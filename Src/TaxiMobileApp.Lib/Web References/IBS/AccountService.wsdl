@@ -1,0 +1,1075 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:s0="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/" xmlns:tns="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" targetNamespace="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <xs:schema elementFormDefault="qualified" targetNamespace="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="Authenticate">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="user" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="password" type="xs:string" />
+            <xs:element minOccurs="1" maxOccurs="1" name="minutesTimeOut" type="xs:int" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="AuthenticateResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="AuthenticateResult" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetAccount">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="sessionId" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="email" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="password" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetAccountResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="GetAccountResult" type="tns:AccountCallResult" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="AccountCallResult">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="Error" type="tns:ErrorCode" />
+          <xs:element minOccurs="0" maxOccurs="1" name="ErrorMessage" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Account" type="tns:AccountInfo" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:simpleType name="ErrorCode">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="NoError" />
+          <xs:enumeration value="InvalidLoginInfo" />
+          <xs:enumeration value="AccountAlreadyExist" />
+          <xs:enumeration value="AccessDenied" />
+          <xs:enumeration value="Exception" />
+          <xs:enumeration value="IBSError" />
+          <xs:enumeration value="DataError" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:complexType name="AccountInfo">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="Email" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Password" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Title" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="FirstName" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="LastName" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="PhoneNumber" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="MobileNumber" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Language" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="PreferenceCompanyId" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="PreferenceVehicleTypeId" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="PreferenceNumberOfPassenger" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="PreferenceChargeTypeId" type="xs:int" />
+          <xs:element minOccurs="0" maxOccurs="1" name="PreferenceRideExceptions" type="tns:ArrayOfRideException" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Addresses" type="tns:ArrayOfAccountAddress" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ArrayOfRideException">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="RideException" nillable="true" type="tns:RideException" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="RideException">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="Id" type="xs:int" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Description" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Value" type="xs:boolean" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ArrayOfAccountAddress">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="AccountAddress" nillable="true" type="tns:AccountAddress" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="AccountAddress">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="Id" type="xs:int" />
+          <xs:element minOccurs="0" maxOccurs="1" name="LocationName" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="AddressAndCity" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Appartment" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Province" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="PostalCode" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Longitude" type="xs:double" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Latitude" type="xs:double" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="CreateAccount">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="sessionId" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="accountInfo" type="tns:AccountInfo" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="CreateAccountResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="CreateAccountResult" type="tns:AccountCallResult" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="UpdateAccount">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="sessionId" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="accountInfo" type="tns:AccountInfo" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="UpdateAccountResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="UpdateAccountResult" type="tns:AccountCallResult" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="ResetPassword">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="sessionId" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="email" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="ResetPasswordResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="ResetPasswordResult" type="tns:CallResult" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="CallResult">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="Error" type="tns:ErrorCode" />
+          <xs:element minOccurs="0" maxOccurs="1" name="ErrorMessage" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="UpdatePassword">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="sessionId" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="email" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="oldPassword" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="newPassword" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="UpdatePasswordResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="UpdatePasswordResult" type="tns:CallResult" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetCompaniesList">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="sessionId" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetCompaniesListResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="GetCompaniesListResult" type="tns:CompaniesListCallResult" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="CompaniesListCallResult">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="Error" type="tns:ErrorCode" />
+          <xs:element minOccurs="0" maxOccurs="1" name="ErrorMessage" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Companies" type="tns:ArrayOfCompany" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ArrayOfCompany">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Company" nillable="true" type="tns:Company" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Company">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="Id" type="xs:int" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Name" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="GetNotesList">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="sessionId" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="language" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetNotesListResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="GetNotesListResult" type="tns:NotesListCallResult" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="NotesListCallResult">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="Error" type="tns:ErrorCode" />
+          <xs:element minOccurs="0" maxOccurs="1" name="ErrorMessage" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Notes" type="tns:ArrayOfNote" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ArrayOfNote">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Note" nillable="true" type="tns:Note" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Note">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="Id" type="xs:int" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Description" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Value" type="xs:boolean" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="GetVehiclesList">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="sessionId" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetVehiclesListResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="GetVehiclesListResult" type="tns:VehiclesListCallResult" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="VehiclesListCallResult">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="Error" type="tns:ErrorCode" />
+          <xs:element minOccurs="0" maxOccurs="1" name="ErrorMessage" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Vehicles" type="tns:ArrayOfVehicle" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ArrayOfVehicle">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Vehicle" nillable="true" type="tns:Vehicle" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Vehicle">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="1" name="Id" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Description" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="GetOrderStatusList">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="sessionId" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="language" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetOrderStatusListResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="GetOrderStatusListResult" type="tns:OrderStatusListCallResult" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="OrderStatusListCallResult">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="Error" type="tns:ErrorCode" />
+          <xs:element minOccurs="0" maxOccurs="1" name="ErrorMessage" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="OrderStatus" type="tns:ArrayOfOrderStatus" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ArrayOfOrderStatus">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="OrderStatus" nillable="true" type="tns:OrderStatus" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="OrderStatus">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="Id" type="xs:int" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Description" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="GetChargeTypesList">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="sessionId" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="language" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetChargeTypesListResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="GetChargeTypesListResult" type="tns:ChargeTypesListCallResult" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="ChargeTypesListCallResult">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="Error" type="tns:ErrorCode" />
+          <xs:element minOccurs="0" maxOccurs="1" name="ErrorMessage" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="ChargeTypes" type="tns:ArrayOfChargeType" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ArrayOfChargeType">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="ChargeType" nillable="true" type="tns:ChargeType" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ChargeType">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="Id" type="xs:int" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Description" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="GetRideExceptionsList">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="sessionId" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="language" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetRideExceptionsListResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="GetRideExceptionsListResult" type="tns:RideExceptionsListCallResult" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="RideExceptionsListCallResult">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="Error" type="tns:ErrorCode" />
+          <xs:element minOccurs="0" maxOccurs="1" name="ErrorMessage" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="RideExceptions" type="tns:ArrayOfRideException" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="GetOrderHistory">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="sessionId" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="email" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="password" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetOrderHistoryResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="GetOrderHistoryResult" type="tns:GetOrdersListCallResult" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="GetOrdersListCallResult">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="Error" type="tns:ErrorCode" />
+          <xs:element minOccurs="0" maxOccurs="1" name="ErrorMessage" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="OrderInfos" type="tns:ArrayOfOrderInfo" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ArrayOfOrderInfo">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="OrderInfo" nillable="true" type="tns:OrderInfo" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="OrderInfo">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="Id" type="xs:int" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Title" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Name" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="ContactPhone" type="xs:string" />
+          <xs:element minOccurs="1" maxOccurs="1" name="PickupTime" type="xs:dateTime" />
+          <xs:element minOccurs="0" maxOccurs="1" name="PickupAddress" type="tns:AccountAddress" />
+          <xs:element minOccurs="0" maxOccurs="1" name="RingCode" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="DropoffAddress" type="tns:AccountAddress" />
+          <xs:element minOccurs="1" maxOccurs="1" name="CompanyId" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="VehicleTypeId" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="ChargeTypeId" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="NumberOfPassenger" type="xs:int" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Status" type="tns:OrderStatus" />
+          <xs:element minOccurs="0" maxOccurs="1" name="MobileNote" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="Notes" type="tns:ArrayOfNote" />
+          <xs:element minOccurs="0" maxOccurs="1" name="RideExceptions" type="tns:ArrayOfRideException" />
+          <xs:element minOccurs="1" maxOccurs="1" name="OrderDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" maxOccurs="1" name="NoVehicle" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="GetOrderHistoryEx">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="sessionId" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="email" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="password" type="xs:string" />
+            <xs:element minOccurs="1" maxOccurs="1" name="dtFrom" type="xs:dateTime" />
+            <xs:element minOccurs="1" maxOccurs="1" name="dtTo" type="xs:dateTime" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetOrderHistoryExResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="GetOrderHistoryExResult" type="tns:GetOrdersListCallResult" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetOrdersList">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="sessionId" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="email" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="password" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetOrdersListResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="GetOrdersListResult" type="tns:GetOrdersListCallResult" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="CreateOrder">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="sesssionId" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="email" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="password" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="orderInfo" type="tns:OrderInfo" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="CreateOrderResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="CreateOrderResult" type="tns:OrderCallResult" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="OrderCallResult">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="OrderId" type="xs:int" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Error" type="tns:ErrorCode" />
+          <xs:element minOccurs="0" maxOccurs="1" name="ErrorMessage" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ChangeOrder">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="sesssionId" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="email" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="password" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="orderInfo" type="tns:OrderInfo" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="ChangeOrderResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="ChangeOrderResult" type="tns:OrderCallResult" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="CancelOrder">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="sesssionId" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="email" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="password" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="orderInfo" type="tns:OrderInfo" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="CancelOrderResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="CancelOrderResult" type="tns:OrderCallResult" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetVehicleLocation">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="sesssionId" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="email" type="xs:string" />
+            <xs:element minOccurs="0" maxOccurs="1" name="password" type="xs:string" />
+            <xs:element minOccurs="1" maxOccurs="1" name="orderId" type="xs:int" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetVehicleLocationResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="1" name="GetVehicleLocationResult" type="tns:VehicleLocationCallResult" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="VehicleLocationCallResult">
+        <xs:sequence>
+          <xs:element minOccurs="1" maxOccurs="1" name="Error" type="tns:ErrorCode" />
+          <xs:element minOccurs="0" maxOccurs="1" name="ErrorMessage" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="NoVehicle" type="xs:string" />
+          <xs:element minOccurs="0" maxOccurs="1" name="OrderStatus" type="tns:OrderStatus" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Longitude" type="xs:double" />
+          <xs:element minOccurs="1" maxOccurs="1" name="Latitude" type="xs:double" />
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+  </types>
+  <message name="AuthenticateSoapIn">
+    <part name="parameters" element="tns:Authenticate" />
+  </message>
+  <message name="AuthenticateSoapOut">
+    <part name="parameters" element="tns:AuthenticateResponse" />
+  </message>
+  <message name="GetAccountSoapIn">
+    <part name="parameters" element="tns:GetAccount" />
+  </message>
+  <message name="GetAccountSoapOut">
+    <part name="parameters" element="tns:GetAccountResponse" />
+  </message>
+  <message name="CreateAccountSoapIn">
+    <part name="parameters" element="tns:CreateAccount" />
+  </message>
+  <message name="CreateAccountSoapOut">
+    <part name="parameters" element="tns:CreateAccountResponse" />
+  </message>
+  <message name="UpdateAccountSoapIn">
+    <part name="parameters" element="tns:UpdateAccount" />
+  </message>
+  <message name="UpdateAccountSoapOut">
+    <part name="parameters" element="tns:UpdateAccountResponse" />
+  </message>
+  <message name="ResetPasswordSoapIn">
+    <part name="parameters" element="tns:ResetPassword" />
+  </message>
+  <message name="ResetPasswordSoapOut">
+    <part name="parameters" element="tns:ResetPasswordResponse" />
+  </message>
+  <message name="UpdatePasswordSoapIn">
+    <part name="parameters" element="tns:UpdatePassword" />
+  </message>
+  <message name="UpdatePasswordSoapOut">
+    <part name="parameters" element="tns:UpdatePasswordResponse" />
+  </message>
+  <message name="GetCompaniesListSoapIn">
+    <part name="parameters" element="tns:GetCompaniesList" />
+  </message>
+  <message name="GetCompaniesListSoapOut">
+    <part name="parameters" element="tns:GetCompaniesListResponse" />
+  </message>
+  <message name="GetNotesListSoapIn">
+    <part name="parameters" element="tns:GetNotesList" />
+  </message>
+  <message name="GetNotesListSoapOut">
+    <part name="parameters" element="tns:GetNotesListResponse" />
+  </message>
+  <message name="GetVehiclesListSoapIn">
+    <part name="parameters" element="tns:GetVehiclesList" />
+  </message>
+  <message name="GetVehiclesListSoapOut">
+    <part name="parameters" element="tns:GetVehiclesListResponse" />
+  </message>
+  <message name="GetOrderStatusListSoapIn">
+    <part name="parameters" element="tns:GetOrderStatusList" />
+  </message>
+  <message name="GetOrderStatusListSoapOut">
+    <part name="parameters" element="tns:GetOrderStatusListResponse" />
+  </message>
+  <message name="GetChargeTypesListSoapIn">
+    <part name="parameters" element="tns:GetChargeTypesList" />
+  </message>
+  <message name="GetChargeTypesListSoapOut">
+    <part name="parameters" element="tns:GetChargeTypesListResponse" />
+  </message>
+  <message name="GetRideExceptionsListSoapIn">
+    <part name="parameters" element="tns:GetRideExceptionsList" />
+  </message>
+  <message name="GetRideExceptionsListSoapOut">
+    <part name="parameters" element="tns:GetRideExceptionsListResponse" />
+  </message>
+  <message name="GetOrderHistorySoapIn">
+    <part name="parameters" element="tns:GetOrderHistory" />
+  </message>
+  <message name="GetOrderHistorySoapOut">
+    <part name="parameters" element="tns:GetOrderHistoryResponse" />
+  </message>
+  <message name="GetOrderHistoryExSoapIn">
+    <part name="parameters" element="tns:GetOrderHistoryEx" />
+  </message>
+  <message name="GetOrderHistoryExSoapOut">
+    <part name="parameters" element="tns:GetOrderHistoryExResponse" />
+  </message>
+  <message name="GetOrdersListSoapIn">
+    <part name="parameters" element="tns:GetOrdersList" />
+  </message>
+  <message name="GetOrdersListSoapOut">
+    <part name="parameters" element="tns:GetOrdersListResponse" />
+  </message>
+  <message name="CreateOrderSoapIn">
+    <part name="parameters" element="tns:CreateOrder" />
+  </message>
+  <message name="CreateOrderSoapOut">
+    <part name="parameters" element="tns:CreateOrderResponse" />
+  </message>
+  <message name="ChangeOrderSoapIn">
+    <part name="parameters" element="tns:ChangeOrder" />
+  </message>
+  <message name="ChangeOrderSoapOut">
+    <part name="parameters" element="tns:ChangeOrderResponse" />
+  </message>
+  <message name="CancelOrderSoapIn">
+    <part name="parameters" element="tns:CancelOrder" />
+  </message>
+  <message name="CancelOrderSoapOut">
+    <part name="parameters" element="tns:CancelOrderResponse" />
+  </message>
+  <message name="GetVehicleLocationSoapIn">
+    <part name="parameters" element="tns:GetVehicleLocation" />
+  </message>
+  <message name="GetVehicleLocationSoapOut">
+    <part name="parameters" element="tns:GetVehicleLocationResponse" />
+  </message>
+  <portType name="AccountServiceSoap">
+    <operation name="Authenticate">
+      <input message="tns:AuthenticateSoapIn" />
+      <output message="tns:AuthenticateSoapOut" />
+    </operation>
+    <operation name="GetAccount">
+      <input message="tns:GetAccountSoapIn" />
+      <output message="tns:GetAccountSoapOut" />
+    </operation>
+    <operation name="CreateAccount">
+      <input message="tns:CreateAccountSoapIn" />
+      <output message="tns:CreateAccountSoapOut" />
+    </operation>
+    <operation name="UpdateAccount">
+      <input message="tns:UpdateAccountSoapIn" />
+      <output message="tns:UpdateAccountSoapOut" />
+    </operation>
+    <operation name="ResetPassword">
+      <input message="tns:ResetPasswordSoapIn" />
+      <output message="tns:ResetPasswordSoapOut" />
+    </operation>
+    <operation name="UpdatePassword">
+      <input message="tns:UpdatePasswordSoapIn" />
+      <output message="tns:UpdatePasswordSoapOut" />
+    </operation>
+    <operation name="GetCompaniesList">
+      <input message="tns:GetCompaniesListSoapIn" />
+      <output message="tns:GetCompaniesListSoapOut" />
+    </operation>
+    <operation name="GetNotesList">
+      <input message="tns:GetNotesListSoapIn" />
+      <output message="tns:GetNotesListSoapOut" />
+    </operation>
+    <operation name="GetVehiclesList">
+      <input message="tns:GetVehiclesListSoapIn" />
+      <output message="tns:GetVehiclesListSoapOut" />
+    </operation>
+    <operation name="GetOrderStatusList">
+      <input message="tns:GetOrderStatusListSoapIn" />
+      <output message="tns:GetOrderStatusListSoapOut" />
+    </operation>
+    <operation name="GetChargeTypesList">
+      <input message="tns:GetChargeTypesListSoapIn" />
+      <output message="tns:GetChargeTypesListSoapOut" />
+    </operation>
+    <operation name="GetRideExceptionsList">
+      <input message="tns:GetRideExceptionsListSoapIn" />
+      <output message="tns:GetRideExceptionsListSoapOut" />
+    </operation>
+    <operation name="GetOrderHistory">
+      <input message="tns:GetOrderHistorySoapIn" />
+      <output message="tns:GetOrderHistorySoapOut" />
+    </operation>
+    <operation name="GetOrderHistoryEx">
+      <input message="tns:GetOrderHistoryExSoapIn" />
+      <output message="tns:GetOrderHistoryExSoapOut" />
+    </operation>
+    <operation name="GetOrdersList">
+      <input message="tns:GetOrdersListSoapIn" />
+      <output message="tns:GetOrdersListSoapOut" />
+    </operation>
+    <operation name="CreateOrder">
+      <input message="tns:CreateOrderSoapIn" />
+      <output message="tns:CreateOrderSoapOut" />
+    </operation>
+    <operation name="ChangeOrder">
+      <input message="tns:ChangeOrderSoapIn" />
+      <output message="tns:ChangeOrderSoapOut" />
+    </operation>
+    <operation name="CancelOrder">
+      <input message="tns:CancelOrderSoapIn" />
+      <output message="tns:CancelOrderSoapOut" />
+    </operation>
+    <operation name="GetVehicleLocation">
+      <input message="tns:GetVehicleLocationSoapIn" />
+      <output message="tns:GetVehicleLocationSoapOut" />
+    </operation>
+  </portType>
+  <binding name="AccountServiceSoap" type="tns:AccountServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="Authenticate">
+      <soap:operation soapAction="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/Authenticate" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetAccount">
+      <soap:operation soapAction="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/GetAccount" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CreateAccount">
+      <soap:operation soapAction="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/CreateAccount" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="UpdateAccount">
+      <soap:operation soapAction="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/UpdateAccount" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="ResetPassword">
+      <soap:operation soapAction="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/ResetPassword" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="UpdatePassword">
+      <soap:operation soapAction="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/UpdatePassword" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetCompaniesList">
+      <soap:operation soapAction="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/GetCompaniesList" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetNotesList">
+      <soap:operation soapAction="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/GetNotesList" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetVehiclesList">
+      <soap:operation soapAction="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/GetVehiclesList" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetOrderStatusList">
+      <soap:operation soapAction="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/GetOrderStatusList" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetChargeTypesList">
+      <soap:operation soapAction="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/GetChargeTypesList" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetRideExceptionsList">
+      <soap:operation soapAction="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/GetRideExceptionsList" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetOrderHistory">
+      <soap:operation soapAction="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/GetOrderHistory" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetOrderHistoryEx">
+      <soap:operation soapAction="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/GetOrderHistoryEx" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetOrdersList">
+      <soap:operation soapAction="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/GetOrdersList" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CreateOrder">
+      <soap:operation soapAction="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/CreateOrder" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="ChangeOrder">
+      <soap:operation soapAction="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/ChangeOrder" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CancelOrder">
+      <soap:operation soapAction="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/CancelOrder" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetVehicleLocation">
+      <soap:operation soapAction="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/GetVehicleLocation" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+  <binding name="AccountServiceSoap12" type="tns:AccountServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="Authenticate">
+      <soap12:operation soapAction="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/Authenticate" style="document" />
+      <input>
+        <soap12:body use="literal" />
+      </input>
+      <output>
+        <soap12:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetAccount">
+      <soap12:operation soapAction="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/GetAccount" style="document" />
+      <input>
+        <soap12:body use="literal" />
+      </input>
+      <output>
+        <soap12:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CreateAccount">
+      <soap12:operation soapAction="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/CreateAccount" style="document" />
+      <input>
+        <soap12:body use="literal" />
+      </input>
+      <output>
+        <soap12:body use="literal" />
+      </output>
+    </operation>
+    <operation name="UpdateAccount">
+      <soap12:operation soapAction="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/UpdateAccount" style="document" />
+      <input>
+        <soap12:body use="literal" />
+      </input>
+      <output>
+        <soap12:body use="literal" />
+      </output>
+    </operation>
+    <operation name="ResetPassword">
+      <soap12:operation soapAction="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/ResetPassword" style="document" />
+      <input>
+        <soap12:body use="literal" />
+      </input>
+      <output>
+        <soap12:body use="literal" />
+      </output>
+    </operation>
+    <operation name="UpdatePassword">
+      <soap12:operation soapAction="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/UpdatePassword" style="document" />
+      <input>
+        <soap12:body use="literal" />
+      </input>
+      <output>
+        <soap12:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetCompaniesList">
+      <soap12:operation soapAction="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/GetCompaniesList" style="document" />
+      <input>
+        <soap12:body use="literal" />
+      </input>
+      <output>
+        <soap12:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetNotesList">
+      <soap12:operation soapAction="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/GetNotesList" style="document" />
+      <input>
+        <soap12:body use="literal" />
+      </input>
+      <output>
+        <soap12:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetVehiclesList">
+      <soap12:operation soapAction="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/GetVehiclesList" style="document" />
+      <input>
+        <soap12:body use="literal" />
+      </input>
+      <output>
+        <soap12:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetOrderStatusList">
+      <soap12:operation soapAction="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/GetOrderStatusList" style="document" />
+      <input>
+        <soap12:body use="literal" />
+      </input>
+      <output>
+        <soap12:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetChargeTypesList">
+      <soap12:operation soapAction="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/GetChargeTypesList" style="document" />
+      <input>
+        <soap12:body use="literal" />
+      </input>
+      <output>
+        <soap12:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetRideExceptionsList">
+      <soap12:operation soapAction="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/GetRideExceptionsList" style="document" />
+      <input>
+        <soap12:body use="literal" />
+      </input>
+      <output>
+        <soap12:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetOrderHistory">
+      <soap12:operation soapAction="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/GetOrderHistory" style="document" />
+      <input>
+        <soap12:body use="literal" />
+      </input>
+      <output>
+        <soap12:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetOrderHistoryEx">
+      <soap12:operation soapAction="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/GetOrderHistoryEx" style="document" />
+      <input>
+        <soap12:body use="literal" />
+      </input>
+      <output>
+        <soap12:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetOrdersList">
+      <soap12:operation soapAction="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/GetOrdersList" style="document" />
+      <input>
+        <soap12:body use="literal" />
+      </input>
+      <output>
+        <soap12:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CreateOrder">
+      <soap12:operation soapAction="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/CreateOrder" style="document" />
+      <input>
+        <soap12:body use="literal" />
+      </input>
+      <output>
+        <soap12:body use="literal" />
+      </output>
+    </operation>
+    <operation name="ChangeOrder">
+      <soap12:operation soapAction="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/ChangeOrder" style="document" />
+      <input>
+        <soap12:body use="literal" />
+      </input>
+      <output>
+        <soap12:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CancelOrder">
+      <soap12:operation soapAction="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/CancelOrder" style="document" />
+      <input>
+        <soap12:body use="literal" />
+      </input>
+      <output>
+        <soap12:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetVehicleLocation">
+      <soap12:operation soapAction="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/GetVehicleLocation" style="document" />
+      <input>
+        <soap12:body use="literal" />
+      </input>
+      <output>
+        <soap12:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+  <service name="AccountService">
+    <port name="AccountServiceSoap" binding="tns:AccountServiceSoap">
+      <soap:address location="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebServiceProd/AccountService.asmx" />
+    </port>
+    <port name="AccountServiceSoap12" binding="tns:AccountServiceSoap12">
+      <soap12:address location="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebServiceProd/AccountService.asmx" />
+    </port>
+  </service>
+</definitions>

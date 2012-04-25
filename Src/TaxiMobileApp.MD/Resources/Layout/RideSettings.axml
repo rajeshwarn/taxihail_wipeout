@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical" android:layout_width="fill_parent"
+        android:layout_height="fill_parent" android:gravity="center_horizontal"
+        android:focusable="true" android:focusableInTouchMode="true">
+	    
+	<RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center" >
+
+        <ImageView
+           android:layout_width="fill_parent"
+           android:layout_height="wrap_content"
+           android:src="@drawable/header_nologo"
+           android:scaleType="fitXY"
+           android:adjustViewBounds="true" />
+    
+		<ImageButton
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="35dip"
+			android:scaleType="fitStart"
+            android:layout_alignParentLeft="true"
+			android:layout_centerVertical="true"
+            android:gravity="left"
+			android:background="@null" />
+        <TextView
+            android:id="@+id/HistoryDetailTitle"
+            style="@style/BigTitleText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center_horizontal"
+            android:text="@string/DefaultRideSettingsViewTitle" />
+        <Button android:id="@+id/DoneBtn"
+             style="@style/ButtonText"
+             android:background="@drawable/black_button"
+             android:layout_width="wrap_content"
+             android:gravity="right"
+             android:layout_alignParentRight="true"
+             android:layout_height="wrap_content"
+			 android:layout_centerVertical="true"
+             android:text="@string/DoneButton" />
+    </RelativeLayout>
+	
+	<LinearLayout 
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"		
+		android:paddingLeft="15dip"
+		android:paddingRight="15dip"
+		android:paddingTop="15dip"
+		android:background="@drawable/background"
+		android:scaleType="fitXY"
+		android:orientation="vertical">
+			
+		<TextView
+			android:id="@+id/rideSettingsListHeader"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:focusable="false"
+			android:textStyle="bold"
+			android:textSize="14sp"
+			android:textColor="@color/darkgray"
+			android:background="#00000000">
+		</TextView>
+		<LinearLayout
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			android:background="@drawable/roundedContainer">			
+			<ListView
+				android:id="@+id/android:list"
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"   
+				android:divider="@color/gray"
+				android:dividerHeight="1dp"
+				android:focusable="false"
+				android:background="#00000000">
+			</ListView>
+		</LinearLayout>
+	</LinearLayout>
+</LinearLayout>

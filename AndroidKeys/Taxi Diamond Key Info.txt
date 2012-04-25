@@ -1,0 +1,27 @@
+Name : TaxiDiamond
+Password Taxi123
+
+
+
+D:\Sources\TaxiMobile\Src\TaxiMobileApp.MD\bin\Release>keytool -list -alias Taxi
+Diamond -keystore taxidiamond.keystore
+Enter keystore password:
+TaxiDiamond, Mar 23, 2012, PrivateKeyEntry,
+Certificate fingerprint (MD5): 0B:5C:CC:F6:F6:DA:D1:6E:41:4D:2F:62:38:DC:10:E5
+
+Google api : 
+
+Thank you for signing up for an Android Maps API key!
+Your key is:
+0XEY3WqKVmJNPdO_6HbYCNKId-81eCqYBVEb-Jw
+This key is good for all apps signed with your certificate whose fingerprint is:
+0B:5C:CC:F6:F6:DA:D1:6E:41:4D:2F:62:38:DC:10:E5
+
+Here is an example xml layout to get you started on your way to mapping glory:
+              <com.google.android.maps.MapView
+                 android:layout_width="fill_parent"
+                 android:layout_height="fill_parent"
+                 android:apiKey="0XEY3WqKVmJNPdO_6HbYCNKId-81eCqYBVEb-Jw"
+                 />
+            
+Check out the API documentation for more information.

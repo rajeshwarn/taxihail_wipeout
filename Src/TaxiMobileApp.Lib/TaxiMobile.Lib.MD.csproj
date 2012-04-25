@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B2ADB131-E47E-4DF4-8AA6-1D7E284EFFA9}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TaxiMobile.Lib.MD</RootNamespace>
+    <AssemblyName>TaxiMobile.Lib.MD</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
+    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+    <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Mono.Android" />
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Data\AccountData.cs" />
+    <Compile Include="Data\BookingInfo.cs" />
+    <Compile Include="Data\BookingSetting.cs" />
+    <Compile Include="Data\CreateAccountData.cs" />
+    <Compile Include="Data\ListItem.cs" />
+    <Compile Include="Data\LocationData.cs" />
+    <Compile Include="Data\LocationData.MT.cs" />
+    <Compile Include="Data\LocationDataExtension.cs" />
+    <Compile Include="Data\OrderStatus.cs" />
+    <Compile Include="Data\ResetPasswordData.cs" />
+    <Compile Include="Framework\DisposableAction.cs" />
+    <Compile Include="Framework\Extensions\ActionExtensions.cs" />
+    <Compile Include="Framework\Extensions\Calendar\ByteTimeSpanExtensions.cs" />
+    <Compile Include="Framework\Extensions\Calendar\DayOfWeekExtensions.cs" />
+    <Compile Include="Framework\Extensions\Calendar\DoubleTimeSpanExtensions.cs" />
+    <Compile Include="Framework\Extensions\Calendar\IDateTimeCalendarExtensions.cs" />
+    <Compile Include="Framework\Extensions\Calendar\Int16TimeSpanExtensions.cs" />
+    <Compile Include="Framework\Extensions\Calendar\Int32TimeSpanExtensions.cs" />
+    <Compile Include="Framework\Extensions\Calendar\Int64TimeSpanExtensions.cs" />
+    <Compile Include="Framework\Extensions\Calendar\SingleTimeSpanExtensions.cs" />
+    <Compile Include="Framework\Extensions\CollectionExtensions.cs" />
+    <Compile Include="Framework\Extensions\DateTimeExtensions.cs" />
+    <Compile Include="Framework\Extensions\DictionaryExtensions.cs" />
+    <Compile Include="Framework\Extensions\DoubleExtension.cs" />
+    <Compile Include="Framework\Extensions\EnumerableExtensions.cs" />
+    <Compile Include="Framework\Extensions\ExtensionPoint.cs" />
+    <Compile Include="Framework\Extensions\FileInfoExtensions.cs" />
+    <Compile Include="Framework\Extensions\FuncExtensions.cs" />
+    <Compile Include="Framework\Extensions\GroupingExtensions.cs" />
+    <Compile Include="Framework\Extensions\IExtensionPoint.cs" />
+    <Compile Include="Framework\Extensions\IExtensionPoint.Generic.cs" />
+    <Compile Include="Framework\Extensions\ObjectExtensions.cs" />
+    <Compile Include="Framework\Extensions\StackExtensions.cs" />
+    <Compile Include="Framework\Extensions\StreamExtensions.cs" />
+    <Compile Include="Framework\Extensions\StringBuilderExtensions.cs" />
+    <Compile Include="Framework\Extensions\StringExtensions.cs" />
+    <Compile Include="Framework\Extensions\TextWriterExtensions.cs" />
+    <Compile Include="Framework\Extensions\ValueType\ByteSupport.cs" />
+    <Compile Include="Framework\Extensions\ValueType\EnumSupport.cs" />
+    <Compile Include="Framework\Extensions\ValueType\Int32Support.cs" />
+    <Compile Include="Framework\Extensions\ValueType\IValueSupport.cs" />
+    <Compile Include="Framework\Extensions\ValueType\IValueSupport.Generic.cs" />
+    <Compile Include="Framework\Extensions\ValueType\ValueSupport.cs" />
+    <Compile Include="Framework\Extensions\ValueType\ValueSupport.Generic.cs" />
+    <Compile Include="Framework\Extensions\ValueType\ValueSupportExtensions.cs" />
+    <Compile Include="Framework\Null.cs" />
+    <Compile Include="Framework\NullDisposable.cs" />
+    <Compile Include="Framework\Params.cs" />
+    <Compile Include="Infrastructure\IAppContext.cs" />
+    <Compile Include="Infrastructure\IAppResource.cs" />
+    <Compile Include="Infrastructure\IAppSettings.cs" />
+    <Compile Include="Infrastructure\ILogger.cs" />
+    <Compile Include="Localization\AppLanguage.cs" />
+    <Compile Include="Practices\Bootstrapper.cs" />
+    <Compile Include="Practices\IModule.cs" />
+    <Compile Include="Practices\ServiceLocator.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\IAccountService.cs" />
+    <Compile Include="Services\IBookingService.cs" />
+    <Compile Include="Services\Impl\AccountService.cs" />
+    <Compile Include="Services\Impl\BookingService.cs" />
+    <Compile Include="Services\Mapper\AccountMapping.cs" />
+    <Compile Include="Services\Mapper\OrderMapping.cs" />
+    <Compile Include="Services\Mapper\SettingMapper.cs" />
+    <Compile Include="Services\ModuleService.cs" />
+    <Compile Include="Web References\IBS\Reference.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Web References\IBS\AccountService.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Web References\IBS\AccountService.wsdl" />
+    <None Include="Web References\IBS\Reference.map" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
