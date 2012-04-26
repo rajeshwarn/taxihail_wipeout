@@ -11,7 +11,7 @@ namespace TaxiMobile.Lib.Services.Mapper
 	{
         public TBookAccount3 ToWSData(TBookAccount3 result, AccountData data)
 		{
-			result.FavoriteAddresses = data.FavoriteLocations.Select (loc => ToWSLocationData (loc)).ToArray ();
+			result.FavoriteAddresses = data.FavoriteLocations.Select (loc => ToWSFavoriteLocationData (loc)).ToArray ();
 			return result;
 			
 		}
@@ -32,7 +32,7 @@ namespace TaxiMobile.Lib.Services.Mapper
 		}
 
 
-		public TWEBFavotiteAddress ToWSLocationData (LocationData location)
+		public TWEBFavotiteAddress ToWSFavoriteLocationData (LocationData location)
 		{
             var result = new TWEBFavotiteAddress();
 			result.AddressID = location.Id;
@@ -43,6 +43,18 @@ namespace TaxiMobile.Lib.Services.Mapper
 			result.Longitude = location.Longitude.HasValue ? location.Longitude.Value : 0;
 			return result;
 		}
+
+        public TWEBAddress ToWSLocationData(LocationData location)
+        {
+            var result = new TWEBAddress();
+            result.AddressID = location.Id;
+            result.StreetPlace = location.Address;
+            result.AptBaz = location.Apartment;
+            result.Latitude = location.Latitude.HasValue ? location.Latitude.Value : 0;
+            result.Longitude = location.Longitude.HasValue ? location.Longitude.Value : 0;
+            return result;
+        }
+
 		public LocationData ToLocationData (AccountData existing, TWEBFavotiteAddress address)
 		{
 			var result = new LocationData ();
