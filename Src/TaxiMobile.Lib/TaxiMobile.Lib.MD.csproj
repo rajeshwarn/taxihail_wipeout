@@ -122,14 +122,6 @@
     <Compile Include="Services\Mapper\OrderMapping.cs" />
     <Compile Include="Services\Mapper\SettingMapper.cs" />
     <Compile Include="Services\ModuleService.cs" />
-    <Compile Include="Web References\IBS\Reference.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Web References\IBS\AccountService.disco" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Web References\IBS\AccountService.wsdl" />
-    <None Include="Web References\IBS\Reference.map" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

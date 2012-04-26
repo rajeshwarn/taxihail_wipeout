@@ -2,7 +2,6 @@ using System.Linq;
 using TaxiMobile.Lib.Data;
 using TaxiMobile.Lib.Framework;
 using TaxiMobile.Lib.Framework.Extensions;
-using TaxiMobile.Lib.IBS;
 using TaxiMobile.Lib.Practices;
 using TaxiMobile.Lib.Services.IBS;
 

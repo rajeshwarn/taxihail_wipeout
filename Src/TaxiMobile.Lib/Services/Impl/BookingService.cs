@@ -5,7 +5,6 @@ using System.Linq;
 using System.Xml.Linq;
 using TaxiMobile.Lib.Data;
 using TaxiMobile.Lib.Framework.Extensions;
-using TaxiMobile.Lib.IBS;
 using TaxiMobile.Lib.Infrastructure;
 using TaxiMobile.Lib.Practices;
 using TaxiMobile.Lib.Services.Mapper;
@@ -32,27 +31,7 @@ namespace TaxiMobile.Lib.Services.Impl
 		{
 		}
 
-        public void UseService(Action<TaxiMobile.Lib.IBS.AccountService> action)
-		{
-			var serviceUrl = ServiceLocator.Current.GetInstance<IAppSettings> ().ServiceUrl;
-
-            var service = new TaxiMobile.Lib.IBS.AccountService(); //serviceUrl + "AccountService.asmx"
-			
-			try
-			{
-				action (service);
-			}
-			catch (Exception ex)
-			{
-				ServiceLocator.Current.GetInstance<ILogger> ().LogError (ex);
-			}
-			finally
-			{
-				
-				service.Dispose ();
-			}
-			
-		}
+        
 
 		public bool IsValid (ref BookingInfoData info)
 		{
@@ -102,9 +81,6 @@ namespace TaxiMobile.Lib.Services.Impl
 
 		private LocationData[] SearchAddressUsingGoogle (string param)
 		{
-			
-			
-			
 			var result = new LocationData[0];
 			try
 			{
@@ -118,13 +94,9 @@ namespace TaxiMobile.Lib.Services.Impl
 					
 					var doc = XDocument.Load (encodedUrl);
 					
-					
-					
 					IEnumerable<LocationData > addresses = from item in doc.Descendants ("result")
 						where item.Element ("formatted_address").Value.ToLower ().Contains ("canada")
 						select ConvertToData (item);
-					
-					
 					
 					result = addresses.Where (a => a != null).ToArray ();
 					
@@ -197,7 +169,6 @@ namespace TaxiMobile.Lib.Services.Impl
 		
 		private LocationData ConvertToData (XElement item)
 		{
-			
 			LocationData result = new LocationData { Address = "" };
 			
 			
@@ -314,10 +285,6 @@ namespace TaxiMobile.Lib.Services.Impl
 			
 		}
 		
-		protected ILogger Logger {
-			get { return ServiceLocator.Current.GetInstance<ILogger > ();}
-		}
-
 		public int CreateOrder (AccountData user, BookingInfoData info, out string error)
 		{
 			error = "";
@@ -325,83 +292,63 @@ namespace TaxiMobile.Lib.Services.Impl
 			int r = 0;
 			UseService (service =>
 			{
+				new OrderMapping ().ToWSOrder (info);
+                //var order = new OrderInfo ();
+                //order.ChargeTypeId = info.Settings.ChargeType;
+                //order.CompanyId = info.Settings.Company;
+                //order.ContactPhone = info.Settings.Phone;
+                //order.Name = info.Settings.Name;
+                //order.NumberOfPassenger = info.Settings.Passengers;
+                //order.VehicleTypeId = info.Settings.VehicleType;
+					
+					
+                //order.MobileNote = "";
+                //if (info.PickupLocation.IsGPSNotAccurate)
+                //{
+                //    var note = ServiceLocator.Current.GetInstance <IAppResource> ().OrderNote;
+                //    note += ServiceLocator.Current.GetInstance <IAppResource> ().OrderNoteGPSApproximate;
+                //    order.MobileNote = note;
+                //}
 				
+                //if (info.PickupLocation.RingCode.HasValue ())
+                //{
+                //    order.RingCode = info.PickupLocation.RingCode;
+                //}
+					
+					
+                //if (info.PickupDate.HasValue)
+                //{
+                //    order.PickupTime = info.PickupDate.Value;
+                //}
+                //else
+                //{                                                                   
+                //    order.PickupTime = DateTime.Now.AddMinutes (5);
+                //}
+					
+                //if (info.DestinationLocation != null)
+                //{
+                //    info.DestinationLocation.Address = info.DestinationLocation.Address.SelectOrDefault (a => a, "");
+                //}
+					
+                //order.OrderDate = DateTime.Now;
+					
+					
+					
+				Logger.LogMessage ("Create order  :" + user.Email);
 				
-//				for (int i = 0; i < info.Settings.NumberOfTaxi; i++)
-//				{
-					
-					
-					
-					var sessionId = service.Authenticate ("iphone", "test", 1);
-					
-					new OrderMapping ().ToWSOrder (info);
-					var order = new OrderInfo ();
-					order.ChargeTypeId = info.Settings.ChargeType;
-					order.CompanyId = info.Settings.Company;
-					order.ContactPhone = info.Settings.Phone;
-					order.Name = info.Settings.Name;
-					order.NumberOfPassenger = info.Settings.Passengers;
-					order.VehicleTypeId = info.Settings.VehicleType;
-					
-					
-					order.MobileNote = "";
-					if (info.PickupLocation.IsGPSNotAccurate)
-					{
-					
-						var note = ServiceLocator.Current.GetInstance <IAppResource> ().OrderNote;
-						note += ServiceLocator.Current.GetInstance <IAppResource> ().OrderNoteGPSApproximate;
-						order.MobileNote = note;
-					}
-					
-				
-				
-					if (info.PickupLocation.RingCode.HasValue ())
-					{
-						order.RingCode = info.PickupLocation.RingCode;
-					}
-					
-					
-					//order.PickupAddress = new AccountMapping ().ToWSLocationData (info.PickupLocation);
-					
-					
-					if (info.PickupDate.HasValue)
-					{
-						order.PickupTime = info.PickupDate.Value;
-					}
-					else
-					{
-						order.PickupTime = DateTime.Now.AddMinutes (5);
-					}
-					
-					if (info.DestinationLocation != null)
-					{
-						info.DestinationLocation.Address = info.DestinationLocation.Address.SelectOrDefault (a => a, "");
-						//order.DropoffAddress = new AccountMapping ().ToWSLocationData (info.DestinationLocation);
-					}
-					
-					
-					
-					order.OrderDate = DateTime.Now;
-					
-					
-					
-					Logger.LogMessage ("Create order  :" + user.Email);
-				
-					var result = service.CreateOrder (sessionId, user.Email, user.Password, order);
-					
-					
-					
-					if (result.OrderId > 0)
-					{
-						r = result.OrderId;
-						Logger.LogMessage ("Order Created :" + result.OrderId.ToString ());
-					}
-					else
-					{
-						errorResult = result.ErrorMessage;
-						Logger.LogMessage ("Error order creation :" + errorResult);
-					}
-				//}
+				var result = service.SaveBookOrder(userNameApp, passwordApp, null);
+
+				if (result > 0)
+				{
+                    r = result;
+                    Logger.LogMessage("Order Created :" + result.ToString());
+				}
+				else
+				{
+					errorResult = "Can't create order";
+					Logger.LogMessage ("Error order creation :" + errorResult);
+				}
+			
 			});
 			error = errorResult;
 			return r;
@@ -412,51 +359,39 @@ namespace TaxiMobile.Lib.Services.Impl
 			OrderStatus r = null;
 			UseService (service =>
 			{
-				
 				ServiceLocator.Current.GetInstance<ILogger> ().LogMessage ("Begin GetOrderStatus");
 				
-				var sessionId = service.Authenticate ("iphone", "test", 1);
-				var result = service.GetVehicleLocation (sessionId, user.Email, user.Password, orderId);				
-				if (result.Error == ErrorCode.NoError)
-				{
-					if ((result.OrderStatus == null) || (result.OrderStatus.Description.IsNullOrEmpty ()))
-					{
-						Logger.LogMessage ("Status cannot be found for order #" + orderId.ToString ());
-						
-						var status = new OrderStatus ();
-						status.Latitude = 0;
-						status.Longitude = 0; 
-						status.Status = ServiceLocator.Current.GetInstance <IAppResource> ().StatusInvalid;
-						status.Id = result.OrderStatus.SelectOrDefault (o => o.Id, 0);
-						r = status;
-					}
-					else
-					{
-						var status = new OrderStatus ();
-						if (result.OrderStatus.Id == 13)
-						{
-							status.Latitude = result.Latitude;
-							status.Longitude = result.Longitude;
-						}
-						status.Status = result.OrderStatus.SelectOrDefault (o => o.Description, "");						
-						status.Id = result.OrderStatus.SelectOrDefault (o => o.Id, 0);
-						r = status;
-
-						if (result.NoVehicle.HasValue () && (result.OrderStatus.Id == 13))
-						{
-							status.Status += Environment.NewLine + string.Format (ServiceLocator.Current.GetInstance <IAppResource> ().CarAssigned, result.NoVehicle);
-						}
-					}
-					
-					
-						
-				}
-				else
-				{
-					ServiceLocator.Current.GetInstance<ILogger> ().LogMessage (result.ErrorMessage);
-				}
+                //var result = service.GetVehicleLocation (sessionId, user.Email, user.Password, orderId);				
 				
-				ServiceLocator.Current.GetInstance<ILogger> ().LogMessage ("End GetOrderStatus");
+                //if ((result.OrderStatus == null) || (result.OrderStatus.Description.IsNullOrEmpty ()))
+                //{
+                //    Logger.LogMessage ("Status cannot be found for order #" + orderId.ToString ());
+						
+                //    var status = new OrderStatus ();
+                //    status.Latitude = 0;
+                //    status.Longitude = 0; 
+                //    status.Status = ServiceLocator.Current.GetInstance <IAppResource> ().StatusInvalid;
+                //    status.Id = result.OrderStatus.SelectOrDefault (o => o.Id, 0);
+                //    r = status;
+                //}
+                //else
+                //{
+                //    var status = new OrderStatus ();
+                //    if (result.OrderStatus.Id == 13)
+                //    {
+                //        status.Latitude = result.Latitude;
+                //        status.Longitude = result.Longitude;
+                //    }
+                //    status.Status = result.OrderStatus.SelectOrDefault (o => o.Description, "");						
+                //    status.Id = result.OrderStatus.SelectOrDefault (o => o.Id, 0);
+                //    r = status;
+
+                //    if (result.NoVehicle.HasValue () && (result.OrderStatus.Id == 13))
+                //    {
+                //        status.Status += Environment.NewLine + string.Format (ServiceLocator.Current.GetInstance <IAppResource> ().CarAssigned, result.NoVehicle);
+                //    }
+                //}
+				Logger.LogMessage ("End GetOrderStatus");
 				
 			});
 			return r;
@@ -467,17 +402,12 @@ namespace TaxiMobile.Lib.Services.Impl
 			bool isCompleted = false;
 			UseService (service =>
 			{
-				
-				var sessionId = service.Authenticate ("iphone", "test", 1);
-				var result = service.GetVehicleLocation (sessionId, user.Email, user.Password, orderId);
-				if (result.Error == ErrorCode.NoError)
-				{
-					
-					int statusId = result.OrderStatus.SelectOrDefault (o => o.Id, 0);
-					isCompleted = IsCompleted (statusId);
-				}
-				
-				
+                //var result = service.GetVehicleLocation (sessionId, user.Email, user.Password, orderId);
+                //if (result.Error == ErrorCode.NoError)
+                //{
+                //    int statusId = result.OrderStatus.SelectOrDefault (o => o.Id, 0);
+                //    isCompleted = IsCompleted (statusId);
+                //}
 			});
 			return isCompleted;
 			
@@ -493,15 +423,8 @@ namespace TaxiMobile.Lib.Services.Impl
 			bool isCompleted = false;
 			UseService (service =>
 			{
-				
-				var sessionId = service.Authenticate ("iphone", "test", 1);
-				
-				var result = service.CancelOrder (sessionId, user.Email, user.Password, new OrderInfo { Id = orderId });
-				if (result.Error == ErrorCode.NoError)
-				{
-					isCompleted = true;
-				}
-				
+                var result = service.CancelBookOrder(userNameApp, passwordApp, orderId, user.DefaultSettings.Phone, null, user.Id);
+                isCompleted = result == 0;
 			});
 			return isCompleted;
 		}

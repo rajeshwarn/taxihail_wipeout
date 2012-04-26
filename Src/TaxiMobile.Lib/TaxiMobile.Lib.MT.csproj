@@ -117,73 +117,11 @@
     <Compile Include="Infrastructure\IAppSettings.cs" />
     <Compile Include="Infrastructure\ILogger.cs" />
     <Compile Include="Services\Impl\StaticDataService.cs" />
-    <Compile Include="Web References\IBS\Reference.cs">
-      <DependentUpon>Reference.map</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Localization\AppLanguage.cs" />
     <Compile Include="Infrastructure\IAppResource.cs" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferences Include="Web References" />
-  </ItemGroup>
-  <ItemGroup>
-    <WebReferenceUrl Include="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebServiceProd/AccountService.asmx">
-      <UrlBehavior>Dynamic</UrlBehavior>
-      <RelPath>Web References\IBS\</RelPath>
-      <UpdateFromURL>http://taxidiamondwebbook.dyndns.org/TaxiMobileWebServiceProd/AccountService.asmx</UpdateFromURL>
-      <ServiceLocationURL>
-      </ServiceLocationURL>
-      <CachedDynamicPropName>
-      </CachedDynamicPropName>
-      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
-      <CachedSettingsPropName>TaxiMobile_Lib_IBS_AccountService</CachedSettingsPropName>
-    </WebReferenceUrl>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="app.config" />
-    <None Include="Web References\IBS\AccountCallResult1.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\IBS\AccountService.disco" />
-    <None Include="Web References\IBS\AccountService.wsdl" />
-    <None Include="Web References\IBS\CallResult1.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\IBS\ChargeTypesListCallResult1.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\IBS\CompaniesListCallResult1.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\IBS\GetOrdersListCallResult1.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\IBS\NotesListCallResult1.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\IBS\OrderCallResult1.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\IBS\OrderStatusListCallResult1.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\IBS\Reference.map">
-      <Generator>MSDiscoCodeGenerator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="Web References\IBS\RideExceptionsListCallResult1.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\IBS\VehicleLocationCallResult1.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\IBS\VehiclesListCallResult1.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Diagnostics\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>
