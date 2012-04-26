@@ -33,8 +33,6 @@ namespace TaxiMobile.Lib.Services.Impl
 		{
 		}
 
-        
-
 		public bool IsValid (ref BookingInfoData info)
 		{
 			return info.PickupLocation.Address.HasValue () && info.PickupLocation.Latitude.HasValue && info.PickupLocation.Longitude.HasValue;
@@ -294,51 +292,12 @@ namespace TaxiMobile.Lib.Services.Impl
 			int r = 0;
 			UseService (service =>
 			{
-				new OrderMapping ().ToWSOrder (info);
-                //var order = new OrderInfo ();
-                //order.ChargeTypeId = info.Settings.ChargeType;
-                //order.CompanyId = info.Settings.Company;
-                //order.ContactPhone = info.Settings.Phone;
-                //order.Name = info.Settings.Name;
-                //order.NumberOfPassenger = info.Settings.Passengers;
-                //order.VehicleTypeId = info.Settings.VehicleType;
-					
-					
-                //order.MobileNote = "";
-                //if (info.PickupLocation.IsGPSNotAccurate)
-                //{
-                //    var note = ServiceLocator.Current.GetInstance <IAppResource> ().OrderNote;
-                //    note += ServiceLocator.Current.GetInstance <IAppResource> ().OrderNoteGPSApproximate;
-                //    order.MobileNote = note;
-                //}
-				
-                //if (info.PickupLocation.RingCode.HasValue ())
-                //{
-                //    order.RingCode = info.PickupLocation.RingCode;
-                //}
-					
-					
-                //if (info.PickupDate.HasValue)
-                //{
-                //    order.PickupTime = info.PickupDate.Value;
-                //}
-                //else
-                //{                                                                   
-                //    order.PickupTime = DateTime.Now.AddMinutes (5);
-                //}
-					
-                //if (info.DestinationLocation != null)
-                //{
-                //    info.DestinationLocation.Address = info.DestinationLocation.Address.SelectOrDefault (a => a, "");
-                //}
-					
-                //order.OrderDate = DateTime.Now;
-					
-					
+				var orderWS = new OrderMapping ().ToWSOrder (info);
+                orderWS.PickupAddress = new AccountMapping().ToWSLocationData(info.PickupLocation); 
 					
 				Logger.LogMessage ("Create order  :" + user.Email);
-				
-				var result = service.SaveBookOrder(userNameApp, passwordApp, null);
+
+                var result = service.SaveBookOrder(userNameApp, passwordApp, orderWS);
 
 				if (result > 0)
 				{
@@ -362,37 +321,20 @@ namespace TaxiMobile.Lib.Services.Impl
 			UseService (service =>
 			{
 				ServiceLocator.Current.GetInstance<ILogger> ().LogMessage ("Begin GetOrderStatus");
-				
-                //var result = service.GetVehicleLocation (sessionId, user.Email, user.Password, orderId);				
-				
-                //if ((result.OrderStatus == null) || (result.OrderStatus.Description.IsNullOrEmpty ()))
-                //{
-                //    Logger.LogMessage ("Status cannot be found for order #" + orderId.ToString ());
-						
-                //    var status = new OrderStatus ();
-                //    status.Latitude = 0;
-                //    status.Longitude = 0; 
-                //    status.Status = ServiceLocator.Current.GetInstance <IAppResource> ().StatusInvalid;
-                //    status.Id = result.OrderStatus.SelectOrDefault (o => o.Id, 0);
-                //    r = status;
-                //}
-                //else
-                //{
-                //    var status = new OrderStatus ();
-                //    if (result.OrderStatus.Id == 13)
-                //    {
-                //        status.Latitude = result.Latitude;
-                //        status.Longitude = result.Longitude;
-                //    }
-                //    status.Status = result.OrderStatus.SelectOrDefault (o => o.Description, "");						
-                //    status.Id = result.OrderStatus.SelectOrDefault (o => o.Id, 0);
-                //    r = status;
 
-                //    if (result.NoVehicle.HasValue () && (result.OrderStatus.Id == 13))
-                //    {
-                //        status.Status += Environment.NewLine + string.Format (ServiceLocator.Current.GetInstance <IAppResource> ().CarAssigned, result.NoVehicle);
-                //    }
-                //}
+                var orderStatus = service.GetOrderStatus(userNameApp, passwordApp, orderId, string.Empty, string.Empty, user.Id);
+                var status = new OrderStatus();
+                status.Status = orderStatus.ToString();
+
+                //if(result == TWEBOrderStatusValue.wosASSIGNED)
+			    double latitude = 0;
+			    double longitude = 0;
+			    var location = service.GetVehicleLocation(userNameApp, passwordApp, orderId, ref latitude, ref longitude);
+
+                status.Longitude = longitude;
+                status.Latitude = latitude;
+
+                r= status;
 				Logger.LogMessage ("End GetOrderStatus");
 				
 			});
@@ -404,20 +346,21 @@ namespace TaxiMobile.Lib.Services.Impl
 			bool isCompleted = false;
 			UseService (service =>
 			{
-                //var result = service.GetVehicleLocation (sessionId, user.Email, user.Password, orderId);
-                //if (result.Error == ErrorCode.NoError)
-                //{
-                //    int statusId = result.OrderStatus.SelectOrDefault (o => o.Id, 0);
-                //    isCompleted = IsCompleted (statusId);
-                //}
+                var result = service.GetOrderStatus(userNameApp, passwordApp, orderId, string.Empty, string.Empty, user.Id);
+                isCompleted = IsCompleted(result);
 			});
 			return isCompleted;
 			
 		}
 
-		public bool IsCompleted (int statusId)
+	    public bool IsCompleted(int statusId)
+	    {
+            return (statusId == (decimal) TWEBOrderStatusValue.wosDONE) || (statusId == (decimal) TWEBOrderStatusValue.wosCANCELLED);
+	    }
+
+	    private bool IsCompleted(TWEBOrderStatusValue statusId)
 		{
-			return (statusId == 0) || (statusId == 7) || (statusId == 18) || (statusId == 22) || (statusId == 11);
+            return (statusId == TWEBOrderStatusValue.wosDONE) || (statusId == TWEBOrderStatusValue.wosCANCELLED);
 		}
 
 		public bool CancelOrder (AccountData user, int orderId)
@@ -430,8 +373,6 @@ namespace TaxiMobile.Lib.Services.Impl
 			});
 			return isCompleted;
 		}
-		
-		
 	}
 }
 
