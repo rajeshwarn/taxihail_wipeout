@@ -31,8 +31,6 @@ namespace TaxiMobile.Lib.Services.Impl
 		{
 		}
 
-        
-
 		public bool IsValid (ref BookingInfoData info)
 		{
 			return info.PickupLocation.Address.HasValue () && info.PickupLocation.Latitude.HasValue && info.PickupLocation.Longitude.HasValue;
@@ -373,8 +371,6 @@ namespace TaxiMobile.Lib.Services.Impl
 			});
 			return isCompleted;
 		}
-		
-		
 	}
 }
 
