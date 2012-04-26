@@ -221,6 +221,12 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\TaxiMobile.MT\assets\About_en.html">
+      <Link>Assets\About_en.html</Link>
+    </Content>
+    <Content Include="..\TaxiMobile.MT\assets\About_fr.html">
+      <Link>Assets\About_fr.html</Link>
+    </Content>
     <Content Include="Properties\AndroidManifest.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -296,18 +302,12 @@
   -->
   <ItemGroup>
     <AndroidAsset Include="Assets\AboutAssets.txt" />
-    <AndroidAsset Include="..\assets\About_en.html">
-      <Link>Assets\About_en.html</Link>
-    </AndroidAsset>
-    <AndroidAsset Include="..\assets\About_fr.html">
-      <Link>Assets\About_fr.html</Link>
-    </AndroidAsset>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Mapper\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TaxiMobileApp.Lib\TaxiMobile.Lib.MD.csproj">
+    <ProjectReference Include="..\TaxiMobile.Lib\TaxiMobile.Lib.MD.csproj">
       <Project>{B2ADB131-E47E-4DF4-8AA6-1D7E284EFFA9}</Project>
       <Name>TaxiMobile.Lib.MD</Name>
     </ProjectReference>

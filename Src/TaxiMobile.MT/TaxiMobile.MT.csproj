@@ -231,7 +231,12 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\TaxiMobile.Lib\TaxiMobile.Lib.MT.csproj">
+      <Project>{11150F15-8271-43E3-BECA-65F24E82774C}</Project>
+      <Name>TaxiMobile.Lib.MT</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Page Include="MainWindow.xib" />
     <Page Include="Book\BookTabView.xib" />
@@ -316,11 +321,5 @@
     <Content Include="Assets\location%402x.png" />
     <Content Include="Assets\apcuriumLogo.png" />
     <Content Include="Assets\apcuriumLogo%402x.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="TaxiMobileApp.Lib\TaxiMobile.Lib.MT.csproj">
-      <Project>{11150F15-8271-43E3-BECA-65F24E82774C}</Project>
-      <Name>TaxiMobile.Lib.MT</Name>
-    </ProjectReference>
   </ItemGroup>
 </Project>

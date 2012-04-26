@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.Practices.ServiceLocation;
 using MobileTaxiApp.Infrastructure;
 using TaxiMobile.Lib.IBS;
+using apcurium.Framework.Extensions;
 #if MONO_DROID
 using Android.Runtime;
 using apcurium.Framework.Extensions;
