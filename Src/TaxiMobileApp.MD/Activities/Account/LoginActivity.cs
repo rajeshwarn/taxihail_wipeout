@@ -1,25 +1,17 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Android.App;
-using Android.Content;
+using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
 using Microsoft.Practices.ServiceLocation;
-using TaxiMobileApp;
-using apcurium.Framework.Extensions;
-using Android.Text.Util;
 using TaxiMobile.Helpers;
 using TaxiMobile.Validation;
-using TaxiMobile.Activities;
+using TaxiMobileApp;
+using apcurium.Framework.Extensions;
 
 namespace TaxiMobile.Activities.Account
 {
-    [Activity(Label = "Login", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation=Android.Content.PM.ScreenOrientation.Portrait)]
+    [Activity(Label = "Login", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation=ScreenOrientation.Portrait)]
     public class LoginActivity : Activity
     {
         protected override void OnCreate(Bundle bundle)

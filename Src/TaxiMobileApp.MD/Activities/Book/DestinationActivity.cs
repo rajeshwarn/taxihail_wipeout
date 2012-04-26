@@ -1,29 +1,15 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
+using Android.Content.PM;
 using Android.GoogleMaps;
-using TaxiMobile.Activities.Location;
-using TaxiMobile.Models;
-using Android.Locations;
-using TaxiMobile.Converters;
-using TaxiMobile.Helpers;
-using Microsoft.Practices.ServiceLocation;
+using Android.Graphics.Drawables;
+using Android.OS;
+using Android.Widget;
 using TaxiMobileApp;
-using apcurium.Framework.Extensions;
-using Android.Views.InputMethods;
-using TaxiMobile.MapUtitilties;
 
 namespace TaxiMobile.Activities.Book
 {
-    [Activity(Label = "Destination", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
+    [Activity(Label = "Destination", ScreenOrientation = ScreenOrientation.Portrait)]
     public class DestinationActivity : AddressActivity, IAddress
     {
 
@@ -105,7 +91,7 @@ namespace TaxiMobile.Activities.Book
             get { return false; }
         }
 
-        protected override Android.Graphics.Drawables.Drawable MapPin
+        protected override Drawable MapPin
         {
             get { return Resources.GetDrawable(Resource.Drawable.pin_red); }
         }

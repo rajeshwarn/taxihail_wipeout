@@ -1,4 +1,4 @@
-using System;
+using System.Drawing;
 using MonoTouch.UIKit;
 
 namespace TaxiMobileApp
@@ -18,7 +18,7 @@ namespace TaxiMobileApp
 			var btnBookIt=UIButton.FromType( UIButtonType.Custom );			
 			btnBookIt.SetImage( UIImage.FromFile(  Resources.BookItButtonImageName ), UIControlState.Normal);
 		
-			btnBookIt.Frame = new System.Drawing.RectangleF( 0,0, 103, 45 );
+			btnBookIt.Frame = new RectangleF( 0,0, 103, 45 );
 			_view.AddSubview( btnBookIt );
 			_view.BackgroundColor = UIColor.Clear;
 			return btnBookIt;

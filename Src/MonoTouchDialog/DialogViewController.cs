@@ -9,11 +9,13 @@
 // by Devin Doty and is Copyrighted 2009 enormego and released under the
 // MIT X11 license
 //
+
 using System;
-using MonoTouch.UIKit;
-using System.Drawing;
 using System.Collections.Generic;
+using System.Drawing;
 using MonoTouch.Foundation;
+using MonoTouch.UIKit;
+using TaxiMobileApp;
 
 namespace MonoTouch.Dialog
 {
@@ -194,7 +196,7 @@ namespace MonoTouch.Dialog
 		
 		public virtual string GetTitle()
 		{
-			return TaxiMobileApp.Resources.DefaultRideSettingsViewTitle;
+			return Resources.DefaultRideSettingsViewTitle;
 		}
 		
 		public virtual UIColor GetCellColor()
@@ -322,7 +324,7 @@ namespace MonoTouch.Dialog
 				return Root.Sections [section].Footer;
 			}
 
-			public override UITableViewCell GetCell (UITableView tableView, MonoTouch.Foundation.NSIndexPath indexPath)
+			public override UITableViewCell GetCell (UITableView tableView, NSIndexPath indexPath)
 			{
 				
 				var section = Root.Sections [indexPath.Section];
@@ -350,7 +352,7 @@ namespace MonoTouch.Dialog
 				}
 			}
 			
-			public override void RowSelected (UITableView tableView, MonoTouch.Foundation.NSIndexPath indexPath)
+			public override void RowSelected (UITableView tableView, NSIndexPath indexPath)
 			{
 				Container.Selected (indexPath);
 			}			
@@ -367,7 +369,7 @@ namespace MonoTouch.Dialog
 				var view = new UIView();
 				view.Frame = new RectangleF( 0,0,300,33 );
 				var headerLabel = new UILabel (  );
-				headerLabel.Frame = new System.Drawing.RectangleF ( 10, 8, 300, 33 );
+				headerLabel.Frame = new RectangleF ( 10, 8, 300, 33 );
 				
 				headerLabel.BackgroundColor = UIColor.Clear;
 				headerLabel.Opaque = false;
@@ -453,7 +455,7 @@ namespace MonoTouch.Dialog
 		public class SizingSource : Source {
 			public SizingSource (DialogViewController controller) : base (controller) {}
 			
-			public override float GetHeightForRow (UITableView tableView, MonoTouch.Foundation.NSIndexPath indexPath)
+			public override float GetHeightForRow (UITableView tableView, NSIndexPath indexPath)
 			{
 				var section = Root.Sections [indexPath.Section];
 				var element = section.Elements [indexPath.Row];
@@ -561,7 +563,7 @@ namespace MonoTouch.Dialog
 			
 			if ( this.NavigationItem != null )
 			{				
-				NavigationItem.TitleView = TaxiMobileApp.AppContext.Current.Controller.GetTitleView( null, GetTitle() ); 
+				NavigationItem.TitleView = AppContext.Current.Controller.GetTitleView( null, GetTitle() ); 
 			}
 		}
 			
@@ -579,7 +581,7 @@ namespace MonoTouch.Dialog
 			}
 			
 			
-			TableView.BackgroundView = new UIView{ Frame = new System.Drawing.RectangleF ( 0,0,120,50 )};
+			TableView.BackgroundView = new UIView{ Frame = new RectangleF ( 0,0,120,50 )};
 			TableView.BackgroundView.BackgroundColor = UIColor.Clear;
 			
 		}

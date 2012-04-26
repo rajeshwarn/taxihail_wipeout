@@ -1,4 +1,3 @@
-using System;
 using MonoTouch.CoreLocation;
 
 namespace TaxiMobileApp

@@ -1,7 +1,8 @@
 using System;
 using System.Runtime.InteropServices;
-using MonoTouch.Foundation;
+using MonoTouch;
 using MonoTouch.UIKit;
+
 namespace TaxiMobileApp
 {
 
@@ -29,7 +30,7 @@ namespace TaxiMobileApp
 
 		// Changing the constant to "/usr/bin/libSystem.dylib" allows this P/Invoke to work on Mac OS X  
 		// Using "hw.model" as property gives Macintosh model, "hw.machine" kernel arch (ppc, ppc64, i386, x86_64)  
-		[DllImport( MonoTouch.Constants.SystemLibrary )]
+		[DllImport( Constants.SystemLibrary )]
 		// name of the property  
 		// output  
 		// IntPtr.Zero  
@@ -43,7 +44,7 @@ namespace TaxiMobileApp
 			{
 				// get the length of the string that will be returned  
 				var pLen = Marshal.AllocHGlobal ( sizeof( int ) );
-				sysctlbyname ( DeviceHardware.HardwareProperty, IntPtr.Zero, pLen, IntPtr.Zero, 0 );
+				sysctlbyname ( HardwareProperty, IntPtr.Zero, pLen, IntPtr.Zero, 0 );
 				
 				var length = Marshal.ReadInt32 ( pLen );
 				
@@ -56,7 +57,7 @@ namespace TaxiMobileApp
 				
 				// get the hardware string  
 				var pStr = Marshal.AllocHGlobal ( length );
-				sysctlbyname ( DeviceHardware.HardwareProperty, pStr, pLen, IntPtr.Zero, 0 );
+				sysctlbyname ( HardwareProperty, pStr, pLen, IntPtr.Zero, 0 );
 				
 				// convert the native string into a C# string  
 				var hardwareStr = Marshal.PtrToStringAnsi ( pStr );

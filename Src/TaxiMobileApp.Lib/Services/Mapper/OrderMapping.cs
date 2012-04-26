@@ -1,10 +1,8 @@
 using System;
 using System.Linq;
-using System.Collections.Generic;
-
-using apcurium.Framework;
+using TaxiMobile.Lib.IBS;
 using apcurium.Framework.Extensions;
-using IBS =TaxiMobileApp.Lib.IBS;
+
 namespace TaxiMobileApp
 {
 	public class OrderMapping
@@ -13,7 +11,7 @@ namespace TaxiMobileApp
 		{
 		}
 
-		public void UpdateHistory (AccountData existingAccount, IBS.OrderInfo[] orders, ListItem[] vehicules, ListItem[] companies, ListItem[] chargeTypes)
+		public void UpdateHistory (AccountData existingAccount, OrderInfo[] orders, ListItem[] vehicules, ListItem[] companies, ListItem[] chargeTypes)
 		{
 			orders.ForEach (order =>
 			{
@@ -31,7 +29,7 @@ namespace TaxiMobileApp
 		}
 
 
-		public void UpdateOrder (BookingInfoData toUpdate, IBS.OrderInfo order, ListItem[] vehicules, ListItem[] companies, ListItem[] chargeTypes)
+		public void UpdateOrder (BookingInfoData toUpdate, OrderInfo order, ListItem[] vehicules, ListItem[] companies, ListItem[] chargeTypes)
 		{
 			if ( toUpdate.Settings == null )
 			{
@@ -74,9 +72,9 @@ namespace TaxiMobileApp
 						
 		}
 		
-		public IBS.OrderInfo ToWSOrder (BookingInfoData info)
+		public OrderInfo ToWSOrder (BookingInfoData info)
 		{
-			var order = new IBS.OrderInfo ();
+			var order = new OrderInfo ();
 			order.ChargeTypeId = info.Settings.ChargeType;
 			order.CompanyId = info.Settings.Company;
 			order.ContactPhone = info.Settings.Phone;

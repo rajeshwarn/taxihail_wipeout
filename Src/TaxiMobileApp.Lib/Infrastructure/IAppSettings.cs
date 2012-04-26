@@ -1,4 +1,3 @@
-using System;
 namespace MobileTaxiApp.Infrastructure
 {
 	public interface IAppSettings

@@ -1,31 +1,23 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+using System.Threading;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
+using Android.GoogleMaps;
 using Android.OS;
-using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using Android.Views.Animations;
-using Android.GoogleMaps;
-using Android.Locations;
-using TaxiMobile.Activities.Location;
-using TaxiMobile.Models;
-using apcurium.Framework.Extensions;
-using TaxiMobile.Helpers;
-using TaxiMobileApp;
 using Microsoft.Practices.ServiceLocation;
-using TaxiMobile.Helpers;
-using System.Threading;
 using TaxiMobile.Converters;
+using TaxiMobile.Helpers;
 using TaxiMobile.MapUtitilties;
+using TaxiMobileApp;
+using String = Java.Lang.String;
+using Uri = Android.Net.Uri;
 
 namespace TaxiMobile.Activities.Book
 {
-    [Activity(Label = "Book Status", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation=Android.Content.PM.ScreenOrientation.Portrait)]
+    [Activity(Label = "Book Status", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation=ScreenOrientation.Portrait)]
     public class BookingStatusActivity : MapActivity
     {
         private bool _closeScreenWhenCompleted;
@@ -98,11 +90,11 @@ namespace TaxiMobile.Activities.Book
             //this.OpenContextMenu(FindViewById<Button>(Resource.Id.CallBookCancelBtn));
         }
 
-        public override void OnCreateContextMenu(Android.Views.IContextMenu menu, Android.Views.View v, Android.Views.IContextMenuContextMenuInfo menuInfo)
+        public override void OnCreateContextMenu(IContextMenu menu, View v, IContextMenuContextMenuInfo menuInfo)
         {
             base.OnCreateContextMenu(menu, v, menuInfo);
 
-            var callCompany = new Java.Lang.String(string.Format(GetString(Resource.String.CallCompanyButton), BookingInfo.Settings.CompanyName));
+            var callCompany = new String(string.Format(GetString(Resource.String.CallCompanyButton), BookingInfo.Settings.CompanyName));
             menu.SetHeaderTitle(Resource.String.StatusActionButton);
             menu.Add(0, 1, 0, callCompany);
             menu.Add(0, 2, 1, Resource.String.StatusActionBookButton);
@@ -146,7 +138,7 @@ namespace TaxiMobile.Activities.Book
         private void CallCompany()
         {
             Intent callIntent = new Intent(Intent.ActionCall);
-            callIntent.SetData(Android.Net.Uri.Parse("tel:" + AppSettings.PhoneNumber(BookingInfo.Settings.Company)));
+            callIntent.SetData(Uri.Parse("tel:" + AppSettings.PhoneNumber(BookingInfo.Settings.Company)));
             StartActivity(callIntent);
         }
 

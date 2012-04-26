@@ -1,5 +1,6 @@
 using System;
 using Android.Content;
+using Android.Runtime;
 using Android.Util;
 using Android.Widget;
 
@@ -17,7 +18,7 @@ namespace TaxiMobile.Controls
 		{
 		}
 		
-		public ReclickableTabHost( IntPtr ptr, Android.Runtime.JniHandleOwnership handle ) : base( ptr, handle )
+		public ReclickableTabHost( IntPtr ptr, JniHandleOwnership handle ) : base( ptr, handle )
 		{
 			
 		}

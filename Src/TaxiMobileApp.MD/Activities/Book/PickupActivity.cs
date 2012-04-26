@@ -1,29 +1,20 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
+using Android.Content.PM;
 using Android.GoogleMaps;
-using TaxiMobile.Activities.Location;
-using TaxiMobile.Models;
-using TaxiMobile.Converters;
-using Android.Locations;
-using TaxiMobile.MapUtitilties;
-using Microsoft.Practices.ServiceLocation;
-using TaxiMobileApp;
-using TaxiMobile.Helpers;
-using apcurium.Framework.Extensions;
+using Android.Graphics.Drawables;
+using Android.OS;
+using Android.Views;
 using Android.Views.InputMethods;
+using Android.Widget;
+using TaxiMobile.Models;
+using TaxiMobileApp;
 
 namespace TaxiMobile.Activities.Book
 {
-    [Activity(Label = "Pickup", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
+    [Activity(Label = "Pickup", ScreenOrientation = ScreenOrientation.Portrait)]
     public class PickupActivity : AddressActivity, IAddress
     {
 
@@ -120,7 +111,7 @@ namespace TaxiMobile.Activities.Book
             get { return FindViewById<EditText>(Resource.Id.pickupTimeText); }
         }
 
-        protected override Android.Graphics.Drawables.Drawable MapPin
+        protected override Drawable MapPin
         {
             get { return Resources.GetDrawable(Resource.Drawable.pin_green); }
         }

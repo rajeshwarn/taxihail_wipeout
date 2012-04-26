@@ -1,16 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Android.App;
-using Android.Content;
-using Android.OS;
 using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using TaxiMobileApp;
 using Microsoft.Practices.ServiceLocation;
+using TaxiMobileApp;
 
 namespace TaxiMobile
 {
@@ -33,7 +25,7 @@ namespace TaxiMobile
         {
             base.OnCreate();
 
-            Android.Runtime.AndroidEnvironment.UnhandledExceptionRaiser += AndroidEnvironmentOnUnhandledExceptionRaiser;
+            AndroidEnvironment.UnhandledExceptionRaiser += AndroidEnvironmentOnUnhandledExceptionRaiser;
             
             new Bootstrapper(new IModule[] { new AppModule(this) }).Run();
 

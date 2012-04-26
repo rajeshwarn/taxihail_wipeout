@@ -5,7 +5,6 @@ using System.Text;
 using Microsoft.Practices.ServiceLocation;
 using TaxiMobileApp;
 
-
 namespace TaxiMobile.Helpers
 {
 	public class WebRequestHelper
@@ -136,7 +135,7 @@ namespace TaxiMobile.Helpers
 				using ( var resStream = response.GetResponseStream (  ) )
 				{
 					
-					Encoding encode = System.Text.Encoding.GetEncoding ( "utf-8" );
+					Encoding encode = Encoding.GetEncoding ( "utf-8" );
 					// Pipe the stream to a higher level stream reader with the required encoding format. 
 					StreamReader readStream = new StreamReader ( resStream, encode );
 					
@@ -189,7 +188,7 @@ namespace TaxiMobile.Helpers
 			string stream;
 			try
 			{
-				stream = WebRequestHelper.ReadString ( url, timeoutInSecond );				
+				stream = ReadString ( url, timeoutInSecond );				
 				if ( stream == null )
 				{
 					//StandardMessages.ShowNotConnectedWarning (  );

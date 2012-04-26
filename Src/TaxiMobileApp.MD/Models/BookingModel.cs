@@ -1,6 +1,5 @@
 ﻿using System;
 using TaxiMobileApp;
-using Android.OS;
 
 namespace TaxiMobile.Models
 {

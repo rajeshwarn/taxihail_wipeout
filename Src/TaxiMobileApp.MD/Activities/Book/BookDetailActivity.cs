@@ -1,20 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Android.OS;
 using Android.App;
 using Android.Content;
-using TaxiMobile.Models;
+using Android.Content.PM;
+using Android.OS;
 using Android.Widget;
-using apcurium.Framework.Extensions;
-using Microsoft.Practices.ServiceLocation;
-using TaxiMobileApp;
-using TaxiMobile.Helpers;
 using TaxiMobile.Activities.Setting;
+using TaxiMobile.Helpers;
+using TaxiMobile.Models;
+using TaxiMobileApp;
+using apcurium.Framework.Extensions;
 
 namespace TaxiMobile.Activities.Book
 {
-    [Activity(Label = "Book Details", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation=Android.Content.PM.ScreenOrientation.Portrait )]
+    [Activity(Label = "Book Details", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation=ScreenOrientation.Portrait )]
     public class BookDetailActivity : Activity
     {
         private BookingInfoData _bookingInfo;
@@ -50,7 +48,7 @@ namespace TaxiMobile.Activities.Book
             StartActivityForResult(i, 2);
         }
 
-        protected override void OnActivityResult(int requestCode, Result resultCode, Android.Content.Intent data)
+        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
             if ((data != null) && (data.Extras != null))

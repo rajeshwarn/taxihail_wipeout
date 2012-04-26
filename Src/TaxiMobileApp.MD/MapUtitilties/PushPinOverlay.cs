@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Android.App;
 using Android.Content;
 using Android.GoogleMaps;
 using Android.Graphics.Drawables;
 using Android.Views;
-using TaxiMobile.Controls;
 using Android.Widget;
+using TaxiMobile.Controls;
+using Object = Java.Lang.Object;
 
 namespace TaxiMobile.MapUtitilties
 {
@@ -30,7 +29,7 @@ namespace TaxiMobile.MapUtitilties
 
         public string Title { get { return _item.Title; } }
 
-        protected override Java.Lang.Object CreateItem(int i)
+        protected override Object CreateItem(int i)
         {
             return _item;
         }

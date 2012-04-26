@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Android.Widget;
 using Android.Content;
 using Android.Views;
 using TaxiMobile.ListViewStructure;

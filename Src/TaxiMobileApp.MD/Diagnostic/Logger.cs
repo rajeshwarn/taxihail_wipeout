@@ -1,17 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using TaxiMobileApp;
 using System.Diagnostics;
 using System.IO;
+using TaxiMobileApp;
+using Environment = Android.OS.Environment;
 
 namespace TaxiMobile.Diagnostic
 {
@@ -85,9 +76,9 @@ namespace TaxiMobile.Diagnostic
             }
         }
 
-        public readonly static string BaseDir = System.IO.Path.Combine(Android.OS.Environment.ExternalStorageDirectory.ToString(), "Taxi Diamond"); //System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+        public readonly static string BaseDir = Path.Combine(Environment.ExternalStorageDirectory.ToString(), "Taxi Diamond"); //System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
 
-        public readonly static string LogFilename = System.IO.Path.Combine(BaseDir, "log.txt");
+        public readonly static string LogFilename = Path.Combine(BaseDir, "log.txt");
 
         private static void Write(string message)
         {

@@ -1,8 +1,6 @@
-
 using System;
-using MonoTouch.UIKit;
-using System.Threading;
 using MonoTouch.Foundation;
+using MonoTouch.UIKit;
 using apcurium.Framework.Extensions;
 
 namespace TaxiMobileApp

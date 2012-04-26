@@ -1,10 +1,9 @@
 using System;
 using System.IO;
+using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
-using System.Text;
 using apcurium.Framework.Extensions;
-
 
 namespace TaxiMobileApp
 {
@@ -28,7 +27,7 @@ namespace TaxiMobileApp
 			}
 			catch (Exception e)
 			{
-				System.Console.WriteLine (e);
+				Console.WriteLine (e);
 				return null;
 			}
 		}

@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Android.Widget;
+﻿using System.Collections.Generic;
 using Android.App;
+using Android.Views;
+using Android.Widget;
+using Java.Lang;
 using TaxiMobile.Models;
 
 namespace TaxiMobile.Adapters
@@ -23,7 +23,7 @@ namespace TaxiMobile.Adapters
         {
             get { return Items.Count; }
         }
-        public override Java.Lang.Object GetItem(int position)
+        public override Object GetItem(int position)
         {
             return position;
         }
@@ -31,7 +31,7 @@ namespace TaxiMobile.Adapters
         {
             return Items[position].Id;
         }
-        public override Android.Views.View GetView(int position, Android.Views.View convertView, Android.Views.ViewGroup parent)
+        public override View GetView(int position, View convertView, ViewGroup parent)
         {
             var item = Items[position];
             var view = (convertView ??_context.LayoutInflater.Inflate(Resource.Layout.HistoryListItem,parent,false)) as LinearLayout;

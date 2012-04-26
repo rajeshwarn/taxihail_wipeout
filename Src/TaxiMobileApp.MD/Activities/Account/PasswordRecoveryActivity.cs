@@ -1,23 +1,16 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Android.App;
-using Android.Content;
+using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
-using System.Text.RegularExpressions;
 using Microsoft.Practices.ServiceLocation;
-using TaxiMobileApp;
-using TaxiMobile.Validation;
 using TaxiMobile.Helpers;
+using TaxiMobile.Validation;
+using TaxiMobileApp;
 
 namespace TaxiMobile.Activities.Account
 {
-    [Activity(Label = "Password Recovery", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation=Android.Content.PM.ScreenOrientation.Portrait)]
+    [Activity(Label = "Password Recovery", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation=ScreenOrientation.Portrait)]
     public class PasswordRecoveryActivity : Activity
     {
         protected override void OnCreate(Bundle bundle)

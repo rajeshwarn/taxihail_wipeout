@@ -1,11 +1,11 @@
-using System;
+using TaxiMobileApp;
 
 namespace MobileTaxiApp.Infrastructure
 {
 	public interface IAppContext
 	{
 				
-		TaxiMobileApp.AccountData LoggedUser {get;}
+		AccountData LoggedUser {get;}
 	}
 }
 

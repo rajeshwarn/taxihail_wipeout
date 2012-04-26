@@ -1,14 +1,8 @@
-using System;
-using Android.GoogleMaps;
-using Android.Content;
-using Android.Graphics.Drawables;
-using TaxiMobileApp;
-using Microsoft.Practices.ServiceLocation;
-using System.Linq;
-using apcurium.Framework.Extensions;
-using TaxiMobile.Converters;
-using Android.Locations;
 using Android.App;
+using Android.GoogleMaps;
+using Android.Graphics.Drawables;
+using TaxiMobile.Converters;
+using TaxiMobileApp;
 
 namespace TaxiMobile.MapUtitilties
 {
@@ -48,7 +42,7 @@ namespace TaxiMobile.MapUtitilties
                                                      CoordinatesConverter.ConvertToE6(location.Longitude.Value));
 
                             map.Overlays.Clear();
-                            MapService.AddMyLocationOverlay(map, activity);                            
+                            AddMyLocationOverlay(map, activity);                            
                             var pushpinOverlay = new PushPinOverlay( map , mapPin,title, point);
                             map.Overlays.Add(pushpinOverlay);
                         }

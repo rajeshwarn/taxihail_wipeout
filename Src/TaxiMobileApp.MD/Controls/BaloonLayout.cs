@@ -1,16 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
 using Android.Content;
-using Android.OS;
+using Android.Graphics;
 using Android.Runtime;
 using Android.Util;
-using Android.Views;
 using Android.Widget;
-using Android.Graphics;
 
 namespace TaxiMobile.Controls
 {
@@ -25,13 +18,13 @@ namespace TaxiMobile.Controls
 		{
 		}
 
-        public BaloonLayout(IntPtr ptr, Android.Runtime.JniHandleOwnership handle)
+        public BaloonLayout(IntPtr ptr, JniHandleOwnership handle)
             : base(ptr, handle)
 		{
 			
 		}
 
-        protected override void DispatchDraw(Android.Graphics.Canvas canvas)
+        protected override void DispatchDraw(Canvas canvas)
         {
             Paint panelPaint = new Paint();
             panelPaint.SetARGB(0, 0, 0, 0);

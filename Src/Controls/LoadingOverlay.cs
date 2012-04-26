@@ -1,10 +1,9 @@
 using System;
-using apcurium.Framework.Extensions;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
-
 using System.Drawing;
 using Microsoft.Practices.ServiceLocation;
+using MonoTouch.Foundation;
+using MonoTouch.UIKit;
+using apcurium.Framework.Extensions;
 
 namespace TaxiMobileApp
 {
@@ -21,7 +20,7 @@ namespace TaxiMobileApp
 		ActivityIndicator
 	}
 
-	[MonoTouch.Foundation.Register("CAlertView")]
+	[Register("CAlertView")]
 	public class CAlertView : UIAlertView
 	{
 
@@ -239,14 +238,14 @@ namespace TaxiMobileApp
 			}
 			
 			
-			this.Frame = new System.Drawing.RectangleF (x, y, Width, Height);
+			this.Frame = new RectangleF (x, y, Width, Height);
 			Layer.CornerRadius = 5;
 			BackgroundColor = UIColor.DarkGray;
 			Hidden = false;
 			if (_acitivty == null)
 			{
 				_acitivty = new UIActivityIndicatorView ();
-				_acitivty.Frame = new System.Drawing.RectangleF (8, 5, 20, 20);
+				_acitivty.Frame = new RectangleF (8, 5, 20, 20);
 				this.AddSubview (_acitivty);
 			}
 			if (_label == null)
@@ -258,7 +257,7 @@ namespace TaxiMobileApp
 				
 				_label.Font = ServiceLocator.Current.GetInstance<IAppResource> ().CurrentLanguage == AppLanguage.English ? UIFont.SystemFontOfSize (14) : UIFont.SystemFontOfSize (12);
 				
-				_label.Frame = new System.Drawing.RectangleF (36, 4, 86, 21);
+				_label.Frame = new RectangleF (36, 4, 86, 21);
 				
 				
 				

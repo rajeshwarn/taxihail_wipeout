@@ -1,16 +1,11 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
-using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using apcurium.Framework.Extensions;
+using Java.Lang;
 using TaxiMobile.ListViewStructure;
+using apcurium.Framework.Extensions;
 
 namespace TaxiMobile.ListViewCell
 {
@@ -52,7 +47,7 @@ namespace TaxiMobile.ListViewCell
 			private set;
 		}
 		
-		public override Java.Lang.Object GetItem (int position)
+		public override Object GetItem (int position)
 		{
 			return position; 
 		} 

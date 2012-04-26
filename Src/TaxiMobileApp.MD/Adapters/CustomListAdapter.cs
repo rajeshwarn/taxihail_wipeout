@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Android.Widget;
+﻿using System.Collections.Generic;
 using Android.App;
-using TaxiMobile.Models;
 using Android.Views;
+using Android.Widget;
+using Java.Lang;
 
 namespace TaxiMobile.Adapters
 {
@@ -55,7 +53,7 @@ namespace TaxiMobile.Adapters
             }
         }
 
-        public override Java.Lang.Object GetItem(int position)
+        public override Object GetItem(int position)
         {
             foreach (var section in this.Sections.Keys)
             {

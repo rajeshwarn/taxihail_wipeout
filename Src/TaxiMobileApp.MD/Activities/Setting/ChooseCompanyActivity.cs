@@ -1,25 +1,17 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Android.App;
-using Android.Content;
+using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
-
 using Microsoft.Practices.ServiceLocation;
-
-using TaxiMobile.Models;
-using TaxiMobileApp;
+using TaxiMobile.Helpers;
 using TaxiMobile.ListViewCell;
 using TaxiMobile.ListViewStructure;
+using TaxiMobileApp;
 
 namespace TaxiMobile.Activities.Setting
 {
-	[Activity (Label = "ChooseCompanyActivity",  Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation=Android.Content.PM.ScreenOrientation.Portrait)]			
+	[Activity (Label = "ChooseCompanyActivity",  Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation=ScreenOrientation.Portrait)]			
 	public class ChooseCompanyActivity : ListActivity
 	{
 		private RideSettingsModel _model;
@@ -66,7 +58,7 @@ namespace TaxiMobile.Activities.Setting
         {
 			AppContext.Current.LoggedUser.DefaultSettings.Company = _model.Company;
 			AppContext.Current.LoggedUser.DefaultSettings.CompanyName = _model.CompanyName;
-			Helpers.ThreadHelper.ExecuteInThread( Parent, () => {
+			ThreadHelper.ExecuteInThread( Parent, () => {
 				var currentAccountData = AppContext.Current.LoggedUser;
 				currentAccountData.DefaultSettings = _model.Data;
 				currentAccountData.Name = _model.Data.Name;

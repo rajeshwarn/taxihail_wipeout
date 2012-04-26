@@ -1,5 +1,3 @@
-using System;
-
 namespace TaxiMobile.Models
 {
     public enum ActivityEnum

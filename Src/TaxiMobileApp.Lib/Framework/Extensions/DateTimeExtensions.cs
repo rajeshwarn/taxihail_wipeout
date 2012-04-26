@@ -1,5 +1,4 @@
 ﻿using System;
-using apcurium.Framework.Extensions.ValueType;
 
 namespace apcurium.Framework.Extensions
 {

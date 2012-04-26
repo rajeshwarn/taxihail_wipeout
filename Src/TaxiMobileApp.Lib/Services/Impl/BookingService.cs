@@ -1,17 +1,19 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Xml;
-using System.Xml.Linq;
 using System.Globalization;
-
-
-using apcurium.Framework.Extensions;
-using MobileTaxiApp.Infrastructure;
+using System.Linq;
+using System.Xml.Linq;
 using Microsoft.Practices.ServiceLocation;
-using IBS = TaxiMobileApp.Lib.IBS;
+using MobileTaxiApp.Infrastructure;
+using TaxiMobile.Lib.IBS;
+using apcurium.Framework.Extensions;
+#if MONO_DROID
 using Android.Runtime;
+#endif
+#if MONO_TOUCH
+using MonoTouch.Foundation;
+#endif
+
 
 namespace TaxiMobileApp
 {
@@ -22,11 +24,11 @@ namespace TaxiMobileApp
 		{
 		}
 
-		public void UseService (Action<TaxiMobileApp.Lib.IBS.AccountService> action)
+        public void UseService(Action<TaxiMobile.Lib.IBS.AccountService> action)
 		{
 			var serviceUrl = ServiceLocator.Current.GetInstance<IAppSettings> ().ServiceUrl;
-			
-			var service = new IBS.AccountService (serviceUrl + "AccountService.asmx");
+
+            var service = new TaxiMobile.Lib.IBS.AccountService(); //serviceUrl + "AccountService.asmx"
 			
 			try
 			{
@@ -325,7 +327,7 @@ namespace TaxiMobileApp
 					var sessionId = service.Authenticate ("iphone", "test", 1);
 					
 					new OrderMapping ().ToWSOrder (info);
-					var order = new IBS.OrderInfo ();
+					var order = new OrderInfo ();
 					order.ChargeTypeId = info.Settings.ChargeType;
 					order.CompanyId = info.Settings.Company;
 					order.ContactPhone = info.Settings.Phone;
@@ -407,7 +409,7 @@ namespace TaxiMobileApp
 				
 				var sessionId = service.Authenticate ("iphone", "test", 1);
 				var result = service.GetVehicleLocation (sessionId, user.Email, user.Password, orderId);				
-				if (result.Error == IBS.ErrorCode.NoError)
+				if (result.Error == ErrorCode.NoError)
 				{
 					if ((result.OrderStatus == null) || (result.OrderStatus.Description.IsNullOrEmpty ()))
 					{
@@ -460,7 +462,7 @@ namespace TaxiMobileApp
 				
 				var sessionId = service.Authenticate ("iphone", "test", 1);
 				var result = service.GetVehicleLocation (sessionId, user.Email, user.Password, orderId);
-				if (result.Error == IBS.ErrorCode.NoError)
+				if (result.Error == ErrorCode.NoError)
 				{
 					
 					int statusId = result.OrderStatus.SelectOrDefault (o => o.Id, 0);
@@ -486,8 +488,8 @@ namespace TaxiMobileApp
 				
 				var sessionId = service.Authenticate ("iphone", "test", 1);
 				
-				var result = service.CancelOrder (sessionId, user.Email, user.Password, new IBS.OrderInfo { Id = orderId });
-				if (result.Error == IBS.ErrorCode.NoError)
+				var result = service.CancelOrder (sessionId, user.Email, user.Password, new OrderInfo { Id = orderId });
+				if (result.Error == ErrorCode.NoError)
 				{
 					isCompleted = true;
 				}

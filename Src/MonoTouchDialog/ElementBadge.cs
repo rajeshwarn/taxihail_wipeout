@@ -8,13 +8,12 @@
 //
 // Code licensed under the MIT X11 license
 //
+
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using MonoTouch.UIKit;
-using MonoTouch.CoreGraphics;
 using System.Drawing;
+using MonoTouch.CoreGraphics;
 using MonoTouch.Foundation;
+using MonoTouch.UIKit;
 
 namespace MonoTouch.Dialog
 {	

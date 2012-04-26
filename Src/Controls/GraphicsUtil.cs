@@ -1,6 +1,5 @@
-using System;
-using MonoTouch.CoreGraphics;
 using System.Drawing;
+using MonoTouch.CoreGraphics;
 
 namespace TaxiMobileApp
 {
@@ -40,7 +39,7 @@ namespace TaxiMobileApp
 		
 		public static void FillRoundedRect (CGContext ctx, RectangleF rect, float radius)
 		{
-				var p = GraphicsUtil.MakeRoundedRectPath2 (rect, radius);
+				var p = MakeRoundedRectPath2 (rect, radius);
 				ctx.AddPath (p);
 				ctx.FillPath ();
 		}

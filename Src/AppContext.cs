@@ -1,13 +1,10 @@
 using System;
-using System.IO;
-
+using Microsoft.Practices.ServiceLocation;
+using MobileTaxiApp.Infrastructure;
 using MonoTouch.CoreLocation;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using apcurium.Framework.Extensions;
-using MobileTaxiApp.Infrastructure;
-
-using Microsoft.Practices.ServiceLocation;
 
 namespace TaxiMobileApp
 {
@@ -203,7 +200,7 @@ namespace TaxiMobileApp
 			_context = context;
 		}
 
-		public static DateTime NSDateToDateTime (MonoTouch.Foundation.NSDate date)
+		public static DateTime NSDateToDateTime (NSDate date)
 		{
 			return (new DateTime (2001, 1, 1, 0, 0, 0)).AddSeconds (date.SecondsSinceReferenceDate);
 		}

@@ -1,5 +1,3 @@
-using System;
-
 using MonoTouch.Foundation;
 using apcurium.Framework.Extensions;
 

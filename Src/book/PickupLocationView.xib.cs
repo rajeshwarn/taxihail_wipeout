@@ -1,13 +1,8 @@
-
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Drawing;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using MonoTouch.MapKit;
-using MonoTouch.CoreLocation;
 using apcurium.Framework.Extensions;
-
 
 namespace TaxiMobileApp
 {
@@ -136,9 +131,9 @@ namespace TaxiMobileApp
 			
 		}
 
-		public static MonoTouch.Foundation.NSDate DateTimeToNSDate (DateTime date)
+		public static NSDate DateTimeToNSDate (DateTime date)
 		{
-			return MonoTouch.Foundation.NSDate.FromTimeIntervalSinceReferenceDate ((date - (new DateTime (2001, 1, 1, 0, 0, 0))).TotalSeconds);
+			return NSDate.FromTimeIntervalSinceReferenceDate ((date - (new DateTime (2001, 1, 1, 0, 0, 0))).TotalSeconds);
 		}
 
 		public void RefreshData ()
@@ -156,12 +151,12 @@ namespace TaxiMobileApp
 			_picker = new UIDatePicker ();
 			UIView view = new UIView ();
 			
-			view.Frame = new System.Drawing.RectangleF (0, 0, 320, 260);
+			view.Frame = new RectangleF (0, 0, 320, 260);
 			
 			view.BackgroundColor = UIColor.Gray;
 			
 			var accept = UIButton.FromType (UIButtonType.RoundedRect);
-			accept.Frame = new System.Drawing.RectangleF (40, 5, 100, 35);
+			accept.Frame = new RectangleF (40, 5, 100, 35);
 			accept.SetTitle (Resources.Close, UIControlState.Normal);
 			view.AddSubview (accept);
 			GlassButton.Wrap (accept, AppStyle.LightButtonColor, AppStyle.LightButtonHighlightedColor).TouchUpInside += delegate { txtTime.ResignFirstResponder (); };
@@ -170,7 +165,7 @@ namespace TaxiMobileApp
 			
 			
 			var reset = UIButton.FromType (UIButtonType.RoundedRect);
-			reset.Frame = new System.Drawing.RectangleF (180, 5, 100, 35);
+			reset.Frame = new RectangleF (180, 5, 100, 35);
 			reset.SetTitle (Resources.Now, UIControlState.Normal);
 			
 			
@@ -182,7 +177,7 @@ namespace TaxiMobileApp
 			};
 			
 			_picker.MinuteInterval = 15;
-			_picker.Frame = new System.Drawing.RectangleF (0, 45, 320, 300);
+			_picker.Frame = new RectangleF (0, 45, 320, 300);
 			view.AddSubview (_picker);
 			
 			_picker.ValueChanged += PickerValueChanged;
@@ -198,7 +193,7 @@ namespace TaxiMobileApp
 			}
 		}
 
-		public static DateTime NSDateToDateTime (MonoTouch.Foundation.NSDate date)
+		public static DateTime NSDateToDateTime (NSDate date)
 		{
 			return (new DateTime (2001, 1, 1, 0, 0, 0)).AddSeconds (date.SecondsSinceReferenceDate);
 		}

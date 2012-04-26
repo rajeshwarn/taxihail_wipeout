@@ -1,11 +1,8 @@
 using System;
 using System.Threading;
-using Microsoft.Practices.ServiceLocation;
 using Android.App;
-using TaxiMobile;
+using Microsoft.Practices.ServiceLocation;
 using TaxiMobileApp;
-
-
 
 namespace TaxiMobile.Helpers
 {

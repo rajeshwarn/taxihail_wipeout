@@ -13,15 +13,15 @@
 // TODO: StyledStringElement: add sizing based on image size?
 // TODO: Move image rendering to StyledImageElement?
 //
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using MonoTouch.UIKit;
-using MonoTouch.CoreGraphics;
 using System.Drawing;
-using MonoTouch.Foundation;
+using MonoTouch.CoreGraphics;
 using MonoTouch.Dialog.Utilities;
+using MonoTouch.Foundation;
+using MonoTouch.UIKit;
 
 namespace MonoTouch.Dialog
 {

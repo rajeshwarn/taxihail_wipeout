@@ -1,10 +1,8 @@
 using System;
-using System.Linq;
+using Microsoft.Practices.ServiceLocation;
 using MonoTouch.Dialog;
 using MonoTouch.UIKit;
 using apcurium.Framework.Extensions;
-using apcurium.Framework;
-using Microsoft.Practices.ServiceLocation;
 
 namespace TaxiMobileApp
 {
@@ -39,7 +37,7 @@ namespace TaxiMobileApp
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-			var button = new MonoTouch.UIKit.UIBarButtonItem (Resources.DoneButton, UIBarButtonItemStyle.Plain, delegate { CloseView (); });
+			var button = new UIBarButtonItem (Resources.DoneButton, UIBarButtonItemStyle.Plain, delegate { CloseView (); });
 			NavigationItem.HidesBackButton = true;
 			NavigationItem.RightBarButtonItem = button;
 			
@@ -48,7 +46,7 @@ namespace TaxiMobileApp
 
 		protected override void SetTitleView ()
 		{
-			NavigationItem.TitleView = TaxiMobileApp.AppContext.Current.Controller.GetTitleView (null,GetTitle());
+			NavigationItem.TitleView = AppContext.Current.Controller.GetTitleView (null,GetTitle());
 		}
 
 		public override void ViewDidAppear (bool animated)
@@ -169,7 +167,7 @@ namespace TaxiMobileApp
 					var settings = new Section (Resources.DefaultRideSettingsViewTitle);
 					
 					_nameEntry = new EntryElement (Resources.RideSettingsName, "", _settings.Name);
-					_nameEntry.KeyboardType = MonoTouch.UIKit.UIKeyboardType.Default;
+					_nameEntry.KeyboardType = UIKeyboardType.Default;
 					_nameEntry.Changed += delegate {
 						_nameEntry.FetchValue ();
 						_settings.Name = _nameEntry.Value;
@@ -183,7 +181,7 @@ namespace TaxiMobileApp
 						ApplyChanges ();
 					};
 					
-					_phoneEntry.KeyboardType = MonoTouch.UIKit.UIKeyboardType.PhonePad;
+					_phoneEntry.KeyboardType = UIKeyboardType.PhonePad;
 					
 					
 //					_numberOfTaxiEntry = new EntryElement (Resources.RideSettingsNumberOfTaxi, "", _settings.NumberOfTaxi.ToString());
@@ -204,7 +202,7 @@ namespace TaxiMobileApp
 					
 					
 					_passengerEntry = new EntryElement (Resources.RideSettingsPassengers, "", _settings.Passengers.ToString ());
-					_passengerEntry.KeyboardType = MonoTouch.UIKit.UIKeyboardType.NumberPad;
+					_passengerEntry.KeyboardType = UIKeyboardType.NumberPad;
 					
 					_passengerEntry.Changed += delegate {
 						_passengerEntry.FetchValue ();

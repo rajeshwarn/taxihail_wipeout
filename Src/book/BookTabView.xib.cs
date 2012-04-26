@@ -1,12 +1,10 @@
-
 using System;
 using System.Drawing;
-using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Practices.ServiceLocation;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using apcurium.Framework.Extensions;
-using Microsoft.Practices.ServiceLocation;
 
 namespace TaxiMobileApp
 {
@@ -158,7 +156,7 @@ namespace TaxiMobileApp
 			_btnBookIt = UIButton.FromType (UIButtonType.Custom);
 			_btnBookIt.SetImage (UIImage.FromFile (Resources.BookItButtonImageName), UIControlState.Normal);
 			_btnBookIt.TouchUpInside += BookitButtonTouchUpInside;
-			_btnBookIt.Frame = new System.Drawing.RectangleF (202, 3, 103, 45);
+			_btnBookIt.Frame = new RectangleF (202, 3, 103, 45);
 			
 			return _btnBookIt;
 			

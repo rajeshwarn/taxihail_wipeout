@@ -1,19 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using TaxiMobileApp;
 using Microsoft.Practices.ServiceLocation;
-using TaxiMobile.Localization;
 using MobileTaxiApp.Infrastructure;
 using TaxiMobile.Diagnostic;
+using TaxiMobile.Localization;
+using TaxiMobileApp;
 
 namespace TaxiMobile
 {

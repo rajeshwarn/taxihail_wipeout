@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Collections.Generic;
-using System.Text;
 using Android.Content;
 using Android.GoogleMaps;
 using Android.Runtime;
@@ -37,7 +35,7 @@ namespace TaxiMobile.Controls
         }
 
 
-        public override bool DispatchTouchEvent(Android.Views.MotionEvent e)
+        public override bool DispatchTouchEvent(MotionEvent e)
         {
             if (e.Action == MotionEventActions.Up)
             {
@@ -60,7 +58,7 @@ namespace TaxiMobile.Controls
             Console.WriteLine(e.Action.ToString());
             return base.DispatchTouchEvent(e);
         }
-        public override bool OnTouchEvent(Android.Views.MotionEvent e)
+        public override bool OnTouchEvent(MotionEvent e)
         {
             return base.OnTouchEvent(e);
         }

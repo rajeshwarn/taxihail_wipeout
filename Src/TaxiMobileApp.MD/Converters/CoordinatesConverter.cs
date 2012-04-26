@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace TaxiMobile.Converters
+﻿namespace TaxiMobile.Converters
 {
    public static  class CoordinatesConverter
     {

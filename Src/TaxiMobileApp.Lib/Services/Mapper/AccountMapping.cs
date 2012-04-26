@@ -1,9 +1,9 @@
-using System;
 using System.Linq;
+using Microsoft.Practices.ServiceLocation;
+using TaxiMobile.Lib.IBS;
 using apcurium.Framework;
 using apcurium.Framework.Extensions;
-using Microsoft.Practices.ServiceLocation;
-using IBS =TaxiMobileApp.Lib.IBS;
+
 namespace TaxiMobileApp
 {
 	public class AccountMapping
@@ -12,7 +12,7 @@ namespace TaxiMobileApp
 		{
 		}
 
-		public IBS.AccountInfo ToWSData (IBS.AccountInfo result, AccountData data)
+		public AccountInfo ToWSData (AccountInfo result, AccountData data)
 		{
 			result.Addresses = data.FavoriteLocations.Select (loc => ToWSLocationData (loc)).ToArray ();
 			return result;
@@ -20,7 +20,7 @@ namespace TaxiMobileApp
 		}
 
 
-		public AccountData ToData (AccountData existing, IBS.AccountInfo account)
+		public AccountData ToData (AccountData existing, AccountInfo account)
 		{
 			AccountData result;
 			if ( existing != null )
@@ -45,9 +45,9 @@ namespace TaxiMobileApp
 		}
 
 
-		public IBS.AccountAddress ToWSLocationData (LocationData location)
+		public AccountAddress ToWSLocationData (LocationData location)
 		{
-			var result = new IBS.AccountAddress ();
+			var result = new AccountAddress ();
 			result.Id = location.Id;
 			result.LocationName = location.Name;
 			result.AddressAndCity = location.Address;
@@ -56,7 +56,7 @@ namespace TaxiMobileApp
 			result.Longitude = location.Longitude.HasValue ? location.Longitude.Value : 0;
 			return result;
 		}
-		public LocationData ToLocationData (AccountData existing, IBS.AccountAddress address)
+		public LocationData ToLocationData (AccountData existing, AccountAddress address)
 		{
 			var result = new LocationData ();
 			result.Id = address.Id;
@@ -77,7 +77,7 @@ namespace TaxiMobileApp
 		}
 		
 		
-		public void UpdateLocationData( LocationData result , IBS.AccountAddress address) 
+		public void UpdateLocationData( LocationData result , AccountAddress address) 
 		{
 			if ( address.Id == result.Id  && address.Latitude != 0  && address.Longitude != 0 )
 			{

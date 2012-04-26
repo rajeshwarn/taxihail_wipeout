@@ -1,12 +1,12 @@
 using System;
-using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
-using MonoTouch.MapKit;
-using MonoTouch.CoreLocation;
-using apcurium.Framework.Extensions;
+using System.Threading;
 using Microsoft.Practices.ServiceLocation;
+using MonoTouch.CoreLocation;
+using MonoTouch.MapKit;
+using MonoTouch.UIKit;
+using apcurium.Framework.Extensions;
 
 namespace TaxiMobileApp
 {
@@ -80,7 +80,7 @@ namespace TaxiMobileApp
 			
 			UIImageView img = new UIImageView (UIImage.FromFile ("Assets/location.png"));
 			img.BackgroundColor = UIColor.Clear;
-			img.Frame = new System.Drawing.RectangleF (_map.Frame.X + ((_map.Frame.Width / 2) - 10), _map.Frame.Y + ((_map.Frame.Height / 2) )-30, 20, 20);
+			img.Frame = new RectangleF (_map.Frame.X + ((_map.Frame.Width / 2) - 10), _map.Frame.Y + ((_map.Frame.Height / 2) )-30, 20, 20);
 			map.Superview.AddSubview (img);
 			_map.MultipleTouchEnabled = true;
 			
@@ -379,7 +379,7 @@ namespace TaxiMobileApp
                                         while ((count < 40) && ((AppContext.Current.CurrrentLocation.HorizontalAccuracy > 85) || (AppContext.Current.CurrrentLocation.Coordinate.Longitude == 0)))
                                         {
                                                 Console.WriteLine ("Finding position" + AppContext.Current.CurrrentLocation.HorizontalAccuracy.ToString ());
-                                                System.Threading.Thread.Sleep (300);
+                                                Thread.Sleep (300);
                                                 count++;
                                         }
                                         

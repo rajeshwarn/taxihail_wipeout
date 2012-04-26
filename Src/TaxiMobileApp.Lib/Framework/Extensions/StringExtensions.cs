@@ -7,10 +7,12 @@
 // Generated with Commenter
 
 #region Using directives
+
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Globalization;
+using System.Linq;
+
 #endregion
 
 namespace apcurium.Framework.Extensions

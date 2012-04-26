@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
-
-using MonoTouch.UIKit;
 using MonoTouch.Foundation;
-using MonoTouch.CoreFoundation;
+using MonoTouch.UIKit;
 using apcurium.Framework.Extensions;
-
 
 namespace TaxiMobileApp
 {
@@ -158,7 +156,7 @@ namespace TaxiMobileApp
 		public UIView GetTitleView (UIView rightView, string title, bool hideLogo)
 		{
 			
-			var view = new TitleView (new System.Drawing.RectangleF (5, -3, 310, 50));
+			var view = new TitleView (new RectangleF (5, -3, 310, 50));
 			if (!hideLogo)
 			{
 				
@@ -189,7 +187,7 @@ namespace TaxiMobileApp
 					}
 				};
 				
-				img.Frame = new System.Drawing.RectangleF (0, 5, 60, 40);
+				img.Frame = new RectangleF (0, 5, 60, 40);
 				
 				img.BackgroundColor = UIColor.Clear;
 				
@@ -220,7 +218,7 @@ namespace TaxiMobileApp
 
 	public class TitleView : UIView
 	{
-		public TitleView (System.Drawing.RectangleF bound) : base(bound)
+		public TitleView (RectangleF bound) : base(bound)
 		{
 			
 		}
@@ -231,7 +229,7 @@ namespace TaxiMobileApp
 		{
 			if (title.HasValue ())
 			{
-				var _titleText = new UILabel (new System.Drawing.RectangleF (0, 2, 320, 40));
+				var _titleText = new UILabel (new RectangleF (0, 2, 320, 40));
 				_titleText.TextAlignment = UITextAlignment.Center;
 //				txt.Editable = false;				
 //				txt.ScrollEnabled = false;
@@ -242,7 +240,7 @@ namespace TaxiMobileApp
 				this.AddSubview (_titleText);
 			}
 		}
-		public override System.Drawing.RectangleF Frame {
+		public override RectangleF Frame {
 			get { return base.Frame; }
 			set { base.Frame = value; }
 		}

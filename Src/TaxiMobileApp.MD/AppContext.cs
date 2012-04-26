@@ -1,22 +1,13 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using MobileTaxiApp.Infrastructure;
-using Microsoft.Practices.ServiceLocation;
-using apcurium.Framework.Extensions;
-using TaxiMobile.Helpers;
-using TaxiMobile.Diagnostic;
-using TaxiMobileApp;
 using Android.Locations;
-
+using Android.OS;
+using Microsoft.Practices.ServiceLocation;
+using MobileTaxiApp.Infrastructure;
+using TaxiMobile.Diagnostic;
+using TaxiMobile.Helpers;
+using TaxiMobileApp;
+using apcurium.Framework.Extensions;
 
 namespace TaxiMobile
 {
@@ -44,7 +35,7 @@ namespace TaxiMobile
         public TaxiMobileApplication App { get; set; }
         public Context Context { get; set; }
 
-        public TaxiMobileApp.AccountData LoggedUser
+        public AccountData LoggedUser
         {
 
             get
@@ -55,7 +46,7 @@ namespace TaxiMobile
 	                var serializedUser = pref.GetString("LoggedUser", "");
 	                if (serializedUser.HasValue())
 	                {
-	                    _loggedUser = SerializerHelper.DeserializeObject<TaxiMobileApp.AccountData>(serializedUser);
+	                    _loggedUser = SerializerHelper.DeserializeObject<AccountData>(serializedUser);
 	                }
 //	                else
 //	                {
@@ -73,15 +64,15 @@ namespace TaxiMobile
                     var pref = App.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
                     pref.Edit().PutString("LoggedUser", serializedUser).Commit();
 
-                    AppContext.Current.LoggedInEmail = value.Email;
-                    AppContext.Current.LoggedInPassword = value.Password;
+                    Current.LoggedInEmail = value.Email;
+                    Current.LoggedInPassword = value.Password;
                 }
                 else
                 {
                     var pref = App.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
                     pref.Edit().PutString("LoggedUser", "").Commit();
-                    AppContext.Current.LoggedInEmail = "";
-                    AppContext.Current.LoggedInPassword = "";
+                    Current.LoggedInEmail = "";
+                    Current.LoggedInPassword = "";
                 }
             }
         }

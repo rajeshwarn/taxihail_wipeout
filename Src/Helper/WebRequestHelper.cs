@@ -2,8 +2,6 @@ using System;
 using System.IO;
 using System.Net;
 using System.Text;
-
-using MonoTouch;
 using MonoTouch.UIKit;
 
 namespace TaxiMobileApp
@@ -136,7 +134,7 @@ namespace TaxiMobileApp
 				using ( var resStream = response.GetResponseStream (  ) )
 				{
 					
-					Encoding encode = System.Text.Encoding.GetEncoding ( "utf-8" );
+					Encoding encode = Encoding.GetEncoding ( "utf-8" );
 					// Pipe the stream to a higher level stream reader with the required encoding format. 
 					StreamReader readStream = new StreamReader ( resStream, encode );
 					
@@ -189,7 +187,7 @@ namespace TaxiMobileApp
 			string stream;
 			try
 			{
-				stream = WebRequestHelper.ReadString ( url, timeoutInSecond );				
+				stream = ReadString ( url, timeoutInSecond );				
 				if ( stream == null )
 				{
 					StandardMessages.ShowNotConnectedWarning (  );

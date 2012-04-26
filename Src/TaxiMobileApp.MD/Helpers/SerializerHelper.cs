@@ -1,12 +1,11 @@
 using System;
 using System.IO;
+using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
-using System.Text;
-using apcurium.Framework.Extensions;
 using Microsoft.Practices.ServiceLocation;
 using TaxiMobileApp;
-
+using apcurium.Framework.Extensions;
 
 namespace TaxiMobile.Helpers
 {
@@ -23,7 +22,7 @@ namespace TaxiMobile.Helpers
 				{
 					XmlSerializer xs = new XmlSerializer (typeof(T));
 					//XmlTextWriter xmlTextWriter = new XmlTextWriter (memoryStream, Encoding.UTF8);
-					XmlTextWriter xmlTextWriter = new XmlTextWriter (memoryStream, System.Text.UTF8Encoding.UTF8);
+					XmlTextWriter xmlTextWriter = new XmlTextWriter (memoryStream, UTF8Encoding.UTF8);
 					xs.Serialize (xmlTextWriter, pObject);
 					XmlizedString = UTF8ByteArrayToString (((MemoryStream)xmlTextWriter.BaseStream).ToArray ());
 					return XmlizedString;
@@ -31,7 +30,7 @@ namespace TaxiMobile.Helpers
 			}
 			catch (Exception e)
 			{
-				System.Console.WriteLine (e);
+				Console.WriteLine (e);
 				return null;
 			}
 		}

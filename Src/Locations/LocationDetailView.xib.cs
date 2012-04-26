@@ -1,11 +1,10 @@
-
 using System;
-using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using Microsoft.Practices.ServiceLocation;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using apcurium.Framework.Extensions;
-using Microsoft.Practices.ServiceLocation;
 
 namespace TaxiMobileApp
 {
@@ -249,8 +248,8 @@ namespace TaxiMobileApp
 				
 				if (_data.IsFromHistory)
 				{
-					_btnGSave.Frame = new System.Drawing.RectangleF (_btnGSave.Frame.X + 40, _btnGSave.Frame.Y, _btnGSave.Frame.Width, _btnGSave.Frame.Height);
-					_btnGCancel.Frame = new System.Drawing.RectangleF (_btnGCancel.Frame.X - 40, _btnGCancel.Frame.Y, _btnGCancel.Frame.Width, _btnGCancel.Frame.Height);
+					_btnGSave.Frame = new RectangleF (_btnGSave.Frame.X + 40, _btnGSave.Frame.Y, _btnGSave.Frame.Width, _btnGSave.Frame.Height);
+					_btnGCancel.Frame = new RectangleF (_btnGCancel.Frame.X - 40, _btnGCancel.Frame.Y, _btnGCancel.Frame.Width, _btnGCancel.Frame.Height);
 				}
 				
 				Console.Write (_data.IsFromHistory.ToString ());

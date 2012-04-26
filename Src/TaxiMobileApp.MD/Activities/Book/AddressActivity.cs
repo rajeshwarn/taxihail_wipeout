@@ -1,30 +1,23 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
+using System.Threading;
 using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Android.GoogleMaps;
-using TaxiMobile.Activities.Location;
-using TaxiMobile.Helpers;
-using Android.Locations;
-using TaxiMobile.Diagnostic;
+using Android.Graphics.Drawables;
+using Android.OS;
+using Android.Views;
+using Android.Views.InputMethods;
+using Android.Widget;
 using Microsoft.Practices.ServiceLocation;
+using TaxiMobile.Activities.Location;
+using TaxiMobile.Controls;
+using TaxiMobile.Converters;
+using TaxiMobile.Helpers;
+using TaxiMobile.MapUtitilties;
 using TaxiMobile.Models;
 using TaxiMobileApp;
-using System.Timers;
-using System.Threading;
-using Android.Views.InputMethods;
 using apcurium.Framework.Extensions;
-using TaxiMobile.MapUtitilties;
-using TaxiMobile.Converters;
-using Android.Graphics.Drawables;
-using TaxiMobile.Controls;
 
 namespace TaxiMobile.Activities.Book
 {
@@ -222,7 +215,7 @@ namespace TaxiMobile.Activities.Book
         {
             RunOnUiThread(() =>
                               {
-                                  var manager = (InputMethodManager)GetSystemService(Context.InputMethodService);
+                                  var manager = (InputMethodManager)GetSystemService(InputMethodService);
 
                                   foreach (var view in GetHideableControls())
                                   {

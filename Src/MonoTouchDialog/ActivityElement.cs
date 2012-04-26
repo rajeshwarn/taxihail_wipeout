@@ -1,5 +1,5 @@
-using System;
 using System.Drawing;
+using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 
 namespace MonoTouch.Dialog
@@ -30,7 +30,7 @@ namespace MonoTouch.Dialog
 			}
 		}
 		
-		public new float GetHeight (UITableView tableView, MonoTouch.Foundation.NSIndexPath indexPath)
+		public new float GetHeight (UITableView tableView, NSIndexPath indexPath)
 		{
 			return base.GetHeight (tableView, indexPath)+ 8;
 		}

@@ -286,12 +286,6 @@
     <AndroidResource Include="Resources\drawable-mdpi\splash.png" />
     <Content Include="Todo.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TaxiMobileApp.Lib\TaxiMobile.Lib.MD.csproj">
-      <Project>{B2ADB131-E47E-4DF4-8AA6-1D7E284EFFA9}</Project>
-      <Name>TaxiMobile.Lib.MD</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
      Other similar extension points exist, see Microsoft.Common.targets.
@@ -312,5 +306,10 @@
   <ItemGroup>
     <Folder Include="Mapper\" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\TaxiMobileApp.Lib\TaxiMobile.Lib.MD.csproj">
+      <Project>{B2ADB131-E47E-4DF4-8AA6-1D7E284EFFA9}</Project>
+      <Name>TaxiMobile.Lib.MD</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>

@@ -1,14 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Diagnostics;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using MonoTouch.MapKit;
-using MonoTouch.CoreLocation;
 
-using System.Diagnostics;
-
-using apcurium.Framework.Extensions;
 namespace TaxiMobileApp
 {
 

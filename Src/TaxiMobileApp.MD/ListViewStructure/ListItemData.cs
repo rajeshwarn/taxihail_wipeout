@@ -1,5 +1,3 @@
-using System;
-
 namespace TaxiMobile
 {
 	public class ListItemData

@@ -1,23 +1,18 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+using System.IO;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
-
-using TaxiMobile.Helpers;
-using System.IO;
 using TaxiMobile.Activities.Account;
 using TaxiMobile.Diagnostic;
+using TaxiMobile.Helpers;
+using Uri = Android.Net.Uri;
 
 namespace TaxiMobile.Activities.Setting
 {
-    [Activity(Label = "Settings", ScreenOrientation=Android.Content.PM.ScreenOrientation.Portrait)]
+    [Activity(Label = "Settings", ScreenOrientation=ScreenOrientation.Portrait)]
     public class SettingsActivity : Activity
     {
         protected override void OnCreate(Bundle bundle)
@@ -49,7 +44,7 @@ namespace TaxiMobile.Activities.Setting
 		private void CallCie( object sender, EventArgs e )
 		{
 			Intent callIntent = new Intent(Intent.ActionCall);
-			callIntent.SetData(Android.Net.Uri.Parse("tel:" + AppSettings.PhoneNumber(AppContext.Current.LoggedUser.DefaultSettings.Company) ));
+			callIntent.SetData(Uri.Parse("tel:" + AppSettings.PhoneNumber(AppContext.Current.LoggedUser.DefaultSettings.Company) ));
 			StartActivity(callIntent);
 				
 		}
@@ -77,17 +72,17 @@ namespace TaxiMobile.Activities.Setting
 				emailIntent.PutExtra( Intent.ExtraSubject, Resources.GetString( Resource.String.TechSupportEmailTitle ) );
 				
 				//following line is for test purposes only.  Need to be removed when tested and also remove AboutAssets.txt from Assets (set action to None or remove completely)
-				emailIntent.PutExtra( Intent.ExtraStream,  Android.Net.Uri.Parse( @"file:///" +  LoggerImpl.LogFilename )); // @"file:///android_asset/AboutAssets.txt" ) );
+				emailIntent.PutExtra( Intent.ExtraStream,  Uri.Parse( @"file:///" +  LoggerImpl.LogFilename )); // @"file:///android_asset/AboutAssets.txt" ) );
 				
 				if( AppSettings.ErrorLogEnabled && File.Exists( AppSettings.ErrorLog ) )
 				{
-					emailIntent.PutExtra( Intent.ExtraStream,  Android.Net.Uri.Parse( AppSettings.ErrorLog ) );
+					emailIntent.PutExtra( Intent.ExtraStream,  Uri.Parse( AppSettings.ErrorLog ) );
 				}
 				try {
 					StartActivity( Intent.CreateChooser( emailIntent, "Send mail...") );
                     LoggerImpl.FlushNextWrite();
 				}
-				catch ( Android.Content.ActivityNotFoundException ex) {
+				catch ( ActivityNotFoundException ex) {
 					RunOnUiThread( () => Toast.MakeText( this, Resources.GetString( Resource.String.NoMailClient ), ToastLength.Short ).Show() );
 				}
 			}, false );

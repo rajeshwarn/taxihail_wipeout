@@ -1,25 +1,21 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Microsoft.Practices.ServiceLocation;
 using TaxiMobile.Activities.Book;
-using TaxiMobile.Activities.Location;
 using TaxiMobile.Activities.History;
+using TaxiMobile.Activities.Location;
 using TaxiMobile.Activities.Setting;
 using TaxiMobile.Controls;
-using Microsoft.Practices.ServiceLocation;
 using TaxiMobileApp;
 
 namespace TaxiMobile.Activities
 {
-    [Activity(Label = "@string/ApplicationName", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
+    [Activity(Label = "@string/ApplicationName", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = ScreenOrientation.Portrait)]
     public class MainActivity : TabActivity
     {
         private int _currentCie = -1;

@@ -1,27 +1,21 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-
 using Microsoft.Practices.ServiceLocation;
-
-using TaxiMobile.Models;
-using TaxiMobileApp;
+using TaxiMobile.Helpers;
 using TaxiMobile.ListViewCell;
 using TaxiMobile.ListViewStructure;
+using TaxiMobileApp;
 using apcurium.Framework.Extensions;
-using TaxiMobile.Helpers;
 
 namespace TaxiMobile.Activities.Setting
 {
-	[Activity (Label = "RideSettingsActivity",  Theme = "@android:style/Theme.NoTitleBar", WindowSoftInputMode=SoftInput.AdjustPan, ScreenOrientation=Android.Content.PM.ScreenOrientation.Portrait )]			
+	[Activity (Label = "RideSettingsActivity",  Theme = "@android:style/Theme.NoTitleBar", WindowSoftInputMode=SoftInput.AdjustPan, ScreenOrientation=ScreenOrientation.Portrait )]			
 	public class RideSettingsActivity : ListActivity
 	{
 		private RideSettingsModel _model;

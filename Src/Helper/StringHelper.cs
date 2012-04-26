@@ -1,6 +1,7 @@
 using System;
-using System.Text;
 using System.Globalization;
+using System.Text;
+
 namespace TaxiMobileApp
 {
 	public class StringHelper

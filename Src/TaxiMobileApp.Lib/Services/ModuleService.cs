@@ -1,5 +1,5 @@
-using System;
 using Microsoft.Practices.ServiceLocation;
+
 namespace TaxiMobileApp
 {
 	public class ModuleService : IModule 

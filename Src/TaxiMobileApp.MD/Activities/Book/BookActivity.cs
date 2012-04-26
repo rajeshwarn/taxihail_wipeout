@@ -1,27 +1,20 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using Android.Views.Animations;
-using Android.GoogleMaps;
-using Android.Locations;
-using TaxiMobile.Activities.Location;
-using TaxiMobile.Models;
-using apcurium.Framework.Extensions;
-using TaxiMobile.Helpers;
-using TaxiMobileApp;
 using Microsoft.Practices.ServiceLocation;
+using TaxiMobile.Helpers;
+using TaxiMobile.Models;
+using TaxiMobileApp;
+using apcurium.Framework.Extensions;
 
 namespace TaxiMobile.Activities.Book
 {
-    [Activity(Label = "Book", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
+    [Activity(Label = "Book", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = ScreenOrientation.Portrait)]
     public class BookActivity : TabActivity
     {
         private enum Tab

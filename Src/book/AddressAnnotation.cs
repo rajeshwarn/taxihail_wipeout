@@ -1,6 +1,5 @@
-using System;
-using MonoTouch.MapKit;
 using MonoTouch.CoreLocation;
+using MonoTouch.MapKit;
 
 namespace TaxiMobileApp
 {

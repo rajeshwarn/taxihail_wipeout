@@ -1,16 +1,11 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
 using Java.Lang;
 using TaxiMobile.Helpers;
+using Boolean = Java.Lang.Boolean;
 
 namespace TaxiMobile.Activities.Book
 {
@@ -31,7 +26,7 @@ namespace TaxiMobile.Activities.Book
             FindViewById<TimePicker>(Resource.Id.timePickerCtl).CurrentMinute = new Integer(selected.Minute);
 
 
-            FindViewById<TimePicker>(Resource.Id.timePickerCtl).SetIs24HourView(Java.Lang.Boolean.True);
+            FindViewById<TimePicker>(Resource.Id.timePickerCtl).SetIs24HourView(Boolean.True);
 
             FindViewById<Button>(Resource.Id.DoneButton).Click += DoneOnClick;
             FindViewById<Button>(Resource.Id.NowButton).Click += TimeOnClick;

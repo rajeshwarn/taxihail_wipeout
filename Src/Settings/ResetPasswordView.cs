@@ -1,11 +1,11 @@
 using System;
+using System.Drawing;
 using System.Text.RegularExpressions;
-using System.Linq;
+using Microsoft.Practices.ServiceLocation;
 using MonoTouch.Dialog;
 using MonoTouch.UIKit;
 using apcurium.Framework.Extensions;
-using apcurium.Framework;
-using Microsoft.Practices.ServiceLocation;
+
 namespace TaxiMobileApp
 {
 	public class ResetPasswordView : DialogViewController
@@ -117,7 +117,7 @@ namespace TaxiMobileApp
 			
 			
 			_emailEntry = new EntryElement (Resources.ResetPasswordLabel, Resources.ResetPasswordPlaceholder, _data.Email);
-			_emailEntry.KeyboardType = MonoTouch.UIKit.UIKeyboardType.EmailAddress;
+			_emailEntry.KeyboardType = UIKeyboardType.EmailAddress;
 			_emailEntry.TextAutocapitalizationType = UITextAutocapitalizationType.None;
 			_emailEntry.TextAutocorrectionType = UITextAutocorrectionType.No;
 			
@@ -140,7 +140,7 @@ namespace TaxiMobileApp
 		private void AddButton (float x, float y, string title, UIColor normal, UIColor selected, Action clicked)
 		{
 			var btn = UIButton.FromType (UIButtonType.RoundedRect);
-			btn.Frame = new System.Drawing.RectangleF (x, y, 130, 40);
+			btn.Frame = new RectangleF (x, y, 130, 40);
 			btn.SetTitle (title, UIControlState.Normal);
 			this.View.AddSubview (btn);
 			GlassButton.Wrap (btn, normal, selected).TouchUpInside += delegate { clicked (); };

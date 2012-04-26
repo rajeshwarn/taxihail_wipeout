@@ -1,9 +1,7 @@
-
 using System;
-using MonoTouch.UIKit;
-using MonoTouch.CoreGraphics;
 using System.Drawing;
-
+using MonoTouch.CoreGraphics;
+using MonoTouch.UIKit;
 
 namespace TaxiMobileApp
 {

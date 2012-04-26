@@ -1,9 +1,7 @@
-using System;
 using System.Drawing;
-using MonoTouch.UIKit;
-using MonoTouch.CoreFoundation;
 using MonoTouch.CoreGraphics;
 using MonoTouch.Foundation;
+using MonoTouch.UIKit;
 
 namespace MonoTouch.Dialog
 {

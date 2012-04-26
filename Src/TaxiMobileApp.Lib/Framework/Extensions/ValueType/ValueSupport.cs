@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 
-
 namespace apcurium.Framework.Extensions.ValueType
 {
     public static class ValueSupport

@@ -2,10 +2,9 @@
 // This cell does not perform cell recycling, do not use as
 // sample code for new elements. 
 //
+
 using System;
 using System.Drawing;
-using System.Threading;
-using MonoTouch.CoreFoundation;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 

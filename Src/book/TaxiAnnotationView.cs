@@ -1,8 +1,7 @@
 using System;
+using MonoTouch.Foundation;
 using MonoTouch.MapKit;
 using MonoTouch.UIKit;
-using MonoTouch.CoreFoundation;
-using MonoTouch.Foundation;
 
 namespace TaxiMobileApp
 {

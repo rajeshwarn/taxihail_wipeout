@@ -1,7 +1,7 @@
 using System;
-using MonoTouch.UIKit;
 using MonoTouch.Foundation;
-using MonoTouch.CoreFoundation;
+using MonoTouch.UIKit;
+
 namespace TaxiMobileApp
 {
 	public class Confirmation

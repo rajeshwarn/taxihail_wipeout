@@ -1,22 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Android.App;
-using Android.Content;
+using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Android.Webkit;
-
 using Microsoft.Practices.ServiceLocation;
 using TaxiMobileApp;
 
 namespace TaxiMobile.Activities.Setting
 {
-	[Activity (Label = "About", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation=Android.Content.PM.ScreenOrientation.Portrait)]			
+	[Activity (Label = "About", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation=ScreenOrientation.Portrait)]			
 	public class AboutActivity : Activity
 	{
 		protected override void OnCreate (Bundle bundle)
@@ -26,7 +17,7 @@ namespace TaxiMobile.Activities.Setting
 			SetContentView(Resource.Layout.About);
 			
 			string aboutUrl = "";
-			if( ServiceLocator.Current.GetInstance<IAppResource>().CurrentLanguage == TaxiMobileApp.AppLanguage.Francais )
+			if( ServiceLocator.Current.GetInstance<IAppResource>().CurrentLanguage == AppLanguage.Francais )
 			{
 				aboutUrl = @"file:///android_asset/About_fr.html";
 			}

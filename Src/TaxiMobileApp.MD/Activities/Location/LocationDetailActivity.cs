@@ -1,22 +1,20 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
 using Android.App;
-using Android.Content;
+using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using apcurium.Framework.Extensions;
-using TaxiMobile.Models;
-using TaxiMobile.Helpers;
-using TaxiMobileApp;
 using Microsoft.Practices.ServiceLocation;
+using TaxiMobile.Helpers;
+using TaxiMobile.Models;
+using TaxiMobileApp;
+using apcurium.Framework.Extensions;
+
 namespace TaxiMobile.Activities.Location
 {
-    [Activity(Label = "Location Details", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
+    [Activity(Label = "Location Details", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = ScreenOrientation.Portrait)]
     public class LocationDetailActivity : Activity
     {
         private LocationData _data;

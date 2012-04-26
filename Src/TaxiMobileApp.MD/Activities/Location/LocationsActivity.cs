@@ -1,24 +1,22 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Collections;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
+using Android.Graphics;
 using Android.OS;
-using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using TaxiMobile.Models;
 using TaxiMobile.Adapters;
-using apcurium.Framework.Extensions;
-using TaxiMobileApp;
-using Android.Graphics;
-using TaxiMobile.Activities.Book;
 using TaxiMobile.Helpers;
+using TaxiMobile.Models;
+using TaxiMobileApp;
+using apcurium.Framework.Extensions;
+
 namespace TaxiMobile.Activities.Location
 {
-    [Activity(Label = "Locations", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
+    [Activity(Label = "Locations", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = ScreenOrientation.Portrait)]
     public class LocationsActivity : Activity
     {
         private ParentScreens _parent = ParentScreens.LocationScreen;

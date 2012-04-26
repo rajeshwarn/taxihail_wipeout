@@ -1,6 +1,7 @@
 using System;
 using TaxiMobile.Lib.MD.Framework.Extensions;
 using apcurium.Framework.Extensions;
+
 namespace TaxiMobileApp
 {
 	public static class LocationDataExtension

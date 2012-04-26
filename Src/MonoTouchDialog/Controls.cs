@@ -1,10 +1,9 @@
 using System;
 using System.Drawing;
-using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using MonoTouch.CoreGraphics;
 using MonoTouch.CoreAnimation;
+using MonoTouch.CoreGraphics;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 
@@ -148,13 +147,13 @@ namespace MonoTouch.Dialog
 		
 		public void Flip (bool animate)
 		{
-			UIView.BeginAnimations (null);
-			UIView.SetAnimationDuration (animate ? .18f : 0);
+			BeginAnimations (null);
+			SetAnimationDuration (animate ? .18f : 0);
 			arrowView.Layer.Transform = IsFlipped 
 				? CATransform3D.MakeRotation ((float)Math.PI, 0, 0, 1) 
 				: CATransform3D.MakeRotation ((float)Math.PI * 2, 0, 0, 1);
 				
-			UIView.CommitAnimations ();
+			CommitAnimations ();
 			IsFlipped = !IsFlipped;
 		}
 		

@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using MonoTouch.UIKit;
 
 namespace TaxiMobileApp
@@ -24,7 +25,7 @@ namespace TaxiMobileApp
 			_btnDest.SetImage (UIImage.FromFile (Resources.DestinationOnButtonImageName), UIControlState.Normal);
 			_btnDest.SetImage (UIImage.FromFile (Resources.DestinationOffButtonImageName), UIControlState.Selected);
 			
-			_btnDest.Frame = new System.Drawing.RectangleF (0, 0, 100, 33);
+			_btnDest.Frame = new RectangleF (0, 0, 100, 33);
 			destView.AddSubview (_btnDest);
 			
 			_btnDest.TouchUpInside += HandleBtnDestTouchUpInside;
@@ -35,7 +36,7 @@ namespace TaxiMobileApp
 			
 			
 			
-			_btnPick.Frame = new System.Drawing.RectangleF (0, 0, 100, 33);
+			_btnPick.Frame = new RectangleF (0, 0, 100, 33);
 			
 			_btnPick.TouchUpInside += HandleBtnPickTouchUpInside;
 			pickView.AddSubview (_btnPick);

@@ -1,8 +1,9 @@
 using System;
 using System.Linq;
-using apcurium.Framework.Extensions;
 using Microsoft.Practices.ServiceLocation;
-using IBS =TaxiMobileApp.Lib.IBS;
+using TaxiMobile.Lib.IBS;
+using apcurium.Framework.Extensions;
+
 namespace TaxiMobileApp
 {
 	public class SettingMapper
@@ -14,7 +15,7 @@ namespace TaxiMobileApp
 		
 			
 		
-		public void SetWSSetting (IBS.AccountInfo toUpdate, AccountData account)
+		public void SetWSSetting (AccountInfo toUpdate, AccountData account)
 		{
 			toUpdate.PreferenceChargeTypeId = account.DefaultSettings.ChargeType;
 			toUpdate.PreferenceVehicleTypeId = account.DefaultSettings.VehicleType;
@@ -28,7 +29,7 @@ namespace TaxiMobileApp
 			Console.WriteLine( "SetWSSetting : " + toUpdate.PreferenceChargeTypeId.ToString() );
 			                  
 		}
-		public void SetSetting (AccountData toUpdate, IBS.AccountInfo account)
+		public void SetSetting (AccountData toUpdate, AccountInfo account)
 		{
 		
 	        

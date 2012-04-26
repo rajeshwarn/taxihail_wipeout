@@ -22,19 +22,16 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
-
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using MonoTouch.CoreGraphics;
-using MonoTouch.Dialog.Utilities;
-using System.Security.Cryptography;
 
 namespace MonoTouch.Dialog.Utilities 
 {
@@ -210,7 +207,7 @@ namespace MonoTouch.Dialog.Utilities
 			do {
 				bool downloaded = false;
 				
-				System.Threading.Thread.Sleep (5000);
+				Thread.Sleep (5000);
 				downloaded = Download (uri, target);
 				if (!downloaded)
 					Console.WriteLine ("Error fetching picture for {0} to {1}", uri, target);

@@ -16,13 +16,13 @@ namespace TaxiMobileApp
 			get { return (AppLanguage)Enum.Parse (typeof(AppLanguage), GetValue ("Language")); }
 		}
 		
-		public string OrderNote{ get { return Resources.OrderNoteStatic; } }
+		public string OrderNote{ get { return OrderNoteStatic; } }
 
-		public string OrderNoteGPSApproximate{ get { return Resources.OrderNoteGPSApproximateStatic; } }
+		public string OrderNoteGPSApproximate{ get { return OrderNoteGPSApproximateStatic; } }
 
-		public string StatusInvalid{ get { return Resources.CarAssignedStatic; } }
+		public string StatusInvalid{ get { return CarAssignedStatic; } }
 
-		public string CarAssigned{ get { return Resources.CarAssignedStatic; } }
+		public string CarAssigned{ get { return CarAssignedStatic; } }
 
 		public static string TabBook {
 			get { return GetValue ("TabBook"); }
