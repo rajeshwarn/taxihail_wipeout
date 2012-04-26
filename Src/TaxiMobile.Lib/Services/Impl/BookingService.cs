@@ -20,8 +20,13 @@ using MonoTouch.Foundation;
 
 namespace TaxiMobile.Lib.Services.Impl
 {
-	public class BookingService : IBookingService
+	public class BookingService : BaseService<WebOrder7Service>, IBookingService
 	{
+        protected override string GetUrl()
+        {
+            return base.GetUrl() + "IWEBOrder_7";
+        }
+
         [Preserve]
 		public BookingService ()
 		{

@@ -108,8 +108,16 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IAccountService.cs" />
     <Compile Include="Services\IBookingService.cs" />
+    <Compile Include="Services\IBS\StaticDataservice.cs" />
+    <Compile Include="Services\IBS\WebAccount3Service.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Services\IBS\WEBOrder7Service.cs" />
     <Compile Include="Services\Impl\AccountService.cs" />
+    <Compile Include="Services\Impl\BaseService.cs" />
     <Compile Include="Services\Impl\BookingService.cs" />
+    <Compile Include="Services\Impl\StaticDataService.cs" />
+    <Compile Include="Services\IStaticDataService.cs" />
     <Compile Include="Services\Mapper\AccountMapping.cs" />
     <Compile Include="Services\Mapper\OrderMapping.cs" />
     <Compile Include="Services\Mapper\SettingMapper.cs" />

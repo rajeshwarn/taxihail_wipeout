@@ -55,6 +55,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Services\IAccountService.cs" />
+    <Compile Include="Services\IBS\WEBOrder7Service.cs" />
     <Compile Include="Services\IBS\StaticDataservice.cs" />
     <Compile Include="Services\IBS\WebAccount3Service.cs">
       <SubType>Component</SubType>
