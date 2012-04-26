@@ -1,6 +1,6 @@
 using System;
 
-namespace apcurium.Framework.Extensions.ValueType
+namespace TaxiMobile.Lib.Framework.Extensions.ValueType
 {
     public class ValueSupport<T> : IValueSupport<T>
     {

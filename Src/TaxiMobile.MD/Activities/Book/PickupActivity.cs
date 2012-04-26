@@ -9,8 +9,8 @@ using Android.OS;
 using Android.Views;
 using Android.Views.InputMethods;
 using Android.Widget;
+using TaxiMobile.Lib.Data;
 using TaxiMobile.Models;
-using TaxiMobileApp;
 
 namespace TaxiMobile.Activities.Book
 {

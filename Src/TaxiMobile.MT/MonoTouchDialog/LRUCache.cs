@@ -28,7 +28,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace MonoTouch.Dialog.Utilities {
+namespace TaxiMobile.MonoTouchDialog {
 	
 public class LRUCache<TKey, TValue> where TValue : class, IDisposable  {
 	Dictionary<TKey, LinkedListNode <TValue>> dict;

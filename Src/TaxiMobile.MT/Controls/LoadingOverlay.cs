@@ -1,11 +1,14 @@
 using System;
 using System.Drawing;
-using Microsoft.Practices.ServiceLocation;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using apcurium.Framework.Extensions;
+using TaxiMobile.Lib.Framework.Extensions;
+using TaxiMobile.Lib.Infrastructure;
+using TaxiMobile.Lib.Localization;
+using TaxiMobile.Lib.Practices;
+using TaxiMobile.Localization;
 
-namespace TaxiMobileApp
+namespace TaxiMobile.Controls
 {
 	public enum LoadingOverlayPosition
 	{

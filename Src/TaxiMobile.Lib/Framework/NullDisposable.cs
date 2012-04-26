@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace apcurium.Framework
+namespace TaxiMobile.Lib.Framework
 {
     /// <summary>
     /// An empty implementation of the IDisposable class.

@@ -3,9 +3,9 @@ using System.IO;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
-using Microsoft.Practices.ServiceLocation;
-using TaxiMobileApp;
-using apcurium.Framework.Extensions;
+using TaxiMobile.Lib.Framework.Extensions;
+using TaxiMobile.Lib.Infrastructure;
+using TaxiMobile.Lib.Practices;
 
 namespace TaxiMobile.Helpers
 {

@@ -1,6 +1,6 @@
-using TaxiMobileApp;
+using TaxiMobile.Lib.Data;
 
-namespace MobileTaxiApp.Infrastructure
+namespace TaxiMobile.Lib.Infrastructure
 {
 	public interface IAppContext
 	{

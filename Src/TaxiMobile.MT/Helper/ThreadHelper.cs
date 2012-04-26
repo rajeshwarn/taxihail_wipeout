@@ -1,8 +1,9 @@
 using System;
 using System.Threading;
 using MonoTouch.Foundation;
+using TaxiMobile.Diagnostics;
 
-namespace TaxiMobileApp
+namespace TaxiMobile.Helper
 {
 	public class ThreadHelper
 	{

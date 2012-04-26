@@ -1,12 +1,16 @@
 using System;
 using System.Drawing;
-using System.Linq;
-using Microsoft.Practices.ServiceLocation;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using apcurium.Framework.Extensions;
+using TaxiMobile.Controls;
+using TaxiMobile.Helper;
+using TaxiMobile.Lib.Data;
+using TaxiMobile.Lib.Framework.Extensions;
+using TaxiMobile.Lib.Practices;
+using TaxiMobile.Lib.Services;
+using TaxiMobile.Localization;
 
-namespace TaxiMobileApp
+namespace TaxiMobile.Locations
 {
 	public partial class LocationDetailView : UIViewController
 	{
@@ -96,7 +100,7 @@ namespace TaxiMobileApp
 				var locations = ServiceLocator.Current.GetInstance<IBookingService> ().SearchAddress (txtAddress.Text);
 				
 				
-				if (locations.Count () != 1 || locations[0].Address.IsNullOrEmpty () || !locations[0].Longitude.HasValue || !locations[0].Latitude.HasValue)
+				if (locations.Length != 1 || locations[0].Address.IsNullOrEmpty () || !locations[0].Longitude.HasValue || !locations[0].Latitude.HasValue)
 				{
 					return;
 				}
@@ -175,7 +179,7 @@ namespace TaxiMobileApp
 					var locations = ServiceLocator.Current.GetInstance<IBookingService> ().SearchAddress (txtAddress.Text);
 					
 					
-					if (locations.Count () != 1 || locations[0].Address.IsNullOrEmpty () || !locations[0].Longitude.HasValue || !locations[0].Latitude.HasValue)
+					if (locations.Length != 1 || locations[0].Address.IsNullOrEmpty() || !locations[0].Longitude.HasValue || !locations[0].Latitude.HasValue)
 					{
 						
 						

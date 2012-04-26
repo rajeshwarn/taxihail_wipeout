@@ -2,8 +2,9 @@ using Android.App;
 using Android.Content.PM;
 using Android.OS;
 using Android.Webkit;
-using Microsoft.Practices.ServiceLocation;
-using TaxiMobileApp;
+using TaxiMobile.Lib.Infrastructure;
+using TaxiMobile.Lib.Localization;
+using TaxiMobile.Lib.Practices;
 
 namespace TaxiMobile.Activities.Setting
 {

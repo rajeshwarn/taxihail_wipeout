@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Framework.Extensions.Calendar
+namespace TaxiMobile.Lib.Framework.Extensions.Calendar
 {
 	public static class Int32TimeSpanExtensions
 	{

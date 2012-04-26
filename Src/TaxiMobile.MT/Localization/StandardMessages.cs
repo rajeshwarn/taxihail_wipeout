@@ -1,4 +1,6 @@
-namespace TaxiMobileApp
+using TaxiMobile.Helper;
+
+namespace TaxiMobile.Localization
 {
 	public static class StandardMessages
 	{

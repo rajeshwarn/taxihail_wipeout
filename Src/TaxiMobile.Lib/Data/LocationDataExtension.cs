@@ -1,8 +1,7 @@
 using System;
-using TaxiMobile.Lib.MD.Framework.Extensions;
-using apcurium.Framework.Extensions;
+using TaxiMobile.Lib.Framework.Extensions;
 
-namespace TaxiMobileApp
+namespace TaxiMobile.Lib.Data
 {
 	public static class LocationDataExtension
 	{

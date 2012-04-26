@@ -3,7 +3,7 @@ using MonoTouch.CoreGraphics;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 
-namespace MonoTouch.Dialog
+namespace TaxiMobile.MonoTouchDialog
 {
 	public abstract class OwnerDrawnElement : Element, IElementSizing
 	{		

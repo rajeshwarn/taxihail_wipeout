@@ -2,9 +2,10 @@ using System.Collections.Generic;
 using System.Linq;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using apcurium.Framework.Extensions;
+using TaxiMobile.Lib.Data;
+using TaxiMobile.Lib.Framework.Extensions;
 
-namespace TaxiMobileApp
+namespace TaxiMobile.Book
 {
 
 	public class SimilarAddressTableDatasource : UITableViewDataSource

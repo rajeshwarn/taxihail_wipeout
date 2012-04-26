@@ -2,12 +2,13 @@ using System;
 using Android.Content;
 using Android.Locations;
 using Android.OS;
-using Microsoft.Practices.ServiceLocation;
-using MobileTaxiApp.Infrastructure;
 using TaxiMobile.Diagnostic;
 using TaxiMobile.Helpers;
-using TaxiMobileApp;
-using apcurium.Framework.Extensions;
+using TaxiMobile.Lib.Data;
+using TaxiMobile.Lib.Framework.Extensions;
+using TaxiMobile.Lib.Infrastructure;
+using TaxiMobile.Lib.Practices;
+using TaxiMobile.Lib.Services;
 
 namespace TaxiMobile
 {

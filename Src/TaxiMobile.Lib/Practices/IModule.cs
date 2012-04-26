@@ -1,4 +1,4 @@
-namespace TaxiMobileApp
+namespace TaxiMobile.Lib.Practices
 {
 	
 	public interface IModule

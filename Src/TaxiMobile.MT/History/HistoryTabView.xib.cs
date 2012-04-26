@@ -2,8 +2,10 @@ using System;
 using System.Linq;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+using TaxiMobile.Controls;
+using TaxiMobile.Localization;
 
-namespace TaxiMobileApp
+namespace TaxiMobile.History
 {
 	public partial class HistoryTabView : UIViewController, ITaxiViewController, ISelectableViewController, IRefreshableViewController
 	{

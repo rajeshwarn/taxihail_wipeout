@@ -1,4 +1,4 @@
-namespace MobileTaxiApp.Infrastructure
+namespace TaxiMobile.Lib.Infrastructure
 {
 	public interface IAppSettings
 	{

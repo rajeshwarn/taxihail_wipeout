@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Reflection;
 
-namespace TaxiMobileApp
+namespace TaxiMobile.Helper
 {
 	public class RessourceHelper
 	{

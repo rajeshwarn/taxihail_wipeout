@@ -1,6 +1,7 @@
 using MonoTouch.CoreLocation;
+using TaxiMobile.Lib.Data;
 
-namespace TaxiMobileApp
+namespace TaxiMobile.Book
 {
 	public static class LocationDataExtension
 	{

@@ -1,7 +1,7 @@
 using MonoTouch.CoreLocation;
 using MonoTouch.MapKit;
 
-namespace TaxiMobileApp
+namespace TaxiMobile.Book
 {
 	public enum AddressAnnotationType
 	{

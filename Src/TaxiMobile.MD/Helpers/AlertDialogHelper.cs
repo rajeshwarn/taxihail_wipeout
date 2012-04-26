@@ -1,7 +1,7 @@
 using System;
 using Android.App;
 using Android.Content;
-using apcurium.Framework.Extensions;
+using TaxiMobile.Lib.Framework.Extensions;
 
 namespace TaxiMobile.Helpers
 {

@@ -3,9 +3,13 @@ using System.IO;
 using MonoTouch.Foundation;
 using MonoTouch.MessageUI;
 using MonoTouch.UIKit;
-using apcurium.Framework.Extensions;
+using TaxiMobile.Book;
+using TaxiMobile.Controls;
+using TaxiMobile.Helper;
+using TaxiMobile.Lib.Framework.Extensions;
+using TaxiMobile.Localization;
 
-namespace TaxiMobileApp
+namespace TaxiMobile.Settings
 {
 	public partial class SettingsTabView : UIViewController, ITaxiViewController, ISelectableViewController, IRefreshableViewController
 	{

@@ -1,7 +1,7 @@
 using System.Drawing;
 using MonoTouch.CoreGraphics;
 
-namespace TaxiMobileApp
+namespace TaxiMobile.Controls
 {
 	public static class GraphicsUtil {
 		

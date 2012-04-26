@@ -6,11 +6,12 @@ using Android.Content.PM;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
-using Microsoft.Practices.ServiceLocation;
 using TaxiMobile.Helpers;
+using TaxiMobile.Lib.Data;
+using TaxiMobile.Lib.Framework.Extensions;
+using TaxiMobile.Lib.Practices;
+using TaxiMobile.Lib.Services;
 using TaxiMobile.Models;
-using TaxiMobileApp;
-using apcurium.Framework.Extensions;
 
 namespace TaxiMobile.Activities.Location
 {

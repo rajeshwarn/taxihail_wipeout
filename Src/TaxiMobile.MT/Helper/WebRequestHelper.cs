@@ -3,8 +3,10 @@ using System.IO;
 using System.Net;
 using System.Text;
 using MonoTouch.UIKit;
+using TaxiMobile.Diagnostics;
+using TaxiMobile.Localization;
 
-namespace TaxiMobileApp
+namespace TaxiMobile.Helper
 {
 	public class WebRequestHelper
 	{

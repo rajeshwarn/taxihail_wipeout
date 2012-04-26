@@ -1,9 +1,10 @@
 using System;
 using System.Linq;
+using TaxiMobile.Lib.Data;
+using TaxiMobile.Lib.Framework.Extensions;
 using TaxiMobile.Lib.IBS;
-using apcurium.Framework.Extensions;
 
-namespace TaxiMobileApp
+namespace TaxiMobile.Lib.Services.Mapper
 {
 	public class OrderMapping
 	{

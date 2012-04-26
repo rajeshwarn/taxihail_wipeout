@@ -1,4 +1,4 @@
-namespace TaxiMobile
+namespace TaxiMobile.Activities.Book
 {
 	public interface IAddress
 	{

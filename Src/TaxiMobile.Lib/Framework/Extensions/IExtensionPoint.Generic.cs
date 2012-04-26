@@ -1,4 +1,4 @@
-﻿namespace apcurium.Framework.Extensions
+﻿namespace TaxiMobile.Lib.Framework.Extensions
 {
     public interface IExtensionPoint<T> : IExtensionPoint
     {

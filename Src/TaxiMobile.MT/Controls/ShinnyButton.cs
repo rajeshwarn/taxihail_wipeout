@@ -3,7 +3,7 @@ using MonoTouch.CoreGraphics;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 
-namespace TaxiMobileApp
+namespace TaxiMobile.Controls
 {
 	public class ShinnyButton
 	{

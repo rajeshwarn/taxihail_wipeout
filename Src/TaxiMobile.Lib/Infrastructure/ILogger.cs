@@ -1,6 +1,6 @@
 using System;
 
-namespace TaxiMobileApp
+namespace TaxiMobile.Lib.Infrastructure
 {
 	public interface ILogger
 	{

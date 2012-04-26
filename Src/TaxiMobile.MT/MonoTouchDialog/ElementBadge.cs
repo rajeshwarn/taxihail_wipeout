@@ -15,7 +15,7 @@ using MonoTouch.CoreGraphics;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 
-namespace MonoTouch.Dialog
+namespace TaxiMobile.MonoTouchDialog
 {	
 	/// <summary>
 	///    This element can be used to show an image with some text

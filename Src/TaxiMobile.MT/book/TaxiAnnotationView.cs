@@ -3,7 +3,7 @@ using MonoTouch.Foundation;
 using MonoTouch.MapKit;
 using MonoTouch.UIKit;
 
-namespace TaxiMobileApp
+namespace TaxiMobile.Book
 {
 	public class TaxiAnnotationView : MKAnnotationView
 	{

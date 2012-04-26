@@ -1,7 +1,9 @@
 using System;
 using MonoTouch.Foundation;
+using TaxiMobile.Lib.Infrastructure;
+using TaxiMobile.Lib.Localization;
 
-namespace TaxiMobileApp
+namespace TaxiMobile.Localization
 {
 	public class Resources : IAppResource
 	{

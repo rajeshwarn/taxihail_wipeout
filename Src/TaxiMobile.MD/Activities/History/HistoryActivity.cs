@@ -8,8 +8,8 @@ using Android.Graphics;
 using Android.OS;
 using Android.Widget;
 using TaxiMobile.Adapters;
+using TaxiMobile.Lib.Framework.Extensions;
 using TaxiMobile.Models;
-using apcurium.Framework.Extensions;
 
 namespace TaxiMobile.Activities.History
 {

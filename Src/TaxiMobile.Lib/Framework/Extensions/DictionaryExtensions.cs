@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace apcurium.Framework.Extensions
+namespace TaxiMobile.Lib.Framework.Extensions
 {
     public static class DictionaryExtensions
     {

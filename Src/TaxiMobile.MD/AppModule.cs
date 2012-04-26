@@ -1,8 +1,7 @@
-using Microsoft.Practices.ServiceLocation;
-using MobileTaxiApp.Infrastructure;
 using TaxiMobile.Diagnostic;
+using TaxiMobile.Lib.Infrastructure;
+using TaxiMobile.Lib.Practices;
 using TaxiMobile.Localization;
-using TaxiMobileApp;
 
 namespace TaxiMobile
 {

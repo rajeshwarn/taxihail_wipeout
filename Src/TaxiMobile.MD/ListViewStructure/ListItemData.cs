@@ -1,4 +1,4 @@
-namespace TaxiMobile
+namespace TaxiMobile.ListViewStructure
 {
 	public class ListItemData
 	{

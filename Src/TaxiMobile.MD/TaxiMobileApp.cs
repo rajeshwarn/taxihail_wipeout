@@ -1,8 +1,8 @@
 using System;
 using Android.App;
 using Android.Runtime;
-using Microsoft.Practices.ServiceLocation;
-using TaxiMobileApp;
+using TaxiMobile.Lib.Infrastructure;
+using TaxiMobile.Lib.Practices;
 
 namespace TaxiMobile
 {

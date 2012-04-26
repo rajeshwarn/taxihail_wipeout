@@ -1,7 +1,8 @@
 using System;
-using Microsoft.Practices.ServiceLocation;
+using TaxiMobile.Lib.Practices;
+using TaxiMobile.Lib.Services;
 
-namespace TaxiMobileApp
+namespace TaxiMobile.Lib.Data
 {
     public class BookingInfoData
     {

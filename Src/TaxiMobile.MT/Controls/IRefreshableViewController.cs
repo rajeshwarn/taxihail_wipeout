@@ -1,4 +1,4 @@
-namespace TaxiMobileApp
+namespace TaxiMobile.Controls
 {
 	public interface IRefreshableViewController
 	{

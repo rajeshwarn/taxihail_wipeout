@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace apcurium.Framework.Extensions
+namespace TaxiMobile.Lib.Framework.Extensions
 {
     public static class StreamExtensions
     {

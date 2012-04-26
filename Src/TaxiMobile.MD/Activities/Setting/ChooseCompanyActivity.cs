@@ -3,11 +3,12 @@ using Android.App;
 using Android.Content.PM;
 using Android.OS;
 using Android.Widget;
-using Microsoft.Practices.ServiceLocation;
 using TaxiMobile.Helpers;
+using TaxiMobile.Lib.Practices;
+using TaxiMobile.Lib.Services;
 using TaxiMobile.ListViewCell;
 using TaxiMobile.ListViewStructure;
-using TaxiMobileApp;
+using TaxiMobile.Models;
 
 namespace TaxiMobile.Activities.Setting
 {

@@ -1,10 +1,17 @@
 using System;
-using Microsoft.Practices.ServiceLocation;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using apcurium.Framework.Extensions;
+using TaxiMobile.Book;
+using TaxiMobile.Diagnostics;
+using TaxiMobile.Helper;
+using TaxiMobile.Lib.Data;
+using TaxiMobile.Lib.Framework.Extensions;
+using TaxiMobile.Lib.Practices;
+using TaxiMobile.Lib.Services;
+using TaxiMobile.Localization;
+using TaxiMobile.Settings;
 
-namespace TaxiMobileApp
+namespace TaxiMobile
 {
 	public class Application
 	{

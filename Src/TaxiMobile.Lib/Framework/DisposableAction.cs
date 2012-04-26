@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace apcurium.Framework
+namespace TaxiMobile.Lib.Framework
 {
     public class DisposableAction : IDisposable
     {

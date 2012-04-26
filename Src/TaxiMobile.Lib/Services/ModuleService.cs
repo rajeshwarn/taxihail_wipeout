@@ -1,6 +1,7 @@
-using Microsoft.Practices.ServiceLocation;
+using TaxiMobile.Lib.Practices;
+using TaxiMobile.Lib.Services.Impl;
 
-namespace TaxiMobileApp
+namespace TaxiMobile.Lib.Services
 {
 	public class ModuleService : IModule 
 	{

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace apcurium.Framework
+namespace TaxiMobile.Lib.Framework
 {
     public static class Params
     {

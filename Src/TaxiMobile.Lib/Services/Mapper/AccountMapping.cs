@@ -1,10 +1,11 @@
 using System.Linq;
-using Microsoft.Practices.ServiceLocation;
+using TaxiMobile.Lib.Data;
+using TaxiMobile.Lib.Framework;
+using TaxiMobile.Lib.Framework.Extensions;
 using TaxiMobile.Lib.IBS;
-using apcurium.Framework;
-using apcurium.Framework.Extensions;
+using TaxiMobile.Lib.Practices;
 
-namespace TaxiMobileApp
+namespace TaxiMobile.Lib.Services.Mapper
 {
 	public class AccountMapping
 	{

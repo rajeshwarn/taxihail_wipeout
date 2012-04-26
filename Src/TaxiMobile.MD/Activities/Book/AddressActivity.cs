@@ -9,15 +9,16 @@ using Android.OS;
 using Android.Views;
 using Android.Views.InputMethods;
 using Android.Widget;
-using Microsoft.Practices.ServiceLocation;
 using TaxiMobile.Activities.Location;
 using TaxiMobile.Controls;
 using TaxiMobile.Converters;
 using TaxiMobile.Helpers;
+using TaxiMobile.Lib.Data;
+using TaxiMobile.Lib.Framework.Extensions;
+using TaxiMobile.Lib.Practices;
+using TaxiMobile.Lib.Services;
 using TaxiMobile.MapUtitilties;
 using TaxiMobile.Models;
-using TaxiMobileApp;
-using apcurium.Framework.Extensions;
 
 namespace TaxiMobile.Activities.Book
 {

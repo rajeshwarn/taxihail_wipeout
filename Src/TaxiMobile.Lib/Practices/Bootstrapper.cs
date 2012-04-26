@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using apcurium.Framework.Extensions;
+using TaxiMobile.Lib.Framework.Extensions;
+using TaxiMobile.Lib.Services;
 
-namespace TaxiMobileApp
+namespace TaxiMobile.Lib.Practices
 {
 	public class Bootstrapper
 	{

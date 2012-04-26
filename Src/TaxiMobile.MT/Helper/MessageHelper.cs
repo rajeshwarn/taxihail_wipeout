@@ -1,7 +1,8 @@
 using System;
 using MonoTouch.UIKit;
+using TaxiMobile.Localization;
 
-namespace TaxiMobileApp
+namespace TaxiMobile.Helper
 {
 	public class MessageHelper
 	{

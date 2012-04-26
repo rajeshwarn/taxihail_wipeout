@@ -3,7 +3,7 @@ using System.Drawing;
 using MonoTouch.CoreGraphics;
 using MonoTouch.UIKit;
 
-namespace TaxiMobileApp
+namespace TaxiMobile.Controls
 {
 
 

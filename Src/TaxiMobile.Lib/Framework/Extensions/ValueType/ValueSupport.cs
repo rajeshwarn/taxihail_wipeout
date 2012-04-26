@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace apcurium.Framework.Extensions.ValueType
+namespace TaxiMobile.Lib.Framework.Extensions.ValueType
 {
     public static class ValueSupport
     {

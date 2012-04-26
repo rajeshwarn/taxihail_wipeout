@@ -15,9 +15,9 @@ using System.Collections.Generic;
 using System.Drawing;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using TaxiMobileApp;
+using TaxiMobile.Localization;
 
-namespace MonoTouch.Dialog
+namespace TaxiMobile.MonoTouchDialog
 {
 	public class DialogViewController : UITableViewController
 	{

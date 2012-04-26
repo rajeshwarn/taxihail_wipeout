@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace TaxiMobileApp
+namespace TaxiMobile.Lib.Data
 {
 	public class AccountData
 	{

@@ -1,4 +1,6 @@
-namespace TaxiMobileApp
+using TaxiMobile.Lib.Data;
+
+namespace TaxiMobile.Lib.Services
 {
 	public interface IAccountService
 	{

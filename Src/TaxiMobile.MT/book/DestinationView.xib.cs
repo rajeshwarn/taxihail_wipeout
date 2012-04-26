@@ -1,11 +1,15 @@
 using System;
 using System.Linq;
-using Microsoft.Practices.ServiceLocation;
 using MonoTouch.Foundation;
 using MonoTouch.MapKit;
 using MonoTouch.UIKit;
+using TaxiMobile.Helper;
+using TaxiMobile.Lib.Data;
+using TaxiMobile.Lib.Practices;
+using TaxiMobile.Lib.Services;
+using TaxiMobile.Localization;
 
-namespace TaxiMobileApp
+namespace TaxiMobile.Book
 {
 	public partial class DestinationView : UIViewController
 	{
@@ -116,7 +120,7 @@ namespace TaxiMobileApp
 			var service = ServiceLocator.Current.GetInstance<IBookingService> ();
 			var result = service.SearchAddress (txtAddress.Text);
 			
-			if (result.Count () > 0)
+			if (result.Any())
 			{
 				SetDestinationLocation (result [0]);
 			}

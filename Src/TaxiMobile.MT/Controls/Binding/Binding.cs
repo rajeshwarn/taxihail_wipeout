@@ -1,7 +1,7 @@
 using System;
 using MonoTouch.UIKit;
 
-namespace TaxiMobileApp
+namespace TaxiMobile.Controls.Binding
 {
 	public class Binding<T>
 	{

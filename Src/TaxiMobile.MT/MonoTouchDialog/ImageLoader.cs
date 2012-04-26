@@ -33,7 +33,7 @@ using System.Threading;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 
-namespace MonoTouch.Dialog.Utilities 
+namespace TaxiMobile.MonoTouchDialog 
 {
 	public interface IImageUpdated {
 		void UpdatedImage (Uri uri);

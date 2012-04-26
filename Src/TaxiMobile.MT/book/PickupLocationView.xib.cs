@@ -2,9 +2,11 @@ using System;
 using System.Drawing;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using apcurium.Framework.Extensions;
+using TaxiMobile.Controls;
+using TaxiMobile.Lib.Framework.Extensions;
+using TaxiMobile.Localization;
 
-namespace TaxiMobileApp
+namespace TaxiMobile.Book
 {
 	public partial class PickupLocationView : UIViewController
 	{

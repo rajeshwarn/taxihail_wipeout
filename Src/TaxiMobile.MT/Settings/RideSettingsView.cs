@@ -1,10 +1,14 @@
 using System;
-using Microsoft.Practices.ServiceLocation;
-using MonoTouch.Dialog;
 using MonoTouch.UIKit;
-using apcurium.Framework.Extensions;
+using TaxiMobile.Helper;
+using TaxiMobile.Lib.Data;
+using TaxiMobile.Lib.Framework.Extensions;
+using TaxiMobile.Lib.Practices;
+using TaxiMobile.Lib.Services;
+using TaxiMobile.Localization;
+using TaxiMobile.MonoTouchDialog;
 
-namespace TaxiMobileApp
+namespace TaxiMobile.Settings
 {
 	public class RideSettingsView : DialogViewController
 	{

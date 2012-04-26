@@ -1,20 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Practices.ServiceLocation;
-using MobileTaxiApp.Infrastructure;
+using TaxiMobile.Lib.Data;
+using TaxiMobile.Lib.Framework.Extensions;
 using TaxiMobile.Lib.IBS;
-using apcurium.Framework.Extensions;
-#if MONO_DROID
 using Android.Runtime;
-using apcurium.Framework.Extensions;
+using TaxiMobile.Lib.Infrastructure;
+using TaxiMobile.Lib.Localization;
+using TaxiMobile.Lib.Practices;
+using TaxiMobile.Lib.Services.Mapper;
+#if MONO_DROID
 
 #endif
 #if MONO_TOUCH
 using MonoTouch.Foundation;
 #endif
 
-namespace TaxiMobileApp
+namespace TaxiMobile.Lib.Services.Impl
 {
     public class AccountService : IAccountService
     {
@@ -139,7 +141,7 @@ namespace TaxiMobileApp
 
 
                     var re = service.GetRideExceptionsList(sessionId, "EN");
-                    re.RideExceptions.ForEach(rrr => Console.WriteLine(rrr.Description));
+                    re.RideExceptions.ForEach(rrr => Console.WriteLine((string) rrr.Description));
 
 
                     Logger.StartStopwatch("WS GetAccount : " + email.ToLower());

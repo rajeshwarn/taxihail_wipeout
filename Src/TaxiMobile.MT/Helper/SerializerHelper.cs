@@ -3,9 +3,10 @@ using System.IO;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
-using apcurium.Framework.Extensions;
+using TaxiMobile.Diagnostics;
+using TaxiMobile.Lib.Framework.Extensions;
 
-namespace TaxiMobileApp
+namespace TaxiMobile.Helper
 {
 	public static class SerializerHelper
 	{

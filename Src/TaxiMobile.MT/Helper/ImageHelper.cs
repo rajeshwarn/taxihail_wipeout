@@ -1,9 +1,10 @@
 using System;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using apcurium.Framework.Extensions;
+using TaxiMobile.Diagnostics;
+using TaxiMobile.Lib.Framework.Extensions;
 
-namespace TaxiMobileApp
+namespace TaxiMobile.Helper
 {
 	public class ImageHelper
 	{

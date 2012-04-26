@@ -4,9 +4,18 @@ using System.Drawing;
 using System.Linq;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using apcurium.Framework.Extensions;
+using TaxiMobile.Book;
+using TaxiMobile.Controls;
+using TaxiMobile.Diagnostics;
+using TaxiMobile.Helper;
+using TaxiMobile.History;
+using TaxiMobile.Lib.Data;
+using TaxiMobile.Lib.Framework.Extensions;
+using TaxiMobile.Localization;
+using TaxiMobile.Locations;
+using TaxiMobile.Settings;
 
-namespace TaxiMobileApp
+namespace TaxiMobile
 {
 	public class RootTabController : UITabBarController
 	{

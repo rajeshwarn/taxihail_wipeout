@@ -1,4 +1,6 @@
-namespace TaxiMobileApp
+using TaxiMobile.Lib.Localization;
+
+namespace TaxiMobile.Lib.Infrastructure
 {
 	public interface IAppResource
 	{

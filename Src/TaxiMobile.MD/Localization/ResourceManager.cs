@@ -1,4 +1,5 @@
-using TaxiMobileApp;
+using TaxiMobile.Lib.Infrastructure;
+using TaxiMobile.Lib.Localization;
 
 namespace TaxiMobile.Localization
 {

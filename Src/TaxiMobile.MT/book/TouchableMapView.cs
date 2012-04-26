@@ -3,7 +3,7 @@ using System.Diagnostics;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 
-namespace TaxiMobileApp
+namespace TaxiMobile.Book
 {
 
 	public class UserTouchedGesture : UIGestureRecognizer

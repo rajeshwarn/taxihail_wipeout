@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace apcurium.Framework.Extensions
+namespace TaxiMobile.Lib.Framework.Extensions
 {
     /// <summary>
     /// Provides Extensions Methods for IEnumerable.

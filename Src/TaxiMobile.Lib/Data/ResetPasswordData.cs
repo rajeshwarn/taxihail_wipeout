@@ -1,4 +1,4 @@
-namespace TaxiMobileApp
+namespace TaxiMobile.Lib.Data
 {
 	public class ResetPasswordData
 	{

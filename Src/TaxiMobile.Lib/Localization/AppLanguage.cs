@@ -1,4 +1,4 @@
-namespace TaxiMobileApp
+namespace TaxiMobile.Lib.Localization
 {
 	public enum AppLanguage
 	{

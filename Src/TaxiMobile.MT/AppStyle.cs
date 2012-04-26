@@ -1,6 +1,6 @@
 using MonoTouch.UIKit;
 
-namespace TaxiMobileApp
+namespace TaxiMobile
 {
 	public class AppStyle
 	{

@@ -5,13 +5,13 @@ using Android.Content.PM;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
-using Microsoft.Practices.ServiceLocation;
 using TaxiMobile.Activities.Book;
 using TaxiMobile.Activities.History;
 using TaxiMobile.Activities.Location;
 using TaxiMobile.Activities.Setting;
 using TaxiMobile.Controls;
-using TaxiMobileApp;
+using TaxiMobile.Lib.Practices;
+using TaxiMobile.Lib.Services;
 
 namespace TaxiMobile.Activities
 {

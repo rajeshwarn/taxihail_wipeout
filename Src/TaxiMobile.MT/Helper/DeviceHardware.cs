@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using MonoTouch;
 using MonoTouch.UIKit;
 
-namespace TaxiMobileApp
+namespace TaxiMobile.Helper
 {
 
 // make sure to add a 'using System.Runtime.InteropServices;' line to your file  

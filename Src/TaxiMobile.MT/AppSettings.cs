@@ -1,9 +1,9 @@
 using System;
 using System.IO;
-using MobileTaxiApp.Infrastructure;
 using MonoTouch.Foundation;
+using TaxiMobile.Lib.Infrastructure;
 
-namespace TaxiMobileApp
+namespace TaxiMobile
 {
 	public class AppSettings : IAppSettings
 	{

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Microsoft.Practices.ServiceLocation
+namespace TaxiMobile.Lib.Practices
 {
 
 	public class ServiceLocator

@@ -7,11 +7,13 @@ using Android.GoogleMaps;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
-using Microsoft.Practices.ServiceLocation;
 using TaxiMobile.Converters;
 using TaxiMobile.Helpers;
+using TaxiMobile.Lib.Data;
+using TaxiMobile.Lib.Infrastructure;
+using TaxiMobile.Lib.Practices;
+using TaxiMobile.Lib.Services;
 using TaxiMobile.MapUtitilties;
-using TaxiMobileApp;
 using String = Java.Lang.String;
 using Uri = Android.Net.Uri;
 

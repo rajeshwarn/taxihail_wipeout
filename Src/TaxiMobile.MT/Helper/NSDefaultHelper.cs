@@ -1,7 +1,7 @@
 using MonoTouch.Foundation;
-using apcurium.Framework.Extensions;
+using TaxiMobile.Lib.Framework.Extensions;
 
-namespace TaxiMobileApp
+namespace TaxiMobile.Helper
 {
 	public static class NSDefaultHelper
 	{

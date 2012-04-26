@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace apcurium.Framework.Extensions
+namespace TaxiMobile.Lib.Framework.Extensions
 {
     public static class FuncExtensions
     {

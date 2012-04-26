@@ -6,9 +6,9 @@ using Android.OS;
 using Android.Widget;
 using TaxiMobile.Activities.Setting;
 using TaxiMobile.Helpers;
+using TaxiMobile.Lib.Data;
+using TaxiMobile.Lib.Framework.Extensions;
 using TaxiMobile.Models;
-using TaxiMobileApp;
-using apcurium.Framework.Extensions;
 
 namespace TaxiMobile.Activities.Book
 {

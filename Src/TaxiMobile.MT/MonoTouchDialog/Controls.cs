@@ -7,7 +7,7 @@ using MonoTouch.CoreGraphics;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 
-namespace MonoTouch.Dialog
+namespace TaxiMobile.MonoTouchDialog
 {
 	public enum RefreshViewStatus {
 		ReleaseToReload,

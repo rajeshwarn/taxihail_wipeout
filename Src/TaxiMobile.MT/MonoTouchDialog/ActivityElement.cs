@@ -2,7 +2,7 @@ using System.Drawing;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 
-namespace MonoTouch.Dialog
+namespace TaxiMobile.MonoTouchDialog
 {
 	public class ActivityElement : UIViewElement, IElementSizing {
 		public ActivityElement () : base ("", new UIActivityIndicatorView (UIActivityIndicatorViewStyle.Gray), false)

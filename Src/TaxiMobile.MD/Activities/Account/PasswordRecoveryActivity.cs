@@ -3,10 +3,11 @@ using Android.App;
 using Android.Content.PM;
 using Android.OS;
 using Android.Widget;
-using Microsoft.Practices.ServiceLocation;
 using TaxiMobile.Helpers;
+using TaxiMobile.Lib.Data;
+using TaxiMobile.Lib.Practices;
+using TaxiMobile.Lib.Services;
 using TaxiMobile.Validation;
-using TaxiMobileApp;
 
 namespace TaxiMobile.Activities.Account
 {

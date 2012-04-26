@@ -1,12 +1,17 @@
 using System;
 using System.Drawing;
 using System.Linq;
-using Microsoft.Practices.ServiceLocation;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using apcurium.Framework.Extensions;
+using TaxiMobile.Controls;
+using TaxiMobile.Helper;
+using TaxiMobile.Lib.Data;
+using TaxiMobile.Lib.Framework.Extensions;
+using TaxiMobile.Lib.Practices;
+using TaxiMobile.Lib.Services;
+using TaxiMobile.Localization;
 
-namespace TaxiMobileApp
+namespace TaxiMobile.Book
 {
 	public partial class BookTabView : UIViewController, ITaxiViewController, ISelectableViewController, IRefreshableViewController
 	{

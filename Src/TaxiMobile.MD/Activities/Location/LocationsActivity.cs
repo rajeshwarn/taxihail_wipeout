@@ -10,9 +10,9 @@ using Android.Views;
 using Android.Widget;
 using TaxiMobile.Adapters;
 using TaxiMobile.Helpers;
+using TaxiMobile.Lib.Data;
+using TaxiMobile.Lib.Framework.Extensions;
 using TaxiMobile.Models;
-using TaxiMobileApp;
-using apcurium.Framework.Extensions;
 
 namespace TaxiMobile.Activities.Location
 {

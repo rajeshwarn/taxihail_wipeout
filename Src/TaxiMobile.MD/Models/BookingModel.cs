@@ -1,5 +1,5 @@
 ﻿using System;
-using TaxiMobileApp;
+using TaxiMobile.Lib.Data;
 
 namespace TaxiMobile.Models
 {

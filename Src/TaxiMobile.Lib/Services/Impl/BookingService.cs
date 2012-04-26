@@ -3,19 +3,23 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
-using Microsoft.Practices.ServiceLocation;
-using MobileTaxiApp.Infrastructure;
+using TaxiMobile.Lib.Data;
+using TaxiMobile.Lib.Framework.Extensions;
 using TaxiMobile.Lib.IBS;
-using apcurium.Framework.Extensions;
-#if MONO_DROID
 using Android.Runtime;
+using TaxiMobile.Lib.Infrastructure;
+using TaxiMobile.Lib.Practices;
+using TaxiMobile.Lib.Services.Mapper;
+using OrderStatus = TaxiMobile.Lib.Data.OrderStatus;
+#if MONO_DROID
+
 #endif
 #if MONO_TOUCH
 using MonoTouch.Foundation;
 #endif
 
 
-namespace TaxiMobileApp
+namespace TaxiMobile.Lib.Services.Impl
 {
 	public class BookingService : IBookingService
 	{

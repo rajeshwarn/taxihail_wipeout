@@ -2,8 +2,10 @@ using System.Collections.Generic;
 using System.Linq;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+using TaxiMobile.Lib.Data;
+using TaxiMobile.Localization;
 
-namespace TaxiMobileApp
+namespace TaxiMobile.Locations
 {
 	public class LocationTableViewDataSource : UITableViewDataSource
 	{

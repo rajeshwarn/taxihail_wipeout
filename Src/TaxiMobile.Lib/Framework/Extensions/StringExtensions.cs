@@ -15,7 +15,7 @@ using System.Linq;
 
 #endregion
 
-namespace apcurium.Framework.Extensions
+namespace TaxiMobile.Lib.Framework.Extensions
 {
     public static class StringExtensions
     {

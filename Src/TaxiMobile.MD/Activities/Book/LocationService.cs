@@ -3,8 +3,8 @@ using System.Threading;
 using Android.App;
 using Android.Content;
 using Android.Locations;
-using Microsoft.Practices.ServiceLocation;
-using TaxiMobileApp;
+using TaxiMobile.Lib.Infrastructure;
+using TaxiMobile.Lib.Practices;
 
 namespace TaxiMobile.Activities.Book
 {

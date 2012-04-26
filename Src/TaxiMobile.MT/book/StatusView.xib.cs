@@ -1,13 +1,19 @@
 using System;
 using System.Linq;
-using Microsoft.Practices.ServiceLocation;
 using MonoTouch.CoreLocation;
 using MonoTouch.Foundation;
 using MonoTouch.MapKit;
 using MonoTouch.UIKit;
-using apcurium.Framework.Extensions;
+using TaxiMobile.Controls;
+using TaxiMobile.Diagnostics;
+using TaxiMobile.Helper;
+using TaxiMobile.Lib.Data;
+using TaxiMobile.Lib.Framework.Extensions;
+using TaxiMobile.Lib.Practices;
+using TaxiMobile.Lib.Services;
+using TaxiMobile.Localization;
 
-namespace TaxiMobileApp
+namespace TaxiMobile.Book
 {
 	public partial class StatusView : UIViewController
 	{

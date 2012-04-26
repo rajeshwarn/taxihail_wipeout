@@ -1,5 +1,5 @@
 using Android.App;
-using MobileTaxiApp.Infrastructure;
+using TaxiMobile.Lib.Infrastructure;
 
 namespace TaxiMobile
 {

@@ -1,8 +1,9 @@
 using System;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+using TaxiMobile.Localization;
 
-namespace TaxiMobileApp
+namespace TaxiMobile.Book
 {
 	public class Confirmation
 	{

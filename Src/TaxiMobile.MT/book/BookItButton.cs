@@ -1,7 +1,8 @@
 using System.Drawing;
 using MonoTouch.UIKit;
+using TaxiMobile.Localization;
 
-namespace TaxiMobileApp
+namespace TaxiMobile.Book
 {
 	public class BookItButton
 	{

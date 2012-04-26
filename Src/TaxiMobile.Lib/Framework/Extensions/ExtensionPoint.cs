@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace apcurium.Framework.Extensions
+namespace TaxiMobile.Lib.Framework.Extensions
 {
     public class ExtensionPoint<T> : IExtensionPoint<T>
     {

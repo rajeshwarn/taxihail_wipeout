@@ -4,8 +4,8 @@ using Android.Content;
 using Android.Views;
 using Android.Widget;
 using Java.Lang;
+using TaxiMobile.Lib.Framework.Extensions;
 using TaxiMobile.ListViewStructure;
-using apcurium.Framework.Extensions;
 
 namespace TaxiMobile.ListViewCell
 {

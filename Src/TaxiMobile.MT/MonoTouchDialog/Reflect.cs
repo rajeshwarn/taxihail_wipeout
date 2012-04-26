@@ -17,7 +17,7 @@ using System.Text;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 
-namespace MonoTouch.Dialog
+namespace TaxiMobile.MonoTouchDialog
 {
 	[AttributeUsage (AttributeTargets.Field | AttributeTargets.Property, Inherited=false)]
 	public class EntryAttribute : Attribute {

@@ -1,9 +1,14 @@
 using System;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using apcurium.Framework.Extensions;
+using TaxiMobile.Controls;
+using TaxiMobile.Helper;
+using TaxiMobile.Lib.Data;
+using TaxiMobile.Lib.Framework.Extensions;
+using TaxiMobile.Localization;
+using TaxiMobile.Settings;
 
-namespace TaxiMobileApp
+namespace TaxiMobile.Book
 {
 	public partial class ConfirmationView : UIViewController
 	{

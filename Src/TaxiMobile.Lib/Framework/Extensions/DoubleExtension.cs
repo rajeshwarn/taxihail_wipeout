@@ -1,6 +1,6 @@
 using System;
 
-namespace TaxiMobile.Lib.MD.Framework.Extensions
+namespace TaxiMobile.Lib.Framework.Extensions
 {
     public static class DoubleExtension
     {

@@ -1,11 +1,11 @@
 using System.Linq;
-using apcurium.Framework;
-using apcurium.Framework.Extensions;
+using TaxiMobile.Lib.Framework;
+using TaxiMobile.Lib.Framework.Extensions;
 
 //using MonoTouch.CoreLocation;
 
 
-namespace TaxiMobileApp
+namespace TaxiMobile.Lib.Data
 {
 	
     

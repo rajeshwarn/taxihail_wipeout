@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using System.Text;
 
-namespace TaxiMobileApp
+namespace TaxiMobile.Helper
 {
 	public class StringHelper
 	{

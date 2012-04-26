@@ -1,7 +1,7 @@
 using MonoTouch.Foundation;
 using MonoTouch.MapKit;
 
-namespace TaxiMobileApp
+namespace TaxiMobile.Book
 {
 	public class AddressMapDelegate : MKMapViewDelegate
 	{

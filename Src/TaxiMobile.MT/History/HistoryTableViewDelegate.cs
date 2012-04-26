@@ -2,8 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+using TaxiMobile.Lib.Data;
 
-namespace TaxiMobileApp
+namespace TaxiMobile.History
 {
 	public class HistoryTableViewDelegate : UITableViewDelegate
 	{

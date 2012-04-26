@@ -19,11 +19,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using MonoTouch.CoreGraphics;
-using MonoTouch.Dialog.Utilities;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 
-namespace MonoTouch.Dialog
+namespace TaxiMobile.MonoTouchDialog
 {
 	/// <summary>
 	/// Base class for all elements in MonoTouch.Dialog

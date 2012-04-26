@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Framework.Extensions.Calendar
+namespace TaxiMobile.Lib.Framework.Extensions.Calendar
 {
 	public interface IDateTimeCalendarExtensions
 	{
