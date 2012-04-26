@@ -59,14 +59,14 @@ namespace TaxiMobile.Lib.Services.Mapper
 			toUpdate.PickupLocation.RingCode = order.RingCode;
 			
 			toUpdate.RequestedDateTime = order.OrderDate;
-			new AccountMapping ().UpdateLocationData( toUpdate.PickupLocation, order.PickupAddress );
+			//new AccountMapping ().UpdateLocationData( toUpdate.PickupLocation, order.PickupAddress );
 			
 			toUpdate.PickupDate = order.PickupTime;
 			
 			
 			if ( (order.DropoffAddress != null) && order.DropoffAddress.AddressAndCity.HasValue() )
 			{
-				new AccountMapping ().UpdateLocationData( toUpdate.DestinationLocation, order.DropoffAddress );
+				//new AccountMapping ().UpdateLocationData( toUpdate.DestinationLocation, order.DropoffAddress );
 			}
 			
 			
@@ -91,7 +91,7 @@ namespace TaxiMobile.Lib.Services.Mapper
 				order.RingCode = info.PickupLocation.RingCode;
 			}
 						
-			order.PickupAddress = new AccountMapping ().ToWSLocationData (info.PickupLocation);
+			//order.PickupAddress = new AccountMapping ().ToWSLocationData (info.PickupLocation);
 			
 			
 			if (info.PickupDate.HasValue) {
@@ -102,7 +102,7 @@ namespace TaxiMobile.Lib.Services.Mapper
 			
 			if (info.DestinationLocation != null) {
 				info.DestinationLocation.Address = info.DestinationLocation.Address.SelectOrDefault (a => a, "");
-				order.DropoffAddress = new AccountMapping ().ToWSLocationData (info.DestinationLocation);
+				//order.DropoffAddress = new AccountMapping ().ToWSLocationData (info.DestinationLocation);
 			}
 			
 			return order;

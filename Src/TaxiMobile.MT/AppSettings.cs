@@ -7,9 +7,6 @@ namespace TaxiMobile
 {
 	public class AppSettings : IAppSettings
 	{
-		
-		
-
 		public static bool ErrorLogEnabled {
 			get { return true; }
 		}
@@ -21,7 +18,7 @@ namespace TaxiMobile
 
 		
 		public static string SiteUrl {
-			get { return "http://taxidiamondwebbook.dyndns.org/ibs/"; }		
+            get { return "http://72.38.252.190:6929/XDS_IASPI.DLL/soap/"; }		
 		}
 		
 
@@ -111,7 +108,7 @@ namespace TaxiMobile
 				
 		public string ServiceUrl {
 //			get { return "http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/"; }				
-			get { return "http://taxidiamondwebbook.dyndns.org/TaxiMobileWebServiceProd/"; }				
+            get { return "http://72.38.252.190:6929/XDS_IASPI.DLL/soap/"; }				
 		}
 
 	}

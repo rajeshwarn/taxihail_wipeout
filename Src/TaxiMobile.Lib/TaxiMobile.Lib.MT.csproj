@@ -55,7 +55,13 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Services\IAccountService.cs" />
+    <Compile Include="Services\IBS\StaticDataservice.cs" />
+    <Compile Include="Services\IBS\WebAccount3Service.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Services\Impl\AccountService.cs" />
+    <Compile Include="Services\Impl\BaseService.cs" />
+    <Compile Include="Services\IStaticDataService.cs" />
     <Compile Include="Services\ModuleService.cs" />
     <Compile Include="Services\IBookingService.cs" />
     <Compile Include="Services\Impl\BookingService.cs" />
@@ -115,6 +121,7 @@
     <Compile Include="Infrastructure\IAppContext.cs" />
     <Compile Include="Infrastructure\IAppSettings.cs" />
     <Compile Include="Infrastructure\ILogger.cs" />
+    <Compile Include="Services\Impl\StaticDataService.cs" />
     <Compile Include="Web References\IBS\Reference.cs">
       <DependentUpon>Reference.map</DependentUpon>
       <AutoGen>True</AutoGen>

@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using TaxiMobile.Lib.Data;
-using TaxiMobile.Lib.Framework.Extensions;
-using TaxiMobile.Lib.IBS;
-using Android.Runtime;
 using TaxiMobile.Lib.Infrastructure;
-using TaxiMobile.Lib.Localization;
 using TaxiMobile.Lib.Practices;
+using TaxiMobile.Lib.Services.IBS;
 using TaxiMobile.Lib.Services.Mapper;
 #if MONO_DROID
-
+using Android.Runtime;
 #endif
 #if MONO_TOUCH
 using MonoTouch.Foundation;
@@ -18,100 +13,11 @@ using MonoTouch.Foundation;
 
 namespace TaxiMobile.Lib.Services.Impl
 {
-    public class AccountService : IAccountService
+    public class AccountService : BaseService<WebAccount3Service>, IAccountService
     {
-
-
-        public void UseService(Action<TaxiMobile.Lib.IBS.AccountService> action)
+        protected override string GetUrl()
         {
-            var serviceUrl = ServiceLocator.Current.GetInstance<IAppSettings>().ServiceUrl;
-
-            var service = new TaxiMobile.Lib.IBS.AccountService(); //serviceUrl + "AccountService.asmx"
-
-
-
-            try
-            {
-                action(service);
-            }
-            finally
-            {
-                //if (service.State == ConnectionState.Open) cnnX.Close();    // <<<<--- New addition
-
-                service.Abort();
-                service.Dispose();
-                service = null;
-            }
-
-
-        }
-
-
-        private static ListItem[] _companies;
-        private static ListItem[] _payments;
-        private static ListItem[] _vehicules;
-
-
-        public void EnsureListLoaded()
-        {
-
-            if ((_companies == null) || (_vehicules == null) || (_payments == null))
-            {
-
-
-                UseService(service =>
-                {
-                    try
-                    {
-
-                        //						12-Taxi Diamond
-                        //9-Taxi Diamond de L'Ouest
-                        //10-Taxi Royal
-                        //11-Taxi Candare
-                        //14-TEST
-                        //15-Taxi Diamond - Transport Adapté
-                        //17-Taxi Diamond - Services Spécialisées
-                        //18-***INTERNE*** Dorval
-                        //19-CO-OP Taxi de Terrebonne
-
-                        int[] validCompaniesId = new int[] { 12, 9, 10, 11, 14 };
-
-                        var sessionId = service.Authenticate("iphone", "test", 1);
-                        var result = service.GetCompaniesList(sessionId);
-
-                        if (result.Error == ErrorCode.NoError)
-                        {
-                            //_companies.ForEach ( c=> Console.WriteLine( c.Id.ToString () + "-" + c.Display ) );
-                            _companies = result.Companies.Where(c => validCompaniesId.Any(v => v == c.Id)).Select(c => new ListItem { Id = c.Id, Display = c.Name }).ToArray();
-                        }
-
-
-                        var resultV = service.GetVehiclesList(sessionId);
-
-                        if (resultV.Error == ErrorCode.NoError)
-                        {
-                            _vehicules = resultV.Vehicles.Select(c => new ListItem { Id = Convert.ToInt32(c.Id), Display = c.Description }).ToArray();
-                        }
-
-
-                        var resultP = service.GetChargeTypesList(sessionId, ServiceLocator.Current.GetInstance<IAppResource>().CurrentLanguage == AppLanguage.English ? "en" : "fr");
-
-                        if (resultP.Error == ErrorCode.NoError)
-                        {
-                            _payments = resultP.ChargeTypes.Select(c => new ListItem { Id = Convert.ToInt32(c.Id), Display = c.Description }).ToArray();
-                        }
-
-
-                    }
-                    catch (Exception ex)
-                    {
-                        ServiceLocator.Current.GetInstance<ILogger>().LogError(ex);
-
-                    }
-
-                });
-
-            }
+            return base.GetUrl() + "IWebAccount3";
         }
 
         [Preserve]
@@ -119,74 +25,43 @@ namespace TaxiMobile.Lib.Services.Impl
         {
         }
 
-
-        protected ILogger Logger
-        {
-            get { return ServiceLocator.Current.GetInstance<ILogger>(); }
-        }
-
         public AccountData GetAccount(string email, string password, out string error)
         {
             error = "";
             string resultError = "";
-            EnsureListLoaded();
-
+            
             AccountData data = null;
             UseService(service =>
             {
 
                 try
                 {
-                    var sessionId = service.Authenticate("iphone", "test", 1);
-
-
-                    var re = service.GetRideExceptionsList(sessionId, "EN");
-                    re.RideExceptions.ForEach(rrr => Console.WriteLine((string) rrr.Description));
-
-
                     Logger.StartStopwatch("WS GetAccount : " + email.ToLower());
 
-                    var account = service.GetAccount(sessionId, email.ToLower(), password);
+                    var account = service.GetWEBAccount3(userNameApp, passwordApp, 0, email, password);
 
                     Logger.StopStopwatch("WS GetAccount : " + email.ToLower());
-
-
+                    
                     var result = new AccountData();
 
                     var loggedUser = ServiceLocator.Current.GetInstance<IAppContext>().LoggedUser;
 
-                    if ((account.Error == ErrorCode.NoError) && (account.Account != null))
-                    {
-                        result = new AccountMapping().ToData(loggedUser, account.Account);
-                        
-                        var history = service.GetOrderHistoryEx(sessionId, email, password, DateTime.Now.AddMonths(-1), DateTime.Now);
-                        var orders = new List<OrderInfo>();
-                        if ((history.Error == ErrorCode.NoError) && (history.OrderInfos != null))
-                        {
-                            orders.AddRange(history.OrderInfos);
-                        }
+                    result = new AccountMapping().ToData(loggedUser, account);
 
-                        var orderExisting = service.GetOrdersList(sessionId, email, password);
-                        if ((orderExisting.Error == ErrorCode.NoError) && (orderExisting.OrderInfos != null))
-                        {
-                            orders.AddRange(orderExisting.OrderInfos);
-                        }
+                    //var orderExisting = service.GetOrdersList(sessionId, email, password);
+                    //if ((orderExisting.Error == ErrorCode.NoError) && (orderExisting.OrderInfos != null))
+                    //{
+                    //    orders.AddRange(orderExisting.OrderInfos);
+                    //}
 
-                        if (orders.Count > 0)
-                        {
-                            new OrderMapping().UpdateHistory(result, orders.ToArray(), _vehicules, _companies, _payments);
-                        }
+                    //if (orders.Count > 0)
+                    //{
+                    //    new OrderMapping().UpdateHistory(result, orders.ToArray(), _vehicules, _companies, _payments);
+                    //}
 
-                        result.Password = password;
-                        new SettingMapper().SetSetting(result, account.Account);
-                        data = result;
-                    }
-
-                    else
-                    {
-                        resultError = account.ErrorMessage;
-
-                    }
+                    result.Password = password;
+                    new SettingMapper().SetSetting(result, account);
+                    data = result;
                 }
                 catch (Exception ex)
                 {
@@ -198,22 +73,13 @@ namespace TaxiMobile.Lib.Services.Impl
             return data;
         }
 
-
         public bool ResetPassword(ResetPasswordData data)
         {
             bool isSuccess = false;
             UseService(service =>
             {
-                var sessionId = service.Authenticate("iphone", "test", 1);
-                var result = service.ResetPassword(sessionId, data.Email);
-                if (result.Error == ErrorCode.NoError)
-                {
-                    isSuccess = true;
-                }
-                else
-                {
-                    Logger.LogMessage("ResetPassword : Error : " + result.Error.ToString() + " - " + result.ErrorMessage.ToSafeString());
-                }
+                var result = service.ChangeAccountLogin(userNameApp, passwordApp, data.OldEmail, data.OldPassword, data.Email, data.NewPassword);
+                isSuccess = result == 1;
             });
 
             return isSuccess;
@@ -222,35 +88,24 @@ namespace TaxiMobile.Lib.Services.Impl
         public bool CreateAccount(CreateAccountData data, out string error)
         {
             bool isSuccess = false;
-            string lError = "";
             UseService(service =>
             {
-                var sessionId = service.Authenticate("iphone", "test", 1);
-                var account = new AccountInfo();
-                account.Email = data.Email;
+                var account = new TBookAccount3();
+                account.Email2 = data.Email;
                 account.Title = data.Title;
                 account.FirstName = data.FirstName;
                 account.LastName = data.LastName;
-                account.PhoneNumber = data.Phone;
-                account.MobileNumber = data.Mobile;
-                account.Language = ServiceLocator.Current.GetInstance<IAppResource>().CurrentLanguage == AppLanguage.English ? "E" : "F";
-                account.Password = data.Password;
+                account.Phone = data.Phone;
+                account.MobilePhone = data.Mobile;
+                //account.Language = ServiceLocator.Current.GetInstance<IAppResource>().CurrentLanguage == AppLanguage.English ? "E" : "F";
+                account.WEBPassword = data.Password;
 
-                var result = service.CreateAccount(sessionId, account);
-                if (result.Error == ErrorCode.NoError)
-                {
-                    isSuccess = true;
-                }
-                else
-                {
-                    lError = result.ErrorMessage.ToSafeString();
-                    Logger.LogMessage("ResetPassword : Error : " + result.Error.ToString() + " - " + result.ErrorMessage.ToSafeString());
-                }
+                var result = service.SaveAccount3(userNameApp, passwordApp, account);
+                isSuccess = result == 1;
             });
-            error = lError;
+            error = null;
             return isSuccess;
         }
-
 
         public AccountData UpdateUser(AccountData data)
         {
@@ -259,59 +114,38 @@ namespace TaxiMobile.Lib.Services.Impl
             {
                 Logger.LogMessage("Update user");
 
-                var sessionId = service.Authenticate("iphone", "test", 1);
+                var account = service.GetWEBAccount3(userNameApp, passwordApp, 0, data.Email, data.Password);
+               
+                Logger.LogMessage("Update user : No error");
 
-                var account = service.GetAccount(sessionId, data.Email, data.Password);
-
-                if (account.Error == ErrorCode.NoError)
+                var toUpdate = new AccountMapping().ToWSData(account, data);
+                new SettingMapper().SetWSSetting(toUpdate, data);
+                //toUpdate.Password = data.Password;
+                
+                var result = service.SaveAccount3(userNameApp, passwordApp, toUpdate);
+                if(result == 1)
                 {
-                    Logger.LogMessage("Update user : No error");
-                    var toUpdate = new AccountMapping().ToWSData(account.Account, data);
-                    new SettingMapper().SetWSSetting(toUpdate, data);
-                    toUpdate.Password = data.Password;
-
-
-                    var result = service.UpdateAccount(sessionId, toUpdate);
-                    if (result.Error != ErrorCode.NoError)
-                    {
-                        r = data;
-                    }
-                    else
-                    {
-                        var loggedUser = ServiceLocator.Current.GetInstance<IAppContext>().LoggedUser;
-                        r = new AccountMapping().ToData(loggedUser, result.Account);
-                    }
+                    var loggedUser = ServiceLocator.Current.GetInstance<IAppContext>().LoggedUser;
+                    r = new AccountMapping().ToData(loggedUser, toUpdate);
                 }
-
-                else
-                {
-                    Logger.LogMessage("Update user : Error : " + account.Error.ToString() + " - " + account.ErrorMessage.ToSafeString());
-                }
-
 
             });
             return r;
         }
 
-
         public ListItem[] GetCompaniesList()
         {
-            EnsureListLoaded();
-            return _companies;
+           return null;
         }
-
-
-
+        
         public ListItem[] GetVehiclesList()
         {
-            EnsureListLoaded();
-            return _vehicules;
+            return null;
         }
 
         public ListItem[] GetPaymentsList()
         {
-            EnsureListLoaded();
-            return _payments;
+            return null;
         }
     }
 }

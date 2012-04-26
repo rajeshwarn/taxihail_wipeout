@@ -9,8 +9,6 @@ namespace TaxiMobile.Lib.Services
 			
 		AccountData UpdateUser( AccountData data );
 		
-		void EnsureListLoaded();
-		
 		ListItem[] GetCompaniesList( );
 		
 		ListItem[] GetVehiclesList(  );

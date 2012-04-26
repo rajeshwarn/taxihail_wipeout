@@ -89,8 +89,8 @@ namespace TaxiMobile
 			
 			window.MakeKeyAndVisible ();
 			
-			
-			ThreadHelper.ExecuteInThread (() => ServiceLocator.Current.GetInstance<IAccountService> ().EnsureListLoaded ());
+			//TODO remplacer par appel au load dataservice
+			//ThreadHelper.ExecuteInThread (() => ServiceLocator.Current.GetInstance<IAccountService> ().EnsureListLoaded ());
 			
 			
 			

@@ -6,13 +6,12 @@ using System.Xml.Linq;
 using TaxiMobile.Lib.Data;
 using TaxiMobile.Lib.Framework.Extensions;
 using TaxiMobile.Lib.IBS;
-using Android.Runtime;
 using TaxiMobile.Lib.Infrastructure;
 using TaxiMobile.Lib.Practices;
 using TaxiMobile.Lib.Services.Mapper;
 using OrderStatus = TaxiMobile.Lib.Data.OrderStatus;
 #if MONO_DROID
-
+using Android.Runtime;
 #endif
 #if MONO_TOUCH
 using MonoTouch.Foundation;
@@ -357,7 +356,7 @@ namespace TaxiMobile.Lib.Services.Impl
 					}
 					
 					
-					order.PickupAddress = new AccountMapping ().ToWSLocationData (info.PickupLocation);
+					//order.PickupAddress = new AccountMapping ().ToWSLocationData (info.PickupLocation);
 					
 					
 					if (info.PickupDate.HasValue)
@@ -372,7 +371,7 @@ namespace TaxiMobile.Lib.Services.Impl
 					if (info.DestinationLocation != null)
 					{
 						info.DestinationLocation.Address = info.DestinationLocation.Address.SelectOrDefault (a => a, "");
-						order.DropoffAddress = new AccountMapping ().ToWSLocationData (info.DestinationLocation);
+						//order.DropoffAddress = new AccountMapping ().ToWSLocationData (info.DestinationLocation);
 					}
 					
 					
