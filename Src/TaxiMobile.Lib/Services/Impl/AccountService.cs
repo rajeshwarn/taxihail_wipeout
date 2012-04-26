@@ -20,7 +20,9 @@ namespace TaxiMobile.Lib.Services.Impl
             return base.GetUrl() + "IWebAccount3";
         }
 
+#if !TEST
         [Preserve]
+#endif
         public AccountService()
         {
         }

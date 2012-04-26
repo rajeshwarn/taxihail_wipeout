@@ -1,6 +1,8 @@
 using System;
 using System.IO;
+#if MONO_TOUCH
 using MonoTouch.Foundation;
+#endif
 using TaxiMobile.Lib.Infrastructure;
 
 namespace TaxiMobile
@@ -93,7 +95,7 @@ namespace TaxiMobile
 			}
 		}
 
-
+#if MONO_TOUCH
 		public static string Version {
 			get {
 				
@@ -102,6 +104,12 @@ namespace TaxiMobile
 				return ver;			
 			}
 		}
+#else
+        public static string Version
+        {
+            get { return string.Empty; }
+        }
+#endif
 		
 		
 		

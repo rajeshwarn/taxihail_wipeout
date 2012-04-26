@@ -44,22 +44,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\TaxiMobile.MT\AppSettings.cs">
+      <Link>AppSettings.cs</Link>
+    </Compile>
     <Compile Include="AccountServiceFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StaticDataServiceImplFixture.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TaxiMobile.Lib\TaxiMobile.Lib.MT.csproj">
-      <Project>{11150F15-8271-43E3-BECA-65F24E82774C}</Project>
-      <Name>TaxiMobile.Lib.MT</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TaxiMobile.MT\TaxiMobile.MT.csproj">
-      <Project>{698DA5A6-BEE2-4FD6-A2F7-8269289B1DA4}</Project>
-      <Name>TaxiMobile.MT</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\TaxiMobile.Lib\TaxiMobile.Lib.csproj">
+      <Project>{89148A39-046D-433E-B196-09E5F399EF18}</Project>
+      <Name>TaxiMobile.Lib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

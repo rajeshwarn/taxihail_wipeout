@@ -26,8 +26,10 @@ namespace TaxiMobile.Lib.Services.Impl
             return base.GetUrl() + "IWEBOrder_7";
         }
 
+#if !TEST
         [Preserve]
-		public BookingService ()
+#endif
+        public BookingService ()
 		{
 		}
 

@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxiMobile.MT", "TaxiMobile
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxiMobile.Lib.Tests", "TaxiMobile.Lib.Tests\TaxiMobile.Lib.Tests.csproj", "{B05058DC-A468-4371-A0A8-A528ED9E5692}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxiMobile.Lib", "TaxiMobile.Lib\TaxiMobile.Lib.csproj", "{89148A39-046D-433E-B196-09E5F399EF18}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -95,6 +97,18 @@ Global
 		{B05058DC-A468-4371-A0A8-A528ED9E5692}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{B05058DC-A468-4371-A0A8-A528ED9E5692}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{B05058DC-A468-4371-A0A8-A528ED9E5692}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{89148A39-046D-433E-B196-09E5F399EF18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89148A39-046D-433E-B196-09E5F399EF18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89148A39-046D-433E-B196-09E5F399EF18}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{89148A39-046D-433E-B196-09E5F399EF18}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{89148A39-046D-433E-B196-09E5F399EF18}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{89148A39-046D-433E-B196-09E5F399EF18}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{89148A39-046D-433E-B196-09E5F399EF18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89148A39-046D-433E-B196-09E5F399EF18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89148A39-046D-433E-B196-09E5F399EF18}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{89148A39-046D-433E-B196-09E5F399EF18}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{89148A39-046D-433E-B196-09E5F399EF18}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{89148A39-046D-433E-B196-09E5F399EF18}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -105,5 +119,6 @@ Global
 		{11150F15-8271-43E3-BECA-65F24E82774C} = {89C3B199-2A15-4E86-8D2A-43C9640DD417}
 		{698DA5A6-BEE2-4FD6-A2F7-8269289B1DA4} = {89C3B199-2A15-4E86-8D2A-43C9640DD417}
 		{B05058DC-A468-4371-A0A8-A528ED9E5692} = {067CF9A9-2524-4B97-9ED8-2961A6A38235}
+		{89148A39-046D-433E-B196-09E5F399EF18} = {067CF9A9-2524-4B97-9ED8-2961A6A38235}
 	EndGlobalSection
 EndGlobal
