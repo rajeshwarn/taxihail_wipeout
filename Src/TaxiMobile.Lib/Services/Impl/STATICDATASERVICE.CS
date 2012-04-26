@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using TaxiMobile.Lib.Data;
 
@@ -12,7 +13,13 @@ namespace TaxiMobile.Lib.Services.Impl
         
         public ListItem[] GetCompaniesList()
         {
-            throw new System.NotImplementedException();
+            ListItem[] listeVehicles = null;
+            UseService(service =>
+            {
+                var companies = service.GetProviders(userNameApp, passwordApp);
+                listeVehicles = companies.Select(x => new ListItem { Display = x.ProviderName, Id = x.ProviderNum }).ToArray();
+            });
+            return listeVehicles;
         }
 
         public ListItem[] GetVehiclesList()
@@ -28,7 +35,13 @@ namespace TaxiMobile.Lib.Services.Impl
 
         public ListItem[] GetPaymentsList()
         {
-            throw new System.NotImplementedException();
+            ListItem[] listePaymentList = null;
+            UseService(service =>
+            {
+                var items = service.GetChargeTypes(userNameApp, passwordApp, 0);
+                listePaymentList = items.Select(x => new ListItem { Display = x.ChargeTypeName, Id = x.ChargeTypeID }).ToArray();
+            });
+            return listePaymentList;
         }
     }
 }
