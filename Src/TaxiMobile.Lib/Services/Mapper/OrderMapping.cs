@@ -51,10 +51,10 @@ namespace TaxiMobile.Lib.Services.Mapper
 
             //toUpdate.PickupLocation.RingCode = order.RingCode;
 
-            toUpdate.RequestedDateTime = ToDateTime(order.OrderDate);
+            toUpdate.RequestedDateTime = order.OrderDate.ToDateTime();
 
 
-            toUpdate.PickupDate = ToDateTime(order.PickupTime);
+            toUpdate.PickupDate = order.PickupTime.ToDateTime();
 						
 		}
 
@@ -70,7 +70,7 @@ namespace TaxiMobile.Lib.Services.Mapper
 
             if (info.RequestedDateTime.HasValue)
             {
-                order.OrderDate = ToWSDateTime(info.RequestedDateTime.Value);
+                order.OrderDate = info.RequestedDateTime.Value.ToWSDateTime();
             }
             if (info.PickupLocation.RingCode.HasValue())
             {
@@ -79,11 +79,11 @@ namespace TaxiMobile.Lib.Services.Mapper
 
             if (info.PickupDate.HasValue)
             {
-                order.PickupTime = ToWSDateTime(info.PickupDate.Value);
+                order.PickupTime = info.PickupDate.Value.ToWSDateTime();
             }
             else
             {
-                order.PickupTime = ToWSDateTime(DateTime.Now.AddMinutes(5));
+                order.PickupTime = DateTime.Now.AddMinutes(5).ToWSDateTime();
             }
 
             if (info.DestinationLocation != null)
@@ -94,25 +94,6 @@ namespace TaxiMobile.Lib.Services.Mapper
 			
 			return order;
 		}
-
-        public static TWEBTimeStamp ToWSDateTime(DateTime dateTime)
-        {
-            return new TWEBTimeStamp
-                       {
-                           Fractions = dateTime.Millisecond,
-                           Second = dateTime.Second,
-                           Minute = dateTime.Minute,
-                           Hour = dateTime.Hour,
-                           Day = dateTime.Day,
-                           Month = dateTime.Month,
-                           Year = dateTime.Year
-                       };
-        }
-
-        public static DateTime ToDateTime(TWEBTimeStamp timeStamp)
-        {
-            return new DateTime(timeStamp.Year, timeStamp.Month, timeStamp.Day, timeStamp.Hour, timeStamp.Minute, timeStamp.Second, timeStamp.Fractions);
-        }
 		
 	}
 }

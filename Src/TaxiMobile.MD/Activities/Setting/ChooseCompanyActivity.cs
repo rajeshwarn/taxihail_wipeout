@@ -22,7 +22,7 @@ namespace TaxiMobile.Activities.Setting
 			base.OnCreate (bundle);
 			
 			var currentSettings = AppContext.Current.LoggedUser.DefaultSettings;
-			var service = ServiceLocator.Current.GetInstance<IAccountService>();
+            var service = ServiceLocator.Current.GetInstance<IStaticDataService>();
 			var companyList = service.GetCompaniesList();
 //			var vehicleTypeList = service.GetVehiclesList();
 //			var chargeTypeList = service.GetPaymentsList();

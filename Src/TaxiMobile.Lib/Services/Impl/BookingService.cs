@@ -161,8 +161,10 @@ namespace TaxiMobile.Lib.Services.Impl
 			//http://maps.googleapis.com/maps/api/directions/xml?origin={0},{1}&destination={2},{3}&sensor=false
 			
 		}
-		
-		private string ToUSFormat (double l)
+
+	   
+
+	    private string ToUSFormat (double l)
 		{
 			return l.ToString (CultureInfo.GetCultureInfo ("en-US").NumberFormat);
 		}
@@ -284,6 +286,22 @@ namespace TaxiMobile.Lib.Services.Impl
 			return addresses.Where (a => a.Address.HasValue () && a.Address.ToLower ().StartsWith (address.ToLower ())).ToArray ();
 			
 		}
+
+         public void UpdateHistory(AccountData user)
+	    {
+            UseService(service =>
+	        {
+                var orders = service.GetOrderHistory_6(userNameApp, passwordApp, user.Id, DateTime.Now.AddMonths(-3).ToWSDateTime(), DateTime.Now.ToWSDateTime(), 0);
+	            if(orders != null
+                    && orders.OrderCount > 0)
+	            {
+                    var mapper = new OrderMapping();
+                    var dataService = ServiceLocator.Current.GetInstance<IStaticDataService>();
+                    mapper.UpdateHistory(user, orders.OrderList, dataService.GetVehiclesList(), dataService.GetCompaniesList(), dataService.GetPaymentsList());
+	            }
+                           
+            });
+	    }
 		
 		public int CreateOrder (AccountData user, BookingInfoData info, out string error)
 		{
@@ -326,14 +344,14 @@ namespace TaxiMobile.Lib.Services.Impl
                 var status = new OrderStatus();
                 status.Status = orderStatus.ToString();
 
-                //if(result == TWEBOrderStatusValue.wosASSIGNED)
-			    double latitude = 0;
+                double latitude = 0;
 			    double longitude = 0;
-			    var location = service.GetVehicleLocation(userNameApp, passwordApp, orderId, ref latitude, ref longitude);
-
-                status.Longitude = longitude;
-                status.Latitude = latitude;
-
+			    var result = service.GetVehicleLocation(userNameApp, passwordApp, orderId, ref latitude, ref longitude);
+                if (result == 0)
+                {
+                    status.Longitude = longitude;
+                    status.Latitude = latitude;
+                }
                 r= status;
 				Logger.LogMessage ("End GetOrderStatus");
 				

@@ -1,12 +1,11 @@
+using System.Collections.Generic;
 using TaxiMobile.Lib.Data;
 
 namespace TaxiMobile.Lib.Services
 {
 	public interface IBookingService
 	{
-		
 		bool IsValid( ref BookingInfoData info );
-			
 		
 		LocationData[] SearchAddress( string address );
 		
@@ -25,6 +24,8 @@ namespace TaxiMobile.Lib.Services
 		bool CancelOrder (AccountData user, int orderId );
 		
 		double? GetRouteDistance ( double originLong, double originLat, double destLong, double destLat );
+
+        void UpdateHistory(AccountData user);
 	}
 }
 

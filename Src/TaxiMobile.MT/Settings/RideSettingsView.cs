@@ -118,7 +118,7 @@ namespace TaxiMobile.Settings
 					int selected = 0;
 					
 					var companies = new Section (Resources.RideSettingsCompany);
-					var companiesList = ServiceLocator.Current.GetInstance<IAccountService> ().GetCompaniesList ();
+                    var companiesList = ServiceLocator.Current.GetInstance<IStaticDataService>().GetCompaniesList();
 					index = 0;
 					selected = 0;
 					foreach (ListItem company in companiesList)
@@ -225,8 +225,8 @@ namespace TaxiMobile.Settings
 					};
 					
 					var vehiculeTypes = new Section (Resources.RideSettingsVehiculeType);
-					
-					var vehicules = ServiceLocator.Current.GetInstance<IAccountService> ().GetVehiclesList ();
+
+                    var vehicules = ServiceLocator.Current.GetInstance<IStaticDataService>().GetVehiclesList();
 					
 					int index = 0;
 					int selected = 0;
@@ -248,7 +248,7 @@ namespace TaxiMobile.Settings
 					vehiculeTypeEntry.Add (vehiculeTypes);
 					
 					var companies = new Section (Resources.RideSettingsCompany);
-					var companiesList = ServiceLocator.Current.GetInstance<IAccountService> ().GetCompaniesList ();
+                    var companiesList = ServiceLocator.Current.GetInstance<IStaticDataService>().GetCompaniesList();
 					index = 0;
 					selected = 0;
 					foreach (ListItem company in companiesList)
@@ -274,8 +274,8 @@ namespace TaxiMobile.Settings
 					
 					
 					var chargeTypes = new Section (Resources.RideSettingsChargeType);
-					
-					var payements = ServiceLocator.Current.GetInstance<IAccountService> ().GetPaymentsList ();
+
+                    var payements = ServiceLocator.Current.GetInstance<IStaticDataService>().GetPaymentsList();
 					
 					index = 0;
 					selected = 0;

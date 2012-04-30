@@ -13,7 +13,7 @@ namespace TaxiMobile.Lib.Services
 		{						
 			ServiceLocator.Current.Register<IAccountService, AccountService>();
 			ServiceLocator.Current.Register<IBookingService, BookingService>();
-			
+			ServiceLocator.Current.Register<IStaticDataService, StaticDataServiceImpl>();
 		}
 		
 	}

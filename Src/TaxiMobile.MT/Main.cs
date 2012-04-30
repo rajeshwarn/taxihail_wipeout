@@ -71,11 +71,7 @@ namespace TaxiMobile
 						{
 							_tabBarController.SelectedViewController.PresentModalViewController (new LoginView (), true);
 						}
-						
-						
 					});
-					
-					
 				}
 				catch (Exception ex)
 				{
@@ -83,16 +79,9 @@ namespace TaxiMobile
 				}
 			});
 			
-			
-			
-			
-			
 			window.MakeKeyAndVisible ();
 			
-			//TODO remplacer par appel au load dataservice
-			//ThreadHelper.ExecuteInThread (() => ServiceLocator.Current.GetInstance<IAccountService> ().EnsureListLoaded ());
-			
-			
+			ThreadHelper.ExecuteInThread (() => ServiceLocator.Current.GetInstance<IStaticDataService>().Load());
 			
 			return true;
 		}

@@ -119,6 +119,7 @@
     <Compile Include="Services\Impl\StaticDataService.cs" />
     <Compile Include="Services\IStaticDataService.cs" />
     <Compile Include="Services\Mapper\AccountMapping.cs" />
+    <Compile Include="Services\Mapper\DateTimeExtension.cs" />
     <Compile Include="Services\Mapper\OrderMapping.cs" />
     <Compile Include="Services\Mapper\SettingMapper.cs" />
     <Compile Include="Services\ModuleService.cs" />

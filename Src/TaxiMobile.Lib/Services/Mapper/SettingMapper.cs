@@ -33,7 +33,7 @@ namespace TaxiMobile.Lib.Services.Mapper
 			//var company = ServiceLocator.Current.GetInstance<IAccountService> ().GetCompaniesList ().FirstOrDefault (c => c.Id == account.PreferenceCompanyId);
             ListItem company = null;
 			if (company == null) {
-                company = ServiceLocator.Current.GetInstance<IAccountService>().GetCompaniesList().First();
+                company = ServiceLocator.Current.GetInstance<IStaticDataService>().GetCompaniesList().First();
 			}
 			
 			toUpdate.DefaultSettings.Company = company.Id;
@@ -42,20 +42,20 @@ namespace TaxiMobile.Lib.Services.Mapper
 			//var vehicule = ServiceLocator.Current.GetInstance<IAccountService> ().GetVehiclesList ().FirstOrDefault (c => c.Id == account.PreferenceVehicleTypeId);
             ListItem vehicule = null;
 			if (vehicule == null ){
-                vehicule = ServiceLocator.Current.GetInstance<IAccountService>().GetVehiclesList().First();
+                vehicule = ServiceLocator.Current.GetInstance<IStaticDataService>().GetVehiclesList().First();
 			}
 			
 			toUpdate.DefaultSettings.VehicleType = vehicule.Id;
 			toUpdate.DefaultSettings.VehicleTypeName = vehicule.Display;
-			
-			
-			var pList = ServiceLocator.Current.GetInstance<IAccountService> ().GetPaymentsList ();
+
+
+            var pList = ServiceLocator.Current.GetInstance<IStaticDataService>().GetPaymentsList();
 			
 			//var payement = pList.FirstOrDefault (c => c.Id == account.PreferenceChargeTypeId);
             ListItem payement = null;
 		
 			if (payement == null ){
-                payement = ServiceLocator.Current.GetInstance<IAccountService>().GetPaymentsList().First();
+                payement = ServiceLocator.Current.GetInstance<IStaticDataService>().GetPaymentsList().First();
 			}
 			
 			toUpdate.DefaultSettings.ChargeType = payement.Id;

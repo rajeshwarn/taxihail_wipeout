@@ -57,6 +57,7 @@
     <Compile Include="Services\Impl\AccountService.cs" />
     <Compile Include="Services\Impl\BaseService.cs" />
     <Compile Include="Services\IStaticDataService.cs" />
+    <Compile Include="Services\Mapper\DateTimeExtension.cs" />
     <Compile Include="Services\ModuleService.cs" />
     <Compile Include="Services\IBookingService.cs" />
     <Compile Include="Services\Impl\BookingService.cs" />

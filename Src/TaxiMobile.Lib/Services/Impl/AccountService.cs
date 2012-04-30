@@ -50,17 +50,6 @@ namespace TaxiMobile.Lib.Services.Impl
 
                     result = new AccountMapping().ToData(loggedUser, account);
 
-                    //var orderExisting = service.GetOrdersList(sessionId, email, password);
-                    //if ((orderExisting.Error == ErrorCode.NoError) && (orderExisting.OrderInfos != null))
-                    //{
-                    //    orders.AddRange(orderExisting.OrderInfos);
-                    //}
-
-                    //if (orders.Count > 0)
-                    //{
-                    //    new OrderMapping().UpdateHistory(result, orders.ToArray(), _vehicules, _companies, _payments);
-                    //}
-
                     result.Password = password;
                     new SettingMapper().SetSetting(result, account);
                     data = result;
@@ -122,7 +111,6 @@ namespace TaxiMobile.Lib.Services.Impl
 
                 var toUpdate = new AccountMapping().ToWSData(account, data);
                 new SettingMapper().SetWSSetting(toUpdate, data);
-                //toUpdate.Password = data.Password;
                 
                 var result = service.SaveAccount3(userNameApp, passwordApp, toUpdate);
                 if(result == 1)
@@ -133,21 +121,6 @@ namespace TaxiMobile.Lib.Services.Impl
 
             });
             return r;
-        }
-
-        public ListItem[] GetCompaniesList()
-        {
-           return null;
-        }
-        
-        public ListItem[] GetVehiclesList()
-        {
-            return null;
-        }
-
-        public ListItem[] GetPaymentsList()
-        {
-            return null;
         }
     }
 }

@@ -39,8 +39,8 @@ namespace TaxiMobile.Activities.Setting
 				currentSettings = AppContext.Current.LoggedUser.DefaultSettings;
 				_updateDefaultSettings = true;
 			}
-			
-			var service = ServiceLocator.Current.GetInstance<IAccountService>();
+
+            var service = ServiceLocator.Current.GetInstance<IStaticDataService>();
 			var companyList = service.GetCompaniesList();
 			var vehicleTypeList = service.GetVehiclesList();
 			var chargeTypeList = service.GetPaymentsList();
