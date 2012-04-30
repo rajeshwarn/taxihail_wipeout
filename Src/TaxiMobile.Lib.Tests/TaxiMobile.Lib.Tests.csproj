@@ -48,6 +48,7 @@
       <Link>AppSettings.cs</Link>
     </Compile>
     <Compile Include="AccountServiceFixture.cs" />
+    <Compile Include="BookingServiceFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimpleLogger.cs" />
     <Compile Include="StaticDataServiceImplFixture.cs" />
