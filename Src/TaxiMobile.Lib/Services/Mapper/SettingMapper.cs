@@ -16,10 +16,6 @@ namespace TaxiMobile.Lib.Services.Mapper
 			//toUpdate.PreferenceVehicleTypeId = account.DefaultSettings.VehicleType;
 			//toUpdate.PreferenceNumberOfPassenger = account.DefaultSettings.Passengers;
 			//toUpdate.PreferenceCompanyId = account.DefaultSettings.Company;
-			toUpdate.Phone  = account.DefaultSettings.Phone;
-			var fullNameArray = account.DefaultSettings.Name.Split( ' ' );
-			toUpdate.FirstName = fullNameArray[0];
-			toUpdate.LastName = fullNameArray.Count() > 1 ? fullNameArray[1] : "";
 		}
 
 		public void SetSetting (AccountData toUpdate, TBookAccount3 account)
@@ -49,7 +45,7 @@ namespace TaxiMobile.Lib.Services.Mapper
 			toUpdate.DefaultSettings.VehicleTypeName = vehicule.Display;
 
 
-            var pList = ServiceLocator.Current.GetInstance<IStaticDataService>().GetPaymentsList();
+            //var pList = ServiceLocator.Current.GetInstance<IStaticDataService>().GetPaymentsList();
 			
 			//var payement = pList.FirstOrDefault (c => c.Id == account.PreferenceChargeTypeId);
             ListItem payement = null;
@@ -66,7 +62,7 @@ namespace TaxiMobile.Lib.Services.Mapper
 			
 			if ( toUpdate.DefaultSettings.Name.IsNullOrEmpty() )
 			{
-				toUpdate.DefaultSettings.Name = toUpdate.Name;			
+				toUpdate.DefaultSettings.Name = toUpdate.LastName;			
 			}			
 			toUpdate.DefaultSettings.Phone = account.Phone;
 			

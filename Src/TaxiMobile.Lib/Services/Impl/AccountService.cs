@@ -4,6 +4,8 @@ using TaxiMobile.Lib.Infrastructure;
 using TaxiMobile.Lib.Practices;
 using TaxiMobile.Lib.Services.IBS;
 using TaxiMobile.Lib.Services.Mapper;
+
+
 #if MONO_DROID
 using Android.Runtime;
 #endif
@@ -82,6 +84,8 @@ namespace TaxiMobile.Lib.Services.Impl
             UseService(service =>
             {
                 var account = new TBookAccount3();
+                account.WEBID = data.Email;
+                account.Address = new TWEBAddress() { };
                 account.Email2 = data.Email;
                 account.Title = data.Title;
                 account.FirstName = data.FirstName;
@@ -92,7 +96,7 @@ namespace TaxiMobile.Lib.Services.Impl
                 account.WEBPassword = data.Password;
 
                 var result = service.SaveAccount3(userNameApp, passwordApp, account);
-                isSuccess = result == 1;
+                isSuccess = result > 0;
             });
             error = null;
             return isSuccess;
@@ -106,18 +110,17 @@ namespace TaxiMobile.Lib.Services.Impl
                 Logger.LogMessage("Update user");
 
                 var account = service.GetWEBAccount3(userNameApp, passwordApp, 0, data.Email, data.Password);
-               
-                Logger.LogMessage("Update user : No error");
 
-                var toUpdate = new AccountMapping().ToWSData(account, data);
-                new SettingMapper().SetWSSetting(toUpdate, data);
-                
-                var result = service.SaveAccount3(userNameApp, passwordApp, toUpdate);
-                if(result == 1)
+                new AccountMapping().ToWSData(account, data);
+                new SettingMapper().SetWSSetting(account, data);
+
+                var result = service.SaveAccount3(userNameApp, passwordApp, account);
+                if(result > 0)
                 {
                     var loggedUser = ServiceLocator.Current.GetInstance<IAppContext>().LoggedUser;
-                    r = new AccountMapping().ToData(loggedUser, toUpdate);
+                    r = new AccountMapping().ToData(loggedUser, account);
                 }
+                Logger.LogMessage("Update user : No error");
 
             });
             return r;

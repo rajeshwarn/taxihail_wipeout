@@ -310,12 +310,11 @@ namespace TaxiMobile.Lib.Services.Impl
 			int r = 0;
 			UseService (service =>
 			{
-				var orderWS = new OrderMapping ().ToWSOrder (info);
-                orderWS.PickupAddress = new AccountMapping().ToWSLocationData(info.PickupLocation); 
+				var orderWS = new OrderMapping().ToWSOrder (info, user);
 					
 				Logger.LogMessage ("Create order  :" + user.Email);
 
-                var result = service.SaveBookOrder(userNameApp, passwordApp, orderWS);
+                var result = service.SaveBookOrder_6(userNameApp, passwordApp, orderWS);
 
 				if (result > 0)
 				{

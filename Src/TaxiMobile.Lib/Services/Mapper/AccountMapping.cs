@@ -9,20 +9,23 @@ namespace TaxiMobile.Lib.Services.Mapper
 {
 	public class AccountMapping
 	{
-        public TBookAccount3 ToWSData(TBookAccount3 result, AccountData data)
+        public void ToWSData(TBookAccount3 result, AccountData data)
 		{
+            result.WEBID = data.Email;
+            result.FirstName = data.FirstName;
+            result.LastName = data.LastName;
+            result.WEBPassword = data.Password;
 			result.FavoriteAddresses = data.FavoriteLocations.Select (loc => ToWSFavoriteLocationData (loc)).ToArray ();
-			return result;
-			
 		}
 
 
 		public AccountData ToData (AccountData existing, TBookAccount3 account)
 		{
 		    var result = existing ?? new AccountData ();
-			
-			result.Name = Params.Get (account.FirstName, account.LastName).Where (s => s.HasValue ()).JoinBy (" ");
-            result.Email = account.eMail;						
+
+            result.LastName = account.LastName;
+            result.FirstName = account.FirstName;
+            result.Email = account.Email2;						
 			
 			if ( account.FavoriteAddresses != null )
 			{

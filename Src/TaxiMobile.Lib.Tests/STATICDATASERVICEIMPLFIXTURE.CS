@@ -1,19 +1,17 @@
 ﻿using System.Linq;
 using NUnit.Framework;
-using TaxiMobile.Lib.Infrastructure;
-using TaxiMobile.Lib.Practices;
 using TaxiMobile.Lib.Services.Impl;
 
 
 namespace TaxiMobile.Lib.Tests
 {
     [TestFixture]
-    public class StaticDataServiceImplFixture
+    public class StaticDataServiceImplFixture : BaseTest
     {
          [TestFixtureSetUp]
         public void Setup()
         {
-            ServiceLocator.Current.Register<IAppSettings, AppSettings>();
+            base.Setup();
         }
 
          [Test]

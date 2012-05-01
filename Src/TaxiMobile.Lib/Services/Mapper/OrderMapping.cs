@@ -58,13 +58,14 @@ namespace TaxiMobile.Lib.Services.Mapper
 						
 		}
 
-        public TBookOrder_6 ToWSOrder(BookingInfoData info)
+        public TBookOrder_6 ToWSOrder(BookingInfoData info, AccountData user)
 		{
             var order = new TBookOrder_6();
+            order.OrderedBy = user.FirstName + " " + user.LastName;
             order.ChargeTypeID = info.Settings.ChargeType;
             order.ServiceProviderID = info.Settings.Company;
             order.ContactPhone = info.Settings.Phone;
-            order.Customer = info.Settings.Name;
+            order.Customer = user.FirstName + " " + user.LastName;
             order.Passengers = info.Settings.Passengers;
             order.VehicleTypeID = info.Settings.VehicleType;
 
@@ -79,17 +80,21 @@ namespace TaxiMobile.Lib.Services.Mapper
 
             if (info.PickupDate.HasValue)
             {
-                order.PickupTime = info.PickupDate.Value.ToWSDateTime();
+                order.PickupDate = info.PickupDate.Value.ToWSDateTime();
             }
             else
             {
-                order.PickupTime = DateTime.Now.AddMinutes(5).ToWSDateTime();
+                order.PickupDate = DateTime.Now.AddMinutes(5).ToWSDateTime();
             }
 
             if (info.DestinationLocation != null)
             {
-                info.DestinationLocation.Address = info.DestinationLocation.Address.SelectOrDefault(a => a, "");
+                order.DropoffAddress = new AccountMapping().ToWSLocationData(info.DestinationLocation);
+            }
 
+            if(info.PickupLocation != null)
+            {
+                order.PickupAddress = new AccountMapping().ToWSLocationData(info.PickupLocation); 
             }
 			
 			return order;

@@ -1,21 +1,18 @@
 ﻿using NUnit.Framework;
 using TaxiMobile.Lib.Data;
-using TaxiMobile.Lib.Infrastructure;
-using TaxiMobile.Lib.Practices;
 using TaxiMobile.Lib.Services.Impl;
 
 namespace TaxiMobile.Lib.Tests
 {
     [TestFixture]
-    public class BookingServiceFixture
+    public class BookingServiceFixture : BaseTest
     {
         private BookingService sut;
 
         [TestFixtureSetUp]
-        public void Setup()
+        public new void Setup()
         {
-            ServiceLocator.Current.Register<IAppSettings, AppSettings>();
-            ServiceLocator.Current.Register<ILogger, SimpleLogger>();
+            base.Setup();
             sut = new BookingService();
         }
 
@@ -26,10 +23,21 @@ namespace TaxiMobile.Lib.Tests
             var user = new AccountService().GetAccount("apcurium@apcurium.com", "password", out error);
             var order = new BookingInfoData
                             {
-                                PickupLocation = new LocationData { Address = "5250, Ferrier, Montréal, QC H4P 1L4 ", Latitude = 45.497985, Longitude = -73.656979 }
+                                PickupLocation = new LocationData { Address = "5250, Ferrier, Montréal, QC H4P 1L4 ", Latitude = 45.497985, Longitude = -73.656979 },
+                                DestinationLocation = new LocationData { Address = "5661, Chateaubriand, Montréal, QC H2S 0B6 " }
                             };
             var result = sut.CreateOrder(user, order, out error);
             Assert.IsTrue(result > 0);
+        }
+
+        [Test]
+        public void GetOrderStatus()
+        {
+            string error;
+            var user = new AccountService().GetAccount("apcurium@apcurium.com", "password", out error);
+           
+            var result = sut.GetOrderStatus(user, 170971);
+            Assert.AreEqual("wosnone" , result.Status.ToLowerInvariant());
         }
     }
 }
