@@ -186,4 +186,13 @@
 "EstimatePriceOver100" = "Call for price";
 "HistoryInfo" = "Displaying trips from the last month";
 "CarAssigned" = "Your taxi #{0}";
-	
+"wosNone"="unkown";
+"wosSCHED"="Scheduled";
+"wosCANCELLED"="Cancelled";	
+"wosDONE"="Done"; 	
+"wosWAITING"="Waiting";
+"wosASSIGNED"="Assigned"; 
+"wosARRIVED"="Arrived"; 
+"wosLOADED"="Loaded"; 	
+"wosNOSHOW"="No Show"; 	
+"wosCANCELLED_DONE"="Cancelation Done";

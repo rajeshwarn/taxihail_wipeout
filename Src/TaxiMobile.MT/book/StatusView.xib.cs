@@ -211,8 +211,8 @@ namespace TaxiMobile.Book
 					
 					if (status != null)
 					{
-						BookingInfo2.Status = status.Status;
-						InvokeOnMainThread (() => lblStatus.Text = string.Format (Resources.StatusStatusLabel, status.Status));
+						BookingInfo2.Status = Resources.GetValue(status.Status.ToString());
+						InvokeOnMainThread (() => lblStatus.Text = string.Format (Resources.StatusStatusLabel, Resources.GetValue(status.Status.ToString())));
 						
 						CLLocationCoordinate2D position = new CLLocationCoordinate2D (status.Latitude, status.Longitude);
 						

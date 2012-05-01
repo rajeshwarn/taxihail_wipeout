@@ -8,7 +8,7 @@ namespace TaxiMobile.Localization
 	public class Resources : IAppResource
 	{
 
-		private static string GetValue (string key)
+		public static string GetValue (string key)
 		{
 			string localizedValue = NSBundle.MainBundle.LocalizedString (key, "", "");
 			return string.IsNullOrEmpty (localizedValue) ? key : localizedValue;
