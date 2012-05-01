@@ -35,3 +35,5 @@ _ReSharper*/
 Log*/
 ClientDependency*/
 ClientBin*/
+*.userprefs
+*.pidb

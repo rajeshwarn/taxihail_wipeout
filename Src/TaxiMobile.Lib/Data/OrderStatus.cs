@@ -21,9 +21,22 @@ namespace TaxiMobile.Lib.Data
 			set;
 		}
 		
-		public string Status {
+		public WsStatus Status {
 			get;
 			set;
+		}
+		
+		public enum WsStatus{
+			wosNone,
+			wosSCHED,
+			wosCANCELLED,
+			wosDONE,
+			wosWAITING,
+			wosASSIGNED,
+			wosARRIVED,
+			wosLOADED,
+			wosNOSHOW,
+			wosCANCELLED_DONE,
 		}
 	}
 }
