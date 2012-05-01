@@ -60,9 +60,9 @@ namespace TaxiMobile.Lib.Services.Mapper
 			//toUpdate.DefaultSettings.Passengers = account.PreferenceNumberOfPassenger == 0 ? 1 : account.PreferenceNumberOfPassenger;
 			
 			
-			if ( toUpdate.DefaultSettings.Name.IsNullOrEmpty() )
+			if ( toUpdate.DefaultSettings.LastName.IsNullOrEmpty() )
 			{
-				toUpdate.DefaultSettings.Name = toUpdate.LastName;			
+				toUpdate.DefaultSettings.LastName = toUpdate.LastName;			
 			}			
 			toUpdate.DefaultSettings.Phone = account.Phone;
 			

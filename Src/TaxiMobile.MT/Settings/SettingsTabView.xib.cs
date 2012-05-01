@@ -77,7 +77,7 @@ namespace TaxiMobile.Settings
 			
 						
 			imgCreatedBy.Image = UIImage.FromFile ("Assets/apcuriumLogo.png");
-			lblLoginStatus.Text = string.Format (Resources.SettingViewLoginInfo, AppContext.Current.LoggedUser.Name);
+			lblLoginStatus.Text = string.Format (Resources.SettingViewLoginInfo, AppContext.Current.LoggedUser.DisplayName);
 			lblVersion.Text = string.Format (Resources.Version, AppSettings.Version);
 			
 		}
@@ -94,13 +94,13 @@ namespace TaxiMobile.Settings
 
 		public void Selected ()
 		{
-			lblLoginStatus.Maybe (() => lblLoginStatus.Text = string.Format (Resources.SettingViewLoginInfo, AppContext.Current.LoggedUser.Name));
+			lblLoginStatus.Maybe (() => lblLoginStatus.Text = string.Format (Resources.SettingViewLoginInfo, AppContext.Current.LoggedUser.DisplayName));
 		}
 
 
 		public void RefreshData ()
 		{
-			lblLoginStatus.Maybe (() => lblLoginStatus.Text = string.Format (Resources.SettingViewLoginInfo, AppContext.Current.LoggedUser.Name));
+			lblLoginStatus.Maybe (() => lblLoginStatus.Text = string.Format (Resources.SettingViewLoginInfo, AppContext.Current.LoggedUser.DisplayName));
 		}
 		void TechSupportTouchUpInside (object sender, EventArgs e)
 		{

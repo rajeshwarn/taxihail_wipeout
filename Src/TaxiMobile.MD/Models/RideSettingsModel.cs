@@ -24,8 +24,8 @@ namespace TaxiMobile.Models
 		}
 		
 		public string Name { 
-			get { return Data.Name; }
-			set { Data.Name = value; }
+			get { return Data.LastName; }
+			set { Data.LastName = value; }
 		}
 		
 		public string Phone {

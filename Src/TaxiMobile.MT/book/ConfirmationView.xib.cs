@@ -76,9 +76,9 @@ namespace TaxiMobile.Book
 			var price = _parent.BookingInfo.GetPrice(distance);
 			
 			txtPrice.Text = price.HasValue ? string.Format ("{0:c}", price.Value) : Resources.NotAvailable;
-			
-			
-			txtName.Text = _parent.BookingInfo.Settings.Name;
+
+
+            txtName.Text = _parent.BookingInfo.Settings.FirstName + " " + _parent.BookingInfo.Settings.LastName;
 			txtPhone.Text = _parent.BookingInfo.Settings.Phone;
 			txtPassengers.Text = _parent.BookingInfo.Settings.Passengers.ToString ();
 			txtVehiculeType.Text = _parent.BookingInfo.Settings.VehicleTypeName;
@@ -108,7 +108,7 @@ namespace TaxiMobile.Book
 				_parent.BookingInfo.Settings = settings.Result;
 				
 				txtDistance.Text = _parent.BookingInfo.Settings.ChargeTypeName;
-				txtName.Text = _parent.BookingInfo.Settings.Name;
+				txtName.Text = _parent.BookingInfo.Settings.FirstName + " " + _parent.BookingInfo.Settings.LastName;
 				txtPhone.Text = _parent.BookingInfo.Settings.Phone;
 				txtPassengers.Text = _parent.BookingInfo.Settings.Passengers.ToString ();
 				txtVehiculeType.Text = _parent.BookingInfo.Settings.VehicleTypeName;

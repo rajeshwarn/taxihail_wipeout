@@ -7,10 +7,16 @@ namespace TaxiMobile.Lib.Data
 			NumberOfTaxi =1;
 		}
 		
-		public string Name {
+		public string LastName {
 			get;
 			set;
 		}
+
+        public string FirstName
+        {
+            get;
+            set;
+        }
 		
 		public string Phone {
 			get;
@@ -72,7 +78,7 @@ namespace TaxiMobile.Lib.Data
 		public BookingSetting Copy()
 		{
 			var copy = new BookingSetting();
-			copy.Name = Name;
+			copy.LastName = LastName;
 			copy.Phone = Phone;
 			copy.Passengers = Passengers;
 			copy.DefaultOrigin = DefaultOrigin;

@@ -62,7 +62,8 @@ namespace TaxiMobile.Activities.Setting
 			ThreadHelper.ExecuteInThread( Parent, () => {
 				var currentAccountData = AppContext.Current.LoggedUser;
 				currentAccountData.DefaultSettings = _model.Data;
-				currentAccountData.Name = _model.Data.Name;
+				currentAccountData.LastName = _model.Data.LastName;
+				currentAccountData.FirstName = _model.Data.FirstName;
 				AppContext.Current.UpdateLoggedInUser( currentAccountData, true );
 			},false );
 			Finish();

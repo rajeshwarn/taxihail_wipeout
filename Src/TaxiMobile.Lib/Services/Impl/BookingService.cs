@@ -311,12 +311,10 @@ namespace TaxiMobile.Lib.Services.Impl
 			UseService (service =>
 			{
 				var orderWS = new OrderMapping().ToWSOrder (info, user);
-				
+                orderWS.OrderStatus = TWEBOrderStatusValue.wosPost;
 				Logger.LogMessage ("Create order  :" + user.Email);
 
                 var result = service.SaveBookOrder_6(userNameApp, passwordApp, orderWS);
-				orderWS.OrderStatus = TWEBOrderStatusValue.wosPost;
-				result = service.SaveBookOrder_6(userNameApp, passwordApp, orderWS);
 				if (result > 0)
 				{
                     r = result;
@@ -346,12 +344,12 @@ namespace TaxiMobile.Lib.Services.Impl
 
                 double latitude = 0;
 			    double longitude = 0;
-			    var result = service.GetVehicleLocation(userNameApp, passwordApp, orderId, ref latitude, ref longitude);
-                if (result == 0)
-                {
-                    status.Longitude = longitude;
-                    status.Latitude = latitude;
-                }
+                //var result = service.GetVehicleLocation(userNameApp, passwordApp, orderId, ref latitude, ref longitude);
+                //if (result == 0)
+                //{
+                //    status.Longitude = longitude;
+                //    status.Latitude = latitude;
+                //}
                 r= status;
 				Logger.LogMessage ("End GetOrderStatus");
 				

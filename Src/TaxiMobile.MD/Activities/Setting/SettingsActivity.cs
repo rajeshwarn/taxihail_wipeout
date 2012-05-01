@@ -100,7 +100,7 @@ namespace TaxiMobile.Activities.Setting
 			
 			if( AppContext.Current.LoggedUser != null )
 			{
-				FindViewById<TextView>(Resource.Id.signedInInfoText).Text = string.Format( Resources.GetString( Resource.String.SettingViewLoginInfo ), AppContext.Current.LoggedUser.Name );
+				FindViewById<TextView>(Resource.Id.signedInInfoText).Text = string.Format( Resources.GetString( Resource.String.SettingViewLoginInfo ), AppContext.Current.LoggedUser.DisplayName );
 			}
 			var callCieBtn = FindViewById<TextView>(Resource.Id.CallCompanyButton);
 			callCieBtn.Text = string.Format( Resources.GetString( Resource.String.CallCompanyButton ), AppContext.Current.LoggedUser.DefaultSettings.CompanyName );

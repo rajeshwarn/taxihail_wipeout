@@ -103,7 +103,7 @@ namespace TaxiMobile.Activities.Book
             FindViewById<TextView>(Resource.Id.AptRingCode).Text = FormatAptRingCode(BookingInfo.PickupLocation.Apartment, BookingInfo.PickupLocation.RingCode);
             FindViewById<TextView>(Resource.Id.DestinationTxt).Text = BookingInfo.DestinationLocation.Address.IsNullOrEmpty() ? Resources.GetString(Resource.String.ConfirmDestinationNotSpecified) : BookingInfo.DestinationLocation.Address;
             FindViewById<TextView>(Resource.Id.DateTimeTxt).Text = FormatDateTime(BookingInfo.PickupDate, BookingInfo.PickupDate);
-            FindViewById<TextView>(Resource.Id.NameTxt).Text = BookingInfo.Settings.Name;
+            FindViewById<TextView>(Resource.Id.NameTxt).Text = BookingInfo.Settings.LastName;
             FindViewById<TextView>(Resource.Id.PhoneTxt).Text = BookingInfo.Settings.Phone;
             FindViewById<TextView>(Resource.Id.PassengersTxt).Text = BookingInfo.Settings.Passengers == 0 ? AppContext.Current.LoggedUser.DefaultSettings.Passengers.ToString() : BookingInfo.Settings.Passengers.ToString();
             FindViewById<TextView>(Resource.Id.VehiculeTypeTxt).Text = BookingInfo.Settings.VehicleTypeName;

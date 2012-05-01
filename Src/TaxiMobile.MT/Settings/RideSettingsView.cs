@@ -170,11 +170,11 @@ namespace TaxiMobile.Settings
 					var menu = new RootElement (this.Title);
 					var settings = new Section (Resources.DefaultRideSettingsViewTitle);
 					
-					_nameEntry = new EntryElement (Resources.RideSettingsName, "", _settings.Name);
+					_nameEntry = new EntryElement (Resources.RideSettingsName, "", _settings.LastName);
 					_nameEntry.KeyboardType = UIKeyboardType.Default;
 					_nameEntry.Changed += delegate {
 						_nameEntry.FetchValue ();
-						_settings.Name = _nameEntry.Value;
+						_settings.LastName = _nameEntry.Value;
 						ApplyChanges ();
 					};
 					

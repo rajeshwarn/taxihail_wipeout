@@ -40,7 +40,12 @@ namespace TaxiMobile.Lib.Data
 
 		public LocationData[] FavoriteLocations { get; set; }
 
-		public void AddBooking (BookingInfoData data)
+	    public string DisplayName
+	    {
+            get { return FirstName + " " + LastName; }
+	    }
+
+	    public void AddBooking (BookingInfoData data)
 		{
 			var list = new List<BookingInfoData> ();
 			if ((BookingHistory != null) && (BookingHistory.Count () > 0)) {

@@ -101,8 +101,8 @@ namespace TaxiMobile.Activities.History
               var status = ServiceLocator.Current.GetInstance<IBookingService>().GetOrderStatus(AppContext.Current.LoggedUser, _data.Id);
 
               bool isCompleted = ServiceLocator.Current.GetInstance<IBookingService>().IsCompleted(status.Id);
-
-              RunOnUiThread(() => FindViewById<TextView>(Resource.Id.StatusTxt).Text = status.Status);
+              //TODO localization du status
+              //RunOnUiThread(() => FindViewById<TextView>(Resource.Id.StatusTxt).Text = status.Status);
               var btnCancel = FindViewById<Button>(Resource.Id.CancelTripBtn);
               var btnStatus = FindViewById<Button>(Resource.Id.StatusBtn);              
               RunOnUiThread(() => btnCancel.Visibility = isCompleted ? ViewStates.Invisible : ViewStates.Visible);

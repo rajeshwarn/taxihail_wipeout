@@ -188,9 +188,10 @@ namespace TaxiMobile.Activities.Book
 
                     if (status != null)
                     {
-                        BookingInfo.Status = status.Status;
+                        //TODO localization du status
+                        //BookingInfo.Status = AppContext.Current.App.GetString(Resource.String.Language)status.Status.ToString());
 
-                        RunOnUiThread(() => SetStatusText(status.Status));
+                        //RunOnUiThread(() => SetStatusText(Resources.GetValue(status.Status.ToString()))); //TODO localization du status
 
                         if ((status.Latitude != 0) && (status.Longitude != 0))
                         {

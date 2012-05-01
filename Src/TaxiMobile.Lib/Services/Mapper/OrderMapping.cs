@@ -39,7 +39,7 @@ namespace TaxiMobile.Lib.Services.Mapper
             toUpdate.Settings.CompanyName = companies.FirstOrDefault(c => c.Id == order.ServiceProviderID).SelectOrDefault(c => c.Display, "");
 
             toUpdate.Settings.Phone = order.ContactPhone;
-            toUpdate.Settings.Name = order.Customer;
+            toUpdate.Settings.LastName = order.Customer;
             toUpdate.Settings.Passengers = order.Passengers;
             toUpdate.Settings.VehicleType = order.VehicleTypeID;
             toUpdate.Settings.VehicleTypeName = vehicules.FirstOrDefault(c => c.Id == order.VehicleTypeID).SelectOrDefault(c => c.Display, "");
