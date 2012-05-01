@@ -3,13 +3,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
-    <ProductVersion>10.0.0</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{698DA5A6-BEE2-4FD6-A2F7-8269289B1DA4}</ProjectGuid>
     <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
     <RootNamespace>TaxiMobile</RootNamespace>
     <AssemblyName>TaxiMobile</AssemblyName>
+    <TargetFrameworkVersion>v1.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>true</DebugSymbols>
@@ -23,7 +25,7 @@
     <MtouchDebug>true</MtouchDebug>
     <MtouchI18n />
     <MtouchUseArmv7>false</MtouchUseArmv7>
-    <MtouchSdkVersion>5.1</MtouchSdkVersion>
+    <MtouchSdkVersion>5.0</MtouchSdkVersion>
     <MtouchProfiling>true</MtouchProfiling>
     <MtouchUseSGen>true</MtouchUseSGen>
   </PropertyGroup>
@@ -84,10 +86,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Info.plist" />
-    <None Include="Assets\About_en.html" />
-    <None Include="Assets\About_fr.html" />
-    <None Include="Assets\background.png.red" />
-    <None Include="Assets\background%402x.png.red" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -240,79 +238,88 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="MainWindow.xib" />
+    <Page Include="Book\BookTabView.xib" />
+    <Page Include="History\HistoryTabView.xib" />
+    <Page Include="Settings\SettingsTabView.xib" />
+    <Page Include="Settings\LoginView.xib" />
+    <Page Include="Book\PickupLocationView.xib" />
+    <Page Include="Book\DestinationView.xib" />
+    <Page Include="Book\ConfirmationView.xib" />
+    <Page Include="Book\StatusView.xib" />
+    <Page Include="Locations\LocationsTabView.xib" />
+    <Page Include="Locations\LocationDetailView.xib" />
+    <Page Include="History\HistoryDetailView.xib" />
+    <Page Include="Settings\AboutUsView.xib" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\Tab\book.png" />
+    <Content Include="Assets\Tab\history.png" />
+    <Content Include="Assets\Tab\locations.png" />
+    <Content Include="Assets\Tab\settings.png" />
     <Content Include="en.lproj\Localizable.strings" />
     <Content Include="fr.lproj\Localizable.strings" />
+    <Content Include="Assets\Logo\Logo_1.png" />
+    <Content Include="Assets\Logo\Logo_2.png" />
+    <Content Include="Assets\Tab\book%402x.png" />
+    <Content Include="Assets\Tab\history%402x.png" />
+    <Content Include="Assets\Tab\locations%402x.png" />
+    <Content Include="Assets\Tab\settings%402x.png" />
     <Content Include="app%402x.png" />
     <Content Include="app.png" />
+    <Content Include="Assets\background.png" />
+    <Content Include="Assets\background%402x.png" />
+    <Content Include="Assets\background_full_nologo.png" />
+    <Content Include="Assets\background_nologo%402x.png" />
+    <Content Include="Assets\background_nologo.png" />
+    <Content Include="Assets\background_full_nologo%402x.png" />
     <Content Include="Default.png" />
     <Content Include="Default%402x.png" />
-    <Content Include="Assets\Status.png" />
-    <Content Include="Assets\Status%402x.png" />
-    <Content Include="Assets\TDLogo.png" />
-    <Content Include="Assets\TDLogo%402x.png" />
+    <Content Include="Assets\background_full.png" />
+    <Content Include="Assets\background_full%402x.png" />
     <Content Include="Assets\TopFieldBackground-Lg.png" />
     <Content Include="Assets\TopFieldBackground-Lg%402x.png" />
     <Content Include="Assets\TopFieldBackground-Sm.png" />
     <Content Include="Assets\TopFieldBackground-Sm%402x.png" />
-    <Content Include="Assets\apcuriumLogo.png" />
-    <Content Include="Assets\apcuriumLogo%402x.png" />
-    <Content Include="Assets\background.png" />
-    <Content Include="Assets\background%402x.png" />
-    <Content Include="Assets\background_full.png" />
-    <Content Include="Assets\background_full%402x.png" />
-    <Content Include="Assets\background_full_nologo.png" />
-    <Content Include="Assets\background_full_nologo%402x.png" />
-    <Content Include="Assets\background_nologo.png" />
-    <Content Include="Assets\background_nologo%402x.png" />
+    <Content Include="Assets\Button\btnBookIt_en.png" />
+    <Content Include="Assets\Button\btnBookIt_en%402x.png" />
+    <Content Include="Assets\Button\btnBookIt_fr.png" />
+    <Content Include="Assets\Button\btnBookIt_fr%402x.png" />
+    <Content Include="Assets\TDLogo.png" />
+    <Content Include="Assets\TDLogo%402x.png" />
+    <Content Include="Assets\Status.png" />
+    <Content Include="Assets\Status%402x.png" />
+    <Content Include="Assets\Button\btnDest_off_en.png" />
+    <Content Include="Assets\Button\btnPickup_on_en.png" />
+    <Content Include="Assets\Button\btnPickup_on_en%402x.png" />
+    <Content Include="Assets\Button\btnPickup_on_fr.png" />
+    <Content Include="Assets\Button\btnPickup_on_fr%402x.png" />
+    <Content Include="Assets\Button\btnDest_off_en%402x.png" />
+    <Content Include="Assets\Button\btnDest_off_fr.png" />
+    <Content Include="Assets\Button\btnDest_off_fr%402x.png" />
+    <Content Include="Assets\Button\btnDest_on_en.png" />
+    <Content Include="Assets\Button\btnDest_on_en%402x.png" />
+    <Content Include="Assets\Button\btnDest_on_fr.png" />
+    <Content Include="Assets\Button\btnDest_on_fr%402x.png" />
+    <Content Include="Assets\Button\btnPickup_off_en.png" />
+    <Content Include="Assets\Button\btnPickup_off_en%402x.png" />
+    <Content Include="Assets\Button\btnPickup_off_fr.png" />
+    <Content Include="Assets\Button\btnPickup_off_fr%402x.png" />
+    <Content Include="Assets\About_en.html" />
+    <Content Include="Assets\About_fr.html" />
+    <Content Include="Assets\Logo_TaxiCandare.png" />
+    <Content Include="Assets\Logo_TaxiCandare%402x.png" />
+    <Content Include="Assets\Logo_TaxiDiamond.png" />
+    <Content Include="Assets\Logo_TaxiDiamond%402x.png" />
+    <Content Include="Assets\Logo_TaxiDiamondWest.png" />
+    <Content Include="Assets\Logo_TaxiDiamondWest%402x.png" />
+    <Content Include="Assets\Logo_TaxiRoyal.png" />
+    <Content Include="Assets\Logo_TaxiRoyal%402x.png" />
+    <Content Include="Assets\Logo_TaxiVeteran.png" />
+    <Content Include="Assets\Logo_TaxiVeteran%402x.png" />
     <Content Include="Assets\location.png" />
     <Content Include="Assets\location%402x.png" />
-    <Content Include="Assets\button\btnBookIt_en.png" />
-    <Content Include="Assets\button\btnBookIt_en%402x.png" />
-    <Content Include="Assets\button\btnBookIt_fr.png" />
-    <Content Include="Assets\button\btnBookIt_fr%402x.png" />
-    <Content Include="Assets\button\btnDest_off_en.png" />
-    <Content Include="Assets\button\btnDest_off_en%402x.png" />
-    <Content Include="Assets\button\btnDest_off_fr.png" />
-    <Content Include="Assets\button\btnDest_off_fr%402x.png" />
-    <Content Include="Assets\button\btnDest_on_en.png" />
-    <Content Include="Assets\button\btnDest_on_en%402x.png" />
-    <Content Include="Assets\button\btnDest_on_fr.png" />
-    <Content Include="Assets\button\btnDest_on_fr%402x.png" />
-    <Content Include="Assets\button\btnPickup_off_en.png" />
-    <Content Include="Assets\button\btnPickup_off_en%402x.png" />
-    <Content Include="Assets\button\btnPickup_off_fr.png" />
-    <Content Include="Assets\button\btnPickup_off_fr%402x.png" />
-    <Content Include="Assets\button\btnPickup_on_en.png" />
-    <Content Include="Assets\button\btnPickup_on_en%402x.png" />
-    <Content Include="Assets\button\btnPickup_on_fr.png" />
-    <Content Include="Assets\button\btnPickup_on_fr%402x.png" />
-    <Content Include="Assets\logo\Logo_1.png" />
-    <Content Include="Assets\logo\Logo_2.png" />
-    <Content Include="Assets\tab\book.png" />
-    <Content Include="Assets\tab\book%402x.png" />
-    <Content Include="Assets\tab\history.png" />
-    <Content Include="Assets\tab\history%402x.png" />
-    <Content Include="Assets\tab\locations.png" />
-    <Content Include="Assets\tab\locations%402x.png" />
-    <Content Include="Assets\tab\settings.png" />
-    <Content Include="Assets\tab\settings%402x.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <InterfaceDefinition Include="MainWindow.xib" />
-    <InterfaceDefinition Include="Book\BookTabView.xib" />
-    <InterfaceDefinition Include="History\HistoryTabView.xib" />
-    <InterfaceDefinition Include="Settings\SettingsTabView.xib" />
-    <InterfaceDefinition Include="Settings\LoginView.xib" />
-    <InterfaceDefinition Include="Book\PickupLocationView.xib" />
-    <InterfaceDefinition Include="Book\DestinationView.xib" />
-    <InterfaceDefinition Include="Book\ConfirmationView.xib" />
-    <InterfaceDefinition Include="Book\StatusView.xib" />
-    <InterfaceDefinition Include="Locations\LocationsTabView.xib" />
-    <InterfaceDefinition Include="Locations\LocationDetailView.xib" />
-    <InterfaceDefinition Include="History\HistoryDetailView.xib" />
-    <InterfaceDefinition Include="Settings\AboutUsView.xib" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Assets\" />
+    <Content Include="Assets\apcuriumLogo.png" />
+    <Content Include="Assets\apcuriumLogo%402x.png" />
   </ItemGroup>
 </Project>

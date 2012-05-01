@@ -52,8 +52,6 @@ namespace TaxiMobile.Lib.Data
 			BookingHistory = list.ToArray ();
 		}
 		
-		public string DisplayName { get{ return FirstName + "   " + LastName; } }
-		
 		
 	}
 }

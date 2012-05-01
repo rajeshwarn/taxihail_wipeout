@@ -77,7 +77,7 @@ namespace TaxiMobile.Settings
 			
 						
 			imgCreatedBy.Image = UIImage.FromFile ("Assets/apcuriumLogo.png");
-			lblLoginStatus.Text = string.Format (Resources.SettingViewLoginInfo, AppContext.Current.LoggedUser.DisplayName);
+			lblLoginStatus.Text = string.Format (Resources.SettingViewLoginInfo, AppContext.Current.LoggedUser.Name);
 			lblVersion.Text = string.Format (Resources.Version, AppSettings.Version);
 			
 		}
@@ -94,13 +94,13 @@ namespace TaxiMobile.Settings
 
 		public void Selected ()
 		{
-			lblLoginStatus.Maybe (() => lblLoginStatus.Text = string.Format (Resources.SettingViewLoginInfo, AppContext.Current.LoggedUser.DisplayName));
+			lblLoginStatus.Maybe (() => lblLoginStatus.Text = string.Format (Resources.SettingViewLoginInfo, AppContext.Current.LoggedUser.Name));
 		}
 
 
 		public void RefreshData ()
 		{
-			lblLoginStatus.Maybe (() => lblLoginStatus.Text = string.Format (Resources.SettingViewLoginInfo, AppContext.Current.LoggedUser.DisplayName));
+			lblLoginStatus.Maybe (() => lblLoginStatus.Text = string.Format (Resources.SettingViewLoginInfo, AppContext.Current.LoggedUser.Name));
 		}
 		void TechSupportTouchUpInside (object sender, EventArgs e)
 		{
@@ -151,7 +151,7 @@ namespace TaxiMobile.Settings
 					
 					
 					_mailComposer.AddAttachmentData (NSData.FromFile (AppSettings.ErrorLog), "text", "errorlog.txt");
-					_mailComposer.SetMessageBody ("Error log : " + UIDevice.CurrentDevice.Model, false);
+					_mailComposer.SetMessageBody ("Error log : " + UIDevice.CurrentDevice.UniqueIdentifier, false);
 					_mailComposer.SetSubject ("Error log");
 					_mailComposer.Finished += delegate(object mailsender, MFComposeResultEventArgs mfce) {
 						_mailComposer.DismissModalViewControllerAnimated (true);

@@ -175,7 +175,7 @@ namespace TaxiMobile.History
 				
 				bool isCompleted = ServiceLocator.Current.GetInstance<IBookingService> ().IsCompleted (status.Id);
 				
-				InvokeOnMainThread (() => txtStatus.Text = Resources.GetValue(status.Status.ToString()));
+				InvokeOnMainThread (() => txtStatus.Text = status.Status);
 				InvokeOnMainThread (() => _btnGlossyCancel.Hidden = isCompleted);
 				InvokeOnMainThread (() => _btnGlossyStatus.Hidden = isCompleted);
 				
