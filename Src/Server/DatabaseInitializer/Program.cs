@@ -11,6 +11,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 // ==============================================================================================================
 
+using apcurium.MK.Common.Configuration.Impl;
+
 namespace DatabaseInitializer
 {
     using System.Configuration;
@@ -39,36 +41,55 @@ namespace DatabaseInitializer
                 context.Database.CreateIfNotExists();
             }
 
+            using (var context = new ConfigurationDbContext(connectionString))
+            {
+                context.Database.CreateIfNotExists();
+            }
+
             Database.SetInitializer<EventStoreDbContext>(null);
             Database.SetInitializer<MessageLogDbContext>(null);
             Database.SetInitializer<BlobStorageDbContext>(null);
             Database.SetInitializer<BookingDbContext>(null);
+            Database.SetInitializer<ConfigurationDbContext>(null);
             
             DbContext[] contexts =
                 new DbContext[] 
                 { 
+                    new ConfigurationDbContext(connectionString),
                     new EventStoreDbContext(connectionString),
                     new MessageLogDbContext(connectionString),
-                    new BlobStorageDbContext(connectionString),                    
+                    new BlobStorageDbContext(connectionString) 
                 };
 
-            foreach (DbContext context in contexts)
+            try
             {
-                var adapter = (IObjectContextAdapter)context;
 
-                var script = adapter.ObjectContext.CreateDatabaseScript();
+                foreach (DbContext context in contexts)
+                {
+                    var adapter = (IObjectContextAdapter) context;
 
-                context.Database.ExecuteSqlCommand(script);
+                    var script = adapter.ObjectContext.CreateDatabaseScript();
 
-                context.Dispose();
+                    context.Database.ExecuteSqlCommand(script);
+
+                    context.Dispose();
+                }
+
+            }catch
+            {
+                //TODO trouver un moyen plus sexy
             }
 
-            //using (var context = new PaymentsDbContext(connectionString))
-            //{
-            //    PaymentsReadDbContextInitializer.CreateViews(context);
-            //}
-
             MessagingDbInitializer.CreateDatabaseObjects(connectionString, "SqlBus");
+
+            var configurationManager = new
+                apcurium.MK.Common.Configuration.Impl.ConfigurationManager(() => new ConfigurationDbContext(connectionString));
+
+            configurationManager.SetSetting("IBS.WebServicesUserName", "taxi");
+            configurationManager.SetSetting("IBS.WebServicesPassword", "test");
+            configurationManager.SetSetting("IBS.WebServicesUrl", "http://drivelinq.dyndns-ip.com:6928/XDS_IASPI.DLL/soap/");
+            configurationManager.SetSetting("IBS.DefaultAccountPassword", "password");
+
         }
     }
 }

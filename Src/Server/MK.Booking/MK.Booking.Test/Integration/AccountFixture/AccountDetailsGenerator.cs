@@ -11,6 +11,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 // ==============================================================================================================
 
+using BackOffice.Test;
+
 namespace apcurium.MK.Booking.Test.Integration.AccountFixture
 {
     using System;
@@ -24,7 +26,6 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
     using apcurium.MK.Booking.Events;
     using apcurium.MK.Booking.ReadModel;
     using apcurium.MK.Booking.IBS.Impl;
-    using BackOffice.Test;
     using apcurium.MK.Common.Diagnostic;
 
     public class given_a_view_model_generator : given_a_read_model_database

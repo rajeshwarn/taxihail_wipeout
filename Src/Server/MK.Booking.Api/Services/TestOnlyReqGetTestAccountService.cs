@@ -58,6 +58,7 @@ namespace apcurium.MK.Booking.Api.Services
             command.Email = testEmail;
             command.Password = TestUserPassword;
             command.FirstName = "Test";
+            command.Phone = "123456";
             command.LastName = "User #" + request.Index.ToString();
             _commandBus.Send(command);
             Thread.Sleep(400);

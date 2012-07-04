@@ -42,7 +42,7 @@ namespace apcurium.MK.Web
                 //  .Add<Hello>("/hello")
                 //  .Add<Hello>("/hello/{Name}");
 
-                
+                Database.SetInitializer<BookingDbContext>(null);
                 
                 container.Register<BookingDbContext>(c => new BookingDbContext("MKWeb")).ReusedWithin(ReuseScope.None);
                 container.Register<IAccountDao>(c => new AccountDao(() => c.Resolve<BookingDbContext>())).ReusedWithin(ReuseScope.None);
@@ -66,7 +66,7 @@ namespace apcurium.MK.Web
                             { "Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS" },
                         },
                 });
-                
+
                 
 
 

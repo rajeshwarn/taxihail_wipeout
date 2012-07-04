@@ -81,6 +81,10 @@
       <Project>{F038F286-5AEF-4341-83EC-9F72F42D06D6}</Project>
       <Name>Infrastructure.Sql</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MK.Common\MK.Common.csproj">
+      <Project>{65033050-1D55-465A-A772-F3192F9E2428}</Project>
+      <Name>MK.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\CQRS-journey.licenseheader">

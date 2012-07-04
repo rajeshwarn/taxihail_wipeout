@@ -12,6 +12,10 @@
 // ==============================================================================================================
 
 using apcurium.MK.Booking.BackOffice.EventHandlers;
+using apcurium.MK.Booking.IBS;
+using apcurium.MK.Booking.IBS.Impl;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Diagnostic;
 
 namespace WorkerRoleCommandProcessor
 {
@@ -50,6 +54,8 @@ namespace WorkerRoleCommandProcessor
 
             var commandProcessor = new CommandProcessor(new MessageReceiver(Database.DefaultConnectionFactory, "SqlBus", "SqlBus.Commands"), serializer);
             var eventProcessor = new EventProcessor(new MessageReceiver(Database.DefaultConnectionFactory, "SqlBus", "SqlBus.Events"), serializer);
+
+            container.RegisterInstance<IWebServiceClient>(new WebServiceClient(container.Resolve<IConfigurationManager>(), new Logger()));
 
             container.RegisterInstance<ICommandBus>(commandBus);
             container.RegisterInstance<IEventBus>(eventBus);

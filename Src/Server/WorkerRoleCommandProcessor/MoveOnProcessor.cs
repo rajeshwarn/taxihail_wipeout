@@ -11,7 +11,13 @@
 // See the License for the specific language governing permissions and limitations under the License.
 // ==============================================================================================================
 
+using apcurium.MK.Booking.IBS;
+using apcurium.MK.Booking.IBS.Impl;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Booking.BackOffice.CommandHandlers;
+using apcurium.MK.Common.Diagnostic;
+
 
 namespace WorkerRoleCommandProcessor
 {
@@ -41,15 +47,16 @@ namespace WorkerRoleCommandProcessor
         {
             OnCreating();
 
-            this.cancellationTokenSource = new CancellationTokenSource();
-            this.container = CreateContainer();
-            RegisterCommandHandlers(container);
-            
-
             Database.SetInitializer<EventStoreDbContext>(null);
             Database.SetInitializer<MessageLogDbContext>(null);
             Database.SetInitializer<BlobStorageDbContext>(null);
             Database.SetInitializer<BookingDbContext>(null);
+            Database.SetInitializer<ConfigurationDbContext>(null);
+
+            this.cancellationTokenSource = new CancellationTokenSource();
+            this.container = CreateContainer();
+            RegisterCommandHandlers(container);
+           
 
             this.processors = this.container.ResolveAll<IProcessor>().ToList();
         }
@@ -84,6 +91,8 @@ namespace WorkerRoleCommandProcessor
             //container.RegisterType<DbContext, BackOfficeDbContext>("backoffice", new TransientLifetimeManager(), new InjectionConstructor("BackOffice"));
 
             container.RegisterType<BookingDbContext>(new TransientLifetimeManager(), new InjectionConstructor("MKWeb"));
+            container.RegisterType<ConfigurationDbContext>(new TransientLifetimeManager(), new InjectionConstructor("MKWeb"));
+            container.RegisterInstance<IConfigurationManager>(new ConfigurationManager(() => container.Resolve<ConfigurationDbContext>()));
                         
             // handlers
             container.RegisterType<ICommandHandler, AccountCommandHandler>("AccountCommandHandler");
