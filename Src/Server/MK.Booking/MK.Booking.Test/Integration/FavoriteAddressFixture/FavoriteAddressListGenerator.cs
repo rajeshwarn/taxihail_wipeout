@@ -37,10 +37,12 @@ namespace BackOffice.Test.Integration.FavoriteAddressFixture
         public void when_address_is_added_to_favorites_then_list_updated()
         {
             var accountId = Guid.NewGuid();
+            var addressId = Guid.NewGuid();
 
             this.sut.Handle(new FavoriteAddressAdded
             {
                 SourceId = accountId,
+                AddressId = addressId,
                 FriendlyName = "Chez François",
                 Apartment = "3939",
                 FullAddress = "1234 rue Saint-Hubert",
@@ -55,6 +57,8 @@ namespace BackOffice.Test.Integration.FavoriteAddressFixture
 
                 Assert.Single(list);
                 var dto = list.Single();
+                Assert.Equal(addressId, dto.Id);
+                Assert.Equal(accountId, dto.AccountId);
                 Assert.Equal("Chez François", dto.FriendlyName);
                 Assert.Equal("3939", dto.Apartment);
                 Assert.Equal("1234 rue Saint-Hubert", dto.FullAddress);

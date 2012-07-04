@@ -21,6 +21,7 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
             {
                 context.Save(new FavoriteAddress
                 {
+                    Id = @event.AddressId,
                     AccountId = @event.SourceId,
                     FriendlyName = @event.FriendlyName,
                     Apartment = @event.Apartment,

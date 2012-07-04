@@ -77,6 +77,7 @@ namespace apcurium.MK.Booking.Domain
 
             this.Update(new FavoriteAddressAdded
             {
+                AddressId = Guid.NewGuid(),
                 FriendlyName = friendlyName,
                 Apartment = apartment,
                 FullAddress = fullAddress,

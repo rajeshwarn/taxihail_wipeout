@@ -31,6 +31,7 @@ namespace BackOffice.Test.FavoriteAddressesFixture
             Assert.Single(sut.Events);
             var evt = (FavoriteAddressAdded)sut.Events.Single();
             Assert.Equal(_accountId, evt.SourceId);
+            Assert.NotEqual(Guid.Empty, evt.AddressId);
             Assert.Equal("Chez François", evt.FriendlyName);
             Assert.Equal("3939", evt.Apartment);
             Assert.Equal("1234 rue Saint-Hubert", evt.FullAddress);
