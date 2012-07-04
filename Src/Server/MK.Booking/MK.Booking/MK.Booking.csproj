@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandHandlers\AccountCommandHandler.cs" />
+    <Compile Include="CommandHandlers\FavoriteAddressCommandHandler.cs" />
     <Compile Include="Database\BookingDbContext.cs" />
     <Compile Include="Domain\Account.cs" />
     <Compile Include="Domain\Address.cs" />

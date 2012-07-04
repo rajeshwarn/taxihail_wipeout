@@ -55,6 +55,7 @@
     <Compile Include="AccountFixture\given_one_account.cs" />
     <Compile Include="EnumerableEventsExtensions.cs" />
     <Compile Include="EventSourcingTestHelper.cs" />
+    <Compile Include="FavoriteAddressesFixture\given_an_address.cs" />
     <Compile Include="Integration\AccountFixture\AccountDetailsGenerator.cs" />
     <Compile Include="Integration\GivenAReadModelDatabase.cs" />
     <Compile Include="MemoryCommandBusFixture.cs" />

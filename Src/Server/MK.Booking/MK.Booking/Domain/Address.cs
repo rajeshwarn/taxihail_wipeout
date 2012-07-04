@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MoveOn.BackOffice.Domain
+namespace apcurium.MK.Booking.Domain
 {
     public class Address
     {
