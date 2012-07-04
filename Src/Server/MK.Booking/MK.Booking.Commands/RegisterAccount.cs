@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Infrastructure.Messaging;
 using System.ComponentModel.DataAnnotations;
-using MoveOn.Common.Extensions;
+using apcurium.MK.Common.Extensions;
 
 
 namespace apcurium.MK.Booking.Commands
@@ -24,6 +24,7 @@ namespace apcurium.MK.Booking.Commands
         public string FirstName { get; set; }        
         public string LastName { get; set; }        
         public string Email { get; set; }
+        public string Phone{ get; set; }        
         public string Password { get; set; }
 
 

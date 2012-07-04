@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using Infrastructure.EventSourcing;
 using apcurium.MK.Booking.Events;
-using MoveOn.Common;
-using MoveOn.Common.Extensions;
-
+using apcurium.MK.Common;
+using apcurium.MK.Common.Extensions;
 namespace apcurium.MK.Booking.Domain
 {
     public class Account : EventSourced
@@ -23,10 +22,10 @@ namespace apcurium.MK.Booking.Domain
             this.LoadFrom(history);
         }
 
-        public Account(Guid id, string firstName, string lastName, string email, string password)
+        public Account(Guid id, string firstName, string lastName, string phone, string email, string password)
             : this(id)
         {
-            if (Params.Get(firstName, lastName, email, password).Any(p => p.IsNullOrEmpty()))
+            if (Params.Get(firstName, lastName, phone,email, password).Any(p => p.IsNullOrEmpty()))
             {
                 throw new InvalidOperationException("Missing required fields");
             }
@@ -36,6 +35,7 @@ namespace apcurium.MK.Booking.Domain
                 FirstName = firstName,
                 LastName = lastName,
                 Email = email,
+                Phone = phone,
                 Password = password,
             });
         }        

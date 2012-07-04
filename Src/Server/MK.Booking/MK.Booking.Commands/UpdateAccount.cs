@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Infrastructure.Messaging;
 using System.ComponentModel.DataAnnotations;
-using MoveOn.Common.Extensions;
+using apcurium.MK.Common.Extensions;
 namespace apcurium.MK.Booking.Commands
 {
     public class UpdateAccount : ICommand

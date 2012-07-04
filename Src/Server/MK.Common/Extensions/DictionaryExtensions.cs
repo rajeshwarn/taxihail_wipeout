@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MoveOn.Common.Extensions
+namespace apcurium.MK.Common.Extensions
 {
     public static class DictionaryExtensions
     {

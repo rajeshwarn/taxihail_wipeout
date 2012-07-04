@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(RegisterAccount command)
         {
-            var account = new Account(command.AccountId, command.FirstName, command.LastName, command.Email, command.Password);
+            var account = new Account(command.AccountId, command.FirstName, command.LastName, command.Phone, command.Email, command.Password);
             _repository.Save(account);
         }
 

@@ -1,7 +1,7 @@
 ﻿using System;
 
 
-namespace MoveOn.Common.Extensions
+namespace apcurium.MK.Common.Extensions
 {
     public static class DateTimeExtensions
     {

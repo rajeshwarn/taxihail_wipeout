@@ -3,7 +3,7 @@ using System.Data.Common;
 using System.Data.Entity.Infrastructure;
 using Microsoft.WindowsAzure.ServiceRuntime;
 
-namespace MoveOn.Common.Entity
+namespace apcurium.MK.Common.Entity
 {
     public class ServiceConfigurationSettingConnectionFactory : IDbConnectionFactory
     {

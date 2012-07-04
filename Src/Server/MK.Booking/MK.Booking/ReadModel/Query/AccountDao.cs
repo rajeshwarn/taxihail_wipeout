@@ -10,7 +10,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
         private readonly Func<BookingDbContext> _contextFactory;
 
         public AccountDao(Func<BookingDbContext> contextFactory)
-        {
+        {            
             _contextFactory = contextFactory;
         }
 

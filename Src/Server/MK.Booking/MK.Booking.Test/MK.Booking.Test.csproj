@@ -41,6 +41,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -61,6 +62,7 @@
     <Compile Include="MemoryEventBusFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Integration\AccountDbContextFixture.cs" />
+    <Compile Include="TestConfigurationManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -70,6 +72,14 @@
     <ProjectReference Include="..\..\Infrastructure\Infrastructure\Infrastructure.csproj">
       <Project>{B5786D07-5888-4DF5-B295-3FEA593F3BFE}</Project>
       <Name>Infrastructure %28Infrastructure\Infrastructure%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\MK.Booking.IBS\MK.Booking.IBS.csproj">
+      <Project>{7B615EA9-4232-4FFB-B66C-AC7B833973C9}</Project>
+      <Name>MK.Booking.IBS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\MK.Common\MK.Common.csproj">
+      <Project>{65033050-1D55-465A-A772-F3192F9E2428}</Project>
+      <Name>MK.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\MK.Booking.Commands\MK.Booking.Commands.csproj">
       <Project>{20AEA350-AD91-4053-A8B5-582E13ED43AA}</Project>

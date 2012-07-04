@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace MoveOn.Common.Extensions
+namespace apcurium.MK.Common.Extensions
 {
     public static class StringBuilderExtensions
     {

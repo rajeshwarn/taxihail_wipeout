@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{65033050-1D55-465A-A772-F3192F9E2428}</ProjectGuid>
+    <ProjectGuid>{7B615EA9-4232-4FFB-B66C-AC7B833973C9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>apcurium.MK.Common</RootNamespace>
-    <AssemblyName>apcurium.MK.Common</AssemblyName>
+    <RootNamespace>apcurium.MK.Booking.IBS</RootNamespace>
+    <AssemblyName>apcurium.MK.Booking.IBS</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,18 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.4.3.1\lib\net40\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.WindowsAzure.ServiceRuntime, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\Windows Azure SDK\v1.6\ref\Microsoft.WindowsAzure.ServiceRuntime.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -50,28 +41,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration\IConfigurationManager.cs" />
-    <Compile Include="Diagnostic\ILogger.cs" />
-    <Compile Include="Diagnostic\Logger.cs" />
-    <Compile Include="Entity\ServiceConfigurationSettingConnectionFactory.cs" />
-    <Compile Include="Extensions\AssemblyExtensions.cs" />
-    <Compile Include="Extensions\CollectionExtensions.cs" />
-    <Compile Include="Extensions\DateTimeExtensions.cs" />
-    <Compile Include="Extensions\DictionaryExtensions.cs" />
-    <Compile Include="Extensions\EnumerableExtensions.cs" />
-    <Compile Include="Extensions\EventExtension.cs" />
-    <Compile Include="Extensions\GuidExtensions.cs" />
-    <Compile Include="Extensions\NullableExtension.cs" />
-    <Compile Include="Extensions\ObjectExtensions.cs" />
-    <Compile Include="Extensions\StreamExtensions.cs" />
-    <Compile Include="Extensions\StringBuilderExtensions.cs" />
-    <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Params.cs" />
+    <Compile Include="Impl\BaseService.cs" />
+    <Compile Include="Impl\WebServiceClient.cs" />
+    <Compile Include="IWebServiceClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WebServices\StaticDataservice.cs" />
+    <Compile Include="WebServices\WebAccount3Service.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WebServices\WEBOrder7Service.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MK.Common\MK.Common.csproj">
+      <Project>{65033050-1D55-465A-A772-F3192F9E2428}</Project>
+      <Name>MK.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
