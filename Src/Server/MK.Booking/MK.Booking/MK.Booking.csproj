@@ -8,8 +8,8 @@
     <ProjectGuid>{BAF90740-9220-4BB0-B857-1E5927E464E9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>apcurium.MK.Booking.BackOffice</RootNamespace>
-    <AssemblyName>apcurium.MK.Booking.BackOffice</AssemblyName>
+    <RootNamespace>apcurium.MK.Booking</RootNamespace>
+    <AssemblyName>apcurium.MK.Booking</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -51,9 +51,11 @@
     <Compile Include="Domain\Account.cs" />
     <Compile Include="Domain\Address.cs" />
     <Compile Include="EventHandlers\AccountDetailsGenerator.cs" />
+    <Compile Include="EventHandlers\FavoriteAddressListGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReadModel\AccountAddress.cs" />
     <Compile Include="ReadModel\AccountDetail.cs" />
+    <Compile Include="ReadModel\FavoriteAddress.cs" />
     <Compile Include="ReadModel\Query\AccountDao.cs" />
     <Compile Include="ReadModel\Query\IAccountDao.cs" />
   </ItemGroup>

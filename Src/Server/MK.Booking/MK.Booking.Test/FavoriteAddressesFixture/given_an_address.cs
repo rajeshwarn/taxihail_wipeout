@@ -41,7 +41,13 @@ namespace BackOffice.Test.FavoriteAddressesFixture
         }
 
         [Fact]
-        public void when_latitude_or_longitude_is_invalid()
+        public void when_adding_an_address_with_missing_required_fields()
+        {
+            Assert.Throws<InvalidOperationException>(() => this.sut.When(new AddFavoriteAddress { AccountId = _accountId, FriendlyName = null, Apartment = "3939", FullAddress = null, RingCode = "3131", Latitude = 45.515065, Longitude = -73.558064 }));
+        }
+
+        [Fact]
+        public void when_adding_an_address_with_and_invalid_latitude_or_longitude()
         {
 
             Assert.Throws<ArgumentOutOfRangeException>(() => this
