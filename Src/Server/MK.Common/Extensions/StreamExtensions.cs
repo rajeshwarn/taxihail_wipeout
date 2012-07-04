@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 
-namespace MoveOn.Common.Extensions
+namespace apcurium.MK.Common.Extensions
 {
     public static class StreamExtensions
     {

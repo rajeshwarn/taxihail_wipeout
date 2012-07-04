@@ -6,7 +6,7 @@ using System.Reflection;
 using System.IO;
 
 
-namespace MoveOn.Common.Extensions
+namespace apcurium.MK.Common.Extensions
 {
     public static class AssemblyExtension
     {

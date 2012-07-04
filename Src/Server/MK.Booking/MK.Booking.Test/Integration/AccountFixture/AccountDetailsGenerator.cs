@@ -23,6 +23,9 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
     using apcurium.MK.Booking.Database;
     using apcurium.MK.Booking.Events;
     using apcurium.MK.Booking.ReadModel;
+    using apcurium.MK.Booking.IBS.Impl;
+    using BackOffice.Test;
+    using apcurium.MK.Common.Diagnostic;
 
     public class given_a_view_model_generator : given_a_read_model_database
     {
@@ -37,7 +40,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
             bus.Setup(x => x.Send(It.IsAny<IEnumerable<Envelope<ICommand>>>()))
                 .Callback<IEnumerable<Envelope<ICommand>>>(x => this.commands.AddRange(x.Select(e => e.Body)));
 
-            this.sut = new AccountDetailsGenerator(() => new BookingDbContext(dbName));
+            this.sut = new AccountDetailsGenerator(() => new BookingDbContext(dbName), new WebServiceClient( new TestConfigurationManager(), new Logger()) );
         }
     }
 
@@ -66,6 +69,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 Assert.Equal("Smith", dto.LastName);
                 Assert.Equal("bob.smith@acpurium.com", dto.Email);
                 Assert.Equal("bsmith", dto.Password);
+                Assert.True(dto.IBSAccountid > 0);
             }
         }
     }

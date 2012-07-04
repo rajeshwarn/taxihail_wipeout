@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MoveOn.Common
+namespace apcurium.MK.Common
 {
     public static class Params
     {

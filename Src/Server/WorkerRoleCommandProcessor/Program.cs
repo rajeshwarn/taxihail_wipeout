@@ -15,7 +15,8 @@ namespace WorkerRoleCommandProcessor
 {
     using System;
     using System.Data.Entity;
-    using MoveOn.Common.Entity;
+    using apcurium.MK.Common.Entity;
+    
 
 
     class Program

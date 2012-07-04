@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.ReadModel;
 using Infrastructure.Messaging;
+using apcurium.MK.Booking.IBS;
 
 namespace apcurium.MK.Booking.EventHandlers
 {
@@ -14,29 +15,34 @@ namespace apcurium.MK.Booking.EventHandlers
     {
         private readonly Func<BookingDbContext> _contextFactory;
 
-        
-  
+        private IWebServiceClient _webServiceClient;
 
-
-        public AccountDetailsGenerator(Func<BookingDbContext> contextFactory)
+        public AccountDetailsGenerator(Func<BookingDbContext> contextFactory, IWebServiceClient webServiceClient)
         {
             _contextFactory = contextFactory;
-            
+            _webServiceClient = webServiceClient;
         }
 
         public void Handle(AccountRegistered @event)
         {
             using (var context = _contextFactory.Invoke())
             {
+                var ibsAccountId = _webServiceClient.CreateAccount(@event.SourceId, @event.Email, @event.FirstName, @event.LastName, @event.Phone);
                 context.Save(new AccountDetail
                 {
                     FirstName = @event.FirstName,
                     LastName = @event.LastName,
                     Email = @event.Email,
                     Password = @event.Password,
-                    Id = @event.SourceId
+                    Phone = @event.Phone,
+                    Id = @event.SourceId,
+                    IBSAccountid = ibsAccountId
                 });
+
             }
+
+
+
         }
 
         public void Handle(AccountUpdated @event)

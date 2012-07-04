@@ -14,7 +14,7 @@ using System.Globalization;
 using System.Text;
 #endregion
 
-namespace MoveOn.Common.Extensions
+namespace apcurium.MK.Common.Extensions
 {
     public static class StringExtensions
     {

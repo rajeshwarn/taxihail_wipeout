@@ -12,7 +12,7 @@ using apcurium.MK.Booking.Database;
 using Infrastructure.Messaging;
 using Infrastructure.Sql.Messaging;
 using Infrastructure.Sql.Messaging.Implementation;
-using MoveOn.Common.Entity;
+using apcurium.MK.Common.Entity;
 using System.Configuration;
 using Infrastructure.Serialization;
 using System.Data.Entity;
@@ -42,6 +42,8 @@ namespace apcurium.MK.Web
                 //  .Add<Hello>("/hello")
                 //  .Add<Hello>("/hello/{Name}");
 
+                
+                
                 container.Register<BookingDbContext>(c => new BookingDbContext("MKWeb")).ReusedWithin(ReuseScope.None);
                 container.Register<IAccountDao>(c => new AccountDao(() => c.Resolve<BookingDbContext>())).ReusedWithin(ReuseScope.None);
                 container.Register<ITextSerializer>(new JsonTextSerializer());
