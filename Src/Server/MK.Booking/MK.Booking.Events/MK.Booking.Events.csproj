@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="AccountRegistered.cs" />
     <Compile Include="AccountUpdated.cs" />
+    <Compile Include="FavoriteAddressRemoved.cs" />
     <Compile Include="FavoriteAddressAdded.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

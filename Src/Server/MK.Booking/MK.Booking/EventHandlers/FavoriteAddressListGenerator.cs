@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
@@ -9,7 +6,7 @@ using apcurium.MK.Booking.ReadModel;
 
 namespace apcurium.MK.Booking.BackOffice.EventHandlers
 {
-    public class FavoriteAddressListGenerator : IEventHandler<FavoriteAddressAdded>
+    public class FavoriteAddressListGenerator : IEventHandler<FavoriteAddressAdded>, IEventHandler<FavoriteAddressRemoved>
     {
         private readonly Func<BookingDbContext> _contextFactory;
         public FavoriteAddressListGenerator(Func<BookingDbContext> contextFactory)
@@ -32,6 +29,16 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
                     Latitude = @event.Latitude,
                     Longitude = @event.Longitude
                 });
+            }
+        }
+
+        public void Handle(FavoriteAddressRemoved @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var address = context.Find<FavoriteAddress>(@event.AddressId);
+                context.Set<FavoriteAddress>().Remove(address);
+                context.SaveChanges();
             }
         }
     }

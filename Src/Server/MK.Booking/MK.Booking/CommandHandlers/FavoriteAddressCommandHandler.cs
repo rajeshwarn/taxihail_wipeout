@@ -6,7 +6,7 @@ using apcurium.MK.Booking.Domain;
 
 namespace apcurium.MK.Booking.BackOffice.CommandHandlers
 {
-    public class FavoriteAddressCommandHandler : ICommandHandler<AddFavoriteAddress>
+    public class FavoriteAddressCommandHandler : ICommandHandler<AddFavoriteAddress>, ICommandHandler<RemoveFavoriteAddress>
     {
         private readonly IEventSourcedRepository<Account> _repository;
 
@@ -26,6 +26,15 @@ namespace apcurium.MK.Booking.BackOffice.CommandHandlers
                 latitude: command.Latitude,
                 longitude: command.Longitude);
             
+            _repository.Save(account);
+        }
+
+        public void Handle(RemoveFavoriteAddress command)
+        {
+            var account = _repository.Get(command.AccountId);
+
+            account.RemoveFavoriteAddress(command.AddressId);
+
             _repository.Save(account);
         }
     }

@@ -43,6 +43,16 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
+        public void RemoveAddress()
+        {
+            var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+
+            var acc = sut.GetMyAccount();
+
+            sut.RemoveFavoriteAddress(acc.Id, Guid.NewGuid());
+        }
+
+        [Test]
         public void GetAddressList()
         {
             var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));

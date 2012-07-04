@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 
 using ServiceStack.ServiceInterface;
@@ -38,12 +39,12 @@ namespace apcurium.MK.Booking.Api.Services
         public override object OnGet(TestOnlyReqGetTestAccount request)
         {
             //This method can only be used for unit test.  
-            if (!( (RequestContext.EndpointAttributes & EndpointAttributes.Localhost ) == EndpointAttributes.Localhost ))
+            if (!((RequestContext.EndpointAttributes & EndpointAttributes.Localhost) == EndpointAttributes.Localhost))
             {
                 throw HttpError.NotFound("This method can only be called from the server");
             }
 
-            string testEmail = String.Format(TestUserEmail,request.Index);
+            string testEmail = String.Format(TestUserEmail, request.Index);
 
             var testAccount = _dao.FindByEmail(testEmail);
             if (testAccount != null)
@@ -61,9 +62,15 @@ namespace apcurium.MK.Booking.Api.Services
             command.Phone = "123456";
             command.LastName = "User #" + request.Index.ToString();
             _commandBus.Send(command);
-            Thread.Sleep(400);
 
-            return _dao.FindByEmail(TestUserEmail);
+
+            Thread.Sleep(400);
+            var account = _dao.FindByEmail(TestUserEmail);
+            if (account != null)
+            {
+                return account;
+            }
+            return new HttpResult(HttpStatusCode.RequestTimeout);
         }
 
     }

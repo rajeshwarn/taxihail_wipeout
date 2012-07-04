@@ -35,5 +35,19 @@ namespace apcurium.MK.Booking.Api.Services
             return new HttpResult(HttpStatusCode.OK);
         }
 
+        public override object OnDelete(SaveFavoriteAddress request)
+        {
+            var command = new Commands.RemoveFavoriteAddress
+            {
+                Id = Guid.NewGuid(),
+                AddressId = request.Id,
+                AccountId = request.AccountId
+            };
+
+            _commandBus.Send(command);
+
+            return new HttpResult(HttpStatusCode.OK);
+        }
+
     }
 }

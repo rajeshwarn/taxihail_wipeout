@@ -10,11 +10,13 @@ namespace apcurium.MK.Booking.Domain
 {
     public class Account : EventSourced
     {
+        private readonly IList<Guid> _favoriteAddresses = new List<Guid>(); 
         protected Account(Guid id) : base(id)
         {
             base.Handles<AccountRegistered>(OnAccountRegistered);
             base.Handles<AccountUpdated>(OnAccountUpdated);
             base.Handles<FavoriteAddressAdded>(OnFavoriteAddressAdded);
+            base.Handles<FavoriteAddressRemoved>(OnFavoriteAddressRemoved);
         }
 
         public Account(Guid id, IEnumerable<IVersionedEvent> history)
@@ -84,6 +86,19 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
+        public void RemoveFavoriteAddress(Guid addressId)
+        {
+            if(!_favoriteAddresses.Contains(addressId))
+            {
+                throw new InvalidOperationException("Address does not exist in account");
+            }
+
+            this.Update(new FavoriteAddressRemoved
+            {
+                AddressId = addressId
+            });
+        }
+
 
         private void OnAccountRegistered(AccountRegistered @event)
         {
@@ -98,8 +113,14 @@ namespace apcurium.MK.Booking.Domain
 
         private void OnFavoriteAddressAdded(FavoriteAddressAdded @event)
         {
-            
+            _favoriteAddresses.Add(@event.AddressId);
         }
 
+        private void OnFavoriteAddressRemoved(FavoriteAddressRemoved @event)
+        {
+            _favoriteAddresses.Remove(@event.AddressId);
+        }
+
+        
     }
 }

@@ -47,5 +47,10 @@ namespace apcurium.MK.Booking.Api.Client
             var response = Client.Post<string>(req, address);
         }
 
+        public void RemoveFavoriteAddress(Guid accountId, Guid addressId)
+        {
+            var req = string.Format("/account/{0}/addresses/{1}", accountId, addressId);
+            var response = Client.Delete<string>(req);
+        }
     }
 }
