@@ -1,22 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
+using Infrastructure.Messaging;
+using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Commands;
+using RegisterAccount = apcurium.MK.Booking.Api.Contract.Requests.RegisterAccount;
 
 namespace apcurium.MK.Booking.Api.Services
 {
     public class SaveFavoriteAddressService : RestServiceBase<SaveFavoriteAddress> 
     {
-        public override object OnPut(SaveFavoriteAddress request)
+        private readonly ICommandBus _commandBus;
+        public SaveFavoriteAddressService(ICommandBus commandBus)
         {
-            return base.OnPut(request);
+            _commandBus = commandBus;
+
+            AutoMapper.Mapper.CreateMap<SaveFavoriteAddress, Commands.AddFavoriteAddress>();
+
         }
 
         public override object OnPost(SaveFavoriteAddress request)
         {
-            return base.OnPost(request);
+            var command = new Commands.AddFavoriteAddress();
+            
+            AutoMapper.Mapper.Map(request, command);
+
+            command.Id = Guid.NewGuid();
+            _commandBus.Send(command);
+
+            return new HttpResult(HttpStatusCode.OK);
         }
+
     }
 }

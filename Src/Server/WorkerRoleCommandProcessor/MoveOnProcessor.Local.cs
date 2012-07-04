@@ -11,6 +11,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 // ==============================================================================================================
 
+using apcurium.MK.Booking.BackOffice.EventHandlers;
+
 namespace WorkerRoleCommandProcessor
 {
     using System.Data.Entity;
@@ -66,8 +68,9 @@ namespace WorkerRoleCommandProcessor
         }
 
         private void RegisterEventHandlers(UnityContainer container, EventProcessor eventProcessor)
-        {            
+        {
             eventProcessor.Register(container.Resolve<AccountDetailsGenerator>());
+            eventProcessor.Register(container.Resolve<FavoriteAddressListGenerator>());
             eventProcessor.Register(container.Resolve<SqlMessageLogHandler>());
         }
 

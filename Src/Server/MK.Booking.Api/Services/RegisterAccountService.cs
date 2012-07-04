@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using ServiceStack.ServiceInterface;
-
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking;
 using Infrastructure.Messaging;
-using ServiceStack.ServiceInterface.Auth;
 
 namespace apcurium.MK.Booking.Api.Services
 {

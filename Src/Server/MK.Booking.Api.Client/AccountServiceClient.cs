@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ServiceStack.Common.Web;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Contract.Requests;
 
@@ -38,6 +39,12 @@ namespace apcurium.MK.Booking.Api.Client
             var req = string.Format("/accounts/{0}/addresses", accountId.ToString());
             var addresses = Client.Get<AddressList>(req);
             return addresses;
+        }
+
+        public void AddFavoriteAddress(SaveFavoriteAddress address)
+        {
+            var req = string.Format("/account/{0}/addresses", address.AccountId);
+            var response = Client.Post<string>(req, address);
         }
 
     }

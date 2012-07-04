@@ -11,6 +11,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 // ==============================================================================================================
 
+using apcurium.MK.Booking.BackOffice.CommandHandlers;
+
 namespace WorkerRoleCommandProcessor
 {
     using System;
@@ -84,7 +86,8 @@ namespace WorkerRoleCommandProcessor
             container.RegisterType<BookingDbContext>(new TransientLifetimeManager(), new InjectionConstructor("MKWeb"));
                         
             // handlers
-            container.RegisterType<ICommandHandler, AccountCommandHandler>("AccountCommandHandler");            
+            container.RegisterType<ICommandHandler, AccountCommandHandler>("AccountCommandHandler");
+            container.RegisterType<ICommandHandler, FavoriteAddressCommandHandler>("FavoriteAddressCommandHandler");            
             
 
             OnCreateContainer(container);

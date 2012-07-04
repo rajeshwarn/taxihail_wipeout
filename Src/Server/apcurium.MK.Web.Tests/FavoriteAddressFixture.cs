@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using apcurium.MK.Booking.Api.Client;
+using apcurium.MK.Booking.Api.Contract.Requests;
 
 namespace apcurium.MK.Web.Tests
 {
@@ -19,6 +20,26 @@ namespace apcurium.MK.Web.Tests
         {
             base.Setup();
             
+        }
+
+        [Test]
+        public void AddAddress()
+        {
+            var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+
+            var acc = sut.GetMyAccount();
+
+            sut.AddFavoriteAddress(new SaveFavoriteAddress
+                                       {
+                                           AccountId = TestAccount.Id,
+                                           FriendlyName = "Chez François",
+                                           Apartment = "3939",
+                                           FullAddress = "1234 rue Saint-Hubert",
+                                           RingCode = "3131",
+                                           Latitude = 45.515065,
+                                           Longitude = -73.558064
+                                       });
+
         }
 
         [Test]
