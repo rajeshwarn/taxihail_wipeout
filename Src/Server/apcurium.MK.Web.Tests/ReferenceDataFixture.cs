@@ -12,6 +12,12 @@ namespace apcurium.MK.Web.Tests
             base.Setup();
         }
 
+        [TestFixtureTearDown]
+        public new void TearDown()
+        {
+            base.TearDown();
+        } 
+
         [Test]
         public void Get()
         {
