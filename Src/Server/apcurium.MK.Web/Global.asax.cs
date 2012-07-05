@@ -52,7 +52,7 @@ namespace apcurium.MK.Web
                 container.RegisterInstance<ITextSerializer>(new JsonTextSerializer());
 
                 container.RegisterInstance<IConfigurationManager>(new Common.Configuration.Impl.ConfigurationManager(() => container.Resolve<ConfigurationDbContext>()));
-                container.RegisterInstance<IWebServiceClient>(new WebServiceClient(container.Resolve<IConfigurationManager>(), new Logger()));
+                container.RegisterInstance<IAccountWebServiceClient>(new AccountWebServiceClient(container.Resolve<IConfigurationManager>(), new Logger()));
 
                 container.RegisterInstance<IMessageSender>(new MessageSender(new ServiceConfigurationSettingConnectionFactory(Database.DefaultConnectionFactory),
                     ConfigurationManager.ConnectionStrings["DbContext.SqlBus"].ConnectionString, "SqlBus.Commands"));
