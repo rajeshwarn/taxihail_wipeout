@@ -1,4 +1,5 @@
-﻿using apcurium.MK.Common.Configuration;
+﻿using System;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.IBS.Impl
@@ -12,6 +13,27 @@ namespace apcurium.MK.Booking.IBS.Impl
 
         public BookingWebServiceClient(IConfigurationManager configManager, ILogger logger) : base(configManager, logger)
         {
+        }
+
+        public Tuple<string,double?, double?> GetOrderStatus( int orderId, int accountId)
+        {
+            var status = new Tuple<string, double?, double?>(TWEBOrderStatusValue.wosNone.ToString(), null, null);
+            UseService(service =>
+            {
+                var orderStatus = service.GetOrderStatus(_userNameApp, _passwordApp, orderId, string.Empty, string.Empty, accountId);
+   
+                double latitude = 0;
+                double longitude = 0;
+                var result = service.GetVehicleLocation(_userNameApp, _passwordApp, orderId, ref latitude, ref longitude);
+                if (result == 0)
+                {
+                    status = new Tuple<string, double?, double?>(orderStatus.ToString(), latitude, longitude);
+                }else
+                {
+                    status = new Tuple<string, double?, double?>(orderStatus.ToString(), null, null);
+                }
+            });
+            return status;
         }
 
         //public bool IsValid(ref BookingInfoData info)
