@@ -24,7 +24,6 @@ namespace apcurium.MK.Booking.IBS.WebServices
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.1")]
     [DebuggerStepThrough()]
-    [DesignerCategory("code")]
     [WebServiceBinding(Name="IWebAccount3binding", Namespace="http://tempuri.org/")]
     [SoapInclude(typeof(TVehicleTypeItem))]
     [SoapInclude(typeof(TException))]

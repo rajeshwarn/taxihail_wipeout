@@ -12,11 +12,13 @@ namespace apcurium.MK.Booking.Api.Client
     {
         private CookieContainer _cookieContainer;
         private ServiceClientBase _client;
+        private readonly string _url;
         private AuthInfo _credential;
         private bool _isSecured;
         private AuthResponse _authToken;
         public BaseServiceClient(string url, AuthInfo credential)
         {
+            _url = url;
             _credential = credential;
             _isSecured = credential != null;
             _cookieContainer = new CookieContainer();
@@ -28,7 +30,7 @@ namespace apcurium.MK.Booking.Api.Client
             {
                 if (_client == null)
                 {
-                    _client = new JsonServiceClient("http://localhost.:6900/api");
+                    _client = new JsonServiceClient(_url);
                     ServiceClientBase.HttpWebRequestFilter = req =>
                     {
                         req.CookieContainer = _cookieContainer;

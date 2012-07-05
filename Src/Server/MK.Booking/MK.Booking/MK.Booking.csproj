@@ -60,7 +60,9 @@
     <Compile Include="ReadModel\AccountDetail.cs" />
     <Compile Include="ReadModel\FavoriteAddress.cs" />
     <Compile Include="ReadModel\Query\AccountDao.cs" />
+    <Compile Include="ReadModel\Query\AddressDao.cs" />
     <Compile Include="ReadModel\Query\IAccountDao.cs" />
+    <Compile Include="ReadModel\Query\IAddressDao.cs" />
     <Compile Include="Security\IPasswordService.cs" />
     <Compile Include="Security\PasswordService.cs" />
   </ItemGroup>

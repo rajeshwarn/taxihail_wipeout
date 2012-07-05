@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
+using NUnit.Framework.Constraints;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Web.SelfHost;
 
 namespace apcurium.MK.Web.Tests
 {
@@ -16,8 +18,14 @@ namespace apcurium.MK.Web.Tests
         public new void Setup()
         {
             base.Setup();
-            
+
         }
+
+        [TestFixtureTearDown]
+        public new void TearDown()
+        {
+            base.TearDown();
+        } 
 
         [Test]
         public void AddAddress()
@@ -25,10 +33,10 @@ namespace apcurium.MK.Web.Tests
             var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
 
             var acc = sut.GetMyAccount();
-
+            var addressId = Guid.NewGuid();
             sut.AddFavoriteAddress(new SaveFavoriteAddress
                                        {
-                                           Id = Guid.NewGuid(),
+                                           Id = addressId,
                                            AccountId = TestAccount.Id,
                                            FriendlyName = "Chez François Cuvelier",
                                            Apartment = "3939",
@@ -38,6 +46,9 @@ namespace apcurium.MK.Web.Tests
                                            Longitude = -73.558064
                                        });
 
+            var addresses = sut.GetFavoriteAddresses(TestAccount.Id);
+
+            Assert.AreEqual(1, addresses.Count(x => x.Id == addressId));
         }
 
         [Test]

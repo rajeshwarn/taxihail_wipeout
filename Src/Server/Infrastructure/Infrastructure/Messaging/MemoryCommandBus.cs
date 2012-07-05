@@ -42,21 +42,18 @@ namespace Infrastructure.Messaging.InMemory
         {
             this.commands.Add(command);
 
-            Task.Factory.StartNew(() =>
+            if (command.Delay > TimeSpan.Zero)
             {
-                if (command.Delay > TimeSpan.Zero)
-                {
-                    Thread.Sleep(command.Delay);
-                }
+                Thread.Sleep(command.Delay);
+            }
 
-                var handlerType = typeof(ICommandHandler<>).MakeGenericType(command.Body.GetType());
+            var handlerType = typeof(ICommandHandler<>).MakeGenericType(command.Body.GetType());
 
-                foreach (dynamic handler in this.handlers
-                    .Where(x => handlerType.IsAssignableFrom(x.GetType())))
-                {
-                    handler.Handle((dynamic)command.Body);
-                }
-            });
+            foreach (dynamic handler in this.handlers
+                .Where(x => handlerType.IsAssignableFrom(x.GetType())))
+            {
+                handler.Handle((dynamic)command.Body);
+            }
         }
 
         public void Send(IEnumerable<Envelope<ICommand>> commands)
