@@ -14,6 +14,7 @@
 using BackOffice.Test;
 
 using BackOffice.Test;
+using NUnit.Framework;
 
 namespace apcurium.MK.Booking.Test.Integration.AccountFixture
 {
@@ -22,7 +23,6 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
     using System.Linq;
     using Infrastructure.Messaging;
     using Moq;
-    using Xunit;
     using apcurium.MK.Booking.EventHandlers;
     using apcurium.MK.Booking.Database;
     using apcurium.MK.Booking.Events;
@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
     using apcurium.MK.Booking.IBS.Impl;    
     using apcurium.MK.Common.Diagnostic;
     using apcurium.MK.Booking.Common.Tests;
-
+   
     public class given_a_view_model_generator : given_a_read_model_database
     {
         protected AccountDetailsGenerator sut;
@@ -48,9 +48,10 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
         }
     }
 
+    [TestFixture]
     public class given_no_account : given_a_view_model_generator
     {
-        [Fact]
+        [Test]
         public void when_account_registered_then_account_dto_populated()
         {
             var accountId = Guid.NewGuid();
@@ -61,7 +62,8 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 FirstName = "Bob",
                 LastName = "Smith",
                 Email = "bob.smith@acpurium.com",
-                Password = new byte[1] { 1 }
+                Password = new byte[1] { 1 },
+                IbsAcccountId = 666
             });
 
             using (var context = new BookingDbContext(dbName))
@@ -69,15 +71,16 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 var dto = context.Find<AccountDetail>(accountId);
 
                 Assert.NotNull(dto);
-                Assert.Equal("Bob", dto.FirstName);
-                Assert.Equal("Smith", dto.LastName);
-                Assert.Equal("bob.smith@acpurium.com", dto.Email);
-                Assert.Equal(1, dto.Password.Length);
-                Assert.True(dto.IBSAccountid > 0);
+                Assert.AreEqual("Bob", dto.FirstName);
+                Assert.AreEqual("Smith", dto.LastName);
+                Assert.AreEqual("bob.smith@acpurium.com", dto.Email);
+                Assert.AreEqual(1, dto.Password.Length);
+                Assert.AreEqual(666, dto.IBSAccountid);
             }
         }
     }
 
+    [TestFixture]
     public class given_existing_account : given_a_view_model_generator
     {
         private Guid _accountId = Guid.NewGuid();
@@ -95,7 +98,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
 
         }
 
-        [Fact]
+        [Test]
         public void when_account_updated_then_account_dto_populated()
         {
             this.sut.Handle(new AccountUpdated
@@ -110,8 +113,8 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 var dto = context.Find<AccountDetail>(_accountId);
 
                 Assert.NotNull(dto);
-                Assert.Equal("Robert", dto.FirstName);
-                Assert.Equal("Smither", dto.LastName);                
+                Assert.AreEqual("Robert", dto.FirstName);
+                Assert.AreEqual("Smither", dto.LastName);                
             }
         }
 

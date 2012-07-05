@@ -11,6 +11,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 // ==============================================================================================================
 
+using NUnit.Framework;
+
 namespace apcurium.MK.Booking.Common.Tests
 {
     using System;
@@ -19,11 +21,11 @@ namespace apcurium.MK.Booking.Common.Tests
     using Infrastructure.Messaging.Handling;
     using Infrastructure.Messaging.InMemory;
     using Moq;
-    using Xunit;
 
+    [TestFixture]
     public class MemoryCommandBusFixture
     {
-        [Fact]
+        [Test]
         public void WhenSendingCommand_ThenInvokesCompatibleHandler()
         {
             var handler = new Mock<ICommandHandler<TestCommand>>();
@@ -40,7 +42,7 @@ namespace apcurium.MK.Booking.Common.Tests
             handler.Verify(x => x.Handle(It.IsAny<TestCommand>()));
         }
 
-        [Fact]
+        [Test]
         public void WhenSendingCommand_ThenDoesNotInvokeIncompatibleHandler()
         {
             var compatibleHandler = new Mock<ICommandHandler<TestCommand>>();
@@ -59,7 +61,7 @@ namespace apcurium.MK.Booking.Common.Tests
             incompatibleHandler.Verify(x => x.Handle(It.IsAny<FooCommand>()), Times.Never());
         }
 
-        [Fact]
+        [Test]
         public void WhenSendingMultipleCommands_ThenInvokesCompatibleHandlerMultipleTimes()
         {
             var handler = new Mock<ICommandHandler<TestCommand>>();
@@ -75,7 +77,7 @@ namespace apcurium.MK.Booking.Common.Tests
 
             e.WaitOne(2000);
 
-            Assert.Equal(4, called);
+            Assert.AreEqual(4, called);
         }
 
         public class TestCommand : ICommand
