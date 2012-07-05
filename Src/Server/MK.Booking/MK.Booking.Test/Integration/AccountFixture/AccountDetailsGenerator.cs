@@ -23,9 +23,9 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
     using apcurium.MK.Booking.Database;
     using apcurium.MK.Booking.Events;
     using apcurium.MK.Booking.ReadModel;
-    using apcurium.MK.Booking.IBS.Impl;
-    using BackOffice.Test;
+    using apcurium.MK.Booking.IBS.Impl;    
     using apcurium.MK.Common.Diagnostic;
+    using apcurium.MK.Booking.Common.Tests;
 
     public class given_a_view_model_generator : given_a_read_model_database
     {

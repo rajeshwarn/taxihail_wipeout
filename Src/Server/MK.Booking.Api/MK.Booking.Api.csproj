@@ -71,9 +71,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Security\CustomCredentialsAuthProvider.cs" />
+    <Compile Include="Services\DirectionsService.cs" />
+    <Compile Include="Services\GeocodingService.cs" />
     <Compile Include="Services\CurrentAccountService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\FavoriteAddressesService.cs" />
+    <Compile Include="Services\GoogleApi\CommonDto.cs" />
+    <Compile Include="Services\GoogleApi\DirectionDto.cs" />
+    <Compile Include="Services\GoogleApi\GeolocDto.cs" />
     <Compile Include="Services\RegisterAccountService.cs" />
     <Compile Include="Services\SaveFavoriteAddressService.cs" />
     <Compile Include="Services\TestOnlyReqGetTestAccountService.cs" />
@@ -97,6 +102,10 @@
     <ProjectReference Include="..\MK.Booking\MK.Booking\MK.Booking.csproj">
       <Project>{BAF90740-9220-4BB0-B857-1E5927E464E9}</Project>
       <Name>MK.Booking %28MK.Booking\MK.Booking%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MK.Common\MK.Common.csproj">
+      <Project>{65033050-1D55-465A-A772-F3192F9E2428}</Project>
+      <Name>MK.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

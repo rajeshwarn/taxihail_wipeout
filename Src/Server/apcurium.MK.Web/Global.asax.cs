@@ -23,6 +23,11 @@ using ServiceStack.CacheAccess;
 using ServiceStack.CacheAccess.Providers;
 using ServiceStack.OrmLite;
 using ServiceStack.OrmLite.SqlServer;
+using apcurium.MK.Booking.IBS;
+using apcurium.MK.Booking.IBS.Impl;
+using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Booking.Common.Tests;
 
 
 namespace apcurium.MK.Web
@@ -42,7 +47,15 @@ namespace apcurium.MK.Web
                 //  .Add<Hello>("/hello")
                 //  .Add<Hello>("/hello/{Name}");
 
+//                container.Register<IWebServiceClient>( c => new WebServiceClient>() ).ReusedWithin(ReuseScope.None);;
+
+                container.Register<IWebServiceClient>(c => new WebServiceClient(c.Resolve<IConfigurationManager>(), c.Resolve<ILogger>())).ReusedWithin(ReuseScope.None);
+
+                container.Register<ILogger>(c => new Logger()).ReusedWithin(ReuseScope.None);
+
+                container.Register<IConfigurationManager>(c => new TestConfigurationManager()).ReusedWithin(ReuseScope.None);
                 
+
                 
                 container.Register<BookingDbContext>(c => new BookingDbContext("MKWeb")).ReusedWithin(ReuseScope.None);
                 container.Register<IAccountDao>(c => new AccountDao(() => c.Resolve<BookingDbContext>())).ReusedWithin(ReuseScope.None);

@@ -30,6 +30,11 @@ namespace WorkerRoleCommandProcessor
     using Microsoft.Practices.Unity;        
     using apcurium.MK.Booking.Database;
     using apcurium.MK.Booking.CommandHandlers;
+    using apcurium.MK.Booking.IBS;
+    using apcurium.MK.Booking.IBS.Impl;
+    using apcurium.MK.Common.Diagnostic;
+    using apcurium.MK.Booking.Common.Tests;
+    using apcurium.MK.Common.Configuration;
 
     public sealed partial class MoveOnProcessor : IDisposable
     {
@@ -84,6 +89,10 @@ namespace WorkerRoleCommandProcessor
             //container.RegisterType<DbContext, BackOfficeDbContext>("backoffice", new TransientLifetimeManager(), new InjectionConstructor("BackOffice"));
 
             container.RegisterType<BookingDbContext>(new TransientLifetimeManager(), new InjectionConstructor("MKWeb"));
+            container.RegisterType<IWebServiceClient, WebServiceClient>();
+            container.RegisterType<ILogger, Logger>();
+            container.RegisterType<IConfigurationManager, TestConfigurationManager>();
+            
                         
             // handlers
             container.RegisterType<ICommandHandler, AccountCommandHandler>("AccountCommandHandler");

@@ -7,6 +7,10 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
 {
     public class AddressList
     {
+        public AddressList()
+        {
+            Addresses = new Address[0];
+        }
         public Address[] Addresses { get; set; }
     }
 }
