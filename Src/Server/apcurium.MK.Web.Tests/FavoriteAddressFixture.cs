@@ -48,7 +48,7 @@ namespace apcurium.MK.Web.Tests
 
             var addresses = sut.GetFavoriteAddresses(TestAccount.Id);
 
-            Assert.AreEqual(1, addresses.Addresses.Count(x => x.Id == addressId));
+            Assert.AreEqual(1, addresses.Count(x => x.Id == addressId));
         }
 
         [Test]

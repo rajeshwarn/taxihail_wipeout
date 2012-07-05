@@ -22,9 +22,9 @@ namespace apcurium.MK.Web.Tests
         {
             Database.DefaultConnectionFactory = new ServiceConfigurationSettingConnectionFactory(Database.DefaultConnectionFactory);
 
-            var appHost = new AppHost();
-            appHost.Init();
-            appHost.Start(BaseUrl);
+            _appHost = new AppHost();
+            _appHost.Init();
+            _appHost.Start(BaseUrl);
 
             var sut = new AccountServiceClient(BaseUrl, null);
             TestAccount = sut.GetTestAccount(1);            
