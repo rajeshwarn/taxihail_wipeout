@@ -31,6 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=4.3.1.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL" />
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.0.12054\lib\nunit.framework.dll</HintPath>
     </Reference>
@@ -58,6 +59,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\apcurium.MK.Web.SelfHost\apcurium.MK.Web.SelfHost.csproj">
+      <Project>{26C054F2-4984-4FE5-811C-4D94EF7EAE15}</Project>
+      <Name>apcurium.MK.Web.SelfHost</Name>
+    </ProjectReference>
     <ProjectReference Include="..\apcurium.MK.Web\apcurium.MK.Web.csproj">
       <Project>{F4FEEEC1-E216-406E-A77A-30DD4CEAD773}</Project>
       <Name>apcurium.MK.Web</Name>
@@ -69,6 +74,10 @@
     <ProjectReference Include="..\MK.Booking.Api.Contract\MK.Booking.Api.Contract.csproj">
       <Project>{1DD86EC1-75F9-4A57-A8D6-18248048F571}</Project>
       <Name>MK.Booking.Api.Contract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MK.Common\MK.Common.csproj">
+      <Project>{65033050-1D55-465A-A772-F3192F9E2428}</Project>
+      <Name>MK.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
