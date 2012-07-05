@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
         {
             using (var context = _contextFactory.Invoke())
             {
-                return context.Query<AccountAddress>().Where(c => c.AccountId.Equals(addressId)).ToList();
+                return context.Query<FavoriteAddress>().Where(c => c.AccountId.Equals(addressId)).ToList();
             }
         }
     }
