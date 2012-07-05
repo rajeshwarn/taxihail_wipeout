@@ -15,5 +15,7 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
 
         public string Phone { get; set; }
 
+        public int IBSAccountid { get; set; }   
+
     }
 }
