@@ -35,6 +35,9 @@ namespace WorkerRoleCommandProcessor
     using apcurium.MK.Common.Diagnostic;
     using apcurium.MK.Booking.Common.Tests;
     using apcurium.MK.Common.Configuration;
+    using apcurium.MK.Booking.Security;
+    using apcurium.MK.Common.Configuration.Impl;
+    using apcurium.MK.Booking.BackOffice.CommandHandlers;
 
     public sealed partial class MoveOnProcessor : IDisposable
     {
@@ -87,8 +90,7 @@ namespace WorkerRoleCommandProcessor
 
             container.RegisterType<IBlobStorage, SqlBlobStorage>(new ContainerControlledLifetimeManager(), new InjectionConstructor("BlobStorage"));            
                         
-            container.RegisterType<BookingDbContext>(new TransientLifetimeManager(), new InjectionConstructor("MKWeb"));
-            container.RegisterType<IWebServiceClient, WebServiceClient>();
+            container.RegisterType<BookingDbContext>(new TransientLifetimeManager(), new InjectionConstructor("MKWeb"));            
             container.RegisterType<ILogger, Logger>();
             container.RegisterType<IConfigurationManager, TestConfigurationManager>();
             

@@ -15,7 +15,7 @@ namespace apcurium.MK.Booking.Common.Tests
             config.Add( "IBS.DefaultAccountPassword", "testpassword" );
             config.Add("IBS.WebServicesUserName", "taxi");
             config.Add("IBS.WebServicesPassword", "test");
-            config.Add("IBS.WebServicesUrl", "http://drivelinq.dyndns-ip.com:6928/XDS_IASPI.DLL/soap/");
+            config.Add("IBS.WebServicesUrl", "http://72.38.252.190:6928//XDS_IASPI.DLL/soap/");
 
             return config[key];
             

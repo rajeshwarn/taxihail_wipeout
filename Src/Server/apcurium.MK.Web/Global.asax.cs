@@ -22,14 +22,9 @@ using ServiceStack.ServiceInterface.Auth;
 using apcurium.MK.Booking.Api.Security;
 using ServiceStack.CacheAccess;
 using ServiceStack.CacheAccess.Providers;
-using ServiceStack.OrmLite;
-using ServiceStack.OrmLite.SqlServer;
-using apcurium.MK.Booking.IBS;
-using apcurium.MK.Booking.IBS.Impl;
-using apcurium.MK.Common.Diagnostic;
-using apcurium.MK.Common.Configuration;
-using apcurium.MK.Booking.Common.Tests;
-
+using apcurium.MK.Web.IoC;
+using ConfigurationManager = System.Configuration.ConfigurationManager;
+using UnityServiceLocator = apcurium.MK.Web.IoC.UnityServiceLocator;
 
 namespace apcurium.MK.Web
 {
@@ -47,22 +42,15 @@ namespace apcurium.MK.Web
                 Database.SetInitializer<ConfigurationDbContext>(null);
 
                 containerFunq.Adapter = new UnityContainerAdapter(UnityServiceLocator.Instance, new Logger());
-
-//                container.Register<IWebServiceClient>( c => new WebServiceClient>() ).ReusedWithin(ReuseScope.None);;
-
-                container.Register<IWebServiceClient>(c => new WebServiceClient(c.Resolve<IConfigurationManager>(), c.Resolve<ILogger>())).ReusedWithin(ReuseScope.None);
-
-                container.Register<ILogger>(c => new Logger()).ReusedWithin(ReuseScope.None);
-
-                container.Register<IConfigurationManager>(c => new TestConfigurationManager()).ReusedWithin(ReuseScope.None);
                 var container = UnityServiceLocator.Instance;
 
+                container.RegisterInstance<ILogger>(new Logger());
 
                 container.RegisterType<BookingDbContext>(new TransientLifetimeManager(), new InjectionConstructor("MKWeb"));
-                container.RegisterType<ConfigurationDbContext>(new TransientLifetimeManager(), new InjectionConstructor("MKWeb"));
-                container.RegisterInstance<IAccountDao>(new AccountDao(() => container.Resolve<BookingDbContext>()));
+                container.RegisterType<ConfigurationDbContext>(new TransientLifetimeManager(), new InjectionConstructor("MKWeb"));                
                 container.RegisterInstance<ITextSerializer>(new JsonTextSerializer());
 
+                container.RegisterInstance<IAccountDao>(new AccountDao(() => container.Resolve<BookingDbContext>()));
                 container.RegisterInstance<IConfigurationManager>(new Common.Configuration.Impl.ConfigurationManager(() => container.Resolve<ConfigurationDbContext>()));
                 container.RegisterInstance<IAccountWebServiceClient>(new AccountWebServiceClient(container.Resolve<IConfigurationManager>(), new Logger()));
 
