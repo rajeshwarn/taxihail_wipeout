@@ -11,16 +11,17 @@ namespace apcurium.MK.Web.Tests
     public class GeolocFixture : BaseTest
     {
 
-        private const string _testUserEmail = "apcurium.test@apcurium.com";
-        private const string _testUserPassword = "password";
-
-
         [TestFixtureSetUp]
         public new void Setup()
         {
             base.Setup();
-            //sut = new AccountService();
         }
+
+        [TestFixtureTearDown]
+        public new void TearDown()
+        {
+            base.TearDown();
+        } 
 
         [Test]
         public void BasicNameSearch()

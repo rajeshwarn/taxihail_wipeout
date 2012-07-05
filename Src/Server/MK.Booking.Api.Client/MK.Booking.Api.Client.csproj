@@ -73,6 +73,7 @@
     <Compile Include="DirectionsServiceClient.cs" />
     <Compile Include="GeocodingServiceClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReferenceDataServiceClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MK.Booking.Api.Contract\MK.Booking.Api.Contract.csproj">
