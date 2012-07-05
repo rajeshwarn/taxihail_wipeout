@@ -5,7 +5,10 @@ using System.Net;
 using System.Text;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
+using ServiceStack.FluentValidation;
+using ServiceStack.FluentValidation.Results;
 using ServiceStack.ServiceInterface;
+using ServiceStack.ServiceInterface.Validation;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Commands;
 using RegisterAccount = apcurium.MK.Booking.Api.Contract.Requests.RegisterAccount;
@@ -14,6 +17,8 @@ namespace apcurium.MK.Booking.Api.Services
 {
     public class SaveFavoriteAddressService : RestServiceBase<SaveFavoriteAddress> 
     {
+        public IValidator<SaveFavoriteAddress> Validator { get; set; }
+
         private readonly ICommandBus _commandBus;
         public SaveFavoriteAddressService(ICommandBus commandBus)
         {
@@ -29,6 +34,13 @@ namespace apcurium.MK.Booking.Api.Services
 
         public override object OnPost(SaveFavoriteAddress request)
         {
+            var result = this.Validator.Validate(request);
+
+            if (!result.IsValid)
+            {
+                throw result.ToException();
+            }
+
             var command = new Commands.AddFavoriteAddress();
             
             AutoMapper.Mapper.Map(request, command);

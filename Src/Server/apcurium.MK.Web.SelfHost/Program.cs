@@ -7,9 +7,11 @@ using Infrastructure.Sql.BlobStorage;
 using Infrastructure.Sql.EventSourcing;
 using Infrastructure.Sql.MessageLog;
 using Microsoft.Practices.Unity;
+using ServiceStack.ServiceInterface.Validation;
 using ServiceStack.WebHost.Endpoints;
 using Funq;
 using apcurium.MK.Booking.Api.Services;
+using apcurium.MK.Booking.Api.Validation;
 using apcurium.MK.Booking.BackOffice.CommandHandlers;
 using apcurium.MK.Booking.BackOffice.EventHandlers;
 using apcurium.MK.Booking.CommandHandlers;
@@ -100,6 +102,8 @@ namespace apcurium.MK.Web.SelfHost
 
 
             Plugins.Add(new AuthFeature(() => new AuthUserSession(), new IAuthProvider[] { new CustomCredentialsAuthProvider(container.Resolve<IAccountDao>(), container.Resolve<IPasswordService>()) }));
+            Plugins.Add(new ValidationFeature());
+            containerFunq.RegisterValidators(typeof(SaveFavoriteAddressValidator).Assembly);
 
             container.RegisterInstance<ICacheClient>(new MemoryCacheClient { FlushOnDispose = false });
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
+using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Web.SelfHost;
@@ -61,6 +62,14 @@ namespace apcurium.MK.Web.Tests
             var addresses = sut.GetFavoriteAddresses(TestAccount.Id);
 
             Assert.AreEqual(1, addresses.Count(x => x.Id == addressId));
+        }
+
+        [Test]
+        public void AddInvalidAddress()
+        {
+            var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+
+            Assert.Throws<WebServiceException>(() => sut.AddFavoriteAddress(new SaveFavoriteAddress()));
         }
 
         [Test]

@@ -83,6 +83,7 @@
     <Compile Include="Services\RegisterAccountService.cs" />
     <Compile Include="Services\SaveFavoriteAddressService.cs" />
     <Compile Include="Services\TestOnlyReqGetTestAccountService.cs" />
+    <Compile Include="Validation\SaveFavoriteAddressValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
