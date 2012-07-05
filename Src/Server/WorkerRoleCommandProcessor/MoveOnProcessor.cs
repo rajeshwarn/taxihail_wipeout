@@ -11,7 +11,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 // ==============================================================================================================
 
-using apcurium.MK.Booking.BackOffice.CommandHandlers;
+
 
 namespace WorkerRoleCommandProcessor
 {
@@ -46,15 +46,16 @@ namespace WorkerRoleCommandProcessor
         {
             OnCreating();
 
-            this.cancellationTokenSource = new CancellationTokenSource();
-            this.container = CreateContainer();
-            RegisterCommandHandlers(container);
-            
-
             Database.SetInitializer<EventStoreDbContext>(null);
             Database.SetInitializer<MessageLogDbContext>(null);
             Database.SetInitializer<BlobStorageDbContext>(null);
             Database.SetInitializer<BookingDbContext>(null);
+            Database.SetInitializer<ConfigurationDbContext>(null);
+
+            this.cancellationTokenSource = new CancellationTokenSource();
+            this.container = CreateContainer();
+            RegisterCommandHandlers(container);
+           
 
             this.processors = this.container.ResolveAll<IProcessor>().ToList();
         }
@@ -86,14 +87,14 @@ namespace WorkerRoleCommandProcessor
 
             container.RegisterType<IBlobStorage, SqlBlobStorage>(new ContainerControlledLifetimeManager(), new InjectionConstructor("BlobStorage"));            
                         
-            //container.RegisterType<DbContext, BackOfficeDbContext>("backoffice", new TransientLifetimeManager(), new InjectionConstructor("BackOffice"));
-
             container.RegisterType<BookingDbContext>(new TransientLifetimeManager(), new InjectionConstructor("MKWeb"));
             container.RegisterType<IWebServiceClient, WebServiceClient>();
             container.RegisterType<ILogger, Logger>();
             container.RegisterType<IConfigurationManager, TestConfigurationManager>();
             
-                        
+            container.RegisterType<ConfigurationDbContext>(new TransientLifetimeManager(), new InjectionConstructor("MKWeb"));
+            container.RegisterInstance<IConfigurationManager>(new ConfigurationManager(() => container.Resolve<ConfigurationDbContext>()));
+            container.RegisterInstance<IPasswordService>(new PasswordService());            
             // handlers
             container.RegisterType<ICommandHandler, AccountCommandHandler>("AccountCommandHandler");
             container.RegisterType<ICommandHandler, FavoriteAddressCommandHandler>("FavoriteAddressCommandHandler");            

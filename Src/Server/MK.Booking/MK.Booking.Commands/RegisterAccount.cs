@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Infrastructure.Messaging;
-using System.ComponentModel.DataAnnotations;
-using apcurium.MK.Common.Extensions;
 
 
 namespace apcurium.MK.Booking.Commands
@@ -26,8 +21,6 @@ namespace apcurium.MK.Booking.Commands
         public string Email { get; set; }
         public string Phone{ get; set; }        
         public string Password { get; set; }
-
-
-       
+        public int IbsAccountId { get; set; }
     }
 }

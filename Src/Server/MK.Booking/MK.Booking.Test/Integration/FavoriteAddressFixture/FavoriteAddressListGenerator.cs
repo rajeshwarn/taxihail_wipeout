@@ -31,16 +31,18 @@ namespace BackOffice.Test.Integration.FavoriteAddressFixture
         }
     }
 
-    public class given_an_address : given_a_view_model_generator
+    public class given_no_address : given_a_view_model_generator
     {
         [Fact]
         public void when_address_is_added_to_favorites_then_list_updated()
         {
             var accountId = Guid.NewGuid();
+            var addressId = Guid.NewGuid();
 
             this.sut.Handle(new FavoriteAddressAdded
             {
                 SourceId = accountId,
+                AddressId = addressId,
                 FriendlyName = "Chez François",
                 Apartment = "3939",
                 FullAddress = "1234 rue Saint-Hubert",
@@ -55,12 +57,55 @@ namespace BackOffice.Test.Integration.FavoriteAddressFixture
 
                 Assert.Single(list);
                 var dto = list.Single();
+                Assert.Equal(addressId, dto.Id);
+                Assert.Equal(accountId, dto.AccountId);
                 Assert.Equal("Chez François", dto.FriendlyName);
                 Assert.Equal("3939", dto.Apartment);
                 Assert.Equal("1234 rue Saint-Hubert", dto.FullAddress);
                 Assert.Equal("3131", dto.RingCode);
                 Assert.Equal(45.515065, dto.Latitude);
                 Assert.Equal(-73.558064, dto.Longitude);
+            }
+        }
+    }
+
+    public class given_an_address : given_a_view_model_generator
+    {
+        private readonly Guid _accountId = Guid.NewGuid();
+        private readonly Guid _addressId;
+        public given_an_address()
+        {
+            sut.Handle(new FavoriteAddressAdded
+            {
+                AddressId = Guid.NewGuid(),
+                SourceId = _accountId,
+                FriendlyName = "Chez François",
+                Apartment = "3939",
+                FullAddress = "1234 rue Saint-Hubert",
+                RingCode = "3131",
+                Latitude = 45.515065,
+                Longitude = -73.558064
+            });
+
+            using (var context = new BookingDbContext(dbName))
+            {
+                _addressId = context.Query<FavoriteAddress>().Single().Id;
+            }
+        }
+
+        [Fact]
+        public void when_address_is_removed_from_favorites_then_list_updated()
+        {
+            this.sut.Handle(new FavoriteAddressRemoved
+            {
+                SourceId = _accountId,
+                AddressId = _addressId
+            });
+
+            using (var context = new BookingDbContext(dbName))
+            {
+                var list = context.Query<FavoriteAddress>();
+                Assert.Empty(list);
             }
         }
     }

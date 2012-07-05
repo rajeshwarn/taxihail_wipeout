@@ -57,6 +57,7 @@
     <Compile Include="EnumerableEventsExtensions.cs" />
     <Compile Include="EventSourcingTestHelper.cs" />
     <Compile Include="FavoriteAddressesFixture\given_an_address.cs" />
+    <Compile Include="FavoriteAddressesFixture\given_no_address.cs" />
     <Compile Include="Integration\AccountFixture\AccountDetailsGenerator.cs" />
     <Compile Include="Integration\FavoriteAddressFixture\FavoriteAddressListGenerator.cs" />
     <Compile Include="Integration\GivenAReadModelDatabase.cs" />

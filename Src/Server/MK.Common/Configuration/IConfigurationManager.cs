@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace apcurium.MK.Common.Configuration
+﻿namespace apcurium.MK.Common.Configuration
 {
     public interface IConfigurationManager
     {

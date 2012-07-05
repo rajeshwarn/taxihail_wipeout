@@ -10,11 +10,13 @@ namespace apcurium.MK.Booking.Domain
 {
     public class Account : EventSourced
     {
+        private readonly IList<Guid> _favoriteAddresses = new List<Guid>(); 
         protected Account(Guid id) : base(id)
         {
             base.Handles<AccountRegistered>(OnAccountRegistered);
             base.Handles<AccountUpdated>(OnAccountUpdated);
             base.Handles<FavoriteAddressAdded>(OnFavoriteAddressAdded);
+            base.Handles<FavoriteAddressRemoved>(OnFavoriteAddressRemoved);
         }
 
         public Account(Guid id, IEnumerable<IVersionedEvent> history)
@@ -23,10 +25,11 @@ namespace apcurium.MK.Booking.Domain
             this.LoadFrom(history);
         }
 
-        public Account(Guid id, string firstName, string lastName, string phone, string email, string password)
+        public Account(Guid id, string firstName, string lastName, string phone, string email, byte[] password, int ibsAccountId)
             : this(id)
         {
-            if (Params.Get(firstName, lastName, phone,email, password).Any(p => p.IsNullOrEmpty()))
+            if (Params.Get(firstName, lastName, phone,email).Any(p => p.IsNullOrEmpty())
+                || ibsAccountId == 0 || password == null)
             {
                 throw new InvalidOperationException("Missing required fields");
             }
@@ -38,6 +41,7 @@ namespace apcurium.MK.Booking.Domain
                 Email = email,
                 Phone = phone,
                 Password = password,
+                IbsAcccountId = ibsAccountId
             });
         }        
         
@@ -56,7 +60,7 @@ namespace apcurium.MK.Booking.Domain
             });        
         }
 
-        public void AddFavoriteAddress(string friendlyName, string apartment, string fullAddress, string ringCode, double latitude, double longitude)
+        public void AddFavoriteAddress(Guid id, string friendlyName, string apartment, string fullAddress, string ringCode, double latitude, double longitude)
         {
             if (Params.Get(friendlyName, fullAddress).Any(p => p.IsNullOrEmpty()))
             {
@@ -75,12 +79,26 @@ namespace apcurium.MK.Booking.Domain
 
             this.Update(new FavoriteAddressAdded
             {
+                AddressId = id,
                 FriendlyName = friendlyName,
                 Apartment = apartment,
                 FullAddress = fullAddress,
                 RingCode = ringCode,
                 Latitude = latitude,
                 Longitude = longitude
+            });
+        }
+
+        public void RemoveFavoriteAddress(Guid addressId)
+        {
+            if(!_favoriteAddresses.Contains(addressId))
+            {
+                throw new InvalidOperationException("Address does not exist in account");
+            }
+
+            this.Update(new FavoriteAddressRemoved
+            {
+                AddressId = addressId
             });
         }
 
@@ -98,8 +116,14 @@ namespace apcurium.MK.Booking.Domain
 
         private void OnFavoriteAddressAdded(FavoriteAddressAdded @event)
         {
-            
+            _favoriteAddresses.Add(@event.AddressId);
         }
 
+        private void OnFavoriteAddressRemoved(FavoriteAddressRemoved @event)
+        {
+            _favoriteAddresses.Remove(@event.AddressId);
+        }
+
+        
     }
 }

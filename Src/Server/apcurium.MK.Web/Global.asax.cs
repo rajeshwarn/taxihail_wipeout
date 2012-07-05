@@ -1,19 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Security;
-using System.Web.SessionState;
+using Microsoft.Practices.Unity;
 using ServiceStack.WebHost.Endpoints;
 using Funq;
 using apcurium.MK.Booking.Api.Services;
+using apcurium.MK.Booking.IBS;
+using apcurium.MK.Booking.IBS.Impl;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.Database;
 using Infrastructure.Messaging;
 using Infrastructure.Sql.Messaging;
 using Infrastructure.Sql.Messaging.Implementation;
+using apcurium.MK.Booking.Security;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
-using System.Configuration;
 using Infrastructure.Serialization;
 using System.Data.Entity;
 using ServiceStack.ServiceInterface;
@@ -40,12 +41,12 @@ namespace apcurium.MK.Web
 
             public MKWebAppHost() : base("Mobile Knowledge Web Services", typeof(CurrentAccountService).Assembly) { }
 
-            public override void Configure(Container container)
+            public override void Configure(Container containerFunq)
             {
-                ////register user-defined REST-ful urls
-                //Routes
-                //  .Add<Hello>("/hello")
-                //  .Add<Hello>("/hello/{Name}");
+                Database.SetInitializer<BookingDbContext>(null);
+                Database.SetInitializer<ConfigurationDbContext>(null);
+
+                containerFunq.Adapter = new UnityContainerAdapter(UnityServiceLocator.Instance, new Logger());
 
 //                container.Register<IWebServiceClient>( c => new WebServiceClient>() ).ReusedWithin(ReuseScope.None);;
 
@@ -54,22 +55,27 @@ namespace apcurium.MK.Web
                 container.Register<ILogger>(c => new Logger()).ReusedWithin(ReuseScope.None);
 
                 container.Register<IConfigurationManager>(c => new TestConfigurationManager()).ReusedWithin(ReuseScope.None);
-                
-
-                
-                container.Register<BookingDbContext>(c => new BookingDbContext("MKWeb")).ReusedWithin(ReuseScope.None);
-                container.Register<IAccountDao>(c => new AccountDao(() => c.Resolve<BookingDbContext>())).ReusedWithin(ReuseScope.None);
-                container.Register<ITextSerializer>(new JsonTextSerializer());
-
-                container.Register<IMessageSender>(c => new MessageSender(new ServiceConfigurationSettingConnectionFactory(Database.DefaultConnectionFactory),
-                    ConfigurationManager.ConnectionStrings["DbContext.SqlBus"].ConnectionString, "SqlBus.Commands")).ReusedWithin(ReuseScope.None);
-
-                container.Register<ICommandBus>(c => new CommandBus(c.Resolve<IMessageSender>(), c.Resolve<ITextSerializer>())).ReusedWithin(ReuseScope.Container);
+                var container = UnityServiceLocator.Instance;
 
 
-                Plugins.Add(new AuthFeature(() => new AuthUserSession(), new IAuthProvider[] { new CustomCredentialsAuthProvider(container.Resolve <IAccountDao>()) }));
+                container.RegisterType<BookingDbContext>(new TransientLifetimeManager(), new InjectionConstructor("MKWeb"));
+                container.RegisterType<ConfigurationDbContext>(new TransientLifetimeManager(), new InjectionConstructor("MKWeb"));
+                container.RegisterInstance<IAccountDao>(new AccountDao(() => container.Resolve<BookingDbContext>()));
+                container.RegisterInstance<ITextSerializer>(new JsonTextSerializer());
 
-                container.Register<ICacheClient>(new MemoryCacheClient() { FlushOnDispose = false });
+                container.RegisterInstance<IConfigurationManager>(new Common.Configuration.Impl.ConfigurationManager(() => container.Resolve<ConfigurationDbContext>()));
+                container.RegisterInstance<IAccountWebServiceClient>(new AccountWebServiceClient(container.Resolve<IConfigurationManager>(), new Logger()));
+
+                container.RegisterInstance<IMessageSender>(new MessageSender(new ServiceConfigurationSettingConnectionFactory(Database.DefaultConnectionFactory),
+                    ConfigurationManager.ConnectionStrings["DbContext.SqlBus"].ConnectionString, "SqlBus.Commands"));
+
+                container.RegisterInstance<ICommandBus>(new CommandBus(container.Resolve<IMessageSender>(), container.Resolve<ITextSerializer>()));
+
+                container.RegisterInstance<IPasswordService>(new PasswordService());
+
+                Plugins.Add(new AuthFeature(() => new AuthUserSession(), new IAuthProvider[] { new CustomCredentialsAuthProvider(container.Resolve<IAccountDao>(), container.Resolve<IPasswordService>()) }));
+
+                container.RegisterInstance<ICacheClient>(new MemoryCacheClient{ FlushOnDispose = false });
                 
                 SetConfig(new EndpointHostConfig
                 {
@@ -80,32 +86,14 @@ namespace apcurium.MK.Web
                         },
                 });
                 
-                
-
-
-                //container.Register<BookingDbContext>(c => new BookingDbContext("MKWeb")).ReusedWithin(ReuseScope.None);
-                //container.Register<IAccountDao>(c => new AccountDao(() => c.Resolve<BookingDbContext>())).ReusedWithin(ReuseScope.None);
-                //container.Register<ITextSerializer>(new JsonTextSerializer());
-
-                //container.Register<IMessageSender>(c => new MessageSender(new ServiceConfigurationSettingConnectionFactory(Database.DefaultConnectionFactory),
-                //    ConfigurationManager.ConnectionStrings["DbContext.SqlBus"].ConnectionString, "SqlBus.Commands")).ReusedWithin(ReuseScope.None);
-
-                //container.Register<ICommandBus>(c => new CommandBus(c.Resolve<IMessageSender>(), c.Resolve<ITextSerializer>())).ReusedWithin(ReuseScope.Container);
-                
             }
-
-
-            
         }
 
         protected void Application_Start(object sender, EventArgs e)
         {
             new MKWebAppHost().Init();
-            
         }
-
-     
-
+        
         protected void Session_Start(object sender, EventArgs e)
         {
 

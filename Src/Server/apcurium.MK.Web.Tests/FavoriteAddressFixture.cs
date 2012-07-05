@@ -31,8 +31,9 @@ namespace apcurium.MK.Web.Tests
 
             sut.AddFavoriteAddress(new SaveFavoriteAddress
                                        {
+                                           Id = Guid.NewGuid(),
                                            AccountId = TestAccount.Id,
-                                           FriendlyName = "Chez François",
+                                           FriendlyName = "Chez François Cuvelier",
                                            Apartment = "3939",
                                            FullAddress = "1234 rue Saint-Hubert",
                                            RingCode = "3131",
@@ -40,6 +41,16 @@ namespace apcurium.MK.Web.Tests
                                            Longitude = -73.558064
                                        });
 
+        }
+
+        [Test]
+        public void RemoveAddress()
+        {
+            var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+
+            var acc = sut.GetMyAccount();
+
+            sut.RemoveFavoriteAddress(acc.Id, Guid.NewGuid());
         }
 
         [Test]

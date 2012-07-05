@@ -6,6 +6,7 @@ using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
 using Infrastructure.EventSourcing;
+using apcurium.MK.Booking.Security;
 
 namespace apcurium.MK.Booking.CommandHandlers
 {
@@ -15,15 +16,18 @@ namespace apcurium.MK.Booking.CommandHandlers
     {
 
         private readonly IEventSourcedRepository<Account> _repository;
+        private readonly IPasswordService _passwordService;
 
-        public AccountCommandHandler(IEventSourcedRepository<Account> repository)
+        public AccountCommandHandler(IEventSourcedRepository<Account> repository, IPasswordService passwordService)
         {
             _repository = repository;
+            _passwordService = passwordService;
         }
 
         public void Handle(RegisterAccount command)
         {
-            var account = new Account(command.AccountId, command.FirstName, command.LastName, command.Phone, command.Email, command.Password);
+            var password = _passwordService.EncodePassword(command.Password, command.AccountId.ToString());
+            var account = new Account(command.AccountId, command.FirstName, command.LastName, command.Phone, command.Email, password, command.IbsAccountId);
             _repository.Save(account);
         }
 

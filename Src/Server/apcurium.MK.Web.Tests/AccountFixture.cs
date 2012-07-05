@@ -62,9 +62,9 @@ namespace apcurium.MK.Web.Tests
         public void RegisteringAccountTest()
         {
             var sut = new AccountServiceClient(BaseUrl, null);
-            var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Email = GetTempEmail(), FirstName = "First Name Test", LastName = "Last Name Test", Password = "password" };
+            var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone =  "5146543024", Email = GetTempEmail(), FirstName = "First Name Test", LastName = "Last Name Test", Password = "password" };
             sut.RegisterAccount(newAccount);
-            Thread.Sleep(200);
+            Thread.Sleep(1000);
             sut = new AccountServiceClient(BaseUrl, new AuthInfo(newAccount.Email, newAccount.Password));
             var account = sut.GetMyAccount();
             Assert.IsNotNull(account);

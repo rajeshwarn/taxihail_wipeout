@@ -49,7 +49,6 @@
     <Compile Include="CommandHandlers\FavoriteAddressCommandHandler.cs" />
     <Compile Include="Database\BookingDbContext.cs" />
     <Compile Include="Domain\Account.cs" />
-    <Compile Include="Domain\Address.cs" />
     <Compile Include="EventHandlers\AccountDetailsGenerator.cs" />
     <Compile Include="EventHandlers\FavoriteAddressListGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -58,6 +57,8 @@
     <Compile Include="ReadModel\FavoriteAddress.cs" />
     <Compile Include="ReadModel\Query\AccountDao.cs" />
     <Compile Include="ReadModel\Query\IAccountDao.cs" />
+    <Compile Include="Security\IPasswordService.cs" />
+    <Compile Include="Security\PasswordService.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -68,10 +69,6 @@
     <ProjectReference Include="..\..\Infrastructure\Infrastructure\Infrastructure.csproj">
       <Project>{B5786D07-5888-4DF5-B295-3FEA593F3BFE}</Project>
       <Name>Infrastructure %28Infrastructure\Infrastructure%29</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\MK.Booking.IBS\MK.Booking.IBS.csproj">
-      <Project>{7B615EA9-4232-4FFB-B66C-AC7B833973C9}</Project>
-      <Name>MK.Booking.IBS</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\MK.Common\MK.Common.csproj">
       <Project>{65033050-1D55-465A-A772-F3192F9E2428}</Project>

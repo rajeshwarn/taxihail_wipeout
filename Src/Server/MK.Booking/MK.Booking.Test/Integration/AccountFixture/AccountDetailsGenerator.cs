@@ -11,6 +11,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 // ==============================================================================================================
 
+using BackOffice.Test;
+
+using BackOffice.Test;
+
 namespace apcurium.MK.Booking.Test.Integration.AccountFixture
 {
     using System;
@@ -40,7 +44,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
             bus.Setup(x => x.Send(It.IsAny<IEnumerable<Envelope<ICommand>>>()))
                 .Callback<IEnumerable<Envelope<ICommand>>>(x => this.commands.AddRange(x.Select(e => e.Body)));
 
-            this.sut = new AccountDetailsGenerator(() => new BookingDbContext(dbName), new WebServiceClient( new TestConfigurationManager(), new Logger()) );
+            this.sut = new AccountDetailsGenerator(() => new BookingDbContext(dbName) );
         }
     }
 
@@ -57,7 +61,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 FirstName = "Bob",
                 LastName = "Smith",
                 Email = "bob.smith@acpurium.com",
-                Password = "bsmith"
+                Password = new byte[1] { 1 }
             });
 
             using (var context = new BookingDbContext(dbName))
@@ -68,7 +72,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 Assert.Equal("Bob", dto.FirstName);
                 Assert.Equal("Smith", dto.LastName);
                 Assert.Equal("bob.smith@acpurium.com", dto.Email);
-                Assert.Equal("bsmith", dto.Password);
+                Assert.Equal(1, dto.Password.Length);
                 Assert.True(dto.IBSAccountid > 0);
             }
         }
@@ -86,7 +90,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 FirstName = "Bob",
                 LastName = "Smith",
                 Email = "bob.smith@acpurium.com",
-                Password = "bsmith"
+                Password = new byte[1] { 1 }
             });
 
         }

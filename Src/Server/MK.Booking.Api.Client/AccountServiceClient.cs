@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using ServiceStack.Common.Web;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Contract.Requests;
 
@@ -47,5 +43,10 @@ namespace apcurium.MK.Booking.Api.Client
             var response = Client.Post<string>(req, address);
         }
 
+        public void RemoveFavoriteAddress(Guid accountId, Guid addressId)
+        {
+            var req = string.Format("/account/{0}/addresses/{1}", accountId, addressId);
+            var response = Client.Delete<string>(req);
+        }
     }
 }

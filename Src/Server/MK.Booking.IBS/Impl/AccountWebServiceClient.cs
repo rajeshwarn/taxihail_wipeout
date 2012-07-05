@@ -1,18 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using apcurium.MK.Booking.IBS.WebServices;
-using apcurium.MK.Booking.IBS.Impl;
-
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 namespace apcurium.MK.Booking.IBS.Impl
 {
-    public class WebServiceClient : BaseService<WebAccount3Service>, IWebServiceClient
+    public class AccountWebServiceClient : BaseService<WebAccount3Service>, IAccountWebServiceClient
     {
+        protected override string GetUrl()
+        {
+            return base.GetUrl() + "IWebAccount3";
+        }
 
-        public WebServiceClient(IConfigurationManager configManager, ILogger logger) : base( configManager, logger )
+        public AccountWebServiceClient(IConfigurationManager configManager, ILogger logger) : base( configManager, logger )
         {
 
         }

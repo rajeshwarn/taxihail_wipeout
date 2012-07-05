@@ -49,11 +49,6 @@ namespace apcurium.MK.Booking.IBS.Impl
         protected virtual string GetUrl()
         {
             return ConfigManager.GetSetting("IBS.WebServicesUrl");
-
-            //return "http://drivelinq.dyndns-ip.com:6928/XDS_IASPI.DLL/soap/";
-            
-            //http://72.38.252.190:6929/XDS_IASPI.DLL/soap/";
-            //return ServiceLocator.Current.GetInstance<IAppSettings>().ServiceUrl;
         }
 
         
