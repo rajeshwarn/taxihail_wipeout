@@ -43,6 +43,12 @@ namespace apcurium.MK.Booking.Api.Client
             var response = Client.Post<string>(req, address);
         }
 
+        public void UpdateFavoriteAddress(SaveFavoriteAddress address)
+        {
+            var req = string.Format("/account/{0}/addresses/{1}", address.AccountId, address.Id);
+            var response = Client.Put<string>(req, address);
+        }
+
         public void RemoveFavoriteAddress(Guid accountId, Guid addressId)
         {
             var req = string.Format("/account/{0}/addresses/{1}", accountId, addressId);

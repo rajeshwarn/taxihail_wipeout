@@ -49,7 +49,9 @@
   <ItemGroup>
     <Compile Include="AccountFixture.cs" />
     <Compile Include="BaseTest.cs" />
+    <Compile Include="DirectionsFixture.cs" />
     <Compile Include="FavoriteAddressFixture.cs" />
+    <Compile Include="GeolocFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

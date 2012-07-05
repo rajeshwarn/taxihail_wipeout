@@ -11,13 +11,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 // ==============================================================================================================
 
-using apcurium.MK.Booking.IBS;
-using apcurium.MK.Booking.IBS.Impl;
-using apcurium.MK.Booking.Security;
-using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Configuration.Impl;
-using apcurium.MK.Booking.BackOffice.CommandHandlers;
-using apcurium.MK.Common.Diagnostic;
 
 
 namespace WorkerRoleCommandProcessor
@@ -37,6 +30,14 @@ namespace WorkerRoleCommandProcessor
     using Microsoft.Practices.Unity;        
     using apcurium.MK.Booking.Database;
     using apcurium.MK.Booking.CommandHandlers;
+    using apcurium.MK.Booking.IBS;
+    using apcurium.MK.Booking.IBS.Impl;
+    using apcurium.MK.Common.Diagnostic;
+    using apcurium.MK.Booking.Common.Tests;
+    using apcurium.MK.Common.Configuration;
+    using apcurium.MK.Booking.Security;
+    using apcurium.MK.Common.Configuration.Impl;
+    using apcurium.MK.Booking.BackOffice.CommandHandlers;
 
     public sealed partial class MoveOnProcessor : IDisposable
     {
@@ -89,7 +90,10 @@ namespace WorkerRoleCommandProcessor
 
             container.RegisterType<IBlobStorage, SqlBlobStorage>(new ContainerControlledLifetimeManager(), new InjectionConstructor("BlobStorage"));            
                         
-            container.RegisterType<BookingDbContext>(new TransientLifetimeManager(), new InjectionConstructor("MKWeb"));
+            container.RegisterType<BookingDbContext>(new TransientLifetimeManager(), new InjectionConstructor("MKWeb"));            
+            container.RegisterType<ILogger, Logger>();
+            container.RegisterType<IConfigurationManager, TestConfigurationManager>();
+            
             container.RegisterType<ConfigurationDbContext>(new TransientLifetimeManager(), new InjectionConstructor("MKWeb"));
             container.RegisterInstance<IConfigurationManager>(new ConfigurationManager(() => container.Resolve<ConfigurationDbContext>()));
             container.RegisterInstance<IPasswordService>(new PasswordService());            

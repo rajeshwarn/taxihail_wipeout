@@ -22,6 +22,9 @@ namespace apcurium.MK.Booking.Api.Services
             AutoMapper.Mapper.CreateMap<SaveFavoriteAddress, Commands.AddFavoriteAddress>()
                 .ForMember(x=>x.AddressId, opt => opt.MapFrom(x=>x.Id));
 
+            AutoMapper.Mapper.CreateMap<SaveFavoriteAddress, Commands.UpdateFavoriteAddress>()
+                .ForMember(x => x.AddressId, opt => opt.MapFrom(x => x.Id));
+
         }
 
         public override object OnPost(SaveFavoriteAddress request)
@@ -30,7 +33,6 @@ namespace apcurium.MK.Booking.Api.Services
             
             AutoMapper.Mapper.Map(request, command);
 
-            command.Id = Guid.NewGuid();
             _commandBus.Send(command);
 
             return new HttpResult(HttpStatusCode.OK);
@@ -44,6 +46,17 @@ namespace apcurium.MK.Booking.Api.Services
                 AddressId = request.Id,
                 AccountId = request.AccountId
             };
+
+            _commandBus.Send(command);
+
+            return new HttpResult(HttpStatusCode.OK);
+        }
+
+        public override object OnPut(SaveFavoriteAddress request)
+        {
+            var command = new Commands.UpdateFavoriteAddress();
+
+            AutoMapper.Mapper.Map(request, command);
 
             _commandBus.Send(command);
 

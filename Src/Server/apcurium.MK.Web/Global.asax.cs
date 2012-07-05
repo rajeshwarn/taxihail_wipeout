@@ -26,7 +26,6 @@ using apcurium.MK.Web.IoC;
 using ConfigurationManager = System.Configuration.ConfigurationManager;
 using UnityServiceLocator = apcurium.MK.Web.IoC.UnityServiceLocator;
 
-
 namespace apcurium.MK.Web
 {
     public class Global : System.Web.HttpApplication
@@ -43,14 +42,15 @@ namespace apcurium.MK.Web
                 Database.SetInitializer<ConfigurationDbContext>(null);
 
                 containerFunq.Adapter = new UnityContainerAdapter(UnityServiceLocator.Instance, new Logger());
-
                 var container = UnityServiceLocator.Instance;
 
+                container.RegisterInstance<ILogger>(new Logger());
+
                 container.RegisterType<BookingDbContext>(new TransientLifetimeManager(), new InjectionConstructor("MKWeb"));
-                container.RegisterType<ConfigurationDbContext>(new TransientLifetimeManager(), new InjectionConstructor("MKWeb"));
-                container.RegisterInstance<IAccountDao>(new AccountDao(() => container.Resolve<BookingDbContext>()));
+                container.RegisterType<ConfigurationDbContext>(new TransientLifetimeManager(), new InjectionConstructor("MKWeb"));                
                 container.RegisterInstance<ITextSerializer>(new JsonTextSerializer());
 
+                container.RegisterInstance<IAccountDao>(new AccountDao(() => container.Resolve<BookingDbContext>()));
                 container.RegisterInstance<IConfigurationManager>(new Common.Configuration.Impl.ConfigurationManager(() => container.Resolve<ConfigurationDbContext>()));
                 container.RegisterInstance<IAccountWebServiceClient>(new AccountWebServiceClient(container.Resolve<IConfigurationManager>(), new Logger()));
 

@@ -7,8 +7,6 @@ namespace apcurium.MK.Booking.Commands
     public class RegisterAccount : ICommand
     {
 
-
-
         public RegisterAccount()
         {
             Id = Guid.NewGuid();
