@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Contract.Requests;
 
@@ -30,10 +31,10 @@ namespace apcurium.MK.Booking.Api.Client
             return result.Id;
         }
 
-        public AddressList GetFavoriteAddresses(Guid accountId)
+        public IList<Address> GetFavoriteAddresses(Guid accountId)
         {
             var req = string.Format("/accounts/{0}/addresses", accountId.ToString());
-            var addresses = Client.Get<AddressList>(req);
+            var addresses = Client.Get<IList<Address>>(req);
             return addresses;
         }
 

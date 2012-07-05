@@ -126,6 +126,7 @@ namespace BackOffice.Test.Integration.FavoriteAddressFixture
             using (var context = new BookingDbContext(dbName))
             {
                 var address = context.Find<FavoriteAddress>(_addressId);
+                
                 Assert.NotNull(address);
                 Assert.AreEqual("25 rue Berri Montreal", address.FullAddress);
                 Assert.AreEqual("Chez Costo !", address.FriendlyName);
