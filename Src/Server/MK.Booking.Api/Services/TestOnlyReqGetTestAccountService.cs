@@ -61,10 +61,11 @@ namespace apcurium.MK.Booking.Api.Services
             command.FirstName = "Test";
             command.Phone = "123456";
             command.LastName = "User #" + request.Index.ToString();
+            command.IbsAccountId = 999;
             _commandBus.Send(command);
 
 
-            Thread.Sleep(400);
+            Thread.Sleep(1000);
             var account = _dao.FindByEmail(TestUserEmail);
             if (account != null)
             {

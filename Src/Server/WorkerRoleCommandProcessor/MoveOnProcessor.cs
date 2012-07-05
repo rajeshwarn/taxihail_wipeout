@@ -13,6 +13,7 @@
 
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.IBS.Impl;
+using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Booking.BackOffice.CommandHandlers;
@@ -88,12 +89,10 @@ namespace WorkerRoleCommandProcessor
 
             container.RegisterType<IBlobStorage, SqlBlobStorage>(new ContainerControlledLifetimeManager(), new InjectionConstructor("BlobStorage"));            
                         
-            //container.RegisterType<DbContext, BackOfficeDbContext>("backoffice", new TransientLifetimeManager(), new InjectionConstructor("BackOffice"));
-
             container.RegisterType<BookingDbContext>(new TransientLifetimeManager(), new InjectionConstructor("MKWeb"));
             container.RegisterType<ConfigurationDbContext>(new TransientLifetimeManager(), new InjectionConstructor("MKWeb"));
             container.RegisterInstance<IConfigurationManager>(new ConfigurationManager(() => container.Resolve<ConfigurationDbContext>()));
-                        
+            container.RegisterInstance<IPasswordService>(new PasswordService());            
             // handlers
             container.RegisterType<ICommandHandler, AccountCommandHandler>("AccountCommandHandler");
             container.RegisterType<ICommandHandler, FavoriteAddressCommandHandler>("FavoriteAddressCommandHandler");            
