@@ -91,6 +91,12 @@ namespace DatabaseInitializer
             configurationManager.SetSetting("IBS.WebServicesUrl", "http://72.38.252.190:6928//XDS_IASPI.DLL/soap/");
             configurationManager.SetSetting("IBS.DefaultAccountPassword", "password");
 
+            configurationManager.SetSetting("GeoLoc.SearchFilter", "{0},montreal,qc,canada&region=ca");
+            configurationManager.SetSetting("GeoLoc.AddressFilter", "canada");
+            configurationManager.SetSetting("Direction.FlateRate", "3.45");
+            configurationManager.SetSetting("Direction.RatePerKm", "1.70");
+            configurationManager.SetSetting("Direction.MaxDistance", "50");
+
         }
     }
 }

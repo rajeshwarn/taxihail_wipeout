@@ -11,6 +11,7 @@ using ServiceStack.Common.Web;
 using System.Net;
 using System.Globalization;
 using apcurium.MK.Booking.Api.Services.GoogleApi;
+using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -21,7 +22,11 @@ namespace apcurium.MK.Booking.Api.Services
 
     public class DirectionsService : RestServiceBase<DirectionsRequest>
     {
-
+        private IConfigurationManager _configManager;
+        public DirectionsService(IConfigurationManager configManager)
+        {
+            _configManager = configManager;
+        }
 
 
         public override object OnGet(DirectionsRequest request)
@@ -49,14 +54,14 @@ namespace apcurium.MK.Booking.Api.Services
             return result;
         }
 
-        //TODO: Must be in the settings
-        private const double _callCost = 3.45;
-        private const double _costPerKm = 1.70;
-        private const double _maxDistance = 50;
-
 
         private double? GetPrice(int? distance)
         {
+            double callCost = double.Parse(  _configManager.GetSetting("Direction.FlateRate"), CultureInfo.InvariantCulture );
+            double costPerKm = double.Parse( _configManager.GetSetting("Direction.RatePerKm"), CultureInfo.InvariantCulture );
+            double maxDistance = double.Parse( _configManager.GetSetting("Direction.MaxDistance"), CultureInfo.InvariantCulture );
+            
+
 
             double? price = null;
             try
@@ -67,11 +72,11 @@ namespace apcurium.MK.Booking.Api.Services
 
                     if (km < 5)
                     {
-                        price = _callCost + (km * _costPerKm) + (((km * _costPerKm) + _callCost) * 0.2);
+                        price = callCost + (km * costPerKm) + (((km * costPerKm) + callCost) * 0.2);
                     }
-                    else if (km < _maxDistance)
+                    else if (km < maxDistance)
                     {
-                        price = _callCost + (km * _costPerKm) + (((km * _costPerKm) + _callCost) * 0.2) + 2;
+                        price = callCost + (km * costPerKm) + (((km * costPerKm) + callCost) * 0.2) + 2;
                     }
                     else
                     {
