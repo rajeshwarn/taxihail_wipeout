@@ -11,6 +11,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 // ==============================================================================================================
 
+using NUnit.Framework;
+
 namespace apcurium.MK.Booking.Common.Tests
 {
     using System;
@@ -20,7 +22,7 @@ namespace apcurium.MK.Booking.Common.Tests
     using Infrastructure.EventSourcing;
     using Infrastructure.Messaging;
     using Infrastructure.Messaging.Handling;
-    using Xunit;
+
 
     public class EventSourcingTestHelper<T> where T : IEventSourced
     {
@@ -64,7 +66,7 @@ namespace apcurium.MK.Booking.Common.Tests
 
         public TEvent ThenHasSingle<TEvent>() where TEvent : IVersionedEvent
         {
-            Assert.Equal(1, this.Events.Count);
+            Assert.AreEqual(1, this.Events.Count);
             var @event = this.Events.Single();
             Assert.IsAssignableFrom<TEvent>(@event);
             return (TEvent)@event;
@@ -72,7 +74,7 @@ namespace apcurium.MK.Booking.Common.Tests
 
         public TEvent ThenHasOne<TEvent>() where TEvent : IVersionedEvent
         {
-            Assert.Equal(1, this.Events.OfType<TEvent>().Count());
+            Assert.AreEqual(1, this.Events.OfType<TEvent>().Count());
             var @event = this.Events.OfType<TEvent>().Single();
             return @event;
         }

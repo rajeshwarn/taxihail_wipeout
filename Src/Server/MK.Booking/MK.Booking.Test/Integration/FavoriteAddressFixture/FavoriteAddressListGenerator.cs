@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Infrastructure.Messaging;
 using Moq;
-using Xunit;
+using NUnit.Framework;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.BackOffice.EventHandlers;
 using apcurium.MK.Booking.Database;
@@ -14,6 +14,7 @@ using apcurium.MK.Booking.Test.Integration;
 
 namespace BackOffice.Test.Integration.FavoriteAddressFixture
 {
+   
     public class given_a_view_model_generator : given_a_read_model_database
     {
         protected FavoriteAddressListGenerator sut;
@@ -30,10 +31,10 @@ namespace BackOffice.Test.Integration.FavoriteAddressFixture
             this.sut = new FavoriteAddressListGenerator(() => new BookingDbContext(dbName));
         }
     }
-
+     [TestFixture]
     public class given_no_address : given_a_view_model_generator
     {
-        [Fact]
+        [Test]
         public void when_address_is_added_to_favorites_then_list_updated()
         {
             var accountId = Guid.NewGuid();
@@ -55,20 +56,20 @@ namespace BackOffice.Test.Integration.FavoriteAddressFixture
             {
                 var list = context.Query<FavoriteAddress>().Where(x => x.AccountId == accountId);
 
-                Assert.Single(list);
+                Assert.AreEqual(1, list.Count());
                 var dto = list.Single();
-                Assert.Equal(addressId, dto.Id);
-                Assert.Equal(accountId, dto.AccountId);
-                Assert.Equal("Chez François", dto.FriendlyName);
-                Assert.Equal("3939", dto.Apartment);
-                Assert.Equal("1234 rue Saint-Hubert", dto.FullAddress);
-                Assert.Equal("3131", dto.RingCode);
-                Assert.Equal(45.515065, dto.Latitude);
-                Assert.Equal(-73.558064, dto.Longitude);
+                Assert.AreEqual(addressId, dto.Id);
+                Assert.AreEqual(accountId, dto.AccountId);
+                Assert.AreEqual("Chez François", dto.FriendlyName);
+                Assert.AreEqual("3939", dto.Apartment);
+                Assert.AreEqual("1234 rue Saint-Hubert", dto.FullAddress);
+                Assert.AreEqual("3131", dto.RingCode);
+                Assert.AreEqual(45.515065, dto.Latitude);
+                Assert.AreEqual(-73.558064, dto.Longitude);
             }
         }
     }
-
+     [TestFixture]
     public class given_an_address : given_a_view_model_generator
     {
         private readonly Guid _accountId = Guid.NewGuid();
@@ -93,7 +94,7 @@ namespace BackOffice.Test.Integration.FavoriteAddressFixture
             }
         }
 
-        [Fact]
+        [Test]
         public void when_address_is_removed_from_favorites_then_list_updated()
         {
             this.sut.Handle(new FavoriteAddressRemoved
@@ -105,7 +106,7 @@ namespace BackOffice.Test.Integration.FavoriteAddressFixture
             using (var context = new BookingDbContext(dbName))
             {
                 var list = context.Query<FavoriteAddress>();
-                Assert.Empty(list);
+                Assert.IsEmpty(list);
             }
         }
     }

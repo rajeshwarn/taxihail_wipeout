@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using NUnit.Framework;
 using apcurium.MK.Booking.Common.Tests;
-using Xunit;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.CommandHandlers;
@@ -12,6 +10,7 @@ using apcurium.MK.Booking.Security;
 
 namespace apcurium.MK.Booking.Test.OrganizationFixture
 {
+    [TestFixture]
     public class given_no_account
     {
         private EventSourcingTestHelper<Account> sut;
@@ -23,21 +22,21 @@ namespace apcurium.MK.Booking.Test.OrganizationFixture
             this.sut.Setup(new AccountCommandHandler(this.sut.Repository, new PasswordService()));
         }
 
-        [Fact]
+        [Test]
         public void when_registering_account_successfully()
         {
-            this.sut.When(new RegisterAccount { AccountId = _accountId, FirstName = "Bob", LastName= "Smith", Password = "bsmith", Email = "bob.smith@apcurium.com" });
+            this.sut.When(new RegisterAccount { AccountId = _accountId, FirstName = "Bob", LastName= "Smith", Password = "bsmith", Email = "bob.smith@apcurium.com" , IbsAccountId = 666, Phone= "1523"});
 
-            Assert.Single(sut.Events);
-            Assert.Equal(_accountId, ((AccountRegistered)sut.Events.Single()).SourceId);
-            Assert.Equal("Bob", ((AccountRegistered)sut.Events.Single()).FirstName);
-            Assert.Equal("Smith", ((AccountRegistered)sut.Events.Single()).LastName);
-            Assert.NotEmpty(((AccountRegistered)sut.Events.Single()).Password);
-            Assert.Equal("bob.smith@apcurium.com", ((AccountRegistered)sut.Events.Single()).Email);
+            Assert.AreEqual(1, sut.Events.Count);
+            Assert.AreEqual(_accountId, ((AccountRegistered)sut.Events.Single()).SourceId);
+            Assert.AreEqual("Bob", ((AccountRegistered)sut.Events.Single()).FirstName);
+            Assert.AreEqual("Smith", ((AccountRegistered)sut.Events.Single()).LastName);
+            Assert.IsNotEmpty(((AccountRegistered)sut.Events.Single()).Password);
+            Assert.AreEqual("bob.smith@apcurium.com", ((AccountRegistered)sut.Events.Single()).Email);
 
         }
 
-        [Fact]
+        [Test]
         public void when_registering_account_with_missing_required_fields()
         {
             Assert.Throws<InvalidOperationException>(() => this.sut.When(new RegisterAccount { AccountId = _accountId, FirstName = "Bob" }));
