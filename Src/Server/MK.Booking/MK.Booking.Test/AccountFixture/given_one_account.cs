@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Events;
 using Xunit;
+using apcurium.MK.Booking.Security;
 
 namespace apcurium.MK.Booking.Test.OrganizationFixture
 {
@@ -20,8 +21,8 @@ namespace apcurium.MK.Booking.Test.OrganizationFixture
         public given_one_account()
         {
             this.sut = new EventSourcingTestHelper<Account>();
-            this.sut.Setup(new AccountCommandHandler(this.sut.Repository));
-            this.sut.Given(new AccountRegistered { SourceId = _accountId, FirstName = "Bob", LastName = "Smith", Password = "bsmith", Email = "bob.smith@apcurium.com" });
+            this.sut.Setup(new AccountCommandHandler(this.sut.Repository, new PasswordService()));
+            this.sut.Given(new AccountRegistered { SourceId = _accountId, FirstName = "Bob", LastName = "Smith", Password = null, Email = "bob.smith@apcurium.com" });
         }
 
         [Fact]

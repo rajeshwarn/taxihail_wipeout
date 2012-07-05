@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Infrastructure.EventSourcing;
+﻿using Infrastructure.EventSourcing;
 
 namespace apcurium.MK.Booking.Events
 {
@@ -12,7 +8,7 @@ namespace apcurium.MK.Booking.Events
         public string LastName { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
-        public string Password { get; set; }
+        public byte[] Password { get; set; }
         public int IbsAcccountId { get; set; }
     }
     

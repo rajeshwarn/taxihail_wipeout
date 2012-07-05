@@ -58,7 +58,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 FirstName = "Bob",
                 LastName = "Smith",
                 Email = "bob.smith@acpurium.com",
-                Password = "bsmith"
+                Password = new byte[1] { 1 }
             });
 
             using (var context = new BookingDbContext(dbName))
@@ -69,7 +69,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 Assert.Equal("Bob", dto.FirstName);
                 Assert.Equal("Smith", dto.LastName);
                 Assert.Equal("bob.smith@acpurium.com", dto.Email);
-                Assert.Equal("bsmith", dto.Password);
+                Assert.Equal(1, dto.Password.Length);
                 Assert.True(dto.IBSAccountid > 0);
             }
         }
@@ -87,7 +87,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 FirstName = "Bob",
                 LastName = "Smith",
                 Email = "bob.smith@acpurium.com",
-                Password = "bsmith"
+                Password = new byte[1] { 1 }
             });
 
         }

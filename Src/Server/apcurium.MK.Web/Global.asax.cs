@@ -10,6 +10,7 @@ using apcurium.MK.Booking.Database;
 using Infrastructure.Messaging;
 using Infrastructure.Sql.Messaging;
 using Infrastructure.Sql.Messaging.Implementation;
+using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
@@ -58,8 +59,9 @@ namespace apcurium.MK.Web
 
                 container.RegisterInstance<ICommandBus>(new CommandBus(container.Resolve<IMessageSender>(), container.Resolve<ITextSerializer>()));
 
+                container.RegisterInstance<IPasswordService>(new PasswordService());
 
-                Plugins.Add(new AuthFeature(() => new AuthUserSession(), new IAuthProvider[] { new CustomCredentialsAuthProvider(container.Resolve <IAccountDao>()) }));
+                Plugins.Add(new AuthFeature(() => new AuthUserSession(), new IAuthProvider[] { new CustomCredentialsAuthProvider(container.Resolve<IAccountDao>(), container.Resolve<IPasswordService>()) }));
 
                 container.RegisterInstance<ICacheClient>(new MemoryCacheClient{ FlushOnDispose = false });
                 
