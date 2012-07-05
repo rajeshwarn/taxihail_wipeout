@@ -11,6 +11,7 @@ using ServiceStack.Common.Web;
 using System.Net;
 using System.Globalization;
 using apcurium.MK.Booking.Api.Services.GoogleApi;
+using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -21,7 +22,11 @@ namespace apcurium.MK.Booking.Api.Services
 
     public class GeocodingService : RestServiceBase<GeocodingRequest>
     {
-
+        private IConfigurationManager _configManager;
+        public GeocodingService(IConfigurationManager configManager)
+        {
+            _configManager = configManager;
+        }
 
 
         public override object OnGet(GeocodingRequest request)
@@ -34,8 +39,11 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (geoResult.Status == ResultStatus.OK)
             {
+                var addressFilter = _configManager.GetSetting("GeoLoc.AddressFilter");
+
                 var addresses =  geoResult.Results
                                             .Where( r => r.Formatted_address.HasValue() &&  
+                                                         ( addressFilter.IsNullOrEmpty() || r.Formatted_address.ToLower().Contains( addressFilter.ToLower() )) && 
                                                          r.Geometry != null &&  r.Geometry.Location != null  &&
                                                          r.Geometry.Location.Lng != 0 && r.Geometry.Location.Lat != 0 && 
                                                          r.AddressComponentTypes.Any(type => type == AddressComponentType.Street_address))
@@ -65,7 +73,21 @@ namespace apcurium.MK.Booking.Api.Services
             
             if (request.Name.HasValue())
             {
-                return string.Format(  CultureInfo.InvariantCulture, "geocode/json?address={0},montreal,qc,canada&region=ca&sensor=false", request.Name.Split(' ').JoinBy("+"));
+                var filter = _configManager.GetSetting("GeoLoc.SearchFilter");
+
+                if (filter.HasValue())
+                {
+                    var filteredName = string.Format(filter, request.Name.Split(' ').JoinBy("+"));
+                    return string.Format(CultureInfo.InvariantCulture, "geocode/json?address={0}&sensor=false", filteredName );
+                }
+                else
+                {
+                    return string.Format(CultureInfo.InvariantCulture, "geocode/json?address={0}&sensor=false", request.Name.Split(' ').JoinBy("+"));
+                }
+
+
+
+                
             }
             else
             {
