@@ -10,12 +10,12 @@ namespace apcurium.MK.Booking.Api.Services
     public class RegisterAccountService : RestServiceBase<RegisterAccount>
     {
         private ICommandBus _commandBus;
-        private readonly IWebServiceClient _webServiceClient;
+        private readonly IAccountWebServiceClient _accountWebServiceClient;
 
-        public RegisterAccountService(ICommandBus commandBus, IWebServiceClient webServiceClient)
+        public RegisterAccountService(ICommandBus commandBus, IAccountWebServiceClient accountWebServiceClient)
         {
             _commandBus = commandBus;
-            _webServiceClient = webServiceClient;
+            _accountWebServiceClient = accountWebServiceClient;
 
             AutoMapper.Mapper.CreateMap<RegisterAccount, Commands.RegisterAccount>();
 
@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Api.Services
             AutoMapper.Mapper.Map( request,  command  );
                         
             command.Id = Guid.NewGuid();
-            command.IbsAccountId = _webServiceClient.CreateAccount(command.AccountId, command.Email, command.FirstName,
+            command.IbsAccountId = _accountWebServiceClient.CreateAccount(command.AccountId, command.Email, command.FirstName,
                                                                    command.LastName, command.Phone);
                         
             _commandBus.Send(command);

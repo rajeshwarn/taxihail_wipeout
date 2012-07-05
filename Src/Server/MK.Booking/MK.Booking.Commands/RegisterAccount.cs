@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Infrastructure.Messaging;
-using System.ComponentModel.DataAnnotations;
-using apcurium.MK.Common.Extensions;
 
 
 namespace apcurium.MK.Booking.Commands

@@ -20,7 +20,7 @@ namespace BackOffice.Test.FavoriteAddressesFixture
         {
             this.sut = new EventSourcingTestHelper<Account>();
             this.sut.Setup(new FavoriteAddressCommandHandler(this.sut.Repository));
-            this.sut.Given(new AccountRegistered { SourceId = _accountId, FirstName = "Bob", LastName = "Smith", Password = "bsmith", Email = "bob.smith@apcurium.com" });
+            this.sut.Given(new AccountRegistered { SourceId = _accountId, FirstName = "Bob", LastName = "Smith", Password = null, Email = "bob.smith@apcurium.com" });
         }
 
         [Fact]

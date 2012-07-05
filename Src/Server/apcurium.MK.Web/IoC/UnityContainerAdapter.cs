@@ -23,7 +23,7 @@ namespace apcurium.MK.Web.IoC
             }
             catch (ResolutionFailedException e)
             {
-                _logger.LogMessage("Failed resolution for " + e.Message);
+                _logger.LogMessage("Warning: Failed resolution for " + typeof(T).Name);
                 return default(T);
             }
         }
@@ -36,7 +36,7 @@ namespace apcurium.MK.Web.IoC
             }
             catch (ResolutionFailedException e)
             {
-                _logger.LogMessage("Failed resolution for " + e.Message);
+                _logger.LogMessage("Warning: Failed resolution for " + typeof(T).Name);
                 return default(T);
             }
         }

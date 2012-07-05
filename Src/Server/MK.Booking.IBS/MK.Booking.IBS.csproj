@@ -41,10 +41,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IBookingWebServiceClient.cs" />
     <Compile Include="Impl\BaseService.cs" />
-    <Compile Include="Impl\WebServiceClient.cs" />
-    <Compile Include="IWebServiceClient.cs" />
+    <Compile Include="Impl\AccountWebServiceClient.cs" />
+    <Compile Include="IAccountWebServiceClient.cs" />
+    <Compile Include="Impl\BookingWebServiceClient.cs" />
+    <Compile Include="IStaticDataWebServiceClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Impl\StaticDataWebServiceClient.cs" />
     <Compile Include="WebServices\StaticDataservice.cs" />
     <Compile Include="WebServices\WebAccount3Service.cs">
       <SubType>Component</SubType>

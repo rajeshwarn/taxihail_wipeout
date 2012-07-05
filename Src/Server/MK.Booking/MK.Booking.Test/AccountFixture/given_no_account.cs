@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Events;
+using apcurium.MK.Booking.Security;
 
 namespace apcurium.MK.Booking.Test.OrganizationFixture
 {
@@ -19,7 +20,7 @@ namespace apcurium.MK.Booking.Test.OrganizationFixture
         public given_no_account()
         {
             this.sut = new EventSourcingTestHelper<Account>();
-            this.sut.Setup(new AccountCommandHandler(this.sut.Repository));
+            this.sut.Setup(new AccountCommandHandler(this.sut.Repository, new PasswordService()));
         }
 
         [Fact]
@@ -31,7 +32,7 @@ namespace apcurium.MK.Booking.Test.OrganizationFixture
             Assert.Equal(_accountId, ((AccountRegistered)sut.Events.Single()).SourceId);
             Assert.Equal("Bob", ((AccountRegistered)sut.Events.Single()).FirstName);
             Assert.Equal("Smith", ((AccountRegistered)sut.Events.Single()).LastName);
-            Assert.Equal("bsmith", ((AccountRegistered)sut.Events.Single()).Password);
+            Assert.NotEmpty(((AccountRegistered)sut.Events.Single()).Password);
             Assert.Equal("bob.smith@apcurium.com", ((AccountRegistered)sut.Events.Single()).Email);
             Assert.Equal("888", ((AccountRegistered)sut.Events.Single()).Phone);
 

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace apcurium.MK.Booking.IBS
 {
-    public interface IWebServiceClient
+    public interface IAccountWebServiceClient
     {
         int CreateAccount(Guid accountId, string email, string firstName, string lastName, string phone);
     }
