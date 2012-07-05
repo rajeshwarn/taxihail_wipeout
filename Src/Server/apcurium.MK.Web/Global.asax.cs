@@ -7,13 +7,17 @@ using System.Web.SessionState;
 using ServiceStack.WebHost.Endpoints;
 using Funq;
 using apcurium.MK.Booking.Api.Services;
+using apcurium.MK.Booking.IBS;
+using apcurium.MK.Booking.IBS.Impl;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.Database;
 using Infrastructure.Messaging;
 using Infrastructure.Sql.Messaging;
 using Infrastructure.Sql.Messaging.Implementation;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
-using System.Configuration;
 using Infrastructure.Serialization;
 using System.Data.Entity;
 using ServiceStack.ServiceInterface;
@@ -23,6 +27,7 @@ using ServiceStack.CacheAccess;
 using ServiceStack.CacheAccess.Providers;
 using ServiceStack.OrmLite;
 using ServiceStack.OrmLite.SqlServer;
+using ConfigurationManager = System.Configuration.ConfigurationManager;
 
 
 namespace apcurium.MK.Web
@@ -43,10 +48,15 @@ namespace apcurium.MK.Web
                 //  .Add<Hello>("/hello/{Name}");
 
                 Database.SetInitializer<BookingDbContext>(null);
+                Database.SetInitializer<ConfigurationDbContext>(null);
                 
                 container.Register<BookingDbContext>(c => new BookingDbContext("MKWeb")).ReusedWithin(ReuseScope.None);
-                container.Register<IAccountDao>(c => new AccountDao(() => c.Resolve<BookingDbContext>())).ReusedWithin(ReuseScope.None);
+                container.Register<IAccountDao>(c => new AccountDao(c.Resolve<BookingDbContext>)).ReusedWithin(ReuseScope.None);
                 container.Register<ITextSerializer>(new JsonTextSerializer());
+
+                container.Register<ConfigurationDbContext>(c => new ConfigurationDbContext("MKWeb"));
+                container.Register<IConfigurationManager>(new Common.Configuration.Impl.ConfigurationManager(container.Resolve<ConfigurationDbContext>));
+                container.Register<IWebServiceClient>(new WebServiceClient(container.Resolve<IConfigurationManager>(), new Logger()));
 
                 container.Register<IMessageSender>(c => new MessageSender(new ServiceConfigurationSettingConnectionFactory(Database.DefaultConnectionFactory),
                     ConfigurationManager.ConnectionStrings["DbContext.SqlBus"].ConnectionString, "SqlBus.Commands")).ReusedWithin(ReuseScope.None);

@@ -90,6 +90,10 @@
       <Project>{1DD86EC1-75F9-4A57-A8D6-18248048F571}</Project>
       <Name>MK.Booking.Api.Contract</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MK.Booking.IBS\MK.Booking.IBS.csproj">
+      <Project>{7B615EA9-4232-4FFB-B66C-AC7B833973C9}</Project>
+      <Name>MK.Booking.IBS</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MK.Booking\MK.Booking.Commands\MK.Booking.Commands.csproj">
       <Project>{20AEA350-AD91-4053-A8B5-582E13ED43AA}</Project>
       <Name>MK.Booking.Commands</Name>
