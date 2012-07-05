@@ -5,6 +5,7 @@ using System.Text;
 using NUnit.Framework;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Web.SelfHost;
 
 namespace apcurium.MK.Web.Tests
 {
@@ -16,8 +17,14 @@ namespace apcurium.MK.Web.Tests
         public new void Setup()
         {
             base.Setup();
-            
+
         }
+
+        [TestFixtureTearDown]
+        public new void TearDown()
+        {
+            base.TearDown();
+        } 
 
         [Test]
         public void AddAddress()

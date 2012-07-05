@@ -37,16 +37,13 @@ namespace Infrastructure.Messaging.InMemory
         {
             this.events.Add(@event);
 
-            Task.Factory.StartNew(() =>
-            {
-                var handlerType = typeof(IEventHandler<>).MakeGenericType(@event.GetType());
+            var handlerType = typeof(IEventHandler<>).MakeGenericType(@event.GetType());
 
-                foreach (dynamic handler in this.handlers
-                    .Where(x => handlerType.IsAssignableFrom(x.GetType())))
-                {
-                    handler.Handle((dynamic)@event);
-                }
-            });
+            foreach (dynamic handler in this.handlers
+                .Where(x => handlerType.IsAssignableFrom(x.GetType())))
+            {
+                handler.Handle((dynamic)@event);
+            }
         }
 
         public void Publish(IEnumerable<IEvent> events)
