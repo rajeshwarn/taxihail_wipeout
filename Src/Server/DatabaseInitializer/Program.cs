@@ -87,7 +87,8 @@ namespace DatabaseInitializer
 
             configurationManager.SetSetting("IBS.WebServicesUserName", "taxi");
             configurationManager.SetSetting("IBS.WebServicesPassword", "test");
-            configurationManager.SetSetting("IBS.WebServicesUrl", "http://drivelinq.dyndns-ip.com:6928/XDS_IASPI.DLL/soap/");
+            //configurationManager.SetSetting("IBS.WebServicesUrl", "http://drivelinq.dyndns-ip.com:6928/XDS_IASPI.DLL/soap/");
+            configurationManager.SetSetting("IBS.WebServicesUrl", "http://72.38.252.190:6928//XDS_IASPI.DLL/soap/");
             configurationManager.SetSetting("IBS.DefaultAccountPassword", "password");
 
         }
