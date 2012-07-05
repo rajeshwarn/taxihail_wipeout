@@ -27,10 +27,10 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
     using apcurium.MK.Booking.Database;
     using apcurium.MK.Booking.Events;
     using apcurium.MK.Booking.ReadModel;
-    using apcurium.MK.Booking.IBS.Impl;    
+    using apcurium.MK.Booking.IBS.Impl;
     using apcurium.MK.Common.Diagnostic;
     using apcurium.MK.Booking.Common.Tests;
-   
+
     public class given_a_view_model_generator : given_a_read_model_database
     {
         protected AccountDetailsGenerator sut;
@@ -44,7 +44,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
             bus.Setup(x => x.Send(It.IsAny<IEnumerable<Envelope<ICommand>>>()))
                 .Callback<IEnumerable<Envelope<ICommand>>>(x => this.commands.AddRange(x.Select(e => e.Body)));
 
-            this.sut = new AccountDetailsGenerator(() => new BookingDbContext(dbName) );
+            this.sut = new AccountDetailsGenerator(() => new BookingDbContext(dbName));
         }
     }
 
@@ -57,14 +57,14 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
             var accountId = Guid.NewGuid();
 
             this.sut.Handle(new AccountRegistered
-            {
-                SourceId = accountId,
-                FirstName = "Bob",
-                LastName = "Smith",
-                Email = "bob.smith@acpurium.com",
-                Password = new byte[1] { 1 },
-                IbsAcccountId = 666
-            });
+                                {
+                                    SourceId = accountId,
+                                    FirstName = "Bob",
+                                    LastName = "Smith",
+                                    Email = "bob.smith@acpurium.com",
+                                    Password = new byte[1] {1},
+                                    IbsAcccountId = 666
+                                });
 
             using (var context = new BookingDbContext(dbName))
             {
@@ -88,13 +88,13 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
         public given_existing_account()
         {
             this.sut.Handle(new AccountRegistered
-            {
-                SourceId = _accountId,
-                FirstName = "Bob",
-                LastName = "Smith",
-                Email = "bob.smith@acpurium.com",
-                Password = new byte[1] { 1 }
-            });
+                                {
+                                    SourceId = _accountId,
+                                    FirstName = "Bob",
+                                    LastName = "Smith",
+                                    Email = "bob.smith@acpurium.com",
+                                    Password = new byte[1] {1}
+                                });
 
         }
 
@@ -102,11 +102,11 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
         public void when_account_updated_then_account_dto_populated()
         {
             this.sut.Handle(new AccountUpdated
-            {
-                SourceId = _accountId, 
-                FirstName = "Robert",
-                LastName = "Smither",                
-            });
+                                {
+                                    SourceId = _accountId,
+                                    FirstName = "Robert",
+                                    LastName = "Smither",
+                                });
 
             using (var context = new BookingDbContext(dbName))
             {
@@ -114,9 +114,62 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
 
                 Assert.NotNull(dto);
                 Assert.AreEqual("Robert", dto.FirstName);
-                Assert.AreEqual("Smither", dto.LastName);                
+                Assert.AreEqual("Smither", dto.LastName);
             }
         }
 
+
+
+        [TestFixture]
+        public class given_settings_account : given_a_view_model_generator
+        {
+            private Guid _accountId = Guid.NewGuid();
+
+            public given_settings_account()
+            {
+                this.sut.Handle(new AccountRegistered
+                                    {
+                                        SourceId = _accountId,
+                                        FirstName = "Bob",
+                                        LastName = "Smith",
+                                        Email = "bob.smith@acpurium.com",
+                                        Password = new byte[1] {1}
+                                    });
+
+            }
+
+            [Test]
+            public void when_settings_updated_then_account_dto_populated()
+            {
+                this.sut.Handle(new BookingSettingsUpdated
+                                    {
+                                        SourceId = _accountId,
+                                        FirstName = "Robert",
+                                        LastName = "Smither",
+                                        ChargeTypeId = 123,
+                                        NumberOfTaxi = 3,
+                                        Phone = "123",
+                                        Passengers = 3,
+                                        ProviderId = 85,
+                                        VehicleTypeId = 69
+                                    });
+
+                using (var context = new BookingDbContext(dbName))
+                {
+                    var dto = context.Find<AccountDetail>(_accountId);
+
+                    Assert.NotNull(dto);
+                    Assert.AreEqual("Robert", dto.Settings.FirstName);
+                    Assert.AreEqual("Smither", dto.Settings.LastName);
+                    Assert.AreEqual(123, dto.Settings.ChargeTypeId);
+                    Assert.AreEqual(3, dto.Settings.NumberOfTaxi);
+                    Assert.AreEqual("123", dto.Settings.Phone);
+                    Assert.AreEqual(3, dto.Settings.Passengers);
+                    Assert.AreEqual(85, dto.Settings.ProviderId);
+                    Assert.AreEqual(69, dto.Settings.VehicleTypeId);
+                }
+            }
+
+        }
     }
 }

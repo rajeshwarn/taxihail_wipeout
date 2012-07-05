@@ -12,7 +12,9 @@ namespace apcurium.MK.Booking.CommandHandlers
 {
 
 
-    public class AccountCommandHandler : ICommandHandler<RegisterAccount>, ICommandHandler<UpdateAccount>
+    public class AccountCommandHandler : ICommandHandler<RegisterAccount>, 
+                                         ICommandHandler<UpdateAccount>,
+                                         ICommandHandler<UpdateBookingSettings>
     {
 
         private readonly IEventSourcedRepository<Account> _repository;
@@ -22,6 +24,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             _repository = repository;
             _passwordService = passwordService;
+            AutoMapper.Mapper.CreateMap<UpdateBookingSettings, BookingSettings>();
         }
 
         public void Handle(RegisterAccount command)
@@ -37,6 +40,16 @@ namespace apcurium.MK.Booking.CommandHandlers
             account.Update(command.FirstName, command.LastName);
             _repository.Save(account);
             
+        }
+
+        public void Handle(UpdateBookingSettings command)
+        {
+            var account = _repository.Find(command.AccountId);
+
+            var settings = new BookingSettings();
+            AutoMapper.Mapper.Map(command, settings);
+            account.UpdateBookingSettings(settings);
+            _repository.Save(account);
         }
     }
 }

@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccountFixture\given_booking_settings.cs" />
     <Compile Include="AccountFixture\given_no_account.cs" />
     <Compile Include="AccountFixture\given_one_account.cs" />
     <Compile Include="EnumerableEventsExtensions.cs" />
