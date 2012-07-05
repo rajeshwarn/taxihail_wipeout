@@ -13,11 +13,24 @@ namespace apcurium.MK.Web.Tests
     [TestFixture]
     public class FavoriteAddressFixture: BaseTest
     {
+        private readonly Guid _knownAddressId = Guid.NewGuid();
 
         [TestFixtureSetUp]
         public new void Setup()
         {
             base.Setup();
+
+            var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+
+            sut.AddFavoriteAddress(new SaveFavoriteAddress
+            {
+                Id = _knownAddressId,
+                AccountId = TestAccount.Id,
+                FriendlyName = "La Boite à Jojo",
+                FullAddress = "1234 rue Saint-Denis",
+                Latitude = 45.515065,
+                Longitude = -73.558064
+            });
 
         }
 
@@ -32,7 +45,6 @@ namespace apcurium.MK.Web.Tests
         {
             var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
 
-            var acc = sut.GetMyAccount();
             var addressId = Guid.NewGuid();
             sut.AddFavoriteAddress(new SaveFavoriteAddress
                                        {
@@ -56,11 +68,9 @@ namespace apcurium.MK.Web.Tests
         {
             var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
 
-            var acc = sut.GetMyAccount();
-
             sut.UpdateFavoriteAddress(new SaveFavoriteAddress
             {
-                Id = Guid.NewGuid(),
+                Id = _knownAddressId,
                 AccountId = TestAccount.Id,
                 FriendlyName = "Chez François Cuvelier",
                 Apartment = "3939",
@@ -77,9 +87,10 @@ namespace apcurium.MK.Web.Tests
         {
             var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
 
-            var acc = sut.GetMyAccount();
+            sut.RemoveFavoriteAddress(TestAccount.Id, _knownAddressId);
 
-            sut.RemoveFavoriteAddress(acc.Id, Guid.NewGuid());
+            var addresses = sut.GetFavoriteAddresses(TestAccount.Id);
+            Assert.IsEmpty(addresses.Where(x => x.Id == _knownAddressId));
         }
 
         [Test]
@@ -87,9 +98,7 @@ namespace apcurium.MK.Web.Tests
         {
             var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
 
-            var acc = sut.GetMyAccount(); 
-            
-            var adresses = sut.GetFavoriteAddresses(acc.Id);
+            var adresses = sut.GetFavoriteAddresses(TestAccount.Id);
                         
         }
 
