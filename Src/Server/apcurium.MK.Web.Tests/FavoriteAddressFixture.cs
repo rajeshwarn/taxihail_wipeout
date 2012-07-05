@@ -19,7 +19,7 @@ namespace apcurium.MK.Web.Tests
         public new void Setup()
         {
             base.Setup();
-            
+
         }
 
         [Test]

@@ -9,7 +9,7 @@ namespace apcurium.MK.Web.Tests
 {
     public class BaseTest
     {
-        protected string BaseUrl { get { return "http://localhost.:6900/api"; }}
+        protected string BaseUrl { get { return "http://localhost:6901/"; }}
 
         protected Account TestAccount { get; set; }
         protected string TestAccountPassword { get { return "password1"; } }
@@ -17,7 +17,7 @@ namespace apcurium.MK.Web.Tests
         protected void Setup()
         {
             var sut = new AccountServiceClient(BaseUrl, null);
-            TestAccount = sut.GetTestAccount(0);            
+            TestAccount = sut.GetTestAccount(1);            
         }
     }
 }

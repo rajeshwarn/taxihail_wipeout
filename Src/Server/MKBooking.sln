@@ -50,6 +50,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.Api.Client", "MK
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.IBS", "MK.Booking.IBS\MK.Booking.IBS.csproj", "{7B615EA9-4232-4FFB-B66C-AC7B833973C9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "apcurium.MK.Web.SelfHost", "apcurium.MK.Web.SelfHost\apcurium.MK.Web.SelfHost.csproj", "{26C054F2-4984-4FE5-811C-4D94EF7EAE15}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -348,6 +350,21 @@ Global
 		{7B615EA9-4232-4FFB-B66C-AC7B833973C9}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{7B615EA9-4232-4FFB-B66C-AC7B833973C9}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{7B615EA9-4232-4FFB-B66C-AC7B833973C9}.Release|x86.ActiveCfg = Release|Any CPU
+		{26C054F2-4984-4FE5-811C-4D94EF7EAE15}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{26C054F2-4984-4FE5-811C-4D94EF7EAE15}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{26C054F2-4984-4FE5-811C-4D94EF7EAE15}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{26C054F2-4984-4FE5-811C-4D94EF7EAE15}.Debug|x86.ActiveCfg = Debug|x86
+		{26C054F2-4984-4FE5-811C-4D94EF7EAE15}.Debug|x86.Build.0 = Debug|x86
+		{26C054F2-4984-4FE5-811C-4D94EF7EAE15}.DebugLocal|Any CPU.ActiveCfg = Debug|x86
+		{26C054F2-4984-4FE5-811C-4D94EF7EAE15}.DebugLocal|Mixed Platforms.ActiveCfg = Debug|x86
+		{26C054F2-4984-4FE5-811C-4D94EF7EAE15}.DebugLocal|Mixed Platforms.Build.0 = Debug|x86
+		{26C054F2-4984-4FE5-811C-4D94EF7EAE15}.DebugLocal|x86.ActiveCfg = Debug|x86
+		{26C054F2-4984-4FE5-811C-4D94EF7EAE15}.DebugLocal|x86.Build.0 = Debug|x86
+		{26C054F2-4984-4FE5-811C-4D94EF7EAE15}.Release|Any CPU.ActiveCfg = Release|x86
+		{26C054F2-4984-4FE5-811C-4D94EF7EAE15}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{26C054F2-4984-4FE5-811C-4D94EF7EAE15}.Release|Mixed Platforms.Build.0 = Release|x86
+		{26C054F2-4984-4FE5-811C-4D94EF7EAE15}.Release|x86.ActiveCfg = Release|x86
+		{26C054F2-4984-4FE5-811C-4D94EF7EAE15}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -64,14 +64,7 @@ namespace apcurium.MK.Booking.Api.Services
             command.IbsAccountId = 999;
             _commandBus.Send(command);
 
-
-            Thread.Sleep(1000);
-            var account = _dao.FindByEmail(TestUserEmail);
-            if (account != null)
-            {
-                return account;
-            }
-            return new HttpResult(HttpStatusCode.RequestTimeout);
+            return _dao.FindByEmail(testEmail);
         }
 
     }
