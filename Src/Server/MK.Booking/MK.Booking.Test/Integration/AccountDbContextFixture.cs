@@ -19,7 +19,7 @@
 
 //    public class CompanyDbContextFixture
 //    {
-//        [Fact]
+//        [Test]
 //        public void when_saving_process_then_can_retrieve_it()
 //        {
 //            var dbName = this.GetType().Name + "-" + Guid.NewGuid();
