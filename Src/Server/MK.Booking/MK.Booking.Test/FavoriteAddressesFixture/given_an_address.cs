@@ -18,7 +18,8 @@ namespace BackOffice.Test.FavoriteAddressesFixture
         private readonly Guid _accountId = Guid.NewGuid();
         private readonly Guid _addressId = Guid.NewGuid();
 
-        public given_an_address()
+        [SetUp]
+        public void Setup()
         {
             this.sut = new EventSourcingTestHelper<Account>();
             this.sut.Setup(new FavoriteAddressCommandHandler(this.sut.Repository));
@@ -47,18 +48,18 @@ namespace BackOffice.Test.FavoriteAddressesFixture
             }));
         }
 
-        [Fact]
+        [Test]
         public void when_address_updated_successfully()
         {
             this.sut.When(new UpdateFavoriteAddress { AccountId = _accountId, AddressId = _addressId, FriendlyName = "Chez Costo", FullAddress = "1234 rue Saint-Hubert" });
 
-            Assert.Single(sut.Events);
+            Assert.AreEqual(1, sut.Events.Count());
             var evt = (FavoriteAddressUpdated)sut.Events.Single();
-            Assert.Equal(_accountId, evt.SourceId);
-            Assert.Equal(_addressId, evt.AddressId);
+            Assert.AreEqual(_accountId, evt.SourceId);
+            Assert.AreEqual(_addressId, evt.AddressId);
         }
 
-        [Fact]
+        [Test]
         public void when_address_updated_with_missing_value()
         {
             Assert.Throws<InvalidOperationException>(() => this.sut.When(new UpdateFavoriteAddress { AccountId = _accountId, AddressId = _addressId, FriendlyName = "Chez Costo"}));

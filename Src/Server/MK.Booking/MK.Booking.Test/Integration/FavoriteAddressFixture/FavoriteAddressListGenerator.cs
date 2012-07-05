@@ -73,8 +73,10 @@ namespace BackOffice.Test.Integration.FavoriteAddressFixture
     public class given_an_address : given_a_view_model_generator
     {
         private readonly Guid _accountId = Guid.NewGuid();
-        private readonly Guid _addressId;
-        public given_an_address()
+        private Guid _addressId;
+        
+        [SetUp] 
+        public void Setup()
         {
             sut.Handle(new FavoriteAddressAdded
             {
@@ -110,7 +112,7 @@ namespace BackOffice.Test.Integration.FavoriteAddressFixture
             }
         }
 
-        [Fact]
+        [Test]
         public void when_address_is_updated_successfully()
         {
             this.sut.Handle(new FavoriteAddressUpdated
@@ -125,12 +127,12 @@ namespace BackOffice.Test.Integration.FavoriteAddressFixture
             {
                 var address = context.Find<FavoriteAddress>(_addressId);
                 Assert.NotNull(address);
-                Assert.Equal("25 rue Berri Montreal", address.FullAddress);
-                Assert.Equal("Chez Costo !", address.FriendlyName);
+                Assert.AreEqual("25 rue Berri Montreal", address.FullAddress);
+                Assert.AreEqual("Chez Costo !", address.FriendlyName);
                 Assert.Null(address.RingCode);
                 Assert.Null(address.Apartment);
-                Assert.Equal(0,address.Latitude);
-                Assert.Equal(0, address.Longitude);
+                Assert.AreEqual(0, address.Latitude);
+                Assert.AreEqual(0, address.Longitude);
             }
         }
     }
