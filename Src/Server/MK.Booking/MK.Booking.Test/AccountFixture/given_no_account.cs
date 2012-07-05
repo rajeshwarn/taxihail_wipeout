@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.Test.OrganizationFixture
         [Fact]
         public void when_registering_account_successfully()
         {
-            this.sut.When(new RegisterAccount { AccountId = _accountId, FirstName = "Bob", LastName= "Smith", Password = "bsmith", Email = "bob.smith@apcurium.com" });
+            this.sut.When(new RegisterAccount { AccountId = _accountId, FirstName = "Bob", LastName= "Smith", Phone = "888", Password = "bsmith", Email = "bob.smith@apcurium.com" });
 
             Assert.Single(sut.Events);
             Assert.Equal(_accountId, ((AccountRegistered)sut.Events.Single()).SourceId);
@@ -33,6 +33,7 @@ namespace apcurium.MK.Booking.Test.OrganizationFixture
             Assert.Equal("Smith", ((AccountRegistered)sut.Events.Single()).LastName);
             Assert.Equal("bsmith", ((AccountRegistered)sut.Events.Single()).Password);
             Assert.Equal("bob.smith@apcurium.com", ((AccountRegistered)sut.Events.Single()).Email);
+            Assert.Equal("888", ((AccountRegistered)sut.Events.Single()).Phone);
 
         }
 

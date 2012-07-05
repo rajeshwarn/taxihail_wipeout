@@ -45,5 +45,22 @@ namespace BackOffice.Test.FavoriteAddressesFixture
                 AddressId = Guid.NewGuid()
             }));
         }
+
+        [Fact]
+        public void when_address_updated_successfully()
+        {
+            this.sut.When(new UpdateFavoriteAddress { AccountId = _accountId, AddressId = _addressId, FriendlyName = "Chez Costo", FullAddress = "1234 rue Saint-Hubert" });
+
+            Assert.Single(sut.Events);
+            var evt = (FavoriteAddressUpdated)sut.Events.Single();
+            Assert.Equal(_accountId, evt.SourceId);
+            Assert.Equal(_addressId, evt.AddressId);
+        }
+
+        [Fact]
+        public void when_address_updated_with_missing_value()
+        {
+            Assert.Throws<InvalidOperationException>(() => this.sut.When(new UpdateFavoriteAddress { AccountId = _accountId, AddressId = _addressId, FriendlyName = "Chez Costo"}));
+        }
     }
 }

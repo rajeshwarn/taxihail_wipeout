@@ -17,6 +17,7 @@ namespace apcurium.MK.Booking.Domain
             base.Handles<AccountUpdated>(OnAccountUpdated);
             base.Handles<FavoriteAddressAdded>(OnFavoriteAddressAdded);
             base.Handles<FavoriteAddressRemoved>(OnFavoriteAddressRemoved);
+            base.Handles<FavoriteAddressUpdated>(OnFavoriteAddressUpdated);
         }
 
         public Account(Guid id, IEnumerable<IVersionedEvent> history)
@@ -62,22 +63,25 @@ namespace apcurium.MK.Booking.Domain
 
         public void AddFavoriteAddress(Guid id, string friendlyName, string apartment, string fullAddress, string ringCode, double latitude, double longitude)
         {
-            if (Params.Get(friendlyName, fullAddress).Any(p => p.IsNullOrEmpty()))
-            {
-                throw new InvalidOperationException("Missing required fields");
-            }
-
-            if (latitude < -90 || latitude > 90)
-            {
-                throw new ArgumentOutOfRangeException("latitude", "Invalid latitude");
-            }
-
-            if (longitude < -180 || latitude > 180)
-            {
-                throw new ArgumentOutOfRangeException("longitude", "Invalid longitude");
-            }
+            ValidateFavoriteAddress(friendlyName, fullAddress, latitude, longitude);
 
             this.Update(new FavoriteAddressAdded
+            {
+                AddressId = id,
+                FriendlyName = friendlyName,
+                Apartment = apartment,
+                FullAddress = fullAddress,
+                RingCode = ringCode,
+                Latitude = latitude,
+                Longitude = longitude
+            });
+        }
+
+        public void UpdateFavoriteAddress(Guid id, string friendlyName, string apartment, string fullAddress, string ringCode, double latitude, double longitude)
+        {
+            ValidateFavoriteAddress(friendlyName, fullAddress, latitude, longitude);
+
+            this.Update(new FavoriteAddressUpdated()
             {
                 AddressId = id,
                 FriendlyName = friendlyName,
@@ -103,6 +107,7 @@ namespace apcurium.MK.Booking.Domain
         }
 
 
+
         private void OnAccountRegistered(AccountRegistered @event)
         {
 
@@ -124,6 +129,28 @@ namespace apcurium.MK.Booking.Domain
             _favoriteAddresses.Remove(@event.AddressId);
         }
 
+        private void OnFavoriteAddressUpdated(FavoriteAddressUpdated obj)
+        {
+
+        }
+
+        private static void ValidateFavoriteAddress(string friendlyName, string fullAddress, double latitude, double longitude)
+        {
+            if (Params.Get(friendlyName, fullAddress).Any(p => p.IsNullOrEmpty()))
+            {
+                throw new InvalidOperationException("Missing required fields");
+            }
+
+            if (latitude < -90 || latitude > 90)
+            {
+                throw new ArgumentOutOfRangeException("latitude", "Invalid latitude");
+            }
+
+            if (longitude < -180 || latitude > 180)
+            {
+                throw new ArgumentOutOfRangeException("longitude", "Invalid longitude");
+            }
+        }
         
     }
 }

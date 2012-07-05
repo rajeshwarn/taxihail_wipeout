@@ -108,5 +108,29 @@ namespace BackOffice.Test.Integration.FavoriteAddressFixture
                 Assert.Empty(list);
             }
         }
+
+        [Fact]
+        public void when_address_is_updated_successfully()
+        {
+            this.sut.Handle(new FavoriteAddressUpdated
+            {
+                SourceId = _accountId,
+                AddressId = _addressId,
+                FriendlyName = "Chez Costo !",
+                FullAddress = "25 rue Berri Montreal"
+            });
+
+            using (var context = new BookingDbContext(dbName))
+            {
+                var address = context.Find<FavoriteAddress>(_addressId);
+                Assert.NotNull(address);
+                Assert.Equal("25 rue Berri Montreal", address.FullAddress);
+                Assert.Equal("Chez Costo !", address.FriendlyName);
+                Assert.Null(address.RingCode);
+                Assert.Null(address.Apartment);
+                Assert.Equal(0,address.Latitude);
+                Assert.Equal(0, address.Longitude);
+            }
+        }
     }
 }
