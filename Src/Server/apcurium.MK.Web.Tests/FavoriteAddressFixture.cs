@@ -101,6 +101,29 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
+        public void UpdateAddressWithInvalidData()
+        {
+            var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+
+            Assert.Throws<WebServiceException>(() => sut
+                .UpdateFavoriteAddress(new SaveFavoriteAddress
+                {
+                    Id = _knownAddressId,
+                    AccountId = TestAccount.Id,
+                    FriendlyName =
+                        "Chez François Cuvelier",
+                    Apartment = "3939",
+                    FullAddress =
+                        "1234 rue Saint-Hubert",
+                    RingCode = "3131",
+                    Latitude = double.NaN,
+                    Longitude = double.NaN
+                }));
+
+        }
+
+
+        [Test]
         public void RemoveAddress()
         {
             var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
