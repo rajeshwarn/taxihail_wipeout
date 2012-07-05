@@ -77,6 +77,7 @@ namespace BackOffice.Test.Integration.FavoriteAddressFixture
         {
             sut.Handle(new FavoriteAddressAdded
             {
+                AddressId = Guid.NewGuid(),
                 SourceId = _accountId,
                 FriendlyName = "Chez François",
                 Apartment = "3939",

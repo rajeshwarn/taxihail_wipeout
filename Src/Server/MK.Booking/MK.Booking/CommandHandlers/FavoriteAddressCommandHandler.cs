@@ -19,7 +19,8 @@ namespace apcurium.MK.Booking.BackOffice.CommandHandlers
         {
             var account = _repository.Get(command.AccountId);
 
-            account.AddFavoriteAddress(friendlyName: command.FriendlyName,
+            account.AddFavoriteAddress(id: command.AddressId, 
+                friendlyName: command.FriendlyName,
                 apartment: command.Apartment,
                 fullAddress: command.FullAddress,
                 ringCode: command.RingCode,

@@ -19,7 +19,8 @@ namespace apcurium.MK.Booking.Api.Services
         {
             _commandBus = commandBus;
 
-            AutoMapper.Mapper.CreateMap<SaveFavoriteAddress, Commands.AddFavoriteAddress>();
+            AutoMapper.Mapper.CreateMap<SaveFavoriteAddress, Commands.AddFavoriteAddress>()
+                .ForMember(x=>x.AddressId, opt => opt.MapFrom(x=>x.Id));
 
         }
 

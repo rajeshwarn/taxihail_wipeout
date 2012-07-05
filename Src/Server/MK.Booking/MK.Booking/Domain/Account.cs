@@ -60,7 +60,7 @@ namespace apcurium.MK.Booking.Domain
             });        
         }
 
-        public void AddFavoriteAddress(string friendlyName, string apartment, string fullAddress, string ringCode, double latitude, double longitude)
+        public void AddFavoriteAddress(Guid id, string friendlyName, string apartment, string fullAddress, string ringCode, double latitude, double longitude)
         {
             if (Params.Get(friendlyName, fullAddress).Any(p => p.IsNullOrEmpty()))
             {
@@ -79,7 +79,7 @@ namespace apcurium.MK.Booking.Domain
 
             this.Update(new FavoriteAddressAdded
             {
-                AddressId = Guid.NewGuid(),
+                AddressId = id,
                 FriendlyName = friendlyName,
                 Apartment = apartment,
                 FullAddress = fullAddress,

@@ -26,12 +26,13 @@ namespace BackOffice.Test.FavoriteAddressesFixture
         [Fact]
         public void when_adding_an_address_successfully()
         {
-            this.sut.When(new AddFavoriteAddress { AccountId =  _accountId, FriendlyName = "Chez François", Apartment = "3939", FullAddress = "1234 rue Saint-Hubert", RingCode = "3131", Latitude   = 45.515065, Longitude = -73.558064 });
+            var addressId = Guid.NewGuid();
+            this.sut.When(new AddFavoriteAddress { AddressId = addressId, AccountId =  _accountId, FriendlyName = "Chez François", Apartment = "3939", FullAddress = "1234 rue Saint-Hubert", RingCode = "3131", Latitude   = 45.515065, Longitude = -73.558064 });
 
             Assert.Single(sut.Events);
             var evt = (FavoriteAddressAdded)sut.Events.Single();
             Assert.Equal(_accountId, evt.SourceId);
-            Assert.NotEqual(Guid.Empty, evt.AddressId);
+            Assert.Equal(addressId, evt.AddressId);
             Assert.Equal("Chez François", evt.FriendlyName);
             Assert.Equal("3939", evt.Apartment);
             Assert.Equal("1234 rue Saint-Hubert", evt.FullAddress);
