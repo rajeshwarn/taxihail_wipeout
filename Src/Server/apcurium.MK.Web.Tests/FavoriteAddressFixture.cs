@@ -85,9 +85,18 @@ namespace apcurium.MK.Web.Tests
                 Apartment = "3939",
                 FullAddress = "1234 rue Saint-Hubert",
                 RingCode = "3131",
-                Latitude = 45.515065,
-                Longitude = -73.558064
+                Latitude = 12,
+                Longitude = 34
             });
+
+            var address = sut.GetFavoriteAddresses(TestAccount.Id).Single(x => x.Id == _knownAddressId);
+
+            Assert.AreEqual("Chez François Cuvelier", address.FriendlyName);
+            Assert.AreEqual("3939", address.Apartment);
+            Assert.AreEqual("1234 rue Saint-Hubert", address.FullAddress);
+            Assert.AreEqual("3131", address.RingCode);
+            Assert.AreEqual(12, address.Latitude);
+            Assert.AreEqual(34, address.Longitude);
 
         }
 
