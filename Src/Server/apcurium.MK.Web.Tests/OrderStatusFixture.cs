@@ -4,9 +4,8 @@ using apcurium.MK.Booking.Api.Client;
 namespace apcurium.MK.Web.Tests
 {
     [TestFixture]
-    public class ReferenceDataFixture : BaseTest
+    public class OrderStatusFixture : BaseTest
     {
-
         [TestFixtureSetUp]
         public new void Setup()
         {
@@ -17,16 +16,14 @@ namespace apcurium.MK.Web.Tests
         public new void TearDown()
         {
             base.TearDown();
-        } 
+        }
 
         [Test]
         public void Get()
         {
-            var sut = new ReferenceDataServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
-            var data = sut.GetReferenceData();
-            Assert.IsNotEmpty(data.CompaniesList);
-            Assert.IsNotEmpty(data.VehiclesList);
-            Assert.IsNotEmpty(data.PaymentsList);
+            var sut = new OrderStatusClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+            //var data = sut.GetStatus(123);
+            Assert.Inconclusive("Pas implémenter voir service");
         }
     }
 }

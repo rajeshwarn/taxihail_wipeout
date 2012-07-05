@@ -1,4 +1,6 @@
-﻿namespace apcurium.MK.Booking.IBS
+﻿using System;
+
+namespace apcurium.MK.Booking.IBS
 {
     public interface IBookingWebServiceClient 
     {
@@ -12,7 +14,7 @@
 
         //int CreateOrder(AccountData user, BookingInfoData info, out string error);
 
-        //OrderStatus GetOrderStatus(AccountData user, int orderId);
+        Tuple<string, double?, double?> GetOrderStatus(int orderId, int accountId);
 
         //bool IsCompleted(AccountData user, int orderId);
 

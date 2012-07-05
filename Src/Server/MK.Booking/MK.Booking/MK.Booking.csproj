@@ -52,6 +52,7 @@
     <Compile Include="CommandHandlers\FavoriteAddressCommandHandler.cs" />
     <Compile Include="Database\BookingDbContext.cs" />
     <Compile Include="Domain\Account.cs" />
+    <Compile Include="Domain\Order.cs" />
     <Compile Include="EventHandlers\AccountDetailsGenerator.cs" />
     <Compile Include="EventHandlers\FavoriteAddressListGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
