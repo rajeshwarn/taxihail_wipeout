@@ -9,7 +9,7 @@ using apcurium.MK.Booking.Domain;
 
 namespace apcurium.MK.Booking.CommandHandlers
 {
-    public class OrderCommandHandler : ICommandHandler<CreateOrder>
+    public class OrderCommandHandler : ICommandHandler<CreateOrder>, ICommandHandler<CancelOrder>
     {
         private readonly IEventSourcedRepository<Order> _repository;
 
@@ -23,6 +23,14 @@ namespace apcurium.MK.Booking.CommandHandlers
             var order = new Order(command.Id, command.AccountId, command.PickupDate, command.RequestedDateTime,
                                   command.FriendlyName, command.FullAddress, command.Longitude
                                   , command.Latitude, command.Apartment, command.RingCode);
+            _repository.Save(order);
+        }
+
+        public void Handle(CancelOrder command)
+        {
+            var order = _repository.Find(command.OrderId);
+            order.Cancel();
+            //TODO update order statuts here
             _repository.Save(order);
         }
     }
