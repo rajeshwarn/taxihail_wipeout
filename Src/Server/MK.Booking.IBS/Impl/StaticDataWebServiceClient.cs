@@ -27,24 +27,47 @@ namespace apcurium.MK.Booking.IBS.Impl
             return items;
         }
 
-        public ListItem[] GetVehiclesList(int compagnieId = 0)
+        public ListItem[] GetPickupCity(ListItem company)
         {
             var items = new ListItem[] { };
             UseService(service =>
             {
-                var vehicules = service.GetVehicleTypes(_userNameApp, _passwordApp, compagnieId);
-                items = vehicules.Select(x => new ListItem { Display = x.Name, Id = x.ID }).ToArray();
+                var cities = service.GetPickupCityList(_userNameApp, _passwordApp, company.Id);
+                items = cities.Select(x => new ListItem { Display = x.Name, Id = x.CityID, Parent = company }).ToArray();
+            });
+            return items;
+        }
+        public ListItem[] GetDropoffCity(ListItem company)
+        {
+            var items = new ListItem[] { };
+            UseService(service =>
+            {
+                var cities = service.GetDropoffCityList(_userNameApp, _passwordApp, company.Id);
+                items = cities.Select(x => new ListItem { Display = x.Name, Id = x.CityID, Parent = company }).ToArray();
             });
             return items;
         }
 
-        public ListItem[] GetPaymentsList(int compagnieId = 0)
+
+
+        public ListItem[] GetVehiclesList(ListItem company)
         {
             var items = new ListItem[] { };
             UseService(service =>
             {
-                var payments = service.GetChargeTypes(_userNameApp, _passwordApp, compagnieId);
-                items = payments.Select(x => new ListItem { Display = x.ChargeTypeName, Id = x.ChargeTypeID }).ToArray();
+                var vehicules = service.GetVehicleTypes(_userNameApp, _passwordApp, company.Id);
+                items = vehicules.Select(x => new ListItem { Display = x.Name, Id = x.ID, Parent = company }).ToArray();
+            });
+            return items;
+        }
+
+        public ListItem[] GetPaymentsList(ListItem company)
+        {
+            var items = new ListItem[] { };
+            UseService(service =>
+            {
+                var payments = service.GetChargeTypes(_userNameApp, _passwordApp, company.Id);
+                items = payments.Select(x => new ListItem { Display = x.ChargeTypeName, Id = x.ChargeTypeID, Parent = company }).ToArray();
             });
             return items;
         }
