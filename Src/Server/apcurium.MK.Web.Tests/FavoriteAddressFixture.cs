@@ -20,9 +20,18 @@ namespace apcurium.MK.Web.Tests
         public new void Setup()
         {
             base.Setup();
+        }
 
+        [TestFixtureTearDown]
+        public new void TearDown()
+        {
+            base.TearDown();
+        }
+ 
+        [SetUp]
+        public void SetupTest()
+        {
             var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
-
             sut.AddFavoriteAddress(new SaveFavoriteAddress
             {
                 Id = _knownAddressId,
@@ -32,14 +41,7 @@ namespace apcurium.MK.Web.Tests
                 Latitude = 45.515065,
                 Longitude = -73.558064
             });
-
         }
-
-        [TestFixtureTearDown]
-        public new void TearDown()
-        {
-            base.TearDown();
-        } 
 
         [Test]
         public void AddAddress()
@@ -139,8 +141,10 @@ namespace apcurium.MK.Web.Tests
         {
             var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
 
-            var adresses = sut.GetFavoriteAddresses(TestAccount.Id);
-                        
+            var addresses = sut.GetFavoriteAddresses(TestAccount.Id);
+
+            var knownAddress = addresses.SingleOrDefault(x => x.Id == _knownAddressId);
+            Assert.IsNotNull(knownAddress);
         }
 
         [Test]

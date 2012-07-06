@@ -50,5 +50,15 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             Assert.AreEqual(true, service.IsValid("Yop", _accountId.ToString(), @event.Password));
 
         }
+
+        [Test]
+        public void when_sending_reset_password_email()
+        {
+            this.sut.When(new SendResetPasswordEmail { AccountId = _accountId, Password = "Yop" });
+            
+
+
+
+        }
     }
 }
