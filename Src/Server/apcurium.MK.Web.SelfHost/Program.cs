@@ -93,7 +93,7 @@ namespace apcurium.MK.Web.SelfHost
             container.RegisterType<ICommandHandler, SqlMessageLogHandler>("SqlMessageLogHandler");
 
 
-            container.RegisterInstance<IEventBus>(new MemoryEventBus(container.Resolve<AccountDetailsGenerator>(), container.Resolve<FavoriteAddressListGenerator>(), container.Resolve<SqlMessageLogHandler>()));
+            container.RegisterInstance<IEventBus>(new MemoryEventBus(container.Resolve<AccountDetailsGenerator>(), container.Resolve<FavoriteAddressListGenerator>(), container.Resolve<OrderGenerator>(), container.Resolve<SqlMessageLogHandler>()));
 
             container.RegisterType<EventStoreDbContext>(new TransientLifetimeManager(), new InjectionConstructor("EventStore"));
             container.RegisterType(typeof(IEventSourcedRepository<>), typeof(SqlEventSourcedRepository<>), new ContainerControlledLifetimeManager());
@@ -101,7 +101,8 @@ namespace apcurium.MK.Web.SelfHost
             container.RegisterInstance<IPasswordService>(new PasswordService());
             container.RegisterType<ICommandHandler, AccountCommandHandler>("AccountCommandHandler");
             container.RegisterType<ICommandHandler, FavoriteAddressCommandHandler>("FavoriteAddressCommandHandler");
-            container.RegisterInstance<ICommandBus>(new MemoryCommandBus(container.Resolve<ICommandHandler>("AccountCommandHandler"), container.Resolve<ICommandHandler>("FavoriteAddressCommandHandler")));
+            container.RegisterType<ICommandHandler, OrderCommandHandler>("OrderCommandHandler");
+            container.RegisterInstance<ICommandBus>(new MemoryCommandBus(container.Resolve<ICommandHandler>("AccountCommandHandler"), container.Resolve<ICommandHandler>("FavoriteAddressCommandHandler"), container.Resolve<ICommandHandler>("OrderCommandHandler")));
 
 
             Plugins.Add(new AuthFeature(() => new AuthUserSession(), new IAuthProvider[] { new CustomCredentialsAuthProvider(container.Resolve<IAccountDao>(), container.Resolve<IPasswordService>()) }));

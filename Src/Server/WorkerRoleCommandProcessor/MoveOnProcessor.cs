@@ -99,7 +99,8 @@ namespace WorkerRoleCommandProcessor
             container.RegisterInstance<IPasswordService>(new PasswordService());            
             // handlers
             container.RegisterType<ICommandHandler, AccountCommandHandler>("AccountCommandHandler");
-            container.RegisterType<ICommandHandler, FavoriteAddressCommandHandler>("FavoriteAddressCommandHandler");            
+            container.RegisterType<ICommandHandler, FavoriteAddressCommandHandler>("FavoriteAddressCommandHandler");
+            container.RegisterType<ICommandHandler, OrderCommandHandler>("OrderCommandHandler");   
             
 
             OnCreateContainer(container);

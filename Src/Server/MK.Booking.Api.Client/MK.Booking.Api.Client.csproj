@@ -72,6 +72,7 @@
     <Compile Include="BaseServiceClient.cs" />
     <Compile Include="DirectionsServiceClient.cs" />
     <Compile Include="GeocodingServiceClient.cs" />
+    <Compile Include="OrderServiceClient.cs" />
     <Compile Include="OrderStatusClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReferenceDataServiceClient.cs" />
