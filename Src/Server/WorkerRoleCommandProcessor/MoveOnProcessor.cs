@@ -30,8 +30,6 @@ namespace WorkerRoleCommandProcessor
     using Microsoft.Practices.Unity;        
     using apcurium.MK.Booking.Database;
     using apcurium.MK.Booking.CommandHandlers;
-    using apcurium.MK.Booking.IBS;
-    using apcurium.MK.Booking.IBS.Impl;
     using apcurium.MK.Common.Diagnostic;
     using apcurium.MK.Booking.Common.Tests;
     using apcurium.MK.Common.Configuration;

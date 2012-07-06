@@ -93,7 +93,6 @@
       <DependentUpon>ServiceBusConstants.tt</DependentUpon>
     </Compile>
     <Compile Include="TestConfigurationManager.cs" />
-    <Compile Include="WorkerRole.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\CQRS-journey.licenseheader">
