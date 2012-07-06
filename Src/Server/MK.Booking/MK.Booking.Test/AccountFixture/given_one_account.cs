@@ -62,8 +62,9 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         [Test]
         public void when_sending_reset_password_email()
         {
-            var newPassword = "123456";
-            this.sut.When(new SendResetPasswordEmail { EmailAddress = "test@example.net", Password = newPassword });
+            const string newPassword = "123456";
+
+            this.sut.When(new SendPasswordResettedEmail { EmailAddress = "test@example.net", Password = newPassword });
 
             emailSenderMock.Verify(s => s
                 .Send(It.Is<MailMessage>(message => message

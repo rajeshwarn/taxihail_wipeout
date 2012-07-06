@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System;
 using NUnit.Framework;
+using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using System.Threading;
@@ -73,12 +74,30 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void ResettingAccountPassword()
+        public void when_resetting_account_password()
+        {
+            var email = GetTempEmail();
+            var password = "password";
+
+            var sut = new AccountServiceClient(BaseUrl, null);
+
+            var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = email, FirstName = "First Name Test", LastName = "Last Name Test", Password = password };
+            sut.RegisterAccount(newAccount);
+
+            sut = new AccountServiceClient(BaseUrl, new AuthInfo(email, password));
+            sut.ResetPassword(email);
+
+            sut = new AccountServiceClient(BaseUrl, new AuthInfo(email, password));
+            Assert.Throws<WebServiceException>(() => sut.GetMyAccount());
+        }
+
+        [Test]
+        public void when_resetting_password_with_unknown_email_address()
         {
             var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
-            var acc = sut.GetMyAccount();
-            sut.ResetPassword(acc.Id);
 
+            var exception = Assert.Throws<WebServiceException>(() => sut.ResetPassword("this.is.not@my.email.addre.ss"));
+            Assert.AreEqual(404, exception.StatusCode);
         }
 
 

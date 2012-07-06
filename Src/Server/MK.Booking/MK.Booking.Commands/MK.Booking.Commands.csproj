@@ -50,7 +50,7 @@
     <Compile Include="RegisterAccount.cs" />
     <Compile Include="RemoveFavoriteAddress.cs" />
     <Compile Include="ResetAccountPassword.cs" />
-    <Compile Include="SendResetPasswordEmail.cs" />
+    <Compile Include="SendPasswordResettedEmail.cs" />
     <Compile Include="UpdateAccount.cs" />
     <Compile Include="UpdateBookingSettings.cs" />
     <Compile Include="UpdateFavoriteAddress.cs" />

@@ -7,6 +7,7 @@ using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.Security;
 
 namespace apcurium.MK.Booking.Api.Services
@@ -14,23 +15,24 @@ namespace apcurium.MK.Booking.Api.Services
     public class ResetPasswordService : RestServiceBase<ResetPassword>
     {
 
-        private ICommandBus _commandBus;
+        private readonly ICommandBus _commandBus;
+        private readonly IAccountDao _dao;
 
-        public ResetPasswordService(ICommandBus commandBus)
+        public ResetPasswordService(ICommandBus commandBus, IAccountDao dao)
         {
             _commandBus = commandBus;
+            _dao = dao;
         }
 
         public override object OnPost(ResetPassword request)
         {
-            if (!request.AccountId.Equals(new Guid(this.GetSession().UserAuthId)))
-            {
-                throw HttpError.Unauthorized("Unauthorized");
-            }
-            var service = new PasswordService();
+            var user = _dao.FindByEmail(request.EmailAddress);
+            if (user == null) throw HttpError.NotFound("Account not found");
+
+            var newPassword = new PasswordService().GeneratePassword();
             var command = new Commands.ResetAccountPassword();
-            command.AccountId = request.AccountId;
-            command.Password = service.GeneratePassword();
+            command.AccountId = user.Id;
+            command.Password = newPassword;
             _commandBus.Send(command);
 
             return new HttpResult(HttpStatusCode.OK);
