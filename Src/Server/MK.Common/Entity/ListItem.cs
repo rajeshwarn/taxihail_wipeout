@@ -4,5 +4,6 @@
     {
         public int Id { get; set; }
         public string Display { get; set; }
+        public ListItem Parent { get; set; }
     }
 }

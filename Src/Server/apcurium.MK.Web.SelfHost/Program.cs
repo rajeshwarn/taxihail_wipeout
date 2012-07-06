@@ -33,7 +33,8 @@ using apcurium.MK.Booking.Api.Security;
 using ServiceStack.CacheAccess;
 using ServiceStack.CacheAccess.Providers;
 using apcurium.MK.Common.Entity;
-using apcurium.MK.Web.SelfHost.IoC;
+using apcurium.MK.Common.IoC;
+using UnityServiceLocator = apcurium.MK.Common.IoC.UnityServiceLocator;
 
 namespace apcurium.MK.Web.SelfHost
 {
@@ -69,9 +70,9 @@ namespace apcurium.MK.Web.SelfHost
             Database.SetInitializer<MessageLogDbContext>(null);
             Database.SetInitializer<BlobStorageDbContext>(null);
 
-            containerFunq.Adapter = new UnityContainerAdapter(IoC.UnityServiceLocator.Instance, new Logger());
+            containerFunq.Adapter = new UnityContainerAdapter(UnityServiceLocator.Instance, new Logger());
 
-            var container = IoC.UnityServiceLocator.Instance;
+            var container = UnityServiceLocator.Instance;
 
             container.RegisterType<BookingDbContext>(new TransientLifetimeManager(), new InjectionConstructor("MKWeb"));
             container.RegisterType<ConfigurationDbContext>(new TransientLifetimeManager(), new InjectionConstructor("MKWeb"));

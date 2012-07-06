@@ -24,9 +24,9 @@ using ServiceStack.ServiceInterface.Auth;
 using apcurium.MK.Booking.Api.Security;
 using ServiceStack.CacheAccess;
 using ServiceStack.CacheAccess.Providers;
-using apcurium.MK.Web.IoC;
+using apcurium.MK.Common.IoC;
 using ConfigurationManager = System.Configuration.ConfigurationManager;
-using UnityServiceLocator = apcurium.MK.Web.IoC.UnityServiceLocator;
+using UnityServiceLocator = apcurium.MK.Common.IoC.UnityServiceLocator;
 
 namespace apcurium.MK.Web
 {

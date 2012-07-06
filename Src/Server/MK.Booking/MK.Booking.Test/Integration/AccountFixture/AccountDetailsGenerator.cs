@@ -11,9 +11,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 // ==============================================================================================================
 
-using BackOffice.Test;
-
-using BackOffice.Test;
 using NUnit.Framework;
 using apcurium.MK.Booking.Security;
 

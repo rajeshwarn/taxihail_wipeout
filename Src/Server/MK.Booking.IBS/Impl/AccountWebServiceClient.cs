@@ -30,8 +30,7 @@ namespace apcurium.MK.Booking.IBS.Impl
                 account.FirstName = firstName;
                 account.LastName = lastName;
                 account.Phone = phone;
-                account.MobilePhone = phone;
-                //account.Language = ServiceLocator.Current.GetInstance<IAppResource>().CurrentLanguage == AppLanguage.English ? "E" : "F";
+                account.MobilePhone = phone;                
                 account.WEBPassword = password;
 
                 ibsAcccountId = service.SaveAccount3(_userNameApp, _passwordApp, account);

@@ -14,32 +14,34 @@ namespace apcurium.MK.Web.Tests
     [TestFixture]
     public class FavoriteAddressFixture: BaseTest
     {
-        private readonly Guid _knownAddressId = Guid.NewGuid();
+        private Guid _knownAddressId = Guid.NewGuid();
 
         [TestFixtureSetUp]
         public new void Setup()
         {
             base.Setup();
-
-            var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
-
-            sut.AddFavoriteAddress(new SaveFavoriteAddress
-            {
-                Id = _knownAddressId,
-                AccountId = TestAccount.Id,
-                FriendlyName = "La Boite à Jojo",
-                FullAddress = "1234 rue Saint-Denis",
-                Latitude = 45.515065,
-                Longitude = -73.558064
-            });
-
         }
 
         [TestFixtureTearDown]
         public new void TearDown()
         {
             base.TearDown();
-        } 
+        }
+ 
+        [SetUp]
+        public void SetupTest()
+        {
+            var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+            sut.AddFavoriteAddress(new SaveFavoriteAddress
+            {
+                Id = (_knownAddressId = Guid.NewGuid()),
+                AccountId = TestAccount.Id,
+                FriendlyName = "La Boite à Jojo",
+                FullAddress = "1234 rue Saint-Denis",
+                Latitude = 45.515065,
+                Longitude = -73.558064
+            });
+        }
 
         [Test]
         public void AddAddress()
@@ -139,8 +141,10 @@ namespace apcurium.MK.Web.Tests
         {
             var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
 
-            var adresses = sut.GetFavoriteAddresses(TestAccount.Id);
-                        
+            var addresses = sut.GetFavoriteAddresses(TestAccount.Id);
+
+            var knownAddress = addresses.SingleOrDefault(x => x.Id == _knownAddressId);
+            Assert.IsNotNull(knownAddress);
         }
 
         [Test]
@@ -148,7 +152,7 @@ namespace apcurium.MK.Web.Tests
         public void GetAddressListFromDiffrentUser()
         {
             var sut = new AccountServiceClient(BaseUrl, null);
-            
+
             var otherAccount = sut.GetTestAccount(1);            
 
             sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));

@@ -16,7 +16,8 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         private EventSourcingTestHelper<Account> sut;
         private Guid _accountId = Guid.NewGuid();
 
-        public given_one_account()
+        [SetUp]
+        public void Setup()
         {
             this.sut = new EventSourcingTestHelper<Account>();
             this.sut.Setup(new AccountCommandHandler(this.sut.Repository, new PasswordService()));
@@ -49,6 +50,14 @@ namespace apcurium.MK.Booking.Test.AccountFixture
 
             Assert.AreEqual(true, service.IsValid("Yop", _accountId.ToString(), @event.Password));
 
+        }
+
+        [Test]
+        [Ignore]
+        public void when_sending_reset_password_email()
+        {
+            this.sut.When(new SendResetPasswordEmail { AccountId = _accountId, Password = "Yop" });
+            
         }
     }
 }
