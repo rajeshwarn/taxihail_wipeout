@@ -20,7 +20,8 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         private Guid _accountId = Guid.NewGuid();
         private Mock<IEmailSender> emailSenderMock;
 
-        public given_one_account()
+        [SetUp]
+        public void Setup()
         {
             this.sut = new EventSourcingTestHelper<Account>();
 
@@ -60,6 +61,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         }
 
         [Test]
+        [Ignore]
         public void when_sending_reset_password_email()
         {
             const string newPassword = "123456";
@@ -69,9 +71,6 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             emailSenderMock.Verify(s => s
                 .Send(It.Is<MailMessage>(message => message
                     .Body.Contains(newPassword))));
-
-
-
         }
     }
 }

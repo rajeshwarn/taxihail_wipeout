@@ -36,6 +36,11 @@ namespace apcurium.MK.Booking.IBS.Impl
             return status;
         }
 
+        public int Book()
+        {
+            return 0;
+        }
+
         //public bool IsValid(ref BookingInfoData info)
         //{
         //    return info.PickupLocation.Address.HasValue() && info.PickupLocation.Latitude.HasValue && info.PickupLocation.Longitude.HasValue;

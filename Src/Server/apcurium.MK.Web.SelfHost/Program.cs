@@ -95,7 +95,7 @@ namespace apcurium.MK.Web.SelfHost
             container.RegisterType<ICommandHandler, SqlMessageLogHandler>("SqlMessageLogHandler");
 
 
-            container.RegisterInstance<IEventBus>(new MemoryEventBus(container.Resolve<AccountDetailsGenerator>(), container.Resolve<FavoriteAddressListGenerator>(), container.Resolve<SqlMessageLogHandler>()));
+            container.RegisterInstance<IEventBus>(new MemoryEventBus(container.Resolve<AccountDetailsGenerator>(), container.Resolve<FavoriteAddressListGenerator>(), container.Resolve<OrderGenerator>(), container.Resolve<SqlMessageLogHandler>()));
 
             container.RegisterType<EventStoreDbContext>(new TransientLifetimeManager(), new InjectionConstructor("EventStore"));
             container.RegisterType(typeof(IEventSourcedRepository<>), typeof(SqlEventSourcedRepository<>), new ContainerControlledLifetimeManager());
@@ -107,7 +107,8 @@ namespace apcurium.MK.Web.SelfHost
             container.RegisterType<ICommandHandler, AccountCommandHandler>("AccountCommandHandler");
             container.RegisterType<ICommandHandler, FavoriteAddressCommandHandler>("FavoriteAddressCommandHandler");
             container.RegisterType<ICommandHandler, EmailCommandHandler>("EmailCommandHandler");
-            container.RegisterInstance<ICommandBus>(new MemoryCommandBus(container.Resolve<ICommandHandler>("AccountCommandHandler"),
+            container.RegisterType<ICommandHandler, OrderCommandHandler>("OrderCommandHandler");
+            container.RegisterInstance<ICommandBus>(new MemoryCommandBus(container.Resolve<ICommandHandler>("AccountCommandHandler"), container.Resolve<ICommandHandler>("OrderCommandHandler")
                 container.Resolve<ICommandHandler>("FavoriteAddressCommandHandler"),
                 container.Resolve<EmailCommandHandler>("EmailCommandHandler")));
 

@@ -53,6 +53,7 @@
     <Compile Include="DirectionsFixture.cs" />
     <Compile Include="FavoriteAddressFixture.cs" />
     <Compile Include="GeolocFixture.cs" />
+    <Compile Include="OrderFixture.cs" />
     <Compile Include="OrderStatusFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReferenceDataFixture.cs" />
