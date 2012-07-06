@@ -43,11 +43,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject />
+    <StartupObject>WorkerRoleCommandProcessor.TopShelfService</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.4.3.1\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
@@ -78,12 +81,15 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Topshelf">
+      <HintPath>..\packages\Topshelf.2.3.0.0\lib\NET40\Topshelf.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MoveOnProcessor.cs" />
+    <Compile Include="MkBookingProcessor.cs" />
     <!-- Conditionally include the partial class that implements the two aspects of the processor. -->
     <Compile Include="MoveOnProcessor.Local.cs" Condition=" '$(Configuration)|$(Platform)' == 'DebugLocal|AnyCPU' ">
-      <DependentUpon>MoveOnProcessor.cs</DependentUpon>
+      <DependentUpon>MkBookingProcessor.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -93,6 +99,7 @@
       <DependentUpon>ServiceBusConstants.tt</DependentUpon>
     </Compile>
     <Compile Include="TestConfigurationManager.cs" />
+    <Compile Include="TopShelfService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\CQRS-journey.licenseheader">
