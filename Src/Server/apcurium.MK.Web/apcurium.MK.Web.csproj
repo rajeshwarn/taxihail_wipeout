@@ -123,9 +123,8 @@
     </ProjectReference>
     <ProjectReference Include="..\MK.Booking.Api\MK.Booking.Api.csproj">
       <Project>{1A931A36-D855-4A7A-AD0F-1B35D76582F3}</Project>
-      <Name>MK.Booking.Api</Name>
+      <Name>MK.Booking.Api %28MK.Booking.Api\MK.Booking.Api%29</Name>
     </ProjectReference>
-
     <ProjectReference Include="..\MK.Booking.IBS\MK.Booking.IBS.csproj">
       <Project>{7B615EA9-4232-4FFB-B66C-AC7B833973C9}</Project>
       <Name>MK.Booking.IBS</Name>

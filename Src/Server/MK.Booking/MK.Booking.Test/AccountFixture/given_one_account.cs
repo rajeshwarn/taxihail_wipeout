@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using NUnit.Framework;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Common.Tests;
@@ -10,7 +7,7 @@ using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.Security;
 
-namespace apcurium.MK.Booking.Test.OrganizationFixture
+namespace apcurium.MK.Booking.Test.AccountFixture
 {
     [TestFixture]
     public class given_one_account

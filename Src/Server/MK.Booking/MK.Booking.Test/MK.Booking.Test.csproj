@@ -87,15 +87,15 @@
     </ProjectReference>
     <ProjectReference Include="..\MK.Booking.Commands\MK.Booking.Commands.csproj">
       <Project>{20AEA350-AD91-4053-A8B5-582E13ED43AA}</Project>
-      <Name>BackOffice.Commands</Name>
+      <Name>MK.Booking.Commands</Name>
     </ProjectReference>
     <ProjectReference Include="..\MK.Booking.Events\MK.Booking.Events.csproj">
       <Project>{1D5CC591-D706-4F4E-B4BD-805A191999D7}</Project>
-      <Name>BackOffice.Events</Name>
+      <Name>MK.Booking.Events</Name>
     </ProjectReference>
     <ProjectReference Include="..\MK.Booking\MK.Booking.csproj">
       <Project>{BAF90740-9220-4BB0-B857-1E5927E464E9}</Project>
-      <Name>BackOffice %28BackOffice\BackOffice%29</Name>
+      <Name>MK.Booking %28MK.Booking\MK.Booking%29</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

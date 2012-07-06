@@ -60,7 +60,7 @@
     </ProjectReference>
     <ProjectReference Include="..\..\MK.Common\MK.Common.csproj">
       <Project>{65033050-1D55-465A-A772-F3192F9E2428}</Project>
-      <Name>MoveOn.Common</Name>
+      <Name>MK.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

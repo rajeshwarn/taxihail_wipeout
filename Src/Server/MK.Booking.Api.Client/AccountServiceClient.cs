@@ -31,6 +31,11 @@ namespace apcurium.MK.Booking.Api.Client
             return result.Id;
         }
 
+        public void UpdateBookingSettings(Guid accountId, BookingSettingsDetails settings)
+        {
+            Client.Put<Account>("/account/{0}/bookingsettings", settings);
+        }
+
         public IList<Address> GetFavoriteAddresses(Guid accountId)
         {
             var req = string.Format("/accounts/{0}/addresses", accountId.ToString());
@@ -55,5 +60,7 @@ namespace apcurium.MK.Booking.Api.Client
             var req = string.Format("/account/{0}/addresses/{1}", accountId, addressId);
             var response = Client.Delete<string>(req);
         }
+
+        
     }
 }
