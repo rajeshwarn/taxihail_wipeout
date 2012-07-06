@@ -42,18 +42,18 @@ namespace WorkerRoleCommandProcessor
     /// you will not see full syntax coloring, intellisense, etc.. But it is still 
     /// much more readable and usable than a grayed-out piece of code inside an #if
     /// </devdoc>
-    partial class MoveOnProcessor
+    partial class MkBookingProcessor
     {
         partial void OnCreateContainer(UnityContainer container)
         {
             var serializer = container.Resolve<ITextSerializer>();
             var metadata = container.Resolve<IMetadataProvider>();
 
-            var commandBus = new CommandBus(new MessageSender(Database.DefaultConnectionFactory, "SqlBus", "SqlBus.Commands"), serializer);
-            var eventBus = new EventBus(new MessageSender(Database.DefaultConnectionFactory, "SqlBus", "SqlBus.Events"), serializer);
+            var commandBus = new CommandBus(new MessageSender(Database.DefaultConnectionFactory, "MkWeb", "SqlBus.Commands"), serializer);
+            var eventBus = new EventBus(new MessageSender(Database.DefaultConnectionFactory, "MkWeb", "SqlBus.Events"), serializer);
 
-            var commandProcessor = new CommandProcessor(new MessageReceiver(Database.DefaultConnectionFactory, "SqlBus", "SqlBus.Commands"), serializer);
-            var eventProcessor = new EventProcessor(new MessageReceiver(Database.DefaultConnectionFactory, "SqlBus", "SqlBus.Events"), serializer);
+            var commandProcessor = new CommandProcessor(new MessageReceiver(Database.DefaultConnectionFactory, "MkWeb", "SqlBus.Commands"), serializer);
+            var eventProcessor = new EventProcessor(new MessageReceiver(Database.DefaultConnectionFactory, "MkWeb", "SqlBus.Events"), serializer);
 
             container.RegisterInstance<IAccountWebServiceClient>(new AccountWebServiceClient(container.Resolve<IConfigurationManager>(), new Logger()));
 
