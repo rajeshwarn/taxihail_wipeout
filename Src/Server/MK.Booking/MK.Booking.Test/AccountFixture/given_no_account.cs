@@ -8,7 +8,7 @@ using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.Security;
 
-namespace apcurium.MK.Booking.Test.OrganizationFixture
+namespace apcurium.MK.Booking.Test.AccountFixture
 {
     [TestFixture]
     public class given_no_account

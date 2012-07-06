@@ -2,7 +2,7 @@
 using ServiceStack.Configuration;
 using apcurium.MK.Common.Diagnostic;
 
-namespace apcurium.MK.Web.SelfHost.IoC
+namespace apcurium.MK.Common.IoC
 {
     public class UnityContainerAdapter : IContainerAdapter
     {

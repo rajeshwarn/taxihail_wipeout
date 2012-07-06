@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.Security
             return keyedHashAlgorithm.ComputeHash(plainText);
         }
 
-        public string GeneratePassword(string password)
+        public string GeneratePassword()
         {
             _random = new Random(DateTime.Now.Second);
             var strPass = "";

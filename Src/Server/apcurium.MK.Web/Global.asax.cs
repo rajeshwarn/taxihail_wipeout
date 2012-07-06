@@ -1,8 +1,10 @@
 ﻿using System;
 using Microsoft.Practices.Unity;
+using ServiceStack.ServiceInterface.Validation;
 using ServiceStack.WebHost.Endpoints;
 using Funq;
 using apcurium.MK.Booking.Api.Services;
+using apcurium.MK.Booking.Api.Validation;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.IBS.Impl;
 using apcurium.MK.Booking.ReadModel.Query;
@@ -22,9 +24,9 @@ using ServiceStack.ServiceInterface.Auth;
 using apcurium.MK.Booking.Api.Security;
 using ServiceStack.CacheAccess;
 using ServiceStack.CacheAccess.Providers;
-using apcurium.MK.Web.IoC;
+using apcurium.MK.Common.IoC;
 using ConfigurationManager = System.Configuration.ConfigurationManager;
-using UnityServiceLocator = apcurium.MK.Web.IoC.UnityServiceLocator;
+using UnityServiceLocator = apcurium.MK.Common.IoC.UnityServiceLocator;
 
 namespace apcurium.MK.Web
 {
@@ -66,6 +68,8 @@ namespace apcurium.MK.Web
                 
 
                 Plugins.Add(new AuthFeature(() => new AuthUserSession(), new IAuthProvider[] { new CustomCredentialsAuthProvider(container.Resolve<IAccountDao>(), container.Resolve<IPasswordService>()) }));
+                Plugins.Add(new ValidationFeature());
+                containerFunq.RegisterValidators(typeof(SaveFavoriteAddressValidator).Assembly);
 
                 container.RegisterInstance<ICacheClient>(new MemoryCacheClient{ FlushOnDispose = false });
                 

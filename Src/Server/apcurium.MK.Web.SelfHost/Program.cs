@@ -7,9 +7,11 @@ using Infrastructure.Sql.BlobStorage;
 using Infrastructure.Sql.EventSourcing;
 using Infrastructure.Sql.MessageLog;
 using Microsoft.Practices.Unity;
+using ServiceStack.ServiceInterface.Validation;
 using ServiceStack.WebHost.Endpoints;
 using Funq;
 using apcurium.MK.Booking.Api.Services;
+using apcurium.MK.Booking.Api.Validation;
 using apcurium.MK.Booking.BackOffice.CommandHandlers;
 using apcurium.MK.Booking.BackOffice.EventHandlers;
 using apcurium.MK.Booking.CommandHandlers;
@@ -31,7 +33,8 @@ using apcurium.MK.Booking.Api.Security;
 using ServiceStack.CacheAccess;
 using ServiceStack.CacheAccess.Providers;
 using apcurium.MK.Common.Entity;
-using apcurium.MK.Web.SelfHost.IoC;
+using apcurium.MK.Common.IoC;
+using UnityServiceLocator = apcurium.MK.Common.IoC.UnityServiceLocator;
 
 namespace apcurium.MK.Web.SelfHost
 {
@@ -67,9 +70,9 @@ namespace apcurium.MK.Web.SelfHost
             Database.SetInitializer<MessageLogDbContext>(null);
             Database.SetInitializer<BlobStorageDbContext>(null);
 
-            containerFunq.Adapter = new UnityContainerAdapter(IoC.UnityServiceLocator.Instance, new Logger());
+            containerFunq.Adapter = new UnityContainerAdapter(UnityServiceLocator.Instance, new Logger());
 
-            var container = IoC.UnityServiceLocator.Instance;
+            var container = UnityServiceLocator.Instance;
 
             container.RegisterType<BookingDbContext>(new TransientLifetimeManager(), new InjectionConstructor("MKWeb"));
             container.RegisterType<ConfigurationDbContext>(new TransientLifetimeManager(), new InjectionConstructor("MKWeb"));
@@ -103,6 +106,8 @@ namespace apcurium.MK.Web.SelfHost
 
 
             Plugins.Add(new AuthFeature(() => new AuthUserSession(), new IAuthProvider[] { new CustomCredentialsAuthProvider(container.Resolve<IAccountDao>(), container.Resolve<IPasswordService>()) }));
+            Plugins.Add(new ValidationFeature());
+            containerFunq.RegisterValidators(typeof(SaveFavoriteAddressValidator).Assembly);
 
             container.RegisterInstance<ICacheClient>(new MemoryCacheClient { FlushOnDispose = false });
 

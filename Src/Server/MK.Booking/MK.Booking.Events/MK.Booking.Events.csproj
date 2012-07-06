@@ -40,8 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccountPasswordResetted.cs" />
     <Compile Include="AccountRegistered.cs" />
     <Compile Include="AccountUpdated.cs" />
+    <Compile Include="BookingSettingsUpdated.cs" />
     <Compile Include="FavoriteAddressRemoved.cs" />
     <Compile Include="FavoriteAddressAdded.cs" />
     <Compile Include="FavoriteAddressUpdated.cs" />

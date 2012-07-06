@@ -3,7 +3,7 @@
     public interface IPasswordService
     {
         byte[] EncodePassword(string password, string salt);
-        string GeneratePassword(string password);
+        string GeneratePassword();
         bool IsValid(string passwordSubmitted, string salt, byte[] password);
     }
 }

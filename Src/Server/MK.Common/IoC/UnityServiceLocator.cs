@@ -4,7 +4,7 @@ using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.StaticFactory;
 
-namespace apcurium.MK.Web.SelfHost.IoC
+namespace apcurium.MK.Common.IoC
 {
     public class UnityServiceLocator : ServiceLocatorImplBase
     {

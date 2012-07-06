@@ -6,9 +6,9 @@ using ServiceStack.ServiceHost;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [RestService("/account/{AccountId}/addresses", "GET")]    
-    public class FavoriteAddresses
+    [RestService("/account/{AccountId}/resetpassword", "POST")]
+    public class ResetPassword
     {
-        public Guid AccountId{ get; set; }
+        public Guid AccountId { get; set; } 
     }
 }
