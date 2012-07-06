@@ -65,7 +65,7 @@ namespace apcurium.MK.Web.Tests
             var sut = new AccountServiceClient(BaseUrl, null);
             var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone =  "5146543024", Email = GetTempEmail(), FirstName = "First Name Test", LastName = "Last Name Test", Password = "password" };
             sut.RegisterAccount(newAccount);
-            Thread.Sleep(1000);
+            Thread.Sleep(400);
             sut = new AccountServiceClient(BaseUrl, new AuthInfo(newAccount.Email, newAccount.Password));
             var account = sut.GetMyAccount();
             Assert.IsNotNull(account);
@@ -80,8 +80,37 @@ namespace apcurium.MK.Web.Tests
             sut.ResetPassword(acc.Id);
 
         }
-       
-        
+
+
+        [Test]
+        public void UpdateBookingSettingsAccountTest()
+        {
+            var settings = new BookingSettingsRequest
+            {
+                ChargeTypeId = 3,
+                FirstName = "toto",
+                LastName = "titi",
+                NumberOfTaxi = 6,
+                Passengers = 8,
+                Phone = "12345",
+                ProviderId = 85,
+                VehicleTypeId = 92
+            };
+
+            var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+
+            sut.UpdateBookingSettings(TestAccount.Id, settings);
+
+            var account = sut.GetMyAccount();
+            
+            Assert.AreEqual(settings.ChargeTypeId, account.Settings.ChargeTypeId);
+            Assert.AreEqual(settings.FirstName, account.Settings.FirstName);
+            Assert.AreEqual(settings.NumberOfTaxi, account.Settings.NumberOfTaxi);
+            Assert.AreEqual(settings.Passengers, account.Settings.Passengers);
+            Assert.AreEqual(settings.Phone, account.Settings.Phone);
+            Assert.AreEqual(settings.ProviderId, account.Settings.ProviderId);
+            Assert.AreEqual(settings.VehicleTypeId, account.Settings.VehicleTypeId);
+        }
 
 
         private string GetTempEmail()
@@ -92,71 +121,7 @@ namespace apcurium.MK.Web.Tests
 
 
 
-        //[Test]
-        //public void GetAccountTest()
-        //{
-        //    string error;
-        //    sut.GetAccount("apcurium@apcurium.com", "password", out error);
-
-        //    Assert.IsNullOrEmpty(error);
-        //}
-
-        //[Test]
-        //public void ResetPasswordTest()
-        //{
-        //    string error;
-        //    var account = new CreateAccountData
-        //    {
-        //        Email = "apcuriumtestrset@apcurium.com",
-        //        Password = "password",
-        //        FirstName = "Matthieu",
-        //        LastName = "Guyonnet-Duluc"
-        //    };
-
-        //    //sut.CreateAccount(account, out error);
-
-        //    var result = sut.ResetPassword(new ResetPasswordData()
-        //    {
-        //        Email = account.Email,
-        //        OldEmail = account.Email,
-        //        OldPassword = "password",
-        //        NewPassword = "password2"
-        //    });
-
-        //    Assert.IsTrue(result);
-
-        //    sut.ResetPassword(new ResetPasswordData()
-        //    {
-        //        Email = account.Email,
-        //        OldEmail = account.Email,
-        //        OldPassword = "password2",
-        //        NewPassword = "password"
-        //    });
-
-        //}
-
-        //[Test]
-        //public void UpdateAccountTest()
-        //{
-        //    //var account = new CreateAccountData
-        //    //{
-        //    //    Email = string.Format("apcuriumupdate@apcurium.com", Guid.NewGuid()),
-        //    //    Password = "password",
-        //    //    FirstName = "Matthieu",
-        //    //    LastName = "Guyonnet-Duluc"
-        //    //};
-        //    //sut.CreateAccount(account, out error);
-
-        //    string error;
-
-        //    var existing = sut.GetAccount("apcuriumupdate@apcurium.com", "password", out error);
-        //    existing.FirstName = "Matthieu" + new Random().Next(0, 100);
-
-        //    sut.UpdateUser(existing);
-
-        //    var updated = sut.GetAccount("apcuriumupdate@apcurium.com", "password", out error);
-        //    Assert.AreEqual(existing.FirstName, updated.FirstName);
-        //}
+       
 
     }
 }

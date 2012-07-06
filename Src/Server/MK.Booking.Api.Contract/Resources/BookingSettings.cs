@@ -1,6 +1,6 @@
 ﻿namespace apcurium.MK.Booking.Api.Contract.Resources
 {
-    public class BookingSettingsDetails
+    public class BookingSettings
     {
         public string LastName { get; set; }
 
