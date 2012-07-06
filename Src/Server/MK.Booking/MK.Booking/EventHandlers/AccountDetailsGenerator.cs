@@ -6,8 +6,8 @@ using apcurium.MK.Booking.ReadModel;
 
 namespace apcurium.MK.Booking.EventHandlers
 {
-    public class AccountDetailsGenerator : 
-        IEventHandler<AccountRegistered>, 
+    public class AccountDetailsGenerator :
+        IEventHandler<AccountRegistered>,
         IEventHandler<AccountUpdated>,
         IEventHandler<BookingSettingsUpdated>
     {
@@ -22,17 +22,17 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                
+
                 context.Save(new AccountDetail
-                {
-                    FirstName = @event.FirstName,
-                    LastName = @event.LastName,
-                    Email = @event.Email,
-                    Password = @event.Password,
-                    Phone = @event.Phone,
-                    Id = @event.SourceId,
-                    IBSAccountid = @event.IbsAcccountId
-                });
+                                 {
+                                     FirstName = @event.FirstName,
+                                     LastName = @event.LastName,
+                                     Email = @event.Email,
+                                     Password = @event.Password,
+                                     Phone = @event.Phone,
+                                     Id = @event.SourceId,
+                                     IBSAccountid = @event.IbsAcccountId
+                                 });
 
             }
         }
@@ -68,7 +68,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 context.Save(account);
             }
         }
-        
+
         public void Handle(AccountPasswordResetted @event)
         {
             using (var context = _contextFactory.Invoke())
@@ -77,5 +77,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 account.Password = @event.Password;
                 context.Save(account);
             }
+        }
+        
     }
 }
