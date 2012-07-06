@@ -1,7 +1,6 @@
 ﻿using System.Configuration;
 using System.Data.Common;
 using System.Data.Entity.Infrastructure;
-using Microsoft.WindowsAzure.ServiceRuntime;
 
 namespace apcurium.MK.Common.Entity
 {
@@ -20,23 +19,23 @@ namespace apcurium.MK.Common.Entity
             {
                 var connectionStringName = "DbContext." + nameOrConnectionString;
 
-                if (RoleEnvironment.IsAvailable)
-                {
-                    try
-                    {
-                        var settingValue = RoleEnvironment.GetConfigurationSettingValue(connectionStringName);
-                        if (!string.IsNullOrEmpty(settingValue))
-                        {
-                            nameOrConnectionString = settingValue;
-                        }
-                    }
-                    catch (RoleEnvironmentException)
-                    {
-                        // setting does not exist, use original value
-                    }
-                }
-                else
-                {
+                //if (RoleEnvironment.IsAvailable)
+                //{
+                //    try
+                //    {
+                //        var settingValue = RoleEnvironment.GetConfigurationSettingValue(connectionStringName);
+                //        if (!string.IsNullOrEmpty(settingValue))
+                //        {
+                //            nameOrConnectionString = settingValue;
+                //        }
+                //    }
+                //    catch (RoleEnvironmentException)
+                //    {
+                //        // setting does not exist, use original value
+                //    }
+                //}
+                //else
+                //{
                     try
                     {
                         var connectionString = ConfigurationManager.ConnectionStrings[connectionStringName];
@@ -48,7 +47,7 @@ namespace apcurium.MK.Common.Entity
                     catch (ConfigurationErrorsException e)
                     {
                     }
-                }
+                //}
             }
 
             return this.parent.CreateConnection(nameOrConnectionString);

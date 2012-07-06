@@ -23,7 +23,8 @@ namespace apcurium.MK.Booking.Database
 
             // Make the name of the views match exactly the name of the corresponding property.
             modelBuilder.Entity<AccountDetail>().ToTable("AccountDetail", SchemaName);
-            modelBuilder.Entity<FavoriteAddress>().ToTable("FavoriteAddress", SchemaName);            
+            modelBuilder.Entity<FavoriteAddress>().ToTable("FavoriteAddress", SchemaName);
+            modelBuilder.Entity<OrderDetail>().ToTable("OrderDetail", SchemaName);
         }
 
         public T Find<T>(Guid id) where T : class

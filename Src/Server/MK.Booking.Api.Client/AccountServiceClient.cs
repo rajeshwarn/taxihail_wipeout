@@ -61,9 +61,9 @@ namespace apcurium.MK.Booking.Api.Client
             var response = Client.Delete<string>(req);
         }
 
-        public void ResetPassword(Guid accountId)
+        public void ResetPassword(string emailAddress)
         {
-            var req = string.Format("/account/{0}/resetpassword", accountId);
+            var req = string.Format("/account/resetpassword/{0}", emailAddress);
             var response = Client.Post<string>(req,null);
         }
 
