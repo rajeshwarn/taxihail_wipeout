@@ -98,8 +98,9 @@ namespace WorkerRoleCommandProcessor
             // handlers
             container.RegisterType<ICommandHandler, AccountCommandHandler>("AccountCommandHandler");
             container.RegisterType<ICommandHandler, FavoriteAddressCommandHandler>("FavoriteAddressCommandHandler");
-            container.RegisterType<ICommandHandler, OrderCommandHandler>("OrderCommandHandler");   
-            
+            container.RegisterType<ICommandHandler, OrderCommandHandler>("OrderCommandHandler");
+            container.RegisterType<ICommandHandler, FavoriteAddressCommandHandler>("FavoriteAddressCommandHandler");
+            container.RegisterType<ICommandHandler, EmailCommandHandler>("EmailCommandHandler");
 
             OnCreateContainer(container);
 
