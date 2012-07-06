@@ -43,7 +43,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        [ExpectedException( "ServiceStack.ServiceClient.Web.WebServiceException", ExpectedMessage="Unauthorized")]
+        [ExpectedException("ServiceStack.ServiceClient.Web.WebServiceException", ExpectedMessage = "Invalid UserName or Password")]
         public void BasicSignInWithInvalidPassword()
         {
             var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, "wrong_password"));
@@ -51,7 +51,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        [ExpectedException("ServiceStack.ServiceClient.Web.WebServiceException", ExpectedMessage = "Unauthorized")]
+        [ExpectedException("ServiceStack.ServiceClient.Web.WebServiceException", ExpectedMessage = "Invalid UserName or Password")]
         public void BasicSignInWithInvalidEmail()
         {
             var sut = new AccountServiceClient(BaseUrl, new AuthInfo("wrong_email@wrong.com", "password1"));
