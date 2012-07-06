@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
     }
 
     [TestFixture]
-    public class given_no_account : given_a_view_model_generator
+    public class given_no_order : given_a_view_model_generator
     {
         [Test]
         public void when_order_created_then_order_dto_populated()
@@ -72,12 +72,12 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
     }
 
     [TestFixture]
-    public class given_existing_account : given_a_view_model_generator
+    public class given_existing_order : given_a_view_model_generator
     {
         private Guid _orderId = Guid.NewGuid();
         private Guid _accountId = Guid.NewGuid();
 
-        public given_existing_account()
+        public given_existing_order()
         {
             var pickupDate = DateTime.Now;
             var requestDate = DateTime.Now.AddHours(1);
