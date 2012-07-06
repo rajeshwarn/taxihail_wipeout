@@ -18,6 +18,7 @@ namespace apcurium.MK.Booking.Domain
             base.Handles<FavoriteAddressAdded>(OnFavoriteAddressAdded);
             base.Handles<FavoriteAddressRemoved>(OnFavoriteAddressRemoved);
             base.Handles<FavoriteAddressUpdated>(OnFavoriteAddressUpdated);
+            base.Handles<AccountPasswordResetted>(OnAccountPasswordResetted);
         }
 
         public Account(Guid id, IEnumerable<IVersionedEvent> history)
@@ -59,6 +60,20 @@ namespace apcurium.MK.Booking.Domain
                 FirstName = firstName,
                 LastName = lastName,
             });        
+        }
+
+        internal void UpdatePassword(byte[] newPassword)
+        {
+            if (Params.Get(newPassword).Any(p => false))
+            {
+                throw new InvalidOperationException("Missing required fields");
+            }
+
+            this.Update(new AccountPasswordResetted()
+            {
+                SourceId = Id,
+                Password = newPassword
+            });
         }
 
         public void AddFavoriteAddress(Guid id, string friendlyName, string apartment, string fullAddress, string ringCode, double latitude, double longitude)
@@ -106,13 +121,10 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-
-
         private void OnAccountRegistered(AccountRegistered @event)
         {
 
         }
-
 
         private void OnAccountUpdated(AccountUpdated @event)
         {
@@ -130,6 +142,11 @@ namespace apcurium.MK.Booking.Domain
         }
 
         private void OnFavoriteAddressUpdated(FavoriteAddressUpdated obj)
+        {
+
+        }
+
+        private void OnAccountPasswordResetted(AccountPasswordResetted obj)
         {
 
         }

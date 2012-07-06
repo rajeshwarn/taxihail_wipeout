@@ -71,6 +71,15 @@ namespace apcurium.MK.Web.Tests
             Assert.IsNotNull(account);
             Assert.AreEqual(newAccount.AccountId, account.Id);
         }
+
+        [Test]
+        public void ResettingAccountPassword()
+        {
+            var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+            var acc = sut.GetMyAccount();
+            sut.ResetPassword(acc.Id);
+
+        }
        
         
 

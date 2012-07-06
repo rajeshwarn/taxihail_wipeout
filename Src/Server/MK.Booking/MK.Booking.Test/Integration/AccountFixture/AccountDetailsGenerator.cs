@@ -15,6 +15,7 @@ using BackOffice.Test;
 
 using BackOffice.Test;
 using NUnit.Framework;
+using apcurium.MK.Booking.Security;
 
 namespace apcurium.MK.Booking.Test.Integration.AccountFixture
 {
@@ -115,6 +116,25 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 Assert.NotNull(dto);
                 Assert.AreEqual("Robert", dto.FirstName);
                 Assert.AreEqual("Smither", dto.LastName);                
+            }
+        }
+
+        [Test]
+        public void when_account_resetted_password()
+        {
+            var service = new PasswordService();
+            this.sut.Handle(new AccountPasswordResetted
+            {
+                SourceId = _accountId,
+                Password = service.EncodePassword("Yop", _accountId.ToString())
+            });
+
+            using (var context = new BookingDbContext(dbName))
+            {
+                var dto = context.Find<AccountDetail>(_accountId);
+
+                Assert.NotNull(dto);
+                Assert.AreEqual(true, service.IsValid("Yop", _accountId.ToString(), dto.Password));
             }
         }
 

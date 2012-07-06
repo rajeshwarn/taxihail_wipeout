@@ -12,7 +12,7 @@ namespace apcurium.MK.Booking.CommandHandlers
 {
 
 
-    public class AccountCommandHandler : ICommandHandler<RegisterAccount>, ICommandHandler<UpdateAccount>
+    public class AccountCommandHandler : ICommandHandler<RegisterAccount>, ICommandHandler<UpdateAccount>, ICommandHandler<ResetAccountPassword>
     {
 
         private readonly IEventSourcedRepository<Account> _repository;
@@ -37,6 +37,15 @@ namespace apcurium.MK.Booking.CommandHandlers
             account.Update(command.FirstName, command.LastName);
             _repository.Save(account);
             
+        }
+
+        public void Handle(ResetAccountPassword command)
+        {
+            var account = _repository.Find(command.AccountId);
+            var newPassword = _passwordService.EncodePassword(command.Password, command.AccountId.ToString());
+            account.UpdatePassword(newPassword);
+            _repository.Save(account);
+
         }
     }
 }

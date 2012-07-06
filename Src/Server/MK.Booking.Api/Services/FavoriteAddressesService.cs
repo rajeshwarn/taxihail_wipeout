@@ -29,7 +29,6 @@ namespace apcurium.MK.Booking.Api.Services
 
             var session = this.GetSession();
             return Dao.FindByAccountId(new Guid(session.UserAuthId));
-            //return new AddressList { Addresses = new Address[0] };
         }
     }
 }

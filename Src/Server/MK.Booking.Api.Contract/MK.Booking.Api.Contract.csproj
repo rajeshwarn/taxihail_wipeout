@@ -71,6 +71,7 @@
     <Compile Include="Requests\DirectionsRequest.cs" />
     <Compile Include="Requests\GeocodingRequest.cs" />
     <Compile Include="Requests\ReferenceDataRequest.cs" />
+    <Compile Include="Requests\ResetPassword.cs" />
     <Compile Include="Requests\SaveFavoriteAddress.cs" />
     <Compile Include="Requests\CurrentAccount.cs" />
     <Compile Include="Requests\FavoriteAddresses.cs" />

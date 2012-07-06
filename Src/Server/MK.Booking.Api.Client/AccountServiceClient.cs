@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.Api.Client
 
         public IList<Address> GetFavoriteAddresses(Guid accountId)
         {
-            var req = string.Format("/accounts/{0}/addresses", accountId.ToString());
+            var req = string.Format("/account/{0}/addresses", accountId.ToString());
             var addresses = Client.Get<IList<Address>>(req);
             return addresses;
         }
@@ -54,6 +54,12 @@ namespace apcurium.MK.Booking.Api.Client
         {
             var req = string.Format("/account/{0}/addresses/{1}", accountId, addressId);
             var response = Client.Delete<string>(req);
+        }
+
+        public void ResetPassword(Guid accountId)
+        {
+            var req = string.Format("/account/{0}/resetpassword", accountId);
+            var response = Client.Post<string>(req,null);
         }
     }
 }
