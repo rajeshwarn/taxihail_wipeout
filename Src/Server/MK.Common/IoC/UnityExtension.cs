@@ -2,7 +2,7 @@
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.ObjectBuilder2;
 
-namespace apcurium.MK.Web.IoC
+namespace apcurium.MK.Common.IoC
 {
     public class UnityExtension : UnityContainerExtension
     {
