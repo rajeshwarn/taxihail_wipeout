@@ -31,9 +31,9 @@ namespace apcurium.MK.Booking.Api.Client
             return result.Id;
         }
 
-        public void UpdateBookingSettings(Guid accountId, BookingSettingsDetails settings)
+        public void UpdateBookingSettings(Guid accountId, BookingSettingsRequest settings)
         {
-            Client.Put<Account>("/account/{0}/bookingsettings", settings);
+            Client.Put<string>(string.Format("/account/{0}/bookingsettings", accountId), settings);
         }
 
         public IList<Address> GetFavoriteAddresses(Guid accountId)

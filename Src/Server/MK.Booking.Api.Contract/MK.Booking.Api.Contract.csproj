@@ -81,7 +81,7 @@
     <Compile Include="Resources\Account.cs" />
     <Compile Include="Resources\Address.cs" />
     <Compile Include="Resources\AddressList.cs" />
-    <Compile Include="Resources\BookingSettingsDetails.cs" />
+    <Compile Include="Resources\BookingSettings.cs" />
     <Compile Include="Resources\DirectionInfo.cs" />
     <Compile Include="Resources\OrderStatus.cs" />
     <Compile Include="Resources\ReferenceData.cs" />
