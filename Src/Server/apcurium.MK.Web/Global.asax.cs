@@ -1,8 +1,10 @@
 ﻿using System;
 using Microsoft.Practices.Unity;
+using ServiceStack.ServiceInterface.Validation;
 using ServiceStack.WebHost.Endpoints;
 using Funq;
 using apcurium.MK.Booking.Api.Services;
+using apcurium.MK.Booking.Api.Validation;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.IBS.Impl;
 using apcurium.MK.Booking.ReadModel.Query;
@@ -55,6 +57,7 @@ namespace apcurium.MK.Web
                 container.RegisterInstance<IConfigurationManager>(new Common.Configuration.Impl.ConfigurationManager(() => container.Resolve<ConfigurationDbContext>()));
                 container.RegisterInstance<IAccountWebServiceClient>(new AccountWebServiceClient(container.Resolve<IConfigurationManager>(), new Logger()));
                 container.RegisterInstance<IStaticDataWebServiceClient>(new StaticDataWebServiceClient(container.Resolve<IConfigurationManager>(), new Logger()));
+                container.RegisterInstance<IBookingWebServiceClient>(new BookingWebServiceClient(container.Resolve<IConfigurationManager>(), new Logger()));
 
                 container.RegisterInstance<IMessageSender>(new MessageSender(new ServiceConfigurationSettingConnectionFactory(Database.DefaultConnectionFactory),
                     ConfigurationManager.ConnectionStrings["DbContext.SqlBus"].ConnectionString, "SqlBus.Commands"));
@@ -65,6 +68,8 @@ namespace apcurium.MK.Web
                 
 
                 Plugins.Add(new AuthFeature(() => new AuthUserSession(), new IAuthProvider[] { new CustomCredentialsAuthProvider(container.Resolve<IAccountDao>(), container.Resolve<IPasswordService>()) }));
+                Plugins.Add(new ValidationFeature());
+                containerFunq.RegisterValidators(typeof(SaveFavoriteAddressValidator).Assembly);
 
                 container.RegisterInstance<ICacheClient>(new MemoryCacheClient{ FlushOnDispose = false });
                 

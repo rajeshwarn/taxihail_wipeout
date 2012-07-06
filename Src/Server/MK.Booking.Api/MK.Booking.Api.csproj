@@ -71,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Security\CustomCredentialsAuthProvider.cs" />
+    <Compile Include="Services\BookingSettingsService.cs" />
     <Compile Include="Services\DirectionsService.cs" />
     <Compile Include="Services\GeocodingService.cs" />
     <Compile Include="Services\CurrentAccountService.cs" />
@@ -79,11 +80,13 @@
     <Compile Include="Services\GoogleApi\CommonDto.cs" />
     <Compile Include="Services\GoogleApi\DirectionDto.cs" />
     <Compile Include="Services\GoogleApi\GeolocDto.cs" />
+    <Compile Include="Services\OrderStatusService.cs" />
     <Compile Include="Services\ReferenceDataService.cs" />
     <Compile Include="Services\RegisterAccountService.cs" />
     <Compile Include="Services\ResetPasswordService.cs" />
     <Compile Include="Services\SaveFavoriteAddressService.cs" />
     <Compile Include="Services\TestOnlyReqGetTestAccountService.cs" />
+    <Compile Include="Validation\SaveFavoriteAddressValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

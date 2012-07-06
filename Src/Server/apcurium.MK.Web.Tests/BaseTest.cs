@@ -27,7 +27,7 @@ namespace apcurium.MK.Web.Tests
             _appHost.Start(BaseUrl);
 
             var sut = new AccountServiceClient(BaseUrl, null);
-            TestAccount = sut.GetTestAccount(1);            
+            TestAccount = sut.GetTestAccount(0);            
         }
 
         protected void TearDown()

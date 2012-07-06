@@ -19,6 +19,7 @@ namespace apcurium.MK.Booking.Domain
             base.Handles<FavoriteAddressRemoved>(OnFavoriteAddressRemoved);
             base.Handles<FavoriteAddressUpdated>(OnFavoriteAddressUpdated);
             base.Handles<AccountPasswordResetted>(OnAccountPasswordResetted);
+            base.Handles<BookingSettingsUpdated>(OnBookingSettingsUpdated);
         }
 
         public Account(Guid id, IEnumerable<IVersionedEvent> history)
@@ -74,6 +75,22 @@ namespace apcurium.MK.Booking.Domain
                 SourceId = Id,
                 Password = newPassword
             });
+        }
+
+        public void UpdateBookingSettings(BookingSettings settings)
+        {
+            this.Update(new BookingSettingsUpdated
+            {
+                SourceId = Id,
+                FirstName = settings.FirstName,
+                LastName = settings.LastName,
+                ChargeTypeId = settings.ChargeTypeId,
+                NumberOfTaxi = settings.NumberOfTaxi,
+                Passengers = settings.Passengers,
+                Phone = settings.Phone,
+                ProviderId = settings.ProviderId,
+                VehicleTypeId = settings.VehicleTypeId
+            });  
         }
 
         public void AddFavoriteAddress(Guid id, string friendlyName, string apartment, string fullAddress, string ringCode, double latitude, double longitude)
@@ -150,6 +167,11 @@ namespace apcurium.MK.Booking.Domain
         {
 
         }
+        
+        private void OnBookingSettingsUpdated(BookingSettingsUpdated obj)
+        {
+        }
+
 
         private static void ValidateFavoriteAddress(string friendlyName, string fullAddress, double latitude, double longitude)
         {
@@ -168,6 +190,7 @@ namespace apcurium.MK.Booking.Domain
                 throw new ArgumentOutOfRangeException("longitude", "Invalid longitude");
             }
         }
+
         
     }
 }

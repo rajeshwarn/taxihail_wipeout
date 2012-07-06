@@ -7,9 +7,11 @@ using Infrastructure.Sql.BlobStorage;
 using Infrastructure.Sql.EventSourcing;
 using Infrastructure.Sql.MessageLog;
 using Microsoft.Practices.Unity;
+using ServiceStack.ServiceInterface.Validation;
 using ServiceStack.WebHost.Endpoints;
 using Funq;
 using apcurium.MK.Booking.Api.Services;
+using apcurium.MK.Booking.Api.Validation;
 using apcurium.MK.Booking.BackOffice.CommandHandlers;
 using apcurium.MK.Booking.BackOffice.EventHandlers;
 using apcurium.MK.Booking.CommandHandlers;
@@ -81,6 +83,9 @@ namespace apcurium.MK.Web.SelfHost
             container.RegisterInstance<IAccountDao>(new AccountDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IConfigurationManager>(new Common.Configuration.Impl.ConfigurationManager(() => container.Resolve<ConfigurationDbContext>()));
             container.RegisterInstance<IAccountWebServiceClient>(new AccountWebServiceClient(container.Resolve<IConfigurationManager>(), new Logger()));
+            container.RegisterInstance<IStaticDataWebServiceClient>(new StaticDataWebServiceClient(container.Resolve<IConfigurationManager>(), new Logger()));
+            container.RegisterInstance<IBookingWebServiceClient>(new BookingWebServiceClient(container.Resolve<IConfigurationManager>(), new Logger()));
+
 
             // Event log database and handler.
             container.RegisterType<SqlMessageLog>(new InjectionConstructor("MessageLog", container.Resolve<ITextSerializer>(), container.Resolve<IMetadataProvider>()));
@@ -100,6 +105,8 @@ namespace apcurium.MK.Web.SelfHost
 
 
             Plugins.Add(new AuthFeature(() => new AuthUserSession(), new IAuthProvider[] { new CustomCredentialsAuthProvider(container.Resolve<IAccountDao>(), container.Resolve<IPasswordService>()) }));
+            Plugins.Add(new ValidationFeature());
+            containerFunq.RegisterValidators(typeof(SaveFavoriteAddressValidator).Assembly);
 
             container.RegisterInstance<ICacheClient>(new MemoryCacheClient { FlushOnDispose = false });
 

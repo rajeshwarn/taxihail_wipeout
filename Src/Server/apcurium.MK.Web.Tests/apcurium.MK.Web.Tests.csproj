@@ -36,6 +36,7 @@
       <HintPath>..\packages\NUnit.2.6.0.12054\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack, Version=3.7.9.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="ServiceStack.Common, Version=3.8.3.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="ServiceStack.Interfaces, Version=3.8.3.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -52,6 +53,7 @@
     <Compile Include="DirectionsFixture.cs" />
     <Compile Include="FavoriteAddressFixture.cs" />
     <Compile Include="GeolocFixture.cs" />
+    <Compile Include="OrderStatusFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReferenceDataFixture.cs" />
   </ItemGroup>
