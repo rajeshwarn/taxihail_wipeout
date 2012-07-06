@@ -70,4 +70,49 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
             }
         }
     }
+
+    [TestFixture]
+    public class given_existing_account : given_a_view_model_generator
+    {
+        private Guid _orderId = Guid.NewGuid();
+        private Guid _accountId = Guid.NewGuid();
+
+        public given_existing_account()
+        {
+            var pickupDate = DateTime.Now;
+            var requestDate = DateTime.Now.AddHours(1);
+
+            this.sut.Handle(new OrderCreated()
+                                {
+                                    SourceId = _orderId,
+                                    AccountId = _accountId,
+                                    FriendlyName = "Chez François",
+                                    Apartment = "3939",
+                                    FullAddress = "1234 rue Saint-Hubert",
+                                    RingCode = "3131",
+                                    Latitude = 45.515065,
+                                    Longitude = -73.558064,
+                                    PickupDate = pickupDate,
+                                    RequestedDateTime = requestDate,
+                                });
+
+        }
+
+        [Test]
+        public void when_order_cancelled_then_order_dto_populated()
+        {
+            this.sut.Handle(new OrderCancelled()
+                                {
+                                    SourceId = _orderId,
+
+                                });
+
+            using (var context = new BookingDbContext(dbName))
+            {
+                var dto = context.Find<OrderDetail>(_orderId);
+                Assert.NotNull(dto);
+            }
+        }
+    }
+
 }
