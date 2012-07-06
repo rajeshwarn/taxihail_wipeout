@@ -7,6 +7,7 @@ using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.Security;
 
@@ -30,10 +31,20 @@ namespace apcurium.MK.Booking.Api.Services
             if (user == null) throw HttpError.NotFound("Account not found");
 
             var newPassword = new PasswordService().GeneratePassword();
-            var command = new Commands.ResetAccountPassword();
-            command.AccountId = user.Id;
-            command.Password = newPassword;
-            _commandBus.Send(command);
+            var resetCommand = new Commands.ResetAccountPassword
+            {
+                AccountId = user.Id,
+                Password = newPassword
+            };
+
+            var emailCommand = new SendPasswordResettedEmail
+            {
+                EmailAddress = user.Email,
+                Password = newPassword,
+            };
+
+            _commandBus.Send(resetCommand);
+            _commandBus.Send(emailCommand);
 
             return new HttpResult(HttpStatusCode.OK);
         }

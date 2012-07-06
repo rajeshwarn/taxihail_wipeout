@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Net;
 using System.Net.Mail;
-using System.Text;
-using Nustache.Core;
 
 namespace apcurium.MK.Booking.Email
 {
@@ -11,7 +7,17 @@ namespace apcurium.MK.Booking.Email
     {
         public void Send(MailMessage message)
         {
-            using(var client = new System.Net.Mail.SmtpClient())
+            var client = new System.Net.Mail.SmtpClient
+            {
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential("donotreply@apcurium.com", "2wsxCDE#")
+            };
+
+            using(client)
             {
                 client.Send(message);
             }
