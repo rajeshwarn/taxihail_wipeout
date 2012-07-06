@@ -14,7 +14,7 @@ namespace apcurium.MK.Web.Tests
     [TestFixture]
     public class FavoriteAddressFixture: BaseTest
     {
-        private readonly Guid _knownAddressId = Guid.NewGuid();
+        private Guid _knownAddressId = Guid.NewGuid();
 
         [TestFixtureSetUp]
         public new void Setup()
@@ -34,7 +34,7 @@ namespace apcurium.MK.Web.Tests
             var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
             sut.AddFavoriteAddress(new SaveFavoriteAddress
             {
-                Id = _knownAddressId,
+                Id = (_knownAddressId = Guid.NewGuid()),
                 AccountId = TestAccount.Id,
                 FriendlyName = "La Boite à Jojo",
                 FullAddress = "1234 rue Saint-Denis",
