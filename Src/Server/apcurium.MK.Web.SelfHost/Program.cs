@@ -102,7 +102,7 @@ namespace apcurium.MK.Web.SelfHost
 
             container.RegisterInstance<IPasswordService>(new PasswordService());
             container.RegisterInstance<ITemplateService>(new TemplateService());
-            container.RegisterInstance<IEmailSender>(new EmailSender());
+            container.RegisterInstance<IEmailSender>(new EmailSender(container.Resolve<IConfigurationManager>()));
 
             container.RegisterType<ICommandHandler, AccountCommandHandler>("AccountCommandHandler");
             container.RegisterType<ICommandHandler, FavoriteAddressCommandHandler>("FavoriteAddressCommandHandler");

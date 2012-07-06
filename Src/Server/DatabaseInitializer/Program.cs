@@ -11,6 +11,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 // ==============================================================================================================
 
+using System;
+using System.Globalization;
+using System.Net.Mail;
 using apcurium.MK.Common.Configuration.Impl;
 
 namespace DatabaseInitializer
@@ -98,6 +101,18 @@ namespace DatabaseInitializer
             configurationManager.SetSetting("Direction.MaxDistance", "50");
 
             configurationManager.SetSetting("Email.NoReply", "noreply@apcurium.com");
+
+            configurationManager.SetSetting("Smtp.Host", "smtp.gmail.com");
+            configurationManager.SetSetting("Smtp.Port", Convert.ToString(587, CultureInfo.InvariantCulture));
+            configurationManager.SetSetting("Smtp.EnableSsl", Convert.ToString(true, CultureInfo.InvariantCulture));
+            configurationManager.SetSetting("Smtp.DeliveryMethod", Convert.ToString(SmtpDeliveryMethod.Network,  CultureInfo.InvariantCulture));
+            configurationManager.SetSetting("Smtp.UseDefaultCredentials", Convert.ToString(false, CultureInfo.InvariantCulture));
+            configurationManager.SetSetting("Smtp.Credentials.Username", "donotreply@apcurium.com");
+            configurationManager.SetSetting("Smtp.Credentials.Password", "2wsxCDE#");
+
+
+
+
 
         }
     }
