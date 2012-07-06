@@ -18,6 +18,7 @@ namespace apcurium.MK.Booking.Domain
             base.Handles<FavoriteAddressAdded>(OnFavoriteAddressAdded);
             base.Handles<FavoriteAddressRemoved>(OnFavoriteAddressRemoved);
             base.Handles<FavoriteAddressUpdated>(OnFavoriteAddressUpdated);
+            base.Handles<AccountPasswordResetted>(OnAccountPasswordResetted);
             base.Handles<BookingSettingsUpdated>(OnBookingSettingsUpdated);
         }
 
@@ -62,6 +63,20 @@ namespace apcurium.MK.Booking.Domain
             });        
         }
 
+        internal void UpdatePassword(byte[] newPassword)
+        {
+            if (Params.Get(newPassword).Any(p => false))
+            {
+                throw new InvalidOperationException("Missing required fields");
+            }
+
+            this.Update(new AccountPasswordResetted()
+            {
+                SourceId = Id,
+                Password = newPassword
+            });
+        }
+
         public void UpdateBookingSettings(BookingSettings settings)
         {
             this.Update(new BookingSettingsUpdated
@@ -76,10 +91,6 @@ namespace apcurium.MK.Booking.Domain
                 ProviderId = settings.ProviderId,
                 VehicleTypeId = settings.VehicleTypeId
             });  
-        }
-
-        private void OnBookingSettingsUpdated(BookingSettingsUpdated obj)
-        {
         }
 
         public void AddFavoriteAddress(Guid id, string friendlyName, string apartment, string fullAddress, string ringCode, double latitude, double longitude)
@@ -127,13 +138,10 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-
-
         private void OnAccountRegistered(AccountRegistered @event)
         {
 
         }
-
 
         private void OnAccountUpdated(AccountUpdated @event)
         {
@@ -154,6 +162,16 @@ namespace apcurium.MK.Booking.Domain
         {
 
         }
+
+        private void OnAccountPasswordResetted(AccountPasswordResetted obj)
+        {
+
+        }
+        
+        private void OnBookingSettingsUpdated(BookingSettingsUpdated obj)
+        {
+        }
+
 
         private static void ValidateFavoriteAddress(string friendlyName, string fullAddress, double latitude, double longitude)
         {

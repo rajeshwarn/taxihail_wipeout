@@ -13,6 +13,7 @@ namespace apcurium.MK.Booking.CommandHandlers
 
 
     public class AccountCommandHandler : ICommandHandler<RegisterAccount>, 
+                                         ICommandHandler<ResetAccountPassword>,
                                          ICommandHandler<UpdateAccount>,
                                          ICommandHandler<UpdateBookingSettings>
     {
@@ -42,6 +43,14 @@ namespace apcurium.MK.Booking.CommandHandlers
             
         }
 
+        public void Handle(ResetAccountPassword command)
+        {
+            var account = _repository.Find(command.AccountId);
+            var newPassword = _passwordService.EncodePassword(command.Password, command.AccountId.ToString());
+            account.UpdatePassword(newPassword);
+            _repository.Save(account);
+        }
+        
         public void Handle(UpdateBookingSettings command)
         {
             var account = _repository.Find(command.AccountId);
@@ -51,5 +60,6 @@ namespace apcurium.MK.Booking.CommandHandlers
             account.UpdateBookingSettings(settings);
             _repository.Save(account);
         }
+
     }
 }

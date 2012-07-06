@@ -35,7 +35,6 @@ namespace apcurium.MK.Booking.EventHandlers
                 });
 
             }
-
         }
 
         public void Handle(AccountUpdated @event)
@@ -69,5 +68,14 @@ namespace apcurium.MK.Booking.EventHandlers
                 context.Save(account);
             }
         }
+        
+        public void Handle(AccountPasswordResetted @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var account = context.Find<AccountDetail>(@event.SourceId);
+                account.Password = @event.Password;
+                context.Save(account);
+            }
     }
 }

@@ -73,6 +73,7 @@
     <Compile Include="Requests\GeocodingRequest.cs" />
     <Compile Include="Requests\OrderStatusRequest.cs" />
     <Compile Include="Requests\ReferenceDataRequest.cs" />
+    <Compile Include="Requests\ResetPassword.cs" />
     <Compile Include="Requests\SaveFavoriteAddress.cs" />
     <Compile Include="Requests\CurrentAccount.cs" />
     <Compile Include="Requests\FavoriteAddresses.cs" />
@@ -81,7 +82,7 @@
     <Compile Include="Resources\Account.cs" />
     <Compile Include="Resources\Address.cs" />
     <Compile Include="Resources\AddressList.cs" />
-    <Compile Include="Resources\BookingSettingsDetails.cs" />
+    <Compile Include="Resources\BookingSettings.cs" />
     <Compile Include="Resources\DirectionInfo.cs" />
     <Compile Include="Resources\OrderStatus.cs" />
     <Compile Include="Resources\ReferenceData.cs" />

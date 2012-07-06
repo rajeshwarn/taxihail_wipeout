@@ -149,7 +149,7 @@ namespace apcurium.MK.Web.Tests
         {
             var sut = new AccountServiceClient(BaseUrl, null);
             
-            var otherAccount = sut.GetTestAccount(1);            
+            var otherAccount = sut.GetTestAccount(0);            
 
             sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
             

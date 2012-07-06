@@ -35,5 +35,20 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             Assert.AreEqual("Smither", @event.LastName);
             
         }
+
+        [Test]
+        public void when_reseting_password_successfully()
+        {
+            this.sut.When(new ResetAccountPassword { AccountId = _accountId, Password = "Yop" });
+
+            var @event = sut.ThenHasSingle<AccountPasswordResetted>();
+
+            Assert.AreEqual(_accountId, @event.SourceId);
+
+            var service = new PasswordService();
+
+            Assert.AreEqual(true, service.IsValid("Yop", _accountId.ToString(), @event.Password));
+
+        }
     }
 }
