@@ -3,15 +3,15 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Booking.Commands
 {
-    public class SendResetPasswordEmail : ICommand
+    public class SendPasswordResettedEmail : ICommand
     {
-        public SendResetPasswordEmail()
+        public SendPasswordResettedEmail()
         {
             Id = Guid.NewGuid();
         }
 
         public Guid Id { get; set; }
-        public Guid AccountId { get; set; }
+        public string EmailAddress { get; set; }
         public string Password { get; set; }
     }
 }

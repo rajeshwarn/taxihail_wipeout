@@ -9,7 +9,8 @@ namespace apcurium.MK.Booking.EventHandlers
     public class AccountDetailsGenerator :
         IEventHandler<AccountRegistered>,
         IEventHandler<AccountUpdated>,
-        IEventHandler<BookingSettingsUpdated>
+        IEventHandler<BookingSettingsUpdated>,
+        IEventHandler<AccountPasswordResetted>
     {
         private readonly Func<BookingDbContext> _contextFactory;
 

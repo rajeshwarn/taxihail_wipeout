@@ -15,6 +15,7 @@ using apcurium.MK.Booking.Api.Validation;
 using apcurium.MK.Booking.BackOffice.CommandHandlers;
 using apcurium.MK.Booking.BackOffice.EventHandlers;
 using apcurium.MK.Booking.CommandHandlers;
+using apcurium.MK.Booking.Email;
 using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.IBS.Impl;
@@ -100,10 +101,16 @@ namespace apcurium.MK.Web.SelfHost
             container.RegisterType(typeof(IEventSourcedRepository<>), typeof(SqlEventSourcedRepository<>), new ContainerControlledLifetimeManager());
 
             container.RegisterInstance<IPasswordService>(new PasswordService());
+            container.RegisterInstance<ITemplateService>(new TemplateService());
+            container.RegisterInstance<IEmailSender>(new EmailSender(container.Resolve<IConfigurationManager>()));
+
             container.RegisterType<ICommandHandler, AccountCommandHandler>("AccountCommandHandler");
             container.RegisterType<ICommandHandler, FavoriteAddressCommandHandler>("FavoriteAddressCommandHandler");
+            container.RegisterType<ICommandHandler, EmailCommandHandler>("EmailCommandHandler");
             container.RegisterType<ICommandHandler, OrderCommandHandler>("OrderCommandHandler");
-            container.RegisterInstance<ICommandBus>(new MemoryCommandBus(container.Resolve<ICommandHandler>("AccountCommandHandler"), container.Resolve<ICommandHandler>("FavoriteAddressCommandHandler"), container.Resolve<ICommandHandler>("OrderCommandHandler")));
+            container.RegisterInstance<ICommandBus>(new MemoryCommandBus(container.Resolve<ICommandHandler>("AccountCommandHandler"), container.Resolve<ICommandHandler>("OrderCommandHandler"),
+                container.Resolve<ICommandHandler>("FavoriteAddressCommandHandler"),
+                container.Resolve<ICommandHandler>("EmailCommandHandler")));
 
 
             Plugins.Add(new AuthFeature(() => new AuthUserSession(), new IAuthProvider[] { new CustomCredentialsAuthProvider(container.Resolve<IAccountDao>(), container.Resolve<IPasswordService>()) }));

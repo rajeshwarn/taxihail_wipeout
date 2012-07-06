@@ -5,6 +5,7 @@ using ServiceStack.WebHost.Endpoints;
 using Funq;
 using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.Api.Validation;
+using apcurium.MK.Booking.Email;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.IBS.Impl;
 using apcurium.MK.Booking.ReadModel.Query;
@@ -65,6 +66,8 @@ namespace apcurium.MK.Web
                 container.RegisterInstance<ICommandBus>(new CommandBus(container.Resolve<IMessageSender>(), container.Resolve<ITextSerializer>()));
 
                 container.RegisterInstance<IPasswordService>(new PasswordService());
+                container.RegisterInstance<ITemplateService>(new TemplateService());
+                container.RegisterInstance<IEmailSender>(new EmailSender(container.Resolve<IConfigurationManager>()));
                 
 
                 Plugins.Add(new AuthFeature(() => new AuthUserSession(), new IAuthProvider[] { new CustomCredentialsAuthProvider(container.Resolve<IAccountDao>(), container.Resolve<IPasswordService>()) }));
