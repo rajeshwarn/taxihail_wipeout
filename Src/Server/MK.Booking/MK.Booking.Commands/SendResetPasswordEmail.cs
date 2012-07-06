@@ -11,7 +11,7 @@ namespace apcurium.MK.Booking.Commands
         }
 
         public Guid Id { get; set; }
-        public Guid AccountId { get; set; }
+        public string EmailAddress { get; set; }
         public string Password { get; set; }
     }
 }

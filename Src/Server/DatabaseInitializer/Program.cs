@@ -97,6 +97,8 @@ namespace DatabaseInitializer
             configurationManager.SetSetting("Direction.RatePerKm", "1.70");
             configurationManager.SetSetting("Direction.MaxDistance", "50");
 
+            configurationManager.SetSetting("Email.NoReply", "noreply@apcurium.com");
+
         }
     }
 }

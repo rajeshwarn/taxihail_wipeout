@@ -25,6 +25,8 @@ namespace apcurium.MK.Booking.Common.Tests
             config.Add("Direction.RatePerKm", "1.70");
             config.Add("Direction.MaxDistance", "50");
 
+            config.Add("Email.NoReply", "noreply@apcurium.com");
+
             return config[key];
             
         }

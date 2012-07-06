@@ -37,6 +37,9 @@
     <Reference Include="EntityFramework">
       <HintPath>..\..\packages\EntityFramework.4.3.1\lib\net40\EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="Nustache.Core">
+      <HintPath>..\..\packages\Nustache.1.12.4.29\lib\net20\Nustache.Core.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -49,11 +52,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandHandlers\AccountCommandHandler.cs" />
+    <Compile Include="CommandHandlers\EmailCommandHandler.cs" />
     <Compile Include="CommandHandlers\FavoriteAddressCommandHandler.cs" />
     <Compile Include="Database\BookingDbContext.cs" />
     <Compile Include="Domain\Account.cs" />
     <Compile Include="Domain\Order.cs" />
     <Compile Include="Domain\BookingSettings.cs" />
+    <Compile Include="Email\EmailSender.cs" />
+    <Compile Include="Email\IEmailSender.cs" />
+    <Compile Include="Email\ITemplateService.cs" />
+    <Compile Include="Email\TemplateService.cs" />
     <Compile Include="EventHandlers\AccountDetailsGenerator.cs" />
     <Compile Include="EventHandlers\FavoriteAddressListGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -71,6 +79,9 @@
   <ItemGroup />
   <ItemGroup>
     <None Include="App.config" />
+    <Content Include="Email\Templates\PasswordResetted.mustache">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

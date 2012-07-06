@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Net.Mail;
+using Moq;
 using NUnit.Framework;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Common.Tests;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.CommandHandlers;
+using apcurium.MK.Booking.Email;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.Security;
 
@@ -15,11 +18,16 @@ namespace apcurium.MK.Booking.Test.AccountFixture
 
         private EventSourcingTestHelper<Account> sut;
         private Guid _accountId = Guid.NewGuid();
+        private Mock<IEmailSender> emailSenderMock;
 
         public given_one_account()
         {
             this.sut = new EventSourcingTestHelper<Account>();
+
+            emailSenderMock = new Mock<IEmailSender>();
+
             this.sut.Setup(new AccountCommandHandler(this.sut.Repository, new PasswordService()));
+            this.sut.Setup(new EmailCommandHandler(new TestConfigurationManager(), new TemplateService(), emailSenderMock.Object));
             this.sut.Given(new AccountRegistered { SourceId = _accountId, FirstName = "Bob", LastName = "Smith", Password = null, Email = "bob.smith@apcurium.com" });
         }
 
@@ -54,8 +62,12 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         [Test]
         public void when_sending_reset_password_email()
         {
-            this.sut.When(new SendResetPasswordEmail { AccountId = _accountId, Password = "Yop" });
-            
+            var newPassword = "123456";
+            this.sut.When(new SendResetPasswordEmail { EmailAddress = "test@example.net", Password = newPassword });
+
+            emailSenderMock.Verify(s => s
+                .Send(It.Is<MailMessage>(message => message
+                    .Body.Contains(newPassword))));
 
 
 
