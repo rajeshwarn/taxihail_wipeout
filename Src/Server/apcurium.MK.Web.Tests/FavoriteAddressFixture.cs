@@ -148,8 +148,8 @@ namespace apcurium.MK.Web.Tests
         public void GetAddressListFromDiffrentUser()
         {
             var sut = new AccountServiceClient(BaseUrl, null);
-            
-            var otherAccount = sut.GetTestAccount(0);            
+
+            var otherAccount = sut.GetTestAccount(1);            
 
             sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
             
