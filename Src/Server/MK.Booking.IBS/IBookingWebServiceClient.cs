@@ -12,7 +12,7 @@ namespace apcurium.MK.Booking.IBS
 
         //LocationData[] FindSimilar(string address);
 
-        //int CreateOrder(AccountData user, BookingInfoData info, out string error);
+        int? CreateOrder(int providerId, int accountId, string passengerName, string phone, int nbPassengers, int vehicleTypeId, string note, DateTime? pickupDateTime, Address pickup, Address dropoff);
 
         Tuple<string, double?, double?> GetOrderStatus(int orderId, int accountId);
 

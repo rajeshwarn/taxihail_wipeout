@@ -11,24 +11,26 @@ namespace apcurium.MK.Booking.IBS.Impl
             return base.GetUrl() + "IWEBOrder_7";
         }
 
-        public BookingWebServiceClient(IConfigurationManager configManager, ILogger logger) : base(configManager, logger)
+        public BookingWebServiceClient(IConfigurationManager configManager, ILogger logger)
+            : base(configManager, logger)
         {
         }
 
-        public Tuple<string,double?, double?> GetOrderStatus( int orderId, int accountId)
+        public Tuple<string, double?, double?> GetOrderStatus(int orderId, int accountId)
         {
             var status = new Tuple<string, double?, double?>(TWEBOrderStatusValue.wosNone.ToString(), null, null);
             UseService(service =>
             {
                 var orderStatus = service.GetOrderStatus(_userNameApp, _passwordApp, orderId, string.Empty, string.Empty, accountId);
-   
+
                 double latitude = 0;
                 double longitude = 0;
                 var result = service.GetVehicleLocation(_userNameApp, _passwordApp, orderId, ref latitude, ref longitude);
                 if (result == 0)
                 {
                     status = new Tuple<string, double?, double?>(orderStatus.ToString(), latitude, longitude);
-                }else
+                }
+                else
                 {
                     status = new Tuple<string, double?, double?>(orderStatus.ToString(), null, null);
                 }
@@ -36,9 +38,35 @@ namespace apcurium.MK.Booking.IBS.Impl
             return status;
         }
 
-        public int Book()
+        public int? CreateOrder(int providerId, int accountId, string passengerName, string phone, int nbPassengers, int vehicleTypeId, string note, DateTime? pickupDateTime, Address pickup, Address dropoff)
         {
-            return 0;
+            var order = new TBookOrder();
+
+            order.ServiceProviderID = providerId;
+            order.AccountID = accountId;
+            order.Customer = passengerName;
+            order.Phone = phone;
+
+            //TODO : need to check ibs setup for shortesst time.
+            DateTime pDate = pickupDateTime.HasValue ? pickupDateTime.Value : DateTime.Now.AddMinutes(10);
+            order.PickupDate = new TWEBTimeStamp{ Year= pDate.Year, Month = pDate.Month, Day=pDate.Day, Hour = pDate.Hour , Minute = pDate.Minute, Second=0,Fractions =0};
+            order.PickupTime = new TWEBTimeStamp{ Year= pDate.Year, Month = pDate.Month, Day=pDate.Day, Hour = pDate.Hour , Minute = pDate.Minute, Second=0,Fractions =0};
+
+            order.PickupAddress = new TWEBAddress{ StreetPlace = pickup.FullAddress , AptBaz = pickup.Apartment , Longitude = pickup.Longitude, Latitude = pickup.Latitude };
+            order.DropoffAddress= dropoff == null ? new TWEBAddress() : new TWEBAddress{ StreetPlace = pickup.FullAddress , AptBaz = pickup.Apartment , Longitude = pickup.Longitude, Latitude = pickup.Latitude };
+            order.Passengers = nbPassengers;
+            order.VehicleTypeID = vehicleTypeId;
+            order.Note = note;
+            order.ContactPhone = phone;
+            var now = DateTime.Now;    
+            order.OrderDate = new TWEBTimeStamp{ Year= now.Year, Month = now.Month, Day=now.Day, Hour = now.Hour , Minute = now.Minute, Second=now.Second ,Fractions =now.Millisecond };
+    
+            int? orderId = null;
+             UseService(service =>
+            {
+               orderId = service.SaveBookOrder( _userNameApp , _passwordApp, order );
+            });
+            return orderId;
         }
 
         //public bool IsValid(ref BookingInfoData info)

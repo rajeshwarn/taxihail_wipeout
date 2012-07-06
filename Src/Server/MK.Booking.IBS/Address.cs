@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace apcurium.MK.Booking.Api.Contract.Resources
+namespace apcurium.MK.Booking.IBS
 {
     public class Address
     {
@@ -12,7 +12,7 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
 
         public string FriendlyName { get; set; }
 
-        public string FullAddress { get; set; }        
+        public string FullAddress { get; set; }
 
         public double Longitude { get; set; }
 
