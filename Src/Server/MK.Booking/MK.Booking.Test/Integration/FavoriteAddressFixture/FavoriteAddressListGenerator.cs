@@ -12,7 +12,7 @@ using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.Test.Integration;
 
-namespace BackOffice.Test.Integration.FavoriteAddressFixture
+namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
 {
    
     public class given_a_view_model_generator : given_a_read_model_database
