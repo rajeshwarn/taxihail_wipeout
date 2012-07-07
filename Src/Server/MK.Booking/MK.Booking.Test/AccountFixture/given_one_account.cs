@@ -28,8 +28,8 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             emailSenderMock = new Mock<IEmailSender>();
 
             this.sut.Setup(new AccountCommandHandler(this.sut.Repository, new PasswordService()));
-            this.sut.Setup(new EmailCommandHandler(new TestConfigurationManager(), new TemplateService(), emailSenderMock.Object));
-            this.sut.Given(new AccountRegistered { SourceId = _accountId, FirstName = "Bob", LastName = "Smith", Password = null, Email = "bob.smith@apcurium.com" });
+            //this.sut.Setup(new EmailCommandHandler(new TestConfigurationManager(), new TemplateService(), emailSenderMock.Object));
+            this.sut.Given(new AccountRegistered { SourceId = _accountId, FirstName = "Bob", LastName = "Smith", Password = null, Email = "bob.smith@apcurium.com", IbsAcccountId=10 });
         }
 
         [Test]
