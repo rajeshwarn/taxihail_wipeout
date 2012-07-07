@@ -8,7 +8,6 @@ namespace apcurium.MK.Booking.Events
 {
     public class OrderCreated : VersionedEvent
     {
-        public Guid Id { get; set; }
         public Guid AccountId { get; set; }
         public DateTime PickupDate { get; set; }
         public DateTime RequestedDateTime { get; set; }

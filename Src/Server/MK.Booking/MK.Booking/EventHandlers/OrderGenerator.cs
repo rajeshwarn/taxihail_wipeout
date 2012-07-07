@@ -9,7 +9,7 @@ using apcurium.MK.Booking.ReadModel;
 
 namespace apcurium.MK.Booking.EventHandlers
 {
-    public class OrderGenerator : IEventHandler<OrderCreated>
+    public class OrderGenerator : IEventHandler<OrderCreated>, IEventHandler<OrderCancelled>
     {
 
         private readonly Func<BookingDbContext> _contextFactory;
@@ -23,7 +23,6 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-
                 context.Save(new OrderDetail
                 {
                     AccountId = @event.AccountId,
@@ -37,7 +36,18 @@ namespace apcurium.MK.Booking.EventHandlers
                     RequestedDateTime = @event.RequestedDateTime,
                     RingCode = @event.RingCode
                 });
+            }
+        }
 
+        public void Handle(OrderCancelled @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var order = context.Find<OrderDetail>(@event.SourceId);
+
+                //TODO update order statuts here
+
+                context.Save(order);
             }
         }
     }

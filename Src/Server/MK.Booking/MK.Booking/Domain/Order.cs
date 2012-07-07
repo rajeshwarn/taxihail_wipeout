@@ -16,6 +16,7 @@ namespace apcurium.MK.Booking.Domain
             : base(id)
         {
             base.Handles<OrderCreated>(OnOrderCreated);
+            base.Handles<OrderCancelled>(OnOrderCancelled);
         }
 
         public Order(Guid id, IEnumerable<IVersionedEvent> history)
@@ -35,7 +36,6 @@ namespace apcurium.MK.Booking.Domain
             }
             this.Update(new OrderCreated
             {
-                SourceId = id,
                 AccountId = accountId,
                 PickupDate = pickupDate,
                 RequestedDateTime = requestedDateTime,
@@ -51,6 +51,16 @@ namespace apcurium.MK.Booking.Domain
         private void OnOrderCreated(OrderCreated obj)
         {
             
+        }
+
+        private void OnOrderCancelled(OrderCancelled obj)
+        {
+            
+        }
+
+        public void Cancel()
+        {
+            this.Update(new OrderCancelled());
         }
     }
 }
