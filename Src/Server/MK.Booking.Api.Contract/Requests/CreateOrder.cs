@@ -6,7 +6,7 @@ using ServiceStack.ServiceHost;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [RestService("/account/{AccountId}/createorder", "POST")] 
+    [RestService("/account/{AccountId}/orders", "POST")] 
     public class CreateOrder
     {
         public Guid Id { get; set; }
@@ -15,18 +15,21 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 
         public DateTime PickupDate { get; set; }
 
-        public DateTime RequestedDateTime { get; set; }
+        public string PickupAddress { get; set; }
 
-        public string FriendlyName { get; set; }
+        public double PickupLongitude { get; set; }
 
-        public string FullAddress { get; set; }
+        public double PickupLatitude { get; set; }
 
-        public double Longitude { get; set; }
+        public string PickupApartment { get; set; }
 
-        public double Latitude { get; set; }
+        public string PickupRingCode { get; set; }
 
-        public string Apartment { get; set; }
+        public string DropoffAddress { get; set; }
 
-        public string RingCode { get; set; }
+        public double? DropoffLongitude { get; set; }
+
+        public double? DropoffLatitude { get; set; }        
+        
     }
 }

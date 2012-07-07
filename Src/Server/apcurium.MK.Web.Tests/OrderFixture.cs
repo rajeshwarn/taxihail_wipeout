@@ -32,15 +32,13 @@ namespace apcurium.MK.Web.Tests
             var order = new CreateOrder
                             {
                                 Id = _orderId,
-                                AccountId = TestAccount.Id,
-                                FriendlyName = "Chez François",
-                                Apartment = "3939",
-                                FullAddress = "1234 rue Saint-Hubert",
-                                RingCode = "3131",
-                                Latitude = 45.515065,
-                                Longitude = -73.558064,
-                                PickupDate = pickupDate,
-                                RequestedDateTime = requestDate,
+                                AccountId = TestAccount.Id,                                
+                                PickupApartment = "3939",
+                                PickupAddress = "1234 rue Saint-Hubert",
+                                PickupRingCode = "3131",
+                                PickupLatitude = 45.515065,
+                                PickupLongitude = -73.558064,
+                                PickupDate = pickupDate,                                
                             };
 
             var id = sut.CreateOrder(order);

@@ -15,7 +15,7 @@ namespace apcurium.MK.Booking.Api.Client
 
         public Guid CreateOrder(CreateOrder order)
         {
-            var req = string.Format("/account/{0}/createorder", order.AccountId);
+            var req = string.Format("/account/{0}/orders", order.AccountId);
             var result = Client.Post<Order>(req, order);
             return result.Id;
         }
