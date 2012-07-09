@@ -33,7 +33,10 @@ namespace apcurium.MK.Booking.EventHandlers
                     PickupLongitude = @event.PickupLongitude,
                     PickupDate = @event.PickupDate,
                     PickupRingCode = @event.PickupRingCode,
-                    RequestedDateTime = @event.RequestedDate
+                    RequestedDateTime = @event.RequestedDate,
+                    DropOffAddress = @event.DropOffAddress,
+                    DropOffLatitude = @event.DropOffLatitude,
+                    DropOffLongitude = @event.DropOffLongitude
                 });
             }
         }

@@ -1,28 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using Infrastructure.Messaging;
+using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.Api.Contract.Resources;
-
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class CreateOrderService : RestServiceBase<CreateOrder>
+    public class CancelOrderService : RestServiceBase<CancelOrder>
     {
         private ICommandBus _commandBus;        
-        public CreateOrderService(ICommandBus commandBus)
+        public CancelOrderService(ICommandBus commandBus)
         {
-            _commandBus = commandBus;
-            AutoMapper.Mapper.CreateMap<CreateOrder, Commands.CreateOrder>().ForMember(p => p.OrderId, options => options.MapFrom(m => m.Id));
+            _commandBus = commandBus;            
+            AutoMapper.Mapper.CreateMap<CancelOrder, Commands.CancelOrder>();
 
         }
 
-        public override object OnPost(CreateOrder request)
+        public override object OnPost(CancelOrder request)
         {
-            var command = new Commands.CreateOrder();
+            var command = new Commands.CancelOrder();
             
             AutoMapper.Mapper.Map( request,  command  );
                         
@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Api.Services
                         
             _commandBus.Send(command);
 
-            return new Order { Id = command.Id };                       
+            return new HttpResult(HttpStatusCode.OK);
         }
     }
 }

@@ -72,6 +72,7 @@
   <ItemGroup>
     <Compile Include="Security\CustomCredentialsAuthProvider.cs" />
     <Compile Include="Services\BookingSettingsService.cs" />
+    <Compile Include="Services\CancelOrderService.cs" />
     <Compile Include="Services\CreateOrderService.cs" />
     <Compile Include="Services\DirectionsService.cs" />
     <Compile Include="Services\GeocodingService.cs" />

@@ -19,5 +19,12 @@ namespace apcurium.MK.Booking.Api.Client
             var result = Client.Post<Order>(req, order);
             return result.Id;
         }
+
+        public string Cancel(CancelOrder order)
+        {
+            var req = string.Format("/account/{0}/orders/{1}/cancel", order.AccountId, order.OrderId);
+            var result = Client.Post<string>(req, order);
+            return result;
+        }
     }
 }

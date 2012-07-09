@@ -30,7 +30,19 @@ namespace apcurium.MK.Booking.Test.OrderFixture
         {
             var pickupDate = DateTime.Now;
             var requestDate = DateTime.Now.AddHours(1);
-            this.sut.When(new CreateOrder { AccountId = _accountId, PickupDate = pickupDate, PickupApartment = "3939", PickupAddress = "1234 rue Saint-Hubert", PickupRingCode = "3131", PickupLatitude = 45.515065, PickupLongitude = -73.558064 });
+            this.sut.When(new CreateOrder
+            {
+                AccountId = _accountId,
+                PickupDate = pickupDate,
+                PickupApartment = "3939",
+                PickupAddress = "1234 rue Saint-Hubert",
+                PickupRingCode = "3131",
+                PickupLatitude = 45.515065,
+                PickupLongitude = -73.558064,
+                DropOffAddress = "Velvet auberge st gabriel",
+                DropOffLatitude = 45.50643,
+                DropOffLongitude = -73.554052,
+            });
 
             Assert.AreEqual(1, sut.Events.Count);
             var evt = (OrderCreated)sut.Events.Single();
@@ -41,6 +53,9 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             Assert.AreEqual("3131", evt.PickupRingCode);
             Assert.AreEqual(45.515065, evt.PickupLatitude);
             Assert.AreEqual(-73.558064, evt.PickupLongitude);
+            Assert.AreEqual("Velvet auberge st gabriel", evt.DropOffAddress);
+            Assert.AreEqual(45.50643, evt.DropOffLatitude);
+            Assert.AreEqual(-73.554052, evt.DropOffLongitude);
 
         }
     }
