@@ -232,7 +232,7 @@ namespace TaxiMobileApp
             bool isSuccess = true;
             string lError = "";
 
-            var service = new AccountServiceClient(@"http://localhost:6901/", null);
+            var service = new AccountServiceClient(@"http://alex-macbookpro/apcurium.MK.Web/api/", null);
             service.RegisterAccount(new RegisterAccount { AccountId = Guid.NewGuid(), Email = data.Email, FirstName = data.FirstName, LastName = data.LastName, Password = data.Password, Phone = data.Mobile });
             
 

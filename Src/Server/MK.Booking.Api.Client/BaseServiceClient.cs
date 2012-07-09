@@ -47,7 +47,7 @@ namespace apcurium.MK.Booking.Api.Client
                             UserName = _credential.Email,
                             Password = _credential.Password,
                             RememberMe = true,
-                            provider = CredentialsAuthProvider.Name
+                            provider = "credentials", // CredentialsAuthProvider.Name not supported on android
                         });
                     }
 

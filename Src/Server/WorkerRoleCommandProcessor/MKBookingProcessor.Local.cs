@@ -54,6 +54,8 @@ namespace WorkerRoleCommandProcessor
 
             var commandProcessor = new CommandProcessor(new MessageReceiver(Database.DefaultConnectionFactory, "MkWeb", "SqlBus.Commands"), serializer);
             var eventProcessor = new EventProcessor(new MessageReceiver(Database.DefaultConnectionFactory, "MkWeb", "SqlBus.Events"), serializer);
+            
+            
 
             container.RegisterInstance<IAccountWebServiceClient>(new AccountWebServiceClient(container.Resolve<IConfigurationManager>(), new Logger()));
 
