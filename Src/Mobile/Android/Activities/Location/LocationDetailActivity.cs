@@ -10,11 +10,12 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using apcurium.Framework.Extensions;
-using TaxiMobile.Models;
-using TaxiMobile.Helpers;
-using TaxiMobileApp;
 using Microsoft.Practices.ServiceLocation;
-namespace TaxiMobile.Activities.Location
+using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
+using apcurium.MK.Booking.Mobile.Client.Models;
+namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
 {
     [Activity(Label = "Location Details", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class LocationDetailActivity : Activity

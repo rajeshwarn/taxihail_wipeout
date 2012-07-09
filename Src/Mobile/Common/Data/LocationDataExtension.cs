@@ -1,7 +1,7 @@
 using System;
 
 using apcurium.Framework.Extensions;
-namespace TaxiMobileApp
+namespace apcurium.MK.Booking.Mobile.Data
 {
 	public static class LocationDataExtension
 	{

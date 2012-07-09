@@ -1,20 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Xml;
-using System.Xml.Linq;
 using System.Globalization;
-
-
-using apcurium.Framework.Extensions;
-using MobileTaxiApp.Infrastructure;
-using Microsoft.Practices.ServiceLocation;
-using IBS = TaxiMobileApp.Lib.IBS;
-using Android.Runtime;
+using System.Linq;
 using System.Threading;
+using System.Xml.Linq;
+using apcurium.Framework.Extensions;
+using apcurium.MK.Booking.Mobile.Data;
+using Microsoft.Practices.ServiceLocation;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
-namespace TaxiMobileApp
+
+namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
     public class BookingService : IBookingService
     {
@@ -23,27 +20,8 @@ namespace TaxiMobileApp
         {
         }
 
-        public void UseService(Action<TaxiMobileApp.Lib.IBS.AccountService> action)
-        {
-            var serviceUrl = ServiceLocator.Current.GetInstance<IAppSettings>().ServiceUrl;
-
-            var service = new IBS.AccountService(serviceUrl + "AccountService.asmx");
-
-            try
-            {
-                action(service);
-            }
-            catch (Exception ex)
-            {
-                ServiceLocator.Current.GetInstance<ILogger>().LogError(ex);
-            }
-            finally
-            {
-
-                service.Dispose();
-            }
-
-        }
+        
+        
 
         public bool IsValid(ref BookingInfoData info)
         {
@@ -304,14 +282,14 @@ namespace TaxiMobileApp
 
             }
 
-            var loggedUser = ServiceLocator.Current.GetInstance<IAppContext>().LoggedUser;
-            if (loggedUser.FavoriteLocations.Count() > 0)
+            var favAddresses = ServiceLocator.Current.GetInstance<IAccountService>().GetFavoriteAddresses();
+            if (favAddresses.Count() > 0)
             {
-                addresses.AddRange(loggedUser.FavoriteLocations);
+                addresses.AddRange(favAddresses );
             }
 
-
-            var historic = loggedUser.BookingHistory.Where(b => !b.Hide && b.PickupLocation.Name.IsNullOrEmpty()).OrderByDescending(b => b.RequestedDateTime).Select(b => b.PickupLocation).ToArray();
+            var historic  = ServiceLocator.Current.GetInstance<IAccountService>().GetHistoryAddresses();
+            
 
             if (historic.Count() > 0)
             {
@@ -339,90 +317,90 @@ namespace TaxiMobileApp
             error = "";
             string errorResult = "";
             int r = 0;
-            UseService(service =>
-            {
+            //UseService(service =>
+            //{
 				
 
 				
-				for (int i = 0; i < info.Settings.NumberOfTaxi; i++)
-				{
+            //    for (int i = 0; i < info.Settings.NumberOfTaxi; i++)
+            //    {
 					
 					
 					
-                var sessionId = service.Authenticate("iphone", "test", 1);
+            //    var sessionId = service.Authenticate("iphone", "test", 1);
 
-                new OrderMapping().ToWSOrder(info);
-                var order = new IBS.OrderInfo();
-                order.ChargeTypeId = info.Settings.ChargeType;
-                order.CompanyId = info.Settings.Company;
-                order.ContactPhone = info.Settings.Phone;
-                order.Name = info.Settings.Name;
-                order.NumberOfPassenger = info.Settings.Passengers;
-                order.VehicleTypeId = info.Settings.VehicleType;
+            //    new OrderMapping().ToWSOrder(info);
+            //    var order = new IBS.OrderInfo();
+            //    order.ChargeTypeId = info.Settings.ChargeType;
+            //    order.CompanyId = info.Settings.Company;
+            //    order.ContactPhone = info.Settings.Phone;
+            //    order.Name = info.Settings.Name;
+            //    order.NumberOfPassenger = info.Settings.Passengers;
+            //    order.VehicleTypeId = info.Settings.VehicleType;
 
 
-					order.MobileNote = ServiceLocator.Current.GetInstance <IAppResource> ().MobileUser;
-					order.MobileNote += "\n\n" + ServiceLocator.Current.GetInstance <IAppResource> ().PaiementType + " " + info.Settings.ChargeTypeName;
-					order.MobileNote += "\n\n" + ServiceLocator.Current.GetInstance <IAppResource> ().Notes + " " + info.Notes;
-                if (info.PickupLocation.IsGPSNotAccurate)
-                {
+            //        order.MobileNote = ServiceLocator.Current.GetInstance <IAppResource> ().MobileUser;
+            //        order.MobileNote += "\n\n" + ServiceLocator.Current.GetInstance <IAppResource> ().PaiementType + " " + info.Settings.ChargeTypeName;
+            //        order.MobileNote += "\n\n" + ServiceLocator.Current.GetInstance <IAppResource> ().Notes + " " + info.Notes;
+            //    if (info.PickupLocation.IsGPSNotAccurate)
+            //    {
 					
-						var note = "\n\n" + ServiceLocator.Current.GetInstance <IAppResource> ().OrderNote;
-                    note += ServiceLocator.Current.GetInstance<IAppResource>().OrderNoteGPSApproximate;
-						order.MobileNote += note;
-                }
+            //            var note = "\n\n" + ServiceLocator.Current.GetInstance <IAppResource> ().OrderNote;
+            //        note += ServiceLocator.Current.GetInstance<IAppResource>().OrderNoteGPSApproximate;
+            //            order.MobileNote += note;
+            //    }
 					
 
-					Console.WriteLine( order.MobileNote );
+            //        Console.WriteLine( order.MobileNote );
 
-                if (info.PickupLocation.RingCode.HasValue())
-                {
-                    order.RingCode = info.PickupLocation.RingCode;
-                }
-
-
-                order.PickupAddress = new AccountMapping().ToWSLocationData(info.PickupLocation);
+            //    if (info.PickupLocation.RingCode.HasValue())
+            //    {
+            //        order.RingCode = info.PickupLocation.RingCode;
+            //    }
 
 
-                if (info.PickupDate.HasValue)
-                {
-                    order.PickupTime = info.PickupDate.Value;
-                }
-                else
-                {
-                    order.PickupTime = DateTime.Now.AddMinutes(5);
-                }
-
-                if (info.DestinationLocation != null)
-                {
-                    info.DestinationLocation.Address = info.DestinationLocation.Address.SelectOrDefault(a => a, "");
-                    order.DropoffAddress = new AccountMapping().ToWSLocationData(info.DestinationLocation);
-                }
+            //    order.PickupAddress = new AccountMapping().ToWSLocationData(info.PickupLocation);
 
 
+            //    if (info.PickupDate.HasValue)
+            //    {
+            //        order.PickupTime = info.PickupDate.Value;
+            //    }
+            //    else
+            //    {
+            //        order.PickupTime = DateTime.Now.AddMinutes(5);
+            //    }
 
-                order.OrderDate = DateTime.Now;
+            //    if (info.DestinationLocation != null)
+            //    {
+            //        info.DestinationLocation.Address = info.DestinationLocation.Address.SelectOrDefault(a => a, "");
+            //        order.DropoffAddress = new AccountMapping().ToWSLocationData(info.DestinationLocation);
+            //    }
 
 
 
-                Logger.LogMessage("Create order  :" + user.Email);
-
-                var result = service.CreateOrder(sessionId, user.Email, user.Password, order);
+            //    order.OrderDate = DateTime.Now;
 
 
 
-                if (result.OrderId > 0)
-                {
-                    r = result.OrderId;
-                    Logger.LogMessage("Order Created :" + result.OrderId.ToString());
-                }
-                else
-                {
-                    errorResult = result.ErrorMessage;
-                    Logger.LogMessage("Error order creation :" + errorResult);
-                }
-				}
-            });
+            //    Logger.LogMessage("Create order  :" + user.Email);
+
+            //    var result = service.CreateOrder(sessionId, user.Email, user.Password, order);
+
+
+
+            //    if (result.OrderId > 0)
+            //    {
+            //        r = result.OrderId;
+            //        Logger.LogMessage("Order Created :" + result.OrderId.ToString());
+            //    }
+            //    else
+            //    {
+            //        errorResult = result.ErrorMessage;
+            //        Logger.LogMessage("Error order creation :" + errorResult);
+            //    }
+            //    }
+            //});
             error = errorResult;
             return r;
         }
@@ -430,75 +408,75 @@ namespace TaxiMobileApp
         public OrderStatus GetOrderStatus(AccountData user, int orderId)
         {
             OrderStatus r = null;
-            UseService(service =>
-            {
+            //UseService(service =>
+            //{
 
-                ServiceLocator.Current.GetInstance<ILogger>().LogMessage("Begin GetOrderStatus");
+            //    ServiceLocator.Current.GetInstance<ILogger>().LogMessage("Begin GetOrderStatus");
 
-                var sessionId = service.Authenticate("iphone", "test", 1);
-                var result = service.GetVehicleLocation(sessionId, user.Email, user.Password, orderId);
-                if (result.Error == IBS.ErrorCode.NoError)
-                {
-                    if ((result.OrderStatus == null) || (result.OrderStatus.Description.IsNullOrEmpty()))
-                    {
-                        Logger.LogMessage("Status cannot be found for order #" + orderId.ToString());
+            //    var sessionId = service.Authenticate("iphone", "test", 1);
+            //    var result = service.GetVehicleLocation(sessionId, user.Email, user.Password, orderId);
+            //    if (result.Error == IBS.ErrorCode.NoError)
+            //    {
+            //        if ((result.OrderStatus == null) || (result.OrderStatus.Description.IsNullOrEmpty()))
+            //        {
+            //            Logger.LogMessage("Status cannot be found for order #" + orderId.ToString());
 
-                        var status = new OrderStatus();
-                        status.Latitude = 0;
-                        status.Longitude = 0;
-                        status.Status = ServiceLocator.Current.GetInstance<IAppResource>().StatusInvalid;
-                        status.Id = result.OrderStatus.SelectOrDefault(o => o.Id, 0);
-                        r = status;
-                    }
-                    else
-                    {
-                        var status = new OrderStatus();
-                        if (result.OrderStatus.Id == 13)
-                        {
-                            status.Latitude = result.Latitude;
-                            status.Longitude = result.Longitude;
-                        }
-                        status.Status = result.OrderStatus.SelectOrDefault(o => o.Description, "");
-                        status.Id = result.OrderStatus.SelectOrDefault(o => o.Id, 0);
-                        r = status;
+            //            var status = new OrderStatus();
+            //            status.Latitude = 0;
+            //            status.Longitude = 0;
+            //            status.Status = ServiceLocator.Current.GetInstance<IAppResource>().StatusInvalid;
+            //            status.Id = result.OrderStatus.SelectOrDefault(o => o.Id, 0);
+            //            r = status;
+            //        }
+            //        else
+            //        {
+            //            var status = new OrderStatus();
+            //            if (result.OrderStatus.Id == 13)
+            //            {
+            //                status.Latitude = result.Latitude;
+            //                status.Longitude = result.Longitude;
+            //            }
+            //            status.Status = result.OrderStatus.SelectOrDefault(o => o.Description, "");
+            //            status.Id = result.OrderStatus.SelectOrDefault(o => o.Id, 0);
+            //            r = status;
 
-                        if (result.NoVehicle.HasValue() && (result.OrderStatus.Id == 13))
-                        {
-                            status.Status += Environment.NewLine + string.Format(ServiceLocator.Current.GetInstance<IAppResource>().CarAssigned, result.NoVehicle);
-                        }
-                    }
+            //            if (result.NoVehicle.HasValue() && (result.OrderStatus.Id == 13))
+            //            {
+            //                status.Status += Environment.NewLine + string.Format(ServiceLocator.Current.GetInstance<IAppResource>().CarAssigned, result.NoVehicle);
+            //            }
+            //        }
 
 
 
-                }
-                else
-                {
-                    ServiceLocator.Current.GetInstance<ILogger>().LogMessage(result.ErrorMessage);
-                }
+            //    }
+            //    else
+            //    {
+            //        ServiceLocator.Current.GetInstance<ILogger>().LogMessage(result.ErrorMessage);
+            //    }
 
-                ServiceLocator.Current.GetInstance<ILogger>().LogMessage("End GetOrderStatus");
+            //    ServiceLocator.Current.GetInstance<ILogger>().LogMessage("End GetOrderStatus");
 
-            });
+            //});
             return r;
         }
 
         public bool IsCompleted(AccountData user, int orderId)
         {
             bool isCompleted = false;
-            UseService(service =>
-            {
+            //UseService(service =>
+            //{
 
-                var sessionId = service.Authenticate("iphone", "test", 1);
-                var result = service.GetVehicleLocation(sessionId, user.Email, user.Password, orderId);
-                if (result.Error == IBS.ErrorCode.NoError)
-                {
+            //    var sessionId = service.Authenticate("iphone", "test", 1);
+            //    var result = service.GetVehicleLocation(sessionId, user.Email, user.Password, orderId);
+            //    if (result.Error == IBS.ErrorCode.NoError)
+            //    {
 
-                    int statusId = result.OrderStatus.SelectOrDefault(o => o.Id, 0);
-                    isCompleted = IsCompleted(statusId);
-                }
+            //        int statusId = result.OrderStatus.SelectOrDefault(o => o.Id, 0);
+            //        isCompleted = IsCompleted(statusId);
+            //    }
 
 
-            });
+            //});
             return isCompleted;
 
         }
@@ -511,18 +489,18 @@ namespace TaxiMobileApp
         public bool CancelOrder(AccountData user, int orderId)
         {
             bool isCompleted = false;
-            UseService(service =>
-            {
+            //UseService(service =>
+            //{
 
-                var sessionId = service.Authenticate("iphone", "test", 1);
+            //    var sessionId = service.Authenticate("iphone", "test", 1);
 
-                var result = service.CancelOrder(sessionId, user.Email, user.Password, new IBS.OrderInfo { Id = orderId });
-                if (result.Error == IBS.ErrorCode.NoError)
-                {
-                    isCompleted = true;
-                }
+            //    var result = service.CancelOrder(sessionId, user.Email, user.Password, new IBS.OrderInfo { Id = orderId });
+            //    if (result.Error == IBS.ErrorCode.NoError)
+            //    {
+            //        isCompleted = true;
+            //    }
 
-            });
+            //});
             return isCompleted;
         }
 

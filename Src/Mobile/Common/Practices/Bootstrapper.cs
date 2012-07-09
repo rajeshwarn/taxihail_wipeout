@@ -2,8 +2,10 @@ using System;
 using System.Linq;
 using apcurium.Framework.Extensions;
 using System.Collections.Generic;
+using apcurium.MK.Booking.Mobile.Practices;
+using apcurium.MK.Booking.Mobile.AppServices;
 
-namespace TaxiMobileApp
+namespace apcurium.MK.Booking.Mobile
 {
 	public class Bootstrapper
 	{

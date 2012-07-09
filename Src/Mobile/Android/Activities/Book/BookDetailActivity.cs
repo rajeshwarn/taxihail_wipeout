@@ -4,15 +4,15 @@ using System.Text;
 using Android.OS;
 using Android.App;
 using Android.Content;
-using TaxiMobile.Models;
 using Android.Widget;
 using apcurium.Framework.Extensions;
 using Microsoft.Practices.ServiceLocation;
-using TaxiMobileApp;
-using TaxiMobile.Helpers;
-using TaxiMobile.Activities.Setting;
+using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Booking.Mobile.Client.Activities.Setting;
+using apcurium.MK.Booking.Mobile.Client.Models;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
 
-namespace TaxiMobile.Activities.Book
+namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
     [Activity(Label = "Book Details", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation=Android.Content.PM.ScreenOrientation.Portrait )]
     public class BookDetailActivity : Activity

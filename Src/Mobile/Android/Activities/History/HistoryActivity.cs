@@ -9,12 +9,12 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using TaxiMobile.Adapters;
-using TaxiMobile.Models;
 using apcurium.Framework.Extensions;
 using Android.Graphics;
+using apcurium.MK.Booking.Mobile.Client.Models;
+using apcurium.MK.Booking.Mobile.Client.Adapters;
 
-namespace TaxiMobile.Activities.History
+namespace apcurium.MK.Booking.Mobile.Client.Activities.History
 {
     [Activity(Label = "History", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class HistoryActivity : Activity

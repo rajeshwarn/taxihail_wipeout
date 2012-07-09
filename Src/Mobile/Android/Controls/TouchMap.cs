@@ -7,9 +7,9 @@ using Android.GoogleMaps;
 using Android.Runtime;
 using Android.Util;
 using Android.Views;
-using TaxiMobile.MapUtitilties;
+using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
 
-namespace TaxiMobile.Controls
+namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
     public class TouchMap : MapView
     {

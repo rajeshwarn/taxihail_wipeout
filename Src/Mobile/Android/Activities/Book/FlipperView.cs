@@ -10,7 +10,7 @@
 //using Android.Views;
 //using Android.Widget;
 
-//namespace TaxiMobile.Activities.Book
+//namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 //{
 //    class FlipperView
 //    {

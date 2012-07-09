@@ -3,7 +3,7 @@ using Android.Content;
 using Android.Util;
 using Android.Widget;
 
-namespace TaxiMobile.Controls
+namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
 	public class ReclickableTabHost : TabHost
 	{

@@ -6,7 +6,7 @@ using System.Linq;
 
 using apcurium.Framework.Extensions;
 
-namespace TaxiMobileApp
+namespace apcurium.MK.Booking.Mobile.Data
 {
 	public class AccountData
 	{

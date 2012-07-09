@@ -9,9 +9,8 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using TaxiMobile.Activities;
 
-namespace TaxiMobile.Activities.Setting
+namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 {
 	[Activity (Label = "SettingsGroup", ScreenOrientation=Android.Content.PM.ScreenOrientation.Portrait)]			
 	public class SettingsGroup : TabGroupActivity

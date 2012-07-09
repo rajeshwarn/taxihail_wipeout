@@ -9,9 +9,10 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using TaxiMobileApp;
+using apcurium.MK.Booking.Mobile.Localization;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
-namespace TaxiMobile.Localization
+namespace apcurium.MK.Booking.Mobile.Client.Localization
 {
     public class ResourceManager : IAppResource
     {

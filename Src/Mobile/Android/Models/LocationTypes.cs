@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace TaxiMobile.Models
+namespace apcurium.MK.Booking.Mobile.Client.Models
 {
     public enum LocationTypes
     {

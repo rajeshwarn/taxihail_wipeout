@@ -11,7 +11,7 @@ using Android.Views;
 using Android.Widget;
 using Android.Locations;
 
-namespace TaxiMobile.Activities.Book
+namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
     public class LocationListener : Java.Lang.Object, ILocationListener
     {        

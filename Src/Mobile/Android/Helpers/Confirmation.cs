@@ -10,7 +10,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 
-namespace TaxiMobile.Helpers
+namespace apcurium.MK.Booking.Mobile.Client.Helpers
 {
     public class Confirmation
     {

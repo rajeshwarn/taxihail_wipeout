@@ -9,17 +9,15 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-
 using Microsoft.Practices.ServiceLocation;
-
-using TaxiMobile.Models;
-using TaxiMobileApp;
-using TaxiMobile.ListViewCell;
-using TaxiMobile.ListViewStructure;
 using apcurium.Framework.Extensions;
-using TaxiMobile.Helpers;
+using apcurium.MK.Booking.Mobile.Client.ListViewStructure;
+using apcurium.MK.Booking.Mobile.Client.ListViewCell;
+using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
+using apcurium.MK.Booking.Mobile.Data;
 
-namespace TaxiMobile.Activities.Setting
+namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 {
 	[Activity (Label = "RideSettingsActivity",  Theme = "@android:style/Theme.NoTitleBar", WindowSoftInputMode=SoftInput.AdjustPan, ScreenOrientation=Android.Content.PM.ScreenOrientation.Portrait )]			
 	public class RideSettingsActivity : ListActivity

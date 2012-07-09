@@ -9,12 +9,13 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using TaxiMobileApp;
 using Microsoft.Practices.ServiceLocation;
+using apcurium.MK.Booking.Mobile.Practices;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
-namespace TaxiMobile
+namespace apcurium.MK.Booking.Mobile.Client
 {
-    [Application(Name = "com.apcurium.TaxiMobile")]
+    [Application(Name = "com.apcurium.MK.TaxiHail")]
     public class TaxiMobileApplication : Application
     {
         protected TaxiMobileApplication(IntPtr javaReference, JniHandleOwnership transfer)

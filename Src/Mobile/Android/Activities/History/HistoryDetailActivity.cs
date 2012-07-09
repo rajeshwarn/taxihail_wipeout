@@ -10,12 +10,13 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using apcurium.Framework.Extensions;
-using TaxiMobile.Models;
-using TaxiMobile.Helpers;
-using TaxiMobileApp;
 using Microsoft.Practices.ServiceLocation;
-using TaxiMobile.Activities.Book;
-namespace TaxiMobile.Activities.History
+using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
+using apcurium.MK.Booking.Mobile.Client.Models;
+
+namespace apcurium.MK.Booking.Mobile.Client.Activities.History
 {
     [Activity(Label = "History Details", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation=Android.Content.PM.ScreenOrientation.Portrait)]
   	public  class HistoryDetailActivity: Activity

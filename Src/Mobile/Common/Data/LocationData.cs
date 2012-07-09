@@ -5,7 +5,7 @@ using apcurium.Framework;
 using apcurium.Framework.Extensions;
 
 
-namespace TaxiMobileApp
+namespace apcurium.MK.Booking.Mobile.Data
 {
 	
     

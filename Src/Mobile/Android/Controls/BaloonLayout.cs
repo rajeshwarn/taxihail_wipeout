@@ -12,7 +12,7 @@ using Android.Views;
 using Android.Widget;
 using Android.Graphics;
 
-namespace TaxiMobile.Controls
+namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
     public class BaloonLayout : LinearLayout
     {

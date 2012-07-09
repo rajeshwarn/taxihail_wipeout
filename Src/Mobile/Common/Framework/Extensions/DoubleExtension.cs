@@ -10,7 +10,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 
-namespace TaxiMobile.Lib.MD.Framework.Extensions
+namespace apcurium.MK.Booking.Mobile.Client.Lib.MD.Framework.Extensions
 {
     public static class DoubleExtension
     {

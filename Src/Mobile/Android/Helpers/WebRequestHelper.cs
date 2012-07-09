@@ -3,10 +3,9 @@ using System.IO;
 using System.Net;
 using System.Text;
 using Microsoft.Practices.ServiceLocation;
-using TaxiMobileApp;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
-
-namespace TaxiMobile.Helpers
+namespace apcurium.MK.Booking.Mobile.Client.Helpers
 {
 	public class WebRequestHelper
 	{

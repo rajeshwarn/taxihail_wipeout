@@ -1,6 +1,7 @@
 using System;
+using apcurium.MK.Common.Entity;
 
-namespace TaxiMobileApp
+namespace apcurium.MK.Booking.Mobile.Data
 {
 	public class ListItemValue : ListItem
 	{

@@ -1,28 +1,14 @@
-using System;
-using Android.GoogleMaps;
-using Android.Content;
-using Android.Graphics.Drawables;
-using TaxiMobileApp;
-using Microsoft.Practices.ServiceLocation;
-using System.Linq;
-using apcurium.Framework.Extensions;
-using TaxiMobile.Converters;
-using Android.Locations;
 using Android.App;
+using Android.GoogleMaps;
+using Android.Graphics.Drawables;
+using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Booking.Mobile.Client.Converters;
 
-namespace TaxiMobile.MapUtitilties
+namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 {
     public static class MapService
     {
-
-        //public static LocationData[] ChangeLocation( MapView map, string address )
-        //{
-        //    var locations = ServiceLocator.Current.GetInstance<IBookingService>().SearchAddress(address);
-
-        //    UpdateMap( map, locations );
-
-        //    return locations;
-        //}
+        
 
         public static GeoPoint SetLocationOnMap(MapView map, LocationData location)
         {

@@ -7,10 +7,10 @@ using Android.Content;
 using Android.GoogleMaps;
 using Android.Graphics.Drawables;
 using Android.Views;
-using TaxiMobile.Controls;
 using Android.Widget;
+using apcurium.MK.Booking.Mobile.Client.Controls;
 
-namespace TaxiMobile.MapUtitilties
+namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 {
     public class PushPinOverlay : ItemizedOverlay
     {

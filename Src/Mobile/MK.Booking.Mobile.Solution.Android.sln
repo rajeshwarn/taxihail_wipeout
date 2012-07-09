@@ -11,12 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.Api.Client.Andro
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Common.Android", "..\Server\MK.Common\MK.Common.Android.csproj", "{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceStack.Text.Android", "..\..\..\..\Data\ServiceStack\Android\ServiceStack-ServiceStack.Text\src\ServiceStack.Text.Android\ServiceStack.Text.Android\ServiceStack.Text.Android.csproj", "{1137B5AC-2259-413C-A473-93721D2A7551}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceStack.Interfaces.Android", "..\..\..\..\Data\ServiceStack\Android\src\ServiceStack.Android\ServiceStack.Interfaces.Android\ServiceStack.Interfaces.Android.csproj", "{4E0544B6-8D34-45D2-AB27-605F51BF4C55}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceStack.Common.Android", "..\..\..\..\Data\ServiceStack\Android\src\ServiceStack.Android\ServiceStack.Common.Android\ServiceStack.Common.Android.csproj", "{105AD659-A41C-4063-A57B-E3EB31026445}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,18 +39,6 @@ Global
 		{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1137B5AC-2259-413C-A473-93721D2A7551}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1137B5AC-2259-413C-A473-93721D2A7551}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1137B5AC-2259-413C-A473-93721D2A7551}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1137B5AC-2259-413C-A473-93721D2A7551}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4E0544B6-8D34-45D2-AB27-605F51BF4C55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4E0544B6-8D34-45D2-AB27-605F51BF4C55}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4E0544B6-8D34-45D2-AB27-605F51BF4C55}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4E0544B6-8D34-45D2-AB27-605F51BF4C55}.Release|Any CPU.Build.0 = Release|Any CPU
-		{105AD659-A41C-4063-A57B-E3EB31026445}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{105AD659-A41C-4063-A57B-E3EB31026445}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{105AD659-A41C-4063-A57B-E3EB31026445}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{105AD659-A41C-4063-A57B-E3EB31026445}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

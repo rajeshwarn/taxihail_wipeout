@@ -10,18 +10,14 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.GoogleMaps;
-using TaxiMobile.Activities.Location;
-using TaxiMobile.Models;
-using TaxiMobile.Converters;
 using Android.Locations;
-using TaxiMobile.MapUtitilties;
 using Microsoft.Practices.ServiceLocation;
-using TaxiMobileApp;
-using TaxiMobile.Helpers;
 using apcurium.Framework.Extensions;
 using Android.Views.InputMethods;
+using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Booking.Mobile.Client.Models;
 
-namespace TaxiMobile.Activities.Book
+namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
     [Activity(Label = "Pickup", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class PickupActivity : AddressActivity, IAddress

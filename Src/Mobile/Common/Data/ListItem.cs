@@ -1,21 +1,21 @@
-using System;
+//using System;
 
-namespace TaxiMobileApp
-{
-	public class ListItem
-	{
-		public ListItem ()
-		{
-		}
+//namespace apcurium.MK.Booking.Mobile
+//{
+//    public class ListItem
+//    {
+//        public ListItem ()
+//        {
+//        }
 		
-		public int Id {
-			get;
-			set;
-		}
-		public string Display {
-			get;
-			set;
-		}
-	}
-}
+//        public int Id {
+//            get;
+//            set;
+//        }
+//        public string Display {
+//            get;
+//            set;
+//        }
+//    }
+//}
 

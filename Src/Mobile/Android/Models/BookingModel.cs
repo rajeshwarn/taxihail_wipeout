@@ -1,8 +1,8 @@
 ﻿using System;
-using TaxiMobileApp;
 using Android.OS;
+using apcurium.MK.Booking.Mobile.Data;
 
-namespace TaxiMobile.Models
+namespace apcurium.MK.Booking.Mobile.Client.Models
 {
 	public class BookingModel
     {
@@ -32,23 +32,7 @@ namespace TaxiMobile.Models
 			get { return Data.PickupLocation.RingCode; }
 			set { Data.PickupLocation.RingCode = value; }
 		}
-		
-        //[System.Xml.Serialization.XmlElement(IsNullable=true)] 
-        //public string Date {
-        //    get { return Data.PickupDate.HasValue ? Data.PickupDate.Value.ToShortDateString() : null; }
-        //    set {
-        //        DateTime result;
-        //        if( DateTime.TryParse( value, out result ) )
-        //        {
-        //            Data.PickupDate = result;
-        //        }
-        //        else
-        //        {
-        //            Data.PickupDate = null;
-        //        }
-				
-        //    }
-        //}
+		        
 		
 		public string Distance {
 			get { 

@@ -11,13 +11,11 @@ using Android.Views;
 using Android.Widget;
 
 using Microsoft.Practices.ServiceLocation;
+using apcurium.MK.Booking.Mobile.Client.ListViewStructure;
+using apcurium.MK.Booking.Mobile.Client.ListViewCell;
+using apcurium.MK.Booking.Mobile.AppServices;
 
-using TaxiMobile.Models;
-using TaxiMobileApp;
-using TaxiMobile.ListViewCell;
-using TaxiMobile.ListViewStructure;
-
-namespace TaxiMobile.Activities.Setting
+namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 {
 	[Activity (Label = "ChooseCompanyActivity",  Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation=Android.Content.PM.ScreenOrientation.Portrait)]			
 	public class ChooseCompanyActivity : ListActivity

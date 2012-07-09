@@ -1,6 +1,6 @@
 using System;
 
-namespace TaxiMobile.Models
+namespace apcurium.MK.Booking.Mobile.Client.Models
 {
     public enum ActivityEnum
     {

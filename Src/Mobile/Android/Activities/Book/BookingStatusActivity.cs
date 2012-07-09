@@ -1,29 +1,20 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+using System.Threading;
 using Android.App;
 using Android.Content;
+using Android.GoogleMaps;
 using Android.OS;
-using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using Android.Views.Animations;
-using Android.GoogleMaps;
-using Android.Locations;
-using TaxiMobile.Activities.Location;
-using TaxiMobile.Models;
-using apcurium.Framework.Extensions;
-using TaxiMobile.Helpers;
-using TaxiMobileApp;
 using Microsoft.Practices.ServiceLocation;
-using TaxiMobile.Helpers;
-using System.Threading;
-using TaxiMobile.Converters;
-using TaxiMobile.MapUtitilties;
+using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
+using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
+using apcurium.MK.Booking.Mobile.Client.Converters;
 
-namespace TaxiMobile.Activities.Book
+namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
     [Activity(Label = "Book Status", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation=Android.Content.PM.ScreenOrientation.Portrait)]
     public class BookingStatusActivity : MapActivity

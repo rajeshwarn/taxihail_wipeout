@@ -11,11 +11,12 @@ using Android.Views;
 using Android.Widget;
 using System.Text.RegularExpressions;
 using Microsoft.Practices.ServiceLocation;
-using TaxiMobileApp;
-using TaxiMobile.Validation;
-using TaxiMobile.Helpers;
+using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
+using apcurium.MK.Booking.Mobile.Client.Validation;
 
-namespace TaxiMobile.Activities.Account
+namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {
     [Activity(Label = "Password Recovery", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation=Android.Content.PM.ScreenOrientation.Portrait)]
     public class PasswordRecoveryActivity : Activity

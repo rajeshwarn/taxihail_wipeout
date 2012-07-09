@@ -9,13 +9,13 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using TaxiMobileApp;
 using Microsoft.Practices.ServiceLocation;
-using TaxiMobile.Localization;
-using MobileTaxiApp.Infrastructure;
-using TaxiMobile.Diagnostic;
+using apcurium.MK.Booking.Mobile.Practices;
+using apcurium.MK.Booking.Mobile.Client.Localization;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 
-namespace TaxiMobile
+namespace apcurium.MK.Booking.Mobile.Client
 {
     public class AppModule : IModule
     {

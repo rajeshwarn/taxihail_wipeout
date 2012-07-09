@@ -9,21 +9,13 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using TaxiMobile.ListViewStructure;
+using apcurium.MK.Booking.Mobile.Client.ListViewStructure;
 
-namespace TaxiMobile.ListViewCell
+namespace apcurium.MK.Booking.Mobile.Client.ListViewCell
 {
 	public abstract class InfoCell
 	{
 		private View _cellView;
-//		
-//		public InfoCell () : base()
-//		{		
-//		}
-//
-//		public InfoCell (IntPtr handle)
-//		{		
-//		}
 		
 		public InfoCell (SectionItem item, ViewGroup parent, Context context)
 		{

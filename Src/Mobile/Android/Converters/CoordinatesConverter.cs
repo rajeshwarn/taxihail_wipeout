@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace TaxiMobile.Converters
+namespace apcurium.MK.Booking.Mobile.Client.Converters
 {
    public static  class CoordinatesConverter
     {

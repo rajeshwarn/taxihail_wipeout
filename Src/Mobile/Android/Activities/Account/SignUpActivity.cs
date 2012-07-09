@@ -10,13 +10,14 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using System.Text.RegularExpressions;
-using TaxiMobile.Helpers;
 using Microsoft.Practices.ServiceLocation;
 using apcurium.Framework.Extensions;
-using TaxiMobileApp;
-using TaxiMobile.Validation;
+using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
+using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Client.Validation;
 
-namespace TaxiMobile.Activities.Account
+namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {
     [Activity(Label = "Sign Up", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation=Android.Content.PM.ScreenOrientation.Portrait)]
     public class SignUpActivity : Activity

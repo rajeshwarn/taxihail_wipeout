@@ -9,15 +9,15 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using TaxiMobile.Activities.Book;
-using TaxiMobile.Activities.Location;
-using TaxiMobile.Activities.History;
-using TaxiMobile.Activities.Setting;
-using TaxiMobile.Controls;
 using Microsoft.Practices.ServiceLocation;
-using TaxiMobileApp;
+using apcurium.MK.Booking.Mobile.Client.Controls;
+using apcurium.MK.Booking.Mobile.Client.Activities.Setting;
+using apcurium.MK.Booking.Mobile.Client.Activities.History;
+using apcurium.MK.Booking.Mobile.Client.Activities.Location;
+using apcurium.MK.Booking.Mobile.Client.Activities.Book;
+using apcurium.MK.Booking.Mobile.AppServices;
 
-namespace TaxiMobile.Activities
+namespace apcurium.MK.Booking.Mobile.Client.Activities
 {
     [Activity(Label = "@string/ApplicationName", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class MainActivity : TabActivity

@@ -9,21 +9,13 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using TaxiMobile.ListViewStructure;
+using apcurium.MK.Booking.Mobile.Client.ListViewStructure;
 
-namespace TaxiMobile.ListViewCell
+namespace apcurium.MK.Booking.Mobile.Client.ListViewCell
 {
 	public abstract class LabelValueCell<T> : InfoCell<T>  where T: SectionItem
 	{
 	
-//		public LabelValueCell () : base()
-//		{		
-//		}
-//
-//		public LabelValueCell (IntPtr handle) : base(handle)
-//		{		
-//		}
-//		
 		public LabelValueCell (T item, ViewGroup parent, Context context) : base( item, parent, context )
 		{
 		}

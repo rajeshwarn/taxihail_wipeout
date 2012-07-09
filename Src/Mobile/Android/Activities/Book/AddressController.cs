@@ -11,7 +11,7 @@ using Android.Views;
 using Android.Widget;
 using Android.GoogleMaps;
 
-namespace TaxiMobile.Activities.Book
+namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
     public class AddressController
     {

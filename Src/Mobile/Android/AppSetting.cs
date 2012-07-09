@@ -9,9 +9,9 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using MobileTaxiApp.Infrastructure;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
-namespace TaxiMobile
+namespace apcurium.MK.Booking.Mobile.Client
 {
 
     public class AppSettings : IAppSettings
@@ -116,6 +116,11 @@ namespace TaxiMobile
             }
         }
 
+        public int[] InvalidProviderIds
+        {
+            get { return new int[0]; }
+        }
+
 
         public static string Version
         {
@@ -130,9 +135,8 @@ namespace TaxiMobile
 
 
         public string ServiceUrl
-        {
-            //			get { return "http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/"; }				
-            get { return "http://taxidiamondwebbook.dyndns.org/TaxiMobileWebServiceProd/"; }
+        {        
+            get { return "http://project.apcurium.com/apcurium.MK.Web.csproj_deploy/api/"; }
         }
     }
 

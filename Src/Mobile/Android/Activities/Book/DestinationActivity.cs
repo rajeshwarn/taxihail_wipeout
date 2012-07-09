@@ -10,18 +10,13 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.GoogleMaps;
-using TaxiMobile.Activities.Location;
-using TaxiMobile.Models;
 using Android.Locations;
-using TaxiMobile.Converters;
-using TaxiMobile.Helpers;
 using Microsoft.Practices.ServiceLocation;
-using TaxiMobileApp;
 using apcurium.Framework.Extensions;
 using Android.Views.InputMethods;
-using TaxiMobile.MapUtitilties;
+using apcurium.MK.Booking.Mobile.Data;
 
-namespace TaxiMobile.Activities.Book
+namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
     [Activity(Label = "Destination", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class DestinationActivity : AddressActivity, IAddress
