@@ -7,22 +7,23 @@ using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 
+
 namespace apcurium.MK.Booking.Api.Services
 {
     public class CreateOrderService : RestServiceBase<CreateOrder>
     {
-        private ICommandBus _commandBus;
-
+        private ICommandBus _commandBus;        
         public CreateOrderService(ICommandBus commandBus)
         {
-            _commandBus = commandBus;
-
+            _commandBus = commandBus;            
             AutoMapper.Mapper.CreateMap<CreateOrder, Commands.CreateOrder>();
 
         }
 
         public override object OnPost(CreateOrder request)
         {
+            
+
             var command = new Commands.CreateOrder();
             
             AutoMapper.Mapper.Map( request,  command  );
