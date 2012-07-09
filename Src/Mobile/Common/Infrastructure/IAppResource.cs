@@ -1,6 +1,7 @@
 using System;
+using apcurium.MK.Booking.Mobile.Localization;
 
-namespace TaxiMobileApp
+namespace apcurium.MK.Booking.Mobile.Infrastructure
 {
 	public interface IAppResource
 	{

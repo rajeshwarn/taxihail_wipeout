@@ -1,7 +1,6 @@
 using System;
-using TaxiMobile.Activities.Book;
 
-namespace TaxiMobile
+namespace apcurium.MK.Booking.Mobile.Client
 {
 	public interface IAddress
 	{

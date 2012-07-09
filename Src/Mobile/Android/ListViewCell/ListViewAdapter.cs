@@ -10,9 +10,9 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using apcurium.Framework.Extensions;
-using TaxiMobile.ListViewStructure;
+using apcurium.MK.Booking.Mobile.Client.ListViewStructure;
 
-namespace TaxiMobile.ListViewCell
+namespace apcurium.MK.Booking.Mobile.Client.ListViewCell
 {
 	 class ListViewAdapter : BaseAdapter
 	{
@@ -34,12 +34,6 @@ namespace TaxiMobile.ListViewCell
 			OwnerContext = context;
 			_cells = new Dictionary<int, InfoCell>();
 			
-//			if( Structure.Sections.ElementAt(0).SectionLabel.HasValue())
-//			{
-//				var headerView = new TextView( OwnerContext );
-//				headerView.Text = Structure.Sections.ElementAt(0).SectionLabel;
-//				owner.AddHeaderView( headerView );
-//			}
 		}
 		
 		public ListStructure Structure {

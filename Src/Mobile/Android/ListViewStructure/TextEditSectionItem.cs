@@ -1,6 +1,6 @@
 using System;
 
-namespace TaxiMobile.ListViewStructure
+namespace apcurium.MK.Booking.Mobile.Client.ListViewStructure
 {
 	public class TextEditSectionItem : SectionItem
 	{

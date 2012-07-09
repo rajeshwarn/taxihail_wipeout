@@ -11,9 +11,9 @@ using Android.Views;
 using Android.Widget;
 using Android.Locations;
 using Microsoft.Practices.ServiceLocation;
-using TaxiMobileApp;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
-namespace TaxiMobile.Activities.Book
+namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
     public class LocationService
     {

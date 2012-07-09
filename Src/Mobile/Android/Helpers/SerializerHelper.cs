@@ -5,10 +5,9 @@ using System.Xml.Serialization;
 using System.Text;
 using apcurium.Framework.Extensions;
 using Microsoft.Practices.ServiceLocation;
-using TaxiMobileApp;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
-
-namespace TaxiMobile.Helpers
+namespace apcurium.MK.Booking.Mobile.Client.Helpers
 {
 	public static class SerializerHelper
 	{

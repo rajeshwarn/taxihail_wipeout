@@ -103,23 +103,17 @@
     <Compile Include="Practices\Bootstrapper.cs" />
     <Compile Include="Practices\IModule.cs" />
     <Compile Include="Practices\ServiceLocator.cs" />
+    <Compile Include="Practices\TinyIoC.cs" />
+    <Compile Include="Practices\TinyMessenger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\IAccountService.cs" />
-    <Compile Include="Services\IBookingService.cs" />
-    <Compile Include="Services\Impl\AccountService.cs" />
-    <Compile Include="Services\Impl\BookingService.cs" />
-    <Compile Include="Services\Mapper\AccountMapping.cs" />
-    <Compile Include="Services\Mapper\OrderMapping.cs" />
-    <Compile Include="Services\Mapper\SettingMapper.cs" />
-    <Compile Include="Services\ModuleService.cs" />
-    <Compile Include="Web References\IBS\Reference.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Web References\IBS\AccountService.disco" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Web References\IBS\AccountService.wsdl" />
-    <None Include="Web References\IBS\Reference.map" />
+    <Compile Include="AppServices\IAccountService.cs" />
+    <Compile Include="AppServices\IBookingService.cs" />
+    <Compile Include="AppServices\Impl\AccountService.cs" />
+    <Compile Include="AppServices\Impl\BookingService.cs" />
+    <Compile Include="AppServices\Mapper\AccountMapping.cs" />
+    <Compile Include="AppServices\Mapper\OrderMapping.cs" />
+    <Compile Include="AppServices\Mapper\SettingMapper.cs" />
+    <Compile Include="AppServices\ModuleService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">
@@ -129,6 +123,10 @@
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Contract\MK.Booking.Api.Contract.Android.csproj">
       <Project>{F899012E-C6A6-4C49-8501-8DDEF592CCF1}</Project>
       <Name>MK.Booking.Api.Contract.Android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Server\MK.Common\MK.Common.Android.csproj">
+      <Project>{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}</Project>
+      <Name>MK.Common.Android</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />

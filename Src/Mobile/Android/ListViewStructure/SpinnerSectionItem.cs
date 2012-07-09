@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace TaxiMobile.ListViewStructure
+namespace apcurium.MK.Booking.Mobile.Client.ListViewStructure
 {
 	public class SpinnerSectionItem : SectionItem
 	{

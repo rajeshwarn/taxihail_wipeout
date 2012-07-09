@@ -12,14 +12,14 @@ using Android.Widget;
 using Android.Views.Animations;
 using Android.GoogleMaps;
 using Android.Locations;
-using TaxiMobile.Activities.Location;
-using TaxiMobile.Models;
 using apcurium.Framework.Extensions;
-using TaxiMobile.Helpers;
-using TaxiMobileApp;
 using Microsoft.Practices.ServiceLocation;
+using apcurium.MK.Booking.Mobile.Client.Models;
+using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
 
-namespace TaxiMobile.Activities.Book
+namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
     [Activity(Label = "Book", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class BookActivity : TabActivity

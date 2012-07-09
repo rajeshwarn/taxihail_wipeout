@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using Android.Widget;
 using Android.App;
-using TaxiMobile.Models;
 using Android.Views;
 
-namespace TaxiMobile.Adapters
+namespace apcurium.MK.Booking.Mobile.Client.Adapters
 {
     public class CustomListAdapter : BaseAdapter
     {

@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 
 
-namespace TaxiMobile.ListViewStructure
+namespace apcurium.MK.Booking.Mobile.Client.ListViewStructure
 {
 	public class Section
 	{

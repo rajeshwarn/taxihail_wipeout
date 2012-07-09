@@ -1,7 +1,7 @@
 using System;
 using System.Text;
 using System.Globalization;
-namespace TaxiMobile.Helpers
+namespace apcurium.MK.Booking.Mobile.Client.Helpers
 {
 	public class StringHelper
 	{

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 
 
-namespace TaxiMobileApp
+namespace apcurium.MK.Booking.Mobile.Data
 {
 	public class BookingSetting
 	{

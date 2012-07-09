@@ -1,11 +1,13 @@
 using System;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.Data;
 
-namespace MobileTaxiApp.Infrastructure
+namespace apcurium.MK.Booking.Mobile.Infrastructure
 {
 	public interface IAppContext
 	{
-				
-		TaxiMobileApp.AccountData LoggedUser {get;}
+        AccountData LoggedUser { get; }
+						
 	}
 }
 

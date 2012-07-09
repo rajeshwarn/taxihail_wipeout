@@ -4,7 +4,7 @@
 //using apcurium.Framework.Extensions;
 //using Android.OS;
 //using TaxiMobileApp;
-//namespace TaxiMobile.Models
+//namespace apcurium.MK.Booking.Mobile.Client.Models
 //{
 // public class LocationModel  :IParcelable
 //    {

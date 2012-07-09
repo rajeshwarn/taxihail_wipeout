@@ -1,7 +1,8 @@
 using System;
 using Microsoft.Practices.ServiceLocation;
+using apcurium.MK.Booking.Mobile.AppServices;
 
-namespace TaxiMobileApp
+namespace apcurium.MK.Booking.Mobile.Data
 {
     public class BookingInfoData
     {

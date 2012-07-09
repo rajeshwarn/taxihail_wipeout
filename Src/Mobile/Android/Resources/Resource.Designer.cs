@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TaxiMobile
+namespace apcurium.MK.Booking.Mobile.Client
 {
 	
 	

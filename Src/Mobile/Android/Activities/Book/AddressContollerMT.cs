@@ -8,7 +8,7 @@
 //using apcurium.Framework.Extensions;
 //using Microsoft.Practices.ServiceLocation;
 
-//namespace TaxiMobileApp
+//namespace apcurium.MK.Booking.Mobile
 //{
 //    public class AddressContoller
 //    {

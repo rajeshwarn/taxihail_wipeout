@@ -1,6 +1,6 @@
 using System;
 
-namespace TaxiMobile
+namespace apcurium.MK.Booking.Mobile.Client
 {
 	public class ListItemData
 	{

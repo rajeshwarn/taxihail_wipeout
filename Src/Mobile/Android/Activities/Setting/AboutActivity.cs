@@ -12,9 +12,10 @@ using Android.Widget;
 using Android.Webkit;
 
 using Microsoft.Practices.ServiceLocation;
-using TaxiMobileApp;
+using apcurium.MK.Booking.Mobile.Localization;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
-namespace TaxiMobile.Activities.Setting
+namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 {
 	[Activity (Label = "About", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation=Android.Content.PM.ScreenOrientation.Portrait)]			
 	public class AboutActivity : Activity
@@ -26,7 +27,7 @@ namespace TaxiMobile.Activities.Setting
 			SetContentView(Resource.Layout.About);
 			
 			string aboutUrl = "";
-			if( ServiceLocator.Current.GetInstance<IAppResource>().CurrentLanguage == TaxiMobileApp.AppLanguage.Francais )
+			if( ServiceLocator.Current.GetInstance<IAppResource>().CurrentLanguage == AppLanguage.Francais )
 			{
 				aboutUrl = @"file:///android_asset/About_fr.html";
 			}

@@ -1,5 +1,6 @@
 using System;
-namespace TaxiMobileApp
+
+namespace apcurium.MK.Booking.Mobile.Infrastructure
 {
 	public interface ILogger
 	{

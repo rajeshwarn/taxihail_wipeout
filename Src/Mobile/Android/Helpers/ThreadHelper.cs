@@ -2,12 +2,10 @@ using System;
 using System.Threading;
 using Microsoft.Practices.ServiceLocation;
 using Android.App;
-using TaxiMobile;
-using TaxiMobileApp;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 
-
-namespace TaxiMobile.Helpers
+namespace apcurium.MK.Booking.Mobile.Client.Helpers
 {
     public class ThreadHelper
     {

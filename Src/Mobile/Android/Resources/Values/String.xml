@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="ApplicationName">Taxi Diamond</string>
+  <string name="ApplicationName">Taxi Hail</string>
   <string name="Language">English</string>
   <string name="TabBook">Book</string>
   <string name="TabLocations">Locations</string>

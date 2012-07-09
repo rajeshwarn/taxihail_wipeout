@@ -9,13 +9,11 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using TaxiMobileApp;
-using TaxiMobile.Helpers;
 using Microsoft.Practices.ServiceLocation;
-using TaxiMobile.Activities.Account;
-using TaxiMobile.Activities.Book;
+using apcurium.MK.Booking.Mobile.Client.Activities.Book;
+using apcurium.MK.Booking.Mobile.Client.Activities.Account;
 
-namespace TaxiMobile.Activities
+namespace apcurium.MK.Booking.Mobile.Client.Activities
 {
     [Activity(Label = "@string/ApplicationName", MainLauncher = true, Theme = "@style/Theme.Splash", NoHistory = true, Icon = "@drawable/icon", ScreenOrientation=Android.Content.PM.ScreenOrientation.Portrait)]
     public class SplashActivity : Activity

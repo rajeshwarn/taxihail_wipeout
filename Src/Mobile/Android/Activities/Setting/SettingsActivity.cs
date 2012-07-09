@@ -10,12 +10,13 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 
-using TaxiMobile.Helpers;
 using System.IO;
-using TaxiMobile.Activities.Account;
-using TaxiMobile.Diagnostic;
+using apcurium.MK.Booking.Mobile.Client.Activities.Account;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
+using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 
-namespace TaxiMobile.Activities.Setting
+
+namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 {
     [Activity(Label = "Settings", ScreenOrientation=Android.Content.PM.ScreenOrientation.Portrait)]
     public class SettingsActivity : Activity

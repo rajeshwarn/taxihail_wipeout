@@ -11,7 +11,7 @@ using Android.Views;
 using Android.Widget;
 using System.Text.RegularExpressions;
 
-namespace TaxiMobile.Validation
+namespace apcurium.MK.Booking.Mobile.Client.Validation
 {
     public static  class EmailValidation
     {

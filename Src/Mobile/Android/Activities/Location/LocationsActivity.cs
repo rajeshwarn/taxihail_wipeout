@@ -1,22 +1,19 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Collections;
+using System.Collections.Generic;
 using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using TaxiMobile.Models;
-using TaxiMobile.Adapters;
-using apcurium.Framework.Extensions;
-using TaxiMobileApp;
 using Android.Graphics;
-using TaxiMobile.Activities.Book;
-using TaxiMobile.Helpers;
-namespace TaxiMobile.Activities.Location
+using Android.OS;
+using Android.Widget;
+using apcurium.Framework.Extensions;
+using apcurium.MK.Booking.Mobile.Client.Models;
+using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Booking.Mobile.Client.Adapters;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
+
+namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
 {
     [Activity(Label = "Locations", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class LocationsActivity : Activity

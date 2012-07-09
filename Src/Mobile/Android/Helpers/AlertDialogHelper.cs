@@ -12,7 +12,7 @@ using Android.Widget;
 using apcurium.Framework.Extensions;
 
 
-namespace TaxiMobile.Helpers
+namespace apcurium.MK.Booking.Mobile.Client.Helpers
 {
     public static class AlertDialogHelper
     {

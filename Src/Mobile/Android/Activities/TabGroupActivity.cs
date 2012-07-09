@@ -10,7 +10,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 
-namespace TaxiMobile.Activities
+namespace apcurium.MK.Booking.Mobile.Client.Activities
 {
 	public class TabGroupActivity : ActivityGroup
 	{

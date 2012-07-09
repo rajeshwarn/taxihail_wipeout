@@ -10,10 +10,10 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Java.Lang;
-using TaxiMobile.Helpers;
 using Android.Views.InputMethods;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
 
-namespace TaxiMobile.Activities.Book
+namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
     [Activity(Label = "@string/DateTimePickerPickTitle", Theme = "@android:style/Theme.Dialog")]
     public class DateTimePickerActivity : Activity

@@ -10,9 +10,9 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.Graphics;
-using TaxiMobile.ListViewStructure;
+using apcurium.MK.Booking.Mobile.Client.ListViewStructure;
 
-namespace TaxiMobile.ListViewCell
+namespace apcurium.MK.Booking.Mobile.Client.ListViewCell
 {
 	class BooleanCell : LabelValueCell<BooleanSectionItem>
 	{

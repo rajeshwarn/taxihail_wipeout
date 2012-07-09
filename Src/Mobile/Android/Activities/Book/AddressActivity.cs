@@ -1,32 +1,27 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
+using System.Threading;
 using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Android.GoogleMaps;
-using TaxiMobile.Activities.Location;
-using TaxiMobile.Helpers;
-using Android.Locations;
-using TaxiMobile.Diagnostic;
-using Microsoft.Practices.ServiceLocation;
-using TaxiMobile.Models;
-using TaxiMobileApp;
-using System.Timers;
-using System.Threading;
-using Android.Views.InputMethods;
-using apcurium.Framework.Extensions;
-using TaxiMobile.MapUtitilties;
-using TaxiMobile.Converters;
 using Android.Graphics.Drawables;
-using TaxiMobile.Controls;
+using Android.Locations;
+using Android.OS;
+using Android.Views;
+using Android.Views.InputMethods;
+using Android.Widget;
+using apcurium.Framework.Extensions;
+using Microsoft.Practices.ServiceLocation;
+using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Booking.Mobile.Client.Controls;
+using apcurium.MK.Booking.Mobile.Client.Activities.Location;
+using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
+using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
+using apcurium.MK.Booking.Mobile.Client.Models;
+using apcurium.MK.Booking.Mobile.Client.Converters;
 
-namespace TaxiMobile.Activities.Book
+namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
     public abstract class AddressActivity : MapActivity
     {

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using Android.Widget;
 using Android.Content;
 using Android.Views;
-using TaxiMobile.ListViewStructure;
+using apcurium.MK.Booking.Mobile.Client.ListViewStructure;
 
-namespace TaxiMobile.ListViewCell
+namespace apcurium.MK.Booking.Mobile.Client.ListViewCell
 {
 	public class SectionItemCellRegistry
 	{

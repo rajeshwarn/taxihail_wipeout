@@ -1,24 +1,17 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using MobileTaxiApp.Infrastructure;
-using Microsoft.Practices.ServiceLocation;
-using apcurium.Framework.Extensions;
-using TaxiMobile.Helpers;
-using TaxiMobile.Diagnostic;
-using TaxiMobileApp;
 using Android.Locations;
+using Android.OS;
+using apcurium.Framework.Extensions;
+using apcurium.MK.Booking.Mobile.Data;
+using Microsoft.Practices.ServiceLocation;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.Client.Diagnostic;
+using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
 
 
-namespace TaxiMobile
+namespace apcurium.MK.Booking.Mobile.Client
 {
     public class AppContext :  IAppContext, ILocationListener
     {
@@ -44,7 +37,7 @@ namespace TaxiMobile
         public TaxiMobileApplication App { get; set; }
         public Context Context { get; set; }
 
-        public TaxiMobileApp.AccountData LoggedUser
+        public AccountData LoggedUser
         {
 
             get
@@ -55,7 +48,7 @@ namespace TaxiMobile
 	                var serializedUser = pref.GetString("LoggedUser", "");
 	                if (serializedUser.HasValue())
 	                {
-	                    _loggedUser = SerializerHelper.DeserializeObject<TaxiMobileApp.AccountData>(serializedUser);
+	                    _loggedUser = SerializerHelper.DeserializeObject<AccountData>(serializedUser);
 	                }
                     if (_loggedUser != null)
                     {
