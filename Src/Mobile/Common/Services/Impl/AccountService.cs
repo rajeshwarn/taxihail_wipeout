@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using TaxiMobileApp.Lib.IBS;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using System.Threading;
 
 namespace TaxiMobileApp
 {
@@ -232,10 +233,17 @@ namespace TaxiMobileApp
             bool isSuccess = true;
             string lError = "";
 
-            var service = new AccountServiceClient(@"http://alex-macbookpro/apcurium.MK.Web/api/", null);
+            //var service = new AccountServiceClient(@"http://192.168.12.116/apcurium.MK.Web/api/", null);
+            var service = new AccountServiceClient(@"http://project.apcurium.com/apcurium.MK.Web.csproj_deploy/api/", null);
             service.RegisterAccount(new RegisterAccount { AccountId = Guid.NewGuid(), Email = data.Email, FirstName = data.FirstName, LastName = data.LastName, Password = data.Password, Phone = data.Mobile });
-            
 
+            Thread.Sleep( 2000 );
+            var service2 = new AccountServiceClient(@"http://project.apcurium.com/apcurium.MK.Web.csproj_deploy/api/", new AuthInfo(data.Email, data.Password));
+            var acc = service2.GetMyAccount();
+
+
+
+            Console.WriteLine( acc.Email );
 
             //UseService(service =>
             //{
