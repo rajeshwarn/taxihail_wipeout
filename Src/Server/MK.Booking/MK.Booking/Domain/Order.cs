@@ -25,26 +25,25 @@ namespace apcurium.MK.Booking.Domain
             this.LoadFrom(history);
         }
 
-        public Order(Guid id, Guid accountId, DateTime pickupDate, DateTime requestedDateTime, string friendlyName
-            , string fullAddress, double longitude, double latitude, string apartment, string ringCode)
+        public Order(Guid id, Guid accountId, DateTime pickupDate, string pickupAddress, double pickupLongitude,
+                                                double pickupLatitude, string pickupAppartment, string pickupRingCode)
             : this(id)
         {
-            if (Params.Get(friendlyName, fullAddress, longitude.ToString(CultureInfo.InvariantCulture), latitude.ToString(CultureInfo.InvariantCulture), apartment, ringCode).Any(p => p.IsNullOrEmpty())
-                || pickupDate == null || requestedDateTime == null || accountId == null)
-            {
-                throw new InvalidOperationException("Missing required fields");
-            }
+            //if (Params.Get(friendlyName, fullAddress, longitude.ToString(CultureInfo.InvariantCulture), latitude.ToString(CultureInfo.InvariantCulture), apartment, ringCode).Any(p => p.IsNullOrEmpty())
+            //    || pickupDate == null || requestedDateTime == null || accountId == null)
+            //{
+            //    throw new InvalidOperationException("Missing required fields");
+            //}
             this.Update(new OrderCreated
             {
                 AccountId = accountId,
                 PickupDate = pickupDate,
-                RequestedDateTime = requestedDateTime,
-                FriendlyName = friendlyName,
-                FullAddress = fullAddress,
-                Longitude = longitude,
-                Latitude = latitude,
-                Apartment = apartment,
-                RingCode = ringCode
+                PickupAddress = pickupAddress,
+                PickupLongitude = pickupLongitude,
+                PickupLatitude = pickupLatitude,
+                PickupApartment = pickupAppartment,
+                PickupRingCode = pickupRingCode,
+                RequestedDate = DateTime.Now
             });
         }
 

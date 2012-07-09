@@ -25,7 +25,7 @@ namespace WorkerRoleCommandProcessor
         {
             Database.DefaultConnectionFactory = new ServiceConfigurationSettingConnectionFactory(Database.DefaultConnectionFactory);
 
-            using (var processor = new MkBookingProcessor())
+            using (var processor = new MKBookingProcessor())
             {
                 processor.Start();
 

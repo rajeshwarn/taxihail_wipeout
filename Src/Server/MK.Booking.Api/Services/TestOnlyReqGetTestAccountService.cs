@@ -39,10 +39,10 @@ namespace apcurium.MK.Booking.Api.Services
         public override object OnGet(TestOnlyReqGetTestAccount request)
         {
             //This method can only be used for unit test.  
-            if (!((RequestContext.EndpointAttributes & EndpointAttributes.Localhost) == EndpointAttributes.Localhost))
-            {
-                throw HttpError.NotFound("This method can only be called from the server");
-            }
+            //if (!((RequestContext.EndpointAttributes & EndpointAttributes.Localhost) == EndpointAttributes.Localhost))
+            //{
+            //    throw HttpError.NotFound("This method can only be called from the server");
+            //}
 
             string testEmail = String.Format(TestUserEmail, request.Index);
 

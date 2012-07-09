@@ -22,17 +22,17 @@ namespace apcurium.MK.Booking.ReadModel
         public DateTime PickupDate { get; set; }
         public DateTime RequestedDateTime { get; set; }
 
-        public string FriendlyName { get; set; }
 
-        public string FullAddress { get; set; }
 
-        public double Longitude { get; set; }
+        public string PickupAddress { get; set; }
 
-        public double Latitude { get; set; }
+        public double PickupLongitude { get; set; }
 
-        public string Apartment { get; set; }
+        public double PickupLatitude { get; set; }
 
-        public string RingCode { get; set; }
+        public string PickupApartment { get; set; }
+
+        public string PickupRingCode { get; set; }
 
         public BookingSettingsDetails Settings { get; set; }
     }

@@ -1,0 +1,3 @@
+﻿- Current language
+- Log File location
+- Logger 

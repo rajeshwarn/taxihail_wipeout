@@ -10,10 +10,10 @@ namespace WorkerRoleCommandProcessor
 
             Host h = HostFactory.New(x =>
             {
-                x.Service<MkBookingProcessor>(s =>
+                x.Service<MKBookingProcessor>(s =>
                 {
                     s.SetServiceName("MkBookingProcessor");
-                    s.ConstructUsing(name => new MkBookingProcessor());
+                    s.ConstructUsing(name => new MKBookingProcessor());
                     s.WhenStarted(tc => tc.Start());
                     s.WhenStopped(tc => tc.Stop());
                 });

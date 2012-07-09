@@ -107,7 +107,7 @@ namespace Infrastructure.Sql.EventSourcing
                 this.serializer.Serialize(writer, e);
                 serialized = new Event
                 {
-                    AggregateId = e.SourceId,
+                    AggregateId = e.SourceId,  
                     AggregateType = sourceType,
                     Version = e.Version,
                     Payload = writer.ToString()
