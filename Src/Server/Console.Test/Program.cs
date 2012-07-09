@@ -11,8 +11,8 @@ namespace Console.Test
     {
         static void Main(string[] args)
         {
-            //var service = new AccountServiceClient(@"http://alex-macbookpro/apcurium.MK.Web/api/", null);
-            var service = new AccountServiceClient(@"http://project.apcurium.com/apcurium.MK.Web.csproj_deploy/api/", null);
+            var service = new AccountServiceClient(@"http://localhost:6900/", null);
+            //var service = new AccountServiceClient(@"http://project.apcurium.com/apcurium.MK.Web.csproj_deploy/api/", null);
             service.RegisterAccount(new RegisterAccount { AccountId = Guid.NewGuid(), Email = "aaa@aaa.com", FirstName = "AAAA", LastName = "BBBB", Password = "VVVVV", Phone = "555-555-6666"});
         }
     }
