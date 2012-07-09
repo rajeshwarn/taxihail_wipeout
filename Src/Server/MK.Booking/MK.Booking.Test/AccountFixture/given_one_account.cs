@@ -18,17 +18,13 @@ namespace apcurium.MK.Booking.Test.AccountFixture
 
         private EventSourcingTestHelper<Account> sut;
         private Guid _accountId = Guid.NewGuid();
-        private Mock<IEmailSender> emailSenderMock;
 
         [SetUp]
         public void Setup()
         {
             this.sut = new EventSourcingTestHelper<Account>();
 
-            emailSenderMock = new Mock<IEmailSender>();
-
             this.sut.Setup(new AccountCommandHandler(this.sut.Repository, new PasswordService()));
-            //this.sut.Setup(new EmailCommandHandler(new TestConfigurationManager(), new TemplateService(), emailSenderMock.Object));
             this.sut.Given(new AccountRegistered { SourceId = _accountId, FirstName = "Bob", LastName = "Smith", Password = null, Email = "bob.smith@apcurium.com", IbsAcccountId=10 });
         }
 
@@ -60,17 +56,5 @@ namespace apcurium.MK.Booking.Test.AccountFixture
 
         }
 
-        [Test]
-        [Ignore]
-        public void when_sending_reset_password_email()
-        {
-            const string newPassword = "123456";
-
-            this.sut.When(new SendPasswordResettedEmail { EmailAddress = "test@example.net", Password = newPassword });
-
-            emailSenderMock.Verify(s => s
-                .Send(It.Is<MailMessage>(message => message
-                    .Body.Contains(newPassword))));
-        }
     }
 }
