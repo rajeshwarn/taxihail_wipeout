@@ -38,7 +38,10 @@ namespace apcurium.MK.Web.Tests
                                 PickupRingCode = "3131",
                                 PickupLatitude = 45.515065,
                                 PickupLongitude = -73.558064,
-                                PickupDate = pickupDate,                                
+                                PickupDate = pickupDate,
+                                DropOffAddress = "Velvet auberge st gabriel",
+                                DropOffLatitude = 45.50643,
+                                DropOffLongitude = -73.554052
                             };
 
             var id = sut.CreateOrder(order);

@@ -22,8 +22,6 @@ namespace apcurium.MK.Booking.ReadModel
         public DateTime PickupDate { get; set; }
         public DateTime RequestedDateTime { get; set; }
 
-
-
         public string PickupAddress { get; set; }
 
         public double PickupLongitude { get; set; }
@@ -33,6 +31,12 @@ namespace apcurium.MK.Booking.ReadModel
         public string PickupApartment { get; set; }
 
         public string PickupRingCode { get; set; }
+
+        public string DropOffAddress { get; set; }
+
+        public double? DropOffLongitude { get; set; }
+
+        public double? DropOffLatitude { get; set; }
 
         public BookingSettingsDetails Settings { get; set; }
     }

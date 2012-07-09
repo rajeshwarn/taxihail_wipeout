@@ -21,7 +21,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(CreateOrder command)
         {
             var order = new Order(command.Id, command.AccountId, command.PickupDate, command.PickupAddress, command.PickupLongitude, command.PickupLatitude,
-                                    command.PickupApartment, command.PickupRingCode);
+                                    command.PickupApartment, command.PickupRingCode, command.DropOffAddress, command.DropOffLongitude, command.DropOffLatitude);
             _repository.Save(order);
         }
 
