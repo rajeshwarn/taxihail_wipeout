@@ -12,6 +12,7 @@
 // ==============================================================================================================
 
 
+using apcurium.MK.Booking.Email;
 
 namespace WorkerRoleCommandProcessor
 {
@@ -94,7 +95,10 @@ namespace WorkerRoleCommandProcessor
             
             container.RegisterType<ConfigurationDbContext>(new TransientLifetimeManager(), new InjectionConstructor("MKWeb"));
             container.RegisterInstance<IConfigurationManager>(new ConfigurationManager(() => container.Resolve<ConfigurationDbContext>()));
-            container.RegisterInstance<IPasswordService>(new PasswordService());            
+            container.RegisterInstance<IPasswordService>(new PasswordService());
+            container.RegisterInstance<ITemplateService>(new TemplateService());
+            container.RegisterInstance<IEmailSender>(new EmailSender(container.Resolve<IConfigurationManager>()));
+
             // handlers
             container.RegisterType<ICommandHandler, AccountCommandHandler>("AccountCommandHandler");
             container.RegisterType<ICommandHandler, FavoriteAddressCommandHandler>("FavoriteAddressCommandHandler");
