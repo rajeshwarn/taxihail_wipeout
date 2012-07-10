@@ -6,6 +6,7 @@ using System.Text;
 using Infrastructure.EventSourcing;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Domain
@@ -26,7 +27,7 @@ namespace apcurium.MK.Booking.Domain
         }
 
         public Order(Guid id, Guid accountId, DateTime pickupDate, string pickupAddress, double pickupLongitude,
-                                                double pickupLatitude, string pickupAppartment, string pickupRingCode, string dropOffAddress, double? dropOffLongitude, double? dropOffLatitude)
+                                                double pickupLatitude, string pickupAppartment, string pickupRingCode, string dropOffAddress, double? dropOffLongitude, double? dropOffLatitude, string status)
             : this(id)
         {
             if (Params.Get(pickupAddress, pickupAppartment, pickupLongitude.ToString(CultureInfo.InvariantCulture), pickupLatitude.ToString(CultureInfo.InvariantCulture)
@@ -47,7 +48,8 @@ namespace apcurium.MK.Booking.Domain
                 DropOffAddress = dropOffAddress,
                 DropOffLongitude = dropOffLongitude,
                 DropOffLatitude = dropOffLatitude,
-                RequestedDate = DateTime.Now
+                RequestedDate = DateTime.Now,
+                Status = status
             });
         }
 
@@ -63,7 +65,11 @@ namespace apcurium.MK.Booking.Domain
 
         public void Cancel()
         {
-            this.Update(new OrderCancelled());
+            this.Update(new OrderCancelled()
+                            {
+                                SourceId = Id,
+                                Status = OrderStatus.Cancelled.ToString()
+                            });
         }
     }
 }

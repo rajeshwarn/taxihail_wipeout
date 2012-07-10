@@ -12,6 +12,7 @@
 // ==============================================================================================================
 
 
+using apcurium.MK.Booking.Email;
 
 namespace WorkerRoleCommandProcessor
 {
@@ -87,15 +88,25 @@ namespace WorkerRoleCommandProcessor
             container.RegisterInstance<ITextSerializer>(new JsonTextSerializer());
             container.RegisterInstance<IMetadataProvider>(new StandardMetadataProvider());
 
-            container.RegisterType<IBlobStorage, SqlBlobStorage>(new ContainerControlledLifetimeManager(), new InjectionConstructor("BlobStorage"));            
-                        
-            container.RegisterType<BookingDbContext>(new TransientLifetimeManager(), new InjectionConstructor("MKWeb"));            
+            container.RegisterType<IBlobStorage, SqlBlobStorage>(new ContainerControlledLifetimeManager(), new InjectionConstructor("BlobStorage"));
+
+#if STAGING
+            string databaseName = "MkWebStaging";
+#else
+            string databaseName = "MkWeb";
+#endif
+
+            container.RegisterType<BookingDbContext>(new TransientLifetimeManager(), new InjectionConstructor(databaseName));
+            container.RegisterType<ConfigurationDbContext>(new TransientLifetimeManager(), new InjectionConstructor(databaseName));
+
             container.RegisterType<ILogger, Logger>();
             container.RegisterType<IConfigurationManager, TestConfigurationManager>();
             
-            container.RegisterType<ConfigurationDbContext>(new TransientLifetimeManager(), new InjectionConstructor("MKWeb"));
             container.RegisterInstance<IConfigurationManager>(new ConfigurationManager(() => container.Resolve<ConfigurationDbContext>()));
-            container.RegisterInstance<IPasswordService>(new PasswordService());            
+            container.RegisterInstance<IPasswordService>(new PasswordService());
+            container.RegisterInstance<ITemplateService>(new TemplateService());
+            container.RegisterInstance<IEmailSender>(new EmailSender(container.Resolve<IConfigurationManager>()));
+
             // handlers
             container.RegisterType<ICommandHandler, AccountCommandHandler>("AccountCommandHandler");
             container.RegisterType<ICommandHandler, FavoriteAddressCommandHandler>("FavoriteAddressCommandHandler");

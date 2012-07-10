@@ -8,6 +8,6 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
     [RestService("/orderstatus/{OrderId}", "GET")]   
     public class OrderStatusRequest
     {
-        public int OrderId { get; set; }
+        public Guid OrderId { get; set; }
     }
 }

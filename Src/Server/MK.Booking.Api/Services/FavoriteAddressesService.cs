@@ -13,12 +13,12 @@ namespace apcurium.MK.Booking.Api.Services
     public class FavoriteAddressesService : RestServiceBase<FavoriteAddresses> 
     {
 
-        public FavoriteAddressesService(IAddressDao dao)
+        public FavoriteAddressesService(IFavoriteAddressDao dao)
         {
             Dao = dao;
         }
 
-        protected IAddressDao Dao { get; set; }
+        protected IFavoriteAddressDao Dao { get; set; }
 
         public override object OnGet(FavoriteAddresses request)
         {

@@ -30,6 +30,20 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Staging|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Staging\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Debug\apcurium.MK.Booking.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutoMapper">
       <HintPath>..\..\packages\AutoMapper.2.1.267\lib\net40\AutoMapper.dll</HintPath>
@@ -64,6 +78,7 @@
     <Compile Include="Email\ITemplateService.cs" />
     <Compile Include="Email\TemplateService.cs" />
     <Compile Include="EventHandlers\AccountDetailsGenerator.cs" />
+    <Compile Include="EventHandlers\AddressHistoryGenerator.cs" />
     <Compile Include="EventHandlers\FavoriteAddressListGenerator.cs" />
     <Compile Include="EventHandlers\OrderGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -71,11 +86,16 @@
     <Compile Include="ReadModel\AccountDetail.cs" />
     <Compile Include="ReadModel\BookingSetting.cs" />
     <Compile Include="ReadModel\FavoriteAddress.cs" />
+    <Compile Include="ReadModel\HistoricAddress.cs" />
     <Compile Include="ReadModel\OrderDetail.cs" />
     <Compile Include="ReadModel\Query\AccountDao.cs" />
-    <Compile Include="ReadModel\Query\AddressDao.cs" />
+    <Compile Include="ReadModel\Query\IHistoricAddressDao.cs" />
+    <Compile Include="ReadModel\Query\HistoricAddressDao.cs" />
+    <Compile Include="ReadModel\Query\FavoriteAddressDao.cs" />
     <Compile Include="ReadModel\Query\IAccountDao.cs" />
-    <Compile Include="ReadModel\Query\IAddressDao.cs" />
+    <Compile Include="ReadModel\Query\IFavoriteAddressDao.cs" />
+    <Compile Include="ReadModel\Query\IOrderDao.cs" />
+    <Compile Include="ReadModel\Query\OrderDao.cs" />
     <Compile Include="Security\IPasswordService.cs" />
     <Compile Include="Security\PasswordService.cs" />
   </ItemGroup>

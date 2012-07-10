@@ -77,11 +77,13 @@ namespace apcurium.MK.Web.SelfHost
 
             container.RegisterType<BookingDbContext>(new TransientLifetimeManager(), new InjectionConstructor("MKWeb"));
             container.RegisterType<ConfigurationDbContext>(new TransientLifetimeManager(), new InjectionConstructor("MKWeb"));
-            container.RegisterInstance<IAccountDao>(new AccountDao(() => container.Resolve<BookingDbContext>()));
+
+            container.RegisterInstance<IOrderDao>(new OrderDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<ITextSerializer>(new JsonTextSerializer());
             container.RegisterInstance<IMetadataProvider>(new StandardMetadataProvider());
 
-            container.RegisterInstance<IAddressDao>(new AddressDao(() => container.Resolve<BookingDbContext>()));
+            container.RegisterInstance<IFavoriteAddressDao>(new FavoriteAddressDao(() => container.Resolve<BookingDbContext>()));
+            container.RegisterInstance<IHistoricAddressDao>(new HistoricAddressDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IAccountDao>(new AccountDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IConfigurationManager>(new Common.Configuration.Impl.ConfigurationManager(() => container.Resolve<ConfigurationDbContext>()));
             container.RegisterInstance<IAccountWebServiceClient>(new AccountWebServiceClient(container.Resolve<IConfigurationManager>(), new Logger()));
@@ -95,7 +97,11 @@ namespace apcurium.MK.Web.SelfHost
             container.RegisterType<ICommandHandler, SqlMessageLogHandler>("SqlMessageLogHandler");
 
 
-            container.RegisterInstance<IEventBus>(new MemoryEventBus(container.Resolve<AccountDetailsGenerator>(), container.Resolve<FavoriteAddressListGenerator>(), container.Resolve<OrderGenerator>(), container.Resolve<SqlMessageLogHandler>()));
+            container.RegisterInstance<IEventBus>(new MemoryEventBus(container.Resolve<AccountDetailsGenerator>(),
+                container.Resolve<FavoriteAddressListGenerator>(),
+                container.Resolve<AddressHistoryGenerator>(),
+                container.Resolve<OrderGenerator>(),
+                container.Resolve<SqlMessageLogHandler>()));
 
             container.RegisterType<EventStoreDbContext>(new TransientLifetimeManager(), new InjectionConstructor("EventStore"));
             container.RegisterType(typeof(IEventSourcedRepository<>), typeof(SqlEventSourcedRepository<>), new ContainerControlledLifetimeManager());

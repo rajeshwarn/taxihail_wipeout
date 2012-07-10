@@ -6,36 +6,36 @@ using apcurium.MK.Booking.Database;
 
 namespace apcurium.MK.Booking.ReadModel.Query
 {
-    public class AddressDao : IAddressDao
+    public class OrderDao : IOrderDao
     {
         private readonly Func<BookingDbContext> _contextFactory;
 
-        public AddressDao(Func<BookingDbContext> contextFactory)
+        public OrderDao(Func<BookingDbContext> contextFactory)
         {            
             _contextFactory = contextFactory;
         }
 
-        public IList<FavoriteAddress> GetAll()
+        public IList<OrderDetail> GetAll()
         {
             using (var context = _contextFactory.Invoke())
             {
-                return context.Query<FavoriteAddress>().ToList();
+                return context.Query<OrderDetail>().ToList();
             }
         }
 
-        public FavoriteAddress FindById(Guid id)
+        public OrderDetail FindById(Guid id)
         {
             using (var context = _contextFactory.Invoke())
             {
-                return context.Query<FavoriteAddress>().SingleOrDefault(c => c.Id == id);
+                return context.Query<OrderDetail>().SingleOrDefault(c => c.Id == id);
             }
         }
 
-        public IList<FavoriteAddress> FindByAccountId(Guid addressId)
+        public IList<OrderDetail> FindByAccountId(Guid id)
         {
             using (var context = _contextFactory.Invoke())
             {
-                return context.Query<FavoriteAddress>().Where(c => c.AccountId.Equals(addressId)).ToList();
+                return context.Query<OrderDetail>().Where(c => c.AccountId == id).ToList();
             }
         }
     }

@@ -5,6 +5,7 @@ using System.Text;
 using NUnit.Framework;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.ReadModel.Query;
 
 namespace apcurium.MK.Web.Tests
 {
@@ -15,18 +16,7 @@ namespace apcurium.MK.Web.Tests
         public new void Setup()
         {
             base.Setup();
-        }
-
-        [TestFixtureTearDown]
-        public new void TearDown()
-        {
-            base.TearDown();
-        }
-
-        [SetUp]
-        public void SetupTest()
-        {
-             var sut = new OrderServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+            var sut = new OrderServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
             var order = new CreateOrder
             {
                 Id = _orderId,
@@ -44,6 +34,18 @@ namespace apcurium.MK.Web.Tests
             sut.CreateOrder(order);
         }
 
+        [TestFixtureTearDown]
+        public new void TearDown()
+        {
+            base.TearDown();
+        }
+
+        [SetUp]
+        public void SetupTest()
+        {
+         
+        }
+
         [Test]
         public void CreateOrder()
         {
@@ -52,7 +54,7 @@ namespace apcurium.MK.Web.Tests
             var requestDate = DateTime.Now.AddHours(1);
             var order = new CreateOrder
                             {
-                                Id = _orderId,
+                                Id = Guid.NewGuid(),
                                 AccountId = TestAccount.Id,                                
                                 PickupApartment = "3939",
                                 PickupAddress = "1234 rue Saint-Hubert",
@@ -70,17 +72,36 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void CancelOrder()
+        public void GetOrderList()
         {
             var sut = new OrderServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
-            var order = new CancelOrder()
+            
+            var orders = sut.GetOrdersByAccount(new AccountOrderListRequest()
             {
-                OrderId = _orderId,
-                AccountId = TestAccount.Id,
-            };
+                AccountId = TestAccount.Id
+            });
+            Assert.NotNull(orders);
+        }
 
-            var results = sut.Cancel(order);
-            Assert.AreEqual("OK", results);
+        [Test]
+        public void GetOrder()
+        {
+            var sut = new OrderServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+
+            var orders = sut.GetOrder(new OrderRequest()
+            {
+                AccountId = TestAccount.Id,
+                OrderId = _orderId
+            });
+            Assert.NotNull(orders);
+            Assert.AreEqual("3939",orders.PickupApartment);
+            Assert.AreEqual("1234 rue Saint-Hubert", orders.PickupAddress);
+            Assert.AreEqual("3131", orders.PickupRingCode);
+            Assert.AreEqual(45.515065, orders.PickupLatitude);
+            Assert.AreEqual(-73.558064, orders.PickupLongitude);
+            Assert.AreEqual("Velvet auberge st gabriel", orders.DropOffAddress);
+            Assert.AreEqual(45.50643, orders.DropOffLatitude);
+            Assert.AreEqual(-73.554052, orders.DropOffLongitude);
         }
     }
 }

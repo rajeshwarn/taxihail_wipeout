@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Infrastructure.Messaging;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Commands
 {
@@ -11,6 +12,7 @@ namespace apcurium.MK.Booking.Commands
         public CreateOrder()
         {
             Id = Guid.NewGuid();
+            Status = OrderStatus.Created.ToString();
         }
 
         public Guid Id { get; set; }
@@ -35,6 +37,8 @@ namespace apcurium.MK.Booking.Commands
 
         public double? DropOffLongitude { get; set; }
 
-        public double? DropOffLatitude { get; set; }        
+        public double? DropOffLatitude { get; set; }
+
+        public string Status { get; set; }
     }
 }

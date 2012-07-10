@@ -49,11 +49,17 @@ namespace WorkerRoleCommandProcessor
             var serializer = container.Resolve<ITextSerializer>();
             var metadata = container.Resolve<IMetadataProvider>();
 
-            var commandBus = new CommandBus(new MessageSender(Database.DefaultConnectionFactory, "MkWeb", "SqlBus.Commands"), serializer);
-            var eventBus = new EventBus(new MessageSender(Database.DefaultConnectionFactory, "MkWeb", "SqlBus.Events"), serializer);
+#if STAGING
+            string databaseName = "MkWebStaging";   
+#else
+            string databaseName = "MkWeb";
+#endif
 
-            var commandProcessor = new CommandProcessor(new MessageReceiver(Database.DefaultConnectionFactory, "MkWeb", "SqlBus.Commands"), serializer);
-            var eventProcessor = new EventProcessor(new MessageReceiver(Database.DefaultConnectionFactory, "MkWeb", "SqlBus.Events"), serializer);
+            var commandBus = new CommandBus(new MessageSender(Database.DefaultConnectionFactory, databaseName, "SqlBus.Commands"), serializer);
+            var eventBus = new EventBus(new MessageSender(Database.DefaultConnectionFactory, databaseName, "SqlBus.Events"), serializer);
+
+            var commandProcessor = new CommandProcessor(new MessageReceiver(Database.DefaultConnectionFactory, databaseName, "SqlBus.Commands"), serializer);
+            var eventProcessor = new EventProcessor(new MessageReceiver(Database.DefaultConnectionFactory, databaseName, "SqlBus.Events"), serializer);
             
             
 
@@ -79,6 +85,7 @@ namespace WorkerRoleCommandProcessor
         {
             eventProcessor.Register(container.Resolve<AccountDetailsGenerator>());
             eventProcessor.Register(container.Resolve<FavoriteAddressListGenerator>());
+            eventProcessor.Register(container.Resolve<AddressHistoryGenerator>());
             eventProcessor.Register(container.Resolve<OrderGenerator>());
             eventProcessor.Register(container.Resolve<SqlMessageLogHandler>());
         }

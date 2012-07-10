@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Mail;
+using System.Text;
 using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Email;
@@ -32,7 +33,7 @@ namespace apcurium.MK.Booking.CommandHandlers
             var mailMessage = new MailMessage(from: _configurationManager.GetSetting("Email.NoReply"),
                                               to: command.EmailAddress,
                                               subject: PasswordResettedEmailSubject,
-                                              body: messageBody) { IsBodyHtml = true };
+                                              body: messageBody) { IsBodyHtml = true, BodyEncoding = Encoding.UTF8, SubjectEncoding = Encoding.UTF8 };
             _emailSender.Send(mailMessage);
         }
     }
