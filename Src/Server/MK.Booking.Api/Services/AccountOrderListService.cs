@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             var session = this.GetSession();
-            return Dao.FindByAccountId(new Guid(session.UserAuthId));
+            return Dao.FindByAccountId(new Guid(session.UserAuthId)).OrderByDescending(c=>c.PickupDate);
         }
     }
 }
