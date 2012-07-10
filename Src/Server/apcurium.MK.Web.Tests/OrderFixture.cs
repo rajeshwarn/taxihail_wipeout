@@ -16,18 +16,7 @@ namespace apcurium.MK.Web.Tests
         public new void Setup()
         {
             base.Setup();
-        }
-
-        [TestFixtureTearDown]
-        public new void TearDown()
-        {
-            base.TearDown();
-        }
-
-        [SetUp]
-        public void SetupTest()
-        {
-             var sut = new OrderServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+            var sut = new OrderServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
             var order = new CreateOrder
             {
                 Id = _orderId,
@@ -43,6 +32,18 @@ namespace apcurium.MK.Web.Tests
                 DropOffLongitude = -73.554052
             };
             sut.CreateOrder(order);
+        }
+
+        [TestFixtureTearDown]
+        public new void TearDown()
+        {
+            base.TearDown();
+        }
+
+        [SetUp]
+        public void SetupTest()
+        {
+         
         }
 
         [Test]
