@@ -85,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Security\CustomCredentialsAuthProvider.cs" />
+    <Compile Include="Services\AccountOrderListService.cs" />
     <Compile Include="Services\BookingSettingsService.cs" />
     <Compile Include="Services\CancelOrderService.cs" />
     <Compile Include="Services\CreateOrderService.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="Services\GoogleApi\CommonDto.cs" />
     <Compile Include="Services\GoogleApi\DirectionDto.cs" />
     <Compile Include="Services\GoogleApi\GeolocDto.cs" />
+    <Compile Include="Services\OrderService.cs" />
     <Compile Include="Services\OrderStatusService.cs" />
     <Compile Include="Services\ReferenceDataService.cs" />
     <Compile Include="Services\RegisterAccountService.cs" />

@@ -72,18 +72,36 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void CancelOrder()
+        public void GetOrderList()
         {
             var sut = new OrderServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
-            var order = new CancelOrder()
+            
+            var orders = sut.GetOrdersByAccount(new AccountOrderListRequest()
             {
-                OrderId = _orderId,
+                AccountId = TestAccount.Id
+            });
+            Assert.NotNull(orders);
+        }
+
+        [Test]
+        public void GetOrder()
+        {
+            var sut = new OrderServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+
+            var orders = sut.GetOrder(new OrderRequest()
+            {
                 AccountId = TestAccount.Id,
-            };
-
-            var results = sut.Cancel(order);
-
-            Assert.AreEqual("OK", results);
+                OrderId = _orderId
+            });
+            Assert.NotNull(orders);
+            Assert.AreEqual("3939",orders.PickupApartment);
+            Assert.AreEqual("1234 rue Saint-Hubert", orders.PickupAddress);
+            Assert.AreEqual("3131", orders.PickupRingCode);
+            Assert.AreEqual(45.515065, orders.PickupLatitude);
+            Assert.AreEqual(-73.558064, orders.PickupLongitude);
+            Assert.AreEqual("Velvet auberge st gabriel", orders.DropOffAddress);
+            Assert.AreEqual(45.50643, orders.DropOffLatitude);
+            Assert.AreEqual(-73.554052, orders.DropOffLongitude);
         }
     }
 }

@@ -2,6 +2,7 @@
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.IBS;
+using apcurium.MK.Booking.ReadModel.Query;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -9,29 +10,30 @@ namespace apcurium.MK.Booking.Api.Services
     {
         private readonly IBookingWebServiceClient _bookingWebServiceClient;
 
-        public OrderStatusService(IBookingWebServiceClient bookingWebServiceClient)
+        public OrderStatusService(IOrderDao dao)
         {
-            _bookingWebServiceClient = bookingWebServiceClient;
+            Dao = dao;
         }
+
+        protected IOrderDao Dao { get; set; }
 
         public override object OnGet(OrderStatusRequest request)
         {
-            var status = new OrderStatus();
-            try
+          
+            /*try
             {
+
                 var accountId = this.GetSession().UserAuthId; //TODO avoir le ibsaccountid => pas de requête
-                var statusDetails = _bookingWebServiceClient.GetOrderStatus(request.OrderId, 0);
+                //var statusDetails = _bookingWebServiceClient.GetOrderStatus(request.OrderId, 0);
                 //status.Step = statusDetails.Item1;
                 status.Latitude = statusDetails.Item2;
                 status.Longitude = statusDetails.Item3;
 
             }catch
             {
-                //TODO: erreur ? Status ?
-            }
-            
-
-            return status;
+                //TO DO: erreur ? Status ?
+            }*/
+            return Dao.FindById(request.OrderId).Status;
         }
     }
 }
