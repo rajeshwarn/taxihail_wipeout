@@ -189,19 +189,20 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public bool ResetPassword(ResetPasswordData data)
         {
             bool isSuccess = false;
-            //UseService(service =>
-            //{
-            //    var sessionId = service.Authenticate("iphone", "test", 1);
-            //    var result = service.ResetPassword(sessionId, data.Email);
-            //    if (result.Error == IBS.ErrorCode.NoError)
-            //    {
-            //        isSuccess = true;
-            //    }
-            //    else
-            //    {
-            //        Logger.LogMessage("ResetPassword : Error : " + result.Error.ToString() + " - " + result.ErrorMessage.ToSafeString());
-            //    }
-            //});
+
+            try
+            {
+                var service = TinyIoCContainer.Current.Resolve<AccountServiceClient>("NotAuthenticated");
+                service.ResetPassword(data.Email);
+                isSuccess = true;
+            }
+            catch( Exception ex )
+            {
+
+                TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Error resetting the password");
+                TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex);
+                
+            }
 
             return isSuccess;
         }
