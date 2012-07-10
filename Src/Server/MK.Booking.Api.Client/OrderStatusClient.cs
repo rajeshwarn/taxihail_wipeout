@@ -1,4 +1,6 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
+using ServiceStack.Common;
 using apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Booking.Api.Client
@@ -10,10 +12,10 @@ namespace apcurium.MK.Booking.Api.Client
         {
         }
 
-        public OrderStatus GetStatus(int orderId)
+        public string GetStatus(Guid orderId)
         {
-            var result = Client.Get<OrderStatus>("/orderstatus/" + orderId.ToString(CultureInfo.InvariantCulture));
-            return result;
+            var result = Client.Get<string>("/orderstatus/" + orderId.ToString());
+            return result;   
         }
          
     }

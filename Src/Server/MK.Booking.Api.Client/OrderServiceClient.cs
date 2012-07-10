@@ -26,5 +26,19 @@ namespace apcurium.MK.Booking.Api.Client
             var result = Client.Post<string>(req, order);
             return result;
         }
+
+        public IList<Order> GetOrdersByAccount(AccountOrderListRequest order)
+        {
+            var req = string.Format("/account/{0}/orders", order.AccountId);
+            var result = Client.Get<IList<Order>>(req);
+            return result;
+        }
+
+        public Order GetOrder(OrderRequest order)
+        {
+            var req = string.Format("/account/{0}/orders/{1}", order.AccountId, order.OrderId);
+            var result = Client.Get<Order>(req);
+            return result;
+        }
     }
 }
