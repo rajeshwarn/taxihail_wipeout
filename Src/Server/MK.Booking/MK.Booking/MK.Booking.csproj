@@ -76,6 +76,8 @@
     <Compile Include="ReadModel\Query\AddressDao.cs" />
     <Compile Include="ReadModel\Query\IAccountDao.cs" />
     <Compile Include="ReadModel\Query\IAddressDao.cs" />
+    <Compile Include="ReadModel\Query\IOrderDao.cs" />
+    <Compile Include="ReadModel\Query\OrderDao.cs" />
     <Compile Include="Security\IPasswordService.cs" />
     <Compile Include="Security\PasswordService.cs" />
   </ItemGroup>
