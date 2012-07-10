@@ -6,11 +6,11 @@ using apcurium.MK.Booking.Database;
 
 namespace apcurium.MK.Booking.ReadModel.Query
 {
-    public class AddressDao : IAddressDao
+    public class FavoriteAddressDao : IFavoriteAddressDao
     {
         private readonly Func<BookingDbContext> _contextFactory;
 
-        public AddressDao(Func<BookingDbContext> contextFactory)
+        public FavoriteAddressDao(Func<BookingDbContext> contextFactory)
         {            
             _contextFactory = contextFactory;
         }

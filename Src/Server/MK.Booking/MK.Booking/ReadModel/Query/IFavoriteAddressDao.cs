@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.ReadModel.Query
 {
-    public interface IAddressDao
+    public interface IFavoriteAddressDao
     {
         IList<FavoriteAddress> GetAll();
         FavoriteAddress FindById(Guid id);

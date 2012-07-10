@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountFixture.cs" />
+    <Compile Include="AddressHistoryFixture.cs" />
     <Compile Include="BaseTest.cs" />
     <Compile Include="DirectionsFixture.cs" />
     <Compile Include="FavoriteAddressFixture.cs" />

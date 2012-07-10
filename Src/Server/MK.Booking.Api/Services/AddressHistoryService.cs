@@ -2,25 +2,25 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Infrastructure.Messaging;
+using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using ServiceStack.Common.Web;
 using apcurium.MK.Booking.ReadModel.Query;
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class FavoriteAddressesService : RestServiceBase<FavoriteAddresses> 
+    public class AddressHistoryService : RestServiceBase<AddressHistoryRequest>
     {
+        private readonly IHistoricAddressDao _dao;
+        private readonly ICommandBus _commandBus;
 
-        public FavoriteAddressesService(IFavoriteAddressDao dao)
+        public AddressHistoryService(IHistoricAddressDao dao)
         {
-            Dao = dao;
+            _dao = dao;
         }
 
-        protected IFavoriteAddressDao Dao { get; set; }
-
-        public override object OnGet(FavoriteAddresses request)
+        public override object OnGet(AddressHistoryRequest request)
         {
             if (!request.AccountId.Equals(new Guid(this.GetSession().UserAuthId)))
             {
@@ -28,7 +28,8 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             var session = this.GetSession();
-            return Dao.FindByAccountId(new Guid(session.UserAuthId));
+            return _dao.FindByAccountId(new Guid(session.UserAuthId));
         }
+
     }
 }
