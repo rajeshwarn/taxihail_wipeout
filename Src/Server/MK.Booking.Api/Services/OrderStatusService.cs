@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.Api.Services
                 var statusDetails = _bookingWebServiceClient.GetOrderStatus(request.OrderId, 0);
                 //status.Step = statusDetails.Item1;
                 status.Latitude = statusDetails.Item2;
-                status.Longititude = statusDetails.Item3;
+                status.Longitude = statusDetails.Item3;
 
             }catch
             {

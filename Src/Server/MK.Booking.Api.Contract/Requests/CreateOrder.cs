@@ -3,12 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ServiceStack.ServiceHost;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [RestService("/account/{AccountId}/orders", "POST")] 
     public class CreateOrder
     {
+
+        public CreateOrder()
+        {
+            Status = OrderStatus.Created;
+        }
+
         public Guid Id { get; set; }
 
         public Guid AccountId { get; set; }
@@ -29,7 +36,8 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 
         public double? DropOffLongitude { get; set; }
 
-        public double? DropOffLatitude { get; set; }        
-        
+        public double? DropOffLatitude { get; set; }
+
+        public OrderStatus Status { get; set; }
     }
 }

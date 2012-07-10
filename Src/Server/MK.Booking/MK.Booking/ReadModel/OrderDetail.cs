@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.ReadModel
 {
@@ -39,5 +40,7 @@ namespace apcurium.MK.Booking.ReadModel
         public double? DropOffLatitude { get; set; }
 
         public BookingSettingsDetails Settings { get; set; }
+
+        public string Status { get; set; }
     }
 }

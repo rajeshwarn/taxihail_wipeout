@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using Infrastructure.Messaging.Handling;
@@ -36,7 +37,8 @@ namespace apcurium.MK.Booking.EventHandlers
                     RequestedDateTime = @event.RequestedDate,
                     DropOffAddress = @event.DropOffAddress,
                     DropOffLatitude = @event.DropOffLatitude,
-                    DropOffLongitude = @event.DropOffLongitude
+                    DropOffLongitude = @event.DropOffLongitude,
+                    Status = @event.Status,
                 });
             }
         }
