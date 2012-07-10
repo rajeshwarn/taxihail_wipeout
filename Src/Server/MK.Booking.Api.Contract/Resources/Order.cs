@@ -26,5 +26,7 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
         public string Apartment { get; set; }
 
         public string RingCode { get; set; }
+
+        public MK.Common.Enumeration.OrderStatus Status { get; set; }
     }
 }

@@ -7,6 +7,7 @@ using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -16,18 +17,15 @@ namespace apcurium.MK.Booking.Api.Services
         public CancelOrderService(ICommandBus commandBus)
         {
             _commandBus = commandBus;            
-            AutoMapper.Mapper.CreateMap<CancelOrder, Commands.CancelOrder>();
-
         }
 
         public override object OnPost(CancelOrder request)
         {
             var command = new Commands.CancelOrder();
-            
-            AutoMapper.Mapper.Map( request,  command  );
-                        
+             
             command.Id = Guid.NewGuid();
-                        
+            command.OrderId = request.OrderId;
+            command.Status = OrderStatus.Cancelled.ToString();
             _commandBus.Send(command);
 
             return new HttpResult(HttpStatusCode.OK);

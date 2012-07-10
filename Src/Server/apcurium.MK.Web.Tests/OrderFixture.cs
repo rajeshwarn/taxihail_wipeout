@@ -5,6 +5,7 @@ using System.Text;
 using NUnit.Framework;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.ReadModel.Query;
 
 namespace apcurium.MK.Web.Tests
 {
@@ -15,18 +16,7 @@ namespace apcurium.MK.Web.Tests
         public new void Setup()
         {
             base.Setup();
-        }
-
-        [TestFixtureTearDown]
-        public new void TearDown()
-        {
-            base.TearDown();
-        }
-
-        [SetUp]
-        public void SetupTest()
-        {
-             var sut = new OrderServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+            var sut = new OrderServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
             var order = new CreateOrder
             {
                 Id = _orderId,
@@ -44,6 +34,18 @@ namespace apcurium.MK.Web.Tests
             sut.CreateOrder(order);
         }
 
+        [TestFixtureTearDown]
+        public new void TearDown()
+        {
+            base.TearDown();
+        }
+
+        [SetUp]
+        public void SetupTest()
+        {
+         
+        }
+
         [Test]
         public void CreateOrder()
         {
@@ -52,7 +54,7 @@ namespace apcurium.MK.Web.Tests
             var requestDate = DateTime.Now.AddHours(1);
             var order = new CreateOrder
                             {
-                                Id = _orderId,
+                                Id = Guid.NewGuid(),
                                 AccountId = TestAccount.Id,                                
                                 PickupApartment = "3939",
                                 PickupAddress = "1234 rue Saint-Hubert",
@@ -80,6 +82,7 @@ namespace apcurium.MK.Web.Tests
             };
 
             var results = sut.Cancel(order);
+
             Assert.AreEqual("OK", results);
         }
     }

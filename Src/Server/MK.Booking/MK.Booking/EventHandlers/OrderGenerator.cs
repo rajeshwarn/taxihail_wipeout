@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.EventHandlers
 {
@@ -36,7 +38,8 @@ namespace apcurium.MK.Booking.EventHandlers
                     RequestedDateTime = @event.RequestedDate,
                     DropOffAddress = @event.DropOffAddress,
                     DropOffLatitude = @event.DropOffLatitude,
-                    DropOffLongitude = @event.DropOffLongitude
+                    DropOffLongitude = @event.DropOffLongitude,
+                    Status = @event.Status,
                 });
             }
         }
@@ -46,9 +49,7 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var order = context.Find<OrderDetail>(@event.SourceId);
-
-                //TODO update order statuts here
-
+                order.Status = OrderStatus.Cancelled.ToString();
                 context.Save(order);
             }
         }
