@@ -26,15 +26,17 @@ namespace apcurium.MK.Booking.EventHandlers
                 context.Save(new OrderDetail
                 {
                     AccountId = @event.AccountId,
-                    Apartment = @event.Apartment,
-                    FriendlyName = @event.FriendlyName,
-                    FullAddress = @event.FullAddress,
-                    Latitude = @event.Latitude,
+                    PickupApartment = @event.PickupApartment,
+                    PickupAddress = @event.PickupAddress,
+                    PickupLatitude = @event.PickupLatitude,
                     Id = @event.SourceId,
-                    Longitude = @event.Longitude,
+                    PickupLongitude = @event.PickupLongitude,
                     PickupDate = @event.PickupDate,
-                    RequestedDateTime = @event.RequestedDateTime,
-                    RingCode = @event.RingCode
+                    PickupRingCode = @event.PickupRingCode,
+                    RequestedDateTime = @event.RequestedDate,
+                    DropOffAddress = @event.DropOffAddress,
+                    DropOffLatitude = @event.DropOffLatitude,
+                    DropOffLongitude = @event.DropOffLongitude
                 });
             }
         }

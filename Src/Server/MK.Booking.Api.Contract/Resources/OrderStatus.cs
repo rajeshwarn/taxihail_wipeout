@@ -2,7 +2,7 @@
 {
     public class OrderStatus
     {
-        public string Step { get; set; }
+        public OrderStatusStep Step { get; set; }
         public double? Latitude { get; set; }
         public double? Longititude { get; set; }
     }

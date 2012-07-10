@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using ServiceStack.Common.Web;
 
 namespace apcurium.MK.Booking.Api.Client
 {
@@ -25,10 +26,10 @@ namespace apcurium.MK.Booking.Api.Client
             return result;
         }
 
-        public Guid RegisterAccount(RegisterAccount account)
+        public void RegisterAccount(RegisterAccount account)
         {
-            var result = Client.Post<Account>("/account/register",account);
-            return result.Id;
+            var result = Client.Post<Account>("/account/register", account);
+                        
         }
 
         public void UpdateBookingSettings(Guid accountId, BookingSettingsRequest settings)

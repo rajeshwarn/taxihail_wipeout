@@ -86,10 +86,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MkBookingProcessor.cs" />
+    <Compile Include="MKBookingProcessor.cs" />
     <!-- Conditionally include the partial class that implements the two aspects of the processor. -->
-    <Compile Include="MoveOnProcessor.Local.cs" Condition=" '$(Configuration)|$(Platform)' == 'DebugLocal|AnyCPU' ">
-      <DependentUpon>MkBookingProcessor.cs</DependentUpon>
+    <Compile Include="MKBookingProcessor.Local.cs" Condition=" '$(Configuration)|$(Platform)' == 'DebugLocal|AnyCPU' ">
+      <DependentUpon>MKBookingProcessor.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

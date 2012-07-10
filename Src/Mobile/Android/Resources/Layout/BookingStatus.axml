@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center_horizontal"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:src="@drawable/background"
+            android:scaleType="fitXY"
+            android:adjustViewBounds="true"
+            android:layout_below="@+id/HeaderImage" />
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingTop="5dip"
+            android:layout_below="@+id/HeaderImage">
+            <LinearLayout
+                android:id="@+id/statusInfo"
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dip">
+                <TextView
+                    android:id="@+id/statusInfoText"
+                    style="@style/ListItemValue"
+                    android:text="@string/StatusDescription"
+                    android:layout_width="match_parent"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <RelativeLayout
+                android:id="@+id/statusMapSection"
+                android:layout_below="@+id/statusInfo"
+                android:layout_width="fill_parent"
+                android:layout_height="0px"
+                android:layout_weight="1">
+                <taximobile.controls.TouchMap
+                    android:id="@+id/mapStatus"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:apiKey="0XEY3WqKVmJNPdO_6HbYCNKId-81eCqYBVEb-Jw"
+                    android:enabled="true"
+                    android:clickable="true" />
+            <!--Alex : Do not remove the keys : 0QOw13cruqZC2_2xDstUPim0fpYArvdS1NMmAeA-->
+            <!--android:apiKey="026fKWEpc0ZJZGhoMWTXrVdsYAyHYVpY2Zl4OgA"-->
+            <!--DanB key: 0wGWriS7m-lEKTx-cbJoaGUAFAagBwqVyjKOHMA -->
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_below="@+id/statusMapSection"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:weightSum="1.0">
+                    <TextView
+                        style="@style/ListItemValue"
+                        android:id="@+id/CallStatusText"
+                        android:text="@string/StatusStatusLabel"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:gravity="center_horizontal" />
+                    <Button
+                        android:id="@+id/CallBookCancelBtn"
+                        style="@style/ButtonText"
+                        android:background="@drawable/black_button"
+                        android:layout_width="fill_parent"
+                        android:layout_height="35dip"
+                        android:layout_weight="0.5"
+                        android:text="@string/StatusActionButton" />
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/HeaderImage"
+            android:layout_marginBottom="-8dip"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/header"
+                android:scaleType="centerInside"
+                android:adjustViewBounds="true" />
+        </RelativeLayout>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background"
+        android:gravity="bottom">
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/footer"
+            android:scaleType="fitXY"
+            android:layout_alignParentBottom="true" />
+    </RelativeLayout>
+</LinearLayout>

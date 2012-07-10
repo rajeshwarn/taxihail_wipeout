@@ -30,19 +30,32 @@ namespace apcurium.MK.Booking.Test.OrderFixture
         {
             var pickupDate = DateTime.Now;
             var requestDate = DateTime.Now.AddHours(1);
-            this.sut.When(new CreateOrder { AccountId = _accountId, PickupDate = pickupDate, RequestedDateTime = requestDate, FriendlyName = "Chez François", Apartment = "3939", FullAddress = "1234 rue Saint-Hubert", RingCode = "3131", Latitude = 45.515065, Longitude = -73.558064 });
+            this.sut.When(new CreateOrder
+            {
+                AccountId = _accountId,
+                PickupDate = pickupDate,
+                PickupApartment = "3939",
+                PickupAddress = "1234 rue Saint-Hubert",
+                PickupRingCode = "3131",
+                PickupLatitude = 45.515065,
+                PickupLongitude = -73.558064,
+                DropOffAddress = "Velvet auberge st gabriel",
+                DropOffLatitude = 45.50643,
+                DropOffLongitude = -73.554052,
+            });
 
             Assert.AreEqual(1, sut.Events.Count);
             var evt = (OrderCreated)sut.Events.Single();
             Assert.AreEqual(_accountId, evt.AccountId);
-            Assert.AreEqual(pickupDate, evt.PickupDate);
-            Assert.AreEqual(requestDate, evt.RequestedDateTime);
-            Assert.AreEqual("Chez François", evt.FriendlyName);
-            Assert.AreEqual("3939", evt.Apartment);
-            Assert.AreEqual("1234 rue Saint-Hubert", evt.FullAddress);
-            Assert.AreEqual("3131", evt.RingCode);
-            Assert.AreEqual(45.515065, evt.Latitude);
-            Assert.AreEqual(-73.558064, evt.Longitude);
+            Assert.AreEqual(pickupDate, evt.PickupDate);                        
+            Assert.AreEqual("3939", evt.PickupApartment);
+            Assert.AreEqual("1234 rue Saint-Hubert", evt.PickupAddress);
+            Assert.AreEqual("3131", evt.PickupRingCode);
+            Assert.AreEqual(45.515065, evt.PickupLatitude);
+            Assert.AreEqual(-73.558064, evt.PickupLongitude);
+            Assert.AreEqual("Velvet auberge st gabriel", evt.DropOffAddress);
+            Assert.AreEqual(45.50643, evt.DropOffLatitude);
+            Assert.AreEqual(-73.554052, evt.DropOffLongitude);
 
         }
     }

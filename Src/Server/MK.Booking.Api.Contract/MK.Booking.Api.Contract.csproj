@@ -69,6 +69,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Requests\BookingSettingsRequest.cs" />
+    <Compile Include="Requests\CancelOrder.cs" />
     <Compile Include="Requests\CreateOrder.cs" />
     <Compile Include="Requests\DirectionsRequest.cs" />
     <Compile Include="Requests\GeocodingRequest.cs" />
@@ -85,8 +86,10 @@
     <Compile Include="Resources\AddressList.cs" />
     <Compile Include="Resources\BookingSettings.cs" />
     <Compile Include="Resources\DirectionInfo.cs" />
+    <Compile Include="Resources\ErrorCode.cs" />
     <Compile Include="Resources\Order.cs" />
     <Compile Include="Resources\OrderStatus.cs" />
+    <Compile Include="Resources\OrderStatusStep.cs" />
     <Compile Include="Resources\ReferenceData.cs" />
   </ItemGroup>
   <ItemGroup>

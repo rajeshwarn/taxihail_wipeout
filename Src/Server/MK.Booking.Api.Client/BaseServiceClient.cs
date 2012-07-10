@@ -4,8 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Net;
 using ServiceStack.ServiceClient.Web;
+#if !CLIENT
 using ServiceStack.ServiceInterface.Auth;
-
+#else
+using ServiceStack.Common.ServiceClient.Web;
+#endif
 namespace apcurium.MK.Booking.Api.Client
 {
     public class BaseServiceClient
@@ -38,12 +41,13 @@ namespace apcurium.MK.Booking.Api.Client
 
                     if (_isSecured)
                     {
+                        
                         _authToken = _client.Send<AuthResponse>(new Auth
                         {
                             UserName = _credential.Email,
                             Password = _credential.Password,
                             RememberMe = true,
-                            provider = CredentialsAuthProvider.Name
+                            provider = "credentials", // CredentialsAuthProvider.Name not supported on android
                         });
                     }
 

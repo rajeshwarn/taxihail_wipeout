@@ -25,11 +25,11 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 
         public string PickupRingCode { get; set; }
 
-        public string DropoffAddress { get; set; }
+        public string DropOffAddress { get; set; }
 
-        public double? DropoffLongitude { get; set; }
+        public double? DropOffLongitude { get; set; }
 
-        public double? DropoffLatitude { get; set; }        
+        public double? DropOffLatitude { get; set; }        
         
     }
 }

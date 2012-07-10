@@ -1,5 +1,6 @@
 ﻿using ServiceStack.ServiceHost;
 
+
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [RestService("/account/resetpassword/{EmailAddress}", "POST")]

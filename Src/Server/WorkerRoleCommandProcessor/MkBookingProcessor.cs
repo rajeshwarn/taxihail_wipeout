@@ -37,14 +37,15 @@ namespace WorkerRoleCommandProcessor
     using apcurium.MK.Booking.Security;
     using apcurium.MK.Common.Configuration.Impl;
     using apcurium.MK.Booking.BackOffice.CommandHandlers;
+    using apcurium.MK.Booking.Email;
 
-    public sealed partial class MkBookingProcessor : IDisposable
+    public sealed partial class MKBookingProcessor : IDisposable
     {
         private IUnityContainer container;
         private CancellationTokenSource cancellationTokenSource;
         private List<IProcessor> processors;
 
-        public MkBookingProcessor()
+        public MKBookingProcessor()
         {
             OnCreating();
 
@@ -106,6 +107,9 @@ namespace WorkerRoleCommandProcessor
             container.RegisterType<ICommandHandler, FavoriteAddressCommandHandler>("FavoriteAddressCommandHandler");
             container.RegisterType<ICommandHandler, EmailCommandHandler>("EmailCommandHandler");
 
+            container.RegisterInstance<IPasswordService>(new PasswordService());
+            container.RegisterInstance<ITemplateService>(new TemplateService());
+            container.RegisterInstance<IEmailSender>(new EmailSender(container.Resolve<IConfigurationManager>()));
             OnCreateContainer(container);
 
             return container;

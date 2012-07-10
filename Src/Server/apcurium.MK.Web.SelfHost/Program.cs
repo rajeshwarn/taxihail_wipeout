@@ -46,7 +46,7 @@ namespace apcurium.MK.Web.SelfHost
             var listeningOn = args.Length == 0 ? "http://*:6901/" : args[0];
 
             Database.DefaultConnectionFactory = new ServiceConfigurationSettingConnectionFactory(Database.DefaultConnectionFactory);
-            
+
             var appHost = new AppHost();
             appHost.Init();
             appHost.Start(listeningOn);
@@ -55,7 +55,7 @@ namespace apcurium.MK.Web.SelfHost
             Console.ReadKey();
         }
 
-        
+
     }
 
     public class AppHost : AppHostHttpListenerBase
@@ -131,5 +131,5 @@ namespace apcurium.MK.Web.SelfHost
         }
     }
 
-    
+
 }

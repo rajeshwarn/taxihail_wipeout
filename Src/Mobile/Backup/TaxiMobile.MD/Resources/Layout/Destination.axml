@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <RelativeLayout
+           android:layout_width="fill_parent"
+           android:layout_height="fill_parent">
+        <RelativeLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:id="@+id/fieldBackground">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:background="#FF0000"
+                android:scaleType="fitXY"
+                android:adjustViewBounds="true"
+                android:src="@drawable/topFieldBackgroundSm"/>
+
+            <RelativeLayout android:layout_marginTop="35dip"
+        android:id="@+id/destAddress" android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+                <Button android:id="@+id/destAddressButton"
+                    android:layout_alignParentRight="true"
+                    android:drawableLeft="@drawable/btnPickLocation"
+                      android:background="@drawable/green_button" style="@style/ButtonText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"/>
+
+                <AutoCompleteTextView android:id="@+id/destAddressText"             android:paddingTop="1dp"
+                  android:paddingBottom="2dp"
+                  android:layout_marginTop="3dip"
+                  android:layout_alignParentLeft="true"
+                  android:layout_toLeftOf="@id/destAddressButton"
+                  android:layout_width="fill_parent"
+                  android:hint=""
+                  android:textSize="14dp"
+                  android:inputType="text"
+                  android:layout_height="42dp"
+                  android:maxLines="1" />
+
+            </RelativeLayout>
+
+            <LinearLayout  android:layout_width="fill_parent"  android:id="@+id/rideInfo"  android:layout_below="@+id/destAddress" android:layout_marginTop="-3dip" android:layout_marginLeft="2dp" android:layout_marginRight="2dp"
+                  android:layout_height="wrap_content"    android:orientation="horizontal" android:gravity="center_horizontal" >
+
+                <TextView android:layout_weight="1" android:text="@string/EstimateDistance"
+                          android:id="@+id/rideDistance" android:layout_width="wrap_content" android:textColor="#000000" android:textStyle="bold" android:layout_height="wrap_content"/>
+                <TextView android:layout_weight="1" android:text="@string/EstimatePrice" android:textColor="#000000"  android:textStyle="bold"
+                          android:id="@+id/rideCost" android:layout_width="wrap_content" android:gravity="right" android:layout_height="wrap_content"/>
+            </LinearLayout>
+        </RelativeLayout>
+
+
+        <RelativeLayout    android:layout_width="fill_parent"  android:layout_below="@+id/fieldBackground"
+     android:layout_height="wrap_content" >
+          <taximobile.controls.TouchMap
+              android:id="@+id/mapDestination"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:apiKey="0XEY3WqKVmJNPdO_6HbYCNKId-81eCqYBVEb-Jw"
+                android:enabled="true"
+                android:clickable="true"
+        />
+            <!--Alex : Do not remove the keys : 0QOw13cruqZC2_2xDstUPim0fpYArvdS1NMmAeA-->
+            <!--android:apiKey="026fKWEpc0ZJZGhoMWTXrVdsYAyHYVpY2Zl4OgA"-->
+			<!--DanB key: 0wGWriS7m-lEKTx-cbJoaGUAFAagBwqVyjKOHMA -->
+			<ImageView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_alignWithParentIfMissing="true"
+                  android:layout_centerInParent="true"
+                  android:src="@drawable/location"
+            />
+        </RelativeLayout>
+    </RelativeLayout>
+</LinearLayout>

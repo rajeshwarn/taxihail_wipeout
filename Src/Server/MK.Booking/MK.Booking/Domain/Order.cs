@@ -25,12 +25,13 @@ namespace apcurium.MK.Booking.Domain
             this.LoadFrom(history);
         }
 
-        public Order(Guid id, Guid accountId, DateTime pickupDate, DateTime requestedDateTime, string friendlyName
-            , string fullAddress, double longitude, double latitude, string apartment, string ringCode)
+        public Order(Guid id, Guid accountId, DateTime pickupDate, string pickupAddress, double pickupLongitude,
+                                                double pickupLatitude, string pickupAppartment, string pickupRingCode, string dropOffAddress, double? dropOffLongitude, double? dropOffLatitude)
             : this(id)
         {
-            if (Params.Get(friendlyName, fullAddress, longitude.ToString(CultureInfo.InvariantCulture), latitude.ToString(CultureInfo.InvariantCulture), apartment, ringCode).Any(p => p.IsNullOrEmpty())
-                || pickupDate == null || requestedDateTime == null || accountId == null)
+            if (Params.Get(pickupAddress, pickupAppartment, pickupLongitude.ToString(CultureInfo.InvariantCulture), pickupLatitude.ToString(CultureInfo.InvariantCulture)
+                , pickupRingCode, dropOffAddress).Any(p => p.IsNullOrEmpty())
+                || pickupDate == null || accountId == null)
             {
                 throw new InvalidOperationException("Missing required fields");
             }
@@ -38,13 +39,15 @@ namespace apcurium.MK.Booking.Domain
             {
                 AccountId = accountId,
                 PickupDate = pickupDate,
-                RequestedDateTime = requestedDateTime,
-                FriendlyName = friendlyName,
-                FullAddress = fullAddress,
-                Longitude = longitude,
-                Latitude = latitude,
-                Apartment = apartment,
-                RingCode = ringCode
+                PickupAddress = pickupAddress,
+                PickupLongitude = pickupLongitude,
+                PickupLatitude = pickupLatitude,
+                PickupApartment = pickupAppartment,
+                PickupRingCode = pickupRingCode,
+                DropOffAddress = dropOffAddress,
+                DropOffLongitude = dropOffLongitude,
+                DropOffLatitude = dropOffLatitude,
+                RequestedDate = DateTime.Now
             });
         }
 

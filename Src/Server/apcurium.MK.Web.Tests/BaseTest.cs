@@ -9,7 +9,9 @@ namespace apcurium.MK.Web.Tests
     public class BaseTest
     {
         static readonly AppHost _appHost;
-        protected string BaseUrl { get { return "http://localhost:6901/"; }}
+
+        //staging url : http://project.apcurium.com/apcurium.MK.Web.csproj_deploy/
+        protected string BaseUrl { get { return "http://localhost:6901/"; } }
 
         protected Account TestAccount { get; set; }
         protected string TestAccountPassword { get { return "password1"; } }

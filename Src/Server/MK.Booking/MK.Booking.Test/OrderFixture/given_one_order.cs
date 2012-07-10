@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             this.sut = new EventSourcingTestHelper<Order>();
             this.sut.Setup(new OrderCommandHandler(this.sut.Repository));
             this.sut.Given(new AccountRegistered { SourceId = _accountId, FirstName = "Bob", LastName = "Smith", Password = null, Email = "bob.smith@apcurium.com" });
-            this.sut.Given(new OrderCreated { SourceId = _orderId, AccountId = Guid.NewGuid(), PickupDate = DateTime.Now, RequestedDateTime = DateTime.Now.AddHours(1), FriendlyName = "Chez François", Apartment = "3939", FullAddress = "1234 rue Saint-Hubert", RingCode = "3131", Latitude = 45.515065, Longitude = -73.558064 });
+            this.sut.Given(new OrderCreated { SourceId = _orderId, AccountId = Guid.NewGuid(), PickupDate = DateTime.Now, PickupApartment = "3939", PickupAddress = "1234 rue Saint-Hubert", PickupRingCode = "3131", PickupLatitude = 45.515065, PickupLongitude = -73.558064 });
         }
 
         [Test]
