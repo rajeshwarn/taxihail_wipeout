@@ -79,6 +79,7 @@ namespace WorkerRoleCommandProcessor
         {
             eventProcessor.Register(container.Resolve<AccountDetailsGenerator>());
             eventProcessor.Register(container.Resolve<FavoriteAddressListGenerator>());
+            eventProcessor.Register(container.Resolve<AddressHistoryGenerator>());
             eventProcessor.Register(container.Resolve<OrderGenerator>());
             eventProcessor.Register(container.Resolve<SqlMessageLogHandler>());
         }

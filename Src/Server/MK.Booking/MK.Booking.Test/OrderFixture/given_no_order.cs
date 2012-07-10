@@ -45,18 +45,19 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             });
 
             Assert.AreEqual(1, sut.Events.Count);
-            var evt = (OrderCreated)sut.Events.Single();
-            Assert.AreEqual(_accountId, evt.AccountId);
-            Assert.AreEqual(pickupDate, evt.PickupDate);                        
-            Assert.AreEqual("3939", evt.PickupApartment);
-            Assert.AreEqual("1234 rue Saint-Hubert", evt.PickupAddress);
-            Assert.AreEqual("3131", evt.PickupRingCode);
-            Assert.AreEqual(45.515065, evt.PickupLatitude);
-            Assert.AreEqual(-73.558064, evt.PickupLongitude);
-            Assert.AreEqual("Velvet auberge st gabriel", evt.DropOffAddress);
-            Assert.AreEqual(45.50643, evt.DropOffLatitude);
-            Assert.AreEqual(-73.554052, evt.DropOffLongitude);
+            var orderCreated = (OrderCreated) sut.Events.First();
+            Assert.AreEqual(_accountId, orderCreated.AccountId);
+            Assert.AreEqual(pickupDate, orderCreated.PickupDate);                        
+            Assert.AreEqual("3939", orderCreated.PickupApartment);
+            Assert.AreEqual("1234 rue Saint-Hubert", orderCreated.PickupAddress);
+            Assert.AreEqual("3131", orderCreated.PickupRingCode);
+            Assert.AreEqual(45.515065, orderCreated.PickupLatitude);
+            Assert.AreEqual(-73.558064, orderCreated.PickupLongitude);
+            Assert.AreEqual("Velvet auberge st gabriel", orderCreated.DropOffAddress);
+            Assert.AreEqual(45.50643, orderCreated.DropOffLatitude);
+            Assert.AreEqual(-73.554052, orderCreated.DropOffLongitude);
 
         }
+
     }
 }

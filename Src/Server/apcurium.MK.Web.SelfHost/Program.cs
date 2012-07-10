@@ -95,7 +95,11 @@ namespace apcurium.MK.Web.SelfHost
             container.RegisterType<ICommandHandler, SqlMessageLogHandler>("SqlMessageLogHandler");
 
 
-            container.RegisterInstance<IEventBus>(new MemoryEventBus(container.Resolve<AccountDetailsGenerator>(), container.Resolve<FavoriteAddressListGenerator>(), container.Resolve<OrderGenerator>(), container.Resolve<SqlMessageLogHandler>()));
+            container.RegisterInstance<IEventBus>(new MemoryEventBus(container.Resolve<AccountDetailsGenerator>(),
+                container.Resolve<FavoriteAddressListGenerator>(),
+                container.Resolve<AddressHistoryGenerator>(),
+                container.Resolve<OrderGenerator>(),
+                container.Resolve<SqlMessageLogHandler>()));
 
             container.RegisterType<EventStoreDbContext>(new TransientLifetimeManager(), new InjectionConstructor("EventStore"));
             container.RegisterType(typeof(IEventSourcedRepository<>), typeof(SqlEventSourcedRepository<>), new ContainerControlledLifetimeManager());

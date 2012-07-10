@@ -64,6 +64,7 @@
     <Compile Include="Email\ITemplateService.cs" />
     <Compile Include="Email\TemplateService.cs" />
     <Compile Include="EventHandlers\AccountDetailsGenerator.cs" />
+    <Compile Include="EventHandlers\AddressHistoryGenerator.cs" />
     <Compile Include="EventHandlers\FavoriteAddressListGenerator.cs" />
     <Compile Include="EventHandlers\OrderGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="ReadModel\AccountDetail.cs" />
     <Compile Include="ReadModel\BookingSetting.cs" />
     <Compile Include="ReadModel\FavoriteAddress.cs" />
+    <Compile Include="ReadModel\HistoricAddress.cs" />
     <Compile Include="ReadModel\OrderDetail.cs" />
     <Compile Include="ReadModel\Query\AccountDao.cs" />
     <Compile Include="ReadModel\Query\AddressDao.cs" />
