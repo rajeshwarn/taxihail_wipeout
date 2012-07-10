@@ -38,14 +38,11 @@ namespace DatabaseInitializer
                 connectionString = args[0];
             }
 
-            // Use ConferenceContext as entry point for dropping and recreating DB
+            // Use BookingDbContext as entry point for dropping and recreating DB
             using (var context = new BookingDbContext(connectionString))
             {
-                context.Database.CreateIfNotExists();
-            }
-
-            using (var context = new ConfigurationDbContext(connectionString))
-            {
+                if (context.Database.Exists()) 
+                    context.Database.Delete();
                 context.Database.CreateIfNotExists();
             }
 
