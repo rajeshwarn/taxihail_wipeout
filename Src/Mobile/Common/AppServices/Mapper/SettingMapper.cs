@@ -39,32 +39,32 @@
 			
 //            toUpdate.DefaultSettings.ChargeType = account.PreferenceChargeTypeId;
 			
-//            var company = ServiceLocator.Current.GetInstance<IAccountService> ().GetCompaniesList ().FirstOrDefault (c => c.Id == account.PreferenceCompanyId);
+//            var company = TinyIoCContainer.Current.Resolve<IAccountService> ().GetCompaniesList ().FirstOrDefault (c => c.Id == account.PreferenceCompanyId);
 			
 //            if (company == null) {
-//                company = ServiceLocator.Current.GetInstance<IAccountService>().GetCompaniesList().First();
+//                company = TinyIoCContainer.Current.Resolve<IAccountService>().GetCompaniesList().First();
 //            }
 			
 //            toUpdate.DefaultSettings.Company = company.Id;
 //            toUpdate.DefaultSettings.CompanyName = company.Display;
 			
-//            var vehicule = ServiceLocator.Current.GetInstance<IAccountService> ().GetVehiclesList ().FirstOrDefault (c => c.Id == account.PreferenceVehicleTypeId);
+//            var vehicule = TinyIoCContainer.Current.Resolve<IAccountService> ().GetVehiclesList ().FirstOrDefault (c => c.Id == account.PreferenceVehicleTypeId);
 			
 //            if (vehicule == null ){
-//                vehicule = ServiceLocator.Current.GetInstance<IAccountService>().GetVehiclesList().First();
+//                vehicule = TinyIoCContainer.Current.Resolve<IAccountService>().GetVehiclesList().First();
 //            }
 			
 //            toUpdate.DefaultSettings.VehicleType = vehicule.Id;
 //            toUpdate.DefaultSettings.VehicleTypeName = vehicule.Display;
 			
 			
-//            var pList = ServiceLocator.Current.GetInstance<IAccountService> ().GetPaymentsList ();
+//            var pList = TinyIoCContainer.Current.Resolve<IAccountService> ().GetPaymentsList ();
 			
 //            var payement = pList.FirstOrDefault (c => c.Id == account.PreferenceChargeTypeId);
 			
 		
 //            if (payement == null ){
-//                payement = ServiceLocator.Current.GetInstance<IAccountService>().GetPaymentsList().First();
+//                payement = TinyIoCContainer.Current.Resolve<IAccountService>().GetPaymentsList().First();
 //            }
 			
 //            toUpdate.DefaultSettings.ChargeType = payement.Id;

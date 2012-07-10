@@ -10,7 +10,8 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using apcurium.Framework.Extensions;
-using Microsoft.Practices.ServiceLocation;
+using TinyIoC;
+
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
@@ -35,9 +36,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
       {
           FindViewById<TextView>(Resource.Id.ConfirmationTxt).Text = _data.Id.ToString();
           FindViewById<TextView>(Resource.Id.RequestedTxt).Text = FormatDateTime(_data.RequestedDateTime, _data.RequestedDateTime);
-          FindViewById<TextView>(Resource.Id.OriginTxt).Text = _data.PickupLocation.Address;
+          FindViewById<TextView>(Resource.Id.OriginTxt).Text = _data.PickupLocation.FullAddress;
           FindViewById<TextView>(Resource.Id.AptRingTxt).Text = FormatAptRingCode(_data.PickupLocation.Apartment, _data.PickupLocation.RingCode);
-          FindViewById<TextView>(Resource.Id.DestinationTxt).Text = _data.DestinationLocation.Address.HasValue() ? _data.DestinationLocation.Address : Resources.GetString(Resource.String.ConfirmDestinationNotSpecified);
+          FindViewById<TextView>(Resource.Id.DestinationTxt).Text = _data.DestinationLocation.FullAddress.HasValue() ? _data.DestinationLocation.FullAddress : Resources.GetString(Resource.String.ConfirmDestinationNotSpecified);
           FindViewById<TextView>(Resource.Id.PickUpDateTxt).Text = FormatDateTime(_data.PickupDate, _data.PickupDate);
           FindViewById<TextView>(Resource.Id.StatusTxt).Text = Resources.GetString(Resource.String.LoadingMessage);
           RefreshStatus();
@@ -79,7 +80,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
             {
                
 
-                    var isSuccess = ServiceLocator.Current.GetInstance<IBookingService>().CancelOrder(AppContext.Current.LoggedUser, _data.Id);
+                    var isSuccess = TinyIoCContainer.Current.Resolve<IBookingService>().CancelOrder(AppContext.Current.LoggedUser, _data.Id);
                     if (isSuccess)
                     {
                         RefreshStatus();
@@ -101,9 +102,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
           {
 
 
-              var status = ServiceLocator.Current.GetInstance<IBookingService>().GetOrderStatus(AppContext.Current.LoggedUser, _data.Id);
+              var status = TinyIoCContainer.Current.Resolve<IBookingService>().GetOrderStatus(AppContext.Current.LoggedUser, _data.Id);
 
-              bool isCompleted = ServiceLocator.Current.GetInstance<IBookingService>().IsCompleted(status.Id);
+              bool isCompleted = TinyIoCContainer.Current.Resolve<IBookingService>().IsCompleted(status.Id);
 
               RunOnUiThread(() => FindViewById<TextView>(Resource.Id.StatusTxt).Text = status.Status);
               var btnCancel = FindViewById<Button>(Resource.Id.CancelTripBtn);
@@ -116,7 +117,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
 
       private void SetHistoryData(int id)
       {
-          _data=AppContext.Current.LoggedUser.BookingHistory.Single(o => o.Id == id && !o.Hide);
+          //TODO:Fix this
+          //_data=AppContext.Current.LoggedUser.BookingHistory.Single(o => o.Id == id && !o.Hide);
       }
 
       private string FormatDateTime(DateTime? date, DateTime? time)

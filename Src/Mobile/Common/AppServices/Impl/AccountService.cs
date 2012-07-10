@@ -1,13 +1,13 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Data;
-using apcurium.MK.Common.Entity;
-using Microsoft.Practices.ServiceLocation;
-using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Common.Entity;
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -39,7 +39,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 }
                 catch (Exception ex)
                 {
-                    ServiceLocator.Current.GetInstance<ILogger>().LogError(ex);
+                    
+                    TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex);
 
                 }
             }
@@ -51,7 +52,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         protected ILogger Logger
         {
-            get { return ServiceLocator.Current.GetInstance<ILogger>(); }
+            get { return TinyIoCContainer.Current.Resolve<ILogger>(); }
         }
 
         public void ResendConfirmationEmail(string email)
@@ -73,84 +74,115 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return new LocationData[0];
         }
 
-        public AccountData GetAccount(string email, string password, out string error)
+
+        public Address FindInAccountAddresses(double latitude, double longitude)
+        {
+            Address found = null;
+
+            var service = TinyIoCContainer.Current.Resolve<AccountServiceClient>();
+            var favorites = service.GetFavoriteAddresses(CurrentAccount.Id);
+            
+            if (favorites.Count > 0)
+            {
+                found = favorites.FirstOrDefault( a=> (Math.Abs(a.Longitude - longitude) <= 0.002) && (Math.Abs(a.Latitude - latitude) <= 0.002));                                
+            }
+
+            //if (found == null)
+            //{
+            //    var historics = service.GetHistorucAddresses();
+
+            //    if (historics.Count > 0)
+            //    {
+            //        found = historics.FirstOrDefault(a => (Math.Abs(a.Longitude - longitude) <= 0.001) && (Math.Abs(a.Latitude - latitude) <= 0.001));
+            //    }
+            //}
+
+            return found;
+
+            //    var closeLocation =
+            //        AppContext.Current.LoggedUser.FavoriteLocations.Where(
+            //            d => d.Latitude.HasValue && d.Longitude.HasValue).FirstOrDefault(
+            //                d =>
+            //                (Math.Abs(d.Longitude.Value - addresses[0].Longitude) <= 0.002) &&
+            //                (Math.Abs(d.Latitude.Value - addresses[0].Latitude) <= 0.002));
+            //    if (closeLocation == null)
+            //    {
+            //        //closeLocation =
+            //        //    AppContext.Current.LoggedUser.BookingHistory.Where(
+            //        //        b =>
+            //        //        !b.Hide && (b.PickupLocation != null) && b.PickupLocation.Latitude.HasValue &&
+            //        //        b.PickupLocation.Longitude.HasValue).Select(b => b.PickupLocation).FirstOrDefault(
+            //        //            d =>
+            //        //            (Math.Abs(d.Longitude.Value - locations[0].Longitude.Value) <= 0.001) &&
+            //        //            (Math.Abs(d.Latitude.Value - locations[0].Latitude.Value) <= 0.001));
+            //    }
+
+            //    if (closeLocation != null )
+            //    {
+            //        SetLocationData(closeLocation, changeZoom);
+
+            //    }
+            //    else if (locations.Any())
+            //    {
+            //        SetLocationData(addresses.First(), changeZoom);
+
+            //    }
+            //}
+            
+
+        }
+
+        private Account CurrentAccount
+        {
+            get
+            {
+                return TinyIoCContainer.Current.Resolve<IAppContext>().LoggedUser;
+            }
+        }
+
+        public Account GetAccount(string email, string password, out string error)
         {
             error = "";
             string resultError = "";
+            bool isSuccess = false;
+            Account data = null;
 
-            EnsureListLoaded();
+            try
+            {
 
-            AccountData data = null;
-            //UseService(service =>
-            //{
+                var context = TinyIoCContainer.Current.Resolve<IAppContext>();
+                var parameters = new NamedParameterOverloads(  );
+                parameters.Add( "credential", new AuthInfo(email, password) ) ;
 
-            //    try
-            //    {
-            //        var sessionId = service.Authenticate("iphone", "test", 1);
+                var service = TinyIoCContainer.Current.Resolve<AccountServiceClient>( "Authenticate",  parameters );
+                var account = service.GetMyAccount();
+                if (account != null)
+                {
+                    context.UpdateLoggedInUser(account, false);
+
+                    //TODO: Should not keep password like this
+                    context.LoggedInPassword = password;
+                    data = account;
+
+                }
+
+                EnsureListLoaded();
+
+                
+                isSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                error = ex.Message;
+                isSuccess = false;
+            }
 
 
-            //        //                    var re = service.GetRideExceptionsList(sessionId, "EN");
-            //        //                    re.RideExceptions.ForEach(rrr => Console.WriteLine(rrr.Description));
 
 
-            //        Logger.StartStopwatch("WS GetAccount : " + email.ToLower());
-
-            //        var account = service.GetAccount(sessionId, email.ToLower(), password);
-
-            //        Logger.StopStopwatch("WS GetAccount : " + email.ToLower());
-
-
-            //        var result = new AccountData();
-
-            //        var loggedUser = ServiceLocator.Current.GetInstance<IAppContext>().LoggedUser;
-
-            //        if ((account.Error == IBS.ErrorCode.NoError) && (account.Account != null))
-            //        {
-            //            result = new AccountMapping().ToData(loggedUser, account.Account);
-
-            //            var history = service.GetOrderHistoryEx(sessionId, email, password, DateTime.Now.AddMonths(-1), DateTime.Now);
-            //            var orders = new List<OrderInfo>();
-            //            if ((history.Error == IBS.ErrorCode.NoError) && (history.OrderInfos != null))
-            //            {
-            //                orders.AddRange(history.OrderInfos);
-            //            }
-
-            //            var orderExisting = service.GetOrdersList(sessionId, email, password);
-            //            if ((orderExisting.Error == IBS.ErrorCode.NoError) && (orderExisting.OrderInfos != null))
-            //            {
-            //                orders.AddRange(orderExisting.OrderInfos);
-            //            }
-
-            //            if (orders.Count > 0)
-            //            {
-            //                new OrderMapping().UpdateHistory(result, orders.ToArray(), _vehicules, _companies, _payments);
-            //            }
-
-            //            result.Password = password;
-            //            new SettingMapper().SetSetting(result, account.Account);
-
-            //            if (result.DefaultSettings.Company != 12)
-            //            {
-            //                result.DefaultSettings.Company = 12;
-            //                result.DefaultSettings.CompanyName = GetCompaniesList().Single(c => c.Id == 12).Display;
-            //            }
-            //            data = result;
-            //        }
-
-            //        else
-            //        {
-            //            resultError = account.ErrorMessage;
-            //            resultErrorCode = account.Error;
-
-            //        }
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        ServiceLocator.Current.GetInstance<ILogger>().LogError(ex);
-            //    }
-            //});
-            //error = resultError;
             return data;
+
+            
         }
 
 
@@ -174,53 +206,33 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return isSuccess;
         }
 
-        public bool CreateAccount(CreateAccountData data, out string error)
+        public bool Register(RegisterAccount data, out string error)
         {
-            bool isSuccess = true;
+            
+            bool isSuccess = false;
+            
             string lError = "";
+            
+            try
+            {
+                var service = TinyIoCContainer.Current.Resolve<AccountServiceClient>("NotAuthenticated");
+                service.RegisterAccount(data);
+                isSuccess = true;
+            }
+            catch( Exception ex )
+            {
+                lError = ex.Message;
+                isSuccess = false;
+            }
 
-            //var service = new AccountServiceClient(@, null);
-            var service =TinyIoCContainer.Current.Resolve<AccountServiceClient>();
-            service.RegisterAccount(new RegisterAccount { AccountId = Guid.NewGuid(), Email = data.Email, FirstName = data.FirstName, LastName = data.LastName, Password = data.Password, Phone = data.Mobile });
-
-
-            //var service2 = new AccountServiceClient(@"http://project.apcurium.com/apcurium.MK.Web.csproj_deploy/api/", new AuthInfo(data.Email, data.Password));
-            //var acc = service2.GetMyAccount();
-
-
-
-            //UseService(service =>
-            //{
-            //    var sessionId = service.Authenticate("iphone", "test", 1);
-            //    var account = new IBS.AccountInfo();
-            //    account.Email = data.Email;
-            //    account.Title = data.Title;
-            //    account.FirstName = data.FirstName;
-            //    account.LastName = data.LastName;
-            //    account.PhoneNumber = data.Phone;
-            //    account.MobileNumber = data.Mobile;
-            //    account.Language = ServiceLocator.Current.GetInstance<IAppResource>().CurrentLanguage == AppLanguage.English ? "E" : "F";
-            //    account.Password = data.Password;
-
-            //    var result = service.CreateAccount(sessionId, account);
-            //    if (result.Error == IBS.ErrorCode.NoError)
-            //    {
-            //        isSuccess = true;
-            //    }
-            //    else
-            //    {
-            //        lError = result.ErrorMessage.ToSafeString();
-            //        Logger.LogMessage("ResetPassword : Error : " + result.Error.ToString() + " - " + result.ErrorMessage.ToSafeString());
-            //    }
-            //});
             error = lError;
             return isSuccess;
         }
 
 
-        public AccountData UpdateUser(AccountData data)
+        public Account UpdateUser(Account data)
         {
-            AccountData r = null;
+            Account r = null;
             //UseService(service =>
             //{
             //    Logger.LogMessage("Update user");
@@ -244,7 +256,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             //        }
             //        else
             //        {
-            //            var loggedUser = ServiceLocator.Current.GetInstance<IAppContext>().LoggedUser;
+            //            var loggedUser = TinyIoCContainer.Current.Resolve<IAppContext>().LoggedUser;
             //            r = new AccountMapping().ToData(loggedUser, result.Account);
             //        }
             //    }

@@ -193,7 +193,9 @@
     <AndroidResource Include="Resources\Layout\Main.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Layout\Destination.axml" />
+    <AndroidResource Include="Resources\Layout\Destination.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <AndroidResource Include="Resources\Layout\LabelValueCell.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
@@ -330,6 +332,10 @@
     <Folder Include="Mapper\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Server\MK.Booking.Api.Contract\MK.Booking.Api.Contract.Android.csproj">
+      <Project>{F899012E-C6A6-4C49-8501-8DDEF592CCF1}</Project>
+      <Name>MK.Booking.Api.Contract.Android</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.Android.csproj">
       <Project>{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}</Project>
       <Name>MK.Common.Android</Name>

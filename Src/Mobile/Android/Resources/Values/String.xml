@@ -198,7 +198,7 @@
   <string name="EstimatePriceOver100">Call for price</string>
   <string name="HistoryInfo">Displaying trips from the last month</string>
   <string name="CarAssigned">Your taxi #{0}</string>
-  <string name="SupportEmail">support.android@taxidiamond.com</string>
+  <string name="SupportEmail">techsupport@apcurium.com</string>
   <string name="NoMailClient">There are no email clients installed.</string>
   <string name="ListPromptSelectOne">Select one</string>
   <string name="DateTimePickerPickDate">Select your pickup date:</string>

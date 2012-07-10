@@ -6,8 +6,12 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 {
 	public interface IAppContext
 	{
-        AccountData LoggedUser { get; }
-						
+        Account LoggedUser { get; }
+        string LoggedInEmail { get; set; }
+        string LoggedInPassword { get; set; }
+        void UpdateLoggedInUser(Account data, bool syncWithServer);
+        
+
 	}
 }
 

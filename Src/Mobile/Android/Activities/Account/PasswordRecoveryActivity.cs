@@ -10,7 +10,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using System.Text.RegularExpressions;
-using Microsoft.Practices.ServiceLocation;
+using TinyIoC;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
@@ -47,7 +47,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             else
             {
                 AppContext.Current.LastEmail = email;
-                ThreadHelper.ExecuteInThread(this, () => ServiceLocator.Current.GetInstance<IAccountService>().ResetPassword(new ResetPasswordData { Email = email }), () => this.Finish() , true);                               
+                ThreadHelper.ExecuteInThread(this, () => TinyIoCContainer.Current.Resolve<IAccountService>().ResetPassword(new ResetPasswordData { Email = email }), () => this.Finish() , true);                               
             }
         }
 

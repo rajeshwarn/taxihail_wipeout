@@ -4,8 +4,8 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.Text;
 using apcurium.Framework.Extensions;
-using Microsoft.Practices.ServiceLocation;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Client.Helpers
 {
@@ -67,8 +67,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
 				}
 				catch( Exception ex )
 				{
-						ServiceLocator.Current.GetInstance<ILogger>().LogMessage( "Deserialization error" );
-                        ServiceLocator.Current.GetInstance<ILogger>().LogError(ex);
+						TinyIoCContainer.Current.Resolve<ILogger>().LogMessage( "Deserialization error" );
+                        TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex);
 				}
 			}
 			return default(T);

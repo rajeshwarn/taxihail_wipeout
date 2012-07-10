@@ -13,11 +13,14 @@ using Android.Views.Animations;
 using Android.GoogleMaps;
 using Android.Locations;
 using apcurium.Framework.Extensions;
-using Microsoft.Practices.ServiceLocation;
+using TinyIoC;
 using apcurium.MK.Booking.Mobile.Client.Models;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
+using apcurium.MK.Booking.Mobile.Extensions;
+
+using WS = apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -38,11 +41,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             private set;
         }
 
-        private BookingModel _model;
+        private BookingInfoData _bookingInfo;
 
-        public BookingModel Model
+        public BookingInfoData BookingInfo
         {
-            get { return _model; }
+            get { return _bookingInfo; }
         }
 
         protected override void OnCreate(Bundle bundle)
@@ -91,14 +94,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             UpdateModel();
 
-            if (_model.Origin.IsNullOrEmpty())
+            //TODO: Validation should be in common lib
+            if ( (_bookingInfo.PickupLocation.FullAddress.IsNullOrEmpty()) || ( !_bookingInfo.PickupLocation.HasValidCoordinate() ) )
             {
                 this.ShowAlert(Resource.String.InvalidBookinInfoTitle, Resource.String.InvalidBookinInfo);
             }
             else
             {
                 Intent i = new Intent(this, typeof(BookDetailActivity));
-                var serializedModel = _model.Serialize();
+                var serializedModel = _bookingInfo.Serialize();
                 i.PutExtra("BookingModel", serializedModel);
                 StartActivityForResult(i, (int)ActivityEnum.BookConfirmation);
             }
@@ -120,7 +124,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                         var xmlBInfo = data.GetStringExtra("ConfirmedBookingInfo");
                         var bookingInfo = SerializerHelper.DeserializeObject<BookingInfoData>(xmlBInfo);
 
-                        var service = ServiceLocator.Current.GetInstance<IBookingService>();
+                        var service = TinyIoCContainer.Current.Resolve<IBookingService>();
                         string error;
 
                         var id = service.CreateOrder(AppContext.Current.LoggedUser, bookingInfo, out error);
@@ -129,7 +133,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                             AppContext.Current.LastOrder = id;
                             bookingInfo.Id = id;
                             bookingInfo.RequestedDateTime = DateTime.Now;
-                            AppContext.Current.LoggedUser.AddBooking(bookingInfo);
+                            //TODO:Fix this
+                            //AppContext.Current.LoggedUser.AddBooking(bookingInfo);
                             AppContext.Current.UpdateLoggedInUser(AppContext.Current.LoggedUser, false);
                             ShowStatusActivity(bookingInfo);
                             ResetBookingInfo();
@@ -154,11 +159,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                     var selectedDateTicks = data.GetLongExtra("ResultSelectedDate", 0);
                     if (selectedDateTicks > 0)
                     {
-                        Model.Data.PickupDate = new DateTime(selectedDateTicks);
+                        BookingInfo.PickupDate = new DateTime(selectedDateTicks);
                     }
                     else
                     {
-                        Model.Data.PickupDate = null;
+                        BookingInfo.PickupDate = null;
                     }
                     var activity = (PickupActivity)LocalActivityManager.GetActivity(this.TabHost.CurrentTabTag);
                     activity.RefreshDateTime( );
@@ -170,7 +175,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
                 if (address.HasValue())
                 {
-                    var adrs = SerializerHelper.DeserializeObject<LocationData>(address);
+                    var adrs = SerializerHelper.DeserializeObject<WS.Address>(address);
                     var activity = (AddressActivity)LocalActivityManager.GetActivity(this.TabHost.CurrentTabTag);
 
                     
@@ -188,22 +193,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
         }
 
-        private LocationData GetLocation(LocationTypes type, int id)
+        private WS.Address GetLocation(LocationTypes type, int id)
         {
 
-            if (type == LocationTypes.Favorite)
-            {
-                return AppContext.Current.LoggedUser.FavoriteLocations.FirstOrDefault(a => a.Id == id);
-            }
-            else
-            {
-                var history = AppContext.Current.LoggedUser.BookingHistory.Where(b => !b.Hide && b.PickupLocation.Name.IsNullOrEmpty())
-               .OrderByDescending(b => b.RequestedDateTime)
-               .Select(b => b.PickupLocation).ToArray();
-                var locationsData = history.Where(h => h.Address.HasValue()).GroupBy(l => l.Address + "_" + l.Apartment.ToSafeString() + "_" + l.RingCode.ToSafeString()).Select(g => g.ElementAt(0));
-                return locationsData.FirstOrDefault(a => a.Id == id);
+            return null;
+            //if (type == LocationTypes.Favorite)
+            //{
+            //    return AppContext.Current.LoggedUser.FavoriteLocations.FirstOrDefault(a => a.Id == id);
+            //}
+            //else
+            //{
+            //    return new LocationData();
+            //    //TODO:
+            //   // var history = AppContext.Current.LoggedUser.BookingHistory.Where(b => !b.Hide && b.PickupLocation.f .IsNullOrEmpty())
+            //   //.OrderByDescending(b => b.RequestedDateTime)
+            //   //.Select(b => b.PickupLocation).ToArray();
+            //   // var locationsData = history.Where(h => h.Address.HasValue()).GroupBy(l => l.Address + "_" + l.Apartment.ToSafeString() + "_" + l.RingCode.ToSafeString()).Select(g => g.ElementAt(0));
+            //   // return locationsData.FirstOrDefault(a => a.Id == id);
 
-            }
+            //}
         }
         private void ShowStatusActivity(BookingInfoData data)
         {
@@ -233,7 +241,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             var selectedViewIsPickup = TabHost.CurrentTabTag == Tab.Pickup.ToString();
 
-            if (selectedViewIsPickup && !selectPickup && !Model.Origin.HasValue())
+            if (selectedViewIsPickup && !selectPickup && !BookingInfo.PickupLocation.FullAddress.HasValue())
             {
                 AlertDialogHelper.ShowAlert(this, "", Resources.GetString(Resource.String.InvalidPickupAddress));
             }
@@ -271,14 +279,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             if (TabHost.CurrentView != null && TabHost.CurrentTabTag == Tab.Pickup.ToString())
             {
-                _model.Origin = TabHost.CurrentView.FindViewById<AutoCompleteTextView>(Resource.Id.pickupAddressText).Text;
-                _model.RingCode = TabHost.CurrentView.FindViewById<EditText>(Resource.Id.ringCodeText).Text;
-                _model.Appartment = TabHost.CurrentView.FindViewById<EditText>(Resource.Id.aptNumberText).Text;
+                _bookingInfo.PickupLocation.FullAddress = TabHost.CurrentView.FindViewById<AutoCompleteTextView>(Resource.Id.pickupAddressText).Text;
+                _bookingInfo.PickupLocation.RingCode = TabHost.CurrentView.FindViewById<EditText>(Resource.Id.ringCodeText).Text;
+                _bookingInfo.PickupLocation.Apartment = TabHost.CurrentView.FindViewById<EditText>(Resource.Id.aptNumberText).Text;
                 //s_model.Date = TabHost.CurrentView.FindViewById<EditText>(Resource.Id.pickupDateText).Text + " " + TabHost.CurrentView.FindViewById<EditText>(Resource.Id.pickupTimeText).Text;
             }
             else if (TabHost.CurrentView != null && TabHost.CurrentTabTag == Tab.Destination.ToString())
             {
-                _model.Destination = this.TabHost.CurrentView.FindViewById<EditText>(Resource.Id.destAddressText).Text;
+                _bookingInfo.DestinationLocation.FullAddress = this.TabHost.CurrentView.FindViewById<EditText>(Resource.Id.destAddressText).Text;
             }
         }
 
@@ -287,7 +295,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         public void Reset()
         {
-            _model = new BookingModel();
+            _bookingInfo = new BookingInfoData();
             var pickupActivity = (PickupActivity)LocalActivityManager.GetActivity("Pickup");
             if (pickupActivity != null)
             {
@@ -316,8 +324,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             RunOnUiThread(() =>
                               {
-                                  _model = new BookingModel();
-                                  Model.Data = new BookingInfoData();
+                                  _bookingInfo = new BookingInfoData();                                  
                                   var currentActivity = (IAddress)LocalActivityManager.GetActivity(this.TabHost.CurrentTabTag);
                                   currentActivity.Maybe(() => currentActivity.OnResumeEvent());
                               });
@@ -327,40 +334,43 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         public void RebookTrip(int tripId)
         {
 
-            var tripData = AppContext.Current.LoggedUser.BookingHistory.SingleOrDefault(o => o.Id == tripId);
-            if (tripData != null)
-            {
-                _model.Data = tripData.Copy();
-                _model.Data.Id = 0;
-                _model.Data.PickupDate = null;
-                _model.Data.Status = null;
-                _model.Data.RequestedDateTime = null;
+            //TODO:Fix this
+            //var tripData = AppContext.Current.LoggedUser.BookingHistory.SingleOrDefault(o => o.Id == tripId);
+            //if (tripData != null)
+            //{
+            //    _bookingInfo = tripData.Copy();
+            //    _bookingInfo.Id = 0;
+            //    _bookingInfo.PickupDate = null;
+            //    _bookingInfo.Status = null;
+            //    _bookingInfo.RequestedDateTime = null;
 
 
-                var pickupActivity = (PickupActivity)LocalActivityManager.GetActivity("Pickup");
-                if (pickupActivity != null)
-                {
-                    pickupActivity.SetLocationData(_model.Data.PickupLocation, true);
-                    pickupActivity.RefreshDateTime();                    
-                }
+            //    var pickupActivity = (PickupActivity)LocalActivityManager.GetActivity("Pickup");
+            //    if (pickupActivity != null)
+            //    {
+            //        pickupActivity.SetLocationData(_bookingInfo.PickupLocation, true);
+            //        pickupActivity.RefreshDateTime();                    
+            //    }
 
-                var destActivity = (DestinationActivity)LocalActivityManager.GetActivity("Destination");
-                if (destActivity != null)
-                {
-                    destActivity.SetLocationData(_model.Data.DestinationLocation, true);
-                }
-                TogglePickupDestination(true);
+            //    var destActivity = (DestinationActivity)LocalActivityManager.GetActivity("Destination");
+            //    if (destActivity != null)
+            //    {
+            //        destActivity.SetLocationData(_bookingInfo.DestinationLocation, true);
+            //    }
+            //    TogglePickupDestination(true);
 
-            }
+            //}
         }
 
         internal void StartStatusActivity(int id)
         {
-            var booking = AppContext.Current.LoggedUser.BookingHistory.FirstOrDefault(b => b.Id == id);
-            if (booking != null)
-            {
-                ShowStatusActivity(booking);
-            }
+            //TODO:Fix this
+            //var booking = AppContext.Current.LoggedUser.BookingHistory.FirstOrDefault(b => b.Id == id);
+            //if (booking != null)
+            //{
+            //    ShowStatusActivity(booking);
+            //}
+
         }
     }
 }

@@ -3,19 +3,20 @@ using Android.GoogleMaps;
 using Android.Graphics.Drawables;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Client.Converters;
+using apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 {
     public static class MapService
     {
-        
 
-        public static GeoPoint SetLocationOnMap(MapView map, LocationData location)
+
+        public static GeoPoint SetLocationOnMap(MapView map, Address location)
         {
             var point = new GeoPoint(0, 0);
-            if ((location != null) && (location.Latitude.HasValue) && (location.Longitude.HasValue))
+            if (location != null)
             {                
-                point = new GeoPoint(CoordinatesConverter.ConvertToE6(location.Latitude.Value), CoordinatesConverter.ConvertToE6(location.Longitude.Value));
+                point = new GeoPoint(CoordinatesConverter.ConvertToE6(location.Latitude), CoordinatesConverter.ConvertToE6(location.Longitude));
                 if (point != map.MapCenter)
                 {                    
                     map.Controller.AnimateTo(point);
@@ -25,13 +26,13 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             return point;
         }
 
-        public static void AddPushPin(MapView map, Drawable mapPin, LocationData location, Activity activity, string title)
+        public static void AddPushPin(MapView map, Drawable mapPin, Address location, Activity activity, string title)
         {
 
-                        if ( ( location != null ) && ( location.Latitude.HasValue )&& ( location.Longitude.HasValue ) )
+                        if  ( location != null ) 
                         {
-                            var point = new GeoPoint(CoordinatesConverter.ConvertToE6(location.Latitude.Value),
-                                                     CoordinatesConverter.ConvertToE6(location.Longitude.Value));
+                            var point = new GeoPoint(CoordinatesConverter.ConvertToE6(location.Latitude),
+                                                     CoordinatesConverter.ConvertToE6(location.Longitude));
 
                             map.Overlays.Clear();
                             MapService.AddMyLocationOverlay(map, activity);                            

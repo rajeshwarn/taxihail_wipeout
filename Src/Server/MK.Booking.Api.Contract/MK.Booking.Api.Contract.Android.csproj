@@ -55,6 +55,7 @@
     <Compile Include="AuthenticateAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Requests\BookingSettingsRequest.cs" />
+    <Compile Include="Requests\CancelOrder.cs" />
     <Compile Include="Requests\CreateOrder.cs" />
     <Compile Include="Requests\CurrentAccount.cs" />
     <Compile Include="Requests\DirectionsRequest.cs" />

@@ -2,16 +2,18 @@ using System;
 using System.Collections.Generic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Api.Contract.Resources;
 
 
 namespace apcurium.MK.Booking.Mobile.AppServices
 {
 	public interface IAccountService
 	{
-		
-		AccountData GetAccount( string email, string password , out string  error );
-			
-		AccountData UpdateUser( AccountData data );
+
+        Account GetAccount(string email, string password, out string error);
+
+        Account UpdateUser(Account data);
 		
 		void EnsureListLoaded();
 		
@@ -25,7 +27,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		void ResendConfirmationEmail(string email);
 		
-		bool CreateAccount( CreateAccountData data, out string error);
+		bool Register (RegisterAccount data, out string error);
+
+        Address FindInAccountAddresses(double latitude, double longitude);
 
         LocationData[] GetHistoryAddresses();
 

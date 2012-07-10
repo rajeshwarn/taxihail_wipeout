@@ -1,9 +1,8 @@
 using System;
 using System.Threading;
-using Microsoft.Practices.ServiceLocation;
 using Android.App;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Client.Helpers
 {
@@ -37,7 +36,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
                 }
                 catch (Exception ex)
                 {
-                    ServiceLocator.Current.GetInstance<ILogger>().LogError(ex);
+                    TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex);
                     throw;
                 }
                 finally

@@ -11,11 +11,11 @@ using Android.Views;
 using Android.Widget;
 using Android.GoogleMaps;
 using Android.Locations;
-using Microsoft.Practices.ServiceLocation;
+using TinyIoC;
 using apcurium.Framework.Extensions;
 using Android.Views.InputMethods;
 using apcurium.MK.Booking.Mobile.Data;
-
+using WS = apcurium.MK.Booking.Api.Contract.Resources;
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
     [Activity(Label = "Destination", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
@@ -66,33 +66,44 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             RunOnUiThread(() =>
             {
-                RideDistance.Text = String.Format(Resources.GetString(Resource.String.EstimateDistance), ParentActivity.Model.Distance);
-                RideCost.SetTextColor(Resources.GetColor(Resource.Color.black));
-                double price;
-                if (double.TryParse(ParentActivity.Model.Price, out price))
+                var directionInfo = ParentActivity.BookingInfo.GetDirectionInfo();
+                if (directionInfo.Distance.HasValue)
                 {
-                    if (price > 100)
+                    RideDistance.Text = String.Format(Resources.GetString(Resource.String.EstimateDistance), directionInfo.Distance.Value);                 
+                }
+                else
+                {
+                    RideDistance.Text = String.Format(Resources.GetString(Resource.String.EstimateDistance), Resources.GetString(Resource.String.NotAvailable));                    
+                }
+                
+                
+                
+                if ( directionInfo.Price.HasValue )
+                {
+                    if (directionInfo.Price.Value > 100)
                     {
                         RideCost.SetTextColor(Resources.GetColor(Resource.Color.red));
                         RideCost.Text = Resources.GetString(Resource.String.EstimatePriceOver100);
                     }
                     else
                     {
-                        RideCost.Text = String.Format(Resources.GetString(Resource.String.EstimatePrice), price);
+                        RideCost.SetTextColor(Resources.GetColor(Resource.Color.black));
+                        RideCost.Text = String.Format(Resources.GetString(Resource.String.EstimatePrice), directionInfo.Price.Value );
                     }
                 }
                 else
                 {
-                    RideCost.Text = String.Format(Resources.GetString(Resource.String.EstimatePrice), ParentActivity.Model.Price);
+                    RideCost.SetTextColor(Resources.GetColor(Resource.Color.black));
+                    RideCost.Text = String.Format(Resources.GetString(Resource.String.EstimatePrice), Resources.GetString(Resource.String.NotAvailable));
                 }
             });
         }
 
 
-        protected override LocationData Location
+        protected override WS.Address Location
         {
-            get { return ParentActivity.Model.Data.DestinationLocation; }
-            set { ParentActivity.Model.Data.DestinationLocation = value; }
+            get { return ParentActivity.BookingInfo.DestinationLocation; }
+            set { ParentActivity.BookingInfo.DestinationLocation = value; }
         }
 
         protected override bool NeedFindCurrentLocation
@@ -116,7 +127,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             RefreshEstimates();
         }
 
-        public override void SetLocationData(LocationData location, bool changeZoom)
+        public override void SetLocationData(WS.Address location, bool changeZoom)
         {            
             base.SetLocationData(location, changeZoom);
             RefreshEstimates();

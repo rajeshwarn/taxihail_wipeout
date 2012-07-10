@@ -11,11 +11,12 @@ using Android.Views;
 using Android.Widget;
 using Android.GoogleMaps;
 using Android.Locations;
-using Microsoft.Practices.ServiceLocation;
+using TinyIoC;
 using apcurium.Framework.Extensions;
 using Android.Views.InputMethods;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Client.Models;
+using WS = apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -69,9 +70,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             //ShowDialog(DATE_DIALOG_ID);
             var intent = new Intent(this, typeof(DateTimePickerActivity));
-            if (ParentActivity.Model.Data.PickupDate.HasValue)
+            if (ParentActivity.BookingInfo.PickupDate.HasValue)
             {
-                intent.PutExtra("SelectedDate", ParentActivity.Model.Data.PickupDate.Value.Ticks);
+                intent.PutExtra("SelectedDate", ParentActivity.BookingInfo.PickupDate.Value.Ticks);
             }
 
             Parent.StartActivityForResult(intent, (int)ActivityEnum.DateTimePicked);
@@ -88,11 +89,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                     var selectedDateTicks = data.GetLongExtra("ResultSelectedDate", 0);
                     if (selectedDateTicks > 0)
                     {
-                        ParentActivity.Model.Data.PickupDate = new DateTime(selectedDateTicks);
+                        ParentActivity.BookingInfo.PickupDate = new DateTime(selectedDateTicks);
                     }
                     else
                     {
-                        ParentActivity.Model.Data.PickupDate = null;
+                        ParentActivity.BookingInfo.PickupDate = null;
                     }
                     RefreshDateTime();
                 
@@ -133,10 +134,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
 
 
-        protected override LocationData Location
+        protected override WS.Address Location
         {
-            get { return ParentActivity.Model.Data.PickupLocation; }
-            set { ParentActivity.Model.Data.PickupLocation = value; }
+            get { return ParentActivity.BookingInfo.PickupLocation; }
+            set { ParentActivity.BookingInfo.PickupLocation = value; }
         }
 
         protected override bool NeedFindCurrentLocation
@@ -160,7 +161,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             return list.ToArray();
         }
 
-        public override void SetLocationData(LocationData location, bool changeZoom)
+        public override void SetLocationData(WS.Address location, bool changeZoom)
         {
             base.SetLocationData(location, changeZoom);
             RunOnUiThread(() =>
@@ -172,11 +173,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         public void RefreshDateTime()
         {
-            if (ParentActivity.Model.Data.PickupDate.HasValue)
+            if (ParentActivity.BookingInfo.PickupDate.HasValue)
             {
                 string d = GetString(Resource.String.Date);
                 string t = GetString(Resource.String.Time);
-                Time.Text = d + " : " + ParentActivity.Model.Data.PickupDate.Value.ToShortDateString() + @"  -  " + t + " : " +ParentActivity.Model.Data.PickupDate.Value.ToShortTimeString();                                
+                Time.Text = d + " : " + ParentActivity.BookingInfo.PickupDate.Value.ToShortDateString() + @"  -  " + t + " : " +ParentActivity.BookingInfo.PickupDate.Value.ToShortTimeString();                                
             }
             else
             {

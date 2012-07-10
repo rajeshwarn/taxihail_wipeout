@@ -9,7 +9,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using Microsoft.Practices.ServiceLocation;
+using TinyIoC;
 using apcurium.MK.Booking.Mobile.Practices;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 
@@ -47,7 +47,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             try
             {
-                ServiceLocator.Current.GetInstance<ILogger>().LogError( raiseThrowableEventArgs.Exception );
+                TinyIoCContainer.Current.Resolve<ILogger>().LogError( raiseThrowableEventArgs.Exception );
             }
             catch (Exception)
             {

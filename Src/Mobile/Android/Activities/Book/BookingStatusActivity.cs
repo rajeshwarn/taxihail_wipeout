@@ -6,13 +6,15 @@ using Android.GoogleMaps;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
-using Microsoft.Practices.ServiceLocation;
+using TinyIoC;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Converters;
+using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -62,11 +64,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _timer = new Timer(o => RefreshStatus(), null, 0, 6000);
         }
 
-        private void AddMapPin(MapView map, LocationData loc, int graphic, int titleId)
+        private void AddMapPin(MapView map, Address loc, int graphic, int titleId)
         {
-            if (loc.Latitude.HasValue && loc.Latitude.Value != 0 && loc.Longitude.HasValue && loc.Longitude.Value != 0)
+            if (loc.HasValidCoordinate())
             {
-                var point = new GeoPoint(CoordinatesConverter.ConvertToE6(loc.Latitude.Value), CoordinatesConverter.ConvertToE6(loc.Longitude.Value));
+                var point = new GeoPoint(CoordinatesConverter.ConvertToE6(loc.Latitude), CoordinatesConverter.ConvertToE6(loc.Longitude));
                 var pushpin = Resources.GetDrawable(graphic);
                 var title = GetString(titleId);
                 var pushpinOverlay = new PushPinOverlay(map, pushpin, title, point);
@@ -93,13 +95,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             base.OnCreateContextMenu(menu, v, menuInfo);
 
-            var callCompany = new Java.Lang.String(string.Format(GetString(Resource.String.CallCompanyButton), BookingInfo.Settings.CompanyName));
-            menu.SetHeaderTitle(Resource.String.StatusActionButton);
-            menu.Add(0, 1, 0, callCompany);
-            menu.Add(0, 2, 1, Resource.String.StatusActionBookButton);
-            menu.Add(0, 3, 2, Resource.String.StatusActionCancelButton);
-            menu.Add(0, 4, 3, Resource.String.Close);
-            //menu.Add(0, 3, 0, Resource.String.StatusActionCancelButton);
+            //TODO:Fix this
+
+            //var callCompany = new Java.Lang.String(string.Format(GetString(Resource.String.CallCompanyButton), BookingInfo.Settings.CompanyName));
+            //menu.SetHeaderTitle(Resource.String.StatusActionButton);
+            //menu.Add(0, 1, 0, callCompany);
+            //menu.Add(0, 2, 1, Resource.String.StatusActionBookButton);
+            //menu.Add(0, 3, 2, Resource.String.StatusActionCancelButton);
+            //menu.Add(0, 4, 3, Resource.String.Close);
+            
 
         }
 
@@ -137,7 +141,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private void CallCompany()
         {
             Intent callIntent = new Intent(Intent.ActionCall);
-            callIntent.SetData(Android.Net.Uri.Parse("tel:" + AppSettings.PhoneNumber(BookingInfo.Settings.Company)));
+            callIntent.SetData(Android.Net.Uri.Parse("tel:" + AppSettings.PhoneNumber(BookingInfo.Settings.ProviderId)));
             StartActivity(callIntent);
         }
 
@@ -148,7 +152,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 ThreadHelper.ExecuteInThread(this, () =>
                 {
-                    var isSuccess = ServiceLocator.Current.GetInstance<IBookingService>().CancelOrder(AppContext.Current.LoggedUser, BookingInfo.Id);
+                    var isSuccess = TinyIoCContainer.Current.Resolve<IBookingService>().CancelOrder(AppContext.Current.LoggedUser, BookingInfo.Id);
 
                     if (isSuccess)
                     {
@@ -171,7 +175,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 try
                 {
-                    var isCompleted = ServiceLocator.Current.GetInstance<IBookingService>().IsCompleted(AppContext.Current.LoggedUser, BookingInfo.Id);
+                    var isCompleted = TinyIoCContainer.Current.Resolve<IBookingService>().IsCompleted(AppContext.Current.LoggedUser, BookingInfo.Id);
                     if (isCompleted)
                     {
                         AppContext.Current.LastOrder = null;
@@ -180,7 +184,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                     }
 
 
-                    var status = ServiceLocator.Current.GetInstance<IBookingService>().GetOrderStatus(AppContext.Current.LoggedUser, BookingInfo.Id);
+                    var status = TinyIoCContainer.Current.Resolve<IBookingService>().GetOrderStatus(AppContext.Current.LoggedUser, BookingInfo.Id);
                     _lastOrder = BookingInfo.Id;
 
                     if (status != null)
@@ -220,7 +224,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 }
                 catch (Exception ex)
                 {
-                    ServiceLocator.Current.GetInstance<ILogger>().LogError(ex);
+                    TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex);
                 }
             }, false);
         }

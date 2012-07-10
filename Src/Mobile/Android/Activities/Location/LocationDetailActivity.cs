@@ -10,11 +10,12 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using apcurium.Framework.Extensions;
-using Microsoft.Practices.ServiceLocation;
+
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Models;
+using TinyIoC;
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
 {
     [Activity(Label = "Location Details", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
@@ -61,16 +62,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
                 ThreadHelper.ExecuteInThread(this, () =>
                 {
 
-                    var locations = ServiceLocator.Current.GetInstance<IBookingService>().SearchAddress(txtAddress.Text);
+                    var address = TinyIoCContainer.Current.Resolve<IGeolocService>().ValidateAddress(txtAddress.Text);
+                    //var locations = TinyIoCContainer.Current.Resolve<IBookingService>().SearchAddress(txtAddress.Text);
 
 
-                    if (locations.Count() != 1 || locations[0].Address.IsNullOrEmpty() || !locations[0].Longitude.HasValue || !locations[0].Latitude.HasValue)
+                    if (address == null )
                     {
                         return;
                     }
 
 
-                    RunOnUiThread(() => { txtAddress.Text = locations[0].Address; });
+                    RunOnUiThread(() => { txtAddress.Text = address.FullAddress; });
                 }, false);
             }
         }
@@ -92,8 +94,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
             {
                 try
                 {
-                    var locations = ServiceLocator.Current.GetInstance<IBookingService>().SearchAddress(txtAddress.Text);
-                    if (locations.Count() != 1 || locations[0].Address.IsNullOrEmpty() || !locations[0].Longitude.HasValue || !locations[0].Latitude.HasValue)
+                    var address = TinyIoCContainer.Current.Resolve<IGeolocService>().ValidateAddress(txtAddress.Text);
+                    if ( address == null )
                     {
                         RunOnUiThread(
                             () =>
@@ -103,36 +105,41 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
 
                     RunOnUiThread(() =>
                     {
-                        txtAddress.Text = locations[0].Address;
+                        txtAddress.Text = address.FullAddress;
                         UpdateData();
-                        _data.Latitude = locations[0].Latitude;
-                        _data.Longitude = locations[0].Longitude;
+                        _data.Latitude = address.Latitude;
+                        _data.Longitude = address.Longitude;
                         if (IsNew)
                         {
                             var newList = new List<LocationData>();
-                            if ((AppContext.Current.LoggedUser.FavoriteLocations != null) && (AppContext.Current.LoggedUser.FavoriteLocations.Count() > 0))
-                            {
-                                newList.AddRange(AppContext.Current.LoggedUser.FavoriteLocations);
-                            }
+                            //TODO: Fix this
+                            //if ((AppContext.Current.LoggedUser.FavoriteLocations != null) && (AppContext.Current.LoggedUser.FavoriteLocations.Count() > 0))
+                            //{
+                            //    newList.AddRange(AppContext.Current.LoggedUser.FavoriteLocations);
+                            //}
                             newList.Add(_data);
                             var loggedUser = AppContext.Current.LoggedUser;
-                            loggedUser.FavoriteLocations = newList.ToArray();
+                            
+                            //TODO : Fix this
+                            //loggedUser.FavoriteLocations = newList.ToArray();
+                            
                             AppContext.Current.UpdateLoggedInUser(loggedUser, true);
                             //AppContext.Current.LoggedUser = loggedUser;
                         }
                         else
                         {
-                            if (AppContext.Current.LoggedUser.FavoriteLocations.Count() > 0  )
-                            {
-                                var list = new List<LocationData>(AppContext.Current.LoggedUser.FavoriteLocations);
-                                var loc = list.FirstOrDefault(l => l.Id == _data.Id);
-                                var i = list.IndexOf(loc);
-                                list.RemoveAt(i);
-                                list.Insert(i, _data);
-                                AppContext.Current.LoggedUser.FavoriteLocations = list.ToArray();
-                                //AppContext.Current.LoggedUser.FavoriteLocations.Remove(l => l.Id == _data.Id);
-                                AppContext.Current.UpdateLoggedInUser(AppContext.Current.LoggedUser, true);
-                            }
+                            //TODO : Fix this
+                            //if (AppContext.Current.LoggedUser.FavoriteLocations.Count() > 0  )
+                            //{
+                            //    var list = new List<LocationData>(AppContext.Current.LoggedUser.FavoriteLocations);
+                            //    var loc = list.FirstOrDefault(l => l.Id == _data.Id);
+                            //    var i = list.IndexOf(loc);
+                            //    list.RemoveAt(i);
+                            //    list.Insert(i, _data);
+                            //    AppContext.Current.LoggedUser.FavoriteLocations = list.ToArray();
+                            //    //AppContext.Current.LoggedUser.FavoriteLocations.Remove(l => l.Id == _data.Id);
+                            //    AppContext.Current.UpdateLoggedInUser(AppContext.Current.LoggedUser, true);
+                            //}
                         }
                         _data.IsFromHistory = false;
                         Finish();
@@ -157,16 +164,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
         {
             ThreadHelper.ExecuteInThread(this, () =>
             {
-                var newList = new List<LocationData>();
-                if ((AppContext.Current.LoggedUser.FavoriteLocations != null) &&
-                    (AppContext.Current.LoggedUser.FavoriteLocations.Count() > 0))
-                {
-                    newList.AddRange(AppContext.Current.LoggedUser.FavoriteLocations);
-                }
-                newList.Remove(d => d.Id == _data.Id);
-                AppContext.Current.LoggedUser.FavoriteLocations = newList.ToArray();
-                AppContext.Current.UpdateLoggedInUser(AppContext.Current.LoggedUser, true);
-                RunOnUiThread(() => Finish());
+                //TODO : Fix this
+                //var newList = new List<LocationData>();
+                //if ((AppContext.Current.LoggedUser.FavoriteLocations != null) &&
+                //    (AppContext.Current.LoggedUser.FavoriteLocations.Count() > 0))
+                //{
+                //    newList.AddRange(AppContext.Current.LoggedUser.FavoriteLocations);
+                //}
+                //newList.Remove(d => d.Id == _data.Id);
+                //AppContext.Current.LoggedUser.FavoriteLocations = newList.ToArray();
+                //AppContext.Current.UpdateLoggedInUser(AppContext.Current.LoggedUser, true);
+                //RunOnUiThread(() => Finish());
             }, true);
 
 

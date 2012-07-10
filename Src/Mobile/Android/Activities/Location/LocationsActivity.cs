@@ -198,34 +198,36 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
 
         private List<LocationData> GetLocations(LocationTypes type)
         {
-            LocationData[] locationsData;
+            LocationData[] locationsData = new LocationData[0];
             if (type == LocationTypes.Favorite)
             {
-                locationsData = AppContext.Current.LoggedUser.FavoriteLocations;
+                //TODO : Fix this
+                //locationsData = AppContext.Current.LoggedUser.FavoriteLocations;
             }
             else
             {
-                var history = AppContext.Current.LoggedUser.BookingHistory.Where(b => !b.Hide && b.PickupLocation.Name.IsNullOrEmpty() && b.PickupLocation.Address.HasValue()).OrderByDescending(b => b.RequestedDateTime).GroupBy(l => l.PickupLocation.Address + "_" + l.PickupLocation.Apartment.ToSafeString() + "_" + l.PickupLocation.RingCode.ToSafeString());
+                //TODO:
+                //var history = AppContext.Current.LoggedUser.BookingHistory.Where(b => !b.Hide && b.PickupLocation.Name.IsNullOrEmpty() && b.PickupLocation.Address.HasValue()).OrderByDescending(b => b.RequestedDateTime).GroupBy(l => l.PickupLocation.Address + "_" + l.PickupLocation.Apartment.ToSafeString() + "_" + l.PickupLocation.RingCode.ToSafeString());
 
-                locationsData = history.Select(h =>
-                                                   {
-                                                       var r = h.ElementAt(0).PickupLocation;
-                                                       r.Id = h.ElementAt(0).Id;
-                                                       return r;
-                                                   }).ToArray();
+                //locationsData = history.Select(h =>
+                //                                   {
+                //                                       var r = h.ElementAt(0).PickupLocation;
+                //                                       r.Id = h.ElementAt(0).Id;
+                //                                       return r;
+                //                                   }).ToArray();
 
 
-                if (locationsData.Count() == 0)
-                {
-                    locationsData = new LocationData[1];
-                    locationsData[0] = new LocationData { IsHistoricEmptyItem = true, Id = -1 };
-                }
+                //if (locationsData.Count() == 0)
+                //{
+                //    locationsData = new LocationData[1];
+                //    locationsData[0] = new LocationData { IsHistoricEmptyItem = true, Id = -1 };
+                //}
 
-                locationsData.ForEach(h =>
-                {
-                    h.IsFromHistory = true;
+                //locationsData.ForEach(h =>
+                //{
+                //    h.IsFromHistory = true;
 
-                });
+                //});
             }
             return locationsData.ToList();
         }

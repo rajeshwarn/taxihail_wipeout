@@ -37,32 +37,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public static string SiteUrl
         {
-            get { return "http://taxidiamondwebbook.dyndns.org/ibs/"; }
+            get { return "http://www.taxihail.com/"; }
         }
 
 
-        public static string PhoneNumber(int companyId)
+        public static string PhoneNumber(int providerId)
         {
-            if (companyId == 9) //Ouest
-            {
-                return "5146374444";
-            }
-            else if (companyId == 10) //Royal
-            {
-                return "5142743333";
-            }
-            else if (companyId == 11) //Candare			
-            {
-                return "5143361313";
-            }
-            else if (companyId == 13) //Veteran
-            {
-                return "5142736351";
-            }
-            else
-            {
-                return "5142736331";
-            }
+            return "8666245330";           
         }
 
 
@@ -93,27 +74,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		
         public static string PhoneNumberDisplay(int companyId)
         {
-
-            if (companyId == 9) //Ouest
-            {
-                return "(514)637-4444";
-            }
-            else if (companyId == 10) //Royal
-            {
-                return "(514)274-3333";
-            }
-            else if (companyId == 11) //Candare			
-            {
-                return "(514)336-1313";
-            }
-            else if (companyId == 13) //Veteran
-            {
-                return "(514)273-6351";
-            }
-            else
-            {
-                return "(514)273-6331";
-            }
+            return "1.866.624.5330";
         }
 
         public int[] InvalidProviderIds
@@ -133,10 +94,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 
 
-
         public string ServiceUrl
-        {        
-            get { return "http://project.apcurium.com/apcurium.MK.Web.csproj_deploy/api/"; }
+        {
+
+            //http://localhost:6900/Default.htm
+            get { return "http://192.168.12.116/apcurium.MK.Web/api/"; }
+            //get { return "http://project.apcurium.com/apcurium.MK.Web.csproj_deploy/api/"; }
         }
     }
 

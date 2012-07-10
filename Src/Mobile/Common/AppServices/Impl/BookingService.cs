@@ -7,8 +7,9 @@ using System.Threading;
 using System.Xml.Linq;
 using apcurium.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Data;
-using Microsoft.Practices.ServiceLocation;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using TinyIoC;
 
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
@@ -25,7 +26,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public bool IsValid(ref BookingInfoData info)
         {
-            return info.PickupLocation.Address.HasValue() && info.PickupLocation.Latitude.HasValue && info.PickupLocation.Longitude.HasValue;
+            return info.PickupLocation.FullAddress.HasValue() && info.PickupLocation.Latitude != 0 && info.PickupLocation.Longitude != 0;
         }
 
         public LocationData[] SearchAddress(double latitude, double longitude)
@@ -105,8 +106,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
             catch (Exception ex)
             {
-                ServiceLocator.Current.GetInstance<ILogger>().LogMessage("Search failed : " + param);
-                ServiceLocator.Current.GetInstance<ILogger>().LogError(ex);
+                TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Search failed : " + param);
+                TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex);
             }
             return result.ToArray();
         }
@@ -131,6 +132,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 throw new TimeoutException();
             }
         }
+  
         public double? GetRouteDistance(double originLong, double originLat, double destLong, double destLat)
         {
 
@@ -167,15 +169,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
             catch (Exception ex)
             {
-                ServiceLocator.Current.GetInstance<ILogger>().LogMessage("GetRouteDistance failed");
-                ServiceLocator.Current.GetInstance<ILogger>().LogError(ex);
+                TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("GetRouteDistance failed");
+                TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex);
             }
 
 
             var d = result.HasValue ? result.Value.ToString() : "NULL";
 
 
-            ServiceLocator.Current.GetInstance<ILogger>().LogMessage("Route distance : " + d);
+            TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Route distance : " + d);
 
             return result;
 
@@ -282,13 +284,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             }
 
-            var favAddresses = ServiceLocator.Current.GetInstance<IAccountService>().GetFavoriteAddresses();
+            var favAddresses = TinyIoCContainer.Current.Resolve<IAccountService>().GetFavoriteAddresses();
             if (favAddresses.Count() > 0)
             {
                 addresses.AddRange(favAddresses );
             }
 
-            var historic  = ServiceLocator.Current.GetInstance<IAccountService>().GetHistoryAddresses();
+            var historic  = TinyIoCContainer.Current.Resolve<IAccountService>().GetHistoryAddresses();
             
 
             if (historic.Count() > 0)
@@ -309,10 +311,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         protected ILogger Logger
         {
-            get { return ServiceLocator.Current.GetInstance<ILogger>(); }
+            get { return TinyIoCContainer.Current.Resolve<ILogger>(); }
         }
 
-        public int CreateOrder(AccountData user, BookingInfoData info, out string error)
+        public int CreateOrder(Account user, BookingInfoData info, out string error)
         {
             error = "";
             string errorResult = "";
@@ -339,14 +341,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             //    order.VehicleTypeId = info.Settings.VehicleType;
 
 
-            //        order.MobileNote = ServiceLocator.Current.GetInstance <IAppResource> ().MobileUser;
-            //        order.MobileNote += "\n\n" + ServiceLocator.Current.GetInstance <IAppResource> ().PaiementType + " " + info.Settings.ChargeTypeName;
-            //        order.MobileNote += "\n\n" + ServiceLocator.Current.GetInstance <IAppResource> ().Notes + " " + info.Notes;
+            //        order.MobileNote = TinyIoCContainer.Current.Resolve <IAppResource> ().MobileUser;
+            //        order.MobileNote += "\n\n" + TinyIoCContainer.Current.Resolve <IAppResource> ().PaiementType + " " + info.Settings.ChargeTypeName;
+            //        order.MobileNote += "\n\n" + TinyIoCContainer.Current.Resolve <IAppResource> ().Notes + " " + info.Notes;
             //    if (info.PickupLocation.IsGPSNotAccurate)
             //    {
 					
-            //            var note = "\n\n" + ServiceLocator.Current.GetInstance <IAppResource> ().OrderNote;
-            //        note += ServiceLocator.Current.GetInstance<IAppResource>().OrderNoteGPSApproximate;
+            //            var note = "\n\n" + TinyIoCContainer.Current.Resolve <IAppResource> ().OrderNote;
+            //        note += TinyIoCContainer.Current.Resolve<IAppResource>().OrderNoteGPSApproximate;
             //            order.MobileNote += note;
             //    }
 					
@@ -405,13 +407,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return r;
         }
 
-        public OrderStatus GetOrderStatus(AccountData user, int orderId)
+        public apcurium.MK.Booking.Mobile.Data.OrderStatus GetOrderStatus(Account user, int orderId)
         {
-            OrderStatus r = null;
+            apcurium.MK.Booking.Mobile.Data.OrderStatus r = null;
             //UseService(service =>
             //{
 
-            //    ServiceLocator.Current.GetInstance<ILogger>().LogMessage("Begin GetOrderStatus");
+            //    TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Begin GetOrderStatus");
 
             //    var sessionId = service.Authenticate("iphone", "test", 1);
             //    var result = service.GetVehicleLocation(sessionId, user.Email, user.Password, orderId);
@@ -424,7 +426,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             //            var status = new OrderStatus();
             //            status.Latitude = 0;
             //            status.Longitude = 0;
-            //            status.Status = ServiceLocator.Current.GetInstance<IAppResource>().StatusInvalid;
+            //            status.Status = TinyIoCContainer.Current.Resolve<IAppResource>().StatusInvalid;
             //            status.Id = result.OrderStatus.SelectOrDefault(o => o.Id, 0);
             //            r = status;
             //        }
@@ -442,7 +444,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             //            if (result.NoVehicle.HasValue() && (result.OrderStatus.Id == 13))
             //            {
-            //                status.Status += Environment.NewLine + string.Format(ServiceLocator.Current.GetInstance<IAppResource>().CarAssigned, result.NoVehicle);
+            //                status.Status += Environment.NewLine + string.Format(TinyIoCContainer.Current.Resolve<IAppResource>().CarAssigned, result.NoVehicle);
             //            }
             //        }
 
@@ -451,16 +453,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             //    }
             //    else
             //    {
-            //        ServiceLocator.Current.GetInstance<ILogger>().LogMessage(result.ErrorMessage);
+            //        TinyIoCContainer.Current.Resolve<ILogger>().LogMessage(result.ErrorMessage);
             //    }
 
-            //    ServiceLocator.Current.GetInstance<ILogger>().LogMessage("End GetOrderStatus");
+            //    TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("End GetOrderStatus");
 
             //});
             return r;
         }
 
-        public bool IsCompleted(AccountData user, int orderId)
+        public bool IsCompleted(Account user, int orderId)
         {
             bool isCompleted = false;
             //UseService(service =>
@@ -486,7 +488,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return (statusId == 0) || (statusId == 7) || (statusId == 18) || (statusId == 22) || (statusId == 11);
         }
 
-        public bool CancelOrder(AccountData user, int orderId)
+        public bool CancelOrder(Account user, int orderId)
         {
             bool isCompleted = false;
             //UseService(service =>

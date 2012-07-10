@@ -7,6 +7,9 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 
         int[] InvalidProviderIds { get; }
 		string ServiceUrl { get;}
+
+        
+
 	}
 }
 

@@ -9,7 +9,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using Microsoft.Practices.ServiceLocation;
+using TinyIoC;
 using apcurium.MK.Booking.Mobile.Practices;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Infrastructure;
@@ -30,10 +30,14 @@ namespace apcurium.MK.Booking.Mobile.Client
         public TaxiMobileApplication App { get; set; }
         public void Initialize()
         {
-            ServiceLocator.Current.Register<IAppResource, ResourceManager>();
-            ServiceLocator.Current.RegisterSingleInstance2<IAppSettings>(new AppSettings(App));
-            ServiceLocator.Current.Register<ILogger,LoggerImpl>();
-            ServiceLocator.Current.RegisterSingleInstance2<IAppContext>(new AppContext(App));
+            TinyIoCContainer.Current.Register<IAppSettings>( new AppSettings(App));
+            TinyIoCContainer.Current.Register<IAppContext>(new AppContext(App));
+            TinyIoCContainer.Current.Register<IAppResource, ResourceManager>();
+            TinyIoCContainer.Current.Register<ILogger, LoggerImpl>();
+            //ServiceLocator.Current.Register<IAppResource, ResourceManager>();
+            //ServiceLocator.Current.RegisterSingleInstance2<IAppSettings>(new AppSettings(App));
+            //ServiceLocator.Current.Register<ILogger,LoggerImpl>();
+            //ServiceLocator.Current.RegisterSingleInstance2<IAppContext>(new AppContext(App));
         
         }
     }

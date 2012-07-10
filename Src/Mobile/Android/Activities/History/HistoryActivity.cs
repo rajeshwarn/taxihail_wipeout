@@ -106,17 +106,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
         private List<IDictionary<string, object>> GetHistory()
         {
             var result = new List<IDictionary<string, object>>();
-            var historic = AppContext.Current.LoggedUser.BookingHistory.Where(b => !b.Hide).OrderByDescending(b => b.Id).ToArray();
+            //TODO:Fix this
+            //var historic = AppContext.Current.LoggedUser.BookingHistory.Where(b => !b.Hide).OrderByDescending(b => b.Id).ToArray();
 
-            historic.ForEach(his =>
-            {
-                var history = new HistoryModel()
-                {
-                    Display = "#" + his.Id + " - " + his.PickupLocation.Address,
-                    Id = his.Id,
-                };
-                result.Add(CreateItem(ITEM_TITLE, history));
-            });
+            //historic.ForEach(his =>
+            //{
+            //    var history = new HistoryModel()
+            //    {
+            //        Display = "#" + his.Id + " - " + his.PickupLocation.FullAddress,
+            //        Id = his.Id,
+            //    };
+            //    result.Add(CreateItem(ITEM_TITLE, history));
+            //});
             return result;
         }
 

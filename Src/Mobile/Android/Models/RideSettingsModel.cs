@@ -5,6 +5,7 @@ using System.Linq;
 using apcurium.Framework.Extensions;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -14,7 +15,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         private IEnumerable<ListItem> _vehicleTypeList;
         private IEnumerable<ListItem> _chargeTypeList;
 
-        public RideSettingsModel(BookingSetting data, IEnumerable<ListItem> companyList, IEnumerable<ListItem> vehicleTypeList, IEnumerable<ListItem> chargeTypeList)
+        public RideSettingsModel(BookingSettings data, IEnumerable<ListItem> companyList, IEnumerable<ListItem> vehicleTypeList, IEnumerable<ListItem> chargeTypeList)
         {
             _companyList = companyList;
             _vehicleTypeList = vehicleTypeList;
@@ -22,16 +23,17 @@ namespace apcurium.MK.Booking.Mobile.Client
             Data = data;
         }
 
-        public BookingSetting Data
+        public BookingSettings Data
         {
             get;
             private set;
         }
 
+        //TODO:Fix this
         public string Name
         {
-            get { return Data.Name; }
-            set { Data.Name = value; }
+            get { return Data.FirstName + Data.LastName; }
+            set {  }
         }
 
         public string Phone
@@ -53,65 +55,70 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
         }
 
-        public int VehicleType
+        public int VehicleTypeId
         {
-            get { return Data.VehicleType; }
+            get { return Data.VehicleTypeId; }
             set
             {
-                Data.VehicleType = value;
+                Data.VehicleTypeId = value;
                 if (VehicleTypeList != null)
                 {
-                    var vehicleType = VehicleTypeList.SingleOrDefault(vt => vt.Id == VehicleType);
-                    Data.VehicleTypeName = vehicleType.Display;
+                    var vehicleType = VehicleTypeList.SingleOrDefault(vt => vt.Id == VehicleTypeId);
+                    //TODO:Fix this
+                    //Data.VehicleTypeName = vehicleType.Display;
                 }
             }
         }
 
-        public string VehicleTypeName
-        {
-            get { return Data.VehicleTypeName; }
-            private set { Data.VehicleTypeName = value; }
-        }
+        //TODO:Fix this
+        //public string VehicleTypeName
+        //{
+        //    get { return Data.VehicleTypeName; }
+        //    private set { Data.VehicleTypeName = value; }
+        //}
 
 
-        public int Company
+        public int ProviderId
         {
-            get { return Data.Company; }
+            get { return Data.ProviderId; }
             set
             {
-                Data.Company = value;
+                Data.ProviderId = value;
                 if (CompanyList != null)
                 {
-                    var company = CompanyList.SingleOrDefault(c => c.Id == Company);
-                    Data.CompanyName = company.Display;
+                    var company = CompanyList.SingleOrDefault(c => c.Id == ProviderId);
+                    //Data.CompanyName = company.Display;
                 }
             }
         }
 
-        public string CompanyName
-        {
-            get { return Data.CompanyName; }
-            private set { Data.CompanyName = value; }
-        }
+        //public string CompanyName
+        //{
+        //    get { return Data.CompanyName; }
+        //    private set { Data.CompanyName = value; }
+        //}
 
-        public int ChargeType
+        public int ChargeTypeId
         {
-            get { return Data.ChargeType; }
+            get { return Data.ChargeTypeId; }
             set
             {
-                Data.ChargeType = value;
+                Data.ChargeTypeId = value;
                 if (ChargeTypeList != null)
                 {
-                    var chargeType = ChargeTypeList.SingleOrDefault(ct => ct.Id == ChargeType);
-                    Data.ChargeTypeName = chargeType.Display;
+                    var chargeType = ChargeTypeList.SingleOrDefault(ct => ct.Id == ChargeTypeId);
+                    //TODO:Fix this
+                    //Data.ChargeTypeName = chargeType.Display;
                 }
             }
         }
-        public string ChargeTypeName
-        {
-            get { return Data.ChargeTypeName; }
-            private set { Data.ChargeTypeName = value; }
-        }
+
+        //TODO:Fix this
+        //public string ChargeTypeName
+        //{
+        //    get { return Data.ChargeTypeName; }
+        //    private set { Data.ChargeTypeName = value; }
+        //}
 
         public ListItem[] CompanyList { get { return _companyList.ToArray(); } }
         public ListItem[] VehicleTypeList { get { return _vehicleTypeList.ToArray(); } }

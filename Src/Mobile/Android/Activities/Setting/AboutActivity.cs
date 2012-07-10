@@ -11,7 +11,7 @@ using Android.Views;
 using Android.Widget;
 using Android.Webkit;
 
-using Microsoft.Practices.ServiceLocation;
+using TinyIoC;
 using apcurium.MK.Booking.Mobile.Localization;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 
@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 			SetContentView(Resource.Layout.About);
 			
 			string aboutUrl = "";
-			if( ServiceLocator.Current.GetInstance<IAppResource>().CurrentLanguage == AppLanguage.Francais )
+			if( TinyIoCContainer.Current.Resolve<IAppResource>().CurrentLanguage == AppLanguage.Francais )
 			{
 				aboutUrl = @"file:///android_asset/About_fr.html";
 			}

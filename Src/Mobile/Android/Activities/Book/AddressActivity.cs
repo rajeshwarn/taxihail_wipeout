@@ -11,7 +11,6 @@ using Android.Views;
 using Android.Views.InputMethods;
 using Android.Widget;
 using apcurium.Framework.Extensions;
-using Microsoft.Practices.ServiceLocation;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Activities.Location;
@@ -20,6 +19,8 @@ using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
 using apcurium.MK.Booking.Mobile.Client.Models;
 using apcurium.MK.Booking.Mobile.Client.Converters;
+using TinyIoC;
+using WS = apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -125,7 +126,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             get;
         }
 
-        protected abstract LocationData Location
+        protected abstract WS.Address Location
         {
             get;
             set;
@@ -164,13 +165,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             ThreadHelper.ExecuteInThread(Parent, () =>
                 {
-                    var service = ServiceLocator.Current.GetInstance<IBookingService>();
-                    var locations = service.SearchAddress(address);
+                    var found = TinyIoCContainer.Current.Resolve<IGeolocService>().ValidateAddress(address);
 
-                    if ((locations.Count() == 1) || (useFirst && locations.Any()))
+                    if (found != null)
                     {
-                        var location = locations.First();
-                        SetLocationData(location, changeZoom);
+                        SetLocationData(found, changeZoom);
                     }
                 }, false);
         }
@@ -179,11 +178,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             ThreadHelper.ExecuteInThread(Parent, () =>
             {
-                var service = ServiceLocator.Current.GetInstance<IBookingService>();
-                var locations = service.SearchAddress(CoordinatesConverter.ConvertFromE6(Map.MapCenter.LatitudeE6), CoordinatesConverter.ConvertFromE6(Map.MapCenter.LongitudeE6));
-                if ((locations.Count() == 1) || (useFirst && locations.Any()))
+                
+                var addresses = TinyIoCContainer.Current.Resolve<IGeolocService>().SearchAddress( CoordinatesConverter.ConvertFromE6(Map.MapCenter.LatitudeE6), CoordinatesConverter.ConvertFromE6(Map.MapCenter.LongitudeE6));
+
+
+                if ((addresses.Count() == 1) || (useFirst && addresses.Any()))
                 {
-                    var location = locations.First();
+                    var location = addresses.First();
                     SetLocationData(location, changeZoom);
                     location.ToSafeString();
                 }
@@ -192,21 +193,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         
 
-        public virtual void SetLocationData(LocationData location, bool changeZoom)
+        public virtual void SetLocationData(WS.Address location, bool changeZoom)
         {
             RunOnUiThread(() =>
                               {
                                   Address.FocusChange -= new EventHandler<View.FocusChangeEventArgs>(Address_FocusChange);
-                                  Address.Text = location.Address;
+                                  Address.Text = location.FullAddress;
                                   _lastCenter = MapService.SetLocationOnMap(Map, location);
-
-                                  
 
                                   MapService.AddPushPin(Map, MapPin, location, this, GetString(TitleResourceId));
                                   MapService.SetLocationOnMap(Map, location);
                                   if (changeZoom)
-                                  {
-                                      
+                                  {                                      
                                       Map.Controller.SetZoom(50);
                                   }
                                   Address.ClearFocus();
@@ -241,40 +239,47 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private void UpdateLocationFromAndroidPosition(Android.Locations.Location location, bool timeoutExpired, bool changeZoom)
         {
 
-            var service = ServiceLocator.Current.GetInstance<IBookingService>();
-            var locations = service.SearchAddress(location.Latitude, location.Longitude);
-
-            if (locations.Count() > 0)
+            var address = TinyIoCContainer.Current.Resolve<IAccountService>().FindInAccountAddresses(location.Latitude, location.Longitude);
+            if (address == null)
             {
-                var closeLocation =
-                    AppContext.Current.LoggedUser.FavoriteLocations.Where(
-                        d => d.Latitude.HasValue && d.Longitude.HasValue).FirstOrDefault(
-                            d =>
-                            (Math.Abs(d.Longitude.Value - locations[0].Longitude.Value) <= 0.002) &&
-                            (Math.Abs(d.Latitude.Value - locations[0].Latitude.Value) <= 0.002));
-                if (closeLocation == null)
-                {
-                    closeLocation =
-                        AppContext.Current.LoggedUser.BookingHistory.Where(
-                            b =>
-                            !b.Hide && (b.PickupLocation != null) && b.PickupLocation.Latitude.HasValue &&
-                            b.PickupLocation.Longitude.HasValue).Select(b => b.PickupLocation).FirstOrDefault(
-                                d =>
-                                (Math.Abs(d.Longitude.Value - locations[0].Longitude.Value) <= 0.001) &&
-                                (Math.Abs(d.Latitude.Value - locations[0].Latitude.Value) <= 0.001));
-                }
-
-                if (closeLocation != null )
-                {
-                    SetLocationData(closeLocation, changeZoom);
-                    
-                }
-                else if (locations.Any())
-                {
-                    SetLocationData(locations.First(), changeZoom);
-
-                }
+                address = TinyIoCContainer.Current.Resolve<IGeolocService>().SearchAddress(location.Latitude, location.Longitude).FirstOrDefault();
             }
+
+            SetLocationData(address, changeZoom);
+
+            //TODO: Move in common lib
+
+            //if (addresses.Count() > 0)
+            //{
+            //    var closeLocation =
+            //        AppContext.Current.LoggedUser.FavoriteLocations.Where(
+            //            d => d.Latitude.HasValue && d.Longitude.HasValue).FirstOrDefault(
+            //                d =>
+            //                (Math.Abs(d.Longitude.Value - addresses[0].Longitude) <= 0.002) &&
+            //                (Math.Abs(d.Latitude.Value - addresses[0].Latitude) <= 0.002));
+            //    if (closeLocation == null)
+            //    {
+            //        //closeLocation =
+            //        //    AppContext.Current.LoggedUser.BookingHistory.Where(
+            //        //        b =>
+            //        //        !b.Hide && (b.PickupLocation != null) && b.PickupLocation.Latitude.HasValue &&
+            //        //        b.PickupLocation.Longitude.HasValue).Select(b => b.PickupLocation).FirstOrDefault(
+            //        //            d =>
+            //        //            (Math.Abs(d.Longitude.Value - locations[0].Longitude.Value) <= 0.001) &&
+            //        //            (Math.Abs(d.Latitude.Value - locations[0].Latitude.Value) <= 0.001));
+            //    }
+
+            //    if (closeLocation != null )
+            //    {
+            //        SetLocationData(closeLocation, changeZoom);
+                    
+            //    }
+            //    else if (locations.Any())
+            //    {
+            //        SetLocationData(addresses.First(), changeZoom);
+
+            //    }
+            //}
         }
 
 
@@ -397,7 +402,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             if (list == null)
             {
-                list = AppContext.Current.LoggedUser.FavoriteLocations.Select(o => o.Address).ToArray();
+                //TODO : Fix this
+                //list = AppContext.Current.LoggedUser.FavoriteLocations.Select(o => o.Address).ToArray();
             }
             Address.Adapter = new ArrayAdapter<string>(this, Resource.Layout.ListItemAutoComplete, list);
         }

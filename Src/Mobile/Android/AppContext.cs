@@ -4,26 +4,26 @@ using Android.Locations;
 using Android.OS;
 using apcurium.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Data;
-using Microsoft.Practices.ServiceLocation;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
-
+using apcurium.MK.Booking.Api.Contract.Resources;
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
     public class AppContext :  IAppContext, ILocationListener
     {
         private const string _sharedPreferences = "TaxiMobile.SharedPreferences";
-		private AccountData _loggedUser;
+		private Account _loggedUser;
 
         
         public static AppContext Current
         {
             get
             {
-                return (AppContext)ServiceLocator.Current.GetInstance<IAppContext>();
+                return (AppContext)TinyIoCContainer.Current.Resolve<IAppContext>();
             }
         }
 
@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         public TaxiMobileApplication App { get; set; }
         public Context Context { get; set; }
 
-        public AccountData LoggedUser
+        public Account LoggedUser
         {
 
             get
@@ -48,18 +48,17 @@ namespace apcurium.MK.Booking.Mobile.Client
 	                var serializedUser = pref.GetString("LoggedUser", "");
 	                if (serializedUser.HasValue())
 	                {
-	                    _loggedUser = SerializerHelper.DeserializeObject<AccountData>(serializedUser);
+	                    _loggedUser = SerializerHelper.DeserializeObject<Account>(serializedUser);
 	                }
                     if (_loggedUser != null)
                     {
-                        if (_loggedUser.DefaultSettings == null)
+                        if (_loggedUser.Settings == null)
                         {
-                            _loggedUser.DefaultSettings = new BookingSetting();
+                            _loggedUser.Settings = new BookingSettings();
                         }
-                        if (_loggedUser.DefaultSettings.Company != 12)
+                        if (_loggedUser.Settings.ProviderId != 12)
                         {
-                            _loggedUser.DefaultSettings.Company = 12;
-                            _loggedUser.DefaultSettings.CompanyName = "Taxi Diamond";
+                            _loggedUser.Settings.ProviderId = 12;                            
                         }
                     }
 //	                else
@@ -79,7 +78,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                     pref.Edit().PutString("LoggedUser", serializedUser).Commit();
 
                     AppContext.Current.LoggedInEmail = value.Email;
-                    AppContext.Current.LoggedInPassword = value.Password;
+                    
                 }
                 else
                 {
@@ -92,7 +91,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         }
 
 
-        public void UpdateLoggedInUser(AccountData data, bool syncWithServer)
+        public void UpdateLoggedInUser(Account data, bool syncWithServer)
         {
 
             Logger.LogMessage("UpdateLoggedInUser");
@@ -102,7 +101,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 LoggedUser = data;                
                 if (syncWithServer)
                 {
-                    ServiceLocator.Current.GetInstance<IAccountService>().UpdateUser(data);
+                    TinyIoCContainer.Current.Resolve<IAccountService>().UpdateUser(data);
                 }
             }
             else
@@ -134,7 +133,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 var pref = App.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
                 return pref.GetString( "LoggedInEmail" , "" );
             }
-            private set
+            set
             {
                 var pref = App.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
                 pref.Edit().PutString( "LoggedInEmail", value ).Commit();
@@ -183,7 +182,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 var pref = App.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
                 return pref.GetString( "LoggedInPassword" , "" );
             }
-            private set
+            set
             {
                 var pref = App.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
                 pref.Edit().PutString( "LoggedInPassword", value ).Commit();

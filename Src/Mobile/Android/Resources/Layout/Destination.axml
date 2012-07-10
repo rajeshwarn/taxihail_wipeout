@@ -56,7 +56,7 @@
 
         <RelativeLayout    android:layout_width="fill_parent"  android:layout_below="@+id/fieldBackground"
      android:layout_height="wrap_content" >
-          <taximobile.controls.TouchMap
+          <apcurium.mk.booking.mobile.client.controls.TouchMap
               android:id="@+id/mapDestination"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"

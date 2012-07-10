@@ -205,6 +205,6 @@
   <string name="DateTimePickerPickInvalidDateTitle">Date / Heure Invalide</string>
   <string name="DateTimePickerPickInvalidDateMessage">La date de réservation doit être dans le future.</string>
   <string name="EditButton">Modifier</string>
-  <string name="SupportEmail">support.android@taxidiamond.com</string>
+  <string name="SupportEmail">techsupport@apcurium.com</string>
   <string name="TechSupportEmailTitle">Support Android</string>
 </resources>

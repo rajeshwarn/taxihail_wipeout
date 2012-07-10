@@ -123,7 +123,7 @@
 //            LocationData[] similars = new LocationData[0];
 //            if (_text.Text.HasValue ())
 //            {
-//                var service = ServiceLocator.Current.GetInstance<IBookingService> ();
+//                var service = TinyIoCContainer.Current.Resolve<IBookingService> ();
 //                similars = service.FindSimilar (_text.Text);
 				
 //                _similarDelegate.Similars = similars;
@@ -243,7 +243,7 @@
 //                {
 //                    _btn.Hidden = false;
 //                    _table.Hidden = true;
-//                    var service = ServiceLocator.Current.GetInstance<IBookingService> ();
+//                    var service = TinyIoCContainer.Current.Resolve<IBookingService> ();
 //                    var result = service.SearchAddress (_text.Text);
 				
 //                    Console.WriteLine ("Adrs found : " + result.Count ().ToString ());
@@ -427,7 +427,7 @@
 
 //        private void LoadAddress (double latitude, double longitude, bool isGPSNotAccurate, bool setRegionOnMap)
 //        {
-//            var service = ServiceLocator.Current.GetInstance<IBookingService> ();
+//            var service = TinyIoCContainer.Current.Resolve<IBookingService> ();
 //            var result = service.SearchAddress (latitude, longitude);
 //            if (  (result.Count () > 0) && ( result[0].Longitude.HasValue ) &&  ( result[0].Latitude.HasValue ) )
 //            {

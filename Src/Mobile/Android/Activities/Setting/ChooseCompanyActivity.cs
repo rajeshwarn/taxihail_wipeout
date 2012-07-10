@@ -10,7 +10,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 
-using Microsoft.Practices.ServiceLocation;
+using TinyIoC;
 using apcurium.MK.Booking.Mobile.Client.ListViewStructure;
 using apcurium.MK.Booking.Mobile.Client.ListViewCell;
 using apcurium.MK.Booking.Mobile.AppServices;
@@ -26,8 +26,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 		{
 			base.OnCreate (bundle);
 			
-			var currentSettings = AppContext.Current.LoggedUser.DefaultSettings;
-			var service = ServiceLocator.Current.GetInstance<IAccountService>();
+			var currentSettings = AppContext.Current.LoggedUser.Settings;
+			var service = TinyIoCContainer.Current.Resolve<IAccountService>();
 			var companyList = service.GetCompaniesList();
 //			var vehicleTypeList = service.GetVehiclesList();
 //			var chargeTypeList = service.GetPaymentsList();
@@ -53,7 +53,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 			
 			foreach( var c in model.CompanyList )
 			{
-				section.AddItem( new BooleanSectionItem( c.Id, c.Display, (item) => item.Key == model.Company, value => model.Company = value ) );	               
+                //TODO:Fix this
+				//section.AddItem( new BooleanSectionItem( c.Id, c.Display, (item) => item.Key == model.Company, value => model.Company = value ) );	               
 			}
 			
 
@@ -62,14 +63,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 		
 		private void UpdateDefaultRideSettings_Click(object sender, EventArgs e)
         {
-			AppContext.Current.LoggedUser.DefaultSettings.Company = _model.Company;
-			AppContext.Current.LoggedUser.DefaultSettings.CompanyName = _model.CompanyName;
-			Helpers.ThreadHelper.ExecuteInThread( Parent, () => {
-				var currentAccountData = AppContext.Current.LoggedUser;
-				currentAccountData.DefaultSettings = _model.Data;
-				currentAccountData.Name = _model.Data.Name;
-				AppContext.Current.UpdateLoggedInUser( currentAccountData, true );
-			},false );
+            //TODO:Fix this
+            //AppContext.Current.LoggedUser.Settings.Company = _model.Company;
+            //AppContext.Current.LoggedUser.Settings.CompanyName = _model.CompanyName;
+            //Helpers.ThreadHelper.ExecuteInThread( Parent, () => {
+            //    var currentAccountData = AppContext.Current.LoggedUser;
+            //    currentAccountData.Settings = _model.Data;
+            //    currentAccountData.FirstName = _model.Data.Name;
+            //    AppContext.Current.UpdateLoggedInUser( currentAccountData, true );
+            //},false );
 			Finish();
 		}
 		

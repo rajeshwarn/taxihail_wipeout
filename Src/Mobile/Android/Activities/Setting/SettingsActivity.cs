@@ -44,13 +44,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 		
 		private void CallCie_Click(object sender, EventArgs e)
         {
-			RunOnUiThread(() => AlertDialogHelper.Show( this, "",  AppSettings.PhoneNumberDisplay(AppContext.Current.LoggedUser.DefaultSettings.Company), "Call", CallCie, "Cancel", delegate {} ) );
+            //TODO:Fix this
+            RunOnUiThread(() => AlertDialogHelper.Show(this, "", AppSettings.PhoneNumberDisplay(AppContext.Current.LoggedUser.Settings.ProviderId), "Call", CallCie, "Cancel", delegate { }));
 		}
 		
 		private void CallCie( object sender, EventArgs e )
 		{
 			Intent callIntent = new Intent(Intent.ActionCall);
-			callIntent.SetData(Android.Net.Uri.Parse("tel:" + AppSettings.PhoneNumber(AppContext.Current.LoggedUser.DefaultSettings.Company) ));
+            //TODO:Fix this
+            //callIntent.SetData(Android.Net.Uri.Parse("tel:" + AppSettings.PhoneNumber(AppContext.Current.LoggedUser.Settings.Company)));
 			StartActivity(callIntent);
 				
 		}
@@ -106,11 +108,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 			
 			if( AppContext.Current.LoggedUser != null )
 			{
-				FindViewById<TextView>(Resource.Id.signedInInfoText).Text = string.Format( Resources.GetString( Resource.String.SettingViewLoginInfo ), AppContext.Current.LoggedUser.Name );
+				FindViewById<TextView>(Resource.Id.signedInInfoText).Text = string.Format( Resources.GetString( Resource.String.SettingViewLoginInfo ), AppContext.Current.LoggedUser.FirstName );
 			}
 			var callCieBtn = FindViewById<TextView>(Resource.Id.CallCompanyButton);
-			callCieBtn.Text = string.Format( Resources.GetString( Resource.String.CallCompanyButton ), AppContext.Current.LoggedUser.DefaultSettings.CompanyName );
-			//Parent.FindViewById<ImageButton>(Resource.Id.logo).SetImageResource( AppSettings.GetLogo( AppContext.Current.LoggedUser.DefaultSettings.Company ) );
+            //TODO:Fix this
+            //callCieBtn.Text = string.Format( Resources.GetString( Resource.String.CallCompanyButton ), AppContext.Current.LoggedUser.Settings.CompanyName );
 		}
 		
 	

@@ -2,8 +2,8 @@ using System;
 using System.IO;
 using System.Net;
 using System.Text;
-using Microsoft.Practices.ServiceLocation;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Client.Helpers
 {
@@ -101,7 +101,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
 			}
 			catch ( Exception ex )
 			{
-				ServiceLocator.Current.GetInstance<ILogger>().LogError ( ex );
+				TinyIoCContainer.Current.Resolve<ILogger>().LogError ( ex );
 			}
 			finally
 			{
@@ -159,7 +159,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
 			}
 			catch ( Exception ex )
 			{
-                ServiceLocator.Current.GetInstance<ILogger>().LogError(ex);
+                TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex);
 			}
 			finally
 			{

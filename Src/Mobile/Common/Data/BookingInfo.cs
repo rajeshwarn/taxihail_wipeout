@@ -1,30 +1,32 @@
 using System;
-using Microsoft.Practices.ServiceLocation;
-using apcurium.MK.Booking.Mobile.AppServices;
 
+using apcurium.MK.Booking.Mobile.AppServices;
+using TinyIoC;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.Extensions;
 namespace apcurium.MK.Booking.Mobile.Data
 {
     public class BookingInfoData
     {
-        private LocationData _pickupLocation;
-
-        private LocationData _destinationLocation;
+        
+        private Address _pickupLocation;
+        private Address _destinationLocation;
 
 
         public BookingInfoData()
         {
-            PickupLocation = new LocationData();
-            DestinationLocation = new LocationData();
-            Settings = new BookingSetting();
+            PickupLocation = new Address();
+            DestinationLocation = new Address();
+            Settings = new BookingSettings();
         }
 
-        public LocationData PickupLocation
+        public Address PickupLocation
         {
             get { return _pickupLocation; }
             set { _pickupLocation = value; }
         }
 
-        public LocationData DestinationLocation
+        public Address DestinationLocation
         {
             get { return _destinationLocation; }
             set { _destinationLocation = value; }
@@ -38,7 +40,7 @@ namespace apcurium.MK.Booking.Mobile.Data
 
         public DateTime? RequestedDateTime { get; set; }
 
-        public BookingSetting Settings { get; set; }
+        public BookingSettings Settings { get; set; }
 
         public string Status { get; set; }
 
@@ -59,14 +61,17 @@ namespace apcurium.MK.Booking.Mobile.Data
         }
 
 
-        public double? GetDistance()
+
+
+         
+
+        public DirectionInfo  GetDirectionInfo()
         {
-            double? result = null;
+            var result = new DirectionInfo();
 
             if (PickupLocation.HasValidCoordinate() && DestinationLocation.HasValidCoordinate())
             {
-                var service = ServiceLocator.Current.GetInstance<IBookingService>();
-                result = service.GetRouteDistance(PickupLocation.Longitude.Value, PickupLocation.Latitude.Value, DestinationLocation.Longitude.Value, DestinationLocation.Latitude.Value);
+                result = TinyIoCContainer.Current.Resolve<IGeolocService>().GetDirectionInfo(PickupLocation.Longitude, PickupLocation.Latitude, DestinationLocation.Longitude, DestinationLocation.Latitude);
             }
 
             return result;

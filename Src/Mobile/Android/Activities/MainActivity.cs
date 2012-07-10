@@ -9,7 +9,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using Microsoft.Practices.ServiceLocation;
+using TinyIoC;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Activities.Setting;
 using apcurium.MK.Booking.Mobile.Client.Activities.History;
@@ -65,7 +65,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
                 bool statusShown = false;
                 if (AppContext.Current.LastOrder.HasValue)
                 {
-                    var isCompleted = ServiceLocator.Current.GetInstance<IBookingService>().IsCompleted(AppContext.Current.LoggedUser, AppContext.Current.LastOrder.Value);
+                    var isCompleted = TinyIoCContainer.Current.Resolve<IBookingService>().IsCompleted(AppContext.Current.LoggedUser, AppContext.Current.LastOrder.Value);
                     if (!isCompleted)
                     {
                         statusShown = true;

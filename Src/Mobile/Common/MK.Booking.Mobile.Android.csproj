@@ -46,6 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppServices\IGeolocService.cs" />
+    <Compile Include="AppServices\Impl\GeolocService.cs" />
     <Compile Include="Data\AccountData.cs" />
     <Compile Include="Data\BookingInfo.cs" />
     <Compile Include="Data\BookingSetting.cs" />
@@ -57,6 +59,8 @@
     <Compile Include="Data\LocationDataExtension.cs" />
     <Compile Include="Data\OrderStatus.cs" />
     <Compile Include="Data\ResetPasswordData.cs" />
+    <Compile Include="Extensions\AddressExtension.cs" />
+    <Compile Include="Extensions\BookingSettingsExtension.cs" />
     <Compile Include="Framework\DisposableAction.cs" />
     <Compile Include="Framework\Extensions\ActionExtensions.cs" />
     <Compile Include="Framework\Extensions\Calendar\ByteTimeSpanExtensions.cs" />
@@ -129,6 +133,7 @@
       <Name>MK.Common.Android</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -43,8 +43,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="0px"
                 android:layout_weight="1">
-                <taximobile.controls.TouchMap
-                    android:id="@+id/mapStatus"
+              <apcurium.mk.booking.mobile.client.controls.TouchMap
+                  android:id="@+id/mapStatus"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:apiKey="0XEY3WqKVmJNPdO_6HbYCNKId-81eCqYBVEb-Jw"

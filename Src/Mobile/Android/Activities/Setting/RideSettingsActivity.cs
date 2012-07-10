@@ -9,13 +9,14 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using Microsoft.Practices.ServiceLocation;
+using TinyIoC;
 using apcurium.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Client.ListViewStructure;
 using apcurium.MK.Booking.Mobile.Client.ListViewCell;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 {
@@ -29,20 +30,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 		{
 			base.OnCreate (bundle);
 			
-			BookingSetting currentSettings = null;
+			BookingSettings currentSettings = null;
 			var serializedSettings = Intent.GetStringExtra("BookingSettings");
 			if( serializedSettings.HasValue() )
 			{
-				currentSettings = SerializerHelper.DeserializeObject<BookingSetting>( serializedSettings );
+				currentSettings = SerializerHelper.DeserializeObject<BookingSettings>( serializedSettings );
 				_updateDefaultSettings = false;
 			}
 			else
 			{
-				currentSettings = AppContext.Current.LoggedUser.DefaultSettings;
+				currentSettings = AppContext.Current.LoggedUser.Settings;
 				_updateDefaultSettings = true;
 			}
 			
-			var service = ServiceLocator.Current.GetInstance<IAccountService>();
+			var service = TinyIoCContainer.Current.Resolve<IAccountService>();
 			var companyList = service.GetCompaniesList();
 			var vehicleTypeList = service.GetVehiclesList();
 			var chargeTypeList = service.GetPaymentsList();
@@ -69,9 +70,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 			section.AddItem( new TextEditSectionItem( Resources.GetString( Resource.String.RideSettingsName ), () => model.Name, (value) => model.Name = value ) );
 			section.AddItem( new TextEditSectionItem( Resources.GetString( Resource.String.RideSettingsPhone ), () => model.Phone, (value) => model.Phone = value ) );
 			section.AddItem( new TextEditSectionItem( Resources.GetString( Resource.String.RideSettingsPassengers ), () => model.NbOfPassenger, (value) => model.NbOfPassenger = value ) );
-			section.AddItem( new SpinnerSectionItem( Resources.GetString( Resource.String.RideSettingsVehiculeType ), () => model.VehicleType, (value) => model.VehicleType = value, () => model.VehicleTypeList.Select( i => new ListItemData { Key = i.Id, Value = i.Display } ).ToList() ) );
-			//section.AddItem( new SpinnerSectionItem( Resources.GetString( Resource.String.RideSettingsCompany ), () => model.Company, (value) => model.Company = value, () => model.CompanyList.Select( i => new ListItemData { Key = i.Id, Value = i.Display } ).ToList() ) );
-			section.AddItem( new SpinnerSectionItem( Resources.GetString( Resource.String.RideSettingsChargeType ), () => model.ChargeType, (value) => model.ChargeType = value, () => model.ChargeTypeList.Select( i => new ListItemData { Key = i.Id, Value = i.Display } ).ToList() ) );
+			section.AddItem( new SpinnerSectionItem( Resources.GetString( Resource.String.RideSettingsVehiculeType ), () => model.VehicleTypeId, (value) => model.VehicleTypeId = value, () => model.VehicleTypeList.Select( i => new ListItemData { Key = i.Id, Value = i.Display } ).ToList() ) );
+            
+            //TODO:Fix this
+//			/section.AddItem( new SpinnerSectionItem( Resources.GetString( Resource.String.RideSettingsCompany ), () => model.Company, (value) => model.Company = value, () => model.CompanyList.Select( i => new ListItemData { Key = i.Id, Value = i.Display } ).ToList() ) );
+	//		section.AddItem( new SpinnerSectionItem( Resources.GetString( Resource.String.RideSettingsChargeType ), () => model.ChargeTypeId, (value) => model.ChargeType = value, () => model.ChargeTypeList.Select( i => new ListItemData { Key = i.Id, Value = i.Display } ).ToList() ) );
 			
 			return structure;
 		}
@@ -83,8 +86,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 				{
 
 					var currentAccountData = AppContext.Current.LoggedUser;
-					currentAccountData.DefaultSettings = _model.Data;
-					currentAccountData.Name = _model.Data.Name;
+					currentAccountData.Settings = _model.Data;
+                    //TODO:Fix this
+					//currentAccountData.FirstName = _model.Data.Name;
 					AppContext.Current.UpdateLoggedInUser( currentAccountData, true );
 
 				}

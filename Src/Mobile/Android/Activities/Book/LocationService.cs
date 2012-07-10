@@ -10,7 +10,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.Locations;
-using Microsoft.Practices.ServiceLocation;
+using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
@@ -81,7 +81,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             var autoReset = new AutoResetEvent(false);
             var result = LastLocation;
 
-            ServiceLocator.Current.GetInstance<ILogger>().LogMessage("Start WaitForAccurateLocation");
+            TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Start WaitForAccurateLocation");
 
             _locMgr.RequestLocationUpdates(LocationManager.GpsProvider, 0, 0, _gpsListener);
             //_locMgr.RequestLocationUpdates(LocationManager.NetworkProvider, 0, 0, _networkListener);
@@ -99,11 +99,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                     {
                         if (LastLocation != null)
                         {
-                            ServiceLocator.Current.GetInstance<ILogger>().LogMessage("Current location : " + LastLocation.Provider + " pos Lat : " + LastLocation.Latitude.ToString() + "Pos Long : " + LastLocation.Longitude.ToString()+ " + Accuracy : " + LastLocation.Accuracy.ToString());
+                            TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Current location : " + LastLocation.Provider + " pos Lat : " + LastLocation.Latitude.ToString() + "Pos Long : " + LastLocation.Longitude.ToString()+ " + Accuracy : " + LastLocation.Accuracy.ToString());
                             result = LastLocation;
                             if (result.Accuracy <= accuracy)
                             {
-                                ServiceLocator.Current.GetInstance<ILogger>().LogMessage("Good location found! : " + result.Provider.ToString());
+                                TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Good location found! : " + result.Provider.ToString());
                                 timeoutExpiredResult = false;
                                 autoReset.Set();
                             }
@@ -121,10 +121,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             if (timeoutExpired)
             {
-                ServiceLocator.Current.GetInstance<ILogger>().LogMessage("Location search timed out");
+                TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Location search timed out");
             }
 
-            ServiceLocator.Current.GetInstance<ILogger>().LogMessage("Done WaitForAccurateLocation");
+            TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Done WaitForAccurateLocation");
 
             if (result == null)
             {
@@ -192,7 +192,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         public void LocationChanged(Android.Locations.Location location)
         {
-            ServiceLocator.Current.GetInstance<ILogger>().LogMessage("Location changed : " + GetLocationText(location));
+            TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Location changed : " + GetLocationText(location));
             if (IsBetterLocation(location, LastLocation))
             {
                 LastLocation = location;

@@ -91,7 +91,7 @@
 //            }
 			
 //            if (address.LocationName.HasValue() &&((!result.Longitude.HasValue) || (result.Longitude.Value == 0) || (!result.Latitude.HasValue) || (result.Latitude.Value == 0))) {
-//                var adrs = ServiceLocator.Current.GetInstance<IBookingService>().SearchAddress(address.AddressAndCity).FirstOrDefault();
+//                var adrs = TinyIoCContainer.Current.Resolve<IBookingService>().SearchAddress(address.AddressAndCity).FirstOrDefault();
 //                if (adrs != null) {
 //                    result.Latitude = adrs.Latitude;
 //                    result.Longitude = adrs.Longitude;
