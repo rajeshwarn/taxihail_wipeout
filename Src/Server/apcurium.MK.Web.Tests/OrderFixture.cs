@@ -95,13 +95,14 @@ namespace apcurium.MK.Web.Tests
             });
             Assert.NotNull(orders);
             Assert.AreEqual("3939",orders.PickupApartment);
-            Assert.AreEqual("1234 rue Saint-Hubert", orders.PickupAddress);
+            Assert.AreEqual("220 Yonge Street", orders.PickupAddress);
             Assert.AreEqual("3131", orders.PickupRingCode);
-            Assert.AreEqual(45.515065, orders.PickupLatitude);
-            Assert.AreEqual(-73.558064, orders.PickupLongitude);
+            Assert.AreEqual(45.50643, orders.PickupLatitude);
+            Assert.AreEqual(-79.3800, orders.PickupLongitude);
             Assert.AreEqual("Velvet auberge st gabriel", orders.DropOffAddress);
-            Assert.AreEqual(45.50643, orders.DropOffLatitude);
-            Assert.AreEqual(-73.554052, orders.DropOffLongitude);
+            Assert.AreEqual(43.6540, orders.DropOffLatitude);
+            Assert.AreEqual(-73.558064, orders.DropOffLongitude);             
+
         }
     }
 }
