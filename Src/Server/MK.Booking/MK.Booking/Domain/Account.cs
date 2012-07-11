@@ -28,10 +28,10 @@ namespace apcurium.MK.Booking.Domain
             this.LoadFrom(history);
         }
 
-        public Account(Guid id, string firstName, string lastName, string phone, string email, byte[] password, int ibsAccountId)
+        public Account(Guid id, string name,string phone, string email, byte[] password, int ibsAccountId)
             : this(id)
         {
-            if (Params.Get(firstName, lastName, phone,email).Any(p => p.IsNullOrEmpty())
+            if (Params.Get(name,phone,email).Any(p => p.IsNullOrEmpty())
                 || ibsAccountId == 0 || password == null)
             {
                 throw new InvalidOperationException("Missing required fields");
@@ -39,8 +39,7 @@ namespace apcurium.MK.Booking.Domain
             this.Update(new AccountRegistered
             {
                 SourceId = id,
-                FirstName = firstName,
-                LastName = lastName,
+                Name = name,
                 Email = email,
                 Phone = phone,
                 Password = password,
@@ -48,9 +47,9 @@ namespace apcurium.MK.Booking.Domain
             });
         }        
         
-        internal void Update( string firstName, string lastName )
+        internal void Update( string name )
         {
-            if (Params.Get(firstName, lastName).Any(p => p.IsNullOrEmpty()))
+            if (Params.Get(name).Any(p => p.IsNullOrEmpty()))
             {
                 throw new InvalidOperationException("Missing required fields");
             }
@@ -58,8 +57,7 @@ namespace apcurium.MK.Booking.Domain
             this.Update(new AccountUpdated
             {                 
                 SourceId= Id,
-                FirstName = firstName,
-                LastName = lastName,
+                Name = name,                
             });        
         }
 
@@ -82,8 +80,7 @@ namespace apcurium.MK.Booking.Domain
             this.Update(new BookingSettingsUpdated
             {
                 SourceId = Id,
-                FirstName = settings.FirstName,
-                LastName = settings.LastName,
+                Name = settings.Name,                
                 ChargeTypeId = settings.ChargeTypeId,
                 NumberOfTaxi = settings.NumberOfTaxi,
                 Passengers = settings.Passengers,

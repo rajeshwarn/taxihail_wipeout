@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
             bus.Setup(x => x.Send(It.IsAny<IEnumerable<Envelope<ICommand>>>()))
                 .Callback<IEnumerable<Envelope<ICommand>>>(x => this.commands.AddRange(x.Select(e => e.Body)));
 
-            this.sut = new AccountDetailsGenerator(() => new BookingDbContext(dbName));
+            this.sut = new AccountDetailsGenerator(() => new BookingDbContext(dbName), new TestConfigurationManager());
         }
     }
 
@@ -57,8 +57,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
             this.sut.Handle(new AccountRegistered
                                 {
                                     SourceId = accountId,
-                                    FirstName = "Bob",
-                                    LastName = "Smith",
+                                    Name = "Bob",                                    
                                     Email = "bob.smith@acpurium.com",
                                     Password = new byte[1] {1},
                                     IbsAcccountId = 666
@@ -69,13 +68,45 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 var dto = context.Find<AccountDetail>(accountId);
 
                 Assert.NotNull(dto);
-                Assert.AreEqual("Bob", dto.FirstName);
-                Assert.AreEqual("Smith", dto.LastName);
+                Assert.AreEqual("Bob", dto.Name);                
                 Assert.AreEqual("bob.smith@acpurium.com", dto.Email);
                 Assert.AreEqual(1, dto.Password.Length);
                 Assert.AreEqual(666, dto.IBSAccountid);
             }
         }
+
+        [Test]
+        public void when_account_registered_then_account_settings_populated()
+        {
+            var accountId = Guid.NewGuid();
+
+            this.sut.Handle(new AccountRegistered
+            {
+                SourceId = accountId,
+                Name = "Bob",
+                Email = "bob.smith@acpurium.com",
+                Phone = "555.555.2525",
+                Password = new byte[1] { 1 },
+                IbsAcccountId = 666
+            });
+
+            using (var context = new BookingDbContext(dbName))
+            {
+                var dto = context.Find<AccountDetail>(accountId);
+
+                Assert.NotNull(dto);
+                Assert.AreEqual(dto.Settings.Name, dto.Name);
+                Assert.AreEqual(dto.Settings.Phone  , dto.Phone);
+
+                var config = new TestConfigurationManager();                
+                Assert.AreEqual(dto.Settings.ChargeTypeId.ToString(), config.GetSetting("DefaultBookingSettings.ChargeTypeId"));
+                Assert.AreEqual(dto.Settings.Passengers.ToString(), config.GetSetting("DefaultBookingSettings.NbPassenger"));
+                Assert.AreEqual(dto.Settings.VehicleTypeId.ToString(), config.GetSetting("DefaultBookingSettings.VehicleTypeId"));
+                Assert.AreEqual(dto.Settings.ProviderId.ToString(), config.GetSetting("DefaultBookingSettings.ProviderId"));
+                
+            }
+        }
+
     }
 
     [TestFixture]
@@ -88,8 +119,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
             this.sut.Handle(new AccountRegistered
                                 {
                                     SourceId = _accountId,
-                                    FirstName = "Bob",
-                                    LastName = "Smith",
+                                    Name = "Bob",                                    
                                     Email = "bob.smith@acpurium.com",
                                     Password = new byte[1] {1}
                                 });
@@ -102,8 +132,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
             this.sut.Handle(new AccountUpdated
                                 {
                                     SourceId = _accountId,
-                                    FirstName = "Robert",
-                                    LastName = "Smither",
+                                    Name = "Robert",                                    
                                 });
 
             using (var context = new BookingDbContext(dbName))
@@ -111,8 +140,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 var dto = context.Find<AccountDetail>(_accountId);
 
                 Assert.NotNull(dto);
-                Assert.AreEqual("Robert", dto.FirstName);
-                Assert.AreEqual("Smither", dto.LastName);
+                Assert.AreEqual("Robert", dto.Name);                
             }
         }
 
@@ -147,8 +175,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 this.sut.Handle(new AccountRegistered
                                     {
                                         SourceId = _accountId,
-                                        FirstName = "Bob",
-                                        LastName = "Smith",
+                                        Name = "Bob",                                        
                                         Email = "bob.smith@acpurium.com",
                                         Password = new byte[1] {1}
                                     });
@@ -161,8 +188,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 this.sut.Handle(new BookingSettingsUpdated
                                     {
                                         SourceId = _accountId,
-                                        FirstName = "Robert",
-                                        LastName = "Smither",
+                                        Name = "Robert",                                        
                                         ChargeTypeId = 123,
                                         NumberOfTaxi = 3,
                                         Phone = "123",
@@ -176,8 +202,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                     var dto = context.Find<AccountDetail>(_accountId);
 
                     Assert.NotNull(dto);
-                    Assert.AreEqual("Robert", dto.Settings.FirstName);
-                    Assert.AreEqual("Smither", dto.Settings.LastName);
+                    Assert.AreEqual("Robert", dto.Settings.Name);                    
                     Assert.AreEqual(123, dto.Settings.ChargeTypeId);
                     Assert.AreEqual(3, dto.Settings.NumberOfTaxi);
                     Assert.AreEqual("123", dto.Settings.Phone);

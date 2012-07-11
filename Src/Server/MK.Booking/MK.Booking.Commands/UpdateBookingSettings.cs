@@ -10,9 +10,8 @@ namespace apcurium.MK.Booking.Commands
             Id = Guid.NewGuid();
         }
 
-        public Guid Id { get; set; }
-        public string LastName { get; set; }
-        public string FirstName { get; set; }
+        public Guid Id { get; set; }        
+        public string Name { get; set; }
         public string Phone { get; set; }
         public int Passengers { get; set; }
         public int VehicleTypeId { get; set; }

@@ -25,7 +25,9 @@ namespace apcurium.MK.Booking.Api.Services
         public override object OnGet(CurrentAccount request)
         {
             var session = this.GetSession() ;
-            return Dao.FindById( new Guid( session.UserAuthId) );
+            var account = Dao.FindById( new Guid( session.UserAuthId) );
+            account.Settings.ToString(); 
+            return account;
         }
     }
 }

@@ -31,14 +31,14 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(RegisterAccount command)
         {
             var password = _passwordService.EncodePassword(command.Password, command.AccountId.ToString());
-            var account = new Account(command.AccountId, command.FirstName, command.LastName, command.Phone, command.Email, password, command.IbsAccountId);
+            var account = new Account(command.AccountId, command.Name, command.Phone, command.Email, password, command.IbsAccountId);
             _repository.Save(account);
         }
 
         public void Handle(UpdateAccount command)
         {
             var account = _repository.Find(command.AccountId);
-            account.Update(command.FirstName, command.LastName);
+            account.Update(command.Name);
             _repository.Save(account);
             
         }

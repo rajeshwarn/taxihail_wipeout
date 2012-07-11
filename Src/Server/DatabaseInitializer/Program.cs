@@ -107,6 +107,10 @@ namespace DatabaseInitializer
             configurationManager.SetSetting("Smtp.Credentials.Username", "donotreply@apcurium.com");
             configurationManager.SetSetting("Smtp.Credentials.Password", "2wsxCDE#");
 
+            configurationManager.SetSetting("DefaultBookingSettings.ChargeTypeId", "1");
+            configurationManager.SetSetting("DefaultBookingSettings.NbPassenger", "2");
+            configurationManager.SetSetting("DefaultBookingSettings.VehicleTypeId", "1");
+            configurationManager.SetSetting("DefaultBookingSettings.ProviderId", "13");
 
 
 

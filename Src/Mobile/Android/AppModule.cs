@@ -14,6 +14,7 @@ using apcurium.MK.Booking.Mobile.Practices;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Client.Diagnostic;
+using apcurium.MK.Booking.Mobile.Client.Cache;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -34,6 +35,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             TinyIoCContainer.Current.Register<IAppContext>(new AppContext(App));
             TinyIoCContainer.Current.Register<IAppResource, ResourceManager>();
             TinyIoCContainer.Current.Register<ILogger, LoggerImpl>();
+
+            TinyIoCContainer.Current.Register<ICacheService>(new CacheService(App));
+            
             //ServiceLocator.Current.Register<IAppResource, ResourceManager>();
             //ServiceLocator.Current.RegisterSingleInstance2<IAppSettings>(new AppSettings(App));
             //ServiceLocator.Current.Register<ILogger,LoggerImpl>();

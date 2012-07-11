@@ -40,7 +40,7 @@ namespace apcurium.MK.Booking.IBS.Impl
 
         public int? CreateOrder(int providerId, int accountId, string passengerName, string phone, int nbPassengers, int vehicleTypeId, string note, DateTime? pickupDateTime, Address pickup, Address dropoff)
         {
-            var order = new TBookOrder();
+            var order = new TBookOrder_5();
 
             order.ServiceProviderID = 0;// providerId;
             order.AccountID = 0;//accountId;
@@ -58,17 +58,19 @@ namespace apcurium.MK.Booking.IBS.Impl
             order.VehicleTypeID = vehicleTypeId;
             order.Note = note;
             order.ContactPhone = phone;
-            var now = DateTime.Now;    
-            //order.OrderDate = new TWEBTimeStamp{ Year= now.Year, Month = now.Month, Day=now.Day, Hour = now.Hour , Minute = now.Minute, Second=now.Second ,Fractions =now.Millisecond };
-
-            //order.OrderStatus = TWEBOrderStatusValue.wosPost;
+            order.OrderStatus = TWEBOrderStatusValue.wosPost;
+            
             int? orderId = null;
-             UseService(service =>
+
+            
+            UseService(service =>
             {
                 try
                 {
-                    var oorderId = service.SaveBookOrder(_userNameApp, _passwordApp, order);
-                    oorderId.ToString();
+                    orderId = service.SaveBookOrder_5(_userNameApp, _passwordApp, order);
+                    var s = service.GetOrderStatus(_userNameApp, _passwordApp, orderId.Value, null, null, 0);
+                    var b = service.GetBookOrder_5(_userNameApp, _passwordApp, orderId.Value, null, null, 0);
+                    s.ToString();
                 }
                 catch
                     (Exception ex)

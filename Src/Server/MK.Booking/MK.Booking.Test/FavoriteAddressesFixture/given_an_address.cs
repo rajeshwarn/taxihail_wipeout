@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.Test.FavoriteAddressesFixture
         {
             this.sut = new EventSourcingTestHelper<Account>();
             this.sut.Setup(new FavoriteAddressCommandHandler(this.sut.Repository));
-            this.sut.Given(new AccountRegistered { SourceId = _accountId, FirstName = "Bob", LastName = "Smith", Password = null, Email = "bob.smith@apcurium.com" });
+            this.sut.Given(new AccountRegistered { SourceId = _accountId, Name = "Bob", Password = null, Email = "bob.smith@apcurium.com" });
             this.sut.Given(new FavoriteAddressAdded { AddressId = _addressId, SourceId = _accountId, FriendlyName = "Chez François", Apartment = "3939", FullAddress = "1234 rue Saint-Hubert", RingCode = "3131", Latitude = 45.515065, Longitude = -73.558064 });
         }
 

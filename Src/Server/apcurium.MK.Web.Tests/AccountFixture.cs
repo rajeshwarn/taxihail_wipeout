@@ -38,8 +38,7 @@ namespace apcurium.MK.Web.Tests
             Assert.IsNotNull(acc);
             Assert.AreEqual(acc.Id, TestAccount.Id);
             Assert.AreEqual(acc.Email, TestAccount.Email);
-            Assert.AreEqual(acc.FirstName, TestAccount.FirstName);
-            Assert.AreEqual(acc.LastName, TestAccount.LastName);
+            Assert.AreEqual(acc.Name, TestAccount.Name);            
             Assert.AreEqual(acc.Phone, TestAccount.Phone);
 
         }
@@ -65,7 +64,7 @@ namespace apcurium.MK.Web.Tests
         public void RegisteringAccountTest()
         {
             var sut = new AccountServiceClient(BaseUrl, null);
-            var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), FirstName = "First Name Test", LastName = "Last Name Test", Password = "password" };
+            var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", Password = "password" };
             sut.RegisterAccount(newAccount);
 
 
@@ -82,12 +81,12 @@ namespace apcurium.MK.Web.Tests
             string email = GetTempEmail();
 
             var sut = new AccountServiceClient(BaseUrl, null);
-            var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = email, FirstName = "First Name Test", LastName = "Last Name Test", Password = "password" };
+            var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = email, Name = "First Name Test", Password = "password" };
             sut.RegisterAccount(newAccount);
 
 
             var sut2 = new AccountServiceClient(BaseUrl, null);
-            var newAccount2 = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = email, FirstName = "First Name Test", LastName = "Last Name Test", Password = "password" };
+            var newAccount2 = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = email, Name = "First Name Test", Password = "password" };
             sut.RegisterAccount(newAccount);
 
 
@@ -101,7 +100,7 @@ namespace apcurium.MK.Web.Tests
 
             var sut = new AccountServiceClient(BaseUrl, null);
 
-            var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = email, FirstName = "First Name Test", LastName = "Last Name Test", Password = password };
+            var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = email, Name = "First Name Test", Password = password };
             sut.RegisterAccount(newAccount);
 
             sut = new AccountServiceClient(BaseUrl, new AuthInfo(email, password));
@@ -127,8 +126,7 @@ namespace apcurium.MK.Web.Tests
             var settings = new BookingSettingsRequest
             {
                 ChargeTypeId = 3,
-                FirstName = "toto",
-                LastName = "titi",
+                Name = "toto",                
                 NumberOfTaxi = 6,
                 Passengers = 8,
                 Phone = "12345",
@@ -143,7 +141,7 @@ namespace apcurium.MK.Web.Tests
             var account = sut.GetMyAccount();
 
             Assert.AreEqual(settings.ChargeTypeId, account.Settings.ChargeTypeId);
-            Assert.AreEqual(settings.FirstName, account.Settings.FirstName);
+            Assert.AreEqual(settings.Name, account.Settings.Name);
             Assert.AreEqual(settings.NumberOfTaxi, account.Settings.NumberOfTaxi);
             Assert.AreEqual(settings.Passengers, account.Settings.Passengers);
             Assert.AreEqual(settings.Phone, account.Settings.Phone);

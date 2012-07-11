@@ -27,6 +27,12 @@ namespace apcurium.MK.Booking.Common.Tests
 
             config.Add("Email.NoReply", "noreply@apcurium.com");
 
+            config.Add("DefaultBookingSettings.ChargeTypeId", "1");
+            config.Add("DefaultBookingSettings.NbPassenger", "2");
+            config.Add("DefaultBookingSettings.VehicleTypeId", "1");
+            config.Add("DefaultBookingSettings.ProviderId", "13");
+            
+
             return config[key];
             
         }

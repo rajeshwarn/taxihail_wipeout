@@ -38,7 +38,7 @@
     <AndroidLinkMode>None</AndroidLinkMode>
     <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
     <AndroidLinkSkip />
-    <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
+    <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -94,6 +94,7 @@
     <Compile Include="AppModule.cs" />
     <Compile Include="AppSetting.cs" />
     <Compile Include="Activities\Book\BookActivity.cs" />
+    <Compile Include="Cache\CacheService.cs" />
     <Compile Include="Controls\BaloonLayout.cs" />
     <Compile Include="Controls\TouchMap.cs" />
     <Compile Include="Converters\CoordinatesConverter.cs" />

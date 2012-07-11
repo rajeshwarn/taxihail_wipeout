@@ -15,6 +15,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
     public class AccountService : BaseService, IAccountService
     {
 
+        private const string _favoriteAddressesCacheKey = "Account.FavoriteAddresses";
+
         private static ReferenceData _refData;
 
 
@@ -53,19 +55,78 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public IEnumerable<Address> GetHistoryAddresses()
         {
 
-            var service = TinyIoCContainer.Current.Resolve<AccountServiceClient>();
-            return null;
+
+            IEnumerable<Address> result = new Address[0];
+            UseServiceClient<AccountServiceClient>(service =>
+            {
+                result = service.GetHistoryAddresses(CurrentAccount.Id);
+            });
+
+            return result;
         }
 
         public IEnumerable<Address> GetFavoriteAddresses()
         {
-            IEnumerable<Address> result = new Address[0];
-            UseServiceClient<AccountServiceClient>(service =>
-                {
-                    result = service.GetFavoriteAddresses(CurrentAccount.Id);
-                });
+            var cached = TinyIoCContainer.Current.Resolve<ICacheService>().Get<Address[]>(_favoriteAddressesCacheKey);
 
-            return result;
+            if (cached != null)
+            {
+                return cached;
+            }
+            else
+            {
+
+                IEnumerable<Address> result = new Address[0];
+                UseServiceClient<AccountServiceClient>(service =>
+                    {
+                        result = service.GetFavoriteAddresses(CurrentAccount.Id);
+                    });
+                TinyIoCContainer.Current.Resolve<ICacheService>().Set(_favoriteAddressesCacheKey, result.ToArray());
+                return result;
+            }
+        }
+
+
+        private void UpdateCacheArray<T>(string key, T updated, Func<T, T, bool> compare)
+        {
+            var cached = TinyIoCContainer.Current.Resolve<ICacheService>().Get<T[]>(key);
+
+            if (cached != null)
+            {
+
+                var found = cached.SingleOrDefault(c => compare(updated, c));
+                if (found == null)
+                {
+                    T[] newList = new T[cached.Length + 1];
+                    Array.Copy(cached, newList, cached.Length);
+                    newList[cached.Length] = updated;
+                    
+                    TinyIoCContainer.Current.Resolve<ICacheService>().Set(key, newList);
+                }
+                else
+                {
+                    var foundIndex = cached.IndexOf(updated, compare);
+                    cached[foundIndex] = updated;
+                    TinyIoCContainer.Current.Resolve<ICacheService>().Set(key, cached);
+                }
+            }
+
+
+        }
+
+        private void RemoveFromCacheArray<T>(string key, Guid toDeleteId, Func<Guid, T, bool> compare)
+        {
+            var cached = TinyIoCContainer.Current.Resolve<ICacheService>().Get<T[]>(key);
+
+            if ( (cached != null) && ( cached.Length > 0 ) )
+            {
+                var list = new List<T>(cached);
+                var toDelete = list.Single( item => compare( toDeleteId, item ) );
+                list.Remove(toDelete);                               
+                TinyIoCContainer.Current.Resolve<ICacheService>().Set(key, list.ToArray());
+            }
+
+
         }
 
 
@@ -76,55 +137,25 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             UseServiceClient<AccountServiceClient>(service =>
                 {
 
-                    var favorites = service.GetFavoriteAddresses(CurrentAccount.Id);
+                    var favorites = GetFavoriteAddresses();
 
-                    if (favorites.Count > 0)
+                    if (favorites.Count() > 0)
                     {
                         found = favorites.FirstOrDefault(a => (Math.Abs(a.Longitude - longitude) <= 0.002) && (Math.Abs(a.Latitude - latitude) <= 0.002));
                     }
 
                 });
-            //if (found == null)
-            //{
-            //    var historics = service.GetHistorucAddresses();
+            if (found == null)
+            {
+                var historics = GetHistoryAddresses();
 
-            //    if (historics.Count > 0)
-            //    {
-            //        found = historics.FirstOrDefault(a => (Math.Abs(a.Longitude - longitude) <= 0.001) && (Math.Abs(a.Latitude - latitude) <= 0.001));
-            //    }
-            //}
+                if (historics.Count() > 0)
+                {
+                    found = historics.FirstOrDefault(a => (Math.Abs(a.Longitude - longitude) <= 0.001) && (Math.Abs(a.Latitude - latitude) <= 0.001));
+                }
+            }
 
             return found;
-
-            //    var closeLocation =
-            //        AppContext.Current.LoggedUser.FavoriteLocations.Where(
-            //            d => d.Latitude.HasValue && d.Longitude.HasValue).FirstOrDefault(
-            //                d =>
-            //                (Math.Abs(d.Longitude.Value - addresses[0].Longitude) <= 0.002) &&
-            //                (Math.Abs(d.Latitude.Value - addresses[0].Latitude) <= 0.002));
-            //    if (closeLocation == null)
-            //    {
-            //        //closeLocation =
-            //        //    AppContext.Current.LoggedUser.BookingHistory.Where(
-            //        //        b =>
-            //        //        !b.Hide && (b.PickupLocation != null) && b.PickupLocation.Latitude.HasValue &&
-            //        //        b.PickupLocation.Longitude.HasValue).Select(b => b.PickupLocation).FirstOrDefault(
-            //        //            d =>
-            //        //            (Math.Abs(d.Longitude.Value - locations[0].Longitude.Value) <= 0.001) &&
-            //        //            (Math.Abs(d.Latitude.Value - locations[0].Latitude.Value) <= 0.001));
-            //    }
-
-            //    if (closeLocation != null )
-            //    {
-            //        SetLocationData(closeLocation, changeZoom);
-
-            //    }
-            //    else if (locations.Any())
-            //    {
-            //        SetLocationData(addresses.First(), changeZoom);
-
-            //    }
-            //}
 
 
         }
@@ -229,49 +260,57 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public void DeleteAddress(Guid addressId)
         {
-            try
+            if (addressId.HasValue())
             {
-                var service = TinyIoCContainer.Current.Resolve<AccountServiceClient>();
-                service.RemoveFavoriteAddress(CurrentAccount.Id, addressId);
+                var accountId = CurrentAccount.Id;
+                var toDelete = addressId;
+                RemoveFromCacheArray<Address>(_favoriteAddressesCacheKey, toDelete, (id, a) => a.Id == id);
+                
 
+                QueueCommand<AccountServiceClient>(service =>
+                 {                     
+                     service.RemoveFavoriteAddress(accountId, toDelete);
+                 });
             }
-            catch (Exception ex)
-            {
-            }
+            
 
         }
 
         public void UpdateAddress(Address address)
         {
-            var toSave = new SaveFavoriteAddress
+            bool isNew = address.Id.IsNullOrEmpty();
+            if (isNew)
             {
-                AccountId = CurrentAccount.Id,
-                Apartment = address.Apartment,
-                FriendlyName = address.FriendlyName,
-                FullAddress = address.FullAddress,
-                Id = address.Id,
-                Latitude = address.Latitude,
-                Longitude = address.Longitude,
-                RingCode = address.RingCode
-            };
-
-            try
-            {
-                var service = TinyIoCContainer.Current.Resolve<AccountServiceClient>();
-                if (toSave.Id.IsNullOrEmpty())
-                {
-                    toSave.Id = Guid.NewGuid();
-                    service.AddFavoriteAddress(toSave);
-                }
-                else
-                {
-                    service.UpdateFavoriteAddress(toSave);
-                }
-
+                address.Id = Guid.NewGuid();
             }
-            catch (Exception ex)
-            {
-            }
+
+            UpdateCacheArray(_favoriteAddressesCacheKey, address, (a1, a2) => a1.Id.Equals(a2.Id));
+
+
+            QueueCommand<AccountServiceClient>(service =>
+                {
+                    var toSave = new SaveFavoriteAddress
+                    {
+                        AccountId = CurrentAccount.Id,
+                        Apartment = address.Apartment,
+                        FriendlyName = address.FriendlyName,
+                        FullAddress = address.FullAddress,
+                        Id = address.Id,
+                        Latitude = address.Latitude,
+                        Longitude = address.Longitude,
+                        RingCode = address.RingCode
+                    };
+
+                    if (isNew )
+                    {                        
+                        service.AddFavoriteAddress(toSave);
+                    }
+                    else
+                    {
+                        service.UpdateFavoriteAddress(toSave);
+                    }
+
+                });
 
 
 

@@ -163,28 +163,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
             }
             else
             {
-                //TODO:
-                //var history = AppContext.Current.LoggedUser.BookingHistory.Where(b => !b.Hide && b.PickupLocation.Name.IsNullOrEmpty() && b.PickupLocation.Address.HasValue()).OrderByDescending(b => b.RequestedDateTime).GroupBy(l => l.PickupLocation.Address + "_" + l.PickupLocation.Apartment.ToSafeString() + "_" + l.PickupLocation.RingCode.ToSafeString());
-
-                //locationsData = history.Select(h =>
-                //                                   {
-                //                                       var r = h.ElementAt(0).PickupLocation;
-                //                                       r.Id = h.ElementAt(0).Id;
-                //                                       return r;
-                //                                   }).ToArray();
-
-
-                //if (locationsData.Count() == 0)
-                //{
-                //    locationsData = new LocationData[1];
-                //    locationsData[0] = new LocationData { IsHistoricEmptyItem = true, Id = -1 };
-                //}
-
-                //locationsData.ForEach(h =>
-                //{
-                //    h.IsFromHistory = true;
-
-                //});
+                addresses = TinyIoCContainer.Current.Resolve<IAccountService>().GetHistoryAddresses();                
             }
             return addresses.ToList();
         }

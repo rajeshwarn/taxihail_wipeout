@@ -49,7 +49,7 @@ namespace apcurium.MK.Web.Tests
             orderService.CreateOrder(order);
 
             //Assert
-            var addresses = sut.GetAddressHistory(TestAccount.Id);
+            var addresses = sut.GetHistoryAddresses(TestAccount.Id);
             Assert.AreEqual(1, addresses.Count());
         }
     }

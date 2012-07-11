@@ -35,10 +35,13 @@ namespace apcurium.MK.Booking.Api.Services
             var command = new Commands.RegisterAccount();            
             AutoMapper.Mapper.Map( request,  command  );                                    
             command.Id = Guid.NewGuid();
+
+            
+            
             command.IbsAccountId = _accountWebServiceClient.CreateAccount(command.AccountId, 
-                                                                            command.Email, 
-                                                                            command.FirstName,
-                                                                            command.LastName, 
+                                                                            command.Email,
+                                                                            "",
+                                                                            command.Name,                                                                      
                                                                             command.Phone);                        
             _commandBus.Send(command);
 

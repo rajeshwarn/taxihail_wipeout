@@ -5,59 +5,60 @@
     android:layout_height="fill_parent"
     android:focusable="true"
     android:focusableInTouchMode="true">
+  <RelativeLayout
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:gravity="center">
+
+    <apcurium.mk.booking.mobile.client.controls.ReclickableTabHost
+        android:id="@android:id/tabhost"
+          android:layout_width="fill_parent"
+          android:layout_height="fill_parent"
+          android:layout_below="@+id/HeaderImage">
+      <RelativeLayout
+          android:orientation="vertical"
+          android:layout_width="fill_parent"
+          android:layout_height="fill_parent">
+        <TabWidget
+            android:id="@android:id/tabs"
+            android:layout_alignParentBottom="true"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+        <FrameLayout
+            android:id="@android:id/tabcontent"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_above="@android:id/tabs"
+            android:background="@drawable/background" />
+      </RelativeLayout>
+    </apcurium.mk.booking.mobile.client.controls.ReclickableTabHost>
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:gravity="center">
-      <apcurium.mk.booking.mobile.client.controls.ReclickableTabHost
-          android:id="@android:id/tabhost"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_below="@+id/HeaderImage">
-            <RelativeLayout
-                android:orientation="vertical"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent">
-                <TabWidget
-                    android:id="@android:id/tabs"
-                    android:layout_alignParentBottom="true"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content" />
-                <FrameLayout
-                    android:id="@android:id/tabcontent"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:layout_above="@android:id/tabs"
-                    android:background="@drawable/background" />
-            </RelativeLayout>
-        </apcurium.mk.booking.mobile.client.controls.ReclickableTabHost>
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/HeaderImage"
-            android:layout_marginBottom="-8dip">
-            <ImageView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:src="@drawable/header"
-                android:scaleType="fitXY" />
-            <TextView
-                android:id="@+id/TitleTab"
-                style="@style/BigTitleText"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"    
-                android:layout_marginTop="8dip"
-                android:gravity="center_horizontal" />
-            <Button
-                android:id="@+id/BookItBtn"
-                style="@style/ButtonText"
-                android:background="@drawable/green_button"
-                android:layout_width="100dip"
-                android:layout_marginRight="10dip"
-                android:layout_alignParentRight="true"
-                android:layout_height="36dip"
-                android:text="@string/BookItButton" />
-        </RelativeLayout>
+        android:id="@+id/HeaderImage"
+        android:layout_marginBottom="-8dip">
+      <ImageView
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:adjustViewBounds="true"
+          android:src="@drawable/header"
+          android:scaleType="fitXY" />
+      <TextView
+          android:id="@+id/TitleTab"
+          style="@style/BigTitleText"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dip"
+          android:gravity="center_horizontal" />
+      <Button
+          android:id="@+id/BookItBtn"
+          style="@style/ButtonText"
+          android:background="@drawable/green_button"
+          android:layout_width="100dip"
+          android:layout_marginRight="10dip"
+          android:layout_alignParentRight="true"
+          android:layout_height="36dip"
+          android:text="@string/BookItButton" />
     </RelativeLayout>
+  </RelativeLayout>
 </LinearLayout>

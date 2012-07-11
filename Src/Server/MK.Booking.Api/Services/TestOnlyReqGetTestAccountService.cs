@@ -58,9 +58,8 @@ namespace apcurium.MK.Booking.Api.Services
             command.AccountId = Guid.NewGuid();
             command.Email = testEmail;
             command.Password = TestUserPassword;
-            command.FirstName = "Test";
-            command.Phone = "123456";
-            command.LastName = "User #" + request.Index.ToString();
+            command.Name = "Test";
+            command.Phone = "123456";            
             command.IbsAccountId = 999;
             _commandBus.Send(command);
 

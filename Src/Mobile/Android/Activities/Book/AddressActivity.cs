@@ -403,7 +403,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             if (list == null)
             {
                 //TODO : Fix this
-                //list = AppContext.Current.LoggedUser.FavoriteLocations.Select(o => o.Address).ToArray();
+                list = TinyIoCContainer.Current.Resolve<IAccountService>().GetFavoriteAddresses().Select(a => a.FullAddress).ToArray();                
             }
             Address.Adapter = new ArrayAdapter<string>(this, Resource.Layout.ListItemAutoComplete, list);
         }

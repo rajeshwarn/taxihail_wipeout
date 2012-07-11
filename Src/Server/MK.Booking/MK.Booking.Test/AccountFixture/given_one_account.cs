@@ -25,19 +25,18 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             this.sut = new EventSourcingTestHelper<Account>();
 
             this.sut.Setup(new AccountCommandHandler(this.sut.Repository, new PasswordService()));
-            this.sut.Given(new AccountRegistered { SourceId = _accountId, FirstName = "Bob", LastName = "Smith", Password = null, Email = "bob.smith@apcurium.com", IbsAcccountId=10 });
+            this.sut.Given(new AccountRegistered { SourceId = _accountId, Name = "Bob", Password = null, Email = "bob.smith@apcurium.com", IbsAcccountId=10 });
         }
 
         [Test]
         public void when_updating_successfully()
         {
-            this.sut.When(new UpdateAccount { AccountId = _accountId, FirstName = "Robert", LastName = "Smither" });
+            this.sut.When(new UpdateAccount { AccountId = _accountId, Name = "Robert"});
 
             var @event = sut.ThenHasSingle<AccountUpdated>();
 
             Assert.AreEqual(_accountId, @event.SourceId);
-            Assert.AreEqual("Robert", @event.FirstName);
-            Assert.AreEqual("Smither", @event.LastName);
+            Assert.AreEqual("Robert", @event.Name);            
             
         }
 

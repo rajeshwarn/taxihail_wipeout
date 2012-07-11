@@ -9,8 +9,7 @@ namespace apcurium.MK.Booking.Events
     public class AccountUpdated : VersionedEvent
     {
 
-        public string FirstName { get; set; }        
-        public string LastName { get; set; }                
+        public string Name { get; set; }                
         
     }
 }

@@ -5,8 +5,7 @@ namespace apcurium.MK.Booking.Events
 {
     public class BookingSettingsUpdated : VersionedEvent
     {
-        public string LastName { get; set; }
-        public string FirstName { get; set; }
+        public string Name { get; set; }        
         public string Phone { get; set; }
         public int Passengers { get; set; }
         public int VehicleTypeId { get; set; }

@@ -24,9 +24,9 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 throw HttpError.Unauthorized("Unauthorized");
             }
+
             var command = new UpdateBookingSettings();
             AutoMapper.Mapper.Map(request, command);
-
             _commandBus.Send(command);
 
             return new HttpResult(HttpStatusCode.OK);
