@@ -28,6 +28,45 @@ namespace apcurium.MK.Booking.Test.Integration.AddressHistoryFixture
             this.sut = new AddressHistoryGenerator(() => new BookingDbContext(dbName));
         }
     }
+    [TestFixture]
+    public class given_an_address : given_a_view_model_generator
+    {
+        [Test]
+        public void when_address_is_added_then_address_removed_from_history()
+        {
+            var addressId = Guid.NewGuid();
+            var accountId = Guid.NewGuid();
+            var pickupDate = DateTime.Now;
+            var requestedDate = DateTime.Now.AddDays(-1);
+            this.sut.Handle(new OrderCreated()
+                                {
+                                    AccountId = accountId,
+                                    PickupApartment = "3939",
+                                    PickupRingCode = "3131",
+                                    PickupAddress = "1234 rue Saint-Denis",
+                                    PickupLongitude = -73.558064,
+                                    PickupLatitude = 45.515065,
+
+                                });
+            this.sut.Handle(new FavoriteAddressAdded()
+                                {
+                                    SourceId = accountId,
+                                    Apartment = "3939",
+                                    RingCode = "3131",
+                                    FriendlyName = "La Boite à Jojo",
+                                    FullAddress = "1234 rue Saint-Denis",
+                                    Longitude = -73.558064,
+                                    Latitude = 45.515065,
+                                    AddressId = addressId
+                                });
+
+            using (var context = new BookingDbContext(dbName))
+            {
+                var list = context.Query<HistoricAddress>().Where(x => x.AccountId == accountId);
+                Assert.AreEqual(0, list.Count());
+            }
+        }
+    }
 
     [TestFixture]
     public class given_an_order : given_a_view_model_generator

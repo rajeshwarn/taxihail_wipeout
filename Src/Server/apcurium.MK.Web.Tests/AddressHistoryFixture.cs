@@ -52,5 +52,47 @@ namespace apcurium.MK.Web.Tests
             var addresses = sut.GetAddressHistory(TestAccount.Id);
             Assert.AreEqual(1, addresses.Count());
         }
+        [Test]
+        public void when_save_a_favorite_address_with_an_historic_address_existing()
+        {
+            //Setup
+            var orderService = new OrderServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+            var order = new CreateOrder
+            {
+                Id = Guid.NewGuid(),
+                AccountId = TestAccount.Id,
+                PickupApartment = "3939",
+                PickupAddress = "1234 rue Saint-Denis",
+                PickupRingCode = "3131",
+                PickupLatitude = 45.515065,
+                PickupLongitude = -73.558064,
+                PickupDate = DateTime.Now,
+                DropOffAddress = "Velvet auberge st gabriel",
+                DropOffLatitude = 45.50643,
+                DropOffLongitude = -73.554052
+            };
+            orderService.CreateOrder(order);
+
+            //Arrange
+            var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+
+            //Act
+            var address = new SaveFavoriteAddress()
+            {
+                Id = Guid.NewGuid(),
+                AccountId = TestAccount.Id,
+                FriendlyName = "La Boite à Jojo",
+                FullAddress = "1234 rue Saint-Denis",
+                Latitude = 45.515065,
+                Longitude = -73.558064,
+                Apartment = "3939",
+                RingCode = "3131"
+            };
+            sut.AddFavoriteAddress(address);
+
+            //Assert
+            var addresses = sut.GetAddressHistory(TestAccount.Id);
+            Assert.AreEqual(0, addresses.Count());
+        }
     }
 }
