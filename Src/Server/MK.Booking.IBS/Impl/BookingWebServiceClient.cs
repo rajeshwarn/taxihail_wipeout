@@ -42,15 +42,15 @@ namespace apcurium.MK.Booking.IBS.Impl
         {
             var order = new TBookOrder();
 
-            order.ServiceProviderID = providerId;
-            order.AccountID = accountId;
+            order.ServiceProviderID = 0;// providerId;
+            order.AccountID = 0;//accountId;
             order.Customer = passengerName;
             order.Phone = phone;
-
+             
             //TODO : need to check ibs setup for shortesst time.
             DateTime pDate = pickupDateTime.HasValue ? pickupDateTime.Value : DateTime.Now.AddMinutes(10);
-            order.PickupDate = new TWEBTimeStamp{ Year= pDate.Year, Month = pDate.Month, Day=pDate.Day, Hour = pDate.Hour , Minute = pDate.Minute, Second=0,Fractions =0};
-            order.PickupTime = new TWEBTimeStamp{ Year= pDate.Year, Month = pDate.Month, Day=pDate.Day, Hour = pDate.Hour , Minute = pDate.Minute, Second=0,Fractions =0};
+            order.PickupDate = new TWEBTimeStamp{ Year= pDate.Year, Month = pDate.Month, Day=pDate.Day };
+            order.PickupTime = new TWEBTimeStamp{  Hour = pDate.Hour , Minute = pDate.Minute, Second=0,Fractions =0};
 
             order.PickupAddress = new TWEBAddress{ StreetPlace = pickup.FullAddress , AptBaz = pickup.Apartment , Longitude = pickup.Longitude, Latitude = pickup.Latitude };
             order.DropoffAddress= dropoff == null ? new TWEBAddress() : new TWEBAddress{ StreetPlace = pickup.FullAddress , AptBaz = pickup.Apartment , Longitude = pickup.Longitude, Latitude = pickup.Latitude };
@@ -59,12 +59,22 @@ namespace apcurium.MK.Booking.IBS.Impl
             order.Note = note;
             order.ContactPhone = phone;
             var now = DateTime.Now;    
-            order.OrderDate = new TWEBTimeStamp{ Year= now.Year, Month = now.Month, Day=now.Day, Hour = now.Hour , Minute = now.Minute, Second=now.Second ,Fractions =now.Millisecond };
-    
+            //order.OrderDate = new TWEBTimeStamp{ Year= now.Year, Month = now.Month, Day=now.Day, Hour = now.Hour , Minute = now.Minute, Second=now.Second ,Fractions =now.Millisecond };
+
+            //order.OrderStatus = TWEBOrderStatusValue.wosPost;
             int? orderId = null;
              UseService(service =>
             {
-               orderId = service.SaveBookOrder( _userNameApp , _passwordApp, order );
+                try
+                {
+                    var oorderId = service.SaveBookOrder(_userNameApp, _passwordApp, order);
+                    oorderId.ToString();
+                }
+                catch
+                    (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
             });
             return orderId;
         }

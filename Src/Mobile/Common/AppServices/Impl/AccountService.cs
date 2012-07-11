@@ -7,11 +7,12 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Extensions;
 using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
-    public class AccountService : IAccountService
+    public class AccountService : BaseService, IAccountService
     {
 
         private static ReferenceData _refData;
@@ -22,32 +23,19 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         }
 
-
-
-
         public void EnsureListLoaded()
         {
-
             if (_refData == null)
             {
-                try
+                UseServiceClient<ReferenceDataServiceClient>(service =>
                 {
-
-                    var service = TinyIoCContainer.Current.Resolve<ReferenceDataServiceClient>();
-
                     _refData = service.GetReferenceData();
-                }
-                catch (Exception ex)
-                {
-                    
-                    TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex);
-
-                }
+                });
             }
         }
 
 
-        
+
 
 
         protected ILogger Logger
@@ -62,16 +50,22 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 
 
-        public LocationData[] GetHistoryAddresses()
+        public IEnumerable<Address> GetHistoryAddresses()
         {
-            //var historic = loggedUser.BookingHistory.Where(b => !b.Hide && b.PickupLocation.Name.IsNullOrEmpty()).OrderByDescending(b => b.RequestedDateTime).Select(b => b.PickupLocation).ToArray();
-            return new LocationData[0];
+
+            var service = TinyIoCContainer.Current.Resolve<AccountServiceClient>();
+            return null;
         }
 
-        public LocationData[] GetFavoriteAddresses()
+        public IEnumerable<Address> GetFavoriteAddresses()
         {
-            //var historic = loggedUser.BookingHistory.Where(b => !b.Hide && b.PickupLocation.Name.IsNullOrEmpty()).OrderByDescending(b => b.RequestedDateTime).Select(b => b.PickupLocation).ToArray();
-            return new LocationData[0];
+            IEnumerable<Address> result = new Address[0];
+            UseServiceClient<AccountServiceClient>(service =>
+                {
+                    result = service.GetFavoriteAddresses(CurrentAccount.Id);
+                });
+
+            return result;
         }
 
 
@@ -79,14 +73,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             Address found = null;
 
-            var service = TinyIoCContainer.Current.Resolve<AccountServiceClient>();
-            var favorites = service.GetFavoriteAddresses(CurrentAccount.Id);
-            
-            if (favorites.Count > 0)
-            {
-                found = favorites.FirstOrDefault( a=> (Math.Abs(a.Longitude - longitude) <= 0.002) && (Math.Abs(a.Latitude - latitude) <= 0.002));                                
-            }
+            UseServiceClient<AccountServiceClient>(service =>
+                {
 
+                    var favorites = service.GetFavoriteAddresses(CurrentAccount.Id);
+
+                    if (favorites.Count > 0)
+                    {
+                        found = favorites.FirstOrDefault(a => (Math.Abs(a.Longitude - longitude) <= 0.002) && (Math.Abs(a.Latitude - latitude) <= 0.002));
+                    }
+
+                });
             //if (found == null)
             //{
             //    var historics = service.GetHistorucAddresses();
@@ -128,7 +125,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             //    }
             //}
-            
+
 
         }
 
@@ -151,10 +148,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             {
 
                 var context = TinyIoCContainer.Current.Resolve<IAppContext>();
-                var parameters = new NamedParameterOverloads(  );
-                parameters.Add( "credential", new AuthInfo(email, password) ) ;
+                var parameters = new NamedParameterOverloads();
+                parameters.Add("credential", new AuthInfo(email, password));
 
-                var service = TinyIoCContainer.Current.Resolve<AccountServiceClient>( "Authenticate",  parameters );
+                var service = TinyIoCContainer.Current.Resolve<AccountServiceClient>("Authenticate", parameters);
                 var account = service.GetMyAccount();
                 if (account != null)
                 {
@@ -168,7 +165,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
                 EnsureListLoaded();
 
-                
+
                 isSuccess = true;
             }
             catch (Exception ex)
@@ -182,7 +179,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             return data;
 
-            
+
         }
 
 
@@ -196,12 +193,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 service.ResetPassword(data.Email);
                 isSuccess = true;
             }
-            catch( Exception ex )
+            catch (Exception ex)
             {
 
                 TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Error resetting the password");
                 TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex);
-                
+
             }
 
             return isSuccess;
@@ -209,18 +206,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public bool Register(RegisterAccount data, out string error)
         {
-            
+
             bool isSuccess = false;
-            
+
             string lError = "";
-            
+
             try
             {
                 var service = TinyIoCContainer.Current.Resolve<AccountServiceClient>("NotAuthenticated");
                 service.RegisterAccount(data);
                 isSuccess = true;
             }
-            catch( Exception ex )
+            catch (Exception ex)
             {
                 lError = ex.Message;
                 isSuccess = false;
@@ -230,6 +227,55 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return isSuccess;
         }
 
+        public void DeleteAddress(Guid addressId)
+        {
+            try
+            {
+                var service = TinyIoCContainer.Current.Resolve<AccountServiceClient>();
+                service.RemoveFavoriteAddress(CurrentAccount.Id, addressId);
+
+            }
+            catch (Exception ex)
+            {
+            }
+
+        }
+
+        public void UpdateAddress(Address address)
+        {
+            var toSave = new SaveFavoriteAddress
+            {
+                AccountId = CurrentAccount.Id,
+                Apartment = address.Apartment,
+                FriendlyName = address.FriendlyName,
+                FullAddress = address.FullAddress,
+                Id = address.Id,
+                Latitude = address.Latitude,
+                Longitude = address.Longitude,
+                RingCode = address.RingCode
+            };
+
+            try
+            {
+                var service = TinyIoCContainer.Current.Resolve<AccountServiceClient>();
+                if (toSave.Id.IsNullOrEmpty())
+                {
+                    toSave.Id = Guid.NewGuid();
+                    service.AddFavoriteAddress(toSave);
+                }
+                else
+                {
+                    service.UpdateFavoriteAddress(toSave);
+                }
+
+            }
+            catch (Exception ex)
+            {
+            }
+
+
+
+        }
 
         public Account UpdateUser(Account data)
         {

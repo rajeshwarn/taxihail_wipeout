@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Api.Client
         
         public Account GetTestAccount(int index)
         {
-            var result = Client.Get<Account>("/account/test/" + index.ToString());
+            var result = Client.Get<Account>("/account/test/" + index.ToString());            
             return result;
         }
 

@@ -29,9 +29,7 @@ namespace apcurium.MK.Booking.Api.Services
         {
             if (_accountDao.FindByEmail(request.Email) != null)
             {
-
                 throw new HttpError(ErrorCode.CreateAccount_AccountAlreadyExist.ToString()); 
-
             }
 
             var command = new Commands.RegisterAccount();            

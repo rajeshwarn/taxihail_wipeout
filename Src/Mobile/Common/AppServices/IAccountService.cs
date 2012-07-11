@@ -31,9 +31,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         Address FindInAccountAddresses(double latitude, double longitude);
 
-        LocationData[] GetHistoryAddresses();
+        IEnumerable<Address> GetHistoryAddresses();
 
-        LocationData[] GetFavoriteAddresses();
+        IEnumerable<Address> GetFavoriteAddresses();
+
+        void UpdateAddress(Address address);
+
+        void DeleteAddress(Guid addressId);
     }
 }
 

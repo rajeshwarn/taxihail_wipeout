@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppServices\IGeolocService.cs" />
+    <Compile Include="AppServices\Impl\BaseService.cs" />
     <Compile Include="AppServices\Impl\GeolocService.cs" />
     <Compile Include="Data\AccountData.cs" />
     <Compile Include="Data\BookingInfo.cs" />

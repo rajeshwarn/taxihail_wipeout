@@ -10,8 +10,12 @@ using Android.Widget;
 using apcurium.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Models;
 using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Adapters;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
+using TinyIoC;
+using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
 {
@@ -44,12 +48,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
             var favoriteLocationsView = PopulateLocationView(LocationTypes.Favorite);
             if (_parent != ParentScreens.BookScreen)
             {
-                favoriteLocationsView.Add(CreateItem(new LocationData
+                favoriteLocationsView.Add(CreateItem(new Address
                 {
-                    Id = -1,
-                    IsFromHistory = false,
-                    Address = Resources.GetString(Resource.String.LocationAddFavorite),
-
+                    Id = Guid.Empty,
+                    FullAddress = Resources.GetString(Resource.String.LocationAddFavorite),
                 }));
             }
 
@@ -82,51 +84,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
             }
         }
 
-        //private void CreateTemplate(ListView listView)
-        //{
-        //    var header = new RelativeLayout(this);
-        //    header.LayoutParameters = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WrapContent, RelativeLayout.LayoutParams.WrapContent);
-        //    header.SetGravity(GravityFlags.Center);
-        //    var imageHeader = new ImageView(this);
-        //    imageHeader.LayoutParameters = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FillParent, RelativeLayout.LayoutParams.WrapContent);
-        //    imageHeader.SetScaleType(ImageView.ScaleType.CenterInside);
-        //    imageHeader.SetAdjustViewBounds(true);
-        //    imageHeader.SetImageResource(Resource.Drawable.header);
-        //    var title = new TextView(this);
-        //    var lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MatchParent, RelativeLayout.LayoutParams.WrapContent)
-        //        {
-        //            AlignWithParent = true,
-        //        };
-        //    lp.AddRule(LayoutRules.CenterInParent);
-        //    title.LayoutParameters = lp;
-        //    title.SetTextAppearance(this, Resource.Style.BigTitleText);
-        //    title.Gravity = GravityFlags.CenterHorizontal | GravityFlags.CenterVertical;
-        //    title.Text = Resources.GetString(Resource.String.TabLocations);
-        //    header.AddView(imageHeader);
-        //    header.AddView(title);
-        //    var body = new RelativeLayout(this);
-        //    body.LayoutParameters = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WrapContent, RelativeLayout.LayoutParams.WrapContent);
-        //    var backgroundImage = new ImageView(this);
-        //    backgroundImage.LayoutParameters = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FillParent, RelativeLayout.LayoutParams.WrapContent);
-        //    backgroundImage.SetScaleType(ImageView.ScaleType.Center);
-        //    // backgroundImage.SetAdjustViewBounds(true);
-
-        //    backgroundImage.SetImageResource(Resource.Drawable.background);
-        //    listView.LayoutParameters = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FillParent, RelativeLayout.LayoutParams.FillParent);
-        //    body.AddView(backgroundImage);
-        //    body.AddView(listView);
-        //    LinearLayout parent = new LinearLayout(this);
-        //    parent.LayoutParameters = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FillParent, LinearLayout.LayoutParams.FillParent);
-
-        //    //android:layout_height="0dip"        android:layout_weight="1"
-
-        //    parent.SetGravity(GravityFlags.CenterHorizontal);
-        //    parent.Orientation = Orientation.Vertical;
-        //    parent.AddView(header);
-        //    parent.AddView(body);
-
-        //    this.SetContentView(parent);
-        //}
+     
         private void listView_ItemClickNormal(object sender, AdapterView.ItemClickEventArgs e)
         {
             var adapter = _listView.Adapter as CustomListAdapter;
@@ -171,14 +129,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
         {
             var locations = GetLocations(locationType);
             var result = new List<IDictionary<string, object>>();
-            if (locationType == LocationTypes.History)
-            {
-                locations = locations.Where(o => o.IsFromHistory == true).ToList();
-            }
-            else
-            {
-                locations = locations.Where(o => o.IsFromHistory == false).ToList();
-            }
+            //if (locationType == LocationTypes.History)
+            //{
+            //    locations = locations.Where(o => o.IsFromHistory == true).ToList();
+            //}
+            //else
+            //{
+            //    locations = locations.Where(o => o.IsFromHistory == false).ToList();
+            //}
             locations.ForEach(loc =>
                 {
                     result.Add(CreateItem(loc));
@@ -187,22 +145,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
             return result;
         }
 
-        private IDictionary<string, object> CreateItem(LocationData location)
+        private IDictionary<string, object> CreateItem(Address location)
         {
             IDictionary<string, object> item = new Dictionary<string, object>();
-            item.Add(ITEM_TITLE, location.Display);
+            item.Add(ITEM_TITLE, location.Display());
             item.Add(ITEM_DATA, location.Serialize());
             return item;
         }
 
 
-        private List<LocationData> GetLocations(LocationTypes type)
+        private List<Address> GetLocations(LocationTypes type)
         {
-            LocationData[] locationsData = new LocationData[0];
+            IEnumerable<Address> addresses = new Address[0];
             if (type == LocationTypes.Favorite)
             {
-                //TODO : Fix this
-                //locationsData = AppContext.Current.LoggedUser.FavoriteLocations;
+                addresses = TinyIoCContainer.Current.Resolve<IAccountService>().GetFavoriteAddresses();                                
             }
             else
             {
@@ -229,7 +186,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
 
                 //});
             }
-            return locationsData.ToList();
+            return addresses.ToList();
         }
 
         protected override void OnResume()

@@ -12,6 +12,8 @@ using Android.Widget;
 using TinyIoC;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Common.Extensions;
+using apcurium.MK.Booking.Mobile.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -60,6 +62,43 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
 
         }
+
+
+        public IEnumerable<Address> FindSimilar(string address)
+        {
+            var addresses = new List<Address>();
+
+            if (address.IsNullOrEmpty())
+            {
+                return addresses.ToArray();
+
+            }
+
+            var favAddresses = TinyIoCContainer.Current.Resolve<IAccountService>().GetFavoriteAddresses();
+            if (favAddresses.Count() > 0)
+            {
+                addresses.AddRange(favAddresses);
+            }
+
+            var historic = TinyIoCContainer.Current.Resolve<IAccountService>().GetHistoryAddresses();
+
+
+            if (historic.Count() > 0)
+            {
+
+                foreach (var hist in historic)
+                {
+                    if (addresses.None(a => a.IsSame(hist)))
+                    {
+                        addresses.Add(hist);
+                    }
+                }
+            }
+
+            return addresses.Where(a => a.FullAddress.HasValue() && a.FullAddress.ToLower().StartsWith(address.ToLower())).ToArray();
+
+        }
+
 
     }
 }

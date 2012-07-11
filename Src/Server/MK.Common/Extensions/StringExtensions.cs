@@ -162,5 +162,21 @@ namespace apcurium.MK.Common.Extensions
             }
         }
 
+        public static bool SoftEqual(this string value, string toCompare)
+        {
+            return value.ToSafeString().Trim().ToLower() == toCompare.ToSafeString().Trim().ToLower();
+        }
+
+        public static string ToSafeString(this string value)
+        {
+            if (value.HasValue())
+            {
+                return value;
+            }
+            else
+            {
+                return "";
+            }
+        }
     }
 }

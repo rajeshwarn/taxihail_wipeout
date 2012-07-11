@@ -313,10 +313,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 ((TouchMap)Map).MapTouchUp += new EventHandler(AddressActivity_MapTouchUp);
             }
 
-            var loc = new LocationData { Longitude = -73.6162, Latitude = 45.54015 };
+            var loc = new WS.Address { Longitude = -73.6162, Latitude = 45.54015 };
             if (ParentActivity.LocationService.LastLocation != null)
             {
-                loc = new LocationData { Longitude = ParentActivity.LocationService.LastLocation.Longitude, Latitude = ParentActivity.LocationService.LastLocation.Latitude };
+                loc = new WS.Address { Longitude = ParentActivity.LocationService.LastLocation.Longitude, Latitude = ParentActivity.LocationService.LastLocation.Latitude };
             }
             //_lastCenter = MapService.SetLocationOnMap(Map, loc);
         }
