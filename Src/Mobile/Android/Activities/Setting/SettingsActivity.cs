@@ -108,11 +108,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 			
 			if( AppContext.Current.LoggedUser != null )
 			{
-				FindViewById<TextView>(Resource.Id.signedInInfoText).Text = string.Format( Resources.GetString( Resource.String.SettingViewLoginInfo ), AppContext.Current.LoggedUser.FirstName );
+				FindViewById<TextView>(Resource.Id.signedInInfoText).Text = string.Format( Resources.GetString( Resource.String.SettingViewLoginInfo ), AppContext.Current.LoggedUser.Name );
 			}
-			var callCieBtn = FindViewById<TextView>(Resource.Id.CallCompanyButton);
-            //TODO:Fix this
-            //callCieBtn.Text = string.Format( Resources.GetString( Resource.String.CallCompanyButton ), AppContext.Current.LoggedUser.Settings.CompanyName );
+			var callCieBtn = FindViewById<TextView>(Resource.Id.CallCompanyButton);                        
+            callCieBtn.Text = Resources.GetString( Resource.String.CallCompanyButton );
 		}
 		
 	

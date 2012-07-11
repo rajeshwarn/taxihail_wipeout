@@ -43,6 +43,9 @@ namespace apcurium.MK.Web.Tests
 
         }
 
+
+        
+
         [Test]
         [ExpectedException("ServiceStack.ServiceClient.Web.WebServiceException", ExpectedMessage = "Invalid UserName or Password")]
         public void BasicSignInWithInvalidPassword()
@@ -72,6 +75,26 @@ namespace apcurium.MK.Web.Tests
             var account = sut.GetMyAccount();
             Assert.IsNotNull(account);
             Assert.AreEqual(newAccount.AccountId, account.Id);
+        }
+
+
+        [Test]
+        public void registering_account_has_settings()
+        {
+
+            var sut = new AccountServiceClient(BaseUrl, null);
+            var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", Password = "password" };
+            sut.RegisterAccount(newAccount);
+
+
+            sut = new AccountServiceClient(BaseUrl, new AuthInfo(newAccount.Email, newAccount.Password));
+            var account = sut.GetMyAccount();
+
+            Assert.IsNotNull(account.Settings);
+            Assert.AreEqual(account.Settings.Name, account.Name);
+            Assert.AreEqual(account.Settings.Phone, account.Phone);
+
+
         }
 
         [Test]

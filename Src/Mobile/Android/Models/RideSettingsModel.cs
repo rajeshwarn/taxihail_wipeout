@@ -32,8 +32,8 @@ namespace apcurium.MK.Booking.Mobile.Client
         //TODO:Fix this
         public string Name
         {
-            get { return Data.FirstName + Data.LastName; }
-            set {  }
+            get { return Data.Name; }
+            set { Data.Name = value; }
         }
 
         public string Phone

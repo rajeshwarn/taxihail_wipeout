@@ -106,7 +106,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             FindViewById<TextView>(Resource.Id.AptRingCode).Text = FormatAptRingCode(BookingInfo.PickupLocation.Apartment, BookingInfo.PickupLocation.RingCode);
             FindViewById<TextView>(Resource.Id.DestinationTxt).Text = BookingInfo.DestinationLocation.FullAddress.IsNullOrEmpty() ? Resources.GetString(Resource.String.ConfirmDestinationNotSpecified) : BookingInfo.DestinationLocation.FullAddress;
             FindViewById<TextView>(Resource.Id.DateTimeTxt).Text = FormatDateTime(BookingInfo.PickupDate, BookingInfo.PickupDate);
-            FindViewById<TextView>(Resource.Id.NameTxt).Text = BookingInfo.Settings.FirstName;
+            FindViewById<TextView>(Resource.Id.NameTxt).Text = BookingInfo.Settings.Name;
             FindViewById<TextView>(Resource.Id.PhoneTxt).Text = BookingInfo.Settings.Phone;
             FindViewById<TextView>(Resource.Id.PassengersTxt).Text = BookingInfo.Settings.Passengers == 0 ? AppContext.Current.LoggedUser.Settings.Passengers.ToString() : BookingInfo.Settings.Passengers.ToString();
             

@@ -18,8 +18,7 @@ namespace apcurium.MK.Booking.Mobile.Extensions
         public static BookingSettings Copy(this BookingSettings instance)
         {
             var copy = new BookingSettings();
-            copy.FirstName = instance.FirstName;
-            copy.LastName = instance.LastName;
+            copy.Name = instance.Name;            
             copy.Phone = instance.Phone;
             copy.Passengers = instance.Passengers;
             copy.VehicleTypeId = instance.VehicleTypeId;

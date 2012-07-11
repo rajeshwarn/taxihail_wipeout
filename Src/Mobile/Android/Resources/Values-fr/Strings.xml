@@ -61,7 +61,7 @@
   <string name="StatusViewTitle">Confirmée</string>
   <string name="StatusDescription">Confirmation #{0}</string>
   <string name="ChangeBookingSettingsButton">Changer les options</string>
-  <string name="CallCompanyButton">Appeller {0}</string>
+  <string name="CallCompanyButton">Appeller</string>
   <string name="NoHistoryLabel">Aucun historique</string>
   <string name="LocationNoHistory">Aucun historique</string>
   <string name="LocationAddFavorite">&lt;Ajouter une nouvelle adresse&gt;</string>

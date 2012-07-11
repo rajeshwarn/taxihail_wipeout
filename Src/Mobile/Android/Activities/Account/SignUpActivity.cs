@@ -75,8 +75,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             data.AccountId = Guid.NewGuid();
             data.Password = FindViewById<EditText>(Resource.Id.SignUpPassword).Text;            
             data.Email = FindViewById<EditText>(Resource.Id.SignUpEditEmail).Text;
-            data.FirstName = FindViewById<EditText>(Resource.Id.SignUpFirstName).Text;
-            data.LastName = FindViewById<EditText>(Resource.Id.SignUpLastName).Text;            
+            data.Name= FindViewById<EditText>(Resource.Id.SignUpName).Text;            
             data.Phone = FindViewById<EditText>(Resource.Id.SignUpPhone).Text;            
             return data;
 
@@ -86,12 +85,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             var password = FindViewById<EditText>(Resource.Id.SignUpPassword).Text;
             var confirmPassword = FindViewById<EditText>(Resource.Id.SignUpConfirmPassword).Text;
             var email = FindViewById<EditText>(Resource.Id.SignUpEditEmail).Text;
-            var firstName = FindViewById<EditText>(Resource.Id.SignUpFirstName).Text;
-            var lastName = FindViewById<EditText>(Resource.Id.SignUpLastName).Text;            
+            var name = FindViewById<EditText>(Resource.Id.SignUpName).Text;            
             var phone = FindViewById<EditText>(Resource.Id.SignUpPhone).Text;
             if ((string.IsNullOrEmpty(password)) || (string.IsNullOrEmpty(confirmPassword)) ||
-                (string.IsNullOrEmpty(email)) || (string.IsNullOrEmpty(firstName)) ||
-                (string.IsNullOrEmpty(lastName)) || (string.IsNullOrEmpty(phone)))
+                (string.IsNullOrEmpty(email)) || (string.IsNullOrEmpty(name)) ||
+                (string.IsNullOrEmpty(phone)))
             {
                 return false;
             }

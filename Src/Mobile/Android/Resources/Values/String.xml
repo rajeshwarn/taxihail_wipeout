@@ -61,7 +61,7 @@
   <string name="StatusViewTitle">Confirmed</string>
   <string name="StatusDescription">Confirmation #{0}</string>
   <string name="ChangeBookingSettingsButton">Change booking settings</string>
-  <string name="CallCompanyButton">Call {0}</string>
+  <string name="CallCompanyButton">Call</string>
   <string name="NoHistoryLabel">No booking history</string>
   <string name="LocationNoHistory">No history</string>
   <string name="LocationAddFavorite">&lt; Add a new location &gt;</string>
