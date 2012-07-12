@@ -28,14 +28,16 @@ namespace apcurium.MK.Web.Tests
         public void when_creating_an_order_with_a_new_pickup_address()
         {
             //Arrange
-            var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
-            var orderService = new OrderServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+
+            var newAccount = GetNewAccount();
+            var sut = new AccountServiceClient(BaseUrl, new AuthInfo(newAccount.Email, "password"));
+            var orderService = new OrderServiceClient(BaseUrl, new AuthInfo(newAccount.Email, "password"));
 
             //Act
             var order = new CreateOrder
             {
                 Id = Guid.NewGuid(),
-                AccountId = TestAccount.Id,
+                AccountId = newAccount.Id,
                 PickupAddress = TestAddresses.GetAddress1(),                
                 PickupDate = DateTime.Now,
                 DropOffAddress = TestAddresses.GetAddress2(),   
@@ -45,9 +47,11 @@ namespace apcurium.MK.Web.Tests
             orderService.CreateOrder(order);
 
             //Assert
-            var addresses = sut.GetHistoryAddresses(TestAccount.Id);
+            var addresses = sut.GetHistoryAddresses(newAccount.Id);
             Assert.AreEqual(1, addresses.Count());
         }
+
+        
         [Test]
         public void when_save_a_favorite_address_with_an_historic_address_existing()
         {
@@ -57,15 +61,10 @@ namespace apcurium.MK.Web.Tests
             {
                 Id = Guid.NewGuid(),
                 AccountId = TestAccount.Id,
-                PickupApartment = "3939",
-                PickupAddress = "1234 rue Saint-Denis",
-                PickupRingCode = "3131",
-                PickupLatitude = 45.515065,
-                PickupLongitude = -73.558064,
                 PickupDate = DateTime.Now,
-                DropOffAddress = "Velvet auberge st gabriel",
-                DropOffLatitude = 45.50643,
-                DropOffLongitude = -73.554052
+                PickupAddress = new Booking.Api.Contract.Resources.Address { FullAddress = "1234 rue Saint-Denis", Apartment = "3939", RingCode = "3131", Latitude = 45.515065, Longitude = -73.558064,  },
+                DropOffAddress = new Booking.Api.Contract.Resources.Address { FullAddress = "Velvet auberge st gabriel", Latitude = 45.50643, Longitude = -73.554052 },
+                Settings = new Booking.Api.Contract.Resources.BookingSettings { ChargeTypeId = 99, VehicleTypeId = 88, ProviderId = 11, Phone = "514-555-1212", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" }
             };
             orderService.CreateOrder(order);
 
@@ -87,7 +86,7 @@ namespace apcurium.MK.Web.Tests
             sut.AddFavoriteAddress(address);
 
             //Assert
-            var addresses = sut.GetAddressHistory(TestAccount.Id);
+            var addresses = sut.GetHistoryAddresses(TestAccount.Id);
             Assert.AreEqual(0, addresses.Count());
         }
     }

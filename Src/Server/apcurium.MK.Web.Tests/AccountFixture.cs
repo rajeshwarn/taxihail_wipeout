@@ -40,7 +40,6 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(acc.Email, TestAccount.Email);
             Assert.AreEqual(acc.Name, TestAccount.Name);            
             Assert.AreEqual(acc.Phone, TestAccount.Phone);
-
         }
 
 
@@ -173,12 +172,7 @@ namespace apcurium.MK.Web.Tests
         }
 
 
-        private string GetTempEmail()
-        {
-            var email = string.Format("testemail.{0}@apcurium.com", Guid.NewGuid().ToString().Replace("-", ""));
-            return email;
-        }
-
+      
 
 
 

@@ -3,6 +3,8 @@ using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Web.SelfHost;
+using System;
+using apcurium.MK.Booking.Api.Contract.Requests;
 
 namespace apcurium.MK.Web.Tests
 {
@@ -35,5 +37,23 @@ namespace apcurium.MK.Web.Tests
         {
             _appHost.Stop();
         }
+
+        protected  string GetTempEmail()
+        {
+            var email = string.Format("testemail.{0}@apcurium.com", Guid.NewGuid().ToString().Replace("-", ""));
+            return email;
+        }
+
+        protected Account GetNewAccount()
+        {
+            var accountService = new AccountServiceClient(BaseUrl, null);
+            var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", Password = "password" };
+            accountService.RegisterAccount(newAccount);
+
+            accountService = new AccountServiceClient(BaseUrl, new AuthInfo(newAccount.Email, "password"));
+            
+            return accountService.GetMyAccount();
+        }
+        
     }
 }
