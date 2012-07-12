@@ -38,7 +38,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             return status;
         }
 
-        public int? CreateOrder(int providerId, int accountId, string passengerName, string phone, int nbPassengers, int vehicleTypeId, string note, DateTime? pickupDateTime, Address pickup, Address dropoff)
+        public int? CreateOrder(int providerId, int accountId, string passengerName, string phone, int nbPassengers, int vehicleTypeId, string note, DateTime? pickupDateTime, IBSAddress pickup, IBSAddress dropoff)
         {
             var order = new TBookOrder_5();
 

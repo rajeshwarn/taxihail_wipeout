@@ -41,7 +41,6 @@
   <ItemGroup>
     <Compile Include="Diagnostic\ILogger.cs" />
     <Compile Include="Entity\ListItem.cs" />
-    <Compile Include="Enumeration\OrderStatus.cs" />
     <Compile Include="Extensions\AssemblyExtensions.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />

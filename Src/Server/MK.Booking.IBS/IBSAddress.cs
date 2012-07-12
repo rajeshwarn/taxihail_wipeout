@@ -5,7 +5,7 @@ using System.Text;
 
 namespace apcurium.MK.Booking.IBS
 {
-    public class Address
+    public class IBSAddress
     {
 
         public Guid Id { get; set; }

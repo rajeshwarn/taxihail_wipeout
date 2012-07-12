@@ -7,7 +7,6 @@ using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -25,7 +24,6 @@ namespace apcurium.MK.Booking.Api.Services
              
             command.Id = Guid.NewGuid();
             command.OrderId = request.OrderId;
-            command.Status = OrderStatus.Cancelled.ToString();
             _commandBus.Send(command);
 
             return new HttpResult(HttpStatusCode.OK);

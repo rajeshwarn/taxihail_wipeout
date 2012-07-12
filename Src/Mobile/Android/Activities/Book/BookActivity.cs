@@ -102,8 +102,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             else
             {
                 Intent i = new Intent(this, typeof(BookDetailActivity));
-                var serializedModel = _bookingInfo.Serialize();
-                i.PutExtra("BookingModel", serializedModel);
+                var serializedInfo = _bookingInfo.Serialize();
+                i.PutExtra("BookingInfo", serializedInfo);
                 StartActivityForResult(i, (int)ActivityEnum.BookConfirmation);
             }
         }

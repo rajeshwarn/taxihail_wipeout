@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		
 		IEnumerable<ListItem> GetPaymentsList(  );
 
-		bool ResetPassword( ResetPasswordData data );
+		bool ResetPassword( string email );
 
 		void ResendConfirmationEmail(string email);
 		

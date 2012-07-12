@@ -9,7 +9,7 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
     {
         Ok,
         CreateAccount_AccountAlreadyExist,
-        
+        CreateOrder_InvalidPickupAddress,
 
     }
 }

@@ -3,19 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Infrastructure.EventSourcing;
-using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Events
 {
     public class OrderCreated : VersionedEvent
     {
         public OrderCreated()
-        {
-            Status = OrderStatus.Created.ToString();
+        {            
         }
+
         public Guid AccountId { get; set; }
+        
         public DateTime PickupDate { get; set; }
-        public DateTime RequestedDate { get; set; }
+        
+        public DateTime CreatedDate{ get; set; }
+
         public string PickupAddress { get; set; }
 
         public double PickupLongitude { get; set; }
@@ -31,7 +33,6 @@ namespace apcurium.MK.Booking.Events
         public double? DropOffLongitude { get; set; }
 
         public double? DropOffLatitude { get; set; }
-
-        public string Status { get; set; }
+        
     }
 }

@@ -96,9 +96,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public string ServiceUrl
         {
-
-            //http://localhost:6900/Default.htm
-            get { return "http://192.168.12.106/apcurium.MK.Web/api/"; }
+            get { return "http://192.168.12.105/apcurium.MK.Web/api/"; }
             //get { return "http://project.apcurium.com/apcurium.MK.Web.csproj_deploy/api/"; }
         }
     }

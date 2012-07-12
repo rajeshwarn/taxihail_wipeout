@@ -36,16 +36,12 @@ namespace apcurium.MK.Web.Tests
             {
                 Id = Guid.NewGuid(),
                 AccountId = TestAccount.Id,
-                PickupApartment = "3939",
-                PickupAddress = "1234 rue Saint-Hubert",
-                PickupRingCode = "3131",
-                PickupLatitude = 45.515065,
-                PickupLongitude = -73.558064,
+                PickupAddress = TestAddresses.GetAddress1(),                
                 PickupDate = DateTime.Now,
-                DropOffAddress = "Velvet auberge st gabriel",
-                DropOffLatitude = 45.50643,
-                DropOffLongitude = -73.554052
+                DropOffAddress = TestAddresses.GetAddress2(),   
+                
             };
+            order.Settings = new Booking.Api.Contract.Resources.BookingSettings{ ChargeTypeId = 99, VehicleTypeId = 88, ProviderId = 11, Phone = "514-555-1212", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" };             
             orderService.CreateOrder(order);
 
             //Assert

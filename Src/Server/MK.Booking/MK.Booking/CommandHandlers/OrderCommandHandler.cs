@@ -6,6 +6,7 @@ using Infrastructure.EventSourcing;
 using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.CommandHandlers
 {
@@ -16,12 +17,17 @@ namespace apcurium.MK.Booking.CommandHandlers
         public OrderCommandHandler(IEventSourcedRepository<Order> repository)
         {
             _repository = repository;
+            AutoMapper.Mapper.CreateMap<CreateOrder.BookingSettings, BookingSettings>();
         }
 
         public void Handle(CreateOrder command)
         {
-            var order = new Order(command.OrderId, command.AccountId, command.PickupDate, command.PickupAddress, command.PickupLongitude, command.PickupLatitude,
-                                    command.PickupApartment, command.PickupRingCode, command.DropOffAddress, command.DropOffLongitude, command.DropOffLatitude, command.Status);
+            var settings =  new BookingSettings();
+            AutoMapper.Mapper.Map(command.Settings, settings);
+            var order = new Order(command.OrderId, command.AccountId, command.PickupDate, 
+                                    command.PickupAddress.FullAddress, command.PickupAddress.Longitude, command.PickupAddress.Latitude,command.PickupAddress.Apartment, command.PickupAddress.RingCode,
+                                    command.DropOffAddress.SelectOrDefault(a => a.FullAddress), command.DropOffAddress.SelectOrDefault(a => (double?)a.Longitude, null), command.DropOffAddress.SelectOrDefault(a => (double?)a.Latitude, null),
+                                    settings);
             _repository.Save(order);
         }
 

@@ -2,33 +2,33 @@
 using NUnit.Framework;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Web.Tests
 {
     [TestFixture]
     public class OrderStatusFixture : BaseTest
     {
-        private readonly Guid _orderId = Guid.NewGuid();
+
+        private Guid _orderId;
+       
         [TestFixtureSetUp]
         public new void Setup()
         {
             base.Setup();
+
+            _orderId = Guid.NewGuid();
             var sut = new OrderServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
             var order = new CreateOrder
             {
                 Id = _orderId,
                 AccountId = TestAccount.Id,
-                PickupApartment = "3939",
-                PickupAddress = "1234 rue Saint-Hubert",
-                PickupRingCode = "3131",
-                PickupLatitude = 45.515065,
-                PickupLongitude = -73.558064,
+                PickupAddress = TestAddresses.GetAddress1(),
+                DropOffAddress = TestAddresses.GetAddress2(),
                 PickupDate = DateTime.Now,
-                DropOffAddress = "Velvet auberge st gabriel",
-                DropOffLatitude = 45.50643,
-                DropOffLongitude = -73.554052
+                Settings = new BookingSettings { ChargeTypeId = 99, VehicleTypeId = 88, ProviderId = 11, Phone = "514-555-1212", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" }
             };
+
             sut.CreateOrder(order);
         }
 
@@ -44,11 +44,11 @@ namespace apcurium.MK.Web.Tests
 
         }
         [Test]
-        public void Get()
+        public void create_and_get_a_valid_order()
         {
-            var sut = new OrderStatusClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
-            var data = sut.GetStatus(_orderId);
-            Assert.AreEqual(OrderStatus.Created.ToString(),data);
+            var sut = new OrderServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+            var data = sut.GetOrderStatus( TestAccount.Id, _orderId);
+            Assert.AreEqual(OrderStatus.Created, data.Status);
         }
     }
 }

@@ -74,6 +74,7 @@
     <Compile Include="OrderStatusFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReferenceDataFixture.cs" />
+    <Compile Include="TestAddresses.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

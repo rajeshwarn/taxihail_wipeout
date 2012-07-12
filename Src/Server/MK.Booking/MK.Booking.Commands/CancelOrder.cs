@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Infrastructure.Messaging;
-using apcurium.MK.Common.Enumeration;
+
 
 namespace apcurium.MK.Booking.Commands
 {
@@ -11,12 +11,10 @@ namespace apcurium.MK.Booking.Commands
     {
         public CancelOrder()
         {
-            Id = Guid.NewGuid();
-            Status = OrderStatus.Cancelled.ToString();
+            Id = Guid.NewGuid();            
         }
 
         public Guid Id { get; set; }
-        public Guid OrderId { get; set; }
-        public string Status { get; set; }
+        public Guid OrderId { get; set; }        
     }
 }

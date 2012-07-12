@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
-using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.ReadModel
 {
@@ -21,7 +20,7 @@ namespace apcurium.MK.Booking.ReadModel
         
         public Guid AccountId { get; set; }
         public DateTime PickupDate { get; set; }
-        public DateTime RequestedDateTime { get; set; }
+        public DateTime CreatedDate { get; set; }
 
         public string PickupAddress { get; set; }
 
@@ -41,6 +40,6 @@ namespace apcurium.MK.Booking.ReadModel
 
         public BookingSettingsDetails Settings { get; set; }
 
-        public string Status { get; set; }
+        public int Status { get; set; }
     }
 }

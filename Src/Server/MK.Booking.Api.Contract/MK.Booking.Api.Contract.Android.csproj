@@ -77,7 +77,7 @@
     <Compile Include="Resources\ErrorCode.cs" />
     <Compile Include="Resources\Order.cs" />
     <Compile Include="Resources\OrderStatus.cs" />
-    <Compile Include="Resources\OrderStatusStep.cs" />
+    <Compile Include="Resources\OrderStatusDetail.cs" />
     <Compile Include="Resources\ReferenceData.cs" />
   </ItemGroup>
   <ItemGroup>

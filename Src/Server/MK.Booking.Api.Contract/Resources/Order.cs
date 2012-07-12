@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
 
         public DateTime PickupDate { get; set; }
 
-        public DateTime RequestedDateTime { get; set; }
+        public DateTime CreatedDate { get; set; }
 
         public string PickupAddress { get; set; }
 
@@ -31,6 +31,6 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
 
         public double? DropOffLatitude { get; set; }
 
-        public MK.Common.Enumeration.OrderStatus Status { get; set; }
+        
     }
 }

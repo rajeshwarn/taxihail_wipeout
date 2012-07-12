@@ -32,11 +32,9 @@ namespace apcurium.MK.Booking.Test.OrderFixture
         public void when_cancelling_successfully()
         {
             this.sut.When(new CancelOrder { OrderId = _orderId });
-
-            var @event = sut.ThenHasSingle<OrderCancelled>();
-
+            
+            var @event = sut.ThenHasSingle<OrderCancelled>();            
             Assert.AreEqual(_orderId, @event.SourceId);
-
         }
     }
 }

@@ -6,32 +6,18 @@ using NUnit.Framework;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.ReadModel.Query;
+using apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Web.Tests
 {
-    public class OrderFixture : BaseTest
+    public class given_no_order : BaseTest
     {
-        private readonly Guid _orderId = Guid.NewGuid();
+        
         [TestFixtureSetUp]
         public new void Setup()
         {
             base.Setup();
-            var sut = new OrderServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
-            var order = new CreateOrder
-            {
-                Id = _orderId,
-                AccountId = TestAccount.Id,
-                PickupApartment = "3939",
-                PickupAddress = "220 Yonge Street",
-                PickupRingCode = "3131",
-                PickupLatitude = 45.50643,
-                PickupLongitude = -79.3800,
-                PickupDate = DateTime.Now,
-                DropOffAddress = "Velvet auberge st gabriel",
-                DropOffLatitude = 43.6540,
-                DropOffLongitude = -73.558064
-            };
-            sut.CreateOrder(order);
+
         }
 
         [TestFixtureTearDown]
@@ -43,11 +29,11 @@ namespace apcurium.MK.Web.Tests
         [SetUp]
         public void SetupTest()
         {
-         
+
         }
 
         [Test]
-        public void CreateOrder()
+        public void create_order()
         {
             var sut = new OrderServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
             var pickupDate = DateTime.Now.AddHours(1);
@@ -55,31 +41,51 @@ namespace apcurium.MK.Web.Tests
             var order = new CreateOrder
                             {
                                 Id = Guid.NewGuid(),
-                                AccountId = TestAccount.Id,                                
-                                PickupApartment = "3939",
-                                PickupAddress = "220 Yonge Street",
-                                PickupRingCode = "3131",
-                                PickupLatitude = 45.50643,
-                                PickupLongitude = -79.3800, 
-                                PickupDate = pickupDate,
-                                DropOffAddress = "Velvet auberge st gabriel",
-                                DropOffLatitude = 45.50643,
-                                DropOffLongitude = -73.554052
+                                AccountId = TestAccount.Id,
+                                PickupAddress = TestAddresses.GetAddress1(),
+                                PickupDate = DateTime.Now,
+                                DropOffAddress = TestAddresses.GetAddress2(),
+
                             };
+
+            order.Settings = new BookingSettings { ChargeTypeId = 99, VehicleTypeId = 88, ProviderId = 11, Phone = "514-555-1212", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" };
 
             var id = sut.CreateOrder(order);
             Assert.NotNull(id);
         }
 
+    }
+    public class give_an_existing_order : BaseTest
+    {
+        private readonly Guid _orderId = Guid.NewGuid();
+        [TestFixtureSetUp]
+        public new void Setup()
+        {
+            base.Setup();
+            var sut = new OrderServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+            var order = new CreateOrder
+            {
+                Id = _orderId,
+                AccountId = TestAccount.Id,
+                PickupAddress = TestAddresses.GetAddress1(),
+                PickupDate = DateTime.Now,
+                DropOffAddress = TestAddresses.GetAddress2(),
+
+            };
+            order.Settings = new BookingSettings { ChargeTypeId = 99, VehicleTypeId = 88, ProviderId = 11, Phone = "514-555-1212", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" };
+            sut.CreateOrder(order);
+
+
+        }
+
+
         [Test]
         public void GetOrderList()
         {
+
             var sut = new OrderServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
-            
-            var orders = sut.GetOrdersByAccount(new AccountOrderListRequest()
-            {
-                AccountId = TestAccount.Id
-            });
+
+            var orders = sut.GetOrders(TestAccount.Id);
             Assert.NotNull(orders);
         }
 
@@ -94,14 +100,15 @@ namespace apcurium.MK.Web.Tests
                 OrderId = _orderId
             });
             Assert.NotNull(orders);
-            Assert.AreEqual("3939",orders.PickupApartment);
-            Assert.AreEqual("220 Yonge Street", orders.PickupAddress);
-            Assert.AreEqual("3131", orders.PickupRingCode);
-            Assert.AreEqual(45.50643, orders.PickupLatitude);
-            Assert.AreEqual(-79.3800, orders.PickupLongitude);
-            Assert.AreEqual("Velvet auberge st gabriel", orders.DropOffAddress);
-            Assert.AreEqual(43.6540, orders.DropOffLatitude);
-            Assert.AreEqual(-73.558064, orders.DropOffLongitude);             
+            
+            Assert.AreEqual(TestAddresses.GetAddress1().Apartment , orders.PickupApartment);
+            Assert.AreEqual(TestAddresses.GetAddress1().FullAddress, orders.PickupAddress);
+            Assert.AreEqual(TestAddresses.GetAddress1().RingCode, orders.PickupRingCode);
+            Assert.AreEqual(TestAddresses.GetAddress1().Latitude, orders.PickupLatitude);
+            Assert.AreEqual(TestAddresses.GetAddress1() .Longitude , orders.PickupLongitude);
+            Assert.AreEqual(TestAddresses.GetAddress2().FullAddress, orders.DropOffAddress);
+            Assert.AreEqual(TestAddresses.GetAddress2().Latitude, orders.DropOffLatitude);
+            Assert.AreEqual(TestAddresses.GetAddress2().Longitude, orders.DropOffLongitude);
 
         }
     }

@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
             TinyIoCContainer.Current.Register<DirectionsServiceClient>((c, p) => new DirectionsServiceClient(c.Resolve<IAppSettings>().ServiceUrl, new AuthInfo(c.Resolve<IAppContext>().LoggedInEmail, c.Resolve<IAppContext>().LoggedInPassword)));
 
             TinyIoCContainer.Current.Register<IAccountService, AccountService>();
-            TinyIoCContainer.Current.Register<IAccountService, AccountService>();
+            TinyIoCContainer.Current.Register<IBookingService, BookingService>();
             TinyIoCContainer.Current.Register<IGeolocService, GeolocService >(); 
             //ServiceLocator.Current.Register<IAccountService, AccountService>();
             //ServiceLocator.Current.Register<IBookingService, BookingService>();

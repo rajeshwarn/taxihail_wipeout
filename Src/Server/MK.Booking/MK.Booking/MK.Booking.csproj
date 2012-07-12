@@ -73,6 +73,7 @@
     <Compile Include="Domain\Account.cs" />
     <Compile Include="Domain\Order.cs" />
     <Compile Include="Domain\BookingSettings.cs" />
+    <Compile Include="Domain\OrderStatus.cs" />
     <Compile Include="Email\EmailSender.cs" />
     <Compile Include="Email\IEmailSender.cs" />
     <Compile Include="Email\ITemplateService.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="ReadModel\FavoriteAddress.cs" />
     <Compile Include="ReadModel\HistoricAddress.cs" />
     <Compile Include="ReadModel\OrderDetail.cs" />
+    <Compile Include="ReadModel\OrderStatus.cs" />
     <Compile Include="ReadModel\Query\AccountDao.cs" />
     <Compile Include="ReadModel\Query\IHistoricAddressDao.cs" />
     <Compile Include="ReadModel\Query\HistoricAddressDao.cs" />

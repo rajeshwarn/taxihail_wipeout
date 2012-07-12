@@ -71,7 +71,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 Assert.AreEqual("Bob", dto.Name);                
                 Assert.AreEqual("bob.smith@acpurium.com", dto.Email);
                 Assert.AreEqual(1, dto.Password.Length);
-                Assert.AreEqual(666, dto.IBSAccountid);
+                Assert.AreEqual(666, dto.IBSAccountId);
             }
         }
 

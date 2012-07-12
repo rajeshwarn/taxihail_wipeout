@@ -70,12 +70,12 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
         }
 
+        
         //TODO:Fix this
-        //public string VehicleTypeName
-        //{
-        //    get { return Data.VehicleTypeName; }
-        //    private set { Data.VehicleTypeName = value; }
-        //}
+        public string VehicleTypeName
+        {
+            get { return _vehicleTypeList.SingleOrDefault(v => v.Id == VehicleTypeId).SelectOrDefault(v => v.Display, ""); }            
+        }
 
 
         public int ProviderId
@@ -92,11 +92,10 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
         }
 
-        //public string CompanyName
-        //{
-        //    get { return Data.CompanyName; }
-        //    private set { Data.CompanyName = value; }
-        //}
+        public string ProviderName
+        {
+            get { return _companyList.SingleOrDefault(v => v.Id == ProviderId).SelectOrDefault(v => v.Display, ""); }            
+        }
 
         public int ChargeTypeId
         {
@@ -114,13 +113,13 @@ namespace apcurium.MK.Booking.Mobile.Client
         }
 
         //TODO:Fix this
-        //public string ChargeTypeName
-        //{
-        //    get { return Data.ChargeTypeName; }
-        //    private set { Data.ChargeTypeName = value; }
-        //}
-
-        public ListItem[] CompanyList { get { return _companyList.ToArray(); } }
+        public string ChargeTypeName
+        {
+            get { return _chargeTypeList.SingleOrDefault(v => v.Id == ChargeTypeId).SelectOrDefault(v => v.Display, ""); }            
+        }
+            
+            
+           public ListItem[] CompanyList { get { return _companyList.ToArray(); } }
         public ListItem[] VehicleTypeList { get { return _vehicleTypeList.ToArray(); } }
         public ListItem[] ChargeTypeList { get { return _chargeTypeList.ToArray(); } }
 

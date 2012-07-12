@@ -214,14 +214,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         }
 
 
-        public bool ResetPassword(ResetPasswordData data)
+        public bool ResetPassword(string email )
         {
             bool isSuccess = false;
 
             try
             {
                 var service = TinyIoCContainer.Current.Resolve<AccountServiceClient>("NotAuthenticated");
-                service.ResetPassword(data.Email);
+                service.ResetPassword(email);
                 isSuccess = true;
             }
             catch (Exception ex)

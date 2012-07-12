@@ -56,7 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IBookingWebServiceClient.cs" />
-    <Compile Include="Address.cs" />
+    <Compile Include="IBSAddress.cs" />
     <Compile Include="Impl\BaseService.cs" />
     <Compile Include="Impl\AccountWebServiceClient.cs" />
     <Compile Include="IAccountWebServiceClient.cs" />

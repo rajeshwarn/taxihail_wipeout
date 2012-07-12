@@ -16,62 +16,62 @@ namespace apcurium.MK.Booking.Api.Client
 
         public Account GetMyAccount( )
         {
-            var result = Client.Get<Account>("/account/me");
+            var result = Client.Get<Account>("/accounts/me");
             return result;
         }
         
         public Account GetTestAccount(int index)
         {
-            var result = Client.Get<Account>("/account/test/" + index.ToString());            
+            var result = Client.Get<Account>("/accounts/test/" + index.ToString());            
             return result;
         }
 
         public void RegisterAccount(RegisterAccount account)
         {
-            var result = Client.Post<Account>("/account/register", account);
+            var result = Client.Post<Account>("/accounts/register", account);
                         
         }
 
         public void UpdateBookingSettings(Guid accountId, BookingSettingsRequest settings)
         {
-            Client.Put<string>(string.Format("/account/{0}/bookingsettings", accountId), settings);
+            Client.Put<string>(string.Format("/accounts/{0}/bookingsettings", accountId), settings);
         }
 
         public IList<Address> GetFavoriteAddresses(Guid accountId)
         {
-            var req = string.Format("/account/{0}/addresses", accountId.ToString());
+            var req = string.Format("/accounts/{0}/addresses", accountId.ToString());
             var addresses = Client.Get<IList<Address>>(req);
             return addresses;
         }
 
         public IList<Address> GetHistoryAddresses(Guid accountId)
         {
-            var req = string.Format("/account/{0}/addresses/history", accountId.ToString());
+            var req = string.Format("/accounts/{0}/addresses/history", accountId.ToString());
             var addresses = Client.Get<IList<Address>>(req);
             return addresses;
         }
 
         public void AddFavoriteAddress(SaveFavoriteAddress address)
         {
-            var req = string.Format("/account/{0}/addresses", address.AccountId);
+            var req = string.Format("/accounts/{0}/addresses", address.AccountId);
             var response = Client.Post<string>(req, address);
         }
 
         public void UpdateFavoriteAddress(SaveFavoriteAddress address)
         {
-            var req = string.Format("/account/{0}/addresses/{1}", address.AccountId, address.Id);
+            var req = string.Format("/accounts/{0}/addresses/{1}", address.AccountId, address.Id);
             var response = Client.Put<string>(req, address);
         }
 
         public void RemoveFavoriteAddress(Guid accountId, Guid addressId)
         {
-            var req = string.Format("/account/{0}/addresses/{1}", accountId, addressId);
+            var req = string.Format("/accounts/{0}/addresses/{1}", accountId, addressId);
             var response = Client.Delete<string>(req);
         }
 
         public void ResetPassword(string emailAddress)
         {
-            var req = string.Format("/account/resetpassword/{0}", emailAddress);
+            var req = string.Format("/accounts/resetpassword/{0}", emailAddress);
             var response = Client.Post<string>(req,null);
         }
 

@@ -8,7 +8,7 @@ using ServiceStack.ServiceInterface;
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
-    [RestService("/account/{AccountId}/orders/{OrderId}", "GET")]
+    [RestService("/accounts/{AccountId}/orders/{OrderId}", "GET")]
     public class OrderRequest
     {
         public Guid OrderId { get; set; }

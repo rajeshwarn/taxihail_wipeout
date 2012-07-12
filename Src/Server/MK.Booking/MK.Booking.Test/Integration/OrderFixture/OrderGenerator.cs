@@ -37,23 +37,23 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
         {
             var orderId = Guid.NewGuid();
             var accountId = Guid.NewGuid();
-            var pickupDate = DateTime.Now;
-            var requestedDate = DateTime.Now.AddDays(-1);
+            var pickupDate = DateTime.Now.AddDays(1);
+            var createdDate = DateTime.Now;
             this.sut.Handle(new OrderCreated
             {
                 SourceId = orderId,
                 AccountId = accountId,
-                
+
                 PickupApartment = "3939",
                 PickupAddress = "1234 rue Saint-Hubert",
                 PickupRingCode = "3131",
                 PickupLatitude = 45.515065,
                 PickupLongitude = -73.558064,
-                PickupDate =  pickupDate,
+                PickupDate = pickupDate,
                 DropOffAddress = "Velvet auberge st gabriel",
                 DropOffLatitude = 45.50643,
                 DropOffLongitude = -73.554052,
-                RequestedDate = requestedDate
+                CreatedDate = createdDate
             });
 
             using (var context = new BookingDbContext(dbName))
@@ -61,7 +61,7 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 var list = context.Query<OrderDetail>().Where(x => x.Id == orderId);
                 Assert.AreEqual(1, list.Count());
                 var dto = list.Single();
-                Assert.AreEqual(accountId, dto.AccountId);                
+                Assert.AreEqual(accountId, dto.AccountId);
                 Assert.AreEqual("3939", dto.PickupApartment);
                 Assert.AreEqual("1234 rue Saint-Hubert", dto.PickupAddress);
                 Assert.AreEqual("3131", dto.PickupRingCode);
@@ -70,7 +70,7 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 Assert.AreEqual("Velvet auberge st gabriel", dto.DropOffAddress);
                 Assert.AreEqual(45.50643, dto.DropOffLatitude);
                 Assert.AreEqual(-73.554052, dto.DropOffLongitude);
-                Assert.AreEqual(pickupDate.ToLongDateString(), dto.PickupDate.ToLongDateString());                
+                Assert.AreEqual(pickupDate.ToLongDateString(), dto.PickupDate.ToLongDateString());
             }
         }
     }
@@ -90,7 +90,7 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                                 {
                                     SourceId = _orderId,
                                     AccountId = _accountId,
-                                    
+
                                     PickupApartment = "3939",
                                     PickupAddress = "1234 rue Saint-Hubert",
                                     PickupRingCode = "3131",
@@ -100,11 +100,21 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                                     DropOffAddress = "Velvet auberge st gabriel",
                                     DropOffLatitude = 45.50643,
                                     DropOffLongitude = -73.554052,
-                                    RequestedDate = DateTime.Now.AddDays(-1),
+                                    CreatedDate = DateTime.Now,                                    
                                 });
 
         }
 
+        [Test]
+        public void status_set_to_created()
+        {
+            using (var context = new BookingDbContext(dbName))
+            {
+                var dto = context.Find<OrderDetail>(_orderId);
+                Assert.NotNull(dto);
+                Assert.NotNull(dto.Status == (int)OrderStatus.Created );
+            }
+        }
         [Test]
         public void when_order_cancelled_then_order_dto_populated()
         {
@@ -118,6 +128,7 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
             {
                 var dto = context.Find<OrderDetail>(_orderId);
                 Assert.NotNull(dto);
+                Assert.NotNull(dto.Status == (int)OrderStatus.Cancelled);
             }
         }
     }

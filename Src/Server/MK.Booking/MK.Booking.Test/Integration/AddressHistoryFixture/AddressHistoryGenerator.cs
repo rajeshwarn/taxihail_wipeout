@@ -37,8 +37,8 @@ namespace apcurium.MK.Booking.Test.Integration.AddressHistoryFixture
         {
             var orderId = Guid.NewGuid();
             var accountId = Guid.NewGuid();
-            var pickupDate = DateTime.Now;
-            var requestedDate = DateTime.Now.AddDays(-1);
+            var pickupDate = DateTime.Now.AddDays(1);
+            var createdDate = DateTime.Now;
             this.sut.Handle(new OrderCreated
             {
                 SourceId = orderId,
@@ -53,7 +53,7 @@ namespace apcurium.MK.Booking.Test.Integration.AddressHistoryFixture
                 DropOffAddress = "Velvet auberge st gabriel",
                 DropOffLatitude = 45.50643,
                 DropOffLongitude = -73.554052,
-                RequestedDate = requestedDate
+                CreatedDate = createdDate
             });
 
             using (var context = new BookingDbContext(dbName))
@@ -86,7 +86,7 @@ namespace apcurium.MK.Booking.Test.Integration.AddressHistoryFixture
                 DropOffAddress = "Velvet auberge st gabriel",
                 DropOffLatitude = 45.50643,
                 DropOffLongitude = -73.554052,
-                RequestedDate = DateTime.Now.AddDays(-1)
+                CreatedDate = DateTime.Now.AddDays(-1)
             };
 
             // Use the same address twice

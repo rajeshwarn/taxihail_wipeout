@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace apcurium.MK.Booking.Api.Contract.Resources
+namespace apcurium.MK.Booking.ReadModel
 {
-    public enum OrderStatus
+    public enum OrderStatus 
     {
         Pending = 1,
         Created = 2,
-        Canceled = 3,
+        Cancelled = 3,
         Completed = 4
     }
 }

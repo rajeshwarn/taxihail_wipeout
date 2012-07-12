@@ -7,7 +7,6 @@ using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
-using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.EventHandlers
 {
@@ -35,11 +34,11 @@ namespace apcurium.MK.Booking.EventHandlers
                     PickupLongitude = @event.PickupLongitude,
                     PickupDate = @event.PickupDate,
                     PickupRingCode = @event.PickupRingCode,
-                    RequestedDateTime = @event.RequestedDate,
+                    CreatedDate = @event.CreatedDate,
                     DropOffAddress = @event.DropOffAddress,
                     DropOffLatitude = @event.DropOffLatitude,
                     DropOffLongitude = @event.DropOffLongitude,
-                    Status = @event.Status,
+                    Status = (int)OrderStatus.Created,
                 });
             }
         }
@@ -49,7 +48,7 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var order = context.Find<OrderDetail>(@event.SourceId);
-                order.Status = OrderStatus.Cancelled.ToString();
+                order.Status = (int)OrderStatus.Cancelled;
                 context.Save(order);
             }
         }
