@@ -26,6 +26,7 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 context.Save(new OrderDetail
                 {
+                    IBSOrderId = @event.IBSOrderId,
                     AccountId = @event.AccountId,
                     PickupApartment = @event.PickupApartment,
                     PickupAddress = @event.PickupAddress,

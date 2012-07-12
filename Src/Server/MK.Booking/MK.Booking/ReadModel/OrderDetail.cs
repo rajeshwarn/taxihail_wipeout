@@ -22,6 +22,8 @@ namespace apcurium.MK.Booking.ReadModel
         public DateTime PickupDate { get; set; }
         public DateTime CreatedDate { get; set; }
 
+        public int? IBSOrderId { get; set; }
+
         public string PickupAddress { get; set; }
 
         public double PickupLongitude { get; set; }

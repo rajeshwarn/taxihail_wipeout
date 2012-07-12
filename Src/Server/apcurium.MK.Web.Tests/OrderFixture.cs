@@ -51,8 +51,12 @@ namespace apcurium.MK.Web.Tests
             order.Settings = new BookingSettings { ChargeTypeId = 99, VehicleTypeId = 88, ProviderId = 11, Phone = "514-555-1212", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" };
 
             var id = sut.CreateOrder(order);
+            
+            
             Assert.NotNull(id);
         }
+
+
 
     }
     public class give_an_existing_order : BaseTest
@@ -78,6 +82,16 @@ namespace apcurium.MK.Web.Tests
 
         }
 
+        [Test]
+        public void ibs_order_was_created()
+        {
+            var sut = new OrderServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+            var order = sut.GetOrder( TestAccount.Id, _orderId);
+            
+            Assert.IsNotNull(order);
+            Assert.IsNotNull(order.IBSOrderId);
+        }
+
 
         [Test]
         public void GetOrderList()
@@ -94,11 +108,7 @@ namespace apcurium.MK.Web.Tests
         {
             var sut = new OrderServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
 
-            var orders = sut.GetOrder(new OrderRequest()
-            {
-                AccountId = TestAccount.Id,
-                OrderId = _orderId
-            });
+            var orders = sut.GetOrder(TestAccount.Id,_orderId);
             Assert.NotNull(orders);
             
             Assert.AreEqual(TestAddresses.GetAddress1().Apartment , orders.PickupApartment);

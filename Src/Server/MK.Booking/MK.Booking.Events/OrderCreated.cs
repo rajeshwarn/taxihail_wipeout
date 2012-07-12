@@ -13,6 +13,8 @@ namespace apcurium.MK.Booking.Events
         }
 
         public Guid AccountId { get; set; }
+
+        public int IBSOrderId { get; set; }
         
         public DateTime PickupDate { get; set; }
         

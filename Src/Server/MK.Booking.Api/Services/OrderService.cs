@@ -24,6 +24,7 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 throw HttpError.Unauthorized("Unauthorized");
             }
+
             return Dao.FindById(request.OrderId);
         }
     }

@@ -17,6 +17,8 @@ namespace apcurium.MK.Booking.Commands
 
         public Guid OrderId { get; set; }
 
+        public int IBSOrderId { get; set; }
+
         public Guid AccountId { get; set; }
 
         public DateTime PickupDate { get; set; }

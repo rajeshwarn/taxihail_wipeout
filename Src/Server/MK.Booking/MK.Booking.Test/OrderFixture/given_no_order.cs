@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 PickupDate = pickupDate,
                 PickupAddress = new CreateOrder.Address { RingCode = "3131", Latitude = 45.515065, Longitude = -73.558064, FullAddress = "1234 rue Saint-Hubert", Apartment = "3939"},
                 DropOffAddress = new CreateOrder.Address { Latitude = 45.50643, Longitude = -73.554052, FullAddress = "Velvet auberge st gabriel" },           
-                
+                IBSOrderId = 99,
             };
             order.Settings = new CreateOrder.BookingSettings { ChargeTypeId = 99, VehicleTypeId = 88, ProviderId = 11, Phone = "514-555-1212", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" };
 
@@ -59,6 +59,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             Assert.AreEqual(-73.558064, orderCreated.PickupLongitude);
             Assert.AreEqual("Velvet auberge st gabriel", orderCreated.DropOffAddress);
             Assert.AreEqual(45.50643, orderCreated.DropOffLatitude);
+            Assert.AreEqual(99, orderCreated.IBSOrderId);
             Assert.AreEqual(-73.554052, orderCreated.DropOffLongitude);
             
         }
@@ -76,6 +77,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 AccountId = _accountId,
                 PickupDate = pickupDate,
                 PickupAddress = new CreateOrder.Address { RingCode = "3131", Latitude = 45.515065, Longitude = -73.558064, FullAddress = "1234 rue Saint-Hubert", Apartment="3939" },
+                IBSOrderId = 99,
             };
             order.Settings = new CreateOrder.BookingSettings { ChargeTypeId = 99, VehicleTypeId = 88, ProviderId = 11, Phone = "514-555-1212", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" };
 
@@ -92,6 +94,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             Assert.AreEqual("3131", orderCreated.PickupRingCode);
             Assert.AreEqual(45.515065, orderCreated.PickupLatitude);
             Assert.AreEqual(-73.558064, orderCreated.PickupLongitude);
+            Assert.AreEqual(99, orderCreated.IBSOrderId);            
             Assert.IsNull(orderCreated.DropOffAddress);
             Assert.IsNull(orderCreated.DropOffLatitude);
             Assert.IsNull(orderCreated.DropOffLongitude);

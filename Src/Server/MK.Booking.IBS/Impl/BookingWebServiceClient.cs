@@ -11,9 +11,13 @@ namespace apcurium.MK.Booking.IBS.Impl
             return base.GetUrl() + "IWEBOrder_7";
         }
 
+
+        private ILogger _logger;
+
         public BookingWebServiceClient(IConfigurationManager configManager, ILogger logger)
             : base(configManager, logger)
         {
+            _logger = logger;
         }
 
         public Tuple<string, double?, double?> GetOrderStatus(int orderId, int accountId)
@@ -42,40 +46,37 @@ namespace apcurium.MK.Booking.IBS.Impl
         {
             var order = new TBookOrder_5();
 
-            order.ServiceProviderID = 0;// providerId;
-            order.AccountID = 0;//accountId;
+            order.ServiceProviderID = providerId;
+            order.AccountID = accountId;
             order.Customer = passengerName;
             order.Phone = phone;
-             
-            //TODO : need to check ibs setup for shortesst time.
-            DateTime pDate = pickupDateTime.HasValue ? pickupDateTime.Value : DateTime.Now.AddMinutes(10);
-            order.PickupDate = new TWEBTimeStamp{ Year= pDate.Year, Month = pDate.Month, Day=pDate.Day };
-            order.PickupTime = new TWEBTimeStamp{  Hour = pDate.Hour , Minute = pDate.Minute, Second=0,Fractions =0};
 
-            order.PickupAddress = new TWEBAddress{ StreetPlace = pickup.FullAddress , AptBaz = pickup.Apartment , Longitude = pickup.Longitude, Latitude = pickup.Latitude };
-            order.DropoffAddress= dropoff == null ? new TWEBAddress() : new TWEBAddress{ StreetPlace = pickup.FullAddress , AptBaz = pickup.Apartment , Longitude = pickup.Longitude, Latitude = pickup.Latitude };
+            //TODO : need to check ibs setup for shortesst time.
+            DateTime pDate = pickupDateTime.HasValue ? pickupDateTime.Value : DateTime.Now.AddMinutes(2);
+            order.PickupDate = new TWEBTimeStamp { Year = pDate.Year, Month = pDate.Month, Day = pDate.Day };
+            order.PickupTime = new TWEBTimeStamp { Hour = pDate.Hour, Minute = pDate.Minute, Second = 0, Fractions = 0 };
+
+            order.PickupAddress = new TWEBAddress { StreetPlace = pickup.FullAddress, AptBaz = pickup.Apartment, Longitude = pickup.Longitude, Latitude = pickup.Latitude };
+            order.DropoffAddress = dropoff == null ? new TWEBAddress() : new TWEBAddress { StreetPlace = pickup.FullAddress, AptBaz = pickup.Apartment, Longitude = pickup.Longitude, Latitude = pickup.Latitude };
             order.Passengers = nbPassengers;
             order.VehicleTypeID = vehicleTypeId;
             order.Note = note;
             order.ContactPhone = phone;
             order.OrderStatus = TWEBOrderStatusValue.wosPost;
-            
+
             int? orderId = null;
 
-            
+
             UseService(service =>
             {
                 try
                 {
                     orderId = service.SaveBookOrder_5(_userNameApp, _passwordApp, order);
-                    var s = service.GetOrderStatus(_userNameApp, _passwordApp, orderId.Value, null, null, 0);
-                    var b = service.GetBookOrder_5(_userNameApp, _passwordApp, orderId.Value, null, null, 0);
-                    s.ToString();
                 }
-                catch
-                    (Exception ex)
+                catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    _logger.LogError(ex);
+                    throw;
                 }
             });
             return orderId;

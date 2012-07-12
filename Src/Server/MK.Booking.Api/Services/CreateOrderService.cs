@@ -49,25 +49,31 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(ErrorCode.CreateOrder_InvalidPickupAddress.ToString()); 
             }
 
-            //CreateIbsOrder(account, request);
-            
+            var ibsOrderId = CreateIBSOrder(account, request);
+
+            if (!ibsOrderId.HasValue)
+            {
+                throw new HttpError(ErrorCode.CreateOrder_CannotCreateInIbs.ToString()); 
+            }
+
             var command = new Commands.CreateOrder();
             
             Mapper.Map( request,  command  );
                         
             command.Id = Guid.NewGuid();
-                        
+
+            command.IBSOrderId = ibsOrderId.Value;
             _commandBus.Send(command);
 
             return new Order { Id = command.Id };                       
         }
 
-        private void CreateIbsOrder(ReadModel.AccountDetail account, CreateOrder request)
+        private int? CreateIBSOrder(ReadModel.AccountDetail account, CreateOrder request)
         {                       
             var ibsPickupAddress = Mapper.Map<IBSAddress>(request.PickupAddress);
             var ibsDropOffAddress = IsValid(request.DropOffAddress) ? Mapper.Map<IBSAddress>(request.PickupAddress) : (IBSAddress) null;
 
-            _bookingWebServiceClient.CreateOrder(request.Settings.ProviderId, account.IBSAccountId, request.Settings.Name, request.Settings.Phone, request.Settings.Passengers,
+            return _bookingWebServiceClient.CreateOrder(request.Settings.ProviderId, account.IBSAccountId, request.Settings.Name, request.Settings.Phone, request.Settings.Passengers,
                                                     request.Settings.VehicleTypeId, request.Note, request.PickupDate, ibsPickupAddress, ibsDropOffAddress);
         }
 

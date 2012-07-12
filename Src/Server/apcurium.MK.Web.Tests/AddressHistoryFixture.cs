@@ -40,7 +40,7 @@ namespace apcurium.MK.Web.Tests
                 AccountId = newAccount.Id,
                 PickupAddress = TestAddresses.GetAddress1(),                
                 PickupDate = DateTime.Now,
-                DropOffAddress = TestAddresses.GetAddress2(),   
+                DropOffAddress = TestAddresses.GetAddress2(),                   
                 
             };
             order.Settings = new Booking.Api.Contract.Resources.BookingSettings{ ChargeTypeId = 99, VehicleTypeId = 88, ProviderId = 11, Phone = "514-555-1212", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" };             
@@ -56,26 +56,30 @@ namespace apcurium.MK.Web.Tests
         public void when_save_a_favorite_address_with_an_historic_address_existing()
         {
             //Setup
-            var orderService = new OrderServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+            var newAccount = GetNewAccount();
+            
+            var orderService = new OrderServiceClient(BaseUrl, new AuthInfo(newAccount.Email, "password"));
+
             var order = new CreateOrder
             {
                 Id = Guid.NewGuid(),
-                AccountId = TestAccount.Id,
+                AccountId = newAccount.Id,
                 PickupDate = DateTime.Now,
                 PickupAddress = new Booking.Api.Contract.Resources.Address { FullAddress = "1234 rue Saint-Denis", Apartment = "3939", RingCode = "3131", Latitude = 45.515065, Longitude = -73.558064,  },
                 DropOffAddress = new Booking.Api.Contract.Resources.Address { FullAddress = "Velvet auberge st gabriel", Latitude = 45.50643, Longitude = -73.554052 },
                 Settings = new Booking.Api.Contract.Resources.BookingSettings { ChargeTypeId = 99, VehicleTypeId = 88, ProviderId = 11, Phone = "514-555-1212", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" }
+
             };
             orderService.CreateOrder(order);
 
             //Arrange
-            var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+            var sut = new AccountServiceClient(BaseUrl, new AuthInfo(newAccount.Email, "password"));
 
             //Act
             var address = new SaveFavoriteAddress()
             {
                 Id = Guid.NewGuid(),
-                AccountId = TestAccount.Id,
+                AccountId = newAccount.Id,
                 FriendlyName = "La Boite à Jojo",
                 FullAddress = "1234 rue Saint-Denis",
                 Latitude = 45.515065,
@@ -86,7 +90,7 @@ namespace apcurium.MK.Web.Tests
             sut.AddFavoriteAddress(address);
 
             //Assert
-            var addresses = sut.GetHistoryAddresses(TestAccount.Id);
+            var addresses = sut.GetHistoryAddresses(newAccount.Id);
             Assert.AreEqual(0, addresses.Count());
         }
     }

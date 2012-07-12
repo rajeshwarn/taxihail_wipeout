@@ -34,9 +34,9 @@ namespace apcurium.MK.Booking.Api.Client
             return result;
         }
 
-        public Order GetOrder(OrderRequest order)
+        public Order GetOrder(Guid accountId, Guid orderId)
         {
-            var req = string.Format("/accounts/{0}/orders/{1}", order.AccountId, order.OrderId);
+            var req = string.Format("/accounts/{0}/orders/{1}", accountId, orderId);
             var result = Client.Get<Order>(req);
             return result;
         }
