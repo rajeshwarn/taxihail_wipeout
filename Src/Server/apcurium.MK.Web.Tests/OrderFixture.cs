@@ -111,14 +111,16 @@ namespace apcurium.MK.Web.Tests
             var orders = sut.GetOrder(TestAccount.Id,_orderId);
             Assert.NotNull(orders);
             
-            Assert.AreEqual(TestAddresses.GetAddress1().Apartment , orders.PickupApartment);
-            Assert.AreEqual(TestAddresses.GetAddress1().FullAddress, orders.PickupAddress);
-            Assert.AreEqual(TestAddresses.GetAddress1().RingCode, orders.PickupRingCode);
-            Assert.AreEqual(TestAddresses.GetAddress1().Latitude, orders.PickupLatitude);
-            Assert.AreEqual(TestAddresses.GetAddress1() .Longitude , orders.PickupLongitude);
-            Assert.AreEqual(TestAddresses.GetAddress2().FullAddress, orders.DropOffAddress);
-            Assert.AreEqual(TestAddresses.GetAddress2().Latitude, orders.DropOffLatitude);
-            Assert.AreEqual(TestAddresses.GetAddress2().Longitude, orders.DropOffLongitude);
+            //TODO: Fix test
+
+            Assert.AreEqual(TestAddresses.GetAddress1().Apartment , orders.PickupAddress.Apartment );
+            Assert.AreEqual(TestAddresses.GetAddress1().FullAddress, orders.PickupAddress.FullAddress);
+            Assert.AreEqual(TestAddresses.GetAddress1().RingCode, orders.PickupAddress.RingCode);
+            Assert.AreEqual(TestAddresses.GetAddress1().Latitude, orders.PickupAddress.Latitude);
+            Assert.AreEqual(TestAddresses.GetAddress1().Longitude, orders.PickupAddress.Longitude);
+            Assert.AreEqual(TestAddresses.GetAddress2().FullAddress, orders.DropOffAddress.FullAddress);
+            Assert.AreEqual(TestAddresses.GetAddress2().Latitude, orders.DropOffAddress.Latitude);
+            Assert.AreEqual(TestAddresses.GetAddress2().Longitude, orders.DropOffAddress.Longitude);
 
         }
     }

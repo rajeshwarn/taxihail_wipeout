@@ -98,6 +98,7 @@
     <Compile Include="Services\GoogleApi\CommonDto.cs" />
     <Compile Include="Services\GoogleApi\DirectionDto.cs" />
     <Compile Include="Services\GoogleApi\GeolocDto.cs" />
+    <Compile Include="Services\OrderMapper.cs" />
     <Compile Include="Services\OrderService.cs" />
     <Compile Include="Services\OrderStatusService.cs" />
     <Compile Include="Services\ReferenceDataService.cs" />

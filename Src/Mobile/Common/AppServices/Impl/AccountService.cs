@@ -9,6 +9,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using TinyIoC;
+using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -54,8 +55,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public IEnumerable<Address> GetHistoryAddresses()
         {
-
-
             IEnumerable<Address> result = new Address[0];
             UseServiceClient<AccountServiceClient>(service =>
             {
@@ -63,6 +62,24 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             });
 
             return result;
+        }
+
+
+        public IEnumerable<Order> GetHistoryOrders()
+        {
+            IEnumerable<Order> result = new Order[0];
+            UseServiceClient<OrderServiceClient>(service =>
+            {
+                result = service.GetOrders(CurrentAccount.Id);
+            });
+
+            return result;
+        }
+
+
+        public Order GetHistoryOrder(Guid id)
+        {
+            return GetHistoryOrders().Single(o => o.Id == id);
         }
 
         public IEnumerable<Address> GetFavoriteAddresses()
@@ -160,7 +177,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         }
 
-        private Account CurrentAccount
+        public Account CurrentAccount
         {
             get
             {

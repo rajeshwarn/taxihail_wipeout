@@ -19,7 +19,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         Address[] SearchAddress(double latitude, double longitude);
 
-        DirectionInfo GetDirectionInfo(double originLong, double originLat, double destLong, double destLat);
+        DirectionInfo GetDirectionInfo(double originLat, double originLong, double destLat, double destLong);
 
         IEnumerable<Address> FindSimilar(string address);
     }

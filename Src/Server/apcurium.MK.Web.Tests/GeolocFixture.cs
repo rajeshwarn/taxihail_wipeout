@@ -27,9 +27,9 @@ namespace apcurium.MK.Web.Tests
         public void BasicNameSearch()
         {
             var sut = new GeocodingServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
-            var addresses = sut.Search("5250 ferrier montreal");
+            var addresses = sut.Search("11 hines");
             Assert.True(addresses.Addresses.Count() == 1);
-            Assert.True(addresses.Addresses.ElementAt(0).FullAddress.Contains( "5250" ));
+            Assert.True(addresses.Addresses.ElementAt(0).FullAddress.Contains( "11" ));
         }
 
         [Test]

@@ -21,11 +21,11 @@ namespace DatabaseInitializer
     using System.Configuration;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
-    
+
     using Infrastructure.Sql.BlobStorage;
     using Infrastructure.Sql.MessageLog;
     using Infrastructure.Sql.EventSourcing;
-    using Infrastructure.Sql.Messaging.Implementation;   
+    using Infrastructure.Sql.Messaging.Implementation;
     using apcurium.MK.Booking.Database;
 
     public class Program
@@ -87,15 +87,35 @@ namespace DatabaseInitializer
 
             configurationManager.SetSetting("IBS.WebServicesUserName", "taxi");
             configurationManager.SetSetting("IBS.WebServicesPassword", "test");
-            //configurationManager.SetSetting("IBS.WebServicesUrl", "http://drivelinq.dyndns-ip.com:6928/XDS_IASPI.DLL/soap/");
-            configurationManager.SetSetting("IBS.WebServicesUrl", "http://72.38.252.190:6928//XDS_IASPI.DLL/soap/");
+
+            //DEMO SERVER
+            configurationManager.SetSetting("IBS.WebServicesUrl", "http://drivelinq.dyndns-ip.com:6928/XDS_IASPI.DLL/soap/");
+            configurationManager.SetSetting("DefaultBookingSettings.ProviderId", "9");
+            configurationManager.SetSetting("DefaultBookingSettings.VehicleTypeId", "4");
+            configurationManager.SetSetting("DefaultBookingSettings.ChargeTypeId", "1");
+            //------
+            
+            //TEST SERVER
+            //configurationManager.SetSetting("IBS.WebServicesUrl", "http://72.38.252.190:6928/XDS_IASPI.DLL/soap/");
+            //configurationManager.SetSetting("DefaultBookingSettings.ProviderId", "13");
+            //configurationManager.SetSetting("DefaultBookingSettings.VehicleTypeId", "1");
+            //configurationManager.SetSetting("DefaultBookingSettings.ChargeTypeId", "1");
+            //------
+            
+            configurationManager.SetSetting("DefaultBookingSettings.NbPassenger", "2");
+            
+            
+
             configurationManager.SetSetting("IBS.DefaultAccountPassword", "password");
 
-            configurationManager.SetSetting("GeoLoc.SearchFilter", "{0},montreal,qc,canada&region=ca");
+            configurationManager.SetSetting("GeoLoc.SearchFilter", "{0},ottawa,on,canada&region=ca");
             configurationManager.SetSetting("GeoLoc.AddressFilter", "canada");
             configurationManager.SetSetting("Direction.FlateRate", "3.45");
             configurationManager.SetSetting("Direction.RatePerKm", "1.70");
             configurationManager.SetSetting("Direction.MaxDistance", "50");
+            
+            configurationManager.SetSetting("DistanceFormat", "KM"); // Other option is "MILE"
+            configurationManager.SetSetting("PriceFormat", "en-US");
 
             configurationManager.SetSetting("Email.NoReply", "noreply@apcurium.com");
 
@@ -107,13 +127,19 @@ namespace DatabaseInitializer
             configurationManager.SetSetting("Smtp.Credentials.Username", "donotreply@apcurium.com");
             configurationManager.SetSetting("Smtp.Credentials.Password", "2wsxCDE#");
 
-            configurationManager.SetSetting("DefaultBookingSettings.ChargeTypeId", "1");
-            configurationManager.SetSetting("DefaultBookingSettings.NbPassenger", "2");
-            configurationManager.SetSetting("DefaultBookingSettings.VehicleTypeId", "1");
-            configurationManager.SetSetting("DefaultBookingSettings.ProviderId", "13");
-
-
-
+            configurationManager.SetSetting("OrderStatus.wosNone", "Invalid order, please call dispatch center" );
+            configurationManager.SetSetting("OrderStatus.wosAddrNotValid", "The address is not valid" );
+            configurationManager.SetSetting("OrderStatus.wosSCHED", "Scheduled" );
+            configurationManager.SetSetting("OrderStatus.wosCANCELLED", "Cancelled" );
+            configurationManager.SetSetting("OrderStatus.wosDONE", "Completed" );
+            configurationManager.SetSetting("OrderStatus.wosWAITING", "Waiting for driver to be assigned" );
+            configurationManager.SetSetting("OrderStatus.wosASSIGNED", "Driver assigned" );
+            configurationManager.SetSetting("OrderStatus.wosARRIVED", "Taxi is at pickup location" );
+            configurationManager.SetSetting("OrderStatus.wosLOADED", "Passengers are in the taxi" );
+            configurationManager.SetSetting("OrderStatus.wosNOSHOW", "No show" );
+            configurationManager.SetSetting("OrderStatus.wosCANCELLED_DONE", "Cancelled");
+            configurationManager.SetSetting("OrderStatus.CabDriverNumberAssigned", "Cab #{0} is assigned to you");
+            configurationManager.SetSetting("OrderStatus.OrderDoneFareAvailable", "Completed (Fare: {0}, Toll: {1})");        
 
         }
     }

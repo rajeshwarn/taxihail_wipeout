@@ -136,8 +136,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         protected override WS.Address Location
         {
-            get { return ParentActivity.BookingInfo.PickupLocation; }
-            set { ParentActivity.BookingInfo.PickupLocation = value; }
+            get { return ParentActivity.BookingInfo.PickupAddress; }
+            set { ParentActivity.BookingInfo.PickupAddress = value; }
         }
 
         protected override bool NeedFindCurrentLocation

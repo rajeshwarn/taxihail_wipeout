@@ -61,7 +61,7 @@
   <string name="StatusViewTitle">Confirmed</string>
   <string name="StatusDescription">Confirmation #{0}</string>
   <string name="ChangeBookingSettingsButton">Change booking settings</string>
-  <string name="CallCompanyButton">Call</string>
+  <string name="CallCompanyButton">Call dispatch center</string>
   <string name="NoHistoryLabel">No booking history</string>
   <string name="LocationNoHistory">No history</string>
   <string name="LocationAddFavorite">&lt; Add a new location &gt;</string>
@@ -150,7 +150,7 @@
   <string name="StatusInvalid">Status not available</string>
   <string name="ParameterButton">Parameters</string>
   <string name="EstimateDistance">Distance: {0}</string>
-  <string name="EstimatePrice">Approx. Price: {0:C}</string>
+  <string name="EstimatePrice">Approx. Price: {0}</string>
   <string name="ApproxPrice">Approx. Price:</string>
   <string name="NotAvailable">N/A</string>
   <string name="AboutButton">About Us</string>
@@ -207,4 +207,5 @@
   <string name="DateTimePickerPickInvalidDateTitle">Invalid date / time</string>
   <string name="DateTimePickerPickInvalidDateMessage">The pickup date must be in the future.</string>
   <string name="EditButton">Edit</string>
+  <string name="StatusCannotBeDisplayed">Cannot get status. Please call provider.</string>
 </resources>

@@ -21,6 +21,8 @@ using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Extensions;
 
 using WS = apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -41,9 +43,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             private set;
         }
 
-        private BookingInfoData _bookingInfo;
+        private CreateOrder _bookingInfo;
 
-        public BookingInfoData BookingInfo
+        public CreateOrder BookingInfo
         {
             get { return _bookingInfo; }
         }
@@ -95,7 +97,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             UpdateModel();
 
             //TODO: Validation should be in common lib
-            if ( (_bookingInfo.PickupLocation.FullAddress.IsNullOrEmpty()) || ( !_bookingInfo.PickupLocation.HasValidCoordinate() ) )
+            if ((_bookingInfo.PickupAddress.FullAddress.IsNullOrEmpty()) || (!_bookingInfo.PickupAddress.HasValidCoordinate()))
             {
                 this.ShowAlert(Resource.String.InvalidBookinInfoTitle, Resource.String.InvalidBookinInfo);
             }
@@ -122,32 +124,37 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                     ThreadHelper.ExecuteInThread(this, () =>
                     {
                         var xmlBInfo = data.GetStringExtra("ConfirmedBookingInfo");
-                        var bookingInfo = SerializerHelper.DeserializeObject<BookingInfoData>(xmlBInfo);
+                        var bookingInfo = SerializerHelper.DeserializeObject<CreateOrder>(xmlBInfo);
 
-                        var service = TinyIoCContainer.Current.Resolve<IBookingService>();
-                        string error;
+                        var service = TinyIoCContainer.Current.Resolve<IBookingService>();                        
+                        bookingInfo.Id = Guid.NewGuid();
 
-                        var id = service.CreateOrder(AppContext.Current.LoggedUser, bookingInfo, out error);
-                        if (id > 0)
+                        try
                         {
-                            AppContext.Current.LastOrder = id;
-                            bookingInfo.Id = id;
-                            bookingInfo.RequestedDateTime = DateTime.Now;
+                            
+                            var orderInfo = service.CreateOrder(bookingInfo);
+                            AppContext.Current.LastOrder = bookingInfo.Id;
+
+                            //bookingInfo.PickupDate = DateTime.Now;
                             //TODO:Fix this
                             //AppContext.Current.LoggedUser.AddBooking(bookingInfo);
-                            AppContext.Current.UpdateLoggedInUser(AppContext.Current.LoggedUser, false);
-                            ShowStatusActivity(bookingInfo);
+                            //AppContext.Current.UpdateLoggedInUser(AppContext.Current.LoggedUser, false);
+
+                            ShowStatusActivity(bookingInfo, orderInfo);
                             ResetBookingInfo();
+
                         }
-                        else
+                        catch( Exception ex )
                         {
                             RunOnUiThread(() =>
-                                {
-                                    string err = GetString(Resource.String.ErrorCreatingOrderMessage);
-                                    err += error.HasValue() ? " (" + error + ")" : "";
-                                    this.ShowAlert(GetString(Resource.String.ErrorCreatingOrderTitle), err);
-                                });
+                            {
+                                string error = ex.Message;
+                                string err = GetString(Resource.String.ErrorCreatingOrderMessage);
+                                err += error.HasValue() ? " (" + error + ")" : "";
+                                this.ShowAlert(GetString(Resource.String.ErrorCreatingOrderTitle), err);
+                            });
                         }
+                        
                     }, true);
                 }
             }
@@ -193,6 +200,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
         }
 
+        
+
         private WS.Address GetLocation(LocationTypes type, int id)
         {
 
@@ -213,13 +222,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             //}
         }
-        private void ShowStatusActivity(BookingInfoData data)
+
+        
+        private void ShowStatusActivity(CreateOrder data,OrderStatusDetail orderInfo)
         {
             RunOnUiThread(() =>
             {
                 Intent i = new Intent(this, typeof(BookingStatusActivity));
                 var serialized = data.Serialize();
-                i.PutExtra("BookingData", serialized);
+                i.PutExtra("CreateOrder", serialized);
+
+                serialized = orderInfo.Serialize( );
+                i.PutExtra("OrderStatusDetail", serialized);
+                
+
                 StartActivity(i);
             });
         }
@@ -241,7 +257,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             var selectedViewIsPickup = TabHost.CurrentTabTag == Tab.Pickup.ToString();
 
-            if (selectedViewIsPickup && !selectPickup && !BookingInfo.PickupLocation.FullAddress.HasValue())
+            if (selectedViewIsPickup && !selectPickup && !BookingInfo.PickupAddress.FullAddress.HasValue())
             {
                 AlertDialogHelper.ShowAlert(this, "", Resources.GetString(Resource.String.InvalidPickupAddress));
             }
@@ -279,14 +295,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             if (TabHost.CurrentView != null && TabHost.CurrentTabTag == Tab.Pickup.ToString())
             {
-                _bookingInfo.PickupLocation.FullAddress = TabHost.CurrentView.FindViewById<AutoCompleteTextView>(Resource.Id.pickupAddressText).Text;
-                _bookingInfo.PickupLocation.RingCode = TabHost.CurrentView.FindViewById<EditText>(Resource.Id.ringCodeText).Text;
-                _bookingInfo.PickupLocation.Apartment = TabHost.CurrentView.FindViewById<EditText>(Resource.Id.aptNumberText).Text;
+                _bookingInfo.PickupAddress.FullAddress = TabHost.CurrentView.FindViewById<AutoCompleteTextView>(Resource.Id.pickupAddressText).Text;
+                _bookingInfo.PickupAddress.RingCode = TabHost.CurrentView.FindViewById<EditText>(Resource.Id.ringCodeText).Text;
+                _bookingInfo.PickupAddress.Apartment = TabHost.CurrentView.FindViewById<EditText>(Resource.Id.aptNumberText).Text;
                 //s_model.Date = TabHost.CurrentView.FindViewById<EditText>(Resource.Id.pickupDateText).Text + " " + TabHost.CurrentView.FindViewById<EditText>(Resource.Id.pickupTimeText).Text;
             }
             else if (TabHost.CurrentView != null && TabHost.CurrentTabTag == Tab.Destination.ToString())
             {
-                _bookingInfo.DestinationLocation.FullAddress = this.TabHost.CurrentView.FindViewById<EditText>(Resource.Id.destAddressText).Text;
+                _bookingInfo.DropOffAddress.FullAddress = this.TabHost.CurrentView.FindViewById<EditText>(Resource.Id.destAddressText).Text;
             }
         }
 
@@ -295,7 +311,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         public void Reset()
         {
-            _bookingInfo = new BookingInfoData();
+            _bookingInfo = new CreateOrder();
             var pickupActivity = (PickupActivity)LocalActivityManager.GetActivity("Pickup");
             if (pickupActivity != null)
             {
@@ -324,14 +340,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             RunOnUiThread(() =>
                               {
-                                  _bookingInfo = new BookingInfoData();                                  
+                                  _bookingInfo = new CreateOrder();                                  
                                   var currentActivity = (IAddress)LocalActivityManager.GetActivity(this.TabHost.CurrentTabTag);
                                   currentActivity.Maybe(() => currentActivity.OnResumeEvent());
                               });
         }
 
 
-        public void RebookTrip(int tripId)
+        public void RebookTrip(Guid tripId)
         {
 
             //TODO:Fix this
@@ -362,7 +378,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             //}
         }
 
-        internal void StartStatusActivity(int id)
+        internal void StartStatusActivity(Guid id)
         {
             //TODO:Fix this
             //var booking = AppContext.Current.LoggedUser.BookingHistory.FirstOrDefault(b => b.Id == id);

@@ -27,9 +27,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Adapters
         {
             return position;
         }
+        
         public override long GetItemId(int position)
         {
-            return Items[position].Id;
+            return -1;
+            //return Items[position].Id;
         }
         public override Android.Views.View GetView(int position, Android.Views.View convertView, Android.Views.ViewGroup parent)
         {

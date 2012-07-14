@@ -43,7 +43,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Localization
         
         public string MobileUser
         {
-            get { return ""; }
+            get { return "This booking was made using the mobile application."; }
         }
 
         public string PaiementType

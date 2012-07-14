@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 
         private int _currentCie = -1;
 
-        private int? _tripToRebook = null;
+        private Guid? _tripToRebook = null;
 
         public ReclickableTabHost MainTabHost
         {
@@ -65,7 +65,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
                 bool statusShown = false;
                 if (AppContext.Current.LastOrder.HasValue)
                 {
-                    var isCompleted = TinyIoCContainer.Current.Resolve<IBookingService>().IsCompleted(AppContext.Current.LoggedUser, AppContext.Current.LastOrder.Value);
+                    var isCompleted = TinyIoCContainer.Current.Resolve<IBookingService>().IsCompleted(AppContext.Current.LastOrder.Value);
                     if (!isCompleted)
                     {
                         statusShown = true;
@@ -160,7 +160,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
         }
 
 
-        public void RebookTrip(int rebookTripId)
+        public void RebookTrip(Guid rebookTripId)
         {
 
             _tripToRebook = rebookTripId;

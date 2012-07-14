@@ -6,6 +6,7 @@ using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.ReadModel.Query;
+using apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -26,7 +27,9 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             var session = this.GetSession();
-            return Dao.FindByAccountId(new Guid(session.UserAuthId)).OrderByDescending(c=>c.PickupDate);
+
+
+            return Dao.FindByAccountId(new Guid(session.UserAuthId)).OrderByDescending(c => c.CreatedDate).Select(read => new OrderMapper().ToResource(read)); ;
         }
     }
 }

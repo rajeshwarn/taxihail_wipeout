@@ -15,21 +15,21 @@ using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Converters;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
-    [Activity(Label = "Book Status", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation=Android.Content.PM.ScreenOrientation.Portrait)]
+    [Activity(Label = "Book Status", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class BookingStatusActivity : MapActivity
     {
         private bool _closeScreenWhenCompleted;
-        private int _lastOrder;
+        private Guid _lastOrder;
         private Timer _timer;
-        private BookingInfoData _bookingInfo;
-        public BookingInfoData BookingInfo
-        {
-            get { return _bookingInfo; }
-            private set { _bookingInfo = value; }
-        }
+
+        public OrderStatusDetail OrderStatus { get; private set; }
+        public CreateOrder Order { get; private set; }
 
 
         protected override bool IsRouteDisplayed
@@ -43,25 +43,57 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             SetContentView(Resource.Layout.BookingStatus);
 
-            var serialized = Intent.GetStringExtra("BookingData");
-            var data = SerializerHelper.DeserializeObject<BookingInfoData>(serialized);
-            _bookingInfo = data;
+            LoadParameters();
 
 
-
-            FindViewById<TextView>(Resource.Id.statusInfoText).Text = string.Format(GetString(Resource.String.StatusDescription), _bookingInfo.Id);
+            if (OrderStatus.IBSOrderId.HasValue)
+            {
+                FindViewById<TextView>(Resource.Id.statusInfoText).Text = string.Format(GetString(Resource.String.StatusDescription), OrderStatus.IBSOrderId.Value);
+            }
+            else
+            {
+                FindViewById<TextView>(Resource.Id.statusInfoText).Text = string.Format(GetString(Resource.String.StatusDescription), OrderStatus.IBSOrderId.Value);
+            }
 
             SetStatusText(GetString(Resource.String.LoadingMessage));
 
             FindViewById<Button>(Resource.Id.CallBookCancelBtn).Click += new EventHandler(BookingStatusActivity_Click);
 
-
             var map = FindViewById<MapView>(Resource.Id.mapStatus);
 
-            AddMapPin(map, _bookingInfo.PickupLocation, Resource.Drawable.pin_green, Resource.String.PickupMapTitle);
-            AddMapPin(map, _bookingInfo.DestinationLocation, Resource.Drawable.pin_red, Resource.String.DestinationMapTitle);
+            
+
+            ThreadHelper.ExecuteInThread(this, () => DisplayStatus( Order, OrderStatus), false);
 
             _timer = new Timer(o => RefreshStatus(), null, 0, 6000);
+        }
+
+        protected override void OnStop()
+        {
+            base.OnStop();
+            try
+            {
+                _timer.Change(int.MaxValue, int.MaxValue);
+                _timer.Dispose();
+                _timer = null;
+            }
+            catch
+            {
+
+            }
+            
+        }
+        
+        private void LoadParameters()
+        {
+            var serialized = Intent.GetStringExtra("OrderStatusDetail");
+            var status = SerializerHelper.DeserializeObject<OrderStatusDetail>(serialized);
+            OrderStatus = status;
+
+            serialized = Intent.GetStringExtra("CreateOrder");
+            var order = SerializerHelper.DeserializeObject<CreateOrder>(serialized);
+            Order = order;
+
         }
 
         private void AddMapPin(MapView map, Address loc, int graphic, int titleId)
@@ -94,16 +126,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         public override void OnCreateContextMenu(Android.Views.IContextMenu menu, Android.Views.View v, Android.Views.IContextMenuContextMenuInfo menuInfo)
         {
             base.OnCreateContextMenu(menu, v, menuInfo);
+                        
+            menu.SetHeaderTitle(Resource.String.StatusActionButton);
+            menu.Add(0, 1, 0, Resource.String.CallCompanyButton);
+            menu.Add(0, 2, 1, Resource.String.StatusActionBookButton);
+            menu.Add(0, 3, 2, Resource.String.StatusActionCancelButton);
+            menu.Add(0, 4, 3, Resource.String.Close);
 
-            //TODO:Fix this
-
-            //var callCompany = new Java.Lang.String(string.Format(GetString(Resource.String.CallCompanyButton), BookingInfo.Settings.CompanyName));
-            //menu.SetHeaderTitle(Resource.String.StatusActionButton);
-            //menu.Add(0, 1, 0, callCompany);
-            //menu.Add(0, 2, 1, Resource.String.StatusActionBookButton);
-            //menu.Add(0, 3, 2, Resource.String.StatusActionCancelButton);
-            //menu.Add(0, 4, 3, Resource.String.Close);
-            
 
         }
 
@@ -128,6 +157,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         }
 
+
+
         private void CloseActivity()
         {
             _timer.Dispose();
@@ -141,7 +172,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private void CallCompany()
         {
             Intent callIntent = new Intent(Intent.ActionCall);
-            callIntent.SetData(Android.Net.Uri.Parse("tel:" + AppSettings.PhoneNumber(BookingInfo.Settings.ProviderId)));
+            callIntent.SetData(Android.Net.Uri.Parse("tel:" + AppSettings.PhoneNumber(Order.Settings.ProviderId)));
             StartActivity(callIntent);
         }
 
@@ -152,7 +183,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 ThreadHelper.ExecuteInThread(this, () =>
                 {
-                    var isSuccess = TinyIoCContainer.Current.Resolve<IBookingService>().CancelOrder(AppContext.Current.LoggedUser, BookingInfo.Id);
+                    var isSuccess = TinyIoCContainer.Current.Resolve<IBookingService>().CancelOrder(Order.Id);
 
                     if (isSuccess)
                     {
@@ -175,50 +206,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 try
                 {
-                    var isCompleted = TinyIoCContainer.Current.Resolve<IBookingService>().IsCompleted(AppContext.Current.LoggedUser, BookingInfo.Id);
-                    if (isCompleted)
-                    {
-                        AppContext.Current.LastOrder = null;
-                        CloseActivity();
-                        return;
-                    }
+                    //var isCompleted = TinyIoCContainer.Current.Resolve<IBookingService>().IsCompleted(OrderStatus.OrderId);
+                    //if (isCompleted)
+                    //{
+                    //    AppContext.Current.LastOrder = null;
+                    //    CloseActivity();
+                    //    return;
+                    //}
 
 
-                    var status = TinyIoCContainer.Current.Resolve<IBookingService>().GetOrderStatus(AppContext.Current.LoggedUser, BookingInfo.Id);
-                    _lastOrder = BookingInfo.Id;
+                    var status = TinyIoCContainer.Current.Resolve<IBookingService>().GetOrderStatus(Order.Id );
+
+                    _lastOrder = OrderStatus.OrderId;
 
                     if (status != null)
                     {
-                        BookingInfo.Status = status.Status;
-
-                        RunOnUiThread(() => SetStatusText(status.Status));
-
-                        if ((status.Latitude != 0) && (status.Longitude != 0))
-                        {
-                            RunOnUiThread(() =>
-                                {
-                                    var map = FindViewById<MapView>(Resource.Id.mapStatus);
-                                    var point = new GeoPoint(CoordinatesConverter.ConvertToE6(status.Latitude), CoordinatesConverter.ConvertToE6(status.Longitude));
-                                    var pushpin = Resources.GetDrawable(Resource.Drawable.pin_yellow);
-                                    var title = GetString(Resource.String.TaxiMapTitle);
-                                    var pushpinOverlay = new PushPinOverlay(map, pushpin, title, point);
-
-                                    map.Overlays.Clear();
-                                    map.Invalidate();
-
-                                    AddMapPin(map, _bookingInfo.PickupLocation, Resource.Drawable.pin_green, Resource.String.PickupMapTitle);
-                                    AddMapPin(map, _bookingInfo.DestinationLocation, Resource.Drawable.pin_red, Resource.String.DestinationMapTitle);
-                                    map.Overlays.Add(pushpinOverlay);
-                                    map.Invalidate();
-
-                                    map.Controller.AnimateTo(point);
-
-
-                                });
-
-
-
-                        }
+                        //TODO : Status
+                        //BookingInfo.Status = status.Status;
+                        OrderStatus = status;
+                        DisplayStatus(Order, status);
                     }
 
                 }
@@ -228,7 +234,46 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 }
             }, false);
         }
+
+        private void DisplayStatus(CreateOrder order, OrderStatusDetail status)
+        {
+            if (status.IBSStatusDescription.HasValue())
+            {
+                RunOnUiThread(() => SetStatusText(status.IBSStatusDescription));
+            }
+            else
+            {
+                //RunOnUiThread(() => SetStatusText(GetString(Resource.String.StatusCannotBeDisplayed)));
+            }
+
+            if ((status.VehicleLatitude.HasValue ) && (status.VehicleLongitude.HasValue ))
+            {
+                RunOnUiThread(() =>
+                    {
+                        var map = FindViewById<MapView>(Resource.Id.mapStatus);
+                        var point = new GeoPoint(CoordinatesConverter.ConvertToE6(status.VehicleLatitude.Value), CoordinatesConverter.ConvertToE6(status.VehicleLongitude.Value));
+                        var pushpin = Resources.GetDrawable(Resource.Drawable.pin_yellow);
+                        var title = GetString(Resource.String.TaxiMapTitle);
+                        var pushpinOverlay = new PushPinOverlay(map, pushpin, title, point);
+
+                        map.Overlays.Clear();
+                        map.Invalidate();
+
+                        AddMapPin(map, order.PickupAddress, Resource.Drawable.pin_green, Resource.String.PickupMapTitle);
+                        AddMapPin(map, order.DropOffAddress , Resource.Drawable.pin_red, Resource.String.DestinationMapTitle);
+                        map.Overlays.Add(pushpinOverlay);
+                        map.Invalidate();
+
+                        map.Controller.AnimateTo(point);
+
+
+                    });
+
+
+
+                //}
+            }
+        }
+
     }
-
-
 }

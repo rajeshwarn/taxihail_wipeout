@@ -23,9 +23,10 @@ namespace apcurium.MK.Booking.Api.Services
         private IStaticDataWebServiceClient _staticDataWebServiceClient;
         private GeocodingService _geocodingService;
         private IAccountDao _accountDao;
-
-        public CreateOrderService(ICommandBus commandBus, IBookingWebServiceClient bookingWebServiceClient,IStaticDataWebServiceClient staticDataWebServiceClient, IAccountDao accountDao, GeocodingService geocodingService)
+        private OrderStatusService _statusService;
+        public CreateOrderService(ICommandBus commandBus, IBookingWebServiceClient bookingWebServiceClient,IStaticDataWebServiceClient staticDataWebServiceClient, IAccountDao accountDao, GeocodingService geocodingService, OrderStatusService statusService )
         {
+            _statusService = statusService;
             _commandBus = commandBus;
             _bookingWebServiceClient = bookingWebServiceClient;
             _staticDataWebServiceClient = staticDataWebServiceClient;
@@ -49,6 +50,9 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(ErrorCode.CreateOrder_InvalidPickupAddress.ToString()); 
             }
 
+            //TODO : need to check ibs setup for shortesst time.
+            request.PickupDate = request.PickupDate.HasValue ? request.PickupDate.Value : DateTime.Now.AddMinutes(2);            
+            
             var ibsOrderId = CreateIBSOrder(account, request);
 
             if (!ibsOrderId.HasValue)
@@ -63,18 +67,23 @@ namespace apcurium.MK.Booking.Api.Services
             command.Id = Guid.NewGuid();
 
             command.IBSOrderId = ibsOrderId.Value;
+            
             _commandBus.Send(command);
-
-            return new Order { Id = command.Id };                       
-        }
+            
+            return new OrderStatusDetail { OrderId = request.Id, Status = OrderStatus.Created, IBSOrderId = ibsOrderId, IBSStatusId = "", IBSStatusDescription = "Processing your order"};  
+        } 
 
         private int? CreateIBSOrder(ReadModel.AccountDetail account, CreateOrder request)
         {                       
             var ibsPickupAddress = Mapper.Map<IBSAddress>(request.PickupAddress);
             var ibsDropOffAddress = IsValid(request.DropOffAddress) ? Mapper.Map<IBSAddress>(request.PickupAddress) : (IBSAddress) null;
 
-            return _bookingWebServiceClient.CreateOrder(request.Settings.ProviderId, account.IBSAccountId, request.Settings.Name, request.Settings.Phone, request.Settings.Passengers,
-                                                    request.Settings.VehicleTypeId, request.Note, request.PickupDate, ibsPickupAddress, ibsDropOffAddress);
+            var result = _bookingWebServiceClient.CreateOrder(request.Settings.ProviderId, account.IBSAccountId, request.Settings.Name, request.Settings.Phone, request.Settings.Passengers,
+                                                    request.Settings.VehicleTypeId, request.Note, request.PickupDate.Value, ibsPickupAddress, ibsDropOffAddress);
+
+            return result;
+
+            
         }
 
         private bool IsValid(Address address)

@@ -4,6 +4,7 @@ using System.Net;
 using System.Text;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using TinyIoC;
+using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Mobile.Client.Helpers
 {

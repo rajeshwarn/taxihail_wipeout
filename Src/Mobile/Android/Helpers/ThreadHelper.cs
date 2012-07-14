@@ -3,6 +3,7 @@ using System.Threading;
 using Android.App;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using TinyIoC;
+using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Mobile.Client.Helpers
 {
@@ -37,7 +38,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
                 catch (Exception ex)
                 {
                     TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex);
-                    throw;
+                    //throw;
                 }
                 finally
                 {

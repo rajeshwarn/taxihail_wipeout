@@ -16,6 +16,10 @@ using apcurium.Framework.Extensions;
 using Android.Views.InputMethods;
 using apcurium.MK.Booking.Mobile.Data;
 using WS = apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
     [Activity(Label = "Destination", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
@@ -66,10 +70,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             RunOnUiThread(() =>
             {
-                var directionInfo = ParentActivity.BookingInfo.GetDirectionInfo();
+                var directionInfo = new DirectionInfo();
+
+                if (ParentActivity.BookingInfo.PickupAddress.HasValidCoordinate() && ParentActivity.BookingInfo.DropOffAddress.HasValidCoordinate())
+                {
+                    directionInfo = TinyIoCContainer.Current.Resolve<IGeolocService>().GetDirectionInfo(ParentActivity.BookingInfo.PickupAddress.Latitude, ParentActivity.BookingInfo.PickupAddress.Longitude, ParentActivity.BookingInfo.DropOffAddress.Latitude, ParentActivity.BookingInfo.DropOffAddress.Longitude);
+                }
+
                 if (directionInfo.Distance.HasValue)
                 {
-                    RideDistance.Text = String.Format(Resources.GetString(Resource.String.EstimateDistance), directionInfo.Distance.Value);                 
+                    RideDistance.Text = String.Format(Resources.GetString(Resource.String.EstimateDistance), directionInfo.FormattedDistance);                 
                 }
                 else
                 {
@@ -88,7 +98,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                     else
                     {
                         RideCost.SetTextColor(Resources.GetColor(Resource.Color.black));
-                        RideCost.Text = String.Format(Resources.GetString(Resource.String.EstimatePrice), directionInfo.Price.Value );
+                        RideCost.Text = String.Format(Resources.GetString(Resource.String.EstimatePrice), directionInfo.FormattedPrice);
                     }
                 }
                 else
@@ -102,8 +112,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         protected override WS.Address Location
         {
-            get { return ParentActivity.BookingInfo.DestinationLocation; }
-            set { ParentActivity.BookingInfo.DestinationLocation = value; }
+            get { return ParentActivity.BookingInfo.DropOffAddress; }
+            set { ParentActivity.BookingInfo.DropOffAddress = value; }
         }
 
         protected override bool NeedFindCurrentLocation
@@ -130,7 +140,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         public override void SetLocationData(WS.Address location, bool changeZoom)
         {            
             base.SetLocationData(location, changeZoom);
-            RefreshEstimates();
+
+            ThreadHelper.ExecuteInThread(this, RefreshEstimates, false);
         }
     }
 }

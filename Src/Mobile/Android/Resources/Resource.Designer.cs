@@ -726,8 +726,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f05005b
 			public const int BookItButtonImageName = 2131034203;
 			
-			// aapt resource value: 0x7f0500cb
-			public const int BookItButtonImageNamePressed = 2131034315;
+			// aapt resource value: 0x7f0500cc
+			public const int BookItButtonImageNamePressed = 2131034316;
 			
 			// aapt resource value: 0x7f05001c
 			public const int BookPickupLabel = 2131034140;
@@ -1241,6 +1241,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f05007e
 			public const int StatusActionCancelButton = 2131034238;
+			
+			// aapt resource value: 0x7f0500cb
+			public const int StatusCannotBeDisplayed = 2131034315;
 			
 			// aapt resource value: 0x7f050080
 			public const int StatusConfirmCancelRide = 2131034240;

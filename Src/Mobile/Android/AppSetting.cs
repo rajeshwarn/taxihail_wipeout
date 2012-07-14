@@ -43,7 +43,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public static string PhoneNumber(int providerId)
         {
-            return "8666245330";           
+            return "18666245330";           
         }
 
 
@@ -96,7 +96,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public string ServiceUrl
         {
-            get { return "http://192.168.12.105/apcurium.MK.Web/api/"; }
+            //get { return "http://192.168.12.105/apcurium.MK.Web/api/"; }
+            get { return "http://192.168.1.9/apcurium.MK.Web/api/"; }
             //get { return "http://project.apcurium.com/apcurium.MK.Web.csproj_deploy/api/"; }
         }
     }

@@ -12,5 +12,7 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
         CreateOrder_InvalidPickupAddress,
         CreateOrder_CannotCreateInIbs,
 
+        CancelOrder_OrderNotInIbs,
+
     }
 }

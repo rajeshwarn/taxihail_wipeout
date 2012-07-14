@@ -48,7 +48,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         }
 
-        public DirectionInfo GetDirectionInfo(double originLong, double originLat, double destLong, double destLat)
+        public DirectionInfo GetDirectionInfo(double originLat, double originLong, double destLat, double destLong)
         {
 
             try

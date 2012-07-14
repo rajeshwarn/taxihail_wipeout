@@ -28,8 +28,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices
             TinyIoCContainer.Current.Register<AccountServiceClient>((c, p) => new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, new AuthInfo(c.Resolve<IAppContext>().LoggedInEmail, c.Resolve<IAppContext>().LoggedInPassword)));
             TinyIoCContainer.Current.Register<ReferenceDataServiceClient>((c, p) => new ReferenceDataServiceClient(c.Resolve<IAppSettings>().ServiceUrl, new AuthInfo(c.Resolve<IAppContext>().LoggedInEmail, c.Resolve<IAppContext>().LoggedInPassword)));
 
+
             TinyIoCContainer.Current.Register<GeocodingServiceClient>((c, p) => new GeocodingServiceClient(c.Resolve<IAppSettings>().ServiceUrl, new AuthInfo(c.Resolve<IAppContext>().LoggedInEmail, c.Resolve<IAppContext>().LoggedInPassword)));
             TinyIoCContainer.Current.Register<DirectionsServiceClient>((c, p) => new DirectionsServiceClient(c.Resolve<IAppSettings>().ServiceUrl, new AuthInfo(c.Resolve<IAppContext>().LoggedInEmail, c.Resolve<IAppContext>().LoggedInPassword)));
+
+            TinyIoCContainer.Current.Register<OrderServiceClient>((c, p) => new OrderServiceClient(c.Resolve<IAppSettings>().ServiceUrl, new AuthInfo(c.Resolve<IAppContext>().LoggedInEmail, c.Resolve<IAppContext>().LoggedInPassword)));
+            
 
             TinyIoCContainer.Current.Register<IAccountService, AccountService>();
             TinyIoCContainer.Current.Register<IBookingService, BookingService>();

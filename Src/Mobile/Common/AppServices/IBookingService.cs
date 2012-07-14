@@ -2,23 +2,24 @@ using System;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using System.Collections.Generic;
+using apcurium.MK.Booking.Api.Contract.Requests;
 
 namespace apcurium.MK.Booking.Mobile.AppServices
 {
 	public interface IBookingService
 	{
-		
-		bool IsValid( ref BookingInfoData info );
+
+        bool IsValid(ref CreateOrder info);
 				
-		bool IsCompleted(Account user, int orderId);
+		bool IsCompleted(Guid orderId);
 		
 		bool IsCompleted( int statusId );
         
-        bool CancelOrder(Account user, int orderId);
+        bool CancelOrder(Guid orderId);
 
-        int CreateOrder(Account user, BookingInfoData info, out string error);
+        OrderStatusDetail CreateOrder(CreateOrder info);
 
-        apcurium.MK.Booking.Mobile.Data.OrderStatus GetOrderStatus(Account user, int orderId);
+        OrderStatusDetail GetOrderStatus(Guid orderId);
 		
 		
 	}

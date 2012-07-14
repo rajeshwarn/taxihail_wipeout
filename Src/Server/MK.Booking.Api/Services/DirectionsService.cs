@@ -12,11 +12,16 @@ using System.Net;
 using System.Globalization;
 using apcurium.MK.Booking.Api.Services.GoogleApi;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Api.Services
 {
 
-
+    public enum DistanceFormat
+    {
+        Km,
+        Mile,
+    }
 
 
 
@@ -48,10 +53,49 @@ namespace apcurium.MK.Booking.Api.Services
                     var distance = route.Legs.Sum(leg => leg.Distance.Value);
                     result.Distance = distance;
                     result.Price = GetPrice(distance);
+
+                    result.FormattedPrice = FormatPrice(result.Price);
+                    result.FormattedDistance = FormatDistance(result.Distance);
                 }
             }
             
             return result;
+        }
+
+        private string FormatPrice(double? price)
+        {
+            if (price.HasValue)
+            {
+                var culture = _configManager.GetSetting("PriceFormat");
+                return string.Format(new CultureInfo(culture), "{0:C}", price);
+            }
+            else
+            {
+                return "";                
+            }
+            
+        }
+        private string FormatDistance(int? distance)
+        {
+            if (distance.HasValue)
+            {
+                var format = _configManager.GetSetting("DistanceFormat").ToEnum<DistanceFormat>(true, DistanceFormat.Km);
+                if (format == DistanceFormat.Km)
+                {
+                    double distanceInKM = Math.Round( (double)distance.Value / 1000, 1);
+                    return string.Format("{0:n1} km", distanceInKM);
+                }
+                else
+                {
+                    double distanceInMiles = Math.Round((double)distance.Value / 1000, 1);
+                    return string.Format("{0:n1} miles", distanceInMiles);
+                }
+            }
+            else
+            {
+                return "";
+            }
+            
         }
 
 

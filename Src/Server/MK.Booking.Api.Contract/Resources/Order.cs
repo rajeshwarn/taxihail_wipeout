@@ -15,23 +15,15 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
 
         public DateTime PickupDate { get; set; }
 
-        public DateTime CreatedDate { get; set; }
+        public DateTime CreatedDate { get; set; }       
 
-        public string PickupAddress { get; set; }
+        public string Note { get; set; }
 
-        public double PickupLongitude { get; set; }
+        public Address PickupAddress { get; set; }
 
-        public double PickupLatitude { get; set; }
+        public Address DropOffAddress { get; set; }
 
-        public string PickupApartment { get; set; }
-
-        public string PickupRingCode { get; set; }
-
-        public string DropOffAddress { get; set; }
-
-        public double? DropOffLongitude { get; set; }
-
-        public double? DropOffLatitude { get; set; }
+        public BookingSettings Settings { get; set; }        
 
         
     }

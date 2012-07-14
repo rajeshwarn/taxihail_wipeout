@@ -12,7 +12,9 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
     {
 
         public CreateOrder()
-        {            
+        {
+            PickupAddress = new Address();
+            DropOffAddress = new Address();
         }
 
         public Guid Id { get; set; }

@@ -16,7 +16,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         Account UpdateUser(Account data);
 		
 		void EnsureListLoaded();
-		
+
+        Account CurrentAccount { get; }
+
 		IEnumerable<ListItem> GetCompaniesList( );
 		
 		IEnumerable<ListItem> GetVehiclesList(  );
@@ -38,6 +40,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         void UpdateAddress(Address address);
 
         void DeleteAddress(Guid addressId);
+
+        IEnumerable<Order> GetHistoryOrders();
+
+        Order GetHistoryOrder(Guid id);
     }
 }
 

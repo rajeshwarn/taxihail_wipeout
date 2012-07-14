@@ -14,14 +14,15 @@ using apcurium.MK.Booking.Mobile.Client.Models;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
-
+using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Mobile.Extensions;
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
     [Activity(Label = "Book Details", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation=Android.Content.PM.ScreenOrientation.Portrait )]
     public class BookDetailActivity : Activity
     {
-        private BookingInfoData _bookingInfo;
-        public BookingInfoData BookingInfo
+        private CreateOrder _bookingInfo;
+        public CreateOrder BookingInfo
         {
             get { return _bookingInfo; }
             private set { _bookingInfo = value; }
@@ -34,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             SetContentView(Resource.Layout.BookingDetail);
 
             var serialized = Intent.GetStringExtra("BookingInfo");
-            var data = SerializerHelper.DeserializeObject<BookingInfoData>(serialized);
+            var data = SerializerHelper.DeserializeObject<CreateOrder>(serialized);
             BookingInfo = data;
             var currentSettings = AppContext.Current.LoggedUser.Settings;
             BookingInfo.Settings = currentSettings;
@@ -109,11 +110,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             
             var companies = service.GetCompaniesList();
             //TODO : data depends on company selected            
-            
 
-            FindViewById<TextView>(Resource.Id.OriginTxt).Text = BookingInfo.PickupLocation.FullAddress;
-            FindViewById<TextView>(Resource.Id.AptRingCode).Text = FormatAptRingCode(BookingInfo.PickupLocation.Apartment, BookingInfo.PickupLocation.RingCode);
-            FindViewById<TextView>(Resource.Id.DestinationTxt).Text = BookingInfo.DestinationLocation.FullAddress.IsNullOrEmpty() ? Resources.GetString(Resource.String.ConfirmDestinationNotSpecified) : BookingInfo.DestinationLocation.FullAddress;
+
+            FindViewById<TextView>(Resource.Id.OriginTxt).Text = BookingInfo.PickupAddress.FullAddress;
+            FindViewById<TextView>(Resource.Id.AptRingCode).Text = FormatAptRingCode(BookingInfo.PickupAddress.Apartment, BookingInfo.PickupAddress.RingCode);
+            FindViewById<TextView>(Resource.Id.DestinationTxt).Text = BookingInfo.DropOffAddress.FullAddress.IsNullOrEmpty() ? Resources.GetString(Resource.String.ConfirmDestinationNotSpecified) : BookingInfo.DropOffAddress.FullAddress;
             FindViewById<TextView>(Resource.Id.DateTimeTxt).Text = FormatDateTime(BookingInfo.PickupDate, BookingInfo.PickupDate);
             FindViewById<TextView>(Resource.Id.NameTxt).Text = BookingInfo.Settings.Name;
             FindViewById<TextView>(Resource.Id.PhoneTxt).Text = BookingInfo.Settings.Phone;
@@ -125,8 +126,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             FindViewById<TextView>(Resource.Id.CampanyTxt).Text = model.ProviderName;
             FindViewById<TextView>(Resource.Id.ChargeTypeTxt).Text = model.ChargeTypeName;
 
-            var direction = BookingInfo.GetDirectionInfo();
+            var direction = new DirectionInfo();
 
+            if ( BookingInfo.PickupAddress.HasValidCoordinate() && BookingInfo.DropOffAddress.HasValidCoordinate() )
+            {
+                direction = TinyIoCContainer.Current.Resolve<IGeolocService>().GetDirectionInfo(BookingInfo.PickupAddress.Latitude, BookingInfo.PickupAddress.Longitude, BookingInfo.DropOffAddress.Latitude, BookingInfo.DropOffAddress.Longitude);
+            }
+            
             //var price = BookingInfo.GetPrice(BookingInfo.GetDistance());
             if (direction.Price.HasValue)
             {

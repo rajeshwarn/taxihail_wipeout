@@ -31,6 +31,7 @@ namespace apcurium.MK.Web.Tests
             Assert.IsNotNull(direction);
             Assert.True(direction.Distance.HasValue);
             Assert.True(direction.Price.HasValue);
+            
         }
 
 

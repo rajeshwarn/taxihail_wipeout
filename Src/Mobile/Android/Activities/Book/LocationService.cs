@@ -12,6 +12,7 @@ using Android.Widget;
 using Android.Locations;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {

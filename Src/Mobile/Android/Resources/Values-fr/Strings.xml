@@ -61,7 +61,7 @@
   <string name="StatusViewTitle">Confirmée</string>
   <string name="StatusDescription">Confirmation #{0}</string>
   <string name="ChangeBookingSettingsButton">Changer les options</string>
-  <string name="CallCompanyButton">Appeller</string>
+  <string name="CallCompanyButton">Appeller la centrale</string>
   <string name="NoHistoryLabel">Aucun historique</string>
   <string name="LocationNoHistory">Aucun historique</string>
   <string name="LocationAddFavorite">&lt;Ajouter une nouvelle adresse&gt;</string>
@@ -207,4 +207,6 @@
   <string name="EditButton">Modifier</string>
   <string name="SupportEmail">techsupport@apcurium.com</string>
   <string name="TechSupportEmailTitle">Support Android</string>
+  <string name="StatusCannotBeDisplayed">Le status ne peut être affiché. Contactez la centrale de réservation.</string>
+  
 </resources>

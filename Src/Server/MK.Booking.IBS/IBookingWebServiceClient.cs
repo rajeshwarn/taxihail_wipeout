@@ -3,27 +3,14 @@
 namespace apcurium.MK.Booking.IBS
 {
     public interface IBookingWebServiceClient 
-    {
-        //bool IsValid(ref BookingInfoData info);
+    {        
+        int? CreateOrder(int providerId, int accountId, string passengerName, string phone, int nbPassengers, int vehicleTypeId, string note, DateTime pickupDateTime, IBSAddress pickup, IBSAddress dropoff);
 
-        //LocationData[] SearchAddress(string address);
+        IBSOrderStauts GetOrderStatus(int orderId, int accountId);        
 
-        //LocationData[] SearchAddress(double latitude, double longitude);
+        IBSOrderDetails GetOrderDetails(int orderId, int accountId, string contactPhone);
 
-        //LocationData[] FindSimilar(string address);
-
-        int? CreateOrder(int providerId, int accountId, string passengerName, string phone, int nbPassengers, int vehicleTypeId, string note, DateTime? pickupDateTime, IBSAddress pickup, IBSAddress dropoff);
-
-        Tuple<string, double?, double?> GetOrderStatus(int orderId, int accountId);
-
-        //bool IsCompleted(AccountData user, int orderId);
-
-        //bool IsCompleted(int statusId);
-
-        //bool CancelOrder(AccountData user, int orderId);
-
-        //double? GetRouteDistance(double originLong, double originLat, double destLong, double destLat);
-
-        //void UpdateHistory(AccountData user);
+        bool CancelOrder(int orderId, int accountId, string contactPhone);
+        
     }
 }

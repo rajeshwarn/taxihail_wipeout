@@ -6,7 +6,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Models
 {
    public class HistoryModel
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Display { get; set; }
 
     }
