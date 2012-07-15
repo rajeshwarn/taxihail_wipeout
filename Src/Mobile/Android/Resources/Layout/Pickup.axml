@@ -125,7 +125,7 @@
           android:id="@+id/mapPickup"
           android:layout_width="fill_parent"
           android:layout_height="wrap_content"
-          android:apiKey="0XEY3WqKVmJNPdO_6HbYCNKId-81eCqYBVEb-Jw"
+          android:apiKey="0XEY3WqKVmJMzXNRJfhbH1yM6RkpBMOaZWUoMAw"
           android:enabled="true"
           android:clickable="true" />
       <ImageView
@@ -134,10 +134,6 @@
           android:layout_alignWithParentIfMissing="true"
           android:layout_centerInParent="true"
           android:src="@drawable/location" />
-    </RelativeLayout>
-    <!--Release key : 0XEY3WqKVmJNPdO_6HbYCNKId-81eCqYBVEb-Jw -->
-    <!--Alex : Do not remove the keys : 0QOw13cruqZC2_2xDstUPim0fpYArvdS1NMmAeA-->
-    <!--android:apiKey="026fKWEpc0ZJZGhoMWTXrVdsYAyHYVpY2Zl4OgA"-->
-    <!--DanB key: 0wGWriS7m-lEKTx-cbJoaGUAFAagBwqVyjKOHMA -->
+    </RelativeLayout>    
   </RelativeLayout>
 </LinearLayout>

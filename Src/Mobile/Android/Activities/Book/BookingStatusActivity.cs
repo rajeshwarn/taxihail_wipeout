@@ -165,6 +165,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _timer = null;
             RunOnUiThread(() =>
                 {
+                    Intent intent = new Intent();
+                    intent.SetFlags(ActivityFlags.ForwardResult);
+                    intent.PutExtra("Reset", true.ToString());
+                    SetResult(Result.Ok, intent);
                     Finish();
                 });
         }

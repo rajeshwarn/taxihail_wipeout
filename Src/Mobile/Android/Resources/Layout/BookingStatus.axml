@@ -47,12 +47,9 @@
                   android:id="@+id/mapStatus"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:apiKey="0XEY3WqKVmJNPdO_6HbYCNKId-81eCqYBVEb-Jw"
+                    android:apiKey="0XEY3WqKVmJMzXNRJfhbH1yM6RkpBMOaZWUoMAw"
                     android:enabled="true"
-                    android:clickable="true" />
-            <!--Alex : Do not remove the keys : 0QOw13cruqZC2_2xDstUPim0fpYArvdS1NMmAeA-->
-            <!--android:apiKey="026fKWEpc0ZJZGhoMWTXrVdsYAyHYVpY2Zl4OgA"-->
-            <!--DanB key: 0wGWriS7m-lEKTx-cbJoaGUAFAagBwqVyjKOHMA -->
+                    android:clickable="true" />            
             </RelativeLayout>
             <RelativeLayout
                 android:layout_below="@+id/statusMapSection"

@@ -176,6 +176,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                     activity.RefreshDateTime( );
                 }
             }
+            else if (requestCode == 101)
+            {
+                var execute = data.GetStringExtra("Reset");
+
+                if (execute == true.ToString())
+                {
+                    Reset();
+                }
+            }
             else if ((data != null) && (data.Extras != null))
             {
                 var address = data.GetStringExtra("SelectedAddress");
@@ -184,20 +193,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 {
                     var adrs = SerializerHelper.DeserializeObject<WS.Address>(address);
                     var activity = (AddressActivity)LocalActivityManager.GetActivity(this.TabHost.CurrentTabTag);
-
-                    
-                    //var adrs = GetLocation(LocationTypes.Favorite, address);
-                    //if (adrs == null)
-                    //{
-                    //    adrs = GetLocation(LocationTypes.History, address);
-                    //}
-
                     if (adrs != null)
                     {
                         activity.SetLocationData(adrs, true);
                     }
                 }
             }
+            
         }
 
         
@@ -234,9 +236,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
                 serialized = orderInfo.Serialize( );
                 i.PutExtra("OrderStatusDetail", serialized);
-                
 
-                StartActivity(i);
+
+                StartActivityForResult(i, 101);
             });
         }
 
@@ -319,7 +321,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 pickupActivity.FindViewById<EditText>(Resource.Id.ringCodeText).Text = "";
                 pickupActivity.FindViewById<EditText>(Resource.Id.aptNumberText).Text = "";
                 pickupActivity.RefreshDateTime();
-                pickupActivity.OnAddressChanged("", true);
+                RunOnUiThread(() => pickupActivity.OnAddressChanged("", true));
             }
             var destActivity = (DestinationActivity)LocalActivityManager.GetActivity("Destination");
             if (destActivity != null)

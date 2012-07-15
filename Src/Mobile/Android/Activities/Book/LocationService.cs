@@ -9,10 +9,11 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using Android.Locations;
+
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
+using Android.Locations;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -95,7 +96,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             var t = new Thread(() =>
                 {
 
-                    Thread.Sleep(4000);
+                    Thread.Sleep(2000);
                     while (!exit)
                     {
                         if (LastLocation != null)
@@ -170,9 +171,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             else
             {
                 LastLocation = new Android.Locations.Location(LocationManager.PassiveProvider);
-                LastLocation.Latitude = 45.54015;
-                LastLocation.Longitude = -73.6162;
-                LastLocation.Accuracy = float.MaxValue;
+
+                var address = TinyIoCContainer.Current.Resolve<ICacheService>().Get<apcurium.MK.Booking.Api.Contract.Resources.Address>("LastKnowLocation");
+
+                if ( (address != null) && ( address.Latitude != 0 ) && ( address.Longitude != 0 ) )
+                {
+                    LastLocation.Latitude = address.Latitude;
+                    LastLocation.Longitude = address.Longitude;
+                    LastLocation.Accuracy = float.MaxValue;
+                }
+                else
+                {
+                    LastLocation.Latitude = 45.34185;
+                    LastLocation.Longitude = -75.92196;
+                    LastLocation.Accuracy = float.MaxValue;
+                }
             }
         }
 
@@ -194,6 +207,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         public void LocationChanged(Android.Locations.Location location)
         {
             TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Location changed : " + GetLocationText(location));
+            TinyIoCContainer.Current.Resolve<ICacheService>().Set("LastKnowLocation", new apcurium.MK.Booking.Api.Contract.Resources.Address { Longitude = location.Longitude, Latitude = location.Latitude });
             if (IsBetterLocation(location, LastLocation))
             {
                 LastLocation = location;

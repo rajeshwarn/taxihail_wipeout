@@ -32,9 +32,9 @@
     <WarningLevel>4</WarningLevel>
     <AndroidKeyStore>True</AndroidKeyStore>
     <AndroidSigningKeyStore>public.keystore</AndroidSigningKeyStore>
-    <AndroidSigningStorePass>Taxi123</AndroidSigningStorePass>
-    <AndroidSigningKeyAlias>taxidiamond</AndroidSigningKeyAlias>
-    <AndroidSigningKeyPass>Taxi123</AndroidSigningKeyPass>
+    <AndroidSigningStorePass>mkt0001.</AndroidSigningStorePass>
+    <AndroidSigningKeyAlias>MKTaxiHail</AndroidSigningKeyAlias>
+    <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
     <AndroidLinkMode>None</AndroidLinkMode>
     <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
     <AndroidLinkSkip />
@@ -44,16 +44,16 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;CLIENT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
     <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
     <AndroidKeyStore>True</AndroidKeyStore>
     <AndroidSigningKeyStore>public.keystore</AndroidSigningKeyStore>
-    <AndroidSigningStorePass>Taxi123</AndroidSigningStorePass>
-    <AndroidSigningKeyAlias>taxidiamond</AndroidSigningKeyAlias>
-    <AndroidSigningKeyPass>Taxi123</AndroidSigningKeyPass>
+    <AndroidSigningStorePass>mkt0001.</AndroidSigningStorePass>
+    <AndroidSigningKeyAlias>MKTaxiHail</AndroidSigningKeyAlias>
+    <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
   </PropertyGroup>
   <ItemGroup>

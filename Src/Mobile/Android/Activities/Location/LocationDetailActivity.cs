@@ -46,11 +46,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
             FindViewById<EditText>(Resource.Id.RingCode).Text = !_data.RingCode.IsNullOrEmpty() ? _data.RingCode : null;
             FindViewById<EditText>(Resource.Id.LocationFriendlyName).Text = !_data.FriendlyName.IsNullOrEmpty() ? _data.FriendlyName : null;
             
-            //TODO : Need to check if from history
-            //if (_data.IsFromHistory)
-            //{
-            //    FindViewById<Button>(Resource.Id.LocationDeleteBtn).Visibility = ViewStates.Invisible;
-            //}
+            
+            if (_data.Id.IsNullOrEmpty() )
+            {
+                FindViewById<Button>(Resource.Id.LocationDeleteBtn).Visibility = ViewStates.Invisible;
+            }
             
             FindViewById<Button>(Resource.Id.LocationDeleteBtn).Click += new EventHandler(DeleteBtn_Click);
             FindViewById<Button>(Resource.Id.LocationCancelBtn).Click += new EventHandler(CancelBtn_Click);
@@ -207,7 +207,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
             //TODO: Need to check if it's from history
             _data = SerializerHelper.DeserializeObject<Address>(serializedData);
 
-            
+            if (_data.FullAddress == GetString(Resource.String.LocationAddFavorite))
+            {
+                _data.FullAddress = "";
+            }
 
             
             //if ((data != null) && (data.Id.

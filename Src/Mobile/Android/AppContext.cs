@@ -145,17 +145,17 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             get
             {
-                var pref = App.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
-                var orderId = pref.GetString("LastOrder", null);
-                Guid r;
-                if (  ( orderId.HasValue() ) && ( Guid.TryParse( orderId, out r ) ))
-                {
-                    return r;
-                }
-                else
-                {
+                //var pref = App.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
+                //var orderId = pref.GetString("LastOrder", null);
+                //Guid r;
+                //if (  ( orderId.HasValue() ) && ( Guid.TryParse( orderId, out r ) ))
+                //{
+                //    return r;
+                //}
+                //else
+                //{
                     return null;
-                }
+                //}
 
             }
             set
