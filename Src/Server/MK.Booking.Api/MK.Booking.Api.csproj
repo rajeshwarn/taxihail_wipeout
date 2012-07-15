@@ -87,7 +87,6 @@
     <Compile Include="Security\CustomCredentialsAuthProvider.cs" />
     <Compile Include="Services\AddressHistoryService.cs" />
     <Compile Include="Services\AccountOrderListService.cs" />
-    <Compile Include="Services\AppSettingsService.cs" />
     <Compile Include="Services\BookingSettingsService.cs" />
     <Compile Include="Services\CancelOrderService.cs" />
     <Compile Include="Services\CreateOrderService.cs" />

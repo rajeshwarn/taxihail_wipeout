@@ -84,7 +84,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Requests\AddressHistoryRequest.cs" />
     <Compile Include="Requests\AccountOrderListRequest.cs" />
-    <Compile Include="Requests\AppSettingsRequest.cs" />
     <Compile Include="Requests\BookingSettingsRequest.cs" />
     <Compile Include="Requests\CancelOrder.cs" />
     <Compile Include="Requests\CreateOrder.cs" />
