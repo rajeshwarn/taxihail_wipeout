@@ -50,26 +50,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public static int GetLogo(int companyId)
         {
-            if (companyId == 9) //Ouest
-            {
-                return Resource.Drawable.Logo_TaxiDiamondWest;  //"Assets/Logo_TaxiDiamondWest.png";
-            }
-            else if (companyId == 10) //Royal
-            {
-                return Resource.Drawable.Logo_TaxiRoyal;  //"Assets/Logo_TaxiRoyal.png";
-            }
-            else if (companyId == 11) //Candare			
-            {
-                return Resource.Drawable.Logo_TaxiCandare;  //"Assets/Logo_TaxiCandare.png";
-            }
-            else if (companyId == 13) //Veteran
-            {
-                return Resource.Drawable.Logo_TaxiVeteran;  //"Assets/Logo_TaxiVeteran.png";
-            }
-            else
-            {
-                return Resource.Drawable.Logo_TaxiDiamond;  //"Assets/TDLogo.png";
-            }
+            return Resource.Drawable.Logo_TaxiDiamond;  //"Assets/TDLogo.png";
         }
 		
         public static string PhoneNumberDisplay(int companyId)
