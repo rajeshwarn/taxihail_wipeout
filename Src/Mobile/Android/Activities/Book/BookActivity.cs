@@ -177,13 +177,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 }
             }
             else if (requestCode == 101)
-            {
-                var execute = data.GetStringExtra("Reset");
-
-                if (execute == true.ToString())
-                {
-                    Reset();
-                }
+            {             
+                  Reset();             
             }
             else if ((data != null) && (data.Extras != null))
             {

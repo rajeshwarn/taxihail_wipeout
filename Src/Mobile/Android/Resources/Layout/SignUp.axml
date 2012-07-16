@@ -63,7 +63,7 @@
                 <EditText
                     android:id="@+id/SignUpName"
                     android:layout_height="wrap_content"
-                    android:hint="@string/CreateAccountFirstName"
+                    android:hint="@string/CreateAccountFullName"
                     android:inputType="textNoSuggestions"
                     android:padding="10dip"
                     android:layout_width="fill_parent" />                

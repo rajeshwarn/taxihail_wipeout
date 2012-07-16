@@ -27,6 +27,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private bool _closeScreenWhenCompleted;
         private Guid _lastOrder;
         private Timer _timer;
+        private bool _isInit = false;
 
         public OrderStatusDetail OrderStatus { get; private set; }
         public CreateOrder Order { get; private set; }
@@ -61,11 +62,37 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             var map = FindViewById<MapView>(Resource.Id.mapStatus);
 
-            
+          
 
             ThreadHelper.ExecuteInThread(this, () => DisplayStatus( Order, OrderStatus), false);
 
             _timer = new Timer(o => RefreshStatus(), null, 0, 6000);
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+
+
+            InitMap();
+            
+        }
+
+        protected void InitMap()
+        {
+            if (_isInit)
+            {
+                return;
+            }
+
+            _isInit = true;
+
+            var map = FindViewById<MapView>(Resource.Id.mapStatus);
+
+            map.SetBuiltInZoomControls(true);
+            map.Clickable = true;
+            map.Traffic = false;
+            map.Satellite = false;
         }
 
         protected override void OnStop()

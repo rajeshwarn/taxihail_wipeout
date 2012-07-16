@@ -107,7 +107,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
 
                 var status = TinyIoCContainer.Current.Resolve<IBookingService>().GetOrderStatus(_data.Id);
 
-                bool isCompleted = true;
+                bool isCompleted = false;
                 //if (status.IBSStatusId.HasValue)
                 //{
                 //    isCompleted = TinyIoCContainer.Current.Resolve<IBookingService>().IsCompleted(status.IBSStatusId.Value);

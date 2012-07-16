@@ -121,11 +121,12 @@
     <Compile Include="Activities\Account\PasswordRecoveryActivity.cs" />
     <Compile Include="Models\NavigationStrings.cs" />
     <Compile Include="Models\ParentScreens.cs" />
-    <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Activities\Account\SignUpActivity.cs" />
     <Compile Include="Activities\SplashActivity.cs" />
     <Compile Include="Activities\Setting\SettingsActivity.cs" />
+    <None Include="Resources\Resource.Designer.cs.bak" />
+    <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="TaxiMobileApp.cs" />
     <Compile Include="Validation\EmailValidation.cs" />
     <Compile Include="Models\RideSettingsModel.cs" />

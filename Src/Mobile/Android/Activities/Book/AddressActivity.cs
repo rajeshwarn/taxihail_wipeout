@@ -300,7 +300,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 return;
             }
-            _isInit = false;
+
+            _isInit = true;
             Map.SetBuiltInZoomControls(true);
             Map.Clickable = true;
             Map.Traffic = false;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="ApplicationName">Taxi Hail</string>
+  <string name="ApplicationName">TaxiHail</string>
   <string name="Language">English</string>
   <string name="TabBook">Book</string>
   <string name="TabLocations">Locations</string>
@@ -28,6 +28,7 @@
   <string name="InvalidLoginMessageTitle">Invalid information</string>
   <string name="InvalidLoginMessage">The email or/and password is invalid.</string>
   <string name="BookItButton">Book It</string>
+  <string name="ass">asdasd</string>
   <string name="BookPickupLabel">Confrim your pickup location</string>
   <string name="PickupTextPlaceholder">Pickup street address</string>
   <string name="AptNumberTextPlaceholder">Apt/Suite Number</string>
@@ -80,15 +81,14 @@
   <string name="Time">Time</string>
   <string name="CreateAccountEmail">Email:</string>
   <string name="CreateAccountTitle">Title:</string>
-  <string name="CreateAccountFirstName">First Name:</string>
-  <string name="CreateAccountLastName">Last Name:</string>
-  <string name="CreateAccountPhone">Phone:</string>
+  <string name="CreateAccountFullName">Full Name</string>  
+  <string name="CreateAccountPhone">Phone</string>
   <string name="CreateAccountMobile">Mobile:</string>
   <string name="CreateAccountLanguage">Language:</string>
   <string name="CreateAccountLanguageEn">English</string>
   <string name="CreateAccountLanguageFr">French</string>
-  <string name="CreateAccountPassword">Password:</string>
-  <string name="CreateAccountPasswordConfrimation">Confirm:</string>
+  <string name="CreateAccountPassword">Password</string>
+  <string name="CreateAccountPasswordConfrimation">Confirm</string>
   <string name="SettingViewLoginInfo">You are currently signed in as : {0}</string>
   <string name="SettingViewNotSignedIn">Your are currently not signed in. You must be signed in to use this app.</string>
   <string name="BookItButtonImageName">Assets/Button/btnBookIt_en.png</string>
