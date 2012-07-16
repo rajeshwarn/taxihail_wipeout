@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center_horizontal"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+    <RelativeLayout
+        android:id="@+id/ContentSection"
+        android:layout_below="@+id/HeaderSection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:src="@drawable/background"
+            android:scaleType="fitXY"
+            android:layout_below="@+id/HeaderSection"
+            android:adjustViewBounds="true" />
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_below="@+id/HeaderSection"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingLeft="20px"
+            android:paddingRight="20px"
+            android:paddingTop="15dip">
+            <TextView
+                android:id="@+id/SignUpLink"
+                style="@style/LinkText"
+                android:layout_width="fill_parent"
+                android:layout_height="50dip"
+                android:autoLink="all"
+                android:gravity="right|center_horizontal"
+                android:text="@string/SignUpButton" />
+            <EditText
+                android:id="@+id/Username"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/EmailLabel"
+                android:inputType="textEmailAddress"
+                android:nextFocusDown="@+id/Password"
+                android:nextFocusUp="@+id/LoginButton" />
+            <EditText
+                android:id="@+id/Password"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/PasswordLabel"
+                android:inputType="textPassword" />
+            <LinearLayout
+                android:id="@+id/linearLayout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/ForgotPasswordButton"
+                    style="@style/LinkText"
+                    android:layout_width="170dip"
+                    android:layout_height="50dip"
+                    android:text="@string/LoginForgotPasswordButton" />
+                <Button
+                    android:id="@+id/SignInButton"
+                    style="@style/ButtonText"
+                    android:background="@drawable/green_button"
+                    android:nextFocusDown="@+id/Username"
+                    android:nextFocusUp="@+id/Password"
+                    android:layout_height="wrap_content"
+                    android:text="@string/SignInButton" />
+            </LinearLayout>
+        </LinearLayout>
+        <RelativeLayout
+            android:id="@+id/HeaderSection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="-10dip"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/header"
+                android:scaleType="centerInside"
+                android:adjustViewBounds="true" />
+            <TextView
+                android:id="@+id/LoginBigTitle"
+                style="@style/BigTitleText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center_horizontal" />
+        </RelativeLayout>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/ContentSection"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background"
+        android:gravity="bottom">
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/footer"
+            android:scaleType="fitXY"
+            android:layout_alignParentBottom="true" />
+    </RelativeLayout>
+</LinearLayout>

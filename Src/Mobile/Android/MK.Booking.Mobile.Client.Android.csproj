@@ -220,11 +220,7 @@
     <AndroidResource Include="Resources\Drawable\SpinnerSelectorBackground.xml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Drawable\Logo_TaxiCandare.png" />
     <AndroidResource Include="Resources\Drawable\Logo_TaxiDiamond.png" />
-    <AndroidResource Include="Resources\Drawable\Logo_TaxiDiamondWest.png" />
-    <AndroidResource Include="Resources\Drawable\Logo_TaxiRoyal.png" />
-    <AndroidResource Include="Resources\Drawable\Logo_TaxiVeteran.png" />
     <AndroidResource Include="Resources\Layout\ChooseCompany.axml" />
     <AndroidResource Include="Resources\Layout\BooleanCell.axml" />
     <AndroidResource Include="Resources\Layout\BookingStatus.axml">

@@ -178,67 +178,55 @@ namespace apcurium.MK.Booking.Mobile.Client
 			public const int locations = 2130837533;
 			
 			// aapt resource value: 0x7f02001e
-			public const int Logo_TaxiCandare = 2130837534;
+			public const int Logo_TaxiDiamond = 2130837534;
 			
 			// aapt resource value: 0x7f02001f
-			public const int Logo_TaxiDiamond = 2130837535;
+			public const int pickDate = 2130837535;
 			
 			// aapt resource value: 0x7f020020
-			public const int Logo_TaxiDiamondWest = 2130837536;
+			public const int pickDateNormal = 2130837536;
 			
 			// aapt resource value: 0x7f020021
-			public const int Logo_TaxiRoyal = 2130837537;
+			public const int pickTime = 2130837537;
 			
 			// aapt resource value: 0x7f020022
-			public const int Logo_TaxiVeteran = 2130837538;
+			public const int pickTimeNormal = 2130837538;
 			
 			// aapt resource value: 0x7f020023
-			public const int pickDate = 2130837539;
+			public const int pin_green = 2130837539;
 			
 			// aapt resource value: 0x7f020024
-			public const int pickDateNormal = 2130837540;
+			public const int pin_grey = 2130837540;
 			
 			// aapt resource value: 0x7f020025
-			public const int pickTime = 2130837541;
+			public const int pin_red = 2130837541;
 			
 			// aapt resource value: 0x7f020026
-			public const int pickTimeNormal = 2130837542;
+			public const int pin_yellow = 2130837542;
 			
 			// aapt resource value: 0x7f020027
-			public const int pin_green = 2130837543;
+			public const int pushPin = 2130837543;
 			
 			// aapt resource value: 0x7f020028
-			public const int pin_grey = 2130837544;
+			public const int red_button = 2130837544;
 			
 			// aapt resource value: 0x7f020029
-			public const int pin_red = 2130837545;
+			public const int roundedContainer = 2130837545;
 			
 			// aapt resource value: 0x7f02002a
-			public const int pin_yellow = 2130837546;
+			public const int settings = 2130837546;
 			
 			// aapt resource value: 0x7f02002b
-			public const int pushPin = 2130837547;
+			public const int SpinnerSelectorBackground = 2130837547;
 			
 			// aapt resource value: 0x7f02002c
-			public const int red_button = 2130837548;
+			public const int splash = 2130837548;
 			
 			// aapt resource value: 0x7f02002d
-			public const int roundedContainer = 2130837549;
+			public const int topFieldBackgroundLg = 2130837549;
 			
 			// aapt resource value: 0x7f02002e
-			public const int settings = 2130837550;
-			
-			// aapt resource value: 0x7f02002f
-			public const int SpinnerSelectorBackground = 2130837551;
-			
-			// aapt resource value: 0x7f020030
-			public const int splash = 2130837552;
-			
-			// aapt resource value: 0x7f020031
-			public const int topFieldBackgroundLg = 2130837553;
-			
-			// aapt resource value: 0x7f020032
-			public const int topFieldBackgroundSm = 2130837554;
+			public const int topFieldBackgroundSm = 2130837550;
 			
 			private Drawable()
 			{
