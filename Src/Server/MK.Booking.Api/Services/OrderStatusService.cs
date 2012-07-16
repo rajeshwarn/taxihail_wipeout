@@ -64,8 +64,12 @@ namespace apcurium.MK.Booking.Api.Services
                         {
                             desc = _configManager.GetSetting("OrderStatus." + status.IBSStatusId);
                         }
-                        status.VehicleLatitude = statusDetails.VehicleLatitude;
-                        status.VehicleLongitude = statusDetails.VehicleLongitude;
+                        
+                        status.VehicleLatitude = order.PickupLatitude + 0.001;
+                        status.VehicleLongitude = order.PickupLongitude + 0.001;
+
+                        //status.VehicleLatitude = statusDetails.VehicleLatitude;
+                        //status.VehicleLongitude = statusDetails.VehicleLongitude;
                     }
                     else if (status.IBSStatusId.SoftEqual(_doneStatus))
                     {

@@ -18,6 +18,7 @@ using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Models;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.Client.Activities.Book;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.History
 {
@@ -69,11 +70,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
 
         void btnStatus_Click(object sender, EventArgs e)
         {
-            Intent intent = new Intent();
-            intent.SetFlags(ActivityFlags.ForwardResult);
-            intent.PutExtra("Book", _data.Id.ToString());
-            SetResult(Result.Ok, intent);
-            Finish();
+
+            Intent i = new Intent(this, typeof(BookingStatusActivity));
+            
+            CreateOrder data = new CreateOrder{ AccountId= _data.AccountId, DropOffAddress = _data.DropOffAddress, Id = _data.Id, PickupAddress = _data.PickupAddress, Note = _data.Note, PickupDate = _data.PickupDate, Settings = _data.Settings };
+            OrderStatusDetail orderInfo = new OrderStatusDetail { IBSOrderId = _data.IBSOrderId, IBSStatusDescription = "Loading...", IBSStatusId = "", OrderId = _data.Id, Status = OrderStatus.Unknown, VehicleLatitude = null, VehicleLongitude = null };
+
+            var serialized = data.Serialize();
+            i.PutExtra("CreateOrder", serialized);
+
+            serialized = orderInfo.Serialize();
+            i.PutExtra("OrderStatusDetail", serialized);
+
+
+            StartActivityForResult(i, 101);
+
+
+            //Intent intent = new Intent();
+            //intent.SetFlags(ActivityFlags.ForwardResult);
+            //intent.PutExtra("Book", _data.Id.ToString());
+            //SetResult(Result.Ok, intent);
+            //Finish();
         }
 
         void btnCancel_Click(object sender, EventArgs e)
