@@ -5,7 +5,6 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Xml.Linq;
-using apcurium.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -13,6 +12,7 @@ using TinyIoC;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Extensions;
 
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
@@ -49,6 +49,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     orderDetail = service.CreateOrder(order);                   
                 });
 
+
+
+            ThreadPool.QueueUserWorkItem(o =>
+            {
+                TinyIoCContainer.Current.Resolve<IAccountService>().RefreshCache();
+            });
+
             return orderDetail;
            
         }
@@ -67,30 +74,20 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         }
 
         public bool IsCompleted(Guid orderId)
-        {
-            bool isCompleted = false;
-            //UseService(service =>
-            //{
-
-            //    var sessionId = service.Authenticate("iphone", "test", 1);
-            //    var result = service.GetVehicleLocation(sessionId, user.Email, user.Password, orderId);
-            //    if (result.Error == IBS.ErrorCode.NoError)
-            //    {
-
-            //        int statusId = result.OrderStatus.SelectOrDefault(o => o.Id, 0);
-            //        isCompleted = IsCompleted(statusId);
-            //    }
-
-
-            //});
-            return isCompleted;
-
+        {                        
+            var status = GetOrderStatus(orderId);
+            return IsStatusCompleted(status.IBSStatusId);                
         }
 
-        public bool IsCompleted(int statusId)
+        public bool IsStatusCompleted(string statusId)
         {
-            return (statusId == 0) || (statusId == 7) || (statusId == 18) || (statusId == 22) || (statusId == 11);
+            return statusId.SoftEqual("wosSCHED") || 
+                    statusId.SoftEqual("wosCANCELLED") || 
+                    statusId.SoftEqual("wosDONE") || 
+                    statusId.SoftEqual("wosNOSHOW") || 
+                    statusId.SoftEqual("wosCANCELLED_DONE");
         }
+        
 
         public bool CancelOrder( Guid orderId)
         {

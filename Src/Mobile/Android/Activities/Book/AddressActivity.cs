@@ -12,6 +12,7 @@ using Android.Views.InputMethods;
 using Android.Widget;
 using apcurium.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Activities.Location;
 using apcurium.MK.Booking.Mobile.AppServices;
@@ -21,6 +22,7 @@ using apcurium.MK.Booking.Mobile.Client.Models;
 using apcurium.MK.Booking.Mobile.Client.Converters;
 using TinyIoC;
 using WS = apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -67,7 +69,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             InitMap();
 
-
+            MapService.AddMyLocationOverlay(Map, this);
             Address.EditorAction -= new EventHandler<TextView.EditorActionEventArgs>(Address_EditorAction);
             Address.EditorAction += new EventHandler<TextView.EditorActionEventArgs>(Address_EditorAction);
             Address.ItemClick -= HandleItemClick;
@@ -109,8 +111,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 SetAutoComplete();
             }
             else
-            {
+            {               
                 ClearAutoComplete();
+                ValidateAddress(true);
             }
         }
 
@@ -121,7 +124,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         }
 
 
-        protected abstract int TitleResourceId 
+        protected abstract int TitleResourceId
         {
             get;
         }
@@ -160,16 +163,58 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         }
 
+        public void ValidateAddress(bool executeInThread)
+        {
+            RunOnUiThread(() => Address.Error = null);
+
+            Action validate = () =>
+            {
+                
+                var found = TinyIoCContainer.Current.Resolve<IGeolocService>().ValidateAddress(Address.Text);
+                if (found != null)
+                {                
+                    SetLocationData(found, true);
+                }
+                else
+                {                    
+                    ClearLocationLngLAt();
+                }
+            };
+
+            if (executeInThread)
+            {
+                ThreadHelper.ExecuteInThread(Parent, validate, false);
+            }
+            else
+            {
+                validate();
+            }
+        }
+
+        private void ClearLocationLngLAt()
+        {
+            RunOnUiThread(() => Address.Error = GetString ( Resource.String.InvalidAddressTextEdit ));
+            Location.Latitude = 0;
+            Location.Longitude = 0;
+        }
+
+
         private void SearchForAddress(string address, bool useFirst, bool changeZoom)
         {
+            RunOnUiThread(() => Address.Error = null);
 
             ThreadHelper.ExecuteInThread(Parent, () =>
                 {
+                    
                     var found = TinyIoCContainer.Current.Resolve<IGeolocService>().ValidateAddress(address);
 
                     if (found != null)
-                    {
-                        SetLocationData(found, changeZoom);
+                    {                        
+                        SetLocationData(found, changeZoom);                        
+                    }
+                    else
+                    {                        
+                        ClearLocationLngLAt();
                     }
                 }, false);
         }
@@ -178,8 +223,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             ThreadHelper.ExecuteInThread(Parent, () =>
             {
-                
-                var addresses = TinyIoCContainer.Current.Resolve<IGeolocService>().SearchAddress( CoordinatesConverter.ConvertFromE6(Map.MapCenter.LatitudeE6), CoordinatesConverter.ConvertFromE6(Map.MapCenter.LongitudeE6));
+
+                var addresses = TinyIoCContainer.Current.Resolve<IGeolocService>().SearchAddress(CoordinatesConverter.ConvertFromE6(Map.MapCenter.LatitudeE6), CoordinatesConverter.ConvertFromE6(Map.MapCenter.LongitudeE6));
 
 
                 if ((addresses.Count() == 1) || (useFirst && addresses.Any()))
@@ -191,24 +236,35 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }, false);
         }
 
-        
+
 
         public virtual void SetLocationData(WS.Address location, bool changeZoom)
         {
             RunOnUiThread(() =>
                               {
                                   Address.FocusChange -= new EventHandler<View.FocusChangeEventArgs>(Address_FocusChange);
-                                  Address.Text = location.FullAddress;
-                                  _lastCenter = MapService.SetLocationOnMap(Map, location);
 
-                                  MapService.AddPushPin(Map, MapPin, location, this, GetString(TitleResourceId));
-                                  MapService.SetLocationOnMap(Map, location);
-                                  if (changeZoom)
-                                  {                                      
-                                      Map.Controller.SetZoom(50);
+                                  try
+                                  {
+                                      Address.Text = location.FullAddress;
+
+                                      if (location.HasValidCoordinate())
+                                      {
+                                          _lastCenter = MapService.SetLocationOnMap(Map, location);
+                                          MapService.AddPushPin(Map, MapPin, location, this, GetString(TitleResourceId));
+                                          MapService.SetLocationOnMap(Map, location);
+                                          if (changeZoom)
+                                          {
+                                              Map.Controller.SetZoom(100);
+                                          }
+                                      }
+                                      Address.ClearFocus();
+                                      HideKeyboards();
                                   }
-                                  Address.ClearFocus();
-                                  HideKeyboards();
+                                  catch(Exception ex)
+                                  {
+                                      TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex);
+                                  }
                                   Address.FocusChange += new EventHandler<View.FocusChangeEventArgs>(Address_FocusChange);
                               });
 
@@ -238,48 +294,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         private void UpdateLocationFromAndroidPosition(Android.Locations.Location location, bool timeoutExpired, bool changeZoom)
         {
-
-            var address = TinyIoCContainer.Current.Resolve<IAccountService>().FindInAccountAddresses(location.Latitude, location.Longitude);
-            if (address == null)
+            try
             {
-                address = TinyIoCContainer.Current.Resolve<IGeolocService>().SearchAddress(location.Latitude, location.Longitude).FirstOrDefault();
+
+                var address = TinyIoCContainer.Current.Resolve<IAccountService>().FindInAccountAddresses(location.Latitude, location.Longitude);
+                if (address == null)
+                {
+                    address = TinyIoCContainer.Current.Resolve<IGeolocService>().SearchAddress(location.Latitude, location.Longitude).FirstOrDefault();
+                }
+
+                SetLocationData(address, changeZoom);
             }
-
-            SetLocationData(address, changeZoom);
-
-            //TODO: Move in common lib
-
-            //if (addresses.Count() > 0)
-            //{
-            //    var closeLocation =
-            //        AppContext.Current.LoggedUser.FavoriteLocations.Where(
-            //            d => d.Latitude.HasValue && d.Longitude.HasValue).FirstOrDefault(
-            //                d =>
-            //                (Math.Abs(d.Longitude.Value - addresses[0].Longitude) <= 0.002) &&
-            //                (Math.Abs(d.Latitude.Value - addresses[0].Latitude) <= 0.002));
-            //    if (closeLocation == null)
-            //    {
-            //        //closeLocation =
-            //        //    AppContext.Current.LoggedUser.BookingHistory.Where(
-            //        //        b =>
-            //        //        !b.Hide && (b.PickupLocation != null) && b.PickupLocation.Latitude.HasValue &&
-            //        //        b.PickupLocation.Longitude.HasValue).Select(b => b.PickupLocation).FirstOrDefault(
-            //        //            d =>
-            //        //            (Math.Abs(d.Longitude.Value - locations[0].Longitude.Value) <= 0.001) &&
-            //        //            (Math.Abs(d.Latitude.Value - locations[0].Latitude.Value) <= 0.001));
-            //    }
-
-            //    if (closeLocation != null )
-            //    {
-            //        SetLocationData(closeLocation, changeZoom);
-                    
-            //    }
-            //    else if (locations.Any())
-            //    {
-            //        SetLocationData(addresses.First(), changeZoom);
-
-            //    }
-            //}
+            catch
+            {
+            }
         }
 
 
@@ -319,6 +347,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 loc = new WS.Address { Longitude = ParentActivity.LocationService.LastLocation.Longitude, Latitude = ParentActivity.LocationService.LastLocation.Latitude };
             }
+
             //_lastCenter = MapService.SetLocationOnMap(Map, loc);
         }
 
@@ -326,19 +355,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
 
 
-
-
         private void RetrieveCurrentLocation(Action<Android.Locations.Location, bool, bool> callback)
         {
-
-
-
-
+            bool canceled = false;
+            Action cancelAction= ()=> { 
+                                        _updateReceived = true;
+                                          canceled = true;
+                                      };
             var progressDialog = new ProgressDialog(Parent);
             progressDialog.SetMessage(Resources.GetString(Resource.String.Locating));
-            progressDialog.SetButton(Resources.GetString(Resource.String.CancelBoutton),
-                                      delegate { _updateReceived = true; });
-            progressDialog.CancelEvent += delegate { _updateReceived = true; };
+            progressDialog.SetButton(Resources.GetString(Resource.String.CancelBoutton), (e,s)=> cancelAction());
+            progressDialog.CancelEvent += (e, s) => cancelAction();
             progressDialog.Show();
 
 
@@ -351,8 +378,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                                                              bool timeoutExpired = false;
                                                              var location =
                                                                  ParentActivity.LocationService.WaitForAccurateLocation(
-                                                                     12000, 100, out timeoutExpired);
-                                                             RunInUIThreadAndWait(() => callback(location, timeoutExpired, true));
+                                                                    6000, 200, out timeoutExpired);
+
+                                                             if (!canceled)
+                                                             {
+                                                                 RunInUIThreadAndWait(() => callback(location, timeoutExpired, true));
+                                                             }
                                                          }
                                                          finally
                                                          {
@@ -404,7 +435,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             if (list == null)
             {
                 //TODO : Fix this
-                list = TinyIoCContainer.Current.Resolve<IAccountService>().GetFavoriteAddresses().Select(a => a.FullAddress).ToArray();                
+                list = TinyIoCContainer.Current.Resolve<IAccountService>().GetFavoriteAddresses().Select(a => a.FullAddress).ToArray();
             }
             Address.Adapter = new ArrayAdapter<string>(this, Resource.Layout.ListItemAutoComplete, list);
         }
@@ -431,36 +462,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             });
         }
 
-
-
-        //public override bool DispatchTouchEvent(MotionEvent ev)
-        //{
-
-        //    var r = base.DispatchTouchEvent(ev);
-
-
-        //    if (ev.Action == MotionEventActions.Up) 
-        //    {
-
-
-        //        RunOnUiThread(() =>
-        //        {
-
-        //            HideKeyboards();
-        //            if (_lastCenter == null ||
-        //                !(_lastCenter.LatitudeE6 == Map.MapCenter.LatitudeE6 &&
-        //                  _lastCenter.LongitudeE6 == Map.MapCenter.LongitudeE6))
-        //            {
-        //                SearchForAddress(Map.MapCenter, true, false);
-        //            }
-
-
-        //        });
-        //    }
-
-
-        //    return r;
-        //}
 
 
 

@@ -72,12 +72,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
         {
 
             Intent i = new Intent(this, typeof(BookingStatusActivity));
-            
-            CreateOrder data = new CreateOrder{ AccountId= _data.AccountId, DropOffAddress = _data.DropOffAddress, Id = _data.Id, PickupAddress = _data.PickupAddress, Note = _data.Note, PickupDate = _data.PickupDate, Settings = _data.Settings };
+                        
             OrderStatusDetail orderInfo = new OrderStatusDetail { IBSOrderId = _data.IBSOrderId, IBSStatusDescription = "Loading...", IBSStatusId = "", OrderId = _data.Id, Status = OrderStatus.Unknown, VehicleLatitude = null, VehicleLongitude = null };
 
-            var serialized = data.Serialize();
-            i.PutExtra("CreateOrder", serialized);
+            var serialized = _data.Serialize();
+            i.PutExtra("Order", serialized);
 
             serialized = orderInfo.Serialize();
             i.PutExtra("OrderStatusDetail", serialized);
@@ -125,10 +124,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
                 var status = TinyIoCContainer.Current.Resolve<IBookingService>().GetOrderStatus(_data.Id);
 
                 bool isCompleted = false;
-                //if (status.IBSStatusId.HasValue)
-                //{
-                //    isCompleted = TinyIoCContainer.Current.Resolve<IBookingService>().IsCompleted(status.IBSStatusId.Value);
-                //}
+                if (status.IBSStatusId.HasValue() )
+                {
+                    isCompleted = TinyIoCContainer.Current.Resolve<IBookingService>().IsStatusCompleted (status.IBSStatusId);
+                }
 
                 RunOnUiThread(() => FindViewById<TextView>(Resource.Id.StatusTxt).Text = status.IBSStatusDescription);
                 var btnCancel = FindViewById<Button>(Resource.Id.CancelTripBtn);

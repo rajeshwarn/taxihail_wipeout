@@ -94,23 +94,34 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         void BookItBtn_Click(object sender, EventArgs e)
         {
-            UpdateModel();
+            ThreadHelper.ExecuteInThread(this, () =>
+                {
 
-            //TODO: Validation should be in common lib
-            if ((_bookingInfo.PickupAddress.FullAddress.IsNullOrEmpty()) || (!_bookingInfo.PickupAddress.HasValidCoordinate()))
-            {
-                this.ShowAlert(Resource.String.InvalidBookinInfoTitle, Resource.String.InvalidBookinInfo);
-            }
-            else
-            {
-                Intent i = new Intent(this, typeof(BookDetailActivity));
-                var serializedInfo = _bookingInfo.Serialize();
-                i.PutExtra("BookingInfo", serializedInfo);
-                StartActivityForResult(i, (int)ActivityEnum.BookConfirmation);
-            }
+                    var pickup = (AddressActivity)LocalActivityManager.GetActivity(Tab.Pickup.ToSafeString());
+                    pickup.Maybe(() => pickup.ValidateAddress(false));
+                    var dest = (AddressActivity)LocalActivityManager.GetActivity(Tab.Destination.ToSafeString());
+                    dest.Maybe(() => dest.ValidateAddress(false));
+
+                    UpdateModel();
+                    
+                    if ((_bookingInfo.PickupAddress.FullAddress.IsNullOrEmpty()) || (!_bookingInfo.PickupAddress.HasValidCoordinate()))
+                    {
+                        RunOnUiThread(() => this.ShowAlert(Resource.String.InvalidBookinInfoTitle, Resource.String.InvalidBookinInfo));
+                    }
+                    else
+                    {
+                        RunOnUiThread(() =>
+                            {
+                                Intent i = new Intent(this, typeof(BookDetailActivity));
+                                var serializedInfo = _bookingInfo.Serialize();
+                                i.PutExtra("BookingInfo", serializedInfo);
+                                StartActivityForResult(i, (int)ActivityEnum.BookConfirmation);
+                            });
+                    }
+                }, true);
         }
 
-        
+
 
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
@@ -126,25 +137,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                         var xmlBInfo = data.GetStringExtra("ConfirmedBookingInfo");
                         var bookingInfo = SerializerHelper.DeserializeObject<CreateOrder>(xmlBInfo);
 
-                        var service = TinyIoCContainer.Current.Resolve<IBookingService>();                        
+                        var service = TinyIoCContainer.Current.Resolve<IBookingService>();
                         bookingInfo.Id = Guid.NewGuid();
 
                         try
                         {
-                            
+
                             var orderInfo = service.CreateOrder(bookingInfo);
                             AppContext.Current.LastOrder = bookingInfo.Id;
 
-                            //bookingInfo.PickupDate = DateTime.Now;
-                            //TODO:Fix this
-                            //AppContext.Current.LoggedUser.AddBooking(bookingInfo);
-                            //AppContext.Current.UpdateLoggedInUser(AppContext.Current.LoggedUser, false);
-
-                            ShowStatusActivity(bookingInfo, orderInfo);
+                            var order = new Order { AccountId = bookingInfo.AccountId, CreatedDate = DateTime.Now, DropOffAddress = bookingInfo.DropOffAddress, IBSOrderId = orderInfo.IBSOrderId, Id = bookingInfo.Id, PickupAddress = bookingInfo.PickupAddress, Note = bookingInfo.Note, PickupDate = bookingInfo.PickupDate.HasValue ? bookingInfo.PickupDate.Value: DateTime.Now, Settings = bookingInfo.Settings };  
+                            
+                            ShowStatusActivity( order , orderInfo);
+                            
                             ResetBookingInfo();
 
                         }
-                        catch( Exception ex )
+                        catch (Exception ex)
                         {
                             RunOnUiThread(() =>
                             {
@@ -154,7 +163,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                                 this.ShowAlert(GetString(Resource.String.ErrorCreatingOrderTitle), err);
                             });
                         }
-                        
+
                     }, true);
                 }
             }
@@ -173,12 +182,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                         BookingInfo.PickupDate = null;
                     }
                     var activity = (PickupActivity)LocalActivityManager.GetActivity(this.TabHost.CurrentTabTag);
-                    activity.RefreshDateTime( );
+                    activity.RefreshDateTime();
                 }
             }
             else if (requestCode == 101)
-            {             
-                  Reset();             
+            {
+                Reset();
             }
             else if ((data != null) && (data.Extras != null))
             {
@@ -194,10 +203,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                     }
                 }
             }
-            
+
         }
 
-        
+
 
         private WS.Address GetLocation(LocationTypes type, int id)
         {
@@ -220,16 +229,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             //}
         }
 
-        
-        private void ShowStatusActivity(CreateOrder data,OrderStatusDetail orderInfo)
+
+        private void ShowStatusActivity(Order data, OrderStatusDetail orderInfo)
         {
             RunOnUiThread(() =>
             {
                 Intent i = new Intent(this, typeof(BookingStatusActivity));
                 var serialized = data.Serialize();
-                i.PutExtra("CreateOrder", serialized);
+                i.PutExtra("Order", serialized);
 
-                serialized = orderInfo.Serialize( );
+                serialized = orderInfo.Serialize();
                 i.PutExtra("OrderStatusDetail", serialized);
 
 
@@ -337,7 +346,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             RunOnUiThread(() =>
                               {
-                                  _bookingInfo = new CreateOrder();                                  
+                                  _bookingInfo = new CreateOrder();
                                   var currentActivity = (IAddress)LocalActivityManager.GetActivity(this.TabHost.CurrentTabTag);
                                   currentActivity.Maybe(() => currentActivity.OnResumeEvent());
                               });
@@ -381,7 +390,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             //var booking = AppContext.Current.LoggedUser.BookingHistory.FirstOrDefault(b => b.Id == id);
             //if (booking != null)
             //{
-            //    ShowStatusActivity(booking);
+
+            ThreadHelper.ExecuteInThread(this, () =>
+            {
+                var orderStatus = TinyIoCContainer.Current.Resolve<IBookingService>().GetOrderStatus(id);
+                var order = TinyIoCContainer.Current.Resolve<IAccountService>().GetHistoryOrder(id);
+                ShowStatusActivity(order, orderStatus);
+
+            }, false);
             //}
 
         }

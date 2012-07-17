@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading;
 using Android.App;
 using Android.Content;
@@ -18,6 +19,8 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common;
+using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -30,7 +33,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private bool _isInit = false;
 
         public OrderStatusDetail OrderStatus { get; private set; }
-        public CreateOrder Order { get; private set; }
+        public Order Order { get; private set; }
 
 
         protected override bool IsRouteDisplayed
@@ -58,24 +61,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             SetStatusText(GetString(Resource.String.LoadingMessage));
 
+
+
             FindViewById<Button>(Resource.Id.CallBookCancelBtn).Click += new EventHandler(BookingStatusActivity_Click);
 
             var map = FindViewById<MapView>(Resource.Id.mapStatus);
 
-          
+            ThreadHelper.ExecuteInThread(this, () =>
+                {
+                    DisplayStatus(Order, OrderStatus);                    
+                }, false);
 
-            ThreadHelper.ExecuteInThread(this, () => DisplayStatus( Order, OrderStatus), false);
 
-            _timer = new Timer(o => RefreshStatus(), null, 0, 6000);
         }
 
         protected override void OnResume()
         {
             base.OnResume();
-
-
             InitMap();
-            
         }
 
         protected void InitMap()
@@ -88,13 +91,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _isInit = true;
 
             var map = FindViewById<MapView>(Resource.Id.mapStatus);
-
             map.SetBuiltInZoomControls(true);
             map.Clickable = true;
             map.Traffic = false;
             map.Satellite = false;
-        }
 
+        }
+        protected override void OnStart()
+        {
+            base.OnStart();
+            _timer = new Timer(o => RefreshStatus(), null, 0, 6000);
+
+        }
         protected override void OnStop()
         {
             base.OnStop();
@@ -108,17 +116,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
 
             }
-            
+
         }
-        
+
         private void LoadParameters()
         {
             var serialized = Intent.GetStringExtra("OrderStatusDetail");
             var status = SerializerHelper.DeserializeObject<OrderStatusDetail>(serialized);
             OrderStatus = status;
 
-            serialized = Intent.GetStringExtra("CreateOrder");
-            var order = SerializerHelper.DeserializeObject<CreateOrder>(serialized);
+            serialized = Intent.GetStringExtra("Order");
+            var order = SerializerHelper.DeserializeObject<Order>(serialized);
             Order = order;
 
         }
@@ -153,7 +161,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         public override void OnCreateContextMenu(Android.Views.IContextMenu menu, Android.Views.View v, Android.Views.IContextMenuContextMenuInfo menuInfo)
         {
             base.OnCreateContextMenu(menu, v, menuInfo);
-                        
+
             menu.SetHeaderTitle(Resource.String.StatusActionButton);
             menu.Add(0, 1, 0, Resource.String.CallCompanyButton);
             menu.Add(0, 2, 1, Resource.String.StatusActionBookButton);
@@ -246,7 +254,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                     //}
 
 
-                    var status = TinyIoCContainer.Current.Resolve<IBookingService>().GetOrderStatus(Order.Id );
+                    var status = TinyIoCContainer.Current.Resolve<IBookingService>().GetOrderStatus(Order.Id);
 
                     _lastOrder = OrderStatus.OrderId;
 
@@ -266,44 +274,83 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }, false);
         }
 
-        private void DisplayStatus(CreateOrder order, OrderStatusDetail status)
+        private void DisplayStatus(Order order, OrderStatusDetail status)
         {
             if (status.IBSStatusDescription.HasValue())
             {
-                RunOnUiThread(() => SetStatusText(status.IBSStatusDescription));
-            }
-            else
-            {
-                //RunOnUiThread(() => SetStatusText(GetString(Resource.String.StatusCannotBeDisplayed)));
-            }
-
-            if ((status.VehicleLatitude.HasValue ) && (status.VehicleLongitude.HasValue ))
-            {
                 RunOnUiThread(() =>
                     {
-                        var map = FindViewById<MapView>(Resource.Id.mapStatus);
+                        SetStatusText(status.IBSStatusDescription);
+                    });
+            }            
+
+
+            RunOnUiThread(() =>
+                {
+                    var map = FindViewById<MapView>(Resource.Id.mapStatus);
+                    map.Overlays.Clear();
+                    map.Invalidate();
+
+
+                    if (status.VehicleLatitude.HasValue && status.VehicleLongitude.HasValue)
+                    {
                         var point = new GeoPoint(CoordinatesConverter.ConvertToE6(status.VehicleLatitude.Value), CoordinatesConverter.ConvertToE6(status.VehicleLongitude.Value));
                         var pushpin = Resources.GetDrawable(Resource.Drawable.pin_yellow);
                         var title = GetString(Resource.String.TaxiMapTitle);
                         var pushpinOverlay = new PushPinOverlay(map, pushpin, title, point);
-
-                        map.Overlays.Clear();
-                        map.Invalidate();
-
-                        AddMapPin(map, order.PickupAddress, Resource.Drawable.pin_green, Resource.String.PickupMapTitle);
-                        AddMapPin(map, order.DropOffAddress , Resource.Drawable.pin_red, Resource.String.DestinationMapTitle);
                         map.Overlays.Add(pushpinOverlay);
-                        map.Invalidate();
+                    }
 
-                        map.Controller.AnimateTo(point);
+                    AddMapPin(map, order.PickupAddress, Resource.Drawable.pin_green, Resource.String.PickupMapTitle);
+                    AddMapPin(map, order.DropOffAddress, Resource.Drawable.pin_red, Resource.String.DestinationMapTitle);
+
+                    map.Invalidate();
+                    
+                    var adressesToDisplay = Params.Get<Address>(order.PickupAddress, order.DropOffAddress, new Address { Longitude = status.VehicleLongitude.HasValue ? status.VehicleLongitude.Value : 0, Latitude = status.VehicleLatitude.HasValue ? status.VehicleLatitude.Value : 0 }).Where(a => a.HasValidCoordinate());
+                    SetZoom(adressesToDisplay);
+
+                });
 
 
-                    });
 
 
 
-                //}
+
+        }
+
+        private void SetZoom(IEnumerable<Address> adressesToDisplay)
+        {
+            var map = FindViewById<MapView>(Resource.Id.mapStatus);
+            var mapController = map.Controller;
+
+            if (adressesToDisplay.Count() == 1)
+            {
+                mapController.SetZoom(50);
+                return;
             }
+
+            int minLat = int.MaxValue;
+            int maxLat = int.MinValue;
+            int minLon = int.MaxValue;
+            int maxLon = int.MinValue;
+
+            foreach (var item in adressesToDisplay)
+            {
+                int lat = CoordinatesConverter.ConvertToE6(item.Latitude);
+                int lon = CoordinatesConverter.ConvertToE6(item.Longitude);
+                maxLat = Math.Max(lat, maxLat);
+                minLat = Math.Min(lat, minLat);
+                maxLon = Math.Max(lon, maxLon);
+                minLon = Math.Min(lon, minLon);
+            }
+
+            
+
+            double fitFactor = 1.5;
+            
+            mapController.ZoomToSpan((int)(Math.Abs(maxLat - minLat) * fitFactor), (int)(Math.Abs(maxLon - minLon) * fitFactor));
+            mapController.AnimateTo(new GeoPoint((maxLat + minLat) / 2, (maxLon + minLon) / 2));
+
         }
 
     }

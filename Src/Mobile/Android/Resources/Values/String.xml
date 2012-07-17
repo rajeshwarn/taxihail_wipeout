@@ -74,6 +74,7 @@
   <string name="LocationDetailGiveItANamePlaceholder">Home, work, friend\'s house...</string>
   <string name="SaveButton">Save</string>
   <string name="DeleteButton">Delete</string>
+  <string name="InvalidAddressTextEdit">Cannot validate adddress</string>
   <string name="InvalidAddressMessage">The address you provided is invalid. Please verify this information</string>
   <string name="InvalidAddressTitle">Invalid address</string>
   <string name="Now">Now</string>

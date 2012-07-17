@@ -16,7 +16,7 @@ namespace apcurium.MK.Booking.Common.Tests
             _config.Add("IBS.DefaultAccountPassword", "testpassword");
             _config.Add("IBS.WebServicesUserName", "taxi");
             _config.Add("IBS.WebServicesPassword", "test");
-            _config.Add("IBS.WebServicesUrl", "http://72.38.252.190:6928//XDS_IASPI.DLL/soap/");
+            _config.Add("IBS.WebServicesUrl", "http://72.38.252.190:6928/XDS_IASPI.DLL/soap/");
 
             _config.Add("GeoLoc.SearchFilter", "{0},montreal,qc,canada&region=ca");
             _config.Add("GeoLoc.AddressFilter", "canada");

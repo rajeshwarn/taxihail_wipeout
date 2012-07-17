@@ -73,6 +73,7 @@
   <string name="LocationDetailGiveItANamePlaceholder">Maison, travail, ami...</string>
   <string name="SaveButton">Sauvegarder</string>
   <string name="DeleteButton">Effacer</string>
+  <string name="InvalidAddressTextEdit">Impossible de validater l\'adresse</string>
   <string name="InvalidAddressMessage">L\'adresse que vous avez fourni est invalide.  Veuillez vérifier cette information.</string>
   <string name="InvalidAddressTitle">Adresse invalide</string>
   <string name="Now">Maintenant</string>

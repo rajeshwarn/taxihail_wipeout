@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 				
 		bool IsCompleted(Guid orderId);
 		
-		bool IsCompleted( int statusId );
+		bool IsStatusCompleted( string statusId );
         
         bool CancelOrder(Guid orderId);
 
