@@ -26,15 +26,8 @@
             android:orientation="vertical"
             android:paddingLeft="20px"
             android:paddingRight="20px"
-            android:paddingTop="15dip">
-            <TextView
-                android:id="@+id/SignUpLink"
-                style="@style/LinkText"
-                android:layout_width="fill_parent"
-                android:layout_height="50dip"
-                android:autoLink="all"
-                android:gravity="right|center_horizontal"
-                android:text="@string/SignUpButton" />
+            android:paddingTop="15dip"
+            android:background="#004c8f">
             <EditText
                 android:id="@+id/Username"
                 android:layout_width="fill_parent"
@@ -42,32 +35,87 @@
                 android:hint="@string/EmailLabel"
                 android:inputType="textEmailAddress"
                 android:nextFocusDown="@+id/Password"
-                android:nextFocusUp="@+id/LoginButton" />
-            <EditText
-                android:id="@+id/Password"
+                android:nextFocusUp="@+id/LoginButton"
+                android:background="@drawable/email_cell"
+                android:paddingRight="5dip"
+                android:paddingLeft="5dip"
+                android:layout_marginBottom="10dip" />
+            <LinearLayout
+                android:id="@+id/linearLayout0"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/PasswordLabel"
-                android:inputType="textPassword" />
+                android:orientation="horizontal">
+                <EditText
+                    android:id="@+id/Password"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/PasswordLabel"
+                    android:inputType="textPassword"
+                    android:layout_weight="3"
+                    android:background="@drawable/password_cell"
+                    android:paddingLeft="5dip"
+                    android:paddingRight="5dip" />
+                <Button
+                    android:id="@+id/ForgotPasswordButton"
+                    style="@style/ButtonText"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:text="@string/LoginForgotPasswordButton"
+                    android:layout_weight="3"
+                    android:layout_gravity="bottom"
+                    android:background="@drawable/forgot_password_btn" />
+            </LinearLayout>
             <LinearLayout
                 android:id="@+id/linearLayout1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/ForgotPasswordButton"
-                    style="@style/LinkText"
-                    android:layout_width="170dip"
-                    android:layout_height="50dip"
-                    android:text="@string/LoginForgotPasswordButton" />
+                android:layout_width="fill_parent"
+                android:layout_height="40dip"
+                android:orientation="horizontal"
+                android:paddingRight="5dip"
+                android:paddingLeft="5dip"
+                android:layout_marginTop="10dip"
+                android:layout_marginBottom="100dip">
                 <Button
                     android:id="@+id/SignInButton"
                     style="@style/ButtonText"
-                    android:background="@drawable/green_button"
+                    android:background="@drawable/sign_in_bnt"
                     android:nextFocusDown="@+id/Username"
                     android:nextFocusUp="@+id/Password"
-                    android:layout_height="wrap_content"
-                    android:text="@string/SignInButton" />
+                    android:text="@string/SignInButton"
+                    android:layout_width="fill_parent"
+                    android:layout_gravity="left"
+                    android:layout_weight="1" />
+                <Button
+                    android:id="@+id/SignUpButton"
+                    style="@style/ButtonText"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/sign_in_bnt"
+                    android:text="@string/SignUpButton"
+                    android:layout_gravity="right"
+                    android:layout_width="fill_parent"
+                    android:layout_weight="1" />
             </LinearLayout>
+            <Button
+                android:id="@+id/FacebookButton"
+                style="@style/ButtonText"
+                android:background="@drawable/social_media_login_btn"
+                android:text="@string/FacebookButton"
+                android:layout_width="200dip"
+                android:layout_height="40dip"
+                android:gravity="center|right"
+                android:drawableLeft="@drawable/facebook_icon"
+                android:paddingTop="2dip"
+                android:paddingBottom="2dip"
+                android:paddingLeft="2dip"
+                android:paddingRight="2dip" />
+            <Button
+                android:id="@+id/SignUpButton"
+                style="@style/ButtonText"
+                android:background="@drawable/social_media_login_btn"
+                android:text="@string/TwitterButton"
+                android:layout_width="200dip"
+                android:layout_height="40dip"
+                android:gravity="center|right"
+                android:drawableLeft="@drawable/twitter_icon" />
         </LinearLayout>
         <RelativeLayout
             android:id="@+id/HeaderSection"

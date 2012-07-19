@@ -53,7 +53,9 @@
     <Compile Include="Extensions\StreamExtensions.cs" />
     <Compile Include="Extensions\StringBuilderExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Params.cs" />
+    <Compile Include="Params.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />

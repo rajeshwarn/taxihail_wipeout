@@ -62,7 +62,7 @@ namespace apcurium.MK.Booking.Test.Integration.AddressHistoryFixture
 
             using (var context = new BookingDbContext(dbName))
             {
-                var list = context.Query<HistoricAddress>().Where(x => x.AccountId == accountId);
+                var list = context.Query<HistoricAddress>().Where(x => x.AccountId == accountId && x.FullAddress.Equals("1234 rue Saint-Denis"));
                 Assert.AreEqual(0, list.Count());
             }
         }

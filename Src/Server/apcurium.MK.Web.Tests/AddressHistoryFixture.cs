@@ -5,6 +5,7 @@ using System.Text;
 using NUnit.Framework;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Web.Tests
 {
@@ -76,9 +77,10 @@ namespace apcurium.MK.Web.Tests
             var sut = new AccountServiceClient(BaseUrl, new AuthInfo(newAccount.Email, "password"));
 
             //Act
+            Guid addressGuid = Guid.NewGuid();
             var address = new SaveFavoriteAddress()
             {
-                Id = Guid.NewGuid(),
+                Id = addressGuid,
                 AccountId = newAccount.Id,
                 FriendlyName = "La Boite à Jojo",
                 FullAddress = "1234 rue Saint-Denis",
@@ -91,7 +93,10 @@ namespace apcurium.MK.Web.Tests
 
             //Assert
             var addresses = sut.GetHistoryAddresses(newAccount.Id);
-            Assert.AreEqual(0, addresses.Count());
+
+            Address first = addresses.FirstOrDefault(address1 => address1.Id.Equals(addressGuid));
+            Assert.IsNull(first);
+            
         }
     }
 }

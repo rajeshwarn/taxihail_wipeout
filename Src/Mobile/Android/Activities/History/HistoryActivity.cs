@@ -11,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 using apcurium.Framework.Extensions;
 using Android.Graphics;
+using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Client.Models;
 using apcurium.MK.Booking.Mobile.Client.Adapters;
 using TinyIoC;
@@ -38,8 +39,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
         private void SetAdapter()
         {
             var historyView = GetHistory();
-            var adapter = new CustomListAdapter(this);
-            adapter.AddSection(Resources.GetString(Resource.String.HistoryInfo), new SimpleAdapter(this, historyView, Resource.Layout.SimpleListItem, new string[] { ITEM_TITLE }, new int[] { Resource.Id.ListComplexTitle }));
+            var adapter = new CustomOrderListAdapter(this);
+            adapter.AddSection(Resources.GetString(Resource.String.HistoryInfo), new OrderListAdapter(this, historyView));
             FindViewById<ListView>(Resource.Id.HistoryList).Adapter = adapter;
 
         }
@@ -54,7 +55,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
 
         void listView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
-            var adapter = FindViewById<ListView>(Resource.Id.HistoryList).Adapter as CustomListAdapter;
+            var adapter = FindViewById<ListView>(Resource.Id.HistoryList).Adapter as CustomOrderListAdapter;
             if (adapter == null)
             {
                 return;
@@ -105,25 +106,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
             }
         }
 
-        private List<IDictionary<string, object>> GetHistory()
-        {
-            var result = new List<IDictionary<string, object>>();
-            
-            var orders = TinyIoCContainer.Current.Resolve<IAccountService>().GetHistoryOrders();
-            //var historic = AppContext.Current.LoggedUser.BookingHistory.Where(b => !b.Hide).OrderByDescending(b => b.Id).ToArray();
-
-
-            orders.ForEach(order =>
-            {
-                
-                var history = new HistoryModel()
-                {
-                    Display = "#" + order.IBSOrderId + " - " + order.PickupAddress.FullAddress,
-                    Id = order.Id,
-                };
-                result.Add(CreateItem(ITEM_TITLE, history));
-            });
-            return result;
+        private List<Order> GetHistory()
+        { 
+            return TinyIoCContainer.Current.Resolve<IAccountService>().GetHistoryOrders().ToList();
         }
 
         protected override void OnResume()

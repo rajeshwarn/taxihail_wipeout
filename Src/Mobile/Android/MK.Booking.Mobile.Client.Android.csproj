@@ -87,9 +87,12 @@
     <Compile Include="Activities\Book\LocationService.cs" />
     <Compile Include="Activities\Book\PickupActivity.cs" />
     <Compile Include="Activities\Setting\AboutActivity.cs" />
+    <Compile Include="Adapters\CustomOrderListAdapter.cs" />
     <Compile Include="Adapters\HistoryListAdapter.cs" />
-    <Compile Include="Adapters\CustomListAdapter.cs" />
+    <Compile Include="Adapters\CustomLocationListAdapter.cs" />
     <Compile Include="Adapters\JavaObject.cs" />
+    <Compile Include="Adapters\LocationListAdapter.cs" />
+    <Compile Include="Adapters\OrderListAdapter.cs" />
     <Compile Include="AppContext.cs" />
     <Compile Include="AppModule.cs" />
     <Compile Include="AppSetting.cs" />
@@ -114,6 +117,7 @@
     <Compile Include="Activities\Account\LoginActivity.cs" />
     <Compile Include="Activities\MainActivity.cs" />
     <Compile Include="MapUtitilties\PushPinOverlay.cs" />
+    <Compile Include="Models\AddressItemListModel.cs" />
     <Compile Include="Models\BookingModel.cs" />
     <Compile Include="Models\HistoryModel.cs" />
     <Compile Include="Models\LocationModel.cs" />
@@ -125,6 +129,15 @@
     <Compile Include="Activities\Account\SignUpActivity.cs" />
     <Compile Include="Activities\SplashActivity.cs" />
     <Compile Include="Activities\Setting\SettingsActivity.cs" />
+    <AndroidResource Include="Resources\Layout\LocationListItem.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\OrderListItem.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\Login2.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
     <None Include="Resources\Resource.Designer.cs.bak" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="TaxiMobileApp.cs" />
@@ -313,6 +326,29 @@
     <AndroidResource Include="Resources\Drawable\pin_yellow.png" />
     <AndroidResource Include="Resources\drawable-hdpi\splash.png" />
     <AndroidResource Include="Resources\drawable-mdpi\splash.png" />
+    <AndroidResource Include="Resources\Drawable\listAdd.png" />
+    <AndroidResource Include="Resources\Drawable\listRightArrow.png" />
+    <AndroidResource Include="Resources\Drawable\listfooter.png" />
+    <AndroidResource Include="Resources\Drawable\listheader.png" />
+    <AndroidResource Include="Resources\Drawable\listitem.png" />
+    <AndroidResource Include="Resources\Drawable\backgroundblue.png" />
+    <AndroidResource Include="Resources\Drawable\blackbutton.png" />
+    <AndroidResource Include="Resources\Drawable\buttonfacebook.png" />
+    <AndroidResource Include="Resources\Drawable\buttontwitter.png" />
+    <AndroidResource Include="Resources\Drawable\right_arrow.png" />
+    <AndroidResource Include="Resources\Drawable\cell_bottom.9.png" />
+    <AndroidResource Include="Resources\Drawable\cell_middle.9.png" />
+    <AndroidResource Include="Resources\Drawable\cell_top.9.png" />
+    <AndroidResource Include="Resources\Drawable\email_cell.9.png" />
+    <AndroidResource Include="Resources\Drawable\password_cell.9.png" />
+    <AndroidResource Include="Resources\Drawable\sign_in_bnt.9.png" />
+    <AndroidResource Include="Resources\Drawable\social_media_login_btn.9.png" />
+    <AndroidResource Include="Resources\Drawable\twitter_icon.png" />
+    <AndroidResource Include="Resources\Drawable\facebook_icon.png" />
+    <AndroidResource Include="Resources\Drawable\add_button.png" />
+    <AndroidResource Include="Resources\Drawable\add_btn.png" />
+    <AndroidResource Include="Resources\Drawable\forgot_password_btn.9.png" />
+    <AndroidResource Include="Resources\Drawable\sign_in_btn.9.png" />
     <Content Include="Todo.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />

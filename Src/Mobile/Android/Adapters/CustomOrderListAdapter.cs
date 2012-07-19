@@ -1,34 +1,40 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
-using Android.Widget;
+
 using Android.App;
+using Android.Content;
+using Android.OS;
+using Android.Runtime;
 using Android.Views;
+using Android.Widget;
 
 namespace apcurium.MK.Booking.Mobile.Client.Adapters
 {
-    public class CustomListAdapter : BaseAdapter
+    public class CustomOrderListAdapter : BaseAdapter
     {
         private Activity _context;
 
-        public IDictionary<string, SimpleAdapter> Sections { get; set; }
+        public IDictionary<string, OrderListAdapter> Sections { get; set; }
         public ArrayAdapter<string> Headers { get; set; }
         public static int TYPE_SECTION_HEADER = 0;
 
         public static string ITEM_TITLE = "TITLE";
+        public static string ITEM_SUBTITLE = "SUBTITLE";
         public static string ITEM_ID = "ID";
 
-        public CustomListAdapter(Activity context)
+        public CustomOrderListAdapter(Activity context)
             : base()
         {
             _context = context;
             Headers = new ArrayAdapter<string>(context, Resource.Layout.ListHeader);
-            Sections = new Dictionary<string, SimpleAdapter>();
+            Sections = new Dictionary<string, OrderListAdapter>();
         }
-        public void AddSection(string section, SimpleAdapter adapter)
+        public void AddSection(string section, OrderListAdapter adapter)
         {
             Headers.Add(section);
-            Sections.Add(new KeyValuePair<string, SimpleAdapter>(section, adapter));
+            Sections.Add(new KeyValuePair<string, OrderListAdapter>(section, adapter));
         }
 
         public override int Count
@@ -62,7 +68,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Adapters
         {
             foreach (var section in this.Sections.Keys)
             {
-                SimpleAdapter adapter = Sections[section];
+                OrderListAdapter adapter = Sections[section];
                 int size = adapter.Count + 1;
                 if (position == 0)
                 {
@@ -84,7 +90,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Adapters
             int type = 1;
             foreach (var section in this.Sections.Keys)
             {
-                SimpleAdapter adapter = this.Sections[section];
+                OrderListAdapter adapter = this.Sections[section];
                 int size = adapter.Count + 1;
                 if (position == 0)
                 {
@@ -113,7 +119,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Adapters
             int sectionNum = 0;
             foreach (var section in this.Sections.Keys)
             {
-                SimpleAdapter adapter = this.Sections[section];
+                OrderListAdapter adapter = this.Sections[section];
                 int size = adapter.Count + 1;
 
                 // check if position inside this section
@@ -123,7 +129,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Adapters
                 }
                 if (position < size)
                 {
-                    var item = adapter.GetItem(position - 1).Cast<IDictionary<string, object>>();                    
+                    /*var item = adapter.GetItem(position - 1).Cast<IDictionary<string, object>>();                    
                     
                     var inflater = (LayoutInflater)_context.GetSystemService(Android.Content.Context.LayoutInflaterService);
                     
@@ -132,10 +138,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Adapters
                     if ( item != null )
                     {
                         v.FindViewById<TextView>(Resource.Id.ListComplexTitle).Text = item[ITEM_TITLE].ToString();
-                    }
-                    
+                        v.FindViewById<TextView>(Resource.Id.ListComplexSubtitle).Text = item[ITEM_SUBTITLE].ToString();
+                    }*/
 
-                    return v;
+
+
+                    return adapter.GetView(position - 1, convertView, parent);
                     //_headerView = inflater.Inflate(info.HeaderLayoutResourceId, headerContainer, false);
 
 
@@ -150,20 +158,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Adapters
                 sectionNum++;
             }
             return null;
-        }
-
-
-
-    }
-
-
-
-    public static class ObjectTypeHelper
-    {
-        public static T Cast<T>(this Java.Lang.Object obj) where T : class
-        {
-            var propertyInfo = obj.GetType().GetProperty("Instance");
-            return propertyInfo == null ? null : propertyInfo.GetValue(obj, null) as T;
         }
     }
 }

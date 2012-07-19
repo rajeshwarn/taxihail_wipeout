@@ -207,7 +207,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
             //TODO: Need to check if it's from history
             _data = SerializerHelper.DeserializeObject<Address>(serializedData);
 
-            if (_data.FullAddress == GetString(Resource.String.LocationAddFavorite))
+            if (_data.FullAddress == GetString(Resource.String.LocationAddFavoriteSubtitle))
             {
                 _data.FullAddress = "";
             }

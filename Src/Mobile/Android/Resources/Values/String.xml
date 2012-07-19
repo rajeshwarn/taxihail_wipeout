@@ -18,11 +18,13 @@
   <string name="HistoryDetailViewTitle">Details</string>
   <string name="SettingsViewTitle">Settings</string>
   <string name="DefaultRideSettingsViewTitle">Settings</string>
-  <string name="SignInViewTitle">Sign In</string>
+  <string name="SignInViewTitle">Log In</string>
   <string name="EmailLabel">Email</string>
   <string name="PasswordLabel">Password</string>
-  <string name="SignInButton">Sign In</string>
-  <string name="SignUpButton">Create a new account</string>
+  <string name="SignInButton">Log In</string>
+  <string name="SignUpButton">Sign up</string>
+  <string name="FacebookButton">Log In with Facebook</string>
+  <string name="TwitterButton">Log In with Twitter</string>
   <string name="DontHaveAnAccountLabel">Don\'t have an account?</string>
   <string name="LoadingMessage">Loading...</string>
   <string name="InvalidLoginMessageTitle">Invalid information</string>
@@ -65,7 +67,8 @@
   <string name="CallCompanyButton">Call dispatch center</string>
   <string name="NoHistoryLabel">No booking history</string>
   <string name="LocationNoHistory">No history</string>
-  <string name="LocationAddFavorite">&lt; Add a new location &gt;</string>
+  <string name="LocationAddFavoriteTitle">Add location</string>
+  <string name="LocationAddFavoriteSubtitle">Select to add a new location</string>
   <string name="LocationDetailInstructionLabel">Save as a favorite location</string>
   <string name="LocationDetailGiveItANameLabel">Give it a name</string>
   <string name="LocationDetailStreetAddressPlaceholder">Street address</string>

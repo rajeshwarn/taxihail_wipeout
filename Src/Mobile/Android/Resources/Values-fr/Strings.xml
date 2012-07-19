@@ -23,6 +23,8 @@
   <string name="PasswordLabel">Mot de passe :</string>
   <string name="SignInButton">Connexion</string>
   <string name="SignUpButton">Créer un nouveau compte</string>
+  <string name="FacebookButton">Connexion avec Facebook</string>
+  <string name="TwitterButton">Log In with Twitter</string>
   <string name="DontHaveAnAccountLabel">Vous n\'êtes pas inscrit?</string>
   <string name="LoadingMessage">Chargement...</string>
   <string name="InvalidLoginMessageTitle">Information invalide</string>
@@ -64,7 +66,8 @@
   <string name="CallCompanyButton">Appeller la centrale</string>
   <string name="NoHistoryLabel">Aucun historique</string>
   <string name="LocationNoHistory">Aucun historique</string>
-  <string name="LocationAddFavorite">&lt;Ajouter une nouvelle adresse&gt;</string>
+  <string name="LocationAddFavoriteTitle">Ajouter une adresse</string>
+  <string name="LocationAddFavoriteSubtitle">Ajouter une nouvelle adresse</string>
   <string name="LocationDetailInstructionLabel">Sauvegarder comme adresse favorite</string>
   <string name="LocationDetailGiveItANameLabel">Nom de l\'endroit</string>
   <string name="LocationDetailStreetAddressPlaceholder">adresse</string>

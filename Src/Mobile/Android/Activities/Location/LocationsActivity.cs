@@ -25,10 +25,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
         private ParentScreens _parent = ParentScreens.LocationScreen;
         private ListView _listView;
         public static string ITEM_TITLE = "TITLE";
-        //public static string ITEM = "ITEM";
+        public static string ITEM_SUBTITLE = "SUBTITLE";
         public static string ITEM_DATA = "DATA";
-        //public static string ITEM_ADDRESS = "ADDRESS";
-        //   public CustomListAdapter Adapter { get; set; }
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -37,37 +35,40 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
             {
                 _parent = (ParentScreens)Intent.Extras.GetInt(NavigationStrings.ParentScreen.ToString());
             }
-
-            //SetAdapter();
             UpdateUI();
         }
 
         private void SetAdapter()
         {
-            var historyLocationsView = PopulateLocationView(LocationTypes.History);
-            var favoriteLocationsView = PopulateLocationView(LocationTypes.Favorite);
+            var historyAddresses = GetLocations(LocationTypes.History);
+            var favoriteAddresses = GetLocations(LocationTypes.Favorite);
             if (_parent != ParentScreens.BookScreen)
             {
-                favoriteLocationsView.Add(CreateItem(new Address
-                {
-                    Id = Guid.Empty,
-                    FullAddress = Resources.GetString(Resource.String.LocationAddFavorite),
-                }));
+                favoriteAddresses.Add(new AddressItemListModel()
+                                          {
+                                              Address = new Address()
+                                                            {
+                                                                Id = Guid.Empty,
+                                                                FullAddress =
+                                                                    Resources.GetString(
+                                                                        Resource.String.LocationAddFavoriteSubtitle),
+                                                                FriendlyName =
+                                                                    Resources.GetString(
+                                                                        Resource.String.LocationAddFavoriteTitle)
+                                                            },
+                                              BgResource = Resource.Drawable.cell_bottom,
+                                              ImageResource = Resource.Drawable.add_button
+                                          });
             }
 
-
-            var adapter = new CustomListAdapter(this);
-            adapter.AddSection(Resources.GetString(Resource.String.FavoriteLocationsTitle), new SimpleAdapter(this, favoriteLocationsView, Resource.Layout.SimpleListItem, new string[] { ITEM_TITLE }, new int[] { Resource.Id.ListComplexTitle }));
-            adapter.AddSection(Resources.GetString(Resource.String.LocationHistoryTitle), new SimpleAdapter(this, historyLocationsView, Resource.Layout.SimpleListItem, new string[] { ITEM_TITLE }, new int[] { Resource.Id.ListComplexTitle }));
+            var adapter = new CustomLocationListAdapter(this);
+            adapter.AddSection(Resources.GetString(Resource.String.FavoriteLocationsTitle), new LocationListAdapter(this, favoriteAddresses));
+            adapter.AddSection(Resources.GetString(Resource.String.LocationHistoryTitle), new LocationListAdapter(this, historyAddresses));
             _listView.Adapter = adapter;
         }
 
         private void UpdateUI()
         {
-
-
-
-
             if (_parent != ParentScreens.BookScreen)
             {
                 _listView = new ListView(this);
@@ -87,18 +88,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
      
         private void listView_ItemClickNormal(object sender, AdapterView.ItemClickEventArgs e)
         {
-            var adapter = _listView.Adapter as CustomListAdapter;
-            if (adapter == null)
+            var adapter = _listView.Adapter as CustomLocationListAdapter;
+            if (adapter == null || adapter.GetItem(e.Position)==null)
             {
                 return;
             }
 
-            var item = adapter.GetItem(e.Position).Cast<IDictionary<string, object>>(); 
-            if ((item != null) && (item is IDictionary<string, object>))
-            {
-                IDictionary<string, object> model = (IDictionary<string, object>)item;
+            var item = adapter.GetItem(e.Position).Cast<AddressItemListModel>();
 
-                string data = (string)model.GetValueOrDefault<string, object>(ITEM_DATA);
+            if ((item.Address != null) )
+            {
+
+                string data = item.Address.Serialize();
 
                 Intent i = new Intent(this, typeof(LocationDetailActivity));
                 i.PutExtra(NavigationStrings.LocationSelectedId.ToString(), data);
@@ -107,15 +108,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
         }
         private void listView_ItemClickFromBook(object sender, AdapterView.ItemClickEventArgs e)
         {
-            var adapter = _listView.Adapter as CustomListAdapter;
-            if (adapter == null)
+            var adapter = _listView.Adapter as CustomLocationListAdapter;
+            if (adapter == null || adapter.GetItem(e.Position)==null)
             {
                 return;
             }
-            var item = adapter.GetItem(e.Position).Cast<IDictionary<string, object>>();
-            if ((item != null))
+            var item = adapter.GetItem(e.Position).Cast<AddressItemListModel>();
+            if ((item.Address != null))
             {
-                var data = (string)item.GetValueOrDefault<string, object>(ITEM_DATA);
+                var data = item.Address.Serialize();
                 Intent intent = new Intent();
                 intent.SetFlags(ActivityFlags.ForwardResult);
                 intent.PutExtra("SelectedAddress", data);
@@ -124,37 +125,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
             }
         }
 
-
-        private List<IDictionary<string, object>> PopulateLocationView(LocationTypes locationType)
-        {
-            var locations = GetLocations(locationType);
-            var result = new List<IDictionary<string, object>>();
-            //if (locationType == LocationTypes.History)
-            //{
-            //    locations = locations.Where(o => o.IsFromHistory == true).ToList();
-            //}
-            //else
-            //{
-            //    locations = locations.Where(o => o.IsFromHistory == false).ToList();
-            //}
-            locations.ForEach(loc =>
-                {
-                    result.Add(CreateItem(loc));
-                });
-
-            return result;
-        }
-
         private IDictionary<string, object> CreateItem(Address location)
         {
             IDictionary<string, object> item = new Dictionary<string, object>();
-            item.Add(ITEM_TITLE, location.Display());
+            //item.Add(ITEM_TITLE, location.Display());
+            item.Add(ITEM_TITLE, location.FriendlyName);
+            item.Add(ITEM_SUBTITLE, location.FullAddress);
             item.Add(ITEM_DATA, location.Serialize());
             return item;
         }
 
 
-        private List<Address> GetLocations(LocationTypes type)
+        private List<AddressItemListModel> GetLocations(LocationTypes type)
         {
             IEnumerable<Address> addresses = new Address[0];
             if (type == LocationTypes.Favorite)
@@ -165,7 +147,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
             {
                 addresses = TinyIoCContainer.Current.Resolve<IAccountService>().GetHistoryAddresses();                
             }
-            return addresses.ToList();
+            List<AddressItemListModel> ailm = addresses.Select(address => new AddressItemListModel()
+                                                                              {
+                                                                                  Address = address, BgResource = Resource.Drawable.cell_middle, ImageResource = Resource.Drawable.right_arrow
+                                                                              }).ToList();
+            if (ailm.Any())
+            {
+                ailm.First().BgResource = Resource.Drawable.cell_top;
+            }
+            return ailm;
         }
 
         protected override void OnResume()

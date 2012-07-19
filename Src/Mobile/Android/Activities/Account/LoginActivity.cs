@@ -33,12 +33,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                 FindViewById<EditText>(Resource.Id.Username).Text = AppContext.Current.LastEmail;
             }
 
-            FindViewById<TextView>(Resource.Id.SignUpLink).Click += new EventHandler(SignUpLink_Click);
+            FindViewById<Button>(Resource.Id.SignUpButton).Click += new EventHandler(SignUpButton_Click);
 
             FindViewById<Button>(Resource.Id.SignInButton).Click += new EventHandler(btnSignIn_Click);
 
-            
-            FindViewById<TextView>(Resource.Id.ForgotPasswordButton).Click += new EventHandler(ForgotPassword_Click);
+
+            FindViewById<Button>(Resource.Id.ForgotPasswordButton).Click += new EventHandler(ForgotPassword_Click);
         }
 
         protected override void OnResume()
@@ -60,7 +60,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             base.OnRestart();
         }
 
-        void SignUpLink_Click(object sender, EventArgs e)
+        void SignUpButton_Click(object sender, EventArgs e)
         {
             DoSignUp();
         }

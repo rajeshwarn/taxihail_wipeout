@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:layout_marginLeft="5dip"
+    android:layout_marginRight="5dip">
+    <LinearLayout
+        android:id="@+id/LocationListLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="55dip"
+        android:paddingTop="5dip"
+        android:paddingBottom="5dip"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:layout_marginLeft="5dip"
+        android:layout_marginRight="5dip">
+        <LinearLayout
+            android:layout_width="270dip"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:id="@+id/LocationListLayoutContent">
+            <TextView
+                android:id="@+id/LocationListTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TitleText"
+                android:lines="1"
+                android:singleLine="true"
+                android:ellipsize="end" />
+            <TextView
+                android:id="@+id/LocationListSubtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/SimpleTextItem"
+                android:lines="1"
+                android:singleLine="true"
+                android:ellipsize="end" />
+        </LinearLayout>
+        <ImageView
+            android:id="@+id/LocationListPicture"
+            android:src="@drawable/right_arrow"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"
+            android:layout_height="20dip"
+            android:layout_width="15dip" />
+    </LinearLayout>
+</LinearLayout>
