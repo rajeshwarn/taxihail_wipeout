@@ -65,6 +65,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
             adapter.AddSection(Resources.GetString(Resource.String.FavoriteLocationsTitle), new LocationListAdapter(this, favoriteAddresses));
             adapter.AddSection(Resources.GetString(Resource.String.LocationHistoryTitle), new LocationListAdapter(this, historyAddresses));
             _listView.Adapter = adapter;
+            _listView.Divider = null;
+            _listView.DividerHeight = 0;
         }
 
         private void UpdateUI()

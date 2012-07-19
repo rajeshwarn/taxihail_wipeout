@@ -47,14 +47,15 @@
     <DefineConstants>TRACE;CLIENT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
-    <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
+    <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
+    <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
     <AndroidKeyStore>True</AndroidKeyStore>
     <AndroidSigningKeyStore>public.keystore</AndroidSigningKeyStore>
     <AndroidSigningStorePass>mkt0001.</AndroidSigningStorePass>
     <AndroidSigningKeyAlias>MKTaxiHail</AndroidSigningKeyAlias>
     <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+    <AndroidLinkSkip />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
@@ -342,6 +343,30 @@
     <AndroidResource Include="Resources\Drawable\add_button.png" />
     <AndroidResource Include="Resources\Drawable\forgot_password_btn.9.png" />
     <AndroidResource Include="Resources\Drawable\sign_in_btn.9.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\add_button.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\cell_bottom.9.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\cell_middle.9.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\cell_top.9.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\email_cell.9.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\facebook_icon.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\forgot_password_btn.9.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\password_cell.9.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\right_arrow.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\sign_in_btn.9.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\social_media_login_btn.9.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\twitter_icon.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\add_button.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\cell_bottom.9.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\cell_middle.9.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\cell_top.9.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\email_cell.9.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\facebook_icon.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\forgot_password_btn.9.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\password_cell.9.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\right_arrow.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\sign_in_btn.9.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\social_media_login_btn.9.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\twitter_icon.png" />
     <Content Include="Todo.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />

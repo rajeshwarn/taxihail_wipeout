@@ -8,16 +8,14 @@
     <LinearLayout
         android:id="@+id/LocationListLayout"
         android:layout_width="fill_parent"
-        android:layout_height="55dip"
-        android:paddingTop="5dip"
-        android:paddingBottom="5dip"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_horizontal"
         android:layout_marginLeft="5dip"
         android:layout_marginRight="5dip">
         <LinearLayout
             android:layout_width="270dip"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:id="@+id/LocationListLayoutContent">
             <TextView

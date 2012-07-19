@@ -139,7 +139,7 @@
   <string name="YesButton">Yes</string>
   <string name="NoButton">No</string>
   <string name="HistoryViewStatusButton">View Status</string>
-  <string name="LoginForgotPasswordButton">Forgot password ?</string>
+  <string name="LoginForgotPasswordButton">Forgot Password?</string>
   <string name="TechSupportButton">Report a problem</string>
   <string name="TechSupportEmailTitle">Support Android</string>
   <string name="PickupOnButtonImageName">Assets/Button/btnPickup_on_en.png</string>

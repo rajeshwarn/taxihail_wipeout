@@ -30,7 +30,9 @@
                 android:layout_height="50dip"
                 android:id="@+id/LocationListView"
                 android:layout_marginLeft="10dip"
-                android:layout_marginRight="10dip" />
+                android:layout_marginRight="10dip"
+                android:dividerHeight="0dip"
+                android:divider="#00000000" />
         </LinearLayout>
         <RelativeLayout
             android:layout_width="wrap_content"
