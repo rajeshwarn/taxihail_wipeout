@@ -21,8 +21,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             try
             {
+                TinyIoCContainer.Current.Resolve<ILogger>().StartStopwatch("UseServiceClient : " + typeof(T));
                 var service = TinyIoCContainer.Current.Resolve<T>();
-                action(service);                
+                action(service);
+                TinyIoCContainer.Current.Resolve<ILogger>().StopStopwatch("UseServiceClient : " + typeof(T));
             }
             catch (Exception ex)
             {

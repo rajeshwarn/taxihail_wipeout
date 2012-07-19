@@ -41,6 +41,15 @@ namespace apcurium.MK.Web.Tests
         }
 
 
+        [Test]
+        public void RangeCoordinateSearch()
+        {
+            var sut = new GeocodingServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+            var addresses = sut.Search(45.5227967351675, -73.6242310144007);
+            Assert.True(addresses.Addresses.Count() >= 1);
+        }
+
+
     
 
 

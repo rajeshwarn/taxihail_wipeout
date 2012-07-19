@@ -18,6 +18,15 @@ namespace apcurium.MK.Common.Diagnostic
             Trace.WriteLine(message);            
         }
 
+        public void StartStopwatch(string message)
+        {
+        }
+
+
+        public void StopStopwatch(string message)
+        {
+        }
+
         public void LogStack()
         {
             

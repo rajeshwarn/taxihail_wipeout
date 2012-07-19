@@ -49,7 +49,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 
 
             MainTabHost.CurrentTab = 0;
-            ((BookActivity)LocalActivityManager.CurrentActivity).Reset();
+
+            bool statusShown = ShowStatusIfLastOrderActive();
+            if (!statusShown)
+            {
+                ((BookActivity)LocalActivityManager.CurrentActivity).Reset();
+            }
 
 
             MainTabHost.OnTabChanged += HandleMainTabHostOnTabChanged;
@@ -62,21 +67,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
         {
             if (MainTabHost.CurrentTab == tab && MainTabHost.CurrentTabTag == "book")
             {
-                bool statusShown = false;
-                if (AppContext.Current.LastOrder.HasValue)
-                {
-                    var isCompleted = TinyIoCContainer.Current.Resolve<IBookingService>().IsCompleted(AppContext.Current.LastOrder.Value);
-                    if (!isCompleted)
-                    {
-                        statusShown = true;
-                        ((BookActivity)LocalActivityManager.CurrentActivity).StartStatusActivity(
-                            AppContext.Current.LastOrder.Value);
-                    }
-                    else
-                    {
-                        AppContext.Current.LastOrder = null;
-                    }
-                }
+                bool statusShown = ShowStatusIfLastOrderActive();                
 
                 if (!statusShown)
                 {
@@ -94,6 +85,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 
 
             RefreshHeader();
+        }
+
+        private bool ShowStatusIfLastOrderActive()
+        {
+            bool statusShown = false;
+            if (AppContext.Current.LastOrder.HasValue)
+            {
+                var isCompleted = TinyIoCContainer.Current.Resolve<IBookingService>().IsCompleted(AppContext.Current.LastOrder.Value);
+                if (!isCompleted)
+                {
+                    statusShown = true;
+                    ((BookActivity)LocalActivityManager.CurrentActivity).StartStatusActivity(AppContext.Current.LastOrder.Value);
+                }
+                else
+                {
+                    AppContext.Current.LastOrder = null;
+                }
+            }
+            return statusShown;
         }
 
         private void RefreshHeader()

@@ -10,6 +10,13 @@ namespace apcurium.MK.Common.Diagnostic
 		void LogMessage( string message );
 		
 		void LogStack( );
+
+        void StartStopwatch( string message );
+
+        void StopStopwatch(string message);
+        
+
+            
 	}
 }
 

@@ -31,7 +31,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
     }
     public class LoggerImpl : ILogger
     {
-        private static Stopwatch _stopWatch;
+        private static Stack<Stopwatch> _watchs = new Stack<Stopwatch>();
+
         public void LogError(Exception ex)
         {
 
@@ -73,22 +74,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
 
         }
 
+       
         public void StartStopwatch(string message)
         {
-            _stopWatch = new Stopwatch();
-            _stopWatch.Start();
-
-            Write("Start timer : " + message);
+            var w = new Stopwatch();
+            _watchs.Push(w);
+            w.Start();
+            LogMessage("Start :" + message);
         }
+
 
         public void StopStopwatch(string message)
         {
-            if (_stopWatch != null)
-            {
-                _stopWatch.Stop();
-                Write("Stop timer : " + message + " in " + _stopWatch.ElapsedMilliseconds + " ms");
-            }
+            var w = _watchs.Pop();
+            w.Stop();
+            LogMessage(message + " Execution time : " + w.ElapsedMilliseconds.ToString() + " ms");
         }
+
+
+    
 
         public readonly static string BaseDir = System.IO.Path.Combine(Android.OS.Environment.ExternalStorageDirectory.ToString(), "TaxiHail"); //System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
 

@@ -6,13 +6,21 @@ using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
 using System.Globalization;
+using apcurium.MK.Booking.Api.Services.GoogleApi;
+using System.Collections.Generic;
+using System;
+using ServiceStack.ServiceClient.Web;
 
 namespace apcurium.MK.Booking.Api.Services
 {
     public class OrderStatusService : RestServiceBase<OrderStatusRequest>
     {
+        private static Dictionary<Guid, List<Location>> _fakeTaxiPositions = new Dictionary<Guid, List<Location>>();
+        private static Dictionary<Guid, int> _fakeTaxiPositionsIndex = new Dictionary<Guid, int>();
+
         private const string _assignedStatus = "wosASSIGNED";
         private const string _doneStatus = "wosDONE";
+
 
         private IBookingWebServiceClient _bookingWebServiceClient;
         private IOrderDao _orderDao;
@@ -64,8 +72,20 @@ namespace apcurium.MK.Booking.Api.Services
                         {
                             desc = _configManager.GetSetting("OrderStatus." + status.IBSStatusId);
                         }
-                        status.VehicleLatitude = statusDetails.VehicleLatitude;
-                        status.VehicleLongitude = statusDetails.VehicleLongitude;
+
+                        //For demo purpose only
+                        var leg = BuildFakeDirectionForOrder(status.OrderId, order.PickupLatitude, order.PickupLongitude);
+
+
+
+                        if (leg != null)
+                        {
+                            status.VehicleLatitude = leg.Lat;
+                            status.VehicleLongitude = leg.Lng;
+                        }
+
+                        //status.VehicleLatitude = statusDetails.VehicleLatitude;
+                        //status.VehicleLongitude = statusDetails.VehicleLongitude;
                     }
                     else if (status.IBSStatusId.SoftEqual(_doneStatus))
                     {
@@ -99,6 +119,47 @@ namespace apcurium.MK.Booking.Api.Services
                 //TO DO: erreur ? Status ?
             }
             return status;
+        }
+
+        private Location BuildFakeDirectionForOrder(Guid guid, double lat, double lng)
+        {
+
+            if (!_fakeTaxiPositions.ContainsKey(guid))
+            {
+                var result = new DirectionInfo();
+
+                var client = new JsonServiceClient("http://maps.googleapis.com/maps/api/");
+
+                var resource = string.Format(CultureInfo.InvariantCulture, "directions/json?origin={0},{1}&destination={2},{3}&sensor=false", lat, lng, lat + 0.008, lng + 0.008);
+
+                var directions = client.Get<DirectionResult>(resource);
+
+                List<Location> steps = new List<Location>();
+
+                foreach (var s in directions.Routes[0].Legs[0].Steps)
+                {
+                    steps.Add(s.Start_location);
+                    steps.Add(s.End_location);
+                    //steps.Add(s);
+                    //steps.Add(s);
+                    //steps.Add(s);                    
+                }
+                
+
+                _fakeTaxiPositions.Add(guid, steps);
+                _fakeTaxiPositionsIndex.Add(guid, 0);
+            }
+
+            var index = _fakeTaxiPositionsIndex[guid];
+
+            _fakeTaxiPositionsIndex[guid] = index + 1;
+
+            if (_fakeTaxiPositionsIndex[guid] >= _fakeTaxiPositions[guid].Count)
+            {
+                return new  Location { Lat = lat , Lng = lng };
+            }
+            return _fakeTaxiPositions[guid][_fakeTaxiPositions[guid].Count - index - 1];
+
         }
 
         private string FormatPrice(double? price)

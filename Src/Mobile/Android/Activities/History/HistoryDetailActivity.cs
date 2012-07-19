@@ -18,6 +18,7 @@ using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Models;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.Client.Activities.Book;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.History
 {
@@ -69,11 +70,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
 
         void btnStatus_Click(object sender, EventArgs e)
         {
-            Intent intent = new Intent();
-            intent.SetFlags(ActivityFlags.ForwardResult);
-            intent.PutExtra("Book", _data.Id.ToString());
-            SetResult(Result.Ok, intent);
-            Finish();
+
+            Intent i = new Intent(this, typeof(BookingStatusActivity));
+                        
+            OrderStatusDetail orderInfo = new OrderStatusDetail { IBSOrderId = _data.IBSOrderId, IBSStatusDescription = "Loading...", IBSStatusId = "", OrderId = _data.Id, Status = OrderStatus.Unknown, VehicleLatitude = null, VehicleLongitude = null };
+
+            var serialized = _data.Serialize();
+            i.PutExtra("Order", serialized);
+
+            serialized = orderInfo.Serialize();
+            i.PutExtra("OrderStatusDetail", serialized);
+
+
+            StartActivityForResult(i, 101);
+
+
+            //Intent intent = new Intent();
+            //intent.SetFlags(ActivityFlags.ForwardResult);
+            //intent.PutExtra("Book", _data.Id.ToString());
+            //SetResult(Result.Ok, intent);
+            //Finish();
         }
 
         void btnCancel_Click(object sender, EventArgs e)
@@ -108,10 +124,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
                 var status = TinyIoCContainer.Current.Resolve<IBookingService>().GetOrderStatus(_data.Id);
 
                 bool isCompleted = false;
-                //if (status.IBSStatusId.HasValue)
-                //{
-                //    isCompleted = TinyIoCContainer.Current.Resolve<IBookingService>().IsCompleted(status.IBSStatusId.Value);
-                //}
+                if (status.IBSStatusId.HasValue() )
+                {
+                    isCompleted = TinyIoCContainer.Current.Resolve<IBookingService>().IsStatusCompleted (status.IBSStatusId);
+                }
 
                 RunOnUiThread(() => FindViewById<TextView>(Resource.Id.StatusTxt).Text = status.IBSStatusDescription);
                 var btnCancel = FindViewById<Button>(Resource.Id.CancelTripBtn);

@@ -37,10 +37,29 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             Android.Runtime.AndroidEnvironment.UnhandledExceptionRaiser += AndroidEnvironmentOnUnhandledExceptionRaiser;
 
+            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+
             Console.WriteLine("App created");
 
             new Bootstrapper(new IModule[] { new AppModule(this) }).Run();
 
+        }
+
+        void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            try
+            {
+                if (e.ExceptionObject is Exception)
+                {
+                    TinyIoCContainer.Current.Resolve<ILogger>().LogError((Exception)e.ExceptionObject);
+                }
+            }
+            catch (Exception)
+            {
+
+
+                throw;
+            }
         }
 
         

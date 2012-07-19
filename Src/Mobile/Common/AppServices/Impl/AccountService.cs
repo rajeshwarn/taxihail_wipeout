@@ -17,6 +17,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
     {
 
         private const string _favoriteAddressesCacheKey = "Account.FavoriteAddresses";
+        private const string _historyAddressesCacheKey = "Account.HistoryAddresses";
 
         private static ReferenceData _refData;
 
@@ -52,16 +53,33 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         }
 
 
+        public void RefreshCache()
+        {
+            TinyIoCContainer.Current.Resolve<ICacheService>().Clear(_historyAddressesCacheKey);
+            GetHistoryAddresses();
+        }
+
 
         public IEnumerable<Address> GetHistoryAddresses()
         {
-            IEnumerable<Address> result = new Address[0];
-            UseServiceClient<AccountServiceClient>(service =>
-            {
-                result = service.GetHistoryAddresses(CurrentAccount.Id);
-            });
+            var cached = TinyIoCContainer.Current.Resolve<ICacheService>().Get<Address[]>(_historyAddressesCacheKey);
 
-            return result;
+             if (cached != null)
+             {
+                 return cached;
+             }
+             else
+             {
+
+                 IEnumerable<Address> result = new Address[0];
+                 UseServiceClient<AccountServiceClient>(service =>
+                 {
+                     result = service.GetHistoryAddresses(CurrentAccount.Id);
+                 });
+
+                 TinyIoCContainer.Current.Resolve<ICacheService>().Set(_historyAddressesCacheKey, result.ToArray());
+                 return result;
+             }
         }
 
 
