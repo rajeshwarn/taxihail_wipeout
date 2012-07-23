@@ -12,10 +12,10 @@ namespace apcurium.MK.Booking.Api.Services
 {
     public class AddressHistoryService : RestServiceBase<AddressHistoryRequest>
     {
-        private readonly IHistoricAddressDao _dao;
+        private readonly IAddressDao _dao;
         private readonly ICommandBus _commandBus;
 
-        public AddressHistoryService(IHistoricAddressDao dao)
+        public AddressHistoryService(IAddressDao dao)
         {
             _dao = dao;
         }
@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             var session = this.GetSession();
-            return _dao.FindByAccountId(new Guid(session.UserAuthId));
+            return _dao.FindHistoricByAccountId(new Guid(session.UserAuthId));
         }
 
     }

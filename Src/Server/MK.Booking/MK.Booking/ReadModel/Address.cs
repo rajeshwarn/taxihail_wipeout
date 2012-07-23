@@ -6,11 +6,13 @@ using System.Text;
 
 namespace apcurium.MK.Booking.ReadModel
 {
-    public class FavoriteAddress
+    public class Address
     {
         [Key]
         public Guid Id { get; set; }
         public Guid AccountId { get; set; }
+
+        public bool IsHistoric { get; set; }
 
         public string FriendlyName
         {

@@ -324,7 +324,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             QueueCommand<AccountServiceClient>(service =>
                 {
-                    var toSave = new SaveFavoriteAddress
+                    var toSave = new SaveAddress
                     {
                         AccountId = CurrentAccount.Id,
                         Apartment = address.Apartment,
@@ -336,9 +336,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                         RingCode = address.RingCode
                     };
 
+                    var toMove = toSave;
+                    toMove.IsHistoric = false;
+
                     if (isNew )
                     {                        
                         service.AddFavoriteAddress(toSave);
+                    }
+                    else if(address.IsHistoric)
+                    {
+                        service.UpdateFavoriteAddress(toMove);
                     }
                     else
                     {

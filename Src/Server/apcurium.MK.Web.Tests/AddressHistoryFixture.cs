@@ -78,7 +78,7 @@ namespace apcurium.MK.Web.Tests
 
             //Act
             Guid addressGuid = Guid.NewGuid();
-            var address = new SaveFavoriteAddress()
+            var address = new SaveAddress()
             {
                 Id = addressGuid,
                 AccountId = newAccount.Id,

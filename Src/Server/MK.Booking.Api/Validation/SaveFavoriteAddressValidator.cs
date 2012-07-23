@@ -8,7 +8,7 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 
 namespace apcurium.MK.Booking.Api.Validation
 {
-    public class SaveFavoriteAddressValidator : AbstractValidator<SaveFavoriteAddress>
+    public class SaveFavoriteAddressValidator : AbstractValidator<SaveAddress>
     {
         public SaveFavoriteAddressValidator()
         {

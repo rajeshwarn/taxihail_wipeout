@@ -32,7 +32,7 @@ namespace apcurium.MK.Web.Tests
         public void SetupTest()
         {
             var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
-            sut.AddFavoriteAddress(new SaveFavoriteAddress
+            sut.AddFavoriteAddress(new SaveAddress
             {
                 Id = (_knownAddressId = Guid.NewGuid()),
                 AccountId = TestAccount.Id,
@@ -49,7 +49,7 @@ namespace apcurium.MK.Web.Tests
             var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
 
             var addressId = Guid.NewGuid();
-            sut.AddFavoriteAddress(new SaveFavoriteAddress
+            sut.AddFavoriteAddress(new SaveAddress
                                        {
                                            Id = addressId,
                                            AccountId = TestAccount.Id,
@@ -71,7 +71,7 @@ namespace apcurium.MK.Web.Tests
         {
             var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
 
-            Assert.Throws<WebServiceException>(() => sut.AddFavoriteAddress(new SaveFavoriteAddress()));
+            Assert.Throws<WebServiceException>(() => sut.AddFavoriteAddress(new SaveAddress()));
         }
 
         [Test]
@@ -79,7 +79,7 @@ namespace apcurium.MK.Web.Tests
         {
             var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
 
-            sut.UpdateFavoriteAddress(new SaveFavoriteAddress
+            sut.UpdateFavoriteAddress(new SaveAddress
             {
                 Id = _knownAddressId,
                 AccountId = TestAccount.Id,
@@ -108,7 +108,7 @@ namespace apcurium.MK.Web.Tests
             var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
 
             Assert.Throws<WebServiceException>(() => sut
-                .UpdateFavoriteAddress(new SaveFavoriteAddress
+                .UpdateFavoriteAddress(new SaveAddress
                 {
                     Id = _knownAddressId,
                     AccountId = TestAccount.Id,

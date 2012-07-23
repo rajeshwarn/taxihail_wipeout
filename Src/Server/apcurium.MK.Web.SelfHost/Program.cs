@@ -82,7 +82,7 @@ namespace apcurium.MK.Web.SelfHost
             container.RegisterInstance<ITextSerializer>(new JsonTextSerializer());
             container.RegisterInstance<IMetadataProvider>(new StandardMetadataProvider());
 
-            container.RegisterInstance<IFavoriteAddressDao>(new FavoriteAddressDao(() => container.Resolve<BookingDbContext>()));
+            container.RegisterInstance<IAddressDao>(new AddressDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IHistoricAddressDao>(new HistoricAddressDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IAccountDao>(new AccountDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IConfigurationManager>(new Common.Configuration.Impl.ConfigurationManager(() => container.Resolve<ConfigurationDbContext>()));
@@ -98,8 +98,7 @@ namespace apcurium.MK.Web.SelfHost
 
 
             container.RegisterInstance<IEventBus>(new MemoryEventBus(container.Resolve<AccountDetailsGenerator>(),
-                container.Resolve<FavoriteAddressListGenerator>(),
-                container.Resolve<AddressHistoryGenerator>(),
+                container.Resolve<AddressListGenerator>(),
                 container.Resolve<OrderGenerator>(),
                 container.Resolve<SqlMessageLogHandler>()));
 
@@ -111,11 +110,11 @@ namespace apcurium.MK.Web.SelfHost
             container.RegisterInstance<IEmailSender>(new EmailSender(container.Resolve<IConfigurationManager>()));
 
             container.RegisterType<ICommandHandler, AccountCommandHandler>("AccountCommandHandler");
-            container.RegisterType<ICommandHandler, FavoriteAddressCommandHandler>("FavoriteAddressCommandHandler");
+            container.RegisterType<ICommandHandler, AddressCommandHandler>("AddressCommandHandler");
             container.RegisterType<ICommandHandler, EmailCommandHandler>("EmailCommandHandler");
             container.RegisterType<ICommandHandler, OrderCommandHandler>("OrderCommandHandler");
             container.RegisterInstance<ICommandBus>(new MemoryCommandBus(container.Resolve<ICommandHandler>("AccountCommandHandler"), container.Resolve<ICommandHandler>("OrderCommandHandler"),
-                container.Resolve<ICommandHandler>("FavoriteAddressCommandHandler"),
+                container.Resolve<ICommandHandler>("AddressCommandHandler"),
                 container.Resolve<ICommandHandler>("EmailCommandHandler")));
 
 

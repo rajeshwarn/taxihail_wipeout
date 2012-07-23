@@ -51,13 +51,13 @@ namespace apcurium.MK.Booking.Api.Client
             return addresses;
         }
 
-        public void AddFavoriteAddress(SaveFavoriteAddress address)
+        public void AddFavoriteAddress(SaveAddress address)
         {
             var req = string.Format("/accounts/{0}/addresses", address.AccountId);
             var response = Client.Post<string>(req, address);
         }
 
-        public void UpdateFavoriteAddress(SaveFavoriteAddress address)
+        public void UpdateFavoriteAddress(SaveAddress address)
         {
             var req = string.Format("/accounts/{0}/addresses/{1}", address.AccountId, address.Id);
             var response = Client.Put<string>(req, address);
