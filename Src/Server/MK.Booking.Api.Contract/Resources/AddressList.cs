@@ -5,7 +5,7 @@ using System.Text;
 
 namespace apcurium.MK.Booking.Api.Contract.Resources
 {
-    public class AddressList
+    public class AddressList : BaseDTO
     {
         public AddressList()
         {

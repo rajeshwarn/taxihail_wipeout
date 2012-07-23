@@ -43,6 +43,7 @@ namespace apcurium.MK.Web.SelfHost
     {
         static void Main(string[] args)
         {
+
             var listeningOn = args.Length == 0 ? "http://*:6901/" : args[0];
 
             var appHost = new AppHost();

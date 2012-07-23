@@ -1,9 +1,9 @@
 ﻿using System;
 
 namespace apcurium.MK.Booking.Api.Contract.Resources
-{    
-        
-    public class Account  
+{
+
+    public class Account : BaseDTO  
     {
         public Guid Id { get; set; }
 

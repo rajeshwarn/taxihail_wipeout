@@ -7,8 +7,8 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [RestService("/accounts/{AccountId}/orders", "POST")] 
-    public class CreateOrder
+    [RestService("/accounts/{AccountId}/orders", "POST")]
+    public class CreateOrder : BaseDTO
     {
 
         public CreateOrder()
