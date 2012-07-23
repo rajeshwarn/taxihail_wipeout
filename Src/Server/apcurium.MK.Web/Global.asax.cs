@@ -41,42 +41,14 @@ namespace apcurium.MK.Web
 
             public override void Configure(Container containerFunq)
             {
-                Database.SetInitializer<BookingDbContext>(null);
-                Database.SetInitializer<ConfigurationDbContext>(null);
+                new Module().Init(UnityServiceLocator.Instance);
 
-                containerFunq.Adapter = new UnityContainerAdapter(UnityServiceLocator.Instance, new Logger());
                 var container = UnityServiceLocator.Instance;
-
-                container.RegisterInstance<ILogger>(new Logger());
-
-                container.RegisterType<BookingDbContext>(new TransientLifetimeManager(), new InjectionConstructor("MKWeb"));
-                container.RegisterType<ConfigurationDbContext>(new TransientLifetimeManager(), new InjectionConstructor("MKWeb"));                
-                container.RegisterInstance<ITextSerializer>(new JsonTextSerializer());
-
-                container.RegisterInstance<IFavoriteAddressDao>(new FavoriteAddressDao(() => container.Resolve<BookingDbContext>()));
-                container.RegisterInstance<IHistoricAddressDao>(new HistoricAddressDao(() => container.Resolve<BookingDbContext>()));
-                container.RegisterInstance<IAccountDao>(new AccountDao(() => container.Resolve<BookingDbContext>()));
-                container.RegisterInstance<IOrderDao>(new OrderDao(() => container.Resolve<BookingDbContext>()));
-                container.RegisterInstance<IConfigurationManager>(new Common.Configuration.Impl.ConfigurationManager(() => container.Resolve<ConfigurationDbContext>()));
-                container.RegisterInstance<IAccountWebServiceClient>(new AccountWebServiceClient(container.Resolve<IConfigurationManager>(), new Logger()));
-                container.RegisterInstance<IStaticDataWebServiceClient>(new StaticDataWebServiceClient(container.Resolve<IConfigurationManager>(), new Logger()));
-                container.RegisterInstance<IBookingWebServiceClient>(new BookingWebServiceClient(container.Resolve<IConfigurationManager>(), new Logger()));
-
-                container.RegisterInstance<IMessageSender>(new MessageSender(new ServiceConfigurationSettingConnectionFactory(Database.DefaultConnectionFactory),
-                    ConfigurationManager.ConnectionStrings["DbContext.SqlBus"].ConnectionString, "SqlBus.Commands"));
-
-                container.RegisterInstance<ICommandBus>(new CommandBus(container.Resolve<IMessageSender>(), container.Resolve<ITextSerializer>()));
-
-                container.RegisterInstance<IPasswordService>(new PasswordService());
-                container.RegisterInstance<ITemplateService>(new TemplateService());
-                container.RegisterInstance<IEmailSender>(new EmailSender(container.Resolve<IConfigurationManager>()));
-                
+                containerFunq.Adapter = new UnityContainerAdapter(container, new Logger());
 
                 Plugins.Add(new AuthFeature(() => new AuthUserSession(), new IAuthProvider[] { new CustomCredentialsAuthProvider(container.Resolve<IAccountDao>(), container.Resolve<IPasswordService>()) }));
                 Plugins.Add(new ValidationFeature());
                 containerFunq.RegisterValidators(typeof(SaveFavoriteAddressValidator).Assembly);
-
-                container.RegisterInstance<ICacheClient>(new MemoryCacheClient{ FlushOnDispose = false });
                 
                 SetConfig(new EndpointHostConfig
                 {
@@ -86,6 +58,7 @@ namespace apcurium.MK.Web
                             { "Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS" },
                         },
                 });
+
                 
             }
         }

@@ -44,58 +44,7 @@ namespace WorkerRoleCommandProcessor
     /// </devdoc>
     partial class MKBookingProcessor
     {
-        partial void OnCreateContainer(UnityContainer container)
-        {
-            var serializer = container.Resolve<ITextSerializer>();
-            var metadata = container.Resolve<IMetadataProvider>();
-
-#if STAGING
-            string databaseName = "MkWebStaging";   
-#else
-            string databaseName = "MkWeb";
-#endif
-
-            var commandBus = new CommandBus(new MessageSender(Database.DefaultConnectionFactory, databaseName, "SqlBus.Commands"), serializer);
-            var eventBus = new EventBus(new MessageSender(Database.DefaultConnectionFactory, databaseName, "SqlBus.Events"), serializer);
-
-            var commandProcessor = new CommandProcessor(new MessageReceiver(Database.DefaultConnectionFactory, databaseName, "SqlBus.Commands"), serializer);
-            var eventProcessor = new EventProcessor(new MessageReceiver(Database.DefaultConnectionFactory, databaseName, "SqlBus.Events"), serializer);
-            
-            
-
-            container.RegisterInstance<IAccountWebServiceClient>(new AccountWebServiceClient(container.Resolve<IConfigurationManager>(), new Logger()));
-
-            container.RegisterInstance<ICommandBus>(commandBus);
-            container.RegisterInstance<IEventBus>(eventBus);
-            container.RegisterInstance<ICommandHandlerRegistry>(commandProcessor);
-            container.RegisterInstance<IProcessor>("CommandProcessor", commandProcessor);
-            container.RegisterInstance<IEventHandlerRegistry>(eventProcessor);
-            container.RegisterInstance<IProcessor>("EventProcessor", eventProcessor);
-
-            // Event log database and handler.
-            container.RegisterType<SqlMessageLog>(new InjectionConstructor("MessageLog", serializer, metadata));
-            container.RegisterType<IEventHandler, SqlMessageLogHandler>("SqlMessageLogHandler");
-            container.RegisterType<ICommandHandler, SqlMessageLogHandler>("SqlMessageLogHandler");
-
-            RegisterRepository(container);
-            RegisterEventHandlers(container, eventProcessor);
-        }
-
-        private void RegisterEventHandlers(UnityContainer container, EventProcessor eventProcessor)
-        {
-            eventProcessor.Register(container.Resolve<AccountDetailsGenerator>());
-            eventProcessor.Register(container.Resolve<FavoriteAddressListGenerator>());
-            eventProcessor.Register(container.Resolve<AddressHistoryGenerator>());
-            eventProcessor.Register(container.Resolve<OrderGenerator>());
-            eventProcessor.Register(container.Resolve<SqlMessageLogHandler>());
-        }
-
-        private void RegisterRepository(UnityContainer container)
-        {
-            // repository
-            container.RegisterType<EventStoreDbContext>(new TransientLifetimeManager(), new InjectionConstructor("EventStore"));
-            container.RegisterType(typeof(IEventSourcedRepository<>), typeof(SqlEventSourcedRepository<>), new ContainerControlledLifetimeManager());
-        }
+        
 
     }
 }

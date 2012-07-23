@@ -12,55 +12,27 @@
 // ==============================================================================================================
 
 
-using apcurium.MK.Booking.Email;
 
 namespace WorkerRoleCommandProcessor
 {
     using System;
     using System.Collections.Generic;
-    using System.Data.Entity;
     using System.Linq;
     using System.Threading;
     using Infrastructure;
-    using Infrastructure.BlobStorage;
-    using Infrastructure.Messaging.Handling;
-    using Infrastructure.Serialization;
-    using Infrastructure.Sql.BlobStorage;
-    using Infrastructure.Sql.EventSourcing;
-    using Infrastructure.Sql.MessageLog;
-    using Microsoft.Practices.Unity;        
-    using apcurium.MK.Booking.Database;
-    using apcurium.MK.Booking.CommandHandlers;
-    using apcurium.MK.Common.Diagnostic;
-    using apcurium.MK.Booking.Common.Tests;
-    using apcurium.MK.Common.Configuration;
-    using apcurium.MK.Booking.Security;
-    using apcurium.MK.Common.Configuration.Impl;
-    using apcurium.MK.Booking.BackOffice.CommandHandlers;
-    using apcurium.MK.Booking.Email;
+    using Microsoft.Practices.Unity;
 
     public sealed partial class MKBookingProcessor : IDisposable
     {
-        private IUnityContainer container;
         private CancellationTokenSource cancellationTokenSource;
         private List<IProcessor> processors;
 
-        public MKBookingProcessor()
+        public MKBookingProcessor(IUnityContainer container)
         {
             OnCreating();
 
-            Database.SetInitializer<EventStoreDbContext>(null);
-            Database.SetInitializer<MessageLogDbContext>(null);
-            Database.SetInitializer<BlobStorageDbContext>(null);
-            Database.SetInitializer<BookingDbContext>(null);
-            Database.SetInitializer<ConfigurationDbContext>(null);
-
             this.cancellationTokenSource = new CancellationTokenSource();
-            this.container = CreateContainer();
-            RegisterCommandHandlers(container);
-           
-
-            this.processors = this.container.ResolveAll<IProcessor>().ToList();
+            this.processors = container.ResolveAll<IProcessor>().ToList();
         }
 
         public void Start()
@@ -77,62 +49,8 @@ namespace WorkerRoleCommandProcessor
 
         public void Dispose()
         {
-            this.container.Dispose();
-        }
-
-        private UnityContainer CreateContainer()
-        {
-            var container = new UnityContainer();
-
-            // infrastructure
-            container.RegisterInstance<ITextSerializer>(new JsonTextSerializer());
-            container.RegisterInstance<IMetadataProvider>(new StandardMetadataProvider());
-
-            container.RegisterType<IBlobStorage, SqlBlobStorage>(new ContainerControlledLifetimeManager(), new InjectionConstructor("BlobStorage"));
-
-#if STAGING
-            string databaseName = "MkWebStaging";
-#else
-            string databaseName = "MkWeb";
-#endif
-
-            container.RegisterType<BookingDbContext>(new TransientLifetimeManager(), new InjectionConstructor(databaseName));
-            container.RegisterType<ConfigurationDbContext>(new TransientLifetimeManager(), new InjectionConstructor(databaseName));
-
-            container.RegisterType<ILogger, Logger>();
-            container.RegisterType<IConfigurationManager, TestConfigurationManager>();
-            
-            container.RegisterInstance<IConfigurationManager>(new ConfigurationManager(() => container.Resolve<ConfigurationDbContext>()));
-            container.RegisterInstance<IPasswordService>(new PasswordService());
-            container.RegisterInstance<ITemplateService>(new TemplateService());
-            container.RegisterInstance<IEmailSender>(new EmailSender(container.Resolve<IConfigurationManager>()));
-
-            // handlers
-            container.RegisterType<ICommandHandler, AccountCommandHandler>("AccountCommandHandler");
-            container.RegisterType<ICommandHandler, FavoriteAddressCommandHandler>("FavoriteAddressCommandHandler");
-            container.RegisterType<ICommandHandler, OrderCommandHandler>("OrderCommandHandler");
-            container.RegisterType<ICommandHandler, FavoriteAddressCommandHandler>("FavoriteAddressCommandHandler");
-            container.RegisterType<ICommandHandler, EmailCommandHandler>("EmailCommandHandler");
-
-            container.RegisterInstance<IPasswordService>(new PasswordService());
-            container.RegisterInstance<ITemplateService>(new TemplateService());
-            container.RegisterInstance<IEmailSender>(new EmailSender(container.Resolve<IConfigurationManager>()));
-            OnCreateContainer(container);
-
-            return container;
-        }
-
-        private static void RegisterCommandHandlers(IUnityContainer unityContainer)
-        {
-            var commandHandlerRegistry = unityContainer.Resolve<ICommandHandlerRegistry>();
-
-            foreach (var commandHandler in unityContainer.ResolveAll<ICommandHandler>())
-            {
-                commandHandlerRegistry.Register(commandHandler);
-            }
         }
 
         partial void OnCreating();
-        partial void OnCreateContainer(UnityContainer container);
     }
 }
