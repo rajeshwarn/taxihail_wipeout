@@ -18,8 +18,7 @@ namespace apcurium.MK.Booking
 
         public void Init(IUnityContainer container)
         {
-            container.RegisterInstance<IFavoriteAddressDao>(new FavoriteAddressDao(() => container.Resolve<BookingDbContext>()));
-            container.RegisterInstance<IHistoricAddressDao>(new HistoricAddressDao(() => container.Resolve<BookingDbContext>()));
+            container.RegisterInstance<IAddressDao>(new AddressDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IAccountDao>(new AccountDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IOrderDao>(new OrderDao(() => container.Resolve<BookingDbContext>()));
 
@@ -29,7 +28,7 @@ namespace apcurium.MK.Booking
 
             //Command Handlers
             container.RegisterType<ICommandHandler, AccountCommandHandler>("AccountCommandHandler");
-            container.RegisterType<ICommandHandler, FavoriteAddressCommandHandler>("FavoriteAddressCommandHandler");
+            container.RegisterType<ICommandHandler, AddressCommandHandler>("FavoriteAddressCommandHandler");
             container.RegisterType<ICommandHandler, EmailCommandHandler>("EmailCommandHandler");
             container.RegisterType<ICommandHandler, OrderCommandHandler>("OrderCommandHandler");
             
@@ -38,7 +37,7 @@ namespace apcurium.MK.Booking
         public void RegisterEventHandlers(IUnityContainer container, IEventHandlerRegistry registry)
         {
             registry.Register(container.Resolve<AccountDetailsGenerator>());
-            registry.Register(container.Resolve<FavoriteAddressListGenerator>());
+            registry.Register(container.Resolve<AddressListGenerator>());
             registry.Register(container.Resolve<AddressHistoryGenerator>());
             registry.Register(container.Resolve<OrderGenerator>());
 
