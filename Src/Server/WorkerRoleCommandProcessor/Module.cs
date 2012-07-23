@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
+﻿using System.Data.Entity;
 using Infrastructure;
 using Infrastructure.BlobStorage;
 using Infrastructure.EventSourcing;
@@ -16,9 +12,7 @@ using Infrastructure.Sql.Messaging;
 using Infrastructure.Sql.Messaging.Handling;
 using Infrastructure.Sql.Messaging.Implementation;
 using Microsoft.Practices.Unity;
-using apcurium.MK.Booking.BackOffice.EventHandlers;
 using apcurium.MK.Booking.Database;
-using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
@@ -78,12 +72,11 @@ namespace WorkerRoleCommandProcessor
         {
             var eventBus = new EventBus(new MessageSender(Database.DefaultConnectionFactory, databaseName, "SqlBus.Events"), container.Resolve<ITextSerializer>());
             var eventProcessor = new EventProcessor(new MessageReceiver(Database.DefaultConnectionFactory, databaseName, "SqlBus.Events"), container.Resolve<ITextSerializer>());
-            new apcurium.MK.Booking.Module().RegisterEventHandlers(container, eventProcessor);
             container.RegisterInstance<IEventBus>(eventBus);
             container.RegisterInstance<IEventHandlerRegistry>(eventProcessor);
             container.RegisterInstance<IProcessor>("EventProcessor", eventProcessor);
 
-            eventProcessor.Register(container.Resolve<SqlMessageLogHandler>());
+            RegisterEventHandlers(container);
         }
 
         private void RegisterRepository(IUnityContainer container)
@@ -100,6 +93,16 @@ namespace WorkerRoleCommandProcessor
             foreach (var commandHandler in unityContainer.ResolveAll<ICommandHandler>())
             {
                 commandHandlerRegistry.Register(commandHandler);
+            }
+        }
+
+        private static void RegisterEventHandlers(IUnityContainer unityContainer)
+        {
+            var commandHandlerRegistry = unityContainer.Resolve<IEventHandlerRegistry>();
+
+            foreach (var eventHandler in unityContainer.ResolveAll<IEventHandler>())
+            {
+                commandHandlerRegistry.Register(eventHandler);
             }
         }
     }
