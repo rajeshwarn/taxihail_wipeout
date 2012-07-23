@@ -255,7 +255,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                                           MapService.SetLocationOnMap(Map, location);
                                           if (changeZoom)
                                           {
-                                              Map.Controller.SetZoom(100);
+                                              Map.Controller.SetZoom(17);
                                           }
                                       }
                                       Address.ClearFocus();

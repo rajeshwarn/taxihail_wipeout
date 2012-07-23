@@ -746,40 +746,37 @@ namespace apcurium.MK.Booking.Mobile.Client
 			public const int Login = 2130903058;
 			
 			// aapt resource value: 0x7f030013
-			public const int Login2 = 2130903059;
+			public const int Main = 2130903059;
 			
 			// aapt resource value: 0x7f030014
-			public const int Main = 2130903060;
+			public const int OrderListItem = 2130903060;
 			
 			// aapt resource value: 0x7f030015
-			public const int OrderListItem = 2130903061;
+			public const int PasswordRecovery = 2130903061;
 			
 			// aapt resource value: 0x7f030016
-			public const int PasswordRecovery = 2130903062;
+			public const int Pickup = 2130903062;
 			
 			// aapt resource value: 0x7f030017
-			public const int Pickup = 2130903063;
+			public const int RideSettings = 2130903063;
 			
 			// aapt resource value: 0x7f030018
-			public const int RideSettings = 2130903064;
+			public const int Settings = 2130903064;
 			
 			// aapt resource value: 0x7f030019
-			public const int Settings = 2130903065;
+			public const int SignUp = 2130903065;
 			
 			// aapt resource value: 0x7f03001a
-			public const int SignUp = 2130903066;
+			public const int SimpleListItem = 2130903066;
 			
 			// aapt resource value: 0x7f03001b
-			public const int SimpleListItem = 2130903067;
+			public const int SpinnerCell = 2130903067;
 			
 			// aapt resource value: 0x7f03001c
-			public const int SpinnerCell = 2130903068;
+			public const int SpinnerText = 2130903068;
 			
 			// aapt resource value: 0x7f03001d
-			public const int SpinnerText = 2130903069;
-			
-			// aapt resource value: 0x7f03001e
-			public const int Test = 2130903070;
+			public const int Test = 2130903069;
 			
 			private Layout()
 			{

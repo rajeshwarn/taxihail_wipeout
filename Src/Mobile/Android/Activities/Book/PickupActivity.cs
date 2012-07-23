@@ -41,7 +41,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             //FindViewById<Button>(Resource.Id.pickupTimeButton).Click += new EventHandler(PickTime_Click);
             FindViewById<Button>(Resource.Id.pickupDateButton).Click += new EventHandler(PickDate_Click);
 
-
             FindViewById<EditText>(Resource.Id.pickupTimeText).EditorAction += new EventHandler<TextView.EditorActionEventArgs>(PickupTimeText_EditorAction);
 
         }

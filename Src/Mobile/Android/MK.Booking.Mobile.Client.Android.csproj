@@ -137,9 +137,6 @@
     <AndroidResource Include="Resources\Layout\OrderListItem.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Layout\Login2.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
     <None Include="Resources\Resource.Designer.cs.bak" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="TaxiMobileApp.cs" />
