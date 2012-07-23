@@ -367,6 +367,14 @@
     <AndroidResource Include="Resources\drawable-mdpi\sign_in_btn.9.png" />
     <AndroidResource Include="Resources\drawable-mdpi\social_media_login_btn.9.png" />
     <AndroidResource Include="Resources\drawable-mdpi\twitter_icon.png" />
+    <AndroidResource Include="Resources\Drawable\newBlackButton.xml" />
+    <AndroidResource Include="Resources\Drawable\cell_middle_state.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Drawable\cell_top_state.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Drawable\cell_bottom_state.xml" />
     <Content Include="Todo.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />

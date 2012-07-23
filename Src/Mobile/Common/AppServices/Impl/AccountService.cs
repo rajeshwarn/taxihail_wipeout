@@ -64,12 +64,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             var cached = TinyIoCContainer.Current.Resolve<ICacheService>().Get<Address[]>(_historyAddressesCacheKey);
 
-             if (cached != null)
-             {
-                 return cached;
-             }
-             else
-             {
+             //if (cached != null)
+             //{
+              //   return cached;
+             //}
+             //else
+             //{
 
                  IEnumerable<Address> result = new Address[0];
                  UseServiceClient<AccountServiceClient>(service =>
@@ -79,7 +79,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
                  TinyIoCContainer.Current.Resolve<ICacheService>().Set(_historyAddressesCacheKey, result.ToArray());
                  return result;
-             }
+            // }
         }
 
 
