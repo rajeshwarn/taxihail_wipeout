@@ -25,7 +25,6 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             _repository = repository;
             _passwordService = passwordService;
-            AutoMapper.Mapper.CreateMap<UpdateBookingSettings, BookingSettings>();
         }
 
         public void Handle(RegisterAccount command)

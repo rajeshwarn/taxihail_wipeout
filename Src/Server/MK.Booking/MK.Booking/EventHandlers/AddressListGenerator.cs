@@ -14,15 +14,6 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
         public AddressListGenerator(Func<BookingDbContext> contextFactory)
         {
             _contextFactory = contextFactory;
-            AutoMapper.Mapper.CreateMap<OrderCreated, Address>()
-                .ForMember(p => p.Apartment, opt => opt.MapFrom(m => m.PickupApartment))
-                .ForMember(p => p.FullAddress, opt => opt.MapFrom(m => m.PickupAddress))
-                .ForMember(p => p.RingCode, opt => opt.MapFrom(m => m.PickupRingCode))
-                .ForMember(p => p.Latitude, opt => opt.MapFrom(m => m.PickupLatitude))
-                .ForMember(p => p.Longitude, opt => opt.MapFrom(m => m.PickupLongitude));
-
-            AutoMapper.Mapper.CreateMap<AddressUpdated, Address >().ForMember(p=>p.Id,options=>options.MapFrom(m=>m.AddressId));
-
         }
 
         public void Handle(AddressAdded @event)

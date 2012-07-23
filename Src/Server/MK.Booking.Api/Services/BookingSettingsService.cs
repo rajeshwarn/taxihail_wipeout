@@ -15,7 +15,6 @@ namespace apcurium.MK.Booking.Api.Services
         public BookingSettingsService(ICommandBus commandBus)
         {
             _commandBus = commandBus;
-            AutoMapper.Mapper.CreateMap<BookingSettingsRequest, Commands.UpdateBookingSettings>();
         }
 
         public override object OnPut(BookingSettingsRequest request)

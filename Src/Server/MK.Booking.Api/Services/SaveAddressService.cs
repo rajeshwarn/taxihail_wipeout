@@ -23,13 +23,6 @@ namespace apcurium.MK.Booking.Api.Services
         public SaveAddressService(ICommandBus commandBus)
         {
             _commandBus = commandBus;
-
-            AutoMapper.Mapper.CreateMap<SaveAddress, Commands.AddAddress>()
-                .ForMember(x=>x.AddressId, opt => opt.MapFrom(x=>x.Id));
-
-            AutoMapper.Mapper.CreateMap<SaveAddress, Commands.UpdateAddress>()
-                .ForMember(x => x.AddressId, opt => opt.MapFrom(x => x.Id));
-
         }
 
         public override object OnPost(SaveAddress request)

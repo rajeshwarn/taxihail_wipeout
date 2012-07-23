@@ -20,9 +20,6 @@ namespace apcurium.MK.Booking.Api.Services
             _commandBus = commandBus;
             _accountDao = accountDao;
             _accountWebServiceClient = accountWebServiceClient;
-
-            AutoMapper.Mapper.CreateMap<RegisterAccount, Commands.RegisterAccount>();
-
         }
 
         public override object OnPost(RegisterAccount request)
