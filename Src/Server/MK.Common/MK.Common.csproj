@@ -104,6 +104,7 @@
     <Compile Include="IoC\UnityContainerAdapter.cs" />
     <Compile Include="IoC\UnityExtension.cs" />
     <Compile Include="IoC\UnityServiceLocator.cs" />
+    <Compile Include="Module.cs" />
     <Compile Include="Params.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

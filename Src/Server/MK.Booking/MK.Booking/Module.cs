@@ -18,6 +18,9 @@ namespace apcurium.MK.Booking
 
         public void Init(IUnityContainer container)
         {
+            System.Data.Entity.Database.SetInitializer<BookingDbContext>(null);
+            container.RegisterType<BookingDbContext>(new TransientLifetimeManager(), new InjectionConstructor("Booking"));
+
             container.RegisterInstance<IAddressDao>(new AddressDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IAccountDao>(new AccountDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IOrderDao>(new OrderDao(() => container.Resolve<BookingDbContext>()));

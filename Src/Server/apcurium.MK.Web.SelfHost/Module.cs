@@ -22,28 +22,10 @@ namespace apcurium.MK.Web.SelfHost
         public void Init(IUnityContainer container)
         {
             Database.DefaultConnectionFactory = new ServiceConfigurationSettingConnectionFactory(Database.DefaultConnectionFactory);
-            Database.SetInitializer<BookingDbContext>(null);
-            Database.SetInitializer<ConfigurationDbContext>(null);
-            Database.SetInitializer<EventStoreDbContext>(null);
-            Database.SetInitializer<MessageLogDbContext>(null);
-            Database.SetInitializer<BlobStorageDbContext>(null); 
 
-            container.RegisterType<BookingDbContext>(new TransientLifetimeManager(), new InjectionConstructor("MKWeb"));
-            container.RegisterType<ConfigurationDbContext>(new TransientLifetimeManager(), new InjectionConstructor("MKWeb"));
+            RegisterInfrastructure(container);
 
-            // Infrastructure
-            container.RegisterInstance<ITextSerializer>(new JsonTextSerializer());
-            container.RegisterInstance<IMetadataProvider>(new StandardMetadataProvider());
-
-            // Infrastructure - Event log database and handler.
-            container.RegisterType<SqlMessageLog>(new InjectionConstructor("MessageLog", container.Resolve<ITextSerializer>(), container.Resolve<IMetadataProvider>()));
-            container.RegisterType<IEventHandler, SqlMessageLogHandler>("SqlMessageLogHandler");
-            container.RegisterType<ICommandHandler, SqlMessageLogHandler>("SqlMessageLogHandler");
-
-            // Common
-            container.RegisterInstance<ILogger>(new Logger());
-            container.RegisterInstance<IConfigurationManager>(new Common.Configuration.Impl.ConfigurationManager(() => container.Resolve<ConfigurationDbContext>()));
-
+            new MK.Common.Module().Init(container);
             new MK.Booking.Module().Init(container);
             new MK.Booking.IBS.Module().Init(container);
             new MK.Booking.Api.Module().Init(container);
@@ -52,6 +34,21 @@ namespace apcurium.MK.Web.SelfHost
             RegisterEventBus(container);
             RegisterCommandBus(container);
 
+        }
+
+        private void RegisterInfrastructure(IUnityContainer container)
+        {
+            Database.SetInitializer<EventStoreDbContext>(null);
+            Database.SetInitializer<MessageLogDbContext>(null);
+            Database.SetInitializer<BlobStorageDbContext>(null);
+
+            container.RegisterInstance<ITextSerializer>(new JsonTextSerializer());
+            container.RegisterInstance<IMetadataProvider>(new StandardMetadataProvider());
+
+            // Event log database and handler.
+            container.RegisterType<SqlMessageLog>(new InjectionConstructor("MessageLog", container.Resolve<ITextSerializer>(), container.Resolve<IMetadataProvider>()));
+            container.RegisterType<IEventHandler, SqlMessageLogHandler>("SqlMessageLogHandler");
+            container.RegisterType<ICommandHandler, SqlMessageLogHandler>("SqlMessageLogHandler");
         }
 
         private void RegisterCommandBus(IUnityContainer container)

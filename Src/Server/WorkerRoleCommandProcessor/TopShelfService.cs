@@ -7,16 +7,11 @@ namespace WorkerRoleCommandProcessor
 {
     public class TopShelfService
     {
-#if STAGING
-        const string databaseName = "MkWebStaging";
-#else
-        const string DatabaseName = "MkWeb";
-#endif
         static void Main(string[] args)
         {
             //XmlConfigurator.ConfigureAndWatch(new FileInfo(".\\log4net.config"));
             var container = new UnityContainer();
-            new Module().Init(container, DatabaseName);
+            new Module().Init(container);
             Host h = HostFactory.New(x =>
             {
                 x.Service<MKBookingProcessor>(s =>
