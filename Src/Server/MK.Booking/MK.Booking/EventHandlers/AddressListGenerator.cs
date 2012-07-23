@@ -87,7 +87,7 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                var identicalAddresses = from a in context.Query<HistoricAddress>()
+                var identicalAddresses = from a in context.Query<Address>()
                                          where a.AccountId == @event.AccountId
                                          where a.Apartment == @event.PickupApartment
                                          where a.FullAddress == @event.PickupAddress
