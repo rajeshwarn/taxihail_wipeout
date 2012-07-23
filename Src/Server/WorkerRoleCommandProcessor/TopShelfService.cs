@@ -15,7 +15,6 @@ namespace WorkerRoleCommandProcessor
         static void Main(string[] args)
         {
             //XmlConfigurator.ConfigureAndWatch(new FileInfo(".\\log4net.config"));
-            Database.DefaultConnectionFactory = new ServiceConfigurationSettingConnectionFactory(Database.DefaultConnectionFactory);
             var container = new UnityContainer();
             new Module().Init(container, DatabaseName);
             Host h = HostFactory.New(x =>

@@ -59,8 +59,8 @@ namespace WorkerRoleCommandProcessor
             new apcurium.MK.Booking.IBS.Module().Init(container);
 
             RegisterRepository(container);
-            RegisterCommandBus(container, databaseName);
             RegisterEventBus(container, databaseName);
+            RegisterCommandBus(container, databaseName);
         }
 
         private void RegisterCommandBus(IUnityContainer container, string databaseName)
