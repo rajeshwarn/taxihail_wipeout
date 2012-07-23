@@ -21,8 +21,6 @@ namespace apcurium.MK.Web.SelfHost
     {
         public void Init(IUnityContainer container)
         {
-            Database.DefaultConnectionFactory = new ServiceConfigurationSettingConnectionFactory(Database.DefaultConnectionFactory);
-
             RegisterInfrastructure(container);
 
             new MK.Common.Module().Init(container);
@@ -30,14 +28,14 @@ namespace apcurium.MK.Web.SelfHost
             new MK.Booking.IBS.Module().Init(container);
             new MK.Booking.Api.Module().Init(container);
 
-            RegisterRepository(container);
-            RegisterEventBus(container);
-            RegisterCommandBus(container);
+            RegisterEventHandlers(container);
+            RegisterCommandHandlers(container);
 
         }
 
         private void RegisterInfrastructure(IUnityContainer container)
         {
+            Database.DefaultConnectionFactory = new ServiceConfigurationSettingConnectionFactory(Database.DefaultConnectionFactory);
             Database.SetInitializer<EventStoreDbContext>(null);
             Database.SetInitializer<MessageLogDbContext>(null);
             Database.SetInitializer<BlobStorageDbContext>(null);
@@ -49,31 +47,20 @@ namespace apcurium.MK.Web.SelfHost
             container.RegisterType<SqlMessageLog>(new InjectionConstructor("MessageLog", container.Resolve<ITextSerializer>(), container.Resolve<IMetadataProvider>()));
             container.RegisterType<IEventHandler, SqlMessageLogHandler>("SqlMessageLogHandler");
             container.RegisterType<ICommandHandler, SqlMessageLogHandler>("SqlMessageLogHandler");
-        }
 
-        private void RegisterCommandBus(IUnityContainer container)
-        {
+            // Repository
+            container.RegisterType<EventStoreDbContext>(new TransientLifetimeManager(), new InjectionConstructor("EventStore"));
+            container.RegisterType(typeof(IEventSourcedRepository<>), typeof(SqlEventSourcedRepository<>), new ContainerControlledLifetimeManager());
+
+            // Command bus
             var commandBus = new MemoryCommandBus();
             container.RegisterInstance<ICommandBus>(commandBus);
             container.RegisterInstance<ICommandHandlerRegistry>(commandBus);
 
-            RegisterCommandHandlers(container);
-        }
-
-        private void RegisterEventBus(IUnityContainer container)
-        {
+            // Event bus
             var eventBus = new MemoryEventBus();
             container.RegisterInstance<IEventBus>(eventBus);
             container.RegisterInstance<IEventHandlerRegistry>(eventBus);
-
-            RegisterEventHandlers(container);
-        }
-
-        private void RegisterRepository(IUnityContainer container)
-        {
-            // repository
-            container.RegisterType<EventStoreDbContext>(new TransientLifetimeManager(), new InjectionConstructor("EventStore"));
-            container.RegisterType(typeof(IEventSourcedRepository<>), typeof(SqlEventSourcedRepository<>), new ContainerControlledLifetimeManager());
         }
 
         private static void RegisterCommandHandlers(IUnityContainer unityContainer)

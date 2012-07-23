@@ -29,12 +29,13 @@ namespace apcurium.MK.Booking
             container.RegisterInstance<ITemplateService>(new TemplateService());
             container.RegisterInstance<IEmailSender>(new EmailSender(container.Resolve<IConfigurationManager>()));
 
-            //Command Handlers
+            // Command Handlers
             container.RegisterType<ICommandHandler, AccountCommandHandler>("AccountCommandHandler");
             container.RegisterType<ICommandHandler, AddressCommandHandler>("FavoriteAddressCommandHandler");
             container.RegisterType<ICommandHandler, EmailCommandHandler>("EmailCommandHandler");
             container.RegisterType<ICommandHandler, OrderCommandHandler>("OrderCommandHandler");
 
+            // Event Handlers
             container.RegisterType<IEventHandler, AccountDetailsGenerator>("AccountDetailsGenerator");
             container.RegisterType<IEventHandler, AddressListGenerator>("AddressListGenerator");
             container.RegisterType<IEventHandler, AddressHistoryGenerator>("AddressHistoryGenerator");

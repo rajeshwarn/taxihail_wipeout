@@ -13,31 +13,21 @@ namespace apcurium.MK.Web
     {
         public void Init(IUnityContainer container)
         {
-            Database.DefaultConnectionFactory = new ServiceConfigurationSettingConnectionFactory(Database.DefaultConnectionFactory);
-
             RegisterInfrastructure(container);
 
             new MK.Common.Module().Init(container);
             new MK.Booking.Module().Init(container);
             new MK.Booking.IBS.Module().Init(container);
             new MK.Booking.Api.Module().Init(container);
-
-            RegisterCommandBus(container);
-
         }
 
         private void RegisterInfrastructure(IUnityContainer container)
         {
+            Database.DefaultConnectionFactory = new ServiceConfigurationSettingConnectionFactory(Database.DefaultConnectionFactory);
+
             container.RegisterInstance<ITextSerializer>(new JsonTextSerializer());
-        }
-
-        private void RegisterCommandBus(IUnityContainer container)
-        {
-            container.RegisterInstance<IMessageSender>(new MessageSender(new ServiceConfigurationSettingConnectionFactory(Database.DefaultConnectionFactory),
-                   ConfigurationManager.ConnectionStrings["DbContext.SqlBus"].ConnectionString, "SqlBus.Commands"));
-
+            container.RegisterInstance<IMessageSender>(new MessageSender(Database.DefaultConnectionFactory, "SqlBus", "SqlBus.Commands"));
             container.RegisterInstance<ICommandBus>(new CommandBus(container.Resolve<IMessageSender>(), container.Resolve<ITextSerializer>()));
         }
-
     }
 }
