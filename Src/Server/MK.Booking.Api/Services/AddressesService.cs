@@ -10,17 +10,17 @@ using apcurium.MK.Booking.ReadModel.Query;
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class FavoriteAddressesService : RestServiceBase<FavoriteAddresses> 
+    public class AddressesService : RestServiceBase<Addresses> 
     {
 
-        public FavoriteAddressesService(IFavoriteAddressDao dao)
+        public AddressesService(IAddressDao dao)
         {
             Dao = dao;
         }
 
-        protected IFavoriteAddressDao Dao { get; set; }
+        protected IAddressDao Dao { get; set; }
 
-        public override object OnGet(FavoriteAddresses request)
+        public override object OnGet(Addresses request)
         {
             if (!request.AccountId.Equals(new Guid(this.GetSession().UserAuthId)))
             {
@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             var session = this.GetSession();
-            return Dao.FindByAccountId(new Guid(session.UserAuthId));
+            return Dao.FindFavoritesByAccountId(new Guid(session.UserAuthId));
         }
     }
 }

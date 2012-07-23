@@ -15,9 +15,9 @@ namespace apcurium.MK.Booking.Domain
         {
             base.Handles<AccountRegistered>(OnAccountRegistered);
             base.Handles<AccountUpdated>(OnAccountUpdated);
-            base.Handles<FavoriteAddressAdded>(OnFavoriteAddressAdded);
-            base.Handles<FavoriteAddressRemoved>(OnFavoriteAddressRemoved);
-            base.Handles<FavoriteAddressUpdated>(OnFavoriteAddressUpdated);
+            base.Handles<AddressAdded>(OnAddressAdded);
+            base.Handles<AddressRemoved>(OnAddressRemoved);
+            base.Handles<AddressUpdated>(OnAddressUpdated);
             base.Handles<AccountPasswordResetted>(OnAccountPasswordResetted);
             base.Handles<BookingSettingsUpdated>(OnBookingSettingsUpdated);
         }
@@ -90,11 +90,11 @@ namespace apcurium.MK.Booking.Domain
             });  
         }
 
-        public void AddFavoriteAddress(Guid id, string friendlyName, string apartment, string fullAddress, string ringCode, double latitude, double longitude)
+        public void AddAddress(Guid id, string friendlyName, string apartment, string fullAddress, string ringCode, double latitude, double longitude, bool isHistoric)
         {
             ValidateFavoriteAddress(friendlyName, fullAddress, latitude, longitude);
 
-            this.Update(new FavoriteAddressAdded
+            this.Update(new AddressAdded
             {
                 AddressId = id,
                 FriendlyName = friendlyName,
@@ -102,15 +102,16 @@ namespace apcurium.MK.Booking.Domain
                 FullAddress = fullAddress,
                 RingCode = ringCode,
                 Latitude = latitude,
-                Longitude = longitude
+                Longitude = longitude,
+                IsHistoric = isHistoric
             });
         }
 
-        public void UpdateFavoriteAddress(Guid id, string friendlyName, string apartment, string fullAddress, string ringCode, double latitude, double longitude)
+        public void UpdateAddress(Guid id, string friendlyName, string apartment, string fullAddress, string ringCode, double latitude, double longitude, bool isHistoric)
         {
             ValidateFavoriteAddress(friendlyName, fullAddress, latitude, longitude);
 
-            this.Update(new FavoriteAddressUpdated()
+            this.Update(new AddressUpdated()
             {
                 AddressId = id,
                 FriendlyName = friendlyName,
@@ -118,7 +119,8 @@ namespace apcurium.MK.Booking.Domain
                 FullAddress = fullAddress,
                 RingCode = ringCode,
                 Latitude = latitude,
-                Longitude = longitude
+                Longitude = longitude,
+                IsHistoric = isHistoric
             });
         }
 
@@ -129,7 +131,7 @@ namespace apcurium.MK.Booking.Domain
                 throw new InvalidOperationException("Address does not exist in account");
             }
 
-            this.Update(new FavoriteAddressRemoved
+            this.Update(new AddressRemoved
             {
                 AddressId = addressId
             });
@@ -145,17 +147,17 @@ namespace apcurium.MK.Booking.Domain
 
         }
 
-        private void OnFavoriteAddressAdded(FavoriteAddressAdded @event)
+        private void OnAddressAdded(AddressAdded @event)
         {
             _favoriteAddresses.Add(@event.AddressId);
         }
 
-        private void OnFavoriteAddressRemoved(FavoriteAddressRemoved @event)
+        private void OnAddressRemoved(AddressRemoved @event)
         {
             _favoriteAddresses.Remove(@event.AddressId);
         }
 
-        private void OnFavoriteAddressUpdated(FavoriteAddressUpdated obj)
+        private void OnAddressUpdated(AddressUpdated obj)
         {
 
         }

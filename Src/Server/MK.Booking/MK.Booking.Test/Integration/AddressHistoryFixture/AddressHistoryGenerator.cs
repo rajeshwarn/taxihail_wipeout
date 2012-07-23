@@ -48,7 +48,7 @@ namespace apcurium.MK.Booking.Test.Integration.AddressHistoryFixture
                                     PickupLatitude = 45.515065,
 
                                 });
-            this.sut.Handle(new FavoriteAddressAdded()
+            this.sut.Handle(new AddressAdded()
                                 {
                                     SourceId = accountId,
                                     Apartment = "3939",

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Android.App;
 using Android.Content;
 using Android.Graphics;
+using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Widget;
 using apcurium.Framework.Extensions;
@@ -56,7 +57,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
                                                                     Resources.GetString(
                                                                         Resource.String.LocationAddFavoriteTitle)
                                                             },
-                                              BgResource = Resource.Drawable.cell_bottom,
+                                              BgResource = Resource.Drawable.cell_bottom_state,
                                               ImageResource = Resource.Drawable.add_button
                                           });
             }
@@ -65,8 +66,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
             adapter.AddSection(Resources.GetString(Resource.String.FavoriteLocationsTitle), new LocationListAdapter(this, favoriteAddresses));
             adapter.AddSection(Resources.GetString(Resource.String.LocationHistoryTitle), new LocationListAdapter(this, historyAddresses));
             _listView.Adapter = adapter;
+            
+            //_listView.SetBackgroundResource(Resource.Drawable.cell_middle);
             _listView.Divider = null;
             _listView.DividerHeight = 0;
+            _listView.SetPadding(10,0,10,0);
         }
 
         private void UpdateUI()
@@ -81,7 +85,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
             else
             {
                 this.SetContentView(Resource.Layout.LocationPick);
-                _listView = FindViewById<ListView>(Resource.Id.LocationListView);                
+                _listView = FindViewById<ListView>(Resource.Id.LocationListView);
                 _listView.CacheColorHint = Color.Transparent;
                 _listView.ItemClick += new EventHandler<AdapterView.ItemClickEventArgs>(listView_ItemClickFromBook);
             }
@@ -151,11 +155,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
             }
             List<AddressItemListModel> ailm = addresses.Select(address => new AddressItemListModel()
                                                                               {
-                                                                                  Address = address, BgResource = Resource.Drawable.cell_middle, ImageResource = Resource.Drawable.right_arrow
+                                                                                  Address = address, BgResource = Resource.Drawable.cell_middle_state, ImageResource = Resource.Drawable.right_arrow
                                                                               }).ToList();
             if (ailm.Any())
             {
-                ailm.First().BgResource = Resource.Drawable.cell_top;
+                ailm.First().BgResource = Resource.Drawable.cell_top_state;
             }
             return ailm;
         }

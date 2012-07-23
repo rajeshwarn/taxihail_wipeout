@@ -22,5 +22,7 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
 
         public string RingCode { get; set; }
 
+        public bool IsHistoric { get; set; }
+
     }
 }

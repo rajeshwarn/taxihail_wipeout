@@ -93,9 +93,9 @@
     <Compile Include="Requests\OrderStatusRequest.cs" />
     <Compile Include="Requests\ReferenceDataRequest.cs" />
     <Compile Include="Requests\ResetPassword.cs" />
-    <Compile Include="Requests\SaveFavoriteAddress.cs" />
+    <Compile Include="Requests\SaveAddress.cs" />
     <Compile Include="Requests\CurrentAccount.cs" />
-    <Compile Include="Requests\FavoriteAddresses.cs" />
+    <Compile Include="Requests\Addresses.cs" />
     <Compile Include="Requests\RegisterAccount.cs" />
     <Compile Include="Requests\TestOnlyReqGetTestAccount.cs" />
     <Compile Include="Resources\Account.cs" />

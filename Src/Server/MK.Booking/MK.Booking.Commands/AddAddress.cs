@@ -4,9 +4,9 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Booking.Commands
 {
-    public class AddFavoriteAddress : ICommand
+    public class AddAddress : ICommand
     {
-        public AddFavoriteAddress()
+        public AddAddress()
         {
             Id = Guid.NewGuid();
         }
@@ -20,6 +20,7 @@ namespace apcurium.MK.Booking.Commands
         public double Latitude { get; set; }
         public string Apartment { get; set; }
         public string RingCode { get; set; }
+        public bool IsHistoric { get; set; }
 
     }
 }

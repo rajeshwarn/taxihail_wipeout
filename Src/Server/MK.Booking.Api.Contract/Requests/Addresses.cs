@@ -7,7 +7,7 @@ using ServiceStack.ServiceHost;
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [RestService("/accounts/{AccountId}/addresses", "GET")]    
-    public class FavoriteAddresses
+    public class Addresses
     {
         public Guid AccountId{ get; set; }
     }

@@ -64,12 +64,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             var cached = TinyIoCContainer.Current.Resolve<ICacheService>().Get<Address[]>(_historyAddressesCacheKey);
 
-             if (cached != null)
-             {
-                 return cached;
-             }
-             else
-             {
+             //if (cached != null)
+             //{
+              //   return cached;
+             //}
+             //else
+             //{
 
                  IEnumerable<Address> result = new Address[0];
                  UseServiceClient<AccountServiceClient>(service =>
@@ -79,7 +79,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
                  TinyIoCContainer.Current.Resolve<ICacheService>().Set(_historyAddressesCacheKey, result.ToArray());
                  return result;
-             }
+            // }
         }
 
 
@@ -324,7 +324,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             QueueCommand<AccountServiceClient>(service =>
                 {
-                    var toSave = new SaveFavoriteAddress
+                    var toSave = new SaveAddress
                     {
                         AccountId = CurrentAccount.Id,
                         Apartment = address.Apartment,
@@ -336,9 +336,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                         RingCode = address.RingCode
                     };
 
+                    var toMove = toSave;
+                    toMove.IsHistoric = false;
+
                     if (isNew )
                     {                        
                         service.AddFavoriteAddress(toSave);
+                    }
+                    else if(address.IsHistoric)
+                    {
+                        service.UpdateFavoriteAddress(toMove);
                     }
                     else
                     {
