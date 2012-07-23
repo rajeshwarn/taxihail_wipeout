@@ -9,7 +9,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
     [RestService("/accounts/{AccountId}/orders", "GET")]
-    public class AccountOrderListRequest
+    public class AccountOrderListRequest : BaseDTO
     {
         public Guid AccountId { get; set; }
     }

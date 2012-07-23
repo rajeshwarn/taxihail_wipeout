@@ -8,7 +8,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [RestService("/accounts/{AccountId}/addresses", "POST")]
     [RestService("/accounts/{AccountId}/addresses/{Id}", "PUT, DELETE")]
-    public class SaveFavoriteAddress
+    public class SaveFavoriteAddress : BaseDTO
     {
         public Guid Id { get; set; }
 
