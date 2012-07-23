@@ -6,8 +6,8 @@ using ServiceStack.ServiceHost;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [RestService("/accounts/test/{Index}", "GET")]  
-    public class TestOnlyReqGetTestAccount
+    [RestService("/accounts/test/{Index}", "GET")]
+    public class TestOnlyReqGetTestAccount : BaseDTO
     {
         public int Index { get; set; }
     }

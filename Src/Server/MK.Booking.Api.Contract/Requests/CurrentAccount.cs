@@ -8,8 +8,8 @@ using ServiceStack.ServiceInterface;
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
-    [RestService("/accounts/me", "GET")]    
-    public class CurrentAccount
+    [RestService("/accounts/me", "GET")]
+    public class CurrentAccount : BaseDTO
     {
     }
 }

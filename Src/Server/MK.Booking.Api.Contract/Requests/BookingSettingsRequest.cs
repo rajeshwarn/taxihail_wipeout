@@ -3,8 +3,8 @@ using ServiceStack.ServiceHost;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [RestService("/accounts/{AccountId}/bookingsettings", "PUT")]    
-    public class BookingSettingsRequest
+    [RestService("/accounts/{AccountId}/bookingsettings", "PUT")]
+    public class BookingSettingsRequest : BaseDTO
     {
         public string Name { get; set; }        
 

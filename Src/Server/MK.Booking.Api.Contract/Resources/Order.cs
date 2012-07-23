@@ -5,7 +5,7 @@ using System.Text;
 
 namespace apcurium.MK.Booking.Api.Contract.Resources
 {
-    public class Order
+    public class Order : BaseDTO
     {
         public Guid Id { get; set; }
 
