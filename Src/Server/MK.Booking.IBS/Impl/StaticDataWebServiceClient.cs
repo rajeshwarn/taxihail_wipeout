@@ -21,7 +21,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             var items = new ListItem[] {};
             UseService(service =>
             {
-                var companies = service.GetProviders(_userNameApp, _passwordApp);
+                var companies = service.GetProviders(UserNameApp, PasswordApp);
                 items= companies.Select(x => new ListItem { Display = x.ProviderName, Id = x.ProviderNum }).ToArray();
             });
             return items;
@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             var items = new ListItem[] { };
             UseService(service =>
             {
-                var cities = service.GetPickupCityList(_userNameApp, _passwordApp, company.Id);
+                var cities = service.GetPickupCityList(UserNameApp, PasswordApp, company.Id);
                 items = cities.Select(x => new ListItem { Display = x.Name, Id = x.CityID, Parent = company }).ToArray();
             });
             return items;
@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             var items = new ListItem[] { };
             UseService(service =>
             {
-                var cities = service.GetDropoffCityList(_userNameApp, _passwordApp, company.Id);
+                var cities = service.GetDropoffCityList(UserNameApp, PasswordApp, company.Id);
                 items = cities.Select(x => new ListItem { Display = x.Name, Id = x.CityID, Parent = company }).ToArray();
             });
             return items;
@@ -55,7 +55,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             var items = new ListItem[] { };
             UseService(service =>
             {
-                var vehicules = service.GetVehicleTypes(_userNameApp, _passwordApp, company.Id);
+                var vehicules = service.GetVehicleTypes(UserNameApp, PasswordApp, company.Id);
                 items = vehicules.Select(x => new ListItem { Display = x.Name, Id = x.ID, Parent = company }).ToArray();
             });
             return items;
@@ -66,7 +66,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             var items = new ListItem[] { };
             UseService(service =>
             {
-                var payments = service.GetChargeTypes(_userNameApp, _passwordApp, company.Id);
+                var payments = service.GetChargeTypes(UserNameApp, PasswordApp, company.Id);
                 items = payments.Select(x => new ListItem { Display = x.ChargeTypeName, Id = x.ChargeTypeID, Parent = company }).ToArray();
             });
             return items;

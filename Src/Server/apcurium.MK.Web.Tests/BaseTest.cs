@@ -1,10 +1,12 @@
 ﻿using System.Data.Entity;
+using System.IO;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Web.SelfHost;
 using System;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using log4net.Config;
 
 namespace apcurium.MK.Web.Tests
 {
@@ -20,6 +22,7 @@ namespace apcurium.MK.Web.Tests
 
         static BaseTest()
         {
+            XmlConfigurator.ConfigureAndWatch(new FileInfo(".\\log4net.xml"));
             Database.DefaultConnectionFactory = new ServiceConfigurationSettingConnectionFactory(Database.DefaultConnectionFactory);
             _appHost = new AppHost();
             _appHost.Init();

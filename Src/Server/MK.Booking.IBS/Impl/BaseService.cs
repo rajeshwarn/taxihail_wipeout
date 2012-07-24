@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Web.Services.Protocols;
 using apcurium.MK.Common.Diagnostic;
 
@@ -12,16 +9,15 @@ namespace apcurium.MK.Booking.IBS.Impl
 
     public class BaseService<T> where T : SoapHttpClientProtocol, new()
     {
-        protected string _userNameApp;
-        protected string _passwordApp;
+        protected string UserNameApp;
+        protected string PasswordApp;
         
-        private ILogger _logger;
         public BaseService(IConfigurationManager configManager, ILogger logger)
         {
             Logger = logger;
             ConfigManager = configManager;
-            _userNameApp = ConfigManager.GetSetting("IBS.WebServicesUserName");
-            _passwordApp = ConfigManager.GetSetting("IBS.WebServicesPassword");
+            UserNameApp = ConfigManager.GetSetting("IBS.WebServicesUserName");
+            PasswordApp = ConfigManager.GetSetting("IBS.WebServicesPassword");
         }
 
         protected IConfigurationManager ConfigManager { get; set; }
@@ -33,7 +29,9 @@ namespace apcurium.MK.Booking.IBS.Impl
 
             try
             {
+                Logger.LogMessage("Begin call to " + this.GetUrl());
                 action(service);
+                Logger.LogMessage("End call to " + this.GetUrl());
             }
             catch (Exception exception)
             {
