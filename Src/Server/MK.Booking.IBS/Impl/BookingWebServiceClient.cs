@@ -11,14 +11,12 @@ namespace apcurium.MK.Booking.IBS.Impl
         {
             return base.GetUrl() + "IWEBOrder_7";
         }
-
-
-        private ILogger _logger;
+        
 
         public BookingWebServiceClient(IConfigurationManager configManager, ILogger logger)
             : base(configManager, logger)
         {
-            _logger = logger;
+           
         }
 
         public IBSOrderStauts GetOrderStatus(int orderId, int accountId)
@@ -26,12 +24,12 @@ namespace apcurium.MK.Booking.IBS.Impl
             var status = new IBSOrderStauts { Status = TWEBOrderStatusValue.wosNone.ToString() };
             UseService(service =>
             {
-                var orderStatus = service.GetOrderStatus(_userNameApp, _passwordApp, orderId, string.Empty, string.Empty, accountId);
+                var orderStatus = service.GetOrderStatus(UserNameApp, PasswordApp, orderId, string.Empty, string.Empty, accountId);
                 status.Status = orderStatus.ToString();
 
                 double latitude = 0;
                 double longitude = 0;
-                var result = service.GetVehicleLocation(_userNameApp, _passwordApp, orderId, ref latitude, ref longitude);
+                var result = service.GetVehicleLocation(UserNameApp, PasswordApp, orderId, ref latitude, ref longitude);
 
                 if (result == 0)
                 {
@@ -48,7 +46,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             var result = new IBSOrderDetails();
             UseService(service =>
             {
-                var order = service.GetBookOrder_5(_userNameApp, _passwordApp, orderId, contactPhone, null, accountId);
+                var order = service.GetBookOrder_5(UserNameApp, PasswordApp, orderId, contactPhone, null, accountId);
                 if (order != null)
                 {
                     result.CabNumber = order.CabNo.ToSafeString().Trim();
@@ -61,6 +59,7 @@ namespace apcurium.MK.Booking.IBS.Impl
 
         public int? CreateOrder(int providerId, int accountId, string passengerName, string phone, int nbPassengers, int vehicleTypeId, string note, DateTime pickupDateTime, IBSAddress pickup, IBSAddress dropoff)
         {
+            Logger.LogMessage("WebService Create Order call : accountID=" + accountId);
             var order = new TBookOrder_5();
 
             order.ServiceProviderID = providerId;
@@ -85,25 +84,19 @@ namespace apcurium.MK.Booking.IBS.Impl
 
             UseService(service =>
             {
-                try
-                {
-                    orderId = service.SaveBookOrder_5(_userNameApp, _passwordApp, order);
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex);
-                    throw;
-                }
+                 orderId = service.SaveBookOrder_5(UserNameApp, PasswordApp, order);
+                 Logger.LogMessage("WebService Create Order, orderid receveid : " + orderId);
             });
             return orderId;
         }
 
         public bool CancelOrder(int orderId, int accountId, string contactPhone)
         {
+            Logger.LogMessage("WebService Cancel Order call : " + orderId + " " + accountId);
             bool isCompleted = false;
             UseService(service =>
             {
-                var result = service.CancelBookOrder(_userNameApp, _passwordApp, orderId, contactPhone, null, accountId);
+                var result = service.CancelBookOrder(UserNameApp, PasswordApp, orderId, contactPhone, null, accountId);
                 isCompleted = result == 0;
             });
             return isCompleted;

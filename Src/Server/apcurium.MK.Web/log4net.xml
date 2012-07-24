@@ -32,5 +32,8 @@
 	</root>
 	<logger name="apcurium.MK.Booking.Api.Services">
 		<level value="ALL" />
-	</logger>	
+	</logger>
+	<logger name="TraceOutput">
+		<level value="ALL" />
+	</logger>
 </log4net>

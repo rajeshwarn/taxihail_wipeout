@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Practices.Unity;
+﻿using Microsoft.Practices.Unity;
 using apcurium.MK.Booking.IBS.Impl;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
