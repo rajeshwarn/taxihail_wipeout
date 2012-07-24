@@ -14,6 +14,7 @@
 using System;
 using System.Globalization;
 using System.Net.Mail;
+using apcurium.MK.Common.Caching;
 using apcurium.MK.Common.Configuration.Impl;
 
 namespace DatabaseInitializer
@@ -51,10 +52,12 @@ namespace DatabaseInitializer
             Database.SetInitializer<BlobStorageDbContext>(null);
             Database.SetInitializer<BookingDbContext>(null);
             Database.SetInitializer<ConfigurationDbContext>(null);
+            Database.SetInitializer<CachingDbContext>(null);
             
             DbContext[] contexts =
                 new DbContext[] 
                 { 
+                    new CachingDbContext(connectionString),
                     new ConfigurationDbContext(connectionString),
                     new EventStoreDbContext(connectionString),
                     new MessageLogDbContext(connectionString),
