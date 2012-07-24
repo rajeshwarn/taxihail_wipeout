@@ -1,32 +1,20 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
 using Microsoft.Practices.Unity;
 using ServiceStack.ServiceInterface.Validation;
 using ServiceStack.WebHost.Endpoints;
 using Funq;
 using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.Api.Validation;
-using apcurium.MK.Booking.Email;
-using apcurium.MK.Booking.IBS;
-using apcurium.MK.Booking.IBS.Impl;
 using apcurium.MK.Booking.ReadModel.Query;
-using apcurium.MK.Booking.Database;
-using Infrastructure.Messaging;
-using Infrastructure.Sql.Messaging;
-using Infrastructure.Sql.Messaging.Implementation;
 using apcurium.MK.Booking.Security;
-using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
-using apcurium.MK.Common.Entity;
-using Infrastructure.Serialization;
-using System.Data.Entity;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Auth;
 using apcurium.MK.Booking.Api.Security;
-using ServiceStack.CacheAccess;
-using ServiceStack.CacheAccess.Providers;
 using apcurium.MK.Common.IoC;
-using ConfigurationManager = System.Configuration.ConfigurationManager;
+using log4net.Config;
 using UnityServiceLocator = apcurium.MK.Common.IoC.UnityServiceLocator;
 
 namespace apcurium.MK.Web
@@ -41,6 +29,7 @@ namespace apcurium.MK.Web
 
             public override void Configure(Container containerFunq)
             {
+                Trace.WriteLine("Configure AppHost");
                 new Module().Init(UnityServiceLocator.Instance);
 
                 var container = UnityServiceLocator.Instance;
@@ -58,14 +47,14 @@ namespace apcurium.MK.Web
                             { "Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS" },
                         },
                 });
-
-                
+                Trace.WriteLine("Configure AppHost finished");
             }
         }
 
         protected void Application_Start(object sender, EventArgs e)
         {
             new MKWebAppHost().Init();
+            
         }
         
         protected void Session_Start(object sender, EventArgs e)
@@ -75,7 +64,12 @@ namespace apcurium.MK.Web
 
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
+            Trace.WriteLine("Request Begin");
+        }
 
+        protected void Application_EndRequest(object sender, EventArgs e)
+        {
+            Trace.WriteLine("End Requestn");
         }
 
         protected void Application_AuthenticateRequest(object sender, EventArgs e)

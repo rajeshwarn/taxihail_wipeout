@@ -1,8 +1,6 @@
 ﻿using System.IO;
 using Microsoft.Practices.Unity;
 using Topshelf;
-using System.Data.Entity;
-using apcurium.MK.Common.Entity;
 using log4net.Config;
 
 namespace WorkerRoleCommandProcessor
