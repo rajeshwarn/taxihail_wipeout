@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.IBS.Impl
                 account.MobilePhone = phone;                
                 account.WEBPassword = password;
 
-                ibsAcccountId = service.SaveAccount3(_userNameApp, _passwordApp, account);
+                ibsAcccountId = service.SaveAccount3(UserNameApp, PasswordApp, account);
                 isSuccess = ibsAcccountId > 0;
             });
 
