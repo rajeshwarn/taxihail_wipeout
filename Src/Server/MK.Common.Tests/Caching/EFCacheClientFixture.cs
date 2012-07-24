@@ -73,7 +73,8 @@ namespace MK.Common.Tests.Caching
 
 
 
-        public EFCacheClientFixture()
+        [TestFixtureSetUp]
+        public void TestFixtureSetup()
         {
             dbName = this.GetType().Name + "-" + Guid.NewGuid().ToString();
             using (var context = new CachingDbContext(dbName))
@@ -85,7 +86,8 @@ namespace MK.Common.Tests.Caching
             }
         }
 
-        public void Dispose()
+        [TestFixtureTearDown]
+        public void TestFixtureTearDown()
         {
             using (var context = new CachingDbContext(dbName))
             {
