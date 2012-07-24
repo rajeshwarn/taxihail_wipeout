@@ -197,6 +197,7 @@ namespace apcurium.MK.Common.Caching
                 }
                 item.Value = JsonSerializer.SerializeToString(value);
                 item.ExpiresAt = expiresAt;
+                context.SaveChanges();
                 return true;
             }
         }
