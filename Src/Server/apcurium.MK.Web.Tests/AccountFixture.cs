@@ -18,19 +18,25 @@ namespace apcurium.MK.Web.Tests
     {
 
         [TestFixtureSetUp]
-        public new void Setup()
+        public override void TestFixtureSetup()
+        {
+            base.TestFixtureSetup();
+        }
+
+        [TestFixtureTearDown]
+        public override void TestFixtureTearDown()
+        {
+            base.TestFixtureTearDown();
+        }
+
+        [SetUp]
+        public override void Setup()
         {
             base.Setup();
         }
 
-        [TestFixtureTearDown]
-        public new void TearDown()
-        {
-            base.TearDown();
-        }
-
         [Test]
-        public void BasicSignIn()
+        public void when_getting_user_account()
         {
             var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
             var acc = sut.GetMyAccount();
@@ -41,39 +47,19 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(acc.Name, TestAccount.Name);            
             Assert.AreEqual(acc.Phone, TestAccount.Phone);
         }
-
-
         
 
         [Test]
-        [ExpectedException("ServiceStack.ServiceClient.Web.WebServiceException", ExpectedMessage = "Invalid UserName or Password")]
-        public void BasicSignInWithInvalidPassword()
-        {
-            var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, "wrong_password"));
-            var acc = sut.GetMyAccount();
-        }
-
-        [Test]
-        [ExpectedException("ServiceStack.ServiceClient.Web.WebServiceException", ExpectedMessage = "Invalid UserName or Password")]
-        public void BasicSignInWithInvalidEmail()
-        {
-            var sut = new AccountServiceClient(BaseUrl, new AuthInfo("wrong_email@wrong.com", "password1"));
-            var acc = sut.GetMyAccount();
-        }
-
-
-        [Test]
-        public void RegisteringAccountTest()
+        public void when_registering_a_new_account()
         {
             var sut = new AccountServiceClient(BaseUrl, null);
             var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", Password = "password" };
             sut.RegisterAccount(newAccount);
 
+            var auth = new AuthServiceClient(BaseUrl, null).Authenticate(newAccount.Email, newAccount.Password);
 
-            sut = new AccountServiceClient(BaseUrl, new AuthInfo(newAccount.Email, newAccount.Password));
-            var account = sut.GetMyAccount();
-            Assert.IsNotNull(account);
-            Assert.AreEqual(newAccount.AccountId, account.Id);
+            Assert.IsNotNull(auth);
+            Assert.AreEqual(newAccount.Email, auth.UserName);
         }
 
 
@@ -85,8 +71,8 @@ namespace apcurium.MK.Web.Tests
             var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", Password = "password" };
             sut.RegisterAccount(newAccount);
 
-
-            sut = new AccountServiceClient(BaseUrl, new AuthInfo(newAccount.Email, newAccount.Password));
+            new AuthServiceClient(BaseUrl, null).Authenticate(newAccount.Email, newAccount.Password);
+            
             var account = sut.GetMyAccount();
 
             Assert.IsNotNull(account.Settings);
@@ -117,18 +103,12 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void when_resetting_account_password()
         {
-            var email = GetTempEmail();
-            var password = "password";
-
+            var newAccount = GetNewAccount();
             var sut = new AccountServiceClient(BaseUrl, null);
 
-            var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = email, Name = "First Name Test", Password = password };
-            sut.RegisterAccount(newAccount);
 
-            sut = new AccountServiceClient(BaseUrl, new AuthInfo(email, password));
-            sut.ResetPassword(email);
+            sut.ResetPassword(newAccount.Email);
 
-            sut = new AccountServiceClient(BaseUrl, new AuthInfo(email, password));
             Assert.Throws<WebServiceException>(() => sut.GetMyAccount());
         }
 

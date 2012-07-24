@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ServiceStack.ServiceHost;
+using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
+    [Authenticate]
     [RestService("/accounts/{AccountId}/orders", "POST")]
     public class CreateOrder : BaseDTO
     {

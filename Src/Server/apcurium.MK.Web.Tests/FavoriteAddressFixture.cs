@@ -18,20 +18,21 @@ namespace apcurium.MK.Web.Tests
         private Guid _knownAddressId = Guid.NewGuid();
 
         [TestFixtureSetUp]
-        public new void Setup()
+        public override void TestFixtureSetup()
         {
-            base.Setup();
+            base.TestFixtureSetup();
         }
 
         [TestFixtureTearDown]
-        public new void TearDown()
+        public override void TestFixtureTearDown()
         {
-            base.TearDown();
+            base.TestFixtureTearDown();
         }
- 
+
         [SetUp]
-        public void SetupTest()
+        public override void Setup()
         {
+            base.Setup();
             var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
             sut.AddFavoriteAddress(new SaveAddress
             {

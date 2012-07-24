@@ -24,7 +24,6 @@ namespace apcurium.MK.Booking.Api.Client
             _url = url;
             _credential = credential;
             _isSecured = credential != null;
-            _cookieContainer = new CookieContainer();
         }
 
         protected ServiceClientBase Client
@@ -34,22 +33,18 @@ namespace apcurium.MK.Booking.Api.Client
                 if (_client == null)
                 {
                     _client = new JsonServiceClient(_url);
-                    ServiceClientBase.HttpWebRequestFilter = req =>
-                    {
-                        req.CookieContainer = _cookieContainer;
-                    };
 
-                    if (_isSecured)
-                    {
+                    //if (_isSecured)
+                    //{
                         
-                        _authToken = _client.Send<AuthResponse>(new Auth
-                        {
-                            UserName = _credential.Email,
-                            Password = _credential.Password,
-                            RememberMe = true,
-                            provider = "credentials", // CredentialsAuthProvider.Name not supported on android
-                        });
-                    }
+                    //    _authToken = _client.Send<AuthResponse>(new Auth
+                    //    {
+                    //        UserName = _credential.Email,
+                    //        Password = _credential.Password,
+                    //        RememberMe = true,
+                    //        provider = "credentials", // CredentialsAuthProvider.Name not supported on android
+                    //    });
+                    //}
 
 
                 }

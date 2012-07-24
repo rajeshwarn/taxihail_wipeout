@@ -10,18 +10,23 @@ namespace apcurium.MK.Web.Tests
     [TestFixture]
     public class GeolocFixture : BaseTest
     {
-
         [TestFixtureSetUp]
-        public new void Setup()
+        public override void TestFixtureSetup()
         {
-            base.Setup();
+            base.TestFixtureSetup();
         }
 
         [TestFixtureTearDown]
-        public new void TearDown()
+        public override void TestFixtureTearDown()
         {
-            base.TearDown();
-        } 
+            base.TestFixtureTearDown();
+        }
+
+        [SetUp]
+        public override void Setup()
+        {
+            base.Setup();
+        }
 
         [Test]
         public void BasicNameSearch()

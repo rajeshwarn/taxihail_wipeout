@@ -16,10 +16,21 @@ namespace apcurium.MK.Web.Tests
 
 
         [TestFixtureSetUp]
-        public new void Setup()
+        public override void TestFixtureSetup()
+        {
+            base.TestFixtureSetup();
+        }
+
+        [TestFixtureTearDown]
+        public override void TestFixtureTearDown()
+        {
+            base.TestFixtureTearDown();
+        }
+
+        [SetUp]
+        public override void Setup()
         {
             base.Setup();
-            //sut = new AccountService();
         }
 
         [Test]

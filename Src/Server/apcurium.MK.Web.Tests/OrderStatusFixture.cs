@@ -13,9 +13,9 @@ namespace apcurium.MK.Web.Tests
         private Guid _orderId;
        
         [TestFixtureSetUp]
-        public new void Setup()
+        public override void TestFixtureSetup()
         {
-            base.Setup();
+            base.TestFixtureSetup();
 
             _orderId = Guid.NewGuid();
             var sut = new OrderServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
@@ -33,16 +33,17 @@ namespace apcurium.MK.Web.Tests
         }
 
         [TestFixtureTearDown]
-        public new void TearDown()
+        public override void TestFixtureTearDown()
         {
-            base.TearDown();
+            base.TestFixtureTearDown();
         }
 
         [SetUp]
-        public void SetupTest()
+        public override void Setup()
         {
-
+            base.Setup();
         }
+
         [Test]
         public void create_and_get_a_valid_order()
         {

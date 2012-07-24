@@ -14,22 +14,27 @@ namespace apcurium.MK.Web.Tests
         private Guid _knownAddressId = Guid.NewGuid();
 
         [TestFixtureSetUp]
-        public new void Setup()
+        public override void TestFixtureSetup()
         {
-            base.Setup();
+            base.TestFixtureSetup();
         }
 
         [TestFixtureTearDown]
-        public new void TearDown()
+        public override void TestFixtureTearDown()
         {
-            base.TearDown();
+            base.TestFixtureTearDown();
+        }
+
+        [SetUp]
+        public override void Setup()
+        {
+            base.Setup();
         }
 
         [Test]
         public void when_creating_an_order_with_a_new_pickup_address()
         {
             //Arrange
-
             var newAccount = GetNewAccount();
             var sut = new AccountServiceClient(BaseUrl, new AuthInfo(newAccount.Email, "password"));
             var orderService = new OrderServiceClient(BaseUrl, new AuthInfo(newAccount.Email, "password"));
