@@ -12,6 +12,7 @@
 // ==============================================================================================================
 
 
+using System.Diagnostics;
 
 namespace WorkerRoleCommandProcessor
 {
@@ -37,7 +38,9 @@ namespace WorkerRoleCommandProcessor
 
         public void Start()
         {
+            Trace.TraceInformation("Starting processsors...");
             this.processors.ForEach(p => p.Start());
+            Trace.TraceInformation("Processors started.");
         }
 
         public void Stop()

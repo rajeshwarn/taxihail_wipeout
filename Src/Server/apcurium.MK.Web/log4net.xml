@@ -32,11 +32,5 @@
 	</root>
 	<logger name="apcurium.MK.Booking.Api.Services">
 		<level value="ALL" />
-	</logger>
-	<logger name="apcurium.MK.Booking.IBS">
-		<level value="ALL" />
-	</logger>
-	<logger name="apcurium.MK.Booking.CommandHandlers">
-		<level value="ALL" />
-	</logger>
+	</logger>	
 </log4net>

@@ -27,16 +27,10 @@
 		</layout>
 	</appender>
 	<root>
-		<level value="WARN" />
+		<level value="ALL" />
 		<appender-ref ref="UdpAppender" />
 	</root>
 	<logger name="apcurium.MK.Booking.Api.Services">
 		<level value="ALL" />
-	</logger>
-	<logger name="apcurium.MK.Booking.IBS">
-		<level value="ALL" />
-	</logger>
-	<logger name="apcurium.MK.Booking.CommandHandlers">
-		<level value="ALL" />
-	</logger>
+	</logger>	
 </log4net>

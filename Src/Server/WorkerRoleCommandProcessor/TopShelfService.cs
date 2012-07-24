@@ -1,7 +1,9 @@
-﻿using Microsoft.Practices.Unity;
+﻿using System.IO;
+using Microsoft.Practices.Unity;
 using Topshelf;
 using System.Data.Entity;
 using apcurium.MK.Common.Entity;
+using log4net.Config;
 
 namespace WorkerRoleCommandProcessor
 {
@@ -9,7 +11,7 @@ namespace WorkerRoleCommandProcessor
     {
         static void Main(string[] args)
         {
-            //XmlConfigurator.ConfigureAndWatch(new FileInfo(".\\log4net.config"));
+            XmlConfigurator.ConfigureAndWatch(new FileInfo(".\\log4net.xml"));
             var container = new UnityContainer();
             new Module().Init(container);
             Host h = HostFactory.New(x =>
