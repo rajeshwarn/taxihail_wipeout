@@ -56,7 +56,7 @@ namespace apcurium.MK.Common.Caching
             using (var context = _contextFactory.Invoke())
             {
                 var item = context.Find(key);
-                if (context.Find(key) == null) return default(T);
+                if (item == null) return default(T);
                 if (item.ExpiresAt < DateTime.Now)
                 {
                     context.Set<CacheItem>().Remove(item);
