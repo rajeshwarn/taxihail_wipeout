@@ -29,7 +29,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void Get()
         {
-            var sut = new ReferenceDataServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+            var sut = new ReferenceDataServiceClient(BaseUrl);
             var data = sut.GetReferenceData();
             Assert.IsNotEmpty(data.CompaniesList);
             Assert.IsNotEmpty(data.VehiclesList);

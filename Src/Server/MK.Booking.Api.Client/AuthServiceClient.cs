@@ -4,14 +4,18 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using ServiceStack.ServiceClient.Web;
+#if !CLIENT
 using ServiceStack.ServiceInterface.Auth;
+#else
+using ServiceStack.Common.ServiceClient.Web;
+#endif
 
 namespace apcurium.MK.Booking.Api.Client
 {
     public class AuthServiceClient : BaseServiceClient
     {
-        public AuthServiceClient(string url, AuthInfo credential)
-            : base(url, credential)
+        public AuthServiceClient(string url)
+            : base(url)
         {
         }
 

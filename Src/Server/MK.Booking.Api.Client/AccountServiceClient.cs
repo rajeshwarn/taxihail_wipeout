@@ -8,8 +8,8 @@ namespace apcurium.MK.Booking.Api.Client
 {
     public class AccountServiceClient : BaseServiceClient
     {
-        public AccountServiceClient(string url, AuthInfo credential)
-            : base(url, credential)
+        public AccountServiceClient(string url)
+            : base(url)
         {
         }
 

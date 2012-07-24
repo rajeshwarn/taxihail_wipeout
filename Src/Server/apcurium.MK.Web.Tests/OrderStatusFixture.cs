@@ -18,7 +18,7 @@ namespace apcurium.MK.Web.Tests
             base.TestFixtureSetup();
 
             _orderId = Guid.NewGuid();
-            var sut = new OrderServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+            var sut = new OrderServiceClient(BaseUrl);
             var order = new CreateOrder
             {
                 Id = _orderId,
@@ -47,7 +47,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void create_and_get_a_valid_order()
         {
-            var sut = new OrderServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+            var sut = new OrderServiceClient(BaseUrl);
             var data = sut.GetOrderStatus( TestAccount.Id, _orderId);
             //Assert.AreEqual(OrderStatus, data.Status);
         }

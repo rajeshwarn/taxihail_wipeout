@@ -27,7 +27,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void when_user_sign_in()
         {
-            var sut = new AuthServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+            var sut = new AuthServiceClient(BaseUrl);
             var response = sut.Authenticate(TestAccount.Email, TestAccountPassword);
 
             Assert.IsNotNull(response);
@@ -41,7 +41,7 @@ namespace apcurium.MK.Web.Tests
             ExpectedMessage = "Invalid UserName or Password")]
         public void when_user_sign_in_with_invalid_password()
         {
-            var sut = new AuthServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, "wrong_password"));
+            var sut = new AuthServiceClient(BaseUrl);
             var response = sut.Authenticate(TestAccount.Email, "wrong password");
         }
 
@@ -49,7 +49,7 @@ namespace apcurium.MK.Web.Tests
         [ExpectedException("ServiceStack.ServiceClient.Web.WebServiceException", ExpectedMessage = "Invalid UserName or Password")]
         public void when_user_sign_in_with_invalid_email()
         {
-            var sut = new AuthServiceClient(BaseUrl, new AuthInfo("wrong_email@wrong.com", "password1"));
+            var sut = new AuthServiceClient(BaseUrl);
             var response = sut.Authenticate("wrong_email@wrong.com", TestAccountPassword);
         }
     }

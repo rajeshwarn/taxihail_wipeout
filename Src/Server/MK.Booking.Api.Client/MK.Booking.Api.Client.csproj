@@ -90,7 +90,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountServiceClient.cs" />
-    <Compile Include="AuthInfo.cs" />
     <Compile Include="AuthServiceClient.cs" />
     <Compile Include="BaseServiceClient.cs" />
     <Compile Include="DirectionsServiceClient.cs" />

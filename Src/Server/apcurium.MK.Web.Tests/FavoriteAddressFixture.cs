@@ -33,7 +33,7 @@ namespace apcurium.MK.Web.Tests
         public override void Setup()
         {
             base.Setup();
-            var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+            var sut = new AccountServiceClient(BaseUrl);
             sut.AddFavoriteAddress(new SaveAddress
             {
                 Id = (_knownAddressId = Guid.NewGuid()),
@@ -48,7 +48,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void AddAddress()
         {
-            var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+            var sut = new AccountServiceClient(BaseUrl);
 
             var addressId = Guid.NewGuid();
             sut.AddFavoriteAddress(new SaveAddress
@@ -71,7 +71,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void AddInvalidAddress()
         {
-            var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+            var sut = new AccountServiceClient(BaseUrl);
 
             Assert.Throws<WebServiceException>(() => sut.AddFavoriteAddress(new SaveAddress()));
         }
@@ -79,7 +79,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void UpdateAddress()
         {
-            var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+            var sut = new AccountServiceClient(BaseUrl);
 
             sut.UpdateFavoriteAddress(new SaveAddress
             {
@@ -107,7 +107,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void UpdateAddressWithInvalidData()
         {
-            var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+            var sut = new AccountServiceClient(BaseUrl);
 
             Assert.Throws<WebServiceException>(() => sut
                 .UpdateFavoriteAddress(new SaveAddress
@@ -130,7 +130,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void RemoveAddress()
         {
-            var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+            var sut = new AccountServiceClient(BaseUrl);
 
             sut.RemoveFavoriteAddress(TestAccount.Id, _knownAddressId);
 
@@ -141,7 +141,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void GetAddressList()
         {
-            var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+            var sut = new AccountServiceClient(BaseUrl);
 
             var addresses = sut.GetFavoriteAddresses(TestAccount.Id);
 
@@ -153,11 +153,8 @@ namespace apcurium.MK.Web.Tests
         [ExpectedException("ServiceStack.ServiceClient.Web.WebServiceException", ExpectedMessage = "Unauthorized")]
         public void GetAddressListFromDiffrentUser()
         {
-            var sut = new AccountServiceClient(BaseUrl, null);
-
+            var sut = new AccountServiceClient(BaseUrl);
             var otherAccount = sut.GetTestAccount(1);            
-
-            sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
             
             var adresses = sut.GetFavoriteAddresses(otherAccount.Id);
 
@@ -169,7 +166,7 @@ namespace apcurium.MK.Web.Tests
             //Setup
             var newAccount = GetNewAccount();
 
-            var orderService = new OrderServiceClient(BaseUrl, new AuthInfo(newAccount.Email, "password"));
+            var orderService = new OrderServiceClient(BaseUrl);
 
             var order = new CreateOrder
             {
@@ -184,7 +181,7 @@ namespace apcurium.MK.Web.Tests
             orderService.CreateOrder(order);
 
             //Arrange
-            var sut = new AccountServiceClient(BaseUrl, new AuthInfo(newAccount.Email, "password"));
+            var sut = new AccountServiceClient(BaseUrl);
 
             //Act
             Guid addressGuid = Guid.NewGuid();

@@ -36,7 +36,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void BasicDirectionSearch()
         {
-            var sut = new DirectionsServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+            var sut = new DirectionsServiceClient(BaseUrl);
             var direction = sut.GetDirectionDistance(45.5062, -73.5726, 45.5273, -73.6344);
 
             Assert.IsNotNull(direction);

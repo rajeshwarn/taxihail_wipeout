@@ -36,8 +36,8 @@ namespace apcurium.MK.Web.Tests
         {
             //Arrange
             var newAccount = GetNewAccount();
-            var sut = new AccountServiceClient(BaseUrl, new AuthInfo(newAccount.Email, "password"));
-            var orderService = new OrderServiceClient(BaseUrl, new AuthInfo(newAccount.Email, "password"));
+            var sut = new AccountServiceClient(BaseUrl);
+            var orderService = new OrderServiceClient(BaseUrl);
 
             //Act
             var order = new CreateOrder
@@ -64,7 +64,7 @@ namespace apcurium.MK.Web.Tests
             //Setup
             var newAccount = GetNewAccount();
             
-            var orderService = new OrderServiceClient(BaseUrl, new AuthInfo(newAccount.Email, "password"));
+            var orderService = new OrderServiceClient(BaseUrl);
 
             var order = new CreateOrder
             {
@@ -79,7 +79,7 @@ namespace apcurium.MK.Web.Tests
             orderService.CreateOrder(order);
 
             //Arrange
-            var sut = new AccountServiceClient(BaseUrl, new AuthInfo(newAccount.Email, "password"));
+            var sut = new AccountServiceClient(BaseUrl);
 
             //Act
             Guid addressGuid = Guid.NewGuid();

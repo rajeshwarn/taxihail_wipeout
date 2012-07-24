@@ -38,7 +38,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void when_getting_user_account()
         {
-            var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+            var sut = new AccountServiceClient(BaseUrl);
             var acc = sut.GetMyAccount();
 
             Assert.IsNotNull(acc);
@@ -52,11 +52,11 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void when_registering_a_new_account()
         {
-            var sut = new AccountServiceClient(BaseUrl, null);
+            var sut = new AccountServiceClient(BaseUrl);
             var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", Password = "password" };
             sut.RegisterAccount(newAccount);
 
-            var auth = new AuthServiceClient(BaseUrl, null).Authenticate(newAccount.Email, newAccount.Password);
+            var auth = new AuthServiceClient(BaseUrl).Authenticate(newAccount.Email, newAccount.Password);
 
             Assert.IsNotNull(auth);
             Assert.AreEqual(newAccount.Email, auth.UserName);
@@ -67,11 +67,11 @@ namespace apcurium.MK.Web.Tests
         public void registering_account_has_settings()
         {
 
-            var sut = new AccountServiceClient(BaseUrl, null);
+            var sut = new AccountServiceClient(BaseUrl);
             var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", Password = "password" };
             sut.RegisterAccount(newAccount);
 
-            new AuthServiceClient(BaseUrl, null).Authenticate(newAccount.Email, newAccount.Password);
+            new AuthServiceClient(BaseUrl).Authenticate(newAccount.Email, newAccount.Password);
             
             var account = sut.GetMyAccount();
 
@@ -88,14 +88,12 @@ namespace apcurium.MK.Web.Tests
         {
             string email = GetTempEmail();
 
-            var sut = new AccountServiceClient(BaseUrl, null);
+            var sut = new AccountServiceClient(BaseUrl);
             var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = email, Name = "First Name Test", Password = "password" };
             sut.RegisterAccount(newAccount);
 
-
-            var sut2 = new AccountServiceClient(BaseUrl, null);
             var newAccount2 = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = email, Name = "First Name Test", Password = "password" };
-            sut.RegisterAccount(newAccount);
+            sut.RegisterAccount(newAccount2);
 
 
         }
@@ -104,7 +102,7 @@ namespace apcurium.MK.Web.Tests
         public void when_resetting_account_password()
         {
             var newAccount = GetNewAccount();
-            var sut = new AccountServiceClient(BaseUrl, null);
+            var sut = new AccountServiceClient(BaseUrl);
 
 
             sut.ResetPassword(newAccount.Email);
@@ -115,7 +113,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void when_resetting_password_with_unknown_email_address()
         {
-            var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+            var sut = new AccountServiceClient(BaseUrl);
 
             var exception = Assert.Throws<WebServiceException>(() => sut.ResetPassword("this.is.not@my.email.addre.ss"));
             Assert.AreEqual(404, exception.StatusCode);
@@ -136,7 +134,7 @@ namespace apcurium.MK.Web.Tests
                 VehicleTypeId = 92
             };
 
-            var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+            var sut = new AccountServiceClient(BaseUrl);
 
             sut.UpdateBookingSettings(TestAccount.Id, settings);
 
