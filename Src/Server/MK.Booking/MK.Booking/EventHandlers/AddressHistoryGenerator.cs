@@ -44,6 +44,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     var address = new Address();
                     AutoMapper.Mapper.Map(@event, address);
                     address.Id = Guid.NewGuid();
+                    address.IsHistoric = true;
                 context.Save(address);
                 }
             }

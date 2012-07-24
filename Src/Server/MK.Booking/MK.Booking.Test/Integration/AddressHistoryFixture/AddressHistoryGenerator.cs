@@ -134,7 +134,7 @@ namespace apcurium.MK.Booking.Test.Integration.AddressHistoryFixture
 
             using (var context = new BookingDbContext(dbName))
             {
-                var list = context.Query<Address>().Where(x => x.AccountId == command.AccountId);
+                var list = context.Query<Address>().Where(x => x.AccountId == command.AccountId && x.IsHistoric.Equals(true));
                 Assert.AreEqual(1, list.Count());
                 var dto = list.Single();
                 Assert.AreEqual(command.AccountId, dto.AccountId);
