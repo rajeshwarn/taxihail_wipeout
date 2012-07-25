@@ -91,8 +91,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             data.Email = FindViewById<EditText>(Resource.Id.SignUpEditEmail).Text;
             data.Name= FindViewById<EditText>(Resource.Id.SignUpName).Text;            
             data.Phone = FindViewById<EditText>(Resource.Id.SignUpPhone).Text;
-            data.FacebookId = string.IsNullOrEmpty(b.GetString("facebookId")) ? "" : b.GetString("facebookId");
-            data.TwitterId = string.IsNullOrEmpty(b.GetString("twitterId")) ? "" : b.GetString("twitterId");
+            if (IsCreatedFromSocial)
+            {
+                data.FacebookId = string.IsNullOrEmpty(b.GetString("facebookId")) ? "" : b.GetString("facebookId");
+                data.TwitterId = string.IsNullOrEmpty(b.GetString("twitterId")) ? "" : b.GetString("twitterId");
+            }
+            
             return data;
 
         }
@@ -130,7 +134,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
         {
             var password = FindViewById<EditText>(Resource.Id.SignUpPassword).Text;
             var confirmPassword = FindViewById<EditText>(Resource.Id.SignUpConfirmPassword).Text;
-            return password == confirmPassword;
+            if (password.Length>=6 && password.Equals(confirmPassword))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
 
         }
         
