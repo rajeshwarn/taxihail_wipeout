@@ -63,7 +63,7 @@ namespace apcurium.MK.Web.Tests
         public void RegisteringFacebookAccountTest()
         {
             var sut = new AccountServiceClient(BaseUrl);
-            var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", FacebookId = "123456789"};
+            var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", FacebookId = Guid.NewGuid().ToString()};
             sut.RegisterAccount(newAccount);
 
             var auth = new AuthServiceClient(BaseUrl).AuthenticateFacebook(newAccount.FacebookId);
@@ -75,7 +75,7 @@ namespace apcurium.MK.Web.Tests
         public void RegisteringTwitterAccountTest()
         {
             var sut = new AccountServiceClient(BaseUrl);
-            var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", TwitterId = "123456789" };
+            var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", TwitterId = Guid.NewGuid().ToString() };
             sut.RegisterAccount(newAccount);
 
             var auth = new AuthServiceClient(BaseUrl).AuthenticateTwitter(newAccount.TwitterId);
