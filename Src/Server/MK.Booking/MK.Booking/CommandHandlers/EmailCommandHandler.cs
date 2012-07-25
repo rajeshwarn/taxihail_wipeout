@@ -8,10 +8,12 @@ using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.CommandHandlers
 {
-    public class EmailCommandHandler : ICommandHandler<SendPasswordResettedEmail>
+    public class EmailCommandHandler : ICommandHandler<SendPasswordResettedEmail>, ICommandHandler<SendAccountConfirmationEmail>
     {
         const string PasswordResettedTemplateName = "PasswordResetted";
+        const string AccountConfirmationTemplateName = "AccountConfirmation";
         const string PasswordResettedEmailSubject = "Your password has been resetted";
+        const string AccountConfirmationEmailSubject = "Welcome to Taxi Hail";
         private readonly IConfigurationManager _configurationManager;
         private readonly ITemplateService _templateService;
         private readonly IEmailSender _emailSender;
@@ -33,6 +35,20 @@ namespace apcurium.MK.Booking.CommandHandlers
             var mailMessage = new MailMessage(from: _configurationManager.GetSetting("Email.NoReply"),
                                               to: command.EmailAddress,
                                               subject: PasswordResettedEmailSubject,
+                                              body: messageBody) { IsBodyHtml = true, BodyEncoding = Encoding.UTF8, SubjectEncoding = Encoding.UTF8 };
+            _emailSender.Send(mailMessage);
+        }
+
+        public void Handle(SendAccountConfirmationEmail command)
+        {
+            var template = _templateService.Find(AccountConfirmationTemplateName);
+            if (template == null) throw new InvalidOperationException("Template not found: " + AccountConfirmationTemplateName);
+
+            var messageBody = _templateService.Render(template, command);
+
+            var mailMessage = new MailMessage(from: _configurationManager.GetSetting("Email.NoReply"),
+                                              to: command.EmailAddress,
+                                              subject: AccountConfirmationEmailSubject,
                                               body: messageBody) { IsBodyHtml = true, BodyEncoding = Encoding.UTF8, SubjectEncoding = Encoding.UTF8 };
             _emailSender.Send(mailMessage);
         }

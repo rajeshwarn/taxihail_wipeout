@@ -14,7 +14,7 @@ using apcurium.MK.Booking.Events;
 
 namespace apcurium.MK.Booking.Test.AccountFixture
 {
-    public class given_password_resetted
+    public class given_an_email_address
     {
         private EventSourcingTestHelper<Account> sut;
         private Guid _accountId = Guid.NewGuid();
@@ -40,6 +40,17 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             emailSenderMock.Verify(s => s
                 .Send(It.Is<MailMessage>(message => message
                     .Body.Contains(newPassword))));
+        }
+
+        [Test]
+        public void when_sending_confirmation_email()
+        {
+            var confirmationUrl = new Uri("http://example.net", UriKind.Absolute);
+            this.sut.When(new SendAccountConfirmationEmail { EmailAddress = "test@example.net", ConfirmationUrl = confirmationUrl});
+
+            emailSenderMock.Verify(s => s
+                .Send(It.Is<MailMessage>(message => message
+                    .Body.Contains(confirmationUrl.ToString()))));
         }
     }
 }

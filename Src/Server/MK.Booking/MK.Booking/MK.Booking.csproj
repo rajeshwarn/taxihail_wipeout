@@ -128,6 +128,9 @@
     <Content Include="Email\Templates\PasswordResetted.mustache">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Email\Templates\AccountConfirmation.mustache">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="MK.Booking.psproj" />
     <None Include="packages.config" />
   </ItemGroup>

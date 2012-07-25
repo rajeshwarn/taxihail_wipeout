@@ -53,15 +53,25 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
 
-            var command = new Commands.RegisterAccount();
-            command.Id = Guid.NewGuid();
-            command.AccountId = Guid.NewGuid();
-            command.Email = testEmail;
-            command.Password = TestUserPassword;
-            command.Name = "Test";
-            command.Phone = "123456";            
-            command.IbsAccountId = 999;
+            var command = new Commands.RegisterAccount
+            {
+                AccountId = Guid.NewGuid(),
+                Email = testEmail,
+                Password = TestUserPassword,
+                Name = "Test",
+                Phone = "123456",
+                IbsAccountId = 999,
+                ConfimationToken = Guid.NewGuid().ToString("N")
+            };
+
             _commandBus.Send(command);
+
+            // Confirm account immediately
+            _commandBus.Send(new Commands.ConfirmAccount
+            {
+                 AccountId = command.AccountId,
+                 ConfimationToken = command.ConfimationToken
+            });
 
             return _dao.FindByEmail(testEmail);
         }

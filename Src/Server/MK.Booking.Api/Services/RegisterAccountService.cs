@@ -2,12 +2,13 @@
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
-using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using Infrastructure.Messaging;
+using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query;
 
+using RegisterAccount = apcurium.MK.Booking.Api.Contract.Requests.RegisterAccount;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -70,7 +71,13 @@ namespace apcurium.MK.Booking.Api.Services
                                                                             "",
                                                                             command.Name,                                                                      
                                                                             command.Phone);
+            var confirmationToken = Guid.NewGuid();            
             _commandBus.Send(command);
+            _commandBus.Send(new SendAccountConfirmationEmail
+                                 {
+                                     EmailAddress = command.Email,
+                                     ConfirmationUrl = new Uri(new Uri(base.RequestContext.Get<IHttpRequest>().AbsoluteUri), string.Format("/api/accounts/confirm/{0}/{1}", command.Email, confirmationToken))
+                                 });
             return new Account { Id = command.AccountId };
             }
         }

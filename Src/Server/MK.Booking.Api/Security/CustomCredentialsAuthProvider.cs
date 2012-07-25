@@ -20,10 +20,11 @@ namespace apcurium.MK.Booking.Api.Security
 
         public override bool TryAuthenticate(IServiceBase authService, string userName, string password)
         {
-            
             var account = Dao.FindByEmail(userName);
 
-            return (account != null) && _passwordService.IsValid(password, account.Id.ToString(), account.Password);
+            return (account != null) 
+                && account.IsConfirmed 
+                && _passwordService.IsValid(password, account.Id.ToString(), account.Password);
         }
         
         public override void OnAuthenticated(IServiceBase authService, IAuthSession session, IOAuthTokens tokens, Dictionary<string, string> authInfo)

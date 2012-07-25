@@ -9,6 +9,7 @@ namespace apcurium.MK.Booking.EventHandlers
 {
     public class AccountDetailsGenerator :
         IEventHandler<AccountRegistered>,
+        IEventHandler<AccountConfirmed>,
         IEventHandler<AccountUpdated>,
         IEventHandler<BookingSettingsUpdated>,
         IEventHandler<AccountPasswordResetted>,
@@ -52,6 +53,17 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
+        public void Handle(AccountConfirmed @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var account = context.Find<AccountDetail>(@event.SourceId);
+                account.IsConfirmed = true;
+
+                context.Save(account);
+            }
+        }
+
         public void Handle(AccountUpdated @event)
         {
             using (var context = _contextFactory.Invoke())
@@ -91,7 +103,6 @@ namespace apcurium.MK.Booking.EventHandlers
                 context.Save(account);
             }
         }
-
         public void Handle(AccountPasswordUpdated @event)
         {
             using (var context = _contextFactory.Invoke())

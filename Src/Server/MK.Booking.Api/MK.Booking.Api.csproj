@@ -100,8 +100,7 @@
       <HintPath>..\packages\ServiceStack.3.9.2\lib\net40\ServiceStack.ServiceInterface.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.Text, Version=3.9.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.Text.3.9.0\lib\net35\ServiceStack.Text.dll</HintPath>
+      <HintPath>..\packages\ServiceStack.Text.3.9.2\lib\net35\ServiceStack.Text.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -120,6 +119,7 @@
     <Compile Include="Services\AccountOrderListService.cs" />
     <Compile Include="Services\BookingSettingsService.cs" />
     <Compile Include="Services\CancelOrderService.cs" />
+    <Compile Include="Services\ConfirmAccountService.cs" />
     <Compile Include="Services\CreateOrderService.cs" />
     <Compile Include="Services\DirectionsService.cs" />
     <Compile Include="Services\GeocodingService.cs" />
