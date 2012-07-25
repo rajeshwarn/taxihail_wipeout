@@ -17,7 +17,8 @@ namespace apcurium.MK.Booking.CommandHandlers
                                          ICommandHandler<UpdateAccount>,
                                          ICommandHandler<UpdateBookingSettings>,
                                          ICommandHandler<RegisterFacebookAccount>,
-                                         ICommandHandler<RegisterTwitterAccount>
+                                         ICommandHandler<RegisterTwitterAccount>,
+                                         ICommandHandler<UpdateAccountPassword>
     {
 
         private readonly IEventSourcedRepository<Account> _repository;
@@ -48,7 +49,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var account = _repository.Find(command.AccountId);
             var newPassword = _passwordService.EncodePassword(command.Password, command.AccountId.ToString());
-            account.UpdatePassword(newPassword);
+            account.ResetPassword(newPassword);
             _repository.Save(account);
         }
         
@@ -71,6 +72,14 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(RegisterTwitterAccount command)
         {
             var account = new Account(command.AccountId, command.Name, command.Phone, command.Email, command.IbsAccountId, twitterId:command.TwitterId);
+            _repository.Save(account);
+        }
+
+        public void Handle(UpdateAccountPassword command)
+        {
+            var account = _repository.Find(command.AccountId);
+            var newPassword = _passwordService.EncodePassword(command.Password, command.AccountId.ToString());
+            account.UpdatePassword(newPassword);
             _repository.Save(account);
         }
     }

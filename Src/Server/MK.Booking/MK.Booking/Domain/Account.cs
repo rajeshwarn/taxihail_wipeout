@@ -20,6 +20,7 @@ namespace apcurium.MK.Booking.Domain
             base.Handles<AddressUpdated>(OnAddressUpdated);
             base.Handles<AccountPasswordResetted>(OnAccountPasswordResetted);
             base.Handles<BookingSettingsUpdated>(OnBookingSettingsUpdated);
+            base.Handles<AccountPasswordUpdated>(OnAccountPasswordUpdated);
         }
 
         public Account(Guid id, IEnumerable<IVersionedEvent> history)
@@ -82,7 +83,7 @@ namespace apcurium.MK.Booking.Domain
             });        
         }
 
-        internal void UpdatePassword(byte[] newPassword)
+        internal void ResetPassword(byte[] newPassword)
         {
             if (Params.Get(newPassword).Any(p => false))
             {
@@ -90,6 +91,20 @@ namespace apcurium.MK.Booking.Domain
             }
 
             this.Update(new AccountPasswordResetted()
+            {
+                SourceId = Id,
+                Password = newPassword
+            });
+        }
+
+        internal void UpdatePassword(byte[] newPassword)
+        {
+            if (Params.Get(newPassword).Any(p => false))
+            {
+                throw new InvalidOperationException("Missing required fields");
+            }
+
+            this.Update(new AccountPasswordUpdated()
             {
                 SourceId = Id,
                 Password = newPassword
@@ -190,6 +205,11 @@ namespace apcurium.MK.Booking.Domain
         
         private void OnBookingSettingsUpdated(BookingSettingsUpdated obj)
         {
+        }
+
+        private void OnAccountPasswordUpdated(AccountPasswordUpdated obj)
+        {
+            
         }
 
 

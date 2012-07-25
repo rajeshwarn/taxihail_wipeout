@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountPasswordResetted.cs" />
+    <Compile Include="AccountPasswordUpdated.cs" />
     <Compile Include="AccountRegistered.cs" />
     <Compile Include="AccountUpdated.cs" />
     <Compile Include="BookingSettingsUpdated.cs" />

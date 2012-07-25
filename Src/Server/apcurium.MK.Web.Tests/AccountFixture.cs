@@ -62,29 +62,29 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(newAccount.Email, auth.UserName);
         }
 
-        /*[Test]
+        [Test]
         public void RegisteringFacebookAccountTest()
         {
             var sut = new AccountServiceClient(BaseUrl);
             var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", FacebookId = "123456789"};
             sut.RegisterAccount(newAccount);
 
-            var auth = new AuthServiceClient(BaseUrl).Authenticate(newAccount.FacebookId);
+            var auth = new AuthServiceClient(BaseUrl).AuthenticateFacebook(newAccount.FacebookId);
             Assert.IsNotNull(auth);
-            Assert.AreEqual(newAccount.AccountId, auth.Id);
-        }*/
+            Assert.AreEqual(newAccount.FacebookId, auth.UserName);
+        }
 
-        /*[Test]
+        [Test]
         public void RegisteringTwitterAccountTest()
         {
             var sut = new AccountServiceClient(BaseUrl);
             var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", TwitterId = "123456789" };
             sut.RegisterAccount(newAccount);
 
-            var auth = new AuthServiceClient(BaseUrl).Authenticate(newAccount.TwitterId);
+            var auth = new AuthServiceClient(BaseUrl).AuthenticateTwitter(newAccount.TwitterId);
             Assert.IsNotNull(auth);
-            Assert.AreEqual(newAccount.AccountId, auth.Id);
-        }*/
+            Assert.AreEqual(newAccount.TwitterId, auth.UserName);
+        }
 
 
         [Test]

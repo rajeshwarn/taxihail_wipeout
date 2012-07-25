@@ -55,5 +55,19 @@ namespace apcurium.MK.Booking.Test.AccountFixture
 
         }
 
+        [Test]
+        public void when_updating_password_successfully()
+        {
+            this.sut.When(new UpdateAccountPassword { AccountId = _accountId, Password = "Yop" });
+
+            var @event = sut.ThenHasSingle<AccountPasswordUpdated>();
+
+            Assert.AreEqual(_accountId, @event.SourceId);
+
+            var service = new PasswordService();
+
+            Assert.AreEqual(true, service.IsValid("Yop", _accountId.ToString(), @event.Password));
+        }
+
     }
 }
