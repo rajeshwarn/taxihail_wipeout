@@ -204,49 +204,32 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 
-        public Account GetFacebookAccount(string facebookId, string error)
-        {
-            var parameters = new NamedParameterOverloads();
-            parameters.Add("credential", auth.Authenticate(email,password));
-            return GetAccount(parameters, error);
-        }
-
-        private Account GetAccount(NamedParameterOverloads parameters, string error)
-        {
-            error = "";
-            string resultError = "";
-            bool isSuccess = false;
-            Account data = null;
-
-            try
-            {
-
-                var context = TinyIoCContainer.Current.Resolve<IAppContext>();
-                var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
-
-                var service = TinyIoCContainer.Current.Resolve<AccountServiceClient>("Authenticate", parameters);
-                var account = service.GetMyAccount();
-                if (account != null)
-                {
-                    context.UpdateLoggedInUser(account, false);
-
-                    //TODO: Should not keep password like this
-                    context.LoggedInPassword = password;
-                    data = account;
-                }
-                EnsureListLoaded();
-                isSuccess = true;
-            }
-            catch (Exception ex)
-            {
-                error = ex.Message;
-                isSuccess = false;
-            }
-            return data;
-        }
-
         public Account GetAccount(string email, string password, out string error)
         {
+            var parameters = new NamedParameterOverloads();
+            var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
+            parameters.Add("credential", auth.Authenticate(email, password));
+            return GetAccount(parameters, out error);
+        }
+
+        public Account GetFacebookAccount(string facebookId, out string error)
+        {
+            var parameters = new NamedParameterOverloads();
+            var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
+            parameters.Add("credential", auth.AuthenticateFacebook(facebookId));
+            return GetAccount(parameters, out error);
+        }
+
+        public Account GetTwitterAccount(string twitterId, out string error)
+        {
+            var parameters = new NamedParameterOverloads();
+            var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
+            parameters.Add("credential", auth.AuthenticateTwitter(twitterId));
+            return GetAccount(parameters, out error);
+        }
+
+        private Account GetAccount(NamedParameterOverloads parameters, out string error)
+        {
             error = "";
             string resultError = "";
             bool isSuccess = false;
@@ -256,11 +239,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             {
 
                 var context = TinyIoCContainer.Current.Resolve<IAppContext>();
-                var parameters = new NamedParameterOverloads();
                 var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
-                parameters.Add("credential", auth.Authenticate(email,password));
-                
-            
+
                 var service = TinyIoCContainer.Current.Resolve<AccountServiceClient>("Authenticate", parameters);
                 var account = service.GetMyAccount();
                 if (account != null)
@@ -268,14 +248,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     context.UpdateLoggedInUser(account, false);
 
                     //TODO: Should not keep password like this
-                    context.LoggedInPassword = password;
+                   // context.LoggedInPassword = password;
                     data = account;
-
                 }
-
                 EnsureListLoaded();
-
-
                 isSuccess = true;
             }
             catch (Exception ex)
@@ -283,15 +259,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 error = ex.Message;
                 isSuccess = false;
             }
-
-
-
-
             return data;
-
-
         }
-
 
         public bool ResetPassword(string email )
         {

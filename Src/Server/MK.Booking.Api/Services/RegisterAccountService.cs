@@ -1,4 +1,5 @@
 ﻿using System;
+using ServiceStack.Common.Web;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
@@ -6,7 +7,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using Infrastructure.Messaging;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query;
-using ServiceStack.Common.Web;
+
 
 namespace apcurium.MK.Booking.Api.Services
 {
