@@ -113,7 +113,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Module.cs" />
+    <Compile Include="Security\CustomTwitterAuthProvider.cs" />
     <Compile Include="Security\CustomCredentialsAuthProvider.cs" />
+    <Compile Include="Security\CustomFacebookAuthProvider.cs" />
     <Compile Include="Services\AddressHistoryService.cs" />
     <Compile Include="Services\AccountOrderListService.cs" />
     <Compile Include="Services\BookingSettingsService.cs" />

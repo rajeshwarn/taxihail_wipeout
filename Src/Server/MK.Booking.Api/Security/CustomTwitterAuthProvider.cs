@@ -1,37 +1,34 @@
-﻿using System.Collections.Generic;
-using ServiceStack.ServiceInterface.Auth;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using ServiceStack.ServiceInterface;
+using ServiceStack.ServiceInterface.Auth;
 using apcurium.MK.Booking.ReadModel.Query;
-using apcurium.MK.Booking.Security;
 
 namespace apcurium.MK.Booking.Api.Security
 {
-    public class CustomCredentialsAuthProvider : CredentialsAuthProvider
+    public class CustomTwitterAuthProvider : CredentialsAuthProvider
     {
-        private readonly IPasswordService _passwordService;
-
-        public CustomCredentialsAuthProvider(IAccountDao dao, IPasswordService passwordService)
+        public CustomTwitterAuthProvider(IAccountDao dao)
         {
-            _passwordService = passwordService;
             Dao = dao;
+            Provider = "credentialstw";
         }
 
         protected IAccountDao Dao { get; set; }
 
         public override bool TryAuthenticate(IServiceBase authService, string userName, string password)
         {
-            
-            var account = Dao.FindByEmail(userName);
-
-            return (account != null) && _passwordService.IsValid(password, account.Id.ToString(), account.Password);
+            var account = Dao.FindByTwitterId(userName);
+            return (account != null);
         }
         
         public override void OnAuthenticated(IServiceBase authService, IAuthSession session, IOAuthTokens tokens, Dictionary<string, string> authInfo)
         {
-            var account = Dao.FindByEmail(session.UserAuthName);
+            var account = Dao.FindByTwitterId(session.UserAuthName);
             session.UserAuthId = account.Id.ToString();
             authService.SaveSession(session, SessionExpiry);
         }
     }
-
 }

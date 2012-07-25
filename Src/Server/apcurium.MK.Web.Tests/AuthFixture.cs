@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
+using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Api.Client;
 
 namespace apcurium.MK.Web.Tests
@@ -51,6 +52,46 @@ namespace apcurium.MK.Web.Tests
         {
             var sut = new AuthServiceClient(BaseUrl);
             var response = sut.Authenticate("wrong_email@wrong.com", TestAccountPassword);
+        }
+
+        [Test]
+        public void when_user_sign_in_with_facebook()
+        {
+            var account = GetNewFacebookAccount();
+            var sut = new AuthServiceClient(BaseUrl);
+            var response = sut.AuthenticateFacebook(account.FacebookId);
+
+            Assert.IsNotNull(response);
+            Assert.IsNotNull(response.SessionId);
+            Assert.AreEqual(account.FacebookId, response.UserName);
+        }
+
+        [Test]
+        public void when_user_sign_in_with_invalid_facebook_id()
+        {
+            var sut = new AuthServiceClient(BaseUrl);
+            Assert.Throws<WebServiceException>(() => sut
+                .AuthenticateFacebook(Guid.NewGuid().ToString()), "Invalid UserName or Password");
+        }
+
+        [Test]
+        public void when_user_sign_in_with_twitter()
+        {
+            var account = GetNewTwitterAccount();
+            var sut = new AuthServiceClient(BaseUrl);
+            var response = sut.AuthenticateTwitter(account.TwitterId);
+
+            Assert.IsNotNull(response);
+            Assert.IsNotNull(response.SessionId);
+            Assert.AreEqual(account.TwitterId, response.UserName);
+        }
+
+        [Test]
+        public void when_user_sign_in_with_invalid_twitter_id()
+        {
+            var sut = new AuthServiceClient(BaseUrl);
+            Assert.Throws<WebServiceException>(() => sut
+                .AuthenticateTwitter(Guid.NewGuid().ToString()), "Invalid UserName or Password");
         }
     }
 }
