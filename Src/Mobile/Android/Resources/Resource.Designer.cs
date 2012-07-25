@@ -813,8 +813,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f05005f
 			public const int BookItButtonImageName = 2131034207;
 			
-			// aapt resource value: 0x7f0500d2
-			public const int BookItButtonImageNamePressed = 2131034322;
+			// aapt resource value: 0x7f0500d4
+			public const int BookItButtonImageNamePressed = 2131034324;
 			
 			// aapt resource value: 0x7f05001f
 			public const int BookPickupLabel = 2131034143;
@@ -900,8 +900,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0500ba
 			public const int CreateAccountErrorTitle = 2131034298;
 			
-			// aapt resource value: 0x7f0500d0
-			public const int CreateAccountFirstName = 2131034320;
+			// aapt resource value: 0x7f0500d2
+			public const int CreateAccountFirstName = 2131034322;
 			
 			// aapt resource value: 0x7f050055
 			public const int CreateAccountFullName = 2131034197;
@@ -927,8 +927,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0500b8
 			public const int CreateAccountLanguageFrench = 2131034296;
 			
-			// aapt resource value: 0x7f0500d1
-			public const int CreateAccountLastName = 2131034321;
+			// aapt resource value: 0x7f0500d3
+			public const int CreateAccountLastName = 2131034323;
 			
 			// aapt resource value: 0x7f050057
 			public const int CreateAccountMobile = 2131034199;
@@ -1403,6 +1403,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f050080
 			public const int UnexpectedError = 2131034240;
+			
+			// aapt resource value: 0x7f0500d1
+			public const int UpdateBookingSettingsEmptyField = 2131034321;
+			
+			// aapt resource value: 0x7f0500d0
+			public const int UpdateBookingSettingsInvalidDataTitle = 2131034320;
 			
 			// aapt resource value: 0x7f050067
 			public const int Version = 2131034215;

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -71,6 +72,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 			section.AddItem( new TextEditSectionItem( Resources.GetString( Resource.String.RideSettingsPhone ), () => model.Phone, (value) => model.Phone = value ) );
 			section.AddItem( new TextEditSectionItem( Resources.GetString( Resource.String.RideSettingsPassengers ), () => model.NbOfPassenger, (value) => model.NbOfPassenger = value ) );
 			section.AddItem( new SpinnerSectionItem( Resources.GetString( Resource.String.RideSettingsVehiculeType ), () => model.VehicleTypeId, (value) => model.VehicleTypeId = value, () => model.VehicleTypeList.Select( i => new ListItemData { Key = i.Id, Value = i.Display } ).ToList() ) );
+            section.AddItem(new SpinnerSectionItem(Resources.GetString(Resource.String.RideSettingsVehiculeType), () => model.ChargeTypeId, (value) => model.ChargeTypeId = value, () => model.ChargeTypeList.Select(i => new ListItemData { Key = i.Id, Value = i.Display }).ToList()));
             
             //TODO:Fix this
 //			/section.AddItem( new SpinnerSectionItem( Resources.GetString( Resource.String.RideSettingsCompany ), () => model.Company, (value) => model.Company = value, () => model.CompanyList.Select( i => new ListItemData { Key = i.Id, Value = i.Display } ).ToList() ) );
@@ -81,7 +83,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 		
 		private void UpdateDefaultRideSettings_Click(object sender, EventArgs e)
         {
-			ThreadHelper.ExecuteInThread( this, () => { 
+		    if (ValidateRideSettings(_model.Data))
+		    {
+		        ThreadHelper.ExecuteInThread( this, () => { 
 				if( _updateDefaultSettings )
 				{
 
@@ -89,6 +93,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 					currentAccountData.Settings = _model.Data;
                     //TODO:Fix this
 					//currentAccountData.FirstName = _model.Data.Name;
+				    TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().UpdateBookingSettings(_model.Data);
 					AppContext.Current.UpdateLoggedInUser( currentAccountData, true );
 
 				}
@@ -103,7 +108,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 				Finish();
 		
 			}, true );
+		    }
+		    else
+		    {
+                this.ShowAlert(Resource.String.UpdateBookingSettingsInvalidDataTitle, Resource.String.UpdateBookingSettingsEmptyField);
+		    }
+			
 		}
+
+        public bool ValidateRideSettings(BookingSettings bookingSettings)
+        {
+            if ((string.IsNullOrEmpty(bookingSettings.Name)) || (string.IsNullOrEmpty(bookingSettings.Phone)) || (string.IsNullOrEmpty(bookingSettings.Passengers.ToString(CultureInfo.InvariantCulture))))
+            {
+                return false;
+            }
+            return true;
+        }
 		
 	}
 }

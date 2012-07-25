@@ -318,8 +318,27 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                      service.RemoveFavoriteAddress(accountId, toDelete);
                  });
             }
-            
+        }
 
+        public void UpdateBookingSettings(BookingSettings bookingSettings)
+        {
+            var accountId = CurrentAccount.Id;
+            BookingSettingsRequest bsr = new BookingSettingsRequest()
+                                             {
+                                                 AccountId = accountId,
+                                                 ChargeTypeId = bookingSettings.ChargeTypeId,
+                                                 Name = bookingSettings.Name,
+                                                 NumberOfTaxi = bookingSettings.NumberOfTaxi,
+                                                 Passengers = bookingSettings.Passengers,
+                                                 Phone = bookingSettings.Phone,
+                                                 ProviderId = bookingSettings.ProviderId,
+                                                 VehicleTypeId = bookingSettings.VehicleTypeId
+                                             };
+            QueueCommand<AccountServiceClient>(service =>
+            {
+                service.UpdateBookingSettings(accountId, bsr);
+            });
+            
         }
 
         public void UpdateAddress(Address address)

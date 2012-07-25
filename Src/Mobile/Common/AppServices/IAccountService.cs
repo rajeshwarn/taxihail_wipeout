@@ -18,6 +18,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 	    Account GetTwitterAccount(string twitterId, out string error);
 
         Account UpdateUser(Account data);
+
+	    void UpdateBookingSettings(BookingSettings bookingSettings);
 		
 		void EnsureListLoaded();
 
