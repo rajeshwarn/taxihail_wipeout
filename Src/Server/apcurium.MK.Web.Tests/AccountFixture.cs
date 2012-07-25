@@ -104,7 +104,6 @@ namespace apcurium.MK.Web.Tests
             var newAccount = GetNewAccount();
             var sut = new AccountServiceClient(BaseUrl);
 
-
             sut.ResetPassword(newAccount.Email);
 
             Assert.Throws<WebServiceException>(() => sut.GetMyAccount());
