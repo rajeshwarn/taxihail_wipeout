@@ -33,21 +33,45 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(ErrorCode.CreateAccount_AccountAlreadyExist.ToString()); 
             }
 
-            var command = new Commands.RegisterAccount();            
-            AutoMapper.Mapper.Map( request,  command  );                                    
+            if (!string.IsNullOrEmpty(request.FacebookId))
+            {
+                var command = new Commands.RegisterFacebookAccount();
+                AutoMapper.Mapper.Map(request, command);
+                command.Id = Guid.NewGuid();
+                command.IbsAccountId = _accountWebServiceClient.CreateAccount(command.AccountId,
+                                                                              command.Email,
+                                                                              "",
+                                                                              command.Name,
+                                                                              command.Phone);
+                _commandBus.Send(command);
+                return new Account { Id = command.AccountId };
+            }
+            else if (!string.IsNullOrEmpty(request.TwitterId))
+            {
+                var command = new Commands.RegisterTwitterAccount();
+                AutoMapper.Mapper.Map(request, command);
+                command.Id = Guid.NewGuid();
+                command.IbsAccountId = _accountWebServiceClient.CreateAccount(command.AccountId,
+                                                                              command.Email,
+                                                                              "",
+                                                                              command.Name,
+                                                                              command.Phone);
+                _commandBus.Send(command);
+                return new Account { Id = command.AccountId };
+            }
+            else
+            {
+                 var command = new Commands.RegisterAccount();
+            AutoMapper.Mapper.Map( request,  command  );
             command.Id = Guid.NewGuid();
-
-            
-            
             command.IbsAccountId = _accountWebServiceClient.CreateAccount(command.AccountId, 
                                                                             command.Email,
                                                                             "",
                                                                             command.Name,                                                                      
-                                                                            command.Phone);                        
+                                                                            command.Phone);
             _commandBus.Send(command);
-
             return new Account { Id = command.AccountId };
-            
+            }
         }
 
     }

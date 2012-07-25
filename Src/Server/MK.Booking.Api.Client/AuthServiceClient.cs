@@ -8,6 +8,8 @@ using ServiceStack.ServiceClient.Web;
 using ServiceStack.ServiceInterface.Auth;
 #else
 using ServiceStack.Common.ServiceClient.Web;
+
+
 #endif
 
 namespace apcurium.MK.Booking.Api.Client

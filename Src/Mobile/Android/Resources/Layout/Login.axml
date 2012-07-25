@@ -135,7 +135,7 @@
                     android:gravity="center"
                     android:visibility="invisible" />
                 <Button
-                    android:id="@+id/SignUpButton"
+                    android:id="@+id/TwitterButton"
                     style="@style/ButtonText"
                     android:background="@drawable/social_media_login_btn"
                     android:text="@string/TwitterButton"

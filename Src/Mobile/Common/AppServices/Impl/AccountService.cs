@@ -215,8 +215,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
                 var context = TinyIoCContainer.Current.Resolve<IAppContext>();
                 var parameters = new NamedParameterOverloads();
-                parameters.Add("credential", new AuthInfo(email, password));
+                var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
 
+                parameters.Add("credential", auth.Authenticate(email,password));
+            
                 var service = TinyIoCContainer.Current.Resolve<AccountServiceClient>("Authenticate", parameters);
                 var account = service.GetMyAccount();
                 if (account != null)
@@ -261,10 +263,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
             catch (Exception ex)
             {
-
                 TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Error resetting the password");
                 TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex);
-
             }
 
             return isSuccess;

@@ -18,6 +18,10 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public string Password { get; set; }
 
         public string Phone { get; set; }
+
+        public string FacebookId { get; set; }
+
+        public string TwitterId { get; set; }
         
     }
 }
