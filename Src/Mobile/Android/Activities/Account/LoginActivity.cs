@@ -12,6 +12,7 @@ using Android.Widget;
 //using SocialNetworks.Services;
 //using SocialNetworks.Services.MonoDroid;
 using SocialNetworks.Services;
+using SocialNetworks.Services.Entities;
 using SocialNetworks.Services.MonoDroid;
 using SocialNetworks.Services.OAuth;
 using TinyIoC;
@@ -76,7 +77,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             {
                  if(e.IsConnected)
                  {
-                     facebook.GetUserInfos(infos => DoSignUpWithParameter(infos.Firstname, infos.Lastname, infos.Email, "", FacebookId:infos.Id));
+                     facebook.GetUserInfos(infos => CheckIfFacebookAccountExist(infos));
+                     //facebook.GetUserInfos(infos => DoSignUpWithParameter(infos.Firstname, infos.Lastname, infos.Email, "", FacebookId:infos.Id));
                  }
             };
 
@@ -88,6 +90,36 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                 }
             };     
 
+        }
+
+        private void CheckIfFacebookAccountExist(UserInfos infos)
+        {
+            ThreadHelper.ExecuteInThread(this, () =>
+            {
+                    string err = "";
+                    var account = TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().GetAccount(txtUserName.Text, txtPassword.Text, out err);
+                    if (account != null)
+                    {
+                        AppContext.Current.UpdateLoggedInUser(account, false);
+                        AppContext.Current.LastEmail = account.Email;
+                        RunOnUiThread(() =>
+                        {
+                            Finish();
+                            StartActivity(typeof(MainActivity));
+                        });
+                        return;
+                    }
+                    else
+                    {
+                        DoSignUpWithParameter(infos.Firstname, infos.Lastname, infos.Email, "", FacebookId: infos.Id);
+                    }
+
+                
+
+                RunOnUiThread(() => this.ShowAlert(Resource.String.InvalidLoginMessageTitle, Resource.String.InvalidLoginMessage));
+
+
+            }, true);
         }
 
         private void InitializeSocialNetwork()

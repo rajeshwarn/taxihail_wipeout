@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using ServiceStack.Common.ServiceClient.Web;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -203,6 +204,47 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 
+        public Account GetFacebookAccount(string facebookId, string error)
+        {
+            var parameters = new NamedParameterOverloads();
+            parameters.Add("credential", auth.Authenticate(email,password));
+            return GetAccount(parameters, error);
+        }
+
+        private Account GetAccount(NamedParameterOverloads parameters, string error)
+        {
+            error = "";
+            string resultError = "";
+            bool isSuccess = false;
+            Account data = null;
+
+            try
+            {
+
+                var context = TinyIoCContainer.Current.Resolve<IAppContext>();
+                var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
+
+                var service = TinyIoCContainer.Current.Resolve<AccountServiceClient>("Authenticate", parameters);
+                var account = service.GetMyAccount();
+                if (account != null)
+                {
+                    context.UpdateLoggedInUser(account, false);
+
+                    //TODO: Should not keep password like this
+                    context.LoggedInPassword = password;
+                    data = account;
+                }
+                EnsureListLoaded();
+                isSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                error = ex.Message;
+                isSuccess = false;
+            }
+            return data;
+        }
+
         public Account GetAccount(string email, string password, out string error)
         {
             error = "";
@@ -216,8 +258,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 var context = TinyIoCContainer.Current.Resolve<IAppContext>();
                 var parameters = new NamedParameterOverloads();
                 var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
-
                 parameters.Add("credential", auth.Authenticate(email,password));
+                
             
                 var service = TinyIoCContainer.Current.Resolve<AccountServiceClient>("Authenticate", parameters);
                 var account = service.GetMyAccount();
