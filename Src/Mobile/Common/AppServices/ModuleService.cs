@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
                 }, "Authenticate");
 
             TinyIoCContainer.Current.Register<AccountServiceClient>((c, p) => new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, new AuthInfo(c.Resolve<IAppContext>().LoggedInEmail, c.Resolve<IAppContext>().LoggedInPassword)));
-            TinyIoCContainer.Current.Register<ReferenceDataServiceClient>((c, p) => new ReferenceDataServiceClient(c.Resolve<IAppSettings>().ServiceUrl, new AuthInfo(c.Resolve<IAppContext>().LoggedInEmail, c.Resolve<IAppContext>().LoggedInPassword)));
+            TinyIoCContainer.Current.Register<ReferenceDataServiceClient>((c, p) => new ReferenceDataServiceClient(c.Resolve<IAppSettings>().ServiceUrl, null));
 
 
             TinyIoCContainer.Current.Register<GeocodingServiceClient>((c, p) => new GeocodingServiceClient(c.Resolve<IAppSettings>().ServiceUrl, new AuthInfo(c.Resolve<IAppContext>().LoggedInEmail, c.Resolve<IAppContext>().LoggedInPassword)));

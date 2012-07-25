@@ -6,7 +6,7 @@ using System.Text;
 using MonoTouch;
 using MonoTouch.UIKit;
 
-namespace TaxiMobileApp
+namespace apcurium.MK.Booking.Mobile.Client
 {
 	public class WebRequestHelper
 	{

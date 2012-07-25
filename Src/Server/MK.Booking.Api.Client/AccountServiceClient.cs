@@ -11,6 +11,7 @@ namespace apcurium.MK.Booking.Api.Client
         public AccountServiceClient(string url, AuthInfo credential)
             : base(url, credential)
         {
+
         }
 
 
@@ -22,6 +23,7 @@ namespace apcurium.MK.Booking.Api.Client
         
         public Account GetTestAccount(int index)
         {
+
             var result = Client.Get<Account>("/accounts/test/" + index.ToString());            
             return result;
         }

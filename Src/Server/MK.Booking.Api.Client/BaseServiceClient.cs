@@ -16,7 +16,7 @@ namespace apcurium.MK.Booking.Api.Client
         private CookieContainer _cookieContainer;
         private ServiceClientBase _client;
         private readonly string _url;
-        private AuthInfo _credential;
+        protected AuthInfo _credential;
         private bool _isSecured;
         private AuthResponse _authToken;
         public BaseServiceClient(string url, AuthInfo credential)

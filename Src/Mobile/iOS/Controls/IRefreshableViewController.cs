@@ -1,5 +1,5 @@
 using System;
-namespace TaxiMobileApp
+namespace apcurium.MK.Booking.Mobile.Client
 {
 	public interface IRefreshableViewController
 	{

@@ -1,3 +1,4 @@
+
 using System;
 using System.Collections.Generic;
 using apcurium.MK.Common.Entity;
@@ -10,6 +11,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 {
 	public interface IAccountService
 	{
+        void UpdateSettings(BookingSettings settings);
 
         Account GetAccount(string email, string password, out string error);
 

@@ -9,7 +9,7 @@ using MonoTouch.CoreLocation;
 using System.Diagnostics;
 
 using apcurium.Framework.Extensions;
-namespace TaxiMobileApp
+namespace apcurium.MK.Booking.Mobile.Client
 {
 
 	public class UserTouchedGesture : UIGestureRecognizer

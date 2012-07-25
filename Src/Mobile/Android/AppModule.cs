@@ -39,10 +39,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             TinyIoCContainer.Current.Register<ICacheService>(new CacheService(App));
             
-            //ServiceLocator.Current.Register<IAppResource, ResourceManager>();
-            //ServiceLocator.Current.RegisterSingleInstance2<IAppSettings>(new AppSettings(App));
-            //ServiceLocator.Current.Register<ILogger,LoggerImpl>();
-            //ServiceLocator.Current.RegisterSingleInstance2<IAppContext>(new AppContext(App));
+          
         
         }
     }

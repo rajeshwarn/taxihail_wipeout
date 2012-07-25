@@ -3,13 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using apcurium.MK.Booking.Api.Contract.Resources;
+ using apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Booking.Mobile.AppServices
 {
@@ -20,6 +14,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         Address[] SearchAddress(double latitude, double longitude);
 
         DirectionInfo GetDirectionInfo(double originLat, double originLong, double destLat, double destLong);
+
+        DirectionInfo GetDirectionInfo(Address origin, Address dest);
 
         IEnumerable<Address> FindSimilar(string address);
     }

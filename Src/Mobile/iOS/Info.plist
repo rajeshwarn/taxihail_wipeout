@@ -3,14 +3,14 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>Taxi Diamond</string>
+	<string>TaxiHail</string>
 	<key>CFBundleIconFiles</key>
 	<array>
 		<string>app.png</string>
 		<string>app@2x.png</string>
 	</array>
 	<key>CFBundleIdentifier</key>
-	<string>com.taxidiamond.mobile</string>
+	<string>com.apcurium.mk.taxihail.dev</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -23,7 +23,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1.2.4</string>
+	<string>1.0.3</string>
 	<key>MinimumOSVersion</key>
 	<string>3.0</string>
 	<key>NSMainNibFile</key>
@@ -32,6 +32,8 @@
 	<array>
 		<integer>1</integer>
 	</array>
+	<key>UIPrerenderedIcon</key>
+	<true/>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

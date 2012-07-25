@@ -4,259 +4,275 @@ using System.Collections.Generic;
 using System.Linq;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using apcurium.Framework.Extensions;
-using Microsoft.Practices.ServiceLocation;
+using TinyIoC;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common.Diagnostic;
 
-namespace TaxiMobileApp
+namespace apcurium.MK.Booking.Mobile.Client
 {
-	public partial class LocationDetailView : UIViewController
-	{
-		#region Constructors
+    public partial class LocationDetailView : UIViewController
+    {
+        #region Constructors
 
-		// The IntPtr and initWithCoder constructors are required for items that need 
-		// to be able to be created from a xib rather than from managed code
+        // The IntPtr and initWithCoder constructors are required for items that need 
+        // to be able to be created from a xib rather than from managed code
 
-		private LocationData _data;
+        private Address _data;
 
-		private UIButton _btnGCancel;
-		private UIButton _btnGDelete;
-		private UIButton _btnGSave;
+        public event EventHandler Canceled;
+        public event EventHandler Saved;
+        public event EventHandler Deleted;
 
+        public LocationDetailView(IntPtr handle) : base(handle)
+        {
+            Initialize();
+        }
 
-		public event EventHandler Canceled;
-		public event EventHandler Saved;
-		public event EventHandler Deleted;
+        [Export("initWithCoder:")]
+        public LocationDetailView(NSCoder coder) : base(coder)
+        {
+            Initialize();
+        }
 
+        public LocationDetailView() : base("LocationDetailView", null)
+        {
+            Initialize();
+        }
 
-		public LocationDetailView (IntPtr handle) : base(handle)
-		{
-			Initialize ();
-		}
+        void Initialize()
+        {
+        }
 
-		[Export("initWithCoder:")]
-		public LocationDetailView (NSCoder coder) : base(coder)
-		{
-			Initialize ();
-		}
+        public override void ViewDidLoad()
+        {
+            base.ViewDidLoad();
+            View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
+            
+            var view = AppContext.Current.Controller.GetTitleView(null, Resources.LocationDetailViewTitle, true);
+            
+            this.NavigationItem.HidesBackButton = false;
+            this.NavigationItem.TitleView = view;
+            
+            
+            lblSaveAsAFavorite.Text = Resources.LocationDetailInstructionLabel;
+            lblName.Text = Resources.LocationDetailGiveItANameLabel;
 
-		public LocationDetailView () : base("LocationDetailView", null)
-		{
-			Initialize ();
-		}
+            ((TextField)txtAddress).PaddingLeft =3;
+            ((TextField)txtAptNumber).PaddingLeft =3;
+            ((TextField)txtRingCode).PaddingLeft =3;
+            ((TextField)txtName).PaddingLeft =3;
 
-		void Initialize ()
-		{
-		}
-		public override void ViewDidLoad ()
-		{
-			base.ViewDidLoad ();
-			View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
-			
-			var view = AppContext.Current.Controller.GetTitleView (null, Resources.LocationDetailViewTitle, true);
-			
-			this.NavigationItem.HidesBackButton = false;
-			this.NavigationItem.TitleView = view;
-			
-			
-			lblSaveAsAFavorite.Text = Resources.LocationDetailInstructionLabel;
-			lblName.Text = Resources.LocationDetailGiveItANameLabel;
-			
-			txtAddress.Placeholder = Resources.LocationDetailStreetAddressPlaceholder;
-			txtAptNumber.Placeholder = Resources.LocationDetailAptPlaceholder;
-			txtRingCode.Placeholder = Resources.LocationDetailRingCodePlaceholder;
-			txtName.Placeholder = Resources.LocationDetailGiveItANamePlaceholder;
-			btnSave.SetTitle (Resources.SaveButton, UIControlState.Normal);
-			btnDelete.SetTitle (Resources.DeleteButton, UIControlState.Normal);
-			btnCancel.SetTitle (Resources.CancelBoutton, UIControlState.Normal);
-			
-			txtAddress.ShouldReturn = delegate(UITextField textField) { return textField.ResignFirstResponder (); };
-			txtAptNumber.ShouldReturn = delegate(UITextField textField) { return textField.ResignFirstResponder (); };
-			txtRingCode.ShouldReturn = delegate(UITextField textField) { return textField.ResignFirstResponder (); };
-			txtName.ShouldReturn = delegate(UITextField textField) { return textField.ResignFirstResponder (); };
-			
-			txtAddress.Ended += HandleTxtAddressEnded;
-			
-			_btnGCancel = GlassButton.Wrap (btnCancel, AppStyle.LightButtonColor, AppStyle.LightButtonHighlightedColor);
-			_btnGSave = GlassButton.Wrap (btnSave, AppStyle.AcceptButtonColor, AppStyle.AcceptButtonHighlightedColor);
-			_btnGDelete = GlassButton.Wrap (btnDelete, AppStyle.CancelButtonColor, AppStyle.CancelButtonHighlightedColor);
-			
-			_btnGCancel.TouchUpInside += BtnCancelTouchUpInside;
-			_btnGSave.TouchUpInside += BtnSaveTouchUpInside;
-			_btnGDelete.TouchUpInside += BtnDeleteTouchUpInside;
-			
-//			btnCancel.TouchUpInside += BtnCancelTouchUpInside;
-//			btnSave.TouchUpInside += BtnSaveTouchUpInside;
-//			btnDelete.TouchUpInside += BtnDeleteTouchUpInside;
-		}
+            txtAddress.Placeholder = Resources.LocationDetailStreetAddressPlaceholder;
+            txtAptNumber.Placeholder = Resources.LocationDetailAptPlaceholder;
+            txtRingCode.Placeholder = Resources.LocationDetailRingCodePlaceholder;
+            txtName.Placeholder = Resources.LocationDetailGiveItANamePlaceholder;
 
-		void HandleTxtAddressEnded (object sender, EventArgs e)
-		{
-			ThreadHelper.ExecuteInThread (() =>
-			{
-				
-				var locations = ServiceLocator.Current.GetInstance<IBookingService> ().SearchAddress (txtAddress.Text);
-				
-				
-				if (locations.Count () != 1 || locations[0].Address.IsNullOrEmpty () || !locations[0].Longitude.HasValue || !locations[0].Latitude.HasValue)
-				{
-					return;
-				}
-				
-				
-				InvokeOnMainThread (() => { txtAddress.Text = locations[0].Address; });
-			});
-			
-		}
-
-		private void UpdateData ()
-		{
-			
-			_data.Address = txtAddress.Text;
-			Console.WriteLine ("UpdateData" + txtAddress.Text);
-			_data.Apartment = txtAptNumber.Text;
-			_data.RingCode = txtRingCode.Text;
-			_data.Name = txtName.Text;
-		}
-
-		void BtnDeleteTouchUpInside (object sender, EventArgs e)
-		{
-			LoadingOverlay.StartAnimatingLoading (this.View, LoadingOverlayPosition.Center, null, 130, 30);
-			View.UserInteractionEnabled = false;
-			ThreadHelper.ExecuteInThread (() =>
-			{
-				
-				try
-				{
-					if (Deleted != null)
-					{
-						Deleted (this, EventArgs.Empty);
-					}
-					
-					_data.IsFromHistory = true;
-					InvokeOnMainThread (() => _btnGDelete.Hidden = true);
-					InvokeOnMainThread (() => this.NavigationController.PopViewControllerAnimated (true));
-				}
-				catch (Exception ex)
-				{
-					Console.WriteLine (ex.Message);
-				}
-				finally
-				{
-					InvokeOnMainThread (() =>
-					{
-						LoadingOverlay.StopAnimatingLoading (this.View);
-						View.UserInteractionEnabled = true;
-					});
-				}
-			});
-			
-			
-		}
-
-		void BtnSaveTouchUpInside (object sender, EventArgs e)
-		{
-			if (txtAddress.Text.IsNullOrEmpty ())
-			{
-				MessageHelper.Show (Resources.InvalidAddressTitle, Resources.InvalidAddressMessage);
-				return;
-			}
-			
-			
-			txtAddress.ResignFirstResponder ();
-			txtAptNumber.ResignFirstResponder ();
-			txtRingCode.ResignFirstResponder ();
-			txtName.ResignFirstResponder ();
-			
-			LoadingOverlay.StartAnimatingLoading (this.View, LoadingOverlayPosition.Center, null, 130, 30);
-			View.UserInteractionEnabled = false;
-			ThreadHelper.ExecuteInThread (() =>
-			{
-				try
-				{
-					var locations = ServiceLocator.Current.GetInstance<IBookingService> ().SearchAddress (txtAddress.Text);
-					
-					
-					if (locations.Count () != 1 || locations[0].Address.IsNullOrEmpty () || !locations[0].Longitude.HasValue || !locations[0].Latitude.HasValue)
-					{
-						
-						
-						
-						InvokeOnMainThread (() => MessageHelper.Show (Resources.InvalidAddressTitle, Resources.InvalidAddressMessage));
-						
-						return;
-						
-					}
-					
-					InvokeOnMainThread (() =>
-					{
-						txtAddress.Text = locations[0].Address;
-						
-						UpdateData ();
-						
-						_data.Latitude = locations[0].Latitude;
-						_data.Longitude = locations[0].Longitude;
-						
-						if (Saved != null)
-						{
-							
-							Saved (this, EventArgs.Empty);
-						}
-						_data.IsFromHistory = false;
-						_btnGDelete.Hidden = false;
-						this.NavigationController.PopViewControllerAnimated (true);
-					});
-					
-				}
-				catch (Exception ex)
-				{
-					Console.WriteLine (ex.Message);
-				}
-				finally
-				{
-					InvokeOnMainThread (() =>
-					{
-						LoadingOverlay.StopAnimatingLoading (this.View);
-						View.UserInteractionEnabled = true;
-					});
-				}
-			});
-			
-		}
-
-		void BtnCancelTouchUpInside (object sender, EventArgs e)
-		{
-			if (Canceled != null)
-			{
-				Canceled (this, EventArgs.Empty);
-			}
-			
-			this.NavigationController.PopViewControllerAnimated (true);
-		}
+            txtAddress.ShouldReturn = delegate(UITextField textField)
+            {
+                return textField.ResignFirstResponder();
+            };
+            txtAptNumber.ShouldReturn = delegate(UITextField textField)
+            {
+                return textField.ResignFirstResponder();
+            };
+            txtRingCode.ShouldReturn = delegate(UITextField textField)
+            {
+                return textField.ResignFirstResponder();
+            };
+            txtName.ShouldReturn = delegate(UITextField textField)
+            {
+                return textField.ResignFirstResponder();
+            };
+            
+            txtAddress.Ended += HandleTxtAddressEnded;
 
 
-		public void LoadData (LocationData data)
-		{
-			_data = data;
-			
-			if (txtName != null)
-			{
-				Console.WriteLine ("LoadData" + data.Name);
-				txtAddress.Text = _data.Address;
-				txtAptNumber.Text = _data.Apartment;
-				txtRingCode.Text = _data.RingCode;
-				txtName.Text = _data.Name;
-				_btnGDelete.Hidden = _data.IsFromHistory;
-				
-				if (_data.IsFromHistory)
-				{
-					_btnGSave.Frame = new System.Drawing.RectangleF (_btnGSave.Frame.X + 40, _btnGSave.Frame.Y, _btnGSave.Frame.Width, _btnGSave.Frame.Height);
-					_btnGCancel.Frame = new System.Drawing.RectangleF (_btnGCancel.Frame.X - 40, _btnGCancel.Frame.Y, _btnGCancel.Frame.Width, _btnGCancel.Frame.Height);
-				}
-				
-				Console.Write (_data.IsFromHistory.ToString ());
-			}
-		}
-		#endregion
-	}
+            AppButtons.FormatStandardGradientButton((GradientButton)btnSave, Resources.SaveButton, UIColor.White, AppStyle.ButtonColor.Green); 
+            ((GradientButton)btnCancel).SetTitle(Resources.CancelBoutton, UIControlState.Normal);
+            AppButtons.FormatStandardGradientButton((GradientButton)btnDelete, Resources.DeleteButton, UIColor.White, AppStyle.ButtonColor.Red); 
+            
+            btnCancel.TouchUpInside += BtnCancelTouchUpInside;
+            btnSave.TouchUpInside += BtnSaveTouchUpInside;
+            btnDelete.TouchUpInside += BtnDeleteTouchUpInside;
+            
+//          btnCancel.TouchUpInside += BtnCancelTouchUpInside;
+//          btnSave.TouchUpInside += BtnSaveTouchUpInside;
+//          btnDelete.TouchUpInside += BtnDeleteTouchUpInside;
+        }
+
+        void HandleTxtAddressEnded(object sender, EventArgs e)
+        {
+            ThreadHelper.ExecuteInThread(() =>
+            {
+                
+                var location = TinyIoCContainer.Current.Resolve<IGeolocService>().ValidateAddress(txtAddress.Text);
+                
+                
+                if ((location == null) || location.FullAddress.IsNullOrEmpty() || !location.HasValidCoordinate())
+                {
+                    return;
+                }
+                
+                
+                InvokeOnMainThread(() => {
+                    txtAddress.Text = location.FullAddress; }
+                );
+            }
+            );
+            
+        }
+
+        private void UpdateData()
+        {
+            
+            _data.FullAddress = txtAddress.Text;
+            Console.WriteLine("UpdateData" + txtAddress.Text);
+            _data.Apartment = txtAptNumber.Text;
+            _data.RingCode = txtRingCode.Text;
+            _data.FriendlyName = txtName.Text;
+        }
+
+        void BtnDeleteTouchUpInside(object sender, EventArgs e)
+        {
+            LoadingOverlay.StartAnimatingLoading(this.View, LoadingOverlayPosition.Center, null, 130, 30);
+            View.UserInteractionEnabled = false;
+            ThreadHelper.ExecuteInThread(() =>
+            {
+                
+                try
+                {
+                    if (Deleted != null)
+                    {
+                        Deleted(this, EventArgs.Empty);
+                    }
+                    
+                   
+                    InvokeOnMainThread(() => btnDelete.Hidden = true);
+                    InvokeOnMainThread(() => this.NavigationController.PopViewControllerAnimated(true));
+                }
+                catch (Exception ex)
+                {
+                    TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex);
+                }
+                finally
+                {
+                    InvokeOnMainThread(() =>
+                    {
+                        LoadingOverlay.StopAnimatingLoading(this.View);
+                        View.UserInteractionEnabled = true;
+                    }
+                    );
+                }
+            }
+            );
+            
+            
+        }
+
+        void BtnSaveTouchUpInside(object sender, EventArgs e)
+        {
+            if (txtAddress.Text.IsNullOrEmpty())
+            {
+                MessageHelper.Show(Resources.InvalidAddressTitle, Resources.InvalidAddressMessage);
+                return;
+            }
+            
+            
+            txtAddress.ResignFirstResponder();
+            txtAptNumber.ResignFirstResponder();
+            txtRingCode.ResignFirstResponder();
+            txtName.ResignFirstResponder();
+            
+            LoadingOverlay.StartAnimatingLoading(this.View, LoadingOverlayPosition.Center, null, 130, 30);
+            View.UserInteractionEnabled = false;
+
+            ThreadHelper.ExecuteInThread(() =>
+            {
+                try
+                {
+                    var location = TinyIoCContainer.Current.Resolve<IGeolocService>().ValidateAddress(txtAddress.Text);
+                    
+                    
+                    if ((location == null) || location.FullAddress.IsNullOrEmpty() || !location.HasValidCoordinate())
+                    {
+                        
+                        InvokeOnMainThread(() => MessageHelper.Show(Resources.InvalidAddressTitle, Resources.InvalidAddressMessage));
+                        
+                        return;
+                        
+                    }
+                    
+                    InvokeOnMainThread(() =>
+                    {
+                        txtAddress.Text = location.FullAddress;
+                        
+                        UpdateData();
+                        
+                        _data.Latitude = location.Latitude;
+                        _data.Longitude = location.Longitude;
+                        
+                        if (Saved != null)
+                        {                            
+                            Saved(this, EventArgs.Empty);
+                        }
+                        btnDelete.Hidden = false;
+                        this.NavigationController.PopViewControllerAnimated(true);
+                    }
+                    );
+                    
+                }
+                catch (Exception ex)
+                {
+                    TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex);
+                }
+                finally
+                {
+                    InvokeOnMainThread(() =>
+                    {
+                        LoadingOverlay.StopAnimatingLoading(this.View);
+                        View.UserInteractionEnabled = true;
+                    }
+                    );
+                }
+            }
+            );
+            
+        }
+
+        void BtnCancelTouchUpInside(object sender, EventArgs e)
+        {
+            if (Canceled != null)
+            {
+                Canceled(this, EventArgs.Empty);
+            }
+            
+            this.NavigationController.PopViewControllerAnimated(true);
+        }
+
+        public void LoadData(Address data)
+        {
+            _data = data;
+            
+            if (txtName != null)
+            {
+                txtAddress.Text = _data.FullAddress;
+                txtAptNumber.Text = _data.Apartment;
+                txtRingCode.Text = _data.RingCode;
+                txtName.Text = _data.FriendlyName;
+                btnDelete.Hidden = _data.Id.IsNullOrEmpty();
+                
+                if (_data.Id.IsNullOrEmpty())
+                {
+                    btnSave.Frame = new System.Drawing.RectangleF(btnSave.Frame.X + 40, btnSave.Frame.Y, btnSave.Frame.Width, btnSave.Frame.Height);
+                    btnCancel.Frame = new System.Drawing.RectangleF(btnCancel.Frame.X - 40, btnCancel.Frame.Y, btnCancel.Frame.Width, btnCancel.Frame.Height);
+                }
+
+            }
+        }
+        #endregion
+    }
 }
 

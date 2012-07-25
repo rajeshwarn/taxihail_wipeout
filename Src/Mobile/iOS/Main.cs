@@ -4,14 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using Microsoft.Practices.ServiceLocation;
+using TinyIoC;
 using apcurium.Framework.Extensions;
-using TaxiMobileApp.Lib.IBS;
-using TaxiMobileApp.Lib;
-using SocialNetworks.Services.MonoTouch;
-using SocialNetworks.Services;
+using apcurium.MK.Booking.Mobile.Practices;
+using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
-namespace TaxiMobileApp
+
+namespace apcurium.MK.Booking.Mobile.Client
 {
 	public class Application
 	{
@@ -38,8 +39,7 @@ namespace TaxiMobileApp
 		// This method is invoked when the application has loaded its UI and its ready to run
 		public override bool FinishedLaunching (UIApplication app, NSDictionary options)
 		{
-			
-			window.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background_full_nologo.png"));
+            Background.Load( window, "Assets/background_full_nologo.png", false,0,0 );			
 			
 			AppContext.Initialize (window);
 			
@@ -80,7 +80,7 @@ namespace TaxiMobileApp
 				}
 			});
 			
-			ThreadHelper.ExecuteInThread (() => ServiceLocator.Current.GetInstance<IAccountService> ().EnsureListLoaded ());
+			ThreadHelper.ExecuteInThread (() => TinyIoCContainer.Current.Resolve<IAccountService> ().EnsureListLoaded ());
 
 			return true;
 		}
@@ -97,28 +97,11 @@ namespace TaxiMobileApp
 					try
 					{
 
-						string error = "";
-						ErrorCode errorCode = ErrorCode.NoError;
-						
-						var service = ServiceLocator.Current.GetInstance<IAccountService> ();
-						
+
 						if ((AppContext.Current.Controller.SelectedUIViewController != null) && (AppContext.Current.Controller.SelectedUIViewController is BookTabView))
 						{
 							AppContext.Current.Controller.View.InvokeOnMainThread (() => { AppContext.Current.Controller.SelectedRefreshableViewController.RefreshData (); });
-						}
-
-						AccountData account = service.GetAccount (AppContext.Current.LoggedUser.Email, AppContext.Current.LoggedUser.Password, out error, out errorCode );
-						
-						if  ( (account == null) && ( error.HasValue() ) )
-						{
-							AppContext.Current.SignOutUser();
-							InvokeOnMainThread (() => MessageHelper.Show (Resources.InvalidAccountOnActivatedTitle, Resources.InvalidAccountOnActivatedMessage));
-							InvokeOnMainThread (() => _tabBarController.SelectedViewController.PresentModalViewController (new LoginView (), true));
-							return;
-						}
-
-						InvokeOnMainThread (() => AppContext.Current.UpdateLoggedInUser (account, false));
-						
+						}						
 						if ((AppContext.Current.Controller.SelectedRefreshableViewController != null) && (!(AppContext.Current.Controller.SelectedUIViewController is BookTabView)))
 						{
 							AppContext.Current.Controller.View.InvokeOnMainThread (() => { AppContext.Current.Controller.SelectedRefreshableViewController.RefreshData (); });
@@ -140,8 +123,7 @@ namespace TaxiMobileApp
 			else
 			{
 				if (  _tabBarController.SelectedViewController != null )
-				{
-				//	InvokeOnMainThread (() => MessageHelper.Show (Resources.InvalidAccountOnActivatedTitle, Resources.InvalidAccountOnActivatedMessage));
+				{	
 					InvokeOnMainThread (() => _tabBarController.SelectedViewController.PresentModalViewController (new LoginView (), true));
 				}
 			}
@@ -153,33 +135,9 @@ namespace TaxiMobileApp
 			Logger.LogMessage ("ReceiveMemoryWarning");
 		}
 
-		public override bool HandleOpenURL (UIApplication application, NSUrl url)
-		{
-			Console.WriteLine( url.ToString() );
-			if( url.AbsoluteString.StartsWith("fb" + new SocialNetworksService().FacebookAppId ) )
-			{
-				return (ServiceLocator.Current.GetInstance<IFacebookService>() as FacebookServiceMT).HandleOpenURL(application, url);
-			}
-			return false;				
-		}
 		
-		public override bool OpenUrl (UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)
-		{
-			Console.WriteLine( url.ToString() );
-			if( url.AbsoluteString.StartsWith("fb" + new SocialNetworksService().FacebookAppId ) )
-			{
-				return (ServiceLocator.Current.GetInstance<IFacebookService>() as FacebookServiceMT).HandleOpenURL(application, url);
-			}
-			
-			return false;
-		}		
 		
 	}
-	/*
-		public override void WillTerminate (UIApplication application)
-		{
-			//Save data here
-		}
-		*/	
+	
 }
 

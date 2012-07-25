@@ -55,7 +55,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                 ThreadHelper.ExecuteInThread(this, () =>
                     {
                         var service = TinyIoCContainer.Current.Resolve<IAccountService>();
-                        var data = GetRegisterAccountData();
+                        var data = GetRegisterAccount();
                         string error = "";
                         service.Register(data, out error);
                         if (error.HasValue())
@@ -69,7 +69,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             }
 
         }
-        private RegisterAccount GetRegisterAccountData()
+        private RegisterAccount GetRegisterAccount()
         {
             var data = new RegisterAccount();
             data.AccountId = Guid.NewGuid();

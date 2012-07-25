@@ -2,7 +2,7 @@ using System;
 using MonoTouch.UIKit;
 using MonoTouch.Foundation;
 using MonoTouch.CoreFoundation;
-namespace TaxiMobileApp
+namespace apcurium.MK.Booking.Mobile.Client
 {
 	public class Confirmation
 	{

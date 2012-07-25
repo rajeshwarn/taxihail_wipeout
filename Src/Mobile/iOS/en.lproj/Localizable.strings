@@ -12,7 +12,7 @@
 "NearbyPlacesTitle" = "Nearby places";
 "LocationHistoryTitle" = "Locations history";
 "HistoryViewTitle" = "History";
-"LocationViewTitle" = "My locations";
+"LocationViewTitle" = "My Locations";
 "LocationDetailViewTitle" = "Location details";
 "HistoryDetailViewTitle" = "Bookings details";
 "SettingsViewTitle" = "Settings";
@@ -21,14 +21,14 @@
 "EmailLabel" = "Email";
 "PasswordLabel" = "Password";
 "SignInButton" = "Sign In";
-"SignUpButton" = "Create a new account";
+"SignUpButton" = "Sign Up";
 "DontHaveAnAccountLabel" = "Don't have an account?";
 "LoadingMessage" = "Loading...";
 "InvalidLoginMessageTitle" = "Invalid information";
 "InvalidLoginMessage" = "The email or/and password is invalid.";
 "AccountNotValidatedMessage" = "Your account has not been validated. Tap Resend to receive a new validation email.";
 "ResendValidationButton" = "Resend";
-"BookItButton" = "Book It";
+"BookItButton" = "Book It!";
 "BookPickupLabel" = "Confrim your pickup location";
 "PickupTextPlaceholder" = "Pickup street address";
 "AptNumberTextPlaceholder" = "Apt/Suite Number";
@@ -62,7 +62,7 @@
 "StatusViewTitle" = "Confirmed";
 "StatusDescription" = "Confirmation #{0}";
 "ChangeBookingSettingsButton" = "Change booking settings";
-"CallCompanyButton" = "Call {0}";
+"CallCompanyButton" = "Call dispatch center";
 "NoHistoryLabel" = "No booking history";
 "LocationNoHistory" = "No history";
 "LocationAddFavorite" = "< Add a new location >";
@@ -134,7 +134,7 @@
 "YesButton" = "Yes";
 "NoButton" = "No";
 "HistoryViewStatusButton" = "View Status";
-"LoginForgotPasswordButton" = "Forgot password ?";
+"LoginForgotPasswordButton" = "Forgot password?";
 "TechSupportButton" = "Report a problem";
 "PickupOnButtonImageName" = "Assets/Button/btnPickup_on_en.png";
 "PickupOffButtonImageName" = "Assets/Button/btnPickup_off_en.png";
@@ -161,11 +161,8 @@
 "ResetPasswordInvalidDataMessage" = "The email is invalid.";
 "CreateAccoutTitle" = "Create account";
 "CreateAccoutEmailLabel" = "Email:";
-"CreateAccoutTitleLabel" = "Title:";
-"CreateAccoutFirstNameLabel" = "First name:";
-"CreateAccoutLastNameLabel" = "Last name:";
+"CreateAccoutFullNameLabel" = "Full name:";
 "CreateAccoutPhoneNumberLabel" = "Phone:";
-"CreateAccoutMobileLabel" = "Mobile:";
 "CreateAccoutLanguageLabel" = "Language:";
 "CreateAccoutPasswordLabel" = "Password:";
 "CreateAccoutPasswordConfirmLabel" = "Confirm:";
@@ -198,3 +195,4 @@
 "Exceptions" = "Exceptions:";
 "MobileUser" = "This order has been placed by a mobile application user.";
 "Notes" = "Notes:";
+"ErrorGettingStatus" = "Error getting status.  Call for status.";

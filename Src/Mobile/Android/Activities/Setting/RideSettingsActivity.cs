@@ -85,11 +85,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 				if( _updateDefaultSettings )
 				{
 
-					var currentAccountData = AppContext.Current.LoggedUser;
-					currentAccountData.Settings = _model.Data;
+					var currentAccount = AppContext.Current.LoggedUser;
+					currentAccount.Settings = _model.Data;
                     //TODO:Fix this
-					//currentAccountData.FirstName = _model.Data.Name;
-					AppContext.Current.UpdateLoggedInUser( currentAccountData, true );
+					//currentAccount.FirstName = _model.Data.Name;
+					AppContext.Current.UpdateLoggedInUser( currentAccount, true );
 
 				}
 				else
