@@ -36,9 +36,19 @@ namespace apcurium.MK.Booking.Api.Client
             return Authenticate(new Auth
             {
                 UserName = facebookId,
-                RememberMe = true,
                 Password = facebookId,
+                RememberMe = true,
             }, "credentialsfb");
+        }
+
+        public AuthResponse AuthenticateTwitter(string twitterId)
+        {
+            return Authenticate(new Auth
+            {
+                UserName = twitterId,
+                Password = twitterId,
+                RememberMe = true,
+            }, "credentialstw");
         }
 
         private AuthResponse Authenticate(Auth auth, string provider)

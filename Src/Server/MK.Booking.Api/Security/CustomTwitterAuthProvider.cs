@@ -8,26 +8,25 @@ using apcurium.MK.Booking.ReadModel.Query;
 
 namespace apcurium.MK.Booking.Api.Security
 {
-    public class CustomFacebookAuthProvider : CredentialsAuthProvider
+    public class CustomTwitterAuthProvider : CredentialsAuthProvider
     {
-
-        public CustomFacebookAuthProvider(IAccountDao dao)
+        public CustomTwitterAuthProvider(IAccountDao dao)
         {
             Dao = dao;
-            Provider = "credentialsfb";
+            Provider = "credentialstw";
         }
 
         protected IAccountDao Dao { get; set; }
 
         public override bool TryAuthenticate(IServiceBase authService, string userName, string password)
         {
-            var account = Dao.FindByFacebookId(userName);
+            var account = Dao.FindByTwitterId(userName);
             return (account != null);
         }
         
         public override void OnAuthenticated(IServiceBase authService, IAuthSession session, IOAuthTokens tokens, Dictionary<string, string> authInfo)
         {
-            var account = Dao.FindByFacebookId(session.UserAuthName);
+            var account = Dao.FindByTwitterId(session.UserAuthName);
             session.UserAuthId = account.Id.ToString();
             authService.SaveSession(session, SessionExpiry);
         }

@@ -40,6 +40,7 @@ namespace apcurium.MK.Web
                     {
                         new CustomCredentialsAuthProvider(container.Resolve<IAccountDao>(), container.Resolve<IPasswordService>()),
                         new CustomFacebookAuthProvider(container.Resolve<IAccountDao>()), 
+                        new CustomTwitterAuthProvider(container.Resolve<IAccountDao>()), 
                     }));
                 Plugins.Add(new ValidationFeature());
                 containerFunq.RegisterValidators(typeof(SaveFavoriteAddressValidator).Assembly);

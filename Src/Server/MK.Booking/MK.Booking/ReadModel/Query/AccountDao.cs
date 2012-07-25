@@ -40,12 +40,18 @@ namespace apcurium.MK.Booking.ReadModel.Query
 
         public AccountDetail FindByFacebookId(string id)
         {
-            throw new NotImplementedException();
+            using (var context = _contextFactory.Invoke())
+            {
+                return context.Query<AccountDetail>().SingleOrDefault(c => c.FacebookId == id);
+            }
         }
 
         public AccountDetail FindByTwitterId(string id)
         {
-            throw new NotImplementedException();
+            using (var context = _contextFactory.Invoke())
+            {
+                return context.Query<AccountDetail>().SingleOrDefault(c => c.TwitterId == id);
+            }
         }
     }
 }
