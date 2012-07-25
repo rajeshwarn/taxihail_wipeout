@@ -24,6 +24,8 @@ namespace apcurium.MK.Booking.Api
             AutoMapper.Mapper.CreateMap<BookingSettings, Commands.CreateOrder.BookingSettings>();
             AutoMapper.Mapper.CreateMap<Address, IBSAddress>();
             AutoMapper.Mapper.CreateMap<RegisterAccount, Commands.RegisterAccount>();
+            AutoMapper.Mapper.CreateMap<RegisterAccount, Commands.RegisterTwitterAccount>();
+            AutoMapper.Mapper.CreateMap<RegisterAccount, Commands.RegisterFacebookAccount>();
 
             AutoMapper.Mapper.CreateMap<SaveAddress, Commands.AddAddress>()
                 .ForMember(x => x.AddressId, opt => opt.MapFrom(x => x.Id));

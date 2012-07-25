@@ -261,10 +261,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
             catch (Exception ex)
             {
-
                 TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Error resetting the password");
                 TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex);
-
             }
 
             return isSuccess;

@@ -15,7 +15,9 @@ namespace apcurium.MK.Booking.CommandHandlers
     public class AccountCommandHandler : ICommandHandler<RegisterAccount>, 
                                          ICommandHandler<ResetAccountPassword>,
                                          ICommandHandler<UpdateAccount>,
-                                         ICommandHandler<UpdateBookingSettings>
+                                         ICommandHandler<UpdateBookingSettings>,
+                                         ICommandHandler<RegisterFacebookAccount>,
+                                         ICommandHandler<RegisterTwitterAccount>
     {
 
         private readonly IEventSourcedRepository<Account> _repository;
@@ -60,5 +62,16 @@ namespace apcurium.MK.Booking.CommandHandlers
             _repository.Save(account);
         }
 
+        public void Handle(RegisterFacebookAccount command)
+        {
+            var account = new Account(command.AccountId, command.Name, command.Phone, command.Email, command.IbsAccountId, facebookId:command.FacebookId);
+            _repository.Save(account);
+        }
+
+        public void Handle(RegisterTwitterAccount command)
+        {
+            var account = new Account(command.AccountId, command.Name, command.Phone, command.Email, command.IbsAccountId, twitterId:command.TwitterId);
+            _repository.Save(account);
+        }
     }
 }

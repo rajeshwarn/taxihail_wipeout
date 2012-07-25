@@ -33,7 +33,9 @@ namespace apcurium.MK.Booking.EventHandlers
                                      Password = @event.Password,
                                      Phone = @event.Phone,
                                      Id = @event.SourceId,
-                                     IBSAccountId = @event.IbsAcccountId
+                                     IBSAccountId = @event.IbsAcccountId,
+                                     FacebookId = @event.FacebookId,
+                                     TwitterId = @event.TwitterId
                                  };
 
 
