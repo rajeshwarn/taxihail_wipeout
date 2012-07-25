@@ -52,5 +52,17 @@ namespace apcurium.MK.Web.Tests
             var sut = new AuthServiceClient(BaseUrl);
             var response = sut.Authenticate("wrong_email@wrong.com", TestAccountPassword);
         }
+
+        [Test]
+        public void when_user_sign_in_with_facebook()
+        {
+            var facebookId = "1234";
+            var sut = new AuthServiceClient(BaseUrl);
+            var response = sut.AuthenticateFacebook(facebookId);
+
+            Assert.IsNotNull(response);
+            Assert.IsNotNull(response.SessionId);
+            Assert.AreEqual(facebookId, response.UserName);
+        }
     }
 }

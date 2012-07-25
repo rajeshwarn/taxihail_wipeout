@@ -21,18 +21,33 @@ namespace apcurium.MK.Booking.Api.Client
 
         public AuthResponse Authenticate(string email, string password)
         {
+            return Authenticate(new Auth
+            {
+                UserName = email,
+                Password = password,
+                RememberMe = true,
+            }, "credentials");
+        }
+
+        public AuthResponse AuthenticateFacebook(string facebookId)
+        {
+            return Authenticate(new Auth
+            {
+                UserName = facebookId,
+                RememberMe = true,
+                Password = facebookId,
+            }, "credentialsfb");
+        }
+
+        private AuthResponse Authenticate(Auth auth, string provider)
+        {
             var cookieContainer = new CookieContainer();
             ServiceClientBase.HttpWebRequestFilter = req =>
             {
                 req.CookieContainer = cookieContainer;
             };
 
-           return Client.Post<AuthResponse>("/auth/credentials", new Auth
-            {
-                UserName = email,
-                Password = password,
-                RememberMe = true,
-            });
+            return Client.Post<AuthResponse>("/auth/" + provider , auth);
         }
     }
 }

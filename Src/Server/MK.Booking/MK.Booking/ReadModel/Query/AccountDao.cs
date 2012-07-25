@@ -37,5 +37,15 @@ namespace apcurium.MK.Booking.ReadModel.Query
                 return context.Query<AccountDetail>().SingleOrDefault(c => c.Email.ToLower() == email.ToLower() );
             }
         }
+
+        public AccountDetail FindByFacebookId(string id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public AccountDetail FindByTwitterId(string id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
