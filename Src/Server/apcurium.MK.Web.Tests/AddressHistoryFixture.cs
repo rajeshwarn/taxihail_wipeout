@@ -35,8 +35,7 @@ namespace apcurium.MK.Web.Tests
         public void when_creating_an_order_with_a_new_pickup_address()
         {
             //Arrange
-            var newAccount = GetNewAccount();
-            var sut = new AccountServiceClient(BaseUrl);
+            var newAccount = CreateAndAuthenticateTestAccount();
             var orderService = new OrderServiceClient(BaseUrl);
 
             //Act
@@ -53,6 +52,7 @@ namespace apcurium.MK.Web.Tests
             orderService.CreateOrder(order);
 
             //Assert
+            var sut = new AccountServiceClient(BaseUrl);
             var addresses = sut.GetHistoryAddresses(newAccount.Id);
             Assert.AreEqual(1, addresses.Count());
         }
@@ -61,11 +61,10 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void when_save_a_favorite_address_with_an_historic_address_existing()
         {
-            //Setup
-            var newAccount = GetNewAccount();
-            
+            //Arrange
+            var newAccount = CreateAndAuthenticateTestAccount();
             var orderService = new OrderServiceClient(BaseUrl);
-
+            var sut = new AccountServiceClient(BaseUrl);
             var order = new CreateOrder
             {
                 Id = Guid.NewGuid(),
@@ -78,14 +77,12 @@ namespace apcurium.MK.Web.Tests
             };
             orderService.CreateOrder(order);
 
-            //Arrange
-            var sut = new AccountServiceClient(BaseUrl);
 
             //Act
-            Guid addressGuid = Guid.NewGuid();
-            var address = new SaveAddress()
+            Guid addressId = Guid.NewGuid();
+            sut.AddFavoriteAddress(new SaveAddress()
             {
-                Id = addressGuid,
+                Id = addressId,
                 AccountId = newAccount.Id,
                 FriendlyName = "La Boite à Jojo",
                 FullAddress = "1234 rue Saint-Denis",
@@ -93,14 +90,12 @@ namespace apcurium.MK.Web.Tests
                 Longitude = -73.558064,
                 Apartment = "3939",
                 RingCode = "3131"
-            };
-            sut.AddFavoriteAddress(address);
+            });
 
             //Assert
             var addresses = sut.GetHistoryAddresses(newAccount.Id);
 
-            Address first = addresses.FirstOrDefault(address1 => address1.Id.Equals(addressGuid));
-            Assert.IsNull(first);
+            Assert.IsFalse(addresses.Any(x => x.Id.Equals(addressId)));
             
         }
     }

@@ -9,6 +9,6 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
     [RestService("/accounts/test/{Index}", "GET")]
     public class TestOnlyReqGetTestAccount : BaseDTO
     {
-        public int Index { get; set; }
+        public string Index { get; set; }
     }
 }

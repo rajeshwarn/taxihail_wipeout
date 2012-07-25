@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using ServiceStack.Common.Web;
@@ -22,7 +23,13 @@ namespace apcurium.MK.Booking.Api.Client
         
         public Account GetTestAccount(int index)
         {
-            var result = Client.Get<Account>("/accounts/test/" + index.ToString());            
+            var result = Client.Get<Account>("/accounts/test/" + index);
+            return result;
+        }
+
+        public Account CreateTestAccount()
+        {
+            var result = Client.Get<Account>("/accounts/test/" + Guid.NewGuid());
             return result;
         }
 

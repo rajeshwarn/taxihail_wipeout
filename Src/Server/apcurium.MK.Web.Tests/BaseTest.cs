@@ -53,6 +53,15 @@ namespace apcurium.MK.Web.Tests
             return email;
         }
 
+        protected Account CreateAndAuthenticateTestAccount()
+        {
+            var sut = new AccountServiceClient(BaseUrl);
+            var newAccount = sut.CreateTestAccount();
+            new AuthServiceClient(BaseUrl).Authenticate(newAccount.Email, TestAccountPassword);
+            return newAccount;
+        }
+
+
         protected Account GetNewAccount()
         {
             var accountService = new AccountServiceClient(BaseUrl);

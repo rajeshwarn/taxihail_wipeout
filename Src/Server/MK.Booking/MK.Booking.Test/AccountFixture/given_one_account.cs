@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             this.sut = new EventSourcingTestHelper<Account>();
 
             this.sut.Setup(new AccountCommandHandler(this.sut.Repository, new PasswordService()));
-            this.sut.Given(new AccountRegistered { SourceId = _accountId, Name = "Bob", Password = null, Email = "bob.smith@apcurium.com", IbsAcccountId=10 });
+            this.sut.Given(new AccountRegistered { SourceId = _accountId, Name = "Bob", Password = null, Email = "bob.smith@apcurium.com", IbsAcccountId=10, ConfirmationToken = confimationToken});
         }
 
         [Test]
