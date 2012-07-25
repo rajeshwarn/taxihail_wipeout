@@ -10,10 +10,12 @@ namespace apcurium.MK.Booking.Domain
 {
     public class Account : EventSourced
     {
-        private readonly IList<Guid> _favoriteAddresses = new List<Guid>(); 
+        private readonly IList<Guid> _favoriteAddresses = new List<Guid>();
+        private string _confirmationToken;
         protected Account(Guid id) : base(id)
         {
             base.Handles<AccountRegistered>(OnAccountRegistered);
+            base.Handles<AccountConfirmed>(OnAccountConfirmed);
             base.Handles<AccountUpdated>(OnAccountUpdated);
             base.Handles<AddressAdded>(OnAddressAdded);
             base.Handles<AddressRemoved>(OnAddressRemoved);
@@ -28,7 +30,7 @@ namespace apcurium.MK.Booking.Domain
             this.LoadFrom(history);
         }
 
-        public Account(Guid id, string name,string phone, string email, byte[] password, int ibsAccountId)
+        public Account(Guid id, string name,string phone, string email, byte[] password, int ibsAccountId, string confirmationToken)
             : this(id)
         {
             if (Params.Get(name,phone,email).Any(p => p.IsNullOrEmpty())
@@ -44,7 +46,7 @@ namespace apcurium.MK.Booking.Domain
                 Phone = phone,
                 Password = password,
                 IbsAcccountId = ibsAccountId,
-
+                ConfirmationToken = confirmationToken,
             });
         }
 
@@ -66,7 +68,16 @@ namespace apcurium.MK.Booking.Domain
                 TwitterId = twitterId,
                 FacebookId = facebookId
             });
-        }        
+        }
+
+        public void ConfirmAccount(string confirmationToken)
+        {
+            if (confirmationToken == null) throw new ArgumentNullException();
+            if(confirmationToken.Length == 0) throw new ArgumentException("Confirmation token cannot be an empty string");
+            if(confirmationToken != this._confirmationToken) throw new InvalidOperationException("Invalid confirmation token");
+
+            this.Update(new AccountConfirmed());  
+        }
         
         internal void Update( string name )
         {
@@ -160,6 +171,11 @@ namespace apcurium.MK.Booking.Domain
 
         private void OnAccountRegistered(AccountRegistered @event)
         {
+            _confirmationToken = @event.ConfirmationToken;
+        }
+
+        private void OnAccountConfirmed(AccountConfirmed @event)
+        {
 
         }
 
@@ -210,7 +226,5 @@ namespace apcurium.MK.Booking.Domain
                 throw new ArgumentOutOfRangeException("longitude", "Invalid longitude");
             }
         }
-
-        
     }
 }

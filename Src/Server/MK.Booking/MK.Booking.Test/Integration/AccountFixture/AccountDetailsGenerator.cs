@@ -60,7 +60,9 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                                     Name = "Bob",                                    
                                     Email = "bob.smith@acpurium.com",
                                     Password = new byte[1] {1},
-                                    IbsAcccountId = 666
+                                    IbsAcccountId = 666,
+                                    FacebookId = "FacebookId",
+                                    TwitterId = "TwitterId",
                                 });
 
             using (var context = new BookingDbContext(dbName))
@@ -72,6 +74,28 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 Assert.AreEqual("bob.smith@acpurium.com", dto.Email);
                 Assert.AreEqual(1, dto.Password.Length);
                 Assert.AreEqual(666, dto.IBSAccountId);
+                Assert.AreEqual("FacebookId", dto.FacebookId);
+                Assert.AreEqual("TwitterId", dto.TwitterId);
+                Assert.AreEqual(false, dto.IsConfirmed);
+            }
+        }
+
+        [Test]
+        public void when_account_registered_then_account_is_not_confirmed()
+        {
+            var accountId = Guid.NewGuid();
+
+            this.sut.Handle(new AccountRegistered
+            {
+                SourceId = accountId,
+            });
+
+            using (var context = new BookingDbContext(dbName))
+            {
+                var dto = context.Find<AccountDetail>(accountId);
+
+                Assert.NotNull(dto);
+                Assert.AreEqual(false, dto.IsConfirmed );
             }
         }
 
@@ -176,6 +200,23 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                                     Password = new byte[1] {1}
                                 });
 
+        }
+
+        [Test]
+        public void when_account_confirmed_then_account_dto_updated()
+        {
+            this.sut.Handle(new AccountConfirmed
+            {
+                SourceId = _accountId,
+            });
+
+            using (var context = new BookingDbContext(dbName))
+            {
+                var dto = context.Find<AccountDetail>(_accountId);
+
+                Assert.NotNull(dto);
+                Assert.AreEqual(true, dto.IsConfirmed);
+            }
         }
 
         [Test]

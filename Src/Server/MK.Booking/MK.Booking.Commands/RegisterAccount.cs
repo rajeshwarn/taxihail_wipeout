@@ -19,5 +19,6 @@ namespace apcurium.MK.Booking.Commands
         public string Phone{ get; set; }        
         public string Password { get; set; }
         public int IbsAccountId { get; set; }
+        public string ConfimationToken { get; set; }
     }
 }

@@ -56,12 +56,9 @@ namespace apcurium.MK.Web.Tests
             var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", Password = "password" };
             sut.RegisterAccount(newAccount);
 
-            var auth = new AuthServiceClient(BaseUrl).Authenticate(newAccount.Email, newAccount.Password);
-
-            Assert.IsNotNull(auth);
-            Assert.AreEqual(newAccount.Email, auth.UserName);
+            Assert.Throws<WebServiceException>(() => new AuthServiceClient(BaseUrl).Authenticate(newAccount.Email, newAccount.Password));
         }
-
+        
         /*[Test]
         public void RegisteringFacebookAccountTest()
         {

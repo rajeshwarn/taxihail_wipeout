@@ -8,7 +8,7 @@ using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.CommandHandlers
 {
-    public class EmailCommandHandler : ICommandHandler<SendPasswordResettedEmail>
+    public class EmailCommandHandler : ICommandHandler<SendPasswordResettedEmail>, ICommandHandler<SendAccountConfirmationEmail>
     {
         const string PasswordResettedTemplateName = "PasswordResetted";
         const string AccountConfirmationTemplateName = "AccountConfirmation";

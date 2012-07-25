@@ -65,6 +65,7 @@
   <ItemGroup>
     <Compile Include="AddAddress.cs" />
     <Compile Include="CancelOrder.cs" />
+    <Compile Include="ConfirmAccount.cs" />
     <Compile Include="SendAccountConfirmationEmail.cs" />
     <Compile Include="CreateOrder.cs" />
     <Compile Include="CreateOrderAddress.cs" />
