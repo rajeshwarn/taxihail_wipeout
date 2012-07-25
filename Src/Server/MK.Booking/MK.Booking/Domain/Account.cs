@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.Domain
             : this(id)
         {
             if (Params.Get(name,phone,email).Any(p => p.IsNullOrEmpty())
-                || ibsAccountId == 0 || password == null)
+                || ibsAccountId == 0 || (password == null) )
             {
                 throw new InvalidOperationException("Missing required fields");
             }
@@ -43,7 +43,28 @@ namespace apcurium.MK.Booking.Domain
                 Email = email,
                 Phone = phone,
                 Password = password,
-                IbsAcccountId = ibsAccountId
+                IbsAcccountId = ibsAccountId,
+
+            });
+        }
+
+        public Account(Guid id, string name, string phone, string email, int ibsAccountId, string facebookId = "", string twitterId = "")
+            : this(id)
+        {
+            if (Params.Get(name, phone, email).Any(p => p.IsNullOrEmpty())
+                || ibsAccountId == 0 )
+            {
+                throw new InvalidOperationException("Missing required fields");
+            }
+            this.Update(new AccountRegistered
+            {
+                SourceId = id,
+                Name = name,
+                Email = email,
+                Phone = phone,
+                IbsAcccountId = ibsAccountId,
+                TwitterId = twitterId,
+                FacebookId = facebookId
             });
         }        
         

@@ -76,6 +76,58 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
         }
 
         [Test]
+        public void when_facebook_account_registered_then_account_dto_populated()
+        {
+            var accountId = Guid.NewGuid();
+
+            this.sut.Handle(new AccountRegistered
+            {
+                SourceId = accountId,
+                Name = "Bob",
+                Email = "bob.smith@acpurium.com",
+                FacebookId = "123456789",
+                IbsAcccountId = 666
+            });
+
+            using (var context = new BookingDbContext(dbName))
+            {
+                var dto = context.Find<AccountDetail>(accountId);
+
+                Assert.NotNull(dto);
+                Assert.AreEqual("Bob", dto.Name);
+                Assert.AreEqual("bob.smith@acpurium.com", dto.Email);
+                Assert.AreEqual("123456789", dto.FacebookId);
+                Assert.AreEqual(666, dto.IBSAccountId);
+            }
+        }
+
+        [Test]
+        public void when_twitter_account_registered_then_account_dto_populated()
+        {
+            var accountId = Guid.NewGuid();
+
+            this.sut.Handle(new AccountRegistered
+            {
+                SourceId = accountId,
+                Name = "Bob",
+                Email = "bob.smith@acpurium.com",
+                TwitterId = "123456789",
+                IbsAcccountId = 666
+            });
+
+            using (var context = new BookingDbContext(dbName))
+            {
+                var dto = context.Find<AccountDetail>(accountId);
+
+                Assert.NotNull(dto);
+                Assert.AreEqual("Bob", dto.Name);
+                Assert.AreEqual("bob.smith@acpurium.com", dto.Email);
+                Assert.AreEqual("123456789", dto.TwitterId);
+                Assert.AreEqual(666, dto.IBSAccountId);
+            }
+        }
+
+        [Test]
         public void when_account_registered_then_account_settings_populated()
         {
             var accountId = Guid.NewGuid();

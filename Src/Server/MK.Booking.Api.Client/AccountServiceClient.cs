@@ -28,8 +28,7 @@ namespace apcurium.MK.Booking.Api.Client
 
         public void RegisterAccount(RegisterAccount account)
         {
-            var result = Client.Post<Account>("/accounts/register", account);
-                        
+            var result = Client.Post<Account>("/accounts/register", account);         
         }
 
         public void UpdateBookingSettings(Guid accountId, BookingSettingsRequest settings)

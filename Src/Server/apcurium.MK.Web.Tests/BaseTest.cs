@@ -63,6 +63,28 @@ namespace apcurium.MK.Web.Tests
             
             return accountService.GetMyAccount();
         }
+
+        protected Account GetNewFacebookAccount()
+        {
+            var accountService = new AccountServiceClient(BaseUrl);
+            var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test",  FacebookId  = Guid.NewGuid().ToString()};
+            accountService.RegisterAccount(newAccount);
+
+            new AuthServiceClient(BaseUrl).AuthenticateFacebook(newAccount.FacebookId);
+
+            return accountService.GetMyAccount();
+        }
+
+        protected Account GetNewTwitterAccount()
+        {
+            var accountService = new AccountServiceClient(BaseUrl);
+            var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", TwitterId = Guid.NewGuid().ToString() };
+            accountService.RegisterAccount(newAccount);
+
+            new AuthServiceClient(BaseUrl).AuthenticateTwitter(newAccount.TwitterId);
+
+            return accountService.GetMyAccount();
+        }
         
     }
 }

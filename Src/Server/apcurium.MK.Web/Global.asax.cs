@@ -35,7 +35,13 @@ namespace apcurium.MK.Web
                 var container = UnityServiceLocator.Instance;
                 containerFunq.Adapter = new UnityContainerAdapter(container, new Logger());
 
-                Plugins.Add(new AuthFeature(() => new AuthUserSession(), new IAuthProvider[] { new CustomCredentialsAuthProvider(container.Resolve<IAccountDao>(), container.Resolve<IPasswordService>()) }));
+                Plugins.Add(new AuthFeature(() => new AuthUserSession(),
+                    new IAuthProvider[]
+                    {
+                        new CustomCredentialsAuthProvider(container.Resolve<IAccountDao>(), container.Resolve<IPasswordService>()),
+                        new CustomFacebookAuthProvider(container.Resolve<IAccountDao>()), 
+                        new CustomTwitterAuthProvider(container.Resolve<IAccountDao>()), 
+                    }));
                 Plugins.Add(new ValidationFeature());
                 containerFunq.RegisterValidators(typeof(SaveFavoriteAddressValidator).Assembly);
                 
