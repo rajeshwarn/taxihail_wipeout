@@ -12,7 +12,8 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<AccountConfirmed>,
         IEventHandler<AccountUpdated>,
         IEventHandler<BookingSettingsUpdated>,
-        IEventHandler<AccountPasswordResetted>
+        IEventHandler<AccountPasswordResetted>,
+        IEventHandler<AccountPasswordUpdated>
     {
         private readonly Func<BookingDbContext> _contextFactory;
         private IConfigurationManager _configurationManager;
@@ -94,6 +95,15 @@ namespace apcurium.MK.Booking.EventHandlers
         }
 
         public void Handle(AccountPasswordResetted @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var account = context.Find<AccountDetail>(@event.SourceId);
+                account.Password = @event.Password;
+                context.Save(account);
+            }
+        }
+        public void Handle(AccountPasswordUpdated @event)
         {
             using (var context = _contextFactory.Invoke())
             {

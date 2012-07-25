@@ -256,6 +256,25 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
             }
         }
 
+        [Test]
+        public void when_account_updated_password()
+        {
+            var service = new PasswordService();
+            this.sut.Handle(new AccountPasswordUpdated
+            {
+                SourceId = _accountId,
+                Password = service.EncodePassword("Yop", _accountId.ToString())
+            });
+
+            using (var context = new BookingDbContext(dbName))
+            {
+                var dto = context.Find<AccountDetail>(_accountId);
+
+                Assert.NotNull(dto);
+                Assert.AreEqual(true, service.IsValid("Yop", _accountId.ToString(), dto.Password));
+            }
+        }
+
 
 
         [TestFixture]

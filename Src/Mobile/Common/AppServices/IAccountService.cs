@@ -13,7 +13,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         Account GetAccount(string email, string password, out string error);
 
+	    Account GetFacebookAccount(string facebookId, out string error);
+
+	    Account GetTwitterAccount(string twitterId, out string error);
+
         Account UpdateUser(Account data);
+
+	    void UpdateBookingSettings(BookingSettings bookingSettings);
 		
 		void EnsureListLoaded();
 

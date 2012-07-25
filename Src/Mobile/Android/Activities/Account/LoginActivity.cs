@@ -12,6 +12,7 @@ using Android.Widget;
 //using SocialNetworks.Services;
 //using SocialNetworks.Services.MonoDroid;
 using SocialNetworks.Services;
+using SocialNetworks.Services.Entities;
 using SocialNetworks.Services.MonoDroid;
 using SocialNetworks.Services.OAuth;
 using TinyIoC;
@@ -76,7 +77,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             {
                  if(e.IsConnected)
                  {
-                     facebook.GetUserInfos(infos => DoSignUpWithParameter(infos.Firstname, infos.Lastname, infos.Email, "", FacebookId:infos.Id));
+                     facebook.GetUserInfos(infos => CheckIfFacebookAccountExist(infos));
                  }
             };
 
@@ -84,10 +85,54 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             {
                 if (e.IsConnected)
                 {
-                    twitterService.GetUserInfos(infos => DoSignUpWithParameter(infos.Firstname, infos.Lastname, infos.Email, "",TwitterId:infos.Id));
+                    twitterService.GetUserInfos(infos => CheckIfTwitterAccountExist(infos));
                 }
             };     
 
+        }
+
+        private void CheckIfFacebookAccountExist(UserInfos infos)
+        {
+
+                    string err = "";
+                    var account = TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().GetFacebookAccount(infos.Id, out err);
+                    if (account != null)
+                    {
+                        AppContext.Current.UpdateLoggedInUser(account, false);
+                        AppContext.Current.LastEmail = account.Email;
+                        RunOnUiThread(() =>
+                        {
+                            Finish();
+                            StartActivity(typeof(MainActivity));
+                        });
+                        return;
+                    }
+                    else
+                    {
+                        DoSignUpWithParameter(infos.Firstname, infos.Lastname, infos.Email, "", FacebookId: infos.Id);
+                    }
+        }
+
+        private void CheckIfTwitterAccountExist(UserInfos infos)
+        {
+
+            string err = "";
+            var account = TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().GetTwitterAccount(infos.Id, out err);
+            if (account != null)
+            {
+                AppContext.Current.UpdateLoggedInUser(account, false);
+                AppContext.Current.LastEmail = account.Email;
+                RunOnUiThread(() =>
+                {
+                    Finish();
+                    StartActivity(typeof(MainActivity));
+                });
+                return;
+            }
+            else
+            {
+                DoSignUpWithParameter(infos.Firstname, infos.Lastname, infos.Email, "", TwitterId: infos.Id);
+            }
         }
 
         private void InitializeSocialNetwork()

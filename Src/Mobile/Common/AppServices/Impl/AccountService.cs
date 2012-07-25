@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using ServiceStack.Common.ServiceClient.Web;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -205,6 +206,30 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public Account GetAccount(string email, string password, out string error)
         {
+            var parameters = new NamedParameterOverloads();
+            var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
+            parameters.Add("credential", auth.Authenticate(email, password));
+            return GetAccount(parameters, out error);
+        }
+
+        public Account GetFacebookAccount(string facebookId, out string error)
+        {
+            var parameters = new NamedParameterOverloads();
+            var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
+            parameters.Add("credential", auth.AuthenticateFacebook(facebookId));
+            return GetAccount(parameters, out error);
+        }
+
+        public Account GetTwitterAccount(string twitterId, out string error)
+        {
+            var parameters = new NamedParameterOverloads();
+            var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
+            parameters.Add("credential", auth.AuthenticateTwitter(twitterId));
+            return GetAccount(parameters, out error);
+        }
+
+        private Account GetAccount(NamedParameterOverloads parameters, out string error)
+        {
             error = "";
             string resultError = "";
             bool isSuccess = false;
@@ -214,11 +239,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             {
 
                 var context = TinyIoCContainer.Current.Resolve<IAppContext>();
-                var parameters = new NamedParameterOverloads();
                 var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
 
-                parameters.Add("credential", auth.Authenticate(email,password));
-            
                 var service = TinyIoCContainer.Current.Resolve<AccountServiceClient>("Authenticate", parameters);
                 var account = service.GetMyAccount();
                 if (account != null)
@@ -226,14 +248,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     context.UpdateLoggedInUser(account, false);
 
                     //TODO: Should not keep password like this
-                    context.LoggedInPassword = password;
+                   // context.LoggedInPassword = password;
                     data = account;
-
                 }
-
                 EnsureListLoaded();
-
-
                 isSuccess = true;
             }
             catch (Exception ex)
@@ -241,15 +259,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 error = ex.Message;
                 isSuccess = false;
             }
-
-
-
-
             return data;
-
-
         }
-
 
         public bool ResetPassword(string email )
         {
@@ -307,8 +318,27 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                      service.RemoveFavoriteAddress(accountId, toDelete);
                  });
             }
-            
+        }
 
+        public void UpdateBookingSettings(BookingSettings bookingSettings)
+        {
+            var accountId = CurrentAccount.Id;
+            BookingSettingsRequest bsr = new BookingSettingsRequest()
+                                             {
+                                                 AccountId = accountId,
+                                                 ChargeTypeId = bookingSettings.ChargeTypeId,
+                                                 Name = bookingSettings.Name,
+                                                 NumberOfTaxi = bookingSettings.NumberOfTaxi,
+                                                 Passengers = bookingSettings.Passengers,
+                                                 Phone = bookingSettings.Phone,
+                                                 ProviderId = bookingSettings.ProviderId,
+                                                 VehicleTypeId = bookingSettings.VehicleTypeId
+                                             };
+            QueueCommand<AccountServiceClient>(service =>
+            {
+                service.UpdateBookingSettings(accountId, bsr);
+            });
+            
         }
 
         public void UpdateAddress(Address address)
