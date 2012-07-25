@@ -9,11 +9,16 @@ using Infrastructure.Sql.BlobStorage;
 using Infrastructure.Sql.EventSourcing;
 using Infrastructure.Sql.MessageLog;
 using Microsoft.Practices.Unity;
+using ServiceStack.CacheAccess;
+using ServiceStack.OrmLite;
+using ServiceStack.ServiceInterface.Auth;
 using apcurium.MK.Booking.Database;
+using apcurium.MK.Common.Caching;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
+using ConfigurationManager = System.Configuration.ConfigurationManager;
 
 namespace apcurium.MK.Web.SelfHost
 {

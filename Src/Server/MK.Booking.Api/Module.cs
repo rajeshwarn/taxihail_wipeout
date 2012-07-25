@@ -1,9 +1,11 @@
 ﻿using Microsoft.Practices.Unity;
 using ServiceStack.CacheAccess;
 using ServiceStack.CacheAccess.Providers;
+using ServiceStack.OrmLite;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.IBS;
+using apcurium.MK.Common.Caching;
 
 namespace apcurium.MK.Booking.Api
 {
@@ -11,8 +13,6 @@ namespace apcurium.MK.Booking.Api
     {
         public void Init(IUnityContainer container)
         {
-            container.RegisterInstance<ICacheClient>(new MemoryCacheClient { FlushOnDispose = false });
-
             RegisterMaps();
         }
 

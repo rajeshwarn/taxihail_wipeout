@@ -91,6 +91,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Caching\CacheItem.cs" />
+    <Compile Include="Caching\CachingDbContext.cs" />
+    <Compile Include="Caching\EFCacheClient.cs" />
     <Compile Include="Configuration\Impl\AppSetting.cs" />
     <Compile Include="Configuration\Impl\ConfigurationDbContext.cs" />
     <Compile Include="Configuration\Impl\ConfigurationManager.cs" />

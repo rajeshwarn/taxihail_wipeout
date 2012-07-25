@@ -1,4 +1,5 @@
 ﻿using System;
+using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -24,6 +25,9 @@ namespace apcurium.MK.Booking.Api.Services
 
         public override object OnPost(RegisterAccount request)
         {
+            // Ensure user is not signed in
+            this.RequestContext.Get<IHttpRequest>().RemoveSession();
+
             if (_accountDao.FindByEmail(request.Email) != null)
             {
                 throw new HttpError(ErrorCode.CreateAccount_AccountAlreadyExist.ToString()); 

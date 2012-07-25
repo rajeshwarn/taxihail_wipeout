@@ -12,30 +12,29 @@ namespace apcurium.MK.Web.Tests
 {
     public class given_no_order : BaseTest
     {
-        
-        [TestFixtureSetUp]
-        public new void Setup()
-        {
-            base.Setup();
 
+        [TestFixtureSetUp]
+        public override void TestFixtureSetup()
+        {
+            base.TestFixtureSetup();
         }
 
         [TestFixtureTearDown]
-        public new void TearDown()
+        public override void TestFixtureTearDown()
         {
-            base.TearDown();
+            base.TestFixtureTearDown();
         }
 
         [SetUp]
-        public void SetupTest()
+        public override void Setup()
         {
-
+            base.Setup();
         }
 
         [Test]
         public void create_order()
         {
-            var sut = new OrderServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+            var sut = new OrderServiceClient(BaseUrl);
             var pickupDate = DateTime.Now.AddHours(1);
             var requestDate = DateTime.Now.AddHours(1);
             var order = new CreateOrder
@@ -65,8 +64,8 @@ namespace apcurium.MK.Web.Tests
         [TestFixtureSetUp]
         public new void Setup()
         {
-            base.Setup();
-            var sut = new OrderServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+            base.TestFixtureSetup();
+            var sut = new OrderServiceClient(BaseUrl);
             var order = new CreateOrder
             {
                 Id = _orderId,
@@ -85,7 +84,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void ibs_order_was_created()
         {
-            var sut = new OrderServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+            var sut = new OrderServiceClient(BaseUrl);
             var order = sut.GetOrder( TestAccount.Id, _orderId);
             
             Assert.IsNotNull(order);
@@ -97,7 +96,7 @@ namespace apcurium.MK.Web.Tests
         public void GetOrderList()
         {
 
-            var sut = new OrderServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+            var sut = new OrderServiceClient(BaseUrl);
 
             var orders = sut.GetOrders(TestAccount.Id);
             Assert.NotNull(orders);
@@ -106,7 +105,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void GetOrder()
         {
-            var sut = new OrderServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+            var sut = new OrderServiceClient(BaseUrl);
 
             var orders = sut.GetOrder(TestAccount.Id,_orderId);
             Assert.NotNull(orders);

@@ -28,15 +28,21 @@ namespace apcurium.MK.Web.Tests
             _appHost.Init();
         }
 
-        protected void Setup()
+        public virtual void TestFixtureSetup()
         {
             _appHost.Start(BaseUrl);
 
-            var sut = new AccountServiceClient(BaseUrl, null);
-            TestAccount = sut.GetTestAccount(0);            
+            var sut = new AccountServiceClient(BaseUrl);
+            TestAccount = sut.GetTestAccount(0);
+
         }
 
-        protected void TearDown()
+        public virtual void Setup()
+        {
+            new AuthServiceClient(BaseUrl).Authenticate(TestAccount.Email, TestAccountPassword);            
+        }
+
+        public virtual void TestFixtureTearDown()
         {
             _appHost.Stop();
         }
@@ -49,11 +55,11 @@ namespace apcurium.MK.Web.Tests
 
         protected Account GetNewAccount()
         {
-            var accountService = new AccountServiceClient(BaseUrl, null);
+            var accountService = new AccountServiceClient(BaseUrl);
             var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", Password = "password" };
             accountService.RegisterAccount(newAccount);
 
-            accountService = new AccountServiceClient(BaseUrl, new AuthInfo(newAccount.Email, "password"));
+            new AuthServiceClient(BaseUrl).Authenticate(newAccount.Email, newAccount.Password);
             
             return accountService.GetMyAccount();
         }

@@ -37,8 +37,8 @@ namespace apcurium.MK.Booking.Api.Services
 
         public override object OnPost(CreateOrder request)
         {
-            var account = _accountDao.FindById(request.AccountId );
-
+            var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
+            if (account.Id != request.AccountId) throw HttpError.Unauthorized("Unauthorized");
             if (!IsValid(request.PickupAddress))
             {
                 throw new HttpError(ErrorCode.CreateOrder_InvalidPickupAddress.ToString()); 
