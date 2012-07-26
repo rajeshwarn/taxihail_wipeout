@@ -65,7 +65,7 @@ namespace apcurium.MK.Web.Tests
         protected Account GetNewAccount()
         {
             var accountService = new AccountServiceClient(BaseUrl);
-            var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", Password = "password" };
+            var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", Password = "password", Language = "en" };
             accountService.RegisterAccount(newAccount);
 
             new AuthServiceClient(BaseUrl).Authenticate(newAccount.Email, newAccount.Password);
@@ -76,7 +76,7 @@ namespace apcurium.MK.Web.Tests
         protected Account GetNewFacebookAccount()
         {
             var accountService = new AccountServiceClient(BaseUrl);
-            var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test",  FacebookId  = Guid.NewGuid().ToString()};
+            var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", FacebookId = Guid.NewGuid().ToString(), Language = "en" };
             accountService.RegisterAccount(newAccount);
 
             new AuthServiceClient(BaseUrl).AuthenticateFacebook(newAccount.FacebookId);
@@ -87,7 +87,7 @@ namespace apcurium.MK.Web.Tests
         protected Account GetNewTwitterAccount()
         {
             var accountService = new AccountServiceClient(BaseUrl);
-            var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", TwitterId = Guid.NewGuid().ToString() };
+            var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", TwitterId = Guid.NewGuid().ToString(), Language = "en" };
             accountService.RegisterAccount(newAccount);
 
             new AuthServiceClient(BaseUrl).AuthenticateTwitter(newAccount.TwitterId);

@@ -34,7 +34,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(RegisterAccount command)
         {
             var password = _passwordService.EncodePassword(command.Password, command.AccountId.ToString());
-            var account = new Account(command.AccountId, command.Name, command.Phone, command.Email, password, command.IbsAccountId, command.ConfimationToken);
+            var account = new Account(command.AccountId, command.Name, command.Phone, command.Email, password, command.IbsAccountId, command.ConfimationToken, command.Language);
             _repository.Save(account);
         }
 
@@ -73,13 +73,13 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(RegisterFacebookAccount command)
         {
-            var account = new Account(command.AccountId, command.Name, command.Phone, command.Email, command.IbsAccountId, facebookId:command.FacebookId);
+            var account = new Account(command.AccountId, command.Name, command.Phone, command.Email, command.IbsAccountId, facebookId:command.FacebookId, language:command.Language);
             _repository.Save(account);
         }
 
         public void Handle(RegisterTwitterAccount command)
         {
-            var account = new Account(command.AccountId, command.Name, command.Phone, command.Email, command.IbsAccountId, twitterId:command.TwitterId);
+            var account = new Account(command.AccountId, command.Name, command.Phone, command.Email, command.IbsAccountId, twitterId: command.TwitterId, language: command.Language);
             _repository.Save(account);
         }
 
