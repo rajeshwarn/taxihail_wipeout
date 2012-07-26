@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
@@ -34,7 +36,18 @@ namespace apcurium.MK.Booking.Api.Services
                 ConfimationToken = request.ConfirmationToken
             });
 
-            return new HttpResult("Account confirmed");
+            return new HttpResult(new FileInfo(Path.Combine(AssemblyDirectory, "AccountConfirmationSuccess.html")));
+        }
+
+        static public string AssemblyDirectory
+        {
+            get
+            {
+                string codeBase = Assembly.GetExecutingAssembly().CodeBase;
+                UriBuilder uri = new UriBuilder(codeBase);
+                string path = Uri.UnescapeDataString(uri.Path);
+                return Path.GetDirectoryName(path);
+            }
         }
     }
 }
