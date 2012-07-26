@@ -238,10 +238,10 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
         }
 
         [Test]
-        public void when_account_resetted_password()
+        public void when_account_reset_password()
         {
             var service = new PasswordService();
-            this.sut.Handle(new AccountPasswordResetted
+            this.sut.Handle(new AccountPasswordReset
             {
                 SourceId = _accountId,
                 Password = service.EncodePassword("Yop", _accountId.ToString())

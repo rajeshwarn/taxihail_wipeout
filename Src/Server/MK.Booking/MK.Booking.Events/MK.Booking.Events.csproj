@@ -55,7 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountConfirmed.cs" />
-    <Compile Include="AccountPasswordResetted.cs" />
+    <Compile Include="AccountPasswordReset.cs" />
     <Compile Include="AccountPasswordUpdated.cs" />
     <Compile Include="AccountRegistered.cs" />
     <Compile Include="AccountUpdated.cs" />

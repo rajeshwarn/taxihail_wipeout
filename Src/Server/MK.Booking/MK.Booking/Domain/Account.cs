@@ -20,7 +20,7 @@ namespace apcurium.MK.Booking.Domain
             base.Handles<AddressAdded>(OnAddressAdded);
             base.Handles<AddressRemoved>(OnAddressRemoved);
             base.Handles<AddressUpdated>(OnAddressUpdated);
-            base.Handles<AccountPasswordResetted>(OnAccountPasswordResetted);
+            base.Handles<AccountPasswordReset>(OnAccountPasswordReset);
             base.Handles<BookingSettingsUpdated>(OnBookingSettingsUpdated);
             base.Handles<AccountPasswordUpdated>(OnAccountPasswordUpdated);
         }
@@ -101,7 +101,7 @@ namespace apcurium.MK.Booking.Domain
                 throw new InvalidOperationException("Missing required fields");
             }
 
-            this.Update(new AccountPasswordResetted()
+            this.Update(new AccountPasswordReset()
             {
                 SourceId = Id,
                 Password = newPassword
@@ -214,7 +214,7 @@ namespace apcurium.MK.Booking.Domain
 
         }
 
-        private void OnAccountPasswordResetted(AccountPasswordResetted obj)
+        private void OnAccountPasswordReset(AccountPasswordReset obj)
         {
 
         }

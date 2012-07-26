@@ -3,9 +3,9 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Booking.Commands
 {
-    public class SendPasswordResettedEmail : ICommand
+    public class SendPasswordResetEmail : ICommand
     {
-        public SendPasswordResettedEmail()
+        public SendPasswordResetEmail()
         {
             Id = Guid.NewGuid();
         }

@@ -62,7 +62,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         {
             this.sut.When(new ResetAccountPassword { AccountId = _accountId, Password = "Yop" });
 
-            var @event = sut.ThenHasSingle<AccountPasswordResetted>();
+            var @event = sut.ThenHasSingle<AccountPasswordReset>();
 
             Assert.AreEqual(_accountId, @event.SourceId);
 

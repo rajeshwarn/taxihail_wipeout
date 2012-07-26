@@ -41,7 +41,7 @@ namespace apcurium.MK.Booking.Api.Services
                 Password = newPassword
             };
 
-            var emailCommand = new SendPasswordResettedEmail
+            var emailCommand = new SendPasswordResetEmail
             {
                 EmailAddress = user.Email,
                 Password = newPassword,
