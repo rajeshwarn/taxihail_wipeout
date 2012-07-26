@@ -144,16 +144,5 @@ namespace apcurium.MK.Web.Tests
             var knownAddress = addresses.SingleOrDefault(x => x.Id == _knownAddressId);
             Assert.IsNotNull(knownAddress);
         }
-
-        [Test]
-        [ExpectedException("ServiceStack.ServiceClient.Web.WebServiceException", ExpectedMessage = "Unauthorized")]
-        public void GetAddressListFromDiffrentUser()
-        {
-            var sut = new AccountServiceClient(BaseUrl);
-            var otherAccount = sut.GetTestAccount(1);            
-            
-            var adresses = sut.GetFavoriteAddresses();
-
-        }
     }
 }
