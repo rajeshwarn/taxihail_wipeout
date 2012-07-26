@@ -85,6 +85,34 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(newAccount.TwitterId, auth.UserName);
         }
 
+        [Test]
+        [ExpectedException("ServiceStack.ServiceClient.Web.WebServiceException", ExpectedMessage = "CreateAccount_AccountAlreadyExist")]
+        public void when_registering_2_account_with_same_facebookId()
+        {
+            var facebookId = Guid.NewGuid();
+
+            var sut = new AccountServiceClient(BaseUrl);
+            var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", FacebookId = facebookId.ToString() };
+            sut.RegisterAccount(newAccount);
+
+            var newAccount2 = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", FacebookId = facebookId.ToString() };
+            sut.RegisterAccount(newAccount2);
+        }
+
+        [Test]
+        [ExpectedException("ServiceStack.ServiceClient.Web.WebServiceException", ExpectedMessage = "CreateAccount_AccountAlreadyExist")]
+        public void when_registering_2_account_with_same_twitterId()
+        {
+            var twitterId = Guid.NewGuid();
+
+            var sut = new AccountServiceClient(BaseUrl);
+            var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", TwitterId = twitterId.ToString() };
+            sut.RegisterAccount(newAccount);
+
+            var newAccount2 = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", TwitterId = twitterId.ToString() };
+            sut.RegisterAccount(newAccount2);
+        }
+
 
         [Test]
         public void registering_account_has_settings()
@@ -136,41 +164,31 @@ namespace apcurium.MK.Web.Tests
         public void when_updating_account_password()
         {
             var sut = new AccountServiceClient(BaseUrl);
-            var password = "yop";
-            var accountId = Guid.NewGuid();
-            var newMail = GetTempEmail();
 
-            var newAccount = new RegisterAccount { AccountId = accountId, Phone = "5146543024", Email = newMail, Name = "First Name Test", Password = password };
-            sut.RegisterAccount(newAccount);
-
-            new AuthServiceClient(BaseUrl).Authenticate(newAccount.Email, newAccount.Password);
+            var account = CreateAndAuthenticateTestAccount();
 
 
             sut.UpdatePassword(new UpdatePassword()
                                    {
-                                       AccountId = accountId,
-                                       CurrentPassword = password,
+                                       AccountId = account.Id,
+                                       CurrentPassword = base.TestAccountPassword,
                                        NewPassword = "p@55w0rddddddddd"
                                    });
 
-            Assert.DoesNotThrow(() => new AuthServiceClient(BaseUrl).Authenticate(newMail, "p@55w0rddddddddd"));
+            Assert.DoesNotThrow(() => new AuthServiceClient(BaseUrl).Authenticate(account.Email, "p@55w0rddddddddd"));
 
         }
         [Test]
         public void when_updating_account_password_with_wrong_current_password()
         {
             var sut = new AccountServiceClient(BaseUrl);
-            var password = "yop";
-            var accountId = Guid.NewGuid();
-            var newMail = GetTempEmail();
 
-            var newAccount = new RegisterAccount { AccountId = accountId, Phone = "5146543024", Email = newMail, Name = "First Name Test", Password = password };
-            sut.RegisterAccount(newAccount);
+            var account = CreateAndAuthenticateTestAccount();
 
-            new AuthServiceClient(BaseUrl).Authenticate(newAccount.Email, newAccount.Password);
+            new AuthServiceClient(BaseUrl).Authenticate(account.Email, base.TestAccountPassword);
             var request = new UpdatePassword()
                               {
-                                  AccountId = accountId,
+                                  AccountId = account.Id,
                                   CurrentPassword = "wrongpassword",
                                   NewPassword = "p@55w0rddddddddd"
                              };
@@ -182,22 +200,18 @@ namespace apcurium.MK.Web.Tests
         public void when_updating_account_password__user_is_logout()
         {
             var sut = new AccountServiceClient(BaseUrl);
-            var password = "yop";
-            var accountId = Guid.NewGuid();
-            var newMail = GetTempEmail();
 
-            var newAccount = new RegisterAccount { AccountId = accountId, Phone = "5146543024", Email = newMail, Name = "First Name Test", Password = password };
-            sut.RegisterAccount(newAccount);
+            var account = CreateAndAuthenticateTestAccount();
 
-            new AuthServiceClient(BaseUrl).Authenticate(newAccount.Email, newAccount.Password);
+            new AuthServiceClient(BaseUrl).Authenticate(account.Email, base.TestAccountPassword);
             var request = new UpdatePassword()
             {
-                AccountId = accountId,
-                CurrentPassword = password,
+                AccountId = account.Id,
+                CurrentPassword = base.TestAccountPassword,
                 NewPassword = "p@55w0rddddddddd"
             };
             sut.UpdatePassword(request);
-            Assert.Throws<WebServiceException>(() => sut.GetFavoriteAddresses(accountId));
+            Assert.Throws<WebServiceException>(() => sut.GetFavoriteAddresses(account.Id));
         }
 
         [Test]

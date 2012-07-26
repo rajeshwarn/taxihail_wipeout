@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Api.Services
         {
             var user = _dao.FindById(request.AccountId);
             if (user == null) throw HttpError.NotFound("Account not found");
-            if (string.IsNullOrEmpty(user.FacebookId) || string.IsNullOrEmpty(user.TwitterId))
+            if (!string.IsNullOrEmpty(user.FacebookId) || !string.IsNullOrEmpty(user.TwitterId))
                 throw HttpError.Unauthorized("Facebook or Twitter account cannot update password");
             if (!new PasswordService().IsValid(request.CurrentPassword, request.AccountId.ToString(),user.Password))
                 throw HttpError.Unauthorized("Current password doesn't match with account password");
