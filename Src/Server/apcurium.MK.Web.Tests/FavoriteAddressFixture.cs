@@ -159,52 +159,5 @@ namespace apcurium.MK.Web.Tests
             var adresses = sut.GetFavoriteAddresses(otherAccount.Id);
 
         }
-
-        [Test]
-        public void when_save_a_favorite_address_with_an_historic_address_existing()
-        {
-            //Setup
-            var newAccount = GetNewAccount();
-
-            var orderService = new OrderServiceClient(BaseUrl);
-
-            var order = new CreateOrder
-            {
-                Id = Guid.NewGuid(),
-                AccountId = newAccount.Id,
-                PickupDate = DateTime.Now,
-                PickupAddress = new Booking.Api.Contract.Resources.Address { FullAddress = "1234 rue Saint-Denis", Apartment = "3939", RingCode = "3131", Latitude = 45.515065, Longitude = -73.558064, },
-                DropOffAddress = new Booking.Api.Contract.Resources.Address { FullAddress = "Velvet auberge st gabriel", Latitude = 45.50643, Longitude = -73.554052 },
-                Settings = new Booking.Api.Contract.Resources.BookingSettings { ChargeTypeId = 99, VehicleTypeId = 88, ProviderId = 11, Phone = "514-555-1212", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" }
-
-            };
-            orderService.CreateOrder(order);
-
-            //Arrange
-            var sut = new AccountServiceClient(BaseUrl);
-
-            //Act
-            Guid addressGuid = Guid.NewGuid();
-            var address = new SaveAddress()
-            {
-                Id = addressGuid,
-                AccountId = newAccount.Id,
-                FriendlyName = "La Boite à Jojo",
-                FullAddress = "1234 rue Saint-Denis",
-                Latitude = 45.515065,
-                Longitude = -73.558064,
-                Apartment = "3939",
-                RingCode = "3131"
-            };
-            sut.AddFavoriteAddress(address);
-
-            //Assert
-            var addresses = sut.GetHistoryAddresses(newAccount.Id);
-
-            Address first = addresses.FirstOrDefault(address1 => address1.Id.Equals(addressGuid));
-            Assert.IsNull(first);
-
-        }
-       
     }
 }

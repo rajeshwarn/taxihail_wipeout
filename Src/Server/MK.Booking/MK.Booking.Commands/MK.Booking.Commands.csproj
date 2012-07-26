@@ -65,6 +65,8 @@
   <ItemGroup>
     <Compile Include="AddAddress.cs" />
     <Compile Include="CancelOrder.cs" />
+    <Compile Include="ConfirmAccount.cs" />
+    <Compile Include="SendAccountConfirmationEmail.cs" />
     <Compile Include="CreateOrder.cs" />
     <Compile Include="CreateOrderAddress.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -73,7 +75,7 @@
     <Compile Include="RegisterTwitterAccount.cs" />
     <Compile Include="RemoveAddress.cs" />
     <Compile Include="ResetAccountPassword.cs" />
-    <Compile Include="SendPasswordResettedEmail.cs" />
+    <Compile Include="SendPasswordResetEmail.cs" />
     <Compile Include="UpdateAccount.cs" />
     <Compile Include="UpdateAccountPassword.cs" />
     <Compile Include="UpdateBookingSettings.cs" />

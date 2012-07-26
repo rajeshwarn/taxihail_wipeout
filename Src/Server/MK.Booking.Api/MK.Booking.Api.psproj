@@ -10,6 +10,6 @@
   </Tasks>
   <Data Name="XmlMulticast">
 	<LogAttribute xmlns="clr-namespace:PostSharp.Toolkit.Diagnostics;assembly:PostSharp.Toolkit.Diagnostics" />
-    <LogAttribute xmlns="clr-namespace:PostSharp.Toolkit.Diagnostics;assembly:PostSharp.Toolkit.Diagnostics" AttributeExclude="true"  OnEntryOptions="IncludeParameterValue" OnSuccessOptions="IncludeReturnValue" AttributeTargetMembers="regex:get_.*|set_.*" />
+    <LogAttribute xmlns="clr-namespace:PostSharp.Toolkit.Diagnostics;assembly:PostSharp.Toolkit.Diagnostics" AttributeTargetMemberAttributes="NonAbstract" OnEntryOptions="IncludeParameterValue" OnSuccessOptions="IncludeReturnValue" AttributeTargetMembers="regex:get_.*|set_.*" />
   </Data>
 </Project>

@@ -54,7 +54,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccountPasswordResetted.cs" />
+    <Compile Include="AccountConfirmed.cs" />
+    <Compile Include="AccountPasswordReset.cs" />
     <Compile Include="AccountPasswordUpdated.cs" />
     <Compile Include="AccountRegistered.cs" />
     <Compile Include="AccountUpdated.cs" />

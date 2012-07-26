@@ -18,6 +18,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
 
         private EventSourcingTestHelper<Account> sut;
         private Guid _accountId = Guid.NewGuid();
+        private string confimationToken = Guid.NewGuid().ToString();
 
         [SetUp]
         public void Setup()
@@ -25,7 +26,23 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             this.sut = new EventSourcingTestHelper<Account>();
 
             this.sut.Setup(new AccountCommandHandler(this.sut.Repository, new PasswordService()));
-            this.sut.Given(new AccountRegistered { SourceId = _accountId, Name = "Bob", Password = null, Email = "bob.smith@apcurium.com", IbsAcccountId=10 });
+            this.sut.Given(new AccountRegistered { SourceId = _accountId, Name = "Bob", Password = null, Email = "bob.smith@apcurium.com", IbsAcccountId=10, ConfirmationToken = confimationToken});
+        }
+
+        [Test]
+        public void when_confirming_account_successfully()
+        {
+            this.sut.When(new ConfirmAccount { AccountId = _accountId, ConfimationToken = confimationToken });
+
+            var @event = sut.ThenHasSingle<AccountConfirmed>();
+            Assert.AreEqual(_accountId, @event.SourceId);
+        }
+
+        [Test]
+        public void when_confirming_account_with_invalid_token()
+        {
+            Assert.Throws<InvalidOperationException>(
+                () => this.sut.When(new ConfirmAccount { AccountId = _accountId, ConfimationToken = "invalid" }), "Invalid confirmation token");
         }
 
         [Test]
@@ -45,7 +62,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         {
             this.sut.When(new ResetAccountPassword { AccountId = _accountId, Password = "Yop" });
 
-            var @event = sut.ThenHasSingle<AccountPasswordResetted>();
+            var @event = sut.ThenHasSingle<AccountPasswordReset>();
 
             Assert.AreEqual(_accountId, @event.SourceId);
 

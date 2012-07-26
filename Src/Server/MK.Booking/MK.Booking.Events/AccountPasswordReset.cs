@@ -6,7 +6,7 @@ using Infrastructure.EventSourcing;
 
 namespace apcurium.MK.Booking.Events
 {
-    public class AccountPasswordResetted : VersionedEvent
+    public class AccountPasswordReset : VersionedEvent
     {
         public byte[] Password { get; set; }
     }
