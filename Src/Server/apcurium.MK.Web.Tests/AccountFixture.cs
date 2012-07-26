@@ -1,16 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System;
 using NUnit.Framework;
-using ServiceStack.Common.Web;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using System.Threading;
-using apcurium.MK.Booking.Api.Contract.Resources;
 
 
 namespace apcurium.MK.Web.Tests
@@ -211,7 +203,7 @@ namespace apcurium.MK.Web.Tests
                 NewPassword = "p@55w0rddddddddd"
             };
             sut.UpdatePassword(request);
-            Assert.Throws<WebServiceException>(() => sut.GetFavoriteAddresses(account.Id));
+            Assert.Throws<WebServiceException>(() => sut.GetFavoriteAddresses());
         }
 
         [Test]
