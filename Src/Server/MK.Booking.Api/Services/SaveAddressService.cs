@@ -37,6 +37,7 @@ namespace apcurium.MK.Booking.Api.Services
             var command = new Commands.AddAddress();
             
             AutoMapper.Mapper.Map(request, command);
+            command.AccountId = new Guid(this.GetSession().UserAuthId);
 
             _commandBus.Send(command);
 
@@ -49,7 +50,7 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 Id = Guid.NewGuid(),
                 AddressId = request.Id,
-                AccountId = request.AccountId
+                AccountId = new Guid(this.GetSession().UserAuthId)
             };
 
             _commandBus.Send(command);
@@ -62,6 +63,7 @@ namespace apcurium.MK.Booking.Api.Services
             var command = new Commands.UpdateAddress();
 
             AutoMapper.Mapper.Map(request, command);
+            command.AccountId = new Guid(this.GetSession().UserAuthId);
 
             _commandBus.Send(command);
 

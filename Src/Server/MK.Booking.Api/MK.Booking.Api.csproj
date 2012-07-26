@@ -138,6 +138,7 @@
     <Compile Include="Services\ResetPasswordService.cs" />
     <Compile Include="Services\SaveAddressService.cs" />
     <Compile Include="Services\TestOnlyReqGetTestAccountService.cs" />
+    <Compile Include="Services\UpdatePasswordService.cs" />
     <Compile Include="Validation\SaveFavoriteAddressValidator.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -38,14 +38,12 @@ namespace apcurium.MK.Web.Tests
             var pickupDate = DateTime.Now.AddHours(1);
             var requestDate = DateTime.Now.AddHours(1);
             var order = new CreateOrder
-                            {
-                                Id = Guid.NewGuid(),
-                                AccountId = TestAccount.Id,
-                                PickupAddress = TestAddresses.GetAddress1(),
-                                PickupDate = DateTime.Now,
-                                DropOffAddress = TestAddresses.GetAddress2(),
-
-                            };
+            {
+                Id = Guid.NewGuid(),
+                PickupAddress = TestAddresses.GetAddress1(),
+                PickupDate = DateTime.Now,
+                DropOffAddress = TestAddresses.GetAddress2(),
+            };
 
             order.Settings = new BookingSettings { ChargeTypeId = 99, VehicleTypeId = 88, ProviderId = 11, Phone = "514-555-1212", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" };
 
@@ -69,7 +67,6 @@ namespace apcurium.MK.Web.Tests
             var order = new CreateOrder
             {
                 Id = _orderId,
-                AccountId = TestAccount.Id,
                 PickupAddress = TestAddresses.GetAddress1(),
                 PickupDate = DateTime.Now,
                 DropOffAddress = TestAddresses.GetAddress2(),
@@ -85,7 +82,7 @@ namespace apcurium.MK.Web.Tests
         public void ibs_order_was_created()
         {
             var sut = new OrderServiceClient(BaseUrl);
-            var order = sut.GetOrder( TestAccount.Id, _orderId);
+            var order = sut.GetOrder(_orderId);
             
             Assert.IsNotNull(order);
             Assert.IsNotNull(order.IBSOrderId);
@@ -98,7 +95,7 @@ namespace apcurium.MK.Web.Tests
 
             var sut = new OrderServiceClient(BaseUrl);
 
-            var orders = sut.GetOrders(TestAccount.Id);
+            var orders = sut.GetOrders();
             Assert.NotNull(orders);
         }
 
@@ -107,7 +104,7 @@ namespace apcurium.MK.Web.Tests
         {
             var sut = new OrderServiceClient(BaseUrl);
 
-            var orders = sut.GetOrder(TestAccount.Id,_orderId);
+            var orders = sut.GetOrder(_orderId);
             Assert.NotNull(orders);
             
             //TODO: Fix test

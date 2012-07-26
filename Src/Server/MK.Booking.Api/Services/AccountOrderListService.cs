@@ -21,14 +21,7 @@ namespace apcurium.MK.Booking.Api.Services
 
         public override object OnGet(AccountOrderListRequest request)
         {
-            if (!request.AccountId.Equals(new Guid(this.GetSession().UserAuthId)))
-            {
-                throw HttpError.Unauthorized("Unauthorized");
-            }
-
             var session = this.GetSession();
-
-
             return Dao.FindByAccountId(new Guid(session.UserAuthId)).OrderByDescending(c => c.CreatedDate).Select(read => new OrderMapper().ToResource(read)); ;
         }
     }

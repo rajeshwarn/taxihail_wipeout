@@ -38,12 +38,6 @@ namespace apcurium.MK.Booking.Api.Services
         public override object OnPost(CreateOrder request)
         {
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
-            if (account.Id != request.AccountId) throw HttpError.Unauthorized("Unauthorized");
-            if (!IsValid(request.PickupAddress))
-            {
-                throw new HttpError(ErrorCode.CreateOrder_InvalidPickupAddress.ToString()); 
-            }
-
             //TODO : need to check ibs setup for shortesst time.
             request.PickupDate = request.PickupDate.HasValue ? request.PickupDate.Value : DateTime.Now.AddMinutes(2);            
             
@@ -59,8 +53,8 @@ namespace apcurium.MK.Booking.Api.Services
             Mapper.Map( request,  command  );
                         
             command.Id = Guid.NewGuid();
-
             command.IBSOrderId = ibsOrderId.Value;
+            command.AccountId = account.Id;
             
             _commandBus.Send(command);
             

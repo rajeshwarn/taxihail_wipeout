@@ -22,11 +22,6 @@ namespace apcurium.MK.Booking.Api.Services
 
         public override object OnGet(AddressHistoryRequest request)
         {
-            if (!request.AccountId.Equals(new Guid(this.GetSession().UserAuthId)))
-            {
-                throw HttpError.Unauthorized("Unauthorized");
-            }
-
             var session = this.GetSession();
             return _dao.FindHistoricByAccountId(new Guid(session.UserAuthId));
         }

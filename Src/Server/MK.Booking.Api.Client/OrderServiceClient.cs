@@ -15,34 +15,34 @@ namespace apcurium.MK.Booking.Api.Client
 
         public OrderStatusDetail CreateOrder(CreateOrder order)
         {
-            var req = string.Format("/accounts/{0}/orders", order.AccountId);
+            var req = string.Format("/account/orders");
             var result = Client.Post<OrderStatusDetail>(req, order);
             return result;
         }
 
-        public void CancelOrder(Guid accountId, Guid orderId)
+        public void CancelOrder(Guid orderId)
         {
-            var req = string.Format("/accounts/{0}/orders/{1}/cancel", accountId, orderId);
-            Client.Post<string>(req, new CancelOrder { AccountId = accountId, OrderId = orderId  });            
+            var req = string.Format("/account/orders/{0}/cancel", orderId);
+            Client.Post<string>(req, new CancelOrder { OrderId = orderId  });            
         }
 
-        public IList<Order> GetOrders( Guid accountId )
+        public IList<Order> GetOrders()
         {            
-            var req = string.Format("/accounts/{0}/orders", accountId);
+            var req = string.Format("/account/orders");
             var result = Client.Get<IList<Order>>(req);
             return result;
         }
 
-        public Order GetOrder(Guid accountId, Guid orderId)
+        public Order GetOrder(Guid orderId)
         {
-            var req = string.Format("/accounts/{0}/orders/{1}", accountId, orderId);
+            var req = string.Format("/account/orders/{0}", orderId);
             var result = Client.Get<Order>(req);
             return result;
         }
 
-        public OrderStatusDetail GetOrderStatus(Guid accountId, Guid orderId)
+        public OrderStatusDetail GetOrderStatus(Guid orderId)
         {
-            var req = string.Format("/accounts/{0}/orders/{1}/status", accountId, orderId);
+            var req = string.Format("/account/orders/{0}/status", orderId);
             var result = Client.Get<OrderStatusDetail>(req);
             return result;
         }

@@ -8,8 +8,11 @@ using ServiceStack.ServiceInterface;
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
-    [RestService("/account", "GET")]
-    public class CurrentAccount : BaseDTO
+    [RestService("/accounts/{AccountId}/updatePassword", "POST")]
+    public class UpdatePassword : BaseDTO
     {
+        public Guid AccountId { get; set; }
+        public string CurrentPassword { get; set; }
+        public string NewPassword { get; set; }
     }
 }

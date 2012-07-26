@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System;
 using NUnit.Framework;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using System.Threading;
-using apcurium.MK.Booking.Api.Contract.Resources;
 
 
 namespace apcurium.MK.Web.Tests
@@ -83,6 +77,34 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(newAccount.TwitterId, auth.UserName);
         }
 
+        [Test]
+        [ExpectedException("ServiceStack.ServiceClient.Web.WebServiceException", ExpectedMessage = "CreateAccount_AccountAlreadyExist")]
+        public void when_registering_2_account_with_same_facebookId()
+        {
+            var facebookId = Guid.NewGuid();
+
+            var sut = new AccountServiceClient(BaseUrl);
+            var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", FacebookId = facebookId.ToString() };
+            sut.RegisterAccount(newAccount);
+
+            var newAccount2 = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", FacebookId = facebookId.ToString() };
+            sut.RegisterAccount(newAccount2);
+        }
+
+        [Test]
+        [ExpectedException("ServiceStack.ServiceClient.Web.WebServiceException", ExpectedMessage = "CreateAccount_AccountAlreadyExist")]
+        public void when_registering_2_account_with_same_twitterId()
+        {
+            var twitterId = Guid.NewGuid();
+
+            var sut = new AccountServiceClient(BaseUrl);
+            var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", TwitterId = twitterId.ToString() };
+            sut.RegisterAccount(newAccount);
+
+            var newAccount2 = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", TwitterId = twitterId.ToString() };
+            sut.RegisterAccount(newAccount2);
+        }
+
 
         [Test]
         public void registering_account_has_settings()
@@ -132,6 +154,83 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
+        public void when_updating_account_password()
+        {
+            var sut = new AccountServiceClient(BaseUrl);
+
+            var account = CreateAndAuthenticateTestAccount();
+
+
+            sut.UpdatePassword(new UpdatePassword()
+                                   {
+                                       AccountId = account.Id,
+                                       CurrentPassword = base.TestAccountPassword,
+                                       NewPassword = "p@55w0rddddddddd"
+                                   });
+
+            Assert.DoesNotThrow(() => new AuthServiceClient(BaseUrl).Authenticate(account.Email, "p@55w0rddddddddd"));
+
+        }
+        [Test]
+        public void when_updating_account_password_with_wrong_current_password()
+        {
+            var sut = new AccountServiceClient(BaseUrl);
+
+            var account = CreateAndAuthenticateTestAccount();
+
+            new AuthServiceClient(BaseUrl).Authenticate(account.Email, base.TestAccountPassword);
+            var request = new UpdatePassword()
+                              {
+                                  AccountId = account.Id,
+                                  CurrentPassword = "wrongpassword",
+                                  NewPassword = "p@55w0rddddddddd"
+                             };
+
+            Assert.Throws<WebServiceException>(() => sut.UpdatePassword(request));
+        }
+
+        [Test]
+        public void when_updating_account_password__user_is_logout()
+        {
+            var sut = new AccountServiceClient(BaseUrl);
+
+            var account = CreateAndAuthenticateTestAccount();
+
+            new AuthServiceClient(BaseUrl).Authenticate(account.Email, base.TestAccountPassword);
+            var request = new UpdatePassword()
+            {
+                AccountId = account.Id,
+                CurrentPassword = base.TestAccountPassword,
+                NewPassword = "p@55w0rddddddddd"
+            };
+            sut.UpdatePassword(request);
+            Assert.Throws<WebServiceException>(() => sut.GetFavoriteAddresses());
+        }
+
+        [Test]
+        public void when_updating_twitter_account_password()
+        {
+
+            var sut = new AccountServiceClient(BaseUrl);
+            var password = "yop";
+            var accountId = Guid.NewGuid();
+            var twitterId = Guid.NewGuid();
+            var newMail = GetTempEmail();
+
+            var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", TwitterId = twitterId.ToString() };
+            sut.RegisterAccount(newAccount);
+
+            var auth = new AuthServiceClient(BaseUrl).AuthenticateTwitter(newAccount.TwitterId);
+            var request = new UpdatePassword()
+            {
+                AccountId = accountId,
+                CurrentPassword = password,
+                NewPassword = "p@55w0rddddddddd"
+            };
+            Assert.Throws<WebServiceException>(() => sut.UpdatePassword(request));
+        }
+
+        [Test]
         public void when_resetting_password_with_unknown_email_address()
         {
             var sut = new AccountServiceClient(BaseUrl);
@@ -157,7 +256,7 @@ namespace apcurium.MK.Web.Tests
 
             var sut = new AccountServiceClient(BaseUrl);
 
-            sut.UpdateBookingSettings(TestAccount.Id, settings);
+            sut.UpdateBookingSettings(settings);
 
             var account = sut.GetMyAccount();
 

@@ -8,9 +8,8 @@ using ServiceStack.ServiceInterface;
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
-    [RestService("/accounts/{AccountId}/addresses/history", "GET")]
+    [RestService("/account/addresses/history", "GET")]
     public class AddressHistoryRequest : BaseDTO
     {
-        public Guid AccountId { get; set; }
     }
 }

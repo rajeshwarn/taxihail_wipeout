@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Api.Services
             // Ensure user is not signed in
             this.RequestContext.Get<IHttpRequest>().RemoveSession();
 
-            if (_accountDao.FindByEmail(request.Email) != null)
+            if (_accountDao.FindByEmail(request.Email) != null || _accountDao.FindByFacebookId(request.FacebookId) != null || _accountDao.FindByTwitterId(request.TwitterId) != null)
             {
                 throw new HttpError(ErrorCode.CreateAccount_AccountAlreadyExist.ToString()); 
             }
@@ -76,7 +76,7 @@ namespace apcurium.MK.Booking.Api.Services
             _commandBus.Send(new SendAccountConfirmationEmail
                                  {
                                      EmailAddress = command.Email,
-                                     ConfirmationUrl = new Uri(new Uri(base.RequestContext.Get<IHttpRequest>().AbsoluteUri), string.Format("/api/accounts/confirm/{0}/{1}", command.Email, confirmationToken))
+                                     ConfirmationUrl = new Uri(new Uri(base.RequestContext.Get<IHttpRequest>().AbsoluteUri), string.Format("/api/account/confirm/{0}/{1}", command.Email, confirmationToken))
                                  });
             return new Account { Id = command.AccountId };
             }
