@@ -81,6 +81,13 @@ namespace apcurium.MK.Booking.Api.Client
             var response = Client.Post<string>(req,null);
         }
 
+        public string UpdatePassword(UpdatePassword updatePassword)
+        {
+            var req = string.Format("/accounts/{0}/updatepassword", updatePassword.AccountId);
+            var response = Client.Post<string>(req, updatePassword);
+            return response;
+        }
+
         
     }
 }

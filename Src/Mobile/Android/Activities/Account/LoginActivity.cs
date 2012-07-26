@@ -95,7 +95,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
         {
 
                     string err = "";
-                    var account = TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().GetFacebookAccount(infos.Id, out err);
+                    Api.Contract.Resources.Account account = null;
+                    try
+                    {
+                         account = TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().GetFacebookAccount(infos.Id, out err);
+                    }
+                    catch (Exception)
+                    {
+
+                         account = null;
+                    }
+                    //var account = TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().GetFacebookAccount(infos.Id, out err);
                     if (account != null)
                     {
                         AppContext.Current.UpdateLoggedInUser(account, false);

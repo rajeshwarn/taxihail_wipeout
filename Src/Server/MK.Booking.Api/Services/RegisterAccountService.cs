@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Api.Services
             // Ensure user is not signed in
             this.RequestContext.Get<IHttpRequest>().RemoveSession();
 
-            if (_accountDao.FindByEmail(request.Email) != null)
+            if (_accountDao.FindByEmail(request.Email) != null || _accountDao.FindByFacebookId(request.FacebookId) != null || _accountDao.FindByTwitterId(request.TwitterId) != null)
             {
                 throw new HttpError(ErrorCode.CreateAccount_AccountAlreadyExist.ToString()); 
             }
