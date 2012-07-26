@@ -22,7 +22,6 @@ namespace apcurium.MK.Web.Tests
             var order = new CreateOrder
             {
                 Id = _orderId,
-                AccountId = TestAccount.Id,
                 PickupAddress = TestAddresses.GetAddress1(),
                 DropOffAddress = TestAddresses.GetAddress2(),
                 PickupDate = DateTime.Now,
@@ -48,7 +47,7 @@ namespace apcurium.MK.Web.Tests
         public void create_and_get_a_valid_order()
         {
             var sut = new OrderServiceClient(BaseUrl);
-            var data = sut.GetOrderStatus( TestAccount.Id, _orderId);
+            var data = sut.GetOrderStatus( _orderId);
             //Assert.AreEqual(OrderStatus, data.Status);
         }
     }

@@ -12,7 +12,6 @@ namespace apcurium.MK.Booking.Api.Services
 {
     public class AddressesService : RestServiceBase<Addresses> 
     {
-
         public AddressesService(IAddressDao dao)
         {
             Dao = dao;
@@ -22,11 +21,6 @@ namespace apcurium.MK.Booking.Api.Services
 
         public override object OnGet(Addresses request)
         {
-            if (!request.AccountId.Equals(new Guid(this.GetSession().UserAuthId)))
-            {
-                throw HttpError.Unauthorized("Unauthorized");
-            }
-
             var session = this.GetSession();
             return Dao.FindFavoritesByAccountId(new Guid(session.UserAuthId));
         }

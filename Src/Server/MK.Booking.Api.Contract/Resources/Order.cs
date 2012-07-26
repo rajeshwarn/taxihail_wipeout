@@ -11,8 +11,6 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
 
         public int? IBSOrderId { get; set; }
         
-        public Guid AccountId { get; set; }
-
         public DateTime PickupDate { get; set; }
 
         public DateTime CreatedDate { get; set; }       
@@ -24,7 +22,5 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
         public Address DropOffAddress { get; set; }
 
         public BookingSettings Settings { get; set; }        
-
-        
     }
 }

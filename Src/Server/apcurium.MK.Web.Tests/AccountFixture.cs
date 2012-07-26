@@ -156,7 +156,7 @@ namespace apcurium.MK.Web.Tests
 
             var sut = new AccountServiceClient(BaseUrl);
 
-            sut.UpdateBookingSettings(TestAccount.Id, settings);
+            sut.UpdateBookingSettings(settings);
 
             var account = sut.GetMyAccount();
 

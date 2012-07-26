@@ -30,10 +30,8 @@ namespace apcurium.MK.Booking.Api.Services
 
         public override object OnPost(CancelOrder request)
         {
-            //bool CancelOrder(int orderId, int accountId, string contactPhone)
-
             var order = _orderDao.FindById(request.OrderId);
-            var account = _accountDao.FindById(request.AccountId);
+            var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
 
             if (!order.IBSOrderId.HasValue)
             {

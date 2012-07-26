@@ -37,7 +37,6 @@ namespace apcurium.MK.Web.Tests
             sut.AddFavoriteAddress(new SaveAddress
             {
                 Id = (_knownAddressId = Guid.NewGuid()),
-                AccountId = TestAccount.Id,
                 FriendlyName = "La Boite à Jojo",
                 FullAddress = "1234 rue Saint-Denis",
                 Latitude = 45.515065,
@@ -54,7 +53,6 @@ namespace apcurium.MK.Web.Tests
             sut.AddFavoriteAddress(new SaveAddress
                                        {
                                            Id = addressId,
-                                           AccountId = TestAccount.Id,
                                            FriendlyName = "Chez François Cuvelier",
                                            Apartment = "3939",
                                            FullAddress = "1234 rue Saint-Hubert",
@@ -63,7 +61,7 @@ namespace apcurium.MK.Web.Tests
                                            Longitude = -73.558064
                                        });
 
-            var addresses = sut.GetFavoriteAddresses(TestAccount.Id);
+            var addresses = sut.GetFavoriteAddresses();
 
             Assert.AreEqual(1, addresses.Count(x => x.Id == addressId));
         }
@@ -84,7 +82,6 @@ namespace apcurium.MK.Web.Tests
             sut.UpdateFavoriteAddress(new SaveAddress
             {
                 Id = _knownAddressId,
-                AccountId = TestAccount.Id,
                 FriendlyName = "Chez François Cuvelier",
                 Apartment = "3939",
                 FullAddress = "1234 rue Saint-Hubert",
@@ -93,7 +90,7 @@ namespace apcurium.MK.Web.Tests
                 Longitude = 34
             });
 
-            var address = sut.GetFavoriteAddresses(TestAccount.Id).Single(x => x.Id == _knownAddressId);
+            var address = sut.GetFavoriteAddresses().Single(x => x.Id == _knownAddressId);
 
             Assert.AreEqual("Chez François Cuvelier", address.FriendlyName);
             Assert.AreEqual("3939", address.Apartment);
@@ -113,7 +110,6 @@ namespace apcurium.MK.Web.Tests
                 .UpdateFavoriteAddress(new SaveAddress
                 {
                     Id = _knownAddressId,
-                    AccountId = TestAccount.Id,
                     FriendlyName =
                         "Chez François Cuvelier",
                     Apartment = "3939",
@@ -132,9 +128,9 @@ namespace apcurium.MK.Web.Tests
         {
             var sut = new AccountServiceClient(BaseUrl);
 
-            sut.RemoveFavoriteAddress(TestAccount.Id, _knownAddressId);
+            sut.RemoveFavoriteAddress(_knownAddressId);
 
-            var addresses = sut.GetFavoriteAddresses(TestAccount.Id);
+            var addresses = sut.GetFavoriteAddresses();
             Assert.IsEmpty(addresses.Where(x => x.Id == _knownAddressId));
         }
 
@@ -143,7 +139,7 @@ namespace apcurium.MK.Web.Tests
         {
             var sut = new AccountServiceClient(BaseUrl);
 
-            var addresses = sut.GetFavoriteAddresses(TestAccount.Id);
+            var addresses = sut.GetFavoriteAddresses();
 
             var knownAddress = addresses.SingleOrDefault(x => x.Id == _knownAddressId);
             Assert.IsNotNull(knownAddress);
@@ -156,7 +152,7 @@ namespace apcurium.MK.Web.Tests
             var sut = new AccountServiceClient(BaseUrl);
             var otherAccount = sut.GetTestAccount(1);            
             
-            var adresses = sut.GetFavoriteAddresses(otherAccount.Id);
+            var adresses = sut.GetFavoriteAddresses();
 
         }
     }

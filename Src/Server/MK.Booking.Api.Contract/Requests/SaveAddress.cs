@@ -8,13 +8,11 @@ using ServiceStack.ServiceInterface;
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
-    [RestService("/accounts/{AccountId}/addresses", "POST")]
-    [RestService("/accounts/{AccountId}/addresses/{Id}", "PUT, DELETE")]
+    [RestService("/account/addresses", "POST")]
+    [RestService("/account/addresses/{Id}", "PUT, DELETE")]
     public class SaveAddress
     {
         public Guid Id { get; set; }
-
-        public Guid AccountId { get; set; }
 
         public string FriendlyName { get; set; }
 

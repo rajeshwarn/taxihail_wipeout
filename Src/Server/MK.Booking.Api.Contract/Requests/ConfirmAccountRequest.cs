@@ -6,7 +6,7 @@ using ServiceStack.ServiceHost;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [RestService("/accounts/confirm/{EmailAddress}/{ConfirmationToken}", "GET")]
+    [RestService("/account/confirm/{EmailAddress}/{ConfirmationToken}", "GET")]
     public class ConfirmAccountRequest
     {
         public string EmailAddress { get; set; }

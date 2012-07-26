@@ -5,7 +5,7 @@ using ServiceStack.ServiceInterface;
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
-    [RestService("/accounts/{AccountId}/bookingsettings", "PUT")]
+    [RestService("/account/bookingsettings", "PUT")]
     public class BookingSettingsRequest : BaseDTO
     {
         public string Name { get; set; }        
@@ -21,7 +21,5 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public int ProviderId { get; set; }
 
         public int NumberOfTaxi { get; set; }
-
-        public Guid AccountId { get; set; }
     }
 }
