@@ -79,7 +79,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                         }
                         AppContext.Current.LastEmail = data.Email;
                         this.RunOnUiThread(() => Finish());
-                    },true );
+                    }, true);
             }
 
         }
@@ -93,8 +93,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             data.Phone = FindViewById<EditText>(Resource.Id.SignUpPhone).Text;
             if (IsCreatedFromSocial)
             {
-                data.FacebookId = string.IsNullOrEmpty(b.GetString("facebookId")) ? "" : b.GetString("facebookId");
-                data.TwitterId = string.IsNullOrEmpty(b.GetString("twitterId")) ? "" : b.GetString("twitterId");
+                data.FacebookId = string.IsNullOrEmpty(b.GetString("facebookId")) ? null : b.GetString("facebookId");
+                data.TwitterId = string.IsNullOrEmpty(b.GetString("twitterId")) ? null : b.GetString("twitterId");
             }
             
             return data;

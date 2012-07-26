@@ -30,13 +30,14 @@ namespace apcurium.MK.Booking.Api.Services
             // Ensure user is not signed in
             this.RequestContext.Get<IHttpRequest>().RemoveSession();
 
-            if (_accountDao.FindByEmail(request.Email) != null || _accountDao.FindByFacebookId(request.FacebookId) != null || _accountDao.FindByTwitterId(request.TwitterId) != null)
+            if (_accountDao.FindByEmail(request.Email) != null )
             {
                 throw new HttpError(ErrorCode.CreateAccount_AccountAlreadyExist.ToString()); 
             }
 
             if (!string.IsNullOrEmpty(request.FacebookId))
             {
+                if (_accountDao.FindByFacebookId(request.FacebookId) != null) throw new HttpError(ErrorCode.CreateAccount_AccountAlreadyExist.ToString()); 
                 var command = new Commands.RegisterFacebookAccount();
                 AutoMapper.Mapper.Map(request, command);
                 command.Id = Guid.NewGuid();
@@ -50,6 +51,7 @@ namespace apcurium.MK.Booking.Api.Services
             }
             else if (!string.IsNullOrEmpty(request.TwitterId))
             {
+                if (_accountDao.FindByTwitterId(request.TwitterId) != null) throw new HttpError(ErrorCode.CreateAccount_AccountAlreadyExist.ToString()); 
                 var command = new Commands.RegisterTwitterAccount();
                 AutoMapper.Mapper.Map(request, command);
                 command.Id = Guid.NewGuid();

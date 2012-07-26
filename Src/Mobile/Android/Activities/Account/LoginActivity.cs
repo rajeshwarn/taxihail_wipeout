@@ -69,7 +69,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
             FindViewById<Button>(Resource.Id.ForgotPasswordButton).Click += new EventHandler(ForgotPassword_Click);
 
-            FindViewById<Button>(Resource.Id.FacebookButton).Click += delegate { facebook.Connect("email,publish_stream"); };
+            FindViewById<Button>(Resource.Id.FacebookButton).Click += delegate
+                                                                          {
+                                                                              if (facebook.IsConnected)
+                                                                              {
+                                                                                  facebook.GetUserInfos(infos => CheckIfFacebookAccountExist(infos));
+                                                                              }
+                                                                              else
+                                                                              {
+                                                                                  facebook.Connect("email,publish_stream");
+                                                                              }
+                                                                              
+                                                                          };
 
             FindViewById<Button>(Resource.Id.TwitterButton).Click += delegate { twitterService.Connect(); };
 
@@ -127,7 +138,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
         {
 
             string err = "";
-            var account = TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().GetTwitterAccount(infos.Id, out err);
+            Api.Contract.Resources.Account account = null;
+            try
+            {
+                account = TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().GetTwitterAccount(infos.Id, out err);
+            }
+            catch (Exception)
+            {
+
+                account = null;
+            }
             if (account != null)
             {
                 AppContext.Current.UpdateLoggedInUser(account, false);

@@ -15,8 +15,5 @@ namespace apcurium.MK.Booking.Api.Client
         {
             get { return _client ?? (_client = new JsonServiceClient(_url)); }
         }
-
-
-
     }
 }

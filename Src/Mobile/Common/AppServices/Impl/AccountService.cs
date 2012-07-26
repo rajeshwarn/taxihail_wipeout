@@ -290,9 +290,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             try
             {
-                var service = TinyIoCContainer.Current.Resolve<AccountServiceClient>("NotAuthenticated");
-                service.RegisterAccount(data);
-                isSuccess = true;
+                UseServiceClient<AccountServiceClient>(service =>
+                {
+                    service.RegisterAccount(data);
+                    isSuccess = true;
+                });
+                //var service = TinyIoCContainer.Current.Resolve<AccountServiceClient>();
+                //var service = new AccountServiceClient("http://192.168.12.125/apcurium.MK.Web/api/");
+                //service.RegisterAccount(data);
+                //isSuccess = true;
             }
             catch (Exception ex)
             {
