@@ -36,6 +36,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (!string.IsNullOrEmpty(request.FacebookId))
             {
+                if (_accountDao.FindByFacebookId(request.FacebookId) != null) throw HttpError.Conflict("Account Already Exist");
                 var command = new Commands.RegisterFacebookAccount();
                 AutoMapper.Mapper.Map(request, command);
                 command.Id = Guid.NewGuid();
@@ -49,6 +50,7 @@ namespace apcurium.MK.Booking.Api.Services
             }
             else if (!string.IsNullOrEmpty(request.TwitterId))
             {
+                if (_accountDao.FindByTwitterId(request.TwitterId) != null) throw HttpError.Conflict("Account Already Exist");
                 var command = new Commands.RegisterTwitterAccount();
                 AutoMapper.Mapper.Map(request, command);
                 command.Id = Guid.NewGuid();

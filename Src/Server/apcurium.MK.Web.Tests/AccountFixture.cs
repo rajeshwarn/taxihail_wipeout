@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System;
 using NUnit.Framework;
+using ServiceStack.Common.Web;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Contract.Requests;
@@ -132,6 +134,97 @@ namespace apcurium.MK.Web.Tests
             sut.ResetPassword(newAccount.Email);
 
             Assert.Throws<WebServiceException>(() => sut.GetMyAccount());
+        }
+
+        [Test]
+        public void when_updating_account_password()
+        {
+            var sut = new AccountServiceClient(BaseUrl);
+            var password = "yop";
+            var accountId = Guid.NewGuid();
+            var newMail = GetTempEmail();
+
+            var newAccount = new RegisterAccount { AccountId = accountId, Phone = "5146543024", Email = newMail, Name = "First Name Test", Password = password };
+            sut.RegisterAccount(newAccount);
+
+            new AuthServiceClient(BaseUrl).Authenticate(newAccount.Email, newAccount.Password);
+
+
+            sut.UpdatePassword(new UpdatePassword()
+                                   {
+                                       AccountId = accountId,
+                                       CurrentPassword = password,
+                                       NewPassword = "p@55w0rddddddddd"
+                                   });
+
+            Assert.DoesNotThrow(() => new AuthServiceClient(BaseUrl).Authenticate(newMail, "p@55w0rddddddddd"));
+
+        }
+        [Test]
+        public void when_updating_account_password_with_wrong_current_password()
+        {
+            var sut = new AccountServiceClient(BaseUrl);
+            var password = "yop";
+            var accountId = Guid.NewGuid();
+            var newMail = GetTempEmail();
+
+            var newAccount = new RegisterAccount { AccountId = accountId, Phone = "5146543024", Email = newMail, Name = "First Name Test", Password = password };
+            sut.RegisterAccount(newAccount);
+
+            new AuthServiceClient(BaseUrl).Authenticate(newAccount.Email, newAccount.Password);
+            var request = new UpdatePassword()
+                              {
+                                  AccountId = accountId,
+                                  CurrentPassword = "wrongpassword",
+                                  NewPassword = "p@55w0rddddddddd"
+                             };
+
+            Assert.Throws<WebServiceException>(() => sut.UpdatePassword(request));
+        }
+
+        [Test]
+        public void when_updating_account_password__user_is_logout()
+        {
+            var sut = new AccountServiceClient(BaseUrl);
+            var password = "yop";
+            var accountId = Guid.NewGuid();
+            var newMail = GetTempEmail();
+
+            var newAccount = new RegisterAccount { AccountId = accountId, Phone = "5146543024", Email = newMail, Name = "First Name Test", Password = password };
+            sut.RegisterAccount(newAccount);
+
+            new AuthServiceClient(BaseUrl).Authenticate(newAccount.Email, newAccount.Password);
+            var request = new UpdatePassword()
+            {
+                AccountId = accountId,
+                CurrentPassword = password,
+                NewPassword = "p@55w0rddddddddd"
+            };
+            sut.UpdatePassword(request);
+            Assert.Throws<WebServiceException>(() => sut.GetFavoriteAddresses(accountId));
+        }
+
+        [Test]
+        public void when_updating_twitter_account_password()
+        {
+
+            var sut = new AccountServiceClient(BaseUrl);
+            var password = "yop";
+            var accountId = Guid.NewGuid();
+            var twitterId = Guid.NewGuid();
+            var newMail = GetTempEmail();
+
+            var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", TwitterId = twitterId.ToString() };
+            sut.RegisterAccount(newAccount);
+
+            var auth = new AuthServiceClient(BaseUrl).AuthenticateTwitter(newAccount.TwitterId);
+            var request = new UpdatePassword()
+            {
+                AccountId = accountId,
+                CurrentPassword = password,
+                NewPassword = "p@55w0rddddddddd"
+            };
+            Assert.Throws<WebServiceException>(() => sut.UpdatePassword(request));
         }
 
         [Test]
