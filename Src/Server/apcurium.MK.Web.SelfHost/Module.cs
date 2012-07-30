@@ -30,6 +30,7 @@ namespace apcurium.MK.Web.SelfHost
 
             new MK.Common.Module().Init(container);
             new MK.Booking.Module().Init(container);
+            new MK.Booking.Google.Module().Init(container);
             new MK.Booking.IBS.Module().Init(container);
             new MK.Booking.Api.Module().Init(container);
 

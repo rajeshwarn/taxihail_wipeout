@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         [Test]
         public void when_registering_account_successfully()
         {
-            this.sut.When(new RegisterAccount { AccountId = _accountId, Name = "Bob Smith", Phone = "888", Password = "bsmith", Email = "bob.smith@apcurium.com", IbsAccountId = 999, Language = "fr"});
+            this.sut.When(new RegisterAccount { AccountId = _accountId, Name = "Bob Smith", Phone = "888", Password = "bsmith", Email = "bob.smith@apcurium.com", IbsAccountId = 999, Language = "fr", ConfimationToken = "token"});
 
             Assert.AreEqual(1, sut.Events.Count);
             Assert.AreEqual(_accountId, ((AccountRegistered)sut.Events.Single()).SourceId);
