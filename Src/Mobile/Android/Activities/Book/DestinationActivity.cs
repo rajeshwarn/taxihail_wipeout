@@ -6,6 +6,7 @@ using System.Text;
 using Android.App;
 using Android.Content;
 using Android.OS;
+using Android.Provider;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
@@ -14,6 +15,8 @@ using Android.Locations;
 using TinyIoC;
 using apcurium.Framework.Extensions;
 using Android.Views.InputMethods;
+using apcurium.MK.Booking.Mobile.Client.Controls;
+using apcurium.MK.Booking.Mobile.Client.Models;
 using apcurium.MK.Booking.Mobile.Data;
 using WS = apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Extensions;
@@ -25,7 +28,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
     [Activity(Label = "Destination", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class DestinationActivity : AddressActivity, IAddress
     {
-
+        private LinearLayout _dropDownControlLayout;
 
         private TextView RideDistance
         {
@@ -54,13 +57,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         protected override Button SelectAddressButton
         {
-            get { return FindViewById<Button>(Resource.Id.destAddressButton); }
+            get { /*return FindViewById<Button>(Resource.Id.destAddressButton);*/
+                return null;
+            }
         }
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
             this.SetContentView(Resource.Layout.Destination);
-            
+
+            //Initialize dropdown control
+            var contactIntent = new Intent(Intent.ActionPick, ContactsContract.CommonDataKinds.StructuredPostal.ContentUri);
+            //contactIntent.SetType(ContactsContract.CommonDataKinds.StructuredPostal.ContentType);
+            var iconActionControl = new IconActionControl(this, "images/arrow-right@2x.png", new List<IconAction>() { new IconAction("images/favorite-icon@2x.png", contactIntent, 42) }, true);
+            _dropDownControlLayout = FindViewById<LinearLayout>(Resource.Id.linear_iconaction);
+
+            _dropDownControlLayout.AddView(iconActionControl);
             RefreshEstimates();
         }
 

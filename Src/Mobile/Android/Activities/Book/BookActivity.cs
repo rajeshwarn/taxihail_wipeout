@@ -207,24 +207,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
             else if (requestCode == 42)
             {
-                string id = data.Data.LastPathSegment;
-                var address = "";
-                var contacts = ManagedQuery(ContactsContract.CommonDataKinds.StructuredPostal.ContentUri, null, "_id = ?", new string[] { id }, null);
-                if (contacts.MoveToFirst())
+                if(data != null)
                 {
-                    address = contacts
-                        .GetString(contacts
-                                       .GetColumnIndex(
-                                           ContactsContract.CommonDataKinds.StructuredPostal.FormattedAddress));
-                }
-                //this.TabHost.SetCurrentTabByTag(Tab.Destination.ToString());
-                TogglePickupDestination(false);
-                var activity = (DestinationActivity)LocalActivityManager.GetActivity(this.TabHost.CurrentTabTag);
+                    string id = data.Data.LastPathSegment;
+                    var address = "";
+                    var contacts = ManagedQuery(ContactsContract.CommonDataKinds.StructuredPostal.ContentUri, null, "_id = ?", new string[] { id }, null);
+                    if (contacts.MoveToFirst())
+                    {
+                        address = contacts
+                            .GetString(contacts
+                                           .GetColumnIndex(
+                                               ContactsContract.CommonDataKinds.StructuredPostal.FormattedAddress));
+                    }
+                    //this.TabHost.SetCurrentTabByTag(Tab.Destination.ToString());
+                    TogglePickupDestination(false);
+                    var activity = (DestinationActivity)LocalActivityManager.GetActivity(this.TabHost.CurrentTabTag);
 
-                if (!string.IsNullOrEmpty(address))
-                {
-                    activity.SetLocationDataAndValidate(new WS.Address() { FullAddress = address }, true);
+                    if (!string.IsNullOrEmpty(address))
+                    {
+                        activity.SetLocationDataAndValidate(new WS.Address() { FullAddress = address }, true);
                    
+                    }
                 }
             }
         }
