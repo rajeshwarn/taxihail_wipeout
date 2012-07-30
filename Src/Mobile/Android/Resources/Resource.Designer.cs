@@ -154,142 +154,139 @@ namespace apcurium.MK.Booking.Mobile.Client
 			public const int cell_top_state = 2130837525;
 			
 			// aapt resource value: 0x7f020016
-			public const int close = 2130837526;
+			public const int email_cell = 2130837526;
 			
 			// aapt resource value: 0x7f020017
-			public const int email_cell = 2130837527;
+			public const int facebook_icon = 2130837527;
 			
 			// aapt resource value: 0x7f020018
-			public const int facebook_icon = 2130837528;
+			public const int footer = 2130837528;
 			
 			// aapt resource value: 0x7f020019
-			public const int footer = 2130837529;
+			public const int forgot_password_btn = 2130837529;
 			
 			// aapt resource value: 0x7f02001a
-			public const int forgot_password_btn = 2130837530;
+			public const int green_button = 2130837530;
 			
 			// aapt resource value: 0x7f02001b
-			public const int green_button = 2130837531;
+			public const int header = 2130837531;
 			
 			// aapt resource value: 0x7f02001c
-			public const int header = 2130837532;
+			public const int header_nologo = 2130837532;
 			
 			// aapt resource value: 0x7f02001d
-			public const int header_nologo = 2130837533;
+			public const int history = 2130837533;
 			
 			// aapt resource value: 0x7f02001e
-			public const int history = 2130837534;
+			public const int ic_tab_book = 2130837534;
 			
 			// aapt resource value: 0x7f02001f
-			public const int ic_tab_book = 2130837535;
+			public const int ic_tab_book_w = 2130837535;
 			
 			// aapt resource value: 0x7f020020
-			public const int ic_tab_book_w = 2130837536;
+			public const int ic_tab_history = 2130837536;
 			
 			// aapt resource value: 0x7f020021
-			public const int ic_tab_history = 2130837537;
+			public const int ic_tab_history_w = 2130837537;
 			
 			// aapt resource value: 0x7f020022
-			public const int ic_tab_history_w = 2130837538;
+			public const int ic_tab_locations = 2130837538;
 			
 			// aapt resource value: 0x7f020023
-			public const int ic_tab_locations = 2130837539;
+			public const int ic_tab_locations_w = 2130837539;
 			
 			// aapt resource value: 0x7f020024
-			public const int ic_tab_locations_w = 2130837540;
+			public const int ic_tab_settings = 2130837540;
 			
 			// aapt resource value: 0x7f020025
-			public const int ic_tab_settings = 2130837541;
+			public const int ic_tab_settings_w = 2130837541;
 			
 			// aapt resource value: 0x7f020026
-			public const int ic_tab_settings_w = 2130837542;
+			public const int Icon = 2130837542;
 			
 			// aapt resource value: 0x7f020027
-			public const int Icon = 2130837543;
+			public const int listleftarrow = 2130837543;
 			
 			// aapt resource value: 0x7f020028
-			public const int listleftarrow = 2130837544;
+			public const int location = 2130837544;
 			
 			// aapt resource value: 0x7f020029
-			public const int location = 2130837545;
+			public const int locations = 2130837545;
 			
 			// aapt resource value: 0x7f02002a
-			public const int locations = 2130837546;
+			public const int Logo_TaxiDiamond = 2130837546;
 			
 			// aapt resource value: 0x7f02002b
-			public const int Logo_TaxiDiamond = 2130837547;
+			public const int newBlackButton = 2130837547;
 			
 			// aapt resource value: 0x7f02002c
-			public const int newBlackButton = 2130837548;
+			public const int password_cell = 2130837548;
 			
 			// aapt resource value: 0x7f02002d
-			public const int password_cell = 2130837549;
+			public const int pickDate = 2130837549;
 			
 			// aapt resource value: 0x7f02002e
-			public const int pickDate = 2130837550;
+			public const int pickDateNormal = 2130837550;
 			
 			// aapt resource value: 0x7f02002f
-			public const int pickDateNormal = 2130837551;
+			public const int pickTime = 2130837551;
 			
 			// aapt resource value: 0x7f020030
-			public const int pickTime = 2130837552;
+			public const int pickTimeNormal = 2130837552;
 			
 			// aapt resource value: 0x7f020031
-			public const int pickTimeNormal = 2130837553;
+			public const int pin_green = 2130837553;
 			
 			// aapt resource value: 0x7f020032
-			public const int pin_green = 2130837554;
+			public const int pin_grey = 2130837554;
 			
 			// aapt resource value: 0x7f020033
-			public const int pin_grey = 2130837555;
+			public const int pin_red = 2130837555;
 			
 			// aapt resource value: 0x7f020034
-			public const int pin_red = 2130837556;
+			public const int pin_yellow = 2130837556;
 			
 			// aapt resource value: 0x7f020035
-			public const int pin_yellow = 2130837557;
+			public const int pushPin = 2130837557;
 			
 			// aapt resource value: 0x7f020036
-			public const int pushPin = 2130837558;
+			public const int red_button = 2130837558;
 			
 			// aapt resource value: 0x7f020037
-			public const int red_button = 2130837559;
+			public const int right_arrow = 2130837559;
 			
 			// aapt resource value: 0x7f020038
-			public const int right_arrow = 2130837560;
+			public const int roundedContainer = 2130837560;
 			
 			// aapt resource value: 0x7f020039
-			public const int roundedContainer = 2130837561;
+			public const int settings = 2130837561;
 			
 			// aapt resource value: 0x7f02003a
-			public const int settings = 2130837562;
+			public const int sign_in_bnt = 2130837562;
 			
 			// aapt resource value: 0x7f02003b
-			public const int sign_in_bnt = 2130837563;
+			public const int sign_in_btn = 2130837563;
 			
 			// aapt resource value: 0x7f02003c
-			public const int sign_in_btn = 2130837564;
+			public const int social_media_login_btn = 2130837564;
 			
 			// aapt resource value: 0x7f02003d
-			public const int social_media_login_btn = 2130837565;
+			public const int SpinnerSelectorBackground = 2130837565;
 			
 			// aapt resource value: 0x7f02003e
-			public const int SpinnerSelectorBackground = 2130837566;
+			public const int splash = 2130837566;
 			
 			// aapt resource value: 0x7f02003f
-			public const int splash = 2130837567;
+			public const int taxi_label = 2130837567;
 			
 			// aapt resource value: 0x7f020040
-			public const int taxi_label = 2130837568;
+			public const int topFieldBackgroundLg = 2130837568;
 			
 			// aapt resource value: 0x7f020041
-			public const int topFieldBackgroundLg = 2130837569;
+			public const int topFieldBackgroundSm = 2130837569;
 			
 			// aapt resource value: 0x7f020042
-			public const int topFieldBackgroundSm = 2130837570;
-			
-			// aapt resource value: 0x7f020043
-			public const int twitter_icon = 2130837571;
+			public const int twitter_icon = 2130837570;
 			
 			private Drawable()
 			{
