@@ -47,7 +47,7 @@ namespace apcurium.MK.Web.Tests
         public void when_registering_a_new_account()
         {
             var sut = new AccountServiceClient(BaseUrl);
-            var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", Password = "password" };
+            var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", Password = "password", Language = "en" };
             sut.RegisterAccount(newAccount);
 
             Assert.Throws<WebServiceException>(() => new AuthServiceClient(BaseUrl).Authenticate(newAccount.Email, newAccount.Password));
@@ -57,7 +57,7 @@ namespace apcurium.MK.Web.Tests
         public void RegisteringFacebookAccountTest()
         {
             var sut = new AccountServiceClient(BaseUrl);
-            var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", FacebookId = Guid.NewGuid().ToString()};
+            var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", FacebookId = Guid.NewGuid().ToString(), Language = "en" };
             sut.RegisterAccount(newAccount);
 
             var auth = new AuthServiceClient(BaseUrl).AuthenticateFacebook(newAccount.FacebookId);
@@ -69,7 +69,7 @@ namespace apcurium.MK.Web.Tests
         public void RegisteringTwitterAccountTest()
         {
             var sut = new AccountServiceClient(BaseUrl);
-            var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", TwitterId = Guid.NewGuid().ToString() };
+            var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", TwitterId = Guid.NewGuid().ToString(), Language = "en" };
             sut.RegisterAccount(newAccount);
 
             var auth = new AuthServiceClient(BaseUrl).AuthenticateTwitter(newAccount.TwitterId);
@@ -117,6 +117,7 @@ namespace apcurium.MK.Web.Tests
             var account = sut.GetMyAccount();
 
             // Assert
+            Assert.AreEqual("en", account.Language);
             Assert.IsNotNull(account.Settings);
             Assert.AreEqual(account.Settings.Name, account.Name);
             Assert.AreEqual(account.Settings.Phone, account.Phone);
@@ -131,7 +132,7 @@ namespace apcurium.MK.Web.Tests
             string email = GetTempEmail();
 
             var sut = new AccountServiceClient(BaseUrl);
-            var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = email, Name = "First Name Test", Password = "password" };
+            var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = email, Name = "First Name Test", Password = "password"  };
             sut.RegisterAccount(newAccount);
 
             var newAccount2 = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = email, Name = "First Name Test", Password = "password" };

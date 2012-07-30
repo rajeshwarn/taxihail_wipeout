@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
+using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.ReadModel.Query;
@@ -59,10 +60,14 @@ namespace apcurium.MK.Web.Tests
     public class give_an_existing_order : BaseTest
     {
         private readonly Guid _orderId = Guid.NewGuid();
+
         [TestFixtureSetUp]
-        public new void Setup()
+        public new void TestFixtureSetup()
         {
             base.TestFixtureSetup();
+
+            new AuthServiceClient(BaseUrl).Authenticate(TestAccount.Email, TestAccountPassword);    
+
             var sut = new OrderServiceClient(BaseUrl);
             var order = new CreateOrder
             {
@@ -74,8 +79,12 @@ namespace apcurium.MK.Web.Tests
             };
             order.Settings = new BookingSettings { ChargeTypeId = 99, VehicleTypeId = 88, ProviderId = 11, Phone = "514-555-1212", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" };
             sut.CreateOrder(order);
+        }
 
-
+        [SetUp]
+        public override void Setup()
+        {
+            base.Setup();
         }
 
         [Test]
@@ -86,6 +95,36 @@ namespace apcurium.MK.Web.Tests
             
             Assert.IsNotNull(order);
             Assert.IsNotNull(order.IBSOrderId);
+        }
+
+        [Test]
+        public void can_not_get_order_another_account()
+        {
+            CreateAndAuthenticateTestAccount();
+
+            var sut = new OrderServiceClient(BaseUrl);
+            Assert.Throws<WebServiceException>(() => sut.GetOrder(_orderId));
+        }
+
+        [Test]
+        public void can_cancel_it()
+        {
+            var sut = new OrderServiceClient(BaseUrl);
+            sut.CancelOrder(_orderId);
+
+            var status = sut.GetOrderStatus(_orderId);
+
+            Assert.AreEqual("Cancelled", status.IBSStatusDescription);
+        }
+
+        [Test]
+        public void can_not_cancel_when_different_account()
+        {
+            CreateAndAuthenticateTestAccount();
+              
+            var sut = new OrderServiceClient(BaseUrl);
+
+            Assert.Throws<WebServiceException>(() => sut.CancelOrder(_orderId));
         }
 
 

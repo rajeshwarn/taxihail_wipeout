@@ -21,10 +21,10 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
     using System.Linq;
     using Infrastructure.Messaging;
     using Moq;
-    using apcurium.MK.Booking.EventHandlers;
-    using apcurium.MK.Booking.Database;
-    using apcurium.MK.Booking.Events;
-    using apcurium.MK.Booking.ReadModel;
+    using EventHandlers;
+    using Database;
+    using Events;
+    using ReadModel;
     using apcurium.MK.Booking.IBS.Impl;
     using apcurium.MK.Common.Diagnostic;
     using apcurium.MK.Booking.Common.Tests;
@@ -63,6 +63,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                                     IbsAcccountId = 666,
                                     FacebookId = "FacebookId",
                                     TwitterId = "TwitterId",
+                                    Language = "fr"
                                 });
 
             using (var context = new BookingDbContext(dbName))
@@ -77,6 +78,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 Assert.AreEqual("FacebookId", dto.FacebookId);
                 Assert.AreEqual("TwitterId", dto.TwitterId);
                 Assert.AreEqual(false, dto.IsConfirmed);
+                Assert.AreEqual("fr", dto.Language);
             }
         }
 

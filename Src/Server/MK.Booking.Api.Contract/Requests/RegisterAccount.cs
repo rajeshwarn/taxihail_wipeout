@@ -22,6 +22,8 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public string FacebookId { get; set; }
 
         public string TwitterId { get; set; }
+
+        public string Language { get; set; }
         
     }
 }

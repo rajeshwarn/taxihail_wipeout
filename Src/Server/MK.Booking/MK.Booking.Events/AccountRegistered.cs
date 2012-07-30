@@ -12,6 +12,7 @@ namespace apcurium.MK.Booking.Events
         public string FacebookId { get; set; }
         public string TwitterId { get; set; }
         public string ConfirmationToken { get; set; }
+        public string Language { get; set; }
     }
     
 }
