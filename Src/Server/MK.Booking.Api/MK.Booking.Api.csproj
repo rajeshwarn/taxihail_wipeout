@@ -126,9 +126,6 @@
     <Compile Include="Services\CurrentAccountService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AddressesService.cs" />
-    <Compile Include="Services\GoogleApi\CommonDto.cs" />
-    <Compile Include="Services\GoogleApi\DirectionDto.cs" />
-    <Compile Include="Services\GoogleApi\GeolocDto.cs" />
     <Compile Include="Services\NearbyPlacesService.cs" />
     <Compile Include="Services\OrderMapper.cs" />
     <Compile Include="Services\OrderService.cs" />

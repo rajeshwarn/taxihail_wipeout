@@ -6,11 +6,11 @@ using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using ServiceStack.ServiceClient.Web;
+using apcurium.MK.Booking.Google;
 using apcurium.MK.Common.Extensions;
 using ServiceStack.Common.Web;
 using System.Net;
 using System.Globalization;
-using apcurium.MK.Booking.Api.Services.GoogleApi;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
 
@@ -27,9 +27,11 @@ namespace apcurium.MK.Booking.Api.Services
 
     public class DirectionsService : RestServiceBase<DirectionsRequest>
     {
+        private readonly IPlacesClient _client;
         private IConfigurationManager _configManager;
-        public DirectionsService(IConfigurationManager configManager)
+        public DirectionsService(IPlacesClient client, IConfigurationManager configManager)
         {
+            _client = client;
             _configManager = configManager;
         }
 
@@ -38,14 +40,9 @@ namespace apcurium.MK.Booking.Api.Services
         {
             
             var result = new DirectionInfo();
+            var directions = _client.GetDirections(request.OriginLat.GetValueOrDefault(), request.OriginLng.GetValueOrDefault(), request.DestinationLat.GetValueOrDefault(), request.DestinationLng.GetValueOrDefault());
 
-            var client = new JsonServiceClient("http://maps.googleapis.com/maps/api/");
-
-            var resource = string.Format(CultureInfo.InvariantCulture, "directions/json?origin={0},{1}&destination={2},{3}&sensor=false", request.OriginLat, request.OriginLng, request.DestinationLat, request.DestinationLng);            
-
-            var directions = client.Get<DirectionResult>(resource);
-
-            if (directions.Status == ResultStatus.OK) 
+            if (directions.Status == Google.Resources.ResultStatus.OK) 
             {
                 var route = directions.Routes.ElementAt(0);
                 if ( route.Legs.Count > 0 )
