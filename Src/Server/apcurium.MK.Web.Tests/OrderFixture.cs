@@ -91,6 +91,14 @@ namespace apcurium.MK.Web.Tests
             Assert.IsNotNull(order.IBSOrderId);
         }
 
+        [Test]
+        public void can_not_get_order_another_account()
+        {
+            CreateAndAuthenticateTestAccount();
+
+            var sut = new OrderServiceClient(BaseUrl);
+            Assert.Throws<WebServiceException>(() => sut.GetOrder(_orderId));
+        }
 
         [Test]
         public void can_cancel_it()
