@@ -117,6 +117,7 @@
     <Compile Include="Activities\Account\LoginActivity.cs" />
     <Compile Include="Activities\MainActivity.cs" />
     <Compile Include="MapUtitilties\PushPinOverlay.cs" />
+    <Compile Include="MapUtitilties\TaxiOverlay.cs" />
     <Compile Include="Models\AddressItemListModel.cs" />
     <Compile Include="Models\BookingModel.cs" />
     <Compile Include="Models\HistoryModel.cs" />
@@ -133,9 +134,6 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\OrderListItem.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\Layout\Login2.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <None Include="Resources\Resource.Designer.cs.bak" />
@@ -372,6 +370,7 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Drawable\cell_bottom_state.xml" />
+    <AndroidResource Include="Resources\Drawable\taxi_label.png" />
     <Content Include="Todo.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />

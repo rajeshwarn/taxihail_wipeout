@@ -10,6 +10,7 @@ using Infrastructure.Messaging;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query;
+using apcurium.MK.Common.Extensions;
 
 using RegisterAccount = apcurium.MK.Booking.Api.Contract.Requests.RegisterAccount;
 
@@ -35,10 +36,10 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (_accountDao.FindByEmail(request.Email) != null || _accountDao.FindByFacebookId(request.FacebookId) != null || _accountDao.FindByTwitterId(request.TwitterId) != null)
             {
-                throw new HttpError(ErrorCode.CreateAccount_AccountAlreadyExist.ToString()); 
+                throw new HttpError(ErrorCode.CreateAccount_AccountAlreadyExist.ToString());
             }
 
-            if (!string.IsNullOrEmpty(request.FacebookId))
+            if (request.FacebookId.HasValue())
             {
                 var command = new Commands.RegisterFacebookAccount();
                 AutoMapper.Mapper.Map(request, command);
@@ -51,7 +52,7 @@ namespace apcurium.MK.Booking.Api.Services
                 _commandBus.Send(command);
                 return new Account { Id = command.AccountId };
             }
-            else if (!string.IsNullOrEmpty(request.TwitterId))
+            else if (request.TwitterId.HasValue())
             {
                 var command = new Commands.RegisterTwitterAccount();
                 AutoMapper.Mapper.Map(request, command);
@@ -66,15 +67,18 @@ namespace apcurium.MK.Booking.Api.Services
             }
             else
             {
+                var confirmationToken = Guid.NewGuid();
                 var command = new Commands.RegisterAccount();
-                AutoMapper.Mapper.Map( request,  command  );
+
+                AutoMapper.Mapper.Map(request, command);
                 command.Id = Guid.NewGuid();
-                command.IbsAccountId = _accountWebServiceClient.CreateAccount(command.AccountId, 
+                command.ConfimationToken = confirmationToken.ToString();
+                command.IbsAccountId = _accountWebServiceClient.CreateAccount(command.AccountId,
                                                                                 command.Email,
                                                                                 "",
-                                                                                command.Name,                                                                      
+                                                                                command.Name,
                                                                                 command.Phone);
-                var confirmationToken = Guid.NewGuid();
+
                 command.ConfimationToken = confirmationToken.ToString();
                 _commandBus.Send(command);
             
@@ -94,10 +98,10 @@ namespace apcurium.MK.Booking.Api.Services
                 }
 
                 _commandBus.Send(new SendAccountConfirmationEmail
-                                 {
-                                     EmailAddress = command.Email,
+                                     {
+                                         EmailAddress = command.Email,
                                      ConfirmationUrl = new Uri(root + string.Format("/api/account/confirm/{0}/{1}", command.Email, confirmationToken)),
-                                 });
+                                     });
                 return new Account { Id = command.AccountId };
             }
         }
