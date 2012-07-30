@@ -1,5 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
+using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -17,6 +18,8 @@ namespace apcurium.MK.Web.Tests
         {
             base.TestFixtureSetup();
 
+            new AuthServiceClient(BaseUrl).Authenticate(TestAccount.Email, TestAccountPassword);   
+ 
             _orderId = Guid.NewGuid();
             var sut = new OrderServiceClient(BaseUrl);
             var order = new CreateOrder
@@ -48,7 +51,17 @@ namespace apcurium.MK.Web.Tests
         {
             var sut = new OrderServiceClient(BaseUrl);
             var data = sut.GetOrderStatus( _orderId);
-            //Assert.AreEqual(OrderStatus, data.Status);
+            Assert.AreEqual("wosWAITING", data.IBSStatusId);
+        }
+
+        [Test]
+        public void can_not_access_order_status_another_account()
+        {
+            CreateAndAuthenticateTestAccount();
+
+            var sut = new OrderServiceClient(BaseUrl);
+
+            Assert.Throws<WebServiceException>(() => sut.GetOrderStatus(_orderId));
         }
     }
 }
