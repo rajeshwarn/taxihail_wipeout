@@ -38,6 +38,11 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(ErrorCode.CancelOrder_OrderNotInIbs.ToString());
             }
 
+            if(account.Id != order.AccountId)
+            {
+                throw new HttpError(HttpStatusCode.Unauthorized, "Can't cancel another account's order");
+            }
+
             var isSuccessful = _bookingWebServiceClient.CancelOrder(order.IBSOrderId.Value, account.IBSAccountId, order.Settings.Phone);
 
             if (!isSuccessful)
