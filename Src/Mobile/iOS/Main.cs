@@ -10,6 +10,7 @@ using apcurium.MK.Booking.Mobile.Practices;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using ServiceStack.Text;
 
 
 namespace apcurium.MK.Booking.Mobile.Client
@@ -90,6 +91,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			Logger.LogMessage ("OnActivated");
 
+            JsConfig.RegisterTypeForAot<OrderStatus>();
+            JsConfig.RegisterTypeForAot<OrderStatusDetail>();
 			if (AppContext.Current.LoggedUser != null)
 			{
 				ThreadHelper.ExecuteInThread (() =>

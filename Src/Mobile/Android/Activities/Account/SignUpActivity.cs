@@ -72,7 +72,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
         private RegisterAccount GetRegisterAccount()
         {
             var data = new RegisterAccount();
-            data.AccountId = Guid.NewGuid();
             data.Password = FindViewById<EditText>(Resource.Id.SignUpPassword).Text;            
             data.Email = FindViewById<EditText>(Resource.Id.SignUpEditEmail).Text;
             data.Name= FindViewById<EditText>(Resource.Id.SignUpName).Text;            

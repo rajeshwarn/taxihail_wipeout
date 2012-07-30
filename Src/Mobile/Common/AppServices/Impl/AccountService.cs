@@ -283,6 +283,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             string lError = "";
 
+            data.AccountId = Guid.NewGuid();
+
             try
             {
                 var service = TinyIoCContainer.Current.Resolve<AccountServiceClient>("NotAuthenticated");
