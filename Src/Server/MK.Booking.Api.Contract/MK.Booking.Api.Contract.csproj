@@ -98,6 +98,7 @@
     <Compile Include="Requests\CreateOrder.cs" />
     <Compile Include="Requests\DirectionsRequest.cs" />
     <Compile Include="Requests\GeocodingRequest.cs" />
+    <Compile Include="Requests\NearbyPlacesRequest.cs" />
     <Compile Include="Requests\OrderRequest.cs" />
     <Compile Include="Requests\OrderStatusRequest.cs" />
     <Compile Include="Requests\ReferenceDataRequest.cs" />

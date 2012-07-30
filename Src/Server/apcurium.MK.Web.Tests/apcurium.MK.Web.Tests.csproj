@@ -102,6 +102,7 @@
     <Compile Include="DirectionsFixture.cs" />
     <Compile Include="FavoriteAddressFixture.cs" />
     <Compile Include="GeolocFixture.cs" />
+    <Compile Include="NearbyPlacesFixture.cs" />
     <Compile Include="OrderFixture.cs" />
     <Compile Include="OrderStatusFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
