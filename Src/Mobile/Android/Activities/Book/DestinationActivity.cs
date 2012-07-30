@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
     [Activity(Label = "Destination", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class DestinationActivity : AddressActivity, IAddress
     {
-        private LinearLayout _dropDownControlLayout;
+        
 
         private TextView RideDistance
         {
@@ -65,18 +65,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             base.OnCreate(bundle);
             this.SetContentView(Resource.Layout.Destination);
-
-            //Initialize dropdown control
-            var contactIntent = new Intent(Intent.ActionPick, ContactsContract.CommonDataKinds.StructuredPostal.ContentUri);
-            //contactIntent.SetType(ContactsContract.CommonDataKinds.StructuredPostal.ContentType);
-            var iconActionControl = new IconActionControl(this, "images/arrow-right@2x.png", new List<IconAction>() { new IconAction("images/favorite-icon@2x.png", contactIntent, 42) }, true);
-            _dropDownControlLayout = FindViewById<LinearLayout>(Resource.Id.linear_iconaction);
-
-            _dropDownControlLayout.AddView(iconActionControl);
+            this.InitializeDropDownMenu();
             RefreshEstimates();
         }
-
-
 
         private void RefreshEstimates()
         {

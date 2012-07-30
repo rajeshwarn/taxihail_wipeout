@@ -32,7 +32,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         const int PICK_CONTACT = 42;
         const double DELTA_DISTANCE = 0.001;
 
-        private LinearLayout _dropDownControlLayout;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -47,15 +46,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             FindViewById<Button>(Resource.Id.pickupDateButton).Click += new EventHandler(PickDate_Click);
 
             FindViewById<EditText>(Resource.Id.pickupTimeText).EditorAction += new EventHandler<TextView.EditorActionEventArgs>(PickupTimeText_EditorAction);
-
-            //Initialize dropdown control
-            var contactIntent = new Intent(Intent.ActionPick, ContactsContract.CommonDataKinds.StructuredPostal.ContentUri);
-            //contactIntent.SetType(ContactsContract.CommonDataKinds.StructuredPostal.ContentType);
-            var iconActionControl = new IconActionControl(this, "images/arrow-right@2x.png", new List<IconAction>() { new IconAction("images/favorite-icon@2x.png", contactIntent, PICK_CONTACT) }, true);
-            _dropDownControlLayout = FindViewById<LinearLayout>(Resource.Id.linear_iconaction);
-
-            _dropDownControlLayout.AddView(iconActionControl);
-
+            this.InitializeDropDownMenu();
         }
 
         protected override int TitleResourceId
@@ -108,14 +99,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                         ParentActivity.BookingInfo.PickupDate = null;
                     }
                     RefreshDateTime();
-            }
-            if (requestCode == PICK_CONTACT)
-            {
-                string id = data.Data.LastPathSegment;
-                var contacts = ManagedQuery(ContactsContract.Contacts.ContentUri, null, "_id = ?", new string[] { id }, null);
-                contacts.MoveToFirst();
-
-                //_contactName.Text = "Got contact: " + contacts.GetString(contacts.GetColumnIndex("display_name"));
             }
         }
 

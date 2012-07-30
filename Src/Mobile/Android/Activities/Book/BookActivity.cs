@@ -15,6 +15,7 @@ using Android.GoogleMaps;
 using Android.Locations;
 using apcurium.Framework.Extensions;
 using TinyIoC;
+using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Models;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.AppServices;
@@ -35,8 +36,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             Pickup,
             Destination
         }
-
-
 
         public LocationService LocationService
         {
@@ -75,9 +74,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             TabWidget.Visibility = ViewStates.Gone;
             Parent.FindViewById<Button>(Resource.Id.BookItBtn).Click += new EventHandler(BookItBtn_Click);
-
-
         }
+
+        
 
         protected override void OnResume()
         {
