@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Web;
+using System.Web.Hosting;
+using System.Web.Hosting;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
@@ -63,25 +66,40 @@ namespace apcurium.MK.Booking.Api.Services
             }
             else
             {
-                 var command = new Commands.RegisterAccount();
-            AutoMapper.Mapper.Map( request,  command  );
-            command.Id = Guid.NewGuid();
-            command.IbsAccountId = _accountWebServiceClient.CreateAccount(command.AccountId, 
-                                                                            command.Email,
-                                                                            "",
-                                                                            command.Name,                                                                      
-                                                                            command.Phone);
-            var confirmationToken = Guid.NewGuid();
-            command.ConfimationToken = confirmationToken.ToString();
-            _commandBus.Send(command);
-            _commandBus.Send(new SendAccountConfirmationEmail
+                var command = new Commands.RegisterAccount();
+                AutoMapper.Mapper.Map( request,  command  );
+                command.Id = Guid.NewGuid();
+                command.IbsAccountId = _accountWebServiceClient.CreateAccount(command.AccountId, 
+                                                                                command.Email,
+                                                                                "",
+                                                                                command.Name,                                                                      
+                                                                                command.Phone);
+                var confirmationToken = Guid.NewGuid();
+                command.ConfimationToken = confirmationToken.ToString();
+                _commandBus.Send(command);
+            
+                // Determine the root path to the app 
+                var httpRequest = RequestContext.Get<IHttpRequest>();
+                string root = null;
+                var aspNetRequest = httpRequest.OriginalRequest as HttpRequest;
+                if(aspNetRequest == null)
+                {
+                    // We are probably in a test environment, using HttpListener
+                    root = new Uri(RequestContext.AbsoluteUri).GetLeftPart(UriPartial.Authority);
+                }
+                else
+                {
+                    // We are in IIS
+                    root = HostingEnvironment.ApplicationVirtualPath;
+                }
+
+                _commandBus.Send(new SendAccountConfirmationEmail
                                  {
                                      EmailAddress = command.Email,
-                                     ConfirmationUrl = new Uri(new Uri(base.RequestContext.Get<IHttpRequest>().AbsoluteUri), string.Format("/api/account/confirm/{0}/{1}", command.Email, confirmationToken))
+                                     ConfirmationUrl = new Uri(root + string.Format("/api/account/confirm/{0}/{1}", command.Email, confirmationToken)),
                                  });
-            return new Account { Id = command.AccountId };
+                return new Account { Id = command.AccountId };
             }
         }
-
     }
 }
