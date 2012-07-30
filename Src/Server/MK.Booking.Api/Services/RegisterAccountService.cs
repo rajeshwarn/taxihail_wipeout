@@ -71,7 +71,8 @@ namespace apcurium.MK.Booking.Api.Services
                                                                             "",
                                                                             command.Name,                                                                      
                                                                             command.Phone);
-            var confirmationToken = Guid.NewGuid();            
+            var confirmationToken = Guid.NewGuid();
+            command.ConfimationToken = confirmationToken.ToString();
             _commandBus.Send(command);
             _commandBus.Send(new SendAccountConfirmationEmail
                                  {
