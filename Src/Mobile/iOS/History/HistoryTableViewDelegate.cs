@@ -7,14 +7,17 @@ using System.Text;
 
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-namespace TaxiMobileApp
+using apcurium.MK.Booking.Api.Contract.Resources;
+
+
+namespace apcurium.MK.Booking.Mobile.Client
 {
 	public class HistoryTableViewDelegate : UITableViewDelegate
 	{
-		private IEnumerable<BookingInfoData> _list;
+		private IEnumerable<Order> _list;
 		private HistoryTabView _parent;
 		
-		public HistoryTableViewDelegate (HistoryTabView parent, IEnumerable<BookingInfoData> list)
+		public HistoryTableViewDelegate (HistoryTabView parent, IEnumerable<Order> list)
 		{
 			_parent = parent;
 			_list = list;

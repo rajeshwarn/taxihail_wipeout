@@ -9,9 +9,11 @@ using MonoTouch.UIKit;
 using MonoTouch.MessageUI;
 
 using apcurium.Framework.Extensions;
+using TinyIoC;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 
-namespace TaxiMobileApp
+namespace apcurium.MK.Booking.Mobile.Client
 {
 	public partial class SettingsTabView : UIViewController, ITaxiViewController, ISelectableViewController, IRefreshableViewController
 	{
@@ -20,7 +22,7 @@ namespace TaxiMobileApp
 		// The IntPtr and initWithCoder constructors are required for items that need 
 		// to be able to be created from a xib rather than from managed code
 		
-		private UIButton _btnGlossyCall;
+		
 		
 		public SettingsTabView (IntPtr handle) : base(handle)
 		{
@@ -57,8 +59,8 @@ namespace TaxiMobileApp
 			base.ViewDidLoad ();
 			View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
 			
-			var callBtnTitle = string.Format (Resources.CallCompanyButton, AppContext.Current.LoggedUser.DefaultSettings.CompanyName);
-			btnCall.SetTitle (callBtnTitle, UIControlState.Normal);
+			
+			btnCall.SetTitle (Resources.CallCompanyButton, UIControlState.Normal);
 			
 			btnTechSupport.SetTitle (Resources.TechSupportButton, UIControlState.Normal);
 			btnAbout.SetTitle( Resources.AboutButton , UIControlState.Normal );
@@ -66,14 +68,12 @@ namespace TaxiMobileApp
 			btnSignOut.SetTitle (Resources.SignOutButton, UIControlState.Normal);
 			btnError.SetTitle (Resources.SendErrorLogButton, UIControlState.Normal);
 			
-			GlassButton.Wrap(btnChangeSettings, AppStyle.LightButtonColor , AppStyle.LightButtonHighlightedColor ).TouchUpInside += ChangeSettingsTouchUpInside;
-			GlassButton.Wrap(btnSignOut, AppStyle.LightButtonColor , AppStyle.LightButtonHighlightedColor ).TouchUpInside += SignOutTouchUpInside;
-			//GlassButton.Wrap(btnError, AppStyle.LightButtonColor , AppStyle.LightButtonHighlightedColor ).TouchUpInside += SendLog;
-			GlassButton.Wrap(btnAbout, AppStyle.LightButtonColor , AppStyle.LightButtonHighlightedColor ).TouchUpInside += AboutUs;
-			GlassButton.Wrap(btnTechSupport, AppStyle.LightButtonColor , AppStyle.LightButtonHighlightedColor ).TouchUpInside += TechSupportTouchUpInside;
-			
-			_btnGlossyCall = GlassButton.Wrap( btnCall , AppStyle.LightButtonColor , AppStyle.LightButtonHighlightedColor );
-			_btnGlossyCall.TouchUpInside += CallTouchUpInside;
+			btnChangeSettings.TouchUpInside += ChangeSettingsTouchUpInside;
+			btnSignOut.TouchUpInside += SignOutTouchUpInside;			
+			btnAbout.TouchUpInside += AboutUs;
+			btnTechSupport.TouchUpInside += TechSupportTouchUpInside;
+						
+			btnCall.TouchUpInside += CallTouchUpInside;
 			
 			
 			
@@ -119,7 +119,7 @@ namespace TaxiMobileApp
 				_mailComposer.AddAttachmentData (NSData.FromFile (AppSettings.ErrorLog), "text", "errorlog.txt");
 			}
 			
-			_mailComposer.SetToRecipients (new string[] { "support.iphone@taxidiamond.com" });
+			_mailComposer.SetToRecipients (new string[] { "techsupport@apcurium.com" });
 			_mailComposer.SetMessageBody ("", false);
 			_mailComposer.SetSubject (Resources.TechSupportButton);
 			_mailComposer.Finished += delegate(object mailsender, MFComposeResultEventArgs mfce) {
@@ -136,7 +136,8 @@ namespace TaxiMobileApp
 		void CallTouchUpInside (object sender, EventArgs e)
 		{
 			var call = new Confirmation ();
-			call.Call (AppSettings.PhoneNumber (AppContext.Current.LoggedUser.DefaultSettings.Company), AppSettings.PhoneNumberDisplay (AppContext.Current.LoggedUser.DefaultSettings.Company));
+
+			call.Call ( AppSettings.PhoneNumber(AppContext.Current.LoggedUser.Settings.ProviderId), AppSettings.PhoneNumberDisplay (AppContext.Current.LoggedUser.Settings.ProviderId));
 		}
 
 		private MFMailComposeViewController _mailComposer;
@@ -153,7 +154,7 @@ namespace TaxiMobileApp
 					
 					
 					_mailComposer.AddAttachmentData (NSData.FromFile (AppSettings.ErrorLog), "text", "errorlog.txt");
-					_mailComposer.SetMessageBody ("Error log : " + UIDevice.CurrentDevice.UniqueIdentifier, false);
+					_mailComposer.SetMessageBody ("iOS Error log ", false);
 					_mailComposer.SetSubject ("Error log");
 					_mailComposer.Finished += delegate(object mailsender, MFComposeResultEventArgs mfce) {
 						_mailComposer.DismissModalViewControllerAnimated (true);
@@ -178,14 +179,12 @@ namespace TaxiMobileApp
 
 		void ChangeSettingsTouchUpInside (object sender, EventArgs e)
 		{
-			var settings = new RideSettingsView (AppContext.Current.LoggedUser.DefaultSettings, true, false);
+			var settings = new RideSettingsView (AppContext.Current.LoggedUser.Settings, true, false);
 
 			settings.Closed += delegate { 
 				ThreadHelper.ExecuteInThread (() => {
-					InvokeOnMainThread (() => {
-						var callBtnTitle = string.Format (Resources.CallCompanyButton, settings.Result.CompanyName);
-						_btnGlossyCall.SetTitle (callBtnTitle, UIControlState.Normal);});					 
-						AppContext.Current.Controller.RefreshCompanyButtons();
+					InvokeOnMainThread (() => {						
+						btnCall.SetTitle (Resources.CallCompanyButton, UIControlState.Normal);});					 						
 					});
 			};
 			

@@ -76,6 +76,7 @@ namespace apcurium.MK.Booking.Api.Services
                                                                                 command.Name,
                                                                                 command.Phone);
 
+            command.ConfimationToken = confirmationToken.ToString();
                 _commandBus.Send(command);
                 _commandBus.Send(new SendAccountConfirmationEmail
                                      {

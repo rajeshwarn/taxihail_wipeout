@@ -8,9 +8,9 @@
 
 //namespace apcurium.MK.Booking.Mobile.Data
 //{
-//    public class AccountData
+//    public class Account
 //    {
-//        public AccountData ()
+//        public Account ()
 //        {
 //            BookingHistory = new BookingInfoData[0];
 //            FavoriteLocations = new LocationData[0];

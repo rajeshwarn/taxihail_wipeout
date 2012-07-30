@@ -6,7 +6,7 @@
 //using MonoTouch.MapKit;
 //using MonoTouch.CoreLocation;
 //using apcurium.Framework.Extensions;
-//using Microsoft.Practices.ServiceLocation;
+//using TinyIoC;
 
 //namespace apcurium.MK.Booking.Mobile
 //{

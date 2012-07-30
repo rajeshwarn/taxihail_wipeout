@@ -2,7 +2,7 @@ using System;
 using System.Runtime.InteropServices;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-namespace TaxiMobileApp
+namespace apcurium.MK.Booking.Mobile.Client
 {
 
 // make sure to add a 'using System.Runtime.InteropServices;' line to your file  

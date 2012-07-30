@@ -12,7 +12,7 @@
 "NearbyPlacesTitle" = "Endroits à proximité";
 "LocationHistoryTitle" = "Historique";
 "HistoryViewTitle" = "Historique";
-"LocationViewTitle" = "Mes adresses";
+"LocationViewTitle" = "Mes Adresses";
 "LocationDetailViewTitle" = "Détails de l'adresse";
 "HistoryDetailViewTitle" = "Commande";
 "SettingsViewTitle" = "Paramètres";
@@ -28,7 +28,7 @@
 "InvalidLoginMessage" = "La combinaison courriel et mot de passe est invalide.";
 "AccountNotValidatedMessage" = "Votre compte n<est pas validé. Appuyer sur Ré-Envoyer pour recevoir un nouveau courriel de validation.";
 "ResendValidationButton" = "Ré-Envoyer";
-"BookItButton" = "Commander";
+"BookItButton" = "Commander!";
 "BookPickupLabel" = "Choisir votre adresse d'origine";
 "PickupTextPlaceholder" = "Adress d'origine";
 "AptNumberTextPlaceholder" = "# Appartement";
@@ -62,7 +62,7 @@
 "StatusViewTitle" = "Confirmée";
 "StatusDescription" = "Confirmation #{0}";
 "ChangeBookingSettingsButton" = "Changer les options";
-"CallCompanyButton" = "Appeller {0}";
+"CallCompanyButton" = "Appeller la centrale";
 "NoHistoryLabel" = "Aucun historique";
 "LocationNoHistory" = "Aucun historique";
 "LocationAddFavorite" = "<Ajouter une nouvelle adresse>";
@@ -136,7 +136,7 @@
 "YesButton" = "Oui";
 "NoButton" = "Non";
 "HistoryViewStatusButton" = "Voir statut";
-"LoginForgotPasswordButton" = "Mot de passe oublié ?";
+"LoginForgotPasswordButton" = "Mot de passe oublié?";
 "TechSupportButton" = "Signaler un problème";
 "PickupOnButtonImageName" = "Assets/Button/btnPickup_on_fr.png";
 "PickupOffButtonImageName" = "Assets/Button/btnPickup_off_fr.png";
@@ -163,11 +163,8 @@
 "ResetPasswordInvalidDataMessage" = "Le courriel est invalide.";
 "CreateAccoutTitle" = "Créer compte";
 "CreateAccoutEmailLabel" = "Courriel:";
-"CreateAccoutTitleLabel" = "Titre:";
-"CreateAccoutFirstNameLabel" = "Prénom:";
-"CreateAccoutLastNameLabel" = "Nom:";
+"CreateAccoutFullNameLabel" = "Nom complet:";
 "CreateAccoutPhoneNumberLabel" = "Téléphone:";
-"CreateAccoutMobileLabel" = "Mobile:";
 "CreateAccoutLanguageLabel" = "Langue:";
 "CreateAccoutPasswordLabel" = "Mot de passe:";
 "CreateAccoutPasswordConfirmLabel" = "Confirmation:";
@@ -197,4 +194,5 @@
 "TwitterLoginBtn" = "Connexion Twitter";
 "Exceptions" = "Exceptions:";
 "MobileUser" = "Cette commande a été placée par un usager de l'application mobile.";
-"Notes" = "Notes:"
+"Notes" = "Notes:";
+"ErrorGettingStatus" = "Impossible d'avoir le status.";

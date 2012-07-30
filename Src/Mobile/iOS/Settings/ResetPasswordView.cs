@@ -5,13 +5,16 @@ using MonoTouch.Dialog;
 using MonoTouch.UIKit;
 using apcurium.Framework.Extensions;
 using apcurium.Framework;
-using Microsoft.Practices.ServiceLocation;
-namespace TaxiMobileApp
+using TinyIoC;
+using apcurium.MK.Booking.Mobile.AppServices;
+
+
+namespace apcurium.MK.Booking.Mobile.Client
 {
 	public class ResetPasswordView : DialogViewController
 	{
 		private EntryElement _emailEntry;
-		private ResetPasswordData _data;
+		private string _email;
 
 		public ResetPasswordView () : base(null)
 		{
@@ -19,12 +22,12 @@ namespace TaxiMobileApp
 
 		public override void ViewDidLoad ()
 		{
-			_data = new ResetPasswordData ();
+            _email = "";
 			LoadSettingsElements ();
 			
 			
-			AddButton (170, 100, Resources.ResetPasswordReset, AppStyle.AcceptButtonColor, AppStyle.AcceptButtonHighlightedColor, () => ResetPassword ());
-			AddButton (20, 100, Resources.ResetPasswordCancel, AppStyle.LightButtonColor, AppStyle.LightButtonHighlightedColor, () => Cancel ());
+			AddButton (170, 100, Resources.ResetPasswordReset, AppStyle.AcceptButtonColor, AppStyle.AcceptButtonHighlightedColor, () => ResetPassword (), apcurium.MK.Booking.Mobile.Client.AppStyle.ButtonColor.Green);
+			AddButton (20, 100, Resources.ResetPasswordCancel, AppStyle.LightButtonColor, AppStyle.LightButtonHighlightedColor, () => Cancel (), apcurium.MK.Booking.Mobile.Client.AppStyle.ButtonColor.Grey);
 		}
 
 
@@ -34,7 +37,7 @@ namespace TaxiMobileApp
 			
 			
 			
-			if (!IsEmail (_data.Email))
+			if (!IsEmail (_email))
 			{
 				MessageHelper.Show (Resources.ResetPasswordInvalidDataTitle, Resources.ResetPasswordInvalidDataMessage);
 				return;
@@ -47,7 +50,7 @@ namespace TaxiMobileApp
 			{
 				try
 				{
-					var result = ServiceLocator.Current.GetInstance<IAccountService> ().ResetPassword (_data);
+					var result = TinyIoCContainer.Current.Resolve<IAccountService> ().ResetPassword (_email);
 					if (result)
 					{
 						InvokeOnMainThread (() => MessageHelper.Show (Resources.ResetPasswordConfirmationTitle, Resources.ResetPasswordConfirmationMessage) );
@@ -117,14 +120,14 @@ namespace TaxiMobileApp
 			var settings = new Section (Resources.ResetPasswordTitle);
 			
 			
-			_emailEntry = new EntryElement (Resources.ResetPasswordLabel, Resources.ResetPasswordPlaceholder, _data.Email);
+			_emailEntry = new EntryElement (Resources.ResetPasswordLabel, Resources.ResetPasswordPlaceholder, _email);
 			_emailEntry.KeyboardType = MonoTouch.UIKit.UIKeyboardType.EmailAddress;
 			_emailEntry.TextAutocapitalizationType = UITextAutocapitalizationType.None;
 			_emailEntry.TextAutocorrectionType = UITextAutocorrectionType.No;
 			
 			_emailEntry.Changed += delegate {
 				_emailEntry.FetchValue ();
-				_data.Email = _emailEntry.Value;
+				_email = _emailEntry.Value;
 			};
 			
 			menu.Add (settings);
@@ -138,13 +141,16 @@ namespace TaxiMobileApp
 		}
 
 
-		private void AddButton (float x, float y, string title, UIColor normal, UIColor selected, Action clicked)
+		private void AddButton (float x, float y, string title, UIColor normal, UIColor selected, Action clicked, AppStyle.ButtonColor bcolor )
 		{
-			var btn = UIButton.FromType (UIButtonType.RoundedRect);
-			btn.Frame = new System.Drawing.RectangleF (x, y, 130, 40);
-			btn.SetTitle (title, UIControlState.Normal);
+            var btn = AppButtons.CreateStandardGradientButton(  new System.Drawing.RectangleF (x, y, 130, 40), title, bcolor == AppStyle.ButtonColor.Grey ? UIColor.FromRGB(101, 101, 101) : UIColor.White, bcolor );
+            btn.TextShadowColor = null;
+//			var btn = UIButton.FromType (UIButtonType.RoundedRect);
+//			btn.Frame = new System.Drawing.RectangleF (x, y, 130, 40);
+//			btn.SetTitle (title, UIControlState.Normal);
 			this.View.AddSubview (btn);
-			GlassButton.Wrap (btn, normal, selected).TouchUpInside += delegate { clicked (); };
+			btn.TouchUpInside += delegate { clicked (); };
+            //GlassButton.Wrap (btn, normal, selected).TouchUpInside += delegate { clicked (); };
 			
 			//btn.TouchUpInside += delegate { clicked (); };
 			

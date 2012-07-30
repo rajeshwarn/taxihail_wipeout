@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+using TinyIoC;
+using apcurium.MK.Booking.Mobile.AppServices;
 
-namespace TaxiMobileApp
+namespace apcurium.MK.Booking.Mobile.Client
 {
 	public partial class HistoryTabView : UIViewController, ITaxiViewController, ISelectableViewController, IRefreshableViewController
 	{
@@ -72,7 +74,8 @@ namespace TaxiMobileApp
 		private void LoadGridData ()
 		{
 			if (tableHistory != null) {
-				var historic = AppContext.Current.LoggedUser.BookingHistory.Where (b => !b.Hide).OrderByDescending( b=>b.Id );
+
+                var historic = TinyIoCContainer.Current.Resolve<IAccountService>().GetHistoryOrders();				
 				if (historic.Count () == 0) {
 					lblNoHistory.Hidden = false;
 					tableHistory.Hidden = true;

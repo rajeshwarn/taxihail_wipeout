@@ -7,16 +7,19 @@ using System.Text;
 
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-namespace TaxiMobileApp
+using apcurium.MK.Booking.Api.Contract.Resources;
+
+
+namespace apcurium.MK.Booking.Mobile.Client
 {
 	public class HistoryTableViewDataSource : UITableViewDataSource
 	{
 
 		static NSString kCellIdentifier = new NSString ("HistoryTableCellIdentifier");
 
-		private IEnumerable<BookingInfoData> _list;
+		private IEnumerable<Order> _list;
 
-		public HistoryTableViewDataSource (IEnumerable<BookingInfoData> list)
+		public HistoryTableViewDataSource (IEnumerable<Order> list)
 		{
 			_list = list;
 		}
@@ -30,7 +33,7 @@ namespace TaxiMobileApp
 		{
 			UITableViewCell cell = tableView.DequeueReusableCell (kCellIdentifier);
 			if (cell == null) {				
-				cell = new UITableViewCell (UITableViewCellStyle.Default, kCellIdentifier);
+				cell = new UITableViewCell (UITableViewCellStyle.Default , kCellIdentifier);
 			}
 			cell.BackgroundColor = UIColor.Clear;
 			cell.Accessory = UITableViewCellAccessory.DisclosureIndicator;
@@ -39,7 +42,7 @@ namespace TaxiMobileApp
     		cell.TextLabel.Font = UIFont.SystemFontOfSize( 14 );
 			
 			var b = _list.ElementAt(indexPath.Row);
-			cell.TextLabel.Text = "#" + b.Id + " - " + b.PickupLocation.Address ;
+			cell.TextLabel.Text = "#" + b.IBSOrderId + " - " + b.PickupAddress.FullAddress ;
 			return cell;
 		}
 		

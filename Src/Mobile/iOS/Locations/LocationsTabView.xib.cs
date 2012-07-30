@@ -5,8 +5,11 @@ using System.Linq;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using apcurium.Framework.Extensions;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using TinyIoC;
+using apcurium.MK.Booking.Mobile.AppServices;
 
-namespace TaxiMobileApp
+namespace apcurium.MK.Booking.Mobile.Client
 {
 	public enum LocationsTabViewMode
 	{
@@ -121,55 +124,44 @@ namespace TaxiMobileApp
 			}
 			else if( Mode == LocationsTabViewMode.NearbyPlacesSelector )
 			{
-				tableLocations.DataSource = new LocationTableViewDataSource (this, LocationList, new List<LocationData>(), Mode);
-				tableLocations.Delegate = new LocationTableViewDelegate (this, LocationList, new List<LocationData>());
+				tableLocations.DataSource = new LocationTableViewDataSource (this, LocationList, new List<Address>(), Mode);
+				tableLocations.Delegate = new LocationTableViewDelegate (this, LocationList, new List<Address>());
 			}
 
 			tableLocations.ReloadData ();
 		}
 
-		public List<LocationData> LocationList { get; set; }
+		public List<Address> LocationList { get; set; }
 
-		private List<LocationData> GetFavorites()
+		private List<Address> GetFavorites()
 		{
-			List<LocationData> favorites = new List<LocationData>();
-			if  ( AppContext.Current.LoggedUser.FavoriteLocations.Count () > 0) {
-				favorites.AddRange (AppContext.Current.LoggedUser.FavoriteLocations );
-			}
+			List<Address> favorites = new List<Address>();
+            var adrs =TinyIoCContainer.Current.Resolve<IAccountService>().GetFavoriteAddresses();
+            if ( adrs.Count() > 0 )
+            {
+                favorites.AddRange( adrs );
+            }
 			
 			if ( Mode == LocationsTabViewMode.Edit )
 			{
-				favorites.Add (new LocationData { IsAddNewItem = true });
+				favorites.Add (new Address());
 			}
 			return favorites;
 		}
 
-		private List<LocationData> GetHistoric()
+		private List<Address> GetHistoric()
 		{
-			List<LocationData> historics = new List<LocationData>();
-			var historicList = AppContext.Current.LoggedUser.BookingHistory.Where (b => !b.Hide && b.PickupLocation.Name.IsNullOrEmpty ())				
-				.OrderByDescending (b => b.RequestedDateTime)
-				.Select (b => b.PickupLocation).ToArray ();
-			
-			if ( historicList.Count() > 0 )
-			{
-				historics.AddRange(historicList);
-			}
-			    
-			var historic = historics.Where( h=>h.Address.HasValue()).GroupBy( l=>l.Address + "_" + l.Apartment.ToSafeString() + "_" + l.RingCode.ToSafeString() ).Select( g=>g.ElementAt(0)).ToArray();
-			
-			if (historic.Count () == 0) {
-				historic = new LocationData[1];
-				historic[0] = new LocationData { IsHistoricEmptyItem = true };
-			}
-			
-			historic.ForEach( h => h.IsFromHistory =true);
-
-			return historic.ToList();
+			List<Address> historics = new List<Address>();
+            var adrs =TinyIoCContainer.Current.Resolve<IAccountService>().GetHistoryAddresses();
+            if ( adrs.Count() > 0 )
+            {
+                historics.AddRange( adrs );
+            }
+            return historics;
 		}
 
 
-		public void DoSelect ( LocationData data )
+		public void DoSelect ( Address data )
 		{
 			SelectedLocation =data;
 			if ( LocationSelected != null )
@@ -178,47 +170,21 @@ namespace TaxiMobileApp
 			}
 		}
 
-		public LocationData SelectedLocation { get; set; }
+		public Address SelectedLocation { get; set; }
 
-		public void Delete (LocationData data)
-		{
-			var newList = new List<LocationData> ();
-			
-			
-			if ((AppContext.Current.LoggedUser.FavoriteLocations != null) && (AppContext.Current.LoggedUser.FavoriteLocations.Count () > 0)) {
-				newList.AddRange (AppContext.Current.LoggedUser.FavoriteLocations);
-			}
-			newList.Remove (data);
-			AppContext.Current.LoggedUser.FavoriteLocations = newList.ToArray ();
-			
-			
-			
-			if (AppContext.Current.LoggedUser.BookingHistory != null) {
-				AppContext.Current.LoggedUser.BookingHistory.FirstOrDefault (b => b.PickupLocation == data).Maybe (b => b.Hide = true);				
-			}
-			
-			AppContext.Current.UpdateLoggedInUser (AppContext.Current.LoggedUser,true);
+		public void Delete (Address data)
+		{						
+            TinyIoCContainer.Current.Resolve<IAccountService>().DeleteAddress( data.Id );
 			LoadGridData ();
 		}
 
-		public void Update (LocationData data)
+		public void Update (Address data)
 		{
-			AppContext.Current.UpdateLoggedInUser (AppContext.Current.LoggedUser,true);
-			LoadGridData ();
+			TinyIoCContainer.Current.Resolve<IAccountService>().UpdateAddress( data );           
+            LoadGridData ();
 		}
 
-		public void AddNew (LocationData data)
-		{
-			Console.WriteLine (data.Address + "-" + data.Name);
-			var newList = new List<LocationData> ();
-			if ((AppContext.Current.LoggedUser.FavoriteLocations != null) && (AppContext.Current.LoggedUser.FavoriteLocations.Count () > 0)) {
-				newList.AddRange (AppContext.Current.LoggedUser.FavoriteLocations);
-			}
-			newList.Add (data);
-			AppContext.Current.LoggedUser.FavoriteLocations = newList.ToArray ();
-			AppContext.Current.UpdateLoggedInUser (AppContext.Current.LoggedUser,true);
-			LoadGridData ();
-		}
+		
 		
 		#endregion
 	}

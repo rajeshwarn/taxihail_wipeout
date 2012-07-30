@@ -5,7 +5,7 @@ using System.Threading;
 using MonoTouch.Foundation;
 using apcurium.Framework.Extensions;
 
-namespace TaxiMobileApp
+namespace apcurium.MK.Booking.Mobile.Client
 {
 	public class ImageHelper
 	{

@@ -30,7 +30,7 @@
 		<level value="WARN" />
 		<appender-ref ref="UdpAppender" />
 	</root>
-	<logger name="apcurium.MK.Booking.Api.Services">
+	<logger name="apcurium.MK">
 		<level value="ALL" />
 	</logger>
 	<logger name="TraceOutput">

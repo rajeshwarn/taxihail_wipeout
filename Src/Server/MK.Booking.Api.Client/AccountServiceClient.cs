@@ -12,6 +12,7 @@ namespace apcurium.MK.Booking.Api.Client
         public AccountServiceClient(string url)
             : base(url)
         {
+
         }
 
 

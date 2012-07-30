@@ -6,7 +6,7 @@
 //
 using MonoTouch.Foundation;
 
-namespace TaxiMobileApp
+namespace apcurium.MK.Booking.Mobile.Client
 {
 	[Register ("PickupLocationView")]
 	partial class PickupLocationView

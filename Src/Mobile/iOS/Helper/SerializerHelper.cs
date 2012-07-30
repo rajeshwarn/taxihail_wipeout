@@ -6,7 +6,7 @@ using System.Text;
 using apcurium.Framework.Extensions;
 
 
-namespace TaxiMobileApp
+namespace apcurium.MK.Booking.Mobile.Client
 {
 	public static class SerializerHelper
 	{

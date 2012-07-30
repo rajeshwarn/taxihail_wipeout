@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Net;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
@@ -11,16 +9,26 @@ namespace apcurium.MK.Booking.Api.Services
 {
     public class OrderService : RestServiceBase<OrderRequest>
     {
-        public OrderService(IOrderDao dao)
+        private readonly IAccountDao _accountDao;
+        protected IOrderDao Dao { get; set; }
+
+        public OrderService(IOrderDao dao, IAccountDao accountDao)
         {
+            _accountDao = accountDao;
             Dao = dao;
         }
 
-        protected IOrderDao Dao { get; set; }
-
         public override object OnGet(OrderRequest request)
         {
-            return new OrderMapper().ToResource( Dao.FindById(request.OrderId));
+            var orderDetail = Dao.FindById(request.OrderId);
+            var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
+
+            if (account.Id != orderDetail.AccountId)
+            {
+                throw new HttpError(HttpStatusCode.Unauthorized, "Can't access another account's order");
+            }
+
+            return new OrderMapper().ToResource( orderDetail);
         }
     }
 }
