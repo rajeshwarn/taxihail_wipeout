@@ -18,9 +18,9 @@ namespace apcurium.MK.Booking.Api.Services
 {
     public class GeocodingService : RestServiceBase<GeocodingRequest>
     {
-        private readonly IPlacesClient _client;
+        private readonly IMapsApiClient _client;
         private IConfigurationManager _configManager;
-        public GeocodingService( IPlacesClient client ,  IConfigurationManager configManager)
+        public GeocodingService( IMapsApiClient client ,  IConfigurationManager configManager)
         {
             _client = client;
             _configManager = configManager;

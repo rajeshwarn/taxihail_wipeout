@@ -8,7 +8,7 @@ using apcurium.MK.Booking.Google.Resources;
 
 namespace apcurium.MK.Booking.Google.Impl
 {
-    public class PlacesClient : IPlacesClient
+    public class MapsApiClient : IMapsApiClient
     {
         private const string PlacesServiceUrl = "https://maps.googleapis.com/maps/api/place/search/";
         private const string MapsServiceUrl = "http://maps.googleapis.com/maps/api/";

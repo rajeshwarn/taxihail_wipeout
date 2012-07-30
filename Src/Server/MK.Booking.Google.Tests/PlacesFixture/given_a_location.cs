@@ -10,14 +10,14 @@ namespace apcurium.MK.Booking.Google.Tests.PlacesFixture
     [TestFixture]
     public class given_a_location
     {
-        private IPlacesClient sut;
+        private IMapsApiClient sut;
         private const double Latitude = 45.5062;
         private const double Longitude = -73.5726;
 
         [SetUp]
         public void  Setup()
         {
-            sut = new PlacesClient();
+            sut = new MapsApiClient();
         }
 
         [Test]

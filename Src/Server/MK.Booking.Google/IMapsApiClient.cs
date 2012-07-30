@@ -6,7 +6,7 @@ using apcurium.MK.Booking.Google.Resources;
 
 namespace apcurium.MK.Booking.Google
 {
-    public interface IPlacesClient
+    public interface IMapsApiClient
     {
         Place[] GetNearbyPlaces(double latitude, double longitude, string languageCode, bool sensor, int radius);
         DirectionResult GetDirections(double originLatitude, double originLongitude, double destinationLatitude, double destinationLongitude);
