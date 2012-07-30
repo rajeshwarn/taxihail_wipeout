@@ -137,6 +137,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             RefreshEstimates();
         }
 
+        public void SetLocationDataAndValidate(WS.Address location, bool changeZoom)
+        {
+            Address.Text = location.FullAddress;
+            this.ValidateAddress(true);
+            base.SetLocationData(location, changeZoom);
+
+            ThreadHelper.ExecuteInThread(this, RefreshEstimates, false);
+        }
+
         public override void SetLocationData(WS.Address location, bool changeZoom)
         {            
             base.SetLocationData(location, changeZoom);

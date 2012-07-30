@@ -78,8 +78,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             Address.FocusChange -= new EventHandler<View.FocusChangeEventArgs>(Address_FocusChange);
             Address.FocusChange += new EventHandler<View.FocusChangeEventArgs>(Address_FocusChange);
 
-            SelectAddressButton.Click -= SelectAddressButtonOnClick;
-            SelectAddressButton.Click += SelectAddressButtonOnClick;
+            //SelectAddressButton.Click -= SelectAddressButtonOnClick;
+            //SelectAddressButton.Click += SelectAddressButtonOnClick;
 
             HideKeyboards();
 
