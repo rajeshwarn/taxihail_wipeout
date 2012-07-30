@@ -81,6 +81,12 @@ namespace apcurium.MK.Web.Tests
             sut.CreateOrder(order);
         }
 
+        [SetUp]
+        public override void Setup()
+        {
+            base.Setup();
+        }
+
         [Test]
         public void ibs_order_was_created()
         {
