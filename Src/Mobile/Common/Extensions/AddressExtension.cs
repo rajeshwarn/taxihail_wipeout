@@ -3,12 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
+
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common;
@@ -40,6 +35,11 @@ namespace apcurium.MK.Booking.Mobile.Extensions
 
         public static bool HasValidCoordinate(this Address instance)
         {
+            if ( instance == null )
+            {
+                return false;
+            }
+
             return instance.Longitude != 0 && instance.Latitude != 0 && instance.Latitude >= -90 && instance.Latitude <= 90 && instance.Longitude >= -180 && instance.Longitude <= 180;
         }
 

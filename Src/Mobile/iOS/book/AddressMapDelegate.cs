@@ -9,7 +9,7 @@ using MonoTouch.CoreLocation;
 
 using apcurium.Framework.Extensions;
 
-namespace TaxiMobileApp
+namespace apcurium.MK.Booking.Mobile.Client
 {
 	public class AddressMapDelegate : MKMapViewDelegate
 	{

@@ -2,7 +2,7 @@ using System;
 using MonoTouch.CoreGraphics;
 using System.Drawing;
 
-namespace TaxiMobileApp
+namespace apcurium.MK.Booking.Mobile.Client
 {
 	public static class GraphicsUtil {
 		

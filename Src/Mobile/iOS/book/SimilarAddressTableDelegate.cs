@@ -7,21 +7,22 @@ using System.Text;
 
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+using apcurium.MK.Booking.Api.Contract.Resources;
 
-namespace TaxiMobileApp
+namespace apcurium.MK.Booking.Mobile.Client
 {
 	public class SimilarAddressTableDelegate : UITableViewDelegate
 	{		
 		//private UITextField _parent;
-		private  Action<LocationData> _refresh;
-		public SimilarAddressTableDelegate ( Action<LocationData> refresh)
+		private  Action<Address> _refresh;
+		public SimilarAddressTableDelegate ( Action<Address> refresh)
 		{
 			_refresh = refresh;
 		//	_parent = parent;
-			Similars = new LocationData[0];
+			Similars = new Address[0];
 		}
 		
-		public IEnumerable<LocationData>  Similars {
+		public IEnumerable<Address>  Similars {
 			get;
 			set;
 		}

@@ -1,7 +1,7 @@
 using System;
 using MonoTouch.UIKit;
 
-namespace TaxiMobileApp
+namespace apcurium.MK.Booking.Mobile.Client
 {
 	public class MessageHelper
 	{

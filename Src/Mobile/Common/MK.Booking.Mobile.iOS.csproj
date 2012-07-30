@@ -5,25 +5,25 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{11150F15-8271-43E3-BECA-65F24E82774C}</ProjectGuid>
+    <ProjectGuid>{43282000-6BF8-4D70-B7DB-833BA44E34BB}</ProjectGuid>
     <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <RootNamespace>TaxiMobileApp.Lib</RootNamespace>
-    <AssemblyName>TaxiMobileApp.Lib</AssemblyName>
+    <RootNamespace>MK.Booking.Mobile.iOS</RootNamespace>
+    <AssemblyName>MK.Booking.Mobile.iOS</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
+    <DefineConstants>DEBUG;CLIENT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -34,42 +34,65 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="monotouch" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Web.Services" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="RestSharp.MonoTouch">
-      <HintPath>..\..\Libraries\Monotouch\RestSharp.MonoTouch.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <Compile Include="Services\IAccountService.cs" />
-    <Compile Include="Services\Impl\AccountService.cs" />
-    <Compile Include="Services\ModuleService.cs" />
-    <Compile Include="Services\IBookingService.cs" />
-    <Compile Include="Services\Impl\BookingService.cs" />
-    <Compile Include="Services\Mapper\AccountMapping.cs" />
-    <Compile Include="Services\Mapper\SettingMapper.cs" />
-    <Compile Include="Services\Mapper\OrderMapping.cs" />
-    <Compile Include="Practices\ServiceLocator.cs" />
     <Compile Include="Practices\Bootstrapper.cs" />
     <Compile Include="Practices\IModule.cs" />
-    <Compile Include="Data\LocationData.cs" />
+    <Compile Include="Practices\ServiceLocator.cs" />
+    <Compile Include="Practices\TinyIoC.cs" />
+    <Compile Include="Practices\TinyMessenger.cs" />
+    <Compile Include="Localization\AppLanguage.cs" />
+    <Compile Include="Infrastructure\IAppContext.cs" />
+    <Compile Include="Infrastructure\IAppResource.cs" />
+    <Compile Include="Infrastructure\IAppSettings.cs" />
+    <Compile Include="Infrastructure\ICacheService.cs" />
+    <Compile Include="Infrastructure\ILogger.cs" />
+    <Compile Include="AppServices\Impl\AccountService.cs" />
+    <Compile Include="AppServices\Impl\BaseService.cs" />
+    <Compile Include="AppServices\Impl\BookingService.cs" />
+    <Compile Include="AppServices\Impl\GeolocService.cs" />
+    <Compile Include="AppServices\Mapper\AccountMapping.cs" />
+    <Compile Include="AppServices\Mapper\OrderMapping.cs" />
+    <Compile Include="AppServices\Mapper\SettingMapper.cs" />
+    <Compile Include="AppServices\IAccountService.cs" />
+    <Compile Include="AppServices\IBookingService.cs" />
+    <Compile Include="AppServices\IGeolocService.cs" />
+    <Compile Include="AppServices\ModuleService.cs" />
     <Compile Include="Data\AccountData.cs" />
     <Compile Include="Data\BookingInfo.cs" />
     <Compile Include="Data\BookingSetting.cs" />
+    <Compile Include="Data\CreateAccountData.cs" />
     <Compile Include="Data\ListItem.cs" />
-    <Compile Include="Data\OrderStatus.cs" />
+    <Compile Include="Data\ListItemValue.cs" />
+    <Compile Include="Data\LocationData.cs" />
     <Compile Include="Data\LocationData.MT.cs" />
     <Compile Include="Data\LocationDataExtension.cs" />
-    <Compile Include="Data\CreateAccountData.cs" />
+    <Compile Include="Data\OrderStatus.cs" />
     <Compile Include="Data\ResetPasswordData.cs" />
-    <Compile Include="Framework\DisposableAction.cs" />
+    <Compile Include="Extensions\AddressExtension.cs" />
+    <Compile Include="Extensions\BookingSettingsExtension.cs" />
+    <Compile Include="Framework\Extensions\Calendar\ByteTimeSpanExtensions.cs" />
+    <Compile Include="Framework\Extensions\Calendar\DayOfWeekExtensions.cs" />
+    <Compile Include="Framework\Extensions\Calendar\DoubleTimeSpanExtensions.cs" />
+    <Compile Include="Framework\Extensions\Calendar\IDateTimeCalendarExtensions.cs" />
+    <Compile Include="Framework\Extensions\Calendar\Int16TimeSpanExtensions.cs" />
+    <Compile Include="Framework\Extensions\Calendar\Int32TimeSpanExtensions.cs" />
+    <Compile Include="Framework\Extensions\Calendar\Int64TimeSpanExtensions.cs" />
+    <Compile Include="Framework\Extensions\Calendar\SingleTimeSpanExtensions.cs" />
+    <Compile Include="Framework\Extensions\ValueType\ByteSupport.cs" />
+    <Compile Include="Framework\Extensions\ValueType\EnumSupport.cs" />
+    <Compile Include="Framework\Extensions\ValueType\Int32Support.cs" />
+    <Compile Include="Framework\Extensions\ValueType\IValueSupport.cs" />
+    <Compile Include="Framework\Extensions\ValueType\IValueSupport.Generic.cs" />
+    <Compile Include="Framework\Extensions\ValueType\ValueSupport.cs" />
+    <Compile Include="Framework\Extensions\ValueType\ValueSupport.Generic.cs" />
+    <Compile Include="Framework\Extensions\ValueType\ValueSupportExtensions.cs" />
     <Compile Include="Framework\Extensions\ActionExtensions.cs" />
     <Compile Include="Framework\Extensions\CollectionExtensions.cs" />
     <Compile Include="Framework\Extensions\DateTimeExtensions.cs" />
     <Compile Include="Framework\Extensions\DictionaryExtensions.cs" />
+    <Compile Include="Framework\Extensions\DoubleExtension.cs" />
     <Compile Include="Framework\Extensions\EnumerableExtensions.cs" />
     <Compile Include="Framework\Extensions\ExtensionPoint.cs" />
     <Compile Include="Framework\Extensions\FileInfoExtensions.cs" />
@@ -83,70 +106,25 @@
     <Compile Include="Framework\Extensions\StringBuilderExtensions.cs" />
     <Compile Include="Framework\Extensions\StringExtensions.cs" />
     <Compile Include="Framework\Extensions\TextWriterExtensions.cs" />
-    <Compile Include="Framework\Extensions\Calendar\ByteTimeSpanExtensions.cs" />
-    <Compile Include="Framework\Extensions\Calendar\DayOfWeekExtensions.cs" />
-    <Compile Include="Framework\Extensions\Calendar\DoubleTimeSpanExtensions.cs" />
-    <Compile Include="Framework\Extensions\Calendar\IDateTimeCalendarExtensions.cs" />
-    <Compile Include="Framework\Extensions\Calendar\Int16TimeSpanExtensions.cs" />
-    <Compile Include="Framework\Extensions\Calendar\Int32TimeSpanExtensions.cs" />
-    <Compile Include="Framework\Extensions\Calendar\Int64TimeSpanExtensions.cs" />
-    <Compile Include="Framework\Extensions\Calendar\SingleTimeSpanExtensions.cs" />
+    <Compile Include="Framework\DisposableAction.cs" />
     <Compile Include="Framework\Null.cs" />
     <Compile Include="Framework\NullDisposable.cs" />
-    <Compile Include="Framework\Extensions\ValueType\ByteSupport.cs" />
-    <Compile Include="Framework\Extensions\ValueType\EnumSupport.cs" />
-    <Compile Include="Framework\Extensions\ValueType\Int32Support.cs" />
-    <Compile Include="Framework\Extensions\ValueType\IValueSupport.cs" />
-    <Compile Include="Framework\Extensions\ValueType\IValueSupport.Generic.cs" />
-    <Compile Include="Framework\Extensions\ValueType\ValueSupport.cs" />
-    <Compile Include="Framework\Extensions\ValueType\ValueSupport.Generic.cs" />
-    <Compile Include="Framework\Extensions\ValueType\ValueSupportExtensions.cs" />
     <Compile Include="Framework\Params.cs" />
-    <Compile Include="Infrastructure\IAppContext.cs" />
-    <Compile Include="Infrastructure\IAppSettings.cs" />
-    <Compile Include="Infrastructure\ILogger.cs" />
-    <Compile Include="Web References\IBS\Reference.cs">
-      <DependentUpon>Reference.map</DependentUpon>
-    </Compile>
-    <Compile Include="Localization\AppLanguage.cs" />
-    <Compile Include="Infrastructure\IAppResource.cs" />
-    <Compile Include="GoogleServices\GooglePlaceData.cs" />
-    <Compile Include="GoogleServices\GoogleServiceClient.cs" />
-    <Compile Include="GoogleServices\Logger.cs" />
-    <Compile Include="GoogleServices\GooglePlacesService.cs" />
-    <Compile Include="GoogleServices\GooglePlaceResponseData.cs" />
-    <Compile Include="Data\DataMapper.cs" />
-    <Compile Include="Services\ISocialNetworksService.cs" />
-    <Compile Include="Services\Impl\SocialNetworksService.cs" />
-    <Compile Include="GoogleServices\GooglePlaceTypes.cs" />
-    <Compile Include="Data\ListItemValue.cs" />
+    <Compile Include="Models\RideSettingsModel.cs" />
+    <Compile Include="Extensions\OrderExtension.cs" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferences Include="Web References" />
-  </ItemGroup>
-  <ItemGroup>
-    <WebReferenceUrl Include="http://taxidiamondwebbook.dyndns.org/TaxiMobileWebServiceProd/AccountService.asmx">
-      <UrlBehavior>Dynamic</UrlBehavior>
-      <RelPath>Web References\IBS</RelPath>
-      <UpdateFromURL>http://taxidiamondwebbook.dyndns.org/TaxiMobileWebServiceProd/AccountService.asmx</UpdateFromURL>
-    </WebReferenceUrl>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Web References\IBS\AccountService.disco" />
-    <None Include="Web References\IBS\AccountService.wsdl" />
-    <None Include="Web References\IBS\Reference.map">
-      <Generator>MSDiscoCodeGenerator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Diagnostics\" />
-    <Folder Include="GoogleServices\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\socialnetworks.controls\SocialNetworks.Services.MonoTouch\SocialNetworks.Services.MonoTouch.csproj">
-      <Project>{9CB6D6F3-4E5F-4A4F-B6AE-731B3DBC2031}</Project>
-      <Name>SocialNetworks.Services.MonoTouch</Name>
+    <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">
+      <Project>{52A964D2-F9FE-47CD-9C50-781CCEC560ED}</Project>
+      <Name>MK.Booking.Api.Client.iOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Server\MK.Booking.Api.Contract\MK.Booking.Api.Contract.iOS.csproj">
+      <Project>{0C54E2DC-0852-4EED-A882-60B68FE41C8D}</Project>
+      <Name>MK.Booking.Api.Contract.iOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Server\MK.Common\MK.Common.iOS.csproj">
+      <Project>{CF82F47F-A55D-45C6-B605-822458968E12}</Project>
+      <Name>MK.Common.iOS</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

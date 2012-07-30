@@ -1,10 +1,10 @@
 using System;
-using Microsoft.Practices.ServiceLocation;
-using SocialNetworks.Services.MonoTouch;
-using SocialNetworks.Services;
-using TaxiMobileApp.Lib;
+using TinyIoC;
+using apcurium.MK.Booking.Mobile.Practices;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Common.Diagnostic;
 
-namespace TaxiMobileApp
+namespace apcurium.MK.Booking.Mobile.Client
 {
 	public class AppModule : IModule 
 	{
@@ -15,9 +15,17 @@ namespace TaxiMobileApp
 		#region IModule implementation
 		public void Initialize ()
 		{
-			ServiceLocator.Current.Register<IAppResource, Resources>();
-			ServiceLocator.Current.RegisterSingleInstance2<IFacebookService>(new FacebookServiceMT( new SocialNetworksService().FacebookAppId ) );
-			ServiceLocator.Current.RegisterFactory<ITwitterService>( () => new TwitterServiceMonoTouch( new SocialNetworksService().GetOAuthConfig(), AppContext.Current.Window.RootViewController.PresentedViewController.ModalViewController != null ? AppContext.Current.Window.RootViewController.PresentedViewController.ModalViewController : AppContext.Current.Window.RootViewController.PresentedViewController ) );
+            TinyIoCContainer.Current.Register<IAppSettings>( new AppSettings() );
+            TinyIoCContainer.Current.Register<IAppContext>(AppContext.Current);
+
+            TinyIoCContainer.Current.Register<IAppResource, Resources>();
+            TinyIoCContainer.Current.Register<ILogger, LoggerWrapper>();
+//
+            TinyIoCContainer.Current.Register<ICacheService>(new CacheService());
+
+            //			ServiceLocator.Current.RegisterSingleInstance2<IAppContext> (this);
+//            ServiceLocator.Current.RegisterSingleInstance2<IAppSettings> (new AppSettings ());
+//            ServiceLocator.Current.RegisterSingleInstance2<ILogger> (new LoggerWrapper ());
 		}
 		#endregion
 	}

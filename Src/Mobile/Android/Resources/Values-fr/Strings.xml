@@ -13,7 +13,7 @@
   <string name="FavoriteLocationsTitle">Adresses favorites</string>
   <string name="LocationHistoryTitle">Historique</string>
   <string name="HistoryViewTitle">Historique</string>
-  <string name="LocationViewTitle">Mes adresses</string>
+  <string name="LocationViewTitle">Mes Adresses</string>
   <string name="LocationDetailViewTitle">Adresse</string>
   <string name="HistoryDetailViewTitle">Commande</string>
   <string name="SettingsViewTitle">Paramètres</string>
@@ -145,7 +145,7 @@
   <string name="YesButton">Oui</string>
   <string name="NoButton">Non</string>
   <string name="HistoryViewStatusButton">Voir statut</string>
-  <string name="LoginForgotPasswordButton">Mot de passe oublié ?</string>
+  <string name="LoginForgotPasswordButton">Mot de passe oublié?</string>
   <string name="TechSupportButton">Signaler un problème</string>
   <string name="PickupOnButtonImageName">Assets/Button/btnPickup_on_fr.png</string>
   <string name="PickupOffButtonImageName">Assets/Button/btnPickup_off_fr.png</string>

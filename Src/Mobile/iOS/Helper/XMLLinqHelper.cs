@@ -1,7 +1,7 @@
 //using System;
 //using System.Xml.Linq;
 //
-//namespace TaxiMobileApp
+//namespace apcurium.MK.Booking.Mobile.Client
 //{
 //	public static class XMLLinqHelper
 //	{

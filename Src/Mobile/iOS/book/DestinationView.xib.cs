@@ -5,10 +5,12 @@ using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using MonoTouch.MapKit;
 using MonoTouch.CoreLocation;
-using Microsoft.Practices.ServiceLocation;
+using TinyIoC;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.AppServices;
 
 
-namespace TaxiMobileApp
+namespace apcurium.MK.Booking.Mobile.Client
 {
 	public partial class DestinationView : UIViewController
 	{
@@ -47,14 +49,7 @@ namespace TaxiMobileApp
 		}
 		public override void ViewDidLoad ()
 		{
-			base.ViewDidLoad ();
-
-			var vertBar = new VerticalButtonBar( new System.Drawing.RectangleF( txtAddress.Frame.Right + 3,txtAddress.Frame.Top - 2,39f,34f ) );
-			vertBar.AddButton( UIImage.FromFile("Assets/VerticalButtonBar/locationIcon.png" ), UIImage.FromFile("Assets/VerticalButtonBar/locationIcon.png" ) );
-			vertBar.AddButton( UIImage.FromFile("Assets/VerticalButtonBar/targetIcon.png" ), UIImage.FromFile("Assets/VerticalButtonBar/targetIcon.png" ) );
-			vertBar.AddButton( UIImage.FromFile("Assets/VerticalButtonBar/favoriteIcon.png" ), UIImage.FromFile("Assets/VerticalButtonBar/favoriteIcon.png" ));
-			vertBar.AddButton( UIImage.FromFile("Assets/VerticalButtonBar/nearbyIcon.png" ), UIImage.FromFile("Assets/VerticalButtonBar/nearbyIcon.png" ));
-			View.AddSubview( vertBar );
+			base.ViewDidLoad ();			
 
 			View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
 			
@@ -62,8 +57,8 @@ namespace TaxiMobileApp
 			
 			mapDestination.Delegate = new AddressMapDelegate ();
 			
-			_addressController = new AddressContoller (txtAddress, null, null, tableSimilarAddress, vertBar, mapDestination, AddressAnnotationType.Destination, Resources.DestinationMapTitle,
-			                                           () => _parent.BookingInfo.DestinationLocation, data => _parent.BookingInfo.DestinationLocation = data, () => _parent.IsTopView);
+			_addressController = new AddressContoller (txtAddress, null, null, tableSimilarAddress, mapDestination, AddressAnnotationType.Destination, Resources.DestinationMapTitle,
+			                                           () => _parent.BookingInfo.DropOffAddress, data => _parent.BookingInfo.DropOffAddress = data, () => _parent.IsTopView);
 			
 			_addressController.LocationHasChanged += Handle_addressControllerLocationHasChanged;
 			lblDestination.Text = Resources.DestinationViewDestinationLabel;
@@ -71,6 +66,8 @@ namespace TaxiMobileApp
 			DisplayEstimate ();
 			
 			txtAddress.Placeholder = Resources.DestinationTextPlaceholder;
+
+            ((TextField)txtAddress).PaddingLeft = 3;
 			
 			mapDestination.ShowsUserLocation = true;
 		}
@@ -89,15 +86,15 @@ namespace TaxiMobileApp
 		{
 			ThreadHelper.ExecuteInThread (() =>
 			{
-				var distance = _parent.BookingInfo.GetDistance ();
-				var price = _parent.BookingInfo.GetPrice (distance);
+                var directionInfo  = TinyIoCContainer.Current.Resolve<IGeolocService>().GetDirectionInfo( _parent.BookingInfo.PickupAddress, _parent.BookingInfo.DropOffAddress );
+				
 				InvokeOnMainThread (() =>
 				{
 					
 					
-					if (distance.HasValue)
+					if (directionInfo.Distance.HasValue)
 					{						
-						lblDistance.Text = string.Format (Resources.EstimateDistance, Math.Round (distance.Value / 1000, 1).ToString () + "km");
+						lblDistance.Text = string.Format (Resources.EstimateDistance, directionInfo.FormattedDistance);
 					}
 					else
 					{
@@ -105,16 +102,16 @@ namespace TaxiMobileApp
 					}
 					
 					lblPrice.TextColor = UIColor.Black;
-					if (price.HasValue)
+					if (directionInfo.Price.HasValue)
 					{
-						if (price.Value > 100)
+						if (directionInfo.Price.Value > 100)
 						{
 							lblPrice.Text = Resources.EstimatePriceOver100;
 							lblPrice.TextColor = UIColor.Red;
 						}
 						else
 						{
-							lblPrice.Text = string.Format (Resources.EstimatePrice, string.Format ("{0:c}", price.Value));							
+							lblPrice.Text = string.Format (Resources.EstimatePrice, directionInfo.FormattedPrice);							
 						}
 					}
 					else
@@ -128,12 +125,12 @@ namespace TaxiMobileApp
 
 		void SearchAddress (object sender, EventArgs e)
 		{
-			var service = ServiceLocator.Current.GetInstance<IBookingService> ();
-			var result = service.SearchAddress (txtAddress.Text);
+			var service = TinyIoCContainer.Current.Resolve<IGeolocService> ();
+			var result = service.ValidateAddress (txtAddress.Text);
 			
-			if (result.Count () > 0)
+			if (result != null )
 			{
-				SetDestinationLocation (result [0]);
+				SetDestinationLocation (result);
 			}
 			
 			
@@ -166,13 +163,13 @@ namespace TaxiMobileApp
 			
 		}
 
-		private void SetDestinationLocation (LocationData locationData)
+		private void SetDestinationLocation (Address locationData)
 		{
-			BookingInfoData data = _parent.BookingInfo;
+			var data = _parent.BookingInfo;
 			
-			data.DestinationLocation = locationData;
+			data.DropOffAddress = locationData;
 			
-			InvokeOnMainThread (() => txtAddress.Text = locationData.Address);
+			InvokeOnMainThread (() => txtAddress.Text = locationData.FullAddress);
 			
 			if ((mapDestination.Annotations != null) && (mapDestination.Annotations.OfType<AddressAnnotation> ().Count (a => a.AddressType == AddressAnnotationType.Destination) > 0))
 			{
@@ -185,9 +182,9 @@ namespace TaxiMobileApp
 				
 				try
 				{
-					var coordinate = data.DestinationLocation.GetCoordinate ();
+					var coordinate = data.DropOffAddress.GetCoordinate ();
 					mapDestination.SetRegion (new MKCoordinateRegion (coordinate, new MKCoordinateSpan (0.02, 0.02)), true);
-					mapDestination.AddAnnotation (new AddressAnnotation (coordinate, AddressAnnotationType.Destination, Resources.DestinationMapTitle, data.DestinationLocation.Address));
+					mapDestination.AddAnnotation (new AddressAnnotation (coordinate, AddressAnnotationType.Destination, Resources.DestinationMapTitle, data.DropOffAddress.FullAddress));
 				}
 				finally
 				{

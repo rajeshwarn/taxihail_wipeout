@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{698DA5A6-BEE2-4FD6-A2F7-8269289B1DA4}</ProjectGuid>
+    <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>apcurium.MK.Booking.Mobile.Client</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\iPhoneSimulator\Debug</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <MtouchDebug>true</MtouchDebug>
+    <MtouchI18n />
+    <MtouchUseArmv7>false</MtouchUseArmv7>
+    <MtouchSdkVersion>5.1</MtouchSdkVersion>
+    <MtouchProfiling>true</MtouchProfiling>
+    <AssemblyName>TaxiHail</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\iPhoneSimulator\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <MtouchLink>None</MtouchLink>
+    <MtouchI18n />
+    <MtouchUseArmv7>false</MtouchUseArmv7>
+    <AssemblyName>TaxiHail</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\iPhone\Debug</OutputPath>
+    <DefineConstants>DEBUG;CLIENT</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <CodesignKey>iPhone Distribution: Baventure Group Inc.</CodesignKey>
+    <MtouchDebug>true</MtouchDebug>
+    <MtouchI18n />
+    <MtouchUseArmv7>false</MtouchUseArmv7>
+    <CodesignProvision>55BC7130-27C8-49F9-B4AA-3C4F1B761071</CodesignProvision>
+    <IpaPackageName />
+    <MtouchUseLlvm>true</MtouchUseLlvm>
+    <CrashReportingApiKey />
+    <BuildIpa>true</BuildIpa>
+    <AssemblyName>TaxiMobileApp</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\iPhone\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <CodesignKey>iPhone Distribution: Baventure Group Inc.</CodesignKey>
+    <MtouchI18n />
+    <MtouchUseArmv7>false</MtouchUseArmv7>
+    <IpaPackageName />
+    <BuildIpa>true</BuildIpa>
+    <CodesignProvision>55BC7130-27C8-49F9-B4AA-3C4F1B761071</CodesignProvision>
+    <MtouchArch>ARMv6_ARMv7</MtouchArch>
+    <CrashReportingApiKey />
+    <AssemblyName>TaxiMobileApp</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="monotouch" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="ServiceStack.Text.MonoTouch">
+      <HintPath>..\Libraries\Monotouch\ServiceStack.Text.MonoTouch.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Interfaces.MonoTouch">
+      <HintPath>..\Libraries\Monotouch\ServiceStack.Interfaces.MonoTouch.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Common.MonoTouch">
+      <HintPath>..\Libraries\Monotouch\ServiceStack.Common.MonoTouch.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="About_fr.html" />
+    <None Include="Assets\Info.plist" />
+    <None Include="Info.plist" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Main.cs" />
+    <Compile Include="RootTabController.cs" />
+    <Compile Include="AppStyle.cs" />
+    <Compile Include="MainWindow.xib.designer.cs">
+      <DependentUpon>MainWindow.xib</DependentUpon>
+    </Compile>
+    <Compile Include="AppContext.cs" />
+    <Compile Include="Helper\DeviceHardware.cs" />
+    <Compile Include="Helper\ImageHelper.cs" />
+    <Compile Include="Helper\MessageHelper.cs" />
+    <Compile Include="Helper\ResourceHelper.cs" />
+    <Compile Include="Helper\StringHelper.cs" />
+    <Compile Include="Helper\ThreadHelper.cs" />
+    <Compile Include="Helper\WebRequestHelper.cs" />
+    <Compile Include="Helper\XMLLinqHelper.cs" />
+    <Compile Include="Localization\Resources.cs" />
+    <Compile Include="AppSettings.cs" />
+    <Compile Include="Localization\StandardMessages.cs" />
+    <Compile Include="History\HistoryTabView.xib.cs">
+      <DependentUpon>HistoryTabView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="History\HistoryTabView.xib.designer.cs">
+      <DependentUpon>HistoryTabView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\SettingsTabView.xib.cs">
+      <DependentUpon>SettingsTabView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\SettingsTabView.xib.designer.cs">
+      <DependentUpon>SettingsTabView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\LoginView.xib.cs">
+      <DependentUpon>LoginView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\LoginView.xib.designer.cs">
+      <DependentUpon>LoginView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Locations\LocationsTabView.xib.cs">
+      <DependentUpon>LocationsTabView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Locations\LocationsTabView.xib.designer.cs">
+      <DependentUpon>LocationsTabView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Locations\LocationDetailView.xib.cs">
+      <DependentUpon>LocationDetailView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Locations\LocationDetailView.xib.designer.cs">
+      <DependentUpon>LocationDetailView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="History\HistoryDetailView.xib.cs">
+      <DependentUpon>HistoryDetailView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="History\HistoryDetailView.xib.designer.cs">
+      <DependentUpon>HistoryDetailView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="History\HistoryTableViewDataSource.cs" />
+    <Compile Include="History\HistoryTableViewDelegate.cs" />
+    <Compile Include="Locations\LocationTableViewDataSource.cs" />
+    <Compile Include="Locations\LocationTableViewDelegate.cs" />
+    <Compile Include="Settings\LocationTableViewDataSource.cs" />
+    <Compile Include="Settings\LocationTableViewDelegate.cs" />
+    <Compile Include="Controls\LoadingOverlay.cs" />
+    <Compile Include="Helper\SerializerHelper.cs" />
+    <Compile Include="Helper\NSDefaultHelper.cs" />
+    <Compile Include="Controls\Binding\Binding.cs" />
+    <Compile Include="Controls\ISelectableViewController.cs" />
+    <Compile Include="MonoTouchDialog\ActivityElement.cs" />
+    <Compile Include="MonoTouchDialog\Controls.cs" />
+    <Compile Include="MonoTouchDialog\DialogViewController.cs" />
+    <Compile Include="MonoTouchDialog\ElementBadge.cs" />
+    <Compile Include="MonoTouchDialog\Elements.cs" />
+    <Compile Include="MonoTouchDialog\LoadMoreElement.cs" />
+    <Compile Include="MonoTouchDialog\OwnerDrawnElement.cs" />
+    <Compile Include="MonoTouchDialog\Reflect.cs" />
+    <Compile Include="Controls\IRefreshableViewController.cs" />
+    <Compile Include="Settings\RideSettingsView.cs" />
+    <Compile Include="MonoTouchDialog\LRUCache.cs" />
+    <Compile Include="MonoTouchDialog\ImageLoader.cs" />
+    <Compile Include="MonoTouchDialog\DialogViewController2.cs" />
+    <Compile Include="Settings\AboutUsView.xib.cs">
+      <DependentUpon>AboutUsView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\AboutUsView.xib.designer.cs">
+      <DependentUpon>AboutUsView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ShinnyButton.cs" />
+    <Compile Include="Settings\CreateAccountView.cs" />
+    <Compile Include="Settings\ResetPasswordView.cs" />
+    <Compile Include="Controls\GraphicsUtil.cs" />
+    <Compile Include="Controls\GlassButton.cs" />
+    <Compile Include="Diagnostics\Logger.cs" />
+    <Compile Include="AppModule.cs" />
+    <Compile Include="Controls\VerticalButtonBar.cs" />
+    <Compile Include="Controls\Background.cs" />
+    <Compile Include="Controls\VerticalButton.cs" />
+    <Compile Include="Controls\ContactPicker.cs" />
+    <Compile Include="Controls\GradientButton.cs" />
+    <Compile Include="AppButtons.cs" />
+    <Compile Include="Extensions\LocationExtensionMD.cs" />
+    <Compile Include="Cache\CacheService.cs" />
+    <Compile Include="Book\BookTabView.xib.cs">
+      <DependentUpon>BookTabView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Book\BookTabView.xib.designer.cs">
+      <DependentUpon>BookTabView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Book\PickupLocationView.xib.cs">
+      <DependentUpon>PickupLocationView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Book\PickupLocationView.xib.designer.cs">
+      <DependentUpon>PickupLocationView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Book\DestinationView.xib.cs">
+      <DependentUpon>DestinationView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Book\DestinationView.xib.designer.cs">
+      <DependentUpon>DestinationView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Book\ConfirmationView.xib.cs">
+      <DependentUpon>ConfirmationView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Book\ConfirmationView.xib.designer.cs">
+      <DependentUpon>ConfirmationView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Book\StatusView.xib.cs">
+      <DependentUpon>StatusView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Book\StatusView.xib.designer.cs">
+      <DependentUpon>StatusView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Book\AddressMapDelegate.cs" />
+    <Compile Include="Book\AddressAnnotation.cs" />
+    <Compile Include="Book\BookItButton.cs" />
+    <Compile Include="Book\SimilarAddressTableDelegate.cs" />
+    <Compile Include="Book\SimilarAddressTableDatasource.cs" />
+    <Compile Include="Book\AddressContoller.cs" />
+    <Compile Include="Book\ConfirmationCall.cs" />
+    <Compile Include="Book\TaxiAnnotationView.cs" />
+    <Compile Include="Book\DestPickToggleButton.cs" />
+    <Compile Include="Book\TouchableMapView.cs" />
+    <Compile Include="Book\LocationDataExtension.cs" />
+    <Compile Include="Controls\TextField.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <Policies>
+          <DotNetNamingPolicy DirectoryNamespaceAssociation="None" ResourceNamePolicy="FileName" />
+        </Policies>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
+  <ItemGroup>
+    <Folder Include="Helper\" />
+    <Folder Include="fr.lproj\" />
+    <Folder Include="en.lproj\" />
+    <Folder Include="Localization\" />
+    <Folder Include="Locations\" />
+    <Folder Include="History\" />
+    <Folder Include="Settings\" />
+    <Folder Include="Controls\" />
+    <Folder Include="Controls\Binding\" />
+    <Folder Include="Diagnostics\" />
+    <Folder Include="Assets\" />
+    <Folder Include="Assets\VerticalButtonBar\" />
+    <Folder Include="Assets\Resources\" />
+    <Folder Include="Extensions\" />
+    <Folder Include="Cache\" />
+    <Folder Include="Assets\Button\" />
+    <Folder Include="Assets\Tab\" />
+    <Folder Include="Book\" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterfaceDefinition Include="MainWindow.xib" xmlns="" />
+    <InterfaceDefinition Include="History\HistoryTabView.xib" xmlns="" />
+    <InterfaceDefinition Include="Settings\SettingsTabView.xib" xmlns="" />
+    <InterfaceDefinition Include="Settings\LoginView.xib" xmlns="" />
+    <InterfaceDefinition Include="Locations\LocationsTabView.xib" xmlns="" />
+    <InterfaceDefinition Include="Locations\LocationDetailView.xib" xmlns="" />
+    <InterfaceDefinition Include="History\HistoryDetailView.xib" xmlns="" />
+    <InterfaceDefinition Include="Settings\AboutUsView.xib" xmlns="" />
+    <InterfaceDefinition Include="Book\BookTabView.xib" />
+    <InterfaceDefinition Include="Book\PickupLocationView.xib" />
+    <InterfaceDefinition Include="Book\DestinationView.xib" />
+    <InterfaceDefinition Include="Book\ConfirmationView.xib" />
+    <InterfaceDefinition Include="Book\StatusView.xib" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="en.lproj\Localizable.strings" />
+    <Content Include="fr.lproj\Localizable.strings" />
+    <Content Include="app%402x.png" />
+    <Content Include="app.png" />
+    <Content Include="Default.png" />
+    <Content Include="Default%402x.png" />
+    <Content Include="Assets\VerticalButtonBar\rightArrow%402x.png" />
+    <Content Include="Assets\VerticalButtonBar\favoriteIcon%402x.png" />
+    <Content Include="Assets\VerticalButtonBar\locationIcon%402x.png" />
+    <Content Include="Assets\VerticalButtonBar\nearbyIcon%402x.png" />
+    <Content Include="Assets\VerticalButtonBar\targetIcon%402x.png" />
+    <Content Include="Assets\VerticalButtonBar\favoriteIcon.png" />
+    <Content Include="Assets\VerticalButtonBar\locationIcon.png" />
+    <Content Include="Assets\VerticalButtonBar\nearbyIcon.png" />
+    <Content Include="Assets\VerticalButtonBar\targetIcon.png" />
+    <Content Include="Assets\VerticalButtonBar\rightArrow.png" />
+    <Content Include="Assets\background.png" />
+    <Content Include="Assets\background%402x.png" />
+    <Content Include="Assets\background_full_nologo.png" />
+    <Content Include="Assets\background_full_nologo%402x.png" />
+    <Content Include="Assets\background_full.png" />
+    <Content Include="Assets\background_full%402x.png" />
+    <Content Include="Assets\TopFieldBackground-Lg.png" />
+    <Content Include="Assets\TopFieldBackground-Lg%402x.png" />
+    <Content Include="Assets\TopFieldBackground-Sm.png" />
+    <Content Include="Assets\TopFieldBackground-Sm%402x.png" />
+    <Content Include="Assets\About_en.html" />
+    <Content Include="Assets\About_fr.html" />
+    <Content Include="Assets\location.png" />
+    <Content Include="Assets\location%402x.png" />
+    <Content Include="Assets\apcuriumLogo.png" />
+    <Content Include="Assets\apcuriumLogo%402x.png" />
+    <Content Include="Assets\navBar.png" />
+    <Content Include="Assets\navBar%402x.png" />
+    <Content Include="Assets\Logo%402x.png" />
+    <Content Include="Assets\Logo.png" />
+    <Content Include="Assets\Button\btnBookIt_en.png" />
+    <Content Include="Assets\Button\btnBookIt_en%402x.png" />
+    <Content Include="Assets\Button\btnBookIt_fr.png" />
+    <Content Include="Assets\Button\btnBookIt_fr%402x.png" />
+    <Content Include="Assets\Button\btnDest_off_en.png" />
+    <Content Include="Assets\Button\btnPickup_on_en.png" />
+    <Content Include="Assets\Button\btnPickup_on_en%402x.png" />
+    <Content Include="Assets\Button\btnPickup_on_fr.png" />
+    <Content Include="Assets\Button\btnPickup_on_fr%402x.png" />
+    <Content Include="Assets\Button\btnDest_off_en%402x.png" />
+    <Content Include="Assets\Button\btnDest_off_fr.png" />
+    <Content Include="Assets\Button\btnDest_off_fr%402x.png" />
+    <Content Include="Assets\Button\btnDest_on_en.png" />
+    <Content Include="Assets\Button\btnDest_on_en%402x.png" />
+    <Content Include="Assets\Button\btnDest_on_fr.png" />
+    <Content Include="Assets\Button\btnDest_on_fr%402x.png" />
+    <Content Include="Assets\Button\btnPickup_off_en.png" />
+    <Content Include="Assets\Button\btnPickup_off_en%402x.png" />
+    <Content Include="Assets\Button\btnPickup_off_fr.png" />
+    <Content Include="Assets\Button\btnPickup_off_fr%402x.png" />
+    <Content Include="Assets\Tab\book.png" />
+    <Content Include="Assets\Tab\history.png" />
+    <Content Include="Assets\Tab\locations.png" />
+    <Content Include="Assets\Tab\settings.png" />
+    <Content Include="Assets\Tab\book%402x.png" />
+    <Content Include="Assets\Tab\history%402x.png" />
+    <Content Include="Assets\Tab\locations%402x.png" />
+    <Content Include="Assets\Tab\settings%402x.png" />
+    <Content Include="Assets\VerticalButtonBar\contacts.png" />
+    <Content Include="Assets\VerticalButtonBar\contacts%402x.png" />
+    <Content Include="Assets\taxi-label.png" />
+    <Content Include="Assets\taxi-label%402x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Server\MK.Common\MK.Common.iOS.csproj">
+      <Project>{CF82F47F-A55D-45C6-B605-822458968E12}</Project>
+      <Name>MK.Common.iOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Common\MK.Booking.Mobile.iOS.csproj">
+      <Project>{43282000-6BF8-4D70-B7DB-833BA44E34BB}</Project>
+      <Name>MK.Booking.Mobile.iOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Server\MK.Booking.Api.Contract\MK.Booking.Api.Contract.iOS.csproj">
+      <Project>{0C54E2DC-0852-4EED-A882-60B68FE41C8D}</Project>
+      <Name>MK.Booking.Api.Contract.iOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">
+      <Project>{52A964D2-F9FE-47CD-9C50-781CCEC560ED}</Project>
+      <Name>MK.Booking.Api.Client.iOS</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

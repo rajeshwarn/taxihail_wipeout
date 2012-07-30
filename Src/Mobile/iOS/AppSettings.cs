@@ -2,9 +2,10 @@ using System;
 using System.IO;
 using MonoTouch.Foundation;
 using MonoTouch.CoreFoundation;
-using MobileTaxiApp.Infrastructure;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
-namespace TaxiMobileApp
+
+namespace apcurium.MK.Booking.Mobile.Client
 {
 	public class AppSettings : IAppSettings
 	{
@@ -21,37 +22,27 @@ namespace TaxiMobileApp
 		}
 
 		
-		public static string SiteUrl {
-			get { return "http://taxidiamondwebbook.dyndns.org/ibs/"; }		
-		}
+		 public static string SiteUrl
+        {
+            get { return "http://www.taxihail.com/"; }
+        }
+
+
+        public static string PhoneNumber(int providerId)
+        {
+            return "18666245330";           
+        }
 
 		public static string FacebookPageId {
 			get { return "332870833414607"; }
 		}
 		
+         public int[] InvalidProviderIds
+        {
+            get { return new int[0]; }
+        }
 
-		public static string PhoneNumber( int companyId ) {
-			if ( companyId == 9 ) //Ouest
-			{
-				return "5146374444";
-			}
-			else if ( companyId == 10) //Royal
-			{
-				return "5142743333";
-			}
-			else if ( companyId == 11) //Candare			
-			{
-				return "5143361313";
-			}
-			else if ( companyId == 13) //Veteran
-			{
-				return "5142736351";
-			}
-			else
-			{
-			return "5142736331"; 
-			}
-		}
+		
 		
 		public static bool ShowNumberOfTaxi
 		{
@@ -59,50 +50,14 @@ namespace TaxiMobileApp
 		}
 		
 		public static string GetLogo( int companyId ) {
-			if ( companyId == 9 ) //Ouest
-			{
-				return "Assets/Logo_TaxiDiamondWest.png";
-			}
-			else if ( companyId == 10) //Royal
-			{
-				return "Assets/Logo_TaxiRoyal.png";
-			}
-			else if ( companyId == 11) //Candare			
-			{
-				return "Assets/Logo_TaxiCandare.png";
-			}
-			else if ( companyId == 13) //Veteran
-			{
-				return "Assets/Logo_TaxiVeteran.png";
-			}
-			else
-			{
-			return "Assets/TDLogo.png"; 
-			}
-		}
-		public static string PhoneNumberDisplay( int companyId ) {
 			
-			if ( companyId == 9 ) //Ouest
-			{
-				return "(514)637-4444";
-			}
-			else if ( companyId == 10) //Royal
-			{
-				return "(514)274-3333";
-			}
-			else if ( companyId == 11) //Candare			
-			{
-				return "(514)336-1313";
-			}
-			else if ( companyId == 13) //Veteran
-			{
-				return "(514)273-6351";
-			}
-			else
-			{
-				return "(514)273-6331"; 
-			}
+			return "Assets/Logo.png"; 			
 		}
+
+		 public static string PhoneNumberDisplay(int companyId)
+        {
+            return "1.866.624.5330";
+        }
 
 
 		public static string Version {
@@ -117,11 +72,14 @@ namespace TaxiMobileApp
 		
 		
 				
-		public string ServiceUrl {
-//			get { return "http://taxidiamondwebbook.dyndns.org/TaxiMobileWebService/"; }				
-			get { return "http://taxidiamondwebbook.dyndns.org/TaxiMobileWebServiceProd/"; }	
-			//get { return "http://taxidiamond2.dyndns.org/TestMobileServiceProd/"; }	
-		}
+	
+        public string ServiceUrl
+        {
+            //get { return "http://192.168.12.125/apcurium.MK.Web/api/"; }
+            //get { return "http://192.168.1.12/apcurium.MK.Web/api/"; }
+            get { return "http://project.apcurium.com/apcurium.MK.Web.csproj_deploy/api/"; }
+
+        }
 
 	}
 }

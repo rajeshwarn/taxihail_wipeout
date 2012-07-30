@@ -6,17 +6,17 @@
 //
 //using MonoTouch.Foundation;
 //using MonoTouch.UIKit;
-//namespace TaxiMobileApp
+//namespace apcurium.MK.Booking.Mobile.Client
 //{
 //	public class LocationTableViewDataSource : UITableViewDataSource
 //	{
 //
 //		static NSString kCellIdentifier = new NSString ("LocationTableCellIdentifier");
 //
-//		private List<LocationData> _favoriteList;
-//		private List<LocationData> _historyList;
+//		private List<Address> _favoriteList;
+//		private List<Address> _historyList;
 //
-//		public LocationTableViewDataSource (List<LocationData> favoriteList, List<LocationData> historyList)
+//		public LocationTableViewDataSource (List<Address> favoriteList, List<Address> historyList)
 //		{
 //			_historyList = historyList;
 //			_favoriteList = favoriteList;

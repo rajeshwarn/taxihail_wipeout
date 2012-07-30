@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using apcurium.Framework.Extensions;
 
-namespace TaxiMobileApp
+namespace apcurium.MK.Booking.Mobile.Client
 {
 	public class VerticalButtonBar : UIView
 	{
@@ -64,7 +64,7 @@ namespace TaxiMobileApp
 //			});
 
 			UIView.BeginAnimations("Arrow");
-			UIView.SetAnimationDuration(0.5);
+			UIView.SetAnimationDuration(0.3);
 			UIView.SetAnimationCurve( UIViewAnimationCurve.EaseIn );
 			if( IsOpen )
 			{

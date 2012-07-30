@@ -6,26 +6,11 @@
 //
 using MonoTouch.Foundation;
 
-namespace TaxiMobileApp
+namespace apcurium.MK.Booking.Mobile.Client
 {
 	[Register ("ConfirmationView")]
 	partial class ConfirmationView
 	{
-		[Outlet]
-		MonoTouch.UIKit.UILabel lblExceptions { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UILabel txtExceptions { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UILabel lblNotes { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UILabel txtNotes { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UIButton btnNotes { get; set; }
-
 		[Outlet]
 		MonoTouch.UIKit.UIButton btnCancel { get; set; }
 
@@ -94,31 +79,6 @@ namespace TaxiMobileApp
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (lblExceptions != null) {
-				lblExceptions.Dispose ();
-				lblExceptions = null;
-			}
-
-			if (txtExceptions != null) {
-				txtExceptions.Dispose ();
-				txtExceptions = null;
-			}
-
-			if (lblNotes != null) {
-				lblNotes.Dispose ();
-				lblNotes = null;
-			}
-
-			if (txtNotes != null) {
-				txtNotes.Dispose ();
-				txtNotes = null;
-			}
-
-			if (btnNotes != null) {
-				btnNotes.Dispose ();
-				btnNotes = null;
-			}
-
 			if (btnCancel != null) {
 				btnCancel.Dispose ();
 				btnCancel = null;

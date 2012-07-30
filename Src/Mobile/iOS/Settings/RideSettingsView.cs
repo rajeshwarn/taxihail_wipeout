@@ -4,34 +4,37 @@ using MonoTouch.Dialog;
 using MonoTouch.UIKit;
 using apcurium.Framework.Extensions;
 using apcurium.Framework;
-using Microsoft.Practices.ServiceLocation;
+using TinyIoC;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Common.Entity;
+using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.AppServices;
 
-namespace TaxiMobileApp
+namespace apcurium.MK.Booking.Mobile.Client
 {
 	public class RideSettingsView : DialogViewController
 	{
 		public event EventHandler Closed;
 
-		private BookingSetting _settings;
+		private BookingSettings _settings;
 		private EntryElement _nameEntry;
 		private EntryElement _phoneEntry;
 		private EntryElement _passengerEntry;
 		private RootElement _vehiculeTypeEntry;
 		private EntryElement _numberOfTaxiEntry;
-		private RootElement _exceptionsEntry;
+		
 		private int _selected = 0;
 		private bool _autoSave;
 		private bool _companyOnly;
-		private ListItem _vanType;
 
-		public RideSettingsView (BookingSetting settings, bool autoSave, bool companyOnly) : base(null)
+		public RideSettingsView (BookingSettings settings, bool autoSave, bool companyOnly) : base(null)
 		{
 			_companyOnly = companyOnly;
 			_autoSave = autoSave;
 			_settings = settings.Copy ();
 		}
 
-		public BookingSetting Result {
+		public BookingSettings Result {
 			get { return _settings; }
 		}
 
@@ -42,14 +45,12 @@ namespace TaxiMobileApp
 				CloseView (); });
 			NavigationItem.HidesBackButton = true;
 			NavigationItem.RightBarButtonItem = button;
-
-			_vanType = ServiceLocator.Current.GetInstance<IAccountService> ().GetVehiclesList ().Single( vt => vt.Id == 171 );
 			
 		}
 
 		protected override void SetTitleView ()
 		{
-			NavigationItem.TitleView = TaxiMobileApp.AppContext.Current.Controller.GetTitleView (null, GetTitle ());
+			NavigationItem.TitleView = AppContext.Current.Controller.GetTitleView (null, GetTitle ());
 		}
 
 		public override void ViewDidAppear (bool animated)
@@ -93,8 +94,7 @@ namespace TaxiMobileApp
 			{
 				ThreadHelper.ExecuteInThread (() =>
 				{
-					AppContext.Current.LoggedUser.DefaultSettings = _settings;
-					AppContext.Current.UpdateLoggedInUser (AppContext.Current.LoggedUser, true);
+                    TinyIoCContainer.Current.Resolve<IAccountService>().UpdateSettings( _settings );
 				});
 			}
 			
@@ -116,7 +116,7 @@ namespace TaxiMobileApp
 					int selected = 0;
 					
 					var companies = new Section (Resources.RideSettingsCompany);
-					var companiesList = ServiceLocator.Current.GetInstance<IAccountService> ().GetCompaniesList ();
+					var companiesList = TinyIoCContainer.Current.Resolve<IAccountService> ().GetCompaniesList ();
 					index = 0;
 					selected = 0;
 					foreach (ListItem company in companiesList)
@@ -129,7 +129,7 @@ namespace TaxiMobileApp
 							item.Tapped += delegate {
 								SetCompany (item); };
 							companies.Add (item);
-							if (_settings.Company == company.Id)
+							if (_settings.ProviderId == company.Id)
 							{
 								selected = index;
 							}
@@ -219,15 +219,7 @@ namespace TaxiMobileApp
 						int r;
 						if (int.TryParse (_passengerEntry.Value, out r))
 						{
-							_settings.Passengers = r;
-							if( r > 4  && _settings.VehicleType != _vanType.Id )
-							{
-								SetVehiculeType( _vanType.Id, _vanType.Display );
-								_vehiculeTypeEntry.RadioSelected = _vehiculeTypeEntry.Sections[0].Elements.IndexOf( _vehiculeTypeEntry.Sections[0].Elements.Single( e => ((RadioElement)e).ItemId ==_vanType.Id ));
-								var root = _vehiculeTypeEntry.GetImmediateRootElement();
-								root.Reload( _vehiculeTypeEntry, UITableViewRowAnimation.Fade );
-								_selected = _vehiculeTypeEntry.Sections[0].Elements.IndexOf( _vehiculeTypeEntry.Sections[0].Elements.Single( e => ((RadioElement)e).ItemId ==_vanType.Id ) );
-							}
+							_settings.Passengers = r;							
 						}
 						else
 						{
@@ -239,7 +231,7 @@ namespace TaxiMobileApp
 					
 					var vehiculeTypes = new Section (Resources.RideSettingsVehiculeType);
 					
-					var vehicules = ServiceLocator.Current.GetInstance<IAccountService> ().GetVehiclesList ();
+					var vehicules = TinyIoCContainer.Current.Resolve<IAccountService> ().GetVehiclesList ();
 					
 					int index = 0;
 					
@@ -249,28 +241,13 @@ namespace TaxiMobileApp
 						var item = new RadioElement (vType.Display);
 						item.ItemId = vType.Id;
 						item.Tapped += delegate {
-							if( _settings.Passengers > 4 && item.ItemId != _vanType.Id )
-							{
-								MessageHelper.Show( Resources.InvalidChoiceTitle, Resources.InvalidVehiculeTypeForNbPassenger, () => {
-									_vehiculeTypeEntry.RadioSelected = _selected;
-									var root = _vehiculeTypeEntry.GetImmediateRootElement();
-									root.Reload( _vehiculeTypeEntry, UITableViewRowAnimation.Fade );
-
-									var sectRoot = _vehiculeTypeEntry.Sections[0].Elements[ _vehiculeTypeEntry.Sections[0].Elements.IndexOf( item ) ].GetImmediateRootElement();
-									sectRoot.Reload( _vehiculeTypeEntry.Sections[0].Elements[_vehiculeTypeEntry.Sections[0].Elements.IndexOf( item ) ], UITableViewRowAnimation.Fade );
-
-									sectRoot = _vehiculeTypeEntry.Sections[0].Elements[_selected].GetImmediateRootElement();
-									sectRoot.Reload( _vehiculeTypeEntry.Sections[0].Elements[_selected], UITableViewRowAnimation.Fade );
-								});
-							}
-							else
-							{
+							
 								_selected = _vehiculeTypeEntry.Sections[0].Elements.IndexOf( item );
 								SetVehiculeType (item);
-							}
+							
 						};
 						vehiculeTypes.Add (item);
-						if (_settings.VehicleType == vType.Id)
+						if (_settings.VehicleTypeId == vType.Id)
 						{
 							_selected = index;
 						}
@@ -286,7 +263,7 @@ namespace TaxiMobileApp
 					
 					
 //					var companies = new Section (Resources.RideSettingsCompany);
-//					var companiesList = ServiceLocator.Current.GetInstance<IAccountService> ().GetCompaniesList ();
+//					var companiesList = TinyIoCContainer.Current.Resolve<IAccountService> ().GetCompaniesList ();
 //					index = 0;
 //					selected = 0;
 //					foreach (ListItem company in companiesList)
@@ -314,7 +291,7 @@ namespace TaxiMobileApp
 					
 					var chargeTypes = new Section (Resources.RideSettingsChargeType);
 					
-					var payements = ServiceLocator.Current.GetInstance<IAccountService> ().GetPaymentsList ();
+					var payements = TinyIoCContainer.Current.Resolve<IAccountService> ().GetPaymentsList ();
 					
 					index = 0;
 					int selected = 0;
@@ -327,7 +304,7 @@ namespace TaxiMobileApp
 						item.Tapped += delegate {
 							SetChargeType (item); };
 						chargeTypes.Add (item);
-						if (_settings.ChargeType == pay.Id)
+						if (_settings.ChargeTypeId == pay.Id)
 						{
 							selected = index;
 						}
@@ -336,7 +313,7 @@ namespace TaxiMobileApp
 					var chargeTypeEntry = new RootElement (Resources.RideSettingsChargeType, new RadioGroup (selected));
 					chargeTypeEntry.Add (chargeTypes);
 
-					_exceptionsEntry = CreateExceptionsSection(); 
+					//_exceptionsEntry = CreateExceptionsSection(); 
 
 					menu.Add (settings);
 					
@@ -353,7 +330,7 @@ namespace TaxiMobileApp
 						settings.Add (_numberOfTaxiEntry);
 					}
 
-					settings.Add( _exceptionsEntry );
+					//settings.Add( _exceptionsEntry );
 					
 					
 					this.InvokeOnMainThread (() => {
@@ -376,54 +353,30 @@ namespace TaxiMobileApp
 
 		private void SetVehiculeType (int id, string vehiculeName )
 		{
-			_settings.VehicleType = id;
-			_settings.VehicleTypeName = vehiculeName;
+			_settings.VehicleTypeId = id;			
 			ApplyChanges ();
 			
 		}
 
 		private void SetChargeType (RadioElement item)
 		{
-			_settings.ChargeType = item.ItemId;
-			_settings.ChargeTypeName = item.Caption;
+			_settings.ChargeTypeId = item.ItemId;			
 			ApplyChanges ();
 			
 		}
 
 		private void SetCompany (RadioElement item)
 		{
-			_settings.Company = item.ItemId;
-			_settings.CompanyName = item.Caption;
+			_settings.ProviderId = item.ItemId;			
 			ApplyChanges ();
 		}
 
 		private void SetException( CheckboxElement item )
 		{
-			_settings.Exceptions.Single( e => e.Id == item.ItemId ).Value = !_settings.Exceptions.Single( e => e.Id == item.ItemId ).Value;
+			//_settings.Exceptions.Single( e => e.Id == item.ItemId ).Value = !_settings.Exceptions.Single( e => e.Id == item.ItemId ).Value;
 			ApplyChanges ();
 		}
-
-		private RootElement CreateExceptionsSection()
-		{
-			var exceptionsSection = new Section (Resources.Exceptions);
-
-			foreach (ListItemValue exception in _settings.Exceptions )
-			{
-				var item = new CheckboxElement (exception.Display, exception.Value);
-				item.ItemId = exception.Id;
-				item.Tapped += delegate {
-					SetException (item);
-				};
-				exceptionsSection.Add (item);
-			}
-
-			var exceptionsEntry = new RootElement ( Resources.Exceptions );
-			exceptionsEntry.Add( exceptionsSection );
-
-			return exceptionsEntry;
-		}
-		
-		
+	
 	}
 }
 
