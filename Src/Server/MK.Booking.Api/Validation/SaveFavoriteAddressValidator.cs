@@ -13,7 +13,6 @@ namespace apcurium.MK.Booking.Api.Validation
         public SaveFavoriteAddressValidator()
         {
             //Validation rules for all requests
-            RuleFor(r => r.AccountId).NotEmpty();
             RuleFor(r => r.Id).NotEmpty();
             
 

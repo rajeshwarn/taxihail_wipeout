@@ -18,7 +18,6 @@ using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Client.Validation;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {

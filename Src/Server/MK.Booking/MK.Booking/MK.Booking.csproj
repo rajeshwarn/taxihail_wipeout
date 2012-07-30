@@ -131,7 +131,9 @@
     <Content Include="Email\Templates\AccountConfirmation.mustache">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="MK.Booking.psproj" />
+    <None Include="MK.Booking.psproj">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

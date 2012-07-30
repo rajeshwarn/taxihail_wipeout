@@ -13,7 +13,6 @@ namespace apcurium.MK.Booking.Api.Services
         {
             var resource = new Order();
             resource.Id = order.Id;
-            resource.AccountId = order.AccountId;
             resource.PickupDate = order.PickupDate;
             resource.CreatedDate = order.CreatedDate;
             resource.IBSOrderId = order.IBSOrderId;

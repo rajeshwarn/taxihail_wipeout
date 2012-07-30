@@ -42,7 +42,6 @@ namespace apcurium.MK.Web.Tests
             var order = new CreateOrder
             {
                 Id = Guid.NewGuid(),
-                AccountId = newAccount.Id,
                 PickupAddress = TestAddresses.GetAddress1(),                
                 PickupDate = DateTime.Now,
                 DropOffAddress = TestAddresses.GetAddress2(),                   
@@ -68,7 +67,6 @@ namespace apcurium.MK.Web.Tests
             var order = new CreateOrder
             {
                 Id = Guid.NewGuid(),
-                AccountId = newAccount.Id,
                 PickupDate = DateTime.Now,
                 PickupAddress = new Booking.Api.Contract.Resources.Address { FullAddress = "1234 rue Saint-Denis", Apartment = "3939", RingCode = "3131", Latitude = 45.515065, Longitude = -73.558064,  },
                 DropOffAddress = new Booking.Api.Contract.Resources.Address { FullAddress = "Velvet auberge st gabriel", Latitude = 45.50643, Longitude = -73.554052 },
@@ -83,7 +81,6 @@ namespace apcurium.MK.Web.Tests
             sut.AddFavoriteAddress(new SaveAddress()
             {
                 Id = addressId,
-                AccountId = newAccount.Id,
                 FriendlyName = "La Boite à Jojo",
                 FullAddress = "1234 rue Saint-Denis",
                 Latitude = 45.515065,

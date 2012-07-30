@@ -9,7 +9,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
-    [RestService("/accounts/{AccountId}/orders", "POST")]
+    [RestService("/account/orders", "POST")]
     public class CreateOrder : BaseDTO
     {
 
@@ -20,8 +20,6 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         }
 
         public Guid Id { get; set; }
-
-        public Guid AccountId { get; set; }
 
         public DateTime? PickupDate { get; set; }
 

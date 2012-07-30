@@ -30,14 +30,17 @@ namespace apcurium.MK.Booking.Api.Services
 
         public override object OnPost(CancelOrder request)
         {
-            //bool CancelOrder(int orderId, int accountId, string contactPhone)
-
             var order = _orderDao.FindById(request.OrderId);
-            var account = _accountDao.FindById(request.AccountId);
+            var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
 
             if (!order.IBSOrderId.HasValue)
             {
                 throw new HttpError(ErrorCode.CancelOrder_OrderNotInIbs.ToString());
+            }
+
+            if(account.Id != order.AccountId)
+            {
+                throw new HttpError(HttpStatusCode.Unauthorized, "Can't cancel another account's order");
             }
 
             var isSuccessful = _bookingWebServiceClient.CancelOrder(order.IBSOrderId.Value, account.IBSAccountId, order.Settings.Phone);

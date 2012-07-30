@@ -147,7 +147,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                             var orderInfo = service.CreateOrder(bookingInfo);
                             AppContext.Current.LastOrder = bookingInfo.Id;
 
-                            var order = new Order { AccountId = bookingInfo.AccountId, CreatedDate = DateTime.Now, DropOffAddress = bookingInfo.DropOffAddress, IBSOrderId = orderInfo.IBSOrderId, Id = bookingInfo.Id, PickupAddress = bookingInfo.PickupAddress, Note = bookingInfo.Note, PickupDate = bookingInfo.PickupDate.HasValue ? bookingInfo.PickupDate.Value: DateTime.Now, Settings = bookingInfo.Settings };  
+                            var order = new Order { CreatedDate = DateTime.Now, DropOffAddress = bookingInfo.DropOffAddress, IBSOrderId = orderInfo.IBSOrderId, Id = bookingInfo.Id, PickupAddress = bookingInfo.PickupAddress, Note = bookingInfo.Note, PickupDate = bookingInfo.PickupDate.HasValue ? bookingInfo.PickupDate.Value: DateTime.Now, Settings = bookingInfo.Settings };  
                             
                             ShowStatusActivity( order , orderInfo);
                             

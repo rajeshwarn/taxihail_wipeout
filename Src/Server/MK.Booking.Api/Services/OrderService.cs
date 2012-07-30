@@ -20,11 +20,6 @@ namespace apcurium.MK.Booking.Api.Services
 
         public override object OnGet(OrderRequest request)
         {
-            if (!request.AccountId.Equals(new Guid(this.GetSession().UserAuthId)))
-            {
-                throw HttpError.Unauthorized("Unauthorized");
-            }
-
             return new OrderMapper().ToResource( Dao.FindById(request.OrderId));
         }
     }
