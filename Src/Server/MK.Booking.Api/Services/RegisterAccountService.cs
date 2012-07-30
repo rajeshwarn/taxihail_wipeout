@@ -84,24 +84,29 @@ namespace apcurium.MK.Booking.Api.Services
             
                 // Determine the root path to the app 
                 var httpRequest = RequestContext.Get<IHttpRequest>();
-                string root = null;
+                string root = new Uri(RequestContext.AbsoluteUri).GetLeftPart(UriPartial.Authority);;
                 var aspNetRequest = httpRequest.OriginalRequest as HttpRequest;
-                if(aspNetRequest == null)
+                if (aspNetRequest != null)
                 {
-                    // We are probably in a test environment, using HttpListener
-                    root = new Uri(RequestContext.AbsoluteUri).GetLeftPart(UriPartial.Authority);
+                    // We are in IIS
+                    //The ApplicationVirtualPath property always returns "/" as the first character of the returned value.
+                    //If the application is located in the root of the Web site, the return value is just "/".
+                    if (HostingEnvironment.ApplicationVirtualPath.Length > 1)
+                    {
+                        root += HostingEnvironment.ApplicationVirtualPath;
+                    }
                 }
                 else
                 {
-                    // We are in IIS
-                    root = HostingEnvironment.ApplicationVirtualPath;
+                    // We are probably in a test environment, using HttpListener
+                    // We Assume there is no virtual path
                 }
 
                 _commandBus.Send(new SendAccountConfirmationEmail
-                                     {
-                                         EmailAddress = command.Email,
-                                     ConfirmationUrl = new Uri(root + string.Format("/api/account/confirm/{0}/{1}", command.Email, confirmationToken)),
-                                     });
+                {
+                    EmailAddress = command.Email,
+                    ConfirmationUrl = new Uri(root + string.Format("/api/account/confirm/{0}/{1}", command.Email, confirmationToken)),
+                });
                 return new Account { Id = command.AccountId };
             }
         }
