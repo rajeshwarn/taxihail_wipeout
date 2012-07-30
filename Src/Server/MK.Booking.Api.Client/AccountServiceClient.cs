@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using ServiceStack.Common.Web;
@@ -8,8 +9,8 @@ namespace apcurium.MK.Booking.Api.Client
 {
     public class AccountServiceClient : BaseServiceClient
     {
-        public AccountServiceClient(string url, AuthInfo credential)
-            : base(url, credential)
+        public AccountServiceClient(string url)
+            : base(url)
         {
 
         }
@@ -17,64 +18,75 @@ namespace apcurium.MK.Booking.Api.Client
 
         public Account GetMyAccount( )
         {
-            var result = Client.Get<Account>("/accounts/me");
+            var result = Client.Get<Account>("/account");
             return result;
         }
         
         public Account GetTestAccount(int index)
         {
+            var result = Client.Get<Account>("/account/test/" + index);
+            return result;
+        }
 
-            var result = Client.Get<Account>("/accounts/test/" + index.ToString());            
+        public Account CreateTestAccount()
+        {
+            var result = Client.Get<Account>("/account/test/" + Guid.NewGuid());
             return result;
         }
 
         public void RegisterAccount(RegisterAccount account)
         {
-            var result = Client.Post<Account>("/accounts/register", account);
-                        
+            var result = Client.Post<Account>("/account/register", account);         
         }
 
-        public void UpdateBookingSettings(Guid accountId, BookingSettingsRequest settings)
+        public void UpdateBookingSettings(BookingSettingsRequest settings)
         {
-            Client.Put<string>(string.Format("/accounts/{0}/bookingsettings", accountId), settings);
+            Client.Put<string>(string.Format("/account/bookingsettings"), settings);
         }
 
-        public IList<Address> GetFavoriteAddresses(Guid accountId)
+        public IList<Address> GetFavoriteAddresses()
         {
-            var req = string.Format("/accounts/{0}/addresses", accountId.ToString());
+            var req = string.Format("/account/addresses");
             var addresses = Client.Get<IList<Address>>(req);
             return addresses;
         }
 
         public IList<Address> GetHistoryAddresses(Guid accountId)
         {
-            var req = string.Format("/accounts/{0}/addresses/history", accountId.ToString());
+            var req = string.Format("/account/addresses/history");
             var addresses = Client.Get<IList<Address>>(req);
             return addresses;
         }
 
-        public void AddFavoriteAddress(SaveFavoriteAddress address)
+        public void AddFavoriteAddress(SaveAddress address)
         {
-            var req = string.Format("/accounts/{0}/addresses", address.AccountId);
+            var req = string.Format("/account/addresses");
             var response = Client.Post<string>(req, address);
         }
 
-        public void UpdateFavoriteAddress(SaveFavoriteAddress address)
+        public void UpdateFavoriteAddress(SaveAddress address)
         {
-            var req = string.Format("/accounts/{0}/addresses/{1}", address.AccountId, address.Id);
+            var req = string.Format("/account/addresses/{0}", address.Id);
             var response = Client.Put<string>(req, address);
         }
 
-        public void RemoveFavoriteAddress(Guid accountId, Guid addressId)
+        public void RemoveFavoriteAddress(Guid addressId)
         {
-            var req = string.Format("/accounts/{0}/addresses/{1}", accountId, addressId);
+            var req = string.Format("/account/addresses/{0}", addressId);
             var response = Client.Delete<string>(req);
         }
 
         public void ResetPassword(string emailAddress)
         {
-            var req = string.Format("/accounts/resetpassword/{0}", emailAddress);
+            var req = string.Format("/account/resetpassword/{0}", emailAddress);
             var response = Client.Post<string>(req,null);
+        }
+
+        public string UpdatePassword(UpdatePassword updatePassword)
+        {
+            var req = string.Format("/accounts/{0}/updatepassword", updatePassword.AccountId);
+            var response = Client.Post<string>(req, updatePassword);
+            return response;
         }
 
         

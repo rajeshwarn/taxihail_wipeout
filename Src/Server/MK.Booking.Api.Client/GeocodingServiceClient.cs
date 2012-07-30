@@ -9,13 +9,9 @@ namespace apcurium.MK.Booking.Api.Client
 {
     public class GeocodingServiceClient : BaseServiceClient
     {
-        public GeocodingServiceClient(string url, AuthInfo credential)
-            : base(url, credential)
+        public GeocodingServiceClient(string url)
+            : base(url)
         {
-            Console.WriteLine( "GeocodingServiceClient");
-            Console.WriteLine( _credential.Email );
-            Console.WriteLine( _credential.Password );
-            Console.WriteLine( "end GeocodingServiceClient");
         }
 
 

@@ -6,8 +6,8 @@ using ServiceStack.ServiceHost;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [RestService("/accounts/Register", "POST")]    
-    public class RegisterAccount
+    [RestService("/account/register", "POST")]
+    public class RegisterAccount : BaseDTO
     {
         public Guid AccountId { get; set; }
 
@@ -18,6 +18,12 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public string Password { get; set; }
 
         public string Phone { get; set; }
+
+        public string FacebookId { get; set; }
+
+        public string TwitterId { get; set; }
+
+        public string Language { get; set; }
         
     }
 }

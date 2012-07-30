@@ -24,9 +24,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
         }
 
-
-
-
         public bool IsValid(ref CreateOrder info)
         {
             return info.PickupAddress.FullAddress.HasValue() && info.PickupAddress.Latitude != 0 && info.PickupAddress.Longitude != 0;
@@ -40,8 +37,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public OrderStatusDetail CreateOrder(CreateOrder order)
         {
-            var account  = TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount;
-            order.AccountId = account.Id;
             order.Note = TinyIoCContainer.Current.Resolve<IAppResource>().MobileUser;
             var orderDetail = new OrderStatusDetail();
             UseServiceClient<OrderServiceClient>(service =>
@@ -66,8 +61,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             UseServiceClient<OrderServiceClient>(service =>
                 {
-                    var AccountId = TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount.Id;
-                    r = service.GetOrderStatus(AccountId, orderId);
+                    r = service.GetOrderStatus(orderId);
                 });
             
             return r;
@@ -95,8 +89,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             
                 UseServiceClient<OrderServiceClient>(service =>
                 {
-                    var accountId = TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount.Id;
-                    service.CancelOrder( accountId , orderId );
+                    service.CancelOrder(orderId );
                     isCompleted = true;
                 });            
             return isCompleted;

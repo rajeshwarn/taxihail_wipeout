@@ -12,6 +12,9 @@
     <AssemblyName>apcurium.MK.Booking</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <DontImportPostSharp>True</DontImportPostSharp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <SkipPostSharp>True</SkipPostSharp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -51,8 +55,26 @@
     <Reference Include="EntityFramework">
       <HintPath>..\..\packages\EntityFramework.4.3.1\lib\net40\EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity, Version=2.1.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Unity.2.1.505.0\lib\NET35\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration">
+      <HintPath>..\..\packages\Unity.2.1.505.0\lib\NET35\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
     <Reference Include="Nustache.Core">
       <HintPath>..\..\packages\Nustache.1.12.4.29\lib\net20\Nustache.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="PostSharp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\PostSharp.2.1.7.5\lib\net20\PostSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="PostSharp.Toolkit.Diagnostics">
+      <HintPath>..\..\packages\PostSharp-Diagnostics-Toolkit.2.1.1.3\lib\PostSharp.Toolkit.Diagnostics.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -67,7 +89,7 @@
   <ItemGroup>
     <Compile Include="CommandHandlers\AccountCommandHandler.cs" />
     <Compile Include="CommandHandlers\EmailCommandHandler.cs" />
-    <Compile Include="CommandHandlers\FavoriteAddressCommandHandler.cs" />
+    <Compile Include="CommandHandlers\AddressCommandHandler.cs" />
     <Compile Include="CommandHandlers\OrderCommandHandler.cs" />
     <Compile Include="Database\BookingDbContext.cs" />
     <Compile Include="Domain\Account.cs" />
@@ -80,22 +102,21 @@
     <Compile Include="Email\TemplateService.cs" />
     <Compile Include="EventHandlers\AccountDetailsGenerator.cs" />
     <Compile Include="EventHandlers\AddressHistoryGenerator.cs" />
-    <Compile Include="EventHandlers\FavoriteAddressListGenerator.cs" />
+    <Compile Include="EventHandlers\AddressListGenerator.cs" />
     <Compile Include="EventHandlers\OrderGenerator.cs" />
+    <Compile Include="Logging\Log4NetTraceListenerAdapter.cs" />
+    <Compile Include="Module.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReadModel\AccountAddress.cs" />
     <Compile Include="ReadModel\AccountDetail.cs" />
     <Compile Include="ReadModel\BookingSetting.cs" />
-    <Compile Include="ReadModel\FavoriteAddress.cs" />
-    <Compile Include="ReadModel\HistoricAddress.cs" />
+    <Compile Include="ReadModel\Address.cs" />
     <Compile Include="ReadModel\OrderDetail.cs" />
     <Compile Include="ReadModel\OrderStatus.cs" />
     <Compile Include="ReadModel\Query\AccountDao.cs" />
-    <Compile Include="ReadModel\Query\IHistoricAddressDao.cs" />
-    <Compile Include="ReadModel\Query\HistoricAddressDao.cs" />
-    <Compile Include="ReadModel\Query\FavoriteAddressDao.cs" />
+    <Compile Include="ReadModel\Query\AddressDao.cs" />
     <Compile Include="ReadModel\Query\IAccountDao.cs" />
-    <Compile Include="ReadModel\Query\IFavoriteAddressDao.cs" />
+    <Compile Include="ReadModel\Query\IAddressDao.cs" />
     <Compile Include="ReadModel\Query\IOrderDao.cs" />
     <Compile Include="ReadModel\Query\OrderDao.cs" />
     <Compile Include="Security\IPasswordService.cs" />
@@ -104,9 +125,15 @@
   <ItemGroup />
   <ItemGroup>
     <None Include="App.config" />
-    <Content Include="Email\Templates\PasswordResetted.mustache">
+    <Content Include="Email\Templates\PasswordReset.mustache">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Email\Templates\AccountConfirmation.mustache">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="MK.Booking.psproj">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -128,6 +155,8 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <Import Project="..\..\packages\PostSharp.2.1.7.5\tools\PostSharp.targets" Condition="Exists('..\..\packages\PostSharp.2.1.7.5\tools\PostSharp.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

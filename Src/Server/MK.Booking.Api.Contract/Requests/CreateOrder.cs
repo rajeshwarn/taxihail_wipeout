@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ServiceStack.ServiceHost;
+using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [RestService("/accounts/{AccountId}/orders", "POST")] 
-    public class CreateOrder
+    [Authenticate]
+    [RestService("/account/orders", "POST")]
+    public class CreateOrder : BaseDTO
     {
 
         public CreateOrder()
@@ -18,8 +20,6 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         }
 
         public Guid Id { get; set; }
-
-        public Guid AccountId { get; set; }
 
         public DateTime? PickupDate { get; set; }
 

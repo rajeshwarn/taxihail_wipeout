@@ -10,12 +10,6 @@ namespace apcurium.MK.Booking.Email
     {
         private readonly SmtpConfiguration _configuration;
 
-        static EmailSender()
-        {
-            AutoMapper.Mapper.CreateMap<SmtpConfiguration, SmtpClient>()
-                .ForMember(x => x.Credentials, opt => opt.MapFrom(x => new NetworkCredential(x.Username, x.Password)));
-        }
-
         public EmailSender(IConfigurationManager configurationManager)
         {
             _configuration = new SmtpConfiguration
@@ -41,7 +35,7 @@ namespace apcurium.MK.Booking.Email
             }
         }
 
-        class SmtpConfiguration
+        internal class SmtpConfiguration
         {
             public string Host { get; set; }
             public int Port { get; set; }

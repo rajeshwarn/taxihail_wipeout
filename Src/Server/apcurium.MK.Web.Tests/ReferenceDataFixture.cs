@@ -8,23 +8,28 @@ namespace apcurium.MK.Web.Tests
     [TestFixture]
     public class ReferenceDataFixture : BaseTest
     {
-
         [TestFixtureSetUp]
-        public new void Setup()
+        public override void TestFixtureSetup()
+        {
+            base.TestFixtureSetup();
+        }
+
+        [TestFixtureTearDown]
+        public override void TestFixtureTearDown()
+        {
+            base.TestFixtureTearDown();
+        }
+
+        [SetUp]
+        public override void Setup()
         {
             base.Setup();
         }
 
-        [TestFixtureTearDown]
-        public new void TearDown()
-        {
-            base.TearDown();
-        } 
-
         [Test]
         public void Get()
         {
-            var sut = new ReferenceDataServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+            var sut = new ReferenceDataServiceClient(BaseUrl);
             var data = sut.GetReferenceData();
             Assert.IsNotEmpty(data.CompaniesList);
             Assert.IsNotEmpty(data.VehiclesList);

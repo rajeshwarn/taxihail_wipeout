@@ -138,6 +138,7 @@
     <AndroidResource Include="Resources\Layout\Login2.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
+    <None Include="Resources\Resource.Designer.cs.bak" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="TaxiMobileApp.cs" />
     <Compile Include="Validation\EmailValidation.cs" />
@@ -363,6 +364,14 @@
     <AndroidResource Include="Resources\drawable-mdpi\sign_in_btn.9.png" />
     <AndroidResource Include="Resources\drawable-mdpi\social_media_login_btn.9.png" />
     <AndroidResource Include="Resources\drawable-mdpi\twitter_icon.png" />
+    <AndroidResource Include="Resources\Drawable\newBlackButton.xml" />
+    <AndroidResource Include="Resources\Drawable\cell_middle_state.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Drawable\cell_top_state.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Drawable\cell_bottom_state.xml" />
     <Content Include="Todo.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
@@ -391,6 +400,14 @@
     <ProjectReference Include="..\Common\MK.Booking.Mobile.Android.csproj">
       <Project>{B2ADB131-E47E-4DF4-8AA6-1D7E284EFFA9}</Project>
       <Name>MK.Booking.Mobile.Android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SocialNetwork\Mono.Facebook\Mono.Facebook.csproj">
+      <Project>{33B8DF4F-E480-4B97-8DA1-BEB89CA6B644}</Project>
+      <Name>Mono.Facebook</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SocialNetwork\SocialNetworks.Services.MonoDroid\SocialNetworks.Services.MonoDroid.csproj">
+      <Project>{AD9663ED-C050-4580-B285-9C4AF363EA48}</Project>
+      <Name>SocialNetworks.Services.MonoDroid</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

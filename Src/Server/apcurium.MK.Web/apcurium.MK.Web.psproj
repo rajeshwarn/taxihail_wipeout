@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Default project used when PostSharp is detected according to project references. -->
+<Project xmlns="http://schemas.postsharp.org/1.0/configuration" ReferenceDirectory="{$ReferenceDirectory}">
+  <Using File="default" />
+  <Tasks>
+    <XmlMulticast />
+  </Tasks>
+  <Data Name="XmlMulticast">
+    <!-- Exclude property getters and setters -->
+    <LogAttribute xmlns="clr-namespace:PostSharp.Toolkit.Diagnostics;assembly:PostSharp.Toolkit.Diagnostics" />
+    <LogAttribute xmlns="clr-namespace:PostSharp.Toolkit.Diagnostics;assembly:PostSharp.Toolkit.Diagnostics" AttributeExclude="true" AttributeTargetMembers="regex:get_.*|set_.*" />
+  </Data>
+</Project>

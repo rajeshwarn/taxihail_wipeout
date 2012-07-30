@@ -1,6 +1,11 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+#if !CLIENT 
+using ServiceStack.Common.ServiceClient.Web;
+#else
+
+#endif
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -81,9 +86,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             IEnumerable<Order> result = new Order[0];
             UseServiceClient<OrderServiceClient>(service =>
             {
-                result = service.GetOrders(CurrentAccount.Id);
-            }
-            );
+                result = service.GetOrders();
+            });
 
             return result;
         }
@@ -106,10 +110,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
                 IEnumerable<Address> result = new Address[0];
                 UseServiceClient<AccountServiceClient>(service =>
-                {
-                    result = service.GetFavoriteAddresses(CurrentAccount.Id);
-                }
-                );
+                    {
+                        result = service.GetFavoriteAddresses();
+                    });
                 TinyIoCContainer.Current.Resolve<ICacheService>().Set(_favoriteAddressesCacheKey, result.ToArray());
                 return result;
             }
@@ -200,13 +203,37 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             QueueCommand<AccountServiceClient>(service =>
             {                     
-                service.UpdateBookingSettings(CurrentAccount.Id, new BookingSettingsRequest{ Name =  settings.Name, Phone=settings.Phone, Passengers = settings.Passengers, VehicleTypeId = settings.VehicleTypeId, ChargeTypeId = settings.ChargeTypeId, ProviderId = settings.ProviderId });
+                service.UpdateBookingSettings( new BookingSettingsRequest{ Name =  settings.Name, Phone=settings.Phone, Passengers = settings.Passengers, VehicleTypeId = settings.VehicleTypeId, ChargeTypeId = settings.ChargeTypeId, ProviderId = settings.ProviderId });
                 CurrentAccount.Settings = settings;
             });
 
         }
 
         public Account GetAccount(string email, string password, out string error)
+        {
+            var parameters = new NamedParameterOverloads();
+            var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
+            parameters.Add("credential", auth.Authenticate(email, password));
+            return GetAccount(parameters, out error);
+        }
+
+        public Account GetFacebookAccount(string facebookId, out string error)
+        {
+            var parameters = new NamedParameterOverloads();
+            var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
+            parameters.Add("credential", auth.AuthenticateFacebook(facebookId));
+            return GetAccount(parameters, out error);
+        }
+
+        public Account GetTwitterAccount(string twitterId, out string error)
+        {
+            var parameters = new NamedParameterOverloads();
+            var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
+            parameters.Add("credential", auth.AuthenticateTwitter(twitterId));
+            return GetAccount(parameters, out error);
+        }
+
+        private Account GetAccount(NamedParameterOverloads parameters, out string error)
         {
             error = "";
             string resultError = "";
@@ -217,8 +244,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             {
 
                 var context = TinyIoCContainer.Current.Resolve<IAppContext>();
-                var parameters = new NamedParameterOverloads();
-                parameters.Add("credential", new AuthInfo(email, password));
+                var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
 
 
                 var service = TinyIoCContainer.Current.Resolve<AccountServiceClient>("Authenticate", parameters);
@@ -226,18 +252,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 if (account != null)
                 {
                     context.UpdateLoggedInUser(account, false);
-                    context.LoggedInEmail = email;
-                    context.LoggedInPassword = password;
+
+                    //TODO: Should not keep password like this
+                   // context.LoggedInPassword = password;
                     data = account;
-                }
-                else
-                {
-                    TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("***************AUTH FAILED ");
-                }
 
+                }
                 EnsureListLoaded();
-
-
                 isSuccess = true;
             }
             catch (Exception ex)
@@ -246,16 +267,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 error = ex.Message;
                 isSuccess = false;
             }
-
-
-
-
             return data;
-
-
         }
 
-        public bool ResetPassword(string email)
+        public bool ResetPassword(string email )
         {
             bool isSuccess = false;
 
@@ -267,10 +282,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
             catch (Exception ex)
             {
-
                 TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Error resetting the password");
                 TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex);
-
             }
 
             return isSuccess;
@@ -311,13 +324,29 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 
 
                 QueueCommand<AccountServiceClient>(service =>
-                {                     
-                    service.RemoveFavoriteAddress(accountId, toDelete);
-                }
-                );
+                 {                     
+                     service.RemoveFavoriteAddress(toDelete);
+                 });
             }
-            
+        }
 
+        public void UpdateBookingSettings(BookingSettings bookingSettings)
+        {
+            BookingSettingsRequest bsr = new BookingSettingsRequest()
+                                             {
+                                                 ChargeTypeId = bookingSettings.ChargeTypeId,
+                                                 Name = bookingSettings.Name,
+                                                 NumberOfTaxi = bookingSettings.NumberOfTaxi,
+                                                 Passengers = bookingSettings.Passengers,
+                                                 Phone = bookingSettings.Phone,
+                                                 ProviderId = bookingSettings.ProviderId,
+                                                 VehicleTypeId = bookingSettings.VehicleTypeId
+                                             };
+            QueueCommand<AccountServiceClient>(service =>
+            {
+                service.UpdateBookingSettings( bsr);
+            });
+            
         }
 
         public void UpdateAddress(Address address)
@@ -332,10 +361,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 
             QueueCommand<AccountServiceClient>(service =>
-            {
-                var toSave = new SaveFavoriteAddress
+                {
+                    var toSave = new SaveAddress
                     {
-                        AccountId = CurrentAccount.Id,
                         Apartment = address.Apartment,
                         FriendlyName = address.FriendlyName,
                         FullAddress = address.FullAddress,
@@ -345,14 +373,21 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                         RingCode = address.RingCode
                     };
 
-                if (isNew)
-                {                        
-                    service.AddFavoriteAddress(toSave);
-                }
-                else
-                {
-                    service.UpdateFavoriteAddress(toSave);
-                }
+                    var toMove = toSave;
+                    toMove.IsHistoric = false;
+
+                    if (isNew )
+                    {                        
+                        service.AddFavoriteAddress(toSave);
+                    }
+                    else if(address.IsHistoric)
+                    {
+                        service.UpdateFavoriteAddress(toMove);
+                    }
+                    else
+                    {
+                        service.UpdateFavoriteAddress(toSave);
+                    }
 
             }
             );

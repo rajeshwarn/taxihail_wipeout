@@ -8,12 +8,11 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 
 namespace apcurium.MK.Booking.Api.Validation
 {
-    public class SaveFavoriteAddressValidator : AbstractValidator<SaveFavoriteAddress>
+    public class SaveFavoriteAddressValidator : AbstractValidator<SaveAddress>
     {
         public SaveFavoriteAddressValidator()
         {
             //Validation rules for all requests
-            RuleFor(r => r.AccountId).NotEmpty();
             RuleFor(r => r.Id).NotEmpty();
             
 

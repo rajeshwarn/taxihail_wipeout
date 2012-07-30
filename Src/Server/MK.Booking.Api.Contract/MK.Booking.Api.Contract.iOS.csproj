@@ -64,15 +64,18 @@
     <Compile Include="Requests\CreateOrder.cs" />
     <Compile Include="Requests\CurrentAccount.cs" />
     <Compile Include="Requests\DirectionsRequest.cs" />
-    <Compile Include="Requests\FavoriteAddresses.cs" />
     <Compile Include="Requests\GeocodingRequest.cs" />
     <Compile Include="Requests\OrderRequest.cs" />
     <Compile Include="Requests\OrderStatusRequest.cs" />
     <Compile Include="Requests\ReferenceDataRequest.cs" />
     <Compile Include="Requests\RegisterAccount.cs" />
     <Compile Include="Requests\ResetPassword.cs" />
-    <Compile Include="Requests\SaveFavoriteAddress.cs" />
     <Compile Include="Requests\TestOnlyReqGetTestAccount.cs" />
+    <Compile Include="Requests\Addresses.cs" />
+    <Compile Include="Requests\ConfirmAccountRequest.cs" />
+    <Compile Include="Requests\SaveAddress.cs" />
+    <Compile Include="Requests\UpdatePassword.cs" />
+    <Compile Include="BaseDTO.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MK.Common\MK.Common.iOS.csproj">

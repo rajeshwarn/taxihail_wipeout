@@ -17,7 +17,7 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
    
     public class given_a_view_model_generator : given_a_read_model_database
     {
-        protected FavoriteAddressListGenerator sut;
+        protected AddressListGenerator sut;
         protected List<ICommand> commands = new List<ICommand>();
 
         public given_a_view_model_generator()
@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
             bus.Setup(x => x.Send(It.IsAny<IEnumerable<Envelope<ICommand>>>()))
                 .Callback<IEnumerable<Envelope<ICommand>>>(x => this.commands.AddRange(x.Select(e => e.Body)));
 
-            this.sut = new FavoriteAddressListGenerator(() => new BookingDbContext(dbName));
+            this.sut = new AddressListGenerator(() => new BookingDbContext(dbName));
         }
     }
      [TestFixture]
@@ -40,7 +40,7 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
             var accountId = Guid.NewGuid();
             var addressId = Guid.NewGuid();
 
-            this.sut.Handle(new FavoriteAddressAdded
+            this.sut.Handle(new AddressAdded
             {
                 SourceId = accountId,
                 AddressId = addressId,
@@ -54,7 +54,7 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
 
             using (var context = new BookingDbContext(dbName))
             {
-                var list = context.Query<FavoriteAddress>().Where(x => x.AccountId == accountId);
+                var list = context.Query<Address>().Where(x => x.AccountId == accountId);
 
                 Assert.AreEqual(1, list.Count());
                 var dto = list.Single();
@@ -78,7 +78,7 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
         [SetUp] 
         public void Setup()
         {
-            sut.Handle(new FavoriteAddressAdded
+            sut.Handle(new AddressAdded
             {
                 AddressId = Guid.NewGuid(),
                 SourceId = _accountId,
@@ -92,14 +92,14 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
 
             using (var context = new BookingDbContext(dbName))
             {
-                _addressId = context.Query<FavoriteAddress>().Single().Id;
+                _addressId = context.Query<Address>().Single().Id;
             }
         }
 
         [Test]
         public void when_address_is_removed_from_favorites_then_list_updated()
         {
-            this.sut.Handle(new FavoriteAddressRemoved
+            this.sut.Handle(new AddressRemoved
             {
                 SourceId = _accountId,
                 AddressId = _addressId
@@ -107,7 +107,7 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
 
             using (var context = new BookingDbContext(dbName))
             {
-                var list = context.Query<FavoriteAddress>();
+                var list = context.Query<Address>();
                 Assert.IsEmpty(list);
             }
         }
@@ -115,7 +115,7 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
         [Test]
         public void when_address_is_updated_successfully()
         {
-            this.sut.Handle(new FavoriteAddressUpdated
+            this.sut.Handle(new AddressUpdated
             {
                 SourceId = _accountId,
                 AddressId = _addressId,
@@ -125,7 +125,7 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
 
             using (var context = new BookingDbContext(dbName))
             {
-                var address = context.Find<FavoriteAddress>(_addressId);
+                var address = context.Find<Address>(_addressId);
                 
                 Assert.NotNull(address);
                 Assert.AreEqual("25 rue Berri Montreal", address.FullAddress);

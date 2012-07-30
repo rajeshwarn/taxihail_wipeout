@@ -37,3 +37,6 @@ ClientDependency*/
 ClientBin*/
 *.userprefs
 *.pidb
+
+#NuGet
+packages/

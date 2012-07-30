@@ -1,11 +1,14 @@
 ﻿using System;
+using ServiceStack.Common.Web;
+using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
-using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using Infrastructure.Messaging;
+using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query;
-using ServiceStack.Common.Web;
+
+using RegisterAccount = apcurium.MK.Booking.Api.Contract.Requests.RegisterAccount;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -20,33 +23,63 @@ namespace apcurium.MK.Booking.Api.Services
             _commandBus = commandBus;
             _accountDao = accountDao;
             _accountWebServiceClient = accountWebServiceClient;
-
-            AutoMapper.Mapper.CreateMap<RegisterAccount, Commands.RegisterAccount>();
-
         }
 
         public override object OnPost(RegisterAccount request)
         {
-            if (_accountDao.FindByEmail(request.Email) != null)
+            // Ensure user is not signed in
+            this.RequestContext.Get<IHttpRequest>().RemoveSession();
+
+            if (_accountDao.FindByEmail(request.Email) != null || _accountDao.FindByFacebookId(request.FacebookId) != null || _accountDao.FindByTwitterId(request.TwitterId) != null)
             {
                 throw new HttpError(ErrorCode.CreateAccount_AccountAlreadyExist.ToString()); 
             }
 
-            var command = new Commands.RegisterAccount();            
-            AutoMapper.Mapper.Map( request,  command  );                                    
+            if (!string.IsNullOrEmpty(request.FacebookId))
+            {
+                var command = new Commands.RegisterFacebookAccount();
+                AutoMapper.Mapper.Map(request, command);
+                command.Id = Guid.NewGuid();
+                command.IbsAccountId = _accountWebServiceClient.CreateAccount(command.AccountId,
+                                                                              command.Email,
+                                                                              "",
+                                                                              command.Name,
+                                                                              command.Phone);
+                _commandBus.Send(command);
+                return new Account { Id = command.AccountId };
+            }
+            else if (!string.IsNullOrEmpty(request.TwitterId))
+            {
+                var command = new Commands.RegisterTwitterAccount();
+                AutoMapper.Mapper.Map(request, command);
+                command.Id = Guid.NewGuid();
+                command.IbsAccountId = _accountWebServiceClient.CreateAccount(command.AccountId,
+                                                                              command.Email,
+                                                                              "",
+                                                                              command.Name,
+                                                                              command.Phone);
+                _commandBus.Send(command);
+                return new Account { Id = command.AccountId };
+            }
+            else
+            {
+                 var command = new Commands.RegisterAccount();
+            AutoMapper.Mapper.Map( request,  command  );
             command.Id = Guid.NewGuid();
-
-            
-            
             command.IbsAccountId = _accountWebServiceClient.CreateAccount(command.AccountId, 
                                                                             command.Email,
                                                                             "",
                                                                             command.Name,                                                                      
-                                                                            command.Phone);                        
+                                                                            command.Phone);
+            var confirmationToken = Guid.NewGuid();            
             _commandBus.Send(command);
-
+            _commandBus.Send(new SendAccountConfirmationEmail
+                                 {
+                                     EmailAddress = command.Email,
+                                     ConfirmationUrl = new Uri(new Uri(base.RequestContext.Get<IHttpRequest>().AbsoluteUri), string.Format("/api/account/confirm/{0}/{1}", command.Email, confirmationToken))
+                                 });
             return new Account { Id = command.AccountId };
-            
+            }
         }
 
     }

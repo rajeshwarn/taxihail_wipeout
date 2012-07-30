@@ -8,6 +8,8 @@ namespace apcurium.MK.Booking.ReadModel.Query
         IList<AccountDetail> GetAll();
         AccountDetail FindById(Guid Id);
         AccountDetail FindByEmail(string email);
-        
+        AccountDetail FindByFacebookId(string id);
+        AccountDetail FindByTwitterId(string id);
+
     }
 }

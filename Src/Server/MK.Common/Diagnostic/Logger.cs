@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Diagnostics;
 
 namespace apcurium.MK.Common.Diagnostic
@@ -10,7 +7,7 @@ namespace apcurium.MK.Common.Diagnostic
     {
         public void LogError(Exception ex)
         {
-            Trace.TraceError(ex.Message);
+            Trace.TraceError(ex.Message + " " + ex.StackTrace);
         }
 
         public void LogMessage(string message)

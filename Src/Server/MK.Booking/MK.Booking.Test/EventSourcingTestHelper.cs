@@ -29,6 +29,11 @@ namespace apcurium.MK.Booking.Common.Tests
         private ICommandHandler handler;
         private readonly RepositoryStub repository;
 
+        static EventSourcingTestHelper()
+        {
+            new Booking.Module().RegisterMaps();
+        }
+
         public EventSourcingTestHelper()
         {
             this.Events = new List<IVersionedEvent>();

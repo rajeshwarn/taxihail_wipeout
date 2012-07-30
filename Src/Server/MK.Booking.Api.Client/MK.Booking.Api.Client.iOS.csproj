@@ -58,12 +58,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountServiceClient.cs" />
-    <Compile Include="AuthInfo.cs" />
     <Compile Include="BaseServiceClient.cs" />
     <Compile Include="DirectionsServiceClient.cs" />
     <Compile Include="GeocodingServiceClient.cs" />
     <Compile Include="OrderServiceClient.cs" />
     <Compile Include="ReferenceDataServiceClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="AuthServiceClient.cs" />
   </ItemGroup>
 </Project>

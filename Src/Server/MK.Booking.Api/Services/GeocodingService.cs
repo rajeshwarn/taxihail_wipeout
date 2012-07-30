@@ -15,11 +15,6 @@ using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Api.Services
 {
-
-
-
-
-
     public class GeocodingService : RestServiceBase<GeocodingRequest>
     {
         private IConfigurationManager _configManager;

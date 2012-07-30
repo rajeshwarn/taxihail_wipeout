@@ -7,6 +7,7 @@ using NUnit.Framework.Constraints;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Web.SelfHost;
 
 namespace apcurium.MK.Web.Tests
@@ -17,25 +18,25 @@ namespace apcurium.MK.Web.Tests
         private Guid _knownAddressId = Guid.NewGuid();
 
         [TestFixtureSetUp]
-        public new void Setup()
+        public override void TestFixtureSetup()
         {
-            base.Setup();
+            base.TestFixtureSetup();
         }
 
         [TestFixtureTearDown]
-        public new void TearDown()
+        public override void TestFixtureTearDown()
         {
-            base.TearDown();
+            base.TestFixtureTearDown();
         }
- 
+
         [SetUp]
-        public void SetupTest()
+        public override void Setup()
         {
-            var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
-            sut.AddFavoriteAddress(new SaveFavoriteAddress
+            base.Setup();
+            var sut = new AccountServiceClient(BaseUrl);
+            sut.AddFavoriteAddress(new SaveAddress
             {
                 Id = (_knownAddressId = Guid.NewGuid()),
-                AccountId = TestAccount.Id,
                 FriendlyName = "La Boite à Jojo",
                 FullAddress = "1234 rue Saint-Denis",
                 Latitude = 45.515065,
@@ -46,13 +47,12 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void AddAddress()
         {
-            var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+            var sut = new AccountServiceClient(BaseUrl);
 
             var addressId = Guid.NewGuid();
-            sut.AddFavoriteAddress(new SaveFavoriteAddress
+            sut.AddFavoriteAddress(new SaveAddress
                                        {
                                            Id = addressId,
-                                           AccountId = TestAccount.Id,
                                            FriendlyName = "Chez François Cuvelier",
                                            Apartment = "3939",
                                            FullAddress = "1234 rue Saint-Hubert",
@@ -61,7 +61,7 @@ namespace apcurium.MK.Web.Tests
                                            Longitude = -73.558064
                                        });
 
-            var addresses = sut.GetFavoriteAddresses(TestAccount.Id);
+            var addresses = sut.GetFavoriteAddresses();
 
             Assert.AreEqual(1, addresses.Count(x => x.Id == addressId));
         }
@@ -69,20 +69,19 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void AddInvalidAddress()
         {
-            var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+            var sut = new AccountServiceClient(BaseUrl);
 
-            Assert.Throws<WebServiceException>(() => sut.AddFavoriteAddress(new SaveFavoriteAddress()));
+            Assert.Throws<WebServiceException>(() => sut.AddFavoriteAddress(new SaveAddress()));
         }
 
         [Test]
         public void UpdateAddress()
         {
-            var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+            var sut = new AccountServiceClient(BaseUrl);
 
-            sut.UpdateFavoriteAddress(new SaveFavoriteAddress
+            sut.UpdateFavoriteAddress(new SaveAddress
             {
                 Id = _knownAddressId,
-                AccountId = TestAccount.Id,
                 FriendlyName = "Chez François Cuvelier",
                 Apartment = "3939",
                 FullAddress = "1234 rue Saint-Hubert",
@@ -91,7 +90,7 @@ namespace apcurium.MK.Web.Tests
                 Longitude = 34
             });
 
-            var address = sut.GetFavoriteAddresses(TestAccount.Id).Single(x => x.Id == _knownAddressId);
+            var address = sut.GetFavoriteAddresses().Single(x => x.Id == _knownAddressId);
 
             Assert.AreEqual("Chez François Cuvelier", address.FriendlyName);
             Assert.AreEqual("3939", address.Apartment);
@@ -105,13 +104,12 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void UpdateAddressWithInvalidData()
         {
-            var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+            var sut = new AccountServiceClient(BaseUrl);
 
             Assert.Throws<WebServiceException>(() => sut
-                .UpdateFavoriteAddress(new SaveFavoriteAddress
+                .UpdateFavoriteAddress(new SaveAddress
                 {
                     Id = _knownAddressId,
-                    AccountId = TestAccount.Id,
                     FriendlyName =
                         "Chez François Cuvelier",
                     Apartment = "3939",
@@ -128,38 +126,23 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void RemoveAddress()
         {
-            var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+            var sut = new AccountServiceClient(BaseUrl);
 
-            sut.RemoveFavoriteAddress(TestAccount.Id, _knownAddressId);
+            sut.RemoveFavoriteAddress(_knownAddressId);
 
-            var addresses = sut.GetFavoriteAddresses(TestAccount.Id);
+            var addresses = sut.GetFavoriteAddresses();
             Assert.IsEmpty(addresses.Where(x => x.Id == _knownAddressId));
         }
 
         [Test]
         public void GetAddressList()
         {
-            var sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+            var sut = new AccountServiceClient(BaseUrl);
 
-            var addresses = sut.GetFavoriteAddresses(TestAccount.Id);
+            var addresses = sut.GetFavoriteAddresses();
 
             var knownAddress = addresses.SingleOrDefault(x => x.Id == _knownAddressId);
             Assert.IsNotNull(knownAddress);
         }
-
-        [Test]
-        [ExpectedException("ServiceStack.ServiceClient.Web.WebServiceException", ExpectedMessage = "Unauthorized")]
-        public void GetAddressListFromDiffrentUser()
-        {
-            var sut = new AccountServiceClient(BaseUrl, null);
-
-            var otherAccount = sut.GetTestAccount(1);            
-
-            sut = new AccountServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
-            
-            var adresses = sut.GetFavoriteAddresses(otherAccount.Id);
-
-        }
-       
     }
 }

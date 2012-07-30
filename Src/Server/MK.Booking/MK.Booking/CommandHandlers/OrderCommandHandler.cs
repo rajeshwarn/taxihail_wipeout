@@ -17,7 +17,6 @@ namespace apcurium.MK.Booking.CommandHandlers
         public OrderCommandHandler(IEventSourcedRepository<Order> repository)
         {
             _repository = repository;
-            AutoMapper.Mapper.CreateMap<CreateOrder.BookingSettings, BookingSettings>();
         }
 
         public void Handle(CreateOrder command)

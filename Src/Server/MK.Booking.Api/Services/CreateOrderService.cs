@@ -33,23 +33,11 @@ namespace apcurium.MK.Booking.Api.Services
             _accountDao = accountDao;
             _geocodingService = geocodingService;
 
-            Mapper.CreateMap<CreateOrder, Commands.CreateOrder>().ForMember(p => p.OrderId, options => options.MapFrom(m => m.Id));                
-            Mapper.CreateMap<Address, Commands.CreateOrder.Address>();
-            Mapper.CreateMap<BookingSettings, Commands.CreateOrder.BookingSettings>();
-
-            Mapper.CreateMap<Address, IBSAddress>();
-
         }
 
         public override object OnPost(CreateOrder request)
         {
-            var account = _accountDao.FindById(request.AccountId );
-
-            if (!IsValid(request.PickupAddress))
-            {
-                throw new HttpError(ErrorCode.CreateOrder_InvalidPickupAddress.ToString()); 
-            }
-
+            var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
             //TODO : need to check ibs setup for shortesst time.
             request.PickupDate = request.PickupDate.HasValue ? request.PickupDate.Value : DateTime.Now.AddMinutes(2);            
             
@@ -65,8 +53,8 @@ namespace apcurium.MK.Booking.Api.Services
             Mapper.Map( request,  command  );
                         
             command.Id = Guid.NewGuid();
-
             command.IBSOrderId = ibsOrderId.Value;
+            command.AccountId = account.Id;
             
             _commandBus.Send(command);
             

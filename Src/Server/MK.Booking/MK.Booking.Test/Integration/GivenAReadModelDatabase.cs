@@ -20,6 +20,11 @@ namespace apcurium.MK.Booking.Test.Integration
     {
         protected string dbName;
 
+        static given_a_read_model_database()
+        {
+            new Booking.Module().RegisterMaps();
+        }
+
         public given_a_read_model_database()
         {
             dbName = this.GetType().Name + "-" + Guid.NewGuid().ToString();

@@ -18,17 +18,30 @@ using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Client.Validation;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {
     [Activity(Label = "Sign Up", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation=Android.Content.PM.ScreenOrientation.Portrait)]
     public class SignUpActivity : Activity
     {
+        private bool IsCreatedFromSocial;
+        private Bundle b;
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.SignUp);
+            IsCreatedFromSocial = false;
+            b = Intent.Extras;
+            //Si on vient de facebook ou twitter on prerempli les champs
+            if(b!=null)
+            {
+                FindViewById<EditText>(Resource.Id.SignUpEditEmail).Text = b.GetString("email");
+                FindViewById<EditText>(Resource.Id.SignUpName).Text = b.GetString("firstName") + " " + b.GetString("lastName");
+                FindViewById<EditText>(Resource.Id.SignUpPhone).Text = b.GetString("phone");
+                FindViewById<EditText>(Resource.Id.SignUpPassword).Visibility = ViewStates.Invisible;
+                FindViewById<EditText>(Resource.Id.SignUpConfirmPassword).Visibility = ViewStates.Invisible;
+                IsCreatedFromSocial = true;
+            }
 
             var btnCreate = FindViewById<Button>(Resource.Id.SignUpCreateBtn);
             
@@ -42,7 +55,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             {
                 this.ShowAlert(Resource.String.CreateAccountInvalidDataTitle, Resource.String.ResetPasswordInvalidDataMessage);
             }
-            else if (!ValidatePassword())
+            else if (!ValidatePassword() && !IsCreatedFromSocial)
             {
                 this.ShowAlert(Resource.String.CreateAccountInvalidDataTitle, Resource.String.CreateAccountInvalidPassword);             
             }
@@ -75,7 +88,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             data.Password = FindViewById<EditText>(Resource.Id.SignUpPassword).Text;            
             data.Email = FindViewById<EditText>(Resource.Id.SignUpEditEmail).Text;
             data.Name= FindViewById<EditText>(Resource.Id.SignUpName).Text;            
-            data.Phone = FindViewById<EditText>(Resource.Id.SignUpPhone).Text;            
+            data.Phone = FindViewById<EditText>(Resource.Id.SignUpPhone).Text;
+            if (IsCreatedFromSocial)
+            {
+                data.FacebookId = string.IsNullOrEmpty(b.GetString("facebookId")) ? "" : b.GetString("facebookId");
+                data.TwitterId = string.IsNullOrEmpty(b.GetString("twitterId")) ? "" : b.GetString("twitterId");
+            }
+            
             return data;
 
         }
@@ -86,12 +105,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             var email = FindViewById<EditText>(Resource.Id.SignUpEditEmail).Text;
             var name = FindViewById<EditText>(Resource.Id.SignUpName).Text;            
             var phone = FindViewById<EditText>(Resource.Id.SignUpPhone).Text;
-            if ((string.IsNullOrEmpty(password)) || (string.IsNullOrEmpty(confirmPassword)) ||
+            if (!IsCreatedFromSocial)
+            {
+                if ((string.IsNullOrEmpty(password)) || (string.IsNullOrEmpty(confirmPassword))  ||
                 (string.IsNullOrEmpty(email)) || (string.IsNullOrEmpty(name)) ||
                 (string.IsNullOrEmpty(phone)))
-            {
-                return false;
+                {
+                    return false;
+                }
             }
+            
+            if (IsCreatedFromSocial)
+            {
+                if ((string.IsNullOrEmpty(email)) || (string.IsNullOrEmpty(name)) ||
+                (string.IsNullOrEmpty(phone)))
+                {
+                    return false;
+                }
+            }
+            
             return true;
 
         }
@@ -100,7 +132,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
         {
             var password = FindViewById<EditText>(Resource.Id.SignUpPassword).Text;
             var confirmPassword = FindViewById<EditText>(Resource.Id.SignUpConfirmPassword).Text;
-            return password == confirmPassword;
+            if (password.Length>=6 && password.Equals(confirmPassword))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
 
         }
         

@@ -48,7 +48,7 @@ namespace apcurium.MK.Booking.Test.Integration.AddressHistoryFixture
                                     PickupLatitude = 45.515065,
 
                                 });
-            this.sut.Handle(new FavoriteAddressAdded()
+            this.sut.Handle(new AddressAdded()
                                 {
                                     SourceId = accountId,
                                     Apartment = "3939",
@@ -62,7 +62,7 @@ namespace apcurium.MK.Booking.Test.Integration.AddressHistoryFixture
 
             using (var context = new BookingDbContext(dbName))
             {
-                var list = context.Query<HistoricAddress>().Where(x => x.AccountId == accountId && x.FullAddress.Equals("1234 rue Saint-Denis"));
+                var list = context.Query<Address>().Where(x => x.AccountId == accountId && x.FullAddress.Equals("1234 rue Saint-Denis"));
                 Assert.AreEqual(0, list.Count());
             }
         }
@@ -97,7 +97,7 @@ namespace apcurium.MK.Booking.Test.Integration.AddressHistoryFixture
 
             using (var context = new BookingDbContext(dbName))
             {
-                var list = context.Query<HistoricAddress>().Where(x => x.AccountId == accountId);
+                var list = context.Query<Address>().Where(x => x.AccountId == accountId);
                 Assert.AreEqual(1, list.Count());
                 var dto = list.Single();
                 Assert.AreEqual(accountId, dto.AccountId);
@@ -134,7 +134,7 @@ namespace apcurium.MK.Booking.Test.Integration.AddressHistoryFixture
 
             using (var context = new BookingDbContext(dbName))
             {
-                var list = context.Query<HistoricAddress>().Where(x => x.AccountId == command.AccountId);
+                var list = context.Query<Address>().Where(x => x.AccountId == command.AccountId && x.IsHistoric.Equals(true));
                 Assert.AreEqual(1, list.Count());
                 var dto = list.Single();
                 Assert.AreEqual(command.AccountId, dto.AccountId);

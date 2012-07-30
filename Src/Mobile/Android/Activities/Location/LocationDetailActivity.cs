@@ -112,10 +112,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
                         UpdateData();
                         _data.Latitude = address.Latitude;
                         _data.Longitude = address.Longitude;
-                        
 
-                           
-                        TinyIoCContainer.Current.Resolve<IAccountService>().UpdateAddress( _data );
+                        
                         //    //TODO: Fix this
                         //    //if ((AppContext.Current.LoggedUser.FavoriteLocations != null) && (AppContext.Current.LoggedUser.FavoriteLocations.Count() > 0))
                         //    //{
@@ -147,7 +145,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
                         //}
 
                         //_data.IsFromHistory = false;
-                        Finish();
+                        //Finish();
                     });
                 }
                 catch (Exception ex)
@@ -160,6 +158,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
                 }
             }, true);
             }
+            TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().UpdateAddress(_data);
 
         }
 

@@ -15,18 +15,14 @@ namespace apcurium.MK.Booking.Api.Services
         public BookingSettingsService(ICommandBus commandBus)
         {
             _commandBus = commandBus;
-            AutoMapper.Mapper.CreateMap<BookingSettingsRequest, Commands.UpdateBookingSettings>();
         }
 
         public override object OnPut(BookingSettingsRequest request)
         {
-            if (!request.AccountId.Equals(new Guid(this.GetSession().UserAuthId)))
-            {
-                throw HttpError.Unauthorized("Unauthorized");
-            }
-
             var command = new UpdateBookingSettings();
             AutoMapper.Mapper.Map(request, command);
+            command.AccountId = new Guid(this.GetSession().UserAuthId);
+
             _commandBus.Send(command);
 
             return new HttpResult(HttpStatusCode.OK);

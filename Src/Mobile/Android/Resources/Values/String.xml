@@ -212,4 +212,6 @@
   <string name="DateTimePickerPickInvalidDateMessage">The pickup date must be in the future.</string>
   <string name="EditButton">Edit</string>
   <string name="StatusCannotBeDisplayed">Cannot get status. Please call provider.</string>
+  <string name="UpdateBookingSettingsInvalidDataTitle">Invalid booking settings info.</string>
+  <string name="UpdateBookingSettingsEmptyField">The data is invalid, all the fields are required.</string>
 </resources>

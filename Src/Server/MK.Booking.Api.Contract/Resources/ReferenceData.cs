@@ -3,7 +3,7 @@ using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Api.Contract.Resources
 {
-    public class ReferenceData
+    public class ReferenceData : BaseDTO
     {
         public IList<ListItem> CompaniesList { get; set; }
         public IList<ListItem> VehiclesList { get; set; }

@@ -16,16 +16,27 @@ namespace apcurium.MK.Web.Tests
 
 
         [TestFixtureSetUp]
-        public new void Setup()
+        public override void TestFixtureSetup()
+        {
+            base.TestFixtureSetup();
+        }
+
+        [TestFixtureTearDown]
+        public override void TestFixtureTearDown()
+        {
+            base.TestFixtureTearDown();
+        }
+
+        [SetUp]
+        public override void Setup()
         {
             base.Setup();
-            //sut = new AccountService();
         }
 
         [Test]
         public void BasicDirectionSearch()
         {
-            var sut = new DirectionsServiceClient(BaseUrl, new AuthInfo(TestAccount.Email, TestAccountPassword));
+            var sut = new DirectionsServiceClient(BaseUrl);
             var direction = sut.GetDirectionDistance(45.5062, -73.5726, 45.5273, -73.6344);
 
             Assert.IsNotNull(direction);

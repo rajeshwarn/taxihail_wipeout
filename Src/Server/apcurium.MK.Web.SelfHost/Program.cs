@@ -1,39 +1,16 @@
 ﻿using System;
-using Infrastructure;
-using Infrastructure.EventSourcing;
-using Infrastructure.Messaging.Handling;
-using Infrastructure.Messaging.InMemory;
-using Infrastructure.Sql.BlobStorage;
-using Infrastructure.Sql.EventSourcing;
-using Infrastructure.Sql.MessageLog;
 using Microsoft.Practices.Unity;
 using ServiceStack.ServiceInterface.Validation;
 using ServiceStack.WebHost.Endpoints;
 using Funq;
 using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.Api.Validation;
-using apcurium.MK.Booking.BackOffice.CommandHandlers;
-using apcurium.MK.Booking.BackOffice.EventHandlers;
-using apcurium.MK.Booking.CommandHandlers;
-using apcurium.MK.Booking.Email;
-using apcurium.MK.Booking.EventHandlers;
-using apcurium.MK.Booking.IBS;
-using apcurium.MK.Booking.IBS.Impl;
 using apcurium.MK.Booking.ReadModel.Query;
-using apcurium.MK.Booking.Database;
-using Infrastructure.Messaging;
 using apcurium.MK.Booking.Security;
-using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
-using Infrastructure.Serialization;
-using System.Data.Entity;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Auth;
 using apcurium.MK.Booking.Api.Security;
-using ServiceStack.CacheAccess;
-using ServiceStack.CacheAccess.Providers;
-using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.IoC;
 using UnityServiceLocator = apcurium.MK.Common.IoC.UnityServiceLocator;
 
@@ -43,9 +20,8 @@ namespace apcurium.MK.Web.SelfHost
     {
         static void Main(string[] args)
         {
-            var listeningOn = args.Length == 0 ? "http://*:6901/" : args[0];
 
-            Database.DefaultConnectionFactory = new ServiceConfigurationSettingConnectionFactory(Database.DefaultConnectionFactory);
+            var listeningOn = args.Length == 0 ? "http://*:6901/" : args[0];
 
             var appHost = new AppHost();
             appHost.Init();
@@ -65,65 +41,21 @@ namespace apcurium.MK.Web.SelfHost
 
         public override void Configure(Container containerFunq)
         {
-            Database.SetInitializer<BookingDbContext>(null);
-            Database.SetInitializer<ConfigurationDbContext>(null);
-            Database.SetInitializer<EventStoreDbContext>(null);
-            Database.SetInitializer<MessageLogDbContext>(null);
-            Database.SetInitializer<BlobStorageDbContext>(null);
-
-            containerFunq.Adapter = new UnityContainerAdapter(UnityServiceLocator.Instance, new Logger());
+            new Module().Init(UnityServiceLocator.Instance);
 
             var container = UnityServiceLocator.Instance;
-
-            container.RegisterType<BookingDbContext>(new TransientLifetimeManager(), new InjectionConstructor("MKWeb"));
-            container.RegisterType<ConfigurationDbContext>(new TransientLifetimeManager(), new InjectionConstructor("MKWeb"));
-
-            container.RegisterInstance<IOrderDao>(new OrderDao(() => container.Resolve<BookingDbContext>()));
-            container.RegisterInstance<ITextSerializer>(new JsonTextSerializer());
-            container.RegisterInstance<IMetadataProvider>(new StandardMetadataProvider());
-
-            container.RegisterInstance<IFavoriteAddressDao>(new FavoriteAddressDao(() => container.Resolve<BookingDbContext>()));
-            container.RegisterInstance<IHistoricAddressDao>(new HistoricAddressDao(() => container.Resolve<BookingDbContext>()));
-            container.RegisterInstance<IAccountDao>(new AccountDao(() => container.Resolve<BookingDbContext>()));
-            container.RegisterInstance<IConfigurationManager>(new Common.Configuration.Impl.ConfigurationManager(() => container.Resolve<ConfigurationDbContext>()));
-            container.RegisterInstance<IAccountWebServiceClient>(new AccountWebServiceClient(container.Resolve<IConfigurationManager>(), new Logger()));
-            container.RegisterInstance<IStaticDataWebServiceClient>(new StaticDataWebServiceClient(container.Resolve<IConfigurationManager>(), new Logger()));
-            container.RegisterInstance<IBookingWebServiceClient>(new BookingWebServiceClient(container.Resolve<IConfigurationManager>(), new Logger()));
+            containerFunq.Adapter = new UnityContainerAdapter(container, new Logger());
 
 
-            // Event log database and handler.
-            container.RegisterType<SqlMessageLog>(new InjectionConstructor("MessageLog", container.Resolve<ITextSerializer>(), container.Resolve<IMetadataProvider>()));
-            container.RegisterType<IEventHandler, SqlMessageLogHandler>("SqlMessageLogHandler");
-            container.RegisterType<ICommandHandler, SqlMessageLogHandler>("SqlMessageLogHandler");
-
-
-            container.RegisterInstance<IEventBus>(new MemoryEventBus(container.Resolve<AccountDetailsGenerator>(),
-                container.Resolve<FavoriteAddressListGenerator>(),
-                container.Resolve<AddressHistoryGenerator>(),
-                container.Resolve<OrderGenerator>(),
-                container.Resolve<SqlMessageLogHandler>()));
-
-            container.RegisterType<EventStoreDbContext>(new TransientLifetimeManager(), new InjectionConstructor("EventStore"));
-            container.RegisterType(typeof(IEventSourcedRepository<>), typeof(SqlEventSourcedRepository<>), new ContainerControlledLifetimeManager());
-
-            container.RegisterInstance<IPasswordService>(new PasswordService());
-            container.RegisterInstance<ITemplateService>(new TemplateService());
-            container.RegisterInstance<IEmailSender>(new EmailSender(container.Resolve<IConfigurationManager>()));
-
-            container.RegisterType<ICommandHandler, AccountCommandHandler>("AccountCommandHandler");
-            container.RegisterType<ICommandHandler, FavoriteAddressCommandHandler>("FavoriteAddressCommandHandler");
-            container.RegisterType<ICommandHandler, EmailCommandHandler>("EmailCommandHandler");
-            container.RegisterType<ICommandHandler, OrderCommandHandler>("OrderCommandHandler");
-            container.RegisterInstance<ICommandBus>(new MemoryCommandBus(container.Resolve<ICommandHandler>("AccountCommandHandler"), container.Resolve<ICommandHandler>("OrderCommandHandler"),
-                container.Resolve<ICommandHandler>("FavoriteAddressCommandHandler"),
-                container.Resolve<ICommandHandler>("EmailCommandHandler")));
-
-
-            Plugins.Add(new AuthFeature(() => new AuthUserSession(), new IAuthProvider[] { new CustomCredentialsAuthProvider(container.Resolve<IAccountDao>(), container.Resolve<IPasswordService>()) }));
+            Plugins.Add(new AuthFeature(() => new AuthUserSession(),
+                new IAuthProvider[]
+                    {
+                        new CustomCredentialsAuthProvider(container.Resolve<IAccountDao>(), container.Resolve<IPasswordService>()),
+                        new CustomFacebookAuthProvider(container.Resolve<IAccountDao>()), 
+                        new CustomTwitterAuthProvider(container.Resolve<IAccountDao>()), 
+                    }));
             Plugins.Add(new ValidationFeature());
             containerFunq.RegisterValidators(typeof(SaveFavoriteAddressValidator).Assembly);
-
-            container.RegisterInstance<ICacheClient>(new MemoryCacheClient { FlushOnDispose = false });
 
             SetConfig(new EndpointHostConfig
             {

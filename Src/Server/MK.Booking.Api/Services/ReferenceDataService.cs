@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using ServiceStack.CacheAccess;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
@@ -52,7 +53,7 @@ namespace apcurium.MK.Booking.Api.Services
                                  DropoffCityList = dropCities,
                                  PickupCityList = pickCities,
                              };
-                _cacheClient.Add(CacheKey, result);
+                _cacheClient.Add(CacheKey, result, TimeSpan.FromMinutes(60));
             }
             return result;
         }

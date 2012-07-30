@@ -530,7 +530,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                         
                         BookingInfo.PickupDate = DateTime.Now;                       
                         
-                        LoadStatusView (new Order { Id = bi.Id, IBSOrderId = orderStatus.IBSOrderId, AccountId =accountId, CreatedDate = DateTime.Now, DropOffAddress = bi.DropOffAddress, PickupAddress  = bi.PickupAddress , Settings = bi.Settings   }, orderStatus, false);
+                        LoadStatusView (new Order { Id = bi.Id, IBSOrderId = orderStatus.IBSOrderId,  CreatedDate = DateTime.Now, DropOffAddress = bi.DropOffAddress, PickupAddress  = bi.PickupAddress , Settings = bi.Settings   }, orderStatus, false);
                     }
                     else
                     {

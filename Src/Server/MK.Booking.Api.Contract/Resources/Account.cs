@@ -1,9 +1,9 @@
 ﻿using System;
 
 namespace apcurium.MK.Booking.Api.Contract.Resources
-{    
-        
-    public class Account  
+{
+
+    public class Account : BaseDTO  
     {
         public Guid Id { get; set; }
 
@@ -15,6 +15,12 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
 
         public int IBSAccountid { get; set; }
 
+        public string FacebookId { get; set; }
+
+        public string TwitterId { get; set; }
+
         public BookingSettings Settings { get; set; }
+
+        public string Language { get; set; }
     }
 }

@@ -18,7 +18,10 @@ namespace apcurium.MK.Booking.ReadModel
         public byte[] Password{ get; set; }
         public string Phone{ get; set; }
         public int IBSAccountId { get; set; }
-
+        public string TwitterId { get; set; }
+        public string FacebookId { get; set; }
+        public bool IsConfirmed { get; set; }
+        public string Language { get; set; }
         
         public BookingSettingsDetails Settings { get; set; }
         

@@ -10,16 +10,19 @@ namespace apcurium.MK.Booking.Domain
 {
     public class Account : EventSourced
     {
-        private readonly IList<Guid> _favoriteAddresses = new List<Guid>(); 
+        private readonly IList<Guid> _favoriteAddresses = new List<Guid>();
+        private string _confirmationToken;
         protected Account(Guid id) : base(id)
         {
             base.Handles<AccountRegistered>(OnAccountRegistered);
+            base.Handles<AccountConfirmed>(OnAccountConfirmed);
             base.Handles<AccountUpdated>(OnAccountUpdated);
-            base.Handles<FavoriteAddressAdded>(OnFavoriteAddressAdded);
-            base.Handles<FavoriteAddressRemoved>(OnFavoriteAddressRemoved);
-            base.Handles<FavoriteAddressUpdated>(OnFavoriteAddressUpdated);
-            base.Handles<AccountPasswordResetted>(OnAccountPasswordResetted);
+            base.Handles<AddressAdded>(OnAddressAdded);
+            base.Handles<AddressRemoved>(OnAddressRemoved);
+            base.Handles<AddressUpdated>(OnAddressUpdated);
+            base.Handles<AccountPasswordReset>(OnAccountPasswordReset);
             base.Handles<BookingSettingsUpdated>(OnBookingSettingsUpdated);
+            base.Handles<AccountPasswordUpdated>(OnAccountPasswordUpdated);
         }
 
         public Account(Guid id, IEnumerable<IVersionedEvent> history)
@@ -28,11 +31,11 @@ namespace apcurium.MK.Booking.Domain
             this.LoadFrom(history);
         }
 
-        public Account(Guid id, string name,string phone, string email, byte[] password, int ibsAccountId)
+        public Account(Guid id, string name,string phone, string email, byte[] password, int ibsAccountId, string confirmationToken, string language)
             : this(id)
         {
             if (Params.Get(name,phone,email).Any(p => p.IsNullOrEmpty())
-                || ibsAccountId == 0 || password == null)
+                || ibsAccountId == 0 || (password == null) )
             {
                 throw new InvalidOperationException("Missing required fields");
             }
@@ -43,9 +46,41 @@ namespace apcurium.MK.Booking.Domain
                 Email = email,
                 Phone = phone,
                 Password = password,
-                IbsAcccountId = ibsAccountId
+                IbsAcccountId = ibsAccountId,
+                ConfirmationToken = confirmationToken,
+                Language = language
             });
-        }        
+        }
+
+        public Account(Guid id, string name, string phone, string email, int ibsAccountId, string facebookId = "", string twitterId = "", string language = null)
+            : this(id)
+        {
+            if (Params.Get(name, phone, email).Any(p => p.IsNullOrEmpty())
+                || ibsAccountId == 0 )
+            {
+                throw new InvalidOperationException("Missing required fields");
+            }
+            this.Update(new AccountRegistered
+            {
+                SourceId = id,
+                Name = name,
+                Email = email,
+                Phone = phone,
+                IbsAcccountId = ibsAccountId,
+                TwitterId = twitterId,
+                FacebookId = facebookId,
+                Language = language
+            });
+        }
+
+        public void ConfirmAccount(string confirmationToken)
+        {
+            if (confirmationToken == null) throw new ArgumentNullException();
+            if(confirmationToken.Length == 0) throw new ArgumentException("Confirmation token cannot be an empty string");
+            if(confirmationToken != this._confirmationToken) throw new InvalidOperationException("Invalid confirmation token");
+
+            this.Update(new AccountConfirmed());  
+        }
         
         internal void Update( string name )
         {
@@ -61,6 +96,20 @@ namespace apcurium.MK.Booking.Domain
             });        
         }
 
+        internal void ResetPassword(byte[] newPassword)
+        {
+            if (Params.Get(newPassword).Any(p => false))
+            {
+                throw new InvalidOperationException("Missing required fields");
+            }
+
+            this.Update(new AccountPasswordReset()
+            {
+                SourceId = Id,
+                Password = newPassword
+            });
+        }
+
         internal void UpdatePassword(byte[] newPassword)
         {
             if (Params.Get(newPassword).Any(p => false))
@@ -68,7 +117,7 @@ namespace apcurium.MK.Booking.Domain
                 throw new InvalidOperationException("Missing required fields");
             }
 
-            this.Update(new AccountPasswordResetted()
+            this.Update(new AccountPasswordUpdated()
             {
                 SourceId = Id,
                 Password = newPassword
@@ -90,11 +139,11 @@ namespace apcurium.MK.Booking.Domain
             });  
         }
 
-        public void AddFavoriteAddress(Guid id, string friendlyName, string apartment, string fullAddress, string ringCode, double latitude, double longitude)
+        public void AddAddress(Guid id, string friendlyName, string apartment, string fullAddress, string ringCode, double latitude, double longitude, bool isHistoric)
         {
             ValidateFavoriteAddress(friendlyName, fullAddress, latitude, longitude);
 
-            this.Update(new FavoriteAddressAdded
+            this.Update(new AddressAdded
             {
                 AddressId = id,
                 FriendlyName = friendlyName,
@@ -102,15 +151,16 @@ namespace apcurium.MK.Booking.Domain
                 FullAddress = fullAddress,
                 RingCode = ringCode,
                 Latitude = latitude,
-                Longitude = longitude
+                Longitude = longitude,
+                IsHistoric = isHistoric
             });
         }
 
-        public void UpdateFavoriteAddress(Guid id, string friendlyName, string apartment, string fullAddress, string ringCode, double latitude, double longitude)
+        public void UpdateAddress(Guid id, string friendlyName, string apartment, string fullAddress, string ringCode, double latitude, double longitude, bool isHistoric)
         {
             ValidateFavoriteAddress(friendlyName, fullAddress, latitude, longitude);
 
-            this.Update(new FavoriteAddressUpdated()
+            this.Update(new AddressUpdated()
             {
                 AddressId = id,
                 FriendlyName = friendlyName,
@@ -118,7 +168,8 @@ namespace apcurium.MK.Booking.Domain
                 FullAddress = fullAddress,
                 RingCode = ringCode,
                 Latitude = latitude,
-                Longitude = longitude
+                Longitude = longitude,
+                IsHistoric = isHistoric
             });
         }
 
@@ -129,13 +180,18 @@ namespace apcurium.MK.Booking.Domain
                 throw new InvalidOperationException("Address does not exist in account");
             }
 
-            this.Update(new FavoriteAddressRemoved
+            this.Update(new AddressRemoved
             {
                 AddressId = addressId
             });
         }
 
         private void OnAccountRegistered(AccountRegistered @event)
+        {
+            _confirmationToken = @event.ConfirmationToken;
+        }
+
+        private void OnAccountConfirmed(AccountConfirmed @event)
         {
 
         }
@@ -145,28 +201,33 @@ namespace apcurium.MK.Booking.Domain
 
         }
 
-        private void OnFavoriteAddressAdded(FavoriteAddressAdded @event)
+        private void OnAddressAdded(AddressAdded @event)
         {
             _favoriteAddresses.Add(@event.AddressId);
         }
 
-        private void OnFavoriteAddressRemoved(FavoriteAddressRemoved @event)
+        private void OnAddressRemoved(AddressRemoved @event)
         {
             _favoriteAddresses.Remove(@event.AddressId);
         }
 
-        private void OnFavoriteAddressUpdated(FavoriteAddressUpdated obj)
+        private void OnAddressUpdated(AddressUpdated obj)
         {
 
         }
 
-        private void OnAccountPasswordResetted(AccountPasswordResetted obj)
+        private void OnAccountPasswordReset(AccountPasswordReset obj)
         {
 
         }
         
         private void OnBookingSettingsUpdated(BookingSettingsUpdated obj)
         {
+        }
+
+        private void OnAccountPasswordUpdated(AccountPasswordUpdated obj)
+        {
+            
         }
 
 
@@ -187,7 +248,5 @@ namespace apcurium.MK.Booking.Domain
                 throw new ArgumentOutOfRangeException("longitude", "Invalid longitude");
             }
         }
-
-        
     }
 }

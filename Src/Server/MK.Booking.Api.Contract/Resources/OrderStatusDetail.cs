@@ -1,7 +1,7 @@
 ﻿using System;
 namespace apcurium.MK.Booking.Api.Contract.Resources
 {
-    public class OrderStatusDetail
+    public class OrderStatusDetail : BaseDTO
     {
         public OrderStatus Status { get; set; }
         public int? IBSOrderId { get; set; }                

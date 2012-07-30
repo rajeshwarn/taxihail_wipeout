@@ -14,31 +14,34 @@ namespace apcurium.MK.Web.Tests
         private Guid _knownAddressId = Guid.NewGuid();
 
         [TestFixtureSetUp]
-        public new void Setup()
+        public override void TestFixtureSetup()
         {
-            base.Setup();
+            base.TestFixtureSetup();
         }
 
         [TestFixtureTearDown]
-        public new void TearDown()
+        public override void TestFixtureTearDown()
         {
-            base.TearDown();
+            base.TestFixtureTearDown();
+        }
+
+        [SetUp]
+        public override void Setup()
+        {
+            base.Setup();
         }
 
         [Test]
         public void when_creating_an_order_with_a_new_pickup_address()
         {
             //Arrange
-
-            var newAccount = GetNewAccount();
-            var sut = new AccountServiceClient(BaseUrl, new AuthInfo(newAccount.Email, "password"));
-            var orderService = new OrderServiceClient(BaseUrl, new AuthInfo(newAccount.Email, "password"));
+            var newAccount = CreateAndAuthenticateTestAccount();
+            var orderService = new OrderServiceClient(BaseUrl);
 
             //Act
             var order = new CreateOrder
             {
                 Id = Guid.NewGuid(),
-                AccountId = newAccount.Id,
                 PickupAddress = TestAddresses.GetAddress1(),                
                 PickupDate = DateTime.Now,
                 DropOffAddress = TestAddresses.GetAddress2(),                   
@@ -48,6 +51,7 @@ namespace apcurium.MK.Web.Tests
             orderService.CreateOrder(order);
 
             //Assert
+            var sut = new AccountServiceClient(BaseUrl);
             var addresses = sut.GetHistoryAddresses(newAccount.Id);
             Assert.AreEqual(1, addresses.Count());
         }
@@ -56,15 +60,13 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void when_save_a_favorite_address_with_an_historic_address_existing()
         {
-            //Setup
-            var newAccount = GetNewAccount();
-            
-            var orderService = new OrderServiceClient(BaseUrl, new AuthInfo(newAccount.Email, "password"));
-
+            //Arrange
+            var newAccount = CreateAndAuthenticateTestAccount();
+            var orderService = new OrderServiceClient(BaseUrl);
+            var sut = new AccountServiceClient(BaseUrl);
             var order = new CreateOrder
             {
                 Id = Guid.NewGuid(),
-                AccountId = newAccount.Id,
                 PickupDate = DateTime.Now,
                 PickupAddress = new Booking.Api.Contract.Resources.Address { FullAddress = "1234 rue Saint-Denis", Apartment = "3939", RingCode = "3131", Latitude = 45.515065, Longitude = -73.558064,  },
                 DropOffAddress = new Booking.Api.Contract.Resources.Address { FullAddress = "Velvet auberge st gabriel", Latitude = 45.50643, Longitude = -73.554052 },
@@ -73,29 +75,24 @@ namespace apcurium.MK.Web.Tests
             };
             orderService.CreateOrder(order);
 
-            //Arrange
-            var sut = new AccountServiceClient(BaseUrl, new AuthInfo(newAccount.Email, "password"));
 
             //Act
-            Guid addressGuid = Guid.NewGuid();
-            var address = new SaveFavoriteAddress()
+            Guid addressId = Guid.NewGuid();
+            sut.AddFavoriteAddress(new SaveAddress()
             {
-                Id = addressGuid,
-                AccountId = newAccount.Id,
+                Id = addressId,
                 FriendlyName = "La Boite à Jojo",
                 FullAddress = "1234 rue Saint-Denis",
                 Latitude = 45.515065,
                 Longitude = -73.558064,
                 Apartment = "3939",
                 RingCode = "3131"
-            };
-            sut.AddFavoriteAddress(address);
+            });
 
             //Assert
             var addresses = sut.GetHistoryAddresses(newAccount.Id);
 
-            Address first = addresses.FirstOrDefault(address1 => address1.Id.Equals(addressGuid));
-            Assert.IsNull(first);
+            Assert.IsFalse(addresses.Any(x => x.Id.Equals(addressId)));
             
         }
     }

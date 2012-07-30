@@ -9,9 +9,11 @@ namespace apcurium.MK.Booking.EventHandlers
 {
     public class AccountDetailsGenerator :
         IEventHandler<AccountRegistered>,
+        IEventHandler<AccountConfirmed>,
         IEventHandler<AccountUpdated>,
         IEventHandler<BookingSettingsUpdated>,
-        IEventHandler<AccountPasswordResetted>
+        IEventHandler<AccountPasswordReset>,
+        IEventHandler<AccountPasswordUpdated>
     {
         private readonly Func<BookingDbContext> _contextFactory;
         private IConfigurationManager _configurationManager;
@@ -33,7 +35,10 @@ namespace apcurium.MK.Booking.EventHandlers
                                      Password = @event.Password,
                                      Phone = @event.Phone,
                                      Id = @event.SourceId,
-                                     IBSAccountId = @event.IbsAcccountId
+                                     IBSAccountId = @event.IbsAcccountId,
+                                     FacebookId = @event.FacebookId,
+                                     TwitterId = @event.TwitterId,
+                                     Language = @event.Language
                                  };
 
 
@@ -46,6 +51,17 @@ namespace apcurium.MK.Booking.EventHandlers
 
                 context.Save(account);
 
+            }
+        }
+
+        public void Handle(AccountConfirmed @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var account = context.Find<AccountDetail>(@event.SourceId);
+                account.IsConfirmed = true;
+
+                context.Save(account);
             }
         }
 
@@ -79,7 +95,7 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
-        public void Handle(AccountPasswordResetted @event)
+        public void Handle(AccountPasswordReset @event)
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -88,6 +104,14 @@ namespace apcurium.MK.Booking.EventHandlers
                 context.Save(account);
             }
         }
-
+        public void Handle(AccountPasswordUpdated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var account = context.Find<AccountDetail>(@event.SourceId);
+                account.Password = @event.Password;
+                context.Save(account);
+            }
+        }
     }
 }

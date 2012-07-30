@@ -77,7 +77,7 @@
                 <Button
                     android:id="@+id/SignInButton"
                     style="@style/ButtonText"
-                    android:background="@drawable/sign_in_btn"
+                    android:background="@drawable/newBlackButton"
                     android:nextFocusDown="@+id/Username"
                     android:nextFocusUp="@+id/Password"
                     android:text="@string/SignInButton"
@@ -102,7 +102,7 @@
                     android:id="@+id/SignUpButton"
                     style="@style/ButtonText"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/sign_in_btn"
+                    android:background="@drawable/newBlackButton"
                     android:text="@string/SignUpButton"
                     android:layout_gravity="right"
                     android:layout_width="200dip"
@@ -135,7 +135,7 @@
                     android:gravity="center"
                     android:visibility="invisible" />
                 <Button
-                    android:id="@+id/SignUpButton"
+                    android:id="@+id/TwitterButton"
                     style="@style/ButtonText"
                     android:background="@drawable/social_media_login_btn"
                     android:text="@string/TwitterButton"
