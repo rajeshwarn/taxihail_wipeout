@@ -90,11 +90,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 				{
 
 					var currentAccount = AppContext.Current.LoggedUser;
-					currentAccount.Settings = _model.Data;
-                    //TODO:Fix this
-					//currentAccountData.FirstName = _model.Data.Name;
-				    TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().UpdateBookingSettings(_model.Data);
-					AppContext.Current.UpdateLoggedInUser( currentAccountData, true );
+					currentAccount.Settings = _model.Data;                    
+				    TinyIoCContainer.Current.Resolve<IAccountService>().UpdateBookingSettings(_model.Data);
+                    AppContext.Current.UpdateLoggedInUser(currentAccount, true);
 
 				}
 				else
