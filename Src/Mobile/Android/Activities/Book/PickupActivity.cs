@@ -5,7 +5,9 @@ using System.Text;
 
 using Android.App;
 using Android.Content;
+using Android.Graphics;
 using Android.OS;
+using Android.Provider;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
@@ -14,6 +16,7 @@ using Android.Locations;
 using TinyIoC;
 using apcurium.Framework.Extensions;
 using Android.Views.InputMethods;
+using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Client.Models;
 using WS = apcurium.MK.Booking.Api.Contract.Resources;
@@ -26,6 +29,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         const int TIME_DIALOG_ID = 0;
         const int DATE_DIALOG_ID = 1;
+        const int PICK_CONTACT = 42;
         const double DELTA_DISTANCE = 0.001;
 
 
@@ -42,7 +46,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             FindViewById<Button>(Resource.Id.pickupDateButton).Click += new EventHandler(PickDate_Click);
 
             FindViewById<EditText>(Resource.Id.pickupTimeText).EditorAction += new EventHandler<TextView.EditorActionEventArgs>(PickupTimeText_EditorAction);
-
+            this.InitializeDropDownMenu();
         }
 
         protected override int TitleResourceId
@@ -95,7 +99,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                         ParentActivity.BookingInfo.PickupDate = null;
                     }
                     RefreshDateTime();
-                
             }
         }
 
@@ -107,7 +110,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         protected override MapView Map
         {
-            get { return FindViewById<MapView>(Resource.Id.mapPickup); }
+            get { return FindViewById<MapView>(Resource.Id.mapPickup);}
         }
 
 
@@ -123,7 +126,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         protected override Button SelectAddressButton
         {
-            get { return FindViewById<Button>(Resource.Id.pickupAddressButton); }
+            //get { return FindViewById<Button>(Resource.Id.pickupAddressButton); }
+            get { return null; }
         }
 
         protected override bool ShowUserLocation

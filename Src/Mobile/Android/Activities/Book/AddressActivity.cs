@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Android.App;
@@ -7,6 +8,7 @@ using Android.GoogleMaps;
 using Android.Graphics.Drawables;
 using Android.Locations;
 using Android.OS;
+using Android.Provider;
 using Android.Views;
 using Android.Views.InputMethods;
 using Android.Widget;
@@ -41,6 +43,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             base.OnCreate(savedInstanceState);
             _updateReceived = false;
+        }
+
+        protected void InitializeDropDownMenu()
+        {
+            //Initialize dropdown control
+
+            var contactIntent = new Intent(Intent.ActionPick, ContactsContract.CommonDataKinds.StructuredPostal.ContentUri);
+            var iconActionControl = new IconActionControl(this, "images/arrow-right@2x.png", new List<IconAction>() { new IconAction("images/favorite-icon@2x.png", contactIntent, 42) }, true);
+            var dropDownControlLayout = FindViewById<LinearLayout>(Resource.Id.linear_iconaction);
+            dropDownControlLayout.AddView(iconActionControl);
         }
 
         void HandleItemClick(object sender, AdapterView.ItemClickEventArgs e)
@@ -78,8 +90,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             Address.FocusChange -= new EventHandler<View.FocusChangeEventArgs>(Address_FocusChange);
             Address.FocusChange += new EventHandler<View.FocusChangeEventArgs>(Address_FocusChange);
 
-            SelectAddressButton.Click -= SelectAddressButtonOnClick;
-            SelectAddressButton.Click += SelectAddressButtonOnClick;
+            //SelectAddressButton.Click -= SelectAddressButtonOnClick;
+            //SelectAddressButton.Click += SelectAddressButtonOnClick;
 
             HideKeyboards();
 

@@ -61,8 +61,10 @@ namespace apcurium.MK.Web.Tests
             sut.RegisterAccount(newAccount);
 
             var auth = new AuthServiceClient(BaseUrl).AuthenticateFacebook(newAccount.FacebookId);
+            var account = sut.GetMyAccount();
             Assert.IsNotNull(auth);
             Assert.AreEqual(newAccount.FacebookId, auth.UserName);
+            Assert.IsNull(account.TwitterId);
         }
 
         [Test]
@@ -73,8 +75,10 @@ namespace apcurium.MK.Web.Tests
             sut.RegisterAccount(newAccount);
 
             var auth = new AuthServiceClient(BaseUrl).AuthenticateTwitter(newAccount.TwitterId);
+            var account = sut.GetMyAccount();
             Assert.IsNotNull(auth);
             Assert.AreEqual(newAccount.TwitterId, auth.UserName);
+            Assert.IsNull(account.FacebookId);
         }
 
         [Test]
@@ -89,6 +93,7 @@ namespace apcurium.MK.Web.Tests
 
             var newAccount2 = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", FacebookId = facebookId.ToString() };
             sut.RegisterAccount(newAccount2);
+            
         }
 
         [Test]

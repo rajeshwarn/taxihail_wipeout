@@ -52,7 +52,7 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public Account(Guid id, string name, string phone, string email, int ibsAccountId, string facebookId = "", string twitterId = "", string language = null)
+        public Account(Guid id, string name, string phone, string email, int ibsAccountId, string facebookId = null, string twitterId = null, string language = null)
             : this(id)
         {
             if (Params.Get(name, phone, email).Any(p => p.IsNullOrEmpty())
