@@ -53,6 +53,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             var iconActionControl = new IconActionControl(this, "images/arrow-right@2x.png", new List<IconAction>() { new IconAction("images/favorite-icon@2x.png", contactIntent, 42) }, true);
             var dropDownControlLayout = FindViewById<LinearLayout>(Resource.Id.linear_iconaction);
             dropDownControlLayout.AddView(iconActionControl);
+            iconActionControl.BuildLayer();
+            iconActionControl.ClearAnimation();
+            iconActionControl.DestroyDrawingCache();
         }
 
         void HandleItemClick(object sender, AdapterView.ItemClickEventArgs e)

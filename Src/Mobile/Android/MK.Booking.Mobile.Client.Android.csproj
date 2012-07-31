@@ -20,7 +20,7 @@
     <AndroidSupportedAbis>armeabi%3barmeabi-v7a%3bx86</AndroidSupportedAbis>
     <AndroidStoreUncompressedFileExtensions />
     <MandroidI18n />
-    <TargetFrameworkVersion>v2.3</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -394,6 +394,7 @@
     <AndroidResource Include="Resources\Drawable\ddc_list_btn_selected.png" />
     <AndroidResource Include="Resources\Drawable\ddc_list_btn_unselected.png" />
     <AndroidResource Include="Resources\Drawable\ddc_location_icon.png" />
+    <AndroidResource Include="Resources\Drawable\cell_borderTop.png" />
     <Content Include="Todo.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />

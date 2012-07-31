@@ -206,26 +206,52 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public Account GetAccount(string email, string password, out string error)
         {
-            var parameters = new NamedParameterOverloads();
-            var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
-            parameters.Add("credential", auth.Authenticate(email, password));
-            return GetAccount(parameters, out error);
+            try
+            {
+                var parameters = new NamedParameterOverloads();
+                var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
+                parameters.Add("credential", auth.Authenticate(email, password));
+                return GetAccount(parameters, out error);
+            }
+            catch (Exception e)
+            {
+                error = "Invalid login or password";
+                return null;
+            }
+            
+            
         }
 
         public Account GetFacebookAccount(string facebookId, out string error)
         {
-            var parameters = new NamedParameterOverloads();
-            var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
-            parameters.Add("credential", auth.AuthenticateFacebook(facebookId));
-            return GetAccount(parameters, out error);
+            try
+            {
+                var parameters = new NamedParameterOverloads();
+                var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
+                parameters.Add("credential", auth.AuthenticateFacebook(facebookId));
+                return GetAccount(parameters, out error);
+            }
+            catch (Exception e)
+            {
+                error = "Invalid login or password";
+                return null;
+            }
         }
 
         public Account GetTwitterAccount(string twitterId, out string error)
         {
-            var parameters = new NamedParameterOverloads();
-            var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
-            parameters.Add("credential", auth.AuthenticateTwitter(twitterId));
-            return GetAccount(parameters, out error);
+            try
+            {
+                var parameters = new NamedParameterOverloads();
+                var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
+                parameters.Add("credential", auth.AuthenticateTwitter(twitterId));
+                return GetAccount(parameters, out error);
+            }
+            catch (Exception e)
+            {
+                error = "Invalid login or password";
+                return null;
+            }
         }
 
         private Account GetAccount(NamedParameterOverloads parameters, out string error)

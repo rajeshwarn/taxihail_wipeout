@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
     {
         private IFacebookService facebook;
         ITwitterService twitterService;
-
+        private ProgressDialog progressDialog;
         /// <summary>
         /// use for SSO when FB app is isntalled
         /// </summary>
@@ -56,7 +56,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
             InitializeSocialNetwork();
 
-            
+            progressDialog = new ProgressDialog(this);
 
             if (AppContext.Current.LastEmail.HasValue())
             {
@@ -73,7 +73,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                                                                           {
                                                                               if (facebook.IsConnected)
                                                                               {
-                                                                                  facebook.GetUserInfos(infos => CheckIfFacebookAccountExist(infos));
+                                                                                  ThreadHelper.ExecuteInThread(this, () => facebook.GetUserInfos(
+                                                                                      CheckIfFacebookAccountExist),true);
                                                                               }
                                                                               else
                                                                               {
@@ -82,13 +83,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                                                                               
                                                                           };
 
-            FindViewById<Button>(Resource.Id.TwitterButton).Click += delegate { twitterService.Connect(); };
+            FindViewById<Button>(Resource.Id.TwitterButton).Click += delegate
+                {
+                    if (twitterService.IsConnected)
+                    {
+                          ThreadHelper.ExecuteInThread(this, () => twitterService.GetUserInfos(CheckIfTwitterAccountExist),true);
+                    }
+                    else
+                    {
+                        twitterService.Connect();
+                    }
+                };
 
             facebook.ConnectionStatusChanged += (s, e) =>
             {
                  if(e.IsConnected)
                  {
-                     facebook.GetUserInfos(infos => CheckIfFacebookAccountExist(infos));
+                     ThreadHelper.ExecuteInThread(this, () => facebook.GetUserInfos(CheckIfFacebookAccountExist), true);
                  }
             };
 
@@ -96,7 +107,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             {
                 if (e.IsConnected)
                 {
-                    twitterService.GetUserInfos(infos => CheckIfTwitterAccountExist(infos));
+                      ThreadHelper.ExecuteInThread(this, () => twitterService.GetUserInfos(CheckIfTwitterAccountExist),true);
                 }
             };     
 
@@ -104,39 +115,32 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
         private void CheckIfFacebookAccountExist(UserInfos infos)
         {
+            //this.ShowProgressDialog();
+            string err = "";
+            Api.Contract.Resources.Account account = null;
+                    
+            account = TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().GetFacebookAccount(infos.Id, out err);
+            if (account != null)
+            {
+                AppContext.Current.UpdateLoggedInUser(account, false);
+                AppContext.Current.LastEmail = account.Email;
+                RunOnUiThread(() =>
+                {
+                    Finish();
+                    StartActivity(typeof(MainActivity));
+                });
+                return;
+            }
+            else
+            {
+                DoSignUpWithParameter(infos.Firstname, infos.Lastname, infos.Email, "", FacebookId: infos.Id);
+            }
 
-                    string err = "";
-                    Api.Contract.Resources.Account account = null;
-                    try
-                    {
-                         account = TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().GetFacebookAccount(infos.Id, out err);
-                    }
-                    catch (Exception)
-                    {
-
-                         account = null;
-                    }
-                    //var account = TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().GetFacebookAccount(infos.Id, out err);
-                    if (account != null)
-                    {
-                        AppContext.Current.UpdateLoggedInUser(account, false);
-                        AppContext.Current.LastEmail = account.Email;
-                        RunOnUiThread(() =>
-                        {
-                            Finish();
-                            StartActivity(typeof(MainActivity));
-                        });
-                        return;
-                    }
-                    else
-                    {
-                        DoSignUpWithParameter(infos.Firstname, infos.Lastname, infos.Email, "", FacebookId: infos.Id);
-                    }
         }
 
         private void CheckIfTwitterAccountExist(UserInfos infos)
         {
-
+            this.ShowProgressDialog();
             string err = "";
             Api.Contract.Resources.Account account = null;
             try
@@ -163,6 +167,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             {
                 DoSignUpWithParameter(infos.Firstname, infos.Lastname, infos.Email, "", TwitterId: infos.Id);
             }
+        }
+
+        private void ShowProgressDialog()
+        {
+            RunOnUiThread(() =>
+            {
+
+                progressDialog.SetMessage(Resources.GetString(Resource.String.LoadingMessage));
+                progressDialog.SetButton(Resources.GetString(Resource.String.CancelBoutton),
+                                         (e, s) => cancelAction());
+                progressDialog.CancelEvent += (e, s) => cancelAction();
+                progressDialog.Show();
+
+            });
+        }
+
+        private void cancelAction()
+        {
+             progressDialog.Cancel();
         }
 
         private void InitializeSocialNetwork()
@@ -220,11 +243,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
         private void DoSignIn()
         {
-
-
             ThreadHelper.ExecuteInThread(this, () =>
             {
-
+                
                 EditText txtUserName = FindViewById<EditText>(Resource.Id.Username);
                 EditText txtPassword = FindViewById<EditText>(Resource.Id.Password);
 
@@ -232,7 +253,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
                 if (isValid)
                 {
-
                     string err = "";                    
                     var account = TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().GetAccount(txtUserName.Text, txtPassword.Text, out err);
                     if (account != null)

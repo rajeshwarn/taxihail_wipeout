@@ -157,10 +157,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
                                                                               {
                                                                                   Address = address, BgResource = Resource.Drawable.cell_middle_state, ImageResource = Resource.Drawable.right_arrow
                                                                               }).ToList();
-            if (ailm.Any())
-            {
-                ailm.First().BgResource = Resource.Drawable.cell_top_state;
-            }
+            //if (ailm.Any())
+            //{
+            //    ailm.First().BgResource = Resource.Drawable.cell_top_state;
+            //}
             return ailm;
         }
 

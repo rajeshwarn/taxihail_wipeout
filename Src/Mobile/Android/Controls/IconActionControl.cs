@@ -42,7 +42,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             this._activity = activity;
             this._toBottom = toBottom;
             this._buttonIcon = buttonIcon;
-			 
             Initialize();
         }
 

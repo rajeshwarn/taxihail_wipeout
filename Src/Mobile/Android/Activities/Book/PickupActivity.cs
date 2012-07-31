@@ -110,7 +110,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         protected override MapView Map
         {
-            get { return FindViewById<MapView>(Resource.Id.mapPickup); }
+            get { return FindViewById<MapView>(Resource.Id.mapPickup);}
         }
 
 
