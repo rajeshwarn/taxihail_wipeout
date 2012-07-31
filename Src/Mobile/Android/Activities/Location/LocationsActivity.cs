@@ -45,6 +45,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
             var favoriteAddresses = GetLocations(LocationTypes.Favorite);
             if (_parent != ParentScreens.BookScreen)
             {
+                int bgId;
+                if (favoriteAddresses.Count>=1)
+                {
+                    bgId = Resource.Drawable.cell_bottom_state;
+                }
+                else
+                {
+                    bgId = Resource.Drawable.cell_bottom_full_state;
+                }
                 favoriteAddresses.Add(new AddressItemListModel()
                                           {
                                               Address = new Address()
@@ -57,7 +66,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
                                                                     Resources.GetString(
                                                                         Resource.String.LocationAddFavoriteTitle)
                                                             },
-                                              BgResource = Resource.Drawable.cell_bottom_state,
+                                              BgResource = bgId,
                                               ImageResource = Resource.Drawable.add_button
                                           });
             }
@@ -157,10 +166,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
                                                                               {
                                                                                   Address = address, BgResource = Resource.Drawable.cell_middle_state, ImageResource = Resource.Drawable.right_arrow
                                                                               }).ToList();
-            //if (ailm.Any())
-            //{
-            //    ailm.First().BgResource = Resource.Drawable.cell_top_state;
-            //}
+            if (ailm.Any())
+            {
+                ailm.First().BgResource = Resource.Drawable.cell_top_state;
+            }
             return ailm;
         }
 

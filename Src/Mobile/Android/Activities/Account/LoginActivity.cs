@@ -73,8 +73,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                                                                           {
                                                                               if (facebook.IsConnected)
                                                                               {
-                                                                                  ThreadHelper.ExecuteInThread(this, () => facebook.GetUserInfos(
-                                                                                      CheckIfFacebookAccountExist),true);
+                                                                                  facebook.GetUserInfos(CheckIfFacebookAccountExist);
                                                                               }
                                                                               else
                                                                               {
@@ -87,7 +86,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                 {
                     if (twitterService.IsConnected)
                     {
-                          ThreadHelper.ExecuteInThread(this, () => twitterService.GetUserInfos(CheckIfTwitterAccountExist),true);
+                          twitterService.GetUserInfos(CheckIfTwitterAccountExist);
                     }
                     else
                     {
@@ -99,7 +98,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             {
                  if(e.IsConnected)
                  {
-                     ThreadHelper.ExecuteInThread(this, () => facebook.GetUserInfos(CheckIfFacebookAccountExist), true);
+                    facebook.GetUserInfos(CheckIfFacebookAccountExist);
                  }
             };
 
@@ -107,7 +106,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             {
                 if (e.IsConnected)
                 {
-                      ThreadHelper.ExecuteInThread(this, () => twitterService.GetUserInfos(CheckIfTwitterAccountExist),true);
+                      twitterService.GetUserInfos(CheckIfTwitterAccountExist);
                 }
             };     
 
@@ -115,7 +114,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
         private void CheckIfFacebookAccountExist(UserInfos infos)
         {
-            //this.ShowProgressDialog();
+            this.ShowProgressDialog();
             string err = "";
             Api.Contract.Resources.Account account = null;
                     

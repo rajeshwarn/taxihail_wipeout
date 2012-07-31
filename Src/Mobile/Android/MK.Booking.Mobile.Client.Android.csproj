@@ -143,6 +143,9 @@
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\dropdownRow.axml" />
     <AndroidResource Include="Resources\Layout\IconActionLayout.axml" />
+    <AndroidResource Include="Resources\Drawable\cell_bottom_full_state.xml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
     <None Include="Resources\Resource.Designer.cs.bak" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="TaxiMobileApp.cs" />
@@ -395,6 +398,8 @@
     <AndroidResource Include="Resources\Drawable\ddc_list_btn_unselected.png" />
     <AndroidResource Include="Resources\Drawable\ddc_location_icon.png" />
     <AndroidResource Include="Resources\Drawable\cell_borderTop.png" />
+    <AndroidResource Include="Resources\Drawable\cell_bottom_full.9.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\cell_bottom_full.9.png" />
     <Content Include="Todo.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
