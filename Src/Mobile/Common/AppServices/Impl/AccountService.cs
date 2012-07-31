@@ -6,6 +6,7 @@ using ServiceStack.Common.ServiceClient.Web;
 #else
 
 #endif
+using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -25,10 +26,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         private const string _historyAddressesCacheKey = "Account.HistoryAddresses";
         private static ReferenceData _refData;
 
-        public AccountService()
-        {
-
-        }
+       
 
         public void EnsureListLoaded()
         {
@@ -199,6 +197,20 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 
+        public bool CheckSession()
+        {
+            try
+            {
+                var client = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
+                client.CheckSession();
+                return true;
+
+            }catch(WebServiceException e)
+            {
+                return false;
+            }
+        }
+
         public void UpdateSettings(BookingSettings settings)
         {
             QueueCommand<AccountServiceClient>(service =>
@@ -215,7 +227,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             {
                 var parameters = new NamedParameterOverloads();
                 var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
-                parameters.Add("credential", auth.Authenticate(email, password));
+                var authResponse = auth.Authenticate(email, password);
+
+                var cache = TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService>();
+                cache.Set("SessionId", authResponse.SessionId);
+
+                parameters.Add("credential", authResponse);
                 return GetAccount(parameters, out error);
             }
             catch (Exception e)

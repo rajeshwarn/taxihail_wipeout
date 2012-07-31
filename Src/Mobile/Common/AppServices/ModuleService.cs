@@ -17,24 +17,24 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		
 		public void Initialize()
 		{
-            TinyIoCContainer.Current.Register<AccountServiceClient>((c , p) => new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl), "NotAuthenticated");
+            TinyIoCContainer.Current.Register<AccountServiceClient>((c , p) => new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, null), "NotAuthenticated");
 
             TinyIoCContainer.Current.Register<AccountServiceClient>((c, p) => 
                 {
-                    
-                    return new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl);
+
+                    return new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, c.Resolve<ICacheService>().Get<string>("SessionId"));
                 }, "Authenticate");
 
-            TinyIoCContainer.Current.Register<AccountServiceClient>((c, p) => new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl));
-            TinyIoCContainer.Current.Register<ReferenceDataServiceClient>((c, p) => new ReferenceDataServiceClient(c.Resolve<IAppSettings>().ServiceUrl));
+            TinyIoCContainer.Current.Register<AccountServiceClient>((c, p) => new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, c.Resolve<ICacheService>().Get<string>("SessionId")));
+            TinyIoCContainer.Current.Register<ReferenceDataServiceClient>((c, p) => new ReferenceDataServiceClient(c.Resolve<IAppSettings>().ServiceUrl, c.Resolve<ICacheService>().Get<string>("SessionId")));
 
 
-            TinyIoCContainer.Current.Register<GeocodingServiceClient>((c, p) => new GeocodingServiceClient(c.Resolve<IAppSettings>().ServiceUrl));
-            TinyIoCContainer.Current.Register<DirectionsServiceClient>((c, p) => new DirectionsServiceClient(c.Resolve<IAppSettings>().ServiceUrl));
+            TinyIoCContainer.Current.Register<GeocodingServiceClient>((c, p) => new GeocodingServiceClient(c.Resolve<IAppSettings>().ServiceUrl, c.Resolve<ICacheService>().Get<string>("SessionId")));
+            TinyIoCContainer.Current.Register<DirectionsServiceClient>((c, p) => new DirectionsServiceClient(c.Resolve<IAppSettings>().ServiceUrl, c.Resolve<ICacheService>().Get<string>("SessionId")));
 
-            TinyIoCContainer.Current.Register<OrderServiceClient>((c, p) => new OrderServiceClient(c.Resolve<IAppSettings>().ServiceUrl));
+            TinyIoCContainer.Current.Register<OrderServiceClient>((c, p) => new OrderServiceClient(c.Resolve<IAppSettings>().ServiceUrl, c.Resolve<ICacheService>().Get<string>("SessionId")));
 
-            TinyIoCContainer.Current.Register<AuthServiceClient>((c, p) => new AuthServiceClient(c.Resolve<IAppSettings>().ServiceUrl));
+            TinyIoCContainer.Current.Register<AuthServiceClient>((c, p) => new AuthServiceClient(c.Resolve<IAppSettings>().ServiceUrl, c.Resolve<ICacheService>().Get<string>("SessionId")));
             
 
             TinyIoCContainer.Current.Register<IAccountService, AccountService>();

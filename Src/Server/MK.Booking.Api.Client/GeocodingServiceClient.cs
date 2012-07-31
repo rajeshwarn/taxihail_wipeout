@@ -9,8 +9,8 @@ namespace apcurium.MK.Booking.Api.Client
 {
     public class GeocodingServiceClient : BaseServiceClient
     {
-        public GeocodingServiceClient(string url)
-            : base(url)
+        public GeocodingServiceClient(string url, string sessionId)
+            : base(url, sessionId)
         {
         }
 
