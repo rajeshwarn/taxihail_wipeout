@@ -8,8 +8,8 @@ namespace apcurium.MK.Booking.Api.Client
 {
     public class NearbyPlacesClient : BaseServiceClient
     {
-        public NearbyPlacesClient(string url)
-            : base(url)
+        public NearbyPlacesClient(string url, string sessionId)
+            : base(url, sessionId)
         {
         }
 

@@ -28,7 +28,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void when_user_sign_in()
         {
-            var sut = new AuthServiceClient(BaseUrl);
+            var sut = new AuthServiceClient(BaseUrl, SessionId);
             var response = sut.Authenticate(TestAccount.Email, TestAccountPassword);
 
             Assert.IsNotNull(response);
@@ -42,7 +42,7 @@ namespace apcurium.MK.Web.Tests
             ExpectedMessage = "Invalid UserName or Password")]
         public void when_user_sign_in_with_invalid_password()
         {
-            var sut = new AuthServiceClient(BaseUrl);
+            var sut = new AuthServiceClient(BaseUrl, SessionId);
             var response = sut.Authenticate(TestAccount.Email, "wrong password");
         }
 
@@ -50,7 +50,7 @@ namespace apcurium.MK.Web.Tests
         [ExpectedException("ServiceStack.ServiceClient.Web.WebServiceException", ExpectedMessage = "Invalid UserName or Password")]
         public void when_user_sign_in_with_invalid_email()
         {
-            var sut = new AuthServiceClient(BaseUrl);
+            var sut = new AuthServiceClient(BaseUrl, SessionId);
             var response = sut.Authenticate("wrong_email@wrong.com", TestAccountPassword);
         }
 
@@ -58,7 +58,7 @@ namespace apcurium.MK.Web.Tests
         public void when_user_sign_in_with_facebook()
         {
             var account = GetNewFacebookAccount();
-            var sut = new AuthServiceClient(BaseUrl);
+            var sut = new AuthServiceClient(BaseUrl, SessionId);
             var response = sut.AuthenticateFacebook(account.FacebookId);
 
             Assert.IsNotNull(response);
@@ -69,7 +69,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void when_user_sign_in_with_invalid_facebook_id()
         {
-            var sut = new AuthServiceClient(BaseUrl);
+            var sut = new AuthServiceClient(BaseUrl, SessionId);
             Assert.Throws<WebServiceException>(() => sut
                 .AuthenticateFacebook(Guid.NewGuid().ToString()), "Invalid UserName or Password");
         }
@@ -78,7 +78,7 @@ namespace apcurium.MK.Web.Tests
         public void when_user_sign_in_with_twitter()
         {
             var account = GetNewTwitterAccount();
-            var sut = new AuthServiceClient(BaseUrl);
+            var sut = new AuthServiceClient(BaseUrl, SessionId);
             var response = sut.AuthenticateTwitter(account.TwitterId);
 
             Assert.IsNotNull(response);
@@ -89,7 +89,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void when_user_sign_in_with_invalid_twitter_id()
         {
-            var sut = new AuthServiceClient(BaseUrl);
+            var sut = new AuthServiceClient(BaseUrl, SessionId);
             Assert.Throws<WebServiceException>(() => sut
                 .AuthenticateTwitter(Guid.NewGuid().ToString()), "Invalid UserName or Password");
         }

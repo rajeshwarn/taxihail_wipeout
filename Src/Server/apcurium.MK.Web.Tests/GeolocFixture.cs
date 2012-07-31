@@ -31,7 +31,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void BasicNameSearch()
         {
-            var sut = new GeocodingServiceClient(BaseUrl);
+            var sut = new GeocodingServiceClient(BaseUrl, SessionId);
             var addresses = sut.Search("11 hines");
             Assert.True(addresses.Addresses.Count() == 1);
             Assert.True(addresses.Addresses.ElementAt(0).FullAddress.Contains( "11" ));
@@ -40,7 +40,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void BasicCoordinateSearch()
         {
-            var sut = new GeocodingServiceClient(BaseUrl);
+            var sut = new GeocodingServiceClient(BaseUrl, SessionId);
             var addresses = sut.Search( 45.5062, -73.5726);
             Assert.True(addresses.Addresses.Count() >= 1);            
         }
@@ -49,7 +49,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void RangeCoordinateSearch()
         {
-            var sut = new GeocodingServiceClient(BaseUrl);
+            var sut = new GeocodingServiceClient(BaseUrl, SessionId);
             var addresses = sut.Search(45.5227967351675, -73.6242310144007);
             Assert.True(addresses.Addresses.Count() >= 1);
         }

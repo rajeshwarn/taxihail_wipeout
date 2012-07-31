@@ -27,7 +27,7 @@ namespace apcurium.MK.Web
             if(account == null)
             {
                 // Wait for testAccount to be created and try again
-                Thread.Sleep(3000);
+                Thread.Sleep(5000);
                 account = client.GetTestAccount(PingdomTestAccount);
             }
             new AuthServiceClient(baseUrl).Authenticate(account.Email, "password1");
@@ -37,7 +37,7 @@ namespace apcurium.MK.Web
                 Name = name
             });
 
-            Thread.Sleep(1000);
+            Thread.Sleep(5000);
 
             account = client.GetMyAccount();
 

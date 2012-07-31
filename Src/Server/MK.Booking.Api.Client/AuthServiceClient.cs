@@ -4,11 +4,11 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using ServiceStack.ServiceClient.Web;
+using apcurium.MK.Booking.Api.Contract.Resources;
 #if !CLIENT
 using ServiceStack.ServiceInterface.Auth;
 #else
 using ServiceStack.Common.ServiceClient.Web;
-using apcurium.MK.Booking.Api.Contract.Resources;
 #endif
 
 namespace apcurium.MK.Booking.Api.Client

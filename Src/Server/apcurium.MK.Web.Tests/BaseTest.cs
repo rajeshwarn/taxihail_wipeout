@@ -19,6 +19,7 @@ namespace apcurium.MK.Web.Tests
 
         protected Account TestAccount { get; set; }
         protected string TestAccountPassword { get { return "password1"; } }
+        protected string SessionId { get; set; }
 
         static BaseTest()
         {
@@ -32,14 +33,15 @@ namespace apcurium.MK.Web.Tests
         {
             _appHost.Start(BaseUrl);
 
-            var sut = new AccountServiceClient(BaseUrl);
+            var sut = new AccountServiceClient(BaseUrl, null);
             TestAccount = sut.GetTestAccount(0);
 
         }
 
         public virtual void Setup()
         {
-            new AuthServiceClient(BaseUrl).Authenticate(TestAccount.Email, TestAccountPassword);            
+            var authResponse = new AuthServiceClient(BaseUrl, null).Authenticate(TestAccount.Email, TestAccountPassword);
+            SessionId = authResponse.SessionId;
         }
 
         public virtual void TestFixtureTearDown()
@@ -55,42 +57,33 @@ namespace apcurium.MK.Web.Tests
 
         protected Account CreateAndAuthenticateTestAccount()
         {
-            var sut = new AccountServiceClient(BaseUrl);
+            var sut = new AccountServiceClient(BaseUrl, null);
             var newAccount = sut.CreateTestAccount();
-            new AuthServiceClient(BaseUrl).Authenticate(newAccount.Email, TestAccountPassword);
+            var authResponse = new AuthServiceClient(BaseUrl, null).Authenticate(newAccount.Email, TestAccountPassword);
+            SessionId = authResponse.SessionId;
             return newAccount;
         }
 
-
-        protected Account GetNewAccount()
-        {
-            var accountService = new AccountServiceClient(BaseUrl);
-            var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", Password = "password", Language = "en" };
-            accountService.RegisterAccount(newAccount);
-
-            new AuthServiceClient(BaseUrl).Authenticate(newAccount.Email, newAccount.Password);
-            
-            return accountService.GetMyAccount();
-        }
-
+        
         protected Account GetNewFacebookAccount()
         {
-            var accountService = new AccountServiceClient(BaseUrl);
+            var accountService = new AccountServiceClient(BaseUrl, null);
             var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", FacebookId = Guid.NewGuid().ToString(), Language = "en" };
             accountService.RegisterAccount(newAccount);
 
-            new AuthServiceClient(BaseUrl).AuthenticateFacebook(newAccount.FacebookId);
+            var authResponse = new AuthServiceClient(BaseUrl, null).AuthenticateFacebook(newAccount.FacebookId);
+            SessionId = authResponse.SessionId;
 
             return accountService.GetMyAccount();
         }
 
         protected Account GetNewTwitterAccount()
         {
-            var accountService = new AccountServiceClient(BaseUrl);
+            var accountService = new AccountServiceClient(BaseUrl, null);
             var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", TwitterId = Guid.NewGuid().ToString(), Language = "en" };
             accountService.RegisterAccount(newAccount);
 
-            new AuthServiceClient(BaseUrl).AuthenticateTwitter(newAccount.TwitterId);
+            new AuthServiceClient(BaseUrl, null).AuthenticateTwitter(newAccount.TwitterId);
 
             return accountService.GetMyAccount();
         }
