@@ -1,4 +1,11 @@
-﻿using ServiceStack.ServiceClient.Web;
+﻿using System;
+using System.Net;
+#if !CLIENT
+using ServiceStack.ServiceInterface.Auth;
+#else
+using ServiceStack.Common.ServiceClient.Web;
+#endif
+using ServiceStack.ServiceClient.Web;
 
 namespace apcurium.MK.Booking.Api.Client
 {
@@ -6,14 +13,38 @@ namespace apcurium.MK.Booking.Api.Client
     {
         private ServiceClientBase _client;
         private readonly string _url;
-        public BaseServiceClient(string url)
+        private readonly string _sessionId;
+
+        public BaseServiceClient(string url, string sessionId)
         {
             _url = url;
+            _sessionId = sessionId;
         }
 
         protected ServiceClientBase Client
         {
-            get { return _client ?? (_client = new JsonServiceClient(_url)); }
+            get
+            {
+                if (_client == null)
+                {
+                    _client = CreateClient();
+                }
+                return _client;
+            }
+        }
+
+        private ServiceClientBase CreateClient()
+        {
+            var client = new JsonServiceClient(_url);
+            var uri = new Uri(_url);
+            if (!string.IsNullOrEmpty(_sessionId))
+            {
+                client.CookieContainer = new System.Net.CookieContainer();
+                client.CookieContainer.Add(uri, new Cookie("ss-opt", "perm"));
+                client.CookieContainer.Add(uri, new Cookie("ss-pid", _sessionId));
+            }
+
+            return client;
         }
     }
 }

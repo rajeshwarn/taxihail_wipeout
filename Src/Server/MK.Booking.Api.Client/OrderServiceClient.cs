@@ -9,7 +9,8 @@ namespace apcurium.MK.Booking.Api.Client
 {
     public class OrderServiceClient : BaseServiceClient
     {
-        public OrderServiceClient(string url) : base(url)
+        public OrderServiceClient(string url, string sessionId)
+            : base(url, sessionId)
         {
         }
 

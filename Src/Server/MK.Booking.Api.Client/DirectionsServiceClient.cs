@@ -9,8 +9,8 @@ namespace apcurium.MK.Booking.Api.Client
 {
     public class DirectionsServiceClient : BaseServiceClient
     {
-        public DirectionsServiceClient(string url)
-            : base(url)
+        public DirectionsServiceClient(string url, string sessionId)
+            : base(url, sessionId)
         {
         }
 

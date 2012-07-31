@@ -10,8 +10,10 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using TinyIoC;
+using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Client.Activities.Book;
 using apcurium.MK.Booking.Mobile.Client.Activities.Account;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities
 {
@@ -27,8 +29,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
             _locationService.Start();
             base.OnCreate(bundle);
 
-            if (AppContext.Current.LoggedUser == null)           
-            //if(true)
+            var sessionValid = TinyIoCContainer.Current.Resolve<IAccountService>().CheckSession();
+
+            if (!sessionValid
+                || AppContext.Current.LoggedUser == null)           
             {
                 StartActivity(typeof(LoginActivity));
             }

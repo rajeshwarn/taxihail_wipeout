@@ -4,8 +4,8 @@ namespace apcurium.MK.Booking.Api.Client
 {
     public class ReferenceDataServiceClient : BaseServiceClient
     {
-        public ReferenceDataServiceClient(string url)
-            : base(url)
+        public ReferenceDataServiceClient(string url, string sessionId)
+            : base(url, sessionId)
         {
         }
 
