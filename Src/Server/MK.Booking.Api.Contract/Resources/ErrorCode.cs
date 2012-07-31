@@ -11,6 +11,7 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
         CreateAccount_AccountAlreadyExist,
         CreateOrder_InvalidPickupAddress,
         CreateOrder_CannotCreateInIbs,
+        CreateOrder_SettingsRequired,
 
         CancelOrder_OrderNotInIbs,
 
