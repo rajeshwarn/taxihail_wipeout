@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Android.App;
 using Android.Content;
 using Android.Graphics;
@@ -47,17 +48,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private void Initialize()
         {
-            //_bitmapUnselected = new BitmapDrawable(BitmapFactory.DecodeStream(Resources.Assets.Open("images/list-btn-unselected@2x.png")));
-            //_bitmapSelected = new BitmapDrawable(BitmapFactory.DecodeStream(Resources.Assets.Open("images/list-btn-selected@2x.png")));
+
             _bitmapUnselected = Resources.GetDrawable(Resource.Drawable.ddc_list_btn_unselected);
             _bitmapSelected = Resources.GetDrawable(Resource.Drawable.ddc_list_btn_selected);
 
             _endlineReverse = FindViewById<ImageView>(Resource.Id.iconAction_endlineReverse);
-            //_endlineReverse.SetImageBitmap(BitmapFactory.DecodeStream(Resources.Assets.Open("images/dropdownreverse-endline@2x.png")));
             _endlineReverse.SetImageDrawable(Resources.GetDrawable(Resource.Drawable.ddc_dropdownreverse_endline));
 
             _endline = FindViewById<ImageView>(Resource.Id.iconAction_endline);
-            //_endline.SetImageBitmap(BitmapFactory.DecodeStream(Resources.Assets.Open("images/dropdown-endline@2x.png")));
             _endline.SetImageDrawable(Resources.GetDrawable(Resource.Drawable.ddc_dropdown_endline));
 
             _button = FindViewById<ImageButton>(Resource.Id.iconAction_button);
@@ -69,15 +67,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             _lv = FindViewById<ListView>(_toBottom ? Resource.Id.iconAction_listViewBottom : Resource.Id.iconAction_listViewTop);
 
             _lv.Adapter = new IconActionAdapter(_activity, Android.Resource.Layout.SimpleListItem1, ListIconAction);
-            //var bm = new BitmapDrawable(BitmapFactory.DecodeStream(Resources.Assets.Open("images/dropdownreverse-bkgd@.png")));
+
             _lv.SetBackgroundDrawable(Resources.GetDrawable(Resource.Drawable.ddc_dropdownreverse_bkgd));
             this.InitializeAnimation();
             _button.Click += new EventHandler(button_OnClick);
             _button.SetBackgroundDrawable(null);
             _button.SetImageBitmap(BitmapFactory.DecodeStream(Resources.Assets.Open(_buttonIcon)));
-           // _button.SetImageDrawable(_buttonIcon);
             _lv.ItemClick += listView_itemSelected;
-
+            _lv.Visibility = ViewStates.Visible;
         }
 
         void HandleFocusChange (object sender, FocusChangeEventArgs e)
@@ -132,8 +129,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             _rotateLeft.FillAfter = true;
             _rotateRight.Duration = 250;
             _rotateRight.FillAfter = true;
-            _resizeUp = new ResizeAnimation( _lv, 0, 58 * _lv.Count, true) { Duration = 500, FillAfter = true };
-            _resizeDown = new ResizeAnimation( _lv, 0, 58 * _lv.Count, false) { Duration = 500, FillAfter = true };
+            _resizeUp = new ResizeAnimation( _lv, 0, 58 * _lv.Count, true) { Duration = 500, Interpolator = new AccelerateDecelerateInterpolator()};
+            _resizeDown = new ResizeAnimation(_lv, 0, 58 * _lv.Count, false) { Duration = 500, Interpolator = new AccelerateDecelerateInterpolator() };
             _resizeDown.AnimationEnd += ResizeDownOnAnimationEnd;
 			_resizeUp.AnimationEnd += ResizeUpAnimationEnd;
         }
@@ -164,14 +161,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 {
                     _endline.Visibility = ViewStates.Visible;
                 }
-                else
+                else 
                 {
                     _endlineReverse.Visibility = ViewStates.Visible;
                 }
+
                 _frameLayout.SetBackgroundDrawable(_bitmapSelected);
                 _button.StartAnimation(_rotateRight);
                 _lv.StartAnimation(_resizeUp);
-                
             }
             else
             {

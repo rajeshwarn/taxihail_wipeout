@@ -28,10 +28,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
     {
 
         const int TIME_DIALOG_ID = 0;
-        const int DATE_DIALOG_ID = 1;
-        const int PICK_CONTACT = 42;
-        const double DELTA_DISTANCE = 0.001;
-
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -47,6 +43,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             FindViewById<EditText>(Resource.Id.pickupTimeText).EditorAction += new EventHandler<TextView.EditorActionEventArgs>(PickupTimeText_EditorAction);
             this.InitializeDropDownMenu();
+            
         }
 
         protected override int TitleResourceId
@@ -71,7 +68,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         void PickDate_Click(object sender, EventArgs e)
         {
-            //ShowDialog(DATE_DIALOG_ID);
             var intent = new Intent(this, typeof(DateTimePickerActivity));
             if (ParentActivity.BookingInfo.PickupDate.HasValue)
             {

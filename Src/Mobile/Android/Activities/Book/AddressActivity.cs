@@ -50,7 +50,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             //Initialize dropdown control
 
             var contactIntent = new Intent(Intent.ActionPick, ContactsContract.CommonDataKinds.StructuredPostal.ContentUri);
-            var iconActionControl = new IconActionControl(this, "images/arrow-right@2x.png", new List<IconAction>() { new IconAction("images/favorite-icon@2x.png", contactIntent, 42) }, true);
+            var iconActionControl = new IconActionControl(this, "images/arrow-right@2x.png", new List<IconAction>() { new IconAction("images/favorite-icon@2x.png", contactIntent, 42), new IconAction("images/favorite-icon@2x.png", contactIntent, 42), new IconAction("images/favorite-icon@2x.png", contactIntent, 42), new IconAction("images/favorite-icon@2x.png", contactIntent, 42) }, true);
             var dropDownControlLayout = FindViewById<LinearLayout>(Resource.Id.linear_iconaction);
             dropDownControlLayout.AddView(iconActionControl);
         }
@@ -322,16 +322,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
         }
 
-
-
-
-
-
         public void ParentResume()
         {
             InitMap();
         }
-
 
         #region Map Manipulation
         protected void InitMap()
