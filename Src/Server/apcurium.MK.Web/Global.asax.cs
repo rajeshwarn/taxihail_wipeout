@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Web;
 using Microsoft.Practices.Unity;
 using ServiceStack.ServiceInterface.Validation;
 using ServiceStack.WebHost.Endpoints;
@@ -59,6 +60,7 @@ namespace apcurium.MK.Web
 
         protected void Application_Start(object sender, EventArgs e)
         {
+            XmlConfigurator.Configure();
             new MKWebAppHost().Init();
             
         }
