@@ -6,6 +6,7 @@ using System.Text;
 using Android.App;
 using Android.Content;
 using Android.OS;
+using Android.Provider;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
@@ -14,6 +15,8 @@ using Android.Locations;
 using TinyIoC;
 using apcurium.Framework.Extensions;
 using Android.Views.InputMethods;
+using apcurium.MK.Booking.Mobile.Client.Controls;
+using apcurium.MK.Booking.Mobile.Client.Models;
 using apcurium.MK.Booking.Mobile.Data;
 using WS = apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Extensions;
@@ -25,7 +28,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
     [Activity(Label = "Destination", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class DestinationActivity : AddressActivity, IAddress
     {
-
+        
 
         private TextView RideDistance
         {
@@ -54,17 +57,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         protected override Button SelectAddressButton
         {
-            get { return FindViewById<Button>(Resource.Id.destAddressButton); }
+            get { /*return FindViewById<Button>(Resource.Id.destAddressButton);*/
+                return null;
+            }
         }
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
             this.SetContentView(Resource.Layout.Destination);
-            
+            this.InitializeDropDownMenu();
             RefreshEstimates();
         }
-
-
 
         private void RefreshEstimates()
         {
@@ -135,6 +138,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             base.OnResume();
             RefreshEstimates();
+        }
+
+        public void SetLocationDataAndValidate(WS.Address location, bool changeZoom)
+        {
+            Address.Text = location.FullAddress;
+            this.ValidateAddress(true);
+            base.SetLocationData(location, changeZoom);
+
+            ThreadHelper.ExecuteInThread(this, RefreshEstimates, false);
         }
 
         public override void SetLocationData(WS.Address location, bool changeZoom)

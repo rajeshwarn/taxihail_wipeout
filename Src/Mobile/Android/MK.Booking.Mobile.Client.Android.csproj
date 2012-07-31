@@ -91,15 +91,18 @@
     <Compile Include="Adapters\CustomOrderListAdapter.cs" />
     <Compile Include="Adapters\HistoryListAdapter.cs" />
     <Compile Include="Adapters\CustomLocationListAdapter.cs" />
+    <Compile Include="Adapters\IconActionAdapter.cs" />
     <Compile Include="Adapters\JavaObject.cs" />
     <Compile Include="Adapters\LocationListAdapter.cs" />
     <Compile Include="Adapters\OrderListAdapter.cs" />
+    <Compile Include="Animations\ResizeAnimation.cs" />
     <Compile Include="AppContext.cs" />
     <Compile Include="AppModule.cs" />
     <Compile Include="AppSetting.cs" />
     <Compile Include="Activities\Book\BookActivity.cs" />
     <Compile Include="Cache\CacheService.cs" />
     <Compile Include="Controls\BaloonLayout.cs" />
+    <Compile Include="Controls\IconActionControl.cs" />
     <Compile Include="Controls\TouchMap.cs" />
     <Compile Include="Converters\CoordinatesConverter.cs" />
     <Compile Include="Diagnostic\Logger.cs" />
@@ -122,6 +125,7 @@
     <Compile Include="Models\AddressItemListModel.cs" />
     <Compile Include="Models\BookingModel.cs" />
     <Compile Include="Models\HistoryModel.cs" />
+    <Compile Include="Models\IconAction.cs" />
     <Compile Include="Models\LocationModel.cs" />
     <Compile Include="Models\LocationTypes.cs" />
     <Compile Include="Activities\Account\PasswordRecoveryActivity.cs" />
@@ -135,6 +139,11 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\OrderListItem.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\dropdownRow.axml" />
+    <AndroidResource Include="Resources\Layout\IconActionLayout.axml" />
+    <AndroidResource Include="Resources\Drawable\cell_bottom_full_state.xml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <None Include="Resources\Resource.Designer.cs.bak" />
@@ -259,6 +268,13 @@
     <Content Include="..\Shared Assets\About_fr.html">
       <Link>Assets\About_fr.html</Link>
     </Content>
+    <AndroidAsset Include="Assets\images\arrow-right%402x.png" />
+    <AndroidAsset Include="Assets\images\target-icon%402x.png" />
+    <AndroidAsset Include="Assets\images\dropdown-bkgd%402x.png" />
+    <AndroidAsset Include="Assets\images\dropdownreverse-bkgd%402x.png" />
+    <AndroidAsset Include="Assets\images\favorite-icon%402x.png" />
+    <AndroidAsset Include="Assets\images\location-icon%402x.png" />
+    <AndroidAsset Include="Assets\images\nearby-icon%402x.png" />
     <Content Include="Properties\AndroidManifest.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -371,7 +387,19 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Drawable\cell_bottom_state.xml" />
+    <AndroidResource Include="Resources\Drawable\dropdown.png" />
     <AndroidResource Include="Resources\Drawable\taxi_label.png" />
+    <AndroidResource Include="Resources\Drawable\ddc_dropdown_bkgd.png" />
+    <AndroidResource Include="Resources\Drawable\ddc_dropdown_endline.png" />
+    <AndroidResource Include="Resources\Drawable\ddc_dropdownmiddle_bkgd.png" />
+    <AndroidResource Include="Resources\Drawable\ddc_dropdownreverse_bkgd.png" />
+    <AndroidResource Include="Resources\Drawable\ddc_dropdownreverse_endline.png" />
+    <AndroidResource Include="Resources\Drawable\ddc_list_btn_selected.png" />
+    <AndroidResource Include="Resources\Drawable\ddc_list_btn_unselected.png" />
+    <AndroidResource Include="Resources\Drawable\ddc_location_icon.png" />
+    <AndroidResource Include="Resources\Drawable\cell_borderTop.png" />
+    <AndroidResource Include="Resources\Drawable\cell_bottom_full.9.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\cell_bottom_full.9.png" />
     <Content Include="Todo.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
@@ -387,6 +415,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Mapper\" />
+    <Folder Include="Resources\drawable-hdpi\dropdowncontrol\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Contract\MK.Booking.Api.Contract.Android.csproj">
