@@ -22,10 +22,8 @@ namespace apcurium.MK.Web
 {
     public class Global : System.Web.HttpApplication
     {
-
         public class MKWebAppHost : AppHostBase
         {
-
             public MKWebAppHost() : base("Mobile Knowledge Web Services", typeof(CurrentAccountService).Assembly) { }
 
             public override void Configure(Container containerFunq)
