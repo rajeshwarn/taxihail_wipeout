@@ -32,7 +32,9 @@ _ReSharper*/
 [Bb]uild[Ll]og.*
 *.[Pp]ublish.xml
 *.resharper
-Log*/
+Log/
+Logs/
+*.log
 ClientDependency*/
 ClientBin*/
 *.userprefs

@@ -16,8 +16,8 @@ namespace apcurium.MK.Booking.Api.Services
     public class NearbyPlacesService : RestServiceBase<NearbyPlacesRequest>
     {
         private const int DefaulRadius = 100;
-        private IPlacesClient _client;
-        public NearbyPlacesService(IPlacesClient client)
+        private IMapsApiClient _client;
+        public NearbyPlacesService(IMapsApiClient client)
         {
             _client = client;
         }
