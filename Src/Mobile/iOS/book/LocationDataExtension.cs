@@ -1,19 +1,20 @@
 using System;
 using MonoTouch.CoreLocation;
+using apcurium.MK.Booking.Api.Contract.Resources;
 
-namespace TaxiMobileApp
+namespace apcurium.MK.Booking.Mobile.Client
 {
-	public static class LocationDataExtension
+	public static class AddressExtension
 	{
 	
 		
 	
-		public static CLLocationCoordinate2D GetCoordinate( this LocationData instance )
+		public static CLLocationCoordinate2D GetCoordinate( this Address instance )
         { 
             CLLocationCoordinate2D result = new CLLocationCoordinate2D(0,0);			
-            if ( instance.Longitude.HasValue && instance.Latitude.HasValue )
+            if ( instance.Longitude!=0 && instance.Latitude !=0)
             {
-                result = new CLLocationCoordinate2D( instance.Latitude.Value , instance.Longitude.Value );
+                result = new CLLocationCoordinate2D( instance.Latitude , instance.Longitude );
             }				
             return result;
         }

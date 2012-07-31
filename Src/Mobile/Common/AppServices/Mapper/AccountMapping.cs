@@ -2,7 +2,7 @@
 //using System.Linq;
 //using apcurium.Framework;
 //using apcurium.Framework.Extensions;
-//using Microsoft.Practices.ServiceLocation;
+//using TinyIoC;
 
 
 //namespace apcurium.MK.Booking.Mobile
@@ -13,7 +13,7 @@
 //        {
 //        }
 
-//        public IBS.AccountInfo ToWSData (IBS.AccountInfo result, AccountData data)
+//        public IBS.AccountInfo ToWSData (IBS.AccountInfo result, Account data)
 //        {
 //            result.Addresses = data.FavoriteLocations.Select (loc => ToWSLocationData (loc)).ToArray ();
 //            return result;
@@ -21,16 +21,16 @@
 //        }
 
 
-//        public AccountData ToData (AccountData existing, IBS.AccountInfo account)
+//        public Account ToData (Account existing, IBS.AccountInfo account)
 //        {
-//            AccountData result;
+//            Account result;
 //            if ( existing != null )
 //            {
 //                result = existing;
 //            }
 //            else 
 //            {
-//                 result = new AccountData ();
+//                 result = new Account ();
 //            }
 			
 					
@@ -57,7 +57,7 @@
 //            result.Longitude = location.Longitude.HasValue ? location.Longitude.Value : 0;
 //            return result;
 //        }
-//        public LocationData ToLocationData (AccountData existing, IBS.AccountAddress address)
+//        public LocationData ToLocationData (Account existing, IBS.AccountAddress address)
 //        {
 //            var result = new LocationData ();
 //            result.Id = address.Id;

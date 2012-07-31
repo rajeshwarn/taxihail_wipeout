@@ -2,7 +2,7 @@ using System;
 using MonoTouch.MapKit;
 using MonoTouch.CoreLocation;
 
-namespace TaxiMobileApp
+namespace apcurium.MK.Booking.Mobile.Client
 {
 	public enum AddressAnnotationType
 	{

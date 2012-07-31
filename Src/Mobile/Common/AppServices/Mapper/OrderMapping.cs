@@ -13,7 +13,7 @@
 //        {
 //        }
 
-//        public void UpdateHistory (AccountData existingAccount, IBS.OrderInfo[] orders, ListItem[] vehicules, ListItem[] companies, ListItem[] chargeTypes)
+//        public void UpdateHistory (Account existingAccount, IBS.OrderInfo[] orders, ListItem[] vehicules, ListItem[] companies, ListItem[] chargeTypes)
 //        {
 //            orders.ForEach (order =>
 //            {

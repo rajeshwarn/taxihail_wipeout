@@ -1,12 +1,14 @@
-﻿using ServiceStack.ServiceInterface;
+﻿using System.Net;
+using ServiceStack.Common.Web;
+using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Google.Resources;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
 using System.Globalization;
-using apcurium.MK.Booking.Api.Services.GoogleApi;
 using System.Collections.Generic;
 using System;
 using ServiceStack.ServiceClient.Web;
@@ -38,17 +40,22 @@ namespace apcurium.MK.Booking.Api.Services
 
         public override object OnGet(OrderStatusRequest request)
         {
-            OrderStatusDetail status = new OrderStatusDetail();
+            var status = new OrderStatusDetail();
+            var order = _orderDao.FindById(request.OrderId);
+            var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
+
+            if (!order.IBSOrderId.HasValue)
+            {
+                return new OrderStatusDetail { IBSStatusDescription = "Error getting the order status" };
+            }
+
+            if (account.Id != order.AccountId)
+            {
+                throw new HttpError(HttpStatusCode.Unauthorized, "Can't access another account's order");
+            }
+
             try
             {
-                var order = _orderDao.FindById(request.OrderId);
-                var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
-
-                if (!order.IBSOrderId.HasValue)
-                {
-                    return new OrderStatusDetail { IBSStatusDescription = "Error getting the order status" };
-                }
-
                 var statusDetails = _bookingWebServiceClient.GetOrderStatus(order.IBSOrderId.Value, account.IBSAccountId);
 
                 status.OrderId = request.OrderId;
@@ -113,7 +120,7 @@ namespace apcurium.MK.Booking.Api.Services
             }
             catch
             {
-                //TO DO: erreur ? Status ?
+                //TODO: erreur ? Status ?
             }
             return status;
         }

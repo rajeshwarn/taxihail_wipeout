@@ -4,9 +4,11 @@ using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 
 using System.Drawing;
-using Microsoft.Practices.ServiceLocation;
+using TinyIoC;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.Localization;
 
-namespace TaxiMobileApp
+namespace apcurium.MK.Booking.Mobile.Client
 {
 	public enum LoadingOverlayPosition
 	{
@@ -283,7 +285,7 @@ namespace TaxiMobileApp
 				_label.TextColor = UIColor.White;
 				_label.TextAlignment = UITextAlignment.Center;
 				
-				_label.Font = ServiceLocator.Current.GetInstance<IAppResource> ().CurrentLanguage == AppLanguage.English ? UIFont.SystemFontOfSize (14) : UIFont.SystemFontOfSize (12);
+				_label.Font = TinyIoCContainer.Current.Resolve<IAppResource> ().CurrentLanguage == AppLanguage.English ? UIFont.SystemFontOfSize (14) : UIFont.SystemFontOfSize (12);
 				
 				_label.Frame = new System.Drawing.RectangleF (36, 4, 86, 21);
 				

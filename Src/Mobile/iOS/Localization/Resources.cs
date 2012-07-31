@@ -1,7 +1,9 @@
 using System;
 using MonoTouch.Foundation;
+using apcurium.MK.Booking.Mobile.Localization;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
-namespace TaxiMobileApp
+namespace apcurium.MK.Booking.Mobile.Client
 {
 	public class Resources : IAppResource
 	{
@@ -699,22 +701,15 @@ namespace TaxiMobileApp
 			get { return GetValue ("CreateAccoutTitleLabel"); }
 		}
 
-		public static string CreateAccoutFirstNameLabel {
-			get { return GetValue ("CreateAccoutFirstNameLabel"); }
+		public static string CreateAccoutFullNameLabel {
+			get { return GetValue ("CreateAccoutFullNameLabel"); }
 		}
 
-		public static string CreateAccoutLastNameLabel {
-			get { return GetValue ("CreateAccoutLastNameLabel"); }
-		}
-
+		
 		public static string CreateAccoutPhoneNumberLabel {
 			get { return GetValue ("CreateAccoutPhoneNumberLabel"); }
 		}
-
-		public static string CreateAccoutMobileLabel {
-			get { return GetValue ("CreateAccoutMobileLabel"); }
-		}
-
+	
 		public static string CreateAccoutLanguageLabel {
 			get { return GetValue ("CreateAccoutLanguageLabel"); }
 		}
@@ -824,7 +819,12 @@ namespace TaxiMobileApp
 
 		public static string NotesStatic {
 			get { return GetValue ("Notes"); }
-		}
+		}    
+        public static string ErrorGettingStatus
+        {
+            get { return GetValue ("ErrorGettingStatus"); }
+        }
+
 	}
 }
 

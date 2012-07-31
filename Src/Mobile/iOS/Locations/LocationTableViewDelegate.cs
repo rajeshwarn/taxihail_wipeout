@@ -7,15 +7,19 @@ using System.Text;
 
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-namespace TaxiMobileApp
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Common.Extensions;
+using apcurium.MK.Booking.Mobile.Extensions;
+
+namespace apcurium.MK.Booking.Mobile.Client
 {
 	public class LocationTableViewDelegate : UITableViewDelegate
 	{
 
-		private IEnumerable<LocationData> _favoriteList;
-		private IEnumerable<LocationData> _historyList;
+		private IEnumerable<Address> _favoriteList;
+		private IEnumerable<Address> _historyList;
 		private LocationsTabView _parent;
-		public LocationTableViewDelegate (LocationsTabView parent, IEnumerable<LocationData> favoriteList, IEnumerable<LocationData> historyList)
+		public LocationTableViewDelegate (LocationsTabView parent, IEnumerable<Address> favoriteList, IEnumerable<Address> historyList)
 		{
 			_parent = parent;
 			_historyList = historyList;
@@ -28,12 +32,12 @@ namespace TaxiMobileApp
 //		}
 //		
 
-		private LocationData _lastSelected;
+		private Address _lastSelected;
 
 		public override void RowSelected (UITableView tableView, NSIndexPath indexPath)
 		{
 			
-			if ((indexPath.Section == 1) && _historyList.ElementAt (indexPath.Row).IsHistoricEmptyItem)
+			if ((indexPath.Section == 1) && _historyList.ElementAt (indexPath.Row).Id.IsNullOrEmpty())
 			{
 				return;
 			}
@@ -45,25 +49,15 @@ namespace TaxiMobileApp
 				if (indexPath.Section == 0)
 				{
 					
-					_lastSelected = _favoriteList.ElementAt (indexPath.Row);
-					_lastSelected.IsNew = false;
-					_lastSelected.IsFromHistory = false;
-					if (_lastSelected.IsAddNewItem)
-					{
-						_lastSelected = new LocationData { IsNew = true ,Id=-1};						
-					}
-										
-					
+					_lastSelected = _favoriteList.ElementAt (indexPath.Row);					
 					detail.LoadData (_lastSelected);
 					
 				}
 
 				else
 				{
-					_lastSelected = _historyList.ElementAt (indexPath.Row).Copy();
-					_lastSelected.IsNew = true;
-					_lastSelected.IsFromHistory = true;
-					_lastSelected.Id = -1;
+					_lastSelected = _historyList.ElementAt (indexPath.Row).Copy();					
+                    _lastSelected.Id = Guid.Empty;
 					detail.LoadData (_lastSelected);
 				}
 				detail.Deleted += HandleDetailDeleted;
@@ -97,27 +91,17 @@ namespace TaxiMobileApp
 
 		void HandleDetailSaved (object sender, EventArgs e)
 		{
-			if(_lastSelected.IsNew) 
-			{				
-				_parent.AddNew (_lastSelected);				
-			}
+    
 
-			else
-			{
-				_parent.Update (_lastSelected);
-				
-			}
-			_lastSelected.IsNew = false;
+            _parent.Update (_lastSelected);             
+
 			
 		}
 
 
 		void HandleDetailDeleted (object sender, EventArgs e)
 		{
-			if (!_lastSelected.IsNew)
-			{
-				_parent.Delete (_lastSelected);
-			}
+			_parent.Delete (_lastSelected);
 		}
 		
 	}

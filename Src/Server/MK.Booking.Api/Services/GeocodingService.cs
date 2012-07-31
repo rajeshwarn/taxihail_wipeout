@@ -6,35 +6,34 @@ using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using ServiceStack.ServiceClient.Web;
+using apcurium.MK.Booking.Google;
+using apcurium.MK.Booking.Google.Resources;
 using apcurium.MK.Common.Extensions;
 using ServiceStack.Common.Web;
 using System.Net;
 using System.Globalization;
-using apcurium.MK.Booking.Api.Services.GoogleApi;
 using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Api.Services
 {
     public class GeocodingService : RestServiceBase<GeocodingRequest>
     {
+        private readonly IMapsApiClient _client;
         private IConfigurationManager _configManager;
-        public GeocodingService(IConfigurationManager configManager)
+        public GeocodingService( IMapsApiClient client ,  IConfigurationManager configManager)
         {
+            _client = client;
             _configManager = configManager;
         }
 
 
         public override object OnGet(GeocodingRequest request)
         {
-            var client = new JsonServiceClient("http://maps.googleapis.com/maps/api/");
-
-            
-
-            var result = GetResultUsingFilter(client, request, true);
+            var result = GetResultUsingFilter(request, true);
 
             if (result.Addresses.Count() == 0)
             {
-                return GetResultUsingFilter(client, request, false);
+                return GetResultUsingFilter(request, false);
             }
             else
             {
@@ -42,11 +41,9 @@ namespace apcurium.MK.Booking.Api.Services
             }
         }
 
-        private AddressList GetResultUsingFilter(JsonServiceClient client, GeocodingRequest request, bool useFilter)
+        private AddressList GetResultUsingFilter(GeocodingRequest request, bool useFilter)
         {
-            var resource = CreateResourceFromRequest(request, useFilter);
-
-            var geoResult = client.Get<GeoResult>(resource);
+            var geoResult = GetResultFromRequest(request, useFilter);
 
             if (geoResult.Status == ResultStatus.OK)
             {
@@ -82,7 +79,7 @@ namespace apcurium.MK.Booking.Api.Services
             return new Address { FullAddress = obj.Formatted_address, Id = Guid.Empty, Latitude = obj.Geometry.Location.Lat, Longitude = obj.Geometry.Location.Lng };
         }
 
-        private string CreateResourceFromRequest(GeocodingRequest request, bool useFilter)
+        private GeoResult GetResultFromRequest(GeocodingRequest request, bool useFilter)
         {
          
             if ( (request.Lat.HasValue && request.Lng.HasValue && request.Name.HasValue()) ||
@@ -98,16 +95,16 @@ namespace apcurium.MK.Booking.Api.Services
                 if ((filter.HasValue()) && (useFilter))
                 {
                     var filteredName = string.Format(filter, request.Name.Split(' ').JoinBy("+"));
-                    return string.Format(CultureInfo.InvariantCulture, "geocode/json?address={0}&sensor=false", filteredName );
+                    return _client.GeocodeAddress(filteredName);
                 }
                 else
                 {
-                    return string.Format(CultureInfo.InvariantCulture, "geocode/json?address={0}&sensor=false", request.Name.Split(' ').JoinBy("+"));
+                    return _client.GeocodeAddress(request.Name.Split(' ').JoinBy("+"));
                 }                
             }
             else
             {
-                return string.Format( CultureInfo.InvariantCulture, "geocode/json?latlng={0},{1}&sensor=false", request.Lat, request.Lng);
+                return _client.GeocodeLocation(request.Lat.GetValueOrDefault(), request.Lng.GetValueOrDefault());
             }
 
         }

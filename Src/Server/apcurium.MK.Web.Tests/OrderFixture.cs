@@ -54,7 +54,20 @@ namespace apcurium.MK.Web.Tests
             Assert.NotNull(id);
         }
 
-
+        [Test]
+        [ExpectedException("ServiceStack.ServiceClient.Web.WebServiceException", ExpectedMessage = "CreateOrder_SettingsRequired")]
+        public void when_creating_order_without_passing_settings()
+        {
+            var sut = new OrderServiceClient(BaseUrl);
+            var order = new CreateOrder
+            {
+                Id = Guid.NewGuid(),
+                PickupAddress = TestAddresses.GetAddress1(),
+                PickupDate = DateTime.Now,
+                DropOffAddress = TestAddresses.GetAddress2(),
+            };
+            sut.CreateOrder(order);
+        }
 
     }
     public class give_an_existing_order : BaseTest
@@ -81,6 +94,12 @@ namespace apcurium.MK.Web.Tests
             sut.CreateOrder(order);
         }
 
+        [SetUp]
+        public override void Setup()
+        {
+            base.Setup();
+        }
+
         [Test]
         public void ibs_order_was_created()
         {
@@ -91,6 +110,14 @@ namespace apcurium.MK.Web.Tests
             Assert.IsNotNull(order.IBSOrderId);
         }
 
+        [Test]
+        public void can_not_get_order_another_account()
+        {
+            CreateAndAuthenticateTestAccount();
+
+            var sut = new OrderServiceClient(BaseUrl);
+            Assert.Throws<WebServiceException>(() => sut.GetOrder(_orderId));
+        }
 
         [Test]
         public void can_cancel_it()

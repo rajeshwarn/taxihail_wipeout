@@ -4,7 +4,7 @@ using MonoTouch.UIKit;
 using MonoTouch.CoreGraphics;
 using System.Collections.Generic;
 
-namespace TaxiMobileApp
+namespace apcurium.MK.Booking.Mobile.Client
 {
 	public class VerticalButton : UIButton
 	{

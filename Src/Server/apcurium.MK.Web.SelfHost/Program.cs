@@ -21,7 +21,7 @@ namespace apcurium.MK.Web.SelfHost
         static void Main(string[] args)
         {
 
-            var listeningOn = args.Length == 0 ? "http://*:6901/" : args[0];
+            var listeningOn = args.Length == 0 ? "http://*:6901/api/" : args[0];
 
             var appHost = new AppHost();
             appHost.Init();
@@ -45,7 +45,6 @@ namespace apcurium.MK.Web.SelfHost
 
             var container = UnityServiceLocator.Instance;
             containerFunq.Adapter = new UnityContainerAdapter(container, new Logger());
-
 
             Plugins.Add(new AuthFeature(() => new AuthUserSession(),
                 new IAuthProvider[]

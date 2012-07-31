@@ -3,7 +3,7 @@ using System.Threading;
 
 using MonoTouch.Foundation;
 
-namespace TaxiMobileApp
+namespace apcurium.MK.Booking.Mobile.Client
 {
 	public class ThreadHelper
 	{

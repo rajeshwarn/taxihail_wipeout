@@ -47,7 +47,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (!isSuccessful)
             {
-                throw new HttpError(ErrorCode.CreateOrder_InvalidPickupAddress.ToString());
+                throw new HttpError(ErrorCode.CancelOrder_OrderNotInIbs.ToString());
             }
 
             var command = new Commands.CancelOrder();

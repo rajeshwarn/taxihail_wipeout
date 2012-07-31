@@ -1,7 +1,7 @@
 //using System;
 //using System.Linq;
 //using apcurium.Framework.Extensions;
-//using Microsoft.Practices.ServiceLocation;
+//using TinyIoC;
 
 //namespace apcurium.MK.Booking.Mobile
 //{
@@ -14,7 +14,7 @@
 		
 			
 		
-//        public void SetWSSetting (IBS.AccountInfo toUpdate, AccountData account)
+//        public void SetWSSetting (IBS.AccountInfo toUpdate, Account account)
 //        {
 //            toUpdate.PreferenceChargeTypeId = account.DefaultSettings.ChargeType;
 //            toUpdate.PreferenceVehicleTypeId = account.DefaultSettings.VehicleType;
@@ -29,7 +29,7 @@
 //            Console.WriteLine( "SetWSSetting : " + toUpdate.PreferenceChargeTypeId.ToString() );
 			                  
 //        }
-//        public void SetSetting (AccountData toUpdate, IBS.AccountInfo account)
+//        public void SetSetting (Account toUpdate, IBS.AccountInfo account)
 //        {
 		
 	        

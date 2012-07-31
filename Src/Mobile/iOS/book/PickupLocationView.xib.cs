@@ -7,8 +7,9 @@ using MonoTouch.UIKit;
 using MonoTouch.MapKit;
 using MonoTouch.CoreLocation;
 using apcurium.Framework.Extensions;
+using System.Drawing;
 
-namespace TaxiMobileApp
+namespace apcurium.MK.Booking.Mobile.Client
 {
 	public partial class PickupLocationView : UIViewController
 	{
@@ -50,13 +51,6 @@ namespace TaxiMobileApp
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-
-			var vertBar = new VerticalButtonBar( new System.Drawing.RectangleF( txtAddress.Frame.Right + 3,txtAddress.Frame.Top - 3,39f,34f ) );
-			vertBar.AddButton( UIImage.FromFile("Assets/VerticalButtonBar/locationIcon.png" ), UIImage.FromFile("Assets/VerticalButtonBar/locationIcon.png" ) );
-			vertBar.AddButton( UIImage.FromFile("Assets/VerticalButtonBar/targetIcon.png" ), UIImage.FromFile("Assets/VerticalButtonBar/targetIcon.png" ) );
-			vertBar.AddButton( UIImage.FromFile("Assets/VerticalButtonBar/favoriteIcon.png" ), UIImage.FromFile("Assets/VerticalButtonBar/favoriteIcon.png" ));
-			vertBar.AddButton( UIImage.FromFile("Assets/VerticalButtonBar/nearbyIcon.png" ), UIImage.FromFile("Assets/VerticalButtonBar/nearbyIcon.png" ));
-			View.AddSubview( vertBar );
 
 			View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
 			
@@ -113,18 +107,22 @@ namespace TaxiMobileApp
 			mapPickUp.Delegate = new AddressMapDelegate ();
 			
 			
-			_addressController = new AddressContoller (txtAddress, txtAptSuite, txtRingCode, tableAddress, vertBar, mapPickUp, AddressAnnotationType.Pickup, Resources.PickupMapTitle, 
-			                                           () => _parent.BookingInfo.PickupLocation, data => _parent.BookingInfo.PickupLocation = data, ()=> _parent.IsTopView  );
+			_addressController = new AddressContoller (txtAddress, txtAptSuite, txtRingCode, tableAddress, mapPickUp, AddressAnnotationType.Pickup, Resources.PickupMapTitle, 
+			                                           () => _parent.BookingInfo.PickupAddress, data => _parent.BookingInfo.PickupAddress = data, ()=> _parent.IsTopView  );
 			
 			
 			
 			txtRingCode.ShouldReturn = delegate(UITextField textField) { return textField.ResignFirstResponder (); };
 			txtAptSuite.ShouldReturn = delegate(UITextField textField) { return textField.ResignFirstResponder (); };
 			
-			txtAptSuite.EditingChanged += delegate { _parent.BookingInfo.PickupLocation.Apartment = txtAptSuite.Text; };
-			txtRingCode.EditingChanged += delegate { _parent.BookingInfo.PickupLocation.RingCode = txtRingCode.Text; };
+			txtAptSuite.EditingChanged += delegate { _parent.BookingInfo.PickupAddress.Apartment = txtAptSuite.Text; };
+			txtRingCode.EditingChanged += delegate { _parent.BookingInfo.PickupAddress.RingCode = txtRingCode.Text; };
 			
-			//_addressController.ShowCurrentLocation (AppContext.Current.LoggedUser != null);
+			
+            ((TextField)txtAddress).PaddingLeft = 3;
+            ((TextField)txtAptSuite).PaddingLeft = 3;
+            ((TextField)txtRingCode).PaddingLeft = 3;
+            ((TextField)txtTime).PaddingLeft = 3;
 			
 			
 			
@@ -171,22 +169,15 @@ namespace TaxiMobileApp
 			
 			view.BackgroundColor = UIColor.Gray;
 			
-			var accept = UIButton.FromType (UIButtonType.RoundedRect);
-			accept.Frame = new System.Drawing.RectangleF (40, 5, 100, 35);
-			accept.SetTitle (Resources.Close, UIControlState.Normal);
-			view.AddSubview (accept);
-			GlassButton.Wrap (accept, AppStyle.LightButtonColor, AppStyle.LightButtonHighlightedColor).TouchUpInside += delegate { txtTime.ResignFirstResponder (); };
-			
-			
-			
-			
-			var reset = UIButton.FromType (UIButtonType.RoundedRect);
-			reset.Frame = new System.Drawing.RectangleF (180, 5, 100, 35);
-			reset.SetTitle (Resources.Now, UIControlState.Normal);
-			
+            var accept = AppButtons.CreateStandardGradientButton( new RectangleF (40, 5, 100, 35), Resources.Close, UIColor.White, AppStyle.ButtonColor.Green );			
+			view.AddSubview (accept);			
+            accept.TouchUpInside += delegate { txtTime.ResignFirstResponder (); };
+									
+			var reset = AppButtons.CreateStandardGradientButton( new RectangleF (180, 5, 100, 35), Resources.Now, UIColor.FromRGB(101, 101, 101), AppStyle.ButtonColor.Grey );
+            reset.TextShadowColor = null;			
 			
 			view.AddSubview (reset);
-			GlassButton.Wrap (reset, AppStyle.LightButtonColor, AppStyle.LightButtonHighlightedColor).TouchUpInside += delegate {
+			reset.TouchUpInside += delegate {
 				_parent.BookingInfo.PickupDate = null;
 				txtTime.Text = "";
 				txtTime.ResignFirstResponder ();

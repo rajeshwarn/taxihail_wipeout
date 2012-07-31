@@ -34,7 +34,7 @@ namespace apcurium.MK.Booking.Domain
         public Account(Guid id, string name,string phone, string email, byte[] password, int ibsAccountId, string confirmationToken, string language)
             : this(id)
         {
-            if (Params.Get(name,phone,email).Any(p => p.IsNullOrEmpty())
+            if (Params.Get(name, phone, email, confirmationToken).Any(p => p.IsNullOrEmpty())
                 || ibsAccountId == 0 || (password == null) )
             {
                 throw new InvalidOperationException("Missing required fields");

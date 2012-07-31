@@ -67,10 +67,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
             //AppContext.Current.LoggedUser.Settings.Company = _model.Company;
             //AppContext.Current.LoggedUser.Settings.CompanyName = _model.CompanyName;
             //Helpers.ThreadHelper.ExecuteInThread( Parent, () => {
-            //    var currentAccountData = AppContext.Current.LoggedUser;
-            //    currentAccountData.Settings = _model.Data;
-            //    currentAccountData.FirstName = _model.Data.Name;
-            //    AppContext.Current.UpdateLoggedInUser( currentAccountData, true );
+            //    var currentAccount = AppContext.Current.LoggedUser;
+            //    currentAccount.Settings = _model.Data;
+            //    currentAccount.FirstName = _model.Data.Name;
+            //    AppContext.Current.UpdateLoggedInUser( currentAccount, true );
             //},false );
 			Finish();
 		}

@@ -16,7 +16,7 @@
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
-    <DeployExternal>False</DeployExternal>
+    <DeployExternal>false</DeployExternal>
     <AndroidSupportedAbis>armeabi%3barmeabi-v7a%3bx86</AndroidSupportedAbis>
     <AndroidStoreUncompressedFileExtensions />
     <MandroidI18n />
@@ -36,9 +36,8 @@
     <AndroidSigningKeyAlias>MKTaxiHail</AndroidSigningKeyAlias>
     <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
     <AndroidLinkMode>None</AndroidLinkMode>
-    <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
-    <AndroidLinkSkip />
-    <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+    <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
+    <AndroidSupportedAbis>armeabi-v7a,x86</AndroidSupportedAbis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -47,8 +46,8 @@
     <DefineConstants>TRACE;CLIENT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
-    <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
+    <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
     <AndroidKeyStore>True</AndroidKeyStore>
     <AndroidSigningKeyStore>public.keystore</AndroidSigningKeyStore>
     <AndroidSigningStorePass>mkt0001.</AndroidSigningStorePass>
@@ -122,6 +121,7 @@
     <Compile Include="Activities\Account\LoginActivity.cs" />
     <Compile Include="Activities\MainActivity.cs" />
     <Compile Include="MapUtitilties\PushPinOverlay.cs" />
+    <Compile Include="MapUtitilties\TaxiOverlay.cs" />
     <Compile Include="Models\AddressItemListModel.cs" />
     <Compile Include="Models\BookingModel.cs" />
     <Compile Include="Models\HistoryModel.cs" />
@@ -147,7 +147,6 @@
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="TaxiMobileApp.cs" />
     <Compile Include="Validation\EmailValidation.cs" />
-    <Compile Include="Models\RideSettingsModel.cs" />
     <Compile Include="ListViewStructure\Section.cs" />
     <Compile Include="ListViewStructure\SectionItem.cs" />
     <Compile Include="ListViewStructure\ListStructure.cs" />
@@ -386,6 +385,7 @@
     </AndroidResource>
     <AndroidResource Include="Resources\Drawable\cell_bottom_state.xml" />
     <AndroidResource Include="Resources\Drawable\dropdown.png" />
+    <AndroidResource Include="Resources\Drawable\taxi_label.png" />
     <AndroidResource Include="Resources\Drawable\ddc_dropdown_bkgd.png" />
     <AndroidResource Include="Resources\Drawable\ddc_dropdown_endline.png" />
     <AndroidResource Include="Resources\Drawable\ddc_dropdownmiddle_bkgd.png" />

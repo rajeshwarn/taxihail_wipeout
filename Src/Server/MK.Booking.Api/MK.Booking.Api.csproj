@@ -104,6 +104,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -126,9 +127,7 @@
     <Compile Include="Services\CurrentAccountService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AddressesService.cs" />
-    <Compile Include="Services\GoogleApi\CommonDto.cs" />
-    <Compile Include="Services\GoogleApi\DirectionDto.cs" />
-    <Compile Include="Services\GoogleApi\GeolocDto.cs" />
+    <Compile Include="Services\NearbyPlacesService.cs" />
     <Compile Include="Services\OrderMapper.cs" />
     <Compile Include="Services\OrderService.cs" />
     <Compile Include="Services\OrderStatusService.cs" />
@@ -138,6 +137,7 @@
     <Compile Include="Services\SaveAddressService.cs" />
     <Compile Include="Services\TestOnlyReqGetTestAccountService.cs" />
     <Compile Include="Services\UpdatePasswordService.cs" />
+    <Compile Include="Validation\CreateOrderValidator.cs" />
     <Compile Include="Validation\SaveFavoriteAddressValidator.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -152,6 +152,10 @@
     <ProjectReference Include="..\MK.Booking.Api.Contract\MK.Booking.Api.Contract.csproj">
       <Project>{1DD86EC1-75F9-4A57-A8D6-18248048F571}</Project>
       <Name>MK.Booking.Api.Contract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MK.Booking.Google\MK.Booking.Google.csproj">
+      <Project>{AD0BC4AD-6BAC-4E02-8202-D7B3BF64D0F1}</Project>
+      <Name>MK.Booking.Google</Name>
     </ProjectReference>
     <ProjectReference Include="..\MK.Booking.IBS\MK.Booking.IBS.csproj">
       <Project>{7B615EA9-4232-4FFB-B66C-AC7B833973C9}</Project>

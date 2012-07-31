@@ -26,6 +26,8 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             _title = title;
             BoundCenterBottom(imagePushPint);
             Populate();
+
+            
         }
 
         public string Title { get { return _item.Title; } }
@@ -47,8 +49,6 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             var result = base.OnTap(index);
 
             var overlay = _owner.Overlays.ElementAt(index); // as PushPinOverlay;
-            //if (overlay != null)
-            //{
 
             RemoveAllBalloons(_owner);
 
@@ -62,15 +62,9 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
                 _noteBaloon.LayoutParameters = layoutParams;
             }
 
-
-
-            _owner.RemoveView(_noteBaloon);
-            Console.WriteLine("TAPP");
+            _owner.RemoveView(_noteBaloon);            
             _noteBaloon.Visibility = ViewStates.Visible;
-
-
-            _noteBaloon.FindViewById<TextView>(Resource.Id.note_text).Text = Title;
-            //mapController.animateTo(noteOverlay.getTapPoint());
+            _noteBaloon.FindViewById<TextView>(Resource.Id.note_text).Text = Title;            
             _owner.AddView(_noteBaloon, new MapView.LayoutParams(200, 100, this.Center, MapView.LayoutParams.BottomCenter));
 
             return result;

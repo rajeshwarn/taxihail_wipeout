@@ -1,9 +1,9 @@
 //using System;
 //namespace apcurium.MK.Booking.Mobile.Data
 //{
-//    public class CreateAccountData
+//    public class CreateAccount
 //    {
-//        public CreateAccountData ()
+//        public CreateAccount ()
 //        {
 //        }
 		

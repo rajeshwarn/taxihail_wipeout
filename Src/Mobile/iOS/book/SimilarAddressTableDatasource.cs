@@ -11,7 +11,9 @@ using MonoTouch.UIKit;
 using apcurium.Framework.Extensions;
 using apcurium.Framework;
 
-namespace TaxiMobileApp
+using apcurium.MK.Booking.Api.Contract.Resources;
+
+namespace apcurium.MK.Booking.Mobile.Client
 {
 
 	public class SimilarAddressTableDatasource : UITableViewDataSource
@@ -23,10 +25,10 @@ namespace TaxiMobileApp
 
 		public SimilarAddressTableDatasource ()
 		{
-			Similars = new LocationData[0];	
+			Similars = new Address[0];	
 		}
 		
-		public IEnumerable<LocationData> Similars {
+		public IEnumerable<Address> Similars {
 			get;
 			set;
 		}
@@ -62,16 +64,16 @@ namespace TaxiMobileApp
 			
 			var b = Similars.ElementAt(indexPath.Row);
 			
-			if ( b.Name.HasValue() )
+			if ( b.FriendlyName.HasValue() )
 			{
-				cell.TextLabel.Text = b.Name;
+				cell.TextLabel.Text = b.FriendlyName;
 			}
 			
 			cell.TextLabel.Text = "  ";
 			
 			
 			cell.DetailTextLabel.Font = UIFont.BoldSystemFontOfSize( 14 );
-			cell.DetailTextLabel.Text =  b.Address.ToSafeString();
+			cell.DetailTextLabel.Text =  b.FullAddress.ToSafeString();
 			
 			if ( b.Apartment.HasValue() ) 
 			{

@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 using System.Reflection;
-namespace TaxiMobileApp
+namespace apcurium.MK.Booking.Mobile.Client
 {
 	public class RessourceHelper
 	{

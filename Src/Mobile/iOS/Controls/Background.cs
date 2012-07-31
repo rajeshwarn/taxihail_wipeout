@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using MonoTouch.UIKit;
 using apcurium.Framework.Extensions;
 
-namespace TaxiMobileApp
+namespace apcurium.MK.Booking.Mobile.Client
 {
 	public class Background
 	{

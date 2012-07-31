@@ -5,7 +5,7 @@ using MonoTouch.AddressBook;
 using System.Collections.Generic;
 using MonoTouch.Foundation;
 
-namespace TaxiMobileApp.Controls
+namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
 	public class ContactPicker
 	{
@@ -22,6 +22,7 @@ namespace TaxiMobileApp.Controls
 			_picker = new ABPeoplePickerNavigationController();
 			_picker.DisplayedProperties.Clear();
 			_picker.SelectPerson += HandleSelectPerson;
+
 			_picker.Cancelled += delegate {
 				_picker.DismissModalViewControllerAnimated(true);
 			};
@@ -33,11 +34,16 @@ namespace TaxiMobileApp.Controls
 			_properties.Add( property );
 		}
 
+
+     
+
+
 		void HandleSelectPerson (object sender, ABPeoplePickerSelectPersonEventArgs e)
 		{
 			ABPerson selectedPerson = e.Person;		
 
 			var viewer = new ABPersonViewController();
+
 			viewer.DisplayedPerson = selectedPerson;
 			_properties.ForEach( p => viewer.DisplayedProperties.Add(p) );
 			
@@ -53,7 +59,16 @@ namespace TaxiMobileApp.Controls
 						List<string> list = new List<string>();
 						if( value.ContainsKey( NSObject.FromObject( "Street" ) ) )
 						{
-							list.Add( value.ValueForKey( new NSString("Street") ).ToString().Replace("\n"," " ) );
+                                var fullStreet =  value.ValueForKey( new NSString("Street") ).ToString();
+                                if ( fullStreet.Contains( "\n" ) )
+                                {
+                                    list.Add( fullStreet.Split( '\n' )[0]);
+                                }
+                                else
+                                {
+                                    list.Add( fullStreet);
+                                }
+							
 						}
 
 						if( value.ContainsKey( NSObject.FromObject( "City" ) ) )
@@ -61,20 +76,7 @@ namespace TaxiMobileApp.Controls
 							list.Add( value.ValueForKey( new NSString("City") ).ToString() );
 						}
 						
-						if( value.ContainsKey( NSObject.FromObject( "ZIP" ) ) )
-						{
-							list.Add( value.ValueForKey( new NSString("ZIP") ).ToString() );
-						}
-						
-						if( value.ContainsKey( NSObject.FromObject( "State" ) ) )
-						{
-							list.Add( value.ValueForKey( new NSString("State") ).ToString() );
-						}
-						
-						if( value.ContainsKey( NSObject.FromObject( "Country" ) ) )
-						{
-							list.Add( value.ValueForKey( new NSString("Country") ).ToString() );
-						}
+
 
 
 						ContactSelected(this, new ContactPickerResult( string.Join(", ", list ), string.Join(" ", argsViewer.Person.FirstName, argsViewer.Person.LastName ) ) );
