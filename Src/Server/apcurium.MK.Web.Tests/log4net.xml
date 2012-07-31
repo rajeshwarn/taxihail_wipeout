@@ -25,14 +25,14 @@
 		<layout type="log4net.Layout.PatternLayout">
 			<conversionPattern value="%date [%thread] %-5level %logger [%property{NDC}] - %message%newline" />
 		</layout>
-	</appender>
+	</appender>	
 	<root>
 		<level value="WARN" />
 		<appender-ref ref="UdpAppender" />
 	</root>
 	<logger name="apcurium.MK">
 		<level value="ALL" />
-	</logger>
+	</logger>	
 	<logger name="TraceOutput">
 		<level value="ALL" />
 	</logger>
