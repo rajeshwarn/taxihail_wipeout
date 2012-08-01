@@ -67,11 +67,9 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var address = context.Find<Address>(@event.AddressId);
-                if (!address.IsHistoric)
-                {
-                    AutoMapper.Mapper.Map(@event, address);
-                    context.SaveChanges();
-                }
+                address.IsHistoric = false;
+                AutoMapper.Mapper.Map(@event, address);
+                context.SaveChanges();
             }
         }
 

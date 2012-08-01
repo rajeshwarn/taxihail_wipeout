@@ -157,11 +157,6 @@ namespace apcurium.MK.Booking.Domain
 
         public void UpdateFavoriteAddress(Guid id, string friendlyName, string apartment, string fullAddress, string ringCode, double latitude, double longitude)
         {
-            if (!_favoriteAddresses.Contains(id))
-            {
-                throw new InvalidOperationException("Address does not exist in account");
-            }
-
             ValidateFavoriteAddress(friendlyName, fullAddress, latitude, longitude);
 
             this.Update(new FavoriteAddressUpdated()
@@ -214,8 +209,12 @@ namespace apcurium.MK.Booking.Domain
             _favoriteAddresses.Remove(@event.AddressId);
         }
 
-        private void OnAddressUpdated(FavoriteAddressUpdated obj)
+        private void OnAddressUpdated(FavoriteAddressUpdated @event)
         {
+            if (!_favoriteAddresses.Contains(@event.AddressId))
+            {
+                _favoriteAddresses.Add(@event.AddressId);
+            }
 
         }
 
