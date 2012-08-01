@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.Api.Services
             });
 
             return new HttpResult(new FileInfo(Path.Combine(AssemblyDirectory, "AccountConfirmationSuccess.html")));
-        }
+         }
 
         static public string AssemblyDirectory
         {

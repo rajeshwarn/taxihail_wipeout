@@ -4,21 +4,26 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using ServiceStack.ServiceClient.Web;
+
+using apcurium.MK.Booking.Api.Contract.Resources;
 #if !CLIENT
 using ServiceStack.ServiceInterface.Auth;
 #else
 using ServiceStack.Common.ServiceClient.Web;
-
-
 #endif
 
 namespace apcurium.MK.Booking.Api.Client
 {
     public class AuthServiceClient : BaseServiceClient
     {
-        public AuthServiceClient(string url)
-            : base(url)
+        public AuthServiceClient(string url, string sessionId)
+            : base(url, sessionId)
         {
+        }
+
+        public void CheckSession()
+        {
+            Client.Get<Account>("/account");
         }
 
         public AuthResponse Authenticate(string email, string password)
@@ -53,12 +58,6 @@ namespace apcurium.MK.Booking.Api.Client
 
         private AuthResponse Authenticate(Auth auth, string provider)
         {
-            var cookieContainer = new CookieContainer();
-            ServiceClientBase.HttpWebRequestFilter = req =>
-            {
-                req.CookieContainer = cookieContainer;
-            };
-
             
             var response = Client.Post<AuthResponse>("/auth/" + provider , auth);
 

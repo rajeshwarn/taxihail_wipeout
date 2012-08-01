@@ -4,136 +4,103 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-  <RelativeLayout
-      android:id="@+id/relativeLayoutPickUp"
-      android:layout_width="fill_parent"
-      android:layout_height="fill_parent">
     <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/fieldBackground">
-      <ImageView
-          android:layout_width="fill_parent"
-          android:layout_height="wrap_content"
-          android:layout_alignParentTop="true"
-          android:background="#FF0F00"
-          android:scaleType="fitXY"
-          android:adjustViewBounds="true"
-          android:src="@drawable/topFieldBackgroundLg" />
-      <RelativeLayout
-          android:layout_marginTop="35dip"
-          android:id="@+id/pickAddress"
-          android:layout_width="fill_parent"
-          android:layout_height="wrap_content">
-        <Button
-            android:id="@+id/pickupAddressButton"
-            android:layout_alignParentRight="true"
-            android:drawableLeft="@drawable/btnPickLocation"
-            android:background="@drawable/green_button"
-            style="@style/ButtonText"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp" />
+        android:id="@+id/relativeLayoutPickUp"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent">
+        <ImageView
+            android:id="@+id/imagePickupBackground"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="#FF0F00"
+            android:scaleType="fitXY"
+            android:adjustViewBounds="true"
+            android:src="@drawable/topFieldBackgroundLg" />
         <AutoCompleteTextView
             android:id="@+id/pickupAddressText"
             android:paddingTop="1dp"
             android:paddingBottom="2dp"
-            android:layout_marginTop="3dip"
+            android:layout_marginTop="37dip"
             android:layout_alignParentLeft="true"
-            android:layout_toLeftOf="@id/pickupAddressButton"
-            android:layout_width="fill_parent"
+            android:layout_width="275dip"
             android:hint=""
             android:imeOptions="actionSearch"
             android:textSize="14dp"
             android:inputType="text"
             android:layout_height="42dp"
             android:maxLines="1" />
-      </RelativeLayout>
-      <LinearLayout
-          android:layout_width="fill_parent"
-          android:id="@+id/aptNumberRingCode"
-          android:layout_below="@+id/pickAddress"
-          android:layout_marginTop="-4dip"
-          android:layout_height="wrap_content"
-          android:orientation="horizontal"
-          android:gravity="center_horizontal">
         <EditText
-            android:id="@+id/aptNumberText"
-            android:layout_width="fill_parent"
-            android:layout_weight="1"
-            android:paddingTop="1dp"
-            android:paddingBottom="2dp"
-            android:textSize="14dp"
-            android:inputType="text"
-            android:layout_height="42dp"
-            android:maxLines="1"
-            android:hint="@string/LocationDetailAptPlaceholder" />
+                android:id="@+id/aptNumberText"
+                android:layout_width="200dip"
+                android:layout_below="@id/pickupAddressText"
+                android:layout_weight="1"
+                android:textSize="14dp"
+                android:inputType="text"
+                android:layout_height="42dp"
+                android:maxLines="1"
+                android:hint="@string/LocationDetailAptPlaceholder" />
         <EditText
-            android:id="@+id/ringCodeText"
-            android:layout_width="fill_parent"
-            android:layout_weight="1"
-            android:paddingTop="1dp"
-            android:paddingBottom="2dp"
-            android:textSize="14dp"
-            android:inputType="text"
-            android:layout_height="42dp"
-            android:maxLines="1"
-            android:hint="@string/LocationDetailRingCodePlaceholder" />
-      </LinearLayout>
-      <LinearLayout
-          android:layout_width="fill_parent"
-          android:id="@+id/pickupDateTime"
-          android:layout_below="@+id/aptNumberRingCode"
-          android:layout_marginTop="-7dip"
-          android:layout_height="wrap_content"
-          android:orientation="horizontal"
-          android:gravity="center_horizontal">
-
+                android:id="@+id/ringCodeText"
+                android:layout_width="200dip"
+                android:layout_below="@id/pickupAddressText"
+                android:layout_toRightOf="@id/aptNumberText"
+                android:layout_weight="1"
+                android:textSize="14dp"
+                android:inputType="text"
+                android:layout_height="42dp"
+                android:maxLines="1"
+                android:hint="@string/LocationDetailRingCodePlaceholder" />
+                <Button
+                    android:id="@+id/pickupDateButton"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@id/aptNumberText"
+                    android:drawableLeft="@drawable/pickDate"
+                    android:background="@drawable/green_button"
+                    style="@style/ButtonText"
+                    android:layout_marginRight="2dip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp" />
+                <EditText
+                    android:id="@+id/pickupTimeText"
+                    android:layout_below="@id/aptNumberText"
+                    android:layout_alignParentLeft="true"
+                    android:layout_toLeftOf="@id/pickupDateButton"
+                    android:layout_width="fill_parent"
+                    android:hint=""
+                    android:textSize="14dp"
+                    android:inputType="text"
+                    android:layout_height="42dp"
+                    android:maxLines="1" />
         <RelativeLayout
-            android:layout_weight="1"
-            android:id="@+id/pickupTime"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-          <Button
-              android:id="@+id/pickupDateButton"
-              android:layout_alignParentRight="true"
-              android:drawableLeft="@drawable/pickDate"
-              android:background="@drawable/green_button"
-              style="@style/ButtonText"
-              android:layout_width="wrap_content"
-              android:layout_height="35dp" />
-          <EditText
-              android:id="@+id/pickupTimeText"
-              android:paddingTop="1dp"
-              android:paddingBottom="2dp"
-              android:layout_marginTop="3dip"
-              android:layout_alignParentLeft="true"
-              android:layout_toLeftOf="@id/pickupDateButton"
-              android:layout_width="fill_parent"
-              android:hint=""
-              android:textSize="14dp"
-              android:inputType="text"
-              android:layout_height="42dp"
-              android:maxLines="1" />
+                android:layout_height="fill_parent"
+            android:layout_below="@+id/pickupTimeText">
+            <apcurium.mk.booking.mobile.client.controls.TouchMap
+                android:id="@+id/mapPickup"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                
+                android:apiKey="0XEY3WqKVmJMzXNRJfhbH1yM6RkpBMOaZWUoMAw"
+                android:enabled="true"
+                android:clickable="true" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignWithParentIfMissing="true"
+                android:layout_centerInParent="true"
+                android:src="@drawable/location" />
         </RelativeLayout>
-      </LinearLayout>
+        
+
+        <LinearLayout
+            android:id="@+id/linear_iconaction"
+            android:layout_toRightOf="@id/pickupAddressText"
+            android:orientation="vertical"
+            android:layout_width="78px"
+            android:layout_height="fill_parent"
+            android:layout_marginRight="2dip"
+            android:layout_marginTop="37dip"
+            android:gravity="top" />
     </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_below="@+id/fieldBackground"
-        android:layout_height="wrap_content">
-      <apcurium.mk.booking.mobile.client.controls.TouchMap
-          android:id="@+id/mapPickup"
-          android:layout_width="fill_parent"
-          android:layout_height="wrap_content"
-          android:apiKey="0XEY3WqKVmJMzXNRJfhbH1yM6RkpBMOaZWUoMAw"
-          android:enabled="true"
-          android:clickable="true" />
-      <ImageView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_alignWithParentIfMissing="true"
-          android:layout_centerInParent="true"
-          android:src="@drawable/location" />
-    </RelativeLayout>    
-  </RelativeLayout>
 </LinearLayout>

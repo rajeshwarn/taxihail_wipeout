@@ -6,6 +6,7 @@ using ServiceStack.Common.ServiceClient.Web;
 #else
 
 #endif
+using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -25,10 +26,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         private const string _historyAddressesCacheKey = "Account.HistoryAddresses";
         private static ReferenceData _refData;
 
-        public AccountService()
-        {
-
-        }
+       
 
         public void EnsureListLoaded()
         {
@@ -199,6 +197,20 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 
+        public bool CheckSession()
+        {
+            try
+            {
+                var client = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
+                client.CheckSession();
+                return true;
+
+            }catch(WebServiceException e)
+            {
+                return false;
+            }
+        }
+
         public void UpdateSettings(BookingSettings settings)
         {
             QueueCommand<AccountServiceClient>(service =>
@@ -211,28 +223,57 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public Account GetAccount(string email, string password, out string error)
         {
-            var parameters = new NamedParameterOverloads();
-            var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
-            parameters.Add("credential", auth.Authenticate(email, password));
-            return GetAccount(parameters, out error);
+            try
+            {
+                var parameters = new NamedParameterOverloads();
+                var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
+                var authResponse = auth.Authenticate(email, password);
 
+                var cache = TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService>();
+                cache.Set("SessionId", authResponse.SessionId);
+
+                parameters.Add("credential", authResponse);
+                return GetAccount(parameters, out error);
+            }
+            catch (Exception e)
+            {
+                error = "Invalid login or password";
+                return null;
+            }
+            
+            
         }
 
         public Account GetFacebookAccount(string facebookId, out string error)
         {
-            var parameters = new NamedParameterOverloads();
-            var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
-            parameters.Add("credential", auth.AuthenticateFacebook(facebookId));
-            return GetAccount(parameters, out error);
+            try
+            {
+                var parameters = new NamedParameterOverloads();
+                var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
+                parameters.Add("credential", auth.AuthenticateFacebook(facebookId));
+                return GetAccount(parameters, out error);
+            }
+            catch (Exception e)
+            {
+                error = "Invalid login or password";
+                return null;
+            }
         }
 
         public Account GetTwitterAccount(string twitterId, out string error)
         {
-            var parameters = new NamedParameterOverloads();
-            var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
-            parameters.Add("credential", auth.AuthenticateTwitter(twitterId));
-            return GetAccount(parameters, out error);
-
+            try
+            {
+                var parameters = new NamedParameterOverloads();
+                var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
+                parameters.Add("credential", auth.AuthenticateTwitter(twitterId));
+                return GetAccount(parameters, out error);
+            }
+            catch (Exception e)
+            {
+                error = "Invalid login or password";
+                return null;
+            }
         }
 
         private Account GetAccount(NamedParameterOverloads parameters, out string error)
@@ -300,9 +341,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             try
             {
-                var service = TinyIoCContainer.Current.Resolve<AccountServiceClient>("NotAuthenticated");
-                service.RegisterAccount(data);
-                isSuccess = true;
+                UseServiceClient<AccountServiceClient>(service =>
+                {
+                    service.RegisterAccount(data);
+                    isSuccess = true;
+                });
+                //var service = TinyIoCContainer.Current.Resolve<AccountServiceClient>();
+                //var service = new AccountServiceClient("http://192.168.12.125/apcurium.MK.Web/api/");
+                //service.RegisterAccount(data);
+                //isSuccess = true;
             }
             catch (Exception ex)
             {

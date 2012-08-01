@@ -54,7 +54,20 @@ namespace apcurium.MK.Web.Tests
             Assert.NotNull(id);
         }
 
-
+        [Test]
+        [ExpectedException("ServiceStack.ServiceClient.Web.WebServiceException", ExpectedMessage = "CreateOrder_SettingsRequired")]
+        public void when_creating_order_without_passing_settings()
+        {
+            var sut = new OrderServiceClient(BaseUrl);
+            var order = new CreateOrder
+            {
+                Id = Guid.NewGuid(),
+                PickupAddress = TestAddresses.GetAddress1(),
+                PickupDate = DateTime.Now,
+                DropOffAddress = TestAddresses.GetAddress2(),
+            };
+            sut.CreateOrder(order);
+        }
 
     }
     public class give_an_existing_order : BaseTest

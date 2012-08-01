@@ -137,6 +137,7 @@
     <Compile Include="Services\SaveAddressService.cs" />
     <Compile Include="Services\TestOnlyReqGetTestAccountService.cs" />
     <Compile Include="Services\UpdatePasswordService.cs" />
+    <Compile Include="Validation\CreateOrderValidator.cs" />
     <Compile Include="Validation\SaveFavoriteAddressValidator.cs" />
   </ItemGroup>
   <ItemGroup>

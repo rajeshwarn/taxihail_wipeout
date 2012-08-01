@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Web;
 using Microsoft.Practices.Unity;
 using ServiceStack.ServiceInterface.Validation;
 using ServiceStack.WebHost.Endpoints;
@@ -21,10 +22,8 @@ namespace apcurium.MK.Web
 {
     public class Global : System.Web.HttpApplication
     {
-
         public class MKWebAppHost : AppHostBase
         {
-
             public MKWebAppHost() : base("Mobile Knowledge Web Services", typeof(CurrentAccountService).Assembly) { }
 
             public override void Configure(Container containerFunq)
