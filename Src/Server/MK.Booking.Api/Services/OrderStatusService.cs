@@ -68,9 +68,10 @@ namespace apcurium.MK.Booking.Api.Services
                     if (status.IBSStatusId.SoftEqual(_assignedStatus))
                     {
                         var orderDetails = _bookingWebServiceClient.GetOrderDetails(order.IBSOrderId.Value, account.IBSAccountId, order.Settings.Phone);
-                        if ((orderDetails != null) && (orderDetails.CabNumber.HasValue()))
+                        if ((orderDetails != null) && (orderDetails.VehicleNumber.HasValue()))
                         {
-                            desc = string.Format(_configManager.GetSetting("OrderStatus.CabDriverNumberAssigned"), orderDetails.CabNumber);
+                            status.VehicleNumber = orderDetails.VehicleNumber;
+                            desc = string.Format(_configManager.GetSetting("OrderStatus.CabDriverNumberAssigned"), orderDetails.VehicleNumber);
                         }
                         else
                         {

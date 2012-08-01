@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using ServiceStack.ServiceClient.Web;
+
 using apcurium.MK.Booking.Api.Contract.Resources;
 #if !CLIENT
 using ServiceStack.ServiceInterface.Auth;
@@ -57,9 +58,10 @@ namespace apcurium.MK.Booking.Api.Client
 
         private AuthResponse Authenticate(Auth auth, string provider)
         {
-           return Client.Post<AuthResponse>("/auth/" + provider , auth);
-
-
+            
+            var response = Client.Post<AuthResponse>("/auth/" + provider , auth);
+             
+            return response;
         }
     }
 }

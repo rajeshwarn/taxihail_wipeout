@@ -105,7 +105,7 @@ namespace DatabaseInitializer
             configurationManager.SetSetting("DefaultBookingSettings.ChargeTypeId", "1");
             //------
             
-            configurationManager.SetSetting("DefaultBookingSettings.NbPassenger", "2");
+            configurationManager.SetSetting("DefaultBookingSettings.NbPassenger", "1");
             
             
 
@@ -116,6 +116,8 @@ namespace DatabaseInitializer
             configurationManager.SetSetting("Direction.FlateRate", "3.45");
             configurationManager.SetSetting("Direction.RatePerKm", "1.70");
             configurationManager.SetSetting("Direction.MaxDistance", "50");
+
+            configurationManager.SetSetting("NearbyPlacesService.DefaultRadius", "500");
             
             configurationManager.SetSetting("DistanceFormat", "KM"); // Other option is "MILE"
             configurationManager.SetSetting("PriceFormat", "en-US");

@@ -28,10 +28,10 @@ namespace apcurium.MK.Booking.Test.FavoriteAddressesFixture
         public void when_adding_an_address_successfully()
         {
             var addressId = Guid.NewGuid();
-            this.sut.When(new AddAddress { AddressId = addressId, AccountId =  _accountId, FriendlyName = "Chez François", Apartment = "3939", FullAddress = "1234 rue Saint-Hubert", RingCode = "3131", Latitude   = 45.515065, Longitude = -73.558064 });
+            this.sut.When(new AddFavoriteAddress { AddressId = addressId, AccountId =  _accountId, FriendlyName = "Chez François", Apartment = "3939", FullAddress = "1234 rue Saint-Hubert", RingCode = "3131", Latitude   = 45.515065, Longitude = -73.558064 });
 
             Assert.AreEqual(1, sut.Events.Count);
-            var evt = (AddressAdded)sut.Events.Single();
+            var evt = (FavoriteAddressAdded)sut.Events.Single();
             Assert.AreEqual(_accountId, evt.SourceId);
             Assert.AreEqual(addressId, evt.AddressId);
             Assert.AreEqual("Chez François", evt.FriendlyName);
@@ -46,7 +46,7 @@ namespace apcurium.MK.Booking.Test.FavoriteAddressesFixture
         [Test]
         public void when_adding_an_address_with_missing_required_fields()
         {
-            Assert.Throws<InvalidOperationException>(() => this.sut.When(new AddAddress { AccountId = _accountId, FriendlyName = null, Apartment = "3939", FullAddress = null, RingCode = "3131", Latitude = 45.515065, Longitude = -73.558064 }));
+            Assert.Throws<InvalidOperationException>(() => this.sut.When(new AddFavoriteAddress { AccountId = _accountId, FriendlyName = null, Apartment = "3939", FullAddress = null, RingCode = "3131", Latitude = 45.515065, Longitude = -73.558064 }));
         }
 
         [Test]
@@ -54,7 +54,7 @@ namespace apcurium.MK.Booking.Test.FavoriteAddressesFixture
         {
 
             Assert.Throws<ArgumentOutOfRangeException>(() => this
-                .sut.When(new AddAddress
+                .sut.When(new AddFavoriteAddress
                     {
                         AccountId = _accountId,
                         FriendlyName = "Chez François",
@@ -66,7 +66,7 @@ namespace apcurium.MK.Booking.Test.FavoriteAddressesFixture
                     }));
 
             Assert.Throws<ArgumentOutOfRangeException>(() => this
-                .sut.When(new AddAddress
+                .sut.When(new AddFavoriteAddress
                 {
                     AccountId = _accountId,
                     FriendlyName = "Chez François",

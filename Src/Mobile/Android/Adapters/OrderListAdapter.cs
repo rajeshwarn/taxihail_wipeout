@@ -40,7 +40,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Adapters
             {
                 view = _context.LayoutInflater.Inflate(Resource.Layout.OrderListItem, null);
             }
-            var layout = view.FindViewById<LinearLayout>(Resource.Id.OrderListLayout);
+          var layout = view.FindViewById<LinearLayout>(Resource.Id.OrderListLayout);
             var title = view.FindViewById<TextView>(Resource.Id.OrderListTitle);
             var subtitle = view.FindViewById<TextView>(Resource.Id.OrderListSubtitle);
             var image = view.FindViewById<ImageView>(Resource.Id.OrderListPicture);

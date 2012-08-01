@@ -36,8 +36,10 @@
     <AndroidSigningKeyAlias>MKTaxiHail</AndroidSigningKeyAlias>
     <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
     <AndroidLinkMode>None</AndroidLinkMode>
-    <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
+    <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
     <AndroidSupportedAbis>armeabi-v7a,x86</AndroidSupportedAbis>
+    <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
+    <AndroidLinkSkip />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -147,7 +149,6 @@
     <AndroidResource Include="Resources\Drawable\cell_bottom_full_state.xml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
-    <None Include="Resources\Resource.Designer.cs.bak" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="TaxiMobileApp.cs" />
     <Compile Include="Validation\EmailValidation.cs" />
@@ -175,6 +176,8 @@
     <Compile Include="Controls\ReclickableTabHost.cs" />
   </ItemGroup>
   <ItemGroup>
+    <AndroidAsset Include="Assets\HelveticaNeue.dfont" />
+    <AndroidAsset Include="Assets\Helvetica.dfont" />
     <None Include="Resources\AboutResources.txt" />
     <AndroidResource Include="Resources\Layout\Login.axml">
       <SubType>Designer</SubType>

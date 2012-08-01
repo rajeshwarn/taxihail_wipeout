@@ -6,18 +6,11 @@ using System.Collections.Generic;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Common.ServiceClient.Web;
 #endif
-
-
-#if !CLIENT 
 using ServiceStack.Common.ServiceClient.Web;
-#else
-using ServiceStack.Common.ServiceClient.Web;
-#endif
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
@@ -157,9 +150,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             if ((cached != null) && (cached.Length > 0))
             {
                 var list = new List<T>(cached);
-                var toDelete = list.Single(item => compare(toDeleteId, item));
-                list.Remove(toDelete);                               
-                TinyIoCContainer.Current.Resolve<ICacheService>().Set(key, list.ToArray());
+                var toDelete = list.SingleOrDefault(item => compare(toDeleteId, item));
+                if (toDelete != null)
+                {
+                    list.Remove(toDelete);
+                    TinyIoCContainer.Current.Resolve<ICacheService>().Set(key, list.ToArray());
+                }
             }
 
 
@@ -304,11 +300,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             try
             {
 
-                var context = TinyIoCContainer.Current.Resolve<IAppContext>();
-                var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
-
-
-                var service = TinyIoCContainer.Current.Resolve<AccountServiceClient>("Authenticate", parameters);
+                var context = TinyIoCContainer.Current.Resolve<IAppContext>();                
+                
+                var service = TinyIoCContainer.Current.Resolve<AccountServiceClient>("Authenticate");
                 var account = service.GetMyAccount();
                 if (account != null)
                 {
@@ -358,10 +352,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             string lError = "";
 
             data.AccountId = Guid.NewGuid();
+            data.Language =  TinyIoCContainer.Current.Resolve<IAppResource>().CurrentLanguageCode;
 
             try
             {
-                UseServiceClient<AccountServiceClient>(service =>
+                lError = UseServiceClient<AccountServiceClient>(service =>
                 {
                     service.RegisterAccount(data);
                     isSuccess = true;
@@ -425,6 +420,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
 
             UpdateCacheArray(_favoriteAddressesCacheKey, address, (a1, a2) => a1.Id.Equals(a2.Id));
+            RemoveFromCacheArray<Address>(_historyAddressesCacheKey, address.Id, (a1, a2) => a1 == a2.Id);
 
 
             QueueCommand<AccountServiceClient>(service =>
@@ -441,7 +437,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     };
 
                     var toMove = toSave;
-                    toMove.IsHistoric = false;
 
                     if (isNew )
                     {                        

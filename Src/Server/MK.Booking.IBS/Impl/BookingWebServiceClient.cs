@@ -48,8 +48,8 @@ namespace apcurium.MK.Booking.IBS.Impl
             {
                 var order = service.GetBookOrder_5(UserNameApp, PasswordApp, orderId, contactPhone, null, accountId);
                 if (order != null)
-                {
-                    result.CabNumber = order.CabNo.ToSafeString().Trim();
+                {                    
+                    result.VehicleNumber = order.CabNo.ToSafeString().Trim();
                     result.Fare = order.Fare == 0 ? (double?)null : order.Fare;
                     result.Toll = order.Tolls == 0 ? (double?)null : order.Tolls;
                 }
@@ -72,7 +72,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             order.PickupTime = new TWEBTimeStamp { Hour = pickupDateTime.Hour, Minute = pickupDateTime.Minute, Second = 0, Fractions = 0 };
 
             order.PickupAddress = new TWEBAddress { StreetPlace = pickup.FullAddress, AptBaz = pickup.Apartment, Longitude = pickup.Longitude, Latitude = pickup.Latitude };
-            order.DropoffAddress = dropoff == null ? new TWEBAddress() : new TWEBAddress { StreetPlace = pickup.FullAddress, AptBaz = pickup.Apartment, Longitude = pickup.Longitude, Latitude = pickup.Latitude };
+            order.DropoffAddress = dropoff == null ? new TWEBAddress() : new TWEBAddress { StreetPlace = dropoff.FullAddress, AptBaz = dropoff.Apartment, Longitude = dropoff.Longitude, Latitude = dropoff.Latitude };
             order.Passengers = nbPassengers;
             order.VehicleTypeID = vehicleTypeId;
             order.Note = note;
