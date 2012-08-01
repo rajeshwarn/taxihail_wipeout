@@ -54,10 +54,10 @@ namespace apcurium.MK.Booking
                 .ForMember(p => p.Latitude, opt => opt.MapFrom(m => m.PickupLatitude))
                 .ForMember(p => p.Longitude, opt => opt.MapFrom(m => m.PickupLongitude));
 
-            AutoMapper.Mapper.CreateMap<AddressAdded, Address>()
+            AutoMapper.Mapper.CreateMap<FavoriteAddressAdded, Address>()
                 .ForMember(p => p.AccountId, opt => opt.MapFrom(m => m.SourceId));
 
-            AutoMapper.Mapper.CreateMap<AddressUpdated, ReadModel.Address>()
+            AutoMapper.Mapper.CreateMap<FavoriteAddressUpdated, ReadModel.Address>()
                 .ForMember(p => p.Id, options => options.MapFrom(m => m.AddressId));
         }
 

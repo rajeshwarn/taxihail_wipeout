@@ -101,7 +101,6 @@
     <Compile Include="Email\ITemplateService.cs" />
     <Compile Include="Email\TemplateService.cs" />
     <Compile Include="EventHandlers\AccountDetailsGenerator.cs" />
-    <Compile Include="EventHandlers\AddressHistoryGenerator.cs" />
     <Compile Include="EventHandlers\AddressListGenerator.cs" />
     <Compile Include="EventHandlers\OrderGenerator.cs" />
     <Compile Include="Logging\Log4NetTraceListenerAdapter.cs" />

@@ -63,7 +63,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddAddress.cs" />
+    <Compile Include="AddFavoriteAddress.cs" />
     <Compile Include="CancelOrder.cs" />
     <Compile Include="ConfirmAccount.cs" />
     <Compile Include="SendAccountConfirmationEmail.cs" />
@@ -73,13 +73,13 @@
     <Compile Include="RegisterAccount.cs" />
     <Compile Include="RegisterFacebookAccount.cs" />
     <Compile Include="RegisterTwitterAccount.cs" />
-    <Compile Include="RemoveAddress.cs" />
+    <Compile Include="RemoveFavoriteAddress.cs" />
     <Compile Include="ResetAccountPassword.cs" />
     <Compile Include="SendPasswordResetEmail.cs" />
     <Compile Include="UpdateAccount.cs" />
     <Compile Include="UpdateAccountPassword.cs" />
     <Compile Include="UpdateBookingSettings.cs" />
-    <Compile Include="UpdateAddress.cs" />
+    <Compile Include="UpdateFavoriteAddress.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Infrastructure\Infrastructure\Infrastructure.csproj">
