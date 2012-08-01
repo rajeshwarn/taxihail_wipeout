@@ -140,9 +140,7 @@ namespace apcurium.MK.Web.Tests
             sut.RegisterAccount(newAccount);
 
             var newAccount2 = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = email, Name = "First Name Test", Password = "password" };
-            sut.RegisterAccount(newAccount2);
-
-
+            sut.RegisterAccount(newAccount2);           
         }
 
         [Test]

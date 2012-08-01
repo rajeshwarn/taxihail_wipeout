@@ -79,12 +79,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                         AppContext.Current.LastEmail = data.Email;
                         this.RunOnUiThread(() =>
                                                {
-                                                   Finish();
-                                                   if(IsCreatedFromSocial)
+                                                   
+                                                   
+                                                   if (IsCreatedFromSocial)
                                                    {
+                                                       Finish();
                                                        StartActivity(typeof(MainActivity));
                                                    }
-                                                   
+                                                   else
+                                                   {
+                                                       this.ShowAlert(Resource.String.AccountActivationTitle, Resource.String.AccountActivationMessage, ()=> Finish());                             
+                                                   }
+
                                                });
                     }, true);
             }
