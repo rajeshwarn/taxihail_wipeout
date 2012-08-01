@@ -417,6 +417,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
 
             UpdateCacheArray(_favoriteAddressesCacheKey, address, (a1, a2) => a1.Id.Equals(a2.Id));
+            UpdateCacheArray(_historyAddressesCacheKey, address, (a1, a2) => a1.Id.Equals(a2.Id));
 
 
             QueueCommand<AccountServiceClient>(service =>
