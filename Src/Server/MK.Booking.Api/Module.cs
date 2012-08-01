@@ -27,10 +27,10 @@ namespace apcurium.MK.Booking.Api
             AutoMapper.Mapper.CreateMap<RegisterAccount, Commands.RegisterTwitterAccount>();
             AutoMapper.Mapper.CreateMap<RegisterAccount, Commands.RegisterFacebookAccount>();
 
-            AutoMapper.Mapper.CreateMap<SaveAddress, Commands.AddAddress>()
+            AutoMapper.Mapper.CreateMap<SaveAddress, Commands.AddFavoriteAddress>()
                 .ForMember(x => x.AddressId, opt => opt.MapFrom(x => x.Id));
 
-            AutoMapper.Mapper.CreateMap<SaveAddress, Commands.UpdateAddress>()
+            AutoMapper.Mapper.CreateMap<SaveAddress, Commands.UpdateFavoriteAddress>()
                 .ForMember(x => x.AddressId, opt => opt.MapFrom(x => x.Id));
         }
     }

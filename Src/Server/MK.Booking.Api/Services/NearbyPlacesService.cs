@@ -1,25 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Net;
-using System.Text;
 using apcurium.MK.Booking.Google;
 using ServiceStack.Common.Web;
-using ServiceStack.ServiceClient.Web;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Api.Services
 {
     public class NearbyPlacesService : RestServiceBase<NearbyPlacesRequest>
     {
-        private const int DefaulRadius = 100;
         private IMapsApiClient _client;
-        public NearbyPlacesService(IMapsApiClient client)
+        private readonly IConfigurationManager _configurationManager;
+
+        public NearbyPlacesService(IMapsApiClient client, IConfigurationManager configurationManager)
         {
             _client = client;
+            _configurationManager = configurationManager;
         }
 
         public override object OnGet(NearbyPlacesRequest request)
@@ -29,7 +28,14 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.NearbyPlaces_LocationRequired.ToString());
             }
 
-            var results = _client.GetNearbyPlaces(request.Lat.Value, request.Lng.Value, "en", false, request.Radius ?? DefaulRadius);
+            int defaultRadius;
+            if(!Int32.TryParse(_configurationManager.GetSetting("NearbyPlacesService.DefaultRadius"), out defaultRadius))
+            {
+                //fallback
+                defaultRadius = 500;
+            }
+
+            var results = _client.GetNearbyPlaces(request.Lat.Value, request.Lng.Value, "en", false, request.Radius ?? defaultRadius);
 
             return results.Select(x => new Address
             {

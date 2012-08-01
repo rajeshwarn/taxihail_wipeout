@@ -3,9 +3,9 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Booking.Commands
 {
-    public class RemoveAddress : ICommand
+    public class RemoveFavoriteAddress : ICommand
     {
-        public RemoveAddress()
+        public RemoveFavoriteAddress()
         {
             Id = Guid.NewGuid();
         }
