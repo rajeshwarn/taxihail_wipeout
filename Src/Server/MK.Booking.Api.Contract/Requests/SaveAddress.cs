@@ -25,8 +25,5 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public string Apartment { get; set; }
 
         public string RingCode { get; set; }
-
-        public bool IsHistoric { get; set; }
-
     }
 }

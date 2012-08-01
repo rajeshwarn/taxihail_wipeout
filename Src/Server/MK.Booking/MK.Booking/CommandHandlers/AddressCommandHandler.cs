@@ -6,7 +6,7 @@ using apcurium.MK.Booking.Domain;
 
 namespace apcurium.MK.Booking.BackOffice.CommandHandlers
 {
-    public class AddressCommandHandler : ICommandHandler<AddAddress>, ICommandHandler<RemoveAddress>, ICommandHandler<UpdateAddress>
+    public class AddressCommandHandler : ICommandHandler<AddFavoriteAddress>, ICommandHandler<RemoveFavoriteAddress>, ICommandHandler<UpdateFavoriteAddress>
     {
         private readonly IEventSourcedRepository<Account> _repository;
 
@@ -15,23 +15,22 @@ namespace apcurium.MK.Booking.BackOffice.CommandHandlers
             _repository = repository;
         }
 
-        public void Handle(AddAddress command)
+        public void Handle(AddFavoriteAddress command)
         {
             var account = _repository.Get(command.AccountId);
 
-            account.AddAddress(id: command.AddressId, 
+            account.AddFavoriteAddress(id: command.AddressId, 
                 friendlyName: command.FriendlyName,
                 apartment: command.Apartment,
                 fullAddress: command.FullAddress,
                 ringCode: command.RingCode,
                 latitude: command.Latitude,
-                longitude: command.Longitude,
-                isHistoric:command.IsHistoric);
+                longitude: command.Longitude);
             
             _repository.Save(account);
         }
 
-        public void Handle(RemoveAddress command)
+        public void Handle(RemoveFavoriteAddress command)
         {
             var account = _repository.Get(command.AccountId);
 
@@ -40,18 +39,17 @@ namespace apcurium.MK.Booking.BackOffice.CommandHandlers
             _repository.Save(account);
         }
 
-        public void Handle(UpdateAddress command)
+        public void Handle(UpdateFavoriteAddress command)
         {
             var account = _repository.Get(command.AccountId);
 
-            account.UpdateAddress(id: command.AddressId,
+            account.UpdateFavoriteAddress(id: command.AddressId,
                 friendlyName: command.FriendlyName,
                 apartment: command.Apartment,
                 fullAddress: command.FullAddress,
                 ringCode: command.RingCode,
                 latitude: command.Latitude,
-                longitude: command.Longitude,
-                isHistoric:command.IsHistoric);
+                longitude: command.Longitude);
 
             _repository.Save(account);
         }

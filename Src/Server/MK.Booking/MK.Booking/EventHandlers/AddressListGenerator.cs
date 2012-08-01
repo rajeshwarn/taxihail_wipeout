@@ -8,7 +8,7 @@ using apcurium.MK.Booking.ReadModel;
 
 namespace apcurium.MK.Booking.BackOffice.EventHandlers
 {
-    public class AddressListGenerator : IEventHandler<AddressAdded>, IEventHandler<AddressRemoved>, IEventHandler<AddressUpdated>, IEventHandler<OrderCreated>
+    public class AddressListGenerator : IEventHandler<FavoriteAddressAdded>, IEventHandler<FavoriteAddressRemoved>, IEventHandler<FavoriteAddressUpdated>, IEventHandler<OrderCreated>
     {
         private readonly Func<BookingDbContext> _contextFactory;
         public AddressListGenerator(Func<BookingDbContext> contextFactory)
@@ -16,7 +16,7 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
             _contextFactory = contextFactory;
         }
 
-        public void Handle(AddressAdded @event)
+        public void Handle(FavoriteAddressAdded @event)
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -30,47 +30,48 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
                     RingCode = @event.RingCode,
                     Latitude = @event.Latitude,
                     Longitude = @event.Longitude,
-                    IsHistoric = @event.IsHistoric
+                    IsHistoric = false
                 });
 
-                if (!@event.IsHistoric)
-                {
-                     var identicalAddresses = (from a in context.Query<Address>()
-                                         where a.AccountId == @event.SourceId
-                                         where a.Apartment == @event.Apartment
-                                         where a.FullAddress == @event.FullAddress
-                                         where a.RingCode == @event.RingCode
-                                         where a.IsHistoric
-                                         select a).FirstOrDefault();
+                var identicalHistoricAddress = (from a in context.Query<Address>().Where(x=>x.IsHistoric)
+                                    where a.AccountId == @event.SourceId
+                                    where (a.Apartment ?? string.Empty) == (@event.Apartment ?? string.Empty)
+                                    where a.FullAddress == @event.FullAddress
+                                    where (a.RingCode ?? string.Empty) == (@event.RingCode ?? string.Empty)
+                                    select a).FirstOrDefault();
 
-                    if (identicalAddresses!=null)
-                    {
-                        //var historicAddress = context.Query<Address>().FirstOrDefault(c => c.AccountId.Equals(@event.SourceId) && c.IsHistoric.Equals(true));
-                        context.Set<Address>().Remove(identicalAddresses);
-                        context.SaveChanges();
-                    }
+                if (identicalHistoricAddress != null)
+                {
+                    context.Set<Address>().Remove(identicalHistoricAddress);
+                    context.SaveChanges();
                 }
                
             }
         }
 
-        public void Handle(AddressRemoved @event)
+        public void Handle(FavoriteAddressRemoved @event)
         {
             using (var context = _contextFactory.Invoke())
             {
                 var address = context.Find<Address>(@event.AddressId);
-                context.Set<Address>().Remove(address);
-                context.SaveChanges();
+                if (!address.IsHistoric)
+                {
+                    context.Set<Address>().Remove(address);
+                    context.SaveChanges();
+                }
             }
         }
 
-        public void Handle(AddressUpdated @event)
+        public void Handle(FavoriteAddressUpdated @event)
         {
             using (var context = _contextFactory.Invoke())
             {
                 var address = context.Find<Address>(@event.AddressId);
-                AutoMapper.Mapper.Map(@event, address);
-                context.SaveChanges();
+                if (!address.IsHistoric)
+                {
+                    AutoMapper.Mapper.Map(@event, address);
+                    context.SaveChanges();
+                }
             }
         }
 
@@ -80,9 +81,9 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
             {
                 var identicalAddresses = from a in context.Query<Address>()
                                          where a.AccountId == @event.AccountId
-                                         where a.Apartment == @event.PickupApartment
+                                         where (a.Apartment ?? string.Empty) == (@event.PickupApartment ?? string.Empty)
                                          where a.FullAddress == @event.PickupAddress
-                                         where a.RingCode == @event.PickupRingCode
+                                         where (a.RingCode ?? string.Empty) == (@event.PickupRingCode ?? string.Empty)
                                          where a.Latitude == @event.PickupLatitude
                                          where a.Longitude == @event.PickupLongitude
                                          select a;

@@ -34,7 +34,7 @@ namespace apcurium.MK.Booking.Api.Services
                 throw result.ToException();
             }
 
-            var command = new Commands.AddAddress();
+            var command = new Commands.AddFavoriteAddress();
             
             AutoMapper.Mapper.Map(request, command);
             command.AccountId = new Guid(this.GetSession().UserAuthId);
@@ -46,7 +46,7 @@ namespace apcurium.MK.Booking.Api.Services
 
         public override object OnDelete(SaveAddress request)
         {
-            var command = new Commands.RemoveAddress
+            var command = new Commands.RemoveFavoriteAddress
             {
                 Id = Guid.NewGuid(),
                 AddressId = request.Id,
@@ -60,7 +60,7 @@ namespace apcurium.MK.Booking.Api.Services
 
         public override object OnPut(SaveAddress request)
         {
-            var command = new Commands.UpdateAddress();
+            var command = new Commands.UpdateFavoriteAddress();
 
             AutoMapper.Mapper.Map(request, command);
             command.AccountId = new Guid(this.GetSession().UserAuthId);

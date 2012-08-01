@@ -423,7 +423,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     };
 
                     var toMove = toSave;
-                    toMove.IsHistoric = false;
 
                     if (isNew )
                     {                        
