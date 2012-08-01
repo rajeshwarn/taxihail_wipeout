@@ -215,6 +215,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
             parameters.Add("credential", auth.Authenticate(email, password));
             return GetAccount(parameters, out error);
+
         }
 
         public Account GetFacebookAccount(string facebookId, out string error)
@@ -231,6 +232,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
             parameters.Add("credential", auth.AuthenticateTwitter(twitterId));
             return GetAccount(parameters, out error);
+
         }
 
         private Account GetAccount(NamedParameterOverloads parameters, out string error)
@@ -243,11 +245,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             try
             {
 
-                var context = TinyIoCContainer.Current.Resolve<IAppContext>();
-                var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
-
-
-                var service = TinyIoCContainer.Current.Resolve<AccountServiceClient>("Authenticate", parameters);
+                var context = TinyIoCContainer.Current.Resolve<IAppContext>();                
+                
+                var service = TinyIoCContainer.Current.Resolve<AccountServiceClient>("Authenticate");
                 var account = service.GetMyAccount();
                 if (account != null)
                 {

@@ -105,7 +105,7 @@ namespace DatabaseInitializer
             configurationManager.SetSetting("DefaultBookingSettings.ChargeTypeId", "1");
             //------
             
-            configurationManager.SetSetting("DefaultBookingSettings.NbPassenger", "2");
+            configurationManager.SetSetting("DefaultBookingSettings.NbPassenger", "1");
             
             
 

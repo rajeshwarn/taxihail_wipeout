@@ -18,18 +18,20 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
     {
         private OverlayItem _item;
         private string _title;
+        private string _subTitle;
         private MapView _owner;
 
         private int _markerHeight;
 
-        public TaxiOverlay(MapView owner, Drawable taxiImage, string title, GeoPoint point)
+        public TaxiOverlay(MapView owner, Drawable taxiImage, string title,string subTitle, GeoPoint point)
             : base(taxiImage)
         {
             _owner = owner;
             _item = new OverlayItem(point, title, null);
             _title = title;
+            _subTitle = subTitle;
             BoundCenterBottom(taxiImage);
-
+            
             _markerHeight = taxiImage.Bounds.Height();
 
             Populate();
@@ -39,36 +41,52 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 
         public override void Draw(Android.Graphics.Canvas canvas, MapView mapView, bool shadow)
         {
+
+            if (shadow)
+            {
+                return;
+            }
+
             base.Draw(canvas, mapView, shadow);
 
 
 
-            foreach (OverlayItem item in _owner.Overlays.OfType<OverlayItem>())
+            foreach (var overlay in _owner.Overlays)
             {
-                GeoPoint point = item.Point;
+                if (overlay is TaxiOverlay)
+                {
+                    var item = ((TaxiOverlay)overlay)._item;
 
-                Point markerBottomCenterCoords = new Point();
-                _owner.Projection.ToPixels(point, markerBottomCenterCoords);
+                    
 
-                /* Find the width and height of the title*/
-                TextPaint paintText = new TextPaint();
-                Paint paintRect = new Paint();
+                    GeoPoint point = item.Point;
 
-                Rect rect = new Rect();
-                paintText.TextSize = 12;
-                paintText.GetTextBounds(item.Title, 0, item.Title.Length, rect);
+                    Point markerBottomCenterCoords = new Point();
+                    _owner.Projection.ToPixels(point, markerBottomCenterCoords);
 
-                rect.Inset(-3, -3);
-                rect.OffsetTo(markerBottomCenterCoords.X - rect.Width() / 2, markerBottomCenterCoords.Y - _markerHeight - rect.Height());
+                    /* Find the width and height of the title*/
+                    TextPaint paintText = new TextPaint();
+                    Paint paintRect = new Paint();
 
-                paintText.TextAlign = Paint.Align.Center;
-                paintText.TextSize = 12;
-                paintText.SetARGB(255, 255, 255, 255);
-                paintRect.SetARGB(130, 0, 0, 0);
+                    Rect rect = new Rect();
+                    paintText.TextSize = 22;
+                    paintText.GetTextBounds(_title, 0, item.Title.Length, rect);
 
-                canvas.DrawRoundRect(new RectF(rect), 2, 2, paintRect);
-                canvas.DrawText(item.Title, rect.Left + rect.Width() / 2,
-                        rect.Bottom - 3, paintText);
+                    rect.Inset(-3, -3);
+                    rect.OffsetTo(markerBottomCenterCoords.X - rect.Width() / 2, markerBottomCenterCoords.Y - _markerHeight + 8);
+
+                    paintText.TextAlign = Paint.Align.Center;
+                    paintText.TextSize = 22;
+                    paintText.SetARGB(255, 255, 255, 255);
+                    paintRect.SetARGB(0, 0, 0, 0);
+                    
+                    paintText.SetTypeface(  Typeface.CreateFromAsset( AppContext.Current.App.Assets , "Helvetica.dfont" ) );
+                    canvas.DrawRoundRect(new RectF(rect), 2, 2, paintRect);
+                    canvas.DrawText(_title, rect.Left + rect.Width() / 2, rect.Bottom - 3, paintText);
+
+                    canvas.DrawText(_subTitle, rect.Left + rect.Width() / 2, rect.Bottom - 3  + rect.Height(), paintText);
+
+                }
             }
         }
 

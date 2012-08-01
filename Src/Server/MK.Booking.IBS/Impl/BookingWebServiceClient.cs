@@ -48,8 +48,8 @@ namespace apcurium.MK.Booking.IBS.Impl
             {
                 var order = service.GetBookOrder_5(UserNameApp, PasswordApp, orderId, contactPhone, null, accountId);
                 if (order != null)
-                {
-                    result.CabNumber = order.CabNo.ToSafeString().Trim();
+                {                    
+                    result.VehicleNumber = order.CabNo.ToSafeString().Trim();
                     result.Fare = order.Fare == 0 ? (double?)null : order.Fare;
                     result.Toll = order.Tolls == 0 ? (double?)null : order.Tolls;
                 }

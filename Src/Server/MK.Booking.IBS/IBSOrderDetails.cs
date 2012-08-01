@@ -11,6 +11,6 @@ namespace apcurium.MK.Booking.IBS
         public double? Toll { get; set; }
         public double? Fare { get; set; }
 
-        public string CabNumber { get; set; }
+        public string VehicleNumber { get; set; }
     }
 }

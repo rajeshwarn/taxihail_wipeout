@@ -5,7 +5,7 @@ namespace apcurium.MK.Booking.Api.Client
     public class BaseServiceClient
     {
         private ServiceClientBase _client;
-        private readonly string _url;
+        protected readonly string _url;
         public BaseServiceClient(string url)
         {
             _url = url;

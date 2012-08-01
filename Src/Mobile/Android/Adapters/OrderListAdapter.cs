@@ -41,9 +41,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Adapters
             }
             var title = view.FindViewById<TextView>(Resource.Id.LocationListTitle);
             var subtitle = view.FindViewById<TextView>(Resource.Id.LocationListSubtitle);
-
-            title.Text = this.ListOrder[position].IBSOrderId.ToString();
-            subtitle.Text = this.ListOrder[position].PickupAddress.FullAddress;
+            if (title != null)
+            {
+                title.Text = this.ListOrder[position].IBSOrderId.ToString();
+            }
+            if (subtitle != null)
+            {
+                subtitle.Text = this.ListOrder[position].PickupAddress.FullAddress;
+            }
             return view;
         }
 
