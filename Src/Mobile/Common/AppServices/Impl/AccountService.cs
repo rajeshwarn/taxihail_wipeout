@@ -150,9 +150,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             if ((cached != null) && (cached.Length > 0))
             {
                 var list = new List<T>(cached);
-                var toDelete = list.Single(item => compare(toDeleteId, item));
-                list.Remove(toDelete);                               
-                TinyIoCContainer.Current.Resolve<ICacheService>().Set(key, list.ToArray());
+                var toDelete = list.SingleOrDefault(item => compare(toDeleteId, item));
+                if (toDelete != null)
+                {
+                    list.Remove(toDelete);
+                    TinyIoCContainer.Current.Resolve<ICacheService>().Set(key, list.ToArray());
+                }
             }
 
 
@@ -417,7 +420,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
 
             UpdateCacheArray(_favoriteAddressesCacheKey, address, (a1, a2) => a1.Id.Equals(a2.Id));
-            UpdateCacheArray(_historyAddressesCacheKey, address, (a1, a2) => a1.Id.Equals(a2.Id));
+            RemoveFromCacheArray<Address>(_historyAddressesCacheKey, address.Id, (a1, a2) => a1 == a2.Id);
 
 
             QueueCommand<AccountServiceClient>(service =>
