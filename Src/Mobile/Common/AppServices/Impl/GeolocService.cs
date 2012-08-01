@@ -17,11 +17,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public Address ValidateAddress(string address)
         {
             try
-            {
+            {                
                 var addresses = TinyIoCContainer.Current.Resolve<GeocodingServiceClient>().Search( address );
                 return addresses.Addresses.FirstOrDefault();
             }
-            catch
+            catch( Exception ex )
             {
                 return null; ;
             }

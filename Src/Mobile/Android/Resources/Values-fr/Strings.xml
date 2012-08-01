@@ -2,6 +2,7 @@
 <resources>
   <string name="ApplicationName">TaxiHail</string>
   <string name="Language">Francais</string>
+  <string name="LanguageCode">fr</string>
   <string name="TabBook">Commander</string>
   <string name="TabLocations">Adresses</string>
   <string name="TabHistory">Historique</string>
@@ -212,5 +213,6 @@
   <string name="SupportEmail">techsupport@apcurium.com</string>
   <string name="TechSupportEmailTitle">Support Android</string>
   <string name="StatusCannotBeDisplayed">Le status ne peut être affiché. Contactez la centrale de réservation.</string>
-  
+  <string name="AccountActivationTitle">Activation</string>
+  <string name="AccountActivationMessage">Vous allez recevoir un email contenant un lien pour activer ce compte.</string>
 </resources>

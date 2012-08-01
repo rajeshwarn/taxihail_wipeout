@@ -297,7 +297,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                         var point = new GeoPoint(CoordinatesConverter.ConvertToE6(status.VehicleLatitude.Value), CoordinatesConverter.ConvertToE6(status.VehicleLongitude.Value));
                         var taxiOverlay = Resources.GetDrawable(Resource.Drawable.taxi_label);
                         var title = GetString(Resource.String.TaxiMapTitle);
-                        var pushpinOverlay = new TaxiOverlay(map, taxiOverlay, title, point);
+                        var pushpinOverlay = new TaxiOverlay(map, taxiOverlay, title, "#" + status.VehicleNumber , point);
                         map.Overlays.Add(pushpinOverlay);
                     }
 
@@ -306,7 +306,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
                     map.Invalidate();
 
-                    var adressesToDisplay = Params.Get<Address>(order.PickupAddress, order.DropOffAddress, new Address { Longitude = status.VehicleLongitude.HasValue ? status.VehicleLongitude.Value : 0, Latitude = status.VehicleLatitude.HasValue ? status.VehicleLatitude.Value : 0 }).Where(a => a.HasValidCoordinate());
+                    var adressesToDisplay = Params.Get<Address>(order.PickupAddress,  new Address { Longitude = status.VehicleLongitude.HasValue ? status.VehicleLongitude.Value : 0, Latitude = status.VehicleLatitude.HasValue ? status.VehicleLatitude.Value : 0 }).Where(a => a.HasValidCoordinate());
                     SetZoom(adressesToDisplay);
 
                 });
@@ -325,9 +325,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             if (adressesToDisplay.Count() == 1)
             {
-                mapController.SetZoom(50);
+                int lat = CoordinatesConverter.ConvertToE6(adressesToDisplay.ElementAt(0).Latitude);
+                int lon = CoordinatesConverter.ConvertToE6(adressesToDisplay.ElementAt(0).Longitude);
+                mapController.AnimateTo(new GeoPoint( lat, lon ));
+                mapController.SetZoom(17);
                 return;
             }
+
 
             int minLat = int.MaxValue;
             int maxLat = int.MinValue;
@@ -344,12 +348,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 minLon = Math.Min(lon, minLon);
             }
 
+            if ((Math.Abs(maxLat - minLat) < 0.004) && (Math.Abs(maxLon - minLon) < 0.004))
+            {
+                mapController.AnimateTo(new GeoPoint((maxLat + minLat) / 2, (maxLon + minLon) / 2));
+                mapController.SetZoom(17);
+            }
+            else
+            {
+                double fitFactor = 1.5;
 
-
-            double fitFactor = 1.5;
-
-            mapController.ZoomToSpan((int)(Math.Abs(maxLat - minLat) * fitFactor), (int)(Math.Abs(maxLon - minLon) * fitFactor));
-            mapController.AnimateTo(new GeoPoint((maxLat + minLat) / 2, (maxLon + minLon) / 2));
+                mapController.ZoomToSpan((int)(Math.Abs(maxLat - minLat) * fitFactor), (int)(Math.Abs(maxLon - minLon) * fitFactor));
+                mapController.AnimateTo(new GeoPoint((maxLat + minLat) / 2, (maxLon + minLon) / 2));
+            }
 
         }
 
