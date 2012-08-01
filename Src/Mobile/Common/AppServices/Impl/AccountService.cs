@@ -229,8 +229,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
                 var authResponse = auth.Authenticate(email, password);
 
-                var cache = TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService>();
-                cache.Set("SessionId", authResponse.SessionId);
+                SaveCredentials(authResponse);
 
                 parameters.Add("credential", authResponse);
                 return GetAccount(parameters, out error);
@@ -244,13 +243,22 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             
         }
 
+        private static void SaveCredentials(AuthResponse authResponse)
+        {
+            var cache = TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService>();
+            cache.Set("SessionId", authResponse.SessionId);
+        }
+
         public Account GetFacebookAccount(string facebookId, out string error)
         {
             try
             {
                 var parameters = new NamedParameterOverloads();
                 var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
-                parameters.Add("credential", auth.AuthenticateFacebook(facebookId));
+                var authResponse = auth.AuthenticateFacebook(facebookId);
+                SaveCredentials(authResponse);
+
+                parameters.Add("credential", authResponse);
                 return GetAccount(parameters, out error);
             }
             catch (Exception e)
@@ -266,7 +274,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             {
                 var parameters = new NamedParameterOverloads();
                 var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
-                parameters.Add("credential", auth.AuthenticateTwitter(twitterId));
+                var authResponse = auth.AuthenticateTwitter(twitterId);
+                SaveCredentials(authResponse);
+
+                parameters.Add("credential", authResponse);
                 return GetAccount(parameters, out error);
             }
             catch (Exception e)
