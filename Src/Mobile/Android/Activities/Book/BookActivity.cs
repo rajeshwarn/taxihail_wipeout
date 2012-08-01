@@ -219,14 +219,28 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                                                ContactsContract.CommonDataKinds.StructuredPostal.FormattedAddress));
                     }
                     //this.TabHost.SetCurrentTabByTag(Tab.Destination.ToString());
-                    TogglePickupDestination(false);
-                    var activity = (DestinationActivity)LocalActivityManager.GetActivity(this.TabHost.CurrentTabTag);
-
-                    if (!string.IsNullOrEmpty(address))
+                    //TogglePickupDestination(false);
+                    if (this.TabHost.CurrentTabTag.Equals(Tab.Destination.ToString()))
                     {
-                        activity.SetLocationDataAndValidate(new WS.Address() { FullAddress = address }, true);
-                   
+                          var activity = (DestinationActivity)LocalActivityManager.GetActivity(this.TabHost.CurrentTabTag);
+                          if (!string.IsNullOrEmpty(address))
+                          {
+                              activity.SetLocationDataAndValidate(new WS.Address() { FullAddress = address }, true);
+
+                          }
                     }
+                    else
+                    {
+                         var activity = (PickupActivity)LocalActivityManager.GetActivity(this.TabHost.CurrentTabTag);
+                         if (!string.IsNullOrEmpty(address))
+                         {
+                             activity.SetLocationDataAndValidate(new WS.Address() { FullAddress = address }, true);
+
+                         }
+                    }
+                   
+
+                    
                 }
             }
         }

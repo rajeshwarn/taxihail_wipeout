@@ -17,6 +17,7 @@ using TinyIoC;
 using apcurium.Framework.Extensions;
 using Android.Views.InputMethods;
 using apcurium.MK.Booking.Mobile.Client.Controls;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Client.Models;
 using WS = apcurium.MK.Booking.Api.Contract.Resources;
@@ -171,6 +172,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                                       FindViewById<EditText>(Resource.Id.aptNumberText).Text = location.Apartment;
                                   }
                               });
+        }
+
+        public void SetLocationDataAndValidate(WS.Address location, bool changeZoom)
+        {
+            Address.Text = location.FullAddress;
+            this.ValidateAddress(true);
+            base.SetLocationData(location, changeZoom);
+
+            RunOnUiThread(() =>
+            {
+                if (location != null)
+                {
+                    FindViewById<EditText>(Resource.Id.ringCodeText).Text = location.RingCode;
+                    FindViewById<EditText>(Resource.Id.aptNumberText).Text = location.Apartment;
+                }
+            });
         }
 
         public void RefreshDateTime()

@@ -49,8 +49,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             //Initialize dropdown control
 
+            // Address book intent
             var contactIntent = new Intent(Intent.ActionPick, ContactsContract.CommonDataKinds.StructuredPostal.ContentUri);
-            var iconActionControl = new IconActionControl(this, "images/arrow-right@2x.png", new List<IconAction>() { new IconAction("images/favorite-icon@2x.png", contactIntent, 42), new IconAction("images/favorite-icon@2x.png", contactIntent, 42), new IconAction("images/favorite-icon@2x.png", contactIntent, 42), new IconAction("images/favorite-icon@2x.png", contactIntent, 42) }, true);
+            // Favorite address intent
+            var locationIntent = new Intent(this, typeof(LocationsActivity));
+            locationIntent.PutExtra(NavigationStrings.ParentScreen.ToString(), (int)ParentScreens.BookScreen);
+
+            //DropDownMenu definition
+            var iconActionControl = new IconActionControl(this, "images/arrow-right@2x.png", new List<IconAction>() { new IconAction("images/location-icon@2x.png", null, null), new IconAction("images/favorite-icon@2x.png", locationIntent, (int)ActivityEnum.Pickup), new IconAction("images/contacts@2x.png", contactIntent, 42) }, true);
             var dropDownControlLayout = FindViewById<LinearLayout>(Resource.Id.linear_iconaction);
             dropDownControlLayout.AddView(iconActionControl);
         }

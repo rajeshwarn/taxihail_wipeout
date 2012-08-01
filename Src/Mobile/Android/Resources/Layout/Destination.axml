@@ -20,7 +20,7 @@
             android:paddingTop="1dp"
             android:paddingBottom="2dp"
             android:layout_marginTop="37dip"
-            android:layout_marginRight="50dip"
+            android:layout_marginRight="45dip"
             android:layout_alignParentLeft="true"
             android:layout_width="fill_parent"
             android:hint=""
@@ -69,10 +69,11 @@
             android:layout_toRightOf="@id/destAddressText"
             android:layout_alignParentRight="true"
             android:layout_marginRight="2dip"
-            android:layout_marginTop="38dip"
+            android:layout_marginTop="39dip"
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:gravity="right" />
+            android:gravity="right"
+            android:paddingRight="2dip"/>
     </RelativeLayout>
 </LinearLayout>
