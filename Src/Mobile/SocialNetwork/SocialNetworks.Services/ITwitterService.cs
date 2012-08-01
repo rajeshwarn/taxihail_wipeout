@@ -14,6 +14,7 @@ namespace SocialNetworks.Services
 		void Disconnect();
 		
 		event EventHandler<TwitterStatus> ConnectionStatusChanged;
+	    void SetLoginContext(object context);
 	}
 }
 

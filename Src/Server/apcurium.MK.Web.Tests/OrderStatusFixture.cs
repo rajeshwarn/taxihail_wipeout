@@ -18,10 +18,10 @@ namespace apcurium.MK.Web.Tests
         {
             base.TestFixtureSetup();
 
-            new AuthServiceClient(BaseUrl).Authenticate(TestAccount.Email, TestAccountPassword);   
- 
+            var authResponse = new AuthServiceClient(BaseUrl, null).Authenticate(TestAccount.Email, TestAccountPassword);
+
             _orderId = Guid.NewGuid();
-            var sut = new OrderServiceClient(BaseUrl);
+            var sut = new OrderServiceClient(BaseUrl, authResponse.SessionId);
             var order = new CreateOrder
             {
                 Id = _orderId,
@@ -49,7 +49,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void create_and_get_a_valid_order()
         {
-            var sut = new OrderServiceClient(BaseUrl);
+            var sut = new OrderServiceClient(BaseUrl, SessionId);
             var data = sut.GetOrderStatus( _orderId);
             Assert.AreEqual("wosWAITING", data.IBSStatusId);
         }
@@ -59,7 +59,7 @@ namespace apcurium.MK.Web.Tests
         {
             CreateAndAuthenticateTestAccount();
 
-            var sut = new OrderServiceClient(BaseUrl);
+            var sut = new OrderServiceClient(BaseUrl, SessionId);
 
             Assert.Throws<WebServiceException>(() => sut.GetOrderStatus(_orderId));
         }

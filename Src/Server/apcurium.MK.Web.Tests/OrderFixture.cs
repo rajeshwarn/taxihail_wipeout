@@ -35,7 +35,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void create_order()
         {
-            var sut = new OrderServiceClient(BaseUrl);
+            var sut = new OrderServiceClient(BaseUrl, SessionId);
             var pickupDate = DateTime.Now.AddHours(1);
             var requestDate = DateTime.Now.AddHours(1);
             var order = new CreateOrder
@@ -58,7 +58,7 @@ namespace apcurium.MK.Web.Tests
         [ExpectedException("ServiceStack.ServiceClient.Web.WebServiceException", ExpectedMessage = "CreateOrder_SettingsRequired")]
         public void when_creating_order_without_passing_settings()
         {
-            var sut = new OrderServiceClient(BaseUrl);
+            var sut = new OrderServiceClient(BaseUrl, SessionId);
             var order = new CreateOrder
             {
                 Id = Guid.NewGuid(),
@@ -79,9 +79,10 @@ namespace apcurium.MK.Web.Tests
         {
             base.TestFixtureSetup();
 
-            new AuthServiceClient(BaseUrl).Authenticate(TestAccount.Email, TestAccountPassword);    
+            var auth = new AuthServiceClient(BaseUrl, SessionId).Authenticate(TestAccount.Email, TestAccountPassword);
+            SessionId = auth.SessionId;
 
-            var sut = new OrderServiceClient(BaseUrl);
+            var sut = new OrderServiceClient(BaseUrl, SessionId);
             var order = new CreateOrder
             {
                 Id = _orderId,
@@ -103,7 +104,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void ibs_order_was_created()
         {
-            var sut = new OrderServiceClient(BaseUrl);
+            var sut = new OrderServiceClient(BaseUrl, SessionId);
             var order = sut.GetOrder(_orderId);
             
             Assert.IsNotNull(order);
@@ -115,14 +116,14 @@ namespace apcurium.MK.Web.Tests
         {
             CreateAndAuthenticateTestAccount();
 
-            var sut = new OrderServiceClient(BaseUrl);
+            var sut = new OrderServiceClient(BaseUrl, SessionId);
             Assert.Throws<WebServiceException>(() => sut.GetOrder(_orderId));
         }
 
         [Test]
         public void can_cancel_it()
         {
-            var sut = new OrderServiceClient(BaseUrl);
+            var sut = new OrderServiceClient(BaseUrl, SessionId);
             sut.CancelOrder(_orderId);
 
             var status = sut.GetOrderStatus(_orderId);
@@ -135,7 +136,7 @@ namespace apcurium.MK.Web.Tests
         {
             CreateAndAuthenticateTestAccount();
               
-            var sut = new OrderServiceClient(BaseUrl);
+            var sut = new OrderServiceClient(BaseUrl, SessionId);
 
             Assert.Throws<WebServiceException>(() => sut.CancelOrder(_orderId));
         }
@@ -145,7 +146,7 @@ namespace apcurium.MK.Web.Tests
         public void GetOrderList()
         {
 
-            var sut = new OrderServiceClient(BaseUrl);
+            var sut = new OrderServiceClient(BaseUrl, SessionId);
 
             var orders = sut.GetOrders();
             Assert.NotNull(orders);
@@ -154,7 +155,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void GetOrder()
         {
-            var sut = new OrderServiceClient(BaseUrl);
+            var sut = new OrderServiceClient(BaseUrl, SessionId);
 
             var orders = sut.GetOrder(_orderId);
             Assert.NotNull(orders);

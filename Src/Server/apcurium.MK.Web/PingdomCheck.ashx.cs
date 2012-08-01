@@ -21,23 +21,24 @@ namespace apcurium.MK.Web
         {
             var baseUrl = new Uri(context.Request.Url, VirtualPathUtility.ToAbsolute("~/api")).ToString();
             var name = Guid.NewGuid().ToString();
-            var client = new AccountServiceClient(baseUrl);
+            var client = new AccountServiceClient(baseUrl, null);
 
             var account = client.GetTestAccount(PingdomTestAccount);
             if(account == null)
             {
                 // Wait for testAccount to be created and try again
-                Thread.Sleep(3000);
+                Thread.Sleep(5000);
                 account = client.GetTestAccount(PingdomTestAccount);
             }
-            new AuthServiceClient(baseUrl).Authenticate(account.Email, "password1");
+            var auth = new AuthServiceClient(baseUrl, null).Authenticate(account.Email, "password1");
+            client = new AccountServiceClient(baseUrl, auth.SessionId);
 
             client.UpdateBookingSettings(new BookingSettingsRequest
             {
                 Name = name
             });
 
-            Thread.Sleep(1000);
+            Thread.Sleep(5000);
 
             account = client.GetMyAccount();
 

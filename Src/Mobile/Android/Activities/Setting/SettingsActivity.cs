@@ -11,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 
 using System.IO;
+using SocialNetworks.Services;
 using apcurium.MK.Booking.Mobile.Client.Activities.Account;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Diagnostic;
@@ -60,6 +61,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 		private void Logout_Click( object sender, EventArgs e )
 		{
             AppContext.Current.SignOut();
+            var facebook = TinyIoC.TinyIoCContainer.Current.Resolve<IFacebookService>();
+            if (facebook.IsConnected)
+            {
+                facebook.SetCurrentContext(this);
+                facebook.Disconnect();
+            }
+
+		    var twitterService = TinyIoC.TinyIoCContainer.Current.Resolve<ITwitterService>();
+            if(twitterService.IsConnected)
+            {
+                twitterService.Disconnect();
+            }
+           
             RunOnUiThread(() =>
             {
                 Finish();

@@ -97,8 +97,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="About_fr.html" />
-    <None Include="Assets\Info.plist" />
     <None Include="Info.plist" />
+    <None Include="Images\Info.plist" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -200,48 +200,48 @@
     <Compile Include="AppButtons.cs" />
     <Compile Include="Extensions\LocationExtensionMD.cs" />
     <Compile Include="Cache\CacheService.cs" />
-    <Compile Include="Book\BookTabView.xib.cs">
-      <DependentUpon>BookTabView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Book\BookTabView.xib.designer.cs">
-      <DependentUpon>BookTabView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Book\PickupLocationView.xib.cs">
-      <DependentUpon>PickupLocationView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Book\PickupLocationView.xib.designer.cs">
-      <DependentUpon>PickupLocationView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Book\DestinationView.xib.cs">
-      <DependentUpon>DestinationView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Book\DestinationView.xib.designer.cs">
-      <DependentUpon>DestinationView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Book\ConfirmationView.xib.cs">
-      <DependentUpon>ConfirmationView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Book\ConfirmationView.xib.designer.cs">
-      <DependentUpon>ConfirmationView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Book\StatusView.xib.cs">
-      <DependentUpon>StatusView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Book\StatusView.xib.designer.cs">
-      <DependentUpon>StatusView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Book\AddressMapDelegate.cs" />
-    <Compile Include="Book\AddressAnnotation.cs" />
-    <Compile Include="Book\BookItButton.cs" />
-    <Compile Include="Book\SimilarAddressTableDelegate.cs" />
-    <Compile Include="Book\SimilarAddressTableDatasource.cs" />
-    <Compile Include="Book\AddressContoller.cs" />
-    <Compile Include="Book\ConfirmationCall.cs" />
-    <Compile Include="Book\TaxiAnnotationView.cs" />
-    <Compile Include="Book\DestPickToggleButton.cs" />
-    <Compile Include="Book\TouchableMapView.cs" />
-    <Compile Include="Book\LocationDataExtension.cs" />
     <Compile Include="Controls\TextField.cs" />
+    <Compile Include="Order\BookTabView.xib.cs">
+      <DependentUpon>BookTabView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Order\BookTabView.xib.designer.cs">
+      <DependentUpon>BookTabView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Order\PickupLocationView.xib.cs">
+      <DependentUpon>PickupLocationView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Order\PickupLocationView.xib.designer.cs">
+      <DependentUpon>PickupLocationView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Order\DestinationView.xib.cs">
+      <DependentUpon>DestinationView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Order\DestinationView.xib.designer.cs">
+      <DependentUpon>DestinationView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Order\ConfirmationView.xib.cs">
+      <DependentUpon>ConfirmationView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Order\ConfirmationView.xib.designer.cs">
+      <DependentUpon>ConfirmationView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Order\StatusView.xib.cs">
+      <DependentUpon>StatusView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Order\StatusView.xib.designer.cs">
+      <DependentUpon>StatusView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Order\AddressMapDelegate.cs" />
+    <Compile Include="Order\AddressAnnotation.cs" />
+    <Compile Include="Order\BookItButton.cs" />
+    <Compile Include="Order\SimilarAddressTableDelegate.cs" />
+    <Compile Include="Order\SimilarAddressTableDatasource.cs" />
+    <Compile Include="Order\AddressContoller.cs" />
+    <Compile Include="Order\ConfirmationCall.cs" />
+    <Compile Include="Order\TaxiAnnotationView.cs" />
+    <Compile Include="Order\DestPickToggleButton.cs" />
+    <Compile Include="Order\TouchableMapView.cs" />
+    <Compile Include="Order\LocationDataExtension.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -264,14 +264,14 @@
     <Folder Include="Controls\" />
     <Folder Include="Controls\Binding\" />
     <Folder Include="Diagnostics\" />
-    <Folder Include="Assets\" />
-    <Folder Include="Assets\VerticalButtonBar\" />
-    <Folder Include="Assets\Resources\" />
     <Folder Include="Extensions\" />
     <Folder Include="Cache\" />
-    <Folder Include="Assets\Button\" />
-    <Folder Include="Assets\Tab\" />
-    <Folder Include="Book\" />
+    <Folder Include="Images\" />
+    <Folder Include="Images\VerticalButtonBar\" />
+    <Folder Include="Images\Resources\" />
+    <Folder Include="Images\Tab\" />
+    <Folder Include="Order\" />
+    <Folder Include="Images\Button\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="MainWindow.xib" xmlns="" />
@@ -282,11 +282,11 @@
     <InterfaceDefinition Include="Locations\LocationDetailView.xib" xmlns="" />
     <InterfaceDefinition Include="History\HistoryDetailView.xib" xmlns="" />
     <InterfaceDefinition Include="Settings\AboutUsView.xib" xmlns="" />
-    <InterfaceDefinition Include="Book\BookTabView.xib" />
-    <InterfaceDefinition Include="Book\PickupLocationView.xib" />
-    <InterfaceDefinition Include="Book\DestinationView.xib" />
-    <InterfaceDefinition Include="Book\ConfirmationView.xib" />
-    <InterfaceDefinition Include="Book\StatusView.xib" />
+    <InterfaceDefinition Include="Order\BookTabView.xib" />
+    <InterfaceDefinition Include="Order\PickupLocationView.xib" />
+    <InterfaceDefinition Include="Order\DestinationView.xib" />
+    <InterfaceDefinition Include="Order\ConfirmationView.xib" />
+    <InterfaceDefinition Include="Order\StatusView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />
@@ -295,68 +295,68 @@
     <Content Include="app.png" />
     <Content Include="Default.png" />
     <Content Include="Default%402x.png" />
-    <Content Include="Assets\VerticalButtonBar\rightArrow%402x.png" />
-    <Content Include="Assets\VerticalButtonBar\favoriteIcon%402x.png" />
-    <Content Include="Assets\VerticalButtonBar\locationIcon%402x.png" />
-    <Content Include="Assets\VerticalButtonBar\nearbyIcon%402x.png" />
-    <Content Include="Assets\VerticalButtonBar\targetIcon%402x.png" />
-    <Content Include="Assets\VerticalButtonBar\favoriteIcon.png" />
-    <Content Include="Assets\VerticalButtonBar\locationIcon.png" />
-    <Content Include="Assets\VerticalButtonBar\nearbyIcon.png" />
-    <Content Include="Assets\VerticalButtonBar\targetIcon.png" />
-    <Content Include="Assets\VerticalButtonBar\rightArrow.png" />
-    <Content Include="Assets\background.png" />
-    <Content Include="Assets\background%402x.png" />
-    <Content Include="Assets\background_full_nologo.png" />
-    <Content Include="Assets\background_full_nologo%402x.png" />
-    <Content Include="Assets\background_full.png" />
-    <Content Include="Assets\background_full%402x.png" />
-    <Content Include="Assets\TopFieldBackground-Lg.png" />
-    <Content Include="Assets\TopFieldBackground-Lg%402x.png" />
-    <Content Include="Assets\TopFieldBackground-Sm.png" />
-    <Content Include="Assets\TopFieldBackground-Sm%402x.png" />
-    <Content Include="Assets\About_en.html" />
-    <Content Include="Assets\About_fr.html" />
-    <Content Include="Assets\location.png" />
-    <Content Include="Assets\location%402x.png" />
-    <Content Include="Assets\apcuriumLogo.png" />
-    <Content Include="Assets\apcuriumLogo%402x.png" />
-    <Content Include="Assets\navBar.png" />
-    <Content Include="Assets\navBar%402x.png" />
-    <Content Include="Assets\Logo%402x.png" />
-    <Content Include="Assets\Logo.png" />
-    <Content Include="Assets\Button\btnBookIt_en.png" />
-    <Content Include="Assets\Button\btnBookIt_en%402x.png" />
-    <Content Include="Assets\Button\btnBookIt_fr.png" />
-    <Content Include="Assets\Button\btnBookIt_fr%402x.png" />
-    <Content Include="Assets\Button\btnDest_off_en.png" />
-    <Content Include="Assets\Button\btnPickup_on_en.png" />
-    <Content Include="Assets\Button\btnPickup_on_en%402x.png" />
-    <Content Include="Assets\Button\btnPickup_on_fr.png" />
-    <Content Include="Assets\Button\btnPickup_on_fr%402x.png" />
-    <Content Include="Assets\Button\btnDest_off_en%402x.png" />
-    <Content Include="Assets\Button\btnDest_off_fr.png" />
-    <Content Include="Assets\Button\btnDest_off_fr%402x.png" />
-    <Content Include="Assets\Button\btnDest_on_en.png" />
-    <Content Include="Assets\Button\btnDest_on_en%402x.png" />
-    <Content Include="Assets\Button\btnDest_on_fr.png" />
-    <Content Include="Assets\Button\btnDest_on_fr%402x.png" />
-    <Content Include="Assets\Button\btnPickup_off_en.png" />
-    <Content Include="Assets\Button\btnPickup_off_en%402x.png" />
-    <Content Include="Assets\Button\btnPickup_off_fr.png" />
-    <Content Include="Assets\Button\btnPickup_off_fr%402x.png" />
-    <Content Include="Assets\Tab\book.png" />
-    <Content Include="Assets\Tab\history.png" />
-    <Content Include="Assets\Tab\locations.png" />
-    <Content Include="Assets\Tab\settings.png" />
-    <Content Include="Assets\Tab\book%402x.png" />
-    <Content Include="Assets\Tab\history%402x.png" />
-    <Content Include="Assets\Tab\locations%402x.png" />
-    <Content Include="Assets\Tab\settings%402x.png" />
-    <Content Include="Assets\VerticalButtonBar\contacts.png" />
-    <Content Include="Assets\VerticalButtonBar\contacts%402x.png" />
-    <Content Include="Assets\taxi-label.png" />
-    <Content Include="Assets\taxi-label%402x.png" />
+    <Content Include="Images\VerticalButtonBar\rightArrow%402x.png" />
+    <Content Include="Images\VerticalButtonBar\favoriteIcon%402x.png" />
+    <Content Include="Images\VerticalButtonBar\locationIcon%402x.png" />
+    <Content Include="Images\VerticalButtonBar\nearbyIcon%402x.png" />
+    <Content Include="Images\VerticalButtonBar\targetIcon%402x.png" />
+    <Content Include="Images\VerticalButtonBar\favoriteIcon.png" />
+    <Content Include="Images\VerticalButtonBar\locationIcon.png" />
+    <Content Include="Images\VerticalButtonBar\nearbyIcon.png" />
+    <Content Include="Images\VerticalButtonBar\targetIcon.png" />
+    <Content Include="Images\VerticalButtonBar\rightArrow.png" />
+    <Content Include="Images\background.png" />
+    <Content Include="Images\background%402x.png" />
+    <Content Include="Images\background_full_nologo.png" />
+    <Content Include="Images\background_full_nologo%402x.png" />
+    <Content Include="Images\background_full.png" />
+    <Content Include="Images\background_full%402x.png" />
+    <Content Include="Images\TopFieldBackground-Lg.png" />
+    <Content Include="Images\TopFieldBackground-Lg%402x.png" />
+    <Content Include="Images\TopFieldBackground-Sm.png" />
+    <Content Include="Images\TopFieldBackground-Sm%402x.png" />
+    <Content Include="Images\About_en.html" />
+    <Content Include="Images\About_fr.html" />
+    <Content Include="Images\location.png" />
+    <Content Include="Images\location%402x.png" />
+    <Content Include="Images\apcuriumLogo.png" />
+    <Content Include="Images\apcuriumLogo%402x.png" />
+    <Content Include="Images\navBar.png" />
+    <Content Include="Images\navBar%402x.png" />
+    <Content Include="Images\Logo%402x.png" />
+    <Content Include="Images\Logo.png" />
+    <Content Include="Images\VerticalButtonBar\contacts.png" />
+    <Content Include="Images\VerticalButtonBar\contacts%402x.png" />
+    <Content Include="Images\taxi-label.png" />
+    <Content Include="Images\taxi-label%402x.png" />
+    <Content Include="Images\Tab\book.png" />
+    <Content Include="Images\Tab\history.png" />
+    <Content Include="Images\Tab\locations.png" />
+    <Content Include="Images\Tab\settings.png" />
+    <Content Include="Images\Tab\book%402x.png" />
+    <Content Include="Images\Tab\history%402x.png" />
+    <Content Include="Images\Tab\locations%402x.png" />
+    <Content Include="Images\Tab\settings%402x.png" />
+    <Content Include="Images\Button\btnBookIt_en.png" />
+    <Content Include="Images\Button\btnBookIt_en%402x.png" />
+    <Content Include="Images\Button\btnBookIt_fr.png" />
+    <Content Include="Images\Button\btnBookIt_fr%402x.png" />
+    <Content Include="Images\Button\btnDest_off_en.png" />
+    <Content Include="Images\Button\btnPickup_on_en.png" />
+    <Content Include="Images\Button\btnPickup_on_en%402x.png" />
+    <Content Include="Images\Button\btnPickup_on_fr.png" />
+    <Content Include="Images\Button\btnPickup_on_fr%402x.png" />
+    <Content Include="Images\Button\btnDest_off_en%402x.png" />
+    <Content Include="Images\Button\btnDest_off_fr.png" />
+    <Content Include="Images\Button\btnDest_off_fr%402x.png" />
+    <Content Include="Images\Button\btnDest_on_en.png" />
+    <Content Include="Images\Button\btnDest_on_en%402x.png" />
+    <Content Include="Images\Button\btnDest_on_fr.png" />
+    <Content Include="Images\Button\btnDest_on_fr%402x.png" />
+    <Content Include="Images\Button\btnPickup_off_en.png" />
+    <Content Include="Images\Button\btnPickup_off_en%402x.png" />
+    <Content Include="Images\Button\btnPickup_off_fr.png" />
+    <Content Include="Images\Button\btnPickup_off_fr%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.iOS.csproj">

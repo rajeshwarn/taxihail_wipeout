@@ -51,7 +51,12 @@ namespace SocialNetworks.Services
 		#region ITwitterService implementation
 		public event EventHandler<TwitterStatus> ConnectionStatusChanged;
 
-		public void Connect ()
+	    public virtual void SetLoginContext(object context)
+	    {
+	        
+	    }
+
+	    public void Connect ()
 		{
 			if (_oAuthToken == null && _oAuthTokenSecret == null)
 			{

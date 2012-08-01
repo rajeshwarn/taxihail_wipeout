@@ -24,6 +24,8 @@ namespace SocialNetworks.Services.MonoDroid
 			_handler = new Handler();
         }
 
+
+
 		public void AuthorizeCallback (int requestCode, int resultCode, Android.Content.Intent data)
 		{
 			_facebookClient.AuthorizeCallback (requestCode, resultCode, data);
@@ -89,7 +91,12 @@ namespace SocialNetworks.Services.MonoDroid
 		    ));	
 		}
 
-		public void Like( string objectId )
+        public void SetCurrentContext(object context)
+        {
+            _mainActivity = context as Activity;
+        }
+
+        public void Like( string objectId )
 		{
 			var asyncRunner = new AsyncFacebookRunner (_facebookClient);
 			asyncRunner.Request( objectId + "/likes", new RequestListener((response, obj) => {
