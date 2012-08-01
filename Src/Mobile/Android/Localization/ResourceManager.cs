@@ -53,7 +53,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Localization
 
         public string CurrentLanguageCode
         {
-            get { return ""; }
+            get { return AppContext.Current.App.GetString(Resource.String.LanguageCode ); }
         }
 
 

@@ -11,15 +11,16 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.Client.Models;
 
 namespace apcurium.MK.Booking.Mobile.Client.Adapters
 {
-    public class OrderListAdapter : BaseAdapter<Order>
+    public class OrderListAdapter : BaseAdapter<OrderItemListModel>
     {
         private readonly Activity _context;
-        public List<Order> ListOrder { get; set; }
+        public List<OrderItemListModel> ListOrder { get; set; }
 
-        public OrderListAdapter(Activity context, List<Order> objects)
+        public OrderListAdapter(Activity context, List<OrderItemListModel> objects)
             : base()
         {
             ListOrder = objects;
@@ -39,15 +40,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Adapters
             {
                 view = _context.LayoutInflater.Inflate(Resource.Layout.OrderListItem, null);
             }
-            var title = view.FindViewById<TextView>(Resource.Id.LocationListTitle);
-            var subtitle = view.FindViewById<TextView>(Resource.Id.LocationListSubtitle);
-            if (title != null)
+          var layout = view.FindViewById<LinearLayout>(Resource.Id.OrderListLayout);
+            var title = view.FindViewById<TextView>(Resource.Id.OrderListTitle);
+            var subtitle = view.FindViewById<TextView>(Resource.Id.OrderListSubtitle);
+            var image = view.FindViewById<ImageView>(Resource.Id.OrderListPicture);
+
+            title.Text = this.ListOrder[position].Order.IBSOrderId.ToString();
+            subtitle.Text = this.ListOrder[position].Order.PickupAddress.FullAddress;
+
+            layout.SetBackgroundResource(this.ListOrder[position].BgResource);
+            try
             {
-                title.Text = this.ListOrder[position].IBSOrderId.ToString();
+                image.SetImageDrawable(this._context.Resources.GetDrawable(this.ListOrder[position].ImageResource));
             }
-            if (subtitle != null)
+            catch (Exception)
             {
-                subtitle.Text = this.ListOrder[position].PickupAddress.FullAddress;
+                throw;
             }
             return view;
         }
@@ -57,7 +65,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Adapters
             get { return ListOrder.Count; }
         }
 
-        public override Order this[int position]
+        public override OrderItemListModel this[int position]
         {
             get { return ListOrder[position]; }
         }

@@ -196,3 +196,6 @@
 "MobileUser" = "This order has been placed by a mobile application user.";
 "Notes" = "Notes:";
 "ErrorGettingStatus" = "Error getting status.  Call for status.";
+"AccountActivationTitle" = "Sign Up";
+"AccountActivationMessage" = "You will receive an email shortly with a link you need to click on to confirm your registration.";
+"ErrorCode_CreateAccount_AccountAlreadyExist" = "An account with this email already exist.";
