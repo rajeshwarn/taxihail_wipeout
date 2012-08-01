@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace apcurium.MK.Booking.IBS
 {
     public class IBSAddress
     {
-
         public Guid Id { get; set; }
 
         public string FriendlyName { get; set; }
@@ -21,6 +17,5 @@ namespace apcurium.MK.Booking.IBS
         public string Apartment { get; set; }
 
         public string RingCode { get; set; }
-
     }
 }

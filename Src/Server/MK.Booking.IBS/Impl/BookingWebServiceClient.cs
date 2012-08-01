@@ -72,7 +72,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             order.PickupTime = new TWEBTimeStamp { Hour = pickupDateTime.Hour, Minute = pickupDateTime.Minute, Second = 0, Fractions = 0 };
 
             order.PickupAddress = new TWEBAddress { StreetPlace = pickup.FullAddress, AptBaz = pickup.Apartment, Longitude = pickup.Longitude, Latitude = pickup.Latitude };
-            order.DropoffAddress = dropoff == null ? new TWEBAddress() : new TWEBAddress { StreetPlace = pickup.FullAddress, AptBaz = pickup.Apartment, Longitude = pickup.Longitude, Latitude = pickup.Latitude };
+            order.DropoffAddress = dropoff == null ? new TWEBAddress() : new TWEBAddress { StreetPlace = dropoff.FullAddress, AptBaz = dropoff.Apartment, Longitude = dropoff.Longitude, Latitude = dropoff.Latitude };
             order.Passengers = nbPassengers;
             order.VehicleTypeID = vehicleTypeId;
             order.Note = note;
