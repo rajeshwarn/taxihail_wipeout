@@ -36,8 +36,6 @@ namespace apcurium.MK.Web.Tests
         public void create_order()
         {
             var sut = new OrderServiceClient(BaseUrl, SessionId);
-            var pickupDate = DateTime.Now.AddHours(1);
-            var requestDate = DateTime.Now.AddHours(1);
             var order = new CreateOrder
             {
                 Id = Guid.NewGuid(),
@@ -48,10 +46,13 @@ namespace apcurium.MK.Web.Tests
 
             order.Settings = new BookingSettings { ChargeTypeId = 99, VehicleTypeId = 88, ProviderId = 11, Phone = "514-555-1212", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" };
 
-            var id = sut.CreateOrder(order);
-            
-            
-            Assert.NotNull(id);
+            var details = sut.CreateOrder(order);
+
+            Assert.NotNull(details);
+
+            var orderDetails = sut.GetOrder(details.OrderId);
+            Assert.AreEqual(orderDetails.PickupAddress.FullAddress, order.PickupAddress.FullAddress);
+            Assert.AreEqual(orderDetails.DropOffAddress.FullAddress, order.DropOffAddress.FullAddress);
         }
 
         [Test]
