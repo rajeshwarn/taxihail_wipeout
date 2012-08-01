@@ -8,7 +8,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 	public class Resources : IAppResource
 	{
 
-		private static string GetValue (string key)
+		public static string GetValue (string key)
 		{
 			string localizedValue = NSBundle.MainBundle.LocalizedString (key, "", "");
 			return string.IsNullOrEmpty (localizedValue) ? key : localizedValue;
@@ -39,6 +39,15 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public static string TabBook {
 			get { return GetValue ("TabBook"); }
 		}
+
+        public static string AccountActivationTitle
+        {
+            get { return GetValue ("AccountActivationTitle"); }
+        }
+        public static string AccountActivationMessage
+        {
+            get { return GetValue ("AccountActivationMessage"); }
+        }
 
 		public static string TabLocations {
 			get { return GetValue ("TabLocations"); }

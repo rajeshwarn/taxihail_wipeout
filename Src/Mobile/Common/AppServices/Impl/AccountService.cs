@@ -13,7 +13,7 @@ using ServiceStack.Common.ServiceClient.Web;
 #else
 using ServiceStack.Common.ServiceClient.Web;
 #endif
-using ServiceStack.ServiceClient.Web;
+
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -358,10 +358,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             string lError = "";
 
             data.AccountId = Guid.NewGuid();
+            data.Language =  TinyIoCContainer.Current.Resolve<IAppResource>().CurrentLanguageCode;
 
             try
             {
-                UseServiceClient<AccountServiceClient>(service =>
+                lError = UseServiceClient<AccountServiceClient>(service =>
                 {
                     service.RegisterAccount(data);
                     isSuccess = true;

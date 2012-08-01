@@ -107,6 +107,8 @@ namespace apcurium.MK.Booking.Mobile.Client
                         {
                             AccountCreated(_data, EventArgs.Empty);
                         }
+
+                        BeginInvokeOnMainThread(() => MessageHelper.Show(Resources.AccountActivationTitle, Resources.AccountActivationMessage));
                         BeginInvokeOnMainThread(() => this.DismissModalViewControllerAnimated(true));
                     }
                     else
@@ -115,7 +117,14 @@ namespace apcurium.MK.Booking.Mobile.Client
                         {
                             error = Resources.CreateAccountErrorNotSpecified;
                         }
-                        BeginInvokeOnMainThread(() => MessageHelper.Show(Resources.CreateAccountErrorTitle, Resources.CreateAccountErrorMessage + " " + error));
+                        if (Resources.GetValue("ErrorCode_" + error) != "ErrorCode_" + error)
+                        {
+                            BeginInvokeOnMainThread(() => MessageHelper.Show(Resources.CreateAccountErrorTitle, Resources.CreateAccountErrorMessage + " " + Resources.GetValue("ErrorCode_" + error)));
+                        }
+                        else
+                        {
+                            BeginInvokeOnMainThread(() => MessageHelper.Show(Resources.CreateAccountErrorTitle, Resources.CreateAccountErrorMessage + " " + error));
+                        }
                     }
                 }
                 finally
@@ -203,7 +212,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 return (false);
         }
             
-        private void AddButton(UIView parent,float x, float y, string title, Action clicked, AppStyle.ButtonColor bcolor)
+        private void AddButton(UIView parent, float x, float y, string title, Action clicked, AppStyle.ButtonColor bcolor)
         {
             var btn = AppButtons.CreateStandardGradientButton(new System.Drawing.RectangleF(x, y, 130, 40), title, bcolor == AppStyle.ButtonColor.Grey ? UIColor.FromRGB(101, 101, 101) : UIColor.White, bcolor);
             btn.TextShadowColor = null;
@@ -233,7 +242,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             var footer = new UIView { Frame = new RectangleF (0, 0, 320, 200) };
             this.TableView.TableFooterView = footer;
             
-            AddButton(footer, 170, 25, Resources.CreateAccoutCreate,  () => CreateAccount(), apcurium.MK.Booking.Mobile.Client.AppStyle.ButtonColor.Green);
+            AddButton(footer, 170, 25, Resources.CreateAccoutCreate, () => CreateAccount(), apcurium.MK.Booking.Mobile.Client.AppStyle.ButtonColor.Green);
             AddButton(footer, 20, 25, Resources.CreateAccoutCancel, () => Cancel(), apcurium.MK.Booking.Mobile.Client.AppStyle.ButtonColor.Grey);
         }
         
@@ -277,7 +286,8 @@ namespace apcurium.MK.Booking.Mobile.Client
                     _confirmPasswordEntry.TextAutocorrectionType = UITextAutocorrectionType.No;
                     
                     this.InvokeOnMainThread(() => {
-                        this.Root = menu; });
+                        this.Root = menu; }
+                    );
                     this.InvokeOnMainThread(() => LoadFooter());
                     this.InvokeOnMainThread(() => NavigationItem.Title = " ");
                     

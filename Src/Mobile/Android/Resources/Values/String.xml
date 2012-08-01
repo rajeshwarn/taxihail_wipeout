@@ -2,6 +2,7 @@
 <resources>
   <string name="ApplicationName">TaxiHail</string>
   <string name="Language">English</string>
+  <string name="LanguageCode">en</string>  
   <string name="TabBook">Book</string>
   <string name="TabLocations">Locations</string>
   <string name="TabHistory">History</string>
@@ -214,4 +215,6 @@
   <string name="StatusCannotBeDisplayed">Cannot get status. Please call provider.</string>
   <string name="UpdateBookingSettingsInvalidDataTitle">Invalid booking settings info.</string>
   <string name="UpdateBookingSettingsEmptyField">The data is invalid, all the fields are required.</string>
+  <string name="AccountActivationTitle">Sign Up</string>
+  <string name="AccountActivationMessage">You will receiveAccountActivationMessagean email shortly with a link you need to click on to confirm your registration.</string>
 </resources>
