@@ -1,14 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Practices;
 using apcurium.MK.Booking.Mobile.Client.Localization;
@@ -38,8 +27,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             TinyIoCContainer.Current.Register<ILogger, LoggerImpl>();
 
             TinyIoCContainer.Current.Register<ICacheService>(new CacheService(App));
-            
-          
         
         }
     }

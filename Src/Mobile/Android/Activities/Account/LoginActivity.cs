@@ -1,25 +1,13 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
-//using SocialNetworks.Services;
-//using SocialNetworks.Services.MonoDroid;
 using SocialNetworks.Services;
 using SocialNetworks.Services.Entities;
 using SocialNetworks.Services.MonoDroid;
-using SocialNetworks.Services.OAuth;
-using TinyIoC;
 using apcurium.Framework.Extensions;
-using Android.Text.Util;
 using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Validation;
 
@@ -29,8 +17,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
     [Activity(Label = "Login", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation=Android.Content.PM.ScreenOrientation.Portrait)]
     public class LoginActivity : Activity
     {
-        private IFacebookService facebook;
-        ITwitterService twitterService;
+        
         private ProgressDialog progressDialog;
         /// <summary>
         /// use for SSO when FB app is isntalled
@@ -46,6 +33,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
         /// </param>
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
+            var facebook = TinyIoC.TinyIoCContainer.Current.Resolve<IFacebookService>();
+            facebook.SetCurrentContext(this);
             (facebook as FacebookServicesMD).AuthorizeCallback(requestCode, (int)resultCode, data);
         }
 
@@ -54,7 +43,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.Login);
 
-            InitializeSocialNetwork();
+            var facebook = TinyIoC.TinyIoCContainer.Current.Resolve<IFacebookService>();
+            facebook.SetCurrentContext(this);
+
+            var twitterService = TinyIoC.TinyIoCContainer.Current.Resolve<ITwitterService>();
+            twitterService.SetLoginContext(this);
 
             progressDialog = new ProgressDialog(this);
 
@@ -98,6 +91,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             {
                  if(e.IsConnected)
                  {
+                    ShowProgressDialog();
                     facebook.GetUserInfos(CheckIfFacebookAccountExist);
                  }
             };
@@ -106,7 +100,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             {
                 if (e.IsConnected)
                 {
-                      twitterService.GetUserInfos(CheckIfTwitterAccountExist);
+                    ShowProgressDialog();
+                    twitterService.GetUserInfos(CheckIfTwitterAccountExist);
                 }
             };     
 
@@ -114,7 +109,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
         private void CheckIfFacebookAccountExist(UserInfos infos)
         {
-            this.ShowProgressDialog();
+            
             string err = "";
             Api.Contract.Resources.Account account = null;
                     
@@ -140,7 +135,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
         private void CheckIfTwitterAccountExist(UserInfos infos)
         {
-            this.ShowProgressDialog();
+            
             string err = "";
             Api.Contract.Resources.Account account = null;
             try
@@ -189,21 +184,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
              progressDialog.Cancel();
         }
 
-        private void InitializeSocialNetwork()
-        {
-            OAuthConfig oauthConfig = new OAuthConfig
-            {
-                ConsumerKey = "CIi418tFp0c4DIj8tQKEw",
-                Callback = "http://www.apcurium.com/oauth",
-                ConsumerSecret = "wtHZHvigOaKaXjHQT3MjdKZ8aICOa6toNcJlbfWX54",
-                RequestTokenUrl = "https://api.twitter.com/oauth/request_token",
-                AccessTokenUrl = "https://twitter.com/oauth/access_token",
-                AuthorizeUrl = "https://twitter.com/oauth/authorize"
-            };
-
-            facebook = new FacebookServicesMD("431321630224094", this);
-            twitterService = new TwitterServiceMonoDroid(oauthConfig, this);
-        }
+        
 
         protected override void OnResume()
         {
@@ -212,16 +193,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             {
                 FindViewById<EditText>(Resource.Id.Username).Text = AppContext.Current.LastEmail;
             }
-        }
-
-        protected override void OnPause()
-        {
-            base.OnPause();
-        }
-
-        protected override void OnRestart()
-        {
-            base.OnRestart();
         }
 
         void SignUpButton_Click(object sender, EventArgs e)
@@ -290,6 +261,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             b.PutString("twitterId", TwitterId);
             b.PutString("facebookId", FacebookId);
             intent.PutExtras(b);
+            if(TwitterId != string.Empty
+                || FacebookId != string.Empty)
+            {
+                Finish();
+            }
             StartActivity(intent);
         }
     }

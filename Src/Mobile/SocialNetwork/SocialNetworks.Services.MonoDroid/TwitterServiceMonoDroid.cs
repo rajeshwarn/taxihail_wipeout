@@ -16,6 +16,12 @@ namespace SocialNetworks.Services.MonoDroid
 			LoadCredentials();
 		}
 
+        public override void SetLoginContext(object context)
+        {
+            base.SetLoginContext(context);
+            _parent = context as Activity;
+        }
+
 		protected override void ClearAuthorization ()
 		{
 			base.ClearAuthorization ();

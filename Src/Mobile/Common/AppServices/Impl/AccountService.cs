@@ -1,10 +1,17 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+
+#if IOS
+using ServiceStack.ServiceClient.Web;
+using ServiceStack.Common.ServiceClient.Web;
+#endif
+
+
 #if !CLIENT 
 using ServiceStack.Common.ServiceClient.Web;
 #else
-
+using ServiceStack.Common.ServiceClient.Web;
 #endif
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Api.Client;
