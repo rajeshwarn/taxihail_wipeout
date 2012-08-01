@@ -34,22 +34,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Animations
 
     
     protected override void ApplyTransformation(float interpolatedTime, Transformation t) {
-        int newHeight;
+       // int newHeight;
         if (Down)
-            newHeight = (int) (OffsetHeight * interpolatedTime);
-       
-        else
-            newHeight = (int) (OffsetHeight * (1 - interpolatedTime));
-       
-        //The new view height is based on start height plus the height increment
-        View.LayoutParameters.Height = newHeight + OriginalHeight;
-        View.RequestLayout();
-       
-        if (AdjacentView != null) {
-                        //This line is only triggered to animate and adjacent view
-            AdjacentView.LayoutParameters.Height = View.LayoutParameters.Height + AdjacentHeightIncrement;
-            AdjacentView.RequestLayout();
+        {
+            View.LayoutParameters.Height = (int) (OffsetHeight * interpolatedTime) + OriginalHeight;
         }
+            
+        else
+        {
+            View.LayoutParameters.Height = (int) (OffsetHeight * (1 - interpolatedTime)) + OriginalHeight;
+            
+        }
+        View.RequestLayout();
+
     }
 
     

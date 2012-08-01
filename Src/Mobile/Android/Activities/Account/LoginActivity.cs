@@ -125,6 +125,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                 AppContext.Current.LastEmail = account.Email;
                 RunOnUiThread(() =>
                 {
+                    progressDialog.Dismiss();
                     Finish();
                     StartActivity(typeof(MainActivity));
                 });
@@ -157,6 +158,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                 AppContext.Current.LastEmail = account.Email;
                 RunOnUiThread(() =>
                 {
+                    progressDialog.Dismiss();
                     Finish();
                     StartActivity(typeof(MainActivity));
                 });
