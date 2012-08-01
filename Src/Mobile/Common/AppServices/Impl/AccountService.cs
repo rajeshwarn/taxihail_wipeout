@@ -358,10 +358,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             string lError = "";
 
             data.AccountId = Guid.NewGuid();
+            data.Language =  TinyIoCContainer.Current.Resolve<IAppResource>().CurrentLanguageCode;
 
             try
             {
-                UseServiceClient<AccountServiceClient>(service =>
+                lError = UseServiceClient<AccountServiceClient>(service =>
                 {
                     service.RegisterAccount(data);
                     isSuccess = true;

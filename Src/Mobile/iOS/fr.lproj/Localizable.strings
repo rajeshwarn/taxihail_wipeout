@@ -196,3 +196,6 @@
 "MobileUser" = "Cette commande a été placée par un usager de l'application mobile.";
 "Notes" = "Notes:";
 "ErrorGettingStatus" = "Impossible d'avoir le status.";
+"AccountActivationTitle" = "Activation";
+"AccountActivationMessage" = "Vous allez recevoir un email contenant un lien pour activer ce compte.";
+"ErrorCode_CreateAccount_AccountAlreadyExist" = "Un compte avec ce courriel existe déjà";
