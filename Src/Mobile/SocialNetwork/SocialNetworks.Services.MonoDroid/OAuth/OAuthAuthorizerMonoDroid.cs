@@ -84,14 +84,15 @@ namespace SocialNetworks.Services.OAuth
 			{
 				base.OnPageStarted (view, url, favicon);
 				if (url.StartsWith (_container.config.Callback)){
+
 					var results = HttpUtility.ParseQueryString (url.Substring (_container.config.Callback.Length+1));
-					
-					_container.AuthorizationToken = results ["oauth_token"];
-					_container.AuthorizationVerifier = results ["oauth_verifier"];					
-					_container.AcquireAccessToken ();
-
-					_callback ();
-
+                    if(results["denied"] == null)
+                    {
+                        _container.AuthorizationToken = results["oauth_token"];
+                        _container.AuthorizationVerifier = results["oauth_verifier"];
+                        _container.AcquireAccessToken();
+                        _callback();
+                    }
 					_dialog.Dismiss();
 				}
 			}
