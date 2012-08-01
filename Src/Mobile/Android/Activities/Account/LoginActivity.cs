@@ -66,6 +66,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                                                                           {
                                                                               if (facebook.IsConnected)
                                                                               {
+                                                                                  ShowProgressDialog();
                                                                                   facebook.GetUserInfos(CheckIfFacebookAccountExist);
                                                                               }
                                                                               else
@@ -79,6 +80,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                 {
                     if (twitterService.IsConnected)
                     {
+                          ShowProgressDialog();
                           twitterService.GetUserInfos(CheckIfTwitterAccountExist);
                     }
                     else
