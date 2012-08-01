@@ -79,7 +79,8 @@ namespace apcurium.MK.Web.Tests
         {
             base.TestFixtureSetup();
 
-            new AuthServiceClient(BaseUrl, SessionId).Authenticate(TestAccount.Email, TestAccountPassword);    
+            var auth = new AuthServiceClient(BaseUrl, SessionId).Authenticate(TestAccount.Email, TestAccountPassword);
+            SessionId = auth.SessionId;
 
             var sut = new OrderServiceClient(BaseUrl, SessionId);
             var order = new CreateOrder
