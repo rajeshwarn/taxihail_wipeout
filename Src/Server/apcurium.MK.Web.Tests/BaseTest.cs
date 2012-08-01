@@ -74,6 +74,9 @@ namespace apcurium.MK.Web.Tests
             var authResponse = new AuthServiceClient(BaseUrl, null).AuthenticateFacebook(newAccount.FacebookId);
             SessionId = authResponse.SessionId;
 
+            accountService = new AccountServiceClient(BaseUrl, authResponse.SessionId);
+
+
             return accountService.GetMyAccount();
         }
 
@@ -83,7 +86,10 @@ namespace apcurium.MK.Web.Tests
             var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", TwitterId = Guid.NewGuid().ToString(), Language = "en" };
             accountService.RegisterAccount(newAccount);
 
-            new AuthServiceClient(BaseUrl, null).AuthenticateTwitter(newAccount.TwitterId);
+            var authResponse = new AuthServiceClient(BaseUrl, null).AuthenticateTwitter(newAccount.TwitterId);
+            SessionId = authResponse.SessionId;
+
+            accountService = new AccountServiceClient(BaseUrl, authResponse.SessionId);
 
             return accountService.GetMyAccount();
         }
