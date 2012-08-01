@@ -15,22 +15,14 @@
             android:scaleType="fitXY"
             android:adjustViewBounds="true"
             android:src="@drawable/topFieldBackgroundLg" />
-
-
-        <!--Button android:id="@+id/destAddressButton"
-                    android:layout_alignParentRight="true"
-                    android:drawableLeft="@drawable/btnPickLocation"
-                      android:background="@drawable/green_button" style="@style/ButtonText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="35dp"/-->
-
         <AutoCompleteTextView
             android:id="@+id/destAddressText"
             android:paddingTop="1dp"
             android:paddingBottom="2dp"
             android:layout_marginTop="37dip"
+            android:layout_marginRight="50dip"
             android:layout_alignParentLeft="true"
-            android:layout_width="275dip"
+            android:layout_width="fill_parent"
             android:hint=""
             android:textSize="14dp"
             android:inputType="text"
@@ -75,11 +67,12 @@
         <LinearLayout
             android:id="@+id/linear_iconaction"
             android:layout_toRightOf="@id/destAddressText"
+            android:layout_alignParentRight="true"
             android:layout_marginRight="2dip"
-            android:layout_marginTop="35dip"
+            android:layout_marginTop="38dip"
             android:orientation="vertical"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:gravity="right" />
     </RelativeLayout>
 </LinearLayout>

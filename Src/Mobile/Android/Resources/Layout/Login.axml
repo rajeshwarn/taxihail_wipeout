@@ -118,12 +118,12 @@
                 <Button
                     android:id="@+id/FacebookButton"
                     style="@style/ButtonText"
-                    android:background="@drawable/social_media_login_btn"
+                    android:background="@drawable/social_media_login_btn_state"
                     android:text="@string/FacebookButton"
                     android:layout_width="200dip"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:drawableLeft="@drawable/facebook_icon"
+                    android:drawableLeft="@drawable/facebook_icon_state"
                     android:lines="1"
                     android:paddingTop="-2dip"
                     android:drawablePadding="-2dip"
@@ -137,12 +137,12 @@
                 <Button
                     android:id="@+id/TwitterButton"
                     style="@style/ButtonText"
-                    android:background="@drawable/social_media_login_btn"
+                    android:background="@drawable/social_media_login_btn_state"
                     android:text="@string/TwitterButton"
                     android:layout_width="200dip"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:drawableLeft="@drawable/twitter_icon"
+                    android:drawableLeft="@drawable/twitter_icon_state"
                     android:drawablePadding="-2dip" />
             </LinearLayout>
         </LinearLayout>

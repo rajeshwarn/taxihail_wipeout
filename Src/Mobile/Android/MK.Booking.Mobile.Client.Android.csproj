@@ -401,6 +401,15 @@
     <AndroidResource Include="Resources\Drawable\cell_borderTop.png" />
     <AndroidResource Include="Resources\Drawable\cell_bottom_full.9.png" />
     <AndroidResource Include="Resources\drawable-hdpi\cell_bottom_full.9.png" />
+    <AndroidResource Include="Resources\Drawable\social_media_login_btn_state.xml" />
+    <AndroidResource Include="Resources\Drawable\social_media_login_btn_hit.9.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\social_media_login_btn_hit.9.png" />
+    <AndroidResource Include="Resources\Drawable\facebook_icon_state.xml" />
+    <AndroidResource Include="Resources\Drawable\twitter_icon_state.xml" />
+    <AndroidResource Include="Resources\Drawable\twitter_icon_hit.png" />
+    <AndroidResource Include="Resources\Drawable\facebook_icon_hit.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\twitter_icon_hit.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\facebook_icon_hit.png" />
     <Content Include="Todo.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
@@ -416,7 +425,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Mapper\" />
-    <Folder Include="Resources\drawable-hdpi\dropdowncontrol\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Contract\MK.Booking.Api.Contract.Android.csproj">
