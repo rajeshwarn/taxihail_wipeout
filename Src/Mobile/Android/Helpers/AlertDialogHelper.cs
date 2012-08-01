@@ -16,28 +16,28 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
 {
     public static class AlertDialogHelper
     {
-        public static void ShowAlert(this Activity owner, string title, string message)
+        public static void ShowAlert(this Activity owner, string title, string message, Action onClose = null)
         {
-            Show(owner, title, message);
+            Show(owner, title, message, onClose);
         }
 
 
-        public static void ShowAlert(this Activity owner, int titleResId, int messageResId)
+        public static void ShowAlert(this Activity owner, int titleResId, int messageResId, Action onClose = null)
         {
-            Show(owner, titleResId, messageResId);
+            Show(owner, titleResId, messageResId, onClose);
         }
 
-        public static void ShowAlert(this Activity owner, int titleResId)
+        public static void ShowAlert(this Activity owner, int titleResId, Action onClose = null)
         {
-            Show(owner, titleResId, null);
+            Show(owner, titleResId, null, onClose);
         }
 
-        public static void Show(Activity owner, int titleResId, int? messageResId)
+        public static void Show(Activity owner, int titleResId, int? messageResId, Action onClose = null)
         {
-            Show(owner, owner.GetString(titleResId), messageResId.HasValue ? owner.GetString(messageResId.Value) : null );            
+            Show(owner, owner.GetString(titleResId), messageResId.HasValue ? owner.GetString(messageResId.Value) : null, onClose );            
         }
 
-        public static void Show(Activity owner, string title, string message)
+        public static void Show(Activity owner, string title, string message, Action onClose = null)
         {
             var dialog = new AlertDialog.Builder(owner).Create();
             dialog.SetTitle(title);
@@ -47,7 +47,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
             }
             dialog.SetButton("Ok", delegate
             {
-
+                if (onClose != null)
+                {
+                    onClose();
+                }
             });
             dialog.Show();
         }

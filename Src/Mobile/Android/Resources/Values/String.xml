@@ -216,5 +216,5 @@
   <string name="UpdateBookingSettingsInvalidDataTitle">Invalid booking settings info.</string>
   <string name="UpdateBookingSettingsEmptyField">The data is invalid, all the fields are required.</string>
   <string name="AccountActivationTitle">Sign Up</string>
-  <string name="AccountActivationMessage">You will receiveAccountActivationMessagean email shortly with a link you need to click on to confirm your registration.</string>
+  <string name="AccountActivationMessage">You will receive an email shortly with a link you need to click on to confirm your registration.</string>
 </resources>
