@@ -60,15 +60,7 @@ namespace apcurium.MK.Booking.Api.Client
         {
             
             var response = Client.Post<AuthResponse>("/auth/" + provider , auth);
-
-
-            var cookies = cookieContainer.GetCookies( new Uri(_url ));
-
-            foreach (var item in cookies)
-            {
-                item.ToString();
-            }
-
+             
             return response;
         }
     }
