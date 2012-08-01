@@ -13,7 +13,7 @@ using ServiceStack.Common.ServiceClient.Web;
 #else
 using ServiceStack.Common.ServiceClient.Web;
 #endif
-
+using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;

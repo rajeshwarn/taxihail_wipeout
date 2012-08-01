@@ -91,6 +91,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             {
                  if(e.IsConnected)
                  {
+                    ShowProgressDialog();
                     facebook.GetUserInfos(CheckIfFacebookAccountExist);
                  }
             };
@@ -99,7 +100,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             {
                 if (e.IsConnected)
                 {
-                      twitterService.GetUserInfos(CheckIfTwitterAccountExist);
+                    ShowProgressDialog();
+                    twitterService.GetUserInfos(CheckIfTwitterAccountExist);
                 }
             };     
 
@@ -107,7 +109,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
         private void CheckIfFacebookAccountExist(UserInfos infos)
         {
-            this.ShowProgressDialog();
+            
             string err = "";
             Api.Contract.Resources.Account account = null;
                     
@@ -133,7 +135,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
         private void CheckIfTwitterAccountExist(UserInfos infos)
         {
-            this.ShowProgressDialog();
+            
             string err = "";
             Api.Contract.Resources.Account account = null;
             try
@@ -259,6 +261,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             b.PutString("twitterId", TwitterId);
             b.PutString("facebookId", FacebookId);
             intent.PutExtras(b);
+            if(TwitterId != string.Empty
+                || FacebookId != string.Empty)
+            {
+                Finish();
+            }
             StartActivity(intent);
         }
     }
