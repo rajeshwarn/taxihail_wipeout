@@ -266,12 +266,12 @@
     <Folder Include="Diagnostics\" />
     <Folder Include="Extensions\" />
     <Folder Include="Cache\" />
+    <Folder Include="Order\" />
     <Folder Include="Images\" />
     <Folder Include="Images\VerticalButtonBar\" />
     <Folder Include="Images\Resources\" />
-    <Folder Include="Images\Tab\" />
-    <Folder Include="Order\" />
     <Folder Include="Images\Button\" />
+    <Folder Include="Images\Tab\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="MainWindow.xib" xmlns="" />
@@ -325,18 +325,6 @@
     <Content Include="Images\navBar%402x.png" />
     <Content Include="Images\Logo%402x.png" />
     <Content Include="Images\Logo.png" />
-    <Content Include="Images\VerticalButtonBar\contacts.png" />
-    <Content Include="Images\VerticalButtonBar\contacts%402x.png" />
-    <Content Include="Images\taxi-label.png" />
-    <Content Include="Images\taxi-label%402x.png" />
-    <Content Include="Images\Tab\book.png" />
-    <Content Include="Images\Tab\history.png" />
-    <Content Include="Images\Tab\locations.png" />
-    <Content Include="Images\Tab\settings.png" />
-    <Content Include="Images\Tab\book%402x.png" />
-    <Content Include="Images\Tab\history%402x.png" />
-    <Content Include="Images\Tab\locations%402x.png" />
-    <Content Include="Images\Tab\settings%402x.png" />
     <Content Include="Images\Button\btnBookIt_en.png" />
     <Content Include="Images\Button\btnBookIt_en%402x.png" />
     <Content Include="Images\Button\btnBookIt_fr.png" />
@@ -357,6 +345,18 @@
     <Content Include="Images\Button\btnPickup_off_en%402x.png" />
     <Content Include="Images\Button\btnPickup_off_fr.png" />
     <Content Include="Images\Button\btnPickup_off_fr%402x.png" />
+    <Content Include="Images\Tab\book.png" />
+    <Content Include="Images\Tab\history.png" />
+    <Content Include="Images\Tab\locations.png" />
+    <Content Include="Images\Tab\settings.png" />
+    <Content Include="Images\Tab\book%402x.png" />
+    <Content Include="Images\Tab\history%402x.png" />
+    <Content Include="Images\Tab\locations%402x.png" />
+    <Content Include="Images\Tab\settings%402x.png" />
+    <Content Include="Images\VerticalButtonBar\contacts.png" />
+    <Content Include="Images\VerticalButtonBar\contacts%402x.png" />
+    <Content Include="Images\taxi-label.png" />
+    <Content Include="Images\taxi-label%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.iOS.csproj">
