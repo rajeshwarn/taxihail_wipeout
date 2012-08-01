@@ -21,6 +21,8 @@ namespace apcurium.MK.Booking.Common.Tests
             _config.Add("GeoLoc.SearchFilter", "{0},montreal,qc,canada&region=ca");
             _config.Add("GeoLoc.AddressFilter", "canada");
 
+            _config.Add("NearbyPlacesService.DefaultRadius", "500");
+
 
             _config.Add("Direction.FlateRate", "3.45");
             _config.Add("Direction.RatePerKm", "1.70");
