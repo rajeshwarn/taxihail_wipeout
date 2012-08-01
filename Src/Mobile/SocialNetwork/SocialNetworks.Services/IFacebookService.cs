@@ -10,7 +10,8 @@ namespace SocialNetworks.Services
 		bool IsConnected { get; }
 		void Connect(string permissions);
 		void GetUserInfos(Action<UserInfos> onRequestDone);
-		void GetLikes( Action<List<UserLike>> onRequestDone );  
+		void GetLikes( Action<List<UserLike>> onRequestDone );
+	    void SetCurrentContext(object context);
 
 		void Share(Post post, Action onRequestDone);
 		void Like( string objectId );

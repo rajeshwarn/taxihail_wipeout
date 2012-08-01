@@ -1,19 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Android.App;
-using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
+using SocialNetworks.Services;
+using SocialNetworks.Services.MonoDroid;
+using SocialNetworks.Services.OAuth;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Client.Activities.Book;
 using apcurium.MK.Booking.Mobile.Client.Activities.Account;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities
 {
@@ -26,6 +19,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 
         protected override void OnCreate(Bundle bundle)
         {
+            InitializeSocialNetwork();
             _locationService.Start();
             base.OnCreate(bundle);
 
@@ -40,6 +34,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
             {
                 this.RunOnUiThread(() => StartActivity(typeof(MainActivity)));                
             }
+
+        }
+
+        private void InitializeSocialNetwork()
+        {
+            OAuthConfig oauthConfig = new OAuthConfig
+            {
+                ConsumerKey = "CIi418tFp0c4DIj8tQKEw",
+                Callback = "http://www.apcurium.com/oauth",
+                ConsumerSecret = "wtHZHvigOaKaXjHQT3MjdKZ8aICOa6toNcJlbfWX54",
+                RequestTokenUrl = "https://api.twitter.com/oauth/request_token",
+                AccessTokenUrl = "https://twitter.com/oauth/access_token",
+                AuthorizeUrl = "https://twitter.com/oauth/authorize"
+            };
+
+            var facebook = new FacebookServicesMD("431321630224094", this);
+            var twitterService = new TwitterServiceMonoDroid(oauthConfig, this);
+
+            TinyIoCContainer.Current.Register<IFacebookService>(facebook);
+            TinyIoCContainer.Current.Register<ITwitterService>(twitterService);
 
         }
     }
