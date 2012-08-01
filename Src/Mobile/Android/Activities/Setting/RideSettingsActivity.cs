@@ -72,7 +72,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 			section.AddItem( new TextEditSectionItem( Resources.GetString( Resource.String.RideSettingsPhone ), () => model.Phone, (value) => model.Phone = value ) );
 			section.AddItem( new TextEditSectionItem( Resources.GetString( Resource.String.RideSettingsPassengers ), () => model.NbOfPassenger, (value) => model.NbOfPassenger = value ) );
 			section.AddItem( new SpinnerSectionItem( Resources.GetString( Resource.String.RideSettingsVehiculeType ), () => model.VehicleTypeId, (value) => model.VehicleTypeId = value, () => model.VehicleTypeList.Select( i => new ListItemData { Key = i.Id, Value = i.Display } ).ToList() ) );
-            section.AddItem(new SpinnerSectionItem(Resources.GetString(Resource.String.RideSettingsVehiculeType), () => model.ChargeTypeId, (value) => model.ChargeTypeId = value, () => model.ChargeTypeList.Select(i => new ListItemData { Key = i.Id, Value = i.Display }).ToList()));
+            section.AddItem(new SpinnerSectionItem(Resources.GetString(Resource.String.RideSettingsChargeType), () => model.ChargeTypeId, (value) => model.ChargeTypeId = value, () => model.ChargeTypeList.Select(i => new ListItemData { Key = i.Id, Value = i.Display }).ToList()));
             
             //TODO:Fix this
 //			/section.AddItem( new SpinnerSectionItem( Resources.GetString( Resource.String.RideSettingsCompany ), () => model.Company, (value) => model.Company = value, () => model.CompanyList.Select( i => new ListItemData { Key = i.Id, Value = i.Display } ).ToList() ) );
