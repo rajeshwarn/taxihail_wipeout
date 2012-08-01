@@ -6,18 +6,11 @@ using System.Collections.Generic;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Common.ServiceClient.Web;
 #endif
-
-
-#if !CLIENT 
 using ServiceStack.Common.ServiceClient.Web;
-#else
-using ServiceStack.Common.ServiceClient.Web;
-#endif
-
+using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
