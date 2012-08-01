@@ -57,8 +57,7 @@ namespace apcurium.MK.Web.Tests
 
         protected Account CreateAndAuthenticateTestAccount()
         {
-            var sut = new AccountServiceClient(BaseUrl, null);
-            var newAccount = sut.CreateTestAccount();
+            var newAccount = new AccountServiceClient(BaseUrl, null).CreateTestAccount();
             var authResponse = new AuthServiceClient(BaseUrl, null).Authenticate(newAccount.Email, TestAccountPassword);
             SessionId = authResponse.SessionId;
             return newAccount;
@@ -67,31 +66,24 @@ namespace apcurium.MK.Web.Tests
         
         protected Account GetNewFacebookAccount()
         {
-            var accountService = new AccountServiceClient(BaseUrl, null);
             var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", FacebookId = Guid.NewGuid().ToString(), Language = "en" };
-            accountService.RegisterAccount(newAccount);
+            new AccountServiceClient(BaseUrl, null).RegisterAccount(newAccount);
 
             var authResponse = new AuthServiceClient(BaseUrl, null).AuthenticateFacebook(newAccount.FacebookId);
             SessionId = authResponse.SessionId;
 
-            accountService = new AccountServiceClient(BaseUrl, authResponse.SessionId);
-
-
-            return accountService.GetMyAccount();
+            return new AccountServiceClient(BaseUrl, authResponse.SessionId).GetMyAccount();
         }
 
         protected Account GetNewTwitterAccount()
         {
-            var accountService = new AccountServiceClient(BaseUrl, null);
             var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", TwitterId = Guid.NewGuid().ToString(), Language = "en" };
-            accountService.RegisterAccount(newAccount);
+            new AccountServiceClient(BaseUrl, null).RegisterAccount(newAccount);
 
             var authResponse = new AuthServiceClient(BaseUrl, null).AuthenticateTwitter(newAccount.TwitterId);
             SessionId = authResponse.SessionId;
 
-            accountService = new AccountServiceClient(BaseUrl, authResponse.SessionId);
-
-            return accountService.GetMyAccount();
+            return new AccountServiceClient(BaseUrl, authResponse.SessionId).GetMyAccount();
         }
         
     }

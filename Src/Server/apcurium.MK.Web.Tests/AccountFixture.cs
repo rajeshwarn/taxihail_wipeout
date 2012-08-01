@@ -115,11 +115,10 @@ namespace apcurium.MK.Web.Tests
         public void registering_account_has_settings()
         {
             // Arrange
-            var sut = new AccountServiceClient(BaseUrl, SessionId);
+            CreateAndAuthenticateTestAccount();
             
             // Act
-            CreateAndAuthenticateTestAccount();
-            var account = sut.GetMyAccount();
+            var account = new AccountServiceClient(BaseUrl, SessionId).GetMyAccount();
 
             // Assert
             Assert.AreEqual("en", account.Language);
