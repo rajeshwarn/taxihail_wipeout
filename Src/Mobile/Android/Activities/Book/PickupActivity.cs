@@ -165,8 +165,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             base.SetLocationData(location, changeZoom);
             RunOnUiThread(() =>
                               {
-                                  FindViewById<EditText>(Resource.Id.ringCodeText).Text = location.RingCode;
-                                  FindViewById<EditText>(Resource.Id.aptNumberText).Text = location.Apartment;
+                                  if(location != null)
+                                  {
+                                      FindViewById<EditText>(Resource.Id.ringCodeText).Text = location.RingCode;
+                                      FindViewById<EditText>(Resource.Id.aptNumberText).Text = location.Apartment;
+                                  }
                               });
         }
 
