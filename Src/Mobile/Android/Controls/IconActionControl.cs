@@ -74,6 +74,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             _button.SetBackgroundDrawable(null);
             _button.SetImageBitmap(BitmapFactory.DecodeStream(Resources.Assets.Open(_buttonIcon)));
             _lv.ItemClick += listView_itemSelected;
+            _lv.Divider = null;
+            _lv.DividerHeight = 0;
             _lv.Visibility = ViewStates.Visible;
         }
 
@@ -113,7 +115,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 							_activity.StartActivity(ia.IntentAction);
 						}
 					}
-
+                    ResizeDown();
                 }
                 catch (Exception)
                 {
@@ -129,8 +131,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             _rotateLeft.FillAfter = true;
             _rotateRight.Duration = 250;
             _rotateRight.FillAfter = true;
-            _resizeUp = new ResizeAnimation( _lv, 0, 58 * _lv.Count, true) { Duration = 500, Interpolator = new AccelerateDecelerateInterpolator()};
-            _resizeDown = new ResizeAnimation(_lv, 0, 58 * _lv.Count, false) { Duration = 500, Interpolator = new AccelerateDecelerateInterpolator() };
+            _resizeUp = new ResizeAnimation( _lv, 0, 61 * _lv.Count, true) { Duration = 500, Interpolator = new AccelerateDecelerateInterpolator()};
+            _resizeDown = new ResizeAnimation(_lv, 0, 61 * _lv.Count, false) { Duration = 500, Interpolator = new AccelerateDecelerateInterpolator() };
             _resizeDown.AnimationEnd += ResizeDownOnAnimationEnd;
 			_resizeUp.AnimationEnd += ResizeUpAnimationEnd;
         }

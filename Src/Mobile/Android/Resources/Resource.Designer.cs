@@ -686,11 +686,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f08006b
 			public const int pickupAddressText = 2131230827;
 			
-			// aapt resource value: 0x7f08006e
-			public const int pickupDateButton = 2131230830;
-			
 			// aapt resource value: 0x7f08006f
-			public const int pickupTimeText = 2131230831;
+			public const int pickupDateButton = 2131230831;
+			
+			// aapt resource value: 0x7f08006e
+			public const int pickupTimeText = 2131230830;
 			
 			// aapt resource value: 0x7f080068
 			public const int pickupView = 2131230824;
