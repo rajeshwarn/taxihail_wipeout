@@ -10,6 +10,7 @@ using apcurium.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Validation;
+using Android.Graphics;
 
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
@@ -51,10 +52,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
             progressDialog = new ProgressDialog(this);
 
+            
+
             if (AppContext.Current.LastEmail.HasValue())
             {
                 FindViewById<EditText>(Resource.Id.Username).Text = AppContext.Current.LastEmail;
             }
+
+            var typeface = Typeface.CreateFromAsset(Assets, "HelveticaNeueLTPro-Roman.otf");
+            FindViewById<EditText>(Resource.Id.Username).Typeface = typeface;
+            FindViewById<EditText>(Resource.Id.Password).Typeface = typeface;
+            FindViewById<Button>(Resource.Id.ForgotPasswordButton).Typeface = typeface;
+            FindViewById<Button>(Resource.Id.SignInButton).Typeface = typeface;
+            FindViewById<Button>(Resource.Id.SignUpButton).Typeface = typeface;
+
+            FindViewById<Button>(Resource.Id.FacebookButton).Typeface = typeface;
+            FindViewById<Button>(Resource.Id.TwitterButton).Typeface = typeface;
+
+            
+
 
             FindViewById<Button>(Resource.Id.SignUpButton).Click += new EventHandler(SignUpButton_Click);
 
