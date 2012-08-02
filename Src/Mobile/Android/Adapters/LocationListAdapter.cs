@@ -49,8 +49,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Adapters
             var image = view.FindViewById<ImageView>(Resource.Id.LocationListPicture);
 
             title.Text = this.ListAddress[position].Address.FriendlyName;
-            subtitle.Text = this.ListAddress[position].Address.FullAddress.Length < 40 ? this.ListAddress[position].Address.FullAddress : this.ListAddress[position].Address.FullAddress.Substring(0,37) + "...";
-
+            //subtitle.Text = this.ListAddress[position].Address.FullAddress.Length < 40 ? this.ListAddress[position].Address.FullAddress : this.ListAddress[position].Address.FullAddress.Substring(0,37) + "...";
+            subtitle.Text = this.ListAddress[position].Address.FullAddress;
             layout.SetBackgroundResource(this.ListAddress[position].BgResource);
             try
             {
