@@ -79,7 +79,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             //get { return "http://192.168.12.105/apcurium.MK.Web/api/"; }
             //get { return "http://192.168.12.115/apcurium.MK.Web/api/"; }
-            get { return "http://project.apcurium.com/TaxiHailV2/api/"; }
+            get { return "http://demo.taxihail.biz/V1/api/"; }
             //get { return "http://project.apcurium.com/apcurium.MK.Web.csproj_deploy/api/"; }
 
         }
