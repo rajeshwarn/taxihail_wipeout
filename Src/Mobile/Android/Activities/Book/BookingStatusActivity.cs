@@ -56,7 +56,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
             else
             {
-                FindViewById<TextView>(Resource.Id.statusInfoText).Text = string.Format(GetString(Resource.String.StatusDescription), OrderStatus.IBSOrderId.Value);
+                //FindViewById<TextView>(Resource.Id.statusInfoText).Text = string.Format(GetString(Resource.String.StatusDescription), OrderStatus.IBSOrderId.Value);
             }
 
             SetStatusText(GetString(Resource.String.LoadingMessage));
