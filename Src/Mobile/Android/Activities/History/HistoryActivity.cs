@@ -123,11 +123,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
                 ailm.First().BgResource = Resource.Drawable.cell_top_state;
                 if (ailm.Count().Equals(1))
                 {
-                    ailm.First().BgResource = Resource.Drawable.cell_bottom_full_state;
+                    ailm.First().BgResource = Resource.Drawable.blank_single_state;
                 }
                 else
                 {
-                    ailm.Last().BgResource = Resource.Drawable.cell_bottom_state;
+                    ailm.Last().BgResource = Resource.Drawable.blank_bottom_state;
                 }
             }
             
