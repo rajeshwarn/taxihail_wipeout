@@ -18,7 +18,8 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:id="@+id/LocationListLayoutContent"
-            android:gravity="bottom">
+            android:gravity="bottom"
+            android:layout_marginTop="7dip">
             <TextView
                 android:id="@+id/OrderListTitle"
                 android:layout_width="match_parent"

@@ -422,8 +422,17 @@
     <AndroidResource Include="Resources\Drawable\facebook_icon_hit.png" />
     <AndroidResource Include="Resources\drawable-hdpi\twitter_icon_hit.png" />
     <AndroidResource Include="Resources\drawable-hdpi\facebook_icon_hit.png" />
+    <AndroidResource Include="Resources\Drawable\blank_single.9.png" />
+    <AndroidResource Include="Resources\Drawable\add_single.9.png" />
     <AndroidResource Include="Resources\Drawable\red_button.xml" />
     <AndroidResource Include="Resources\Drawable\forgot_password_btn_state.xml" />
+    <AndroidResource Include="Resources\Drawable\blank_bottom.9.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\blank_single.9.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\add_single.9.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\blank_bottom.9.png" />
+    <AndroidResource Include="Resources\Drawable\add_single_state.xml" />
+    <AndroidResource Include="Resources\Drawable\blank_bottom_state.xml" />
+    <AndroidResource Include="Resources\Drawable\blank_single_state.xml" />
     <Content Include="Todo.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />

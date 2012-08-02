@@ -52,7 +52,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
                 }
                 else
                 {
-                    bgId = Resource.Drawable.cell_bottom_full_state;
+                    bgId = Resource.Drawable.add_single_state;
                 }
                 favoriteAddresses.Add(new AddressItemListModel()
                                           {
@@ -169,7 +169,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
             if (ailm.Any())
             {
                 ailm.First().BgResource = Resource.Drawable.cell_top_state;
+                if (type.Equals(LocationTypes.History))
+                {
+                    if (ailm.Count().Equals(1))
+                    {
+                        ailm.First().BgResource = Resource.Drawable.blank_single_state;
+                    }
+                    else
+                    {
+                        ailm.Last().BgResource = Resource.Drawable.blank_bottom_state;
+                    }
+                }
             }
+
             return ailm;
         }
 
