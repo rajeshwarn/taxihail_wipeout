@@ -178,6 +178,14 @@
   <ItemGroup>
     <AndroidAsset Include="Assets\HelveticaNeue.dfont" />
     <AndroidAsset Include="Assets\Helvetica.dfont" />
+    <AndroidAsset Include="Assets\HelveticaNeue-Bold.otf" />
+    <AndroidAsset Include="Assets\HelveticaNeue.ttf" />
+    <AndroidAsset Include="Assets\HelveticaNeue-Medium.otf" />
+    <AndroidAsset Include="Assets\HelveticaNeueLTPro-Lt.otf" />
+    <AndroidAsset Include="Assets\HelveticaNeueLTPro-Md.otf" />
+    <AndroidAsset Include="Assets\HelveticaNeueLTPro-Ex.otf" />
+    <AndroidAsset Include="Assets\HelveticaNeueLTPro-Roman.otf" />
+    <AndroidAsset Include="Assets\HelveticaNeueLTPro-Th.otf" />
     <None Include="Resources\AboutResources.txt" />
     <AndroidResource Include="Resources\Layout\Login.axml">
       <SubType>Designer</SubType>
@@ -328,7 +336,6 @@
     <AndroidResource Include="Resources\Drawable\background.png" />
     <AndroidResource Include="Resources\Drawable\footer.png" />
     <AndroidResource Include="Resources\Drawable\header.png" />
-    <AndroidResource Include="Resources\Drawable\red_button.xml" />
     <AndroidResource Include="Resources\Drawable\topFieldBackgroundLg.png" />
     <AndroidResource Include="Resources\Drawable\topFieldBackgroundSm.png" />
     <AndroidResource Include="Resources\Drawable\btnPickLocation.xml" />
@@ -353,7 +360,6 @@
     <AndroidResource Include="Resources\Drawable\cell_top.9.png" />
     <AndroidResource Include="Resources\Drawable\email_cell.9.png" />
     <AndroidResource Include="Resources\Drawable\password_cell.9.png" />
-    <AndroidResource Include="Resources\Drawable\sign_in_bnt.9.png" />
     <AndroidResource Include="Resources\Drawable\social_media_login_btn.9.png" />
     <AndroidResource Include="Resources\Drawable\twitter_icon.png" />
     <AndroidResource Include="Resources\Drawable\facebook_icon.png" />
@@ -416,6 +422,8 @@
     <AndroidResource Include="Resources\drawable-hdpi\facebook_icon_hit.png" />
     <AndroidResource Include="Resources\Drawable\blank_single.9.png" />
     <AndroidResource Include="Resources\Drawable\add_single.9.png" />
+    <AndroidResource Include="Resources\Drawable\red_button.xml" />
+    <AndroidResource Include="Resources\Drawable\forgot_password_btn_state.xml" />
     <AndroidResource Include="Resources\Drawable\blank_bottom.9.png" />
     <AndroidResource Include="Resources\drawable-hdpi\blank_single.9.png" />
     <AndroidResource Include="Resources\drawable-hdpi\add_single.9.png" />

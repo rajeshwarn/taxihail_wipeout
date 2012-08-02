@@ -2,6 +2,7 @@
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
+using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.IBS.Impl
 {
@@ -11,12 +12,12 @@ namespace apcurium.MK.Booking.IBS.Impl
         {
             return base.GetUrl() + "IWEBOrder_7";
         }
-        
+
 
         public BookingWebServiceClient(IConfigurationManager configManager, ILogger logger)
             : base(configManager, logger)
         {
-           
+
         }
 
         public IBSOrderStauts GetOrderStatus(int orderId, int accountId)
@@ -48,7 +49,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             {
                 var order = service.GetBookOrder_5(UserNameApp, PasswordApp, orderId, contactPhone, null, accountId);
                 if (order != null)
-                {                    
+                {
                     result.VehicleNumber = order.CabNo.ToSafeString().Trim();
                     result.Fare = order.Fare == 0 ? (double?)null : order.Fare;
                     result.Toll = order.Tolls == 0 ? (double?)null : order.Tolls;
@@ -57,7 +58,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             return result;
         }
 
-        public int? CreateOrder(int providerId, int accountId, string passengerName, string phone, int nbPassengers, int vehicleTypeId, string note, DateTime pickupDateTime, IBSAddress pickup, IBSAddress dropoff)
+        public int? CreateOrder(int providerId, int accountId, string passengerName, string phone, int nbPassengers, int vehicleTypeId, int chargeTypeId, string note, DateTime pickupDateTime, IBSAddress pickup, IBSAddress dropoff)
         {
             Logger.LogMessage("WebService Create Order call : accountID=" + accountId);
             var order = new TBookOrder_5();
@@ -71,6 +72,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             order.PickupDate = new TWEBTimeStamp { Year = pickupDateTime.Year, Month = pickupDateTime.Month, Day = pickupDateTime.Day };
             order.PickupTime = new TWEBTimeStamp { Hour = pickupDateTime.Hour, Minute = pickupDateTime.Minute, Second = 0, Fractions = 0 };
 
+            order.ChargeTypeID = chargeTypeId;
             order.PickupAddress = new TWEBAddress { StreetPlace = pickup.FullAddress, AptBaz = pickup.Apartment, Longitude = pickup.Longitude, Latitude = pickup.Latitude };
             order.DropoffAddress = dropoff == null ? new TWEBAddress() : new TWEBAddress { StreetPlace = dropoff.FullAddress, AptBaz = dropoff.Apartment, Longitude = dropoff.Longitude, Latitude = dropoff.Latitude };
             order.Passengers = nbPassengers;
@@ -84,8 +86,9 @@ namespace apcurium.MK.Booking.IBS.Impl
 
             UseService(service =>
             {
-                 orderId = service.SaveBookOrder_5(UserNameApp, PasswordApp, order);
-                 Logger.LogMessage("WebService Create Order, orderid receveid : " + orderId);
+                Logger.LogMessage("WebService Creating IBS Order : " +  JsonSerializer.SerializeToString( order, typeof( TBookOrder_5 ) ) );
+                orderId = service.SaveBookOrder_5(UserNameApp, PasswordApp, order);
+                Logger.LogMessage("WebService Create Order, orderid receveid : " + orderId);
             });
             return orderId;
         }

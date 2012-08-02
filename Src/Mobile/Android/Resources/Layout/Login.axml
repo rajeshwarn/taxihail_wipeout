@@ -14,7 +14,7 @@
         <ImageView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:src="@drawable/background"
+            android:src="@drawable/backgroundblue"
             android:scaleType="fitXY"
             android:layout_below="@+id/HeaderSection"
             android:adjustViewBounds="true" />
@@ -26,12 +26,12 @@
             android:orientation="vertical"
             android:paddingLeft="20px"
             android:paddingRight="20px"
-            android:paddingTop="15dip"
-            android:background="#004c8f">
+            android:paddingTop="25dip"
+            android:background="@android:color/transparent">
             <EditText
                 android:id="@+id/Username"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dip"
                 android:hint="@string/EmailLabel"
                 android:inputType="textEmailAddress"
                 android:nextFocusDown="@+id/Password"
@@ -39,7 +39,10 @@
                 android:background="@drawable/email_cell"
                 android:paddingRight="5dip"
                 android:paddingLeft="5dip"
-                android:layout_marginBottom="10dip" />
+                android:layout_marginBottom="10dip"
+                android:textSize="16dip"
+                android:typeface="normal"
+                android:textColorHint="#a3a3a3" />
             <LinearLayout
                 android:id="@+id/linearLayout0"
                 android:layout_width="fill_parent"
@@ -48,22 +51,30 @@
                 <EditText
                     android:id="@+id/Password"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dip"
                     android:hint="@string/PasswordLabel"
                     android:inputType="textPassword"
                     android:layout_weight="3"
                     android:background="@drawable/password_cell"
                     android:paddingLeft="5dip"
-                    android:paddingRight="5dip" />
+                    android:paddingRight="5dip"
+                    android:textSize="16dip"
+                    android:layout_marginTop="0.0dp"
+                    android:layout_marginBottom="0.0dp"
+                    android:typeface="normal"
+                    android:textColorHint="#a3a3a3" />
                 <Button
                     android:id="@+id/ForgotPasswordButton"
                     style="@style/ButtonText"
-                    android:layout_width="252dip"
-                    android:layout_height="wrap_content"
+                    android:layout_width="270dip"
+                    android:layout_height="40dip"
                     android:text="@string/LoginForgotPasswordButton"
                     android:layout_weight="3"
-                    android:layout_gravity="fill"
-                    android:background="@drawable/forgot_password_btn" />
+                    android:layout_gravity="right"
+                    android:background="@drawable/forgot_password_btn_state"
+                    android:textSize="14dip"
+                    android:textColor="#bcd9f2"
+                    android:typeface="normal" />
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/linearLayout1"
@@ -86,7 +97,7 @@
                     android:layout_weight="1"
                     android:paddingTop="5dip"
                     android:paddingBottom="5dip"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dip"
                     android:layout_marginRight="10dip"
                     android:layout_marginLeft="10dip" />
                 <Button
@@ -101,7 +112,7 @@
                 <Button
                     android:id="@+id/SignUpButton"
                     style="@style/ButtonText"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dip"
                     android:background="@drawable/newBlackButton"
                     android:text="@string/SignUpButton"
                     android:layout_gravity="right"
@@ -127,7 +138,8 @@
                     android:lines="1"
                     android:paddingTop="-2dip"
                     android:drawablePadding="-2dip"
-                    android:layout_marginBottom="10dip" />
+                    android:layout_marginBottom="10dip"                    
+                    android:typeface="normal" />
                 <Button
                     android:text="a"
                     android:layout_height="20dip"
@@ -143,7 +155,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:drawableLeft="@drawable/twitter_icon_state"
-                    android:drawablePadding="-2dip" />
+                    android:drawablePadding="-2dip"                    
+                    android:typeface="normal" />
             </LinearLayout>
         </LinearLayout>
         <RelativeLayout

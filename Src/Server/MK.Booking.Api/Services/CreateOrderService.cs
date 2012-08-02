@@ -67,7 +67,7 @@ namespace apcurium.MK.Booking.Api.Services
             var ibsDropOffAddress = IsValid(request.DropOffAddress) ? Mapper.Map<IBSAddress>(request.DropOffAddress) : (IBSAddress) null;
 
             var result = _bookingWebServiceClient.CreateOrder(request.Settings.ProviderId, account.IBSAccountId, request.Settings.Name, request.Settings.Phone, request.Settings.Passengers,
-                                                    request.Settings.VehicleTypeId, request.Note, request.PickupDate.Value, ibsPickupAddress, ibsDropOffAddress);
+                                                    request.Settings.VehicleTypeId, request.Settings.ChargeTypeId, request.Note, request.PickupDate.Value, ibsPickupAddress, ibsDropOffAddress);
 
             return result;
 
