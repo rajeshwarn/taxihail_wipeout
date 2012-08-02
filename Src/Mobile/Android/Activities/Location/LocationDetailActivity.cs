@@ -44,7 +44,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
             FindViewById<EditText>(Resource.Id.LocationAddress).Text = !_data.FullAddress.IsNullOrEmpty() ? _data.FullAddress : null;
             FindViewById<EditText>(Resource.Id.LocationAppartment).Text = !_data.Apartment.IsNullOrEmpty() ? _data.Apartment : null;
             FindViewById<EditText>(Resource.Id.RingCode).Text = !_data.RingCode.IsNullOrEmpty() ? _data.RingCode : null;
-            FindViewById<EditText>(Resource.Id.LocationFriendlyName).Text = !_data.FriendlyName.IsNullOrEmpty() ? _data.FriendlyName : null;
+            FindViewById<EditText>(Resource.Id.LocationFriendlyName).Text = !_data.Id.IsNullOrEmpty() ? _data.FriendlyName : null;
             
             
             if (_data.Id.IsNullOrEmpty() )
