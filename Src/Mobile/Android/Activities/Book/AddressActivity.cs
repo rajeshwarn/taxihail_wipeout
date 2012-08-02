@@ -55,8 +55,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             var locationIntent = new Intent(this, typeof(LocationsActivity));
             locationIntent.PutExtra(NavigationStrings.ParentScreen.ToString(), (int)ParentScreens.BookScreen);
 
+            //gps intent
+            var gpsIntent = new Intent(LocationBroadcastReceiver.ACTION_RESP);
+
+            IntentFilter filter = new IntentFilter(LocationBroadcastReceiver.ACTION_RESP);
+            filter.AddCategory(Intent.CategoryDefault);
+            var receiver = new LocationBroadcastReceiver(this);
+            RegisterReceiver(receiver, filter);
+
             //DropDownMenu definition
-            var iconActionControl = new IconActionControl(this, "images/arrow-right@2x.png", new List<IconAction>() { new IconAction("images/location-icon@2x.png", null, null), new IconAction("images/favorite-icon@2x.png", locationIntent, (int)ActivityEnum.Pickup), new IconAction("images/contacts@2x.png", contactIntent, 42) }, true);
+            var iconActionControl = new IconActionControl(this, "images/arrow-right@2x.png", new List<IconAction>() { new IconAction("images/location-icon@2x.png", gpsIntent, null), new IconAction("images/favorite-icon@2x.png", locationIntent, (int)ActivityEnum.Pickup), new IconAction("images/contacts@2x.png", contactIntent, 42) }, true);
             var dropDownControlLayout = FindViewById<LinearLayout>(Resource.Id.linear_iconaction);
             dropDownControlLayout.AddView(iconActionControl);
         }
@@ -365,7 +373,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
 
 
-
+        public void RefreshPosition()
+        {
+            RetrieveCurrentLocation(UpdateLocationFromAndroidPosition);
+        }
 
         private void RetrieveCurrentLocation(Action<Android.Locations.Location, bool, bool> callback)
         {
@@ -482,6 +493,28 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
 
 
+    }
+
+    [BroadcastReceiver]
+    public class LocationBroadcastReceiver : BroadcastReceiver
+    {
+        public static readonly string ACTION_RESP = "Mk_Taxi_Address_Activity.Action.GPS_BUTTON_RAISED";
+        public AddressActivity addressActivity { get; set; }
+
+        public LocationBroadcastReceiver()
+        {
+            //addressActivity = new AddressActivity();
+        }
+
+        public LocationBroadcastReceiver(AddressActivity addressActivity)
+        {
+            this.addressActivity = addressActivity;
+        }
+        public override void OnReceive(Context context, Intent intent)
+        {
+            addressActivity.RefreshPosition();
+
+        }
     }
 
 

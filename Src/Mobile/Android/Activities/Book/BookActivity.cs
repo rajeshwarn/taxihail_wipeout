@@ -31,6 +31,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
     [Activity(Label = "Book", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class BookActivity : TabActivity
     {
+
+
         private enum Tab
         {
             Pickup,
@@ -56,11 +58,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             LocationService = new LocationService();
             LocationService.Start();
-
+            
             SetContentView(Resource.Layout.Book);
 
             ResetBookingInfo();
-
             var pickupButton = FindViewById<Button>(Resource.Id.PickupBtn);
             pickupButton.Click += new EventHandler(pickupButton_Click);
 
@@ -74,6 +75,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             TabWidget.Visibility = ViewStates.Gone;
             Parent.FindViewById<Button>(Resource.Id.BookItBtn).Click += new EventHandler(BookItBtn_Click);
+
+
+            
+
+
         }
 
         
@@ -441,4 +447,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         }
     }
+
+    
+
 }
