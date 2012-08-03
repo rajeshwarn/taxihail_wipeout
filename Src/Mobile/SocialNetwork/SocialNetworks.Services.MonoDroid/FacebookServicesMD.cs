@@ -50,6 +50,10 @@ namespace SocialNetworks.Services.MonoDroid
             var asyncRunner = new AsyncFacebookRunner (_facebookClient);
 			asyncRunner.Request("me", new RequestListener((response, obj) => {
 				var data = (JsonObject) JsonValue.Parse (response);
+                if (!data.ContainsKey("id"))
+                {
+                    return;
+                }
 				var infos = new UserInfos();
 				infos = new UserInfos();
 				infos.Id = data["id"];

@@ -16,6 +16,7 @@ using apcurium.MK.Booking.Mobile.Client.Models;
 using apcurium.MK.Booking.Mobile.Client.Adapters;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.History
 {
@@ -39,20 +40,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
 
         private void SetAdapter()
         {
-            var historyView = GetHistory();
+            ThreadHelper.ExecuteInThread(this, () =>
+                {
+                    var historyView = GetHistory();
+                    var adapter = new CustomOrderListAdapter(this);
+                    adapter.AddSection(Resources.GetString(Resource.String.HistoryInfo), new OrderListAdapter(this, historyView));
 
-            var adapter = new CustomOrderListAdapter(this);
-            adapter.AddSection(Resources.GetString(Resource.String.HistoryInfo), new OrderListAdapter(this, historyView));
-              FindViewById<ListView>(Resource.Id.HistoryList).Adapter = adapter;
-            _listView.Divider = null;
-            _listView.DividerHeight = 0;
-            _listView.SetPadding(10, 0, 10, 0);
-            /*if (_listView.FooterViewsCount.Equals(0))
+                    RunOnUiThread(() =>
+                        {
+                            FindViewById<ListView>(Resource.Id.HistoryList).Adapter = adapter;
+                            _listView.Divider = null;
+                            _listView.DividerHeight = 0;
+                            _listView.SetPadding(10, 0, 10, 0);
+                        });
+                }, true );
+               /*if (_listView.FooterViewsCount.Equals(0))
             {
                 TextView padding = new TextView(this);
                 padding.SetHeight(10);
                 _listView.AddFooterView(padding);
             }*/
+
         }
 
         private IDictionary<string, object> CreateItem(string title, HistoryModel model)
@@ -75,7 +83,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
             if (item != null)
             {
                 var id = item.Order.Id;
-                Intent i = new Intent(this,typeof(HistoryDetailActivity));
+                Intent i = new Intent(this, typeof(HistoryDetailActivity));
                 i.PutExtra(NavigationStrings.HistorySelectedId.ToString(), id.ToString());
                 StartActivityForResult(i, (int)ActivityEnum.History);
             }
@@ -135,9 +143,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
                     ailm.Last().BgResource = Resource.Drawable.blank_bottom_state;
                 }
             }
-            
-            
-            
+
+
+
             return ailm;
         }
 

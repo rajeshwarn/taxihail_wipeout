@@ -39,13 +39,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             Time.Hint = GetString(Resource.String.PickupDateTextPlaceholder) + "  -  " + GetString(Resource.String.PickupTimeTextPlaceholder);
             Time.Enabled = false;
 
-            //Time.Background.SetAlpha(255);
-            Time.Background.SetColorFilter(Color.LightGray,PorterDuff.Mode.Multiply);
+            Time.FocusChange += (e,s) => ResizeDownIconActionControl();
+
             
             //FindViewById<Button>(Resource.Id.pickupTimeButton).Click += new EventHandler(PickTime_Click);
             FindViewById<Button>(Resource.Id.pickupDateButton).Click += new EventHandler(PickDate_Click);
 
             FindViewById<EditText>(Resource.Id.pickupTimeText).EditorAction += new EventHandler<TextView.EditorActionEventArgs>(PickupTimeText_EditorAction);
+            FindViewById<EditText>(Resource.Id.pickupTimeText).FocusChange += (e, s) => ResizeDownIconActionControl();
+
+            FindViewById<EditText>(Resource.Id.aptNumberText).FocusChange += (e, s) => ResizeDownIconActionControl();
+            FindViewById<EditText>(Resource.Id.ringCodeText).FocusChange += (e, s) => ResizeDownIconActionControl();
+
             this.InitializeDropDownMenu();
             
         }

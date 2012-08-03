@@ -178,11 +178,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-		private void ResizeDown()
+		public void ResizeDown()
 		{
-			_button.StartAnimation(_rotateLeft);
-            _lv.StartAnimation(_resizeDown);
-            _frameLayout.SetBackgroundDrawable(_bitmapUnselected);
+            if (!_lv.Height.Equals(0))
+            {
+                _button.StartAnimation(_rotateLeft);
+                _lv.StartAnimation(_resizeDown);
+                _frameLayout.SetBackgroundDrawable(_bitmapUnselected);
+            }
 		}
 
     }

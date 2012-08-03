@@ -274,12 +274,6 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\Shared Assets\About_en.html">
-      <Link>Assets\About_en.html</Link>
-    </Content>
-    <Content Include="..\Shared Assets\About_fr.html">
-      <Link>Assets\About_fr.html</Link>
-    </Content>
     <AndroidAsset Include="Assets\images\arrow-right%402x.png" />
     <AndroidAsset Include="Assets\images\target-icon%402x.png" />
     <AndroidAsset Include="Assets\images\dropdown-bkgd%402x.png" />
@@ -390,7 +384,9 @@
     <AndroidResource Include="Resources\drawable-mdpi\sign_in_btn.9.png" />
     <AndroidResource Include="Resources\drawable-mdpi\social_media_login_btn.9.png" />
     <AndroidResource Include="Resources\drawable-mdpi\twitter_icon.png" />
-    <AndroidResource Include="Resources\Drawable\newBlackButton.xml" />
+    <AndroidResource Include="Resources\Drawable\newBlackButton.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <AndroidResource Include="Resources\Drawable\cell_middle_state.xml">
       <SubType>Designer</SubType>
     </AndroidResource>

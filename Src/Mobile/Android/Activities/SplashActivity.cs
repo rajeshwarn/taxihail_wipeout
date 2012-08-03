@@ -7,6 +7,7 @@ using TinyIoC;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Client.Activities.Book;
 using apcurium.MK.Booking.Mobile.Client.Activities.Account;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities
 {
@@ -24,6 +25,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
             base.OnCreate(bundle);
 
             var sessionValid = TinyIoCContainer.Current.Resolve<IAccountService>().CheckSession();
+
+            ThreadHelper.ExecuteInThread(this, () => TinyIoCContainer.Current.Resolve<IAccountService>().RefreshCache(),false);            
 
             if (!sessionValid
                 || AppContext.Current.LoggedUser == null)           

@@ -127,6 +127,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             base.OnPause();
             HideKeyboards();
+            ResizeDownIconActionControl();
         }
 
 
@@ -134,12 +135,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             if (e.HasFocus)
             {
+                ResizeDownIconActionControl();
                 SetAutoComplete();
             }
             else
-            {               
+            {
                 ClearAutoComplete();
                 ValidateAddress(true);
+            }
+        }
+
+        protected void ResizeDownIconActionControl()
+        {
+            var dropDownControlLayout = FindViewById<LinearLayout>(Resource.Id.linear_iconaction);
+
+            for (int i = 0; i < dropDownControlLayout.ChildCount; i++)
+            {
+                if (dropDownControlLayout.GetChildAt(i) is IconActionControl)
+                {
+                    ((IconActionControl)dropDownControlLayout.GetChildAt(i)).ResizeDown();
+                }
             }
         }
 
@@ -195,14 +210,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             Action validate = () =>
             {
-                
+
                 var found = TinyIoCContainer.Current.Resolve<IGeolocService>().ValidateAddress(Address.Text);
                 if (found != null)
-                {                
+                {
                     SetLocationData(found, true);
                 }
                 else
-                {                    
+                {
                     ClearLocationLngLAt();
                 }
             };
@@ -219,7 +234,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         private void ClearLocationLngLAt()
         {
-            RunOnUiThread(() => Address.Error = GetString ( Resource.String.InvalidAddressTextEdit ));
+            RunOnUiThread(() => Address.Error = GetString(Resource.String.InvalidAddressTextEdit));
             Location.Latitude = 0;
             Location.Longitude = 0;
         }
@@ -231,15 +246,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             ThreadHelper.ExecuteInThread(Parent, () =>
                 {
-                    
+
                     var found = TinyIoCContainer.Current.Resolve<IGeolocService>().ValidateAddress(address);
 
                     if (found != null)
-                    {                        
-                        SetLocationData(found, changeZoom);                        
+                    {
+                        SetLocationData(found, changeZoom);
                     }
                     else
-                    {                        
+                    {
                         ClearLocationLngLAt();
                     }
                 }, false);
@@ -287,7 +302,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                                       Address.ClearFocus();
                                       HideKeyboards();
                                   }
-                                  catch(Exception ex)
+                                  catch (Exception ex)
                                   {
                                       TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex);
                                   }
@@ -381,13 +396,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private void RetrieveCurrentLocation(Action<Android.Locations.Location, bool, bool> callback)
         {
             bool canceled = false;
-            Action cancelAction= ()=> { 
-                                        _updateReceived = true;
-                                          canceled = true;
-                                      };
+            Action cancelAction = () =>
+            {
+                _updateReceived = true;
+                canceled = true;
+            };
             var progressDialog = new ProgressDialog(Parent);
             progressDialog.SetMessage(Resources.GetString(Resource.String.Locating));
-            progressDialog.SetButton(Resources.GetString(Resource.String.CancelBoutton), (e,s)=> cancelAction());
+            progressDialog.SetButton(Resources.GetString(Resource.String.CancelBoutton), (e, s) => cancelAction());
             progressDialog.CancelEvent += (e, s) => cancelAction();
             progressDialog.Show();
 
@@ -472,6 +488,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             RunOnUiThread(() =>
             {
+                ResizeDownIconActionControl();
 
                 HideKeyboards();
                 if (_lastCenter == null ||
