@@ -215,4 +215,6 @@
   <string name="StatusCannotBeDisplayed">Le status ne peut être affiché. Contactez la centrale de réservation.</string>
   <string name="AccountActivationTitle">Activation</string>
   <string name="AccountActivationMessage">Vous allez recevoir un email contenant un lien pour activer ce compte.</string>
+    <string name="SaveAddressEmptyFieldMessage">Données manquantes, le nom et l\'addresse sont requis.</string>
+    <string name="SaveAddressEmptyFieldTitle">Nom manquant</string>
 </resources>
