@@ -51,7 +51,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 		
 		private void CallCie( object sender, EventArgs e )
 		{
-			Intent callIntent = new Intent(Intent.ActionCall);
+            Intent callIntent = new Intent(Intent.ActionCall, Android.Net.Uri.Parse("tel:" + AppSettings.PhoneNumberDisplay(AppContext.Current.LoggedUser.Settings.ProviderId)));
             //TODO:Fix this
             //callIntent.SetData(Android.Net.Uri.Parse("tel:" + AppSettings.PhoneNumber(AppContext.Current.LoggedUser.Settings.Company)));
 			StartActivity(callIntent);

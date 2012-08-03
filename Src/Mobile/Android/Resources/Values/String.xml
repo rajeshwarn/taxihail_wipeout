@@ -100,6 +100,8 @@
   <string name="DeleteBookItButtonImageNamePressed">Assets/Button/btnBookIt-Pressed_en.png</string>
   <string name="InvalidAccountOnActivatedMessage">Your account cannot be validated, you must log in to use this application</string>
   <string name="InvalidAccountOnActivatedTitle">Invalid account</string>
+  <string name="SaveAddressEmptyFieldMessage">The data is invalid, friendly name and address fields are required.</string>
+  <string name="SaveAddressEmptyFieldTitle">Friendly name required</string>
   <string name="DoneButton">Done</string>
   <string name="SignOutButton">Sign Out</string>
   <string name="ChangeDefaultRideSettings">Change default ride settings</string>

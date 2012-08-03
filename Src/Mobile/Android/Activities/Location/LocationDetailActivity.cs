@@ -83,79 +83,94 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
         {
             Finish();
         }
-        private void SaveBtn_Click(object sender, EventArgs e)
+
+        private bool ValidateFields()
         {
             var txtAddress = FindViewById<EditText>(Resource.Id.LocationAddress);
+            var txtFriendlyName = FindViewById<EditText>(Resource.Id.LocationFriendlyName);
             if (txtAddress.Text.IsNullOrEmpty())
             {
                 this.ShowAlert(Resource.String.InvalidAddressTitle, Resource.String.InvalidAddressMessage);
+                return false;
             }
-            else
+            if (txtFriendlyName.Text.IsNullOrEmpty())
             {
+                this.ShowAlert(Resource.String.SaveAddressEmptyFieldTitle, Resource.String.SaveAddressEmptyFieldMessage);
+                return false;
+            }
+            return true;
+
+        }
+
+        private void SaveBtn_Click(object sender, EventArgs e)
+        {
+            if (ValidateFields())
+            {
+                var txtAddress = FindViewById<EditText>(Resource.Id.LocationAddress);
                 UpdateData();
                 ThreadHelper.ExecuteInThread(this, () =>
-            {
-                try
                 {
-                    var address = TinyIoCContainer.Current.Resolve<IGeolocService>().ValidateAddress(txtAddress.Text);
-                    if ( address == null )
+                    try
                     {
-                        RunOnUiThread(
-                            () =>
-                            this.ShowAlert(Resource.String.InvalidAddressTitle, Resource.String.InvalidAddressMessage));                        
-                        return;
-                    }
+                        var address = TinyIoCContainer.Current.Resolve<IGeolocService>().ValidateAddress(txtAddress.Text);
+                        if ( address == null )
+                        {
+                            RunOnUiThread(
+                                () =>
+                                this.ShowAlert(Resource.String.InvalidAddressTitle, Resource.String.InvalidAddressMessage));                        
+                            return;
+                        }
 
-                    RunOnUiThread(() =>
-                    {
-                        txtAddress.Text = address.FullAddress;
-                        UpdateData();
-                        _data.Latitude = address.Latitude;
-                        _data.Longitude = address.Longitude;
+                        RunOnUiThread(() =>
+                        {
+                            txtAddress.Text = address.FullAddress;
+                            UpdateData();
+                            _data.Latitude = address.Latitude;
+                            _data.Longitude = address.Longitude;
 
                         
-                        //    //TODO: Fix this
-                        //    //if ((AppContext.Current.LoggedUser.FavoriteLocations != null) && (AppContext.Current.LoggedUser.FavoriteLocations.Count() > 0))
-                        //    //{
-                        //    //    newList.AddRange(AppContext.Current.LoggedUser.FavoriteLocations);
-                        //    //}
-                        //    //newList.Add(_data);
-                        //    //var loggedUser = AppContext.Current.LoggedUser;
+                            //    //TODO: Fix this
+                            //    //if ((AppContext.Current.LoggedUser.FavoriteLocations != null) && (AppContext.Current.LoggedUser.FavoriteLocations.Count() > 0))
+                            //    //{
+                            //    //    newList.AddRange(AppContext.Current.LoggedUser.FavoriteLocations);
+                            //    //}
+                            //    //newList.Add(_data);
+                            //    //var loggedUser = AppContext.Current.LoggedUser;
                             
-                        //    //TODO : Fix this
-                        //    //loggedUser.FavoriteLocations = newList.ToArray();
+                            //    //TODO : Fix this
+                            //    //loggedUser.FavoriteLocations = newList.ToArray();
                             
-                        //    //AppContext.Current.UpdateLoggedInUser(loggedUser, true);
-                        //    //AppContext.Current.LoggedUser = loggedUser;
-                        //}
-                        //else
-                        //{
-                        //    //TODO : Fix this
-                        //    //if (AppContext.Current.LoggedUser.FavoriteLocations.Count() > 0  )
-                        //    //{
-                        //    //    var list = new List<LocationData>(AppContext.Current.LoggedUser.FavoriteLocations);
-                        //    //    var loc = list.FirstOrDefault(l => l.Id == _data.Id);
-                        //    //    var i = list.IndexOf(loc);
-                        //    //    list.RemoveAt(i);
-                        //    //    list.Insert(i, _data);
-                        //    //    AppContext.Current.LoggedUser.FavoriteLocations = list.ToArray();
-                        //    //    //AppContext.Current.LoggedUser.FavoriteLocations.Remove(l => l.Id == _data.Id);
-                        //    //    AppContext.Current.UpdateLoggedInUser(AppContext.Current.LoggedUser, true);
-                        //    //}
-                        //}
+                            //    //AppContext.Current.UpdateLoggedInUser(loggedUser, true);
+                            //    //AppContext.Current.LoggedUser = loggedUser;
+                            //}
+                            //else
+                            //{
+                            //    //TODO : Fix this
+                            //    //if (AppContext.Current.LoggedUser.FavoriteLocations.Count() > 0  )
+                            //    //{
+                            //    //    var list = new List<LocationData>(AppContext.Current.LoggedUser.FavoriteLocations);
+                            //    //    var loc = list.FirstOrDefault(l => l.Id == _data.Id);
+                            //    //    var i = list.IndexOf(loc);
+                            //    //    list.RemoveAt(i);
+                            //    //    list.Insert(i, _data);
+                            //    //    AppContext.Current.LoggedUser.FavoriteLocations = list.ToArray();
+                            //    //    //AppContext.Current.LoggedUser.FavoriteLocations.Remove(l => l.Id == _data.Id);
+                            //    //    AppContext.Current.UpdateLoggedInUser(AppContext.Current.LoggedUser, true);
+                            //    //}
+                            //}
 
-                        //_data.IsFromHistory = false;
-                        //Finish();
-                    });
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-                finally
-                {
+                            //_data.IsFromHistory = false;
+                            Finish();
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                    finally
+                    {
 
-                }
+                    }
             }, true);
             }
             TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().UpdateAddress(_data);
