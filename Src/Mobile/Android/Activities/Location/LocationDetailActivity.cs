@@ -145,7 +145,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
                         //}
 
                         //_data.IsFromHistory = false;
-                        //Finish();
+                        Finish();
                     });
                 }
                 catch (Exception ex)
