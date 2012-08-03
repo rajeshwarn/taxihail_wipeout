@@ -25,18 +25,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 			base.OnCreate (bundle);
 
 			SetContentView(Resource.Layout.About);
-			
-			string aboutUrl = "";
+
+            string aboutUrl = @"http://www.mobile-knowledge.com/index.html";
 			if( TinyIoCContainer.Current.Resolve<IAppResource>().CurrentLanguage == AppLanguage.Francais )
 			{
-				aboutUrl = @"file:///android_asset/About_fr.html";
+				//aboutUrl = @"file:///android_asset/About_fr.html";
 			}
 			else
 			{
-				aboutUrl = @"file:///android_asset/About_en.html";
+				//aboutUrl = @"file:///android_asset/About_en.html";
 			}
 			
 			FindViewById<WebView>(Resource.Id.aboutWebView).LoadUrl( aboutUrl );
+            FindViewById<WebView>(Resource.Id.aboutWebView).SetInitialScale(50);
 		}
 	}
 }

@@ -274,12 +274,6 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\Shared Assets\About_en.html">
-      <Link>Assets\About_en.html</Link>
-    </Content>
-    <Content Include="..\Shared Assets\About_fr.html">
-      <Link>Assets\About_fr.html</Link>
-    </Content>
     <AndroidAsset Include="Assets\images\arrow-right%402x.png" />
     <AndroidAsset Include="Assets\images\target-icon%402x.png" />
     <AndroidAsset Include="Assets\images\dropdown-bkgd%402x.png" />
