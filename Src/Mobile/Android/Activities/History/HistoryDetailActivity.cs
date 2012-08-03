@@ -60,11 +60,35 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
 
         void btnRebook_Click(object sender, EventArgs e)
         {
-            Intent intent = new Intent();
+            /*Intent intent = new Intent();
             intent.SetFlags(ActivityFlags.ForwardResult);
             intent.PutExtra("Rebook", _data.Id.ToString());
             SetResult(Result.Ok, intent);
-            Finish();
+            Finish();*/
+            ThreadHelper.ExecuteInThread(this, () =>
+                {
+
+                    var pickup = _data.PickupAddress;
+                    var dest = _data.DropOffAddress;
+                    var bookingInfo = new CreateOrder(){
+                        DropOffAddress =  _data.DropOffAddress,
+                        Note = _data.Note,
+                        PickupAddress = _data.PickupAddress,
+                        PickupDate = DateTime.Now,
+                        Settings = _data.Settings,
+                        Id = new Guid()
+                    };
+                    
+
+                    RunOnUiThread(() =>
+                    {
+                        Intent i = new Intent(this, typeof(BookDetailActivity));
+                        var serializedInfo = bookingInfo.Serialize();
+                        i.PutExtra("BookingInfo", serializedInfo);
+                        StartActivityForResult(i, (int)ActivityEnum.BookConfirmation);
+                    });
+                
+            }, true);
         }
 
 

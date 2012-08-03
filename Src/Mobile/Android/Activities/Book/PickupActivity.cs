@@ -38,6 +38,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             
             Time.Hint = GetString(Resource.String.PickupDateTextPlaceholder) + "  -  " + GetString(Resource.String.PickupTimeTextPlaceholder);
             Time.Enabled = false;
+
+            //Time.Background.SetAlpha(255);
+            Time.Background.SetColorFilter(Color.LightGray,PorterDuff.Mode.Multiply);
             
             //FindViewById<Button>(Resource.Id.pickupTimeButton).Click += new EventHandler(PickTime_Click);
             FindViewById<Button>(Resource.Id.pickupDateButton).Click += new EventHandler(PickDate_Click);

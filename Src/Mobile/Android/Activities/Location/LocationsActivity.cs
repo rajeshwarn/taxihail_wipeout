@@ -7,6 +7,7 @@ using Android.Content;
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.OS;
+using Android.Views;
 using Android.Widget;
 using apcurium.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Models;
@@ -74,12 +75,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
             var adapter = new CustomLocationListAdapter(this);
             adapter.AddSection(Resources.GetString(Resource.String.FavoriteLocationsTitle), new LocationListAdapter(this, favoriteAddresses));
             adapter.AddSection(Resources.GetString(Resource.String.LocationHistoryTitle), new LocationListAdapter(this, historyAddresses));
+            
             _listView.Adapter = adapter;
+            /*if(_listView.FooterViewsCount.Equals(0))
+            {
+                TextView padding = new TextView(this);
+                padding.SetHeight(10);
+                _listView.AddFooterView(padding);
+            }*/
             
             //_listView.SetBackgroundResource(Resource.Drawable.cell_middle);
             _listView.Divider = null;
             _listView.DividerHeight = 0;
             _listView.SetPadding(10,0,10,0);
+            
+            
+            
+
         }
 
         private void UpdateUI()

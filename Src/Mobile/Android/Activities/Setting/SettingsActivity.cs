@@ -15,6 +15,7 @@ using SocialNetworks.Services;
 using apcurium.MK.Booking.Mobile.Client.Activities.Account;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Diagnostic;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
@@ -73,7 +74,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
             {
                 twitterService.Disconnect();
             }
-           
+
+            TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService>().ClearAll();
             RunOnUiThread(() =>
             {
                 Finish();
