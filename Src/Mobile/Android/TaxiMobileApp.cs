@@ -45,6 +45,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         }
 
+
+        
         void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             try

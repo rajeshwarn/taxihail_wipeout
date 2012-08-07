@@ -4,6 +4,10 @@ using Android.Graphics.Drawables;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Client.Converters;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using TinyIoC;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using System;
+
 
 namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 {
@@ -15,10 +19,10 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
         {
             var point = new GeoPoint(0, 0);
             if (location != null)
-            {                
+            {
                 point = new GeoPoint(CoordinatesConverter.ConvertToE6(location.Latitude), CoordinatesConverter.ConvertToE6(location.Longitude));
                 if (point != map.MapCenter)
-                {                    
+                {
                     map.Controller.AnimateTo(point);
                 }
             }
@@ -29,22 +33,32 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
         public static void AddPushPin(MapView map, Drawable mapPin, Address location, Activity activity, string title)
         {
 
-                        if  ( location != null ) 
-                        {
-                            var point = new GeoPoint(CoordinatesConverter.ConvertToE6(location.Latitude),
-                                                     CoordinatesConverter.ConvertToE6(location.Longitude));
+            if (location != null)
+            {
+                var point = new GeoPoint(CoordinatesConverter.ConvertToE6(location.Latitude),
+                                         CoordinatesConverter.ConvertToE6(location.Longitude));
 
-                            map.Overlays.Clear();
-                            MapService.AddMyLocationOverlay(map, activity);                            
-                            var pushpinOverlay = new PushPinOverlay( map , mapPin,title, point);
-                            map.Overlays.Add(pushpinOverlay);
-                        }
-            
+                map.Overlays.Clear();
+                MapService.AddMyLocationOverlay(map, activity, null);
+                var pushpinOverlay = new PushPinOverlay(map, mapPin, title, point);
+                map.Overlays.Add(pushpinOverlay);
+            }
+
         }
 
-        public static void AddMyLocationOverlay(MapView map, Activity activity)
+        public static void AddMyLocationOverlay(MapView map, Activity activity, Func<bool> needToRunOnFirstFix )
         {
-            var overlay = new MyLocationOverlay(activity, map);            
+            var overlay = new MyLocationOverlay(activity, map);
+            var func = needToRunOnFirstFix;
+            overlay.RunOnFirstFix(() =>
+                {
+                    
+                    if (( func != null )  && (func()) )
+                    {
+                        map.Controller.SetZoom(15);
+                        map.Controller.AnimateTo(overlay.MyLocation);
+                    }
+                });   
             overlay.EnableMyLocation();
             map.Overlays.Add(overlay);
         }
@@ -54,18 +68,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             return new GeoPoint(CoordinatesConverter.ConvertToE6(latitude), CoordinatesConverter.ConvertToE6(longitude));
         }
 
-        //private static void UpdateMap( MapView map, LocationData[] locations )
-        //{
-        //    if (locations.Count() >= 1 && !locations[0].Address.IsNullOrEmpty() && locations[0].Longitude.HasValue && locations[0].Latitude.HasValue)
-        //    {
-        //        var point = new GeoPoint(CoordinatesConverter.ConvertToE6(locations[0].Latitude.Value), CoordinatesConverter.ConvertToE6(locations[0].Longitude.Value));
-        //        if( point != map.MapCenter )
-        //        {
-        //            map.Controller.AnimateTo(point);
-        //            Console.WriteLine( point.LatitudeE6.ToString() + " " + point.LongitudeE6.ToString() );
-        //        }
-        //    }			
-        //}
+      
 
     }
 }

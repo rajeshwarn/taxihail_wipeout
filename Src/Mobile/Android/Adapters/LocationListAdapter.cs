@@ -38,29 +38,40 @@ namespace apcurium.MK.Booking.Mobile.Client.Adapters
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
             var item = ListAddress[position];
-            View view = convertView;
-            if (view == null)
+            
+            
+            TitleSubTitleListItemController controller = null;
+            if (item.Address.IsHistoric)
             {
-                view = _context.LayoutInflater.Inflate(Resource.Layout.LocationListItem, null);
+                if ((convertView == null) || new TitleSubTitleListItemController(convertView).HasSubTitle)
+                {
+                    controller = new TitleSubTitleListItemController(_context.LayoutInflater.Inflate(Resource.Layout.TitleListItem, null));
+                }
+                else
+                {
+                    controller = new TitleSubTitleListItemController(convertView);
+                }
+                controller.Title = this.ListAddress[position].Address.FullAddress;                
             }
-            var layout = view.FindViewById<LinearLayout>(Resource.Id.LocationListLayout);
-            var title = view.FindViewById<TextView>(Resource.Id.LocationListTitle);
-            var subtitle = view.FindViewById<TextView>(Resource.Id.LocationListSubtitle);
-            var image = view.FindViewById<ImageView>(Resource.Id.LocationListPicture);
+            else
+            {
+                if ((convertView == null) || !( new TitleSubTitleListItemController(convertView).HasSubTitle))
+                {
+                    controller = new TitleSubTitleListItemController(_context.LayoutInflater.Inflate(Resource.Layout.TitleSubTitleListItem, null));
+                }
+                else
+                {
+                    controller = new TitleSubTitleListItemController(convertView);
+                }                
+                controller.Title = this.ListAddress[position].Address.FriendlyName;                                
+                controller.SubTitle = this.ListAddress[position].Address.FullAddress;
+                
+            }
 
-            title.Text = this.ListAddress[position].Address.FriendlyName;
-            //subtitle.Text = this.ListAddress[position].Address.FullAddress.Length < 40 ? this.ListAddress[position].Address.FullAddress : this.ListAddress[position].Address.FullAddress.Substring(0,37) + "...";
-            subtitle.Text = this.ListAddress[position].Address.FullAddress;
-            layout.SetBackgroundResource(this.ListAddress[position].BgResource);
-            try
-            {
-                image.SetImageDrawable(this._context.Resources.GetDrawable(this.ListAddress[position].ImageResource));
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            return view;
+            controller.SetBackImage(this.ListAddress[position].BackgroundImageResource);
+            controller.SetNavIcon(this.ListAddress[position].NavigationIconResource);
+
+            return controller.View;
         }
 
         public override int Count

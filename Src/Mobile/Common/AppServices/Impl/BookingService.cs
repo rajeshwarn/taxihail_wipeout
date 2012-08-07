@@ -48,7 +48,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             ThreadPool.QueueUserWorkItem(o =>
             {
-                TinyIoCContainer.Current.Resolve<IAccountService>().RefreshCache();
+                TinyIoCContainer.Current.Resolve<IAccountService>().RefreshCache(true);
             });
 
             return orderDetail;

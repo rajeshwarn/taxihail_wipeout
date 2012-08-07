@@ -60,6 +60,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             get { return Resource.String.PickupMapTitle; }
         }
 
+        protected override bool AddressCanBeEmpty
+        {
+            get { return false; }
+        }
 
         void PickupTimeText_EditorAction(object sender, TextView.EditorActionEventArgs e)
         {
@@ -127,13 +131,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         protected override Android.Graphics.Drawables.Drawable MapPin
         {
             get { return Resources.GetDrawable(Resource.Drawable.pin_green); }
-        }
-
-        protected override Button SelectAddressButton
-        {
-            //get { return FindViewById<Button>(Resource.Id.pickupAddressButton); }
-            get { return null; }
-        }
+        }        
 
         protected override bool ShowUserLocation
         {

@@ -6,62 +6,61 @@
     android:gravity="center_horizontal"
     android:focusable="true"
     android:focusableInTouchMode="true">
-  <RelativeLayout
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content">
-    <ImageView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:src="@drawable/background"
-        android:scaleType="fitXY"
-        android:adjustViewBounds="true"
-        android:layout_below="@+id/HeaderImage" />
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:paddingTop="5dip"
-        android:layout_below="@+id/HeaderImage">
-
-      <ListView android:layout_width="fill_parent"
-        android:layout_height="fill_parent" android:id="@+id/LocationListView">
-
-      </ListView>
-    </LinearLayout>
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/HeaderImage"
-        android:layout_marginBottom="-8dip"
-        android:gravity="center">
-      <ImageView
-          android:layout_width="fill_parent"
-          android:layout_height="wrap_content"
-          android:src="@drawable/header"
-          android:scaleType="centerInside"
-          android:adjustViewBounds="true" />
-      <TextView
-      android:id="@+id/SignUpBigTitle"
-      style="@style/BigTitleText"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="8dip"
-      android:gravity="center_horizontal"
-      android:text="@string/TabLocations" />
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:src="@drawable/background"
+            android:scaleType="fitXY"
+            android:adjustViewBounds="true"
+            android:layout_below="@+id/HeaderImage" />
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingTop="5dip"
+            android:layout_below="@+id/HeaderImage">
+            <ListView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/LocationListView"
+                android:layout_marginBottom="5dip" />
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/HeaderImage"
+            android:layout_marginBottom="-8dip"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/header"
+                android:scaleType="centerInside"
+                android:adjustViewBounds="true" />
+            <TextView
+                android:id="@+id/SignUpBigTitle"
+                style="@style/BigTitleText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dip"
+                android:gravity="center_horizontal"
+                android:text="@string/TabLocations" />
+        </RelativeLayout>
     </RelativeLayout>
-  </RelativeLayout>
-  <RelativeLayout
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:background="@drawable/background"
-      android:gravity="bottom">
-    <ImageView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/footer"
-        android:scaleType="fitXY"
-        android:layout_alignParentBottom="true" />
-
-  </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background"
+        android:gravity="bottom">
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/footer"
+            android:scaleType="fitXY"
+            android:layout_alignParentBottom="true" />
+    </RelativeLayout>
 </LinearLayout>

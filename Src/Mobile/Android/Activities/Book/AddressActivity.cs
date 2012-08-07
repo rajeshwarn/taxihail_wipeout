@@ -95,32 +95,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             InitMap();
 
-            MapService.AddMyLocationOverlay(Map, this);
+            MapService.AddMyLocationOverlay(Map, this, () =>  ParentActivity.LocationService.LastLocation == null );
+
             Address.EditorAction -= new EventHandler<TextView.EditorActionEventArgs>(Address_EditorAction);
             Address.EditorAction += new EventHandler<TextView.EditorActionEventArgs>(Address_EditorAction);
             Address.ItemClick -= HandleItemClick;
             Address.ItemClick += HandleItemClick;
 
             Address.FocusChange -= new EventHandler<View.FocusChangeEventArgs>(Address_FocusChange);
-            Address.FocusChange += new EventHandler<View.FocusChangeEventArgs>(Address_FocusChange);
-
-            //SelectAddressButton.Click -= SelectAddressButtonOnClick;
-            //SelectAddressButton.Click += SelectAddressButtonOnClick;
+            Address.FocusChange += new EventHandler<View.FocusChangeEventArgs>(Address_FocusChange);            
 
             HideKeyboards();
-
         }
 
 
 
-        private void SelectAddressButtonOnClick(object sender, EventArgs eventArgs)
-        {
-
-            Intent i = new Intent(this, typeof(LocationsActivity));
-            i.PutExtra(NavigationStrings.ParentScreen.ToString(), (int)ParentScreens.BookScreen);
-            Parent.StartActivityForResult(i, (int)ActivityEnum.Pickup);
-
-        }
 
 
         protected override void OnPause()
@@ -181,12 +170,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             get;
         }
 
-        protected abstract AutoCompleteTextView Address
+        protected abstract bool AddressCanBeEmpty
         {
             get;
         }
 
-        protected abstract Button SelectAddressButton { get; }
+        protected abstract AutoCompleteTextView Address
+        {
+            get;
+        }
+        
 
         public virtual void OnAddressChanged(string address, bool useFirst)
         {
@@ -210,6 +203,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             Action validate = () =>
             {
+                if (Address.Text.IsNullOrEmpty() && !AddressCanBeEmpty)
+                {
+                    ClearLocationLngLAt();
+                    return;
+                }
 
                 var found = TinyIoCContainer.Current.Resolve<IGeolocService>().ValidateAddress(Address.Text);
                 if (found != null)
@@ -234,7 +232,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         private void ClearLocationLngLAt()
         {
-            RunOnUiThread(() => Address.Error = GetString(Resource.String.InvalidAddressTextEdit));
+            if ( Address.Text.HasValue() || !AddressCanBeEmpty) 
+            {
+                RunOnUiThread(() => Address.Error = GetString(Resource.String.InvalidAddressTextEdit));
+            }
             Location.Latitude = 0;
             Location.Longitude = 0;
         }
@@ -281,19 +282,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         public virtual void SetLocationData(WS.Address location, bool changeZoom)
         {
+            //We need to set a local variable otherwise the reference is lost in the ui thread.
+            var localLocation = location;
+
             RunOnUiThread(() =>
                               {
                                   Address.FocusChange -= new EventHandler<View.FocusChangeEventArgs>(Address_FocusChange);
-
+                                  Address.Error = null;
                                   try
                                   {
-                                      Address.Text = location.FullAddress;
+                                      Address.Text = localLocation.FullAddress;
 
                                       if (location.HasValidCoordinate())
                                       {
-                                          _lastCenter = MapService.SetLocationOnMap(Map, location);
-                                          MapService.AddPushPin(Map, MapPin, location, this, GetString(TitleResourceId));
-                                          MapService.SetLocationOnMap(Map, location);
+                                          _lastCenter = MapService.SetLocationOnMap(Map, localLocation);
+                                          MapService.AddPushPin(Map, MapPin, localLocation, this, GetString(TitleResourceId));
+                                          MapService.SetLocationOnMap(Map, localLocation);
                                           if (changeZoom)
                                           {
                                               Map.Controller.SetZoom(17);
@@ -310,7 +314,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                               });
 
 
-            Location = location;
+            Location = localLocation;
         }
 
         protected void HideKeyboards()
@@ -366,21 +370,29 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             _isInit = true;
             Map.SetBuiltInZoomControls(true);
+            
             Map.Clickable = true;
             Map.Traffic = false;
             Map.Satellite = false;
-            Map.Controller.SetZoom(15);
-
+            Map.Controller.SetZoom(17);            
+            
             if (Map is TouchMap)
             {
                 ((TouchMap)Map).MapTouchUp -= new EventHandler(AddressActivity_MapTouchUp);
                 ((TouchMap)Map).MapTouchUp += new EventHandler(AddressActivity_MapTouchUp);
             }
 
-            var loc = new WS.Address { Longitude = -73.6162, Latitude = 45.54015 };
+
             if (ParentActivity.LocationService.LastLocation != null)
             {
-                loc = new WS.Address { Longitude = ParentActivity.LocationService.LastLocation.Longitude, Latitude = ParentActivity.LocationService.LastLocation.Latitude };
+                Map.Controller.SetZoom(15);                
+                var loc = new WS.Address { Longitude = ParentActivity.LocationService.LastLocation.Longitude, Latitude = ParentActivity.LocationService.LastLocation.Latitude };
+            }
+            else
+            {
+                Map.Controller.SetZoom(5);
+                var loc = new WS.Address { Longitude = -96, Latitude = 48 };
+                Map.Controller.SetCenter( new GeoPoint(CoordinatesConverter.ConvertToE6(loc.Latitude), CoordinatesConverter.ConvertToE6(loc.Longitude)));
             }
 
             //_lastCenter = MapService.SetLocationOnMap(Map, loc);

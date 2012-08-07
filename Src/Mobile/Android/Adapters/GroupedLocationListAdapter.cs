@@ -7,7 +7,7 @@ using Android.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Adapters
 {
-    public class CustomLocationListAdapter : BaseAdapter
+    public class GroupedLocationListAdapter : BaseAdapter
     {
         private Activity _context;
 
@@ -15,11 +15,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Adapters
         public ArrayAdapter<string> Headers { get; set; }
         public static int TYPE_SECTION_HEADER = 0;
 
-        public static string ITEM_TITLE = "TITLE";
-        public static string ITEM_SUBTITLE = "SUBTITLE";
-        public static string ITEM_ID = "ID";
 
-        public CustomLocationListAdapter(Activity context)
+        public GroupedLocationListAdapter(Activity context)
             : base()
         {
             _context = context;
@@ -120,32 +117,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Adapters
                 // check if position inside this section
                 if (position == 0)
                 {
-                    return Headers.GetView(sectionNum, convertView, parent);
+                    var header = Headers.GetView(sectionNum, convertView, parent);
+                    if (header is TextView)
+                    {
+                        ((TextView)header).Typeface = AppFonts.Bold;
+                    }
+                    return header;
                 }
                 if (position < size)
-                {
-                    /*var item = adapter.GetItem(position - 1).Cast<IDictionary<string, object>>();                    
-                    
-                    var inflater = (LayoutInflater)_context.GetSystemService(Android.Content.Context.LayoutInflaterService);
-                    
-                    var v = inflater.Inflate(Resource.Layout.SimpleListItem, parent, false );
-
-                    if ( item != null )
-                    {
-                        v.FindViewById<TextView>(Resource.Id.ListComplexTitle).Text = item[ITEM_TITLE].ToString();
-                        v.FindViewById<TextView>(Resource.Id.ListComplexSubtitle).Text = item[ITEM_SUBTITLE].ToString();
-                    }*/
-
-                    
-
-                    return adapter.GetView(position-1,convertView,parent);
-                    //_headerView = inflater.Inflate(info.HeaderLayoutResourceId, headerContainer, false);
-
-
-                    //return new TextView(_context) { Text = "AAA" };
-                    //var view = adapter.GetView(position - 1, convertView, parent);
-                    //return view;
-
+                {                 
+                    return adapter.GetView(position-1,convertView,parent);                    
                 }
 
                 // otherwise jump into next section

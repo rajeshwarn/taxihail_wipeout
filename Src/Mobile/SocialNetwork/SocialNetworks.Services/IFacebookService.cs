@@ -9,7 +9,7 @@ namespace SocialNetworks.Services
 	{
 		bool IsConnected { get; }
 		void Connect(string permissions);
-		void GetUserInfos(Action<UserInfos> onRequestDone);
+		void GetUserInfos(Action<UserInfos> onRequestDone, Action onError);
 		void GetLikes( Action<List<UserLike>> onRequestDone );
 	    void SetCurrentContext(object context);
 

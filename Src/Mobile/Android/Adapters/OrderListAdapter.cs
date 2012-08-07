@@ -35,29 +35,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Adapters
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
             var item = ListOrder[position];
-            View view = convertView;
-            if (view == null)
-            {
-                view = _context.LayoutInflater.Inflate(Resource.Layout.OrderListItem, null);
-            }
-          var layout = view.FindViewById<LinearLayout>(Resource.Id.OrderListLayout);
-            var title = view.FindViewById<TextView>(Resource.Id.OrderListTitle);
-            var subtitle = view.FindViewById<TextView>(Resource.Id.OrderListSubtitle);
-            var image = view.FindViewById<ImageView>(Resource.Id.OrderListPicture);
 
-            title.Text = this.ListOrder[position].Order.IBSOrderId.ToString();
-            subtitle.Text = this.ListOrder[position].Order.PickupAddress.FullAddress;
 
-            layout.SetBackgroundResource(this.ListOrder[position].BgResource);
-            try
+            TitleSubTitleListItemController controller = null;
+            if (convertView == null)
             {
-                image.SetImageDrawable(this._context.Resources.GetDrawable(this.ListOrder[position].ImageResource));
+                controller = new TitleSubTitleListItemController(_context.LayoutInflater.Inflate(Resource.Layout.TitleSubTitleListItem, null));
             }
-            catch (Exception)
+            else
             {
-                throw;
+                controller = new TitleSubTitleListItemController(convertView);
             }
-            return view;
+            var title = string.Format( _context.GetString(Resource.String.OrderHistoryListTitle), this.ListOrder[position].Order.IBSOrderId.ToString());
+            controller.Title = title;
+            controller.SubTitle = this.ListOrder[position].Order.PickupAddress.FullAddress;
+            controller.SetBackImage( this.ListOrder[position].BackgroundImageResource );
+            controller.SetNavIcon( this.ListOrder[position].NavigationIconResource);
+
+            return controller.View;
         }
 
         public override int Count

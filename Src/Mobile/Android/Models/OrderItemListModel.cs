@@ -16,7 +16,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Models
     public class OrderItemListModel
     {
         public Order Order { get; set; }
-        public int BgResource { get; set; }
-        public int ImageResource { get; set; }
+        public int BackgroundImageResource { get; set; }
+        public int NavigationIconResource { get; set; }
     }
 }

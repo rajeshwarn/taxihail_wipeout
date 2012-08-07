@@ -25,6 +25,8 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using WS = apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using ServiceStack.Text;
+using System.Threading;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -76,7 +78,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             TabWidget.Visibility = ViewStates.Gone;
             Parent.FindViewById<Button>(Resource.Id.BookItBtn).Click += new EventHandler(BookItBtn_Click);
 
-
+            
             
 
 
@@ -106,15 +108,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                     var pickup = (AddressActivity)LocalActivityManager.GetActivity(Tab.Pickup.ToSafeString());
                     pickup.Maybe(() => pickup.ValidateAddress(false));
                     var dest = (AddressActivity)LocalActivityManager.GetActivity(Tab.Destination.ToSafeString());
-                    dest.Maybe(() => dest.ValidateAddress(false));
-
-                    UpdateModel();
-                    
                     if ((_bookingInfo.PickupAddress.FullAddress.IsNullOrEmpty()) || (!_bookingInfo.PickupAddress.HasValidCoordinate()))
                     {
                         RunOnUiThread(() => this.ShowAlert(Resource.String.InvalidBookinInfoTitle, Resource.String.InvalidBookinInfo));
                     }
                     else
+                    dest.Maybe(() => dest.ValidateAddress(false));
+
+                    Thread.Sleep(200);
+                    UpdateModel();
+                    if ((_bookingInfo.PickupAddress.FullAddress.IsNullOrEmpty()) || (!_bookingInfo.PickupAddress.HasValidCoordinate()))
+                    {
+                        RunOnUiThread(() => this.ShowAlert(Resource.String.InvalidBookinInfoTitle, Resource.String.InvalidBookinInfo));
+                    }
+                    else
+                    
                     {
                         RunOnUiThread(() =>
                             {
@@ -401,32 +409,34 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         public void RebookTrip(Guid tripId)
         {
 
-            //TODO:Fix this
-            //var tripData = AppContext.Current.LoggedUser.BookingHistory.SingleOrDefault(o => o.Id == tripId);
-            //if (tripData != null)
-            //{
-            //    _bookingInfo = tripData.Copy();
-            //    _bookingInfo.Id = 0;
-            //    _bookingInfo.PickupDate = null;
-            //    _bookingInfo.Status = null;
-            //    _bookingInfo.RequestedDateTime = null;
+
+            var tripData = TinyIoCContainer.Current.Resolve<IAccountService>().GetHistoryOrder(tripId);
+            if (tripData != null)
+            {
 
 
-            //    var pickupActivity = (PickupActivity)LocalActivityManager.GetActivity("Pickup");
-            //    if (pickupActivity != null)
-            //    {
-            //        pickupActivity.SetLocationData(_bookingInfo.PickupLocation, true);
-            //        pickupActivity.RefreshDateTime();                    
-            //    }
+                _bookingInfo = JsonSerializer.DeserializeFromString<CreateOrder>(JsonSerializer.SerializeToString<Order>(tripData));
+                _bookingInfo.Id = Guid.Empty;
+                _bookingInfo.PickupDate = null;                
+                _bookingInfo.PickupDate = null;
 
-            //    var destActivity = (DestinationActivity)LocalActivityManager.GetActivity("Destination");
-            //    if (destActivity != null)
-            //    {
-            //        destActivity.SetLocationData(_bookingInfo.DestinationLocation, true);
-            //    }
-            //    TogglePickupDestination(true);
 
-            //}
+                var pickupActivity = (PickupActivity)LocalActivityManager.GetActivity("Pickup");
+                if (pickupActivity != null)
+                {
+                    pickupActivity.SetLocationData(_bookingInfo.PickupAddress, true);
+                    pickupActivity.RefreshDateTime();
+                }
+
+                var destActivity = (DestinationActivity)LocalActivityManager.GetActivity("Destination");
+                if (destActivity != null)
+                {
+                    destActivity.SetLocationData(_bookingInfo.DropOffAddress, true);
+                }
+                TogglePickupDestination(true);
+
+                BookItBtn_Click(this, EventArgs.Empty);
+            }
         }
 
         internal void StartStatusActivity(Guid id)

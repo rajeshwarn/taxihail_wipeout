@@ -55,7 +55,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         Order GetHistoryOrder(Guid id);
 
-        void RefreshCache();
+        void RefreshCache(bool reload);
     }
 }
 

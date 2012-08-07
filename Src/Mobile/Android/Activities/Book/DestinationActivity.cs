@@ -55,12 +55,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             get { return FindViewById<MapView>(Resource.Id.mapDestination); }
         }
 
-        protected override Button SelectAddressButton
+        protected override bool AddressCanBeEmpty
         {
-            get { /*return FindViewById<Button>(Resource.Id.destAddressButton);*/
-                return null;
-            }
+            get { return true; }
         }
+
+
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);

@@ -43,7 +43,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
             ThreadHelper.ExecuteInThread(this, () =>
                 {
                     var historyView = GetHistory();
-                    var adapter = new CustomOrderListAdapter(this);
+                    var adapter = new GroupedOrderListAdapter(this);
                     adapter.AddSection(Resources.GetString(Resource.String.HistoryInfo), new OrderListAdapter(this, historyView));
 
                     RunOnUiThread(() =>
@@ -53,14 +53,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
                             _listView.DividerHeight = 0;
                             _listView.SetPadding(10, 0, 10, 0);
                         });
-                }, true );
-               /*if (_listView.FooterViewsCount.Equals(0))
-            {
-                TextView padding = new TextView(this);
-                padding.SetHeight(10);
-                _listView.AddFooterView(padding);
-            }*/
-
+                }, true );               
         }
 
         private IDictionary<string, object> CreateItem(string title, HistoryModel model)
@@ -73,7 +66,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
 
         void listView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
-            var adapter = FindViewById<ListView>(Resource.Id.HistoryList).Adapter as CustomOrderListAdapter;
+            var adapter = FindViewById<ListView>(Resource.Id.HistoryList).Adapter as GroupedOrderListAdapter;
             if (adapter == null)
             {
                 return;
@@ -100,7 +93,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
                         var rebookTripId = data.GetStringExtra("Rebook");
                         if (rebookTripId.HasValue())
                         {
-                            //AppContext.Current.TripIdToRebook = rebookTripId;
+                            
                             var parent = (MainActivity)Parent;
                             parent.RebookTrip(new Guid(rebookTripId));
                             parent.MainTabHost.CurrentTab = 0;
@@ -128,19 +121,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
             List<OrderItemListModel> ailm = orders.Select(order => new OrderItemListModel()
             {
                 Order = order,
-                BgResource = Resource.Drawable.cell_middle_state,
-                ImageResource = Resource.Drawable.right_arrow
+                BackgroundImageResource = Resource.Drawable.cell_middle_state,
+                NavigationIconResource = Resource.Drawable.right_arrow
             }).ToList();
             if (ailm.Any())
             {
-                ailm.First().BgResource = Resource.Drawable.cell_top_state;
+                ailm.First().BackgroundImageResource = Resource.Drawable.cell_top_state;
                 if (ailm.Count().Equals(1))
                 {
-                    ailm.First().BgResource = Resource.Drawable.blank_single_state;
+                    ailm.First().BackgroundImageResource = Resource.Drawable.blank_single_state;
                 }
                 else
                 {
-                    ailm.Last().BgResource = Resource.Drawable.blank_bottom_state;
+                    ailm.Last().BackgroundImageResource = Resource.Drawable.blank_bottom_state;
                 }
             }
 

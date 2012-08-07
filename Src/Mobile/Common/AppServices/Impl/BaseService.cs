@@ -6,6 +6,7 @@ using System.Text;
 
 using TinyIoC;
 using apcurium.MK.Common.Diagnostic;
+using System.Threading;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -34,8 +35,19 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         protected void QueueCommand<T>(Action<T> action) where T : class
         {
+
+            ThreadPool.QueueUserWorkItem(o =>
+            {
+                try
+                {
+                    UseServiceClient(action);
+                }
+                catch (Exception ex)
+                {
+                    TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex);
+                }
+            });
             
-            UseServiceClient(action);
         }
 
 

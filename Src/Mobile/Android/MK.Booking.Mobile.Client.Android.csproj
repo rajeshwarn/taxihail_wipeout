@@ -90,18 +90,18 @@
     <Compile Include="Activities\Book\LocationService.cs" />
     <Compile Include="Activities\Book\PickupActivity.cs" />
     <Compile Include="Activities\Setting\AboutActivity.cs" />
-    <Compile Include="Adapters\CustomOrderListAdapter.cs" />
-    <Compile Include="Adapters\HistoryListAdapter.cs" />
-    <Compile Include="Adapters\CustomLocationListAdapter.cs" />
+    <Compile Include="Adapters\GroupedOrderListAdapter.cs" />
+    <Compile Include="Adapters\GroupedLocationListAdapter.cs" />
     <Compile Include="Adapters\IconActionAdapter.cs" />
-    <Compile Include="Adapters\JavaObject.cs" />
     <Compile Include="Adapters\LocationListAdapter.cs" />
     <Compile Include="Adapters\OrderListAdapter.cs" />
+    <Compile Include="Adapters\TitleSubTitleListItemController.cs" />
     <Compile Include="Animations\ResizeAnimation.cs" />
     <Compile Include="AppContext.cs" />
     <Compile Include="AppModule.cs" />
     <Compile Include="AppSetting.cs" />
     <Compile Include="Activities\Book\BookActivity.cs" />
+    <Compile Include="AppFonts.cs" />
     <Compile Include="Cache\CacheService.cs" />
     <Compile Include="Controls\BaloonLayout.cs" />
     <Compile Include="Controls\IconActionControl.cs" />
@@ -138,10 +138,7 @@
     <Compile Include="Activities\Account\SignUpActivity.cs" />
     <Compile Include="Activities\SplashActivity.cs" />
     <Compile Include="Activities\Setting\SettingsActivity.cs" />
-    <AndroidResource Include="Resources\Layout\LocationListItem.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\Layout\OrderListItem.axml">
+    <AndroidResource Include="Resources\Layout\TitleSubTitleListItem.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\dropdownRow.axml" />
@@ -186,6 +183,8 @@
     <AndroidAsset Include="Assets\HelveticaNeueLTPro-Ex.otf" />
     <AndroidAsset Include="Assets\HelveticaNeueLTPro-Roman.otf" />
     <AndroidAsset Include="Assets\HelveticaNeueLTPro-Th.otf" />
+    <AndroidAsset Include="Assets\HelveticaNeueLTPro-Roman2.otf" />
+    <AndroidAsset Include="Assets\HelveticaNeueLTPro-Bd.otf" />
     <None Include="Resources\AboutResources.txt" />
     <AndroidResource Include="Resources\Layout\Login.axml">
       <SubType>Designer</SubType>
@@ -214,9 +213,6 @@
     <AndroidResource Include="Resources\Layout\RideSettings.axml" />
     <AndroidResource Include="Resources\Layout\LocationDetail.axml">
       <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\Layout\HistoryListItem.axml">
-      <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\HistoryDetail.axml">
       <SubType>AndroidResource</SubType>
@@ -270,6 +266,12 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\HistoryListView.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\LocationList.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\TitleListItem.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>
@@ -427,6 +429,10 @@
     <AndroidResource Include="Resources\Drawable\add_single_state.xml" />
     <AndroidResource Include="Resources\Drawable\blank_bottom_state.xml" />
     <AndroidResource Include="Resources\Drawable\blank_single_state.xml" />
+    <AndroidResource Include="Resources\Drawable\textedit_background.9.png" />
+    <AndroidResource Include="Resources\Drawable\textedit_background_std.xml" />
+    <AndroidResource Include="Resources\Drawable\textedit_background_disabled.9.png" />
+    <AndroidResource Include="Resources\Drawable\gray_button.xml" />
     <Content Include="Todo.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />

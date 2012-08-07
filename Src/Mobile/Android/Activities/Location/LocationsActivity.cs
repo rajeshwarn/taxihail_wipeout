@@ -56,22 +56,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
                         favoriteAddresses.Add(new AddressItemListModel()
                                                   {
                                                       Address = new Address() { Id = Guid.Empty, FullAddress = Resources.GetString(Resource.String.LocationAddFavoriteSubtitle), FriendlyName = Resources.GetString(Resource.String.LocationAddFavoriteTitle) },
-                                                      BgResource = bgId,
-                                                      ImageResource = Resource.Drawable.add_button
+                                                      BackgroundImageResource = bgId,
+                                                      NavigationIconResource = Resource.Drawable.add_button
                                                   });
                     }
 
-                    var adapter = new CustomLocationListAdapter(this);
+                    var adapter = new GroupedLocationListAdapter(this);
                     adapter.AddSection(Resources.GetString(Resource.String.FavoriteLocationsTitle), new LocationListAdapter(this, favoriteAddresses));
                     adapter.AddSection(Resources.GetString(Resource.String.LocationHistoryTitle), new LocationListAdapter(this, historyAddresses));
-            
-            /*if(_listView.FooterViewsCount.Equals(0))
-            {
-                TextView padding = new TextView(this);
-                padding.SetHeight(10);
-                _listView.AddFooterView(padding);
-            }*/
-
+             
                     RunOnUiThread(() =>
                         {
                             _listView.Adapter = adapter;
@@ -79,8 +72,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
                             _listView.DividerHeight = 0;
                             _listView.SetPadding(10, 0, 10, 0);
                         });
-                },true);
-            
+                }, true);
+
 
         }
 
@@ -88,9 +81,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
         {
             if (_parent != ParentScreens.BookScreen)
             {
-                _listView = new ListView(this);
+                this.SetContentView(Resource.Layout.LocationList);     
+                _listView = FindViewById<ListView>(Resource.Id.LocationListView);
                 _listView.CacheColorHint = Color.Transparent;
-                this.SetContentView(_listView);
                 _listView.ItemClick += new EventHandler<AdapterView.ItemClickEventArgs>(listView_ItemClickNormal);
             }
             else
@@ -105,7 +98,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
 
         private void listView_ItemClickNormal(object sender, AdapterView.ItemClickEventArgs e)
         {
-            var adapter = _listView.Adapter as CustomLocationListAdapter;
+            var adapter = _listView.Adapter as GroupedLocationListAdapter;
             if (adapter == null || adapter.GetItem(e.Position) == null)
             {
                 return;
@@ -125,7 +118,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
         }
         private void listView_ItemClickFromBook(object sender, AdapterView.ItemClickEventArgs e)
         {
-            var adapter = _listView.Adapter as CustomLocationListAdapter;
+            var adapter = _listView.Adapter as GroupedLocationListAdapter;
             if (adapter == null || adapter.GetItem(e.Position) == null)
             {
                 return;
@@ -167,21 +160,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
             List<AddressItemListModel> ailm = addresses.Select(address => new AddressItemListModel()
                                                                               {
                                                                                   Address = address,
-                                                                                  BgResource = Resource.Drawable.cell_middle_state,
-                                                                                  ImageResource = Resource.Drawable.right_arrow
+                                                                                  BackgroundImageResource = Resource.Drawable.cell_middle_state,
+                                                                                  NavigationIconResource = Resource.Drawable.right_arrow
                                                                               }).ToList();
             if (ailm.Any())
             {
-                ailm.First().BgResource = Resource.Drawable.cell_top_state;
+                ailm.First().BackgroundImageResource = Resource.Drawable.cell_top_state;
                 if (type.Equals(LocationTypes.History))
                 {
                     if (ailm.Count().Equals(1))
                     {
-                        ailm.First().BgResource = Resource.Drawable.blank_single_state;
+                        ailm.First().BackgroundImageResource = Resource.Drawable.blank_single_state;
                     }
                     else
                     {
-                        ailm.Last().BgResource = Resource.Drawable.blank_bottom_state;
+                        ailm.Last().BackgroundImageResource = Resource.Drawable.blank_bottom_state;
                     }
                 }
             }

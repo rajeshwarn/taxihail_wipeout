@@ -38,7 +38,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
 
         private void UpdateUI()
         {
-            FindViewById<TextView>(Resource.Id.ConfirmationTxt).Text = _data.IBSOrderId.HasValue ? _data.IBSOrderId.Value.ToString() : "Error" ;
+            FindViewById<TextView>(Resource.Id.ConfirmationTxt).Text = _data.IBSOrderId.HasValue ? _data.IBSOrderId.Value.ToString() : "Error";
             FindViewById<TextView>(Resource.Id.RequestedTxt).Text = FormatDateTime(_data.PickupDate, _data.PickupDate);
             FindViewById<TextView>(Resource.Id.OriginTxt).Text = _data.PickupAddress.FullAddress;
             FindViewById<TextView>(Resource.Id.AptRingTxt).Text = FormatAptRingCode(_data.PickupAddress.Apartment, _data.PickupAddress.RingCode);
@@ -60,35 +60,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
 
         void btnRebook_Click(object sender, EventArgs e)
         {
-            /*Intent intent = new Intent();
+            Intent intent = new Intent();
             intent.SetFlags(ActivityFlags.ForwardResult);
             intent.PutExtra("Rebook", _data.Id.ToString());
             SetResult(Result.Ok, intent);
-            Finish();*/
-            ThreadHelper.ExecuteInThread(this, () =>
-                {
-
-                    var pickup = _data.PickupAddress;
-                    var dest = _data.DropOffAddress;
-                    var bookingInfo = new CreateOrder(){
-                        DropOffAddress =  _data.DropOffAddress,
-                        Note = _data.Note,
-                        PickupAddress = _data.PickupAddress,
-                        PickupDate = DateTime.Now,
-                        Settings = _data.Settings,
-                        Id = new Guid()
-                    };
-                    
-
-                    RunOnUiThread(() =>
-                    {
-                        Intent i = new Intent(this, typeof(BookDetailActivity));
-                        var serializedInfo = bookingInfo.Serialize();
-                        i.PutExtra("BookingInfo", serializedInfo);
-                        StartActivityForResult(i, (int)ActivityEnum.BookConfirmation);
-                    });
-                
-            }, true);
+            Finish();
         }
 
 
@@ -96,7 +72,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
         {
 
             Intent i = new Intent(this, typeof(BookingStatusActivity));
-                        
+
             OrderStatusDetail orderInfo = new OrderStatusDetail { IBSOrderId = _data.IBSOrderId, IBSStatusDescription = "Loading...", IBSStatusId = "", OrderId = _data.Id, Status = OrderStatus.Unknown, VehicleLatitude = null, VehicleLongitude = null };
 
             var serialized = _data.Serialize();
@@ -118,25 +94,28 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
 
         void btnCancel_Click(object sender, EventArgs e)
         {
-
-            ThreadHelper.ExecuteInThread(this, () =>
-              {
-
-
-                  var isSuccess = TinyIoCContainer.Current.Resolve<IBookingService>().CancelOrder(_data.Id);
-                  if (isSuccess)
+            var newBooking = new Confirmation();
+            newBooking.Action(this, Resource.String.StatusConfirmCancelRide, () =>
+            {
+                ThreadHelper.ExecuteInThread(this, () =>
                   {
-                      RefreshStatus();
-                  }
-                  else
-                  {
-                      RunOnUiThread(() =>
-                          {
-                              this.ShowAlert(Resources.GetString(Resource.String.StatusConfirmCancelRideErrorTitle), Resources.GetString(Resource.String.StatusConfirmCancelRideError));
-                          });
-                  }
 
-              }, false);
+
+                      var isSuccess = TinyIoCContainer.Current.Resolve<IBookingService>().CancelOrder(_data.Id);
+                      if (isSuccess)
+                      {
+                          RefreshStatus();
+                      }
+                      else
+                      {
+                          RunOnUiThread(() =>
+                              {
+                                  this.ShowAlert(Resources.GetString(Resource.String.StatusConfirmCancelRideErrorTitle), Resources.GetString(Resource.String.StatusConfirmCancelRideError));
+                              });
+                      }
+
+                  }, false);
+            });
         }
 
         private void RefreshStatus()
@@ -148,9 +127,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
                 var status = TinyIoCContainer.Current.Resolve<IBookingService>().GetOrderStatus(_data.Id);
 
                 bool isCompleted = false;
-                if (status.IBSStatusId.HasValue() )
+                if (status.IBSStatusId.HasValue())
                 {
-                    isCompleted = TinyIoCContainer.Current.Resolve<IBookingService>().IsStatusCompleted (status.IBSStatusId);
+                    isCompleted = TinyIoCContainer.Current.Resolve<IBookingService>().IsStatusCompleted(status.IBSStatusId);
                 }
 
                 RunOnUiThread(() => FindViewById<TextView>(Resource.Id.StatusTxt).Text = status.IBSStatusDescription);

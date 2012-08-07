@@ -50,10 +50,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         }
 
-        public void RefreshCache()
+        public void RefreshCache(bool reload)
         {
             TinyIoCContainer.Current.Resolve<ICacheService>().Clear(_historyAddressesCacheKey);
-            TinyIoCContainer.Current.Resolve<ICacheService>().Clear(_favoriteAddressesCacheKey);         
+            TinyIoCContainer.Current.Resolve<ICacheService>().Clear(_favoriteAddressesCacheKey);
+
+            if (reload)
+            {
+                GetFavoriteAddresses();
+                GetHistoryAddresses();
+            }
         }
 
         public IEnumerable<Address> GetHistoryAddresses()
@@ -116,6 +122,49 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 
+
+        private void UpdateCacheArray<T>(string key, T updated, Func<T, T, bool> compare)
+        {
+            var cached = TinyIoCContainer.Current.Resolve<ICacheService>().Get<T[]>(key);
+
+            if (cached != null)
+            {
+
+                var found = cached.SingleOrDefault(c => compare(updated, c));
+                if (found == null)
+                {
+                    T[] newList = new T[cached.Length + 1];
+                    Array.Copy(cached, newList, cached.Length);
+                    newList[cached.Length] = updated;
+
+                    TinyIoCContainer.Current.Resolve<ICacheService>().Set(key, newList);
+                }
+                else
+                {
+                    var foundIndex = cached.IndexOf(updated, compare);
+                    cached[foundIndex] = updated;
+                    TinyIoCContainer.Current.Resolve<ICacheService>().Set(key, cached);
+                }
+            }
+
+
+        }
+
+        private void RemoveFromCacheArray<T>(string key, Guid toDeleteId, Func<Guid, T, bool> compare)
+        {
+            var cached = TinyIoCContainer.Current.Resolve<ICacheService>().Get<T[]>(key);
+
+            if ((cached != null) && (cached.Length > 0))
+            {
+                var list = new List<T>(cached);
+                var toDelete = list.Single(item => compare(toDeleteId, item));
+                list.Remove(toDelete);
+                TinyIoCContainer.Current.Resolve<ICacheService>().Set(key, list.ToArray());
+            }
+
+
+        }
+
   
 
         public Address FindInAccountAddresses(double latitude, double longitude)
@@ -166,7 +215,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
                 return true;
 
-            }catch(WebServiceException e)
+            }catch(Exception e)
             {
                 return false;
             }
@@ -341,9 +390,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             {
                 var accountId = CurrentAccount.Id;
                 var toDelete = addressId;
-                TinyIoCContainer.Current.Resolve<ICacheService>().Clear(_historyAddressesCacheKey);
-                TinyIoCContainer.Current.Resolve<ICacheService>().Clear(_favoriteAddressesCacheKey);
                 
+                RemoveFromCacheArray<Address>(_favoriteAddressesCacheKey, toDelete, (id, a) => a.Id == id);                
 
                 QueueCommand<AccountServiceClient>(service =>
                  {                     
@@ -378,11 +426,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             bool isNew = address.Id.IsNullOrEmpty();
             if (isNew)
             {
+                
                 address.Id = Guid.NewGuid();
             }
 
-            TinyIoCContainer.Current.Resolve<ICacheService>().Clear(_historyAddressesCacheKey);
-            TinyIoCContainer.Current.Resolve<ICacheService>().Clear(_favoriteAddressesCacheKey);
+
+            address.IsHistoric = false;
+
+            UpdateCacheArray(_favoriteAddressesCacheKey, address, (a1, a2) => a1.Id.Equals(a2.Id));
 
 
             QueueCommand<AccountServiceClient>(service =>

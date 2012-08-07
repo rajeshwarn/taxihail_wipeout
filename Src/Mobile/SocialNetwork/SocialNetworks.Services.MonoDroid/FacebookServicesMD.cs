@@ -45,13 +45,14 @@ namespace SocialNetworks.Services.MonoDroid
 			}
         }
 
-        public void GetUserInfos(Action<UserInfos> onRequestDone)
+        public void GetUserInfos(Action<UserInfos> onRequestDone, Action onError)
         {
             var asyncRunner = new AsyncFacebookRunner (_facebookClient);
 			asyncRunner.Request("me", new RequestListener((response, obj) => {
 				var data = (JsonObject) JsonValue.Parse (response);
                 if (!data.ContainsKey("id"))
                 {
+                    onError();
                     return;
                 }
 				var infos = new UserInfos();
@@ -60,8 +61,15 @@ namespace SocialNetworks.Services.MonoDroid
 				infos.Email = data["email"];
 				infos.Firstname = data["first_name"];
 				infos.Lastname = data["last_name"];
-				//infos.City = data["location"]["name"];
-				if(onRequestDone != null) onRequestDone(infos);
+
+                if (onRequestDone != null)
+                {
+                    onRequestDone(infos);
+                }
+                else
+                {
+                    onError();
+                }
 			}));
         }
 

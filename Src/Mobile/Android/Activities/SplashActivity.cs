@@ -20,16 +20,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 
         protected override void OnCreate(Bundle bundle)
         {
-            InitializeSocialNetwork();
-            _locationService.Start();
             base.OnCreate(bundle);
 
-            var sessionValid = TinyIoCContainer.Current.Resolve<IAccountService>().CheckSession();
+            InitializeSocialNetwork();
+            
+            _locationService.Start();                        
 
-            ThreadHelper.ExecuteInThread(this, () => TinyIoCContainer.Current.Resolve<IAccountService>().RefreshCache(),false);            
+            ThreadHelper.ExecuteInThread(this, () => TinyIoCContainer.Current.Resolve<IAccountService>().RefreshCache(true),false);            
 
-            if (!sessionValid
-                || AppContext.Current.LoggedUser == null)           
+            if ( AppContext.Current.LoggedUser == null)           
             {
                 StartActivity(typeof(LoginActivity));
             }

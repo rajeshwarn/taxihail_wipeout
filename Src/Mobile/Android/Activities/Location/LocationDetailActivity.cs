@@ -47,13 +47,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
             FindViewById<EditText>(Resource.Id.LocationFriendlyName).Text = !_data.Id.IsNullOrEmpty() ? _data.FriendlyName : null;
             
             
-            if (_data.Id.IsNullOrEmpty() )
+            if (  (_data.Id.IsNullOrEmpty() ) || _data.IsHistoric )
             {
                 FindViewById<Button>(Resource.Id.LocationDeleteBtn).Visibility = ViewStates.Invisible;
             }
             
-            FindViewById<Button>(Resource.Id.LocationDeleteBtn).Click += new EventHandler(DeleteBtn_Click);
-            FindViewById<Button>(Resource.Id.LocationCancelBtn).Click += new EventHandler(CancelBtn_Click);
+            FindViewById<Button>(Resource.Id.LocationDeleteBtn).Click += new EventHandler(DeleteBtn_Click);            
             FindViewById<Button>(Resource.Id.LocationSaveBtn).Click += new EventHandler(SaveBtn_Click);
             FindViewById<EditText>(Resource.Id.LocationAddress).FocusChange += new EventHandler<View.FocusChangeEventArgs>(LocationDetailActivity_FocusChange);
 
@@ -79,11 +78,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
                 }, false);
             }
         }
-        private void CancelBtn_Click(object sender, EventArgs e)
-        {
-            Finish();
-        }
-
+     
         private bool ValidateFields()
         {
             var txtAddress = FindViewById<EditText>(Resource.Id.LocationAddress);
@@ -127,39 +122,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
                             UpdateData();
                             _data.Latitude = address.Latitude;
                             _data.Longitude = address.Longitude;
-
-                        
-                            //    //TODO: Fix this
-                            //    //if ((AppContext.Current.LoggedUser.FavoriteLocations != null) && (AppContext.Current.LoggedUser.FavoriteLocations.Count() > 0))
-                            //    //{
-                            //    //    newList.AddRange(AppContext.Current.LoggedUser.FavoriteLocations);
-                            //    //}
-                            //    //newList.Add(_data);
-                            //    //var loggedUser = AppContext.Current.LoggedUser;
-                            
-                            //    //TODO : Fix this
-                            //    //loggedUser.FavoriteLocations = newList.ToArray();
-                            
-                            //    //AppContext.Current.UpdateLoggedInUser(loggedUser, true);
-                            //    //AppContext.Current.LoggedUser = loggedUser;
-                            //}
-                            //else
-                            //{
-                            //    //TODO : Fix this
-                            //    //if (AppContext.Current.LoggedUser.FavoriteLocations.Count() > 0  )
-                            //    //{
-                            //    //    var list = new List<LocationData>(AppContext.Current.LoggedUser.FavoriteLocations);
-                            //    //    var loc = list.FirstOrDefault(l => l.Id == _data.Id);
-                            //    //    var i = list.IndexOf(loc);
-                            //    //    list.RemoveAt(i);
-                            //    //    list.Insert(i, _data);
-                            //    //    AppContext.Current.LoggedUser.FavoriteLocations = list.ToArray();
-                            //    //    //AppContext.Current.LoggedUser.FavoriteLocations.Remove(l => l.Id == _data.Id);
-                            //    //    AppContext.Current.UpdateLoggedInUser(AppContext.Current.LoggedUser, true);
-                            //    //}
-                            //}
-
-                            //_data.IsFromHistory = false;
+                            TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().UpdateAddress(_data);
                             Finish();
                         });
                     }
@@ -173,7 +136,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
                     }
             }, true);
             }
-            TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().UpdateAddress(_data);
+            
 
         }
 

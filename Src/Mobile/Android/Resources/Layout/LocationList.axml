@@ -2,16 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:minWidth="25px"
-    android:minHeight="25px">
+    android:layout_height="fill_parent">
     <ListView
-        android:id="@+id/HistoryList"
-        android:minWidth="25px"
-        android:minHeight="25px"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="@android:color/transparent"
-        android:cacheColorHint="@android:color/transparent"
+        android:id="@+id/LocationListView"
         android:layout_marginBottom="5dip" />
 </LinearLayout>
