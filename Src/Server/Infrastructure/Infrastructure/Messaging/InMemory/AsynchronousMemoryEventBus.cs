@@ -28,8 +28,7 @@ namespace Infrastructure.Messaging.InMemory
     {
         private Dictionary<Type, List<Tuple<Type, Action<Envelope>>>> handlersByEventType;
         private Dictionary<Type, Action<IEvent, string, string, string>> dispatchersByEventType;
-        private List<IEvent> events = new List<IEvent>();
-
+        
         public AsynchronousMemoryEventBus(params IEventHandler[] handlers)
         {
             this.handlersByEventType = new Dictionary<Type, List<Tuple<Type, Action<Envelope>>>>();
@@ -162,12 +161,8 @@ namespace Infrastructure.Messaging.InMemory
             }
         }
 
-        public IEnumerable<IEvent> Events { get { return this.events; } }
-
         public void Publish(Envelope<IEvent> @event)
         {
-            this.events.Add(@event.Body);
-
             Task.Factory.StartNew(() =>
             {
                 try

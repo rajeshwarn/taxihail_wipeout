@@ -28,8 +28,7 @@ namespace Infrastructure.Messaging.InMemory
     public class AsynchronousMemoryCommandBus : ICommandBus, ICommandHandlerRegistry
     {
         private Dictionary<Type, ICommandHandler> handlers = new Dictionary<Type, ICommandHandler>();
-        private List<Envelope<ICommand>> commands = new List<Envelope<ICommand>>();
-
+        
         public AsynchronousMemoryCommandBus(params ICommandHandler[] handlers)
         {
             foreach (var commandHandler in handlers)
@@ -59,8 +58,6 @@ namespace Infrastructure.Messaging.InMemory
 
         public void Send(Envelope<ICommand> command)
         {
-            this.commands.Add(command);
-
             Task.Factory.StartNew(() =>
             {
                 try
@@ -99,11 +96,6 @@ namespace Infrastructure.Messaging.InMemory
             {
                 this.Send(command);
             }
-        }
-
-        public IEnumerable<Envelope<ICommand>> Commands
-        {
-            get { return this.commands; }
         }
     }
 }
