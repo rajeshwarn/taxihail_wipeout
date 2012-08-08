@@ -59,12 +59,12 @@ namespace apcurium.MK.Web.SelfHost
             container.RegisterType(typeof(IEventSourcedRepository<>), typeof(SqlEventSourcedRepository<>), new ContainerControlledLifetimeManager());
 
             // Command bus
-            var commandBus = new MemoryCommandBus();
+            var commandBus = new SynchronousMemoryCommandBus();
             container.RegisterInstance<ICommandBus>(commandBus);
             container.RegisterInstance<ICommandHandlerRegistry>(commandBus);
 
             // Event bus
-            var eventBus = new MemoryEventBus();
+            var eventBus = new SynchronousMemoryEventBus();
             container.RegisterInstance<IEventBus>(eventBus);
             container.RegisterInstance<IEventHandlerRegistry>(eventBus);
         }

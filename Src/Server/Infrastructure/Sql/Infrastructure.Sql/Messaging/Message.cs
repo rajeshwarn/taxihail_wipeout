@@ -3,7 +3,7 @@
 // CQRS Journey project
 // ==============================================================================================================
 // ©2012 Microsoft. All rights reserved. Certain content used with permission from contributors
-// http://cqrsjourney.github.com/contributors/members
+// http://go.microsoft.com/fwlink/p/?LinkID=258575
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance 
 // with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 // Unless required by applicable law or agreed to in writing, software distributed under the License is 
@@ -17,13 +17,16 @@ namespace Infrastructure.Sql.Messaging
 
     public class Message
     {
-        public Message(string body, DateTime? deliveryDate = null)
+        public Message(string body, DateTime? deliveryDate = null, string correlationId = null)
         {
             this.Body = body;
             this.DeliveryDate = deliveryDate;
+            this.CorrelationId = correlationId;
         }
 
         public string Body { get; private set; }
+
+        public string CorrelationId { get; private set; }
 
         public DateTime? DeliveryDate { get; private set; }
     }

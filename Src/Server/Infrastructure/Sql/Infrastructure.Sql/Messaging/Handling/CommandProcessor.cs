@@ -3,7 +3,7 @@
 // CQRS Journey project
 // ==============================================================================================================
 // ©2012 Microsoft. All rights reserved. Certain content used with permission from contributors
-// http://cqrsjourney.github.com/contributors/members
+// http://go.microsoft.com/fwlink/p/?LinkID=258575
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance 
 // with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 // Unless required by applicable law or agreed to in writing, software distributed under the License is 
@@ -56,7 +56,7 @@ namespace Infrastructure.Sql.Messaging.Handling
             if (handlers.Keys.Any(registeredType => supportedCommandTypes.Contains(registeredType)))
                 throw new ArgumentException("The command handled by the received handler already has a registered handler.");
 
-            // Register this handler for each of he handled types.
+            // Register this handler for each of the handled types.
             foreach (var commandType in supportedCommandTypes)
             {
                 this.handlers.Add(commandType, commandHandler);
@@ -66,7 +66,7 @@ namespace Infrastructure.Sql.Messaging.Handling
         /// <summary>
         /// Processes the message by calling the registered handler.
         /// </summary>
-        protected override void ProcessMessage(object payload)
+        protected override void ProcessMessage(object payload, string correlationId)
         {
             var commandType = payload.GetType();
             ICommandHandler handler = null;

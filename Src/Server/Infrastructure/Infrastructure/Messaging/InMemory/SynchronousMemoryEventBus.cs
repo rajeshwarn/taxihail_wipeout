@@ -15,15 +15,14 @@ namespace Infrastructure.Messaging.InMemory
 {
     using System.Collections.Generic;
     using System.Linq;
-    using System.Threading.Tasks;
-    using Infrastructure.Messaging.Handling;
+    using Handling;
 
-    public class MemoryEventBus : IEventBus, IEventHandlerRegistry
+    public class SynchronousMemoryEventBus : IEventBus, IEventHandlerRegistry
     {
         private List<IEventHandler> handlers = new List<IEventHandler>();
         private List<IEvent> events = new List<IEvent>();
 
-        public MemoryEventBus(params IEventHandler[] handlers)
+        public SynchronousMemoryEventBus(params IEventHandler[] handlers)
         {
             this.handlers.AddRange(handlers);
         }
@@ -33,27 +32,27 @@ namespace Infrastructure.Messaging.InMemory
             this.handlers.Add(handler);
         }
 
-        public void Publish(IEvent @event)
-        {
-            this.events.Add(@event);
+        public IEnumerable<IEvent> Events { get { return this.events; } }
 
-            var handlerType = typeof(IEventHandler<>).MakeGenericType(@event.GetType());
+        public void Publish(Envelope<IEvent> @event)
+        {
+            this.events.Add(@event.Body);
+
+            var handlerType = typeof(IEventHandler<>).MakeGenericType(@event.Body.GetType());
 
             foreach (dynamic handler in this.handlers
                 .Where(x => handlerType.IsAssignableFrom(x.GetType())))
             {
-                handler.Handle((dynamic)@event);
+                handler.Handle((dynamic)@event.Body);
             }
         }
 
-        public void Publish(IEnumerable<IEvent> events)
+        public void Publish(IEnumerable<Envelope<IEvent>> events)
         {
             foreach (var @event in events)
             {
                 this.Publish(@event);
             }
         }
-
-        public IEnumerable<IEvent> Events { get { return this.events; } }
     }
 }

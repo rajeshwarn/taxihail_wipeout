@@ -13,22 +13,19 @@
 
 namespace Infrastructure.Messaging.InMemory
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Infrastructure.Messaging.Handling;
+    using Handling;
 
     /// <summary>
     /// Sample in-memory command bus that is asynchronous.
     /// </summary>
-    public class MemoryCommandBus : ICommandBus, ICommandHandlerRegistry
+    public class SynchronousMemoryCommandBus : ICommandBus, ICommandHandlerRegistry
     {
         private List<ICommandHandler> handlers = new List<ICommandHandler>();
         private List<Envelope<ICommand>> commands = new List<Envelope<ICommand>>();
 
-        public MemoryCommandBus(params ICommandHandler[] handlers)
+        public SynchronousMemoryCommandBus(params ICommandHandler[] handlers)
         {
             this.handlers.AddRange(handlers);
         }
@@ -41,11 +38,6 @@ namespace Infrastructure.Messaging.InMemory
         public void Send(Envelope<ICommand> command)
         {
             this.commands.Add(command);
-
-            if (command.Delay > TimeSpan.Zero)
-            {
-                Thread.Sleep(command.Delay);
-            }
 
             var handlerType = typeof(ICommandHandler<>).MakeGenericType(command.Body.GetType());
 

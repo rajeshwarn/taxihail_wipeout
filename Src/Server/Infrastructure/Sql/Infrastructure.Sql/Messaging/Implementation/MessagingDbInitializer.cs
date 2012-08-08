@@ -3,7 +3,7 @@
 // CQRS Journey project
 // ==============================================================================================================
 // ©2012 Microsoft. All rights reserved. Certain content used with permission from contributors
-// http://cqrsjourney.github.com/contributors/members
+// http://go.microsoft.com/fwlink/p/?LinkID=258575
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance 
 // with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 // Unless required by applicable law or agreed to in writing, software distributed under the License is 
@@ -16,8 +16,14 @@ namespace Infrastructure.Sql.Messaging.Implementation
     using System.Data.SqlClient;
     using System.Globalization;
 
+    /// <summary>
+    /// This database initializer is to support <see cref="CommandBus"/> and <see cref="EventBus"/>, which should be only
+    /// used for running the sample application without the dependency to the Windows Azure Service Bus when using the
+    /// DebugLocal solution configuration. It should not be used in production systems.
+    /// </summary>
     public class MessagingDbInitializer
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities", Justification="Does not contain user input.")]
         public static void CreateDatabaseObjects(string connectionString, string schema, bool createDatabase = false)
         {
             if (createDatabase)
@@ -61,6 +67,7 @@ CREATE TABLE [{0}].[Commands](
     [Id] [bigint] IDENTITY(1,1) NOT NULL,
     [Body] [nvarchar](max) NOT NULL,
     [DeliveryDate] [datetime] NULL,
+    [CorrelationId] [nvarchar](max) NULL,
  CONSTRAINT [PK_{0}.Commands] PRIMARY KEY CLUSTERED 
 (
     [Id] ASC
@@ -71,6 +78,7 @@ CREATE TABLE [{0}].[Events](
     [Id] [bigint] IDENTITY(1,1) NOT NULL,
     [Body] [nvarchar](max) NOT NULL,
     [DeliveryDate] [datetime] NULL,
+    [CorrelationId] [nvarchar](max) NULL,
  CONSTRAINT [PK_{0}.Events] PRIMARY KEY CLUSTERED 
 (
     [Id] ASC

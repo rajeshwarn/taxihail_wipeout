@@ -3,7 +3,7 @@
 // CQRS Journey project
 // ==============================================================================================================
 // ©2012 Microsoft. All rights reserved. Certain content used with permission from contributors
-// http://cqrsjourney.github.com/contributors/members
+// http://go.microsoft.com/fwlink/p/?LinkID=258575
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance 
 // with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 // Unless required by applicable law or agreed to in writing, software distributed under the License is 
@@ -32,6 +32,11 @@ namespace Infrastructure.EventSourcing
         /// <exception cref="EntityNotFoundException">If the entity is not found.</exception>
         T Get(Guid id);
 
-        void Save(T eventSourced);
+        /// <summary>
+        /// Saves the event sourced entity.
+        /// </summary>
+        /// <param name="eventSourced">The entity.</param>
+        /// <param name="correlationId">A correlation id to use when publishing events.</param>
+        void Save(T eventSourced, string correlationId);
     }
 }

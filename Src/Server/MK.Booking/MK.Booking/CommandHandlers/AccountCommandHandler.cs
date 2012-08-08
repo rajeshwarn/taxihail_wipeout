@@ -35,21 +35,21 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var password = _passwordService.EncodePassword(command.Password, command.AccountId.ToString());
             var account = new Account(command.AccountId, command.Name, command.Phone, command.Email, password, command.IbsAccountId, command.ConfimationToken, command.Language);
-            _repository.Save(account);
+            _repository.Save(account, command.Id.ToString());
         }
 
         public void Handle(ConfirmAccount command)
         {
             var account = _repository.Find(command.AccountId);
             account.ConfirmAccount(command.ConfimationToken);
-            _repository.Save(account);
+            _repository.Save(account, command.Id.ToString());
         }
 
         public void Handle(UpdateAccount command)
         {
             var account = _repository.Find(command.AccountId);
             account.Update(command.Name);
-            _repository.Save(account);
+            _repository.Save(account, command.Id.ToString());
             
         }
 
@@ -58,7 +58,7 @@ namespace apcurium.MK.Booking.CommandHandlers
             var account = _repository.Find(command.AccountId);
             var newPassword = _passwordService.EncodePassword(command.Password, command.AccountId.ToString());
             account.ResetPassword(newPassword);
-            _repository.Save(account);
+            _repository.Save(account, command.Id.ToString());
         }
         
         public void Handle(UpdateBookingSettings command)
@@ -68,19 +68,19 @@ namespace apcurium.MK.Booking.CommandHandlers
             var settings = new BookingSettings();
             AutoMapper.Mapper.Map(command, settings);
             account.UpdateBookingSettings(settings);
-            _repository.Save(account);
+            _repository.Save(account, command.Id.ToString());
         }
 
         public void Handle(RegisterFacebookAccount command)
         {
             var account = new Account(command.AccountId, command.Name, command.Phone, command.Email, command.IbsAccountId, facebookId:command.FacebookId, language:command.Language);
-            _repository.Save(account);
+            _repository.Save(account, command.Id.ToString());
         }
 
         public void Handle(RegisterTwitterAccount command)
         {
             var account = new Account(command.AccountId, command.Name, command.Phone, command.Email, command.IbsAccountId, twitterId: command.TwitterId, language: command.Language);
-            _repository.Save(account);
+            _repository.Save(account, command.Id.ToString());
         }
 
         public void Handle(UpdateAccountPassword command)
@@ -88,7 +88,7 @@ namespace apcurium.MK.Booking.CommandHandlers
             var account = _repository.Find(command.AccountId);
             var newPassword = _passwordService.EncodePassword(command.Password, command.AccountId.ToString());
             account.UpdatePassword(newPassword);
-            _repository.Save(account);
+            _repository.Save(account, command.Id.ToString());
         }
 
     }

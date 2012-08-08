@@ -3,7 +3,7 @@
 // CQRS Journey project
 // ==============================================================================================================
 // ©2012 Microsoft. All rights reserved. Certain content used with permission from contributors
-// http://cqrsjourney.github.com/contributors/members
+// http://go.microsoft.com/fwlink/p/?LinkID=258575
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance 
 // with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 // Unless required by applicable law or agreed to in writing, software distributed under the License is 
@@ -20,7 +20,6 @@ namespace Infrastructure.Sql.Messaging.Implementation
     using System.Globalization;
     using System.Threading;
     using System.Threading.Tasks;
-    using System.Diagnostics;
 
     public class MessageReceiver : IMessageReceiver, IDisposable
     {
@@ -49,7 +48,8 @@ namespace Infrastructure.Sql.Messaging.Implementation
                     @"SELECT TOP (1) 
                     {0}.[Id] AS [Id], 
                     {0}.[Body] AS [Body], 
-                    {0}.[DeliveryDate] AS [DeliveryDate]
+                    {0}.[DeliveryDate] AS [DeliveryDate],
+                    {0}.[CorrelationId] AS [CorrelationId]
                     FROM {0} WITH (UPDLOCK, READPAST)
                     WHERE ({0}.[DeliveryDate] IS NULL) OR ({0}.[DeliveryDate] <= @CurrentDate)
                     ORDER BY {0}.[Id] ASC",
@@ -124,6 +124,7 @@ namespace Infrastructure.Sql.Messaging.Implementation
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities", Justification = "Does not contain user input.")]
         protected bool ReceiveMessage()
         {
             using (var connection = this.connectionFactory.CreateConnection(this.name))
@@ -155,8 +156,10 @@ namespace Infrastructure.Sql.Messaging.Implementation
                                 var body = (string)reader["Body"];
                                 var deliveryDateValue = reader["DeliveryDate"];
                                 var deliveryDate = deliveryDateValue == DBNull.Value ? (DateTime?)null : new DateTime?((DateTime)deliveryDateValue);
+                                var correlationIdValue = reader["CorrelationId"];
+                                var correlationId = (string)(correlationIdValue == DBNull.Value ? null : correlationIdValue);
 
-                                message = new Message(body, deliveryDate);
+                                message = new Message(body, deliveryDate, correlationId);
                                 messageId = (long)reader["Id"];
                             }
                         }

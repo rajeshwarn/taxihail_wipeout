@@ -23,6 +23,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>bin\Debug\Infrastructure.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,30 +34,23 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Staging|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Staging\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\packages\Newtonsoft.Json.4.5.8\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BlobStorage\IBlobStorage.cs" />
+    <Compile Include="ConcurrencyException.cs" />
     <Compile Include="Database\IAggregateRoot.cs" />
     <Compile Include="Database\IDataContext.cs" />
     <Compile Include="EntityNotFoundException.cs" />
+    <Compile Include="EventSourcing\IMementoOriginator.cs" />
     <Compile Include="IProcessor.cs" />
     <Compile Include="MessageLog\EventLogExtensions.cs" />
     <Compile Include="MessageLog\IEventLogReader.cs" />
@@ -68,27 +63,33 @@
     <Compile Include="ExpressionCombiner.cs" />
     <Compile Include="IMetadataProvider.cs" />
     <Compile Include="Messaging\CommandBusExtensions.cs" />
+    <Compile Include="Messaging\IMessageSessionProvider.cs" />
+    <Compile Include="Messaging\EventBusExtensions.cs" />
     <Compile Include="Messaging\Envelope.cs" />
+    <Compile Include="Messaging\Handling\EventDispatcher.cs" />
     <Compile Include="Messaging\Handling\ICommandHandler.cs" />
     <Compile Include="Messaging\Handling\ICommandHandlerRegistry.cs" />
     <Compile Include="Messaging\Handling\IEventHandler.cs" />
     <Compile Include="Messaging\Handling\IEventHandlerRegistry.cs" />
-    <Compile Include="Messaging\Handling\MessageDispatcher.cs" />
     <Compile Include="Messaging\ICommand.cs" />
     <Compile Include="Messaging\ICommandBus.cs" />
     <Compile Include="Messaging\IEvent.cs" />
     <Compile Include="Messaging\IEventBus.cs" />
     <Compile Include="Messaging\IEventPublisher.cs" />
-    <Compile Include="Messaging\MemoryCommandBus.cs" />
-    <Compile Include="Messaging\MemoryEventBus.cs" />
-    <Compile Include="Processes\IProcess.cs" />
-    <Compile Include="Processes\IProcessDataContext.cs" />
+    <Compile Include="Messaging\InMemory\AsynchronousMemoryCommandBus.cs" />
+    <Compile Include="Messaging\InMemory\AsynchronousMemoryEventBus.cs" />
+    <Compile Include="Messaging\InMemory\SynchronousMemoryCommandBus.cs" />
+    <Compile Include="Messaging\InMemory\SynchronousMemoryEventBus.cs" />
+    <Compile Include="Processes\IProcessManager.cs" />
+    <Compile Include="Processes\IProcessManagerDataContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serialization\ITextSerializer.cs" />
     <Compile Include="Serialization\JsonTextSerializer.cs" />
     <Compile Include="Serialization\TextSerializerExtensions.cs" />
     <Compile Include="StandardMetadata.cs" />
     <Compile Include="StandardMetadataProvider.cs" />
+    <Compile Include="Tasks\TimerTaskFactory.cs" />
+    <Compile Include="Utils\GuidUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\CQRS-journey.licenseheader">
