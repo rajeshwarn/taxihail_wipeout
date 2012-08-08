@@ -452,7 +452,9 @@ namespace apcurium.MK.Booking.Mobile.Client
                         return;
                     }
                     
-                    
+
+
+
                     this.InvokeOnMainThread (() =>
                     {
                         var view = new ConfirmationView (this);

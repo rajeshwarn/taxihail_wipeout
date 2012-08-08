@@ -186,6 +186,7 @@
   <string name="CreateAccoutCancel">Annuler</string>
   <string name="RideSettingsChargeType">Type paiement:</string>
   <string name="CreateAccountInvalidPassword">Le mot de passe est invalide.  Le mot de passe et la confirmation doivent être identique.  Le mot de passe doit aussi avoir entre 6 et 10 caractères.</string>
+  <string name="CreateAccountInvalidPhone">Le numéro de téléphone est invalide.  Il doit être composé de 10 chiffres.</string>  
   <string name="CreateAccountEmptyField">Les données ne sont pas valides, tous les champs doivent être remplis.</string>
   <string name="CreateAccountInvalidDataTitle">Données invalides.</string>
   <string name="CreateAccountLanguageFrench">Français</string>

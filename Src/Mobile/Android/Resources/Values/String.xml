@@ -183,6 +183,7 @@
   <string name="CreateAccoutCancel">Cancel</string>
   <string name="RideSettingsChargeType">Charge type:</string>
   <string name="CreateAccountInvalidPassword">The password is invalid.  The password and confirmation must be the same.  The password must also be between 6 and 10 characters.</string>
+  <string name="CreateAccountInvalidPhone">The phone number is invalid. It must contain 10 numbers.</string>  
   <string name="CreateAccountEmptyField">The data is invalid, all the fields are required.</string>
   <string name="CreateAccountInvalidDataTitle">Invalid account info</string>
     <string-array name="CreateAccountTitleArray">

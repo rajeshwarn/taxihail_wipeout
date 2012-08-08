@@ -80,19 +80,34 @@ namespace apcurium.MK.Booking.Mobile.Client
                 MessageHelper.Show(Resources.ResetPasswordInvalidDataTitle, Resources.ResetPasswordInvalidDataMessage);
                 return;
             }
-            
-            if (_data.Email.IsNullOrEmpty() || _data.Name.IsNullOrEmpty() || _data.Phone.IsNullOrEmpty() || _data.Password.IsNullOrEmpty() || confirm.IsNullOrEmpty())
+
+            bool hasEmail = _data.Password.HasValue() && confirm.HasValue();
+            bool hasSocialInfo = _data.FacebookId.HasValue() || _data.TwitterId.HasValue();
+            if (_data.Email.IsNullOrEmpty() || _data.Name.IsNullOrEmpty() || _data.Phone.IsNullOrEmpty() || (!hasEmail && !hasSocialInfo))
             {
                 MessageHelper.Show(Resources.CreateAccountInvalidDataTitle, Resources.CreateAccountEmptyField);
                 return;
             }
             
-            if ((_data.Password != confirm) || (_data.Password.Length < 6 || _data.Password.Length > 10))
+            if (!hasSocialInfo && ((_data.Password != confirm) || (_data.Password.Length < 6 || _data.Password.Length > 10)))
             {
                 MessageHelper.Show(Resources.CreateAccountInvalidDataTitle, Resources.CreateAccountInvalidPassword);
                 return;
             }
-            
+
+            if ( _data.Phone.Count(x => Char.IsDigit(x)) < 10 )
+            {
+                MessageHelper.Show(Resources.CreateAccountInvalidDataTitle, Resources.CreateAccountInvalidPhone);
+                return;
+            }
+            else
+            {
+                _data.Phone= new string( _data.Phone.ToArray().Where( c=> Char.IsDigit( c ) ).ToArray());
+            }
+
+
+            //var count = jobId.Count(x => Char.IsDigit(x));
+
             LoadingOverlay.StartAnimatingLoading(this.View, LoadingOverlayPosition.Center, null, 130, 30);
             ThreadHelper.ExecuteInThread(() =>
             {
@@ -107,8 +122,11 @@ namespace apcurium.MK.Booking.Mobile.Client
                         {
                             AccountCreated(_data, EventArgs.Empty);
                         }
+                        if (!hasSocialInfo)
+                        {
+                            BeginInvokeOnMainThread(() => MessageHelper.Show(Resources.AccountActivationTitle, Resources.AccountActivationMessage));
+                        }
 
-                        BeginInvokeOnMainThread(() => MessageHelper.Show(Resources.AccountActivationTitle, Resources.AccountActivationMessage));
                         BeginInvokeOnMainThread(() => this.DismissModalViewControllerAnimated(true));
                     }
                     else
@@ -151,7 +169,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             return CreateTextEntry(parentSection, caption, placeholder, setValue, getValue, false);
         }
 
-        private EntryElement CreateTextEntry(Section parentSection, string caption, string placeholder, Action<string> setValue, Func<string> getValue, bool isPassword)
+        private EntryElement CreateTextEntry(Section parentSection, string caption, string placeholder, Action<string> setValue, Func<string> getValue, bool isPassword, bool addToParentSection = true)
         {
             setValue(getValue());
             var entry = new EntryElement(caption, placeholder, getValue(), isPassword);         
@@ -162,7 +180,11 @@ namespace apcurium.MK.Booking.Mobile.Client
                 
                 setValue(entry.Value);
             };
-            parentSection.Add(entry);
+
+            if ( addToParentSection )
+            {
+                parentSection.Add(entry);
+            }
             return entry;
             
         }
@@ -276,15 +298,18 @@ namespace apcurium.MK.Booking.Mobile.Client
                     _phoneEntry = CreateTextEntry(settings, Resources.CreateAccoutPhoneNumberLabel, null, s => _data.Phone = s, () => _data.Phone);
                     _phoneEntry.KeyboardType = UIKeyboardType.PhonePad;
                     
+
+                    bool hasSocialInfo = _data.FacebookId.HasValue() || _data.TwitterId.HasValue();
+
+
+                        _passwordEntry = CreateTextEntry(settings, Resources.CreateAccoutPasswordLabel, null, s => _data.Password = s, () => _data.Password, true, !hasSocialInfo);
+                        _passwordEntry.TextAutocapitalizationType = UITextAutocapitalizationType.None;
+                        _passwordEntry.TextAutocorrectionType = UITextAutocorrectionType.No;
                     
-                    _passwordEntry = CreateTextEntry(settings, Resources.CreateAccoutPasswordLabel, null, s => _data.Password = s, () => _data.Password, true);
-                    _passwordEntry.TextAutocapitalizationType = UITextAutocapitalizationType.None;
-                    _passwordEntry.TextAutocorrectionType = UITextAutocorrectionType.No;
-                    
-                    _confirmPasswordEntry = CreateTextEntry(settings, Resources.CreateAccountPasswordConfrimation, null, s => _confirm = s, () => _confirm, true);                  
-                    _confirmPasswordEntry.TextAutocapitalizationType = UITextAutocapitalizationType.None;
-                    _confirmPasswordEntry.TextAutocorrectionType = UITextAutocorrectionType.No;
-                    
+                        _confirmPasswordEntry = CreateTextEntry(settings, Resources.CreateAccountPasswordConfrimation, null, s => _confirm = s, () => _confirm, true, !hasSocialInfo);                  
+                        _confirmPasswordEntry.TextAutocapitalizationType = UITextAutocapitalizationType.None;
+                        _confirmPasswordEntry.TextAutocorrectionType = UITextAutocorrectionType.No;
+
                     this.InvokeOnMainThread(() => {
                         this.Root = menu; }
                     );

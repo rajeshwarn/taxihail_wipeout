@@ -10,6 +10,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.AppServices;
+using System.Text.RegularExpressions;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -90,7 +91,19 @@ namespace apcurium.MK.Booking.Mobile.Client
             
             
             txtName.Text = _parent.BookingInfo.Settings.Name;
-            txtPhone.Text = _parent.BookingInfo.Settings.Phone;
+
+
+            try
+            {
+                var cleaned = new string(_parent.BookingInfo.Settings.Phone.ToArray().Where(c => Char.IsDigit(c)).ToArray());
+                var phone = Regex.Replace(cleaned, @"(\d{3})(\d{3})(\d{4})", "$1-$2-$3");
+                txtPhone.Text = phone;
+            }
+            catch
+            {
+                txtPhone.Text = _parent.BookingInfo.Settings.Phone;
+            }
+
             txtPassengers.Text = _parent.BookingInfo.Settings.Passengers.ToString();
             txtVehiculeType.Text = model.VehicleTypeName;
             //txtNotes.Text = _parent.BookingInfo.Note;
@@ -101,13 +114,14 @@ namespace apcurium.MK.Booking.Mobile.Client
             btnCancel.SetTitle(Resources.CancelBoutton, UIControlState.Normal);
             btnConfirm.SetTitle(Resources.ConfirmButton, UIControlState.Normal);
 
-            AppButtons.FormatStandardGradientButton( (GradientButton) btnConfirm, Resources.ConfirmButton, UIColor.White, apcurium.MK.Booking.Mobile.Client.AppStyle.ButtonColor.Green );
+            AppButtons.FormatStandardGradientButton((GradientButton)btnConfirm, Resources.ConfirmButton, UIColor.White, apcurium.MK.Booking.Mobile.Client.AppStyle.ButtonColor.Green);
 
 
             this.NavigationItem.RightBarButtonItem = new UIBarButtonItem(UIBarButtonSystemItem.Edit, delegate
             {
                 EditRideSettings();
-            });
+            }
+            );
             
                     
         }
@@ -129,6 +143,19 @@ namespace apcurium.MK.Booking.Mobile.Client
                 txtDistance.Text = model.ChargeTypeName;
                 txtName.Text = _parent.BookingInfo.Settings.Name;
                 txtPhone.Text = _parent.BookingInfo.Settings.Phone;
+
+                try
+                {
+                    var cleaned = new string(_parent.BookingInfo.Settings.Phone.ToArray().Where(c => Char.IsDigit(c)).ToArray());
+                    var phone = Regex.Replace(cleaned, @"(\d{3})(\d{3})(\d{4})", "$1-$2-$3");
+                    txtPhone.Text = phone;
+                }
+                catch
+                {
+                    txtPhone.Text = _parent.BookingInfo.Settings.Phone;
+                }
+
+
                 txtPassengers.Text = _parent.BookingInfo.Settings.Passengers.ToString();
                 txtVehiculeType.Text = model.VehicleTypeName;
                 //txtExceptions.Text = string.Join(", ", _parent.BookingInfo.Settings.Exceptions.Where(ee => ee.Value).Select(e => e.Display));                   
@@ -175,7 +202,18 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         void ConfirmClicked(object sender, EventArgs e)
         {
-            
+
+            var phone = txtPhone.Text;
+            if (phone.Count(x => Char.IsDigit(x)) < 10)
+            {
+                MessageHelper.Show(Resources.CreateAccountInvalidDataTitle, Resources.CreateAccountInvalidPhone);
+                return;
+            }
+            else
+            {
+                txtPhone.Text = new string(phone.ToArray().Where(c => Char.IsDigit(c)).ToArray());
+            }
+
             if (Confirmed != null)
             {
                 Confirmed(this, EventArgs.Empty);
@@ -189,7 +227,6 @@ namespace apcurium.MK.Booking.Mobile.Client
                 Canceled(this, EventArgs.Empty);
             }
         }
-
 
         public CreateOrder BI
         {

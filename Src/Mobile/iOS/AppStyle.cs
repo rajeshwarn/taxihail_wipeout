@@ -19,8 +19,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             Green,
             Red,
             Gold,
-            Yellow,
-            DarkYellow }
+            Blue,
+            DarkBlue }
         ;
         private static Dictionary<ButtonColor, UIColor[]> _buttonColors = new Dictionary<ButtonColor, UIColor[]>(){ 
             { ButtonColor.Black, new UIColor[] { UIColor.FromRGB(39,40,40), UIColor.FromRGB(36,37,37), UIColor.Black, UIColor.FromRGB(50,50,50) } },
@@ -28,8 +28,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             { ButtonColor.Green, new UIColor[] { UIColor.FromRGB(143,207,15), UIColor.FromRGB(87,177,9) } },
             { ButtonColor.Red, new UIColor[] { UIColor.FromRGB(248,76,76), UIColor.FromRGB(244,46,46) } },
             { ButtonColor.Gold, new UIColor[] { UIColor.FromRGB(199,158,16), UIColor.FromRGB(206,164,18), UIColor.FromRGB(215,177,10), UIColor.FromRGB(244,206,40) } },
-            { ButtonColor.Yellow, new UIColor[] { UIColor.FromRGB(15,94,163) } },
-            { ButtonColor.DarkYellow, new UIColor[] { UIColor.FromRGB(230,135,13) } }
+            { ButtonColor.Blue, new UIColor[] { UIColor.FromRGB(15,94,163) } },
+            { ButtonColor.DarkBlue, new UIColor[] { UIColor.FromRGB(13,69,119) } }
         };
         private static Dictionary<ButtonColor, float[]> _buttonColorLocations = new Dictionary<ButtonColor, float[]>(){ 
             { ButtonColor.Black, new float[] { 0f, 0.5f, 0.53f, 1f } },
@@ -37,8 +37,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             { ButtonColor.Green, new float[] { 0f, 1f } },
             { ButtonColor.Red, new float[] { 0f, 1f } },
             { ButtonColor.Gold, new float[] { 0f, 0.5f, 0.5f, 1f } },
-            { ButtonColor.Yellow, new float[] { 1f } },
-            { ButtonColor.DarkYellow, new float[] { 1f } }
+            { ButtonColor.Blue, new float[] { 1f } },
+            { ButtonColor.DarkBlue, new float[] { 1f } }
         };
         private static Dictionary<ButtonColor, UIColor> _buttonStrokeColors = new Dictionary<ButtonColor, UIColor>(){ 
             { ButtonColor.Black, UIColor.Black },
@@ -46,16 +46,16 @@ namespace apcurium.MK.Booking.Mobile.Client
             { ButtonColor.Green, UIColor.FromRGB(69,103,24) },
             { ButtonColor.Red, UIColor.FromRGB(182,53,64) },
             { ButtonColor.Gold, UIColor.FromRGB(90,74,6) },
-            { ButtonColor.Yellow, UIColor.FromRGB(7,34,57) },
-            { ButtonColor.DarkYellow, UIColor.FromRGB(123,93,15) }
+            { ButtonColor.Blue, UIColor.FromRGB(7,34,57) },
+            { ButtonColor.DarkBlue, UIColor.FromRGB(7,34,57) }
         };
         private static Dictionary<ButtonColor, ShadowSetting> _buttonInnerShadows = new Dictionary<ButtonColor, ShadowSetting>(){ 
             { ButtonColor.Green, new ShadowSetting() { BlurRadius = 1, Offset = new SizeF( 0, 1 ), Color = UIColor.FromRGBA( 255,255,255, 0.5f ) } },
             { ButtonColor.Red, new ShadowSetting() { BlurRadius = 1, Offset = new SizeF( 0, 1 ), Color = UIColor.FromRGBA( 255,255,255, 0.5f ) } }
         };
         private static Dictionary<ButtonColor, ShadowSetting> _buttonDropShadows = new Dictionary<ButtonColor, ShadowSetting>(){ 
-            { ButtonColor.Yellow, new ShadowSetting() { BlurRadius = 1, Offset = new SizeF( 0, 1 ), Color = UIColor.FromRGB( 38,107,167 ) } },
-            { ButtonColor.DarkYellow, new ShadowSetting() { BlurRadius = 1, Offset = new SizeF( 0, 1 ), Color = UIColor.FromRGB( 242,171,81 ) } }
+            { ButtonColor.Blue, new ShadowSetting() { BlurRadius = 1, Offset = new SizeF( 0, 1 ), Color = UIColor.FromRGB( 38,107,167 ) } },
+            { ButtonColor.DarkBlue, new ShadowSetting() { BlurRadius = 1, Offset = new SizeF( 0, 1 ), Color = UIColor.FromRGB( 38,105,164 ) } }
         };
 
         public static float ButtonStrokeLineWidth { get { return 2f; } }

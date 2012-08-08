@@ -172,6 +172,7 @@
 "CreateAccoutCancel" = "Annuler";
 "RideSettingsChargeType" = "Type paiement:";
 "CreateAccountInvalidPassword" = "Le mot de passe est invalide.  Le mot de passe et la confirmation doivent être identique.  Le mot de passe doit aussi avoir entre 6 et 10 caractères.";
+"CreateAccountInvalidPhone" = "Le numéro de téléphone est invalide.  Il doit être composé de 10 chiffres.";
 "CreateAccountEmptyField" = "Les données ne sont pas valides, tous les champs doivent être remplis.";
 "CreateAccountInvalidDataTitle" = "Données invalides.";
 "CreateAccountLanguageFrench" = "Français";
