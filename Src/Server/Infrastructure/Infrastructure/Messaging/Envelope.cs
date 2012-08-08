@@ -3,7 +3,7 @@
 // CQRS Journey project
 // ==============================================================================================================
 // ©2012 Microsoft. All rights reserved. Certain content used with permission from contributors
-// http://cqrsjourney.github.com/contributors/members
+// http://go.microsoft.com/fwlink/p/?LinkID=258575
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance 
 // with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 // Unless required by applicable law or agreed to in writing, software distributed under the License is 
@@ -18,7 +18,7 @@ namespace Infrastructure.Messaging
     /// <summary>
     /// Static factory class for <see cref="Envelope{T}"/>.
     /// </summary>
-    public static class Envelope
+    public abstract class Envelope
     {
         /// <summary>
         /// Creates an envelope for the given body.
@@ -32,7 +32,7 @@ namespace Infrastructure.Messaging
     /// <summary>
     /// Provides the envelope for an object that will be sent to a bus.
     /// </summary>
-    public class Envelope<T>
+    public class Envelope<T> : Envelope
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Envelope{T}"/> class.
@@ -51,6 +51,21 @@ namespace Infrastructure.Messaging
         /// Gets or sets the delay for sending, enqueing or processing the body.
         /// </summary>
         public TimeSpan Delay { get; set; }
+
+        /// <summary>
+        /// Gets or sets the time to live for the message in the queue.
+        /// </summary>
+        public TimeSpan TimeToLive { get; set; }
+
+        /// <summary>
+        /// Gets the correlation id.
+        /// </summary>
+        public string CorrelationId { get; set; }
+
+        /// <summary>
+        /// Gets the correlation id.
+        /// </summary>
+        public string MessageId { get; set; }
 
         public static implicit operator Envelope<T>(T body)
         {

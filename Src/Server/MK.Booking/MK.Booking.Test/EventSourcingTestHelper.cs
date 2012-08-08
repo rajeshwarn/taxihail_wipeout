@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.Common.Tests
         public EventSourcingTestHelper()
         {
             this.Events = new List<IVersionedEvent>();
-            this.repository = new RepositoryStub(eventSouced => this.Events.AddRange(eventSouced.Events));
+            this.repository = new RepositoryStub((eventSouced, correlationId) => this.Events.AddRange(eventSouced.Events));
         }
 
         public List<IVersionedEvent> Events { get; private set; }
@@ -87,10 +87,10 @@ namespace apcurium.MK.Booking.Common.Tests
         private class RepositoryStub : IEventSourcedRepository<T>
         {
             public readonly List<IVersionedEvent> History = new List<IVersionedEvent>();
-            private readonly Action<T> onSave;
+            private readonly Action<T, string> onSave;
             private readonly Func<Guid, IEnumerable<IVersionedEvent>, T> entityFactory;
 
-            internal RepositoryStub(Action<T> onSave)
+            internal RepositoryStub(Action<T, string> onSave)
             {
                 this.onSave = onSave;
                 var constructor = typeof(T).GetConstructor(new[] { typeof(Guid), typeof(IEnumerable<IVersionedEvent>) });
@@ -113,11 +113,6 @@ namespace apcurium.MK.Booking.Common.Tests
                 return default(T);
             }
 
-            void IEventSourcedRepository<T>.Save(T eventSourced)
-            {
-                this.onSave(eventSourced);
-            }
-
             T IEventSourcedRepository<T>.Get(Guid id)
             {
                 var entity = ((IEventSourcedRepository<T>)this).Find(id);
@@ -127,6 +122,11 @@ namespace apcurium.MK.Booking.Common.Tests
                 }
 
                 return entity;
+            }
+
+            public void Save(T eventSourced, string correlationId)
+            {
+                this.onSave(eventSourced, correlationId);
             }
         }
     }

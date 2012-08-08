@@ -3,7 +3,7 @@
 // CQRS Journey project
 // ==============================================================================================================
 // ©2012 Microsoft. All rights reserved. Certain content used with permission from contributors
-// http://cqrsjourney.github.com/contributors/members
+// http://go.microsoft.com/fwlink/p/?LinkID=258575
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance 
 // with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 // Unless required by applicable law or agreed to in writing, software distributed under the License is 
@@ -15,6 +15,7 @@ namespace Infrastructure
 {
     using System;
     using System.Runtime.Serialization;
+    using System.Security.Permissions;
 
     [Serializable]
     public class EntityNotFoundException : Exception
@@ -49,6 +50,11 @@ namespace Infrastructure
             SerializationInfo info,
             StreamingContext context) : base(info, context)
         {
+            if (info == null)
+                throw new ArgumentNullException("info");
+
+            this.entityId = Guid.Parse(info.GetString("entityId"));
+            this.entityType = info.GetString("entityType");
         }
 
         public Guid EntityId
@@ -59,6 +65,14 @@ namespace Infrastructure
         public string EntityType
         {
             get { return this.entityType; }
+        }
+
+        [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
+            info.AddValue("entityId", this.entityId.ToString());
+            info.AddValue("entityType", this.entityType);
         }
     }
 }

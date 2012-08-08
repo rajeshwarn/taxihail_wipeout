@@ -49,7 +49,6 @@ namespace DatabaseInitializer
 
             Database.SetInitializer<EventStoreDbContext>(null);
             Database.SetInitializer<MessageLogDbContext>(null);
-            Database.SetInitializer<BlobStorageDbContext>(null);
             Database.SetInitializer<BookingDbContext>(null);
             Database.SetInitializer<ConfigurationDbContext>(null);
             Database.SetInitializer<CachingDbContext>(null);
@@ -60,8 +59,7 @@ namespace DatabaseInitializer
                     new CachingDbContext(connectionString),
                     new ConfigurationDbContext(connectionString),
                     new EventStoreDbContext(connectionString),
-                    new MessageLogDbContext(connectionString),
-                    new BlobStorageDbContext(connectionString) 
+                    new MessageLogDbContext(connectionString)
                 };
 
             try
@@ -83,7 +81,7 @@ namespace DatabaseInitializer
                 //TODO trouver un moyen plus sexy
             }
 
-            MessagingDbInitializer.CreateDatabaseObjects(connectionString, "SqlBus");
+            
 
             var configurationManager = new
                 apcurium.MK.Common.Configuration.Impl.ConfigurationManager(() => new ConfigurationDbContext(connectionString));

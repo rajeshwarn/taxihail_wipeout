@@ -3,7 +3,7 @@
 // CQRS Journey project
 // ==============================================================================================================
 // ©2012 Microsoft. All rights reserved. Certain content used with permission from contributors
-// http://cqrsjourney.github.com/contributors/members
+// http://go.microsoft.com/fwlink/p/?LinkID=258575
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance 
 // with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 // Unless required by applicable law or agreed to in writing, software distributed under the License is 
@@ -82,7 +82,7 @@ namespace Infrastructure.Sql.Messaging.Handling
             GC.SuppressFinalize(this);
         }
 
-        protected abstract void ProcessMessage(object payload);
+        protected abstract void ProcessMessage(object payload, string correlationId);
 
         /// <summary>
         /// Disposes the resources used by the processor.
@@ -120,14 +120,14 @@ namespace Infrastructure.Sql.Messaging.Handling
                 TracePayload(body);
                 Trace.WriteLine("");
 
-                ProcessMessage(body);
+                ProcessMessage(body, args.Message.CorrelationId);
 
                 Trace.WriteLine(new string('-', 100));
             }
             catch (Exception e)
             {
                 // NOTE: we catch ANY exceptions as this is for local 
-                // development/debugging. The Azure implementation 
+                // development/debugging. The Windows Azure implementation 
                 // supports retries and dead-lettering, which would 
                 // be totally overkill for this alternative debug-only implementation.
                 Trace.TraceError("An exception happened while processing message through handler/s:\r\n{0}", e);

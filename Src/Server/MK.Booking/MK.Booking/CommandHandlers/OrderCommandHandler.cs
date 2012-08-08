@@ -27,14 +27,14 @@ namespace apcurium.MK.Booking.CommandHandlers
                                     command.PickupAddress.FullAddress, command.PickupAddress.Longitude, command.PickupAddress.Latitude,command.PickupAddress.Apartment, command.PickupAddress.RingCode,
                                     command.DropOffAddress.SelectOrDefault(a => a.FullAddress), command.DropOffAddress.SelectOrDefault(a => (double?)a.Longitude, null), command.DropOffAddress.SelectOrDefault(a => (double?)a.Latitude, null),
                                     settings);
-            _repository.Save(order);
+            _repository.Save(order, command.Id.ToString());
         }
 
         public void Handle(CancelOrder command)
         {
             Order order = _repository.Find(command.OrderId);
             order.Cancel();
-            _repository.Save(order);
+            _repository.Save(order,command.Id.ToString());
         }
     }
 }

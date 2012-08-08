@@ -3,7 +3,7 @@
 // CQRS Journey project
 // ==============================================================================================================
 // ©2012 Microsoft. All rights reserved. Certain content used with permission from contributors
-// http://cqrsjourney.github.com/contributors/members
+// http://go.microsoft.com/fwlink/p/?LinkID=258575
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance 
 // with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 // Unless required by applicable law or agreed to in writing, software distributed under the License is 
@@ -22,9 +22,13 @@ namespace Infrastructure.Sql.EventSourcing
     using Infrastructure.Serialization;
     using Infrastructure.Util;
 
-    // TODO: This is an extremely basic implementation of the event store (straw man), that will be replaced in the future.
-    // It does not check for event versions before committing, nor is transactional with the event bus.
-    // It does not do any snapshots either, which the SeatsAvailability will definitely need.
+    /// <summary>
+    /// This is an extremely basic implementation of the event store (straw man), that is used only for running the sample application
+    /// without the dependency to the Windows Azure Service Bus when using the DebugLocal solution configuration.
+    /// It does not check for event versions before committing, nor is transactional with the event bus nor resilient to connectivity errors or crashes.
+    /// It does not do any snapshots either for entities that implement <see cref="IMementoOriginator"/>, which would benefit the usage of SeatsAvailability.
+    /// </summary>
+    /// <typeparam name="T">The entity type to persist.</typeparam>
     public class SqlEventSourcedRepository<T> : IEventSourcedRepository<T> where T : class, IEventSourced
     {
         // Could potentially use DataAnnotations to get a friendly/unique name in case of collisions between BCs.
@@ -80,7 +84,7 @@ namespace Infrastructure.Sql.EventSourcing
             return entity;
         }
 
-        public void Save(T eventSourced)
+        public void Save(T eventSourced, string correlationId)
         {
             // TODO: guarantee that only incremental versions of the event are stored
             var events = eventSourced.Events.ToArray();
@@ -89,17 +93,17 @@ namespace Infrastructure.Sql.EventSourcing
                 var eventsSet = context.Set<Event>();
                 foreach (var e in events)
                 {
-                    eventsSet.Add(this.Serialize(e));
+                    eventsSet.Add(this.Serialize(e, correlationId));
                 }
 
                 context.SaveChanges();
             }
 
             // TODO: guarantee delivery or roll back, or have a way to resume after a system crash
-            this.eventBus.Publish(events);
+            this.eventBus.Publish(events.Select(e => new Envelope<IEvent>(e) { CorrelationId = correlationId }));
         }
 
-        private Event Serialize(IVersionedEvent e)
+        private Event Serialize(IVersionedEvent e, string correlationId)
         {
             Event serialized;
             using (var writer = new StringWriter())
@@ -107,10 +111,11 @@ namespace Infrastructure.Sql.EventSourcing
                 this.serializer.Serialize(writer, e);
                 serialized = new Event
                 {
-                    AggregateId = e.SourceId,  
+                    AggregateId = e.SourceId,
                     AggregateType = sourceType,
                     Version = e.Version,
-                    Payload = writer.ToString()
+                    Payload = writer.ToString(),
+                    CorrelationId = correlationId
                 };
             }
             return serialized;

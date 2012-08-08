@@ -3,7 +3,7 @@
 // CQRS Journey project
 // ==============================================================================================================
 // ©2012 Microsoft. All rights reserved. Certain content used with permission from contributors
-// http://cqrsjourney.github.com/contributors/members
+// http://go.microsoft.com/fwlink/p/?LinkID=258575
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance 
 // with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 // Unless required by applicable law or agreed to in writing, software distributed under the License is 
@@ -21,16 +21,19 @@ namespace Infrastructure.Sql.Messaging
     using Infrastructure.Serialization;
 
     /// <summary>
-    /// A command bus that sends serialized object payloads through a <see cref="IMessageSender"/>.
+    /// This is an extremely basic implementation of <see cref="ICommandBus"/> that is used only for running the sample
+    /// application without the dependency to the Windows Azure Service Bus when using the DebugLocal solution configuration.
+    /// It should not be used in production systems.
     /// </summary>
     public class CommandBus : ICommandBus
     {
         private readonly IMessageSender sender;
-        private ITextSerializer serializer;
+        private readonly ITextSerializer serializer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandBus"/> class.
         /// </summary>
+        /// <param name="serializer">The serializer to use for the message body.</param>
         public CommandBus(IMessageSender sender, ITextSerializer serializer)
         {
             this.sender = sender;
@@ -60,7 +63,7 @@ namespace Infrastructure.Sql.Messaging
             using (var payloadWriter = new StringWriter())
             {
                 this.serializer.Serialize(payloadWriter, command.Body);
-                return new Message(payloadWriter.ToString(), command.Delay != TimeSpan.Zero ? (DateTime?)DateTime.UtcNow.Add(command.Delay) : null);
+                return new Message(payloadWriter.ToString(), command.Delay != TimeSpan.Zero ? (DateTime?)DateTime.UtcNow.Add(command.Delay) : null, command.CorrelationId);
             }
         }
     }
