@@ -3,7 +3,7 @@
 // CQRS Journey project
 // ==============================================================================================================
 // ©2012 Microsoft. All rights reserved. Certain content used with permission from contributors
-// http://cqrsjourney.github.com/contributors/members
+// http://go.microsoft.com/fwlink/p/?LinkID=258575
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance 
 // with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 // Unless required by applicable law or agreed to in writing, software distributed under the License is 
@@ -13,7 +13,6 @@
 
 namespace Infrastructure.Sql.Messaging
 {
-    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -21,7 +20,9 @@ namespace Infrastructure.Sql.Messaging
     using Infrastructure.Serialization;
 
     /// <summary>
-    /// An event bus that sends serialized object payloads through a <see cref="IMessageSender"/>.
+    /// This is an extremely basic implementation of <see cref="IEventBus"/> that is used only for running the sample
+    /// application without the dependency to the Windows Azure Service Bus when using the DebugLocal solution configuration.
+    /// It should not be used in production systems.
     /// </summary>
     public class EventBus : IEventBus
     {
@@ -31,8 +32,6 @@ namespace Infrastructure.Sql.Messaging
         /// <summary>
         /// Initializes a new instance of the <see cref="EventBus"/> class.
         /// </summary>
-        /// <param name="receiver">The receiver to use. If the receiver is <see cref="IDisposable"/>, it will be disposed when the processor is 
-        /// disposed.</param>
         /// <param name="serializer">The serializer to use for the message body.</param>
         public EventBus(IMessageSender sender, ITextSerializer serializer)
         {
@@ -43,9 +42,9 @@ namespace Infrastructure.Sql.Messaging
         /// <summary>
         /// Sends the specified event.
         /// </summary>
-        public void Publish(IEvent @event)
+        public void Publish(Envelope<IEvent> @event)
         {
-            var message = BuildMessage(@event);
+            var message = this.BuildMessage(@event);
 
             this.sender.Send(message);
         }
@@ -53,19 +52,19 @@ namespace Infrastructure.Sql.Messaging
         /// <summary>
         /// Publishes the specified events.
         /// </summary>
-        public void Publish(IEnumerable<IEvent> events)
+        public void Publish(IEnumerable<Envelope<IEvent>> events)
         {
-            var messages = events.Select(e => BuildMessage(e));
+            var messages = events.Select(e => this.BuildMessage(e));
 
             this.sender.Send(messages);
         }
 
-        private Message BuildMessage(IEvent @event)
+        private Message BuildMessage(Envelope<IEvent> @event)
         {
             using (var payloadWriter = new StringWriter())
             {
-                this.serializer.Serialize(payloadWriter, @event);
-                return new Message(payloadWriter.ToString());
+                this.serializer.Serialize(payloadWriter, @event.Body);
+                return new Message(payloadWriter.ToString(), correlationId: @event.CorrelationId);
             }
         }
     }

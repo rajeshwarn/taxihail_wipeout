@@ -3,7 +3,7 @@
 // CQRS Journey project
 // ==============================================================================================================
 // ©2012 Microsoft. All rights reserved. Certain content used with permission from contributors
-// http://cqrsjourney.github.com/contributors/members
+// http://go.microsoft.com/fwlink/p/?LinkID=258575
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance 
 // with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 // Unless required by applicable law or agreed to in writing, software distributed under the License is 
@@ -40,10 +40,20 @@ namespace Infrastructure.Sql.BlobStorage
             string blobString = "";
             if (contentType == "text/plain")
             {
-                using (var stream = new MemoryStream(blob))
-                using (var reader = new StreamReader(stream))
+                Stream stream = null;
+                try
                 {
-                    blobString = reader.ReadToEnd();
+                    stream = new MemoryStream(blob);
+                    using (var reader = new StreamReader(stream))
+                    {
+                        stream = null;
+                        blobString = reader.ReadToEnd();
+                    }
+                }
+                finally
+                {
+                    if (stream != null)
+                        stream.Dispose();
                 }
             }
 
@@ -56,6 +66,17 @@ namespace Infrastructure.Sql.BlobStorage
             {
                 this.Set<BlobEntity>().Add(new BlobEntity(id, contentType, blob, blobString));
             }
+
+            this.SaveChanges();
+        }
+
+        public void Delete(string id)
+        {
+            var blob = this.Set<BlobEntity>().Find(id);
+            if (blob == null)
+                return;
+
+            this.Set<BlobEntity>().Remove(blob);
 
             this.SaveChanges();
         }

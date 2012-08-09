@@ -170,6 +170,7 @@
 "CreateAccoutCancel" = "Cancel";
 "RideSettingsChargeType" = "Charge type:";
 "CreateAccountInvalidPassword" = "The password is invalid.  The password and confirmation must be the same.  The password must also be between 6 and 10 characters.";
+"CreateAccountInvalidPhone" = "The phone number is invalid. It must contain 10 numbers";
 "CreateAccountEmptyField" = "The data is invalid, all the fields are required.";
 "CreateAccountInvalidDataTitle" = "Invalid account info";
 "CreateAccountTitleMr" = "Mr";
@@ -190,8 +191,8 @@
 "CarAssigned" = "Your taxi #{0}";
 "InvalidVehiculeTypeForNbPassenger" = "You cannot choose this type of vehicule with more than 4 passengers.";
 "InvalidChoiceTitle" = "Invalid Choice";
-"FacebookLoginBtn" = "FB Login";
-"TwitterLoginBtn" = "Twitter Login";
+"FacebookLoginBtn" = "Log In with Facebook";
+"TwitterLoginBtn" = "Log In with Twitter";
 "Exceptions" = "Exceptions:";
 "MobileUser" = "This order has been placed by a mobile application user.";
 "Notes" = "Notes:";

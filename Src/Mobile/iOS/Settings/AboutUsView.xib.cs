@@ -38,7 +38,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			base.ViewDidLoad ();
 			
-			webView.LoadRequest( NSUrlRequest.FromUrl(  NSUrl.FromFilename( Resources.AboutUsUrl  ) ) );
+            webView.LoadRequest( NSUrlRequest.FromUrl( new NSUrl( "http://www.mobile-knowledge.com" ) ) ); // )  );//  NSUrl.FromFilename( Resources.AboutUsUrl  ) ) );
+            webView.ScalesPageToFit = true;
 		}
 		
 		#endregion

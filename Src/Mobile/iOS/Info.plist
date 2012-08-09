@@ -19,11 +19,12 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>fb405057926196041</string>
+				<string>taxihail</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1.0.4</string>
+	<string>1.0.6</string>
 	<key>MinimumOSVersion</key>
 	<string>3.0</string>
 	<key>NSMainNibFile</key>

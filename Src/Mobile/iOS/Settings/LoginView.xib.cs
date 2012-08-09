@@ -12,6 +12,10 @@ using System.IO;
 using System.Drawing;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.AppServices;
+using SocialNetworks.Services;
+using apcurium.MK.Common;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using System.Threading;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -63,15 +67,19 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public override void ViewDidAppear(bool animated)
         {
-            base.ViewDidAppear(animated);           
+            base.ViewDidAppear(animated); 
+            TinyIoCContainer.Current.Resolve<IFacebookService>().ConnectionStatusChanged -= HandleFbConnectionStatusChanged;
+            TinyIoCContainer.Current.Resolve<IFacebookService>().ConnectionStatusChanged += HandleFbConnectionStatusChanged;
+             
+            TinyIoCContainer.Current.Resolve<ITwitterService>().ConnectionStatusChanged -= HandleTwitterConnectionStatusChanged;
+            TinyIoCContainer.Current.Resolve<ITwitterService>().ConnectionStatusChanged += HandleTwitterConnectionStatusChanged;
+             
         }
 
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-
-
-
+             
             View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background_full.png"));
             
             if (AppContext.Current.LastEmailUsed.HasValue())
@@ -87,7 +95,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             View.AddSubview(btnSignUp);
             btnSignUp.TouchUpInside += SignUpClicked;
 
-            var btnPassword = AppButtons.CreateStandardButton(new RectangleF(170, 122, 140, 37), Resources.LoginForgotPasswordButton, AppStyle.LightBlue, AppStyle.ButtonColor.Yellow);
+            var btnPassword = AppButtons.CreateStandardButton(new RectangleF(170, 122, 140, 37), Resources.LoginForgotPasswordButton, AppStyle.LightBlue, AppStyle.ButtonColor.Blue);
             View.AddSubview(btnPassword);
             btnPassword.TouchUpInside += PasswordTouchUpInside;         
 
@@ -122,18 +130,21 @@ namespace apcurium.MK.Booking.Mobile.Client
             };
             
 
-//          var btnFbLogin = AppButtons.CreateStandardImageButton( new RectangleF( 55, 281, 211, 41), Resources.FacebookLoginBtn, AppStyle.DarkText, "Assets/FB/fbIcon.png", AppStyle.ButtonColor.DarkYellow );
-//          View.AddSubview(btnFbLogin);
-//          
-//
-//          var btnTwLogin = AppButtons.CreateStandardImageButton( new RectangleF( 55, 342, 211, 41), Resources.TwitterLoginBtn, AppStyle.DarkText, "Assets/TW/twIcon.png", AppStyle.ButtonColor.DarkYellow );
-//          View.AddSubview(btnTwLogin);
+
+            var btnFbLogin = AppButtons.CreateStandardImageButton(new RectangleF(55, 281, 211, 41), Resources.FacebookLoginBtn, AppStyle.LightBlue, "Assets/Social/FB/fbIcon.png", AppStyle.ButtonColor.DarkBlue);
+            View.AddSubview(btnFbLogin);
+            btnFbLogin.TouchUpInside += FacebookLogin;  
+
+            var btnTwLogin = AppButtons.CreateStandardImageButton(new RectangleF(55, 342, 211, 41), Resources.TwitterLoginBtn, AppStyle.LightBlue, "Assets/Social/TW/twIcon.png", AppStyle.ButtonColor.DarkBlue);
+            View.AddSubview(btnTwLogin);
+            btnTwLogin.TouchUpInside += TwitterLogin;   
+
             
 
-            txtEmail.BecomeFirstResponder();
+            //txtEmail.BecomeFirstResponder();
 
         }
-
+         
         void SignUpClicked(object sender, EventArgs e)
         {
             ShowSignUp(null);
@@ -153,15 +164,56 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             view.AccountCreated += delegate(object data, EventArgs e2)
             {
+
                 if (data is RegisterAccount)
                 {
-                    InvokeOnMainThread(() => txtEmail.Text = ((RegisterAccount)data).Email);
+
+                    if (((RegisterAccount)data).FacebookId.HasValue() || ((RegisterAccount)data).TwitterId.HasValue())
+                    {
+                        var facebookId = ((RegisterAccount)data).FacebookId;
+                        var twitterId = ((RegisterAccount)data).TwitterId;
+                        LoadingOverlay.StartAnimatingLoading(this.View, LoadingOverlayPosition.Center, null, 130, 30);
+                        ThreadHelper.ExecuteInThread(() =>
+                        {
+                            try
+                            {
+                                Thread.Sleep(500);                             
+                                Account account = null;
+                                string error = "";
+                                var service = TinyIoCContainer.Current.Resolve<IAccountService>();
+                                if ( facebookId.HasValue() )
+                                {
+
+                                    account = service.GetFacebookAccount(facebookId, out error);
+                                }
+                                else
+                                {
+                                    account = service.GetTwitterAccount(twitterId, out error);
+                                }
+                                if (account != null)
+                                {
+                                    SetAccountInfo(account);
+                                }
+                            }
+                            catch
+                            {
+                            }
+                            finally
+                            {                 
+                                LoadingOverlay.StopAnimatingLoading(this.View);
+                            }
+                        });
+                    }
+                    else
+                    {
+                        InvokeOnMainThread(() => txtEmail.Text = ((RegisterAccount)data).Email);
+                    }
                 }
             };
             
             var nav = new UINavigationController(view);
             //nav.NavigationBar.TintColor = UIColor.FromRGB(255, 178, 14);
-            LoadBackgroundNavBar(nav.NavigationBar );
+            LoadBackgroundNavBar(nav.NavigationBar);
             nav.Title = ".";
             this.PresentModalViewController(nav, true);
         }
@@ -184,9 +236,25 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             var nav = new UINavigationController(new ResetPasswordView());
             //nav.NavigationBar.TintColor = UIColor.FromRGB(255, 178, 14);
-            LoadBackgroundNavBar(nav.NavigationBar );
+            LoadBackgroundNavBar(nav.NavigationBar);
             nav.Title = ".";
             this.PresentModalViewController(nav, true);
+        }
+
+        private void SetAccountInfo(Account account)
+        {
+            AppContext.Current.LastEmailUsed = txtEmail.Text;
+            AppContext.Current.LoggedInEmail = txtEmail.Text;
+            InvokeOnMainThread(() => AppContext.Current.UpdateLoggedInUser(account, false));
+            InvokeOnMainThread(() => this.DismissModalViewControllerAnimated(true));
+            if (AppContext.Current.Controller.SelectedRefreshableViewController != null)
+            {
+                AppContext.Current.Controller.View.InvokeOnMainThread(() => 
+                {
+                    AppContext.Current.Controller.SelectedRefreshableViewController.RefreshData();
+                }
+                );
+            }
         }
 
         void SignInClicked(object sender, EventArgs e)
@@ -207,20 +275,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                         var account = service.GetAccount(txtEmail.Text, txtPassword.Text, out error);
                         if (account != null)
                         {
-                            AppContext.Current.LastEmailUsed = txtEmail.Text;
-
-                            AppContext.Current.LoggedInEmail = txtEmail.Text;
-                            AppContext.Current.LoggedInPassword = txtPassword.Text;
-
-                            InvokeOnMainThread(() => AppContext.Current.UpdateLoggedInUser(account, false));
-                            InvokeOnMainThread(() => this.DismissModalViewControllerAnimated(true));
-                            
-                            if (AppContext.Current.Controller.SelectedRefreshableViewController != null)
-                            {                               
-                                AppContext.Current.Controller.View.InvokeOnMainThread(() => {
-                                    AppContext.Current.Controller.SelectedRefreshableViewController.RefreshData(); });
-                            }
-                            
+                            SetAccountInfo(account);
                         }
                         else
                         {
@@ -250,6 +305,145 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         }
         #endregion
+
+        private void FacebookLogin(object sender, EventArgs e)
+        {
+            if (TinyIoCContainer.Current.Resolve<IFacebookService>().IsConnected)
+            {
+                DoFbLogin();
+            }
+            else
+            {
+                TinyIoCContainer.Current.Resolve<IFacebookService>().Connect("email, publish_stream, publish_actions");
+
+            }
+        }
+
+        void HandleFbConnectionStatusChanged(object sender, SocialNetworks.Services.Entities.FacebookStatus e)
+        {
+            if (e.IsConnected)
+            {
+                DoFbLogin();
+            }
+        }
+
+        private void DoFbLogin()
+        {
+            LoadingOverlay.StartAnimatingLoading(this.View, LoadingOverlayPosition.Center, null, 130, 30);
+
+            TinyIoCContainer.Current.Resolve<IFacebookService>().GetUserInfos(info => {
+                var data = new RegisterAccount();
+                data.FacebookId = info.Id;
+                data.Email = info.Email;
+                data.Name = Params.Get(info.Firstname, info.Lastname).Where(n => n.HasValue()).JoinBy(" ");
+
+                try
+                {
+                    AppContext.Current.SignOutUser();
+                    ThreadHelper.ExecuteInThread(() =>
+                    {
+                        try
+                        {
+                            InvokeOnMainThread(() => this.View.UserInteractionEnabled = false);
+                            var service = TinyIoCContainer.Current.Resolve<IAccountService>();
+
+
+                            string error = "";
+
+                            var account = service.GetFacebookAccount(data.FacebookId, out error);
+                            if (account != null)
+                            {
+                                SetAccountInfo(account);
+                            }
+                            else
+                            {
+                                InvokeOnMainThread(() => ShowSignUp(data));
+                            }
+                            
+                        }
+                        finally
+                        {
+                            InvokeOnMainThread(() => this.View.UserInteractionEnabled = true);
+                            LoadingOverlay.StopAnimatingLoading(this.View);
+                        }
+                    }
+                    );
+                }
+                finally
+                {
+                    
+                } 
+            }, () => Console.WriteLine("A") 
+            );
+        }
+
+        private void TwitterLogin(object sender, EventArgs e)
+        {
+            if (TinyIoCContainer.Current.Resolve<ITwitterService>().IsConnected)
+            {
+                DoTwLogin();
+            }
+            else
+            {
+                TinyIoCContainer.Current.Resolve<ITwitterService>().Connect();
+
+            }
+        }
+
+        private void DoTwLogin()
+        {
+            LoadingOverlay.StartAnimatingLoading(this.View, LoadingOverlayPosition.Center, null, 130, 30);
+
+            TinyIoCContainer.Current.Resolve<ITwitterService>().GetUserInfos(info => {
+                var data = new RegisterAccount();
+                data.TwitterId = info.Id;
+                data.Name = Params.Get(info.Firstname, info.Lastname).Where(n => n.HasValue()).JoinBy(" ");
+        
+                try
+                {
+                    AppContext.Current.SignOutUser();
+                    ThreadHelper.ExecuteInThread(() =>
+                    {
+                        try
+                        {
+                            InvokeOnMainThread(() => this.View.UserInteractionEnabled = false);
+                            var service = TinyIoCContainer.Current.Resolve<IAccountService>();
+
+                            string error = "";
+                            Account account = service.GetTwitterAccount( data.TwitterId, out error );
+                            if (account != null)
+                            {
+                                SetAccountInfo( account );
+                            }
+                            else
+                            {
+                                InvokeOnMainThread(() => ShowSignUp(data));
+                            }
+                            
+                        }
+                        finally
+                        {
+                            InvokeOnMainThread(() => this.View.UserInteractionEnabled = true);
+                            LoadingOverlay.StopAnimatingLoading(this.View);
+                        }
+                    }
+                    );
+                }
+                finally
+                {
+                    
+                }
+            }
+            );
+        }
+
+        void HandleTwitterConnectionStatusChanged(object sender, SocialNetworks.Services.Entities.TwitterStatus e)
+        {
+            if (e.IsConnected)
+            {
+                DoTwLogin();
+            }
+        }
 
     }
 }

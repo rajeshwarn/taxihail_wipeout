@@ -94,6 +94,9 @@
     <Reference Include="ServiceStack.Common.MonoTouch">
       <HintPath>..\Libraries\Monotouch\ServiceStack.Common.MonoTouch.dll</HintPath>
     </Reference>
+    <Reference Include="Facebook">
+      <HintPath>..\Libraries\Monotouch\Facebook.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="About_fr.html" />
@@ -363,6 +366,18 @@
     <Content Include="Assets\TopFieldBackground-Lg%402x.png" />
     <Content Include="Assets\TopFieldBackground-Sm.png" />
     <Content Include="Assets\TopFieldBackground-Sm%402x.png" />
+    <Content Include="Assets\Social\FB\fbIcon.png" />
+    <Content Include="Assets\Social\FB\fbIcon%402x.png" />
+    <Content Include="Assets\Social\FB\login.png" />
+    <Content Include="Assets\Social\FB\login_down.png" />
+    <Content Include="Assets\Social\FB\logout.png" />
+    <Content Include="Assets\Social\FB\logout_down.png" />
+    <Content Include="Assets\Social\TW\login.png" />
+    <Content Include="Assets\Social\TW\login_down.png" />
+    <Content Include="Assets\Social\TW\logout.png" />
+    <Content Include="Assets\Social\TW\logout_down.png" />
+    <Content Include="Assets\Social\TW\twIcon.png" />
+    <Content Include="Assets\Social\TW\twIcon%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.iOS.csproj">
@@ -380,6 +395,10 @@
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">
       <Project>{52A964D2-F9FE-47CD-9C50-781CCEC560ED}</Project>
       <Name>MK.Booking.Api.Client.iOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SocialNetwork\SocialNetworks.Services.MonoTouch\SocialNetworks.Services.MonoTouch.csproj">
+      <Project>{9CB6D6F3-4E5F-4A4F-B6AE-731B3DBC2031}</Project>
+      <Name>SocialNetworks.Services.MonoTouch</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

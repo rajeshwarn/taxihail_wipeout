@@ -80,8 +80,6 @@
     <Compile Include="Integration\AddressListFixture\AddressListGenerator.cs" />
     <Compile Include="Integration\GivenAReadModelDatabase.cs" />
     <Compile Include="Integration\OrderFixture\OrderGenerator.cs" />
-    <Compile Include="MemoryCommandBusFixture.cs" />
-    <Compile Include="MemoryEventBusFixture.cs" />
     <Compile Include="OrderFixture\given_no_order.cs" />
     <Compile Include="OrderFixture\given_one_order.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -108,8 +108,9 @@ namespace apcurium.MK.Booking.Mobile.Client
                 "TaxiMobile.Account.CurrentUser"
             );    
 
-            LoggedInEmail = null;
-            LoggedInPassword = null;
+
+
+            TinyIoCContainer.Current.Resolve<IAccountService>().SignOut();
         }
 
         public Account LoggedUser

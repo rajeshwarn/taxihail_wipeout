@@ -110,11 +110,6 @@
     <!-- Conditionally include the partial class that implements the two aspects of the processor. -->
     <Compile Include="Module.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServiceBusConstants.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ServiceBusConstants.tt</DependentUpon>
-    </Compile>
     <Compile Include="TestConfigurationManager.cs" />
     <Compile Include="TopShelfService.cs" />
   </ItemGroup>
@@ -143,17 +138,6 @@
       <IsTransformFile>True</IsTransformFile>
     </None>
     <None Include="packages.config" />
-    <None Include="ServiceBusConstants.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ServiceBusConstants.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup Condition=" '$(Configuration)|$(Platform)' != 'DebugLocal|AnyCPU' ">
-    <Content Include="..\Infrastructure\Azure\Settings.xml">
-      <Link>Settings.xml</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MK.Booking.IBS\MK.Booking.IBS.csproj">

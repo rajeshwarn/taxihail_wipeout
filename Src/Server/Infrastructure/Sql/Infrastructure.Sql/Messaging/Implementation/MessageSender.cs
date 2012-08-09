@@ -3,7 +3,7 @@
 // CQRS Journey project
 // ==============================================================================================================
 // ©2012 Microsoft. All rights reserved. Certain content used with permission from contributors
-// http://cqrsjourney.github.com/contributors/members
+// http://go.microsoft.com/fwlink/p/?LinkID=258575
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance 
 // with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 // Unless required by applicable law or agreed to in writing, software distributed under the License is 
@@ -31,7 +31,7 @@ namespace Infrastructure.Sql.Messaging.Implementation
         {
             this.connectionFactory = connectionFactory;
             this.name = name;
-            this.insertQuery = string.Format("INSERT INTO {0} (Body, DeliveryDate) VALUES (@Body, @DeliveryDate)", tableName);
+            this.insertQuery = string.Format("INSERT INTO {0} (Body, DeliveryDate, CorrelationId) VALUES (@Body, @DeliveryDate, @CorrelationId)", tableName);
         }
 
         /// <summary>
@@ -68,6 +68,7 @@ namespace Infrastructure.Sql.Messaging.Implementation
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities", Justification = "Does not contain user input.")]
         private void InsertMessage(Message message, DbConnection connection)
         {
             using (var command = (SqlCommand)connection.CreateCommand())
@@ -77,6 +78,7 @@ namespace Infrastructure.Sql.Messaging.Implementation
 
                 command.Parameters.Add("@Body", SqlDbType.NVarChar).Value = message.Body;
                 command.Parameters.Add("@DeliveryDate", SqlDbType.DateTime).Value = message.DeliveryDate.HasValue ? (object)message.DeliveryDate.Value : DBNull.Value;
+                command.Parameters.Add("@CorrelationId", SqlDbType.NVarChar).Value = (object)message.CorrelationId ?? DBNull.Value;
 
                 command.ExecuteNonQuery();
             }

@@ -3,7 +3,7 @@
 // CQRS Journey project
 // ==============================================================================================================
 // ©2012 Microsoft. All rights reserved. Certain content used with permission from contributors
-// http://cqrsjourney.github.com/contributors/members
+// http://go.microsoft.com/fwlink/p/?LinkID=258575
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance 
 // with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 // Unless required by applicable law or agreed to in writing, software distributed under the License is 
@@ -16,6 +16,9 @@ namespace Infrastructure.BlobStorage
     public interface IBlobStorage
     {
         byte[] Find(string id);
+        //T Find<T>(string id) where T : class;
         void Save(string id, string contentType, byte[] blob);
+        //void Save<T>(string id, T instance) where T : class;
+        void Delete(string id);
     }
 }

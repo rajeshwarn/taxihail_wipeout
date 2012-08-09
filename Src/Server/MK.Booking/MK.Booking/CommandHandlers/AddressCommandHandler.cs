@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.BackOffice.CommandHandlers
                 latitude: command.Latitude,
                 longitude: command.Longitude);
             
-            _repository.Save(account);
+            _repository.Save(account ,command.Id.ToString());
         }
 
         public void Handle(RemoveFavoriteAddress command)
@@ -36,7 +36,7 @@ namespace apcurium.MK.Booking.BackOffice.CommandHandlers
 
             account.RemoveFavoriteAddress(command.AddressId);
 
-            _repository.Save(account);
+            _repository.Save(account, command.Id.ToString());
         }
 
         public void Handle(UpdateFavoriteAddress command)
@@ -51,7 +51,7 @@ namespace apcurium.MK.Booking.BackOffice.CommandHandlers
                 latitude: command.Latitude,
                 longitude: command.Longitude);
 
-            _repository.Save(account);
+            _repository.Save(account, command.Id.ToString());
         }
     }
 }

@@ -3,7 +3,7 @@
 // CQRS Journey project
 // ==============================================================================================================
 // ©2012 Microsoft. All rights reserved. Certain content used with permission from contributors
-// http://cqrsjourney.github.com/contributors/members
+// http://go.microsoft.com/fwlink/p/?LinkID=258575
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance 
 // with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 // Unless required by applicable law or agreed to in writing, software distributed under the License is 
@@ -14,10 +14,16 @@
 namespace Infrastructure.EventSourcing
 {
     using System;
-    using System.Linq;
     using System.Collections.Generic;
     using Infrastructure.Messaging;
 
+    /// <summary>
+    /// Base class for event sourced entities that implements <see cref="IEventSourced"/>. 
+    /// </summary>
+    /// <remarks>
+    /// <see cref="IEventSourced"/> entities do not require the use of <see cref="EventSourced"/>, but this class contains some common 
+    /// useful functionality related to versions and rehydration from past events.
+    /// </remarks>
     public abstract class EventSourced : IEventSourced
     {
         private readonly Dictionary<Type, Action<IVersionedEvent>> handlers = new Dictionary<Type, Action<IVersionedEvent>>();
@@ -36,8 +42,18 @@ namespace Infrastructure.EventSourcing
             get { return this.id; }
         }
 
-        public int Version { get { return this.version; } }
+        /// <summary>
+        /// Gets the entity's version. As the entity is being updated and events being generated, the version is incremented.
+        /// </summary>
+        public int Version
+        {
+            get { return this.version; }
+            protected set { this.version = value; }
+        }
 
+        /// <summary>
+        /// Gets the collection of new events since the entity was loaded, as a consequence of command handling.
+        /// </summary>
         public IEnumerable<IVersionedEvent> Events
         {
             get { return this.pendingEvents; }
@@ -56,7 +72,6 @@ namespace Infrastructure.EventSourcing
         {
             foreach (var e in pastEvents)
             {
-                //this.handlers.First().Value.Invoke(e);
                 this.handlers[e.GetType()].Invoke(e);
                 this.version = e.Version;
             }
