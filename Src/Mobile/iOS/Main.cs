@@ -155,7 +155,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         public override bool HandleOpenURL(UIApplication application, NSUrl url)
         {
             Console.WriteLine(url.ToString());
-            if (url.AbsoluteString.StartsWith("fb405057926196041"))
+            if (url.AbsoluteString.StartsWith("fb134284363380764"))
             {
                 _callbackFromFB = true;
                 return (TinyIoCContainer.Current.Resolve<IFacebookService>() as FacebookServiceMT).HandleOpenURL(application, url);

@@ -47,11 +47,10 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <CodesignKey>iPhone Distribution: Baventure Group Inc.</CodesignKey>
+    <CodesignKey>iPhone Developer: Alexandre Proteau (32P5R9VSFV)</CodesignKey>
     <MtouchDebug>true</MtouchDebug>
     <MtouchI18n />
     <MtouchUseArmv7>false</MtouchUseArmv7>
-    <CodesignProvision>55BC7130-27C8-49F9-B4AA-3C4F1B761071</CodesignProvision>
     <IpaPackageName />
     <MtouchUseLlvm>true</MtouchUseLlvm>
     <CrashReportingApiKey />
@@ -65,15 +64,15 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <CodesignKey>iPhone Distribution: Baventure Group Inc.</CodesignKey>
+    <CodesignKey>iPhone Distribution</CodesignKey>
     <MtouchI18n />
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <IpaPackageName />
     <BuildIpa>true</BuildIpa>
     <CodesignProvision>55BC7130-27C8-49F9-B4AA-3C4F1B761071</CodesignProvision>
-    <MtouchArch>ARMv6_ARMv7</MtouchArch>
     <CrashReportingApiKey />
     <AssemblyName>TaxiMobileApp</AssemblyName>
+    <MtouchSdkVersion>5.1</MtouchSdkVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -97,6 +96,7 @@
     <Reference Include="Facebook">
       <HintPath>..\Libraries\Monotouch\Facebook.dll</HintPath>
     </Reference>
+    <Reference Include="MonoTouch.Dialog-1" />
   </ItemGroup>
   <ItemGroup>
     <None Include="About_fr.html" />
@@ -173,19 +173,8 @@
     <Compile Include="Helper\NSDefaultHelper.cs" />
     <Compile Include="Controls\Binding\Binding.cs" />
     <Compile Include="Controls\ISelectableViewController.cs" />
-    <Compile Include="MonoTouchDialog\ActivityElement.cs" />
-    <Compile Include="MonoTouchDialog\Controls.cs" />
-    <Compile Include="MonoTouchDialog\DialogViewController.cs" />
-    <Compile Include="MonoTouchDialog\ElementBadge.cs" />
-    <Compile Include="MonoTouchDialog\Elements.cs" />
-    <Compile Include="MonoTouchDialog\LoadMoreElement.cs" />
-    <Compile Include="MonoTouchDialog\OwnerDrawnElement.cs" />
-    <Compile Include="MonoTouchDialog\Reflect.cs" />
     <Compile Include="Controls\IRefreshableViewController.cs" />
     <Compile Include="Settings\RideSettingsView.cs" />
-    <Compile Include="MonoTouchDialog\LRUCache.cs" />
-    <Compile Include="MonoTouchDialog\ImageLoader.cs" />
-    <Compile Include="MonoTouchDialog\DialogViewController2.cs" />
     <Compile Include="Settings\AboutUsView.xib.cs">
       <DependentUpon>AboutUsView.xib</DependentUpon>
     </Compile>
@@ -249,6 +238,10 @@
     <Compile Include="Order\DestPickToggleButton.cs" />
     <Compile Include="Order\TouchableMapView.cs" />
     <Compile Include="Order\LocationDataExtension.cs" />
+    <Compile Include="MonoTouchDialog\CustomRootElement.cs" />
+    <Compile Include="MonoTouchDialog\RightAlignedEntryElement.cs" />
+    <Compile Include="MonoTouchDialog\SectionWithBackground.cs" />
+    <Compile Include="MonoTouchDialog\RadioElementWithId.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -349,15 +342,6 @@
     <Content Include="Assets\location%402x.png" />
     <Content Include="Assets\Logo.png" />
     <Content Include="Assets\Logo%402x.png" />
-    <Content Include="Assets\Logo_TaxiCandare.png" />
-    <Content Include="Assets\Logo_TaxiCandare%402x.png" />
-    <Content Include="Assets\Logo_TaxiDiamond.png" />
-    <Content Include="Assets\Logo_TaxiDiamondWest.png" />
-    <Content Include="Assets\Logo_TaxiDiamondWest%402x.png" />
-    <Content Include="Assets\Logo_TaxiRoyal.png" />
-    <Content Include="Assets\Logo_TaxiRoyal%402x.png" />
-    <Content Include="Assets\Logo_TaxiVeteran.png" />
-    <Content Include="Assets\Logo_TaxiVeteran%402x.png" />
     <Content Include="Assets\navBar.png" />
     <Content Include="Assets\navBar%402x.png" />
     <Content Include="Assets\taxi-label.png" />
@@ -378,6 +362,8 @@
     <Content Include="Assets\Social\TW\logout_down.png" />
     <Content Include="Assets\Social\TW\twIcon.png" />
     <Content Include="Assets\Social\TW\twIcon%402x.png" />
+    <Content Include="Assets\server.png" />
+    <Content Include="Assets\server%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.iOS.csproj">

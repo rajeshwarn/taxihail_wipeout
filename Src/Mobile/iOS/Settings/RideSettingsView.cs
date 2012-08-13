@@ -17,11 +17,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public event EventHandler Closed;
 
 		private BookingSettings _settings;
-		private EntryElement _nameEntry;
-		private EntryElement _phoneEntry;
-		private EntryElement _passengerEntry;
-		private RootElement _vehiculeTypeEntry;
-		private EntryElement _numberOfTaxiEntry;
+		private RightAlignedEntryElement _nameEntry;
+		private RightAlignedEntryElement _phoneEntry;
+		private RightAlignedEntryElement _passengerEntry;
+		private CustomRootElement _vehiculeTypeEntry;
+		private RightAlignedEntryElement _numberOfTaxiEntry;
 		
 		private int _selected = 0;
 		private bool _autoSave;
@@ -45,26 +45,44 @@ namespace apcurium.MK.Booking.Mobile.Client
 				CloseView (); });
 			NavigationItem.HidesBackButton = true;
 			NavigationItem.RightBarButtonItem = button;
+
+
 			
 		}
 
-		protected override void SetTitleView ()
-		{
-			NavigationItem.TitleView = AppContext.Current.Controller.GetTitleView (null, GetTitle ());
-		}
+        public override void ViewWillAppear(bool animated)
+        {
+            base.ViewWillAppear(animated);
+
+            ((UINavigationController ) ParentViewController ).NavigationBar.TopItem.TitleView = AppContext.Current.Controller.GetTitleView(null, Resources.DefaultRideSettingsViewTitle, false);
+            ((UINavigationController ) ParentViewController ).View.BackgroundColor =UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
+
+            View.BackgroundColor = UIColor.Clear; 
+            TableView.BackgroundColor = UIColor.Clear;
+
+
+
+        }
+
+//		protected override void SetTitleView ()
+//		{
+//			NavigationItem.TitleView = AppContext.Current.Controller.GetTitleView (null, GetTitle ());
+//		}
 
 		public override void ViewDidAppear (bool animated)
 		{
 			base.ViewDidAppear (animated);
 			if (_companyOnly)
 			{
-				LoadSettingsElementsForComaganies ();
+				//LoadSettingsElementsForComaganies ();
 			}
 			else
 			{
 				LoadSettingsElements ();
 			}
 			
+            ((UINavigationController ) ParentViewController ).NavigationBar.TopItem.TitleView = AppContext.Current.Controller.GetTitleView(null, Resources.DefaultRideSettingsViewTitle, false);
+
 		}
 
 		private void CloseView ()
@@ -124,11 +142,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 						if (!company.Display.ToSafeString ().ToLower ().Contains ("test"))
 						{
 						
-							var item = new RadioElement (company.Display);
-							item.ItemId = company.Id;
+							var item = new RadioElementWithId (company.Display);
+							item.Id = company.Id;
 							item.Tapped += delegate {
-								SetCompany (item); };
-							companies.Add (item);
+								SetCompany (item); 
+                            };
+							
+                            companies.Add (item);
 							if (_settings.ProviderId == company.Id)
 							{
 								selected = index;
@@ -156,6 +176,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 		}
 
+
 		private void LoadSettingsElements ()
 		{
 			
@@ -170,7 +191,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 					var menu = new RootElement (this.Title);
 					var settings = new Section (Resources.DefaultRideSettingsViewTitle);
 					
-					_nameEntry = new EntryElement (Resources.RideSettingsName, "", _settings.Name);
+					_nameEntry = new RightAlignedEntryElement (Resources.RideSettingsName, "", _settings.Name);
 					_nameEntry.KeyboardType = MonoTouch.UIKit.UIKeyboardType.Default;
 					_nameEntry.Changed += delegate {
 						_nameEntry.FetchValue ();
@@ -178,7 +199,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 						ApplyChanges ();
 					};
 					
-					_phoneEntry = new EntryElement (Resources.RideSettingsPhone, "", _settings.Phone);
+					_phoneEntry = new RightAlignedEntryElement (Resources.RideSettingsPhone, "", _settings.Phone);
 					_phoneEntry.Changed += delegate {
 						_phoneEntry.FetchValue ();
 						_settings.Phone = _phoneEntry.Value;
@@ -190,7 +211,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 					
 					if (AppSettings.ShowNumberOfTaxi)
 					{
-						_numberOfTaxiEntry = new EntryElement (Resources.RideSettingsNumberOfTaxi, "", _settings.NumberOfTaxi.ToString ());
+						_numberOfTaxiEntry = new RightAlignedEntryElement (Resources.RideSettingsNumberOfTaxi, "", _settings.NumberOfTaxi.ToString ());
 						_numberOfTaxiEntry.Changed += delegate {
 							_numberOfTaxiEntry.FetchValue ();
 							int r;
@@ -211,7 +232,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 
 
-					_passengerEntry = new EntryElement (Resources.RideSettingsPassengers, "", _settings.Passengers.ToString ());
+					_passengerEntry = new RightAlignedEntryElement (Resources.RideSettingsPassengers, "", _settings.Passengers.ToString ());
 					_passengerEntry.KeyboardType = MonoTouch.UIKit.UIKeyboardType.NumberPad;
 					
 					_passengerEntry.Changed += delegate {
@@ -229,7 +250,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 						
 					};
 					
-					var vehiculeTypes = new Section (Resources.RideSettingsVehiculeType);
+					var vehiculeTypes = new SectionWithBackground (Resources.RideSettingsVehiculeType);
 					
 					var vehicules = TinyIoCContainer.Current.Resolve<IAccountService> ().GetVehiclesList ();
 					
@@ -238,13 +259,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 					
 					foreach (ListItem vType in vehicules)
 					{
-						var item = new RadioElement (vType.Display);
-						item.ItemId = vType.Id;
-						item.Tapped += delegate {
-							
-								_selected = _vehiculeTypeEntry.Sections[0].Elements.IndexOf( item );
-								SetVehiculeType (item);
-							
+						var item = new RadioElementWithId(vType.Display);
+						item.Id = vType.Id;
+						item.Tapped += delegate {														
+							SetVehiculeType (item);
+                            ((UINavigationController) this.ParentViewController).PopViewControllerAnimated(true);
 						};
 						vehiculeTypes.Add (item);
 						if (_settings.VehicleTypeId == vType.Id)
@@ -253,43 +272,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 						}
 						index++;
 					}
-					_vehiculeTypeEntry = new RootElement (Resources.RideSettingsVehiculeType, new RadioGroup (_selected));
+					_vehiculeTypeEntry = new CustomRootElement (Resources.RideSettingsVehiculeType, new RadioGroup(_selected));
 					_vehiculeTypeEntry.Add (vehiculeTypes);
 				
-					
-					//var companyEntry = new StringElement ( Resources.RideSettingsCompany,  _settings.CompanyName );
-					
-					
-					
-					
-//					var companies = new Section (Resources.RideSettingsCompany);
-//					var companiesList = TinyIoCContainer.Current.Resolve<IAccountService> ().GetCompaniesList ();
-//					index = 0;
-//					selected = 0;
-//					foreach (ListItem company in companiesList)
-//					{
-//						//if (!company.Display.ToSafeString ().ToLower ().Contains ("test")) {
-//						
-//						var item = new RadioElement (company.Display);
-//						item.ItemId = company.Id;
-//						item.Tapped += delegate {
-//							SetCompany (item); };
-//						companies.Add (item);
-//						if (_settings.Company == company.Id)
-//						{
-//							selected = index;
-//						}
-//						index++;
-//						//}
-//					}
-//					
-//					var companyEntry = new RootElement (Resources.RideSettingsCompany, new RadioGroup (selected));
-//					companyEntry.Add (companies);
-//					
-					
-					
-					
-					var chargeTypes = new Section (Resources.RideSettingsChargeType);
+					var chargeTypes = new SectionWithBackground (Resources.RideSettingsChargeType);
 					
 					var payements = TinyIoCContainer.Current.Resolve<IAccountService> ().GetPaymentsList ();
 					
@@ -299,21 +285,23 @@ namespace apcurium.MK.Booking.Mobile.Client
 					
 					foreach (ListItem pay in payements)
 					{
-						var item = new RadioElement (pay.Display);
-						item.ItemId = pay.Id;
+						var item = new RadioElementWithId (pay.Display);
+						item.Id = pay.Id;
 						item.Tapped += delegate {
-							SetChargeType (item); };
+							SetChargeType (item); 
+                            ((UINavigationController) this.ParentViewController).PopViewControllerAnimated(true);
+                        };
 						chargeTypes.Add (item);
 						if (_settings.ChargeTypeId == pay.Id)
 						{
 							selected = index;
+
 						}
 						index++;
 					}
-					var chargeTypeEntry = new RootElement (Resources.RideSettingsChargeType, new RadioGroup (selected));
+					var chargeTypeEntry = new CustomRootElement (Resources.RideSettingsChargeType, new RadioGroup (selected));
 					chargeTypeEntry.Add (chargeTypes);
-
-					//_exceptionsEntry = CreateExceptionsSection(); 
+					
 
 					menu.Add (settings);
 					
@@ -322,7 +310,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 					
 					settings.Add (_passengerEntry);
 					settings.Add (_vehiculeTypeEntry);
-				//	settings.Add (companyEntry);
 					settings.Add (chargeTypeEntry);
 					
 					if (AppSettings.ShowNumberOfTaxi)
@@ -330,9 +317,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 						settings.Add (_numberOfTaxiEntry);
 					}
 
-					//settings.Add( _exceptionsEntry );
-					
-					
 					this.InvokeOnMainThread (() => {
 						this.Root = menu; });
 					
@@ -346,9 +330,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 		}
 
-		private void SetVehiculeType (RadioElement item)
+		private void SetVehiculeType (RadioElementWithId item)
 		{
-			SetVehiculeType( item.ItemId, item.Caption );
+			SetVehiculeType( item.Id , item.Caption );
 		}
 
 		private void SetVehiculeType (int id, string vehiculeName )
@@ -358,16 +342,16 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 		}
 
-		private void SetChargeType (RadioElement item)
+		private void SetChargeType (RadioElementWithId item)
 		{
-			_settings.ChargeTypeId = item.ItemId;			
+            _settings.ChargeTypeId = item.Id ;	
 			ApplyChanges ();
 			
 		}
 
-		private void SetCompany (RadioElement item)
+		private void SetCompany (RadioElementWithId item)
 		{
-			_settings.ProviderId = item.ItemId;			
+            _settings.ProviderId =  item.Id;
 			ApplyChanges ();
 		}
 

@@ -34,15 +34,15 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             OAuthConfig oauthConfig = new OAuthConfig
             {
-                ConsumerKey = "CIi418tFp0c4DIj8tQKEw",
-                Callback = "http://www.apcurium.com/oauth",
-                ConsumerSecret = "wtHZHvigOaKaXjHQT3MjdKZ8aICOa6toNcJlbfWX54",
+                ConsumerKey = "3nNkJ5EcI7yyi56ifLSAA",
+                Callback = "http://www.taxihail.com/oauth",
+                ConsumerSecret = "Th6nCDTgPiI3JPwHxgm8fQheMaLczUeHHG5liHGZRqs",
                 RequestTokenUrl = "https://api.twitter.com/oauth/request_token",
                 AccessTokenUrl = "https://twitter.com/oauth/access_token",
                 AuthorizeUrl = "https://twitter.com/oauth/authorize"
             };
 
-            var facebook = new FacebookServiceMT("405057926196041");
+            var facebook = new FacebookServiceMT("134284363380764");
             var twitterService = new TwitterServiceMonoTouch(oauthConfig, ()=> AppContext.Current.Window.RootViewController.PresentedViewController == null ? AppContext.Current.Window.RootViewController : AppContext.Current.Window.RootViewController.PresentedViewController.ModalViewController != null ? AppContext.Current.Window.RootViewController.PresentedViewController.ModalViewController : AppContext.Current.Window.RootViewController.PresentedViewController);
 
             TinyIoCContainer.Current.Register<IFacebookService>(facebook);

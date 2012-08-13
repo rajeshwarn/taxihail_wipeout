@@ -29,35 +29,48 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             _data = new RegisterAccount();
             _elementAreLoaded = false;
+
+
+            LoadSettingsElements();
         }
 
         public CreateAccountView(RegisterAccount data) : base(null)
         {
             _data = data;
             _elementAreLoaded = false;
+                LoadSettingsElements();
         }
 
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
             this.InvokeOnMainThread(() => NavigationItem.Title = " ");
+
+            View.BackgroundColor = UIColor.Clear; // UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
+            TableView.BackgroundColor = UIColor.Clear;
+            ((UINavigationController ) ParentViewController ).NavigationBar.TopItem.TitleView = AppContext.Current.Controller.GetTitleView(null, Resources.CreateAccoutTitle, false);
+            ((UINavigationController ) ParentViewController ).View.BackgroundColor =UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
+
+            //LoadBackgroundNavBar( this
         }
 
-        public override void ViewDidAppear(bool animated)
+   
+
+         private void LoadBackgroundNavBar(UINavigationBar bar)
         {
-            LoadSettingsElements();
+            bar.TintColor = UIColor.FromRGB(0, 78, 145);
+
+            //It might crash on iOS version smaller than 5.0
+            try
+            {
+                bar.SetBackgroundImage(UIImage.FromFile("Assets/navBar.png"), UIBarMetrics.Default);
+            }
+            catch
+            {
+            }
         }
 
-        public override void ViewDidLoad()
-        {
-            base.ViewDidLoad();
-        }
 
-        public override string GetTitle()
-        {
-            return "";
-            //  return Resources.CreateAccoutTitle;
-        }
 
         private void CreateAccount()
         {
@@ -154,11 +167,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             );
         }
 
-        public override UIColor GetCellColor()
-        {
-            return UIColor.White;
-        }
-
         private void Cancel()
         {
             this.DismissModalViewControllerAnimated(true);
@@ -166,13 +174,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         private EntryElement CreateTextEntry(Section parentSection, string caption, string placeholder, Action<string> setValue, Func<string> getValue)
         {
-            return CreateTextEntry(parentSection, caption, placeholder, setValue, getValue, false);
+            return CreateTextEntry(parentSection, caption, placeholder, setValue, getValue, false, true);
         }
 
         private EntryElement CreateTextEntry(Section parentSection, string caption, string placeholder, Action<string> setValue, Func<string> getValue, bool isPassword, bool addToParentSection = true)
         {
             setValue(getValue());
-            var entry = new EntryElement(caption, placeholder, getValue(), isPassword);         
+            var entry = new RightAlignedEntryElement(caption, placeholder, getValue(), isPassword);         
             entry.Changed += delegate
             {
                 Console.WriteLine("Changed");
@@ -199,13 +207,11 @@ namespace apcurium.MK.Booking.Mobile.Client
             foreach (string val in values)
             {
                 var item = new RadioElement(val);
-                item.ItemId = index;
+                item.Value = index.ToString();
                 item.Tapped += delegate
                 {
-                    setValue(values[item.ItemId]);
+                    setValue(values[int.Parse( item.Value ) ]);
                     this.DeactivateController(true);
-                    //this.
-                    //thithis.DismissModalViewControllerAnimated (true);
                 };
                 listSection.Add(item);
                 index++;
@@ -247,17 +253,6 @@ namespace apcurium.MK.Booking.Mobile.Client
              
         }
 
-//        private void AddButton(UIView parent, float x, float y, string title, UIColor normal, UIColor selected, Action clicked)
-//        {
-//            var btn = UIButton.FromType(UIButtonType.RoundedRect);
-//            btn.Frame = new System.Drawing.RectangleF(x, y, 130, 40);
-//            btn.SetTitle(title, UIControlState.Normal);
-//            parent.AddSubview(btn);
-//            GlassButton.Wrap(btn, normal, selected).TouchUpInside += delegate
-//            {
-//                clicked();
-//            };
-//        }
         
         private void LoadFooter()
         {
@@ -267,7 +262,10 @@ namespace apcurium.MK.Booking.Mobile.Client
             AddButton(footer, 170, 25, Resources.CreateAccoutCreate, () => CreateAccount(), apcurium.MK.Booking.Mobile.Client.AppStyle.ButtonColor.Green);
             AddButton(footer, 20, 25, Resources.CreateAccoutCancel, () => Cancel(), apcurium.MK.Booking.Mobile.Client.AppStyle.ButtonColor.Grey);
         }
-        
+
+        private CustomRootElement _menu;
+        private Section _settings;
+
         private void LoadSettingsElements()
         {
             ThreadHelper.ExecuteInThread(() =>
@@ -280,38 +278,40 @@ namespace apcurium.MK.Booking.Mobile.Client
                     }
                     _elementAreLoaded = true;
                     
-                    var menu = new RootElement(Resources.CreateAccoutTitle);
+                    _menu = new CustomRootElement(Resources.CreateAccoutTitle);
                     
-                    var settings = new Section(Resources.CreateAccoutTitle);
-                    menu.Add(settings);
-                    
-                    _emailEntry = CreateTextEntry(settings, Resources.CreateAccoutEmailLabel, null, s => _data.Email = s, () => _data.Email);
+                    _settings = new Section(Resources.CreateAccoutTitle);
+
+                    _menu.Add(_settings);
+                   
+                    _emailEntry = CreateTextEntry(_settings, Resources.CreateAccoutEmailLabel, "", s => _data.Email = s, () => _data.Email);
                     _emailEntry.KeyboardType = UIKeyboardType.EmailAddress;
-                    _emailEntry.OffsetX = 50;
-                    
-                    _emailEntry.TextAutocapitalizationType = UITextAutocapitalizationType.None;
-                    _emailEntry.TextAutocorrectionType = UITextAutocorrectionType.No;
+                    //_emailEntry.oOffsetX = 50;
+
+                    _emailEntry.AutocapitalizationType = UITextAutocapitalizationType.None;
+                    _emailEntry.AutocorrectionType = UITextAutocorrectionType.No;
                                 
-                    _fullNameEntry = CreateTextEntry(settings, Resources.CreateAccoutFullNameLabel, null, s => _data.Name = s, () => _data.Name);                   
-                    _fullNameEntry.OffsetX = 30;                    
+                    _fullNameEntry = CreateTextEntry(_settings, Resources.CreateAccoutFullNameLabel, null, s => _data.Name = s, () => _data.Name);                   
+                    //_fullNameEntry.OffsetX = 30;                    
                     
-                    _phoneEntry = CreateTextEntry(settings, Resources.CreateAccoutPhoneNumberLabel, null, s => _data.Phone = s, () => _data.Phone);
+                    _phoneEntry = CreateTextEntry(_settings, Resources.CreateAccoutPhoneNumberLabel, null, s => _data.Phone = s, () => _data.Phone);
                     _phoneEntry.KeyboardType = UIKeyboardType.PhonePad;
-                    
+
 
                     bool hasSocialInfo = _data.FacebookId.HasValue() || _data.TwitterId.HasValue();
 
 
-                        _passwordEntry = CreateTextEntry(settings, Resources.CreateAccoutPasswordLabel, null, s => _data.Password = s, () => _data.Password, true, !hasSocialInfo);
-                        _passwordEntry.TextAutocapitalizationType = UITextAutocapitalizationType.None;
-                        _passwordEntry.TextAutocorrectionType = UITextAutocorrectionType.No;
+
+                    _passwordEntry = CreateTextEntry(_settings, Resources.CreateAccoutPasswordLabel, null, s => _data.Password = s, () => _data.Password, true, !hasSocialInfo);
+                    _passwordEntry.AutocapitalizationType = UITextAutocapitalizationType.None;
+                    _passwordEntry.AutocorrectionType = UITextAutocorrectionType.No;
                     
-                        _confirmPasswordEntry = CreateTextEntry(settings, Resources.CreateAccountPasswordConfrimation, null, s => _confirm = s, () => _confirm, true, !hasSocialInfo);                  
-                        _confirmPasswordEntry.TextAutocapitalizationType = UITextAutocapitalizationType.None;
-                        _confirmPasswordEntry.TextAutocorrectionType = UITextAutocorrectionType.No;
+                    _confirmPasswordEntry = CreateTextEntry(_settings, Resources.CreateAccountPasswordConfrimation, null, s => _confirm = s, () => _confirm, true, !hasSocialInfo);                  
+                    _confirmPasswordEntry.AutocapitalizationType = UITextAutocapitalizationType.None;
+                    _confirmPasswordEntry.AutocorrectionType = UITextAutocorrectionType.No;
 
                     this.InvokeOnMainThread(() => {
-                        this.Root = menu; }
+                        this.Root = _menu; }
                     );
                     this.InvokeOnMainThread(() => LoadFooter());
                     this.InvokeOnMainThread(() => NavigationItem.Title = " ");
