@@ -50,9 +50,6 @@
     <Reference Include="Mono.Facebook">
       <HintPath>..\Mono.Facebook\bin\Debug\Mono.Facebook.dll</HintPath>
     </Reference>
-    <Reference Include="Facebook">
-      <HintPath>..\Libs\Facebook.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SocialNetworks.Services\Entities\FacebookStatus.cs">

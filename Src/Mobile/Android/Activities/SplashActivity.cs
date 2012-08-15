@@ -8,10 +8,11 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Client.Activities.Book;
 using apcurium.MK.Booking.Mobile.Client.Activities.Account;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
+using System;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities
 {
-    [Activity(Label = "@string/ApplicationName", MainLauncher = true, Theme = "@style/Theme.Splash", NoHistory = true, Icon = "@drawable/icon", ScreenOrientation=Android.Content.PM.ScreenOrientation.Portrait)]
+    [Activity(Label = "@string/ApplicationName", MainLauncher = true, Theme = "@style/Theme.Splash", NoHistory = true, Icon = "@drawable/icon", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class SplashActivity : Activity
     {
 
@@ -23,18 +24,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
             base.OnCreate(bundle);
 
             InitializeSocialNetwork();
-            
-            _locationService.Start();                        
 
-            ThreadHelper.ExecuteInThread(this, () => TinyIoCContainer.Current.Resolve<IAccountService>().RefreshCache(true),false);            
+            _locationService.Start();
 
-            if ( AppContext.Current.LoggedUser == null)           
+            ThreadHelper.ExecuteInThread(this, () => TinyIoCContainer.Current.Resolve<IAccountService>().RefreshCache(true), false);
+
+            if (AppContext.Current.LoggedUser == null)
             {
                 StartActivity(typeof(LoginActivity));
             }
             else
             {
-                this.RunOnUiThread(() => StartActivity(typeof(MainActivity)));                
+                this.RunOnUiThread(() => StartActivity(typeof(MainActivity)));
             }
 
         }

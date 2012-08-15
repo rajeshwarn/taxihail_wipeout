@@ -75,8 +75,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public bool IsStatusCompleted(string statusId)
         {
-            return statusId.IsNullOrEmpty() || 
-                    statusId.SoftEqual("wosSCHED") || 
+            return statusId.IsNullOrEmpty() ||                     
                     statusId.SoftEqual("wosCANCELLED") ||
                     statusId.SoftEqual("wosDONE") || 
                     statusId.SoftEqual("wosNOSHOW") || 

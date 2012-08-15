@@ -140,6 +140,10 @@
       <Project>{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}</Project>
       <Name>MK.Common.Android</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SocialNetwork\SocialNetworks.Services.MonoDroid\SocialNetworks.Services.MonoDroid.csproj">
+      <Project>{AD9663ED-C050-4580-B285-9C4AF363EA48}</Project>
+      <Name>SocialNetworks.Services.MonoDroid</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
@@ -150,7 +154,5 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>

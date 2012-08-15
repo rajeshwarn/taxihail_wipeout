@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Api.Services
     public class DirectionsService : RestServiceBase<DirectionsRequest>
     {
         private readonly IMapsApiClient _client;
-        private IConfigurationManager _configManager;
+        private readonly IConfigurationManager _configManager;
         public DirectionsService(IMapsApiClient client, IConfigurationManager configManager)
         {
             _client = client;

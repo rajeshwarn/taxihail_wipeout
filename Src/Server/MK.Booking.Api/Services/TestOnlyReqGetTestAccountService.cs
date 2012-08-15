@@ -67,6 +67,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             _commandBus.Send(command);
 
+            Thread.Sleep(400);
             // Confirm account immediately
             _commandBus.Send(new Commands.ConfirmAccount
             {

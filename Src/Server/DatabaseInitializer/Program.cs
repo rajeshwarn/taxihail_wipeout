@@ -42,8 +42,11 @@ namespace DatabaseInitializer
             // Use BookingDbContext as entry point for dropping and recreating DB
             using (var context = new BookingDbContext(connectionString))
             {
-                if (context.Database.Exists()) 
+                if (context.Database.Exists())
+                {
                     context.Database.Delete();
+                }
+
                 context.Database.CreateIfNotExists();
             }
 
@@ -86,13 +89,19 @@ namespace DatabaseInitializer
             var configurationManager = new
                 apcurium.MK.Common.Configuration.Impl.ConfigurationManager(() => new ConfigurationDbContext(connectionString));
 
+            configurationManager.SetSetting("TaxiHail.Version", "1.0.0");
+            configurationManager.SetSetting("TaxiHail.SiteName", "Dev");
+
             configurationManager.SetSetting("IBS.WebServicesUserName", "taxi");
             configurationManager.SetSetting("IBS.WebServicesPassword", "test");
+
+
+            configurationManager.SetSetting("IBS.AutoDispatch", "true");
 
             //DEMO SERVER
             //configurationManager.SetSetting("IBS.WebServicesUrl", "http://drivelinq.dyndns-ip.com:6928/XDS_IASPI.DLL/soap/");
             //configurationManager.SetSetting("DefaultBookingSettings.ProviderId", "9");
-            //configurationManager.SetSetting("DefaultBookingSettings.VehicleTypeId", "4");
+            //configurationManager.SetSetting("DefaultBookingSettings.VehicleTypeId", "1");
             //configurationManager.SetSetting("DefaultBookingSettings.ChargeTypeId", "1");
             //------
             

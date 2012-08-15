@@ -115,6 +115,7 @@
     <Compile Include="Security\CustomFacebookAuthProvider.cs" />
     <Compile Include="Services\AddressHistoryService.cs" />
     <Compile Include="Services\AccountOrderListService.cs" />
+    <Compile Include="Services\ApplicationInfoService.cs" />
     <Compile Include="Services\BookingSettingsService.cs" />
     <Compile Include="Services\CancelOrderService.cs" />
     <Compile Include="Services\ConfirmAccountService.cs" />

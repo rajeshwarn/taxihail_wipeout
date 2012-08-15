@@ -86,6 +86,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountServiceClient.cs" />
+    <Compile Include="ApplicationInfoServiceClient.cs" />
     <Compile Include="AuthServiceClient.cs" />
     <Compile Include="BaseServiceClient.cs" />
     <Compile Include="DirectionsServiceClient.cs" />

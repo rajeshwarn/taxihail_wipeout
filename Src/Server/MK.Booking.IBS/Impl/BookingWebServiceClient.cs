@@ -68,7 +68,8 @@ namespace apcurium.MK.Booking.IBS.Impl
             order.Customer = passengerName;
             order.Phone = phone;
 
-
+            var autoDispatch = ConfigManager.GetSetting("IBS.AutoDispatch").SelectOrDefault( setting => bool.Parse( setting ) , true );
+            order.DispByAuto = autoDispatch;
             order.PickupDate = new TWEBTimeStamp { Year = pickupDateTime.Year, Month = pickupDateTime.Month, Day = pickupDateTime.Day };
             order.PickupTime = new TWEBTimeStamp { Hour = pickupDateTime.Hour, Minute = pickupDateTime.Minute, Second = 0, Fractions = 0 };
 
