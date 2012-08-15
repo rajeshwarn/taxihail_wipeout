@@ -16,6 +16,7 @@ using SocialNetworks.Services;
 using apcurium.MK.Common;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using System.Threading;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -139,10 +140,45 @@ namespace apcurium.MK.Booking.Mobile.Client
             View.AddSubview(btnTwLogin);
             btnTwLogin.TouchUpInside += TwitterLogin;   
 
-            
+
+            var btnServer = AppButtons.CreateStandardImageButton(new RectangleF(55, 403, 211, 41), "Change Server", AppStyle.LightBlue, "Assets/server.png", AppStyle.ButtonColor.DarkBlue);
+            btnServer.TouchUpInside += ChangeServerTouchUpInside;
+            View.AddSubview(btnServer);
+            //btnTwLogin.TouchUpInside += TwitterLogin;   
+
+
 
             //txtEmail.BecomeFirstResponder();
 
+        }
+
+        void ChangeServerTouchUpInside (object sender, EventArgs e)
+        {
+
+
+
+       
+
+
+            var popup = new UIAlertView(){AlertViewStyle = UIAlertViewStyle.PlainTextInput};
+            popup.Title = "Server Url";
+            popup.GetTextField(0).Text = TinyIoC.TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl;
+            var saveBtnIndex = popup.AddButton("Save");
+            var cancelBtnIndex = popup.AddButton("Cancel");
+
+            popup.CancelButtonIndex = cancelBtnIndex;
+
+            popup.Clicked += delegate(object sender2, UIButtonEventArgs e2) {
+                if( e2.ButtonIndex == saveBtnIndex )
+                {
+                  new AppSettings().ServiceUrl = popup.GetTextField(0).Text ;                 
+                }
+                else
+                {
+                    popup.Dispose();
+                }
+            };
+            popup.Show();
         }
          
         void SignUpClicked(object sender, EventArgs e)
@@ -211,11 +247,13 @@ namespace apcurium.MK.Booking.Mobile.Client
                 }
             };
             
-            var nav = new UINavigationController(view);
+            var nav = new UINavigationController();
             //nav.NavigationBar.TintColor = UIColor.FromRGB(255, 178, 14);
             LoadBackgroundNavBar(nav.NavigationBar);
             nav.Title = ".";
             this.PresentModalViewController(nav, true);
+
+            nav.SetViewControllers( new UIViewController[]{view}, false );
         }
 
         private void LoadBackgroundNavBar(UINavigationBar bar)

@@ -102,11 +102,11 @@
 "Version" = "Version: {0}";
 "RideSettingsCannotLoadListMessage"="The server cannot be contacted, try again later.";
 "RideSettingsCannotLoadListTitle"="Server error";
-"RideSettingsName"="Name:";
-"RideSettingsPhone"="Phone:";
-"RideSettingsPassengers"="Passengers:";
-"RideSettingsVehiculeType"="Vehicule Type:";
-"RideSettingsCompany"="Company:";
+"RideSettingsName"="Name";
+"RideSettingsPhone"="Phone";
+"RideSettingsPassengers"="Passengers";
+"RideSettingsVehiculeType"="Vehicule Type";
+"RideSettingsCompany"="Company";
 "HistoryDetailHideButton"="Hide from history";
 "HistoryDetailRebookButton"="Rebook trip";
 "HistoryDetailDestinationLabel"="Destination:";
@@ -168,7 +168,7 @@
 "CreateAccoutPasswordConfirmLabel" = "Confirm:";
 "CreateAccoutCreate" = "Create";
 "CreateAccoutCancel" = "Cancel";
-"RideSettingsChargeType" = "Charge type:";
+"RideSettingsChargeType" = "Charge type";
 "CreateAccountInvalidPassword" = "The password is invalid.  The password and confirmation must be the same.  The password must also be between 6 and 10 characters.";
 "CreateAccountInvalidPhone" = "The phone number is invalid. It must contain 10 numbers";
 "CreateAccountEmptyField" = "The data is invalid, all the fields are required.";
