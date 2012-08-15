@@ -2,6 +2,7 @@ Name : MKTaxiHail
 Password : mkt0001.
 
 
+
 keytool -list -alias MKTaxiHail -keystore mkTaxiHail.keystore
 
 MKTaxiHail, Jul 15, 2012, PrivateKeyEntry,
@@ -29,3 +30,6 @@ Here is an example xml layout to get you started on your way to mapping glory:
                  android:apiKey="0XEY3WqKVmJMzXNRJfhbH1yM6RkpBMOaZWUoMAw"
                  />
             
+
+
+Hash facebook : Jbi/meELm8i7T47pKA4HZBN5NUk=

@@ -75,14 +75,57 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 
 
-        public string ServiceUrl
-        {            
-            //get { return "http://demo.taxihail.biz/V1/api/"; }
+        //public string ServiceUrl
+        //{            
+        //    //get { return "http://demo.taxihail.biz/V1/api/"; }
 
 
-            get { return "http://services.taxihail.com/TaxiHailDemo/V1/api/"; }
+        //    get { return "http://services.taxihail.com/TaxiHailDemo/V1/api/"; }
             
-            //get { return "http://project.apcurium.com/apcurium.MK.Web.csproj_deploy/api/"; }
+        //    //get { return "http://project.apcurium.com/apcurium.MK.Web.csproj_deploy/api/"; }
+
+        //}
+
+
+        public string DefaultServiceUrl
+        {
+            get { return "http://services.taxihail.com/{0}/v1/api/"; }
+
+        }
+
+        public string ServiceUrl
+        {
+            get
+            {
+                var url = TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService>().Get<string>("TaxiHail.ServiceUrl");
+                if (string.IsNullOrEmpty(url))
+                {
+                    return string.Format(DefaultServiceUrl, "taxihaildemo");
+                }
+                else
+                {
+                    return url;
+                }
+
+                //return "http://services.taxihail.com/taxihaildemo/v1/api/"; }
+            }
+
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService>().Clear("TaxiHail.ServiceUrl");
+                }
+                else if (value.ToLower().StartsWith("http"))
+                {
+                    TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService>().Set<string>("TaxiHail.ServiceUrl", value);
+                }
+                else
+                {
+                    TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService>().Set<string>("TaxiHail.ServiceUrl", string.Format(DefaultServiceUrl, value));
+                }
+
+            }
 
         }
     }

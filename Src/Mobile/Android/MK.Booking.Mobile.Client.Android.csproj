@@ -430,6 +430,10 @@
     <AndroidResource Include="Resources\Drawable\textedit_background_std.xml" />
     <AndroidResource Include="Resources\Drawable\textedit_background_disabled.9.png" />
     <AndroidResource Include="Resources\Drawable\gray_button.xml" />
+    <AndroidResource Include="Resources\Drawable\server_button_state.xml" />
+    <AndroidResource Include="Resources\Drawable\server_button.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\server_button.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\server_button.png" />
     <Content Include="Todo.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />

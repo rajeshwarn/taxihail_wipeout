@@ -20,6 +20,7 @@ namespace SocialNetworks.Services.MonoDroid
 			SessionEvents.AddAuthListener (this);
 			SessionEvents.AddLogoutListener (this);
 			_mainActivity = mainActivity;
+            SessionStore.Clear(_mainActivity.BaseContext);
 			SessionStore.Restore(_facebookClient, _mainActivity.BaseContext);
 			_handler = new Handler();
         }
@@ -29,6 +30,12 @@ namespace SocialNetworks.Services.MonoDroid
 		public void AuthorizeCallback (int requestCode, int resultCode, Android.Content.Intent data)
 		{
 			_facebookClient.AuthorizeCallback (requestCode, resultCode, data);
+
+            GetUserInfos(u =>
+                {
+                    u.ToString();
+                }, () => Console.Write("ee"));
+            //ConnectionStatusChanged(this, new FacebookStatus(false));
 		}
 		
 		#region IFacebookService implementation

@@ -159,6 +159,23 @@
                     android:drawableLeft="@drawable/twitter_icon_state"
                     android:drawablePadding="-2dip"                    
                     android:typeface="normal" />
+              <Button
+                  android:text="a"
+                  android:layout_height="20dip"
+                  android:layout_width="wrap_content"
+                  android:gravity="center"
+                  android:visibility="invisible" />
+              <Button
+                  android:id="@+id/ServerButton"
+                  style="@style/ButtonText"
+                  android:background="@drawable/social_media_login_btn_state"
+                  android:text="Change Server"
+                  android:layout_width="200dip"
+                  android:layout_height="wrap_content"
+                  android:gravity="center"
+                  android:drawableLeft="@drawable/server_button_state"
+                  android:drawablePadding="-2dip"
+                  android:typeface="normal" />
             </LinearLayout>
         </LinearLayout>
         <RelativeLayout

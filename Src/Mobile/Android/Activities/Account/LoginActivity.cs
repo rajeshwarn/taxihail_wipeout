@@ -43,6 +43,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
         {
             base.OnCreate(bundle);
 
+            SplashActivity.TopActivity = this;
+
             SetContentView(Resource.Layout.Login);
 
             var facebook = TinyIoC.TinyIoCContainer.Current.Resolve<IFacebookService>();
@@ -64,18 +66,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                 FindViewById<EditText>(Resource.Id.Username).Text = AppContext.Current.LastEmail;
             }
 
-            //var typeface = Typeface.CreateFromAsset(Assets, "HelveticaNeueLTPro-Roman.otf");
-            //FindViewById<EditText>(Resource.Id.Username).Typeface = typeface;
-            //FindViewById<EditText>(Resource.Id.Password).Typeface = typeface;
-            //FindViewById<Button>(Resource.Id.ForgotPasswordButton).Typeface = typeface;
-            //FindViewById<Button>(Resource.Id.SignInButton).Typeface = typeface;
-            //FindViewById<Button>(Resource.Id.SignUpButton).Typeface = typeface;
-
-            //FindViewById<Button>(Resource.Id.FacebookButton).Typeface = typeface;
-            //FindViewById<Button>(Resource.Id.TwitterButton).Typeface = typeface;
-
-
-
 
             FindViewById<Button>(Resource.Id.SignUpButton).Click += new EventHandler(SignUpButton_Click);
 
@@ -85,8 +75,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
             FindViewById<Button>(Resource.Id.FacebookButton).Click += delegate
                                                                           {
-                                                                              ShowProgressDialog();
-                                                                              facebook.Disconnect();
+                                                                              ShowProgressDialog();                                                                              
                                                                               if (facebook.IsConnected)
                                                                               {
                                                                                   facebook.GetUserInfos(CheckIfFacebookAccountExist, () =>
@@ -97,10 +86,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                                                                               }
                                                                               else
                                                                               {
-                                                                                  facebook.Connect("email,publish_stream");
+                                                                                  facebook.Connect("email, publish_stream, publish_actions");
                                                                               }
 
                                                                           };
+
+            FindViewById<Button>(Resource.Id.ServerButton).Click += delegate
+            {
+                PromptServer();
+            };
 
             FindViewById<Button>(Resource.Id.TwitterButton).Click += delegate
                 {
@@ -114,7 +108,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                     }
                 };
 
-
+            TinyIoC.TinyIoCContainer.Current.Resolve<IFacebookService>().ConnectionStatusChanged -= HandleFacebookConnection;
+            TinyIoC.TinyIoCContainer.Current.Resolve<IFacebookService>().ConnectionStatusChanged += HandleFacebookConnection;
 
             twitterService.ConnectionStatusChanged += (s, e) =>
             {
@@ -125,7 +120,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                 }
             };
 
-            //var facebook = TinyIoC.TinyIoCContainer.Current.Resolve<IFacebookService>();
 
         }
 
@@ -150,11 +144,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             {
                 var facebook = TinyIoC.TinyIoCContainer.Current.Resolve<IFacebookService>();
                 facebook.ConnectionStatusChanged -= HandleFacebookConnection;
+                facebook.ConnectionStatusChanged += HandleFacebookConnection;
                 facebook.GetUserInfos(CheckIfFacebookAccountExist, () =>
                 {
                     facebook.Disconnect();
                     HideProgressDialog();
                 });
+            }
+            else
+            {
+                HideProgressDialog();
             }
         }
 
@@ -174,14 +173,35 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             {
 
                 _progressDialog = ProgressDialog.Show(this, "", this.GetString(Resource.String.LoadingMessage), true, false);
-
-                //_progressDialog.SetMessage(Resources.GetString(Resource.String.LoadingMessage));
-                //_progressDialog.SetButton(Resources.GetString(Resource.String.CancelBoutton),
-                //                         cancelAction);
-                //_progressDialog.CancelEvent += new EventHandler(cancelAction);
                 _progressDialog.Show();
 
             });
+        }
+
+        private void PromptServer()
+        {
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            alert.SetTitle("Server Configuration");
+            alert.SetMessage("Enter Server Url");
+
+            var input = new EditText(this);
+            input.Text = new AppSettings(null).ServiceUrl;
+            alert.SetView(input);
+
+
+
+            alert.SetPositiveButton("Ok", (s, e) =>
+                {
+                    var serverUrl = input.Text;
+                    new AppSettings(null).ServiceUrl = serverUrl;
+                });
+
+            alert.SetNegativeButton("Cancel", (s, e) =>
+            {
+                
+            });
+
+            alert.Show();
         }
 
         private void CancelAction(object sender, EventArgs e)
