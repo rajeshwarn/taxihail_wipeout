@@ -10,6 +10,7 @@ using MonoTouch.UIKit;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.Client.InfoTableView;
 
 
 namespace apcurium.MK.Booking.Mobile.Client
@@ -18,59 +19,28 @@ namespace apcurium.MK.Booking.Mobile.Client
 	{
 		static NSString kCellIdentifier = new NSString ("LocationTableCellIdentifier");
 
-		private IEnumerable<Address> _favoriteList;
-		private IEnumerable<Address> _historyList;
-		private LocationsTabViewMode _mode;
+		private InfoStructure _structure;
 		private LocationsTabView _parent;
 
-		public LocationTableViewDataSource ( LocationsTabView parent, IEnumerable<Address> favoriteList, IEnumerable<Address> historyList, LocationsTabViewMode mode )
+		public LocationTableViewDataSource ( LocationsTabView parent, InfoStructure structure )
 		{
 			_parent = parent;
-			_historyList = historyList;
-			_favoriteList = favoriteList;
-			_mode = mode;
+			_structure = structure;
 		}
-
 
 		public override int NumberOfSections (UITableView tableView)
 		{
-			return 2;
+			return _structure.Sections.Count();
 		}
 
 		public override string TitleForHeader (UITableView tableView, int section)
 		{
-			if (section == 0 ) 
-			{
-				if( _mode == LocationsTabViewMode.Edit || _mode == LocationsTabViewMode.FavoritesSelector )
-				{
-					return Resources.FavoriteLocationsTitle;
-				}
-				else if( _mode == LocationsTabViewMode.NearbyPlacesSelector )
-				{
-					return Resources.NearbyPlacesTitle;
-				}
-			}
-			else if( _mode == LocationsTabViewMode.Edit || _mode == LocationsTabViewMode.FavoritesSelector )
-			{
-				return Resources.LocationHistoryTitle;
-			}
-
-			return null;
+			return _structure.Sections.ElementAt( section ).SectionLabel;
 		}
-
-
-
 
 		public override int RowsInSection (UITableView tableview, int section)
 		{
-			if (section == 0) 
-			{
-				return _favoriteList.Count ();
-			} 
-			else 
-			{
-				return _historyList.Count ();
-			}
+			return _structure.Sections.ElementAt( section ).Items.Count();
 		}
 
 		public override UITableViewCell GetCell (UITableView tableView, NSIndexPath indexPath)
@@ -78,41 +48,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			UITableViewCell cell = tableView.DequeueReusableCell (kCellIdentifier);
 			
 			if (cell == null) {
-				cell = new UITableViewCell (UITableViewCellStyle.Default, kCellIdentifier);
-			}
-			
-			cell.BackgroundColor = UIColor.Clear;
-			
-			if ( _parent.Mode == LocationsTabViewMode.Edit )
-			{
-			cell.Accessory = UITableViewCellAccessory.DisclosureIndicator;
-			}
-			else{
-				cell.Accessory = UITableViewCellAccessory.None;
-			}
-			cell.SelectionStyle = UITableViewCellSelectionStyle.Blue;
-			
-			cell.TextLabel.TextColor = UIColor.DarkGray;
-    		cell.TextLabel.Font = UIFont.SystemFontOfSize( 14 );
-			
-			if (indexPath.Section == 0) {
-				var favLoc = _favoriteList.ElementAt (indexPath.Row);
-				if (favLoc.Id.IsNullOrEmpty()) {
-					cell.TextLabel.Text = Resources.LocationAddFavorite;
-				} else {
-					cell.TextLabel.Text = favLoc.Display();
-				}
-			} else {
-				var hist = _historyList.ElementAt (indexPath.Row);
-				if (hist.Id.IsNullOrEmpty()) {
-					cell.TextLabel.Text = Resources.LocationNoHistory;
-					cell.Accessory = UITableViewCellAccessory.None;
-					cell.SelectionStyle = UITableViewCellSelectionStyle.None;
-					
-				} else {
-					cell.TextLabel.Text = hist.Display();
-				}
-				
+				cell = new TwoLinesAddressCell ( (TwoLinesAddressItem)_structure.Sections.ElementAt( indexPath.Section ).Items.ElementAt( indexPath.Row ), kCellIdentifier);
 			}
 			
 			return cell;

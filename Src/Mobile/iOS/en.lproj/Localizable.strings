@@ -65,7 +65,9 @@
 "CallCompanyButton" = "Call dispatch center";
 "NoHistoryLabel" = "No booking history";
 "LocationNoHistory" = "No history";
-"LocationAddFavorite" = "< Add a new location >";
+"LocationNoHistoryDetails" = "Book a ride";
+"LocationAddFavorite" = "Add a new location";
+"LocationAddFavoriteDetails" = "Select to add a new location";
 "LocationDetailInstructionLabel" = "Save as a favorite location";
 "LocationDetailGiveItANameLabel" = "Give it a name";
 "LocationDetailStreetAddressPlaceholder" = "Street address";

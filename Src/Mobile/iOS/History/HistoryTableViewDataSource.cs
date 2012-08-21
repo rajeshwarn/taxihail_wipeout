@@ -8,6 +8,7 @@ using System.Text;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.Client.InfoTableView;
 
 
 namespace apcurium.MK.Booking.Mobile.Client
@@ -17,32 +18,42 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		static NSString kCellIdentifier = new NSString ("HistoryTableCellIdentifier");
 
-		private IEnumerable<Order> _list;
+		private InfoStructure _structure;
 
-		public HistoryTableViewDataSource (IEnumerable<Order> list)
+		public HistoryTableViewDataSource (InfoStructure structure)
 		{
-			_list = list;
+			_structure = structure;
 		}
 
 		public override int RowsInSection (UITableView tableview, int section)
 		{
-			return _list.Count();
+			return _structure.Sections.ElementAt( section ).Items.Count();
 		}
 
 		public override UITableViewCell GetCell (UITableView tableView, NSIndexPath indexPath)
 		{
-			UITableViewCell cell = tableView.DequeueReusableCell (kCellIdentifier);
+//			UITableViewCell cell = tableView.DequeueReusableCell (kCellIdentifier);
+//			if (cell == null) {				
+//				cell = new UITableViewCell (UITableViewCellStyle.Default , kCellIdentifier);
+//			}
+//			cell.BackgroundColor = UIColor.Clear;
+//			cell.Accessory = UITableViewCellAccessory.DisclosureIndicator;
+//			cell.SelectionStyle = UITableViewCellSelectionStyle.None;
+//			cell.TextLabel.TextColor = UIColor.DarkGray;
+//    		cell.TextLabel.Font = UIFont.SystemFontOfSize( 14 );
+//			
+//			var b = _list.ElementAt(indexPath.Row);
+//			cell.TextLabel.Text = "#" + b.IBSOrderId + " - " + b.PickupAddress.FullAddress ;
+//			return cell;
+
+			TwoLinesAddressCell cell = (TwoLinesAddressCell)tableView.DequeueReusableCell (kCellIdentifier);
 			if (cell == null) {				
-				cell = new UITableViewCell (UITableViewCellStyle.Default , kCellIdentifier);
+				cell = new TwoLinesAddressCell ( _structure.Sections.ElementAt( indexPath.Section ).Items.ElementAt( indexPath.Row ) as TwoLinesAddressItem, kCellIdentifier);
 			}
-			cell.BackgroundColor = UIColor.Clear;
-			cell.Accessory = UITableViewCellAccessory.DisclosureIndicator;
-			cell.SelectionStyle = UITableViewCellSelectionStyle.None;
-			cell.TextLabel.TextColor = UIColor.DarkGray;
-    		cell.TextLabel.Font = UIFont.SystemFontOfSize( 14 );
+
 			
-			var b = _list.ElementAt(indexPath.Row);
-			cell.TextLabel.Text = "#" + b.IBSOrderId + " - " + b.PickupAddress.FullAddress ;
+
+//			cell.TextLabel.Text = "#" + b.IBSOrderId + " - " + b.PickupAddress.FullAddress ;
 			return cell;
 		}
 		

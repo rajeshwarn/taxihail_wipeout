@@ -8,6 +8,8 @@ using apcurium.Framework.Extensions;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Client.InfoTableView;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -19,6 +21,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 	}
 	public partial class LocationsTabView : UIViewController , ITaxiViewController, ISelectableViewController,IRefreshableViewController
 	{
+//		private TableView _tableLocations;
 		public event EventHandler Canceled;
 		public event EventHandler LocationSelected;
 		#region Constructors
@@ -65,7 +68,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-			
+//			_tableLocations = new TableView( new System.Drawing.RectangleF(0,-2,320,366), UITableViewStyle.Grouped );
+//			_tableLocations.SectionFooterHeight = 10;
+//			_tableLocations.SectionHeaderHeight = 10;
+//			_tableLocations.BackgroundColor = UIColor.Clear;
+//			View.AddSubview( _tableLocations );
+//			tableLocations.Hidden = true;
+
 			if (Mode == LocationsTabViewMode.Edit) {
 				View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
 								
@@ -79,7 +88,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			}
 //			btnCancel.SetTitle (Resources.CancelBoutton, UIControlState.Normal);
 //			lblTitle.Text = "";
-			tableLocations.RowHeight = 35;
 			Layout();
 			LoadGridData ();
 			
@@ -115,18 +123,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 				return;
 			}
 
-			if( Mode == LocationsTabViewMode.Edit || Mode == LocationsTabViewMode.FavoritesSelector )
-			{
-				var favorites = GetFavorites();
-				var historic = GetHistoric();
-				tableLocations.DataSource = new LocationTableViewDataSource (this,favorites, historic, Mode);
-				tableLocations.Delegate = new LocationTableViewDelegate (this, favorites, historic);
-			}
-			else if( Mode == LocationsTabViewMode.NearbyPlacesSelector )
-			{
-				tableLocations.DataSource = new LocationTableViewDataSource (this, LocationList, new List<Address>(), Mode);
-				tableLocations.Delegate = new LocationTableViewDelegate (this, LocationList, new List<Address>());
-			}
+			var structure = GetLocationsStructure();
+
+			tableLocations.DataSource = new LocationTableViewDataSource (this, structure);
+			tableLocations.Delegate = new LocationTableViewDelegate (this, structure);
 
 			tableLocations.ReloadData ();
 		}
@@ -185,7 +185,32 @@ namespace apcurium.MK.Booking.Mobile.Client
 		}
 
 		
-		
+		private InfoStructure GetLocationsStructure()
+		{
+			var structure = new InfoStructure( 50, false );
+
+			if( Mode == LocationsTabViewMode.Edit || Mode == LocationsTabViewMode.FavoritesSelector )
+			{
+				var favorites = GetFavorites();
+				var historic = GetHistoric();
+
+				var sectFav = structure.AddSection( Resources.FavoriteLocationsTitle );
+				sectFav.EditMode = Mode == LocationsTabViewMode.Edit;
+				favorites.ForEach( item => sectFav.AddItem( new TwoLinesAddressItem( item.Id,  item.Id.IsNullOrEmpty() ? Resources.LocationAddFavorite : item.FriendlyName, item.Id.IsNullOrEmpty() ? Resources.LocationAddFavoriteDetails : item.FullAddress ) { Data = item, ShowRightArrow = Mode == LocationsTabViewMode.Edit && !item.Id.IsNullOrEmpty(), ShowPlusSign = item.Id.IsNullOrEmpty() } ) );
+
+				var sectHist = structure.AddSection( Resources.LocationHistoryTitle );
+				sectHist.EditMode = Mode == LocationsTabViewMode.Edit;
+				historic.ForEach( item => sectHist.AddItem( new TwoLinesAddressItem( item.Id,  item.Id.IsNullOrEmpty() ? Resources.LocationNoHistory : item.FriendlyName, item.Id.IsNullOrEmpty() ? Resources.LocationNoHistoryDetails : item.FullAddress ) { Data = item, ShowRightArrow = Mode == LocationsTabViewMode.Edit && !item.Id.IsNullOrEmpty() } ) );
+			}
+			else if( Mode == LocationsTabViewMode.NearbyPlacesSelector )
+			{
+				var sectNearby = structure.AddSection( Resources.NearbyPlacesTitle );
+				sectNearby.EditMode = false;
+				LocationList.ForEach( item => sectNearby.AddItem( new TwoLinesAddressItem( item.Id,  item.FriendlyName, item.FullAddress ) { Data = item } ) );
+			}
+
+			return structure;
+		}
 		#endregion
 	}
 }

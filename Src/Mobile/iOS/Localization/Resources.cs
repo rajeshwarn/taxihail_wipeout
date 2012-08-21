@@ -838,7 +838,14 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             get { return GetValue ("ErrorGettingStatus"); }
         }
-
+        public static string LocationAddFavoriteDetails
+        {
+            get { return GetValue ("LocationAddFavoriteDetails"); }
+        }
+        public static string LocationNoHistoryDetails
+        {
+            get { return GetValue ("LocationNoHistoryDetails"); }
+        }
 	}
 }
 

@@ -242,6 +242,12 @@
     <Compile Include="MonoTouchDialog\RightAlignedEntryElement.cs" />
     <Compile Include="MonoTouchDialog\SectionWithBackground.cs" />
     <Compile Include="MonoTouchDialog\RadioElementWithId.cs" />
+    <Compile Include="InfoTableView\Section.cs" />
+    <Compile Include="InfoTableView\SectionItem.cs" />
+    <Compile Include="InfoTableView\TwoLinesAddressCell.cs" />
+    <Compile Include="InfoTableView\TwoLinesAddressItem.cs" />
+    <Compile Include="InfoTableView\InfoStructure.cs" />
+    <Compile Include="Controls\TableView.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -267,6 +273,8 @@
     <Folder Include="Extensions\" />
     <Folder Include="Cache\" />
     <Folder Include="Order\" />
+    <Folder Include="InfoTableView\" />
+    <Folder Include="Assets\Cells\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="MainWindow.xib" xmlns="" />
@@ -364,6 +372,10 @@
     <Content Include="Assets\Social\TW\twIcon%402x.png" />
     <Content Include="Assets\server.png" />
     <Content Include="Assets\server%402x.png" />
+    <Content Include="Assets\Cells\plusSign.png" />
+    <Content Include="Assets\Cells\plusSign%402x.png" />
+    <Content Include="Assets\Cells\rightArrow.png" />
+    <Content Include="Assets\Cells\rightArrow%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.iOS.csproj">

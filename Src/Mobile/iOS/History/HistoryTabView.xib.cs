@@ -6,6 +6,8 @@ using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Client.InfoTableView;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -75,18 +77,31 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			if (tableHistory != null) {
 
-                var historic = TinyIoCContainer.Current.Resolve<IAccountService>().GetHistoryOrders();				
-				if (historic.Count () == 0) {
+                var structure = GetHistoricStructure();				
+				if (structure.Sections.ElementAt(0).Items.Count () == 0) {
 					lblNoHistory.Hidden = false;
 					tableHistory.Hidden = true;
 				} else {
 					lblNoHistory.Hidden = true;
 					tableHistory.Hidden = false;
-					tableHistory.DataSource = new HistoryTableViewDataSource (historic);
-					tableHistory.Delegate = new HistoryTableViewDelegate (this, historic);
+
+					tableHistory.DataSource = new HistoryTableViewDataSource (structure);
+					tableHistory.Delegate = new HistoryTableViewDelegate (this, structure );
 					tableHistory.ReloadData ();
 				}
 			}
+		}
+
+		private InfoStructure GetHistoricStructure()
+		{
+			var historic = TinyIoCContainer.Current.Resolve<IAccountService>().GetHistoryOrders();
+
+			var s = new InfoStructure( 50, false );
+			var sect = s.AddSection( Resources.HistoryViewTitle );
+			historic.ForEach( item => sect.AddItem( new TwoLinesAddressItem( item.Id, item.PickupAddress.FriendlyName, item.PickupAddress.FullAddress ) { Data = item } ) );
+
+			return s;
+
 		}
 		#endregion
 	}

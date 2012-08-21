@@ -107,6 +107,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public static string ButtonFontName { get { return "HelveticaNeue-Bold"; } }
 
+		public static UIFont CellFont { get { return UIFont.FromName( "HelveticaNeue-Bold", CellFontSize ); } }
+		public static float CellFontSize { get { return 14f; } }
+
         public static float ButtonFontSize { get { return 14f; } }
 
         public static UIFont GetButtonFont(float size)
@@ -126,6 +129,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public  static UIColor LightButtonHighlightedColor{ get { return UIColor.FromRGB(50, 50, 50); } }
 
+		public static UIColor CellBackgroundColor{ get{ return UIColor.FromRGB(253, 253, 253); } }
+		public static UIColor CellFirstLineTextColor{ get{ return UIColor.FromRGB(77, 77, 77); } }
+		public static UIColor CellSecondLineTextColor{ get{ return UIColor.FromRGB(133, 133, 133); } }
 //        public static UIColor NavBarColor
 //        {
 //             private void LoadBackgroundNavBar()

@@ -65,7 +65,9 @@
 "CallCompanyButton" = "Appeller la centrale";
 "NoHistoryLabel" = "Aucun historique";
 "LocationNoHistory" = "Aucun historique";
-"LocationAddFavorite" = "<Ajouter une nouvelle adresse>";
+"LocationNoHistoryDetails" = "Commandez un taxi";
+"LocationAddFavorite" = "Ajouter une nouvelle adresse";
+"LocationAddFavoriteDetails" = "Selectionnez pour ajouter une nouvelle adresse";
 "LocationDetailInstructionLabel" = "Sauvegarder comme adresse favorite";
 "LocationDetailGiveItANameLabel" = "Nom de l'endroit";
 "LocationDetailStreetAddressPlaceholder" = "adresse";

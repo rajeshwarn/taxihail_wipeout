@@ -10,20 +10,20 @@ using MonoTouch.UIKit;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.Client.InfoTableView;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
 	public class LocationTableViewDelegate : UITableViewDelegate
 	{
 
-		private IEnumerable<Address> _favoriteList;
-		private IEnumerable<Address> _historyList;
+		private InfoStructure _structure;
 		private LocationsTabView _parent;
-		public LocationTableViewDelegate (LocationsTabView parent, IEnumerable<Address> favoriteList, IEnumerable<Address> historyList)
+
+		public LocationTableViewDelegate (LocationsTabView parent, InfoStructure structure)
 		{
 			_parent = parent;
-			_historyList = historyList;
-			_favoriteList = favoriteList;
+			_structure = structure;
 		}
 
 //		public override float GetHeightForRow (UITableView tableView, NSIndexPath indexPath)
@@ -34,68 +34,46 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		private Address _lastSelected;
 
+		public override float GetHeightForRow (UITableView tableView, NSIndexPath indexPath)
+		{
+			return _structure.Sections.ElementAt( indexPath.Section ).Items.ElementAt( indexPath.Row ).RowHeight;
+		}
+
 		public override void RowSelected (UITableView tableView, NSIndexPath indexPath)
 		{
-			
-			if ((indexPath.Section == 1) && _historyList.ElementAt (indexPath.Row).Id.IsNullOrEmpty())
-			{
-				return;
-			}
-			
-			if (_parent.Mode == LocationsTabViewMode.Edit)
+
+			if ( _structure.Sections.ElementAt( indexPath.Section ).EditMode )
 			{
 				var detail = new LocationDetailView ();
 				_parent.NavigationController.PushViewController (detail, true);
+
 				if (indexPath.Section == 0)
 				{
-					
-					_lastSelected = _favoriteList.ElementAt (indexPath.Row);					
-					detail.LoadData (_lastSelected);
-					
+					_lastSelected = (Address)_structure.Sections.ElementAt( indexPath.Section ).Items.ElementAt (indexPath.Row).Data;					
 				}
 
 				else
 				{
-					_lastSelected = _historyList.ElementAt (indexPath.Row).Copy();					
+					_lastSelected = ((Address)_structure.Sections.ElementAt( indexPath.Section ).Items.ElementAt (indexPath.Row).Data).Copy();					
                     _lastSelected.Id = Guid.Empty;
-					detail.LoadData (_lastSelected);
 				}
+				detail.LoadData (_lastSelected);
+
 				detail.Deleted += HandleDetailDeleted;
-				
-				
 				detail.Saved += HandleDetailSaved;
 				
 			}
 
-			else if (_parent.Mode == LocationsTabViewMode.FavoritesSelector || _parent.Mode == LocationsTabViewMode.NearbyPlacesSelector )
+			else if( !_structure.Sections.ElementAt( indexPath.Section ).Items.ElementAt( indexPath.Row ).Id.IsNullOrEmpty() )
 			{
-				if (indexPath.Section == 0)
-				{
-					
-					_parent.DoSelect (_favoriteList.ElementAt (indexPath.Row));
-					
-					
-				}
-
-				else
-				{
-					_parent.DoSelect (_historyList.ElementAt (indexPath.Row));
-				}
+				_parent.DoSelect ( (Address)_structure.Sections.ElementAt( indexPath.Section ).Items.ElementAt (indexPath.Row).Data );
 			}
-			
-			
-			
-			
 			
 		}
 
 		void HandleDetailSaved (object sender, EventArgs e)
 		{
-    
-
             _parent.Update (_lastSelected);             
-
-			
 		}
 
 
