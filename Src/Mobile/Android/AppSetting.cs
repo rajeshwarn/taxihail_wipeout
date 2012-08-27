@@ -93,6 +93,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         }
 
+		public string DefaultServiceServer {
+			get {
+				return "taxihaildemo";
+			}
+		}
+
         public string ServiceUrl
         {
             get
@@ -100,7 +106,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 var url = TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService>().Get<string>("TaxiHail.ServiceUrl");
                 if (string.IsNullOrEmpty(url))
                 {
-                    return string.Format(DefaultServiceUrl, "taxihaildemo");
+                    return string.Format(DefaultServiceUrl, DefaultServiceServer);
                 }
                 else
                 {
@@ -128,5 +134,35 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
 
         }
+
+		public string ServiceServerName {
+			get {
+				var url = TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService>().Get<string>("TaxiHail.ServiceUrl");
+                if (string.IsNullOrEmpty(url))
+                {
+                    return DefaultServiceServer;
+                }
+                else
+                {
+					var split = url.Split( '/' );
+                    return split[3];
+                }
+			}
+		}
+
+		public string ServiceServerVersion {
+			get {
+				var url = TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService>().Get<string>("TaxiHail.ServiceUrl");
+                if (string.IsNullOrEmpty(url))
+                {
+                    return "v1";
+                }
+                else
+                {
+					var split = url.Split( '/' );
+                    return split[4];
+                }
+			}
+		}
     }
 }

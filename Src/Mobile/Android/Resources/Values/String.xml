@@ -12,6 +12,7 @@
   <string name="NoConnectionTitle">Connection error</string>
   <string name="NoConnectionMessage"> The server cannot be contacted, it might be down temporarily or you may have lost your connection to the Internet.</string>
   <string name="FavoriteLocationsTitle">Favorite locations</string>
+  <string name="NearbyPlacesTitle">Nearby places</string>
   <string name="LocationHistoryTitle">Locations history</string>
   <string name="HistoryViewTitle">History</string>
   <string name="LocationViewTitle">My Locations</string>
@@ -57,6 +58,7 @@
   <string name="ConfirmCompanyLabel">Company:</string>
   <string name="ConfirmPassengersLabel">Passengers:</string>
   <string name="ConfirmVehiculeTypeLabel">Vehicule type:</string>
+  <string name="ChargeTypeLabel">Charge type:</string>
   <string name="ConfirmNoApt">No apt.</string>
   <string name="ConfirmNoRingCode">No code</string>
   <string name="ConfirmDestinationNotSpecified">Destination not specified</string>
@@ -107,6 +109,8 @@
   <string name="ChangeDefaultRideSettings">Change default ride settings</string>
   <string name="SendErrorLogButton">Send error log</string>
   <string name="Version">Version: {0}</string>
+  <string name="ServerVersion">Server version : {0}</string>
+  <string name="ServerName">Server name : {0}</string>
   <string name="RideSettingsCannotLoadListMessage">The server cannot be contacted, try again later.</string>
   <string name="RideSettingsCannotLoadListTitle">Server error</string>
   <string name="RideSettingsName">Name:</string>
@@ -133,6 +137,9 @@
   <string name="ErrorCreatingOrderTitle">Error</string>
   <string name="UnexpectedError">Unexpected error</string>
   <string name="StatusActionButton">Call / Book / Cancel</string>
+  <string name="StatusCallButton">Call</string>
+  <string name="StatusCancelButton">Cancel</string>
+  <string name="StatusNewRideButton">New Ride</string>
   <string name="StatusActionCancelButton">Cancel this order</string>
   <string name="StatusActionBookButton">Book another taxi</string>
   <string name="StatusConfirmCancelRide">This action will cancel your order, do you want to continue ?</string>
@@ -220,7 +227,8 @@
   <string name="UpdateBookingSettingsEmptyField">The data is invalid, all the fields are required.</string>
   <string name="AccountActivationTitle">Sign Up</string>
   <string name="AccountActivationMessage">You will receive an email shortly with a link you need to click on to confirm your registration.</string>
-  
-  <string name="OrderHistoryListTitle">Order #{0}</string>
+  <string name="OrderHistoryListTitle">Order #{0}</string> 
+  <string name="UnAuthorizedCallTitle">Unauthorized Access</string>
+  <string name="UnAuthorizedCallMessage">An unauthorized call has been made to server, you will be redirected to login page.</string>
   
 </resources>

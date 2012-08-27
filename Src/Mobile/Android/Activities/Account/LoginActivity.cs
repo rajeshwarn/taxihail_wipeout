@@ -108,8 +108,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                     }
                 };
 
-            TinyIoC.TinyIoCContainer.Current.Resolve<IFacebookService>().ConnectionStatusChanged -= HandleFacebookConnection;
-            TinyIoC.TinyIoCContainer.Current.Resolve<IFacebookService>().ConnectionStatusChanged += HandleFacebookConnection;
+            facebook.ConnectionStatusChanged -= HandleFacebookConnection;
+            facebook.ConnectionStatusChanged += HandleFacebookConnection;
 
             twitterService.ConnectionStatusChanged += (s, e) =>
             {
@@ -122,9 +122,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
 
         }
-
-
-
 
         private void HideProgressDialog()
         {

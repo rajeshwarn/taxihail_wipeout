@@ -197,7 +197,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public void SignOut()
         {
-            LoggedUser = null;
+            Logger.LogMessage("SignOutUser");      
+            LoggedUser = null;                                             
+
+			TinyIoCContainer.Current.Resolve<IAccountService>().SignOut();
         }
 
         public void OnLocationChanged(Location location)

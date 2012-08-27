@@ -12,6 +12,7 @@
   <string name="NoConnectionTitle">Erreur connexion</string>
   <string name="NoConnectionMessage">Impossible de se connecter au serveur.  Notre serveur ou votre connection internet pourrait être temporairement hors service.</string>
   <string name="FavoriteLocationsTitle">Adresses favorites</string>
+  <string name="NearbyPlacesTitle">Endroits à proximité</string>
   <string name="LocationHistoryTitle">Historique</string>
   <string name="HistoryViewTitle">Historique</string>
   <string name="LocationViewTitle">Mes Adresses</string>
@@ -56,6 +57,7 @@
   <string name="ConfirmCompanyLabel">Compagnie:</string>
   <string name="ConfirmPassengersLabel">Passagers:</string>
   <string name="ConfirmVehiculeTypeLabel">Type véhicule:</string>
+  <string name="ChargeTypeLabel">Type de paiement:</string>
   <string name="ConfirmNoApt">Pas d\'apt.</string>
   <string name="ConfirmNoRingCode">Pas de code.</string>
   <string name="ConfirmDestinationNotSpecified">Destination pas spécifiée</string>
@@ -111,6 +113,8 @@
   <string name="ChangeDefaultRideSettings">Paramètres de commande</string>
   <string name="SendErrorLogButton">Envoyer log erreur</string>
   <string name="Version">Version : {0}</string>
+  <string name="ServerVersion">Version serveur : {0}</string>
+  <string name="ServerName">Nom du serveur : {0}</string>
   <string name="RideSettingsCannotLoadListMessage">Notre serveur ne peut être contacté, veuillez réessayer plus tard.</string>
   <string name="RideSettingsCannotLoadListTitle">Erreur serveur</string>
   <string name="RideSettingsName">Nom:</string>
@@ -137,6 +141,9 @@
   <string name="UnexpectedError">Erreur inattendue</string>  
   <string name="ErrorCreatingOrderTitle">Erreur</string>
   <string name="StatusActionButton">Appeler / Commander / Annuler</string>
+  <string name="StatusCallButton">Appeler</string>
+  <string name="StatusCancelButton">Annuler</string>
+  <string name="StatusNewRideButton">Re-book</string>
   <string name="StatusActionCancelButton">Annuler cette commande</string>
   <string name="StatusActionBookButton">Commander un autre taxi</string>
   <string name="StatusConfirmCancelRideErrorTitle">Impossible d\'annuler</string>
@@ -203,8 +210,8 @@
   <string name="EstimatePriceOver100">Appeller pour prix</string>
   <string name="HistoryInfo">Courses du dernier mois</string>
   <string name="CarAssigned">Votre taxi #{0}</string>
-	<string name="NoMailClient">Aucun outil de courriel installé.</string>
-	<string name="ListPromptSelectOne">Sélectionner</string>
+  <string name="NoMailClient">Aucun outil de courriel installé.</string>
+  <string name="ListPromptSelectOne">Sélectionner</string>
   <string name="DateTimePickerPickDate">Choisir la date de la réservation:</string>
   <string name="DateTimePickerPickTime">Choisir l\'heure de la réservation:</string>
   <string name="DateTimePickerPickTitle">Date et heure de réservation</string>
@@ -216,7 +223,10 @@
   <string name="StatusCannotBeDisplayed">Le status ne peut être affiché. Contactez la centrale de réservation.</string>
   <string name="AccountActivationTitle">Activation</string>
   <string name="AccountActivationMessage">Vous allez recevoir un email contenant un lien pour activer ce compte.</string>
-    <string name="SaveAddressEmptyFieldMessage">Données manquantes, le nom et l\'addresse sont requis.</string>
-    <string name="SaveAddressEmptyFieldTitle">Nom manquant</string>
+  <string name="SaveAddressEmptyFieldMessage">Données manquantes, le nom et l\'addresse sont requis.</string>
+  <string name="SaveAddressEmptyFieldTitle">Nom manquant</string>
   <string name="OrderHistoryListTitle">Commande #{0}</string>
+  <string name="UnAuthorizedCallTitle">Accès non-authorisé</string>
+  <string name="UnAuthorizedCallMessage">Un appel non-authorisé a été fait au serveur, vous allez être redirigé vers la page de connexion.</string>
+  
 </resources>

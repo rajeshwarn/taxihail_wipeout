@@ -22,8 +22,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
     [Activity(Label = "@string/ApplicationName", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class MainActivity : TabActivity
     {
-       
-
         private int _currentCie = -1;
 
         private Guid? _tripToRebook = null;
@@ -59,6 +57,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 
             MainTabHost.OnTabChanged += HandleMainTabHostOnTabChanged;
             FindViewById<TextView>(Resource.Id.TitleTab).Text = Resources.GetString(Resource.String.TabBook);
+
         }
 
 
@@ -176,4 +175,5 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
             _tripToRebook = rebookTripId;
         }
     }
+
 }

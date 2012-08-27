@@ -54,12 +54,13 @@
 "ConfirmCompanyLabel" = "Compagnie:";
 "ConfirmPassengersLabel" = "Passagers:";
 "ConfirmVehiculeTypeLabel" = "Type véhicule:";
+"ChargeTypeLabel" = "Type de paiement:";
 "ConfirmNoApt" = "Pas d'apt.";
 "ConfirmNoRingCode" = "Pas de code.";
 "ConfirmDestinationNotSpecified" = "Destination pas spécifiée";
 "DateToday" = "Aujourd'hui";
 "TimeNow" = "Maintenant";
-"StatusViewTitle" = "Confirmée";
+"StatusViewTitle" = "Statut";
 "StatusDescription" = "Confirmation #{0}";
 "ChangeBookingSettingsButton" = "Changer les options";
 "CallCompanyButton" = "Appeller la centrale";
@@ -104,6 +105,8 @@
 "ChangeDefaultRideSettings" = "Paramètres de commande";
 "SendErrorLogButton" = "Envoyer log erreur";
 "Version" = "Version : {0}";
+"ServerVersion" = "Version serveur : {0}";
+"ServerName" = "Nom du serveur : {0}";
 "RideSettingsCannotLoadListMessage"="Notre serveur ne peut être contacté, veuillez réessayer plus tard.";
 "RideSettingsCannotLoadListTitle"="Erreur serveur";
 "RideSettingsName"="Nom:";
@@ -129,6 +132,9 @@
 "ErrorCreatingOrderMessage"="Il y a eu une erreur lors de la création de la commande, essayez à nouveau.";
 "ErrorCreatingOrderTitle"="Erreur";
 "StatusActionButton"="Appeler / Commander / Annuler";
+"StatusCallButton"="Appeler";
+"StatusCancelButton"="Annuler";
+"StatusNewRideButton"="Re-book";
 "StatusActionCancelButton"="Annuler cette commande";
 "StatusActionBookButton"="Commander un autre taxi";
 "StatusConfirmCancelRideErrorTitle" = "Impossible d'annuler";
@@ -201,4 +207,7 @@
 "ErrorGettingStatus" = "Impossible d'avoir le status.";
 "AccountActivationTitle" = "Activation";
 "AccountActivationMessage" = "Vous allez recevoir un email contenant un lien pour activer ce compte.";
+"EditButton"="Editer";
 "ErrorCode_CreateAccount_AccountAlreadyExist" = "Un compte avec ce courriel existe déjà";
+"UnAuthorizedCallTitle"="Accès non-authorisé";
+"UnAuthorizedCallMessage"="Un appel non-authorisé a été fait au serveur, vous allez être redirigé vers la page de connexion.";

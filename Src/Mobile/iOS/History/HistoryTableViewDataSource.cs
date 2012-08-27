@@ -32,28 +32,15 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		public override UITableViewCell GetCell (UITableView tableView, NSIndexPath indexPath)
 		{
-//			UITableViewCell cell = tableView.DequeueReusableCell (kCellIdentifier);
-//			if (cell == null) {				
-//				cell = new UITableViewCell (UITableViewCellStyle.Default , kCellIdentifier);
-//			}
-//			cell.BackgroundColor = UIColor.Clear;
-//			cell.Accessory = UITableViewCellAccessory.DisclosureIndicator;
-//			cell.SelectionStyle = UITableViewCellSelectionStyle.None;
-//			cell.TextLabel.TextColor = UIColor.DarkGray;
-//    		cell.TextLabel.Font = UIFont.SystemFontOfSize( 14 );
-//			
-//			var b = _list.ElementAt(indexPath.Row);
-//			cell.TextLabel.Text = "#" + b.IBSOrderId + " - " + b.PickupAddress.FullAddress ;
-//			return cell;
-
 			TwoLinesAddressCell cell = (TwoLinesAddressCell)tableView.DequeueReusableCell (kCellIdentifier);
 			if (cell == null) {				
 				cell = new TwoLinesAddressCell ( _structure.Sections.ElementAt( indexPath.Section ).Items.ElementAt( indexPath.Row ) as TwoLinesAddressItem, kCellIdentifier);
 			}
+			else
+			{
+				((TwoLinesAddressCell)cell).ReUse( _structure.Sections.ElementAt( indexPath.Section ).Items.ElementAt( indexPath.Row ) as TwoLinesAddressItem );
+			}
 
-			
-
-//			cell.TextLabel.Text = "#" + b.IBSOrderId + " - " + b.PickupAddress.FullAddress ;
 			return cell;
 		}
 		

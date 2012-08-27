@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 
             _locationService.Start();
 
-            ThreadHelper.ExecuteInThread(this, () => TinyIoCContainer.Current.Resolve<IAccountService>().RefreshCache(true), false);
+            ThreadHelper.ExecuteInThread(this, () => TinyIoCContainer.Current.Resolve<IAccountService>().RefreshCache(AppContext.Current.LoggedUser != null), false);
 
             if (AppContext.Current.LoggedUser == null)
             {
@@ -40,6 +40,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 
         }
 
+		protected override void OnDestroy ()
+		{
+			base.OnDestroy ();
+		}
 
         public static Activity TopActivity{ get; set; }
 
@@ -48,7 +52,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
         {
             if ( _fb  == null )
             {
-                _fb = new FacebookServicesMD("431321630224094", GetTopActivity());
+				//android key hash: Jbi/meELm8i7T47pKA4HZBN5NUk=
+				_fb = new FacebookServicesMD("134284363380764", GetTopActivity());
+//                _fb = new FacebookServicesMD("431321630224094", GetTopActivity());
             }
             return _fb;
         }
@@ -81,4 +87,5 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 
         }
     }
+
 }

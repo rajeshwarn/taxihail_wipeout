@@ -200,7 +200,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 				var sectHist = structure.AddSection( Resources.LocationHistoryTitle );
 				sectHist.EditMode = Mode == LocationsTabViewMode.Edit;
-				historic.ForEach( item => sectHist.AddItem( new TwoLinesAddressItem( item.Id,  item.Id.IsNullOrEmpty() ? Resources.LocationNoHistory : item.FriendlyName, item.Id.IsNullOrEmpty() ? Resources.LocationNoHistoryDetails : item.FullAddress ) { Data = item, ShowRightArrow = Mode == LocationsTabViewMode.Edit && !item.Id.IsNullOrEmpty() } ) );
+				historic.ForEach( item => sectHist.AddItem( new TwoLinesAddressItem( item.Id,  item.Id.IsNullOrEmpty() ? Resources.LocationNoHistory : item.FriendlyName, item.Id.IsNullOrEmpty() ? Resources.LocationNoHistoryDetails : item.FullAddress ) { Data = item, ShowRightArrow = Mode == LocationsTabViewMode.Edit && !item.Id.IsNullOrEmpty(), Enabled = () => !item.Id.IsNullOrEmpty() } ) );
 			}
 			else if( Mode == LocationsTabViewMode.NearbyPlacesSelector )
 			{

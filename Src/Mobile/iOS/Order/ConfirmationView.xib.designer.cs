@@ -12,6 +12,24 @@ namespace apcurium.MK.Booking.Mobile.Client
 	partial class ConfirmationView
 	{
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.GradientButton btnEdit { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UILabel lblRideInfo { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UILabel lblRideSettings { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UILabel lblChargeType { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UILabel txtChargeType { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.BottomBar bottomBar { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UIButton btnCancel { get; set; }
 
 		[Outlet]
@@ -79,6 +97,36 @@ namespace apcurium.MK.Booking.Mobile.Client
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (btnEdit != null) {
+				btnEdit.Dispose ();
+				btnEdit = null;
+			}
+
+			if (lblRideInfo != null) {
+				lblRideInfo.Dispose ();
+				lblRideInfo = null;
+			}
+
+			if (lblRideSettings != null) {
+				lblRideSettings.Dispose ();
+				lblRideSettings = null;
+			}
+
+			if (lblChargeType != null) {
+				lblChargeType.Dispose ();
+				lblChargeType = null;
+			}
+
+			if (txtChargeType != null) {
+				txtChargeType.Dispose ();
+				txtChargeType = null;
+			}
+
+			if (bottomBar != null) {
+				bottomBar.Dispose ();
+				bottomBar = null;
+			}
+
 			if (btnCancel != null) {
 				btnCancel.Dispose ();
 				btnCancel = null;

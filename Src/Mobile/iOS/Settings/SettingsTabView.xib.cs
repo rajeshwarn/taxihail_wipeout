@@ -59,7 +59,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			base.ViewDidLoad ();
 			View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
 			
-			
+			scrollView.ContentSize = contentView.Frame.Size;
+
 			btnCall.SetTitle (Resources.CallCompanyButton, UIControlState.Normal);
 			
 			btnTechSupport.SetTitle (Resources.TechSupportButton, UIControlState.Normal);
@@ -82,7 +83,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			imgCreatedBy.Image = UIImage.FromFile ("Assets/apcuriumLogo.png");
 			lblLoginStatus.Text = string.Format (Resources.SettingViewLoginInfo, AppContext.Current.LoggedUser.Name);
 			lblVersion.Text = string.Format (Resources.Version, AppSettings.Version);
-			
+			lblServerVersion.Text = string.Format( Resources.ServerVersion, TinyIoC.TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceServerVersion );
+			lblServerName.Text = string.Format( Resources.ServerName, TinyIoC.TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceServerName );
 		}
 		
 		
@@ -98,13 +100,18 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public void Selected ()
 		{
 			lblLoginStatus.Maybe (() => lblLoginStatus.Text = string.Format (Resources.SettingViewLoginInfo, AppContext.Current.LoggedUser.Name));
+			lblServerVersion.Maybe (() => lblServerVersion.Text = string.Format( Resources.ServerVersion, TinyIoC.TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceServerVersion ));
+			lblServerName.Maybe (() => lblServerName.Text = string.Format( Resources.ServerName, TinyIoC.TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceServerName ));
 		}
 
 
 		public void RefreshData ()
 		{
 			lblLoginStatus.Maybe (() => lblLoginStatus.Text = string.Format (Resources.SettingViewLoginInfo, AppContext.Current.LoggedUser.Name));
+			lblServerVersion.Maybe (() => lblServerVersion.Text = string.Format( Resources.ServerVersion, TinyIoC.TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceServerVersion ));
+			lblServerName.Maybe (() => lblServerName.Text = string.Format( Resources.ServerName, TinyIoC.TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceServerName ));
 		}
+
 		void TechSupportTouchUpInside (object sender, EventArgs e)
 		{
 			

@@ -356,17 +356,23 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             bool isSuccess = false;
 
-            try
-            {
-                var service = TinyIoCContainer.Current.Resolve<AccountServiceClient>("NotAuthenticated");
+			UseServiceClient<AccountServiceClient>( "NotAuthenticated", service => {
+				//service = TinyIoCContainer.Current.Resolve<AccountServiceClient>("NotAuthenticated");
                 service.ResetPassword(email);
                 isSuccess = true;
-            }
-            catch (Exception ex)
-            {
-                TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Error resetting the password");
-                TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex);
-            }
+			});
+
+//            try
+//            {
+//                var service = TinyIoCContainer.Current.Resolve<AccountServiceClient>("NotAuthenticated");
+//                service.ResetPassword(email);
+//                isSuccess = true;
+//            }
+//            catch (Exception ex)
+//            {
+//                TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Error resetting the password");
+//                TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex);
+//            }
 
             return isSuccess;
         }

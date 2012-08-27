@@ -289,21 +289,21 @@ namespace apcurium.MK.Booking.Mobile.Client
         private void LoadStatusView (Order order, OrderStatusDetail status, bool closeScreenWhenCompleted)
         {
             
-            InvokeOnMainThread (() => 
-                                    {
-                                        _btnBookIt.Maybe (() => _btnBookIt.Hidden = true);
-                                        RemoveStatusView();
-                                         _statusView = new StatusView (this, order, status, closeScreenWhenCompleted);
-                                        _statusView.CloseRequested += delegate(object sender, EventArgs e) 
-                                                                            {
-                                                                                RemoveStatusView();
-                                                                                AppContext.Current.LastOrder = null;
-                                                                                Selected ();
-                                                                             };
-                                       _statusView.View.Frame = scrollView.Frame;
-                                        this.View.AddSubview (_statusView.View);
-                                    });
-            
+            InvokeOnMainThread (() => {
+	            _btnBookIt.Maybe (() => _btnBookIt.Hidden = true);
+	            RemoveStatusView();
+	            _statusView = new StatusView (this, order, status, closeScreenWhenCompleted);
+				_statusView.HidesBottomBarWhenPushed = true;
+	            _statusView.CloseRequested += delegate(object sender, EventArgs e) {
+		            RemoveStatusView();
+		            AppContext.Current.LastOrder = null;
+					NavigationController.TabBarController.TabBar.Hidden = false;
+		            Selected ();
+				};
+
+				NavigationController.PushViewController( _statusView, true );
+	        });
+
            
         }
 
@@ -458,7 +458,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                     this.InvokeOnMainThread (() =>
                     {
                         var view = new ConfirmationView (this);
-                        
+						view.HidesBottomBarWhenPushed = true;
                         this.NavigationController.PushViewController (view, true);
                         
                         view.Canceled += delegate(object sender, EventArgs e) {

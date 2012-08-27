@@ -64,7 +64,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 				
 			}
 
-			else if( !_structure.Sections.ElementAt( indexPath.Section ).Items.ElementAt( indexPath.Row ).Id.IsNullOrEmpty() )
+			else // if( !_structure.Sections.ElementAt( indexPath.Section ).Items.ElementAt( indexPath.Row ).Id.IsNullOrEmpty() )
 			{
 				_parent.DoSelect ( (Address)_structure.Sections.ElementAt( indexPath.Section ).Items.ElementAt (indexPath.Row).Data );
 			}

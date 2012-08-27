@@ -52,5 +52,6 @@
     <Compile Include="Extensions\StringBuilderExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Params.cs" />
+    <Compile Include="Diagnostic\IErrorHandler.cs" />
   </ItemGroup>
 </Project>

@@ -55,10 +55,10 @@ namespace apcurium.MK.Booking.Mobile.Client
             base.ViewDidLoad();
             View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             NavigationItem.HidesBackButton = true;
-            
-            btnCancel.SetTitle(Resources.CancelBoutton, UIControlState.Normal);
-            btnConfirm.SetTitle(Resources.ConfirmButton, UIControlState.Normal);
-//          btnNotes.SetTitle (Resources.NotesToDriverButton, UIControlState.Normal);
+
+			AppButtons.FormatStandardGradientButton((GradientButton)btnCancel, Resources.CancelBoutton, UIColor.White, AppStyle.ButtonColor.Red );
+			AppButtons.FormatStandardGradientButton((GradientButton)btnConfirm, Resources.ConfirmButton, UIColor.White, AppStyle.ButtonColor.Green );
+			AppButtons.FormatStandardGradientButton((GradientButton)btnEdit, Resources.EditButton, AppStyle.GreyText, AppStyle.ButtonColor.Grey );
 
             lblOrigin.Text = Resources.ConfirmOriginLablel;
             lblAptRing.Text = Resources.ConfirmAptRingCodeLabel;
@@ -68,30 +68,48 @@ namespace apcurium.MK.Booking.Mobile.Client
             lblPhone.Text = Resources.ConfirmPhoneLabel;
             lblPassengers.Text = Resources.ConfirmPassengersLabel;
             lblVehiculeType.Text = Resources.ConfirmVehiculeTypeLabel;
+			lblChargeType.Text = Resources.ChargeTypeLabel;
 
-            lblDistance.Text = Resources.RideSettingsChargeType;
+//            lblDistance.Text = Resources.RideSettingsChargeType;
             lblPrice.Text = string.Format(Resources.EstimatePrice, "");
             
             txtOrigin.Text = _parent.BookingInfo.PickupAddress.FullAddress;
             txtAptRing.Text = FormatAptRingCode(_parent.BookingInfo.PickupAddress.Apartment, _parent.BookingInfo.PickupAddress.RingCode);           
             txtDestination.Text = _parent.BookingInfo.DropOffAddress.FullAddress.HasValue() ? _parent.BookingInfo.DropOffAddress.FullAddress : Resources.ConfirmDestinationNotSpecified;            
             txtDateTime.Text = FormatDateTime(_parent.BookingInfo.PickupDate, _parent.BookingInfo.PickupDate);
+            
+			var directionInfo = TinyIoCContainer.Current.Resolve<IGeolocService>().GetDirectionInfo(_parent.BookingInfo.PickupAddress, _parent.BookingInfo.DropOffAddress);
+            txtPrice.Text = directionInfo.Price.HasValue ? directionInfo.FormattedPrice : Resources.NotAvailable;
 
+			SetRideSettingsFields();
+
+            btnCancel.TouchUpInside += CancelClicked;
+            btnConfirm.TouchUpInside += ConfirmClicked;
+			btnEdit.TouchUpInside += EditRideSettings;
+            
+            View.BringSubviewToFront( bottomBar );        
+        }
+
+        void EditRideSettings (object sender, EventArgs e)
+        {
+            var settings = new  RideSettingsView(_parent.BookingInfo.Settings, false, false);
+
+            settings.Closed += delegate
+            {
+                _parent.BookingInfo.Settings = settings.Result;
+				SetRideSettingsFields();                 
+            };
+            
+            this.NavigationController.PushViewController(settings, true);
+        }
+
+		private void SetRideSettingsFields()
+		{
             var service = TinyIoCContainer.Current.Resolve<IAccountService>();            
             var companies = service.GetCompaniesList();
             var model = new RideSettingsModel(_parent.BookingInfo.Settings, companies, service.GetVehiclesList(), service.GetPaymentsList());
 
-
-            txtDistance.Text = model.ChargeTypeName;
-            
-            var directionInfo = TinyIoCContainer.Current.Resolve<IGeolocService>().GetDirectionInfo(_parent.BookingInfo.PickupAddress, _parent.BookingInfo.DropOffAddress);
-
-            
-            txtPrice.Text = directionInfo.Price.HasValue ? directionInfo.FormattedPrice : Resources.NotAvailable;
-            
-            
             txtName.Text = _parent.BookingInfo.Settings.Name;
-
 
             try
             {
@@ -106,63 +124,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             txtPassengers.Text = _parent.BookingInfo.Settings.Passengers.ToString();
             txtVehiculeType.Text = model.VehicleTypeName;
-            //txtNotes.Text = _parent.BookingInfo.Note;
-
-            btnCancel.TouchUpInside += CancelClicked;
-            btnConfirm.TouchUpInside += ConfirmClicked;
-
-            btnCancel.SetTitle(Resources.CancelBoutton, UIControlState.Normal);
-            btnConfirm.SetTitle(Resources.ConfirmButton, UIControlState.Normal);
-
-            AppButtons.FormatStandardGradientButton((GradientButton)btnConfirm, Resources.ConfirmButton, UIColor.White, apcurium.MK.Booking.Mobile.Client.AppStyle.ButtonColor.Green);
-
-
-            this.NavigationItem.RightBarButtonItem = new UIBarButtonItem(UIBarButtonSystemItem.Edit, delegate
-            {
-                EditRideSettings();
-            }
-            );
-            
-                    
-        }
-        
-        public void EditRideSettings()
-        {
-            var settings = new  RideSettingsView(_parent.BookingInfo.Settings, false, false);
-            
-
-            settings.Closed += delegate
-            {
-                _parent.BookingInfo.Settings = settings.Result;
-                
-                var service = TinyIoCContainer.Current.Resolve<IAccountService>();            
-                var companies = service.GetCompaniesList();
-                var model = new RideSettingsModel(_parent.BookingInfo.Settings, companies, service.GetVehiclesList(), service.GetPaymentsList());
-
-
-                txtDistance.Text = model.ChargeTypeName;
-                txtName.Text = _parent.BookingInfo.Settings.Name;
-                txtPhone.Text = _parent.BookingInfo.Settings.Phone;
-
-                try
-                {
-                    var cleaned = new string(_parent.BookingInfo.Settings.Phone.ToArray().Where(c => Char.IsDigit(c)).ToArray());
-                    var phone = Regex.Replace(cleaned, @"(\d{3})(\d{3})(\d{4})", "$1-$2-$3");
-                    txtPhone.Text = phone;
-                }
-                catch
-                {
-                    txtPhone.Text = _parent.BookingInfo.Settings.Phone;
-                }
-
-
-                txtPassengers.Text = _parent.BookingInfo.Settings.Passengers.ToString();
-                txtVehiculeType.Text = model.VehicleTypeName;
-                //txtExceptions.Text = string.Join(", ", _parent.BookingInfo.Settings.Exceptions.Where(ee => ee.Value).Select(e => e.Display));                   
-            };
-            
-            this.NavigationController.PushViewController(settings, true);
-        }
+			txtChargeType.Text = model.ChargeTypeName;
+		}
 
         public override void ViewDidAppear(bool animated)
         {
@@ -178,8 +141,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         private void LoadLayout()
         {
-
-            
             this.NavigationItem.TitleView = AppContext.Current.Controller.GetTitleView(null, Resources.ConfirmationViewTitle);
         }
 

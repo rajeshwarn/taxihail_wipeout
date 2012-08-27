@@ -47,7 +47,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <CodesignKey>iPhone Developer: Alexandre Proteau (32P5R9VSFV)</CodesignKey>
+    <CodesignKey>iPhone Developer: Daniel Boissonneault (8N23K7P2GB)</CodesignKey>
     <MtouchDebug>true</MtouchDebug>
     <MtouchI18n />
     <MtouchUseArmv7>false</MtouchUseArmv7>
@@ -64,12 +64,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <CodesignKey>iPhone Distribution</CodesignKey>
+    <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchI18n />
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <IpaPackageName />
     <BuildIpa>true</BuildIpa>
-    <CodesignProvision>55BC7130-27C8-49F9-B4AA-3C4F1B761071</CodesignProvision>
+    <CodesignProvision>B3EE4BDD-022C-4997-8D54-A29A6465BC50</CodesignProvision>
     <CrashReportingApiKey />
     <AssemblyName>TaxiMobileApp</AssemblyName>
     <MtouchSdkVersion>5.1</MtouchSdkVersion>
@@ -247,7 +247,10 @@
     <Compile Include="InfoTableView\TwoLinesAddressCell.cs" />
     <Compile Include="InfoTableView\TwoLinesAddressItem.cs" />
     <Compile Include="InfoTableView\InfoStructure.cs" />
-    <Compile Include="Controls\TableView.cs" />
+    <Compile Include="Controls\BottomBar.cs" />
+    <Compile Include="Controls\StatusBar.cs" />
+    <Compile Include="Controls\WindowDisplay.cs" />
+    <Compile Include="Diagnostics\ErrorHandler.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

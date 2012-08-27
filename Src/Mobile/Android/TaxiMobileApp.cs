@@ -13,12 +13,15 @@ using TinyIoC;
 using apcurium.MK.Booking.Mobile.Practices;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Booking.Mobile.Client.Services;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
     [Application(Name = "com.apcurium.MK.TaxiHail")]
     public class TaxiMobileApplication : Application
     {
+		private Intent _errorHandlingServiceIntent;
+
         protected TaxiMobileApplication(IntPtr javaReference, JniHandleOwnership transfer)
             : base(javaReference, transfer)
         {
@@ -41,10 +44,19 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             Console.WriteLine("App created");
 
+			_errorHandlingServiceIntent = new Intent( this, typeof(ErrorHandlingService) );
+			StartService( _errorHandlingServiceIntent );
+
             new Bootstrapper(new IModule[] { new AppModule(this) }).Run();
 
         }
 
+		public override void OnTerminate ()
+		{
+			base.OnTerminate ();
+
+			StopService( _errorHandlingServiceIntent );
+		}
 
         
         void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -79,4 +91,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
         }
     }
+
+
 }

@@ -65,5 +65,6 @@
     <Compile Include="ReferenceDataServiceClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AuthServiceClient.cs" />
+    <Compile Include="NearbyPlacesClient.cs" />
   </ItemGroup>
 </Project>

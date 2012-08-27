@@ -45,7 +45,7 @@
 "CancelBoutton" = "Cancel";
 "ConfirmButton" = "Confirm";
 "NotesToDriverButton" = "Notes for driver";
-"ConfirmOriginLablel" = "Origin:";
+"ConfirmOriginLablel" = "Pickup:";
 "ConfirmAptRingCodeLabel" = "Apt / Ring code:";
 "ConfirmDestinationLabel" = "Destination:";
 "ConfirmDateTimeLabel" = "Date / Time:";
@@ -54,12 +54,13 @@
 "ConfirmCompanyLabel" = "Company:";
 "ConfirmPassengersLabel" = "Passengers:";
 "ConfirmVehiculeTypeLabel" = "Vehicule type:";
+"ChargeTypeLabel" = "Charge type:";
 "ConfirmNoApt" = "No apt.";
 "ConfirmNoRingCode" = "No code";
 "ConfirmDestinationNotSpecified" = "Destination not specified";
 "DateToday" = "Today";
 "TimeNow" = "Now";
-"StatusViewTitle" = "Confirmed";
+"StatusViewTitle" = "Status";
 "StatusDescription" = "Confirmation #{0}";
 "ChangeBookingSettingsButton" = "Change booking settings";
 "CallCompanyButton" = "Call dispatch center";
@@ -102,6 +103,8 @@
 "ChangeDefaultRideSettings" = "Change default ride settings";
 "SendErrorLogButton" = "Send error log";
 "Version" = "Version: {0}";
+"ServerVersion" = "Server version : {0}";
+"ServerName" = "Server name : {0}";
 "RideSettingsCannotLoadListMessage"="The server cannot be contacted, try again later.";
 "RideSettingsCannotLoadListTitle"="Server error";
 "RideSettingsName"="Name";
@@ -113,7 +116,7 @@
 "HistoryDetailRebookButton"="Rebook trip";
 "HistoryDetailDestinationLabel"="Destination:";
 "HistoryDetailRequestedLabel"="Requested:";
-"HistoryDetailOriginLabel"="Origin:";
+"HistoryDetailOriginLabel"="Pickup:";
 "HistoryDetailStatusLabel"="Status:";
 "HistoryDetailConfirmationLabel"="Confirmation:";
 "StatusStatusLabel"="Status: {0}";
@@ -127,6 +130,9 @@
 "ErrorCreatingOrderMessage"="The order couldn't be created, please try again.";
 "ErrorCreatingOrderTitle"="Error";
 "StatusActionButton"="Call / Book / Cancel";
+"StatusCallButton"="Call";
+"StatusCancelButton"="Cancel";
+"StatusNewRideButton"="New Ride";
 "StatusActionCancelButton"="Cancel this order";
 "StatusActionBookButton"="Book another taxi";
 "StatusConfirmCancelRide" = "This action will cancel your order, do you want to continue ?";
@@ -201,4 +207,7 @@
 "ErrorGettingStatus" = "Error getting status.  Call for status.";
 "AccountActivationTitle" = "Sign Up";
 "AccountActivationMessage" = "You will receive an email shortly with a link you need to click on to confirm your registration.";
+"EditButton"="Edit";
 "ErrorCode_CreateAccount_AccountAlreadyExist" = "An account with this email already exist.";
+"UnAuthorizedCallTitle"="Unauthorized Access";
+"UnAuthorizedCallMessage"="An unauthorized call has been made to server, you will be redirected to login page.";

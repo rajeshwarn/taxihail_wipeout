@@ -47,9 +47,6 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Web.Services" />
-    <Reference Include="Mono.Facebook">
-      <HintPath>..\Mono.Facebook\bin\Debug\Mono.Facebook.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SocialNetworks.Services\Entities\FacebookStatus.cs">
@@ -104,4 +101,10 @@
   </Target>
   -->
   <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Mono.Facebook\Mono.Facebook.csproj">
+      <Project>{33B8DF4F-E480-4B97-8DA1-BEB89CA6B644}</Project>
+      <Name>Mono.Facebook</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>

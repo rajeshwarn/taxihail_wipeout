@@ -50,6 +50,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 			if (cell == null) {
 				cell = new TwoLinesAddressCell ( (TwoLinesAddressItem)_structure.Sections.ElementAt( indexPath.Section ).Items.ElementAt( indexPath.Row ), kCellIdentifier);
 			}
+			else
+			{
+				((TwoLinesAddressCell)cell).ReUse( (TwoLinesAddressItem)_structure.Sections.ElementAt( indexPath.Section ).Items.ElementAt( indexPath.Row ) );
+			}
 			
 			return cell;
 		}

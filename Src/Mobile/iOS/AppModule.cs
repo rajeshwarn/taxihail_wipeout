@@ -23,6 +23,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             TinyIoCContainer.Current.Register<IAppResource, Resources>();
             TinyIoCContainer.Current.Register<ILogger, LoggerWrapper>();
+			TinyIoCContainer.Current.Register<IErrorHandler, ErrorHandler>();
 
             TinyIoCContainer.Current.Register<ICacheService>(new CacheService());
 

@@ -73,7 +73,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             //vertBar.AddButton( UIImage.FromFile("Assets/VerticalButtonBar/targetIcon.png" ), UIImage.FromFile("Assets/VerticalButtonBar/targetIcon.png" ) );
             _bar.AddButton(UIImage.FromFile("Assets/VerticalButtonBar/favoriteIcon.png"), UIImage.FromFile("Assets/VerticalButtonBar/favoriteIcon.png"));
             _bar.AddButton(UIImage.FromFile("Assets/VerticalButtonBar/contacts.png"), UIImage.FromFile("Assets/VerticalButtonBar/contacts.png"));
-            _text.Superview.AddSubview(_bar);
+            _bar.AddButton(UIImage.FromFile("Assets/VerticalButtonBar/nearbyIcon.png"), UIImage.FromFile("Assets/VerticalButtonBar/nearbyIcon.png"));
+			_text.Superview.AddSubview(_bar);
 
 
             
@@ -234,16 +235,13 @@ namespace apcurium.MK.Booking.Mobile.Client
                     contactPicker.Show();
                     break;
                 case 3:
-//                    var googlePlaceService = new GooglePlacesService(TinyIoCContainer.Current.Resolve<IAppResource>().CurrentLanguageCode);
-//                    var places = googlePlaceService.GetNearbyPlaces(_map.CenterCoordinate.Latitude, _map.CenterCoordinate.Longitude);
-//                    var locations = places.Select(p => DataMapper.GooglePlaceDataToAddress(p)).ToList();
-//        
-//                    _adrsSelector = new LocationsTabView();
-//                    _adrsSelector.Mode = LocationsTabViewMode.NearbyPlacesSelector;
-//                    _adrsSelector.LocationList = locations;
-//                    _adrsSelector.LocationSelected += LocationSelectedDelegate;
-//                    _adrsSelector.Canceled += CancelSelectionDelegate;
-//                    AppContext.Current.Controller.SelectedUIViewController.NavigationController.PushViewController(_adrsSelector, true);
+                    var places = TinyIoCContainer.Current.Resolve<IGoogleService>().GetNearbyPlaces(_map.CenterCoordinate.Latitude, _map.CenterCoordinate.Longitude);
+                    _adrsSelector = new LocationsTabView();
+                    _adrsSelector.Mode = LocationsTabViewMode.NearbyPlacesSelector;
+                    _adrsSelector.LocationList = places.ToList();
+                    _adrsSelector.LocationSelected += LocationSelectedDelegate;
+                    _adrsSelector.Canceled += CancelSelectionDelegate;
+                    AppContext.Current.Controller.SelectedUIViewController.NavigationController.PushViewController(_adrsSelector, true);
                     break;
             }
         }

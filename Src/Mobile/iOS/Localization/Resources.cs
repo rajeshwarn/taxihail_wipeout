@@ -461,6 +461,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			get { return GetValue ("Version"); }
 		}
 
+		public static string ServerVersion {
+			get { return GetValue ("ServerVersion"); }
+		}
+
+		public static string ServerName {
+			get { return GetValue ("ServerName"); }
+		}
+
 		public static string RideSettingsCannotLoadListMessage {
 			get { return GetValue ("RideSettingsCannotLoadListMessage"); }
 		}
@@ -846,6 +854,35 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             get { return GetValue ("LocationNoHistoryDetails"); }
         }
+        public static string StatusCallButton
+        {
+            get { return GetValue ("StatusCallButton"); }
+        }
+        public static string StatusCancelButton
+        {
+            get { return GetValue ("StatusCancelButton"); }
+        }
+        public static string StatusNewRideButton
+        {
+            get { return GetValue ("StatusNewRideButton"); }
+        }
+        public static string EditButton
+        {
+            get { return GetValue ("EditButton"); }
+        }
+        public static string ChargeTypeLabel
+        {
+            get { return GetValue ("ChargeTypeLabel"); }
+        }	
+        public static string UnAuthorizedCallTitle
+        {
+            get { return GetValue ("UnAuthorizedCallTitle"); }
+        }
+        public static string UnAuthorizedCallMessage
+        {
+            get { return GetValue ("UnAuthorizedCallMessage"); }
+        }
+
 	}
 }
 

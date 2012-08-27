@@ -88,22 +88,28 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
                 NavigationItem.HidesBackButton = true;                
                 View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
-                lblStatus.Text = string.Format(Resources.StatusStatusLabel, Resources.LoadingMessage);                              
-                btnCall.SetTitle(Resources.StatusActionButton, UIControlState.Normal);
-                
+
+				View.BringSubviewToFront( lblTitle );
+				lblTitle.Text = Resources.LoadingMessage;
+
+
                 btnChangeBooking.SetTitle(Resources.ChangeBookingSettingsButton, UIControlState.Normal);
              
-                btnCall.TouchUpInside += CallTouchUpInside;                                        
+				AppButtons.FormatStandardGradientButton((GradientButton)btnCall, Resources.StatusCallButton, AppStyle.GreyText, AppStyle.ButtonColor.Grey );
+				AppButtons.FormatStandardGradientButton((GradientButton)btnCancel, Resources.StatusCancelButton, UIColor.White, AppStyle.ButtonColor.Red );
+				AppButtons.FormatStandardGradientButton((GradientButton)btnNewRide, Resources.StatusNewRideButton, UIColor.White, AppStyle.ButtonColor.Green );
+
+                btnCall.TouchUpInside += CallProvider;
+				btnCancel.TouchUpInside += CancelOrder;
+				btnNewRide.TouchUpInside += Rebook;
                 
                 mapStatus.Delegate = new AddressMapDelegate();
                 
                 var view = AppContext.Current.Controller.GetTitleView(null, Resources.StatusViewTitle);
                 
-//                LoadOrderInfo();
-//
-//                RefreshStatusDisplay();
-                
                 this.NavigationItem.TitleView = view;
+
+				View.BringSubviewToFront( bottomBar );
             
             }
             catch (Exception ex)
@@ -112,13 +118,83 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
         }
 
+        void Rebook (object sender, EventArgs e)
+        {
+			var newBooking = new Confirmation();
+            newBooking.Action(Resources.StatusConfirmNewBooking, () =>
+            {
+                _timer.Dispose();
+                _timer = null;
+                if (CloseRequested != null)
+                {
+                    InvokeOnMainThread(() => CloseRequested(this, EventArgs.Empty));
+                }
+            }
+            );
+        }
+
+        void CancelOrder (object sender, EventArgs e)
+        {
+            var newBooking = new Confirmation();
+            newBooking.Action(Resources.StatusConfirmCancelRide, () => 
+            {
+                LoadingOverlay.StartAnimatingLoading(this.View, LoadingOverlayPosition.Center, null, 130, 30);
+                View.UserInteractionEnabled = false;
+                ThreadHelper.ExecuteInThread(() => 
+                {
+                    try
+                    {
+                        var isSuccess = TinyIoCContainer.Current.Resolve<IBookingService>().CancelOrder(Order.Id);
+                        if (isSuccess)
+                        {
+                            _timer.Dispose();
+                            _timer = null;
+                            if (CloseRequested != null)
+                            {
+                                InvokeOnMainThread(() => CloseRequested(this, EventArgs.Empty));
+                            }
+                        }
+                        else
+                        {
+                            MessageHelper.Show(Resources.StatusConfirmCancelRideErrorTitle, Resources.StatusConfirmCancelRideError);
+                        }
+                    }
+                    catch
+                    {
+                         
+                        MessageHelper.Show(Resources.StatusConfirmCancelRideErrorTitle, Resources.StatusConfirmCancelRideError);
+                        AppContext.Current.LastOrder = null;
+                        InvokeOnMainThread(() => CloseRequested(this, EventArgs.Empty));
+
+                    }
+                    finally
+                    {
+                        InvokeOnMainThread(() => 
+                        {
+                            LoadingOverlay.StopAnimatingLoading(this.View);
+                            View.UserInteractionEnabled = true;
+                        }
+                        );
+                    }
+                }
+                );
+            }
+            );
+        }
+
+        void CallProvider (object sender, EventArgs e)
+        {
+            var call = new Confirmation();
+            call.Call(AppSettings.PhoneNumber(Order.Settings.ProviderId), AppSettings.PhoneNumberDisplay(Order.Settings.ProviderId));
+        }
+
         private void LoadOrderInfo()
         {
 
             try
             {
 
-                lblTitle.Text = string.Format(Resources.StatusDescription, Order.IBSOrderId);
+//                lblTitle.Text = string.Format(Resources.StatusDescription, Order.IBSOrderId);
 
                 if (mapStatus.Annotations != null)
                 {
@@ -130,7 +206,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             
                 if (Status.IBSStatusDescription.HasValue())
                 {
-                    lblStatus.Text = string.Format(Resources.StatusStatusLabel, Status.IBSStatusDescription);
+					lblTitle.Text = Status.IBSStatusDescription;
                 }
             
                 if (Order.DropOffAddress.HasValidCoordinate())
@@ -163,7 +239,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
             catch (Exception ex)
             {
-                lblStatus.Text =  Resources.ErrorGettingStatus;
+                lblTitle.Text =  Resources.ErrorGettingStatus;
             }
             
         }
@@ -172,11 +248,11 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             if ( Status == null )
             {
-                 lblStatus.Text =  Resources.ErrorGettingStatus;
+                 lblTitle.Text =  Resources.ErrorGettingStatus;
                 return;
             }
 
-            InvokeOnMainThread(() => lblStatus.Text = string.Format(Resources.StatusStatusLabel, Status.IBSStatusDescription));
+			InvokeOnMainThread(() => lblTitle.Text = Status.IBSStatusDescription);
             if ((Status.VehicleLatitude.HasValue) && (Status.VehicleLongitude.HasValue) && (Status.VehicleLatitude.Value != 0) && (Status.VehicleLongitude.Value != 0))
             {
                 CLLocationCoordinate2D position = new CLLocationCoordinate2D(Status.VehicleLatitude.Value, Status.VehicleLongitude.Value);
@@ -207,7 +283,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
                 if ( Order == null )
                 {
-                    InvokeOnMainThread(() => lblStatus.Text =  Resources.ErrorGettingStatus);
+                    InvokeOnMainThread(() => lblTitle.Text =  Resources.ErrorGettingStatus);
                     return;
                 }
                 
@@ -280,114 +356,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
                 _timer = null;
             }
-        }
-
-        private void CancelOrder()
-        {
-            var newBooking = new Confirmation();
-            newBooking.Action(Resources.StatusConfirmCancelRide, () => 
-            {
-                LoadingOverlay.StartAnimatingLoading(this.View, LoadingOverlayPosition.Center, null, 130, 30);
-                View.UserInteractionEnabled = false;
-                ThreadHelper.ExecuteInThread(() => 
-                {
-                    try
-                    {
-                        var isSuccess = TinyIoCContainer.Current.Resolve<IBookingService>().CancelOrder(Order.Id);
-                        if (isSuccess)
-                        {
-                            _timer.Dispose();
-                            _timer = null;
-                            if (CloseRequested != null)
-                            {
-                                InvokeOnMainThread(() => CloseRequested(this, EventArgs.Empty));
-                            }
-                        }
-                        else
-                        {
-                            MessageHelper.Show(Resources.StatusConfirmCancelRideErrorTitle, Resources.StatusConfirmCancelRideError);
-                        }
-                    }
-                    catch
-                    {
-                         
-                        MessageHelper.Show(Resources.StatusConfirmCancelRideErrorTitle, Resources.StatusConfirmCancelRideError);
-                        AppContext.Current.LastOrder = null;
-                        InvokeOnMainThread(() => CloseRequested(this, EventArgs.Empty));
-
-                    }
-                    finally
-                    {
-                        InvokeOnMainThread(() => 
-                        {
-                            LoadingOverlay.StopAnimatingLoading(this.View);
-                            View.UserInteractionEnabled = true;
-                        }
-                        );
-                    }
-                }
-                );
-            }
-            );
-        }
-
-        private void Rebook()
-        {
-            var newBooking = new Confirmation();
-            newBooking.Action(Resources.StatusConfirmNewBooking, () =>
-            {
-                _timer.Dispose();
-                _timer = null;
-                if (CloseRequested != null)
-                {
-                    InvokeOnMainThread(() => CloseRequested(this, EventArgs.Empty));
-                }
-            }
-            );
-        }
-
-        private void CallProvider()
-        {
-            var call = new Confirmation();
-            call.Call(AppSettings.PhoneNumber(Order.Settings.ProviderId), AppSettings.PhoneNumberDisplay(Order.Settings.ProviderId));
-        }
-
-        void CallTouchUpInside(object sender, EventArgs e)
-        {
-            
-            var actionSheet = new UIActionSheet("");
-            actionSheet.AddButton(Resources.CallCompanyButton);
-            actionSheet.AddButton(Resources.StatusActionBookButton);
-            actionSheet.AddButton(Resources.StatusActionCancelButton);
-            actionSheet.AddButton(Resources.CancelBoutton);
-            actionSheet.CancelButtonIndex = 3;
-            actionSheet.DestructiveButtonIndex = 2;
-            actionSheet.Clicked += delegate(object se, UIButtonEventArgs ea)
-            {
-                
-                if (ea.ButtonIndex == 0)
-                {
-                    CallProvider();
-                }
-                else if (ea.ButtonIndex == 1)
-                {
-                    Rebook();
-                    
-                }
-                else if (ea.ButtonIndex == 2)
-                {
-                    CancelOrder();
-                }
-                
-                
-            };
-            actionSheet.ShowInView(AppContext.Current.Controller.View);
-            
-            
-            
-            
-        }
-        
+        } 
         
         #endregion
     }

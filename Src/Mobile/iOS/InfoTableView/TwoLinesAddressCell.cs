@@ -55,6 +55,7 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 		{
 			TextLabel.Text = _sectionItem.Label;
 			DetailTextLabel.Text = _sectionItem.DetailText;
+			UserInteractionEnabled = _sectionItem.Enabled();
 
 			if( _sectionItem.ShowRightArrow )
 			{
@@ -89,6 +90,22 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 					_sectionItem = item;
 				}				
 				Load ();
+				bool changed = false;
+				if( ((CustomCellBackgroundView)BackgroundView).IsTop != (_sectionItem.Index == 0) )
+				{
+					((CustomCellBackgroundView)BackgroundView).IsTop = _sectionItem.Index == 0;
+					changed = true;
+				}
+				if( ((CustomCellBackgroundView)BackgroundView).IsBottom != (_sectionItem.Index == (_sectionItem.Parent.Items.Count() - 1)) )
+				{
+					((CustomCellBackgroundView)BackgroundView).IsBottom = _sectionItem.Index == (_sectionItem.Parent.Items.Count() - 1);
+					changed = true;
+				}
+				if( changed )
+				{
+					BackgroundView.SetNeedsDisplay();
+				}
+
 			}
 
 		}
@@ -143,6 +160,16 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 			_isTop = isTop;
 			_isBottom = isBottom;
 			BackgroundColor = UIColor.Clear;
+		}
+
+		public bool IsTop { 
+			get { return _isTop; } 
+			set { _isTop = value; }
+		}
+
+		public bool IsBottom { 
+			get { return _isBottom; } 
+			set { _isBottom = value; }
 		}
 
 		public override void Draw (RectangleF rect)
