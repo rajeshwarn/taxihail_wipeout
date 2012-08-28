@@ -8,5 +8,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Models
     {
         Favorite=0,
         History=1,
+		NearbyPlaces=2,
     }
 }

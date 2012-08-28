@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using System.Globalization;
 
 namespace apcurium.MK.Booking.Api.Client
 {
@@ -16,13 +17,13 @@ namespace apcurium.MK.Booking.Api.Client
 
         public Address[] GetNearbyPlaces(double? latitude, double? longitude, int? radius)
         {
-            var result = Client.Get<Address[]>(string.Format("/places?lat={0}&lng={1}&radius={2}", latitude, longitude, radius));
+            var result = Client.Get<Address[]>(string.Format(CultureInfo.InvariantCulture, "/places?lat={0}&lng={1}&radius={2}", latitude, longitude, radius));
             return result;
         }
 
         public Address[] GetNearbyPlaces(double? latitude, double? longitude)
         {
-            var result = Client.Get<Address[]>(string.Format("/places?lat={0}&lng={1}", latitude, longitude));
+			var result = Client.Get<Address[]>(string.Format(CultureInfo.InvariantCulture, "/places?lat={0}&lng={1}", latitude, longitude));
             return result;
         }
     }

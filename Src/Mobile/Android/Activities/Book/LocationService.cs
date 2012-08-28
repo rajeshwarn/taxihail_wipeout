@@ -36,8 +36,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         public void Start()
         {
-
-
             if (_isStarted)
             {
                 return;
@@ -172,13 +170,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 LastLocation = new Android.Locations.Location(LocationManager.PassiveProvider);
 
-                var address = TinyIoCContainer.Current.Resolve<ICacheService>().Get<apcurium.MK.Booking.Api.Contract.Resources.Address>("LastKnowLocation");
+				var location = TinyIoCContainer.Current.Resolve<ICacheService>().Get<Android.Locations.Location>("LastKnowLocation");
 
-                if ( (address != null) && ( address.Latitude != 0 ) && ( address.Longitude != 0 ) )
+				if ( (location != null) && ( location.Latitude != 0 ) && ( location.Longitude != 0 ) )
                 {
-                    LastLocation.Latitude = address.Latitude;
-                    LastLocation.Longitude = address.Longitude;
-                    LastLocation.Accuracy = float.MaxValue;
+					LastLocation = location;
+//                    LastLocation.Longitude = address.Longitude;
+//                    LastLocation.Accuracy = float.MaxValue;
                 }
                 else
                 {
@@ -207,8 +205,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         public void LocationChanged(Android.Locations.Location location)
         {
             TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Location changed : " + GetLocationText(location));
-            TinyIoCContainer.Current.Resolve<ICacheService>().Set("LastKnowLocation", new apcurium.MK.Booking.Api.Contract.Resources.Address { Longitude = location.Longitude, Latitude = location.Latitude });
-            if (IsBetterLocation(location, LastLocation))
+            TinyIoCContainer.Current.Resolve<ICacheService>().Set("LastKnowLocation", location );
+			if (IsBetterLocation(location, LastLocation))
             {
                 LastLocation = location;
             }
