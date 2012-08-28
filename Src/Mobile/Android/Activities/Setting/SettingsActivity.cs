@@ -17,6 +17,8 @@ using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 
+using TinyIoC;
+
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 {
@@ -30,7 +32,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
             SetContentView(Resource.Layout.Settings);
 		
 			FindViewById<TextView>(Resource.Id.version).Text += AppSettings.Version;
-			
+
 			FindViewById<Button>(Resource.Id.AboutButton).Click += new EventHandler(About_Click);
 			FindViewById<Button>(Resource.Id.SignOutButton).Click += new EventHandler(Logout_Click);
 			FindViewById<Button>(Resource.Id.TechSupportButton).Click += new EventHandler(ReportProblem_Click);
@@ -128,6 +130,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 			}
 			var callCieBtn = FindViewById<TextView>(Resource.Id.CallCompanyButton);                        
             callCieBtn.Text = Resources.GetString( Resource.String.CallCompanyButton );
+			FindViewById<TextView>(Resource.Id.serverVersion).Text = string.Format( Resources.GetString( Resource.String.ServerVersion ), AppContext.Current.ServerName );
+			FindViewById<TextView>(Resource.Id.serverName).Text = string.Format( Resources.GetString( Resource.String.ServerName ), AppContext.Current.ServerVersion );
 		}
 		
 	

@@ -62,6 +62,7 @@
     <Compile Include="OrderServiceClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReferenceDataServiceClient.cs" />
+    <Compile Include="ApplicationInfoServiceClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MK.Booking.Api.Contract\MK.Booking.Api.Contract.Android.csproj">

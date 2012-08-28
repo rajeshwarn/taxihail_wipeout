@@ -129,11 +129,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
             }
         }
 
-        void HandleLogoClick(object sender, EventArgs e)
-        {
-            var intent = new Intent().SetClass(this, typeof(ChooseCompanyActivity));
-            StartActivity(intent);
-        }
+//        void HandleLogoClick(object sender, EventArgs e)
+//        {
+//            var intent = new Intent().SetClass(this, typeof(ChooseCompanyActivity));
+//            StartActivity(intent);
+//        }
 
         public override void OnBackPressed()
         {

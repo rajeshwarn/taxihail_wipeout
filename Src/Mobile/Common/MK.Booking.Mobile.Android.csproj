@@ -128,6 +128,8 @@
     <Compile Include="Models\RideSettingsModel.cs" />
     <Compile Include="AppServices\Impl\GoogleService.cs" />
     <Compile Include="AppServices\IGoogleService.cs" />
+    <Compile Include="AppServices\IApplicationInfoService.cs" />
+    <Compile Include="AppServices\Impl\ApplicationInfoService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">
