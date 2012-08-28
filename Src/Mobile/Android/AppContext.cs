@@ -84,12 +84,35 @@ namespace apcurium.MK.Booking.Mobile.Client
                 {
                     var pref = App.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
                     pref.Edit().PutString("LoggedUser", "").Commit();
-                    AppContext.Current.LoggedInEmail = "";
+					pref.Edit().PutString("ServerName", "" ).Commit();
+					pref.Edit().PutString("ServerVersion", "" ).Commit();
+					AppContext.Current.LoggedInEmail = "";
                     AppContext.Current.LoggedInPassword = "";
                 }
             }
         }
 
+		public string ServerName {
+			get {
+				var pref = App.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
+	            return pref.GetString("ServerName", "");
+			}
+			set {
+			    var pref = App.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
+                pref.Edit().PutString("ServerName", value).Commit();
+			}
+		}
+
+		public string ServerVersion {
+			get {
+				var pref = App.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
+	            return pref.GetString("ServerVersion", "");
+			}
+			set {
+			    var pref = App.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
+                pref.Edit().PutString("ServerVersion", value).Commit();
+			}
+		}
 
         public void UpdateLoggedInUser(Account data, bool syncWithServer)
         {
@@ -198,7 +221,9 @@ namespace apcurium.MK.Booking.Mobile.Client
         public void SignOut()
         {
             Logger.LogMessage("SignOutUser");      
-            LoggedUser = null;                                             
+            LoggedUser = null;
+			ServerName = "";
+			ServerVersion = "";
 
 			TinyIoCContainer.Current.Resolve<IAccountService>().SignOut();
         }

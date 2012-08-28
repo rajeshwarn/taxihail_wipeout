@@ -103,12 +103,8 @@ namespace apcurium.MK.Booking.Mobile.Client
         {           
             Logger.LogMessage("SignOutUser");      
             _loggedUser = null;                                             
-            NSUserDefaults.StandardUserDefaults.SetStringOrClear(
-                null,
-                "TaxiMobile.Account.CurrentUser"
-            );    
-
-
+            NSUserDefaults.StandardUserDefaults.SetStringOrClear( null, "TaxiMobile.Account.CurrentUser" );    
+            NSUserDefaults.StandardUserDefaults.SetStringOrClear( null, "TaxiMobile.ServerName" ); 
 
             TinyIoCContainer.Current.Resolve<IAccountService>().SignOut();
         }
@@ -255,7 +251,21 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             get { return _currrentLocation; }
         }
-        
+
+		public string ServerName {
+			get {
+				return NSUserDefaults.StandardUserDefaults.StringForKey("TaxiMobile.ServerName");
+			}
+			set {
+				NSUserDefaults.StandardUserDefaults.SetStringOrClear( value, "TaxiMobile.ServerName" );
+			}
+		}
+
+		public string ServerVersion {
+			get {
+				return TinyIoCContainer.Current.Resolve<IApplicationInfoService>().GetServerVersion();
+			}
+		}        
         
     }
 
@@ -297,7 +307,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             
         }
         
-        
+
         
     }
     

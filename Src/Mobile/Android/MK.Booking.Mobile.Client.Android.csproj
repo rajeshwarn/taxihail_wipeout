@@ -149,7 +149,6 @@
     <Compile Include="ListViewStructure\SectionItem.cs" />
     <Compile Include="ListViewStructure\ListStructure.cs" />
     <Compile Include="Activities\TabGroupActivity.cs" />
-    <Compile Include="Activities\Setting\SettingsGroup.cs" />
     <Compile Include="ListViewCell\LabelValueCell.cs" />
     <Compile Include="ListViewCell\InfoCell.cs" />
     <Compile Include="ListViewCell\SectionItemCellRegistry.cs" />
@@ -160,7 +159,6 @@
     <Compile Include="ListViewStructure\SpinnerSectionItem.cs" />
     <Compile Include="ListViewCell\SpinnerCell.cs" />
     <Compile Include="ListViewStructure\ListItemData.cs" />
-    <Compile Include="Activities\Setting\ChooseCompanyActivity.cs" />
     <Compile Include="ListViewStructure\BooleanSectionItem.cs" />
     <Compile Include="ListViewCell\BooleanCell.cs" />
     <Compile Include="Models\Activities.cs" />

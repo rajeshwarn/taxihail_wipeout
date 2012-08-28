@@ -314,6 +314,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                         if (account != null)
                         {
                             SetAccountInfo(account);
+							AppContext.Current.ServerName = TinyIoCContainer.Current.Resolve<IApplicationInfoService>().GetServerName();
                         }
                         else
                         {
@@ -330,8 +331,11 @@ namespace apcurium.MK.Booking.Mobile.Client
                     }
                     finally
                     {
-                        InvokeOnMainThread(() => this.View.UserInteractionEnabled = true);
-                        LoadingOverlay.StopAnimatingLoading(this.View);
+                        InvokeOnMainThread(() => { 
+							this.View.UserInteractionEnabled = true;
+
+						});
+						LoadingOverlay.StopAnimatingLoading(this.View);
                     }
                 }
                 );

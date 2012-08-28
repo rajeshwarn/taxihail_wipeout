@@ -56,6 +56,7 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{AD9663ED-C050-4580-B285-9C4AF363EA48} = {097AA31B-EAA6-4814-A012-F050F71324C5}
+		{33B8DF4F-E480-4B97-8DA1-BEB89CA6B644} = {097AA31B-EAA6-4814-A012-F050F71324C5}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Android\MK.Booking.Mobile.Client.Android.csproj

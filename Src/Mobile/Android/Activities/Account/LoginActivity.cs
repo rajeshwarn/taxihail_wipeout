@@ -12,6 +12,7 @@ using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Validation;
 using Android.Graphics;
 using Android.Views;
+using TinyIoC;
 
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
@@ -350,6 +351,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                     if (account != null)
                     {
                         AppContext.Current.UpdateLoggedInUser(account, false);
+						AppContext.Current.ServerName = TinyIoCContainer.Current.Resolve<IApplicationInfoService>().GetServerName();
+						AppContext.Current.ServerVersion = TinyIoCContainer.Current.Resolve<IApplicationInfoService>().GetServerVersion();
                         AppContext.Current.LastEmail = account.Email;
                         RunOnUiThread(() =>
                         {

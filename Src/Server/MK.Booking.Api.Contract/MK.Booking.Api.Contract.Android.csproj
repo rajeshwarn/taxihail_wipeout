@@ -84,6 +84,7 @@
     <Compile Include="Resources\OrderStatus.cs" />
     <Compile Include="Resources\OrderStatusDetail.cs" />
     <Compile Include="Resources\ReferenceData.cs" />
+    <Compile Include="Resources\ApplicationInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
