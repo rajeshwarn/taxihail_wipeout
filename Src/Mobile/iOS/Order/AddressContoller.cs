@@ -18,7 +18,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 {
     public class AddressContoller
     {
-        private UITextField _text;
+		private UITextField _text;
         private UITableView _table;
         private VerticalButtonBar _bar;
         private SimilarAddressTableDatasource _similarDatasource;
@@ -79,7 +79,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             
             _bar.ButtonClicked -= PickAddressTouchUpInside;
-            _bar.ButtonClicked += PickAddressTouchUpInside;
+			_bar.ButtonClicked += PickAddressTouchUpInside;
             
             _similarDelegate = new SimilarAddressTableDelegate(adrs => SetLocation(adrs, true, true));
             _similarDatasource = new SimilarAddressTableDatasource();
@@ -89,12 +89,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             _table.RowHeight = 45;
             _table.SeparatorStyle = UITableViewCellSeparatorStyle.SingleLine;
             _table.SeparatorColor = UIColor.FromRGB(0.9f, 0.9f, 0.9f);
-            
-            
-            
-            
-            _map.SetRegion(new MKCoordinateRegion(new CLLocationCoordinate2D(45.529, -73.630), new MKCoordinateSpan(0.1, 0.1)), true);
-            
             
             UIImageView img = new UIImageView(UIImage.FromFile("Assets/location.png"));
             img.BackgroundColor = UIColor.Clear;
@@ -413,6 +407,16 @@ namespace apcurium.MK.Booking.Mobile.Client
         }
 
         private bool _showCurrentLocationCanceled = false;
+
+		public void CenterMapOnUserLocation ()
+		{
+			CLLocationManager locationManager = new CLLocationManager();
+			locationManager.UpdatedLocation += (object sender, CLLocationUpdatedEventArgs e) => {
+				locationManager.StopUpdatingLocation();
+				_map.SetRegion(new MKCoordinateRegion(e.NewLocation.Coordinate, new MKCoordinateSpan(0.02, 0.02)), true);
+			};
+			locationManager.StartUpdatingLocation();
+		}
 
         public void ShowCurrentLocation(bool showProgress)
         {

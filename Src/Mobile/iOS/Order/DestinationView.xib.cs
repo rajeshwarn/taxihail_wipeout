@@ -8,6 +8,7 @@ using MonoTouch.CoreLocation;
 using TinyIoC;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.Framework.Extensions;
 
 
 namespace apcurium.MK.Booking.Mobile.Client
@@ -56,10 +57,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 			imageFieldBackground.Image = UIImage.FromFile ("Assets/TopFieldBackground-Sm.png");
 			
 			mapDestination.Delegate = new AddressMapDelegate ();
-			
+
+					
 			_addressController = new AddressContoller (txtAddress, null, null, tableSimilarAddress, mapDestination, AddressAnnotationType.Destination, Resources.DestinationMapTitle,
 			                                           () => _parent.BookingInfo.DropOffAddress, data => _parent.BookingInfo.DropOffAddress = data, () => _parent.IsTopView);
 			
+			_addressController.CenterMapOnUserLocation();
+
 			_addressController.LocationHasChanged += Handle_addressControllerLocationHasChanged;
 			lblDestination.Text = Resources.DestinationViewDestinationLabel;
 			
@@ -194,7 +198,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			
 		}
-		
+
+
 		
 		#endregion
 	}
