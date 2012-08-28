@@ -1,17 +1,28 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{14455101-7665-4CD6-A9F7-235BF1C50A6E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sql", "Sql", "{4C72F685-CBCF-4D77-B44C-5A661A8235AB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MK.Booking", "MK.Booking", "{853645BA-A2C2-4E59-B65E-70A64FB59904}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MK.Booking.Api", "MK.Booking.Api", "{93E0C6A9-6CE1-4A23-92FB-BAEF00EC15C2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MK.Booking.Tests", "MK.Booking.Tests", "{E0F34126-87A5-46FA-AE8A-6EEEC29C7B79}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{831E66EB-E70A-432E-B250-1BB43B562752}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\nuget.exe = .nuget\nuget.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure\Infrastructure.csproj", "{B5786D07-5888-4DF5-B295-3FEA593F3BFE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Sql", "Infrastructure\Sql\Infrastructure.Sql\Infrastructure.Sql.csproj", "{F038F286-5AEF-4341-83EC-9F72F42D06D6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkerRoleCommandProcessor", "WorkerRoleCommandProcessor\WorkerRoleCommandProcessor.csproj", "{8D856E0A-17CC-42FC-9F18-32D20EF0C53A}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MK.Booking", "MK.Booking", "{853645BA-A2C2-4E59-B65E-70A64FB59904}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.Commands", "MK.Booking\MK.Booking.Commands\MK.Booking.Commands.csproj", "{20AEA350-AD91-4053-A8B5-582E13ED43AA}"
 EndProject
@@ -39,10 +50,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.IBS", "MK.Bookin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "apcurium.MK.Web.SelfHost", "apcurium.MK.Web.SelfHost\apcurium.MK.Web.SelfHost.csproj", "{26C054F2-4984-4FE5-811C-4D94EF7EAE15}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MK.Booking.Api", "MK.Booking.Api", "{93E0C6A9-6CE1-4A23-92FB-BAEF00EC15C2}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MK.Booking.Tests", "MK.Booking.Tests", "{E0F34126-87A5-46FA-AE8A-6EEEC29C7B79}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Console.Test", "Console.Test\Console.Test.csproj", "{DFA720A1-56EC-4AF5-810C-C8548D12002A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Common.Tests", "MK.Common.Tests\MK.Common.Tests.csproj", "{EAD58094-9B43-4FF6-90D3-F721B00033CF}"
@@ -50,13 +57,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.Google", "MK.Booking.Google\MK.Booking.Google.csproj", "{AD0BC4AD-6BAC-4E02-8202-D7B3BF64D0F1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.Google.Tests", "MK.Booking.Google.Tests\MK.Booking.Google.Tests.csproj", "{0933E3FC-6332-43C0-B133-16299DF47B2D}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{831E66EB-E70A-432E-B250-1BB43B562752}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\nuget.exe = .nuget\nuget.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,11 +89,11 @@ Global
 		{B5786D07-5888-4DF5-B295-3FEA593F3BFE}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{B5786D07-5888-4DF5-B295-3FEA593F3BFE}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{B5786D07-5888-4DF5-B295-3FEA593F3BFE}.Release|x86.ActiveCfg = Release|Any CPU
-		{B5786D07-5888-4DF5-B295-3FEA593F3BFE}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
-		{B5786D07-5888-4DF5-B295-3FEA593F3BFE}.Staging|Any CPU.Build.0 = Staging|Any CPU
-		{B5786D07-5888-4DF5-B295-3FEA593F3BFE}.Staging|Mixed Platforms.ActiveCfg = Staging|Any CPU
-		{B5786D07-5888-4DF5-B295-3FEA593F3BFE}.Staging|Mixed Platforms.Build.0 = Staging|Any CPU
-		{B5786D07-5888-4DF5-B295-3FEA593F3BFE}.Staging|x86.ActiveCfg = Staging|Any CPU
+		{B5786D07-5888-4DF5-B295-3FEA593F3BFE}.Staging|Any CPU.ActiveCfg = Release|Any CPU
+		{B5786D07-5888-4DF5-B295-3FEA593F3BFE}.Staging|Any CPU.Build.0 = Release|Any CPU
+		{B5786D07-5888-4DF5-B295-3FEA593F3BFE}.Staging|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{B5786D07-5888-4DF5-B295-3FEA593F3BFE}.Staging|Mixed Platforms.Build.0 = Release|Any CPU
+		{B5786D07-5888-4DF5-B295-3FEA593F3BFE}.Staging|x86.ActiveCfg = Release|Any CPU
 		{F038F286-5AEF-4341-83EC-9F72F42D06D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F038F286-5AEF-4341-83EC-9F72F42D06D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F038F286-5AEF-4341-83EC-9F72F42D06D6}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -109,11 +109,11 @@ Global
 		{F038F286-5AEF-4341-83EC-9F72F42D06D6}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{F038F286-5AEF-4341-83EC-9F72F42D06D6}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{F038F286-5AEF-4341-83EC-9F72F42D06D6}.Release|x86.ActiveCfg = Release|Any CPU
-		{F038F286-5AEF-4341-83EC-9F72F42D06D6}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
-		{F038F286-5AEF-4341-83EC-9F72F42D06D6}.Staging|Any CPU.Build.0 = Staging|Any CPU
-		{F038F286-5AEF-4341-83EC-9F72F42D06D6}.Staging|Mixed Platforms.ActiveCfg = Staging|Any CPU
-		{F038F286-5AEF-4341-83EC-9F72F42D06D6}.Staging|Mixed Platforms.Build.0 = Staging|Any CPU
-		{F038F286-5AEF-4341-83EC-9F72F42D06D6}.Staging|x86.ActiveCfg = Staging|Any CPU
+		{F038F286-5AEF-4341-83EC-9F72F42D06D6}.Staging|Any CPU.ActiveCfg = Release|Any CPU
+		{F038F286-5AEF-4341-83EC-9F72F42D06D6}.Staging|Any CPU.Build.0 = Release|Any CPU
+		{F038F286-5AEF-4341-83EC-9F72F42D06D6}.Staging|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{F038F286-5AEF-4341-83EC-9F72F42D06D6}.Staging|Mixed Platforms.Build.0 = Release|Any CPU
+		{F038F286-5AEF-4341-83EC-9F72F42D06D6}.Staging|x86.ActiveCfg = Release|Any CPU
 		{8D856E0A-17CC-42FC-9F18-32D20EF0C53A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8D856E0A-17CC-42FC-9F18-32D20EF0C53A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8D856E0A-17CC-42FC-9F18-32D20EF0C53A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -492,14 +492,14 @@ Global
 		{BAF90740-9220-4BB0-B857-1E5927E464E9} = {853645BA-A2C2-4E59-B65E-70A64FB59904}
 		{7B615EA9-4232-4FFB-B66C-AC7B833973C9} = {853645BA-A2C2-4E59-B65E-70A64FB59904}
 		{AD0BC4AD-6BAC-4E02-8202-D7B3BF64D0F1} = {853645BA-A2C2-4E59-B65E-70A64FB59904}
-		{9C75BF3A-6A8B-44CA-B010-727ACD40F677} = {E0F34126-87A5-46FA-AE8A-6EEEC29C7B79}
-		{26C054F2-4984-4FE5-811C-4D94EF7EAE15} = {E0F34126-87A5-46FA-AE8A-6EEEC29C7B79}
-		{2AD48D85-462D-4763-8016-A2AA10F185A7} = {E0F34126-87A5-46FA-AE8A-6EEEC29C7B79}
-		{EAD58094-9B43-4FF6-90D3-F721B00033CF} = {E0F34126-87A5-46FA-AE8A-6EEEC29C7B79}
-		{0933E3FC-6332-43C0-B133-16299DF47B2D} = {E0F34126-87A5-46FA-AE8A-6EEEC29C7B79}
+		{1A931A36-D855-4A7A-AD0F-1B35D76582F3} = {93E0C6A9-6CE1-4A23-92FB-BAEF00EC15C2}
 		{1DD86EC1-75F9-4A57-A8D6-18248048F571} = {93E0C6A9-6CE1-4A23-92FB-BAEF00EC15C2}
 		{304F8E9E-0E9C-40F4-81FB-E7558286C5C1} = {93E0C6A9-6CE1-4A23-92FB-BAEF00EC15C2}
-		{1A931A36-D855-4A7A-AD0F-1B35D76582F3} = {93E0C6A9-6CE1-4A23-92FB-BAEF00EC15C2}
+		{2AD48D85-462D-4763-8016-A2AA10F185A7} = {E0F34126-87A5-46FA-AE8A-6EEEC29C7B79}
+		{9C75BF3A-6A8B-44CA-B010-727ACD40F677} = {E0F34126-87A5-46FA-AE8A-6EEEC29C7B79}
+		{26C054F2-4984-4FE5-811C-4D94EF7EAE15} = {E0F34126-87A5-46FA-AE8A-6EEEC29C7B79}
+		{EAD58094-9B43-4FF6-90D3-F721B00033CF} = {E0F34126-87A5-46FA-AE8A-6EEEC29C7B79}
+		{0933E3FC-6332-43C0-B133-16299DF47B2D} = {E0F34126-87A5-46FA-AE8A-6EEEC29C7B79}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35;packages\Unity.Interception.2.1.505.0\lib\NET35;packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\TransientFaultHandling.Core.5.0.1118.2\lib\NET35;packages\EnterpriseLibrary.WindowsAzure.TransientFaultHandling.5.0.1118.2\lib\NET4;packages\EnterpriseLibrary.WindowsAzure.TransientFaultHandling.5.0.1118.2\DesignTime
