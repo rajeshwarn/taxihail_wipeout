@@ -216,7 +216,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
         }
         
-        public Location CurrentLocation { get; set; }
+		public Location CurrentLocation { get; set; }
 
         public void SignOut()
         {

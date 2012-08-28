@@ -18,6 +18,8 @@ using apcurium.MK.Booking.Mobile.Client.Helpers;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.Client.Activities.Book;
+using System.Globalization;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
 {
@@ -25,56 +27,55 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
     public class LocationsActivity : Activity
     {
         private ParentScreens _parent = ParentScreens.LocationScreen;
+		private LocationTypes _viewMode;
         private ListView _listView;
         public static string ITEM_TITLE = "TITLE";
         public static string ITEM_SUBTITLE = "SUBTITLE";
         public static string ITEM_DATA = "DATA";
+		private LocationService _locService;
 
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
+
             if (Intent.Extras != null)
             {
                 _parent = (ParentScreens)Intent.Extras.GetInt(NavigationStrings.ParentScreen.ToString());
+				_viewMode = (LocationTypes)Intent.Extras.GetInt(NavigationStrings.LocationType.ToString() );
             }
+
+			if( _viewMode == LocationTypes.NearbyPlaces )
+			{
+				_locService = new LocationService();
+				_locService.Start();
+			}
+
             UpdateUI();
         }
 
         private void SetAdapter()
         {
+            ThreadHelper.ExecuteInThread(this, () => {
 
+				var adapter = new GroupedLocationListAdapter(this);
 
-            ThreadHelper.ExecuteInThread(this, () =>
-                {
-                    var historyAddresses = GetLocations(LocationTypes.History);
-                    var favoriteAddresses = GetLocations(LocationTypes.Favorite);
+				if( _viewMode == LocationTypes.NearbyPlaces )
+				{
+					SetNearbyPlacesAdapter( adapter );
+				}
+				else
+				{
+					SetFavoriteAdapter( adapter );
+				}
 
-                    if (_parent != ParentScreens.BookScreen)
-                    {
-                        int bgId = favoriteAddresses.Count >= 1 ? Resource.Drawable.cell_bottom_state : Resource.Drawable.add_single_state;
-
-                        favoriteAddresses.Add(new AddressItemListModel()
-                                                  {
-                                                      Address = new Address() { Id = Guid.Empty, FullAddress = Resources.GetString(Resource.String.LocationAddFavoriteSubtitle), FriendlyName = Resources.GetString(Resource.String.LocationAddFavoriteTitle) },
-                                                      BackgroundImageResource = bgId,
-                                                      NavigationIconResource = Resource.Drawable.add_button
-                                                  });
-                    }
-
-                    var adapter = new GroupedLocationListAdapter(this);
-                    adapter.AddSection(Resources.GetString(Resource.String.FavoriteLocationsTitle), new LocationListAdapter(this, favoriteAddresses));
-                    adapter.AddSection(Resources.GetString(Resource.String.LocationHistoryTitle), new LocationListAdapter(this, historyAddresses));
-             
-                    RunOnUiThread(() =>
-                        {
-                            _listView.Adapter = adapter;
-                            _listView.Divider = null;
-                            _listView.DividerHeight = 0;
-                            _listView.SetPadding(10, 0, 10, 0);
-                        });
-                }, true);
-
-
+                RunOnUiThread(() => {
+					_listView.Adapter = adapter;
+                    _listView.Divider = null;
+                    _listView.DividerHeight = 0;
+                    _listView.SetPadding(10, 0, 10, 0);
+				});
+                
+			}, true);
         }
 
         private void UpdateUI()
@@ -149,7 +150,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
         private List<AddressItemListModel> GetLocations(LocationTypes type)
         {
             IEnumerable<Address> addresses = new Address[0];
-            if (type == LocationTypes.Favorite)
+			if( type == LocationTypes.NearbyPlaces )
+			{
+				bool timeoutExpired;
+				_locService.WaitForAccurateLocation(6000, 200, out timeoutExpired);
+				addresses = TinyIoCContainer.Current.Resolve<IGoogleService>().GetNearbyPlaces( _locService.LastLocation.Latitude, _locService.LastLocation.Longitude );
+			}
+            else if (type == LocationTypes.Favorite)
             {
                 addresses = TinyIoCContainer.Current.Resolve<IAccountService>().GetFavoriteAddresses();
             }
@@ -188,5 +195,31 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
             SetAdapter();
         }
 
+		private void SetFavoriteAdapter( GroupedLocationListAdapter adapter )
+		{
+			var historyAddresses = GetLocations(LocationTypes.History);
+			var favoriteAddresses = GetLocations(LocationTypes.Favorite);
+			
+			if (_parent != ParentScreens.BookScreen)
+			{
+				int bgId = favoriteAddresses.Count >= 1 ? Resource.Drawable.cell_bottom_state : Resource.Drawable.add_single_state;
+				
+				favoriteAddresses.Add(new AddressItemListModel() {
+					Address = new Address() { Id = Guid.Empty, FullAddress = Resources.GetString(Resource.String.LocationAddFavoriteSubtitle), FriendlyName = Resources.GetString(Resource.String.LocationAddFavoriteTitle) },
+					BackgroundImageResource = bgId,
+					NavigationIconResource = Resource.Drawable.add_button
+				});
+			}
+			
+			adapter.AddSection(Resources.GetString(Resource.String.FavoriteLocationsTitle), new LocationListAdapter(this, favoriteAddresses));
+			adapter.AddSection(Resources.GetString(Resource.String.LocationHistoryTitle), new LocationListAdapter(this, historyAddresses));
+		}
+
+		private void SetNearbyPlacesAdapter( GroupedLocationListAdapter adapter )
+		{
+			var places = GetLocations(_viewMode);
+
+			adapter.AddSection(Resources.GetString(Resource.String.NearbyPlacesTitle), new LocationListAdapter(this, places));
+		}
     }
 }

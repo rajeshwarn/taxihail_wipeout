@@ -15,6 +15,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Models
         BookDetail_RingCode,
         BookDetail_Date,
         BookDetail_Time,
+		LocationType,
         
 
     }

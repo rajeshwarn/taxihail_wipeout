@@ -1,6 +1,7 @@
 using System;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Data;
+using Android.Locations;
 
 namespace apcurium.MK.Booking.Mobile.Infrastructure
 {

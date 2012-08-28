@@ -35,10 +35,10 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
-    <MtouchLink>None</MtouchLink>
     <MtouchI18n />
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <AssemblyName>TaxiHail</AssemblyName>
+    <MtouchExtraArgs>--disable-thread-check</MtouchExtraArgs>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
     <DebugSymbols>True</DebugSymbols>

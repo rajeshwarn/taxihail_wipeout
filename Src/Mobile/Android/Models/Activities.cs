@@ -6,10 +6,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Models
     {
         Destination = 0,
         Pickup = 1,
-        BookConfirmation =2,
+        BookConfirmation = 2,
 		History = 3,
 
         DateTimePicked = 4,
+		NearbyPlaces = 5,
     }
 }
 

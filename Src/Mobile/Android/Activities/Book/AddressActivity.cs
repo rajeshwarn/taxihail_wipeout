@@ -54,9 +54,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             // Favorite address intent
             var locationIntent = new Intent(this, typeof(LocationsActivity));
             locationIntent.PutExtra(NavigationStrings.ParentScreen.ToString(), (int)ParentScreens.BookScreen);
-
             //gps intent
             var gpsIntent = new Intent(LocationBroadcastReceiver.ACTION_RESP);
+			//nearby places intent
+			var placesIntent = new Intent(this, typeof(LocationsActivity));
+			placesIntent.PutExtra(NavigationStrings.ParentScreen.ToString(), (int)ParentScreens.BookScreen);
+			placesIntent.PutExtra(NavigationStrings.LocationType.ToString(), (int)LocationTypes.NearbyPlaces);
 
             IntentFilter filter = new IntentFilter(LocationBroadcastReceiver.ACTION_RESP);
             filter.AddCategory(Intent.CategoryDefault);
@@ -64,7 +67,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             RegisterReceiver(receiver, filter);
 
             //DropDownMenu definition
-            var iconActionControl = new IconActionControl(this, "images/arrow-right@2x.png", new List<IconAction>() { new IconAction("images/location-icon@2x.png", gpsIntent, null), new IconAction("images/favorite-icon@2x.png", locationIntent, (int)ActivityEnum.Pickup), new IconAction("images/contacts@2x.png", contactIntent, 42) }, true);
+            var iconActionControl = new IconActionControl(this, "images/arrow-right@2x.png", new List<IconAction>() { 
+				new IconAction("images/location-icon@2x.png", gpsIntent, null), 
+				new IconAction("images/favorite-icon@2x.png", locationIntent, (int)ActivityEnum.Pickup), 
+				new IconAction("images/contacts@2x.png", contactIntent, 42),
+				new IconAction("images/nearby-icon@2x.png", placesIntent, (int)ActivityEnum.NearbyPlaces )
+			}, true);
             var dropDownControlLayout = FindViewById<LinearLayout>(Resource.Id.linear_iconaction);
             dropDownControlLayout.AddView(iconActionControl);
         }
