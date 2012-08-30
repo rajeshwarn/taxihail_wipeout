@@ -168,6 +168,9 @@
     <Compile Include="Diagnostic\ErrorHandler.cs" />
     <Compile Include="Activities\AlertDialogActivity.cs" />
     <Compile Include="Services\ErrorHandlingService.cs" />
+    <AndroidResource Include="Resources\Drawable\StatusBottomBarBackground.xml" />
+    <AndroidResource Include="Resources\Drawable\DropShadow.xml" />
+    <AndroidResource Include="Resources\Drawable\WindowDisplay.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\HelveticaNeue.dfont" />

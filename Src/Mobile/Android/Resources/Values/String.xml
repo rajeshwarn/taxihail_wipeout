@@ -49,6 +49,8 @@
   <string name="ConfirmationViewTitle">Confirmation</string>
   <string name="CancelBoutton">Cancel</string>
   <string name="ConfirmButton">Confirm</string>
+  <string name="ConfirmRideInformationTitle">Ride Information</string>
+  <string name="ConfirmPassengerSettingsTitle">Passenger Settings</string>
   <string name="ConfirmOriginLablel">Origin:</string>
   <string name="ConfirmAptRingCodeLabel">Apt / Ring code:</string>
   <string name="ConfirmDestinationLabel">Destination:</string>
@@ -122,7 +124,7 @@
   <string name="HistoryDetailRebookButton">Rebook trip</string>
   <string name="HistoryDetailDestinationLabel">Destination:</string>
   <string name="HistoryDetailRequestedLabel">Requested:</string>
-  <string name="HistoryDetailOriginLabel">Origin:</string>
+  <string name="HistoryDetailOriginLabel">Pickup:</string>
   <string name="HistoryDetailStatusLabel">Status:</string>
   <string name="HistoryDetailConfirmationLabel">Confirmation:</string>
   <string name="StatusStatusLabel">Status: {0}</string>
@@ -165,7 +167,7 @@
   <string name="ParameterButton">Parameters</string>
   <string name="EstimateDistance">Distance: {0}</string>
   <string name="EstimatePrice">Approx. Price: {0}</string>
-  <string name="ApproxPrice">Approx. Price:</string>
+  <string name="ApproxPrice">Estimated Fare:</string>
   <string name="NotAvailable">N/A</string>
   <string name="AboutButton">About Us</string>
   <string name="AboutUsUrl">Assets/About_en.html</string>

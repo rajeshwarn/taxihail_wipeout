@@ -48,6 +48,8 @@
   <string name="ConfirmationViewTitle">Confirmation</string>
   <string name="CancelBoutton">Annuler</string>
   <string name="ConfirmButton">Confirmer</string>
+  <string name="ConfirmRideInformationTitle">Information Trajet</string>
+  <string name="ConfirmPassengerSettingsTitle">Préférences Passager</string>
   <string name="ConfirmOriginLablel">Origine:</string>
   <string name="ConfirmAptRingCodeLabel">Apt / Code:</string>
   <string name="ConfirmDestinationLabel">Destination:</string>

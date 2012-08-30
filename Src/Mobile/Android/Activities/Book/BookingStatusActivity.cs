@@ -49,21 +49,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             LoadParameters();
 
-
             if (OrderStatus.IBSOrderId.HasValue)
             {
                 FindViewById<TextView>(Resource.Id.statusInfoText).Text = string.Format(GetString(Resource.String.StatusDescription), OrderStatus.IBSOrderId.Value);
             }
-            else
-            {
-                //FindViewById<TextView>(Resource.Id.statusInfoText).Text = string.Format(GetString(Resource.String.StatusDescription), OrderStatus.IBSOrderId.Value);
-            }
 
             SetStatusText(GetString(Resource.String.LoadingMessage));
 
-
-
-            FindViewById<Button>(Resource.Id.CallBookCancelBtn).Click += new EventHandler(BookingStatusActivity_Click);
+			FindViewById<Button>(Resource.Id.CancelBtn).Click += delegate {	CancelOrder(); };
+			FindViewById<Button>(Resource.Id.CallBtn).Click += delegate { CallCompany(); };
+			FindViewById<Button>(Resource.Id.NewRideBtn).Click += delegate { CloseActivity(); };
 
             var map = FindViewById<MapView>(Resource.Id.mapStatus);
 
@@ -71,7 +66,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 {
                     DisplayStatus(Order, OrderStatus);
                 }, false);
-
 
         }
 
@@ -146,53 +140,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         private void SetStatusText(string status)
         {
-            FindViewById<TextView>(Resource.Id.CallStatusText).Text = string.Format(GetString(Resource.String.StatusStatusLabel), status);
+			FindViewById<TextView>(Resource.Id.statusInfoText).Text = string.Format(GetString(Resource.String.StatusStatusLabel), status);
         }
-
-        void BookingStatusActivity_Click(object sender, EventArgs e)
-        {
-            RegisterForContextMenu((View)sender);
-            OpenContextMenu((View)sender);
-            UnregisterForContextMenu((View)sender);
-
-            //this.OpenContextMenu(FindViewById<Button>(Resource.Id.CallBookCancelBtn));
-        }
-
-        public override void OnCreateContextMenu(Android.Views.IContextMenu menu, Android.Views.View v, Android.Views.IContextMenuContextMenuInfo menuInfo)
-        {
-            base.OnCreateContextMenu(menu, v, menuInfo);
-
-            menu.SetHeaderTitle(Resource.String.StatusActionButton);
-            menu.Add(0, 1, 0, Resource.String.CallCompanyButton);
-            menu.Add(0, 2, 1, Resource.String.StatusActionBookButton);
-            menu.Add(0, 3, 2, Resource.String.StatusActionCancelButton);
-            menu.Add(0, 4, 3, Resource.String.Close);
-
-
-        }
-
-
-        public override bool OnContextItemSelected(IMenuItem item)
-        {
-            if (item.ItemId == 1)
-            {
-                CallCompany();
-            }
-            else if (item.ItemId == 2)
-            {
-                CloseActivity();
-            }
-            else if (item.ItemId == 3)
-            {
-                CancelOrder();
-            }
-
-
-            return base.OnContextItemSelected(item);
-
-        }
-
-
 
         private void CloseActivity()
         {
@@ -233,10 +182,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                         RunOnUiThread(() => this.ShowAlert(Resource.String.StatusConfirmCancelRideErrorTitle, Resource.String.StatusConfirmCancelRideError));
                     }
 
-
                 }, true);
             });
-            //		
+	
         }
 
         private void RefreshStatus()
@@ -245,15 +193,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 try
                 {
-                    //var isCompleted = TinyIoCContainer.Current.Resolve<IBookingService>().IsCompleted(OrderStatus.OrderId);
-                    //if (isCompleted)
-                    //{
-                    //    AppContext.Current.LastOrder = null;
-                    //    CloseActivity();
-                    //    return;
-                    //}
-
-
                     var status = TinyIoCContainer.Current.Resolve<IBookingService>().GetOrderStatus(Order.Id);
 
                     _lastOrder = OrderStatus.OrderId;
@@ -310,11 +249,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                     SetZoom(adressesToDisplay);
 
                 });
-
-
-
-
-
 
         }
 

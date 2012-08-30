@@ -120,7 +120,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                     twitterService.GetUserInfos(CheckIfTwitterAccountExist);
                 }
             };
-
+			FindViewById<EditText>(Resource.Id.Username).Text = "dboisson20@hotmail.com";
+			FindViewById<EditText>(Resource.Id.Password).Text ="password";
 
         }
 

@@ -15,14 +15,14 @@
             android:src="@drawable/background"
             android:scaleType="fitXY"
             android:adjustViewBounds="true"
-            android:layout_below="@+id/HeaderImage" />
+            android:layout_below="@id/HeaderImage" />
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:gravity="center_horizontal"
             android:orientation="vertical"
             android:paddingTop="5dip"
-            android:layout_below="@+id/HeaderImage">
+            android:layout_below="@id/HeaderImage">
             <LinearLayout
                 android:id="@+id/statusInfo"
                 android:orientation="horizontal"
@@ -37,48 +37,59 @@
                     android:gravity="center_horizontal"
                     android:layout_height="wrap_content" />
             </LinearLayout>
-            <RelativeLayout
+            <FrameLayout
                 android:id="@+id/statusMapSection"
-                android:layout_below="@+id/statusInfo"
+                android:layout_below="@id/statusInfo"
                 android:layout_width="fill_parent"
-                android:layout_height="0px"
-                android:layout_weight="1">
+                android:layout_height="fill_parent"
+                android:layout_weight="0"
+                android:layout_gravity="bottom">
                 <apcurium.mk.booking.mobile.client.controls.TouchMap
                     android:id="@+id/mapStatus"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="fill_parent"
                     android:apiKey="0XEY3WqKVmJMzXNRJfhbH1yM6RkpBMOaZWUoMAw"
                     android:enabled="true"
                     android:clickable="true" />
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_below="@+id/statusMapSection"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="3dip"
+                    android:background="@drawable/DropShadow"
+                    android:layout_gravity="top" />
                 <LinearLayout
-                    android:orientation="vertical"
+                    android:orientation="horizontal"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:weightSum="1.0">
-                    <TextView
-                        style="@style/ListItemValue"
-                        android:id="@+id/CallStatusText"
-                        android:text="@string/StatusStatusLabel"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:gravity="center_horizontal" />
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:background="@drawable/StatusBottomBarBackground"
+                    android:paddingTop="4dip"
+                    android:paddingBottom="4dip">
                     <Button
-                        android:id="@+id/CallBookCancelBtn"
+                        android:id="@+id/CancelBtn"
                         style="@style/ButtonText"
-                        android:background="@drawable/black_button"
-                        android:layout_width="fill_parent"
+                        android:background="@drawable/red_button"
+                        android:layout_width="wrap_content"
                         android:layout_height="35dip"
                         android:layout_weight="0.5"
-                        android:text="@string/StatusActionButton" />
+                        android:text="@string/StatusCancelButton" />
+                    <Button
+                        android:id="@+id/CallBtn"
+                        style="@style/ButtonText"
+                        android:background="@drawable/black_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dip"
+                        android:layout_weight="0.5"
+                        android:text="@string/StatusCallButton" />
+                    <Button
+                        android:id="@+id/NewRideBtn"
+                        style="@style/ButtonText"
+                        android:background="@drawable/green_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dip"
+                        android:layout_weight="0.5"
+                        android:text="@string/StatusNewRideButton" />
                 </LinearLayout>
-            </RelativeLayout>
+            </FrameLayout>
         </LinearLayout>
         <RelativeLayout
             android:layout_width="wrap_content"

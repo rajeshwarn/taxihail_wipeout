@@ -123,7 +123,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             var model = new RideSettingsModel(BookingInfo.Settings, companies, service.GetVehiclesList(), service.GetPaymentsList());
             //TODO:Fix this
             FindViewById<TextView>(Resource.Id.VehiculeTypeTxt).Text = model.VehicleTypeName;
-            FindViewById<TextView>(Resource.Id.CampanyTxt).Text = model.ProviderName;
+//            FindViewById<TextView>(Resource.Id.CampanyTxt).Text = model.ProviderName;
             FindViewById<TextView>(Resource.Id.ChargeTypeTxt).Text = model.ChargeTypeName;
 
             var direction = new DirectionInfo();
