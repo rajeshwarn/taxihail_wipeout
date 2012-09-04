@@ -63,23 +63,6 @@ namespace apcurium.MK.Web.Tests
             Assert.True(addresses.Addresses.Count() >= 1);
         }
 
-        [Test]
-        public void Airport_Coordinate_Search_And_Name_Search()
-        {
-            var sut = new GeocodingServiceClient(BaseUrl, SessionId);
-            var addresses = sut.Search(45.326874, -75.672616);
-            Assert.AreEqual(1, addresses.Addresses.Count());
-
-            addresses = sut.Search(addresses.Addresses[0].FullAddress);
-            Assert.AreEqual(1, addresses.Addresses.Count());
-            Assert.AreEqual(true, addresses.Addresses.ElementAt(0).FullAddress.Contains("Convair"));
-        }
-    
-
-
-
         
-
-
     }
 }
