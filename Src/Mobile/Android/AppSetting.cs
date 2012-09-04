@@ -103,17 +103,17 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             get
             {
-                var url = TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService>().Get<string>("TaxiHail.ServiceUrl");
-                if (string.IsNullOrEmpty(url))
-                {
-                    return string.Format(DefaultServiceUrl, DefaultServiceServer);
-                }
-                else
-                {
-                    return url;
-                }
+                //var url = TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService>().Get<string>("TaxiHail.ServiceUrl");
+                //if (string.IsNullOrEmpty(url))
+                //{
+                //    return string.Format(DefaultServiceUrl, DefaultServiceServer);
+                //}
+                //else
+                //{
+                //    return url;
+                //}
 
-                //return "http://services.taxihail.com/taxihaildemo/v1/api/"; }
+                return "http://10.0.1.21/apcurium.MK.Web/api/"; 
             }
 
             set
