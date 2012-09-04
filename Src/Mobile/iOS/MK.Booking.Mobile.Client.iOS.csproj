@@ -49,7 +49,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
-    <CodesignKey>iPhone Developer: Daniel Boissonneault (8N23K7P2GB)</CodesignKey>
+    <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchDebug>True</MtouchDebug>
     <MtouchI18n />
     <MtouchUseArmv7>false</MtouchUseArmv7>
@@ -76,6 +76,23 @@
     <CrashReportingApiKey />
     <AssemblyName>TaxiMobileApp</AssemblyName>
     <MtouchSdkVersion>5.1</MtouchSdkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Distribution|iPhone' ">
+    <DebugType>none</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>bin\iPhone\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CrashReportingApiKey />
+    <IpaPackageName />
+    <MtouchUseArmv7>false</MtouchUseArmv7>
+    <MtouchI18n />
+    <CodesignProvision>3F3DE1DD-7B47-4311-AA91-C9FC285FAE43</CodesignProvision>
+    <AssemblyName>TaxiMobileApp</AssemblyName>
+    <ConsolePause>False</ConsolePause>
+    <BuildIpa>True</BuildIpa>
+    <MtouchSdkVersion>5.1</MtouchSdkVersion>
+    <CodesignKey>iPhone Distribution: Baventure Group Inc.</CodesignKey>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -104,11 +121,11 @@
   <ItemGroup>
     <None Include="About_fr.html" />
     <None Include="Info.plist" />
-    <None Include="Assets\VerticalButtonBar\.DS_Store" />
     <None Include="Assets\.DS_Store" />
     <None Include="Assets\About_en.html" />
     <None Include="Assets\About_fr.html" />
     <None Include="Assets\Info.plist" />
+    <None Include="assets\VerticalButtonBar\.DS_Store" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
