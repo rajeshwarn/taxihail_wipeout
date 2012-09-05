@@ -47,12 +47,13 @@ namespace apcurium.MK.Booking.IBS.Impl
             var result = new IBSOrderDetails();
             UseService(service =>
             {
-                var order = service.GetBookOrder_5(UserNameApp, PasswordApp, orderId, contactPhone, null, accountId);
+                var order = service.GetBookOrder_7(UserNameApp, PasswordApp, orderId, contactPhone, null, accountId);
                 if (order != null)
                 {
                     result.VehicleNumber = order.CabNo.ToSafeString().Trim();
                     result.Fare = order.Fare == 0 ? (double?)null : order.Fare;
                     result.Toll = order.Tolls == 0 ? (double?)null : order.Tolls;
+                    result.Tip = order.Tips == 0 ? (double?)null : order.Tips; //TODO à enlever
                 }
             });
             return result;

@@ -112,7 +112,7 @@
     <Compile Include="WebServices\WebAccount3Service.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="WebServices\WEBOrder7Service.cs" />
+    <Compile Include="WebServices\WebOrder7Service.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MK.Booking.IBS.psproj">
