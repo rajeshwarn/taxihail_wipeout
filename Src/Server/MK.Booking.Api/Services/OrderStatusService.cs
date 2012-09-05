@@ -105,6 +105,11 @@ namespace apcurium.MK.Booking.Api.Services
                         {
                             desc = _configManager.GetSetting("OrderStatus." + status.IBSStatusId);
                         }
+
+                        if(order.Status != (int)OrderStatus.Completed)
+                        {
+                            //send complete command
+                        }
                     }
                     else
                     {
@@ -113,10 +118,7 @@ namespace apcurium.MK.Booking.Api.Services
 
                 }
 
-
-
                 status.IBSStatusDescription = desc.HasValue() ? desc : status.IBSStatusId;
-
 
             }
             catch

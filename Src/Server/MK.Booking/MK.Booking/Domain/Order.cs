@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Text;
 using Infrastructure.EventSourcing;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common;
@@ -20,6 +18,7 @@ namespace apcurium.MK.Booking.Domain
         {
             base.Handles<OrderCreated>(OnOrderCreated);
             base.Handles<OrderCancelled>(OnOrderCancelled);
+            base.Handles<OrderCompleted>(OnOrderCompleted);
         }
 
         public Order(Guid id, IEnumerable<IVersionedEvent> history)
@@ -65,13 +64,30 @@ namespace apcurium.MK.Booking.Domain
             _status = OrderStatus.Canceled;   
         }
 
+        private void OnOrderCompleted(OrderCompleted obj)
+        {
+            _status = OrderStatus.Completed;
+        }
+
 
         public void Cancel()
         {
-            this.Update(new OrderCancelled()
-                            {
-                                SourceId = Id,                                
-                            });
+            this.Update(new OrderCancelled());
+        }
+
+        public void Complete(DateTime date, double? fare, double? tip, double? toll)
+        {
+            if(_status != OrderStatus.Completed)
+            {
+                
+                this.Update(new OrderCompleted
+                                {
+                                    Date = date,
+                                    Fare = fare,
+                                    Toll = toll,
+                                    Tip = tip
+                                });
+            }
         }
     }
 }
