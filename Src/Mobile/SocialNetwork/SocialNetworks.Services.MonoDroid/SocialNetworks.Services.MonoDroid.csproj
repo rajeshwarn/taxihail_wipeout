@@ -100,10 +100,9 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Mono.Facebook\Mono.Facebook.csproj">
-      <Project>{33B8DF4F-E480-4B97-8DA1-BEB89CA6B644}</Project>
+      <Project>{33b8df4f-e480-4b97-8da1-beb89ca6b644}</Project>
       <Name>Mono.Facebook</Name>
     </ProjectReference>
   </ItemGroup>

@@ -36,5 +36,28 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             var @event = sut.ThenHasSingle<OrderCancelled>();            
             Assert.AreEqual(_orderId, @event.SourceId);
         }
+
+        [Test]
+        public void when_complete_order_successfully()
+        {
+            var completeOrder = new CompleteOrder {OrderId = _orderId, Date = DateTime.Now, Fare = 23, Toll = 2, Tip = 5};
+            this.sut.When(completeOrder);
+
+            var @event = sut.ThenHasSingle<OrderCompleted>();
+            Assert.AreEqual(_orderId, @event.SourceId);
+            Assert.That(@event.Date, Is.EqualTo(completeOrder.Date).Within(1).Seconds);
+            Assert.AreEqual(completeOrder.Fare, @event.Fare);
+            Assert.AreEqual(completeOrder.Toll, @event.Toll);
+            Assert.AreEqual(completeOrder.Tip, @event.Tip);
+        }
+
+        [Test]
+        public void when_complete_twice_order_one_event_only()
+        {
+            this.sut.Given(new OrderCompleted());
+            this.sut.When(new CompleteOrder { OrderId = _orderId });
+
+            sut.ThenHasSingle<OrderCompleted>();
+        }
     }
 }

@@ -115,20 +115,24 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 Assert.NotNull(dto.Status == (int)OrderStatus.Created );
             }
         }
-        [Test]
-        public void when_order_cancelled_then_order_dto_populated()
-        {
-            this.sut.Handle(new OrderCancelled()
-                                {
-                                    SourceId = _orderId,
 
-                                });
+        [Test]
+        public void when_order_completed_then_order_dto_populated()
+        {
+            var orderCompleted = new OrderCompleted
+                                     {
+                                         SourceId = _orderId, Date = DateTime.Now, Fare = 23, Toll = 2, Tip = 5
+                                     };
+            this.sut.Handle(orderCompleted);
 
             using (var context = new BookingDbContext(dbName))
             {
                 var dto = context.Find<OrderDetail>(_orderId);
                 Assert.NotNull(dto);
-                Assert.NotNull(dto.Status == (int)OrderStatus.Cancelled);
+                Assert.NotNull(dto.Status == (int)OrderStatus.Completed);
+                Assert.AreEqual(orderCompleted.Fare, dto.Fare);
+                Assert.AreEqual(orderCompleted.Toll, dto.Toll);
+                Assert.AreEqual(orderCompleted.Tip, dto.Tip);
             }
         }
     }
