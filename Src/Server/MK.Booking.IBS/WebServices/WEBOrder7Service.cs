@@ -1,4 +1,4 @@
-using apcurium.MK.Booking.IBS.WebServices;
+
 
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.17929")]
@@ -4485,30 +4485,6 @@ public partial class TWEBAddress
     }
 }
 
-/// <remarks/>
-[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.17929")]
-[System.SerializableAttribute()]
-[System.Diagnostics.DebuggerStepThroughAttribute()]
-[System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeOrder")]
-public partial class TWEBFavotiteAddress : TWEBAddress
-{
-
-    private string addressAliasField;
-
-    /// <remarks/>
-    public string AddressAlias
-    {
-        get
-        {
-            return this.addressAliasField;
-        }
-        set
-        {
-            this.addressAliasField = value;
-        }
-    }
-}
 
 /// <remarks/>
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBookOrder_3))]
