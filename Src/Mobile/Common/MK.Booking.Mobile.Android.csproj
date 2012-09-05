@@ -39,6 +39,10 @@
   <ItemGroup>
     <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
+    <Reference Include="SocialNetworks.Services.MonoDroid, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libraries\Monodroid\SocialNetworks.Services.MonoDroid.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
@@ -133,7 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">
-      <Project>{A70ADE42-9492-4247-96DC-0CFE0CB0CC64}</Project>
+      <Project>{a70ade42-9492-4247-96dc-0cfe0cb0cc64}</Project>
       <Name>MK.Booking.Api.Client.Android</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Contract\MK.Booking.Api.Contract.Android.csproj">
@@ -143,10 +147,6 @@
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.Android.csproj">
       <Project>{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}</Project>
       <Name>MK.Common.Android</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SocialNetwork\SocialNetworks.Services.MonoDroid\SocialNetworks.Services.MonoDroid.csproj">
-      <Project>{AD9663ED-C050-4580-B285-9C4AF363EA48}</Project>
-      <Name>SocialNetworks.Services.MonoDroid</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
