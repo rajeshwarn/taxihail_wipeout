@@ -91,10 +91,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 
             AppButtons.FormatStandardGradientButton((GradientButton)btnSave, Resources.SaveButton, UIColor.White, AppStyle.ButtonColor.Green); 
-            ((GradientButton)btnCancel).SetTitle(Resources.CancelBoutton, UIControlState.Normal);
+
+            ((GradientButton)btnBook).SetTitle(Resources.BookFromLocationButton, UIControlState.Normal);
             AppButtons.FormatStandardGradientButton((GradientButton)btnDelete, Resources.DeleteButton, UIColor.White, AppStyle.ButtonColor.Red); 
-            
-            btnCancel.TouchUpInside += BtnCancelTouchUpInside;
+
+            btnBook.TouchUpInside += BtnBookTouchUpInside;
             btnSave.TouchUpInside += BtnSaveTouchUpInside;
             btnDelete.TouchUpInside += BtnDeleteTouchUpInside;
             
@@ -242,14 +243,16 @@ namespace apcurium.MK.Booking.Mobile.Client
             
         }
 
-        void BtnCancelTouchUpInside(object sender, EventArgs e)
+
+    
+        void BtnBookTouchUpInside(object sender, EventArgs e)
         {
-            if (Canceled != null)
-            {
-                Canceled(this, EventArgs.Empty);
-            }
-            
-            this.NavigationController.PopViewControllerAnimated(true);
+             this.NavigationController.PopViewControllerAnimated(true);
+
+            var order = new Order();
+            order.PickupAddress = _data;
+            order.Settings = AppContext.Current.LoggedUser.Settings;
+            AppContext.Current.Controller.Rebook(order);
         }
 
         public void LoadData(Address data)
@@ -264,11 +267,11 @@ namespace apcurium.MK.Booking.Mobile.Client
                 txtName.Text = _data.FriendlyName;
                 btnDelete.Hidden = _data.Id.IsNullOrEmpty();
                 
-                if (_data.Id.IsNullOrEmpty())
-                {
-                    btnSave.Frame = new System.Drawing.RectangleF(btnSave.Frame.X + 40, btnSave.Frame.Y, btnSave.Frame.Width, btnSave.Frame.Height);
-                    btnCancel.Frame = new System.Drawing.RectangleF(btnCancel.Frame.X - 40, btnCancel.Frame.Y, btnCancel.Frame.Width, btnCancel.Frame.Height);
-                }
+//                if (_data.Id.IsNullOrEmpty())
+//                {
+//                    btnSave.Frame = new System.Drawing.RectangleF(btnSave.Frame.X + 40, btnSave.Frame.Y, btnSave.Frame.Width, btnSave.Frame.Height);
+//                    btnCancel.Frame = new System.Drawing.RectangleF(btnCancel.Frame.X - 40, btnCancel.Frame.Y, btnCancel.Frame.Width, btnCancel.Frame.Height);
+//                }
 
             }
         }

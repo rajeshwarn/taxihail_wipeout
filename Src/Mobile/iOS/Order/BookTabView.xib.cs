@@ -11,6 +11,7 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Common.Diagnostic;
+using ServiceStack.Text;
  
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -227,7 +228,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             pageControl.CurrentPage = 0;
 
             //TODO : Fix this
-            //_toRebookData = data.Copy ();
+            _toRebookData = JsonSerializer.DeserializeFromString<CreateOrder>(JsonSerializer.SerializeToString<Order>(data));
+            _toRebookData.Id = Guid.Empty;
+            _toRebookData.PickupDate = null;
         }
 
 //      private bool TryToLoadLastOrder ()
@@ -372,7 +375,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                         BookingInfo = _toRebookData;
                         isRebook = true;
                         _toRebookData = null;
-                        
+                        BookTaxi();
                     }
                     else
                     {
