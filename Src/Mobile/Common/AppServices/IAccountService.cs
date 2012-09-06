@@ -49,14 +49,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         void UpdateAddress(Address address);
 
-        void DeleteAddress(Guid addressId);
+	    void DeleteFavoriteAddress(Guid addressId);
+
+        void DeleteHistoryAddress(Guid addressId);
 
         IEnumerable<Order> GetHistoryOrders();
 
         Order GetHistoryOrder(Guid id);
 
         void RefreshCache(bool reload);
-
 
         void SignOut();
     }

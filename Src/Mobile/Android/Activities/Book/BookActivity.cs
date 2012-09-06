@@ -436,9 +436,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         public void BookFromFavorite(string addressFromFavorite)
         {
-            TogglePickupDestination(false);
-            var activity = (DestinationActivity)LocalActivityManager.GetActivity(this.TabHost.CurrentTabTag);
-            activity.SetLocationDataAndValidate(new WS.Address() { FullAddress = addressFromFavorite }, true);
+
+            if (this.TabHost.CurrentTabTag.Equals(Tab.Destination.ToString()))
+            {
+                var activity = (DestinationActivity)LocalActivityManager.GetActivity(this.TabHost.CurrentTabTag);
+                activity.SetLocationDataAndValidate(new WS.Address() { FullAddress = addressFromFavorite }, true);
+            }
+            else
+            {
+                var activity = (PickupActivity)LocalActivityManager.GetActivity(this.TabHost.CurrentTabTag);
+                activity.SetLocationDataAndValidate(new WS.Address() { FullAddress = addressFromFavorite }, true);
+            }
+
             BookItBtn_Click(this, EventArgs.Empty);
         }
 

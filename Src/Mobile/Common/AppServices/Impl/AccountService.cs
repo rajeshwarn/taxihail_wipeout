@@ -410,20 +410,27 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return isSuccess;
         }
 
-        public void DeleteAddress(Guid addressId)
+        public void DeleteFavoriteAddress(Guid addressId)
         {
             if (addressId.HasValue())
             {
-                var accountId = CurrentAccount.Id;
                 var toDelete = addressId;
                 
                 RemoveFromCacheArray<Address>(_favoriteAddressesCacheKey, toDelete, (id, a) => a.Id == id);                
 
-                QueueCommand<AccountServiceClient>(service =>
-                {                     
-                    service.RemoveFavoriteAddress(toDelete);
-                }
-                );
+                QueueCommand<AccountServiceClient>(service => service.RemoveFavoriteAddress(toDelete));
+            }
+        }
+
+        public void DeleteHistoryAddress(Guid addressId)
+        {
+            if (addressId.HasValue())
+            {
+                var toDelete = addressId;
+
+                RemoveFromCacheArray<Address>(_historyAddressesCacheKey, toDelete, (id, a) => a.Id == id);
+
+                QueueCommand<AccountServiceClient>(service => service.RemoveAddress(toDelete));
             }
         }
 

@@ -153,12 +153,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
                 {
                     if(_data.IsHistoric)
                     {
-                        //remplacer avec removefrom history location et gg
-                        //TinyIoCContainer.Current.Resolve<IBookingService>().RemoveFromHistory(_data.Id);
+                        TinyIoCContainer.Current.Resolve<IAccountService>().DeleteHistoryAddress(_data.Id);
                     }
                     else
                     {
-                        TinyIoCContainer.Current.Resolve<IAccountService>().DeleteAddress(_data.Id);
+                        TinyIoCContainer.Current.Resolve<IAccountService>().DeleteFavoriteAddress(_data.Id);
                     }
                 }
 
