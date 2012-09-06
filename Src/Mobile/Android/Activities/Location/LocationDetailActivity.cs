@@ -47,12 +47,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
             FindViewById<EditText>(Resource.Id.RingCode).Text = !_data.RingCode.IsNullOrEmpty() ? _data.RingCode : null;
             FindViewById<EditText>(Resource.Id.LocationFriendlyName).Text = !_data.Id.IsNullOrEmpty() ? _data.FriendlyName : null;
             
-            
-            if (  (_data.Id.IsNullOrEmpty() ) || _data.IsHistoric )
-            {
-                FindViewById<Button>(Resource.Id.LocationDeleteBtn).Visibility = ViewStates.Gone;
-            }
-            
             FindViewById<Button>(Resource.Id.LocationDeleteBtn).Click += new EventHandler(DeleteBtn_Click);            
             FindViewById<Button>(Resource.Id.LocationSaveBtn).Click += new EventHandler(SaveBtn_Click);
             FindViewById<Button>(Resource.Id.LocationBookBtn).Click += new EventHandler(BookBtn_Click);
@@ -148,10 +142,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
         {
             ThreadHelper.ExecuteInThread(this, () =>
             {
-
+                
                 if ( _data.Id.HasValue() )
                 {
-                    TinyIoCContainer.Current.Resolve<IAccountService>().DeleteAddress(_data.Id);
+                    if(_data.IsHistoric)
+                    {
+                        //remplacer avec removefrom history location et gg
+                        //TinyIoCContainer.Current.Resolve<IBookingService>().RemoveFromHistory(_data.Id);
+                    }
+                    else
+                    {
+                        TinyIoCContainer.Current.Resolve<IAccountService>().DeleteAddress(_data.Id);
+                    }
                 }
 
                 RunOnUiThread(() => Finish());

@@ -200,6 +200,14 @@
                     android:text="@string/StatusActionCancelButton"
                     android:layout_width="fill_parent"
                     android:layout_height="40dip" />
+                <Button
+                    android:id="@+id/HistoryOrderDeleteBtn"
+                    style="@style/ButtonText"
+                    android:background="@drawable/red_button"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dip"
+                    android:layout_weight="0.33"
+                    android:text="@string/DeleteButton" />
             </LinearLayout>
         </LinearLayout>
         <RelativeLayout
