@@ -10,14 +10,18 @@ namespace apcurium.MK.Booking.Mobile.Client
 {
 	public class VerticalButtonBar : UIView
 	{
+		public enum AnimationType { Wheel, Arrow };
+		public enum AnimationDirection { Down, Up };
+
 		private Dictionary<int, VerticalButton> _buttons;
-		private VerticalButton _arrowBtn;
+		private VerticalButton _mainBtn;
 		private float _btnHeight = 40f;
 
 		public delegate void ButtonClickedEventHandler(int index);
 		public event ButtonClickedEventHandler ButtonClicked;
 
-		public VerticalButtonBar ( RectangleF frame ) : base ( frame )
+
+		public VerticalButtonBar ( RectangleF frame, AnimationType animationType, AnimationDirection animationDirection ) : base ( frame )
 		{
 			_buttons = new Dictionary<int, VerticalButton>();
 
@@ -25,19 +29,25 @@ namespace apcurium.MK.Booking.Mobile.Client
 			Layer.MasksToBounds = true;
 			ContentMode = UIViewContentMode.Top;
 
-			_arrowBtn = new VerticalButton(new RectangleF( 0,0, frame.Width, frame.Height ), UIColor.FromRGB(212,212,212), UIColor.FromRGB(184,184,184) );
-			_arrowBtn.SetCustomSelectedBackgroundColor( UIColor.FromRGB(53,136,204) );
-			_arrowBtn.BackgroundColor = UIColor.Clear;
-			_arrowBtn.ContentMode = UIViewContentMode.Center;
+			switch( animationType )
+			{
+			case AnimationType.Wheel:
+				_mainBtn = new  AnimatedWheelButton( new RectangleF( 0,0, frame.Width, frame.Height ), UIColor.FromRGB(53,136,204) );
+				break;
+			case AnimationType.Arrow:
+			default:
+				_mainBtn = new  AnimatedArrowButton( new RectangleF( 0,0, frame.Width, frame.Height ), UIColor.FromRGB(212,212,212), UIColor.FromRGB(184,184,184));
+				break;
+			}
 
-			_arrowBtn.SetImage( UIImage.FromFile( "Assets/VerticalButtonBar/rightArrow.png"), UIControlState.Normal );
-			_arrowBtn.ImageView.BackgroundColor = UIColor.Clear;
-			_arrowBtn.FirstButton = true;
 
-			_arrowBtn.TouchUpInside -= delegate { AnimateBar(); };
-			_arrowBtn.TouchUpInside += delegate { AnimateBar(); };
+			_mainBtn.Direction = animationDirection;
+			_mainBtn.FirstButton = true;
 
-			AddSubview( _arrowBtn );
+			_mainBtn.TouchUpInside -= delegate { AnimateBar(); };
+			_mainBtn.TouchUpInside += delegate { AnimateBar(); };
+
+			AddSubview( (VerticalButton)_mainBtn );
 			IsOpen = false;
 		}
 
@@ -45,65 +55,18 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		private void AnimateBar()
 		{
-//			UIView.Animate( 0.5, () => {
-//				if( IsOpen )
-//				{
-//					_arrowBtn.ImageView.Transform = CGAffineTransform.MakeRotation( 0f );
-//					Frame = new RectangleF( Frame.X, Frame.Y, Frame.Width, _arrowBtn.Frame.Height );
-//					IsClosing = true;
-//				}
-//				else
-//				{
-//					_arrowBtn.ImageView.Transform = CGAffineTransform.MakeRotation( (float)Math.PI/2 );
-//					Frame = new RectangleF( Frame.X, Frame.Y, Frame.Width, FullHeight );
-//				}
-//			}, () => {
-//				IsClosing = false;
-//				base.SetNeedsDisplay();
-////				base.LayoutIfNeeded();
-//			});
-
-			UIView.BeginAnimations("Arrow");
-			UIView.SetAnimationDuration(0.3);
-			UIView.SetAnimationCurve( UIViewAnimationCurve.EaseIn );
-			if( IsOpen )
-			{
-				_arrowBtn.ImageView.Transform = CGAffineTransform.MakeRotation( 0f );
-//				for( int i = _buttons.Count-1; i >= 0; i-- )
-//				{
-//					_buttons[i].Frame = new RectangleF( 0, 0, Frame.Width, _arrowBtn.Frame.Height );
-//				}
-//				Frame = new RectangleF( Frame.X, Frame.Y, Frame.Width, _arrowBtn.Frame.Height );
-				Frame = new RectangleF( Frame.X, Frame.Y, Frame.Width, _arrowBtn.Frame.Height );
-
-			}
-			else
-			{
-				_arrowBtn.ImageView.Transform = CGAffineTransform.MakeRotation( (float)Math.PI/2 );
-//				float y = _arrowBtn.Frame.Bottom;
-//				for( int i = 0; i < _buttons.Count; i++ )
-//				{
-//					_buttons[i].Frame = new RectangleF( 0, y, Frame.Width, _arrowBtn.Frame.Height );
-//					y += _arrowBtn.Frame.Height;
-//				}
-//				Frame = new RectangleF( Frame.X, Frame.Y, Frame.Width, y );
-				Frame = new RectangleF( Frame.X, Frame.Y, Frame.Width, FullHeight );
-			}
-			UIView.CommitAnimations();
+			_mainBtn.Animate( IsOpen, FullHeight );
 
 			IsOpen = !IsOpen;
 
-//			base.SetNeedsDisplay();
-//			base.LayoutIfNeeded();
-
-			_arrowBtn.Selected = IsOpen;
+			_mainBtn.Selected = IsOpen;
 		}
 
-		private float FullHeight { get { return _arrowBtn.Frame.Height + (_buttons.Count * _btnHeight); } }
+		private float FullHeight { get { return _mainBtn.Frame.Height + (_buttons.Count * _btnHeight); } }
 
 		public void AddButton( UIImage normalImage, UIImage selectedImage)
 		{
-			var lastBtn = _buttons.Count == 0 ? _arrowBtn : _buttons[_buttons.Count - 1];
+			var lastBtn = _buttons.Count == 0 ? _mainBtn : _buttons[_buttons.Count - 1];
 			var button = new VerticalButton( new RectangleF(0 ,lastBtn.Frame.Bottom, Frame.Width, _btnHeight), UIColor.FromRGB(242,242,242) );
 			button.ContentMode = UIViewContentMode.Center;
 			button.LastButton = true;

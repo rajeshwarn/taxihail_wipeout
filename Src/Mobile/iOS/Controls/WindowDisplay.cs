@@ -21,7 +21,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         private UIColor _strokeLineColor = UIColor.FromRGB(105, 105, 105) ;
         private float _cornerRadius = AppStyle.ButtonCornerRadius;
 		private ShadowSetting _innerShadow = new ShadowSetting(){ BlurRadius = 3f, Color = UIColor.Black, Offset = new SizeF(0, 1) };
-        private ShadowSetting _dropShadow = new ShadowSetting(){ BlurRadius = 0f, Color = UIColor.White, Offset = new SizeF(0, 1) };
+        private ShadowSetting _dropShadow = new ShadowSetting(){ BlurRadius = 0f, Color = UIColor.White.ColorWithAlpha( 0.5f ), Offset = new SizeF(0, 1) };
 
         public WindowDisplay(IntPtr handle) : base(  handle )
         {

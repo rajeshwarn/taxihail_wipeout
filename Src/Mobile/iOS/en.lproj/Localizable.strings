@@ -212,3 +212,4 @@
 "UnAuthorizedCallTitle"="Unauthorized Access";
 "UnAuthorizedCallMessage"="An unauthorized call has been made to server, you will be redirected to login page.";
 "BookFromLocationButton"="Book using this address";
+"PickupLater"="Pick Me Up Later";

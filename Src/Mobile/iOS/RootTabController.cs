@@ -100,15 +100,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         private UINavigationController CreateNavigationController<T>(string title, string logo, bool hideNavBar) where T : UIViewController, ITaxiViewController
         {
-            
-            
-            
             UIViewController baseController = Activator.CreateInstance<T>();
-            
+
             var navController = new TaxiNavigationController((ITaxiViewController)baseController);
-            navController.PushViewController(baseController, false);
+			navController.PushViewController(baseController, false);
             navController.NavigationBar.BarStyle = UIBarStyle.Black;
-            using (var image = UIImage.FromFile (logo))
+
+			using (var image = UIImage.FromFile (logo))
             {
                 navController.TabBarItem = new UITabBarItem(title, image, 0);
             }
@@ -196,17 +194,12 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
         }
 
-
-     
     }
 
     public interface ITaxiViewController
     {
-
         UIView GetTopView();
-
         string GetTitle();
-        
     }
 
     public class TaxiNavigationController : UINavigationController
@@ -236,10 +229,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         }
 
         void Initialize()
-        {
-            
-            
-            
+        { 
         }
 
         private bool _didAppear;
@@ -272,7 +262,6 @@ namespace apcurium.MK.Booking.Mobile.Client
                 _didAppear = true;
                 
                 LoadBackgroundNavBar();              
-
 
                 NavigationBar.TopItem.TitleView = AppContext.Current.Controller.GetTitleView(_rootViewContrller.GetTopView(), _rootViewContrller.GetTitle());
                 
