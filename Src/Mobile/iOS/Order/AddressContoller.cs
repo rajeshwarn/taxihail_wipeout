@@ -18,7 +18,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 {
     public class AddressContoller
     {
-		private UITextField _text;
+		private AddressBar _addressBar;
         private UITableView _table;
         private VerticalButtonBar _bar;
         private SimilarAddressTableDatasource _similarDatasource;
@@ -36,50 +36,29 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public event EventHandler LocationHasChanged;
 
-        public AddressContoller(UITextField text, UITextField apt, UITextField ringCode, UITableView table, MKMapView map, AddressAnnotationType adrsType, 
-                                 string mapTitle, Func<Address> getLocation, Action<Address> setLocation, Func<bool> isEnabled)
+        public AddressContoller(AddressBar addressBar, UITableView table, MKMapView map, AddressAnnotationType adrsType, 
+                                  Func<Address> getLocation, Action<Address> setLocation )
         {
-            _isEnabled = isEnabled;
-            _mapTitle = mapTitle;
-            _apt = apt;
-            _ringCode = ringCode;
+//            _apt = apt;
+//            _ringCode = ringCode;
             _map = map;
             _adrsType = adrsType;
             _table = table;
-            _text = text;
+			_addressBar = addressBar;
             _getLocation = getLocation;
             _setLocation = setLocation;
-            _text.Started -= StartAddressEdit;
-            _text.Started += StartAddressEdit;
-            
-            _text.Ended -= SearchAddress;
-            _text.Ended += SearchAddress;
-            
-            _text.EditingChanged -= AddressChanged;
-            _text.EditingChanged += AddressChanged;
-            
-            _text.ReturnKeyType = UIReturnKeyType.Search;
-            _text.AutocorrectionType = UITextAutocorrectionType.No;
-            _text.AutocapitalizationType = UITextAutocapitalizationType.None;
-            _text.ShouldReturn = delegate(UITextField textField)
-            {
-                return _text.ResignFirstResponder();
-            };
 
-
+			_addressBar.Started -= StartAddressEdit;
+			_addressBar.Started += StartAddressEdit;
             
-            _bar = new VerticalButtonBar(new RectangleF(_text.Frame.Right + 4, _text.Frame.Top, 39f, 34f));
-            _bar.AddButton(UIImage.FromFile("Assets/VerticalButtonBar/locationIcon.png"), UIImage.FromFile("Assets/VerticalButtonBar/locationIcon.png"));
-            //vertBar.AddButton( UIImage.FromFile("Assets/VerticalButtonBar/targetIcon.png" ), UIImage.FromFile("Assets/VerticalButtonBar/targetIcon.png" ) );
-            _bar.AddButton(UIImage.FromFile("Assets/VerticalButtonBar/favoriteIcon.png"), UIImage.FromFile("Assets/VerticalButtonBar/favoriteIcon.png"));
-            _bar.AddButton(UIImage.FromFile("Assets/VerticalButtonBar/contacts.png"), UIImage.FromFile("Assets/VerticalButtonBar/contacts.png"));
-            _bar.AddButton(UIImage.FromFile("Assets/VerticalButtonBar/nearbyIcon.png"), UIImage.FromFile("Assets/VerticalButtonBar/nearbyIcon.png"));
-			_text.Superview.AddSubview(_bar);
-
-
+			_addressBar.Ended -= SearchAddress;
+			_addressBar.Ended += SearchAddress;
             
-            _bar.ButtonClicked -= PickAddressTouchUpInside;
-			_bar.ButtonClicked += PickAddressTouchUpInside;
+			_addressBar.EditingChanged -= AddressChanged;
+			_addressBar.EditingChanged += AddressChanged;
+
+			_addressBar.BarItemClicked -= PickAddressTouchUpInside;
+			_addressBar.BarItemClicked += PickAddressTouchUpInside;
             
             _similarDelegate = new SimilarAddressTableDelegate(adrs => SetLocation(adrs, true, true));
             _similarDatasource = new SimilarAddressTableDatasource();
@@ -89,15 +68,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             _table.RowHeight = 45;
             _table.SeparatorStyle = UITableViewCellSeparatorStyle.SingleLine;
             _table.SeparatorColor = UIColor.FromRGB(0.9f, 0.9f, 0.9f);
-            
-            UIImageView img = new UIImageView(UIImage.FromFile("Assets/location.png"));
-            img.BackgroundColor = UIColor.Clear;
-            img.Frame = new System.Drawing.RectangleF(_map.Frame.X + ((_map.Frame.Width / 2) - 10), _map.Frame.Y + ((_map.Frame.Height / 2)) - 30, 20, 20);
-            map.Superview.AddSubview(img);
-            _map.MultipleTouchEnabled = true;
-            
-                
-
             
         }
 
@@ -131,20 +101,20 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         void StartAddressEdit(object sender, EventArgs e)
         {
-//          _btn.Hidden = _text.Text.HasValue ();
+			//          _btn.Hidden = _addressBar.Text.HasValue ();
         }
 
         void AddressChanged(object sender, EventArgs e)
         {
-//          _btn.Hidden = _text.Text.HasValue ();
+			//          _btn.Hidden = _addressBar.Text.HasValue ();
             
             Address[] similars = new Address[0];
-            if (_text.Text.HasValue())
+			if (_addressBar.Text.HasValue())
             {
                 var service = TinyIoCContainer.Current.Resolve<IBookingService>();
 
                 //TODO : Fix this
-//                similars = service.FindSimilar(_text.Text);
+				//                similars = service.FindSimilar(_addressBar.Text);
 //                
 //                _similarDelegate.Similars = similars;
 //                _similarDatasource.Similars = similars;
@@ -161,7 +131,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             Address data = _getLocation();
             
-            _text.Text = data.FullAddress;
+			_addressBar.Text = data.FullAddress;
             
             
             _apt.Maybe(() =>
@@ -182,11 +152,11 @@ namespace apcurium.MK.Booking.Mobile.Client
             
         }
 
-        public void PerpareData()
+        public void PrepareData()
         {
             Address data = _getLocation();
             
-            data.FullAddress = _text.Text;
+			data.FullAddress = _addressBar.Text;
             
             data.Apartment = "";
             _apt.Maybe(() => data.Apartment = _apt.Text);
@@ -242,7 +212,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         void HandleContactSelected(object sender, ContactPickerResult e)
         {
-            _text.Text = e.Value;
+			_addressBar.Text = e.Value;
             SearchAddress(this, EventArgs.Empty);
         }
 
@@ -292,7 +262,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
                 Console.WriteLine(_map.Annotations.Count().ToString());
             
-                if (_text.Text.IsNullOrEmpty())
+				if (_addressBar.Text.IsNullOrEmpty())
                 {
                     ShowCurrentLocation(true);
                 }
@@ -301,7 +271,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 //                  _btn.Hidden = false;
                     _table.Hidden = true;
                     var service = TinyIoCContainer.Current.Resolve<IGeolocService>();
-                    var result = service.ValidateAddress(_text.Text);
+					var result = service.ValidateAddress(_addressBar.Text);
                 
                     
                     if (result != null)
@@ -333,22 +303,15 @@ namespace apcurium.MK.Booking.Mobile.Client
         private void SetLocation(Address locationData, bool overrideAptRingCode, bool setRegionOnMap)
         {
             try
-            {
-                
-                if (!_isEnabled())
+            { 
+				_addressBar.InvokeOnMainThread(() =>
                 {
-                    return;
-                }
-            
-                _text.InvokeOnMainThread(() =>
-                {
-                    
-                    _text.EditingChanged -= AddressChanged;
-                    _text.ResignFirstResponder();
+					_addressBar.EditingChanged -= AddressChanged;
+					_addressBar.ResignFirstResponder();
                 
                     _table.Hidden = true;
                     _setLocation(locationData.Copy());
-                    _text.Text = locationData.FullAddress;
+					_addressBar.Text = locationData.FullAddress;
             
                     if (overrideAptRingCode)
                     {
@@ -377,7 +340,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                         ResumeRegionChanged();
                     }
                     
-                    _text.EditingChanged += AddressChanged;
+					_addressBar.EditingChanged += AddressChanged;
                 
             
                 
@@ -391,9 +354,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             catch (Exception ex)
             {
                 Logger.LogError(ex);
-            }
-                
-            
+            }   
         }
 
         public void SuspendRegionChanged()
@@ -422,20 +383,22 @@ namespace apcurium.MK.Booking.Mobile.Client
                 _map.SetRegion( new MKCoordinateRegion(AppContext.Current.CurrrentLocation.Coordinate , new MKCoordinateSpan(0.02, 0.02)), true);
 		}
 
+		public void RefreshData()
+		{
+			ShowCurrentLocation(AppContext.Current.LoggedUser != null);
+		}
+
         public void ShowCurrentLocation(bool showProgress)
         {
-            
-            
             if ((AppContext.Current.LoggedUser == null) || (!(AppContext.Current.Controller.SelectedViewController is UINavigationController)) || (!(((UINavigationController)AppContext.Current.Controller.SelectedViewController).TopViewController is BookTabView)))
             {
                 return;
             }
-            
-            
+
             _showCurrentLocationCanceled = false;
             if (showProgress)
             {
-                LoadingOverlay.StartAnimatingLoading(_text, LoadingOverlayPosition.Center, Resources.Locating, 130, 30, () => _showCurrentLocationCanceled = true);
+				LoadingOverlay.StartAnimatingLoading(_addressBar, LoadingOverlayPosition.Center, Resources.Locating, 130, 30, () => _showCurrentLocationCanceled = true);
             }
             
             
@@ -478,8 +441,8 @@ namespace apcurium.MK.Booking.Mobile.Client
                     _showCurrentLocationCanceled = false;
                     if (showProgress)
                     {
-                        _text.InvokeOnMainThread(() => {
-                            LoadingOverlay.StopAnimatingLoading(_text); }
+						_addressBar.InvokeOnMainThread(() => {
+							LoadingOverlay.StopAnimatingLoading(_addressBar); }
                         );
                     }
                 }

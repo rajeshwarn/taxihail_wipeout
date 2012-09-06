@@ -37,7 +37,6 @@
     <MtouchI18n />
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <AssemblyName>TaxiHail</AssemblyName>
-    <MtouchExtraArgs>--disable-thread-check</MtouchExtraArgs>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
     <DebugSymbols>true</DebugSymbols>
@@ -48,7 +47,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <CodesignKey>iPhone Developer</CodesignKey>
+    <CodesignKey>iPhone Developer: Daniel Boissonneault (8N23K7P2GB)</CodesignKey>
     <MtouchDebug>true</MtouchDebug>
     <MtouchI18n />
     <MtouchUseArmv7>false</MtouchUseArmv7>
@@ -57,7 +56,6 @@
     <CrashReportingApiKey />
     <BuildIpa>true</BuildIpa>
     <AssemblyName>TaxiMobileApp</AssemblyName>
-    <MtouchExtraArgs>--disable-thread-check</MtouchExtraArgs>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>none</DebugType>
@@ -222,18 +220,6 @@
     <Compile Include="Order\BookTabView.xib.designer.cs">
       <DependentUpon>BookTabView.xib</DependentUpon>
     </Compile>
-    <Compile Include="Order\PickupLocationView.xib.cs">
-      <DependentUpon>PickupLocationView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Order\PickupLocationView.xib.designer.cs">
-      <DependentUpon>PickupLocationView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Order\DestinationView.xib.cs">
-      <DependentUpon>DestinationView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Order\DestinationView.xib.designer.cs">
-      <DependentUpon>DestinationView.xib</DependentUpon>
-    </Compile>
     <Compile Include="Order\ConfirmationView.xib.cs">
       <DependentUpon>ConfirmationView.xib</DependentUpon>
     </Compile>
@@ -254,7 +240,6 @@
     <Compile Include="Order\AddressContoller.cs" />
     <Compile Include="Order\ConfirmationCall.cs" />
     <Compile Include="Order\TaxiAnnotationView.cs" />
-    <Compile Include="Order\DestPickToggleButton.cs" />
     <Compile Include="Order\TouchableMapView.cs" />
     <Compile Include="Order\LocationDataExtension.cs" />
     <Compile Include="MonoTouchDialog\CustomRootElement.cs" />
@@ -270,6 +255,9 @@
     <Compile Include="Controls\StatusBar.cs" />
     <Compile Include="Controls\WindowDisplay.cs" />
     <Compile Include="Diagnostics\ErrorHandler.cs" />
+    <Compile Include="Controls\AddressBar.cs" />
+    <Compile Include="Controls\AnimatedArrowButton.cs" />
+    <Compile Include="Controls\AnimatedWheelButton.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -308,8 +296,6 @@
     <InterfaceDefinition Include="History\HistoryDetailView.xib" xmlns="" />
     <InterfaceDefinition Include="Settings\AboutUsView.xib" xmlns="" />
     <InterfaceDefinition Include="Order\BookTabView.xib" />
-    <InterfaceDefinition Include="Order\PickupLocationView.xib" />
-    <InterfaceDefinition Include="Order\DestinationView.xib" />
     <InterfaceDefinition Include="Order\ConfirmationView.xib" />
     <InterfaceDefinition Include="Order\StatusView.xib" />
   </ItemGroup>
@@ -398,6 +384,8 @@
     <Content Include="Assets\Cells\plusSign%402x.png" />
     <Content Include="Assets\Cells\rightArrow.png" />
     <Content Include="Assets\Cells\rightArrow%402x.png" />
+    <Content Include="Assets\VerticalButtonBar\wheel.png" />
+    <Content Include="Assets\VerticalButtonBar\wheel%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.iOS.csproj">
