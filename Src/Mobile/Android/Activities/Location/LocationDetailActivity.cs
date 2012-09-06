@@ -46,6 +46,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
             FindViewById<EditText>(Resource.Id.LocationAppartment).Text = !_data.Apartment.IsNullOrEmpty() ? _data.Apartment : null;
             FindViewById<EditText>(Resource.Id.RingCode).Text = !_data.RingCode.IsNullOrEmpty() ? _data.RingCode : null;
             FindViewById<EditText>(Resource.Id.LocationFriendlyName).Text = !_data.Id.IsNullOrEmpty() ? _data.FriendlyName : null;
+
+            if (_data.Id.IsNullOrEmpty() )
+            {
+               FindViewById<Button>(Resource.Id.LocationDeleteBtn).Visibility = ViewStates.Gone;
+               FindViewById<Button>(Resource.Id.LocationBookBtn).Visibility = ViewStates.Gone;
+            }
             
             FindViewById<Button>(Resource.Id.LocationDeleteBtn).Click += new EventHandler(DeleteBtn_Click);            
             FindViewById<Button>(Resource.Id.LocationSaveBtn).Click += new EventHandler(SaveBtn_Click);

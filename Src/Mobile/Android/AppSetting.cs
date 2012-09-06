@@ -114,7 +114,8 @@ namespace apcurium.MK.Booking.Mobile.Client
                 //}
 
                 //return "http://10.0.1.21/apcurium.MK.Web/api/"; 
-                return "http://services.taxihail.com/taxihaildemo/v1/api/"; 
+                //return "http://services.taxihail.com/taxihaildemo/v1/api/"; 
+                return "http://192.168.12.126/apcurium.MK.Web/api/";
             }
 
             set
