@@ -57,9 +57,13 @@ namespace apcurium.MK.Booking.Mobile.Client
             View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             NavigationItem.HidesBackButton = true;
 
+			lblRideSettings.TextColor = AppStyle.TitleTextColor;
+			lblRideInfo.TextColor = AppStyle.TitleTextColor;
+
 			AppButtons.FormatStandardGradientButton((GradientButton)btnCancel, Resources.CancelBoutton, UIColor.White, AppStyle.ButtonColor.Red );
 			AppButtons.FormatStandardGradientButton((GradientButton)btnConfirm, Resources.ConfirmButton, UIColor.White, AppStyle.ButtonColor.Green );
 			AppButtons.FormatStandardGradientButton((GradientButton)btnEdit, Resources.EditButton, AppStyle.GreyText, AppStyle.ButtonColor.Grey );
+			btnEdit.TextShadowColor = AppStyle.GetButtonTextShadowColor(AppStyle.ButtonColor.Grey);
 
             lblOrigin.Text = Resources.ConfirmOriginLablel;
             lblAptRing.Text = Resources.ConfirmAptRingCodeLabel;

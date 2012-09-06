@@ -20,13 +20,11 @@ namespace apcurium.MK.Booking.Mobile.Client
         private float _strokeLineWidth = 1f;
         private UIColor _strokeLineColor = UIColor.FromRGB(105, 105, 105) ;
         private float _cornerRadius = AppStyle.ButtonCornerRadius;
-		private ShadowSetting _innerShadow = new ShadowSetting(){ BlurRadius = 3f, Color = UIColor.Black, Offset = new SizeF(0, 1) };
-        private ShadowSetting _dropShadow = new ShadowSetting(){ BlurRadius = 0f, Color = UIColor.White.ColorWithAlpha( 0.5f ), Offset = new SizeF(0, 1) };
+		private ShadowSetting _innerShadow = new ShadowSetting(){ BlurRadius = 2f, Color = UIColor.Black.ColorWithAlpha( 0.5f ), Offset = new SizeF(0, 1) };
+        private ShadowSetting _dropShadow = new ShadowSetting(){ BlurRadius = 0f, Color = UIColor.White.ColorWithAlpha( 0.3f ), Offset = new SizeF(0, 1) };
 
         public WindowDisplay(IntPtr handle) : base(  handle )
         {
-
-            BackgroundColor = UIColor.White;
             Layer.MasksToBounds = false;
             ClipsToBounds = false;
         }
@@ -47,13 +45,17 @@ namespace apcurium.MK.Booking.Mobile.Client
             rect.X += _dropShadow != null && _dropShadow.Offset.Width < 0 ? Math.Abs(_dropShadow.Offset.Width) : 0;
             rect.Y += _dropShadow != null && _dropShadow.Offset.Height < 0 ? Math.Abs(_dropShadow.Offset.Height) : 0;
 
+			context.SaveState();
             var roundedRectanglePath = UIBezierPath.FromRoundedRect(rect, _cornerRadius);
-            context.SaveState();
             if (_dropShadow != null)
             {
                 context.SetShadowWithColor(_dropShadow.Offset, _dropShadow.BlurRadius, _dropShadow.Color.CGColor);
             }
-
+			UIColor.White.SetFill();
+			roundedRectanglePath.Fill();
+			context.RestoreState();
+            
+			context.SaveState();
             context.BeginTransparencyLayer(null);
             roundedRectanglePath.AddClip();
             context.DrawLinearGradient(newGradient, new PointF(rect.X + (rect.Width / 2.0f), rect.Y), new PointF(rect.X + (rect.Width / 2.0f), rect.Y + rect.Height), 0);

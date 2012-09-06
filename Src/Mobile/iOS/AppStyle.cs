@@ -34,7 +34,17 @@ namespace apcurium.MK.Booking.Mobile.Client
             { ButtonColor.DarkBlue, new UIColor[] { UIColor.FromRGB(13,69,119) } },
 			{ ButtonColor.Silver, new UIColor[] { UIColor.FromRGB(210,208,207), UIColor.FromRGB(248,247,244) } }
         };
-        private static Dictionary<ButtonColor, float[]> _buttonColorLocations = new Dictionary<ButtonColor, float[]>(){ 
+		private static Dictionary<ButtonColor, UIColor> _textShadowColor = new Dictionary<ButtonColor, UIColor>(){ 
+			{ ButtonColor.Black, UIColor.FromRGBA(0f, 0f, 0f, 0.5f) },
+			{ ButtonColor.Grey, UIColor.FromRGBA(255, 255, 255, 1f) },
+            { ButtonColor.Green, UIColor.FromRGBA(0f, 0f, 0f, 0.5f) },
+            { ButtonColor.Red,  UIColor.FromRGBA(0f, 0f, 0f, 0.5f) },
+            { ButtonColor.Gold, UIColor.FromRGBA(0f, 0f, 0f, 0.5f) },
+            { ButtonColor.Blue, UIColor.FromRGBA(0f, 0f, 0f, 0.5f) },
+            { ButtonColor.DarkBlue, UIColor.FromRGBA(0f, 0f, 0f, 0.5f) },
+			{ ButtonColor.Silver,  UIColor.FromRGBA(255, 255, 255, 0.5f) }
+        };
+		private static Dictionary<ButtonColor, float[]> _buttonColorLocations = new Dictionary<ButtonColor, float[]>(){ 
             { ButtonColor.Black, new float[] { 0f, 0.5f, 0.53f, 1f } },
             { ButtonColor.Grey, new float[] { 0f, 0.93f, 1f } },
             { ButtonColor.Green, new float[] { 0f, 1f } },
@@ -77,6 +87,11 @@ namespace apcurium.MK.Booking.Mobile.Client
             return _buttonColorLocations [color];
         }
 
+        public static UIColor GetButtonTextShadowColor(ButtonColor color)
+        {
+            return _textShadowColor [color];
+        }
+
         public static ShadowSetting GetInnerShadow(ButtonColor color)
         {
             if (_buttonInnerShadows.ContainsKey(color))
@@ -109,6 +124,8 @@ namespace apcurium.MK.Booking.Mobile.Client
         public static UIColor LightBlue { get { return UIColor.FromRGB(188, 217, 242); } }
 
         public static UIColor DarkText { get { return UIColor.FromRGB(57, 44, 11); } }
+
+		public static UIColor TitleTextColor { get { return UIColor.FromRGB(66, 63, 58); } }
 
 		public static UIFont NormalTextFont { get { return UIFont.FromName( "HelveticaNeue", CellFontSize ); } }
 		

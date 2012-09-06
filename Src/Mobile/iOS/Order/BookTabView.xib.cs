@@ -66,7 +66,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			bookBtn.TouchUpInside += BookitButtonTouchUpInside;
 
 			AppButtons.FormatStandardGradientButton( (GradientButton)datetimeBtn, Resources.PickupLater , UIColor.White, AppStyle.ButtonColor.Black );
-			bookBtn.TouchUpInside += BookitButtonTouchUpInside;
 
 			UIImageView img = new UIImageView(UIImage.FromFile("Assets/location.png"));
 			img.BackgroundColor = UIColor.Clear;
@@ -155,7 +154,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 	            _statusView.CloseRequested += delegate(object sender, EventArgs e) {
 		            RemoveStatusView();
 		            AppContext.Current.LastOrder = null;
-					NavigationController.TabBarController.TabBar.Hidden = false;
+					NavigationController.TabBarController.TabBar.Hidden = true;
 		            Selected ();
 				};
 

@@ -106,6 +106,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			navController.PushViewController(baseController, false);
             navController.NavigationBar.BarStyle = UIBarStyle.Black;
 
+
 			using (var image = UIImage.FromFile (logo))
             {
                 navController.TabBarItem = new UITabBarItem(title, image, 0);
