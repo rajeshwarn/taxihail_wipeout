@@ -22,8 +22,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Services
 		public override void OnCreate ()
 		{
 			base.OnCreate ();
-						
-			IntentFilter filter = new IntentFilter(ErrorHandler.ACTION_EUC);
+
+            IntentFilter filter = new IntentFilter(ErrorHandler.ACTION_SERVICE_ERROR);
             filter.AddCategory(Intent.CategoryDefault);
             _errorReceiver = new ErrorBroadcastReceiver(this);
             RegisterReceiver(_errorReceiver, filter);
@@ -39,18 +39,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Services
 			base.OnDestroy ();
 			UnregisterReceiver( _errorReceiver );
 		}
-		public void DisplayError( Context context,string action )
+
+		public void DisplayError(Context context ,Intent intent)
 		{
-			string title = "";
-			string message = "";
+			var title = Resources.GetString(Resource.String.ServiceErrorCallTitle);
+            var message = Resources.GetString(Resource.String.ServiceErrorDefaultMessage);
 
-
-			switch( action )
+			switch(intent.Action)
 			{
-			case ErrorHandler.ACTION_EUC:
-				title = Resources.GetString( Resource.String.UnAuthorizedCallTitle );
-				message = Resources.GetString( Resource.String.UnAuthorizedCallMessage );
-				break;
+			    case ErrorHandler.ACTION_SERVICE_ERROR:
+                    message = Resources.GetString(Resources.GetIdentifier("ServiceError" + intent.GetStringExtra(ErrorHandler.ACTION_SERVICE_ERROR), null, null));
+				    break;
 			}
 
 			var i = new Intent( this, typeof(AlertDialogActivity) );
@@ -77,7 +76,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Services
 
         public override void OnReceive(Context context, Intent intent)
         {
-			_service.DisplayError( context, intent.Action );
+			_service.DisplayError( context, intent );
         }
     }
 }
