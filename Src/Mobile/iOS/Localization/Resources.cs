@@ -881,8 +881,11 @@ namespace apcurium.MK.Booking.Mobile.Client
         public static string UnAuthorizedCallMessage
         {
             get { return GetValue ("UnAuthorizedCallMessage"); }
-        }
-
+		}
+		public static string PickupLater
+		{
+			get { return GetValue ("PickupLater"); }
+		}
 	}
 }
 

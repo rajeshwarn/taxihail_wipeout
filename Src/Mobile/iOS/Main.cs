@@ -144,6 +144,10 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
                 _callbackFromFB = false;
             }
+
+			_tabBarController.TabBar.Hidden = true;
+			_tabBarController.View.Subviews.ElementAt(0).Frame = new System.Drawing.RectangleF(0,0,320,480);
+
         }
 
         public override void ReceiveMemoryWarning(UIApplication application)

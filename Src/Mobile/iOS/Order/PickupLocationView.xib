@@ -233,8 +233,8 @@
 					</object>
 					<object class="IBMKMapView" id="780603330">
 						<reference key="NSNextResponder" ref="191373211"/>
-						<int key="NSvFlags">306</int>
-						<string key="NSFrame">{{0, 145}, {320, 262}}</string>
+						<int key="NSvFlags">274</int>
+						<string key="NSFrame">{{0, 145}, {320, 315}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView"/>
@@ -245,7 +245,7 @@
 					<object class="IBUITableView" id="312783297">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">-2147483374</int>
-						<string key="NSFrame">{{0, 74}, {320, 333}}</string>
+						<string key="NSFrame">{{0, 74}, {320, 386}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="393206520"/>

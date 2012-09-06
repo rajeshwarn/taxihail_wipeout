@@ -11,67 +11,64 @@
     <RootNamespace>apcurium.MK.Booking.Mobile.Client</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
-    <DebugSymbols>True</DebugSymbols>
+    <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>False</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\iPhoneSimulator\Debug</OutputPath>
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <ConsolePause>False</ConsolePause>
-    <MtouchDebug>True</MtouchDebug>
+    <ConsolePause>false</ConsolePause>
+    <MtouchDebug>true</MtouchDebug>
     <MtouchI18n />
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <MtouchSdkVersion>5.1</MtouchSdkVersion>
-    <MtouchProfiling>True</MtouchProfiling>
+    <MtouchProfiling>true</MtouchProfiling>
     <AssemblyName>TaxiHail</AssemblyName>
     <CrashReportingApiKey />
-    <MtouchExtraArgs>--disable-thread-check</MtouchExtraArgs>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
-    <Optimize>False</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\iPhoneSimulator\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <ConsolePause>False</ConsolePause>
+    <ConsolePause>false</ConsolePause>
     <MtouchI18n />
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <AssemblyName>TaxiHail</AssemblyName>
-    <MtouchExtraArgs>--disable-thread-check</MtouchExtraArgs>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
-    <DebugSymbols>True</DebugSymbols>
+    <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>False</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\iPhone\Debug</OutputPath>
     <DefineConstants>DEBUG;CLIENT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <ConsolePause>False</ConsolePause>
+    <ConsolePause>false</ConsolePause>
     <CodesignKey>iPhone Developer: Daniel Boissonneault (8N23K7P2GB)</CodesignKey>
-    <MtouchDebug>True</MtouchDebug>
+    <MtouchDebug>true</MtouchDebug>
     <MtouchI18n />
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <IpaPackageName />
-    <MtouchUseLlvm>True</MtouchUseLlvm>
+    <MtouchUseLlvm>true</MtouchUseLlvm>
     <CrashReportingApiKey />
-    <BuildIpa>True</BuildIpa>
+    <BuildIpa>true</BuildIpa>
     <AssemblyName>TaxiMobileApp</AssemblyName>
-    <MtouchExtraArgs>--disable-thread-check</MtouchExtraArgs>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>none</DebugType>
-    <Optimize>False</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\iPhone\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <ConsolePause>False</ConsolePause>
+    <ConsolePause>false</ConsolePause>
     <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchI18n />
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <IpaPackageName />
-    <BuildIpa>True</BuildIpa>
+    <BuildIpa>true</BuildIpa>
     <CodesignProvision>B3EE4BDD-022C-4997-8D54-A29A6465BC50</CodesignProvision>
     <CrashReportingApiKey />
     <AssemblyName>TaxiMobileApp</AssemblyName>
@@ -206,18 +203,6 @@
     <Compile Include="Order\BookTabView.xib.designer.cs">
       <DependentUpon>BookTabView.xib</DependentUpon>
     </Compile>
-    <Compile Include="Order\PickupLocationView.xib.cs">
-      <DependentUpon>PickupLocationView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Order\PickupLocationView.xib.designer.cs">
-      <DependentUpon>PickupLocationView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Order\DestinationView.xib.cs">
-      <DependentUpon>DestinationView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Order\DestinationView.xib.designer.cs">
-      <DependentUpon>DestinationView.xib</DependentUpon>
-    </Compile>
     <Compile Include="Order\ConfirmationView.xib.cs">
       <DependentUpon>ConfirmationView.xib</DependentUpon>
     </Compile>
@@ -238,7 +223,6 @@
     <Compile Include="Order\AddressContoller.cs" />
     <Compile Include="Order\ConfirmationCall.cs" />
     <Compile Include="Order\TaxiAnnotationView.cs" />
-    <Compile Include="Order\DestPickToggleButton.cs" />
     <Compile Include="Order\TouchableMapView.cs" />
     <Compile Include="Order\LocationDataExtension.cs" />
     <Compile Include="MonoTouchDialog\CustomRootElement.cs" />
@@ -254,6 +238,9 @@
     <Compile Include="Controls\StatusBar.cs" />
     <Compile Include="Controls\WindowDisplay.cs" />
     <Compile Include="Diagnostics\ErrorHandler.cs" />
+    <Compile Include="Controls\AddressBar.cs" />
+    <Compile Include="Controls\AnimatedArrowButton.cs" />
+    <Compile Include="Controls\AnimatedWheelButton.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -292,8 +279,6 @@
     <InterfaceDefinition Include="History\HistoryDetailView.xib" xmlns="" />
     <InterfaceDefinition Include="Settings\AboutUsView.xib" xmlns="" />
     <InterfaceDefinition Include="Order\BookTabView.xib" />
-    <InterfaceDefinition Include="Order\PickupLocationView.xib" />
-    <InterfaceDefinition Include="Order\DestinationView.xib" />
     <InterfaceDefinition Include="Order\ConfirmationView.xib" />
     <InterfaceDefinition Include="Order\StatusView.xib" />
   </ItemGroup>
@@ -382,6 +367,8 @@
     <Content Include="Assets\Cells\plusSign%402x.png" />
     <Content Include="Assets\Cells\rightArrow.png" />
     <Content Include="Assets\Cells\rightArrow%402x.png" />
+    <Content Include="Assets\VerticalButtonBar\wheel.png" />
+    <Content Include="Assets\VerticalButtonBar\wheel%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.iOS.csproj">

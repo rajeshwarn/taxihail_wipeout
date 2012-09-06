@@ -37,6 +37,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 			_customSelectedColor = solidColor;
 		}
 
+		public virtual void Animate(bool isOpen, float fullHeight)
+		{}
+
+		public VerticalButtonBar.AnimationDirection Direction { get; set; }
+
 		public bool FirstButton { get; set; }
 		public bool LastButton { get; set; }
 		public bool IsGradient { get { return (_customSelectedGradientStart != null && _customSelectedGradientEnd != null && Selected ) || (_gradientStart != null && _gradientEnd != null && !Selected ); } }

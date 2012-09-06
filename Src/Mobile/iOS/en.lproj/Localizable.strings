@@ -211,3 +211,4 @@
 "ErrorCode_CreateAccount_AccountAlreadyExist" = "An account with this email already exist.";
 "UnAuthorizedCallTitle"="Unauthorized Access";
 "UnAuthorizedCallMessage"="An unauthorized call has been made to server, you will be redirected to login page.";
+"PickupLater"="Pick Me Up Later";

@@ -18,17 +18,13 @@ namespace apcurium.MK.Booking.Mobile.Client
     {
         #region Constructors
 
-        // The IntPtr and initWithCoder constructors are required for items that need 
-        // to be able to be created from a xib rather than from managed code
-
         public event EventHandler TabSelected;
 
         private CreateOrder _bookingInfo;
-        private PickupLocationView _pickup;
-        private DestinationView _destination;
-        private UIButton _btnBookIt;
         private StatusView _statusView;
-        private DestPickToggleButton _destPickToggleButton;
+		private AddressContoller _pickAdrsCtl;
+		private AddressContoller _destAdrsCtl;
+		private VerticalButtonBar _settingsBar;
 
         public CreateOrder BookingInfo {
             get { return _bookingInfo; }
@@ -54,40 +50,55 @@ namespace apcurium.MK.Booking.Mobile.Client
         void Initialize ()
         {
             BookingInfo = new CreateOrder ();
-            
         }
 
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
-            scrollView.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
-        
+            View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png")); 
 
-            AppContext.Current.Controller.CompanyChanged -= ChangeCompany;
-            AppContext.Current.Controller.CompanyChanged += ChangeCompany;
+			pickView.Placeholder = Resources.PickupTextPlaceholder;
+			destView.Placeholder = Resources.DestinationTextPlaceholder;
+			destView.ClearBackground = true;
 
-            
+			AppButtons.FormatStandardGradientButton( (GradientButton)bookBtn, Resources.BookItButton , UIColor.White, AppStyle.ButtonColor.Green );
+			bookBtn.TouchUpInside += BookitButtonTouchUpInside;
+
+			AppButtons.FormatStandardGradientButton( (GradientButton)datetimeBtn, Resources.PickupLater , UIColor.White, AppStyle.ButtonColor.Black );
+			bookBtn.TouchUpInside += BookitButtonTouchUpInside;
+
+			UIImageView img = new UIImageView(UIImage.FromFile("Assets/location.png"));
+			img.BackgroundColor = UIColor.Clear;
+			img.Frame = new System.Drawing.RectangleF(mapView.Frame.X + ((mapView.Frame.Width / 2) - 10), mapView.Frame.Y + ((mapView.Frame.Height / 2)) - 30, 20, 20);
+			mapView.Superview.AddSubview(img);
+			mapView.MultipleTouchEnabled = true;
+
+			_pickAdrsCtl = new AddressContoller( pickView, tableView, mapView, AddressAnnotationType.Pickup, () => BookingInfo.PickupAddress, data => BookingInfo.PickupAddress = data );
+			_destAdrsCtl = new AddressContoller( destView, tableView, mapView, AddressAnnotationType.Destination, () => BookingInfo.DropOffAddress, data => BookingInfo.DropOffAddress = data );
+
+			_settingsBar = new VerticalButtonBar( new RectangleF( 9, 6, 40, 33 ), VerticalButtonBar.AnimationType.Wheel, apcurium.MK.Booking.Mobile.Client.VerticalButtonBar.AnimationDirection.Up );
+			_settingsBar.ButtonClicked += HandleSettingsButtonClicked;
+			bottomBar.AddSubview( _settingsBar );
+
+			View.BringSubviewToFront( destView );
+			View.BringSubviewToFront( pickView );
+        }
+
+        void HandleSettingsButtonClicked (int index)
+        {
+
         }
         
         public override void ViewWillAppear (bool animated)
         {
             base.ViewWillAppear (animated);     
             
-            
-            if ((_pickup == null) || (_pickup.View == null) || (_pickup.View.Superview == null))
-            {           
-                CreatePanels ();
-                _destPickToggleButton = new DestPickToggleButton (viewPick, viewDest, () => SwitchToPickView (), () => SwitchToDestView ());                        
-            }
-            
             if (AppContext.Current.ReceiveMemoryWarning)
             {
                 Console.WriteLine (" When view apperaing ReceiveMemoryWarning");
             }
             
-            AppContext.Current.ReceiveMemoryWarning = false;
-            
-                        
+            AppContext.Current.ReceiveMemoryWarning = false;              
         }
         
         public override void ViewDidAppear (bool animated)
@@ -96,76 +107,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             
             if ((AppContext.Current.LastOrder.HasValue) && (AppContext.Current.LoggedUser != null) )
             {
-                scrollView.Hidden = true;
                 LoadStatusView (true);
             }
-        }
-        
-        private void CreatePanels ()
-        {
-            scrollView.Scrolled -= ScrollViewScrolled;
-            scrollView.Scrolled += ScrollViewScrolled;
-            
-            int count = 2;
-            RectangleF scrollFrame = scrollView.Frame;
-            scrollFrame.Width = scrollFrame.Width * count;
-            scrollView.ContentSize = scrollFrame.Size;
-            
-            _pickup = new PickupLocationView (this);                        
-            _destination = new DestinationView (this);
-            
-            
-            RectangleF frame = scrollView.Frame;
-            
-            PointF location = new PointF ();
-            location.X = frame.Width * 0;
-            frame.Location = location;
-            _pickup.View.Frame = frame;
-            scrollView.Add (_pickup.View);
-            
-            
-            location = new PointF ();
-            location.X = frame.Width * 1;
-            frame.Location = location;
-            _destination.View.Frame = frame;
-            scrollView.Add (_destination.View);
-            
-            
-            pageControl.ValueChanged -= PageChanged;
-            pageControl.ValueChanged += PageChanged;
-            pageControl.Pages = count;
-
-            _destination.StartTrackingMapMoving();
-            _pickup.StartTrackingMapMoving();
-        }
-
-        private void SwitchToPickView ()
-        {
-            SwitchToPage (0);
-        }
-
-        private void SwitchToDestView ()
-        {
-            SwitchToPage (1);
-        }
-
-        private void SwitchToPage (int toPage)
-        {
-            int fromPage = (int)Math.Floor ((scrollView.ContentOffset.X - scrollView.Frame.Width / 2) / scrollView.Frame.Width) + 1;
-            
-            var pageOffset = scrollView.Frame.Width * toPage;
-            PointF p = new PointF (pageOffset, 0);
-            pageControl.CurrentPage = fromPage;
-            scrollView.SetContentOffset (p, true);
-        }
-
-        public UIView GetTopView ()
-        {
-            _btnBookIt =AppButtons.CreateStandardGradientButton( new System.Drawing.RectangleF (210, 6, 98, 37), "Book It!", UIColor.White, AppStyle.ButtonColor.Green )  ;
-            ((GradientButton) _btnBookIt).TitleFont = AppStyle.GetButtonFont( 16 );
-            _btnBookIt.TouchUpInside += BookitButtonTouchUpInside;            
-            return _btnBookIt;
-            
         }
 
         public string GetTitle ()
@@ -173,104 +116,18 @@ namespace apcurium.MK.Booking.Mobile.Client
             return "";
         }
         
-        void ChangeCompany (object sender, EventArgs e)
-        {
-        
-            if (_bookingInfo != null)
-            {
-                var id = (AppContext.Current.LoggedUser != null) && (AppContext.Current.LoggedUser.Settings != null) ? AppContext.Current.LoggedUser.Settings.ProviderId : -1;
-                 
-                _bookingInfo.Settings.ProviderId = id;              
-            }
-            
-                
-        }
-
         void BookitButtonTouchUpInside (object sender, EventArgs e)
         {
             BookTaxi ();
-        }
-
-        void PageChanged (object sender, EventArgs e)
-        {
-            var pc = (UIPageControl)sender;
-            int fromPage = (int)Math.Floor ((scrollView.ContentOffset.X - scrollView.Frame.Width / 2) / scrollView.Frame.Width) + 1;
-            var toPage = pc.CurrentPage;
-            var pageOffset = scrollView.Frame.Width * toPage;
-            PointF p = new PointF (pageOffset, 0);
-            pc.CurrentPage = fromPage;
-            scrollView.SetContentOffset (p, true);
-        }
-
-        private void ScrollViewScrolled (object sender, EventArgs e)
-        {
-            double page = Math.Floor ((scrollView.ContentOffset.X - scrollView.Frame.Width / 2) / scrollView.Frame.Width) + 1;
-            pageControl.CurrentPage = (int)page;
-            _destPickToggleButton.SelectedButton = (int)page;
-            
-            if ((int)page == 0)
-            {
-                _pickup.Display ();
-                
-            }
-            else
-            if ((int)page == 1)
-            {
-                _destination.Display ();
-            }
         }
 
         private CreateOrder _toRebookData;
 
         public void Rebook (Order data)
         {
-            pageControl.CurrentPage = 0;
-
             //TODO : Fix this
             //_toRebookData = data.Copy ();
         }
-
-//      private bool TryToLoadLastOrder ()
-//      {
-//          bool wasReloaded = false;
-//          
-//          if (AppContext.Current.LastOrder.HasValue && !TinyIoCContainer.Current.Resolve<IBookingService> ().IsCompleted (AppContext.Current.LoggedUser, AppContext.Current.LastOrder.Value))
-//          {
-//              
-//              var order = AppContext.Current.LoggedUser.BookingHistory.FirstOrDefault (o => o.Id == AppContext.Current.LastOrder.Value);
-//              if (order != null)
-//              {
-//                  
-//                  wasReloaded = true;
-//                  StatusView view = null;
-//                  
-//                  if ((this.NavigationController.TopViewController is StatusView))
-//                  {
-//                      view = (StatusView)this.NavigationController.TopViewController;
-//                      view.Refresh (order);
-//                  }
-//
-//                  else
-//                  {
-//                      if (!(this.NavigationController.TopViewController is BookTabView))
-//                      {
-//                          this.NavigationController.PopViewControllerAnimated (false);
-//                      }
-//                      view = new StatusView (this, order);
-//                      this.NavigationController.PushViewController (view, true);
-//                  }
-//                  
-//              }
-//              
-//              
-//              
-//              
-//              
-//          }
-//          
-//          return wasReloaded;
-//      }
-
 
         private void RemoveStatusView()
         {
@@ -282,15 +139,13 @@ namespace apcurium.MK.Booking.Mobile.Client
                     _statusView = null;
                 }
                 catch
-                {
-                }
+                {}
             }
         }
+
         private void LoadStatusView (Order order, OrderStatusDetail status, bool closeScreenWhenCompleted)
         {
-            
             InvokeOnMainThread (() => {
-	            _btnBookIt.Maybe (() => _btnBookIt.Hidden = true);
 	            RemoveStatusView();
 	            _statusView = new StatusView (this, order, status, closeScreenWhenCompleted);
 				_statusView.HidesBottomBarWhenPushed = true;
@@ -302,15 +157,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 				};
 
 				NavigationController.PushViewController( _statusView, true );
-	        });
-
-           
+	        }); 
         }
 
         void StatusViewCloseRequested (object sender, EventArgs e)
-        {
-            
-        }
+		{}
 
         private void LoadStatusView ( bool closeScreenWhenCompleted)
         {
@@ -332,34 +183,16 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public void Selected ()
         {
-            
             try
             {
-                
-                
-                
                 AppContext.Current.ResetPosition ();
-                
-                if (_pickup == null)
-                {
-                    Console.WriteLine ("PICKUP NULL!!!!");
-                }
-                else
-                {
-                    Console.WriteLine ("pickup not null!!!");
-                }
-            
-                
+
                 if (AppContext.Current.LastOrder.HasValue) 
                 {
-                    scrollView.Hidden = true;
                     LoadStatusView (true);
                 }
                 else
-                {
-                    scrollView.Hidden = false;
-                    _btnBookIt.Maybe (() => _btnBookIt.Hidden = false);
-                    
+                {  
                     if (!(this.NavigationController.TopViewController is BookTabView))
                     {
                         this.NavigationController.PopViewControllerAnimated (false);
@@ -367,29 +200,19 @@ namespace apcurium.MK.Booking.Mobile.Client
                     
                     bool isRebook = false;
                     if (_toRebookData != null)
-                    {
-                        
+                    {                       
                         BookingInfo = _toRebookData;
                         isRebook = true;
-                        _toRebookData = null;
-                        
+                        _toRebookData = null;    
                     }
                     else
                     {
                         BookingInfo = new CreateOrder ();
                         BookingInfo.Settings = AppContext.Current.LoggedUser.Settings.Copy ();
                     }
-                    
-                    
-                    
-                    if (pageControl != null)
-                    {
-                        pageControl.CurrentPage = 0;
-                        PointF p = new PointF (0, 0);
-                        scrollView.SetContentOffset (p, true);
-                    }
-                    _pickup.Maybe (() => _pickup.AssignData ());
-                    _destination.Maybe (() => _destination.AssignData ());
+
+					_pickAdrsCtl.Maybe (() => _pickAdrsCtl.AssignData ());
+					_destAdrsCtl.Maybe (() => _destAdrsCtl.AssignData ());
                     
                     if ((!isRebook) && (TabSelected != null))
                     {
@@ -405,8 +228,8 @@ namespace apcurium.MK.Booking.Mobile.Client
         public void RefreshData ()
         {
             Selected ();
-            _pickup.Maybe (() => _pickup.RefreshData ());
-            _destination.Maybe (() => _destination.RefreshData ());
+			_pickAdrsCtl.Maybe (() => _pickAdrsCtl.RefreshData ());
+			_destAdrsCtl.Maybe (() => _destAdrsCtl.RefreshData ());
         }
 
         public void BookTaxi ()
@@ -415,29 +238,23 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
                 return;
             }
-            
-            
-            
-            
+
             if (BookingInfo.Settings.Passengers == 0)
             {
                 BookingInfo.Settings = AppContext.Current.LoggedUser.Settings;
             }
-            
-            
-            
+
             LoadingOverlay.StartAnimatingLoading (this.View, LoadingOverlayPosition.Center, null, 130, 30);
             View.UserInteractionEnabled = false;
             
             ThreadHelper.ExecuteInThread (() =>
             {
-                
                 try
                 {
-                    _pickup.SuspendRegionChanged ();
-                    _destination.SuspendRegionChanged ();
-                    _pickup.PrepareData ();
-                    _destination.PrepareData ();
+					_pickAdrsCtl.SuspendRegionChanged ();
+                    _destAdrsCtl.SuspendRegionChanged ();
+					_pickAdrsCtl.PrepareData ();
+                    _destAdrsCtl.PrepareData ();
                     
                     bool isValid = TinyIoCContainer.Current.Resolve<IBookingService> ().IsValid (ref _bookingInfo);
                     if (!isValid)
@@ -451,9 +268,6 @@ namespace apcurium.MK.Booking.Mobile.Client
                         MessageHelper.Show (Resources.InvalidBookinInfoTitle, Resources.BookViewInvalidDate);
                         return;
                     }
-                    
-
-
 
                     this.InvokeOnMainThread (() =>
                     {
@@ -476,8 +290,8 @@ namespace apcurium.MK.Booking.Mobile.Client
                 {
                     InvokeOnMainThread (() =>
                     {
-                        _pickup.ResumeRegionChanged ();
-                        _destination.ResumeRegionChanged ();
+                        _pickAdrsCtl.ResumeRegionChanged ();
+                        _destAdrsCtl.ResumeRegionChanged ();
                         LoadingOverlay.StopAnimatingLoading (this.View);
                         View.UserInteractionEnabled = true;
                     });
@@ -490,6 +304,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             get { return this.NavigationController.TopViewController is BookTabView; }
         }
+
+		public UIView GetTopView()
+		{
+			return null;
+		}
 
         private void CreateOrder (CreateOrder bi)
         {
@@ -544,9 +363,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                         {
                             MessageHelper.Show (Resources.ErrorCreatingOrderTitle, Resources.ErrorCreatingOrderMessage);
                         }
-                    }
-                    
-                    
+                    }   
                 }
                 finally
                 {
@@ -559,16 +376,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             });
             
         }
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+
         #endregion
     }
 }
