@@ -408,14 +408,18 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         private bool _showCurrentLocationCanceled = false;
 
+        //private CLLocationManager _locationManager;
 		public void CenterMapOnUserLocation ()
 		{
-			CLLocationManager locationManager = new CLLocationManager();
-			locationManager.UpdatedLocation += (object sender, CLLocationUpdatedEventArgs e) => {
-				locationManager.StopUpdatingLocation();
-				_map.SetRegion(new MKCoordinateRegion(e.NewLocation.Coordinate, new MKCoordinateSpan(0.02, 0.02)), true);
-			};
-			locationManager.StartUpdatingLocation();
+           // .
+//			_locationManager= new CLLocationManager();
+//			_locationManager.UpdatedLocation += (object sender, CLLocationUpdatedEventArgs e) => {
+//				_locationManager.StopUpdatingLocation();
+//				_map.SetRegion(new MKCoordinateRegion(e.NewLocation.Coordinate, new MKCoordinateSpan(0.02, 0.02)), true);
+//			};
+//			_locationManager.StartUpdatingLocation();
+
+                _map.SetRegion( new MKCoordinateRegion(AppContext.Current.CurrrentLocation.Coordinate , new MKCoordinateSpan(0.02, 0.02)), true);
 		}
 
         public void ShowCurrentLocation(bool showProgress)

@@ -41,6 +41,12 @@ namespace apcurium.MK.Booking.Api.Client
             return result;
         }
 
+        public void RemoveFromHistory(Guid orderId)
+        {
+            var req = string.Format("/account/orders/{0}", orderId);
+            Client.Delete<string>(req);
+        }
+
         public OrderStatusDetail GetOrderStatus(Guid orderId)
         {
             var req = string.Format("/account/orders/{0}/status", orderId);

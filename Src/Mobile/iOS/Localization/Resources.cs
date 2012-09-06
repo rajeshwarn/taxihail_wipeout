@@ -109,6 +109,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 			get { return GetValue ("LocationDetailViewTitle"); }
 		}
 
+
+
+            public static string BookFromLocationButton {
+            get { return GetValue ("BookFromLocationButton"); }
+        }
+
 		public static string HistoryDetailViewTitle {
 			get { return GetValue ("HistoryDetailViewTitle"); }
 		}

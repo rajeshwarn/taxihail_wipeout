@@ -1,8 +1,10 @@
 ﻿using System.Net;
+using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Google.Resources;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query;
@@ -25,15 +27,17 @@ namespace apcurium.MK.Booking.Api.Services
 
 
         private IBookingWebServiceClient _bookingWebServiceClient;
+        private readonly ICommandBus _commandBus;
         private IOrderDao _orderDao;
         private IAccountDao _accountDao;
         private IConfigurationManager _configManager;
 
-        public OrderStatusService(IOrderDao orderDao, IAccountDao accountDao, IConfigurationManager configManager, IBookingWebServiceClient bookingWebServiceClient)
+        public OrderStatusService(IOrderDao orderDao, IAccountDao accountDao, IConfigurationManager configManager, IBookingWebServiceClient bookingWebServiceClient, ICommandBus commandBus)
         {
             _accountDao = accountDao;
             _orderDao = orderDao;
             _bookingWebServiceClient = bookingWebServiceClient;
+            _commandBus = commandBus;
             _configManager = configManager;
 
         }
@@ -105,6 +109,18 @@ namespace apcurium.MK.Booking.Api.Services
                         {
                             desc = _configManager.GetSetting("OrderStatus." + status.IBSStatusId);
                         }
+
+                        if(order.Status != (int)OrderStatus.Completed)
+                        {
+                            var completeOrder = new CompleteOrder {Date = DateTime.UtcNow};
+                            if(orderDetails != null)
+                            {
+                                completeOrder.Fare = orderDetails.Fare;
+                                completeOrder.Toll = orderDetails.Toll;
+                                completeOrder.Tip = orderDetails.Tip;
+                            }
+                            _commandBus.Send(completeOrder);
+                        }
                     }
                     else
                     {
@@ -113,10 +129,7 @@ namespace apcurium.MK.Booking.Api.Services
 
                 }
 
-
-
                 status.IBSStatusDescription = desc.HasValue() ? desc : status.IBSStatusId;
-
 
             }
             catch

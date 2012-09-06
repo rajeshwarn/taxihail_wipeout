@@ -65,7 +65,9 @@
   <ItemGroup>
     <Compile Include="AddFavoriteAddress.cs" />
     <Compile Include="CancelOrder.cs" />
+    <Compile Include="CompleteOrder.cs" />
     <Compile Include="ConfirmAccount.cs" />
+    <Compile Include="RemoveOrderFromHistory.cs" />
     <Compile Include="SendAccountConfirmationEmail.cs" />
     <Compile Include="CreateOrder.cs" />
     <Compile Include="CreateOrderAddress.cs" />

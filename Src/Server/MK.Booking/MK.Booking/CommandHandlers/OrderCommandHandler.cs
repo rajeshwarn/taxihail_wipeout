@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Infrastructure.EventSourcing;
+﻿using Infrastructure.EventSourcing;
 using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
@@ -10,7 +6,7 @@ using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.CommandHandlers
 {
-    public class OrderCommandHandler : ICommandHandler<CreateOrder>, ICommandHandler<CancelOrder>
+    public class OrderCommandHandler : ICommandHandler<CreateOrder>, ICommandHandler<CancelOrder>, ICommandHandler<CompleteOrder>, ICommandHandler<RemoveOrderFromHistory>
     {
         private readonly IEventSourcedRepository<Order> _repository;
 
@@ -32,9 +28,23 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(CancelOrder command)
         {
-            Order order = _repository.Find(command.OrderId);
+            var order = _repository.Find(command.OrderId);
             order.Cancel();
             _repository.Save(order,command.Id.ToString());
+        }
+
+        public void Handle(CompleteOrder command)
+        {
+            var order = _repository.Find(command.OrderId);
+            order.Complete(command.Date, command.Fare, command.Tip, command.Toll);
+            _repository.Save(order, command.Id.ToString());
+        }
+
+        public void Handle(RemoveOrderFromHistory command)
+        {
+            var order = _repository.Find(command.OrderId);
+            order.RemoveFromHistory();
+            _repository.Save(order, command.Id.ToString());
         }
     }
 }

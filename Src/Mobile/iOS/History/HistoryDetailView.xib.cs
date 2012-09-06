@@ -123,8 +123,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         void RebookTouched(object sender, EventArgs e)
         {
-            AppContext.Current.Controller.Rebook(_data);
+
             this.NavigationController.PopViewControllerAnimated(true);
+            AppContext.Current.Controller.Rebook(_data);
         }
 
         void HideTouchUpInside(object sender, EventArgs e)

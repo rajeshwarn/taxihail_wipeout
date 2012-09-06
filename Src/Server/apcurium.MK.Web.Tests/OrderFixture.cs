@@ -142,6 +142,18 @@ namespace apcurium.MK.Web.Tests
             Assert.Throws<WebServiceException>(() => sut.CancelOrder(_orderId));
         }
 
+        [Test]
+        public void when_remove_it_should_not_be_in_history()
+        {
+
+            var sut = new OrderServiceClient(BaseUrl, SessionId);
+
+            sut.RemoveFromHistory(_orderId);
+
+            var orders = sut.GetOrders();
+            Assert.AreEqual(false, orders.Any(x => x.Id == _orderId));
+        }
+
 
         [Test]
         public void GetOrderList()
@@ -171,6 +183,10 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(TestAddresses.GetAddress2().FullAddress, orders.DropOffAddress.FullAddress);
             Assert.AreEqual(TestAddresses.GetAddress2().Latitude, orders.DropOffAddress.Latitude);
             Assert.AreEqual(TestAddresses.GetAddress2().Longitude, orders.DropOffAddress.Longitude);
+            Assert.AreEqual(false, orders.IsCompleted);
+            Assert.IsNull(orders.Fare);
+            Assert.IsNull(orders.Toll);
+            Assert.IsNull(orders.Tip);
 
         }
     }

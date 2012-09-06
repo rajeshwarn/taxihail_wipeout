@@ -1,5 +1,4 @@
 ﻿using System;
-using apcurium.MK.Booking.IBS.WebServices;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 namespace apcurium.MK.Booking.IBS.Impl

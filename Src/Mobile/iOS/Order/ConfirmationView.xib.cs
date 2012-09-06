@@ -11,6 +11,7 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.AppServices;
 using System.Text.RegularExpressions;
+using apcurium.MK.Booking.Mobile.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -133,7 +134,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             LoadLayout();       
             
             
-            if (AppContext.Current.WarnEstimate)
+            if  ( AppContext.Current.WarnEstimate && _parent.BookingInfo.DropOffAddress.HasValidCoordinate() ) 
             {
                 MessageHelper.Show(Resources.WarningEstimateTitle, Resources.WarningEstimate, Resources.WarningEstimateDontShow, ( ) => AppContext.Current.WarnEstimate = false); 
             }
