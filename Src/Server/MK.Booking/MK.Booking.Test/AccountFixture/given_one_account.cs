@@ -86,5 +86,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             Assert.AreEqual(true, service.IsValid("Yop", _accountId.ToString(), @event.Password));
         }
 
+       
+
     }
 }

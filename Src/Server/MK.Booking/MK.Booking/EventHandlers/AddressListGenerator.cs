@@ -8,7 +8,7 @@ using apcurium.MK.Booking.ReadModel;
 
 namespace apcurium.MK.Booking.BackOffice.EventHandlers
 {
-    public class AddressListGenerator : IEventHandler<FavoriteAddressAdded>, IEventHandler<FavoriteAddressRemoved>, IEventHandler<FavoriteAddressUpdated>, IEventHandler<OrderCreated>
+    public class AddressListGenerator : IEventHandler<FavoriteAddressAdded>, IEventHandler<FavoriteAddressRemoved>, IEventHandler<FavoriteAddressUpdated>, IEventHandler<OrderCreated>, IEventHandler<AddressRemovedFromHistory>
     {
         private readonly Func<BookingDbContext> _contextFactory;
         public AddressListGenerator(Func<BookingDbContext> contextFactory)
@@ -94,6 +94,16 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
                     address.IsHistoric = true;
                     context.Save(address);
                 }
+            }
+        }
+
+        public void Handle(AddressRemovedFromHistory @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var address = context.Find<Address>(@event.AddressId);
+                context.Set<Address>().Remove(address);
+                context.SaveChanges();
             }
         }
     }

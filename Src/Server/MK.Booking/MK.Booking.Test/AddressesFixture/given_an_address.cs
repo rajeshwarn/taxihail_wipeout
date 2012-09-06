@@ -9,7 +9,7 @@ using apcurium.MK.Booking.Common.Tests;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Events;
 
-namespace apcurium.MK.Booking.Test.FavoriteAddressesFixture
+namespace apcurium.MK.Booking.Test.AddressesFixture
 {
     [TestFixture]
     public class given_an_address
@@ -63,6 +63,18 @@ namespace apcurium.MK.Booking.Test.FavoriteAddressesFixture
         public void when_address_updated_with_missing_value()
         {
             Assert.Throws<InvalidOperationException>(() => this.sut.When(new UpdateFavoriteAddress { AccountId = _accountId, AddressId = _addressId, FriendlyName = "Chez Costo"}));
+        }
+
+        [Test]
+        public void when_removing_address_successfully()
+        {
+            var _addressId = Guid.NewGuid();
+            this.sut.When(new RemoveAddressFromHistory { AddressId = _addressId, AccountId = _accountId });
+
+            var @event = sut.ThenHasSingle<AddressRemovedFromHistory>();
+
+            Assert.AreEqual(_accountId, @event.SourceId);
+            Assert.AreEqual(_addressId, @event.AddressId);
         }
     }
 }
