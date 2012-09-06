@@ -45,7 +45,9 @@ namespace apcurium.MK.Booking.ReadModel
         public int Status { get; set; }
 
         public double? Fare { get; set; }
+
         public double? Toll { get; set; }
+
         public double? Tip { get; set; }
     }
 }

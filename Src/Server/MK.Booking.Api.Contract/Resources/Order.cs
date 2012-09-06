@@ -21,6 +21,14 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
 
         public Address DropOffAddress { get; set; }
 
-        public BookingSettings Settings { get; set; }        
+        public BookingSettings Settings { get; set; }
+
+        public double? Fare { get; set; }
+
+        public double? Toll { get; set; }
+
+        public double? Tip { get; set; }
+
+        public bool IsCompleted { get; set; }
     }
 }
