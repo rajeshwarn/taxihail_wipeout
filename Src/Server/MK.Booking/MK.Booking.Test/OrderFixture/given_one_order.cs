@@ -59,5 +59,13 @@ namespace apcurium.MK.Booking.Test.OrderFixture
 
             sut.ThenHasSingle<OrderCompleted>();
         }
+
+        [Test]
+        public void when_remove_from_history_successfully()
+        {
+            this.sut.When(new RemoveOrderFromHistory() { OrderId = _orderId });
+
+            sut.ThenHasSingle<OrderRemovedFromHistory>();
+        }
     }
 }

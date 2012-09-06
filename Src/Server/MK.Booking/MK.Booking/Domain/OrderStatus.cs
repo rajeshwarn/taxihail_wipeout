@@ -10,6 +10,7 @@ namespace apcurium.MK.Booking.Domain
         Pending = 1,
         Created = 2,
         Canceled = 3,
-        Completed = 4
+        Completed = 4,
+        Removed = 5 // when user choose to remove it from the history
     }
 }

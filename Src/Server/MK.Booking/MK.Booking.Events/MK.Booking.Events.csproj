@@ -66,6 +66,7 @@
     <Compile Include="OrderCancelled.cs" />
     <Compile Include="OrderCompleted.cs" />
     <Compile Include="OrderCreated.cs" />
+    <Compile Include="OrderRemovedFromHistory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

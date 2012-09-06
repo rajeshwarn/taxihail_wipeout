@@ -10,7 +10,7 @@ using apcurium.MK.Booking.ReadModel;
 
 namespace apcurium.MK.Booking.EventHandlers
 {
-    public class OrderGenerator : IEventHandler<OrderCreated>, IEventHandler<OrderCancelled>, IEventHandler<OrderCompleted>
+    public class OrderGenerator : IEventHandler<OrderCreated>, IEventHandler<OrderCancelled>, IEventHandler<OrderCompleted>, IEventHandler<OrderRemovedFromHistory>
     {
 
         private readonly Func<BookingDbContext> _contextFactory;
@@ -64,6 +64,16 @@ namespace apcurium.MK.Booking.EventHandlers
                 order.Toll = @event.Toll;
                 order.Tip = @event.Tip;
                 context.Save(order);
+            }
+        }
+
+        public void Handle(OrderRemovedFromHistory @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var order = context.Find<OrderDetail>(@event.SourceId);
+                context.Set<OrderDetail>().Remove(order);
+                context.SaveChanges();
             }
         }
     }

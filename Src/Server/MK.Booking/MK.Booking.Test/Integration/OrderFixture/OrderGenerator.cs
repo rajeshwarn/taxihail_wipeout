@@ -117,6 +117,19 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
         }
 
         [Test]
+        public void when_removed_then_no_longer_in_db()
+        {
+            var orderRemovedFromHistory = new OrderRemovedFromHistory(){ SourceId = _orderId };
+            this.sut.Handle(orderRemovedFromHistory);
+
+            using (var context = new BookingDbContext(dbName))
+            {
+                var dto = context.Find<OrderDetail>(_orderId);
+                Assert.IsNull(dto);
+            }
+        }
+
+        [Test]
         public void when_order_completed_then_order_dto_populated()
         {
             var orderCompleted = new OrderCompleted

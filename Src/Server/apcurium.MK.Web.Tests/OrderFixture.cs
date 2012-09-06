@@ -142,6 +142,18 @@ namespace apcurium.MK.Web.Tests
             Assert.Throws<WebServiceException>(() => sut.CancelOrder(_orderId));
         }
 
+        [Test]
+        public void when_remove_it_should_not_be_in_history()
+        {
+
+            var sut = new OrderServiceClient(BaseUrl, SessionId);
+
+            sut.RemoveFromHistory(_orderId);
+
+            var orders = sut.GetOrders();
+            Assert.AreEqual(false, orders.Any(x => x.Id == _orderId));
+        }
+
 
         [Test]
         public void GetOrderList()

@@ -19,6 +19,7 @@ namespace apcurium.MK.Booking.Domain
             base.Handles<OrderCreated>(OnOrderCreated);
             base.Handles<OrderCancelled>(OnOrderCancelled);
             base.Handles<OrderCompleted>(OnOrderCompleted);
+            base.Handles<OrderRemovedFromHistory>(OnOrderRemoved);
         }
 
         public Order(Guid id, IEnumerable<IVersionedEvent> history)
@@ -69,6 +70,10 @@ namespace apcurium.MK.Booking.Domain
             _status = OrderStatus.Completed;
         }
 
+        private void OnOrderRemoved(OrderRemovedFromHistory obj)
+        {
+            _status = OrderStatus.Removed;
+        }
 
         public void Cancel()
         {
@@ -88,6 +93,11 @@ namespace apcurium.MK.Booking.Domain
                                     Tip = tip
                                 });
             }
+        }
+
+        public void RemoveFromHistory()
+        {
+            this.Update(new OrderRemovedFromHistory());
         }
     }
 }
