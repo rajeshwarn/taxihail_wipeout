@@ -114,7 +114,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
 
                 Intent i = new Intent(this, typeof(LocationDetailActivity));
                 i.PutExtra(NavigationStrings.LocationSelectedId.ToString(), data);
-                StartActivity(i);
+                StartActivityForResult(i, (int)ActivityEnum.FavoriteLocations);
             }
         }
         private void listView_ItemClickFromBook(object sender, AdapterView.ItemClickEventArgs e)
@@ -221,5 +221,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
 
 			adapter.AddSection(Resources.GetString(Resource.String.NearbyPlacesTitle), new LocationListAdapter(this, places));
 		}
+
+        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+            if (data != null)
+            {
+                switch (requestCode)
+                {
+                    case (int)ActivityEnum.FavoriteLocations:
+                        var bookAddress = data.GetStringExtra("BookFromLocation");
+                        if (bookAddress.HasValue())
+                        {
+                            var parent = (MainActivity)Parent;
+                            parent.BookFromFavorites(bookAddress);
+                            parent.MainTabHost.CurrentTab = 0;
+                        }
+                    break;
+                }
+            }
+        }
+
+
     }
 }

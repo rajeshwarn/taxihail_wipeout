@@ -9,7 +9,8 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-
+using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Mobile.Client.Activities.Book;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
@@ -49,11 +50,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
             
             if (  (_data.Id.IsNullOrEmpty() ) || _data.IsHistoric )
             {
-                FindViewById<Button>(Resource.Id.LocationDeleteBtn).Visibility = ViewStates.Invisible;
+                FindViewById<Button>(Resource.Id.LocationDeleteBtn).Visibility = ViewStates.Gone;
             }
             
             FindViewById<Button>(Resource.Id.LocationDeleteBtn).Click += new EventHandler(DeleteBtn_Click);            
             FindViewById<Button>(Resource.Id.LocationSaveBtn).Click += new EventHandler(SaveBtn_Click);
+            FindViewById<Button>(Resource.Id.LocationBookBtn).Click += new EventHandler(BookBtn_Click);
             FindViewById<EditText>(Resource.Id.LocationAddress).FocusChange += new EventHandler<View.FocusChangeEventArgs>(LocationDetailActivity_FocusChange);
 
         }
@@ -166,10 +168,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
                 //AppContext.Current.UpdateLoggedInUser(AppContext.Current.LoggedUser, true);
                 
             }, true);
-
-
-
         }
+
+        private void BookBtn_Click(object sender, EventArgs e)
+        {
+            Intent intent = new Intent();
+            intent.SetFlags(ActivityFlags.ForwardResult);
+            intent.PutExtra("BookFromLocation", _data.FullAddress);
+            SetResult(Result.Ok, intent);
+            Finish();
+        }
+
         private void UpdateData()
         {
             _data.FullAddress = FindViewById<EditText>(Resource.Id.LocationAddress).Text;

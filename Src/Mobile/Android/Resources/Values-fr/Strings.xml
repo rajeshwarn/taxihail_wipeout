@@ -230,5 +230,8 @@
   <string name="OrderHistoryListTitle">Commande #{0}</string>
   <string name="UnAuthorizedCallTitle">Accès non-authorisé</string>
   <string name="UnAuthorizedCallMessage">Un appel non-authorisé a été fait au serveur, vous allez être redirigé vers la page de connexion.</string>
+  <string name="WarningEstimate">Prenez note que le prix fournit par cette app est un prix estimé et que le compteur prévaudra sur le prix indiqué sur le site en conformité avec la Loi sur le transport par taxi.</string>
+  <string name="WarningEstimateTitle">Attention</string>
+  <string name="WarningEstimateDontShow">Ne plus m\'avertir</string>
   
 </resources>

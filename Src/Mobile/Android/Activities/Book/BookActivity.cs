@@ -96,8 +96,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             pickup.Maybe(() => pickup.ParentResume());
             dest.Maybe(() => pickup.ParentResume());
-
-
         }
 
         void BookItBtn_Click(object sender, EventArgs e)
@@ -252,9 +250,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
                          }
                     }
-                   
-
-                    
                 }
             }
         }
@@ -437,6 +432,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
                 BookItBtn_Click(this, EventArgs.Empty);
             }
+        }
+
+        public void BookFromFavorite(string addressFromFavorite)
+        {
+            TogglePickupDestination(false);
+            var activity = (DestinationActivity)LocalActivityManager.GetActivity(this.TabHost.CurrentTabTag);
+            activity.SetLocationDataAndValidate(new WS.Address() { FullAddress = addressFromFavorite }, true);
+            BookItBtn_Click(this, EventArgs.Empty);
         }
 
         internal void StartStatusActivity(Guid id)

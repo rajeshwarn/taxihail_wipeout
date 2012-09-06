@@ -232,5 +232,8 @@
   <string name="OrderHistoryListTitle">Order #{0}</string> 
   <string name="UnAuthorizedCallTitle">Unauthorized Access</string>
   <string name="UnAuthorizedCallMessage">An unauthorized call has been made to server, you will be redirected to login page.</string>
+  <string name="WarningEstimate">Please note that the price provided by this app is an estimated price and the meter will prevail on the price quoted on the site in accordance with the Act of transportation by taxi.</string>
+  <string name="WarningEstimateTitle">Warning</string>
+  <string name="WarningEstimateDontShow">Don\'t warn</string>
   
 </resources>

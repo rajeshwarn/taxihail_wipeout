@@ -11,6 +11,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Models
 
         DateTimePicked = 4,
 		NearbyPlaces = 5,
+        FavoriteLocations = 6
     }
 }
 

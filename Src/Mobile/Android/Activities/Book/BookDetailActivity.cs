@@ -16,6 +16,8 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
     [Activity(Label = "Book Details", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation=Android.Content.PM.ScreenOrientation.Portrait )]
@@ -45,6 +47,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             FindViewById<Button>(Resource.Id.ConfirmBtn).Click += new EventHandler(Confirm_Click);
             FindViewById<Button>(Resource.Id.CancelBtn).Click += new EventHandler(Cancel_Click);
             FindViewById<Button>(Resource.Id.EditBtn).Click += new EventHandler(Edit_Click);
+            if (TinyIoCContainer.Current.Resolve<ICacheService>().Get<string>("WarningEstimateDontShow").IsNullOrEmpty() && _bookingInfo.DropOffAddress.HasValidCoordinate())
+            {
+                ShowAlertDialog();
+            }
+        }
+
+        public void ShowAlertDialog()
+        {
+            var alert = new AlertDialog.Builder(this);
+            alert.SetTitle(Resources.GetString(Resource.String.WarningEstimateTitle));
+            alert.SetMessage(Resources.GetString(Resource.String.WarningEstimate));
+
+            alert.SetPositiveButton("Ok", (s, e) => alert.Dispose());
+
+            alert.SetNegativeButton(Resource.String.WarningEstimateDontShow, (s, e) =>
+                {
+                    TinyIoCContainer.Current.Resolve<ICacheService>().Set("WarningEstimateDontShow", "yes");
+                    alert.Dispose();
+                });
+
+            alert.Show();
         }
 
         void Edit_Click(object sender, EventArgs e)
