@@ -92,10 +92,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 				View.BringSubviewToFront( lblTitle );
 				lblTitle.Text = Resources.LoadingMessage;
 
-
                 btnChangeBooking.SetTitle(Resources.ChangeBookingSettingsButton, UIControlState.Normal);
              
-				AppButtons.FormatStandardGradientButton((GradientButton)btnCall, Resources.StatusCallButton, AppStyle.GreyText, AppStyle.ButtonColor.Grey );
+				AppButtons.FormatStandardGradientButton((GradientButton)btnCall, Resources.StatusCallButton, UIColor.White, AppStyle.ButtonColor.Black );
 				AppButtons.FormatStandardGradientButton((GradientButton)btnCancel, Resources.StatusCancelButton, UIColor.White, AppStyle.ButtonColor.Red );
 				AppButtons.FormatStandardGradientButton((GradientButton)btnNewRide, Resources.StatusNewRideButton, UIColor.White, AppStyle.ButtonColor.Green );
 

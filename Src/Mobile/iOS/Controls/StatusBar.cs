@@ -21,6 +21,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		private void Initialize()
 		{
+			BackgroundColor = UIColor.FromPatternImage( UIImage.FromFile( "Assets/rideStatusBarBackground.png" ) );
+
 			ClipsToBounds = false;
 
 			Layer.MasksToBounds = false;

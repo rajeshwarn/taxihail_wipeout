@@ -386,6 +386,8 @@
     <Content Include="Assets\Cells\rightArrow%402x.png" />
     <Content Include="Assets\VerticalButtonBar\wheel.png" />
     <Content Include="Assets\VerticalButtonBar\wheel%402x.png" />
+    <Content Include="Assets\rideStatusBarBackground.png" />
+    <Content Include="Assets\rideStatusBarBackground%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.iOS.csproj">
