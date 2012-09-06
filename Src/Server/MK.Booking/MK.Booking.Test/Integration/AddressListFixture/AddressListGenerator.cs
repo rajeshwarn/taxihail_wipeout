@@ -255,6 +255,8 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
             }
         }
 
+
+
         [Test]
         public void when_order_created_no_duplicate_address_is_added_to_history_even_if_optional_fields_are_not_set()
         {
@@ -283,6 +285,36 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
                 Assert.AreEqual(null, dto.RingCode);
                 Assert.AreEqual(default(double), dto.Latitude);
                 Assert.AreEqual(default(double), dto.Longitude);
+            }
+        }
+
+        [Test]
+        public void when_remove_address_not_more_in_db()
+        {
+            //Arrrange
+            var orderCreated = new OrderCreated
+            {
+                SourceId = Guid.NewGuid(),
+                AccountId = Guid.NewGuid(),
+                PickupAddress = "1234 rue Saint-Hubert",
+                CreatedDate = DateTime.Now.AddDays(-1)
+            };
+            this.sut.Handle(orderCreated);
+
+            Guid addressId;
+            using (var context = new BookingDbContext(dbName))
+            {
+                addressId = context.Query<Address>().First(x => x.AccountId == orderCreated.AccountId && x.IsHistoric.Equals(true)).Id;
+            }
+
+            //Act
+            this.sut.Handle(new AddressRemovedFromHistory() { AddressId = addressId });
+
+            //Assert
+            using (var context = new BookingDbContext(dbName))
+            {
+                var address = context.Query<Address>().FirstOrDefault(x => x.Id == addressId);
+                Assert.IsNull(address);
             }
         }
     }

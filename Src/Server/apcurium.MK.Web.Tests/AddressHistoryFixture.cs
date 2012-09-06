@@ -95,5 +95,37 @@ namespace apcurium.MK.Web.Tests
             Assert.IsFalse(addresses.Any(x => x.Id.Equals(addressId)));
             
         }
+
+
+        [Test]
+        public void when_removing_with_a_new_pickup_address()
+        {
+            //Arrange
+            var newAccount = CreateAndAuthenticateTestAccount();
+            var orderService = new OrderServiceClient(BaseUrl, SessionId);
+
+            
+            var order = new CreateOrder
+            {
+                Id = Guid.NewGuid(),
+                PickupAddress = TestAddresses.GetAddress1(),
+                PickupDate = DateTime.Now,
+                DropOffAddress = TestAddresses.GetAddress2(),
+
+            };
+            order.Settings = new Booking.Api.Contract.Resources.BookingSettings { ChargeTypeId = 99, VehicleTypeId = 88, ProviderId = 11, Phone = "514-555-1212", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" };
+            orderService.CreateOrder(order);
+
+            var sut = new AccountServiceClient(BaseUrl, SessionId);
+            var addresses = sut.GetHistoryAddresses(newAccount.Id);
+
+            //Act
+            var addressId = addresses.First().Id;
+            sut.RemoveAddress(addressId);
+
+            //Assert
+            addresses = sut.GetHistoryAddresses(newAccount.Id);
+            Assert.AreEqual(false, addresses.Any(x => x.Id == addressId));
+        }
     }
 }

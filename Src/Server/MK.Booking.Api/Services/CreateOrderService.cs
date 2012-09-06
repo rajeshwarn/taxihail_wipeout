@@ -43,7 +43,8 @@ namespace apcurium.MK.Booking.Api.Services
             
             var ibsOrderId = CreateIBSOrder(account, request);
 
-            if (!ibsOrderId.HasValue)
+            if (!ibsOrderId.HasValue
+                || ibsOrderId == 0)
             {
                 throw new HttpError(ErrorCode.CreateOrder_CannotCreateInIbs.ToString()); 
             }
