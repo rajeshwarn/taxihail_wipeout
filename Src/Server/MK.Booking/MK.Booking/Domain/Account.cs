@@ -23,6 +23,7 @@ namespace apcurium.MK.Booking.Domain
             base.Handles<AccountPasswordReset>(OnAccountPasswordReset);
             base.Handles<BookingSettingsUpdated>(OnBookingSettingsUpdated);
             base.Handles<AccountPasswordUpdated>(OnAccountPasswordUpdated);
+            base.Handles<AddressRemovedFromHistory>(OnAddressRemoved);
         }
 
         public Account(Guid id, IEnumerable<IVersionedEvent> history)
@@ -231,6 +232,10 @@ namespace apcurium.MK.Booking.Domain
         {
             
         }
+        private void OnAddressRemoved(AddressRemovedFromHistory obj)
+        {
+
+        }
 
 
         private static void ValidateFavoriteAddress(string friendlyName, string fullAddress, double latitude, double longitude)
@@ -249,6 +254,11 @@ namespace apcurium.MK.Booking.Domain
             {
                 throw new ArgumentOutOfRangeException("longitude", "Invalid longitude");
             }
+        }
+
+        public void RemoveAddressFromHistory(Guid addressId)
+        {
+            this.Update(new AddressRemovedFromHistory() { AddressId = addressId });
         }
     }
 }

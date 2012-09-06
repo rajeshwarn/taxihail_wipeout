@@ -59,6 +59,7 @@
     <Compile Include="AccountPasswordUpdated.cs" />
     <Compile Include="AccountRegistered.cs" />
     <Compile Include="AccountUpdated.cs" />
+    <Compile Include="AddressRemovedFromHistory.cs" />
     <Compile Include="BookingSettingsUpdated.cs" />
     <Compile Include="FavoriteAddressRemoved.cs" />
     <Compile Include="FavoriteAddressAdded.cs" />

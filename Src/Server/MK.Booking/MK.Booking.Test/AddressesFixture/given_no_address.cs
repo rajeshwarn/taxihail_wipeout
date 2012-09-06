@@ -9,7 +9,7 @@ using apcurium.MK.Booking.Common.Tests;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Events;
 
-namespace apcurium.MK.Booking.Test.FavoriteAddressesFixture
+namespace apcurium.MK.Booking.Test.AddressesFixture
 {
     [TestFixture]
     public class given_no_address
