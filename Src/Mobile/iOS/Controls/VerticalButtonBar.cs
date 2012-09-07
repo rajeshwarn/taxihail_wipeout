@@ -14,7 +14,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public enum AnimationDirection { Down, Up };
 
 		private Dictionary<int, VerticalButton> _buttons;
-		private VerticalButton _mainBtn;
+		public VerticalButton _mainBtn;
 		private float _btnHeight = 40f;
 
 		public delegate void ButtonClickedEventHandler(int index);
@@ -24,6 +24,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public VerticalButtonBar ( RectangleF frame, AnimationType animationType, AnimationDirection animationDirection ) : base ( frame )
 		{
 			_buttons = new Dictionary<int, VerticalButton>();
+			AutosizesSubviews = false;
 
 			BackgroundColor = UIColor.Clear;
 			Layer.MasksToBounds = true;
@@ -57,6 +58,43 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			_mainBtn.Animate( IsOpen, FullHeight );
 
+			UIView.BeginAnimations("Extend");
+			UIView.SetAnimationDuration(0.3);
+			UIView.SetAnimationCurve( UIViewAnimationCurve.EaseIn );
+			if( IsOpen )
+			{
+				if( _mainBtn.Direction == VerticalButtonBar.AnimationDirection.Down )
+				{
+					Frame = new RectangleF( Frame.X, Frame.Y, Frame.Width, _mainBtn.Frame.Height );
+				}
+				else
+				{
+					Frame = new RectangleF( Frame.X, Frame.Y + FullHeight - _mainBtn.Frame.Height, Frame.Width, _mainBtn.Frame.Height );
+					_mainBtn.Frame = new RectangleF( _mainBtn.Frame.X, _mainBtn.Frame.Y - FullHeight + _mainBtn.Frame.Height, _mainBtn.Frame.Width, _mainBtn.Frame.Height );
+					foreach( var btn in _buttons.Values )
+					{
+						btn.Frame = new RectangleF( btn.Frame.X, btn.Frame.Y - FullHeight + _mainBtn.Frame.Height, btn.Frame.Width, btn.Frame.Height );
+					}
+				}
+			}
+			else
+			{
+				if( _mainBtn.Direction == VerticalButtonBar.AnimationDirection.Down)
+				{
+					Frame = new RectangleF( Frame.X, Frame.Y, Frame.Width, FullHeight );
+				}
+				else
+				{
+					Frame = new RectangleF( Frame.X, Frame.Y - FullHeight + _mainBtn.Frame.Height, Frame.Width, FullHeight );
+					_mainBtn.Frame = new RectangleF( _mainBtn.Frame.X, _mainBtn.Frame.Y + FullHeight - _mainBtn.Frame.Height, _mainBtn.Frame.Width, _mainBtn.Frame.Height );
+					foreach( var btn in _buttons.Values )
+					{
+						btn.Frame = new RectangleF( btn.Frame.X, btn.Frame.Y + FullHeight - _mainBtn.Frame.Height, btn.Frame.Width, btn.Frame.Height );
+					}
+				}
+			}
+			UIView.CommitAnimations();
+
 			IsOpen = !IsOpen;
 
 			_mainBtn.Selected = IsOpen;
@@ -67,7 +105,18 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public void AddButton( UIImage normalImage, UIImage selectedImage)
 		{
 			var lastBtn = _buttons.Count == 0 ? _mainBtn : _buttons[_buttons.Count - 1];
-			var button = new VerticalButton( new RectangleF(0 ,lastBtn.Frame.Bottom, Frame.Width, _btnHeight), UIColor.FromRGB(242,242,242) );
+			VerticalButton button = null;
+			switch( _mainBtn.Direction )
+			{
+			case AnimationDirection.Down:
+				button = new VerticalButton( new RectangleF(0 ,lastBtn.Frame.Bottom, Frame.Width, _btnHeight), UIColor.FromRGB(242,242,242) );
+				break;
+			case AnimationDirection.Up:
+				button = new VerticalButton( new RectangleF(0 ,lastBtn.Frame.Top - _btnHeight, Frame.Width, _btnHeight), UIColor.FromRGB(242,242,242) );
+				break;
+			}
+			button.AutoresizingMask = UIViewAutoresizing.None;
+			button.Direction = _mainBtn.Direction;
 			button.ContentMode = UIViewContentMode.Center;
 			button.LastButton = true;
 			button.SetImage( normalImage, UIControlState.Normal );
@@ -77,6 +126,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 			InsertSubview( button, 0 );
 			_buttons.Values.Where( b => b.LastButton == true ).ForEach( bb => bb.LastButton = false );
 			_buttons.Add( _buttons.Count, button );
+		}
+
+		public RectangleF OpenRect {
+			get { return new RectangleF( Frame.X, Frame.Y - FullHeight + _mainBtn.Frame.Height, Frame.Width, FullHeight ); }
 		}
 
 		void HandleTouchUpInside (object sender, EventArgs e)
