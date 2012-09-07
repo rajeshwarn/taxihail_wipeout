@@ -150,7 +150,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
             else
             {
-                _endlineReverse.Visibility = ViewStates.Invisible;
+                //_endlineReverse.Visibility = ViewStates.Invisible;
             }
 
         }
@@ -165,7 +165,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 }
                 else 
                 {
-                    _endlineReverse.Visibility = ViewStates.Visible;
+                    //_endlineReverse.Visibility = ViewStates.Visible;
                 }
 
                 _frameLayout.SetBackgroundDrawable(_bitmapSelected);

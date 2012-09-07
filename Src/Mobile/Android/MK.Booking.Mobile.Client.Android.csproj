@@ -90,6 +90,7 @@
     <Compile Include="Activities\Book\AddressController.cs" />
     <Compile Include="Activities\Book\BookDetailActivity.cs" />
     <Compile Include="Activities\Book\BookingStatusActivity.cs" />
+    <Compile Include="Activities\Book\Bookv2Activity.cs" />
     <Compile Include="Activities\Book\Coordinate.cs" />
     <Compile Include="Activities\Book\DateTimePickerActivity.cs" />
     <Compile Include="Activities\Book\DestinationActivity.cs" />
@@ -284,6 +285,9 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\TitleListItem.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\Bookv2.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>

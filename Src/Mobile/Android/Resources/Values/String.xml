@@ -233,5 +233,5 @@
   <string name="ServiceErrorCallTitle">Server Error</string>
   <string name="ServiceErrorDefaultMessage">An error occurred. Please try again.</string>
   <string name="ServiceError401">An unauthorized call has been made to server, you will be redirected to login page.</string>
-  
+  <string name="BookDateLabel">Pick Me Up Later</string>
 </resources>

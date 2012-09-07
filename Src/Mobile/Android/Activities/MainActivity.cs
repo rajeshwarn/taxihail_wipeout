@@ -41,6 +41,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 
             SetContentView(Resource.Layout.Main);
 
+            //AddTab<Bookv2Activity>("bookv2", Resource.String.TabBook, Resource.Drawable.book);
             AddTab<BookActivity>("book", Resource.String.TabBook, Resource.Drawable.book);
             AddTab<LocationsActivity>("locations", Resource.String.TabLocations, Resource.Drawable.locations);
             AddTab<HistoryActivity>("history", Resource.String.TabHistory, Resource.Drawable.history);

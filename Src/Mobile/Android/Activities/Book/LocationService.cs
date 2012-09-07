@@ -205,7 +205,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         public void LocationChanged(Android.Locations.Location location)
         {
             TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Location changed : " + GetLocationText(location));
-            TinyIoCContainer.Current.Resolve<ICacheService>().Set("LastKnowLocation", location );
+            
+            TinyIoCContainer.Current.Resolve<ICacheService>().Set("LastKnowLocation", new apcurium.MK.Booking.Api.Contract.Resources.Address { Longitude = location.Longitude, Latitude = location.Latitude });
+            // this line make application frozen
+            //TinyIoCContainer.Current.Resolve<ICacheService>().Set("LastKnowLocation", location );
 			if (IsBetterLocation(location, LastLocation))
             {
                 LastLocation = location;
