@@ -449,11 +449,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             QueueCommand<AccountServiceClient>(service =>
             {
                 service.UpdateBookingSettings(bsr);
-            }
-            );
-
-            
-            
+            });
         }
 
         public void UpdateAddress(Address address)

@@ -30,6 +30,13 @@ namespace apcurium.MK.Booking.Mobile.Client
         }
 
 
+        public bool CanChooseProvider
+        {
+            get { return true; }
+        }
+
+
+
         public static string ErrorLog
         {
             get { return ""; }
@@ -41,7 +48,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         }
 
 
-        public static string PhoneNumber(int providerId)
+        public static string PhoneNumber(int? providerId)
         {
             return "18666245330";           
         }
@@ -53,7 +60,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             return Resource.Drawable.Logo_TaxiDiamond;  //"Assets/TDLogo.png";
         }
 		
-        public static string PhoneNumberDisplay(int companyId)
+        public static string PhoneNumberDisplay(int? companyId)
         {
             return "1.866.624.5330";
         }

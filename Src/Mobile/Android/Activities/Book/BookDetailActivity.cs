@@ -8,6 +8,9 @@ using Android.Content;
 using Android.Widget;
 using apcurium.Framework.Extensions;
 using TinyIoC;
+using apcurium.MK.Booking.Mobile.Client.Adapters;
+using apcurium.MK.Booking.Mobile.Client.ListViewCell;
+using apcurium.MK.Booking.Mobile.Client.ListViewStructure;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Client.Activities.Setting;
 using apcurium.MK.Booking.Mobile.Client.Models;
@@ -51,6 +54,38 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 ShowAlertDialog();
             }
+
+            if (TinyIoCContainer.Current.Resolve<IAppSettings>().CanChooseProvider)
+            {
+                if(BookingInfo.Settings.ProviderId ==null)
+                {
+                    ShowChooseProviderDialog();
+                }
+            }
+        }
+
+        public void ShowChooseProviderDialog()
+        {
+            var service = TinyIoCContainer.Current.Resolve<IAccountService>();
+            var companyList = service.GetCompaniesList();
+            var hashmap = new List<int>();
+
+            for(int i=0; i< companyList.Count();i++)
+            {
+                hashmap.Add(companyList.ElementAt(i).Id);
+            }
+
+            string[] list = companyList.Select(c => c.Display).ToArray();
+            var chooseProviderDialog = new AlertDialog.Builder(this);
+            var adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SelectDialogItem, list);
+            chooseProviderDialog.SetTitle("Pick a provider");
+            chooseProviderDialog.SetAdapter(adapter, (sender, args) => 
+            {
+                BookingInfo.Settings.ProviderId = hashmap[(int)args.Which];
+                TinyIoCContainer.Current.Resolve<IAccountService>().UpdateBookingSettings(BookingInfo.Settings);
+                chooseProviderDialog.Dispose();
+            });
+            chooseProviderDialog.Show();
         }
 
         public void ShowAlertDialog()
@@ -146,7 +181,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             var model = new RideSettingsModel(BookingInfo.Settings, companies, service.GetVehiclesList(), service.GetPaymentsList());
             //TODO:Fix this
             FindViewById<TextView>(Resource.Id.VehiculeTypeTxt).Text = model.VehicleTypeName;
-//            FindViewById<TextView>(Resource.Id.CampanyTxt).Text = model.ProviderName;
+            FindViewById<TextView>(Resource.Id.CompanyTxt).Text = model.ProviderName;
             FindViewById<TextView>(Resource.Id.ChargeTypeTxt).Text = model.ChargeTypeName;
 
             var direction = new DirectionInfo();

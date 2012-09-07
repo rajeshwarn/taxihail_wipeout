@@ -77,18 +77,11 @@ namespace apcurium.MK.Booking.Mobile.Client.ListViewCell
 				infoCell.Dispose();
 			}
 			
-			infoCell.Initialize();							
+			infoCell.Initialize();
 			infoCell.LoadData();
 			
 			return infoCell.CellView;
 		}
-		
-		public override void NotifyDataSetChanged ()
-		{
-			base.NotifyDataSetChanged ();
-		}
-
-
 	}
 }
 

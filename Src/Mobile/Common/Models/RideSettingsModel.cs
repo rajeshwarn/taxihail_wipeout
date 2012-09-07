@@ -78,7 +78,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         }
 
 
-        public int ProviderId
+        public int? ProviderId
         {
             get { return Data.ProviderId; }
             set

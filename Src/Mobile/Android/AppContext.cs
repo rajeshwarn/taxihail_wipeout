@@ -56,10 +56,10 @@ namespace apcurium.MK.Booking.Mobile.Client
                         {
                             _loggedUser.Settings = new BookingSettings();
                         }
-                        if (_loggedUser.Settings.ProviderId != 12)
+                        /*if (_loggedUser.Settings.ProviderId != 12)
                         {
                             _loggedUser.Settings.ProviderId = 12;                            
-                        }
+                        }*/
                     }
 //	                else
 //	                {

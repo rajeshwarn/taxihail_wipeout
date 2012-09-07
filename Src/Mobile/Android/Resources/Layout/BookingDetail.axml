@@ -244,26 +244,26 @@
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp" />
             </LinearLayout>
-        <!--<LinearLayout
+        <LinearLayout
                 android:orientation="horizontal"
                 android:paddingTop="5dip"
                 android:paddingBottom="5dip"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
                 <TextView
-                    style="@style/SimpleText"
+                    style="@style/GrayText"
                     android:text="@string/ConfirmCompanyLabel"
-                    android:layout_width="100dp"
+                    android:layout_width="115dp"
                     android:layout_height="wrap_content"
                     android:gravity="right" />
                 <TextView
-                    android:id="@+id/CampanyTxt"
+                    android:id="@+id/CompanyTxt"
                     style="@style/DetailText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp" />
-            </LinearLayout>-->
+            </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
                 android:paddingTop="5dip"

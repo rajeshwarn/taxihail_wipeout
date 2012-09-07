@@ -2883,7 +2883,7 @@ public enum TWEBOrderStatusValue
 public partial class TBookOrder
 {
 
-    private int serviceProviderIDField;
+    private int? serviceProviderIDField;
 
     private int confirmationIDField;
 
@@ -2950,7 +2950,7 @@ public partial class TBookOrder
     private TWEBTimeStamp orderDateField;
 
     /// <remarks/>
-    public int ServiceProviderID
+    public int? ServiceProviderID
     {
         get
         {
