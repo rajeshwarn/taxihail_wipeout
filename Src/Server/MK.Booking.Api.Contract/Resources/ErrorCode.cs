@@ -14,5 +14,6 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
         CreateOrder_SettingsRequired,
         CancelOrder_OrderNotInIbs,
         NearbyPlaces_LocationRequired,
+        Search_Locations_NameRequired
     }
 }

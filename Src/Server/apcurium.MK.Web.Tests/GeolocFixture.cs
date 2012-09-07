@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using apcurium.MK.Booking.Api.Client;
+using apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Web.Tests
 {
@@ -41,9 +42,14 @@ namespace apcurium.MK.Web.Tests
         public void AdvancedNameSearch()
         {
             var sut = new GeocodingServiceClient(BaseUrl, SessionId);
-            var addresses = sut.Search("2100 Research Rd, Ottawa MacDonald-Cartier Airport (YOW), Gloucester, ON K1V 2B1, Canada");
+            var addresses = sut.Search("5661 avenue chateaubriand, Montreal");
             Assert.AreEqual(1, addresses.Addresses.Count());
-            Assert.AreEqual(true, addresses.Addresses.ElementAt(0).FullAddress.Contains("Research"));
+            var address = addresses.Addresses.ElementAt(0);
+            Assert.AreEqual(true, address.FullAddress.Contains("Chateaubriand"));
+            Assert.AreEqual("5661", address.StreetNumber);
+            Assert.AreEqual("Avenue de Chateaubriand", address.Street);
+            Assert.AreEqual("Montreal", address.City);
+            Assert.AreEqual("H2J 2T8", address.ZipCode);
         }
 
         [Test]

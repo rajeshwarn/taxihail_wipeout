@@ -105,6 +105,7 @@
     <Compile Include="Requests\CurrentAccount.cs" />
     <Compile Include="Requests\Addresses.cs" />
     <Compile Include="Requests\RegisterAccount.cs" />
+    <Compile Include="Requests\SearchLocationsRequest.cs" />
     <Compile Include="Requests\TestOnlyReqGetTestAccount.cs" />
     <Compile Include="Requests\UpdatePassword.cs" />
     <Compile Include="Resources\Account.cs" />

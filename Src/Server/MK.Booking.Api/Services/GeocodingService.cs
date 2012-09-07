@@ -1,37 +1,36 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Google;
 using apcurium.MK.Booking.Google.Resources;
 using apcurium.MK.Common.Extensions;
 using ServiceStack.Common.Web;
 using System.Net;
-using System.Globalization;
 using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Api.Services
 {
+    /// <summary>
+    /// documentation https://developers.google.com/maps/documentation/geocoding/
+    /// </summary>
     public class GeocodingService : RestServiceBase<GeocodingRequest>
     {
         private readonly IMapsApiClient _client;
         private IConfigurationManager _configManager;
+
         public GeocodingService( IMapsApiClient client ,  IConfigurationManager configManager)
         {
             _client = client;
             _configManager = configManager;
         }
-
-
+        
         public override object OnGet(GeocodingRequest request)
         {
             var result = GetResultUsingFilter(request, true);
 
-            if (result.Addresses.Count() == 0)
+            if (!result.Addresses.Any())
             {
                 return GetResultUsingFilter(request, false);
             }
@@ -55,7 +54,7 @@ namespace apcurium.MK.Booking.Api.Services
                                                          r.Geometry != null && r.Geometry.Location != null &&
                                                          r.Geometry.Location.Lng != 0 && r.Geometry.Location.Lat != 0 &&
                                                          r.AddressComponentTypes.Any(type => type == AddressComponentType.Street_address))
-                                            .Select(r => ConvertToAddress(r)).ToArray();
+                                            .Select(ConvertToAddress).ToArray();
 
                 if (addresses.Count() == 0)
                 {
@@ -63,7 +62,7 @@ namespace apcurium.MK.Booking.Api.Services
                                                          r.Geometry != null && r.Geometry.Location != null &&
                                                          r.Geometry.Location.Lng != 0 && r.Geometry.Location.Lat != 0 &&
                                                          r.AddressComponentTypes.Any(type => type == AddressComponentType.Street_address))
-                                            .Select(r => ConvertToAddress(r)).ToArray();
+                                            .Select(ConvertToAddress).ToArray();
                 }
 
                 return new AddressList { Addresses = addresses };
@@ -74,9 +73,27 @@ namespace apcurium.MK.Booking.Api.Services
             }
         }
 
-        private Address ConvertToAddress(GeoObj obj)
+        private Address ConvertToAddress(GeoObj geoCodeResult)
         {
-            return new Address { FullAddress = obj.Formatted_address, Id = Guid.Empty, Latitude = obj.Geometry.Location.Lat, Longitude = obj.Geometry.Location.Lng };
+            var address =  new Address
+                       {
+                           FullAddress = geoCodeResult.Formatted_address, 
+                           Id = Guid.Empty, 
+                           Latitude = geoCodeResult.Geometry.Location.Lat, 
+                           Longitude = geoCodeResult.Geometry.Location.Lng
+                       };
+
+            geoCodeResult.Address_components.FirstOrDefault(x => x.AddressComponentTypes.Any(t => t == AddressComponentType.Street_number)).Maybe(x => address.StreetNumber = x.Long_name);
+            var component = (from c in geoCodeResult.Address_components
+                            where (c.AddressComponentTypes.Any(x => x == AddressComponentType.Route || x == AddressComponentType.Street_address) && !string.IsNullOrEmpty(c.Long_name))
+                            select c).FirstOrDefault();
+            component.Maybe(c => address.Street = c.Long_name);
+            geoCodeResult.Address_components.FirstOrDefault(x => x.AddressComponentTypes.Any(t => t == AddressComponentType.Postal_code)).Maybe(x => address.ZipCode = x.Long_name);
+            geoCodeResult.Address_components.FirstOrDefault(x => x.AddressComponentTypes.Any(t => t == AddressComponentType.Locality)).Maybe(x => address.City = x.Long_name);
+
+            address.AddressType = "postal";
+
+            return address;
         }
 
         private GeoResult GetResultFromRequest(GeocodingRequest request, bool useFilter)
