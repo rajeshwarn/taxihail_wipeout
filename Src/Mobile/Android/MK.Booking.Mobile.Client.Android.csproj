@@ -98,6 +98,7 @@
     <Compile Include="Activities\Book\LocationListener.cs" />
     <Compile Include="Activities\Book\LocationService.cs" />
     <Compile Include="Activities\Book\PickupActivity.cs" />
+    <Compile Include="Activities\Book\SearchAddressActivity.cs" />
     <Compile Include="Activities\Setting\AboutActivity.cs" />
     <Compile Include="Adapters\GroupedOrderListAdapter.cs" />
     <Compile Include="Adapters\GroupedLocationListAdapter.cs" />
@@ -288,6 +289,9 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\Bookv2.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\SearchAddress.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>
