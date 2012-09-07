@@ -71,8 +71,6 @@ namespace apcurium.MK.Booking.Api.Services
                                                     request.Settings.VehicleTypeId, request.Settings.ChargeTypeId, request.Note, request.PickupDate.Value, ibsPickupAddress, ibsDropOffAddress);
 
             return result;
-
-            
         }
 
         private bool IsValid(Address address)

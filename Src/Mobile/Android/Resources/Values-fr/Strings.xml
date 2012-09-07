@@ -228,9 +228,10 @@
   <string name="SaveAddressEmptyFieldMessage">Données manquantes, le nom et l\'addresse sont requis.</string>
   <string name="SaveAddressEmptyFieldTitle">Nom manquant</string>
   <string name="OrderHistoryListTitle">Commande #{0}</string>
-  <string name="UnAuthorizedCallTitle">Accès non-authorisé</string>
-  <string name="UnAuthorizedCallMessage">Un appel non-authorisé a été fait au serveur, vous allez être redirigé vers la page de connexion.</string>
+  <string name="ServiceErrorCallTitle">Erreur du serveur</string>
+  <string name="ServiceErrorDefaultMessage">Une erreur s\'est produite, veuillez recommencer.</string>
   <string name="WarningEstimate">Prenez note que le prix fournit par cette app est un prix estimé et que le compteur prévaudra sur le prix indiqué sur le site en conformité avec la Loi sur le transport par taxi.</string>
+  <string name="ServiceError401">Un appel non-authorisé a été fait au serveur, vous allez être redirigé vers la page de connexion.</string>
   <string name="WarningEstimateTitle">Attention</string>
   <string name="WarningEstimateDontShow">Ne plus m\'avertir</string>
   
