@@ -113,7 +113,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 //    return url;
                 //}
 
-                return "http://10.0.1.21/apcurium.MK.Web/api/"; 
+                return "http://192.168.12.116/apcurium.MK.Web/api/"; 
             }
 
             set

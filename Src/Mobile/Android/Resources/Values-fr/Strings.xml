@@ -230,6 +230,7 @@
   <string name="OrderHistoryListTitle">Commande #{0}</string>
   <string name="ServiceErrorCallTitle">Erreur du serveur</string>
   <string name="ServiceErrorDefaultMessage">Une erreur s\'est produite, veuillez recommencer.</string>
-  <string name="ServiceError401">Un appel non-authorisé a été fait au serveur, vous allez être redirigé vers la page de connexion.</string>
+  <string name="ServiceErrorCreateOrder_CannotCreateInIbs">Impossible de passer votre commande.</string>
+  <string name="ServiceErrorUnauthorized">Un appel non-authorisé a été fait au serveur, vous allez être redirigé vers la page de connexion.</string>
   
 </resources>

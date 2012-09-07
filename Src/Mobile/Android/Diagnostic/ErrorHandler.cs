@@ -15,13 +15,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
 		public void HandleError( Exception ex )
 		{
             var exception =  ex as WebServiceException;
-			int erroCode;
-
-			if(exception != null
-                && int.TryParse(exception.ErrorCode, out erroCode))
+			
+			if(exception != null)
             {
                 var errorIntent = new Intent(ACTION_SERVICE_ERROR);
-                errorIntent.PutExtra(ACTION_EXTRA_ERROR, erroCode.ToString(CultureInfo.InvariantCulture));
+                errorIntent.PutExtra(ACTION_EXTRA_ERROR, exception.ErrorCode);
 
                 AppContext.Current.App.SendBroadcast(errorIntent);
 

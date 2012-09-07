@@ -232,6 +232,7 @@
   <string name="OrderHistoryListTitle">Order #{0}</string> 
   <string name="ServiceErrorCallTitle">Server Error</string>
   <string name="ServiceErrorDefaultMessage">An error occurred. Please try again.</string>
-  <string name="ServiceError401">An unauthorized call has been made to server, you will be redirected to login page.</string>
+  <string name="ServiceErrorCreateOrder_CannotCreateInIbs">Can\'t book a taxi. Please try again or call us.</string>
+  <string name="ServiceErrorUnauthorized">An unauthorized call has been made to server, you will be redirected to login page.</string>
   
 </resources>

@@ -951,8 +951,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f050064
 			public const int BookItButtonImageName = 2131034212;
 			
-			// aapt resource value: 0x7f0500e7
-			public const int BookItButtonImageNamePressed = 2131034343;
+			// aapt resource value: 0x7f0500e8
+			public const int BookItButtonImageNamePressed = 2131034344;
 			
 			// aapt resource value: 0x7f050021
 			public const int BookPickupLabel = 2131034145;
@@ -1047,8 +1047,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0500c7
 			public const int CreateAccountErrorTitle = 2131034311;
 			
-			// aapt resource value: 0x7f0500e5
-			public const int CreateAccountFirstName = 2131034341;
+			// aapt resource value: 0x7f0500e6
+			public const int CreateAccountFirstName = 2131034342;
 			
 			// aapt resource value: 0x7f05005a
 			public const int CreateAccountFullName = 2131034202;
@@ -1077,8 +1077,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0500c5
 			public const int CreateAccountLanguageFrench = 2131034309;
 			
-			// aapt resource value: 0x7f0500e6
-			public const int CreateAccountLastName = 2131034342;
+			// aapt resource value: 0x7f0500e7
+			public const int CreateAccountLastName = 2131034343;
 			
 			// aapt resource value: 0x7f05005c
 			public const int CreateAccountMobile = 2131034204;
@@ -1482,14 +1482,20 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f05006f
 			public const int ServerVersion = 2131034223;
 			
-			// aapt resource value: 0x7f0500e4
-			public const int ServiceError401 = 2131034340;
+			// aapt resource value: 0x7f0500e9
+			public const int ServiceError401 = 2131034345;
 			
 			// aapt resource value: 0x7f0500e2
 			public const int ServiceErrorCallTitle = 2131034338;
 			
+			// aapt resource value: 0x7f0500e4
+			public const int ServiceErrorCreateOrder_CannotCreateInIbs = 2131034340;
+			
 			// aapt resource value: 0x7f0500e3
 			public const int ServiceErrorDefaultMessage = 2131034339;
+			
+			// aapt resource value: 0x7f0500e5
+			public const int ServiceErrorError401 = 2131034341;
 			
 			// aapt resource value: 0x7f050062
 			public const int SettingViewLoginInfo = 2131034210;
