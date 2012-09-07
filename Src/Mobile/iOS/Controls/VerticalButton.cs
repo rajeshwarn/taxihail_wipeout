@@ -62,7 +62,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			{
 				if( Selected )
 				{
-					rectanglePath = UIBezierPath.FromRoundedRect(rect, UIRectCorner.TopLeft | UIRectCorner.TopRight, new SizeF(4, 4));
+					if( Direction == VerticalButtonBar.AnimationDirection.Down )
+					{
+						rectanglePath = UIBezierPath.FromRoundedRect(rect, UIRectCorner.TopLeft | UIRectCorner.TopRight, new SizeF(4, 4));
+					}
+					else
+					{
+						rectanglePath = UIBezierPath.FromRoundedRect(rect, UIRectCorner.BottomLeft | UIRectCorner.BottomRight, new SizeF(4, 4));
+					}
 				}
 				else
 				{
@@ -73,21 +80,41 @@ namespace apcurium.MK.Booking.Mobile.Client
 			}
 			else if( LastButton )
 			{
-				rectanglePath = UIBezierPath.FromRoundedRect(rect, UIRectCorner.BottomLeft | UIRectCorner.BottomRight, new SizeF(4, 4));
+				if( Direction == VerticalButtonBar.AnimationDirection.Down )
+				{
+					rectanglePath = UIBezierPath.FromRoundedRect(rect, UIRectCorner.BottomLeft | UIRectCorner.BottomRight, new SizeF(4, 4));
+					var path = new UIBezierPath();
+					path.MoveTo( new PointF( rect.X + 1, rect.Y ) );
+					path.AddLineTo( new PointF( rect.Right -1, rect.Y ) );
+					_interiorTopPaths.Add( path ); 
 
-				var path = new UIBezierPath();
-				path.MoveTo( new PointF( rect.X + 1, rect.Y ) );
-				path.AddLineTo( new PointF( rect.Right -1, rect.Y ) );
-				_interiorTopPaths.Add( path ); 
+					path = new UIBezierPath();
+					path.MoveTo( new PointF( rect.X, rect.Y ) );
+					path.AddLineTo( new PointF( rect.X, rect.Bottom - 4) );
+					path.AddArc( new PointF( rect.X + 4, rect.Bottom - 4), 4f, ((float)Math.PI),((float)(Math.PI/2)), false );
+					path.AddLineTo( new PointF( rect.Right - 4, rect.Bottom ) );
+					path.AddArc( new PointF( rect.Right - 4, rect.Bottom - 4 ), 4f, ((float)(Math.PI/2)), ((float)(2*Math.PI)), false );
+					path.AddLineTo( new PointF( rect.Right, rect.Y ) );
+					_exteriorPaths.Add( path );
+				}
+				else
+				{
+					rectanglePath = UIBezierPath.FromRoundedRect(rect, UIRectCorner.TopLeft | UIRectCorner.TopRight, new SizeF(4, 4));
 
-				path = new UIBezierPath();
-				path.MoveTo( new PointF( rect.X, rect.Y ) );
-				path.AddLineTo( new PointF( rect.X, rect.Bottom - 4) );
-				path.AddArc( new PointF( rect.X + 4, rect.Bottom - 4), 4f, ((float)Math.PI),((float)(Math.PI/2)), false );
-				path.AddLineTo( new PointF( rect.Right - 4, rect.Bottom ) );
-				path.AddArc( new PointF( rect.Right - 4, rect.Bottom - 4 ), 4f, ((float)(Math.PI/2)), ((float)(2*Math.PI)), false );
-				path.AddLineTo( new PointF( rect.Right, rect.Y ) );
-				_exteriorPaths.Add( path );
+					var path = new UIBezierPath();
+					path.MoveTo( new PointF( rect.X + 1, rect.Bottom ) );
+					path.AddLineTo( new PointF( rect.Right - 1, rect.Bottom ) );
+					_interiorBottomPaths.Add( path ); 
+
+					path = new UIBezierPath();
+					path.MoveTo( new PointF( rect.X, rect.Bottom ) );
+					path.AddLineTo( new PointF( rect.X, rect.Top + 4) );
+					path.AddArc( new PointF( rect.X + 4, rect.Top + 4), 4f, ((float)Math.PI),((float)(3*Math.PI/2)), true );
+					path.AddLineTo( new PointF( rect.Right - 4, rect.Top ) );
+					path.AddArc( new PointF( rect.Right - 4, rect.Top + 4 ), 4f, ((float)(3*Math.PI/2)), 0, true );
+					path.AddLineTo( new PointF( rect.Right, rect.Bottom ) );
+					_exteriorPaths.Add( path );
+				}
 
 			}
 			else
@@ -150,7 +177,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 
 			//Inner shadow for the top button
-			if( FirstButton )
+			if( FirstButton && Direction != VerticalButtonBar.AnimationDirection.Up )
 			{
 				//// Shadow Declarations
 				var shadow2 = UIColor.White.ColorWithAlpha(0.5f).CGColor;
