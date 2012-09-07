@@ -60,12 +60,13 @@ namespace apcurium.MK.Booking.Mobile.Client
             lblStatus.Text = Resources.HistoryDetailStatusLabel;
             lblPickupDate.Text = Resources.HistoryDetailPickupDateLabel;
             lblAptRingCode.Text = Resources.HistoryDetailAptRingCodeLabel;
-            btnHide.SetTitle(Resources.HistoryDetailHideButton, UIControlState.Normal);
+//            btnHide.SetTitle(Resources.HistoryDetailHideButton, UIControlState.Normal);
             btnRebook.SetTitle(Resources.HistoryDetailRebookButton, UIControlState.Normal);
             
             
             btnCancel.SetTitle(Resources.StatusActionCancelButton, UIControlState.Normal);
             btnStatus.SetTitle(Resources.HistoryViewStatusButton, UIControlState.Normal);
+			AppButtons.FormatStandardGradientButton((GradientButton)btnHide, Resources.DeleteButton, UIColor.White, AppStyle.ButtonColor.Red );
 
             btnCancel.TouchUpInside += CancelTouchUpInside;
 
@@ -130,10 +131,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         void HideTouchUpInside(object sender, EventArgs e)
         {
-            //TODO : Is this still used ?
-//            _data.Hide = true;
-//            AppContext.Current.UpdateLoggedInUser(AppContext.Current.LoggedUser, false);
-//            _parent.Selected();
+			TinyIoCContainer.Current.Resolve<IBookingService>().RemoveFromHistory( _data.Id );
+
             this.NavigationController.PopViewControllerAnimated(true);
         }
 
@@ -180,6 +179,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 InvokeOnMainThread(() => txtStatus.Text = status.IBSStatusDescription);
                 InvokeOnMainThread(() => btnCancel.Hidden = isCompleted);
                 InvokeOnMainThread(() => btnStatus.Hidden = isCompleted);
+				InvokeOnMainThread(() => btnHide.Hidden = !isCompleted);
                 
             }
             );

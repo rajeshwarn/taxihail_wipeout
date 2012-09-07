@@ -98,10 +98,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             btnBook.TouchUpInside += BtnBookTouchUpInside;
             btnSave.TouchUpInside += BtnSaveTouchUpInside;
             btnDelete.TouchUpInside += BtnDeleteTouchUpInside;
-            
-//          btnCancel.TouchUpInside += BtnCancelTouchUpInside;
-//          btnSave.TouchUpInside += BtnSaveTouchUpInside;
-//          btnDelete.TouchUpInside += BtnDeleteTouchUpInside;
+			btnDelete.Hidden = false;
+
         }
 
         void HandleTxtAddressEnded(object sender, EventArgs e)
@@ -150,7 +148,6 @@ namespace apcurium.MK.Booking.Mobile.Client
                         Deleted(this, EventArgs.Empty);
                     }
                     
-                   
                     InvokeOnMainThread(() => btnDelete.Hidden = true);
                     InvokeOnMainThread(() => this.NavigationController.PopViewControllerAnimated(true));
                 }
@@ -265,7 +262,6 @@ namespace apcurium.MK.Booking.Mobile.Client
                 txtAptNumber.Text = _data.Apartment;
                 txtRingCode.Text = _data.RingCode;
                 txtName.Text = _data.FriendlyName;
-                btnDelete.Hidden = _data.Id.IsNullOrEmpty();
                 
 //                if (_data.Id.IsNullOrEmpty())
 //                {

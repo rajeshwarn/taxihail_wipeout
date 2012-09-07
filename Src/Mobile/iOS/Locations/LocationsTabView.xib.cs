@@ -179,8 +179,15 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public Address SelectedLocation { get; set; }
 
 		public void Delete (Address data)
-		{						
-            TinyIoCContainer.Current.Resolve<IAccountService>().DeleteFavoriteAddress( data.Id );
+		{			
+			if( data.IsHistoric )
+			{
+				TinyIoCContainer.Current.Resolve<IAccountService>().DeleteHistoryAddress( data.Id );
+			}
+			else
+			{
+            	TinyIoCContainer.Current.Resolve<IAccountService>().DeleteFavoriteAddress( data.Id );
+			}
 			LoadGridData ();
 		}
 
