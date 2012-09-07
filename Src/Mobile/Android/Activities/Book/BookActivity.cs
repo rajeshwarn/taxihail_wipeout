@@ -77,11 +77,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             TabWidget.Visibility = ViewStates.Gone;
             Parent.FindViewById<Button>(Resource.Id.BookItBtn).Click += new EventHandler(BookItBtn_Click);
-
-            
-            
-
-
         }
 
         

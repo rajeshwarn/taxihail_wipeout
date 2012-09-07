@@ -82,8 +82,8 @@ namespace apcurium.MK.Booking.Api.Services
         private GeoResult GetResultFromRequest(GeocodingRequest request, bool useFilter)
         {
          
-            if ( (request.Lat.HasValue && request.Lng.HasValue && request.Name.HasValue()) ||
-                (!request.Lat.HasValue && !request.Lng.HasValue && !request.Name.HasValue()))
+            if ( (request.Lat.HasValue && request.Lng.HasValue && !request.Name.IsNullOrEmpty()) ||
+                (!request.Lat.HasValue && !request.Lng.HasValue && request.Name.IsNullOrEmpty()))
             {
                 throw new HttpError(HttpStatusCode.BadRequest, "400", "You must specify the name or the coordinate");
             }
