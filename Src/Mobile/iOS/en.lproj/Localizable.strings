@@ -93,7 +93,7 @@
 "CreateAccountLanguageFr" = "French";		
 "CreateAccountPassword" = "Password:";
 "CreateAccountPasswordConfrimation" = "Confirm:";			
-"SettingViewLoginInfo" = "You are currently signed in as : {0}";			
+"SettingViewLoginInfo" = "You are currently signed in as :";			
 "BookItButtonImageName" = "Assets/Button/btnBookIt_en.png";
 "DeleteBookItButtonImageNamePressed" = "Assets/Button/btnBookIt-Pressed_en.png";
 "InvalidAccountOnActivatedMessage" = "Your account cannot be validated, you must log in to use this application";
@@ -102,9 +102,7 @@
 "SignOutButton" = "Sign Out";
 "ChangeDefaultRideSettings" = "Change default ride settings";
 "SendErrorLogButton" = "Send error log";
-"Version" = "Version: {0}";
-"ServerVersion" = "Server version : {0}";
-"ServerName" = "Server name : {0}";
+"Version" = "Version: {0} ({1}, {2})";
 "RideSettingsCannotLoadListMessage"="The server cannot be contacted, try again later.";
 "RideSettingsCannotLoadListTitle"="Server error";
 "RideSettingsName"="Name";
@@ -213,3 +211,4 @@
 "UnAuthorizedCallMessage"="An unauthorized call has been made to server, you will be redirected to login page.";
 "BookFromLocationButton"="Book using this address";
 "PickupLater"="Pick Me Up Later";
+"OrderNumber"="Order #{0}";

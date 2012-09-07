@@ -1521,14 +1521,20 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f05006f
 			public const int ServerVersion = 2131034223;
 			
-			// aapt resource value: 0x7f0500e4
-			public const int ServiceError401 = 2131034340;
+			// aapt resource value: 0x7f0500e9
+			public const int ServiceError401 = 2131034345;
 			
 			// aapt resource value: 0x7f0500e2
 			public const int ServiceErrorCallTitle = 2131034338;
 			
+			// aapt resource value: 0x7f0500e4
+			public const int ServiceErrorCreateOrder_CannotCreateInIbs = 2131034340;
+			
 			// aapt resource value: 0x7f0500e3
 			public const int ServiceErrorDefaultMessage = 2131034339;
+			
+			// aapt resource value: 0x7f0500e5
+			public const int ServiceErrorError401 = 2131034341;
 			
 			// aapt resource value: 0x7f050062
 			public const int SettingViewLoginInfo = 2131034210;

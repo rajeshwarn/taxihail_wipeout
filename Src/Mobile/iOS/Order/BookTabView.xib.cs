@@ -66,6 +66,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			bookBtn.TouchUpInside += BookitButtonTouchUpInside;
 
 			AppButtons.FormatStandardGradientButton( (GradientButton)datetimeBtn, Resources.PickupLater , UIColor.White, AppStyle.ButtonColor.Black );
+			datetimeBtn.TouchUpInside += HandleTouchUpInside;
 
 			UIImageView img = new UIImageView(UIImage.FromFile("Assets/location.png"));
 			img.BackgroundColor = UIColor.Clear;
@@ -78,15 +79,40 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 			_settingsBar = new VerticalButtonBar( new RectangleF( 9, 6, 40, 33 ), VerticalButtonBar.AnimationType.Wheel, apcurium.MK.Booking.Mobile.Client.VerticalButtonBar.AnimationDirection.Up );
 			_settingsBar.ButtonClicked += HandleSettingsButtonClicked;
+			_settingsBar.AddButton(UIImage.FromFile("Assets/VerticalButtonBar/settings.png"), UIImage.FromFile("Assets/VerticalButtonBar/settings.png"));
+			_settingsBar.AddButton(UIImage.FromFile("Assets/VerticalButtonBar/history.png"), UIImage.FromFile("Assets/VerticalButtonBar/history.png"));
+			_settingsBar.AddButton(UIImage.FromFile("Assets/VerticalButtonBar/locations.png"), UIImage.FromFile("Assets/VerticalButtonBar/locations.png"));
 			bottomBar.AddSubview( _settingsBar );
+			bottomBar.OutsideRect = _settingsBar.OpenRect;
 
 			View.BringSubviewToFront( destView );
 			View.BringSubviewToFront( pickView );
         }
 
+        void HandleTouchUpInside (object sender, EventArgs e)
+        {
+			Console.WriteLine( _settingsBar.Frame  );
+			Console.WriteLine( _settingsBar._mainBtn.Frame  );
+			_settingsBar._mainBtn.Frame = new RectangleF( 0, 50, 40, 33 );
+        }
+
         void HandleSettingsButtonClicked (int index)
         {
+			InvokeOnMainThread (() => {
+				switch( index )
+				{
+				case 0:
+					AppContext.Current.Controller.SelectViewController( 3 );
+					break;
+				case 1:
+					AppContext.Current.Controller.SelectViewController( 2 );
+					break;
+				case 2:
+					AppContext.Current.Controller.SelectViewController( 1 );
+					break;
+				}
 
+			});
         }
         
         public override void ViewWillAppear (bool animated)

@@ -61,6 +61,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			scrollView.ContentSize = contentView.Frame.Size;
 
+			lblLoginStatus.Text = Resources.SettingViewLoginInfo;
+			lblLoginStatus.TextColor = AppStyle.TitleTextColor;
+			lblLoggedInUser.Text = "";
+			lblLoggedInUser.TextColor = AppStyle.TitleTextColor;
+
 			btnCall.SetTitle (Resources.CallCompanyButton, UIControlState.Normal);
 			
 			btnTechSupport.SetTitle (Resources.TechSupportButton, UIControlState.Normal);
@@ -81,7 +86,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 						
 			imgCreatedBy.Image = UIImage.FromFile ("Assets/apcuriumLogo.png");
-			lblVersion.Text = string.Format (Resources.Version, AppSettings.Version);
+			lblVersion.TextColor = AppStyle.TitleTextColor;
+			lblVersion.Text = string.Format (Resources.Version, AppSettings.Version, AppContext.Current.ServerName, AppContext.Current.ServerVersion );
 
 			UpdateTextFields();
 		}
@@ -109,9 +115,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		private void UpdateTextFields()
 		{
-			lblLoginStatus.Maybe (() => lblLoginStatus.Text = string.Format (Resources.SettingViewLoginInfo, AppContext.Current.LoggedUser.Name));
-			lblServerVersion.Maybe (() => lblServerVersion.Text = string.Format( Resources.ServerVersion, AppContext.Current.ServerVersion ) );
-			lblServerName.Maybe (() => lblServerName.Text = string.Format( Resources.ServerName, AppContext.Current.ServerName ) );
+			lblLoggedInUser.Maybe (() => lblLoggedInUser.Text = AppContext.Current.LoggedUser.Name );
+			lblVersion.Maybe( () => lblVersion.Text = string.Format (Resources.Version, AppSettings.Version, AppContext.Current.ServerName, AppContext.Current.ServerVersion ) );
 		}
 
 		void TechSupportTouchUpInside (object sender, EventArgs e)

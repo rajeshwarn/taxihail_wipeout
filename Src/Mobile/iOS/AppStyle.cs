@@ -128,10 +128,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public static UIColor TitleTextColor { get { return UIColor.FromRGB(66, 63, 58); } }
 
 		public static UIFont NormalTextFont { get { return UIFont.FromName( "HelveticaNeue", CellFontSize ); } }
-		
+
+		public static UIFont BoldTextFont { get { return UIFont.FromName( "HelveticaNeue-Bold", CellFontSize ); } }
+
         public static string ButtonFontName { get { return "HelveticaNeue-Bold"; } }
 
 		public static UIFont CellFont { get { return UIFont.FromName( "HelveticaNeue-Bold", CellFontSize ); } }
+
 		public static float CellFontSize { get { return 14f; } }
 
         public static float ButtonFontSize { get { return 14f; } }

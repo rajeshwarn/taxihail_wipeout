@@ -53,6 +53,11 @@ namespace apcurium.MK.Booking.Mobile.Client
             
         }
 
+		public void SelectViewController( int index )
+		{
+			this.SelectedViewController = _controllers[index];
+		}
+
         private void ControllerSelected(UIViewController ctl)
         {
             if (ctl is UINavigationController)

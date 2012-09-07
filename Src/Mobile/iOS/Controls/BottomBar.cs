@@ -10,11 +10,19 @@ namespace apcurium.MK.Booking.Mobile.Client
 	{
 		public BottomBar ()
 		{
+			Initialize();
 		}
 
 		public BottomBar (IntPtr handle) : base(  handle )
 		{
+			Initialize();
 		}
+
+		private void Initialize()
+		{
+			OutsideRect = new RectangleF(0,0,0,0);
+		}
+
 
 		public override void Draw (System.Drawing.RectangleF rect)
 		{
@@ -34,6 +42,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 			strokePath.LineWidth = 1f;
 			strokePath.Stroke();
 
+		}
+
+		public RectangleF OutsideRect { get; set; }
+
+		public override bool PointInside (PointF point, UIEvent uievent)
+		{
+			return this.Frame.Contains( point) || OutsideRect.Contains( point );
 		}
 	}
 }

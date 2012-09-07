@@ -71,6 +71,24 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 		}
 
+		public override UIView GetViewForHeader (UITableView tableView, int section)
+		{
+			var header = new UIView( new RectangleF( 0,0 ,320,33) );
+			header.BackgroundColor = UIColor.Clear;
+
+			var label = new UILabel( new RectangleF( 15, 5, 300, 25 ) );
+			var color = _structure.Sections.ElementAt( section ).SectionLabelTextColor;
+			label.TextColor = UIColor.FromRGBA( color[0], color[1], color[2], color[3] );
+			label.Font = AppStyle.BoldTextFont;
+			label.Text = _structure.Sections.ElementAt( section ).SectionLabel;
+			label.BackgroundColor = UIColor.Clear;
+			label.Text.PadLeft( 15 );
+
+			header.AddSubview( label );
+
+			return header;
+		}
+
 		void HandleDetailSaved (object sender, EventArgs e)
 		{
             _parent.Update (_lastSelected);             

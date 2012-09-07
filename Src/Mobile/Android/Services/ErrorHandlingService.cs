@@ -48,15 +48,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Services
 			switch(intent.Action)
 			{
 			    case ErrorHandler.ACTION_SERVICE_ERROR:
-                    message = Resources.GetString(Resources.GetIdentifier("ServiceError" + intent.GetStringExtra(ErrorHandler.ACTION_SERVICE_ERROR), null, null));
+			        var key = intent.GetStringExtra(ErrorHandler.ACTION_EXTRA_ERROR);
+                    var identifier = Resources.GetIdentifier("ServiceError" + key, "string", context.PackageName);
+                    message = Resources.GetString(identifier);
 				    break;
 			}
 
-			var i = new Intent( this, typeof(AlertDialogActivity) );
+			var i = new Intent(this, typeof(AlertDialogActivity));
 			i.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront );
 			i.PutExtra("Title", title );
 			i.PutExtra("Message", message);
-			StartActivity( i );
+			StartActivity(i);
 		}
 	}
 

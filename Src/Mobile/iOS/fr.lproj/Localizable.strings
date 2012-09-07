@@ -95,7 +95,7 @@
 "CreateAccountLanguageFr" = "Français";		
 "CreateAccountPassword" = "Mot de passe:";
 "CreateAccountPasswordConfrimation" = "Confirmation:";	
-"SettingViewLoginInfo" = "Vous êtes présentement connecté avec l'usager : {0}";			
+"SettingViewLoginInfo" = "Vous êtes présentement connecté avec l'usager :";			
 "BookItButtonImageName" = "Assets/Button/btnBookIt_fr.png";
 "BookItButtonImageNamePressed" = "Assets/Button/btnBookIt-Pressed_fr.png";
 "InvalidAccountOnActivatedMessage" = "Votre compte ne peut être validé, vous devez vous connecter pour utiliser cette application ";
@@ -104,9 +104,7 @@
 "SignOutButton" = "Déconnecter";
 "ChangeDefaultRideSettings" = "Paramètres de commande";
 "SendErrorLogButton" = "Envoyer log erreur";
-"Version" = "Version : {0}";
-"ServerVersion" = "Version serveur : {0}";
-"ServerName" = "Nom du serveur : {0}";
+"Version" = "Version: {0} ({1}, {2})";
 "RideSettingsCannotLoadListMessage"="Notre serveur ne peut être contacté, veuillez réessayer plus tard.";
 "RideSettingsCannotLoadListTitle"="Erreur serveur";
 "RideSettingsName"="Nom:";
@@ -213,3 +211,4 @@
 "UnAuthorizedCallMessage"="Un appel non-authorisé a été fait au serveur, vous allez être redirigé vers la page de connexion.";
 "BookFromLocationButton"="Commander à cette adresse";
 "PickupLater"="Me Prendre Plus Tard";
+"OrderNumber"="Commande #{0}";
