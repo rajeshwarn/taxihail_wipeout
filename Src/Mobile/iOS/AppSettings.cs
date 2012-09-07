@@ -9,7 +9,7 @@ namespace apcurium.MK.Booking.Mobile.Client
     public class AppSettings : IAppSettings
     {
         
-        
+		public bool CanChooseProvider { get { return true; } }
 
         public static bool ErrorLogEnabled
         {
@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             get { return "http://www.taxihail.com/"; }
         }
 
-        public static string PhoneNumber(int providerId)
+        public static string PhoneNumber(int? providerId)
         {
             return "18666245330";           
         }
@@ -48,11 +48,10 @@ namespace apcurium.MK.Booking.Mobile.Client
         
         public static string GetLogo(int companyId)
         {
-            
             return "Assets/Logo.png";           
         }
 
-        public static string PhoneNumberDisplay(int companyId)
+        public static string PhoneNumberDisplay(int? companyId)
         {
             return "1.866.624.5330";
         }

@@ -180,7 +180,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		public void Delete (Address data)
 		{						
-            TinyIoCContainer.Current.Resolve<IAccountService>().DeleteAddress( data.Id );
+            TinyIoCContainer.Current.Resolve<IAccountService>().DeleteFavoriteAddress( data.Id );
 			LoadGridData ();
 		}
 

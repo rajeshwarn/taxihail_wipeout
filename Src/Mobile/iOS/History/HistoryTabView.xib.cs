@@ -45,12 +45,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			 
 			lblInfo.Text = Resources.HistoryInfo;	
+			lblInfo.TextColor = AppStyle.TitleTextColor;
 			lblNoHistory.Text = Resources.NoHistoryLabel;
 			lblNoHistory.Hidden = true;
 			tableHistory.Hidden = true;
 			tableHistory.RowHeight = 35;
 			Selected ();
-			
+
+
 		}
 
 
@@ -98,7 +100,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 			var s = new InfoStructure( 50, false );
 			var sect = s.AddSection( Resources.HistoryViewTitle );
-			historic.ForEach( item => sect.AddItem( new TwoLinesAddressItem( item.Id, item.PickupAddress.FriendlyName, item.PickupAddress.FullAddress ) { Data = item } ) );
+			historic.ForEach( item => sect.AddItem( new TwoLinesAddressItem( item.Id, string.Format( Resources.OrderNumber, item.IBSOrderId.Value.ToString() ), item.PickupAddress.FullAddress ) { Data = item } ) );
 
 			return s;
 

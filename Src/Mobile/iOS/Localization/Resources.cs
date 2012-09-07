@@ -467,14 +467,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			get { return GetValue ("Version"); }
 		}
 
-		public static string ServerVersion {
-			get { return GetValue ("ServerVersion"); }
-		}
-
-		public static string ServerName {
-			get { return GetValue ("ServerName"); }
-		}
-
 		public static string RideSettingsCannotLoadListMessage {
 			get { return GetValue ("RideSettingsCannotLoadListMessage"); }
 		}
@@ -891,6 +883,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public static string PickupLater
 		{
 			get { return GetValue ("PickupLater"); }
+		}
+		public static string OrderNumber
+		{
+			get { return GetValue ("OrderNumber"); }
 		}
 	}
 }
