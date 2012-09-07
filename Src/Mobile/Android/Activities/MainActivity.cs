@@ -25,6 +25,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
         private int _currentCie = -1;
 
         private Guid? _tripToRebook = null;
+        private string _addressFromFavorite; 
 
         public ReclickableTabHost MainTabHost
         {
@@ -70,14 +71,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 
                 if (!statusShown)
                 {
-                    if (!_tripToRebook.HasValue)
-                    {
-                        ((BookActivity)LocalActivityManager.CurrentActivity).Reset();
-                    }
-                    else
+                    if (_tripToRebook.HasValue)
                     {
                         ((BookActivity)LocalActivityManager.GetActivity("book")).RebookTrip(_tripToRebook.Value);
                         _tripToRebook = null;
+                    }
+                    else if(!string.IsNullOrEmpty(_addressFromFavorite))
+                    {
+                        ((BookActivity)LocalActivityManager.GetActivity("book")).BookFromFavorite(_addressFromFavorite);
+                        _addressFromFavorite = null;
+                    }
+                    else
+                    {
+                        ((BookActivity)LocalActivityManager.CurrentActivity).Reset();
                     }
                 }
             }
@@ -171,8 +177,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 
         public void RebookTrip(Guid rebookTripId)
         {
-
             _tripToRebook = rebookTripId;
+        }
+
+        public void BookFromFavorites(string addressFromFavorite)
+        {
+            _addressFromFavorite = addressFromFavorite;
         }
     }
 

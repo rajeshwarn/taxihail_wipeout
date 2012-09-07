@@ -37,12 +37,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 			if( isOpen )
 			{
 				this.ImageView.Transform = CGAffineTransform.MakeRotation( 0f );
-				Superview.Frame = new RectangleF( Superview.Frame.X, Superview.Frame.Y, Superview.Frame.Width, Frame.Height );
 			}
 			else
 			{
 				this.ImageView.Transform = CGAffineTransform.MakeRotation( (float)Math.PI );
-				Superview.Frame = new RectangleF( Superview.Frame.X, Superview.Frame.Y, Superview.Frame.Width, fullHeight );
 			}
 			UIView.CommitAnimations();
 		}

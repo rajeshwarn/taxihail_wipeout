@@ -33,7 +33,7 @@
   <string name="InvalidLoginMessage">The email or/and password is invalid.</string>
   <string name="BookItButton">Book It</string>
   <string name="ass">asdasd</string>
-  <string name="BookPickupLabel">Confrim your pickup location</string>
+  <string name="BookPickupLabel">Confirm your pickup location</string>
   <string name="PickupTextPlaceholder">Pickup street address</string>
   <string name="AptNumberTextPlaceholder">Apt/Suite Number</string>
   <string name="RingCodeTextPlaceholder">Ring code</string>
@@ -234,5 +234,7 @@
   <string name="ServiceErrorDefaultMessage">An error occurred. Please try again.</string>
   <string name="ServiceErrorCreateOrder_CannotCreateInIbs">Can\'t book a taxi. Please try again or call us.</string>
   <string name="ServiceErrorUnauthorized">An unauthorized call has been made to server, you will be redirected to login page.</string>
+  <string name="WarningEstimateTitle">Warning</string>
+  <string name="WarningEstimateDontShow">Don\'t warn</string>
   
 </resources>

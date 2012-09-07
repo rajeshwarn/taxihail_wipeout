@@ -258,6 +258,7 @@
     <Compile Include="Controls\AddressBar.cs" />
     <Compile Include="Controls\AnimatedArrowButton.cs" />
     <Compile Include="Controls\AnimatedWheelButton.cs" />
+    <Compile Include="Extensions\ColorExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -388,6 +389,16 @@
     <Content Include="Assets\VerticalButtonBar\wheel%402x.png" />
     <Content Include="Assets\rideStatusBarBackground.png" />
     <Content Include="Assets\rideStatusBarBackground%402x.png" />
+    <Content Include="Assets\VerticalButtonBar\history.png" />
+    <Content Include="Assets\VerticalButtonBar\history%402x.png" />
+    <Content Include="Assets\VerticalButtonBar\settings.png" />
+    <Content Include="Assets\VerticalButtonBar\settings%402x.png" />
+    <Content Include="Assets\VerticalButtonBar\locations.png" />
+    <Content Include="Assets\VerticalButtonBar\locations%402x.png" />
+    <Content Include="Assets\Cells\addNewBackground.png" />
+    <Content Include="Assets\Cells\addNewBackground%402x.png" />
+    <Content Include="Assets\Cells\addNewBackgroundSelected.png" />
+    <Content Include="Assets\Cells\addNewBackgroundSelected%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.iOS.csproj">

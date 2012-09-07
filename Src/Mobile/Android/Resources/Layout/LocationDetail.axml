@@ -115,6 +115,14 @@
                     android:layout_height="40dip"
                     android:layout_weight="0.33"
                     android:text="@string/DeleteButton" />
+                <Button
+                    android:id="@+id/LocationBookBtn"
+                    style="@style/ButtonText"
+                    android:background="@drawable/gray_button"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dip"
+                    android:layout_weight="0.33"
+                    android:text="@string/BookItButton" />
             </LinearLayout>
         </LinearLayout>
         <RelativeLayout

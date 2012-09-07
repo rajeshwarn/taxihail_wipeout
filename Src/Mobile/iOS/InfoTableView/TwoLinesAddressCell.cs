@@ -35,16 +35,16 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 		private void Initialize ()
 		{
 
-			BackgroundView = new CustomCellBackgroundView( _sectionItem.Index == 0, _sectionItem.Index == (_sectionItem.Parent.Items.Count() - 1), Frame );
+			BackgroundView = new CustomCellBackgroundView( _sectionItem.Index == 0, _sectionItem.Index == (_sectionItem.Parent.Items.Count() - 1), Frame, _sectionItem.ShowPlusSign );
 			TextLabel.TextColor = AppStyle.CellFirstLineTextColor;
 			TextLabel.BackgroundColor = UIColor.Clear;
 			TextLabel.Font = AppStyle.CellFont;
 
 			DetailTextLabel.TextColor = AppStyle.CellSecondLineTextColor;
 			DetailTextLabel.BackgroundColor = UIColor.Clear;
-			DetailTextLabel.Font = AppStyle.CellFont;
+			DetailTextLabel.Font = AppStyle.NormalTextFont;
 
-			_rightImage = new UIImageView (new RectangleF (290, 18, 14, 15 ));
+			_rightImage = new UIImageView (new RectangleF (290, _sectionItem.RowHeight/2 - 15/2, 14, 15 ) ); 
 			_rightImage.BackgroundColor = UIColor.Clear;
 			_rightImage.ContentMode = UIViewContentMode.ScaleAspectFit;
 			AddSubview ( _rightImage );	
@@ -88,9 +88,16 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 				if ( item != _sectionItem )
 				{								
 					_sectionItem = item;
-				}				
+				}			
+
 				Load ();
 				bool changed = false;
+				if( ((CustomCellBackgroundView)BackgroundView).IsAddNewCell != _sectionItem.ShowPlusSign )
+				{
+					((CustomCellBackgroundView)BackgroundView).IsAddNewCell = _sectionItem.ShowPlusSign;
+					changed = true;
+				}
+
 				if( ((CustomCellBackgroundView)BackgroundView).IsTop != (_sectionItem.Index == 0) )
 				{
 					((CustomCellBackgroundView)BackgroundView).IsTop = _sectionItem.Index == 0;
@@ -155,12 +162,16 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 		private UIColor _selectedBackgroundColor = UIColor.FromRGBA( 233, 217, 219, 0.1f );
 		private UIColor _backgroundColor = AppStyle.CellBackgroundColor;
 
-		public CustomCellBackgroundView(bool isTop, bool isBottom, RectangleF rect) : base( rect )
+		public CustomCellBackgroundView(bool isTop, bool isBottom, RectangleF rect, bool isAddNewCell ) : base( rect )
 		{
 			_isTop = isTop;
 			_isBottom = isBottom;
 			BackgroundColor = UIColor.Clear;
+			IsAddNewCell = isAddNewCell;
+
 		}
+
+		public bool IsAddNewCell { get; set; }
 
 		public bool IsTop { 
 			get { return _isTop; } 
@@ -218,10 +229,22 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 			}
 
 			//Fill
-  			var backgroundColor = ((UITableViewCell)Superview).Highlighted ? _selectedBackgroundColor : _backgroundColor;
-			backgroundColor.SetFill();
-			fillRectPath.LineWidth = _strokeSize;
-			fillRectPath.Fill();
+			if( IsAddNewCell && !((UITableViewCell)Superview).Highlighted )
+			{
+				UIImage.FromFile( "Assets/Cells/addNewBackground.png" ).Draw( rect, CGBlendMode.Normal, 1f );
+			}
+			else if( IsAddNewCell && ((UITableViewCell)Superview).Highlighted )
+			{
+				UIImage.FromFile( "Assets/Cells/addNewBackgroundSelected.png" ).Draw( rect, CGBlendMode.Normal, 1f );
+			}
+			else
+			{
+	  			var backgroundColor = ((UITableViewCell)Superview).Highlighted ? _selectedBackgroundColor : _backgroundColor;
+				backgroundColor.SetFill();
+				fillRectPath.LineWidth = _strokeSize;
+				fillRectPath.Fill();
+			}
+
 
 			//Inner Shadow
 		    var roundedRectangleBorderRect = fillRectPath.Bounds;

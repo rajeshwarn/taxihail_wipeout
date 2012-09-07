@@ -12,16 +12,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 	partial class SettingsTabView
 	{
 		[Outlet]
+		MonoTouch.UIKit.UILabel lblLoggedInUser { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UIView contentView { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UIScrollView scrollView { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UILabel lblServerName { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UILabel lblServerVersion { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UIButton btnChangeSettings { get; set; }
@@ -52,6 +49,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (lblLoggedInUser != null) {
+				lblLoggedInUser.Dispose ();
+				lblLoggedInUser = null;
+			}
+
 			if (contentView != null) {
 				contentView.Dispose ();
 				contentView = null;
@@ -60,16 +62,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			if (scrollView != null) {
 				scrollView.Dispose ();
 				scrollView = null;
-			}
-
-			if (lblServerName != null) {
-				lblServerName.Dispose ();
-				lblServerName = null;
-			}
-
-			if (lblServerVersion != null) {
-				lblServerVersion.Dispose ();
-				lblServerVersion = null;
 			}
 
 			if (btnChangeSettings != null) {

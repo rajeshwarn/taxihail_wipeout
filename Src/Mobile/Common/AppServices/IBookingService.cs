@@ -20,8 +20,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         OrderStatusDetail CreateOrder(CreateOrder info);
 
         OrderStatusDetail GetOrderStatus(Guid orderId);
-		
-		
+
+	    void RemoveFromHistory(Guid orderId);
+
+
 	}
 }
 

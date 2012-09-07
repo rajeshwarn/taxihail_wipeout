@@ -14,6 +14,7 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 		{
 			_items = new List<SectionItem> ();
 			Parent = parent;
+			SectionLabelTextColor = new float[] { 0f, 0f, 0f, 1f };
 		}
 		
 		public InfoStructure Parent {
@@ -45,12 +46,17 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 		public IEnumerable<SectionItem> Items {
 			get { return _items;}		
 		}
-		
+
 		public string SectionLabel {
 			get;
 			set;
 		}
-		
+
+		public float[] SectionLabelTextColor {
+			get;
+			set;
+		}
+
 		public void AddItem (SectionItem item)
 		{
 			item.Parent = this;

@@ -10,6 +10,7 @@ using TinyIoC;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Client.InfoTableView;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -50,6 +51,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		void Initialize ()
 		{
+
 		}
 		
 		public UIView GetTopView()
@@ -88,8 +90,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 			}
 //			btnCancel.SetTitle (Resources.CancelBoutton, UIControlState.Normal);
 //			lblTitle.Text = "";
+
+			tableLocations.SectionHeaderHeight = 33;
 			Layout();
 			LoadGridData ();
+
+
 			
 		}
 
@@ -174,7 +180,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		public void Delete (Address data)
 		{						
-            TinyIoCContainer.Current.Resolve<IAccountService>().DeleteAddress( data.Id );
+            TinyIoCContainer.Current.Resolve<IAccountService>().DeleteFavoriteAddress( data.Id );
 			LoadGridData ();
 		}
 
@@ -187,7 +193,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		
 		private InfoStructure GetLocationsStructure()
 		{
-			var structure = new InfoStructure( 50, false );
+			var structure = new InfoStructure( 44, false );
 
 			if( Mode == LocationsTabViewMode.Edit || Mode == LocationsTabViewMode.FavoritesSelector )
 			{
@@ -195,10 +201,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 				var historic = GetHistoric();
 
 				var sectFav = structure.AddSection( Resources.FavoriteLocationsTitle );
+
+				sectFav.SectionLabelTextColor = AppStyle.TitleTextColor.ToArray();
 				sectFav.EditMode = Mode == LocationsTabViewMode.Edit;
 				favorites.ForEach( item => sectFav.AddItem( new TwoLinesAddressItem( item.Id,  item.Id.IsNullOrEmpty() ? Resources.LocationAddFavorite : item.FriendlyName, item.Id.IsNullOrEmpty() ? Resources.LocationAddFavoriteDetails : item.FullAddress ) { Data = item, ShowRightArrow = Mode == LocationsTabViewMode.Edit && !item.Id.IsNullOrEmpty(), ShowPlusSign = item.Id.IsNullOrEmpty() } ) );
 
 				var sectHist = structure.AddSection( Resources.LocationHistoryTitle );
+				sectHist.SectionLabelTextColor = AppStyle.TitleTextColor.ToArray();
 				sectHist.EditMode = Mode == LocationsTabViewMode.Edit;
 				historic.ForEach( item => sectHist.AddItem( new TwoLinesAddressItem( item.Id,  item.Id.IsNullOrEmpty() ? Resources.LocationNoHistory : item.FriendlyName, item.Id.IsNullOrEmpty() ? Resources.LocationNoHistoryDetails : item.FullAddress ) { Data = item, ShowRightArrow = Mode == LocationsTabViewMode.Edit && !item.Id.IsNullOrEmpty(), Enabled = () => !item.Id.IsNullOrEmpty() } ) );
 			}

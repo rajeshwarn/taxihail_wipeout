@@ -67,6 +67,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return r;
         }
 
+        public void RemoveFromHistory(Guid orderId)
+        {
+            UseServiceClient<OrderServiceClient>(service => service.RemoveFromHistory(orderId));
+        }
+
         public bool IsCompleted(Guid orderId)
         {                        
             var status = GetOrderStatus(orderId);

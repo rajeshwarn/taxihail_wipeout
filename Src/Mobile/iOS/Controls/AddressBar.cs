@@ -34,7 +34,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			var rect = Frame;
 
-			_addressTextView = new TextField( new RectangleF( 9, 6, 260, rect.Height - 12 ) );
+			_addressTextView = new TextField( new RectangleF( 9, 6, 253, rect.Height - 12 ) );
 			_addressTextView.Font = AppStyle.NormalTextFont;
 			_addressTextView.TextColor = AppStyle.GreyText;
 			_addressTextView.PaddingLeft = 3;
@@ -52,7 +52,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			_addressTextView.Ended += HandleEnded;
 			_addressTextView.EditingChanged += HandleEditingChanged;
 			
-			_bar = new VerticalButtonBar( new RectangleF( _addressTextView.Frame.Right + 9, 6, 33, rect.Height - 12 ), VerticalButtonBar.AnimationType.Arrow, apcurium.MK.Booking.Mobile.Client.VerticalButtonBar.AnimationDirection.Down );
+			_bar = new VerticalButtonBar( new RectangleF( _addressTextView.Frame.Right + 9, rect.Height/2 - 33/2, 40, 33 ), VerticalButtonBar.AnimationType.Arrow, apcurium.MK.Booking.Mobile.Client.VerticalButtonBar.AnimationDirection.Down );
 			_bar.AddButton(UIImage.FromFile("Assets/VerticalButtonBar/locationIcon.png"), UIImage.FromFile("Assets/VerticalButtonBar/locationIcon.png"));
 			_bar.AddButton(UIImage.FromFile("Assets/VerticalButtonBar/favoriteIcon.png"), UIImage.FromFile("Assets/VerticalButtonBar/favoriteIcon.png"));
 			_bar.AddButton(UIImage.FromFile("Assets/VerticalButtonBar/contacts.png"), UIImage.FromFile("Assets/VerticalButtonBar/contacts.png"));
@@ -108,6 +108,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 		}
 
 		public bool ClearBackground { get; set; }
+
+		public override bool PointInside (PointF point, UIEvent uievent)
+		{
+			return this.Frame.Contains( point ) || _bar.Frame.Contains( point );
+		}
 
 		public override void Draw (RectangleF rect)
 		{

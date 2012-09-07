@@ -49,13 +49,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
             var btnCancel = FindViewById<Button>(Resource.Id.CancelTripBtn);
             var btnStatus = FindViewById<Button>(Resource.Id.StatusBtn);
             var btnRebook = FindViewById<Button>(Resource.Id.RebookTripBtn);
+            var btnDelete = FindViewById<Button>(Resource.Id.HistoryOrderDeleteBtn);
 
-            btnCancel.Visibility = ViewStates.Invisible;
-            btnStatus.Visibility = ViewStates.Invisible;
+            btnCancel.Visibility = ViewStates.Gone;
+            btnStatus.Visibility = ViewStates.Gone;
 
             btnCancel.Click += new EventHandler(btnCancel_Click);
             btnStatus.Click += new EventHandler(btnStatus_Click);
             btnRebook.Click += new EventHandler(btnRebook_Click);
+            btnDelete.Click += new EventHandler(btnDelete_Click);
+
         }
 
         void btnRebook_Click(object sender, EventArgs e)
@@ -65,6 +68,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
             intent.PutExtra("Rebook", _data.Id.ToString());
             SetResult(Result.Ok, intent);
             Finish();
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            ThreadHelper.ExecuteInThread(this, () =>
+            {
+                if (Common.Extensions.GuidExtensions.HasValue(_data.Id))
+                {
+                        TinyIoCContainer.Current.Resolve<IBookingService>().RemoveFromHistory(_data.Id);
+                }
+                
+
+                RunOnUiThread(() => Finish());
+            }, true);
         }
 
 
@@ -135,8 +152,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
                 RunOnUiThread(() => FindViewById<TextView>(Resource.Id.StatusTxt).Text = status.IBSStatusDescription);
                 var btnCancel = FindViewById<Button>(Resource.Id.CancelTripBtn);
                 var btnStatus = FindViewById<Button>(Resource.Id.StatusBtn);
-                RunOnUiThread(() => btnCancel.Visibility = isCompleted ? ViewStates.Invisible : ViewStates.Visible);
-                RunOnUiThread(() => btnStatus.Visibility = isCompleted ? ViewStates.Invisible : ViewStates.Visible);
+                var btnDelete = FindViewById<Button>(Resource.Id.HistoryOrderDeleteBtn);
+                RunOnUiThread(() => btnCancel.Visibility = isCompleted ? ViewStates.Gone : ViewStates.Visible);
+                RunOnUiThread(() => btnStatus.Visibility = isCompleted ? ViewStates.Gone : ViewStates.Visible);
+                RunOnUiThread(() => btnDelete.Visibility = isCompleted ? ViewStates.Visible : ViewStates.Gone);
 
             }, false);
         }
