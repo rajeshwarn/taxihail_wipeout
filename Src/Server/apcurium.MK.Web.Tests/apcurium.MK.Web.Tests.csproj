@@ -105,6 +105,7 @@
     <Compile Include="ApplicationInfoFixture.cs" />
     <Compile Include="AuthFixture.cs" />
     <Compile Include="BaseTest.cs" />
+    <Compile Include="SearchLocationsFixture.cs" />
     <Compile Include="DirectionsFixture.cs" />
     <Compile Include="FavoriteAddressFixture.cs" />
     <Compile Include="GeolocFixture.cs" />

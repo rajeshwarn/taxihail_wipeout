@@ -90,6 +90,9 @@ namespace apcurium.MK.Booking.Api.Services
             component.Maybe(c => address.Street = c.Long_name);
             geoCodeResult.Address_components.FirstOrDefault(x => x.AddressComponentTypes.Any(t => t == AddressComponentType.Postal_code)).Maybe(x => address.ZipCode = x.Long_name);
             geoCodeResult.Address_components.FirstOrDefault(x => x.AddressComponentTypes.Any(t => t == AddressComponentType.Locality)).Maybe(x => address.City = x.Long_name);
+
+            address.AddressType = "postal";
+
             return address;
         }
 

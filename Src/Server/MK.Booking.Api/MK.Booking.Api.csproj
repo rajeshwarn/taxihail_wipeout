@@ -133,6 +133,7 @@
     <Compile Include="Services\RegisterAccountService.cs" />
     <Compile Include="Services\ResetPasswordService.cs" />
     <Compile Include="Services\SaveAddressService.cs" />
+    <Compile Include="Services\SearchLocationsService.cs" />
     <Compile Include="Services\TestOnlyReqGetTestAccountService.cs" />
     <Compile Include="Services\UpdatePasswordService.cs" />
     <Compile Include="Validation\CreateOrderValidator.cs" />

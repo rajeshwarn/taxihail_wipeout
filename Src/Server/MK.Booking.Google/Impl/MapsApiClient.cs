@@ -11,25 +11,36 @@ namespace apcurium.MK.Booking.Google.Impl
     public class MapsApiClient : IMapsApiClient
     {
         private const string PlacesServiceUrl = "https://maps.googleapis.com/maps/api/place/search/";
+        private const string PlacesTextServiceUrl = "https://maps.googleapis.com/maps/api/place/textsearch/";
         private const string MapsServiceUrl = "http://maps.googleapis.com/maps/api/";
         private const string PlacesApiKey = "AIzaSyBzHXvi9heL8opeThi_uCIBOETLCDk575I";
 
-        public Place[] GetNearbyPlaces(double latitude, double longitude, string languageCode, bool sensor, int radius)
+        public Place[] GetNearbyPlaces(double? latitude, double? longitude,string name, string languageCode, bool sensor, int radius)
         {
-            var client = new JsonServiceClient(PlacesServiceUrl);
+            var client = name != null ? new JsonServiceClient(PlacesTextServiceUrl) : new JsonServiceClient(PlacesServiceUrl);
             var @params = new Dictionary<string, string>
             {
                 { "sensor", sensor.ToString(CultureInfo.InvariantCulture).ToLowerInvariant() },
-                { "key",  PlacesApiKey },
-                { "location", string.Join(",", latitude.ToString(CultureInfo.InvariantCulture), longitude.ToString(CultureInfo.InvariantCulture)) },
+                { "key",  PlacesApiKey },                
                 { "radius", radius.ToString(CultureInfo.InvariantCulture)  },
                 { "language", languageCode  },
-                { "types", new PlaceTypes().GetPipedTypeList()  },
+                { "types", new PlaceTypes().GetPipedTypeList()},
             };
+
+            if (latitude != null
+                && longitude != null)
+            {
+                @params.Add("location", string.Join(",", latitude.Value.ToString(CultureInfo.InvariantCulture), longitude.Value.ToString(CultureInfo.InvariantCulture)));
+            }
+
+            if (name != null)
+            {
+                @params.Add("query",name);
+            }
 
             return client.Get<PlacesResponse>("json" + BuildQueryString(@params)).Results.ToArray();
 
-        }
+        }        
 
         public DirectionResult GetDirections(double originLat, double originLng, double destLat, double destLng)
         {

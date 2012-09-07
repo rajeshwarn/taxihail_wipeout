@@ -7,6 +7,7 @@ using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Booking.Google.Resources;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -23,7 +24,8 @@ namespace apcurium.MK.Booking.Api.Services
 
         public override object OnGet(NearbyPlacesRequest request)
         {
-            if (request.Lat == null || request.Lng == null)
+            if (string.IsNullOrEmpty(request.Name) 
+                && request.IsLocationEmpty())
             {
                 throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.NearbyPlaces_LocationRequired.ToString());
             }
@@ -35,15 +37,23 @@ namespace apcurium.MK.Booking.Api.Services
                 defaultRadius = 500;
             }
 
-            var results = _client.GetNearbyPlaces(request.Lat.Value, request.Lng.Value, "en", false, request.Radius ?? defaultRadius);
+            var results = _client.GetNearbyPlaces(request.Lat.Value, request.Lng.Value, request.Name, "en", false, request.Radius ?? defaultRadius);
 
-            return results.Select(x => new Address
+            return results.Select(ConvertToAddress).ToArray();
+        }
+
+        private Address ConvertToAddress(Place place)
+        {
+            var address = new Address
             {
-                FriendlyName = x.Name,
-                FullAddress = x.Vicinity,
-                Latitude = x.Geometry.Location.Lat,
-                Longitude = x.Geometry.Location.Lng,
-            });
+                FriendlyName = place.Name,
+                FullAddress = place.Vicinity,
+                Latitude = place.Geometry.Location.Lat,
+                Longitude = place.Geometry.Location.Lng,
+                AddressType = "place"
+            };
+
+            return address;
         }
 
     }
