@@ -36,6 +36,7 @@ namespace apcurium.MK.Booking.Mobile.Settings
             //JsonSerializer.DeserializeFromString<CreateOrder>
         }
 
+        public bool CanChooseProvider { get; set; }
 
         public bool ErrorLogEnabled
         {

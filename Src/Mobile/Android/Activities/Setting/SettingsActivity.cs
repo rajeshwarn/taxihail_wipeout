@@ -50,17 +50,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 		
 		private void CallCie_Click(object sender, EventArgs e)
         {
-            //TODO:Fix this
 
-            RunOnUiThread(() => AlertDialogHelper.Show(this, "", TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumberDisplay(AppContext.Current.LoggedUser.Settings.ProviderId), "Call", CallCie, "Cancel", delegate { }));
+            if (AppContext.Current.LoggedUser.Settings.ProviderId.HasValue)
+            {
+                RunOnUiThread(() => AlertDialogHelper.Show(this, "", TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumberDisplay(AppContext.Current.LoggedUser.Settings.ProviderId.Value), "Call", CallCie, "Cancel", delegate { }));
+            }
 		}
 		
 		private void CallCie( object sender, EventArgs e )
 		{
 
-            Intent callIntent = new Intent(Intent.ActionCall, Android.Net.Uri.Parse("tel:" + TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumberDisplay(AppContext.Current.LoggedUser.Settings.ProviderId)));
-            //TODO:Fix this
-            //callIntent.SetData(Android.Net.Uri.Parse("tel:" + AppSettings.PhoneNumber(AppContext.Current.LoggedUser.Settings.Company)));
+            Intent callIntent = new Intent(Intent.ActionCall, Android.Net.Uri.Parse("tel:" + TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumberDisplay(AppContext.Current.LoggedUser.Settings.ProviderId.Value)));            
 			StartActivity(callIntent);
 				
 		}

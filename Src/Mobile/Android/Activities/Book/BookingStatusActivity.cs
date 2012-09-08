@@ -159,8 +159,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         private void CallCompany()
         {
+
             Intent callIntent = new Intent(Intent.ActionCall);
-            callIntent.SetData(Android.Net.Uri.Parse("tel:" + TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumber(Order.Settings.ProviderId)));
+            callIntent.SetData(Android.Net.Uri.Parse("tel:" + TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumber(Order.Settings.ProviderId.Value )));
             StartActivity(callIntent);
         }
 

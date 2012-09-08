@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="internalOnly" package="com.android" android:versionCode="1" android:versionName="1.0.12">
-  <application android:label="TaxiHail" android:icon="@drawable/Icon">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="internalOnly" package="com.apcurium.MK.AtlantaCheckerCab" android:versionCode="1" android:versionName="1.0.12">
+  <application android:label="Atlanta Checker Cab" android:icon="@drawable/Icon">
     <uses-library android:name="com.google.android.maps" />
   </application>
   <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="10" />

@@ -6,17 +6,17 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 	{
 
         int[] InvalidProviderIds { get; }
-		string ServiceUrl { get; }
+        string ServiceUrl { get; set; }
 
 	    bool CanChooseProvider { get; }
-        string ServiceUrl { get; set; }
+        
         bool ErrorLogEnabled{ get; }
         bool CanChangeServiceUrl { get; }
         
         string ErrorLog{ get; }
         string SiteUrl{ get; }
         string PhoneNumber(int providerId);
-        string PhoneNumberDisplay(int companyId);
+        string PhoneNumberDisplay(int providerId);
         string DefaultServiceUrl{ get; }
 
         bool TwitterEnabled{ get; }        
