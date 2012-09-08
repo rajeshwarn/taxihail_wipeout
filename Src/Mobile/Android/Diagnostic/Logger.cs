@@ -13,6 +13,7 @@ using System.Diagnostics;
 using System.IO;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
 {
@@ -111,9 +112,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
             {
                 return;
             }
-            string user = @" N\A with version " + AppSettings.Version;
-            
-            var msgToLog = message + " by :" + user + " with version " + AppSettings.Version;
+
+
+            string version = TinyIoCContainer.Current.Resolve<IPackageInfo>().Version;
+
+            string user = @" N\A with version " + version;
+
+            var msgToLog = message + " by :" + user + " with version " + version;
             
             Console.WriteLine(msgToLog);
             

@@ -1,14 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="ApplicationName">TaxiHail</string>
+  <string name="ApplicationName">Atlanta Checker Cab</string>
   <string name="Language">English</string>
-  <string name="LanguageCode">en</string>  
+  <string name="LanguageCode">en</string>
   <string name="TabBook">Book</string>
   <string name="TabLocations">Locations</string>
   <string name="TabHistory">History</string>
   <string name="TabSettings">Settings</string>
   <string name="Close">Close</string>
-  <string name="GenericTitle"></string>
+  <string name="GenericTitle">
+  </string>
   <string name="NoConnectionTitle">Connection error</string>
   <string name="NoConnectionMessage"> The server cannot be contacted, it might be down temporarily or you may have lost your connection to the Internet.</string>
   <string name="FavoriteLocationsTitle">Favorite locations</string>
@@ -90,7 +91,7 @@
   <string name="Time">Time</string>
   <string name="CreateAccountEmail">Email:</string>
   <string name="CreateAccountTitle">Title:</string>
-  <string name="CreateAccountFullName">Full Name</string>  
+  <string name="CreateAccountFullName">Full Name</string>
   <string name="CreateAccountPhone">Phone</string>
   <string name="CreateAccountMobile">Mobile:</string>
   <string name="CreateAccountLanguage">Language:</string>
@@ -192,13 +193,13 @@
   <string name="CreateAccoutCancel">Cancel</string>
   <string name="RideSettingsChargeType">Charge type:</string>
   <string name="CreateAccountInvalidPassword">The password is invalid.  The password and confirmation must be the same.  The password must also be between 6 and 10 characters.</string>
-  <string name="CreateAccountInvalidPhone">The phone number is invalid. It must contain 10 numbers.</string>  
+  <string name="CreateAccountInvalidPhone">The phone number is invalid. It must contain 10 numbers.</string>
   <string name="CreateAccountEmptyField">The data is invalid, all the fields are required.</string>
   <string name="CreateAccountInvalidDataTitle">Invalid account info</string>
-    <string-array name="CreateAccountTitleArray">
-        <item>Mr</item>
-        <item>Mrs</item>
-    </string-array>
+  <string-array name="CreateAccountTitleArray">
+    <item>Mr</item>
+    <item>Mrs</item>
+  </string-array>
   <string name="CreateAccountTitleMr">Mr</string>
   <string name="CreateAccountTitleMrs">Mrs</string>
   <string name="CreateAccountLanguageFrench">French</string>
@@ -235,4 +236,6 @@
   <string name="ServiceErrorCreateOrder_CannotCreateInIbs">Can\'t book a taxi. Please try again or call us.</string>
   <string name="ServiceErrorUnauthorized">An unauthorized call has been made to server, you will be redirected to login page.</string>
   <string name="BookDateLabel">Pick Me Up Later</string>
+  <string name="OrderHistoryListTitle">Order #{0}</string>
+  <string name="GoogleMapKey">0XEY3WqKVmJPhbZLikyEk8DUaS4VVLGuMHNSqKg</string>
 </resources>

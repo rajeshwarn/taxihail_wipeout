@@ -1,0 +1,19 @@
+{
+   "CanChangeServiceUrl" : "false",
+   "DefaultPhoneNumber" : "14043511111",
+   "DefaultPhoneNumberDisplay" : "404-351-1111",
+   "ErrorLog" : "",
+   "ErrorLogEnabled" : "false",
+   "FacebookAppId" : "",
+   "FacebookEnabled" : "false",
+   "ServiceUrl" : "http://services.taxihail.com/AtlantaCheckerCab/v1/api/",
+   "SiteUrl" : "http://www.atlantacheckercab.com/",
+   "SupportEmail" : "rickhewatt@atlantacheckercab.com",
+   "TwitterAccessTokenUrl" : "",
+   "TwitterAuthorizeUrl" : "",
+   "TwitterCallback" : "",
+   "TwitterConsumerKey" : "",
+   "TwitterConsumerSecret" : "",
+   "TwitterEnabled" : "false",
+   "TwitterRequestTokenUrl" : ""
+}

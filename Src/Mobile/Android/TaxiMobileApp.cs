@@ -17,7 +17,7 @@ using apcurium.MK.Booking.Mobile.Client.Services;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-    [Application(Name = "com.apcurium.MK.TaxiHail")]
+    [Application]
     public class TaxiMobileApplication : Application
     {
 		private Intent _errorHandlingServiceIntent;

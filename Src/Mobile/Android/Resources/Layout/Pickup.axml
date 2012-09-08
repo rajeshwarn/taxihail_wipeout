@@ -93,7 +93,7 @@
                 android:id="@+id/mapPickup"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:apiKey="0XEY3WqKVmJMzXNRJfhbH1yM6RkpBMOaZWUoMAw"
+                android:apiKey="@string/GoogleMapKey"
                 android:enabled="true"
                 android:clickable="true" />
             <ImageView

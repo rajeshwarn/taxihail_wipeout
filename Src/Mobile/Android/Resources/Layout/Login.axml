@@ -68,14 +68,14 @@
                 <Button
                     android:id="@+id/ForgotPasswordButton"
                     style="@style/ButtonText"
+                    android:background="@drawable/newBlackButton"
+                    
                     android:layout_width="270dip"
                     android:layout_height="40dip"
                     android:text="@string/LoginForgotPasswordButton"
                     android:layout_weight="3"
-                    android:layout_gravity="right"
-                    android:background="@drawable/forgot_password_btn_state"
-                    android:textSize="14dip"
-                    android:textColor="#bcd9f2"
+                    android:layout_gravity="right"                    
+                    android:textSize="14dip"                    
                     android:typeface="normal" />
             </LinearLayout>
             <LinearLayout

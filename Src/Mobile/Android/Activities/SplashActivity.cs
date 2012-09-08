@@ -9,6 +9,7 @@ using apcurium.MK.Booking.Mobile.Client.Activities.Book;
 using apcurium.MK.Booking.Mobile.Client.Activities.Account;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using System;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities
 {
@@ -52,9 +53,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
         {
             if ( _fb  == null )
             {
-				//android key hash: Jbi/meELm8i7T47pKA4HZBN5NUk=
-				_fb = new FacebookServicesMD("134284363380764", GetTopActivity());
-//                _fb = new FacebookServicesMD("431321630224094", GetTopActivity());
+                var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
+                _fb = new FacebookServicesMD(settings.FacebookAppId, GetTopActivity());
             }
             return _fb;
         }
@@ -69,17 +69,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
         private void InitializeSocialNetwork()
         {
             TopActivity = this;
+
+            var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
+            
+            
             OAuthConfig oauthConfig = new OAuthConfig
             {
-                ConsumerKey = "3nNkJ5EcI7yyi56ifLSAA",
-                Callback = "http://www.taxihail.com/oauth",
-                ConsumerSecret = "Th6nCDTgPiI3JPwHxgm8fQheMaLczUeHHG5liHGZRqs",
-                RequestTokenUrl = "https://api.twitter.com/oauth/request_token",
-                AccessTokenUrl = "https://twitter.com/oauth/access_token",
-                AuthorizeUrl = "https://twitter.com/oauth/authorize"
+                
+                ConsumerKey =  settings.TwitterConsumerKey,
+                Callback = settings.TwitterCallback,
+                ConsumerSecret = settings.TwitterConsumerSecret,
+                RequestTokenUrl = settings.TwitterRequestTokenUrl,
+                AccessTokenUrl = settings.TwitterAccessTokenUrl,
+                AuthorizeUrl = settings.TwitterAuthorizeUrl 
             };
-
-            //var facebook = new FacebookServicesMD("134284363380764", this);
+            
             var twitterService = new TwitterServiceMonoDroid(oauthConfig, this);
 
             TinyIoCContainer.Current.Register<IFacebookService>((c, p) => GetFacebookService());
