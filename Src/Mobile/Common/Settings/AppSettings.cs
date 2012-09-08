@@ -20,7 +20,19 @@ namespace apcurium.MK.Booking.Mobile.Settings
         public AppSettings()
         {
 
-            using (var stream = this.GetType().Assembly.GetManifestResourceStream("apcurium.MK.Booking.Mobile.Settings.Settings.json"))
+            string resourceName = "";
+
+            foreach ( string name in GetType().Assembly.GetManifestResourceNames() ) 
+            { 
+                if ( name.ToLower().EndsWith( ".settings.json") )
+                {
+                    resourceName = name;
+                    break;
+                }
+            }
+
+
+            using (var stream = this.GetType().Assembly.GetManifestResourceStream( resourceName))
             {
                 using (StreamReader reader = new StreamReader(stream))
                 {

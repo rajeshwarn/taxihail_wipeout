@@ -171,7 +171,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             popup.Clicked += delegate(object sender2, UIButtonEventArgs e2) {
                 if( e2.ButtonIndex == saveBtnIndex )
                 {
-                  new AppSettings().ServiceUrl = popup.GetTextField(0).Text ;                 
+                    TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl = popup.GetTextField(0).Text ;                 
                 }
                 else
                 {

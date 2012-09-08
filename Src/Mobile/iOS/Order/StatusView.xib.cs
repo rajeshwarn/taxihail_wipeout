@@ -11,6 +11,7 @@ using TinyIoC;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -183,8 +184,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         void CallProvider (object sender, EventArgs e)
         {
+            if ( !Order.Settings.ProviderId.HasValue  )             
+                {
+                return;
+            }
             var call = new Confirmation();
-            call.Call(AppSettings.PhoneNumber(Order.Settings.ProviderId), AppSettings.PhoneNumberDisplay(Order.Settings.ProviderId));
+            call.Call(TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumber(Order.Settings.ProviderId.Value), 
+                      TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumberDisplay(Order.Settings.ProviderId.Value));
         }
 
         private void LoadOrderInfo()

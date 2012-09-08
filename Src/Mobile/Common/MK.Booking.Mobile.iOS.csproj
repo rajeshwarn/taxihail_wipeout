@@ -8,7 +8,7 @@
     <ProjectGuid>{43282000-6BF8-4D70-B7DB-833BA44E34BB}</ProjectGuid>
     <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <RootNamespace>MK.Booking.Mobile.iOS</RootNamespace>
+    <RootNamespace>apcurium.MK.Booking.Mobile.iOS</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -134,6 +134,9 @@
     <Compile Include="AppServices\Impl\GoogleService.cs" />
     <Compile Include="AppServices\Impl\ApplicationInfoService.cs" />
     <Compile Include="AppServices\IApplicationInfoService.cs" />
+    <Compile Include="Infrastructure\IPackageInfo.cs" />
+    <Compile Include="Settings\AppSettings.cs" />
+    <Compile Include="Settings\AppSettingsData.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">
@@ -152,5 +155,8 @@
       <Project>{9CB6D6F3-4E5F-4A4F-B6AE-731B3DBC2031}</Project>
       <Name>SocialNetworks.Services.MonoTouch</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Settings\Settings.json" />
   </ItemGroup>
 </Project>

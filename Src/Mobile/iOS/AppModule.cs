@@ -6,6 +6,8 @@ using apcurium.MK.Common.Diagnostic;
 using SocialNetworks.Services.OAuth;
 using SocialNetworks.Services.MonoTouch;
 using SocialNetworks.Services;
+using apcurium.MK.Booking.Mobile.Settings;
+using apcurium.MK.Booking.Mobile.Client.PlatformIntegration;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -19,6 +21,8 @@ namespace apcurium.MK.Booking.Mobile.Client
         public void Initialize()
         {
             TinyIoCContainer.Current.Register<IAppSettings>(new AppSettings());
+            TinyIoCContainer.Current.Register<IPackageInfo>(new PackageInfo());
+
             TinyIoCContainer.Current.Register<IAppContext>(AppContext.Current);
 
             TinyIoCContainer.Current.Register<IAppResource, Resources>();

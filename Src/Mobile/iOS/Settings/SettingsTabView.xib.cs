@@ -87,7 +87,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 						
 			imgCreatedBy.Image = UIImage.FromFile ("Assets/apcuriumLogo.png");
 			lblVersion.TextColor = AppStyle.TitleTextColor;
-			lblVersion.Text = string.Format (Resources.Version, AppSettings.Version, AppContext.Current.ServerName, AppContext.Current.ServerVersion );
+
+            lblVersion.Text = string.Format (Resources.Version, TinyIoCContainer.Current.Resolve<IPackageInfo>().Version, AppContext.Current.ServerName, AppContext.Current.ServerVersion );
 
 			UpdateTextFields();
 		}
@@ -116,7 +117,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		private void UpdateTextFields()
 		{
 			lblLoggedInUser.Maybe (() => lblLoggedInUser.Text = AppContext.Current.LoggedUser.Name );
-			lblVersion.Maybe( () => lblVersion.Text = string.Format (Resources.Version, AppSettings.Version, AppContext.Current.ServerName, AppContext.Current.ServerVersion ) );
+            lblVersion.Maybe( () => lblVersion.Text = string.Format (Resources.Version, TinyIoCContainer.Current.Resolve<IPackageInfo>().Version, AppContext.Current.ServerName, AppContext.Current.ServerVersion ) );
 		}
 
 		void TechSupportTouchUpInside (object sender, EventArgs e)
@@ -129,19 +130,19 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			_mailComposer = new MFMailComposeViewController ();
 			
-			if (File.Exists (AppSettings.ErrorLog))
+            if (File.Exists (TinyIoCContainer.Current.Resolve<IAppSettings>().ErrorLog))
 			{
-				_mailComposer.AddAttachmentData (NSData.FromFile (AppSettings.ErrorLog), "text", "errorlog.txt");
+                _mailComposer.AddAttachmentData (NSData.FromFile (TinyIoCContainer.Current.Resolve<IAppSettings>().ErrorLog), "text", "errorlog.txt");
 			}
 			
-			_mailComposer.SetToRecipients (new string[] { "techsupport@apcurium.com" });
+            _mailComposer.SetToRecipients (new string[] { TinyIoCContainer.Current.Resolve<IAppSettings>().SupportEmail  });
 			_mailComposer.SetMessageBody ("", false);
 			_mailComposer.SetSubject (Resources.TechSupportButton);
 			_mailComposer.Finished += delegate(object mailsender, MFComposeResultEventArgs mfce) {
 				_mailComposer.DismissModalViewControllerAnimated (true);
-				if (File.Exists (AppSettings.ErrorLog))
+                if (File.Exists (TinyIoCContainer.Current.Resolve<IAppSettings>().ErrorLog))
 				{
-					File.Delete (AppSettings.ErrorLog);
+                    File.Delete (TinyIoCContainer.Current.Resolve<IAppSettings>().ErrorLog);
 				}
 			};
 			
@@ -150,16 +151,21 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		void CallTouchUpInside (object sender, EventArgs e)
 		{
+            if ( !AppContext.Current.LoggedUser.Settings.ProviderId.HasValue )
+            {
+                return;
+            }
 			var call = new Confirmation ();
 
-			call.Call ( AppSettings.PhoneNumber(AppContext.Current.LoggedUser.Settings.ProviderId), AppSettings.PhoneNumberDisplay (AppContext.Current.LoggedUser.Settings.ProviderId));
+            call.Call ( TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumber(AppContext.Current.LoggedUser.Settings.ProviderId.Value),
+                       TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumberDisplay (AppContext.Current.LoggedUser.Settings.ProviderId.Value));
 		}
 
 		private MFMailComposeViewController _mailComposer;
 		void SendLog (object sender, EventArgs e)
 		{
 			
-			if (File.Exists (AppSettings.ErrorLog))
+            if (File.Exists (TinyIoCContainer.Current.Resolve<IAppSettings>().ErrorLog))
 			{
 				
 				
@@ -168,12 +174,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 					_mailComposer = new MFMailComposeViewController ();
 					
 					
-					_mailComposer.AddAttachmentData (NSData.FromFile (AppSettings.ErrorLog), "text", "errorlog.txt");
+                    _mailComposer.AddAttachmentData (NSData.FromFile (TinyIoCContainer.Current.Resolve<IAppSettings>().ErrorLog), "text", "errorlog.txt");
 					_mailComposer.SetMessageBody ("iOS Error log ", false);
 					_mailComposer.SetSubject ("Error log");
 					_mailComposer.Finished += delegate(object mailsender, MFComposeResultEventArgs mfce) {
 						_mailComposer.DismissModalViewControllerAnimated (true);
-						File.Delete (AppSettings.ErrorLog);
+                        File.Delete (TinyIoCContainer.Current.Resolve<IAppSettings>().ErrorLog);
 					};
 					
 					PresentModalViewController (_mailComposer, true);

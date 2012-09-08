@@ -209,25 +209,25 @@ namespace apcurium.MK.Booking.Mobile.Client
 					_phoneEntry.KeyboardType = MonoTouch.UIKit.UIKeyboardType.PhonePad;
 					
 					
-					if (AppSettings.ShowNumberOfTaxi)
-					{
-						_numberOfTaxiEntry = new RightAlignedEntryElement (Resources.RideSettingsNumberOfTaxi, "", _settings.NumberOfTaxi.ToString ());
-						_numberOfTaxiEntry.Changed += delegate {
-							_numberOfTaxiEntry.FetchValue ();
-							int r;
-							if (int.TryParse (_numberOfTaxiEntry.Value, out r))
-							{
-								_settings.NumberOfTaxi = r;
-							}
-							else
-							{
-								_settings.NumberOfTaxi = 1;
-							}
-							ApplyChanges ();
-						};
-					
-						_numberOfTaxiEntry.KeyboardType = MonoTouch.UIKit.UIKeyboardType.NumberPad;
-					}
+//                    if (TinyIoCContainer.Current.Resolve<IAppSettings>().ShowNumberOfTaxi)
+//					{
+//						_numberOfTaxiEntry = new RightAlignedEntryElement (Resources.RideSettingsNumberOfTaxi, "", _settings.NumberOfTaxi.ToString ());
+//						_numberOfTaxiEntry.Changed += delegate {
+//							_numberOfTaxiEntry.FetchValue ();
+//							int r;
+//							if (int.TryParse (_numberOfTaxiEntry.Value, out r))
+//							{
+//								_settings.NumberOfTaxi = r;
+//							}
+//							else
+//							{
+//								_settings.NumberOfTaxi = 1;
+//							}
+//							ApplyChanges ();
+//						};
+//					
+//						_numberOfTaxiEntry.KeyboardType = MonoTouch.UIKit.UIKeyboardType.NumberPad;
+//					}
 
 
 
@@ -312,10 +312,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 					settings.Add (_vehiculeTypeEntry);
 					settings.Add (chargeTypeEntry);
 					
-					if (AppSettings.ShowNumberOfTaxi)
-					{
-						settings.Add (_numberOfTaxiEntry);
-					}
+//					if (AppSettings.ShowNumberOfTaxi)
+//					{
+//						settings.Add (_numberOfTaxiEntry);
+//					}
 
 					this.InvokeOnMainThread (() => {
 						this.Root = menu; });
