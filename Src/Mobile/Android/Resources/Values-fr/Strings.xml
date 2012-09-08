@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="ApplicationName">TaxiHail</string>
+  <string name="ApplicationName">Atlanta Checker Cab</string>
   <string name="Language">Francais</string>
   <string name="LanguageCode">fr</string>
   <string name="TabBook">Commander</string>
@@ -8,7 +8,8 @@
   <string name="TabHistory">Historique</string>
   <string name="TabSettings">Paramètres</string>
   <string name="Close">Fermer</string>
-  <string name="GenericTitle"></string>
+  <string name="GenericTitle">
+  </string>
   <string name="NoConnectionTitle">Erreur connexion</string>
   <string name="NoConnectionMessage">Impossible de se connecter au serveur.  Notre serveur ou votre connection internet pourrait être temporairement hors service.</string>
   <string name="FavoriteLocationsTitle">Adresses favorites</string>
@@ -85,10 +86,10 @@
   <string name="Time">Heure</string>
   <string name="CreateAccountEmail">Courriel:</string>
   <string name="CreateAccountTitle">Titre:</string>
-    <string-array name="CreateAccountTitleArray">
-        <item>Monsieur</item>
-        <item>Madame</item>
-    </string-array>
+  <string-array name="CreateAccountTitleArray">
+    <item>Monsieur</item>
+    <item>Madame</item>
+  </string-array>
   <string name="CreateAccountTitleMr">Monsieur</string>
   <string name="CreateAccountTitleMrs">Madame</string>
   <string name="CreateAccountFirstName">Prénom:</string>
@@ -134,7 +135,7 @@
   <string name="CallButton">Appeler</string>
   <string name="TaxiMapTitle">Votre Taxi</string>
   <string name="ErrorCreatingOrderMessage">Il y a eu une erreur lors de la création de la commande, essayez à nouveau.</string>
-  <string name="UnexpectedError">Erreur inattendue</string>  
+  <string name="UnexpectedError">Erreur inattendue</string>
   <string name="ErrorCreatingOrderTitle">Erreur</string>
   <string name="StatusActionButton">Appeler / Commander / Annuler</string>
   <string name="StatusActionCancelButton">Annuler cette commande</string>
@@ -186,7 +187,7 @@
   <string name="CreateAccoutCancel">Annuler</string>
   <string name="RideSettingsChargeType">Type paiement:</string>
   <string name="CreateAccountInvalidPassword">Le mot de passe est invalide.  Le mot de passe et la confirmation doivent être identique.  Le mot de passe doit aussi avoir entre 6 et 10 caractères.</string>
-  <string name="CreateAccountInvalidPhone">Le numéro de téléphone est invalide.  Il doit être composé de 10 chiffres.</string>  
+  <string name="CreateAccountInvalidPhone">Le numéro de téléphone est invalide.  Il doit être composé de 10 chiffres.</string>
   <string name="CreateAccountEmptyField">Les données ne sont pas valides, tous les champs doivent être remplis.</string>
   <string name="CreateAccountInvalidDataTitle">Données invalides.</string>
   <string name="CreateAccountLanguageFrench">Français</string>
@@ -203,8 +204,8 @@
   <string name="EstimatePriceOver100">Appeller pour prix</string>
   <string name="HistoryInfo">Courses du dernier mois</string>
   <string name="CarAssigned">Votre taxi #{0}</string>
-	<string name="NoMailClient">Aucun outil de courriel installé.</string>
-	<string name="ListPromptSelectOne">Sélectionner</string>
+  <string name="NoMailClient">Aucun outil de courriel installé.</string>
+  <string name="ListPromptSelectOne">Sélectionner</string>
   <string name="DateTimePickerPickDate">Choisir la date de la réservation:</string>
   <string name="DateTimePickerPickTime">Choisir l\'heure de la réservation:</string>
   <string name="DateTimePickerPickTitle">Date et heure de réservation</string>
@@ -216,7 +217,8 @@
   <string name="StatusCannotBeDisplayed">Le status ne peut être affiché. Contactez la centrale de réservation.</string>
   <string name="AccountActivationTitle">Activation</string>
   <string name="AccountActivationMessage">Vous allez recevoir un email contenant un lien pour activer ce compte.</string>
-    <string name="SaveAddressEmptyFieldMessage">Données manquantes, le nom et l\'addresse sont requis.</string>
-    <string name="SaveAddressEmptyFieldTitle">Nom manquant</string>
+  <string name="SaveAddressEmptyFieldMessage">Données manquantes, le nom et l\'addresse sont requis.</string>
+  <string name="SaveAddressEmptyFieldTitle">Nom manquant</string>
   <string name="OrderHistoryListTitle">Commande #{0}</string>
+  <string name="GoogleMapKey">0XEY3WqKVmJPhbZLikyEk8DUaS4VVLGuMHNSqKg</string>
 </resources>

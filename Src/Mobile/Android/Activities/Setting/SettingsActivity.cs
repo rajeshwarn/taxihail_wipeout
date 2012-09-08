@@ -16,6 +16,7 @@ using apcurium.MK.Booking.Mobile.Client.Activities.Account;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using TinyIoC;
 
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
@@ -28,8 +29,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
             base.OnCreate(bundle);
 			
             SetContentView(Resource.Layout.Settings);
-		
-			FindViewById<TextView>(Resource.Id.version).Text += AppSettings.Version;
+
+
+            FindViewById<TextView>(Resource.Id.version).Text += TinyIoCContainer.Current.Resolve<IPackageInfo>().Version;
 			
 			FindViewById<Button>(Resource.Id.AboutButton).Click += new EventHandler(About_Click);
 			FindViewById<Button>(Resource.Id.SignOutButton).Click += new EventHandler(Logout_Click);
@@ -47,12 +49,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 		private void CallCie_Click(object sender, EventArgs e)
         {
             //TODO:Fix this
-            RunOnUiThread(() => AlertDialogHelper.Show(this, "", AppSettings.PhoneNumberDisplay(AppContext.Current.LoggedUser.Settings.ProviderId), "Call", CallCie, "Cancel", delegate { }));
+
+            RunOnUiThread(() => AlertDialogHelper.Show(this, "", TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumberDisplay(AppContext.Current.LoggedUser.Settings.ProviderId), "Call", CallCie, "Cancel", delegate { }));
 		}
 		
 		private void CallCie( object sender, EventArgs e )
 		{
-            Intent callIntent = new Intent(Intent.ActionCall, Android.Net.Uri.Parse("tel:" + AppSettings.PhoneNumberDisplay(AppContext.Current.LoggedUser.Settings.ProviderId)));
+
+            Intent callIntent = new Intent(Intent.ActionCall, Android.Net.Uri.Parse("tel:" + TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumberDisplay(AppContext.Current.LoggedUser.Settings.ProviderId)));
             //TODO:Fix this
             //callIntent.SetData(Android.Net.Uri.Parse("tel:" + AppSettings.PhoneNumber(AppContext.Current.LoggedUser.Settings.Company)));
 			StartActivity(callIntent);
@@ -91,16 +95,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 				Intent emailIntent = new Intent( Intent.ActionSend );
                 
 				emailIntent.SetType( "application/octet-stream" );
-				emailIntent.PutExtra( Intent.ExtraEmail, new String[]{Resources.GetString( Resource.String.SupportEmail )} );
+				emailIntent.PutExtra( Intent.ExtraEmail, new String[]{ TinyIoCContainer.Current.Resolve<IAppSettings>().SupportEmail } );
 				emailIntent.PutExtra( Intent.ExtraCc, new String[]{AppContext.Current.LoggedInEmail} );
 				emailIntent.PutExtra( Intent.ExtraSubject, Resources.GetString( Resource.String.TechSupportEmailTitle ) );
 				
 				//following line is for test purposes only.  Need to be removed when tested and also remove AboutAssets.txt from Assets (set action to None or remove completely)
 				emailIntent.PutExtra( Intent.ExtraStream,  Android.Net.Uri.Parse( @"file:///" +  LoggerImpl.LogFilename )); // @"file:///android_asset/AboutAssets.txt" ) );
-				
-				if( AppSettings.ErrorLogEnabled && File.Exists( AppSettings.ErrorLog ) )
+
+                if (TinyIoCContainer.Current.Resolve<IAppSettings>().ErrorLogEnabled && File.Exists(TinyIoCContainer.Current.Resolve<IAppSettings>().ErrorLog))
 				{
-					emailIntent.PutExtra( Intent.ExtraStream,  Android.Net.Uri.Parse( AppSettings.ErrorLog ) );
+                    emailIntent.PutExtra(Intent.ExtraStream, Android.Net.Uri.Parse(TinyIoCContainer.Current.Resolve<IAppSettings>().ErrorLog));
 				}
 				try {
 					StartActivity( Intent.CreateChooser( emailIntent, "Send mail...") );

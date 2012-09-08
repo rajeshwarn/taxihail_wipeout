@@ -1,0 +1,18 @@
+{
+   "CanChangeServiceUrl" : "true",
+   "DefaultPhoneNumber" : "18666245330",
+   "DefaultPhoneNumberDisplay" : "1.866.624.5330",
+   "ErrorLog" : "",
+   "ErrorLogEnabled" : "false",
+   "FacebookAppId" : "431321630224094",
+   "FacebookEnabled" : "true",
+   "ServiceUrl" : "http://services.taxihail.com/taxihaildemo/v1/api/",
+   "SiteUrl" : "http://www.mobile-knowledge.com/index.html",
+   "TwitterAccessTokenUrl" : "https://twitter.com/oauth/access_token",
+   "TwitterAuthorizeUrl" : "https://twitter.com/oauth/authorize",
+   "TwitterCallback" : "http://www.taxihail.com/oauth",
+   "TwitterConsumerKey" : "3nNkJ5EcI7yyi56ifLSAA",
+   "TwitterConsumerSecret" : "Th6nCDTgPiI3JPwHxgm8fQheMaLczUeHHG5liHGZRqs",
+   "TwitterEnabled" : "true",
+   "TwitterRequestTokenUrl" : "https://api.twitter.com/oauth/request_token"
+}

@@ -16,7 +16,7 @@ using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-    [Application(Name = "com.apcurium.MK.TaxiHail")]
+    [Application]
     public class TaxiMobileApplication : Application
     {
         protected TaxiMobileApplication(IntPtr javaReference, JniHandleOwnership transfer)

@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 
 			SetContentView(Resource.Layout.About);
 
-            string aboutUrl = @"http://www.mobile-knowledge.com/index.html";
+            string aboutUrl = TinyIoCContainer.Current.Resolve<IAppSettings>().SiteUrl; 
 			if( TinyIoCContainer.Current.Resolve<IAppResource>().CurrentLanguage == AppLanguage.Francais )
 			{
 				//aboutUrl = @"file:///android_asset/About_fr.html";

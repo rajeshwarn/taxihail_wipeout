@@ -47,8 +47,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         }
         
         public static string GetLogo(int companyId)
-        {
-            
+        {            
             return "Assets/Logo.png";           
         }
 
@@ -60,8 +59,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         public static string Version
         {
             get
-            {
-                
+            {                
                 NSObject nsVersion = NSBundle.MainBundle.ObjectForInfoDictionary("CFBundleVersion");
                 string ver = nsVersion.ToString();
                 return ver;         
@@ -86,11 +84,8 @@ namespace apcurium.MK.Booking.Mobile.Client
                 else
                 {
                     return url;
-                }
-
-                //return "http://services.taxihail.com/taxihaildemo/v1/api/"; }
+                }                
             }
-
             set
             {
                 if (string.IsNullOrEmpty(value))

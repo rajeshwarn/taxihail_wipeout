@@ -12,6 +12,8 @@ using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Validation;
 using Android.Graphics;
 using Android.Views;
+using TinyIoC;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
@@ -73,40 +75,65 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
             FindViewById<Button>(Resource.Id.ForgotPasswordButton).Click += new EventHandler(ForgotPassword_Click);
 
-            FindViewById<Button>(Resource.Id.FacebookButton).Click += delegate
-                                                                          {
-                                                                              ShowProgressDialog();                                                                              
-                                                                              if (facebook.IsConnected)
-                                                                              {
-                                                                                  facebook.GetUserInfos(CheckIfFacebookAccountExist, () =>
-                                                                                  {
-                                                                                      facebook.Disconnect();
-                                                                                      HideProgressDialog();
-                                                                                  });
-                                                                              }
-                                                                              else
-                                                                              {
-                                                                                  facebook.Connect("email, publish_stream, publish_actions");
-                                                                              }
-
-                                                                          };
-
-            FindViewById<Button>(Resource.Id.ServerButton).Click += delegate
+            if (TinyIoCContainer.Current.Resolve<IAppSettings>().FacebookEnabled)
             {
-                PromptServer();
-            };
 
-            FindViewById<Button>(Resource.Id.TwitterButton).Click += delegate
+                FindViewById<Button>(Resource.Id.FacebookButton).Click += delegate
+                                                                              {
+                                                                                  ShowProgressDialog();
+                                                                                  if (facebook.IsConnected)
+                                                                                  {
+                                                                                      facebook.GetUserInfos(CheckIfFacebookAccountExist, () =>
+                                                                                      {
+                                                                                          facebook.Disconnect();
+                                                                                          HideProgressDialog();
+                                                                                      });
+                                                                                  }
+                                                                                  else
+                                                                                  {
+                                                                                      facebook.Connect("email, publish_stream, publish_actions");
+                                                                                  }
+
+                                                                              };
+            }
+            else
+            {
+                FindViewById<Button>(Resource.Id.FacebookButton).Visibility = ViewStates.Gone;
+            }
+
+
+
+            if (TinyIoCContainer.Current.Resolve<IAppSettings>().CanChangeServiceUrl)
+            {
+                FindViewById<Button>(Resource.Id.ServerButton).Click += delegate
                 {
-                    if (twitterService.IsConnected)
-                    {
-                        twitterService.GetUserInfos(CheckIfTwitterAccountExist);
-                    }
-                    else
-                    {
-                        twitterService.Connect();
-                    }
+                    PromptServer();
                 };
+            }
+            else
+            {
+                FindViewById<Button>(Resource.Id.ServerButton).Visibility = ViewStates.Gone;
+            }
+
+            if (TinyIoCContainer.Current.Resolve<IAppSettings>().TwitterEnabled)
+            {
+
+                FindViewById<Button>(Resource.Id.TwitterButton).Click += delegate
+                    {
+                        if (twitterService.IsConnected)
+                        {
+                            twitterService.GetUserInfos(CheckIfTwitterAccountExist);
+                        }
+                        else
+                        {
+                            twitterService.Connect();
+                        }
+                    };
+            }
+            else
+            {
+                FindViewById<Button>(Resource.Id.TwitterButton).Visibility = ViewStates.Gone;
+            }
 
             TinyIoC.TinyIoCContainer.Current.Resolve<IFacebookService>().ConnectionStatusChanged -= HandleFacebookConnection;
             TinyIoC.TinyIoCContainer.Current.Resolve<IFacebookService>().ConnectionStatusChanged += HandleFacebookConnection;
@@ -185,7 +212,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             alert.SetMessage("Enter Server Url");
 
             var input = new EditText(this);
-            input.Text = new AppSettings(null).ServiceUrl;
+            
+            input.Text = TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl;
             alert.SetView(input);
 
 
@@ -193,7 +221,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             alert.SetPositiveButton("Ok", (s, e) =>
                 {
                     var serverUrl = input.Text;
-                    new AppSettings(null).ServiceUrl = serverUrl;
+                    
+                    TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl = serverUrl;
                 });
 
             alert.SetNegativeButton("Cancel", (s, e) =>
