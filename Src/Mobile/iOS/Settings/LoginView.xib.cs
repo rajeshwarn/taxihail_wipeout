@@ -96,7 +96,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             View.AddSubview(btnSignUp);
             btnSignUp.TouchUpInside += SignUpClicked;
 
-            var btnPassword = AppButtons.CreateStandardButton(new RectangleF(170, 122, 140, 37), Resources.LoginForgotPasswordButton, AppStyle.LightBlue, AppStyle.ButtonColor.Blue);
+            var btnPassword = AppButtons.CreateStandardButton(new RectangleF(170, 122, 140, 37), Resources.LoginForgotPasswordButton, AppStyle.LightCorporateColor, AppStyle.ButtonColor.CorporateColor, false);
             View.AddSubview(btnPassword);
             btnPassword.TouchUpInside += PasswordTouchUpInside;         
 
@@ -131,19 +131,29 @@ namespace apcurium.MK.Booking.Mobile.Client
             };
             
 
-
-            var btnFbLogin = AppButtons.CreateStandardImageButton(new RectangleF(55, 281, 211, 41), Resources.FacebookLoginBtn, AppStyle.LightBlue, "Assets/Social/FB/fbIcon.png", AppStyle.ButtonColor.DarkBlue);
-            View.AddSubview(btnFbLogin);
-            btnFbLogin.TouchUpInside += FacebookLogin;  
-
-            var btnTwLogin = AppButtons.CreateStandardImageButton(new RectangleF(55, 342, 211, 41), Resources.TwitterLoginBtn, AppStyle.LightBlue, "Assets/Social/TW/twIcon.png", AppStyle.ButtonColor.DarkBlue);
-            View.AddSubview(btnTwLogin);
-            btnTwLogin.TouchUpInside += TwitterLogin;   
+            var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
 
 
-            var btnServer = AppButtons.CreateStandardImageButton(new RectangleF(55, 403, 211, 41), "Change Server", AppStyle.LightBlue, "Assets/server.png", AppStyle.ButtonColor.DarkBlue);
-            btnServer.TouchUpInside += ChangeServerTouchUpInside;
-            View.AddSubview(btnServer);
+            if (settings.FacebookEnabled)
+            {
+                var btnFbLogin = AppButtons.CreateStandardImageButton(new RectangleF(55, 281, 211, 41), Resources.FacebookLoginBtn, AppStyle.LightCorporateColor, "Assets/Social/FB/fbIcon.png", AppStyle.ButtonColor.AlternateCorporateColor);
+                View.AddSubview(btnFbLogin);
+                btnFbLogin.TouchUpInside += FacebookLogin;  
+            }
+
+            if (settings.TwitterEnabled)
+            {
+                var btnTwLogin = AppButtons.CreateStandardImageButton(new RectangleF(55, 342, 211, 41), Resources.TwitterLoginBtn, AppStyle.LightCorporateColor, "Assets/Social/TW/twIcon.png", AppStyle.ButtonColor.AlternateCorporateColor);
+                View.AddSubview(btnTwLogin);
+                btnTwLogin.TouchUpInside += TwitterLogin;   
+            }
+
+            if (settings.CanChangeServiceUrl)
+            {
+                var btnServer = AppButtons.CreateStandardImageButton(new RectangleF(55, 403, 211, 41), "Change Server", AppStyle.LightCorporateColor, "Assets/server.png", AppStyle.ButtonColor.AlternateCorporateColor);
+                btnServer.TouchUpInside += ChangeServerTouchUpInside;
+                View.AddSubview(btnServer);            
+            }
             //btnTwLogin.TouchUpInside += TwitterLogin;   
 
 
@@ -152,7 +162,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         }
 
-        void ChangeServerTouchUpInside (object sender, EventArgs e)
+        void ChangeServerTouchUpInside(object sender, EventArgs e)
         {
 
 
@@ -162,14 +172,15 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             var popup = new UIAlertView(){AlertViewStyle = UIAlertViewStyle.PlainTextInput};
             popup.Title = "Server Url";
-            popup.GetTextField(0).Text = TinyIoC.TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl;
+            popup.GetTextField(0).Text = TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl;
             var saveBtnIndex = popup.AddButton("Save");
             var cancelBtnIndex = popup.AddButton("Cancel");
 
             popup.CancelButtonIndex = cancelBtnIndex;
 
-            popup.Clicked += delegate(object sender2, UIButtonEventArgs e2) {
-                if( e2.ButtonIndex == saveBtnIndex )
+            popup.Clicked += delegate(object sender2, UIButtonEventArgs e2)
+            {
+                if (e2.ButtonIndex == saveBtnIndex)
                 {
                     TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl = popup.GetTextField(0).Text ;                 
                 }
@@ -217,7 +228,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                                 Account account = null;
                                 string error = "";
                                 var service = TinyIoCContainer.Current.Resolve<IAccountService>();
-                                if ( facebookId.HasValue() )
+                                if (facebookId.HasValue())
                                 {
 
                                     account = service.GetFacebookAccount(facebookId, out error);
@@ -238,7 +249,8 @@ namespace apcurium.MK.Booking.Mobile.Client
                             {                 
                                 LoadingOverlay.StopAnimatingLoading(this.View);
                             }
-                        });
+                        }
+                        );
                     }
                     else
                     {
@@ -253,12 +265,12 @@ namespace apcurium.MK.Booking.Mobile.Client
             nav.Title = ".";
             this.PresentModalViewController(nav, true);
 
-            nav.SetViewControllers( new UIViewController[]{view}, false );
+            nav.SetViewControllers(new UIViewController[]{view}, false);
         }
 
         private void LoadBackgroundNavBar(UINavigationBar bar)
         {
-            bar.TintColor = UIColor.FromRGB(0, 78, 145);
+            bar.TintColor =  AppStyle.NavigationBarColor;  
 
             //It might crash on iOS version smaller than 5.0
             try
@@ -331,11 +343,8 @@ namespace apcurium.MK.Booking.Mobile.Client
                     }
                     finally
                     {
-                        InvokeOnMainThread(() => { 
-							this.View.UserInteractionEnabled = true;
-
-						});
-						LoadingOverlay.StopAnimatingLoading(this.View);
+                        InvokeOnMainThread(() => this.View.UserInteractionEnabled = true);
+                        LoadingOverlay.StopAnimatingLoading(this.View);
                     }
                 }
                 );
@@ -452,10 +461,10 @@ namespace apcurium.MK.Booking.Mobile.Client
                             var service = TinyIoCContainer.Current.Resolve<IAccountService>();
 
                             string error = "";
-                            Account account = service.GetTwitterAccount( data.TwitterId, out error );
+                            Account account = service.GetTwitterAccount(data.TwitterId, out error);
                             if (account != null)
                             {
-                                SetAccountInfo( account );
+                                SetAccountInfo(account);
                             }
                             else
                             {

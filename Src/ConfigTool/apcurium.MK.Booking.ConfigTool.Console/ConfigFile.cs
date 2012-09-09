@@ -18,10 +18,12 @@ namespace apcurium.MK.Booking.ConfigTool
 
         public override void Apply()
         {
-            var destPath = Path.Combine(Parent.SrcDirectoryPath, Destination);
-            var sourcePath = Path.Combine(Parent.ConfigDirectoryPath, Source);
+            var destPath = Path.Combine(Parent.SrcDirectoryPath, PathConverter.Convert(  Destination ) );
+            var sourcePath = Path.Combine(Parent.ConfigDirectoryPath, PathConverter.Convert(  Source ) );
             File.Copy(sourcePath, destPath, true);
         }
+
+
         
     }
 

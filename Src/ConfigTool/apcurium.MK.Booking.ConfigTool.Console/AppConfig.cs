@@ -5,6 +5,10 @@ using System.Text;
 using ServiceStack.Text;
 using System.IO;
 
+#if OSX
+using ServiceStack.ServiceClient.Web;
+#endif
+
 namespace apcurium.MK.Booking.ConfigTool
 {
     public class AppConfig
@@ -20,13 +24,20 @@ namespace apcurium.MK.Booking.ConfigTool
             Init();
         }
 
-
         private void Init()
         {
             _configs = new Config[]
                 {
+#if !OSX
+
                     new ConfigKeyStore(this){ },        
+#endif
+
+
+
                     new ConfigFile(this){ Source="Settings.json", Destination=@"Mobile\Common\Settings\Settings.json" },
+                new ConfigFile(this){ Source="Style.json", Destination=@"Mobile\Common\Style\Style.json" },
+#if !OSX
                     new ConfigFile(this){ Source="public.keystore", Destination=@"Mobile\Android\public.keystore" },
                     new ConfigFile(this){ Source="splash.png", Destination=@"Mobile\Android\Resources\Drawable\splash.png" },
                     new ConfigFile(this){ Source="splash.png", Destination=@"Mobile\Android\Resources\drawable-hdpi\splash.png" },
@@ -38,13 +49,8 @@ namespace apcurium.MK.Booking.ConfigTool
                     new ConfigXML(this){  Destination=@"Mobile\Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest/application", Attribute="android:label" , SetterAtt = ( app, att )=> att.Value = app.AppName  },
                     new ConfigXML(this){  Destination=@"Mobile\Android\Resources\Values-fr\Strings.xml", NodeSelector=@"//resources/string[@name=""ApplicationName""]", SetterEle = ( app, ele )=> ele.InnerText = app.AppName  },
                     new ConfigXML(this){  Destination=@"Mobile\Android\Resources\Values\String.xml", NodeSelector=@"//resources/string[@name=""ApplicationName""]" , SetterEle= ( app, ele )=> ele.InnerText = app.AppName  },               
-
                     new ConfigXML(this){  Destination=@"Mobile\Android\Resources\Values-fr\Strings.xml", NodeSelector=@"//resources/string[@name=""GoogleMapKey""]", SetterEle = ( app, ele )=> ele.InnerText = app.GoogleMapKey  },
-                    new ConfigXML(this){  Destination=@"Mobile\Android\Resources\Values\String.xml", NodeSelector=@"//resources/string[@name=""GoogleMapKey""]" , SetterEle= ( app, ele )=> ele.InnerText = app.GoogleMapKey  },               
-                    
-                    
-                    
-
+                    new ConfigXML(this){  Destination=@"Mobile\Android\Resources\Values\String.xml", NodeSelector=@"//resources/string[@name=""GoogleMapKey""]" , SetterEle= ( app, ele )=> ele.InnerText = app.GoogleMapKey  },                                                                          
 
                     new ConfigXML(this){  Destination=@"Mobile\Android\MK.Booking.Mobile.Client.Android.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Debug|AnyCPU'"")]/a:AndroidSigningKeyAlias" , SetterEle= ( app, ele )=> ele.InnerText = app.AndroidSigningKeyAlias },               
                     new ConfigXML(this){  Destination=@"Mobile\Android\MK.Booking.Mobile.Client.Android.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Release|AnyCPU'"")]/a:AndroidSigningKeyAlias" , SetterEle= ( app, ele )=> ele.InnerText = app.AndroidSigningKeyAlias },               
@@ -55,7 +61,39 @@ namespace apcurium.MK.Booking.ConfigTool
                     
                     new ConfigXML(this){  Destination=@"Mobile\Android\MK.Booking.Mobile.Client.Android.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Debug|AnyCPU'"")]/a:AndroidSigningStorePass" , SetterEle= ( app, ele )=> ele.InnerText = app.AndroidSigningKeyPassStorePass},               
                     new ConfigXML(this){  Destination=@"Mobile\Android\MK.Booking.Mobile.Client.Android.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Release|AnyCPU'"")]/a:AndroidSigningStorePass" , SetterEle= ( app, ele )=> ele.InnerText = app.AndroidSigningKeyPassStorePass },               
-                  
+
+#else
+
+                new ConfigFile(this){ Source="Default.png", Destination=@"Mobile\iOS\Default.png" },
+                new ConfigFile(this){ Source="Default@2x.png", Destination=@"Mobile\iOS\Default@2x.png" },
+
+                new ConfigFile(this){ Source="Default.png", Destination=@"Mobile\iOS\Assets\background_full_nologo.png" },
+                new ConfigFile(this){ Source="Default@2x.png", Destination=@"Mobile\iOS\Assets\background_full_nologo@2x.png" },
+
+                new ConfigFile(this){ Source="background_full.png", Destination=@"Mobile\iOS\Assets\background_full.png" },
+                new ConfigFile(this){ Source="background_full@2x.png", Destination=@"Mobile\iOS\Assets\background_full@2x.png" },
+
+                new ConfigFile(this){ Source="Logo.png", Destination=@"Mobile\iOS\Assets\Logo.png" },
+                new ConfigFile(this){ Source="Logo@2x.png", Destination=@"Mobile\iOS\Assets\Logo@2x.png" },
+
+                new ConfigFile(this){ Source="navBar.png", Destination=@"Mobile\iOS\Assets\navBar.png" },
+                new ConfigFile(this){ Source="navBar@2x.png", Destination=@"Mobile\iOS\Assets\navBar@2x.png" },
+
+
+                new ConfigFile(this){ Source="Default@2x.png", Destination=@"Mobile\iOS\Default@2x.png" },
+
+                new ConfigFile(this){ Source="app.png", Destination=@"Mobile\iOS\app.png" },
+                new ConfigFile(this){ Source="app@2x.png", Destination=@"Mobile\iOS\app@2x.png" },
+
+                new ConfigPList(this){ Destination=@"Mobile\iOS\Info.plist", Key = "CFBundleDisplayName",  SetterEle = ( ele )=> ele.InnerText = App.AppName },
+                new ConfigPList(this){ Destination=@"Mobile\iOS\Info.plist", Key = "CFBundleIdentifier",  SetterEle = ( ele )=> ele.InnerText = App.Package },
+                new ConfigPList(this){ Destination=@"Mobile\iOS\Info.plist", Key = "CFBundleURLSchemes",  SetterEle = ( ele )=> 
+                    {
+                        ele.InnerXml = string.Format( "<string>fb{0}</string><string>taxihail</string>", Config.FacebookAppId);
+                    }
+                },
+
+#endif
   
 
                     
@@ -63,8 +101,8 @@ namespace apcurium.MK.Booking.ConfigTool
                 };
         }
 
-
         private AppInfo _app;
+
         public AppInfo App
         {
             get
@@ -73,10 +111,28 @@ namespace apcurium.MK.Booking.ConfigTool
                 {
                     using (var file = File.Open(Path.Combine(ConfigDirectoryPath, "AppInfo.json"), FileMode.Open))
                     {
-                        _app = JsonSerializer.DeserializeFromStream<AppInfo>(file);
+                        _app = JsonSerializer.DeserializeFromStream(typeof(AppInfo), file) as AppInfo;
                     }
                 }
                 return _app;
+
+            }
+        }
+
+        private AppConfigFile _config;
+
+        public AppConfigFile Config
+        {
+            get
+            {
+                if (_config == null)
+                {
+                    using (var file = File.Open(Path.Combine(ConfigDirectoryPath, "Settings.json"), FileMode.Open))
+                    {
+                        _config = JsonSerializer.DeserializeFromStream(typeof(AppConfigFile), file) as AppConfigFile;
+                    }
+                }
+                return _config;
 
             }
         }
@@ -87,7 +143,9 @@ namespace apcurium.MK.Booking.ConfigTool
         }
 
         public string Name { get; private set; }
+
         public string ConfigDirectoryPath { get; private set; }
+
         public string SrcDirectoryPath { get; private set; }
 
         public void Apply()

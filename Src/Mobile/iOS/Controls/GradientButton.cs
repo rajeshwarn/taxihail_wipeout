@@ -44,9 +44,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public GradientButton(RectangleF rect, float cornerRadius, UIColor[] colors, float[] colorLocations, float strokeLineWidth, 
                               UIColor strokeLineColor, ShadowSetting innerShadow, ShadowSetting dropShadow, 
-                              string title, UIColor titleColor, UIFont titleFont, string image = null) : base ( rect )
+                              string title, UIColor titleColor, UIFont titleFont, bool useShadow = true,  string image = null) : base ( rect )
         {
-            _textShadowColor = UIColor.FromRGBA(0f, 0f, 0f, 0.5f);
+            if ( useShadow )
+            {
+                _textShadowColor = UIColor.FromRGBA(0f, 0f, 0f, 0.5f);
+            }
             _colors = colors;
             _colorLocations = colorLocations;
             _strokeLineColor = strokeLineColor;

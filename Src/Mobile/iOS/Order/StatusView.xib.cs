@@ -361,7 +361,115 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
                 _timer = null;
             }
-        } 
+        }
+
+        private void CancelOrder()
+        {
+            var newBooking = new Confirmation();
+            newBooking.Action(Resources.StatusConfirmCancelRide, () => 
+            {
+                LoadingOverlay.StartAnimatingLoading(this.View, LoadingOverlayPosition.Center, null, 130, 30);
+                View.UserInteractionEnabled = false;
+                ThreadHelper.ExecuteInThread(() => 
+                {
+                    try
+                    {
+                        var isSuccess = TinyIoCContainer.Current.Resolve<IBookingService>().CancelOrder(Order.Id);
+                        if (isSuccess)
+                        {
+                            _timer.Dispose();
+                            _timer = null;
+                            if (CloseRequested != null)
+                            {
+                                InvokeOnMainThread(() => CloseRequested(this, EventArgs.Empty));
+                            }
+                        }
+                        else
+                        {
+                            MessageHelper.Show(Resources.StatusConfirmCancelRideErrorTitle, Resources.StatusConfirmCancelRideError);
+                        }
+                    }
+                    catch
+                    {
+                         
+                        MessageHelper.Show(Resources.StatusConfirmCancelRideErrorTitle, Resources.StatusConfirmCancelRideError);
+                        AppContext.Current.LastOrder = null;
+                        InvokeOnMainThread(() => CloseRequested(this, EventArgs.Empty));
+
+                    }
+                    finally
+                    {
+                        InvokeOnMainThread(() => 
+                        {
+                            LoadingOverlay.StopAnimatingLoading(this.View);
+                            View.UserInteractionEnabled = true;
+                        }
+                        );
+                    }
+                }
+                );
+            }
+            );
+        }
+
+        private void Rebook()
+        {
+            var newBooking = new Confirmation();
+            newBooking.Action(Resources.StatusConfirmNewBooking, () =>
+            {
+                _timer.Dispose();
+                _timer = null;
+                if (CloseRequested != null)
+                {
+                    InvokeOnMainThread(() => CloseRequested(this, EventArgs.Empty));
+                }
+            }
+            );
+        }
+
+        private void CallProvider()
+        {
+            var call = new Confirmation();
+            var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
+            call.Call(settings.PhoneNumber(Order.Settings.ProviderId.Value), settings.PhoneNumberDisplay(Order.Settings.ProviderId.Value));
+        }
+
+        void CallTouchUpInside(object sender, EventArgs e)
+        {
+            
+            var actionSheet = new UIActionSheet("");
+            actionSheet.AddButton(Resources.CallCompanyButton);
+            actionSheet.AddButton(Resources.StatusActionBookButton);
+            actionSheet.AddButton(Resources.StatusActionCancelButton);
+            actionSheet.AddButton(Resources.CancelBoutton);
+            actionSheet.CancelButtonIndex = 3;
+            actionSheet.DestructiveButtonIndex = 2;
+            actionSheet.Clicked += delegate(object se, UIButtonEventArgs ea)
+            {
+                
+                if (ea.ButtonIndex == 0)
+                {
+                    CallProvider();
+                }
+                else if (ea.ButtonIndex == 1)
+                {
+                    Rebook();
+                    
+                }
+                else if (ea.ButtonIndex == 2)
+                {
+                    CancelOrder();
+                }
+                
+                
+            };
+            actionSheet.ShowInView(AppContext.Current.Controller.View);
+            
+            
+            
+            
+        }
+        
         
         #endregion
     }

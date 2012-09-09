@@ -4,8 +4,8 @@ using System.IO;
 
 using System.Diagnostics;
 using apcurium.MK.Common.Diagnostic;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using TinyIoC;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {

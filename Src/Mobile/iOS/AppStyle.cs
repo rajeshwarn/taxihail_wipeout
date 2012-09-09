@@ -1,131 +1,105 @@
-
+using System.Linq;
 using System.Drawing;
 using MonoTouch.CoreAnimation;
 using MonoTouch.CoreGraphics;
 using MonoTouch.UIKit;
 using System.Collections.Generic;
+using apcurium.MK.Booking.Mobile.Style;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
     public class AppStyle
     {
-        public AppStyle()
-        {
-        }
         public enum ButtonColor
         {
             Black,
             Grey,
             Green,
             Red,
-            Gold,
-            Blue,
-            DarkBlue,
-			Silver
-		}
+            CorporateColor,
+            Silver,
+            AlternateCorporateColor }
         ;
-        private static Dictionary<ButtonColor, UIColor[]> _buttonColors = new Dictionary<ButtonColor, UIColor[]>(){ 
-            { ButtonColor.Black, new UIColor[] { UIColor.FromRGB(39,40,40), UIColor.FromRGB(36,37,37), UIColor.Black, UIColor.FromRGB(50,50,50) } },
-            { ButtonColor.Grey, new UIColor[] { UIColor.FromRGB(240,240,240), UIColor.FromRGB(222,222,222), UIColor.FromRGB(200,200,200) } },
-            { ButtonColor.Green, new UIColor[] { UIColor.FromRGB(143,207,15), UIColor.FromRGB(87,177,9) } },
-            { ButtonColor.Red, new UIColor[] { UIColor.FromRGB(248,76,76), UIColor.FromRGB(244,46,46) } },
-            { ButtonColor.Gold, new UIColor[] { UIColor.FromRGB(199,158,16), UIColor.FromRGB(206,164,18), UIColor.FromRGB(215,177,10), UIColor.FromRGB(244,206,40) } },
-            { ButtonColor.Blue, new UIColor[] { UIColor.FromRGB(15,94,163) } },
-            { ButtonColor.DarkBlue, new UIColor[] { UIColor.FromRGB(13,69,119) } },
-			{ ButtonColor.Silver, new UIColor[] { UIColor.FromRGB(210,208,207), UIColor.FromRGB(248,247,244) } }
-        };
-		private static Dictionary<ButtonColor, UIColor> _textShadowColor = new Dictionary<ButtonColor, UIColor>(){ 
-			{ ButtonColor.Black, UIColor.FromRGBA(0f, 0f, 0f, 0.5f) },
-			{ ButtonColor.Grey, UIColor.FromRGBA(255, 255, 255, 1f) },
-            { ButtonColor.Green, UIColor.FromRGBA(0f, 0f, 0f, 0.5f) },
-            { ButtonColor.Red,  UIColor.FromRGBA(0f, 0f, 0f, 0.5f) },
-            { ButtonColor.Gold, UIColor.FromRGBA(0f, 0f, 0f, 0.5f) },
-            { ButtonColor.Blue, UIColor.FromRGBA(0f, 0f, 0f, 0.5f) },
-            { ButtonColor.DarkBlue, UIColor.FromRGBA(0f, 0f, 0f, 0.5f) },
-			{ ButtonColor.Silver,  UIColor.FromRGBA(255, 255, 255, 0.5f) }
-        };
-		private static Dictionary<ButtonColor, float[]> _buttonColorLocations = new Dictionary<ButtonColor, float[]>(){ 
-            { ButtonColor.Black, new float[] { 0f, 0.5f, 0.53f, 1f } },
-            { ButtonColor.Grey, new float[] { 0f, 0.93f, 1f } },
-            { ButtonColor.Green, new float[] { 0f, 1f } },
-            { ButtonColor.Red, new float[] { 0f, 1f } },
-            { ButtonColor.Gold, new float[] { 0f, 0.5f, 0.5f, 1f } },
-            { ButtonColor.Blue, new float[] { 1f } },
-            { ButtonColor.DarkBlue, new float[] { 1f } },
-			{ ButtonColor.Silver, new float[] { 1f, 0f } }
-        };
-        private static Dictionary<ButtonColor, UIColor> _buttonStrokeColors = new Dictionary<ButtonColor, UIColor>(){ 
-            { ButtonColor.Black, UIColor.Black },
-            { ButtonColor.Grey, UIColor.FromRGB(155,155,155) },
-            { ButtonColor.Green, UIColor.FromRGB(69,103,24) },
-            { ButtonColor.Red, UIColor.FromRGB(182,53,64) },
-            { ButtonColor.Gold, UIColor.FromRGB(90,74,6) },
-            { ButtonColor.Blue, UIColor.FromRGB(7,34,57) },
-            { ButtonColor.DarkBlue, UIColor.FromRGB(7,34,57) }
-        };
-        private static Dictionary<ButtonColor, ShadowSetting> _buttonInnerShadows = new Dictionary<ButtonColor, ShadowSetting>(){ 
-            { ButtonColor.Green, new ShadowSetting() { BlurRadius = 1, Offset = new SizeF( 0, 1 ), Color = UIColor.FromRGBA( 255,255,255, 0.5f ) } },
-            { ButtonColor.Red, new ShadowSetting() { BlurRadius = 1, Offset = new SizeF( 0, 1 ), Color = UIColor.FromRGBA( 255,255,255, 0.5f ) } },
-			{ ButtonColor.Silver, new ShadowSetting() { BlurRadius = 1, Offset = new SizeF( 0, -1 ), Color = UIColor.FromRGB( 80,79,78 ) } }
-        };
-        private static Dictionary<ButtonColor, ShadowSetting> _buttonDropShadows = new Dictionary<ButtonColor, ShadowSetting>(){ 
-            { ButtonColor.Blue, new ShadowSetting() { BlurRadius = 1, Offset = new SizeF( 0, 1 ), Color = UIColor.FromRGB( 38,107,167 ) } },
-            { ButtonColor.DarkBlue, new ShadowSetting() { BlurRadius = 1, Offset = new SizeF( 0, 1 ), Color = UIColor.FromRGB( 38,105,164 ) } }
-        };
 
+    
         public static float ButtonStrokeLineWidth { get { return 2f; } }
 
         public static float ButtonCornerRadius { get { return 2f; } }
+      
 
         public static UIColor[] GetButtonColors(ButtonColor color)
         {
-            return _buttonColors [color];
+            var style = StyleManager.Current.Buttons.Single(c => c.Key == color.ToString());
+            return style.Colors.Select(c => UIColor.FromRGBA(c.Red, c.Green, c.Blue, c.Alpha)).ToArray();          
         }
 
         public static float[] GetButtonColorLocations(ButtonColor color)
         {
-            return _buttonColorLocations [color];
+            var style = StyleManager.Current.Buttons.Single(c => c.Key == color.ToString());
+            return  style.Colors.Select(c => c.Location).ToArray();
         }
 
         public static UIColor GetButtonTextShadowColor(ButtonColor color)
         {
-            return _textShadowColor [color];
+            var style = StyleManager.Current.Buttons.Single(c => c.Key == color.ToString());
+            return UIColor.FromRGBA(style.TextShadowColor.Red, style.TextShadowColor.Green, style.TextShadowColor.Blue, style.TextShadowColor .Alpha);
+        }
+        public static UIColor GetButtonTextColor(ButtonColor color)
+        {
+            var style = StyleManager.Current.Buttons.Single(c => c.Key == color.ToString());
+            return UIColor.FromRGBA(style.TextColor.Red, style.TextColor.Green, style.TextColor.Blue, style.TextColor .Alpha);
         }
 
         public static ShadowSetting GetInnerShadow(ButtonColor color)
         {
-            if (_buttonInnerShadows.ContainsKey(color))
+            var style = StyleManager.Current.Buttons.Single(c => c.Key == color.ToString());
+
+            if (style.InnerShadow != null)
             {
-                return _buttonInnerShadows [color];
-            } else
+                return new ShadowSetting{ BlurRadius = style.InnerShadow.BlurRadius, 
+                                                                            Offset = new SizeF( style.InnerShadow.OffsetX, style.InnerShadow.OffsetY ), 
+                                                                            Color = UIColor.FromRGBA( style.InnerShadow.Color.Red, style.InnerShadow.Color.Green, style.InnerShadow.Color.Blue , style.InnerShadow.Color.Alpha) };
+            }
+            else
             {
                 return null;
             }
+           
         }
 
         public static ShadowSetting GetDropShadow(ButtonColor color)
         {
-            if (_buttonDropShadows.ContainsKey(color))
+            var style = StyleManager.Current.Buttons.Single(c => c.Key == color.ToString());
+            if (style.DropShadow != null)
             {
-                return _buttonDropShadows [color];
-            } else
+                return new ShadowSetting{ BlurRadius = style.DropShadow.BlurRadius, 
+                                                                            Offset = new SizeF( style.DropShadow.OffsetX, style.DropShadow.OffsetY ),   
+                                                                            Color = UIColor.FromRGBA( style.DropShadow.Color.Red, style.DropShadow.Color.Green, style.DropShadow.Color.Blue , style.DropShadow.Color.Alpha) };                
+            }
+            else
             {
                 return null;
             }
+
         }
 
         public static UIColor GetButtonStrokeColor(ButtonColor color)
         {
-            return _buttonStrokeColors [color];
+            var style = StyleManager.Current.Buttons.Single(c => c.Key == color.ToString());
+            return UIColor.FromRGBA(style.StrokeColor.Red, style.StrokeColor.Green, style.StrokeColor.Blue, style.StrokeColor .Alpha);
         }
 
         public static UIColor GreyText { get { return UIColor.FromRGB(101, 101, 101); } }
 
-        public static UIColor LightBlue { get { return UIColor.FromRGB(188, 217, 242); } }
+        public static UIColor NavigationTitleColor { get { return  UIColor.FromRGBA(StyleManager.Current.NavigationTitleColor.Red, StyleManager.Current.NavigationTitleColor.Green, StyleManager.Current.NavigationTitleColor.Blue, StyleManager.Current.NavigationTitleColor.Alpha); } }
+
+        public static UIColor NavigationBarColor { get { return  UIColor.FromRGBA(StyleManager.Current.NavigationBarColor.Red, StyleManager.Current.NavigationBarColor.Green, StyleManager.Current.NavigationBarColor.Blue, StyleManager.Current.NavigationBarColor.Alpha); } }
+
+        public static UIColor LightCorporateColor { get { return  UIColor.FromRGBA(StyleManager.Current.LightCorporateTextColor.Red, StyleManager.Current.LightCorporateTextColor.Green, StyleManager.Current.LightCorporateTextColor.Blue, StyleManager.Current.LightCorporateTextColor.Alpha); } }
 
         public static UIColor DarkText { get { return UIColor.FromRGB(57, 44, 11); } }
 
-		public static UIColor TitleTextColor { get { return UIColor.FromRGB(66, 63, 58); } }
+	    public static UIColor TitleTextColor { get { return UIColor.FromRGB(66, 63, 58); } }
 
 		public static UIFont NormalTextFont { get { return UIFont.FromName( "HelveticaNeue", CellFontSize ); } }
 
@@ -159,23 +133,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public static UIColor CellBackgroundColor{ get{ return UIColor.FromRGB(253, 253, 253); } }
 		public static UIColor CellFirstLineTextColor{ get{ return UIColor.FromRGB(77, 77, 77); } }
 		public static UIColor CellSecondLineTextColor{ get{ return UIColor.FromRGB(133, 133, 133); } }
-//        public static UIColor NavBarColor
-//        {
-//             private void LoadBackgroundNavBar()
-//        {
-//            NavigationBar.TintColor = UIColor.FromRGB(0, 78, 145);
-//
-//            //It might crash on iOS version smaller than 5.0
-//            try 
-//            {
-//                NavigationBar.SetBackgroundImage(UIImage.FromFile("Assets/navBar.png"), UIBarMetrics.Default);
-//            }
-//            catch
-//            {
-//            }
-//        }    
-//            get { return UIColor.FromRGB(174, 181, 137); }
-//        }
+
+
     }
 
     public class ShadowSetting

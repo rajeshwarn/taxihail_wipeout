@@ -34,16 +34,16 @@ namespace apcurium.MK.Booking.Mobile.Client
         }
 
 
-		public static GradientButton CreateStandardButton ( RectangleF rect, string title, UIColor titleColor, AppStyle.ButtonColor buttonColor )
+		public static GradientButton CreateStandardButton ( RectangleF rect, string title, UIColor titleColor, AppStyle.ButtonColor buttonColor,  bool useTitleShadow = true )
 		{
-			var btn = new GradientButton( rect, AppStyle.ButtonCornerRadius, AppStyle.GetButtonColors( buttonColor ), AppStyle.GetButtonColorLocations( buttonColor ), AppStyle.ButtonStrokeLineWidth, AppStyle.GetButtonStrokeColor( buttonColor ), AppStyle.GetInnerShadow( buttonColor ), AppStyle.GetDropShadow( buttonColor ), title, titleColor, AppStyle.GetButtonFont( AppStyle.ButtonFontSize ) );
+			var btn = new GradientButton( rect, AppStyle.ButtonCornerRadius, AppStyle.GetButtonColors( buttonColor ), AppStyle.GetButtonColorLocations( buttonColor ), AppStyle.ButtonStrokeLineWidth, AppStyle.GetButtonStrokeColor( buttonColor ), AppStyle.GetInnerShadow( buttonColor ), AppStyle.GetDropShadow( buttonColor ), title, titleColor, AppStyle.GetButtonFont( AppStyle.ButtonFontSize ), useTitleShadow );
 
 			return btn;
 		}
 
-		public static GradientButton CreateStandardImageButton ( RectangleF rect, string title, UIColor titleColor, string image, AppStyle.ButtonColor buttonColor )
+		public static GradientButton CreateStandardImageButton ( RectangleF rect, string title, UIColor titleColor, string image, AppStyle.ButtonColor buttonColor,  bool useTitleShadow = true )
 		{
-			var btn = new GradientButton( rect, AppStyle.ButtonCornerRadius, AppStyle.GetButtonColors( buttonColor ), AppStyle.GetButtonColorLocations( buttonColor ), AppStyle.ButtonStrokeLineWidth, AppStyle.GetButtonStrokeColor( buttonColor ), AppStyle.GetInnerShadow( buttonColor ), AppStyle.GetDropShadow( buttonColor ), title, titleColor, AppStyle.GetButtonFont( AppStyle.ButtonFontSize ), image  );
+			var btn = new GradientButton( rect, AppStyle.ButtonCornerRadius, AppStyle.GetButtonColors( buttonColor ), AppStyle.GetButtonColorLocations( buttonColor ), AppStyle.ButtonStrokeLineWidth, AppStyle.GetButtonStrokeColor( buttonColor ), AppStyle.GetInnerShadow( buttonColor ), AppStyle.GetDropShadow( buttonColor ), title, titleColor, AppStyle.GetButtonFont( AppStyle.ButtonFontSize ), useTitleShadow, image  );
 
 			return btn;
 		}

@@ -25,7 +25,7 @@
     <MtouchSdkVersion>5.1</MtouchSdkVersion>
     <MtouchProfiling>True</MtouchProfiling>
     <AssemblyName>TaxiHail</AssemblyName>
-    <CrashReportingApiKey />
+    <MtouchExtraArgs>--disable-thread-check</MtouchExtraArgs>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
@@ -73,6 +73,7 @@
     <CrashReportingApiKey />
     <AssemblyName>TaxiMobileApp</AssemblyName>
     <MtouchSdkVersion>5.1</MtouchSdkVersion>
+    <MtouchExtraArgs>--disable-thread-check</MtouchExtraArgs>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Distribution|iPhone' ">
     <DebugType>none</DebugType>

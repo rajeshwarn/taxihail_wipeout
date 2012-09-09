@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.ConfigTool
         public override void Apply()
         {
             
-            var destPath = Path.Combine(Parent.SrcDirectoryPath, Destination);
+            var destPath = Path.Combine(Parent.SrcDirectoryPath, PathConverter.Convert( Destination));
             var doc = new XmlDocument();
             doc.Load(destPath);
 

@@ -41,6 +41,8 @@ namespace apcurium.MK.Booking.Mobile.Client
         // This method is invoked when the application has loaded its UI and its ready to run
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
+
+
             Background.Load(window, "Assets/background_full_nologo.png", false, 0, 0);          
             
             AppContext.Initialize(window);
@@ -62,6 +64,10 @@ namespace apcurium.MK.Booking.Mobile.Client
                 {
                     InvokeOnMainThread(() =>
                     {
+
+
+                        SetUIDefaults( );
+
                         _tabBarController.Load();
 
                         window.AddSubview(_tabBarController.View);
@@ -89,6 +95,12 @@ namespace apcurium.MK.Booking.Mobile.Client
             return true;
         }
 
+        private void SetUIDefaults()
+        {
+            var buttonAtt = new UITextAttributes{ TextColor = AppStyle.LightCorporateColor, TextShadowColor = UIColor.Clear };
+            UIBarButtonItem.Appearance.SetTitleTextAttributes( buttonAtt, UIControlState.Normal );
+
+        }
         // This method is required in iPhoneOS 3.0
         public override void OnActivated(UIApplication application)
         {
@@ -171,6 +183,8 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             return HandleOpenURL( application , url );
         }       
+
+
     }
     
 }

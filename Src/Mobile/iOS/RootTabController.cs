@@ -194,7 +194,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 _titleText.TextAlignment = UITextAlignment.Center;
                 _titleText.Text = title;
                 _titleText.Font = UIFont.BoldSystemFontOfSize(17);
-                _titleText.TextColor = UIColor.White;
+                _titleText.TextColor = AppStyle.NavigationTitleColor;
                 _titleText.BackgroundColor = UIColor.Clear;
                 this.AddSubview(_titleText);
             }
@@ -248,11 +248,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         private void LoadBackgroundNavBar()
         {
-            NavigationBar.TintColor = UIColor.FromRGB(0, 78, 145);
+            NavigationBar.TintColor = AppStyle.NavigationBarColor;  
+
 
             //It might crash on iOS version smaller than 5.0
             try
-            {
+            {               
                 NavigationBar.SetBackgroundImage(UIImage.FromFile("Assets/navBar.png"), UIBarMetrics.Default);
             }
             catch

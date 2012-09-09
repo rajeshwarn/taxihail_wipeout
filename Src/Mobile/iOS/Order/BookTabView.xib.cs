@@ -358,7 +358,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                     string error;
                     
 //                    if (!AppSettings.ShowNumberOfTaxi)
-//                    {
+//                    {                    
                         bi.Settings.NumberOfTaxi = 1;
                     //}
                 

@@ -9,7 +9,7 @@
 //    public class AppSettings : IAppSettings
 //    {
 //        
-//		public bool CanChooseProvider { get { return true; } }
+//        
 //
 //        public static bool ErrorLogEnabled
 //        {
@@ -26,7 +26,7 @@
 //            get { return "http://www.taxihail.com/"; }
 //        }
 //
-//        public static string PhoneNumber(int? providerId)
+//        public static string PhoneNumber(int providerId)
 //        {
 //            return "18666245330";           
 //        }
@@ -51,7 +51,7 @@
 //            return "Assets/Logo.png";           
 //        }
 //
-//        public static string PhoneNumberDisplay(int? companyId)
+//        public static string PhoneNumberDisplay(int companyId)
 //        {
 //            return "1.866.624.5330";
 //        }
@@ -71,12 +71,6 @@
 //            get { return "http://services.taxihail.com/{0}/v1/api/"; }
 //
 //        }
-//
-//		public string DefaultServiceServer {
-//			get {
-//				return "taxihaildemo";
-//			}
-//		}
 //    
 //        public string ServiceUrl
 //        {
@@ -85,7 +79,7 @@
 //                var url = TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService>().Get<string>("TaxiHail.ServiceUrl");
 //                if (string.IsNullOrEmpty(url))
 //                {
-//                    return string.Format(DefaultServiceUrl, DefaultServiceServer);
+//                    return string.Format(DefaultServiceUrl, "taxihaildemo");
 //                }
 //                else
 //                {
@@ -110,7 +104,6 @@
 //            }
 //
 //        }
-//
 //
 //    }
 //}

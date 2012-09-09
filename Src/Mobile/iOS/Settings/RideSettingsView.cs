@@ -209,7 +209,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 					_phoneEntry.KeyboardType = MonoTouch.UIKit.UIKeyboardType.PhonePad;
 					
 					
-//                    if (TinyIoCContainer.Current.Resolve<IAppSettings>().ShowNumberOfTaxi)
+//					if (AppSettings.ShowNumberOfTaxi)
 //					{
 //						_numberOfTaxiEntry = new RightAlignedEntryElement (Resources.RideSettingsNumberOfTaxi, "", _settings.NumberOfTaxi.ToString ());
 //						_numberOfTaxiEntry.Changed += delegate {

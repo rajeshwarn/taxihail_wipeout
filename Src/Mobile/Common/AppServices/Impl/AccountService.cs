@@ -236,7 +236,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 return true;
 
             }
-            catch (Exception e)
+            catch
             {
                 return false;
             }

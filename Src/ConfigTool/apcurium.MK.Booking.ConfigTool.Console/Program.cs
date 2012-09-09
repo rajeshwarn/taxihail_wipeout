@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.ConfigTool
         static void Main(string[] args)
         {
 
-            var fullPath = Path.GetFullPath(ToolSettings.Default.RootDirectory);            
+            var fullPath = Path.GetFullPath( PathConverter.Convert( ToolSettings.Default.RootDirectory) );       
             var directories = Directory.GetDirectories(fullPath);
             if (!directories.Any(dir => Path.GetFileName(dir).ToLower() == "config") ||
                  !directories.Any(dir => Path.GetFileName(dir).ToLower() == "src"))

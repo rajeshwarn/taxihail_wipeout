@@ -58,7 +58,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
          private void LoadBackgroundNavBar(UINavigationBar bar)
         {
-            bar.TintColor = UIColor.FromRGB(0, 78, 145);
+            bar.TintColor = AppStyle.NavigationBarColor;  
 
             //It might crash on iOS version smaller than 5.0
             try
