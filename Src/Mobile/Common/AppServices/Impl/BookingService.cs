@@ -100,21 +100,26 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return isCompleted;
         }
 
-        public List<Contact> GetContactWithAddress()
+        public List<Api.Contract.Resources.Address> GetAddressFromAddressBook()
         {
             var book = TinyIoCContainer.Current.Resolve<AddressBook>();
-            var contacts = new List<Contact>();
+            var contacts = new List<Api.Contract.Resources.Address>();
 
             book.PreferContactAggregation = true;
 
             foreach (Contact contact in book.Where(c => c.Addresses.Any()))
             {
-                contacts.Add(contact);
+                contact.Addresses.ForEach(c => contacts.Add(new Api.Contract.Resources.Address()
+                                                                {
+                                                                    FriendlyName = contact.DisplayName,
+                                                                    FullAddress = c.StreetAddress,
+                                                                    City = c.City,
+                                                                    IsHistoric = false,
+                                                                    ZipCode = c.PostalCode
+                                                                }));
             }
             return contacts;
         }
-
-
     }
 }
 

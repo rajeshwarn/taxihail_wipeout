@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 	    void RemoveFromHistory(Guid orderId);
 
-	    List<Contact> GetContactWithAddress();
+        List<apcurium.MK.Booking.Api.Contract.Resources.Address> GetAddressFromAddressBook();
 
 	}
 }
