@@ -63,7 +63,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             
             SetContentView(Resource.Layout.Book);
 
-            var contacts = TinyIoCContainer.Current.Resolve<IBookingService>().GetContactWithAddress();
+            var contacts = TinyIoCContainer.Current.Resolve<IBookingService>().GetAddressFromAddressBook();
 
             ResetBookingInfo();
             var pickupButton = FindViewById<Button>(Resource.Id.PickupBtn);
