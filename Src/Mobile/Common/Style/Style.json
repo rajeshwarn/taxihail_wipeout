@@ -7,7 +7,7 @@
       "Key": "CorporateColor",
       "Colors": [  { "Red": "15", "Green": "94", "Blue": "163", "Alpha": "255",  "Location": "1"  }  ],
       "StrokeColor": {  "Red": "7", "Green": "34",  "Blue": "57", "Alpha": "255",  "Location": "1"  },
-      "TextColor": {  "Red": "126", "Green": "98",  "Blue": "26", "Alpha": "255",  "Location": "1"  },
+      "TextColor": {  "Red": "188", "Green": "217",  "Blue": "242", "Alpha": "255",  "Location": "1"  },
       "TextShadowColor": {  "Red": "0", "Green": "0",  "Blue": "0", "Alpha": "128",  "Location": "1"  },
       "DropShadow": {
         "BlurRadius": "1",
@@ -20,7 +20,7 @@
       "Key": "AlternateCorporateColor",
       "Colors": [  {  "Red": "13", "Green": "69", "Blue": "119",   "Alpha": "255", "Location": "1"     }   ],
       "StrokeColor": { "Red": "7", "Green": "34", "Blue": "57", "Alpha": "255",  "Location": "1"  },
-      "TextColor": {  "Red": "126", "Green": "98",  "Blue": "26", "Alpha": "255",  "Location": "1"  },
+      "TextColor": {  "Red": "188", "Green": "217",  "Blue": "242", "Alpha": "255",  "Location": "1"  },
       "TextShadowColor": {  "Red": "0", "Green": "0",  "Blue": "0", "Alpha": "128",  "Location": "1"  },
       "DropShadow": {
         "BlurRadius": "1",
@@ -34,7 +34,7 @@
       "Colors": [  { "Red": "248", "Green": "76", "Blue": "76", "Alpha": "255",  "Location": "0"  } ,
                     { "Red": "244", "Green": "46", "Blue": "46", "Alpha": "255",  "Location": "1"  } ],
       "StrokeColor": {  "Red": "182", "Green": "53",  "Blue": "64", "Alpha": "255",  "Location": "1"  },
-      "TextColor": {  "Red": "126", "Green": "98",  "Blue": "26", "Alpha": "255",  "Location": "1"  },
+      "TextColor": {  "Red": "255", "Green": "255",  "Blue": "255", "Alpha": "255",  "Location": "1"  },
       "TextShadowColor": {  "Red": "0", "Green": "0",  "Blue": "0", "Alpha": "128",  "Location": "1"  },
       "InnerShadow": {
         "BlurRadius": "1",
@@ -53,7 +53,7 @@
                     { "Red": "50", "Green": "50", "Blue": "50", "Alpha": "255",  "Location": "1"  }                    
                     ],
       "StrokeColor": {  "Red": "0", "Green": "0",  "Blue": "0", "Alpha": "255",  "Location": "1"  }   ,
-      "TextColor": {  "Red": "126", "Green": "98",  "Blue": "26", "Alpha": "255",  "Location": "1"  },
+      "TextColor": {  "Red": "255", "Green": "255",  "Blue": "255", "Alpha": "255",  "Location": "1"  },
       "TextShadowColor": {  "Red": "0", "Green": "0",  "Blue": "0", "Alpha": "128",  "Location": "1"  }
     }
     ,
@@ -63,8 +63,8 @@
                     { "Red": "222", "Green": "222", "Blue": "222", "Alpha": "255",  "Location": "0.93"  } ,
                     { "Red": "200", "Green": "200", "Blue": "200", "Alpha": "255",  "Location": "1"  } ],
       "StrokeColor": {  "Red": "155", "Green": "155",  "Blue": "155", "Alpha": "255",  "Location": "1"  }    ,
-      "TextColor": {  "Red": "126", "Green": "98",  "Blue": "26", "Alpha": "255",  "Location": "1"  },
-      "TextShadowColor": {  "Red": "0", "Green": "0",  "Blue": "0", "Alpha": "128",  "Location": "1"  }
+      "TextColor": {  "Red": "101", "Green": "101",  "Blue": "101", "Alpha": "255",  "Location": "1"  },
+      "TextShadowColor": {  "Red": "255", "Green": "255",  "Blue": "255", "Alpha": "255",  "Location": "1"  }
     }
     ,
     {
@@ -72,7 +72,7 @@
       "Colors": [  { "Red": "143", "Green": "207", "Blue": "15", "Alpha": "255",  "Location": "0"  } ,
                     { "Red": "87", "Green": "177", "Blue": "9", "Alpha": "255",  "Location": "1"  } ],
       "StrokeColor": {  "Red": "69", "Green": "103",  "Blue": "24", "Alpha": "255",  "Location": "1"  },
-      "TextColor": {  "Red": "126", "Green": "98",  "Blue": "26", "Alpha": "255",  "Location": "1"  },
+      "TextColor": {  "Red": "255", "Green": "255",  "Blue": "255", "Alpha": "255",  "Location": "1"  },
       "TextShadowColor": {  "Red": "0", "Green": "0",  "Blue": "0", "Alpha": "128",  "Location": "1"  },
       "InnerShadow": {
         "BlurRadius": "1",

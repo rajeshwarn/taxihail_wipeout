@@ -4,6 +4,7 @@ using MonoTouch.UIKit;
 using System.Drawing;
 using MonoTouch.CoreGraphics;
 using MonoTouch.Foundation;
+using apcurium.MK.Common.Extensions;
 
 
 namespace apcurium.MK.Booking.Mobile.Client
@@ -28,8 +29,8 @@ namespace apcurium.MK.Booking.Mobile.Client
         private UIFont _titleFont = AppStyle.GetButtonFont( AppStyle.ButtonFontSize ) ;       
         private UIColor _textShadowColor = null;
         private UIImage _image;
-        private ShadowSetting _innerShadow;
-        private ShadowSetting _dropShadow;
+        private Style.ShadowDefinition _innerShadow = null;
+        private Style.ShadowDefinition _dropShadow = null;
 
         public GradientButton(IntPtr handle) : base(  handle )
         {
@@ -42,24 +43,26 @@ namespace apcurium.MK.Booking.Mobile.Client
             SetTitleColor( UIColor.Clear, UIControlState.Selected );
         }
 
-        public GradientButton(RectangleF rect, float cornerRadius, UIColor[] colors, float[] colorLocations, float strokeLineWidth, 
-                              UIColor strokeLineColor, ShadowSetting innerShadow, ShadowSetting dropShadow, 
-                              string title, UIColor titleColor, UIFont titleFont, bool useShadow = true,  string image = null) : base ( rect )
+//		        public GradientButton(RectangleF rect, float cornerRadius, UIColor[] colors, float[] colorLocations, float strokeLineWidth, 
+//                              UIColor strokeLineColor, ShadowSetting innerShadow, ShadowSetting dropShadow, 
+//                              string title, UIColor titleColor, UIFont titleFont, bool useShadow = true,  string image = null) : base ( rect )
+        public GradientButton(RectangleF rect, float cornerRadius, Style.ButtonStyle buttonStyle, string title, UIFont titleFont, string image = null) : base ( rect )
         {
-            if ( useShadow )
-            {
-                _textShadowColor = UIColor.FromRGBA(0f, 0f, 0f, 0.5f);
-            }
-            _colors = colors;
-            _colorLocations = colorLocations;
-            _strokeLineColor = strokeLineColor;
-            _strokeLineWidth = strokeLineWidth;
+
+			buttonStyle.TextShadowColor.Maybe( c => _textShadowColor = UIColor.FromRGBA(c.Red, c.Green, c.Blue, c.Alpha) );
+
+            _colors = buttonStyle.Colors.Select ( color => UIColor.FromRGBA(color.Red, color.Green, color.Blue, color.Alpha) ).ToArray();
+			_colorLocations = buttonStyle.Colors.Select ( color => color.Location ).ToArray();
+			_strokeLineColor = UIColor.FromRGBA( buttonStyle.StrokeColor.Red, buttonStyle.StrokeColor.Green, buttonStyle.StrokeColor.Blue, buttonStyle.StrokeColor.Alpha);
+            _strokeLineWidth = buttonStyle.StrokeLineWidth;
             _cornerRadius = cornerRadius;
             _title = title;
-            _titleColor = titleColor.CGColor;
-            _titleFont = titleFont;
-            _innerShadow = innerShadow;
-            _dropShadow = dropShadow;
+            _titleColor = UIColor.FromRGBA( buttonStyle.TextColor.Red, buttonStyle.TextColor.Green, buttonStyle.TextColor.Blue, buttonStyle.TextColor.Alpha).CGColor;
+			_titleFont = titleFont;
+			_innerShadow = buttonStyle.InnerShadow;
+			_dropShadow = buttonStyle.DropShadow;
+//			buttonStyle.InnerShadow.Maybe( shadow => _innerShadow = new ShadowSetting(){ BlurRadius = shadow.BlurRadius, Offset = new SizeF(shadow.OffsetX, shadow.OffsetY), Color = UIColor.FromRGBA(shadow.Color.Red, shadow.Color.Green, shadow.Color.Blue, shadow.Color.Alpha) } );
+//			buttonStyle.DropShadow.Maybe( shadow => _dropShadow = new ShadowSetting(){ BlurRadius = shadow.BlurRadius, Offset = new SizeF(shadow.OffsetX, shadow.OffsetY), Color = UIColor.FromRGBA(shadow.Color.Red, shadow.Color.Green, shadow.Color.Blue, shadow.Color.Alpha) } );
             BackgroundColor = UIColor.Clear;
             Layer.MasksToBounds = false;
             ClipsToBounds = false;
@@ -73,7 +76,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         }
 
 
-        public ShadowSetting DropShadow
+        public Style.ShadowDefinition DropShadow
         {
             get{ return _dropShadow; }
             set
@@ -83,7 +86,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
         }
 
-        public ShadowSetting InnerShadow
+        public Style.ShadowDefinition InnerShadow
         {
             get{ return _innerShadow; }
             set
@@ -219,16 +222,16 @@ namespace apcurium.MK.Booking.Mobile.Client
             var newGradientLocations = _colorLocations;
             var newGradient = new CGGradient(colorSpace, newGradientColors, newGradientLocations);
 
-            rect.Width -= _dropShadow != null ? Math.Abs(_dropShadow.Offset.Width) : 0;
-            rect.Height -= _dropShadow != null ? Math.Abs(_dropShadow.Offset.Height) : 0;
-            rect.X += _dropShadow != null && _dropShadow.Offset.Width < 0 ? Math.Abs(_dropShadow.Offset.Width) : 0;
-            rect.Y += _dropShadow != null && _dropShadow.Offset.Height < 0 ? Math.Abs(_dropShadow.Offset.Height) : 0;
+            rect.Width -= _dropShadow != null ? Math.Abs(_dropShadow.OffsetX) : 0;
+            rect.Height -= _dropShadow != null ? Math.Abs(_dropShadow.OffsetY) : 0;
+            rect.X += _dropShadow != null && _dropShadow.OffsetX < 0 ? Math.Abs(_dropShadow.OffsetX) : 0;
+            rect.Y += _dropShadow != null && _dropShadow.OffsetY < 0 ? Math.Abs(_dropShadow.OffsetY) : 0;
 
             var roundedRectanglePath = UIBezierPath.FromRoundedRect(rect, _cornerRadius);
             context.SaveState();
             if (_dropShadow != null)
             {
-                context.SetShadowWithColor(_dropShadow.Offset, _dropShadow.BlurRadius, _dropShadow.Color.CGColor);
+                context.SetShadowWithColor( new SizeF( _dropShadow.OffsetX, _dropShadow.OffsetY ), _dropShadow.BlurRadius, UIColor.FromRGBA( _dropShadow.Color.Red, _dropShadow.Color.Green, _dropShadow.Color.Blue, _dropShadow.Color.Alpha ).CGColor );
             }
 
             context.BeginTransparencyLayer(null);
@@ -241,7 +244,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
                 var roundedRectangleBorderRect = roundedRectanglePath.Bounds;
                 roundedRectangleBorderRect.Inflate(_innerShadow.BlurRadius, _innerShadow.BlurRadius);
-                roundedRectangleBorderRect.Offset(-_innerShadow.Offset.Width, -_innerShadow.Offset.Height);
+                roundedRectangleBorderRect.Offset(-_innerShadow.OffsetX, -_innerShadow.OffsetY);
                 roundedRectangleBorderRect = RectangleF.Union(roundedRectangleBorderRect, roundedRectanglePath.Bounds);
                 roundedRectangleBorderRect.Inflate(1, 1);
 
@@ -251,12 +254,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 
                 context.SaveState();
                 {
-                    var xOffset = _innerShadow.Offset.Width + (float)Math.Round(roundedRectangleBorderRect.Width);
-                    var yOffset = _innerShadow.Offset.Height;
+                    var xOffset = _innerShadow.OffsetX + (float)Math.Round(roundedRectangleBorderRect.Width);
+                    var yOffset = _innerShadow.OffsetY;
                     context.SetShadowWithColor(
                         new SizeF(xOffset + (xOffset >= 0 ? 0.1f : -0.1f), yOffset + (yOffset >= 0 ? 0.1f : -0.1f)),
                         _innerShadow.BlurRadius,
-                        _innerShadow.Color.CGColor);
+                        UIColor.FromRGBA( _innerShadow.Color.Red, _innerShadow.Color.Green, _innerShadow.Color.Blue, _innerShadow.Color.Alpha ).CGColor);
 
                     roundedRectanglePath.AddClip();
                     var transform = CGAffineTransform.MakeTranslation(-(float)Math.Round(roundedRectangleBorderRect.Width), 0);

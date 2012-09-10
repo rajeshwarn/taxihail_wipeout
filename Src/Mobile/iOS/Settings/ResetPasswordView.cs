@@ -165,7 +165,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         private void AddButton(float x, float y, string title, UIColor normal, UIColor selected, Action clicked, AppStyle.ButtonColor bcolor)
         {
-            var btn = AppButtons.CreateStandardGradientButton(new System.Drawing.RectangleF(x, y, 130, 40), title, bcolor == AppStyle.ButtonColor.Grey ? UIColor.FromRGB(101, 101, 101) : UIColor.White, bcolor);
+            var btn = AppButtons.CreateStandardButton(new System.Drawing.RectangleF(x, y, 130, 40), title, bcolor);
             btn.TextShadowColor = null;
 //          var btn = UIButton.FromType (UIButtonType.RoundedRect);
 //          btn.Frame = new System.Drawing.RectangleF (x, y, 130, 40);

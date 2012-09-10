@@ -82,7 +82,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			btnCall.TouchUpInside += CallTouchUpInside;
 			
 			
-			AppButtons.FormatStandardGradientButton((GradientButton)btnSignOut, Resources.SignOutButton, UIColor.White, AppStyle.ButtonColor.Red); 
+			AppButtons.FormatStandardButton((GradientButton)btnSignOut, Resources.SignOutButton, AppStyle.ButtonColor.Red); 
 
 						
 			imgCreatedBy.Image = UIImage.FromFile ("Assets/apcuriumLogo.png");

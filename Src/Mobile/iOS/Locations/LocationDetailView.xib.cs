@@ -90,10 +90,10 @@ namespace apcurium.MK.Booking.Mobile.Client
             txtAddress.Ended += HandleTxtAddressEnded;
 
 
-            AppButtons.FormatStandardGradientButton((GradientButton)btnSave, Resources.SaveButton, UIColor.White, AppStyle.ButtonColor.Green); 
+            AppButtons.FormatStandardButton((GradientButton)btnSave, Resources.SaveButton, AppStyle.ButtonColor.Green); 
 
             ((GradientButton)btnBook).SetTitle(Resources.BookFromLocationButton, UIControlState.Normal);
-            AppButtons.FormatStandardGradientButton((GradientButton)btnDelete, Resources.DeleteButton, UIColor.White, AppStyle.ButtonColor.Red); 
+            AppButtons.FormatStandardButton((GradientButton)btnDelete, Resources.DeleteButton, AppStyle.ButtonColor.Red); 
 
             btnBook.TouchUpInside += BtnBookTouchUpInside;
             btnSave.TouchUpInside += BtnSaveTouchUpInside;

@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F073E4F8-E0B6-43E7-84C1-B71AE4BEA0E0}</ProjectGuid>
+    <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Cirrious.MvvmCross.Dialog.Touch</RootNamespace>
+    <AssemblyName>Cirrious.MvvmCross.Dialog.Touch</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\iPhoneSimulator\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <MtouchDebug>true</MtouchDebug>
+    <MtouchProfiling>true</MtouchProfiling>
+    <MtouchLink>None</MtouchLink>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\iPhoneSimulator\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <MtouchLink>None</MtouchLink>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AdHoc|iPhone' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\iPhone\AdHoc</OutputPath>
+    <WarningLevel>4</WarningLevel>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <DefineConstants>MONOTOUCH</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|iPhone'">
+    <OutputPath>bin\iPhone\Debug\</OutputPath>
+    <DebugType>none</DebugType>
+    <WarningLevel>4</WarningLevel>
+    <Optimize>false</Optimize>
+    <NoStdLib>true</NoStdLib>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|iPhone'">
+    <OutputPath>bin\iPhone\Release\</OutputPath>
+    <DebugType>none</DebugType>
+    <WarningLevel>4</WarningLevel>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AdHoc|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\AdHoc</OutputPath>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AdHoc|iPhoneSimulator' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\AdHoc</OutputPath>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="monotouch">
+    </Reference>
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="Dialog\DialogViewController.cs" />
+    <Compile Include="Dialog\Elements\MessageSummaryView.cs" />
+    <Compile Include="Dialog\Elements\BaseBooleanImageElement.cs" />
+    <Compile Include="Dialog\Elements\BooleanElement.cs" />
+    <Compile Include="Dialog\Elements\BooleanImageElement.cs" />
+    <Compile Include="Dialog\Elements\CheckboxElement.cs" />
+    <Compile Include="Dialog\Elements\DateElement.cs" />
+    <Compile Include="Dialog\Elements\DateTimeElement.cs" />
+    <Compile Include="Dialog\Elements\Element.cs" />
+    <Compile Include="Dialog\Elements\ActivityElement.cs" />
+    <Compile Include="Dialog\Elements\ElementBadge.cs" />
+    <Compile Include="Dialog\Elements\Json.cs" />
+    <Compile Include="Dialog\Elements\MessageElement.cs" />
+    <Compile Include="Dialog\Elements\OwnerDrawnElement.cs" />
+    <Compile Include="Dialog\Elements\EntryElement.cs" />
+    <Compile Include="Dialog\Elements\FloatElement.cs" />
+    <Compile Include="Dialog\Elements\Group.cs" />
+    <Compile Include="Dialog\Elements\HtmlElement.cs" />
+    <Compile Include="Dialog\Elements\IColorizeBackground.cs" />
+    <Compile Include="Dialog\Elements\IElementSizing.cs" />
+    <Compile Include="Dialog\Elements\ImageElement.cs" />
+    <Compile Include="Dialog\Elements\ImageStringElement.cs" />
+    <Compile Include="Dialog\Elements\MultilineElement.cs" />
+    <Compile Include="Dialog\Elements\RadioElement.cs" />
+    <Compile Include="Dialog\Elements\RadioGroup.cs" />
+    <Compile Include="Dialog\Elements\RootElement.cs" />
+    <Compile Include="Dialog\Elements\Section.cs" />
+    <Compile Include="Dialog\Elements\StringElement.cs" />
+    <Compile Include="Dialog\Elements\ValueElement.cs" />
+    <Compile Include="Dialog\Elements\StyledMultilineElement.cs" />
+    <Compile Include="Dialog\Elements\StyledStringElement.cs" />
+    <Compile Include="Dialog\Elements\TimeElement.cs" />
+    <Compile Include="Dialog\Elements\UIViewElement.cs" />
+    <Compile Include="Dialog\OldElements\LoadMoreElement.cs" />
+    <Compile Include="Dialog\Reflect.cs" />
+    <Compile Include="Dialog\Utilities\Controls.cs" />
+    <Compile Include="Dialog\Utilities\GlassButton.cs" />
+    <Compile Include="Dialog\Utilities\Graphics.cs" />
+    <Compile Include="Dialog\Utilities\ImageLoader.cs" />
+    <Compile Include="Dialog\Utilities\LocalizationExtensions.cs" />
+    <Compile Include="Dialog\Utilities\LRUCache.cs" />
+    <Compile Include="Simple\MvxSimpleTouchDialogViewController.cs" />
+    <Compile Include="Simple\MvxSimpleTouchDialogBindingSetup.cs" />
+    <Compile Include="Simple\MvxEmptyApp.cs" />
+    <Compile Include="MvxTouchDialogBindingSetup.cs" />
+    <Compile Include="MvxTouchDialogViewController.cs" />
+    <Compile Include="MvxTouchDialogViewControllerBinderExtensions.cs" />
+    <Compile Include="Target\MvxEntryElementValueBinding.cs" />
+    <Compile Include="Target\MvxRadioRootElementBinding.cs" />
+    <Compile Include="Target\MvxValueElementValueBinding.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Cirrious.MvvmCross.Binding\Cirrious.MvvmCross.Binding.Touch.csproj">
+      <Project>{913B13B5-7B2C-4DDA-BECB-DADC827ED895}</Project>
+      <Name>Cirrious.MvvmCross.Binding.Touch</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Cirrious.MvvmCross\Cirrious.MvvmCross.Touch.csproj">
+      <Project>{E042EDD9-E89D-4928-BF4D-27F0FC29CEDA}</Project>
+      <Name>Cirrious.MvvmCross.Touch</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Library\Newtonsoft.Json\Newtonsoft.Json\Newtonsoft_Json_MonoTouch.csproj">
+      <Project>{7E04C0C7-C26E-4F5E-A634-A687757E76A1}</Project>
+      <Name>Newtonsoft_Json_MonoTouch</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Dialog\Images\arrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Dialog\NoteAndLicense.MonoTouch.Dialog.txt" />
+  </ItemGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
