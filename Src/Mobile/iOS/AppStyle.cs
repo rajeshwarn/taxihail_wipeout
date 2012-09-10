@@ -25,69 +25,6 @@ namespace apcurium.MK.Booking.Mobile.Client
         public static float ButtonStrokeLineWidth { get { return 2f; } }
 
         public static float ButtonCornerRadius { get { return 2f; } }
-      
-
-        public static UIColor[] GetButtonColors(ButtonColor color)
-        {
-            var style = StyleManager.Current.Buttons.Single(c => c.Key == color.ToString());
-            return style.Colors.Select(c => UIColor.FromRGBA(c.Red, c.Green, c.Blue, c.Alpha)).ToArray();          
-        }
-
-        public static float[] GetButtonColorLocations(ButtonColor color)
-        {
-            var style = StyleManager.Current.Buttons.Single(c => c.Key == color.ToString());
-            return  style.Colors.Select(c => c.Location).ToArray();
-        }
-
-        public static UIColor GetButtonTextShadowColor(ButtonColor color)
-        {
-            var style = StyleManager.Current.Buttons.Single(c => c.Key == color.ToString());
-            return UIColor.FromRGBA(style.TextShadowColor.Red, style.TextShadowColor.Green, style.TextShadowColor.Blue, style.TextShadowColor .Alpha);
-        }
-        public static UIColor GetButtonTextColor(ButtonColor color)
-        {
-            var style = StyleManager.Current.Buttons.Single(c => c.Key == color.ToString());
-            return UIColor.FromRGBA(style.TextColor.Red, style.TextColor.Green, style.TextColor.Blue, style.TextColor .Alpha);
-        }
-
-        public static ShadowSetting GetInnerShadow(ButtonColor color)
-        {
-            var style = StyleManager.Current.Buttons.Single(c => c.Key == color.ToString());
-
-            if (style.InnerShadow != null)
-            {
-                return new ShadowSetting{ BlurRadius = style.InnerShadow.BlurRadius, 
-                                                                            Offset = new SizeF( style.InnerShadow.OffsetX, style.InnerShadow.OffsetY ), 
-                                                                            Color = UIColor.FromRGBA( style.InnerShadow.Color.Red, style.InnerShadow.Color.Green, style.InnerShadow.Color.Blue , style.InnerShadow.Color.Alpha) };
-            }
-            else
-            {
-                return null;
-            }
-           
-        }
-
-        public static ShadowSetting GetDropShadow(ButtonColor color)
-        {
-            var style = StyleManager.Current.Buttons.Single(c => c.Key == color.ToString());
-            if (style.DropShadow != null)
-            {
-                return new ShadowSetting{ BlurRadius = style.DropShadow.BlurRadius, 
-                                                                            Offset = new SizeF( style.DropShadow.OffsetX, style.DropShadow.OffsetY ),   
-                                                                            Color = UIColor.FromRGBA( style.DropShadow.Color.Red, style.DropShadow.Color.Green, style.DropShadow.Color.Blue , style.DropShadow.Color.Alpha) };                
-            }
-            else
-            {
-                return null;
-            }
-
-        }
-
-        public static UIColor GetButtonStrokeColor(ButtonColor color)
-        {
-            var style = StyleManager.Current.Buttons.Single(c => c.Key == color.ToString());
-            return UIColor.FromRGBA(style.StrokeColor.Red, style.StrokeColor.Green, style.StrokeColor.Blue, style.StrokeColor .Alpha);
-        }
 
         public static UIColor GreyText { get { return UIColor.FromRGB(101, 101, 101); } }
 
@@ -113,6 +50,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		public static float CellFontSize { get { return 14f; } }
 
+		public static UIFont ButtonFont { get { return GetButtonFont( ButtonFontSize ); } }
+
 		public static float CellSmallFontSize { get { return 10f; } }
 
         public static float ButtonFontSize { get { return 14f; } }
@@ -126,10 +65,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public  static UIColor AcceptButtonHighlightedColor{ get { return UIColor.FromRGB(12, 98, 8); } }
         
-        public  static UIColor CancelButtonColor{ get { return UIColor.FromRGB(215, 0, 2); } }
-
-        public  static UIColor CancelButtonHighlightedColor{ get { return UIColor.FromRGB(136, 0, 2); } }
-        
         public  static UIColor LightButtonColor{ get { return UIColor.FromRGB(90, 90, 90); } }
 
         public  static UIColor LightButtonHighlightedColor{ get { return UIColor.FromRGB(50, 50, 50); } }
@@ -141,14 +76,5 @@ namespace apcurium.MK.Booking.Mobile.Client
 
     }
 
-    public class ShadowSetting
-    {
-        public float BlurRadius { get; set; }
-
-        public SizeF Offset { get; set; }
-
-        public UIColor Color { get; set; }
-
-    }
 }
 

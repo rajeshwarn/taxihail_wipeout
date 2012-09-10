@@ -64,10 +64,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 			destView.SetPlaceholder( "Tap to specify (optional)" );
 
 
-			AppButtons.FormatStandardGradientButton( (GradientButton)bookBtn, Resources.BookItButton , UIColor.White, AppStyle.ButtonColor.Green );
+			AppButtons.FormatStandardButton( (GradientButton)bookBtn, Resources.BookItButton , AppStyle.ButtonColor.Green );
 			bookBtn.TouchUpInside += BookitButtonTouchUpInside;
 
-			AppButtons.FormatStandardGradientButton( (GradientButton)datetimeBtn, Resources.PickupLater , UIColor.White, AppStyle.ButtonColor.Black );
+			AppButtons.FormatStandardButton( (GradientButton)datetimeBtn, Resources.PickupLater , AppStyle.ButtonColor.Black );
 			datetimeBtn.TouchUpInside += HandleTouchUpInside;
 
 			UIImageView img = new UIImageView(UIImage.FromFile("Assets/location.png"));

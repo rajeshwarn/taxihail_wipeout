@@ -4,6 +4,7 @@ using System.Drawing;
 using apcurium.MK.Common.Extensions;
 using MonoTouch.CoreGraphics;
 using System.Linq;
+using apcurium.MK.Booking.Mobile.Style;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -59,9 +60,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 			var colorSpace = CGColorSpace.CreateDeviceRGB();
 			var context = UIGraphics.GetCurrentContext();
-			
-			var newGradientColors = AppStyle.GetButtonColors( AppStyle.ButtonColor.Silver ).Select( c => c.CGColor ).ToArray();
-			var newGradientLocations = AppStyle.GetButtonColorLocations( AppStyle.ButtonColor.Silver );
+
+			var style = StyleManager.Current.Buttons.Single( s => s.Key == AppStyle.ButtonColor.Silver.ToString() );
+
+			var newGradientColors = style.Colors.Select( c => UIColor.FromRGBA( c.Red, c.Green, c.Blue, c.Alpha ).CGColor ).ToArray();
+			var newGradientLocations = style.Colors.Select( c => c.Location ).ToArray();
 			var newGradient = new CGGradient(colorSpace, newGradientColors, newGradientLocations);
 
 			var radius = 0;

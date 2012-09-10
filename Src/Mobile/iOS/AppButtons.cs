@@ -1,52 +1,67 @@
 using System;
+using System.Linq;
 using System.Drawing;
 using MonoTouch.UIKit;
 using MonoTouch.CoreGraphics;
 using apcurium.Framework.Extensions;
+using apcurium.MK.Booking.Mobile.Style;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
 	public class AppButtons
 	{
-		public static GradientButton CreateStandardGradientButton ( RectangleF rect, string title, UIColor titleColor, AppStyle.ButtonColor buttonColor )
+		public static GradientButton CreateStandardButton ( RectangleF rect, string title, AppStyle.ButtonColor buttonColor, string image = null )
 		{
-			var btn = new GradientButton( rect, AppStyle.ButtonCornerRadius, AppStyle.GetButtonColors(buttonColor), 
-                                            AppStyle.GetButtonColorLocations( buttonColor ), AppStyle.ButtonStrokeLineWidth, AppStyle.GetButtonStrokeColor( buttonColor ),
-                                            AppStyle.GetInnerShadow( buttonColor ), AppStyle.GetDropShadow( buttonColor ), title, titleColor, AppStyle.GetButtonFont( AppStyle.ButtonFontSize ) );
+			var btnStyle = StyleManager.Current.Buttons.Single( b => b.Key == buttonColor.ToString() );
+
+			var btn = new GradientButton( rect, AppStyle.ButtonCornerRadius, btnStyle, title, AppStyle.ButtonFont, image );
 
 			return btn;
 		}
 
-        public static void FormatStandardGradientButton ( GradientButton button,  string title, UIColor titleColor, AppStyle.ButtonColor buttonColor )
+        public static void FormatStandardButton ( GradientButton button,  string title, AppStyle.ButtonColor buttonColor )
         {
+			var btnStyle = StyleManager.Current.Buttons.Single( b => b.Key == buttonColor.ToString() );
 
-            button.TextShadowColor = UIColor.FromRGBA(0f, 0f, 0f, 0.5f);
+            button.TextShadowColor = UIColor.FromRGBA(btnStyle.TextShadowColor.Red, btnStyle.TextShadowColor.Green, btnStyle.TextShadowColor.Blue, btnStyle.TextShadowColor.Alpha);
             button.CornerRadius = AppStyle.ButtonCornerRadius;
-            button.Colors=  AppStyle.GetButtonColors(buttonColor);
-            button.ColorLocations = AppStyle.GetButtonColorLocations( buttonColor );
-            button.StrokeLineWidth = AppStyle.ButtonStrokeLineWidth;
-            button.StrokeLineColor = AppStyle.GetButtonStrokeColor(buttonColor );
-            button.InnerShadow = AppStyle.GetInnerShadow( buttonColor );
-            button.DropShadow = AppStyle.GetDropShadow( buttonColor );
+            button.Colors =  btnStyle.Colors.Select ( color => UIColor.FromRGBA(color.Red, color.Green, color.Blue, color.Alpha) ).ToArray();
+            button.ColorLocations = btnStyle.Colors.Select ( color => color.Location ).ToArray();
+			button.StrokeLineWidth = btnStyle.StrokeLineWidth;
+			button.StrokeLineColor = UIColor.FromRGBA( btnStyle.StrokeColor.Red, btnStyle.StrokeColor.Green, btnStyle.StrokeColor.Blue, btnStyle.StrokeColor.Alpha );
+			button.InnerShadow = btnStyle.InnerShadow;
+//			btnStyle.InnerShadow.Maybe( c => {
+//				button.InnerShadow = new ShadowSetting() { Color = UIColor.FromRGBA( c.Color.Red, c.Color.Green, c.Color.Blue, c.Color.Alpha ),
+//					Offset = new SizeF( c.OffsetX, c.OffsetY ),
+//					BlurRadius = c.BlurRadius };
+//			});
+			button.DropShadow = btnStyle.DropShadow;
+//			btnStyle.DropShadow.Maybe( c => {
+//				button.DropShadow = new ShadowSetting() { Color = UIColor.FromRGBA( c.Color.Red, c.Color.Green, c.Color.Blue, c.Color.Alpha ),
+//					Offset = new SizeF( c.OffsetX, c.OffsetY ),
+//					BlurRadius = c.BlurRadius };
+//			});
             button.SetTitle( title , UIControlState.Normal );
-            button.TitleColour = titleColor.CGColor;
-            button.TitleFont = AppStyle.GetButtonFont( AppStyle.ButtonFontSize ) ;        
+			btnStyle.TextColor.Maybe( c => button.TitleColour = UIColor.FromRGBA( c.Red, c.Green, c.Blue, c.Alpha ).CGColor );
+            button.TitleFont = AppStyle.ButtonFont;        
         }
 
 
-		public static GradientButton CreateStandardButton ( RectangleF rect, string title, UIColor titleColor, AppStyle.ButtonColor buttonColor,  bool useTitleShadow = true )
-		{
-			var btn = new GradientButton( rect, AppStyle.ButtonCornerRadius, AppStyle.GetButtonColors( buttonColor ), AppStyle.GetButtonColorLocations( buttonColor ), AppStyle.ButtonStrokeLineWidth, AppStyle.GetButtonStrokeColor( buttonColor ), AppStyle.GetInnerShadow( buttonColor ), AppStyle.GetDropShadow( buttonColor ), title, titleColor, AppStyle.GetButtonFont( AppStyle.ButtonFontSize ), useTitleShadow );
+//		public static GradientButton CreateStandardsButton ( RectangleF rect, string title, UIColor titleColor, AppStyle.ButtonColor buttonColor,  bool useTitleShadow = true )
+//		{
+//			var btn = new GradientButton( rect, AppStyle.ButtonCornerRadius, AppStyle.GetButtonColors( buttonColor ), AppStyle.GetButtonColorLocations( buttonColor ), AppStyle.ButtonStrokeLineWidth, AppStyle.GetButtonStrokeColor( buttonColor ), AppStyle.GetInnerShadow( buttonColor ), AppStyle.GetDropShadow( buttonColor ), title, titleColor, AppStyle.GetButtonFont( AppStyle.ButtonFontSize ), useTitleShadow );
+//
+//			return btn;
+//		}
 
-			return btn;
-		}
-
-		public static GradientButton CreateStandardImageButton ( RectangleF rect, string title, UIColor titleColor, string image, AppStyle.ButtonColor buttonColor,  bool useTitleShadow = true )
-		{
-			var btn = new GradientButton( rect, AppStyle.ButtonCornerRadius, AppStyle.GetButtonColors( buttonColor ), AppStyle.GetButtonColorLocations( buttonColor ), AppStyle.ButtonStrokeLineWidth, AppStyle.GetButtonStrokeColor( buttonColor ), AppStyle.GetInnerShadow( buttonColor ), AppStyle.GetDropShadow( buttonColor ), title, titleColor, AppStyle.GetButtonFont( AppStyle.ButtonFontSize ), useTitleShadow, image  );
-
-			return btn;
-		}
+//		public static GradientButton CreateStandardButton ( RectangleF rect, string title, string image, AppStyle.ButtonColor buttonColor )
+//		{( 
+//			var btnStyle = StyleManager.Current.Buttons.Single( b => b.Key == buttonColor.ToString() );
+//		
+//			var btn = new GradientButton( rect, AppStyle.ButtonCornerRadius, btnStyle, title, AppStyle.ButtonFont, image  );
+//
+//			return btn;
+//		}
 
 		public static UIView GetAccessoryView( string leftBtnTitle, UIColor leftBtnTitleColor, Action leftBtnAction, AppStyle.ButtonColor leftBtnColor, string rightBtnTitle, UIColor rightBtnTitleColor, Action rightBtnAction, AppStyle.ButtonColor rightBtnColor )
 		{
@@ -54,7 +69,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 			if( leftBtnTitle.HasValue() )
 			{
-				var leftBtn = AppButtons.CreateStandardGradientButton(new RectangleF( 5, 3, 46, 30 ), leftBtnTitle, leftBtnTitleColor, leftBtnColor );
+				var leftBtn = AppButtons.CreateStandardButton(new RectangleF( 5, 3, 46, 30 ), leftBtnTitle, leftBtnColor );
 				if( leftBtnAction != null )
 				{
 					leftBtn.TouchUpInside += delegate {
@@ -66,7 +81,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 			if( rightBtnTitle.HasValue() )
 			{
-				var rightBtn = AppButtons.CreateStandardGradientButton(new RectangleF( 269, 3, 46, 30 ), rightBtnTitle, rightBtnTitleColor, rightBtnColor );
+				var rightBtn = AppButtons.CreateStandardButton(new RectangleF( 269, 3, 46, 30 ), rightBtnTitle, rightBtnColor );
 				if( rightBtnAction != null )
 				{
 					rightBtn.TouchUpInside += delegate {
@@ -91,7 +106,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 				{
 					x = 320f - 5f - btnWidth;
 				}
-				var btn = AppButtons.CreateStandardGradientButton(new RectangleF( x, 3, btnWidth, 30 ), btnTitle, btnTitleColor, btnColor );
+				var btn = AppButtons.CreateStandardButton(new RectangleF( x, 3, btnWidth, 30 ), btnTitle, btnColor );
 				if( btnAction != null )
 				{
 					btn.TouchUpInside += delegate {
