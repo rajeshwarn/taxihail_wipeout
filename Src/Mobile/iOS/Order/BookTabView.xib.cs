@@ -58,9 +58,11 @@ namespace apcurium.MK.Booking.Mobile.Client
             base.ViewDidLoad ();
             View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png")); 
 
-			pickView.Placeholder = Resources.PickupTextPlaceholder;
-			destView.Placeholder = Resources.DestinationTextPlaceholder;
-			destView.ClearBackground = true;
+			pickView.SetTitle( "Pickup location :" );
+			pickView.SetPlaceholder( "Tap to specify" );
+			destView.SetTitle( "Dropoff location :" );
+			destView.SetPlaceholder( "Tap to specify (optional)" );
+
 
 			AppButtons.FormatStandardGradientButton( (GradientButton)bookBtn, Resources.BookItButton , UIColor.White, AppStyle.ButtonColor.Green );
 			bookBtn.TouchUpInside += BookitButtonTouchUpInside;
@@ -85,8 +87,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			bottomBar.AddSubview( _settingsBar );
 			bottomBar.OutsideRect = _settingsBar.OpenRect;
 
-			View.BringSubviewToFront( destView );
-			View.BringSubviewToFront( pickView );
         }
 
         void HandleTouchUpInside (object sender, EventArgs e)

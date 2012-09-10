@@ -259,6 +259,8 @@
     <Compile Include="Controls\AnimatedArrowButton.cs" />
     <Compile Include="Controls\AnimatedWheelButton.cs" />
     <Compile Include="Extensions\ColorExtensions.cs" />
+    <Compile Include="Controls\AddressBarButtons.cs" />
+    <Compile Include="Controls\AddressButton.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
