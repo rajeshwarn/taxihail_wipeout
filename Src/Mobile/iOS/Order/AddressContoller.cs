@@ -48,17 +48,17 @@ namespace apcurium.MK.Booking.Mobile.Client
             _getLocation = getLocation;
             _setLocation = setLocation;
 
-			_addressBar.Started -= StartAddressEdit;
-			_addressBar.Started += StartAddressEdit;
-            
-			_addressBar.Ended -= SearchAddress;
-			_addressBar.Ended += SearchAddress;
-            
-			_addressBar.EditingChanged -= AddressChanged;
-			_addressBar.EditingChanged += AddressChanged;
-
-			_addressBar.BarItemClicked -= PickAddressTouchUpInside;
-			_addressBar.BarItemClicked += PickAddressTouchUpInside;
+//			_addressBar.Started -= StartAddressEdit;
+//			_addressBar.Started += StartAddressEdit;
+//            
+//			_addressBar.Ended -= SearchAddress;
+//			_addressBar.Ended += SearchAddress;
+//            
+//			_addressBar.EditingChanged -= AddressChanged;
+//			_addressBar.EditingChanged += AddressChanged;
+//
+//			_addressBar.BarItemClicked -= PickAddressTouchUpInside;
+//			_addressBar.BarItemClicked += PickAddressTouchUpInside;
             
             _similarDelegate = new SimilarAddressTableDelegate(adrs => SetLocation(adrs, true, true));
             _similarDatasource = new SimilarAddressTableDatasource();

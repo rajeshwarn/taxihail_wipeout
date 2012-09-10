@@ -109,7 +109,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		public static UIFont CellFont { get { return UIFont.FromName( "HelveticaNeue-Bold", CellFontSize ); } }
 
+		public static UIFont CellSmallFont { get { return UIFont.FromName( "HelveticaNeue-Bold", CellSmallFontSize ); } }
+
 		public static float CellFontSize { get { return 14f; } }
+
+		public static float CellSmallFontSize { get { return 10f; } }
 
         public static float ButtonFontSize { get { return 14f; } }
 

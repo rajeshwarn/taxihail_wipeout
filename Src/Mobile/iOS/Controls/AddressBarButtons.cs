@@ -2,81 +2,55 @@ using System;
 using MonoTouch.UIKit;
 using System.Drawing;
 using apcurium.MK.Common.Extensions;
-using MonoTouch.Foundation;
 using MonoTouch.CoreGraphics;
 using System.Linq;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-	[Register ("AddressBar")]
-	public class AddressBar : UIView
+	public class AddressBarButtons : UIView
 	{
-		public event EventHandler Ended;
-		public event EventHandler Started;
-		public event EventHandler EditingChanged;
-		public delegate void myhandler( int indexer );
-		public event myhandler BarItemClicked;
+		public AddressButton BtnAddress;
+		private UIButton _btnCurrentPosition;
+		private UIButton _btnActivate;
 
-		public event EventHandler AddressSelected;
-		public event EventHandler FindCurrentLocationTouched;
-		public event EventHandler Activated;
-
-		private bool _isActive;
-		private AddressBarButtons _buttons;
-
-
-		public AddressBar ()
-		{
-			Initialize();
-		}
-		
-		public AddressBar (IntPtr handle) : base(  handle )
+		public AddressBarButtons ( RectangleF rect ) : base( rect )
 		{
 			Initialize();
 		}
 
 		private void Initialize()
 		{
-			IsActive = false;
+			BackgroundColor = UIColor.Clear;
 
-			_buttons = new AddressBarButtons( new RectangleF( 10, 5, Frame.Width - 20, Frame.Height - 10 ) );
-			this.AddSubview( _buttons );
+			_btnActivate = new UIButton( new RectangleF( Frame.Width - 40, 0, 40, Frame.Height ) );
+			_btnActivate.BackgroundColor = UIColor.Clear;
+			_btnActivate.SetImage( UIImage.FromFile( "Assets/VerticalButtonBar/targetIcon.png" ), UIControlState.Normal );
+			this.AddSubview( _btnActivate );
+
+			_btnActivate.TouchUpInside += HandleActivateTouchUpInside;
+		
+			_btnCurrentPosition = new UIButton( new RectangleF( Frame.Width - 80, 0, 40, Frame.Height ) );
+			_btnCurrentPosition.BackgroundColor = UIColor.Clear;
+			_btnCurrentPosition.SetImage( UIImage.FromFile( "Assets/VerticalButtonBar/locationIcon.png" ), UIControlState.Normal );
+			this.AddSubview( _btnCurrentPosition );
+
+			_btnCurrentPosition.TouchUpInside += HandleCurrentPositionTouchUpInside;
+
+			BtnAddress = new AddressButton( new RectangleF( 0, 0, Frame.Width - 80, Frame.Height ) );
+			BtnAddress.BackgroundColor = UIColor.Clear;
+			this.AddSubview( BtnAddress );
+
+			_btnCurrentPosition.TouchUpInside += HandleCurrentPositionTouchUpInside;
 		}
 
-		public void SetTitle ( string title )
+		void HandleActivateTouchUpInside (object sender, EventArgs e)
 		{
-			_buttons.BtnAddress.SetTitle( title );
+			_btnActivate.Highlighted = !_btnActivate.Highlighted;
 		}
 
-		public void SetPlaceholder( string placeholder )
+		void HandleCurrentPositionTouchUpInside (object sender, EventArgs e)
 		{
-			_buttons.BtnAddress.SetPlaceholder( placeholder );
-		}
 
-		public void Clear()
-		{
-			_buttons.BtnAddress.Clear();
-		}
-
-		public string Text { 
-			get { return _buttons.BtnAddress.Text; }
-			set { _buttons.BtnAddress.SetAddress( value ); }
-		}
-
-		public bool IsActive { 
-			get { return _isActive; }
-			set { 
-				_isActive = value;
-				Highlight( _isActive );
-			}
-		}
-
-		private void Highlight( bool isActive )
-		{
-			if( isActive )
-			{}
-			else
-			{}
 		}
 
 		public override void Draw (RectangleF rect)
@@ -86,11 +60,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 			var colorSpace = CGColorSpace.CreateDeviceRGB();
 			var context = UIGraphics.GetCurrentContext();
 			
-//			var newGradientColors = AppStyle.GetButtonColors( AppStyle.ButtonColor.Silver ).Select( c => c.CGColor ).ToArray();
-//			var newGradientLocations = AppStyle.GetButtonColorLocations( AppStyle.ButtonColor.Silver );
-//			var newGradient = new CGGradient(colorSpace, newGradientColors, newGradientLocations);
-//
-//			var radius = 0;
+			var newGradientColors = AppStyle.GetButtonColors( AppStyle.ButtonColor.Silver ).Select( c => c.CGColor ).ToArray();
+			var newGradientLocations = AppStyle.GetButtonColorLocations( AppStyle.ButtonColor.Silver );
+			var newGradient = new CGGradient(colorSpace, newGradientColors, newGradientLocations);
+
+			var radius = 0;
 //
 //			ShadowSetting dropShadow = null;
 //			var innerShadow = AppStyle.GetInnerShadow( AppStyle.ButtonColor.Silver );
@@ -99,24 +73,22 @@ namespace apcurium.MK.Booking.Mobile.Client
 //			rect.Height -= dropShadow != null ? Math.Abs(dropShadow.Offset.Height) : 0;
 //			rect.X += dropShadow != null && dropShadow.Offset.Width < 0 ? Math.Abs(dropShadow.Offset.Width) : 0;
 //			rect.Y += dropShadow != null && dropShadow.Offset.Height < 0 ? Math.Abs(dropShadow.Offset.Height) : 0;
-//
-//
-//			var roundedRectanglePath = UIBezierPath.FromRoundedRect(rect, radius);
-//			if( !ClearBackground )
+
+
+			var roundedRectanglePath = UIBezierPath.FromRoundedRect(rect, radius);
+
+			context.SaveState();
+//			if (dropShadow != null)
 //			{
-//				context.SaveState();
-//				if (dropShadow != null)
-//				{
-//					context.SetShadowWithColor(dropShadow.Offset, dropShadow.BlurRadius, dropShadow.Color.CGColor);
-//				}
-//				
-//				context.BeginTransparencyLayer(null);
-//				roundedRectanglePath.AddClip();
-//				context.DrawLinearGradient(newGradient, new PointF(rect.X + (rect.Width / 2.0f), rect.Y), new PointF(rect.X + (rect.Width / 2.0f), rect.Y + rect.Height), 0);
-//				context.EndTransparencyLayer();
-//				context.RestoreState();
+//				context.SetShadowWithColor(dropShadow.Offset, dropShadow.BlurRadius, dropShadow.Color.CGColor);
 //			}
-//
+			
+			context.BeginTransparencyLayer(null);
+			roundedRectanglePath.AddClip();
+			context.DrawLinearGradient(newGradient, new PointF(rect.X + (rect.Width / 2.0f), rect.Y), new PointF(rect.X + (rect.Width / 2.0f), rect.Y + rect.Height), 0);
+			context.EndTransparencyLayer();
+			context.RestoreState();
+
 //			if (innerShadow != null)
 //			{
 //				var roundedRectangleBorderRect = roundedRectanglePath.Bounds;
