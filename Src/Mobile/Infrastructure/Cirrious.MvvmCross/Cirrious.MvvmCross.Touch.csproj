@@ -454,7 +454,7 @@
   <ItemGroup />
   <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\..\Library\Newtonsoft.Json\Newtonsoft.Json\Newtonsoft_Json_MonoTouch.csproj">
+    <ProjectReference Include="..\..\Libraries\Newtonsoft.Json\Newtonsoft.Json\Newtonsoft_Json_MonoTouch.csproj">
       <Project>{7E04C0C7-C26E-4F5E-A634-A687757E76A1}</Project>
       <Name>Newtonsoft_Json_MonoTouch</Name>
     </ProjectReference>
