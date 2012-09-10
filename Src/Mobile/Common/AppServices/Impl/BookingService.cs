@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
-
+using Xamarin.Contacts;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -98,6 +98,20 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     isCompleted = true;
                 });            
             return isCompleted;
+        }
+
+        public List<Contact> GetContactWithAddress()
+        {
+            var book = TinyIoCContainer.Current.Resolve<AddressBook>();
+            var contacts = new List<Contact>();
+
+            book.PreferContactAggregation = true;
+
+            foreach (Contact contact in book.Where(c => c.Addresses.Any()))
+            {
+                contacts.Add(contact);
+            }
+            return contacts;
         }
 
 

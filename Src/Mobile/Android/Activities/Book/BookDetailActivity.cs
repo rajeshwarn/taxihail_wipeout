@@ -54,7 +54,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 ShowAlertDialog();
             }
-
+            //TinyIoCContainer.Current.Resolve<ICacheService>().ClearAll();
             if (TinyIoCContainer.Current.Resolve<IAppSettings>().CanChooseProvider)
             {
                 if(BookingInfo.Settings.ProviderId ==null)
@@ -83,6 +83,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 BookingInfo.Settings.ProviderId = hashmap[(int)args.Which];
                 TinyIoCContainer.Current.Resolve<IAccountService>().UpdateBookingSettings(BookingInfo.Settings);
+                FindViewById<TextView>(Resource.Id.CompanyTxt).Text = companyList.ElementAt(args.Which).Display;
                 chooseProviderDialog.Dispose();
             });
             chooseProviderDialog.Show();

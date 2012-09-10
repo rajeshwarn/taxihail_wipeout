@@ -1,4 +1,5 @@
 using TinyIoC;
+using Xamarin.Contacts;
 using apcurium.MK.Booking.Mobile.Practices;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Infrastructure;
@@ -31,6 +32,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			TinyIoCContainer.Current.Register<IErrorHandler, ErrorHandler>();
 
             TinyIoCContainer.Current.Register<ICacheService>(new CacheService(App));
+            TinyIoCContainer.Current.Register<AddressBook>(new AddressBook(App.ApplicationContext));
         
         }
     }

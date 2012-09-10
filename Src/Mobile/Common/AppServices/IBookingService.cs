@@ -1,4 +1,5 @@
 using System;
+using Xamarin.Contacts;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using System.Collections.Generic;
@@ -23,6 +24,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 	    void RemoveFromHistory(Guid orderId);
 
+	    List<Contact> GetContactWithAddress();
 
 	}
 }

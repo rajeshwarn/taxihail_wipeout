@@ -1,4 +1,5 @@
 {
+   "CanChooseProvider" : "true",
    "CanChangeServiceUrl" : "true",
    "DefaultPhoneNumber" : "18666245330",
    "DefaultPhoneNumberDisplay" : "1.866.624.5330",
@@ -6,7 +7,7 @@
    "ErrorLogEnabled" : "false",
    "FacebookAppId" : "134284363380764",
    "FacebookEnabled" : "true",
-   "ServiceUrl" : "http://services.taxihail.com/taxihaildemo/v1/api/",
+   "ServiceUrl" : "http://192.168.12.126/apcurium.MK.Web/api/",
    "SiteUrl" : "http://www.mobile-knowledge.com/index.html",
    "TwitterAccessTokenUrl" : "https://twitter.com/oauth/access_token",
    "TwitterAuthorizeUrl" : "https://twitter.com/oauth/authorize",

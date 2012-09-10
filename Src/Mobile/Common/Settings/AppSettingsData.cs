@@ -13,6 +13,7 @@ namespace apcurium.MK.Booking.Mobile.Settings
         public string SiteUrl { get; set; }
 
         public bool CanChangeServiceUrl{ get; set; }
+        public bool CanChooseProvider { get; set; }
         public string ServiceUrl { get; set; }
 
         public string DefaultPhoneNumber { get; set; }

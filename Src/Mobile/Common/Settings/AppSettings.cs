@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Mobile.Settings
             }
         }
 
-        public bool CanChooseProvider { get; set; }
+        public bool CanChooseProvider { get { return _data.CanChooseProvider; } }
 
         public bool ErrorLogEnabled
         {
