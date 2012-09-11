@@ -91,6 +91,7 @@ namespace DatabaseInitializer
 
             configurationManager.SetSetting("TaxiHail.Version", "1.0.0");
             configurationManager.SetSetting("TaxiHail.SiteName", "Dev");
+            configurationManager.SetSetting("TaxiHail.ApplicationName", "Taxi Hail");
 
             configurationManager.SetSetting("IBS.WebServicesUserName", "taxi");
             configurationManager.SetSetting("IBS.WebServicesPassword", "test");
