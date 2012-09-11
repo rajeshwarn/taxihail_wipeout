@@ -10,10 +10,12 @@ namespace apcurium.MK.Booking.CommandHandlers
 {
     public class EmailCommandHandler : ICommandHandler<SendPasswordResetEmail>, ICommandHandler<SendAccountConfirmationEmail>
     {
+        const string ApplicationNameSetting = "TaxiHail.ApplicationName";
         const string PasswordResetTemplateName = "PasswordReset";
         const string AccountConfirmationTemplateName = "AccountConfirmation";
-        const string PasswordResetEmailSubject = "Your password has been reset";
-        const string AccountConfirmationEmailSubject = "Welcome to Taxi Hail";
+        const string PasswordResetEmailSubject = "{{ ApplicationName }} - Your password has been reset";
+        const string AccountConfirmationEmailSubject = "Welcome to {{ ApplicationName }}";
+
         private readonly IConfigurationManager _configurationManager;
         private readonly ITemplateService _templateService;
         private readonly IEmailSender _emailSender;
@@ -29,14 +31,13 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var template = _templateService.Find(PasswordResetTemplateName);
             if (template == null) throw new InvalidOperationException("Template not found: " + PasswordResetTemplateName);
-             
-            var messageBody = _templateService.Render(template, new {command.Password});
 
-            var mailMessage = new MailMessage(from: _configurationManager.GetSetting("Email.NoReply"),
-                                              to: command.EmailAddress,
-                                              subject: PasswordResetEmailSubject,
-                                              body: messageBody) { IsBodyHtml = true, BodyEncoding = Encoding.UTF8, SubjectEncoding = Encoding.UTF8 };
-            _emailSender.Send(mailMessage);
+            var templateData = new {
+                                       command.Password,
+                                       ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
+                                   };
+
+            SendEmail(command.EmailAddress, template, PasswordResetEmailSubject, templateData);
         }
 
         public void Handle(SendAccountConfirmationEmail command)
@@ -44,12 +45,24 @@ namespace apcurium.MK.Booking.CommandHandlers
             var template = _templateService.Find(AccountConfirmationTemplateName);
             if (template == null) throw new InvalidOperationException("Template not found: " + AccountConfirmationTemplateName);
 
-            var messageBody = _templateService.Render(template, command);
+            var templateData = new {
+                                       command.ConfirmationUrl,
+                                       ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
+                                   };
 
-            var mailMessage = new MailMessage(from: _configurationManager.GetSetting("Email.NoReply"),
-                                              to: command.EmailAddress,
-                                              subject: AccountConfirmationEmailSubject,
-                                              body: messageBody) { IsBodyHtml = true, BodyEncoding = Encoding.UTF8, SubjectEncoding = Encoding.UTF8 };
+            SendEmail(command.EmailAddress, template, AccountConfirmationEmailSubject, templateData);
+        }
+
+        private void SendEmail(string to, string bodyTemplate, string subjectTemplate, object templateData)
+        {
+            var messageSubject = _templateService.Render(subjectTemplate, templateData);
+            var messageBody = _templateService.Render(bodyTemplate, templateData);
+
+            var mailMessage = new MailMessage(@from: _configurationManager.GetSetting("Email.NoReply"),
+                                              to: to,
+                                              subject: messageSubject,
+                                              body: messageBody)
+                                  {IsBodyHtml = true, BodyEncoding = Encoding.UTF8, SubjectEncoding = Encoding.UTF8};
             _emailSender.Send(mailMessage);
         }
     }
