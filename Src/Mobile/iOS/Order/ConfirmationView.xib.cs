@@ -17,7 +17,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 {
     public partial class ConfirmationView : UIViewController
     {
-        private BookTabView _parent;
+        private BookView _parent;
 
         public event EventHandler Confirmed;
         public event EventHandler Canceled;
@@ -41,7 +41,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             Initialize();
         }
 
-        public ConfirmationView(BookTabView parent) : base("ConfirmationView", null)
+        public ConfirmationView(BookView parent) : base("ConfirmationView", null)
         {
             _parent = parent;
             Initialize();

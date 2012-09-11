@@ -8,14 +8,11 @@ using MonoTouch.Foundation;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-	[Register ("BookTabView")]
-	partial class BookTabView
+	[Register ("BookView")]
+	partial class BookView
 	{
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.BottomBar bottomBar { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UITableView tableView { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.AddressBar pickView { get; set; }
@@ -43,11 +40,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			if (bottomBar != null) {
 				bottomBar.Dispose ();
 				bottomBar = null;
-			}
-
-			if (tableView != null) {
-				tableView.Dispose ();
-				tableView = null;
 			}
 
 			if (pickView != null) {

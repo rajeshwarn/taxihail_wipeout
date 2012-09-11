@@ -38,7 +38,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             Initialize();
         }
 
-        public StatusView(BookTabView parent, Order info, OrderStatusDetail status, bool closeScreenWhenCompleted) : base("StatusView", null)
+        public StatusView(BookView parent, Order info, OrderStatusDetail status, bool closeScreenWhenCompleted) : base("StatusView", null)
         {
             _closeScreenWhenCompleted = closeScreenWhenCompleted;
             Order = info;

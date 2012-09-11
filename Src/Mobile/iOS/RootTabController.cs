@@ -10,7 +10,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-    public class RootTabController : UITabBarController
+    public class RootTabController : UINavigationController
     {
 
         private List<UINavigationController> _controllers;
@@ -18,7 +18,8 @@ namespace apcurium.MK.Booking.Mobile.Client
         public RootTabController()
         {
             
-            
+            this.NavigationBarHidden = true;
+            this.ToolbarHidden = true;
         }
 
         public void Load()
@@ -26,25 +27,25 @@ namespace apcurium.MK.Booking.Mobile.Client
             
             Logger.StartStopwatch("loading controllers");
             
-            this.ViewControllerSelected += ControllerSelected;
+            //this.ViewControllerSelected += ControllerSelected;
             
             _controllers = new List<UINavigationController>();
             
-            _controllers.Add(CreateNavigationController<BookTabView>(Resources.TabBook, "Assets/Tab/book.png", true));
+            _controllers.Add(CreateNavigationController<BookView>(Resources.TabBook, "Assets/Tab/book.png", true));
             
-            _controllers.Add(CreateNavigationController<LocationsTabView>(Resources.TabLocations, "Assets/Tab/locations.png", true));
-            
-            _controllers.Add(CreateNavigationController<HistoryTabView>(Resources.TabHistory, "Assets/Tab/history.png", true));
-            
-            _controllers.Add(CreateNavigationController<SettingsTabView>(Resources.TabSettings, "Assets/Tab/settings.png", true));
+//            _controllers.Add(CreateNavigationController<LocationsTabView>(Resources.TabLocations, "Assets/Tab/locations.png", true));
+//            
+//            _controllers.Add(CreateNavigationController<HistoryTabView>(Resources.TabHistory, "Assets/Tab/history.png", true));
+//            
+//            _controllers.Add(CreateNavigationController<SettingsTabView>(Resources.TabSettings, "Assets/Tab/settings.png", true));
             
             
             this.SetViewControllers(_controllers.ToArray(), false);
             
-            this.SelectedViewController = _controllers[0];
+            //this.SelectedViewController = _controllers[0];
             
             
-            this.MoreNavigationController.NavigationBar.BarStyle = UIBarStyle.Black;
+            //this.MoreNavigationController.NavigationBar.BarStyle = UIBarStyle.Black;
             
             
             
@@ -53,10 +54,10 @@ namespace apcurium.MK.Booking.Mobile.Client
             
         }
 
-		public void SelectViewController( int index )
-		{
-			this.SelectedViewController = _controllers[index];
-		}
+//		public void SelectViewController( int index )
+//		{
+//			this.SelectedViewController = _controllers[index];
+//		}
 
         private void ControllerSelected(UIViewController ctl)
         {
@@ -72,35 +73,23 @@ namespace apcurium.MK.Booking.Mobile.Client
             ControllerSelected(e.ViewController);
         }
 
-        public UIViewController SelectedUIViewController
-        {
-            get
-            {
-                if ((this.SelectedViewController is UINavigationController) && (((UINavigationController)this.SelectedViewController).ViewControllers.Count() > 0) && (((UINavigationController)this.SelectedViewController).ViewControllers[0] is UIViewController))
-                {
-                    return ((UIViewController)((UINavigationController)AppContext.Current.Controller.SelectedViewController).ViewControllers[0]);
-                }
-                else
-                {
-                    return null;
-                }
-            }
-        }
+
 
         public IRefreshableViewController SelectedRefreshableViewController
         {
-            get { return SelectedUIViewController as IRefreshableViewController; }
+            get { return TopViewController as IRefreshableViewController; }
         }
 
         public void Rebook(Order data)
         {
-            var bookTab = _controllers[0].ViewControllers[0] as BookTabView;
+            var bookTab = _controllers[0].ViewControllers[0] as BookView;
             if (data != null)
             {
                 bookTab.Rebook(data);
             }
             ((UINavigationController)_controllers[0]).ViewControllers.OfType<ISelectableViewController>().ForEach(c => c.Selected());
-            this.SelectedViewController = _controllers[0];
+           
+        
         }
 
         private UINavigationController CreateNavigationController<T>(string title, string logo, bool hideNavBar) where T : UIViewController, ITaxiViewController

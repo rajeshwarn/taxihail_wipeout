@@ -15,7 +15,7 @@ using ServiceStack.Text;
  
 namespace apcurium.MK.Booking.Mobile.Client
 {
-    public partial class BookTabView : UIViewController, ITaxiViewController, ISelectableViewController, IRefreshableViewController
+    public partial class BookView : UIViewController, ITaxiViewController, ISelectableViewController, IRefreshableViewController
     {
         #region Constructors
 
@@ -32,18 +32,18 @@ namespace apcurium.MK.Booking.Mobile.Client
             private set { _bookingInfo = value; }
         }
 
-        public BookTabView (IntPtr handle) : base(handle)
+        public BookView (IntPtr handle) : base(handle)
         {
             Initialize ();
         }
 
         [Export("initWithCoder:")]
-        public BookTabView (NSCoder coder) : base(coder)
+        public BookView (NSCoder coder) : base(coder)
         {
             Initialize ();
         }
 
-        public BookTabView () : base("BookTabView", null)
+        public BookView () : base("BookView", null)
         {
             Initialize ();
         }
@@ -76,8 +76,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			mapView.Superview.AddSubview(img);
 			mapView.MultipleTouchEnabled = true;
 
-			_pickAdrsCtl = new AddressContoller( pickView, tableView, mapView, AddressAnnotationType.Pickup, () => BookingInfo.PickupAddress, data => BookingInfo.PickupAddress = data );
-			_destAdrsCtl = new AddressContoller( destView, tableView, mapView, AddressAnnotationType.Destination, () => BookingInfo.DropOffAddress, data => BookingInfo.DropOffAddress = data );
+			//_pickAdrsCtl = new AddressContoller( pickView, tableView, mapView, AddressAnnotationType.Pickup, () => BookingInfo.PickupAddress, data => BookingInfo.PickupAddress = data );
+			//_destAdrsCtl = new AddressContoller( destView, tableView, mapView, AddressAnnotationType.Destination, () => BookingInfo.DropOffAddress, data => BookingInfo.DropOffAddress = data );
 
 			_settingsBar = new VerticalButtonBar( new RectangleF( 9, 6, 40, 33 ), VerticalButtonBar.AnimationType.Wheel, apcurium.MK.Booking.Mobile.Client.VerticalButtonBar.AnimationDirection.Up );
 			_settingsBar.ButtonClicked += HandleSettingsButtonClicked;
@@ -85,7 +85,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 			_settingsBar.AddButton(UIImage.FromFile("Assets/VerticalButtonBar/history.png"), UIImage.FromFile("Assets/VerticalButtonBar/history.png"));
 			_settingsBar.AddButton(UIImage.FromFile("Assets/VerticalButtonBar/locations.png"), UIImage.FromFile("Assets/VerticalButtonBar/locations.png"));
 			bottomBar.AddSubview( _settingsBar );
-			bottomBar.OutsideRect = _settingsBar.OpenRect;
+			//bottomBar.OutsideRect = _settingsBar.OpenRect;
+            bottomBar.UserInteractionEnabled =true;
+            View.BringSubviewToFront( bottomBar );
+            View.BringSubviewToFront( _settingsBar );
+            View.BringSubviewToFront( bookBtn  );
+//            boo
 
         }
 
@@ -96,25 +101,25 @@ namespace apcurium.MK.Booking.Mobile.Client
 			_settingsBar._mainBtn.Frame = new RectangleF( 0, 50, 40, 33 );
         }
 
-        void HandleSettingsButtonClicked (int index)
+       void HandleSettingsButtonClicked (int index)
         {
-			InvokeOnMainThread (() => {
-				switch( index )
-				{
-				case 0:
-					AppContext.Current.Controller.SelectViewController( 3 );
-					break;
-				case 1:
-					AppContext.Current.Controller.SelectViewController( 2 );
-					break;
-				case 2:
-					AppContext.Current.Controller.SelectViewController( 1 );
-					break;
-				}
-
-			});
+//			InvokeOnMainThread (() => {
+//				switch( index )
+//				{
+//				case 0:
+//					AppContext.Current.Controller.SelectViewController( 3 );
+//					break;
+//				case 1:
+//					AppContext.Current.Controller.SelectViewController( 2 );
+//					break;
+//				case 2:
+//					AppContext.Current.Controller.SelectViewController( 1 );
+//					break;
+//				}
+//
+//			});
         }
-        
+
         public override void ViewWillAppear (bool animated)
         {
             base.ViewWillAppear (animated);     
@@ -221,7 +226,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 }
                 else
                 {  
-                    if (!(this.NavigationController.TopViewController is BookTabView))
+                    if (!(this.NavigationController.TopViewController is BookView))
                     {
                         this.NavigationController.PopViewControllerAnimated (false);
                     }
@@ -331,7 +336,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public bool IsTopView {
 
-            get { return this.NavigationController.TopViewController is BookTabView; }
+            get { return this.NavigationController.TopViewController is BookView; }
         }
 
 		public UIView GetTopView()
@@ -341,7 +346,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         private void CreateOrder (CreateOrder bi)
         {
-            if (!(this.NavigationController.TopViewController is BookTabView))
+            if (!(this.NavigationController.TopViewController is BookView))
             {
                 this.NavigationController.PopViewControllerAnimated (false);
             }

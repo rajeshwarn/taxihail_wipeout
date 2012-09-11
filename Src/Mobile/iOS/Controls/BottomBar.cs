@@ -46,10 +46,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		public RectangleF OutsideRect { get; set; }
 
-		public override bool PointInside (PointF point, UIEvent uievent)
-		{
-			return this.Frame.Contains( point) || OutsideRect.Contains( point );
-		}
+//		public override bool PointInside (PointF point, UIEvent uievent)
+//		{
+//			return this.Frame.Contains( point) || OutsideRect.Contains( point );
+//		}
 	}
 }
 

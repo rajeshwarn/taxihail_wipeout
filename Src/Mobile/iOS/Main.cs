@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,6 +51,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             _tabBarController = new RootTabController();
 
             window.RootViewController = _tabBarController;
+
             Logger.LogMessage("MainTabController initialized");
             
             AppContext.Current.Controller = _tabBarController;
@@ -66,7 +66,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                     {
 
 
-                        SetUIDefaults( );
+                        SetUIDefaults();
 
                         _tabBarController.Load();
 
@@ -98,7 +98,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         private void SetUIDefaults()
         {
             var buttonAtt = new UITextAttributes{ TextColor = AppStyle.LightCorporateColor, TextShadowColor = UIColor.Clear };
-            UIBarButtonItem.Appearance.SetTitleTextAttributes( buttonAtt, UIControlState.Normal );
+            UIBarButtonItem.Appearance.SetTitleTextAttributes(buttonAtt, UIControlState.Normal);
 
         }
         // This method is required in iPhoneOS 3.0
@@ -109,57 +109,53 @@ namespace apcurium.MK.Booking.Mobile.Client
             JsConfig.RegisterTypeForAot<OrderStatus>();
             JsConfig.RegisterTypeForAot<OrderStatusDetail>();
          
-            if( !_callbackFromFB )
+            if (!_callbackFromFB)
             {
 
-            if (AppContext.Current.LoggedUser != null)
-            {
-                ThreadHelper.ExecuteInThread(() =>
+                if (AppContext.Current.LoggedUser != null)
                 {
-                    try
+                    ThreadHelper.ExecuteInThread(() =>
                     {
-
-
-                        if ((AppContext.Current.Controller.SelectedUIViewController != null) && (AppContext.Current.Controller.SelectedUIViewController is BookTabView))
+                        try
                         {
+
                             AppContext.Current.Controller.View.InvokeOnMainThread(() => {
-                                AppContext.Current.Controller.SelectedRefreshableViewController.RefreshData(); });
-                        }                       
-                        if ((AppContext.Current.Controller.SelectedRefreshableViewController != null) && (!(AppContext.Current.Controller.SelectedUIViewController is BookTabView)))
-                        {
-                            AppContext.Current.Controller.View.InvokeOnMainThread(() => {
-                                AppContext.Current.Controller.SelectedRefreshableViewController.RefreshData(); });
+                                if ((AppContext.Current.Controller.TopViewController != null) && (AppContext.Current.Controller.TopViewController is BookView))
+                                {
+                                    AppContext.Current.Controller.SelectedRefreshableViewController.RefreshData();
+                                }                       
+                                if ((AppContext.Current.Controller.SelectedRefreshableViewController != null) && (!(AppContext.Current.Controller.TopViewController  is BookView)))
+                                {
+                                    AppContext.Current.Controller.SelectedRefreshableViewController.RefreshData(); 
+                                }
+
+                            });
+
                         }
-
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.LogError(ex);
-                    }
-                    finally
-                    {
+                        catch (Exception ex)
+                        {
+                            Logger.LogError(ex);
+                        }
+                        finally
+                        {
                         
+                        }
+                    }
+                    );
+                
+                }
+                else
+                {
+                    if (_tabBarController.TopViewController != null)
+                    {   
+                        InvokeOnMainThread(() => _tabBarController.TopViewController.PresentModalViewController(new LoginView(), true));
                     }
                 }
-                );
-                
-            }
-            else
-            {
-                if (_tabBarController.SelectedViewController != null)
-                {   
-                    InvokeOnMainThread(() => _tabBarController.SelectedViewController.PresentModalViewController(new LoginView(), true));
-                }
-            }
             }
             else
             {
                 _callbackFromFB = false;
-            }
-
-			_tabBarController.TabBar.Hidden = true;
-			_tabBarController.View.Subviews.ElementAt(0).Frame = new System.Drawing.RectangleF(0,0,320,480);
-
+            }           
         }
 
         public override void ReceiveMemoryWarning(UIApplication application)
@@ -181,7 +177,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         
         public override bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)
         {
-            return HandleOpenURL( application , url );
+            return HandleOpenURL(application, url);
         }       
 
 

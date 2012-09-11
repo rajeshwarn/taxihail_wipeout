@@ -190,10 +190,10 @@ namespace apcurium.MK.Booking.Mobile.Client
                     _adrsSelector.Mode = LocationsTabViewMode.FavoritesSelector;
                     _adrsSelector.LocationSelected += LocationSelectedDelegate;
                     _adrsSelector.Canceled += CancelSelectionDelegate;
-                    AppContext.Current.Controller.SelectedUIViewController.NavigationController.PushViewController(_adrsSelector, true);
+                    AppContext.Current.Controller.TopViewController.NavigationController.PushViewController(_adrsSelector, true);
                     break;
                 case 2:
-                    var contactPicker = new ContactPicker(AppContext.Current.Controller.SelectedUIViewController);
+                    var contactPicker = new ContactPicker(AppContext.Current.Controller.TopViewController);
                     contactPicker.AddProperty(MonoTouch.AddressBook.ABPersonProperty.Address);
                     contactPicker.ContactSelected += HandleContactSelected;
                     contactPicker.Show();
@@ -205,7 +205,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                     _adrsSelector.LocationList = places.ToList();
                     _adrsSelector.LocationSelected += LocationSelectedDelegate;
                     _adrsSelector.Canceled += CancelSelectionDelegate;
-                    AppContext.Current.Controller.SelectedUIViewController.NavigationController.PushViewController(_adrsSelector, true);
+                    AppContext.Current.Controller.TopViewController.NavigationController.PushViewController(_adrsSelector, true);
                     break;
             }
         }
@@ -225,7 +225,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             try
             {
-                AppContext.Current.Controller.SelectedUIViewController.NavigationController.PopViewControllerAnimated(true);
+                AppContext.Current.Controller.TopViewController.NavigationController.PopViewControllerAnimated(true);
 
                 SetLocation(locData, true, true);
 
@@ -245,7 +245,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             try
             {
-                AppContext.Current.Controller.SelectedUIViewController.NavigationController.PopViewControllerAnimated(true); 
+                AppContext.Current.Controller.TopViewController.NavigationController.PopViewControllerAnimated(true); 
             }
             catch (Exception ex)
             {
@@ -390,7 +390,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public void ShowCurrentLocation(bool showProgress)
         {
-            if ((AppContext.Current.LoggedUser == null) || (!(AppContext.Current.Controller.SelectedViewController is UINavigationController)) || (!(((UINavigationController)AppContext.Current.Controller.SelectedViewController).TopViewController is BookTabView)))
+            if ((AppContext.Current.LoggedUser == null) || (!(AppContext.Current.Controller.TopViewController is UINavigationController)) || (!(((UINavigationController)AppContext.Current.Controller.TopViewController).TopViewController is BookView)))
             {
                 return;
             }
