@@ -149,6 +149,8 @@
     <Compile Include="Mvx\TinyIocViewModelLocator.cs" />
     <Compile Include="Mvx\TinyIoCProvider.cs" />
     <Compile Include="Mvx\TinyIoCServiceProviderSetup.cs" />
+    <Compile Include="Navigation\INavigationService.cs" />
+    <Compile Include="ViewModels\BaseViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">
@@ -179,5 +181,6 @@
   <ItemGroup>
     <Folder Include="Style\" />
     <Folder Include="ViewModels\" />
+    <Folder Include="Navigation\" />
   </ItemGroup>
 </Project>

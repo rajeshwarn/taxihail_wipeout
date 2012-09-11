@@ -34,7 +34,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public GradientButton(IntPtr handle) : base(  handle )
         {
-
             BackgroundColor = UIColor.Clear;
             Layer.MasksToBounds = false;
             ClipsToBounds = false;
@@ -43,9 +42,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             SetTitleColor( UIColor.Clear, UIControlState.Selected );
         }
 
-//		        public GradientButton(RectangleF rect, float cornerRadius, UIColor[] colors, float[] colorLocations, float strokeLineWidth, 
-//                              UIColor strokeLineColor, ShadowSetting innerShadow, ShadowSetting dropShadow, 
-//                              string title, UIColor titleColor, UIFont titleFont, bool useShadow = true,  string image = null) : base ( rect )
+
         public GradientButton(RectangleF rect, float cornerRadius, Style.ButtonStyle buttonStyle, string title, UIFont titleFont, string image = null) : base ( rect )
         {
 
@@ -61,8 +58,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			_titleFont = titleFont;
 			_innerShadow = buttonStyle.InnerShadow;
 			_dropShadow = buttonStyle.DropShadow;
-//			buttonStyle.InnerShadow.Maybe( shadow => _innerShadow = new ShadowSetting(){ BlurRadius = shadow.BlurRadius, Offset = new SizeF(shadow.OffsetX, shadow.OffsetY), Color = UIColor.FromRGBA(shadow.Color.Red, shadow.Color.Green, shadow.Color.Blue, shadow.Color.Alpha) } );
-//			buttonStyle.DropShadow.Maybe( shadow => _dropShadow = new ShadowSetting(){ BlurRadius = shadow.BlurRadius, Offset = new SizeF(shadow.OffsetX, shadow.OffsetY), Color = UIColor.FromRGBA(shadow.Color.Red, shadow.Color.Green, shadow.Color.Blue, shadow.Color.Alpha) } );
             BackgroundColor = UIColor.Clear;
             Layer.MasksToBounds = false;
             ClipsToBounds = false;
@@ -75,6 +70,14 @@ namespace apcurium.MK.Booking.Mobile.Client
             SetTitleColor( UIColor.Clear, UIControlState.Selected );
         }
 
+        public void SetImage( string image )
+        {
+            if (image != null)
+            {
+                _image = UIImage.FromFile(image);
+                SetNeedsDisplay();
+            }
+        }
 
         public Style.ShadowDefinition DropShadow
         {
@@ -281,7 +284,10 @@ namespace apcurium.MK.Booking.Mobile.Client
             RectangleF imageRect = new RectangleF();
             if (_image != null)
             {
-                imageRect = new RectangleF(3f, 3f, rect.Height - 6f, rect.Height - 6f);
+                var emptySpaceX =  rect.Width - _image.Size.Width;
+                var emptySpaceY =  rect.Height - _image.Size.Height ;
+
+                imageRect = new RectangleF(emptySpaceX/2, emptySpaceY/2, rect.Width - emptySpaceX, rect.Height - emptySpaceY);                               
                 _image.Draw(imageRect, CGBlendMode.Normal, 1f);
             }
 

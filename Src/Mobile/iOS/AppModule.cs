@@ -8,6 +8,7 @@ using SocialNetworks.Services.MonoTouch;
 using SocialNetworks.Services;
 using apcurium.MK.Booking.Mobile.Settings;
 using apcurium.MK.Booking.Mobile.Client.PlatformIntegration;
+using apcurium.MK.Booking.Mobile.Navigation;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -20,6 +21,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         #region IModule implementation
         public void Initialize()
         {
+            TinyIoCContainer.Current.Register<INavigationService>(new NavigationService( AppContext.Current.Controller ));
             TinyIoCContainer.Current.Register<IAppSettings>(new AppSettings());
             TinyIoCContainer.Current.Register<IPackageInfo>(new PackageInfo());
 

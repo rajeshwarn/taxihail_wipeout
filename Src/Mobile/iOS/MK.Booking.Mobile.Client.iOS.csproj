@@ -257,12 +257,14 @@
     <Compile Include="PlatformIntegration\PackageInfo.cs" />
     <Compile Include="Controls\AddressBarButtons.cs" />
     <Compile Include="Controls\AddressButton.cs" />
-    <Compile Include="Views\BookTabView.xib.cs">
+    <Compile Include="Views\BookView.xib.cs">
       <DependentUpon>BookView.xib</DependentUpon>
     </Compile>
-    <Compile Include="Views\BookTabView.xib.designer.cs">
+    <Compile Include="Views\BookView.xib.designer.cs">
       <DependentUpon>BookView.xib</DependentUpon>
     </Compile>
+    <Compile Include="Navigation\NavigationService.cs" />
+    <Compile Include="Controls\AddressButton2.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -292,6 +294,7 @@
     <Folder Include="Assets\Cells\" />
     <Folder Include="PlatformIntegration\" />
     <Folder Include="Views\" />
+    <Folder Include="Navigation\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="MainWindow.xib" xmlns="" />
@@ -405,6 +408,12 @@
     <Content Include="Assets\Cells\addNewBackground%402x.png" />
     <Content Include="Assets\Cells\addNewBackgroundSelected.png" />
     <Content Include="Assets\Cells\addNewBackgroundSelected%402x.png" />
+    <Content Include="Assets\gpsRefreshIcon.png" />
+    <Content Include="Assets\gpsRefreshIcon%402x.png" />
+    <Content Include="Assets\bookLaterIcon.png" />
+    <Content Include="Assets\bookLaterIcon%402x.png" />
+    <Content Include="Assets\backPickupDestination.png" />
+    <Content Include="Assets\backPickupDestination%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.iOS.csproj">

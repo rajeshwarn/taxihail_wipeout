@@ -18,8 +18,10 @@ namespace apcurium.MK.Booking.Mobile.Client
             Red,
             CorporateColor,
             Silver,
-            AlternateCorporateColor }
-        ;
+            AlternateCorporateColor,
+            Blue,
+            DarkGray
+        };
 
     
         public static float ButtonStrokeLineWidth { get { return 2f; } }

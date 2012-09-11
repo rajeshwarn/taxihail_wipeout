@@ -9,17 +9,18 @@ using Xamarin.Geolocation;
 using System.Threading.Tasks;
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class BookViewModel: MvxViewModel
+    public class BookViewModel : BaseViewModel 
     {
         private string _pickupLocation;
         private string _destinationLocation;
+
         public enum LocationType
         {
             Pickup,
             Destination
         }
+
         private LocationType _currentLocationType;
-        private CreateOrder _order;
         private IAccountService _accountService;
         private Geolocator _geolocator;
         private  TaskScheduler _scheduler = TaskScheduler.FromCurrentSynchronizationContext();
@@ -30,29 +31,45 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _geolocator = new Geolocator{ DesiredAccuracy  = 100 };
         }
 
-        public void Load()
+        public override void Load()
         {
-            _order = new CreateOrder();
+            Order = new CreateOrder();
             if (_accountService.CurrentAccount != null)
             {
-                _order.Settings = _accountService.CurrentAccount.Settings;
+                Order.Settings = _accountService.CurrentAccount.Settings;
             }
             else
             {
-                _order.Settings = new BookingSettings{Passengers = 2};
-            }
+                Order.Settings = new BookingSettings{Passengers = 2};
+            }           
+        }
+
+        public void Reset()
+        {
+            Load();
+        }
+
+        public void Rebook( CreateOrder rebookData)
+        {
+            Order =rebookData;
+        }
+
+        public CreateOrder Order
+        {
+            get;
+            private set;
         }
 
         public Address Pickup
         {
             get
             { 
-                return _order.PickupAddress;
+                return Order.PickupAddress;
             }
 
             set
             { 
-                _order.PickupAddress = value;
+                Order.PickupAddress = value;
                 FirePropertyChanged(() => Pickup);
             }
         }
@@ -61,12 +78,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             { 
-                return _order.DropOffAddress;
+                return Order.DropOffAddress;
             }
             
             set
             {
-                _order.DropOffAddress = value;
+                Order.DropOffAddress = value;
                 FirePropertyChanged(() => Pickup);
             }
         }

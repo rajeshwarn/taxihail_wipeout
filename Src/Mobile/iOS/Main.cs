@@ -12,6 +12,8 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using ServiceStack.Text;
 using SocialNetworks.Services.MonoTouch;
 using SocialNetworks.Services;
+using apcurium.MK.Booking.Mobile.Navigation;
+using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -41,54 +43,55 @@ namespace apcurium.MK.Booking.Mobile.Client
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
 
-
             Background.Load(window, "Assets/background_full_nologo.png", false, 0, 0);          
             
-            AppContext.Initialize(window);
-            
-            Logger.LogMessage("Context initialized");
+            AppContext.Initialize(window);           
 
             _tabBarController = new RootTabController();
 
-            window.RootViewController = _tabBarController;
-
-            Logger.LogMessage("MainTabController initialized");
+            window.RootViewController = _tabBarController;           
             
             AppContext.Current.Controller = _tabBarController;
 
+
             new Bootstrapper(new IModule[] { new AppModule() }).Run();
-            
-            ThreadHelper.ExecuteInThread(() =>
-            {
-                try
-                {
-                    InvokeOnMainThread(() =>
-                    {
-
-
-                        SetUIDefaults();
-
-                        _tabBarController.Load();
+//            
+//            ThreadHelper.ExecuteInThread(() =>
+//            {
+//                try
+//                {
+//                    InvokeOnMainThread(() =>
+//                    {
+//
+//                        SetUIDefaults();
+//
+//                        _tabBarController.Load();
+//
 
                         window.AddSubview(_tabBarController.View);
 
+
+//
                         if (AppContext.Current.LoggedUser == null)
                         {
                             _tabBarController.ViewControllers[0].PresentModalViewController(new LoginView(), true);
                         }
-
-                        window.MakeKeyAndVisible();
-                        
-                    }
-                    );
-
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(ex);
-                }
+            else{
+                TinyIoCContainer.Current.Resolve<INavigationService>().Navigate<BookViewModel,BookView>(); 
             }
-            );
+//
+                        window.MakeKeyAndVisible();
+//                        
+//                    }
+//                    );
+//
+//                }
+//                catch (Exception ex)
+//                {
+//                    Logger.LogError(ex);
+//                }
+//            }
+//            );
             
             ThreadHelper.ExecuteInThread(() => TinyIoCContainer.Current.Resolve<IAccountService>().EnsureListLoaded());
 

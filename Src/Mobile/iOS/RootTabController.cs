@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             
             _controllers = new List<UINavigationController>();
             
-            _controllers.Add(CreateNavigationController<BookView>(Resources.TabBook, "Assets/Tab/book.png", true));
+            //_controllers.Add(CreateNavigationController<BookView>(Resources.TabBook, "Assets/Tab/book.png", true));
             
 //            _controllers.Add(CreateNavigationController<LocationsTabView>(Resources.TabLocations, "Assets/Tab/locations.png", true));
 //            
@@ -52,6 +52,12 @@ namespace apcurium.MK.Booking.Mobile.Client
             Logger.StopStopwatch("done loading controllers");
             
             
+        }
+
+        public void Navigate( UIViewController controller )
+        {
+            var nav = CreateNavigationController( controller, "","", true );
+            this.SetViewControllers(new UIViewController[]{ nav }, false);
         }
 
 //		public void SelectViewController( int index )
@@ -92,19 +98,19 @@ namespace apcurium.MK.Booking.Mobile.Client
         
         }
 
-        private UINavigationController CreateNavigationController<T>(string title, string logo, bool hideNavBar) where T : UIViewController, ITaxiViewController
+        private UINavigationController CreateNavigationController(  UIViewController baseController, string title, string logo, bool hideNavBar) 
         {
-            UIViewController baseController = Activator.CreateInstance<T>();
+
 
             var navController = new TaxiNavigationController((ITaxiViewController)baseController);
 			navController.PushViewController(baseController, false);
-            navController.NavigationBar.BarStyle = UIBarStyle.Black;
+            //navController.NavigationBar.BarStyle = UIBarStyle.Black;
 
 
-			using (var image = UIImage.FromFile (logo))
-            {
-                navController.TabBarItem = new UITabBarItem(title, image, 0);
-            }
+//			using (var image = UIImage.FromFile (logo))
+//            {
+//                navController.TabBarItem = new UITabBarItem(title, image, 0);
+//            }
             
             return navController;
         }
