@@ -6,37 +6,54 @@ using MonoTouch.UIKit;
 using apcurium.MK.Common.Extensions;
 using MonoTouch.CoreGraphics;
 using apcurium.MK.Booking.Mobile.ListViewStructure;
+using Cirrious.MvvmCross.Binding.Touch.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 {
-	public class TwoLinesAddressCell : UITableViewCell
+	public class TwoLinesCell : MvxBindableTableViewCell
 	{
 		private UIImageView _rightImage;
-		private TwoLinesAddressItem _sectionItem;
-		
-		public TwoLinesAddressCell (IntPtr handle) : base(handle)
+		private bool _showPlusSign;
+		private bool _showArrow;
+		private float _rowHeight = 44f;
+		public TwoLinesCell (IntPtr handle, string bindingText) : base(bindingText, handle)
 		{		
 		}
 
-//		[Export("initWithCoder:")]
-//		public TwoLinesAddressCell (NSCoder coder) : base(coder)
-//		{			
-//		}
-		
-		public TwoLinesAddressCell (TwoLinesAddressItem data, string cellIdentifier) : base( UITableViewCellStyle.Subtitle, new NSString(cellIdentifier)   )
+		public TwoLinesCell (string cellIdentifier, string bindingText) : base( bindingText, UITableViewCellStyle.Subtitle, new NSString(cellIdentifier), UITableViewCellAccessory.None   )
 		{					
-			_sectionItem = data;
-			
 			SelectionStyle = UITableViewCellSelectionStyle.None;
 			Accessory = UITableViewCellAccessory.None;
 			Initialize ();
-			Load ();
 		}
-		
+
+		public string FirstLine { get { return TextLabel.Text; }
+			set { TextLabel.Text = value; }
+		}
+		public string SecondLine { get { return DetailTextLabel.Text; }
+			set { DetailTextLabel.Text = value; }
+		}
+		public bool ShowPlusSign { 
+			get { return _showPlusSign; }
+			set { 
+				_showPlusSign = value;
+				LoadImageFromAssets( _rightImage, "Assets/Cells/plusSign.png" );
+			}
+		}
+		public bool ShowArrow { 
+			get { return _showArrow; }
+			set { 
+				_showArrow = value;
+				LoadImageFromAssets( _rightImage, "Assets/Cells/rightArrow.png" );
+			}
+		}
+
+		public bool IsFirst { get; set; }
+		public bool IsLast { get; set; }
+
 		private void Initialize ()
 		{
-
-			BackgroundView = new CustomCellBackgroundView( _sectionItem.Index == 0, _sectionItem.Index == (_sectionItem.Parent.Items.Count() - 1), Frame, _sectionItem.ShowPlusSign );
+			BackgroundView = new CustomCellBackgroundView2( IsFirst, IsLast, Frame, ShowPlusSign );
 			TextLabel.TextColor = AppStyle.CellFirstLineTextColor;
 			TextLabel.BackgroundColor = UIColor.Clear;
 			TextLabel.Font = AppStyle.CellFont;
@@ -45,35 +62,12 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 			DetailTextLabel.BackgroundColor = UIColor.Clear;
 			DetailTextLabel.Font = AppStyle.NormalTextFont;
 
-			_rightImage = new UIImageView (new RectangleF (290, _sectionItem.RowHeight/2 - 15/2, 14, 15 ) ); 
+			_rightImage = new UIImageView (new RectangleF (290, _rowHeight/2 - 15/2, 14, 15 ) ); 
 			_rightImage.BackgroundColor = UIColor.Clear;
 			_rightImage.ContentMode = UIViewContentMode.ScaleAspectFit;
 			AddSubview ( _rightImage );	
 		}
 
-		
-		public void Load ()
-		{
-			TextLabel.Text = _sectionItem.Label;
-			DetailTextLabel.Text = _sectionItem.DetailText;
-			UserInteractionEnabled = _sectionItem.Enabled();
-
-			if( _sectionItem.ShowRightArrow )
-			{
-				LoadImageFromAssets ( _rightImage, "Assets/Cells/rightArrow.png" );
-			}
-			if( _sectionItem.ShowPlusSign )
-			{
-				LoadImageFromAssets ( _rightImage, "Assets/Cells/plusSign.png" );
-			}
-
-		}
-		
-		public float GetHeight ()
-		{
-			return _sectionItem.RowHeight;
-		}
-		
 		private void LoadImageFromAssets ( UIImageView imageView, string asset )
 		{
 			if ( !asset.IsNullOrEmpty () )
@@ -82,46 +76,8 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 			}			
 		}
 		
-		public void ReUse ( TwoLinesAddressItem item )
-		{
-			if ( item != null )
-			{
-				if ( item != _sectionItem )
-				{								
-					_sectionItem = item;
-				}			
-
-				Load ();
-				bool changed = false;
-				if( ((CustomCellBackgroundView)BackgroundView).IsAddNewCell != _sectionItem.ShowPlusSign )
-				{
-					((CustomCellBackgroundView)BackgroundView).IsAddNewCell = _sectionItem.ShowPlusSign;
-					changed = true;
-				}
-
-				if( ((CustomCellBackgroundView)BackgroundView).IsTop != (_sectionItem.Index == 0) )
-				{
-					((CustomCellBackgroundView)BackgroundView).IsTop = _sectionItem.Index == 0;
-					changed = true;
-				}
-				if( ((CustomCellBackgroundView)BackgroundView).IsBottom != (_sectionItem.Index == (_sectionItem.Parent.Items.Count() - 1)) )
-				{
-					((CustomCellBackgroundView)BackgroundView).IsBottom = _sectionItem.Index == (_sectionItem.Parent.Items.Count() - 1);
-					changed = true;
-				}
-				if( changed )
-				{
-					BackgroundView.SetNeedsDisplay();
-				}
-
-			}
-
-		}
-		
 		public void CleanUp ()
-		{					
-			_sectionItem = null;		
-			
+		{							
 			if ( _rightImage != null )
 			{
 				_rightImage.Image = new UIImage ();
@@ -151,7 +107,7 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 
 	}
 
-	public class CustomCellBackgroundView : UIView
+	public class CustomCellBackgroundView2 : UIView
 	{
 		private bool _isTop;
 		private bool _isBottom;
@@ -163,7 +119,7 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 		private UIColor _selectedBackgroundColor = UIColor.FromRGBA( 233, 217, 219, 0.1f );
 		private UIColor _backgroundColor = AppStyle.CellBackgroundColor;
 
-		public CustomCellBackgroundView(bool isTop, bool isBottom, RectangleF rect, bool isAddNewCell ) : base( rect )
+		public CustomCellBackgroundView2(bool isTop, bool isBottom, RectangleF rect, bool isAddNewCell ) : base( rect )
 		{
 			_isTop = isTop;
 			_isBottom = isBottom;

@@ -87,10 +87,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 //
                         if (AppContext.Current.LoggedUser == null)
                         {
-                            _tabBarController.ViewControllers[0].PresentModalViewController(new LoginView(), true);
+                          //  _tabBarController.ViewControllers[0].PresentModalViewController(new LoginView(), true);
+
                         }
             else{
                 TinyIoCContainer.Current.Resolve<INavigationService>().Navigate<BookViewModel,BookView>(); 
+				  
             }
 //
                         window.MakeKeyAndVisible();
@@ -163,9 +165,10 @@ namespace apcurium.MK.Booking.Mobile.Client
                 }
                 else
                 {
+					TinyIoCContainer.Current.Resolve<INavigationService>().Navigate<AddressSearchViewModel,AddressSearchView>();
                     if (_tabBarController.TopViewController != null)
                     {   
-                        InvokeOnMainThread(() => _tabBarController.TopViewController.PresentModalViewController(new LoginView(), true));
+                       // InvokeOnMainThread(() => _tabBarController.TopViewController.PresentModalViewController(new LoginView(), true));
                     }
                 }
             }
@@ -201,4 +204,3 @@ namespace apcurium.MK.Booking.Mobile.Client
     }
     
 }
-

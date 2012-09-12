@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using System.Runtime.Serialization;
 
 
-namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
+namespace apcurium.MK.Booking.Mobile.ListViewStructure
 {
 	
 	public class TwoLinesAddressItem : SectionItem

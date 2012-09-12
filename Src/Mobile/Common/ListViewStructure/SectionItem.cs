@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using apcurium.MK.Common.Extensions;
 
-namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
+namespace apcurium.MK.Booking.Mobile.ListViewStructure
 {
 	public abstract class SectionItem : IDisposable
 	{

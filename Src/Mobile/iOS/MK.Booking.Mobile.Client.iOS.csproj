@@ -241,11 +241,7 @@
     <Compile Include="MonoTouchDialog\RightAlignedEntryElement.cs" />
     <Compile Include="MonoTouchDialog\SectionWithBackground.cs" />
     <Compile Include="MonoTouchDialog\RadioElementWithId.cs" />
-    <Compile Include="InfoTableView\Section.cs" />
-    <Compile Include="InfoTableView\SectionItem.cs" />
     <Compile Include="InfoTableView\TwoLinesAddressCell.cs" />
-    <Compile Include="InfoTableView\TwoLinesAddressItem.cs" />
-    <Compile Include="InfoTableView\InfoStructure.cs" />
     <Compile Include="Controls\BottomBar.cs" />
     <Compile Include="Controls\StatusBar.cs" />
     <Compile Include="Controls\WindowDisplay.cs" />
@@ -275,6 +271,7 @@
     <Compile Include="Views\AddressSearchView.designer.cs">
       <DependentUpon>AddressSearchView.xib</DependentUpon>
     </Compile>
+    <Compile Include="InfoTableView\TwoLinesCell.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -305,6 +302,7 @@
     <Folder Include="PlatformIntegration\" />
     <Folder Include="Views\" />
     <Folder Include="Navigation\" />
+    <Folder Include="Assets\Search\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="MainWindow.xib" xmlns="" />
@@ -425,6 +423,8 @@
     <Content Include="Assets\bookLaterIcon%402x.png" />
     <Content Include="Assets\backPickupDestination.png" />
     <Content Include="Assets\backPickupDestination%402x.png" />
+    <Content Include="Assets\Search\SearchIcon.png" />
+    <Content Include="Assets\Search\SearchIcon%402x.png" />
     <Content Include="Assets\locationSelected.png" />
     <Content Include="Assets\locationSelected%402x.png" />
   </ItemGroup>
