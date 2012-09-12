@@ -68,45 +68,47 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 
             new Bootstrapper(new IModule[] { new AppModule() }).Run();
-//            
-//            ThreadHelper.ExecuteInThread(() =>
-//            {
-//                try
-//                {
-//                    InvokeOnMainThread(() =>
-//                    {
-//
-//                        SetUIDefaults();
-//
-//                        _tabBarController.Load();
-//
 
-                        window.AddSubview(_tabBarController.View);
-
-
+			window.RootViewController.PresentModalViewController(new AddressSearchView( ), true);
+////            
+////            ThreadHelper.ExecuteInThread(() =>
+////            {
+////                try
+////                {
+////                    InvokeOnMainThread(() =>
+////                    {
+////
+////                        SetUIDefaults();
+////
+////                        _tabBarController.Load();
+////
 //
-                        if (AppContext.Current.LoggedUser == null)
-                        {
-                            _tabBarController.ViewControllers[0].PresentModalViewController(new LoginView(), true);
-                        }
-            else{
-                TinyIoCContainer.Current.Resolve<INavigationService>().Navigate<BookViewModel,BookView>(); 
-            }
+//                        window.AddSubview(_tabBarController.View);
 //
-                        window.MakeKeyAndVisible();
-//                        
-//                    }
-//                    );
 //
-//                }
-//                catch (Exception ex)
-//                {
-//                    Logger.LogError(ex);
-//                }
+////
+//                        if (AppContext.Current.LoggedUser == null)
+//                        {
+//                            _tabBarController.ViewControllers[0].PresentModalViewController(new AddressSearchView(), true);
+//                        }
+//            else{
+//                TinyIoCContainer.Current.Resolve<INavigationService>().Navigate<BookViewModel,BookView>(); 
 //            }
-//            );
-            
-            ThreadHelper.ExecuteInThread(() => TinyIoCContainer.Current.Resolve<IAccountService>().EnsureListLoaded());
+////
+//                        window.MakeKeyAndVisible();
+////                        
+////                    }
+////                    );
+////
+////                }
+////                catch (Exception ex)
+////                {
+////                    Logger.LogError(ex);
+////                }
+////            }
+////            );
+//            
+//            ThreadHelper.ExecuteInThread(() => TinyIoCContainer.Current.Resolve<IAccountService>().EnsureListLoaded());
 
 
             return true;

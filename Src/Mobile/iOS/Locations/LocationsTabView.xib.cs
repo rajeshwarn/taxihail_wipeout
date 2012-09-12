@@ -11,6 +11,7 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Client.InfoTableView;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
+using apcurium.MK.Booking.Mobile.ListViewStructure;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {

@@ -69,6 +69,19 @@ namespace apcurium.MK.Booking.Mobile.Client
                 
         }
 
+		public void SetImage( string image )
+		{
+			var img = UIImage.FromFile( image );
+			var imgView = new UIImageView( new RectangleF( 5, Frame.Height/2 - img.Size.Height/2, img.Size.Width, img.Size.Height ) );
+			imgView.BackgroundColor = UIColor.Clear;
+			imgView.Image = img;
+
+			AddSubview( imgView );
+
+			PaddingLeft += img.Size.Width + 5;
+		}
+
+
         public UIColor StrokeColor
         {
             get { return _strokeColor;}
