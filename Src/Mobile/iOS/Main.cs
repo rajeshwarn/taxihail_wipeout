@@ -161,14 +161,14 @@ namespace apcurium.MK.Booking.Mobile.Client
                         }
                     }
                     );
-                
+                TinyIoCContainer.Current.Resolve<INavigationService>().Navigate<AddressSearchViewModel,AddressSearchView>();
                 }
                 else
                 {
-					TinyIoCContainer.Current.Resolve<INavigationService>().Navigate<AddressSearchViewModel,AddressSearchView>();
+
                     if (_tabBarController.TopViewController != null)
                     {   
-                       // InvokeOnMainThread(() => _tabBarController.TopViewController.PresentModalViewController(new LoginView(), true));
+                       InvokeOnMainThread(() => _tabBarController.TopViewController.PresentModalViewController(new LoginView(), true));
                     }
                 }
             }

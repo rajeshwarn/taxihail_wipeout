@@ -12,7 +12,8 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 {
 	public class TwoLinesCell : MvxBindableTableViewCell
 	{
-		private UIImageView _rightImage;
+		private UIImageView _arrowImage;
+		private UIImageView _plusSignImage;
 		private bool _showPlusSign;
 		private bool _showArrow;
 		private float _rowHeight = 44f;
@@ -30,26 +31,42 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 		public string FirstLine { get { return TextLabel.Text; }
 			set { TextLabel.Text = value; }
 		}
+
 		public string SecondLine { get { return DetailTextLabel.Text; }
 			set { DetailTextLabel.Text = value; }
 		}
+
+		public string test{get;set;}
+
 		public bool ShowPlusSign { 
 			get { return _showPlusSign; }
 			set { 
 				_showPlusSign = value;
-				LoadImageFromAssets( _rightImage, "Assets/Cells/plusSign.png" );
-			}
-		}
-		public bool ShowArrow { 
-			get { return _showArrow; }
-			set { 
-				_showArrow = value;
-				LoadImageFromAssets( _rightImage, "Assets/Cells/rightArrow.png" );
+				_plusSignImage.Hidden = !_showPlusSign;
 			}
 		}
 
-		public bool IsFirst { get; set; }
-		public bool IsLast { get; set; }
+		public bool ShowRightArrow { 
+			get { return _showArrow; }
+			set { 
+				_showArrow = value;
+				_arrowImage.Hidden = !_showArrow;
+			}
+		}
+
+		private bool _isFirst, _isLast;
+		public bool IsFirst { get { return _isFirst;} 
+			set{ 
+				_isFirst = value;
+				((CustomCellBackgroundView2)BackgroundView).IsTop = _isFirst;
+			}
+		}
+		public bool IsLast { get{ return _isLast;} 
+			set{ 
+				_isLast = value;
+				((CustomCellBackgroundView2)BackgroundView).IsBottom = _isLast;
+			}
+		}
 
 		private void Initialize ()
 		{
@@ -62,28 +79,19 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 			DetailTextLabel.BackgroundColor = UIColor.Clear;
 			DetailTextLabel.Font = AppStyle.NormalTextFont;
 
-			_rightImage = new UIImageView (new RectangleF (290, _rowHeight/2 - 15/2, 14, 15 ) ); 
-			_rightImage.BackgroundColor = UIColor.Clear;
-			_rightImage.ContentMode = UIViewContentMode.ScaleAspectFit;
-			AddSubview ( _rightImage );	
-		}
-
-		private void LoadImageFromAssets ( UIImageView imageView, string asset )
-		{
-			if ( !asset.IsNullOrEmpty () )
-			{
-				imageView.Image = UIImage. FromFile ( asset );
-			}			
-		}
+			_arrowImage = new UIImageView (new RectangleF (290, _rowHeight/2 - 15/2, 14, 15 ) ); 
+			_arrowImage.BackgroundColor = UIColor.Clear;
+			_arrowImage.ContentMode = UIViewContentMode.ScaleAspectFit;
+			_arrowImage.Image = UIImage.FromFile("Assets/Cells/rightArrow.png");
+			_arrowImage.Hidden = true;
+			AddSubview ( _arrowImage );	
 		
-		public void CleanUp ()
-		{							
-			if ( _rightImage != null )
-			{
-				_rightImage.Image = new UIImage ();
-				_rightImage.Dispose ();
-				_rightImage = null;
-			}						
+			_plusSignImage = new UIImageView (new RectangleF (290, _rowHeight/2 - 15/2, 14, 15 ) ); 
+			_plusSignImage.BackgroundColor = UIColor.Clear;
+			_plusSignImage.ContentMode = UIViewContentMode.ScaleAspectFit;
+			_plusSignImage.Image = UIImage.FromFile("Assets/Cells/plusSign.png");
+			_plusSignImage.Hidden = true;
+			AddSubview ( _plusSignImage );	
 		}
 	
 		public override void TouchesBegan ( NSSet touches, UIEvent evt )

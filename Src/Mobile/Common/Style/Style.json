@@ -88,7 +88,7 @@
                     { "Red": "248", "Green": "247", "Blue": "244", "Alpha": "255",  "Location": "0"  } ],
       "TextColor": {  "Red": "85", "Green": "85",  "Blue": "85", "Alpha": "255",  "Location": "1"  },
       "TextShadowColor": {  "Red": "255", "Green": "255",  "Blue": "255", "Alpha": "192",  "Location": "1"  },
-      "StrokeColor": {  "Red": "69", "Green": "103",  "Blue": "24", "Alpha": "255",  "Location": "1"  },
+      "StrokeColor": {  "Red": "143", "Green": "143",  "Blue": "143", "Alpha": "255",  "Location": "1"  },
       "InnerShadow": {
         "BlurRadius": "1",
         "OffsetX": "0",
