@@ -14,6 +14,11 @@ using SocialNetworks.Services.MonoTouch;
 using SocialNetworks.Services;
 using apcurium.MK.Booking.Mobile.Navigation;
 using apcurium.MK.Booking.Mobile.ViewModels;
+using Cirrious.MvvmCross.ExtensionMethods;
+using Cirrious.MvvmCross.Touch.Platform;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Interfaces.ServiceProvider;
+using Cirrious.MvvmCross.Touch.Interfaces;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -34,8 +39,9 @@ namespace apcurium.MK.Booking.Mobile.Client
         
     }
 
-    // The name AppDelegate is referenced in the MainWindow.xib file.
-    public partial class AppDelegate : UIApplicationDelegate
+    public partial class AppDelegate 
+        : MvxApplicationDelegate 
+            , IMvxServiceConsumer<IMvxStartNavigation>
     {
         private RootTabController _tabBarController;
         private bool _callbackFromFB = false;
@@ -44,7 +50,14 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
 
             Background.Load(window, "Assets/background_full_nologo.png", false, 0, 0);          
+
+            var setup = new Setup(this, new PhonePresenter( this, window ) );
+            setup.Initialize();
             
+            var start = this.GetService<IMvxStartNavigation>();
+            start.Start();  
+
+
             AppContext.Initialize(window);           
 
             _tabBarController = new RootTabController();
@@ -94,6 +107,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 //            );
             
             ThreadHelper.ExecuteInThread(() => TinyIoCContainer.Current.Resolve<IAccountService>().EnsureListLoaded());
+
 
             return true;
         }

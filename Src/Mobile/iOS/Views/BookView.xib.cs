@@ -14,10 +14,14 @@ using apcurium.MK.Common.Diagnostic;
 using ServiceStack.Text;
 using Cirrious.MvvmCross.Interfaces.Views;
 using apcurium.MK.Booking.Mobile.ViewModels;
+using Cirrious.MvvmCross.Binding.Touch.Interfaces;
+using Cirrious.MvvmCross.Binding.Touch.Views;
+using Cirrious.MvvmCross.Views;
+using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
  
 namespace apcurium.MK.Booking.Mobile.Client
 {
-    public partial class BookView : UIViewController, ITaxiViewController, ISelectableViewController, IRefreshableViewController, IMvxView<BookViewModel>
+    public partial class BookView : MvxBindingTouchViewController<BookViewModel>, ITaxiViewController, ISelectableViewController, IRefreshableViewController
     {
         #region Constructors
 
@@ -26,52 +30,51 @@ namespace apcurium.MK.Booking.Mobile.Client
         //private CreateOrder _bookingInfo;
         private StatusView _statusView;
         //private VerticalButtonBar _settingsBar;
-
-
-        public BookView(IntPtr handle) : base(handle)
-        {
-            Initialize();
-        }
-
-        [Export("initWithCoder:")]
-        public BookView(NSCoder coder) : base(coder)
-        {
-            Initialize();
-        }
-
-        public BookView() : base("BookView", null)
-        {
-            Initialize();
-        }
-
-        void Initialize()
+        public BookView() 
+            : base(new MvxShowViewModelRequest<BookViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
         {
         }
 
-        public BookViewModel ViewModel
+        protected BookView(MvxShowViewModelRequest request) 
+            : base(request)
         {
-            get;
-            set;
+        }
+        
+        protected BookView(MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
+            : base(request, nibName, bundle)
+        {
         }
 
-        public bool IsVisible { get {return true ;} }
+//        public BookView(IntPtr handle) : base(  base(handle)
+//        {
+//            Initialize();
+//        }
+//
+//        [Export("initWithCoder:")]
+//        public BookView(NSCoder coder) : base(coder)
+//        {
+//            Initialize();
+//        }
+//
+//        public BookView() : base("BookView", null)
+//        {
+//            Initialize();
+//        }
+
+
+
+       
 
         
         public CreateOrder BookingInfo
         {
             get { return ViewModel.Order; }
-            //private set { ViewModel.Order = value; }
         }
 
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
             View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png")); 
-
-//            pickView.SetTitle("Pickup location :");
-//            pickView.SetPlaceholder("Tap to specify");
-//            destView.SetTitle("Dropoff location :");
-//            destView.SetPlaceholder("Tap to specify (optional)");
 
             AppButtons.FormatStandardButton((GradientButton)refreshCurrentLocationButton, "", AppStyle.ButtonColor.Blue, "");
             AppButtons.FormatStandardButton((GradientButton)bookLaterButton, "", AppStyle.ButtonColor.DarkGray );
@@ -104,7 +107,13 @@ namespace apcurium.MK.Booking.Mobile.Client
             View.BringSubviewToFront(bottomBar);
             View.BringSubviewToFront(bookBtn);
 
+
+            this.AddBindings(new Dictionary<object, string>()                            {
+                { refreshCurrentLocationButton, "{'TouchUpInside':{'Path':'RequestCurrentLocationCommand'}}"},                
+            });
         }
+
+       
 
         void HandleTouchUpInside(object sender, EventArgs e)
         {           

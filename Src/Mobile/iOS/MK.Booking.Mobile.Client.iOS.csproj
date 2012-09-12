@@ -265,6 +265,8 @@
     </Compile>
     <Compile Include="Navigation\NavigationService.cs" />
     <Compile Include="Controls\AddressButton2.cs" />
+    <Compile Include="Setup.cs" />
+    <Compile Include="PhonePresenter.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
