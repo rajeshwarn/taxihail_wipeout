@@ -212,3 +212,7 @@
 "BookFromLocationButton"="Commander à cette adresse";
 "PickupLater"="Me Prendre Plus Tard";
 "OrderNumber"="Commande #{0}";
+"SearchButton"="Recherche";
+"ContactsButton"="Contacts";
+"FavoritesButton"="Favoris";
+"PlacesButton"="Lieux";
