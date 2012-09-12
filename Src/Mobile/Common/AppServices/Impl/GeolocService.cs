@@ -39,7 +39,19 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             {
                 return new Address[0];
             }
+        }
 
+        public Address[] SearchAddress(string addressName)
+        {
+            try
+            {
+                var addresses = TinyIoCContainer.Current.Resolve<GeocodingServiceClient>().Search(addressName);
+                return addresses.Addresses;
+            }
+            catch
+            {
+                return new Address[0];
+            }
         }
 
         public DirectionInfo GetDirectionInfo(Address origin, Address dest)

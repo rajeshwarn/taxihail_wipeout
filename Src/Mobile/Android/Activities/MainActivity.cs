@@ -8,7 +8,9 @@ using Android.Content;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
+using Android.Views.Animations;
 using Android.Widget;
+using SlidingPanel;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Activities.Setting;
@@ -25,7 +27,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
         private int _currentCie = -1;
 
         private Guid? _tripToRebook = null;
-        private string _addressFromFavorite; 
+        private string _addressFromFavorite;
+        private bool _menuIsShown;
+        private int _menuWidth = 400;
+        private DecelerateInterpolator _interpolator = new DecelerateInterpolator(1.2f);
 
         public ReclickableTabHost MainTabHost
         {
@@ -41,19 +46,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 
             SetContentView(Resource.Layout.Main);
 
-            //AddTab<Bookv2Activity>("bookv2", Resource.String.TabBook, Resource.Drawable.book);
-            AddTab<BookActivity>("book", Resource.String.TabBook, Resource.Drawable.book);
+            AddTab<Bookv2Activity>("bookv2", Resource.String.TabBook, Resource.Drawable.book);
+            //AddTab<BookActivity>("book", Resource.String.TabBook, Resource.Drawable.book);
+            //AddTab<SearchAddressActivity>("search", Resource.String.TabBook, Resource.Drawable.book);
             AddTab<LocationsActivity>("locations", Resource.String.TabLocations, Resource.Drawable.locations);
             AddTab<HistoryActivity>("history", Resource.String.TabHistory, Resource.Drawable.history);
             AddTab<SettingsActivity>("settings", Resource.String.TabSettings, Resource.Drawable.settings);
 
 
+            var mainSettingsButton = FindViewById<ImageButton>(Resource.Id.MainSettingsBtn);
+            mainSettingsButton.Click += MainSettingsButtonOnClick;
+            InitMenu();
+            _menuIsShown = false;
+            
             MainTabHost.CurrentTab = 0;
+
 
             bool statusShown = ShowStatusIfLastOrderActive();
             if (!statusShown)
             {
-                ((BookActivity)LocalActivityManager.CurrentActivity).Reset();
+               // ((BookActivity)LocalActivityManager.CurrentActivity).Reset();
             }
 
 
@@ -62,6 +74,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 
         }
 
+        private void MainSettingsButtonOnClick(object sender, EventArgs eventArgs)
+        {
+            View v2 = FindViewById<FrameLayout>(Resource.Id.scrollinglayout);
+            v2.ClearAnimation();
+            v2.DrawingCacheEnabled = true;
+
+            if (_menuIsShown)
+            {
+                SlideAnimation a = new SlideAnimation(v2, -(_menuWidth), 0, _interpolator);
+                a.Duration = 400;
+                v2.StartAnimation(a);
+            }
+            else
+            {
+                SlideAnimation a = new SlideAnimation(v2, 0, -(_menuWidth), _interpolator);
+                a.Duration = 400;
+                v2.StartAnimation(a);
+            }
+
+            _menuIsShown = !_menuIsShown;
+        }
 
 
         void HandleMainTabHostOnTabChanged(int tab)
@@ -117,23 +150,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 
             FindViewById<TextView>(Resource.Id.TitleTab).Visibility = MainTabHost.CurrentTab == 0 ? ViewStates.Invisible : ViewStates.Visible;
 
-            switch (MainTabHost.CurrentTab)
+           /* switch (MainTabHost.CurrentTab)
             {
                 case 0: FindViewById<TextView>(Resource.Id.TitleTab).Text = Resources.GetString(Resource.String.TabBook);
-                    FindViewById<Button>(Resource.Id.BookItBtn).Visibility = ViewStates.Visible;
+                    FindViewById<ImageButton>(Resource.Id.BookItBtn).Visibility = ViewStates.Visible;
                     break;
                 case 1: FindViewById<TextView>(Resource.Id.TitleTab).Text = Resources.GetString(Resource.String.TabLocations);
-                    FindViewById<Button>(Resource.Id.BookItBtn).Visibility = ViewStates.Invisible;
+                    FindViewById<ImageButton>(Resource.Id.BookItBtn).Visibility = ViewStates.Invisible;
                     break;
                 case 2: FindViewById<TextView>(Resource.Id.TitleTab).Text = Resources.GetString(Resource.String.HistoryViewTitle);
-                    FindViewById<Button>(Resource.Id.BookItBtn).Visibility = ViewStates.Invisible;
+                    FindViewById<ImageButton>(Resource.Id.BookItBtn).Visibility = ViewStates.Invisible;
                     break;
                 case 3: FindViewById<TextView>(Resource.Id.TitleTab).Text = Resources.GetString(Resource.String.TabSettings);
-                    FindViewById<Button>(Resource.Id.BookItBtn).Visibility = ViewStates.Invisible;
+                    FindViewById<ImageButton>(Resource.Id.BookItBtn).Visibility = ViewStates.Invisible;
                     break;
                 default:
                     break;
-            }
+            }*/
         }
 
 //        void HandleLogoClick(object sender, EventArgs e)
@@ -154,7 +187,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
             var spec = MainTabHost.NewTabSpec(tag).SetIndicator(GetString(titleId), Resources.GetDrawable(drawableId)).SetContent(intent);
 
             MainTabHost.AddTab(spec);
-
         }
         protected override void OnResume()
         {
@@ -184,6 +216,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
         public void BookFromFavorites(string addressFromFavorite)
         {
             _addressFromFavorite = addressFromFavorite;
+        }
+
+        public void HideMainLayout(bool hide)
+        {
+            var mainLayout = FindViewById<RelativeLayout>(Resource.Id.HeaderImage);
+            mainLayout.Visibility = hide ? ViewStates.Gone : ViewStates.Visible;
+        }
+
+        private void InitMenu()
+        {
+            List<string> menuItems = new List<string>(); 
+            var g = FindViewById<GridView>(Resource.Id.gridMenu);
+
+
+            for( int i = 0; i<10; i++ )
+            {
+                menuItems.Add( "Item " + i.ToString() );
+            }
+            g.Adapter = new ArrayAdapter( this, Resource.Layout.MenuItem, Resource.Id.textView1, menuItems );
+            var x = WindowManager.DefaultDisplay.Width;
+
         }
     }
 

@@ -60,7 +60,7 @@ namespace apcurium.MK.Booking.Commands
 
             public int ChargeTypeId { get; set; }
 
-            public int ProviderId { get; set; }
+            public int? ProviderId { get; set; }
 
             public int NumberOfTaxi { get; set; }
         }
