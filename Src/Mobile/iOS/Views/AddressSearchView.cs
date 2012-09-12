@@ -16,14 +16,31 @@ using Cirrious.MvvmCross.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-	public partial class AddressSearchView : MvxBindingTouchViewController<AddressSearchViewModel>
+	public partial class AddressSearchView : MvxBindingTouchViewController<AddressSearchViewModel>, ITaxiViewController, ISelectableViewController, IRefreshableViewController
 	{
 		private const string CELLID = "AdressCell";
 
-		public AddressSearchView (MvxShowViewModelRequest request) : base (request)
-		{
-		}
-		
+		const string CellBindingText = @"
+                {
+                   'TitleText':{'Path':'FriendlyName'},
+                   'DetailText':{'Path':'FullAddress'},
+                }";
+
+        public AddressSearchView() 
+            : base(new MvxShowViewModelRequest<AddressSearchViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
+        {
+        }
+
+        protected AddressSearchView(MvxShowViewModelRequest request) 
+            : base(request)
+        {
+        }
+        
+        protected AddressSearchView(MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
+            : base(request, nibName, bundle)
+        {
+        }	
+
 		public override void DidReceiveMemoryWarning ()
 		{
 			// Releases the view if it doesn't have a superview.
@@ -35,6 +52,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
+			this.NavigationController.NavigationBar.Hidden=true;
+
 
 			View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
 
@@ -49,24 +68,17 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 			AppButtons.FormatStandardButton( (GradientButton)CancelButton, Resources.CancelBoutton, AppStyle.ButtonColor.Silver );
 
-			// Perform any additional setup after loading the view, typically from a nib.
-
 			var source = new MvxActionBasedBindableTableViewSource(
                                 AddressListView, 
                                 UITableViewCellStyle.Subtitle,
                                 new NSString(CELLID), 
-                                "test",
+                                CellBindingText,
 								UITableViewCellAccessory.None);
 			
             source.CellCreator = (tview , iPath, state ) =>
             {
-                return new TwoLinesAddressCell( ViewModel.DataSourceStructure.Sections.ElementAt(iPath.Section).Items.ElementAt(iPath.Row) as TwoLinesAddressItem, CELLID );
+                return new TwoLinesCell( CELLID, CellBindingText );
             };
-
-			source.CellModifier = (cell) =>
-				{
-					
-				};
 			
             this.AddBindings(new Dictionary<object, string>()
 		                         {
@@ -97,13 +109,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			ViewModel.GetPlacesCommand.Execute();
 		}
 
-		public AddressSearchViewModel ViewModel
-        {
-            get;
-            set;
-        }
-
-        public bool IsVisible { get {return true ;} }
 
 		public override void ViewDidUnload ()
 		{
@@ -123,7 +128,37 @@ namespace apcurium.MK.Booking.Mobile.Client
 			return (toInterfaceOrientation != UIInterfaceOrientation.PortraitUpsideDown);
 		}
 
+		public string GetTitle()
+        {
+            return "";
+        }
+        
+      	public bool IsTopView
+        {
+            get { return this.NavigationController.TopViewController is AddressSearchView; }
+        }
 
+        public UIView GetTopView()
+        {
+            return null;
+        }
+
+        public void Selected()
+        {
+            try
+            {
+
+
+            }
+            catch
+            {
+            }
+        }
+
+        public void RefreshData()
+        {
+            Selected();
+        }
 	}
 }
 

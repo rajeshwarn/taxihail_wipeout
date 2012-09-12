@@ -6,16 +6,15 @@ using MonoTouch.UIKit;
 using apcurium.MK.Common.Extensions;
 using MonoTouch.CoreGraphics;
 using apcurium.MK.Booking.Mobile.ListViewStructure;
-using Cirrious.MvvmCross.Binding.Touch.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 {
-	public class TwoLinesAddressCell : MvxBindableTableViewCell
+	public class TwoLinesAddressCell : UITableViewCell
 	{
 		private UIImageView _rightImage;
 		private TwoLinesAddressItem _sectionItem;
 		
-		public TwoLinesAddressCell (IntPtr handle) : base("test", handle)
+		public TwoLinesAddressCell (IntPtr handle) : base(handle)
 		{		
 		}
 
@@ -24,7 +23,7 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 //		{			
 //		}
 		
-		public TwoLinesAddressCell (TwoLinesAddressItem data, string cellIdentifier) : base( "test", UITableViewCellStyle.Subtitle, new NSString(cellIdentifier), UITableViewCellAccessory.None   )
+		public TwoLinesAddressCell (TwoLinesAddressItem data, string cellIdentifier) : base( UITableViewCellStyle.Subtitle, new NSString(cellIdentifier)   )
 		{					
 			_sectionItem = data;
 			

@@ -271,6 +271,7 @@
     <Compile Include="Views\AddressSearchView.designer.cs">
       <DependentUpon>AddressSearchView.xib</DependentUpon>
     </Compile>
+    <Compile Include="InfoTableView\TwoLinesCell.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

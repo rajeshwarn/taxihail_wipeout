@@ -68,47 +68,47 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 
             new Bootstrapper(new IModule[] { new AppModule() }).Run();
-
-			window.RootViewController.PresentModalViewController(new AddressSearchView( ), true);
-////            
-////            ThreadHelper.ExecuteInThread(() =>
-////            {
-////                try
-////                {
-////                    InvokeOnMainThread(() =>
-////                    {
-////
-////                        SetUIDefaults();
-////
-////                        _tabBarController.Load();
-////
-//
-//                        window.AddSubview(_tabBarController.View);
-//
-//
-////
-//                        if (AppContext.Current.LoggedUser == null)
-//                        {
-//                            _tabBarController.ViewControllers[0].PresentModalViewController(new AddressSearchView(), true);
-//                        }
-//            else{
-//                TinyIoCContainer.Current.Resolve<INavigationService>().Navigate<BookViewModel,BookView>(); 
-//            }
-////
-//                        window.MakeKeyAndVisible();
-////                        
-////                    }
-////                    );
-////
-////                }
-////                catch (Exception ex)
-////                {
-////                    Logger.LogError(ex);
-////                }
-////            }
-////            );
 //            
-//            ThreadHelper.ExecuteInThread(() => TinyIoCContainer.Current.Resolve<IAccountService>().EnsureListLoaded());
+//            ThreadHelper.ExecuteInThread(() =>
+//            {
+//                try
+//                {
+//                    InvokeOnMainThread(() =>
+//                    {
+//
+//                        SetUIDefaults();
+//
+//                        _tabBarController.Load();
+//
+
+                        window.AddSubview(_tabBarController.View);
+
+
+//
+                        if (AppContext.Current.LoggedUser == null)
+                        {
+                          //  _tabBarController.ViewControllers[0].PresentModalViewController(new LoginView(), true);
+
+                        }
+            else{
+                TinyIoCContainer.Current.Resolve<INavigationService>().Navigate<BookViewModel,BookView>(); 
+				  
+            }
+//
+                        window.MakeKeyAndVisible();
+//                        
+//                    }
+//                    );
+//
+//                }
+//                catch (Exception ex)
+//                {
+//                    Logger.LogError(ex);
+//                }
+//            }
+//            );
+            
+            ThreadHelper.ExecuteInThread(() => TinyIoCContainer.Current.Resolve<IAccountService>().EnsureListLoaded());
 
 
             return true;
@@ -165,9 +165,10 @@ namespace apcurium.MK.Booking.Mobile.Client
                 }
                 else
                 {
+					TinyIoCContainer.Current.Resolve<INavigationService>().Navigate<AddressSearchViewModel,AddressSearchView>();
                     if (_tabBarController.TopViewController != null)
                     {   
-                        InvokeOnMainThread(() => _tabBarController.TopViewController.PresentModalViewController(new LoginView(), true));
+                       // InvokeOnMainThread(() => _tabBarController.TopViewController.PresentModalViewController(new LoginView(), true));
                     }
                 }
             }
@@ -203,4 +204,3 @@ namespace apcurium.MK.Booking.Mobile.Client
     }
     
 }
-

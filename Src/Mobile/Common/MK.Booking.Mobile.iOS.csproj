@@ -158,6 +158,7 @@
     <Compile Include="ListViewStructure\Section.cs" />
     <Compile Include="ListViewStructure\SectionItem.cs" />
     <Compile Include="ListViewStructure\TwoLinesAddressItem.cs" />
+    <Compile Include="ViewModels\AddressViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">

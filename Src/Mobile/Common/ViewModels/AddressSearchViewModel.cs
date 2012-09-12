@@ -20,7 +20,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private IGeolocService _geolocService;
 		private IBookingService _bookingService;
 		private IAccountService _accountService;
-		private IEnumerable<Address> _addressList;
+		private IEnumerable<AddressViewModel> _addressViewModels;
 		private Geolocator _geolocator;
         private TaskScheduler _scheduler = TaskScheduler.FromCurrentSynchronizationContext();
 
@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_geolocService = geolocService;
 			_bookingService = bookingService;
 			_accountService = accountService;
-			_addressList = new List<Address>();
+			_addressViewModels = new List<AddressViewModel>();
 			_geolocator = new Geolocator{ DesiredAccuracy  = 100 };
         }
 
@@ -60,7 +60,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			                }
 			                else
 			                {
-								AddressList = _googleService.GetNearbyPlaces( t.Result.Latitude, t.Result.Longitude );
+								var addresses = _googleService.GetNearbyPlaces( t.Result.Latitude, t.Result.Longitude );
+								AddressViewModels = addresses.Select( a => new AddressViewModel(){ Address = a, ShowPlusSign = false, ShowRightArrow = false, IsFirst = a.Equals(addresses.First()), IsLast = a.Equals(addresses.Last()) } ).ToList();
 			                }
 			                
 			            }, _scheduler);
@@ -79,7 +80,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     _searchAddressCommand = new MvxRelayCommand(() => 
                     {       
-						AddressList = _geolocService.SearchAddress( SearchText );
+						var addresses = _geolocService.SearchAddress( SearchText );
+						AddressViewModels = addresses.Select( a => new AddressViewModel(){ Address = a, ShowPlusSign = false, ShowRightArrow = false, IsFirst = a.Equals(addresses.First()), IsLast = a.Equals(addresses.Last()) } ).ToList();
 					});
 				}
 				return _searchAddressCommand;
@@ -95,7 +97,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     _getContactsCommand = new MvxRelayCommand(() => 
                     {       
-						AddressList = _bookingService.GetAddressFromAddressBook();
+						var addresses = _bookingService.GetAddressFromAddressBook();
+						AddressViewModels = addresses.Select( a => new AddressViewModel(){ Address = a, ShowPlusSign = false, ShowRightArrow = false, IsFirst = a.Equals(addresses.First()), IsLast = a.Equals(addresses.Last()) } ).ToList();
+
 					});
 				}
 				return _getContactsCommand;
@@ -111,33 +115,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     _getFavoritesCommand = new MvxRelayCommand(() => 
                     {       
-						AddressList = _accountService.GetFavoriteAddresses();
+						var addresses = _accountService.GetFavoriteAddresses();
+						AddressViewModels = addresses.Select( a => new AddressViewModel(){ Address = a, ShowPlusSign = false, ShowRightArrow = false, IsFirst = a.Equals(addresses.First()), IsLast = a.Equals(addresses.Last()) } ).ToList();
 					});
 				}
 				return _getFavoritesCommand;
 			}
 		}
 
-		public IEnumerable<Address> AddressList { 
-			get { return _addressList; }
+		public IEnumerable<AddressViewModel> AddressViewModels { 
+			get { return _addressViewModels; }
 			set { 
-				_addressList = value;
-				DataSourceStructure = LoadStructure( _addressList );
-				FirePropertyChanged( () => AddressList ); }
+				_addressViewModels = value;
+				FirePropertyChanged( () => AddressViewModels ); }
 		}
-
-		public InfoStructure DataSourceStructure { get; set; }
-
-		private InfoStructure LoadStructure( IEnumerable<Address> addressList )
-		{
-			var structure = new InfoStructure( 44, false );
-
-			var sect = structure.AddSection();
-			addressList.ForEach( item => sect.AddItem( new TwoLinesAddressItem( item.Id, item.FriendlyName, item.FullAddress ) { Data = item } ) );
-
-			return structure;
-		}
-
 
 		public string SearchText { get; set; }
 
