@@ -23,6 +23,16 @@ namespace apcurium.MK.Booking.Mobile.Client
             _rootController.Navigate( view );
         }
 
+        public void Navigate<TViewModel>(string viewTypeName) where TViewModel : BaseViewModel
+        {
+            var viewType = Type.GetType( viewTypeName );
+            var viewModel = TinyIoC.TinyIoCContainer.Current.Resolve<TViewModel>();
+            viewModel.Load();
+            var view = Activator.CreateInstance(viewType) as UIViewController;
+            _rootController.Navigate( view );
+        }
+
+
         #endregion
     }
 }

@@ -10,7 +10,7 @@
 		<string>app@2x.png</string>
 	</array>
 	<key>CFBundleIdentifier</key>
-	<string>com.apcurium.MK.TaxiHail</string>
+	<string>com.apcurium.MK.TaxiHail.dev</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
