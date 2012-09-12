@@ -11,63 +11,63 @@
     <RootNamespace>apcurium.MK.Booking.Mobile.Client</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
-    <DebugSymbols>True</DebugSymbols>
+    <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>False</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\iPhoneSimulator\Debug</OutputPath>
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <ConsolePause>False</ConsolePause>
-    <MtouchDebug>True</MtouchDebug>
+    <ConsolePause>false</ConsolePause>
+    <MtouchDebug>true</MtouchDebug>
     <MtouchI18n />
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <MtouchSdkVersion>5.1</MtouchSdkVersion>
-    <MtouchProfiling>True</MtouchProfiling>
+    <MtouchProfiling>true</MtouchProfiling>
     <AssemblyName>TaxiHail</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
-    <Optimize>False</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\iPhoneSimulator\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <ConsolePause>False</ConsolePause>
+    <ConsolePause>false</ConsolePause>
     <MtouchI18n />
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <AssemblyName>TaxiHail</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
-    <DebugSymbols>True</DebugSymbols>
+    <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>False</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\iPhone\Debug</OutputPath>
     <DefineConstants>DEBUG;CLIENT;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <ConsolePause>False</ConsolePause>
+    <ConsolePause>false</ConsolePause>
     <CodesignKey>iPhone Developer: Daniel Boissonneault (8N23K7P2GB)</CodesignKey>
-    <MtouchDebug>True</MtouchDebug>
+    <MtouchDebug>true</MtouchDebug>
     <MtouchI18n />
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <IpaPackageName />
-    <MtouchUseLlvm>True</MtouchUseLlvm>
+    <MtouchUseLlvm>true</MtouchUseLlvm>
     <CrashReportingApiKey />
-    <BuildIpa>True</BuildIpa>
+    <BuildIpa>true</BuildIpa>
     <AssemblyName>TaxiMobileApp</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>none</DebugType>
-    <Optimize>False</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\iPhone\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <ConsolePause>False</ConsolePause>
+    <ConsolePause>false</ConsolePause>
     <CodesignKey>iPhone Distribution</CodesignKey>
     <MtouchI18n />
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <IpaPackageName />
-    <BuildIpa>True</BuildIpa>
+    <BuildIpa>true</BuildIpa>
     <CodesignProvision>55BC7130-27C8-49F9-B4AA-3C4F1B761071</CodesignProvision>
     <CrashReportingApiKey />
     <AssemblyName>TaxiMobileApp</AssemblyName>
@@ -77,7 +77,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Distribution|iPhone' ">
     <DebugType>none</DebugType>
-    <Optimize>False</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\iPhone\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -87,8 +87,8 @@
     <MtouchI18n />
     <CodesignProvision>3F3DE1DD-7B47-4311-AA91-C9FC285FAE43</CodesignProvision>
     <AssemblyName>TaxiMobileApp</AssemblyName>
-    <ConsolePause>False</ConsolePause>
-    <BuildIpa>True</BuildIpa>
+    <ConsolePause>false</ConsolePause>
+    <BuildIpa>true</BuildIpa>
     <MtouchSdkVersion>5.1</MtouchSdkVersion>
     <CodesignKey>iPhone Distribution: Baventure Group Inc.</CodesignKey>
   </PropertyGroup>
@@ -267,6 +267,14 @@
     <Compile Include="Controls\AddressButton2.cs" />
     <Compile Include="Setup.cs" />
     <Compile Include="PhonePresenter.cs" />
+    <Compile Include="Controls\SegmentedButton.cs" />
+    <Compile Include="Controls\SegmentedButtonBar.cs" />
+    <Compile Include="Views\AddressSearchView.cs" >
+<DependentUpon>AddressSearchView.xib</DependentUpon>
+     </Compile>
+    <Compile Include="Views\AddressSearchView.designer.cs">
+      <DependentUpon>AddressSearchView.xib</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -310,6 +318,7 @@
     <InterfaceDefinition Include="Order\ConfirmationView.xib" />
     <InterfaceDefinition Include="Order\StatusView.xib" />
     <InterfaceDefinition Include="Views\BookView.xib" />
+    <InterfaceDefinition Include="Views\AddressSearchView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />

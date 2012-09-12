@@ -888,6 +888,22 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			get { return GetValue ("OrderNumber"); }
 		}
+		public static string SearchButton
+		{
+			get { return GetValue ("SearchButton"); }
+		}
+		public static string ContactsButton
+		{
+			get { return GetValue ("ContactsButton"); }
+		}
+		public static string FavoritesButton
+		{
+			get { return GetValue ("FavoritesButton"); }
+		}
+		public static string PlacesButton
+		{
+			get { return GetValue ("PlacesButton"); }
+		}
 	}
 }
 

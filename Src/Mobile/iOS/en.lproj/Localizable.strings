@@ -212,3 +212,7 @@
 "BookFromLocationButton"="Book using this address";
 "PickupLater"="Pick Me Up Later";
 "OrderNumber"="Order #{0}";
+"SearchButton"="Search";
+"ContactsButton"="Contacts";
+"FavoritesButton"="Favorites";
+"PlacesButton"="Places";
