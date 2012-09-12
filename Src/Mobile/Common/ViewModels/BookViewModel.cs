@@ -7,6 +7,8 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.AppServices;
 using Xamarin.Geolocation;
 using System.Threading.Tasks;
+using apcurium.MK.Booking.Mobile.Navigation;
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -133,6 +135,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return new MvxRelayCommand(() => 
                                            {   
                     Pickup = new Address{ FriendlyName = Guid.NewGuid().ToString() };
+                    TinyIoCContainer.Current.Resolve<INavigationService>().Navigate<AddressSearchViewModel>( "apcurium.MK.Booking.Mobile.Client.AddressSearchView" );
                 });
             }
         }
