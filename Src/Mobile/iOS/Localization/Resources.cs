@@ -904,6 +904,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			get { return GetValue ("PlacesButton"); }
 		}
+		public static string SearchPlaceholder
+		{
+			get { return GetValue ("SearchPlaceholder"); }
+		}
 	}
 }
 

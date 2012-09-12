@@ -11,28 +11,28 @@
     <RootNamespace>apcurium.MK.Booking.Mobile</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>True</DebugSymbols>
+    <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>False</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
     <DefineConstants>DEBUG;CLIENT;IOS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <ConsolePause>False</ConsolePause>
+    <ConsolePause>false</ConsolePause>
     <AssemblyName>MK.Booking.Mobile.iOS</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
-    <Optimize>True</Optimize>
+    <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <ConsolePause>False</ConsolePause>
+    <ConsolePause>false</ConsolePause>
     <AssemblyName>MK.Booking.Mobile.iOS</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Distribution|iPhone' ">
     <DebugType>none</DebugType>
-    <Optimize>False</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\iPhone\Distribution</OutputPath>
     <WarningLevel>4</WarningLevel>
     <AssemblyName>MKBookingMobileiOS</AssemblyName>
@@ -151,6 +151,11 @@
     <Compile Include="Mvx\TinyIoCServiceProviderSetup.cs" />
     <Compile Include="Navigation\INavigationService.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\AddressSearchViewModel.cs" />
+    <Compile Include="ListViewStructure\InfoStructure.cs" />
+    <Compile Include="ListViewStructure\Section.cs" />
+    <Compile Include="ListViewStructure\SectionItem.cs" />
+    <Compile Include="ListViewStructure\TwoLinesAddressItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">
@@ -182,5 +187,6 @@
     <Folder Include="Style\" />
     <Folder Include="ViewModels\" />
     <Folder Include="Navigation\" />
+    <Folder Include="ListViewStructure\" />
   </ItemGroup>
 </Project>
