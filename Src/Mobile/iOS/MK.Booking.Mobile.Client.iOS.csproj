@@ -15,7 +15,7 @@
     <DebugType>full</DebugType>
     <Optimize>False</Optimize>
     <OutputPath>bin\iPhoneSimulator\Debug</OutputPath>
-    <DefineConstants>DEBUG</DefineConstants>
+    <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
@@ -25,7 +25,6 @@
     <MtouchSdkVersion>5.1</MtouchSdkVersion>
     <MtouchProfiling>True</MtouchProfiling>
     <AssemblyName>TaxiHail</AssemblyName>
-    <MtouchExtraArgs>--disable-thread-check</MtouchExtraArgs>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
@@ -43,7 +42,7 @@
     <DebugType>full</DebugType>
     <Optimize>False</Optimize>
     <OutputPath>bin\iPhone\Debug</OutputPath>
-    <DefineConstants>DEBUG;CLIENT</DefineConstants>
+    <DefineConstants>DEBUG;CLIENT;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
@@ -74,6 +73,7 @@
     <AssemblyName>TaxiMobileApp</AssemblyName>
     <MtouchSdkVersion>5.1</MtouchSdkVersion>
     <MtouchExtraArgs>--disable-thread-check</MtouchExtraArgs>
+    <DefineConstants>MONOTOUCH;NET35;SILVERLIGHT</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Distribution|iPhone' ">
     <DebugType>none</DebugType>
@@ -215,12 +215,6 @@
     <Compile Include="Extensions\LocationExtensionMD.cs" />
     <Compile Include="Cache\CacheService.cs" />
     <Compile Include="Controls\TextField.cs" />
-    <Compile Include="Order\BookTabView.xib.cs">
-      <DependentUpon>BookTabView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Order\BookTabView.xib.designer.cs">
-      <DependentUpon>BookTabView.xib</DependentUpon>
-    </Compile>
     <Compile Include="Order\ConfirmationView.xib.cs">
       <DependentUpon>ConfirmationView.xib</DependentUpon>
     </Compile>
@@ -247,11 +241,7 @@
     <Compile Include="MonoTouchDialog\RightAlignedEntryElement.cs" />
     <Compile Include="MonoTouchDialog\SectionWithBackground.cs" />
     <Compile Include="MonoTouchDialog\RadioElementWithId.cs" />
-    <Compile Include="InfoTableView\Section.cs" />
-    <Compile Include="InfoTableView\SectionItem.cs" />
     <Compile Include="InfoTableView\TwoLinesAddressCell.cs" />
-    <Compile Include="InfoTableView\TwoLinesAddressItem.cs" />
-    <Compile Include="InfoTableView\InfoStructure.cs" />
     <Compile Include="Controls\BottomBar.cs" />
     <Compile Include="Controls\StatusBar.cs" />
     <Compile Include="Controls\WindowDisplay.cs" />
@@ -261,6 +251,27 @@
     <Compile Include="Controls\AnimatedWheelButton.cs" />
     <Compile Include="Extensions\ColorExtensions.cs" />
     <Compile Include="PlatformIntegration\PackageInfo.cs" />
+    <Compile Include="Controls\AddressBarButtons.cs" />
+    <Compile Include="Controls\AddressButton.cs" />
+    <Compile Include="Views\BookView.xib.cs">
+      <DependentUpon>BookView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BookView.xib.designer.cs">
+      <DependentUpon>BookView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Navigation\NavigationService.cs" />
+    <Compile Include="Controls\AddressButton2.cs" />
+    <Compile Include="Setup.cs" />
+    <Compile Include="PhonePresenter.cs" />
+    <Compile Include="Controls\SegmentedButton.cs" />
+    <Compile Include="Controls\SegmentedButtonBar.cs" />
+    <Compile Include="Views\AddressSearchView.cs">
+      <DependentUpon>AddressSearchView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AddressSearchView.designer.cs">
+      <DependentUpon>AddressSearchView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="InfoTableView\TwoLinesCell.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -289,6 +300,9 @@
     <Folder Include="InfoTableView\" />
     <Folder Include="Assets\Cells\" />
     <Folder Include="PlatformIntegration\" />
+    <Folder Include="Views\" />
+    <Folder Include="Navigation\" />
+    <Folder Include="Assets\Search\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="MainWindow.xib" xmlns="" />
@@ -299,9 +313,10 @@
     <InterfaceDefinition Include="Locations\LocationDetailView.xib" xmlns="" />
     <InterfaceDefinition Include="History\HistoryDetailView.xib" xmlns="" />
     <InterfaceDefinition Include="Settings\AboutUsView.xib" xmlns="" />
-    <InterfaceDefinition Include="Order\BookTabView.xib" />
     <InterfaceDefinition Include="Order\ConfirmationView.xib" />
     <InterfaceDefinition Include="Order\StatusView.xib" />
+    <InterfaceDefinition Include="Views\BookView.xib" />
+    <InterfaceDefinition Include="Views\AddressSearchView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />
@@ -402,6 +417,16 @@
     <Content Include="Assets\Cells\addNewBackground%402x.png" />
     <Content Include="Assets\Cells\addNewBackgroundSelected.png" />
     <Content Include="Assets\Cells\addNewBackgroundSelected%402x.png" />
+    <Content Include="Assets\gpsRefreshIcon.png" />
+    <Content Include="Assets\gpsRefreshIcon%402x.png" />
+    <Content Include="Assets\bookLaterIcon.png" />
+    <Content Include="Assets\bookLaterIcon%402x.png" />
+    <Content Include="Assets\backPickupDestination.png" />
+    <Content Include="Assets\backPickupDestination%402x.png" />
+    <Content Include="Assets\Search\SearchIcon.png" />
+    <Content Include="Assets\Search\SearchIcon%402x.png" />
+    <Content Include="Assets\locationSelected.png" />
+    <Content Include="Assets\locationSelected%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.iOS.csproj">
@@ -423,6 +448,18 @@
     <ProjectReference Include="..\SocialNetwork\SocialNetworks.Services.MonoTouch\SocialNetworks.Services.MonoTouch.csproj">
       <Project>{9CB6D6F3-4E5F-4A4F-B6AE-731B3DBC2031}</Project>
       <Name>SocialNetworks.Services.MonoTouch</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Infrastructure\Cirrious.MvvmCross.Binding\Cirrious.MvvmCross.Binding.Touch.csproj">
+      <Project>{913B13B5-7B2C-4DDA-BECB-DADC827ED895}</Project>
+      <Name>Cirrious.MvvmCross.Binding.Touch</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Infrastructure\Cirrious.MvvmCross.Dialog\Cirrious.MvvmCross.Dialog.Touch.csproj">
+      <Project>{F073E4F8-E0B6-43E7-84C1-B71AE4BEA0E0}</Project>
+      <Name>Cirrious.MvvmCross.Dialog.Touch</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Infrastructure\Cirrious.MvvmCross\Cirrious.MvvmCross.Touch.csproj">
+      <Project>{E042EDD9-E89D-4928-BF4D-27F0FC29CEDA}</Project>
+      <Name>Cirrious.MvvmCross.Touch</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

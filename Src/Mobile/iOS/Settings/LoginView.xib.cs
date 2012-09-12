@@ -88,15 +88,15 @@ namespace apcurium.MK.Booking.Mobile.Client
                 txtEmail.Text = AppContext.Current.LastEmailUsed;
             }
 
-            var btnSignIn = AppButtons.CreateStandardGradientButton(new RectangleF(25, 179, 120, 37), Resources.SignInButton, UIColor.White, AppStyle.ButtonColor.Black);
+            var btnSignIn = AppButtons.CreateStandardButton(new RectangleF(25, 179, 120, 37), Resources.SignInButton, AppStyle.ButtonColor.Black);
             View.AddSubview(btnSignIn);
             btnSignIn.TouchUpInside += SignInClicked;
 
-            var btnSignUp = AppButtons.CreateStandardGradientButton(new RectangleF(175, 179, 120, 37), Resources.SignUpButton, UIColor.White, AppStyle.ButtonColor.Black);
+            var btnSignUp = AppButtons.CreateStandardButton(new RectangleF(175, 179, 120, 37), Resources.SignUpButton, AppStyle.ButtonColor.Black);
             View.AddSubview(btnSignUp);
             btnSignUp.TouchUpInside += SignUpClicked;
 
-            var btnPassword = AppButtons.CreateStandardButton(new RectangleF(170, 122, 140, 37), Resources.LoginForgotPasswordButton, AppStyle.LightCorporateColor, AppStyle.ButtonColor.CorporateColor, false);
+            var btnPassword = AppButtons.CreateStandardButton(new RectangleF(170, 122, 140, 37), Resources.LoginForgotPasswordButton, AppStyle.ButtonColor.CorporateColor );
             View.AddSubview(btnPassword);
             btnPassword.TouchUpInside += PasswordTouchUpInside;         
 
@@ -136,21 +136,21 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             if (settings.FacebookEnabled)
             {
-                var btnFbLogin = AppButtons.CreateStandardImageButton(new RectangleF(55, 281, 211, 41), Resources.FacebookLoginBtn, AppStyle.LightCorporateColor, "Assets/Social/FB/fbIcon.png", AppStyle.ButtonColor.AlternateCorporateColor);
+                var btnFbLogin = AppButtons.CreateStandardButton(new RectangleF(55, 281, 211, 41), Resources.FacebookLoginBtn, AppStyle.ButtonColor.AlternateCorporateColor, "Assets/Social/FB/fbIcon.png");
                 View.AddSubview(btnFbLogin);
                 btnFbLogin.TouchUpInside += FacebookLogin;  
             }
 
             if (settings.TwitterEnabled)
             {
-                var btnTwLogin = AppButtons.CreateStandardImageButton(new RectangleF(55, 342, 211, 41), Resources.TwitterLoginBtn, AppStyle.LightCorporateColor, "Assets/Social/TW/twIcon.png", AppStyle.ButtonColor.AlternateCorporateColor);
+                var btnTwLogin = AppButtons.CreateStandardButton(new RectangleF(55, 342, 211, 41), Resources.TwitterLoginBtn, AppStyle.ButtonColor.AlternateCorporateColor, "Assets/Social/TW/twIcon.png" );
                 View.AddSubview(btnTwLogin);
                 btnTwLogin.TouchUpInside += TwitterLogin;   
             }
 
             if (settings.CanChangeServiceUrl)
             {
-                var btnServer = AppButtons.CreateStandardImageButton(new RectangleF(55, 403, 211, 41), "Change Server", AppStyle.LightCorporateColor, "Assets/server.png", AppStyle.ButtonColor.AlternateCorporateColor);
+                var btnServer = AppButtons.CreateStandardButton(new RectangleF(55, 403, 211, 41), "Change Server", AppStyle.ButtonColor.AlternateCorporateColor, "Assets/server.png");
                 btnServer.TouchUpInside += ChangeServerTouchUpInside;
                 View.AddSubview(btnServer);            
             }

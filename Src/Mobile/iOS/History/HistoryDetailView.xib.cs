@@ -66,7 +66,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             
             btnCancel.SetTitle(Resources.StatusActionCancelButton, UIControlState.Normal);
             btnStatus.SetTitle(Resources.HistoryViewStatusButton, UIControlState.Normal);
-			AppButtons.FormatStandardGradientButton((GradientButton)btnHide, Resources.DeleteButton, UIColor.White, AppStyle.ButtonColor.Red );
+			AppButtons.FormatStandardButton((GradientButton)btnHide, Resources.DeleteButton, AppStyle.ButtonColor.Red );
 
             btnCancel.TouchUpInside += CancelTouchUpInside;
 

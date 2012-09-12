@@ -38,7 +38,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             Initialize();
         }
 
-        public StatusView(BookTabView parent, Order info, OrderStatusDetail status, bool closeScreenWhenCompleted) : base("StatusView", null)
+        public StatusView(BookView parent, Order info, OrderStatusDetail status, bool closeScreenWhenCompleted) : base("StatusView", null)
         {
             _closeScreenWhenCompleted = closeScreenWhenCompleted;
             Order = info;
@@ -95,9 +95,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 
                 btnChangeBooking.SetTitle(Resources.ChangeBookingSettingsButton, UIControlState.Normal);
              
-				AppButtons.FormatStandardGradientButton((GradientButton)btnCall, Resources.StatusCallButton, UIColor.White, AppStyle.ButtonColor.Black );
-				AppButtons.FormatStandardGradientButton((GradientButton)btnCancel, Resources.StatusCancelButton, UIColor.White, AppStyle.ButtonColor.Red );
-				AppButtons.FormatStandardGradientButton((GradientButton)btnNewRide, Resources.StatusNewRideButton, UIColor.White, AppStyle.ButtonColor.Green );
+				AppButtons.FormatStandardButton((GradientButton)btnCall, Resources.StatusCallButton, AppStyle.ButtonColor.Black );
+				AppButtons.FormatStandardButton((GradientButton)btnCancel, Resources.StatusCancelButton, AppStyle.ButtonColor.Red );
+				AppButtons.FormatStandardButton((GradientButton)btnNewRide, Resources.StatusNewRideButton, AppStyle.ButtonColor.Green );
 
                 btnCall.TouchUpInside += CallProvider;
 				btnCancel.TouchUpInside += CancelOrder;

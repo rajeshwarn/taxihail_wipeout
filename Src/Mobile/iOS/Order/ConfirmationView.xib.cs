@@ -17,7 +17,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 {
     public partial class ConfirmationView : UIViewController
     {
-        private BookTabView _parent;
+        private BookView _parent;
 
         public event EventHandler Confirmed;
         public event EventHandler Canceled;
@@ -41,7 +41,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             Initialize();
         }
 
-        public ConfirmationView(BookTabView parent) : base("ConfirmationView", null)
+        public ConfirmationView(BookView parent) : base("ConfirmationView", null)
         {
             _parent = parent;
             Initialize();
@@ -60,10 +60,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			lblRideSettings.TextColor = AppStyle.TitleTextColor;
 			lblRideInfo.TextColor = AppStyle.TitleTextColor;
 
-			AppButtons.FormatStandardGradientButton((GradientButton)btnCancel, Resources.CancelBoutton, UIColor.White, AppStyle.ButtonColor.Red );
-			AppButtons.FormatStandardGradientButton((GradientButton)btnConfirm, Resources.ConfirmButton, UIColor.White, AppStyle.ButtonColor.Green );
-			AppButtons.FormatStandardGradientButton((GradientButton)btnEdit, Resources.EditButton, AppStyle.GreyText, AppStyle.ButtonColor.Grey );
-			btnEdit.TextShadowColor = AppStyle.GetButtonTextShadowColor(AppStyle.ButtonColor.Grey);
+			AppButtons.FormatStandardButton((GradientButton)btnCancel, Resources.CancelBoutton, AppStyle.ButtonColor.Red );
+			AppButtons.FormatStandardButton((GradientButton)btnConfirm, Resources.ConfirmButton, AppStyle.ButtonColor.Green );
+			AppButtons.FormatStandardButton((GradientButton)btnEdit, Resources.EditButton, AppStyle.ButtonColor.Grey );
 
             lblOrigin.Text = Resources.ConfirmOriginLablel;
             lblAptRing.Text = Resources.ConfirmAptRingCodeLabel;

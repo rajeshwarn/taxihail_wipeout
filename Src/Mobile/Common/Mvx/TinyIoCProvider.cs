@@ -1,0 +1,41 @@
+using System;
+using Cirrious.MvvmCross.Interfaces.IoC;
+using TinyIoC;
+
+namespace MK.Booking.Mobile.Infrastructure.Practices
+{
+    public class TinyIoCProvider : IMvxIoCProvider
+    {
+        public TinyIoCProvider()
+        {
+        }
+        #region IMvxIoCProvider implementation
+        public bool SupportsService<T>() where T : class
+        {
+            return TinyIoCContainer.Current.CanResolve<T>();
+        }
+
+        public T GetService<T>() where T : class
+        {
+            return TinyIoCContainer.Current.Resolve<T>();
+        }
+
+        public bool TryGetService<T>(out T service) where T : class
+        {
+            return TinyIoCContainer.Current.TryResolve<T>(out service);
+        }
+
+        public void RegisterServiceType<TFrom, TTo>() 
+        {
+            TinyIoCContainer.Current.Register( typeof(TFrom), typeof(TTo ) );
+        }
+
+        public void RegisterServiceInstance<TInterface>(TInterface theObject)
+        {
+            TinyIoCContainer.Current.Register( typeof(TInterface)  ,theObject);
+        }
+        #endregion
+
+    }
+}
+

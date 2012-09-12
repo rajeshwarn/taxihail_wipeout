@@ -5,6 +5,7 @@ using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using apcurium.MK.Common.Extensions;
 using MonoTouch.CoreGraphics;
+using apcurium.MK.Booking.Mobile.ListViewStructure;
 
 namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 {
@@ -17,12 +18,12 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 		{		
 		}
 
-		[Export("initWithCoder:")]
-		public TwoLinesAddressCell (NSCoder coder) : base(coder)
-		{			
-		}
+//		[Export("initWithCoder:")]
+//		public TwoLinesAddressCell (NSCoder coder) : base(coder)
+//		{			
+//		}
 		
-		public TwoLinesAddressCell (TwoLinesAddressItem data, string cellIdentifier) : base( UITableViewCellStyle.Subtitle, cellIdentifier )
+		public TwoLinesAddressCell (TwoLinesAddressItem data, string cellIdentifier) : base( UITableViewCellStyle.Subtitle, new NSString(cellIdentifier)   )
 		{					
 			_sectionItem = data;
 			

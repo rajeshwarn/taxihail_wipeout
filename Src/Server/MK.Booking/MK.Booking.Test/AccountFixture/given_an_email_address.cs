@@ -19,6 +19,8 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         private EventSourcingTestHelper<Account> sut;
         private Guid _accountId = Guid.NewGuid();
         private Mock<IEmailSender> emailSenderMock;
+        private TestConfigurationManager configurationManager;
+        const string ApplicationName = "TestApplication";
 
         [SetUp]
         public void Setup()
@@ -26,8 +28,10 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             this.sut = new EventSourcingTestHelper<Account>();
 
             emailSenderMock = new Mock<IEmailSender>();
+            configurationManager = new TestConfigurationManager();
+            configurationManager.SetSetting("TaxiHail.ApplicationName", ApplicationName);
 
-            this.sut.Setup(new EmailCommandHandler(new TestConfigurationManager(), new TemplateService(), emailSenderMock.Object));
+            this.sut.Setup(new EmailCommandHandler(configurationManager, new TemplateService(), emailSenderMock.Object));
         }
 
         [Test]
@@ -38,8 +42,11 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             this.sut.When(new SendPasswordResetEmail { EmailAddress = "test@example.net", Password = newPassword });
 
             emailSenderMock.Verify(s => s
-                .Send(It.Is<MailMessage>(message => message
-                    .Body.Contains(newPassword))));
+                .Send(It.Is<MailMessage>(message => 
+                    message.Body.Contains(newPassword) &&
+                    message.Body.Contains(ApplicationName) &&
+                    message.Subject.Contains(ApplicationName))));
+
         }
 
         [Test]
@@ -49,8 +56,10 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             this.sut.When(new SendAccountConfirmationEmail { EmailAddress = "test@example.net", ConfirmationUrl = confirmationUrl});
 
             emailSenderMock.Verify(s => s
-                .Send(It.Is<MailMessage>(message => message
-                    .Body.Contains(confirmationUrl.ToString()))));
+                .Send(It.Is<MailMessage>(message => 
+                    message.Body.Contains(confirmationUrl.ToString()) &&
+                    message.Body.Contains(ApplicationName) &&
+                    message.Subject.Contains(ApplicationName))));
         }
     }
 }
