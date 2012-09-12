@@ -11,27 +11,18 @@ using System.Threading.Tasks;
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class BookViewModel : BaseViewModel
-    {
-        private string _pickupLocation;
-        private string _destinationLocation;
-
-        public enum LocationType
-        {
-            Pickup,
-            Destination
-        }
-
-        private LocationType _currentLocationType;
+    {      
         private IAccountService _accountService;
         private Geolocator _geolocator;
         private bool _pickupIsActive = true;
-        private bool _dropoffIsActive = true;
+        private bool _dropoffIsActive = false;
         private  TaskScheduler _scheduler = TaskScheduler.FromCurrentSynchronizationContext();
 
         public BookViewModel(IAccountService accountService)
         {
             _accountService = accountService;
             _geolocator = new Geolocator{ DesiredAccuracy  = 100 };
+            Load();
         }
 
         public override void Load()
@@ -69,7 +60,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             { 
                 return Order.PickupAddress;
             }
-
             set
             { 
                 Order.PickupAddress = value;
@@ -81,135 +71,114 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             { 
-
                 return Order.DropOffAddress;
-            }
-            
+            }            
             set
             {
                 Order.DropOffAddress = value;
-                FirePropertyChanged(() => Pickup);
-            }
-        }
-
-        public string PickupLocation
-        {
-            get{ return _pickupLocation;}
-            set
-            { 
-                _pickupLocation = value;
-                PickupLocationChanged.RaiseCanExecuteChanged();
+                FirePropertyChanged(() => Dropoff);
             }
         }
 
         public bool PickupIsActive
         {
             get{ return _pickupIsActive;}
-            set{ _pickupIsActive = value;
-                FirePropertyChanged( ()=>PickupIsActive );
+            set
+            {
+                _pickupIsActive = value;
+                FirePropertyChanged(() => PickupIsActive);
+                if (DropoffIsActive && PickupIsActive)
+                {
+                    _dropoffIsActive = false;
+                    FirePropertyChanged(() => DropoffIsActive);
+                }
             }
         }
 
         public bool DropoffIsActive
         {
             get{ return _dropoffIsActive;}
-            set{ _dropoffIsActive = value;}
-        }
-
-        public string DestinationLocation
-        {
-            get{ return _destinationLocation;}
             set
             { 
-                _destinationLocation = value;
-                PickupLocationChanged.RaiseCanExecuteChanged();
-            }
-        }
-
-        public LocationType CurrentLocationType
-        {
-            get { return _currentLocationType; }
-            set { _currentLocationType = value; }
-        }
-
-        private MvxRelayCommand _requestCurrentLocationCommand;
-
-        public IMvxCommand  RequestCurrentLocationCommand
-        {                   
-            get
-            {       
-                if (_requestCurrentLocationCommand == null)
+                _dropoffIsActive = value;
+                FirePropertyChanged(() => DropoffIsActive);
+                if (DropoffIsActive && PickupIsActive)
                 {
-                    _requestCurrentLocationCommand = new MvxRelayCommand(() => 
-                    {       
-                        _geolocator.GetPositionAsync(3000).ContinueWith(t =>
-                        {
-                            if (t.IsFaulted)
-                            {
-//                                PositionStatus.Text = ((GeolocationException)t.
-//                                                       Exception.InnerException).Error.ToString();
-                            }
-                            else if (t.IsCanceled)
-                            {
-//                                PositionStatus.Text = "Canceled";
-                            }
-                            else
-                            {
-                                Console.WriteLine(t.Result.Timestamp.ToString("G"));
-                                Console.WriteLine(t.Result.Latitude.ToString("N4"));
-                                Console.WriteLine(t.Result.Longitude.ToString("N4"));
-                            }
-                            
-                        }, _scheduler);
-
-                    });
+                    _pickupIsActive = false;
+                    FirePropertyChanged(() => PickupIsActive);
                 }
-                return _requestCurrentLocationCommand;
             }
         }
-
-        private MvxRelayCommand _pickupLocationChanged;
-
-        public MvxRelayCommand PickupLocationChanged
-        {                   
-            get
-            {       
-                if (_pickupLocationChanged == null)
-                {
-                    _pickupLocationChanged = new MvxRelayCommand(() => 
-                    {       
-
-
-                    });
-                }
-                return _pickupLocationChanged;
-            }
-        }
-
 
         public MvxRelayCommand ActivatePickup
         {                   
             get
             {       
-                return new MvxRelayCommand(() => 
-                                                                 {                               
-                    PickupIsActive = !PickupIsActive;
-
-                    });
+                return new MvxRelayCommand(() => PickupIsActive = !PickupIsActive);            
             }
         }
 
         public MvxRelayCommand ActivateDropoff
         {                   
             get
+            {   
+                return new MvxRelayCommand(() => DropoffIsActive = !DropoffIsActive);      
+            }
+        }
+
+        public IMvxCommand  PickPickupLocation
+        {                   
+            get
             {       
                 return new MvxRelayCommand(() => 
-                                           {       
-                    
+                                           {   
+                    Pickup = new Address{ FriendlyName = Guid.NewGuid().ToString() };
+                });
+            }
+        }
+
+        public IMvxCommand  PickDropOffLocation
+        {                   
+            get
+            {       
+                return new MvxRelayCommand(() => 
+                                           {
+                                           Dropoff = new Address{ FriendlyName = Guid.NewGuid().ToString() };                          
+                });
+            }
+        }
+
+        public IMvxCommand  RequestCurrentLocationCommand
+        {                   
+            get
+            {       
+                return new MvxRelayCommand(() => 
+                {       
+                    _geolocator.GetPositionAsync(3000).ContinueWith(t =>
+                    {
+                        if (t.IsFaulted)
+                        {
+                            //                                PositionStatus.Text = ((GeolocationException)t.
+                            //                                                       Exception.InnerException).Error.ToString();
+                        }
+                        else if (t.IsCanceled)
+                        {
+                            //                                PositionStatus.Text = "Canceled";
+                        }
+                        else
+                        {
+                            Console.WriteLine(t.Result.Timestamp.ToString("G"));
+                            Console.WriteLine(t.Result.Latitude.ToString("N4"));
+                            Console.WriteLine(t.Result.Longitude.ToString("N4"));
+                        }
+                        
+                    }, _scheduler);
                     
                 });
             }
         }
+        
+
 
     }
 }

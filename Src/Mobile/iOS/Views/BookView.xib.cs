@@ -45,25 +45,6 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
         }
 
-//        public BookView(IntPtr handle) : base(  base(handle)
-//        {
-//            Initialize();
-//        }
-//
-//        [Export("initWithCoder:")]
-//        public BookView(NSCoder coder) : base(coder)
-//        {
-//            Initialize();
-//        }
-//
-//        public BookView() : base("BookView", null)
-//        {
-//            Initialize();
-//        }
-
-
-
-       
 
         
         public CreateOrder BookingInfo
@@ -109,16 +90,16 @@ namespace apcurium.MK.Booking.Mobile.Client
             bottomBar.UserInteractionEnabled = true;
             View.BringSubviewToFront(bottomBar);
             View.BringSubviewToFront(bookBtn);
+           
 
-//            { dropoffActivationButton, ""},              
-//            { pickupActivationButton, "{'Selected':{'Path':'PickupIsActive'}}"},                
 
 
             this.AddBindings(new Dictionary<object, string>()                            {
                 { refreshCurrentLocationButton, "{'TouchUpInside':{'Path':'RequestCurrentLocationCommand'}}"},                
                 { pickupActivationButton, "{'TouchUpInside':{'Path':'ActivatePickup'},'Selected':{'Path':'PickupIsActive', 'Mode':'TwoWay'}}"},                
-                { dropoffActivationButton, "{'TouchUpInside':{'Path':'ActivateDropoff'}}"},                
-
+                { dropoffActivationButton, "{'TouchUpInside':{'Path':'ActivateDropoff'},'Selected':{'Path':'DropoffIsActive', 'Mode':'TwoWay'}}"},       
+                { pickupButton, "{'TouchUpInside':{'Path':'PickPickupLocation'},'TextLine1':{'Path':'Pickup.FriendlyName', 'Mode':'TwoWay'}, 'TextLine2':{'Path':'Pickup.FullAddress', 'Mode':'TwoWay'} }"},  
+                { dropoffButton, "{'TouchUpInside':{'Path':'PickDropOffLocation'},'TextLine1':{'Path':'Dropoff.FriendlyName', 'Mode':'TwoWay'}, 'TextLine2':{'Path':'Dropoff.FullAddress', 'Mode':'TwoWay'} }"},             
 
             });
         }
