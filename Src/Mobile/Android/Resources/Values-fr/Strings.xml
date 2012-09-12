@@ -7,6 +7,12 @@
   <string name="TabLocations">Adresses</string>
   <string name="TabHistory">Historique</string>
   <string name="TabSettings">Paramètres</string>
+
+  <string name="TabSearch">Recherche</string>
+  <string name="TabFavorites">Favoris</string>
+  <string name="TabContacts">Contacts</string>
+  <string name="TabPlaces">Endroits</string>
+
   <string name="Close">Fermer</string>
   <string name="GenericTitle">
   </string>
@@ -235,4 +241,5 @@
   <string name="ServiceErrorCreateOrder_CannotCreateInIbs">Impossible de passer votre commande.</string>
   <string name="ServiceErrorUnauthorized">Un appel non-authorisé a été fait au serveur, vous allez être redirigé vers la page de connexion.</string>
   <string name="BookDateLabel">Pick Me Up Later</string>
+  <string name="searchHint">Recherche</string>
 </resources>

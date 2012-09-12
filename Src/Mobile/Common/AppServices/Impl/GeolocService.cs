@@ -39,7 +39,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             {
                 return new Address[0];
             }
-
         }
         
 		public Address[] SearchAddress(string address)

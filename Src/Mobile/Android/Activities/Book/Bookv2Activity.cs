@@ -6,14 +6,18 @@ using System.Text;
 using Android.App;
 using Android.Content;
 using Android.GoogleMaps;
+using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Provider;
 using Android.Runtime;
+using Android.Text;
 using Android.Views;
+using Android.Views.Animations;
 using Android.Widget;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Client.Activities.Location;
+using apcurium.MK.Booking.Mobile.Client.Adapters;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Models;
 
@@ -34,10 +38,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             base.OnCreate(bundle);
             LocationService = new LocationService();
             LocationService.Start();
-
             SetContentView(Resource.Layout.Bookv2);
+
+            // make bottom layout transparent
+            var bottomLayout = FindViewById<FrameLayout>(Resource.Id.bottomLayout);
+            AlphaAnimation alpha = new AlphaAnimation(0.1F,0.1F);
+            alpha.Duration = 0;
+            alpha.FillAfter = true;
+            bottomLayout.StartAnimation(alpha);
+
+            //set text on button destinationAddressButton
+            var pickupAddressButton = FindViewById<Button>(Resource.Id.pickupAddressButton);
+            pickupAddressButton.SetText(Html.FromHtml("<small>Pickup</small> <br/> <b>3939 rue Rivard, Montreal QC</br>").ToString(), TextView.BufferType.Editable);
+
+            var destinationAddressButton = FindViewById<Button>(Resource.Id.destinationAddressButton);
+            destinationAddressButton.SetText(Html.FromHtml("<small>Destination</small> <br/> <b>426 rue Saint Gabriel, Montreal QC</br>").ToString(), TextView.BufferType.Editable);
+
             // Create your application here
-            this.InitializeDropDownMenu();
+            // this.InitializeDropDownMenu();
         }
 
         /*protected override MapView Map
@@ -85,7 +103,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             get { return true; }
         }
 
-        protected void InitializeDropDownMenu()
+       /* protected void InitializeDropDownMenu()
         {
             //Initialize dropdown control
 
@@ -115,6 +133,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			}, false);
             var dropDownControlLayout = FindViewById<LinearLayout>(Resource.Id.linear_iconaction);
             dropDownControlLayout.AddView(iconActionControl);
-        }
+        }*/
     }
 }

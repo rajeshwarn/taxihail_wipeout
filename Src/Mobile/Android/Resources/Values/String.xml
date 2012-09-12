@@ -7,6 +7,12 @@
   <string name="TabLocations">Locations</string>
   <string name="TabHistory">History</string>
   <string name="TabSettings">Settings</string>
+  
+  <string name="TabSearch">Search</string>
+  <string name="TabFavorites">Favorites</string>
+  <string name="TabContacts">Contacts</string>
+  <string name="TabPlaces">Places</string>
+  
   <string name="Close">Close</string>
   <string name="GenericTitle">
   </string>
@@ -32,7 +38,7 @@
   <string name="LoadingMessage">Loading...</string>
   <string name="InvalidLoginMessageTitle">Invalid information</string>
   <string name="InvalidLoginMessage">The email or/and password is invalid.</string>
-  <string name="BookItButton">Book It</string>
+  <string name="BookItButton">Book Now</string>
   <string name="ass">asdasd</string>
   <string name="BookPickupLabel">Confirm your pickup location</string>
   <string name="PickupTextPlaceholder">Pickup street address</string>
@@ -238,4 +244,5 @@
   <string name="BookDateLabel">Pick Me Up Later</string>
   <string name="OrderHistoryListTitle">Order #{0}</string>
   <string name="GoogleMapKey">0XEY3WqKVmJPhbZLikyEk8DUaS4VVLGuMHNSqKg</string>
+  <string name="searchHint">Search</string>
 </resources>

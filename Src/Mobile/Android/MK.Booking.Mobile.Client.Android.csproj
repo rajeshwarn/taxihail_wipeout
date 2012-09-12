@@ -109,6 +109,7 @@
     <Compile Include="Adapters\OrderListAdapter.cs" />
     <Compile Include="Adapters\TitleSubTitleListItemController.cs" />
     <Compile Include="Animations\ResizeAnimation.cs" />
+    <Compile Include="Animations\SlideAnimation.cs" />
     <Compile Include="AppContext.cs" />
     <Compile Include="AppModule.cs" />
     <Compile Include="Activities\Book\BookActivity.cs" />
@@ -296,6 +297,7 @@
     <AndroidResource Include="Resources\Layout\SearchAddress.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\Layout\MenuItem.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\images\arrow-right%402x.png" />
@@ -458,6 +460,31 @@
     <AndroidResource Include="Resources\Drawable\server_button.png" />
     <AndroidResource Include="Resources\drawable-hdpi\server_button.png" />
     <AndroidResource Include="Resources\drawable-mdpi\server_button.png" />
+    <AndroidResource Include="Resources\Drawable\searchTabBtn_off.png" />
+    <AndroidResource Include="Resources\Drawable\searchTabBtn_on.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\searchTabBtn_off.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\searchTabBtn_on.png" />
+    <AndroidResource Include="Resources\Drawable\searchTabBtnSelector.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\loupe.png" />
+    <AndroidResource Include="Resources\Drawable\loupe.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\mylocation.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\main_settings.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\target.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\target_selected.png" />
+    <AndroidResource Include="Resources\Drawable\main_settings.png" />
+    <AndroidResource Include="Resources\Drawable\target.png" />
+    <AndroidResource Include="Resources\Drawable\target_selected.png" />
+    <AndroidResource Include="Resources\Drawable\mylocation.png" />
+    <AndroidResource Include="Resources\Drawable\main_btn_state.xml" />
+    <AndroidResource Include="Resources\Drawable\main_btn_selected.9.png" />
+    <AndroidResource Include="Resources\Drawable\main_btn_unselected.9.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\main_btn_unselected.9.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\main_btn_selected.9.png" />
+    <AndroidResource Include="Resources\Drawable\target_state.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\backPickupDestination.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\bookLaterIcon.png" />
+    <AndroidResource Include="Resources\Drawable\backPickupDestination.png" />
+    <AndroidResource Include="Resources\Drawable\bookLaterIcon.png" />
     <Content Include="Todo.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />

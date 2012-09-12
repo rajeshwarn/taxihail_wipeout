@@ -20,8 +20,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Adapters
     {
         private readonly Activity _context;
         public List<AddressItemListModel> ListAddress { get; set; }
-        private Color BgColor { get; set; }
-        private string ImageUri { get; set; }
 
         public LocationListAdapter(Activity context, List<AddressItemListModel> objects)
             : base()

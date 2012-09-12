@@ -77,7 +77,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
            
             if (TinyIoCContainer.Current.Resolve<IAppSettings>().CanChooseProvider)
 		    {
-                section.AddItem(new SpinnerSectionItem(Resources.GetString(Resource.String.RideSettingsCompany), () => model.ProviderId != null ? (int) model.ProviderId : -1, (value) => model.ProviderId = value, () => model.CompanyList.Select(i => new ListItemData { Key = i.Id, Value = i.Display }).ToList()));
+                //section.AddItem(new SpinnerSectionItem(Resources.GetString(Resource.String.RideSettingsCompany), () => model.ProviderId != null ? (int) model.ProviderId : 0, (value) => model.ProviderId = value, () => model.CompanyList.Select(i => new ListItemData { Key = i.Id, Value = i.Display }).ToList()));
 		    }
 			
 			return structure;
