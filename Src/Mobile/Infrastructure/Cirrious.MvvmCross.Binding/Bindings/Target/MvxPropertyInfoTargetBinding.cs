@@ -39,7 +39,7 @@ namespace Cirrious.MvvmCross.Binding.Bindings.Target
 
         public override MvxBindingMode DefaultMode
         {
-            get { return MvxBindingMode.OneWay; }
+            get { return MvxBindingMode.TwoWay; }
         }
 
         sealed public override void SetValue(object value)

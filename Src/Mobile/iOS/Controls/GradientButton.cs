@@ -29,6 +29,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         private UIFont _titleFont = AppStyle.GetButtonFont( AppStyle.ButtonFontSize ) ;       
         private UIColor _textShadowColor = null;
         private UIImage _image;
+        private UIImage _selectedImage;
         private Style.ShadowDefinition _innerShadow = null;
         private Style.ShadowDefinition _dropShadow = null;
 
@@ -70,11 +71,31 @@ namespace apcurium.MK.Booking.Mobile.Client
             SetTitleColor( UIColor.Clear, UIControlState.Selected );
         }
 
+        public override bool Selected
+        {
+            get
+            {
+                return base.Selected;
+            }
+            set
+            {
+                base.Selected = value;
+            }
+        }
         public void SetImage( string image )
         {
             if (image != null)
             {
                 _image = UIImage.FromFile(image);
+                SetNeedsDisplay();
+            }
+        }
+
+        public void SetSelectedImage( string image )
+        {
+            if (image != null)
+            {
+                _selectedImage = UIImage.FromFile(image);
                 SetNeedsDisplay();
             }
         }
@@ -282,13 +303,21 @@ namespace apcurium.MK.Booking.Mobile.Client
             context.RestoreState();
 
             RectangleF imageRect = new RectangleF();
-            if (_image != null)
+            if ( (_image != null) && ( !Selected || (_selectedImage == null )))
             {
                 var emptySpaceX =  rect.Width - _image.Size.Width;
                 var emptySpaceY =  rect.Height - _image.Size.Height ;
 
                 imageRect = new RectangleF(emptySpaceX/2, emptySpaceY/2, rect.Width - emptySpaceX, rect.Height - emptySpaceY);                               
                 _image.Draw(imageRect, CGBlendMode.Normal, 1f);
+            }
+            else if ( Selected && (_selectedImage != null ) )
+            {
+                var emptySpaceX =  rect.Width - _selectedImage.Size.Width;
+                var emptySpaceY =  rect.Height - _selectedImage.Size.Height ;
+                
+                imageRect = new RectangleF(emptySpaceX/2, emptySpaceY/2, rect.Width - emptySpaceX, rect.Height - emptySpaceY);                               
+                _selectedImage.Draw(imageRect, CGBlendMode.Normal, 1f);
             }
 
             context.SaveState();

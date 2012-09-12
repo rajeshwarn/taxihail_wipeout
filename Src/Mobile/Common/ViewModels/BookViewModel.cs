@@ -7,9 +7,10 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.AppServices;
 using Xamarin.Geolocation;
 using System.Threading.Tasks;
+
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class BookViewModel : BaseViewModel 
+    public class BookViewModel : BaseViewModel
     {
         private string _pickupLocation;
         private string _destinationLocation;
@@ -23,6 +24,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private LocationType _currentLocationType;
         private IAccountService _accountService;
         private Geolocator _geolocator;
+        private bool _pickupIsActive = true;
+        private bool _dropoffIsActive = true;
         private  TaskScheduler _scheduler = TaskScheduler.FromCurrentSynchronizationContext();
 
         public BookViewModel(IAccountService accountService)
@@ -49,9 +52,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Load();
         }
 
-        public void Rebook( CreateOrder rebookData)
+        public void Rebook(CreateOrder rebookData)
         {
-            Order =rebookData;
+            Order = rebookData;
         }
 
         public CreateOrder Order
@@ -78,6 +81,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             { 
+
                 return Order.DropOffAddress;
             }
             
@@ -96,6 +100,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 _pickupLocation = value;
                 PickupLocationChanged.RaiseCanExecuteChanged();
             }
+        }
+
+        public bool PickupIsActive
+        {
+            get{ return _pickupIsActive;}
+            set{ _pickupIsActive = value;
+                FirePropertyChanged( ()=>PickupIsActive );
+            }
+        }
+
+        public bool DropoffIsActive
+        {
+            get{ return _dropoffIsActive;}
+            set{ _dropoffIsActive = value;}
         }
 
         public string DestinationLocation
@@ -137,9 +155,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             }
                             else
                             {
-                                Console.WriteLine ( t.Result.Timestamp.ToString("G") );
-                                Console.WriteLine ( t.Result.Latitude.ToString("N4"));
-                                Console.WriteLine ( t.Result.Longitude.ToString("N4"));
+                                Console.WriteLine(t.Result.Timestamp.ToString("G"));
+                                Console.WriteLine(t.Result.Latitude.ToString("N4"));
+                                Console.WriteLine(t.Result.Longitude.ToString("N4"));
                             }
                             
                         }, _scheduler);
@@ -165,6 +183,31 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     });
                 }
                 return _pickupLocationChanged;
+            }
+        }
+
+
+        public MvxRelayCommand ActivatePickup
+        {                   
+            get
+            {       
+                return new MvxRelayCommand(() => 
+                                                                 {                               
+                    PickupIsActive = !PickupIsActive;
+
+                    });
+            }
+        }
+
+        public MvxRelayCommand ActivateDropoff
+        {                   
+            get
+            {       
+                return new MvxRelayCommand(() => 
+                                           {       
+                    
+                    
+                });
             }
         }
 

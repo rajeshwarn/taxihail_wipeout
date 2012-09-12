@@ -87,6 +87,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             ((GradientButton)dropoffActivationButton).SetImage( "Assets/location.png" );
             ((GradientButton)pickupActivationButton).SetImage( "Assets/location.png" );
 
+            ((GradientButton)dropoffActivationButton).SetSelectedImage( "Assets/locationSelected.png" );
+            ((GradientButton)pickupActivationButton).SetSelectedImage( "Assets/locationSelected.png" );
+
 
             headerBackgroundView.Image =UIImage.FromFile("Assets/backPickupDestination.png");
 
@@ -107,9 +110,16 @@ namespace apcurium.MK.Booking.Mobile.Client
             View.BringSubviewToFront(bottomBar);
             View.BringSubviewToFront(bookBtn);
 
+//            { dropoffActivationButton, ""},              
+//            { pickupActivationButton, "{'Selected':{'Path':'PickupIsActive'}}"},                
+
 
             this.AddBindings(new Dictionary<object, string>()                            {
                 { refreshCurrentLocationButton, "{'TouchUpInside':{'Path':'RequestCurrentLocationCommand'}}"},                
+                { pickupActivationButton, "{'TouchUpInside':{'Path':'ActivatePickup'},'Selected':{'Path':'PickupIsActive', 'Mode':'TwoWay'}}"},                
+                { dropoffActivationButton, "{'TouchUpInside':{'Path':'ActivateDropoff'}}"},                
+
+
             });
         }
 
