@@ -8,7 +8,112 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:gravity="center">
+        android:background="@color/gray"
+        >
+      <LinearLayout
+        android:id="@+id/mainSettingsLayoutHeader"
+        android:layout_width="fill_parent"
+        android:layout_height="50dip"
+        android:background="@color/blue">
+        <TextView
+                android:text="Settings"
+                style="@style/BigTitleText"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dip"
+                android:gravity="center_horizontal" />
+      </LinearLayout>
+      
+      <LinearLayout
+        android:id="@+id/mainSettingsLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true" 
+        android:layout_marginTop="50dip">
+      <Button
+          android:background="@drawable/cell_top_state"
+          android:layout_width="400dip"
+          android:layout_height="50dip"
+          android:text="Favorites"
+          android:drawableRight="@drawable/right_arrow"
+          android:paddingRight="10dip"
+          android:paddingLeft="10dip"
+          android:gravity="left|center_vertical"
+          />
+      <Button
+          android:background="@drawable/cell_middle_state"
+          android:layout_width="400dip"
+          android:layout_height="50dip"
+          android:text="Ride History"
+          android:drawableRight="@drawable/right_arrow"
+          android:paddingRight="10dip"
+          android:paddingLeft="10dip"
+          android:gravity="left|center_vertical"
+          />
+        <Button
+          android:background="@drawable/cell_middle_state"
+          android:layout_width="400dip"
+          android:layout_height="50dip"
+          android:text="Profile"
+          android:drawableRight="@drawable/right_arrow"
+          android:paddingRight="10dip"
+          android:paddingLeft="10dip"
+          android:gravity="left|center_vertical"
+          />
+          <Button
+          android:background="@drawable/cell_middle_state"
+          android:layout_width="400dip"
+          android:layout_height="50dip"
+          android:text="Call"
+          android:drawableRight="@drawable/right_arrow"
+          android:paddingRight="10dip"
+          android:paddingLeft="10dip"
+          android:gravity="left|center_vertical"
+          />
+            <Button
+          android:background="@drawable/cell_middle_state"
+          android:layout_width="400dip"
+          android:layout_height="50dip"
+          android:text="About"
+          android:drawableRight="@drawable/right_arrow"
+          android:paddingRight="10dip"
+          android:paddingLeft="10dip"
+          android:gravity="left|center_vertical"
+          />
+      <Button
+          android:background="@drawable/cell_middle_state"
+          android:layout_width="400dip"
+          android:layout_height="50dip"
+          android:text="Support"
+          android:drawableRight="@drawable/right_arrow"
+          android:paddingRight="10dip"
+          android:paddingLeft="10dip"
+          android:gravity="left|center_vertical"
+          />
+      <Button
+          android:background="@drawable/blank_bottom_state"
+          android:layout_width="400dip"
+          android:layout_height="50dip"
+          android:text="Logout"
+          android:drawableRight="@drawable/right_arrow"
+          android:paddingRight="10dip"
+          android:paddingLeft="10dip"
+          android:gravity="left|center_vertical"
+          />
+      
+      </LinearLayout>
+        <ImageView
+            android:id="@+id/apcuriumLogo"
+            android:src="@drawable/apcuriumLogo"
+            android:layout_width="fill_parent"
+            android:scaleType="centerInside"
+            android:adjustViewBounds="true"
+            android:layout_height="wrap_content" 
+            android:layout_centerHorizontal="true" 
+            android:layout_alignParentBottom="true"
+            android:paddingBottom="10dip"
+            />
         <apcurium.mk.booking.mobile.client.controls.ReclickableTabHost
             android:id="@android:id/tabhost"
             android:layout_width="fill_parent"
@@ -23,28 +128,7 @@
                     android:layout_alignParentBottom="true"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content" />
-              <FrameLayout
-        android:id="@+id/menuframe"
-        android:layout_height="match_parent"
-        android:layout_width="400dp"
-        android:background="#ff4acf6e">
-        <LinearLayout
-            android:id="@+id/menu"
-            android:orientation="horizontal"
-            android:layout_height="match_parent"
-            android:layout_width="fill_parent"
-            android:background="#ff4acf6e">
-            <View
-                android:id="@+id/emptyspace"
-                android:layout_height="match_parent"
-                android:layout_width="50dp" />
-            <GridView
-                android:id="@+id/gridMenu"
-                android:layout_height="fill_parent"
-                android:layout_width="fill_parent"
-                android:background="#ffdb30b2" />
-        </LinearLayout>
-    </FrameLayout>
+ 
               <FrameLayout
                 android:id="@+id/scrollinglayout"
                 android:layout_width="fill_parent"
@@ -73,7 +157,7 @@
               android:id="@+id/HeaderImage"
               android:layout_marginBottom="-8dip"
             
-              android:paddingTop="5dip">
+              >
             <ImageView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
