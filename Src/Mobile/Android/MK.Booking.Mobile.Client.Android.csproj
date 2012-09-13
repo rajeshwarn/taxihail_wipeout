@@ -32,9 +32,9 @@
     <WarningLevel>4</WarningLevel>
     <AndroidKeyStore>True</AndroidKeyStore>
     <AndroidSigningKeyStore>public.keystore</AndroidSigningKeyStore>
-    <AndroidSigningStorePass>mkAtlantaCheckerCab0001.</AndroidSigningStorePass>
-    <AndroidSigningKeyAlias>MKAtlantaCheckerCab</AndroidSigningKeyAlias>
-    <AndroidSigningKeyPass>mkAtlantaCheckerCab0001.</AndroidSigningKeyPass>
+    <AndroidSigningStorePass>mkt0001.</AndroidSigningStorePass>
+    <AndroidSigningKeyAlias>MKTaxiHail</AndroidSigningKeyAlias>
+    <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
     <AndroidLinkMode>None</AndroidLinkMode>
     <AndroidSupportedAbis>armeabi,armeabi-v7a,x86</AndroidSupportedAbis>
     <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
@@ -52,9 +52,9 @@
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
     <AndroidKeyStore>True</AndroidKeyStore>
     <AndroidSigningKeyStore>public.keystore</AndroidSigningKeyStore>
-    <AndroidSigningStorePass>mkAtlantaCheckerCab0001.</AndroidSigningStorePass>
-    <AndroidSigningKeyAlias>MKAtlantaCheckerCab</AndroidSigningKeyAlias>
-    <AndroidSigningKeyPass>mkAtlantaCheckerCab0001.</AndroidSigningKeyPass>
+    <AndroidSigningStorePass>mkt0001.</AndroidSigningStorePass>
+    <AndroidSigningKeyAlias>MKTaxiHail</AndroidSigningKeyAlias>
+    <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
     <AndroidSupportedAbis>armeabi-v7a,x86</AndroidSupportedAbis>
   </PropertyGroup>
@@ -116,6 +116,7 @@
     <Compile Include="AppFonts.cs" />
     <Compile Include="Cache\CacheService.cs" />
     <Compile Include="Controls\BaloonLayout.cs" />
+    <Compile Include="Controls\TextButton.cs" />
     <Compile Include="Controls\IconActionControl.cs" />
     <Compile Include="Controls\TouchMap.cs" />
     <Compile Include="Converters\CoordinatesConverter.cs" />
@@ -160,6 +161,7 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <Compile Include="Resources\Resource.Designer.cs" />
+    <Compile Include="Setup.cs" />
     <Compile Include="TaxiMobileApp.cs" />
     <Compile Include="Validation\EmailValidation.cs" />
     <Compile Include="ListViewStructure\Section.cs" />
@@ -485,6 +487,7 @@
     <AndroidResource Include="Resources\drawable-hdpi\bookLaterIcon.png" />
     <AndroidResource Include="Resources\Drawable\backPickupDestination.png" />
     <AndroidResource Include="Resources\Drawable\bookLaterIcon.png" />
+    <AndroidResource Include="Resources\Values\MvxBindingAttributes.xml" />
     <Content Include="Todo.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
@@ -517,6 +520,22 @@
     <ProjectReference Include="..\Common\MK.Booking.Mobile.Android.csproj">
       <Project>{B2ADB131-E47E-4DF4-8AA6-1D7E284EFFA9}</Project>
       <Name>MK.Booking.Mobile.Android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Infrastructure\Cirrious.MvvmCross.Android.Maps\Cirrious.MvvmCross.Android.Maps.csproj">
+      <Project>{43A48F1C-39F3-4C1C-8831-5D3EF45744FE}</Project>
+      <Name>Cirrious.MvvmCross.Android.Maps</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Infrastructure\Cirrious.MvvmCross.Binding\Cirrious.MvvmCross.Binding.Android.csproj">
+      <Project>{47FD89C3-19DC-4BD2-9B6D-FB8363BE7EB9}</Project>
+      <Name>Cirrious.MvvmCross.Binding.Android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Infrastructure\Cirrious.MvvmCross\Cirrious.MvvmCross.Android.csproj">
+      <Project>{7A6BE137-D0F1-46A1-AE5C-81FAEEDDDF02}</Project>
+      <Name>Cirrious.MvvmCross.Android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Libraries\Newtonsoft.Json\Newtonsoft.Json\Newtonsoft.Json.MonoDroid.csproj">
+      <Project>{E6C3413C-919B-486D-8B6C-225CBD921B98}</Project>
+      <Name>Newtonsoft.Json.MonoDroid</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

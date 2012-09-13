@@ -9,6 +9,7 @@ using Xamarin.Geolocation;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Navigation;
 using TinyIoC;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -18,13 +19,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private Geolocator _geolocator;
         private bool _pickupIsActive = true;
         private bool _dropoffIsActive = false;
+        private IAppResource _appResource;
         private  TaskScheduler _scheduler = TaskScheduler.FromCurrentSynchronizationContext();
 
-        public BookViewModel(IAccountService accountService)
+        public BookViewModel(IAccountService accountService, IAppResource appResource, Geolocator geolocator)
         {
+            _appResource = appResource;
             _accountService = accountService;
-            _geolocator = new Geolocator{ DesiredAccuracy  = 100 };
+            _geolocator = geolocator;
+            _appResource = appResource;
+
+            
+            
             Load();
+
+            Pickup = new BookAddressViewModel ( Order.PickupAddress ) { Title = appResource.GetString( "BookPickupLocationButtonTitle" ), EmptyAddressPlaceholder=   appResource.GetString( "BookPickupLocationEmptyPlaceholder") };
+            Dropoff = new BookAddressViewModel( Order.DropOffAddress ){ Title = appResource.GetString( "BookDropoffLocationButtonTitle" ),EmptyAddressPlaceholder=   appResource.GetString( "BookDropoffLocationEmptyPlaceholder") };
         }
 
         public override void Load()
@@ -56,31 +66,51 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             private set;
         }
 
-        public Address Pickup
+        public BookAddressViewModel SelectedAddress
         {
             get
-            { 
-                return Order.PickupAddress;
-            }
-            set
-            { 
-                Order.PickupAddress = value;
-                FirePropertyChanged(() => Pickup);
+            {
+                if (PickupIsActive)
+                {
+                    return Pickup;
+                }
+                else if (DropoffIsActive)
+                {
+                    return Dropoff;
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
 
-        public Address Dropoff
-        {
-            get
-            { 
-                return Order.DropOffAddress;
-            }            
-            set
-            {
-                Order.DropOffAddress = value;
-                FirePropertyChanged(() => Dropoff);
-            }
-        }
+
+        public BookAddressViewModel Pickup { get; set; }
+        //{
+        //    get
+        //    { 
+        //        return Order.PickupAddress;
+        //    }
+        //    set
+        //    { 
+        //        Order.PickupAddress = value;
+        //        FirePropertyChanged(() => Pickup);
+        //    }
+        //}
+        public BookAddressViewModel Dropoff { get; set; }
+        //public BookAddressViewModel Dropoff
+        //{
+        //    get
+        //    { 
+        //        return Order.DropOffAddress;
+        //    }            
+        //    set
+        //    {
+        //        Order.DropOffAddress = value;
+        //        FirePropertyChanged(() => Dropoff);
+        //    }
+        //}
 
         public bool PickupIsActive
         {
@@ -133,9 +163,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get
             {       
                 return new MvxRelayCommand(() => 
-                                           {   
-                    Pickup = new Address{ FriendlyName = Guid.NewGuid().ToString() };
-                    TinyIoCContainer.Current.Resolve<INavigationService>().Navigate<AddressSearchViewModel>( "apcurium.MK.Booking.Mobile.Client.AddressSearchView" );
+                                           {
+                                               //Pickup = new Address { FriendlyName = Guid.NewGuid().ToString(), FullAddress = Guid.NewGuid().ToString() };
+                    //RequestNavigate(typeof(AddressSearchViewModel));
+                    //TinyIoCContainer.Current.Resolve<INavigationService>().Navigate<AddressSearchViewModel>( "apcurium.MK.Booking.Mobile.Client.AddressSearchView" );
                 });
             }
         }
@@ -146,7 +177,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {       
                 return new MvxRelayCommand(() => 
                                            {
-                                           Dropoff = new Address{ FriendlyName = Guid.NewGuid().ToString() };                          
+                                           //Dropoff = new Address{ FriendlyName = Guid.NewGuid().ToString() };                          
                 });
             }
         }

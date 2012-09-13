@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using ServiceStack.Text;
 using System.IO;
+using ServiceStack.ServiceClient.Web;
 
 #if OSX
 using ServiceStack.ServiceClient.Web;

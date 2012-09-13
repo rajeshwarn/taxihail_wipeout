@@ -15,7 +15,9 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 		string OrderNoteGPSApproximate{get;}
 		string StatusInvalid{get;}
 		string CarAssigned{get;}
-		
-	}
+
+        string GetString(string key);
+
+    }
 }
 

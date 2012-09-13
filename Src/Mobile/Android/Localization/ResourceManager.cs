@@ -16,6 +16,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Localization
 {
     public class ResourceManager : IAppResource
     {
+        
+        private Context _context;
+
+
+        public ResourceManager(Context context)
+        {
+            _context = context;
+        }
+
         public AppLanguage CurrentLanguage
         {
             get { return AppContext.Current.App.GetString(Resource.String.Language) == "English" ? AppLanguage.English : AppLanguage.Francais; }
@@ -40,7 +49,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Localization
         {
             get { return ""; }
         }
-        
+
         public string MobileUser
         {
             get { return "This booking was made using the mobile application."; }
@@ -53,13 +62,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Localization
 
         public string CurrentLanguageCode
         {
-            get { return AppContext.Current.App.GetString(Resource.String.LanguageCode ); }
+            get { return AppContext.Current.App.GetString(Resource.String.LanguageCode); }
         }
 
 
         public string CarAssigned
         {
-            get { return AppContext.Current.App.GetString( Resource.String.CarAssigned ); }
+            get { return AppContext.Current.App.GetString(Resource.String.CarAssigned); }
         }
+
+        public string GetString(string key)
+        {
+            var identifier = _context.Resources.GetIdentifier(key,"string", _context.PackageName);
+            return _context.Resources.GetString(identifier);
+        }
+
     }
 }

@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Mobile.Client.Cache;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Booking.Mobile.Client.PlatformIntegration;
 using apcurium.MK.Booking.Mobile.Settings;
+using Xamarin.Geolocation;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -27,12 +28,14 @@ namespace apcurium.MK.Booking.Mobile.Client
             TinyIoCContainer.Current.Register<IPackageInfo>(new PackageInfo(App));
             TinyIoCContainer.Current.Register<IAppSettings>( new AppSettings());
             TinyIoCContainer.Current.Register<IAppContext>(new AppContext(App));
-            TinyIoCContainer.Current.Register<IAppResource, ResourceManager>();
+            TinyIoCContainer.Current.Register<IAppResource>( new ResourceManager( App.ApplicationContext ));
             TinyIoCContainer.Current.Register<ILogger, LoggerImpl>();
 			TinyIoCContainer.Current.Register<IErrorHandler, ErrorHandler>();
 
             TinyIoCContainer.Current.Register<ICacheService>(new CacheService(App));
             TinyIoCContainer.Current.Register<AddressBook>(new AddressBook(App.ApplicationContext));
+            TinyIoCContainer.Current.Register<Geolocator>(new Geolocator(App.ApplicationContext) { DesiredAccuracy = 100 });
+            
         
         }
     }

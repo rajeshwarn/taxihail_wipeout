@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.Mobile.Client.Android", "Android\MK.Booking.Mobile.Client.Android.csproj", "{9F666743-C8EE-4553-A079-03FB36F979E0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.Mobile.Android", "Common\MK.Booking.Mobile.Android.csproj", "{B2ADB131-E47E-4DF4-8AA6-1D7E284EFFA9}"
@@ -10,6 +10,16 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.Api.Client.Android", "..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj", "{A70ADE42-9492-4247-96DC-0CFE0CB0CC64}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Common.Android", "..\Server\MK.Common\MK.Common.Android.csproj", "{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{0B2090C8-7575-4992-9765-04354EEB73A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cirrious.MvvmCross.Android", "Infrastructure\Cirrious.MvvmCross\Cirrious.MvvmCross.Android.csproj", "{7A6BE137-D0F1-46A1-AE5C-81FAEEDDDF02}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cirrious.MvvmCross.Binding.Android", "Infrastructure\Cirrious.MvvmCross.Binding\Cirrious.MvvmCross.Binding.Android.csproj", "{47FD89C3-19DC-4BD2-9B6D-FB8363BE7EB9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newtonsoft.Json.MonoDroid", "Libraries\Newtonsoft.Json\Newtonsoft.Json\Newtonsoft.Json.MonoDroid.csproj", "{E6C3413C-919B-486D-8B6C-225CBD921B98}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cirrious.MvvmCross.Android.Maps", "Infrastructure\Cirrious.MvvmCross.Android.Maps\Cirrious.MvvmCross.Android.Maps.csproj", "{43A48F1C-39F3-4C1C-8831-5D3EF45744FE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,9 +49,31 @@ Global
 		{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A6BE137-D0F1-46A1-AE5C-81FAEEDDDF02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A6BE137-D0F1-46A1-AE5C-81FAEEDDDF02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A6BE137-D0F1-46A1-AE5C-81FAEEDDDF02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A6BE137-D0F1-46A1-AE5C-81FAEEDDDF02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47FD89C3-19DC-4BD2-9B6D-FB8363BE7EB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47FD89C3-19DC-4BD2-9B6D-FB8363BE7EB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47FD89C3-19DC-4BD2-9B6D-FB8363BE7EB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47FD89C3-19DC-4BD2-9B6D-FB8363BE7EB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6C3413C-919B-486D-8B6C-225CBD921B98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6C3413C-919B-486D-8B6C-225CBD921B98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6C3413C-919B-486D-8B6C-225CBD921B98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6C3413C-919B-486D-8B6C-225CBD921B98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43A48F1C-39F3-4C1C-8831-5D3EF45744FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43A48F1C-39F3-4C1C-8831-5D3EF45744FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43A48F1C-39F3-4C1C-8831-5D3EF45744FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43A48F1C-39F3-4C1C-8831-5D3EF45744FE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7A6BE137-D0F1-46A1-AE5C-81FAEEDDDF02} = {0B2090C8-7575-4992-9765-04354EEB73A5}
+		{47FD89C3-19DC-4BD2-9B6D-FB8363BE7EB9} = {0B2090C8-7575-4992-9765-04354EEB73A5}
+		{E6C3413C-919B-486D-8B6C-225CBD921B98} = {0B2090C8-7575-4992-9765-04354EEB73A5}
+		{43A48F1C-39F3-4C1C-8831-5D3EF45744FE} = {0B2090C8-7575-4992-9765-04354EEB73A5}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Android\MK.Booking.Mobile.Client.Android.csproj

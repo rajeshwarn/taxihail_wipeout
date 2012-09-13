@@ -1,18 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="ApplicationName">Atlanta Checker Cab</string>
+  <string name="ApplicationName">TaxiHail</string>
   <string name="Language">Francais</string>
   <string name="LanguageCode">fr</string>
   <string name="TabBook">Commander</string>
   <string name="TabLocations">Adresses</string>
   <string name="TabHistory">Historique</string>
   <string name="TabSettings">Paramètres</string>
-
   <string name="TabSearch">Recherche</string>
   <string name="TabFavorites">Favoris</string>
   <string name="TabContacts">Contacts</string>
   <string name="TabPlaces">Endroits</string>
-
   <string name="Close">Fermer</string>
   <string name="GenericTitle">
   </string>
@@ -235,11 +233,13 @@
   <string name="SaveAddressEmptyFieldMessage">Données manquantes, le nom et l\'addresse sont requis.</string>
   <string name="SaveAddressEmptyFieldTitle">Nom manquant</string>
   <string name="OrderHistoryListTitle">Commande #{0}</string>
-  <string name="GoogleMapKey">0XEY3WqKVmJPhbZLikyEk8DUaS4VVLGuMHNSqKg</string>
+  <string name="GoogleMapKey">0XEY3WqKVmJMzXNRJfhbH1yM6RkpBMOaZWUoMAw</string>
   <string name="ServiceErrorCallTitle">Erreur du serveur</string>
   <string name="ServiceErrorDefaultMessage">Une erreur s\'est produite, veuillez recommencer.</string>
   <string name="ServiceErrorCreateOrder_CannotCreateInIbs">Impossible de passer votre commande.</string>
   <string name="ServiceErrorUnauthorized">Un appel non-authorisé a été fait au serveur, vous allez être redirigé vers la page de connexion.</string>
   <string name="BookDateLabel">Pick Me Up Later</string>
   <string name="searchHint">Recherche</string>
+  <string name="BookPickupLocationButtonTitle">Origine</string>
+  <string name="BookDropoffLocationButtonTitle">Destination</string>
 </resources>

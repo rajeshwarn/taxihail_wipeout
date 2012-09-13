@@ -14,6 +14,10 @@ using Android.Graphics;
 using Android.Views;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using Cirrious.MvvmCross.Views;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Interfaces.Views;
 
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
@@ -384,7 +388,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                         RunOnUiThread(() =>
                         {
                             Finish();
-                            StartActivity(typeof(MainActivity));
+
+                            var dispatch = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
+                            dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(BookViewModel), null, false, MvxRequestedBy.UserAction)); 
+                            //RequestNavigate<BookViewModel>();
+                            //StartActivity(typeof(MainActivity));
                         });
                         return;
                     }

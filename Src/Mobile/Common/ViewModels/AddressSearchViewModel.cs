@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using Xamarin.Geolocation;
 using System.Threading.Tasks;
 using System.Linq;
-using apcurium.MK.Booking.Mobile.ListViewStructure;
+
 using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -24,14 +24,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private Geolocator _geolocator;
         private TaskScheduler _scheduler = TaskScheduler.FromCurrentSynchronizationContext();
 
-        public AddressSearchViewModel(IGoogleService googleService, IGeolocService geolocService, IBookingService bookingService, IAccountService accountService)
+        public AddressSearchViewModel(IGoogleService googleService, IGeolocService geolocService, IBookingService bookingService, IAccountService accountService, Geolocator geolocator)
         {
             _googleService = googleService;
 			_geolocService = geolocService;
 			_bookingService = bookingService;
 			_accountService = accountService;
 			_addressViewModels = new List<AddressViewModel>();
-			_geolocator = new Geolocator{ DesiredAccuracy  = 100 };
+            _geolocator = geolocator;
         }
 
         public override void Load()

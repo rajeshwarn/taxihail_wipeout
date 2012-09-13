@@ -20,44 +20,73 @@ using apcurium.MK.Booking.Mobile.Client.Activities.Location;
 using apcurium.MK.Booking.Mobile.Client.Adapters;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Models;
+using Cirrious.MvvmCross.Binding.Android.Views;
+ 
+using apcurium.MK.Booking.Mobile.ViewModels;
+using Cirrious.MvvmCross.Binding.Android.ExtensionMethods;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
     [Activity(Label = "Bookv2", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
-    public class Bookv2Activity : MapActivity, IAddress
-    {
-
+    public class Bookv2Activity : MvxBindingMapActivityView<BookViewModel>, IAddress
+    {        
         public LocationService LocationService
         {
             get;
             private set;
         }
 
-        protected override void OnCreate(Bundle bundle)
+
+        //protected override void OnCreate(Bundle bundle)
+        //{
+            
+        //    base.OnCreate(bundle);
+        //    LocationService = new LocationService();
+        //    LocationService.Start();
+        //    SetContentView(Resource.Layout.Bookv2);
+
+        //    // make bottom layout transparent
+        //    var bottomLayout = FindViewById<FrameLayout>(Resource.Id.bottomLayout);
+        //    AlphaAnimation alpha = new AlphaAnimation(0.1F,0.1F);
+        //    alpha.Duration = 0;
+        //    alpha.FillAfter = true;
+        //    bottomLayout.StartAnimation(alpha);
+
+        //    //set text on button destinationAddressButton
+        //    var pickupAddressButton = FindViewById<Button>(Resource.Id.pickupAddressButton);
+        //    pickupAddressButton.SetText(Html.FromHtml("<small>Pickup</small> <br/> <b>3939 rue Rivard, Montreal QC</br>").ToString(), TextView.BufferType.Editable);
+
+        //    var destinationAddressButton = FindViewById<Button>(Resource.Id.destinationAddressButton);
+        //    destinationAddressButton.SetText(Html.FromHtml("<small>Destination</small> <br/> <b>426 rue Saint Gabriel, Montreal QC</br>").ToString(), TextView.BufferType.Editable);
+
+        //    // Create your application here
+        //    // this.InitializeDropDownMenu();
+        //}
+
+        protected override void OnViewModelSet()
         {
-            base.OnCreate(bundle);
             LocationService = new LocationService();
             LocationService.Start();
             SetContentView(Resource.Layout.Bookv2);
 
             // make bottom layout transparent
             var bottomLayout = FindViewById<FrameLayout>(Resource.Id.bottomLayout);
-            AlphaAnimation alpha = new AlphaAnimation(0.1F,0.1F);
+            AlphaAnimation alpha = new AlphaAnimation(0.1F, 0.1F);
             alpha.Duration = 0;
             alpha.FillAfter = true;
             bottomLayout.StartAnimation(alpha);
 
             //set text on button destinationAddressButton
-            var pickupAddressButton = FindViewById<Button>(Resource.Id.pickupAddressButton);
-            pickupAddressButton.SetText(Html.FromHtml("<small>Pickup</small> <br/> <b>3939 rue Rivard, Montreal QC</br>").ToString(), TextView.BufferType.Editable);
+            //var pickupAddressButton = FindViewById<Button>(Resource.Id.pickupAddressButton);
+            //pickupAddressButton.SetText(Html.FromHtml("<small>Pickup</small> <br/> <b>3939 rue Rivard, Montreal QC</br>").ToString(), TextView.BufferType.Editable);
+            
 
-            var destinationAddressButton = FindViewById<Button>(Resource.Id.destinationAddressButton);
-            destinationAddressButton.SetText(Html.FromHtml("<small>Destination</small> <br/> <b>426 rue Saint Gabriel, Montreal QC</br>").ToString(), TextView.BufferType.Editable);
+            //var destinationAddressButton = FindViewById<Button>(Resource.Id.destinationAddressButton);
+            //destinationAddressButton.SetText(Html.FromHtml("<small>Destination</small> <br/> <b>426 rue Saint Gabriel, Montreal QC</br>").ToString(), TextView.BufferType.Editable);
 
-            // Create your application here
-            // this.InitializeDropDownMenu();
+             
+
         }
-
         /*protected override MapView Map
         {
             get { return FindViewById<MapView>(Resource.Id.mapPickup); }

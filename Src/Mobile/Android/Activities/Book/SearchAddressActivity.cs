@@ -19,10 +19,12 @@ using apcurium.MK.Booking.Mobile.Client.Adapters;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Models;
 using apcurium.MK.Common.Extensions;
+using Cirrious.MvvmCross.Binding.Android.Views;
+using apcurium.MK.Booking.Mobile.ViewModels;
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
     [Activity(Label = "SearchActivity")]
-    public class SearchAddressActivity : Activity
+    public class SearchAddressActivity : MvxBindingActivityView<AddressSearchViewModel>
     {
         private LocationService _locService;
         private DateTime dateEvent;
@@ -31,11 +33,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
+          
+        }
+
+        protected override void OnViewModelSet()
+        {
             _locService = new LocationService();
             _locService.Start();
 
-            var parent = (MainActivity)Parent;
-            parent.HideMainLayout(true);
+            //var parent = (MainActivity)Parent;
+            //parent.HideMainLayout(true);
 
             SetContentView(Resource.Layout.SearchAddress);
 
@@ -44,9 +51,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             var placesButton = FindViewById<Button>(Resource.Id.placesbtn);
             placesButton.Click += PlacesButtonOnClick;
             var contactsButton = FindViewById<Button>(Resource.Id.contactbtn);
-            contactsButton.Click+= ContactsButtonOnClick;
+            contactsButton.Click += ContactsButtonOnClick;
             var searchButton = FindViewById<Button>(Resource.Id.searchbtn);
-            searchButton.Click+= SearchButtonOnClick;
+            searchButton.Click += SearchButtonOnClick;
             var validateSearchButton = FindViewById<Button>(Resource.Id.validateSearchButton);
             validateSearchButton.Click += ValidateSearchButtonOnClick;
             var searchTextView = FindViewById<AutoCompleteTextView>(Resource.Id.SearchAddressText);
@@ -57,6 +64,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _listView.DividerHeight = 0;
             _listView.SetPadding(10, 0, 10, 0);
         }
+        
 
         private void SearchTextViewOnTextChanged(object sender, TextChangedEventArgs textChangedEventArgs)
         {

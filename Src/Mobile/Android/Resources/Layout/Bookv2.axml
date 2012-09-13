@@ -1,27 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.TaxiHail"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-    <TabHost
-        android:id="@android:id/tabhost"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-        <RelativeLayout
-            android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
-            <TabWidget
-                android:id="@android:id/tabs"
-                android:layout_alignParentBottom="true"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
-            <FrameLayout
-                android:id="@android:id/tabcontent"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_above="@android:id/tabs" />
-        </RelativeLayout>
-    </TabHost>
     <ImageView
         android:id="@+id/imagePickupBackground"
         android:layout_width="fill_parent"
@@ -40,7 +21,7 @@
         android:layout_marginTop="10dip"
         android:layout_marginLeft="10dip"
         android:layout_marginRight="10dip">
-        <Button
+        <apcurium.mk.booking.mobile.client.controls.TextButton
             android:id="@+id/pickupAddressButton"
             android:layout_width="fill_parent"
             android:layout_height="55dip"
@@ -50,6 +31,7 @@
             android:background="@drawable/main_btn_state"
             android:layout_marginRight="10dip"
             android:drawableRight="@drawable/right_arrow"
+            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;PickPickupLocation&apos;}, &apos;TextLine1&apos; : {&apos;Path&apos;:&apos;Pickup.Title&apos;}, &apos;TextLine2&apos; : {&apos;Path&apos;:&apos;Pickup.Display&apos;}}"
             android:paddingRight="10dip" />
         <ImageButton
             android:id="@+id/pickupIsActiveButton"
@@ -58,6 +40,7 @@
             style="@style/ButtonTextGray"
             android:layout_height="55dip"
             android:layout_weight="6"
+            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;ActivatePickup&apos;}, &apos;Selected&apos;:{&apos;Path&apos;:&apos;PickupIsActive&apos;}}"
             android:layout_gravity="fill" />
     </LinearLayout>
     <LinearLayout
@@ -70,20 +53,14 @@
         android:layout_marginLeft="10dip"
         android:layout_marginRight="10dip"
         android:layout_marginTop="10dip">
-    <!--ListView
-            android:id="@+id/pickupAddressListView"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_marginBottom="5dip"
-            android:gravity="left"
-            android:layout_weight="1" /-->
-        <Button
+        <apcurium.mk.booking.mobile.client.controls.TextButton
             android:id="@+id/destinationAddressButton"
             android:layout_width="fill_parent"
             android:layout_height="55dip"
             android:layout_marginBottom="5dip"
             android:gravity="left"
             android:layout_weight="1"
+            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;PickDropOffLocation&apos;}, &apos;TextLine1&apos; : {&apos;Path&apos;:&apos;Dropoff.Title&apos;}, &apos;TextLine2&apos; : {&apos;Path&apos;:&apos;Dropoff.Display&apos;}}"
             android:background="@drawable/main_btn_state"
             android:layout_marginRight="10dip"
             android:paddingRight="10dip"
@@ -93,6 +70,7 @@
             android:background="@drawable/main_btn_state"
             android:src="@drawable/target_state"
             style="@style/ButtonTextGray"
+            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;ActivateDropoff&apos;}, &apos;Selected&apos;:{&apos;Path&apos;:&apos;DropoffIsActive&apos;}}"
             android:layout_height="55dip"
             android:layout_weight="6"
             android:layout_gravity="fill"
@@ -133,15 +111,6 @@
             android:layout_centerInParent="true"
             android:layout_gravity="center"
             android:src="@drawable/location" />
-    <!--LinearLayout
-            android:id="@+id/linear_iconaction"
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="100dip"
-            android:layout_marginBottom="5dip"
-            android:layout_gravity="left|bottom" /-->
         <FrameLayout
             android:id="@+id/bottomLayout"
             android:layout_width="fill_parent"
@@ -160,6 +129,7 @@
                 style="@style/ButtonTextGray"
                 android:layout_width="50dip"
                 android:layout_height="50dip"
+                local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;RequestCurrentLocationCommand&apos;}}"
                 android:layout_alignParentLeft="true" />
             <Button
                 android:id="@+id/BookItBtn"
@@ -168,6 +138,7 @@
                 android:layout_width="150dip"
                 android:layout_height="50dip"
                 android:text="@string/BookItButton"
+                local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;RequestCurrentLocationCommand&apos;}}"
                 android:layout_centerInParent="true" />
             <ImageButton
                 android:id="@+id/pickupDateButton"

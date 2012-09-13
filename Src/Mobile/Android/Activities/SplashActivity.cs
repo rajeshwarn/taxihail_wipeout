@@ -10,16 +10,25 @@ using apcurium.MK.Booking.Mobile.Client.Activities.Account;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using System;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using Cirrious.MvvmCross.Android.Views;
+using Cirrious.MvvmCross.Interfaces.Views;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities
 {
     [Activity(Label = "@string/ApplicationName", MainLauncher = true, Theme = "@style/Theme.Splash", NoHistory = true, Icon = "@drawable/icon", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
-    public class SplashActivity : Activity
+    public class SplashActivity : MvxBaseSplashScreenActivity
     {
 
 
         private LocationService _locationService = new LocationService();
 
+        public override Android.Views.View OnCreateView(string name, Android.Content.Context context, Android.Util.IAttributeSet attrs)
+        {
+            return base.OnCreateView(name, context, attrs);
+        }
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -28,17 +37,52 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 
             _locationService.Start();
 
+           
+
+        }
+
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            
+            DebugLogin();
+
+            //if (AppContext.Current.LoggedUser == null)
+            //{
+            //    StartActivity(typeof(LoginActivity));
+            //}
+            //else
+            //{
+            //    var dispatch = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
+            //    dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(BookViewModel), null, false, MvxRequestedBy.UserAction)); 
+
+            //    //this.RunOnUiThread(() => StartActivity(typeof(MainActivity)));
+            //}
+
+        }
+        private void DebugLogin()
+        {
             ThreadHelper.ExecuteInThread(this, () => TinyIoCContainer.Current.Resolve<IAccountService>().RefreshCache(AppContext.Current.LoggedUser != null), false);
-
-            if (AppContext.Current.LoggedUser == null)
+            string err = "";
+            var account = TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().GetAccount("alex@e-nergik.com", "qqqqqq", out err);
+            if (account != null)
             {
-                StartActivity(typeof(LoginActivity));
-            }
-            else
-            {
-                this.RunOnUiThread(() => StartActivity(typeof(MainActivity)));
-            }
+                AppContext.Current.UpdateLoggedInUser(account, false);
+                AppContext.Current.ServerName = TinyIoCContainer.Current.Resolve<IApplicationInfoService>().GetServerName();
+                AppContext.Current.ServerVersion = TinyIoCContainer.Current.Resolve<IApplicationInfoService>().GetServerVersion();
+                AppContext.Current.LastEmail = account.Email;
+                RunOnUiThread(() =>
+                {
+                    Finish();
 
+                    var dispatch = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
+                    dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(BookViewModel), null, false, MvxRequestedBy.UserAction));
+                    //RequestNavigate<BookViewModel>();
+                    //StartActivity(typeof(MainActivity));
+                });
+                return;
+            }
         }
 
 		protected override void OnDestroy ()
