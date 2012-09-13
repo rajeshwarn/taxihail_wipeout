@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using System;
+using Android.Content;
 
 
 namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
@@ -20,7 +21,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             var point = new GeoPoint(0, 0);
             if (location != null)
             {
-                point = new GeoPoint(CoordinatesConverter.ConvertToE6(location.Latitude), CoordinatesConverter.ConvertToE6(location.Longitude));
+                point = new GeoPoint(CoordinatesHelper.ConvertToE6(location.Latitude), CoordinatesHelper.ConvertToE6(location.Longitude));
                 if (point != map.MapCenter)
                 {
                     map.Controller.AnimateTo(point);
@@ -30,25 +31,26 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             return point;
         }
 
-        public static void AddPushPin(MapView map, Drawable mapPin, Address location, Activity activity, string title)
+        public static PushPinOverlay AddPushPin(MapView map, Drawable mapPin,Address location, string title)
         {
-
+            PushPinOverlay pushpinOverlay = null;
             if (location != null)
             {
-                var point = new GeoPoint(CoordinatesConverter.ConvertToE6(location.Latitude),
-                                         CoordinatesConverter.ConvertToE6(location.Longitude));
+                var point = new GeoPoint(CoordinatesHelper.ConvertToE6(location.Latitude),
+                                         CoordinatesHelper.ConvertToE6(location.Longitude));
 
                 map.Overlays.Clear();
-                MapService.AddMyLocationOverlay(map, activity, null);
-                var pushpinOverlay = new PushPinOverlay(map, mapPin, title, point);
+                MapService.AddMyLocationOverlay(map, map.Context, null);
+                pushpinOverlay  = new PushPinOverlay(map, mapPin, title, point);
                 map.Overlays.Add(pushpinOverlay);
             }
+            return pushpinOverlay;
 
         }
 
-        public static void AddMyLocationOverlay(MapView map, Activity activity, Func<bool> needToRunOnFirstFix )
+        public static void AddMyLocationOverlay(MapView map, Context context, Func<bool> needToRunOnFirstFix)
         {
-            var overlay = new MyLocationOverlay(activity, map);
+            var overlay = new MyLocationOverlay(context, map);
             var func = needToRunOnFirstFix;
             overlay.RunOnFirstFix(() =>
                 {
@@ -65,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 
         public static GeoPoint GetGeoPoint(double latitude, double longitude)
         {
-            return new GeoPoint(CoordinatesConverter.ConvertToE6(latitude), CoordinatesConverter.ConvertToE6(longitude));
+            return new GeoPoint(CoordinatesHelper.ConvertToE6(latitude), CoordinatesHelper.ConvertToE6(longitude));
         }
 
       

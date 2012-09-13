@@ -17,13 +17,17 @@ using System.Threading.Tasks;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Common.Extensions;
+using System.Threading;
+using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class BookAddressViewModel : BaseViewModel
     {
         private Geolocator _geolocator;
+        private CancellationTokenSource _cancellationToken;
         private TaskScheduler _scheduler = TaskScheduler.FromCurrentSynchronizationContext();
+        private bool _isExecuting;
 
         private string _id;
 
@@ -56,15 +60,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public Address Model { get; private set; }
 
-        public IMvxCommand PickAddress
+        public object SearchCoordinate { get; set; }
+
+        public IMvxCommand Search
         {
             get
             {
                 return new MvxRelayCommand(() =>
                 {
-                    //Pickup = new Address { FriendlyName = Guid.NewGuid().ToString(), FullAddress = Guid.NewGuid().ToString() };
-                    RequestNavigate<AddressSearchViewModel>(new { ownerId = _id});
-                    //TinyIoCContainer.Current.Resolve<INavigationService>().Navigate<AddressSearchViewModel>( "apcurium.MK.Booking.Mobile.Client.AddressSearchView" );
+                    Console.WriteLine("S");
+                });
+            }
+        }
+
+        public IMvxCommand PickAddress
+        {
+            get
+            {
+                return new MvxRelayCommand(() =>
+                {                    
+                    RequestNavigate<AddressSearchViewModel>(new { ownerId = _id});                    
                 });
             }
         }
@@ -75,29 +90,91 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             FirePropertyChanged(() => Display);
         }
 
-        public IMvxCommand RequestCurrentLocationCommand
+        
+
+        public bool IsExecuting
+        {
+            get { return _isExecuting; }
+            set 
+            { 
+                _isExecuting = value;
+                FirePropertyChanged(() => IsExecuting);
+            }
+        }
+
+
+        public IMvxCommand CancelCurrentLocationCommand
         {
             get
             {
                 return new MvxRelayCommand(() =>
-                {
-                    _geolocator.GetPositionAsync(3000).ContinueWith(t =>
                     {
-                        Console.WriteLine(Title);
-                        if (t.IsFaulted)
+                        IsExecuting = false;
+                        if (_cancellationToken != null)
                         {
-                            //                                PositionStatus.Text = ((GeolocationException)t.
-                            //                                                       Exception.InnerException).Error.ToString();
+                            _cancellationToken.Cancel();
                         }
-                        else if (t.IsCanceled)
+                    });
+            }
+        }
+
+
+        //public CoordinateViewModel CoordinateViewModel
+        //{
+        //    get
+        //    {
+        //        return new CoordinateViewModel(Model.Latitude, Model.Longitude);
+        //    }
+        //}
+
+
+        public IMvxCommand RequestCurrentLocationCommand
+        {
+            get
+            {
+                
+                return new MvxRelayCommand(() =>
+                {
+                    IsExecuting = true;
+                    _cancellationToken = new CancellationTokenSource();
+                    _geolocator.GetPositionAsync(10000, _cancellationToken.Token ).ContinueWith(t =>
+                    {
+                        try
                         {
-                            //                                PositionStatus.Text = "Canceled";
+                            if (t.IsFaulted)
+                            {
+
+                                //                                PositionStatus.Text = ((GeolocationException)t.
+                                //                                                       Exception.InnerException).Error.ToString();
+                            }
+                            else
+                            {
+                                Console.WriteLine(t.Result.Timestamp.ToString("G"));
+                                Console.WriteLine(t.Result.Latitude.ToString("N4"));
+                                Console.WriteLine(t.Result.Longitude.ToString("N4"));
+
+                                var address = TinyIoC.TinyIoCContainer.Current.Resolve<IGeolocService>().SearchAddress(t.Result.Latitude, t.Result.Longitude);
+                                if (address.Count() > 0)
+                                {
+                                    this.Model.FullAddress = address[0].FullAddress;
+                                    this.Model.Longitude = address[0].Longitude;
+                                    this.Model.Latitude = address[0].Latitude;
+                                }
+                                else
+                                {
+                                    this.Model.FullAddress = null;
+                                    this.Model.Longitude = 0;
+                                    this.Model.Latitude = 0;
+                                }
+                                FirePropertyChanged(() => Display);
+                                FirePropertyChanged(() => Model);
+
+                                
+                            }
                         }
-                        else
+                        finally
                         {
-                            Console.WriteLine(t.Result.Timestamp.ToString("G"));
-                            Console.WriteLine(t.Result.Latitude.ToString("N4"));
-                            Console.WriteLine(t.Result.Longitude.ToString("N4"));
+                            IsExecuting = false;
                         }
 
                     }, _scheduler);

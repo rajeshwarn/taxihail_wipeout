@@ -129,7 +129,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             if (loc.HasValidCoordinate())
             {
-                var point = new GeoPoint(CoordinatesConverter.ConvertToE6(loc.Latitude), CoordinatesConverter.ConvertToE6(loc.Longitude));
+                var point = new GeoPoint(CoordinatesHelper.ConvertToE6(loc.Latitude), CoordinatesHelper.ConvertToE6(loc.Longitude));
                 var pushpin = Resources.GetDrawable(graphic);
                 var title = GetString(titleId);
                 var pushpinOverlay = new PushPinOverlay(map, pushpin, title, point);
@@ -234,7 +234,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
                     if (status.VehicleLatitude.HasValue && status.VehicleLongitude.HasValue)
                     {
-                        var point = new GeoPoint(CoordinatesConverter.ConvertToE6(status.VehicleLatitude.Value), CoordinatesConverter.ConvertToE6(status.VehicleLongitude.Value));
+                        var point = new GeoPoint(CoordinatesHelper.ConvertToE6(status.VehicleLatitude.Value), CoordinatesHelper.ConvertToE6(status.VehicleLongitude.Value));
                         var taxiOverlay = Resources.GetDrawable(Resource.Drawable.taxi_label);
                         var title = GetString(Resource.String.TaxiMapTitle);
                         var pushpinOverlay = new TaxiOverlay(map, taxiOverlay, title, "#" + status.VehicleNumber , point);
@@ -260,8 +260,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             if (adressesToDisplay.Count() == 1)
             {
-                int lat = CoordinatesConverter.ConvertToE6(adressesToDisplay.ElementAt(0).Latitude);
-                int lon = CoordinatesConverter.ConvertToE6(adressesToDisplay.ElementAt(0).Longitude);
+                int lat = CoordinatesHelper.ConvertToE6(adressesToDisplay.ElementAt(0).Latitude);
+                int lon = CoordinatesHelper.ConvertToE6(adressesToDisplay.ElementAt(0).Longitude);
                 mapController.AnimateTo(new GeoPoint( lat, lon ));
                 mapController.SetZoom(17);
                 return;
@@ -275,8 +275,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             foreach (var item in adressesToDisplay)
             {
-                int lat = CoordinatesConverter.ConvertToE6(item.Latitude);
-                int lon = CoordinatesConverter.ConvertToE6(item.Longitude);
+                int lat = CoordinatesHelper.ConvertToE6(item.Latitude);
+                int lon = CoordinatesHelper.ConvertToE6(item.Longitude);
                 maxLat = Math.Max(lat, maxLat);
                 minLat = Math.Min(lat, minLat);
                 maxLon = Math.Max(lon, maxLon);

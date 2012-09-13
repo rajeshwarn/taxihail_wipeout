@@ -15,31 +15,127 @@ using Android.Text;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
-    public class TextProgressButton : ViewGroup
+    public class TextProgressButton : LinearLayout
     {
-         public TextProgressButton(Context context)
+        private static int _rightArrowDrawableId;
+        private bool _isProgressing;
+        private ProgressBar _bar;
+        private ImageView _image;
+
+        public event EventHandler Start;
+        
+        public event EventHandler Cancel;
+
+        
+        public TextProgressButton(Context context)
             : base(context)
         {
+            Initialize();
         }
 
         public TextProgressButton(Context context, IAttributeSet attrs)
             : base(context, attrs)
         {
+            Initialize();              
+
+
+           
         }
 
+       
         public TextProgressButton(IntPtr ptr, Android.Runtime.JniHandleOwnership handle)
             : base(ptr, handle)
         {
+            Initialize();
         }
-        protected override void OnLayout(bool changed, int l, int t, int r, int b)
+
+        private void Initialize()
         {
-        
+            this.Click += new EventHandler(TextProgressButton_Click);
+            this.SetGravity(GravityFlags.CenterVertical | GravityFlags.Right);
+            this.Orientation = Android.Widget.Orientation.Vertical;
+
+            _bar = new ProgressBar(Context, null, Android.Resource.Attribute.ProgressBarStyleLarge);
+            _bar.Indeterminate = true;
+            _bar.Visibility = ViewStates.Gone;
+            var layout = new LinearLayout.LayoutParams(40, 40);
+            layout.Gravity = GravityFlags.CenterVertical | GravityFlags.Right;
+            AddView(_bar, layout);
+
+            _image= new ImageView( Context, null);
+            _image.SetScaleType(ImageView.ScaleType.Center);
+            
+            _image.Visibility = ViewStates.Visible;
+            layout = new LayoutParams(40, 40);
+            layout.Gravity = GravityFlags.CenterVertical | GravityFlags.Right;
+            AddView(_image, layout);
+
+            if (_rightArrowDrawableId == 0)
+            {
+                _rightArrowDrawableId = Context.Resources.GetIdentifier("right_arrow", "drawable", Context.PackageName);
+            }
+            _image.SetImageDrawable(Context.Resources.GetDrawable(_rightArrowDrawableId));
+            ///android:drawableRight="@drawable/right_arrow"
+            
         }
+
+
+        public bool IsProgressing 
+        { 
+            get
+            {
+                return _isProgressing;
+            }
+            set
+            {
+                _isProgressing = value;
+                if (IsProgressing)
+                {
+                    _image.Visibility = ViewStates.Gone;
+                    _bar.Visibility = ViewStates.Visible;
+                }
+                else
+                {
+                    _image.Visibility = ViewStates.Visible;
+                    _bar.Visibility = ViewStates.Gone;
+                }
+            }
+        }
+
+        
+        
+
+        void TextProgressButton_Click(object sender, EventArgs e)
+        {
+            if (IsProgressing)
+            {
+                if (Cancel != null)
+                {
+                    Cancel(this, EventArgs.Empty);
+                }
+            }
+            else
+            {
+                if (Start != null)
+                {
+                    Start(this, EventArgs.Empty);
+                }
+            }
+        }
+
 
         public string TextLine1 { get; set; }
 
         public string TextLine2 { get; set; }
 
+        protected override void OnAttachedToWindow()
+        {
+         
+
+            base.OnAttachedToWindow();
+
+          
+        }
         protected override void OnDraw(Android.Graphics.Canvas canvas)
         {
             base.OnDraw(canvas);
@@ -62,30 +158,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             canvas.DrawText(text, x, y, paintText);
 
         }
-
-
-        //public string TextLine2 
-        //{
-        //    get
-        //    {
-        //        return Button.TextLine2;
-        //    }
-        //    set { Button.TextLine2 = value; } 
-        //}
-        
-        //    public TextButton Button { get; set; }
-        
-        //private void Initialize()
-        //{
-        //    if (Button == null)
-        //    {
                 
-        //        Button = new TextButton(Context);
-
-        //        this.AddView(Button);
-        //    }
-        //}
-
     }
     public class TextButton : Button
     {

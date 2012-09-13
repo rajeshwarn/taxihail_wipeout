@@ -8,6 +8,7 @@ using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
+using apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -15,6 +16,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
     {
 
         public event EventHandler MapTouchUp;
+
+        private Address _pickup;
+        private Address _dropoff;
 
         protected TouchMap(IntPtr javaReference, JniHandleOwnership transfer)
             : base(javaReference, transfer)
@@ -60,6 +64,53 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             Console.WriteLine(e.Action.ToString());
             return base.DispatchTouchEvent(e);
         }
+
+        private PushPinOverlay _pickupPin;
+        private PushPinOverlay _dropoffPin;
+
+        public Address Pickup
+        {
+            get { return _pickup; }
+            set 
+            { 
+                _pickup = value;
+                if (_pickupPin != null)
+                {
+                    this.Overlays.Remove(_pickupPin);
+                    _pickupPin = null;
+                }
+
+                if ((value != null) && (value.Latitude != 0) && (value.Longitude != 0))
+                {
+                    _pickupPin = MapUtitilties.MapService.AddPushPin(this, Resources.GetDrawable(Resource.Drawable.pin_green), value, Resources.GetString(Resource.String.PickupMapTitle));
+                }
+            }
+        }
+
+
+
+        public Address Dropoff
+        {
+            get { return _dropoff; }
+            set 
+            { 
+               
+                 
+               
+                _dropoff = value;
+                if (_dropoffPin != null)
+                {
+                    this.Overlays.Remove(_dropoffPin);
+                    _dropoffPin = null;
+                }
+                if ((value != null) && (value.Latitude != 0) && (value.Longitude != 0))
+                {
+                    _dropoffPin = MapUtitilties.MapService.AddPushPin(this, Resources.GetDrawable(Resource.Drawable.pin_red), value, Resources.GetString(Resource.String.DestinationMapTitle));
+                }               
+            }
+        }
+
+
         public override bool OnTouchEvent(Android.Views.MotionEvent e)
         {
             return base.OnTouchEvent(e);
