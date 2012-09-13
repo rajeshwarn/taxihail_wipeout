@@ -56,7 +56,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 
             var mainSettingsButton = FindViewById<ImageButton>(Resource.Id.MainSettingsBtn);
             mainSettingsButton.Click += MainSettingsButtonOnClick;
-            var mainSettingsLayout = FindViewById<LinearLayout>(Resource.Id.mainSettingsLayout);
+            //var mainSettingsLayout = FindViewById<LinearLayout>(Resource.Id.mainSettingsLayout);
             //mainSettingsLayout.LayoutParameters.Width = WindowManager.DefaultDisplay.Width + 100;
             _menuWidth = WindowManager.DefaultDisplay.Width - 100;
             _menuIsShown = false;

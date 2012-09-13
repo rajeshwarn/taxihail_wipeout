@@ -204,7 +204,6 @@
     <AndroidAsset Include="Assets\HelveticaNeueLTPro-Th.otf" />
     <AndroidAsset Include="Assets\HelveticaNeueLTPro-Roman2.otf" />
     <AndroidAsset Include="Assets\HelveticaNeueLTPro-Bd.otf" />
-    <None Include="Resources\AboutResources.txt" />
     <AndroidResource Include="Resources\Layout\Login.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
