@@ -495,7 +495,9 @@
     <AndroidResource Include="Resources\Drawable\roundedContainer_state.xml" />
     <AndroidResource Include="Resources\Drawable\mylocation_pressed.png" />
     <AndroidResource Include="Resources\drawable-hdpi\my_location_pressed.png" />
-    <AndroidResource Include="Resources\Drawable\mylocation_state.xml" />
+    <AndroidResource Include="Resources\Drawable\mylocation_state.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <AndroidResource Include="Resources\Drawable\bookLater_state.xml" />
     <Content Include="Todo.txt" />
   </ItemGroup>
