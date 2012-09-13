@@ -4,7 +4,7 @@ using System.Text;
 
 namespace apcurium.MK.Booking.Mobile.Client.Converters
 {
-   public static  class CoordinatesConverter
+   public static  class CoordinatesHelper
     {
 
        public static int ConvertToE6(this double coordinate)

@@ -274,7 +274,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             ThreadHelper.ExecuteInThread(Parent, () =>
             {
 
-                var addresses = TinyIoCContainer.Current.Resolve<IGeolocService>().SearchAddress(CoordinatesConverter.ConvertFromE6(Map.MapCenter.LatitudeE6), CoordinatesConverter.ConvertFromE6(Map.MapCenter.LongitudeE6));
+                var addresses = TinyIoCContainer.Current.Resolve<IGeolocService>().SearchAddress(CoordinatesHelper.ConvertFromE6(Map.MapCenter.LatitudeE6), CoordinatesHelper.ConvertFromE6(Map.MapCenter.LongitudeE6));
 
 
                 if ((addresses.Count() == 1) || (useFirst && addresses.Any()))
@@ -304,7 +304,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                                       if (location.HasValidCoordinate())
                                       {
                                           _lastCenter = MapService.SetLocationOnMap(Map, localLocation);
-                                          MapService.AddPushPin(Map, MapPin, localLocation, this, GetString(TitleResourceId));
+                                          MapService.AddPushPin(Map, MapPin, localLocation, GetString(TitleResourceId));
                                           MapService.SetLocationOnMap(Map, localLocation);
                                           if (changeZoom)
                                           {
@@ -400,7 +400,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 Map.Controller.SetZoom(5);
                 var loc = new WS.Address { Longitude = -96, Latitude = 48 };
-                Map.Controller.SetCenter( new GeoPoint(CoordinatesConverter.ConvertToE6(loc.Latitude), CoordinatesConverter.ConvertToE6(loc.Longitude)));
+                Map.Controller.SetCenter( new GeoPoint(CoordinatesHelper.ConvertToE6(loc.Latitude), CoordinatesHelper.ConvertToE6(loc.Longitude)));
             }
 
             //_lastCenter = MapService.SetLocationOnMap(Map, loc);

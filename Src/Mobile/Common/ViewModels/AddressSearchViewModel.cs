@@ -14,6 +14,7 @@ using apcurium.MK.Common.Extensions;
 using System.Threading;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Messages;
+using TinyMessenger;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -150,7 +151,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     _closeViewCommand = new MvxRelayCommand(() => 
                     {
-                        TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub>().Publish(new AddressSelected(this, new Address { FullAddress = Guid.NewGuid().ToString() }, _ownerId));
+                        TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new AddressSelected(this, new Address { FullAddress = Guid.NewGuid().ToString() }, _ownerId));
 						RequestClose( this );
 					});
 				}

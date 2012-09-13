@@ -185,8 +185,8 @@
                     android:layout_weight="1"
                     android:background="@drawable/main_btn_state"
                     android:layout_marginRight="10dip"
-                    android:drawableRight="@drawable/right_arrow"
-                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;Pickup.PickAddress&apos;}, &apos;TextLine1&apos; : {&apos;Path&apos;:&apos;Pickup.Title&apos;}, &apos;TextLine2&apos; : {&apos;Path&apos;:&apos;Pickup.Display&apos;}}"
+                    android:drawableRight="@drawable/right_arrow"           
+local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;Pickup.PickAddress&apos;}, &apos;Cancel&apos;:{&apos;Path&apos;:&apos;Pickup.CancelCurrentLocationCommand&apos;},&apos;IsProgressing&apos;:{&apos;Path&apos;:&apos;Pickup.IsExecuting&apos;},&apos;TextLine1&apos; : {&apos;Path&apos;:&apos;Pickup.Title&apos;}, &apos;TextLine2&apos; : {&apos;Path&apos;:&apos;Pickup.Display&apos;}}"
                     android:paddingRight="10dip" />
                 <ImageButton
                     android:id="@+id/pickupIsActiveButton"
@@ -210,17 +210,18 @@
                 android:layout_marginLeft="12dip"
                 android:layout_marginRight="10dip"
                 android:layout_marginTop="5dip">
-                <apcurium.mk.booking.mobile.client.controls.TextButton
-                    android:id="@+id/destinationAddressButton"
+      <apcurium.mk.booking.mobile.client.controls.TextProgressButton
+          android:id="@+id/destinationAddressButton"
                     android:layout_width="fill_parent"
                     android:layout_height="40dip"
                     android:layout_marginBottom="5dip"
                     android:gravity="left"
                     android:layout_weight="1"
-                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;Dropoff.PickAddress&apos;}, &apos;TextLine1&apos; : {&apos;Path&apos;:&apos;Dropoff.Title&apos;}, &apos;TextLine2&apos; : {&apos;Path&apos;:&apos;Dropoff.Display&apos;}}"
+            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;Dropoff.PickAddress&apos;}, &apos;Cancel&apos;:{&apos;Path&apos;:&apos;Dropoff.CancelCurrentLocationCommand&apos;},&apos;IsProgressing&apos;:{&apos;Path&apos;:&apos;Dropoff.IsExecuting&apos;},&apos;TextLine1&apos; : {&apos;Path&apos;:&apos;Dropoff.Title&apos;}, &apos;TextLine2&apos; : {&apos;Path&apos;:&apos;Dropoff.Display&apos;}}"
                     android:background="@drawable/main_btn_state"
                     android:layout_marginRight="10dip"
                     android:paddingRight="10dip"
+            
                     android:drawableRight="@drawable/right_arrow" />
                 <ImageButton
                     android:id="@+id/destinationIsActiveButton"
@@ -229,6 +230,7 @@
                     style="@style/ButtonTextGray"
                     local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;ActivateDropoff&apos;}, &apos;Selected&apos;:{&apos;Path&apos;:&apos;DropoffIsActive&apos;}}"
                     android:layout_height="40dip"
+            
                     android:layout_gravity="fill"
                     android:layout_marginLeft="10dip"
                     android:layout_width="40dip"
@@ -261,6 +263,7 @@
                     android:layout_height="wrap_content"
                     android:apiKey="0XEY3WqKVmJMzXNRJfhbH1yM6RkpBMOaZWUoMAw"
                     android:enabled="true"
+            local:MvxBind="{&apos;Pickup&apos;:{&apos;Path&apos;:&apos;Pickup.Model&apos;}, &apos;Dropoff&apos;:{&apos;Path&apos;:&apos;Dropoff.Model&apos;}, &apos;MapCenter&apos;:{&apos;Path&apos;:&apos;Selected.SearchCoordinate&apos;}, &apos;MapTouchUp&apos;:{&apos;Path&apos;:&apos;Selected.Search&apos;}}"            
                     android:clickable="true" />
                 <ImageView
                     android:layout_width="30dip"
