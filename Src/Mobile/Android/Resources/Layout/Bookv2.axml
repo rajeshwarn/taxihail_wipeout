@@ -3,151 +3,305 @@
     xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.TaxiHail"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-    <ImageView
-        android:id="@+id/imagePickupBackground"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:scaleType="fitXY"
-        android:adjustViewBounds="true"
-        android:src="@drawable/backPickupDestination" />
     <LinearLayout
-        android:id="@+id/pickupAddressLayout"
-        android:orientation="horizontal"
+        android:orientation="vertical"
+        android:layout_width="100dip"
+        android:layout_height="fill_parent" />
+    <RelativeLayout
+        android:id="@+id/mainSettingsLayoutHeader"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="false"
-        android:gravity="center_horizontal"
-        android:layout_marginTop="10dip"
-        android:layout_marginLeft="10dip"
-        android:layout_marginRight="10dip">
-        <apcurium.mk.booking.mobile.client.controls.TextButton
-            android:id="@+id/pickupAddressButton"
-            android:layout_width="fill_parent"
-            android:layout_height="55dip"
-            android:layout_marginBottom="5dip"
-            android:gravity="left"
-            android:layout_weight="1"
-            android:background="@drawable/main_btn_state"
-            android:layout_marginRight="10dip"
-            android:drawableRight="@drawable/right_arrow"
-            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;PickPickupLocation&apos;}, &apos;TextLine1&apos; : {&apos;Path&apos;:&apos;Pickup.Title&apos;}, &apos;TextLine2&apos; : {&apos;Path&apos;:&apos;Pickup.Display&apos;}}"
-            android:paddingRight="10dip" />
-        <ImageButton
-            android:id="@+id/pickupIsActiveButton"
-            android:background="@drawable/main_btn_state"
-            android:src="@drawable/target_state"
-            style="@style/ButtonTextGray"
-            android:layout_height="55dip"
-            android:layout_weight="6"
-            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;ActivatePickup&apos;}, &apos;Selected&apos;:{&apos;Path&apos;:&apos;PickupIsActive&apos;}}"
-            android:layout_gravity="fill" />
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/destinationAddressLayout"
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/pickupAddressLayout"
-        android:gravity="center_horizontal"
-        android:layout_marginLeft="10dip"
-        android:layout_marginRight="10dip"
-        android:layout_marginTop="10dip">
-        <apcurium.mk.booking.mobile.client.controls.TextButton
-            android:id="@+id/destinationAddressButton"
-            android:layout_width="fill_parent"
-            android:layout_height="55dip"
-            android:layout_marginBottom="5dip"
-            android:gravity="left"
-            android:layout_weight="1"
-            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;PickDropOffLocation&apos;}, &apos;TextLine1&apos; : {&apos;Path&apos;:&apos;Dropoff.Title&apos;}, &apos;TextLine2&apos; : {&apos;Path&apos;:&apos;Dropoff.Display&apos;}}"
-            android:background="@drawable/main_btn_state"
-            android:layout_marginRight="10dip"
-            android:paddingRight="10dip"
-            android:drawableRight="@drawable/right_arrow" />
-        <ImageButton
-            android:id="@+id/destinationIsActiveButton"
-            android:background="@drawable/main_btn_state"
-            android:src="@drawable/target_state"
-            style="@style/ButtonTextGray"
-            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;ActivateDropoff&apos;}, &apos;Selected&apos;:{&apos;Path&apos;:&apos;DropoffIsActive&apos;}}"
-            android:layout_height="55dip"
-            android:layout_weight="6"
-            android:layout_gravity="fill"
-            android:layout_marginLeft="10dip" />
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/pickupDateLayout"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/destinationAddressLayout"
-        android:gravity="center_horizontal"
-        android:paddingLeft="3dip"
-        android:paddingRight="3dip"
-        android:paddingTop="5dip">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Enter Pickup Location and Destination for Fare Estimate"
-            android:layout_gravity="top"
-            android:gravity="center"
-            android:textColor="@color/white" />
-    </LinearLayout>
-    <FrameLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@+id/pickupDateLayout">
-        <apcurium.mk.booking.mobile.client.controls.TouchMap
-            android:id="@+id/mapPickup"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:apiKey="0XEY3WqKVmJMzXNRJfhbH1yM6RkpBMOaZWUoMAw"
-            android:enabled="true"
-            android:clickable="true" />
+        android:layout_height="wrap_content">
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignWithParentIfMissing="true"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center"
-            android:src="@drawable/location" />
-        <FrameLayout
-            android:id="@+id/bottomLayout"
             android:layout_width="fill_parent"
-            android:layout_height="70dip"
-            android:layout_gravity="bottom"
-            android:background="@color/black" />
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:src="@drawable/header"
+            android:scaleType="fitXY" />
+        <TextView
+            android:text="Settings"
+            style="@style/BigTitleText"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dip"
+            android:gravity="center" />
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/mainSettingsLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dip"
+        android:layout_below="@id/mainSettingsLayoutHeader">
+        <Button
+            android:background="@drawable/cell_top_state"
+            android:layout_width="400dip"
+            android:layout_height="50dip"
+            android:text="Favorites"
+            android:drawableRight="@drawable/right_arrow"
+            android:paddingRight="10dip"
+            android:paddingLeft="10dip"
+            android:gravity="left|center_vertical"
+            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;GoToFavorites&apos;}}" />
+        <Button
+            android:background="@drawable/cell_middle_state"
+            android:layout_width="400dip"
+            android:layout_height="50dip"
+            android:text="Ride History"
+            android:drawableRight="@drawable/right_arrow"
+            android:paddingRight="10dip"
+            android:paddingLeft="10dip"
+            android:gravity="left|center_vertical"
+            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;GoToRideHistory&apos;}}" />
+        <Button
+            android:background="@drawable/cell_middle_state"
+            android:layout_width="400dip"
+            android:layout_height="50dip"
+            android:text="@string/ChangeDefaultRideSettings"
+            android:drawableRight="@drawable/right_arrow"
+            android:paddingRight="10dip"
+            android:paddingLeft="10dip"
+            android:gravity="left|center_vertical"
+            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;GoToProfile&apos;}}" />
+        <Button
+            android:background="@drawable/cell_middle_state"
+            android:layout_width="400dip"
+            android:layout_height="50dip"
+            android:text="@string/CallCompanyButton"
+            android:drawableRight="@drawable/right_arrow"
+            android:paddingRight="10dip"
+            android:paddingLeft="10dip"
+            android:gravity="left|center_vertical"
+            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;GoToCall&apos;}}" />
+        <Button
+            android:background="@drawable/cell_middle_state"
+            android:layout_width="400dip"
+            android:layout_height="50dip"
+            android:text="@string/AboutButton"
+            android:drawableRight="@drawable/right_arrow"
+            android:paddingRight="10dip"
+            android:paddingLeft="10dip"
+            android:gravity="left|center_vertical"
+            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;GoToAbout&apos;}}" />
+        <Button
+            android:background="@drawable/cell_middle_state"
+            android:layout_width="400dip"
+            android:layout_height="50dip"
+            android:text="@string/TechSupportButton"
+            android:drawableRight="@drawable/right_arrow"
+            android:paddingRight="10dip"
+            android:paddingLeft="10dip"
+            android:gravity="left|center_vertical"
+            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;GoToSupport&apos;}}" />
+        <Button
+            android:background="@drawable/blank_bottom_state"
+            android:layout_width="400dip"
+            android:layout_height="50dip"
+            android:text="@string/SignOutButton"
+            android:drawableRight="@drawable/right_arrow"
+            android:paddingRight="10dip"
+            android:paddingLeft="10dip"
+            android:gravity="left|center_vertical"
+            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;GoToLogout&apos;}}" />
+    </LinearLayout>
+    <ImageView
+        android:id="@+id/apcuriumLogo"
+        android:src="@drawable/apcuriumLogo"
+        android:layout_width="fill_parent"
+        android:scaleType="centerInside"
+        android:adjustViewBounds="true"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:paddingBottom="10dip" />
+    <FrameLayout
+        android:id="@+id/scrollinglayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
         <RelativeLayout
+            android:id="@+id/contentframe"
+            android:layout_height="match_parent"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_margin="10dip">
-            <ImageButton
-                android:id="@+id/myLocationButton"
-                android:src="@drawable/mylocation"
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:background="@color/black">
+          <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/HeaderImage"
+                android:layout_marginBottom="-8dip"
+                >
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:src="@drawable/header"
+                android:scaleType="fitXY" />
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dip">
+              <ImageButton
+                  android:id="@+id/MainSettingsBtn"
+                  style="@style/ButtonText"
+                  android:background="@drawable/roundedContainer"
+                  android:layout_width="50dip"
+                  android:layout_height="50dip"
+                  android:src="@drawable/main_settings"
+                  android:layout_alignParentRight="true" />
+            </RelativeLayout>
+          </RelativeLayout>
+            <ImageView
+                android:id="@+id/imagePickupBackground"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="fitXY"
+                android:adjustViewBounds="true"
+                android:src="@drawable/backPickupDestination"
+                android:layout_below="@id/HeaderImage"
+                />
+          <LinearLayout
+              android:id="@+id/pickupAddressLayout"
+              android:orientation="horizontal"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:layout_centerVertical="false"
+              android:gravity="center_horizontal"
+              android:layout_marginTop="10dip"
+              android:layout_marginLeft="10dip"
+              android:layout_marginRight="10dip"
+              android:layout_below="@id/HeaderImage">
+
+            <apcurium.mk.booking.mobile.client.controls.TextButton
+                android:id="@+id/pickupAddressButton"
+                android:layout_width="fill_parent"
+                android:layout_height="55dip"
+                android:layout_marginBottom="5dip"
+                android:gravity="left"
+                android:layout_weight="1"
                 android:background="@drawable/main_btn_state"
-                style="@style/ButtonTextGray"
-                android:layout_width="50dip"
-                android:layout_height="50dip"
-                local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;RequestCurrentLocationCommand&apos;}}"
-                android:layout_alignParentLeft="true" />
-            <Button
-                android:id="@+id/BookItBtn"
-                style="@style/ButtonText"
-                android:background="@drawable/green_button"
-                android:layout_width="150dip"
-                android:layout_height="50dip"
-                android:text="@string/BookItButton"
-                local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;RequestCurrentLocationCommand&apos;}}"
-                android:layout_centerInParent="true" />
+                android:layout_marginRight="10dip"
+                android:drawableRight="@drawable/right_arrow"
+                local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;PickPickupLocation&apos;}, &apos;TextLine1&apos; : {&apos;Path&apos;:&apos;Pickup.Title&apos;}, &apos;TextLine2&apos; : {&apos;Path&apos;:&apos;Pickup.Display&apos;}}"
+                android:paddingRight="10dip" />
             <ImageButton
-                android:id="@+id/pickupDateButton"
-                android:src="@drawable/bookLaterIcon"
+                android:id="@+id/pickupIsActiveButton"
                 android:background="@drawable/main_btn_state"
+                android:src="@drawable/target_state"
                 style="@style/ButtonTextGray"
-                android:layout_width="50dip"
-                android:layout_height="50dip"
-                android:layout_alignParentRight="true" />
+                android:layout_height="55dip"
+                android:layout_weight="6"
+                local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;ActivatePickup&apos;}, &apos;Selected&apos;:{&apos;Path&apos;:&apos;PickupIsActive&apos;}}"
+                android:layout_gravity="fill" />
+          </LinearLayout>
+            <LinearLayout
+                android:id="@+id/destinationAddressLayout"
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/pickupAddressLayout"
+                android:gravity="center_horizontal"
+                android:layout_marginLeft="10dip"
+                android:layout_marginRight="10dip"
+                android:layout_marginTop="10dip">
+                <apcurium.mk.booking.mobile.client.controls.TextButton
+                    android:id="@+id/destinationAddressButton"
+                    android:layout_width="fill_parent"
+                    android:layout_height="55dip"
+                    android:layout_marginBottom="5dip"
+                    android:gravity="left"
+                    android:layout_weight="1"
+                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;PickDropOffLocation&apos;}, &apos;TextLine1&apos; : {&apos;Path&apos;:&apos;Dropoff.Title&apos;}, &apos;TextLine2&apos; : {&apos;Path&apos;:&apos;Dropoff.Display&apos;}}"
+                    android:background="@drawable/main_btn_state"
+                    android:layout_marginRight="10dip"
+                    android:paddingRight="10dip"
+                    android:drawableRight="@drawable/right_arrow" />
+                <ImageButton
+                    android:id="@+id/destinationIsActiveButton"
+                    android:background="@drawable/main_btn_state"
+                    android:src="@drawable/target_state"
+                    style="@style/ButtonTextGray"
+                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;ActivateDropoff&apos;}, &apos;Selected&apos;:{&apos;Path&apos;:&apos;DropoffIsActive&apos;}}"
+                    android:layout_height="55dip"
+                    android:layout_weight="6"
+                    android:layout_gravity="fill"
+                    android:layout_marginLeft="10dip" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/pickupDateLayout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/destinationAddressLayout"
+                android:gravity="center_horizontal"
+                android:paddingLeft="3dip"
+                android:paddingRight="3dip"
+                android:paddingTop="5dip">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Enter Pickup Location and Destination for Fare Estimate"
+                    android:layout_gravity="top"
+                    android:gravity="center"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+            
+            <FrameLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_below="@+id/pickupDateLayout">
+                <apcurium.mk.booking.mobile.client.controls.TouchMap
+                    android:id="@+id/mapPickup"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:apiKey="0XEY3WqKVmJMzXNRJfhbH1yM6RkpBMOaZWUoMAw"
+                    android:enabled="true"
+                    android:clickable="true" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignWithParentIfMissing="true"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:src="@drawable/target_state" />
+                <FrameLayout
+                    android:id="@+id/bottomLayout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="70dip"
+                    android:layout_gravity="bottom"
+                    android:background="@color/black" />
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_margin="10dip">
+                    <ImageButton
+                        android:id="@+id/myLocationButton"
+                        android:src="@drawable/mylocation"
+                        android:background="@drawable/main_btn_state"
+                        style="@style/ButtonTextGray"
+                        android:layout_width="50dip"
+                        android:layout_height="50dip"
+                        local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;RequestCurrentLocationCommand&apos;}}"
+                        android:layout_alignParentLeft="true" />
+                    <Button
+                        android:id="@+id/BookItBtn"
+                        style="@style/ButtonText"
+                        android:background="@drawable/green_button"
+                        android:layout_width="150dip"
+                        android:layout_height="50dip"
+                        android:text="@string/BookItButton"
+                        local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;RequestCurrentLocationCommand&apos;}}"
+                        android:layout_centerInParent="true" />
+                    <ImageButton
+                        android:id="@+id/pickupDateButton"
+                        android:src="@drawable/bookLaterIcon"
+                        android:background="@drawable/main_btn_state"
+                        style="@style/ButtonTextGray"
+                        android:layout_width="50dip"
+                        android:layout_height="50dip"
+                        android:layout_alignParentRight="true" />
+                </RelativeLayout>
+            </FrameLayout>
         </RelativeLayout>
     </FrameLayout>
 </RelativeLayout>

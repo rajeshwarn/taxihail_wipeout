@@ -242,4 +242,6 @@
   <string name="searchHint">Recherche</string>
   <string name="BookPickupLocationButtonTitle">Origine</string>
   <string name="BookDropoffLocationButtonTitle">Destination</string>
+  <string name="FavoritesButton">Favoris</string>
+  <string name="RideHistoryButton">Historique</string>
 </resources>

@@ -1,35 +1,23 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Android.App;
-using Android.Content;
-using Android.GoogleMaps;
-using Android.Graphics;
-using Android.Graphics.Drawables;
-using Android.OS;
-using Android.Provider;
-using Android.Runtime;
-using Android.Text;
 using Android.Views;
 using Android.Views.Animations;
 using Android.Widget;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Mobile.Client.Activities.Location;
-using apcurium.MK.Booking.Mobile.Client.Adapters;
-using apcurium.MK.Booking.Mobile.Client.Controls;
-using apcurium.MK.Booking.Mobile.Client.Models;
+using SlidingPanel;
 using Cirrious.MvvmCross.Binding.Android.Views;
  
 using apcurium.MK.Booking.Mobile.ViewModels;
-using Cirrious.MvvmCross.Binding.Android.ExtensionMethods;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
     [Activity(Label = "Bookv2", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class Bookv2Activity : MvxBindingMapActivityView<BookViewModel>, IAddress
-    {        
+    {
+
+        private bool _menuIsShown;
+        private int _menuWidth = 400;
+        private DecelerateInterpolator _interpolator = new DecelerateInterpolator(1.2f);
+
         public LocationService LocationService
         {
             get;
@@ -75,18 +63,38 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             alpha.Duration = 0;
             alpha.FillAfter = true;
             bottomLayout.StartAnimation(alpha);
+            var mainSettingsButton = FindViewById<ImageButton>(Resource.Id.MainSettingsBtn);
+            mainSettingsButton.Click += MainSettingsButtonOnClick;
+            _menuWidth = WindowManager.DefaultDisplay.Width - 100;
+            _menuIsShown = false;
+            var mainSettingsLayout = FindViewById<LinearLayout>(Resource.Id.mainSettingsLayout);
+            var mainSettingsLayoutHeader = FindViewById<RelativeLayout>(Resource.Id.mainSettingsLayoutHeader);
 
-            //set text on button destinationAddressButton
-            //var pickupAddressButton = FindViewById<Button>(Resource.Id.pickupAddressButton);
-            //pickupAddressButton.SetText(Html.FromHtml("<small>Pickup</small> <br/> <b>3939 rue Rivard, Montreal QC</br>").ToString(), TextView.BufferType.Editable);
-            
-
-            //var destinationAddressButton = FindViewById<Button>(Resource.Id.destinationAddressButton);
-            //destinationAddressButton.SetText(Html.FromHtml("<small>Destination</small> <br/> <b>426 rue Saint Gabriel, Montreal QC</br>").ToString(), TextView.BufferType.Editable);
-
-             
 
         }
+
+        private void MainSettingsButtonOnClick(object sender, EventArgs eventArgs)
+        {
+            View v2 = FindViewById<FrameLayout>(Resource.Id.scrollinglayout);
+            v2.ClearAnimation();
+            v2.DrawingCacheEnabled = true;
+
+            if (_menuIsShown)
+            {
+                SlideAnimation a = new SlideAnimation(v2, -(_menuWidth), 0, _interpolator);
+                a.Duration = 400;
+                v2.StartAnimation(a);
+            }
+            else
+            {
+                SlideAnimation a = new SlideAnimation(v2, 0, -(_menuWidth), _interpolator);
+                a.Duration = 400;
+                v2.StartAnimation(a);
+            }
+
+            _menuIsShown = !_menuIsShown;
+        }
+
         /*protected override MapView Map
         {
             get { return FindViewById<MapView>(Resource.Id.mapPickup); }

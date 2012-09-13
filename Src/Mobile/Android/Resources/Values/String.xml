@@ -113,6 +113,8 @@
   <string name="DoneButton">Done</string>
   <string name="SignOutButton">Sign Out</string>
   <string name="ChangeDefaultRideSettings">Change default ride settings</string>
+  <string name="FavoritesButton">Favorites</string>
+  <string name="RideHistoryButton">Ride History</string>
   <string name="SendErrorLogButton">Send error log</string>
   <string name="Version">Version: {0}</string>
   <string name="ServerVersion">Server version : {0}</string>

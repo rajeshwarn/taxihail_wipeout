@@ -32,7 +32,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             
             
             Load();
-
             Pickup = new BookAddressViewModel ( Order.PickupAddress ) { Title = appResource.GetString( "BookPickupLocationButtonTitle" ), EmptyAddressPlaceholder=   appResource.GetString( "BookPickupLocationEmptyPlaceholder") };
             Dropoff = new BookAddressViewModel( Order.DropOffAddress ){ Title = appResource.GetString( "BookDropoffLocationButtonTitle" ),EmptyAddressPlaceholder=   appResource.GetString( "BookDropoffLocationEmptyPlaceholder") };
         }
