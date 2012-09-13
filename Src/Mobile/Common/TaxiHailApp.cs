@@ -4,6 +4,8 @@ using Cirrious.MvvmCross.Interfaces.Localization;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
 using MK.Booking.Mobile.Infrastructure.Mvx;
+using TinyIoC;
+using TinyMessenger;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -19,6 +21,8 @@ namespace apcurium.MK.Booking.Mobile
         
         private void InitaliseServices()
         {
+            TinyIoCContainer.Current.Register<ITinyMessengerHub, TinyMessengerHub>();
+
             //this.RegisterServiceInstance<ITwitterSearchProvider>(new TwitterSearchProvider());
         }
         

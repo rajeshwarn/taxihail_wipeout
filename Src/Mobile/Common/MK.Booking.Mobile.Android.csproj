@@ -126,6 +126,7 @@
     <Compile Include="Infrastructure\ILogger.cs" />
     <Compile Include="Infrastructure\IPackageInfo.cs" />
     <Compile Include="Localization\AppLanguage.cs" />
+    <Compile Include="Messages\AddressSelected.cs" />
     <Compile Include="Mvx\TinyIoCProvider.cs" />
     <Compile Include="Mvx\TinyIoCServiceProviderSetup.cs" />
     <Compile Include="Mvx\TinyIocViewModelLocator.cs" />
