@@ -138,6 +138,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
+		private MvxRelayCommand _closeViewCommand;
+		public IMvxCommand CloseViewCommand
+		{
+            get
+            {       
+                if (_closeViewCommand == null)
+                {
+                    _closeViewCommand = new MvxRelayCommand(() => 
+                    {       
+						RequestClose( this );
+					});
+				}
+				return _closeViewCommand;
+			}
+		}
+
 		public IEnumerable<AddressViewModel> AddressViewModels { 
 			get { return _addressViewModels; }
 			set { 
@@ -145,16 +161,43 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				FirePropertyChanged( () => AddressViewModels ); }
 		}
 
-		public void Reset()
+		private MvxRelayCommand _resetCommand;
+		public IMvxCommand ResetCommand
 		{
-			AddressViewModels = new List<AddressViewModel>();
+            get
+            {       
+                if (_resetCommand == null)
+                {
+                    _resetCommand = new MvxRelayCommand(() => 
+                    {       
+						AddressViewModels = new List<AddressViewModel>();
+					});
+				}
+				return _resetCommand;
+			}
 		}
+
+		private MvxRelayCommand _rowSelectedCommand;
+		public IMvxCommand RowSelectedCommand
+		{
+            get
+            {       
+                if (_rowSelectedCommand == null)
+                {
+                    _rowSelectedCommand = new MvxRelayCommand(() => 
+                    {       
+						RequestClose( this );
+					});
+				}
+				return _rowSelectedCommand;
+			}
+		}
+
 
 		private string _searchText;
 		public string SearchText { get { return _searchText; }
 			set { _searchText = value;
 				SearchAddressCommand.Execute();
-//				FirePropertyChanged(() => SearchText );
 			}
 		}
 

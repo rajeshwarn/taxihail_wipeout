@@ -79,6 +79,7 @@ namespace apcurium.MK.Booking.Mobile.ListViewStructure
 			set;
 		}
 
+
 		public bool EditMode { get; set; }
 		
 		#region IDisposable implementation

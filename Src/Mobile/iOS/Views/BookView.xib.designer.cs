@@ -12,6 +12,21 @@ namespace apcurium.MK.Booking.Mobile.Client
 	partial class BookView
 	{
 		[Outlet]
+		MonoTouch.UIKit.UIView view { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UILabel titleLabel { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UITableView menuListView { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UIImageView logoImageView { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UILabel versionLabel { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.AddressButton pickupActivationButton { get; set; }
 
 		[Outlet]
@@ -46,6 +61,31 @@ namespace apcurium.MK.Booking.Mobile.Client
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (view != null) {
+				view.Dispose ();
+				view = null;
+			}
+
+			if (titleLabel != null) {
+				titleLabel.Dispose ();
+				titleLabel = null;
+			}
+
+			if (menuListView != null) {
+				menuListView.Dispose ();
+				menuListView = null;
+			}
+
+			if (logoImageView != null) {
+				logoImageView.Dispose ();
+				logoImageView = null;
+			}
+
+			if (versionLabel != null) {
+				versionLabel.Dispose ();
+				versionLabel = null;
+			}
+
 			if (pickupActivationButton != null) {
 				pickupActivationButton.Dispose ();
 				pickupActivationButton = null;
