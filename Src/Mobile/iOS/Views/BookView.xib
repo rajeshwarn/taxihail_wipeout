@@ -123,7 +123,7 @@
 								<string key="NSFrame">{{216, 431}, {42, 21}}</string>
 								<reference key="NSSuperview" ref="405537500"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
+								<reference key="NSNextKeyView" ref="817439265"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="320041679"/>
 								<bool key="IBUIOpaque">NO</bool>
@@ -375,7 +375,6 @@
 										<string key="NSFrame">{{273, 7}, {39, 36}}</string>
 										<reference key="NSSuperview" ref="756231839"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="405537500"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -414,7 +413,7 @@
 				<string key="NSFrame">{{0, 20}, {320, 460}}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView" ref="817439265"/>
+				<reference key="NSNextKeyView" ref="405537500"/>
 				<reference key="IBUIBackgroundColor" ref="320041679"/>
 				<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics"/>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -545,11 +544,27 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">view</string>
+						<string key="label">bookView</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="817439265"/>
 					</object>
-					<int key="connectionID">83</int>
+					<int key="connectionID">85</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">menuView</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="405537500"/>
+					</object>
+					<int key="connectionID">86</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">view</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="191373211"/>
+					</object>
+					<int key="connectionID">88</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -776,7 +791,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">83</int>
+			<int key="maxID">88</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -798,6 +813,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>bookBtn</string>
 							<string>bookLaterButton</string>
+							<string>bookView</string>
 							<string>bottomBar</string>
 							<string>dropoffActivationButton</string>
 							<string>dropoffButton</string>
@@ -806,17 +822,18 @@
 							<string>logoImageView</string>
 							<string>mapView</string>
 							<string>menuListView</string>
+							<string>menuView</string>
 							<string>pickupActivationButton</string>
 							<string>pickupButton</string>
 							<string>refreshCurrentLocationButton</string>
 							<string>titleLabel</string>
 							<string>versionLabel</string>
-							<string>view</string>
 						</object>
 						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>UIButton</string>
 							<string>GradientButton</string>
+							<string>UIView</string>
 							<string>BottomBar</string>
 							<string>AddressButton</string>
 							<string>AddressButton</string>
@@ -825,12 +842,12 @@
 							<string>UIImageView</string>
 							<string>MKMapView</string>
 							<string>UITableView</string>
+							<string>UIView</string>
 							<string>AddressButton</string>
 							<string>AddressButton</string>
 							<string>GradientButton</string>
 							<string>UILabel</string>
 							<string>UILabel</string>
-							<string>UIView</string>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
@@ -839,6 +856,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>bookBtn</string>
 							<string>bookLaterButton</string>
+							<string>bookView</string>
 							<string>bottomBar</string>
 							<string>dropoffActivationButton</string>
 							<string>dropoffButton</string>
@@ -847,12 +865,12 @@
 							<string>logoImageView</string>
 							<string>mapView</string>
 							<string>menuListView</string>
+							<string>menuView</string>
 							<string>pickupActivationButton</string>
 							<string>pickupButton</string>
 							<string>refreshCurrentLocationButton</string>
 							<string>titleLabel</string>
 							<string>versionLabel</string>
-							<string>view</string>
 						</object>
 						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -863,6 +881,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">bookLaterButton</string>
 								<string key="candidateClassName">GradientButton</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">bookView</string>
+								<string key="candidateClassName">UIView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">bottomBar</string>
@@ -897,6 +919,10 @@
 								<string key="candidateClassName">UITableView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
+								<string key="name">menuView</string>
+								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
 								<string key="name">pickupActivationButton</string>
 								<string key="candidateClassName">AddressButton</string>
 							</object>
@@ -915,10 +941,6 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">versionLabel</string>
 								<string key="candidateClassName">UILabel</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">view</string>
-								<string key="candidateClassName">UIView</string>
 							</object>
 						</object>
 					</object>
