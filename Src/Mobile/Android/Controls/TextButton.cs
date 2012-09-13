@@ -45,8 +45,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             base.OnDraw(canvas);
 
 
-            DrawText(canvas, TextLine1 ?? "", 8, 28, 20);
-            DrawText(canvas, TextLine2 ?? "", 8, 65, 25);
+            DrawText(canvas, TextLine1 ?? "", 8, 20, 15);
+            DrawText(canvas, TextLine2 ?? "", 8, 45, 20);
 
 
         }
@@ -117,8 +117,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             base.OnDraw(canvas);
 
 
-            DrawText(canvas, TextLine1 ?? "", 8, 28, 20);
-            DrawText(canvas, TextLine2 ?? "", 8, 65, 25);
+            DrawText(canvas, TextLine1 ?? "", 8, 20, 15);
+            DrawText(canvas, TextLine2 ?? "", 8, 45, 20);
 
 
         }

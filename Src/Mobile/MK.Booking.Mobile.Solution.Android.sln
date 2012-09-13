@@ -1,5 +1,5 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2010
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.Mobile.Client.Android", "Android\MK.Booking.Mobile.Client.Android.csproj", "{9F666743-C8EE-4553-A079-03FB36F979E0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.Mobile.Android", "Common\MK.Booking.Mobile.Android.csproj", "{B2ADB131-E47E-4DF4-8AA6-1D7E284EFFA9}"

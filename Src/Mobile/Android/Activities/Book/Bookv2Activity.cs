@@ -16,7 +16,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         private bool _menuIsShown;
         private int _menuWidth = 400;
-        private DecelerateInterpolator _interpolator = new DecelerateInterpolator(1.2f);
+        private DecelerateInterpolator _interpolator = new DecelerateInterpolator(0.9f);
 
         public LocationService LocationService
         {

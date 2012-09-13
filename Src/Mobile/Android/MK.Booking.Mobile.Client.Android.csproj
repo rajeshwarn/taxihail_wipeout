@@ -485,6 +485,16 @@
     <AndroidResource Include="Resources\Drawable\backPickupDestination.png" />
     <AndroidResource Include="Resources\Drawable\bookLaterIcon.png" />
     <AndroidResource Include="Resources\Values\MvxBindingAttributes.xml" />
+    <AndroidResource Include="Resources\Drawable\laterbutton.png" />
+    <AndroidResource Include="Resources\Drawable\mylocationbutton.png" />
+    <AndroidResource Include="Resources\Drawable\navBar.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\navBar.png" />
+    <AndroidResource Include="Resources\Drawable\roundedContainer_pressed.xml" />
+    <AndroidResource Include="Resources\Drawable\roundedContainer_state.xml" />
+    <AndroidResource Include="Resources\Drawable\mylocation_pressed.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\my_location_pressed.png" />
+    <AndroidResource Include="Resources\Drawable\mylocation_state.xml" />
+    <AndroidResource Include="Resources\Drawable\bookLater_state.xml" />
     <Content Include="Todo.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
