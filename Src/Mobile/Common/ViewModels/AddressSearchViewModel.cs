@@ -12,6 +12,8 @@ using System.Linq;
 
 using apcurium.MK.Common.Extensions;
 using System.Threading;
+using TinyIoC;
+using apcurium.MK.Booking.Mobile.Messages;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -24,9 +26,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private IEnumerable<AddressViewModel> _addressViewModels;
 		private Geolocator _geolocator;
         private TaskScheduler _scheduler = TaskScheduler.FromCurrentSynchronizationContext();
-
-        public AddressSearchViewModel(IGoogleService googleService, IGeolocService geolocService, IBookingService bookingService, IAccountService accountService, Geolocator geolocator)
+        private string _ownerId;
+        public AddressSearchViewModel(string ownerId,IGoogleService googleService, IGeolocService geolocService, IBookingService bookingService, IAccountService accountService, Geolocator geolocator)
         {
+            _ownerId = ownerId;
             _googleService = googleService;
 			_geolocService = geolocService;
 			_bookingService = bookingService;
@@ -146,7 +149,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (_closeViewCommand == null)
                 {
                     _closeViewCommand = new MvxRelayCommand(() => 
-                    {       
+                    {
+                        TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub>().Publish(new AddressSelected(this, new Address { FullAddress = Guid.NewGuid().ToString() }, _ownerId));
 						RequestClose( this );
 					});
 				}
@@ -169,7 +173,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (_resetCommand == null)
                 {
                     _resetCommand = new MvxRelayCommand(() => 
-                    {       
+                    {
+                        
 						AddressViewModels = new List<AddressViewModel>();
 					});
 				}

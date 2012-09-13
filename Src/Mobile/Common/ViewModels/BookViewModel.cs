@@ -20,7 +20,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private bool _pickupIsActive = true;
         private bool _dropoffIsActive = false;
         private IAppResource _appResource;
-        private  TaskScheduler _scheduler = TaskScheduler.FromCurrentSynchronizationContext();
+        
 
         public BookViewModel(IAccountService accountService, IAppResource appResource, Geolocator geolocator)
         {
@@ -28,12 +28,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _accountService = accountService;
             _geolocator = geolocator;
             _appResource = appResource;
-
-            
             
             Load();
-            Pickup = new BookAddressViewModel ( Order.PickupAddress ) { Title = appResource.GetString( "BookPickupLocationButtonTitle" ), EmptyAddressPlaceholder=   appResource.GetString( "BookPickupLocationEmptyPlaceholder") };
-            Dropoff = new BookAddressViewModel( Order.DropOffAddress ){ Title = appResource.GetString( "BookDropoffLocationButtonTitle" ),EmptyAddressPlaceholder=   appResource.GetString( "BookDropoffLocationEmptyPlaceholder") };
+            Pickup = new BookAddressViewModel(Order.PickupAddress, _geolocator) { Title = appResource.GetString("BookPickupLocationButtonTitle"), EmptyAddressPlaceholder = appResource.GetString("BookPickupLocationEmptyPlaceholder") };
+            Dropoff = new BookAddressViewModel(Order.DropOffAddress, _geolocator) { Title = appResource.GetString("BookDropoffLocationButtonTitle"), EmptyAddressPlaceholder = appResource.GetString("BookDropoffLocationEmptyPlaceholder") };
         }
 
         public override void Load()
@@ -86,30 +84,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 
         public BookAddressViewModel Pickup { get; set; }
-        //{
-        //    get
-        //    { 
-        //        return Order.PickupAddress;
-        //    }
-        //    set
-        //    { 
-        //        Order.PickupAddress = value;
-        //        FirePropertyChanged(() => Pickup);
-        //    }
-        //}
         public BookAddressViewModel Dropoff { get; set; }
-        //public BookAddressViewModel Dropoff
-        //{
-        //    get
-        //    { 
-        //        return Order.DropOffAddress;
-        //    }            
-        //    set
-        //    {
-        //        Order.DropOffAddress = value;
-        //        FirePropertyChanged(() => Dropoff);
-        //    }
-        //}
 
         public bool PickupIsActive
         {
@@ -121,8 +96,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (DropoffIsActive && PickupIsActive)
                 {
                     _dropoffIsActive = false;
-                    FirePropertyChanged(() => DropoffIsActive);
+                    FirePropertyChanged(() => DropoffIsActive);                                        
                 }
+                FirePropertyChanged(() => SelectedAddress);
             }
         }
 
@@ -138,6 +114,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     _pickupIsActive = false;
                     FirePropertyChanged(() => PickupIsActive);
                 }
+                FirePropertyChanged(() => SelectedAddress);
             }
         }
 
@@ -181,35 +158,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand  RequestCurrentLocationCommand
-        {                   
-            get
-            {       
-                return new MvxRelayCommand(() => 
-                {       
-                    _geolocator.GetPositionAsync(3000).ContinueWith(t =>
-                    {
-                        if (t.IsFaulted)
-                        {
-                            //                                PositionStatus.Text = ((GeolocationException)t.
-                            //                                                       Exception.InnerException).Error.ToString();
-                        }
-                        else if (t.IsCanceled)
-                        {
-                            //                                PositionStatus.Text = "Canceled";
-                        }
-                        else
-                        {
-                            Console.WriteLine(t.Result.Timestamp.ToString("G"));
-                            Console.WriteLine(t.Result.Latitude.ToString("N4"));
-                            Console.WriteLine(t.Result.Longitude.ToString("N4"));
-                        }
-                        
-                    }, _scheduler);
-                    
-                });
-            }
-        }
         
 
 

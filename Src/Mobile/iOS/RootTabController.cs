@@ -100,8 +100,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         private UINavigationController CreateNavigationController(  UIViewController baseController, string title, string logo, bool hideNavBar) 
         {
-
-
             var navController = new TaxiNavigationController((ITaxiViewController)baseController);
 			navController.PushViewController(baseController, false);
             //navController.NavigationBar.BarStyle = UIBarStyle.Black;
@@ -146,7 +144,6 @@ namespace apcurium.MK.Booking.Mobile.Client
                 if (title.HasValue())
                 {
                     view.SetTitle(title);
-                    
                 }
             }
             
