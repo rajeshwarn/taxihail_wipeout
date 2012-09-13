@@ -12,7 +12,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 	partial class BookView
 	{
 		[Outlet]
-		MonoTouch.UIKit.UIView view { get; set; }
+		MonoTouch.UIKit.UIView bookView { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UIView menuView { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel titleLabel { get; set; }
@@ -61,9 +64,15 @@ namespace apcurium.MK.Booking.Mobile.Client
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (view != null) {
-				view.Dispose ();
-				view = null;
+
+			if (bookView != null) {
+				bookView.Dispose ();
+				bookView = null;
+			}
+
+			if (menuView != null) {
+				menuView.Dispose ();
+				menuView = null;
 			}
 
 			if (titleLabel != null) {

@@ -19,9 +19,9 @@
     <TargetFrameworkVersion>v1.6</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
+    <DebugSymbols>True</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>False</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>TRACE;DEBUG;MonoDroid</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -30,13 +30,13 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>True</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>DEBUG;TRACE;MonoDroid</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
-    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
+    <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
@@ -45,6 +45,9 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
+    <Reference Include="Newtonsoft.Json.MonoDroid">
+      <HintPath>..\..\Libraries\Newtonsoft.Json\Newtonsoft.Json\bin\Android\Debug\Newtonsoft.Json.MonoDroid.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Android\Interfaces\IMvxAndroidCurrentTopActivity.cs" />
@@ -357,12 +360,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Android\Platform\SoundEffects\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Library\Newtonsoft.Json\Newtonsoft.Json\Newtonsoft.Json.MonoDroid.csproj">
-      <Project>{E6C3413C-919B-486D-8B6C-225CBD921B98}</Project>
-      <Name>Newtonsoft.Json.MonoDroid</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

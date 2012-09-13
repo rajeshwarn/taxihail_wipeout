@@ -16,7 +16,7 @@
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
-    <DeployExternal>false</DeployExternal>
+    <DeployExternal>False</DeployExternal>
     <AndroidSupportedAbis>armeabi-v7a%3bx86</AndroidSupportedAbis>
     <AndroidStoreUncompressedFileExtensions />
     <MandroidI18n />
@@ -37,7 +37,6 @@
     <AndroidSigningKeyPass>mkAtlantaCheckerCab0001.</AndroidSigningKeyPass>
     <AndroidLinkMode>None</AndroidLinkMode>
     <AndroidSupportedAbis>armeabi,armeabi-v7a,x86</AndroidSupportedAbis>
-    <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
     <AndroidLinkSkip />
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
   </PropertyGroup>
@@ -61,10 +60,6 @@
   <ItemGroup>
     <Reference Include="Mono.Android" />
     <Reference Include="Mono.Android.GoogleMaps" />
-    <Reference Include="Mono.Facebook, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Libraries\Monodroid\Mono.Facebook.dll</HintPath>
-    </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="ServiceStack.Common">
       <HintPath>..\Libraries\Monodroid\ServiceStack.Common.dll</HintPath>
@@ -84,6 +79,9 @@
     <Reference Include="System.Xml" />
     <Reference Include="Xamarin.Mobile">
       <HintPath>..\Libraries\Monodroid\Xamarin.Mobile.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Facebook">
+      <HintPath>..\Libraries\Monodroid\Mono.Facebook.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -503,7 +501,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">
-      <Project>{a70ade42-9492-4247-96dc-0cfe0cb0cc64}</Project>
+      <Project>{A70ADE42-9492-4247-96DC-0CFE0CB0CC64}</Project>
       <Name>MK.Booking.Api.Client.Android</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Contract\MK.Booking.Api.Contract.Android.csproj">
@@ -511,7 +509,7 @@
       <Name>MK.Booking.Api.Contract.Android</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.Android.csproj">
-      <Project>{bdec449b-7c09-4302-aef1-af46b34be9a6}</Project>
+      <Project>{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}</Project>
       <Name>MK.Common.Android</Name>
     </ProjectReference>
     <ProjectReference Include="..\Common\MK.Booking.Mobile.Android.csproj">
