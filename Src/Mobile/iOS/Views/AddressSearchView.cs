@@ -89,7 +89,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 				{placesBtn, "{'TouchUpInside':{'Path':'GetPlacesCommand'}}"} ,
 				{searchBtn, "{'TouchUpInside':{'Path':'ResetCommand'}}"} ,
 				{SearchTextField, "{'Text':{'Path':'SearchText'}}"} ,
-				{AddressListView.Delegate, "{'RowSelected':{'Path':'RowSelectedCommand'}}"} ,
+
 			});
 
             AddressListView.Source = source;

@@ -21,6 +21,9 @@ using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 using apcurium.MK.Booking.Mobile.ListViewStructure;
 using apcurium.MK.Booking.Mobile.Client.InfoTableView;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.Client.Animations;
+using MonoTouch.MessageUI;
+using System.IO;
  
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -32,6 +35,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         //private CreateOrder _bookingInfo;
         private StatusView _statusView;
+		private bool _menuIsOpen = false;
         //private VerticalButtonBar _settingsBar;
         public BookView() 
             : base(new MvxShowViewModelRequest<BookViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
@@ -59,13 +63,14 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             base.ViewDidLoad();
 
+			bookView.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
 			InitPanelMenu();
 
 			NavigationController.NavigationBar.TopItem.RightBarButtonItem = new UIBarButtonItem( UIImage.FromFile("Assets/settings.png"), UIBarButtonItemStyle.Bordered, delegate {
 				AnimateMenu();
 			} );
 
-            View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png")); 
+             
 
             AppButtons.FormatStandardButton((GradientButton)refreshCurrentLocationButton, "", AppStyle.ButtonColor.Blue, "");
             AppButtons.FormatStandardButton((GradientButton)bookLaterButton, "", AppStyle.ButtonColor.DarkGray );
@@ -98,8 +103,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             mapView.MultipleTouchEnabled = true;
 
             bottomBar.UserInteractionEnabled = true;
-            View.BringSubviewToFront(bottomBar);
-            View.BringSubviewToFront(bookBtn);
+            bookView.BringSubviewToFront(bottomBar);
+            bookView.BringSubviewToFront(bookBtn);
            
 
 
@@ -290,8 +295,8 @@ namespace apcurium.MK.Booking.Mobile.Client
                 BookingInfo.Settings = AppContext.Current.LoggedUser.Settings;
             }
 
-            LoadingOverlay.StartAnimatingLoading(this.View, LoadingOverlayPosition.Center, null, 130, 30);
-            View.UserInteractionEnabled = false;
+            LoadingOverlay.StartAnimatingLoading(this.bookView, LoadingOverlayPosition.Center, null, 130, 30);
+            bookView.UserInteractionEnabled = false;
             
             ThreadHelper.ExecuteInThread(() =>
             {
@@ -337,8 +342,8 @@ namespace apcurium.MK.Booking.Mobile.Client
                 {
                     InvokeOnMainThread(() =>
                     {
-                        LoadingOverlay.StopAnimatingLoading(this.View);
-                        View.UserInteractionEnabled = true;
+                        LoadingOverlay.StopAnimatingLoading(this.bookView);
+                        bookView.UserInteractionEnabled = true;
                     });
                 }
                 
@@ -363,8 +368,8 @@ namespace apcurium.MK.Booking.Mobile.Client
                 this.NavigationController.PopViewControllerAnimated(false);
             }
             
-            LoadingOverlay.StartAnimatingLoading(this.View, LoadingOverlayPosition.Center, null, 130, 30);
-            View.UserInteractionEnabled = false;
+            LoadingOverlay.StartAnimatingLoading(this.bookView, LoadingOverlayPosition.Center, null, 130, 30);
+            bookView.UserInteractionEnabled = false;
             
             ThreadHelper.ExecuteInThread(() =>
             {
@@ -415,8 +420,8 @@ namespace apcurium.MK.Booking.Mobile.Client
                 {
                     InvokeOnMainThread(() =>
                     {
-                        LoadingOverlay.StopAnimatingLoading(this.View);
-                        View.UserInteractionEnabled = true;
+                        LoadingOverlay.StopAnimatingLoading(this.bookView);
+                        bookView.UserInteractionEnabled = true;
                     });
                 }
             });
@@ -427,12 +432,75 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		private void InitPanelMenu()
 		{
+			menuView.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
+
 			titleLabel.Text = Resources.TabSettings;
 			titleLabel.BackgroundColor = UIColor.FromPatternImage( UIImage.FromFile( "Assets/navBar.png" ));
 
 			var structure = new InfoStructure( 44, false );
 			var sect = structure.AddSection();
-			sect.AddItem( new SingleLineItem( Resources.FavoriteLocationsTitle ) { OnItemSelected = sectItem => InvokeOnMainThread(() => TabBarController.PresentModalViewController(new LocationsTabView(), true)) } );
+			sect.AddItem( new SingleLineItem( Resources.FavoriteLocationsTitle ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
+					AnimateMenu();
+					this.NavigationController.PresentModalViewController(new LocationsTabView(), true);
+				})				
+			});
+			sect.AddItem( new SingleLineItem( Resources.HistoryViewTitle ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
+					AnimateMenu();
+					this.NavigationController.PresentModalViewController(new HistoryTabView(), true);
+				})				
+			});
+			sect.AddItem( new SingleLineItem( Resources.Profile ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
+					AnimateMenu();
+					var rideSettingsView = new RideSettingsView (AppContext.Current.LoggedUser.Settings, true, false);
+					this.NavigationController.PresentModalViewController( rideSettingsView, true);
+				})				
+			});
+			sect.AddItem( new SingleLineItem( Resources.CallButton ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
+					AnimateMenu();
+					var call = new Confirmation ();
+            		call.Call ( TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumber(AppContext.Current.LoggedUser.Settings.ProviderId.Value),
+                       TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumberDisplay (AppContext.Current.LoggedUser.Settings.ProviderId.Value));
+				})				
+			});
+			sect.AddItem( new SingleLineItem( Resources.AboutButton ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
+					AnimateMenu();
+					this.NavigationController.PresentModalViewController(new AboutUsView(), true);
+				})				
+			});
+			sect.AddItem( new SingleLineItem( Resources.TechSupportButton ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
+					AnimateMenu();
+					if (!MFMailComposeViewController.CanSendMail)
+					{
+						return;
+					}
+					
+					var mailComposer = new MFMailComposeViewController ();
+					
+		            if (File.Exists (TinyIoCContainer.Current.Resolve<IAppSettings>().ErrorLog))
+					{
+		                mailComposer.AddAttachmentData (NSData.FromFile (TinyIoCContainer.Current.Resolve<IAppSettings>().ErrorLog), "text", "errorlog.txt");
+					}
+					
+		            mailComposer.SetToRecipients (new string[] { TinyIoCContainer.Current.Resolve<IAppSettings>().SupportEmail  });
+					mailComposer.SetMessageBody ("", false);
+					mailComposer.SetSubject (Resources.TechSupportButton);
+					mailComposer.Finished += delegate(object mailsender, MFComposeResultEventArgs mfce) {
+						mailComposer.DismissModalViewControllerAnimated (true);
+		                if (File.Exists (TinyIoCContainer.Current.Resolve<IAppSettings>().ErrorLog))
+						{
+		                    File.Delete (TinyIoCContainer.Current.Resolve<IAppSettings>().ErrorLog);
+						}
+					};
+					this.NavigationController.PresentModalViewController(mailComposer, true);
+				})				
+			});
+			sect.AddItem( new SingleLineItem( Resources.SignOutButton ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
+					AnimateMenu();
+					AppContext.Current.SignOutUser ();
+					AppContext.Current.WarnEstimate = true;
+					this.NavigationController.PresentModalViewController(new LoginView (), true);
+				})				
+			});
 
 			menuListView.DataSource = new TableViewDataSource( structure );
 			menuListView.Delegate = new TableViewDelegate( structure );
@@ -443,7 +511,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 		}
 
 		private void AnimateMenu()
-		{}
+		{
+			var slideAnimation = new SlideViewAnimation( bookView, new SizeF( (_menuIsOpen ? menuView.Frame.Width : -menuView.Frame.Width), 0f ) );
+			slideAnimation.Animate();
+			_menuIsOpen = !_menuIsOpen;
+		}
 
     }
 }

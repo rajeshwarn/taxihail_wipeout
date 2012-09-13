@@ -908,6 +908,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			get { return GetValue ("SearchPlaceholder"); }
 		}
+		public static string Profile
+		{
+			get { return GetValue ("Profile"); }
+		}
 	}
 }
 

@@ -17,6 +17,8 @@ using apcurium.MK.Common;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using System.Threading;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.Navigation;
+using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -297,6 +299,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             AppContext.Current.LoggedInEmail = txtEmail.Text;
             InvokeOnMainThread(() => AppContext.Current.UpdateLoggedInUser(account, false));
             InvokeOnMainThread(() => this.DismissModalViewControllerAnimated(true));
+			InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<INavigationService>().Navigate<BookViewModel,BookView>());
             if (AppContext.Current.Controller.SelectedRefreshableViewController != null)
             {
                 AppContext.Current.Controller.View.InvokeOnMainThread(() => 

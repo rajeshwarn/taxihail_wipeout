@@ -98,19 +98,7 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 			}
 
 		}
-		
-		public void CleanUp ()
-		{					
-			_sectionItem = null;		
-			
-			if ( _rightImage != null )
-			{
-				_rightImage.Image = new UIImage ();
-				_rightImage.Dispose ();
-				_rightImage = null;
-			}						
-		}
-	
+
 		public override void TouchesBegan ( NSSet touches, UIEvent evt )
 		{	
 			BackgroundView.SetNeedsDisplay();

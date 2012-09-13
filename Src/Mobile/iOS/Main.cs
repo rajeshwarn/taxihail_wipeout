@@ -7,6 +7,15 @@ using TinyIoC;
 using apcurium.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Practices;
 using apcurium.MK.Booking.Mobile.AppServices;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using MonoTouch.Foundation;
+using MonoTouch.UIKit;
+using TinyIoC;
+using apcurium.Framework.Extensions;
+using apcurium.MK.Booking.Mobile.Practices;
+using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using ServiceStack.Text;
@@ -83,17 +92,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 
                         window.AddSubview(_tabBarController.View);
 
-
-//
-                        if (AppContext.Current.LoggedUser == null)
+                        if (AppContext.Current.LoggedUser != null)
                         {
-                          //  _tabBarController.ViewControllers[0].PresentModalViewController(new LoginView(), true);
-
-                        }
-            else{
-                TinyIoCContainer.Current.Resolve<INavigationService>().Navigate<BookViewModel,BookView>(); 
-				  
-            }
+                			TinyIoCContainer.Current.Resolve<INavigationService>().Navigate<BookViewModel,BookView>(); 
+            			}
 //
                         window.MakeKeyAndVisible();
 //                        
@@ -161,13 +163,13 @@ namespace apcurium.MK.Booking.Mobile.Client
                         }
                     }
                     );
-   
+                
                 }
                 else
                 {
-                    if (_tabBarController.TopViewController != null)
+                    if (_tabBarController != null)
                     {   
-                       InvokeOnMainThread(() => _tabBarController.TopViewController.PresentModalViewController(new LoginView(), true));
+                        InvokeOnMainThread(() => _tabBarController.PresentModalViewController(new LoginView(), true));
                     }
                 }
             }
