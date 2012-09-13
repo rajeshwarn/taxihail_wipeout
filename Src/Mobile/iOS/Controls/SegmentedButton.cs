@@ -40,18 +40,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		private string _title;
 
-		public SegmentedButton( RectangleF rect, string title, Action onClick ) : base ( rect )
+		public SegmentedButton( RectangleF rect, string title ) : base ( rect )
         {
 			_title = title;
           	BackgroundColor = UIColor.Clear;
             Layer.MasksToBounds = false;
             ClipsToBounds = false;
 
-			OnClick = onClick;
         }
-
-
-		public Action OnClick { get; set; }
 
         public override void Draw(RectangleF rect)
         {

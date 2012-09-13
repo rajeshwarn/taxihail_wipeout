@@ -161,14 +161,13 @@ namespace apcurium.MK.Booking.Mobile.Client
                         }
                     }
                     );
-                
+   
                 }
                 else
                 {
-					TinyIoCContainer.Current.Resolve<INavigationService>().Navigate<AddressSearchViewModel,AddressSearchView>();
                     if (_tabBarController.TopViewController != null)
                     {   
-                       // InvokeOnMainThread(() => _tabBarController.TopViewController.PresentModalViewController(new LoginView(), true));
+                       InvokeOnMainThread(() => _tabBarController.TopViewController.PresentModalViewController(new LoginView(), true));
                     }
                 }
             }
@@ -187,7 +186,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         public override bool HandleOpenURL(UIApplication application, NSUrl url)
         {
             Console.WriteLine(url.ToString());
-            if (url.AbsoluteString.StartsWith("fb134284363380764"))
+            if (url.AbsoluteString.StartsWith("fb" + TinyIoCContainer.Current.Resolve<IAppSettings>().FacebookAppId ))
             {
                 _callbackFromFB = true;
                 return (TinyIoCContainer.Current.Resolve<IFacebookService>() as FacebookServiceMT).HandleOpenURL(application, url);

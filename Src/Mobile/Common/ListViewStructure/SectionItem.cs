@@ -26,7 +26,12 @@ namespace apcurium.MK.Booking.Mobile.ListViewStructure
 			get;
 			set;
 		}
-		
+				
+		public Action<SectionItem> OnItemSelected {
+			get; 
+			set;
+		}
+
 		public void SetUIState (string key, object value)
 		{
 			if (_uiState == null)

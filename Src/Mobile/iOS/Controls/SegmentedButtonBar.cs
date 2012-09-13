@@ -29,10 +29,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 			BackgroundColor = UIColor.Clear;
 		}
 
-		public void AddButton( string title, Action onClick )
+		public SegmentedButton AddButton( string title )
 		{
 			var btnWidth = this.Frame.Width / (_buttons.Count + 1);
-			var btn = new SegmentedButton( new RectangleF(_buttons.Count * btnWidth - (_buttons.Count == 0 ? 1 : 0), 0, btnWidth + 1, Frame.Height ), title, onClick );
+			var btn = new SegmentedButton( new RectangleF(_buttons.Count * btnWidth - (_buttons.Count == 0 ? 1 : 0), 0, btnWidth + 1, Frame.Height ), title );
 
 			_buttons.ForEach( b => b.Value.Frame = new RectangleF( b.Key * btnWidth - (b.Key == 0 ? 1 : 0), 0, btnWidth + (b.Key == 0 || b.Key == _buttons.Count ? 1 : 0), Frame.Height ) );
 
@@ -41,16 +41,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 			btn.TouchUpInside += HandleTouchUpInside;
 
 			AddSubview( btn );
+
+			return btn;
 		}
 
 		void HandleTouchUpInside (object sender, EventArgs e)
 		{
 			var btn = sender as SegmentedButton;
-
-			if( btn.OnClick != null )
-			{
-				btn.OnClick();
-			}
 
 			btn.Pressed = true;
 			btn.SetNeedsDisplay();

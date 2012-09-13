@@ -8,23 +8,17 @@ using System.Runtime.Serialization;
 
 namespace apcurium.MK.Booking.Mobile.ListViewStructure
 {
-	
-	public class TwoLinesAddressItem : SectionItem
+	public class SingleLineItem : SectionItem
 	{
-		public TwoLinesAddressItem ( Guid id, string firstLine, string secondLine ) 
+		public SingleLineItem ( string firstLine ) 
 		{
-			Id = id;
 			Label = firstLine;
-			DetailText = secondLine;
 			ShowRightArrow = true;
 		}
 
 		public bool ShowRightArrow { get; set; }
-		public bool ShowPlusSign { get; set; }
-		public string DetailText { get; set; }
 
-
-	}
-
+	}	
+	
 }
 

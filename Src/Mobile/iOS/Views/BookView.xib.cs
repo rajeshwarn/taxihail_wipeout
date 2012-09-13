@@ -18,6 +18,9 @@ using Cirrious.MvvmCross.Binding.Touch.Interfaces;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using Cirrious.MvvmCross.Views;
 using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
+using apcurium.MK.Booking.Mobile.ListViewStructure;
+using apcurium.MK.Booking.Mobile.Client.InfoTableView;
+using apcurium.MK.Booking.Mobile.Infrastructure;
  
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -55,6 +58,13 @@ namespace apcurium.MK.Booking.Mobile.Client
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
+
+			InitPanelMenu();
+
+			NavigationController.NavigationBar.TopItem.RightBarButtonItem = new UIBarButtonItem( UIImage.FromFile("Assets/settings.png"), UIBarButtonItemStyle.Bordered, delegate {
+				AnimateMenu();
+			} );
+
             View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png")); 
 
             AppButtons.FormatStandardButton((GradientButton)refreshCurrentLocationButton, "", AppStyle.ButtonColor.Blue, "");
@@ -414,6 +424,27 @@ namespace apcurium.MK.Booking.Mobile.Client
         }
 
         #endregion
+
+		private void InitPanelMenu()
+		{
+			titleLabel.Text = Resources.TabSettings;
+			titleLabel.BackgroundColor = UIColor.FromPatternImage( UIImage.FromFile( "Assets/navBar.png" ));
+
+			var structure = new InfoStructure( 44, false );
+			var sect = structure.AddSection();
+			sect.AddItem( new SingleLineItem( Resources.FavoriteLocationsTitle ) { OnItemSelected = sectItem => InvokeOnMainThread(() => TabBarController.PresentModalViewController(new LocationsTabView(), true)) } );
+
+			menuListView.DataSource = new TableViewDataSource( structure );
+			menuListView.Delegate = new TableViewDelegate( structure );
+			menuListView.ReloadData();
+
+			logoImageView.Image = UIImage.FromFile( "Assets/apcuriumLogo.png" );
+			versionLabel.Text = TinyIoCContainer.Current.Resolve<IPackageInfo>().Version;
+		}
+
+		private void AnimateMenu()
+		{}
+
     }
 }
 

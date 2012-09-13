@@ -56,7 +56,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 
             var mainSettingsButton = FindViewById<ImageButton>(Resource.Id.MainSettingsBtn);
             mainSettingsButton.Click += MainSettingsButtonOnClick;
-            InitMenu();
+            var mainSettingsLayout = FindViewById<LinearLayout>(Resource.Id.mainSettingsLayout);
+            //mainSettingsLayout.LayoutParameters.Width = WindowManager.DefaultDisplay.Width + 100;
+            _menuWidth = WindowManager.DefaultDisplay.Width - 100;
             _menuIsShown = false;
             
             MainTabHost.CurrentTab = 0;
@@ -224,20 +226,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
             mainLayout.Visibility = hide ? ViewStates.Gone : ViewStates.Visible;
         }
 
-        private void InitMenu()
-        {
-            List<string> menuItems = new List<string>(); 
-            var g = FindViewById<GridView>(Resource.Id.gridMenu);
 
-
-            for( int i = 0; i<10; i++ )
-            {
-                menuItems.Add( "Item " + i.ToString() );
-            }
-            g.Adapter = new ArrayAdapter( this, Resource.Layout.MenuItem, Resource.Id.textView1, menuItems );
-            var x = WindowManager.DefaultDisplay.Width;
-
-        }
     }
 
 }

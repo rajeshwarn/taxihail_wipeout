@@ -9,12 +9,12 @@ using apcurium.MK.Booking.Mobile.ListViewStructure;
 
 namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 {
-	public class TwoLinesAddressCell : UITableViewCell
+	public class SingleLineCell : UITableViewCell
 	{
 		private UIImageView _rightImage;
-		private TwoLinesAddressItem _sectionItem;
+		private SingleLineItem _sectionItem;
 		
-		public TwoLinesAddressCell (IntPtr handle) : base(handle)
+		public SingleLineCell (IntPtr handle) : base(handle)
 		{		
 		}
 
@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 //		{			
 //		}
 		
-		public TwoLinesAddressCell (TwoLinesAddressItem data, string cellIdentifier) : base( UITableViewCellStyle.Subtitle, new NSString(cellIdentifier)   )
+		public SingleLineCell (SingleLineItem data, string cellIdentifier) : base( UITableViewCellStyle.Default, new NSString(cellIdentifier)   )
 		{					
 			_sectionItem = data;
 			
@@ -36,39 +36,28 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 		private void Initialize ()
 		{
 
-			BackgroundView = new CustomCellBackgroundView( _sectionItem.Index == 0, _sectionItem.Index == (_sectionItem.Parent.Items.Count() - 1), Frame, _sectionItem.ShowPlusSign );
+			BackgroundView = new CustomCellBackgroundView( _sectionItem.Index == 0, _sectionItem.Index == (_sectionItem.Parent.Items.Count() - 1), Frame, false );
 			TextLabel.TextColor = AppStyle.CellFirstLineTextColor;
 			TextLabel.BackgroundColor = UIColor.Clear;
 			TextLabel.Font = AppStyle.CellFont;
 
-			DetailTextLabel.TextColor = AppStyle.CellSecondLineTextColor;
-			DetailTextLabel.BackgroundColor = UIColor.Clear;
-			DetailTextLabel.Font = AppStyle.NormalTextFont;
-
 			_rightImage = new UIImageView (new RectangleF (290, _sectionItem.RowHeight/2 - 15/2, 14, 15 ) ); 
 			_rightImage.BackgroundColor = UIColor.Clear;
 			_rightImage.ContentMode = UIViewContentMode.ScaleAspectFit;
+			LoadImageFromAssets ( _rightImage, "Assets/Cells/rightArrow.png" );
 			AddSubview ( _rightImage );	
+
 		}
 
 		
 		public void Load ()
 		{
 			TextLabel.Text = _sectionItem.Label;
-			DetailTextLabel.Text = _sectionItem.DetailText;
 			UserInteractionEnabled = _sectionItem.Enabled();
-
-			if( _sectionItem.ShowRightArrow )
-			{
-				LoadImageFromAssets ( _rightImage, "Assets/Cells/rightArrow.png" );
-			}
-			if( _sectionItem.ShowPlusSign )
-			{
-				LoadImageFromAssets ( _rightImage, "Assets/Cells/plusSign.png" );
-			}
-
 		}
-		
+
+	
+
 		public float GetHeight ()
 		{
 			return _sectionItem.RowHeight;
@@ -76,13 +65,10 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 		
 		private void LoadImageFromAssets ( UIImageView imageView, string asset )
 		{
-			if ( !asset.IsNullOrEmpty () )
-			{
-				imageView.Image = UIImage. FromFile ( asset );
-			}			
+			imageView.Image = UIImage. FromFile ( asset );	
 		}
 		
-		public void ReUse ( TwoLinesAddressItem item )
+		public void ReUse ( SingleLineItem item )
 		{
 			if ( item != null )
 			{
@@ -93,11 +79,6 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 
 				Load ();
 				bool changed = false;
-				if( ((CustomCellBackgroundView)BackgroundView).IsAddNewCell != _sectionItem.ShowPlusSign )
-				{
-					((CustomCellBackgroundView)BackgroundView).IsAddNewCell = _sectionItem.ShowPlusSign;
-					changed = true;
-				}
 
 				if( ((CustomCellBackgroundView)BackgroundView).IsTop != (_sectionItem.Index == 0) )
 				{
@@ -150,5 +131,6 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 
 
 	}
+
 
 }

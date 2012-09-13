@@ -71,18 +71,32 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
+		private Thread _editThread;
 		private MvxRelayCommand _searchAddressCommand;
 		public IMvxCommand SearchAddressCommand
 		{
             get
-            {       
+            {   
                 if (_searchAddressCommand == null)
                 {
                     _searchAddressCommand = new MvxRelayCommand(() => 
-                    {       
-						var addresses = _geolocService.SearchAddress( SearchText );
-						AddressViewModels = addresses.Select( a => new AddressViewModel(){ Address = a, ShowPlusSign = false, ShowRightArrow = false, IsFirst = a.Equals(addresses.First()), IsLast = a.Equals(addresses.Last()) } ).ToList();
-					});
+                    {      
+						Console.WriteLine( "SearchAddressCommand: Start executing." );
+						if(_editThread!= null && _editThread.IsAlive )
+						{
+							Console.WriteLine( "SearchAddressCommand: Killing previous thread." );
+							_editThread.Abort();
+						}
+
+						_editThread = new Thread( () => {
+							Console.WriteLine( "SearchAddressCommand: Starting new thread." );
+							Thread.Sleep(1000);
+							var addresses = _geolocService.SearchAddress( SearchText );
+							AddressViewModels = addresses.Select( a => new AddressViewModel(){ Address = a, ShowPlusSign = false, ShowRightArrow = false, IsFirst = a.Equals(addresses.First()), IsLast = a.Equals(addresses.Last()) } ).ToList();
+							Console.WriteLine( "SearchAddressCommand: Finishing executing command." );
+						});
+						_editThread.Start();
+					}, () => !SearchText.IsNullOrEmpty() );
 				}
 				return _searchAddressCommand;
 			}
@@ -123,6 +137,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
+		private MvxRelayCommand _closeViewCommand;
+		public IMvxCommand CloseViewCommand
+		{
+            get
+            {       
+                if (_closeViewCommand == null)
+                {
+                    _closeViewCommand = new MvxRelayCommand(() => 
+                    {       
+						RequestClose( this );
+					});
+				}
+				return _closeViewCommand;
+			}
+		}
+
 		public IEnumerable<AddressViewModel> AddressViewModels { 
 			get { return _addressViewModels; }
 			set { 
@@ -130,7 +160,45 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				FirePropertyChanged( () => AddressViewModels ); }
 		}
 
-		public string SearchText { get; set; }
+		private MvxRelayCommand _resetCommand;
+		public IMvxCommand ResetCommand
+		{
+            get
+            {       
+                if (_resetCommand == null)
+                {
+                    _resetCommand = new MvxRelayCommand(() => 
+                    {       
+						AddressViewModels = new List<AddressViewModel>();
+					});
+				}
+				return _resetCommand;
+			}
+		}
+
+		private MvxRelayCommand _rowSelectedCommand;
+		public IMvxCommand RowSelectedCommand
+		{
+            get
+            {       
+                if (_rowSelectedCommand == null)
+                {
+                    _rowSelectedCommand = new MvxRelayCommand(() => 
+                    {       
+						RequestClose( this );
+					});
+				}
+				return _rowSelectedCommand;
+			}
+		}
+
+
+		private string _searchText;
+		public string SearchText { get { return _searchText; }
+			set { _searchText = value;
+				SearchAddressCommand.Execute();
+			}
+		}
 
         private MvxRelayCommand _pickupLocationChanged;
 

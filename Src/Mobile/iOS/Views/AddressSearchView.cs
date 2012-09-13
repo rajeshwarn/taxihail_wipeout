@@ -22,9 +22,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		const string CellBindingText = @"
                 {
-                   'TitleText':{'Path':'FriendlyName'},
-                   'DetailText':{'Path':'FullAddress'},
-                }";
+                   'FirstLine':{'Path':'Address.FriendlyName'},
+                   'SecondLine':{'Path':'Address.FullAddress'},
+				   'ShowRightArrow':{'Path':'ShowRightArrow'},
+				   'ShowPlusSign':{'Path':'ShowPlusSign'},
+				   'IsFirst':{'Path':'IsFirst'},
+				   'IsLast':{'Path':'IsLast'},
+				}";
 
         public AddressSearchView() 
             : base(new MvxShowViewModelRequest<AddressSearchViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
@@ -52,15 +56,15 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-			this.NavigationController.NavigationBar.Hidden=true;
 
+			NavigationController.NavigationBar.Hidden=true;
 
 			View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
 
-			TopBar.AddButton( Resources.SearchButton, SearchOnClick );
-			TopBar.AddButton( Resources.FavoritesButton, FavoritesOnClick );
-			TopBar.AddButton( Resources.ContactsButton, ContactsOnClick );
-			TopBar.AddButton( Resources.PlacesButton, PlacesOnClick );
+			var searchBtn = TopBar.AddButton( Resources.SearchButton );
+			var favoritesBtn = TopBar.AddButton( Resources.FavoritesButton );
+			var contactsBtn = TopBar.AddButton( Resources.ContactsButton );
+			var placesBtn = TopBar.AddButton( Resources.PlacesButton );
 			TopBar.SetSelected( 0 );
 
 			((TextField)SearchTextField).SetImage( "Assets/Search/SearchIcon.png" );
@@ -75,40 +79,27 @@ namespace apcurium.MK.Booking.Mobile.Client
                                 CellBindingText,
 								UITableViewCellAccessory.None);
 			
-            source.CellCreator = (tview , iPath, state ) =>
-            {
-                return new TwoLinesCell( CELLID, CellBindingText );
-            };
-			
-            this.AddBindings(new Dictionary<object, string>()
-		                         {
-		                             {source, "{'ItemsSource':{'Path':'AddressList'}}"} ,
-		                         });
+			source.CellCreator = (tview , iPath, state ) => { return new TwoLinesCell( CELLID, CellBindingText ); };
+
+            this.AddBindings(new Dictionary<object, string>(){
+				{CancelButton, "{'TouchUpInside':{'Path':'CloseViewCommand'}}"},
+				{source, "{'ItemsSource':{'Path':'AddressViewModels'}}"} ,
+				{favoritesBtn, "{'TouchUpInside':{'Path':'GetFavoritesCommand'}}"} ,
+				{contactsBtn, "{'TouchUpInside':{'Path':'GetContactsCommand'}}"} ,
+				{placesBtn, "{'TouchUpInside':{'Path':'GetPlacesCommand'}}"} ,
+				{searchBtn, "{'TouchUpInside':{'Path':'ResetCommand'}}"} ,
+				{SearchTextField, "{'Text':{'Path':'SearchText'}}"} ,
+				{AddressListView.Delegate, "{'RowSelected':{'Path':'RowSelectedCommand'}}"} ,
+			});
 
             AddressListView.Source = source;
 
-
+            SearchTextField.ReturnKeyType = UIReturnKeyType.Done;
+            SearchTextField.ShouldReturn = delegate(UITextField textField)
+            {
+				return SearchTextField.ResignFirstResponder();
+            };
 		}
-
-		private void SearchOnClick()
-		{
-
-		}
-		private void FavoritesOnClick()
-		{
-			ViewModel.GetFavoritesCommand.Execute();
-		}
-
-		private void ContactsOnClick()
-		{
-			ViewModel.GetContactsCommand.Execute();
-		}
-
-		private void PlacesOnClick()
-		{
-			ViewModel.GetPlacesCommand.Execute();
-		}
-
 
 		public override void ViewDidUnload ()
 		{
