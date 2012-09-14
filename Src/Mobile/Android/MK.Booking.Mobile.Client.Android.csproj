@@ -453,7 +453,9 @@
     <AndroidResource Include="Resources\drawable-hdpi\add_single.9.png" />
     <AndroidResource Include="Resources\drawable-hdpi\blank_bottom.9.png" />
     <AndroidResource Include="Resources\Drawable\add_single_state.xml" />
-    <AndroidResource Include="Resources\Drawable\blank_bottom_state.xml" />
+    <AndroidResource Include="Resources\Drawable\blank_bottom_state.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <AndroidResource Include="Resources\Drawable\blank_single_state.xml" />
     <AndroidResource Include="Resources\Drawable\textedit_background.9.png" />
     <AndroidResource Include="Resources\Drawable\textedit_background_std.xml" />
@@ -508,6 +510,9 @@
     <AndroidResource Include="Resources\Drawable\myLocationButton_state.xml" />
     <AndroidResource Include="Resources\Drawable\bookLaterButton_state.xml" />
     <AndroidResource Include="Resources\Drawable\drop_shadow.xml" />
+    <AndroidResource Include="Resources\Drawable\cell_top_button_state.xml" />
+    <AndroidResource Include="Resources\Drawable\cell_middle_button_state.xml" />
+    <AndroidResource Include="Resources\Drawable\blank_bottom_button_state.xml" />
     <Content Include="Todo.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
