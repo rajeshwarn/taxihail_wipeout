@@ -58,11 +58,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 //				var path = new Path();
 //				path.Reset();
 //				path.SetFillType(Path.FillType.InverseEvenOdd);      
-//				path.MoveTo(0,canvas.Height );
+//				path.MoveTo(0,canvas.Height-1 );
 //				path.LineTo(0, 0);
-//				path.LineTo(canvas.Width, 0);
-//				path.LineTo(canvas.Width, canvas.Height);
-//				path.LineTo(0, canvas.Height);
+//				path.LineTo(canvas.Width-1, 0);
+//				path.LineTo(canvas.Width-1, canvas.Height - 1);
+//				path.LineTo(0, canvas.Height -1 );
 //				canvas.DrawPath(path, paint);
 //
 //				paint = new Paint(PaintFlags.AntiAlias); 
