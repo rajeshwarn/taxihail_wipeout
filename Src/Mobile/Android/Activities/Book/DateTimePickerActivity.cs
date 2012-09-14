@@ -12,6 +12,9 @@ using Android.Widget;
 using Java.Lang;
 using Android.Views.InputMethods;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
+using TinyIoC;
+using TinyMessenger;
+using apcurium.MK.Booking.Mobile.Messages;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -40,10 +43,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         private void TimeOnClick(object sender, EventArgs e)
         {
-            var resultIntent = new Intent();
-            resultIntent.SetFlags(ActivityFlags.ForwardResult);
-            resultIntent.PutExtra("ResultSelectedDate", 0);
-            SetResult(Result.Ok, resultIntent);
+            TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new DateTimePicked(this,null));
             Finish();
         }
 
@@ -58,10 +58,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             if (result > DateTime.Now)
             {
-                var intent = new Intent();
-                intent.SetFlags(ActivityFlags.ForwardResult);
-                intent.PutExtra("ResultSelectedDate", result.Ticks);
-                SetResult(Result.Ok, intent);
+                TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new DateTimePicked(this, result));                                        
                 Finish();
             }
             else

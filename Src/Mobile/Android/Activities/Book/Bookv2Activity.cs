@@ -51,6 +51,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             FindViewById<Button>(Resource.Id.BookItBtn).Click -= new EventHandler(BookItBtn_Click);
             FindViewById<Button>(Resource.Id.BookItBtn).Click += new EventHandler(BookItBtn_Click);
 
+            FindViewById<ImageButton>(Resource.Id.pickupDateButton).Click -= new EventHandler(PickDate_Click);
+            FindViewById<ImageButton>(Resource.Id.pickupDateButton).Click += new EventHandler(PickDate_Click);
+
             if (ViewModel != null)
             {
                 ViewModel.Initialize();
@@ -99,6 +102,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             get { return true; }
         }
 
+        void PickDate_Click(object sender, EventArgs e)
+        {
+            _subscription = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<DateTimePicked>(OnDataTimePicked);
+
+            var intent = new Intent(this, typeof(DateTimePickerActivity));
+            if (ViewModel.Order.PickupDate.HasValue)
+            {
+                intent.PutExtra("SelectedDate", ViewModel.Order.PickupDate.Value.Ticks);
+            }
+            StartActivityForResult(intent, (int)ActivityEnum.DateTimePicked);            
+        }
+
+        private void OnDataTimePicked(DateTimePicked picked)
+        {
+            ViewModel.Order.PickupDate = picked.Content;   
+        }
+
         void BookItBtn_Click(object sender, EventArgs e)
         {
             ConfirmOrder();
@@ -129,8 +149,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         }
 
         private void StartNewOrder()
-        {
-
+        {            
         }
 
         private void UnsubscribeOrderConfirmed()

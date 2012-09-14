@@ -8,10 +8,10 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 
 namespace apcurium.MK.Booking.Mobile.Messages
 {
-    public class OrderConfirmed : GenericTinyMessage<CreateOrder>
+    public class DateTimePicked : GenericTinyMessage<DateTime?>
     {
-        public OrderConfirmed(object sender, CreateOrder address)
-            : base(sender, address)
+        public DateTimePicked(object sender, DateTime? datetime)
+            : base(sender, datetime)
         {            
         }
     }

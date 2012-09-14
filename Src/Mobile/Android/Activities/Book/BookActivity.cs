@@ -81,6 +81,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             Parent.FindViewById<Button>(Resource.Id.BookItBtn).Click += new EventHandler(BookItBtn_Click);
         }
 
+
+
         
 
         protected override void OnResume()
@@ -94,6 +96,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             pickup.Maybe(() => pickup.ParentResume());
             dest.Maybe(() => pickup.ParentResume());
         }
+
 
         void BookItBtn_Click(object sender, EventArgs e)
         {
