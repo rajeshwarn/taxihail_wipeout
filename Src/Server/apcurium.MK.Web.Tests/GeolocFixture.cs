@@ -71,7 +71,5 @@ namespace apcurium.MK.Web.Tests
             Assert.False(addresses.Addresses.First().StreetNumber.Contains("-"));
             Assert.False(addresses.Addresses.First().FullAddress.Split(' ')[0].Contains("-"));
         }
-
-        
     }
 }
