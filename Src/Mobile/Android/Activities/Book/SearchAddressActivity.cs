@@ -39,6 +39,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             var _listView = FindViewById<MvxBindableListView>(Resource.Id.SearchAddressListView);
             _listView.Divider = null;
             _listView.DividerHeight = 0;
+			_listView.TextFilterEnabled = true;
+
+		
 
         }
 

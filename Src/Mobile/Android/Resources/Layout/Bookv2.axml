@@ -7,7 +7,7 @@
     <ImageView
         android:id="@+id/fakeLayout"
         android:layout_marginLeft="100px"
-        android:layout_width="3dip"
+        android:layout_width="5dip"
         android:layout_height="fill_parent"
         android:background="@drawable/drop_shadow" />
     <RelativeLayout
@@ -37,13 +37,13 @@
         android:layout_centerHorizontal="true"
         android:layout_margin="10dip"
         android:layout_below="@id/mainSettingsLayoutHeader"
-        android:layout_toRightOf="@id/fakeLayout"
-        android:background="@color/blue">
+        android:layout_toRightOf="@id/fakeLayout">
         <Button
             android:id="@+id/settingsFavorites"
-            android:background="@drawable/cell_top_state"
+            style="@style/BigTitleTextBlack"
+            android:background="@drawable/cell_top_button_state"
             android:layout_width="fill_parent"
-            android:layout_height="50dip"
+            android:layout_height="40dip"
             android:text="Favorites"
             android:drawableRight="@drawable/right_arrow"
             android:paddingRight="10dip"
@@ -52,9 +52,10 @@
             local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;GoToFavorites&apos;}}" />
         <Button
             android:id="@+id/settingsHistory"
-            android:background="@drawable/cell_middle_state"
+            style="@style/BigTitleTextBlack"
+            android:background="@drawable/cell_middle_button_state"
             android:layout_width="fill_parent"
-            android:layout_height="50dip"
+            android:layout_height="40dip"
             android:text="Ride History"
             android:drawableRight="@drawable/right_arrow"
             android:paddingRight="10dip"
@@ -63,9 +64,10 @@
             local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;GoToRideHistory&apos;}}" />
         <Button
             android:id="@+id/settingsProfile"
-            android:background="@drawable/cell_middle_state"
+            style="@style/BigTitleTextBlack"
+            android:background="@drawable/cell_middle_button_state"
             android:layout_width="fill_parent"
-            android:layout_height="50dip"
+            android:layout_height="40dip"
             android:text="@string/ChangeDefaultRideSettings"
             android:drawableRight="@drawable/right_arrow"
             android:paddingRight="10dip"
@@ -74,9 +76,10 @@
             local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;GoToProfile&apos;}}" />
         <Button
             android:id="@+id/settingsCallCompany"
-            android:background="@drawable/cell_middle_state"
+            style="@style/BigTitleTextBlack"
+            android:background="@drawable/cell_middle_button_state"
             android:layout_width="fill_parent"
-            android:layout_height="50dip"
+            android:layout_height="40dip"
             android:text="@string/CallCompanyButton"
             android:drawableRight="@drawable/right_arrow"
             android:paddingRight="10dip"
@@ -85,9 +88,10 @@
             local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;GoToCall&apos;}}" />
         <Button
             android:id="@+id/settingsAbout"
-            android:background="@drawable/cell_middle_state"
+            style="@style/BigTitleTextBlack"
+            android:background="@drawable/cell_middle_button_state"
             android:layout_width="fill_parent"
-            android:layout_height="50dip"
+            android:layout_height="40dip"
             android:text="@string/AboutButton"
             android:drawableRight="@drawable/right_arrow"
             android:paddingRight="10dip"
@@ -96,9 +100,10 @@
             local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;GoToAbout&apos;}}" />
         <Button
             android:id="@+id/settingsSupport"
-            android:background="@drawable/cell_middle_state"
+            style="@style/BigTitleTextBlack"
+            android:background="@drawable/cell_middle_button_state"
             android:layout_width="fill_parent"
-            android:layout_height="50dip"
+            android:layout_height="40dip"
             android:text="@string/TechSupportButton"
             android:drawableRight="@drawable/right_arrow"
             android:paddingRight="10dip"
@@ -107,9 +112,10 @@
             local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;GoToSupport&apos;}}" />
         <Button
             android:id="@+id/settingsLogout"
-            android:background="@drawable/blank_bottom_state"
+            style="@style/BigTitleTextBlack"
+            android:background="@drawable/blank_bottom_button_state"
             android:layout_width="fill_parent"
-            android:layout_height="50dip"
+            android:layout_height="40dip"
             android:text="@string/SignOutButton"
             android:drawableRight="@drawable/right_arrow"
             android:paddingRight="10dip"
@@ -117,20 +123,25 @@
             android:gravity="left|center_vertical"
             local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;GoToLogout&apos;}}" />
     </LinearLayout>
-    <ImageView
-        android:id="@+id/apcuriumLogo"
-        android:src="@drawable/apcuriumLogo"
-        android:layout_width="wrap_content"
-        android:scaleType="fitXY"
-        android:adjustViewBounds="true"
+    <RelativeLayout
+        android:id="@+id/apcuriumLogoLayout"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="10dip"
-        android:layout_marginLeft="20dip"
-        android:layout_marginRight="20dip"
-        android:paddingBottom="10dip"
-        android:layout_toRightOf="@id/fakeLayout" />
+        android:orientation="vertical"
+        android:layout_toRightOf="@id/fakeLayout"
+        android:layout_alignParentBottom="true">
+        <ImageView
+            android:id="@+id/apcuriumLogo"
+            android:src="@drawable/apcuriumLogo"
+            android:layout_width="wrap_content"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:layout_marginRight="20dip"
+            android:paddingBottom="10dip"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
     <FrameLayout
         android:id="@+id/scrollinglayout"
         android:layout_width="fill_parent"
@@ -171,7 +182,7 @@
                 <RelativeLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dip">
+                    android:layout_marginRight="5dip">
                     <ImageButton
                         android:id="@+id/MainSettingsBtn"
                         style="@style/ButtonText"

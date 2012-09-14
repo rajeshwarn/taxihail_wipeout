@@ -105,9 +105,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return new MvxRelayCommand(() =>
                 {
+					SearchText = "";
 					SetSelected( TopBarButton.PlacesBtn );
 					IsSearching = true;
-                    _geolocator.GetPositionAsync(3000).ContinueWith(t =>
+                    _geolocator.GetPositionAsync(5000).ContinueWith(t =>
                     {
                         if (t.IsFaulted)
                         {
@@ -142,7 +143,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     _searchAddressCommand = new MvxRelayCommand(() =>
                     {
-
                         Console.WriteLine("SearchAddressCommand: Start executing.");
                         if (_editThread != null && _editThread.IsAlive)
                         {
@@ -151,7 +151,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							IsSearching = false;
                         }
 
-						if( SearchText.Where( c => char.IsLetter( c ) ).Count() > 3 )
+						if( SearchText.Where( c => char.IsLetter( c ) ).Count() > 2 )
 						{
 	                        _editThread = new Thread(() =>
 	                        {
@@ -187,6 +187,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get
             {
 				return new MvxRelayCommand(() => {
+					SearchText = "";
 					SetSelected( TopBarButton.ContactsBtn );
 					new Thread( ()=> {
 						IsSearching = true;
@@ -208,6 +209,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get
             {
                 return new MvxRelayCommand(() => {
+					SearchText = "";
 					SetSelected( TopBarButton.FavoritesBtn );
 					new Thread( () => {
 						IsSearching = true;
@@ -250,6 +252,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return new MvxRelayCommand(() =>
                     {
+						SearchText = "";
 						SetSelected( TopBarButton.SearchBtn );
 						AddressViewModels = new List<AddressViewModel>();
 
@@ -280,9 +283,29 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set
             {
                 _searchText = value;
-                SearchAddressCommand.Execute();
+				FirePropertyChanged( () => SearchText );
+				if( SearchSelected )
+				{
+					SearchFilter ="";
+                	SearchAddressCommand.Execute();
+				}
+				else
+				{
+					SearchFilter = SearchText;
+				}
             }
         }
+
+		private string _searchFilter;
+		public string SearchFilter
+		{
+			get { return _searchFilter; }
+			set
+			{
+				_searchFilter = value;
+				FirePropertyChanged( () => SearchFilter );
+			}
+		}
 
 
 		private enum TopBarButton { SearchBtn, FavoritesBtn, ContactsBtn, PlacesBtn }

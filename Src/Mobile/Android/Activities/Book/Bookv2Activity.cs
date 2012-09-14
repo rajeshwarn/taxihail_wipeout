@@ -69,6 +69,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _menuIsShown = false;
             var mainSettingsLayout = FindViewById<LinearLayout>(Resource.Id.mainSettingsLayout);
             var mainSettingsLayoutHeader = FindViewById<RelativeLayout>(Resource.Id.mainSettingsLayoutHeader);
+            var fakeLayout = FindViewById<ImageView>(Resource.Id.fakeLayout);
+            var apcuriumLogoLayout = FindViewById<RelativeLayout>(Resource.Id.apcuriumLogoLayout);
+
+            fakeLayout.Visibility = ViewStates.Gone;
+            apcuriumLogoLayout.Visibility = ViewStates.Gone;
+            mainSettingsLayoutHeader.Visibility = ViewStates.Gone;
+            mainSettingsLayout.Visibility = ViewStates.Gone;
 
             FindViewById<Button>(Resource.Id.BookItBtn).Click -= new EventHandler(BookItBtn_Click);
             FindViewById<Button>(Resource.Id.BookItBtn).Click += new EventHandler(BookItBtn_Click);
@@ -301,6 +308,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             if (_menuIsShown)
             {
+                var mainSettingsLayout = FindViewById<LinearLayout>(Resource.Id.mainSettingsLayout);
+                var mainSettingsLayoutHeader = FindViewById<RelativeLayout>(Resource.Id.mainSettingsLayoutHeader);
+                var fakeLayout = FindViewById<ImageView>(Resource.Id.fakeLayout);
+                var apcuriumLogoLayout = FindViewById<RelativeLayout>(Resource.Id.apcuriumLogoLayout);
+
+                fakeLayout.Visibility = ViewStates.Gone;
+                apcuriumLogoLayout.Visibility = ViewStates.Gone;
+                mainSettingsLayoutHeader.Visibility = ViewStates.Gone;
+                mainSettingsLayout.Visibility = ViewStates.Gone;
+
                 SlideAnimation a = new SlideAnimation(v2, -(_menuWidth), 0, _interpolator);
                 a.Duration = 400;
 
@@ -308,6 +325,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
             else
             {
+                var mainSettingsLayout = FindViewById<LinearLayout>(Resource.Id.mainSettingsLayout);
+                var mainSettingsLayoutHeader = FindViewById<RelativeLayout>(Resource.Id.mainSettingsLayoutHeader);
+                var fakeLayout = FindViewById<ImageView>(Resource.Id.fakeLayout);
+                var apcuriumLogoLayout = FindViewById<RelativeLayout>(Resource.Id.apcuriumLogoLayout);
+
+                fakeLayout.Visibility = ViewStates.Visible;
+                apcuriumLogoLayout.Visibility = ViewStates.Visible;
+                mainSettingsLayoutHeader.Visibility = ViewStates.Visible;
+                mainSettingsLayout.Visibility = ViewStates.Visible;
+
                 SlideAnimation a = new SlideAnimation(v2, 0, -(_menuWidth), _interpolator);
                 a.Duration = 400;
 
