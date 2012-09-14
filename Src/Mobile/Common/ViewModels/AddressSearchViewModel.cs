@@ -30,7 +30,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private double _lat;
         private double _lg;
         private string _ownerId;
-        public AddressSearchViewModel(string ownerId, string search, IGoogleService googleService, IGeolocService geolocService, IBookingService bookingService, IAccountService accountService, Geolocator geolocator)
+        
+		public AddressSearchViewModel(string ownerId, string search, IGoogleService googleService, IGeolocService geolocService, IBookingService bookingService, IAccountService accountService, Geolocator geolocator)
         {
             _ownerId = ownerId;
             _googleService = googleService;
@@ -53,6 +54,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 SearchAddressCommand.Execute();
             }
+			SearchSelected = true;
         }
 
         public override void Load()
@@ -60,6 +62,42 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         }
 
+		private bool _isSearching;
+		public bool IsSearching {
+			get { return _isSearching; }
+			set { _isSearching = value; 
+				FirePropertyChanged( () => IsSearching );
+			}
+		}
+
+		private bool _searchSelected;
+		public bool SearchSelected { 
+			get { return _searchSelected; }
+			set { _searchSelected = value;
+				FirePropertyChanged( () => SearchSelected );
+			}
+		}
+		private bool _favoritesSelected;
+		public bool FavoritesSelected { 
+			get { return _favoritesSelected; }
+			set { _favoritesSelected = value; 
+				FirePropertyChanged( () => FavoritesSelected );
+			}
+		}
+		private bool _contactsSelected;
+		public bool ContactsSelected { 
+			get { return _contactsSelected; }
+			set { _contactsSelected = value;
+				FirePropertyChanged( () => ContactsSelected );
+			}
+		}
+		private bool _placesSelected;
+		public bool PlacesSelected { 
+			get { return _placesSelected; }
+			set { _placesSelected = value; 
+				FirePropertyChanged( () => PlacesSelected );
+			}
+		}
 
         public IMvxCommand GetPlacesCommand
         {
@@ -67,6 +105,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return new MvxRelayCommand(() =>
                 {
+					SetSelected( TopBarButton.PlacesBtn );
+					IsSearching = true;
                     _geolocator.GetPositionAsync(3000).ContinueWith(t =>
                     {
                         if (t.IsFaulted)
@@ -80,8 +120,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         else
                         {
                             var addresses = _googleService.GetNearbyPlaces(t.Result.Latitude, t.Result.Longitude);
-                            AddressViewModels = addresses.Select(a => new AddressViewModel() { Address = a, ShowPlusSign = false, ShowRightArrow = false, IsFirst = a.Equals(addresses.First()), IsLast = a.Equals(addresses.Last()) }).ToList();
+							if( PlacesSelected )
+							{
+                            	AddressViewModels = addresses.Select(a => new AddressViewModel() { Address = a, ShowPlusSign = false, ShowRightArrow = false, IsFirst = a.Equals(addresses.First()), IsLast = a.Equals(addresses.Last()) }).ToList();
+							}
                         }
+						IsSearching = false;
 
                     }, _scheduler);
                 });
@@ -98,25 +142,40 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     _searchAddressCommand = new MvxRelayCommand(() =>
                     {
+
                         Console.WriteLine("SearchAddressCommand: Start executing.");
                         if (_editThread != null && _editThread.IsAlive)
                         {
                             Console.WriteLine("SearchAddressCommand: Killing previous thread.");
                             _editThread.Abort();
+							IsSearching = false;
                         }
 
-                        _editThread = new Thread(() =>
-                        {
-                            Console.WriteLine("SearchAddressCommand: Starting new thread.");
-                            Thread.Sleep(200);
+						if( SearchText.Where( c => char.IsLetter( c ) ).Count() > 3 )
+						{
+	                        _editThread = new Thread(() =>
+	                        {
+	                            Console.WriteLine("SearchAddressCommand: Starting new thread.");
+	                            Thread.Sleep(200);
 
-                            var addresses = _geolocService.SearchAddress(SearchText, _lat, _lg);
-
-                            AddressViewModels = addresses.Select(a => new AddressViewModel() { Address = a, ShowPlusSign = false, ShowRightArrow = false, IsFirst = a.Equals(addresses.First()), IsLast = a.Equals(addresses.Last()) }).ToList();
-                            Console.WriteLine("SearchAddressCommand: Finishing executing command.");
-                        });
-                        _editThread.Start();
-                    }, () => !SearchText.IsNullOrEmpty());
+								new Thread( () => {
+									IsSearching = true;
+									var addresses = _geolocService.SearchAddress(SearchText, _lat, _lg);
+									if( SearchSelected )
+									{
+		                            	AddressViewModels = addresses.Select(a => new AddressViewModel() { Address = a, ShowPlusSign = false, ShowRightArrow = false, IsFirst = a.Equals(addresses.First()), IsLast = a.Equals(addresses.Last()) }).ToList();
+									}
+		                            Console.WriteLine("SearchAddressCommand: Finishing executing command.");
+									IsSearching = false;
+								} ).Start();
+	                        });
+	                        _editThread.Start();
+						}
+						else
+						{
+							AddressViewModels = new List<AddressViewModel>();
+						}
+					}, () => !SearchText.IsNullOrEmpty() );
                 }
                 return _searchAddressCommand;
             }
@@ -127,14 +186,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return new MvxRelayCommand(() =>
-                   {
-                       var addresses = _bookingService.GetAddressFromAddressBook();
-                       AddressViewModels = addresses.Select(a => new AddressViewModel() { Address = a, ShowPlusSign = false, ShowRightArrow = false, IsFirst = a.Equals(addresses.First()), IsLast = a.Equals(addresses.Last()) }).ToList();
-
-                   });
-
-             
+				return new MvxRelayCommand(() => {
+					SetSelected( TopBarButton.ContactsBtn );
+					new Thread( ()=> {
+						IsSearching = true;
+						var addresses = _bookingService.GetAddressFromAddressBook();
+						if(ContactsSelected )
+						{
+	                       AddressViewModels = addresses.Select(a => new AddressViewModel() { Address = a, ShowPlusSign = false, ShowRightArrow = false, IsFirst = a.Equals(addresses.First()), IsLast = a.Equals(addresses.Last()) }).ToList();
+						}  
+						IsSearching = false;
+					}).Start();
+					Console.WriteLine( "Thread started");
+				});
             }
         }
 
@@ -143,10 +207,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return new MvxRelayCommand(() =>
-                    {
-                        var addresses = _accountService.GetFavoriteAddresses();
-                        AddressViewModels = addresses.Select(a => new AddressViewModel() { Address = a, ShowPlusSign = false, ShowRightArrow = false, IsFirst = a.Equals(addresses.First()), IsLast = a.Equals(addresses.Last()) }).ToList();
+                return new MvxRelayCommand(() => {
+					SetSelected( TopBarButton.FavoritesBtn );
+					new Thread( () => {
+						IsSearching = true;
+						var addresses = _accountService.GetFavoriteAddresses();
+
+						if( FavoritesSelected )
+						{
+	                        AddressViewModels = addresses.Select(a => new AddressViewModel() { Address = a, ShowPlusSign = false, ShowRightArrow = false, IsFirst = a.Equals(addresses.First()), IsLast = a.Equals(addresses.Last()) }).ToList();
+						}
+						IsSearching = false;
+					} ).Start();
                     });               
             }
         }
@@ -172,13 +244,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand ResetCommand
+        public IMvxCommand SearchCommand
         {
             get
             {
                 return new MvxRelayCommand(() =>
                     {
-                        AddressViewModels = new List<AddressViewModel>();
+						SetSelected( TopBarButton.SearchBtn );
+						AddressViewModels = new List<AddressViewModel>();
+
+						SearchAddressCommand.Execute();
+                        
                     });
             }
         }
@@ -209,18 +285,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
 
+		private enum TopBarButton { SearchBtn, FavoritesBtn, ContactsBtn, PlacesBtn }
 
-        public MvxRelayCommand PickupLocationChanged
-        {
-            get
-            {
-                return new MvxRelayCommand(() =>
-                    {
-
-
-                    });
-            }
-        }
+		private void SetSelected( TopBarButton btn )
+		{
+			SearchSelected = btn == TopBarButton.SearchBtn;
+			FavoritesSelected = btn == TopBarButton.FavoritesBtn;
+			ContactsSelected = btn == TopBarButton.ContactsBtn;
+			PlacesSelected = btn == TopBarButton.PlacesBtn;
+		}
 
     }
 }

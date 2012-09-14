@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Booking.Google.Resources;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -53,7 +54,18 @@ namespace apcurium.MK.Booking.Api.Services
                 AddressType = "place"
             };
 
-            return address;
+            if (address.FullAddress.HasValue() &&
+                address.FullAddress.Contains("-"))
+            {
+                var firstWordStreetNumber = address.FullAddress.Split(' ')[0];
+                if (firstWordStreetNumber.Contains("-"))
+                {
+                    var newStreetNUmber = firstWordStreetNumber.Split('-')[0].Trim();
+                    address.FullAddress = address.FullAddress.Replace(firstWordStreetNumber, newStreetNUmber);
+                }
+            }
+
+           return address;
         }
 
     }
