@@ -67,6 +67,9 @@ namespace apcurium.MK.Web.Tests
             var sut = new GeocodingServiceClient(BaseUrl, SessionId);
             var addresses = sut.Search(45.5227967351675, -73.6242310144007);
             Assert.True(addresses.Addresses.Count() >= 1);
+
+            Assert.False(addresses.Addresses.First().StreetNumber.Contains("-"));
+            Assert.False(addresses.Addresses.First().FullAddress.Split(' ')[0].Contains("-"));
         }
 
         
