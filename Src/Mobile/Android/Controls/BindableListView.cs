@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 		private void SetFilter()
 		{
-			SetFilterText( SearchFilter );
+			//SetFilterText( SearchFilter );
 		}
 
 	}
