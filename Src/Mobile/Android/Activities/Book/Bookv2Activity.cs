@@ -211,19 +211,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private void MainSettingsButtonOnClick(object sender, EventArgs eventArgs)
         {
             View v2 = FindViewById<FrameLayout>(Resource.Id.scrollinglayout);
+                View v3 = FindViewById<RelativeLayout>(Resource.Id.contentframe);
             v2.ClearAnimation();
             v2.DrawingCacheEnabled = true;
+            v3.ClearAnimation();
+            v3.DrawingCacheEnabled = true;
 
             if (_menuIsShown)
             {
                 SlideAnimation a = new SlideAnimation(v2, -(_menuWidth), 0, _interpolator);
                 a.Duration = 400;
+
                 v2.StartAnimation(a);
             }
             else
             {
                 SlideAnimation a = new SlideAnimation(v2, 0, -(_menuWidth), _interpolator);
                 a.Duration = 400;
+
                 v2.StartAnimation(a);
             }
 

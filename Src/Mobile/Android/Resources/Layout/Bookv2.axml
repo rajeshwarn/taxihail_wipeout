@@ -6,8 +6,10 @@
     android:background="@drawable/background">
     <ImageView
         android:id="@+id/fakeLayout"
-        android:layout_width="100px"
-        android:layout_height="fill_parent" />
+        android:layout_marginLeft="100px"
+        android:layout_width="3dip"
+        android:layout_height="fill_parent"
+        android:background="@drawable/drop_shadow" />
     <RelativeLayout
         android:id="@+id/mainSettingsLayoutHeader"
         android:layout_width="fill_parent"
@@ -15,10 +17,10 @@
         android:layout_toRightOf="@id/fakeLayout">
         <ImageView
             android:layout_width="fill_parent"
-            android:layout_height="48dip"
+            android:layout_height="50dip"
             android:adjustViewBounds="true"
             android:src="@drawable/navBar"
-            android:scaleType="fitStart" />
+            android:scaleType="fitXY" />
         <TextView
             android:text="Settings"
             style="@style/BigTitleText"
@@ -29,7 +31,7 @@
     </RelativeLayout>
     <LinearLayout
         android:id="@+id/mainSettingsLayout"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_centerHorizontal="true"
@@ -37,7 +39,7 @@
         android:layout_below="@id/mainSettingsLayoutHeader"
         android:layout_toRightOf="@id/fakeLayout"
         android:background="@color/blue">
-      <Button
+        <Button
             android:id="@+id/settingsFavorites"
             android:background="@drawable/cell_top_state"
             android:layout_width="fill_parent"
@@ -48,8 +50,8 @@
             android:paddingLeft="10dip"
             android:gravity="left|center_vertical"
             local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;GoToFavorites&apos;}}" />
-      <Button
-              android:id="@+id/settingsHistory"
+        <Button
+            android:id="@+id/settingsHistory"
             android:background="@drawable/cell_middle_state"
             android:layout_width="fill_parent"
             android:layout_height="50dip"
@@ -59,7 +61,7 @@
             android:paddingLeft="10dip"
             android:gravity="left|center_vertical"
             local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;GoToRideHistory&apos;}}" />
-      <Button
+        <Button
             android:id="@+id/settingsProfile"
             android:background="@drawable/cell_middle_state"
             android:layout_width="fill_parent"
@@ -70,8 +72,8 @@
             android:paddingLeft="10dip"
             android:gravity="left|center_vertical"
             local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;GoToProfile&apos;}}" />
-      <Button
-          android:id="@+id/settingsCallCompany"
+        <Button
+            android:id="@+id/settingsCallCompany"
             android:background="@drawable/cell_middle_state"
             android:layout_width="fill_parent"
             android:layout_height="50dip"
@@ -92,7 +94,7 @@
             android:paddingLeft="10dip"
             android:gravity="left|center_vertical"
             local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;GoToAbout&apos;}}" />
-      <Button
+        <Button
             android:id="@+id/settingsSupport"
             android:background="@drawable/cell_middle_state"
             android:layout_width="fill_parent"
@@ -103,7 +105,7 @@
             android:paddingLeft="10dip"
             android:gravity="left|center_vertical"
             local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;GoToSupport&apos;}}" />
-      <Button
+        <Button
             android:id="@+id/settingsLogout"
             android:background="@drawable/blank_bottom_state"
             android:layout_width="fill_parent"
@@ -138,27 +140,34 @@
             android:layout_height="match_parent"
             android:layout_width="fill_parent"
             android:minWidth="25px"
-            android:minHeight="25px"
-            android:background="@color/black">
+            android:minHeight="25px">
             <ImageView
                 android:id="@+id/imagePickupBackground"
                 android:layout_width="fill_parent"
                 android:scaleType="fitXY"
                 android:adjustViewBounds="true"
                 android:src="@drawable/backPickupDestination"
-                android:layout_marginTop="46dip"
-                android:layout_height="wrap_content" />
+                android:layout_marginTop="49dip"
+                android:layout_height="126dip" />
             <RelativeLayout
                 android:layout_width="fill_parent"
-                android:layout_height="55dip"
+                android:layout_height="58dip"
                 android:id="@+id/HeaderImage"
                 android:layout_marginBottom="-8dip">
                 <ImageView
                     android:layout_width="fill_parent"
-                    android:layout_height="55dip"
+                    android:layout_height="50dip"
                     android:adjustViewBounds="true"
-                    android:src="@drawable/header"
+                    android:src="@drawable/navBar"
                     android:scaleType="fitXY" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/Logo"
+                    android:scaleType="fitStart"
+                    android:layout_marginTop="1dip"
+                    android:layout_marginLeft="11dip"
+                    android:layout_height="80dip" />
                 <RelativeLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -180,8 +189,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="false"
                 android:gravity="center_horizontal"
-                android:layout_marginLeft="12dip"
-                android:layout_marginRight="10dip"
+                android:layout_marginLeft="7dip"
+                android:layout_marginRight="5dip"
                 android:layout_marginTop="55dip">
                 <apcurium.mk.booking.mobile.client.controls.TextProgressButton
                     android:id="@+id/pickupAddressButton"
@@ -191,10 +200,11 @@
                     android:gravity="left"
                     android:layout_weight="1"
                     android:background="@drawable/main_btn_state"
-                    android:layout_marginRight="10dip"
+                    android:layout_marginRight="5dip"
                     android:drawableRight="@drawable/right_arrow"
                     local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;Pickup.PickAddress&apos;}, &apos;Cancel&apos;:{&apos;Path&apos;:&apos;Pickup.CancelCurrentLocationCommand&apos;},&apos;IsProgressing&apos;:{&apos;Path&apos;:&apos;Pickup.IsExecuting&apos;},&apos;TextLine1&apos; : {&apos;Path&apos;:&apos;Pickup.Title&apos;}, &apos;TextLine2&apos; : {&apos;Path&apos;:&apos;Pickup.Display&apos;}}"
-                    android:paddingRight="10dip" />
+                    android:paddingRight="10dip"
+                    android:layout_marginTop="1dip" />
                 <ImageButton
                     android:id="@+id/pickupIsActiveButton"
                     android:background="@drawable/main_btn_state"
@@ -205,7 +215,8 @@
                     android:layout_gravity="fill"
                     android:layout_width="40dip"
                     android:scaleType="fitXY"
-                    android:padding="7dip" />
+                    android:padding="7dip"
+                    android:layout_marginTop="1dip" />
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/destinationAddressLayout"
@@ -214,8 +225,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/pickupAddressLayout"
                 android:gravity="center_horizontal"
-                android:layout_marginLeft="12dip"
-                android:layout_marginRight="10dip"
+                android:layout_marginLeft="7dip"
+                android:layout_marginRight="5dip"
                 android:layout_marginTop="5dip">
                 <apcurium.mk.booking.mobile.client.controls.TextProgressButton
                     android:id="@+id/destinationAddressButton"
@@ -226,9 +237,10 @@
                     android:layout_weight="1"
                     local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;Dropoff.PickAddress&apos;}, &apos;Cancel&apos;:{&apos;Path&apos;:&apos;Dropoff.CancelCurrentLocationCommand&apos;},&apos;IsProgressing&apos;:{&apos;Path&apos;:&apos;Dropoff.IsExecuting&apos;},&apos;TextLine1&apos; : {&apos;Path&apos;:&apos;Dropoff.Title&apos;}, &apos;TextLine2&apos; : {&apos;Path&apos;:&apos;Dropoff.Display&apos;}}"
                     android:background="@drawable/main_btn_state"
-                    android:layout_marginRight="10dip"
+                    android:layout_marginRight="5dip"
                     android:paddingRight="10dip"
-                    android:drawableRight="@drawable/right_arrow" />
+                    android:drawableRight="@drawable/right_arrow"
+                    android:layout_marginTop="1dip" />
                 <ImageButton
                     android:id="@+id/destinationIsActiveButton"
                     android:background="@drawable/main_btn_state"
@@ -240,7 +252,8 @@
                     android:layout_marginLeft="10dip"
                     android:layout_width="40dip"
                     android:padding="7dip"
-                    android:scaleType="fitXY" />
+                    android:scaleType="fitXY"
+                    android:layout_marginTop="1dip" />
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/pickupDateLayout"
@@ -292,10 +305,10 @@
                     <ImageButton
                         android:id="@+id/myLocationButton"
                         android:src="@drawable/mylocation_state"
-                        android:background="@drawable/mylocationbutton"
+                        android:background="@drawable/myLocationButton_state"
                         style="@style/ButtonTextGray"
                         android:layout_width="40dip"
-                        android:layout_height="40dip"                        
+                        android:layout_height="40dip"
                         android:layout_alignParentLeft="true" />
                     <Button
                         android:id="@+id/BookItBtn"
@@ -308,7 +321,7 @@
                     <ImageButton
                         android:id="@+id/pickupDateButton"
                         android:src="@drawable/bookLater_state"
-                        android:background="@drawable/laterbutton"
+                        android:background="@drawable/bookLaterButton_state"
                         style="@style/ButtonTextGray"
                         android:layout_width="40dip"
                         android:layout_height="40dip"
