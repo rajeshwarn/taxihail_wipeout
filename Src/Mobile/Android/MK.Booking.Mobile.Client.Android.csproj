@@ -500,9 +500,14 @@
     <AndroidResource Include="Resources\Drawable\mylocation_state.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Drawable\bookLater_state.xml" />
+    <AndroidResource Include="Resources\Drawable\bookLater_state.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <AndroidResource Include="Resources\Drawable\Logo.png" />
     <AndroidResource Include="Resources\drawable-hdpi\Logo.png" />
+    <AndroidResource Include="Resources\Drawable\myLocationButton_state.xml" />
+    <AndroidResource Include="Resources\Drawable\bookLaterButton_state.xml" />
+    <AndroidResource Include="Resources\Drawable\drop_shadow.xml" />
     <Content Include="Todo.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
