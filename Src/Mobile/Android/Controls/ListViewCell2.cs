@@ -12,6 +12,7 @@ using Android.Widget;
 using Android.Util;
 using Android.Graphics;
 using Android.Text;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -32,6 +33,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
         }
 
+
+
+
         public string TextLine1 { get; set; }
 		public string TextLine2 { get; set; }
 
@@ -42,10 +46,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             base.OnDraw(canvas);
 
-            DrawText(canvas, TextLine1 ?? "", 8, 35, 20, AppFonts.Bold);
-			DrawText(canvas, TextLine2 ?? "", 8, 57, 16, AppFonts.Regular);
+			if( !TextLine1.IsNullOrEmpty() )
+			{
+	            DrawText(canvas, TextLine1 ?? "", 8, 32, 20, AppFonts.Bold);
+				DrawText(canvas, TextLine2 ?? "", 8, 54, 16, AppFonts.Regular);
+			}
+			else
+			{
+				DrawText(canvas, TextLine2 ?? "", 8, 45, 16, AppFonts.Regular);
+			}
 
-			var d = IsTop ? Resource.Drawable.cell_top : IsBottom ? Resource.Drawable.cell_bottom : Resource.Drawable.cell_middle;
+			var d = IsTop && !IsBottom ? Resource.Drawable.cell_top : IsBottom && !IsTop ? Resource.Drawable.cell_bottom : IsTop && IsBottom ? Resource.Drawable.cell_bottom_full : Resource.Drawable.cell_middle;
 			SetBackgroundDrawable( Resources.GetDrawable( d ) );
 
 //			if( IsTop )
