@@ -20,6 +20,8 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.Messages;
+using TinyMessenger;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -126,14 +128,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         }
 
         void Confirm_Click(object sender, EventArgs e)
-        {
-
-            var value = BookingInfo.Serialize();
-
-            Intent intent = new Intent();
-            intent.SetFlags(ActivityFlags.ForwardResult);
-            intent.PutExtra("ConfirmedBookingInfo", value);
-            SetResult(Result.Ok, intent);
+        {           
+            TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new OrderConfirmed(this, BookingInfo));                        
 
             Finish();
         }

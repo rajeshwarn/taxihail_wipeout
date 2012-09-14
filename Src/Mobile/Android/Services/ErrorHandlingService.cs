@@ -42,23 +42,31 @@ namespace apcurium.MK.Booking.Mobile.Client.Services
 
 		public void DisplayError(Context context ,Intent intent)
 		{
-			var title = Resources.GetString(Resource.String.ServiceErrorCallTitle);
+            var title = Resources.GetString(Resource.String.ServiceErrorCallTitle);
             var message = Resources.GetString(Resource.String.ServiceErrorDefaultMessage);
-
-			switch(intent.Action)
-			{
-			    case ErrorHandler.ACTION_SERVICE_ERROR:
-			        var key = intent.GetStringExtra(ErrorHandler.ACTION_EXTRA_ERROR);
-                    var identifier = Resources.GetIdentifier("ServiceError" + key, "string", context.PackageName);
-                    message = Resources.GetString(identifier);
-				    break;
-			}
-
-			var i = new Intent(this, typeof(AlertDialogActivity));
+            try
+            {               
+                switch (intent.Action)
+                {
+                    case ErrorHandler.ACTION_SERVICE_ERROR:
+                        var key = intent.GetStringExtra(ErrorHandler.ACTION_EXTRA_ERROR);
+                        var identifier = Resources.GetIdentifier("ServiceError" + key, "string", context.PackageName);
+                        message = Resources.GetString(identifier);
+                        break;
+                }
+            }
+            catch
+            { 
+            
+            }
+			
+            var i = new Intent(this, typeof(AlertDialogActivity));
 			i.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront );
 			i.PutExtra("Title", title );
 			i.PutExtra("Message", message);
 			StartActivity(i);
+
+
 		}
 	}
 

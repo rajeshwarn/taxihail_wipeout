@@ -158,8 +158,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        
 
 
+
+
+        public void Initialize()
+        {
+            PickupIsActive = true;
+            Pickup.RequestCurrentLocationCommand.Execute();
+        }
     }
 }

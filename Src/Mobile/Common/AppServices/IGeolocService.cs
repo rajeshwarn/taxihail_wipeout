@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         Address[] SearchAddress(double latitude, double longitude);
 
-		Address[] SearchAddress(string address);
+		Address[] SearchAddress(string address, double latitude, double longitude);
 
         DirectionInfo GetDirectionInfo(double originLat, double originLong, double destLat, double destLong);
 

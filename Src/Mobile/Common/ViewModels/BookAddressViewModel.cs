@@ -79,16 +79,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return new MvxRelayCommand(() =>
                 {                    
-                    RequestNavigate<AddressSearchViewModel>(new { ownerId = _id});                    
+                    RequestNavigate<AddressSearchViewModel>(new { search  = Model.FullAddress , ownerId = _id});                    
                 });
             }
         }
 
         private void OnAddressSelected(AddressSelected selected)
         {
-            Model.FullAddress = selected.Content.FullAddress;
-            FirePropertyChanged(() => Display);
+            SetAddress(selected.Content);
         }
+
+        
 
         
 
@@ -128,6 +129,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         //}
 
 
+        private void SetAddress(Address address)
+        {
+            Model.FullAddress = address.FullAddress;
+            Model.Longitude = address.Longitude;
+            Model.Latitude = address.Latitude;
+
+            FirePropertyChanged(() => Display);
+            FirePropertyChanged(() => Model);
+        }
+
+
+        private void ClearAddress()
+        {
+            Model.FullAddress = null;
+            Model.Longitude = 0;
+            Model.Latitude = 0;
+            FirePropertyChanged(() => Display);
+            FirePropertyChanged(() => Model);
+        }
+
         public IMvxCommand RequestCurrentLocationCommand
         {
             get
@@ -156,18 +177,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                 var address = TinyIoC.TinyIoCContainer.Current.Resolve<IGeolocService>().SearchAddress(t.Result.Latitude, t.Result.Longitude);
                                 if (address.Count() > 0)
                                 {
-                                    this.Model.FullAddress = address[0].FullAddress;
-                                    this.Model.Longitude = address[0].Longitude;
-                                    this.Model.Latitude = address[0].Latitude;
+                                    SetAddress(address[0]);                                    
                                 }
                                 else
                                 {
-                                    this.Model.FullAddress = null;
-                                    this.Model.Longitude = 0;
-                                    this.Model.Latitude = 0;
+                                    ClearAddress();
                                 }
-                                FirePropertyChanged(() => Display);
-                                FirePropertyChanged(() => Model);
+                                
 
                                 
                             }
@@ -182,5 +198,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 });
             }
         }
+
     }
 }

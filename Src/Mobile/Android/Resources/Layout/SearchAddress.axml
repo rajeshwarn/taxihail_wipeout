@@ -96,7 +96,7 @@
         android:id="@+id/SearchAddressListView"
         android:layout_marginBottom="5dip"
         local:MvxItemTemplate="@layout/simplelistitem"
-        local:MvxBind="{&apos;ItemsSource&apos;:{&apos;Path&apos;:&apos;AddressViewModels&apos;}}"
+        local:MvxBind="{&apos;ItemsSource&apos;:{&apos;Path&apos;:&apos;AddressViewModels&apos;},&apos;ItemClick&apos;:{&apos;Path&apos;:&apos;RowSelectedCommand&apos;}}"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp" />
 </LinearLayout>

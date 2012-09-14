@@ -17,11 +17,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public Address ValidateAddress(string address)
         {
             try
-            {                
-                var addresses = TinyIoCContainer.Current.Resolve<GeocodingServiceClient>().Search( address );
+            {
+                var addresses = TinyIoCContainer.Current.Resolve<GeocodingServiceClient>().Search(address);
                 return addresses.Addresses.FirstOrDefault();
             }
-            catch( Exception ex )
+            catch (Exception ex)
             {
                 return null; ;
             }
@@ -32,21 +32,23 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             try
             {
-                var addresses =  TinyIoCContainer.Current.Resolve<GeocodingServiceClient>().Search(latitude, longitude);
-                return addresses.Addresses;                
+                var addresses = TinyIoCContainer.Current.Resolve<GeocodingServiceClient>().Search(latitude, longitude);
+                return addresses.Addresses;
             }
             catch
             {
                 return new Address[0];
             }
         }
-        
-		public Address[] SearchAddress(string address)
+
+        public Address[] SearchAddress(string address, double latitude, double longitude)
         {
             try
             {
-                var addresses =  TinyIoCContainer.Current.Resolve<GeocodingServiceClient>().Search(address);
-                return addresses.Addresses;                
+                //var localAddress = FindSimilar(address);
+                var addresses = TinyIoCContainer.Current.Resolve<GeocodingServiceClient>().Search(address);
+
+                return addresses.Addresses;
             }
             catch
             {
@@ -57,9 +59,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public DirectionInfo GetDirectionInfo(Address origin, Address dest)
         {
-            if ( origin.HasValidCoordinate() && dest.HasValidCoordinate() )
+            if (origin.HasValidCoordinate() && dest.HasValidCoordinate())
             {
-                return GetDirectionInfo(origin.Latitude, origin.Longitude, dest.Latitude, dest.Longitude );
+                return GetDirectionInfo(origin.Latitude, origin.Longitude, dest.Latitude, dest.Longitude);
             }
             else
             {

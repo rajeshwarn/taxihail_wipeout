@@ -298,8 +298,7 @@ local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;Pickup.PickAddress&apo
                         android:background="@drawable/green_button"
                         android:layout_width="150dip"
                         android:layout_height="40dip"
-                        android:text="@string/BookItButton"
-                        local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;SelectedAddress.RequestCurrentLocationCommand&apos;}}"
+                        android:text="@string/BookItButton"                        
                         android:layout_centerInParent="true" />
                     <ImageButton
                         android:id="@+id/pickupDateButton"
