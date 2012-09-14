@@ -12,6 +12,7 @@ using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using TinyMessenger;
 using apcurium.MK.Booking.Mobile.Messages;
+using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -60,9 +61,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Load();
         }
 
-        public void Rebook(CreateOrder rebookData)
+        public void Rebook(Order order)
         {
-            Order = rebookData;
+            Order = JsonSerializer.DeserializeFromString<CreateOrder>(JsonSerializer.SerializeToString<Order>(order));
+            Order.Id = Guid.Empty;
+            Order.PickupDate = null;
+            Order.PickupDate = null;
+            FirePropertyChanged(() => Order);
+            FirePropertyChanged(() => Pickup );
+            FirePropertyChanged(() => Dropoff );
         }
 
         public CreateOrder Order

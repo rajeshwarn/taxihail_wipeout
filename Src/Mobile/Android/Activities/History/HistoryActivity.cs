@@ -17,6 +17,8 @@ using apcurium.MK.Booking.Mobile.Client.Adapters;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
+using TinyMessenger;
+using apcurium.MK.Booking.Mobile.Messages;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.History
 {
@@ -24,6 +26,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
     public class HistoryActivity : Activity
     {
 
+        private TinyMessageSubscriptionToken _closeViewToken;       
         public static string ITEM_TITLE = "TITLE";
         public static string ITEM_ID = "ID";
         private ListView _listView;
@@ -32,10 +35,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-
+            _closeViewToken = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<CloseViewsToRoot>(m => Finish());            
             SetContentView(Resource.Layout.HistoryListView);
             _listView = FindViewById<ListView>(Resource.Id.HistoryList);
             _listView.ItemClick += new EventHandler<AdapterView.ItemClickEventArgs>(listView_ItemClick);
+        }
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            if (_closeViewToken != null)
+            {
+                TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Unsubscribe<CloseViewsToRoot>(_closeViewToken);
+            }
         }
 
         private void SetAdapter()

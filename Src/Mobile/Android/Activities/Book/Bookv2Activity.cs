@@ -36,13 +36,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private bool _menuIsShown;
         private int _menuWidth = 400;
         private DecelerateInterpolator _interpolator = new DecelerateInterpolator(0.9f);        
-        private TinyMessageSubscriptionToken _subscription;
-        private TinyMessageSubscriptionToken _bookUsingAddress;
+        private TinyMessageSubscriptionToken _pickDateTimeSubscription;
+        private TinyMessageSubscriptionToken _bookUsingAddressSubscription;
+        private TinyMessageSubscriptionToken _rebookSubscription;
         
 
         protected override void OnViewModelSet()
         {
             UnsubscribeOrderConfirmed();
+            UnsubscribeBookUsingAddress();
+
+            _bookUsingAddressSubscription = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<BookUsingAddress>(m => BookUsingAddress(m.Content));
+            _rebookSubscription = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<RebookRequested>(m => Rebook(m.Content));
+
             SetContentView(Resource.Layout.Bookv2);
             
             var bottomLayout = FindViewById<FrameLayout>(Resource.Id.bottomLayout);
@@ -54,7 +60,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             mainSettingsButton.Click -= MainSettingsButtonOnClick;
             mainSettingsButton.Click += MainSettingsButtonOnClick;
             
-            _bookUsingAddress = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<BookUsingAddress>(m => BookUsingAddress(m.Content));
+            
+            
             _menuWidth = WindowManager.DefaultDisplay.Width - 100;
             _menuIsShown = false;
             var mainSettingsLayout = FindViewById<LinearLayout>(Resource.Id.mainSettingsLayout);
@@ -98,6 +105,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 ViewModel.Initialize();
             }
 
+        }
+
+        private void Rebook(Order order)
+        {
+            ViewModel.Rebook(order);
+            BookItBtn_Click(this, EventArgs.Empty);
         }
 
         
@@ -228,10 +241,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             base.OnDestroy();
             UnsubscribeOrderConfirmed();
-            if (_bookUsingAddress != null)
+            UnsubscribeBookUsingAddress();
+        }
+
+        private void UnsubscribeBookUsingAddress()
+        {
+            if (_bookUsingAddressSubscription != null)
             {
-                TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Unsubscribe<BookUsingAddress>(_bookUsingAddress);
-                
+                TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Unsubscribe<BookUsingAddress>(_bookUsingAddressSubscription);
+
             }
         }
 
@@ -277,7 +295,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         void PickDate_Click(object sender, EventArgs e)
         {
-            _subscription = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<DateTimePicked>(OnDataTimePicked);
+            _pickDateTimeSubscription = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<DateTimePicked>(OnDataTimePicked);
 
             var intent = new Intent(this, typeof(DateTimePickerActivity));
             if (ViewModel.Order.PickupDate.HasValue)
@@ -309,7 +327,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 else
                 {
                     
-                    _subscription = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<OrderConfirmed>(OnOrderConfirmed);
+                    _pickDateTimeSubscription = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<OrderConfirmed>(OnOrderConfirmed);
                     RunOnUiThread(() =>
                     {
                         Intent i = new Intent(this, typeof(BookDetailActivity));
@@ -327,11 +345,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         private void UnsubscribeOrderConfirmed()
         {
-            if (_subscription != null)
+            if (_pickDateTimeSubscription != null)
             {
-                TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Unsubscribe<OrderConfirmed>(_subscription);
-                _subscription.Dispose();
-                _subscription = null;
+                TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Unsubscribe<OrderConfirmed>(_pickDateTimeSubscription);
+                _pickDateTimeSubscription.Dispose();
+                _pickDateTimeSubscription = null;
             }
         }
 

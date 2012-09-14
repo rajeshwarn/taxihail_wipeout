@@ -41,9 +41,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
             SetContentView(Resource.Layout.LocationDetail);
             SetLocationData(Intent.Extras.GetString(NavigationStrings.LocationSelectedId.ToString()));
             UpdateUI();
-
             _closeViewToken = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<CloseViewsToRoot>(m => Finish());
-
         }
 
         protected override void OnDestroy()
@@ -176,18 +174,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
                     }
                 }
 
-                RunOnUiThread(() => Finish());
-
-                //TODO : Fix this
-                //var newList = new List<LocationData>();
-                //if ((AppContext.Current.LoggedUser.FavoriteLocations != null) &&
-                //    (AppContext.Current.LoggedUser.FavoriteLocations.Count() > 0))
-                //{
-                //    newList.AddRange(AppContext.Current.LoggedUser.FavoriteLocations);
-                //}
-                //newList.Remove(d => d.Id == _data.Id);
-                //AppContext.Current.LoggedUser.FavoriteLocations = newList.ToArray();
-                //AppContext.Current.UpdateLoggedInUser(AppContext.Current.LoggedUser, true);
+                RunOnUiThread(() => Finish());                
                 
             }, true);
         }
@@ -206,34 +193,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
             _data.FriendlyName = FindViewById<EditText>(Resource.Id.LocationFriendlyName).Text;
             //_data.IsFromHistory = false;
         }
+
         private void SetLocationData(string serializedData)
         {
-
-            //TODO: Need to check if it's from history
             _data = SerializerHelper.DeserializeObject<Address>(serializedData);
-
             if (_data.FullAddress == GetString(Resource.String.LocationAddFavoriteSubtitle))
             {
                 _data.FullAddress = "";
             }
-
-            
-            //if ((data != null) && (data.Id.
-            //{
-//                _data = data;
-            //}
-            //else if ((data != null) && (data.Id > 0) && (data.IsFromHistory))
-            //{
-            //    _data = data.Copy();
-            //    _data.Id = Guid.Empty;                
-            //}
-            //else
-            //{
-            //    _data = new LocationData();                
-            //}
-
-
-
         }
     }
 }
