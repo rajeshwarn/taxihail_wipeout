@@ -118,6 +118,7 @@
     <Compile Include="Controls\IconActionControl.cs" />
     <Compile Include="Controls\TouchMap.cs" />
     <Compile Include="Converter.cs" />
+    <Compile Include="Converters\AppConverters.cs" />
     <Compile Include="Converters\CoordinateConverter.cs" />
     <Compile Include="Helpers\CoordinatesHelper.cs" />
     <Compile Include="Diagnostic\Logger.cs" />

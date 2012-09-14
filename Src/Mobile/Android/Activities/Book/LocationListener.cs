@@ -14,17 +14,17 @@ using Android.Locations;
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
     public class LocationListener : Java.Lang.Object, ILocationListener
-    {        
+    {
         private LocationService _locationService;
 
-        public LocationListener(LocationService locationService )
+        public LocationListener(LocationService locationService)
         {
-            _locationService = locationService;            
+            _locationService = locationService;
         }
 
         public void OnLocationChanged(Android.Locations.Location location)
-        {         
-            _locationService.LocationChanged( location );
+        {
+            _locationService.LocationChanged(location);
         }
 
         public void OnProviderDisabled(string provider)
@@ -39,6 +39,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
         }
 
-       
+
     }
 }

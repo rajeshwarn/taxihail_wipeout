@@ -14,16 +14,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class CoordinateViewModel
     {
-        private double _latitude;
-        private double _longitude;
-
-        public CoordinateViewModel(double latitude, double longitude, string title)
+        
+        public CoordinateViewModel()
         {
-            _latitude = latitude;
-            _longitude = longitude;
+           
         }
 
+        public double Latitude{ get; set; }
 
+        public double Longitude { get; set; }
         
 
     }

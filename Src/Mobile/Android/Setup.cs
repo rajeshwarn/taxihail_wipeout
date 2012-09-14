@@ -7,6 +7,7 @@ using Cirrious.MvvmCross.ExtensionMethods;
 using MK.Booking.Mobile.Infrastructure.Practices;
 using Cirrious.MvvmCross.Binding.Android;
 using Android.Content;
+using apcurium.MK.Booking.Mobile.Client.Converters;
 
 
 namespace apcurium.MK.Booking.Mobile.Client
@@ -21,7 +22,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         }
         
-        #region Overrides of MvxBaseSetup
         
         protected override MvxApplication CreateApp()
         {
@@ -34,6 +34,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             TinyIoCServiceProviderSetup.Initialize();
         }
 
-#endregion
+        protected override IEnumerable<Type> ValueConverterHolders
+        {
+            get { return new[] { typeof(AppConverters) }; }
+        }
     }
 }

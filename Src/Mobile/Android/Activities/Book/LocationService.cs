@@ -52,7 +52,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
                 if (timeDelta > 120)
                 {
-                    _lastLocation = null;                    
+                    _lastLocation = null;
                 }
             }
 
@@ -99,7 +99,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                     {
                         if (LastLocation != null)
                         {
-                            TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Current location : " + LastLocation.Provider + " pos Lat : " + LastLocation.Latitude.ToString() + "Pos Long : " + LastLocation.Longitude.ToString()+ " + Accuracy : " + LastLocation.Accuracy.ToString());
+                            TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Current location : " + LastLocation.Provider + " pos Lat : " + LastLocation.Latitude.ToString() + "Pos Long : " + LastLocation.Longitude.ToString() + " + Accuracy : " + LastLocation.Accuracy.ToString());
                             result = LastLocation;
                             if (result.Accuracy <= accuracy)
                             {
@@ -109,7 +109,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                             }
                         }
 
-                        
+
                         Thread.Sleep(200);
                     }
 
@@ -170,13 +170,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 LastLocation = new Android.Locations.Location(LocationManager.PassiveProvider);
 
-				var location = TinyIoCContainer.Current.Resolve<ICacheService>().Get<Android.Locations.Location>("LastKnowLocation");
+                var location = TinyIoCContainer.Current.Resolve<ICacheService>().Get<Android.Locations.Location>("LastKnowLocation");
 
-				if ( (location != null) && ( location.Latitude != 0 ) && ( location.Longitude != 0 ) )
+                if ((location != null) && (location.Latitude != 0) && (location.Longitude != 0))
                 {
-					LastLocation = location;
-//                    LastLocation.Longitude = address.Longitude;
-//                    LastLocation.Accuracy = float.MaxValue;
+                    LastLocation = location;
+                    //                    LastLocation.Longitude = address.Longitude;
+                    //                    LastLocation.Accuracy = float.MaxValue;
                 }
                 else
                 {
@@ -205,11 +205,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         public void LocationChanged(Android.Locations.Location location)
         {
             TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Location changed : " + GetLocationText(location));
-            
+
             TinyIoCContainer.Current.Resolve<ICacheService>().Set("LastKnowLocation", new apcurium.MK.Booking.Api.Contract.Resources.Address { Longitude = location.Longitude, Latitude = location.Latitude });
             // this line make application frozen
             //TinyIoCContainer.Current.Resolve<ICacheService>().Set("LastKnowLocation", location );
-			if (IsBetterLocation(location, LastLocation))
+            if (IsBetterLocation(location, LastLocation))
             {
                 LastLocation = location;
             }

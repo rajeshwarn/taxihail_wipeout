@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public BookAddressViewModel(Address address, Geolocator geolocator)
         {
-            
+            SearchCoordinate = new CoordinateViewModel();
             _id = Guid.NewGuid().ToString();            
             _geolocator = geolocator;
             Model = address;
@@ -60,9 +60,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public Address Model { get; private set; }
 
-        public object SearchCoordinate { get; set; }
+        public CoordinateViewModel SearchCoordinate { get; set; }
 
-        public IMvxCommand Search
+        public IMvxCommand SearchCommand
         {
             get
             {

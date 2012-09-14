@@ -80,6 +80,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     _pickupPin = null;
                 }
 
+                    
                 if ((value != null) && (value.Latitude != 0) && (value.Longitude != 0))
                 {
                     _pickupPin = MapUtitilties.MapService.AddPushPin(this, Resources.GetDrawable(Resource.Drawable.pin_green), value, Resources.GetString(Resource.String.PickupMapTitle));
@@ -117,6 +118,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         }
 
 
-
+        
+        
     }
 }

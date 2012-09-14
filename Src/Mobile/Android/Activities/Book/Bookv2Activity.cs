@@ -18,11 +18,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private int _menuWidth = 400;
         private DecelerateInterpolator _interpolator = new DecelerateInterpolator(0.9f);
 
-        public LocationService LocationService
-        {
-            get;
-            private set;
-        }
+        //public LocationService LocationService
+        //{
+        //    get;
+        //    private set;
+        //}
 
 
         //protected override void OnCreate(Bundle bundle)
@@ -53,8 +53,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         protected override void OnViewModelSet()
         {
-            LocationService = new LocationService();
-            LocationService.Start();
+            //LocationService = new LocationService();
+            //LocationService.Start();
             SetContentView(Resource.Layout.Bookv2);
 
             // make bottom layout transparent

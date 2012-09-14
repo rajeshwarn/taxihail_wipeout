@@ -263,7 +263,7 @@ local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;Pickup.PickAddress&apo
                     android:layout_height="wrap_content"
                     android:apiKey="0XEY3WqKVmJMzXNRJfhbH1yM6RkpBMOaZWUoMAw"
                     android:enabled="true"
-            local:MvxBind="{&apos;Pickup&apos;:{&apos;Path&apos;:&apos;Pickup.Model&apos;}, &apos;Dropoff&apos;:{&apos;Path&apos;:&apos;Dropoff.Model&apos;}, &apos;MapCenter&apos;:{&apos;Path&apos;:&apos;Selected.SearchCoordinate&apos;}, &apos;MapTouchUp&apos;:{&apos;Path&apos;:&apos;Selected.Search&apos;}}"            
+                  local:MvxBind="{&apos;Pickup&apos;:{&apos;Path&apos;:&apos;Pickup.Model&apos;}, &apos;Dropoff&apos;:{&apos;Path&apos;:&apos;Dropoff.Model&apos;},&apos;MapTouchUp&apos;:{&apos;Path&apos;:&apos;SelectedAddress.SearchCommand&apos;},&apos;MapCenter&apos;:{&apos;Path&apos;:&apos;SelectedAddress.SearchCoordinate&apos;,'Converter':'CoordinateConverter', 'Mode':'TwoWay'}}"            
                     android:clickable="true" />
                 <ImageView
                     android:layout_width="30dip"
