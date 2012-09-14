@@ -268,15 +268,14 @@
                     android:layout_height="wrap_content"
                     android:apiKey="0XEY3WqKVmJMzXNRJfhbH1yM6RkpBMOaZWUoMAw"
                     android:enabled="true"
-                    local:MvxBind="{&apos;Pickup&apos;:{&apos;Path&apos;:&apos;Pickup.Model&apos;}, &apos;Dropoff&apos;:{&apos;Path&apos;:&apos;Dropoff.Model&apos;},&apos;MapTouchUp&apos;:{&apos;Path&apos;:&apos;SelectedAddress.SearchCommand&apos;},&apos;MapCenter&apos;:{&apos;Path&apos;:&apos;SelectedAddress.SearchCoordinate&apos;,&apos;Converter&apos;:&apos;CoordinateConverter&apos;, &apos;Mode&apos;:&apos;TwoWay&apos;}}"
+                    local:MvxBind="{&apos;Pickup&apos;:{&apos;Path&apos;:&apos;Pickup.Model&apos;}, &apos;Dropoff&apos;:{&apos;Path&apos;:&apos;Dropoff.Model&apos;}}"
                     android:clickable="true" />
                 <ImageView
                     android:layout_width="30dip"
                     android:layout_height="30dip"
                     android:layout_alignWithParentIfMissing="true"
                     android:layout_centerInParent="true"
-                    android:layout_gravity="center"
-                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;SelectedAddress.RequestCurrentLocationCommand&apos;}}"
+                    android:layout_gravity="center"                    
                     android:src="@drawable/target_state" />
                 <FrameLayout
                     android:id="@+id/bottomLayout"
@@ -290,7 +289,7 @@
                     android:layout_gravity="bottom"
                     android:layout_margin="10dip">
                     <ImageButton
-                        android:id="@+id/myLocationButton"
+                        local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;SelectedAddress.RequestCurrentLocationCommand&apos;}}"
                         android:src="@drawable/mylocation_state"
                         android:background="@drawable/mylocationbutton"
                         style="@style/ButtonTextGray"
@@ -311,7 +310,7 @@
                         android:background="@drawable/laterbutton"
                         style="@style/ButtonTextGray"
                         android:layout_width="40dip"
-                        android:layout_height="40dip"
+                        android:layout_height="40dip"                        
                         android:layout_alignParentRight="true" />
                 </RelativeLayout>
             </FrameLayout>

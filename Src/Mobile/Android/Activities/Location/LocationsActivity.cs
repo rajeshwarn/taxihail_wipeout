@@ -20,6 +20,8 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Client.Activities.Book;
 using System.Globalization;
+using apcurium.MK.Booking.Mobile.Messages;
+using TinyMessenger;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
 {
@@ -33,6 +35,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
         public static string ITEM_SUBTITLE = "SUBTITLE";
         public static string ITEM_DATA = "DATA";
 		private LocationService _locService;
+        private TinyMessageSubscriptionToken _closeViewToken;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -49,8 +52,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
 				_locService = new LocationService();
 				_locService.Start();
 			}
-
+            _closeViewToken = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<CloseViewsToRoot>(m => Finish());
             UpdateUI();
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            if (_closeViewToken != null)
+            {
+                TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Unsubscribe<CloseViewsToRoot>(_closeViewToken);
+            }
         }
 
         private void SetAdapter()
@@ -230,6 +242,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
                 switch (requestCode)
                 {
                     case (int)ActivityEnum.FavoriteLocations:
+                        
                         var bookAddress = data.GetStringExtra("BookFromLocation");
                         if (bookAddress.HasValue())
                         {

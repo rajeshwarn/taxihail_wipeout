@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Navigation;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using TinyMessenger;
+using apcurium.MK.Booking.Mobile.Messages;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -30,9 +32,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _appResource = appResource;
             
             Load();
-            Pickup = new BookAddressViewModel(Order.PickupAddress, _geolocator) { Title = appResource.GetString("BookPickupLocationButtonTitle"), EmptyAddressPlaceholder = appResource.GetString("BookPickupLocationEmptyPlaceholder") };
-            Dropoff = new BookAddressViewModel(Order.DropOffAddress, _geolocator) { Title = appResource.GetString("BookDropoffLocationButtonTitle"), EmptyAddressPlaceholder = appResource.GetString("BookDropoffLocationEmptyPlaceholder") };
+            Pickup = new BookAddressViewModel( ()=> Order.PickupAddress, address => Order.PickupAddress = address, _geolocator) { Title = appResource.GetString("BookPickupLocationButtonTitle"), EmptyAddressPlaceholder = appResource.GetString("BookPickupLocationEmptyPlaceholder") };
+            Dropoff = new BookAddressViewModel(() => Order.DropOffAddress, address => Order.DropOffAddress = address, _geolocator) { Title = appResource.GetString("BookDropoffLocationButtonTitle"), EmptyAddressPlaceholder = appResource.GetString("BookDropoffLocationEmptyPlaceholder") };
+
+            
         }
+
+        
 
         public override void Load()
         {
@@ -46,6 +52,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 Order.Settings = new BookingSettings{Passengers = 2};
             }           
         }
+
+        
 
         public void Reset()
         {

@@ -18,12 +18,15 @@ using apcurium.MK.Booking.Mobile.Client.Models;
 using TinyIoC;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Extensions;
+using TinyMessenger;
+using apcurium.MK.Booking.Mobile.Messages;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
 {
     [Activity(Label = "Location Details", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class LocationDetailActivity : Activity
     {
+        private TinyMessageSubscriptionToken _closeViewToken;       
         private Address _data;
         public bool IsNew
         {
@@ -38,6 +41,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
             SetContentView(Resource.Layout.LocationDetail);
             SetLocationData(Intent.Extras.GetString(NavigationStrings.LocationSelectedId.ToString()));
             UpdateUI();
+
+            _closeViewToken = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<CloseViewsToRoot>(m => Finish());
+
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            if (_closeViewToken != null)
+            {
+                TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Unsubscribe<CloseViewsToRoot>(_closeViewToken);
+            }
         }
 
         private void UpdateUI()
@@ -179,11 +194,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
 
         private void BookBtn_Click(object sender, EventArgs e)
         {
-            Intent intent = new Intent();
-            intent.SetFlags(ActivityFlags.ForwardResult);
-            intent.PutExtra("BookFromLocation", _data.FullAddress);
-            SetResult(Result.Ok, intent);
-            Finish();
+            TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish( new CloseViewsToRoot(this) );
+            TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new BookUsingAddress(this, _data));            
         }
 
         private void UpdateData()

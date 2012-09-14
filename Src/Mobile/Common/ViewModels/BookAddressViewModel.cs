@@ -28,15 +28,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private CancellationTokenSource _cancellationToken;
         private TaskScheduler _scheduler = TaskScheduler.FromCurrentSynchronizationContext();
         private bool _isExecuting;
-
+        private Func<Address> _getAddress;
+        private Action<Address> _setAddress;
         private string _id;
 
-        public BookAddressViewModel(Address address, Geolocator geolocator)
+        public BookAddressViewModel(Func<Address> getAddress , Action<Address> setAddress, Geolocator geolocator)
         {
-            SearchCoordinate = new CoordinateViewModel();
+            _getAddress = getAddress;
+            _setAddress = setAddress;
+            //SearchCoordinate = new CoordinateViewModel();
             _id = Guid.NewGuid().ToString();            
             _geolocator = geolocator;
-            Model = address;
+            
             TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub>().Subscribe<AddressSelected>(OnAddressSelected, selected => selected.OwnerId == _id);
         }
         public string Title { get; set; }
@@ -56,11 +59,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 }
             }
         }
-            
 
-        public Address Model { get; private set; }
 
-        public CoordinateViewModel SearchCoordinate { get; set; }
+        public Address Model { get { return _getAddress(); } set { _setAddress(value); } }
+
+        //public CoordinateViewModel SearchCoordinate { get { return _getAddress(); } set { _setAddress(value); } }
 
         public IMvxCommand SearchCommand
         {
@@ -129,7 +132,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         //}
 
 
-        private void SetAddress(Address address)
+        public void SetAddress(Address address)
         {
             Model.FullAddress = address.FullAddress;
             Model.Longitude = address.Longitude;
@@ -140,7 +143,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
 
-        private void ClearAddress()
+        public void ClearAddress()
         {
             Model.FullAddress = null;
             Model.Longitude = 0;

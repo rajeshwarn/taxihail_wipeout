@@ -26,7 +26,7 @@ using apcurium.MK.Booking.Mobile.Client.Activities.Setting;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using SocialNetworks.Services;
 using apcurium.MK.Booking.Mobile.Client.Activities.Account;
-
+using Android.Content.PM;
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
     [Activity(Label = "Bookv2", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
@@ -37,7 +37,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private int _menuWidth = 400;
         private DecelerateInterpolator _interpolator = new DecelerateInterpolator(0.9f);        
         private TinyMessageSubscriptionToken _subscription;
-      
+        private TinyMessageSubscriptionToken _bookUsingAddress;
+        
+
         protected override void OnViewModelSet()
         {
             UnsubscribeOrderConfirmed();
@@ -51,6 +53,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             var mainSettingsButton = FindViewById<ImageButton>(Resource.Id.MainSettingsBtn);
             mainSettingsButton.Click -= MainSettingsButtonOnClick;
             mainSettingsButton.Click += MainSettingsButtonOnClick;
+            
+            _bookUsingAddress = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<BookUsingAddress>(m => BookUsingAddress(m.Content));
             _menuWidth = WindowManager.DefaultDisplay.Width - 100;
             _menuIsShown = false;
             var mainSettingsLayout = FindViewById<LinearLayout>(Resource.Id.mainSettingsLayout);
@@ -85,8 +89,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             FindViewById<Button>(Resource.Id.settingsCallCompany ).Click -= new EventHandler(CallCie_Click);
             FindViewById<Button>(Resource.Id.settingsCallCompany).Click += new EventHandler(CallCie_Click);
-                        
 
+
+            
 
             if (ViewModel != null)
             {
@@ -95,15 +100,30 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         }
 
+        
+
+
+        private void BookUsingAddress(Address address)
+        {
+            
+            ViewModel.Load();
+            ViewModel.Pickup.SetAddress(address);
+            ViewModel.Dropoff.ClearAddress();
+            BookItBtn_Click(this, EventArgs.Empty);
+        }
+
+
         void ShowFavorites_Click(object sender, EventArgs e)
         {
+         
+
             RunOnUiThread(() =>
             {
                 Intent i = new Intent(this, typeof(LocationsActivity));
-                StartActivity(i);
-
+                
+                StartActivity( i);
             });
-            
+            ToggleSettingsScreenVisibility();
         }
 
         void ShowHistory_Click(object sender, EventArgs e)
@@ -114,13 +134,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 StartActivity(i);
 
             });
-
+            ToggleSettingsScreenVisibility();
         }
 
         private void About_Click(object sender, EventArgs e)
         {
             var intent = new Intent().SetClass(this, typeof(AboutActivity));
             StartActivity(intent);
+            ToggleSettingsScreenVisibility();
         }
 
         private void CallCie_Click(object sender, EventArgs e)
@@ -130,6 +151,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 RunOnUiThread(() => AlertDialogHelper.Show(this, "", TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumberDisplay(AppContext.Current.LoggedUser.Settings.ProviderId.Value), "Call", CallCie, "Cancel", delegate { }));
             }
+            
         }
 
         private void CallCie(object sender, EventArgs e)
@@ -137,6 +159,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             Intent callIntent = new Intent(Intent.ActionCall, Android.Net.Uri.Parse("tel:" + TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumberDisplay(AppContext.Current.LoggedUser.Settings.ProviderId.Value)));
             StartActivity(callIntent);
+            ToggleSettingsScreenVisibility();
 
         }
 
@@ -205,10 +228,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             base.OnDestroy();
             UnsubscribeOrderConfirmed();
+            if (_bookUsingAddress != null)
+            {
+                TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Unsubscribe<BookUsingAddress>(_bookUsingAddress);
+                
+            }
         }
 
      
         private void MainSettingsButtonOnClick(object sender, EventArgs eventArgs)
+        {
+            ToggleSettingsScreenVisibility();
+        }
+
+        private void ToggleSettingsScreenVisibility()
         {
             View v2 = FindViewById<FrameLayout>(Resource.Id.scrollinglayout);
             v2.ClearAnimation();
