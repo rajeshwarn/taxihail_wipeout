@@ -93,6 +93,23 @@ namespace apcurium.MK.Booking.Api.Services
 
             address.AddressType = "postal";
 
+            if(address.StreetNumber.HasValue() &&
+                address.StreetNumber.Contains("-"))
+            {
+                address.StreetNumber = address.StreetNumber.Split('-')[0].Trim();
+            }
+
+            if (address.FullAddress.HasValue() &&
+                address.FullAddress.Contains("-"))
+            {
+                var firstWordStreetNumber = address.FullAddress.Split(' ')[0];
+                if(firstWordStreetNumber.Contains("-"))
+                {
+                    var newStreetNUmber = firstWordStreetNumber.Split('-')[0].Trim();
+                    address.FullAddress = address.FullAddress.Replace(firstWordStreetNumber, newStreetNUmber);
+                }
+            }
+
             return address;
         }
 
