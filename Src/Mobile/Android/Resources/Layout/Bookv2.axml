@@ -140,18 +140,26 @@
                 android:adjustViewBounds="true"
                 android:src="@drawable/backPickupDestination"
                 android:layout_marginTop="46dip"
-                android:layout_height="wrap_content" />
+                android:layout_height="130dip" />
             <RelativeLayout
                 android:layout_width="fill_parent"
-                android:layout_height="55dip"
+                android:layout_height="58dip"
                 android:id="@+id/HeaderImage"
                 android:layout_marginBottom="-8dip">
                 <ImageView
                     android:layout_width="fill_parent"
-                    android:layout_height="55dip"
+                    android:layout_height="50dip"
                     android:adjustViewBounds="true"
-                    android:src="@drawable/header"
+                    android:src="@drawable/navBar"
                     android:scaleType="fitXY" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/Logo"
+                    android:scaleType="fitStart"
+                    android:layout_marginTop="1dip"
+                    android:layout_marginLeft="11dip"
+                    android:layout_height="80dip" />
                 <RelativeLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -288,7 +296,7 @@
                         android:background="@drawable/mylocationbutton"
                         style="@style/ButtonTextGray"
                         android:layout_width="40dip"
-                        android:layout_height="40dip"                        
+                        android:layout_height="40dip"
                         android:layout_alignParentLeft="true" />
                     <Button
                         android:id="@+id/BookItBtn"
