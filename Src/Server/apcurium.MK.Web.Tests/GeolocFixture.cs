@@ -43,7 +43,7 @@ namespace apcurium.MK.Web.Tests
         {
             var sut = new GeocodingServiceClient(BaseUrl, SessionId);
             var addresses = sut.Search("5661 avenue chateaubriand, Montreal");
-            Assert.AreEqual(1, addresses.Addresses.Count());
+            Assert.AreEqual(2, addresses.Addresses.Count());
             var address = addresses.Addresses.ElementAt(0);
             Assert.AreEqual(true, address.FullAddress.Contains("Chateaubriand"));
             Assert.AreEqual("5661", address.StreetNumber);
