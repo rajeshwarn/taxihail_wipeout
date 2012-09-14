@@ -37,7 +37,8 @@
         android:layout_below="@id/mainSettingsLayoutHeader"
         android:layout_toRightOf="@id/fakeLayout"
         android:background="@color/blue">
-        <Button
+      <Button
+            android:id="@+id/settingsFavorites"
             android:background="@drawable/cell_top_state"
             android:layout_width="fill_parent"
             android:layout_height="50dip"
@@ -47,7 +48,8 @@
             android:paddingLeft="10dip"
             android:gravity="left|center_vertical"
             local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;GoToFavorites&apos;}}" />
-        <Button
+      <Button
+              android:id="@+id/settingsHistory"
             android:background="@drawable/cell_middle_state"
             android:layout_width="fill_parent"
             android:layout_height="50dip"
@@ -57,7 +59,8 @@
             android:paddingLeft="10dip"
             android:gravity="left|center_vertical"
             local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;GoToRideHistory&apos;}}" />
-        <Button
+      <Button
+            android:id="@+id/settingsProfile"
             android:background="@drawable/cell_middle_state"
             android:layout_width="fill_parent"
             android:layout_height="50dip"
@@ -67,7 +70,8 @@
             android:paddingLeft="10dip"
             android:gravity="left|center_vertical"
             local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;GoToProfile&apos;}}" />
-        <Button
+      <Button
+          android:id="@+id/settingsCallCompany"
             android:background="@drawable/cell_middle_state"
             android:layout_width="fill_parent"
             android:layout_height="50dip"
@@ -78,6 +82,7 @@
             android:gravity="left|center_vertical"
             local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;GoToCall&apos;}}" />
         <Button
+            android:id="@+id/settingsAbout"
             android:background="@drawable/cell_middle_state"
             android:layout_width="fill_parent"
             android:layout_height="50dip"
@@ -87,7 +92,8 @@
             android:paddingLeft="10dip"
             android:gravity="left|center_vertical"
             local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;GoToAbout&apos;}}" />
-        <Button
+      <Button
+            android:id="@+id/settingsSupport"
             android:background="@drawable/cell_middle_state"
             android:layout_width="fill_parent"
             android:layout_height="50dip"
@@ -97,7 +103,8 @@
             android:paddingLeft="10dip"
             android:gravity="left|center_vertical"
             local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;GoToSupport&apos;}}" />
-        <Button
+      <Button
+            android:id="@+id/settingsLogout"
             android:background="@drawable/blank_bottom_state"
             android:layout_width="fill_parent"
             android:layout_height="50dip"

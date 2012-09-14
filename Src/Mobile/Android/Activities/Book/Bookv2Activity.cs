@@ -18,6 +18,14 @@ using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Client.Activities.Location;
+using apcurium.MK.Booking.Mobile.Client.Activities.History;
+using System.IO;
+using apcurium.MK.Booking.Mobile.Client.Diagnostic;
+using apcurium.MK.Booking.Mobile.Client.Activities.Setting;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using SocialNetworks.Services;
+using apcurium.MK.Booking.Mobile.Client.Activities.Account;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -54,6 +62,32 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             FindViewById<ImageButton>(Resource.Id.pickupDateButton).Click -= new EventHandler(PickDate_Click);
             FindViewById<ImageButton>(Resource.Id.pickupDateButton).Click += new EventHandler(PickDate_Click);
 
+
+            //Settings 
+            FindViewById<Button>(Resource.Id.settingsFavorites).Click -= new EventHandler(ShowFavorites_Click);
+            FindViewById<Button>(Resource.Id.settingsFavorites).Click += new EventHandler(ShowFavorites_Click);
+
+            FindViewById<Button>(Resource.Id.settingsHistory).Click -= new EventHandler(ShowHistory_Click);
+            FindViewById<Button>(Resource.Id.settingsHistory).Click += new EventHandler(ShowHistory_Click);
+
+            FindViewById<Button>(Resource.Id.settingsAbout).Click -= new EventHandler(About_Click);
+            FindViewById<Button>(Resource.Id.settingsAbout).Click += new EventHandler(About_Click);
+
+
+            FindViewById<Button>(Resource.Id.settingsLogout).Click -= new EventHandler(Logout_Click);
+            FindViewById<Button>(Resource.Id.settingsLogout).Click += new EventHandler(Logout_Click);
+
+            FindViewById<Button>(Resource.Id.settingsSupport).Click -= new EventHandler(ReportProblem_Click);
+            FindViewById<Button>(Resource.Id.settingsSupport).Click += new EventHandler(ReportProblem_Click);
+
+            FindViewById<Button>(Resource.Id.settingsProfile).Click -= new EventHandler(ChangeDefaultRideSettings_Click);
+            FindViewById<Button>(Resource.Id.settingsProfile).Click += new EventHandler(ChangeDefaultRideSettings_Click);
+
+            FindViewById<Button>(Resource.Id.settingsCallCompany ).Click -= new EventHandler(CallCie_Click);
+            FindViewById<Button>(Resource.Id.settingsCallCompany).Click += new EventHandler(CallCie_Click);
+                        
+
+
             if (ViewModel != null)
             {
                 ViewModel.Initialize();
@@ -61,6 +95,112 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         }
 
+        void ShowFavorites_Click(object sender, EventArgs e)
+        {
+            RunOnUiThread(() =>
+            {
+                Intent i = new Intent(this, typeof(LocationsActivity));
+                StartActivity(i);
+
+            });
+            
+        }
+
+        void ShowHistory_Click(object sender, EventArgs e)
+        {
+            RunOnUiThread(() =>
+            {
+                Intent i = new Intent(this, typeof(HistoryActivity));
+                StartActivity(i);
+
+            });
+
+        }
+
+        private void About_Click(object sender, EventArgs e)
+        {
+            var intent = new Intent().SetClass(this, typeof(AboutActivity));
+            StartActivity(intent);
+        }
+
+        private void CallCie_Click(object sender, EventArgs e)
+        {
+
+            if (AppContext.Current.LoggedUser.Settings.ProviderId.HasValue)
+            {
+                RunOnUiThread(() => AlertDialogHelper.Show(this, "", TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumberDisplay(AppContext.Current.LoggedUser.Settings.ProviderId.Value), "Call", CallCie, "Cancel", delegate { }));
+            }
+        }
+
+        private void CallCie(object sender, EventArgs e)
+        {
+
+            Intent callIntent = new Intent(Intent.ActionCall, Android.Net.Uri.Parse("tel:" + TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumberDisplay(AppContext.Current.LoggedUser.Settings.ProviderId.Value)));
+            StartActivity(callIntent);
+
+        }
+
+        private void Logout_Click(object sender, EventArgs e)
+        {
+            AppContext.Current.SignOut();
+            var facebook = TinyIoC.TinyIoCContainer.Current.Resolve<IFacebookService>();
+            if (facebook.IsConnected)
+            {
+                facebook.SetCurrentContext(this);
+                facebook.Disconnect();
+            }
+
+            var twitterService = TinyIoC.TinyIoCContainer.Current.Resolve<ITwitterService>();
+            if (twitterService.IsConnected)
+            {
+                twitterService.Disconnect();
+            }
+
+            TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService>().ClearAll();
+            RunOnUiThread(() =>
+            {
+                Finish();
+                StartActivity(typeof(LoginActivity));
+            });
+        }
+
+        private void ReportProblem_Click(object sender, EventArgs e)
+        {
+
+
+            ThreadHelper.ExecuteInThread(this, () =>
+            {
+                Intent emailIntent = new Intent(Intent.ActionSend);
+
+                emailIntent.SetType("application/octet-stream");
+                emailIntent.PutExtra(Intent.ExtraEmail, new String[] { TinyIoCContainer.Current.Resolve<IAppSettings>().SupportEmail });
+                emailIntent.PutExtra(Intent.ExtraCc, new String[] { AppContext.Current.LoggedInEmail });
+                emailIntent.PutExtra(Intent.ExtraSubject, Resources.GetString(Resource.String.TechSupportEmailTitle));
+
+                //following line is for test purposes only.  Need to be removed when tested and also remove AboutAssets.txt from Assets (set action to None or remove completely)
+                emailIntent.PutExtra(Intent.ExtraStream, Android.Net.Uri.Parse(@"file:///" + LoggerImpl.LogFilename)); // @"file:///android_asset/AboutAssets.txt" ) );
+
+                if (TinyIoCContainer.Current.Resolve<IAppSettings>().ErrorLogEnabled && File.Exists(TinyIoCContainer.Current.Resolve<IAppSettings>().ErrorLog))
+                {
+                    emailIntent.PutExtra(Intent.ExtraStream, Android.Net.Uri.Parse(TinyIoCContainer.Current.Resolve<IAppSettings>().ErrorLog));
+                }
+                try
+                {
+                    StartActivity(Intent.CreateChooser(emailIntent, "Send mail..."));
+                    LoggerImpl.FlushNextWrite();
+                }
+                catch (Android.Content.ActivityNotFoundException ex)
+                {
+                    RunOnUiThread(() => Toast.MakeText(this, Resources.GetString(Resource.String.NoMailClient), ToastLength.Short).Show());
+                }
+            }, false);
+        }
+
+        private void ChangeDefaultRideSettings_Click(object sender, EventArgs e)
+        {
+            var intent = new Intent().SetClass(this, typeof(RideSettingsActivity));
+            StartActivity(intent);
+        }	
         protected override void OnDestroy()
         {
             base.OnDestroy();
