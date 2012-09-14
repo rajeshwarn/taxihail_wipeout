@@ -4,7 +4,28 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:minWidth="25px"
-    android:minHeight="25px">
+    android:minHeight="25px"
+    android:background="@drawable/background">
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="58dip"
+        android:id="@+id/HeaderImage"
+        android:layout_marginBottom="-8dip">
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="50dip"
+            android:adjustViewBounds="true"
+            android:src="@drawable/navBar"
+            android:scaleType="fitXY" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:adjustViewBounds="true"
+            android:src="@drawable/Logo"
+            android:scaleType="fitStart"
+            android:layout_marginTop="1dip"
+            android:layout_marginLeft="11dip"
+            android:layout_height="80dip" />
+    </RelativeLayout>
     <ListView
         android:id="@+id/HistoryList"
         android:minWidth="25px"

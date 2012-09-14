@@ -501,6 +501,8 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Drawable\bookLater_state.xml" />
+    <AndroidResource Include="Resources\Drawable\Logo.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\Logo.png" />
     <Content Include="Todo.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />

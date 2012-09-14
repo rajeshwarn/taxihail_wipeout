@@ -50,6 +50,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			FindViewById<Button>(Resource.Id.placesbtn).Click += HandleClick;
 			FindViewById<Button>(Resource.Id.contactbtn).Click += HandleClick;
 			FindViewById<Button>(Resource.Id.searchbtn).Click += HandleClick;
+            FindViewById<Button>(Resource.Id.searchbtn).Selected = true;
 
 //            var validateSearchButton = FindViewById<Button>(Resource.Id.validateSearchButton);
 //            validateSearchButton.Click += ValidateSearchButtonOnClick;
