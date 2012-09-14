@@ -63,13 +63,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public void Rebook(Order order)
         {
-            Order = JsonSerializer.DeserializeFromString<CreateOrder>(JsonSerializer.SerializeToString<Order>(order));
+            var serialized = JsonSerializer.SerializeToString<Order>(order);
+            Order = JsonSerializer.DeserializeFromString<CreateOrder>(serialized);
             Order.Id = Guid.Empty;
             Order.PickupDate = null;
             Order.PickupDate = null;
             FirePropertyChanged(() => Order);
-            FirePropertyChanged(() => Pickup );
-            FirePropertyChanged(() => Dropoff );
+            FirePropertyChanged(() => Pickup);
+            FirePropertyChanged(() => Dropoff);
         }
 
         public CreateOrder Order
@@ -98,6 +99,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
 
+
+
         public BookAddressViewModel Pickup { get; set; }
         public BookAddressViewModel Dropoff { get; set; }
 
@@ -114,6 +117,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     FirePropertyChanged(() => DropoffIsActive);                                        
                 }
                 FirePropertyChanged(() => SelectedAddress);
+                FirePropertyChanged(() => NoAddressActiveSelection);
             }
         }
 
@@ -130,9 +134,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     FirePropertyChanged(() => PickupIsActive);
                 }
                 FirePropertyChanged(() => SelectedAddress);
+                FirePropertyChanged(() => NoAddressActiveSelection);
+                
             }
         }
 
+        public bool NoAddressActiveSelection
+        {
+            get { return !DropoffIsActive && !PickupIsActive; }
+        }
         public MvxRelayCommand ActivatePickup
         {                   
             get

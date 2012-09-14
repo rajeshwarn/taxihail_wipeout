@@ -19,6 +19,7 @@ using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Common.Extensions;
 using System.Threading;
 using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -36,13 +37,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             _getAddress = getAddress;
             _setAddress = setAddress;
-            //SearchCoordinate = new CoordinateViewModel();
             _id = Guid.NewGuid().ToString();            
             _geolocator = geolocator;
             
             TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub>().Subscribe<AddressSelected>(OnAddressSelected, selected => selected.OwnerId == _id);
         }
+
         public string Title { get; set; }
+        
         public string EmptyAddressPlaceholder { get; set; }
 
         public string Display
@@ -60,18 +62,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-
-        public Address Model { get { return _getAddress(); } set { _setAddress(value); } }
-
-        //public CoordinateViewModel SearchCoordinate { get { return _getAddress(); } set { _setAddress(value); } }
+        public Address Model { get { return _getAddress(); } set { _setAddress(value); } }        
 
         public IMvxCommand SearchCommand
         {
             get
             {
-                return new MvxRelayCommand(() =>
+                return new MvxRelayCommand<Address>(coordinate =>
                 {
-                    Console.WriteLine("S");
+                    var address = TinyIoC.TinyIoCContainer.Current.Resolve<IGeolocService>().SearchAddress(coordinate.Latitude, coordinate.Longitude);
+                    if (address.Count() > 0)
+                    {
+                        SetAddress(address[0]);
+                    }
+                    else
+                    {
+                        ClearAddress();
+                    }
+                    //Console.WriteLine("S");
                 });
             }
         }
@@ -82,7 +90,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return new MvxRelayCommand(() =>
                 {                    
-                    RequestNavigate<AddressSearchViewModel>(new { search  = Model.FullAddress , ownerId = _id});                    
+                    //RequestNavigate<AddressSearchViewModel>(new { search  = Params.Get<string>( Model.StreetNumber, Model.Street ).Where( p => p.HasValue() ).JoinBy( " " ), ownerId = _id});                    
+                    RequestNavigate<AddressSearchViewModel>(new { search = Model.FullAddress , ownerId = _id });                    
                 });
             }
         }
@@ -91,10 +100,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             SetAddress(selected.Content);
         }
-
-        
-
-        
 
         public bool IsExecuting
         {
@@ -121,16 +126,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     });
             }
         }
-
-
-        //public CoordinateViewModel CoordinateViewModel
-        //{
-        //    get
-        //    {
-        //        return new CoordinateViewModel(Model.Latitude, Model.Longitude);
-        //    }
-        //}
-
 
         public void SetAddress(Address address)
         {
@@ -167,16 +162,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         {
                             if (t.IsFaulted)
                             {
-
-                                //                                PositionStatus.Text = ((GeolocationException)t.
-                                //                                                       Exception.InnerException).Error.ToString();
+                                // PositionStatus.Text = ((GeolocationException)t.Exception.InnerException).Error.ToString();
                             }
                             else
-                            {
-                                Console.WriteLine(t.Result.Timestamp.ToString("G"));
-                                Console.WriteLine(t.Result.Latitude.ToString("N4"));
-                                Console.WriteLine(t.Result.Longitude.ToString("N4"));
-
+                            {                                
                                 var address = TinyIoC.TinyIoCContainer.Current.Resolve<IGeolocService>().SearchAddress(t.Result.Latitude, t.Result.Longitude);
                                 if (address.Count() > 0)
                                 {
