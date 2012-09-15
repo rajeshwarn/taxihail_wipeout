@@ -49,7 +49,7 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual("5661", address.StreetNumber);
             Assert.AreEqual("Avenue de Chateaubriand", address.Street);
             Assert.AreEqual("Montreal", address.City);
-            Assert.AreEqual("H2J 2T8", address.ZipCode);
+            Assert.AreEqual("H2S 0A4", address.ZipCode);
         }
 
         [Test]
