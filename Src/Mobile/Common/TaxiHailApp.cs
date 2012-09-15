@@ -22,7 +22,6 @@ namespace apcurium.MK.Booking.Mobile
         private void InitaliseServices()
         {
             TinyIoCContainer.Current.Register<ITinyMessengerHub, TinyMessengerHub>();
-
             //this.RegisterServiceInstance<ITwitterSearchProvider>(new TwitterSearchProvider());
         }
         

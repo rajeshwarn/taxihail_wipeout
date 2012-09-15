@@ -30,7 +30,7 @@ using Android.Content.PM;
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
     [Activity(Label = "Bookv2", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
-    public class Bookv2Activity : MvxBindingMapActivityView<BookViewModel>, IAddress
+    public class Bookv2Activity : MvxBindingMapActivityView<BookViewModel>
     {
 
         private bool _menuIsShown;
@@ -69,7 +69,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _menuIsShown = false;
             var mainSettingsLayout = FindViewById<LinearLayout>(Resource.Id.mainSettingsLayout);
             var mainSettingsLayoutHeader = FindViewById<RelativeLayout>(Resource.Id.mainSettingsLayoutHeader);
-            var fakeLayout = FindViewById<ImageView>(Resource.Id.fakeLayout);
+            var fakeLayout = FindViewById<View>(Resource.Id.fakeLayout);
             var apcuriumLogoLayout = FindViewById<RelativeLayout>(Resource.Id.apcuriumLogoLayout);
 
             fakeLayout.Visibility = ViewStates.Gone;
@@ -310,7 +310,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 var mainSettingsLayout = FindViewById<LinearLayout>(Resource.Id.mainSettingsLayout);
                 var mainSettingsLayoutHeader = FindViewById<RelativeLayout>(Resource.Id.mainSettingsLayoutHeader);
-                var fakeLayout = FindViewById<ImageView>(Resource.Id.fakeLayout);
+                var fakeLayout = FindViewById<View>(Resource.Id.fakeLayout);
                 var apcuriumLogoLayout = FindViewById<RelativeLayout>(Resource.Id.apcuriumLogoLayout);
 
                 fakeLayout.Visibility = ViewStates.Gone;
@@ -327,7 +327,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 var mainSettingsLayout = FindViewById<LinearLayout>(Resource.Id.mainSettingsLayout);
                 var mainSettingsLayoutHeader = FindViewById<RelativeLayout>(Resource.Id.mainSettingsLayoutHeader);
-                var fakeLayout = FindViewById<ImageView>(Resource.Id.fakeLayout);
+                var fakeLayout = FindViewById<View>(Resource.Id.fakeLayout);
                 var apcuriumLogoLayout = FindViewById<RelativeLayout>(Resource.Id.apcuriumLogoLayout);
 
                 fakeLayout.Visibility = ViewStates.Visible;
@@ -345,10 +345,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         }
 
     
-        public void OnResumeEvent()
-        {
-            OnResume();
-        }
+        
 
 
         protected override bool IsRouteDisplayed
@@ -376,7 +373,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         private void OnDataTimePicked(DateTimePicked picked)
         {
-            ViewModel.Order.PickupDate = picked.Content;   
+            
+            ViewModel.Order.PickupDate = picked.Content;
+            ViewModel.PickupDateSelected();
         }
 
         void BookItBtn_Click(object sender, EventArgs e)
@@ -414,7 +413,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         }
 
         private void StartNewOrder()
-        {            
+        {
+            ViewModel.NewOrder();
         }
 
 
@@ -423,11 +423,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             if (_menuIsShown)
             {
                 ToggleSettingsScreenVisibility();
-            }
-            //else
-            //{
-            //    base.OnBackPressed();
-            //}
+            }            
         }
         private void OnOrderConfirmed(OrderConfirmed orderConfirmed)
         {

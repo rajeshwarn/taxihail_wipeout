@@ -4,6 +4,7 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
 {
     public class Address : BaseDTO
     {
+        private Guid _internalId = Guid.NewGuid();
 
         public Guid Id { get; set; }
 

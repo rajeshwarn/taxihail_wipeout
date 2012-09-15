@@ -18,6 +18,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         private static Typeface _typefaceNormal;
         private static Typeface _typefaceMedium;
         private static Typeface _typefaceBold;
+        private static Typeface _typefaceItalic;
 
         public static Typeface Regular
         {
@@ -55,6 +56,20 @@ namespace apcurium.MK.Booking.Mobile.Client
                 return _typefaceBold;
             }
         }
+
+        public static Typeface Italic
+        {
+            get
+            {
+                if (_typefaceItalic == null)
+                {
+                    _typefaceItalic = Typeface.CreateFromAsset(AppContext.Current.App.Assets, "HelveticaNeueLTPro-It.otf");
+                }
+                return _typefaceItalic;
+            }
+        }
+
+        
 
     }
 }

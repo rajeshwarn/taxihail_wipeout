@@ -9,6 +9,8 @@ using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Booking.Mobile.Client.PlatformIntegration;
 using apcurium.MK.Booking.Mobile.Settings;
 using Xamarin.Geolocation;
+using apcurium.MK.Booking.Mobile.Data;
+
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -30,11 +32,16 @@ namespace apcurium.MK.Booking.Mobile.Client
             TinyIoCContainer.Current.Register<IAppContext>(new AppContext(App));
             TinyIoCContainer.Current.Register<IAppResource>( new ResourceManager( App.ApplicationContext ));
             TinyIoCContainer.Current.Register<ILogger, LoggerImpl>();
-			TinyIoCContainer.Current.Register<IErrorHandler, ErrorHandler>();
+            TinyIoCContainer.Current.Register<IErrorHandler, ErrorHandler>();
+            
 
             TinyIoCContainer.Current.Register<ICacheService>(new CacheService(App));
             TinyIoCContainer.Current.Register<AddressBook>(new AddressBook(App.ApplicationContext));
-            TinyIoCContainer.Current.Register<Geolocator>(new Geolocator(App.ApplicationContext) { DesiredAccuracy = 100 });
+            
+            TinyIoCContainer.Current.Register<Geolocator>(new Geolocator(App.ApplicationContext) { DesiredAccuracy = 100 });                        
+            TinyIoCContainer.Current.Register<Geolocator>(new Geolocator(App.ApplicationContext) { DesiredAccuracy = 10000 }, CoordinatePrecision.BallPark.ToString());
+            TinyIoCContainer.Current.Register<Geolocator>(new Geolocator(App.ApplicationContext) { DesiredAccuracy = 1000 }, CoordinatePrecision.Coarse.ToString());
+            TinyIoCContainer.Current.Register<Geolocator>(new Geolocator(App.ApplicationContext) { DesiredAccuracy = 400 }, CoordinatePrecision.Medium.ToString());
             
         
         }

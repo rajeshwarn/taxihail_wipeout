@@ -119,9 +119,8 @@
   <string name="SignOutButton">Déconnecter</string>
   <string name="ChangeDefaultRideSettings">Paramètres de commande</string>
   <string name="SendErrorLogButton">Envoyer log erreur</string>
-  <string name="Version">Version : {0}</string>
-  <string name="ServerVersion">Version serveur : {0}</string>
-  <string name="ServerName">Nom du serveur : {0}</string>
+  <string name="Version">v{0}</string>
+  <string name="ServerInfo">({0} v{1})</string>  
   <string name="RideSettingsCannotLoadListMessage">Notre serveur ne peut être contacté, veuillez réessayer plus tard.</string>
   <string name="RideSettingsCannotLoadListTitle">Erreur serveur</string>
   <string name="RideSettingsName">Nom:</string>
@@ -177,6 +176,7 @@
   <string name="EstimatePrice">Prix Approx.: {0:C}</string>
   <string name="ApproxPrice">Prix Approx.</string>
   <string name="NotAvailable">N/D</string>
+  <string name="EstimatedFareNotAvailable">Estimation n\'est pas disponible</string>
   <string name="AboutButton">À propos de nous</string>
   <string name="AboutUsUrl">Assets/About_fr.html</string>
   <string name="ResetPasswordTitle">Réinitialiser mot de passe</string>
@@ -244,4 +244,8 @@
   <string name="BookDropoffLocationButtonTitle">Destination</string>
   <string name="FavoritesButton">Favoris</string>
   <string name="RideHistoryButton">Historique</string>
+  <string name="AddressSearchingText">Recherche...</string>
+  <string name="NoFareText">Choisir la destination pour avoir un estimé du prix</string>
+  <string name="PickupDateDisplay">This reservation is for : {0:dddd, MMMM d}</string>
+  
 </resources>

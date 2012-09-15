@@ -116,9 +116,8 @@
   <string name="FavoritesButton">Favorites</string>
   <string name="RideHistoryButton">Ride History</string>
   <string name="SendErrorLogButton">Send error log</string>
-  <string name="Version">Version: {0}</string>
-  <string name="ServerVersion">Server version : {0}</string>
-  <string name="ServerName">Server name : {0}</string>
+  <string name="Version">v{0}</string>  
+  <string name="ServerInfo">({0} v{1})</string>  
   <string name="RideSettingsCannotLoadListMessage">The server cannot be contacted, try again later.</string>
   <string name="RideSettingsCannotLoadListTitle">Server error</string>
   <string name="RideSettingsName">Name:</string>
@@ -171,10 +170,11 @@
   <string name="OrderNoteGPSApproximate"> (approx. address)</string>
   <string name="StatusInvalid">Status not available</string>
   <string name="ParameterButton">Parameters</string>
-  <string name="EstimateDistance">Distance: {0}</string>
-  <string name="EstimatePrice">Approx. Price: {0}</string>
+  <string name="EstimateDistance">&#160;({0})</string>
+  <string name="EstimatePrice">Estimated Fare : {0}</string>
   <string name="ApproxPrice">Estimated Fare:</string>
   <string name="NotAvailable">N/A</string>
+  <string name="EstimatedFareNotAvailable">Estimated fare not available</string>
   <string name="AboutButton">About Us</string>
   <string name="AboutUsUrl">Assets/About_en.html</string>
   <string name="ResetPasswordTitle">Reset Password</string>
@@ -248,4 +248,7 @@
   <string name="BookDropoffLocationButtonTitle">Destination</string>
   <string name="BookPickupLocationEmptyPlaceholder">Tap to choose pickup</string>
   <string name="BookDropoffLocationEmptyPlaceholder">Tap to choose destination</string>
+  <string name="AddressSearchingText">Searching...</string>
+  <string name="NoFareText">Choose a destination to get a price estimate.</string>
+  <string name="PickupDateDisplay">Reservation for {0:dddd, MMMM d} at {0:h:mm tt}</string>  
 </resources>

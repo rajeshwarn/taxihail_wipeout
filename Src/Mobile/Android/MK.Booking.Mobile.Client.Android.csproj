@@ -196,10 +196,7 @@
     <Compile Include="Controls\BindableListView.cs" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="Assets\HelveticaNeue.dfont" />
-    <AndroidAsset Include="Assets\Helvetica.dfont" />
     <AndroidAsset Include="Assets\HelveticaNeue-Bold.otf" />
-    <AndroidAsset Include="Assets\HelveticaNeue.ttf" />
     <AndroidAsset Include="Assets\HelveticaNeue-Medium.otf" />
     <AndroidAsset Include="Assets\HelveticaNeueLTPro-Lt.otf" />
     <AndroidAsset Include="Assets\HelveticaNeueLTPro-Md.otf" />
@@ -526,9 +523,6 @@
   </Target>
   -->
   <ItemGroup>
-    <AndroidAsset Include="Assets\AboutAssets.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Mapper\" />
   </ItemGroup>
   <ItemGroup>
@@ -564,5 +558,8 @@
       <Project>{E6C3413C-919B-486D-8B6C-225CBD921B98}</Project>
       <Name>Newtonsoft.Json.MonoDroid</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\HelveticaNeueLTPro-It.otf" />
   </ItemGroup>
 </Project>

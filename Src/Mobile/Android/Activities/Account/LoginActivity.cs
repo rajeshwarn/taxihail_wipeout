@@ -18,13 +18,17 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Views;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.Interfaces.Views;
+using Cirrious.MvvmCross.Binding.Android.Views;
 
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {
     [Activity(Label = "Login", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
-    public class LoginActivity : Activity
+    public class LoginActivity : MvxBindingActivityView<LoginViewModel>
     {
+
+        
+
         private ProgressDialog _progressDialog;
         /// <summary>
         /// use for SSO when FB app is isntalled
@@ -45,6 +49,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             (facebook as FacebookServicesMD).AuthorizeCallback(requestCode, (int)resultCode, data);
         }
 
+        protected override void OnViewModelSet()
+        {
+
+        }
+        
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -151,6 +160,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                 }
             };
 
+#if DEBUG
+            FindViewById<EditText>(Resource.Id.Username).Text = "alex@e-nergik.com";
+            FindViewById<EditText>(Resource.Id.Password).Text = "qqqqqq";            
+#endif 
         }
 
         private void HideProgressDialog()
@@ -258,8 +271,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                 RunOnUiThread(() =>
                     {
                         _progressDialog.Dismiss();
-                        this.Finish();
-                        this.StartActivity(typeof(MainActivity));
+                        var dispatch = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
+                        dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(BookViewModel), null, false, MvxRequestedBy.UserAction));
+                        Finish();
                     });
                 return;
             }
@@ -294,8 +308,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                 RunOnUiThread(() =>
                 {
                     _progressDialog.Dismiss();
-                    this.Finish();
-                    this.StartActivity(typeof(MainActivity));
+                    var dispatch = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
+                    dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(BookViewModel), null, false, MvxRequestedBy.UserAction));
+                    Finish();
                 });
                 return;
             }
@@ -325,8 +340,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             facebook.ConnectionStatusChanged -= (HandleFacebookConnection);
             var twitter = TinyIoC.TinyIoCContainer.Current.Resolve<ITwitterService>();
             twitter.ConnectionStatusChanged -= (HandleTwitterConnection);
-
-
             UnbindDrawables(this.FindViewById(Resource.Id.RootView));
             GC.Collect();
         }
@@ -381,18 +394,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                     var account = TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().GetAccount(txtUserName.Text, txtPassword.Text, out err);
                     if (account != null)
                     {
-                        AppContext.Current.UpdateLoggedInUser(account, false);
-						AppContext.Current.ServerName = TinyIoCContainer.Current.Resolve<IApplicationInfoService>().GetServerName();
-						AppContext.Current.ServerVersion = TinyIoCContainer.Current.Resolve<IApplicationInfoService>().GetServerVersion();
+                        AppContext.Current.UpdateLoggedInUser(account, false);						
                         AppContext.Current.LastEmail = account.Email;
                         RunOnUiThread(() =>
                         {
-                            Finish();
+
 
                             var dispatch = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
-                            dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(BookViewModel), null, false, MvxRequestedBy.UserAction)); 
-                            //RequestNavigate<BookViewModel>();
-                            //StartActivity(typeof(MainActivity));
+                            dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(BookViewModel), null, false, MvxRequestedBy.UserAction));
+
+                           //Finish();
                         });
                         return;
                     }

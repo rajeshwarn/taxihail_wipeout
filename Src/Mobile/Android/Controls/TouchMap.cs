@@ -12,6 +12,11 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Booking.Mobile.Client.Converters;
 using apcurium.MK.Booking.Mobile.Extensions;
+using TinyIoC;
+using apcurium.MK.Booking.Mobile.AppServices;
+using Xamarin.Geolocation;
+using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -28,21 +33,30 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         protected TouchMap(IntPtr javaReference, JniHandleOwnership transfer)
             : base(javaReference, transfer)
         {
+            Initialize();
         }
 
         public TouchMap(Context context, string apiKey)
             : base(context, apiKey)
         {
+            Initialize();
         }
 
         public TouchMap(Context context, IAttributeSet attrs)
             : base(context, attrs)
         {
+            Initialize();
         }
 
         public TouchMap(Context context, IAttributeSet attrs, int defStyle)
             : base(context, attrs, defStyle)
         {
+            Initialize();
+        }
+
+        private void Initialize()
+        {
+            
         }
 
 
@@ -95,6 +109,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 {
                     _pickupPin = MapUtitilties.MapService.AddPushPin(this, Resources.GetDrawable(Resource.Drawable.pin_green), value, Resources.GetString(Resource.String.PickupMapTitle));
                 }
+
+                Invalidate();
             }
         }
 
@@ -114,59 +130,74 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 if ((value != null) && (value.Latitude != 0) && (value.Longitude != 0))
                 {
                     _dropoffPin = MapUtitilties.MapService.AddPushPin(this, Resources.GetDrawable(Resource.Drawable.pin_red), value, Resources.GetString(Resource.String.DestinationMapTitle));
-                }               
+                }
+                Invalidate();
             }
         }
 
         private bool _isDropoffActive;
-
-        public bool IsDropoffActive
+        private IEnumerable<CoordinateViewModel> _center;
+        public IEnumerable<CoordinateViewModel> Center
         {
-            get { return _isDropoffActive; }
-            set 
-            { 
-                _isDropoffActive = value;
-                RecenterMap();
+            get { return _center; }
+            set
+            {
+                _center = value;                
+                
+                SetZoom(Center);                   
+                
             }
         }
 
-        private bool _isPickupActive;
+        
 
-        public bool IsPickupActive
-        {
-            get { return _isPickupActive; }
-            set 
-            { 
-                _isPickupActive = value;
-                RecenterMap();
-            }
-        }
+        //public bool IsDropoffActive
+        //{
+        //    get { return _isDropoffActive; }
+        //    set 
+        //    { 
+        //        _isDropoffActive = value;                
+        //    }
+        //}
 
-        private void RecenterMap()
-        {
-            if (IsPickupActive && Pickup.HasValidCoordinate() )
-            {
-                SetZoom( Pickup );
-            }
-            else if ( IsDropoffActive && Dropoff.HasValidCoordinate())
-            {
-                SetZoom( Dropoff );
-            }
-            else if (!IsDropoffActive && !IsDropoffActive && Pickup.HasValidCoordinate() && Dropoff.HasValidCoordinate())
-            {
-                SetZoom(Pickup, Dropoff);
-            }
-        }
+        //private bool _isPickupActive;
 
-        private void SetZoom(params Address[] adressesToDisplay)
+        //public bool IsPickupActive
+        //{
+        //    get { return _isPickupActive; }
+        //    set 
+        //    { 
+        //        _isPickupActive = value;
+        //    }
+        //}
+
+
+
+        //private void RecenterMap()
+        //{
+        //    if (IsPickupActive && Pickup.HasValidCoordinate() )
+        //    {
+        //        SetZoom( Pickup );
+        //    }
+        //    else if ( IsDropoffActive && Dropoff.HasValidCoordinate())
+        //    {
+        //        SetZoom( Dropoff );
+        //    }
+        //    else if (!IsDropoffActive && !IsDropoffActive && Pickup.HasValidCoordinate() && Dropoff.HasValidCoordinate())
+        //    {
+        //        SetZoom(Pickup, Dropoff);
+        //    }
+        //}
+
+        private void SetZoom(IEnumerable<CoordinateViewModel> adressesToDisplay)
         {
             var map = this;
             var mapController = this.Controller;
 
             if (adressesToDisplay.Count() == 1)
             {
-                int lat = CoordinatesHelper.ConvertToE6(adressesToDisplay.ElementAt(0).Latitude);
-                int lon = CoordinatesHelper.ConvertToE6(adressesToDisplay.ElementAt(0).Longitude);
+                int lat = CoordinatesHelper.ConvertToE6(adressesToDisplay.ElementAt(0).Coordinate.Latitude);
+                int lon = CoordinatesHelper.ConvertToE6(adressesToDisplay.ElementAt(0).Coordinate.Longitude);
                 mapController.AnimateTo(new GeoPoint(lat, lon));
                 mapController.SetZoom(17);
                 return;
@@ -180,8 +211,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             foreach (var item in adressesToDisplay)
             {
-                int lat = CoordinatesHelper.ConvertToE6(item.Latitude);
-                int lon = CoordinatesHelper.ConvertToE6(item.Longitude);
+                int lat = CoordinatesHelper.ConvertToE6(item.Coordinate.Latitude);
+                int lon = CoordinatesHelper.ConvertToE6(item.Coordinate.Longitude);
                 maxLat = Math.Max(lat, maxLat);
                 minLat = Math.Min(lat, minLat);
                 maxLon = Math.Max(lon, maxLon);

@@ -9,22 +9,13 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using apcurium.MK.Booking.Mobile.Data;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class CoordinateViewModel
+    public enum ZoomLevel
     {
-        
-        public CoordinateViewModel()
-        {
-           
-        }
-
-        public Coordinate Coordinate { get; set; }
-
-        public ZoomLevel Zoom{ get; set; }
-        
-
+        Close,
+        Medium,
+        Overview,
     }
 }

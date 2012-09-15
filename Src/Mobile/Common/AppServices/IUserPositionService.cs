@@ -11,20 +11,11 @@ using Android.Views;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.Data;
 
-namespace apcurium.MK.Booking.Mobile.ViewModels
+namespace apcurium.MK.Booking.Mobile.AppServices
 {
-    public class CoordinateViewModel
+    public interface IUserPositionService
     {
-        
-        public CoordinateViewModel()
-        {
-           
-        }
-
-        public Coordinate Coordinate { get; set; }
-
-        public ZoomLevel Zoom{ get; set; }
-        
-
+        Coordinate LastKnownPosition {get;}
+        void Refresh();
     }
 }

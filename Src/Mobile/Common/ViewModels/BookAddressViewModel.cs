@@ -20,6 +20,7 @@ using apcurium.MK.Common.Extensions;
 using System.Threading;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Common;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -32,25 +33,30 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private Func<Address> _getAddress;
         private Action<Address> _setAddress;
         private string _id;
-
-        public BookAddressViewModel(Func<Address> getAddress , Action<Address> setAddress, Geolocator geolocator)
+        private string _searchingTitle;
+        public BookAddressViewModel(Func<Address> getAddress, Action<Address> setAddress, Geolocator geolocator)
         {
             _getAddress = getAddress;
             _setAddress = setAddress;
-            _id = Guid.NewGuid().ToString();            
+            _id = Guid.NewGuid().ToString();
             _geolocator = geolocator;
-            
+            _searchingTitle = TinyIoC.TinyIoCContainer.Current.Resolve<IAppResource>().GetString("AddressSearchingText");
             TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub>().Subscribe<AddressSelected>(OnAddressSelected, selected => selected.OwnerId == _id);
         }
 
         public string Title { get; set; }
-        
+
         public string EmptyAddressPlaceholder { get; set; }
 
         public string Display
         {
             get
             {
+                FirePropertyChanged(() => IsPlaceHolder);
+                if (IsExecuting)
+                {
+                    return _searchingTitle;
+                }
                 if (Model.FullAddress.HasValue())
                 {
                     return Model.FullAddress;
@@ -58,28 +64,66 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 else
                 {
                     return EmptyAddressPlaceholder;
-                }
+                }                
             }
         }
 
-        public Address Model { get { return _getAddress(); } set { _setAddress(value); } }        
+        public bool IsPlaceHolder
+        {
+            get
+            {
+                return Model.FullAddress.IsNullOrEmpty();                
+            }
+        }
+
+        public Address Model { get { return _getAddress(); } set { _setAddress(value); } }
+
+        private Task _searchTask;
 
         public IMvxCommand SearchCommand
         {
             get
             {
+                CancelCurrentLocationCommand.Execute();
+
                 return new MvxRelayCommand<Address>(coordinate =>
                 {
-                    var address = TinyIoC.TinyIoCContainer.Current.Resolve<IGeolocService>().SearchAddress(coordinate.Latitude, coordinate.Longitude);
-                    if (address.Count() > 0)
+                    if ((_searchTask != null) && !_searchTask.IsCompleted && _cancellationToken != null)
                     {
-                        SetAddress(address[0]);
+                        _cancellationToken.Cancel();
+                        _cancellationToken.Dispose();
+                        _cancellationToken = null;
+                        IsExecuting = false;
                     }
-                    else
+                    _cancellationToken = new CancellationTokenSource();
+
+                    var token = _cancellationToken.Token;
+                    _searchTask = Task.Factory.StartNew(() =>
                     {
-                        ClearAddress();
-                    }
-                    //Console.WriteLine("S");
+                        IsExecuting = true;                        
+                        var address = TinyIoC.TinyIoCContainer.Current.Resolve<IGeolocService>().SearchAddress(coordinate.Latitude, coordinate.Longitude);
+                        if (!token.IsCancellationRequested)
+                        {
+                            RequestMainThreadAction(() =>
+                                {
+                                    if (address.Count() > 0)
+                                    {
+                                        SetAddress(address[0]);
+                                    }
+                                    else
+                                    {
+                                        ClearAddress();
+                                    }
+                                    IsExecuting = false;
+                                });
+                        }
+                        else
+                        {
+                            IsExecuting = false;
+                        }
+
+                    }, token);
+
                 });
             }
         }
@@ -89,9 +133,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get
             {
                 return new MvxRelayCommand(() =>
-                {                    
+                {
                     //RequestNavigate<AddressSearchViewModel>(new { search  = Params.Get<string>( Model.StreetNumber, Model.Street ).Where( p => p.HasValue() ).JoinBy( " " ), ownerId = _id});                    
-                    RequestNavigate<AddressSearchViewModel>(new { search = Model.FullAddress , ownerId = _id });                    
+                    RequestNavigate<AddressSearchViewModel>(new { search = Model.FullAddress, ownerId = _id });
                 });
             }
         }
@@ -104,10 +148,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public bool IsExecuting
         {
             get { return _isExecuting; }
-            set 
-            { 
+            set
+            {
                 _isExecuting = value;
                 FirePropertyChanged(() => IsExecuting);
+                FirePropertyChanged(() => Display);                
             }
         }
 
@@ -126,6 +171,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     });
             }
         }
+
 
         public void SetAddress(Address address)
         {
@@ -151,12 +197,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                
+
                 return new MvxRelayCommand(() =>
                 {
                     IsExecuting = true;
                     _cancellationToken = new CancellationTokenSource();
-                    _geolocator.GetPositionAsync(10000, _cancellationToken.Token ).ContinueWith(t =>
+                    _geolocator.GetPositionAsync(10000, _cancellationToken.Token).ContinueWith(t =>
                     {
                         try
                         {
@@ -165,19 +211,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                 // PositionStatus.Text = ((GeolocationException)t.Exception.InnerException).Error.ToString();
                             }
                             else
-                            {                                
+                            {
                                 var address = TinyIoC.TinyIoCContainer.Current.Resolve<IGeolocService>().SearchAddress(t.Result.Latitude, t.Result.Longitude);
                                 if (address.Count() > 0)
                                 {
-                                    SetAddress(address[0]);                                    
+                                    SetAddress(address[0]);
                                 }
                                 else
                                 {
                                     ClearAddress();
                                 }
-                                
 
-                                
+
+
                             }
                         }
                         finally

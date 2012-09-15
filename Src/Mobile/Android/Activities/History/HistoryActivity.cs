@@ -93,37 +93,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
             }
         }
 
-        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
-        {
-            base.OnActivityResult(requestCode, resultCode, data);
-            if (data != null)
-            {
-                switch (requestCode)
-                {
-                    case (int)ActivityEnum.History:
-                        var rebookTripId = data.GetStringExtra("Rebook");
-                        if (rebookTripId.HasValue())
-                        {
-                            
-                            var parent = (MainActivity)Parent;
-                            parent.RebookTrip(new Guid(rebookTripId));
-                            parent.MainTabHost.CurrentTab = 0;
-
-                        }
-
-                        var bookId = data.GetStringExtra("Book");
-                        if (bookId.HasValue())
-                        {
-                            var parent = (MainActivity)Parent;
-                            parent.MainTabHost.CurrentTab = 0;
-
-                        }
-                        break;
-                        break;
-                }
-            }
-        }
-
         private List<OrderItemListModel> GetHistory()
         {
 
