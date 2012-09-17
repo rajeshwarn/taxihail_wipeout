@@ -199,7 +199,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 int lat = CoordinatesHelper.ConvertToE6(adressesToDisplay.ElementAt(0).Coordinate.Latitude);
                 int lon = CoordinatesHelper.ConvertToE6(adressesToDisplay.ElementAt(0).Coordinate.Longitude);
                 mapController.AnimateTo(new GeoPoint(lat, lon));
-                mapController.SetZoom(17);
+                if (adressesToDisplay.ElementAt(0).Zoom != ViewModels.ZoomLevel.DontChange)
+                {
+                    mapController.SetZoom(17);
+                }
                 return;
             }
 

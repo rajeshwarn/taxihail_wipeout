@@ -17,5 +17,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         Close,
         Medium,
         Overview,
+        DontChange,
     }
 }

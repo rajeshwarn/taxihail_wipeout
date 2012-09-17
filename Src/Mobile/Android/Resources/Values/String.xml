@@ -69,7 +69,7 @@
   <string name="ConfirmNoRingCode">No code</string>
   <string name="ConfirmDestinationNotSpecified">Destination not specified</string>
   <string name="DateToday">Today</string>
-  <string name="TimeNow">Now</string>
+  <string name="TimeNow">Current</string>
   <string name="StatusViewTitle">Confirmed</string>
   <string name="StatusDescription">Confirmation #{0}</string>
   <string name="ChangeBookingSettingsButton">Change booking settings</string>
@@ -250,5 +250,8 @@
   <string name="BookDropoffLocationEmptyPlaceholder">Tap to choose destination</string>
   <string name="AddressSearchingText">Searching...</string>
   <string name="NoFareText">Choose a destination to get a price estimate.</string>
-  <string name="PickupDateDisplay">Reservation for {0:dddd, MMMM d} at {0:h:mm tt}</string>  
+  <string name="PickupDateDisplay">Reservation for {0:dddd, MMMM d} at {0:h:mm tt}</string>
+  <string name="SettingsFavorites">Manage Favorites</string>
+  <string name="SettingsRideHistory">Ride History</string>
+  <string name="DateTimePickerSetButton">Set</string>
 </resources>

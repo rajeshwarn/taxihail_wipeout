@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using apcurium.MK.Booking.Google.Impl;
+using apcurium.MK.Booking.Common.Tests;
 
 namespace apcurium.MK.Booking.Google.Tests.PlacesFixture
 {
@@ -17,7 +18,7 @@ namespace apcurium.MK.Booking.Google.Tests.PlacesFixture
         [SetUp]
         public void  Setup()
         {
-            sut = new MapsApiClient();
+            sut = new MapsApiClient(new TestConfigurationManager());
         }
 
         [Test]

@@ -46,7 +46,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
         protected override void OnResume()
         {
             base.OnResume();
-            
+
+            TinyIoCContainer.Current.Resolve<IUserPositionService>().Refresh();
             //DebugLogin();
             //ThreadHelper.ExecuteInThread(this, () => TinyIoCContainer.Current.Resolve<IAccountService>().RefreshCache(AppContext.Current.LoggedUser != null), false);
             //string err = "";

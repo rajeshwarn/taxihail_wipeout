@@ -49,18 +49,31 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Dropoff.PropertyChanged -= new PropertyChangedEventHandler(Address_PropertyChanged);
             Dropoff.PropertyChanged += new PropertyChangedEventHandler(Address_PropertyChanged);
 
+            Pickup.AddressChanged -= new EventHandler(AddressChanged);
+            Pickup.AddressChanged += new EventHandler(AddressChanged);
+
+            Dropoff.AddressChanged -= new EventHandler(AddressChanged);
+            Dropoff.AddressChanged += new EventHandler(AddressChanged);
+
             _fareEstimate = appResource.GetString("NoFareText");
 
-            CenterMap();
+            CenterMap(true);
 
             ThreadPool.QueueUserWorkItem(UpdateServerInfo);
+        }
+
+        void AddressChanged(object sender, EventArgs e)
+        {
+            InvokeOnMainThread(() => FirePropertyChanged(() => Pickup));
+            InvokeOnMainThread(() => FirePropertyChanged(() => Dropoff));
+            CenterMap(sender is bool ? !(bool)sender : false );
         }
 
         void Address_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "Display")
             {
-                ThreadPool.QueueUserWorkItem(CalculateEstimate);
+                ThreadPool.QueueUserWorkItem(CalculateEstimate);                                
             }
         }
 
@@ -101,7 +114,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 }
 
             }
-            FirePropertyChanged(() => FareEstimate);
+
+            InvokeOnMainThread(() => FirePropertyChanged(() => FareEstimate));
 
         }
 
@@ -251,7 +265,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     }
                     FirePropertyChanged(() => SelectedAddress);
                     FirePropertyChanged(() => NoAddressActiveSelection);
-                    CenterMap();
+                    CenterMap(false);
                 });
             }
 
@@ -272,43 +286,44 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         FirePropertyChanged(() => SelectedAddress);
                         FirePropertyChanged(() => NoAddressActiveSelection);
 
-                        CenterMap();
+                        CenterMap(false);
 
                     });
             }
         }
 
-        private void CenterMap()
+        private void CenterMap(bool changeZoom)
         {
+
 
             if (DropoffIsActive && Dropoff.Model.HasValidCoordinate())
             {
-                MapCenter = new CoordinateViewModel[] { new CoordinateViewModel { Coordinate = new Coordinate { Latitude = Dropoff.Model.Latitude, Longitude = Dropoff.Model.Longitude }, Zoom = ZoomLevel.Close } };
+                MapCenter = new CoordinateViewModel[] { new CoordinateViewModel { Coordinate = new Coordinate { Latitude = Dropoff.Model.Latitude, Longitude = Dropoff.Model.Longitude }, Zoom = changeZoom ? ZoomLevel.Close : ZoomLevel.DontChange } };
             }
             else if (PickupIsActive && Pickup.Model.HasValidCoordinate())
             {
-                MapCenter = new CoordinateViewModel[] { new CoordinateViewModel { Coordinate = new Coordinate { Latitude = Pickup.Model.Latitude, Longitude = Pickup.Model.Longitude }, Zoom = ZoomLevel.Close } };
+                MapCenter = new CoordinateViewModel[] { new CoordinateViewModel { Coordinate = new Coordinate { Latitude = Pickup.Model.Latitude, Longitude = Pickup.Model.Longitude }, Zoom = changeZoom ? ZoomLevel.Close : ZoomLevel.DontChange } };
             }
             else if ((!PickupIsActive && Pickup.Model.HasValidCoordinate()) && (!DropoffIsActive && Pickup.Model.HasValidCoordinate()))
             {
-                MapCenter = new CoordinateViewModel[] { new CoordinateViewModel { Coordinate = new Coordinate { Latitude = Dropoff.Model.Latitude, Longitude = Dropoff.Model.Longitude }, Zoom = ZoomLevel.Close } , 
+                MapCenter = new CoordinateViewModel[] { new CoordinateViewModel { Coordinate = new Coordinate { Latitude = Dropoff.Model.Latitude, Longitude = Dropoff.Model.Longitude }, Zoom = changeZoom ? ZoomLevel.Close : ZoomLevel.DontChange } , 
                                             new CoordinateViewModel { Coordinate = new Coordinate { Latitude = Pickup.Model.Latitude, Longitude = Pickup.Model.Longitude }, Zoom = ZoomLevel.Close }};
             }
             else
             {
-                var position = TinyIoCContainer.Current.Resolve<IUserPositionService>().LastKnownPosition;
-                if (position.IsUsable)
-                {
-                    MapCenter = new CoordinateViewModel[] { new CoordinateViewModel { Coordinate = new Coordinate { Latitude = position.Latitude, Longitude = position.Longitude }, Zoom = ZoomLevel.Close } };
-                }
-                else if ((position.RefreshTime == CoordinateRefreshTime.Recently) || (position.RefreshTime == CoordinateRefreshTime.NotRecently))
-                {
-                    MapCenter = new CoordinateViewModel[] { new CoordinateViewModel { Coordinate = new Coordinate { Latitude = position.Latitude, Longitude = position.Longitude }, Zoom = ZoomLevel.Medium } };
-                }
-                else
-                {
-                    MapCenter = new CoordinateViewModel[] { new CoordinateViewModel { Coordinate = new Coordinate { Latitude = position.Latitude, Longitude = position.Longitude }, Zoom = ZoomLevel.Overview } };
-                }
+                //var position = TinyIoCContainer.Current.Resolve<IUserPositionService>().LastKnownPosition;
+                //if (position.IsUsable)
+                //{
+                //    MapCenter = new CoordinateViewModel[] { new CoordinateViewModel { Coordinate = new Coordinate { Latitude = position.Latitude, Longitude = position.Longitude }, Zoom = changeZoom ? ZoomLevel.Close : ZoomLevel.DontChange } };
+                //}
+                //else if ((position.RefreshTime == CoordinateRefreshTime.Recently) || (position.RefreshTime == CoordinateRefreshTime.NotRecently))
+                //{
+                //    MapCenter = new CoordinateViewModel[] { new CoordinateViewModel { Coordinate = new Coordinate { Latitude = position.Latitude, Longitude = position.Longitude }, Zoom = = changeZoom ? ZoomLevel.Medium : ZoomLevel.DontChange } };
+                //}
+                //else
+                //{
+                //    MapCenter = new CoordinateViewModel[] { new CoordinateViewModel { Coordinate = new Coordinate { Latitude = position.Latitude, Longitude = position.Longitude }, Zoom = = changeZoom ? ZoomLevel.Overview: ZoomLevel.DontChange } };
+                //}
 
             }
         }

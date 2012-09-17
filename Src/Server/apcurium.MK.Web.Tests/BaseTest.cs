@@ -16,7 +16,8 @@ namespace apcurium.MK.Web.Tests
 
         //staging url : http://project.apcurium.com/apcurium.MK.Web.csproj_deploy/
         protected string BaseUrl { get { return "http://localhost:6901/"; } }
-
+        //protected string BaseUrl { get { return "http://demo.taxihail.biz/Dev/api/"; } }
+        //
         protected Account TestAccount { get; set; }
         protected string TestAccountPassword { get { return "password1"; } }
         protected string SessionId { get; set; }

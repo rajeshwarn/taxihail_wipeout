@@ -10,7 +10,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		{
 
 		}
+        public Address GetPlaceDetail(string reference)
+        {
 
+            Address result = null;
+            UseServiceClient<PlaceDetailServiceClient>(service =>
+            {
+                result = service.GetPlaceDetail(reference);
+            });
+
+            return result;
+        }
 		public Address[] GetNearbyPlaces(double? latitude, double? longitude, int? radius)
 		{
 			Address[] places = null;

@@ -25,13 +25,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private IBookingService _bookingService;
         private IAccountService _accountService;
         private IEnumerable<AddressViewModel> _addressViewModels;
-        private Geolocator _geolocator;
-        private TaskScheduler _scheduler = TaskScheduler.FromCurrentSynchronizationContext();
-        private double _lat;
-        private double _lg;
+        private TaskScheduler _scheduler = TaskScheduler.FromCurrentSynchronizationContext();        
         private string _ownerId;
-        
-		public AddressSearchViewModel(string ownerId, string search, IGoogleService googleService, IGeolocService geolocService, IBookingService bookingService, IAccountService accountService, Geolocator geolocator)
+
+        public AddressSearchViewModel(string ownerId, string search, IGoogleService googleService, IGeolocService geolocService, IBookingService bookingService, IAccountService accountService)
         {
             _ownerId = ownerId;
             _googleService = googleService;
@@ -39,15 +36,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _bookingService = bookingService;
             _accountService = accountService;
             _addressViewModels = new List<AddressViewModel>();
-            _geolocator = geolocator;
-            _geolocator.GetPositionAsync(5000).ContinueWith(p =>
-                {
-                    if (p.IsCompleted)
-                    {
-                        _lat = p.Result.Latitude;
-                        _lg = p.Result.Longitude;
-                    }
-                });
+            
+            TinyIoCContainer.Current.Resolve<IUserPositionService>().Refresh();
+
             SearchText = search;
 
             if (SearchText.HasValue())
@@ -108,27 +99,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					SearchText = "";
 					SetSelected( TopBarButton.PlacesBtn );
 					IsSearching = true;
-                    _geolocator.GetPositionAsync(5000).ContinueWith(t =>
-                    {
-                        if (t.IsFaulted)
-                        {
-                            Console.WriteLine("GetPosition : Faulted");
-                        }
-                        else if (t.IsCanceled)
-                        {
-                            Console.WriteLine("GetPosition : Cancelled");
-                        }
-                        else
-                        {
-                            var addresses = _googleService.GetNearbyPlaces(t.Result.Latitude, t.Result.Longitude);
-							if( PlacesSelected )
-							{
-                            	AddressViewModels = addresses.Select(a => new AddressViewModel() { Address = a, ShowPlusSign = false, ShowRightArrow = false, IsFirst = a.Equals(addresses.First()), IsLast = a.Equals(addresses.Last()) }).ToList();
-							}
-                        }
-						IsSearching = false;
 
-                    }, _scheduler);
+                    ThreadPool.QueueUserWorkItem( o=>
+                        {
+                            try
+                            {
+                                var position = TinyIoCContainer.Current.Resolve<IUserPositionService>().LastKnownPosition;
+                                var addresses = _googleService.GetNearbyPlaces(position.Latitude, position.Longitude);
+                                if( PlacesSelected )
+					            {
+                                    AddressViewModels = addresses.Select(a => new AddressViewModel() { Address = a, ShowPlusSign = false, ShowRightArrow = false, IsFirst = a.Equals(addresses.First()), IsLast = a.Equals(addresses.Last()) }).ToList();
+                                }   
+                            }
+                            finally
+                            {
+                                IsSearching = false;
+                            }
+                        });                   
                 });
             }
         }
@@ -151,7 +138,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							IsSearching = false;
                         }
 
-						if( SearchText.Where( c => char.IsLetter( c ) ).Count() > 2 )
+						if( SearchText.Count( c => char.IsLetter( c ) ) > 2 )
 						{
 	                        _editThread = new Thread(() =>
 	                        {
@@ -160,7 +147,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 								new Thread( () => {
 									IsSearching = true;
-									var addresses = _geolocService.SearchAddress(SearchText, _lat, _lg);
+                                    var position = TinyIoCContainer.Current.Resolve<IUserPositionService>().LastKnownPosition;
+									var addresses = _geolocService.SearchAddress(SearchText, position.Latitude, position.Longitude );
 									if( SearchSelected )
 									{
 		                            	AddressViewModels = addresses.Select(a => new AddressViewModel() { Address = a, ShowPlusSign = false, ShowRightArrow = false, IsFirst = a.Equals(addresses.First()), IsLast = a.Equals(addresses.Last()) }).ToList();
@@ -269,7 +257,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return new MvxRelayCommand<AddressViewModel>(address =>
                     {
-                        TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new AddressSelected(this, address.Address, _ownerId));
+                        ThreadPool.QueueUserWorkItem(o =>
+                            {
+                                if (address.Address != null)
+                                {
+                                    if (address.Address.FullAddress.IsNullOrEmpty() && (address.Address.AddressType == "place") && (address.Address.PlaceReference.HasValue()))
+                                    {
+                                        var placeAddress = _googleService.GetPlaceDetail(address.Address.PlaceReference);
+                                        placeAddress.FriendlyName = address.Address.FriendlyName;
+                                        InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new AddressSelected(this, placeAddress, _ownerId)));
+                                    }
+                                    else
+                                    {
+                                        InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new AddressSelected(this, address.Address, _ownerId)));
+                                    }
+                                }
+                            });
                         RequestClose(this);
                     });
             }

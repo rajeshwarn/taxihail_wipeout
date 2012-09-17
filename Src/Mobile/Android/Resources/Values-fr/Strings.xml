@@ -247,5 +247,6 @@
   <string name="AddressSearchingText">Recherche...</string>
   <string name="NoFareText">Choisir la destination pour avoir un estimé du prix</string>
   <string name="PickupDateDisplay">This reservation is for : {0:dddd, MMMM d}</string>
+  <string name="DateTimePickerSetButton">OK</string>
   
 </resources>

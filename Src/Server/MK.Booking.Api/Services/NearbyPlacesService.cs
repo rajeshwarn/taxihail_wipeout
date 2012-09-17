@@ -47,6 +47,7 @@ namespace apcurium.MK.Booking.Api.Services
         {
             var address = new Address
             {
+                PlaceReference = place.Reference,
                 FriendlyName = place.Name,
                 FullAddress = place.Vicinity,
                 Latitude = place.Geometry.Location.Lat,

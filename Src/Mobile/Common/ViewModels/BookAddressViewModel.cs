@@ -34,6 +34,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private Action<Address> _setAddress;
         private string _id;
         private string _searchingTitle;
+
+        public event EventHandler AddressChanged;
         public BookAddressViewModel(Func<Address> getAddress, Action<Address> setAddress, Geolocator geolocator)
         {
             _getAddress = getAddress;
@@ -100,29 +102,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     var token = _cancellationToken.Token;
                     _searchTask = Task.Factory.StartNew(() =>
                     {
-                        IsExecuting = true;                        
-                        var address = TinyIoC.TinyIoCContainer.Current.Resolve<IGeolocService>().SearchAddress(coordinate.Latitude, coordinate.Longitude);
-                        if (!token.IsCancellationRequested)
+                        IsExecuting = true;
+                        return TinyIoC.TinyIoCContainer.Current.Resolve<IGeolocService>().SearchAddress(coordinate.Latitude, coordinate.Longitude);
+
+                    }, token)
+                    .ContinueWith( t=>
                         {
-                            RequestMainThreadAction(() =>
+                            if (t.IsCompleted)
+                            {                                
+                                RequestMainThreadAction(() =>
                                 {
-                                    if (address.Count() > 0)
+                                    if (t.Result.Count() > 0)
                                     {
-                                        SetAddress(address[0]);
+                                        SetAddress(t.Result[0], true );
                                     }
                                     else
                                     {
                                         ClearAddress();
-                                    }
-                                    IsExecuting = false;
+                                    }                                    
                                 });
-                        }
-                        else
-                        {
+                            }
                             IsExecuting = false;
-                        }
-
-                    }, token);
+                        });
 
                 });
             }
@@ -142,7 +143,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void OnAddressSelected(AddressSelected selected)
         {
-            SetAddress(selected.Content);
+            SetAddress(selected.Content,true);
         }
 
         public bool IsExecuting
@@ -173,7 +174,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
 
-        public void SetAddress(Address address)
+        public void SetAddress(Address address, bool userInitiated)
         {
             Model.FullAddress = address.FullAddress;
             Model.Longitude = address.Longitude;
@@ -181,6 +182,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             FirePropertyChanged(() => Display);
             FirePropertyChanged(() => Model);
+
+
+            if (AddressChanged != null)
+            {
+                AddressChanged(userInitiated, EventArgs.Empty);
+            }
         }
 
 
@@ -215,7 +222,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                 var address = TinyIoC.TinyIoCContainer.Current.Resolve<IGeolocService>().SearchAddress(t.Result.Latitude, t.Result.Longitude);
                                 if (address.Count() > 0)
                                 {
-                                    SetAddress(address[0]);
+                                    SetAddress(address[0],false);
                                 }
                                 else
                                 {

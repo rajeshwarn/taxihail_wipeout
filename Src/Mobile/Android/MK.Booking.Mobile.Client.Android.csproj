@@ -38,6 +38,8 @@
     <AndroidSupportedAbis>armeabi,armeabi-v7a,x86</AndroidSupportedAbis>
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
     <DebugSymbols>True</DebugSymbols>
+    <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
+    <AndroidLinkSkip />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -84,19 +86,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Activities\Book\AddressActivity.cs" />
-    <Compile Include="Activities\Book\AddressContollerMT.cs" />
-    <Compile Include="Activities\Book\AddressController.cs" />
     <Compile Include="Activities\Book\BookDetailActivity.cs" />
     <Compile Include="Activities\Book\BookingStatusActivity.cs" />
     <Compile Include="Activities\Book\Bookv2Activity.cs" />
-    <Compile Include="Activities\Book\Coordinate.cs" />
     <Compile Include="Activities\Book\DateTimePickerActivity.cs" />
-    <Compile Include="Activities\Book\DestinationActivity.cs" />
-    <Compile Include="Activities\Book\FlipperView.cs" />
     <Compile Include="Activities\Book\LocationListener.cs" />
     <Compile Include="Activities\Book\LocationService.cs" />
-    <Compile Include="Activities\Book\PickupActivity.cs" />
     <Compile Include="Activities\Book\SearchAddressActivity.cs" />
     <Compile Include="Activities\Setting\AboutActivity.cs" />
     <Compile Include="Adapters\GroupedOrderListAdapter.cs" />
@@ -109,7 +104,6 @@
     <Compile Include="Animations\SlideAnimation.cs" />
     <Compile Include="AppContext.cs" />
     <Compile Include="AppModule.cs" />
-    <Compile Include="Activities\Book\BookActivity.cs" />
     <Compile Include="AppFonts.cs" />
     <Compile Include="Cache\CacheService.cs" />
     <Compile Include="Controls\BaloonLayout.cs" />
@@ -134,7 +128,6 @@
     <Compile Include="Activities\Location\LocationDetailActivity.cs" />
     <Compile Include="Activities\Location\LocationsActivity.cs" />
     <Compile Include="Activities\Account\LoginActivity.cs" />
-    <Compile Include="Activities\MainActivity.cs" />
     <Compile Include="MapUtitilties\PushPinOverlay.cs" />
     <Compile Include="MapUtitilties\TaxiOverlay.cs" />
     <Compile Include="Models\AddressItemListModel.cs" />
@@ -151,7 +144,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Activities\Account\SignUpActivity.cs" />
     <Compile Include="Activities\SplashActivity.cs" />
-    <Compile Include="Activities\Setting\SettingsActivity.cs" />
     <AndroidResource Include="Resources\Layout\TitleSubTitleListItem.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
@@ -166,7 +158,6 @@
     <Compile Include="ListViewStructure\Section.cs" />
     <Compile Include="ListViewStructure\SectionItem.cs" />
     <Compile Include="ListViewStructure\ListStructure.cs" />
-    <Compile Include="Activities\TabGroupActivity.cs" />
     <Compile Include="ListViewCell\LabelValueCell.cs" />
     <Compile Include="ListViewCell\InfoCell.cs" />
     <Compile Include="ListViewCell\SectionItemCellRegistry.cs" />
@@ -180,7 +171,6 @@
     <Compile Include="ListViewStructure\BooleanSectionItem.cs" />
     <Compile Include="ListViewCell\BooleanCell.cs" />
     <Compile Include="Models\Activities.cs" />
-    <Compile Include="Activities\Book\IAddress.cs" />
     <Compile Include="MapUtitilties\MapService.cs" />
     <Compile Include="Controls\ReclickableTabHost.cs" />
     <Compile Include="Diagnostic\ErrorHandler.cs" />
@@ -208,12 +198,6 @@
     <AndroidResource Include="Resources\Layout\Login.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Layout\Book.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\Layout\Settings.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\Layout\SignUp.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -235,15 +219,6 @@
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\HistoryDetail.axml">
       <SubType>AndroidResource</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\Layout\Pickup.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\Layout\Main.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\Layout\Destination.axml">
-      <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\LabelValueCell.axml">
       <SubType>AndroidResource</SubType>
@@ -280,7 +255,6 @@
     <AndroidResource Include="Resources\Layout\Baloon.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Layout\Test.axml" />
     <AndroidResource Include="Resources\Layout\LocationPick.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>

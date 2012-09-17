@@ -131,7 +131,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             
             ViewModel.Load();
-            ViewModel.Pickup.SetAddress(address);
+            ViewModel.Pickup.SetAddress(address, true);
             ViewModel.Dropoff.ClearAddress();
             BookItBtn_Click(this, EventArgs.Empty);
         }

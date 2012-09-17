@@ -7,7 +7,7 @@ namespace apcurium.MK.Booking.Google
     {
         public void Init(IUnityContainer container)
         {
-            container.RegisterInstance<IMapsApiClient>(new MapsApiClient());
+            container.RegisterType<IMapsApiClient,MapsApiClient>();
         }
     }
 }

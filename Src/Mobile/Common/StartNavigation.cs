@@ -14,7 +14,7 @@ namespace apcurium.MK.Booking.Mobile
         public void Start()
         {
          
-            TinyIoCContainer.Current.Resolve<IUserPositionService>().Refresh();
+            
 
             if (TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount == null)
             {
@@ -25,6 +25,8 @@ namespace apcurium.MK.Booking.Mobile
                 RequestNavigate<BookViewModel>();                
             }
         }
+
+        
                 
         public bool ApplicationCanOpenBookmarks
         {

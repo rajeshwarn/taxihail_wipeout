@@ -32,6 +32,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             try
             {
+                Console.Write( "La" + latitude.ToString() + " - Lo" + longitude.ToString());
                 var addresses = TinyIoCContainer.Current.Resolve<GeocodingServiceClient>().Search(latitude, longitude);
                 return addresses.Addresses;
             }
@@ -46,12 +47,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             try
             {
                 //var localAddress = FindSimilar(address);
-                var addresses = TinyIoCContainer.Current.Resolve<GeocodingServiceClient>().Search(address);
+                var addresses = TinyIoCContainer.Current.Resolve<SearchLocationsServiceClient>().Search(address, latitude, longitude );
 
                 return addresses.Addresses;
             }
-            catch
+            catch( Exception ex )
             {
+                Console.WriteLine(ex.Message);
                 return new Address[0];
             }
 
