@@ -161,8 +161,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             };
 
 #if DEBUG
-            //FindViewById<EditText>(Resource.Id.Username).Text = "alex@e-nergik.com";
-            //FindViewById<EditText>(Resource.Id.Password).Text = "qqqqqq";            
+//            FindViewById<EditText>(Resource.Id.Username).Text = "dboisson20@hotmail.com";
+//            FindViewById<EditText>(Resource.Id.Password).Text = "password";            
 #endif 
         }
 
