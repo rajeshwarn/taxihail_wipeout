@@ -46,7 +46,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             _bar.Indeterminate = true;
             _bar.Visibility = ViewStates.Gone;
 			_bar.IndeterminateDrawable.SetColorFilter( Color.Rgb(147,152,157), PorterDuff.Mode.Multiply );
-			var layout = new LinearLayout.LayoutParams(30, 30 );
+			var layout = new LinearLayout.LayoutParams(40, 40 );
             layout.Gravity = GravityFlags.CenterVertical | GravityFlags.Left;
             AddView(_bar, layout);
 

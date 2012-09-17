@@ -77,5 +77,7 @@
     <Compile Include="AuthServiceClient.cs" />
     <Compile Include="NearbyPlacesClient.cs" />
     <Compile Include="ApplicationInfoServiceClient.cs" />
+    <Compile Include="PlaceDetailServiceClient.cs" />
+    <Compile Include="SearchLocationsServiceClient.cs" />
   </ItemGroup>
 </Project>

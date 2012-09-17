@@ -263,7 +263,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		public string ServerVersion {
 			get {
-				return TinyIoCContainer.Current.Resolve<IApplicationInfoService>().GetServerVersion();
+				//return TinyIoCContainer.Current.Resolve<IApplicationInfoService>().GetServerVersion();
+				return "1.0" ;
 			}
 		}        
         

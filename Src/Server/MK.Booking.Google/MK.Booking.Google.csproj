@@ -78,6 +78,8 @@
     <Compile Include="Resources\Location.cs" />
     <Compile Include="Resources\OverviewPolyline.cs" />
     <Compile Include="Resources\Place.cs" />
+    <Compile Include="Resources\PlaceDetail.cs" />
+    <Compile Include="Resources\PlaceDetailResponse.cs" />
     <Compile Include="Resources\PlacesResponse.cs" />
     <Compile Include="Resources\PlaceTypes.cs" />
     <Compile Include="Resources\Polyline.cs" />

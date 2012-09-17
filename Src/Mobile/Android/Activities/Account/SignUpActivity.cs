@@ -19,6 +19,10 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Client.Validation;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using System.Threading;
+using Cirrious.MvvmCross.Views;
+using Cirrious.MvvmCross.Interfaces.Views;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {
@@ -100,22 +104,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                                                        {
                                                            AppContext.Current.UpdateLoggedInUser(account, false);
                                                            AppContext.Current.LastEmail = account.Email;
+
                                                            RunOnUiThread(() =>
                                                            {
+                                                               var dispatch = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
+                                                               dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(BookViewModel), null, false, MvxRequestedBy.UserAction));
                                                                Finish();
-                                                               StartActivity(typeof(MainActivity));
                                                            });
-                                                           Finish();
-                                                           StartActivity(typeof(MainActivity));                                                           
                                                        }
                                                        else
                                                        {
-                                                           Finish();                                                           
+                                                           Finish();
                                                        }
-                                                       
-                                                       
 
-                                                       
+
+
+
                                                    }
                                                    else
                                                    {

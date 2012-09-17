@@ -51,7 +51,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             if (OrderStatus.IBSOrderId.HasValue)
             {
-                FindViewById<TextView>(Resource.Id.statusInfoText).Text = string.Format(GetString(Resource.String.StatusDescription), OrderStatus.IBSOrderId.Value);
+                FindViewById<TextView>(Resource.Id.confirmationNo).Text = string.Format(GetString(Resource.String.StatusDescription), OrderStatus.IBSOrderId.Value);
             }
 
             SetStatusText(GetString(Resource.String.LoadingMessage));
@@ -85,7 +85,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _isInit = true;
 
             var map = FindViewById<MapView>(Resource.Id.mapStatus);
-            map.SetBuiltInZoomControls(true);
+            map.SetBuiltInZoomControls(false);
             map.Clickable = true;
             map.Traffic = false;
             map.Satellite = false;
@@ -199,9 +199,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                     _lastOrder = OrderStatus.OrderId;
 
                     if (status != null)
-                    {
-                        //TODO : Status
-                        //BookingInfo.Status = status.Status;
+                    {                        
                         OrderStatus = status;
                         DisplayStatus(Order, status);
                     }
@@ -220,6 +218,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 RunOnUiThread(() =>
                     {
+
                         SetStatusText(status.IBSStatusDescription);
                     });
             }
@@ -227,6 +226,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             RunOnUiThread(() =>
                 {
+                    FindViewById<TextView>(Resource.Id.confirmationNo).Text = string.Format(GetString(Resource.String.StatusDescription), OrderStatus.IBSOrderId.Value);
+
                     var map = FindViewById<MapView>(Resource.Id.mapStatus);
                     map.Overlays.Clear();
                     map.Invalidate();

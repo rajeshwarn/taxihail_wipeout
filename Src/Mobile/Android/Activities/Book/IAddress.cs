@@ -1,11 +1,11 @@
-using System;
+//using System;
 
-namespace apcurium.MK.Booking.Mobile.Client
-{
-	public interface IAddress
-	{
+//namespace apcurium.MK.Booking.Mobile.Client
+//{
+//    public interface IAddress
+//    {
 
-		void OnResumeEvent();
-	}
-}
+//        void OnResumeEvent();
+//    }
+//}
 

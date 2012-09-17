@@ -123,7 +123,7 @@
     <None Include="Assets\About_en.html" />
     <None Include="Assets\About_fr.html" />
     <None Include="Assets\Info.plist" />
-    <None Include="Assets\VerticalButtonBar\.DS_Store" />
+    <None Include="assets\VerticalButtonBar\.DS_Store" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />

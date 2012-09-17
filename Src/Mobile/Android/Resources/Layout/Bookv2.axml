@@ -4,8 +4,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@drawable/background">
-    <ImageView
-        android:id="@+id/fakeLayout"
+  <RelativeLayout
+      android:id="@+id/fakeLayout"
         android:layout_marginLeft="100px"
         android:layout_width="5dip"
         android:layout_height="fill_parent"
@@ -44,7 +44,7 @@
             android:background="@drawable/cell_top_button_state"
             android:layout_width="fill_parent"
             android:layout_height="40dip"
-            android:text="Favorites"
+            android:text="@string/SettingsFavorites"
             android:drawableRight="@drawable/right_arrow"
             android:paddingRight="10dip"
             android:paddingLeft="10dip"
@@ -56,7 +56,7 @@
             android:background="@drawable/cell_middle_button_state"
             android:layout_width="fill_parent"
             android:layout_height="40dip"
-            android:text="Ride History"
+            android:text="@string/SettingsRideHistory"
             android:drawableRight="@drawable/right_arrow"
             android:paddingRight="10dip"
             android:paddingLeft="10dip"
@@ -141,6 +141,15 @@
             android:layout_marginRight="20dip"
             android:paddingBottom="10dip"
             android:layout_centerHorizontal="true" />
+      <TextView
+           android:text="v0.0.0"  
+           local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Version&apos;}}"
+           android:layout_width="fill_parent"
+           android:layout_height="wrap_content"           
+           android:layout_below="@id/apcuriumLogo"
+           style="@style/FinePrint"
+           android:gravity="bottom|right"
+           android:layout_gravity="right"/>
     </RelativeLayout>
     <FrameLayout
         android:id="@+id/scrollinglayout"
@@ -213,7 +222,7 @@
                     android:background="@drawable/main_btn_state"
                     android:layout_marginRight="5dip"
                     android:drawableRight="@drawable/right_arrow"
-                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;Pickup.PickAddress&apos;}, &apos;Cancel&apos;:{&apos;Path&apos;:&apos;Pickup.CancelCurrentLocationCommand&apos;},&apos;IsProgressing&apos;:{&apos;Path&apos;:&apos;Pickup.IsExecuting&apos;},&apos;TextLine1&apos; : {&apos;Path&apos;:&apos;Pickup.Title&apos;}, &apos;TextLine2&apos; : {&apos;Path&apos;:&apos;Pickup.Display&apos;}}"
+                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;Pickup.PickAddress&apos;}, &apos;Cancel&apos;:{&apos;Path&apos;:&apos;Pickup.CancelCurrentLocationCommand&apos;},&apos;IsProgressing&apos;:{&apos;Path&apos;:&apos;Pickup.IsExecuting&apos;},&apos;TextLine1&apos; : {&apos;Path&apos;:&apos;Pickup.Title&apos;}, &apos;TextLine2&apos; : {&apos;Path&apos;:&apos;Pickup.Display&apos;},&apos;IsPlaceHolder&apos; : {&apos;Path&apos;:&apos;Pickup.IsPlaceHolder&apos;} }"
                     android:paddingRight="10dip"
                     android:layout_marginTop="1dip" />
                 <ImageButton
@@ -246,7 +255,7 @@
                     android:layout_marginBottom="5dip"
                     android:gravity="left"
                     android:layout_weight="1"
-                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;Dropoff.PickAddress&apos;}, &apos;Cancel&apos;:{&apos;Path&apos;:&apos;Dropoff.CancelCurrentLocationCommand&apos;},&apos;IsProgressing&apos;:{&apos;Path&apos;:&apos;Dropoff.IsExecuting&apos;},&apos;TextLine1&apos; : {&apos;Path&apos;:&apos;Dropoff.Title&apos;}, &apos;TextLine2&apos; : {&apos;Path&apos;:&apos;Dropoff.Display&apos;}}"
+                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;Dropoff.PickAddress&apos;}, &apos;Cancel&apos;:{&apos;Path&apos;:&apos;Dropoff.CancelCurrentLocationCommand&apos;},&apos;IsProgressing&apos;:{&apos;Path&apos;:&apos;Dropoff.IsExecuting&apos;},&apos;TextLine1&apos; : {&apos;Path&apos;:&apos;Dropoff.Title&apos;}, &apos;TextLine2&apos; : {&apos;Path&apos;:&apos;Dropoff.Display&apos;},&apos;IsPlaceHolder&apos; : {&apos;Path&apos;:&apos;Dropoff.IsPlaceHolder&apos;} }"
                     android:background="@drawable/main_btn_state"
                     android:layout_marginRight="5dip"
                     android:paddingRight="10dip"
@@ -271,16 +280,19 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/destinationAddressLayout"
-                android:gravity="center_horizontal"
+                android:gravity="center_horizontal|center_vertical"                  
+                android:layout_gravity="center_horizontal|center_vertical"                    
                 android:paddingLeft="3dip"
                 android:paddingRight="3dip">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Fare Estimate"
-                    android:layout_gravity="top"
-                    android:gravity="center"
-                    android:textColor="@color/white" />
+                    android:text=""
+                    local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;FareEstimate&apos;}}"
+                    android:gravity="center_horizontal|top"
+                    style="@style/SmallTitle"
+                    android:layout_gravity="center_horizontal|top"
+                    />
             </LinearLayout>
             <FrameLayout
                 android:layout_width="fill_parent"
@@ -292,7 +304,7 @@
                     android:layout_height="wrap_content"
                     android:apiKey="0XEY3WqKVmJMzXNRJfhbH1yM6RkpBMOaZWUoMAw"
                     android:enabled="true"
-                    local:MvxBind="{&apos;Pickup&apos;:{&apos;Path&apos;:&apos;Pickup.Model&apos;}, &apos;Dropoff&apos;:{&apos;Path&apos;:&apos;Dropoff.Model&apos;},&apos;MapTouchUp&apos;:{&apos;Path&apos;:&apos;SelectedAddress.SearchCommand&apos;},&apos;MapCenter&apos;:{&apos;Path&apos;:&apos;SelectedAddress.SearchCoordinate&apos;,&apos;Converter&apos;:&apos;CoordinateConverter&apos;, &apos;Mode&apos;:&apos;TwoWay&apos;}}"
+                    local:MvxBind="{&apos;Pickup&apos;:{&apos;Path&apos;:&apos;Pickup.Model&apos;}, &apos;Dropoff&apos;:{&apos;Path&apos;:&apos;Dropoff.Model&apos;} , &apos;IsDropoffActive&apos;:{&apos;Path&apos;:&apos;DropoffIsActive&apos;}, &apos;IsPickupActive&apos;:{&apos;Path&apos;:&apos;PickupIsActive&apos;} , &apos;MapMoved&apos;:{&apos;Path&apos;:&apos;SelectedAddress.SearchCommand&apos;}, &apos;Center&apos;:{&apos;Path&apos;:&apos;MapCenter&apos;} }"
                     android:clickable="true" />
                 <ImageView
                     android:layout_width="30dip"
@@ -300,21 +312,42 @@
                     android:layout_alignWithParentIfMissing="true"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
-                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;SelectedAddress.RequestCurrentLocationCommand&apos;}}"
+                    local:MvxBind="{&apos;Visibility&apos;:{&apos;Path&apos;:&apos;NoAddressActiveSelection&apos;,'Converter':'InvertedVisibility'}}"
+                    
                     android:src="@drawable/target_state" />
+              
                 <FrameLayout
                     android:id="@+id/bottomLayout"
                     android:layout_width="fill_parent"
                     android:layout_height="60dip"
+                    android:layout_weight="1"
                     android:layout_gravity="bottom"
                     android:background="@color/black" />
+              <RelativeLayout
+        android:layout_weight="0.11"
+        android:layout_width="fill_parent"
+        android:layout_height="19dip"
+        android:layout_gravity="center_horizontal|bottom"
+        local:MvxBind="{&apos;Visibility&apos;:{&apos;Path&apos;:&apos;IsInTheFuture&apos;,'Converter':'Visibility'}}"
+        android:gravity="center_horizontal|center_vertical"
+        android:layout_marginBottom="60dip"
+        android:background="#66000000">
+                <TextView android:layout_width="wrap_content"
+                                 android:layout_height="wrap_content"
+                                 android:text=""
+                                 local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;PickupDateDisplay&apos;}}"
+                                 android:gravity="center_horizontal|top"
+                                 style="@style/SmallTitle"
+                                 android:layout_gravity="center_horizontal|top"
+                    />
+              </RelativeLayout>
                 <RelativeLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:layout_margin="10dip">
                     <ImageButton
-                        android:id="@+id/myLocationButton"
+                        local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;SelectedAddress.RequestCurrentLocationCommand&apos;}}"
                         android:src="@drawable/mylocation_state"
                         android:background="@drawable/myLocationButton_state"
                         style="@style/ButtonTextGray"
@@ -335,9 +368,11 @@
                         android:background="@drawable/bookLaterButton_state"
                         style="@style/ButtonTextGray"
                         android:layout_width="40dip"
-                        android:layout_height="40dip"
+                        android:layout_height="40dip"                        
                         android:layout_alignParentRight="true" />
                 </RelativeLayout>
+
+      
             </FrameLayout>
         </RelativeLayout>
     </FrameLayout>

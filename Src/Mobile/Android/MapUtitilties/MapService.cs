@@ -39,8 +39,8 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
                 var point = new GeoPoint(CoordinatesHelper.ConvertToE6(location.Latitude),
                                          CoordinatesHelper.ConvertToE6(location.Longitude));
 
-                map.Overlays.Clear();
-                MapService.AddMyLocationOverlay(map, map.Context, null);
+                //map.Overlays.Clear();
+                //MapService.AddMyLocationOverlay(map, map.Context, null);
                 pushpinOverlay  = new PushPinOverlay(map, mapPin, title, point);
                 map.Overlays.Add(pushpinOverlay);
             }

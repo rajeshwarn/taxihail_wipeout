@@ -49,11 +49,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			if( !TextLine1.IsNullOrEmpty() )
 			{
 	            DrawText(canvas, TextLine1 ?? "", 8, 32, 20, AppFonts.Bold);
-				DrawText(canvas, TextLine2 ?? "", 8, 54, 16, AppFonts.Regular);
+				DrawText(canvas, TextLine2 ?? "", 8, 54, 18, AppFonts.Regular);
 			}
 			else
 			{
-				DrawText(canvas, TextLine2 ?? "", 8, 45, 16, AppFonts.Regular);
+				DrawText(canvas, TextLine2 ?? "", 8, 45, 18, AppFonts.Regular);
 			}
 
 			var d = IsTop && !IsBottom ? Resource.Drawable.cell_top : IsBottom && !IsTop ? Resource.Drawable.cell_bottom : IsTop && IsBottom ? Resource.Drawable.cell_bottom_full : Resource.Drawable.cell_middle;

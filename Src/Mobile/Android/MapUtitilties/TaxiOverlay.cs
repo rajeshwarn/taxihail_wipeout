@@ -65,7 +65,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
                     _owner.Projection.ToPixels(point, markerBottomCenterCoords);
 
                     /* Find the width and height of the title*/
-                    TextPaint paintText = new TextPaint();
+                    TextPaint paintText = new TextPaint(PaintFlags.AntiAlias | Android.Graphics.PaintFlags.LinearText);
                     Paint paintRect = new Paint();
 
                     Rect rect = new Rect();
@@ -80,7 +80,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
                     paintText.SetARGB(255, 255, 255, 255);
                     paintRect.SetARGB(0, 0, 0, 0);
                     
-                    paintText.SetTypeface(  Typeface.CreateFromAsset( AppContext.Current.App.Assets , "Helvetica.dfont" ) );
+                    paintText.SetTypeface( AppFonts.Bold );
                     canvas.DrawRoundRect(new RectF(rect), 2, 2, paintRect);
                     canvas.DrawText(_title, rect.Left + rect.Width() / 2, rect.Bottom - 3, paintText);
 

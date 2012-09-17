@@ -13,6 +13,76 @@ using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
+
+    /// <summary>
+    /// THIS CLASS IS DEPRECATED.  DON'T ADD ANYTHING TO IT.
+    /// TRY TO AVOID USING IT. REFACTOR ANY CODE THAT USE IT
+    /// 
+    /// THIS CLASS IS DEPRECATED.  DON'T ADD ANYTHING TO IT.
+    /// TRY TO AVOID USING IT. REFACTOR ANY CODE THAT USE IT
+    ///
+    ///
+    /// THIS CLASS IS DEPRECATED.  DON'T ADD ANYTHING TO IT.
+    /// TRY TO AVOID USING IT. REFACTOR ANY CODE THAT USE IT
+    /// 
+    /// THIS CLASS IS DEPRECATED.  DON'T ADD ANYTHING TO IT.
+    /// TRY TO AVOID USING IT. REFACTOR ANY CODE THAT USE IT
+    /// 
+    /// THIS CLASS IS DEPRECATED.  DON'T ADD ANYTHING TO IT.
+    /// TRY TO AVOID USING IT. REFACTOR ANY CODE THAT USE IT
+    /// 
+    /// THIS CLASS IS DEPRECATED.  DON'T ADD ANYTHING TO IT.
+    /// TRY TO AVOID USING IT. REFACTOR ANY CODE THAT USE IT
+    /// 
+    /// THIS CLASS IS DEPRECATED.  DON'T ADD ANYTHING TO IT.
+    /// TRY TO AVOID USING IT.
+    /// 
+    /// THIS CLASS IS DEPRECATED.  DON'T ADD ANYTHING TO IT.
+    /// TRY TO AVOID USING IT.
+    /// 
+    /// THIS CLASS IS DEPRECATED.  DON'T ADD ANYTHING TO IT.
+    /// TRY TO AVOID USING IT.
+    /// 
+    /// THIS CLASS IS DEPRECATED.  DON'T ADD ANYTHING TO IT.
+    /// TRY TO AVOID USING IT.
+    /// 
+    /// THIS CLASS IS DEPRECATED.  DON'T ADD ANYTHING TO IT.
+    /// TRY TO AVOID USING IT.
+    /// 
+    /// THIS CLASS IS DEPRECATED.  DON'T ADD ANYTHING TO IT.
+    /// TRY TO AVOID USING IT.
+    /// 
+    /// THIS CLASS IS DEPRECATED.  DON'T ADD ANYTHING TO IT.
+    /// TRY TO AVOID USING IT.
+    /// 
+    /// THIS CLASS IS DEPRECATED.  DON'T ADD ANYTHING TO IT.
+    /// TRY TO AVOID USING IT.
+    /// 
+    /// THIS CLASS IS DEPRECATED.  DON'T ADD ANYTHING TO IT.
+    /// TRY TO AVOID USING IT.
+    /// 
+    /// THIS CLASS IS DEPRECATED.  DON'T ADD ANYTHING TO IT.
+    /// TRY TO AVOID USING IT.
+    /// 
+    /// THIS CLASS IS DEPRECATED.  DON'T ADD ANYTHING TO IT.
+    /// TRY TO AVOID USING IT.
+    /// 
+    /// THIS CLASS IS DEPRECATED.  DON'T ADD ANYTHING TO IT.
+    /// TRY TO AVOID USING IT.
+    /// 
+    /// THIS CLASS IS DEPRECATED.  DON'T ADD ANYTHING TO IT.
+    /// TRY TO AVOID USING IT.
+    /// 
+    /// THIS CLASS IS DEPRECATED.  DON'T ADD ANYTHING TO IT.
+    /// TRY TO AVOID USING IT.
+    /// 
+    /// THIS CLASS IS DEPRECATED.  DON'T ADD ANYTHING TO IT.
+    /// TRY TO AVOID USING IT.
+    /// 
+    /// 
+    /// </summary>
+
+
     public class AppContext :  IAppContext, ILocationListener
     {
         private const string _sharedPreferences = "TaxiMobile.SharedPreferences";
@@ -92,27 +162,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
         }
 
-		public string ServerName {
-			get {
-				var pref = App.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
-	            return pref.GetString("ServerName", "");
-			}
-			set {
-			    var pref = App.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
-                pref.Edit().PutString("ServerName", value).Commit();
-			}
-		}
-
-		public string ServerVersion {
-			get {
-				var pref = App.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
-	            return pref.GetString("ServerVersion", "");
-			}
-			set {
-			    var pref = App.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
-                pref.Edit().PutString("ServerVersion", value).Commit();
-			}
-		}
+		
 
         public void UpdateLoggedInUser(Account data, bool syncWithServer)
         {
@@ -221,10 +271,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         public void SignOut()
         {
             Logger.LogMessage("SignOutUser");      
-            LoggedUser = null;
-			ServerName = "";
-			ServerVersion = "";
-
+            LoggedUser = null;			
 			TinyIoCContainer.Current.Resolve<IAccountService>().SignOut();
         }
 

@@ -18,12 +18,15 @@ using apcurium.MK.Booking.Mobile.Client.Models;
 using TinyIoC;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Extensions;
+using TinyMessenger;
+using apcurium.MK.Booking.Mobile.Messages;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
 {
     [Activity(Label = "Location Details", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class LocationDetailActivity : Activity
     {
+        private TinyMessageSubscriptionToken _closeViewToken;       
         private Address _data;
         public bool IsNew
         {
@@ -38,6 +41,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
             SetContentView(Resource.Layout.LocationDetail);
             SetLocationData(Intent.Extras.GetString(NavigationStrings.LocationSelectedId.ToString()));
             UpdateUI();
+            _closeViewToken = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<CloseViewsToRoot>(m => Finish());
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            if (_closeViewToken != null)
+            {
+                TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Unsubscribe<CloseViewsToRoot>(_closeViewToken);
+            }
         }
 
         private void UpdateUI()
@@ -161,29 +174,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
                     }
                 }
 
-                RunOnUiThread(() => Finish());
-
-                //TODO : Fix this
-                //var newList = new List<LocationData>();
-                //if ((AppContext.Current.LoggedUser.FavoriteLocations != null) &&
-                //    (AppContext.Current.LoggedUser.FavoriteLocations.Count() > 0))
-                //{
-                //    newList.AddRange(AppContext.Current.LoggedUser.FavoriteLocations);
-                //}
-                //newList.Remove(d => d.Id == _data.Id);
-                //AppContext.Current.LoggedUser.FavoriteLocations = newList.ToArray();
-                //AppContext.Current.UpdateLoggedInUser(AppContext.Current.LoggedUser, true);
+                RunOnUiThread(() => Finish());                
                 
             }, true);
         }
 
         private void BookBtn_Click(object sender, EventArgs e)
         {
-            Intent intent = new Intent();
-            intent.SetFlags(ActivityFlags.ForwardResult);
-            intent.PutExtra("BookFromLocation", _data.FullAddress);
-            SetResult(Result.Ok, intent);
-            Finish();
+            TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish( new CloseViewsToRoot(this) );
+            TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new BookUsingAddress(this, _data));            
         }
 
         private void UpdateData()
@@ -194,34 +193,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
             _data.FriendlyName = FindViewById<EditText>(Resource.Id.LocationFriendlyName).Text;
             //_data.IsFromHistory = false;
         }
+
         private void SetLocationData(string serializedData)
         {
-
-            //TODO: Need to check if it's from history
             _data = SerializerHelper.DeserializeObject<Address>(serializedData);
-
             if (_data.FullAddress == GetString(Resource.String.LocationAddFavoriteSubtitle))
             {
                 _data.FullAddress = "";
             }
-
-            
-            //if ((data != null) && (data.Id.
-            //{
-//                _data = data;
-            //}
-            //else if ((data != null) && (data.Id > 0) && (data.IsFromHistory))
-            //{
-            //    _data = data.Copy();
-            //    _data.Id = Guid.Empty;                
-            //}
-            //else
-            //{
-            //    _data = new LocationData();                
-            //}
-
-
-
         }
     }
 }

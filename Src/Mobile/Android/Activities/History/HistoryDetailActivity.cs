@@ -19,21 +19,35 @@ using apcurium.MK.Booking.Mobile.Client.Models;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Client.Activities.Book;
+using TinyMessenger;
+using apcurium.MK.Booking.Mobile.Messages;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.History
 {
     [Activity(Label = "History Details", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class HistoryDetailActivity : Activity
     {
-
+        private TinyMessageSubscriptionToken _closeViewToken;       
         private Order _data;
 
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
+            _closeViewToken = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<CloseViewsToRoot>(m => Finish());            
             SetContentView(Resource.Layout.HistoryDetail);
             SetHistoryData(Guid.Parse(Intent.Extras.GetString(NavigationStrings.HistorySelectedId.ToString())));
             UpdateUI();
+
+
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            if (_closeViewToken != null)
+            {
+                TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Unsubscribe<CloseViewsToRoot>(_closeViewToken);
+            }
         }
 
         private void UpdateUI()
@@ -63,11 +77,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
 
         void btnRebook_Click(object sender, EventArgs e)
         {
-            Intent intent = new Intent();
-            intent.SetFlags(ActivityFlags.ForwardResult);
-            intent.PutExtra("Rebook", _data.Id.ToString());
-            SetResult(Result.Ok, intent);
-            Finish();
+            TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new CloseViewsToRoot(this));
+            TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new RebookRequested(this, _data));            
+
         }
 
         private void btnDelete_Click(object sender, EventArgs e)

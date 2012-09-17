@@ -9,6 +9,14 @@ using Android.Util;
 using Android.Views;
 using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using Cirrious.MvvmCross.Interfaces.Commands;
+using apcurium.MK.Booking.Mobile.Client.Converters;
+using apcurium.MK.Booking.Mobile.Extensions;
+using TinyIoC;
+using apcurium.MK.Booking.Mobile.AppServices;
+using Xamarin.Geolocation;
+using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -17,27 +25,38 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         public event EventHandler MapTouchUp;
 
+        public IMvxCommand MapMoved { get; set; }
+
         private Address _pickup;
         private Address _dropoff;
 
         protected TouchMap(IntPtr javaReference, JniHandleOwnership transfer)
             : base(javaReference, transfer)
         {
+            Initialize();
         }
 
         public TouchMap(Context context, string apiKey)
             : base(context, apiKey)
         {
+            Initialize();
         }
 
         public TouchMap(Context context, IAttributeSet attrs)
             : base(context, attrs)
         {
+            Initialize();
         }
 
         public TouchMap(Context context, IAttributeSet attrs, int defStyle)
             : base(context, attrs, defStyle)
         {
+            Initialize();
+        }
+
+        private void Initialize()
+        {
+            
         }
 
 
@@ -48,6 +67,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 if (MapTouchUp != null)
                 {
                     MapTouchUp(this, EventArgs.Empty);
+                }
+
+                if ( (MapMoved != null) && ( MapMoved.CanExecute()  ) )
+                {
+                    MapMoved.Execute(new Address { Latitude = CoordinatesHelper.ConvertFromE6(MapCenter.LatitudeE6), Longitude = CoordinatesHelper.ConvertFromE6(MapCenter.LongitudeE6) });
                 }
             }
 
@@ -85,6 +109,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 {
                     _pickupPin = MapUtitilties.MapService.AddPushPin(this, Resources.GetDrawable(Resource.Drawable.pin_green), value, Resources.GetString(Resource.String.PickupMapTitle));
                 }
+
+                Invalidate();
             }
         }
 
@@ -95,9 +121,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             get { return _dropoff; }
             set 
             { 
-               
-                 
-               
                 _dropoff = value;
                 if (_dropoffPin != null)
                 {
@@ -107,10 +130,112 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 if ((value != null) && (value.Latitude != 0) && (value.Longitude != 0))
                 {
                     _dropoffPin = MapUtitilties.MapService.AddPushPin(this, Resources.GetDrawable(Resource.Drawable.pin_red), value, Resources.GetString(Resource.String.DestinationMapTitle));
-                }               
+                }
+                Invalidate();
             }
         }
 
+        private bool _isDropoffActive;
+        private IEnumerable<CoordinateViewModel> _center;
+        public IEnumerable<CoordinateViewModel> Center
+        {
+            get { return _center; }
+            set
+            {
+                _center = value;                
+                
+                SetZoom(Center);                   
+                
+            }
+        }
+
+        
+
+        //public bool IsDropoffActive
+        //{
+        //    get { return _isDropoffActive; }
+        //    set 
+        //    { 
+        //        _isDropoffActive = value;                
+        //    }
+        //}
+
+        //private bool _isPickupActive;
+
+        //public bool IsPickupActive
+        //{
+        //    get { return _isPickupActive; }
+        //    set 
+        //    { 
+        //        _isPickupActive = value;
+        //    }
+        //}
+
+
+
+        //private void RecenterMap()
+        //{
+        //    if (IsPickupActive && Pickup.HasValidCoordinate() )
+        //    {
+        //        SetZoom( Pickup );
+        //    }
+        //    else if ( IsDropoffActive && Dropoff.HasValidCoordinate())
+        //    {
+        //        SetZoom( Dropoff );
+        //    }
+        //    else if (!IsDropoffActive && !IsDropoffActive && Pickup.HasValidCoordinate() && Dropoff.HasValidCoordinate())
+        //    {
+        //        SetZoom(Pickup, Dropoff);
+        //    }
+        //}
+
+        private void SetZoom(IEnumerable<CoordinateViewModel> adressesToDisplay)
+        {
+            var map = this;
+            var mapController = this.Controller;
+
+            if (adressesToDisplay.Count() == 1)
+            {
+                int lat = CoordinatesHelper.ConvertToE6(adressesToDisplay.ElementAt(0).Coordinate.Latitude);
+                int lon = CoordinatesHelper.ConvertToE6(adressesToDisplay.ElementAt(0).Coordinate.Longitude);
+                mapController.AnimateTo(new GeoPoint(lat, lon));
+                if (adressesToDisplay.ElementAt(0).Zoom != ViewModels.ZoomLevel.DontChange)
+                {
+                    mapController.SetZoom(17);
+                }
+                return;
+            }
+
+
+            int minLat = int.MaxValue;
+            int maxLat = int.MinValue;
+            int minLon = int.MaxValue;
+            int maxLon = int.MinValue;
+
+            foreach (var item in adressesToDisplay)
+            {
+                int lat = CoordinatesHelper.ConvertToE6(item.Coordinate.Latitude);
+                int lon = CoordinatesHelper.ConvertToE6(item.Coordinate.Longitude);
+                maxLat = Math.Max(lat, maxLat);
+                minLat = Math.Min(lat, minLat);
+                maxLon = Math.Max(lon, maxLon);
+                minLon = Math.Min(lon, minLon);
+            }
+
+            if ((Math.Abs(maxLat - minLat) < 0.004) && (Math.Abs(maxLon - minLon) < 0.004))
+            {
+                mapController.AnimateTo(new GeoPoint((maxLat + minLat) / 2, (maxLon + minLon) / 2));
+                mapController.SetZoom(17);
+            }
+            else
+            {
+                double fitFactor = 1.5;
+
+                mapController.ZoomToSpan((int)(Math.Abs(maxLat - minLat) * fitFactor), (int)(Math.Abs(maxLon - minLon) * fitFactor));
+                mapController.AnimateTo(new GeoPoint((maxLat + minLat) / 2, (maxLon + minLon) / 2));
+            }
+
+        }
 
         public override bool OnTouchEvent(Android.Views.MotionEvent e)
         {

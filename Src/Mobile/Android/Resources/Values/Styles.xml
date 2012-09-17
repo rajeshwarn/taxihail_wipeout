@@ -64,6 +64,15 @@
     <item name="android:textSize">14dp</item>
     <item name="android:textStyle">bold</item>
     <item name="android:textColor">#ffffff</item>
+  </style>  
+  <style name="SmallTitle">
+    <item name="android:textSize">12dp</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:textColor">#ffffff</item>
+  </style>
+  <style name="FinePrint">
+    <item name="android:textSize">9dp</item>
+    <item name="android:textColor">#ffffff</item>
   </style>
   <style name="BigTitleTextBlack">
     <item name="android:textSize">14dp</item>

@@ -15,6 +15,7 @@ using Cirrious.MvvmCross.Interfaces.Views;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.Views;
+using Java.Lang;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities
 {
@@ -37,7 +38,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 
             _locationService.Start();
 
-           
+
 
         }
 
@@ -45,20 +46,33 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
         protected override void OnResume()
         {
             base.OnResume();
-            
-            DebugLogin();
 
+            TinyIoCContainer.Current.Resolve<IUserPositionService>().Refresh();
+            //DebugLogin();
+            //ThreadHelper.ExecuteInThread(this, () => TinyIoCContainer.Current.Resolve<IAccountService>().RefreshCache(AppContext.Current.LoggedUser != null), false);
+            //string err = "";
+            //var account = TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>();
+            
+            
+
+            //RunOnUiThread(() =>
+            //  {
+            //        Thread.Sleep( 2000 );
+            //        Finish();
             //if (AppContext.Current.LoggedUser == null)
             //{
-            //    StartActivity(typeof(LoginActivity));
+            //    //StartActivity(typeof(LoginActivity));
+            //    var dispatch = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
+            //    dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(LoginViewModel), null, false, MvxRequestedBy.UserAction));
             //}
             //else
             //{
+                
             //    var dispatch = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
-            //    dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(BookViewModel), null, false, MvxRequestedBy.UserAction)); 
-
-            //    //this.RunOnUiThread(() => StartActivity(typeof(MainActivity)));
+            //    dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(BookViewModel), null, false, MvxRequestedBy.UserAction));
             //}
+            //  });
+                
 
         }
         private void DebugLogin()
@@ -68,9 +82,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
             var account = TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().GetAccount("alex@e-nergik.com", "qqqqqq", out err);
             if (account != null)
             {
-                AppContext.Current.UpdateLoggedInUser(account, false);
-                AppContext.Current.ServerName = TinyIoCContainer.Current.Resolve<IApplicationInfoService>().GetServerName();
-                AppContext.Current.ServerVersion = TinyIoCContainer.Current.Resolve<IApplicationInfoService>().GetServerVersion();
+                AppContext.Current.UpdateLoggedInUser(account, false);                
                 AppContext.Current.LastEmail = account.Email;
                 RunOnUiThread(() =>
                 {
@@ -85,17 +97,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
             }
         }
 
-		protected override void OnDestroy ()
-		{
-			base.OnDestroy ();
-		}
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+        }
 
-        public static Activity TopActivity{ get; set; }
+        public static Activity TopActivity { get; set; }
 
         public static FacebookServicesMD _fb;
         public FacebookServicesMD GetFacebookService()
         {
-            if ( _fb  == null )
+            if (_fb == null)
             {
                 var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
                 _fb = new FacebookServicesMD(settings.FacebookAppId, GetTopActivity());
@@ -115,19 +127,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
             TopActivity = this;
 
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
-            
-            
+
+
             OAuthConfig oauthConfig = new OAuthConfig
             {
-                
-                ConsumerKey =  settings.TwitterConsumerKey,
+
+                ConsumerKey = settings.TwitterConsumerKey,
                 Callback = settings.TwitterCallback,
                 ConsumerSecret = settings.TwitterConsumerSecret,
                 RequestTokenUrl = settings.TwitterRequestTokenUrl,
                 AccessTokenUrl = settings.TwitterAccessTokenUrl,
-                AuthorizeUrl = settings.TwitterAuthorizeUrl 
+                AuthorizeUrl = settings.TwitterAuthorizeUrl
             };
-            
+
             var twitterService = new TwitterServiceMonoDroid(oauthConfig, this);
 
             TinyIoCContainer.Current.Register<IFacebookService>((c, p) => GetFacebookService());

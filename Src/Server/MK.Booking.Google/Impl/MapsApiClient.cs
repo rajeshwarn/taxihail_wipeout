@@ -5,18 +5,34 @@ using System.Linq;
 using System.Text;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Google.Resources;
+using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Google.Impl
 {
     public class MapsApiClient : IMapsApiClient
     {
+        private const string PlaceDetailsServiceUrl = "https://maps.googleapis.com/maps/api/place/details/";
         private const string PlacesServiceUrl = "https://maps.googleapis.com/maps/api/place/search/";
         private const string PlacesTextServiceUrl = "https://maps.googleapis.com/maps/api/place/textsearch/";
         private const string MapsServiceUrl = "http://maps.googleapis.com/maps/api/";
-        private const string PlacesApiKey = "AIzaSyBzHXvi9heL8opeThi_uCIBOETLCDk575I";
-
-        public Place[] GetNearbyPlaces(double? latitude, double? longitude,string name, string languageCode, bool sensor, int radius)
+        
+        private IConfigurationManager _conifManager;
+        public MapsApiClient(IConfigurationManager conifManager)
         {
+            _conifManager = conifManager;
+        }
+
+        protected string PlacesApiKey 
+        {
+            get{ 
+                return  _conifManager.GetSetting( "Map.PlacesApiKey" );
+            }
+        }
+        
+
+        public Place[] GetNearbyPlaces(double? latitude, double? longitude,string name, string languageCode, bool sensor, int radius, string pipedTypeList = null)
+        {
+            pipedTypeList = pipedTypeList == null ?  new PlaceTypes().GetPipedTypeList() : pipedTypeList;
             var client = name != null ? new JsonServiceClient(PlacesTextServiceUrl) : new JsonServiceClient(PlacesServiceUrl);
             var @params = new Dictionary<string, string>
             {
@@ -24,7 +40,7 @@ namespace apcurium.MK.Booking.Google.Impl
                 { "key",  PlacesApiKey },                
                 { "radius", radius.ToString(CultureInfo.InvariantCulture)  },
                 { "language", languageCode  },
-                { "types", new PlaceTypes().GetPipedTypeList()},
+                { "types", pipedTypeList},
             };
 
             if (latitude != null
@@ -40,8 +56,22 @@ namespace apcurium.MK.Booking.Google.Impl
 
             return client.Get<PlacesResponse>("json" + BuildQueryString(@params)).Results.ToArray();
 
-        }        
+        }
 
+        public GeoObj GetPlaceDetail(string reference)
+        {
+             var client = new JsonServiceClient(PlaceDetailsServiceUrl);
+            var @params = new Dictionary<string, string>
+            {
+                { "reference", reference },
+                 { "sensor", true.ToString().ToLower() },
+                { "key",  PlacesApiKey },            
+            };
+
+            return client.Get<PlaceDetailResponse>("json" + BuildQueryString(@params)).Result;            
+            //https://maps.googleapis.com/maps/api/place/details/json?reference=CmRYAAAAciqGsTRX1mXRvuXSH2ErwW-jCINE1aLiwP64MCWDN5vkXvXoQGPKldMfmdGyqWSpm7BEYCgDm-iv7Kc2PF7QA7brMAwBbAcqMr5i1f4PwTpaovIZjysCEZTry8Ez30wpEhCNCXpynextCld2EBsDkRKsGhSLayuRyFsex6JA6NPh9dyupoTH3g&sensor=true&key=AIzaSyBzHXvi9heL8opeThi_uCIBOETLCDk575I
+        }
+            
         public DirectionResult GetDirections(double originLat, double originLng, double destLat, double destLng)
         {
 

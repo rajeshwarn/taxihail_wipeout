@@ -4,8 +4,11 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
 {
     public class Address : BaseDTO
     {
+        
 
         public Guid Id { get; set; }
+
+        public string PlaceReference { get; set; }
 
         public string FriendlyName { get; set; }
 

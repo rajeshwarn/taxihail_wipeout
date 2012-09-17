@@ -12,14 +12,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
 	class ApplicationInfoService : BaseService, IApplicationInfoService
 	{
-		public string GetServerName()
+        public ApplicationInfo GetAppInfo()
 		{
-			string serverName = "";
+            ApplicationInfo info = new ApplicationInfo();
 			UseServiceClient<ApplicationInfoServiceClient>( service => {
-				ApplicationInfo info = service.GetAppInfo();
-				serverName = info.SiteName;
+				info = service.GetAppInfo();				
 			});
-			return serverName;
+			return info;
 		}
 
 		public string GetServerVersion()

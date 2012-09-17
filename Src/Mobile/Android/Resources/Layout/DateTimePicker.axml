@@ -43,7 +43,7 @@
             android:layout_weight="0.5"
             android:singleLine="true"
             android:lines="1"
-            android:text="@string/DoneButton" />
+            android:text="@string/DateTimePickerSetButton" />
         <Button
             android:id="@+id/NowButton"
             style="@style/ButtonText"

@@ -70,8 +70,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
             catch (Exception)
             {
-
-
                 throw;
             }
         }

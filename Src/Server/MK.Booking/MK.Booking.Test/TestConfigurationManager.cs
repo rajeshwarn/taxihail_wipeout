@@ -43,6 +43,7 @@ namespace apcurium.MK.Booking.Common.Tests
 
             _config.Add("DistanceFormat", "KM"); // Other option is "MILE"
             _config.Add("PriceFormat", "en-US");
+            _config.Add("Map.PlacesApiKey", "AIzaSyAd-ezA2SeVTSNqsu6aMmAkdlP3UqEVPWE");        
 
         }
         

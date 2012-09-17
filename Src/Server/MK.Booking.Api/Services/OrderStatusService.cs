@@ -82,19 +82,7 @@ namespace apcurium.MK.Booking.Api.Services
                             desc = _configManager.GetSetting("OrderStatus." + status.IBSStatusId);
                         }
 
-                        //For demo purpose only
-                        var leg = BuildFakeDirectionForOrder(status.OrderId, order.PickupLatitude, order.PickupLongitude);
-
-
-
-                        if (leg != null)
-                        {
-                            status.VehicleLatitude = leg.Lat;
-                            status.VehicleLongitude = leg.Lng;
-                        }
-
-                        //status.VehicleLatitude = statusDetails.VehicleLatitude;
-                        //status.VehicleLongitude = statusDetails.VehicleLongitude;
+                        DemoModeFakePosition(status, order);
                     }
                     else if (status.IBSStatusId.SoftEqual(_doneStatus))
                     {
@@ -137,6 +125,21 @@ namespace apcurium.MK.Booking.Api.Services
                 //TODO: erreur ? Status ?
             }
             return status;
+        }
+
+        private void DemoModeFakePosition(OrderStatusDetail status, ReadModel.OrderDetail order)
+        {
+            if (_configManager.GetSetting("OrderStatus.DemoMode") == "true")
+            {
+                //For demo purpose only
+                var leg = BuildFakeDirectionForOrder(status.OrderId, order.PickupLatitude, order.PickupLongitude);
+
+                if (leg != null)
+                {
+                    status.VehicleLatitude = leg.Lat;
+                    status.VehicleLongitude = leg.Lng;
+                }
+            }
         }
 
         private Location BuildFakeDirectionForOrder(Guid guid, double lat, double lng)

@@ -43,15 +43,16 @@ namespace apcurium.MK.Web.Tests
         {
             var sut = new GeocodingServiceClient(BaseUrl, SessionId);
             var addresses = sut.Search("5661 avenue chateaubriand, Montreal");
-            Assert.AreEqual(1, addresses.Addresses.Count());
+            Assert.AreEqual(2, addresses.Addresses.Count());
             var address = addresses.Addresses.ElementAt(0);
             Assert.AreEqual(true, address.FullAddress.Contains("Chateaubriand"));
             Assert.AreEqual("5661", address.StreetNumber);
             Assert.AreEqual("Avenue de Chateaubriand", address.Street);
             Assert.AreEqual("Montreal", address.City);
-            Assert.AreEqual("H2J 2T8", address.ZipCode);
+            Assert.AreEqual("H2S 0A4", address.ZipCode);
         }
 
+    
         [Test]
         public void BasicCoordinateSearch()
         {
@@ -66,6 +67,19 @@ namespace apcurium.MK.Web.Tests
         {
             var sut = new GeocodingServiceClient(BaseUrl, SessionId);
             var addresses = sut.Search(45.5227967351675, -73.6242310144007);
+            Assert.True(addresses.Addresses.Count() >= 1);
+
+            Assert.False(addresses.Addresses.First().StreetNumber.Contains("-"));
+            Assert.False(addresses.Addresses.First().FullAddress.Split(' ')[0].Contains("-"));
+        }
+
+        [Test]
+        public void SearchMiddleField()
+        {
+            var sut = new GeocodingServiceClient(BaseUrl, SessionId);
+            var addresses = sut.Search(45.471459, -73.727142);                         
+            //var addresses = sut.Search(45.4714, -73.727);                         
+
             Assert.True(addresses.Addresses.Count() >= 1);
 
             Assert.False(addresses.Addresses.First().StreetNumber.Contains("-"));

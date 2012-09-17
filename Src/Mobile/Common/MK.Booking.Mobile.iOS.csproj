@@ -26,6 +26,7 @@
     <Optimize>True</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
+    <DefineConstants>CLIENT;IOS</DefineConstants>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
     <AssemblyName>MK.Booking.Mobile.iOS</AssemblyName>
@@ -35,6 +36,7 @@
     <Optimize>False</Optimize>
     <OutputPath>bin\iPhone\Distribution</OutputPath>
     <WarningLevel>4</WarningLevel>
+    <DefineConstants>CLIENT;IOS</DefineConstants>
     <AssemblyName>MKBookingMobileiOS</AssemblyName>
     <CodesignKey>iPhone Developer</CodesignKey>
   </PropertyGroup>
@@ -80,17 +82,7 @@
     <Compile Include="AppServices\IBookingService.cs" />
     <Compile Include="AppServices\IGeolocService.cs" />
     <Compile Include="AppServices\ModuleService.cs" />
-    <Compile Include="Data\AccountData.cs" />
-    <Compile Include="Data\BookingInfo.cs" />
-    <Compile Include="Data\BookingSetting.cs" />
-    <Compile Include="Data\CreateAccountData.cs" />
-    <Compile Include="Data\ListItem.cs" />
     <Compile Include="Data\ListItemValue.cs" />
-    <Compile Include="Data\LocationData.cs" />
-    <Compile Include="Data\LocationData.MT.cs" />
-    <Compile Include="Data\LocationDataExtension.cs" />
-    <Compile Include="Data\OrderStatus.cs" />
-    <Compile Include="Data\ResetPasswordData.cs" />
     <Compile Include="Extensions\AddressExtension.cs" />
     <Compile Include="Extensions\BookingSettingsExtension.cs" />
     <Compile Include="Framework\Extensions\Calendar\ByteTimeSpanExtensions.cs" />
@@ -161,6 +153,20 @@
     <Compile Include="ViewModels\AddressViewModel.cs" />
     <Compile Include="ListViewStructure\SingleLineItem.cs" />
     <Compile Include="ViewModels\BookAddressViewModel.cs" />
+    <Compile Include="ViewModels\CoordinateViewModel.cs" />
+    <Compile Include="ViewModels\ZoomLevel.cs" />
+    <Compile Include="Data\Coordinate.cs" />
+    <Compile Include="Data\CoordinatePrecision.cs" />
+    <Compile Include="Data\CoordinateRefreshTime.cs" />
+    <Compile Include="Messages\AddressSelected.cs" />
+    <Compile Include="Messages\BookUsingAddress.cs" />
+    <Compile Include="Messages\CloseViewsToRoot.cs" />
+    <Compile Include="Messages\DateTimePicked.cs" />
+    <Compile Include="Messages\OrderConfirmed.cs" />
+    <Compile Include="Messages\RebookRequested.cs" />
+    <Compile Include="AppServices\IUserPositionService.cs" />
+    <Compile Include="AppServices\Impl\UserPositionService.cs" />
+    <Compile Include="ViewModels\LoginViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">
@@ -193,5 +199,6 @@
     <Folder Include="ViewModels\" />
     <Folder Include="Navigation\" />
     <Folder Include="ListViewStructure\" />
+    <Folder Include="Messages\" />
   </ItemGroup>
 </Project>
