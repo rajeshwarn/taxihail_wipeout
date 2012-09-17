@@ -279,7 +279,7 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\Baloon.axml">
-      <SubType>AndroidResource</SubType>
+      <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\Test.axml" />
     <AndroidResource Include="Resources\Layout\LocationPick.axml">
@@ -513,6 +513,12 @@
     <AndroidResource Include="Resources\Drawable\cell_top_button_state.xml" />
     <AndroidResource Include="Resources\Drawable\cell_middle_button_state.xml" />
     <AndroidResource Include="Resources\Drawable\blank_bottom_button_state.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\location_info.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\number_icon.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\number_icon_selected.png" />
+    <AndroidResource Include="Resources\Drawable\location_info.png" />
+    <AndroidResource Include="Resources\Drawable\number_icon.png" />
+    <AndroidResource Include="Resources\Drawable\number_icon_selected.png" />
     <Content Include="Todo.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />

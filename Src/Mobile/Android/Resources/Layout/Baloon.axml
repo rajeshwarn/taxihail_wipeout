@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<apcurium.mk.booking.mobile.client.controls.BaloonLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/transparent_panel"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
@@ -8,24 +7,29 @@
     android:paddingTop="2px"
     android:paddingRight="2px"
     android:paddingBottom="2px">
-  <RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
-    
-    <TextView
-        android:layout_height="fill_parent"
-        android:layout_width="fill_parent"
-        android:paddingLeft="5px"
-        android:paddingRight="5px"
-        android:paddingTop="11px"
-        android:text=""
-        android:id="@+id/note_text"
-        android:gravity="center_horizontal"
-        android:minLines="4"
-        android:maxLines="4"       
-        android:textSize="7pt"
-        android:textColor="#000000"
-        />
-  </RelativeLayout>
-</apcurium.mk.booking.mobile.client.controls.BaloonLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/location_info"
+        >
+        <Button
+            android:id="@+id/button_number"
+            style="@style/BigTitleText"
+            android:background="@drawable/number_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="#"
+            android:layout_gravity="left|center_vertical" />
+        <TextView
+            android:layout_toRightOf="@id/button_number"
+            android:layout_height="fill_parent"
+            android:layout_width="fill_parent"
+            android:paddingLeft="5px"
+            android:paddingRight="5px"
+            android:paddingTop="5px"
+            android:text=" 5242 Rue Ferrier"
+            android:id="@+id/note_text"
+            android:gravity="left|center_vertical"
+            style="@style/BigTitleText" />
+    </RelativeLayout>
+</LinearLayout>

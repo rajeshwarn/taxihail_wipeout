@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             return 1;
         }
 
-        private BaloonLayout _noteBaloon;
+        private LinearLayout _noteBaloon;
 
         protected override bool OnTap(int index)
         {
@@ -55,7 +55,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             if (_noteBaloon == null)
             {
                 var layoutInflater = (LayoutInflater)Application.Context.GetSystemService(Context.LayoutInflaterService);
-                _noteBaloon = (BaloonLayout)layoutInflater.Inflate(Resource.Layout.Baloon, null);
+                _noteBaloon = (LinearLayout)layoutInflater.Inflate(Resource.Layout.Baloon, null);
                 var layoutParams = new RelativeLayout.LayoutParams(200, 100);
                 layoutParams.AddRule(LayoutRules.CenterVertical);
                 layoutParams.AddRule(LayoutRules.CenterHorizontal);
@@ -64,7 +64,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 
             _owner.RemoveView(_noteBaloon);            
             _noteBaloon.Visibility = ViewStates.Visible;
-            _noteBaloon.FindViewById<TextView>(Resource.Id.note_text).Text = Title;            
+           // _noteBaloon.FindViewById<TextView>(Resource.Id.note_text).Text = Title;            
             _owner.AddView(_noteBaloon, new MapView.LayoutParams(200, 100, this.Center, MapView.LayoutParams.BottomCenter));
 
             return result;
