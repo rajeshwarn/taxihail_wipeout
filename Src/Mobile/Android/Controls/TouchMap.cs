@@ -84,11 +84,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     {
                         i.RemoveBaloon();
                     }
+                    this.Overlays.Clear();
                 }
             }
 
             Console.WriteLine(e.Action.ToString());
             return base.DispatchTouchEvent(e);
+        }
+
+        private bool IsIntoCircle(double x, double y, double xCircle, double yCircle, double rCircle)
+        {
+            double dist = Math.Sqrt(Math.Pow(x - xCircle, 2) + Math.Pow(y - yCircle, 2));
+            return dist <= rCircle;
         }
 
         private PushPinOverlay _pickupPin;
@@ -100,11 +107,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             set 
             { 
                 _pickup = value;
-                if (_pickupPin != null)
+               /* if (_pickupPin != null)
                 {
                     this.Overlays.Remove(_pickupPin);
                     _pickupPin = null;
-                }
+                }*/
 
 
                 if ((value != null) && (value.Latitude != 0) && (value.Longitude != 0))
