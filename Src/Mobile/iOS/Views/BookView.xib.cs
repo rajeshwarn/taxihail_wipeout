@@ -256,7 +256,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                     bool isRebook = false;
                     if (_toRebookData != null)
                     {                       
-                        ViewModel.Rebook(_toRebookData);
+                        //TODO: migration ver ViewModel ViewModel.Rebook(_toRebookData);
                         isRebook = true;
                         _toRebookData = null;
                         BookTaxi();
