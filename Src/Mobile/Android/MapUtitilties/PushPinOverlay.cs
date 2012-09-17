@@ -56,7 +56,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             {
                 var layoutInflater = (LayoutInflater)Application.Context.GetSystemService(Context.LayoutInflaterService);
                 _noteBaloon = (LinearLayout)layoutInflater.Inflate(Resource.Layout.Baloon, null);
-                var layoutParams = new RelativeLayout.LayoutParams(200, 100);
+                var layoutParams = new RelativeLayout.LayoutParams(300, 90);
                 layoutParams.AddRule(LayoutRules.CenterVertical);
                 layoutParams.AddRule(LayoutRules.CenterHorizontal);
                 _noteBaloon.LayoutParameters = layoutParams;
@@ -64,12 +64,11 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 
             _owner.RemoveView(_noteBaloon);            
             _noteBaloon.Visibility = ViewStates.Visible;
-           // _noteBaloon.FindViewById<TextView>(Resource.Id.note_text).Text = Title;            
-            _owner.AddView(_noteBaloon, new MapView.LayoutParams(200, 100, this.Center, MapView.LayoutParams.BottomCenter));
+            _noteBaloon.FindViewById<TextView>(Resource.Id.note_text).Text = Title;
+            _owner.AddView(_noteBaloon, new MapView.LayoutParams(300, 90, this.Center,0,-30, MapView.LayoutParams.BottomCenter));
 
             return result;
         }
-
 
         private void RemoveAllBalloons(MapView mapView)
         {

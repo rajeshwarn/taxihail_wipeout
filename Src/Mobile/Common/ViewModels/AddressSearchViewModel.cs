@@ -106,7 +106,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             {
                                 var position = TinyIoCContainer.Current.Resolve<IUserPositionService>().LastKnownPosition;
                                 var addresses = _googleService.GetNearbyPlaces(position.Latitude, position.Longitude);
-                                if( PlacesSelected )
+                                if( PlacesSelected && addresses!=null )
 					            {
                                     AddressViewModels = addresses.Select(a => new AddressViewModel() { Address = a, ShowPlusSign = false, ShowRightArrow = false, IsFirst = a.Equals(addresses.First()), IsLast = a.Equals(addresses.Last()) }).ToList();
                                 }   
