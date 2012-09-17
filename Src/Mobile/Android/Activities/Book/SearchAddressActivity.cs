@@ -30,20 +30,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-        }
+
+		}
 
         protected override void OnViewModelSet()
         {
             SetContentView(Resource.Layout.SearchAddress);
 
-            var _listView = FindViewById<MvxBindableListView>(Resource.Id.SearchAddressListView);
-            _listView.Divider = null;
-            _listView.DividerHeight = 0;
-			_listView.TextFilterEnabled = true;
-
-		
-
-        }
+			var _listView = FindViewById<MvxBindableListView>(Resource.Id.SearchAddressListView);
+			_listView.Divider = null;
+			_listView.DividerHeight = 0;
+			
+			var _historicListView = FindViewById<MvxBindableListView>(Resource.Id.HistoricListView);
+			_historicListView.Divider = null;
+			_historicListView.DividerHeight = 0;
+			
+			FindViewById<TextView>( Resource.Id.HistoricListViewTitle ).Text = Resources.GetString( Resource.String.LocationHistoryTitle );
+		}
 
     }
 }
