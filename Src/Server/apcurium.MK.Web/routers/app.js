@@ -9,7 +9,8 @@
     TaxiHail.App = Backbone.Router.extend({
         routes: {
             "": "home",   // #
-            "book": "book",   // #book
+            "book": "book",   // #book,
+            "confirmationbook": "confirmationbook",
             "login": "login" // #login
         },
 
@@ -32,6 +33,12 @@
                 }
             });
             
+        },
+        
+        confirmationbook:function () {
+            renderView(TaxiHail.BookingConfirmationView, new TaxiHail.Order({
+                settings: model.get('settings')
+            }));
         },
         
         login: function () {
