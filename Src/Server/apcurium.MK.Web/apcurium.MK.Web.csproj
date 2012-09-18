@@ -272,9 +272,11 @@
     <Content Include="services\AuthService.js" />
     <Content Include="taxi-hail.js" />
     <Content Include="templates\book.html" />
+    <Content Include="templates\login.html" />
     <Content Include="utils.js" />
     <Content Include="views\BookView.js" />
-    <Content Include="views\TemplateView.js" />
+    <Content Include="views\LoginView.js" />
+    <Content Include="views\TemplatedView.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -453,8 +455,14 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="collections\" />
-    <Folder Include="localization\" />
     <Folder Include="models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="localization\Book.json" />
+    <Content Include="localization\Global.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="localization\Login.json" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
