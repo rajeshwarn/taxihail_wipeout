@@ -275,6 +275,7 @@
     <Content Include="templates\login.html" />
     <Content Include="utils.js" />
     <Content Include="views\BookView.js" />
+    <Content Include="views\HomeView.js" />
     <Content Include="views\LoginView.js" />
     <Content Include="views\TemplatedView.js" />
     <Content Include="Web.config">
@@ -456,13 +457,26 @@
   <ItemGroup>
     <Folder Include="collections\" />
     <Folder Include="models\" />
+    <Folder Include="themes\generic\img\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="localization\Book.json" />
+    <Content Include="localization\Home.json" />
     <Content Include="localization\Global.json" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="localization\Login.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\generic\less\style.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\generic\less\combined.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\generic\less\variables.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="assets\less\bootstrap-common.less" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

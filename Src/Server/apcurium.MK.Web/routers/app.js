@@ -1,12 +1,15 @@
 ﻿(function () {
 
-    var renderView = function(ctor) {
-        $('#main').html(new ctor().render().el);
+    var renderView = function(ctor, model) {
+        $('#main').html(new ctor({
+            model: model
+        }).render().el);
     };
 
     TaxiHail.App = Backbone.Router.extend({
         routes: {
-            "": "book" ,   // #
+            "": "home",   // #
+            "book": "book",   // #book
             "login": "login" // #login
         },
 
@@ -16,8 +19,12 @@
             }, this);
         },
 
+        home: function () {
+            renderView(TaxiHail.HomeView);
+        },
+        
         book: function () {
-            renderView(TaxiHail.BookView);
+            renderView(TaxiHail.BookView, new TaxiHail.Order());
         },
         
         login: function () {

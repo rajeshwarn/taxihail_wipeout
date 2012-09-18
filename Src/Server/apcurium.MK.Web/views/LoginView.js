@@ -15,12 +15,29 @@
         },
 
         onSubmit: function (e) {
+            var $email = this.$('[name=email]'),
+                $password = this.$('[name=password]'),
+                isValid = true;
+            
             e.preventDefault();
+            
+            // Validate field values
+            if (!$email.val()) {
+                $email.parents('.control-group').addClass('error');
+                isValid = false;
+            }
+            
+            if (!$password.val()) {
+                $password.parents('.control-group').addClass('error');
+                isValid = false;
+            }
 
-            TaxiHail.auth.login(this.$('[name=email]').val(), this.$('[name=password]').val())
-                .fail(_.bind(function (response) {
-                    this.showErrors(this.model, response);
-                }, this));
+            if (isValid) {
+                TaxiHail.auth.login(this.$('[name=email]').val(), this.$('[name=password]').val())
+                    .fail(_.bind(function(response) {
+                        this.showErrors(this.model, response);
+                    }, this));
+            }
 
         },
 
