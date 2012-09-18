@@ -55,8 +55,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         }
 
         private void Initialize()
-        {
-            
+        {            
         }
 
 
@@ -123,7 +122,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-
+        protected override void OnAttachedToWindow()
+        {
+            base.OnAttachedToWindow();
+            Console.WriteLine(this.ChildCount.ToString());
+        }
 
         public Address Dropoff
         {
@@ -210,7 +213,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 mapController.AnimateTo(new GeoPoint(lat, lon));
                 if (adressesToDisplay.ElementAt(0).Zoom != ViewModels.ZoomLevel.DontChange)
                 {
-                    mapController.SetZoom(17);
+                    mapController.SetZoom(18);
                 }
                 return;
             }
@@ -234,7 +237,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             if ((Math.Abs(maxLat - minLat) < 0.004) && (Math.Abs(maxLon - minLon) < 0.004))
             {
                 mapController.AnimateTo(new GeoPoint((maxLat + minLat) / 2, (maxLon + minLon) / 2));
-                mapController.SetZoom(17);
+                mapController.SetZoom(18);
             }
             else
             {

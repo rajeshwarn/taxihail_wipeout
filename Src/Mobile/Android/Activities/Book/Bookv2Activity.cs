@@ -108,6 +108,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             FindViewById<Button>(Resource.Id.settingsCallCompany ).Click -= new EventHandler(CallCie_Click);
             FindViewById<Button>(Resource.Id.settingsCallCompany).Click += new EventHandler(CallCie_Click);
 
+
+            FindViewById<ImageButton>(Resource.Id.destinationIsActiveButton).Click += new EventHandler(Bookv2Activity_Click);
             //FindViewById<TouchMap>(Resource.Id.mapPickup).Touch += new EventHandler<View.TouchEventArgs>(Bookv2Activity_Touch);
 
 
@@ -136,7 +138,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
         }
 
+        void Bookv2Activity_Click(object sender, EventArgs e)
+        {
+            ShowToast();
+        }
 
+        private void ShowToast()
+        {
+            Context context = this.ApplicationContext;
+            
+            
+
+            Toast toast = Toast.MakeText( context, "Pickup is active, tap on the crosshair to make destination active", ToastLength.Long );
+            toast.Show();
+        }
         
         private void Rebook(Order order)
         {

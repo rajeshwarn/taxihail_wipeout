@@ -15,6 +15,7 @@ using System.Threading;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Messages;
 using TinyMessenger;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -234,7 +235,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public IEnumerable<AddressViewModel> AddressViewModels
         {
 			get {
-				if( _searchFilter.Count() == 0)
+				if( ( _searchFilter.Count() == 0) ||  SearchSelected )
 				{
 					return _addressViewModels;
 				}
@@ -281,9 +282,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						SearchText = "";
 						SetSelected( TopBarButton.SearchBtn );
 						AddressViewModels = new List<AddressViewModel>();
-
-						SearchAddressCommand.Execute();
-                        
+						SearchAddressCommand.Execute();                        
                     });
             }
         }
@@ -304,6 +303,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                         var placeAddress = _googleService.GetPlaceDetail(address.Address.PlaceReference);
                                         placeAddress.FriendlyName = address.Address.FriendlyName;
                                         InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new AddressSelected(this, placeAddress, _ownerId)));
+                                    }
+                                    if (address.Address.FullAddress.IsNullOrEmpty() && (address.Address.AddressType == "localContact") && (address.Address.PlaceReference.HasValue()))
+                                    {
+                                        var addresses = _geolocService.SearchAddress(address.Address.FullAddress,0,0);
+                                        if (addresses.Count() > 0)
+                                        {
+                                            InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new AddressSelected(this, addresses.ElementAt(0), _ownerId)));
+                                        }
+                                        else
+                                        {
+                                            TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage("s", "s");
+                                        }
                                     }
                                     else
                                     {
