@@ -3,7 +3,8 @@
     TaxiHail.BookView = TaxiHail.TemplatedView.extend({
         events: {
             'click [data-action=select-pickup-address]': 'selectPickupAddress',
-            'click [data-action=select-drop-off-address]': 'selectDropOffAddress'
+            'click [data-action=select-drop-off-address]': 'selectDropOffAddress',
+            'click [data-action=book]': 'book'
         },
         
         initialize: function () {
@@ -59,6 +60,12 @@
                 view.remove();
                 
             }, this);
+        },
+        
+        book: function (e) {
+            e.preventDefault();
+
+            this.model.save();
         }
     });
 

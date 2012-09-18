@@ -4,7 +4,7 @@
         $('#main').html(new ctor({
             model: model
         }).render().el);
-    };
+    }, account = new TaxiHail.UserAccount();
 
     TaxiHail.App = Backbone.Router.extend({
         routes: {
@@ -24,7 +24,14 @@
         },
         
         book: function () {
-            renderView(TaxiHail.BookView, new TaxiHail.Order());
+            account.fetch({
+                success: function (model) {
+                    renderView(TaxiHail.BookView, new TaxiHail.Order({
+                        settings: model.get('settings')
+                    }));
+                }
+            });
+            
         },
         
         login: function () {

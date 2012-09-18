@@ -262,18 +262,27 @@
     <Content Include="assets\js\backbone.js" />
     <Content Include="assets\js\handlebars-1.0.rc.1.js" />
     <Content Include="assets\js\underscore.js" />
+    <Content Include="collections\AddressCollection.js" />
     <Content Include="Config.aspx" />
     <Content Include="Default.htm" />
     <Content Include="Global.asax" />
     <Content Include="log4net.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="models\UserAccount.js" />
+    <Content Include="models\Address.js" />
+    <Content Include="models\Order.js" />
     <Content Include="routers\app.js" />
     <Content Include="services\AuthService.js" />
     <Content Include="taxi-hail.js" />
+    <Content Include="templates\AddressItem.html" />
+    <Content Include="templates\AddressSelection.html" />
     <Content Include="templates\book.html" />
+    <Content Include="templates\home.html" />
     <Content Include="templates\login.html" />
     <Content Include="utils.js" />
+    <Content Include="views\AddressItemView.js" />
+    <Content Include="views\AddressSelectionView.js" />
     <Content Include="views\BookView.js" />
     <Content Include="views\HomeView.js" />
     <Content Include="views\LoginView.js" />
@@ -455,8 +464,6 @@
     <Content Include="assets\less\TaxiHail.less" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="collections\" />
-    <Folder Include="models\" />
     <Folder Include="themes\generic\img\" />
   </ItemGroup>
   <ItemGroup>
@@ -477,6 +484,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\less\bootstrap-common.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="localization\Book.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="localization\AddressSelection.json" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

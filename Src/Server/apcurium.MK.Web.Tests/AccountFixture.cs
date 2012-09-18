@@ -252,8 +252,8 @@ namespace apcurium.MK.Web.Tests
                 NumberOfTaxi = 6,
                 Passengers = 8,
                 Phone = "12345",
-                ProviderId = 85,
-                VehicleTypeId = 92
+                ProviderId = 13,
+                VehicleTypeId = 1
             };
 
             var sut = new AccountServiceClient(BaseUrl, SessionId);
