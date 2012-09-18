@@ -109,22 +109,33 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             FindViewById<Button>(Resource.Id.settingsCallCompany).Click += new EventHandler(CallCie_Click);
 
             //FindViewById<TouchMap>(Resource.Id.mapPickup).Touch += new EventHandler<View.TouchEventArgs>(Bookv2Activity_Touch);
-            
+
 
             if (ViewModel != null)
             {
                 ViewModel.Initialize();
             }
 
+            if (AppContext.Current.LastOrder.HasValue)
+            {
+
+                ThreadHelper.ExecuteInThread(this, () =>
+                    {
+                        var orderStatus = TinyIoCContainer.Current.Resolve<IBookingService>().GetOrderStatus(AppContext.Current.LastOrder.Value);
+                        var isCompleted = TinyIoCContainer.Current.Resolve<IBookingService>().IsStatusCompleted(orderStatus.IBSStatusId);
+                        if (isCompleted)
+                        {
+                            AppContext.Current.LastOrder = null;
+                        }
+                        else
+                        {
+                            var order = TinyIoCContainer.Current.Resolve<IAccountService>().GetHistoryOrder(AppContext.Current.LastOrder.Value);
+                            ShowStatusActivity(order, orderStatus);
+                        }
+                    },true);
+            }
         }
 
-        //void Bookv2Activity_Touch(object sender, View.TouchEventArgs e)
-        //{
-        //    if (_menuIsShown)
-        //    {
-        //        ToggleSettingsScreenVisibility();
-        //    }
-        //}
 
         
         private void Rebook(Order order)

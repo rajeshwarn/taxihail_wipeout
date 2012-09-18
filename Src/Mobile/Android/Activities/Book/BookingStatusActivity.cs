@@ -151,6 +151,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             _timer.Dispose();
             _timer = null;
+            AppContext.Current.LastOrder = null;
             RunOnUiThread(() =>
                 {                    
                     Finish();
@@ -175,7 +176,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
                     
 
-
+            
             var newBooking = new Confirmation();
             newBooking.Action(this, Resource.String.StatusConfirmCancelRide, () =>
             {
@@ -184,7 +185,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                     var isSuccess = TinyIoCContainer.Current.Resolve<IBookingService>().CancelOrder(Order.Id);
 
                     if (isSuccess)
-                    {
+                    {                        
                         CloseActivity();
                     }
                     else

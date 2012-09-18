@@ -114,7 +114,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                 var addresses = _googleService.GetNearbyPlaces(position.Latitude, position.Longitude);
                                 if( PlacesSelected && addresses!=null )
 					            {
-								AddressViewModels = addresses.Select(a => new AddressViewModel() { Address = a, ShowPlusSign = false, ShowRightArrow = false, IsFirst = a.Equals(addresses.First()), IsLast = a.Equals(addresses.Last()) }).ToList();
+								    AddressViewModels = addresses.Select(a => new AddressViewModel() { Address = a, ShowPlusSign = false, ShowRightArrow = false, IsFirst = a.Equals(addresses.First()), IsLast = a.Equals(addresses.Last()) }).ToList();
                                 }   
                             }
                             finally
@@ -240,7 +240,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}
 				else
 				{
-					return _addressViewModels.Where( a => _searchFilter.All ( s => a.Address.FriendlyName.ToLower().Contains( s ) || a.Address.FullAddress.ToLower().Contains( s ) ) ).ToList();
+                    return _addressViewModels.Where(a => _searchFilter.All(s => a.Address.FriendlyName.ToSafeString().ToLower().Contains(s.ToSafeString().ToLower()) || a.Address.FullAddress.ToSafeString().ToLower().Contains(s.ToSafeString().ToLower()))).ToList();
 				}
 			}
 			set
