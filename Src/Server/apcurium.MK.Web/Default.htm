@@ -1,11 +1,44 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <title></title>
-</head>
-<body>
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='utf-8' /> 
+        <title>Taxi Hail</title>
+        <link rel="stylesheet" href='assets/less/combined.less'/>
+    </head>
+    <body>
+        <div class="login-status-zone"></div>
+        <div class="container">
+            <div class='notification-zone'></div>
+            <div class='modal-zone'></div>
+            <div id='main'></div>
+        </div>
 
-Welcome to the booking app site.
+        <!-- assets -->
+        <script src="assets/js/handlebars-1.0.rc.1.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <script src="assets/js/underscore.js"></script>
+        <script src="assets/js/backbone.js"></script>
+        <script src="assets/bootstrap/js/bootstrap-alert.js"></script>
+        <script src="assets/bootstrap/js/bootstrap-transition.js"></script>
+        <script src="assets/bootstrap/js/bootstrap-button.js"></script>
+        <script src="assets/bootstrap/js/bootstrap-modal.js"></script>
+        <script src="assets/bootstrap/js/bootstrap-dropdown.js"></script>
+        <script src="assets/bootstrap/js/bootstrap-tooltip.js"></script>
+        <script src="assets/bootstrap/js/bootstrap-popover.js"></script>
 
-</body>
+        
+        <!-- app -->
+        <script src="taxi-hail.js"></script>
+        <script src="utils.js"></script>
+        
+        <!-- views -->
+        <script src="views/TemplatedView.js"></script>
+        <script src="views/BookView.js"></script>
+
+        
+
+        <script src="services/AuthService.js"></script>
+        <script src="routers/App.js"></script>
+
+    </body>
 </html>
