@@ -82,7 +82,7 @@
             <Button
                 android:id="@+id/validateSearchButton"
                 android:background="@drawable/gray_button"
-                android:text="Cancel"
+                android:text="@string/CancelBoutton"
                 style="@style/ButtonTextGray"
                 local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;CloseViewCommand&apos;}}"
                 android:layout_height="40dp"

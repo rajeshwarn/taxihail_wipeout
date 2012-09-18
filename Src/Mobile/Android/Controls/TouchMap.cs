@@ -131,14 +131,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             set 
             { 
                 _dropoff = value;
-                if (_dropoffPin != null)
+                /*if (_dropoffPin != null)
                 {
                     this.Overlays.Remove(_dropoffPin);
                     _dropoffPin = null;
-                }
+                }*/
                 if ((value != null) && (value.Latitude != 0) && (value.Longitude != 0))
                 {
-                    _dropoffPin = MapUtitilties.MapService.AddPushPin(this, Resources.GetDrawable(Resource.Drawable.pin_red), value, Resources.GetString(Resource.String.DestinationMapTitle));
+                    _dropoffPin = MapUtitilties.MapService.AddPushPin(this, Resources.GetDrawable(Resource.Drawable.pin_red), value, _dropoff.FullAddress);
                 }
                 Invalidate();
             }

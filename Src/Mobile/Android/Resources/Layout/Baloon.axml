@@ -30,7 +30,6 @@
             android:paddingLeft="5px"
             android:paddingRight="5px"
             android:paddingTop="5px"
-            android:text=" 5242 Rue Ferrier bla bla bla bla bla"
             android:id="@+id/note_text"
             android:gravity="left"
             style="@style/BigTitleText"

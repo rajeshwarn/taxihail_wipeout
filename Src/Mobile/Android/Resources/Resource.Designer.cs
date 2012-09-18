@@ -575,23 +575,23 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f050056
 			public const int ListHeaderTitle = 2131034198;
 			
-			// aapt resource value: 0x7f050089
-			public const int ListItemBackImage = 2131034249;
-			
 			// aapt resource value: 0x7f05008f
-			public const int ListItemLayout = 2131034255;
+			public const int ListItemBackImage = 2131034255;
 			
-			// aapt resource value: 0x7f050090
-			public const int ListItemLayoutContent = 2131034256;
+			// aapt resource value: 0x7f050095
+			public const int ListItemLayout = 2131034261;
 			
-			// aapt resource value: 0x7f050092
-			public const int ListItemNavIcon = 2131034258;
+			// aapt resource value: 0x7f050096
+			public const int ListItemLayoutContent = 2131034262;
 			
-			// aapt resource value: 0x7f050093
-			public const int ListItemSubtitle = 2131034259;
+			// aapt resource value: 0x7f050098
+			public const int ListItemNavIcon = 2131034264;
 			
-			// aapt resource value: 0x7f050091
-			public const int ListItemTitle = 2131034257;
+			// aapt resource value: 0x7f050099
+			public const int ListItemSubtitle = 2131034265;
+			
+			// aapt resource value: 0x7f050097
+			public const int ListItemTitle = 2131034263;
 			
 			// aapt resource value: 0x7f050058
 			public const int LocationAddress = 2131034200;
@@ -677,14 +677,17 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f050062
 			public const int RootView = 2131034210;
 			
-			// aapt resource value: 0x7f05008b
-			public const int Sapce4 = 2131034251;
-			
-			// aapt resource value: 0x7f05007e
-			public const int SearchAddressListView = 2131034238;
+			// aapt resource value: 0x7f050091
+			public const int Sapce4 = 2131034257;
 			
 			// aapt resource value: 0x7f05007b
-			public const int SearchAddressText = 2131034235;
+			public const int SaveButton = 2131034235;
+			
+			// aapt resource value: 0x7f050084
+			public const int SearchAddressListView = 2131034244;
+			
+			// aapt resource value: 0x7f050081
+			public const int SearchAddressText = 2131034241;
 			
 			// aapt resource value: 0x7f05006f
 			public const int ServerButton = 2131034223;
@@ -698,38 +701,38 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f05006c
 			public const int SignUpButton = 2131034220;
 			
-			// aapt resource value: 0x7f050084
-			public const int SignUpConfirmPassword = 2131034244;
+			// aapt resource value: 0x7f05008a
+			public const int SignUpConfirmPassword = 2131034250;
+			
+			// aapt resource value: 0x7f05008b
+			public const int SignUpCreateBtn = 2131034251;
+			
+			// aapt resource value: 0x7f050086
+			public const int SignUpEditEmail = 2131034246;
+			
+			// aapt resource value: 0x7f050087
+			public const int SignUpName = 2131034247;
+			
+			// aapt resource value: 0x7f050089
+			public const int SignUpPassword = 2131034249;
+			
+			// aapt resource value: 0x7f050088
+			public const int SignUpPhone = 2131034248;
 			
 			// aapt resource value: 0x7f050085
-			public const int SignUpCreateBtn = 2131034245;
+			public const int SignUpTitleView = 2131034245;
 			
-			// aapt resource value: 0x7f050080
-			public const int SignUpEditEmail = 2131034240;
+			// aapt resource value: 0x7f050092
+			public const int Space1 = 2131034258;
 			
-			// aapt resource value: 0x7f050081
-			public const int SignUpName = 2131034241;
+			// aapt resource value: 0x7f050093
+			public const int Space2 = 2131034259;
 			
-			// aapt resource value: 0x7f050083
-			public const int SignUpPassword = 2131034243;
+			// aapt resource value: 0x7f050090
+			public const int Space3 = 2131034256;
 			
-			// aapt resource value: 0x7f050082
-			public const int SignUpPhone = 2131034242;
-			
-			// aapt resource value: 0x7f05007f
-			public const int SignUpTitleView = 2131034239;
-			
-			// aapt resource value: 0x7f05008c
-			public const int Space1 = 2131034252;
-			
-			// aapt resource value: 0x7f05008d
-			public const int Space2 = 2131034253;
-			
-			// aapt resource value: 0x7f05008a
-			public const int Space3 = 2131034250;
-			
-			// aapt resource value: 0x7f05008e
-			public const int SpaceIcon = 2131034254;
+			// aapt resource value: 0x7f050094
+			public const int SpaceIcon = 2131034260;
 			
 			// aapt resource value: 0x7f050048
 			public const int StatusBtn = 2131034184;
@@ -749,17 +752,26 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f050002
 			public const int aboutWebView = 2131034114;
 			
+			// aapt resource value: 0x7f050077
+			public const int addressTextView = 2131034231;
+			
 			// aapt resource value: 0x7f050028
 			public const int apcuriumLogo = 2131034152;
 			
 			// aapt resource value: 0x7f050027
 			public const int apcuriumLogoLayout = 2131034151;
 			
+			// aapt resource value: 0x7f050078
+			public const int aptNumberEditText = 2131034232;
+			
 			// aapt resource value: 0x7f050038
 			public const int booleanCell = 2131034168;
 			
 			// aapt resource value: 0x7f050035
 			public const int bottomLayout = 2131034165;
+			
+			// aapt resource value: 0x7f05007a
+			public const int buildingNameEditText = 2131034234;
 			
 			// aapt resource value: 0x7f050004
 			public const int button_number = 2131034116;
@@ -770,8 +782,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f050017
 			public const int confirmationNo = 2131034135;
 			
-			// aapt resource value: 0x7f050079
-			public const int contactbtn = 2131034233;
+			// aapt resource value: 0x7f05007f
+			public const int contactbtn = 2131034239;
 			
 			// aapt resource value: 0x7f05002a
 			public const int contentframe = 2131034154;
@@ -791,8 +803,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f05001d
 			public const int fakeLayout = 2131034141;
 			
-			// aapt resource value: 0x7f050078
-			public const int favbtn = 2131034232;
+			// aapt resource value: 0x7f05007e
+			public const int favbtn = 2131034238;
 			
 			// aapt resource value: 0x7f050041
 			public const int icon = 2131034177;
@@ -833,8 +845,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f05006a
 			public const int linearLayout1 = 2131034218;
 			
-			// aapt resource value: 0x7f050086
-			public const int listviencell1 = 2131034246;
+			// aapt resource value: 0x7f05008c
+			public const int listviencell1 = 2131034252;
 			
 			// aapt resource value: 0x7f05001f
 			public const int mainSettingsLayout = 2131034143;
@@ -869,20 +881,23 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f05002f
 			public const int pickupIsActiveButton = 2131034159;
 			
-			// aapt resource value: 0x7f05007a
-			public const int placesbtn = 2131034234;
+			// aapt resource value: 0x7f050080
+			public const int placesbtn = 2131034240;
 			
 			// aapt resource value: 0x7f050039
 			public const int radioButton = 2131034169;
 			
-			// aapt resource value: 0x7f050076
-			public const int rideSettingsListHeader = 2131034230;
+			// aapt resource value: 0x7f05007c
+			public const int rideSettingsListHeader = 2131034236;
+			
+			// aapt resource value: 0x7f050079
+			public const int ringCodeEditText = 2131034233;
 			
 			// aapt resource value: 0x7f050029
 			public const int scrollinglayout = 2131034153;
 			
-			// aapt resource value: 0x7f050077
-			public const int searchbtn = 2131034231;
+			// aapt resource value: 0x7f05007d
+			public const int searchbtn = 2131034237;
 			
 			// aapt resource value: 0x7f050024
 			public const int settingsAbout = 2131034148;
@@ -905,14 +920,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f050025
 			public const int settingsSupport = 2131034149;
 			
-			// aapt resource value: 0x7f050088
-			public const int spinner = 2131034248;
+			// aapt resource value: 0x7f05008e
+			public const int spinner = 2131034254;
 			
-			// aapt resource value: 0x7f050087
-			public const int spinnerCell = 2131034247;
+			// aapt resource value: 0x7f05008d
+			public const int spinnerCell = 2131034253;
 			
-			// aapt resource value: 0x7f05007d
-			public const int spinning = 2131034237;
+			// aapt resource value: 0x7f050083
+			public const int spinning = 2131034243;
 			
 			// aapt resource value: 0x7f050016
 			public const int statusInfo = 2131034134;
@@ -922,6 +937,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f050018
 			public const int statusMapSection = 2131034136;
+			
+			// aapt resource value: 0x7f050076
+			public const int streetNumberEditText = 2131034230;
 			
 			// aapt resource value: 0x7f05003c
 			public const int textView1 = 2131034172;
@@ -935,8 +953,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f050003
 			public const int transparent_panel = 2131034115;
 			
-			// aapt resource value: 0x7f05007c
-			public const int validateSearchButton = 2131034236;
+			// aapt resource value: 0x7f050082
+			public const int validateSearchButton = 2131034242;
 			
 			// aapt resource value: 0x7f050055
 			public const int value = 2131034197;
@@ -1013,28 +1031,31 @@ namespace apcurium.MK.Booking.Mobile.Client
 			public const int PasswordRecovery = 2130903060;
 			
 			// aapt resource value: 0x7f030015
-			public const int RideSettings = 2130903061;
+			public const int RefineAddress = 2130903061;
 			
 			// aapt resource value: 0x7f030016
-			public const int SearchAddress = 2130903062;
+			public const int RideSettings = 2130903062;
 			
 			// aapt resource value: 0x7f030017
-			public const int SignUp = 2130903063;
+			public const int SearchAddress = 2130903063;
 			
 			// aapt resource value: 0x7f030018
-			public const int SimpleListItem = 2130903064;
+			public const int SignUp = 2130903064;
 			
 			// aapt resource value: 0x7f030019
-			public const int SpinnerCell = 2130903065;
+			public const int SimpleListItem = 2130903065;
 			
 			// aapt resource value: 0x7f03001a
-			public const int SpinnerText = 2130903066;
+			public const int SpinnerCell = 2130903066;
 			
 			// aapt resource value: 0x7f03001b
-			public const int TitleListItem = 2130903067;
+			public const int SpinnerText = 2130903067;
 			
 			// aapt resource value: 0x7f03001c
-			public const int TitleSubTitleListItem = 2130903068;
+			public const int TitleListItem = 2130903068;
+			
+			// aapt resource value: 0x7f03001d
+			public const int TitleSubTitleListItem = 2130903069;
 			
 			private Layout()
 			{
@@ -1065,6 +1086,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0600ab
 			public const int ApproxPrice = 2131099819;
 			
+			// aapt resource value: 0x7f0600fa
+			public const int AptNumber = 2131099898;
+			
 			// aapt resource value: 0x7f060026
 			public const int AptNumberTextPlaceholder = 2131099686;
 			
@@ -1086,8 +1110,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f060067
 			public const int BookItButtonImageName = 2131099751;
 			
-			// aapt resource value: 0x7f0600fa
-			public const int BookItButtonImageNamePressed = 2131099898;
+			// aapt resource value: 0x7f0600ff
+			public const int BookItButtonImageNamePressed = 2131099903;
 			
 			// aapt resource value: 0x7f060024
 			public const int BookPickupLabel = 2131099684;
@@ -1100,6 +1124,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f0600a2
 			public const int BookViewInvalidDate = 2131099810;
+			
+			// aapt resource value: 0x7f0600fc
+			public const int BuildingName = 2131099900;
 			
 			// aapt resource value: 0x7f060089
 			public const int CallButton = 2131099785;
@@ -1188,8 +1215,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0600cc
 			public const int CreateAccountErrorTitle = 2131099852;
 			
-			// aapt resource value: 0x7f0600f8
-			public const int CreateAccountFirstName = 2131099896;
+			// aapt resource value: 0x7f0600fd
+			public const int CreateAccountFirstName = 2131099901;
 			
 			// aapt resource value: 0x7f06005d
 			public const int CreateAccountFullName = 2131099741;
@@ -1218,8 +1245,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0600ca
 			public const int CreateAccountLanguageFrench = 2131099850;
 			
-			// aapt resource value: 0x7f0600f9
-			public const int CreateAccountLastName = 2131099897;
+			// aapt resource value: 0x7f0600fe
+			public const int CreateAccountLastName = 2131099902;
 			
 			// aapt resource value: 0x7f06005f
 			public const int CreateAccountMobile = 2131099743;
@@ -1566,6 +1593,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f060087
 			public const int PickupViewPickupLabel = 2131099783;
 			
+			// aapt resource value: 0x7f0600f9
+			public const int RefineAddressTitle = 2131099897;
+			
 			// aapt resource value: 0x7f0600b3
 			public const int ResetPasswordCancel = 2131099827;
 			
@@ -1623,6 +1653,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f06007a
 			public const int RideSettingsVehiculeType = 2131099770;
 			
+			// aapt resource value: 0x7f0600fb
+			public const int RingCode = 2131099899;
+			
 			// aapt resource value: 0x7f060027
 			public const int RingCodeTextPlaceholder = 2131099687;
 			
@@ -1634,6 +1667,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f060053
 			public const int SaveButton = 2131099731;
+			
+			// aapt resource value: 0x7f0600f8
+			public const int SendEmail = 2131099896;
 			
 			// aapt resource value: 0x7f060072
 			public const int SendErrorLogButton = 2131099762;

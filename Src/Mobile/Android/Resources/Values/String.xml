@@ -254,4 +254,9 @@
   <string name="SettingsFavorites">Manage Favorites</string>
   <string name="SettingsRideHistory">Ride History</string>
   <string name="DateTimePickerSetButton">Set</string>
+  <string name="SendEmail">Send mail...</string>
+  <string name="RefineAddressTitle">Refine an address</string>
+  <string name="AptNumber">Apt. No.</string>
+  <string name="RingCode">Ring Code</string>
+  <string name="BuildingName">Building Name</string>
 </resources>

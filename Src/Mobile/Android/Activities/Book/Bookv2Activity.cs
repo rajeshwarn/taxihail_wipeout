@@ -173,7 +173,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             if (AppContext.Current.LoggedUser.Settings.ProviderId.HasValue)
             {
-                RunOnUiThread(() => AlertDialogHelper.Show(this, "", TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumberDisplay(AppContext.Current.LoggedUser.Settings.ProviderId.Value), "Call", CallCie, "Cancel", delegate { }));
+                RunOnUiThread(() => AlertDialogHelper.Show(this, "", TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumberDisplay(AppContext.Current.LoggedUser.Settings.ProviderId.Value), this.GetString(Resource.String.CallButton), CallCie, this.GetString(Resource.String.CancelBoutton), delegate { }));
             }
             
         }
@@ -233,7 +233,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 }
                 try
                 {
-                    StartActivity(Intent.CreateChooser(emailIntent, "Send mail..."));
+                    StartActivity(Intent.CreateChooser(emailIntent, this.GetString(Resource.String.SendEmail)));
                     LoggerImpl.FlushNextWrite();
                 }
                 catch (Android.Content.ActivityNotFoundException ex)

@@ -164,6 +164,7 @@
     <Compile Include="ViewModels\BookViewModel.cs" />
     <Compile Include="ViewModels\CoordinateViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
+    <Compile Include="ViewModels\RefineAddressViewModel.cs" />
     <Compile Include="ViewModels\ZoomLevel.cs" />
   </ItemGroup>
   <ItemGroup>

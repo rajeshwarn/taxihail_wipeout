@@ -22,7 +22,7 @@
             android:src="@drawable/navBar"
             android:scaleType="fitXY" />
         <TextView
-            android:text="Settings"
+            android:text="@string/SettingsViewTitle"
             style="@style/BigTitleText"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
