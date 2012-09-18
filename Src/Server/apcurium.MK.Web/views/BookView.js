@@ -16,6 +16,11 @@
         render: function () {
             this.$el.html(this.renderTemplate(this.model.toJSON()));
 
+            var view = new TaxiHail.MapView({
+                el: this.$('#map-container')[0],
+                model: this.model
+            });
+
             return this;
         },
         
