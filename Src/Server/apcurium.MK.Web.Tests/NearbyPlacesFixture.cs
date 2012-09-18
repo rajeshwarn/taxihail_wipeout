@@ -75,7 +75,7 @@ namespace apcurium.MK.Web.Tests
                                 {
                                     Id = orderId,
                                     PickupAddress = address,
-                                    Settings = new BookingSettings { ChargeTypeId = 99, VehicleTypeId = 88, ProviderId = 11, Phone = "514-555-1212", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" }
+                                    Settings = new BookingSettings { ChargeTypeId = 99, VehicleTypeId = 88, ProviderId = 13, Phone = "514-555-1212", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" }
                                 });
             var order = sut.GetOrder(orderId);
 
