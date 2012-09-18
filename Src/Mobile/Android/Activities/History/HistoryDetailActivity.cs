@@ -77,9 +77,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
 
         void btnRebook_Click(object sender, EventArgs e)
         {
+            
+            TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new RebookRequested(this, _data));
             TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new CloseViewsToRoot(this));
-            TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new RebookRequested(this, _data));            
-
         }
 
         private void btnDelete_Click(object sender, EventArgs e)

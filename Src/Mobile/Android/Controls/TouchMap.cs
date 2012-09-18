@@ -99,7 +99,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             { 
                 _pickup = value;
                 if (_pickupPin != null)
-                {
+                {                    
                     this.Overlays.Remove(_pickupPin);
                     _pickupPin = null;
                 }

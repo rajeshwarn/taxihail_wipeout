@@ -29,7 +29,7 @@ namespace Infrastructure.Sql.EventSourcing
     /// It does not do any snapshots either for entities that implement <see cref="IMementoOriginator"/>, which would benefit the usage of SeatsAvailability.
     /// </summary>
     /// <typeparam name="T">The entity type to persist.</typeparam>
-    public class SqlEventSourcedRepository<T> : IEventSourcedRepository<T> where T : class, IEventSourced
+    public class SqlEventSourcedRepository<T> : IEventSourcedRepository<T> where T :  IEventSourced
     {
         // Could potentially use DataAnnotations to get a friendly/unique name in case of collisions between BCs.
         private static readonly string sourceType = typeof(T).Name;
@@ -69,7 +69,7 @@ namespace Infrastructure.Sql.EventSourcing
                     return entityFactory.Invoke(id, deserialized);
                 }
 
-                return null;
+                return default(T);
             }
         }
 

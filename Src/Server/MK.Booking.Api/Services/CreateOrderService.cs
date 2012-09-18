@@ -24,7 +24,12 @@ namespace apcurium.MK.Booking.Api.Services
         private GeocodingService _geocodingService;
         private IAccountDao _accountDao;
         private OrderStatusService _statusService;
-        public CreateOrderService(ICommandBus commandBus, IBookingWebServiceClient bookingWebServiceClient,IStaticDataWebServiceClient staticDataWebServiceClient, IAccountDao accountDao, GeocodingService geocodingService, OrderStatusService statusService )
+        public CreateOrderService(ICommandBus commandBus, 
+                                    IBookingWebServiceClient bookingWebServiceClient,
+                                    IStaticDataWebServiceClient staticDataWebServiceClient, 
+                                    IAccountDao accountDao, 
+                                    GeocodingService geocodingService, 
+                                    OrderStatusService statusService )
         {
             _statusService = statusService;
             _commandBus = commandBus;
@@ -37,7 +42,11 @@ namespace apcurium.MK.Booking.Api.Services
 
         public override object OnPost(CreateOrder request)
         {
+            
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
+            
+
+
             //TODO : need to check ibs setup for shortesst time.
             request.PickupDate = request.PickupDate.HasValue ? request.PickupDate.Value : DateTime.Now.AddMinutes(2);            
             
@@ -63,7 +72,21 @@ namespace apcurium.MK.Booking.Api.Services
         } 
 
         private int? CreateIBSOrder(ReadModel.AccountDetail account, CreateOrder request)
-        {                       
+        {
+
+            if (!request.Settings.ProviderId.HasValue)
+            {
+                throw new HttpError(ErrorCode.CreateOrder_NoProvider.ToString()); 
+            }
+            else if ( _staticDataWebServiceClient.GetCompaniesList().None(c => c.Id == request.Settings.ProviderId.Value))
+            {
+                throw new HttpError(ErrorCode.CreateOrder_InvalidProvider.ToString()); 
+            }
+            else if (_staticDataWebServiceClient.GetVehiclesList(_staticDataWebServiceClient.GetCompaniesList().Single(c => c.Id == request.Settings.ProviderId.Value)).None(v => v.Id == request.Settings.VehicleTypeId))
+            {
+                throw new HttpError(ErrorCode.CreateOrder_VehiculeType.ToString()); 
+            }
+
             var ibsPickupAddress = Mapper.Map<IBSAddress>(request.PickupAddress);
             var ibsDropOffAddress = IsValid(request.DropOffAddress) ? Mapper.Map<IBSAddress>(request.DropOffAddress) : (IBSAddress) null;
 

@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Linq;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
@@ -14,6 +15,7 @@ using System.Globalization;
 using System.Collections.Generic;
 using System;
 using ServiceStack.ServiceClient.Web;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -88,10 +90,11 @@ namespace apcurium.MK.Booking.Api.Services
                     {
                         var orderDetails = _bookingWebServiceClient.GetOrderDetails(order.IBSOrderId.Value, account.IBSAccountId, order.Settings.Phone);
 
-                        if ((orderDetails != null) && (orderDetails.Fare.HasValue))
+                        if ((orderDetails != null) && ((orderDetails.Fare.HasValue || orderDetails.Tip.HasValue ||orderDetails.Toll.HasValue )))
                         {
                             //FormatPrice
-                            desc = string.Format(_configManager.GetSetting("OrderStatus.OrderDoneFareAvailable"), FormatPrice(orderDetails.Fare), FormatPrice(orderDetails.Toll));
+                            var total = Params.Get<double?>(orderDetails.Toll, orderDetails.Fare, orderDetails.Tip).Where(amount => amount.HasValue).Select(amount => amount.Value).Sum();
+                            desc = string.Format(_configManager.GetSetting("OrderStatus.OrderDoneFareAvailable"), FormatPrice(total ));
                         }
                         else
                         {

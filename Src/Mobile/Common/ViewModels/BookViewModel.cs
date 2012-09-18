@@ -18,6 +18,7 @@ using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Collections.ObjectModel;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -136,18 +137,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public void NewOrder()
         {
-            Load();
-            
-            ForceRefresh();
+            RequestMainThreadAction(() =>
+                {
+                    Load();
 
-            if (!PickupIsActive) 
-            {
-                ActivatePickup.Execute();
-                Thread.Sleep(300);
-                Pickup.RequestCurrentLocationCommand.Execute();
-            }
-            
-            
+                    ForceRefresh();
+
+                    if (!PickupIsActive)
+                    {
+                        ActivatePickup.Execute();
+                        Thread.Sleep(300);
+                    }
+
+                    Pickup.RequestCurrentLocationCommand.Execute();
+                });
+
         }
 
         public void Reset()
@@ -271,7 +275,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         }
 
-
+        
         public MvxRelayCommand ActivateDropoff
         {
             get
@@ -292,9 +296,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+        public MvxRelayCommand Logout
+        {
+            get
+            {
+                return new MvxRelayCommand(() =>
+                    {
+                        
+                        RequestNavigate<LoginViewModel>();
+                        RequestClose(this);
+                    });
+            }
+        }
+
+        
         private void CenterMap(bool changeZoom)
         {
-
+            var c = new ObservableCollection<string>();
+            
+            
 
             if (DropoffIsActive && Dropoff.Model.HasValidCoordinate())
             {
@@ -395,6 +415,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         }
 
+
+        
         
     }
 }

@@ -130,10 +130,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     _searchAddressCommand = new MvxRelayCommand(() =>
                     {
-                        Console.WriteLine("SearchAddressCommand: Start executing.");
+                        
                         if (_editThread != null && _editThread.IsAlive)
-                        {
-                            Console.WriteLine("SearchAddressCommand: Killing previous thread.");
+                        {                        
                             _editThread.Abort();
 							IsSearching = false;
                         }

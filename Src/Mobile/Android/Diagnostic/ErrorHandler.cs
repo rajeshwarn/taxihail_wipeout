@@ -4,6 +4,8 @@ using System.Net;
 using apcurium.MK.Common.Diagnostic;
 using ServiceStack.ServiceClient.Web;
 using Android.Content;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
 {
@@ -18,15 +20,31 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
 			
 			if(exception != null)
             {
-                var errorIntent = new Intent(ACTION_SERVICE_ERROR);
-                errorIntent.PutExtra(ACTION_EXTRA_ERROR, exception.ErrorCode);
-
-                AppContext.Current.App.SendBroadcast(errorIntent);
-
-                if(exception.StatusCode == (int)HttpStatusCode.Unauthorized)
+                var title = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("ServiceErrorCallTitle");
+                var message = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("ServiceErrorDefaultMessage"); //= Resources.GetString(Resource.String.ServiceErrorDefaultMessage);
+                
+                try
                 {
-                    AppContext.Current.SignOut();
+
+                    message = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("ServiceError" + exception.ErrorCode);                    
                 }
+                catch
+                {
+
+                }
+                TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage(title, message);
+
+
+
+                //var errorIntent = new Intent(ACTION_SERVICE_ERROR);
+                //errorIntent.PutExtra(ACTION_EXTRA_ERROR, exception.ErrorCode);
+
+                //AppContext.Current.App.SendBroadcast(errorIntent);
+
+                //if(exception.StatusCode == (int)HttpStatusCode.Unauthorized)
+                //{
+                //    AppContext.Current.SignOut();
+                //}
             }
 		}
 	}

@@ -27,6 +27,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using SocialNetworks.Services;
 using apcurium.MK.Booking.Mobile.Client.Activities.Account;
 using Android.Content.PM;
+using apcurium.MK.Booking.Mobile.Client.Controls;
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
     [Activity(Label = "Bookv2", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
@@ -107,7 +108,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             FindViewById<Button>(Resource.Id.settingsCallCompany ).Click -= new EventHandler(CallCie_Click);
             FindViewById<Button>(Resource.Id.settingsCallCompany).Click += new EventHandler(CallCie_Click);
 
-
+            //FindViewById<TouchMap>(Resource.Id.mapPickup).Touch += new EventHandler<View.TouchEventArgs>(Bookv2Activity_Touch);
             
 
             if (ViewModel != null)
@@ -116,6 +117,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
 
         }
+
+        //void Bookv2Activity_Touch(object sender, View.TouchEventArgs e)
+        //{
+        //    if (_menuIsShown)
+        //    {
+        //        ToggleSettingsScreenVisibility();
+        //    }
+        //}
 
         
         private void Rebook(Order order)
@@ -207,7 +216,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             RunOnUiThread(() =>
             {
                 Finish();
-                StartActivity(typeof(LoginActivity));
+
+                ViewModel.Logout.Execute();                
             });
         }
 
@@ -287,6 +297,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             if (_orderConfirmedSubscription != null)
             {
                 TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Unsubscribe<OrderConfirmed>(_orderConfirmedSubscription);
+                
                 _orderConfirmedSubscription.Dispose();
                 _orderConfirmedSubscription = null;
             }
@@ -355,9 +366,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         void PickDate_Click(object sender, EventArgs e)
         {
-            UnsubscribeOrderConfirmed();
-            UnsubscribeBookUsingAddress();
-            UnsubscribeRebook();
+            UnsubscribeOrderConfirmed();                        
             UnsubscribePickDate();
 
 
@@ -395,9 +404,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 else
                 {
 
-                    UnsubscribeOrderConfirmed();
-                    UnsubscribeBookUsingAddress();
-                    UnsubscribeRebook();
+                    UnsubscribeOrderConfirmed();                                        
                     UnsubscribePickDate();
 
                     _orderConfirmedSubscription  = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<OrderConfirmed>(OnOrderConfirmed);
@@ -431,6 +438,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         }
         private void CompleteOrder(CreateOrder order)
         {
+            UnsubscribeOrderConfirmed();
+
             ThreadHelper.ExecuteInThread(this, () =>
             {
                 var service = TinyIoCContainer.Current.Resolve<IBookingService>();

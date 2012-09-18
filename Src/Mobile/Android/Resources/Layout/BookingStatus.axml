@@ -48,7 +48,7 @@
             android:id="@+id/mapStatus"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:apiKey="0XEY3WqKVmJMzXNRJfhbH1yM6RkpBMOaZWUoMAw"
+            android:apiKey="@string/GoogleMapKey"
             android:enabled="true"
             android:clickable="true" />
 

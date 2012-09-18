@@ -120,7 +120,7 @@
   <string name="ChangeDefaultRideSettings">Paramètres de commande</string>
   <string name="SendErrorLogButton">Envoyer log erreur</string>
   <string name="Version">v{0}</string>
-  <string name="ServerInfo">({0} v{1})</string>  
+  <string name="ServerInfo">({0} v{1})</string>
   <string name="RideSettingsCannotLoadListMessage">Notre serveur ne peut être contacté, veuillez réessayer plus tard.</string>
   <string name="RideSettingsCannotLoadListTitle">Erreur serveur</string>
   <string name="RideSettingsName">Nom:</string>
@@ -248,5 +248,4 @@
   <string name="NoFareText">Choisir la destination pour avoir un estimé du prix</string>
   <string name="PickupDateDisplay">This reservation is for : {0:dddd, MMMM d}</string>
   <string name="DateTimePickerSetButton">OK</string>
-  
 </resources>

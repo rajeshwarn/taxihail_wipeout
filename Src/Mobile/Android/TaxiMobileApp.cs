@@ -25,17 +25,20 @@ namespace apcurium.MK.Booking.Mobile.Client
         protected TaxiMobileApplication(IntPtr javaReference, JniHandleOwnership transfer)
             : base(javaReference, transfer)
         {
-
+            
         }
 
 
         public TaxiMobileApplication()
         {
-
+            
         }
 
         public override void OnCreate()
         {
+            //new AppModule().Initialize(this);
+            //new AppModule().InitializeSocialNetwork(this);
+
             base.OnCreate();
 
             Android.Runtime.AndroidEnvironment.UnhandledExceptionRaiser += AndroidEnvironmentOnUnhandledExceptionRaiser;
@@ -45,9 +48,10 @@ namespace apcurium.MK.Booking.Mobile.Client
             Console.WriteLine("App created");
 
 			_errorHandlingServiceIntent = new Intent( this, typeof(ErrorHandlingService) );
-			StartService( _errorHandlingServiceIntent );
+			
+            StartService( _errorHandlingServiceIntent );
 
-            new Bootstrapper(new IModule[] { new AppModule(this) }).Run();
+         
 
         }
 

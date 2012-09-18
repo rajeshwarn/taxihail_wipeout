@@ -50,6 +50,7 @@
     <Compile Include="ConfigFile.cs" />
     <Compile Include="AppConfig.cs" />
     <Compile Include="ConfigXML.cs" />
+    <Compile Include="ConfigXmlNamespace.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ToolSettings.Designer.cs">

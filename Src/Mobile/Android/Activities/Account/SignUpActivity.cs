@@ -78,7 +78,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                         service.Register(data, out error);
                         if (error.HasValue())
                         {
-                            this.RunOnUiThread(() => this.ShowAlert(this.GetString(Resource.String.CreateAccountErrorMessage), error));
+                           // this.RunOnUiThread(() => this.ShowAlert(this.GetString(Resource.String.CreateAccountErrorMessage), error));
                             return;
                         }
                         AppContext.Current.LastEmail = data.Email;

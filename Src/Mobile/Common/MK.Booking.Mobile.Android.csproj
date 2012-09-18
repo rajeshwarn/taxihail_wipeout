@@ -117,6 +117,7 @@
     <Compile Include="Infrastructure\IAppSettings.cs" />
     <Compile Include="Infrastructure\ICacheService.cs" />
     <Compile Include="Infrastructure\ILogger.cs" />
+    <Compile Include="Infrastructure\IMessageService.cs" />
     <Compile Include="Infrastructure\IPackageInfo.cs" />
     <Compile Include="Localization\AppLanguage.cs" />
     <Compile Include="Messages\AddressSelected.cs" />
@@ -164,6 +165,7 @@
     <Compile Include="ViewModels\BookViewModel.cs" />
     <Compile Include="ViewModels\CoordinateViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
+    <Compile Include="ViewModels\OrderStatusViewModel.cs" />
     <Compile Include="ViewModels\ZoomLevel.cs" />
   </ItemGroup>
   <ItemGroup>

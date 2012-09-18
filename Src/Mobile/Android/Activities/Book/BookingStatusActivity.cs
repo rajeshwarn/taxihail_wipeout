@@ -21,12 +21,16 @@ using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common;
 using System.Collections.Generic;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
     [Activity(Label = "Book Status", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class BookingStatusActivity : MapActivity
     {
+        private const string _doneStatus = "wosDONE";
+        private const string _loadedStatus = "wosLOADED";
+        
         private bool _closeScreenWhenCompleted;
         private Guid _lastOrder;
         private Timer _timer;
@@ -55,7 +59,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
 
             SetStatusText(GetString(Resource.String.LoadingMessage));
-
+            FindViewById<Button>(Resource.Id.CancelBtn).Enabled = true;
 			FindViewById<Button>(Resource.Id.CancelBtn).Click += delegate {	CancelOrder(); };
 			FindViewById<Button>(Resource.Id.CallBtn).Click += delegate { CallCompany(); };
 			FindViewById<Button>(Resource.Id.NewRideBtn).Click += delegate { CloseActivity(); };
@@ -148,11 +152,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _timer.Dispose();
             _timer = null;
             RunOnUiThread(() =>
-                {
-                    Intent intent = new Intent();
-                    intent.SetFlags(ActivityFlags.ForwardResult);
-                    intent.PutExtra("Reset", true.ToString());
-                    SetResult(Result.Ok, intent);
+                {                    
                     Finish();
                 });
         }
@@ -167,6 +167,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         private void CancelOrder()
         {
+
+            if ((OrderStatus.IBSStatusId == _doneStatus) || (OrderStatus.IBSStatusId == _loadedStatus))
+            {
+                this.ShowAlert(Resource.String.CannotCancelOrderTitle, Resource.String.CannotCancelOrderMessage);                
+                return;
+            }
+                    
+
+
             var newBooking = new Confirmation();
             newBooking.Action(this, Resource.String.StatusConfirmCancelRide, () =>
             {
@@ -196,6 +205,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 {
                     var status = TinyIoCContainer.Current.Resolve<IBookingService>().GetOrderStatus(Order.Id);
 
+                
                     _lastOrder = OrderStatus.OrderId;
 
                     if (status != null)

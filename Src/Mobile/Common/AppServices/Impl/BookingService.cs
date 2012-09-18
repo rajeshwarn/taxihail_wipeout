@@ -44,7 +44,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     orderDetail = service.CreateOrder(order);                   
                 });
 
+            if ((orderDetail == null) || !orderDetail.IBSOrderId.HasValue || orderDetail.IBSOrderId.Value <= 0)
+            {
+                var res = TinyIoCContainer.Current.Resolve<IAppResource>();
 
+                TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage(res.GetString("ErrorCreatingOrderTitle"), res.GetString("ErrorCreatingOrderMessage"));
+                
+                return orderDetail;
+            }
 
             ThreadPool.QueueUserWorkItem(o =>
             {
@@ -115,7 +122,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                                                                     FullAddress = c.StreetAddress,
                                                                     City = c.City,
                                                                     IsHistoric = false,
-                                                                    ZipCode = c.PostalCode
+                                                                    ZipCode = c.PostalCode,
+                                                                    AddressType ="localContact"
                                                                 }));
             }
             return contacts;
