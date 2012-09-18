@@ -70,7 +70,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _menuIsShown = false;
             var mainSettingsLayout = FindViewById<LinearLayout>(Resource.Id.mainSettingsLayout);
             var mainSettingsLayoutHeader = FindViewById<RelativeLayout>(Resource.Id.mainSettingsLayoutHeader);
-            var fakeLayout = FindViewById<View>(Resource.Id.fakeLayout);
+            var fakeLayout = FindViewById<RelativeLayout>(Resource.Id.fakeLayout);
             var apcuriumLogoLayout = FindViewById<RelativeLayout>(Resource.Id.apcuriumLogoLayout);
 
             fakeLayout.Visibility = ViewStates.Gone;

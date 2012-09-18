@@ -2,6 +2,7 @@ using System;
 using Cirrious.MvvmCross.Binding.Android.Views;
 using Android.Content;
 using Android.Util;
+using Android.Widget;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -12,29 +13,36 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			Initialize();
 		}
 
-		public BindableListView ( Context context, IAttributeSet attrs ) : base( context, attrs )
+		public BindableListView ( Context context, IAttributeSet attrs ) : base( context, attrs, new MvxFilteringBindableListAdapter( context ) )
 		{
 			Initialize();
 		}
 
 		private void Initialize()
 		{
-			TextFilterEnabled = true;
+//			TextFilterEnabled = true;
+
+
 		}
 
-		private string _searchFilter;
-		public string SearchFilter {
-			get { return _searchFilter; }
-			set {
-				_searchFilter = value;
-				SetFilter();
-			}
-		}
+//		private string _searchFilter;
+//		public string SearchFilter {
+//			get { return _searchFilter; }
+//			set {
+//				_searchFilter = value;
+////				SetFilter();
+//			}
+//		}
 
-		private void SetFilter()
-		{
-			//SetFilterText( SearchFilter );
-		}
+//		private void SetFilter()
+//		{
+////			var f = ((MvxFilteringBindableListAdapter)Adapter).Filter;
+////			f.InvokeFilter( SearchFilter );
+//			
+////			((MvxFilteringBindableListAdapter)Adapter).Filter = (Filter)Filter.FromArray( new string[] {SearchFilter} );
+////			((MvxFilteringBindableListAdapter)Adapter).NotifyDataSetChanged();
+////			SetFilterText( SearchFilter );
+//		}
 
 	}
 }

@@ -154,15 +154,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
 #if DEBUG
             //FindViewById<EditText>(Resource.Id.Username).Text = "alex@e-nergik.com";
-            //FindViewById<EditText>(Resource.Id.Password).Text = "qqqqqq";
+            //FindViewById<EditText>(Resource.Id.Password).Text = "qqqqqq";            
 #endif 
-        }
-        
-        protected override void OnCreate(Bundle bundle)
-        {
-            base.OnCreate(bundle);
-
-           
         }
 
         private void HideProgressDialog()

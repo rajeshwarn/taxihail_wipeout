@@ -8,6 +8,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 	public class Resources : IAppResource
 	{
 
+		public string GetString (string key)
+		{
+			return GetValue(key);
+		}
+
 		public static string GetValue (string key)
 		{
 			string localizedValue = NSBundle.MainBundle.LocalizedString (key, "", "");

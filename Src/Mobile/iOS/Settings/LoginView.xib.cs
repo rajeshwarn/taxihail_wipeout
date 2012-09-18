@@ -329,7 +329,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                         if (account != null)
                         {
                             SetAccountInfo(account);
-							AppContext.Current.ServerName = TinyIoCContainer.Current.Resolve<IApplicationInfoService>().GetServerName();
+							//AppContext.Current.ServerName = TinyIoCContainer.Current.Resolve<IApplicationInfoService>().GetServerName();
                         }
                         else
                         {

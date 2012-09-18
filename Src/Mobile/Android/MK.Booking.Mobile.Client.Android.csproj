@@ -255,7 +255,7 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\Baloon.axml">
-      <SubType>AndroidResource</SubType>
+      <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\LocationPick.axml">
       <SubType>AndroidResource</SubType>
@@ -488,6 +488,12 @@
     <AndroidResource Include="Resources\Drawable\cell_top_button_state.xml" />
     <AndroidResource Include="Resources\Drawable\cell_middle_button_state.xml" />
     <AndroidResource Include="Resources\Drawable\blank_bottom_button_state.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\location_info.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\number_icon.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\number_icon_selected.png" />
+    <AndroidResource Include="Resources\Drawable\location_info.png" />
+    <AndroidResource Include="Resources\Drawable\number_icon.png" />
+    <AndroidResource Include="Resources\Drawable\number_icon_selected.png" />
     <Content Include="Todo.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
@@ -529,10 +535,6 @@
     <ProjectReference Include="..\Infrastructure\Cirrious.MvvmCross.Android.Maps\Cirrious.MvvmCross.Android.Maps.csproj">
       <Project>{43A48F1C-39F3-4C1C-8831-5D3EF45744FE}</Project>
       <Name>Cirrious.MvvmCross.Android.Maps</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Libraries\Newtonsoft.Json\Newtonsoft.Json\Newtonsoft.Json.MonoDroid.csproj">
-      <Project>{E6C3413C-919B-486D-8B6C-225CBD921B98}</Project>
-      <Name>Newtonsoft.Json.MonoDroid</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -4,8 +4,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@drawable/background">
-  <RelativeLayout
-      android:id="@+id/fakeLayout"
+    <RelativeLayout
+        android:id="@+id/fakeLayout"
         android:layout_marginLeft="100px"
         android:layout_width="5dip"
         android:layout_height="fill_parent"
@@ -141,15 +141,15 @@
             android:layout_marginRight="20dip"
             android:paddingBottom="10dip"
             android:layout_centerHorizontal="true" />
-      <TextView
-           android:text="v0.0.0"  
-           local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Version&apos;}}"
-           android:layout_width="fill_parent"
-           android:layout_height="wrap_content"           
-           android:layout_below="@id/apcuriumLogo"
-           style="@style/FinePrint"
-           android:gravity="bottom|right"
-           android:layout_gravity="right"/>
+        <TextView
+            android:text="v0.0.0"
+            local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Version&apos;}}"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/apcuriumLogo"
+            style="@style/FinePrint"
+            android:gravity="bottom|right"
+            android:layout_gravity="right" />
     </RelativeLayout>
     <FrameLayout
         android:id="@+id/scrollinglayout"
@@ -280,8 +280,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/destinationAddressLayout"
-                android:gravity="center_horizontal|center_vertical"                  
-                android:layout_gravity="center_horizontal|center_vertical"                    
+                android:gravity="center_horizontal|center_vertical"
+                android:layout_gravity="center_horizontal|center_vertical"
                 android:paddingLeft="3dip"
                 android:paddingRight="3dip">
                 <TextView
@@ -291,8 +291,7 @@
                     local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;FareEstimate&apos;}}"
                     android:gravity="center_horizontal|top"
                     style="@style/SmallTitle"
-                    android:layout_gravity="center_horizontal|top"
-                    />
+                    android:layout_gravity="center_horizontal|top" />
             </LinearLayout>
             <FrameLayout
                 android:layout_width="fill_parent"
@@ -312,10 +311,8 @@
                     android:layout_alignWithParentIfMissing="true"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
-                    local:MvxBind="{&apos;Visibility&apos;:{&apos;Path&apos;:&apos;NoAddressActiveSelection&apos;,'Converter':'InvertedVisibility'}}"
-                    
+                    local:MvxBind="{&apos;Visibility&apos;:{&apos;Path&apos;:&apos;NoAddressActiveSelection&apos;,&apos;Converter&apos;:&apos;InvertedVisibility&apos;}}"
                     android:src="@drawable/target_state" />
-              
                 <FrameLayout
                     android:id="@+id/bottomLayout"
                     android:layout_width="fill_parent"
@@ -323,24 +320,24 @@
                     android:layout_weight="1"
                     android:layout_gravity="bottom"
                     android:background="@color/black" />
-              <RelativeLayout
-        android:layout_weight="0.11"
-        android:layout_width="fill_parent"
-        android:layout_height="19dip"
-        android:layout_gravity="center_horizontal|bottom"
-        local:MvxBind="{&apos;Visibility&apos;:{&apos;Path&apos;:&apos;IsInTheFuture&apos;,'Converter':'Visibility'}}"
-        android:gravity="center_horizontal|center_vertical"
-        android:layout_marginBottom="60dip"
-        android:background="#66000000">
-                <TextView android:layout_width="wrap_content"
-                                 android:layout_height="wrap_content"
-                                 android:text=""
-                                 local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;PickupDateDisplay&apos;}}"
-                                 android:gravity="center_horizontal|top"
-                                 style="@style/SmallTitle"
-                                 android:layout_gravity="center_horizontal|top"
-                    />
-              </RelativeLayout>
+                <RelativeLayout
+                    android:layout_weight="0.11"
+                    android:layout_width="fill_parent"
+                    android:layout_height="19dip"
+                    android:layout_gravity="center_horizontal|bottom"
+                    local:MvxBind="{&apos;Visibility&apos;:{&apos;Path&apos;:&apos;IsInTheFuture&apos;,&apos;Converter&apos;:&apos;Visibility&apos;}}"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:layout_marginBottom="60dip"
+                    android:background="#66000000">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;PickupDateDisplay&apos;}}"
+                        android:gravity="center_horizontal|top"
+                        style="@style/SmallTitle"
+                        android:layout_gravity="center_horizontal|top" />
+                </RelativeLayout>
                 <RelativeLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -368,11 +365,9 @@
                         android:background="@drawable/bookLaterButton_state"
                         style="@style/ButtonTextGray"
                         android:layout_width="40dip"
-                        android:layout_height="40dip"                        
+                        android:layout_height="40dip"
                         android:layout_alignParentRight="true" />
                 </RelativeLayout>
-
-      
             </FrameLayout>
         </RelativeLayout>
     </FrameLayout>

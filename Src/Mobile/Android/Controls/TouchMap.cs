@@ -64,6 +64,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             if (e.Action == MotionEventActions.Up)
             {
+                
                 if (MapTouchUp != null)
                 {
                     MapTouchUp(this, EventArgs.Empty);
@@ -83,10 +84,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     {
                         i.RemoveBaloon();
                     }
+                    this.Overlays.Clear();
                 }
             }
+
             Console.WriteLine(e.Action.ToString());
             return base.DispatchTouchEvent(e);
+        }
+
+        private bool IsIntoCircle(double x, double y, double xCircle, double yCircle, double rCircle)
+        {
+            double dist = Math.Sqrt(Math.Pow(x - xCircle, 2) + Math.Pow(y - yCircle, 2));
+            return dist <= rCircle;
         }
 
         private PushPinOverlay _pickupPin;
@@ -98,16 +107,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             set 
             { 
                 _pickup = value;
-                if (_pickupPin != null)
-                {                    
+               /* if (_pickupPin != null)
+                {
                     this.Overlays.Remove(_pickupPin);
                     _pickupPin = null;
-                }
+                }*/
 
-                    
+
                 if ((value != null) && (value.Latitude != 0) && (value.Longitude != 0))
                 {
-                    _pickupPin = MapUtitilties.MapService.AddPushPin(this, Resources.GetDrawable(Resource.Drawable.pin_green), value, Resources.GetString(Resource.String.PickupMapTitle));
+                    _pickupPin = MapUtitilties.MapService.AddPushPin(this, Resources.GetDrawable(Resource.Drawable.pin_green), value,  _pickup.FullAddress);
                 }
 
                 Invalidate();
