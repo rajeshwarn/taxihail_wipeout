@@ -104,6 +104,7 @@ namespace apcurium.MK.Booking.Api.Services
                         if(order.Status != (int)OrderStatus.Completed)
                         {
                             var completeOrder = new CompleteOrder {Date = DateTime.UtcNow};
+                            completeOrder.OrderId = request.OrderId;
                             if(orderDetails != null)
                             {
                                 completeOrder.Fare = orderDetails.Fare;

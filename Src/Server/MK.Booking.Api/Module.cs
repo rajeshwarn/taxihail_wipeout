@@ -1,4 +1,5 @@
-﻿using Microsoft.Practices.Unity;
+﻿using System;
+using Microsoft.Practices.Unity;
 using ServiceStack.CacheAccess;
 using ServiceStack.CacheAccess.Providers;
 using ServiceStack.OrmLite;
@@ -19,7 +20,10 @@ namespace apcurium.MK.Booking.Api
         private void RegisterMaps()
         {
             AutoMapper.Mapper.CreateMap<BookingSettingsRequest, Commands.UpdateBookingSettings>();
-            AutoMapper.Mapper.CreateMap<CreateOrder, Commands.CreateOrder>().ForMember(p => p.OrderId, options => options.MapFrom(m => m.Id));
+            AutoMapper.Mapper.CreateMap<CreateOrder, Commands.CreateOrder>()
+                .ForMember(p=> p.Id, options=> options.Ignore())
+                .ForMember(p => p.OrderId, options => options.ResolveUsing(x => x.Id == Guid.Empty ? Guid.NewGuid() : x.Id));
+
             AutoMapper.Mapper.CreateMap<Address, Commands.CreateOrder.Address>();
             AutoMapper.Mapper.CreateMap<BookingSettings, Commands.CreateOrder.BookingSettings>();
             AutoMapper.Mapper.CreateMap<Address, IBSAddress>();

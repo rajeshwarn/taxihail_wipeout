@@ -52,6 +52,9 @@ namespace apcurium.MK.Web
                             { "Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS" },
                         },
                 });
+
+                ServiceStack.Text.JsConfig.EmitCamelCaseNames = true;
+
                 Trace.WriteLine("Configure AppHost finished");
             }
         }

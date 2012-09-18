@@ -22,6 +22,10 @@
     <OldToolsVersion>4.0</OldToolsVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -59,6 +63,9 @@
     <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="dotless.Core">
+      <HintPath>..\packages\dotless.1.3.0.5\lib\dotless.Core.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=4.3.1.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.4.3.1\lib\net40\EntityFramework.dll</HintPath>
     </Reference>
@@ -121,12 +128,165 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="assets\bootstrap\.issue-guidelines.js" />
+    <Content Include="assets\bootstrap\docs\assets\css\bootstrap-responsive.css" />
+    <Content Include="assets\bootstrap\docs\assets\css\bootstrap.css" />
+    <Content Include="assets\bootstrap\docs\assets\css\docs.css" />
+    <Content Include="assets\bootstrap\docs\assets\ico\apple-touch-icon-114-precomposed.png" />
+    <Content Include="assets\bootstrap\docs\assets\ico\apple-touch-icon-144-precomposed.png" />
+    <Content Include="assets\bootstrap\docs\assets\ico\apple-touch-icon-57-precomposed.png" />
+    <Content Include="assets\bootstrap\docs\assets\ico\apple-touch-icon-72-precomposed.png" />
+    <Content Include="assets\bootstrap\docs\assets\ico\favicon.ico" />
+    <Content Include="assets\bootstrap\docs\assets\img\bootstrap-mdo-sfmoma-01.jpg" />
+    <Content Include="assets\bootstrap\docs\assets\img\bootstrap-mdo-sfmoma-02.jpg" />
+    <Content Include="assets\bootstrap\docs\assets\img\bootstrap-mdo-sfmoma-03.jpg" />
+    <Content Include="assets\bootstrap\docs\assets\img\bs-docs-bootstrap-features.png" />
+    <Content Include="assets\bootstrap\docs\assets\img\bs-docs-masthead-pattern.png" />
+    <Content Include="assets\bootstrap\docs\assets\img\bs-docs-responsive-illustrations.png" />
+    <Content Include="assets\bootstrap\docs\assets\img\bs-docs-twitter-github.png" />
+    <Content Include="assets\bootstrap\docs\assets\img\example-sites\fleetio.png" />
+    <Content Include="assets\bootstrap\docs\assets\img\example-sites\jshint.png" />
+    <Content Include="assets\bootstrap\docs\assets\img\example-sites\kippt.png" />
+    <Content Include="assets\bootstrap\docs\assets\img\example-sites\soundready.png" />
+    <Content Include="assets\bootstrap\docs\assets\img\examples\bootstrap-example-fluid.jpg" />
+    <Content Include="assets\bootstrap\docs\assets\img\examples\bootstrap-example-hero.jpg" />
+    <Content Include="assets\bootstrap\docs\assets\img\examples\bootstrap-example-starter.jpg" />
+    <Content Include="assets\bootstrap\docs\assets\img\glyphicons-halflings-white.png" />
+    <Content Include="assets\bootstrap\docs\assets\img\glyphicons-halflings.png" />
+    <Content Include="assets\bootstrap\docs\assets\img\grid-baseline-20px.png" />
+    <Content Include="assets\bootstrap\docs\assets\img\less-logo-large.png" />
+    <Content Include="assets\bootstrap\docs\assets\img\responsive-illustrations.png" />
+    <Content Include="assets\bootstrap\docs\assets\js\application.js" />
+    <Content Include="assets\bootstrap\docs\assets\js\bootstrap-affix.js" />
+    <Content Include="assets\bootstrap\docs\assets\js\bootstrap-alert.js" />
+    <Content Include="assets\bootstrap\docs\assets\js\bootstrap-button.js" />
+    <Content Include="assets\bootstrap\docs\assets\js\bootstrap-carousel.js" />
+    <Content Include="assets\bootstrap\docs\assets\js\bootstrap-collapse.js" />
+    <Content Include="assets\bootstrap\docs\assets\js\bootstrap-dropdown.js" />
+    <Content Include="assets\bootstrap\docs\assets\js\bootstrap-modal.js" />
+    <Content Include="assets\bootstrap\docs\assets\js\bootstrap-popover.js" />
+    <Content Include="assets\bootstrap\docs\assets\js\bootstrap-scrollspy.js" />
+    <Content Include="assets\bootstrap\docs\assets\js\bootstrap-tab.js" />
+    <Content Include="assets\bootstrap\docs\assets\js\bootstrap-tooltip.js" />
+    <Content Include="assets\bootstrap\docs\assets\js\bootstrap-transition.js" />
+    <Content Include="assets\bootstrap\docs\assets\js\bootstrap-typeahead.js" />
+    <Content Include="assets\bootstrap\docs\assets\js\bootstrap.js" />
+    <Content Include="assets\bootstrap\docs\assets\js\bootstrap.min.js" />
+    <Content Include="assets\bootstrap\docs\assets\js\google-code-prettify\prettify.css" />
+    <Content Include="assets\bootstrap\docs\assets\js\google-code-prettify\prettify.js" />
+    <Content Include="assets\bootstrap\docs\assets\js\jquery.js" />
+    <Content Include="assets\bootstrap\docs\base-css.html" />
+    <Content Include="assets\bootstrap\docs\build\index.js" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\lib\compiler.js" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\lib\hogan.js" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\lib\template.js" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\test\html\list.html" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\test\index.html" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\test\index.js" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\test\mustache.js" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\test\spec.js" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\tools\release.js" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\tools\web_templates.js" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\web\1.0.0\hogan.js" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\web\1.0.0\hogan.min.js" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\web\builds\1.0.0\hogan.js" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\web\builds\1.0.0\hogan.min.js" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\web\builds\1.0.3\hogan.js" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\web\builds\1.0.3\hogan.min.js" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\web\builds\1.0.5\hogan-1.0.5.amd.js" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\web\builds\1.0.5\hogan-1.0.5.common.js" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\web\builds\1.0.5\hogan-1.0.5.js" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\web\builds\1.0.5\hogan-1.0.5.min.amd.js" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\web\builds\1.0.5\hogan-1.0.5.min.common.js" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\web\builds\1.0.5\hogan-1.0.5.min.js" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\web\builds\1.0.5\hogan-1.0.5.min.mustache.js" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\web\builds\1.0.5\hogan-1.0.5.mustache.js" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\web\builds\1.0.5\template-1.0.5.js" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\web\builds\1.0.5\template-1.0.5.min.js" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\web\favicon.ico" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\web\images\logo.png" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\web\images\noise.png" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\web\images\small-hogan-icon.png" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\web\images\stripes.png" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\web\stylesheets\layout.css" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\web\stylesheets\skeleton.css" />
+    <Content Include="assets\bootstrap\docs\components.html" />
+    <Content Include="assets\bootstrap\docs\customize.html" />
+    <Content Include="assets\bootstrap\docs\examples\fluid.html" />
+    <Content Include="assets\bootstrap\docs\examples\hero.html" />
+    <Content Include="assets\bootstrap\docs\examples\starter-template.html" />
+    <Content Include="assets\bootstrap\docs\extend.html" />
+    <Content Include="assets\bootstrap\docs\getting-started.html" />
+    <Content Include="assets\bootstrap\docs\index.html" />
+    <Content Include="assets\bootstrap\docs\javascript.html" />
+    <Content Include="assets\bootstrap\docs\scaffolding.html" />
+    <Content Include="assets\bootstrap\img\glyphicons-halflings-white.png" />
+    <Content Include="assets\bootstrap\img\glyphicons-halflings.png" />
+    <Content Include="assets\bootstrap\js\bootstrap-affix.js" />
+    <Content Include="assets\bootstrap\js\bootstrap-alert.js" />
+    <Content Include="assets\bootstrap\js\bootstrap-button.js" />
+    <Content Include="assets\bootstrap\js\bootstrap-carousel.js" />
+    <Content Include="assets\bootstrap\js\bootstrap-collapse.js" />
+    <Content Include="assets\bootstrap\js\bootstrap-dropdown.js" />
+    <Content Include="assets\bootstrap\js\bootstrap-modal.js" />
+    <Content Include="assets\bootstrap\js\bootstrap-popover.js" />
+    <Content Include="assets\bootstrap\js\bootstrap-scrollspy.js" />
+    <Content Include="assets\bootstrap\js\bootstrap-tab.js" />
+    <Content Include="assets\bootstrap\js\bootstrap-tooltip.js" />
+    <Content Include="assets\bootstrap\js\bootstrap-transition.js" />
+    <Content Include="assets\bootstrap\js\bootstrap-typeahead.js" />
+    <Content Include="assets\bootstrap\js\tests\index.html" />
+    <Content Include="assets\bootstrap\js\tests\phantom.js" />
+    <Content Include="assets\bootstrap\js\tests\server.js" />
+    <Content Include="assets\bootstrap\js\tests\unit\bootstrap-affix.js" />
+    <Content Include="assets\bootstrap\js\tests\unit\bootstrap-alert.js" />
+    <Content Include="assets\bootstrap\js\tests\unit\bootstrap-button.js" />
+    <Content Include="assets\bootstrap\js\tests\unit\bootstrap-carousel.js" />
+    <Content Include="assets\bootstrap\js\tests\unit\bootstrap-collapse.js" />
+    <Content Include="assets\bootstrap\js\tests\unit\bootstrap-dropdown.js" />
+    <Content Include="assets\bootstrap\js\tests\unit\bootstrap-modal.js" />
+    <Content Include="assets\bootstrap\js\tests\unit\bootstrap-phantom.js" />
+    <Content Include="assets\bootstrap\js\tests\unit\bootstrap-popover.js" />
+    <Content Include="assets\bootstrap\js\tests\unit\bootstrap-scrollspy.js" />
+    <Content Include="assets\bootstrap\js\tests\unit\bootstrap-tab.js" />
+    <Content Include="assets\bootstrap\js\tests\unit\bootstrap-tooltip.js" />
+    <Content Include="assets\bootstrap\js\tests\unit\bootstrap-transition.js" />
+    <Content Include="assets\bootstrap\js\tests\unit\bootstrap-typeahead.js" />
+    <Content Include="assets\bootstrap\js\tests\vendor\jquery.js" />
+    <Content Include="assets\bootstrap\js\tests\vendor\qunit.css" />
+    <Content Include="assets\bootstrap\js\tests\vendor\qunit.js" />
+    <Content Include="assets\bootstrap\less\tests\css-tests.css" />
+    <Content Include="assets\bootstrap\less\tests\css-tests.html" />
+    <Content Include="assets\bootstrap\less\tests\forms.html" />
+    <Content Include="assets\bootstrap\less\tests\navbar.html" />
+    <Content Include="assets\js\backbone.js" />
+    <Content Include="assets\js\handlebars-1.0.rc.1.js" />
+    <Content Include="assets\js\underscore.js" />
+    <Content Include="collections\AddressCollection.js" />
     <Content Include="Config.aspx" />
     <Content Include="Default.htm" />
     <Content Include="Global.asax" />
     <Content Include="log4net.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="models\UserAccount.js" />
+    <Content Include="models\Address.js" />
+    <Content Include="models\Order.js" />
+    <Content Include="routers\app.js" />
+    <Content Include="services\AuthService.js" />
+    <Content Include="taxi-hail.js" />
+    <Content Include="templates\AddressItem.html" />
+    <Content Include="templates\AddressSelection.html" />
+    <Content Include="templates\book.html" />
+    <Content Include="templates\home.html" />
+    <Content Include="templates\login.html" />
+    <Content Include="utils.js" />
+    <Content Include="views\AddressItemView.js" />
+    <Content Include="views\AddressSelectionView.js" />
+    <Content Include="views\BookView.js" />
+    <Content Include="views\HomeView.js" />
+    <Content Include="views\LoginView.js" />
+    <Content Include="views\TemplatedView.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -207,6 +367,129 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="PingdomCheck.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="assets\bootstrap\.gitignore" />
+    <Content Include="assets\bootstrap\.travis.yml" />
+    <Content Include="assets\bootstrap\docs\assets\js\README.md" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\.bin\hulk" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\.gitmodules" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\.git_ignore" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\bin\hulk" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\LICENSE" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\Makefile" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\package.json" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\README.md" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\test\spec\Changes" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\test\spec\Rakefile" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\test\spec\README.md" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\test\spec\specs\comments.json" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\test\spec\specs\comments.yml" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\test\spec\specs\delimiters.json" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\test\spec\specs\delimiters.yml" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\test\spec\specs\interpolation.json" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\test\spec\specs\interpolation.yml" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\test\spec\specs\inverted.json" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\test\spec\specs\inverted.yml" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\test\spec\specs\partials.json" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\test\spec\specs\partials.yml" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\test\spec\specs\sections.json" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\test\spec\specs\sections.yml" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\test\spec\specs\~lambdas.json" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\test\spec\specs\~lambdas.yml" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\test\spec\TESTING.md" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\test\templates\list.mustache" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\web\index.html.mustache" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\wrappers\amd.js.mustache" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\wrappers\common.js.mustache" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\wrappers\js.mustache" />
+    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\wrappers\mustache.js.mustache" />
+    <Content Include="assets\bootstrap\docs\build\package.json" />
+    <Content Include="assets\bootstrap\docs\templates\layout.mustache" />
+    <Content Include="assets\bootstrap\docs\templates\pages\base-css.mustache" />
+    <Content Include="assets\bootstrap\docs\templates\pages\components.mustache" />
+    <Content Include="assets\bootstrap\docs\templates\pages\customize.mustache" />
+    <Content Include="assets\bootstrap\docs\templates\pages\extend.mustache" />
+    <Content Include="assets\bootstrap\docs\templates\pages\getting-started.mustache" />
+    <Content Include="assets\bootstrap\docs\templates\pages\index.mustache" />
+    <Content Include="assets\bootstrap\docs\templates\pages\javascript.mustache" />
+    <Content Include="assets\bootstrap\docs\templates\pages\scaffolding.mustache" />
+    <Content Include="assets\bootstrap\js\.jshintrc" />
+    <Content Include="assets\bootstrap\less\accordion.less" />
+    <Content Include="assets\bootstrap\less\alerts.less" />
+    <Content Include="assets\bootstrap\less\bootstrap.less" />
+    <Content Include="assets\bootstrap\less\breadcrumbs.less" />
+    <Content Include="assets\bootstrap\less\button-groups.less" />
+    <Content Include="assets\bootstrap\less\buttons.less" />
+    <Content Include="assets\bootstrap\less\carousel.less" />
+    <Content Include="assets\bootstrap\less\close.less" />
+    <Content Include="assets\bootstrap\less\code.less" />
+    <Content Include="assets\bootstrap\less\component-animations.less" />
+    <Content Include="assets\bootstrap\less\dropdowns.less" />
+    <Content Include="assets\bootstrap\less\forms.less" />
+    <Content Include="assets\bootstrap\less\grid.less" />
+    <Content Include="assets\bootstrap\less\hero-unit.less" />
+    <Content Include="assets\bootstrap\less\labels-badges.less" />
+    <Content Include="assets\bootstrap\less\layouts.less" />
+    <Content Include="assets\bootstrap\less\mixins.less" />
+    <Content Include="assets\bootstrap\less\modals.less" />
+    <Content Include="assets\bootstrap\less\navbar.less" />
+    <Content Include="assets\bootstrap\less\navs.less" />
+    <Content Include="assets\bootstrap\less\pager.less" />
+    <Content Include="assets\bootstrap\less\pagination.less" />
+    <Content Include="assets\bootstrap\less\popovers.less" />
+    <Content Include="assets\bootstrap\less\progress-bars.less" />
+    <Content Include="assets\bootstrap\less\reset.less" />
+    <Content Include="assets\bootstrap\less\responsive-1200px-min.less" />
+    <Content Include="assets\bootstrap\less\responsive-767px-max.less" />
+    <Content Include="assets\bootstrap\less\responsive-768px-979px.less" />
+    <Content Include="assets\bootstrap\less\responsive-navbar.less" />
+    <Content Include="assets\bootstrap\less\responsive-utilities.less" />
+    <Content Include="assets\bootstrap\less\responsive.less" />
+    <Content Include="assets\bootstrap\less\scaffolding.less" />
+    <Content Include="assets\bootstrap\less\sprites.less" />
+    <Content Include="assets\bootstrap\less\tables.less" />
+    <Content Include="assets\bootstrap\less\thumbnails.less" />
+    <Content Include="assets\bootstrap\less\tooltip.less" />
+    <Content Include="assets\bootstrap\less\type.less" />
+    <Content Include="assets\bootstrap\less\utilities.less" />
+    <Content Include="assets\bootstrap\less\variables.less" />
+    <Content Include="assets\bootstrap\less\wells.less" />
+    <Content Include="assets\bootstrap\LICENSE" />
+    <Content Include="assets\bootstrap\Makefile" />
+    <Content Include="assets\bootstrap\package.json" />
+    <Content Include="assets\bootstrap\README.md" />
+    <Content Include="assets\less\combined.less" />
+    <Content Include="assets\less\TaxiHail-responsive.less" />
+    <Content Include="assets\less\TaxiHail.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="themes\generic\img\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="localization\Home.json" />
+    <Content Include="localization\Global.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="localization\Login.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\generic\less\style.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\generic\less\combined.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\generic\less\variables.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="assets\less\bootstrap-common.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="localization\Book.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="localization\AddressSelection.json" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

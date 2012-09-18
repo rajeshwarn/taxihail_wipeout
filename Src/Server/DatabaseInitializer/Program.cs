@@ -44,6 +44,7 @@ namespace DatabaseInitializer
             {
                 if (context.Database.Exists())
                 {
+                    context.Database.ExecuteSqlCommand(string.Format("ALTER DATABASE {0} SET SINGLE_USER WITH ROLLBACK IMMEDIATE", context.Database.Connection.Database));
                     context.Database.Delete();
                 }
 

@@ -248,4 +248,9 @@
   <string name="NoFareText">Choisir la destination pour avoir un estimé du prix</string>
   <string name="PickupDateDisplay">This reservation is for : {0:dddd, MMMM d}</string>
   <string name="DateTimePickerSetButton">OK</string>
+  <string name="SendEmail">Envoi du mail...</string>
+  <string name="RefineAddressTitle">Affiner la recherche</string>
+  <string name="AptNumber">Apt. No.</string>
+  <string name="RingCode">Code pour sonner</string>
+  <string name="BuildingName">Nom du batiment</string>
 </resources>

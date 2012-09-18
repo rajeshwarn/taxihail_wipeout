@@ -92,6 +92,7 @@
     <Compile Include="Activities\Book\DateTimePickerActivity.cs" />
     <Compile Include="Activities\Book\LocationListener.cs" />
     <Compile Include="Activities\Book\LocationService.cs" />
+    <Compile Include="Activities\Book\RefineAddressActivity.cs" />
     <Compile Include="Activities\Book\SearchAddressActivity.cs" />
     <Compile Include="Activities\Setting\AboutActivity.cs" />
     <Compile Include="Adapters\GroupedOrderListAdapter.cs" />
@@ -543,5 +544,10 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\HelveticaNeueLTPro-It.otf" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Layout\RefineAddress.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
   </ItemGroup>
 </Project>
