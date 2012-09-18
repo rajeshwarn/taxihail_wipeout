@@ -36,7 +36,7 @@
   <string name="LoadingMessage">Loading...</string>
   <string name="InvalidLoginMessageTitle">Invalid information</string>
   <string name="InvalidLoginMessage">The email or/and password is invalid.</string>
-  <string name="BookItButton">Book Now</string>  
+  <string name="BookItButton">Book Now</string>
   <string name="BookPickupLabel">Confirm your pickup location</string>
   <string name="PickupTextPlaceholder">Pickup street address</string>
   <string name="AptNumberTextPlaceholder">Apt/Suite Number</string>
@@ -116,8 +116,8 @@
   <string name="FavoritesButton">Favorites</string>
   <string name="RideHistoryButton">Ride History</string>
   <string name="SendErrorLogButton">Send error log</string>
-  <string name="Version">v{0}</string>  
-  <string name="ServerInfo">({0} v{1})</string>  
+  <string name="Version">v{0}</string>
+  <string name="ServerInfo">({0} v{1})</string>
   <string name="RideSettingsCannotLoadListMessage">The server cannot be contacted, try again later.</string>
   <string name="RideSettingsCannotLoadListTitle">Server error</string>
   <string name="RideSettingsName">Name:</string>
@@ -141,7 +141,7 @@
   <string name="CallButton">Call</string>
   <string name="TaxiMapTitle">Your Taxi</string>
   <string name="ErrorCreatingOrderMessage">The order couldn\'t be created, please try again.</string>
-  <string name="ErrorCreatingOrderTitle">Error</string>
+  <string name="ErrorCreatingOrderTitle">Server Error</string>
   <string name="UnexpectedError">Unexpected error</string>
   <string name="StatusActionButton">Call / Book / Cancel</string>
   <string name="StatusCallButton">Call</string>
@@ -170,7 +170,7 @@
   <string name="OrderNoteGPSApproximate"> (approx. address)</string>
   <string name="StatusInvalid">Status not available</string>
   <string name="ParameterButton">Parameters</string>
-  <string name="EstimateDistance">&#160;({0})</string>
+  <string name="EstimateDistance"> ({0})</string>
   <string name="EstimatePrice">Estimated Fare : {0}</string>
   <string name="ApproxPrice">Estimated Fare:</string>
   <string name="NotAvailable">N/A</string>
@@ -210,8 +210,8 @@
   <string name="CreateAccountLanguageFrench">French</string>
   <string name="CreateAccountLanguageEnglish">English</string>
   <string name="CreateAccountErrorTitle">Error</string>
-  <string name="CreateAccountErrorMessage">The account cannot be create.</string>
-  <string name="CreateAccountErrorNotSpecified">The server didn\'t specify why the account could not be create, if the error persist try creating the account from the web site.</string>
+  <string name="CreateAccountErrorMessage">The account cannot be created.</string>
+  <string name="CreateAccountErrorNotSpecified">The server didn\'t specify why the account could not be created, if the error persist try creating the account from the web site.</string>
   <string name="RideSettingsNumberOfTaxi">Nb. Taxi:</string>
   <string name="WarningEstimate">Please note that the price provided by this app is an estimated price and the meter will prevail on the price quoted on the site in accordance with the Act of transportation by taxi.</string>
   <string name="WarningEstimateTitle">Warning</string>
@@ -238,7 +238,11 @@
   <string name="OrderHistoryListTitle">Order #{0}</string>
   <string name="ServiceErrorCallTitle">Server Error</string>
   <string name="ServiceErrorDefaultMessage">An error occurred. Please try again.</string>
-  <string name="ServiceErrorCreateOrder_CannotCreateInIbs">Can\'t book a taxi. Please try again or call us.</string>
+  <string name="ServiceErrorCreateOrder_CannotCreateInIbs">Order cannot be created. Please try again or call us.</string>
+  <string name="ServiceErrorCreateOrder_NoProvider">Order cannot be created, no provider specified. Please try again or call us.</string>
+  <string name="ServiceErrorCreateOrder_InvalidProvider">Order cannot be created, invalid provider. Please try again or call us.</string>
+  <string name="ServiceErrorCreateOrder_VehiculeType">Order cannot be created, invalid vehicule type. Please try again or call us.</string>
+  <string name="ServiceErrorCreateAccount_AccountAlreadyExist">The account cannot be created, this email is already in use.</string>
   <string name="ServiceErrorUnauthorized">An unauthorized call has been made to server, you will be redirected to login page.</string>
   <string name="BookDateLabel">Pick Me Up Later</string>
   <string name="OrderHistoryListTitle">Order #{0}</string>
@@ -256,6 +260,8 @@
   <string name="DateTimePickerSetButton">Set</string>
   <string name="SendEmail">Send mail...</string>
   <string name="RefineAddressTitle">Refine an address</string>
+  <string name="CannotCancelOrderTitle">Invalid Action</string>
+  <string name="CannotCancelOrderMessage">You can no longer cancel this order.</string>  
   <string name="AptNumber">Apt. No.</string>
   <string name="RingCode">Ring Code</string>
   <string name="BuildingName">Building Name</string>

@@ -44,6 +44,7 @@ namespace DatabaseInitializer
             {
                 if (context.Database.Exists())
                 {
+                    context.Database.ExecuteSqlCommand(string.Format("ALTER DATABASE {0} SET SINGLE_USER WITH ROLLBACK IMMEDIATE", context.Database.Connection.Database));
                     context.Database.Delete();
                 }
 
@@ -152,7 +153,7 @@ namespace DatabaseInitializer
             configurationManager.SetSetting("OrderStatus.wosNOSHOW", "No show" );
             configurationManager.SetSetting("OrderStatus.wosCANCELLED_DONE", "Cancelled");
             configurationManager.SetSetting("OrderStatus.CabDriverNumberAssigned", "Cab #{0} is assigned to you");
-            configurationManager.SetSetting("OrderStatus.OrderDoneFareAvailable", "Completed (Fare: {0}, Toll: {1})");
+            configurationManager.SetSetting("OrderStatus.OrderDoneFareAvailable", "Completed (Total cost : {0})");
             configurationManager.SetSetting("OrderStatus.DemoMode", "false");
 
             configurationManager.SetSetting("Map.PlacesApiKey", "AIzaSyAd-ezA2SeVTSNqsu6aMmAkdlP3UqEVPWE");        

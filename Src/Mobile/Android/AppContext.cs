@@ -10,6 +10,11 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using TinyIoC;
+using Cirrious.MvvmCross.Interfaces.Views;
+using Cirrious.MvvmCross.Views;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
+using SocialNetworks.Services;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -270,9 +275,35 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public void SignOut()
         {
-            Logger.LogMessage("SignOutUser");      
-            LoggedUser = null;			
-			TinyIoCContainer.Current.Resolve<IAccountService>().SignOut();
+
+            LoggedUser = null;
+
+            try
+            {
+                TinyIoCContainer.Current.Resolve<IAccountService>().SignOut();
+                var facebook = TinyIoC.TinyIoCContainer.Current.Resolve<IFacebookService>();
+                if (facebook.IsConnected)
+                {
+                    facebook.SetCurrentContext(this);
+                    facebook.Disconnect();
+                }
+
+                var twitterService = TinyIoC.TinyIoCContainer.Current.Resolve<ITwitterService>();
+                if (twitterService.IsConnected)
+                {
+                    twitterService.Disconnect();
+                }
+            }
+            catch
+            {
+
+            }
+
+            TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService>().ClearAll();
+
+
+            var dispatch = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
+            dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(LoginViewModel), null, false, MvxRequestedBy.UserAction));
         }
 
         public void OnLocationChanged(Location location)

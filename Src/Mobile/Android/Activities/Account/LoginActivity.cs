@@ -50,15 +50,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
         }
 
         protected override void OnViewModelSet()
-        {
-
-        }
-        
-        protected override void OnCreate(Bundle bundle)
-        {
-            base.OnCreate(bundle);
-
-            SplashActivity.TopActivity = this;
+        {            
 
             SetContentView(Resource.Layout.Login);
 
@@ -92,22 +84,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             {
 
                 FindViewById<Button>(Resource.Id.FacebookButton).Click += delegate
-                                                                              {
-                                                                                  ShowProgressDialog();
-                                                                                  if (facebook.IsConnected)
-                                                                                  {
-                                                                                      facebook.GetUserInfos(CheckIfFacebookAccountExist, () =>
-                                                                                      {
-                                                                                          facebook.Disconnect();
-                                                                                          HideProgressDialog();
-                                                                                      });
-                                                                                  }
-                                                                                  else
-                                                                                  {
-                                                                                      facebook.Connect("email, publish_stream, publish_actions");
-                                                                                  }
+                {
+                    ShowProgressDialog();
+                    if (facebook.IsConnected)
+                    {
+                        facebook.GetUserInfos(CheckIfFacebookAccountExist, () =>
+                        {
+                            facebook.Disconnect();
+                            HideProgressDialog();
+                        });
+                    }
+                    else
+                    {
+                        facebook.Connect("email, publish_stream, publish_actions");
+                    }
 
-                                                                              };
+                };
             }
             else
             {
@@ -132,16 +124,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             {
 
                 FindViewById<Button>(Resource.Id.TwitterButton).Click += delegate
+                {
+                    if (twitterService.IsConnected)
                     {
-                        if (twitterService.IsConnected)
-                        {
-                            twitterService.GetUserInfos(CheckIfTwitterAccountExist);
-                        }
-                        else
-                        {
-                            twitterService.Connect();
-                        }
-                    };
+                        twitterService.GetUserInfos(CheckIfTwitterAccountExist);
+                    }
+                    else
+                    {
+                        twitterService.Connect();
+                    }
+                };
             }
             else
             {

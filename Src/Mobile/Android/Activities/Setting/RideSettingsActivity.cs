@@ -74,7 +74,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 			section.AddItem( new TextEditSectionItem( Resources.GetString( Resource.String.RideSettingsPassengers ), () => model.NbOfPassenger, (value) => model.NbOfPassenger = value ) );
 			section.AddItem( new SpinnerSectionItem( Resources.GetString( Resource.String.RideSettingsVehiculeType ), () => model.VehicleTypeId, (value) => model.VehicleTypeId = value, () => model.VehicleTypeList.Select( i => new ListItemData { Key = i.Id, Value = i.Display } ).ToList() ) );
             section.AddItem(new SpinnerSectionItem(Resources.GetString(Resource.String.RideSettingsChargeType), () => model.ChargeTypeId, (value) => model.ChargeTypeId = value, () => model.ChargeTypeList.Select(i => new ListItemData { Key = i.Id, Value = i.Display }).ToList()));
-           
+
+            
+            section = structure.AddSection("Password");
+
+            section.AddItem(new TextEditSectionItem(Resources.GetString(Resource.String.RideSettingsName), () => model.Name, (value) => model.Name = value));
+            section.AddItem(new TextEditSectionItem(Resources.GetString(Resource.String.RideSettingsName), () => model.Name, (value) => model.Name = value));
+
             if (TinyIoCContainer.Current.Resolve<IAppSettings>().CanChooseProvider)
 		    {
                 //section.AddItem(new SpinnerSectionItem(Resources.GetString(Resource.String.RideSettingsCompany), () => model.ProviderId != null ? (int) model.ProviderId : 0, (value) => model.ProviderId = value, () => model.CompanyList.Select(i => new ListItemData { Key = i.Id, Value = i.Display }).ToList()));

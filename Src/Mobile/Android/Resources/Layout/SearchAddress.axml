@@ -68,7 +68,7 @@
                 android:layout_width="fill_parent"
                 android:layout_weight="1"
                 android:hint="@string/searchHint"
-                android:imeOptions="actionSearch"
+                android:imeOptions="actionDone"
                 android:textSize="15dip"
                 android:inputType="text"
                 android:layout_height="40dp"
@@ -104,11 +104,32 @@
     </FrameLayout>
     <apcurium.mk.booking.mobile.client.controls.BindableListView
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/SearchAddressListView"
         android:layout_marginBottom="5dip"
         local:MvxItemTemplate="@layout/simplelistitem"
-        local:MvxBind="{&apos;ItemsSource&apos;:{&apos;Path&apos;:&apos;AddressViewModels&apos;},&apos;ItemClick&apos;:{&apos;Path&apos;:&apos;RowSelectedCommand&apos;},&apos;SearchFilter&apos;:{&apos;Path&apos;:&apos;SearchFilter&apos;}}"
+        local:MvxBind="{&apos;ItemsSource&apos;:{&apos;Path&apos;:&apos;AddressViewModels&apos;},&apos;ItemClick&apos;:{&apos;Path&apos;:&apos;RowSelectedCommand&apos;}}"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp" />
+    <TextView
+        android:id="@+id/HistoricListViewTitle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="9dip"
+        android:paddingBottom="2dip"
+        android:paddingLeft="5dip"
+        style="@style/HeaderGroupTitle"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        local:MvxBind="{&apos;Visibility&apos;:{&apos;Path&apos;:&apos;HistoricIsHidden&apos;,&apos;Converter&apos;:&apos;InvertedVisibility&apos;}}"
+        android:visibility="gone" />
+    <apcurium.mk.booking.mobile.client.controls.BindableListView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/HistoricListView"
+        android:layout_marginBottom="5dip"
+        local:MvxItemTemplate="@layout/simplelistitem"
+        local:MvxBind="{&apos;ItemsSource&apos;:{&apos;Path&apos;:&apos;HistoricAddressViewModels&apos;}, &apos;Visibility&apos;:{&apos;Path&apos;:&apos;HistoricIsHidden&apos;,&apos;Converter&apos;:&apos;InvertedVisibility&apos;}, &apos;ItemClick&apos;:{&apos;Path&apos;:&apos;RowSelectedCommand&apos;}}"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp" />
 </LinearLayout>

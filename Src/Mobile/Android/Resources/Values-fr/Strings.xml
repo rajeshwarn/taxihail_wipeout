@@ -120,7 +120,7 @@
   <string name="ChangeDefaultRideSettings">Paramètres de commande</string>
   <string name="SendErrorLogButton">Envoyer log erreur</string>
   <string name="Version">v{0}</string>
-  <string name="ServerInfo">({0} v{1})</string>  
+  <string name="ServerInfo">({0} v{1})</string>
   <string name="RideSettingsCannotLoadListMessage">Notre serveur ne peut être contacté, veuillez réessayer plus tard.</string>
   <string name="RideSettingsCannotLoadListTitle">Erreur serveur</string>
   <string name="RideSettingsName">Nom:</string>

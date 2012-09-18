@@ -23,6 +23,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
     public class SplashActivity : MvxBaseSplashScreenActivity
     {
 
+        public SplashActivity()
+        {
+            
+
+        }
 
         private LocationService _locationService = new LocationService();
 
@@ -32,9 +37,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
         }
         protected override void OnCreate(Bundle bundle)
         {
-            base.OnCreate(bundle);
+            new AppModule().Initialize(this.Application as TaxiMobileApplication );
+            new AppModule().InitializeSocialNetwork(this);
 
-            InitializeSocialNetwork();
+            base.OnCreate(bundle);
+            
 
             _locationService.Start();
 
@@ -47,7 +54,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
         {
             base.OnResume();
 
-            TinyIoCContainer.Current.Resolve<IUserPositionService>().Refresh();
+            
             //DebugLogin();
             //ThreadHelper.ExecuteInThread(this, () => TinyIoCContainer.Current.Resolve<IAccountService>().RefreshCache(AppContext.Current.LoggedUser != null), false);
             //string err = "";
@@ -102,50 +109,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
             base.OnDestroy();
         }
 
-        public static Activity TopActivity { get; set; }
+        
 
-        public static FacebookServicesMD _fb;
-        public FacebookServicesMD GetFacebookService()
-        {
-            if (_fb == null)
-            {
-                var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
-                _fb = new FacebookServicesMD(settings.FacebookAppId, GetTopActivity());
-            }
-            return _fb;
-        }
-
-
-        public Activity GetTopActivity()
-        {
-
-            return TopActivity;
-        }
-
-        private void InitializeSocialNetwork()
-        {
-            TopActivity = this;
-
-            var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
-
-
-            OAuthConfig oauthConfig = new OAuthConfig
-            {
-
-                ConsumerKey = settings.TwitterConsumerKey,
-                Callback = settings.TwitterCallback,
-                ConsumerSecret = settings.TwitterConsumerSecret,
-                RequestTokenUrl = settings.TwitterRequestTokenUrl,
-                AccessTokenUrl = settings.TwitterAccessTokenUrl,
-                AuthorizeUrl = settings.TwitterAuthorizeUrl
-            };
-
-            var twitterService = new TwitterServiceMonoDroid(oauthConfig, this);
-
-            TinyIoCContainer.Current.Register<IFacebookService>((c, p) => GetFacebookService());
-            TinyIoCContainer.Current.Register<ITwitterService>(twitterService);
-
-        }
+       
     }
 
 }

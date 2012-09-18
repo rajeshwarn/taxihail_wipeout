@@ -59,7 +59,7 @@ namespace apcurium.MK.Booking.ConfigTool
 
             
             Console.WriteLine("Done. Closing...");
-            Thread.Sleep(5000);            
+            Thread.Sleep(2000);            
 
 
         }

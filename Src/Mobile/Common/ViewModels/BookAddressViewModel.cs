@@ -135,8 +135,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get
             {
                 return new MvxRelayCommand(() =>
-                {
-                    //RequestNavigate<AddressSearchViewModel>(new { search  = Params.Get<string>( Model.StreetNumber, Model.Street ).Where( p => p.HasValue() ).JoinBy( " " ), ownerId = _id});                    
+                {                    
                     RequestNavigate<AddressSearchViewModel>(new { search = Model.FullAddress, ownerId = _id });
                 });
             }

@@ -12,6 +12,9 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
         CreateOrder_InvalidPickupAddress,
         CreateOrder_CannotCreateInIbs,
         CreateOrder_SettingsRequired,
+        CreateOrder_NoProvider,
+        CreateOrder_InvalidProvider,
+        CreateOrder_VehiculeType,
         CancelOrder_OrderNotInIbs,
         NearbyPlaces_LocationRequired,
         Search_Locations_NameRequired

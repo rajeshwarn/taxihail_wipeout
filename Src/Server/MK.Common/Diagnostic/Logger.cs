@@ -8,6 +8,10 @@ namespace apcurium.MK.Common.Diagnostic
         public void LogError(Exception ex)
         {
             Trace.TraceError(ex.Message + " " + ex.StackTrace);
+            if (ex.InnerException != null)
+            {
+                LogError(ex.InnerException);
+            }
         }
 
         public void LogMessage(string message)

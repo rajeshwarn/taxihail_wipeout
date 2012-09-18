@@ -68,7 +68,7 @@ namespace apcurium.MK.Booking.Mobile.Settings
 
         public string DefaultServiceUrl
         {
-            get { return "http://services.taxihail.com/{0}/v1/api/"; }
+            get { return "http://services.taxihail.com/{0}/v1.1/api/"; }
 
         }
 

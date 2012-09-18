@@ -8,6 +8,8 @@ using MK.Booking.Mobile.Infrastructure.Practices;
 using Cirrious.MvvmCross.Binding.Android;
 using Android.Content;
 using apcurium.MK.Booking.Mobile.Client.Converters;
+using TinyIoC;
+using apcurium.MK.Booking.Mobile.AppServices;
 
 
 namespace apcurium.MK.Booking.Mobile.Client

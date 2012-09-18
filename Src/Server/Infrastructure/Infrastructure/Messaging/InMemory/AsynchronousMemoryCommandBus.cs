@@ -85,7 +85,7 @@ namespace Infrastructure.Messaging.InMemory
                 }
                 catch (Exception e)
                 {
-                    Trace.TraceError("Error in handling command " + command.Body.GetType(), e);
+                    Trace.TraceError("Error in handling command " + command.Body.GetType() + Environment.NewLine + e.Message + Environment.NewLine + e.StackTrace);
                 }
             });
         }
