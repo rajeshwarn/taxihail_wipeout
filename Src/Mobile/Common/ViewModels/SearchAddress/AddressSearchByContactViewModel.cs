@@ -22,8 +22,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.SearchAddress
 
         protected override IEnumerable<AddressViewModel> SearchAddresses()
         {
-            var addresses = _bookingService.GetAddressFromAddressBook(c => c.DisplayName.Contains(Criteria));
+            var addresses = _bookingService.GetAddressFromAddressBook(c => string.IsNullOrEmpty( Criteria ) || c.DisplayName.Contains(Criteria));
             return addresses.Select(a => new AddressViewModel { Address = a, ShowPlusSign = false, ShowRightArrow = false, IsFirst = a.Equals(addresses.First()), IsLast = a.Equals(addresses.Last()) }).ToList();
         }
+
+
     }
 }
