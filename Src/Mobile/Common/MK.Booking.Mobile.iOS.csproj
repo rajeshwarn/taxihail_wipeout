@@ -167,6 +167,7 @@
     <Compile Include="AppServices\IUserPositionService.cs" />
     <Compile Include="AppServices\Impl\UserPositionService.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
+    <Compile Include="Infrastructure\IMessageService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">

@@ -306,9 +306,16 @@ namespace apcurium.MK.Booking.Mobile.Client
             if ( (_image != null) && ( !Selected || (_selectedImage == null )))
             {
                 var emptySpaceX =  rect.Width - _image.Size.Width;
-                var emptySpaceY =  rect.Height - _image.Size.Height ;
-
-                imageRect = new RectangleF(emptySpaceX/2, emptySpaceY/2, rect.Width - emptySpaceX, rect.Height - emptySpaceY);                               
+                var emptySpaceY =  rect.Height - _image.Size.Height;
+				if( _title.IsNullOrEmpty() )
+				{
+					imageRect = new RectangleF(emptySpaceX/2, emptySpaceY/2, rect.Width - emptySpaceX, rect.Height - emptySpaceY);
+				}
+				else
+				{
+					imageRect = new RectangleF( 3, emptySpaceY/2, rect.Width - emptySpaceX, rect.Height - emptySpaceY);
+				}
+                                               
                 _image.Draw(imageRect, CGBlendMode.Normal, 1f);
             }
             else if ( Selected && (_selectedImage != null ) )
