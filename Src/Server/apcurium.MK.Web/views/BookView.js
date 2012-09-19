@@ -69,8 +69,8 @@
         
         book: function (e) {
             e.preventDefault();
-
-            this.model.save();
+            TaxiHail.store.setItem("orderToBook", this.model.toJSON());
+            TaxiHail.app.navigate('confirmationbook',{trigger:true});
         }
     });
 

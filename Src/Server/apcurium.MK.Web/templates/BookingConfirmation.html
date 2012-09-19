@@ -2,13 +2,14 @@
     <h1>{{localize "Addresses"}}</h1>
 </div>
 <div class="row">
+    <h2>{{localize "Confirm Information"}}</h2>
     <table>
         <tr>
             <td>{{localize "Pickup Time"}}</td>
             <td>Now</td>
         </tr>
         <tr>
-            <td>{{localize "Pickup"</td>
+            <td>{{localize "Pickup"}}</td>
             <td>{{pickupAddress.fullAddress}}</td>
         </tr>
         <tr>
@@ -16,8 +17,49 @@
             <td>{{dropOffAddress.fullAddress}}</td>
         </tr>
         <tr>
-            <td>{{localize "Fare Estimate"}}</td>
+            <td>{{localize "Fare estimate"}}</td>
             <td></td>
         </tr>
     </table>
+    <h2>{{localize "Settings"}}</h2>
+    <table>
+        <tr>
+            <td>{{localize "Name"}}</td>
+            <td>{{settings.name}}</td>
+        </tr>
+        <tr>
+            <td>{{localize "Phone"}}</td>
+            <td>{{settings.phone}}</td>
+        </tr>
+        <tr>
+            <td>{{localize "Passengers"}}</td>
+            <td>{{settings.passengers}}</td>
+        </tr>
+        <tr>
+            <td>{{localize "Vehicule Type"}}</td>
+            <td>{{settings.vehicleTypeId}}</td>
+        </tr>
+        <tr>
+            <td>{{localize "Charge Type"}}</td>
+            <td>{{settings.chargeTypeId}}</td>
+        </tr>
+        <tr>
+            <td>{{localize "Apt No."}}</td>
+            <td>{{pickupAddress.apartment}}</td>
+        </tr>
+        <tr>
+            <td>{{localize "Ring Code"}}</td>
+            <td>{{pickupAddress.ringCode}}</td>
+        </tr>
+        <tr>
+            <td>{{localize "Notes"}}</td>
+            <td>{{settings.notes}}</td>
+        </tr>
+    </table>
+    <form>
+        <fieldset>
+            <a href='#' class='btn primary' data-action='book'>{{localize "Book Now!"}}</a>
+            <a href='#' class='btn primary' data-action='startOver'>{{localize "Start Over"}}</a>
+        </fieldset>
+    </form>
 </div>
