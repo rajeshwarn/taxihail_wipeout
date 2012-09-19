@@ -22,38 +22,39 @@
         </tr>
     </table>
     <h2>{{localize "Settings"}}</h2>
+    <a href='#' class='btn primary' id="editButton" data-action='edit'>{{localize "Edit"}}</a>
     <table>
         <tr>
             <td>{{localize "Name"}}</td>
-            <td>{{settings.name}}</td>
+            <td><input type="text" disabled="true" value="{{settings.name}}"/></td>
         </tr>
         <tr>
             <td>{{localize "Phone"}}</td>
-            <td>{{settings.phone}}</td>
+            <td><input type="text" disabled="true" value="{{settings.phone}}"/></td>
         </tr>
         <tr>
             <td>{{localize "Passengers"}}</td>
-            <td>{{settings.passengers}}</td>
+            <td><input type="text" disabled="true" value="{{settings.passengers}}"/></td>
         </tr>
         <tr>
             <td>{{localize "Vehicule Type"}}</td>
-            <td>{{settings.vehicleTypeId}}</td>
+            <td><input type="text" disabled="true" value="{{settings.vehicleTypeId}}"/></td>
         </tr>
         <tr>
             <td>{{localize "Charge Type"}}</td>
-            <td>{{settings.chargeTypeId}}</td>
+            <td><input type="text" disabled="true" value="{{settings.chargeTypeId}}"/></td>
         </tr>
         <tr>
             <td>{{localize "Apt No."}}</td>
-            <td>{{pickupAddress.apartment}}</td>
+            <td><input type="text" disabled="true" value="{{pickupAddress.apartment}}"/></td>
         </tr>
         <tr>
             <td>{{localize "Ring Code"}}</td>
-            <td>{{pickupAddress.ringCode}}</td>
+            <td><input type="text" disabled="true" value="{{pickupAddress.ringCode}}"/></td>
         </tr>
         <tr>
             <td>{{localize "Notes"}}</td>
-            <td>{{settings.notes}}</td>
+            <td><input type="text" disabled="true" value="{{settings.notes}}"/></td>
         </tr>
     </table>
     <form>
