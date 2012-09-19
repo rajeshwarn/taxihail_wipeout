@@ -60,14 +60,16 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             Background.Load(window, "Assets/background_full_nologo.png", false, 0, 0);          
 
-            var setup = new Setup(this, new PhonePresenter( this, window ) );
-            setup.Initialize();
+			AppContext.Initialize(window);
             
-            var start = this.GetService<IMvxStartNavigation>();
+			var setup = new Setup(this, new PhonePresenter( this, window ) );
+            setup.Initialize();
+
+			var start = this.GetService<IMvxStartNavigation>();
             start.Start();  
 
 
-            AppContext.Initialize(window);           
+                      
 
             _tabBarController = new RootTabController();
 

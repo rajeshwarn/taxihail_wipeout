@@ -100,6 +100,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 		}
 
+		public override void ViewWillAppear (bool animated)
+		{
+			base.ViewWillAppear (animated);
+
+			NavigationController.NavigationBar.Hidden = false;
+		}
+
 		void CanceledTouchUpInside (object sender, EventArgs e)
 		{
 			if (Canceled != null) {
