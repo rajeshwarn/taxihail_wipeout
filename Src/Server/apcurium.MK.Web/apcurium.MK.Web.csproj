@@ -278,14 +278,17 @@
     <Content Include="taxi-hail.js" />
     <Content Include="templates\AddressControl.html" />
     <Content Include="templates\AddressItem.html" />
+    <Content Include="templates\AddressSearch.html" />
     <Content Include="templates\AddressSelection.html" />
     <Content Include="templates\book.html" />
     <Content Include="templates\BookingConfirmation.html" />
     <Content Include="templates\home.html" />
     <Content Include="templates\login.html" />
+    <Content Include="templates\SettingsEdit.html" />
     <Content Include="utils.js" />
     <Content Include="views\AddressControlView.js" />
     <Content Include="views\AddressItemView.js" />
+    <Content Include="views\AddressSearchView.js" />
     <Content Include="views\AddressSelectionView.js" />
     <Content Include="views\BookingConfirmationView.js" />
     <Content Include="views\BookView.js" />
@@ -293,6 +296,7 @@
     <Content Include="views\HomeView.js" />
     <Content Include="views\LoginView.js" />
     <Content Include="views\MapView.js" />
+    <Content Include="views\SettingsEditView.js" />
     <Content Include="views\TemplatedView.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
