@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.Interfaces.Commands;
@@ -27,6 +28,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			TinyIoCContainer.Current.Resolve<IUserPositionService>().Refresh();
             SearchViewModelSelected = TinyIoCContainer.Current.Resolve<AddressSearchByGeoCodingViewModel>();
             Criteria = search;
+            SearchSelected = true;
         }
 
         public AddressSearchBaseViewModel SearchViewModelSelected { get; set; }
@@ -55,6 +57,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+        public bool HistoricIsHidden { get; set; }
+
         public IMvxCommand SearchCommand
         {
             get
@@ -80,17 +84,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public void RefreshResults(Task<IEnumerable<AddressViewModel>>  task)
         {
-            if(task.IsCompleted)
+            if(task.IsCompleted
+                && !task.IsCanceled)
             {
                 InvokeOnMainThread(() =>
-                                       {
-                                           AddressViewModels = task.Result;
-                                           FirePropertyChanged(() => AddressViewModels);
-                                       });
+                {
+                    AddressViewModels = task.Result.Where(x => !x.Address.IsHistoric).ToList();
+                    HistoricAddressViewModels = task.Result.Where(x => x.Address.IsHistoric).ToList();
+                    HistoricIsHidden = HistoricAddressViewModels.Any();
+
+                    FirePropertyChanged(() => AddressViewModels);
+                    FirePropertyChanged(() => HistoricAddressViewModels);
+                    FirePropertyChanged(() => HistoricIsHidden);
+                });
                 IsSearching = false;
             }
             
         }
+
+        
 
         public IMvxCommand RowSelectedCommand
         {
@@ -142,18 +154,27 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		            throw new ArgumentOutOfRangeException("btn");
 		    }
 
-            _searchSelected = btn == TopBarButton.SearchBtn;
-            _favoritesSelected = btn == TopBarButton.FavoritesBtn;
-            _contactsSelected = btn == TopBarButton.ContactsBtn;
-            _placesSelected = btn == TopBarButton.PlacesBtn;
-
-            FirePropertyChanged(() => SearchSelected);
-            FirePropertyChanged(() => FavoritesSelected);
-            FirePropertyChanged(() => ContactsSelected);
-            FirePropertyChanged(() => PlacesSelected);
+            SearchSelected = btn == TopBarButton.SearchBtn;
+            FavoritesSelected = btn == TopBarButton.FavoritesBtn;
+            ContactsSelected = btn == TopBarButton.ContactsBtn;
+            PlacesSelected = btn == TopBarButton.PlacesBtn;
 
             SearchCommand.Execute();
 		}
+
+        public IMvxCommand SelectedChangedCommand
+        {
+            get { 
+                return new MvxRelayCommand<object>(param => param.Maybe(tag =>
+                {
+                    TopBarButton btSelected;
+                    if(Enum.TryParse(tag.ToString(), true, out btSelected))
+                    {
+                        SetSelected(btSelected);
+                    }
+                })); 
+            }
+        }
 
         private bool _searchSelected;
         public bool SearchSelected
@@ -163,7 +184,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 _searchSelected = value;
                 FirePropertyChanged(() => SearchSelected);
-                if (value) SetSelected(TopBarButton.SearchBtn);
             }
         }
 
@@ -175,7 +195,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 _favoritesSelected = value;
                 FirePropertyChanged(() => FavoritesSelected);
-                if (value) SetSelected(TopBarButton.FavoritesBtn);
             }
         }
 
@@ -187,7 +206,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 _contactsSelected = value;
                 FirePropertyChanged(() => ContactsSelected);
-                if (value) SetSelected(TopBarButton.ContactsBtn);
             }
         }
 
@@ -201,7 +219,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 _placesSelected = value;
                 FirePropertyChanged(() => PlacesSelected);
-                if (value) SetSelected(TopBarButton.PlacesBtn);
             }
         }
 
@@ -209,6 +226,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get { return new MvxRelayCommand(() => RequestClose(this)); }
         }
+
+        
 
     }
 }

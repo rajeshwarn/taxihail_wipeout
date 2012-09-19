@@ -11,8 +11,8 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:layout_gravity="center_horizontal">
-        <Button
-            android:id="@+id/searchbtn"
+      <apcurium.mk.booking.mobile.client.controls.BindableSelectionButton
+          android:id="@+id/searchbtn"
             android:text="@string/TabSearch"
             android:background="@drawable/searchTabBtnSelector"
             android:layout_width="fill_parent"
@@ -20,9 +20,10 @@
             android:layout_weight="1"
             android:textSize="15dip"
             android:textColor="@color/white"
-            local:MvxBind="{&apos;Selected&apos;:{&apos;Path&apos;:&apos;SearchSelected&apos;}}" />
-        <Button
-            android:id="@+id/favbtn"
+            android:tag="SearchBtn"
+            local:MvxBind="{&apos;SelectedChangedCommand&apos;:{&apos;Path&apos;:&apos;SelectedChangedCommand&apos;},&apos;Selected&apos;:{&apos;Path&apos;:&apos;SearchSelected&apos;}}" />
+      <apcurium.mk.booking.mobile.client.controls.BindableSelectionButton
+          android:id="@+id/favbtn"
             android:text="@string/TabFavorites"
             android:background="@drawable/searchTabBtnSelector"
             android:layout_width="fill_parent"
@@ -30,27 +31,30 @@
             android:layout_weight="1"
             android:textSize="15dip"
             android:textColor="@color/white"
-            local:MvxBind="{&apos;Selected&apos;:{&apos;Path&apos;:&apos;FavoritesSelected&apos;}}" />
-        <Button
-            android:id="@+id/contactbtn"
+            android:tag="FavoritesBtn"
+            local:MvxBind="{&apos;SelectedChangedCommand&apos;:{&apos;Path&apos;:&apos;SelectedChangedCommand&apos;},&apos;Selected&apos;:{&apos;Path&apos;:&apos;FavoritesSelected&apos;}}" />
+      <apcurium.mk.booking.mobile.client.controls.BindableSelectionButton
+          android:id="@+id/contactbtn"
             android:text="@string/TabContacts"
             android:background="@drawable/searchTabBtnSelector"
             android:layout_width="fill_parent"
             android:layout_height="50dip"
             android:layout_weight="1"
             android:textSize="15dip"
+            android:tag="ContactsBtn"
             android:textColor="@color/white"
-            local:MvxBind="{&apos;Selected&apos;:{&apos;Path&apos;:&apos;ContactsSelected&apos;}}" />
-        <Button
-            android:id="@+id/placesbtn"
+            local:MvxBind="{&apos;SelectedChangedCommand&apos;:{&apos;Path&apos;:&apos;SelectedChangedCommand&apos;},&apos;Selected&apos;:{&apos;Path&apos;:&apos;ContactsSelected&apos;}}" />
+      <apcurium.mk.booking.mobile.client.controls.BindableSelectionButton
+          android:id="@+id/placesbtn"
             android:text="@string/TabPlaces"
             android:background="@drawable/searchTabBtnSelector"
             android:layout_width="fill_parent"
             android:layout_height="50dip"
             android:layout_weight="1"
             android:textSize="15dip"
+            android:tag="PlacesBtn"
             android:textColor="@color/white"
-            local:MvxBind="{&apos;Selected&apos;:{&apos;Path&apos;:&apos;PlacesSelected&apos;}}" />
+            local:MvxBind="{&apos;SelectedChangedCommand&apos;:{&apos;Path&apos;:&apos;SelectedChangedCommand&apos;},&apos;Selected&apos;:{&apos;Path&apos;:&apos;PlacesSelected&apos;}}" />
     </LinearLayout>
     <FrameLayout
         android:layout_width="fill_parent"
