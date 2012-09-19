@@ -62,10 +62,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 			View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
 
-			var searchBtn = TopBar.AddButton( Resources.SearchButton );
-			var favoritesBtn = TopBar.AddButton( Resources.FavoritesButton );
-			var contactsBtn = TopBar.AddButton( Resources.ContactsButton );
-			var placesBtn = TopBar.AddButton( Resources.PlacesButton );
+			var searchBtn = TopBar.AddButton( Resources.SearchButton, "SearchBtn" );
+			var favoritesBtn = TopBar.AddButton( Resources.FavoritesButton, "FavoritesBtn" );
+			var contactsBtn = TopBar.AddButton( Resources.ContactsButton, "ContactsBtn" );
+			var placesBtn = TopBar.AddButton( Resources.PlacesButton, "PlacesBtn" );
 			TopBar.SetSelected( 0 );
 
 			((SearchTextField)SearchTextField).SetImage( "Assets/Search/SearchIcon.png" );
@@ -85,10 +85,10 @@ namespace apcurium.MK.Booking.Mobile.Client
             this.AddBindings(new Dictionary<object, string>(){
 				{CancelButton, "{'TouchUpInside':{'Path':'CloseViewCommand'}}"},
 				{source, "{'ItemsSource':{'Path':'AddressViewModels'}, 'RowSelected':{'Path':'RowSelectedCommand'}}"} ,
-				{favoritesBtn, "{'TouchUpInside':{'Path':'SelectedChangedCommand'}, 'Selected':{'Path':'FavoritesSelected'}}"} ,
-				{contactsBtn, "{'TouchUpInside':{'Path':'SelectedChangedCommand'}, 'Selected':{'Path':'ContactsSelected'}}"} ,
-				{placesBtn, "{'TouchUpInside':{'Path':'SelectedChangedCommand'}, 'Selected':{'Path':'PlacesSelected'}}"} ,
-				{searchBtn, "{'TouchUpInside':{'Path':'SelectedChangedCommand'}, 'Selected':{'Path':'SearchSelected'}}"} ,
+				{favoritesBtn, "{'SelectedChangedCommand':{'Path':'SelectedChangedCommand'}, 'Selected':{'Path':'FavoritesSelected'}}"} ,
+				{contactsBtn, "{'SelectedChangedCommand':{'Path':'SelectedChangedCommand'}, 'Selected':{'Path':'ContactsSelected'}}"} ,
+				{placesBtn, "{'SelectedChangedCommand':{'Path':'SelectedChangedCommand'}, 'Selected':{'Path':'PlacesSelected'}}"} ,
+				{searchBtn, "{'SelectedChangedCommand':{'Path':'SelectedChangedCommand'}, 'Selected':{'Path':'SearchSelected'}}"} ,
 				{SearchTextField, "{'Text':{'Path':'Criteria'}, 'TextChangedCommand':{'Path':'SearchCommand'}}"} ,
 			});
 
