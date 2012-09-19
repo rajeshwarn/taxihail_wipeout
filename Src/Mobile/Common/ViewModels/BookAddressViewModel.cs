@@ -209,10 +209,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     IsExecuting = true;
                     _cancellationToken = new CancellationTokenSource();
-                    _geolocator.GetPositionAsync(10000, _cancellationToken.Token).ContinueWith(t =>
+                    _geolocator.GetPositionAsync(30000, _cancellationToken.Token).ContinueWith(t =>
                     {
                         try
-                        {
+                        {                            
                             if (t.IsFaulted)
                             {
                                 // PositionStatus.Text = ((GeolocationException)t.Exception.InnerException).Error.ToString();

@@ -55,8 +55,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         }
 
         private void Initialize()
-        {
-            
+        {            
         }
 
 
@@ -83,8 +82,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     foreach (var i in this.Overlays.OfType<PushPinOverlay>())
                     {
                         i.RemoveBaloon();
-                    }
-                    this.Overlays.Clear();
+                    }                    
                 }
             }
 
@@ -107,11 +105,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             set 
             { 
                 _pickup = value;
-               /* if (_pickupPin != null)
+                if (_pickupPin != null)
                 {
                     this.Overlays.Remove(_pickupPin);
                     _pickupPin = null;
-                }*/
+                }
 
 
                 if ((value != null) && (value.Latitude != 0) && (value.Longitude != 0))
@@ -123,7 +121,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-
+        protected override void OnAttachedToWindow()
+        {
+            base.OnAttachedToWindow();
+            Console.WriteLine(this.ChildCount.ToString());
+        }
 
         public Address Dropoff
         {
@@ -131,11 +133,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             set 
             { 
                 _dropoff = value;
-                /*if (_dropoffPin != null)
+                if (_dropoffPin != null)
                 {
                     this.Overlays.Remove(_dropoffPin);
                     _dropoffPin = null;
-                }*/
+                }
+
                 if ((value != null) && (value.Latitude != 0) && (value.Longitude != 0))
                 {
                     _dropoffPin = MapUtitilties.MapService.AddPushPin(this, Resources.GetDrawable(Resource.Drawable.pin_red), value, _dropoff.FullAddress);
@@ -210,7 +213,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 mapController.AnimateTo(new GeoPoint(lat, lon));
                 if (adressesToDisplay.ElementAt(0).Zoom != ViewModels.ZoomLevel.DontChange)
                 {
-                    mapController.SetZoom(17);
+                    mapController.SetZoom(18);
                 }
                 return;
             }
@@ -234,7 +237,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             if ((Math.Abs(maxLat - minLat) < 0.004) && (Math.Abs(maxLon - minLon) < 0.004))
             {
                 mapController.AnimateTo(new GeoPoint((maxLat + minLat) / 2, (maxLon + minLon) / 2));
-                mapController.SetZoom(17);
+                mapController.SetZoom(18);
             }
             else
             {

@@ -41,10 +41,11 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 			TextLabel.BackgroundColor = UIColor.Clear;
 			TextLabel.Font = AppStyle.CellFont;
 
-			_rightImage = new UIImageView (new RectangleF (290, _sectionItem.RowHeight/2 - 15/2, 14, 15 ) ); 
+			_rightImage = new UIImageView (new RectangleF (Frame.Width - 30, _sectionItem.RowHeight/2 - 15/2, 14, 15 ) ); 
 			_rightImage.BackgroundColor = UIColor.Clear;
 			_rightImage.ContentMode = UIViewContentMode.ScaleAspectFit;
 			LoadImageFromAssets ( _rightImage, "Assets/Cells/rightArrow.png" );
+			_rightImage.Hidden = true;
 			AddSubview ( _rightImage );	
 
 		}
@@ -53,6 +54,7 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 		public void Load ()
 		{
 			TextLabel.Text = _sectionItem.Label;
+			_rightImage.Hidden = !_sectionItem.ShowRightArrow;
 			UserInteractionEnabled = _sectionItem.Enabled();
 		}
 

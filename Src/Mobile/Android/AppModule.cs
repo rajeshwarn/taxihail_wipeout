@@ -46,10 +46,10 @@ namespace apcurium.MK.Booking.Mobile.Client
             TinyIoCContainer.Current.Register<ICacheService>(new CacheService(App));
             TinyIoCContainer.Current.Register<AddressBook>(new AddressBook(App.ApplicationContext));
             
-            TinyIoCContainer.Current.Register<Geolocator>(new Geolocator(App.ApplicationContext) { DesiredAccuracy = 250 });                        
+            TinyIoCContainer.Current.Register<Geolocator>(new Geolocator(App.ApplicationContext) { DesiredAccuracy = 500 });                        
             TinyIoCContainer.Current.Register<Geolocator>(new Geolocator(App.ApplicationContext) { DesiredAccuracy = 10000 }, CoordinatePrecision.BallPark.ToString());
             TinyIoCContainer.Current.Register<Geolocator>(new Geolocator(App.ApplicationContext) { DesiredAccuracy = 1000 }, CoordinatePrecision.Coarse.ToString());
-            TinyIoCContainer.Current.Register<Geolocator>(new Geolocator(App.ApplicationContext) { DesiredAccuracy = 400 }, CoordinatePrecision.Medium.ToString());
+            TinyIoCContainer.Current.Register<Geolocator>(new Geolocator(App.ApplicationContext) { DesiredAccuracy = 700 }, CoordinatePrecision.Medium.ToString());
 
             
 

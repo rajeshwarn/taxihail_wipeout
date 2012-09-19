@@ -278,11 +278,13 @@
     <Content Include="templates\AddressItem.html" />
     <Content Include="templates\AddressSelection.html" />
     <Content Include="templates\book.html" />
+    <Content Include="templates\BookingConfirmation.html" />
     <Content Include="templates\home.html" />
     <Content Include="templates\login.html" />
     <Content Include="utils.js" />
     <Content Include="views\AddressItemView.js" />
     <Content Include="views\AddressSelectionView.js" />
+    <Content Include="views\BookingConfirmationView.js" />
     <Content Include="views\BookView.js" />
     <Content Include="views\HomeView.js" />
     <Content Include="views\LoginView.js" />
@@ -490,6 +492,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="localization\AddressSelection.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="localization\BookingConfirmation.json" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

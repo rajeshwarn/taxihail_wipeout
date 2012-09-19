@@ -44,6 +44,13 @@ namespace apcurium.MK.Booking.Mobile.Client
             webView.LoadRequest( NSUrlRequest.FromUrl( new NSUrl( url ) ) ); // )  );//  NSUrl.FromFilename( Resources.AboutUsUrl  ) ) );
             webView.ScalesPageToFit = true;
 		}
+
+		public override void ViewWillAppear (bool animated)
+		{
+			base.ViewWillAppear (animated);
+
+			NavigationController.NavigationBar.Hidden = false;
+		}
 		
 		#endregion
 	}

@@ -237,6 +237,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             RunOnUiThread(() =>
                 {
+                    if (!OrderStatus.IBSOrderId.HasValue)
+                    {
+                        return;
+                    }
+
                     FindViewById<TextView>(Resource.Id.confirmationNo).Text = string.Format(GetString(Resource.String.StatusDescription), OrderStatus.IBSOrderId.Value);
 
                     var map = FindViewById<MapView>(Resource.Id.mapStatus);

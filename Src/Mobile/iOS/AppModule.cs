@@ -9,6 +9,8 @@ using SocialNetworks.Services;
 using apcurium.MK.Booking.Mobile.Settings;
 using apcurium.MK.Booking.Mobile.Client.PlatformIntegration;
 using apcurium.MK.Booking.Mobile.Navigation;
+using apcurium.MK.Booking.Mobile.Data;
+using Xamarin.Geolocation;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -21,6 +23,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         #region IModule implementation
         public void Initialize()
         {
+			TinyIoCContainer.Current.Register<IMessageService>(new MessageService());
             TinyIoCContainer.Current.Register<INavigationService>(new NavigationService( AppContext.Current.Controller ));
             TinyIoCContainer.Current.Register<IAppSettings>(new AppSettings());
             TinyIoCContainer.Current.Register<IPackageInfo>(new PackageInfo());
@@ -32,6 +35,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			TinyIoCContainer.Current.Register<IErrorHandler, ErrorHandler>();
 
             TinyIoCContainer.Current.Register<ICacheService>(new CacheService());
+
+
 
             InitializeSocialNetwork();
             

@@ -32,23 +32,15 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             i.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
             i.PutExtra("Title", title);
             i.PutExtra("Message", message);
-            Context.StartActivity(i);
-
-            //AlertDialog alertDialog = new AlertDialog.Builder(Context).Create();
-            //alertDialog.SetTitle(title);
-            //alertDialog.SetMessage(message);
-            //alertDialog.Show();
-
-            //var errorIntent = new Intent(ACTION_SERVICE_ERROR);
-            //errorIntent.PutExtra(ACTION_EXTRA_ERROR, exception.ErrorCode);
-
-            //AppContext.Current.App.SendBroadcast(errorIntent);
-
-            //if (exception.StatusCode == (int)HttpStatusCode.Unauthorized)
-            //{
-            //    AppContext.Current.SignOut();
-            //}
-
+            Context.StartActivity(i); 
         }
+
+        public void ShowToast(string message, ToastDuration duration )
+        {
+            Toast toast = Toast.MakeText(Context, message , duration == ToastDuration.Short ?  ToastLength.Short : ToastLength.Long );
+            toast.Show();
+        }
+
+         
     }
 }
