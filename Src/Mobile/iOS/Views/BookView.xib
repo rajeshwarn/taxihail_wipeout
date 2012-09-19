@@ -321,7 +321,7 @@
 				<string key="NSFrame">{{0, 20}, {320, 460}}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView"/>
+				<reference key="NSNextKeyView" ref="817439265"/>
 				<reference key="IBUIBackgroundColor" ref="320041679"/>
 				<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics"/>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -618,13 +618,13 @@
 					<string>GradientButton</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>AddressButton</string>
+					<string>TextProgressButton</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>AddressButton</string>
+					<string>TextProgressButton</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>AddressButton</string>
+					<string>GradientButton</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>AddressButton</string>
+					<string>GradientButton</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -649,14 +649,6 @@
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<object class="IBPartialClassDescription">
-					<string key="className">AddressButton</string>
-					<string key="superclassName">GradientButton</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/AddressButton.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
 					<string key="className">BookView</string>
 					<string key="superclassName">UIViewController</string>
 					<object class="NSMutableDictionary" key="outlets">
@@ -672,7 +664,6 @@
 							<string>headerBackgroundView</string>
 							<string>infoLabel</string>
 							<string>mapView</string>
-							<string>menuView</string>
 							<string>navBar</string>
 							<string>pickupActivationButton</string>
 							<string>pickupButton</string>
@@ -684,15 +675,14 @@
 							<string>GradientButton</string>
 							<string>UIView</string>
 							<string>BottomBar</string>
-							<string>AddressButton</string>
-							<string>AddressButton</string>
+							<string>TextProgressButton</string>
+							<string>TextProgressButton</string>
 							<string>UIImageView</string>
 							<string>UILabel</string>
 							<string>MKMapView</string>
-							<string>UIView</string>
 							<string>UINavigationBar</string>
-							<string>AddressButton</string>
-							<string>AddressButton</string>
+							<string>TextProgressButton</string>
+							<string>TextProgressButton</string>
 							<string>GradientButton</string>
 						</object>
 					</object>
@@ -709,7 +699,6 @@
 							<string>headerBackgroundView</string>
 							<string>infoLabel</string>
 							<string>mapView</string>
-							<string>menuView</string>
 							<string>navBar</string>
 							<string>pickupActivationButton</string>
 							<string>pickupButton</string>
@@ -735,11 +724,11 @@
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">dropoffActivationButton</string>
-								<string key="candidateClassName">AddressButton</string>
+								<string key="candidateClassName">TextProgressButton</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">dropoffButton</string>
-								<string key="candidateClassName">AddressButton</string>
+								<string key="candidateClassName">TextProgressButton</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">headerBackgroundView</string>
@@ -754,20 +743,16 @@
 								<string key="candidateClassName">MKMapView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
-								<string key="name">menuView</string>
-								<string key="candidateClassName">UIView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
 								<string key="name">navBar</string>
 								<string key="candidateClassName">UINavigationBar</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">pickupActivationButton</string>
-								<string key="candidateClassName">AddressButton</string>
+								<string key="candidateClassName">TextProgressButton</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">pickupButton</string>
-								<string key="candidateClassName">AddressButton</string>
+								<string key="candidateClassName">TextProgressButton</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">refreshCurrentLocationButton</string>
@@ -794,6 +779,14 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/GradientButton.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">TextProgressButton</string>
+					<string key="superclassName">GradientButton</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/TextProgressButton.h</string>
 					</object>
 				</object>
 			</object>

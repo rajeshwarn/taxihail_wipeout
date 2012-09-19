@@ -62,8 +62,23 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             return UIFont.FromName(ButtonFontName, size);
         }
-        
-        public  static  UIColor AcceptButtonColor{ get { return UIColor.FromRGB(19, 147, 11); } }
+
+		public static UIFont GetNormalFont( float size )
+		{
+			return UIFont.FromName( "HelveticaNeue", size );
+		}
+
+		public static UIFont GetBoldFont( float size )
+		{
+			return UIFont.FromName( "HelveticaNeue-Bold", size );
+		}
+
+		public static UIFont GetItalicFont( float size )
+		{
+			return UIFont.FromName( "HelveticaNeue-Italic", size );
+		}
+
+		public  static  UIColor AcceptButtonColor{ get { return UIColor.FromRGB(19, 147, 11); } }
 
         public  static UIColor AcceptButtonHighlightedColor{ get { return UIColor.FromRGB(12, 98, 8); } }
         
