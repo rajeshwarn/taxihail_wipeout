@@ -274,6 +274,7 @@
     <Content Include="models\Order.js" />
     <Content Include="routers\app.js" />
     <Content Include="services\AuthService.js" />
+    <Content Include="services\LocalStorageService.js" />
     <Content Include="taxi-hail.js" />
     <Content Include="templates\AddressItem.html" />
     <Content Include="templates\AddressSelection.html" />
