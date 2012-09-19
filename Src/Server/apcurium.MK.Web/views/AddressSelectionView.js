@@ -49,7 +49,7 @@
             },
 
             search: function() {
-                this.$('.tab-content').empty();
+                this.$('.tab-content').html(new TaxiHail.AddressSearchView().render().el);
             },
 
             places: function() {
