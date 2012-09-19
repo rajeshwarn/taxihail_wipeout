@@ -68,7 +68,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			var placesBtn = TopBar.AddButton( Resources.PlacesButton );
 			TopBar.SetSelected( 0 );
 
-			((TextField)SearchTextField).SetImage( "Assets/Search/SearchIcon.png" );
+			((SearchTextField)SearchTextField).SetImage( "Assets/Search/SearchIcon.png" );
 			SearchTextField.Placeholder = Resources.SearchPlaceholder;
 
 			AppButtons.FormatStandardButton( (GradientButton)CancelButton, Resources.CancelBoutton, AppStyle.ButtonColor.Silver );
@@ -84,13 +84,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             this.AddBindings(new Dictionary<object, string>(){
 				{CancelButton, "{'TouchUpInside':{'Path':'CloseViewCommand'}}"},
-				{source, "{'ItemsSource':{'Path':'AddressViewModels'}}"} ,
-				{favoritesBtn, "{'TouchUpInside':{'Path':'GetFavoritesCommand'}}"} ,
-				{contactsBtn, "{'TouchUpInside':{'Path':'GetContactsCommand'}}"} ,
-				{placesBtn, "{'TouchUpInside':{'Path':'GetPlacesCommand'}}"} ,
-				{searchBtn, "{'TouchUpInside':{'Path':'SearchCommand'}}"} ,
-				{SearchTextField, "{'Text':{'Path':'SearchText'}}"} ,
-
+				{source, "{'ItemsSource':{'Path':'AddressViewModels'}, 'RowSelected':{'Path':'RowSelectedCommand'}}"} ,
+				{favoritesBtn, "{'TouchUpInside':{'Path':'SelectedChangedCommand'}, 'Selected':{'Path':'FavoritesSelected'}}"} ,
+				{contactsBtn, "{'TouchUpInside':{'Path':'SelectedChangedCommand'}, 'Selected':{'Path':'ContactsSelected'}}"} ,
+				{placesBtn, "{'TouchUpInside':{'Path':'SelectedChangedCommand'}, 'Selected':{'Path':'PlacesSelected'}}"} ,
+				{searchBtn, "{'TouchUpInside':{'Path':'SelectedChangedCommand'}, 'Selected':{'Path':'SearchSelected'}}"} ,
+				{SearchTextField, "{'Text':{'Path':'Criteria'}, 'TextChangedCommand':{'Path':'SearchCommand'}}"} ,
 			});
 
             AddressListView.Source = source;
