@@ -267,6 +267,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     {
                         DropoffIsActive = false;
                     }
+                    if (PickupIsActive)
+                    {
+                        var res = TinyIoCContainer.Current.Resolve<IAppResource>();
+                        TinyIoCContainer.Current.Resolve<IMessageService>().ShowToast(res.GetString("PickupWasActivatedToastMessage"), ToastDuration.Long );
+                    }
                     FirePropertyChanged(() => SelectedAddress);
                     FirePropertyChanged(() => NoAddressActiveSelection);
                     CenterMap(false);
@@ -286,6 +291,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         if (DropoffIsActive && PickupIsActive)
                         {
                             PickupIsActive = false;
+                        }
+                        if (DropoffIsActive)
+                        {
+                            var res = TinyIoCContainer.Current.Resolve<IAppResource>();
+                            TinyIoCContainer.Current.Resolve<IMessageService>().ShowToast(res.GetString("DropoffWasActivatedToastMessage"), ToastDuration.Long);
                         }
                         FirePropertyChanged(() => SelectedAddress);
                         FirePropertyChanged(() => NoAddressActiveSelection);

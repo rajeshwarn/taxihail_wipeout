@@ -261,8 +261,12 @@
   <string name="SendEmail">Send mail...</string>
   <string name="RefineAddressTitle">Refine an address</string>
   <string name="CannotCancelOrderTitle">Invalid Action</string>
-  <string name="CannotCancelOrderMessage">You can no longer cancel this order.</string>  
+  <string name="CannotCancelOrderMessage">You can no longer cancel this order.</string>
   <string name="AptNumber">Apt. No.</string>
   <string name="RingCode">Ring Code</string>
   <string name="BuildingName">Building Name</string>
+  <string name="DropoffWasActivatedToastMessage">Destination selection is active.</string>
+  <string name="PickupWasActivatedToastMessage">Pickup selection is active.</string>
+  <string name="InvalidLocalContactTitle">Invalid contact</string>
+  <string name="InvalidLocalContactMessage">The address associated to this contact cannot be validated.</string>
 </resources>

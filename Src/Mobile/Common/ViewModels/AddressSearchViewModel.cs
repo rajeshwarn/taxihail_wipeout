@@ -303,26 +303,30 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                         var placeAddress = _googleService.GetPlaceDetail(address.Address.PlaceReference);
                                         placeAddress.FriendlyName = address.Address.FriendlyName;
                                         InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new AddressSelected(this, placeAddress, _ownerId)));
+                                        InvokeOnMainThread(() => RequestClose(this));
                                     }
-                                    if (address.Address.FullAddress.IsNullOrEmpty() && (address.Address.AddressType == "localContact") && (address.Address.PlaceReference.HasValue()))
+                                    else if ( address.Address.AddressType == "localContact")  
                                     {
                                         var addresses = _geolocService.SearchAddress(address.Address.FullAddress,0,0);
                                         if (addresses.Count() > 0)
                                         {
                                             InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new AddressSelected(this, addresses.ElementAt(0), _ownerId)));
+                                            InvokeOnMainThread(() => RequestClose(this));
                                         }
                                         else
                                         {
-                                            TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage("s", "s");
+                                            var res = TinyIoCContainer.Current.Resolve<IAppResource>();
+                                            TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage(res.GetString("InvalidLocalContactTitle"), res.GetString("InvalidLocalContactMessage"));
                                         }
                                     }
                                     else
                                     {
                                         InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new AddressSelected(this, address.Address, _ownerId)));
+                                        InvokeOnMainThread(() => RequestClose(this));
                                     }
                                 }
                             });
-                        RequestClose(this);
+                        
                     });
             }
         }

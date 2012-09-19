@@ -82,8 +82,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     foreach (var i in this.Overlays.OfType<PushPinOverlay>())
                     {
                         i.RemoveBaloon();
-                    }
-                    this.Overlays.Clear();
+                    }                    
                 }
             }
 
@@ -106,11 +105,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             set 
             { 
                 _pickup = value;
-               /* if (_pickupPin != null)
+                if (_pickupPin != null)
                 {
                     this.Overlays.Remove(_pickupPin);
                     _pickupPin = null;
-                }*/
+                }
 
 
                 if ((value != null) && (value.Latitude != 0) && (value.Longitude != 0))
@@ -134,11 +133,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             set 
             { 
                 _dropoff = value;
-                /*if (_dropoffPin != null)
+                if (_dropoffPin != null)
                 {
                     this.Overlays.Remove(_dropoffPin);
                     _dropoffPin = null;
-                }*/
+                }
+
                 if ((value != null) && (value.Latitude != 0) && (value.Longitude != 0))
                 {
                     _dropoffPin = MapUtitilties.MapService.AddPushPin(this, Resources.GetDrawable(Resource.Drawable.pin_red), value, _dropoff.FullAddress);
