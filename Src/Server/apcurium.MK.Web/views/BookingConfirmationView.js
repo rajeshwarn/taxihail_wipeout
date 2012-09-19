@@ -5,6 +5,7 @@
         events: {
             'click [data-action=book]': 'book',
             'click [data-action=edit]': 'edit',
+            'change :text': 'onPropertyChanged',
             
         },
 
@@ -18,7 +19,7 @@
         
         book: function (e) {
         e.preventDefault();
-
+            this.model.set('settings', settings);
         this.model.save();
         },
         
@@ -63,7 +64,14 @@
             });
 
             this.$('div#settingsContent').prepend(settingsView.render().el);
-        }
+        },
+        
+        onPropertyChanged: function (e) {
+            var $input = $(e.currentTarget);
+            var pickup = this.model.get('pickupAddress');
+            
+            pickup[$input.attr("name")] = $input.val();
+        },
         
     });
 
