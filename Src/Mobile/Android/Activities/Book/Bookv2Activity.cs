@@ -108,8 +108,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             FindViewById<Button>(Resource.Id.settingsCallCompany ).Click -= new EventHandler(CallCie_Click);
             FindViewById<Button>(Resource.Id.settingsCallCompany).Click += new EventHandler(CallCie_Click);
 
-            //FindViewById<TouchMap>(Resource.Id.mapPickup).Touch += new EventHandler<View.TouchEventArgs>(Bookv2Activity_Touch);
 
+           
 
             if (ViewModel != null)
             {
@@ -136,7 +136,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
         }
 
+         
 
+       
         
         private void Rebook(Order order)
         {

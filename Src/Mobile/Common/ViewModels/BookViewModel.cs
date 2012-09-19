@@ -267,6 +267,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     {
                         DropoffIsActive = false;
                     }
+                    if (PickupIsActive)
+                    {
+                        var res = TinyIoCContainer.Current.Resolve<IAppResource>();
+                        TinyIoCContainer.Current.Resolve<IMessageService>().ShowToast(res.GetString("PickupWasActivatedToastMessage"), ToastDuration.Long );
+                    }
                     FirePropertyChanged(() => SelectedAddress);
                     FirePropertyChanged(() => NoAddressActiveSelection);
                     CenterMap(false);
@@ -286,6 +291,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         if (DropoffIsActive && PickupIsActive)
                         {
                             PickupIsActive = false;
+                        }
+                        if (DropoffIsActive)
+                        {
+                            var res = TinyIoCContainer.Current.Resolve<IAppResource>();
+                            TinyIoCContainer.Current.Resolve<IMessageService>().ShowToast(res.GetString("DropoffWasActivatedToastMessage"), ToastDuration.Long);
                         }
                         FirePropertyChanged(() => SelectedAddress);
                         FirePropertyChanged(() => NoAddressActiveSelection);
@@ -324,10 +334,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 MapCenter = new CoordinateViewModel[] { new CoordinateViewModel { Coordinate = new Coordinate { Latitude = Pickup.Model.Latitude, Longitude = Pickup.Model.Longitude }, Zoom = changeZoom ? ZoomLevel.Close : ZoomLevel.DontChange } };
             }
-            else if ((!PickupIsActive && Pickup.Model.HasValidCoordinate()) && (!DropoffIsActive && Pickup.Model.HasValidCoordinate()))
+            else if ((!PickupIsActive && Pickup.Model.HasValidCoordinate()) && (!DropoffIsActive && Dropoff.Model.HasValidCoordinate()))
             {
                 MapCenter = new CoordinateViewModel[] { new CoordinateViewModel { Coordinate = new Coordinate { Latitude = Dropoff.Model.Latitude, Longitude = Dropoff.Model.Longitude }, Zoom = changeZoom ? ZoomLevel.Close : ZoomLevel.DontChange } , 
-                                            new CoordinateViewModel { Coordinate = new Coordinate { Latitude = Pickup.Model.Latitude, Longitude = Pickup.Model.Longitude }, Zoom = ZoomLevel.Close }};
+                                            new CoordinateViewModel { Coordinate = new Coordinate { Latitude = Pickup.Model.Latitude, Longitude = Pickup.Model.Longitude }, Zoom = ZoomLevel.DontChange }};
             }
             else
             {
