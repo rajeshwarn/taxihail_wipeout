@@ -1,9 +1,12 @@
 ﻿(function () {
 
     var renderView = function(ctor, model) {
-        $('#main').html(new ctor({
+        var view = new ctor({
             model: model
-        }).render().el);
+        }).render();
+
+        $('#main').html(view.el);
+
     }, account = new TaxiHail.UserAccount();
 
     TaxiHail.App = Backbone.Router.extend({
@@ -42,8 +45,6 @@
             } else {
                 this.navigate('', { trigger: true });
             }
-            
-            
                    
         },
         
@@ -51,7 +52,5 @@
             renderView(TaxiHail.LoginView);
         }
     });
-    
-    
 
 }());
