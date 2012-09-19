@@ -60,21 +60,16 @@
         },
         
         showAddressList: function (onAddressSelected) {
-            var addresses = new TaxiHail.AddressCollection(),
-                view = new TaxiHail.AddressSelectionView({
-                    collection: addresses
-                });
+
+            var view = new TaxiHail.AddressSelectionView();
+
             this.$('#pickup-drop-off-container').addClass('hidden-left');
 
             this.$('#address-list-container')
                 .removeClass('hidden-right')
                 .html(view.render().el);
 
-            addresses.fetch({
-                url: 'api/account/addresses'
-            });
-
-            addresses.on('selected', function () {
+            view.on('selected', function () {
 
                 onAddressSelected.apply(this, arguments);
                 this.$('#pickup-drop-off-container').removeClass('hidden-left');

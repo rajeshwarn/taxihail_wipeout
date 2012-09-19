@@ -290,6 +290,7 @@
     </Compile>
     <Compile Include="Controls\PanelView.cs" />
     <Compile Include="Controls\TextProgressButton.cs" />
+    <Compile Include="Controls\SearchTextField.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
