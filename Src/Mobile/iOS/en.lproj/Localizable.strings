@@ -218,3 +218,25 @@
 "PlacesButton"="Places";
 "SearchPlaceholder"="Search";
 "Profile"="Profile";
+
+"BookPickupLocationButtonTitle"="Pickup";
+"BookDropoffLocationButtonTitle"="Destination";
+"BookPickupLocationEmptyPlaceholder"="Tap to choose pickup";
+"BookDropoffLocationEmptyPlaceholder"="Tap to choose destination";
+"AddressSearchingText"="Searching...";
+"NoFareText"="Choose a destination to get a price estimate.";
+"PickupDateDisplay"="Reservation for {0:dddd, MMMM d} at {0:h:mm tt}";
+"SettingsFavorites"="Manage Favorites";
+"SettingsRideHistory"="Ride History";
+"DateTimePickerSetButton"="Set";
+"SendEmail"="Send mail...";
+"RefineAddressTitle"="Refine an address";
+"CannotCancelOrderTitle"="Invalid Action";
+"CannotCancelOrderMessage"="You can no longer cancel this order.";
+"AptNumber"="Apt. No.";
+"RingCode"="Ring Code";
+"BuildingName"="Building Name";
+"DropoffWasActivatedToastMessage"="Destination selection is active.";
+"PickupWasActivatedToastMessage"="Pickup selection is active.";
+"InvalidLocalContactTitle"="Invalid contact";
+"InvalidLocalContactMessage"="The address associated to this contact cannot be validated.";
