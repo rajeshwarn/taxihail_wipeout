@@ -108,7 +108,9 @@
     <Compile Include="AppModule.cs" />
     <Compile Include="AppFonts.cs" />
     <Compile Include="Cache\CacheService.cs" />
+    <Compile Include="Controls\AutoCompleteBindableTextView.cs" />
     <Compile Include="Controls\BaloonLayout.cs" />
+    <Compile Include="Controls\BindableSelectionButton.cs" />
     <Compile Include="Controls\TextButton.cs" />
     <Compile Include="Controls\IconActionControl.cs" />
     <Compile Include="Controls\TouchMap.cs" />
