@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.SearchAddress
@@ -12,10 +14,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.SearchAddress
             _bookingService = bookingService;
         }
 
-        protected override System.Collections.Generic.IEnumerable<AddressViewModel> SearchAddresses()
+        public override Task<IEnumerable<AddressViewModel>> OnSearchExecute(System.Threading.CancellationToken cancellationToken)
         {
-            var addresses = _bookingService.GetAddressFromAddressBook();
-            return addresses.Select(a => new AddressViewModel() { Address = a, ShowPlusSign = false, ShowRightArrow = false, IsFirst = a.Equals(addresses.First()), IsLast = a.Equals(addresses.Last()) }).ToList();
+            var taskLoading = _bookingService.LoadContacts();
+            return taskLoading.ContinueWith(t => SearchAddresses(), cancellationToken);
+        }
+
+        protected override IEnumerable<AddressViewModel> SearchAddresses()
+        {
+            var addresses = _bookingService.GetAddressFromAddressBook(c => c.DisplayName.Contains(Criteria));
+            return addresses.Select(a => new AddressViewModel { Address = a, ShowPlusSign = false, ShowRightArrow = false, IsFirst = a.Equals(addresses.First()), IsLast = a.Equals(addresses.Last()) }).ToList();
         }
     }
 }

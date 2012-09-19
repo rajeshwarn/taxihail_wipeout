@@ -8,7 +8,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.SearchAddress
     {
         public string Criteria { get; set; }
 
-        public Task<IEnumerable<AddressViewModel>> OnSearchExecute(CancellationToken cancellationToken)
+        public virtual Task<IEnumerable<AddressViewModel>> OnSearchExecute(CancellationToken cancellationToken)
         {
             var task = new Task<IEnumerable<AddressViewModel>>(SearchAddresses, cancellationToken);
             return task;

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Xamarin.Contacts;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Infrastructure;
@@ -13,16 +14,14 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
+using Address = apcurium.MK.Booking.Api.Contract.Resources.Address;
 
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
     public class BookingService : BaseService, IBookingService
     {
-
-        public BookingService()
-        {
-        }
+        private List<Contact> _addresBook;
 
         public bool IsValid(ref CreateOrder info)
         {
@@ -107,26 +106,45 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return isCompleted;
         }
 
-        public List<Api.Contract.Resources.Address> GetAddressFromAddressBook()
+        public List<Address> GetAddressFromAddressBook(Predicate<Contact> criteria)
         {
-            var book = TinyIoCContainer.Current.Resolve<AddressBook>();
-            var contacts = new List<Api.Contract.Resources.Address>();
+            var contacts = new List<Address>();
+            var queryable = _addresBook.Where(c => criteria(c)).Take(50).ToList();
 
-            book.PreferContactAggregation = true;
-
-            foreach (Contact contact in book.Where(c => c.Addresses.Any()))
+            foreach (var contact in queryable)
             {
-                contact.Addresses.ForEach(c => contacts.Add(new Api.Contract.Resources.Address()
-                                                                {
-                                                                    FriendlyName = contact.DisplayName,
-                                                                    FullAddress = c.StreetAddress,
-                                                                    City = c.City,
-                                                                    IsHistoric = false,
-                                                                    ZipCode = c.PostalCode,
-                                                                    AddressType ="localContact"
-                                                                }));
+                if (contact.Addresses.Any())
+                {
+                    contact.Addresses.ForEach(c => contacts.Add(new Address
+                                    {
+                                        FriendlyName = contact.DisplayName,
+                                        FullAddress = c.StreetAddress,
+                                        City = c.City,
+                                        IsHistoric = false,
+                                        ZipCode = c.PostalCode,
+                                        AddressType = "localContact"
+                                    }));
+                }
             }
             return contacts;
+        }
+
+        private Task _task;
+
+        public Task LoadContacts()
+        {
+            if(_task == null)
+            {
+                _task = new Task(() =>
+                {
+                    var book = TinyIoCContainer.Current.Resolve<AddressBook>();
+                    book.PreferContactAggregation = true;
+                    _addresBook = book.ToList();
+
+                });
+                _task.Start();
+            }
+            return _task;
         }
     }
 }

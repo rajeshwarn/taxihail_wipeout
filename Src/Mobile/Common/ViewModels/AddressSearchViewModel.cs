@@ -76,7 +76,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     SearchViewModelSelected.Criteria = Criteria;
                     var task = SearchViewModelSelected.OnSearchExecute(_searchCancellationToken.Token);
                     task.ContinueWith(RefreshResults);
-                    task.Start();
+                    if(!(SearchViewModelSelected is AddressSearchByContactViewModel))
+                    {
+                        task.Start();
+                    }
                     IsSearching = true;
                 });
             }
@@ -101,7 +104,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
             
         }
-
         
 
         public IMvxCommand RowSelectedCommand
@@ -145,6 +147,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     SearchViewModelSelected = TinyIoCContainer.Current.Resolve<AddressSearchByFavoritesViewModel>();
 		            break;
 		        case TopBarButton.ContactsBtn:
+		            Criteria = null;
                     SearchViewModelSelected = TinyIoCContainer.Current.Resolve<AddressSearchByContactViewModel>();
 		            break;
 		        case TopBarButton.PlacesBtn:
