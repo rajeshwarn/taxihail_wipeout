@@ -20,7 +20,7 @@
                 model: model
             });
 
-            this.$('ul').append(itemView.render().el);
+            this.$('ul.address-list').append(itemView.render().el);
         }
     });
 

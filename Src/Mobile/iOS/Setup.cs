@@ -10,6 +10,9 @@ using Cirrious.MvvmCross.Binding.Binders;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using Cirrious.MvvmCross.ExtensionMethods;
 using MK.Booking.Mobile.Infrastructure.Practices;
+using Xamarin.Geolocation;
+using apcurium.MK.Booking.Mobile.Data;
+using TinyIoC;
 
 
 namespace apcurium.MK.Booking.Mobile.Client
@@ -30,6 +33,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             return app;
         }
         
+
 //        protected override void FillValueConverters(Cirrious.MvvmCross.Binding.Interfaces.Binders.IMvxValueConverterRegistry registry)
 //        {
 //            base.FillValueConverters(registry);
@@ -38,9 +42,21 @@ namespace apcurium.MK.Booking.Mobile.Client
 //            filler.AddFieldConverters(typeof(Converters));
 //        }
         
+		protected override void InitializeApp ()
+		{
+			base.InitializeApp ();
+
+
+		}
+
         protected override void InitializeIoC()
         {
             TinyIoCServiceProviderSetup.Initialize();
+			new AppModule().Initialize();
+			TinyIoCContainer.Current.Register<Geolocator>(new Geolocator() { DesiredAccuracy = 250 });                        
+			TinyIoCContainer.Current.Register<Geolocator>(new Geolocator() { DesiredAccuracy = 10000 }, CoordinatePrecision.BallPark.ToString());
+			TinyIoCContainer.Current.Register<Geolocator>(new Geolocator() { DesiredAccuracy = 1000 }, CoordinatePrecision.Coarse.ToString());
+			TinyIoCContainer.Current.Register<Geolocator>(new Geolocator() { DesiredAccuracy = 400 }, CoordinatePrecision.Medium.ToString());
         }
 
 #endregion

@@ -917,6 +917,90 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			get { return GetValue ("Profile"); }
 		}
+		public static string BookPickupLocationButtonTitle
+		{
+			get { return GetValue ("BookPickupLocationButtonTitle"); }
+		}
+		public static string BookDropoffLocationButtonTitle
+		{
+			get { return GetValue ("BookDropoffLocationButtonTitle"); }
+		}
+		public static string BookPickupLocationEmptyPlaceholder
+		{
+			get { return GetValue ("BookPickupLocationEmptyPlaceholder"); }
+		}
+		public static string BookDropoffLocationEmptyPlaceholder
+		{
+			get { return GetValue ("BookDropoffLocationEmptyPlaceholder"); }
+		}
+		public static string AddressSearchingText
+		{
+			get { return GetValue ("AddressSearchingText"); }
+		}
+		public static string NoFareText
+		{
+			get { return GetValue ("NoFareText"); }
+		}
+		public static string PickupDateDisplay
+		{
+			get { return GetValue ("PickupDateDisplay"); }
+		}
+		public static string SettingsFavorites
+		{
+			get { return GetValue ("SettingsFavorites"); }
+		}
+		public static string SettingsRideHistory
+		{
+			get { return GetValue ("SettingsRideHistory"); }
+		}
+		public static string DateTimePickerSetButton
+		{
+			get { return GetValue ("DateTimePickerSetButton"); }
+		}
+		public static string SendEmail
+		{
+			get { return GetValue ("SendEmail"); }
+		}
+		public static string RefineAddressTitle
+		{
+			get { return GetValue ("RefineAddressTitle"); }
+		}
+		public static string CannotCancelOrderTitle
+		{
+			get { return GetValue ("CannotCancelOrderTitle"); }
+		}
+		public static string CannotCancelOrderMessage
+		{
+			get { return GetValue ("CannotCancelOrderMessage"); }
+		}
+		public static string AptNumber
+		{
+			get { return GetValue ("AptNumber"); }
+		}	
+		public static string RingCode
+		{
+			get { return GetValue ("RingCode"); }
+		}		
+		public static string BuildingName
+		{
+			get { return GetValue ("BuildingName"); }
+		}	
+		public static string DropoffWasActivatedToastMessage
+		{
+			get { return GetValue ("DropoffWasActivatedToastMessage"); }
+		}		
+		public static string PickupWasActivatedToastMessage
+		{
+			get { return GetValue ("PickupWasActivatedToastMessage"); }
+		}
+		public static string InvalidLocalContactTitle
+		{
+			get { return GetValue ("InvalidLocalContactTitle"); }
+		}
+		public static string InvalidLocalContactMessage
+		{
+			get { return GetValue ("InvalidLocalContactMessage"); }
+		}
 	}
 }
 

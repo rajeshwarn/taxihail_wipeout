@@ -2,31 +2,46 @@
 
     TaxiHail.BookView = TaxiHail.TemplatedView.extend({
         events: {
-            'click [data-action=select-pickup-address]': 'selectPickupAddress',
-            'click [data-action=select-drop-off-address]': 'selectDropOffAddress',
             'click [data-action=book]': 'book'
         },
         
         initialize: function () {
 
-            this.model.on('change', this.render, this);
+            this.model.on('change:pickupAddress', function(model, value) {
+                this.renderAddressControl('.pickup-address-container', new Backbone.Model(value), this.selectPickupAddress);
+            }, this);
+
+            this.model.on('change:dropOffAddress', function(model, value) {
+                this.renderAddressControl('.drop-off-address-container', new Backbone.Model(value), this.selectDropOffAddress);
+            }, this);
             
         },
 
         render: function () {
             this.$el.html(this.renderTemplate(this.model.toJSON()));
 
-            var view = new TaxiHail.MapView({
+            this.renderAddressControl('.pickup-address-container', new Backbone.Model(), this.selectPickupAddress);
+            this.renderAddressControl('.drop-off-address-container', new Backbone.Model(), this.selectDropOffAddress);
+
+            /*var view = new TaxiHail.MapView({
                 el: this.$('#map-container')[0],
                 model: this.model
-            });
+            });*/
 
             return this;
         },
-        
-        selectPickupAddress: function (e) {
-            e.preventDefault();
 
+        renderAddressControl: function(selector, model, onselect) {
+
+            var addressControlView = new TaxiHail.AddressControlView({
+                model: model
+            });
+            addressControlView.on('select', onselect, this);
+
+            this.$(selector).html(addressControlView.render().el);
+        },
+        
+        selectPickupAddress: function (model) {
             this.showAddressList(function (model) {
                 this.model.set({
                     pickupAddress: model.toJSON()
@@ -35,9 +50,7 @@
 
         },
         
-        selectDropOffAddress: function(e) {
-            e.preventDefault();
-
+        selectDropOffAddress: function(model) {
             this.showAddressList(function (model) {
                 this.model.set({
                     dropOffAddress: model.toJSON()
@@ -47,13 +60,15 @@
         },
         
         showAddressList: function (onAddressSelected) {
-            var addresses = new TaxiHail.AddressCollection();
+            var addresses = new TaxiHail.AddressCollection(),
+                view = new TaxiHail.AddressSelectionView({
+                    collection: addresses
+                });
+            this.$('#pickup-drop-off-container').addClass('hidden-left');
 
-            var view = new TaxiHail.AddressSelectionView({
-                collection: addresses
-            });
-
-            this.$('#address-list-container').html(view.render().el);
+            this.$('#address-list-container')
+                .removeClass('hidden-right')
+                .html(view.render().el);
 
             addresses.fetch({
                 url: 'api/account/addresses'
@@ -62,15 +77,16 @@
             addresses.on('selected', function () {
 
                 onAddressSelected.apply(this, arguments);
-                view.remove();
+                this.$('#pickup-drop-off-container').removeClass('hidden-left');
+                this.$('#address-list-container').addClass('hidden-right')
                 
             }, this);
         },
         
         book: function (e) {
             e.preventDefault();
-
-            this.model.save();
+            TaxiHail.store.setItem("orderToBook", this.model.toJSON());
+            TaxiHail.app.navigate('confirmationbook',{trigger:true});
         }
     });
 

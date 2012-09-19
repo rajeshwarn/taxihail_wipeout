@@ -29,21 +29,22 @@ namespace apcurium.MK.Booking.Mobile.Client
 				   'IsFirst':{'Path':'IsFirst'},
 				   'IsLast':{'Path':'IsLast'},
 				}";
-
+		#region Constructors
         public AddressSearchView() 
             : base(new MvxShowViewModelRequest<AddressSearchViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
         {
         }
 
-        protected AddressSearchView(MvxShowViewModelRequest request) 
+        public AddressSearchView(MvxShowViewModelRequest request) 
             : base(request)
         {
         }
-        
-        protected AddressSearchView(MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
+
+        public AddressSearchView(MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
             : base(request, nibName, bundle)
         {
         }	
+		#endregion
 
 		public override void DidReceiveMemoryWarning ()
 		{
@@ -87,7 +88,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 				{favoritesBtn, "{'TouchUpInside':{'Path':'GetFavoritesCommand'}}"} ,
 				{contactsBtn, "{'TouchUpInside':{'Path':'GetContactsCommand'}}"} ,
 				{placesBtn, "{'TouchUpInside':{'Path':'GetPlacesCommand'}}"} ,
-				{searchBtn, "{'TouchUpInside':{'Path':'ResetCommand'}}"} ,
+				{searchBtn, "{'TouchUpInside':{'Path':'SearchCommand'}}"} ,
 				{SearchTextField, "{'Text':{'Path':'SearchText'}}"} ,
 
 			});

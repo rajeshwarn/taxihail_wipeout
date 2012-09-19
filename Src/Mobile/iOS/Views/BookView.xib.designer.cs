@@ -12,34 +12,22 @@ namespace apcurium.MK.Booking.Mobile.Client
 	partial class BookView
 	{
 		[Outlet]
+		MonoTouch.UIKit.UINavigationBar navBar { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UIView bookView { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIView menuView { get; set; }
+		apcurium.MK.Booking.Mobile.Client.TextProgressButton pickupActivationButton { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel titleLabel { get; set; }
+		apcurium.MK.Booking.Mobile.Client.TextProgressButton dropoffActivationButton { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UITableView menuListView { get; set; }
+		apcurium.MK.Booking.Mobile.Client.TextProgressButton pickupButton { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIImageView logoImageView { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UILabel versionLabel { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.AddressButton pickupActivationButton { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.AddressButton dropoffActivationButton { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.AddressButton pickupButton { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.AddressButton dropoffButton { get; set; }
+		apcurium.MK.Booking.Mobile.Client.TextProgressButton dropoffButton { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UIImageView headerBackgroundView { get; set; }
@@ -64,35 +52,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (navBar != null) {
+				navBar.Dispose ();
+				navBar = null;
+			}
 
 			if (bookView != null) {
 				bookView.Dispose ();
 				bookView = null;
-			}
-
-			if (menuView != null) {
-				menuView.Dispose ();
-				menuView = null;
-			}
-
-			if (titleLabel != null) {
-				titleLabel.Dispose ();
-				titleLabel = null;
-			}
-
-			if (menuListView != null) {
-				menuListView.Dispose ();
-				menuListView = null;
-			}
-
-			if (logoImageView != null) {
-				logoImageView.Dispose ();
-				logoImageView = null;
-			}
-
-			if (versionLabel != null) {
-				versionLabel.Dispose ();
-				versionLabel = null;
 			}
 
 			if (pickupActivationButton != null) {
