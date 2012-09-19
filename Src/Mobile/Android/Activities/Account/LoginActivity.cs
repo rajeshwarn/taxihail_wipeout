@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
     public class LoginActivity : MvxBindingActivityView<LoginViewModel>
     {
 
-        
+       
 
         private ProgressDialog _progressDialog;
         /// <summary>

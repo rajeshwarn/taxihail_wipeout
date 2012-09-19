@@ -1,15 +1,10 @@
 using System;
+using System.Threading.Tasks;
 using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.Interfaces.Commands;
-using Cirrious.MvvmCross.ViewModels;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.AppServices;
 using System.Collections.Generic;
-using Xamarin.Geolocation;
-using System.Threading.Tasks;
-using System.Linq;
-
+using apcurium.MK.Booking.Mobile.ViewModels.SearchAddress;
 using apcurium.MK.Common.Extensions;
 using System.Threading;
 using TinyIoC;
@@ -20,274 +15,82 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class AddressSearchViewModel : BaseViewModel
     {
-        private IGoogleService _googleService;
-        private IGeolocService _geolocService;
-        private IBookingService _bookingService;
-        private IAccountService _accountService;
-        private IEnumerable<AddressViewModel> _addressViewModels;
-		private IEnumerable<AddressViewModel> _historicAddressViewModels;
-		private TaskScheduler _scheduler = TaskScheduler.FromCurrentSynchronizationContext();        
-        private string _ownerId;
+        private readonly string _ownerId;
+        private readonly IGoogleService _googleService;
+        private CancellationTokenSource _searchCancellationToken = new CancellationTokenSource();
+        private bool _isSearching;
 
-        public AddressSearchViewModel(string ownerId, string search, IGoogleService googleService, IGeolocService geolocService, IBookingService bookingService, IAccountService accountService)
+        public AddressSearchViewModel(string ownerId, string search, IGoogleService googleService)
         {
             _ownerId = ownerId;
             _googleService = googleService;
-            _geolocService = geolocService;
-            _bookingService = bookingService;
-            _accountService = accountService;
-            _addressViewModels = new List<AddressViewModel>();
-			_historicAddressViewModels = new List<AddressViewModel>();
 			TinyIoCContainer.Current.Resolve<IUserPositionService>().Refresh();
-
-			_searchFilter = new string[0];
-            SearchText = search;
-
-            if (SearchText.HasValue())
-            {
-                SearchAddressCommand.Execute();
-            }
-			SearchSelected = true;
+            SearchViewModelSelected = TinyIoCContainer.Current.Resolve<AddressSearchByGeoCodingViewModel>();
+            Criteria = search;
         }
 
-        public override void Load()
+        public AddressSearchBaseViewModel SearchViewModelSelected { get; set; }
+
+        public IEnumerable<AddressViewModel> AddressViewModels { get; set; }
+
+		public IEnumerable<AddressViewModel> HistoricAddressViewModels { get; set; }
+
+        public string Criteria
         {
-
-        }
-
-		private bool _isSearching;
-		public bool IsSearching {
-			get { return _isSearching; }
-			set { _isSearching = value; 
-				FirePropertyChanged( () => IsSearching );
-			}
-		}
-
-		private bool _searchSelected;
-		public bool SearchSelected { 
-			get { return _searchSelected; }
-			set { _searchSelected = value;
-				FirePropertyChanged( () => SearchSelected );
-				FirePropertyChanged(() => HistoricIsHidden);
-			}
-		}
-		private bool _favoritesSelected;
-		public bool FavoritesSelected { 
-			get { return _favoritesSelected; }
-			set { _favoritesSelected = value; 
-				FirePropertyChanged( () => FavoritesSelected );
-				FirePropertyChanged(() => HistoricIsHidden);
-			}
-		}
-		private bool _contactsSelected;
-		public bool ContactsSelected { 
-			get { return _contactsSelected; }
-			set { _contactsSelected = value;
-				FirePropertyChanged( () => ContactsSelected );
-				FirePropertyChanged(() => HistoricIsHidden);
-			}
-		}
-		private bool _placesSelected;
-		public bool PlacesSelected { 
-			get { return _placesSelected; }
-			set { _placesSelected = value; 
-				FirePropertyChanged( () => PlacesSelected );
-				FirePropertyChanged(() => HistoricIsHidden);
-			}
-		}
-
-        public IMvxCommand GetPlacesCommand
-        {
-            get
+            get { return _criteria; }
+            set
             {
-                return new MvxRelayCommand(() =>
-                {
-					SearchText = "";
-					SetSelected( TopBarButton.PlacesBtn );
-					IsSearching = true;
-
-                    ThreadPool.QueueUserWorkItem( o=>
-                        {
-                            try
-                            {
-                                var position = TinyIoCContainer.Current.Resolve<IUserPositionService>().LastKnownPosition;
-                                var addresses = _googleService.GetNearbyPlaces(position.Latitude, position.Longitude);
-                                if( PlacesSelected && addresses!=null )
-					            {
-								    AddressViewModels = addresses.Select(a => new AddressViewModel() { Address = a, ShowPlusSign = false, ShowRightArrow = false, IsFirst = a.Equals(addresses.First()), IsLast = a.Equals(addresses.Last()) }).ToList();
-                                }   
-                            }
-                            finally
-                            {
-                                IsSearching = false;
-                            }
-                        });                   
-                });
+                _criteria = value;
+                FirePropertyChanged(() => Criteria);
             }
         }
 
-        private Thread _editThread;
-        private MvxRelayCommand _searchAddressCommand;
-        public IMvxCommand SearchAddressCommand
+        public bool IsSearching
         {
-            get
+            get { return _isSearching; }
+            set
             {
-                if (_searchAddressCommand == null)
-                {
-                    _searchAddressCommand = new MvxRelayCommand(() =>
-                    {
-                        
-                        if (_editThread != null && _editThread.IsAlive)
-                        {                        
-                            _editThread.Abort();
-							IsSearching = false;
-                        }
-
-						if( SearchText.Count( c => char.IsLetter( c ) ) > 2 )
-						{
-	                        _editThread = new Thread(() =>
-	                        {
-	                            Console.WriteLine("SearchAddressCommand: Starting new thread.");
-	                            Thread.Sleep(200);
-
-								new Thread( () => {
-									IsSearching = true;
-                                    var position = TinyIoCContainer.Current.Resolve<IUserPositionService>().LastKnownPosition;
-									var addresses = _geolocService.SearchAddress(SearchText, position.Latitude, position.Longitude );
-									if( SearchSelected )
-									{
-										AddressViewModels = addresses.Select(a => new AddressViewModel() { Address = a, ShowPlusSign = false, ShowRightArrow = false, IsFirst = a.Equals(addresses.First()), IsLast = a.Equals(addresses.Last()) }).ToList();
-									}
-		                            Console.WriteLine("SearchAddressCommand: Finishing executing command.");
-									IsSearching = false;
-								} ).Start();
-	                        });
-	                        _editThread.Start();
-						}
-						else
-						{
-							AddressViewModels = new List<AddressViewModel>();
-						}
-					}, () => !SearchText.IsNullOrEmpty() );
-                }
-                return _searchAddressCommand;
+                _isSearching = value;
+                FirePropertyChanged(() => IsSearching);
             }
         }
-
-        
-        public IMvxCommand GetContactsCommand
-        {
-            get
-            {
-				return new MvxRelayCommand(() => {
-					SearchText = "";
-					SetSelected( TopBarButton.ContactsBtn );
-					new Thread( ()=> {
-						IsSearching = true;
-						var addresses = _bookingService.GetAddressFromAddressBook();
-						if(ContactsSelected )
-						{
-							AddressViewModels = addresses.Select(a => new AddressViewModel() { Address = a, ShowPlusSign = false, ShowRightArrow = false, IsFirst = a.Equals(addresses.First()), IsLast = a.Equals(addresses.Last()) }).ToList();
-						}  
-						IsSearching = false;
-					}).Start();
-					Console.WriteLine( "Thread started");
-				});
-            }
-        }
-
-        
-        public IMvxCommand GetFavoritesCommand
-        {
-            get
-            {
-                return new MvxRelayCommand(() => {
-					SearchText = "";
-					SetSelected( TopBarButton.FavoritesBtn );
-					new Thread( () => {
-						IsSearching = true;
-						var addresses = _accountService.GetFavoriteAddresses();
-						var historicAddresses = _accountService.GetHistoryAddresses();
-
-						if( FavoritesSelected )
-						{
-							AddressViewModels = addresses.Select(a => new AddressViewModel() { Address = a, ShowPlusSign = false, ShowRightArrow = false, IsFirst = a.Equals(addresses.First()), IsLast = a.Equals(addresses.Last()) }).ToList();
-							HistoricAddressViewModels = historicAddresses.Select(a => new AddressViewModel() { Address = a, ShowPlusSign = false, ShowRightArrow = false, IsFirst = a.Equals(historicAddresses.First()), IsLast = a.Equals(historicAddresses.Last()) }).ToList();
-						}
-						IsSearching = false;
-					} ).Start();
-                    });               
-            }
-        }
-        
-        public IMvxCommand CloseViewCommand
-        {
-            get
-            {
-                return new MvxRelayCommand(() =>
-                    {                        
-                        RequestClose(this);
-                    });                
-            }
-        }
-
-        public IEnumerable<AddressViewModel> AddressViewModels
-        {
-			get {
-				if( _searchFilter.Count() == 0)
-				{
-					return _addressViewModels;
-				}
-				else
-				{
-                    return _addressViewModels.Where(a => _searchFilter.All(s => a.Address.FriendlyName.ToSafeString().ToLower().Contains(s.ToSafeString().ToLower()) || a.Address.FullAddress.ToSafeString().ToLower().Contains(s.ToSafeString().ToLower()))).ToList();
-				}
-			}
-			set
-            {
-                _addressViewModels = value;
-                FirePropertyChanged(() => AddressViewModels);
-            }
-        }
-
-		public IEnumerable<AddressViewModel> HistoricAddressViewModels
-		{
-			get { 
-				if( _searchFilter.Count() == 0)
-					{
-					return _historicAddressViewModels;
-					}
-					else
-					{
-						return _historicAddressViewModels.Where( a => _searchFilter.All ( s => (!a.Address.FriendlyName.IsNullOrEmpty() && a.Address.FriendlyName.ToLower().Contains( s )) || a.Address.FullAddress.ToLower().Contains( s ) ) ).ToList();
-					}
-			}
-			set
-			{
-				_historicAddressViewModels = value;
-				FirePropertyChanged(() => HistoricAddressViewModels);
-				FirePropertyChanged(() => HistoricIsHidden);
-			}
-		}
-		
-		public bool HistoricIsHidden{ get { return HistoricAddressViewModels.Count() == 0 || !FavoritesSelected; } }
 
         public IMvxCommand SearchCommand
         {
             get
             {
                 return new MvxRelayCommand(() =>
-                    {
-						SearchText = "";
-						SetSelected( TopBarButton.SearchBtn );
-						AddressViewModels = new List<AddressViewModel>();
+                {
+                    if (string.IsNullOrEmpty(Criteria)) return;
 
-						SearchAddressCommand.Execute();
-                        
-                    });
+                    if (_searchCancellationToken != null 
+                        && _searchCancellationToken.Token.CanBeCanceled)
+                    {
+                        _searchCancellationToken.Cancel();
+                    }
+                    _searchCancellationToken = new CancellationTokenSource();
+                    SearchViewModelSelected.Criteria = Criteria;
+                    var task = SearchViewModelSelected.OnSearchExecute(_searchCancellationToken.Token);
+                    task.ContinueWith(RefreshResults);
+                    task.Start();
+                    IsSearching = true;
+                });
             }
         }
 
+        public void RefreshResults(Task<IEnumerable<AddressViewModel>>  task)
+        {
+            if(task.IsCompleted)
+            {
+                InvokeOnMainThread(() =>
+                                       {
+                                           AddressViewModels = task.Result;
+                                           FirePropertyChanged(() => AddressViewModels);
+                                       });
+                IsSearching = false;
+            }
+            
+        }
 
         public IMvxCommand RowSelectedCommand
         {
@@ -316,49 +119,96 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+		private enum TopBarButton { SearchBtn, FavoritesBtn, ContactsBtn, PlacesBtn }
 
-        private string _searchText;
-		private string[] _searchFilter;
-		public string SearchText
+        
+		private void SetSelected(TopBarButton btn)
+		{
+		    switch (btn)
+		    {
+		        case TopBarButton.SearchBtn:
+		            SearchViewModelSelected = TinyIoCContainer.Current.Resolve<AddressSearchByGeoCodingViewModel>();
+                    break;
+		        case TopBarButton.FavoritesBtn:
+                    SearchViewModelSelected = TinyIoCContainer.Current.Resolve<AddressSearchByFavoritesViewModel>();
+		            break;
+		        case TopBarButton.ContactsBtn:
+                    SearchViewModelSelected = TinyIoCContainer.Current.Resolve<AddressSearchByContactViewModel>();
+		            break;
+		        case TopBarButton.PlacesBtn:
+                    SearchViewModelSelected = TinyIoCContainer.Current.Resolve<AddressSearchByPlacesViewModel>();
+		            break;
+		        default:
+		            throw new ArgumentOutOfRangeException("btn");
+		    }
+
+            _searchSelected = btn == TopBarButton.SearchBtn;
+            _favoritesSelected = btn == TopBarButton.FavoritesBtn;
+            _contactsSelected = btn == TopBarButton.ContactsBtn;
+            _placesSelected = btn == TopBarButton.PlacesBtn;
+
+            FirePropertyChanged(() => SearchSelected);
+            FirePropertyChanged(() => FavoritesSelected);
+            FirePropertyChanged(() => ContactsSelected);
+            FirePropertyChanged(() => PlacesSelected);
+
+            SearchCommand.Execute();
+		}
+
+        private bool _searchSelected;
+        public bool SearchSelected
         {
-            get { return _searchText; }
+            get { return _searchSelected; }
             set
             {
-                _searchText = value;
-				FirePropertyChanged( () => SearchText );
-				if( SearchSelected )
-				{
-					_searchFilter = new string[0];
-                	SearchAddressCommand.Execute();
-				}
-				else
-				{
-					if( value.IsNullOrEmpty() )
-					{
-						_searchFilter = new string[0];
-					}
-					else
-					{
-						_searchFilter = value.ToLower().Split( new string[]{" "}, StringSplitOptions.RemoveEmptyEntries );
-					}
-					FirePropertyChanged( () => AddressViewModels );
-					FirePropertyChanged( () => HistoricAddressViewModels );
-				}
+                _searchSelected = value;
+                FirePropertyChanged(() => SearchSelected);
+                if (value) SetSelected(TopBarButton.SearchBtn);
             }
         }
 
+        private bool _favoritesSelected;
+        public bool FavoritesSelected
+        {
+            get { return _favoritesSelected; }
+            set
+            {
+                _favoritesSelected = value;
+                FirePropertyChanged(() => FavoritesSelected);
+                if (value) SetSelected(TopBarButton.FavoritesBtn);
+            }
+        }
 
+        private bool _contactsSelected;
+        public bool ContactsSelected
+        {
+            get { return _contactsSelected; }
+            set
+            {
+                _contactsSelected = value;
+                FirePropertyChanged(() => ContactsSelected);
+                if (value) SetSelected(TopBarButton.ContactsBtn);
+            }
+        }
 
+        private bool _placesSelected;
+        private string _criteria;
 
-		private enum TopBarButton { SearchBtn, FavoritesBtn, ContactsBtn, PlacesBtn }
+        public bool PlacesSelected
+        {
+            get { return _placesSelected; }
+            set
+            {
+                _placesSelected = value;
+                FirePropertyChanged(() => PlacesSelected);
+                if (value) SetSelected(TopBarButton.PlacesBtn);
+            }
+        }
 
-		private void SetSelected( TopBarButton btn )
-		{
-			SearchSelected = btn == TopBarButton.SearchBtn;
-			FavoritesSelected = btn == TopBarButton.FavoritesBtn;
-			ContactsSelected = btn == TopBarButton.ContactsBtn;
-			PlacesSelected = btn == TopBarButton.PlacesBtn;
-		}
+        public IMvxCommand CloseViewCommand
+        {
+            get { return new MvxRelayCommand(() => RequestClose(this)); }
+        }
 
     }
 }

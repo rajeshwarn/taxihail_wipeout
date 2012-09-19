@@ -158,15 +158,20 @@
     <Compile Include="Style\ShadowDefinition.cs" />
     <Compile Include="Style\StyleManager.cs" />
     <Compile Include="TaxiHailApp.cs" />
+    <Compile Include="ViewModels\SearchAddress\AddressSearchBaseViewModel.cs" />
+    <Compile Include="ViewModels\SearchAddress\AddressSearchByContactViewModel.cs" />
+    <Compile Include="ViewModels\SearchAddress\AddressSearchByGeoCodingViewModel.cs" />
     <Compile Include="ViewModels\AddressSearchViewModel.cs" />
     <Compile Include="ViewModels\AddressViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\BookAddressViewModel.cs" />
     <Compile Include="ViewModels\BookViewModel.cs" />
     <Compile Include="ViewModels\CoordinateViewModel.cs" />
+    <Compile Include="ViewModels\SearchAddress\AddressSearchByPlacesViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\RefineAddressViewModel.cs" />
     <Compile Include="ViewModels\OrderStatusViewModel.cs" />
+    <Compile Include="ViewModels\SearchAddress\AddressSearchByFavoritesViewModel.cs" />
     <Compile Include="ViewModels\ZoomLevel.cs" />
   </ItemGroup>
   <ItemGroup>
