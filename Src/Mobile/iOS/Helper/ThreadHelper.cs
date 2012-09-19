@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		public static void ExecuteInThread (Action action)
 		{
-			//action();
+			//action(); 
 			
 			ThreadPool.QueueUserWorkItem (o =>
 			{

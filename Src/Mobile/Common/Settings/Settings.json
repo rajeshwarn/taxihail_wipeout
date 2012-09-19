@@ -8,6 +8,7 @@
    "FacebookEnabled" : "true",
    "ServiceUrl" : "http://services.taxihail.com/taxihaildemo/v1.1/api/",
    "SiteUrl" : "http://www.mobile-knowledge.com/index.html",
+   "SupportEmail" : "alex.proteau@apcurium.com",
    "TwitterAccessTokenUrl" : "https://twitter.com/oauth/access_token",
    "TwitterAuthorizeUrl" : "https://twitter.com/oauth/authorize",
    "TwitterCallback" : "http://www.taxihail.com/oauth",

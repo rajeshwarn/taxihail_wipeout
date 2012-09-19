@@ -31,11 +31,11 @@ namespace apcurium.MK.Booking.Mobile.Client
     {
         #region Constructors
 
+		private PanelMenuView _menu;
         public event EventHandler TabSelected;
 
         //private CreateOrder _bookingInfo;
         private StatusView _statusView;
-		private bool _menuIsOpen = false;
         //private VerticalButtonBar _settingsBar;
         public BookView() 
             : base(new MvxShowViewModelRequest<BookViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
@@ -63,16 +63,14 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             base.ViewDidLoad();
 
+			navBar.SetBackgroundImage(UIImage.FromFile("Assets/navBar.png"), UIBarMetrics.Default);
+			navBar.TopItem.TitleView = AppContext.Current.Controller.GetTitleView( null, "", false );
+
 			bookView.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
-			InitPanelMenu();
+			_menu = new PanelMenuView( bookView, this.NavigationController );
+			View.InsertSubviewBelow( _menu.View, bookView );
 
-			NavigationController.NavigationBar.TopItem.RightBarButtonItem = new UIBarButtonItem( UIImage.FromFile("Assets/settings.png"), UIBarButtonItemStyle.Bordered, delegate {
-				AnimateMenu();
-			} );
-
-             
-
-            AppButtons.FormatStandardButton((GradientButton)refreshCurrentLocationButton, "", AppStyle.ButtonColor.Blue, "");
+            AppButtons.FormatStandardButton((GradientButton)refreshCurrentLocationButton, "", AppStyle.ButtonColor.CorporateColor, "");
             AppButtons.FormatStandardButton((GradientButton)bookLaterButton, "", AppStyle.ButtonColor.DarkGray );
 
             AppButtons.FormatStandardButton((GradientButton)dropoffButton, "Dropoff", AppStyle.ButtonColor.Grey, "");
@@ -149,13 +147,18 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             base.ViewWillAppear(animated);     
 
+			NavigationController.NavigationBar.Hidden = true;
             AppContext.Current.ReceiveMemoryWarning = false;              
         }
         
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
-            
+
+			navBar.TopItem.RightBarButtonItem = new UIBarButtonItem( UIImage.FromFile("Assets/settings.png"), UIBarButtonItemStyle.Bordered, delegate {
+				_menu.AnimateMenu();
+			} );
+
             if ((AppContext.Current.LastOrder.HasValue) && (AppContext.Current.LoggedUser != null))
             {
                 LoadStatusView(true);
@@ -430,92 +433,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         #endregion
 
-		private void InitPanelMenu()
-		{
-			menuView.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
 
-			titleLabel.Text = Resources.TabSettings;
-			titleLabel.BackgroundColor = UIColor.FromPatternImage( UIImage.FromFile( "Assets/navBar.png" ));
-
-			var structure = new InfoStructure( 44, false );
-			var sect = structure.AddSection();
-			sect.AddItem( new SingleLineItem( Resources.FavoriteLocationsTitle ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
-					AnimateMenu();
-					this.NavigationController.PresentModalViewController(new LocationsTabView(), true);
-				})				
-			});
-			sect.AddItem( new SingleLineItem( Resources.HistoryViewTitle ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
-					AnimateMenu();
-					this.NavigationController.PresentModalViewController(new HistoryTabView(), true);
-				})				
-			});
-			sect.AddItem( new SingleLineItem( Resources.Profile ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
-					AnimateMenu();
-					var rideSettingsView = new RideSettingsView (AppContext.Current.LoggedUser.Settings, true, false);
-					this.NavigationController.PresentModalViewController( rideSettingsView, true);
-				})				
-			});
-			sect.AddItem( new SingleLineItem( Resources.CallButton ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
-					AnimateMenu();
-					var call = new Confirmation ();
-            		call.Call ( TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumber(AppContext.Current.LoggedUser.Settings.ProviderId.Value),
-                       TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumberDisplay (AppContext.Current.LoggedUser.Settings.ProviderId.Value));
-				})				
-			});
-			sect.AddItem( new SingleLineItem( Resources.AboutButton ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
-					AnimateMenu();
-					this.NavigationController.PresentModalViewController(new AboutUsView(), true);
-				})				
-			});
-			sect.AddItem( new SingleLineItem( Resources.TechSupportButton ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
-					AnimateMenu();
-					if (!MFMailComposeViewController.CanSendMail)
-					{
-						return;
-					}
-					
-					var mailComposer = new MFMailComposeViewController ();
-					
-		            if (File.Exists (TinyIoCContainer.Current.Resolve<IAppSettings>().ErrorLog))
-					{
-		                mailComposer.AddAttachmentData (NSData.FromFile (TinyIoCContainer.Current.Resolve<IAppSettings>().ErrorLog), "text", "errorlog.txt");
-					}
-					
-		            mailComposer.SetToRecipients (new string[] { TinyIoCContainer.Current.Resolve<IAppSettings>().SupportEmail  });
-					mailComposer.SetMessageBody ("", false);
-					mailComposer.SetSubject (Resources.TechSupportButton);
-					mailComposer.Finished += delegate(object mailsender, MFComposeResultEventArgs mfce) {
-						mailComposer.DismissModalViewControllerAnimated (true);
-		                if (File.Exists (TinyIoCContainer.Current.Resolve<IAppSettings>().ErrorLog))
-						{
-		                    File.Delete (TinyIoCContainer.Current.Resolve<IAppSettings>().ErrorLog);
-						}
-					};
-					this.NavigationController.PresentModalViewController(mailComposer, true);
-				})				
-			});
-			sect.AddItem( new SingleLineItem( Resources.SignOutButton ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
-					AnimateMenu();
-					AppContext.Current.SignOutUser ();
-					AppContext.Current.WarnEstimate = true;
-					this.NavigationController.PresentModalViewController(new LoginView (), true);
-				})				
-			});
-
-			menuListView.DataSource = new TableViewDataSource( structure );
-			menuListView.Delegate = new TableViewDelegate( structure );
-			menuListView.ReloadData();
-
-			logoImageView.Image = UIImage.FromFile( "Assets/apcuriumLogo.png" );
-			versionLabel.Text = TinyIoCContainer.Current.Resolve<IPackageInfo>().Version;
-		}
-
-		private void AnimateMenu()
-		{
-			var slideAnimation = new SlideViewAnimation( bookView, new SizeF( (_menuIsOpen ? menuView.Frame.Width : -menuView.Frame.Width), 0f ) );
-			slideAnimation.Animate();
-			_menuIsOpen = !_menuIsOpen;
-		}
 
     }
 }

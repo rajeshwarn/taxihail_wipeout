@@ -88,7 +88,7 @@ namespace apcurium.MK.Booking.Mobile.ListViewStructure
 
 		public int Index {
 			get {
-				return Parent.Items.IndexOf( this, (item1, item2) => item1.Data == item2.Data );
+				return Parent.Items.IndexOf( this, (item1, item2) => item1.Equals(item2) );
 			}
 		}
 		

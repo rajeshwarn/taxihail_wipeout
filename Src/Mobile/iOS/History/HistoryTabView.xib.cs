@@ -64,6 +64,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 			return null;
 		}
 
+		public override void ViewWillAppear (bool animated)
+		{
+			base.ViewWillAppear (animated);
+
+			NavigationController.NavigationBar.Hidden = false;
+		}
+
 		public override void ViewDidAppear (bool animated)
 		{
 			base.ViewDidAppear (animated);

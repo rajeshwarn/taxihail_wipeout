@@ -35,10 +35,16 @@
             
         },
         
-        confirmationbook:function () {
-            renderView(TaxiHail.BookingConfirmationView, new TaxiHail.Order({
-                settings: model.get('settings')
-            }));
+        confirmationbook: function () {
+            var orderToBook = TaxiHail.store.getItem("orderToBook");
+            if (orderToBook) {
+                renderView(TaxiHail.BookingConfirmationView, new TaxiHail.Order(orderToBook));
+            } else {
+                this.navigate('', { trigger: true });
+            }
+            
+            
+                   
         },
         
         login: function () {

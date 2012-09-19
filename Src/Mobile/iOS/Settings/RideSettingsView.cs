@@ -54,9 +54,10 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             base.ViewWillAppear(animated);
 
-            ((UINavigationController ) ParentViewController ).NavigationBar.TopItem.TitleView = AppContext.Current.Controller.GetTitleView(null, Resources.DefaultRideSettingsViewTitle, false);
+			NavigationController.NavigationBar.Hidden = false;
+            //((UINavigationController ) ParentViewController ).NavigationBar.TopItem.TitleView = AppContext.Current.Controller.GetTitleView(null, Resources.DefaultRideSettingsViewTitle, false);
             ((UINavigationController ) ParentViewController ).View.BackgroundColor =UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
-
+			//View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             View.BackgroundColor = UIColor.Clear; 
             TableView.BackgroundColor = UIColor.Clear;
 
@@ -71,6 +72,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		public override void ViewDidAppear (bool animated)
 		{
+
 			base.ViewDidAppear (animated);
 			if (_companyOnly)
 			{
@@ -80,8 +82,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			{
 				LoadSettingsElements ();
 			}
-			
-            ((UINavigationController ) ParentViewController ).NavigationBar.TopItem.TitleView = AppContext.Current.Controller.GetTitleView(null, Resources.DefaultRideSettingsViewTitle, false);
+
+           // ((UINavigationController ) ParentViewController ).NavigationBar.TopItem.TitleView = AppContext.Current.Controller.GetTitleView(null, Resources.DefaultRideSettingsViewTitle, false);
 
 		}
 
@@ -120,16 +122,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		private void LoadSettingsElementsForComaganies ()
 		{
-			
-			
 			ThreadHelper.ExecuteInThread (() =>
 			{
-				
 				try
 				{
-					
-					
-					
 					int index = 0;
 					int selected = 0;
 					
@@ -141,7 +137,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 					{
 						if (!company.Display.ToSafeString ().ToLower ().Contains ("test"))
 						{
-						
 							var item = new RadioElementWithId (company.Display);
 							item.Id = company.Id;
 							item.Tapped += delegate {
@@ -263,6 +258,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 						item.Id = vType.Id;
 						item.Tapped += delegate {														
 							SetVehiculeType (item);
+						
                             ((UINavigationController) this.ParentViewController).PopViewControllerAnimated(true);
 						};
 						vehiculeTypes.Add (item);
