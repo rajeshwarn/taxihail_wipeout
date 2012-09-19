@@ -62,13 +62,12 @@ namespace apcurium.MK.Booking.Api.Services
             
             Mapper.Map( request,  command  );
                         
-            command.Id = Guid.NewGuid();
             command.IBSOrderId = ibsOrderId.Value;
             command.AccountId = account.Id;
             
             _commandBus.Send(command);
-            
-            return new OrderStatusDetail { OrderId = request.Id, Status = OrderStatus.Created, IBSOrderId = ibsOrderId, IBSStatusId = "", IBSStatusDescription = "Processing your order"};  
+
+            return new OrderStatusDetail { OrderId = command.OrderId, Status = OrderStatus.Created, IBSOrderId = ibsOrderId, IBSStatusId = "", IBSStatusDescription = "Processing your order" };  
         } 
 
         private int? CreateIBSOrder(ReadModel.AccountDetail account, CreateOrder request)

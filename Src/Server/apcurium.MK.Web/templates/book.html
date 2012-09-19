@@ -2,7 +2,21 @@
     <h1>{{localize "Book a taxi"}}</h1>
 </div>
 <div class="row">
+    <form>
+        <fieldset>
+            <a href='#' class='btn' data-action='select-pickup-address'>Pickup {{pickupAddress.fullAddress}}</a>
+            <a href='#' class='btn' data-action='select-drop-off-address'>Destination {{dropOffAddress.fullAddress}}</a>
+            <a href='#' class='btn primary' data-action='book'>Book Now!</a>
+        </fieldset>
+    </form>
+</div>
+<div class='row'>
     <div class="span12">
-        
+        <div id="address-list-container" ></div>
+    </div>
+</div>
+<div class='row'>
+    <div class="span12">
+        <div id="map-container" ></div>
     </div>
 </div>

@@ -248,12 +248,29 @@
 }
 
 // Drop shadows
-.box-shadow(@shadowA, @shadowB:X, ...){
+/*.box-shadow(@shadowA, @shadowB:X, ...){
   // Multiple shadow solution from http://toekneestuck.com/blog/2012/05/15/less-css-arguments-variable/
   @props: ~`"@{arguments}".replace(/[\[\]]|\,\sX/g, '')`;
   -webkit-box-shadow: @props;
      -moz-box-shadow: @props;
           box-shadow: @props;
+}*/
+
+// Drop shadows - Bugfix for DotLess https://github.com/dotless/dotless/issues/246
+.box-shadow(@shadow){
+  -webkit-box-shadow: @shadow;
+     -moz-box-shadow: @shadow;
+          box-shadow: @shadow;
+}
+.box-shadow(@shadow1, @shadow2) {
+  -webkit-box-shadow: @shadow1, @shadow2;
+     -moz-box-shadow: @shadow1, @shadow2;
+          box-shadow: @shadow1, @shadow2;
+}
+.box-shadow(@shadow1, @shadow2, @shadow3) {
+  -webkit-box-shadow: @shadow1, @shadow2, @shadow3;
+     -moz-box-shadow: @shadow1, @shadow2, @shadow3;
+          box-shadow: @shadow1, @shadow2, @shadow3;
 }
 
 // Transitions
