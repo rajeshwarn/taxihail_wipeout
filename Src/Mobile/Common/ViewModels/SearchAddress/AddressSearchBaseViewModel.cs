@@ -18,5 +18,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.SearchAddress
         {
             return new List<AddressViewModel>();
         }
+
+        public virtual bool CriteriaValid { get { return true; } }
     }
 }

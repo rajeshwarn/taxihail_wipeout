@@ -19,7 +19,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.SearchAddress
        {
            var addresses = _accountService.GetFavoriteAddresses();
            var historicAddresses = _accountService.GetHistoryAddresses();
-           return addresses.Concat(historicAddresses).Select(a => new AddressViewModel { Address = a, ShowPlusSign = false, ShowRightArrow = false, IsFirst = a.Equals(addresses.First()), IsLast = a.Equals(addresses.Last()) }).ToList();
+
+           var a1 = addresses.Select(a => new AddressViewModel { Address = a, ShowPlusSign = false, ShowRightArrow = false, IsFirst = a.Equals(addresses.First()), IsLast = a.Equals(addresses.Last()) });
+           var a2 = historicAddresses.Select(a => new AddressViewModel { Address = a, ShowPlusSign = false, ShowRightArrow = false, IsFirst = a.Equals(historicAddresses.First()), IsLast = a.Equals(historicAddresses.Last()) });
+           var r =  a1.Concat(a2).ToArray(); //   addresses.Concat(historicAddresses).Select(a => new AddressViewModel { Address = a, ShowPlusSign = false, ShowRightArrow = false, IsFirst = a.Equals(addresses.First()), IsLast = a.Equals(addresses.Last()) }).ToList();
+           return r;
        }
     }
 }

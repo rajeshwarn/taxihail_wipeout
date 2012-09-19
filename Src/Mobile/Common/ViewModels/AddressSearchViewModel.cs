@@ -12,6 +12,7 @@ using TinyIoC;
 using apcurium.MK.Booking.Mobile.Messages;
 using TinyMessenger;
 
+
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class AddressSearchViewModel : BaseViewModel
@@ -64,16 +65,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get
             {
                 return new MvxRelayCommand(() =>
-                {
-                    if (string.IsNullOrEmpty(Criteria)) return;
-
-                    if (_searchCancellationToken != null 
-                        && _searchCancellationToken.Token.CanBeCanceled)
-                    {
-                        _searchCancellationToken.Cancel();
-                    }
-                    _searchCancellationToken = new CancellationTokenSource();
+                {   
                     SearchViewModelSelected.Criteria = Criteria;
+
+                    if (!SearchViewModelSelected.CriteriaValid)
+                    {
+                        return;
+                    }
+
+                    CancelCurrentSearch();
+
+                    _searchCancellationToken = new CancellationTokenSource();
+                    
                     var task = SearchViewModelSelected.OnSearchExecute(_searchCancellationToken.Token);
                     task.ContinueWith(RefreshResults);
                     if(!(SearchViewModelSelected is AddressSearchByContactViewModel))
@@ -82,6 +85,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     }
                     IsSearching = true;
                 });
+            }
+        }
+
+        private void CancelCurrentSearch()
+        {
+            if (_searchCancellationToken != null
+                && _searchCancellationToken.Token.CanBeCanceled)
+            {
+                _searchCancellationToken.Cancel();
+                _searchCancellationToken.Dispose();
+                _searchCancellationToken = null;
             }
         }
 
@@ -94,7 +108,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     AddressViewModels = task.Result.Where(x => !x.Address.IsHistoric).ToList();
                     HistoricAddressViewModels = task.Result.Where(x => x.Address.IsHistoric).ToList();
-                    HistoricIsHidden = HistoricAddressViewModels.Any();
+                    HistoricIsHidden = !HistoricAddressViewModels.Any();
 
                     FirePropertyChanged(() => AddressViewModels);
                     FirePropertyChanged(() => HistoricAddressViewModels);
@@ -104,7 +118,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
             
         }
-        
+
+        private void ClearResults()
+        {
+            AddressViewModels = new AddressViewModel[0];
+            HistoricAddressViewModels = new AddressViewModel[0];
+            HistoricIsHidden = true;
+
+            FirePropertyChanged(() => AddressViewModels);
+            FirePropertyChanged(() => HistoricAddressViewModels);
+            FirePropertyChanged(() => HistoricIsHidden);
+        }
 
         public IMvxCommand RowSelectedCommand
         {
@@ -161,7 +185,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             FavoritesSelected = btn == TopBarButton.FavoritesBtn;
             ContactsSelected = btn == TopBarButton.ContactsBtn;
             PlacesSelected = btn == TopBarButton.PlacesBtn;
-
+            
             SearchCommand.Execute();
 		}
 
@@ -170,6 +194,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get { 
                 return new MvxRelayCommand<object>(param => param.Maybe(tag =>
                 {
+                    ClearResults();
                     TopBarButton btSelected;
                     if(Enum.TryParse(tag.ToString(), true, out btSelected))
                     {
