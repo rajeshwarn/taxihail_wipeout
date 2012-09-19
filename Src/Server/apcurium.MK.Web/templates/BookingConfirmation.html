@@ -23,27 +23,37 @@
     </table>
     <h2>{{localize "Settings"}}</h2>
     <a href='#' class='btn primary' id="editButton" data-action='edit'>{{localize "Edit"}}</a>
-    <table>
-        <tr>
-            <td>{{localize "Name"}}</td>
-            <td><input type="text" disabled="true" name="name" value="{{settings.name}}"/></td>
-        </tr>
-        <tr>
-            <td>{{localize "Phone"}}</td>
-            <td><input type="text" disabled="true" value="{{settings.phone}}"/></td>
-        </tr>
-        <tr>
-            <td>{{localize "Passengers"}}</td>
-            <td><input type="text" disabled="true" value="{{settings.passengers}}"/></td>
-        </tr>
-        <tr>
-            <td>{{localize "Vehicule Type"}}</td>
-            <td><input type="text" disabled="true" value="{{settings.vehicleTypeId}}"/></td>
-        </tr>
-        <tr>
-            <td>{{localize "Charge Type"}}</td>
-            <td><input type="text" disabled="true" value="{{settings.chargeTypeId}}"/></td>
-        </tr>
+    <form class="form-horizontal">
+    <div id="settingsContent">
+        <div class="control-group">
+            <label class="control-label" for="inputApt">{{localize "Apt No."}}</label>
+            <div class="controls">
+                <input type="text" id="inputApt" value="{{pickupAddress.apartment}}">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="inputRingCode">{{localize "Ring Code"}}</label>
+            <div class="controls">
+                <input type="text" id="inputRingCode"  value="{{pickupAddress.ringCode}}">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="inputNotes">{{localize "Notes"}}</label>
+            <div class="controls">
+                <input type="text" id="inputNotes" placeholder="Notes">
+            </div>
+        </div>
+    </div>
+    
+        
+        
+    <fieldset>
+            <a href='#' class='btn primary' data-action='book'>{{localize "Book Now!"}}</a>
+            <a href='#' class='btn primary' data-action='startOver'>{{localize "Start Over"}}</a>
+        </fieldset>
+    </form>
+
+    <!--table >
         <tr>
             <td>{{localize "Apt No."}}</td>
             <td><input type="text" disabled="true" value="{{pickupAddress.apartment}}"/></td>
@@ -56,11 +66,7 @@
             <td>{{localize "Notes"}}</td>
             <td><input type="text" disabled="true" value="{{settings.notes}}"/></td>
         </tr>
-    </table>
-    <form>
-        <fieldset>
-            <a href='#' class='btn primary' data-action='book'>{{localize "Book Now!"}}</a>
-            <a href='#' class='btn primary' data-action='startOver'>{{localize "Start Over"}}</a>
-        </fieldset>
-    </form>
+    </table-->
+    
+        
 </div>
