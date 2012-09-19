@@ -1,3 +1,8 @@
 ﻿{
-	"Invalid UserName or Password" : "Invalid UserName or Password"
+	"Invalid UserName or Password" : "Invalid UserName or Password",
+	"error.NameRequired" : "The name is required",
+	"error.PhoneRequired" : "The phone is required",
+	"error.PassengersRequired" : "The number of passengers is required",
+	"error.VehicleTypeRequired" : "The vehicule type is required",
+	"error.ChargeTypeRequired" : "The charge type is required"
 }

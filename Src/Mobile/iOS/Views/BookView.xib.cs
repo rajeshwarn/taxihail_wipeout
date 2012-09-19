@@ -73,8 +73,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             AppButtons.FormatStandardButton((GradientButton)refreshCurrentLocationButton, "", AppStyle.ButtonColor.CorporateColor, "");
             AppButtons.FormatStandardButton((GradientButton)bookLaterButton, "", AppStyle.ButtonColor.DarkGray );
 
-            AppButtons.FormatStandardButton((GradientButton)dropoffButton, "Dropoff", AppStyle.ButtonColor.Grey, "");
-            AppButtons.FormatStandardButton((GradientButton)pickupButton, "Pickup", AppStyle.ButtonColor.Grey );
+            AppButtons.FormatStandardButton((GradientButton)dropoffButton, "", AppStyle.ButtonColor.Grey, "");
+            AppButtons.FormatStandardButton((GradientButton)pickupButton, "", AppStyle.ButtonColor.Grey );
 
             AppButtons.FormatStandardButton((GradientButton)dropoffActivationButton, "", AppStyle.ButtonColor.Grey, "");
             AppButtons.FormatStandardButton((GradientButton)pickupActivationButton, "", AppStyle.ButtonColor.Grey );
@@ -111,8 +111,8 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { refreshCurrentLocationButton, "{'TouchUpInside':{'Path':'RequestCurrentLocationCommand'}}"},                
                 { pickupActivationButton, "{'TouchUpInside':{'Path':'ActivatePickup'},'Selected':{'Path':'PickupIsActive', 'Mode':'TwoWay'}}"},                
                 { dropoffActivationButton, "{'TouchUpInside':{'Path':'ActivateDropoff'},'Selected':{'Path':'DropoffIsActive', 'Mode':'TwoWay'}}"},       
-                { pickupButton, "{'TouchUpInside':{'Path':'PickPickupLocation'},'TextLine1':{'Path':'Pickup.FriendlyName', 'Mode':'TwoWay'}, 'TextLine2':{'Path':'Pickup.FullAddress', 'Mode':'TwoWay'} }"},  
-                { dropoffButton, "{'TouchUpInside':{'Path':'PickDropOffLocation'},'TextLine1':{'Path':'Dropoff.FriendlyName', 'Mode':'TwoWay'}, 'TextLine2':{'Path':'Dropoff.FullAddress', 'Mode':'TwoWay'} }"},             
+				{ pickupButton, "{'TouchUpInside':{'Path':'Pickup.PickAddress'},'TextLine1':{'Path':'Pickup.Title', 'Mode':'TwoWay'}, 'TextLine2':{'Path':'Pickup.Display', 'Mode':'TwoWay'}, 'IsSearching':{'Path':'Pickup.IsExecuting', 'Mode':'TwoWay'}, 'IsPlaceholder':{'Path':'Pickup.IsPlaceHolder', 'Mode':'TwoWay'} }"},  
+				{ dropoffButton, "{'TouchUpInside':{'Path':'Dropoff.PickAddress'},'TextLine1':{'Path':'Dropoff.Title', 'Mode':'TwoWay'}, 'TextLine2':{'Path':'Dropoff.Display', 'Mode':'TwoWay'}, 'IsSearching':{'Path':'Dropoff.IsExecuting', 'Mode':'TwoWay'}, 'IsPlaceholder':{'Path':'Dropoff.IsPlaceHolder', 'Mode':'TwoWay'} }"},             
 
             });
         }

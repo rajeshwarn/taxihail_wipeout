@@ -270,6 +270,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         }
 
+
         private void SetZoom(IEnumerable<Address> adressesToDisplay)
         {
             var map = FindViewById<MapView>(Resource.Id.mapStatus);
@@ -279,31 +280,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 int lat = CoordinatesHelper.ConvertToE6(adressesToDisplay.ElementAt(0).Latitude);
                 int lon = CoordinatesHelper.ConvertToE6(adressesToDisplay.ElementAt(0).Longitude);
-                mapController.AnimateTo(new GeoPoint( lat, lon ));
-                mapController.SetZoom(17);
+                mapController.AnimateTo(new GeoPoint(lat, lon));                
+                mapController.SetZoom(18);                
                 return;
             }
 
 
-            int minLat = int.MaxValue;
-            int maxLat = int.MinValue;
-            int minLon = int.MaxValue;
-            int maxLon = int.MinValue;
-
-            foreach (var item in adressesToDisplay)
-            {
-                int lat = CoordinatesHelper.ConvertToE6(item.Latitude);
-                int lon = CoordinatesHelper.ConvertToE6(item.Longitude);
-                maxLat = Math.Max(lat, maxLat);
-                minLat = Math.Min(lat, minLat);
-                maxLon = Math.Max(lon, maxLon);
-                minLon = Math.Min(lon, minLon);
-            }
+            int minLat = adressesToDisplay.Select(d=> CoordinatesHelper.ConvertToE6(d.Latitude)).Min();
+            int maxLat = adressesToDisplay.Select(d => CoordinatesHelper.ConvertToE6(d.Latitude)).Max();
+            int minLon = adressesToDisplay.Select(d=> CoordinatesHelper.ConvertToE6(d.Longitude)).Min();
+            int maxLon = adressesToDisplay.Select(d => CoordinatesHelper.ConvertToE6(d.Longitude)).Max();   
 
             if ((Math.Abs(maxLat - minLat) < 0.004) && (Math.Abs(maxLon - minLon) < 0.004))
             {
                 mapController.AnimateTo(new GeoPoint((maxLat + minLat) / 2, (maxLon + minLon) / 2));
-                mapController.SetZoom(17);
+                mapController.SetZoom(18);
             }
             else
             {

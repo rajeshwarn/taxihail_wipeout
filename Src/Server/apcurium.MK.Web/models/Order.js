@@ -6,7 +6,7 @@
 
         initialize: function(attributes, options) {
             
-        }
+        },
         
     });
 

@@ -16,6 +16,9 @@ using System.Collections.Generic;
 using System;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Diagnostic;
+using log4net;
+using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -33,6 +36,8 @@ namespace apcurium.MK.Booking.Api.Services
         private IOrderDao _orderDao;
         private IAccountDao _accountDao;
         private IConfigurationManager _configManager;
+
+        private static readonly ILog Log = LogManager.GetLogger("TraceOutput");
 
         public OrderStatusService(IOrderDao orderDao, IAccountDao accountDao, IConfigurationManager configManager, IBookingWebServiceClient bookingWebServiceClient, ICommandBus commandBus)
         {
@@ -71,6 +76,7 @@ namespace apcurium.MK.Booking.Api.Services
                 string desc = "";
                 if (status.IBSStatusId.HasValue())
                 {
+                    
                     if (status.IBSStatusId.SoftEqual(_assignedStatus))
                     {
                         var orderDetails = _bookingWebServiceClient.GetOrderDetails(order.IBSOrderId.Value, account.IBSAccountId, order.Settings.Phone);
@@ -84,7 +90,17 @@ namespace apcurium.MK.Booking.Api.Services
                             desc = _configManager.GetSetting("OrderStatus." + status.IBSStatusId);
                         }
 
-                        DemoModeFakePosition(status, order);
+                        
+                        
+                        if (_configManager.GetSetting("OrderStatus.DemoMode") == "true")
+                        {
+                            DemoModeFakePosition(status, order);
+                        }
+                        else if (statusDetails.VehicleLatitude.HasValue && statusDetails.VehicleLongitude.HasValue)
+                        {                        
+                            status.VehicleLatitude = statusDetails.VehicleLatitude;
+                            status.VehicleLongitude = statusDetails.VehicleLongitude;
+                        }
                     }
                     else if (status.IBSStatusId.SoftEqual(_doneStatus))
                     {
@@ -124,8 +140,9 @@ namespace apcurium.MK.Booking.Api.Services
                 status.IBSStatusDescription = desc.HasValue() ? desc : status.IBSStatusId;
 
             }
-            catch
+            catch( Exception ex )
             {
+                Log.Error(ex);
                 //TODO: erreur ? Status ?
             }
             return status;
@@ -133,17 +150,16 @@ namespace apcurium.MK.Booking.Api.Services
 
         private void DemoModeFakePosition(OrderStatusDetail status, ReadModel.OrderDetail order)
         {
-            if (_configManager.GetSetting("OrderStatus.DemoMode") == "true")
-            {
-                //For demo purpose only
-                var leg = BuildFakeDirectionForOrder(status.OrderId, order.PickupLatitude, order.PickupLongitude);
 
-                if (leg != null)
-                {
-                    status.VehicleLatitude = leg.Lat;
-                    status.VehicleLongitude = leg.Lng;
-                }
+            //For demo purpose only
+            var leg = BuildFakeDirectionForOrder(status.OrderId, order.PickupLatitude, order.PickupLongitude);
+
+            if (leg != null)
+            {
+                status.VehicleLatitude = leg.Lat;
+                status.VehicleLongitude = leg.Lng;
             }
+
         }
 
         private Location BuildFakeDirectionForOrder(Guid guid, double lat, double lng)
@@ -169,7 +185,7 @@ namespace apcurium.MK.Booking.Api.Services
                     //steps.Add(s);
                     //steps.Add(s);                    
                 }
-                
+
 
                 _fakeTaxiPositions.Add(guid, steps);
                 _fakeTaxiPositionsIndex.Add(guid, 0);
@@ -181,7 +197,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (_fakeTaxiPositionsIndex[guid] >= _fakeTaxiPositions[guid].Count)
             {
-                return new  Location { Lat = lat , Lng = lng };
+                return new Location { Lat = lat, Lng = lng };
             }
             return _fakeTaxiPositions[guid][_fakeTaxiPositions[guid].Count - index - 1];
 

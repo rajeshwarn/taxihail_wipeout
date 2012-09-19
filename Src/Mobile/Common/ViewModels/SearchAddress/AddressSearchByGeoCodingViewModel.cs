@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.SearchAddress
 {
@@ -19,6 +20,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.SearchAddress
             var position = TinyIoCContainer.Current.Resolve<IUserPositionService>().LastKnownPosition;
             var addresses = _geolocService.SearchAddress(Criteria, position.Latitude, position.Longitude);
             return addresses.Select(a => new AddressViewModel() { Address = a, ShowPlusSign = false, ShowRightArrow = false, IsFirst = a.Equals(addresses.First()), IsLast = a.Equals(addresses.Last()) }).ToList();
+        }
+
+        public override bool CriteriaValid
+        {
+            get
+            {
+                return (Criteria.HasValue() && Criteria.Count(c => char.IsLetter(c)) >= 3);
+            }
         }
     }
 }

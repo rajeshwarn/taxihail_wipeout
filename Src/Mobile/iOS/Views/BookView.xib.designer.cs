@@ -18,16 +18,16 @@ namespace apcurium.MK.Booking.Mobile.Client
 		MonoTouch.UIKit.UIView bookView { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.AddressButton pickupActivationButton { get; set; }
+		apcurium.MK.Booking.Mobile.Client.TextProgressButton pickupActivationButton { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.AddressButton dropoffActivationButton { get; set; }
+		apcurium.MK.Booking.Mobile.Client.TextProgressButton dropoffActivationButton { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.AddressButton pickupButton { get; set; }
+		apcurium.MK.Booking.Mobile.Client.TextProgressButton pickupButton { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.AddressButton dropoffButton { get; set; }
+		apcurium.MK.Booking.Mobile.Client.TextProgressButton dropoffButton { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UIImageView headerBackgroundView { get; set; }

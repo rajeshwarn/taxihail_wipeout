@@ -265,7 +265,6 @@
       <DependentUpon>BookView.xib</DependentUpon>
     </Compile>
     <Compile Include="Navigation\NavigationService.cs" />
-    <Compile Include="Controls\AddressButton2.cs" />
     <Compile Include="Setup.cs" />
     <Compile Include="PhonePresenter.cs" />
     <Compile Include="Controls\SegmentedButton.cs" />
@@ -290,6 +289,7 @@
       <DependentUpon>PanelMenuView.xib</DependentUpon>
     </Compile>
     <Compile Include="Controls\PanelView.cs" />
+    <Compile Include="Controls\TextProgressButton.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -449,6 +449,8 @@
     <Content Include="Assets\locationSelected%402x.png" />
     <Content Include="Assets\settings.png" />
     <Content Include="Assets\settings%402x.png" />
+    <Content Include="Assets\right_arrow.png" />
+    <Content Include="Assets\right_arrow%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.iOS.csproj">
