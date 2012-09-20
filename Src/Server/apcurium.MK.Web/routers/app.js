@@ -7,6 +7,8 @@
 
         $('#main').html(view.el);
 
+        return view;
+
     }, account = new TaxiHail.UserAccount();
 
     TaxiHail.App = Backbone.Router.extend({
@@ -15,7 +17,8 @@
             "book": "book",   // #book,
             "confirmationbook": "confirmationbook",
             "login": "login", // #login
-            "signup": "signup" // #signup
+            "signup": "signup", // #signup
+            "signupconfirmation": "signupconfirmation" // redirect to home after signup success
         },
 
         initialize: function () {
@@ -26,6 +29,11 @@
 
         home: function () {
             renderView(TaxiHail.HomeView);
+        },
+
+        signupconfirmation: function () {
+            var view = renderView(TaxiHail.HomeView);
+            view.showConfirmationMessage();
         },
         
         book: function () {
@@ -53,7 +61,12 @@
             renderView(TaxiHail.LoginView);
         },
         signup: function () {
-            renderView(TaxiHail.SignupView);
+            var model = new TaxiHail.NewAccount(); 
+            model.on('sync', function(){
+                this.navigate('signupconfirmation', { trigger: true });
+
+            }, this);
+            renderView(TaxiHail.SignupView, model);
         }
     });
 

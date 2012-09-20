@@ -10,9 +10,8 @@
         },
         
         initialize:function () {
-            this.$el.addClass('form-horizontal');
-            this.model = new TaxiHail.NewAccount();            
-            _.bindAll(this, "onerror", "onsuccess");
+            this.$el.addClass('form-horizontal');                       
+            _.bindAll(this, "onerror");
         },
 
         render: function () {
@@ -23,7 +22,7 @@
               pattern: this.localize('error.Pattern'),
               equalTo: this.localize('error.EqualTo')
             });
-            
+
             Backbone.Validation.bind(this);
             return this;
         },
@@ -36,7 +35,7 @@
         onsubmit: function (e) {
             e.preventDefault();
             this.$('.errors').empty();
-            this.model.save({}, { error: this.onerror, success: this.onsuccess });           
+            this.model.save({}, { error: this.onerror });           
         },
         
         onerror: function (model, result) {           
@@ -47,8 +46,7 @@
                this.$('.errors').html($alert);
             }              
             
-        },
-        onsuccess: function () { }
+        }       
         
     });
 })();
