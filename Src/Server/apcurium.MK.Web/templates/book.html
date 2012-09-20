@@ -10,6 +10,22 @@
             </form>
         </div>
         
+        <form class="form-horizontal">
+            <div>
+                <div class="control-group">
+                    <label class="control-label" for="inputPrice">{{localize "Price estimate"}}</label>
+                    <div class="controls">
+                       {{priceEstimate}}
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="inputFare">{{localize "Fare estimante"}}</label>
+                    <div class="controls">
+                       {{distanceEstimate}}
+                    </div>
+                </div>
+            </div>
+        </form>
 
     </div>
     <div class='span12 hidden-right' id="address-list-container" ></div>
