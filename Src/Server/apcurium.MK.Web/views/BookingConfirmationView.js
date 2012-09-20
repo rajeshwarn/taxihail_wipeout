@@ -1,5 +1,6 @@
 ﻿(function () {
-    var settings ;
+    var settings;
+    var settingschanged = false;
     TaxiHail.BookingConfirmationView = TaxiHail.TemplatedView.extend({
         
         events: {
@@ -8,13 +9,33 @@
             'change :text': 'onPropertyChanged',
             
         },
+        initialize: function () {
+            _.bindAll(this, "renderResults");
+            this.model.on('change', this.render, this);
+            
+            var pickup = this.model.get('pickupAddress');
+            var dest = this.model.get('dropOffAddress');
+            TaxiHail.directionInfo.getInfo(pickup['latitude'], pickup['longitude'], dest['latitude'], dest['longitude']).done(this.renderResults);
+
+            
+    },
 
         render: function () {
+
             this.$el.html(this.renderTemplate(this.model.toJSON()));
             this.$("input").attr("disabled", true);
             this.renderItem(this.model);
             
+            
             return this;
+        },
+        
+        renderResults: function (result) {
+            
+            this.model.set({
+                'priceEstimate': result.formattedPrice,
+                'distanceEstimate': result.formattedDistance
+            });
         },
         
         book: function (e) {
@@ -27,19 +48,25 @@
             e.preventDefault();
             //$("input").attr("disabled", !$("input").attr("disabled"));
             if (!$("input").attr("disabled")) {
-                if (settings.isValid()) {
+                if (settings.isValid() ) {
                     
-                
-                jQuery.ajax({
+                    if (settingschanged) {
+                        jQuery.ajax({
                     type: 'PUT',
                     url: 'api/account/bookingsettings',
                     data: settings.toJSON(),
                     success: function () {
                         $("#editButton").html(TaxiHail.localize('Edit'));
                         $("input").attr("disabled", true);
+                        settingschanged = false;
                     },
                     dataType: 'json'
                 });
+                    } else {
+                        $("#editButton").html(TaxiHail.localize('Edit'));
+                        $("input").attr("disabled", true);
+                    }
+                
                 }
                 
             } else {
@@ -50,12 +77,6 @@
             }
             
         },
-        
-        callback : function () {
-            
-        },
-        
-        
         
         renderItem: function (model) {
 
@@ -71,6 +92,7 @@
             var pickup = this.model.get('pickupAddress');
             
             pickup[$input.attr("name")] = $input.val();
+            settingschanged = true;
         },
         
     });

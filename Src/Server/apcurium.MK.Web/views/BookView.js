@@ -23,7 +23,7 @@
             this.renderAddressControl('.pickup-address-container', new Backbone.Model(), this.selectPickupAddress);
             this.renderAddressControl('.drop-off-address-container', new Backbone.Model(), this.selectDropOffAddress);
 
-            /*var view = new TaxiHail.MapView({
+           /* var view = new TaxiHail.MapView({
                 el: this.$('#map-container')[0],
                 model: this.model
             });*/
