@@ -16,7 +16,9 @@
             "": "home",   // #
             "book": "book",   // #book,
             "confirmationbook": "confirmationbook",
-            "login": "login" // #login
+            "login": "login", // #login
+            "signup": "signup", // #signup
+            "signupconfirmation": "signupconfirmation" // redirect to home after signup success
         },
 
         initialize: function () {
@@ -27,6 +29,11 @@
 
         home: function () {
             renderView(TaxiHail.HomeView);
+        },
+
+        signupconfirmation: function () {
+            var view = renderView(TaxiHail.HomeView);
+            view.showConfirmationMessage();
         },
         
         book: function () {
@@ -52,6 +59,14 @@
         
         login: function () {
             renderView(TaxiHail.LoginView);
+        },
+        signup: function () {
+            var model = new TaxiHail.NewAccount(); 
+            model.on('sync', function(){
+                this.navigate('signupconfirmation', { trigger: true });
+
+            }, this);
+            renderView(TaxiHail.SignupView, model);
         }
 
     });
