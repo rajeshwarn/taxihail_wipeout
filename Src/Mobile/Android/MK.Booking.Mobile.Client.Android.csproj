@@ -105,7 +105,6 @@
     <Compile Include="Animations\ResizeAnimation.cs" />
     <Compile Include="Animations\SlideAnimation.cs" />
     <Compile Include="AppContext.cs" />
-    <Compile Include="AppModule.cs" />
     <Compile Include="AppFonts.cs" />
     <Compile Include="Cache\CacheService.cs" />
     <Compile Include="Controls\AutoCompleteBindableTextView.cs" />
@@ -498,7 +497,6 @@
     <AndroidResource Include="Resources\Drawable\location_info.png" />
     <AndroidResource Include="Resources\Drawable\number_icon.png" />
     <AndroidResource Include="Resources\Drawable\number_icon_selected.png" />
-    <Content Include="Todo.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
