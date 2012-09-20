@@ -1,12 +1,24 @@
-﻿body {
+﻿html, body {
+    height: 100%
 }
 
-.map-container {
-	height: 400px;
+.map-zone {
+	height: 100%;
+    width:100%;
+
+    z-index: 10; // Put map under .container
     
     img {
         max-width: none;
     }
+}
+
+.container {
+    position:absolute;
+    top:80px;
+    left:40%;
+
+    z-index: 100 // Put container over map
 }
 
 #pickup-drop-off-container,

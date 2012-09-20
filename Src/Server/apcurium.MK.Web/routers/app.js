@@ -23,6 +23,11 @@
             TaxiHail.auth.on('loggedIn', function() {
                 this.navigate('', { trigger: true });
             }, this);
+
+            var view = new TaxiHail.MapView({
+                el: $('.map-zone')[0],
+                model: this.model
+            }).render();
         },
 
         home: function () {
@@ -32,9 +37,9 @@
         book: function () {
             account.fetch({
                 success: function (model) {
-                    var view = renderView(TaxiHail.BookView, new TaxiHail.Order({
+                    renderView(TaxiHail.BookView, new TaxiHail.Order({
                         settings: model.get('settings')
-                    })).renderMap();
+                    }));
                 }
             });
             

@@ -26,16 +26,6 @@
             return this;
         },
 
-        // renderMap must be called after the view is added to the DOM
-        renderMap: function() {
-            var view = new TaxiHail.MapView({
-                el: this.$('.map-container')[0],
-                model: this.model
-            }).render();
-
-            return this;
-        },
-
         renderAddressControl: function(selector, model, onselect) {
 
             var addressControlView = new TaxiHail.AddressControlView({

@@ -17,7 +17,8 @@
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
             
-            
+            var _map = new google.maps.Map(this.el, mapOptions);
+
             // Try W3C Geolocation (Preferred)
             if (navigator.geolocation) {
                 browserSupportFlag = true;
@@ -45,7 +46,7 @@
                 }
                 _map.setCenter(initialLocation);
             }
-
+        }
         
     });
 
