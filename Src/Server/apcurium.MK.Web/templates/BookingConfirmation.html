@@ -18,7 +18,11 @@
         </tr>
         <tr>
             <td>{{localize "Fare estimate"}}</td>
-            <td></td>
+            <td>{{distanceEstimate}}</td>
+        </tr>
+        <tr>
+            <td>{{localize "Price estimate"}}</td>
+            <td>{{priceEstimate}}</td>
         </tr>
     </table>
     <h2>{{localize "Settings"}}</h2>
@@ -28,13 +32,13 @@
         <div class="control-group">
             <label class="control-label" for="inputApt">{{localize "Apt No."}}</label>
             <div class="controls">
-                <input type="text" id="inputApt" value="{{pickupAddress.apartment}}">
+                <input type="text" id="inputApt" name="apartment" value="{{pickupAddress.apartment}}">
             </div>
         </div>
         <div class="control-group">
             <label class="control-label" for="inputRingCode">{{localize "Ring Code"}}</label>
             <div class="controls">
-                <input type="text" id="inputRingCode"  value="{{pickupAddress.ringCode}}">
+                <input type="text" id="inputRingCode" name="ringCode"  value="{{pickupAddress.ringCode}}">
             </div>
         </div>
         <div class="control-group">
