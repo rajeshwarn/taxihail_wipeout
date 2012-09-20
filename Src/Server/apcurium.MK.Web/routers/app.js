@@ -14,7 +14,8 @@
             "": "home",   // #
             "book": "book",   // #book,
             "confirmationbook": "confirmationbook",
-            "login": "login" // #login
+            "login": "login", // #login
+            "signup": "signup" // #signup
         },
 
         initialize: function () {
@@ -50,6 +51,9 @@
         
         login: function () {
             renderView(TaxiHail.LoginView);
+        },
+        signup: function () {
+            renderView(TaxiHail.SignupView);
         }
     });
 
