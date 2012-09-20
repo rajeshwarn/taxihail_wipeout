@@ -11,31 +11,57 @@ using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using System.IO;
 using apcurium.MK.Booking.Mobile.Client.InfoTableView;
+using Cirrious.MvvmCross.Touch.Interfaces;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using Cirrious.MvvmCross.Binding.Touch.Views;
+using Cirrious.MvvmCross.Views;
+using System.Collections.Generic;
+using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-	public partial class PanelMenuView : UIViewController
+	public partial class PanelMenuView : MvxBindingTouchViewController<PanelViewModel>
 	{
 		private UINavigationController _navController;
 		private UIView _viewToAnimate;
 		private bool _menuIsOpen = false;
 
-		public PanelMenuView ( UIView viewToAnimate, UINavigationController navController ) : base("PanelMenuView", null)
+		public PanelMenuView(UIView viewToAnimate, UINavigationController navController) 
+			: base(new MvxShowViewModelRequest<PanelViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
 		{
 			_navController = navController;
 			_viewToAnimate = viewToAnimate;
-			View.Frame = new RectangleF( View.Frame.X, View.Frame.Y, View.Frame.Width, View.Frame.Height );
 		}
+		
+		public PanelMenuView(MvxShowViewModelRequest request) 
+			: base(request)
+		{
+
+		}
+		
+		public PanelMenuView(MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
+			: base(request, nibName, bundle)
+		{
+
+		}
+
+//		public PanelMenuView (  ) : base("PanelMenuView", null)
+//		{
+//
+//
+//
+//		}
 		
 		public override void DidReceiveMemoryWarning ()
 		{
 			base.DidReceiveMemoryWarning ();
 		}
-		
+
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
 
+			View.Frame = new RectangleF( View.Frame.X, View.Frame.Y, View.Frame.Width, View.Frame.Height );
 			View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
 			
 			panelView.Title = Resources.TabSettings;
@@ -44,6 +70,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			versionLabel.Text = TinyIoCContainer.Current.Resolve<IPackageInfo>().Version;
 
 			InitializeMenu();	
+
 		}
 
 		private void InitializeMenu()
@@ -107,9 +134,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			});
 			sect.AddItem( new SingleLineItem( Resources.SignOutButton ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
 					AnimateMenu();
-					AppContext.Current.SignOutUser ();
 					AppContext.Current.WarnEstimate = true;
-					_navController.PresentModalViewController(new LoginView (), true);
+					ViewModel.SignOut();
+
 				})				
 			});
 			

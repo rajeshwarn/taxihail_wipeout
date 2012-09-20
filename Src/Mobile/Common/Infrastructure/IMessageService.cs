@@ -8,6 +8,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
     public interface IMessageService
     {
         void ShowMessage(string title, string message);
+		void ShowMessage(string title, string message, string additionnalActionButtonTitle, Action additionalAction );
 
         void ShowToast(string message, ToastDuration duration);
     }

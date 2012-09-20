@@ -7,15 +7,6 @@ using TinyIoC;
 using apcurium.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Practices;
 using apcurium.MK.Booking.Mobile.AppServices;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
-using TinyIoC;
-using apcurium.Framework.Extensions;
-using apcurium.MK.Booking.Mobile.Practices;
-using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using ServiceStack.Text;
@@ -37,27 +28,21 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             try
             {
-                UIApplication.Main(args);
-                
+                UIApplication.Main(args);  
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex);
             }
-        }
-        
+        } 
     }
 
-    public partial class AppDelegate 
-        : MvxApplicationDelegate 
-            , IMvxServiceConsumer<IMvxStartNavigation>
+    public partial class AppDelegate : MvxApplicationDelegate, IMvxServiceConsumer<IMvxStartNavigation>
     {
-        private RootTabController _tabBarController;
         private bool _callbackFromFB = false;
-        // This method is invoked when the application has loaded its UI and its ready to run
+
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
-
             Background.Load(window, "Assets/background_full_nologo.png", false, 0, 0);          
 
 			AppContext.Initialize(window);
@@ -65,55 +50,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			var setup = new Setup(this, new PhonePresenter( this, window ) );
             setup.Initialize();
 
-			var start = this.GetService<IMvxStartNavigation>();
-            start.Start();  
-
-
-                      
-
-            _tabBarController = new RootTabController();
-
-            window.RootViewController = _tabBarController;           
-            
-            AppContext.Current.Controller = _tabBarController;
-
-
             new Bootstrapper(new IModule[] { new AppModule() }).Run();
-//            
-//            ThreadHelper.ExecuteInThread(() =>
-//            {
-//                try
-//                {
-//                    InvokeOnMainThread(() =>
-//                    {
-//
-//                        SetUIDefaults();
-//
-//                        _tabBarController.Load();
-//
 
-                        window.AddSubview(_tabBarController.View);
+            window.MakeKeyAndVisible();
 
-                        if (AppContext.Current.LoggedUser != null)
-                        {
-                			TinyIoCContainer.Current.Resolve<INavigationService>().Navigate<BookViewModel,BookView>(); 
-            			}
-//
-                        window.MakeKeyAndVisible();
-//                        
-//                    }
-//                    );
-//
-//                }
-//                catch (Exception ex)
-//                {
-//                    Logger.LogError(ex);
-//                }
-//            }
-//            );
+			var start = this.GetService<IMvxStartNavigation>();
+			start.Start();     
             
             ThreadHelper.ExecuteInThread(() => TinyIoCContainer.Current.Resolve<IAccountService>().EnsureListLoaded());
-
 
             return true;
         }
@@ -133,47 +77,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             JsConfig.RegisterTypeForAot<OrderStatusDetail>();
          
             if (!_callbackFromFB)
-            {
+            {    
 
-                if (AppContext.Current.LoggedUser != null)
-                {
-                    ThreadHelper.ExecuteInThread(() =>
-                    {
-                        try
-                        {
-
-                            AppContext.Current.Controller.View.InvokeOnMainThread(() => {
-                                if ((AppContext.Current.Controller.TopViewController != null) && (AppContext.Current.Controller.TopViewController is BookView))
-                                {
-                                    AppContext.Current.Controller.SelectedRefreshableViewController.RefreshData();
-                                }                       
-                                if ((AppContext.Current.Controller.SelectedRefreshableViewController != null) && (!(AppContext.Current.Controller.TopViewController  is BookView)))
-                                {
-                                    AppContext.Current.Controller.SelectedRefreshableViewController.RefreshData(); 
-                                }
-
-                            });
-
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.LogError(ex);
-                        }
-                        finally
-                        {
-                        
-                        }
-                    }
-                    );
-                
-                }
-                else
-                {
-                    if (_tabBarController != null)
-                    {   
-                        InvokeOnMainThread(() => _tabBarController.PresentModalViewController(new LoginView(), true));
-                    }
-                }
             }
             else
             {

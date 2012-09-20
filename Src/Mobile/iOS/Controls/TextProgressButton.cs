@@ -11,7 +11,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		private UILabel _line1Label;
 		private UILabel _line2Label;
 		private UIImageView _imageView;
-		private UIProgressView _progress;
+		private UIActivityIndicatorView _progress;
 
 		public TextProgressButton(IntPtr handle) : base(  handle )
         {
@@ -48,10 +48,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 			_imageView.Hidden = true;
 			AddSubview( _imageView );
 
-			_progress = new UIProgressView( new RectangleF( _line1Label.Frame.Right + 5, 0, image.Size.Width, Frame.Height ) );
+			_progress = new UIActivityIndicatorView( new RectangleF( _line1Label.Frame.Width -5, 0, image.Size.Width, Frame.Height ) );
 			_progress.BackgroundColor = UIColor.Clear;
 			_progress.Hidden = true;
-			_progress.Style = UIProgressViewStyle.Default;
+			_progress.ActivityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray;
 			AddSubview( _progress );
 		}
 
@@ -87,6 +87,15 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			_imageView.Hidden = _isSearching;
 			_progress.Hidden = !_isSearching;
+			if( _isSearching )
+			{
+				_progress.StartAnimating();
+			}
+			else
+			{
+				_progress.StopAnimating();
+			}
+
 			_line2Label.Font = IsSearching || _isPlaceholder ? AppStyle.GetItalicFont( 15 ) : AppStyle.GetBoldFont( 15 );
 		}
 

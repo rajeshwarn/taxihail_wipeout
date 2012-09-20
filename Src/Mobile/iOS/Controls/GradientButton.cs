@@ -19,8 +19,15 @@ namespace apcurium.MK.Booking.Mobile.Client
                 UIColor.FromRGB(222, 222, 222),
                 UIColor.FromRGB(200, 200, 200)
             };
-        private float[] _colorLocations = new float[] { 0f, 0.93f, 1f };
-        private float _strokeLineWidth = 1f;
+		private UIColor[] _selectedColors = new UIColor[]
+		{
+			UIColor.FromRGB(240, 240, 240),
+			UIColor.FromRGB(222, 222, 222),
+			UIColor.FromRGB(200, 200, 200)
+		};
+		private float[] _colorLocations = new float[] { 0f, 0.93f, 1f };
+		private float[] _selectedColorLocations = new float[] { 0f, 0.93f, 1f };
+		private float _strokeLineWidth = 1f;
         private UIColor _strokeLineColor = UIColor.FromRGB(155, 155, 155) ;
         private float _cornerRadius = AppStyle.ButtonCornerRadius;
         private string _title = "";
@@ -50,6 +57,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 			buttonStyle.TextShadowColor.Maybe( c => _textShadowColor = UIColor.FromRGBA(c.Red, c.Green, c.Blue, c.Alpha) );
 
             _colors = buttonStyle.Colors.Select ( color => UIColor.FromRGBA(color.Red, color.Green, color.Blue, color.Alpha) ).ToArray();
+			buttonStyle.SelectedColors.Maybe( () => {
+				_selectedColors = buttonStyle.SelectedColors.Select ( color => UIColor.FromRGBA(color.Red, color.Green, color.Blue, color.Alpha) ).ToArray();
+				_selectedColorLocations = buttonStyle.SelectedColors.Select ( color => color.Location ).ToArray();
+			});
 			_colorLocations = buttonStyle.Colors.Select ( color => color.Location ).ToArray();
 			_strokeLineColor = UIColor.FromRGBA( buttonStyle.StrokeColor.Red, buttonStyle.StrokeColor.Green, buttonStyle.StrokeColor.Blue, buttonStyle.StrokeColor.Alpha);
             _strokeLineWidth = buttonStyle.StrokeLineWidth;
@@ -150,7 +161,17 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
         }
 
-        public UIColor[] Colors
+		public float[] SelectedColorLocations
+		{
+			get{ return _selectedColorLocations; }
+			set
+			{
+				_selectedColorLocations = value;
+				SetNeedsDisplay();
+			}
+		}
+
+		public UIColor[] Colors
         {
             get{ return _colors; }
             set
@@ -159,6 +180,16 @@ namespace apcurium.MK.Booking.Mobile.Client
                 SetNeedsDisplay();
             }
         }
+
+		public UIColor[] SelectedColors
+		{
+			get{ return _selectedColors; }
+			set
+			{
+				_selectedColors = value;
+				SetNeedsDisplay();
+			}
+		}
 
         public float CornerRadius
         {
@@ -242,8 +273,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             var colorSpace = CGColorSpace.CreateDeviceRGB();
             var context = UIGraphics.GetCurrentContext();
 
-            var newGradientColors = _colors.Select( c=>c.CGColor).ToArray() ;
-            var newGradientLocations = _colorLocations;
+			var newGradientColors = Selected ? _selectedColors.Select( c=>c.CGColor).ToArray() : _colors.Select( c=>c.CGColor).ToArray() ;
+			var newGradientLocations = Selected ? _selectedColorLocations : _colorLocations;
             var newGradient = new CGGradient(colorSpace, newGradientColors, newGradientLocations);
 
             rect.Width -= _dropShadow != null ? Math.Abs(_dropShadow.OffsetX) : 0;

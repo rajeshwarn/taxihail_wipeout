@@ -19,9 +19,13 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 		public void ShowMessage(string title, string message)
 		{
 			MessageHelper.Show( title, message );
-
-			
 		}
+
+		public void ShowMessage(string title, string message, string additionnalActionButtonTitle, Action additionalAction )
+		{
+			MessageHelper.Show( title, message, additionnalActionButtonTitle, additionalAction );
+		}
+
 		public void ShowToast(string message, ToastDuration duration)
 		{}
 	}

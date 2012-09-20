@@ -184,8 +184,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             ContactsSelected = btn == TopBarButton.ContactsBtn;
             PlacesSelected = btn == TopBarButton.PlacesBtn;
             
-            //SearchCommand.Execute(Criteria);
-		    Criteria = null;
+			if( Criteria == null )
+			{
+				SearchCommand.Execute(Criteria);
+			}
+			else
+			{
+		    	Criteria = null;
+			}
 		}
 
         public IMvxCommand SelectedChangedCommand

@@ -8,6 +8,8 @@ using apcurium.Framework.Extensions;
 using TinyIoC;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
+using TinyMessenger;
+using apcurium.MK.Booking.Mobile.Messages;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -47,10 +49,10 @@ namespace apcurium.MK.Booking.Mobile.Client
             base.ViewDidLoad();
             View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             
-            var view = AppContext.Current.Controller.GetTitleView(null, Resources.HistoryDetailViewTitle, true);
+//            var view = AppContext.Current.Controller.GetTitleView(null, Resources.HistoryDetailViewTitle, true);
             
             this.NavigationItem.HidesBackButton = false;
-            this.NavigationItem.TitleView = view;
+			this.NavigationItem.TitleView = new TitleView(null, Resources.HistoryDetailViewTitle, true);
             
             
             lblConfirmationNo.Text = Resources.HistoryDetailConfirmationLabel;
@@ -84,7 +86,8 @@ namespace apcurium.MK.Booking.Mobile.Client
         void StatusTouchUpInside(object sender, EventArgs e)
         {
             AppContext.Current.LastOrder = _data.Id;
-            AppContext.Current.Controller.Rebook(null);
+			InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new RebookRequested(this, null)));
+//            AppContext.Current.Controller.Rebook(null);
             this.NavigationController.PopViewControllerAnimated(true);
         }
 
@@ -126,7 +129,8 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
 
             this.NavigationController.PopViewControllerAnimated(true);
-            AppContext.Current.Controller.Rebook(_data);
+			InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new RebookRequested(this, _data)));
+//            AppContext.Current.Controller.Rebook(_data);
         }
 
         void HideTouchUpInside(object sender, EventArgs e)
