@@ -1,20 +1,21 @@
 ﻿(function () {
 
     var renderView = function(ctor, model) {
-        var view = new ctor({
-            model: model
-        }).render();
+            var view = new ctor({
+                model: model
+            }).render();
 
-        $('#main').html(view.el);
+            $('#main').html(view.el);
 
-        return view;
+            return view;
 
-    }, account = new TaxiHail.UserAccount();
+        }, 
+        account = new TaxiHail.UserAccount(),
+        mapView;
 
     TaxiHail.App = Backbone.Router.extend({
         routes: {
-            "": "home",   // #
-            "book": "book",   // #book,
+            "": "book",   // #
             "confirmationbook": "confirmationbook",
             "login": "login", // #login
             "signup": "signup", // #signup
@@ -26,9 +27,9 @@
                 this.navigate('', { trigger: true });
             }, this);
 
-            var view = new TaxiHail.MapView({
+            mapView = new TaxiHail.MapView({
                 el: $('.map-zone')[0],
-                model: this.model
+                model: new TaxiHail.Order
             }).render();
         },
 
@@ -44,9 +45,13 @@
         book: function () {
             account.fetch({
                 success: function (model) {
-                    renderView(TaxiHail.BookView, new TaxiHail.Order({
+                    var model = new TaxiHail.Order({
                         settings: model.get('settings')
-                    }));
+                    });
+
+                    mapView.setModel(model);
+
+                    renderView(TaxiHail.BookView, model);
                 }
             });
             
@@ -71,6 +76,7 @@
                 this.navigate('signupconfirmation', { trigger: true });
 
             }, this);
+
             renderView(TaxiHail.SignupView, model);
         }
 

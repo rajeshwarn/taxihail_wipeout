@@ -9,6 +9,15 @@
     TaxiHail.MapView = Backbone.View.extend({
         
         initialize: function () {
+            
+        },
+
+        setModel: function(model) {
+            if(this.model) {
+                this.model.off(null, null, this);
+            }
+            this.model = model;
+
             this.model.on('change:pickupAddress', function (model, value) {
                 var location = new google.maps.LatLng(value.latitude, value.longitude);
                 if (pickupPin) {
@@ -40,11 +49,9 @@
 
             };
             map = new google.maps.Map(this.el, mapOptions);
-
             this.geolocalize();
-            
-            var _map = new google.maps.Map(this.el, mapOptions);
 
+            return this;
 
         },
         
@@ -93,7 +100,7 @@
             }
             map.setCenter(initialLocation);
         }
-        }
+        
         
     });
 
