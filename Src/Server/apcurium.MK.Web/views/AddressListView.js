@@ -1,6 +1,6 @@
 (function(){
 
-    TaxiHail.FavoriteAddressesView = Backbone.View.extend({
+    TaxiHail.AddressListView = Backbone.View.extend({
 
         tagName: 'ul',
 

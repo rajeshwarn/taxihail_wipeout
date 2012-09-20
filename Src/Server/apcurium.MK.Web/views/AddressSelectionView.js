@@ -33,7 +33,7 @@
             favorites: function() {
 
                 var addresses = new TaxiHail.AddressCollection(),
-                    view = new TaxiHail.FavoriteAddressesView({
+                    view = new TaxiHail.AddressListView({
                         collection: addresses
                     });
 
@@ -49,7 +49,36 @@
             },
 
             search: function() {
-                this.$('.tab-content').html(new TaxiHail.AddressSearchView().render().el);
+
+                var addresses = new TaxiHail.AddressCollection(),
+                    view = new TaxiHail.AddressSearchView({
+                        collection: addresses
+                    });
+
+                addresses.on('selected', function (model, collection) {
+
+                    if(!model.get('fullAddress'))
+                    {
+                        TaxiHail.geocoder.geocode(model.get('latitude'), model.get('longitude'))
+                            .done(function(result){
+                                if(result.addresses && result.addresses.length)
+                                {
+                                    model.set({
+                                        fullAddress: result.addresses[0].fullAddress
+                                    });
+                                }
+
+                            })
+                            .always(_.bind(function(){
+                                this.trigger('selected', model, collection);
+                            }, this));
+                    } else {
+                        this.trigger('selected', model, collection);
+                    } 
+                    
+                }, this);
+
+                this.$('.tab-content').html(view.render().el);
             },
 
             places: function() {

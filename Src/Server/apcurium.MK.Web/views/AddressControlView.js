@@ -7,6 +7,11 @@
             'click [data-action=select-address]': 'selectAddress'
         },
 
+        initialize: function() {
+
+            this.model.on('change', this.render, this);
+
+        },
 
         render: function() {
 
