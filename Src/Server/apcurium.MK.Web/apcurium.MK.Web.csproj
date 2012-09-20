@@ -259,7 +259,9 @@
     <Content Include="assets\bootstrap\less\tests\css-tests.html" />
     <Content Include="assets\bootstrap\less\tests\forms.html" />
     <Content Include="assets\bootstrap\less\tests\navbar.html" />
+    <Content Include="assets\js\backbone-validation.js" />
     <Content Include="assets\js\backbone.js" />
+    <Content Include="assets\js\backbone.validation.bootstrap.js" />
     <Content Include="assets\js\handlebars-1.0.rc.1.js" />
     <Content Include="assets\js\underscore.js" />
     <Content Include="collections\AddressCollection.js" />
@@ -269,11 +271,14 @@
     <Content Include="log4net.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="models\NewAccount.js" />
+    <Content Include="models\Settings.js" />
     <Content Include="models\UserAccount.js" />
     <Content Include="models\Address.js" />
     <Content Include="models\Order.js" />
     <Content Include="routers\app.js" />
     <Content Include="services\AuthService.js" />
+    <Content Include="services\GeocodingService.js" />
     <Content Include="services\LocalStorageService.js" />
     <Content Include="taxi-hail.js" />
     <Content Include="templates\AddressControl.html" />
@@ -285,18 +290,20 @@
     <Content Include="templates\home.html" />
     <Content Include="templates\login.html" />
     <Content Include="templates\SettingsEdit.html" />
+    <Content Include="templates\Signup.html" />
     <Content Include="utils.js" />
     <Content Include="views\AddressControlView.js" />
     <Content Include="views\AddressItemView.js" />
+    <Content Include="views\AddressListView.js" />
     <Content Include="views\AddressSearchView.js" />
     <Content Include="views\AddressSelectionView.js" />
     <Content Include="views\BookingConfirmationView.js" />
     <Content Include="views\BookView.js" />
-    <Content Include="views\FavoriteAddressesView.js" />
     <Content Include="views\HomeView.js" />
     <Content Include="views\LoginView.js" />
     <Content Include="views\MapView.js" />
     <Content Include="views\SettingsEditView.js" />
+    <Content Include="views\SignupView.js" />
     <Content Include="views\TemplatedView.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -504,6 +511,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="localization\BookingConfirmation.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="localization\Signup.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="localization\SettingsEdit.json" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

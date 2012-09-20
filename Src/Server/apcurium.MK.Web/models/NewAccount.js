@@ -3,14 +3,33 @@
     TaxiHail.NewAccount = Backbone.Model.extend({
         
         url: "api/account/register",
-       
-        validate: function (attrs) {
-            var errors = [];
-            if (!attrs.email) errors.push({ errorCode: 'error.EmailRequired' });
-            
-            if (errors.length) return { errors: errors };
-        }
 
+        defaults: {
+    		"email":  null,
+    		"phone":  null,
+    		"fullname":  null,
+    		"password":  null,
+    		"confirmPassword":  null
+  		},
+
+
+        validation: {
+		    fullname: {
+		      required: true
+		    },
+		    phone: {
+		      required: true
+		    },
+		    email: {
+		      pattern: 'email'
+		    },
+		    password: {
+		      required: true
+		    },
+		    confirmPassword:{
+		    	equalTo: 'password'
+		    }
+		}
     });
 
 })();

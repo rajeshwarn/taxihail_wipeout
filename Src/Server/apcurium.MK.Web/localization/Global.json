@@ -1,10 +1,12 @@
 ﻿{
 	"Invalid UserName or Password" : "Invalid UserName or Password",
+	"error.Required" : "{0} is required",
+	"error.Pattern" : "{0} must be a valid {1}",
+	"error.EqualTo" : "{0} must be the same as {1}",
 	"error.NameRequired" : "The name is required",
 	"error.PhoneRequired" : "The phone is required",
 	"error.PassengersRequired" : "The number of passengers is required",
 	"error.VehicleTypeRequired" : "The vehicule type is required",
-	"error.ChargeTypeRequired" : "The charge type is required",
-	"error.EmailRequired" : "The email is required",
+	"error.ChargeTypeRequired" : "The charge type is required",	
 	"CreateAccount_AccountAlreadyExist" : "An account is already registered with this email address."
 }

@@ -5,17 +5,26 @@
         
         events: {
             "submit": "onsubmit",
-            "change :text": "onPropertyChanged"
+            "change :text": "onPropertyChanged",
+            "change :password": "onPropertyChanged"
         },
         
         initialize:function () {
             this.$el.addClass('form-horizontal');
-            this.model = new TaxiHail.NewAccount();
+            this.model = new TaxiHail.NewAccount();            
             _.bindAll(this, "onerror", "onsuccess");
         },
 
         render: function () {
             this.$el.html(this.renderTemplate());
+
+            _.extend(Backbone.Validation.messages, {
+              required: this.localize('error.Required'),
+              pattern: this.localize('error.Pattern'),
+              equalTo: this.localize('error.EqualTo')
+            });
+            
+            Backbone.Validation.bind(this);
             return this;
         },
         
@@ -27,22 +36,17 @@
         onsubmit: function (e) {
             e.preventDefault();
             this.$('.errors').empty();
-            this.model.save({}, { error: this.onerror, success: this.onsuccess });
+            this.model.save({}, { error: this.onerror, success: this.onsuccess });           
         },
         
-        onerror: function (model, result) {
-            var $alert = $('<div class="alert alert-error" />');
-            //local validation error
-            if (result.errors) {
-               _.each(result.errors, function (error) {
-                    $alert.append($('<div />').text(this.localize(error.errorCode)));
-                }, this);
-               
-            } else {
-                $alert.text(this.localize(result.statusText));
-            }
-             
-            this.$('.errors').html($alert);
+        onerror: function (model, result) {           
+            //server validation error
+            if (result.statusText) {
+               var $alert = $('<div class="alert alert-error" />');
+               $alert.text(this.localize(result.statusText));
+               this.$('.errors').html($alert);
+            }              
+            
         },
         onsuccess: function () { }
         

@@ -1,11 +1,35 @@
 ﻿
 <legend>Legend</legend>
 <div class="errors"></div>
-
 <div class="control-group">
     <label class="control-label" for="signup-email">{{localize "Email"}}</label>
     <div class="controls">
-        <input type="text" id="signup-email" name="email" value="">
+        <input type="text" id="email" name="email" value="" data-error-style="inline">
     </div>
+</div>
+</div>
+<div class="control-group">
+    <label class="control-label" for="signup-fullname">{{localize "FullName"}}</label>
+    <div class="controls">
+        <input type="text" id="signup-fullname" name="fullname" value="" data-error-style="inline">
+    </div>
+</div>
+<div class="control-group">
+    <label class="control-label" for="signup-phone">{{localize "Phone"}}</label>
+    <div class="controls">
+        <input type="text" id="signup-phone" name="phone" value="" data-error-style="inline">
+    </div>
+</div>
+<div class="control-group">
+    <label class="control-label" for="signup-password">{{localize "Password"}}</label>
+    <div class="controls">
+        <input type="password" id="signup-password" name="password" value="" data-error-style="inline">
+    </div>
+</div>
+<div class="control-group">
+    <label class="control-label" for="signup-confirm-password">{{localize "ConfirmPassword"}}</label>
+    <div class="controls">
+        <input type="password" id="signup-confirm-password" name="confirmPassword" value="" data-error-style="inline">
+    </div>    
 </div>
 <button type="submit" class="btn btn-primary">Create</button>
