@@ -12,7 +12,7 @@ using apcurium.MK.Booking.Mobile.ListViewStructure;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-	public partial class HistoryTabView : UIViewController, ITaxiViewController, ISelectableViewController, IRefreshableViewController
+	public partial class HistoryTabView : UIViewController
 	{
 		#region Constructors
 
@@ -21,21 +21,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		public HistoryTabView (IntPtr handle) : base(handle)
 		{
-			Initialize ();
 		}
 
 		[Export("initWithCoder:")]
 		public HistoryTabView (NSCoder coder) : base(coder)
 		{
-			Initialize ();
 		}
 
 		public HistoryTabView () : base("HistoryTabView", null)
-		{
-			Initialize ();
-		}
-
-		void Initialize ()
 		{
 		}
 
@@ -59,11 +52,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			return Resources.HistoryViewTitle;
 		}
 
-		public UIView GetTopView ()
-		{
-			return null;
-		}
-
 		public override void ViewWillAppear (bool animated)
 		{
 			base.ViewWillAppear (animated);
@@ -74,16 +62,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public override void ViewDidAppear (bool animated)
 		{
 			base.ViewDidAppear (animated);
-			RefreshData();
-		}
-
-		public void RefreshData ()
-		{
-			LoadGridData ();
-		}
-		public void Selected ()
-		{
-			LoadGridData ();
+			LoadGridData();
 		}
 
 		private void LoadGridData ()

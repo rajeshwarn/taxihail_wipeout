@@ -19,6 +19,9 @@ using System.Threading;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Navigation;
 using apcurium.MK.Booking.Mobile.ViewModels;
+using Cirrious.MvvmCross.Binding.Touch.Views;
+using Cirrious.MvvmCross.Views;
+using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -28,7 +31,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         
     }
 
-    public partial class LoginView : UIViewController
+	public partial class LoginView : MvxBindingTouchViewController<LoginViewModel>
     {
 
 
@@ -36,22 +39,23 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         // The IntPtr and initWithCoder constructors are required for items that need 
         // to be able to be created from a xib rather than from managed code
-
-        public LoginView(IntPtr handle) : base(handle)
-        {
-            Initialize();
-        }
-
-        [Export("initWithCoder:")]
-        public LoginView(NSCoder coder) : base(coder)
-        {
-            Initialize();
-        }
-
-        public LoginView() : base("LoginView", null)
-        {
-            Initialize();
-        }
+		public LoginView() 
+			: base(new MvxShowViewModelRequest<LoginViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
+		{
+			Initialize();
+		}
+		
+		public LoginView(MvxShowViewModelRequest request) 
+			: base(request)
+		{
+			Initialize();
+		}
+		
+		public LoginView(MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
+			: base(request, nibName, bundle)
+		{
+			Initialize();
+		}
 
         void Initialize()
         {
@@ -68,9 +72,16 @@ namespace apcurium.MK.Booking.Mobile.Client
             base.ViewDidDisappear(animated);            
         }
 
+		public override void ViewWillAppear (bool animated)
+		{
+			base.ViewWillAppear (animated);
+			NavigationController.NavigationBar.Hidden = true;
+		}
+
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated); 
+
             TinyIoCContainer.Current.Resolve<IFacebookService>().ConnectionStatusChanged -= HandleFbConnectionStatusChanged;
             TinyIoCContainer.Current.Resolve<IFacebookService>().ConnectionStatusChanged += HandleFbConnectionStatusChanged;
              
@@ -85,14 +96,15 @@ namespace apcurium.MK.Booking.Mobile.Client
              
             View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background_full.png"));
             
-            if (AppContext.Current.LastEmailUsed.HasValue())
+            if (AppContext.Current.LastEmail.HasValue())
             {
-                txtEmail.Text = AppContext.Current.LastEmailUsed;
+                txtEmail.Text = AppContext.Current.LastEmail;
             }
 
             var btnSignIn = AppButtons.CreateStandardButton(new RectangleF(25, 179, 120, 37), Resources.SignInButton, AppStyle.ButtonColor.Black);
             View.AddSubview(btnSignIn);
-            btnSignIn.TouchUpInside += SignInClicked;
+            
+			//btnSignIn.TouchUpInside += SignInClicked;
 
             var btnSignUp = AppButtons.CreateStandardButton(new RectangleF(175, 179, 120, 37), Resources.SignUpButton, AppStyle.ButtonColor.Black);
             View.AddSubview(btnSignUp);
@@ -162,16 +174,16 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             //txtEmail.BecomeFirstResponder();
 
+			this.AddBindings(new Dictionary<object, string>() {
+				{ btnSignIn, "{'TouchUpInside':{'Path':'SignInCommand'}}"},
+				{ this.View, "{'UserInteractionEnabled':{'Path':'UserInteractionEnabled'}}"},
+				{ txtEmail, "{'Text':{'Path':'Email'}}"},
+				{ txtPassword, "{'Text':{'Path':'Password'}}"},
+			});
         }
 
         void ChangeServerTouchUpInside(object sender, EventArgs e)
         {
-
-
-
-       
-
-
             var popup = new UIAlertView(){AlertViewStyle = UIAlertViewStyle.PlainTextInput};
             popup.Title = "Server Url";
             popup.GetTextField(0).Text = TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl;
@@ -241,7 +253,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                                 }
                                 if (account != null)
                                 {
-                                    SetAccountInfo(account);
+									ViewModel.SetAccountInfo(account);
                                 }
                             }
                             catch
@@ -293,71 +305,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             this.PresentModalViewController(nav, true);
         }
 
-        private void SetAccountInfo(Account account)
-        {
-            AppContext.Current.LastEmailUsed = txtEmail.Text;
-            AppContext.Current.LoggedInEmail = txtEmail.Text;
-            InvokeOnMainThread(() => AppContext.Current.UpdateLoggedInUser(account, false));
-            InvokeOnMainThread(() => this.DismissModalViewControllerAnimated(true));
-			InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<INavigationService>().Navigate<BookViewModel,BookView>());
-            if (AppContext.Current.Controller.SelectedRefreshableViewController != null)
-            {
-                AppContext.Current.Controller.View.InvokeOnMainThread(() => 
-                {
-                    AppContext.Current.Controller.SelectedRefreshableViewController.RefreshData();
-                }
-                );
-            }
-        }
 
-        void SignInClicked(object sender, EventArgs e)
-        {
 
-            try
-            {
-                AppContext.Current.SignOutUser();
-                LoadingOverlay.StartAnimatingLoading(this.View, LoadingOverlayPosition.Center, null, 130, 30);
-                ThreadHelper.ExecuteInThread(() =>
-                {
-                    try
-                    {
-                        
-                        InvokeOnMainThread(() => this.View.UserInteractionEnabled = false);
-                        var service = TinyIoCContainer.Current.Resolve<IAccountService>();
-                        string error = "";                      
-                        var account = service.GetAccount(txtEmail.Text, txtPassword.Text, out error);
-                        if (account != null)
-                        {
-                            SetAccountInfo(account);
-							//AppContext.Current.ServerName = TinyIoCContainer.Current.Resolve<IApplicationInfoService>().GetServerName();
-                        }
-                        else
-                        {
-                            if (error.IsNullOrEmpty())
-                            {
-                                MessageHelper.Show(Resources.InvalidLoginMessageTitle, Resources.AccountNotValidatedMessage, Resources.ResendValidationButton, () => service.ResendConfirmationEmail(txtEmail.Text));
-                            }
-                            else
-                            {
-                                MessageHelper.Show(Resources.InvalidLoginMessageTitle, Resources.InvalidLoginMessage + " (" + error + ")");
-                            }
-                        }
-                        
-                    }
-                    finally
-                    {
-                        InvokeOnMainThread(() => this.View.UserInteractionEnabled = true);
-                        LoadingOverlay.StopAnimatingLoading(this.View);
-                    }
-                }
-                );
-            }
-            finally
-            {
-                
-            }
 
-        }
         #endregion
 
         private void FacebookLogin(object sender, EventArgs e)
@@ -393,7 +343,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
                 try
                 {
-                    AppContext.Current.SignOutUser();
+                    AppContext.Current.SignOut();
                     ThreadHelper.ExecuteInThread(() =>
                     {
                         try
@@ -407,7 +357,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                             var account = service.GetFacebookAccount(data.FacebookId, out error);
                             if (account != null)
                             {
-                                SetAccountInfo(account);
+                                ViewModel.SetAccountInfo(account);
                             }
                             else
                             {
@@ -455,7 +405,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         
                 try
                 {
-                    AppContext.Current.SignOutUser();
+                    AppContext.Current.SignOut();
                     ThreadHelper.ExecuteInThread(() =>
                     {
                         try
@@ -467,7 +417,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                             Account account = service.GetTwitterAccount(data.TwitterId, out error);
                             if (account != null)
                             {
-                                SetAccountInfo(account);
+								ViewModel.SetAccountInfo(account);
                             }
                             else
                             {

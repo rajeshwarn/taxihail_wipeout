@@ -105,9 +105,9 @@ namespace apcurium.MK.Booking.Mobile.Client
                 
                 mapStatus.Delegate = new AddressMapDelegate();
                 
-                var view = AppContext.Current.Controller.GetTitleView(null, Resources.StatusViewTitle);
+//                var view = AppContext.Current.Controller.GetTitleView(null, Resources.StatusViewTitle);
                 
-                this.NavigationItem.TitleView = view;
+				this.NavigationItem.TitleView = new TitleView(null, Resources.StatusViewTitle);
 
 				View.BringSubviewToFront( bottomBar );
             

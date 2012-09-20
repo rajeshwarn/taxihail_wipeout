@@ -24,13 +24,24 @@
 
         initialize: function () {
             TaxiHail.auth.on('loggedIn', function() {
-                this.navigate('', { trigger: true });
+                this.navigate('book', { trigger: true });
             }, this);
 
             mapView = new TaxiHail.MapView({
                 el: $('.map-zone')[0],
                 model: new TaxiHail.Order
             }).render();
+            
+            TaxiHail.auth.on('loggedOut', function () {
+                // Clear user account and refetch to trigger redirection to login
+                account.clear();
+                account.fetch();
+
+            });
+            
+            $('.login-status-zone').html(new TaxiHail.LoginStatusView({
+                model: account
+            }).el);
         },
 
         home: function () {

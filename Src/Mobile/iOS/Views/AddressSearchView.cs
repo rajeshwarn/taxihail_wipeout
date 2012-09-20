@@ -16,7 +16,7 @@ using Cirrious.MvvmCross.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-	public partial class AddressSearchView : MvxBindingTouchViewController<AddressSearchViewModel>, ITaxiViewController, ISelectableViewController, IRefreshableViewController
+	public partial class AddressSearchView : MvxBindingTouchViewController<AddressSearchViewModel>
 	{
 		private const string CELLID = "AdressCell";
 

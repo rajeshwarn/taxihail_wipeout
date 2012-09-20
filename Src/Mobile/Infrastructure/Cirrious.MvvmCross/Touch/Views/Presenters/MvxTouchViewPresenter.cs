@@ -72,6 +72,12 @@ namespace Cirrious.MvvmCross.Touch.Views.Presenters
         {
             var topViewController = _masterNavigationController.TopViewController;
 
+			foreach( var c in _masterNavigationController.ViewControllers )
+			{
+				var t = c.Title.ToString();
+				t.ToString();
+			}
+
             if (topViewController == null)
             {
                 MvxTrace.Trace(MvxTraceLevel.Warning, "Don't know how to close this viewmodel - no topmost");
