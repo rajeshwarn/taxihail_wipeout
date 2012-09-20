@@ -7,10 +7,11 @@
     TaxiHail.MapView = Backbone.View.extend({
         
         initialize: function () {
+        },
             
             
-            this.$el.addClass('map-canvas');
-            
+render: function() {
+
             var mapOptions = {
                 zoom: 8,
                 center: new google.maps.LatLng(-34.397, 150.644),

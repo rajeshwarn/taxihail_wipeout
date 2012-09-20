@@ -12,7 +12,7 @@
         render: function () {
             this.$el.html(this.renderTemplate());
 
-            this.show.favorites.call(this);
+            this.show.search.call(this);
 
             return this;
         },
@@ -20,10 +20,10 @@
         selectTab: function(e) {
             e.preventDefault();
 
-            var tabName = $(e.currentTarget).parent('li').data().tab;
+            var $tab = $(e.currentTarget).parent('li'),
+                tabName = $tab.data().tab;
 
-            this.$('li').removeClass('active');
-            $(e.currentTarget).parent('li').addClass('active');
+            $tab.addClass('active').siblings().removeClass('active');
 
             this.show[tabName].call(this);
 
