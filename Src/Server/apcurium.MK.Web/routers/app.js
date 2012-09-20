@@ -7,6 +7,8 @@
 
         $('#main').html(view.el);
 
+        return view;
+
     }, account = new TaxiHail.UserAccount();
 
     TaxiHail.App = Backbone.Router.extend({
@@ -30,9 +32,9 @@
         book: function () {
             account.fetch({
                 success: function (model) {
-                    renderView(TaxiHail.BookView, new TaxiHail.Order({
+                    var view = renderView(TaxiHail.BookView, new TaxiHail.Order({
                         settings: model.get('settings')
-                    }));
+                    })).renderMap();
                 }
             });
             
@@ -51,6 +53,7 @@
         login: function () {
             renderView(TaxiHail.LoginView);
         }
+
     });
 
 }());
