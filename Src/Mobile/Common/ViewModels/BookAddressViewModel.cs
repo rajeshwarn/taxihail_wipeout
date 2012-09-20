@@ -204,7 +204,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-
                 return new MvxRelayCommand(() =>
                 {
                     IsExecuting = true;
@@ -228,9 +227,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                 {
                                     ClearAddress();
                                 }
-
-
-
                             }
                         }
                         finally

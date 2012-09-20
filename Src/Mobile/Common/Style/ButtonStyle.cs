@@ -12,7 +12,9 @@ namespace apcurium.MK.Booking.Mobile.Style
 
         public ColorDefinition[] Colors{get;set;}
 
-        public ColorDefinition StrokeColor{get;set;}
+		public ColorDefinition[] SelectedColors{get;set;}
+        
+		public ColorDefinition StrokeColor{get;set;}
 
 		public float StrokeLineWidth{get; set;}
 

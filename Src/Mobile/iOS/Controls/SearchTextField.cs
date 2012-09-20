@@ -26,9 +26,9 @@ namespace apcurium.MK.Booking.Mobile.Client
         private void Initialize()
         {
 			this.EditingChanged += delegate {
-				if ((TextChangedCommand != null) && (TextChangedCommand.CanExecute()))
+				if ( TextChangedCommand != null && TextChangedCommand.CanExecute() )
 				{
-					TextChangedCommand.Execute();
+					TextChangedCommand.Execute( this.Text );
 				}			
 			};
         }

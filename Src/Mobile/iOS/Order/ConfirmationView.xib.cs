@@ -145,7 +145,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         private void LoadLayout()
         {
-            this.NavigationItem.TitleView = AppContext.Current.Controller.GetTitleView(null, Resources.ConfirmationViewTitle);
+            this.NavigationItem.TitleView = new TitleView(null, Resources.ConfirmationViewTitle);
         }
 
         private string FormatDateTime(DateTime? pickupDate, DateTime? pickupTime)

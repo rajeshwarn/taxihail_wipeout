@@ -27,7 +27,7 @@ using System.IO;
  
 namespace apcurium.MK.Booking.Mobile.Client
 {
-    public partial class BookView : MvxBindingTouchViewController<BookViewModel>, ITaxiViewController, ISelectableViewController, IRefreshableViewController
+    public partial class BookView : MvxBindingTouchViewController<BookViewModel>
     {
         #region Constructors
 
@@ -42,18 +42,16 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
         }
 
-        protected BookView(MvxShowViewModelRequest request) 
+		public BookView(MvxShowViewModelRequest request) 
             : base(request)
         {
         }
         
-        protected BookView(MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
+		public BookView(MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
             : base(request, nibName, bundle)
         {
         }
 
-
-        
         public CreateOrder BookingInfo
         {
             get { return ViewModel.Order; }
@@ -64,7 +62,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             base.ViewDidLoad();
 
 			navBar.SetBackgroundImage(UIImage.FromFile("Assets/navBar.png"), UIBarMetrics.Default);
-			navBar.TopItem.TitleView = AppContext.Current.Controller.GetTitleView( null, "", false );
+			navBar.TopItem.TitleView = new TitleView( null, "", false );
 
 			bookView.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
 			_menu = new PanelMenuView( bookView, this.NavigationController );
@@ -76,14 +74,13 @@ namespace apcurium.MK.Booking.Mobile.Client
             AppButtons.FormatStandardButton((GradientButton)dropoffButton, "", AppStyle.ButtonColor.Grey, "");
             AppButtons.FormatStandardButton((GradientButton)pickupButton, "", AppStyle.ButtonColor.Grey );
 
-            AppButtons.FormatStandardButton((GradientButton)dropoffActivationButton, "", AppStyle.ButtonColor.Grey, "");
-            AppButtons.FormatStandardButton((GradientButton)pickupActivationButton, "", AppStyle.ButtonColor.Grey );
+            AppButtons.FormatStandardButton((GradientButton)dropoffActivationButton, "", AppStyle.ButtonColor.LightBlue, "");
+            AppButtons.FormatStandardButton((GradientButton)pickupActivationButton, "", AppStyle.ButtonColor.LightBlue );
             ((GradientButton)dropoffActivationButton).SetImage( "Assets/location.png" );
             ((GradientButton)pickupActivationButton).SetImage( "Assets/location.png" );
 
             ((GradientButton)dropoffActivationButton).SetSelectedImage( "Assets/locationSelected.png" );
             ((GradientButton)pickupActivationButton).SetSelectedImage( "Assets/locationSelected.png" );
-
 
             headerBackgroundView.Image =UIImage.FromFile("Assets/backPickupDestination.png");
 
@@ -92,7 +89,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             AppButtons.FormatStandardButton((GradientButton)bookBtn, Resources.BookItButton, AppStyle.ButtonColor.Green);
             bookBtn.TouchUpInside += BookitButtonTouchUpInside;
-
 
             UIImageView img = new UIImageView(UIImage.FromFile("Assets/location.png"));
             img.BackgroundColor = UIColor.Clear;
@@ -103,44 +99,15 @@ namespace apcurium.MK.Booking.Mobile.Client
             bottomBar.UserInteractionEnabled = true;
             bookView.BringSubviewToFront(bottomBar);
             bookView.BringSubviewToFront(bookBtn);
-           
-
-
 
             this.AddBindings(new Dictionary<object, string>()                            {
-                { refreshCurrentLocationButton, "{'TouchUpInside':{'Path':'RequestCurrentLocationCommand'}}"},                
+                { refreshCurrentLocationButton, "{'TouchUpInside':{'Path':'SelectedAddress.RequestCurrentLocationCommand'}}"},                
                 { pickupActivationButton, "{'TouchUpInside':{'Path':'ActivatePickup'},'Selected':{'Path':'PickupIsActive', 'Mode':'TwoWay'}}"},                
                 { dropoffActivationButton, "{'TouchUpInside':{'Path':'ActivateDropoff'},'Selected':{'Path':'DropoffIsActive', 'Mode':'TwoWay'}}"},       
 				{ pickupButton, "{'TouchUpInside':{'Path':'Pickup.PickAddress'},'TextLine1':{'Path':'Pickup.Title', 'Mode':'TwoWay'}, 'TextLine2':{'Path':'Pickup.Display', 'Mode':'TwoWay'}, 'IsSearching':{'Path':'Pickup.IsExecuting', 'Mode':'TwoWay'}, 'IsPlaceholder':{'Path':'Pickup.IsPlaceHolder', 'Mode':'TwoWay'} }"},  
 				{ dropoffButton, "{'TouchUpInside':{'Path':'Dropoff.PickAddress'},'TextLine1':{'Path':'Dropoff.Title', 'Mode':'TwoWay'}, 'TextLine2':{'Path':'Dropoff.Display', 'Mode':'TwoWay'}, 'IsSearching':{'Path':'Dropoff.IsExecuting', 'Mode':'TwoWay'}, 'IsPlaceholder':{'Path':'Dropoff.IsPlaceHolder', 'Mode':'TwoWay'} }"},             
 
             });
-        }
-
-       
-
-        void HandleTouchUpInside(object sender, EventArgs e)
-        {           
-            //_settingsBar._mainBtn.Frame = new RectangleF(0, 50, 40, 33);
-        }
-
-        void HandleSettingsButtonClicked(int index)
-        {
-//          InvokeOnMainThread (() => {
-//              switch( index )
-//              {
-//              case 0:
-//                  AppContext.Current.Controller.SelectViewController( 3 );
-//                  break;
-//              case 1:
-//                  AppContext.Current.Controller.SelectViewController( 2 );
-//                  break;
-//              case 2:
-//                  AppContext.Current.Controller.SelectViewController( 1 );
-//                  break;
-//              }
-//
-//          });
         }
 
         public override void ViewWillAppear(bool animated)
@@ -165,11 +132,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
         }
 
-        public string GetTitle()
-        {
-            return "";
-        }
-        
         void BookitButtonTouchUpInside(object sender, EventArgs e)
         {
             BookTaxi();
@@ -281,11 +243,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
         }
 
-        public void RefreshData()
-        {
-            Selected();
-        }
-
         public void BookTaxi()
         {
             if (BookingInfo == null)
@@ -353,16 +310,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             });
         }
 
-        public bool IsTopView
-        {
 
-            get { return this.NavigationController.TopViewController is BookView; }
-        }
 
-        public UIView GetTopView()
-        {
-            return null;
-        }
 
         private void CreateOrder(CreateOrder bi)
         {

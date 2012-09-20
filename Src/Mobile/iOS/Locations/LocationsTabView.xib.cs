@@ -21,7 +21,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		FavoritesSelector,
 		NearbyPlacesSelector
 	}
-	public partial class LocationsTabView : UIViewController , ITaxiViewController, ISelectableViewController,IRefreshableViewController
+	public partial class LocationsTabView : UIViewController
 	{
 //		private TableView _tableLocations;
 		public event EventHandler Canceled;
@@ -33,38 +33,18 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		public LocationsTabView (IntPtr handle) : base(handle)
 		{
-			Initialize ();
 		}
 
 		[Export("initWithCoder:")]
 		public LocationsTabView (NSCoder coder) : base(coder)
 		{
-			Initialize ();
 		}
 
 		public LocationsTabView () : base("LocationsTabView", null)
 		{
 			Mode = LocationsTabViewMode.Edit;
-			Initialize ();
 		}
 
-
-
-		void Initialize ()
-		{
-
-		}
-		
-		public UIView GetTopView()
-		{
-			return null;
-		}
-		
-		public string GetTitle()
-		{
-			return  Resources.LocationViewTitle;
-		}
-		
 		public LocationsTabViewMode Mode { get; set; }
 
 
@@ -80,9 +60,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 			if (Mode == LocationsTabViewMode.Edit) {
 				View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
-								
-				
-			} else {
+			} 
+			else
+			{
 				//View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background_full.png"));
 				View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
 				NavigationItem.RightBarButtonItem = new UIBarButtonItem( UIBarButtonSystemItem.Cancel , CanceledTouchUpInside );
@@ -93,17 +73,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 //			lblTitle.Text = "";
 
 			tableLocations.SectionHeaderHeight = 33;
-			Layout();
 			LoadGridData ();
-
-
-			
+	
 		}
 
 		public override void ViewWillAppear (bool animated)
 		{
 			base.ViewWillAppear (animated);
-
 			NavigationController.NavigationBar.Hidden = false;
 		}
 
@@ -112,23 +88,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			if (Canceled != null) {
 				Canceled (this, EventArgs.Empty);
 			}
-		}
-		
-		
-		public void RefreshData()
-		{
-			LoadGridData ();
-		}
-		
-			
-		public void Selected ()
-		{
-			LoadGridData ();
-		}
-
-		private void Layout()
-		{
-
 		}
 
 		private void LoadGridData ()
