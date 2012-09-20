@@ -29,10 +29,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 			BackgroundColor = UIColor.Clear;
 		}
 
-		public SegmentedButton AddButton( string title )
+		public SegmentedButton AddButton( string title, string tag )
 		{
 			var btnWidth = this.Frame.Width / (_buttons.Count + 1);
-			var btn = new SegmentedButton( new RectangleF(_buttons.Count * btnWidth - (_buttons.Count == 0 ? 1 : 0), 0, btnWidth + 1, Frame.Height ), title );
+			var btn = new SegmentedButton( new RectangleF(_buttons.Count * btnWidth - (_buttons.Count == 0 ? 1 : 0), 0, btnWidth + 1, Frame.Height ), title ) { Tag2 = tag };
 
 			_buttons.ForEach( b => b.Value.Frame = new RectangleF( b.Key * btnWidth - (b.Key == 0 ? 1 : 0), 0, btnWidth + (b.Key == 0 || b.Key == _buttons.Count ? 1 : 0), Frame.Height ) );
 

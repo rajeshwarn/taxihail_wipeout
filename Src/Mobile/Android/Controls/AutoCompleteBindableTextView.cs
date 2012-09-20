@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             base.OnTextChanged(text, start, before, after);
             if ((TextChangedCommand != null) && (TextChangedCommand.CanExecute()))
             {
-                TextChangedCommand.Execute();
+                TextChangedCommand.Execute(text != null ? text.ToString() : null);
             }
         }
 

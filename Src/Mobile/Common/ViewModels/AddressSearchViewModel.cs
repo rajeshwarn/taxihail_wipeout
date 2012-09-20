@@ -64,9 +64,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return new MvxRelayCommand(() =>
-                {   
-                    SearchViewModelSelected.Criteria = Criteria;
+                return new MvxRelayCommand<string>(criteria =>
+                {
+                    SearchViewModelSelected.Criteria = criteria != null ? criteria.ToLowerInvariant() : null;
 
                     if (!SearchViewModelSelected.CriteriaValid)
                     {
@@ -106,6 +106,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 InvokeOnMainThread(() =>
                 {
+                    IsSearching = false;
                     AddressViewModels = task.Result.Where(x => !x.Address.IsHistoric).ToList();
                     HistoricAddressViewModels = task.Result.Where(x => x.Address.IsHistoric).ToList();
                     HistoricIsHidden = !HistoricAddressViewModels.Any();
@@ -114,9 +115,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     FirePropertyChanged(() => HistoricAddressViewModels);
                     FirePropertyChanged(() => HistoricIsHidden);
                 });
-                IsSearching = false;
             }
-            
         }
 
         private void ClearResults()
@@ -171,8 +170,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     SearchViewModelSelected = TinyIoCContainer.Current.Resolve<AddressSearchByFavoritesViewModel>();
 		            break;
 		        case TopBarButton.ContactsBtn:
-		            Criteria = null;
-                    SearchViewModelSelected = TinyIoCContainer.Current.Resolve<AddressSearchByContactViewModel>();
+		            SearchViewModelSelected = TinyIoCContainer.Current.Resolve<AddressSearchByContactViewModel>();
 		            break;
 		        case TopBarButton.PlacesBtn:
                     SearchViewModelSelected = TinyIoCContainer.Current.Resolve<AddressSearchByPlacesViewModel>();
@@ -186,7 +184,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             ContactsSelected = btn == TopBarButton.ContactsBtn;
             PlacesSelected = btn == TopBarButton.PlacesBtn;
             
-            SearchCommand.Execute();
+            //SearchCommand.Execute(Criteria);
+		    Criteria = null;
 		}
 
         public IMvxCommand SelectedChangedCommand
