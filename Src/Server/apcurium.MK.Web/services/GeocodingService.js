@@ -3,10 +3,18 @@
 (function () {
 
     TaxiHail.geocoder = {
-        geocode: function (address) {
+        geocode: function (addressOrLat, lng) {
 
-            return $.get('api/searchlocation', { name: address, lat: 45.516667, lng: -73.65 }, function(){}, 'json');
-        }
+            if(arguments.length > 1) {
+                // Assume parameters are latitude and longitude
+                return $.get('api/geocode', { lat: addressOrLat, lng: lng }, function(){}, 'json');
+            }
+            else {
+                // Assume parameter is an address
+                return $.get('api/searchlocation', { name: addressOrLat, lat: 45.516667, lng: -73.65 }, function(){}, 'json');
+            }
+        },
+
     };
 
 
