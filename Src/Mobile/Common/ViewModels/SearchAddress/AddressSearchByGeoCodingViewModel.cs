@@ -21,13 +21,5 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.SearchAddress
             var addresses = _geolocService.SearchAddress(Criteria, position.Latitude, position.Longitude);
             return addresses.Select(a => new AddressViewModel() { Address = a, ShowPlusSign = false, ShowRightArrow = false, IsFirst = a.Equals(addresses.First()), IsLast = a.Equals(addresses.Last()) }).ToList();
         }
-
-        public override bool CriteriaValid
-        {
-            get
-            {
-                return (Criteria.HasValue() && Criteria.Count(c => char.IsLetter(c)) >= 3);
-            }
-        }
     }
 }

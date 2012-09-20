@@ -109,12 +109,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public List<Address> GetAddressFromAddressBook(Predicate<Contact> criteria)
         {
             var contacts = new List<Address>();
-            var queryable = _addresBook.Where(c => criteria(c)).Take(50).ToList();
+            var queryable = _addresBook.Where(c => criteria(c) && c.Addresses.Any()).ToList();
 
             foreach (var contact in queryable)
             {
-                if (contact.Addresses.Any())
-                {
                     contact.Addresses.ForEach(c => contacts.Add(new Address
                                     {
                                         FriendlyName = contact.DisplayName,
@@ -124,7 +122,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                                         ZipCode = c.PostalCode,
                                         AddressType = "localContact"
                                     }));
-                }
+                
             }
             return contacts;
         }

@@ -23,12 +23,12 @@
                     .done(this.renderResults);
         },
 
-        renderResults: function(results) {
+        renderResults: function(result) {
 
             var $list = $('ul.search-results').empty();
-            _.each(results, function(result) {
+            _.each(result.addresses, function(address) {
                 $list.append(new TaxiHail.AddressItemView({
-                    model: TaxiHail.Address.fromGeocodingResult(result)
+                    model: new TaxiHail.Address(address)
                 }).render().el);
             }, this);
 
