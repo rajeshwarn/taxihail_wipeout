@@ -13,6 +13,11 @@
 
             this.$('input.search-query').on('keypress', _.debounce(this.onkeypress, 500));
 
+            new TaxiHail.AddressListView({
+                collection : this.collection,
+                el: this.$('ul.search-results')
+            });
+
             return this;
         },
 
@@ -25,12 +30,7 @@
 
         renderResults: function(result) {
 
-            var $list = $('ul.search-results').empty();
-            _.each(result.addresses, function(address) {
-                $list.append(new TaxiHail.AddressItemView({
-                    model: new TaxiHail.Address(address)
-                }).render().el);
-            }, this);
+            this.collection.reset(result.addresses);           
 
         }
 
