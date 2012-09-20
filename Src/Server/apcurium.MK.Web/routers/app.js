@@ -39,9 +39,9 @@
         book: function () {
             account.fetch({
                 success: function (model) {
-                    renderView(TaxiHail.BookView, new TaxiHail.Order({
+                    var view = renderView(TaxiHail.BookView, new TaxiHail.Order({
                         settings: model.get('settings')
-                    }));
+                    })).renderMap();
                 }
             });
             
@@ -68,6 +68,7 @@
             }, this);
             renderView(TaxiHail.SignupView, model);
         }
+
     });
 
 }());

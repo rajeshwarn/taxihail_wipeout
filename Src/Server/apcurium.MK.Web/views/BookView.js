@@ -23,10 +23,15 @@
             this.renderAddressControl('.pickup-address-container', new Backbone.Model(), this.selectPickupAddress);
             this.renderAddressControl('.drop-off-address-container', new Backbone.Model(), this.selectDropOffAddress);
 
-            /*var view = new TaxiHail.MapView({
-                el: this.$('#map-container')[0],
+            return this;
+        },
+
+        // renderMap must be called after the view is added to the DOM
+        renderMap: function() {
+            var view = new TaxiHail.MapView({
+                el: this.$('.map-container')[0],
                 model: this.model
-            });*/
+            }).render();
 
             return this;
         },
