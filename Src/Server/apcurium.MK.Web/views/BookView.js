@@ -6,13 +6,19 @@
         },
         
         initialize: function () {
+            _.bindAll(this, "renderEstimateResults");
+            //this.model.on('change', this.render, this);
+            
+
 
             this.model.on('change:pickupAddress', function(model, value) {
                 this.renderAddressControl('.pickup-address-container', new Backbone.Model(value), this.selectPickupAddress);
+                this.actualizeEstimate();
             }, this);
 
             this.model.on('change:dropOffAddress', function(model, value) {
                 this.renderAddressControl('.drop-off-address-container', new Backbone.Model(value), this.selectDropOffAddress);
+                this.actualizeEstimate();
             }, this);
             
         },
@@ -24,6 +30,25 @@
             this.renderAddressControl('.drop-off-address-container', new Backbone.Model(), this.selectDropOffAddress);
 
             return this;
+        },
+        
+        actualizeEstimate: function () {
+            if (this.model.get('pickupAddress') && this.model.get('dropOffAddress')) {
+                var pickup = this.model.get('pickupAddress');
+                var dest = this.model.get('dropOffAddress');
+                TaxiHail.directionInfo.getInfo(pickup['latitude'], pickup['longitude'], dest['latitude'], dest['longitude']).done(this.renderEstimateResults);
+            }
+           
+        },
+        
+        renderEstimateResults: function (result) {
+
+            this.model.set({
+                'priceEstimate': result.formattedPrice,
+                'distanceEstimate': result.formattedDistance
+            });
+            //TODO :
+            //this.render();
         },
 
         // renderMap must be called after the view is added to the DOM
