@@ -15,7 +15,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-	public partial class SettingsTabView : UIViewController, ITaxiViewController, ISelectableViewController, IRefreshableViewController
+	public partial class SettingsTabView : UIViewController
 	{
 		#region Constructors
 
@@ -26,27 +26,15 @@ namespace apcurium.MK.Booking.Mobile.Client
 		
 		public SettingsTabView (IntPtr handle) : base(handle)
 		{
-			Initialize ();
 		}
 
 		[Export("initWithCoder:")]
 		public SettingsTabView (NSCoder coder) : base(coder)
 		{
-			Initialize ();
 		}
 
 		public SettingsTabView () : base("SettingsTabView", null)
 		{
-			Initialize ();
-		}
-
-		void Initialize ()
-		{
-		}
-
-		public UIView GetTopView ()
-		{
-			return null;
 		}
 
 		public string GetTitle ()
@@ -100,18 +88,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			var aboutUs = new AboutUsView(  );
 			
 			this.NavigationController.PushViewController (aboutUs, true);
-		}
-
-
-		public void Selected ()
-		{
-			UpdateTextFields();	
-		}
-
-
-		public void RefreshData ()
-		{
-			UpdateTextFields();
 		}
 
 		private void UpdateTextFields()
@@ -191,7 +167,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		void SignOutTouchUpInside (object sender, EventArgs e)
 		{
-			AppContext.Current.SignOutUser ();
+			AppContext.Current.SignOut ();
 			
 			AppContext.Current.WarnEstimate = true;
 			

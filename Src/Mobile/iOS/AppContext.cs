@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         private CLLocationManager _locationManager;
 #endif
         
-        private RootTabController _controller;
+        private UINavigationController _controller;
         private CLLocation _currrentLocation;
         private Account _loggedUser;
 
@@ -99,7 +99,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
         }
         
-        public void SignOutUser()
+        public void SignOut()
         {           
             Logger.LogMessage("SignOutUser");      
             _loggedUser = null;                                             
@@ -122,7 +122,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
         }
 
-        public string LastEmailUsed
+        public string LastEmail
         {
             get { return NSUserDefaults.StandardUserDefaults.StringForKey("TaxiMobile.LastEmailUsed"); }
             set
@@ -227,7 +227,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
         }
 
-        public RootTabController Controller
+		public UINavigationController Controller
         {
             get { return _controller; }
             set { _controller = value; }
