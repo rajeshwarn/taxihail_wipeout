@@ -19,7 +19,8 @@
             "confirmationbook": "confirmationbook",
             "login": "login", // #login
             "signup": "signup", // #signup
-            "signupconfirmation": "signupconfirmation" // redirect to home after signup success
+            "signupconfirmation": "signupconfirmation", // redirect to home after signup success
+            "bookconfirmed/:id" : "bookconfirmed"
         },
 
         initialize: function () {
@@ -73,6 +74,15 @@
             }
                    
         },
+        
+        bookconfirmed: function (id) {
+            
+                renderView(TaxiHail.BookingConfirmedView, new Backbone.Model({
+                    id:id
+                }));
+           
+            },
+
         
         login: function () {
             renderView(TaxiHail.LoginView);

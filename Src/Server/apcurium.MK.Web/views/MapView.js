@@ -15,6 +15,7 @@
         },
         initialize: function () {
             _.bindAll(this, "successgeo");
+            _.bindAll(this, "successgetpos");
         },
         
         setModel: function(model) {
@@ -71,7 +72,7 @@
             // Try W3C Geolocation (Preferred)
             if (navigator.geolocation) {
                 browserSupportFlag = true;
-                navigator.geolocation.getCurrentPosition(this.successgeo,  function () {
+                navigator.geolocation.getCurrentPosition(this.successgetpos,  function () {
                     handleNoGeolocation(browserSupportFlag);
                 });
             }
@@ -83,18 +84,25 @@
             this.model.set('isLocating', false, {silent : true});
         },
         
-        successgeo : function (position) {
+        successgetpos : function (position) {
             initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 
-            map.setCenter(initialLocation);
+            /*map.setCenter(initialLocation);
             pickupPin = new google.maps.Marker({
                 position: initialLocation,
                 map: map,
-                icon : 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
+                icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
 
-            });
-            geocodeLocationAddress = TaxiHail.geocoder.geocode(position.coords.latitude, position.coords.longitude)[0];
-            this.model.set('pickupAddress', TaxiHail.geocoder.geocode(position.coords.latitude, position.coords.longitude)[0]);
+            });*/
+            TaxiHail.geocoder.geocode(position.coords.latitude, position.coords.longitude).done(this.successgeo);
+        },
+        
+        successgeo : function (result) {
+            
+                if (result.addresses && result.addresses.length) {
+                    geocodeLocationAddress = result.addresses[0];
+                    this.model.set('pickupAddress', geocodeLocationAddress);
+                }
         },
         
             addMarker : function(location, mapc, iconImage) {
