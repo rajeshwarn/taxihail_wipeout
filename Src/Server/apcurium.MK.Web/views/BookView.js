@@ -22,18 +22,37 @@
         render: function () {
             this.$el.html(this.renderTemplate(this.model.toJSON()));
 
-            this.renderAddressControl('.pickup-address-container', new Backbone.Model())
-                .model.on('change', function(model){
-                    this.model.set({
-                        pickupAddress: model.toJSON()
-                    });
-                }, this);
-            this.renderAddressControl('.drop-off-address-container', new Backbone.Model())
-                .model.on('change', function(model){
-                    this.model.set({
-                        dropOffAddress: model.toJSON()
-                    });
-                }, this);
+            var pickupAddress = new Backbone.Model(),
+                dropOffAddress = new Backbone.Model(),
+                pickupAddressView = new TaxiHail.AddressControlView({
+                    model: pickupAddress
+                }),
+                dropOffAddressView = new TaxiHail.AddressControlView({
+                    model: dropOffAddress
+                });
+
+            this.$('.pickup-address-container').html(pickupAddressView.render().el);
+            this.$('.drop-off-address-container').html(dropOffAddressView.render().el);
+
+            pickupAddressView.on('open', function(view){
+                dropOffAddressView.close();
+            }, this);
+
+            dropOffAddressView.on('open', function(view){
+                pickupAddressView.close();
+            }, this);
+
+            pickupAddress.on('change', function(model){
+                this.model.set({
+                    pickupAddress: model.toJSON()
+                });
+            }, this);
+
+            dropOffAddress.on('change', function(model){
+                this.model.set({
+                    dropOffAddress: model.toJSON()
+                });
+            }, this);
 
             return this;
         },
@@ -57,17 +76,7 @@
             //this.render();
         },
 
-        renderAddressControl: function(selector, model) {
-
-            var addressControlView = new TaxiHail.AddressControlView({
-                model: model
-            });
-
-            this.$(selector).html(addressControlView.render().el);
-
-            return addressControlView;
-        },
-        
+               
         book: function (e) {
             e.preventDefault();
             TaxiHail.store.setItem("orderToBook", this.model.toJSON());

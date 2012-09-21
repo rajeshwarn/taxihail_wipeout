@@ -16,11 +16,10 @@
             var pickup = this.model.get('pickupAddress');
             var dest = this.model.get('dropOffAddress');
             TaxiHail.directionInfo.getInfo(pickup['latitude'], pickup['longitude'], dest['latitude'], dest['longitude']).done(this.renderResults);
-
             
     },
 
-        render: function () {
+        render: function (param) {
 
             this.$el.html(this.renderTemplate(this.model.toJSON()));
             this.$("input").attr("disabled", true);
