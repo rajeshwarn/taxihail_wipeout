@@ -44,12 +44,8 @@
             }).el);
         },
 
-        home: function () {
-            renderView(TaxiHail.HomeView);
-        },
-
         signupconfirmation: function () {
-            var view = renderView(TaxiHail.HomeView);
+            var view = renderView(TaxiHail.LoginView);
             view.showConfirmationMessage();
         },
         

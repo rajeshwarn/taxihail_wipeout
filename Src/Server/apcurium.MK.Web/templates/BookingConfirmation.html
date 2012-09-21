@@ -1,7 +1,4 @@
-﻿<div class='page-header'>
-    <h1>{{localize "Addresses"}}</h1>
-</div>
-<div class="row">
+﻿<div class="row span5 well">
     <h2>{{localize "Confirm Information"}}</h2>
     <table>
         <tr>
@@ -28,49 +25,29 @@
     <h2>{{localize "Settings"}}</h2>
     <a href='#' class='btn primary' id="editButton" data-action='edit'>{{localize "Edit"}}</a>
     <form class="form-horizontal">
-    <div id="settingsContent">
-        <div class="control-group">
-            <label class="control-label" for="inputApt">{{localize "Apt No."}}</label>
-            <div class="controls">
-                <input type="text" id="inputApt" name="apartment" value="{{pickupAddress.apartment}}">
+        <div id="settingsContent">
+            <div class="control-group">
+                <label class="control-label" for="inputApt">{{localize "Apt No."}}</label>
+                <div class="controls">
+                    <input type="text" id="inputApt" name="apartment" value="{{pickupAddress.apartment}}">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputRingCode">{{localize "Ring Code"}}</label>
+                <div class="controls">
+                    <input type="text" id="inputRingCode" name="ringCode"  value="{{pickupAddress.ringCode}}">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputNotes">{{localize "Notes"}}</label>
+                <div class="controls">
+                    <input type="text" id="inputNotes" placeholder="Notes">
+                </div>
             </div>
         </div>
-        <div class="control-group">
-            <label class="control-label" for="inputRingCode">{{localize "Ring Code"}}</label>
-            <div class="controls">
-                <input type="text" id="inputRingCode" name="ringCode"  value="{{pickupAddress.ringCode}}">
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="inputNotes">{{localize "Notes"}}</label>
-            <div class="controls">
-                <input type="text" id="inputNotes" placeholder="Notes">
-            </div>
-        </div>
-    </div>
-    
-        
-        
-    <fieldset>
+        <fieldset>
             <a href='#' class='btn primary' data-action='book'>{{localize "Book Now!"}}</a>
             <a href='#' class='btn primary' data-action='startOver'>{{localize "Start Over"}}</a>
         </fieldset>
     </form>
-
-    <!--table >
-        <tr>
-            <td>{{localize "Apt No."}}</td>
-            <td><input type="text" disabled="true" value="{{pickupAddress.apartment}}"/></td>
-        </tr>
-        <tr>
-            <td>{{localize "Ring Code"}}</td>
-            <td><input type="text" disabled="true" value="{{pickupAddress.ringCode}}"/></td>
-        </tr>
-        <tr>
-            <td>{{localize "Notes"}}</td>
-            <td><input type="text" disabled="true" value="{{settings.notes}}"/></td>
-        </tr>
-    </table-->
-    
-        
 </div>
