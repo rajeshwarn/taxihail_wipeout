@@ -293,6 +293,7 @@
     <Compile Include="Controls\SearchTextField.cs" />
     <Compile Include="PlatformIntegration\OverlayService.cs" />
     <Compile Include="Controls\TitleView.cs" />
+    <Compile Include="Controls\Binding\BindableAddressTableViewSource.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
