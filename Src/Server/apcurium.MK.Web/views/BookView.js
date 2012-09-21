@@ -3,7 +3,7 @@
     TaxiHail.BookView = TaxiHail.TemplatedView.extend({
         events: {
             'click [data-action=book]': 'book',
-            'click [data-action=locate]': 'geolocalize',
+            'click [data-action=locate]': 'locate',
 
         },
         
@@ -32,23 +32,24 @@
             this.$el.html(this.renderTemplate(this.model.toJSON()));
 
             var pickupAddress = new Backbone.Model(),
-                dropOffAddress = new Backbone.Model(),
-                pickupAddressView = new TaxiHail.AddressControlView({
+                dropOffAddress = new Backbone.Model();
+
+            this._pickupAddressView = new TaxiHail.AddressControlView({
                     model: pickupAddress
-                }),
-                dropOffAddressView = new TaxiHail.AddressControlView({
+                });
+            this._dropOffAddressView = new TaxiHail.AddressControlView({
                     model: dropOffAddress
                 });
 
-            this.$('.pickup-address-container').html(pickupAddressView.render().el);
-            this.$('.drop-off-address-container').html(dropOffAddressView.render().el);
+            this.$('.pickup-address-container').html(this._pickupAddressView.render().el);
+            this.$('.drop-off-address-container').html(this._dropOffAddressView.render().el);
 
-            pickupAddressView.on('open', function(view){
-                dropOffAddressView.close();
+            this._pickupAddressView.on('open', function(view){
+                this._dropOffAddressView.close();
             }, this);
 
-            dropOffAddressView.on('open', function(view){
-                pickupAddressView.close();
+            this._dropOffAddressView.on('open', function(view){
+                this._pickupAddressView.close();
             }, this);
 
             pickupAddress.on('change', function(model){
@@ -84,10 +85,12 @@
                        
         },
         
-        geolocalize : function () {
-            this.model.set('isLocating', true);
+        locate : function () {
+            TaxiHail.geolocation.getCurrentPosition()
+                .done(_.bind(function(address){
+                    this._pickupAddressView.model.set(address);
+                }, this));
         },
-
                
         book: function (e) {
             e.preventDefault();
