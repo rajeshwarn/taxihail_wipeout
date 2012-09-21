@@ -1,20 +1,21 @@
 ﻿(function () {
 
     var renderView = function(ctor, model) {
-        var view = new ctor({
-            model: model
-        }).render();
+            var view = new ctor({
+                model: model
+            }).render();
 
-        $('#main').html(view.el);
+            $('#main').html(view.el);
 
-        return view;
+            return view;
 
-    }, account = new TaxiHail.UserAccount();
+        }, 
+        account = new TaxiHail.UserAccount(),
+        mapView;
 
     TaxiHail.App = Backbone.Router.extend({
         routes: {
-            "": "home",   // #
-            "book": "book",   // #book,
+            "": "book",   // #
             "confirmationbook": "confirmationbook",
             "login": "login", // #login
             "signup": "signup", // #signup
@@ -23,8 +24,24 @@
 
         initialize: function () {
             TaxiHail.auth.on('loggedIn', function() {
-                this.navigate('', { trigger: true });
+                this.navigate('book', { trigger: true });
             }, this);
+
+            mapView = new TaxiHail.MapView({
+                el: $('.map-zone')[0],
+                model: new TaxiHail.Order
+            }).render();
+            
+            TaxiHail.auth.on('loggedOut', function () {
+                // Clear user account and refetch to trigger redirection to login
+                account.clear();
+                account.fetch();
+
+            });
+            
+            $('.login-status-zone').html(new TaxiHail.LoginStatusView({
+                model: account
+            }).el);
         },
 
         home: function () {
@@ -39,9 +56,13 @@
         book: function () {
             account.fetch({
                 success: function (model) {
-                    var view = renderView(TaxiHail.BookView, new TaxiHail.Order({
+                    var model = new TaxiHail.Order({
                         settings: model.get('settings')
-                    })).renderMap();
+                    });
+
+                    mapView.setModel(model);
+
+                    renderView(TaxiHail.BookView, model);
                 }
             });
             
@@ -66,6 +87,7 @@
                 this.navigate('signupconfirmation', { trigger: true });
 
             }, this);
+
             renderView(TaxiHail.SignupView, model);
         }
 
