@@ -24,7 +24,7 @@
 
         initialize: function () {
             TaxiHail.auth.on('loggedIn', function() {
-                this.navigate('book', { trigger: true });
+                this.navigate('', { trigger: true });
             }, this);
 
             mapView = new TaxiHail.MapView({
