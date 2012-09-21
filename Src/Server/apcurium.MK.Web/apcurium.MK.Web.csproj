@@ -293,7 +293,6 @@
     <Content Include="views\AddressSelectionView.js" />
     <Content Include="views\BookingConfirmationView.js" />
     <Content Include="views\BookView.js" />
-    <Content Include="views\FavoriteAddressesView.js" />
     <Content Include="views\HomeView.js" />
     <Content Include="views\LoginStatusView.js" />
     <Content Include="views\LoginView.js" />
