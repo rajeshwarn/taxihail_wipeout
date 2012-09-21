@@ -9,7 +9,6 @@
         
         initialize: function () {
             _.bindAll(this, "renderEstimateResults");
-           this.model.on('change', this.render, this);
 
             this.model.on('change:pickupAddress', function(model, value) {
                 this.actualizeEstimate();
@@ -17,6 +16,14 @@
 
             this.model.on('change:dropOffAddress', function(model, value) {
                 this.actualizeEstimate();
+            }, this);
+
+            this.model.on('change:priceEstimate', function(model, value){
+                this.$('.price-estimate').text(value);
+            }, this);
+
+            this.model.on('change:distanceEstimate', function(model, value){
+                this.$('.distance-estimate').text(value);
             }, this);
             
         },
@@ -74,9 +81,7 @@
                 'priceEstimate': result.formattedPrice,
                 'distanceEstimate': result.formattedDistance
             });
-            
-            this.render();
-           
+                       
         },
         
         geolocalize : function () {
