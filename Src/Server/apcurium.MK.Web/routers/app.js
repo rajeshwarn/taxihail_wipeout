@@ -25,7 +25,7 @@
 
         initialize: function () {
             TaxiHail.auth.on('loggedIn', function() {
-                this.navigate('', { trigger: true });
+                this.navigate('confirmationbook', { trigger: true });
             }, this);
 
             mapView = new TaxiHail.MapView({
@@ -51,7 +51,7 @@
         },
         
         book: function () {
-            account.fetch({
+            /*account.fetch({
                 success: function (model) {
                     var model = new TaxiHail.Order({
                         settings: model.get('settings')
@@ -61,14 +61,24 @@
 
                     renderView(TaxiHail.BookView, model);
                 }
-            });
-            
+            });*/
+            var model = new TaxiHail.Order();
+
+            mapView.setModel(model);
+
+            renderView(TaxiHail.BookView, model);
         },
         
         confirmationbook: function () {
             var orderToBook = TaxiHail.store.getItem("orderToBook");
             if (orderToBook) {
-                renderView(TaxiHail.BookingConfirmationView, new TaxiHail.Order(orderToBook));
+                account.fetch({
+                    success: function(model) {
+                        orderToBook.settings=model.get('settings');
+                        renderView(TaxiHail.BookingConfirmationView, new TaxiHail.Order(orderToBook));
+                    }
+                });
+                
             } else {
                 this.navigate('', { trigger: true });
             }
