@@ -7,11 +7,11 @@
         },
 
         initialize: function () {
-
+            this.model.set('isLogged', TaxiHail.auth.isLogged());
         },
 
         render: function () {
-            this.$el.html(this.renderTemplate());
+            this.$el.html(this.renderTemplate(this.model.toJSON()));
 
             this.tab.search.call(this);
 
