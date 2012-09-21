@@ -24,6 +24,8 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Client.Animations;
 using MonoTouch.MessageUI;
 using System.IO;
+using apcurium.MK.Booking.Mobile.Client.MapUtilities;
+using apcurium.MK.Booking.Mobile.Style;
  
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -68,7 +70,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			_menu = new PanelMenuView( bookView, this.NavigationController );
 			View.InsertSubviewBelow( _menu.View, bookView );
 
-            AppButtons.FormatStandardButton((GradientButton)refreshCurrentLocationButton, "", AppStyle.ButtonColor.CorporateColor, "");
+            AppButtons.FormatStandardButton((GradientButton)refreshCurrentLocationButton, "", AppStyle.ButtonColor.Blue, "");
             AppButtons.FormatStandardButton((GradientButton)bookLaterButton, "", AppStyle.ButtonColor.DarkGray );
 
             AppButtons.FormatStandardButton((GradientButton)dropoffButton, "", AppStyle.ButtonColor.Grey, "");
@@ -95,6 +97,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             img.Frame = new System.Drawing.RectangleF(mapView.Frame.X + ((mapView.Frame.Width / 2) - 10), mapView.Frame.Y + ((mapView.Frame.Height / 2)) - 30, 20, 20);
             mapView.Superview.AddSubview(img);
             mapView.MultipleTouchEnabled = true;
+			mapView.Delegate = new AddressMapDelegate();
 
             bottomBar.UserInteractionEnabled = true;
             bookView.BringSubviewToFront(bottomBar);
@@ -106,8 +109,16 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { dropoffActivationButton, "{'TouchUpInside':{'Path':'ActivateDropoff'},'Selected':{'Path':'DropoffIsActive', 'Mode':'TwoWay'}}"},       
 				{ pickupButton, "{'TouchUpInside':{'Path':'Pickup.PickAddress'},'TextLine1':{'Path':'Pickup.Title', 'Mode':'TwoWay'}, 'TextLine2':{'Path':'Pickup.Display', 'Mode':'TwoWay'}, 'IsSearching':{'Path':'Pickup.IsExecuting', 'Mode':'TwoWay'}, 'IsPlaceholder':{'Path':'Pickup.IsPlaceHolder', 'Mode':'TwoWay'} }"},  
 				{ dropoffButton, "{'TouchUpInside':{'Path':'Dropoff.PickAddress'},'TextLine1':{'Path':'Dropoff.Title', 'Mode':'TwoWay'}, 'TextLine2':{'Path':'Dropoff.Display', 'Mode':'TwoWay'}, 'IsSearching':{'Path':'Dropoff.IsExecuting', 'Mode':'TwoWay'}, 'IsPlaceholder':{'Path':'Dropoff.IsPlaceHolder', 'Mode':'TwoWay'} }"},             
-
+				{ mapView, "{'Pickup':{'Path':'Pickup.Model'}, 'Dropoff':{'Path':'Dropoff.Model'} , 'MapMoved':{'Path':'SelectedAddress.SearchCommand'}, 'MapCenter':{'Path':'MapCenter'} }" },
+				{ infoLabel, "{'Text':{'Path':'FareEstimate'}}" },
+		
             });
+
+			if (ViewModel != null)
+			{
+				ViewModel.Initialize();
+			}
+
         }
 
         public override void ViewWillAppear(bool animated)
@@ -122,9 +133,11 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             base.ViewDidAppear(animated);
 
-			navBar.TopItem.RightBarButtonItem = new UIBarButtonItem( UIImage.FromFile("Assets/settings.png"), UIBarButtonItemStyle.Bordered, delegate {
+			var btn = new UIBarButtonItem( UIImage.FromFile("Assets/settings.png"), UIBarButtonItemStyle.Bordered, delegate {
 				_menu.AnimateMenu();
 			} );
+			btn.TintColor = AppStyle.NavigationBarColor;
+			navBar.TopItem.RightBarButtonItem = btn;
 
             if ((AppContext.Current.LastOrder.HasValue) && (AppContext.Current.LoggedUser != null))
             {
@@ -171,7 +184,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 {
                     RemoveStatusView();
                     AppContext.Current.LastOrder = null;
-                    NavigationController.TabBarController.TabBar.Hidden = true;
+					NavigationController.NavigationBar.Hidden = true;
                     Selected();
                 };
 

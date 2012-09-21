@@ -9,7 +9,6 @@
         
         initialize: function () {
             _.bindAll(this, "renderEstimateResults");
-           this.model.on('change', this.render, this);
 
             this.model.on('change:pickupAddress', function(model, value) {
                 this.actualizeEstimate();
@@ -18,24 +17,51 @@
             this.model.on('change:dropOffAddress', function(model, value) {
                 this.actualizeEstimate();
             }, this);
+
+            this.model.on('change:priceEstimate', function(model, value){
+                this.$('.price-estimate').text(value);
+            }, this);
+
+            this.model.on('change:distanceEstimate', function(model, value){
+                this.$('.distance-estimate').text(value);
+            }, this);
             
         },
 
         render: function () {
             this.$el.html(this.renderTemplate(this.model.toJSON()));
 
-            this.renderAddressControl('.pickup-address-container', new Backbone.Model(this.model.get('pickupAddress')))
-                .model.on('change', function(model){
-                    this.model.set({
-                        pickupAddress: model.toJSON()
-                    });
-                }, this);
-            this.renderAddressControl('.drop-off-address-container', new Backbone.Model(this.model.get('dropOffAddress')))
-                .model.on('change', function(model){
-                    this.model.set({
-                        dropOffAddress: model.toJSON()
-                    });
-                }, this);
+            var pickupAddress = new Backbone.Model(),
+                dropOffAddress = new Backbone.Model(),
+                pickupAddressView = new TaxiHail.AddressControlView({
+                    model: pickupAddress
+                }),
+                dropOffAddressView = new TaxiHail.AddressControlView({
+                    model: dropOffAddress
+                });
+
+            this.$('.pickup-address-container').html(pickupAddressView.render().el);
+            this.$('.drop-off-address-container').html(dropOffAddressView.render().el);
+
+            pickupAddressView.on('open', function(view){
+                dropOffAddressView.close();
+            }, this);
+
+            dropOffAddressView.on('open', function(view){
+                pickupAddressView.close();
+            }, this);
+
+            pickupAddress.on('change', function(model){
+                this.model.set({
+                    pickupAddress: model.toJSON()
+                });
+            }, this);
+
+            dropOffAddress.on('change', function(model){
+                this.model.set({
+                    dropOffAddress: model.toJSON()
+                });
+            }, this);
             
             return this;
         },
@@ -55,26 +81,14 @@
                 'priceEstimate': result.formattedPrice,
                 'distanceEstimate': result.formattedDistance
             });
-            
-            this.render();
-           
+                       
         },
         
         geolocalize : function () {
             this.model.set('isLocating', true);
         },
 
-        renderAddressControl: function(selector, model) {
-
-            var addressControlView = new TaxiHail.AddressControlView({
-                model: model
-            });
-
-            this.$(selector).html(addressControlView.render().el);
-
-            return addressControlView;
-        },
-        
+               
         book: function (e) {
             e.preventDefault();
             TaxiHail.store.setItem("orderToBook", this.model.toJSON());

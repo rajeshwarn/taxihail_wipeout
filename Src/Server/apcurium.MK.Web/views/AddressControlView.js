@@ -4,13 +4,14 @@
     TaxiHail.AddressControlView = TaxiHail.TemplatedView.extend({
 
         events: {
-            'click [data-action=select-address]': 'selectAddress',
+            'click [data-action=open]': 'open',
             'focus [name=address]': 'onfocus', 
             'blur  [name=address]': 'onblur'
         },
 
         initialize: function() {
             _.bindAll(this, 'onkeypress');
+            this.$el.addClass('address-picker');
             this.model.on('change', this.render, this);
         },
 
@@ -25,22 +26,29 @@
                 model: this.model
             }).on('selected', function(model, collection) {
                 this.model.set(model.toJSON());
+                this.close();
             }, this);
+
             this._selector.render().hide()
             this.$(".address-selector-container").html(this._selector.el);
 
             return this;
         },
 
-        selectAddress: function(e) {
-            e.preventDefault();
+        open: function(e) {
+            e && e.preventDefault();
 
-            this.$('[name=address]').focus();
+            this.trigger('open', this);
+            this._selector && this._selector.show();
 
         },
 
+        close: function() {
+            this._selector && this._selector.hide();
+        },
+
         onfocus: function(e) {
-            this._selector && this._selector.show();
+            this.open();
         },
 
         onblur: function(e) {

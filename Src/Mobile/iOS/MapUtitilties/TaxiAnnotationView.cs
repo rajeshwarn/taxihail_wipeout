@@ -4,7 +4,7 @@
 //using MonoTouch.CoreFoundation;
 //using MonoTouch.Foundation;
 //
-//namespace apcurium.MK.Booking.Mobile.Client
+//namespace apcurium.MK.Booking.Mobile.Client.MapUtilities
 //{
 //	public class TaxiAnnotationView : MKAnnotationView
 //	{

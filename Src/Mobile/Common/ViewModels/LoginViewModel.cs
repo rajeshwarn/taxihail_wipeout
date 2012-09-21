@@ -60,7 +60,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					{
 						_appContext.SignOut();
 						TinyIoCContainer.Current.Resolve<IOverlayService>().StartAnimating();
-						ThreadPool.QueueUserWorkItem( SignIn );                         
+						ThreadPool.QueueUserWorkItem( SignIn );  
+						TinyIoCContainer.Current.Resolve<IOverlayService>().StopAnimating();
 
 					}
 					finally
@@ -96,7 +97,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			finally
 			{
 				UserInteractionEnabled = true;
-				TinyIoCContainer.Current.Resolve<IOverlayService>().StopAnimating();
+
 			}
 		}
 

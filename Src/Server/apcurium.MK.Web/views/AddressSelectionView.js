@@ -27,6 +27,14 @@
         },
 
         search: function(query) {
+
+            // Ensure Search tab is selected
+            var $tab = this.$('[data-tab=search]');
+            if(!$tab.is('.active')) {
+                this.selectTab(this.$('[data-tab=search]'));
+                this.tab.search.call(this);
+            }
+            
             TaxiHail.geocoder.geocode(query).done(_.bind(function(result) {
                 this._searchResults && this._searchResults.reset(result.addresses);
             }, this));
