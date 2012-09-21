@@ -25,6 +25,7 @@ using apcurium.MK.Booking.Mobile.Client.Animations;
 using MonoTouch.MessageUI;
 using System.IO;
 using apcurium.MK.Booking.Mobile.Client.MapUtilities;
+using apcurium.MK.Booking.Mobile.Style;
  
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -69,7 +70,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			_menu = new PanelMenuView( bookView, this.NavigationController );
 			View.InsertSubviewBelow( _menu.View, bookView );
 
-            AppButtons.FormatStandardButton((GradientButton)refreshCurrentLocationButton, "", AppStyle.ButtonColor.CorporateColor, "");
+            AppButtons.FormatStandardButton((GradientButton)refreshCurrentLocationButton, "", AppStyle.ButtonColor.Blue, "");
             AppButtons.FormatStandardButton((GradientButton)bookLaterButton, "", AppStyle.ButtonColor.DarkGray );
 
             AppButtons.FormatStandardButton((GradientButton)dropoffButton, "", AppStyle.ButtonColor.Grey, "");
@@ -113,6 +114,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 		
             });
 
+			if (ViewModel != null)
+			{
+				ViewModel.Initialize();
+			}
+
         }
 
         public override void ViewWillAppear(bool animated)
@@ -127,9 +133,11 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             base.ViewDidAppear(animated);
 
-			navBar.TopItem.RightBarButtonItem = new UIBarButtonItem( UIImage.FromFile("Assets/settings.png"), UIBarButtonItemStyle.Bordered, delegate {
+			var btn = new UIBarButtonItem( UIImage.FromFile("Assets/settings.png"), UIBarButtonItemStyle.Bordered, delegate {
 				_menu.AnimateMenu();
 			} );
+			btn.TintColor = AppStyle.NavigationBarColor;
+			navBar.TopItem.RightBarButtonItem = btn;
 
             if ((AppContext.Current.LastOrder.HasValue) && (AppContext.Current.LoggedUser != null))
             {
