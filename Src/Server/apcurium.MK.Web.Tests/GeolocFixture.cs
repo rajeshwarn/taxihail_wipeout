@@ -49,7 +49,7 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual("5661", address.StreetNumber);
             Assert.AreEqual("Avenue de Chateaubriand", address.Street);
             Assert.AreEqual("Montreal", address.City);
-            Assert.AreEqual("H2S 0A4", address.ZipCode);
+            StringAssert.Contains("H2S", address.ZipCode);
         }
 
     
@@ -77,8 +77,8 @@ namespace apcurium.MK.Web.Tests
         public void SearchMiddleField()
         {
             var sut = new GeocodingServiceClient(BaseUrl, SessionId);
-            var addresses = sut.Search(45.471459, -73.727142);                         
-            //var addresses = sut.Search(45.4714, -73.727);                         
+            var addresses = sut.Search(45.5227967351675, -73.6242310144007);                     
+                        
 
             Assert.True(addresses.Addresses.Count() >= 1);
 

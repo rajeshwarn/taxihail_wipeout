@@ -185,7 +185,6 @@
     <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\test\index.js" />
     <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\test\mustache.js" />
     <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\test\spec.js" />
-    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\tools\release.js" />
     <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\tools\web_templates.js" />
     <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\web\1.0.0\hogan.js" />
     <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\web\1.0.0\hogan.min.js" />
@@ -389,7 +388,6 @@
     <Content Include="assets\bootstrap\docs\build\node_modules\.bin\hulk" />
     <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\.gitmodules" />
     <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\.git_ignore" />
-    <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\bin\hulk" />
     <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\LICENSE" />
     <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\Makefile" />
     <Content Include="assets\bootstrap\docs\build\node_modules\hogan.js\package.json" />
@@ -478,6 +476,7 @@
     <Content Include="assets\less\TaxiHail.less" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="assets\bootstrap\docs\build\node_modules\hogan.js\bin\" />
     <Folder Include="themes\generic\img\" />
   </ItemGroup>
   <ItemGroup>
