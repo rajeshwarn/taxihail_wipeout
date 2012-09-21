@@ -13,6 +13,7 @@ using apcurium.MK.Booking.Mobile.ListViewStructure;
 using System.Collections.Generic;
 using Cirrious.MvvmCross.Binding.Interfaces;
 using Cirrious.MvvmCross.Views;
+using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -73,18 +74,18 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 			AppButtons.FormatStandardButton( (GradientButton)CancelButton, Resources.CancelBoutton, AppStyle.ButtonColor.Silver );
 
-			var source = new MvxActionBasedBindableTableViewSource(
+			var source = new BindableAddressTableViewSource(
                                 AddressListView, 
                                 UITableViewCellStyle.Subtitle,
                                 new NSString(CELLID), 
                                 CellBindingText,
 								UITableViewCellAccessory.None);
-			
+
 			source.CellCreator = (tview , iPath, state ) => { return new TwoLinesCell( CELLID, CellBindingText ); };
 
             this.AddBindings(new Dictionary<object, string>(){
 				{CancelButton, "{'TouchUpInside':{'Path':'CloseViewCommand'}}"},
-				{source, "{'ItemsSource':{'Path':'AddressViewModels'}, 'RowSelected':{'Path':'RowSelectedCommand'}}"} ,
+				{source, "{'ItemsSource':{'Path':'AddressViewModels'}, 'SelectedCommand':{'Path':'RowSelectedCommand'}}"} ,
 				{favoritesBtn, "{'SelectedChangedCommand':{'Path':'SelectedChangedCommand'}, 'Selected':{'Path':'FavoritesSelected'}}"} ,
 				{contactsBtn, "{'SelectedChangedCommand':{'Path':'SelectedChangedCommand'}, 'Selected':{'Path':'ContactsSelected'}}"} ,
 				{placesBtn, "{'SelectedChangedCommand':{'Path':'SelectedChangedCommand'}, 'Selected':{'Path':'PlacesSelected'}}"} ,
