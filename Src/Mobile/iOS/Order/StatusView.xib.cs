@@ -12,6 +12,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.Client.MapUtilities;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -81,6 +82,12 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
 
         }
+
+		public override void ViewWillAppear (bool animated)
+		{
+			base.ViewWillAppear (animated);
+			NavigationController.NavigationBar.Hidden = false;
+		}
 
         public override void ViewDidLoad()
         {
