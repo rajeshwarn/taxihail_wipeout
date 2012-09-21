@@ -2,7 +2,9 @@
 
     TaxiHail.BookView = TaxiHail.TemplatedView.extend({
         events: {
-            'click [data-action=book]': 'book'
+            'click [data-action=book]': 'book',
+            'click [data-action=locate]': 'geolocalize',
+
         },
         
         initialize: function () {
@@ -26,9 +28,14 @@
         render: function () {
             this.$el.html(this.renderTemplate(this.model.toJSON()));
 
-            this.renderAddressControl('.pickup-address-container', new Backbone.Model(), this.selectPickupAddress);
-            this.renderAddressControl('.drop-off-address-container', new Backbone.Model(), this.selectDropOffAddress);
-
+            if (this.model.get('pickupAddress') && this.model.get('dropOffAddress')) {
+                this.renderAddressControl('.pickup-address-container', new Backbone.Model(this.model.get('pickupAddress')), this.selectPickupAddress);
+                this.renderAddressControl('.drop-off-address-container', new Backbone.Model(this.model.get('dropOffAddress')), this.selectDropOffAddress);
+            } else {
+                this.renderAddressControl('.pickup-address-container', new Backbone.Model(), this.selectPickupAddress);
+                this.renderAddressControl('.drop-off-address-container', new Backbone.Model(), this.selectDropOffAddress);
+            }
+            
             return this;
         },
         
@@ -47,8 +54,13 @@
                 'priceEstimate': result.formattedPrice,
                 'distanceEstimate': result.formattedDistance
             });
-            //TODO :
-            //this.render();
+            
+            this.render();
+           
+        },
+        
+        geolocalize : function () {
+            this.model.set('isLocating', true);
         },
 
         renderAddressControl: function(selector, model, onselect) {
