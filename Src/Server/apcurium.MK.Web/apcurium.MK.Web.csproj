@@ -519,9 +519,6 @@
     <Content Include="localization\LoginStatus.json" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="views\SettingsEditView.js.orig" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="localization\SettingsEdit.json" />
     <Content Include="localization\Signup.json" />
   </ItemGroup>
