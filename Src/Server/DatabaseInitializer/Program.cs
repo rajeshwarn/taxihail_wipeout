@@ -178,7 +178,8 @@ namespace DatabaseInitializer
                                   AccountId = Guid.NewGuid(),
                                   Email = "john@taxihail.com",
                                   Name = "John Doe",
-                                  Phone = "5146543024"
+                                  Phone = "5146543024",
+                                  Password = "password"
                               };
 
             var confirmationToken = Guid.NewGuid();
