@@ -35,6 +35,11 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             Context.StartActivity(i); 
         }
 
+        public void ShowMessage(string title, string message, string additionnalActionButtonTitle, Action additionalAction)
+        {
+            throw new NotImplementedException();
+        }
+
         public void ShowToast(string message, ToastDuration duration )
         {
             Toast toast = Toast.MakeText(Context, message , duration == ToastDuration.Short ?  ToastLength.Short : ToastLength.Long );

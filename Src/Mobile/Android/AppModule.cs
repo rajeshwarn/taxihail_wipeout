@@ -36,6 +36,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             
             TinyIoCContainer.Current.Register<IMessageService>(new MessageService(App));
             TinyIoCContainer.Current.Register<IPackageInfo>(new PackageInfo(App));
+            TinyIoCContainer.Current.Register<IOverlayService>(new AndroidOverlayService());
             TinyIoCContainer.Current.Register<IAppSettings>( new AppSettings());
             TinyIoCContainer.Current.Register<IAppContext>(new AppContext(App));
             TinyIoCContainer.Current.Register<IAppResource>( new ResourceManager( App.ApplicationContext ));
