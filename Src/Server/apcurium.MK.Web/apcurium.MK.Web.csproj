@@ -270,6 +270,8 @@
     <Content Include="log4net.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="models\NewAccount.js" />
+    <Content Include="models\Settings.js" />
     <Content Include="models\UserAccount.js" />
     <Content Include="models\Address.js" />
     <Content Include="models\Order.js" />
@@ -281,7 +283,6 @@
     <Content Include="taxi-hail.js" />
     <Content Include="templates\AddressControl.html" />
     <Content Include="templates\AddressItem.html" />
-    <Content Include="templates\AddressSearch.html" />
     <Content Include="templates\AddressSelection.html" />
     <Content Include="templates\book.html" />
     <Content Include="templates\BookingConfirmation.html" />
@@ -293,7 +294,6 @@
     <Content Include="views\AddressControlView.js" />
     <Content Include="views\AddressItemView.js" />
     <Content Include="views\AddressListView.js" />
-    <Content Include="views\AddressSearchView.js" />
     <Content Include="views\AddressSelectionView.js" />
     <Content Include="views\BookingConfirmationView.js" />
     <Content Include="views\BookView.js" />

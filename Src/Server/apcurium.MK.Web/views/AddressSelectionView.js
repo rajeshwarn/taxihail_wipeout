@@ -3,33 +3,53 @@
     TaxiHail.AddressSelectionView = TaxiHail.TemplatedView.extend({
 
         events: {
-            'click .nav-tabs li>a': 'selectTab'
+            'click .nav-tabs li>a': 'ontabclick'
         },
 
         initialize: function () {
+
         },
 
         render: function () {
             this.$el.html(this.renderTemplate());
 
-            this.show.search.call(this);
+            this.tab.search.call(this);
 
             return this;
         },
+
+        hide: function() {
+            this.$el.addClass('hidden');
+        },
+
+        show: function() {
+            this.$el.removeClass('hidden');
+        },
+
+        search: function(query) {
+            TaxiHail.geocoder.geocode(query).done(_.bind(function(result) {
+                this._searchResults && this._searchResults.reset(result.addresses);
+            }, this));
+
+
+        },
         
-        selectTab: function(e) {
+        selectTab: function($tab) {
+            $tab.addClass('active').siblings().removeClass('active');
+        },
+
+        ontabclick: function(e) {
             e.preventDefault();
 
             var $tab = $(e.currentTarget).parent('li'),
                 tabName = $tab.data().tab;
 
-            $tab.addClass('active').siblings().removeClass('active');
-
-            this.show[tabName].call(this);
+            this.selectTab($tab);
+            this.tab[tabName].call(this);
 
         },
 
-        show: {
+        tab: {
             favorites: function() {
 
                 var addresses = new TaxiHail.AddressCollection(),
@@ -50,12 +70,12 @@
 
             search: function() {
 
-                var addresses = new TaxiHail.AddressCollection(),
-                    view = new TaxiHail.AddressSearchView({
-                        collection: addresses
+                this._searchResults = new TaxiHail.AddressCollection(),
+                    view = new TaxiHail.AddressListView({
+                        collection: this._searchResults
                     });
 
-                addresses.on('selected', function (model, collection) {
+                this._searchResults.on('selected', function (model, collection) {
 
                     if(!model.get('fullAddress'))
                     {

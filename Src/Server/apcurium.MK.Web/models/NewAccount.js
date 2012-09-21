@@ -7,14 +7,14 @@
         defaults: {
     		"email":  null,
     		"phone":  null,
-    		"fullname":  null,
+    		"name":  null,
     		"password":  null,
     		"confirmPassword":  null
   		},
 
 
         validation: {
-		    fullname: {
+            name: {
 		      required: true
 		    },
 		    phone: {
