@@ -24,13 +24,13 @@
         render: function () {
             this.$el.html(this.renderTemplate(this.model.toJSON()));
 
-           this.renderAddressControl('.pickup-address-container', new Backbone.Model())
+            this.renderAddressControl('.pickup-address-container', new Backbone.Model(this.model.get('pickupAddress')))
                 .model.on('change', function(model){
                     this.model.set({
                         pickupAddress: model.toJSON()
                     });
                 }, this);
-            this.renderAddressControl('.drop-off-address-container', new Backbone.Model())
+            this.renderAddressControl('.drop-off-address-container', new Backbone.Model(this.model.get('dropOffAddress')))
                 .model.on('change', function(model){
                     this.model.set({
                         dropOffAddress: model.toJSON()
