@@ -11,6 +11,7 @@
 
         initialize: function() {
             _.bindAll(this, 'onkeypress');
+            this.$el.addClass('address-picker');
             this.model.on('change', this.render, this);
         },
 
