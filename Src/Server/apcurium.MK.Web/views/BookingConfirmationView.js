@@ -44,7 +44,10 @@
         book: function (e) {
         e.preventDefault();
             this.model.set('settings', settings);
-        this.model.save();
+            this.model.save({},{success : function (value) {
+                TaxiHail.app.navigate('bookconfirmed/' + value.get('iBSOrderId'), { trigger: true });
+            }});
+            
         },
         
         edit:function (e) {

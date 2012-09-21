@@ -9,7 +9,7 @@
         
         initialize: function () {
             _.bindAll(this, "renderEstimateResults");
-            //this.model.on('change', this.render, this);
+           this.model.on('change', this.render, this);
 
             this.model.on('change:pickupAddress', function(model, value) {
                 this.actualizeEstimate();
