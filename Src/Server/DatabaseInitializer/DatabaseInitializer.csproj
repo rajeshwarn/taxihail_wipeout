@@ -54,7 +54,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Staging|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\Staging\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;STAGING</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisLogFile>bin\Debug\DatabaseInitializer.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
@@ -65,6 +65,9 @@
     <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
     <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SlowCheetahTargets Condition=" '$(SlowCheetahTargets)'=='' ">..\MSBuild\SlowCheetah\v1\SlowCheetah.Transforms.targets</SlowCheetahTargets>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework">
@@ -91,10 +94,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Module.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MK.Booking.IBS\MK.Booking.IBS.csproj">
+      <Project>{7b615ea9-4232-4ffb-b66c-ac7b833973c9}</Project>
+      <Name>MK.Booking.IBS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MK.Booking\MK.Booking.Commands\MK.Booking.Commands.csproj">
+      <Project>{20aea350-ad91-4053-a8b5-582e13ed43aa}</Project>
+      <Name>MK.Booking.Commands</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MK.Booking\MK.Booking\MK.Booking.csproj">
       <Project>{BAF90740-9220-4BB0-B857-1E5927E464E9}</Project>
       <Name>MK.Booking %28MK.Booking\MK.Booking%29</Name>
@@ -116,13 +128,27 @@
     <None Include="..\CQRS-journey.licenseheader">
       <Link>CQRS-journey.licenseheader</Link>
     </None>
-    <None Include="App.config">
+    <None Include="app.config">
       <SubType>Designer</SubType>
+      <TransformOnBuild>true</TransformOnBuild>
+    </None>
+    <None Include="app.Debug.config">
+      <DependentUpon>app.config</DependentUpon>
+      <IsTransformFile>True</IsTransformFile>
+    </None>
+    <None Include="app.Release.config">
+      <DependentUpon>app.config</DependentUpon>
+      <IsTransformFile>True</IsTransformFile>
+    </None>
+    <None Include="app.Staging.config">
+      <DependentUpon>app.config</DependentUpon>
+      <IsTransformFile>True</IsTransformFile>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <Import Project="$(SlowCheetahTargets)" Condition="Exists('$(SlowCheetahTargets)')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

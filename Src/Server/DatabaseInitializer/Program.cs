@@ -14,6 +14,10 @@
 using System;
 using System.Globalization;
 using System.Net.Mail;
+using Infrastructure.Messaging;
+using Microsoft.Practices.Unity;
+using apcurium.MK.Booking.Commands;
+using apcurium.MK.Booking.IBS;
 using apcurium.MK.Common.Caching;
 using apcurium.MK.Common.Configuration.Impl;
 
@@ -156,8 +160,45 @@ namespace DatabaseInitializer
             configurationManager.SetSetting("OrderStatus.OrderDoneFareAvailable", "Completed (Total cost : {0})");
             configurationManager.SetSetting("OrderStatus.DemoMode", "false");
 
-            configurationManager.SetSetting("Map.PlacesApiKey", "AIzaSyAd-ezA2SeVTSNqsu6aMmAkdlP3UqEVPWE");        
-            
+            configurationManager.SetSetting("Map.PlacesApiKey", "AIzaSyAd-ezA2SeVTSNqsu6aMmAkdlP3UqEVPWE");
+        
+
+            //Init Data
+            //Init container
+            var container = new UnityContainer();
+            var module = new Module();
+            module.Init(container);
+
+            //Init data
+            var commandBus = container.Resolve<ICommandBus>();
+
+            var registerAccountCommand = new RegisterAccount
+                              {
+                                  Id = Guid.NewGuid(),
+                                  AccountId = Guid.NewGuid(),
+                                  Email = "john@taxihail.com",
+                                  Name = "John Doe",
+                                  Phone = "5146543024",
+                                  Password = "password"
+                              };
+
+            var confirmationToken = Guid.NewGuid();
+            registerAccountCommand.ConfimationToken = confirmationToken.ToString();
+
+            var accountWebServiceClient = container.Resolve<IAccountWebServiceClient>();
+            registerAccountCommand.IbsAccountId = accountWebServiceClient.CreateAccount(registerAccountCommand.AccountId,
+                                                                            registerAccountCommand.Email,
+                                                                            string.Empty,
+                                                                            registerAccountCommand.Name,
+                                                                            registerAccountCommand.Phone);
+            commandBus.Send(registerAccountCommand);
+
+
+            commandBus.Send(new ConfirmAccount
+            {
+                AccountId = registerAccountCommand.AccountId,
+                ConfimationToken = registerAccountCommand.ConfimationToken
+            });
         }
     }
 }
