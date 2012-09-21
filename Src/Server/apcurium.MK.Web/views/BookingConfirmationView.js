@@ -15,7 +15,10 @@
             
             var pickup = this.model.get('pickupAddress');
             var dest = this.model.get('dropOffAddress');
-            TaxiHail.directionInfo.getInfo(pickup['latitude'], pickup['longitude'], dest['latitude'], dest['longitude']).done(this.renderResults);
+            if (pickup && dest) {
+                TaxiHail.directionInfo.getInfo(pickup['latitude'], pickup['longitude'], dest['latitude'], dest['longitude']).done(this.renderResults);
+            }
+            
             
     },
 
@@ -40,7 +43,10 @@
         book: function (e) {
         e.preventDefault();
             this.model.set('settings', settings);
-        this.model.save();
+            this.model.save({},{success : function (value) {
+                TaxiHail.app.navigate('bookconfirmed/' + value.get('iBSOrderId'), { trigger: true });
+            }});
+            
         },
         
         edit:function (e) {

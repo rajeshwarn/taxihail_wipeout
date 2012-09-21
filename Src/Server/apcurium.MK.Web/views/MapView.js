@@ -6,12 +6,18 @@
     var map;
     var pickupPin;
     var dropOffPin;
+    var geocodeLocationAddress;
     TaxiHail.MapView = Backbone.View.extend({
         
-        initialize: function () {
+        events: {
+
             
         },
-
+        initialize: function () {
+            _.bindAll(this, "successgeo");
+            _.bindAll(this, "successgetpos");
+        },
+        
         setModel: function(model) {
             if(this.model) {
                 this.model.off(null, null, this);
@@ -36,6 +42,13 @@
                     dropOffPin = this.addMarker(location, map, 'http://maps.google.com/mapfiles/ms/icons/red-dot.png');
                 }
             }, this);
+            
+            this.model.on('change:isLocating', function (model, value) {
+                if (model.get('isLocating') == true) {
+                    this.geolocalize();
+                }
+            }, this);
+
         },
            
             
@@ -49,7 +62,7 @@
 
             };
             map = new google.maps.Map(this.el, mapOptions);
-            this.geolocalize();
+            //this.geolocalize();
 
             return this;
 
@@ -59,18 +72,7 @@
             // Try W3C Geolocation (Preferred)
             if (navigator.geolocation) {
                 browserSupportFlag = true;
-                navigator.geolocation.getCurrentPosition(function (position) {
-                    initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-
-                    map.setCenter(initialLocation);
-                    pickupPin = new google.maps.Marker({
-                        position: initialLocation,
-                        map: map,
-                        icon : 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
-
-                    });
-
-                }, function () {
+                navigator.geolocation.getCurrentPosition(this.successgetpos,  function () {
                     handleNoGeolocation(browserSupportFlag);
                 });
             }
@@ -79,6 +81,28 @@
                 browserSupportFlag = false;
                 handleNoGeolocation(browserSupportFlag);
             }
+            this.model.set('isLocating', false, {silent : true});
+        },
+        
+        successgetpos : function (position) {
+            initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+
+            /*map.setCenter(initialLocation);
+            pickupPin = new google.maps.Marker({
+                position: initialLocation,
+                map: map,
+                icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
+
+            });*/
+            TaxiHail.geocoder.geocode(position.coords.latitude, position.coords.longitude).done(this.successgeo);
+        },
+        
+        successgeo : function (result) {
+            
+                if (result.addresses && result.addresses.length) {
+                    geocodeLocationAddress = result.addresses[0];
+                    this.model.set('pickupAddress', geocodeLocationAddress);
+                }
         },
         
             addMarker : function(location, mapc, iconImage) {

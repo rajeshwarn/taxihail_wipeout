@@ -2,12 +2,14 @@
 
     TaxiHail.BookView = TaxiHail.TemplatedView.extend({
         events: {
-            'click [data-action=book]': 'book'
+            'click [data-action=book]': 'book',
+            'click [data-action=locate]': 'geolocalize',
+
         },
         
         initialize: function () {
             _.bindAll(this, "renderEstimateResults");
-            //this.model.on('change', this.render, this);
+           this.model.on('change', this.render, this);
 
             this.model.on('change:pickupAddress', function(model, value) {
                 this.actualizeEstimate();
@@ -53,7 +55,7 @@
                     dropOffAddress: model.toJSON()
                 });
             }, this);
-
+            
             return this;
         },
         
@@ -72,8 +74,13 @@
                 'priceEstimate': result.formattedPrice,
                 'distanceEstimate': result.formattedDistance
             });
-            //TODO :
-            //this.render();
+            
+            this.render();
+           
+        },
+        
+        geolocalize : function () {
+            this.model.set('isLocating', true);
         },
 
                

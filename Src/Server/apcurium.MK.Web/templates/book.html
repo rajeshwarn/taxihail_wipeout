@@ -8,24 +8,26 @@
                 <div class='drop-off-address-container'></div>
                 <a href='#' class='btn btn-primary' data-action='book'>{{localize "Confirm Booking"}}</a>
             </form>
-        </div>
-        
-        <form class="form-horizontal">
+            <form class="form-horizontal">
             <div>
                 <div class="control-group">
                     <label class="control-label" for="inputPrice">{{localize "Price estimate"}}</label>
                     <div class="controls">
-                       {{priceEstimate}}
+                        {{priceEstimate}}
                     </div>
                 </div>
                 <div class="control-group">
                     <label class="control-label" for="inputFare">{{localize "Fare estimante"}}</label>
                     <div class="controls">
-                       {{distanceEstimate}}
+                        {{distanceEstimate}}
                     </div>
                 </div>
             </div>
         </form>
+         <a href='#' class='btn btn-info' data-action='locate'>{{localize "Locate Me"}}</a>
+        </div>
+        
+        
 
     </div>
     <div class='span12 hidden-right' id="address-list-container" ></div>
