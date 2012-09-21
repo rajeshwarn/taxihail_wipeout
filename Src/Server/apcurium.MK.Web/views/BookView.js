@@ -25,13 +25,13 @@
             this.$el.html(this.renderTemplate(this.model.toJSON()));
 
            this.renderAddressControl('.pickup-address-container', new Backbone.Model())
-                .on('selected', function(){
+                .model.on('change', function(model){
                     this.model.set({
                         pickupAddress: model.toJSON()
                     });
                 }, this);
             this.renderAddressControl('.drop-off-address-container', new Backbone.Model())
-                .on('selected', function(){
+                .model.on('change', function(model){
                     this.model.set({
                         dropOffAddress: model.toJSON()
                     });
