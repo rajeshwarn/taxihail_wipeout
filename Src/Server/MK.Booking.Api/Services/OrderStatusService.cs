@@ -69,6 +69,8 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 var statusDetails = _bookingWebServiceClient.GetOrderStatus(order.IBSOrderId.Value, account.IBSAccountId);
 
+                Log.Debug("Status IBS : " + statusDetails.Status.ToSafeString());
+                
                 status.OrderId = request.OrderId;
                 status.IBSOrderId = order.IBSOrderId;
                 status.IBSStatusId = statusDetails.Status;
@@ -78,15 +80,17 @@ namespace apcurium.MK.Booking.Api.Services
                 {
                     
                     if (status.IBSStatusId.SoftEqual(_assignedStatus))
-                    {
+                    {                        
                         var orderDetails = _bookingWebServiceClient.GetOrderDetails(order.IBSOrderId.Value, account.IBSAccountId, order.Settings.Phone);
                         if ((orderDetails != null) && (orderDetails.VehicleNumber.HasValue()))
                         {
+                            Log.Debug("Vehicle number :  " + orderDetails.VehicleNumber);
                             status.VehicleNumber = orderDetails.VehicleNumber;
                             desc = string.Format(_configManager.GetSetting("OrderStatus.CabDriverNumberAssigned"), orderDetails.VehicleNumber);
                         }
                         else
                         {
+                            Log.Debug("No Vehicle number");
                             desc = _configManager.GetSetting("OrderStatus." + status.IBSStatusId);
                         }
 
@@ -94,12 +98,18 @@ namespace apcurium.MK.Booking.Api.Services
                         
                         if (_configManager.GetSetting("OrderStatus.DemoMode") == "true")
                         {
+                            Log.Debug("DEMO MODE IS ACTIVE!");
                             DemoModeFakePosition(status, order);
                         }
                         else if (statusDetails.VehicleLatitude.HasValue && statusDetails.VehicleLongitude.HasValue)
-                        {                        
+                        {
+                            Log.Debug(string.Format( "Vehicle poistion : Lat {0} : Lng{1}", statusDetails.VehicleLatitude, statusDetails.VehicleLongitude ));
                             status.VehicleLatitude = statusDetails.VehicleLatitude;
                             status.VehicleLongitude = statusDetails.VehicleLongitude;
+                        }
+                        else
+                        {
+                            Log.Debug("CANNOT GET VEHICULE POSITION");
                         }
                     }
                     else if (status.IBSStatusId.SoftEqual(_doneStatus))

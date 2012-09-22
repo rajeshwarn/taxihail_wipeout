@@ -16,17 +16,17 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
     public class PackageInfo : IPackageInfo
     {
-        public TaxiMobileApplication App { get; set; }
-        public PackageInfo(TaxiMobileApplication app)
+        private Context _appContext;
+        public PackageInfo(Context appContext)
         {
-            App = app;
+            _appContext = appContext;
         }
 
         public string Version
         {
             get
             {
-                var pInfo = Application.Context.PackageManager.GetPackageInfo(Application.Context.PackageName, 0);
+                var pInfo = Application.Context.PackageManager.GetPackageInfo(_appContext.ApplicationInfo.PackageName , 0);
                 return pInfo.VersionName;
             }
         }

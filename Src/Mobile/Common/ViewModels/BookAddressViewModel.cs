@@ -67,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 else
                 {
                     return EmptyAddressPlaceholder;
-                }                
+                }
             }
         }
 
@@ -75,7 +75,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return Model.FullAddress.IsNullOrEmpty();                
+                return Model.FullAddress.IsNullOrEmpty();
             }
         }
 
@@ -107,20 +107,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         return TinyIoC.TinyIoCContainer.Current.Resolve<IGeolocService>().SearchAddress(coordinate.Latitude, coordinate.Longitude);
 
                     }, token)
-                    .ContinueWith( t=>
+                    .ContinueWith(t =>
                         {
                             if (t.IsCompleted)
-                            {                                
+                            {
                                 RequestMainThreadAction(() =>
                                 {
                                     if (t.Result.Count() > 0)
                                     {
-                                        SetAddress(t.Result[0], true );
+                                        SetAddress(t.Result[0], true);
                                     }
                                     else
                                     {
                                         ClearAddress();
-                                    }                                    
+                                    }
                                 });
                             }
                             IsExecuting = false;
@@ -135,7 +135,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get
             {
                 return new MvxRelayCommand(() =>
-                {                    
+                {
                     RequestNavigate<AddressSearchViewModel>(new { search = Model.FullAddress, ownerId = _id });
                 });
             }
@@ -143,7 +143,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void OnAddressSelected(AddressSelected selected)
         {
-            SetAddress(selected.Content,true);
+            SetAddress(selected.Content, true);
         }
 
         public bool IsExecuting
@@ -153,7 +153,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 _isExecuting = value;
                 FirePropertyChanged(() => IsExecuting);
-                FirePropertyChanged(() => Display);                
+                FirePropertyChanged(() => Display);
             }
         }
 
@@ -200,6 +200,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             FirePropertyChanged(() => Model);
         }
 
+
+
+        public IMvxCommand ClearPositionCommand
+        {
+            get
+            {
+
+                return new MvxRelayCommand(() =>
+                {
+                    ClearAddress();
+
+                });
+            }
+        }
         public IMvxCommand RequestCurrentLocationCommand
         {
             get
@@ -211,7 +225,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     _geolocator.GetPositionAsync(30000, _cancellationToken.Token).ContinueWith(t =>
                     {
                         try
-                        {                            
+                        {
                             if (t.IsFaulted)
                             {
                                 // PositionStatus.Text = ((GeolocationException)t.Exception.InnerException).Error.ToString();
@@ -221,7 +235,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                 var address = TinyIoC.TinyIoCContainer.Current.Resolve<IGeolocService>().SearchAddress(t.Result.Latitude, t.Result.Longitude);
                                 if (address.Count() > 0)
                                 {
-                                    SetAddress(address[0],false);
+                                    SetAddress(address[0], false);
                                 }
                                 else
                                 {

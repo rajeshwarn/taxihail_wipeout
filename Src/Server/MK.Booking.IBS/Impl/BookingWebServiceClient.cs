@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.IBS.Impl
 
                 double latitude = 0;
                 double longitude = 0;
-                var result = service.GetVehicleLocation(UserNameApp, PasswordApp, orderId, ref latitude, ref longitude);
+                var result = service.GetVehicleLocation(UserNameApp, PasswordApp, orderId, ref longitude,ref latitude);
 
                 if (result == 0)
                 {

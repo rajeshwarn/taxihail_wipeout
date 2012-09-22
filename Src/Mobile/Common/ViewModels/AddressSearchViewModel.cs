@@ -30,6 +30,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             SearchViewModelSelected = TinyIoCContainer.Current.Resolve<AddressSearchByGeoCodingViewModel>();
             Criteria = search;
             SearchSelected = true;
+            HistoricIsHidden = true;
         }
 
         public AddressSearchBaseViewModel SearchViewModelSelected { get; set; }

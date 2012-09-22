@@ -23,11 +23,11 @@ using Cirrious.MvvmCross.Binding.Android.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {
-    [Activity(Label = "Login", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
+    [Activity(Label = "Login", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait, LaunchMode=Android.Content.PM.LaunchMode.SingleInstance)]
     public class LoginActivity : MvxBindingActivityView<LoginViewModel>
     {
 
-       
+        public static LoginActivity TopInstance{get;set;}
 
         private ProgressDialog _progressDialog;
         /// <summary>
@@ -50,7 +50,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
         }
 
         protected override void OnViewModelSet()
-        {            
+        {
+
+            TopInstance = this;
 
             SetContentView(Resource.Layout.Login);
 

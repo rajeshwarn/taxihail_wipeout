@@ -37,8 +37,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
         }
         protected override void OnCreate(Bundle bundle)
         {
-            new AppModule().Initialize(this.Application as TaxiMobileApplication );
-            new AppModule().InitializeSocialNetwork(this);
+            
 
             base.OnCreate(bundle);
             
