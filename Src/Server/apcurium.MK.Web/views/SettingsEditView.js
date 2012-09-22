@@ -15,9 +15,8 @@
         
         onPropertyChanged: function (e) {
             var $input = $(e.currentTarget);
-            this.model.set($input.attr('name'), $input.val());
-        },
-        
+            this.model.set($input.attr('name'), $input.val(), {silent:true});
+        }
         
     });
 }());

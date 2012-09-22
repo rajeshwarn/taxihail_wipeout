@@ -103,7 +103,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                         if (directionInfo.Distance.HasValue)
                         {
-                            _fareEstimate += String.Format(_appResource.GetString("EstimateDistance"), directionInfo.FormattedDistance);
+                            _fareEstimate += " " + String.Format(_appResource.GetString("EstimateDistance"), directionInfo.FormattedDistance);
 
                         }
                     }

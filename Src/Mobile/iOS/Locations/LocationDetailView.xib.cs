@@ -10,6 +10,8 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Diagnostic;
+using TinyMessenger;
+using apcurium.MK.Booking.Mobile.Messages;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -51,10 +53,10 @@ namespace apcurium.MK.Booking.Mobile.Client
             base.ViewDidLoad();
             View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             
-            var view = AppContext.Current.Controller.GetTitleView(null, Resources.LocationDetailViewTitle, true);
+//            var view = AppContext.Current.Controller.GetTitleView(null, Resources.LocationDetailViewTitle, true);
             
             this.NavigationItem.HidesBackButton = false;
-            this.NavigationItem.TitleView = view;
+			this.NavigationItem.TitleView = new TitleView(null, Resources.LocationDetailViewTitle, true);
             
             
             lblSaveAsAFavorite.Text = Resources.LocationDetailInstructionLabel;
@@ -249,7 +251,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             var order = new Order();
             order.PickupAddress = _data;
             order.Settings = AppContext.Current.LoggedUser.Settings;
-            AppContext.Current.Controller.Rebook(order);
+			InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new RebookRequested(this, order)));
+//            AppContext.Current.Controller.Rebook(order);
         }
 
         public void LoadData(Address data)

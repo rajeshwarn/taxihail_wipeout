@@ -26,7 +26,12 @@ namespace apcurium.MK.Booking.Mobile.Client
             button.TextShadowColor = UIColor.FromRGBA(btnStyle.TextShadowColor.Red, btnStyle.TextShadowColor.Green, btnStyle.TextShadowColor.Blue, btnStyle.TextShadowColor.Alpha);
             button.CornerRadius = AppStyle.ButtonCornerRadius;
             button.Colors =  btnStyle.Colors.Select ( color => UIColor.FromRGBA(color.Red, color.Green, color.Blue, color.Alpha) ).ToArray();
+			btnStyle.SelectedColors.Maybe( () => {
+				button.SelectedColors =  btnStyle.SelectedColors.Select ( color => UIColor.FromRGBA(color.Red, color.Green, color.Blue, color.Alpha) ).ToArray();
+				button.SelectedColorLocations = btnStyle.SelectedColors.Select ( color => color.Location ).ToArray();
+			});
             button.ColorLocations = btnStyle.Colors.Select ( color => color.Location ).ToArray();
+			
 			button.StrokeLineWidth = btnStyle.StrokeLineWidth;
 			button.StrokeLineColor = UIColor.FromRGBA( btnStyle.StrokeColor.Red, btnStyle.StrokeColor.Green, btnStyle.StrokeColor.Blue, btnStyle.StrokeColor.Alpha );
 			button.InnerShadow = btnStyle.InnerShadow;

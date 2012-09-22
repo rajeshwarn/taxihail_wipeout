@@ -7,7 +7,6 @@ using System.Text;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Authenticate]
     [RestService("/searchlocation", "GET,OPTIONS")]
     public class SearchLocationsRequest : BaseDTO
     {

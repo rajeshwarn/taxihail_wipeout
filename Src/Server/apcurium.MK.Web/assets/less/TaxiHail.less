@@ -1,23 +1,48 @@
-﻿body {
+﻿html, body {
+    height: 100%
 }
 
-.map-canvas {
-	height: 500px;
+.map-zone {
+	height: 100%;
+    width:100%;
+
+    z-index: 10; // Put map under .container
+    
+    img {
+        max-width: none;
+    }
 }
 
-#pickup-drop-off-container,
-#address-list-container
-{
+.container {
     position:absolute;
-    .transition(.4s all);
+    top:80px;
+    left:40%;
+
+    z-index: 100 // Put container over map
 }
 
-.hidden-left {
-    .translate(-500px, 0);
-    opacity: 0;
+/* Address selector */
+
+.address-picker {
+    position: relative;
 }
 
-.hidden-right {
-    .translate(500px, 0);
-    opacity: 0;
+.address-selector-container {
+    position:absolute;
+    background: lightBlue;
+}
+
+/* z-index helpers */
+
+.raise10 {
+    z-index: 10;
+}
+.raise100 {
+    z-index: 10;
+}
+.lower10 {
+    z-index: -10;
+}
+.lower100 {
+    z-index: -100;
 }

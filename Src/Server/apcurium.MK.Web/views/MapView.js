@@ -1,18 +1,57 @@
 ﻿(function () {
-
+    
     TaxiHail.MapView = Backbone.View.extend({
         
-        initialize: function () {
+        setModel: function(model) {
+            if(this.model) {
+                this.model.off(null, null, this);
+            }
+            this.model = model;
 
-            this.$el.addClass('map-canvas');
+            this.model.on('change:pickupAddress', function (model, value) {
+                var location = new google.maps.LatLng(value.latitude, value.longitude);
+                if (this._pickupPin) {
+                    this._pickupPin.setPosition(location);
+                } else {
+                    this._pickupPin = this.addMarker(location, 'http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+                }
+                this._map.setCenter(location);
+            }, this);
+
+            this.model.on('change:dropOffAddress', function (model, value) {
+                var location = new google.maps.LatLng(value.latitude, value.longitude);
+                if (this._dropOffPin) {
+                    this._dropOffPin.setPosition(location);
+                } else {
+                    this._dropOffPin = this.addMarker(location, 'http://maps.google.com/mapfiles/ms/icons/red-dot.png');
+                }
+            }, this);
             
+        },
+           
+            
+        render: function() {
+
             var mapOptions = {
-                zoom: 8,
+                zoom: 12,
                 center: new google.maps.LatLng(-34.397, 150.644),
-                mapTypeId: google.maps.MapTypeId.ROADMAP
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+
             };
             this._map = new google.maps.Map(this.el, mapOptions);
+
+            return this;
+
         },
+        
+        addMarker : function(location, iconImage) {
+            return new google.maps.Marker({
+                position: location,
+                map: this._map,
+                icon: iconImage
+            } );
+        }
+
         
     });
 

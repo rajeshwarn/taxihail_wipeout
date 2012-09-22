@@ -51,6 +51,12 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
         }
 
+		public override void ViewWillAppear (bool animated)
+		{
+			base.ViewWillAppear (animated);
+			NavigationController.NavigationBar.Hidden = false;
+		}
+
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
@@ -145,7 +151,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         private void LoadLayout()
         {
-            this.NavigationItem.TitleView = AppContext.Current.Controller.GetTitleView(null, Resources.ConfirmationViewTitle);
+            this.NavigationItem.TitleView = new TitleView(null, Resources.ConfirmationViewTitle);
         }
 
         private string FormatDateTime(DateTime? pickupDate, DateTime? pickupTime)

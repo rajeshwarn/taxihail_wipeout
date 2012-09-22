@@ -5,6 +5,7 @@ using System.Drawing;
 using MonoTouch.CoreGraphics;
 using MonoTouch.Foundation;
 using apcurium.MK.Common.Extensions;
+using Cirrious.MvvmCross.Interfaces.Commands;
 
 
 namespace apcurium.MK.Booking.Mobile.Client
@@ -47,7 +48,21 @@ namespace apcurium.MK.Booking.Mobile.Client
             Layer.MasksToBounds = false;
             ClipsToBounds = false;
 
+			this.TouchUpInside += delegate
+			{
+				Selected = !Selected;
+				if (Selected
+				    && SelectedChangedCommand != null
+				    && SelectedChangedCommand.CanExecute())
+				{
+					SelectedChangedCommand.Execute(this.Tag2);
+				}
+			};
         }
+
+		public IMvxCommand SelectedChangedCommand { get; set; }
+
+		public string Tag2 { get; set; }
 
         public override void Draw(RectangleF rect)
         {

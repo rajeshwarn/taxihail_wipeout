@@ -12,6 +12,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.Client.MapUtilities;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -82,6 +83,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         }
 
+		public override void ViewWillAppear (bool animated)
+		{
+			base.ViewWillAppear (animated);
+			NavigationController.NavigationBar.Hidden = false;
+		}
+
         public override void ViewDidLoad()
         {
             
@@ -105,9 +112,9 @@ namespace apcurium.MK.Booking.Mobile.Client
                 
                 mapStatus.Delegate = new AddressMapDelegate();
                 
-                var view = AppContext.Current.Controller.GetTitleView(null, Resources.StatusViewTitle);
+//                var view = AppContext.Current.Controller.GetTitleView(null, Resources.StatusViewTitle);
                 
-                this.NavigationItem.TitleView = view;
+				this.NavigationItem.TitleView = new TitleView(null, Resources.StatusViewTitle);
 
 				View.BringSubviewToFront( bottomBar );
             

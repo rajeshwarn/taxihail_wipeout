@@ -21,7 +21,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 					AppContext.Current.Controller.InvokeOnMainThread( () => {
 						AppContext.Current.Controller.PresentModalViewController( new LoginView(), true );
 					});
-					AppContext.Current.SignOutUser ();
+					AppContext.Current.SignOut ();
 				});
 			}
 		}

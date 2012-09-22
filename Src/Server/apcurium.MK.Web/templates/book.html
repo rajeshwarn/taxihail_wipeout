@@ -1,17 +1,34 @@
-﻿<div class='page-header'>
-    <h1>{{localize "Book a taxi"}}</h1>
-</div>
-<div class="row">
-    <div class="span12" id="pickup-drop-off-container">
-        <form>
-            <div class='pickup-address-container'></div>
-            <div class='drop-off-address-container'></div>
+﻿<div class="row">
+    <div class="span5" id="pickup-drop-off-container">
+        <div class='well'>
+            <form>
+                <label>{{localize "Pickup location"}}</label>
+                <div class='pickup-address-container'></div>
+                <label>{{localize "Destination"}}</label>
+                <div class='drop-off-address-container'></div>
+                <a href='#' class='btn btn-primary' data-action='book'>{{localize "Confirm Booking"}}</a>
+            </form>
+            <form class="form-horizontal">
+            <div>
+                <div class="control-group">
+                    <label class="control-label" for="inputPrice">{{localize "Price estimate"}}</label>
+                    <div class="controls price-estimate">
+                        {{priceEstimate}}
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="inputFare">{{localize "Fare estimante"}}</label>
+                    <div class="controls distance-estimate">
+                        {{distanceEstimate}}
+                    </div>
+                </div>
+            </div>
         </form>
+         <a href='#' class='btn btn-info' data-action='locate'>{{localize "Locate Me"}}</a>
+        </div>
+        
+        
+
     </div>
     <div class='span12 hidden-right' id="address-list-container" ></div>
-</div>
-<div class='row'>
-    <div class="span12">
-        <div id="map-container" ></div>
-    </div>
 </div>

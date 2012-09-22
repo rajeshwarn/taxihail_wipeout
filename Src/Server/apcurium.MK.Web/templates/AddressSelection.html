@@ -1,14 +1,8 @@
-﻿<div class="row">
-    <div class='span12'>
-        <ul class="nav nav-tabs">
-              <li>
-                    <a href="#">Search</a>
-              </li>
-              <li><a class='active' href="#">Favorites</a></li>
-              <li><a href="#">Places</a></li>
-        </ul>
-        <div class='tab-content'>
-            <ul class='address-list'></ul>
-        </div>
-    </div>
-</div>
+﻿<ul class="nav nav-tabs">
+    <li class='active' data-tab='search'><a href="#">Search</a>
+        {{#if isLogged}}
+    <li data-tab='favorites'><a href="#">Favorites</a>
+        {{/if}}
+    <li data-tab='places'><a href="#">Places</a>
+</ul>
+<div class='tab-content'></div>

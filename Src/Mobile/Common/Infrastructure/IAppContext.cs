@@ -8,8 +8,10 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 	{
         Account LoggedUser { get; }
         string LoggedInEmail { get; set; }
-        string LoggedInPassword { get; set; }
-        void UpdateLoggedInUser(Account data, bool syncWithServer);		
+		string LastEmail { get; set; }
+		string LoggedInPassword { get; set; }
+        void UpdateLoggedInUser(Account data, bool syncWithServer);	
+		void SignOut();	
 
 	}
 }

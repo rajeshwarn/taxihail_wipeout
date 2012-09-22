@@ -5,11 +5,9 @@ using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using MonoTouch.MapKit;
 using MonoTouch.CoreLocation;
-
-
 using apcurium.Framework.Extensions;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.MapUtilities
 {
 	public class AddressMapDelegate : MKMapViewDelegate
 	{
@@ -17,10 +15,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			
 		}
-		
-		
-		
-		
+
 		public override MKAnnotationView GetViewForAnnotation (MKMapView mapView, NSObject annotation)
 		{
 			var ann = annotation as AddressAnnotation;
