@@ -371,7 +371,8 @@
               style="@style/ButtonTextGray"
               android:layout_width="40dip"
               android:layout_height="40dip"
-              android:padding ="2dip"
+              android:scaleType="fitCenter"
+              android:padding ="5dip"
               android:layout_alignParentLeft="true" />
           <ImageButton
             local:MvxBind="{'Click':{'Path':'SelectedAddress.ClearPositionCommand'}, 'Enabled':{'Path':'CanClearAddress'},'Visibility':{'Path':'CanClearAddress','Converter':'Visibility'}}"
