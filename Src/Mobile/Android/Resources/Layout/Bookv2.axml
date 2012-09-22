@@ -366,11 +366,12 @@
             android:layout_margin="10dip">
           <ImageButton
               local:MvxBind="{'Click':{'Path':'SelectedAddress.RequestCurrentLocationCommand'}, 'Enabled':{'Path':'CanClearAddress','Converter':'BoolInverter'},'Visibility':{'Path':'CanClearAddress','Converter':'InvertedVisibility'}}"
-              android:src="@drawable/target_state"
+              android:src="@drawable/target_selected"
               android:background="@drawable/myLocationButton_state"
               style="@style/ButtonTextGray"
               android:layout_width="40dip"
               android:layout_height="40dip"
+              android:padding ="2dip"
               android:layout_alignParentLeft="true" />
           <ImageButton
             local:MvxBind="{'Click':{'Path':'SelectedAddress.ClearPositionCommand'}, 'Enabled':{'Path':'CanClearAddress'},'Visibility':{'Path':'CanClearAddress','Converter':'Visibility'}}"
