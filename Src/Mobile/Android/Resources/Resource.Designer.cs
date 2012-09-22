@@ -812,14 +812,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f05003d
 			public const int datePickerCtl = 2131034173;
 			
-			// aapt resource value: 0x7f050032
-			public const int destinationAddressButton = 2131034162;
+			// aapt resource value: 0x7f050031
+			public const int destinationAddressButton = 2131034161;
 			
 			// aapt resource value: 0x7f050030
 			public const int destinationAddressLayout = 2131034160;
 			
-			// aapt resource value: 0x7f050031
-			public const int destinationIsActiveButton = 2131034161;
+			// aapt resource value: 0x7f050032
+			public const int destinationIsActiveButton = 2131034162;
 			
 			// aapt resource value: 0x7f05001d
 			public const int fakeLayout = 2131034141;
@@ -887,8 +887,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f050005
 			public const int note_text = 2131034117;
 			
-			// aapt resource value: 0x7f05002f
-			public const int pickupAddressButton = 2131034159;
+			// aapt resource value: 0x7f05002e
+			public const int pickupAddressButton = 2131034158;
 			
 			// aapt resource value: 0x7f05002d
 			public const int pickupAddressLayout = 2131034157;
@@ -899,8 +899,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f050033
 			public const int pickupDateLayout = 2131034163;
 			
-			// aapt resource value: 0x7f05002e
-			public const int pickupIsActiveButton = 2131034158;
+			// aapt resource value: 0x7f05002f
+			public const int pickupIsActiveButton = 2131034159;
 			
 			// aapt resource value: 0x7f050081
 			public const int placesbtn = 2131034241;
