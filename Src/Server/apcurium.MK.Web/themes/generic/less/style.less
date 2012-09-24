@@ -10,10 +10,25 @@ header {
     font-size: 18px;
     color: @white;
     text-shadow: 0 1px 1px rgba(0, 0, 0, .75);
+
+    a, a:link, a:active, a:hover, a:visited {
+        color: @white;
+        font-weight: bold;
+    }
+
+    ul {
+        list-style-type: none;
+    
+        >li {
+            display: inline-block;
+            margin: 0 10px;
+        }
+
+    }
 }
 
 .login-status {
-    margin-top: 34px;
+    margin-top: 30px;
 }
 
 .brand {
