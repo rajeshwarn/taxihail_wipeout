@@ -15,6 +15,7 @@ using Cirrious.MvvmCross.Views;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
 using SocialNetworks.Services;
+using Android.App;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -91,7 +92,7 @@ namespace apcurium.MK.Booking.Mobile.Client
     public class AppContext :  IAppContext, ILocationListener
     {
         private const string _sharedPreferences = "TaxiMobile.SharedPreferences";
-		private Account _loggedUser;
+		
 
         
         public static AppContext Current
@@ -102,15 +103,14 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
         }
 
-        public AppContext(TaxiMobileApplication app)
+        private Account _loggedUser;
+        private Context _appContext;
+        public AppContext(Context appContext)
         {
-            App = app;
-          
+            _appContext = appContext;
         }
-         
 
-        public TaxiMobileApplication App { get; set; }
-        public Context Context { get; set; }
+        
 
         public Account LoggedUser
         {
@@ -119,7 +119,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
                 if( _loggedUser == null )
 				{
-					var pref = App.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
+                    var pref = Application.Context.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
 	                var serializedUser = pref.GetString("LoggedUser", "");
 	                if (serializedUser.HasValue())
 	                {
@@ -149,7 +149,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 if (value != null)
                 {
                     string serializedUser = SerializerHelper.Serialize(value);
-                    var pref = App.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
+                    var pref = Application.Context.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
                     pref.Edit().PutString("LoggedUser", serializedUser).Commit();
 
                     AppContext.Current.LoggedInEmail = value.Email;
@@ -157,7 +157,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 }
                 else
                 {
-                    var pref = App.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
+                    var pref = Application.Context.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
                     pref.Edit().PutString("LoggedUser", "").Commit();
 					pref.Edit().PutString("ServerName", "" ).Commit();
 					pref.Edit().PutString("ServerVersion", "" ).Commit();
@@ -192,12 +192,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             get
             {
-                var pref = App.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
+                var pref = Application.Context.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
                 return pref.GetString( "LastEmail" , "" );
             }
             set
             {
-                var pref = App.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
+                var pref = Application.Context.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
                 pref.Edit().PutString( "LastEmail", value ).Commit();
             }
         }
@@ -208,12 +208,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             get
             {
-                var pref = App.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
+                var pref = Application.Context.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
                 return pref.GetString( "LoggedInEmail" , "" );
             }
             set
             {
-                var pref = App.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
+                var pref = Application.Context.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
                 pref.Edit().PutString( "LoggedInEmail", value ).Commit();
             }
         }
@@ -223,7 +223,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             get
             {
-                 var pref = App.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
+                var pref = Application.Context.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
                  var orderId = pref.GetString("LastOrder", null);
                  Guid r;
                  if (  ( orderId.HasValue() ) && ( Guid.TryParse( orderId, out r ) ))
@@ -243,12 +243,12 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
                 if (value.HasValue)
                 {
-                    var pref = App.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
+                    var pref = Application.Context.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
                     pref.Edit().PutString("LastOrder", value.Value.ToString()).Commit();
                 }
                 else
                 {
-                    var pref = App.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
+                    var pref = Application.Context.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
                     pref.Edit().Remove("LastOrder").Commit();
                 }
             }
@@ -261,12 +261,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             get
             {
-                var pref = App.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
+                var pref = Application.Context.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
                 return pref.GetString( "LoggedInPassword" , "" );
             }
             set
             {
-                var pref = App.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
+                var pref = Application.Context.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
                 pref.Edit().PutString( "LoggedInPassword", value ).Commit();
             }
         }
@@ -338,7 +338,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public IntPtr Handle
         {
-            get { return App.Handle; }
+            get { return Application.Context.Handle; }
         }
     }
 }

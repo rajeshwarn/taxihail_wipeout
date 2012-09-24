@@ -45,7 +45,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>True</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;CLIENT</DefineConstants>
+    <DefineConstants>CLIENT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
@@ -55,7 +55,7 @@
     <AndroidSigningStorePass>mkt0001.</AndroidSigningStorePass>
     <AndroidSigningKeyAlias>MKTaxiHail</AndroidSigningKeyAlias>
     <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
-    <AndroidLinkMode>None</AndroidLinkMode>
+    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
     <AndroidSupportedAbis>armeabi-v7a,x86</AndroidSupportedAbis>
     <AndroidLinkSkip />
   </PropertyGroup>
@@ -105,7 +105,6 @@
     <Compile Include="Animations\ResizeAnimation.cs" />
     <Compile Include="Animations\SlideAnimation.cs" />
     <Compile Include="AppContext.cs" />
-    <Compile Include="AppModule.cs" />
     <Compile Include="AppFonts.cs" />
     <Compile Include="Cache\CacheService.cs" />
     <Compile Include="Controls\AutoCompleteBindableTextView.cs" />
@@ -499,7 +498,13 @@
     <AndroidResource Include="Resources\Drawable\location_info.png" />
     <AndroidResource Include="Resources\Drawable\number_icon.png" />
     <AndroidResource Include="Resources\Drawable\number_icon_selected.png" />
-    <Content Include="Todo.txt" />
+    <AndroidResource Include="Resources\Drawable\pin_state.xml" />
+    <AndroidResource Include="Resources\Drawable\pin_selected.png" />
+    <AndroidResource Include="Resources\Drawable\pin.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\pin.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\pin_selected.png" />
+    <AndroidResource Include="Resources\Drawable\cancel.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\cancel.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -279,6 +279,7 @@
     <Content Include="services\AuthService.js" />
     <Content Include="services\DirectionInfoService.js" />
     <Content Include="services\GeocodingService.js" />
+    <Content Include="services\GeolocationService.js" />
     <Content Include="services\LocalStorageService.js" />
     <Content Include="taxi-hail.js" />
     <Content Include="templates\AddressControl.html" />

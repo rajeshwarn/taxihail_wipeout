@@ -19,17 +19,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Cache
     {
         private const string _sharedPreferences = "MK.Booking.Cache";
 
-        public CacheService(TaxiMobileApplication app)
+        public CacheService()
         {
-            App = app;
+            
         }
 
-        public TaxiMobileApplication App { get; set; }
+        
 
         public T Get<T>(string key)
         {
-            
-            var pref = App.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
+
+            var pref = Application.Context.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
             var serialized = pref.GetString( key , null );
             if ( serialized.HasValue() )
             {
@@ -43,15 +43,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Cache
 
         public void Set<T>(string key, T obj)
         {
-            var serialized = JsonSerializer.SerializeToString(obj);            
-            var pref = App.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
+            var serialized = JsonSerializer.SerializeToString(obj);
+            var pref = Application.Context.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
             pref.Edit().PutString( key, serialized ).Commit();
                
         }
 
         public void Clear(string key)
         {
-            var pref = App.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
+            var pref = Application.Context.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
             var serialized = pref.GetString( key , null );
             if (serialized.HasValue())
             {
@@ -62,7 +62,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Cache
 
         public void ClearAll()
         {
-            var pref = App.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
+            var pref = Application.Context.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
             pref.Edit().Clear().Commit();
         }
 

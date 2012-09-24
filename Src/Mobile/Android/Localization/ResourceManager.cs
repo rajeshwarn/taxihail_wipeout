@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Localization
 
         public AppLanguage CurrentLanguage
         {
-            get { return AppContext.Current.App.GetString(Resource.String.Language) == "English" ? AppLanguage.English : AppLanguage.Francais; }
+            get { return Application.Context.GetString(Resource.String.Language) == "English" ? AppLanguage.English : AppLanguage.Francais; }
         }
 
         public string OrderNote
@@ -62,13 +62,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Localization
 
         public string CurrentLanguageCode
         {
-            get { return AppContext.Current.App.GetString(Resource.String.LanguageCode); }
+            get { return Application.Context.GetString(Resource.String.LanguageCode); }
         }
 
 
         public string CarAssigned
         {
-            get { return AppContext.Current.App.GetString(Resource.String.CarAssigned); }
+            get { return Application.Context.GetString(Resource.String.CarAssigned); }
         }
 
         public string GetString(string key)

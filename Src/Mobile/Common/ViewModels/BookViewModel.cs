@@ -74,7 +74,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             if (e.PropertyName == "Display")
             {
-                ThreadPool.QueueUserWorkItem(CalculateEstimate);                                
+                ThreadPool.QueueUserWorkItem(CalculateEstimate);
+                FirePropertyChanged(() => CanClearAddress);
             }
         }
 
@@ -249,7 +250,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 _dropoffIsActive = value;
                 FirePropertyChanged(() => DropoffIsActive);
+                FirePropertyChanged(() => CanClearAddress);
             }
+        }
+
+        public bool CanClearAddress
+        {
+            get { return DropoffIsActive && ( Dropoff != null) && (Dropoff.Model != null) && Dropoff.Model.HasValidCoordinate(); }
         }
 
         public bool NoAddressActiveSelection
