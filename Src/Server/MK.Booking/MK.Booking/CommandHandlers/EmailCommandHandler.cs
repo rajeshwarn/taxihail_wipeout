@@ -50,9 +50,8 @@ namespace apcurium.MK.Booking.CommandHandlers
                                        command.ConfirmationUrl,
                                        ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
                                    };
-
-            var logo = new KeyValuePair<string, string>("HeaderImage", _templateService.ImagePath("header-gradient.png"));
-            SendEmail(command.EmailAddress, template, AccountConfirmationEmailSubject, templateData, logo);
+            
+            SendEmail(command.EmailAddress, template, AccountConfirmationEmailSubject, templateData);
         }
 
         private void SendEmail(string to, string bodyTemplate, string subjectTemplate, object templateData, params KeyValuePair<string,string>[] embeddedIMages)
@@ -69,11 +68,15 @@ namespace apcurium.MK.Booking.CommandHandlers
             var view = AlternateView.CreateAlternateViewFromString(messageBody, Encoding.UTF8, "text/html");
             mailMessage.AlternateViews.Add(view);
 
-            foreach (var image in embeddedIMages)
+            if(embeddedIMages != null)
             {
-                var linkedImage = new LinkedResource(image.Value) {ContentId = image.Key};
-                view.LinkedResources.Add(linkedImage);
+                foreach (var image in embeddedIMages)
+                {
+                    var linkedImage = new LinkedResource(image.Value) { ContentId = image.Key };
+                    view.LinkedResources.Add(linkedImage);
+                }
             }
+           
             _emailSender.Send(mailMessage);
         }
     }
