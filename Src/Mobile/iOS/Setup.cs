@@ -20,6 +20,7 @@ using apcurium.MK.Common.Diagnostic;
 using SocialNetworks.Services.OAuth;
 using SocialNetworks.Services.MonoTouch;
 using SocialNetworks.Services;
+using apcurium.MK.Booking.Mobile.Client.Converters;
 
 
 namespace apcurium.MK.Booking.Mobile.Client
@@ -54,6 +55,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 			base.InitializeApp ();
 
 
+		}
+
+		protected override IEnumerable<System.Type> ValueConverterHolders {
+			get {
+				return new[] { typeof(AppConverters) };
+			}
 		}
 
         protected override void InitializeIoC()

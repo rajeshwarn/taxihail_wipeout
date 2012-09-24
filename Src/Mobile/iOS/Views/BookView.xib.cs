@@ -26,6 +26,7 @@ using MonoTouch.MessageUI;
 using System.IO;
 using apcurium.MK.Booking.Mobile.Client.MapUtilities;
 using apcurium.MK.Booking.Mobile.Style;
+using apcurium.MK.Booking.Mobile.Client.Controls;
  
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -34,6 +35,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         #region Constructors
 
 		private PanelMenuView _menu;
+		private DateTimePicker _dateTimePicker;
         public event EventHandler TabSelected;
 
         //private CreateOrder _bookingInfo;
@@ -71,18 +73,29 @@ namespace apcurium.MK.Booking.Mobile.Client
 			View.InsertSubviewBelow( _menu.View, bookView );
 
             AppButtons.FormatStandardButton((GradientButton)refreshCurrentLocationButton, "", AppStyle.ButtonColor.Blue, "");
-            AppButtons.FormatStandardButton((GradientButton)bookLaterButton, "", AppStyle.ButtonColor.DarkGray );
+            
+			_dateTimePicker = new DateTimePicker( );
+			_dateTimePicker.ShowPastDate = false;
+
+			View.AddSubview( _dateTimePicker );
+
+			AppButtons.FormatStandardButton((GradientButton)bookLaterButton, "", AppStyle.ButtonColor.DarkGray );
+
+			bookLaterButton.TouchUpInside += delegate {
+				_dateTimePicker.Show( ViewModel.Order.PickupDate );
+			};
+
 
             AppButtons.FormatStandardButton((GradientButton)dropoffButton, "", AppStyle.ButtonColor.Grey, "");
             AppButtons.FormatStandardButton((GradientButton)pickupButton, "", AppStyle.ButtonColor.Grey );
 
             AppButtons.FormatStandardButton((GradientButton)dropoffActivationButton, "", AppStyle.ButtonColor.LightBlue, "");
             AppButtons.FormatStandardButton((GradientButton)pickupActivationButton, "", AppStyle.ButtonColor.LightBlue );
-            ((GradientButton)dropoffActivationButton).SetImage( "Assets/location.png" );
-            ((GradientButton)pickupActivationButton).SetImage( "Assets/location.png" );
+            ((GradientButton)dropoffActivationButton).SetImage( "Assets/pin.png" );
+            ((GradientButton)pickupActivationButton).SetImage( "Assets/pin.png" );
 
-            ((GradientButton)dropoffActivationButton).SetSelectedImage( "Assets/locationSelected.png" );
-            ((GradientButton)pickupActivationButton).SetSelectedImage( "Assets/locationSelected.png" );
+            ((GradientButton)dropoffActivationButton).SetSelectedImage( "Assets/pin_selected.png" );
+            ((GradientButton)pickupActivationButton).SetSelectedImage( "Assets/pin_selected.png" );
 
             headerBackgroundView.Image =UIImage.FromFile("Assets/backPickupDestination.png");
 
@@ -111,6 +124,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 				{ dropoffButton, "{'TouchUpInside':{'Path':'Dropoff.PickAddress'},'TextLine1':{'Path':'Dropoff.Title', 'Mode':'TwoWay'}, 'TextLine2':{'Path':'Dropoff.Display', 'Mode':'TwoWay'}, 'IsSearching':{'Path':'Dropoff.IsExecuting', 'Mode':'TwoWay'}, 'IsPlaceholder':{'Path':'Dropoff.IsPlaceHolder', 'Mode':'TwoWay'} }"},             
 				{ mapView, "{'Pickup':{'Path':'Pickup.Model'}, 'Dropoff':{'Path':'Dropoff.Model'} , 'MapMoved':{'Path':'SelectedAddress.SearchCommand'}, 'MapCenter':{'Path':'MapCenter'} }" },
 				{ infoLabel, "{'Text':{'Path':'FareEstimate'}}" },
+				{ pickupDateLabel, "{'Text':{'Path':'PickupDateDisplay'}, 'Hidden':{'Path':'IsInTheFuture','Converter':'BoolInverter'}}" },
+				{ _dateTimePicker, "{'DateChangedCommand':{'Path':'PickupDateSelectedCommand'}}" },
 		
             });
 
@@ -120,6 +135,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			}
 
         }
+
+		private DateTime? PickupDate{ get;set; }
 
         public override void ViewWillAppear(bool animated)
         {
@@ -392,6 +409,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             });
             
         }
+	
+
+
 
         #endregion
 
