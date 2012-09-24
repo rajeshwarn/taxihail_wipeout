@@ -1,3 +1,9 @@
 ﻿{
-    "Book a taxi": "Book a taxi"
+    "Book a taxi": "Book a taxi",
+	"Pickup location" : "Pickup location",
+	"Destination" : "Destination",
+	"Confirm Booking" : "Confirm Booking",
+	"Price estimate" : "Price estimate",
+	"Fare estimate" : "Fare estimate",
+	"Locate Me" : "Locate Me"
 }

@@ -6,7 +6,9 @@
         events: {
             "submit": "onsubmit",
             "change :text": "onPropertyChanged",
-            "change :password": "onPropertyChanged"
+            "change :password": "onPropertyChanged",
+            "keyup :text": "onKeyPress",
+            "keyup :password": "onKeyPress"
         },
         
         initialize:function () {
@@ -16,7 +18,6 @@
 
         render: function () {
             this.$el.html(this.renderTemplate());
-
             _.extend(Backbone.Validation.messages, {
               required: this.localize('error.Required'),
               pattern: this.localize('error.Pattern'),
@@ -27,9 +28,33 @@
             return this;
         },
         
+        onKeyPress: function (e) {
+
+            //ignore tab key
+            if (e.keyCode != 9) {
+                var $input = $(e.currentTarget);
+                var attrName = $input.attr('name');
+                var attrValue = $input.val();
+
+                this.model.set(attrName, attrValue, { silent: true });
+                var errorMessage = this.model.preValidate(attrName, attrValue);
+
+                if (errorMessage) {
+                    //hide valid status image
+                    $input.next().addClass('hidden');
+                    //display error message
+                    Backbone.Validation.callbacks.invalid(this, attrName, errorMessage, "name");
+                } else {
+                    //show valid status image
+                    $input.next().removeClass('hidden');
+                    Backbone.Validation.callbacks.valid(this, attrName, "name");
+                }
+            }
+        },
+        
         onPropertyChanged: function (e) {
             var $input = $(e.currentTarget);
-            this.model.set($input.attr('name'), $input.val(), { silent: true });
+            this.model.set($input.attr('name'), $input.val(), {silent: true});
         },
         
         onsubmit: function (e) {
