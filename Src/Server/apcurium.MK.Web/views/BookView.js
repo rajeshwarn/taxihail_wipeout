@@ -4,6 +4,7 @@
         events: {
             'click [data-action=book]': 'book',
             'click [data-action=locate]': 'locate',
+            
 
         },
         
@@ -12,10 +13,12 @@
 
             this.model.on('change:pickupAddress', function(model, value) {
                 this.actualizeEstimate();
+                this._pickupAddressView.model.set(value);
             }, this);
 
             this.model.on('change:dropOffAddress', function(model, value) {
                 this.actualizeEstimate();
+                this._dropOffAddressView.model.set(value);
             }, this);
 
             this.model.on('change:priceEstimate', function(model, value){
@@ -26,7 +29,21 @@
                 this.$('.distance-estimate').text(value);
             }, this);
             
+            this.model.set('isPickupBtnSelected', true);
+
+
+            this.model.on('change:isPickupBtnSelected', function (model, value) {
+                if (value == true) {
+                    this._dropOffAddressView.$("span.btn").attr("class", "btn");
+                } else {
+                    this._pickupAddressView.$("span.btn").attr("class", "btn");
+                }
+            }, this);
+            
+            
         },
+        
+        
 
         render: function () {
             this.$el.html(this.renderTemplate(this.model.toJSON()));
@@ -39,10 +56,14 @@
                 });
             this._dropOffAddressView = new TaxiHail.AddressControlView({
                     model: dropOffAddress
-                });
+            });
+            
+            
 
             this.$('.pickup-address-container').html(this._pickupAddressView.render().el);
             this.$('.drop-off-address-container').html(this._dropOffAddressView.render().el);
+            
+            this._pickupAddressView.$("span.btn").attr("class", "btn active");
 
             this._pickupAddressView.on('open', function(view){
                 this._dropOffAddressView.close();
@@ -50,6 +71,14 @@
 
             this._dropOffAddressView.on('open', function(view){
                 this._pickupAddressView.close();
+            }, this);
+
+            this._pickupAddressView.on('toggleselect', function (view) {
+                    this.model.set('isPickupBtnSelected', true);
+            }, this);
+
+            this._dropOffAddressView.on('toggleselect', function (view) {
+                    this.model.set('isPickupBtnSelected', false);
             }, this);
 
             pickupAddress.on('change', function(model){

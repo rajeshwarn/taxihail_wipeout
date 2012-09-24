@@ -5,6 +5,7 @@
 
         events: {
             'click [data-action=open]': 'open',
+            'click [data-action=toggleselect]': 'toggleselect',
             'focus [name=address]': 'onfocus', 
             'blur  [name=address]': 'onblur'
         },
@@ -13,6 +14,12 @@
             _.bindAll(this, 'onkeypress');
             this.$el.addClass('address-picker');
             this.model.on('change', this.render, this);
+        },
+        
+        toggleselect: function (e) {
+            e && e.preventDefault();
+
+            this.trigger('toggleselect', this);
         },
 
         render: function() {
