@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Mail;
 using System.Text;
 using Infrastructure.Messaging.Handling;
@@ -50,10 +51,11 @@ namespace apcurium.MK.Booking.CommandHandlers
                                        ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
                                    };
 
-            SendEmail(command.EmailAddress, template, AccountConfirmationEmailSubject, templateData);
+            var logo = new KeyValuePair<string, string>("HeaderImage", _templateService.ImagePath("header-gradient.png"));
+            SendEmail(command.EmailAddress, template, AccountConfirmationEmailSubject, templateData, logo);
         }
 
-        private void SendEmail(string to, string bodyTemplate, string subjectTemplate, object templateData)
+        private void SendEmail(string to, string bodyTemplate, string subjectTemplate, object templateData, params KeyValuePair<string,string>[] embeddedIMages)
         {
             var messageSubject = _templateService.Render(subjectTemplate, templateData);
             var messageBody = _templateService.Render(bodyTemplate, templateData);
@@ -61,8 +63,17 @@ namespace apcurium.MK.Booking.CommandHandlers
             var mailMessage = new MailMessage(@from: _configurationManager.GetSetting("Email.NoReply"),
                                               to: to,
                                               subject: messageSubject,
-                                              body: messageBody)
+                                              body:null)
                                   {IsBodyHtml = true, BodyEncoding = Encoding.UTF8, SubjectEncoding = Encoding.UTF8};
+
+            var view = AlternateView.CreateAlternateViewFromString(messageBody, Encoding.UTF8, "text/html");
+            mailMessage.AlternateViews.Add(view);
+
+            foreach (var image in embeddedIMages)
+            {
+                var linkedImage = new LinkedResource(image.Value) {ContentId = image.Key};
+                view.LinkedResources.Add(linkedImage);
+            }
             _emailSender.Send(mailMessage);
         }
     }

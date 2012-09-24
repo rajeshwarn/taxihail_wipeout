@@ -9,5 +9,6 @@ namespace apcurium.MK.Booking.Email
     {
         string Find(string templateName);
         string Render(string template, object data);
+        string ImagePath(string imageName);
     }
 }

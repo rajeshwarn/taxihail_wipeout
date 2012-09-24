@@ -25,6 +25,11 @@ namespace apcurium.MK.Booking.Email
             return Nustache.Core.Render.StringToString(template, data);
         }
 
+        public string ImagePath(string imageName)
+        {
+            return Path.Combine(AssemblyDirectory, "Email\\Images", imageName);
+        }
+
         static public string AssemblyDirectory
         {
             get
