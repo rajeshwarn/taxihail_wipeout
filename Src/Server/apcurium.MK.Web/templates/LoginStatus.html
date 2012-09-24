@@ -1,11 +1,12 @@
-﻿<div class='brand'>
-    <div class="pull-right login-status">
-        {{#if isLoggedIn}}
-            {{name}}
-            <a href="#" data-action="logout">{{localize "Logout"}}</a>
-        {{else}}
-            <a href="#login" >{{localize "Login"}}</a>
-            <a href="#signup" >{{localize "Signup"}}</a>
-        {{/if}}
-    </div>
+﻿<div class='brand pull-left'>
+    
+</div>
+<div class="login-status pull-right">
+    {{#if isLoggedIn}}
+        {{name}}
+        <a href="#" data-action="logout">{{localize "Logout"}}</a>
+    {{else}}
+        <a href="#login" >{{localize "Login"}}</a>
+        <a href="#signup" >{{localize "Signup"}}</a>
+    {{/if}}
 </div>

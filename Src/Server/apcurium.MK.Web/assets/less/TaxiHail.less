@@ -1,7 +1,7 @@
 ﻿@map-z-index: 10;
 @container-z-index: @map-z-index * 10;
 @login-status-z-index: @map-z-index * 100;
-@login-status-height: 63px;
+@header-height: 63px;
 
 html, body {
     height: 100%
@@ -12,6 +12,9 @@ html, body {
     width:100%;
 
     z-index: @map-z-index;
+
+    position: absolute;
+    top:0;
     
     img {
         max-width: none;
@@ -19,18 +22,21 @@ html, body {
 }
 
 .container {
-    position:absolute;
+    position:relative;
     top:101px;
-    left:40%;
-
     z-index: @container-z-index;
 }
 
-.login-status-zone {
+header {
     position: absolute;
-    height: @login-status-height;
+    height: @header-height;
     width: 100%;
     z-index: @login-status-z-index;
+
+    .login-status-zone {
+        .span(6);
+        margin: 0 auto;
+    }
 }
 
 /* form validation */
