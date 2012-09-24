@@ -7,6 +7,7 @@
 
 
     TaxiHail.auth = _.extend(Backbone.Events, {
+        account: null,
         login: function (email, password) {
             return $.post('api/auth/credentials', {
                 userName: email,
@@ -28,7 +29,6 @@
         isLoggedIn : function() {
             return isLoggedIn;
         }, 
-        account: null,
         initialize: function() {
             this.account = new TaxiHail.UserAccount();
 
@@ -36,6 +36,10 @@
                 if(!isLoggedIn) this.account.clear();
             }, this);
 
+            // Fetch user account
+            // We use a different instance of UserAccount
+            // In order to be able to set the isLoggedIn flag
+            // Before setting the auth.account attributes
             new TaxiHail.UserAccount().fetch({
                 success: _.bind(function(model) {
                     isLoggedIn = true;
