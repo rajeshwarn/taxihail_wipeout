@@ -67,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 else
                 {
                     return EmptyAddressPlaceholder;
-                }                
+                }
             }
         }
 
@@ -75,7 +75,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return Model.FullAddress.IsNullOrEmpty();                
+                return Model.FullAddress.IsNullOrEmpty();
             }
         }
 
@@ -87,17 +87,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                CancelCurrentLocationCommand.Execute();
+
 
                 return new MvxRelayCommand<Address>(coordinate =>
                 {
-                    if ((_searchTask != null) && !_searchTask.IsCompleted && _cancellationToken != null)
-                    {
-                        _cancellationToken.Cancel();
-                        _cancellationToken.Dispose();
-                        _cancellationToken = null;
-                        IsExecuting = false;
-                    }
+                    CancelCurrentLocationCommand.Execute();
+                                      
                     _cancellationToken = new CancellationTokenSource();
 
                     var token = _cancellationToken.Token;
@@ -107,20 +102,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         return TinyIoC.TinyIoCContainer.Current.Resolve<IGeolocService>().SearchAddress(coordinate.Latitude, coordinate.Longitude);
 
                     }, token)
-                    .ContinueWith( t=>
+                    .ContinueWith(t =>
                         {
-                            if (t.IsCompleted)
-                            {                                
+                            if ( (t.IsCompleted) && ( !t.IsCanceled ) )
+                            {
                                 RequestMainThreadAction(() =>
                                 {
                                     if (t.Result.Count() > 0)
                                     {
-                                        SetAddress(t.Result[0], true );
+                                        SetAddress(t.Result[0], true);
                                     }
                                     else
                                     {
                                         ClearAddress();
-                                    }                                    
+                                    }
                                 });
                             }
                             IsExecuting = false;
@@ -135,7 +130,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get
             {
                 return new MvxRelayCommand(() =>
-                {                    
+                {
+                    CancelCurrentLocationCommand.Execute();
                     RequestNavigate<AddressSearchViewModel>(new { search = Model.FullAddress, ownerId = _id });
                 });
             }
@@ -143,7 +139,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void OnAddressSelected(AddressSelected selected)
         {
-            SetAddress(selected.Content,true);
+            SetAddress(selected.Content, true);
         }
 
         public bool IsExecuting
@@ -153,7 +149,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 _isExecuting = value;
                 FirePropertyChanged(() => IsExecuting);
-                FirePropertyChanged(() => Display);                
+                FirePropertyChanged(() => Display);
             }
         }
 
@@ -168,6 +164,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         if (_cancellationToken != null)
                         {
                             _cancellationToken.Cancel();
+                            _cancellationToken.Dispose();
+                            _cancellationToken = null;
                         }
                     });
             }
@@ -200,28 +198,43 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             FirePropertyChanged(() => Model);
         }
 
+
+
+        public IMvxCommand ClearPositionCommand
+        {
+            get
+            {
+
+                return new MvxRelayCommand(() =>
+                {
+                    ClearAddress();
+
+                });
+            }
+        }
         public IMvxCommand RequestCurrentLocationCommand
         {
             get
             {
                 return new MvxRelayCommand(() =>
                 {
+                    CancelCurrentLocationCommand.Execute();
                     IsExecuting = true;
                     _cancellationToken = new CancellationTokenSource();
                     _geolocator.GetPositionAsync(30000, _cancellationToken.Token).ContinueWith(t =>
                     {
                         try
-                        {                            
+                        {
                             if (t.IsFaulted)
                             {
                                 // PositionStatus.Text = ((GeolocationException)t.Exception.InnerException).Error.ToString();
                             }
-                            else
+                            else if ( t.IsCompleted && !t.IsCanceled )
                             {
                                 var address = TinyIoC.TinyIoCContainer.Current.Resolve<IGeolocService>().SearchAddress(t.Result.Latitude, t.Result.Longitude);
                                 if (address.Count() > 0)
                                 {
-                                    SetAddress(address[0],false);
+                                    SetAddress(address[0], false);
                                 }
                                 else
                                 {

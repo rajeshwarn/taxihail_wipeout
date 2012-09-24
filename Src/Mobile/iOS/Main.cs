@@ -50,7 +50,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			var setup = new Setup(this, new PhonePresenter( this, window ) );
             setup.Initialize();
 
-            new Bootstrapper(new IModule[] { new AppModule() }).Run();
 
             window.MakeKeyAndVisible();
 

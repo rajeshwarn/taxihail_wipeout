@@ -357,7 +357,10 @@ namespace apcurium.MK.Booking.Mobile.Client
             try
             {
                 base.ViewDidDisappear(animated);
-                _timer.Dispose();
+                if ( _timer != null )
+                {
+                       _timer.Dispose();
+                }
 
             }
             catch (Exception ex)
