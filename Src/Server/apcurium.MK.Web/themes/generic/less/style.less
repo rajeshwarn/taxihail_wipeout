@@ -3,3 +3,68 @@ body {
  //#gradient > .vertical(#0058A4, #003B72);
 }
 
+header {
+    #gradient > .vertical(#00407B, #0057A3);
+    border-bottom: 1px solid #003666;
+
+    font-size: 18px;
+    color: @white;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, .75);
+}
+
+.login-status {
+    margin-top: 34px;
+}
+
+.brand {
+    background: url(../img/logo.png) no-repeat;
+    position: relative;
+    top: 17px;
+    height: 80px;
+    width: 113px
+}
+
+.well {
+  min-height: 20px;
+  padding: 18px;
+  margin-bottom: 20px;
+  background-color: @wellBackground;
+  border: 1px solid #6A6855;
+  .border-radius(8px);
+}
+
+label {
+    color: @taxiHailBlue;
+    font-size: 18px;
+    font-weight:bold;
+}
+
+textarea,
+input[type="text"],
+input[type="password"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="date"],
+input[type="month"],
+input[type="time"],
+input[type="week"],
+input[type="number"],
+input[type="email"],
+input[type="url"],
+input[type="search"],
+input[type="tel"],
+input[type="color"],
+.uneditable-input {
+  border: 1px solid @inputBorder;
+  .box-shadow(inset 0 0 6px rgba(0,0,0,.70));
+  color:@black;
+  height: 30px;
+  font-size:14px;
+}
+
+.input-prepend .btn,
+.input-append .btn {
+    line-height: 30px;
+    border: 1px solid @inputBorder;
+}
+

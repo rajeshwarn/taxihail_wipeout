@@ -1,8 +1,4 @@
-﻿// Authentication Service
-// Methods: login, logout
-// Events: loggedIn, loggedOut
-
-(function () {
+﻿(function () {
 
     TaxiHail.directionInfo = _.extend(Backbone.Events, {
         getInfo: function (originLat, originLng, destLat, destLng) {

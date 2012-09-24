@@ -12,13 +12,11 @@
 
         render: function () {
 
-            if (this.model.isNew()) {
-                // Account is not loaded
-                // Hide the view
-                this.$el.empty();
-            } else {
-                this.$el.html(this.renderTemplate(this.model.toJSON()));
-            }
+            var data = _.extend(this.model.toJSON(), {
+                isLoggedIn: TaxiHail.auth.isLoggedIn()
+            });
+
+            this.$el.html(this.renderTemplate(data));
 
             return this;
         },

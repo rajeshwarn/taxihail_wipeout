@@ -1,9 +1,12 @@
-﻿<div class="btn-group pull-right login-status">
-    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-        <i class="icon-user"></i> {{name}}
-        <span class="caret"></span>
-    </a>
-    <ul class="dropdown-menu">
-        <li><a href="#" data-action="logout">{{localize "Logout"}}</a></li>
-    </ul>
+﻿<div class='brand pull-left'>
+    
+</div>
+<div class="login-status pull-right">
+    {{#if isLoggedIn}}
+        {{name}}
+        <a href="#" data-action="logout">{{localize "Logout"}}</a>
+    {{else}}
+        <a href="#login" >{{localize "Login"}}</a>
+        <a href="#signup" >{{localize "Signup"}}</a>
+    {{/if}}
 </div>
