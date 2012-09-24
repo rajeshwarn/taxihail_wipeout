@@ -175,6 +175,7 @@
     <Compile Include="ViewModels\SearchAddress\AddressSearchByPlacesViewModel.cs" />
     <Compile Include="Infrastructure\IOverlayService.cs" />
     <Compile Include="ViewModels\PanelViewModel.cs" />
+    <Compile Include="BindingConverter\BoolInverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">
