@@ -42,9 +42,8 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             this.sut.When(new SendPasswordResetEmail { EmailAddress = "test@example.net", Password = newPassword });
 
             emailSenderMock.Verify(s => s
-                .Send(It.Is<MailMessage>(message => 
-                    message.Body.Contains(newPassword) &&
-                    message.Body.Contains(ApplicationName) &&
+                .Send(It.Is<MailMessage>(message =>
+                    message.AlternateViews[0] != null &&
                     message.Subject.Contains(ApplicationName))));
 
         }
@@ -57,8 +56,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
 
             emailSenderMock.Verify(s => s
                 .Send(It.Is<MailMessage>(message => 
-                    message.Body.Contains(confirmationUrl.ToString()) &&
-                    message.Body.Contains(ApplicationName) &&
+                    message.AlternateViews[0] != null &&
                     message.Subject.Contains(ApplicationName))));
         }
     }
