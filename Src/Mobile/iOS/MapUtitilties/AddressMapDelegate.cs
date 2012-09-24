@@ -41,24 +41,30 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtilities
 //					
 //				}				
 //				else{
-				MKPinAnnotationView anv = mapView.DequeueReusableAnnotation ("thislocation") as MKPinAnnotationView;
-				if (anv == null) {
-					anv = new MKPinAnnotationView (annotation, "thislocation");
-					
-				} else {
+				PinAnnotationView anv = mapView.DequeueReusableAnnotation ("thislocation") as PinAnnotationView;
+				if (anv == null) 
+				{
+					anv = new PinAnnotationView (ann, "thislocation");	
+				} 
+				else 
+				{
 					anv.Annotation = ann;
 				}
 				anv.AnimatesDrop = false;
 				
 				anv.CanShowCallout = true;
 				
-				if (ann.AddressType == AddressAnnotationType.Pickup) {
+				if (ann.AddressType == AddressAnnotationType.Pickup) 
+				{
 					anv.PinColor = MKPinAnnotationColor.Green;
-				} else if (ann.AddressType == AddressAnnotationType.Destination) {
+				} 
+				else if (ann.AddressType == AddressAnnotationType.Destination) 
+				{
 					anv.PinColor = MKPinAnnotationColor.Red;
-				} else if (ann.AddressType == AddressAnnotationType.Taxi) {
+				} 
+				else if (ann.AddressType == AddressAnnotationType.Taxi) 
+				{
 					anv.PinColor = MKPinAnnotationColor.Purple;
-									anv.AnimatesDrop = false;
 				}
 				
 				return anv;

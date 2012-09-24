@@ -431,7 +431,27 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             FirePropertyChanged(() => PickupDateDisplay);
 
         }
+		public IMvxCommand PickupDateSelectedCommand
+		{
+			get
+			{
 
+				return new MvxRelayCommand<DateTime?>(date => {
+					if( date < DateTime.Now )
+					{
+						var res = TinyIoCContainer.Current.Resolve<IAppResource>();
+						TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage( res.GetString("InvalidChoiceTitle"), res.GetString("BookViewInvalidDate") );
+						Order.PickupDate = null;
+					}
+					else
+					{
+						Order.PickupDate = date;
+					}
+					PickupDateSelected();
+				
+				});
+			}
+		}
 
         
         
