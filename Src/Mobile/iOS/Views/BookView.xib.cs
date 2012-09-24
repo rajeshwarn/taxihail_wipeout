@@ -75,6 +75,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             AppButtons.FormatStandardButton((GradientButton)refreshCurrentLocationButton, "", AppStyle.ButtonColor.Blue, "");
             
 			_dateTimePicker = new DateTimePicker( );
+			_dateTimePicker.ShowPastDate = false;
 
 			View.AddSubview( _dateTimePicker );
 

@@ -39,6 +39,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			AddSubview (_picker);
 		}
 
+		public bool ShowPastDate { get;set;}
+
 		private void SetSelectedDate( DateTime? selectedDate )
 		{
 			if( DateChangedCommand != null )
@@ -59,6 +61,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			if( defaultDate.HasValue )
 			{
 				_picker.SetDate( defaultDate.Value, true );
+			}
+			else
+			{
+				_picker.SetDate( DateTime.Now, true );
+			}
+
+			if( !ShowPastDate )
+			{
+				_picker.MinimumDate = DateTime.Now;
 			}
 			Animate ( true );
 		}

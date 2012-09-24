@@ -435,7 +435,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-
 				return new MvxRelayCommand<DateTime?>(date => {
 					if( date < DateTime.Now )
 					{
@@ -448,7 +447,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						Order.PickupDate = date;
 					}
 					PickupDateSelected();
-				
 				});
 			}
 		}
