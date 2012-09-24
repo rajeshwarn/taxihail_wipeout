@@ -42,6 +42,12 @@
             return this;
         },
 
+        remove: function() {
+            if(this._selector) this._selector.remove();
+            this.$el.remove();
+            return this;
+        },
+
         open: function(e) {
             e && e.preventDefault();
 
@@ -52,6 +58,8 @@
 
         close: function() {
             this._selector && this._selector.hide();
+            // Set address in textbox back to the value of the model
+            this.$('[name=address]').val(this.model.get('fullAddress'));
         },
 
         onfocus: function(e) {

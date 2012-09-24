@@ -113,35 +113,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         }
 
 
-//      public override void TouchesMoved (NSSet touches, MonoTouch.UIKit.UIEvent evt)
-//      {
-//          base.TouchesMoved (touches, evt);
-////            if (this.Overlays != null)
-////            {
-////                foreach (var i in this.Overlays.OfType<MKAnnotation>())
-////                {
-////                    i..RemoveBaloon();
-////                }                    
-////            }
-//      }
-//
-//      //TouchUp
-//      public override void TouchesEnded (NSSet touches, MonoTouch.UIKit.UIEvent evt)
-//      {
-//          base.TouchesEnded (touches, evt);
-//          if (MapTouchUp != null)
-//          {
-//              MapTouchUp(this, EventArgs.Empty);
-//          }
-//          
-//          if ( (MapMoved != null) && ( MapMoved.CanExecute()  ) )
-//          {
-//              MapMoved.Execute(new Address { Latitude = CenterCoordinate.Latitude, Longitude = CenterCoordinate.Longitude });
-//          }
-//
-//      }
-
-
 
         private bool IsIntoCircle(double x, double y, double xCircle, double yCircle, double rCircle)
         {

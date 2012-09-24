@@ -1,4 +1,9 @@
-﻿html, body {
+﻿@map-z-index: 10;
+@container-z-index: @map-z-index * 10;
+@login-status-z-index: @map-z-index * 100;
+@header-height: 63px;
+
+html, body {
     height: 100%
 }
 
@@ -6,7 +11,10 @@
 	height: 100%;
     width:100%;
 
-    z-index: 10; // Put map under .container
+    z-index: @map-z-index;
+
+    position: absolute;
+    top:0;
     
     img {
         max-width: none;
@@ -14,12 +22,28 @@
 }
 
 .container {
-    position:absolute;
-    top:80px;
-    left:40%;
-
-    z-index: 100 // Put container over map
+    position:relative;
+    top:101px;
+    z-index: @container-z-index;
 }
+
+header {
+    position: absolute;
+    height: @header-height;
+    width: 100%;
+    z-index: @login-status-z-index;
+
+    .login-status-zone {
+        .span(6);
+        margin: 0 auto;
+    }
+}
+
+/* form validation */
+.valid-input {
+   margin-left: 5px;
+}
+
 
 /* Address selector */
 

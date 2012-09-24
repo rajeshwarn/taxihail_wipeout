@@ -11,7 +11,16 @@
         initialize: function () {
             _.bindAll(this, "renderEstimateResults");
 
-            this.model.on('change:pickupAddress', function(model, value) {
+            this.model.on('change', function(model, value) {
+                
+                // Enable the "Book Now!" button if model is valid
+                if(this.model.isValid()) {
+                    this.$('[data-action=book]').removeClass('disabled');
+                } else this.$('[data-action=book]').addClass('disabled');
+
+            }, this);
+
+           this.model.on('change:pickupAddress', function(model, value) {
                 this.actualizeEstimate();
                 this._pickupAddressView.model.set(value);
             }, this);
@@ -20,6 +29,7 @@
                 this.actualizeEstimate();
                 this._dropOffAddressView.model.set(value);
             }, this);
+
 
             this.model.on('change:priceEstimate', function(model, value){
                 this.$('.price-estimate').text(value);
@@ -63,7 +73,10 @@
             this.$('.pickup-address-container').html(this._pickupAddressView.render().el);
             this.$('.drop-off-address-container').html(this._dropOffAddressView.render().el);
             
-            this._pickupAddressView.$("span.btn").attr("class", "btn active");
+ this._pickupAddressView.$("span.btn").attr("class", "btn active");
+
+            // Only one address picker can be open at once
+           
 
             this._pickupAddressView.on('open', function(view){
                 this._dropOffAddressView.close();
@@ -81,6 +94,8 @@
                     this.model.set('isPickupBtnSelected', false);
             }, this);
 
+
+
             pickupAddress.on('change', function(model){
                 this.model.set({
                     pickupAddress: model.toJSON()
@@ -92,15 +107,28 @@
                     dropOffAddress: model.toJSON()
                 });
             }, this);
+
+            if(!this.model.isValid()){
+                this.$('[data-action=book]').addClass('disabled');
+            }
             
+            return this;
+        },
+
+        remove: function() {
+            if(this._pickupAddressView) this._pickupAddressView.remove();
+            if(this._dropOffAddressView) this._dropOffAddressView.remove();
+            this.$el.remove();
             return this;
         },
         
         actualizeEstimate: function () {
-            if (this.model.get('pickupAddress') && this.model.get('dropOffAddress')) {
-                var pickup = this.model.get('pickupAddress');
-                var dest = this.model.get('dropOffAddress');
-                TaxiHail.directionInfo.getInfo(pickup['latitude'], pickup['longitude'], dest['latitude'], dest['longitude']).done(this.renderEstimateResults);
+            var pickup = this.model.get('pickupAddress'),
+                dest = this.model.get('dropOffAddress');
+
+            if (pickup && dest) {
+                TaxiHail.directionInfo.getInfo(pickup.latitude, pickup.longitude, dest.latitude, dest.longitude)
+                    .done(this.renderEstimateResults);
             }
            
         },
@@ -123,8 +151,10 @@
                
         book: function (e) {
             e.preventDefault();
-            TaxiHail.store.setItem("orderToBook", this.model.toJSON());
-            TaxiHail.app.navigate('confirmationbook',{trigger:true});
+            if(this.model.isValid()) {
+                TaxiHail.store.setItem("orderToBook", this.model.toJSON());
+                TaxiHail.app.navigate('confirmationbook', { trigger:true });
+            }
         }
     });
 

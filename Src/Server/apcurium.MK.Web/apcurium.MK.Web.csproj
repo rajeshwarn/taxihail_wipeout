@@ -258,6 +258,7 @@
     <Content Include="assets\bootstrap\less\tests\css-tests.html" />
     <Content Include="assets\bootstrap\less\tests\forms.html" />
     <Content Include="assets\bootstrap\less\tests\navbar.html" />
+    <Content Include="assets\img\validFieldGreen.png" />
     <Content Include="assets\js\backbone-validation.js" />
     <Content Include="assets\js\backbone.js" />
     <Content Include="assets\js\backbone.validation.bootstrap.js" />

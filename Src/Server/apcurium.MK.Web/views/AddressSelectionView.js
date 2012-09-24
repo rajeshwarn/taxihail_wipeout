@@ -7,7 +7,7 @@
         },
 
         initialize: function () {
-            this.model.set('isLogged', TaxiHail.auth.isLogged());
+            TaxiHail.auth.on('change', this.render, this);
         },
 
         render: function () {
@@ -15,6 +15,12 @@
 
             this.tab.search.call(this);
 
+            return this;
+        },
+
+        remove: function() {
+            TaxiHail.auth.off(null, null, this);
+            this.$el.remove();
             return this;
         },
 
