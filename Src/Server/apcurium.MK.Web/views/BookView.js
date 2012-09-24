@@ -79,6 +79,13 @@
             
             return this;
         },
+
+        remove: function() {
+            if(this._pickupAddressView) this._pickupAddressView.remove();
+            if(this._dropOffAddressView) this._dropOffAddressView.remove();
+            this.$el.remove();
+            return this;
+        },
         
         actualizeEstimate: function () {
             var pickup = this.model.get('pickupAddress'),

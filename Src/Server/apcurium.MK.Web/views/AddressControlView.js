@@ -35,6 +35,12 @@
             return this;
         },
 
+        remove: function() {
+            if(this._selector) this._selector.remove();
+            this.$el.remove();
+            return this;
+        },
+
         open: function(e) {
             e && e.preventDefault();
 

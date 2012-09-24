@@ -41,14 +41,6 @@ $(function () {
 
             // Application starts here
             TaxiHail.app = new TaxiHail.App();
-
-            // Redirect to login in case of HTTP 401
-            $(document).ajaxError(function (e, jqxhr, settings, exception) {
-                if (jqxhr.status === 401 /* Unauthorized */) {
-                    TaxiHail.app.navigate('login', { trigger: true });
-                }
-            });
-
             Backbone.history.start();
         });
 });
