@@ -45,6 +45,8 @@
 
         close: function() {
             this._selector && this._selector.hide();
+            // Set address in textbox back to the value of the model
+            this.$('[name=address]').val(this.model.get('fullAddress'));
         },
 
         onfocus: function(e) {

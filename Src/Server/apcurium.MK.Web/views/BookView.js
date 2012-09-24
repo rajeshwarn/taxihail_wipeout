@@ -10,6 +10,15 @@
         initialize: function () {
             _.bindAll(this, "renderEstimateResults");
 
+            this.model.on('change', function(model, value) {
+                
+                // Enable the "Book Now!" button if model is valid
+                if(this.model.isValid()) {
+                    this.$('[data-action=book]').removeClass('disabled');
+                } else this.$('[data-action=book]').addClass('disabled');
+
+            }, this);
+
             this.model.on('change:pickupAddress', function(model, value) {
                 this.actualizeEstimate();
             }, this);
@@ -63,6 +72,10 @@
                     dropOffAddress: model.toJSON()
                 });
             }, this);
+
+            if(!this.model.isValid()){
+                this.$('[data-action=book]').addClass('disabled');
+            }
             
             return this;
         },
@@ -94,8 +107,10 @@
                
         book: function (e) {
             e.preventDefault();
-            TaxiHail.store.setItem("orderToBook", this.model.toJSON());
-            TaxiHail.app.navigate('confirmationbook',{trigger:true});
+            if(this.model.isValid()) {
+                TaxiHail.store.setItem("orderToBook", this.model.toJSON());
+                TaxiHail.app.navigate('confirmationbook',{trigger:true});
+            }
         }
     });
 
