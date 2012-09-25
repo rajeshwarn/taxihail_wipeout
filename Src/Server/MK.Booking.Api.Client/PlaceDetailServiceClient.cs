@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using System.Globalization;
+﻿using System.Globalization;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Api.Client
 {

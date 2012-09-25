@@ -162,7 +162,7 @@ namespace apcurium.MK.Booking.Api.Services
         {
 
             //For demo purpose only
-            var leg = BuildFakeDirectionForOrder(status.OrderId, order.PickupLatitude, order.PickupLongitude);
+            var leg = BuildFakeDirectionForOrder(status.OrderId, order.PickupAddress.Latitude, order.PickupAddress.Longitude);
 
             if (leg != null)
             {

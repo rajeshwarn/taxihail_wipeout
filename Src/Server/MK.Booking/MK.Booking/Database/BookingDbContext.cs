@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Data.Entity;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Database
 {
@@ -17,13 +18,15 @@ namespace apcurium.MK.Booking.Database
         {
         }
 
+        
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             // Make the name of the views match exactly the name of the corresponding property.
+            modelBuilder.ComplexType<Address>(); //doing here because address is shared among several projects, layers
             modelBuilder.Entity<AccountDetail>().ToTable("AccountDetail", SchemaName);
-            modelBuilder.Entity<Address>().ToTable("Address", SchemaName);
+            modelBuilder.Entity<AddressDetails>().ToTable("AddressDetails", SchemaName);
             modelBuilder.Entity<OrderDetail>().ToTable("OrderDetail", SchemaName);
         }
 

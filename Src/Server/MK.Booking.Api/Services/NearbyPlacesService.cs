@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Booking.Google.Resources;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Api.Services

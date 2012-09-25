@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using ServiceStack.Common.Web;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Api.Client
 {

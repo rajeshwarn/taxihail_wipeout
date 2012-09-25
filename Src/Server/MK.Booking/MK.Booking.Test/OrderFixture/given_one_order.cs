@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Common.Tests;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Events;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Test.OrderFixture
 {
@@ -25,7 +26,15 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             this.sut = new EventSourcingTestHelper<Order>();
             this.sut.Setup(new OrderCommandHandler(this.sut.Repository));
             this.sut.Given(new AccountRegistered { SourceId = _accountId, Name = "Bob", Password = null, Email = "bob.smith@apcurium.com" });
-            this.sut.Given(new OrderCreated { SourceId = _orderId, AccountId = Guid.NewGuid(), PickupDate = DateTime.Now, PickupApartment = "3939", PickupAddress = "1234 rue Saint-Hubert", PickupRingCode = "3131", PickupLatitude = 45.515065, PickupLongitude = -73.558064 });
+            this.sut.Given(new OrderCreated { SourceId = _orderId, AccountId = Guid.NewGuid(), PickupDate = DateTime.Now, 
+                PickupAddress = new Address
+                                    {
+                                        FullAddress = "1234 rue Saint-Hubert",
+                                        Apartment = "3939",
+                                        RingCode = "3131",
+                                        Latitude = 45.515065,
+                                        Longitude = -73.558064,
+                                    }});
         }
 
         [Test]

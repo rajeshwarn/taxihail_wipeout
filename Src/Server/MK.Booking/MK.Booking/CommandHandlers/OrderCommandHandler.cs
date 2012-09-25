@@ -20,9 +20,7 @@ namespace apcurium.MK.Booking.CommandHandlers
             var settings =  new BookingSettings();
             AutoMapper.Mapper.Map(command.Settings, settings);
             var order = new Order(command.OrderId, command.AccountId, command.IBSOrderId, command.PickupDate, 
-                                    command.PickupAddress.FullAddress, command.PickupAddress.Longitude, command.PickupAddress.Latitude,command.PickupAddress.Apartment, command.PickupAddress.RingCode,
-                                    command.DropOffAddress.SelectOrDefault(a => a.FullAddress), command.DropOffAddress.SelectOrDefault(a => (double?)a.Longitude, null), command.DropOffAddress.SelectOrDefault(a => (double?)a.Latitude, null),
-                                    settings);
+                                    command.PickupAddress, command.DropOffAddress, settings);
             _repository.Save(order, command.Id.ToString());
         }
 

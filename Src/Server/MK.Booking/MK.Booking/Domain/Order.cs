@@ -4,6 +4,7 @@ using System.Linq;
 using Infrastructure.EventSourcing;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Domain
@@ -28,13 +29,10 @@ namespace apcurium.MK.Booking.Domain
             this.LoadFrom(history);
         }
 
-        public Order(Guid id, Guid accountId, int ibsOrderId, DateTime pickupDate, string pickupAddress, double pickupLongitude,
-                                                double pickupLatitude, string pickupAppartment, string pickupRingCode,
-                                                string dropOffAddress, double? dropOffLongitude, double? dropOffLatitude,
-                                                BookingSettings settings): this(id)                   
+        public Order(Guid id, Guid accountId, int ibsOrderId, DateTime pickupDate, Address pickupAddress, Address dropOffAddress, BookingSettings settings): this(id)                   
         {
-            if ((settings == null) || pickupLatitude == 0 || pickupLongitude == 0 || ibsOrderId <= 0 ||
-                 ( Params.Get(pickupAddress, settings.Name, settings.Phone).Any(p => p.IsNullOrEmpty()) ))
+            if ((settings == null) || pickupAddress == null || ibsOrderId <= 0 ||
+                 ( Params.Get(pickupAddress.FullAddress, settings.Name, settings.Phone).Any(p => p.IsNullOrEmpty()) ))
             {
                 throw new InvalidOperationException("Missing required fields");
             }
@@ -44,13 +42,7 @@ namespace apcurium.MK.Booking.Domain
                 AccountId = accountId,
                 PickupDate = pickupDate,
                 PickupAddress = pickupAddress,
-                PickupLongitude = pickupLongitude,
-                PickupLatitude = pickupLatitude,
-                PickupApartment = pickupAppartment,
-                PickupRingCode = pickupRingCode,
                 DropOffAddress = dropOffAddress,
-                DropOffLongitude = dropOffLongitude,
-                DropOffLatitude = dropOffLatitude,
                 CreatedDate = DateTime.Now,                
             });
         }
