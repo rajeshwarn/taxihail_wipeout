@@ -4,7 +4,7 @@ body {
 }
 
 header {
-    #gradient > .vertical(#00407B, #0057A3);
+    #gradient > .vertical-no-filter(#00407B, #0057A3);
     border-bottom: 1px solid #003666;
 
     font-size: 18px;
@@ -27,6 +27,14 @@ header {
     }
 }
 
+
+// For IE9 and down
+.no-cssgradients header {
+    background-image: url(../img/header-bg.png);
+    background-position: top left;
+    background-repeat: repeat-x;
+}
+
 .login-status {
     margin-top: 30px;
 }
@@ -46,6 +54,14 @@ header {
   background-color: @wellBackground;
   border: 1px solid #6A6855;
   .border-radius(8px);
+}
+
+.icon-pin {
+    display:inline-block;
+    width:19px;
+    height:28px;
+    background: url(../img/pin-icon.png) top left no-repeat;
+    margin-top:-3px;
 }
 
 // FORMS
@@ -88,7 +104,7 @@ input[type="color"],
 // BUTTONS
 
 .btn {
-    .border-radius(1px);
+    .border-radius(2px);
     font-size: 18px;
     font-weight: bold;
 }
