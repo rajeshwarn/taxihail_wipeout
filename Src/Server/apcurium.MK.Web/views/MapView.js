@@ -57,7 +57,7 @@
         
         geolocdone : function (result) {
             if (result.addresses && result.addresses.length) {
-                if (this.model.get('isPickupBtnSelected')) {
+                if (this.model.get('isPickupActive')) {
                     this.model.set('pickupAddress', result.addresses[0]);
                 } else {
                     this.model.set('dropOffAddress', result.addresses[0]);
@@ -66,7 +66,8 @@
         },
         
         mouseup: function () {
-            if (this.model.get('isPickupBtnSelected')) {
+            if (this.model.get('isPickupActive') == true || this.model.get('isDropOffActive') == true) {
+                if (this.model.get('isPickupActive')) {
                if (this._pickupPin) {
                 this._pickupPin.setPosition(this._map.getCenter());
             } else {
@@ -85,6 +86,8 @@
                 TaxiHail.geocoder.geocode(this._dropOffPin.getPosition().Xa, this._map.getCenter().Ya)
                             .done(this.geolocdone);
             }
+            }
+            
             
         },
 
