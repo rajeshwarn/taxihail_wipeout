@@ -2,9 +2,7 @@
 
     TaxiHail.BookView = TaxiHail.TemplatedView.extend({
         events: {
-            'click [data-action=book]': 'book',
-            'click [data-action=locate]': 'locate',
-
+            'click [data-action=book]': 'book'
         },
         
         initialize: function () {
@@ -34,10 +32,12 @@
                 dropOffAddress = new Backbone.Model();
 
             this._pickupAddressView = new TaxiHail.AddressControlView({
-                    model: pickupAddress
+                    model: pickupAddress,
+                    locate: true
                 });
             this._dropOffAddressView = new TaxiHail.AddressControlView({
-                    model: dropOffAddress
+                    model: dropOffAddress,
+                    clear: true
                 });
 
             this.$('.pickup-address-container').html(this._pickupAddressView.render().el);
@@ -94,13 +94,6 @@
                     }, this));
             }
            
-        },
-
-        locate : function () {
-            TaxiHail.geolocation.getCurrentPosition()
-                .done(_.bind(function(address){
-                    this._pickupAddressView.model.set(address);
-                }, this));
         },
                
         book: function (e) {
