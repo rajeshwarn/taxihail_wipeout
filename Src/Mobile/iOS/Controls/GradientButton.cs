@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         private float _cornerRadius = AppStyle.ButtonCornerRadius;
         private string _title = "";
         private CGColor _titleColor = UIColor.FromRGB(101, 101, 101).CGColor;
-        private UIColor _highlightedColor = UIColor.FromRGBA(0f, 0f, 0f, 0.2f);
+        private UIColor _highlightedColor = UIColor.FromRGBA(0f, 0f, 0f, 0.6f);
         private UIFont _titleFont = AppStyle.GetButtonFont( AppStyle.ButtonFontSize ) ;       
         private UIColor _textShadowColor = null;
         private UIImage _image;
