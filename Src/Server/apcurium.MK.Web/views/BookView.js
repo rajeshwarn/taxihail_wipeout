@@ -3,9 +3,12 @@
     TaxiHail.BookView = TaxiHail.TemplatedView.extend({
         events: {
             'click [data-action=book]': 'book'
+
         },
         
         initialize: function () {
+            this.model.set('isPickupBtnSelected', true);
+
             this.model.on('change', function(model, value) {
                 
                 // Enable the "Book Now!" button if model is valid
@@ -15,15 +18,40 @@
 
             }, this);
 
-            this.model.on('change:pickupAddress, change:dropOffAddress', function(model, value) {
+           this.model.on('change:pickupAddress', function(model, value) {
                 this.actualizeEstimate();
+                this._pickupAddressView.model.set(value);
             }, this);
 
-            this.model.on('change:estimate', function(model, value){
-                this.$('.estimate').text(value.formattedPrice + ' (' + value.formattedDistance + ')');
+            this.model.on('change:dropOffAddress', function(model, value) {
+                this.actualizeEstimate();
+                this._dropOffAddressView.model.set(value);
             }, this);
             
+             this.model.on('change:estimate', function(model, value){
+                this.$('.estimate').text(value.formattedPrice + ' (' + value.formattedDistance + ')');
+             }, this);
+            
+           
+
+
+            this.model.on('change:isPickupBtnSelected', function (model, value) {
+                if (value == true) {
+                    this._dropOffAddressView.$(".btn[data-action=toggleselect]").attr("class", "btn");
+                    this._dropOffAddressView.isBtnSelected = false;
+                    this._pickupAddressView.isBtnSelected = true;
+                    
+                } else {
+                    this._pickupAddressView.$(".btn[data-action=toggleselect]").attr("class", "btn");
+                    this._pickupAddressView.isBtnSelected = false;
+                    this._dropOffAddressView.isBtnSelected = true;
+                }
+            }, this);
+            
+            
         },
+        
+        
 
         render: function () {
             this.$el.html(this.renderTemplate(this.model.toJSON()));
@@ -38,19 +66,32 @@
             this._dropOffAddressView = new TaxiHail.AddressControlView({
                     model: dropOffAddress,
                     clear: true
-                });
+            });
+            
+            
 
             this.$('.pickup-address-container').html(this._pickupAddressView.render().el);
             this.$('.drop-off-address-container').html(this._dropOffAddressView.render().el);
-
+            
+            this._pickupAddressView.$(".btn[data-action=toggleselect]").attr("class", "btn active");
 
             // Only one address picker can be open at once
+           
+
             this._pickupAddressView.on('open', function(view){
                 this._dropOffAddressView.close();
             }, this);
 
             this._dropOffAddressView.on('open', function(view){
                 this._pickupAddressView.close();
+            }, this);
+
+            this._pickupAddressView.on('toggleselect', function (view) {
+                    this.model.set('isPickupBtnSelected', true);
+            }, this);
+
+            this._dropOffAddressView.on('toggleselect', function (view) {
+                    this.model.set('isPickupBtnSelected', false);
             }, this);
 
 
@@ -70,7 +111,6 @@
             if(!this.model.isValid()){
                 this.$('[data-action=book]').addClass('disabled');
             }
-            
             return this;
         },
 
@@ -96,6 +136,10 @@
            
         },
                
+
+
+                    
+                    
         book: function (e) {
             e.preventDefault();
             if(this.model.isValid()) {

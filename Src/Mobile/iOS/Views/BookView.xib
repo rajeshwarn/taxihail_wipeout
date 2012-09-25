@@ -238,6 +238,29 @@
 										<string key="NSFrame">{{8, 5}, {39, 36}}</string>
 										<reference key="NSSuperview" ref="756231839"/>
 										<reference key="NSWindow"/>
+										<reference key="NSNextKeyView" ref="411030588"/>
+										<string key="NSReuseIdentifierKey">_NS:9</string>
+										<bool key="IBUIOpaque">NO</bool>
+										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+										<int key="IBUIContentHorizontalAlignment">0</int>
+										<int key="IBUIContentVerticalAlignment">0</int>
+										<int key="IBUIButtonType">1</int>
+										<string key="IBUINormalTitle">Book It!</string>
+										<reference key="IBUIHighlightedTitleColor" ref="554276597"/>
+										<object class="NSColor" key="IBUINormalTitleColor">
+											<int key="NSColorSpace">1</int>
+											<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+										</object>
+										<reference key="IBUINormalTitleShadowColor" ref="134813362"/>
+										<reference key="IBUIFontDescription" ref="76448498"/>
+										<reference key="IBUIFont" ref="911208546"/>
+									</object>
+									<object class="IBUIButton" id="411030588">
+										<reference key="NSNextResponder" ref="756231839"/>
+										<int key="NSvFlags">-2147483359</int>
+										<string key="NSFrame">{{8, 5}, {39, 36}}</string>
+										<reference key="NSSuperview" ref="756231839"/>
+										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="187394986"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
@@ -500,6 +523,14 @@
 					</object>
 					<int key="connectionID">96</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">cancelBtn</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="411030588"/>
+					</object>
+					<int key="connectionID">99</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -563,6 +594,7 @@
 							<reference ref="562720356"/>
 							<reference ref="427449670"/>
 							<reference ref="187394986"/>
+							<reference ref="411030588"/>
 						</object>
 						<reference key="parent" ref="817439265"/>
 					</object>
@@ -630,6 +662,11 @@
 						<reference key="object" ref="73135811"/>
 						<reference key="parent" ref="817439265"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">97</int>
+						<reference key="object" ref="411030588"/>
+						<reference key="parent" ref="756231839"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -665,6 +702,8 @@
 					<string>89.IBPluginDependency</string>
 					<string>90.IBPluginDependency</string>
 					<string>94.IBPluginDependency</string>
+					<string>97.CustomClassName</string>
+					<string>97.IBPluginDependency</string>
 				</object>
 				<object class="NSArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -697,6 +736,8 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>GradientButton</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="unlocalizedProperties">
@@ -711,7 +752,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">96</int>
+			<int key="maxID">99</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -727,6 +768,7 @@
 							<string>bookLaterButton</string>
 							<string>bookView</string>
 							<string>bottomBar</string>
+							<string>cancelBtn</string>
 							<string>dropoffActivationButton</string>
 							<string>dropoffButton</string>
 							<string>headerBackgroundView</string>
@@ -745,6 +787,7 @@
 							<string>GradientButton</string>
 							<string>UIView</string>
 							<string>BottomBar</string>
+							<string>GradientButton</string>
 							<string>TextProgressButton</string>
 							<string>TextProgressButton</string>
 							<string>UIImageView</string>
@@ -766,6 +809,7 @@
 							<string>bookLaterButton</string>
 							<string>bookView</string>
 							<string>bottomBar</string>
+							<string>cancelBtn</string>
 							<string>dropoffActivationButton</string>
 							<string>dropoffButton</string>
 							<string>headerBackgroundView</string>
@@ -795,6 +839,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">bottomBar</string>
 								<string key="candidateClassName">BottomBar</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">cancelBtn</string>
+								<string key="candidateClassName">GradientButton</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">dropoffActivationButton</string>
