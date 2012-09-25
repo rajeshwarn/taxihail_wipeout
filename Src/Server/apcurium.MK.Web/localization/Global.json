@@ -5,6 +5,7 @@
 	"error.EqualTo" : "{0} must be the same as {1}",
 	"error.NameRequired" : "The name is required",
 	"error.PhoneRequired" : "The phone is required",
+	"error.PhoneBadFormat" : "The phone number is invalid",
 	"error.PassengersRequired" : "The number of passengers is required",
 	"error.VehicleTypeRequired" : "The vehicule type is required",
 	"error.ChargeTypeRequired" : "The charge type is required",	

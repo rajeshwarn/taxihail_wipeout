@@ -27,8 +27,6 @@
             this.$el.html(this.renderTemplate(this.model.toJSON()));
             this.$("input").attr("disabled", true);
             this.renderItem(this.model);
-            
-            
             return this;
         },
         
@@ -53,32 +51,39 @@
             e.preventDefault();
             //$("input").attr("disabled", !$("input").attr("disabled"));
             if (!$("input").attr("disabled")) {
+                
+                this.$('.errors').empty();
                 if (settings.isValid() ) {
                     
                     if (settingschanged) {
                         jQuery.ajax({
-                    type: 'PUT',
-                    url: 'api/account/bookingsettings',
-                    data: settings.toJSON(),
-                    success: function () {
-                        $("#editButton").html(TaxiHail.localize('Edit'));
-                        $("input").attr("disabled", true);
-                        settingschanged = false;
-                    },
-                    dataType: 'json'
-                });
+                                type: 'PUT',
+                                url: 'api/account/bookingsettings',
+                                data: settings.toJSON(),
+                                success: function () {
+                                    $("#editButton").html(TaxiHail.localize('Edit'));
+                                    $("input").attr("disabled", true);
+                                    settingschanged = false;
+                                },
+                            dataType: 'json'
+                        });
                     } else {
                         $("#editButton").html(TaxiHail.localize('Edit'));
                         $("input").attr("disabled", true);
                     }
                 
+                }else {
+                    var result = settings.validate(settings.attributes);
+                    var $alert = $('<div class="alert alert-error" />');
+                    _.each(result.errors, function (error) {
+                        $alert.append($('<div />').text(this.localize(error.errorCode)));
+                    }, this);
+                    this.$('.errors').html($alert);
                 }
                 
             } else {
                 $("#editButton").html(this.localize('Save'));
                 $("input").attr("disabled", false);
-                
-               
             }
             
         },
