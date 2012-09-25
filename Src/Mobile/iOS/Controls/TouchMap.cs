@@ -190,14 +190,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 double lat = adressesToDisplay.ElementAt(0).Coordinate.Latitude;
                 double lon = adressesToDisplay.ElementAt(0).Coordinate.Longitude;
 
-//                if (adressesToDisplay.ElementAt(0).Zoom == ViewModels.ZoomLevel.DontChange)
-//                {
-//					region = Region;
-//                }
-//				else
-//				{
+                if (adressesToDisplay.ElementAt(0).Zoom == ViewModels.ZoomLevel.DontChange)
+                {
+					region = Region;
+                }
+				else
+				{
 					region.Span = new MKCoordinateSpan( 0.004f, 0.004f );
-//				}
+				}
 				region.Center = new CLLocationCoordinate2D(lat, lon);
 
             }

@@ -4,23 +4,38 @@
     TaxiHail.AddressControlView = TaxiHail.TemplatedView.extend({
 
         events: {
-            'click [data-action=open]': 'open',
+            'click [data-action=clear]': 'clear',
+            'click [data-action=locate]': 'locate',
+            'click [data-action=toggleselect]': 'toggleselect',
             'focus [name=address]': 'onfocus', 
             'blur  [name=address]': 'onblur'
         },
 
-        initialize: function() {
+        initialize: function(attrs, options) {
             _.bindAll(this, 'onkeypress');
             this.$el.addClass('address-picker');
             this.model.on('change', this.render, this);
         },
+        
+        toggleselect: function (e) {
+            e && e.preventDefault();
+
+            this.trigger('toggleselect', this);
+        },
 
         render: function() {
 
-            this.$el.html(this.renderTemplate(this.model.toJSON()));
+            var data = _.extend(this.model.toJSON(), {
+                options: _.pick(this.options, 'locate', 'clear')
+            });
+
+            this.$el.html(this.renderTemplate(data));
 
             this.$('[name=address]').on('keypress', _.debounce(this.onkeypress, 500));
 
+            if (this.isBtnSelected == true) {
+                this.$(".btn[data-action=toggleselect]").attr("class", "btn active");
+            }
 
             this._selector = new TaxiHail.AddressSelectionView({
                 model: this.model
@@ -53,6 +68,17 @@
             this._selector && this._selector.hide();
             // Set address in textbox back to the value of the model
             this.$('[name=address]').val(this.model.get('fullAddress'));
+        },
+
+        locate : function () {
+            TaxiHail.geolocation.getCurrentPosition()
+                .done(_.bind(function(address){
+                    this.model.set(address);
+                }, this));
+        },
+
+        clear: function() {
+            this.model.clear();
         },
 
         onfocus: function(e) {

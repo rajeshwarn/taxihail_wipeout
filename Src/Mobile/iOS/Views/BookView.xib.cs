@@ -73,7 +73,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			View.InsertSubviewBelow( _menu.View, bookView );
 
             AppButtons.FormatStandardButton((GradientButton)refreshCurrentLocationButton, "", AppStyle.ButtonColor.Blue, "");
-            
+			AppButtons.FormatStandardButton((GradientButton)cancelBtn, "", AppStyle.ButtonColor.Red, "Assets/cancel.png");
+
 			_dateTimePicker = new DateTimePicker( );
 			_dateTimePicker.ShowPastDate = false;
 
@@ -126,6 +127,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 				{ infoLabel, "{'Text':{'Path':'FareEstimate'}}" },
 				{ pickupDateLabel, "{'Text':{'Path':'PickupDateDisplay'}, 'Hidden':{'Path':'IsInTheFuture','Converter':'BoolInverter'}}" },
 				{ _dateTimePicker, "{'DateChangedCommand':{'Path':'PickupDateSelectedCommand'}}" },
+				{ cancelBtn, "{'Hidden':{'Path':'CanClearAddress', 'Converter':'BoolInverter'}, 'Enabled':{'Path':'CanClearAddress'}, 'TouchUpInside':{'Path':'SelectedAddress.ClearPositionCommand'}}" },
 		
             });
 
@@ -150,11 +152,9 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             base.ViewDidAppear(animated);
 
-			var btn = new UIBarButtonItem( UIImage.FromFile("Assets/settings.png"), UIBarButtonItemStyle.Bordered, delegate {
-				_menu.AnimateMenu();
-			} );
-			btn.TintColor = AppStyle.NavigationBarColor;
+			var btn = new UIBarButtonItem( new BarButtonItem( new RectangleF(0,0, 40, 33) , "Assets/settings.png", () => _menu.AnimateMenu() ) );
 			navBar.TopItem.RightBarButtonItem = btn;
+			navBar.TopItem.RightBarButtonItem.SetTitlePositionAdjustment( new UIOffset( -10,0 ), UIBarMetrics.Default );
 
             if ((AppContext.Current.LastOrder.HasValue) && (AppContext.Current.LoggedUser != null))
             {
