@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
 
 namespace apcurium.MK.Booking.ReadModel
 {
-    public class Address
+    public class AddressDetails
     {
         [Key]
         public Guid Id { get; set; }

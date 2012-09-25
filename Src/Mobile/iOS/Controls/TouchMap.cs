@@ -15,6 +15,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using System.Drawing;
 using MonoTouch.Foundation;
 using MonoTouch.CoreLocation;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {

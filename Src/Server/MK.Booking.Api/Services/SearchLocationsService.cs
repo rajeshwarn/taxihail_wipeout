@@ -4,11 +4,10 @@ using apcurium.MK.Booking.Google;
 using apcurium.MK.Common.Configuration;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Api.Services
 {

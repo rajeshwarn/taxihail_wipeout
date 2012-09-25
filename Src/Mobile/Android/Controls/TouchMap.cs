@@ -1,22 +1,16 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.Text;
 using Android.Content;
 using Android.GoogleMaps;
 using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
-using apcurium.MK.Booking.Api.Contract.Resources;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Booking.Mobile.Client.Converters;
-using apcurium.MK.Booking.Mobile.Extensions;
-using TinyIoC;
-using apcurium.MK.Booking.Mobile.AppServices;
-using Xamarin.Geolocation;
-using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.ViewModels;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {

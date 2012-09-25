@@ -7,6 +7,7 @@ using SlidingPanel;
 using Cirrious.MvvmCross.Binding.Android.Views;
  
 using apcurium.MK.Booking.Mobile.ViewModels;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Helpers;

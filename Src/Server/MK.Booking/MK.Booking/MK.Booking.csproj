@@ -109,7 +109,7 @@
     <Compile Include="ReadModel\AccountAddress.cs" />
     <Compile Include="ReadModel\AccountDetail.cs" />
     <Compile Include="ReadModel\BookingSetting.cs" />
-    <Compile Include="ReadModel\Address.cs" />
+    <Compile Include="ReadModel\AddressDetails.cs" />
     <Compile Include="ReadModel\OrderDetail.cs" />
     <Compile Include="ReadModel\OrderStatus.cs" />
     <Compile Include="ReadModel\Query\AccountDao.cs" />

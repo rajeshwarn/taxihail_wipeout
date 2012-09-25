@@ -1,11 +1,10 @@
 using System;
 using System.Threading.Tasks;
 using Xamarin.Contacts;
-using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using System.Collections.Generic;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using Address = apcurium.MK.Booking.Api.Contract.Resources.Address;
+using Address = apcurium.MK.Common.Entity.Address;
 
 namespace apcurium.MK.Booking.Mobile.AppServices
 {

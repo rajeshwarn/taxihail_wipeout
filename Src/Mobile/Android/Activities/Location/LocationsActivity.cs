@@ -22,6 +22,7 @@ using apcurium.MK.Booking.Mobile.Client.Activities.Book;
 using System.Globalization;
 using apcurium.MK.Booking.Mobile.Messages;
 using TinyMessenger;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
 {

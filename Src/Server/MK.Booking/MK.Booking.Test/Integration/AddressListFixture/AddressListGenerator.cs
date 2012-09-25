@@ -11,6 +11,7 @@ using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.Test.Integration;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
 {
@@ -55,7 +56,7 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
 
             using (var context = new BookingDbContext(dbName))
             {
-                var list = context.Query<Address>().Where(x => x.AccountId == accountId);
+                var list = context.Query<AddressDetails>().Where(x => x.AccountId == accountId);
 
                 Assert.AreEqual(1, list.Count());
                 var dto = list.Single();
@@ -106,7 +107,7 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
 
             using (var context = new BookingDbContext(dbName))
             {
-                var address = context.Find<Address>(_addressId);
+                var address = context.Find<AddressDetails>(_addressId);
                 Assert.IsNull(address);
             }
         }
@@ -124,7 +125,7 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
 
             using (var context = new BookingDbContext(dbName))
             {
-                var address = context.Find<Address>(_addressId);
+                var address = context.Find<AddressDetails>(_addressId);
 
                 Assert.NotNull(address);
                 Assert.AreEqual("25 rue Berri Montreal", address.FullAddress);
@@ -145,12 +146,14 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
             this.sut.Handle(new OrderCreated()
                                 {
                                     AccountId = accountId,
-                                    PickupApartment = "3939",
-                                    PickupRingCode = "3131",
-                                    PickupAddress = address,
-                                    PickupLongitude = -73.558064,
-                                    PickupLatitude = 45.515065,
-
+                                    PickupAddress = new Address
+                                    {
+                                        FullAddress = address,
+                                        Apartment = "3939",
+                                        RingCode = "3131",
+                                        Latitude = 45.515065,
+                                        Longitude = -73.558064,
+                                    }
                                 });
             this.sut.Handle(new FavoriteAddressAdded()
                                 {
@@ -166,7 +169,7 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
 
             using (var context = new BookingDbContext(dbName))
             {
-                var list = context.Query<Address>()
+                var list = context.Query<AddressDetails>()
                     .Where(x => x.AccountId == accountId
                         && x.FullAddress.Equals(address)
                         && x.IsHistoric);
@@ -189,22 +192,28 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
                                 {
                                     SourceId = orderId,
                                     AccountId = accountId,
-
-                                    PickupApartment = "3939",
-                                    PickupAddress = "1234 rue Saint-Hubert",
-                                    PickupRingCode = "3131",
-                                    PickupLatitude = 45.515065,
-                                    PickupLongitude = -73.558064,
+                                    PickupAddress = new Address()
+                                                        {
+                                                            FullAddress = "1234 rue Saint-Hubert",
+                                                            Apartment = "3939",
+                                                            RingCode = "3131",
+                                                            Latitude = 45.515065,
+                                                            Longitude = -73.558064,
+                                                        },
+                                   
                                     PickupDate = pickupDate,
-                                    DropOffAddress = "Velvet auberge st gabriel",
-                                    DropOffLatitude = 45.50643,
-                                    DropOffLongitude = -73.554052,
+                                    DropOffAddress =  new Address()
+                                                          {
+                                                              FriendlyName = "Velvet auberge st gabriel",
+                                                              Latitude = 45.50643,
+                                                              Longitude = -73.554052,
+                                                          },
                                     CreatedDate = createdDate
                                 });
 
             using (var context = new BookingDbContext(dbName))
             {
-                var list = context.Query<Address>().Where(x => x.AccountId == accountId);
+                var list = context.Query<AddressDetails>().Where(x => x.AccountId == accountId);
                 Assert.AreEqual(1, list.Count());
                 var dto = list.Single();
                 Assert.AreEqual(accountId, dto.AccountId);
@@ -223,15 +232,21 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
                               {
                                   SourceId = Guid.NewGuid(),
                                   AccountId = Guid.NewGuid(),
-                                  PickupApartment = "3939",
-                                  PickupAddress = "1234 rue Saint-Hubert",
-                                  PickupRingCode = "3131",
-                                  PickupLatitude = 45.515065,
-                                  PickupLongitude = -73.558064,
+                                  PickupAddress = new Address()
+                                  {
+                                      FullAddress = "1234 rue Saint-Hubert",
+                                      Apartment = "3939",
+                                      RingCode = "3131",
+                                      Latitude = 45.515065,
+                                      Longitude = -73.558064,
+                                  },
                                   PickupDate = DateTime.Now,
-                                  DropOffAddress = "Velvet auberge st gabriel",
-                                  DropOffLatitude = 45.50643,
-                                  DropOffLongitude = -73.554052,
+                                  DropOffAddress = new Address()
+                                  {
+                                      FriendlyName = "Velvet auberge st gabriel",
+                                      Latitude = 45.50643,
+                                      Longitude = -73.554052,
+                                  },
                                   CreatedDate = DateTime.Now.AddDays(-1)
                               };
 
@@ -242,7 +257,7 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
             using (var context = new BookingDbContext(dbName))
             {
                 var list =
-                    context.Query<Address>().Where(
+                    context.Query<AddressDetails>().Where(
                         x => x.AccountId == command.AccountId && x.IsHistoric.Equals(true));
                 Assert.AreEqual(1, list.Count());
                 var dto = list.Single();
@@ -264,7 +279,7 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
                               {
                                   SourceId = Guid.NewGuid(),
                                   AccountId = Guid.NewGuid(),
-                                  PickupAddress = "1234 rue Saint-Hubert",
+                                  PickupAddress = new Address { FullAddress = "1234 rue Saint-Hubert" },
                                   CreatedDate = DateTime.Now.AddDays(-1)
                               };
 
@@ -275,7 +290,7 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
             using (var context = new BookingDbContext(dbName))
             {
                 var list =
-                    context.Query<Address>().Where(
+                    context.Query<AddressDetails>().Where(
                         x => x.AccountId == command.AccountId && x.IsHistoric.Equals(true));
                 Assert.AreEqual(1, list.Count());
                 var dto = list.Single();
@@ -296,7 +311,7 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
             {
                 SourceId = Guid.NewGuid(),
                 AccountId = Guid.NewGuid(),
-                PickupAddress = "1234 rue Saint-Hubert",
+                PickupAddress = new Address { FullAddress = "1234 rue Saint-Hubert" },
                 CreatedDate = DateTime.Now.AddDays(-1)
             };
             this.sut.Handle(orderCreated);
@@ -304,7 +319,7 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
             Guid addressId;
             using (var context = new BookingDbContext(dbName))
             {
-                addressId = context.Query<Address>().First(x => x.AccountId == orderCreated.AccountId && x.IsHistoric.Equals(true)).Id;
+                addressId = context.Query<AddressDetails>().First(x => x.AccountId == orderCreated.AccountId && x.IsHistoric.Equals(true)).Id;
             }
 
             //Act
@@ -313,7 +328,7 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
             //Assert
             using (var context = new BookingDbContext(dbName))
             {
-                var address = context.Query<Address>().FirstOrDefault(x => x.Id == addressId);
+                var address = context.Query<AddressDetails>().FirstOrDefault(x => x.Id == addressId);
                 Assert.IsNull(address);
             }
         }

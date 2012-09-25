@@ -1,12 +1,9 @@
 ﻿using System;
 using Microsoft.Practices.Unity;
-using ServiceStack.CacheAccess;
-using ServiceStack.CacheAccess.Providers;
-using ServiceStack.OrmLite;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.IBS;
-using apcurium.MK.Common.Caching;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Api
 {
@@ -24,7 +21,6 @@ namespace apcurium.MK.Booking.Api
                 .ForMember(p=> p.Id, options=> options.Ignore())
                 .ForMember(p => p.OrderId, options => options.ResolveUsing(x => x.Id == Guid.Empty ? Guid.NewGuid() : x.Id));
 
-            AutoMapper.Mapper.CreateMap<Address, Commands.CreateOrder.Address>();
             AutoMapper.Mapper.CreateMap<BookingSettings, Commands.CreateOrder.BookingSettings>();
             AutoMapper.Mapper.CreateMap<Address, IBSAddress>();
             AutoMapper.Mapper.CreateMap<RegisterAccount, Commands.RegisterAccount>()
