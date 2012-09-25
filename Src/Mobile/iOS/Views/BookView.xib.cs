@@ -152,12 +152,6 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             base.ViewDidAppear(animated);
 
-//			var btn = new UIBarButtonItem( UIImage.FromFile("Assets/settings.png"), UIBarButtonItemStyle.Bordered, delegate {
-//				_menu.AnimateMenu();
-//			} );
-//			btn.TintColor = AppStyle.NavigationBarColor;
-//			navBar.TopItem.RightBarButtonItem = btn;
-
 			var btn = new UIBarButtonItem( new BarButtonItem( new RectangleF(0,0, 40, 33) , "Assets/settings.png", () => _menu.AnimateMenu() ) );
 			navBar.TopItem.RightBarButtonItem = btn;
 			navBar.TopItem.RightBarButtonItem.SetTitlePositionAdjustment( new UIOffset( -10,0 ), UIBarMetrics.Default );
