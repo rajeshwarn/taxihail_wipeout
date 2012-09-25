@@ -4,7 +4,7 @@ body {
 }
 
 header {
-    #gradient > .vertical(#00407B, #0057A3);
+    #gradient > .vertical-no-filter(#00407B, #0057A3);
     border-bottom: 1px solid #003666;
 
     font-size: 18px;
@@ -25,6 +25,14 @@ header {
         }
 
     }
+}
+
+
+// For IE9 and down
+.no-cssgradients header {
+    background-image: url(../img/header-bg.png);
+    background-position: top left;
+    background-repeat: repeat-x;
 }
 
 .login-status {
@@ -88,7 +96,7 @@ input[type="color"],
 // BUTTONS
 
 .btn {
-    .border-radius(1px);
+    .border-radius(2px);
     font-size: 18px;
     font-weight: bold;
 }
