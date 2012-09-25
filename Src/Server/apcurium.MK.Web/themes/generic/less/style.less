@@ -87,9 +87,12 @@ input[type="color"],
     >li {
 
         width:236px;
+        text-align:center;
 
-        >a {
+        >a, >a:hover {
             color: @white;
+            font-size:18px;
+            font-weight:center;
             margin:0;
             .border-radius(0);
             border: 1px solid @inputBorder;
@@ -101,17 +104,17 @@ input[type="color"],
         }
 
         &:first-child>a {
-                .border-radius(8px 0 0 0);
+                .border-radius(4px 0 0 0);
                 border-left: 1px solid @inputBorder;
         }
 
         &:last-child>a {
-            .border-radius(0 8px 0 0);
+            .border-radius(0 4px 0 0);
             border-right: 1px solid @inputBorder;
         }
 
 
-        &.active>a {
+        &.active>a, &.active>a:hover {
             color: @white;
             border: 1px solid @inputBorder;
             border-right: 1px solid #003666;
