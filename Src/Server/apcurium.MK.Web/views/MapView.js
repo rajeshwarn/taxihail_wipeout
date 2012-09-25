@@ -3,12 +3,11 @@
     TaxiHail.MapView = Backbone.View.extend({
         
         events: {
-            'mouseup': 'mouseup',
-            //'mouseout' : 'mouseup'
         },
         
         initialize : function () {
             _.bindAll(this, "geolocdone");
+            _.bindAll(this, "geoloc");
         },
         
         
@@ -50,6 +49,8 @@
 
             };
             this._map = new google.maps.Map(this.el, mapOptions);
+            google.maps.event.addListener(this._map, 'dragend', this.geoloc);
+
 
             return this;
 
@@ -65,7 +66,7 @@
             }
         },
         
-        mouseup: function () {
+        geoloc: function () {
             if (this.model.get('isPickupActive') == true || this.model.get('isDropOffActive') == true) {
                 if (this.model.get('isPickupActive')) {
                if (this._pickupPin) {
