@@ -68,6 +68,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         }
 
+		public void OnRegionChanged()
+		{
+            try
+            {
+                if (_gesture.GetLastTouchDelay() < 1000)
+                {
+                     if ( ( MapMoved != null ) && ( MapMoved.CanExecute() ) )
+                    {
+                        MapMoved.Execute(new Address{ Latitude = CenterCoordinate.Latitude , Longitude = CenterCoordinate.Longitude } );
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+		}
+
         private void InitializeGesture()
         {
             if (_gesture == null)
@@ -75,26 +93,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 _gesture = new TouchGesture();
             
                 AddGestureRecognizer(_gesture);
-            
-                RegionChanged += delegate
-                {
-                
-                    try
-                    {
-                        if (_gesture.GetLastTouchDelay() < 1000)
-                        {
-                             if ( ( MapMoved != null ) && ( MapMoved.CanExecute() ) )
-                            {
-                                MapMoved.Execute(new Address{ Latitude = CenterCoordinate.Latitude , Longitude = CenterCoordinate.Longitude } );
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-
-                    }
-                
-                };
             }
         }
 
@@ -191,22 +189,29 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             {
                 double lat = adressesToDisplay.ElementAt(0).Coordinate.Latitude;
                 double lon = adressesToDisplay.ElementAt(0).Coordinate.Longitude;
-                region.Center = new CLLocationCoordinate2D(lat, lon);
-                if (adressesToDisplay.ElementAt(0).Zoom != ViewModels.ZoomLevel.DontChange)
-                {
-                    SetRegion(region, true);
-                    RegionThatFits(region);
-                }
-                return;
+
+//                if (adressesToDisplay.ElementAt(0).Zoom == ViewModels.ZoomLevel.DontChange)
+//                {
+//					region = Region;
+//                }
+//				else
+//				{
+					region.Span = new MKCoordinateSpan( 0.004f, 0.004f );
+//				}
+				region.Center = new CLLocationCoordinate2D(lat, lon);
+
             }
+			else
+			{
+	            var minLat = adressesToDisplay.Min(a => a.Coordinate.Latitude);
+	            var maxLat = adressesToDisplay.Max(a => a.Coordinate.Latitude);
+	            var minLon = adressesToDisplay.Min(a => a.Coordinate.Longitude);
+	            var maxLon = adressesToDisplay.Max(a => a.Coordinate.Longitude);
 
-            var minLat = adressesToDisplay.Min(a => a.Coordinate.Latitude);
-            var maxLat = adressesToDisplay.Max(a => a.Coordinate.Latitude);
-            var minLon = adressesToDisplay.Min(a => a.Coordinate.Longitude);
-            var maxLon = adressesToDisplay.Max(a => a.Coordinate.Longitude);
+	            region.Center = new CLLocationCoordinate2D((maxLat + minLat) / 2, (maxLon + minLon) / 2);
+	            region.Span = new MKCoordinateSpan((Math.Abs(maxLat - minLat)) * 1.5, (Math.Abs(maxLon - minLon)) * 1.5 );
+			}
 
-            region.Center = new CLLocationCoordinate2D((maxLat + minLat) / 2, (maxLon + minLon) / 2);
-            region.Span = new MKCoordinateSpan((Math.Abs(maxLat - minLat)), (Math.Abs(maxLon - minLon)));
             SetRegion(region, true);
             RegionThatFits(region);         
         }

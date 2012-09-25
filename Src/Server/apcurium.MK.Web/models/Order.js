@@ -4,10 +4,6 @@
 
         url: 'api/account/orders',
 
-        initialize: function(attributes, options) {
-            
-        },
-
         validate: function(attrs) {
 
             if(this._addressIsValid(attrs.pickupAddress))
@@ -32,8 +28,6 @@
 
         }
 
-
-        
     });
 
 }());

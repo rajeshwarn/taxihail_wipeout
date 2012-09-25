@@ -2,11 +2,13 @@
     
 </div>
 <div class="login-status pull-right">
-    {{#if isLoggedIn}}
-        {{name}}
-        <a href="#" data-action="logout">{{localize "Logout"}}</a>
-    {{else}}
-        <a href="#login" >{{localize "Login"}}</a>
-        <a href="#signup" >{{localize "Signup"}}</a>
-    {{/if}}
+    <ul>
+        {{#if isLoggedIn}}
+            <li>{{name}}
+            <li><a href="#" data-action="logout">{{localize "Log Out"}}</a>
+        {{else}}
+            <li><a href="#login" >{{localize "Log In"}}</a>
+            <li><a href="#signup" >{{localize "Sign Up"}}</a>
+        {{/if}}
+    </ul>
 </div>
