@@ -24,7 +24,9 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtilities
 			if (ann == null) {
 				return null;
 			
-			} else {
+			} 
+			else 
+			{
 //				if ( ann.AddressType == AddressAnnotationType.Taxi )
 //				{
 //					TaxiAnnotationView anv = mapView.DequeueReusableAnnotation ( "thislocation" ) as TaxiAnnotationView;
@@ -50,24 +52,26 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtilities
 				else 
 				{
 					anv.Annotation = ann;
+					anv.RefreshPinImage();
 				}
-				anv.AnimatesDrop = false;
+
+				//anv.AnimatesDrop = false;
 				
 				anv.CanShowCallout = true;
+
 				
-				if (ann.AddressType == AddressAnnotationType.Pickup) 
-				{
-					anv.PinColor = MKPinAnnotationColor.Green;
-				} 
-				else if (ann.AddressType == AddressAnnotationType.Destination) 
-				{
-					anv.PinColor = MKPinAnnotationColor.Red;
-				} 
-				else if (ann.AddressType == AddressAnnotationType.Taxi) 
-				{
-					anv.PinColor = MKPinAnnotationColor.Purple;
-				}
-				
+//				if (ann.AddressType == AddressAnnotationType.Pickup) 
+//				{
+//					anv.SetPinColor(MKPinAnnotationColor.Green);
+//				} 
+//				else if (ann.AddressType == AddressAnnotationType.Destination) 
+//				{
+//					anv.SetPinColor(MKPinAnnotationColor.Red);
+//				} 
+//				else if (ann.AddressType == AddressAnnotationType.Taxi) 
+//				{
+//					anv.SetPinColor(MKPinAnnotationColor.Purple);
+//				}
 				return anv;
 			}
 		}
