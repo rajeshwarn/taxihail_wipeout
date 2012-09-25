@@ -29,7 +29,14 @@
             }, this);
             
              this.model.on('change:estimate', function(model, value){
-                this.$('.estimate').text(value.formattedPrice + ' (' + value.formattedDistance + ')');
+                if(value.formattedPrice && value.formattedDistance) {
+                    this.$('.estimate')
+                        .removeClass('hidden')
+                        .find('.fare')
+                            .text(value.formattedPrice + ' (' + value.formattedDistance + ')');
+                } else {
+                    this.$('.estimate').addClass('hidden');
+                }
              }, this);
             
            
@@ -135,14 +142,10 @@
             }
            
         },
-               
-
-
-                    
                     
         book: function (e) {
             e.preventDefault();
-            if(this.model.isValid()) {
+            if(this._addressIsValid(this.model.get('pickupAddress'))) {
                 TaxiHail.store.setItem("orderToBook", this.model.toJSON());
                 TaxiHail.app.navigate('confirmationbook', { trigger:true });
             }
