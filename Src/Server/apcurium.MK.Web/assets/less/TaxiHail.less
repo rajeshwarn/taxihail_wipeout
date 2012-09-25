@@ -16,6 +16,7 @@ html, body {
     position: absolute;
     top:0;
     
+    // Bug fix for Google Maps
     img {
         max-width: none;
     }
@@ -37,7 +38,56 @@ header {
         .span(6);
         margin: 0 auto;
     }
+
+    .login-status {
+        margin-top: 30px;
+    }
+
+    ul {
+        list-style-type: none;
+    
+        >li {
+            display: inline-block;
+            margin: 0 10px;
+        }
+    }
 }
+
+.well {
+  min-height: 20px;
+  padding: 18px;
+  margin-bottom: 20px;
+  background-color: @wellBackground;
+  border: 1px solid #6A6855;
+  .border-radius(8px);
+}
+
+.estimate {
+    font-weight: bold;
+}
+
+
+// ICONS
+.icon-pin {
+    display:inline-block;
+    width:19px;
+    height:28px;
+    background: url(../img/pin-icon.png) top left no-repeat;
+    margin-top:-3px;
+}
+.icon-locate {
+    display:inline-block;
+    width:19px;
+    height:21px;
+    background: url(../img/location.png) top left no-repeat;
+}
+.icon-clear {
+    display:inline-block;
+    width:20px;
+    height:20px;
+    background: url(../img/cancel-icon.png) top left no-repeat;
+}
+
 
 /* form validation */
 .valid-input {
@@ -53,11 +103,23 @@ header {
     input.address {
         width:363px;
     }
+
+    .tab-content {
+
+        li {
+            display: block;
+            height:38px;
+            background: @white;
+            border-left: 1px solid @inputBorder;
+            border-right: 1px solid @inputBorder;
+            border-bottom: 1px solid @inputBorder;
+        }
+
+    }
 }
 
 .address-selector-container {
     position:absolute;
-    background: lightBlue;
 }
 
 
@@ -89,3 +151,11 @@ header {
     background-repeat: repeat-x;
   }
 }
+
+// BUTTONS
+.btn {
+    .border-radius(2px);
+    font-size: 18px;
+    font-weight: bold;
+}
+

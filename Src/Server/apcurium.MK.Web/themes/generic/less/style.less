@@ -1,8 +1,4 @@
 ﻿
-body {
- //#gradient > .vertical(#0058A4, #003B72);
-}
-
 header {
     #gradient > .vertical-no-filter(#00407B, #0057A3);
     border-bottom: 1px solid #003666;
@@ -16,21 +12,7 @@ header {
         font-weight: bold;
     }
 
-    ul {
-        list-style-type: none;
-    
-        >li {
-            display: inline-block;
-            margin: 0 10px;
-        }
-
-    }
 }
-
-body {
-    color: @taxiHailBlue;
-}
-
 
 // For IE9 and down
 .no-cssgradients header {
@@ -39,49 +21,12 @@ body {
     background-repeat: repeat-x;
 }
 
-.login-status {
-    margin-top: 30px;
-}
-
 .brand {
     background: url(../img/logo.png) no-repeat;
     position: relative;
     top: 17px;
     height: 80px;
     width: 113px
-}
-
-.well {
-  min-height: 20px;
-  padding: 18px;
-  margin-bottom: 20px;
-  background-color: @wellBackground;
-  border: 1px solid #6A6855;
-  .border-radius(8px);
-}
-
-.icon-pin {
-    display:inline-block;
-    width:19px;
-    height:28px;
-    background: url(../img/pin-icon.png) top left no-repeat;
-    margin-top:-3px;
-}
-.icon-locate {
-    display:inline-block;
-    width:19px;
-    height:21px;
-    background: url(../img/location.png) top left no-repeat;
-}
-.icon-clear {
-    display:inline-block;
-    width:20px;
-    height:20px;
-    background: url(../img/cancel-icon.png) top left no-repeat;
-}
-
-.estimate {
-    font-weight: bold;
 }
 
 // FORMS
@@ -123,12 +68,6 @@ input[type="color"],
 
 // BUTTONS
 
-.btn {
-    .border-radius(2px);
-    font-size: 18px;
-    font-weight: bold;
-}
-
 .btn-primary {
     border-color: #022240;
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
@@ -139,3 +78,45 @@ input[type="color"],
     background: @taxiHailBlue;
 }
 
+//TABS
+
+.nav-tabs{
+
+    margin-bottom: 0;
+
+    >li {
+
+        width:236px;
+
+        >a {
+            color: @white;
+            margin:0;
+            .border-radius(0);
+            border: 1px solid @inputBorder;
+            border-right: 1px solid #003666;
+            border-left: 1px solid #1A6BAC;
+            #gradient > .vertical(#0068B4, #00478D);
+
+            
+        }
+
+        &:first-child>a {
+                .border-radius(8px 0 0 0);
+                border-left: 1px solid @inputBorder;
+        }
+
+        &:last-child>a {
+            .border-radius(0 8px 0 0);
+            border-right: 1px solid @inputBorder;
+        }
+
+
+        &.active>a {
+            color: @white;
+            border: 1px solid @inputBorder;
+            border-right: 1px solid #003666;
+            border-left: 1px solid #1A6BAC;
+            #gradient > .vertical(#001956, #004085);
+        }
+    }
+}
