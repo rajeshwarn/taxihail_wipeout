@@ -293,6 +293,7 @@
     <Content Include="templates\LoginStatus.html" />
     <Content Include="templates\SettingsEdit.html" />
     <Content Include="templates\Signup.html" />
+    <Content Include="themes\generic\img\logo.png" />
     <Content Include="utils.js" />
     <Content Include="views\AddressControlView.js" />
     <Content Include="views\AddressItemView.js" />
@@ -484,7 +485,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="assets\bootstrap\docs\build\node_modules\hogan.js\bin\" />
-    <Folder Include="themes\generic\img\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="localization\Home.json" />
@@ -529,6 +529,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="themes\generic\less\combined-responsive.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="assets\less\TaxiHail-variables.less" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
