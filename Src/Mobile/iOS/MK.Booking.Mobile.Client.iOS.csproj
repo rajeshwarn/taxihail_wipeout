@@ -293,11 +293,11 @@
     <Compile Include="Controls\TouchMap.cs" />
     <Compile Include="MapUtitilties\AddressAnnotation.cs" />
     <Compile Include="MapUtitilties\AddressMapDelegate.cs" />
-    <Compile Include="MapUtitilties\TaxiAnnotationView.cs" />
     <Compile Include="Controls\TouchGesture.cs" />
     <Compile Include="MapUtitilties\PinAnnotationView.cs" />
     <Compile Include="Converters\AppConverters.cs" />
     <Compile Include="Controls\DateTimePicker.cs" />
+    <Compile Include="Controls\BarButtonItem.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -466,6 +466,8 @@
     <Content Include="Assets\pin_selected%402x.png" />
     <Content Include="Assets\pin_green.png" />
     <Content Include="Assets\pin_red.png" />
+    <Content Include="Assets\cancel.png" />
+    <Content Include="Assets\cancel%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.iOS.csproj">
