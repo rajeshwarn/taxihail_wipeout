@@ -91,8 +91,8 @@
     <AssemblyName>TaxiMobileApp</AssemblyName>
     <ConsolePause>False</ConsolePause>
     <BuildIpa>True</BuildIpa>
-    <MtouchSdkVersion>5.1</MtouchSdkVersion>
     <CodesignKey>iPhone Distribution: Baventure Group Inc.</CodesignKey>
+    <MtouchArch>ARMv6_ARMv7</MtouchArch>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -128,7 +128,7 @@
     <None Include="Assets\About_en.html" />
     <None Include="Assets\About_fr.html" />
     <None Include="Assets\Info.plist" />
-    <None Include="Assets\VerticalButtonBar\.DS_Store" />
+    <None Include="assets\VerticalButtonBar\.DS_Store" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
