@@ -62,5 +62,6 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Params.cs" />
     <Compile Include="Diagnostic\IErrorHandler.cs" />
+    <Compile Include="Entity\Address.cs" />
   </ItemGroup>
 </Project>
