@@ -68,6 +68,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         }
 
+		public void OnRegionChanged()
+		{
+            try
+            {
+                if (_gesture.GetLastTouchDelay() < 1000)
+                {
+                     if ( ( MapMoved != null ) && ( MapMoved.CanExecute() ) )
+                    {
+                        MapMoved.Execute(new Address{ Latitude = CenterCoordinate.Latitude , Longitude = CenterCoordinate.Longitude } );
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+		}
+
         private void InitializeGesture()
         {
             if (_gesture == null)
@@ -75,26 +93,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 _gesture = new TouchGesture();
             
                 AddGestureRecognizer(_gesture);
-            
-                RegionChanged += delegate
-                {
-                
-                    try
-                    {
-                        if (_gesture.GetLastTouchDelay() < 1000)
-                        {
-                             if ( ( MapMoved != null ) && ( MapMoved.CanExecute() ) )
-                            {
-                                MapMoved.Execute(new Address{ Latitude = CenterCoordinate.Latitude , Longitude = CenterCoordinate.Longitude } );
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-
-                    }
-                
-                };
             }
         }
 
@@ -194,6 +192,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 region.Center = new CLLocationCoordinate2D(lat, lon);
                 if (adressesToDisplay.ElementAt(0).Zoom != ViewModels.ZoomLevel.DontChange)
                 {
+					region.Span = new MKCoordinateSpan( (lat + 0.004f) - (lat -0.004f), (lon + 0.004f) - (lon - 0.004f) );
                     SetRegion(region, true);
                     RegionThatFits(region);
                 }

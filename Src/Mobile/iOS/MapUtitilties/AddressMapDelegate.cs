@@ -6,6 +6,7 @@ using MonoTouch.UIKit;
 using MonoTouch.MapKit;
 using MonoTouch.CoreLocation;
 using apcurium.Framework.Extensions;
+using apcurium.MK.Booking.Mobile.Client.Controls;
 
 namespace apcurium.MK.Booking.Mobile.Client.MapUtilities
 {
@@ -69,6 +70,11 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtilities
 				
 				return anv;
 			}
+		}
+
+		public override void RegionChanged (MKMapView mapView, bool animated)
+		{
+			((TouchMap)mapView).OnRegionChanged();
 		}
 	}
 }
