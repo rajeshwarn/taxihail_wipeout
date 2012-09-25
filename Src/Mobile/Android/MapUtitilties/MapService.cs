@@ -1,13 +1,9 @@
-using Android.App;
 using Android.GoogleMaps;
 using Android.Graphics.Drawables;
-using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Client.Converters;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using TinyIoC;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using System;
 using Android.Content;
+using apcurium.MK.Common.Entity;
 
 
 namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties

@@ -1,12 +1,9 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Contacts;
-using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using TinyIoC;
@@ -14,7 +11,7 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
-using Address = apcurium.MK.Booking.Api.Contract.Resources.Address;
+using Address = apcurium.MK.Common.Entity.Address;
 
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl

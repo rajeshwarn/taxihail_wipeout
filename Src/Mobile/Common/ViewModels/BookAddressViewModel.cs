@@ -20,7 +20,7 @@ using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Common.Extensions;
 using System.Threading;
 using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Common;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
