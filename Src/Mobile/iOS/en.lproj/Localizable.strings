@@ -229,6 +229,7 @@
 "SettingsFavorites"="Manage Favorites";
 "SettingsRideHistory"="Ride History";
 "DateTimePickerSetButton"="Set";
+"DateTimePickerCurrentButton"="Current";
 "SendEmail"="Send mail...";
 "RefineAddressTitle"="Refine an address";
 "CannotCancelOrderTitle"="Invalid Action";

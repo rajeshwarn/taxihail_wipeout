@@ -227,6 +227,7 @@
 "NoFareText"="Choisir la destination pour avoir un estimé du prix";
 "PickupDateDisplay"="This reservation is for : {0:dddd, MMMM d}";
 "DateTimePickerSetButton"="OK";
+"DateTimePickerCurrentButton"="Maintenant";
 "SendEmail"="Envoi du mail...";
 "RefineAddressTitle"="Affiner la recherche";
 "AptNumber"="Apt. No.";

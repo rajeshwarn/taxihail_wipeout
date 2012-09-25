@@ -20,31 +20,24 @@ namespace apcurium.MK.Booking.Api.Services
         private ICommandBus _commandBus;        
         private IBookingWebServiceClient _bookingWebServiceClient;
         private IStaticDataWebServiceClient _staticDataWebServiceClient;
-        private GeocodingService _geocodingService;
+
         private IAccountDao _accountDao;
-        private OrderStatusService _statusService;
+
         public CreateOrderService(ICommandBus commandBus, 
                                     IBookingWebServiceClient bookingWebServiceClient,
                                     IStaticDataWebServiceClient staticDataWebServiceClient, 
-                                    IAccountDao accountDao, 
-                                    GeocodingService geocodingService, 
-                                    OrderStatusService statusService )
+                                    IAccountDao accountDao )
         {
-            _statusService = statusService;
             _commandBus = commandBus;
             _bookingWebServiceClient = bookingWebServiceClient;
             _staticDataWebServiceClient = staticDataWebServiceClient;
             _accountDao = accountDao;
-            _geocodingService = geocodingService;
-
         }
 
         public override object OnPost(CreateOrder request)
         {
             
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
-            
-
 
             //TODO : need to check ibs setup for shortesst time.
             request.PickupDate = request.PickupDate.HasValue ? request.PickupDate.Value : DateTime.Now.AddMinutes(2);            

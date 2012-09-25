@@ -74,7 +74,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			TinyIoCContainer.Current.Register<Geolocator>(new Geolocator() { DesiredAccuracy = 400 }, CoordinatePrecision.Medium.ToString());
 
             TinyIoCContainer.Current.Register<IMessageService>(new MessageService());
-            TinyIoCContainer.Current.Register<IOverlayService>(new OverlayService());
             TinyIoCContainer.Current.Register<IAppSettings>(new AppSettings());
             TinyIoCContainer.Current.Register<IPackageInfo>(new PackageInfo());
             
