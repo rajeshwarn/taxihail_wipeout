@@ -16,7 +16,7 @@
             {
                 this.collection.each(this.renderItem, this);
             } else {
-                this.$el.append($('<li>').addClass('no-result').text(TaxiHail.localize('no-result')));
+                this.$el.append($('<li>').addClass('no-result').text(TaxiHail.localize('search.no-result')));
             }
 
             return this;

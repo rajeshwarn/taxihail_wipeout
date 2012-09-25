@@ -11,5 +11,6 @@
 	"error.ChargeTypeRequired" : "The charge type is required",	
 	"CreateAccount_AccountAlreadyExist" : "An account is already registered with this email address.",
 	"signup.confirmation" : "Account created. You will receive an email shortly with a link you need to click on to confirm your registration.",
-	"CreateBt" : "Create" 
+	"CreateBt" : "Create",
+	"search.no-result": "Start typing an address or a place name" 
 }
