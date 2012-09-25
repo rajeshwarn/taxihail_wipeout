@@ -92,7 +92,7 @@
     <ConsolePause>False</ConsolePause>
     <BuildIpa>True</BuildIpa>
     <CodesignKey>iPhone Distribution: Baventure Group Inc.</CodesignKey>
-    <MtouchArch>ARMv6_ARMv7</MtouchArch>
+    <MtouchArch>ARMv7</MtouchArch>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
