@@ -89,12 +89,6 @@ header {
 }
 
 
-/* form validation */
-.valid-input {
-   margin-left: 5px;
-}
-
-
 /* Address selector */
 @resultHeight: 38px;
 .address-picker {
@@ -177,5 +171,30 @@ header {
     .border-radius(2px);
     font-size: 18px;
     font-weight: bold;
+}
+
+// FORMS 
+
+.valid-input {
+   margin-left: 5px;
+}
+
+legend {
+    color: @taxiHailBlue;
+    font-weight:bold;
+    border: none;
+}
+
+.form-horizontal {
+    .control-label {
+        color: black;
+        text-align: left;
+        line-height: 30px;
+    }  
+
+    .input-block-level {
+        height: 40px;
+        min-height: 40px;
+    }   
 }
 
