@@ -24,6 +24,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtilities
 		public PinAnnotationView ( AddressAnnotation annotation, string id ) : base( annotation, id )
 		{
 			Annotation = annotation;
+			ContentMode = UIViewContentMode.TopLeft;
 		}
 
 		 
