@@ -40,6 +40,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _geolocator = geolocator;
             _appResource = appResource;
 
+			TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub>().Subscribe<LogOutRequested>( msg => Logout.Execute() );
+			TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub>().Subscribe<RebookRequested>( msg => Rebook( msg.Content ) );
+
             Load();
             Pickup = new BookAddressViewModel(() => Order.PickupAddress, address => Order.PickupAddress = address, _geolocator) { Title = appResource.GetString("BookPickupLocationButtonTitle"), EmptyAddressPlaceholder = appResource.GetString("BookPickupLocationEmptyPlaceholder") };
             Dropoff = new BookAddressViewModel(() => Order.DropOffAddress, address => Order.DropOffAddress = address, _geolocator) { Title = appResource.GetString("BookDropoffLocationButtonTitle"), EmptyAddressPlaceholder = appResource.GetString("BookDropoffLocationEmptyPlaceholder") };
@@ -166,20 +169,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Order = JsonSerializer.DeserializeFromString<CreateOrder>(serialized);
             Order.Id = Guid.Empty;
             Order.PickupDate = null;
-            Order.PickupDate = null;
+			Pickup.SetAddress( Order.PickupAddress, false );
+			Dropoff.SetAddress( Order.DropOffAddress, false );
             ForceRefresh();
         }
 
         private void ForceRefresh()
         {
             FirePropertyChanged(() => Order);
-            FirePropertyChanged(() => Pickup);
-            FirePropertyChanged(() => Dropoff);
+//            FirePropertyChanged(() => Pickup);
+//            FirePropertyChanged(() => Dropoff);
+			//AddressChanged(this, EventArgs.Empty);
             FirePropertyChanged(() => SelectedAddress);
-            FirePropertyChanged(() => FareEstimate);
+
             FirePropertyChanged(() => IsInTheFuture);
             FirePropertyChanged(() => PickupIsActive);
             FirePropertyChanged(() => DropoffIsActive);
+
+
+			FirePropertyChanged(() => FareEstimate);
         }
 
 
@@ -436,7 +444,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get
 			{
 				return new MvxRelayCommand<DateTime?>(date => {
-					if( date < DateTime.Now )
+					if( date.HasValue && date < DateTime.Now )
 					{
 						var res = TinyIoCContainer.Current.Resolve<IAppResource>();
 						TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage( res.GetString("InvalidChoiceTitle"), res.GetString("BookViewInvalidDate") );
@@ -445,13 +453,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					else
 					{
 						Order.PickupDate = date;
+						InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new DateTimePicked(this, Order.PickupDate )));
 					}
 					PickupDateSelected();
 				});
 			}
 		}
 
-        
-        
+
+
     }
 }

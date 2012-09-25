@@ -27,6 +27,7 @@ using System.IO;
 using apcurium.MK.Booking.Mobile.Client.MapUtilities;
 using apcurium.MK.Booking.Mobile.Style;
 using apcurium.MK.Booking.Mobile.Client.Controls;
+using apcurium.MK.Booking.Mobile.Messages;
  
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -37,6 +38,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		private PanelMenuView _menu;
 		private DateTimePicker _dateTimePicker;
         public event EventHandler TabSelected;
+		private Action _onDateTimePicked;
 
         //private CreateOrder _bookingInfo;
         private StatusView _statusView;
@@ -75,8 +77,10 @@ namespace apcurium.MK.Booking.Mobile.Client
             AppButtons.FormatStandardButton((GradientButton)refreshCurrentLocationButton, "", AppStyle.ButtonColor.Blue, "");
 			AppButtons.FormatStandardButton((GradientButton)cancelBtn, "", AppStyle.ButtonColor.Red, "Assets/cancel.png");
 
+			TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub>().Subscribe<DateTimePicked>( msg => _onDateTimePicked() );
 			_dateTimePicker = new DateTimePicker( );
 			_dateTimePicker.ShowPastDate = false;
+			_onDateTimePicked = () => _dateTimePicker.Hide();
 
 			View.AddSubview( _dateTimePicker );
 
@@ -126,7 +130,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 				{ mapView, "{'Pickup':{'Path':'Pickup.Model'}, 'Dropoff':{'Path':'Dropoff.Model'} , 'MapMoved':{'Path':'SelectedAddress.SearchCommand'}, 'MapCenter':{'Path':'MapCenter'} }" },
 				{ infoLabel, "{'Text':{'Path':'FareEstimate'}}" },
 				{ pickupDateLabel, "{'Text':{'Path':'PickupDateDisplay'}, 'Hidden':{'Path':'IsInTheFuture','Converter':'BoolInverter'}}" },
-				{ _dateTimePicker, "{'DateChangedCommand':{'Path':'PickupDateSelectedCommand'}}" },
+				{ _dateTimePicker, "{'DateChangedCommand':{'Path':'PickupDateSelectedCommand'}, 'CloseDatePickerCommand':{'Path':'CloseDatePickerCommand'}}" },
 				{ cancelBtn, "{'Hidden':{'Path':'CanClearAddress', 'Converter':'BoolInverter'}, 'Enabled':{'Path':'CanClearAddress'}, 'TouchUpInside':{'Path':'SelectedAddress.ClearPositionCommand'}}" },
 		
             });
@@ -137,6 +141,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			}
 
         }
+
+
 
 		private DateTime? PickupDate{ get;set; }
 
@@ -203,6 +209,8 @@ namespace apcurium.MK.Booking.Mobile.Client
                     AppContext.Current.LastOrder = null;
 					NavigationController.NavigationBar.Hidden = true;
                     Selected();
+					ViewModel.Dropoff.ClearAddress();
+					ViewModel.Initialize();
                 };
 
                 NavigationController.PushViewController(_statusView, true);
@@ -315,7 +323,8 @@ namespace apcurium.MK.Booking.Mobile.Client
                         view.Canceled += delegate(object sender, EventArgs e)
                         {
                             this.NavigationController.PopViewControllerAnimated(true);
-                        };
+
+						};
                         
                         view.Confirmed += delegate(object sender, EventArgs e)
                         {
@@ -326,6 +335,8 @@ namespace apcurium.MK.Booking.Mobile.Client
                         {
                             BookingInfo.Note = note;
                         };
+
+
                     });
                 }
                 finally
@@ -383,8 +394,9 @@ namespace apcurium.MK.Booking.Mobile.Client
                         BookingInfo.Id = orderStatus.OrderId;
                         
                         BookingInfo.PickupDate = DateTime.Now;                       
-                        
-                        LoadStatusView(new Order { Id = bi.Id, IBSOrderId = orderStatus.IBSOrderId,  CreatedDate = DateTime.Now, DropOffAddress = bi.DropOffAddress, PickupAddress  = bi.PickupAddress , Settings = bi.Settings   }, orderStatus, false);
+
+						LoadStatusView(new Order { Id = bi.Id, IBSOrderId = orderStatus.IBSOrderId,  CreatedDate = DateTime.Now, DropOffAddress = bi.DropOffAddress, PickupAddress  = bi.PickupAddress , Settings = bi.Settings   }, orderStatus, false);
+
                     }
                     else
                     {

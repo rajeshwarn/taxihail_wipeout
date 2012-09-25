@@ -2,6 +2,8 @@ using System;
 using MonoTouch.UIKit;
 using System.Drawing;
 using Cirrious.MvvmCross.Interfaces.Commands;
+using Cirrious.MvvmCross.Commands;
+using System.ComponentModel;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -20,17 +22,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			_picker = new UIDatePicker ();
 			BackgroundColor = UIColor.Gray;
 			
-			var accept = AppButtons.CreateStandardButton( new RectangleF (40, 5, 100, 35), Resources.Close, AppStyle.ButtonColor.Silver );
+			var accept = AppButtons.CreateStandardButton( new RectangleF (40, 5, 100, 35), Resources.DateTimePickerSetButton, AppStyle.ButtonColor.Silver );
 			accept.TouchUpInside += delegate { 
 				SetSelectedDate( ((DateTime)_picker.Date).ToLocalTime () );
-				Animate(false);
 			};
 			AddSubview( accept );
 			
-			var reset = AppButtons.CreateStandardButton( new RectangleF (180, 5, 100, 35), Resources.Now, AppStyle.ButtonColor.Silver );
+			var reset = AppButtons.CreateStandardButton( new RectangleF (180, 5, 100, 35), Resources.DateTimePickerCurrentButton, AppStyle.ButtonColor.Silver );
 			reset.TouchUpInside += delegate {
 				SetSelectedDate (null);
-				Animate(false);
 			};
 			AddSubview( reset );
 			
@@ -64,12 +64,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			}
 			else
 			{
-				_picker.SetDate( DateTime.Now, true );
+				_picker.SetDate( DateTime.Now.AddMinutes(15), true );
 			}
 
 			if( !ShowPastDate )
 			{
-				_picker.MinimumDate = DateTime.Now;
+				_picker.MinimumDate = DateTime.Now.AddMinutes(15);
 			}
 			Animate ( true );
 		}
@@ -97,6 +97,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 				_dateChangedCommand = value;
 			}
 		}
+
+		public override bool PointInside (PointF point, UIEvent uievent)
+		{
+			if( _pickerViewIsShown && !Frame.Contains( point ) )
+			{
+				Hide ();
+			}
+			return base.PointInside (point, uievent);
+		}
+
 
 	
 	}
