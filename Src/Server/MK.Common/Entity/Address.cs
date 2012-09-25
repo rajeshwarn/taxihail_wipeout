@@ -28,7 +28,7 @@ namespace apcurium.MK.Common.Entity
 
         public string RingCode { get; set; }
 
-        public string BuildingNamee { get; set; }
+        public string BuildingName { get; set; }
 
         public bool IsHistoric { get; set; }
 
