@@ -43,6 +43,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
+            
+            UIApplication.CheckForIllegalCrossThreadCalls = false;
+
             Background.Load(window, "Assets/background_full_nologo.png", false, 0, 0);          
 
 			AppContext.Initialize(window);
