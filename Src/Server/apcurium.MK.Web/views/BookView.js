@@ -8,8 +8,6 @@
         },
         
         initialize: function () {
-            _.bindAll(this, "renderEstimateResults");
-
             this.model.on('change', function(model, value) {
                 
                 // Enable the "Book Now!" button if model is valid
@@ -23,12 +21,8 @@
                 this.actualizeEstimate();
             }, this);
 
-            this.model.on('change:priceEstimate', function(model, value){
-                this.$('.price-estimate').text(value);
-            }, this);
-
-            this.model.on('change:distanceEstimate', function(model, value){
-                this.$('.distance-estimate').text(value);
+            this.model.on('change:estimate', function(model, value){
+                this.$('.estimate').text(value.formattedPrice + ' (' + value.formattedDistance + ')');
             }, this);
             
         },
@@ -93,20 +87,15 @@
 
             if (pickup && dest) {
                 TaxiHail.directionInfo.getInfo(pickup.latitude, pickup.longitude, dest.latitude, dest.longitude)
-                    .done(this.renderEstimateResults);
+                    .done(_.bind(function(result){
+
+                        this.model.set({ 'estimate': result });
+
+                    }, this));
             }
            
         },
-        
-        renderEstimateResults: function (result) {
 
-            this.model.set({
-                'priceEstimate': result.formattedPrice,
-                'distanceEstimate': result.formattedDistance
-            });
-                       
-        },
-        
         locate : function () {
             TaxiHail.geolocation.getCurrentPosition()
                 .done(_.bind(function(address){
