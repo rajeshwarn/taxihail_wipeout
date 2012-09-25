@@ -12,7 +12,7 @@
             this.model.on('change', function(model, value) {
                 
                 // Enable the "Book Now!" button if model is valid
-                if(this.model.isValid()) {
+                if(this._addressIsValid(this.model.get('pickupAddress'))) {
                     this.$('[data-action=book]').removeClass('disabled');
                 } else this.$('[data-action=book]').addClass('disabled');
 
@@ -108,7 +108,7 @@
                 });
             }, this);
 
-            if(!this.model.isValid()){
+            if(!this._addressIsValid(this.model.get('pickupAddress'))){
                 this.$('[data-action=book]').addClass('disabled');
             }
             return this;
@@ -146,6 +146,15 @@
                 TaxiHail.store.setItem("orderToBook", this.model.toJSON());
                 TaxiHail.app.navigate('confirmationbook', { trigger:true });
             }
+        },
+
+        _addressIsValid: function(address){
+
+            return address
+                && address.fullAddress
+                && address.latitude
+                && address.longitude;
+
         }
     });
 
