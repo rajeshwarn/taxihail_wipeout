@@ -28,6 +28,9 @@
 
             this.$('[name=address]').on('keypress', _.debounce(this.onkeypress, 500));
 
+            if (this.isBtnSelected == true) {
+                this.$("span.btn").attr("class", "btn active");
+            }
 
             this._selector = new TaxiHail.AddressSelectionView({
                 model: this.model

@@ -67,7 +67,6 @@
         
         mouseup: function () {
             if (this.model.get('isPickupBtnSelected')) {
-           //     this.setposandgeocod(this._pickupPin, true);
                if (this._pickupPin) {
                 this._pickupPin.setPosition(this._map.getCenter());
             } else {
@@ -77,7 +76,6 @@
             TaxiHail.geocoder.geocode(this._pickupPin.getPosition().Xa, this._map.getCenter().Ya)
                         .done(this.geolocdone);
             } else {
-               // this.setposandgeocod(this._dropOffPin, true);
                 if (this._dropOffPin) {
                     this._dropOffPin.setPosition(this._map.getCenter());
                 } else {
@@ -89,23 +87,7 @@
             }
             
         },
-        
-        setposandgeocod : function (marker,pickup) {
-            if (marker) {
-                marker.setPosition(this._map.getCenter());
-            } else {
-                if (pickup==true) {
-                    marker = this.addMarker(this._map.getCenter(), 'http://maps.google.com/mapfiles/ms/icons/green-dot.png');
-                } else {
-                     marker = this.addMarker(this._map.getCenter(), 'http://maps.google.com/mapfiles/ms/icons/red-dot.png');
-                }
-                
-            }
 
-            TaxiHail.geocoder.geocode(marker.getPosition().Xa, this._map.getCenter().Ya)
-                        .done(this.geolocdone);
-        },
-        
         addMarker : function(location, iconImage) {
             return new google.maps.Marker({
                 position: location,

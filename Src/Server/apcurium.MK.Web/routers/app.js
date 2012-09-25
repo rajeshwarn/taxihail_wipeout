@@ -58,10 +58,11 @@
         book: function () {
 
             var model = new TaxiHail.Order();
-
+            
             mapView.setModel(model);
 
             renderView(TaxiHail.BookView, model);
+           
         },
         
         confirmationbook: function () {

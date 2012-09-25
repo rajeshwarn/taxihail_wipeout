@@ -10,6 +10,8 @@
         
         initialize: function () {
             _.bindAll(this, "renderEstimateResults");
+            
+            this.model.set('isPickupBtnSelected', true);
 
             this.model.on('change', function(model, value) {
                 
@@ -39,14 +41,19 @@
                 this.$('.distance-estimate').text(value);
             }, this);
             
-            this.model.set('isPickupBtnSelected', true);
+           
 
 
             this.model.on('change:isPickupBtnSelected', function (model, value) {
                 if (value == true) {
                     this._dropOffAddressView.$("span.btn").attr("class", "btn");
+                    this._dropOffAddressView.isBtnSelected = false;
+                    this._pickupAddressView.isBtnSelected = true;
+                    
                 } else {
                     this._pickupAddressView.$("span.btn").attr("class", "btn");
+                    this._pickupAddressView.isBtnSelected = false;
+                    this._dropOffAddressView.isBtnSelected = true;
                 }
             }, this);
             
@@ -73,7 +80,7 @@
             this.$('.pickup-address-container').html(this._pickupAddressView.render().el);
             this.$('.drop-off-address-container').html(this._dropOffAddressView.render().el);
             
- this._pickupAddressView.$("span.btn").attr("class", "btn active");
+            this._pickupAddressView.$("span.btn").attr("class", "btn active");
 
             // Only one address picker can be open at once
            
@@ -111,7 +118,6 @@
             if(!this.model.isValid()){
                 this.$('[data-action=book]').addClass('disabled');
             }
-            
             return this;
         },
 
@@ -144,8 +150,14 @@
         
         locate : function () {
             TaxiHail.geolocation.getCurrentPosition()
-                .done(_.bind(function(address){
-                    this._pickupAddressView.model.set(address);
+                .done(_.bind(function (address) {
+                   // if (this.model.isPickupBtnSelected) {
+                        this._pickupAddressView.model.set(address);
+                   // } else {
+                    //    this._dropOffAddressView.model.set(address);
+                    //}
+                    
+                    
                 }, this));
         },
                
