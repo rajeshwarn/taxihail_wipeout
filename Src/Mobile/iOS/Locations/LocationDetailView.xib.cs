@@ -12,6 +12,7 @@ using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Diagnostic;
 using TinyMessenger;
 using apcurium.MK.Booking.Mobile.Messages;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {

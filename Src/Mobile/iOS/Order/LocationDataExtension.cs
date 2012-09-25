@@ -1,6 +1,7 @@
 using System;
 using MonoTouch.CoreLocation;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
