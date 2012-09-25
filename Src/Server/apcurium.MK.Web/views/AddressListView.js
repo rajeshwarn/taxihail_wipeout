@@ -12,7 +12,12 @@
         render: function() {
 
             this.$el.empty();
-            this.collection.each(this.renderItem, this);
+            if(this.collection.length)
+            {
+                this.collection.each(this.renderItem, this);
+            } else {
+                this.$el.append($('<li>').addClass('no-result').text(TaxiHail.localize('no-result')));
+            }
 
             return this;
         },

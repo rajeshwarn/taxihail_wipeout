@@ -79,6 +79,7 @@
 
         clear: function() {
             this.model.clear();
+            this.close();
         },
 
         onfocus: function(e) {
