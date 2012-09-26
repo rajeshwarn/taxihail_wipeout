@@ -13,6 +13,9 @@ using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.ListViewStructure;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -25,6 +28,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 	public partial class LocationsTabView : UIViewController
 	{
 //		private TableView _tableLocations;
+		private CancellationTokenSource _searchCancellationToken = new CancellationTokenSource();
 		public event EventHandler Canceled;
 		public event EventHandler LocationSelected;
 		#region Constructors
@@ -88,13 +92,35 @@ namespace apcurium.MK.Booking.Mobile.Client
 			if (tableLocations == null) {
 				return;
 			}
+			TinyIoCContainer.Current.Resolve<IMessageService>().ShowProgress(true, () => CancelCurrentTask() );
+			_searchCancellationToken = new CancellationTokenSource();
+			var task = new Task<InfoStructure>(() => GetLocationsStructure(), _searchCancellationToken.Token);
+			task.ContinueWith(RefreshData);
+			task.Start();
+		}
 
-			var structure = GetLocationsStructure();
+		public void RefreshData( Task<InfoStructure>  task )
+		{
+			if(task.IsCompleted && !task.IsCanceled)
+			{
+				InvokeOnMainThread( () => {
+					tableLocations.DataSource = new LocationTableViewDataSource (this, task.Result);
+					tableLocations.Delegate = new LocationTableViewDelegate (this, task.Result);
+					tableLocations.ReloadData ();
+				});
+			}
+			TinyIoCContainer.Current.Resolve<IMessageService>().ShowProgress(false);
+		}
 
-			tableLocations.DataSource = new LocationTableViewDataSource (this, structure);
-			tableLocations.Delegate = new LocationTableViewDelegate (this, structure);
-
-			tableLocations.ReloadData ();
+		private void CancelCurrentTask()
+		{
+			if (_searchCancellationToken != null
+			    && _searchCancellationToken.Token.CanBeCanceled)
+			{
+				_searchCancellationToken.Cancel();
+				_searchCancellationToken.Dispose();
+				_searchCancellationToken = null;
+			}
 		}
 
 		public List<Address> LocationList { get; set; }

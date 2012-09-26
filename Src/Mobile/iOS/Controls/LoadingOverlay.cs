@@ -158,9 +158,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 				{
 					owner.InvokeOnMainThread (() =>
 					{
-					
-					
-					
 						if (canceled != null)
 						{
 							_loading = new CAlertView (45);

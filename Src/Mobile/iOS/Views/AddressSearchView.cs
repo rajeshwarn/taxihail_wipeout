@@ -85,7 +85,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             this.AddBindings(new Dictionary<object, string>(){
 				{CancelButton, "{'TouchUpInside':{'Path':'CloseViewCommand'}}"},
-				{source, "{'ItemsSource':{'Path':'Addresses'}, 'SelectedCommand':{'Path':'RowSelectedCommand'}}"} ,
+				{source, "{'ItemsSource':{'Path':'AllAddresses'}, 'SelectedCommand':{'Path':'RowSelectedCommand'}}"} ,
 				{favoritesBtn, "{'SelectedChangedCommand':{'Path':'SelectedChangedCommand'}, 'Selected':{'Path':'FavoritesSelected'}}"} ,
 				{contactsBtn, "{'SelectedChangedCommand':{'Path':'SelectedChangedCommand'}, 'Selected':{'Path':'ContactsSelected'}}"} ,
 				{placesBtn, "{'SelectedChangedCommand':{'Path':'SelectedChangedCommand'}, 'Selected':{'Path':'PlacesSelected'}}"} ,
