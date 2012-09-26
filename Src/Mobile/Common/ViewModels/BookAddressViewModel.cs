@@ -174,6 +174,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public void SetAddress(Address address, bool userInitiated)
         {
+			if( IsExecuting )
+			{
+				CancelCurrentLocationCommand.Execute();
+			}
             Model.FullAddress = address.FullAddress;
             Model.Longitude = address.Longitude;
             Model.Latitude = address.Latitude;
@@ -227,12 +231,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         {
                             if (t.IsFaulted)
                             {
+								IsExecuting = false;
                                 // PositionStatus.Text = ((GeolocationException)t.Exception.InnerException).Error.ToString();
                             }
                             else if ( t.IsCompleted && !t.IsCanceled )
                             {
+								//ThreadPool.QueueUserWorkItem( pos =>   );
                                 var address = TinyIoC.TinyIoCContainer.Current.Resolve<IGeolocService>().SearchAddress(t.Result.Latitude, t.Result.Longitude);
-                                if (address.Count() > 0)
+								if (address.Count() > 0)
                                 {
                                     SetAddress(address[0], false);
                                 }
@@ -242,9 +248,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                 }
                             }
                         }
+						catch
+						{
+							IsExecuting = false;
+						}
                         finally
                         {
-                            IsExecuting = false;
+                            
                         }
 
                     }, _scheduler);

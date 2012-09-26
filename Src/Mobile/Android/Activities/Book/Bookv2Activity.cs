@@ -471,9 +471,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                         var orderCreated = new Order { CreatedDate = DateTime.Now, DropOffAddress = order.DropOffAddress, IBSOrderId = orderInfo.IBSOrderId, Id = order.Id, PickupAddress = order.PickupAddress, Note = order.Note, PickupDate = order.PickupDate.HasValue ? order.PickupDate.Value : DateTime.Now, Settings = order.Settings };
 
                         ShowStatusActivity(orderCreated, orderInfo);
-
-                        StartNewOrder();
+                        
                     }
+
+                    StartNewOrder();
 
                 }
                 catch (Exception ex)
@@ -481,8 +482,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                     RunOnUiThread(() =>
                     {
                         string error = ex.Message;
-                        string err = GetString(Resource.String.ErrorCreatingOrderMessage);
-                        err += error.HasValue() ? " (" + error + ")" : "";
+
+                        var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
+                        string err = string.Format(GetString(Resource.String.ServiceError_ErrorCreatingOrderMessage), settings.ApplicationName, settings.PhoneNumberDisplay(order.Settings.ProviderId.HasValue ? order.Settings.ProviderId.Value : 1));                        
                         this.ShowAlert(GetString(Resource.String.ErrorCreatingOrderTitle), err);
                     });
                 }

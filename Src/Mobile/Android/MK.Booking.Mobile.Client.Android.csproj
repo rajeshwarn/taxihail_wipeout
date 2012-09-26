@@ -133,6 +133,7 @@
     <Compile Include="Activities\Account\LoginActivity.cs" />
     <Compile Include="MapUtitilties\PushPinOverlay.cs" />
     <Compile Include="MapUtitilties\TaxiOverlay.cs" />
+    <Compile Include="Messages\ActivityCompleted.cs" />
     <Compile Include="Models\AddressItemListModel.cs" />
     <Compile Include="Models\BookingModel.cs" />
     <Compile Include="Models\HistoryModel.cs" />
@@ -143,7 +144,6 @@
     <Compile Include="Models\NavigationStrings.cs" />
     <Compile Include="Models\OrderItemListModel.cs" />
     <Compile Include="Models\ParentScreens.cs" />
-    <Compile Include="PlatformIntegration\AndroidOverlayService.cs" />
     <Compile Include="PlatformIntegration\MessageService.cs" />
     <Compile Include="PlatformIntegration\PackageInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

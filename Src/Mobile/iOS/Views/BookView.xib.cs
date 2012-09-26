@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		private PanelMenuView _menu;
 		private DateTimePicker _dateTimePicker;
-        public event EventHandler TabSelected;
+//        public event EventHandler TabSelected;
 		private Action _onDateTimePicked;
 
         //private CreateOrder _bookingInfo;
@@ -142,10 +142,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         }
 
-
-
-		private DateTime? PickupDate{ get;set; }
-
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);     
@@ -173,14 +169,14 @@ namespace apcurium.MK.Booking.Mobile.Client
             BookTaxi();
         }
 
-        private CreateOrder _toRebookData;
+//        private CreateOrder _toRebookData;
 
-        public void Rebook(Order data)
-        {
-            _toRebookData = JsonSerializer.DeserializeFromString<CreateOrder>(JsonSerializer.SerializeToString<Order>(data));
-            _toRebookData.Id = Guid.Empty;
-            _toRebookData.PickupDate = null;
-        }
+//        public void Rebook(Order data)
+//        {
+//            _toRebookData = JsonSerializer.DeserializeFromString<CreateOrder>(JsonSerializer.SerializeToString<Order>(data));
+//            _toRebookData.Id = Guid.Empty;
+//            _toRebookData.PickupDate = null;
+//        }
 
         private void RemoveStatusView()
         {
@@ -208,17 +204,15 @@ namespace apcurium.MK.Booking.Mobile.Client
                     RemoveStatusView();
                     AppContext.Current.LastOrder = null;
 					NavigationController.NavigationBar.Hidden = true;
-                    Selected();
+					this.NavigationController.PopViewControllerAnimated(false);
+					ViewModel.Reset();
 					ViewModel.Dropoff.ClearAddress();
 					ViewModel.Initialize();
+
                 };
 
                 NavigationController.PushViewController(_statusView, true);
             }); 
-        }
-
-        void StatusViewCloseRequested(object sender, EventArgs e)
-        {
         }
 
         private void LoadStatusView(bool closeScreenWhenCompleted)
@@ -239,47 +233,50 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
         }
 
-        public void Selected()
-        {
-            try
-            {
-                AppContext.Current.ResetPosition();
-
-                if (AppContext.Current.LastOrder.HasValue)
-                {
-                    LoadStatusView(true);
-                }
-                else
-                {  
-                    if (!(this.NavigationController.TopViewController is BookView))
-                    {
-                        this.NavigationController.PopViewControllerAnimated(false);
-                    }
-                    
-                    bool isRebook = false;
-                    if (_toRebookData != null)
-                    {                       
-                        //TODO: migration ver ViewModel ViewModel.Rebook(_toRebookData);
-                        isRebook = true;
-                        _toRebookData = null;
-                        BookTaxi();
-                    }
-                    else
-                    {
-                        ViewModel.Reset();
-                    }
-
-                    
-                    if ((!isRebook) && (TabSelected != null))
-                    {
-                        TabSelected(this, EventArgs.Empty);
-                    }
-                }
-            }
-            catch
-            {
-            }
-        }
+//        public void Selected()
+//        {
+//            try
+//            {
+//
+//
+//
+//                if (AppContext.Current.LastOrder.HasValue)
+//                {
+//                    LoadStatusView(true);
+//                }
+//                else
+//                {  
+//                    if (!(this.NavigationController.TopViewController is BookView))
+//                    {
+//                        this.NavigationController.PopViewControllerAnimated(false);
+//                    }
+//
+//                    
+////                    bool isRebook = false;
+////                    if (_toRebookData != null)
+////                    {                       
+////                        //TODO: migration ver ViewModel ViewModel.Rebook(_toRebookData);
+////                        isRebook = true;
+////                        _toRebookData = null;
+////                        BookTaxi();
+////                    }
+////                    else
+////                    {
+//                        
+////                    }
+//
+//
+//                    
+////                    if ((!isRebook) && (TabSelected != null))
+////                    {
+////                        TabSelected(this, EventArgs.Empty);
+////                    }
+//                }
+//            }
+//            catch
+//            {
+//            }
+//        }
 
         public void BookTaxi()
         {
@@ -386,8 +383,6 @@ namespace apcurium.MK.Booking.Mobile.Client
                     if (orderStatus.IBSOrderId.HasValue)
                     {
                         AppContext.Current.LastOrder = orderStatus.OrderId;
-
-                        //var order = TinyIoCContainer.Current.Resolve<IAccountService>( ).GetHistoryOrder( orderStatus.OrderId );
 
                         var accountId = TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount.Id;
 

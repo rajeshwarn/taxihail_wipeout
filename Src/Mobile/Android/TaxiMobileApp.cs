@@ -13,14 +13,14 @@ using TinyIoC;
 using apcurium.MK.Booking.Mobile.Practices;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
-using apcurium.MK.Booking.Mobile.Client.Services;
+
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
     [Application]
     public class TaxiMobileApplication : Application
     {
-		private Intent _errorHandlingServiceIntent;
+		//private Intent _errorHandlingServiceIntent;
 
         protected TaxiMobileApplication(IntPtr javaReference, JniHandleOwnership transfer)
             : base(javaReference, transfer)
@@ -47,9 +47,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             Console.WriteLine("App created");
 
-			_errorHandlingServiceIntent = new Intent( this, typeof(ErrorHandlingService) );
+			//_errorHandlingServiceIntent = new Intent( this, typeof(ErrorHandlingService) );
 			
-            StartService( _errorHandlingServiceIntent );
+            //StartService( _errorHandlingServiceIntent );
 
          
 
@@ -58,8 +58,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public override void OnTerminate ()
 		{
 			base.OnTerminate ();
-
-			StopService( _errorHandlingServiceIntent );
+            
+//			StopService( _errorHandlingServiceIntent );
 		}
 
         

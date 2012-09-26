@@ -11,36 +11,61 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
+using apcurium.MK.Common.Extensions;
+using TinyIoC;
+using TinyMessenger;
+using apcurium.MK.Booking.Mobile.Messages;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-	[Activity (Label = "AlertDialogActivity", Theme ="@android:style/Theme.Dialog")]			
-	public class AlertDialogActivity : Activity
-	{
-		private string _title;
-		private string _message;
+    [Activity(Label = "AlertDialogActivity", Theme = "@android:style/Theme.Dialog")]
+    public class AlertDialogActivity : Activity
+    {
+        private string _title;
+        private string _message;
+        private string _ownerId;
 
-		protected override void OnCreate (Bundle bundle)
-		{
-			base.OnCreate (bundle);
+        private string _positiveButtonTitle;
+        private string _negativeButtonTitle;
 
-			_title = Intent.GetStringExtra("Title");
-			_message = Intent.GetStringExtra("Message");
-		}
+        protected override void OnCreate(Bundle bundle)
+        {
+            base.OnCreate(bundle);
 
-		protected override void OnStart ()
-		{
-			base.OnStart ();
-			DisplayError();
-		}
+            _title = Intent.GetStringExtra("Title");
+            _message = Intent.GetStringExtra("Message");
+            _ownerId = Intent.GetStringExtra("OwnerId");
+            _positiveButtonTitle = Intent.GetStringExtra("PositiveButtonTitle");
+            _negativeButtonTitle = Intent.GetStringExtra("NegativeButtonTitle");
 
-		private void DisplayError( )
-		{
-			AlertDialogHelper.ShowAlert( this, _title, _message, () => { 
-				Console.WriteLine("Error Raised");
-				Finish();
-			} );
-		}
-	}
+
+
+
+        }
+
+        protected override void OnStart()
+        {
+            base.OnStart();
+            DisplayError();
+        }
+
+        private void DisplayError()
+        {
+            if (_ownerId.HasValue() && _negativeButtonTitle.HasValue() && _positiveButtonTitle.HasValue())
+            {
+                AlertDialogHelper.Show(this, _title, _message, _positiveButtonTitle, (s, e) => SendMessage(_positiveButtonTitle), _negativeButtonTitle, (s, e) => SendMessage(_negativeButtonTitle));
+            }
+            else
+            {
+                AlertDialogHelper.ShowAlert(this, _title, _message, () => Finish());
+            }
+        }
+
+        private void SendMessage(string buttonTitle)
+        {
+            TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new ActivityCompleted(this, buttonTitle, _ownerId));
+            Finish();
+        }
+    }
+
 }
-

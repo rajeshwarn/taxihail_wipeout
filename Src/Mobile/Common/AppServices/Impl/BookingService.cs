@@ -12,6 +12,8 @@ using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using Address = apcurium.MK.Common.Entity.Address;
+using ServiceStack.ServiceClient.Web;
+using Cirrious.MvvmCross.Interfaces.Platform.Tasks;
 
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
@@ -25,7 +27,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return info.PickupAddress.FullAddress.HasValue() && info.PickupAddress.Latitude != 0 && info.PickupAddress.Longitude != 0;
         }
 
-   
+
         protected ILogger Logger
         {
             get { return TinyIoCContainer.Current.Resolve<ILogger>(); }
@@ -37,17 +39,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             var orderDetail = new OrderStatusDetail();
             UseServiceClient<OrderServiceClient>(service =>
                 {
-                    orderDetail = service.CreateOrder(order);                   
-                });
+                    orderDetail = service.CreateOrder(order);
+                }, ex => HandleCreateOrderError(ex, order));
 
-            if ((orderDetail == null) || !orderDetail.IBSOrderId.HasValue || orderDetail.IBSOrderId.Value <= 0)
-            {
-                var res = TinyIoCContainer.Current.Resolve<IAppResource>();
-
-                TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage(res.GetString("ErrorCreatingOrderTitle"), res.GetString("ErrorCreatingOrderMessage"));
-                
-                return orderDetail;
-            }
 
             ThreadPool.QueueUserWorkItem(o =>
             {
@@ -55,7 +49,48 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             });
 
             return orderDetail;
-           
+
+        }
+
+        private void HandleCreateOrderError(Exception ex, CreateOrder order)
+        {
+            var appResource = TinyIoCContainer.Current.Resolve<IAppResource>();
+            var title = appResource.GetString("ErrorCreatingOrderTitle");
+
+
+            var message = appResource.GetString("ServiceError_ErrorCreatingOrderMessage"); //= Resources.GetString(Resource.String.ServiceErrorDefaultMessage);
+
+
+            try
+            {
+                if (ex is WebServiceException)
+                {
+                    message = appResource.GetString("ServiceError" + ((WebServiceException) ex).ErrorCode);
+                }
+            }
+            catch
+            {
+
+            }
+
+
+            var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
+            string err = string.Format(message, settings.ApplicationName, settings.PhoneNumberDisplay(order.Settings.ProviderId.HasValue ? order.Settings.ProviderId.Value : 0));
+
+            TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage(title, err, "Call", () => CallCompany(settings.ApplicationName, settings.PhoneNumber(order.Settings.ProviderId.HasValue ? order.Settings.ProviderId.Value : 0)), "Cancel", RefreshBookingView);
+        }
+
+        private void CallCompany(string name, string number)
+        {
+            var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
+            TinyIoCContainer.Current.Resolve<IMvxPhoneCallTask>().MakePhoneCall(name, number);
+            RefreshBookingView();
+        }
+
+
+        private void RefreshBookingView()
+        {
+
         }
 
         public OrderStatusDetail GetOrderStatus(Guid orderId)
@@ -66,7 +101,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 {
                     r = service.GetOrderStatus(orderId);
                 });
-            
+
             return r;
         }
 
@@ -76,30 +111,30 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         }
 
         public bool IsCompleted(Guid orderId)
-        {                        
+        {
             var status = GetOrderStatus(orderId);
-            return IsStatusCompleted(status.IBSStatusId);                
+            return IsStatusCompleted(status.IBSStatusId);
         }
 
         public bool IsStatusCompleted(string statusId)
         {
-            return statusId.IsNullOrEmpty() ||                     
+            return statusId.IsNullOrEmpty() ||
                     statusId.SoftEqual("wosCANCELLED") ||
-                    statusId.SoftEqual("wosDONE") || 
-                    statusId.SoftEqual("wosNOSHOW") || 
+                    statusId.SoftEqual("wosDONE") ||
+                    statusId.SoftEqual("wosNOSHOW") ||
                     statusId.SoftEqual("wosCANCELLED_DONE");
         }
-        
 
-        public bool CancelOrder( Guid orderId)
+
+        public bool CancelOrder(Guid orderId)
         {
             bool isCompleted = false;
-            
-                UseServiceClient<OrderServiceClient>(service =>
-                {
-                    service.CancelOrder(orderId );
-                    isCompleted = true;
-                });            
+
+            UseServiceClient<OrderServiceClient>(service =>
+            {
+                service.CancelOrder(orderId);
+                isCompleted = true;
+            });
             return isCompleted;
         }
 
@@ -110,16 +145,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             foreach (var contact in queryable)
             {
-                    contact.Addresses.ForEach(c => contacts.Add(new Address
-                                    {
-                                        FriendlyName = contact.DisplayName,
-                                        FullAddress = c.StreetAddress,
-                                        City = c.City,
-                                        IsHistoric = false,
-                                        ZipCode = c.PostalCode,
-                                        AddressType = "localContact"
-                                    }));
-                
+                contact.Addresses.ForEach(c => contacts.Add(new Address
+                                {
+                                    FriendlyName = contact.DisplayName,
+                                    FullAddress = c.StreetAddress,
+                                    City = c.City,
+                                    IsHistoric = false,
+                                    ZipCode = c.PostalCode,
+                                    AddressType = "localContact"
+                                }));
+
             }
             return contacts;
         }
@@ -128,7 +163,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public Task LoadContacts()
         {
-            if(_task == null)
+            if (_task == null)
             {
                 _task = new Task(() =>
                 {
