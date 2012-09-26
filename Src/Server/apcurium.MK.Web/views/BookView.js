@@ -142,10 +142,8 @@
                     
         book: function (e) {
             e.preventDefault();
-            if(this.model.isValid()) {
-                TaxiHail.store.setItem("orderToBook", this.model.toJSON());
-                TaxiHail.app.navigate('confirmationbook', { trigger:true });
-            }
+            TaxiHail.store.setItem("orderToBook", this.model.toJSON());
+            TaxiHail.app.navigate('confirmationbook', { trigger:true });
         },
 
         _addressIsValid: function(address){

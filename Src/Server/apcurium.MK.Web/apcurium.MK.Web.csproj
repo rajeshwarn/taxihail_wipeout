@@ -272,6 +272,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="models\NewAccount.js" />
+    <Content Include="models\ReferenceData.js" />
     <Content Include="models\Settings.js" />
     <Content Include="models\UserAccount.js" />
     <Content Include="models\Address.js" />
