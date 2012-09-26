@@ -41,9 +41,12 @@
             this.$('#bookBt').button('loading');
             e.preventDefault();
             this.model.set('settings', settings);
-            this.model.save({},{success : function (value) {
-                TaxiHail.app.navigate('bookconfirmed/' + value.get('iBSOrderId'), { trigger: true });
-            }});
+            this.model.save({}, {
+                success: function (value) {
+                    TaxiHail.app.navigate('bookconfirmed/' + value.get('iBSOrderId'), { trigger: true });
+                },
+                error: this.showErrors
+            });
             
         },
         
@@ -66,8 +69,9 @@
                                     $("input").attr("disabled", true);
                                     settingschanged = false;
                                 },
-                            dataType: 'json'
-                        });
+                                error: showErrors,
+                                dataType: 'json'
+                             });
                     } else {
                         $("#editButton").html(TaxiHail.localize('Edit'));
                         $("input").attr("disabled", true);
@@ -75,11 +79,7 @@
                 
                 }else {
                     var result = settings.validate(settings.attributes);
-                    var $alert = $('<div class="alert alert-error" />');
-                    _.each(result.errors, function (error) {
-                        $alert.append($('<div />').text(this.localize(error.errorCode)));
-                    }, this);
-                    this.$('.errors').html($alert);
+                    this.showErrors(this.model, result);
                 }
                 
             } else {
@@ -87,6 +87,22 @@
                 $("input").attr("disabled", false);
             }
             
+        },
+        
+        showErrors: function (model, result) {
+            this.$('#bookBt').button('reset');
+            
+            if (result.responseText) {
+                result = JSON.parse(result.responseText).responseStatus;
+            }
+            var $alert = $('<div class="alert alert-error" />');
+            if (result.statusText) {
+                $alert.append($('<div />').text(this.localize(result.statusText)));
+            }
+            _.each(result.errors, function (error) {
+                $alert.append($('<div />').text(this.localize(error.errorCode)));
+            }, this);
+            this.$('.errors').html($alert);
         },
         
         renderItem: function (model) {

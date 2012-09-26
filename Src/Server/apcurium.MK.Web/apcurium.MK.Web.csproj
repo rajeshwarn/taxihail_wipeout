@@ -264,6 +264,7 @@
     <Content Include="assets\js\backbone.validation.bootstrap.js" />
     <Content Include="assets\js\handlebars-1.0.rc.1.js" />
     <Content Include="assets\js\modernizr.js" />
+    <Content Include="assets\js\spin.js" />
     <Content Include="assets\js\underscore.js" />
     <Content Include="collections\AddressCollection.js" />
     <Content Include="Config.aspx" />
