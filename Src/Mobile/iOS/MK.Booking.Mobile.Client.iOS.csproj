@@ -56,7 +56,8 @@
     <CrashReportingApiKey />
     <BuildIpa>True</BuildIpa>
     <AssemblyName>TaxiMobileApp</AssemblyName>
-    <MtouchExtraArgs>--disable-thread-check</MtouchExtraArgs>
+    <MtouchExtraArgs>--disable-thread-check -v -v -v -v  -aot "nrgctx-trampolines=2500" -aot "nimt-trampolines=2500" -aot "ntrampolines=2500"</MtouchExtraArgs>
+    <MtouchArch>ARMv7</MtouchArch>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>none</DebugType>
@@ -65,17 +66,18 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
-    <CodesignKey>iPhone Distribution</CodesignKey>
+    <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchI18n />
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <IpaPackageName />
     <BuildIpa>True</BuildIpa>
-    <CodesignProvision>30AE26CF-D638-4747-9ED6-1CEEF52171D7</CodesignProvision>
+    <CodesignProvision>20192CBE-9925-4A5F-867D-AE9DEAE773BD</CodesignProvision>
     <CrashReportingApiKey />
     <AssemblyName>TaxiMobileApp</AssemblyName>
-    <MtouchSdkVersion>5.1</MtouchSdkVersion>
+    <MtouchSdkVersion>6.0</MtouchSdkVersion>
     <MtouchExtraArgs>-v -v -v -v  -aot "nrgctx-trampolines=2500" -aot "nimt-trampolines=2500" -aot "ntrampolines=2500"</MtouchExtraArgs>
     <DefineConstants>MONOTOUCH;NET35;SILVERLIGHT</DefineConstants>
+    <MtouchArch>ARMv7</MtouchArch>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Distribution|iPhone' ">
     <DebugType>none</DebugType>
@@ -128,11 +130,10 @@
     <None Include="Assets\About_en.html" />
     <None Include="Assets\About_fr.html" />
     <None Include="Assets\Info.plist" />
-    <None Include="assets\VerticalButtonBar\.DS_Store" />
+    <None Include="Assets\VerticalButtonBar\.DS_Store" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
-    <Compile Include="RootTabController.cs" />
     <Compile Include="AppStyle.cs" />
     <Compile Include="MainWindow.xib.designer.cs">
       <DependentUpon>MainWindow.xib</DependentUpon>
@@ -147,19 +148,12 @@
     <Compile Include="Helper\WebRequestHelper.cs" />
     <Compile Include="Helper\XMLLinqHelper.cs" />
     <Compile Include="Localization\Resources.cs" />
-    <Compile Include="AppSettings.cs" />
     <Compile Include="Localization\StandardMessages.cs" />
     <Compile Include="History\HistoryTabView.xib.cs">
       <DependentUpon>HistoryTabView.xib</DependentUpon>
     </Compile>
     <Compile Include="History\HistoryTabView.xib.designer.cs">
       <DependentUpon>HistoryTabView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Settings\SettingsTabView.xib.cs">
-      <DependentUpon>SettingsTabView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Settings\SettingsTabView.xib.designer.cs">
-      <DependentUpon>SettingsTabView.xib</DependentUpon>
     </Compile>
     <Compile Include="Settings\LoginView.xib.cs">
       <DependentUpon>LoginView.xib</DependentUpon>
@@ -210,7 +204,6 @@
     <Compile Include="Controls\GraphicsUtil.cs" />
     <Compile Include="Controls\GlassButton.cs" />
     <Compile Include="Diagnostics\Logger.cs" />
-    <Compile Include="AppModule.cs" />
     <Compile Include="Controls\VerticalButtonBar.cs" />
     <Compile Include="Controls\Background.cs" />
     <Compile Include="Controls\VerticalButton.cs" />
@@ -334,7 +327,6 @@
   <ItemGroup>
     <InterfaceDefinition Include="MainWindow.xib" xmlns="" />
     <InterfaceDefinition Include="History\HistoryTabView.xib" xmlns="" />
-    <InterfaceDefinition Include="Settings\SettingsTabView.xib" xmlns="" />
     <InterfaceDefinition Include="Settings\LoginView.xib" xmlns="" />
     <InterfaceDefinition Include="Locations\LocationsTabView.xib" xmlns="" />
     <InterfaceDefinition Include="Locations\LocationDetailView.xib" xmlns="" />
@@ -467,6 +459,9 @@
     <Content Include="Assets\pin_red.png" />
     <Content Include="Assets\cancel.png" />
     <Content Include="Assets\cancel%402x.png" />
+    <Content Include="Assets\pin_green%402x.png" />
+    <Content Include="Assets\pin_red%402x.png" />
+    <Content Include="Default-568h%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.iOS.csproj">

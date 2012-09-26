@@ -1,6 +1,7 @@
 ﻿(function () {
     var settings;
     var settingschanged = false;
+    
     TaxiHail.BookingConfirmationView = TaxiHail.TemplatedView.extend({
         
         events: {
@@ -9,7 +10,8 @@
             'change :text': 'onPropertyChanged',
             
         },
-        initialize: function () {
+        initialize: function () {   
+
             _.bindAll(this, "renderResults");
             this.model.on('change', this.render, this);
             
@@ -18,9 +20,7 @@
             if (pickup && dest) {
                 TaxiHail.directionInfo.getInfo(pickup['latitude'], pickup['longitude'], dest['latitude'], dest['longitude']).done(this.renderResults);
             }
-            
-            
-    },
+        },
 
         render: function (param) {
 
@@ -39,7 +39,7 @@
         },
         
         book: function (e) {
-        e.preventDefault();
+            e.preventDefault();
             this.model.set('settings', settings);
             this.model.save({},{success : function (value) {
                 TaxiHail.app.navigate('bookconfirmed/' + value.get('iBSOrderId'), { trigger: true });
@@ -49,13 +49,14 @@
         
         edit:function (e) {
             e.preventDefault();
-            //$("input").attr("disabled", !$("input").attr("disabled"));
+            
             if (!$("input").attr("disabled")) {
                 
                 this.$('.errors').empty();
                 if (settings.isValid() ) {
                     
                     if (settingschanged) {
+                        
                         jQuery.ajax({
                                 type: 'PUT',
                                 url: 'api/account/bookingsettings',
