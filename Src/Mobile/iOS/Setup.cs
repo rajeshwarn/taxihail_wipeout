@@ -21,6 +21,7 @@ using SocialNetworks.Services.OAuth;
 using SocialNetworks.Services.MonoTouch;
 using SocialNetworks.Services;
 using apcurium.MK.Booking.Mobile.Client.Converters;
+using MonoTouch.CoreLocation;
 
 
 namespace apcurium.MK.Booking.Mobile.Client
@@ -68,7 +69,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             TinyIoCServiceProviderSetup.Initialize();
 
 
-			TinyIoCContainer.Current.Register<Geolocator>(new Geolocator() { DesiredAccuracy = 250 });                        
+			TinyIoCContainer.Current.Register<Geolocator>(new Geolocator() { DesiredAccuracy = 400 });                        
 			TinyIoCContainer.Current.Register<Geolocator>(new Geolocator() { DesiredAccuracy = 10000 }, CoordinatePrecision.BallPark.ToString());
 			TinyIoCContainer.Current.Register<Geolocator>(new Geolocator() { DesiredAccuracy = 1000 }, CoordinatePrecision.Coarse.ToString());
 			TinyIoCContainer.Current.Register<Geolocator>(new Geolocator() { DesiredAccuracy = 400 }, CoordinatePrecision.Medium.ToString());

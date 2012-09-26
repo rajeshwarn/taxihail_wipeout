@@ -27,6 +27,13 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			MessageHelper.Show( title, message, additionnalActionButtonTitle, additionalAction );
 		}
 
+
+        public void ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction)
+        {
+            MessageHelper.Show( title, message, positiveButtonTitle, positiveAction );
+        }
+
+
 		private UIViewController _owner;
 		public void ShowProgress( bool show )
 		{

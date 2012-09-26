@@ -70,11 +70,39 @@
             this.$('[name=address]').val(this.model.get('fullAddress'));
         },
 
-        locate : function () {
+        locate: function (e) {
+
+            var opts = {
+                lines: 11, // The number of lines to draw
+                length: 3, // The length of each line
+                width: 3, // The line thickness
+                radius: 6, // The radius of the inner circle
+                corners: 1, // Corner roundness (0..1)
+                rotate: 0, // The rotation offset
+                color: '#fff', // #rgb or #rrggbb
+                speed: 1, // Rounds per second
+                trail: 60, // Afterglow percentage
+                shadow: false, // Whether to render a shadow
+                hwaccel: false, // Whether to use hardware acceleration
+                className: 'spinner', // The CSS class to assign to the spinner
+                zIndex: 2e9 // The z-index (defaults to 2000000000)
+            };
+            
+            var $spinContainer = $('<div class="icon-locating" />');
+            var spinner = new Spinner(opts).spin();
+            $spinContainer.append(spinner.el);
+            
+            var $button = $(e.currentTarget).children().first();
+            var arrow = $button.replaceWith($spinContainer);
+            
             TaxiHail.geolocation.getCurrentPosition()
                 .done(_.bind(function(address){
                     this.model.set(address);
-                }, this));
+                }, this))
+                .always(function (address) {
+                    spinner.stop();
+                    $button.replaceWith(arrow);
+                });
         },
 
         clear: function() {

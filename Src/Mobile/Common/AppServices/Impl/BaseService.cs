@@ -13,28 +13,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
     public class BaseService
     {
 
-        protected string UseServiceClient<T>(Action<T> action) where T : class
+        protected string UseServiceClient<T>(Action<T> action, Action<Exception> errorHandler = null) where T : class
         {
-			return UseServiceClient<T>( null, action );
-//            try
-//            {
-//                TinyIoCContainer.Current.Resolve<ILogger>().StartStopwatch("UseServiceClient : " + typeof(T));
-//                var service = TinyIoCContainer.Current.Resolve<T>();
-//                action(service);
-//                TinyIoCContainer.Current.Resolve<ILogger>().StopStopwatch("UseServiceClient : " + typeof(T));
-//                return "";
-//            }
-//            catch (Exception ex)
-//            {
-//                    
-//                TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex);
-//				TinyIoCContainer.Current.Resolve<IErrorHandler>().HandleError( ex );
-//                return ex.Message;
-//            
-//            }
+            return UseServiceClient<T>(null, action, errorHandler);
         }
 
-        protected string UseServiceClient<T>( string name, Action<T> action) where T : class
+        protected string UseServiceClient<T>( string name, Action<T> action, Action<Exception> errorHandler = null ) where T : class
         {
             try
             {
@@ -53,10 +37,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 return "";
             }
             catch (Exception ex)
-            {
-                    
+            {                    
                 TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex);
-				TinyIoCContainer.Current.Resolve<IErrorHandler>().HandleError( ex );
+                if (errorHandler == null)
+                {
+                    TinyIoCContainer.Current.Resolve<IErrorHandler>().HandleError(ex);
+                }
+                else
+                {
+                    errorHandler(ex);
+                }
                 return ex.Message;
             
             }
