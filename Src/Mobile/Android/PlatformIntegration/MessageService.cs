@@ -10,6 +10,9 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using TinyIoC;
+using TinyMessenger;
+using apcurium.MK.Booking.Mobile.Messages;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -35,9 +38,38 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             Context.StartActivity(i); 
         }
 
-        public void ShowMessage(string title, string message, string additionnalActionButtonTitle, Action additionalAction)
+        
+        public void ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction)
         {
-            throw new NotImplementedException();
+            var ownerId = Guid.NewGuid().ToString();
+            var i = new Intent(Context, typeof(AlertDialogActivity));
+            i.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
+            i.PutExtra("Title", title);
+            i.PutExtra("Message", message);
+
+            i.PutExtra("PositiveButtonTitle", positiveButtonTitle);
+            i.PutExtra("NegativeButtonTitle", negativeButtonTitle);
+            i.PutExtra("OwnerId", ownerId );
+
+            TinyMessageSubscriptionToken token = null;
+            token = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<ActivityCompleted>( a=>
+                        {
+                                if ( a.Content == positiveButtonTitle )
+                                {
+                                    positiveAction();
+                                }
+                                else if ( a.Content == negativeButtonTitle )
+                                {
+                                    negativeAction();
+                                }
+                                TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Unsubscribe<ActivityCompleted>( token );
+                                token.Dispose();
+                        }, a=>a.OwnerId == ownerId );            
+
+            Context.StartActivity(i); 
+        }
+        public void ShowMessage(string title, string message,  string additionnalActionButtonTitle, Action additionalAction)
+        {            
         }
 
         public void ShowToast(string message, ToastDuration duration )
@@ -46,6 +78,12 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             toast.Show();
         }
 
-         
+
+
+
+        public void ShowProgress(bool show)
+        {
+          
+        }
     }
 }

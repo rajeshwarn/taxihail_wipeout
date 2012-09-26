@@ -63,6 +63,7 @@ namespace apcurium.MK.Booking.Mobile.Settings
             get { return new int[0]; }
         }
 
+        public string ApplicationName { get { return _data.ApplicationName; } }
 
 
 
