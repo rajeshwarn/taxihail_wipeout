@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using TinyIoC;
 using apcurium.Framework.Extensions;
-using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.SearchAddress
 {

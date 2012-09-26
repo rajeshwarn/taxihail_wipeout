@@ -1,22 +1,13 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Android.App;
-using Android.Content;
 using Android.OS;
-using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.Mobile.Client.Activities.Book;
-using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Models;
 using TinyIoC;
-using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using TinyMessenger;
 using apcurium.MK.Booking.Mobile.Messages;

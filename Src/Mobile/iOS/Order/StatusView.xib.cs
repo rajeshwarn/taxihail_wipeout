@@ -229,12 +229,12 @@ namespace apcurium.MK.Booking.Mobile.Client
                         var dcoordinate = Order.DropOffAddress.GetCoordinate();
                         mapStatus.AddAnnotation(new AddressAnnotation(dcoordinate, AddressAnnotationType.Destination, Resources.DestinationMapTitle, Order.DropOffAddress.FullAddress));
                     
-                        double latDelta = Math.Abs(dcoordinate.Latitude - pcoordinate.Latitude);
-                        double longDelta = Math.Abs(dcoordinate.Longitude - pcoordinate.Longitude);
-                    
-                        var center = new CLLocationCoordinate2D((pcoordinate.Latitude + dcoordinate.Latitude) / 2, (pcoordinate.Longitude + dcoordinate.Longitude) / 2);
-                    
-                        mapStatus.SetRegion(new MKCoordinateRegion(center, new MKCoordinateSpan(latDelta, longDelta)), true);
+//                        double latDelta = Math.Abs(dcoordinate.Latitude - pcoordinate.Latitude);
+//                        double longDelta = Math.Abs(dcoordinate.Longitude - pcoordinate.Longitude);
+//                    
+//                        var center = new CLLocationCoordinate2D((pcoordinate.Latitude + dcoordinate.Latitude) / 2, (pcoordinate.Longitude + dcoordinate.Longitude) / 2);
+//                    
+//                        mapStatus.SetRegion(new MKCoordinateRegion(center, new MKCoordinateSpan(latDelta, longDelta)), true);
                     
                     }
                     catch (Exception ex)
@@ -242,11 +242,11 @@ namespace apcurium.MK.Booking.Mobile.Client
                         Console.Write(ex.Message);
                     }
                 }
-                else
-                {
-                    mapStatus.SetRegion(new MKCoordinateRegion(pcoordinate, new MKCoordinateSpan(0.02, 0.02)), true);
+//                else
+//                {
+                    mapStatus.SetRegion(new MKCoordinateRegion(pcoordinate, new MKCoordinateSpan(0.004f, 0.004f)), true);
                 
-                }
+//                }
             
             }
             catch (Exception ex)
@@ -267,7 +267,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			InvokeOnMainThread(() => lblTitle.Text = Status.IBSStatusDescription);
             if ((Status.VehicleLatitude.HasValue) && (Status.VehicleLongitude.HasValue) && (Status.VehicleLatitude.Value != 0) && (Status.VehicleLongitude.Value != 0))
             {
-                CLLocationCoordinate2D position = new CLLocationCoordinate2D(Status.VehicleLatitude.Value, Status.VehicleLongitude.Value);
+                CLLocationCoordinate2D taxiCoordinate = new CLLocationCoordinate2D(Status.VehicleLatitude.Value, Status.VehicleLongitude.Value);
                 if (_taxiPosition != null)
                 {
                     InvokeOnMainThread(() => 
@@ -277,12 +277,21 @@ namespace apcurium.MK.Booking.Mobile.Client
                     );
                 }
 
-                _taxiPosition = new AddressAnnotation(position, AddressAnnotationType.Taxi, Resources.TaxiMapTitle, "");
+                _taxiPosition = new AddressAnnotation(taxiCoordinate, AddressAnnotationType.Taxi, Resources.TaxiMapTitle, "");
+
+				var pickupCoordinate = Order.PickupAddress.GetCoordinate();
+				double latDelta = Math.Abs(taxiCoordinate.Latitude - pickupCoordinate.Latitude);
+				double longDelta = Math.Abs(taxiCoordinate.Longitude - pickupCoordinate.Longitude);
+            
+				var center = new CLLocationCoordinate2D((taxiCoordinate.Latitude + pickupCoordinate.Latitude) / 2, (taxiCoordinate.Longitude + pickupCoordinate.Longitude) / 2);
+				//                    
+				//                        
                 InvokeOnMainThread(() => 
                 {
                     mapStatus.AddAnnotation(_taxiPosition);
-                    mapStatus.SetCenterCoordinate(position, true);
-                    mapStatus.SetRegion(new MKCoordinateRegion(position, new MKCoordinateSpan(0.01, 0.01)), true);
+                    //mapStatus.SetCenterCoordinate(taxiCoordinate, true);
+                   // mapStatus.SetRegion(new MKCoordinateRegion(taxiCoordinate, new MKCoordinateSpan(0.01, 0.01)), true);
+					mapStatus.SetRegion(new MKCoordinateRegion(center, new MKCoordinateSpan(latDelta * 1.5f, longDelta * 1.5f)), true);
                 }
                 );
             }
@@ -357,7 +366,10 @@ namespace apcurium.MK.Booking.Mobile.Client
             try
             {
                 base.ViewDidDisappear(animated);
-                _timer.Dispose();
+                if ( _timer != null )
+                {
+                       _timer.Dispose();
+                }
 
             }
             catch (Exception ex)

@@ -70,11 +70,11 @@
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <IpaPackageName />
     <BuildIpa>True</BuildIpa>
-    <CodesignProvision>55BC7130-27C8-49F9-B4AA-3C4F1B761071</CodesignProvision>
+    <CodesignProvision>30AE26CF-D638-4747-9ED6-1CEEF52171D7</CodesignProvision>
     <CrashReportingApiKey />
     <AssemblyName>TaxiMobileApp</AssemblyName>
     <MtouchSdkVersion>5.1</MtouchSdkVersion>
-    <MtouchExtraArgs>--disable-thread-check</MtouchExtraArgs>
+    <MtouchExtraArgs>-v -v -v -v  -aot "nrgctx-trampolines=2500" -aot "nimt-trampolines=2500" -aot "ntrampolines=2500"</MtouchExtraArgs>
     <DefineConstants>MONOTOUCH;NET35;SILVERLIGHT</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Distribution|iPhone' ">
@@ -91,8 +91,8 @@
     <AssemblyName>TaxiMobileApp</AssemblyName>
     <ConsolePause>False</ConsolePause>
     <BuildIpa>True</BuildIpa>
-    <MtouchSdkVersion>5.1</MtouchSdkVersion>
     <CodesignKey>iPhone Distribution: Baventure Group Inc.</CodesignKey>
+    <MtouchArch>ARMv7</MtouchArch>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -287,13 +287,16 @@
     <Compile Include="Controls\PanelView.cs" />
     <Compile Include="Controls\TextProgressButton.cs" />
     <Compile Include="Controls\SearchTextField.cs" />
-    <Compile Include="PlatformIntegration\OverlayService.cs" />
     <Compile Include="Controls\TitleView.cs" />
     <Compile Include="Controls\Binding\BindableAddressTableViewSource.cs" />
     <Compile Include="Controls\TouchMap.cs" />
     <Compile Include="MapUtitilties\AddressAnnotation.cs" />
     <Compile Include="MapUtitilties\AddressMapDelegate.cs" />
-    <Compile Include="MapUtitilties\TaxiAnnotationView.cs" />
+    <Compile Include="Controls\TouchGesture.cs" />
+    <Compile Include="MapUtitilties\PinAnnotationView.cs" />
+    <Compile Include="Converters\AppConverters.cs" />
+    <Compile Include="Controls\DateTimePicker.cs" />
+    <Compile Include="Controls\BarButtonItem.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -326,6 +329,7 @@
     <Folder Include="Navigation\" />
     <Folder Include="Assets\Search\" />
     <Folder Include="Animations\" />
+    <Folder Include="Converters\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="MainWindow.xib" xmlns="" />
@@ -455,6 +459,14 @@
     <Content Include="Assets\settings%402x.png" />
     <Content Include="Assets\right_arrow.png" />
     <Content Include="Assets\right_arrow%402x.png" />
+    <Content Include="Assets\pin.png" />
+    <Content Include="Assets\pin%402x.png" />
+    <Content Include="Assets\pin_selected.png" />
+    <Content Include="Assets\pin_selected%402x.png" />
+    <Content Include="Assets\pin_green.png" />
+    <Content Include="Assets\pin_red.png" />
+    <Content Include="Assets\cancel.png" />
+    <Content Include="Assets\cancel%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.iOS.csproj">

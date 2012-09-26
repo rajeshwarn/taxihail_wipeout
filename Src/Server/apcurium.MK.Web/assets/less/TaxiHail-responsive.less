@@ -1,4 +1,25 @@
-﻿@media (max-width: 767px) {
+﻿// REPEAT MIXINS
+// -------------------------
+// Required since we compile the responsive stuff separately
+
+@import "../bootstrap/less/mixins.less";
+
+
+// RESPONSIVE CLASSES
+// ------------------
+
+@import "../bootstrap/less/responsive-utilities.less";
+
+
+// MEDIA QUERIES
+// ------------------
+
+// Phones to portrait tablets and narrow desktops
+@import "../bootstrap/less/responsive-767px-max.less";
+
+
+
+@media (max-width: 767px) {
 
   .map-zone {
         height: 320px;

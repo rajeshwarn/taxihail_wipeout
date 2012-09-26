@@ -8,6 +8,7 @@ using Xamarin.Geolocation;
 using System.Threading;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -43,7 +44,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         private void UpdateLocation(Task<Position> p, CoordinatePrecision coordinatePrecision)
         {
-            if (p.IsCompleted)
+
+            try
+            {
+            if ( (p.IsCompleted) && (!p.IsCanceled ) )
             {
                 if (LastKnownPosition.RefreshTime == CoordinateRefreshTime.ALongTimeAgo)
                 {
@@ -62,6 +66,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 
                 //Console.WriteLine("LOCATION UPDATED " + p.Result.Latitude.ToString() + ", " + p.Result.Longitude.ToString() + " : " + coordinatePrecision.ToString() + " ACCC " + p.Result.Accuracy.ToString());
             }
+            }
+            catch( Exception ex )
+            {
+                TinyIoCContainer.Current.Resolve<ILogger>().LogError( ex );
+            }
+
         }
 
         public Coordinate LastKnownPosition

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Api.Contract.Resources
 {

@@ -1,31 +1,64 @@
 ﻿// Authentication Service
 // Methods: login, logout
 // Events: loggedIn, loggedOut
-var isLogged = false;
 (function () {
 
+    var isLoggedIn = false;
+
+
     TaxiHail.auth = _.extend(Backbone.Events, {
+        account: null,
         login: function (email, password) {
-            isLogged = true;
             return $.post('api/auth/credentials', {
                 userName: email,
                 password: password
             },_.bind(function () {
-                this.trigger('loggedIn');
+                isLoggedIn = true;
+                this.trigger('change', isLoggedIn);
             }, this), 'json');
         },
 
         logout: function () {
             isLogged = false;
             return $.post('api/auth/logout', _.bind(function () {
-                this.trigger('loggedOut');                
+                isLoggedIn = false;                
+                this.trigger('change', isLoggedIn);
             }, this), 'json');
         },
         
-        isLogged : function() {
-            return isLogged;
+        isLoggedIn : function() {
+            return isLoggedIn;
+        }, 
+        initialize: function() {
+            this.account = new TaxiHail.UserAccount();
+
+            this.on('change', function(isLoggedIn){
+                if(!isLoggedIn) this.account.clear();
+            }, this);
+
+            // Fetch user account
+            // We use a different instance of UserAccount
+            // In order to be able to set the isLoggedIn flag
+            // Before setting the auth.account attributes
+            new TaxiHail.UserAccount().fetch({
+                success: _.bind(function(model) {
+                    isLoggedIn = true;
+                    this.account.set(model.toJSON());
+                    //this.account('change', isLoggedIn);
+                }, this)
+            });
+
         }
     
+    });
+
+    $(document).ajaxError(function (e, jqxhr, settings, exception) {
+        if (jqxhr.status === 401  /*Unauthorized*/ ) {
+             if(isLoggedIn) {
+                isLoggedIn = false;                
+                TaxiHail.auth.trigger('change', isLoggedIn);
+             }
+         }
     });
 
 } ());

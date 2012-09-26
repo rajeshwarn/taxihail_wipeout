@@ -26,6 +26,8 @@ using MonoTouch.MessageUI;
 using System.IO;
 using apcurium.MK.Booking.Mobile.Client.MapUtilities;
 using apcurium.MK.Booking.Mobile.Style;
+using apcurium.MK.Booking.Mobile.Client.Controls;
+using apcurium.MK.Booking.Mobile.Messages;
  
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -34,7 +36,9 @@ namespace apcurium.MK.Booking.Mobile.Client
         #region Constructors
 
 		private PanelMenuView _menu;
+		private DateTimePicker _dateTimePicker;
         public event EventHandler TabSelected;
+		private Action _onDateTimePicked;
 
         //private CreateOrder _bookingInfo;
         private StatusView _statusView;
@@ -71,18 +75,32 @@ namespace apcurium.MK.Booking.Mobile.Client
 			View.InsertSubviewBelow( _menu.View, bookView );
 
             AppButtons.FormatStandardButton((GradientButton)refreshCurrentLocationButton, "", AppStyle.ButtonColor.Blue, "");
-            AppButtons.FormatStandardButton((GradientButton)bookLaterButton, "", AppStyle.ButtonColor.DarkGray );
+			AppButtons.FormatStandardButton((GradientButton)cancelBtn, "", AppStyle.ButtonColor.Red, "Assets/cancel.png");
+
+			TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub>().Subscribe<DateTimePicked>( msg => _onDateTimePicked() );
+			_dateTimePicker = new DateTimePicker( );
+			_dateTimePicker.ShowPastDate = false;
+			_onDateTimePicked = () => _dateTimePicker.Hide();
+
+			View.AddSubview( _dateTimePicker );
+
+			AppButtons.FormatStandardButton((GradientButton)bookLaterButton, "", AppStyle.ButtonColor.DarkGray );
+
+			bookLaterButton.TouchUpInside += delegate {
+				_dateTimePicker.Show( ViewModel.Order.PickupDate );
+			};
+
 
             AppButtons.FormatStandardButton((GradientButton)dropoffButton, "", AppStyle.ButtonColor.Grey, "");
             AppButtons.FormatStandardButton((GradientButton)pickupButton, "", AppStyle.ButtonColor.Grey );
 
             AppButtons.FormatStandardButton((GradientButton)dropoffActivationButton, "", AppStyle.ButtonColor.LightBlue, "");
             AppButtons.FormatStandardButton((GradientButton)pickupActivationButton, "", AppStyle.ButtonColor.LightBlue );
-            ((GradientButton)dropoffActivationButton).SetImage( "Assets/location.png" );
-            ((GradientButton)pickupActivationButton).SetImage( "Assets/location.png" );
+            ((GradientButton)dropoffActivationButton).SetImage( "Assets/pin.png" );
+            ((GradientButton)pickupActivationButton).SetImage( "Assets/pin.png" );
 
-            ((GradientButton)dropoffActivationButton).SetSelectedImage( "Assets/locationSelected.png" );
-            ((GradientButton)pickupActivationButton).SetSelectedImage( "Assets/locationSelected.png" );
+            ((GradientButton)dropoffActivationButton).SetSelectedImage( "Assets/pin_selected.png" );
+            ((GradientButton)pickupActivationButton).SetSelectedImage( "Assets/pin_selected.png" );
 
             headerBackgroundView.Image =UIImage.FromFile("Assets/backPickupDestination.png");
 
@@ -111,6 +129,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 				{ dropoffButton, "{'TouchUpInside':{'Path':'Dropoff.PickAddress'},'TextLine1':{'Path':'Dropoff.Title', 'Mode':'TwoWay'}, 'TextLine2':{'Path':'Dropoff.Display', 'Mode':'TwoWay'}, 'IsSearching':{'Path':'Dropoff.IsExecuting', 'Mode':'TwoWay'}, 'IsPlaceholder':{'Path':'Dropoff.IsPlaceHolder', 'Mode':'TwoWay'} }"},             
 				{ mapView, "{'Pickup':{'Path':'Pickup.Model'}, 'Dropoff':{'Path':'Dropoff.Model'} , 'MapMoved':{'Path':'SelectedAddress.SearchCommand'}, 'MapCenter':{'Path':'MapCenter'} }" },
 				{ infoLabel, "{'Text':{'Path':'FareEstimate'}}" },
+				{ pickupDateLabel, "{'Text':{'Path':'PickupDateDisplay'}, 'Hidden':{'Path':'IsInTheFuture','Converter':'BoolInverter'}}" },
+				{ _dateTimePicker, "{'DateChangedCommand':{'Path':'PickupDateSelectedCommand'}, 'CloseDatePickerCommand':{'Path':'CloseDatePickerCommand'}}" },
+				{ cancelBtn, "{'Hidden':{'Path':'CanClearAddress', 'Converter':'BoolInverter'}, 'Enabled':{'Path':'CanClearAddress'}, 'TouchUpInside':{'Path':'SelectedAddress.ClearPositionCommand'}}" },
 		
             });
 
@@ -120,6 +141,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 			}
 
         }
+
+
+
+		private DateTime? PickupDate{ get;set; }
 
         public override void ViewWillAppear(bool animated)
         {
@@ -133,11 +158,9 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             base.ViewDidAppear(animated);
 
-			var btn = new UIBarButtonItem( UIImage.FromFile("Assets/settings.png"), UIBarButtonItemStyle.Bordered, delegate {
-				_menu.AnimateMenu();
-			} );
-			btn.TintColor = AppStyle.NavigationBarColor;
+			var btn = new UIBarButtonItem( new BarButtonItem( new RectangleF(0,0, 40, 33) , "Assets/settings.png", () => _menu.AnimateMenu() ) );
 			navBar.TopItem.RightBarButtonItem = btn;
+			navBar.TopItem.RightBarButtonItem.SetTitlePositionAdjustment( new UIOffset( -10,0 ), UIBarMetrics.Default );
 
             if ((AppContext.Current.LastOrder.HasValue) && (AppContext.Current.LoggedUser != null))
             {
@@ -186,6 +209,8 @@ namespace apcurium.MK.Booking.Mobile.Client
                     AppContext.Current.LastOrder = null;
 					NavigationController.NavigationBar.Hidden = true;
                     Selected();
+					ViewModel.Dropoff.ClearAddress();
+					ViewModel.Initialize();
                 };
 
                 NavigationController.PushViewController(_statusView, true);
@@ -298,7 +323,8 @@ namespace apcurium.MK.Booking.Mobile.Client
                         view.Canceled += delegate(object sender, EventArgs e)
                         {
                             this.NavigationController.PopViewControllerAnimated(true);
-                        };
+
+						};
                         
                         view.Confirmed += delegate(object sender, EventArgs e)
                         {
@@ -309,6 +335,8 @@ namespace apcurium.MK.Booking.Mobile.Client
                         {
                             BookingInfo.Note = note;
                         };
+
+
                     });
                 }
                 finally
@@ -366,8 +394,9 @@ namespace apcurium.MK.Booking.Mobile.Client
                         BookingInfo.Id = orderStatus.OrderId;
                         
                         BookingInfo.PickupDate = DateTime.Now;                       
-                        
-                        LoadStatusView(new Order { Id = bi.Id, IBSOrderId = orderStatus.IBSOrderId,  CreatedDate = DateTime.Now, DropOffAddress = bi.DropOffAddress, PickupAddress  = bi.PickupAddress , Settings = bi.Settings   }, orderStatus, false);
+
+						LoadStatusView(new Order { Id = bi.Id, IBSOrderId = orderStatus.IBSOrderId,  CreatedDate = DateTime.Now, DropOffAddress = bi.DropOffAddress, PickupAddress  = bi.PickupAddress , Settings = bi.Settings   }, orderStatus, false);
+
                     }
                     else
                     {
@@ -392,6 +421,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             });
             
         }
+	
+
+
 
         #endregion
 

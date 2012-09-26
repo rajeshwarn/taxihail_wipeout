@@ -1,6 +1,16 @@
-<div class="input-append">
-    <input class="span4" type="text" name='address' value='{{fullAddress}}'>
-    <a href='#' class="btn" data-action='open'>&gt;</a>
+<div class='control-group'>
+    <div class="input-prepend input-append">
+        <a href='#' class="btn" data-action='toggleselect' data-toggle="button">
+            <i class='icon-pin'></i>
+        </a>
+        <input class="address" type="text" name='address' value='{{fullAddress}}'>
+        {{#if options.locate }}
+            <a href='#' class="btn btn-flat" data-action='locate'><i class='icon-locate'></i></a>
+        {{/if}}
+        {{#if options.clear }}
+            <a href='#' class="btn btn-flat" data-action='clear'><i class='icon-clear'></i></a>
+        {{/if}}
+    </div>
 </div>
 <div class='address-selector-container raise100'>
 </div>

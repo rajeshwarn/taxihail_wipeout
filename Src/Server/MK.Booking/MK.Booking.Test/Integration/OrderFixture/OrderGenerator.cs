@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Infrastructure.Messaging;
 using Moq;
 using NUnit.Framework;
@@ -9,6 +8,7 @@ using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Test.Integration.OrderFixture
 {
@@ -43,16 +43,22 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
             {
                 SourceId = orderId,
                 AccountId = accountId,
-
-                PickupApartment = "3939",
-                PickupAddress = "1234 rue Saint-Hubert",
-                PickupRingCode = "3131",
-                PickupLatitude = 45.515065,
-                PickupLongitude = -73.558064,
+                PickupAddress = new Address
+                                    {
+                                        Apartment = "3939",
+                                        Street = "1234 rue Saint-Hubert",
+                                        RingCode = "3131",
+                                        Latitude = 45.515065,
+                                        Longitude = -73.558064
+                                    },
+              
                 PickupDate = pickupDate,
-                DropOffAddress = "Velvet auberge st gabriel",
-                DropOffLatitude = 45.50643,
-                DropOffLongitude = -73.554052,
+                DropOffAddress =  new Address
+                                    {
+                                       FriendlyName = "Velvet auberge st gabriel",
+                                       Latitude = 45.50643,
+                                       Longitude = -73.554052,
+                                    },
                 CreatedDate = createdDate
             });
 
@@ -62,14 +68,14 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 Assert.AreEqual(1, list.Count());
                 var dto = list.Single();
                 Assert.AreEqual(accountId, dto.AccountId);
-                Assert.AreEqual("3939", dto.PickupApartment);
-                Assert.AreEqual("1234 rue Saint-Hubert", dto.PickupAddress);
-                Assert.AreEqual("3131", dto.PickupRingCode);
-                Assert.AreEqual(45.515065, dto.PickupLatitude);
-                Assert.AreEqual(-73.558064, dto.PickupLongitude);
-                Assert.AreEqual("Velvet auberge st gabriel", dto.DropOffAddress);
-                Assert.AreEqual(45.50643, dto.DropOffLatitude);
-                Assert.AreEqual(-73.554052, dto.DropOffLongitude);
+                Assert.AreEqual("3939", dto.PickupAddress.Apartment);
+                Assert.AreEqual("1234 rue Saint-Hubert", dto.PickupAddress.Street);
+                Assert.AreEqual("3131", dto.PickupAddress.RingCode);
+                Assert.AreEqual(45.515065, dto.PickupAddress.Latitude);
+                Assert.AreEqual(-73.558064, dto.PickupAddress.Longitude);
+                Assert.AreEqual("Velvet auberge st gabriel", dto.DropOffAddress.FriendlyName);
+                Assert.AreEqual(45.50643, dto.DropOffAddress.Latitude);
+                Assert.AreEqual(-73.554052, dto.DropOffAddress.Longitude);
                 Assert.AreEqual(pickupDate.ToLongDateString(), dto.PickupDate.ToLongDateString());
             }
         }
@@ -90,16 +96,21 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                                 {
                                     SourceId = _orderId,
                                     AccountId = _accountId,
-
-                                    PickupApartment = "3939",
-                                    PickupAddress = "1234 rue Saint-Hubert",
-                                    PickupRingCode = "3131",
-                                    PickupLatitude = 45.515065,
-                                    PickupLongitude = -73.558064,
+                                    PickupAddress = new Address
+                                    {
+                                        Apartment = "3939",
+                                        Street = "1234 rue Saint-Hubert",
+                                        RingCode = "3131",
+                                        Latitude = 45.515065,
+                                        Longitude = -73.558064
+                                    },
                                     PickupDate = pickupDate,
-                                    DropOffAddress = "Velvet auberge st gabriel",
-                                    DropOffLatitude = 45.50643,
-                                    DropOffLongitude = -73.554052,
+                                    DropOffAddress = new Address
+                                    {
+                                        Street = "Velvet auberge st gabriel",
+                                        Latitude = 45.50643,
+                                        Longitude = -73.554052,
+                                    },
                                     CreatedDate = DateTime.Now,                                    
                                 });
 

@@ -15,35 +15,35 @@ namespace apcurium.MK.Booking.ReadModel.Query
             _contextFactory = contextFactory;
         }
 
-        public IList<Address> GetAll()
+        public IList<AddressDetails> GetAll()
         {
             using (var context = _contextFactory.Invoke())
             {
-                return context.Query<Address>().ToList();
+                return context.Query<AddressDetails>().ToList();
             }
         }
 
-        public Address FindById(Guid id)
+        public AddressDetails FindById(Guid id)
         {
             using (var context = _contextFactory.Invoke())
             {
-                return context.Query<Address>().SingleOrDefault(c => c.Id == id);
+                return context.Query<AddressDetails>().SingleOrDefault(c => c.Id == id);
             }
         }
 
-        public IList<Address> FindFavoritesByAccountId(Guid addressId)
+        public IList<AddressDetails> FindFavoritesByAccountId(Guid addressId)
         {
             using (var context = _contextFactory.Invoke())
             {
-                return context.Query<Address>().Where(c => c.AccountId.Equals(addressId) && c.IsHistoric.Equals(false)).ToList();
+                return context.Query<AddressDetails>().Where(c => c.AccountId.Equals(addressId) && c.IsHistoric.Equals(false)).ToList();
             }
         }
 
-        public IList<Address> FindHistoricByAccountId(Guid addressId)
+        public IList<AddressDetails> FindHistoricByAccountId(Guid addressId)
         {
             using (var context = _contextFactory.Invoke())
             {
-                return context.Query<Address>().Where(c => c.AccountId.Equals(addressId) && c.IsHistoric.Equals(true)).ToList();
+                return context.Query<AddressDetails>().Where(c => c.AccountId.Equals(addressId) && c.IsHistoric.Equals(true)).ToList();
             }
         }
     }

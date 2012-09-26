@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Infrastructure.Messaging;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 
 using AutoMapper;
@@ -21,31 +20,24 @@ namespace apcurium.MK.Booking.Api.Services
         private ICommandBus _commandBus;        
         private IBookingWebServiceClient _bookingWebServiceClient;
         private IStaticDataWebServiceClient _staticDataWebServiceClient;
-        private GeocodingService _geocodingService;
+
         private IAccountDao _accountDao;
-        private OrderStatusService _statusService;
+
         public CreateOrderService(ICommandBus commandBus, 
                                     IBookingWebServiceClient bookingWebServiceClient,
                                     IStaticDataWebServiceClient staticDataWebServiceClient, 
-                                    IAccountDao accountDao, 
-                                    GeocodingService geocodingService, 
-                                    OrderStatusService statusService )
+                                    IAccountDao accountDao )
         {
-            _statusService = statusService;
             _commandBus = commandBus;
             _bookingWebServiceClient = bookingWebServiceClient;
             _staticDataWebServiceClient = staticDataWebServiceClient;
             _accountDao = accountDao;
-            _geocodingService = geocodingService;
-
         }
 
         public override object OnPost(CreateOrder request)
         {
             
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
-            
-
 
             //TODO : need to check ibs setup for shortesst time.
             request.PickupDate = request.PickupDate.HasValue ? request.PickupDate.Value : DateTime.Now.AddMinutes(2);            

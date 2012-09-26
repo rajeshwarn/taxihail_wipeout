@@ -18,7 +18,9 @@
 		      required: true
 		    },
 		    phone: {
-		      required: true
+		        required: true,
+		        pattern: /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/,
+		        msg: 'phone number is not valid'
 		    },
 		    email: {
 		      pattern: 'email'

@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Diagnostic\ILogger.cs" />
+    <Compile Include="Entity\Address.cs" />
     <Compile Include="Entity\ListItem.cs" />
     <Compile Include="Extensions\AssemblyExtensions.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />

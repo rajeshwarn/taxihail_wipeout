@@ -20,7 +20,7 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                context.Save(new Address
+                context.Save(new AddressDetails
                 {
                     Id = @event.AddressId,
                     AccountId = @event.SourceId,
@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
                     IsHistoric = false
                 });
 
-                var identicalHistoricAddress = (from a in context.Query<Address>().Where(x=>x.IsHistoric)
+                var identicalHistoricAddress = (from a in context.Query<AddressDetails>().Where(x=>x.IsHistoric)
                                     where a.AccountId == @event.SourceId
                                     where (a.Apartment ?? string.Empty) == (@event.Apartment ?? string.Empty)
                                     where a.FullAddress == @event.FullAddress
@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
 
                 if (identicalHistoricAddress != null)
                 {
-                    context.Set<Address>().Remove(identicalHistoricAddress);
+                    context.Set<AddressDetails>().Remove(identicalHistoricAddress);
                     context.SaveChanges();
                 }
                
@@ -53,10 +53,10 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                var address = context.Find<Address>(@event.AddressId);
+                var address = context.Find<AddressDetails>(@event.AddressId);
                 if (!address.IsHistoric)
                 {
-                    context.Set<Address>().Remove(address);
+                    context.Set<AddressDetails>().Remove(address);
                     context.SaveChanges();
                 }
             }
@@ -66,7 +66,7 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                var address = context.Find<Address>(@event.AddressId);
+                var address = context.Find<AddressDetails>(@event.AddressId);
                 address.IsHistoric = false;
                 AutoMapper.Mapper.Map(@event, address);
                 context.SaveChanges();
@@ -77,18 +77,18 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                var identicalAddresses = from a in context.Query<Address>()
+                var identicalAddresses = from a in context.Query<AddressDetails>()
                                          where a.AccountId == @event.AccountId
-                                         where (a.Apartment ?? string.Empty) == (@event.PickupApartment ?? string.Empty)
-                                         where a.FullAddress == @event.PickupAddress
-                                         where (a.RingCode ?? string.Empty) == (@event.PickupRingCode ?? string.Empty)
-                                         where a.Latitude == @event.PickupLatitude
-                                         where a.Longitude == @event.PickupLongitude
+                                         where (a.Apartment ?? string.Empty) == (@event.PickupAddress.Apartment ?? string.Empty)
+                                         where a.FullAddress == @event.PickupAddress.FullAddress
+                                         where (a.RingCode ?? string.Empty) == (@event.PickupAddress.RingCode ?? string.Empty)
+                                         where a.Latitude == @event.PickupAddress.Latitude
+                                         where a.Longitude == @event.PickupAddress.Longitude
                                          select a;
 
                 if (!identicalAddresses.Any())
                 {
-                    var address = new Address();
+                    var address = new AddressDetails();
                     AutoMapper.Mapper.Map(@event, address);
                     address.Id = Guid.NewGuid();
                     address.IsHistoric = true;
@@ -101,8 +101,8 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                var address = context.Find<Address>(@event.AddressId);
-                context.Set<Address>().Remove(address);
+                var address = context.Find<AddressDetails>(@event.AddressId);
+                context.Set<AddressDetails>().Remove(address);
                 context.SaveChanges();
             }
         }

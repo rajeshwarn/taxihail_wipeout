@@ -1,7 +1,6 @@
 ﻿using System.Net;
 using System.Net.Mail;
 using Infrastructure.Messaging.Handling;
-using Infrastructure.Messaging.InMemory;
 using Microsoft.Practices.Unity;
 using apcurium.MK.Booking.BackOffice.CommandHandlers;
 using apcurium.MK.Booking.BackOffice.EventHandlers;
@@ -47,17 +46,17 @@ namespace apcurium.MK.Booking
             AutoMapper.Mapper.CreateMap<EmailSender.SmtpConfiguration, SmtpClient>()
                 .ForMember(x => x.Credentials, opt => opt.MapFrom(x => new NetworkCredential(x.Username, x.Password)));
 
-            AutoMapper.Mapper.CreateMap<OrderCreated, Address>()
-                .ForMember(p => p.Apartment, opt => opt.MapFrom(m => m.PickupApartment))
-                .ForMember(p => p.FullAddress, opt => opt.MapFrom(m => m.PickupAddress))
-                .ForMember(p => p.RingCode, opt => opt.MapFrom(m => m.PickupRingCode))
-                .ForMember(p => p.Latitude, opt => opt.MapFrom(m => m.PickupLatitude))
-                .ForMember(p => p.Longitude, opt => opt.MapFrom(m => m.PickupLongitude));
+            AutoMapper.Mapper.CreateMap<OrderCreated, AddressDetails>()
+                .ForMember(p => p.Apartment, opt => opt.MapFrom(m => m.PickupAddress.Apartment))
+                .ForMember(p => p.FullAddress, opt => opt.MapFrom(m => m.PickupAddress.FullAddress))
+                .ForMember(p => p.RingCode, opt => opt.MapFrom(m => m.PickupAddress.RingCode))
+                .ForMember(p => p.Latitude, opt => opt.MapFrom(m => m.PickupAddress.Latitude))
+                .ForMember(p => p.Longitude, opt => opt.MapFrom(m => m.PickupAddress.Longitude));
 
-            AutoMapper.Mapper.CreateMap<FavoriteAddressAdded, Address>()
+            AutoMapper.Mapper.CreateMap<FavoriteAddressAdded, AddressDetails>()
                 .ForMember(p => p.AccountId, opt => opt.MapFrom(m => m.SourceId));
 
-            AutoMapper.Mapper.CreateMap<FavoriteAddressUpdated, ReadModel.Address>()
+            AutoMapper.Mapper.CreateMap<FavoriteAddressUpdated, ReadModel.AddressDetails>()
                 .ForMember(p => p.Id, options => options.MapFrom(m => m.AddressId));
         }
 

@@ -12,6 +12,15 @@ namespace apcurium.MK.Booking.Mobile.Client
 	partial class BookView
 	{
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.GradientButton cancelBtn { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UILabel pickupDtaeLabel { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UILabel pickupDateLabel { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UINavigationBar navBar { get; set; }
 
 		[Outlet]
@@ -52,6 +61,21 @@ namespace apcurium.MK.Booking.Mobile.Client
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (cancelBtn != null) {
+				cancelBtn.Dispose ();
+				cancelBtn = null;
+			}
+
+			if (pickupDtaeLabel != null) {
+				pickupDtaeLabel.Dispose ();
+				pickupDtaeLabel = null;
+			}
+
+			if (pickupDateLabel != null) {
+				pickupDateLabel.Dispose ();
+				pickupDateLabel = null;
+			}
+
 			if (navBar != null) {
 				navBar.Dispose ();
 				navBar = null;

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
 using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
@@ -28,17 +24,11 @@ namespace apcurium.MK.Booking.EventHandlers
                 {
                     IBSOrderId = @event.IBSOrderId,
                     AccountId = @event.AccountId,
-                    PickupApartment = @event.PickupApartment,
                     PickupAddress = @event.PickupAddress,
-                    PickupLatitude = @event.PickupLatitude,
                     Id = @event.SourceId,
-                    PickupLongitude = @event.PickupLongitude,
                     PickupDate = @event.PickupDate,
-                    PickupRingCode = @event.PickupRingCode,
                     CreatedDate = @event.CreatedDate,
                     DropOffAddress = @event.DropOffAddress,
-                    DropOffLatitude = @event.DropOffLatitude,
-                    DropOffLongitude = @event.DropOffLongitude,
                     Status = (int)OrderStatus.Created,
                 });
             }

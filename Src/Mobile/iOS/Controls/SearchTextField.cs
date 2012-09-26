@@ -10,31 +10,84 @@ using Cirrious.MvvmCross.Interfaces.Commands;
 namespace apcurium.MK.Booking.Mobile.Client
 {
     [Register("SearchTextField")]
-	public class SearchTextField : TextField
+    public class SearchTextField : TextField
     {
 
-		public SearchTextField(IntPtr handle) : base(handle)
+        private string _eventRaiseForText;
+        private bool _hasDelayedChangeEvent = false;
+
+        public SearchTextField(IntPtr handle) : base(handle)
         {
             Initialize();
         }
 
-		public SearchTextField(RectangleF rect) : base( rect )
+        public SearchTextField(RectangleF rect) : base( rect )
         {
             Initialize();
         }
 
         private void Initialize()
         {
-			this.EditingChanged += delegate {
-				if ( TextChangedCommand != null && TextChangedCommand.CanExecute() )
-				{
-					TextChangedCommand.Execute( this.Text );
-				}			
-			};
+            this.EditingChanged += delegate
+            {
+                OnTextChanged();            
+            };
+
         }
 
-		public IMvxCommand TextChangedCommand { get; set; }
+        void OnTextChanged()
+        {
+            if (_eventRaiseForText != this.Text)
+            {
+                if (TextChangedCommand != null && TextChangedCommand.CanExecute())
+                {
+                    _eventRaiseForText = Text;
+                    TextChangedCommand.Execute(this.Text);
+                }
+                else
+                {
+                    _hasDelayedChangeEvent = true;
+                }
+            }
+        }
 
+        private IMvxCommand _textChangedCommand;
 
+        public IMvxCommand TextChangedCommand
+        { 
+            get{ return _textChangedCommand;}
+            set
+            {
+                _textChangedCommand = value;
+                if ( ( _textChangedCommand != null ) && _hasDelayedChangeEvent ) 
+                {
+                    _hasDelayedChangeEvent = false;
+                    OnTextChanged();
+                }
+            }
+        }
+
+        public override string Text
+        {
+            get
+            {
+                return base.Text;
+            }
+            set
+            {
+                bool hasChanged = false;
+                if (base.Text != value)
+                {
+                    hasChanged = true;
+                }
+
+                base.Text = value;
+
+                if (hasChanged)
+                {
+                    OnTextChanged();
+                }
+            }
+        }
     }
 }

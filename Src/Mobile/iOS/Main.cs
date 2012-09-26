@@ -43,6 +43,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
+            
+            UIApplication.CheckForIllegalCrossThreadCalls = false;
+
             Background.Load(window, "Assets/background_full_nologo.png", false, 0, 0);          
 
 			AppContext.Initialize(window);
@@ -50,7 +53,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			var setup = new Setup(this, new PhonePresenter( this, window ) );
             setup.Initialize();
 
-            new Bootstrapper(new IModule[] { new AppModule() }).Run();
 
             window.MakeKeyAndVisible();
 
@@ -78,7 +80,11 @@ namespace apcurium.MK.Booking.Mobile.Client
          
             if (!_callbackFromFB)
             {    
-
+				if( AppContext.Current.Controller != null && AppContext.Current.Controller.TopViewController is BookView )
+				{
+					var model = ((BookView)AppContext.Current.Controller.TopViewController).ViewModel;
+					model.Maybe( () => model.Initialize() );
+				}
             }
             else
             {
