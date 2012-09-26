@@ -174,6 +174,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public void SetAddress(Address address, bool userInitiated)
         {
+			if( IsExecuting )
+			{
+				CancelCurrentLocationCommand.Execute();
+			}
             Model.FullAddress = address.FullAddress;
             Model.Longitude = address.Longitude;
             Model.Latitude = address.Latitude;

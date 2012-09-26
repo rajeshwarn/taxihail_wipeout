@@ -241,3 +241,4 @@
 "PickupWasActivatedToastMessage"="Pickup selection is active.";
 "InvalidLocalContactTitle"="Invalid contact";
 "InvalidLocalContactMessage"="The address associated to this contact cannot be validated.";
+"EstimatedFareNotAvailable"="Estimated fare not available";

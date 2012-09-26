@@ -13,13 +13,14 @@ namespace apcurium.MK.Booking.Mobile
     {
         public void Start()
         {
+
             if (TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount == null)
             {
                 RequestNavigate<LoginViewModel>();                
             }
             else
             {
-                RequestNavigate<BookViewModel>();                
+				RequestNavigate<BookViewModel>();           
             }
         }
                 
