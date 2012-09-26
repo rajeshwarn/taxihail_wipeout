@@ -83,12 +83,5 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             toast.Show();
         }
 
-
-
-
-        public void ShowProgress(bool show)
-        {
-          
-        }
     }
 }
