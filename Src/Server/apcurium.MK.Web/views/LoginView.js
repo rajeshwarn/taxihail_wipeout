@@ -40,6 +40,7 @@
             }
 
             if (isValid) {
+                this.$(':submit').button('loading');
                 TaxiHail.auth.login(this.$('[name=email]').val(), this.$('[name=password]').val())
                     .fail(_.bind(function(response) {
                         this.showErrors(this.model, response);
@@ -49,6 +50,7 @@
         },
 
         showErrors: function (model, result) {
+            this.$(':submit').button('reset');
             if (result.responseText) {
                 result = JSON.parse(result.responseText).responseStatus;
             }
