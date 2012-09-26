@@ -58,12 +58,14 @@
         },
         
         onsubmit: function (e) {
+            this.$(':submit').button('loading');
             e.preventDefault();
             this.$('.errors').empty();
-            this.model.save({}, { error: this.onerror });           
+            this.model.save({}, { error: this.onerror });
         },
         
-        onerror: function (model, result) {           
+        onerror: function (model, result) {
+            this.$(':submit').button('reset');
             //server validation error
             if (result.statusText) {
                var $alert = $('<div class="alert alert-error" />');
