@@ -143,7 +143,6 @@
     <Compile Include="Models\NavigationStrings.cs" />
     <Compile Include="Models\OrderItemListModel.cs" />
     <Compile Include="Models\ParentScreens.cs" />
-    <Compile Include="PlatformIntegration\AndroidOverlayService.cs" />
     <Compile Include="PlatformIntegration\MessageService.cs" />
     <Compile Include="PlatformIntegration\PackageInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
