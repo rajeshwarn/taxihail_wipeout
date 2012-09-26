@@ -25,7 +25,7 @@
             "login": "login", // #login
             "signup": "signup", // #signup
             "signupconfirmation": "signupconfirmation", // redirect to home after signup success
-            "bookconfirmed/:id" : "bookconfirmed"
+            "status/:id" : "status"
         },
 
         initialize: function () {
@@ -89,13 +89,13 @@
                    
         },
         
-        bookconfirmed: function (id) {
+        status: function (id) {
             
-                renderView(TaxiHail.BookingConfirmedView, new Backbone.Model({
-                    id:id
-                }));
-           
-            },
+            renderView(TaxiHail.BookingStatusView, new Backbone.Model({
+                id:id
+            }));
+       
+        },
 
         
         login: function () {

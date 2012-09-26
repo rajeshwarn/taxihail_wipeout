@@ -40,7 +40,7 @@
             e.preventDefault();
             this.model.set('settings', settings);
             this.model.save({},{success : function (value) {
-                TaxiHail.app.navigate('bookconfirmed/' + value.get('iBSOrderId'), { trigger: true });
+                TaxiHail.app.navigate('status/' + value.get('iBSOrderId'), { trigger: true });
             }});
             
         },

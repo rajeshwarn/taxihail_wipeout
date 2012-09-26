@@ -1,6 +1,6 @@
 ﻿(function () {
 
-    TaxiHail.BookingConfirmedView = TaxiHail.TemplatedView.extend({
+    TaxiHail.BookingStatusView = TaxiHail.TemplatedView.extend({
         events: {
             
         },
