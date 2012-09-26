@@ -73,9 +73,10 @@
     <CodesignProvision>30AE26CF-D638-4747-9ED6-1CEEF52171D7</CodesignProvision>
     <CrashReportingApiKey />
     <AssemblyName>TaxiMobileApp</AssemblyName>
-    <MtouchSdkVersion>5.1</MtouchSdkVersion>
+    <MtouchSdkVersion>6.0</MtouchSdkVersion>
     <MtouchExtraArgs>-v -v -v -v  -aot "nrgctx-trampolines=2500" -aot "nimt-trampolines=2500" -aot "ntrampolines=2500"</MtouchExtraArgs>
     <DefineConstants>MONOTOUCH;NET35;SILVERLIGHT</DefineConstants>
+    <MtouchArch>ARMv7</MtouchArch>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Distribution|iPhone' ">
     <DebugType>none</DebugType>
@@ -128,7 +129,7 @@
     <None Include="Assets\About_en.html" />
     <None Include="Assets\About_fr.html" />
     <None Include="Assets\Info.plist" />
-    <None Include="assets\VerticalButtonBar\.DS_Store" />
+    <None Include="Assets\VerticalButtonBar\.DS_Store" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
