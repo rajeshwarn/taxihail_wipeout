@@ -1,6 +1,6 @@
 using apcurium.MK.Common.Entity;
 
-namespace apcurium.MK.Booking.Mobile
+namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class AddressViewModel
 	{

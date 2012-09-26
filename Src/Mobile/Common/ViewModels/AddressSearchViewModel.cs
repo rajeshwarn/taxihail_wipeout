@@ -11,6 +11,7 @@ using System.Threading;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Messages;
 using TinyMessenger;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -19,13 +20,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     {
         private readonly string _ownerId;
         private readonly IGoogleService _googleService;
-        private CancellationTokenSource _searchCancellationToken = new CancellationTokenSource();
+		private readonly IAppResource _appResource;
+		private CancellationTokenSource _searchCancellationToken = new CancellationTokenSource();
         private bool _isSearching;
 
-        public AddressSearchViewModel(string ownerId, string search, IGoogleService googleService)
+		public AddressSearchViewModel(string ownerId, string search, IGoogleService googleService, IAppResource appResource)
         {
             _ownerId = ownerId;
             _googleService = googleService;
+			_appResource = appResource;
 			TinyIoCContainer.Current.Resolve<IUserPositionService>().Refresh();
             SearchViewModelSelected = TinyIoCContainer.Current.Resolve<AddressSearchByGeoCodingViewModel>();
             Criteria = search;
@@ -38,6 +41,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public IEnumerable<AddressViewModel> AddressViewModels { get; set; }
 
 		public IEnumerable<AddressViewModel> HistoricAddressViewModels { get; set; }
+
+		public IEnumerable<SectionAddressViewModel> Addresses {
+			get {
+				return  new[] { new SectionAddressViewModel(){SectionTitle = _appResource.GetString("FavoriteLocationsTitle"), Addresses = AddressViewModels}, new SectionAddressViewModel(){SectionTitle = _appResource.GetString("HistoryViewTitle"), Addresses = HistoricAddressViewModels } };
+			}
+		}
 
         public string Criteria
         {
@@ -111,10 +120,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     AddressViewModels = task.Result.Where(x => !x.Address.IsHistoric).ToList();
                     HistoricAddressViewModels = task.Result.Where(x => x.Address.IsHistoric).ToList();
                     HistoricIsHidden = !HistoricAddressViewModels.Any();
+					FirePropertyChanged(() => Addresses);
+					FirePropertyChanged(() => AddressViewModels);
 
-                    FirePropertyChanged(() => AddressViewModels);
-                    FirePropertyChanged(() => HistoricAddressViewModels);
-                    FirePropertyChanged(() => HistoricIsHidden);
+					FirePropertyChanged(() => HistoricAddressViewModels);
+					FirePropertyChanged(() => HistoricIsHidden);
                 });
             }
         }

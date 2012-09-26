@@ -43,5 +43,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
 		public void ShowToast(string message, ToastDuration duration)
 		{}
+		public void ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction)
+		{}
 	}
 }

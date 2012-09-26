@@ -19,6 +19,7 @@ using Cirrious.MvvmCross.Touch.Platform;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using Cirrious.MvvmCross.Touch.Interfaces;
+using apcurium.MK.Booking.Mobile.Data;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -61,6 +62,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             
             ThreadHelper.ExecuteInThread(() => TinyIoCContainer.Current.Resolve<IAccountService>().EnsureListLoaded());
 
+			window.RootViewController = AppContext.Current.Controller;
             return true;
         }
 
@@ -77,7 +79,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             JsConfig.RegisterTypeForAot<OrderStatus>();
             JsConfig.RegisterTypeForAot<OrderStatusDetail>();
-         
+			JsConfig.RegisterTypeForAot<Coordinate>();
+			JsConfig.RegisterTypeForAot<CoordinatePrecision>();
+			JsConfig.RegisterTypeForAot<CoordinateRefreshTime>();
+
             if (!_callbackFromFB)
             {    
 				if( AppContext.Current.Controller != null && AppContext.Current.Controller.TopViewController is BookView )
