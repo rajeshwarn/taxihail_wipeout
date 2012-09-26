@@ -233,3 +233,4 @@
 "AptNumber"="Apt. No.";
 "RingCode"="Code pour sonner";
 "BuildingName"="Nom du batiment";
+"EstimatedFareNotAvailable"="Coût estimé non disponible";
