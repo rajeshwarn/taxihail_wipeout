@@ -35,12 +35,12 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
 
 		private UIViewController _owner;
-		public void ShowProgress( bool show )
+		public void ShowProgress( bool show, Action cancel )
 		{
 			if( show )
 			{
 				_owner = AppContext.Current.Controller.TopViewController;
-				LoadingOverlay.StartAnimatingLoading(  _owner.View, LoadingOverlayPosition.Center, null, 130, 30);
+				LoadingOverlay.StartAnimatingLoading(  _owner.View, LoadingOverlayPosition.Center, null, 130, 30, cancel );
 			}
 			else
 			{
@@ -48,9 +48,13 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			}
 		}
 
+		public void ShowProgress( bool show )
+		{
+			ShowProgress( show, null );
+		}
+
 		public void ShowToast(string message, ToastDuration duration)
 		{}
-		public void ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction)
-		{}
+
 	}
 }

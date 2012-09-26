@@ -34,6 +34,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Criteria = search;
             SearchSelected = true;
             HistoricIsHidden = true;
+			AllAddresses = new SectionAddressViewModel[0];
         }
 
         public AddressSearchBaseViewModel SearchViewModelSelected { get; set; }
@@ -42,11 +43,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public IEnumerable<AddressViewModel> HistoricAddressViewModels { get; set; }
 
-		public IEnumerable<SectionAddressViewModel> Addresses {
-			get {
-				return  new[] { new SectionAddressViewModel(){SectionTitle = _appResource.GetString("FavoriteLocationsTitle"), Addresses = AddressViewModels}, new SectionAddressViewModel(){SectionTitle = _appResource.GetString("HistoryViewTitle"), Addresses = HistoricAddressViewModels } };
-			}
-		}
+		public IEnumerable<SectionAddressViewModel> AllAddresses {get; set;	}
 
         public string Criteria
         {
@@ -91,6 +88,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     task.ContinueWith(RefreshResults);
                     if(!(SearchViewModelSelected is AddressSearchByContactViewModel))
                     {
+						Console.WriteLine( "Show Progress" );
+						TinyIoCContainer.Current.Resolve<IMessageService>().ShowProgress(true, () => CancelCurrentSearch() );
                         task.Start();
                     }
                     IsSearching = true;
@@ -120,24 +119,41 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     AddressViewModels = task.Result.Where(x => !x.Address.IsHistoric).ToList();
                     HistoricAddressViewModels = task.Result.Where(x => x.Address.IsHistoric).ToList();
                     HistoricIsHidden = !HistoricAddressViewModels.Any();
-					FirePropertyChanged(() => Addresses);
+					var allAddresses = new List<SectionAddressViewModel>();
+					if( SearchViewModelSelected is AddressSearchByFavoritesViewModel )
+					{
+						allAddresses.Add( new SectionAddressViewModel(){SectionTitle =  _appResource.GetString("FavoriteLocationsTitle"), Addresses = AddressViewModels} );
+						allAddresses.Add( new SectionAddressViewModel(){SectionTitle = _appResource.GetString("HistoryViewTitle"), Addresses = HistoricAddressViewModels} );
+					}
+					else
+					{
+						allAddresses.Add( new SectionAddressViewModel(){SectionTitle =  "", Addresses = AddressViewModels} );
+					}
+
+					AllAddresses = allAddresses;
+
 					FirePropertyChanged(() => AddressViewModels);
 
 					FirePropertyChanged(() => HistoricAddressViewModels);
+					FirePropertyChanged(() => AllAddresses);
 					FirePropertyChanged(() => HistoricIsHidden);
                 });
             }
+			Console.WriteLine( "Hide Progress" );
+			TinyIoCContainer.Current.Resolve<IMessageService>().ShowProgress(false);
         }
 
         private void ClearResults()
         {
             AddressViewModels = new AddressViewModel[0];
             HistoricAddressViewModels = new AddressViewModel[0];
+			AllAddresses = new SectionAddressViewModel[0];
             HistoricIsHidden = true;
 
             FirePropertyChanged(() => AddressViewModels);
             FirePropertyChanged(() => HistoricAddressViewModels);
-            FirePropertyChanged(() => HistoricIsHidden);
+			FirePropertyChanged(() => AllAddresses);
+			FirePropertyChanged(() => HistoricIsHidden);
         }
 
         public IMvxCommand RowSelectedCommand
