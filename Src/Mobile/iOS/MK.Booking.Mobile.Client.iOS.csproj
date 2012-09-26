@@ -133,7 +133,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
-    <Compile Include="RootTabController.cs" />
     <Compile Include="AppStyle.cs" />
     <Compile Include="MainWindow.xib.designer.cs">
       <DependentUpon>MainWindow.xib</DependentUpon>
@@ -148,19 +147,12 @@
     <Compile Include="Helper\WebRequestHelper.cs" />
     <Compile Include="Helper\XMLLinqHelper.cs" />
     <Compile Include="Localization\Resources.cs" />
-    <Compile Include="AppSettings.cs" />
     <Compile Include="Localization\StandardMessages.cs" />
     <Compile Include="History\HistoryTabView.xib.cs">
       <DependentUpon>HistoryTabView.xib</DependentUpon>
     </Compile>
     <Compile Include="History\HistoryTabView.xib.designer.cs">
       <DependentUpon>HistoryTabView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Settings\SettingsTabView.xib.cs">
-      <DependentUpon>SettingsTabView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Settings\SettingsTabView.xib.designer.cs">
-      <DependentUpon>SettingsTabView.xib</DependentUpon>
     </Compile>
     <Compile Include="Settings\LoginView.xib.cs">
       <DependentUpon>LoginView.xib</DependentUpon>
@@ -211,7 +203,6 @@
     <Compile Include="Controls\GraphicsUtil.cs" />
     <Compile Include="Controls\GlassButton.cs" />
     <Compile Include="Diagnostics\Logger.cs" />
-    <Compile Include="AppModule.cs" />
     <Compile Include="Controls\VerticalButtonBar.cs" />
     <Compile Include="Controls\Background.cs" />
     <Compile Include="Controls\VerticalButton.cs" />
@@ -335,7 +326,6 @@
   <ItemGroup>
     <InterfaceDefinition Include="MainWindow.xib" xmlns="" />
     <InterfaceDefinition Include="History\HistoryTabView.xib" xmlns="" />
-    <InterfaceDefinition Include="Settings\SettingsTabView.xib" xmlns="" />
     <InterfaceDefinition Include="Settings\LoginView.xib" xmlns="" />
     <InterfaceDefinition Include="Locations\LocationsTabView.xib" xmlns="" />
     <InterfaceDefinition Include="Locations\LocationDetailView.xib" xmlns="" />
@@ -468,6 +458,7 @@
     <Content Include="Assets\pin_red.png" />
     <Content Include="Assets\cancel.png" />
     <Content Include="Assets\cancel%402x.png" />
+    <Content Include="Default-568h%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.iOS.csproj">

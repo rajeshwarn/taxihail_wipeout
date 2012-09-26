@@ -36,7 +36,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             dvc.View.BackgroundColor = UIColor.Clear; // UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
 
-            //((UITableViewController)dvc).TableView.BackgroundColor = UIColor.Clear;
+
+            ((UITableViewController)dvc).TableView.BackgroundColor = UIColor.Clear;
+            ((UITableViewController)dvc).TableView.BackgroundView = new UIView{ BackgroundColor = UIColor.Clear};
+
             base.PrepareDialogViewController (dvc);
 
            
