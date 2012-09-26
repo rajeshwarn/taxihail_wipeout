@@ -1,11 +1,12 @@
 ﻿(function () {
     var referenceData,
-    currentView,
+        currentView,
         renderView = function(ctor, model) {
-
-            // Call remove on current view 
+            // Call remove on current view
             // in case it was overriden with custom logic
-            if(currentView && _.isFunction(currentView.remove)) currentView.remove();
+            if(currentView && _.isFunction(currentView.remove)) {
+                currentView.remove();
+            }
             
             currentView = new ctor({
                 model: model
@@ -15,7 +16,7 @@
 
             return currentView;
 
-        }, 
+        },
         mapView;
 
     TaxiHail.App = Backbone.Router.extend({
@@ -42,7 +43,7 @@
 
             mapView = new TaxiHail.MapView({
                 el: $('.map-zone')[0],
-                model: new TaxiHail.Order
+                model: new TaxiHail.Order()
             }).render();
             
             $('.login-status-zone').html(new TaxiHail.LoginStatusView({
@@ -91,9 +92,16 @@
         
         status: function (id) {
             
-            renderView(TaxiHail.BookingStatusView, new Backbone.Model({
+            var status = new TaxiHail.OrderStatus({
                 id:id
-            }));
+            });
+            status.fetch();
+
+            status.on('change:vehicleLatitude, change:vehicleLongitude', function(model){
+                mapView.updateVehiclePosition(model);
+            }, this);
+
+            renderView(TaxiHail.BookingStatusView, status);
        
         },
 
@@ -102,7 +110,7 @@
             renderView(TaxiHail.LoginView);
         },
         signup: function () {
-            var model = new TaxiHail.NewAccount(); 
+            var model = new TaxiHail.NewAccount();
             model.on('sync', function(){
                 this.navigate('signupconfirmation', { trigger: true });
 

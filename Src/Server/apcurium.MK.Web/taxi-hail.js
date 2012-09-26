@@ -1,4 +1,4 @@
-﻿var TaxiHail = {
+var TaxiHail = {
     resources: {}
 };
 
