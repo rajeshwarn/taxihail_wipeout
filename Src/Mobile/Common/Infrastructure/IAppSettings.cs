@@ -4,6 +4,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 {
 	public interface IAppSettings
 	{
+        string ApplicationName {get;}
 
         int[] InvalidProviderIds { get; }
         string ServiceUrl { get; set; }

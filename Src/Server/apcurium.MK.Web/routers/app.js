@@ -1,5 +1,4 @@
 ﻿(function () {
-
     var currentView,
         renderView = function(ctor, model) {
 
@@ -46,8 +45,6 @@
                 model: TaxiHail.auth.account
             }).render().el);
 
-
-
         },
 
         signupconfirmation: function () {
@@ -70,7 +67,7 @@
             if (orderToBook) {
                 TaxiHail.auth.account.fetch({
                     success: function(model) {
-                        orderToBook.settings=model.get('settings');
+                        orderToBook.settings = model.get('settings');
                         renderView(TaxiHail.BookingConfirmationView, new TaxiHail.Order(orderToBook));
                     },
                     error: _.bind(function(model) {

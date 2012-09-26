@@ -43,7 +43,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			lblNoHistory.Hidden = true;
 			tableHistory.Hidden = true;
 			tableHistory.RowHeight = 35;
-
+            tableHistory.BackgroundView = new UIView { BackgroundColor = UIColor.Clear };
+            tableHistory.BackgroundColor = UIColor.Clear; // UIColor.Red ;
 		}
 
 

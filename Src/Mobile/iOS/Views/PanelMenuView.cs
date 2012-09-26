@@ -139,7 +139,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 				})				
 			});
-			
+
+            menuListView.BackgroundView = new UIView { BackgroundColor = UIColor.Clear };
+            menuListView.BackgroundColor = UIColor.Clear; // UIColor.Red ;
+            menuListView.ScrollEnabled = false;
 			menuListView.DataSource = new TableViewDataSource( structure );
 			menuListView.Delegate = new TableViewDelegate( structure );
 			menuListView.ReloadData();

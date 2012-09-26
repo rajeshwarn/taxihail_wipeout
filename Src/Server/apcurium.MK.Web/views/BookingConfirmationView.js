@@ -1,6 +1,7 @@
 ﻿(function () {
     var settings;
     var settingschanged = false;
+    
     TaxiHail.BookingConfirmationView = TaxiHail.TemplatedView.extend({
         
         events: {
@@ -9,18 +10,16 @@
             'change :text': 'onPropertyChanged',
             
         },
-        initialize: function () {
+        initialize: function () {   
+
             _.bindAll(this, "renderResults");
-            this.model.on('change', this.render, this);
             
             var pickup = this.model.get('pickupAddress');
             var dest = this.model.get('dropOffAddress');
             if (pickup && dest) {
                 TaxiHail.directionInfo.getInfo(pickup['latitude'], pickup['longitude'], dest['latitude'], dest['longitude']).done(this.renderResults);
             }
-            
-            
-    },
+        },
 
         render: function (param) {
 
@@ -39,23 +38,28 @@
         },
         
         book: function (e) {
-        e.preventDefault();
+            this.$('#bookBt').button('loading');
+            e.preventDefault();
             this.model.set('settings', settings);
-            this.model.save({},{success : function (value) {
-                TaxiHail.app.navigate('bookconfirmed/' + value.get('iBSOrderId'), { trigger: true });
-            }});
+            this.model.save({}, {
+                success: function (value) {
+                    TaxiHail.app.navigate('bookconfirmed/' + value.get('iBSOrderId'), { trigger: true });
+                },
+                error: this.showErrors
+            });
             
         },
         
         edit:function (e) {
             e.preventDefault();
-            //$("input").attr("disabled", !$("input").attr("disabled"));
+            
             if (!$("input").attr("disabled")) {
                 
                 this.$('.errors').empty();
                 if (settings.isValid() ) {
                     
                     if (settingschanged) {
+                        
                         jQuery.ajax({
                                 type: 'PUT',
                                 url: 'api/account/bookingsettings',
@@ -65,8 +69,9 @@
                                     $("input").attr("disabled", true);
                                     settingschanged = false;
                                 },
-                            dataType: 'json'
-                        });
+                                error: showErrors,
+                                dataType: 'json'
+                             });
                     } else {
                         $("#editButton").html(TaxiHail.localize('Edit'));
                         $("input").attr("disabled", true);
@@ -74,11 +79,7 @@
                 
                 }else {
                     var result = settings.validate(settings.attributes);
-                    var $alert = $('<div class="alert alert-error" />');
-                    _.each(result.errors, function (error) {
-                        $alert.append($('<div />').text(this.localize(error.errorCode)));
-                    }, this);
-                    this.$('.errors').html($alert);
+                    this.showErrors(this.model, result);
                 }
                 
             } else {
@@ -86,6 +87,22 @@
                 $("input").attr("disabled", false);
             }
             
+        },
+        
+        showErrors: function (model, result) {
+            this.$('#bookBt').button('reset');
+            
+            if (result.responseText) {
+                result = JSON.parse(result.responseText).responseStatus;
+            }
+            var $alert = $('<div class="alert alert-error" />');
+            if (result.statusText) {
+                $alert.append($('<div />').text(this.localize(result.statusText)));
+            }
+            _.each(result.errors, function (error) {
+                $alert.append($('<div />').text(this.localize(error.errorCode)));
+            }, this);
+            this.$('.errors').html($alert);
         },
         
         renderItem: function (model) {

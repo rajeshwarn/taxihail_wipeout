@@ -8,9 +8,19 @@
 	"error.PhoneBadFormat" : "The phone number is invalid",
 	"error.PassengersRequired" : "The number of passengers is required",
 	"error.VehicleTypeRequired" : "The vehicule type is required",
-	"error.ChargeTypeRequired" : "The charge type is required",	
-	"CreateAccount_AccountAlreadyExist" : "An account is already registered with this email address.",
+	"error.ChargeTypeRequired" : "The charge type is required",		
 	"signup.confirmation" : "Account created. You will receive an email shortly with a link you need to click on to confirm your registration.",
 	"CreateBt" : "Create",
-	"search.no-result": "Start typing an address or a place name" 
+	"search.no-result": "Start typing an address or a place name",
+	"Loading": "Loading..." ,
+	"CreateAccount_AccountAlreadyExist" : "An account is already registered with this email address.",
+    "CreateOrder_InvalidPickupAddress": "Invalid Pickup Address",
+    "CreateOrder_CannotCreateInIbs": "Server Error, please try again or call us.",
+    "CreateOrder_SettingsRequired": "Settings required",
+    "CreateOrder_NoProvider": "Bad Provider",
+    "CreateOrder_InvalidProvider": "Invalid Provider",
+    "CreateOrder_VehiculeType": "Vehicule Type Invalid",
+    "CancelOrder_OrderNotInIbs": "Unkown Order",
+    "NearbyPlaces_LocationRequired": "Location required",
+    "Search_Locations_NameRequired": "Name requried"
 }

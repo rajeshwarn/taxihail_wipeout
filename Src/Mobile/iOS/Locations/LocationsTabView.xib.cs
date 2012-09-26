@@ -52,28 +52,20 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
-//			_tableLocations = new TableView( new System.Drawing.RectangleF(0,-2,320,366), UITableViewStyle.Grouped );
-//			_tableLocations.SectionFooterHeight = 10;
-//			_tableLocations.SectionHeaderHeight = 10;
-//			_tableLocations.BackgroundColor = UIColor.Clear;
-//			View.AddSubview( _tableLocations );
-//			tableLocations.Hidden = true;
 
 			if (Mode == LocationsTabViewMode.Edit) {
 				View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
 			} 
 			else
-			{
-				//View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background_full.png"));
+			{				
 				View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
-				NavigationItem.RightBarButtonItem = new UIBarButtonItem( UIBarButtonSystemItem.Cancel , CanceledTouchUpInside );
-				//btnCancel.Hidden = false;
-				//btnCancel.TouchUpInside += CanceledTouchUpInside;
+				NavigationItem.RightBarButtonItem = new UIBarButtonItem( UIBarButtonSystemItem.Cancel , CanceledTouchUpInside );			
 			}
-//			btnCancel.SetTitle (Resources.CancelBoutton, UIControlState.Normal);
-//			lblTitle.Text = "";
 
 			tableLocations.SectionHeaderHeight = 33;
+
+            tableLocations.BackgroundView = new UIView { BackgroundColor = UIColor.Clear };
+            tableLocations.BackgroundColor = UIColor.Clear; // UIColor.Red ;
 			LoadGridData ();
 	
 		}
