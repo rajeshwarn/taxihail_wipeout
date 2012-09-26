@@ -248,7 +248,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                 }
                             }
                         }
-						catch()
+						catch
 						{
 							IsExecuting = false;
 						}
