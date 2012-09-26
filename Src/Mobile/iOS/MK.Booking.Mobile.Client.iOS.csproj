@@ -66,12 +66,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
-    <CodesignKey>iPhone Developer</CodesignKey>
+    <CodesignKey>iPhone Distribution</CodesignKey>
     <MtouchI18n />
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <IpaPackageName />
     <BuildIpa>True</BuildIpa>
-    <CodesignProvision>20192CBE-9925-4A5F-867D-AE9DEAE773BD</CodesignProvision>
+    <CodesignProvision>30AE26CF-D638-4747-9ED6-1CEEF52171D7</CodesignProvision>
     <CrashReportingApiKey />
     <AssemblyName>TaxiMobileApp</AssemblyName>
     <MtouchSdkVersion>6.0</MtouchSdkVersion>
