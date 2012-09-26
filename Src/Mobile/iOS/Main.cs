@@ -80,7 +80,11 @@ namespace apcurium.MK.Booking.Mobile.Client
          
             if (!_callbackFromFB)
             {    
-
+				if( AppContext.Current.Controller != null && AppContext.Current.Controller.TopViewController is BookView )
+				{
+					var model = ((BookView)AppContext.Current.Controller.TopViewController).ViewModel;
+					model.Maybe( () => model.Initialize() );
+				}
             }
             else
             {

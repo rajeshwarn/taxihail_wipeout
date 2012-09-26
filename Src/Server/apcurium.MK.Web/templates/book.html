@@ -1,30 +1,23 @@
 ﻿<div class="row">
-    <div class="span11" id="pickup-drop-off-container">
+    <div class="span6" id="pickup-drop-off-container">
         <div class='well'>
             <form>
                 <label>{{localize "Pickup location"}}</label>
                 <div class='pickup-address-container'></div>
                 <label>{{localize "Destination"}}</label>
                 <div class='drop-off-address-container'></div>
-                <div class='control-group clearfix'>
+                <div class='estimate control-group clearfix hidden'>
                     <div class='pull-right'>
                         {{localize "Estimated Fare"}}
-                        <span class="estimate"></span>
+                        <span class="fare"></span>
                     </div>
                 </div>
-                <div class='control-group'>
-                    <a href='#' class='btn btn-primary btn-large pull-right' data-action='book'>{{localize "Book Now"}}</a>
+                <div class='control-group clearfix'>
+                    <a href='#' class='btn btn-primary btn-large pull-right span2' data-action='book'>{{localize "Book Now"}}</a>
                 </div>
             </form>
             <div>
-                
-                
-            
-            <a href='#' class='btn btn-info' data-action='locate'>{{localize "Locate Me"}}</a>
         </div>
-        
-        
-
     </div>
-    <div class='span12 hidden-right' id="address-list-container" ></div>
+    <div class='span6' id="address-list-container" ></div>
 </div>

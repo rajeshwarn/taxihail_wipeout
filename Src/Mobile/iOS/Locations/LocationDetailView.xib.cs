@@ -247,7 +247,7 @@ namespace apcurium.MK.Booking.Mobile.Client
     
         void BtnBookTouchUpInside(object sender, EventArgs e)
         {
-             this.NavigationController.PopViewControllerAnimated(true);
+			this.NavigationController.PopToRootViewController(true); //.PopViewControllerAnimated(true);
 
             var order = new Order();
             order.PickupAddress = _data;

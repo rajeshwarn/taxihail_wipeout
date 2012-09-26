@@ -2,6 +2,9 @@ using System;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using Cirrious.MvvmCross.Commands;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using TinyMessenger;
+using apcurium.MK.Booking.Mobile.Messages;
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -17,8 +20,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public void SignOut()
 		{
 			_appContext.SignOut ();
-
-			RequestNavigate<LoginViewModel>();
+			InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new LogOutRequested(this)));
 		}
 	}
 }

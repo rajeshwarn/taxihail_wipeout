@@ -47,6 +47,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			NavigationItem.RightBarButtonItem = button;
 
 
+
 			
 		}
 
@@ -60,6 +61,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			//View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             View.BackgroundColor = UIColor.Clear; 
             TableView.BackgroundColor = UIColor.Clear;
+            TableView.BackgroundView = new UIView { BackgroundColor = UIColor.Clear };
 
 
 

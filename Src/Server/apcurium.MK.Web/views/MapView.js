@@ -47,6 +47,9 @@
                 zoom: 12,
                 center: new google.maps.LatLng(-34.397, 150.644),
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
+                zoomControlOptions: {
+                    position: google.maps.ControlPosition.LEFT_CENTER
+                }
 
             };
             this._map = new google.maps.Map(this.el, mapOptions);

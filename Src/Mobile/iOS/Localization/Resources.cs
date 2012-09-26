@@ -1001,6 +1001,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			get { return GetValue ("InvalidLocalContactMessage"); }
 		}
+		public static string DateTimePickerCurrentButton
+		{
+			get { return GetValue ("DateTimePickerCurrentButton"); }
+		}
 	}
 }
 

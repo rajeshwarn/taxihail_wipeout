@@ -59,9 +59,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					try
 					{
 						_appContext.SignOut();
-						TinyIoCContainer.Current.Resolve<IOverlayService>().StartAnimating();
+
 						ThreadPool.QueueUserWorkItem( SignIn );  
-						TinyIoCContainer.Current.Resolve<IOverlayService>().StopAnimating();
+
 
 					}
 					finally
@@ -75,6 +75,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			try
 			{
+				TinyIoCContainer.Current.Resolve<IMessageService>().ShowProgress(true);
 				UserInteractionEnabled = false;
 				string error = "";                      
 				var account = _accountService.GetAccount(Email, Password, out error);
@@ -97,6 +98,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			finally
 			{
 				UserInteractionEnabled = true;
+				TinyIoCContainer.Current.Resolve<IMessageService>().ShowProgress(false);
 
 			}
 		}

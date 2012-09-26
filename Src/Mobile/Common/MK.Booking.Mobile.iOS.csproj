@@ -173,9 +173,9 @@
     <Compile Include="ViewModels\SearchAddress\AddressSearchByFavoritesViewModel.cs" />
     <Compile Include="ViewModels\SearchAddress\AddressSearchByGeoCodingViewModel.cs" />
     <Compile Include="ViewModels\SearchAddress\AddressSearchByPlacesViewModel.cs" />
-    <Compile Include="Infrastructure\IOverlayService.cs" />
     <Compile Include="ViewModels\PanelViewModel.cs" />
     <Compile Include="BindingConverter\BoolInverter.cs" />
+    <Compile Include="Messages\LogOutRequested.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">
