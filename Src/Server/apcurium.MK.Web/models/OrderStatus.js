@@ -5,7 +5,6 @@
         url: function() {
             return 'api/account/orders/' + this.id + '/status/';
         }
-
     });
 
 

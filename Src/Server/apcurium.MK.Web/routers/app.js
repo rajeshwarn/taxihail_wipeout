@@ -84,16 +84,17 @@
         
         status: function (id) {
             
-            var status = new TaxiHail.OrderStatus({
-                id:id
+            var order = new TaxiHail.Order({
+                orderId: id
             });
-            status.fetch();
 
-            status.on('change:vehicleLatitude, change:vehicleLongitude', function(model){
+            order.getStatus().on('change:vehicleLatitude, change:vehicleLongitude', function(model){
                 mapView.updateVehiclePosition(model);
             }, this);
 
-            renderView(TaxiHail.BookingStatusView, status);
+            order.fetch();
+
+            renderView(TaxiHail.BookingStatusView, order);
        
         },
 

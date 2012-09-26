@@ -4,7 +4,6 @@
         
         events: {
             'mouseup': 'mouseup'
-            //'mouseout' : 'mouseup'
         },
         
         initialize : function () {
@@ -56,7 +55,7 @@
             this._vehicleMarker = new google.maps.Marker({
                 position: this._map.getCenter(),
                 map: this._map,
-                icon: 'assets/img/location_info.png',
+                icon: new google.maps.MarkerImage('assets/img/taxi_label.png', new google.maps.Size(106,80)),
                 visible: false
             });
             var label = new Label({
@@ -128,7 +127,7 @@
 
         // Label specific
         var span = this.span_ = document.createElement('span');
-        span.style.cssText = 'position: relative; left: -50%; top: -50px; white-space: nowrap; font-size: 24px; font-weight: bold; color: white';
+        span.style.cssText = 'position: relative; left: -50%; top: -66px; white-space: nowrap; font-size: 24px; font-weight: bold; color: white';
 
         var div = this.div_ = document.createElement('div');
         div.appendChild(span);

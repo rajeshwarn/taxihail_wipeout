@@ -1,7 +1,24 @@
 ﻿<div class="row">
-    <div class="span5" id="pickup-drop-off-container">
+    <div class="span6">
         <div class='well'>
-           {{localize "Confirmation Number"}} : {{id}}
+            <legend>{{localize "Your Order"}}</legend>
+            <div class="control-group">
+                <label class="control-label">{{localize "Confirmation Number"}}</label>
+                <div class="controls">
+                    {{iBSOrderId}}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">{{localize "Status"}}</label>
+                <div class="controls">
+                    {{iBSStatusDescription}}
+                </div>
+            </div>
+            <div class='row'>
+                <a href='#' class='btn btn-large btn-danger span2'  data-action='cancel'>{{localize "Cancel"}}</a>
+                <a href='#' class='btn btn-large btn-inverse span2' data-action='call'>{{localize "Call"}}</a>
+                <a href='#' class='btn btn-large btn-success span1' data-action='new'>{{localize "New Ride"}}</a>
+            </row>
         </div>
     </div>
 </div>
