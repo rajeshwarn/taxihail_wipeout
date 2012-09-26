@@ -1,6 +1,7 @@
 ﻿(function () {
     var settings;
     var settingschanged = false;
+    
     TaxiHail.BookingConfirmationView = TaxiHail.TemplatedView.extend({
         
         events: {
@@ -9,7 +10,8 @@
             'change :text': 'onPropertyChanged',
             
         },
-        initialize: function () {
+        initialize: function () {   
+
             _.bindAll(this, "renderResults");
             this.model.on('change', this.render, this);
             
@@ -54,6 +56,7 @@
                 if (settings.isValid() ) {
                     
                     if (settingschanged) {
+                        
                         jQuery.ajax({
                                 type: 'PUT',
                                 url: 'api/account/bookingsettings',

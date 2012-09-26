@@ -1,6 +1,5 @@
 ﻿(function () {
-    var referenceData,
-    currentView,
+    var currentView,
         renderView = function(ctor, model) {
 
             // Call remove on current view 
@@ -37,9 +36,6 @@
 
             TaxiHail.auth.initialize();
 
-            referenceData = new TaxiHail.ReferenceData();
-            referenceData.fetch();
-
             mapView = new TaxiHail.MapView({
                 el: $('.map-zone')[0],
                 model: new TaxiHail.Order
@@ -48,8 +44,6 @@
             $('.login-status-zone').html(new TaxiHail.LoginStatusView({
                 model: TaxiHail.auth.account
             }).render().el);
-
-
 
         },
 
@@ -74,8 +68,6 @@
                 TaxiHail.auth.account.fetch({
                     success: function(model) {
                         orderToBook.settings = model.get('settings');
-                        orderToBook.settings.vehiclesList = referenceData.attributes.vehiclesList;
-                        orderToBook.settings.paymentsList = referenceData.attributes.paymentsList;
                         renderView(TaxiHail.BookingConfirmationView, new TaxiHail.Order(orderToBook));
                     },
                     error: _.bind(function(model) {
