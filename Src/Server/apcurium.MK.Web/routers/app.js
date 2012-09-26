@@ -75,6 +75,7 @@
                     success: function(model) {
                         orderToBook.settings = model.get('settings');
                         orderToBook.settings.vehiclesList = referenceData.attributes.vehiclesList;
+                        orderToBook.settings.paymentsList = referenceData.attributes.paymentsList;
                         renderView(TaxiHail.BookingConfirmationView, new TaxiHail.Order(orderToBook));
                     },
                     error: _.bind(function(model) {

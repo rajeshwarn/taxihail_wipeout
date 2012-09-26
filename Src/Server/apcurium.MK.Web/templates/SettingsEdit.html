@@ -35,6 +35,10 @@
 <div class="control-group">
     <label class="control-label" for="inputChargeType">{{localize "Charge Type"}}</label>
     <div class="controls">
-        <input type="text"  id="inputChargeType" name="chargeTypeId" value="{{chargeTypeId}}">
+        <select>
+            {{#each paymentsList}}
+            <option>{{this.display}}</option>
+            {{/each}}
+        </select>
     </div>
 </div>
