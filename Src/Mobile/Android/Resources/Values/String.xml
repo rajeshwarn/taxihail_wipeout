@@ -139,9 +139,7 @@
   <string name="PickupViewPickupLabel">Pickup:</string>
   <string name="PickupViewDestinationLabel">Destination &gt;&gt;</string>
   <string name="CallButton">Call</string>
-  <string name="TaxiMapTitle">Your Taxi</string>
-  <string name="ErrorCreatingOrderMessage">The order couldn\'t be created, please try again.</string>
-  <string name="ErrorCreatingOrderTitle">Server Error</string>
+  <string name="TaxiMapTitle">Your Taxi</string> 
   <string name="UnexpectedError">Unexpected error</string>
   <string name="StatusActionButton">Call / Book / Cancel</string>
   <string name="StatusCallButton">Call</string>
@@ -269,4 +267,10 @@
   <string name="PickupWasActivatedToastMessage">Pickup selection is active.</string>
   <string name="InvalidLocalContactTitle">Invalid contact</string>
   <string name="InvalidLocalContactMessage">The address associated to this contact cannot be validated.</string>
+
+
+  <string name="ErrorCreatingOrderTitle">Booking cannot be completed</string>
+  <string name="ServiceError_ErrorCreatingOrderMessage">Please contact {0} at {1} for further assistance."</string>  
+  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_1002">The specified Pickup address lies outside the regular service area. Please contact {0} at {1} for further assistance."</string>  
+
 </resources>

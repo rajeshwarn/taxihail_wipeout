@@ -1005,6 +1005,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			get { return GetValue ("DateTimePickerCurrentButton"); }
 		}
+		public static string EstimatedFareNotAvailable
+		{
+			get { return GetValue ("EstimatedFareNotAvailable"); }
+		}
 	}
 }
 

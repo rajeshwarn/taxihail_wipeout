@@ -165,20 +165,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public void Rebook(Order order)
         {
+
             var serialized = JsonSerializer.SerializeToString<Order>(order);
             Order = JsonSerializer.DeserializeFromString<CreateOrder>(serialized);
             Order.Id = Guid.Empty;
             Order.PickupDate = null;
 			Pickup.SetAddress( Order.PickupAddress, false );
 			Dropoff.SetAddress( Order.DropOffAddress, false );
-            ForceRefresh();
+			PickupIsActive=true;
+			DropoffIsActive=false;
+			CenterMap(false);
+			ForceRefresh();
         }
 
         private void ForceRefresh()
         {
             FirePropertyChanged(() => Order);
-//            FirePropertyChanged(() => Pickup);
-//            FirePropertyChanged(() => Dropoff);
+            FirePropertyChanged(() => Pickup);
+            FirePropertyChanged(() => Dropoff);
 			//AddressChanged(this, EventArgs.Empty);
             FirePropertyChanged(() => SelectedAddress);
 
@@ -327,9 +331,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return new MvxRelayCommand(() =>
                     {
-                        
-                        RequestNavigate<LoginViewModel>();
-                        RequestClose(this);
+                        RequestNavigate<LoginViewModel>(true);
+//                        RequestClose(this);
                     });
             }
         }
@@ -410,7 +413,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public void Initialize()
         {
-            PickupIsActive = true;
+			PickupIsActive = true;
+			DropoffIsActive = false;
             Pickup.RequestCurrentLocationCommand.Execute();
         }
 

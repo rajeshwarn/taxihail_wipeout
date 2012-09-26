@@ -1,7 +1,5 @@
 using System;
 using System.IO;
-
-using MonoTouch.CoreLocation;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using apcurium.Framework.Extensions;
@@ -26,54 +24,16 @@ namespace apcurium.MK.Booking.Mobile.Client
             get { return _current; }
         }
         
-    
-#if DEBUG
-#else
-        private CLLocationManager _locationManager;
-#endif
-        
         private UINavigationController _controller;
-        private CLLocation _currrentLocation;
         private Account _loggedUser;
 
         private AppContext(UIWindow window)
         {
             Window = window;
-            
-            #if DEBUG
-            //_currrentLocation = new CLLocation (45.522702, -73.624036);
-            _currrentLocation = new CLLocation (45.5323870130381, -73.6015319824219);
-            
-            #else
-            _currrentLocation = new CLLocation(0, 0);
-            _locationManager = new CLLocationManager();
-            _locationManager.DesiredAccuracy = CLLocation.AccuracyBest;
-            _locationManager.DistanceFilter = -1;
-            _locationManager.Delegate = new AppLocationManagerDelegate(this);
-            _locationManager.StartUpdatingLocation();
-            #endif
-            
-            
         }
 
         public UIWindow Window  { get; private set; }
             
-        public void ResetPosition()
-        {
-            
-            
-            
-            #if DEBUG
-            //_currrentLocation = new CLLocation (45.522702, -73.624036);
-            _currrentLocation = new CLLocation (45.5323870130381, -73.6015319824219);
-            #else
-            _locationManager.StopUpdatingLocation();
-            _currrentLocation = new CLLocation(0, 0);
-            _locationManager.StartUpdatingLocation();
-            #endif
-            
-            
-        }
 
         public void UpdateLoggedInUser(Account data, bool syncWithServer)
         {
@@ -233,24 +193,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             set { _controller = value; }
         }
 
-        public void UpdatedLocation(CLLocationManager manager, CLLocation newLocation, CLLocation oldLocation)
-        {
-            CLLocation currentLocation;
-            
-            #if DEBUG
-            currentLocation = new CLLocation (45.522702, -73.624036);
-            #else
-            currentLocation = newLocation;
-            #endif
-            _currrentLocation = currentLocation;
-            
-            
-        }
-
-        public CLLocation CurrrentLocation
-        {
-            get { return _currrentLocation; }
-        }
 
 		public string ServerName {
 			get {
@@ -269,48 +211,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		}        
         
     }
-
-    public class AppLocationManagerDelegate : CLLocationManagerDelegate
-    {
-        private AppContext _context;
-
-        public AppLocationManagerDelegate(AppContext context)
-        {
-            _context = context;
-        }
-
-        public static DateTime NSDateToDateTime(MonoTouch.Foundation.NSDate date)
-        {
-            return (new DateTime(2001, 1, 1, 0, 0, 0)).AddSeconds(date.SecondsSinceReferenceDate);
-        }
-
-        public override void UpdatedLocation(CLLocationManager manager, CLLocation newLocation, CLLocation oldLocation)
-        {
-            
-            
-            //var newLocationEventDate = newLocation.Timestamp;
-            
-            double secondHowRecent = newLocation.Timestamp.SecondsSinceReferenceDate - NSDate.Now.SecondsSinceReferenceDate;
-            
-            if (((_context.CurrrentLocation.Coordinate.Latitude == 0) || (_context.CurrrentLocation.Coordinate.Longitude == 0) || (_context.CurrrentLocation.HorizontalAccuracy > newLocation.HorizontalAccuracy)) && (secondHowRecent < -0.0 && secondHowRecent > -10.0))
-            {
-                _context.UpdatedLocation(manager, newLocation, oldLocation);
-                Console.WriteLine("********************UPDATING LOCATION**************************");
-                Console.WriteLine("Lat : " + newLocation.Coordinate.Latitude.ToString());
-                Console.WriteLine("Long : " + newLocation.Coordinate.Longitude.ToString());
-                Console.WriteLine("HAcc : " + newLocation.HorizontalAccuracy.ToString());
-                Console.WriteLine("VAcc : " + newLocation.VerticalAccuracy.ToString());
-                
-                
-                
-                
-            }
-            
-        }
-        
-
-        
-    }
+	
     
 }
 
