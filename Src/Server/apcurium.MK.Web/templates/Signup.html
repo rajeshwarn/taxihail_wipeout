@@ -1,5 +1,5 @@
 ﻿<div class="well span5">
-    <legend>Create a new account</legend>
+    <legend>{{localize "SignupTitle"}}</legend>
     <div class="errors"></div>
     <div class="control-group">
         <label class="control-label" for="signup-email">{{localize "Email"}}</label>
@@ -36,7 +36,9 @@
             <span class="valid-input hidden"><img src="assets/img/validFieldGreen.png" width="8" height="8" alt="valid field"/></span>
         </div>    
     </div>
-    <div class='form-actions'>
-        <button type="submit" class="btn btn-primary" data-loading-text="{{localize 'Loading'}}">{{localize "CreateBt"}}</button>
+    <div class="control-group">
+        <div class="controls">
+            <button style="margin-right: 25px;" type="submit" class="btn btn-primary btn-large pull-right span2" data-loading-text="{{localize 'Loading'}}">{{localize "CreateBt"}}</button>
+        </div>
     </div>
 </div>

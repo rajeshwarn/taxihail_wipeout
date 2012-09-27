@@ -59,7 +59,6 @@
                  } else {
                      this._dropOffAddressView.isBtnSelected = false;
                  }
-                 
 
              }, this);
         },

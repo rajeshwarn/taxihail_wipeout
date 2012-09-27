@@ -105,17 +105,17 @@ namespace DatabaseInitializer
             configurationManager.SetSetting("IBS.AutoDispatch", "true");
 
             //DEMO SERVER
-            configurationManager.SetSetting("IBS.WebServicesUrl", "http://drivelinq.dyndns-ip.com:6928/XDS_IASPI.DLL/soap/");
-            configurationManager.SetSetting("DefaultBookingSettings.ProviderId", "9");
-            configurationManager.SetSetting("DefaultBookingSettings.VehicleTypeId", "1");
-            configurationManager.SetSetting("DefaultBookingSettings.ChargeTypeId", "1");
+            //configurationManager.SetSetting("IBS.WebServicesUrl", "http://drivelinq.dyndns-ip.com:6928/XDS_IASPI.DLL/soap/");
+            //configurationManager.SetSetting("DefaultBookingSettings.ProviderId", "9");
+            //configurationManager.SetSetting("DefaultBookingSettings.VehicleTypeId", "1");
+            //configurationManager.SetSetting("DefaultBookingSettings.ChargeTypeId", "1");
             //------
             
             //TEST SERVER
-            //configurationManager.SetSetting("IBS.WebServicesUrl", "http://72.38.252.190:6928/XDS_IASPI.DLL/soap/");
-            //configurationManager.SetSetting("DefaultBookingSettings.ProviderId", "13");
-            //configurationManager.SetSetting("DefaultBookingSettings.VehicleTypeId", "1");
-            //configurationManager.SetSetting("DefaultBookingSettings.ChargeTypeId", "1");
+            configurationManager.SetSetting("IBS.WebServicesUrl", "http://72.38.252.190:6928/XDS_IASPI.DLL/soap/");
+            configurationManager.SetSetting("DefaultBookingSettings.ProviderId", "13");
+            configurationManager.SetSetting("DefaultBookingSettings.VehicleTypeId", "1");
+            configurationManager.SetSetting("DefaultBookingSettings.ChargeTypeId", "1");
             //------
             
             configurationManager.SetSetting("DefaultBookingSettings.NbPassenger", "1");

@@ -1,53 +1,52 @@
-﻿<div class="row span5 well">
-    <h2>{{localize "Confirm Information"}}</h2>
-    <table>
-        <tr>
-            <td>{{localize "Pickup Time"}}</td>
-            <td>Now</td>
-        </tr>
-        <tr>
-            <td>{{localize "Pickup"}}</td>
-            <td>{{pickupAddress.fullAddress}}</td>
-        </tr>
-        <tr>
-            <td>{{localize "Destination"}}</td>
-            <td>{{dropOffAddress.fullAddress}}</td>
-        </tr>
-        <tr>
-            <td>{{localize "Fare estimate"}}</td>
-            <td>{{distanceEstimate}}</td>
-        </tr>
-        <tr>
-            <td>{{localize "Price estimate"}}</td>
-            <td>{{priceEstimate}}</td>
-        </tr>
-    </table>
-    <h2>{{localize "Settings"}}</h2>
-    <div class="errors" style="margin-top: 10px;"></div>
-    <form class="form-horizontal">
-        <div id="settingsContent">
-            <div class="control-group">
-                <label class="control-label" for="inputApt">{{localize "Apt No."}}</label>
-                <div class="controls">
-                    <input type="text" id="inputApt" name="apartment" value="{{pickupAddress.apartment}}">
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="inputRingCode">{{localize "Ring Code"}}</label>
-                <div class="controls">
-                    <input type="text" id="inputRingCode" name="ringCode"  value="{{pickupAddress.ringCode}}">
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="inputNotes">{{localize "Notes"}}</label>
-                <div class="controls">
-                    <input type="text" id="inputNotes" placeholder="Notes">
-                </div>
+﻿<div class="row" >
+<div class="span6">
+    <div class="well">
+        <h2>{{localize "Confirm Information"}}</h2>
+        <table>
+            <tr>
+                <td class="settings-label">{{localize "Pickup Time"}}</td>
+                <td>Now</td>
+            </tr>
+            <tr>
+                <td class="settings-label">{{localize "Pickup"}}</td>
+                <td>{{pickupAddress.fullAddress}}</td>
+            </tr>
+            <tr>
+                <td class="settings-label">{{localize "Destination"}}</td>
+                <td>{{dropOffAddress.fullAddress}}</td>
+            </tr>
+            <tr>
+                <td class="settings-label">{{localize "Estimate"}}</td>
+                <td>{{distanceEstimate}} - {{priceEstimate}}</td>
+            </tr>
+        </table>
+        <div class="control-group">
+            <div class="controls">
+                <a href='#' class='btn pull-right span2' id="editButton" data-action='edit'>{{localize "Edit"}}</a>
             </div>
         </div>
-        <fieldset>
-            <a href='#' id="bookBt" class='btn primary' data-action='book' data-loading-text="{{localize 'Loading'}}">{{localize "Book Now!"}}</a>
-            <a href='#' class='btn primary' data-action='startOver'>{{localize "Start Over"}}</a>
-        </fieldset>
-    </form>
+        <br/>
+        <div class="errors" style="margin-top: 10px;"></div>
+        <form class="form-horizontal">
+            <div id="settingsContent">
+                <div class="control-group">
+                    <div class="controls">
+                        <input type="text" id="inputApt" name="apartment" placeholder="{{localize 'Apt No.'}}" value="{{pickupAddress.apartment}}" class='input-block-level span2'>
+                        <input type="text" id="inputRingCode" name="ringCode"  placeholder="{{localize 'Ring Code'}}" value="{{pickupAddress.ringCode}}" class='input-block-level span2'>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="inputNotes">{{localize "Notes"}}</label>
+                    <div class="controls">
+                        <input type="text" id="inputNotes" placeholder="Notes" class='input-block-level'>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <a href='#' class='btn btn-large pull-right span2' data-action='startOver'>{{localize "Cancel"}}</a>
+                    <a href='#' id="bookBt" class='btn btn-primary btn-large pull-right span2' data-action='book' data-loading-text="{{localize 'Loading'}}">{{localize "Book Now!"}}</a>                
+                </div>
+            </div>
+        </form>
+        </div>
+</div>
 </div>
