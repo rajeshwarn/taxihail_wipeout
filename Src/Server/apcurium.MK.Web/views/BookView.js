@@ -1,6 +1,9 @@
 ﻿(function () {
 
     TaxiHail.BookView = TaxiHail.TemplatedView.extend({
+
+        className: 'book-view',
+
         events: {
             'click [data-action=book]': 'book'
         },
