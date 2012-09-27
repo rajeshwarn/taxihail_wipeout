@@ -247,13 +247,10 @@ namespace apcurium.MK.Booking.Mobile.Client
     
         void BtnBookTouchUpInside(object sender, EventArgs e)
         {
-			this.NavigationController.PopToRootViewController(true); //.PopViewControllerAnimated(true);
-
             var order = new Order();
             order.PickupAddress = _data;
             order.Settings = AppContext.Current.LoggedUser.Settings;
 			InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new RebookRequested(this, order)));
-//            AppContext.Current.Controller.Rebook(order);
         }
 
         public void LoadData(Address data)

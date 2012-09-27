@@ -110,7 +110,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 				btnCancel.TouchUpInside += CancelOrder;
 				btnNewRide.TouchUpInside += Rebook;
                 
-                mapStatus.Delegate = new AddressMapDelegate();
+                mapStatus.Delegate = new AddressMapDelegate(false);
                 
 //                var view = AppContext.Current.Controller.GetTitleView(null, Resources.StatusViewTitle);
                 
@@ -277,7 +277,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                     );
                 }
 
-                _taxiPosition = new AddressAnnotation(taxiCoordinate, AddressAnnotationType.Taxi, Resources.TaxiMapTitle, "");
+                _taxiPosition = new AddressAnnotation(taxiCoordinate, AddressAnnotationType.Taxi, Resources.TaxiMapTitle, Status.VehicleNumber);
 
 				var pickupCoordinate = Order.PickupAddress.GetCoordinate();
 				double latDelta = Math.Abs(taxiCoordinate.Latitude - pickupCoordinate.Latitude);

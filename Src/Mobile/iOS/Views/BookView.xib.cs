@@ -37,12 +37,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		private PanelMenuView _menu;
 		private DateTimePicker _dateTimePicker;
-//        public event EventHandler TabSelected;
 		private Action _onDateTimePicked;
-
-        //private CreateOrder _bookingInfo;
         private StatusView _statusView;
-        //private VerticalButtonBar _settingsBar;
+		private UIImageView _img;
+
         public BookView() 
             : base(new MvxShowViewModelRequest<BookViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
         {
@@ -77,6 +75,10 @@ namespace apcurium.MK.Booking.Mobile.Client
             AppButtons.FormatStandardButton((GradientButton)refreshCurrentLocationButton, "", AppStyle.ButtonColor.Blue, "");
 			AppButtons.FormatStandardButton((GradientButton)cancelBtn, "", AppStyle.ButtonColor.Red, "Assets/cancel.png");
 
+			TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub>().Subscribe<RebookRequested>( msg => {
+				ViewModel.Rebook( msg.Content );
+				BookTaxi();
+			});
 			TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub>().Subscribe<DateTimePicked>( msg => _onDateTimePicked() );
 			_dateTimePicker = new DateTimePicker( );
 			_dateTimePicker.ShowPastDate = false;
@@ -110,10 +112,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             AppButtons.FormatStandardButton((GradientButton)bookBtn, Resources.BookItButton, AppStyle.ButtonColor.Green);
             bookBtn.TouchUpInside += BookitButtonTouchUpInside;
 
-            UIImageView img = new UIImageView(UIImage.FromFile("Assets/location.png"));
-            img.BackgroundColor = UIColor.Clear;
-            img.Frame = new System.Drawing.RectangleF(mapView.Frame.X + ((mapView.Frame.Width / 2) - 10), mapView.Frame.Y + ((mapView.Frame.Height / 2)) - 30, 20, 20);
-            mapView.Superview.AddSubview(img);
+
             mapView.MultipleTouchEnabled = true;
 			mapView.Delegate = new AddressMapDelegate();
 
@@ -147,7 +146,16 @@ namespace apcurium.MK.Booking.Mobile.Client
             base.ViewWillAppear(animated);     
 
 			NavigationController.NavigationBar.Hidden = true;
-            AppContext.Current.ReceiveMemoryWarning = false;              
+            AppContext.Current.ReceiveMemoryWarning = false;  
+
+			if( _img == null )
+			{
+				_img = new UIImageView(UIImage.FromFile("Assets/location.png"));
+				_img.BackgroundColor = UIColor.Clear;
+				_img.ContentMode = UIViewContentMode.Center;
+				_img.Frame = new System.Drawing.RectangleF(mapView.Frame.X + ((mapView.Frame.Width / 2) - 10), mapView.Frame.Y + (mapView.Frame.Height / 2), 20, 20);
+				mapView.Superview.AddSubview(_img);
+			}
         }
         
         public override void ViewDidAppear(bool animated)
@@ -204,7 +212,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                     RemoveStatusView();
                     AppContext.Current.LastOrder = null;
 					NavigationController.NavigationBar.Hidden = true;
-					this.NavigationController.PopViewControllerAnimated(false);
+					this.NavigationController.PopToRootViewController(true);
 					ViewModel.Reset();
 					ViewModel.Dropoff.ClearAddress();
 					ViewModel.Initialize();
@@ -232,51 +240,6 @@ namespace apcurium.MK.Booking.Mobile.Client
                 }
             }
         }
-
-//        public void Selected()
-//        {
-//            try
-//            {
-//
-//
-//
-//                if (AppContext.Current.LastOrder.HasValue)
-//                {
-//                    LoadStatusView(true);
-//                }
-//                else
-//                {  
-//                    if (!(this.NavigationController.TopViewController is BookView))
-//                    {
-//                        this.NavigationController.PopViewControllerAnimated(false);
-//                    }
-//
-//                    
-////                    bool isRebook = false;
-////                    if (_toRebookData != null)
-////                    {                       
-////                        //TODO: migration ver ViewModel ViewModel.Rebook(_toRebookData);
-////                        isRebook = true;
-////                        _toRebookData = null;
-////                        BookTaxi();
-////                    }
-////                    else
-////                    {
-//                        
-////                    }
-//
-//
-//                    
-////                    if ((!isRebook) && (TabSelected != null))
-////                    {
-////                        TabSelected(this, EventArgs.Empty);
-////                    }
-//                }
-//            }
-//            catch
-//            {
-//            }
-//        }
 
         public void BookTaxi()
         {
