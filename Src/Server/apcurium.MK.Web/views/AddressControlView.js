@@ -6,36 +6,38 @@
         events: {
             'click [data-action=clear]': 'clear',
             'click [data-action=locate]': 'locate',
-            'click [data-action=toggleselect]': 'toggleselect',
-            'focus [name=address]': 'onfocus', 
-            'blur  [name=address]': 'onblur'
+            'click [data-action=toggletarget]': 'toggletarget',
+            'focus [name=address]': 'onfocus'
         },
 
         initialize: function(attrs, options) {
-            _.bindAll(this, 'onkeypress');
+            _.bindAll(this, 'onkeyup', 'ondocumentclick');
             this.$el.addClass('address-picker');
             this.model.on('change', this.render, this);
+
+            $(document).on('click', this.ondocumentclick);
         },
         
-        toggleselect: function (e) {
+        toggletarget: function (e) {
             e && e.preventDefault();
 
-            this.trigger('toggleselect', this);
+            this.trigger('target', this, !$(e.currentTarget).is('.active'));
         },
 
         render: function() {
+
+            // Keep state of toggle button before re-rendering
+            var toggleClass = this.$("[data-action=toggletarget]").attr('class');
 
             var data = _.extend(this.model.toJSON(), {
                 options: _.pick(this.options, 'locate', 'clear')
             });
 
             this.$el.html(this.renderTemplate(data));
+            this.$("[data-action=toggletarget]").addClass(toggleClass);
 
-            this.$('[name=address]').on('keypress', _.debounce(this.onkeypress, 500));
+            this.$('[name=address]').on('keyup', _.debounce(this.onkeyup, 500));
 
-            if (this.isBtnSelected == true) {
-                this.$(".btn[data-action=toggleselect]").attr("class", "btn active");
-            }
 
             this._selector = new TaxiHail.AddressSelectionView({
                 model: this.model
@@ -44,7 +46,7 @@
                 this.close();
             }, this);
 
-            this._selector.render().hide()
+            this._selector.render().hide();
             this.$(".address-selector-container").html(this._selector.el);
 
             return this;
@@ -52,6 +54,7 @@
 
         remove: function() {
             if(this._selector) this._selector.remove();
+            $(document).off('click', this.ondocumentclick);
             this.$el.remove();
             return this;
         },
@@ -59,8 +62,15 @@
         open: function(e) {
             e && e.preventDefault();
 
+            // Deactivate the "target" button
+            this.toggleOff();
+            this.trigger('target', this, false);
+
             this.trigger('open', this);
-            this._selector && this._selector.show();
+            if(this._selector)
+            {
+                this._selector.show();
+            }
 
         },
 
@@ -68,6 +78,10 @@
             this._selector && this._selector.hide();
             // Set address in textbox back to the value of the model
             this.$('[name=address]').val(this.model.get('fullAddress'));
+        },
+
+        toggleOff: function(){
+            this.$('[data-action=toggletarget]').removeClass('active');
         },
 
         locate: function (e) {
@@ -94,6 +108,11 @@
             
             var $button = $(e.currentTarget).children().first();
             var $arrow = $button.replaceWith($spinContainer);
+
+            // Deactivate the "target" button
+            this.toggleOff();
+            this.trigger('target', this, false);
+
             
             TaxiHail.geolocation.getCurrentPosition()
                 .done(_.bind(function(address){
@@ -114,12 +133,14 @@
             this.open();
         },
 
-        onblur: function(e) {
-            //this._selector && this._selector.hide();
+        onkeyup: function(e) {
+            this._selector && this._selector.search($(e.currentTarget).val());
         },
 
-        onkeypress: function(e) {
-            this._selector && this._selector.search($(e.currentTarget).val());
+        ondocumentclick: function(e) {
+            if(!this.$el.find(e.target).length) {
+                this.close();
+            }
         }
 
     });

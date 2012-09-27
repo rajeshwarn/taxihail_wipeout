@@ -7,6 +7,7 @@
         },
 
         initialize: function () {
+            _.bindAll(this, 'hide');
             TaxiHail.auth.on('change', this.render, this);
         },
 

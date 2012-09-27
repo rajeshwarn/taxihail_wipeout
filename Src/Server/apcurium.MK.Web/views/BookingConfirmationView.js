@@ -69,7 +69,7 @@
             e.preventDefault();
             //this.model.set('settings', settings);
             this.model.save({},{success : function (model) {
-                TaxiHail.app.navigate('status/' + model.id, { trigger: true });
+                TaxiHail.app.navigate('status/' + model.id, { trigger: true, replace: true /* Prevent user from comming back to this screen */ });
                 },
                 error: this.showErrors
             });
