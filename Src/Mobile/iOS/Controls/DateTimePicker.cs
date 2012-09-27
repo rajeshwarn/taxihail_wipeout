@@ -11,14 +11,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 	{
 		private bool _pickerViewIsShown = false;
 		private UIDatePicker _picker;
+		private float _pickerViewHeight = 260f;
+		private RectangleF _screenBounds;
 
-		public DateTimePicker ( ) :base( new RectangleF(0, 460, 320, 260)  )
+		public DateTimePicker ( ) :base(   )
 		{
 			Initialize();
 		}
 
 		private void Initialize()
 		{
+			_screenBounds = UIScreen.MainScreen.Bounds;
+			Frame = new RectangleF(0, _screenBounds.Height, _screenBounds.Width, _pickerViewHeight);
+
 			_picker = new UIDatePicker ();
 			BackgroundColor = UIColor.Gray;
 			
@@ -28,14 +33,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			};
 			AddSubview( accept );
 			
-			var reset = AppButtons.CreateStandardButton( new RectangleF (180, 5, 100, 35), Resources.DateTimePickerCurrentButton, AppStyle.ButtonColor.Silver );
+			var reset = AppButtons.CreateStandardButton( new RectangleF (_screenBounds.Width - 140, 5, 100, 35), Resources.DateTimePickerCurrentButton, AppStyle.ButtonColor.Silver );
 			reset.TouchUpInside += delegate {
 				SetSelectedDate (null);
 			};
 			AddSubview( reset );
 			
 			_picker.MinuteInterval = 15;
-			_picker.Frame = new System.Drawing.RectangleF (0, 45, 320, 300);
+			_picker.Frame = new System.Drawing.RectangleF (0, 45, _screenBounds.Width, _pickerViewHeight - 40f);
 			AddSubview (_picker);
 		}
 
@@ -82,7 +87,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 		private void Animate( bool show )
 		{
 			UIView.Animate( 0.5f, () => {
-				Frame = new RectangleF( Frame.X, 460 - (show ? Frame.Height : 0 ), Frame.Width, Frame.Height);
+				Frame = new RectangleF( Frame.X, _screenBounds.Height - (show ? Frame.Height : 0 ), Frame.Width, Frame.Height);
 			});
 			_pickerViewIsShown = !_pickerViewIsShown;
 			
@@ -100,7 +105,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 		public override bool PointInside (PointF point, UIEvent uievent)
 		{
-			if( _pickerViewIsShown && !Frame.Contains( point ) )
+			if( _pickerViewIsShown && !Frame.Contains( this.Superview.ConvertPointFromView( point, this ) ) )
 			{
 				Hide ();
 			}
