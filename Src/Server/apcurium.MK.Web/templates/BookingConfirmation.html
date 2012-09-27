@@ -20,19 +20,74 @@
                 <td>{{distanceEstimate}} - {{priceEstimate}}</td>
             </tr>
         </table>
-        <div class="control-group">
-            <div class="controls">
-                <a href='#' class='btn pull-right span2' id="editButton" data-action='edit'>{{localize "Edit"}}</a>
-            </div>
-        </div>
+        
         <br/>
         <div class="errors" style="margin-top: 10px;"></div>
         <form class="form-horizontal">
             <div id="settingsContent">
+                
+                
+                
                 <div class="control-group">
+    <label class="control-label" for="inputName">{{localize "Name"}}</label>
+    <div class="controls">
+        <input type="text"  id="inputName" name="name" data-action="changesettings" value="{{settings.name}}" class='input-block-level'>
+    </div>
+</div>
+
+<div class="control-group">
+    <label class="control-label" for="inputPhone">{{localize "Phone"}}</label>
+    <div class="controls">
+        <input type="text" id="inputPhone" name="phone" data-action="changesettings" value="{{settings.phone}}" class='input-block-level'>
+    </div>
+</div>
+
+<div class="control-group">
+    <label class="control-label" for="inputPassengers">{{localize "Passengers"}}</label>
+    <div class="controls">
+        <input type="text" id="inputPassengers" name="passengers" data-action="changesettings" value="{{settings.passengers}}" class='input-block-level'>
+    </div>
+</div>
+
+<div class="control-group">
+    <label class="control-label" for="inputVehiculeType">{{localize "Vehicule Type"}}</label>
+    <div class="controls">
+       <select data-action="changesettings" name="vehicleTypeId" id="inputVehiculeType" class="select-taxihail">
+                  {{#each vehiclesList}}
+                  {{#ifCond this.id ../vehicleTypeId}}
+                  <option value="{{this.id}}" selected>{{this.display}}</option>
+                  {{else}}
+                  <option value="{{this.id}}">{{this.display}}</option>
+                  {{/ifCond}}
+                  {{/each}}
+              </select>
+            
+    </div>
+</div>
+
+<div class="control-group">
+    <label class="control-label" for="inputChargeType">{{localize "Charge Type"}}</label>
+    <div class="controls">
+        <select data-action="changesettings" id="inputChargeType" name="chargeTypeId" class="select-taxihail">
+            {{#each paymentsList}}
+                {{#ifCond this.id ../chargeTypeId}}
+                    <option value="{{this.id}}" selected>{{this.display}}</option>
+                {{else}}
+                    <option value="{{this.id}}">{{this.display}}</option>
+                {{/ifCond}}
+            {{/each}}
+        </select>
+    </div>
+</div>
+                
+                
+                
+
+                <div class="control-group">
+                    <label class="control-label">{{localize 'Apt No.'}}</label>
                     <div class="controls">
-                        <input type="text" id="inputApt" name="apartment" placeholder="{{localize 'Apt No.'}}" value="{{pickupAddress.apartment}}" class='input-block-level span2'>
-                        <input type="text" id="inputRingCode" name="ringCode"  placeholder="{{localize 'Ring Code'}}" value="{{pickupAddress.ringCode}}" class='input-block-level span2'>
+                        <input type="text" style="width: 100px;" id="inputApt" data-action="changepickup" name="apartment" placeholder="{{localize 'Apt No.'}}" value="{{pickupAddress.apartment}}" class='input-block-level span2'>
+                        <input type="text" style="float:right;width: 100px;" data-action="changepickup" id="inputRingCode" name="ringCode"  placeholder="{{localize 'Ring Code'}}" value="{{pickupAddress.ringCode}}" class='input-block-level span2'>
                     </div>
                 </div>
                 <div class="control-group">
