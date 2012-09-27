@@ -6,7 +6,7 @@
         events: {
             'click [data-action=clear]': 'clear',
             'click [data-action=locate]': 'locate',
-            'click [data-action=toggleselect]': 'toggleselect',
+            'click [data-action=toggletarget]': 'toggletarget',
             'focus [name=address]': 'onfocus'
         },
 
@@ -18,25 +18,26 @@
             $(document).on('click', this.ondocumentclick);
         },
         
-        toggleselect: function (e) {
+        toggletarget: function (e) {
             e && e.preventDefault();
 
-            this.trigger('toggleselect', this);
+            this.trigger('target', this, !$(e.currentTarget).is('.active'));
         },
 
         render: function() {
+
+            // Keep state of toggle button before re-rendering
+            var toggleClass = this.$("[data-action=toggletarget]").attr('class');
 
             var data = _.extend(this.model.toJSON(), {
                 options: _.pick(this.options, 'locate', 'clear')
             });
 
             this.$el.html(this.renderTemplate(data));
+            this.$("[data-action=toggletarget]").addClass(toggleClass);
 
             this.$('[name=address]').on('keyup', _.debounce(this.onkeyup, 500));
 
-            if (this.isBtnSelected) {
-                this.$(".btn[data-action=toggleselect]").attr("class", "btn active");
-            }
 
             this._selector = new TaxiHail.AddressSelectionView({
                 model: this.model
@@ -61,6 +62,10 @@
         open: function(e) {
             e && e.preventDefault();
 
+            // Deactivate the "target" button
+            this.toggleOff();
+            this.trigger('target', this, false);
+
             this.trigger('open', this);
             if(this._selector)
             {
@@ -75,7 +80,9 @@
             this.$('[name=address]').val(this.model.get('fullAddress'));
         },
 
-        
+        toggleOff: function(){
+            this.$('[data-action=toggletarget]').removeClass('active');
+        },
 
         locate: function (e) {
 
@@ -101,6 +108,11 @@
             
             var $button = $(e.currentTarget).children().first();
             var arrow = $button.replaceWith($spinContainer);
+
+            // Deactivate the "target" button
+            this.toggleOff();
+            this.trigger('target', this, false);
+
             
             TaxiHail.geolocation.getCurrentPosition()
                 .done(_.bind(function(address){
