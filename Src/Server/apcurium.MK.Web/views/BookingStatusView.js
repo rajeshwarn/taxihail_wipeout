@@ -1,6 +1,9 @@
 ﻿(function () {
 
     TaxiHail.BookingStatusView = TaxiHail.TemplatedView.extend({
+
+        className: 'booking-status-view',
+
         events: {
             'click [data-action=cancel]': 'cancel'
         },

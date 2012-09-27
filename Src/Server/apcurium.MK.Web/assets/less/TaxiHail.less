@@ -54,18 +54,25 @@ header {
 }
 
 .well {
-  min-height: 20px;
-  padding: 18px;
-  margin-bottom: 20px;
-  background-color: @wellBackground;
-  border: 1px solid #6A6855;
-  .border-radius(8px);
+    min-height: 20px;
+    padding: 18px;
+    margin-bottom: 20px;
+    background-color: @wellBackground;
+    border: 1px solid #6A6855;
+    .border-radius(8px);
+
+    &.well-form-actions {
+    padding-bottom: 0;
+    }
 
     .form-actions {
         margin-right: -18px;
         margin-left: -18px;
         margin-bottom: 0;
+        margin-top: 0;
         padding-left:0;
+        padding-top:10px;
+        padding-bottom:10px;
         background: transparent;
     }
 
@@ -182,10 +189,53 @@ header {
 }
 
 // BUTTONS
+
+// Custom Gradient Bar Colors for buttons and alerts
+.gradientBarCustom(@primaryColor, @secondaryColor, @textColor: #fff, @textShadow: 0 1px 1px rgba(0,0,0,.25)) {
+  color: @textColor;
+  text-shadow: @textShadow;
+  #gradient > .vertical-three-colors(@primaryColor, @primaryColor, 65%, @secondaryColor);
+  border-color: @secondaryColor @secondaryColor darken(@secondaryColor, 15%);
+  border-color: rgba(0,0,0,.1) rgba(0,0,0,.1) fadein(rgba(0,0,0,.1), 15%);
+}
+
+.buttonBackgroundCustom(@startColor, @endColor, @textColor: #fff, @textShadow: 0 1px 1px rgba(0,0,0,.25)) {
+  // gradientBar will set the background to a pleasing blend of these, to support IE<=9
+  .gradientBarCustom(@startColor, @endColor, @textColor, @textShadow);
+  *background-color: @endColor; /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+  .reset-filter();
+
+  // in these cases the gradient won't cover the background, so we override
+  &:hover, &:active, &.active, &.disabled, &[disabled] {
+    color: @textColor;
+    background-color: @endColor;
+    *background-color: darken(@endColor, 5%);
+  }
+
+  // IE 7 + 8 can't handle box-shadow to show active, so we darken a bit ourselves
+  &:active,
+  &.active {
+    background-color: darken(@endColor, 10%) e("\9");
+  }
+}
+
 .btn {
     .border-radius(2px);
     font-size: 18px;
     font-weight: bold;
+    .buttonBackgroundCustom(@btnBackgroundHighlight, @btnBackground);
+}
+
+.btn-primary {
+    .buttonBackgroundCustom(@btnPrimaryBackgroundHighlight, @btnPrimaryBackground);
+}
+
+.btn-danger {
+    .buttonBackgroundCustom(@btnDangerBackgroundHighlight, @btnDangerBackground);
+}  
+
+.btn-flat {
+    background: @taxiHailBlue;
 }
 
 // FORMS 
@@ -219,6 +269,15 @@ legend {
         padding-top: 5px;
         }
     }   
+}
+
+.booking-status-view {
+    .btn {
+        width: 89px;
+        float: left;
+        min-height: 1px;
+        margin-left: 40px;
+    }
 }
 
 //CONFIRM SETINGS 
