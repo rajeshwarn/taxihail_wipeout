@@ -20,30 +20,30 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     {
         private readonly string _ownerId;
         private readonly IGoogleService _googleService;
-		private readonly IAppResource _appResource;
-		private CancellationTokenSource _searchCancellationToken = new CancellationTokenSource();
+        private readonly IAppResource _appResource;
+        private CancellationTokenSource _searchCancellationToken = new CancellationTokenSource();
         private bool _isSearching;
 
-		public AddressSearchViewModel(string ownerId, string search, IGoogleService googleService, IAppResource appResource)
+        public AddressSearchViewModel(string ownerId, string search, IGoogleService googleService, IAppResource appResource)
         {
             _ownerId = ownerId;
             _googleService = googleService;
-			_appResource = appResource;
-			TinyIoCContainer.Current.Resolve<IUserPositionService>().Refresh();
+            _appResource = appResource;
+            TinyIoCContainer.Current.Resolve<IUserPositionService>().Refresh();
             SearchViewModelSelected = TinyIoCContainer.Current.Resolve<AddressSearchByGeoCodingViewModel>();
             Criteria = search;
             SearchSelected = true;
             HistoricIsHidden = true;
-			AllAddresses = new SectionAddressViewModel[0];
+            AllAddresses = new SectionAddressViewModel[0];
         }
 
         public AddressSearchBaseViewModel SearchViewModelSelected { get; set; }
 
         public IEnumerable<AddressViewModel> AddressViewModels { get; set; }
 
-		public IEnumerable<AddressViewModel> HistoricAddressViewModels { get; set; }
+        public IEnumerable<AddressViewModel> HistoricAddressViewModels { get; set; }
 
-		public IEnumerable<SectionAddressViewModel> AllAddresses {get; set;	}
+        public IEnumerable<SectionAddressViewModel> AllAddresses { get; set; }
 
         public string Criteria
         {
@@ -83,13 +83,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     CancelCurrentSearch();
 
                     _searchCancellationToken = new CancellationTokenSource();
-                    
+
                     var task = SearchViewModelSelected.OnSearchExecute(_searchCancellationToken.Token);
                     task.ContinueWith(RefreshResults);
-                    if(!(SearchViewModelSelected is AddressSearchByContactViewModel))
+                    if (!(SearchViewModelSelected is AddressSearchByContactViewModel))
                     {
-						Console.WriteLine( "Show Progress" );
-						TinyIoCContainer.Current.Resolve<IMessageService>().ShowProgress(true, () => CancelCurrentSearch() );
+                        Console.WriteLine("Show Progress");
+                        TinyIoCContainer.Current.Resolve<IMessageService>().ShowProgress(true, () => CancelCurrentSearch());
                         task.Start();
                     }
                     IsSearching = true;
@@ -108,9 +108,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public void RefreshResults(Task<IEnumerable<AddressViewModel>>  task)
+        public void RefreshResults(Task<IEnumerable<AddressViewModel>> task)
         {
-            if(task.IsCompleted
+            if (task.IsCompleted
                 && !task.IsCanceled)
             {
                 InvokeOnMainThread(() =>
@@ -119,41 +119,41 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     AddressViewModels = task.Result.Where(x => !x.Address.IsHistoric).ToList();
                     HistoricAddressViewModels = task.Result.Where(x => x.Address.IsHistoric).ToList();
                     HistoricIsHidden = !HistoricAddressViewModels.Any();
-					var allAddresses = new List<SectionAddressViewModel>();
-					if( SearchViewModelSelected is AddressSearchByFavoritesViewModel )
-					{
-						allAddresses.Add( new SectionAddressViewModel(){SectionTitle =  _appResource.GetString("FavoriteLocationsTitle"), Addresses = AddressViewModels} );
-						allAddresses.Add( new SectionAddressViewModel(){SectionTitle = _appResource.GetString("HistoryViewTitle"), Addresses = HistoricAddressViewModels} );
-					}
-					else
-					{
-						allAddresses.Add( new SectionAddressViewModel(){SectionTitle =  "", Addresses = AddressViewModels} );
-					}
+                    var allAddresses = new List<SectionAddressViewModel>();
+                    if (SearchViewModelSelected is AddressSearchByFavoritesViewModel)
+                    {
+                        allAddresses.Add(new SectionAddressViewModel() { SectionTitle = _appResource.GetString("FavoriteLocationsTitle"), Addresses = AddressViewModels });
+                        allAddresses.Add(new SectionAddressViewModel() { SectionTitle = _appResource.GetString("HistoryViewTitle"), Addresses = HistoricAddressViewModels });
+                    }
+                    else
+                    {
+                        allAddresses.Add(new SectionAddressViewModel() { SectionTitle = "", Addresses = AddressViewModels });
+                    }
 
-					AllAddresses = allAddresses;
+                    AllAddresses = allAddresses;
 
-					FirePropertyChanged(() => AddressViewModels);
+                    FirePropertyChanged(() => AddressViewModels);
 
-					FirePropertyChanged(() => HistoricAddressViewModels);
-					FirePropertyChanged(() => AllAddresses);
-					FirePropertyChanged(() => HistoricIsHidden);
+                    FirePropertyChanged(() => HistoricAddressViewModels);
+                    FirePropertyChanged(() => AllAddresses);
+                    FirePropertyChanged(() => HistoricIsHidden);
                 });
             }
-			Console.WriteLine( "Hide Progress" );
-			TinyIoCContainer.Current.Resolve<IMessageService>().ShowProgress(false);
+            Console.WriteLine("Hide Progress");
+            TinyIoCContainer.Current.Resolve<IMessageService>().ShowProgress(false);
         }
 
         private void ClearResults()
         {
             AddressViewModels = new AddressViewModel[0];
             HistoricAddressViewModels = new AddressViewModel[0];
-			AllAddresses = new SectionAddressViewModel[0];
+            AllAddresses = new SectionAddressViewModel[0];
             HistoricIsHidden = true;
 
             FirePropertyChanged(() => AddressViewModels);
             FirePropertyChanged(() => HistoricAddressViewModels);
-			FirePropertyChanged(() => AllAddresses);
-			FirePropertyChanged(() => HistoricIsHidden);
+            FirePropertyChanged(() => AllAddresses);
+            FirePropertyChanged(() => HistoricIsHidden);
         }
 
         public IMvxCommand RowSelectedCommand
@@ -166,73 +166,96 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             {
                                 if (address.Address != null)
                                 {
-                                    if (address.Address.FullAddress.IsNullOrEmpty() && (address.Address.AddressType == "place") && (address.Address.PlaceReference.HasValue()))
+
+                                    if (address.Address != null)
                                     {
-                                        var placeAddress = _googleService.GetPlaceDetail(address.Address.PlaceReference);
-                                        placeAddress.FriendlyName = address.Address.FriendlyName;
-                                        InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new AddressSelected(this, placeAddress, _ownerId)));
-                                    }
-                                    else
-                                    {
-                                        InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new AddressSelected(this, address.Address, _ownerId)));
+                                        if (address.Address.FullAddress.IsNullOrEmpty() && (address.Address.AddressType == "place") && (address.Address.PlaceReference.HasValue()))
+                                        {
+                                            var placeAddress = _googleService.GetPlaceDetail(address.Address.PlaceReference);
+                                            placeAddress.FriendlyName = address.Address.FriendlyName;
+                                            InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new AddressSelected(this, placeAddress, _ownerId)));
+                                            RequestClose(this);
+                                        }
+                                        if (address.Address.AddressType == "localContact")
+                                        {
+                                            var geolocService = TinyIoCContainer.Current.Resolve<IGeolocService>();
+                                            var addresses = geolocService.SearchAddress(address.Address.FullAddress, 0, 0);
+                                            if (addresses.Count() > 0)
+                                            {
+                                                InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new AddressSelected(this, addresses.ElementAt(0), _ownerId)));
+                                                RequestClose(this);
+                                            }
+                                            else
+                                            {
+                                                var title = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("LocalContactCannotBeResolverTitle");
+                                                var msg = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("LocalContactCannotBeResolverMessage");
+                                                TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage(title, msg);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new AddressSelected(this, address.Address, _ownerId)));
+                                            RequestClose(this);
+                                        }
                                     }
                                 }
                             });
-                        RequestClose(this);
+                        
                     });
             }
         }
 
-		private enum TopBarButton { SearchBtn, FavoritesBtn, ContactsBtn, PlacesBtn }
+        private enum TopBarButton { SearchBtn, FavoritesBtn, ContactsBtn, PlacesBtn }
 
-        
-		private void SetSelected(TopBarButton btn)
-		{
-		    switch (btn)
-		    {
-		        case TopBarButton.SearchBtn:
-		            SearchViewModelSelected = TinyIoCContainer.Current.Resolve<AddressSearchByGeoCodingViewModel>();
+
+        private void SetSelected(TopBarButton btn)
+        {
+            switch (btn)
+            {
+                case TopBarButton.SearchBtn:
+                    SearchViewModelSelected = TinyIoCContainer.Current.Resolve<AddressSearchByGeoCodingViewModel>();
                     break;
-		        case TopBarButton.FavoritesBtn:
+                case TopBarButton.FavoritesBtn:
                     SearchViewModelSelected = TinyIoCContainer.Current.Resolve<AddressSearchByFavoritesViewModel>();
-		            break;
-		        case TopBarButton.ContactsBtn:
-		            SearchViewModelSelected = TinyIoCContainer.Current.Resolve<AddressSearchByContactViewModel>();
-		            break;
-		        case TopBarButton.PlacesBtn:
+                    break;
+                case TopBarButton.ContactsBtn:
+                    SearchViewModelSelected = TinyIoCContainer.Current.Resolve<AddressSearchByContactViewModel>();
+                    break;
+                case TopBarButton.PlacesBtn:
                     SearchViewModelSelected = TinyIoCContainer.Current.Resolve<AddressSearchByPlacesViewModel>();
-		            break;
-		        default:
-		            throw new ArgumentOutOfRangeException("btn");
-		    }
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException("btn");
+            }
 
             SearchSelected = btn == TopBarButton.SearchBtn;
             FavoritesSelected = btn == TopBarButton.FavoritesBtn;
             ContactsSelected = btn == TopBarButton.ContactsBtn;
             PlacesSelected = btn == TopBarButton.PlacesBtn;
-            
-			if( Criteria == null )
-			{
-				SearchCommand.Execute(Criteria);
-			}
-			else
-			{
-		    	Criteria = null;
-			}
-		}
+
+            if (Criteria == null)
+            {
+                SearchCommand.Execute(Criteria);
+            }
+            else
+            {
+                Criteria = null;
+            }
+        }
 
         public IMvxCommand SelectedChangedCommand
         {
-            get { 
+            get
+            {
                 return new MvxRelayCommand<object>(param => param.Maybe(tag =>
                 {
                     ClearResults();
                     TopBarButton btSelected;
-                    if(Enum.TryParse(tag.ToString(), true, out btSelected))
+                    if (Enum.TryParse(tag.ToString(), true, out btSelected))
                     {
                         SetSelected(btSelected);
                     }
-                })); 
+                }));
             }
         }
 
@@ -287,7 +310,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get { return new MvxRelayCommand(() => RequestClose(this)); }
         }
 
-        
+
 
     }
 }

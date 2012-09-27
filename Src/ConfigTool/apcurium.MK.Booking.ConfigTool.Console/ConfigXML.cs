@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.ConfigTool
                          "http://schemas.microsoft.com/developer/msbuild/2003"
                           );
 
-            var node = doc.SelectSingleNode(NodeSelector, nsManager  );
+            var node = doc.SelectSingleNode(NodeSelector, nsManager  ); 
 
             if (string.IsNullOrEmpty(Attribute))
             {
