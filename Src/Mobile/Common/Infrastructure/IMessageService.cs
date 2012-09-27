@@ -18,7 +18,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 
     public enum ToastDuration
     {
-        Short,
-        Long,
+        Short = 5,
+        Long = 8,
     }
 }

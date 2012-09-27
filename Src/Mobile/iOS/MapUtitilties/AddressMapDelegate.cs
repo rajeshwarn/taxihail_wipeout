@@ -12,9 +12,11 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtilities
 {
 	public class AddressMapDelegate : MKMapViewDelegate
 	{
-		public AddressMapDelegate ()
+		private bool _regionMovedActivated;
+
+		public AddressMapDelegate (bool regionMovedActivated = true )
 		{
-			
+			_regionMovedActivated = regionMovedActivated;
 		}
 
 		public override MKAnnotationView GetViewForAnnotation (MKMapView mapView, NSObject annotation)
@@ -38,7 +40,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtilities
 					anv.RefreshPinImage();
 				}
 
-				anv.CanShowCallout = true;
+				anv.CanShowCallout = ann.AddressType != AddressAnnotationType.Taxi;
 
 				return anv;
 			}
@@ -46,7 +48,10 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtilities
 
 		public override void RegionChanged (MKMapView mapView, bool animated)
 		{
-			((TouchMap)mapView).OnRegionChanged();
+			if( _regionMovedActivated )
+			{
+				((TouchMap)mapView).OnRegionChanged();
+			}
 		}
 	}
 }

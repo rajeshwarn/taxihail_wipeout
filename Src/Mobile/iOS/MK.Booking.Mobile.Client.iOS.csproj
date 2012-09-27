@@ -289,6 +289,7 @@
     <Compile Include="Converters\AppConverters.cs" />
     <Compile Include="Controls\DateTimePicker.cs" />
     <Compile Include="Controls\BarButtonItem.cs" />
+    <Compile Include="Controls\ToastMessage.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
