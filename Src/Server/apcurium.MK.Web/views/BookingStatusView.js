@@ -15,19 +15,29 @@
 
         render: function() {
 
+            // Close popover if it is open
+            // Otherwise it will stay there forever
+            this.$('[data-action=call]').popover('hide');
+
             this.$el.html(this.renderTemplate(this.model.getStatus().toJSON()));
 
             this.$('[data-action=call]').popover({
-                title: 'title',
-                content: 'content'
-            });
+                    title:"Call me maybe",
+                    content:"514 692 6813"
+                });
 
             return this;
         },
 
         remove: function() {
 
+            // Close popover if it is open
+            // Otherwise it will stay there forever
+            this.$('[data-action=call]').popover('hide');
+
             this.$el.remove();
+
+            // Stop polling for Order Status updates
             window.clearInterval(this.interval);
 
         },
