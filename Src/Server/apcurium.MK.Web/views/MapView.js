@@ -20,16 +20,11 @@
                 var location = new google.maps.LatLng(value.latitude, value.longitude);
                 var loc = this.offsetX(location, 0, offsetY);
                 if (this._pickupPin) {
-                   // this.offsetCenter(location, 0, -200);
-
                     this._pickupPin.setPosition(location);
-
-                } else {
-                    this._pickupPin = this.addMarker(loc, 'http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+                    this._pickupPin.setVisible(true);
                 }
-                
+
                 this._map.setCenter(loc);
-                //this._map.setCenter(location);
             }, this);
 
             this.model.on('change:dropOffAddress', function (model, value) {
@@ -37,9 +32,9 @@
                 var loc = this.offsetX(location, 0, offsetY);
                 if (this._dropOffPin) {
                     this._dropOffPin.setPosition(location);
-                } else {
-                    this._dropOffPin = this.addMarker(loc, 'http://maps.google.com/mapfiles/ms/icons/red-dot.png');
+                    this._dropOffPin.setVisible(true);
                 }
+
                 this._map.setCenter(loc);
             }, this);
             
@@ -69,8 +64,7 @@
                 center: new google.maps.LatLng(-34.397, 150.644),
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
                 zoomControlOptions: {
-                    position: google.maps.ControlPosition.LEFT_CENTER,
-
+                    position: google.maps.ControlPosition.LEFT_CENTER
                 }
 
             };
@@ -92,8 +86,21 @@
             label.bindTo('text', this._vehicleMarker, 'text');
             label.bindTo('visible', this._vehicleMarker, 'visible');
 
-            return this;
+            this._pickupPin = new google.maps.Marker({
+                position: this._map.getCenter(),
+                map: this._map,
+                icon: 'assets/img/pin_green.png',
+                visible: false
+            });
 
+            this._dropOffPin = new google.maps.Marker({
+                position: this._map.getCenter(),
+                map: this._map,
+                icon: 'assets/img/pin_red.png',
+                visible: false
+            });
+
+            return this;
         },
 
         updateVehiclePosition: function(orderStatus){
@@ -156,19 +163,6 @@
             return this._map.getProjection().fromPointToLatLng(new google.maps.Point(
                 point1.x - point2.x,
                 point1.y + point2.y));
-            
-            
-
-        },
-
-
-        addMarker: function (location, iconImage) {
-            var loc = this.offsetX(location, 0, -offsetY);
-            return new google.maps.Marker({
-                position: loc,
-                map: this._map,
-                icon: iconImage
-            } );
         }
 
         
