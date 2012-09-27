@@ -41,9 +41,8 @@
             this.$('#bookBt').button('loading');
             e.preventDefault();
             this.model.set('settings', settings);
-            this.model.save({}, {
-                success: function (value) {
-                    TaxiHail.app.navigate('bookconfirmed/' + value.get('iBSOrderId'), { trigger: true });
+            this.model.save({},{success : function (model) {
+                TaxiHail.app.navigate('status/' + model.id, { trigger: true });
                 },
                 error: this.showErrors
             });

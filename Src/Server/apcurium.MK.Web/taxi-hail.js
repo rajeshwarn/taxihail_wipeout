@@ -1,4 +1,4 @@
-﻿var TaxiHail = {
+var TaxiHail = {
     resources: {}
 };
 
@@ -35,8 +35,8 @@ TaxiHail.loader = {
 };
 $(function () {
     TaxiHail.loader.load(
-        /* Localizations */ ["Home", "Book", "Login", "AddressSelection", "BookingConfirmation", "SettingsEdit", "Signup", "LoginStatus", "Map", "BookingConfirmed", "Global"],
-        /* Templates*/["Home", "Book", "Login", "AddressSelection", "AddressItem", "AddressControl", "AddressSearch", "BookingConfirmation", "SettingsEdit", "Signup", "LoginStatus", "BookingConfirmed"],
+        /* Localizations */ ["Home", "Book", "Login", "AddressSelection", "BookingConfirmation", "SettingsEdit", "Signup", "LoginStatus", "Map", "BookingStatus", "Global"],
+        /* Templates*/["Home", "Book", "Login", "AddressSelection", "AddressItem", "AddressControl", "AddressSearch", "BookingConfirmation", "SettingsEdit", "Signup", "LoginStatus", "BookingStatus"],
         function () {
 
             // Application starts here

@@ -1,0 +1,24 @@
+﻿<div class="row">
+    <div class="span6">
+        <div class='well'>
+            <legend>{{localize "Your Order"}}</legend>
+            <div class="control-group">
+                <label class="control-label">{{localize "Confirmation Number"}}</label>
+                <div class="controls">
+                    {{iBSOrderId}}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">{{localize "Status"}}</label>
+                <div class="controls">
+                    {{iBSStatusDescription}}
+                </div>
+            </div>
+            <div class='row'>
+                <a href='#' class='btn btn-large btn-danger span1'  data-action='cancel'>{{localize "Cancel"}}</a>
+                <a href='tel://514-692-6813' class='btn btn-large btn-inverse span1' rel='popover' data-action='call' data-placement='top' data-trigger='click'>{{localize "Call"}}</a>
+                <a href='#' class='btn btn-large btn-success span2'>{{localize "New Ride"}}</a>
+            </row>
+        </div>
+    </div>
+</div>

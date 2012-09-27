@@ -261,6 +261,9 @@
     <Content Include="assets\img\cancel-icon.png" />
     <Content Include="assets\img\location.png" />
     <Content Include="assets\img\pin-icon.png" />
+    <Content Include="assets\img\pin_green.png" />
+    <Content Include="assets\img\pin_red.png" />
+    <Content Include="assets\img\taxi_label.png" />
     <Content Include="assets\img\validFieldGreen.png" />
     <Content Include="assets\js\backbone-validation.js" />
     <Content Include="assets\js\backbone.js" />
@@ -277,6 +280,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="models\NewAccount.js" />
+    <Content Include="models\OrderStatus.js" />
     <Content Include="models\ReferenceData.js" />
     <Content Include="models\Settings.js" />
     <Content Include="models\UserAccount.js" />
@@ -294,7 +298,7 @@
     <Content Include="templates\AddressSelection.html" />
     <Content Include="templates\book.html" />
     <Content Include="templates\BookingConfirmation.html" />
-    <Content Include="templates\BookingConfirmed.html" />
+    <Content Include="templates\BookingStatus.html" />
     <Content Include="templates\login.html" />
     <Content Include="templates\LoginStatus.html" />
     <Content Include="templates\SettingsEdit.html" />
@@ -307,7 +311,7 @@
     <Content Include="views\AddressListView.js" />
     <Content Include="views\AddressSelectionView.js" />
     <Content Include="views\BookingConfirmationView.js" />
-    <Content Include="views\BookingConfirmedView.js" />
+    <Content Include="views\BookingStatusView.js" />
     <Content Include="views\BookView.js" />
     <Content Include="views\LoginStatusView.js" />
     <Content Include="views\LoginView.js" />
