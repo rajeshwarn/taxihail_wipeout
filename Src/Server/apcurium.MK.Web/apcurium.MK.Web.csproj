@@ -268,6 +268,7 @@
     <Content Include="assets\js\backbone-validation.js" />
     <Content Include="assets\js\backbone.js" />
     <Content Include="assets\js\backbone.validation.bootstrap.js" />
+    <Content Include="assets\js\combobox-jquery.js" />
     <Content Include="assets\js\handlebars-1.0.rc.1.js" />
     <Content Include="assets\js\modernizr.js" />
     <Content Include="assets\js\spin.js" />
@@ -301,7 +302,6 @@
     <Content Include="templates\BookingStatus.html" />
     <Content Include="templates\login.html" />
     <Content Include="templates\LoginStatus.html" />
-    <Content Include="templates\SettingsEdit.html" />
     <Content Include="templates\Signup.html" />
     <Content Include="themes\generic\img\header-bg.png" />
     <Content Include="themes\generic\img\logo.png" />
@@ -316,7 +316,6 @@
     <Content Include="views\LoginStatusView.js" />
     <Content Include="views\LoginView.js" />
     <Content Include="views\MapView.js" />
-    <Content Include="views\SettingsEditView.js" />
     <Content Include="views\SignupView.js" />
     <Content Include="views\TemplatedView.js" />
     <Content Include="Web.config">
