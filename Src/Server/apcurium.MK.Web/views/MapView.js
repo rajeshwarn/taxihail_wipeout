@@ -1,13 +1,11 @@
 ﻿(function () {
-    var offsetY = -200;
     TaxiHail.MapView = Backbone.View.extend({
         
         events: {
         },
         
         initialize : function () {
-            _.bindAll(this, "geolocdone");
-            _.bindAll(this, "geoloc");
+            _.bindAll(this, "geolocdone", "geoloc");
         },
         
         setModel: function(model) {
@@ -18,37 +16,28 @@
 
             this.model.on('change:pickupAddress', function (model, value) {
                 var location = new google.maps.LatLng(value.latitude, value.longitude);
-                var loc = this.offsetX(location, 0, offsetY);
                 if (this._pickupPin) {
                     this._pickupPin.setPosition(location);
                     this._pickupPin.setVisible(true);
                 }
-
-                this._map.setCenter(loc);
+                this.centerMap(location);
             }, this);
 
             this.model.on('change:dropOffAddress', function (model, value) {
                 var location = new google.maps.LatLng(value.latitude, value.longitude);
-                var loc = this.offsetX(location, 0, offsetY);
                 if (this._dropOffPin) {
                     this._dropOffPin.setPosition(location);
                     this._dropOffPin.setVisible(true);
                 }
-
-                this._map.setCenter(loc);
+                this.centerMap(location);
             }, this);
             
 
-            offsetY = -(this.$el.height() / 4);
-            var targetX = ( this.$el.width() / 2 ) -13;
-            var targetY = ( this.$el.height() / 1.5) + 45 ;
             this.model.on('change:isPickupActive change:isDropOffActive', function (model, value) {
-                if (model.get('isPickupActive') == true || model.get('isDropOffActive') == true) {
-                    if ($("#target-icon").length==0) {
-                        this.$el.append($('<img id="target-icon" src="themes/generic/img/target.png"  style=" width : 25px ; position : absolute; top :' + targetY + 'px ; left :' + targetX + 'px;">'));
-                    }
+                if (model.get('isPickupActive') || model.get('isDropOffActive')) {
+                    this._target.set('visible', true);
                 } else {
-                    $("#target-icon").remove();
+                    this._target.set('visible', false);
                 }
             }, this);
             
@@ -70,8 +59,6 @@
             };
             this._map = new google.maps.Map(this.el, mapOptions);
             google.maps.event.addListener(this._map, 'dragend', this.geoloc);
-
-            
             
             this._vehicleMarker = new google.maps.Marker({
                 position: this._map.getCenter(),
@@ -100,7 +87,35 @@
                 visible: false
             });
 
+            var target = this._target = new Target({
+                position: this._map.getCenter(),
+                map: this._map,
+                visible: true
+            });
+
+            var onmapchanged = function() {
+                var $container = $(target.getMap().getDiv()),
+                    x = $container.width()/2 ,
+                    y = $container.height() * 3 / 4,
+                    projection = target.getProjection(),
+                    position = projection.fromContainerPixelToLatLng(new google.maps.Point(x, y));
+
+                target.set('position', position);
+            };
+
+            google.maps.event.addListener(this._map, 'bounds_changed', onmapchanged);
+            google.maps.event.addListener(this._map, 'drag', onmapchanged);
+
+
             return this;
+        },
+
+        centerMap: function(location) {
+            var projection = this._target.getProjection(),
+                    point = projection.fromLatLngToDivPixel(location),
+                    center = new google.maps.Point(point.x, point.y - $(this._map.getDiv()).height() / 4 );
+
+            this._map.setCenter(projection.fromDivPixelToLatLng(center));
         },
 
         updateVehiclePosition: function(orderStatus){
@@ -120,52 +135,22 @@
                 }
             }
         },
-        
+
         geoloc: function () {
-            if (this.model.get('isPickupActive') == true || this.model.get('isDropOffActive') == true) {
-                if (this.model.get('isPickupActive')) {
-                    if (this._pickupPin) {
-                        var loc = this.offsetX(this._map.getCenter(), 0, -offsetY);
-                        this._pickupPin.setPosition(loc);
-                    } else {
-
-                        this._pickupPin = this.addMarker(this._map.getCenter(), 'http://maps.google.com/mapfiles/ms/icons/green-dot.png');
-
-                    }
-                    TaxiHail.geocoder.geocode(this.offsetX(this._map.getCenter(), 0, 200).Xa, this.offsetX(this._map.getCenter(), 0, -offsetY).Ya)
-                        .done(this.geolocdone);
-            } else {
-                if (this._dropOffPin) {
-                    //this._dropOffPin.setPosition(this._map.getCenter());
-                    var loc = this.offsetX(this._map.getCenter(), 0, -offsetY);
-                    this._dropOffPin.setPosition(loc);
-                } else {
-                    this._dropOffPin = this.addMarker(this._map.getCenter(), 'http://maps.google.com/mapfiles/ms/icons/red-dot.png');
+            var position = this._target.get('position');
+            if (this.model.get('isPickupActive') || this.model.get('isDropOffActive')) {
+                if (this.model.get('isPickupActive') && this._pickupPin) {
+                    this._pickupPin.setPosition(position);
+                    this._pickupPin.setVisible(true);
+                } else if (this.model.get('isDropOffActive') && this._dropOffPin) {
+                    this._dropOffPin.setPosition(position);
+                    this._dropOffPin.setVisible(true);
                 }
 
-                    TaxiHail.geocoder.geocode(this.offsetX(this._map.getCenter(), 0, -offsetY).Xa, this.offsetX(this._map.getCenter(), 0, -offsetY).Ya)
-                            .done(this.geolocdone);
+                TaxiHail.geocoder.geocode(position.lat(), position.lng())
+                    .done(this.geolocdone);
             }
-            }
-            
-        },
-        
-        offsetX: function (latlng, offsetx, offsety) {
-
-
-            var point1 = this._map.getProjection().fromLatLngToPoint(
-        (latlng instanceof google.maps.LatLng) ? latlng : this._map.getCenter()
-           );
-            var point2 = new google.maps.Point(
-                ((typeof (offsetx) == 'number' ? offsetx : 0) / Math.pow(2, this._map.getZoom())) || 0,
-                ((typeof (offsety) == 'number' ? offsety : 0) / Math.pow(2, this._map.getZoom())) || 0
-            );
-            return this._map.getProjection().fromPointToLatLng(new google.maps.Point(
-                point1.x - point2.x,
-                point1.y + point2.y));
         }
-
-        
     });
 
     var Label = function(opt_options) {
@@ -224,6 +209,49 @@
          }
     });
 
+    var Target = function(options) {
+        // Initialization
+        this.setValues(options);
 
+        var div = this.div_ = document.createElement('div');
+        div.style.cssText = 'width: 50px; height: 50px; background: url(themes/generic/img/target.png) top left no-repeat;position: absolute; display: none';
+    };
+
+    _.extend(Target.prototype, new google.maps.OverlayView(), {
+        onAdd: function() {
+            var pane = this.getPanes().overlayLayer;
+            pane.style.zIndex = 121;
+            pane.appendChild(this.div_);
+
+             var me = this;
+             this.listeners_ = [
+             google.maps.event.addListener(this, 'position_changed',
+                   function() { me.draw(); }),
+               google.maps.event.addListener(this, 'visible_changed',
+                   function() { me.draw(); })
+             ];
+         },
+         onRemove: function() {
+            this.div_.parentNode.removeChild(this.div_);
+
+            for (var i = 0, I = this.listeners_.length; i < I; ++i) {
+               google.maps.event.removeListener(this.listeners_[i]);
+            }
+        },
+        draw: function() {
+            if(!this.get('visible')) {
+                this.div_.style.display = 'none';
+                return;
+            }
+
+            var projection = this.getProjection();
+            var position = projection.fromLatLngToDivPixel(this.get('position'));
+
+            var div = this.div_;
+            div.style.left = (position.x -25) + 'px';
+            div.style.top = (position.y  -25) + 'px';
+            div.style.display = 'block';
+         }
+    });
 
 }());
