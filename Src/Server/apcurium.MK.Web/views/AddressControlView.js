@@ -107,7 +107,7 @@
             $spinContainer.append(spinner.el);
             
             var $button = $(e.currentTarget).children().first();
-            var arrow = $button.replaceWith($spinContainer);
+            var $arrow = $button.replaceWith($spinContainer);
 
             // Deactivate the "target" button
             this.toggleOff();
@@ -120,7 +120,7 @@
                 }, this))
                 .always(function (address) {
                     spinner.stop();
-                    $button.replaceWith(arrow);
+                    $spinContainer.replaceWith($arrow);
                 });
         },
 
