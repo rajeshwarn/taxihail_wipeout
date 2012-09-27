@@ -93,6 +93,7 @@
             }, this);
 
             order.fetch();
+            order.getStatus().fetch();
 
             renderView(TaxiHail.BookingStatusView, order);
        
