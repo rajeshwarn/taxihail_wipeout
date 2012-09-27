@@ -25,7 +25,7 @@
                     this._pickupPin.setPosition(location);
 
                 } else {
-                    this._pickupPin = this.addMarker(location, 'http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+                    this._pickupPin = this.addMarker(loc, 'http://maps.google.com/mapfiles/ms/icons/green-dot.png');
                 }
                 
                 this._map.setCenter(loc);
@@ -38,7 +38,7 @@
                 if (this._dropOffPin) {
                     this._dropOffPin.setPosition(location);
                 } else {
-                    this._dropOffPin = this.addMarker(location, 'http://maps.google.com/mapfiles/ms/icons/red-dot.png');
+                    this._dropOffPin = this.addMarker(loc, 'http://maps.google.com/mapfiles/ms/icons/red-dot.png');
                 }
                 this._map.setCenter(loc);
             }, this);
@@ -125,8 +125,8 @@
                         this._pickupPin = this.addMarker(this._map.getCenter(), 'http://maps.google.com/mapfiles/ms/icons/green-dot.png');
 
                     }
-                    //TaxiHail.geocoder.geocode(this.offsetX(this._map.getCenter(), 0, 200).Xa, this.offsetX(this._map.getCenter(), 0, -offsetY).Ya)
-                   //     .done(this.geolocdone);
+                    TaxiHail.geocoder.geocode(this.offsetX(this._map.getCenter(), 0, 200).Xa, this.offsetX(this._map.getCenter(), 0, -offsetY).Ya)
+                        .done(this.geolocdone);
             } else {
                 if (this._dropOffPin) {
                     //this._dropOffPin.setPosition(this._map.getCenter());
@@ -136,8 +136,8 @@
                     this._dropOffPin = this.addMarker(this._map.getCenter(), 'http://maps.google.com/mapfiles/ms/icons/red-dot.png');
                 }
 
-                    //TaxiHail.geocoder.geocode(this.offsetX(this._map.getCenter(), 0, -offsetY).Xa, this.offsetX(this._map.getCenter(), 0, -offsetY).Ya)
-                    //        .done(this.geolocdone);
+                    TaxiHail.geocoder.geocode(this.offsetX(this._map.getCenter(), 0, -offsetY).Xa, this.offsetX(this._map.getCenter(), 0, -offsetY).Ya)
+                            .done(this.geolocdone);
             }
             }
             

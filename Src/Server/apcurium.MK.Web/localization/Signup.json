@@ -1,7 +1,9 @@
 ﻿{
 	"Email" : "Email",
 	"FullName" : "Full Name",
-	"Phone" : "Phone",
+	"Phone" : "Phone Number",
 	"Password" : "Password",
-	"ConfirmPassword" : "Confirm"
+	"ConfirmPassword" : "Confirm",
+	"CreateBt" : "Sign Up",
+	"SignupTitle" : "Sign Up"
 }

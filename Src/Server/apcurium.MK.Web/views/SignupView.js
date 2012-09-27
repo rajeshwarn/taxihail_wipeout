@@ -8,7 +8,9 @@
             "change :text": "onPropertyChanged",
             "change :password": "onPropertyChanged",
             "keyup :text": "onKeyPress",
-            "keyup :password": "onKeyPress"
+            "keyup :password": "onKeyPress",
+            "blur :text": "onKeyPress",
+            "blur :password": "onKeyPress"
         },
         
         initialize:function () {
