@@ -258,6 +258,9 @@
     <Content Include="assets\bootstrap\less\tests\css-tests.html" />
     <Content Include="assets\bootstrap\less\tests\forms.html" />
     <Content Include="assets\bootstrap\less\tests\navbar.html" />
+    <Content Include="assets\img\cancel-icon.png" />
+    <Content Include="assets\img\location.png" />
+    <Content Include="assets\img\pin-icon.png" />
     <Content Include="assets\img\validFieldGreen.png" />
     <Content Include="assets\js\backbone-validation.js" />
     <Content Include="assets\js\backbone.js" />
