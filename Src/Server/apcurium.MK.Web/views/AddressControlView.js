@@ -11,9 +11,11 @@
         },
 
         initialize: function(attrs, options) {
-            _.bindAll(this, 'onkeyup');
+            _.bindAll(this, 'onkeyup', 'ondocumentclick');
             this.$el.addClass('address-picker');
             this.model.on('change', this.render, this);
+
+            $(document).on('click', this.ondocumentclick);
         },
         
         toggleselect: function (e) {
@@ -51,6 +53,7 @@
 
         remove: function() {
             if(this._selector) this._selector.remove();
+            $(document).off('click', this.ondocumentclick);
             this.$el.remove();
             return this;
         },
@@ -59,7 +62,10 @@
             e && e.preventDefault();
 
             this.trigger('open', this);
-            this._selector && this._selector.show();
+            if(this._selector)
+            {
+                this._selector.show();
+            }
 
         },
 
@@ -68,6 +74,8 @@
             // Set address in textbox back to the value of the model
             this.$('[name=address]').val(this.model.get('fullAddress'));
         },
+
+        
 
         locate: function (e) {
 
@@ -115,6 +123,12 @@
 
         onkeyup: function(e) {
             this._selector && this._selector.search($(e.currentTarget).val());
+        },
+
+        ondocumentclick: function(e) {
+            if(!this.$el.find(e.target).length) {
+                this.close();
+            }
         }
 
     });
