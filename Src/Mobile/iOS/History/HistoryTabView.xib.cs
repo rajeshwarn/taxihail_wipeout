@@ -9,6 +9,9 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Client.InfoTableView;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.ListViewStructure;
+using System.Threading.Tasks;
+using System.Threading;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -18,6 +21,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		// The IntPtr and initWithCoder constructors are required for items that need 
 		// to be able to be created from a xib rather than from managed code
+		private CancellationTokenSource _searchCancellationToken = new CancellationTokenSource();
 
 		public HistoryTabView (IntPtr handle) : base(handle)
 		{
@@ -68,22 +72,48 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		private void LoadGridData ()
 		{
-			if (tableHistory != null) {
+			if (tableHistory == null) {
+				return;
+			}
+			TinyIoCContainer.Current.Resolve<IMessageService>().ShowProgress(true, () => CancelCurrentTask() );
+			_searchCancellationToken = new CancellationTokenSource();
+			var task = new Task<InfoStructure>(() => GetHistoricStructure(), _searchCancellationToken.Token);
+			task.ContinueWith(RefreshData);
+			task.Start();
+		}
 
-                var structure = GetHistoricStructure();				
-				if (structure.Sections.ElementAt(0).Items.Count () == 0) {
-					lblNoHistory.Hidden = false;
-					tableHistory.Hidden = true;
-				} else {
-					lblNoHistory.Hidden = true;
-					tableHistory.Hidden = false;
-
-					tableHistory.DataSource = new HistoryTableViewDataSource (structure);
-					tableHistory.Delegate = new HistoryTableViewDelegate (this, structure );
-					tableHistory.ReloadData ();
-				}
+		public void RefreshData( Task<InfoStructure>  task )
+		{
+			if(task.IsCompleted && !task.IsCanceled)
+			{
+				InvokeOnMainThread( () => {
+					if (task.Result.Sections.ElementAt(0).Items.Count () == 0) {
+						lblNoHistory.Hidden = false;
+						tableHistory.Hidden = true;
+					} else {
+						lblNoHistory.Hidden = true;
+						tableHistory.Hidden = false;
+						
+						tableHistory.DataSource = new HistoryTableViewDataSource (task.Result);
+						tableHistory.Delegate = new HistoryTableViewDelegate (this, task.Result );
+						tableHistory.ReloadData ();
+					}
+				});
+			}
+			TinyIoCContainer.Current.Resolve<IMessageService>().ShowProgress(false);
+		}
+		
+		private void CancelCurrentTask()
+		{
+			if (_searchCancellationToken != null
+			    && _searchCancellationToken.Token.CanBeCanceled)
+			{
+				_searchCancellationToken.Cancel();
+				_searchCancellationToken.Dispose();
+				_searchCancellationToken = null;
 			}
 		}
+
 
 		private InfoStructure GetHistoricStructure()
 		{

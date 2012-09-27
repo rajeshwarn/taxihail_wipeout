@@ -6,7 +6,6 @@
         },
         
         initialize: function () {
-            this.model.set('isPickupBtnSelected', true);
 
             this.model.on('change', function(model, value) {
                 
@@ -39,22 +38,30 @@
              }, this);
             
            
+             this.model.on('change:isPickupActive', function (model, value) {
+                 this._dropOffAddressView.$(".btn[data-action=toggleselect]").removeClass('active');
+                 if (value == true) {
+                     this._pickupAddressView.isBtnSelected = true;
 
+                     this._dropOffAddressView.isBtnSelected = false;
+                 } else {
+                     this._pickupAddressView.isBtnSelected = false;
+                 }
 
-            this.model.on('change:isPickupBtnSelected', function (model, value) {
-                if (value == true) {
-                    this._dropOffAddressView.$(".btn[data-action=toggleselect]").attr("class", "btn");
-                    this._dropOffAddressView.isBtnSelected = false;
-                    this._pickupAddressView.isBtnSelected = true;
-                    
-                } else {
-                    this._pickupAddressView.$(".btn[data-action=toggleselect]").attr("class", "btn");
-                    this._pickupAddressView.isBtnSelected = false;
-                    this._dropOffAddressView.isBtnSelected = true;
-                }
-            }, this);
+             }, this);
             
-            
+             this.model.on('change:isDropOffActive', function (model, value) {
+           
+                 this._pickupAddressView.$(".btn[data-action=toggleselect]").removeClass('active');
+                 if (value == true) {
+                     this._pickupAddressView.isBtnSelected = false;
+                     this._dropOffAddressView.isBtnSelected = true;
+                 } else {
+                     this._dropOffAddressView.isBtnSelected = false;
+                 }
+                 
+
+             }, this);
         },
         
         
@@ -79,8 +86,9 @@
             this.$('.pickup-address-container').html(this._pickupAddressView.render().el);
             this.$('.drop-off-address-container').html(this._dropOffAddressView.render().el);
             
-            this._pickupAddressView.$(".btn[data-action=toggleselect]").attr("class", "btn active");
-
+            
+            this.model.set('isPickupActive', false);
+            this.model.set('isDropOffActive', false);
             // Only one address picker can be open at once
            
 
@@ -93,11 +101,13 @@
             }, this);
 
             this._pickupAddressView.on('toggleselect', function (view) {
-                    this.model.set('isPickupBtnSelected', true);
+                this.model.set('isPickupActive', !this.model.get('isPickupActive'));
+                this.model.set('isDropOffActive', false);
             }, this);
 
             this._dropOffAddressView.on('toggleselect', function (view) {
-                    this.model.set('isPickupBtnSelected', false);
+                this.model.set('isDropOffActive', !this.model.get('isDropOffActive'));
+                this.model.set('isPickupActive', false);
             }, this);
 
 
