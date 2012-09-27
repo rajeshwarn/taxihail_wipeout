@@ -63,7 +63,7 @@
   <string name="ConfirmPhoneLabel">Phone:</string>
   <string name="ConfirmCompanyLabel">Company:</string>
   <string name="ConfirmPassengersLabel">Passengers:</string>
-  <string name="ConfirmVehiculeTypeLabel">Vehicule type:</string>
+  <string name="ConfirmVehiculeTypeLabel">Vehicle type:</string>
   <string name="ChargeTypeLabel">Charge type:</string>
   <string name="ConfirmNoApt">No apt.</string>
   <string name="ConfirmNoRingCode">No code</string>
@@ -123,7 +123,7 @@
   <string name="RideSettingsName">Name:</string>
   <string name="RideSettingsPhone">Phone:</string>
   <string name="RideSettingsPassengers">Passengers:</string>
-  <string name="RideSettingsVehiculeType">Vehicule type:</string>
+  <string name="RideSettingsVehiculeType">Vehicle type:</string>
   <string name="RideSettingsCompany">Company:</string>
   <string name="HistoryDetailHideButton">Hide from history</string>
   <string name="HistoryDetailRebookButton">Rebook trip</string>
@@ -139,7 +139,7 @@
   <string name="PickupViewPickupLabel">Pickup:</string>
   <string name="PickupViewDestinationLabel">Destination &gt;&gt;</string>
   <string name="CallButton">Call</string>
-  <string name="TaxiMapTitle">Your Taxi</string> 
+  <string name="TaxiMapTitle">Your Taxi</string>
   <string name="UnexpectedError">Unexpected error</string>
   <string name="StatusActionButton">Call / Book / Cancel</string>
   <string name="StatusCallButton">Call</string>
@@ -239,7 +239,7 @@
   <string name="ServiceErrorCreateOrder_CannotCreateInIbs">Order cannot be created. Please try again or call us.</string>
   <string name="ServiceErrorCreateOrder_NoProvider">Order cannot be created, no provider specified. Please try again or call us.</string>
   <string name="ServiceErrorCreateOrder_InvalidProvider">Order cannot be created, invalid provider. Please try again or call us.</string>
-  <string name="ServiceErrorCreateOrder_VehiculeType">Order cannot be created, invalid vehicule type. Please try again or call us.</string>
+  <string name="ServiceErrorCreateOrder_VehiculeType">Order cannot be created, invalid vehicle type. Please try again or call us.</string>
   <string name="ServiceErrorCreateAccount_AccountAlreadyExist">The account cannot be created, this email is already in use.</string>
   <string name="ServiceErrorUnauthorized">An unauthorized call has been made to server, you will be redirected to login page.</string>
   <string name="BookDateLabel">Pick Me Up Later</string>
@@ -267,10 +267,9 @@
   <string name="PickupWasActivatedToastMessage">Pickup selection is active.</string>
   <string name="InvalidLocalContactTitle">Invalid contact</string>
   <string name="InvalidLocalContactMessage">The address associated to this contact cannot be validated.</string>
-
-
   <string name="ErrorCreatingOrderTitle">Booking cannot be completed</string>
-  <string name="ServiceError_ErrorCreatingOrderMessage">Please contact {0} at {1} for further assistance."</string>  
-  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_1002">The specified Pickup address lies outside the regular service area. Please contact {0} at {1} for further assistance."</string>  
-
+  <string name="ServiceError_ErrorCreatingOrderMessage">Please contact {0} at {1} for further assistance."</string>
+  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_1002">The specified Pickup address lies outside the regular service area. Please contact {0} at {1} for further assistance.</string>
+  <string name="LocalContactCannotBeResolverTitle">Invalid Contact</string>
+  <string name="LocalContactCannotBeResolverMessage">Cannot find the address associated to this contact.</string>
 </resources>

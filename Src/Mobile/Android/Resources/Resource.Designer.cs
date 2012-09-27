@@ -1131,8 +1131,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f060067
 			public const int BookItButtonImageName = 2131099751;
 			
-			// aapt resource value: 0x7f06010a
-			public const int BookItButtonImageNamePressed = 2131099914;
+			// aapt resource value: 0x7f06010c
+			public const int BookItButtonImageNamePressed = 2131099916;
 			
 			// aapt resource value: 0x7f060024
 			public const int BookPickupLabel = 2131099684;
@@ -1242,8 +1242,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0600ca
 			public const int CreateAccountErrorTitle = 2131099850;
 			
-			// aapt resource value: 0x7f060108
-			public const int CreateAccountFirstName = 2131099912;
+			// aapt resource value: 0x7f06010a
+			public const int CreateAccountFirstName = 2131099914;
 			
 			// aapt resource value: 0x7f06005d
 			public const int CreateAccountFullName = 2131099741;
@@ -1272,8 +1272,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0600c8
 			public const int CreateAccountLanguageFrench = 2131099848;
 			
-			// aapt resource value: 0x7f060109
-			public const int CreateAccountLastName = 2131099913;
+			// aapt resource value: 0x7f06010b
+			public const int CreateAccountLastName = 2131099915;
 			
 			// aapt resource value: 0x7f06005f
 			public const int CreateAccountMobile = 2131099743;
@@ -1395,8 +1395,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f060019
 			public const int EmailLabel = 2131099673;
 			
-			// aapt resource value: 0x7f06010b
-			public const int ErrorCreatingOrderMessage = 2131099915;
+			// aapt resource value: 0x7f06010d
+			public const int ErrorCreatingOrderMessage = 2131099917;
 			
 			// aapt resource value: 0x7f060105
 			public const int ErrorCreatingOrderTitle = 2131099909;
@@ -1514,6 +1514,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f060020
 			public const int LoadingMessage = 2131099680;
+			
+			// aapt resource value: 0x7f060109
+			public const int LocalContactCannotBeResolverMessage = 2131099913;
+			
+			// aapt resource value: 0x7f060108
+			public const int LocalContactCannotBeResolverTitle = 2131099912;
 			
 			// aapt resource value: 0x7f0600a1
 			public const int Locating = 2131099809;

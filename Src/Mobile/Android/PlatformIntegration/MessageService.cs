@@ -73,13 +73,12 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         }
 
         public void ShowProgress(bool show)
-        {
-            throw new NotImplementedException();
+        {         
         }
 
         public void ShowProgress(bool show, Action cancel)
         {
-            throw new NotImplementedException();
+            
         }
 
         public void ShowToast(string message, ToastDuration duration )
