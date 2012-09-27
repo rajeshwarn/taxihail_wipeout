@@ -24,22 +24,23 @@
 <div class="control-group">
     <label class="control-label" for="inputVehiculeType">{{localize "Vehicule Type"}}</label>
     <div class="controls">
-         <select name="vehicleTypeId" id="inputVehiculeType">
-             {{#each vehiclesList}}
-                {{#ifCond this.id ../vehicleTypeId}}
-                    <option value="{{this.id}}" selected>{{this.display}}</option>
-                {{else}}
-                    <option value="{{this.id}}">{{this.display}}</option>
-                {{/ifCond}}
-             {{/each}}
-        </select>
+       <select style="width: 220px ; height:40px; " name="vehicleTypeId" id="inputVehiculeType">
+                  {{#each vehiclesList}}
+                  {{#ifCond this.id ../vehicleTypeId}}
+                  <option style="line-height:40px;" value="{{this.id}}" selected>{{this.display}}</option>
+                  {{else}}
+                  <option value="{{this.id}}">{{this.display}}</option>
+                  {{/ifCond}}
+                  {{/each}}
+              </select>
+            
     </div>
 </div>
 
 <div class="control-group">
     <label class="control-label" for="inputChargeType">{{localize "Charge Type"}}</label>
     <div class="controls">
-        <select id="inputChargeType" name="chargeTypeId">
+        <select style="width: 220px" id="inputChargeType" name="chargeTypeId">
             {{#each paymentsList}}
                 {{#ifCond this.id ../chargeTypeId}}
                     <option value="{{this.id}}" selected>{{this.display}}</option>

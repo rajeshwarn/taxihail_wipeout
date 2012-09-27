@@ -6,7 +6,6 @@
         
         events: {
             'click [data-action=book]': 'book',
-            'click [data-action=edit]': 'edit',
             'change :text': 'onPropertyChanged',
             
         },
@@ -24,7 +23,6 @@
         render: function (param) {
 
             this.$el.html(this.renderTemplate(this.model.toJSON()));
-            this.$("input").attr("disabled", true);
             this.renderItem(this.model);
             return this;
         },
@@ -35,6 +33,7 @@
                 'priceEstimate': result.formattedPrice,
                 'distanceEstimate': result.formattedDistance
             });
+            this.render();
         },
         
         book: function (e) {
@@ -46,45 +45,6 @@
                 },
                 error: this.showErrors
             });
-            
-        },
-        
-        edit:function (e) {
-            e.preventDefault();
-            
-            if (!$("input").attr("disabled")) {
-                
-                this.$('.errors').empty();
-                if (settings.isValid() ) {
-                    
-                    if (settingschanged) {
-                        
-                        jQuery.ajax({
-                                type: 'PUT',
-                                url: 'api/account/bookingsettings',
-                                data: settings.toJSON(),
-                                success: function () {
-                                    $("#editButton").html(TaxiHail.localize('Edit'));
-                                    $("input").attr("disabled", true);
-                                    settingschanged = false;
-                                },
-                                error: showErrors,
-                                dataType: 'json'
-                             });
-                    } else {
-                        $("#editButton").html(TaxiHail.localize('Edit'));
-                        $("input").attr("disabled", true);
-                    }
-                
-                }else {
-                    var result = settings.validate(settings.attributes);
-                    this.showErrors(this.model, result);
-                }
-                
-            } else {
-                $("#editButton").html(this.localize('Save'));
-                $("input").attr("disabled", false);
-            }
             
         },
         

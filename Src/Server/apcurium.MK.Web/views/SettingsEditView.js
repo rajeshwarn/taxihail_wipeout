@@ -4,7 +4,7 @@
         
         tagName:"div",
         events: {
-            'change :input': 'onPropertyChanged'
+            'change :input': 'onPropertyChanged',
         },
         
         initialize: function () {
@@ -32,10 +32,9 @@
             });
 
             this.$el.html(this.renderTemplate(data));
-            this.$("input").attr("disabled", true);
             return this;
         },
-        
+
         onPropertyChanged: function (e) {
             var $input = $(e.currentTarget);
             this.model.set($input.attr('name'), $input.val(), {silent:true});
