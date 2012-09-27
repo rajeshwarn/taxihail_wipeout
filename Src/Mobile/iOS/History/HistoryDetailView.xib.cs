@@ -17,7 +17,7 @@ namespace apcurium.MK.Booking.Mobile.Client
     {
         private HistoryTabView _parent;
         private Order _data;
-        
+
         #region Constructors
 
         // The IntPtr and initWithCoder constructors are required for items that need 
@@ -127,10 +127,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         void RebookTouched(object sender, EventArgs e)
         {
-
-			this.NavigationController.PopToRootViewController(true); //.PopViewControllerAnimated(true);
-			InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new RebookRequested(this, _data)));
-//            AppContext.Current.Controller.Rebook(_data);
+			//InvokeOnMainThread( () => NavigationController.PopToRootViewController(true) ), _searchCancellationToken.Token);
+			TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new RebookRequested(this, _data));
         }
 
         void HideTouchUpInside(object sender, EventArgs e)

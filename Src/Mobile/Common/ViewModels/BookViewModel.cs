@@ -41,7 +41,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _appResource = appResource;
 
 			TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub>().Subscribe<LogOutRequested>( msg => Logout.Execute() );
-			TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub>().Subscribe<RebookRequested>( msg => Rebook( msg.Content ) );
+
 
             Load();
             Pickup = new BookAddressViewModel(() => Order.PickupAddress, address => Order.PickupAddress = address, _geolocator) { Title = appResource.GetString("BookPickupLocationButtonTitle"), EmptyAddressPlaceholder = appResource.GetString("BookPickupLocationEmptyPlaceholder") };
@@ -88,7 +88,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 
 
-            if (Order.PickupAddress.HasValidCoordinate() && Order.DropOffAddress.HasValidCoordinate())
+			if (Order != null && Order.PickupAddress.HasValidCoordinate() && Order.DropOffAddress.HasValidCoordinate())
             {
                 var directionInfo = TinyIoCContainer.Current.Resolve<IGeolocService>().GetDirectionInfo(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, Order.DropOffAddress.Latitude, Order.DropOffAddress.Longitude);
                 if (directionInfo != null)

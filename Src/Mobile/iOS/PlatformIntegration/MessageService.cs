@@ -54,7 +54,9 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 		}
 
 		public void ShowToast(string message, ToastDuration duration)
-		{}
+		{
+			MessageHelper.ShowToast(message, (int)duration );
+		}
 
 	}
 }
