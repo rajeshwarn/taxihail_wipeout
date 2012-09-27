@@ -2,9 +2,7 @@
 
     TaxiHail.BookingStatusView = TaxiHail.TemplatedView.extend({
         events: {
-            'click [data-action=cancel]': 'cancel',
-            'click [data-action=call]':   'call',
-            'click [data-action=new]':    'new'
+            'click [data-action=cancel]': 'cancel'
         },
 
         initialize: function() {
@@ -18,6 +16,12 @@
         render: function() {
 
             this.$el.html(this.renderTemplate(this.model.getStatus().toJSON()));
+
+            this.$('[data-action=call]').popover({
+                title: 'title',
+                content: 'content'
+            });
+
             return this;
         },
 
@@ -34,16 +38,6 @@
                 .done(function(){
                     TaxiHail.app.navigate('', { trigger: true });
                 });
-        },
-
-        call: function(e) {
-            e.preventDefault();
-        },
-
-        'new': function(e) {
-            e.preventDefault();
-            TaxiHail.app.navigate('', { trigger: true });
-
         }
 
 
