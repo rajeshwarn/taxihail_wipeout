@@ -6,9 +6,9 @@
         
         events: {
             'click [data-action=book]': 'book',
-            'click [data-action=edit]': 'edit',
-            'change :text': 'onPropertyChanged',
-            
+            'change :text[data-action=changepickup]': 'onPickupPropertyChanged',
+            'change :text[data-action=changesettings]': 'onSettingsPropertyChanged',
+            'change :input[data-action=changesettings]': 'onSettingsPropertyChanged',
         },
         initialize: function () {   
 
@@ -19,13 +19,39 @@
             if (pickup && dest) {
                 TaxiHail.directionInfo.getInfo(pickup['latitude'], pickup['longitude'], dest['latitude'], dest['longitude']).done(this.renderResults);
             }
+            
+
+
+            this.referenceData = new TaxiHail.ReferenceData();
+            this.referenceData.fetch();
+            this.referenceData.on('change', this.render, this);
+
         },
 
         render: function (param) {
 
             this.$el.html(this.renderTemplate(this.model.toJSON()));
-            this.$("input").attr("disabled", true);
-            this.renderItem(this.model);
+            //this.renderItem(this.model);
+            
+
+            Handlebars.registerHelper('ifCond', function (v1, v2, options) {
+                if (v1 == v2) {
+                    return options.fn(this);
+                } else {
+                    return options.inverse(this);
+                }
+            });
+
+            var data = this.model.toJSON();
+
+            _.extend(data, {
+                vehiclesList: this.referenceData.attributes.vehiclesList,
+                paymentsList: this.referenceData.attributes.paymentsList
+            });
+
+            this.$el.html(this.renderTemplate(data));
+
+
             return this;
         },
         
@@ -35,56 +61,18 @@
                 'priceEstimate': result.formattedPrice,
                 'distanceEstimate': result.formattedDistance
             });
+            this.render();
         },
         
         book: function (e) {
             this.$('#bookBt').button('loading');
             e.preventDefault();
-            this.model.set('settings', settings);
+            //this.model.set('settings', settings);
             this.model.save({},{success : function (model) {
                 TaxiHail.app.navigate('status/' + model.id, { trigger: true, replace: true /* Prevent user from comming back to this screen */ });
                 },
                 error: this.showErrors
             });
-            
-        },
-        
-        edit:function (e) {
-            e.preventDefault();
-            
-            if (!$("input").attr("disabled")) {
-                
-                this.$('.errors').empty();
-                if (settings.isValid() ) {
-                    
-                    if (settingschanged) {
-                        
-                        jQuery.ajax({
-                                type: 'PUT',
-                                url: 'api/account/bookingsettings',
-                                data: settings.toJSON(),
-                                success: function () {
-                                    $("#editButton").html(TaxiHail.localize('Edit'));
-                                    $("input").attr("disabled", true);
-                                    settingschanged = false;
-                                },
-                                error: showErrors,
-                                dataType: 'json'
-                             });
-                    } else {
-                        $("#editButton").html(TaxiHail.localize('Edit'));
-                        $("input").attr("disabled", true);
-                    }
-                
-                }else {
-                    var result = settings.validate(settings.attributes);
-                    this.showErrors(this.model, result);
-                }
-                
-            } else {
-                $("#editButton").html(this.localize('Save'));
-                $("input").attr("disabled", false);
-            }
             
         },
         
@@ -104,22 +92,30 @@
             this.$('.errors').html($alert);
         },
         
-        renderItem: function (model) {
+        /*renderItem: function (model) {
 
             var settingsView = new TaxiHail.SettingsEditView({
                 model: settings = new TaxiHail.Settings(model.get('settings')) 
             });
 
             this.$('div#settingsContent').prepend(settingsView.render().el);
-        },
+        },*/
         
-        onPropertyChanged: function (e) {
+        onPickupPropertyChanged: function (e) {
             var $input = $(e.currentTarget);
             var pickup = this.model.get('pickupAddress');
             
             pickup[$input.attr("name")] = $input.val();
             settingschanged = true;
         },
+        
+        onSettingsPropertyChanged : function (e) {
+            var $input = $(e.currentTarget);
+            var pickup = this.model.get('settings');
+
+            pickup[$input.attr("name")] = $input.val();
+            settingschanged = true;
+        }
         
     });
 
