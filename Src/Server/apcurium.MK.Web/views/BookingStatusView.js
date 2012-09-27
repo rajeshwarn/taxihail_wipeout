@@ -8,7 +8,7 @@
         initialize: function() {
 
             var status = this.model.getStatus();
-            this.interval = window.setInterval(_.bind(status.fetch, status), 3000);
+            this.interval = window.setInterval(_.bind(status.fetch, status), 5000);
             status.on('change:iBSStatusId', this.render, this);
 
         },
@@ -46,6 +46,7 @@
             e.preventDefault();
             this.model.cancel()
                 .done(function(){
+                    // Redirect to Home
                     TaxiHail.app.navigate('', { trigger: true });
                 });
         }

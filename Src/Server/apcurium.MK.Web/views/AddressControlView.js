@@ -7,12 +7,11 @@
             'click [data-action=clear]': 'clear',
             'click [data-action=locate]': 'locate',
             'click [data-action=toggleselect]': 'toggleselect',
-            'focus [name=address]': 'onfocus', 
-            'blur  [name=address]': 'onblur'
+            'focus [name=address]': 'onfocus'
         },
 
         initialize: function(attrs, options) {
-            _.bindAll(this, 'onkeypress');
+            _.bindAll(this, 'onkeyup');
             this.$el.addClass('address-picker');
             this.model.on('change', this.render, this);
         },
@@ -31,9 +30,9 @@
 
             this.$el.html(this.renderTemplate(data));
 
-            this.$('[name=address]').on('keypress', _.debounce(this.onkeypress, 500));
+            this.$('[name=address]').on('keyup', _.debounce(this.onkeyup, 500));
 
-            if (this.isBtnSelected == true) {
+            if (this.isBtnSelected) {
                 this.$(".btn[data-action=toggleselect]").attr("class", "btn active");
             }
 
@@ -44,7 +43,7 @@
                 this.close();
             }, this);
 
-            this._selector.render().hide()
+            this._selector.render().hide();
             this.$(".address-selector-container").html(this._selector.el);
 
             return this;
@@ -114,11 +113,7 @@
             this.open();
         },
 
-        onblur: function(e) {
-            //this._selector && this._selector.hide();
-        },
-
-        onkeypress: function(e) {
+        onkeyup: function(e) {
             this._selector && this._selector.search($(e.currentTarget).val());
         }
 
