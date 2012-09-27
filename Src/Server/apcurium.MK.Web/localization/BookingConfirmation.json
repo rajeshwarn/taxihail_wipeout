@@ -1,13 +1,12 @@
 ﻿{
-    "Confirm Information": "Confirm Information",
+    "Confirm Information": "Confirm Ride",
 	"Pickup Time": "Pickup Time",
 	"Pickup": "Pickup",
 	"Destination": "Destination",
-	"Fare estimate": "Fare estimate",
-	"Price estimate": "Price estimate",
+	"Estimate": "Estimates",
 	"Settings": "Settings",
 	"Name": "Name",
-	"Phone": "Phone",
+	"Phone": "Phone Number",
 	"Passengers": "Passengers",
 	"Vehicule Type": "Vehicule Type",
 	"Charge Type": "Charge Type",
@@ -15,7 +14,7 @@
 	"Ring Code": "Ring Code",
 	"Notes": "Notes",
 	"Book Now!": "Book Now!",
-	"Start Over": "Start Over",
-	"Edit": "Edit",
+	"Cancel": "Cancel",
+	"Edit": "Edit Settings",
 	"Save":"Save"
 }
