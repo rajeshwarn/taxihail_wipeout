@@ -63,6 +63,12 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtilities
 				break;
 			case AddressAnnotationType.Taxi:
 				Image = UIImage.FromFile( "Assets/taxi-label.png" );
+				var lblVehicleNumber = new UILabel(new RectangleF(0,0,Image.Size.Width,45));
+				lblVehicleNumber.BackgroundColor = UIColor.Clear;
+				lblVehicleNumber.TextColor = UIColor.White;
+				lblVehicleNumber. TextAlignment = UITextAlignment.Center;
+				lblVehicleNumber.Text = ((AddressAnnotation)Annotation).Subtitle;
+				this.AddSubview( lblVehicleNumber );
 			break;
 			case AddressAnnotationType.Pickup:
 			default:

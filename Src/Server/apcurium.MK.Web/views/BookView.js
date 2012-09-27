@@ -38,29 +38,6 @@
              }, this);
             
            
-             this.model.on('change:isPickupActive', function (model, value) {
-                 this._dropOffAddressView.$(".btn[data-action=toggleselect]").removeClass('active');
-                 if (value == true) {
-                     this._pickupAddressView.isBtnSelected = true;
-
-                     this._dropOffAddressView.isBtnSelected = false;
-                 } else {
-                     this._pickupAddressView.isBtnSelected = false;
-                 }
-
-             }, this);
-            
-             this.model.on('change:isDropOffActive', function (model, value) {
-           
-                 this._pickupAddressView.$(".btn[data-action=toggleselect]").removeClass('active');
-                 if (value == true) {
-                     this._pickupAddressView.isBtnSelected = false;
-                     this._dropOffAddressView.isBtnSelected = true;
-                 } else {
-                     this._dropOffAddressView.isBtnSelected = false;
-                 }
-
-             }, this);
         },
         
         
@@ -99,17 +76,21 @@
                 this._pickupAddressView.close();
             }, this);
 
-            this._pickupAddressView.on('toggleselect', function (view) {
-                this.model.set('isPickupActive', !this.model.get('isPickupActive'));
-                this.model.set('isDropOffActive', false);
+            this._pickupAddressView.on('target', function (view, isActive) {
+                this.model.set({
+                    'isPickupActive': isActive,
+                    'isDropOffActive': false
+                });
+                this._dropOffAddressView.toggleOff();
             }, this);
 
-            this._dropOffAddressView.on('toggleselect', function (view) {
-                this.model.set('isDropOffActive', !this.model.get('isDropOffActive'));
-                this.model.set('isPickupActive', false);
+            this._dropOffAddressView.on('target', function (view, isActive) {
+                this.model.set({
+                    'isDropOffActive': isActive,
+                    'isPickupActive': false
+                });
+                this._pickupAddressView.toggleOff();
             }, this);
-
-
 
             pickupAddress.on('change', function(model){
                 this.model.set({
