@@ -141,14 +141,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public List<Address> GetAddressFromAddressBook(Predicate<Contact> criteria)
         {
             var contacts = new List<Address>();
-            var queryable = _addresBook.Where(c => criteria(c) && c.Addresses.Any()).ToList();
+			var queryable = _addresBook.Where(c => criteria(c) && c.Addresses.Any() ).ToList();
 
             foreach (var contact in queryable)
             {
-                contact.Addresses.ForEach(c => contacts.Add(new Address
+                contact.Addresses.Where( a => a.StreetAddress != null ).ForEach(c => contacts.Add(new Address
                                 {
                                     FriendlyName = contact.DisplayName,
-                                    FullAddress = c.StreetAddress,
+									FullAddress = string.Join(", ", new object[]{ c.StreetAddress, c.City, c.Country } ),
                                     City = c.City,
                                     IsHistoric = false,
                                     ZipCode = c.PostalCode,
@@ -167,11 +167,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             {
                 _task = new Task(() =>
                 {
-                    var book = TinyIoCContainer.Current.Resolve<AddressBook>();
-                    book.PreferContactAggregation = true;
-                    _addresBook = book.ToList();
-
-                });
+					var book = TinyIoCContainer.Current.Resolve<IAddressBookService>();
+					_addresBook = book.LoadContacts();
+				});
                 _task.Start();
             }
             return _task;
