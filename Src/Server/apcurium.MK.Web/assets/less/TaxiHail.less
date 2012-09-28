@@ -113,7 +113,6 @@ header {
 
 
 /* Address selector */
-@resultHeight: 38px;
 .address-picker {
     position: relative;
 
@@ -122,24 +121,24 @@ header {
     }
 
     .tab-content {
+
+        min-height: 123px;
+        background: @white;
+        border-left: 1px solid @inputBorder;
+        border-right: 1px solid @inputBorder;
+        
+        ul {
+            margin:10px;
+            padding:0;
+        }
+
         li {
             display: block;
-            height:@resultHeight;
-            background: @white;
-            border-left: 1px solid @inputBorder;
-            border-right: 1px solid @inputBorder;
-            border-bottom: 1px solid @inputBorder;
-            line-height: 36px;
             overflow:hidden;
-            color: #525252;
-            font-size: 18px;
-            font-weight: bold;
+            color: @black;
 
             a, a:link, a:active, a:visited, a:hover {
-                color: #525252;
-                font-size: 18px;
-                font-weight: bold;
-                margin: 0 10px;
+                color: @black;
             }
 
             &:last-child {
@@ -157,6 +156,8 @@ header {
 
 .address-selector-container {
     position:absolute;
+    top: 40px;
+    left:47px;
 }
 
 
@@ -270,6 +271,15 @@ legend {
         width:120px;
     }  
 
+	.center-control-label {
+		color: black;
+        margin-right: 10px;
+		margin-left: 10px;
+        line-height: 20px;
+        width: 120px;
+		font-weight: bold;
+		}
+
     .input-block-level {
         height: 40px;
         min-height: 40px;
@@ -285,7 +295,7 @@ legend {
         }
 
         input {
-            width: 320px;
+            width: 100%;
         }
     }   
 }
@@ -303,12 +313,15 @@ legend {
 .settings-label {
     float: left;
     width: 160px;
-    color: black;
     text-align: left;
-    line-height: 30px;
-    font-size: 18px;
+    line-height: 20px;
+    font-size: 14px;
     font-weight: bold;
     color: black;
+}
+
+.settings-value {
+    font-weight: bold;
 }
 
 .select-taxihail {
