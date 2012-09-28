@@ -50,7 +50,7 @@
 
             this.$el.html(this.renderTemplate(data));
 
-            if (!this.model.get('dropOffAddress')) {
+            if (this.model.get('dropOffAddress')) {
                 this.showInfos(TaxiHail.localize('Warning_when_booking_without_destination'));
             }
 
@@ -98,20 +98,10 @@
         
         showInfos : function (message) {
             var infos = $('<div class="alert alert-block" />').text(message);
-            //infos.append($('<button type="button" class="close" data-dismiss="alert">×</button>'));
-            ///infos.append($('<div />').text(message));
+
             
             this.$('.infos').html(infos);
         },
-        
-        /*renderItem: function (model) {
-
-            var settingsView = new TaxiHail.SettingsEditView({
-                model: settings = new TaxiHail.Settings(model.get('settings')) 
-            });
-
-            this.$('div#settingsContent').prepend(settingsView.render().el);
-        },*/
         
         onPickupPropertyChanged: function (e) {
             var $input = $(e.currentTarget);
