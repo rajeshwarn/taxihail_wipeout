@@ -53,6 +53,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtilities
 				((TouchMap)mapView).OnRegionChanged();
 			}
 		}
+
 	}
 }
 
