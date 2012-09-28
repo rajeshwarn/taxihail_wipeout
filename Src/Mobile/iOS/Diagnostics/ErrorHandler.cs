@@ -23,12 +23,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			{
 				MessageHelper.Show( Resources.UnAuthorizedCallTitle, Resources.UnAuthorizedCallMessage, () => {
 					AppContext.Current.Controller.InvokeOnMainThread( () => {
-						
-                        //RequestNavigate<LoginViewModel>(true);
-
                         var dispatch = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
-                        dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(LoginViewModel), null, false, MvxRequestedBy.UserAction));
-                        //AppContext.Current.Controller.PresentModalViewController( new LoginView(), true );
+                        dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(LoginViewModel), null, true, MvxRequestedBy.UserAction));
 					});
 					AppContext.Current.SignOut ();
 				});
