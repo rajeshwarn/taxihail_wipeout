@@ -57,7 +57,7 @@
 
             var model = new TaxiHail.Order();
             
-            mapView.setModel(model);
+            mapView.setModel(model, true);
 
             renderView(TaxiHail.BookView, model);
            
@@ -69,7 +69,9 @@
                 TaxiHail.auth.account.fetch({
                     success: function(model) {
                         orderToBook.settings = model.get('settings');
-                        renderView(TaxiHail.BookingConfirmationView, new TaxiHail.Order(orderToBook));
+                        var orderModel = new TaxiHail.Order(orderToBook);
+                        mapView.setModel(orderModel);
+                        renderView(TaxiHail.BookingConfirmationView, orderModel);
                     },
                     error: _.bind(function(model) {
                         this.navigate('login', {trigger: true});
@@ -95,6 +97,7 @@
             order.fetch();
             order.getStatus().fetch();
 
+            mapView.setModel(order);
             renderView(TaxiHail.BookingStatusView, order);
        
         },

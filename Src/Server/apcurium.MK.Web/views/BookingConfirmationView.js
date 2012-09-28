@@ -8,9 +8,9 @@
             'click [data-action=book]': 'book',
             'change :text[data-action=changepickup]': 'onPickupPropertyChanged',
             'change :text[data-action=changesettings]': 'onSettingsPropertyChanged',
-            'change :input[data-action=changesettings]': 'onSettingsPropertyChanged',
+            'change :input[data-action=changesettings]': 'onSettingsPropertyChanged'
         },
-        initialize: function () {   
+        initialize: function () { 
 
             _.bindAll(this, "renderResults");
             
@@ -19,8 +19,6 @@
             if (pickup && dest) {
                 TaxiHail.directionInfo.getInfo(pickup['latitude'], pickup['longitude'], dest['latitude'], dest['longitude']).done(this.renderResults);
             }
-            
-
 
             this.referenceData = new TaxiHail.ReferenceData();
             this.referenceData.fetch();
@@ -68,9 +66,11 @@
             this.$('#bookBt').button('loading');
             e.preventDefault();
             //this.model.set('settings', settings);
-            this.model.save({},{success : function (model) {
-                TaxiHail.app.navigate('status/' + model.id, { trigger: true, replace: true /* Prevent user from comming back to this screen */ });
-                },
+            this.model.save({}, {
+                success : TaxiHail.postpone(function (model) {
+                    // Wait for order to be created before redirecting to status
+                        TaxiHail.app.navigate('status/' + model.id, { trigger: true, replace: true /* Prevent user from comming back to this screen */ });
+                }, this),
                 error: this.showErrors
             });
             
