@@ -6,6 +6,7 @@
         
         initialize : function () {
             _.bindAll(this, "geolocdone", "geoloc");
+            this.streetZoomLevel = 17;
         },
         
         setModel: function(model, centerMapOnAddressChange) {
@@ -18,7 +19,12 @@
                 this.updatePickup();
                 if(model.isValidAddress('pickupAddress')) {
                     var location = new google.maps.LatLng(value.latitude, value.longitude);
-                    if(centerMapOnAddressChange) this.centerMap(location);
+                    if (centerMapOnAddressChange) {
+                        if (this._map.getZoom() < this.streetZoomLevel) {
+                            this._map.setZoom(this.streetZoomLevel);
+                        }
+                        this.centerMap(location);
+                    }
                 }
             }, this);
 
@@ -101,29 +107,47 @@
 
                 target.set('position', position);
             };
+
             
-            var getdefaultlocation = _.bind(function () {
-                $.get('api/settings/defaultlocation',
-                    _.bind(function (address) {
-                        this.centerMap(new google.maps.LatLng(address.latitude, address.longitude));
-                        google.maps.event.clearListeners(this._map, 'tilesloaded'); //to refine if others listener subscribe
-                    }, this),
-                    "json");
-            }, this);
+           
+            $.get('api/settings/defaultlocation',
+                _.bind(function (address) {
+                    this.centerMap(new google.maps.LatLng(address.latitude, address.longitude));
+                }, this),
+                "json");
+            
 
             google.maps.event.addListener(this._map, 'bounds_changed', onmapchanged);
             google.maps.event.addListener(this._map, 'drag', onmapchanged);
-            google.maps.event.addListener(this._map, 'tilesloaded', getdefaultlocation);
             
             return this;
         },
         
+        goToPickup: function () {
+            if (this._pickupPin) this.centerMap(this._pickupPin.getPosition());
+        },
 
-        centerMap: function(location) {
-            var projection = this._target.getProjection(),
-                    point = projection.fromLatLngToDivPixel(location),
-                    center = new google.maps.Point(point.x, point.y - $(this._map.getDiv()).height() / 4 );
-
+        centerMap: function (location) {
+            
+            var projection = this._target.getProjection();
+            if (projection) {
+                //map ready center now
+                this.centerFromProjection(projection, location);
+                
+            } else {
+                //will center when the map is loaded
+                var centerAfterLoad = _.bind(function () {
+                    projection = this._target.getProjection();
+                    this.centerFromProjection(projection, location);
+                }, this);
+                
+                google.maps.event.addListenerOnce(this._map, 'tilesloaded', centerAfterLoad);
+            }
+        },
+        
+        centerFromProjection: function (projection, location) {
+            var point = projection.fromLatLngToDivPixel(location);
+            var center = new google.maps.Point(point.x, point.y - $(this._map.getDiv()).height() / 4);
             this._map.setCenter(projection.fromDivPixelToLatLng(center));
         },
 

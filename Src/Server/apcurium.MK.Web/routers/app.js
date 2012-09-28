@@ -90,6 +90,8 @@
                 orderId: id
             });
 
+            mapView.goToPickup();
+
             order.getStatus().on('change:vehicleLatitude, change:vehicleLongitude', function(model){
                 mapView.updateVehiclePosition(model);
             }, this);
