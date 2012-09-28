@@ -76,47 +76,33 @@ select,
 }
 
 //TABS
+.tabs-below > .nav-tabs{
 
-.nav-tabs{
-
-    margin-bottom: 0;
+    width: 377px;
+    background: @white;
+    border-bottom: 1px solid @inputBorder;
+    border-left: 1px solid @inputBorder;
+    border-right: 1px solid @inputBorder;
 
     >li {
 
-        width:236px;
+        width:130px;
         text-align:center;
+        border:none;
+        background:transparent;
 
         >a, >a:hover {
-            color: @white;
-            font-size:18px;
-            font-weight:center;
+            color: #767676;
+            font-weight:normal;
             margin:0;
-            .border-radius(0);
-            border: 1px solid @inputBorder;
-            border-right: 1px solid #003666;
-            border-left: 1px solid #1A6BAC;
-            #gradient > .vertical(#0068B4, #00478D);
-
-            
-        }
-
-        &:first-child>a {
-                .border-radius(4px 0 0 0);
-                border-left: 1px solid @inputBorder;
-        }
-
-        &:last-child>a {
-            .border-radius(0 4px 0 0);
-            border-right: 1px solid @inputBorder;
         }
 
 
         &.active>a, &.active>a:hover {
-            color: @white;
-            border: 1px solid @inputBorder;
-            border-right: 1px solid #003666;
-            border-left: 1px solid #1A6BAC;
-            #gradient > .vertical(#001956, #004085);
+            color: @taxiHailBlue;
+            font-weight:bold;
+            border:none;
+            background:transparent;
         }
     }
 }
