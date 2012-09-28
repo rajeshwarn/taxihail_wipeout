@@ -167,37 +167,36 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                 if (address.Address != null)
                                 {
 
-                                    if (address.Address != null)
+
+                                    if ((address.Address.AddressType == "place") && (address.Address.PlaceReference.HasValue()))
                                     {
-                                        if (address.Address.FullAddress.IsNullOrEmpty() && (address.Address.AddressType == "place") && (address.Address.PlaceReference.HasValue()))
+                                        var placeAddress = _googleService.GetPlaceDetail(address.Address.PlaceReference);
+                                        placeAddress.FriendlyName = address.Address.FriendlyName;
+                                        InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new AddressSelected(this, placeAddress, _ownerId)));
+                                        RequestClose(this);
+                                    }
+                                    else if (address.Address.AddressType == "localContact")
+                                    {
+                                        var geolocService = TinyIoCContainer.Current.Resolve<IGeolocService>();
+                                        var addresses = geolocService.SearchAddress(address.Address.FullAddress, 0, 0);
+                                        if (addresses.Count() > 0)
                                         {
-                                            var placeAddress = _googleService.GetPlaceDetail(address.Address.PlaceReference);
-                                            placeAddress.FriendlyName = address.Address.FriendlyName;
-                                            InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new AddressSelected(this, placeAddress, _ownerId)));
+                                            InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new AddressSelected(this, addresses.ElementAt(0), _ownerId)));
                                             RequestClose(this);
-                                        }
-                                        if (address.Address.AddressType == "localContact")
-                                        {
-                                            var geolocService = TinyIoCContainer.Current.Resolve<IGeolocService>();
-                                            var addresses = geolocService.SearchAddress(address.Address.FullAddress, 0, 0);
-                                            if (addresses.Count() > 0)
-                                            {
-                                                InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new AddressSelected(this, addresses.ElementAt(0), _ownerId)));
-                                                RequestClose(this);
-                                            }
-                                            else
-                                            {
-                                                var title = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("LocalContactCannotBeResolverTitle");
-                                                var msg = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("LocalContactCannotBeResolverMessage");
-                                                TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage(title, msg);
-                                            }
                                         }
                                         else
                                         {
-                                            InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new AddressSelected(this, address.Address, _ownerId)));
-                                            RequestClose(this);
+                                            var title = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("LocalContactCannotBeResolverTitle");
+                                            var msg = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("LocalContactCannotBeResolverMessage");
+                                            TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage(title, msg);
                                         }
                                     }
+                                    else 
+                                    {
+                                        InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new AddressSelected(this, address.Address, _ownerId)));
+                                        RequestClose(this);
+                                    }
+
                                 }
                             });
                         
