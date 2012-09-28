@@ -1,5 +1,5 @@
 ﻿(function () {
-
+    var canCancel = true;
     TaxiHail.BookingStatusView = TaxiHail.TemplatedView.extend({
 
         className: 'booking-status-view',
@@ -27,6 +27,14 @@
             }
 
             this.$el.html(this.renderTemplate(data));
+            
+            var status = this.model.getStatus();
+            if (status.get('iBSStatusId') == 'wosCANCELLED' || status.get('iBSStatusId') == 'wosCANCELLED_DONE' || status.get('iBSStatusId') == 'wosDONE' || status.get('iBSStatusId') == 'wosLOADED') {
+                this.$('[data-action=cancel]').addClass('disabled');
+                canCancel = false;
+            } else {
+                canCancel = true;
+            }
 
             this.$('[data-action=call]').popover({
                     title:"Call me maybe",
@@ -51,11 +59,14 @@
 
         cancel: function(e) {
             e.preventDefault();
-            this.model.cancel()
+            if (canCancel == true) {
+                this.model.cancel()
                 .done(function(){
                     // Redirect to Home
                     TaxiHail.app.navigate('', { trigger: true });
                 });
+            }
+            
         }
 
 
