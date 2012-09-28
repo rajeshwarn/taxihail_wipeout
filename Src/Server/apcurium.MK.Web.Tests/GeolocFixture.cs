@@ -30,6 +30,17 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
+        public void DefaultLocationIsAnAddress()
+        {
+            var sut = new GeocodingServiceClient(BaseUrl, SessionId);
+            var address = sut.DefaultLocation();
+
+            Assert.IsNotNull(address);
+            Assert.AreEqual(45.516667, address.Latitude);
+            Assert.AreEqual(-73.65, address.Longitude);
+        }
+
+        [Test]
         public void BasicNameSearch()
         {
             var sut = new GeocodingServiceClient(BaseUrl, SessionId);

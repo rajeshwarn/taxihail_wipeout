@@ -101,13 +101,23 @@
 
                 target.set('position', position);
             };
+            
+            var getdefaultlocation = _.bind(function () {
+                $.get('api/settings/defaultlocation',
+                    _.bind(function (address) {
+                        this.centerMap(new google.maps.LatLng(address.latitude, address.longitude));
+                        google.maps.event.clearListeners(this._map, 'tilesloaded'); //to refine if others listener subscribe
+                    }, this),
+                    "json");
+            }, this);
 
             google.maps.event.addListener(this._map, 'bounds_changed', onmapchanged);
             google.maps.event.addListener(this._map, 'drag', onmapchanged);
-
-
+            google.maps.event.addListener(this._map, 'tilesloaded', getdefaultlocation);
+            
             return this;
         },
+        
 
         centerMap: function(location) {
             var projection = this._target.getProjection(),
