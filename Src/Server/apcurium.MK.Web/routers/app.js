@@ -56,9 +56,21 @@
         book: function () {
 
             var model = new TaxiHail.Order();
-            
-            mapView.setModel(model, true);
 
+            TaxiHail.geolocation
+                .getCurrentPosition()
+                // By default, set pickup address to current user location
+                .done(TaxiHail.postpone(function(address){
+                    model.set('pickupAddress', address);
+                }))
+                // If geoloc doesn't work, center map on default location
+                .fail(function(){
+                    $.get('api/settings/defaultlocation', function (address) {
+                            mapView.centerMap(new google.maps.LatLng(address.latitude, address.longitude));
+                    }, "json");
+                });
+
+            mapView.setModel(model, true);
             renderView(TaxiHail.BookView, model);
            
         },

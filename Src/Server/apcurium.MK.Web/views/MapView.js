@@ -121,15 +121,6 @@
                 target.set('position', position);
             };
 
-            
-           
-            $.get('api/settings/defaultlocation',
-                _.bind(function (address) {
-                    this.centerMap(new google.maps.LatLng(address.latitude, address.longitude));
-                }, this),
-                "json");
-            
-
             google.maps.event.addListener(this._map, 'bounds_changed', onmapchanged);
             google.maps.event.addListener(this._map, 'drag', onmapchanged);
             
