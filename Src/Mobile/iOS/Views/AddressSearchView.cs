@@ -90,7 +90,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 				{contactsBtn, "{'SelectedChangedCommand':{'Path':'SelectedChangedCommand'}, 'Selected':{'Path':'ContactsSelected'}}"} ,
 				{placesBtn, "{'SelectedChangedCommand':{'Path':'SelectedChangedCommand'}, 'Selected':{'Path':'PlacesSelected'}}"} ,
 				{searchBtn, "{'SelectedChangedCommand':{'Path':'SelectedChangedCommand'}, 'Selected':{'Path':'SearchSelected'}}"} ,
-				{SearchTextField, "{'Text':{'Path':'Criteria'}, 'TextChangedCommand':{'Path':'SearchCommand'}}"} ,
+                {SearchTextField, "{'Text':{'Path':'Criteria'}, 'TextChangedCommand':{'Path':'SearchCommand'}, 'IsProgressing':{'Path':'IsSearching'}}"} ,
 			});
 
             AddressListView.Source = source;

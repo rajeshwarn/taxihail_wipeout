@@ -11,10 +11,11 @@ namespace apcurium.MK.Booking.Mobile.Client
     [Register("TextField")]
     public class TextField : UITextField
     {
-
+        private bool _isProgressing = false;
         private UIColor _strokeColor = UIColor.FromRGBA(82, 82, 82, 255);
         private float _paddingRight = 0;
         private float _paddingLeft = 0;
+        private UIActivityIndicatorView _progress;
 
         public TextField(IntPtr handle) : base(handle)
         {
@@ -68,19 +69,61 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
                 
         }
+         
+        public bool IsProgressing
+        {
+            get { return _isProgressing; }
+            set
+            {
+                _isProgressing = value;
+                RefreshUI();
+            }
+        }
 
-		public void SetImage( string image )
-		{
-			var img = UIImage.FromFile( image );
-			var imgView = new UIImageView( new RectangleF( 5, Frame.Height/2 - img.Size.Height/2, img.Size.Width, img.Size.Height ) );
-			imgView.BackgroundColor = UIColor.Clear;
-			imgView.Image = img;
+        private void InitProgress()
+        {
+            var r  = new RectangleF(5, Frame.Height / 2 - Image.Image.Size.Height / 2, Image.Image.Size.Width, Image.Image.Size.Height);
+            _progress = new UIActivityIndicatorView(r );
+            _progress.BackgroundColor = UIColor.Clear;
+            _progress.Hidden = true;
+            _progress.ActivityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray;
+            AddSubview( _progress );
+        }
+        private void RefreshUI()
+        { 
+            Image.Hidden = _isProgressing ;
 
-			AddSubview( imgView );
+            if ( _progress == null )
+            {
+                InitProgress();
+            }
 
-			PaddingLeft += img.Size.Width + 5;
-		}
+            _progress.Hidden = !_isProgressing;
+            if (_isProgressing)
+            {
+                _progress.StartAnimating();
+            }
+            else
+            {
+                _progress.StopAnimating();
+            }
+                
+              
+        }
 
+        protected UIImageView Image { get; set; }
+
+        public void SetImage(string image)
+        {
+            var img = UIImage.FromFile(image);
+            Image = new UIImageView(new RectangleF(5, Frame.Height / 2 - img.Size.Height / 2, img.Size.Width, img.Size.Height));
+            Image.BackgroundColor = UIColor.Clear;
+            Image.Image = img;
+
+            AddSubview(Image);
+
+            PaddingLeft += img.Size.Width + 4;
+        }
 
         public UIColor StrokeColor
         {

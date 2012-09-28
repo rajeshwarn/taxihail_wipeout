@@ -67,6 +67,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
         }
 
+
+
+
         public override string Text
         {
             get
