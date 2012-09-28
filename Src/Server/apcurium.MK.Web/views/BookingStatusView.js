@@ -37,8 +37,8 @@
             }
 
             this.$('[data-action=call]').popover({
-                    title:"Call me maybe",
-                    content:"514 692 6813"
+                    title: this.localize("Call us at"),
+                    content:"1 866 624 5330"
                 });
 
             return this;
