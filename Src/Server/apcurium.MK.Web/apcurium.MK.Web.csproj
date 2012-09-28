@@ -535,13 +535,13 @@
     <Content Include="localization\Signup.json" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="localization\BookingConfirmed.json" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="themes\generic\less\combined-responsive.less" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\less\TaxiHail-variables.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="localization\BookingStatus.json" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
