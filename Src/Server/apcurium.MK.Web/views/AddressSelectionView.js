@@ -2,6 +2,8 @@
 
     TaxiHail.AddressSelectionView = TaxiHail.TemplatedView.extend({
 
+        className: 'tabs-below',
+
         events: {
             'click .nav-tabs li>a': 'ontabclick'
         },
