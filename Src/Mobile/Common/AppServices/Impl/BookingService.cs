@@ -145,15 +145,21 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             foreach (var contact in queryable)
             {
-                contact.Addresses.Where( a => a.StreetAddress != null ).ForEach(c => contacts.Add(new Address
+                contact.Addresses.Where( a => a.StreetAddress != null ).ForEach(c => {
+					var list = new List<string>();
+					c.StreetAddress.Maybe( () => list.Add( c.StreetAddress ) );
+					c.City.Maybe( () => list.Add( c.City ) );
+					c.Country.Maybe( () => list.Add( c.Country ) );
+					contacts.Add(new Address
                                 {
                                     FriendlyName = contact.DisplayName,
-									FullAddress = string.Join(", ", new object[]{ c.StreetAddress, c.City, c.Country } ),
+									FullAddress = string.Join(", ", list ),
                                     City = c.City,
                                     IsHistoric = false,
                                     ZipCode = c.PostalCode,
                                     AddressType = "localContact"
-                                }));
+					});
+				});
 
             }
             return contacts;
@@ -169,6 +175,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 {
 					var book = TinyIoCContainer.Current.Resolve<IAddressBookService>();
 					_addresBook = book.LoadContacts();
+					_addresBook.ToString();
 				});
                 _task.Start();
             }
