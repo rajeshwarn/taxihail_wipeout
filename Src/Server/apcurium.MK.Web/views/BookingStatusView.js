@@ -21,8 +21,13 @@
             // Close popover if it is open
             // Otherwise it will stay there forever
             this.$('[data-action=call]').popover('hide');
+            var data = this.model.getStatus().toJSON();
+            if(!data.iBSStatusDescription)
+            {
+                data.iBSStatusDescription = this.localize('Processing');
+            }
 
-            this.$el.html(this.renderTemplate(this.model.getStatus().toJSON()));
+            this.$el.html(this.renderTemplate(data));
 
             this.$('[data-action=call]').popover({
                     title:"Call me maybe",
