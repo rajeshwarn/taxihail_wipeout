@@ -222,7 +222,7 @@ header {
 
 .btn {
     .border-radius(2px);
-    font-size: 18px;
+    font-size: 14px;
     font-weight: bold;
     .buttonBackgroundCustom(@btnBackgroundHighlight, @btnBackground);
 }
@@ -270,6 +270,15 @@ legend {
         width:120px;
     }  
 
+	.center-control-label {
+		color: black;
+        margin-right: 10px;
+		margin-left: 10px;
+        line-height: 20px;
+        width: 120px;
+		font-weight: bold;
+		}
+
     .input-block-level {
         height: 40px;
         min-height: 40px;
@@ -285,7 +294,7 @@ legend {
         }
 
         input {
-            width: 320px;
+            width: 100%;
         }
     }   
 }
@@ -303,12 +312,15 @@ legend {
 .settings-label {
     float: left;
     width: 160px;
-    color: black;
     text-align: left;
-    line-height: 30px;
-    font-size: 18px;
+    line-height: 20px;
+    font-size: 14px;
     font-weight: bold;
     color: black;
+}
+
+.settings-value {
+    font-weight: bold;
 }
 
 .select-taxihail {
