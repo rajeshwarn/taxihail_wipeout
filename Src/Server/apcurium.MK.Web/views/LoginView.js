@@ -16,9 +16,9 @@
         
         showConfirmationMessage: function() {
             this.$('#alert')
-        		.addClass('alert')
-        		.addClass('alert-success')
-        		.html(this.localize('signup.confirmation'));
+                .addClass('alert')
+                .addClass('alert-success')
+                .html(this.localize('signup.confirmation'));
         },
 
         onSubmit: function (e) {

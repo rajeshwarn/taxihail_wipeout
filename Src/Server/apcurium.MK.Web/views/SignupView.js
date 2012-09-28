@@ -2,6 +2,7 @@
     TaxiHail.SignupView = TaxiHail.TemplatedView.extend({
         
         tagName: "form",
+        className: 'signup-view',
         
         events: {
             "submit": "onsubmit",
