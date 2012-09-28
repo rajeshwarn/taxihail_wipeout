@@ -32,6 +32,8 @@
             TaxiHail.auth.on('change', function(isloggedIn) {
                 if(isloggedIn){
                     this.navigate('confirmationbook', { trigger: true });
+                }else {
+                    this.navigate('', { trigger: true });
                 }
             }, this);
 
@@ -56,9 +58,21 @@
         book: function () {
 
             var model = new TaxiHail.Order();
-            
-            mapView.setModel(model);
 
+            TaxiHail.geolocation
+                .getCurrentPosition()
+                // By default, set pickup address to current user location
+                .done(TaxiHail.postpone(function(address){
+                    model.set('pickupAddress', address);
+                }))
+                // If geoloc doesn't work, center map on default location
+                .fail(function(){
+                    $.get('api/settings/defaultlocation', function (address) {
+                            mapView.centerMap(new google.maps.LatLng(address.latitude, address.longitude));
+                    }, "json");
+                });
+
+            mapView.setModel(model, true);
             renderView(TaxiHail.BookView, model);
            
         },
@@ -69,7 +83,9 @@
                 TaxiHail.auth.account.fetch({
                     success: function(model) {
                         orderToBook.settings = model.get('settings');
-                        renderView(TaxiHail.BookingConfirmationView, new TaxiHail.Order(orderToBook));
+                        var orderModel = new TaxiHail.Order(orderToBook);
+                        mapView.setModel(orderModel);
+                        renderView(TaxiHail.BookingConfirmationView, orderModel);
                     },
                     error: _.bind(function(model) {
                         this.navigate('login', {trigger: true});
@@ -88,12 +104,12 @@
                 orderId: id
             });
 
-            order.getStatus().on('change:vehicleLatitude, change:vehicleLongitude', function(model){
-                mapView.updateVehiclePosition(model);
-            }, this);
+            mapView.goToPickup();
 
             order.fetch();
+            order.getStatus().fetch();
 
+            mapView.setModel(order);
             renderView(TaxiHail.BookingStatusView, order);
        
         },

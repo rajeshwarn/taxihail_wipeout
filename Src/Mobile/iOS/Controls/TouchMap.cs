@@ -16,6 +16,8 @@ using System.Drawing;
 using MonoTouch.Foundation;
 using MonoTouch.CoreLocation;
 using apcurium.MK.Common.Entity;
+using Xamarin.Geolocation;
+using System.Threading;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -33,6 +35,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private Address _pickup;
         private Address _dropoff;
+		private CancellationTokenSource _cancelToken;
         
         protected TouchMap(RectangleF rect)
             : base(rect)
@@ -65,8 +68,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         }
 
         private void Initialize()
-        {   
-
+		{   
+			_cancelToken = new CancellationTokenSource();
+			var geolocator = TinyIoCContainer.Current.Resolve<Geolocator>( CoordinatePrecision.BallPark.ToString() );
+			geolocator.GetPositionAsync( 5000, _cancelToken.Token ).ContinueWith( t => {
+				if( t.IsCompleted && !t.IsCanceled )
+				{
+					if( t.Result.Latitude != 0 && t.Result.Longitude != 0 )
+					{
+						SetRegionAndZoom( new MKCoordinateRegion(), new CLLocationCoordinate2D( t.Result.Latitude, t.Result.Longitude ), 0.2, 0.2 );
+					}
+				}
+			});
         }
 
 		public void OnRegionChanged()
@@ -98,8 +111,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         }
 
         public IMvxCommand MapMoved 
-        { 
-
+        {
             get{ return _mapMoved;} 
             set
             { 
@@ -109,14 +121,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     InitializeGesture();
                 }
             } 
-        }
-
-
-
-        private bool IsIntoCircle(double x, double y, double xCircle, double yCircle, double rCircle)
-        {
-            double dist = Math.Sqrt(Math.Pow(x - xCircle, 2) + Math.Pow(y - yCircle, 2));
-            return dist <= rCircle;
         }
         
         private MKAnnotation _pickupPin;
@@ -184,8 +188,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         
         private void SetZoom(IEnumerable<CoordinateViewModel> adressesToDisplay)
         {
+
             var region = new MKCoordinateRegion();
-            
+			double? deltaLat = null;
+			double? deltaLng = null;
+			CLLocationCoordinate2D center;
+
             if (adressesToDisplay.Count() == 1)
             {
                 double lat = adressesToDisplay.ElementAt(0).Coordinate.Latitude;
@@ -197,9 +205,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 }
 				else
 				{
-					region.Span = new MKCoordinateSpan( 0.004f, 0.004f );
+					deltaLat =  0.004;
+					deltaLng = 0.004;
+
 				}
-				region.Center = new CLLocationCoordinate2D(lat, lon);
+				center = new CLLocationCoordinate2D(lat, lon);
 
             }
 			else
@@ -209,13 +219,42 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 	            var minLon = adressesToDisplay.Min(a => a.Coordinate.Longitude);
 	            var maxLon = adressesToDisplay.Max(a => a.Coordinate.Longitude);
 
-	            region.Center = new CLLocationCoordinate2D((maxLat + minLat) / 2, (maxLon + minLon) / 2);
-	            region.Span = new MKCoordinateSpan((Math.Abs(maxLat - minLat)) * 1.5, (Math.Abs(maxLon - minLon)) * 1.5 );
+				deltaLat = (Math.Abs(maxLat - minLat)) * 1.5;
+				deltaLng = (Math.Abs(maxLon - minLon)) * 1.5;
+				center = new CLLocationCoordinate2D((maxLat + minLat) / 2, (maxLon + minLon) / 2);
+
 			}
 
-            SetRegion(region, true);
-            RegionThatFits(region);         
+			SetRegionAndZoom( region, center, deltaLat, deltaLng );
+       
         }
+
+		private void SetRegionAndZoom( MKCoordinateRegion region, CLLocationCoordinate2D center, double? deltaLat, double? deltaLng )
+		{
+			region.Center = center;
+			if( deltaLat.HasValue && deltaLng.HasValue )
+			{
+				region.Span = new MKCoordinateSpan(deltaLat.Value, deltaLng.Value );
+			}
+			SetRegion( region, true );
+			RegionThatFits(region);
+		}
+
+		private void CancelInitialZooming()
+		{
+			if (_cancelToken != null && _cancelToken.Token.CanBeCanceled)
+			{
+				_cancelToken.Cancel();
+				_cancelToken.Dispose();
+				_cancelToken = null;
+			}
+		}
+
+		public override void SetRegion (MKCoordinateRegion region, bool animated)
+		{
+			CancelInitialZooming();
+			base.SetRegion (region, animated);
+		}
 
     }
 }

@@ -14,6 +14,9 @@ using System.Collections.Generic;
 using Cirrious.MvvmCross.Binding.Interfaces;
 using Cirrious.MvvmCross.Views;
 using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
+using MonoTouch.AddressBook;
+using Xamarin.Contacts;
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -54,7 +57,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// Release any cached data, images, etc that aren't in use.
 		}
-		
+
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
@@ -90,7 +93,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 				{contactsBtn, "{'SelectedChangedCommand':{'Path':'SelectedChangedCommand'}, 'Selected':{'Path':'ContactsSelected'}}"} ,
 				{placesBtn, "{'SelectedChangedCommand':{'Path':'SelectedChangedCommand'}, 'Selected':{'Path':'PlacesSelected'}}"} ,
 				{searchBtn, "{'SelectedChangedCommand':{'Path':'SelectedChangedCommand'}, 'Selected':{'Path':'SearchSelected'}}"} ,
-				{SearchTextField, "{'Text':{'Path':'Criteria'}, 'TextChangedCommand':{'Path':'SearchCommand'}}"} ,
+                {SearchTextField, "{'Text':{'Path':'Criteria'}, 'TextChangedCommand':{'Path':'SearchCommand'}, 'IsProgressing':{'Path':'IsSearching'}}"} ,
 			});
 
             AddressListView.Source = source;

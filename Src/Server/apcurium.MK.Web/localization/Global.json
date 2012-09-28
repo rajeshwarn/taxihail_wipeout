@@ -7,7 +7,7 @@
 	"error.PhoneRequired" : "The phone is required",
 	"error.PhoneBadFormat" : "The phone number is invalid",
 	"error.PassengersRequired" : "The number of passengers is required",
-	"error.VehicleTypeRequired" : "The vehicule type is required",
+	"error.VehicleTypeRequired" : "The vehicle type is required",
 	"error.ChargeTypeRequired" : "The charge type is required",		
 	"signup.confirmation" : "Account created. You will receive an email shortly with a link you need to click on to confirm your registration.",	
 	"search.no-result": "Start typing an address or a place name",
@@ -18,8 +18,9 @@
     "CreateOrder_SettingsRequired": "Settings required",
     "CreateOrder_NoProvider": "Bad Provider",
     "CreateOrder_InvalidProvider": "Invalid Provider",
-    "CreateOrder_VehiculeType": "Vehicule Type Invalid",
+    "CreateOrder_VehicleType": "Vehicle Type Invalid",
     "CancelOrder_OrderNotInIbs": "Unkown Order",
     "NearbyPlaces_LocationRequired": "Location required",
-    "Search_Locations_NameRequired": "Name requried"
+    "Search_Locations_NameRequired": "Name required",
+	"Warning_when_booking_without_destination": "Please note that the price provided by this app is an estimated price and the meter will prevail on the price quoted on the site in accordance with the Act of transportation by taxi."
 }

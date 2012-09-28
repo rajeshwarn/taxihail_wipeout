@@ -3,6 +3,8 @@
 
     TaxiHail.AddressControlView = TaxiHail.TemplatedView.extend({
 
+        className: 'address-picker',
+
         events: {
             'click [data-action=clear]': 'clear',
             'click [data-action=locate]': 'locate',
@@ -12,7 +14,6 @@
 
         initialize: function(attrs, options) {
             _.bindAll(this, 'onkeyup', 'ondocumentclick');
-            this.$el.addClass('address-picker');
             this.model.on('change', this.render, this);
 
             $(document).on('click', this.ondocumentclick);

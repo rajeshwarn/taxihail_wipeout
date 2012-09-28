@@ -20,6 +20,7 @@ using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using Cirrious.MvvmCross.Touch.Interfaces;
 using apcurium.MK.Booking.Mobile.Data;
+using Xamarin.Contacts;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -82,6 +83,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 			JsConfig.RegisterTypeForAot<Coordinate>();
 			JsConfig.RegisterTypeForAot<CoordinatePrecision>();
 			JsConfig.RegisterTypeForAot<CoordinateRefreshTime>();
+			JsConfig.RegisterTypeForAot<AddressType>();
+			JsConfig.RegisterTypeForAot<OrganizationType>();
+			JsConfig.RegisterTypeForAot<RelationshipType>();
+			JsConfig.RegisterTypeForAot<InstantMessagingService>();
+			JsConfig.RegisterTypeForAot<EmailType>();
+			JsConfig.RegisterTypeForAot<PhoneType>();
+			JsConfig.RegisterTypeForAot<Contact>();
 
             if (!_callbackFromFB)
             {    

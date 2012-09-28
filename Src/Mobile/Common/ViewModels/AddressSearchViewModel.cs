@@ -88,8 +88,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     task.ContinueWith(RefreshResults);
                     if (!(SearchViewModelSelected is AddressSearchByContactViewModel))
                     {
-                        Console.WriteLine("Show Progress");
-                        TinyIoCContainer.Current.Resolve<IMessageService>().ShowProgress(true, () => CancelCurrentSearch());
                         task.Start();
                     }
                     IsSearching = true;
@@ -133,14 +131,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     AllAddresses = allAddresses;
 
                     FirePropertyChanged(() => AddressViewModels);
-
                     FirePropertyChanged(() => HistoricAddressViewModels);
                     FirePropertyChanged(() => AllAddresses);
                     FirePropertyChanged(() => HistoricIsHidden);
                 });
             }
-            Console.WriteLine("Hide Progress");
-            TinyIoCContainer.Current.Resolve<IMessageService>().ShowProgress(false);
         }
 
         private void ClearResults()

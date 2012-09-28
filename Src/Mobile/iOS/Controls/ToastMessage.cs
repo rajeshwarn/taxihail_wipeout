@@ -17,7 +17,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		private float _bottomPadding = 80f;
 
 		private NSTimer _timer;
-		private int _toastDuration = 5; //seconds
+		private int _toastDuration = 3; //seconds
 
 		private double _animationDuration = 3;
 		private float _minimumToastHeight = 50f;
@@ -44,9 +44,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 			var lblMsg = new UILabel( new RectangleF( _interiorPadding, _interiorPadding, Frame.Width - (_interiorPadding * 2), Frame.Height - (_interiorPadding * 2) ) );
 			lblMsg.BackgroundColor = UIColor.Clear;
-			lblMsg.TextColor = UIColor.FromRGBA( 255,255,255,210);
+			lblMsg.TextColor = UIColor.FromRGBA( 255,255,255,255);
 			lblMsg.TextAlignment = UITextAlignment.Center;
 			lblMsg.Text = _msg;
+            lblMsg.Font = AppStyle.BoldTextFont;
 			AddSubview( lblMsg );
 
 		}

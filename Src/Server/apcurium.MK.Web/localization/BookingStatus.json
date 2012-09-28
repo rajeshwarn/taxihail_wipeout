@@ -1,8 +1,10 @@
 ﻿{
     "Your Order": "Your Order",
-	"Confirmation Number" : "Confirmation Number",
+	"ConfirmationNumber" : "Confirmation #",
     "Status": "Status",
     "Cancel": "Cancel",
     "Call": "Call",
-    "New Ride": "New Ride"
+    "New Ride": "New Ride",
+    "Processing": "Processing...",
+    "Call us at": "Call us at"
 }

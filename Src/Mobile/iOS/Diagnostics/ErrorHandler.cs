@@ -4,6 +4,10 @@ using System.Linq;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Common.Diagnostic;
 using ServiceStack.ServiceClient.Web;
+using Cirrious.MvvmCross.Interfaces.Views;
+using Cirrious.MvvmCross.Views;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -19,7 +23,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			{
 				MessageHelper.Show( Resources.UnAuthorizedCallTitle, Resources.UnAuthorizedCallMessage, () => {
 					AppContext.Current.Controller.InvokeOnMainThread( () => {
-						AppContext.Current.Controller.PresentModalViewController( new LoginView(), true );
+                        var dispatch = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
+                        dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(LoginViewModel), null, true, MvxRequestedBy.UserAction));
 					});
 					AppContext.Current.SignOut ();
 				});

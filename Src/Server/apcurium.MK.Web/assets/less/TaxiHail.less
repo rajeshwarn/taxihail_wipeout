@@ -54,12 +54,29 @@ header {
 }
 
 .well {
-  min-height: 20px;
-  padding: 18px;
-  margin-bottom: 20px;
-  background-color: @wellBackground;
-  border: 1px solid #6A6855;
-  .border-radius(8px);
+    min-height: 20px;
+    padding: 18px;
+    margin-bottom: 20px;
+    background-color: @wellBackground;
+    border: 1px solid #6A6855;
+    .border-radius(8px);
+
+    &.well-form-actions {
+    padding-bottom: 0;
+    }
+
+    .form-actions {
+        margin-right: -18px;
+        margin-left: -18px;
+        margin-bottom: 0;
+        margin-top: 0;
+        padding-left:0;
+        padding-top:10px;
+        padding-bottom:10px;
+        background: transparent;
+        border-top-color: #5E5D4F;
+    }
+
 }
 
 .estimate .fare {
@@ -96,7 +113,6 @@ header {
 
 
 /* Address selector */
-@resultHeight: 38px;
 .address-picker {
     position: relative;
 
@@ -105,24 +121,24 @@ header {
     }
 
     .tab-content {
+
+        min-height: 123px;
+        background: @white;
+        border-left: 1px solid @inputBorder;
+        border-right: 1px solid @inputBorder;
+        
+        ul {
+            margin:10px;
+            padding:0;
+        }
+
         li {
             display: block;
-            height:@resultHeight;
-            background: @white;
-            border-left: 1px solid @inputBorder;
-            border-right: 1px solid @inputBorder;
-            border-bottom: 1px solid @inputBorder;
-            line-height: 36px;
             overflow:hidden;
-            color: #525252;
-            font-size: 18px;
-            font-weight: bold;
+            color: @black;
 
             a, a:link, a:active, a:visited, a:hover {
-                color: #525252;
-                font-size: 18px;
-                font-weight: bold;
-                margin: 0 10px;
+                color: @black;
             }
 
             &:last-child {
@@ -140,6 +156,8 @@ header {
 
 .address-selector-container {
     position:absolute;
+    top: 40px;
+    left:47px;
 }
 
 
@@ -173,10 +191,57 @@ header {
 }
 
 // BUTTONS
+
+// Custom Gradient Bar Colors for buttons and alerts
+.gradientBarCustom(@primaryColor, @secondaryColor, @textColor: #fff, @textShadow: 0 1px 1px rgba(0,0,0,.25)) {
+  color: @textColor;
+  text-shadow: @textShadow;
+  #gradient > .vertical-three-colors(@primaryColor, @primaryColor, 65%, @secondaryColor);
+  border-color: @secondaryColor @secondaryColor darken(@secondaryColor, 15%);
+  border-color: rgba(0,0,0,.1) rgba(0,0,0,.1) fadein(rgba(0,0,0,.1), 15%);
+}
+
+.buttonBackgroundCustom(@startColor, @endColor, @textColor: #fff, @textShadow: 0 1px 1px rgba(0,0,0,.25)) {
+  // gradientBar will set the background to a pleasing blend of these, to support IE<=9
+  .gradientBarCustom(@startColor, @endColor, @textColor, @textShadow);
+  *background-color: @endColor; /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+  .reset-filter();
+
+  // in these cases the gradient won't cover the background, so we override
+  &:hover, &:active, &.active, &.disabled, &[disabled] {
+    color: @textColor;
+    background-color: @endColor;
+    *background-color: darken(@endColor, 5%);
+  }
+
+  // IE 7 + 8 can't handle box-shadow to show active, so we darken a bit ourselves
+  &:active,
+  &.active {
+    background-color: darken(@endColor, 10%) e("\9");
+  }
+}
+
 .btn {
     .border-radius(2px);
     font-size: 18px;
     font-weight: bold;
+    .buttonBackgroundCustom(@btnBackgroundHighlight, @btnBackground);
+}
+
+.btn-primary {
+    .buttonBackgroundCustom(@btnPrimaryBackgroundHighlight, @btnPrimaryBackground);
+}
+
+.btn-danger {
+    .buttonBackgroundCustom(@btnDangerBackgroundHighlight, @btnDangerBackground);
+}
+
+.btn-inverse {
+    .buttonBackgroundCustom(@btnInverseBackgroundHighlight, @btnInverseBackground);
+}  
+
+.btn-flat {
+    background: @taxiHailBlue;
 }
 
 // FORMS 
@@ -189,31 +254,74 @@ legend {
     color: @taxiHailBlue;
     font-weight:bold;
     border: none;
+    line-height: @baseLineHeight;
+    margin-bottom:5px;
 }
 
 .form-horizontal {
+
+    .control-group {
+        margin-bottom:10px;
+    }
+
     .control-label {
         color: black;
         text-align: left;
-        line-height: 30px;
+        line-height: 20px;
+        width:120px;
     }  
+
+	.center-control-label {
+		color: black;
+        margin-right: 10px;
+		margin-left: 10px;
+        line-height: 20px;
+        width: 120px;
+		font-weight: bold;
+		}
 
     .input-block-level {
         height: 40px;
         min-height: 40px;
+    }
+
+    .controls {
+
+        margin-left: 120px;
+
+        label {
+            line-height: 20px;
+            padding-top: 5px;
+        }
+
+        input {
+            width: 100%;
+        }
     }   
+}
+
+.booking-status-view {
+    .btn {
+        width: 89px;
+        float: left;
+        min-height: 1px;
+        margin-left: 40px;
+    }
 }
 
 //CONFIRM SETINGS 
 .settings-label {
     float: left;
     width: 160px;
-    color: black;
     text-align: left;
-    line-height: 30px;
-    font-size: 18px;
+    line-height: 20px;
+    font-size: 14px;
     font-weight: bold;
     color: black;
+}
+
+.settings-value {
+    font-weight: bold;
 }
 
 .select-taxihail {

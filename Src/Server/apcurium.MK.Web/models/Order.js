@@ -16,6 +16,11 @@
             return this._status || (this._status = new TaxiHail.OrderStatus({
                 id: this.id
             }));
+        },
+
+        isValidAddress: function(attr) {
+            var value = this.get(attr);
+            return !!(value && value.fullAddress && value.latitude && value.longitude);
         }
     });
 
