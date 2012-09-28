@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Xamarin.Contacts;
 using System.Linq;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using TinyIoC;
 
 
 namespace apcurium.MK.Booking.Mobile.Client
@@ -18,7 +19,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			var book = TinyIoCContainer.Current.Resolve<AddressBook>();
 	        book.PreferContactAggregation = true;
 
-			return book.ToList();;
+			return book.ToList();
 		}
 
 	}

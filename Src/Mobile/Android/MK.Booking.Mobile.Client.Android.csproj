@@ -21,6 +21,7 @@
     <AndroidStoreUncompressedFileExtensions />
     <MandroidI18n />
     <TargetFrameworkVersion>v2.3</TargetFrameworkVersion>
+    <AndroidLinkSkip />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -36,10 +37,7 @@
     <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
     <AndroidLinkMode>None</AndroidLinkMode>
     <AndroidSupportedAbis>armeabi,armeabi-v7a,x86</AndroidSupportedAbis>
-    <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
     <DebugSymbols>True</DebugSymbols>
-    <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
-    <AndroidLinkSkip />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -57,7 +55,6 @@
     <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
     <AndroidSupportedAbis>armeabi-v7a,x86</AndroidSupportedAbis>
-    <AndroidLinkSkip />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
@@ -190,6 +187,7 @@
     <Compile Include="Controls\SpinningSearch.cs" />
     <Compile Include="Controls\TextProgressButton.cs" />
     <Compile Include="Controls\BindableListView.cs" />
+    <Compile Include="PlatformIntegration\AddressBookService.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\HelveticaNeue-Bold.otf" />
@@ -545,10 +543,6 @@
     <ProjectReference Include="..\Infrastructure\Cirrious.MvvmCross.Android.Maps\Cirrious.MvvmCross.Android.Maps.csproj">
       <Project>{43A48F1C-39F3-4C1C-8831-5D3EF45744FE}</Project>
       <Name>Cirrious.MvvmCross.Android.Maps</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Libraries\Newtonsoft.Json\Newtonsoft.Json\Newtonsoft.Json.MonoDroid.csproj">
-      <Project>{E6C3413C-919B-486D-8B6C-225CBD921B98}</Project>
-      <Name>Newtonsoft.Json.MonoDroid</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
