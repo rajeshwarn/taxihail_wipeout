@@ -19,6 +19,7 @@
             if (pickup && dest) {
                 TaxiHail.directionInfo.getInfo(pickup['latitude'], pickup['longitude'], dest['latitude'], dest['longitude']).done(this.renderResults);
             }
+            
 
             this.referenceData = new TaxiHail.ReferenceData();
             this.referenceData.fetch();
@@ -49,6 +50,9 @@
 
             this.$el.html(this.renderTemplate(data));
 
+            if (!this.model.get('dropOffAddress')) {
+                this.showInfos(TaxiHail.localize('Warning_when_booking_without_destination'));
+            }
 
             return this;
         },
@@ -90,6 +94,14 @@
                 $alert.append($('<div />').text(this.localize(error.errorCode)));
             }, this);
             this.$('.errors').html($alert);
+        },
+        
+        showInfos : function (message) {
+            var infos = $('<div class="alert alert-block" />').text(message);
+            //infos.append($('<button type="button" class="close" data-dismiss="alert">×</button>'));
+            ///infos.append($('<div />').text(message));
+            
+            this.$('.infos').html(infos);
         },
         
         /*renderItem: function (model) {
