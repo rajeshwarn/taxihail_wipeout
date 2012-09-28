@@ -2,10 +2,10 @@
 
     TaxiHail.AddressListView = Backbone.View.extend({
 
+        className: 'unstyled',
         tagName: 'ul',
 
         initialize: function() {
-            this.$el.addClass('unstyled');
             this.collection.on('reset', this.render, this);
         },
 

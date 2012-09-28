@@ -73,7 +73,7 @@
             this.model.save({}, {
                 success : TaxiHail.postpone(function (model) {
                     // Wait for order to be created before redirecting to status
-                        TaxiHail.app.navigate('status/' + model.id, { trigger: true, replace: true /* Prevent user from comming back to this screen */ });
+                        TaxiHail.app.navigate('status/' + model.id, { trigger: true, replace: true /* Prevent user from coming back to this screen */ });
                 }, this),
                 error: this.showErrors
             });

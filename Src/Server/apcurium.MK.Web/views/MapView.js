@@ -1,9 +1,6 @@
 ﻿(function () {
     TaxiHail.MapView = Backbone.View.extend({
         
-        events: {
-        },
-        
         initialize : function () {
             _.bindAll(this, "geolocdone", "geoloc");
             this.streetZoomLevel = 17;
@@ -303,8 +300,8 @@
             var position = projection.fromLatLngToDivPixel(this.get('position'));
 
             var div = this.div_;
-            div.style.left = (position.x -25) + 'px';
-            div.style.top = (position.y  -25) + 'px';
+            div.style.left = (position.x - 12) + 'px';
+            div.style.top =  (position.y - 12) + 'px';
             div.style.display = 'block';
          }
     });

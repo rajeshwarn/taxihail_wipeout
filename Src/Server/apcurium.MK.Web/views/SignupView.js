@@ -2,7 +2,7 @@
     TaxiHail.SignupView = TaxiHail.TemplatedView.extend({
         
         tagName: "form",
-        className: 'signup-view',
+        className: 'signup-view form-horizontal',
         
         events: {
             "submit": "onsubmit",
@@ -15,16 +15,15 @@
         },
         
         initialize:function () {
-            this.$el.addClass('form-horizontal');                       
             _.bindAll(this, "onerror");
         },
 
         render: function () {
             this.$el.html(this.renderTemplate());
             _.extend(Backbone.Validation.messages, {
-              required: this.localize('error.Required'),
-              pattern: this.localize('error.Pattern'),
-              equalTo: this.localize('error.EqualTo')
+                required: this.localize('error.Required'),
+                pattern: this.localize('error.Pattern'),
+                equalTo: this.localize('error.EqualTo')
             });
 
             Backbone.Validation.bind(this);
@@ -74,9 +73,8 @@
                var $alert = $('<div class="alert alert-error" />');
                $alert.text(this.localize(result.statusText));
                this.$('.errors').html($alert);
-            }              
+            }
             
-        }       
-        
+        }
     });
 })();
