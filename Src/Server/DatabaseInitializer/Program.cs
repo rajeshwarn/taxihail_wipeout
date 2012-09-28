@@ -124,6 +124,8 @@ namespace DatabaseInitializer
 
             configurationManager.SetSetting("IBS.DefaultAccountPassword", "password");
 
+            configurationManager.SetSetting("GeoLoc.DefaultLatitude", "45.516667");
+            configurationManager.SetSetting("GeoLoc.DefaultLongitude", "-73.65");
             configurationManager.SetSetting("GeoLoc.SearchFilter", "{0},ottawa,on,canada&region=ca");
             configurationManager.SetSetting("GeoLoc.AddressFilter", "canada");
             configurationManager.SetSetting("Direction.FlateRate", "3.45");

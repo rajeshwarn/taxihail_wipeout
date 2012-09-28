@@ -8,38 +8,36 @@
             _.bindAll(this, "geolocdone", "geoloc");
         },
         
-        setModel: function(model) {
+        setModel: function(model, centerMapOnAddressChange) {
             if(this.model) {
                 this.model.off(null, null, this);
             }
             this.model = model;
 
             this.model.on('change:pickupAddress', function (model, value) {
-                var location = new google.maps.LatLng(value.latitude, value.longitude);
-                if (this._pickupPin) {
-                    this._pickupPin.setPosition(location);
-                    this._pickupPin.setVisible(true);
+                this.updatePickup();
+                if(model.isValidAddress('pickupAddress')) {
+                    var location = new google.maps.LatLng(value.latitude, value.longitude);
+                    if(centerMapOnAddressChange) this.centerMap(location);
                 }
-                this.centerMap(location);
             }, this);
 
             this.model.on('change:dropOffAddress', function (model, value) {
-                var location = new google.maps.LatLng(value.latitude, value.longitude);
-                if (this._dropOffPin) {
-                    this._dropOffPin.setPosition(location);
-                    this._dropOffPin.setVisible(true);
+                this.updateDropOff();
+                if(model.isValidAddress('dropOffAddress')) {
+                    var location = new google.maps.LatLng(value.latitude, value.longitude);
+                    if(centerMapOnAddressChange) this.centerMap(location);
                 }
-                this.centerMap(location);
             }, this);
             
 
             this.model.on('change:isPickupActive change:isDropOffActive', function (model, value) {
-                if (model.get('isPickupActive') || model.get('isDropOffActive')) {
-                    this._target.set('visible', true);
-                } else {
-                    this._target.set('visible', false);
-                }
+                this._target.set('visible',  this.model.get('isPickupActive') || this.model.get('isDropOffActive'));
             }, this);
+
+            this.updatePickup();
+            this.updateDropOff();
+            this._target.set('visible',  this.model.get('isPickupActive') || this.model.get('isDropOffActive'));
             
         },
         
@@ -50,13 +48,14 @@
 
             var mapOptions = {
                 zoom: 12,
-                center: new google.maps.LatLng(-34.397, 150.644),
+                center: new google.maps.LatLng(45.516667, -73.65) /* Montreal */,
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
                 zoomControlOptions: {
                     position: google.maps.ControlPosition.LEFT_CENTER
                 }
 
             };
+
             this._map = new google.maps.Map(this.el, mapOptions);
             google.maps.event.addListener(this._map, 'dragend', this.geoloc);
             
@@ -90,7 +89,7 @@
             var target = this._target = new Target({
                 position: this._map.getCenter(),
                 map: this._map,
-                visible: true
+                visible: false
             });
 
             var onmapchanged = function() {
@@ -102,13 +101,23 @@
 
                 target.set('position', position);
             };
+            
+            var getdefaultlocation = _.bind(function () {
+                $.get('api/settings/defaultlocation',
+                    _.bind(function (address) {
+                        this.centerMap(new google.maps.LatLng(address.latitude, address.longitude));
+                        google.maps.event.clearListeners(this._map, 'tilesloaded'); //to refine if others listener subscribe
+                    }, this),
+                    "json");
+            }, this);
 
             google.maps.event.addListener(this._map, 'bounds_changed', onmapchanged);
             google.maps.event.addListener(this._map, 'drag', onmapchanged);
-
-
+            google.maps.event.addListener(this._map, 'tilesloaded', getdefaultlocation);
+            
             return this;
         },
+        
 
         centerMap: function(location) {
             var projection = this._target.getProjection(),
@@ -124,6 +133,24 @@
             this._vehicleMarker.setVisible(true);
             this._vehicleMarker.set('text', orderStatus.get('vehicleNumber'));
 
+        },
+
+        updatePickup: function() {
+            if(this._pickupPin) {
+                this._pickupPin.setVisible(this.model.isValidAddress('pickupAddress'));
+                if(this.model.isValidAddress('pickupAddress')) {
+                    this._pickupPin.setPosition(new google.maps.LatLng(this.model.get('pickupAddress').latitude, this.model.get('pickupAddress').longitude));
+                }
+            }
+        },
+
+        updateDropOff: function() {
+            if(this._dropOffPin) {
+                this._dropOffPin.setVisible(this.model.isValidAddress('dropOffAddress'));
+                if(this.model.isValidAddress('dropOffAddress')) {
+                    this._dropOffPin.setPosition(new google.maps.LatLng(this.model.get('dropOffAddress').latitude, this.model.get('dropOffAddress').longitude));
+                }
+            }
         },
         
         geolocdone : function (result) {
