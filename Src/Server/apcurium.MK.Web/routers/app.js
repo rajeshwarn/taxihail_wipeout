@@ -32,6 +32,8 @@
             TaxiHail.auth.on('change', function(isloggedIn) {
                 if(isloggedIn){
                     this.navigate('confirmationbook', { trigger: true });
+                }else {
+                    this.navigate('', { trigger: true });
                 }
             }, this);
 

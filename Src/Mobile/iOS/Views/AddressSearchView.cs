@@ -14,6 +14,9 @@ using System.Collections.Generic;
 using Cirrious.MvvmCross.Binding.Interfaces;
 using Cirrious.MvvmCross.Views;
 using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
+using MonoTouch.AddressBook;
+using Xamarin.Contacts;
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -54,7 +57,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// Release any cached data, images, etc that aren't in use.
 		}
-		
+
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();

@@ -52,7 +52,6 @@
     <MtouchI18n />
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <IpaPackageName />
-    <MtouchUseLlvm>True</MtouchUseLlvm>
     <CrashReportingApiKey />
     <BuildIpa>True</BuildIpa>
     <AssemblyName>TaxiMobileApp</AssemblyName>
@@ -66,7 +65,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
-    <CodesignKey>iPhone Distribution</CodesignKey>
+    <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchI18n />
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <IpaPackageName />
@@ -77,7 +76,6 @@
     <MtouchExtraArgs>-v -v -v -v  -aot "nrgctx-trampolines=2500" -aot "nimt-trampolines=2500" -aot "ntrampolines=2500"</MtouchExtraArgs>
     <DefineConstants>MONOTOUCH;NET35;SILVERLIGHT</DefineConstants>
     <MtouchArch>ARMv7</MtouchArch>
-    <CodesignProvision>30AE26CF-D638-4747-9ED6-1CEEF52171D7</CodesignProvision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Distribution|iPhone' ">
     <DebugType>none</DebugType>
@@ -253,7 +251,6 @@
     <Compile Include="Views\BookView.xib.designer.cs">
       <DependentUpon>BookView.xib</DependentUpon>
     </Compile>
-    <Compile Include="Navigation\NavigationService.cs" />
     <Compile Include="Setup.cs" />
     <Compile Include="PhonePresenter.cs" />
     <Compile Include="Controls\SegmentedButton.cs" />
@@ -291,6 +288,7 @@
     <Compile Include="Controls\DateTimePicker.cs" />
     <Compile Include="Controls\BarButtonItem.cs" />
     <Compile Include="Controls\ToastMessage.cs" />
+    <Compile Include="PlatformIntegration\AddressBookService.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -320,7 +318,6 @@
     <Folder Include="Assets\Cells\" />
     <Folder Include="PlatformIntegration\" />
     <Folder Include="Views\" />
-    <Folder Include="Navigation\" />
     <Folder Include="Assets\Search\" />
     <Folder Include="Animations\" />
     <Folder Include="Converters\" />
