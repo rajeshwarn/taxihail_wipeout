@@ -13,7 +13,6 @@
             var status = this.model.getStatus();
             this.interval = window.setInterval(_.bind(status.fetch, status), 5000);
             status.on('change:iBSStatusId', this.render, this);
-
         },
 
         render: function() {

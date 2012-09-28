@@ -41,6 +41,19 @@
                 this._target.set('visible',  this.model.get('isPickupActive') || this.model.get('isDropOffActive'));
             }, this);
 
+            this.model.getStatus().on('change:vehicleLatitude, change:vehicleLongitude', (function(self) {
+                var isAssigned = false;
+                return _.bind(function(model) {
+                    this.updateVehiclePosition(model);
+                    if(!isAssigned && model.get('vehicleLatitude') && model.get('vehicleLongitude') )
+                    {
+                        // Center the map on the taxi the first time we have coordinates
+                        isAssigned = true;
+                        this.centerMap(new google.maps.LatLng(model.get('vehicleLatitude'), model.get('vehicleLongitude')));
+                    }
+                }, self);
+            }(this)));
+
             this.updatePickup();
             this.updateDropOff();
             this._target.set('visible',  this.model.get('isPickupActive') || this.model.get('isDropOffActive'));
