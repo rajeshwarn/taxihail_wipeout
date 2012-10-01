@@ -6,6 +6,7 @@
             'click [data-action=goToFavorites]': 'goToFavorites',
             'click [data-action=goToHistory]': 'goToHistory',
             'click [data-action=goToPassword]': 'goToPassword',
+            'click .nav-tabs li>a': 'ontabclick'
         },
 
         initialize: function() {
@@ -43,6 +44,19 @@
         
         goToPassword : function (e) {
             e.preventDefault();
+        },
+        
+        selectTab: function ($tab) {
+            $tab.addClass('active').siblings().removeClass('active');
+        },
+        
+        ontabclick: function (e) {
+            e.preventDefault();
+
+            var $tab = $(e.currentTarget).parent('li');
+
+            this.selectTab($tab);
+
         },
         
     });
