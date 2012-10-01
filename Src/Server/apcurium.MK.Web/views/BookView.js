@@ -138,7 +138,7 @@
         book: function (e) {
             e.preventDefault();
             if(this.model.isValidAddress('pickupAddress')) {
-                TaxiHail.store.setItem("orderToBook", this.model.toJSON());
+                this.model.saveLocal();
                 TaxiHail.app.navigate('confirmationbook', { trigger:true });
             }
         }

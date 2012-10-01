@@ -21,15 +21,16 @@
         logout: function () {
             isLogged = false;
             return $.post('api/auth/logout', _.bind(function () {
-                isLoggedIn = false;                
+                isLoggedIn = false;
                 this.trigger('change', isLoggedIn);
             }, this), 'json');
         },
         
         isLoggedIn : function() {
             return isLoggedIn;
-        }, 
-        initialize: function() {
+        },
+
+        initialize: function(oninitialized, context) {
             this.account = new TaxiHail.UserAccount();
 
             this.on('change', function(isLoggedIn){
@@ -44,9 +45,13 @@
                 success: _.bind(function(model) {
                     isLoggedIn = true;
                     this.account.set(model.toJSON());
-                    //this.account('change', isLoggedIn);
+                    if(oninitialized) {
+                        oninitialized.call(context, isLoggedIn);
+                    }
                 }, this)
             });
+
+
 
         }
     
@@ -55,7 +60,7 @@
     $(document).ajaxError(function (e, jqxhr, settings, exception) {
         if (jqxhr.status === 401  /*Unauthorized*/ ) {
              if(isLoggedIn) {
-                isLoggedIn = false;                
+                isLoggedIn = false;
                 TaxiHail.auth.trigger('change', isLoggedIn);
              }
          }

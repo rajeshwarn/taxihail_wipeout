@@ -69,6 +69,9 @@
     <Reference Include="EntityFramework, Version=4.3.1.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.4.3.1\lib\net40\EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="Jurassic">
+      <HintPath>..\packages\Jurassic.2.1.1\lib\Jurassic.dll</HintPath>
+    </Reference>
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
     </Reference>
@@ -291,7 +294,7 @@
     <Content Include="services\DirectionInfoService.js" />
     <Content Include="services\GeocodingService.js" />
     <Content Include="services\GeolocationService.js" />
-    <Content Include="services\LocalStorageService.js" />
+    <Content Include="services\OrderService.js" />
     <Content Include="taxi-hail.js" />
     <Content Include="templates\AddressControl.html" />
     <Content Include="templates\AddressItem.html" />
@@ -342,6 +345,7 @@
     <Compile Include="Config.aspx.designer.cs">
       <DependentUpon>Config.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Handlebars\HandlebarsHttpHandler.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
