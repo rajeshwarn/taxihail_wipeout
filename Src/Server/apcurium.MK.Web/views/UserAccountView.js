@@ -43,7 +43,14 @@
         },
         
         goToPassword : function (e) {
-            e.preventDefault();
+            if (e) {
+                e.preventDefault();
+            }
+            this._password = new TaxiHail.UpdatePasswordView({
+                model: this.model
+            });
+            this._password.render();
+            this.$("#user-account-container").html(this._password.el);
         },
         
         selectTab: function ($tab) {
