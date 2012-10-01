@@ -29,7 +29,7 @@
             this.$el.html(this.renderTemplate(data));
             
             var status = this.model.getStatus();
-            if (status.get('iBSStatusId') == 'wosCANCELLED' || status.get('iBSStatusId') == 'wosCANCELLED_DONE' || status.get('iBSStatusId') == 'wosDONE' || status.get('iBSStatusId') == 'wosLOADED') {
+            if (!status.isActive()) {
                 this.$('[data-action=cancel]').addClass('disabled');
                 canCancel = false;
             } else {
