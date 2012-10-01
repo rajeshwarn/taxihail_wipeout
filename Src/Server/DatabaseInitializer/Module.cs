@@ -1,5 +1,6 @@
 ﻿using System.Configuration;
 using System.Data.Entity;
+using DatabaseInitializer.Services;
 using Infrastructure;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
@@ -57,6 +58,9 @@ namespace DatabaseInitializer
             var eventBus = new SynchronousMemoryEventBus();
             container.RegisterInstance<IEventBus>(eventBus);
             container.RegisterInstance<IEventHandlerRegistry>(eventBus);
+
+           //ReplayEventService
+            container.RegisterInstance<IEventsPlayBackService>(new EventsPlayBackService(() => container.Resolve<EventStoreDbContext>(), eventBus, container.Resolve<ITextSerializer>()));
         }
 
         private static void RegisterCommandHandlers(IUnityContainer unityContainer)

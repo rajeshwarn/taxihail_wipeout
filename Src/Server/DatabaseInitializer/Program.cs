@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using DatabaseInitializer.Services;
 using DatabaseInitializer.Sql;
 using Infrastructure.Messaging;
 using Microsoft.Practices.Unity;
@@ -82,7 +83,13 @@ namespace DatabaseInitializer
             var module = new Module();
             module.Init(container, connectionString);
 
-            if(!isUpdate)
+            if(isUpdate)
+            {
+               //replay events
+                var replayService = container.Resolve<IEventsPlayBackService>();
+                replayService.ReplayAllEvents();
+
+            }else
             {
                 //Init data
                 var commandBus = container.Resolve<ICommandBus>();
