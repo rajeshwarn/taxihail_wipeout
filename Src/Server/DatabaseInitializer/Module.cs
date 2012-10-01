@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.Configuration;
+using System.Data.Entity;
 using Infrastructure;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
@@ -14,9 +15,9 @@ namespace DatabaseInitializer
 {
     public class Module
     {
-        public void Init(IUnityContainer container)
+        public void Init(IUnityContainer container, ConnectionStringSettings connectionString)
         {
-            RegisterInfrastructure(container);
+            RegisterInfrastructure(container, connectionString);
 
             new apcurium.MK.Common.Module().Init(container);
             new apcurium.MK.Booking.Module().Init(container);
@@ -26,22 +27,25 @@ namespace DatabaseInitializer
             RegisterCommandHandlers(container);
         }
 
-        private void RegisterInfrastructure(IUnityContainer container)
+        private void RegisterInfrastructure(IUnityContainer container, ConnectionStringSettings connectionString)
         {
             Database.DefaultConnectionFactory = new ServiceConfigurationSettingConnectionFactory(Database.DefaultConnectionFactory);
+
+            container.RegisterInstance(apcurium.MK.Common.Module.MKConnectionString, connectionString);
             Database.SetInitializer<EventStoreDbContext>(null);
             Database.SetInitializer<MessageLogDbContext>(null);
+
 
             container.RegisterInstance<ITextSerializer>(new JsonTextSerializer());
             container.RegisterInstance<IMetadataProvider>(new StandardMetadataProvider());
 
             // Event log database and handler.
-            container.RegisterType<SqlMessageLog>(new InjectionConstructor("MessageLog", container.Resolve<ITextSerializer>(), container.Resolve<IMetadataProvider>()));
+            container.RegisterType<SqlMessageLog>(new InjectionConstructor(connectionString.ConnectionString, container.Resolve<ITextSerializer>(), container.Resolve<IMetadataProvider>()));
             container.RegisterType<IEventHandler, SqlMessageLogHandler>("SqlMessageLogHandler");
             container.RegisterType<ICommandHandler, SqlMessageLogHandler>("SqlMessageLogHandler");
 
             // Repository
-            container.RegisterType<EventStoreDbContext>(new TransientLifetimeManager(), new InjectionConstructor("EventStore"));
+            container.RegisterType<EventStoreDbContext>(new TransientLifetimeManager(), new InjectionConstructor(connectionString.ConnectionString));
             container.RegisterType(typeof(IEventSourcedRepository<>), typeof(SqlEventSourcedRepository<>), new ContainerControlledLifetimeManager());
 
             // Command bus
