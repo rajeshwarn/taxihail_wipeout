@@ -18,5 +18,11 @@ $process = [Diagnostics.Process]::Start($psi)
 $process.WaitForExit()
 
 
+#here deploy website
+
+#change connectionString
+Set-WebConfigurationProperty '/connectionStrings/add[@name="MkWeb"]' -PSPath "IIS:\sites\$companyName" -Name "connectionString" -Value "DataSource=.;Initial Catalog=$companyName;Integrated Security=True; MultipleActiveResultSets=True"
+
+
 Write-Host "***************Start Website $companyName ************************"
 Start-WebSite -Name $companyName

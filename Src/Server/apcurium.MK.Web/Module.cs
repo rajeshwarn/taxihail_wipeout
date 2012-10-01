@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.Configuration;
+using System.Data.Entity;
 using Infrastructure;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
@@ -31,6 +32,9 @@ namespace apcurium.MK.Web
         private void RegisterInfrastructure(IUnityContainer container)
         {
             Database.DefaultConnectionFactory = new ServiceConfigurationSettingConnectionFactory(Database.DefaultConnectionFactory);
+
+            container.RegisterInstance(apcurium.MK.Common.Module.MKConnectionString, ConfigurationManager.ConnectionStrings["MKWeb"]);
+
             Database.SetInitializer<EventStoreDbContext>(null);
             Database.SetInitializer<MessageLogDbContext>(null);
 
