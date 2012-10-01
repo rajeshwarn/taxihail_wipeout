@@ -55,7 +55,6 @@
         updatepassword: function (e) {
             e.preventDefault();
             if (this.$("#updatePasswordForm").valid()) {
-                var settings = this.model.get('settings');
                 var accountId = this.model.get('id');
                     $.post('api/accounts/' + accountId + '/updatePassword', {
                         accountId: accountId,
