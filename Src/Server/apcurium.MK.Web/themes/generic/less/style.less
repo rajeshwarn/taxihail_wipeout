@@ -69,10 +69,18 @@ select,
 
 
 
-.input-prepend .btn,
-.input-append .btn {
-    line-height: 30px;
-    border: 1px solid @inputBorder;
+.input-prepend,
+.input-append {
+    .btn {
+        line-height: 30px;
+        border: 1px solid @inputBorder;
+    }
+
+    .add-on {
+        width:30px;
+        height:30px;
+    }
+
 }
 
 //TABS
