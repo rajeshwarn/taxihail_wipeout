@@ -25,7 +25,8 @@
             "login": "login", // #login
             "signup": "signup", // #signup
             "signupconfirmation": "signupconfirmation", // redirect to home after signup success
-            "status/:id" : "status"
+            "status/:id": "status",
+            "useraccount": "useraccount",
         },
 
         initialize: function () {
@@ -126,7 +127,20 @@
             }, this);
 
             renderView(TaxiHail.SignupView, model);
-        }
+        },
+        
+        useraccount: function () {
+                TaxiHail.auth.account.fetch({
+                    success: function (model) {
+                        
+                        var account = new TaxiHail.UserAccount(model);
+                        renderView(TaxiHail.UserAccountView, account);
+                    },
+                    error: _.bind(function (model) {
+                        this.navigate('login', { trigger: true });
+                    }, this)
+                });
+        },
 
     });
 
