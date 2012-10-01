@@ -8,6 +8,7 @@ using ServiceStack.Common.Web;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.Security;
 
@@ -31,7 +32,7 @@ namespace apcurium.MK.Booking.Api.Services
             if (!string.IsNullOrEmpty(user.FacebookId) || !string.IsNullOrEmpty(user.TwitterId))
                 throw HttpError.Unauthorized("Facebook or Twitter account cannot update password");
             if (!new PasswordService().IsValid(request.CurrentPassword, request.AccountId.ToString(),user.Password))
-                throw new HttpError(HttpStatusCode.Forbidden, "Current password doesn't match with account password");
+                throw new HttpError(ErrorCode.UpdatePassword_NotSame.ToString());
 
 
             var udpateCommand = new Commands.UpdateAccountPassword()
