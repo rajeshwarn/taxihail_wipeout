@@ -294,7 +294,7 @@
     <Content Include="services\DirectionInfoService.js" />
     <Content Include="services\GeocodingService.js" />
     <Content Include="services\GeolocationService.js" />
-    <Content Include="services\LocalStorageService.js" />
+    <Content Include="services\OrderService.js" />
     <Content Include="taxi-hail.js" />
     <Content Include="templates\AddressControl.html" />
     <Content Include="templates\AddressItem.html" />

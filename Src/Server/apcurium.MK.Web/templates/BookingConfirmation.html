@@ -31,11 +31,11 @@
                 
                 
                 <div class="control-group">
-    <label class="control-label" for="inputName">{{localize "Name"}}</label>
-    <div class="controls">
-        <input type="text"  id="inputName" name="name" data-action="changesettings" value="{{settings.name}}" class='input-block-level'>
-    </div>
-</div>
+                    <label class="control-label" for="inputName">{{localize "Name"}}</label>
+                    <div class="controls">
+                        <input type="text"  id="inputName" name="name" data-action="changesettings" value="{{settings.name}}" class='input-block-level'>
+                    </div>
+                </div>
 
                 <div class="control-group">
                     <label class="control-label" for="inputPhone">{{localize "Phone"}}</label>
@@ -73,20 +73,20 @@
                 </div>
 
 
-<div class="control-group">
-    <label class="control-label" for="inputChargeType">{{localize "Charge Type"}}</label>
-    <div class="controls">
-        <select data-action="changesettings" id="inputChargeType" name="chargeTypeId" class="select-taxihail">
-            {{#each paymentsList}}
-                {{#ifCond this.id ../chargeTypeId}}
-                    <option value="{{this.id}}" selected>{{this.display}}</option>
-                {{else}}
-                    <option value="{{this.id}}">{{this.display}}</option>
-                {{/ifCond}}
-            {{/each}}
-        </select>
-    </div>
-</div>
+                <div class="control-group">
+                    <label class="control-label" for="inputChargeType">{{localize "Charge Type"}}</label>
+                    <div class="controls">
+                        <select data-action="changesettings" id="inputChargeType" name="chargeTypeId" class="select-taxihail">
+                            {{#each paymentsList}}
+                                {{#ifCond this.id ../chargeTypeId}}
+                                    <option value="{{this.id}}" selected>{{this.display}}</option>
+                                {{else}}
+                                    <option value="{{this.id}}">{{this.display}}</option>
+                                {{/ifCond}}
+                            {{/each}}
+                        </select>
+                    </div>
+                </div>
                 
                 
                 
@@ -105,5 +105,5 @@
             </div>
         </form>
         </div>
-</div>
+    </div>
 </div>

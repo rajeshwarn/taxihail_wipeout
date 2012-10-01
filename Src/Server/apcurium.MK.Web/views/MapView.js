@@ -56,9 +56,6 @@
             this._target.set('visible',  this.model.get('isPickupActive') || this.model.get('isDropOffActive'));
             
         },
-        
-        
-
            
         render: function() {
 
