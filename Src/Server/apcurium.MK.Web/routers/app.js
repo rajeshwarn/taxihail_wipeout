@@ -21,12 +21,13 @@
     TaxiHail.App = Backbone.Router.extend({
         routes: {
             "": "book",   // #
+            "later": "later",
             "confirmationbook": "confirmationbook",
             "login": "login", // #login
             "signup": "signup", // #signup
             "signupconfirmation": "signupconfirmation",
             "status/:id": "status",
-            "useraccount": "useraccount",
+            "useraccount": "useraccount"
         },
 
         initialize: function () {
@@ -95,6 +96,15 @@
             mapView.setModel(model, true);
             renderView(TaxiHail.BookView, model);
            
+        },
+
+        later: function() {
+            var currentOrder = TaxiHail.orderService.getCurrentOrder();
+            if (currentOrder) {
+                renderView(TaxiHail.BookLaterView, currentOrder);
+            } else {
+                this.navigate('', { trigger: true });
+            }
         },
         
         confirmationbook: function () {

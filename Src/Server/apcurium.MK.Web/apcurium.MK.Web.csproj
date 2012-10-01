@@ -128,6 +128,10 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="assets\bootstrap-datepicker\css\datepicker.css" />
+    <Content Include="assets\bootstrap-datepicker\js\bootstrap-datepicker.js" />
+    <Content Include="assets\bootstrap-timepicker\compiled\timepicker.css" />
+    <Content Include="assets\bootstrap-timepicker\js\bootstrap-timepicker.js" />
     <Content Include="assets\bootstrap\.issue-guidelines.js" />
     <Content Include="assets\bootstrap\docs\assets\css\bootstrap-responsive.css" />
     <Content Include="assets\bootstrap\docs\assets\css\bootstrap.css" />
@@ -542,6 +546,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="localization\BookingStatus.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="assets\bootstrap-datepicker\less\datepicker.less" />
+    <Content Include="assets\bootstrap-timepicker\less\timepicker.less" />
+    <Content Include="assets\bootstrap-timepicker\README.md" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
