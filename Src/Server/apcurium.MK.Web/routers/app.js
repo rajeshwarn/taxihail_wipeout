@@ -27,6 +27,7 @@
             "signupconfirmation": "signupconfirmation",
             "status/:id": "status",
             "useraccount": "useraccount",
+            "resetpassword": "resetpassword",
         },
 
         initialize: function () {
@@ -159,6 +160,10 @@
                     }, this)
                 });
         },
+        
+        resetpassword : function () {
+            renderView(TaxiHail.ResetPasswordView);
+        }
 
     });
 
