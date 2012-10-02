@@ -1,0 +1,12 @@
+﻿{
+	"Settings": "Settings",
+	"Name": "Name",
+	"Phone": "Phone Number",
+	"Passengers": "Passengers",
+	"Vehicle Type": "Vehicle Type",
+	"Charge Type": "Charge Type",
+	"Cancel": "Cancel",
+	"Saves changes":"Saves changes",
+	"Loading" : "Loading",
+	"Settings Changed" : "Settings Changed"
+}

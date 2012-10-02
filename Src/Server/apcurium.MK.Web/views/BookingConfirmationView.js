@@ -6,13 +6,14 @@
         
         events: {
             'click [data-action=book]': 'book',
+            'click [data-action=cancel]': 'cancel',
             'change :text[data-action=changepickup]': 'onPickupPropertyChanged',
             'change :text[data-action=changesettings]': 'onSettingsPropertyChanged',
             'change :input[data-action=changesettings]': 'onSettingsPropertyChanged'
         },
         initialize: function () { 
 
-            _.bindAll(this, "renderResults");
+            _.bindAll(this, "renderResults", 'showErrors');
             
             var pickup = this.model.get('pickupAddress');
             var dest = this.model.get('dropOffAddress');
@@ -53,6 +54,27 @@
             if (this.model.get('dropOffAddress')) {
                 this.showInfos(TaxiHail.localize('Warning_when_booking_without_destination'));
             }
+            
+
+            this.$("#updateBookingSettingsForm").validate({
+                rules: {
+                    name: "required",
+                    phone: "required",
+                    passengers: "required",
+                },
+                messages: {
+                    name: {
+                        required: TaxiHail.localize('error.NameRequired'),
+                    },
+                    phone: {
+                        required: TaxiHail.localize('error.PhoneRequired'),
+                    },
+                    passengers: {
+                        required: TaxiHail.localize('error.PassengersRequired'),
+                    }
+                }, success: function (label) {
+                }
+            });
 
             return this;
         },
@@ -67,17 +89,25 @@
         },
         
         book: function (e) {
-            this.$('#bookBt').button('loading');
+            
             e.preventDefault();
             //this.model.set('settings', settings);
-            this.model.save({}, {
+            if (this.$("#updateBookingSettingsForm").valid()) {
+                this.$('#bookBt').button('loading');
+                this.model.save({}, {
                 success : TaxiHail.postpone(function (model) {
                     // Wait for order to be created before redirecting to status
                         TaxiHail.app.navigate('status/' + model.id, { trigger: true, replace: true /* Prevent user from coming back to this screen */ });
                 }, this),
                 error: this.showErrors
             });
-            
+            }
+        },
+        
+        cancel: function (e) {
+            e.preventDefault();
+            this.model.destroyLocal();
+            TaxiHail.app.navigate('', { trigger: true, replace: true /* Prevent user from coming back to this screen */ });
         },
         
         showErrors: function (model, result) {

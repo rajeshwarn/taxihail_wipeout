@@ -25,17 +25,15 @@
         <br/>
         
         <div class="errors" style="margin-top: 10px;"></div>
-        <form class="form-horizontal">
+        <form class="form-horizontal" id="updateBookingSettingsForm">
             <div id="settingsContent">
                 
-                
-                
                 <div class="control-group">
-    <label class="control-label" for="inputName">{{localize "Name"}}</label>
-    <div class="controls">
-        <input type="text"  id="inputName" name="name" data-action="changesettings" value="{{settings.name}}" class='input-block-level'>
-    </div>
-</div>
+                    <label class="control-label" for="inputName">{{localize "Name"}}</label>
+                    <div class="controls">
+                        <input type="text"  id="inputName" name="name" data-action="changesettings" value="{{settings.name}}" class='input-block-level'>
+                    </div>
+                </div>
 
                 <div class="control-group">
                     <label class="control-label" for="inputPhone">{{localize "Phone"}}</label>
@@ -73,20 +71,20 @@
                 </div>
 
 
-<div class="control-group">
-    <label class="control-label" for="inputChargeType">{{localize "Charge Type"}}</label>
-    <div class="controls">
-        <select data-action="changesettings" id="inputChargeType" name="chargeTypeId" class="select-taxihail">
-            {{#each paymentsList}}
-                {{#ifCond this.id ../chargeTypeId}}
-                    <option value="{{this.id}}" selected>{{this.display}}</option>
-                {{else}}
-                    <option value="{{this.id}}">{{this.display}}</option>
-                {{/ifCond}}
-            {{/each}}
-        </select>
-    </div>
-</div>
+                <div class="control-group">
+                    <label class="control-label" for="inputChargeType">{{localize "Charge Type"}}</label>
+                    <div class="controls">
+                        <select data-action="changesettings" id="inputChargeType" name="chargeTypeId" class="select-taxihail">
+                            {{#each paymentsList}}
+                                {{#ifCond this.id ../chargeTypeId}}
+                                    <option value="{{this.id}}" selected>{{this.display}}</option>
+                                {{else}}
+                                    <option value="{{this.id}}">{{this.display}}</option>
+                                {{/ifCond}}
+                            {{/each}}
+                        </select>
+                    </div>
+                </div>
                 
                 
                 
@@ -95,15 +93,15 @@
                 <div class="control-group">
                     <label class="control-label" for="inputNotes">{{localize "Notes"}}</label>
                     <div class="controls">
-                        <input type="text" id="inputNotes" placeholder="Notes" class='input-block-level'>
+                        <input type="text" id="inputNotes" name="notes" placeholder="Notes" class='input-block-level'>
                     </div>
                 </div>
                 <div class="control-group">
-                    <a href='#' style="width:75px;" class='btn btn-large pull-right span2' data-action='startOver'>{{localize "Cancel"}}</a>
+                    <a href='#' style="width:75px;" class='btn btn-large pull-right span2' data-action='cancel'>{{localize "Cancel"}}</a>
                     <a href='#' style="width:150px;" id="bookBt" class='btn btn-primary btn-large pull-right span2' data-action='book' data-loading-text="{{localize 'Loading'}}">{{localize "Book Now!"}}</a>                
                 </div>
             </div>
         </form>
         </div>
-</div>
+    </div>
 </div>

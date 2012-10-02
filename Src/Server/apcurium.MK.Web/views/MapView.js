@@ -56,9 +56,6 @@
             this._target.set('visible',  this.model.get('isPickupActive') || this.model.get('isDropOffActive'));
             
         },
-        
-        
-
            
         render: function() {
 
@@ -266,7 +263,7 @@
         this.setValues(options);
 
         var div = this.div_ = document.createElement('div');
-        div.style.cssText = 'width: 25px; height: 25px; background: url(themes/generic/img/target.png) top left no-repeat;position: absolute; display: none';
+        div.style.cssText = 'width: 25px; height: 25px; background: url(assets/img/target.png) top left no-repeat;position: absolute; display: none';
     };
 
     _.extend(Target.prototype, new google.maps.OverlayView(), {

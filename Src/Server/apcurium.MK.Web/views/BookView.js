@@ -5,7 +5,8 @@
         className: 'book-view',
 
         events: {
-            'click [data-action=book]': 'book'
+            'click [data-action=book]': 'book',
+            'click [data-action=later]': 'later'
         },
         
         initialize: function () {
@@ -138,8 +139,16 @@
         book: function (e) {
             e.preventDefault();
             if(this.model.isValidAddress('pickupAddress')) {
-                TaxiHail.store.setItem("orderToBook", this.model.toJSON());
+                this.model.saveLocal();
                 TaxiHail.app.navigate('confirmationbook', { trigger:true });
+            }
+        },
+
+        later: function (e) {
+            e.preventDefault();
+            if(this.model.isValidAddress('pickupAddress')) {
+                this.model.saveLocal();
+                TaxiHail.app.navigate('later', { trigger:true });
             }
         }
     });

@@ -4,7 +4,7 @@
 <div class="login-status pull-right">
     <ul>
         {{#if isLoggedIn}}
-            <li>{{name}}
+            <li><a href="#" data-action="goToUserAccount">{{name}}</a>
             <li><a href="#" data-action="logout">{{localize "Log Out"}}</a>
         {{else}}
             <li><a href="#login" >{{localize "Log In"}}</a>

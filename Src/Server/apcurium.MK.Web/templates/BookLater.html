@@ -1,0 +1,19 @@
+<div class="row">
+    <div class="span6">
+        <div class='well clearfix'>
+            <div class="input-append date pull-left" data-role='datepicker' data-date="{{ today }}">
+                <input class="span2" type="text" value="{{ today }}">
+                <span class="add-on"><i class="icon-calendar"></i></span>
+            </div>
+            <div class="input-append bootstrap-timepicker-component pull-right">
+                <input type="text" data-role='timepicker' class="input-small">
+                <span class="add-on">
+                    <i class="icon-time"></i>
+                </span>
+            </div>
+            <div class='control-group'>
+                <button type='submit' class='btn btn-large btn-primary span2 pull-right' >{{ localize "Set Time" }}</button>
+            </div>
+        </div>
+    </div>
+</div>

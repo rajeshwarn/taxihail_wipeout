@@ -3,7 +3,8 @@
     TaxiHail.LoginView = TaxiHail.TemplatedView.extend({
 
         events: {
-            "submit form": 'onSubmit'
+            "submit form": 'onSubmit',
+            "click [data-action=resetpassword]" : "resetpassword"
         },
 
         render: function () {
@@ -62,6 +63,11 @@
                 $alert.append($('<div />').text(this.localize(error.errorCode)));
             }, this);
             this.$('.errors').html($alert);
+        },
+        
+        resetpassword : function (e) {
+            e.preventDefault();
+            TaxiHail.app.navigate('resetpassword', { trigger: true });
         }
 
     });

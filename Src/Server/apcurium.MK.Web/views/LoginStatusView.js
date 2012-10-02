@@ -3,7 +3,8 @@
     TaxiHail.LoginStatusView = TaxiHail.TemplatedView.extend({
 
         events: {
-            'click [data-action=logout]': 'logout'
+            'click [data-action=logout]': 'logout',
+            'click [data-action=goToUserAccount] ': 'goToUserAccount',
         },
 
         initialize: function () {
@@ -24,6 +25,11 @@
         logout: function (e) {
             e.preventDefault();
             TaxiHail.auth.logout();
+        },
+        
+        goToUserAccount : function (e) {
+            e.preventDefault();
+            TaxiHail.app.navigate('useraccount', { trigger: true });
         }
 
     });

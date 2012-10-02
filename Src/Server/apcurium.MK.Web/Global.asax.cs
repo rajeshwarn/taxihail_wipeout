@@ -4,6 +4,7 @@ using System.IO;
 using System.Web;
 using Microsoft.Practices.Unity;
 using ServiceStack.ServiceInterface.Validation;
+using ServiceStack.Text;
 using ServiceStack.WebHost.Endpoints;
 using Funq;
 using apcurium.MK.Booking.Api.Services;
@@ -54,6 +55,7 @@ namespace apcurium.MK.Web
                 });
 
                 ServiceStack.Text.JsConfig.EmitCamelCaseNames = true;
+                ServiceStack.Text.JsConfig.DateHandler = JsonDateHandler.ISO8601;
 
                 Trace.WriteLine("Configure AppHost finished");
             }

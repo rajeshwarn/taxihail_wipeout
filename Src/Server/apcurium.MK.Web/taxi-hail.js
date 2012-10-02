@@ -35,8 +35,8 @@ TaxiHail.loader = {
 };
 $(function () {
     TaxiHail.loader.load(
-        /* Localizations */ ["Home", "Book", "Login", "AddressSelection", "BookingConfirmation", "SettingsEdit", "Signup", "LoginStatus", "Map", "BookingStatus", "Global"],
-        /* Templates*/["Home", "Book", "Login", "AddressSelection", "AddressItem", "AddressControl", "AddressSearch", "BookingConfirmation", "SettingsEdit", "Signup", "LoginStatus", "BookingStatus"],
+        /* Localizations */ ["Home", "Book", "BookLater", "Login", "AddressSelection", "BookingConfirmation", "SettingsEdit", "Signup", "LoginStatus", "Map", "BookingStatus", "Profile", "UpdatePassword", "ResetPassword", "Global"],
+        /* Templates*/["Home", "Book", "BookLater", "Login", "AddressSelection", "AddressItem", "AddressControl", "AddressSearch", "BookingConfirmation", "SettingsEdit", "Signup", "LoginStatus", "BookingStatus", "Profile", "UpdatePassword", "UserAccount", "ResetPassword"],
         function () {
 
             // Application starts here
