@@ -44,11 +44,30 @@
             pickupDate.setHours(hour);
             pickupDate.setMinutes(minute);
 
+            if(this.validate(pickupDate)){
+                this.model.set('pickupDate', toISO8601(pickupDate));
+                this.model.saveLocal();
+                TaxiHail.app.navigate('confirmationbook', { trigger: true });
+            }
 
-            this.model.set('pickupDate', toISO8601(pickupDate));
-            this.model.saveLocal();
-            TaxiHail.app.navigate('confirmationbook', { trigger: true });
+        },
 
+        validate: function(date) {
+            var now = new Date();
+            now.setMinutes(now.getMinutes() + 2);
+
+            var isInFuture = now < date;
+
+            if(!isInFuture) {
+                this.showError(this.localize("error.PickupDateMustBeInFuture"));
+            }
+
+            return isInFuture;
+        },
+
+        showError: function (error) {
+            var $alert = $('<div class="alert alert-error" />').text(error);
+            this.$('.errors').html($alert);
         }
 
     });
