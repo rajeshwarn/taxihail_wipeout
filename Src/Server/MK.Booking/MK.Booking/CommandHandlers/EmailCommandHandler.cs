@@ -12,6 +12,7 @@ namespace apcurium.MK.Booking.CommandHandlers
     public class EmailCommandHandler : ICommandHandler<SendPasswordResetEmail>, ICommandHandler<SendAccountConfirmationEmail>
     {
         const string ApplicationNameSetting = "TaxiHail.ApplicationName";
+        const string AccentColorSetting = "TaxiHail.AccentColor";
         const string PasswordResetTemplateName = "PasswordReset";
         const string AccountConfirmationTemplateName = "AccountConfirmation";
         const string PasswordResetEmailSubject = "{{ ApplicationName }} - Your password has been reset";
@@ -36,6 +37,7 @@ namespace apcurium.MK.Booking.CommandHandlers
             var templateData = new {
                                        command.Password,
                                        ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
+
                                    };
 
             SendEmail(command.EmailAddress, template, PasswordResetEmailSubject, templateData);
@@ -49,6 +51,7 @@ namespace apcurium.MK.Booking.CommandHandlers
             var templateData = new {
                                        command.ConfirmationUrl,
                                        ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
+                                       AccentColor = _configurationManager.GetSetting(AccentColorSetting)
                                    };
             
             SendEmail(command.EmailAddress, template, AccountConfirmationEmailSubject, templateData);

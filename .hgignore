@@ -42,3 +42,6 @@ ClientBin*/
 
 #NuGet
 packages/
+Deployment/WebSite/*
+syntax: regexp
+Deployment/Database/*

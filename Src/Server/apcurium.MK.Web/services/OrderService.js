@@ -19,8 +19,8 @@
             }
             return null;
         },
-        
-        cancelCurrentOrder: function () {
+
+        clearCurrentOrder: function() {        
             this.store.removeItem(currentOrderKey);
         }
     });

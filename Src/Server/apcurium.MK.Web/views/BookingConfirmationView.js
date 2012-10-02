@@ -6,14 +6,14 @@
         
         events: {
             'click [data-action=book]': 'book',
-            'click [data-action=startOver]': 'cancelbook',
+            'click [data-action=cancel]': 'cancel',
             'change :text[data-action=changepickup]': 'onPickupPropertyChanged',
             'change :text[data-action=changesettings]': 'onSettingsPropertyChanged',
             'change :input[data-action=changesettings]': 'onSettingsPropertyChanged'
         },
         initialize: function () { 
 
-            _.bindAll(this, "renderResults");
+            _.bindAll(this, "renderResults", 'showErrors');
             
             var pickup = this.model.get('pickupAddress');
             var dest = this.model.get('dropOffAddress');
@@ -128,8 +128,10 @@
             }
         },
         
-        cancelbook : function (e) {
-            TaxiHail.orderService.cancelCurrentOrder();
+        cancel: function (e) {
+            e.preventDefault();
+            this.model.destroyLocal();
+            TaxiHail.app.navigate('', { trigger: true, replace: true /* Prevent user from coming back to this screen */ });
         },
         
         showErrors: function (model, result) {

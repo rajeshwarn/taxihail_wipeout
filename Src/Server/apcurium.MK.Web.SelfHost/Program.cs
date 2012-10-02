@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using Microsoft.Practices.Unity;
 using ServiceStack.ServiceInterface.Validation;
 using ServiceStack.WebHost.Endpoints;
@@ -20,7 +21,6 @@ namespace apcurium.MK.Web.SelfHost
     {
         static void Main(string[] args)
         {
-
             var listeningOn = args.Length == 0 ? "http://*:6901/api/" : args[0];
 
             var appHost = new AppHost();
@@ -30,8 +30,6 @@ namespace apcurium.MK.Web.SelfHost
             Console.WriteLine("AppHost Created at {0}, listening on {1}", DateTime.Now, listeningOn);
             Console.ReadKey();
         }
-
-
     }
 
     public class AppHost : AppHostHttpListenerBase
@@ -41,7 +39,7 @@ namespace apcurium.MK.Web.SelfHost
 
         public override void Configure(Container containerFunq)
         {
-            new Module().Init(UnityServiceLocator.Instance);
+            new Module().Init(UnityServiceLocator.Instance, ConfigurationManager.ConnectionStrings["MKWebDev"]);
 
             var container = UnityServiceLocator.Instance;
             containerFunq.Adapter = new UnityContainerAdapter(container, new Logger());

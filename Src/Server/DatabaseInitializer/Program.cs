@@ -1,206 +1,150 @@
-﻿// ==============================================================================================================
-// Microsoft patterns & practices
-// CQRS Journey project
-// ==============================================================================================================
-// ©2012 Microsoft. All rights reserved. Certain content used with permission from contributors
-// http://cqrsjourney.github.com/contributors/members
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance 
-// with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
-// Unless required by applicable law or agreed to in writing, software distributed under the License is 
-// distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
-// See the License for the specific language governing permissions and limitations under the License.
-// ==============================================================================================================
-
-using System;
-using System.Globalization;
-using System.Net.Mail;
+﻿using System;
+using System.IO;
+using System.Reflection;
+using DatabaseInitializer.Services;
+using DatabaseInitializer.Sql;
 using Infrastructure.Messaging;
 using Microsoft.Practices.Unity;
+using Newtonsoft.Json.Linq;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.IBS;
-using apcurium.MK.Common.Caching;
 using apcurium.MK.Common.Configuration.Impl;
 
 namespace DatabaseInitializer
 {
     using System.Configuration;
-    using System.Data.Entity;
-    using System.Data.Entity.Infrastructure;
-
-    using Infrastructure.Sql.BlobStorage;
-    using Infrastructure.Sql.MessageLog;
-    using Infrastructure.Sql.EventSourcing;
-    using Infrastructure.Sql.Messaging.Implementation;
-    using apcurium.MK.Booking.Database;
 
     public class Program
     {
         public static void Main(string[] args)
         {
-            var connectionString = ConfigurationManager.AppSettings["defaultConnection"];
+            var companyName = "MKWebDev";
             if (args.Length > 0)
             {
-                connectionString = args[0];
+                companyName = args[0];
             }
 
-            // Use BookingDbContext as entry point for dropping and recreating DB
-            using (var context = new BookingDbContext(connectionString))
+            var connectionString = new ConnectionStringSettings("MkWeb",
+                                                                "Data Source=.;Initial Catalog=MKWebDev;Integrated Security=True; MultipleActiveResultSets=True");
+            if (args.Length > 1)
             {
-                if (context.Database.Exists())
-                {
-                    context.Database.ExecuteSqlCommand(string.Format("ALTER DATABASE {0} SET SINGLE_USER WITH ROLLBACK IMMEDIATE", context.Database.Connection.Database));
-                    context.Database.Delete();
-                }
-
-                context.Database.CreateIfNotExists();
+                connectionString.ConnectionString = args[1];
             }
 
-            Database.SetInitializer<EventStoreDbContext>(null);
-            Database.SetInitializer<MessageLogDbContext>(null);
-            Database.SetInitializer<BookingDbContext>(null);
-            Database.SetInitializer<ConfigurationDbContext>(null);
-            Database.SetInitializer<CachingDbContext>(null);
+            var connStringMaster = connectionString.ConnectionString.Replace(companyName, "master");
+
+            //Init or Update
+            var isUpdate = true;
+            if (args.Length > 2)
+            {
+                isUpdate = args[2].ToUpperInvariant() == "U";
+            }else
+            {
+                Console.WriteLine("[C]reate (drop existing) or [U]pdate database ? C/U");
+                isUpdate = Console.ReadLine() == "U";
+            }
+
+            //SQL Instance name
+            var sqlInstanceName = "MSSQL11.MSSQLSERVER";
+            if (args.Length > 3)
+            {
+                sqlInstanceName = args[3];
+            }else
+            {
+                Console.WriteLine("Sql Instance name ? Default is MSSQL11.MSSQLSERVER");
+                var userSqlInstance = Console.ReadLine();
+                sqlInstanceName = string.IsNullOrEmpty(userSqlInstance) ? sqlInstanceName : userSqlInstance;
+            }
+
+            var creatorDb = new DatabaseCreator();
+            string oldDatabase = null;
+            if (isUpdate)
+            {
+                oldDatabase = creatorDb.RenameDatabase(connStringMaster, companyName);
+            }
+
+            creatorDb.CreateDatabase(connStringMaster, companyName, sqlInstanceName);
+            creatorDb.CreateSchemas(connectionString);
+
+            //add user for IIS IIS APPPOOL\MyCompany
+            if (companyName != "MKWebDev" && companyName != "MKWebStaging")
+            {
+                creatorDb.AddUserAndRighst(connStringMaster, connectionString.ConnectionString, "IIS APPPOOL\\" + companyName, companyName);
+            }
+
+            //Copy Domain Events
+            if (isUpdate)
+            {
+                creatorDb.CopyDomainEventFromOldToNewDatabase(connStringMaster, oldDatabase, companyName);
+            }
             
-            DbContext[] contexts =
-                new DbContext[] 
-                { 
-                    new CachingDbContext(connectionString),
-                    new ConfigurationDbContext(connectionString),
-                    new EventStoreDbContext(connectionString),
-                    new MessageLogDbContext(connectionString)
-                };
-
-            try
-            {
-
-                foreach (DbContext context in contexts)
-                {
-                    var adapter = (IObjectContextAdapter) context;
-
-                    var script = adapter.ObjectContext.CreateDatabaseScript();
-
-                    context.Database.ExecuteSqlCommand(script);
-
-                    context.Dispose();
-                }
-
-            }catch
-            {
-                //TODO trouver un moyen plus sexy
-            }
-
-            
-
+            //Create settings
             var configurationManager = new
-                apcurium.MK.Common.Configuration.Impl.ConfigurationManager(() => new ConfigurationDbContext(connectionString));
+                apcurium.MK.Common.Configuration.Impl.ConfigurationManager(() => new ConfigurationDbContext(connectionString.ConnectionString));
 
-            configurationManager.SetSetting("TaxiHail.Version", "1.0.0");
-            configurationManager.SetSetting("TaxiHail.SiteName", "Dev");
-            configurationManager.SetSetting("TaxiHail.ApplicationName", "Taxi Hail");
+            var jsonSettings = File.ReadAllText(Path.Combine(AssemblyDirectory, "Settings\\", companyName + ".json"));
+            var objectSettings = JObject.Parse(jsonSettings);
+            foreach (var token in objectSettings)
+            {
+                configurationManager.SetSetting(token.Key, token.Value.ToString());
+            }
 
-            configurationManager.SetSetting("IBS.WebServicesUserName", "taxi");
-            configurationManager.SetSetting("IBS.WebServicesPassword", "test");
-
-
-            configurationManager.SetSetting("IBS.AutoDispatch", "true");
-
-            //DEMO SERVER
-            //configurationManager.SetSetting("IBS.WebServicesUrl", "http://drivelinq.dyndns-ip.com:6928/XDS_IASPI.DLL/soap/");
-            //configurationManager.SetSetting("DefaultBookingSettings.ProviderId", "9");
-            //configurationManager.SetSetting("DefaultBookingSettings.VehicleTypeId", "1");
-            //configurationManager.SetSetting("DefaultBookingSettings.ChargeTypeId", "1");
-            //------
-            
-            //TEST SERVER
-            configurationManager.SetSetting("IBS.WebServicesUrl", "http://72.38.252.190:6928/XDS_IASPI.DLL/soap/");
-            configurationManager.SetSetting("DefaultBookingSettings.ProviderId", "13");
-            configurationManager.SetSetting("DefaultBookingSettings.VehicleTypeId", "1");
-            configurationManager.SetSetting("DefaultBookingSettings.ChargeTypeId", "1");
-            //------
-            
-            configurationManager.SetSetting("DefaultBookingSettings.NbPassenger", "1");
-            
-            
-
-            configurationManager.SetSetting("IBS.DefaultAccountPassword", "password");
-
-            configurationManager.SetSetting("GeoLoc.DefaultLatitude", "45.516667");
-            configurationManager.SetSetting("GeoLoc.DefaultLongitude", "-73.65");
-            configurationManager.SetSetting("GeoLoc.SearchFilter", "{0},ottawa,on,canada&region=ca");
-            configurationManager.SetSetting("GeoLoc.AddressFilter", "canada");
-            configurationManager.SetSetting("Direction.FlateRate", "3.45");
-            configurationManager.SetSetting("Direction.RatePerKm", "1.70");
-            configurationManager.SetSetting("Direction.MaxDistance", "50");
-
-            configurationManager.SetSetting("NearbyPlacesService.DefaultRadius", "500");
-            
-            configurationManager.SetSetting("DistanceFormat", "KM"); // Other option is "MILE"
-            configurationManager.SetSetting("PriceFormat", "en-US");
-
-            configurationManager.SetSetting("Email.NoReply", "noreply@apcurium.com");
-
-            configurationManager.SetSetting("Smtp.Host", "smtp.gmail.com");
-            configurationManager.SetSetting("Smtp.Port", Convert.ToString(587, CultureInfo.InvariantCulture));
-            configurationManager.SetSetting("Smtp.EnableSsl", Convert.ToString(true, CultureInfo.InvariantCulture));
-            configurationManager.SetSetting("Smtp.DeliveryMethod", Convert.ToString(SmtpDeliveryMethod.Network,  CultureInfo.InvariantCulture));
-            configurationManager.SetSetting("Smtp.UseDefaultCredentials", Convert.ToString(false, CultureInfo.InvariantCulture));
-            configurationManager.SetSetting("Smtp.Credentials.Username", "donotreply@apcurium.com");
-            configurationManager.SetSetting("Smtp.Credentials.Password", "2wsxCDE#");
-
-            configurationManager.SetSetting("OrderStatus.wosNone", "Invalid order, please call dispatch center" );
-            configurationManager.SetSetting("OrderStatus.wosAddrNotValid", "The address is not valid" );
-            configurationManager.SetSetting("OrderStatus.wosSCHED", "Scheduled" );
-            configurationManager.SetSetting("OrderStatus.wosCANCELLED", "Cancelled" );
-            configurationManager.SetSetting("OrderStatus.wosDONE", "Completed" );
-            configurationManager.SetSetting("OrderStatus.wosWAITING", "Waiting for driver to be assigned" );
-            configurationManager.SetSetting("OrderStatus.wosASSIGNED", "Driver assigned" );
-            configurationManager.SetSetting("OrderStatus.wosARRIVED", "Taxi is at pickup location" );
-            configurationManager.SetSetting("OrderStatus.wosLOADED", "Passengers are in the taxi" );
-            configurationManager.SetSetting("OrderStatus.wosNOSHOW", "No show" );
-            configurationManager.SetSetting("OrderStatus.wosCANCELLED_DONE", "Cancelled");
-            configurationManager.SetSetting("OrderStatus.CabDriverNumberAssigned", "Cab #{0} is assigned to you");
-            configurationManager.SetSetting("OrderStatus.OrderDoneFareAvailable", "Completed (Total cost : {0})");
-            configurationManager.SetSetting("OrderStatus.DemoMode", "false");
-
-            configurationManager.SetSetting("Map.PlacesApiKey", "AIzaSyAd-ezA2SeVTSNqsu6aMmAkdlP3UqEVPWE");
-        
-
-            //Init Data
             //Init container
             var container = new UnityContainer();
             var module = new Module();
-            module.Init(container);
+            module.Init(container, connectionString);
 
-            //Init data
-            var commandBus = container.Resolve<ICommandBus>();
-
-            var registerAccountCommand = new RegisterAccount
-                              {
-                                  Id = Guid.NewGuid(),
-                                  AccountId = Guid.NewGuid(),
-                                  Email = "john@taxihail.com",
-                                  Name = "John Doe",
-                                  Phone = "5146543024",
-                                  Password = "password"
-                              };
-
-            var confirmationToken = Guid.NewGuid();
-            registerAccountCommand.ConfimationToken = confirmationToken.ToString();
-
-            var accountWebServiceClient = container.Resolve<IAccountWebServiceClient>();
-            registerAccountCommand.IbsAccountId = accountWebServiceClient.CreateAccount(registerAccountCommand.AccountId,
-                                                                            registerAccountCommand.Email,
-                                                                            string.Empty,
-                                                                            registerAccountCommand.Name,
-                                                                            registerAccountCommand.Phone);
-            commandBus.Send(registerAccountCommand);
-
-
-            commandBus.Send(new ConfirmAccount
+            if(isUpdate)
             {
-                AccountId = registerAccountCommand.AccountId,
-                ConfimationToken = registerAccountCommand.ConfimationToken
-            });
+               //replay events
+                var replayService = container.Resolve<IEventsPlayBackService>();
+                replayService.ReplayAllEvents();
+
+            }else
+            {
+                //Init data
+                var commandBus = container.Resolve<ICommandBus>();
+
+                var registerAccountCommand = new RegisterAccount
+                {
+                    Id = Guid.NewGuid(),
+                    AccountId = Guid.NewGuid(),
+                    Email = "john@taxihail.com",
+                    Name = "John Doe",
+                    Phone = "5146543024",
+                    Password = "password"
+                };
+
+                var confirmationToken = Guid.NewGuid();
+                registerAccountCommand.ConfimationToken = confirmationToken.ToString();
+
+                var accountWebServiceClient = container.Resolve<IAccountWebServiceClient>();
+                registerAccountCommand.IbsAccountId = accountWebServiceClient.CreateAccount(registerAccountCommand.AccountId,
+                                                                                registerAccountCommand.Email,
+                                                                                string.Empty,
+                                                                                registerAccountCommand.Name,
+                                                                                registerAccountCommand.Phone);
+                commandBus.Send(registerAccountCommand);
+
+
+                commandBus.Send(new ConfirmAccount
+                {
+                    AccountId = registerAccountCommand.AccountId,
+                    ConfimationToken = registerAccountCommand.ConfimationToken
+                });
+            }
+            
+        }
+
+        static public string AssemblyDirectory
+        {
+            get
+            {
+                string codeBase = Assembly.GetExecutingAssembly().CodeBase;
+                UriBuilder uri = new UriBuilder(codeBase);
+                string path = Uri.UnescapeDataString(uri.Path);
+                return Path.GetDirectoryName(path);
+            }
         }
     }
 }

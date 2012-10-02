@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Configuration;
+using System.Net;
 using System.Net.Mail;
 using Infrastructure.Messaging.Handling;
 using Microsoft.Practices.Unity;
@@ -23,7 +24,7 @@ namespace apcurium.MK.Booking
         public void Init(IUnityContainer container)
         {
             System.Data.Entity.Database.SetInitializer<BookingDbContext>(null);
-            container.RegisterType<BookingDbContext>(new TransientLifetimeManager(), new InjectionConstructor("Booking"));
+            container.RegisterType<BookingDbContext>(new TransientLifetimeManager(), new InjectionConstructor(container.Resolve<ConnectionStringSettings>(apcurium.MK.Common.Module.MKConnectionString).ConnectionString));
 
             container.RegisterInstance<IAddressDao>(new AddressDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IAccountDao>(new AccountDao(() => container.Resolve<BookingDbContext>()));
