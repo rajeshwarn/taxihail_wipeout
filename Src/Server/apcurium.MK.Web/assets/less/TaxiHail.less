@@ -47,15 +47,16 @@ header {
     width: 100%;
     z-index: @login-status-z-index;
 
-    #gradient > .vertical-no-filter(@headerBackground, @headerBackgroundDark);
+    #gradient > .vertical-no-filter(@headerBackgroundDark, @headerBackground);
     border-bottom: 1px solid #003666;
 
     font-size: 18px;
-    color: @white;
-    text-shadow: 0 1px 1px rgba(0, 0, 0, .75);
+    color: @headerTextColor;
+    // text shadow is inverse of text Color
+    text-shadow: 0 1px 1px  hsl(hue(@headerTextColor), saturation(@headerTextColor), 100 - lightness(@headerTextColor));
 
     a, a:link, a:active, a:hover, a:visited {
-        color: @white;
+        color: @headerTextColor;
         font-weight: bold;
     }
 
@@ -257,7 +258,7 @@ header {
 }
 
 .btn-primary {
-    .buttonBackgroundCustom(@btnPrimaryBackgroundHighlight, @btnPrimaryBackground);
+    .buttonBackgroundCustom(@btnPrimaryBackgroundHighlight, @btnPrimaryBackground, @btnPrimaryTextColor);
 }
 
 .btn-danger {
@@ -279,7 +280,7 @@ header {
 }
 
 legend {
-    color: @taxiHailBlue;
+    color: @textColor;
     font-weight:bold;
     border: none;
     line-height: @baseLineHeight;
@@ -345,7 +346,7 @@ legend {
 }
 
 label {
-    color: @taxiHailBlue;
+    color: @textColor;
     font-weight:bold;
     padding-top:0;
 

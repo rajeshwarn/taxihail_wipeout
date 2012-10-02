@@ -2,14 +2,13 @@
 .brand {
     background: url(@logoPath) no-repeat;
 }
-@taxiHailBlue:          #f00;
-@textColor: @taxiHailBlue;
+@taxiHailBlue:          #fcf600;
+@textColor: @grayDark;
 
-@headerBackground: #f00;
-@headerBackgroundDark: #c00;
+@headerBackground: @taxiHailBlue;
+@headerBackgroundDark: darken(@taxiHailBlue, 10%);
+@headerTextColor: @grayDark;
 
-@btnPrimaryBackground:              #0a0;
-@btnPrimaryBackgroundHighlight:     #0c0;
-
-@btnDangerBackground:               #c00;
-@btnDangerBackgroundHighlight:      #f00;
+@btnPrimaryBackground:              darken(@taxiHailBlue, 5%);
+@btnPrimaryBackgroundHighlight:     @taxiHailBlue;
+@btnPrimaryTextColor :              @grayDark;
