@@ -27,8 +27,8 @@
             "signup": "signup", // #signup
             "signupconfirmation": "signupconfirmation",
             "status/:id": "status",
-            "useraccount": "useraccount"
-            "resetpassword": "resetpassword",
+            "useraccount": "useraccount",
+            "resetpassword": "resetpassword"
         },
 
         initialize: function () {

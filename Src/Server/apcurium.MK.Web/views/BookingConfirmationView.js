@@ -13,7 +13,7 @@
         },
         initialize: function () { 
 
-            _.bindAll(this, "renderResults");
+            _.bindAll(this, "renderResults", 'showErrors');
             
             var pickup = this.model.get('pickupAddress');
             var dest = this.model.get('dropOffAddress');
