@@ -1,11 +1,13 @@
-﻿<!DOCTYPE html>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="default.aspx.cs" Inherits="apcurium.MK.Web._default" %>
+
+<!DOCTYPE html>
 <html>
     <head>
         <meta charset='utf-8' />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
         <title>Taxi Hail</title>
-        <link rel="stylesheet" href='themes/atlanta/less/combined.less'/>
-        <link rel="stylesheet" href='themes/atlanta/less/combined-responsive.less'/>
+        <link rel="stylesheet" href='themes/<%: this.ApplicationKey %>/less/combined.less'/>
+        <link rel="stylesheet" href='themes/<%: this.ApplicationKey %>/less/combined-responsive.less'/>
         <script src="assets/js/modernizr.js"></script>
     </head>
     <body>
@@ -84,3 +86,4 @@
 
     </body>
 </html>
+
