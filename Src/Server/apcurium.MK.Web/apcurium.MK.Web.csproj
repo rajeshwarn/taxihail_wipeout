@@ -37,8 +37,10 @@
     <WarningLevel>4</WarningLevel>
     <IncludeIisSettings>false</IncludeIisSettings>
     <IncludeAppPool>false</IncludeAppPool>
-    <DeployIisAppPath>Default Web Site/apcurium.MK.Web_deploy</DeployIisAppPath>
-    <PackageAsSingleFile>true</PackageAsSingleFile>
+    <DeployIisAppPath>
+    </DeployIisAppPath>
+    <PackageAsSingleFile>false</PackageAsSingleFile>
+    <PublishDatabases>false</PublishDatabases>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
