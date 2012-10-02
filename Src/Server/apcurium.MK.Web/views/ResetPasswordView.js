@@ -13,6 +13,22 @@
         render: function () {
             this.$el.html(this.renderTemplate());
 
+            this.$("#resetPasswordForm").validate({
+                rules: {
+                    email: {
+                        required: true,
+                        email: true
+                    }
+                },
+                messages: {
+                    email: {
+                        required: TaxiHail.localize('error.EmailRequired'),
+                        email: TaxiHail.localize('error.NotEmailFormat'),
+                    }
+                },
+                success: function(label) {
+                }
+            });
         
             return this;
         },
@@ -27,13 +43,17 @@
         
         resetpassword : function (e) {
             e.preventDefault();
-            if (email) {
+            if (this.$("#resetPasswordForm").valid()) {
                 $.post('api/account/resetpassword/' + email, {
                 emailAddress: email
             }, function () {
-                $("#notif-bar").html(TaxiHail.localize('An email has been sent to you with confirmation link.'));
+                $("#notif-bar").html(TaxiHail.localize('resetPassword.emailSent'));
+                $("#email").val("");
             }, 'json').fail(function (response) {
-                $("#notif-bar").html(TaxiHail.localize(response.statusText));
+                if (response.status == 404) {
+                    $("#notif-bar").html(TaxiHail.localize('resetPassword.accountNotFound'));
+                }
+                //$("#notif-bar").html(TaxiHail.localize(response.statusText));
             });
             }
             
