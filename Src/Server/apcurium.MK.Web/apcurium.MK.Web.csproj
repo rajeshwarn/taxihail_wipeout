@@ -272,6 +272,7 @@
     <Content Include="assets\img\pin-icon.png" />
     <Content Include="assets\img\pin_green.png" />
     <Content Include="assets\img\pin_red.png" />
+    <Content Include="assets\img\target.png" />
     <Content Include="assets\img\taxi_label.png" />
     <Content Include="assets\img\validFieldGreen.png" />
     <Content Include="assets\js\backbone-validation.js" />
@@ -577,6 +578,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="localization\ResetPassword.json" />
+    <Content Include="assets\less\TaxiHail-buttons.less" />
+    <Content Include="assets\less\TaxiHail-forms.less" />
+    <Content Include="assets\less\TaxiHail-mixins.less" />
+    <Content Include="assets\less\TaxiHail-navs.less" />
+    <Content Include="assets\less\TaxiHail-wells.less" />
     <None Include="Properties\PublishProfiles\Local.pubxml" />
     <None Include="Properties\PublishProfiles\LocalAtlanta.pubxml" />
     <Content Include="themes\AtlantaCheckerCab\less\combined-responsive.less" />

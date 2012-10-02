@@ -1,0 +1,30 @@
+.tabs-below > .nav-tabs{
+
+    width: 377px;
+    background: @white;
+    border-bottom: 1px solid @inputBorder;
+    border-left: 1px solid @inputBorder;
+    border-right: 1px solid @inputBorder;
+
+    >li {
+
+        width:130px;
+        text-align:center;
+        border:none;
+        background:transparent;
+
+        >a, >a:hover {
+            color: #767676;
+            font-weight:normal;
+            margin:0;
+        }
+
+
+        &.active>a, &.active>a:hover {
+            color: @taxiHailBlue;
+            font-weight:bold;
+            border:none;
+            background:transparent;
+        }
+    }
+}

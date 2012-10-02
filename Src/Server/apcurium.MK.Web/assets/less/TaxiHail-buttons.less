@@ -1,0 +1,22 @@
+.btn {
+    .border-radius(2px);
+    font-size: 18px;
+    font-weight: bold;
+    .buttonBackgroundCustom(@btnBackgroundHighlight, @btnBackground);
+}
+
+.btn-primary {
+    .buttonBackgroundCustom(@btnPrimaryBackgroundHighlight, @btnPrimaryBackground, @btnPrimaryTextColor);
+}
+
+.btn-danger {
+    .buttonBackgroundCustom(@btnDangerBackgroundHighlight, @btnDangerBackground);
+}
+
+.btn-inverse {
+    .buttonBackgroundCustom(@btnInverseBackgroundHighlight, @btnInverseBackground);
+}  
+
+.btn-flat {
+    background: @taxiHailBlue;
+}
