@@ -42,6 +42,6 @@
 	"TaxiHail.ApplicationName" : "Atlanta Checker",
 	"TaxiHail.SiteName" : "Atlanta Checker",
 	"TaxiHail.ApplicationKey" : "AtlantaCheckerCab",
-   	"TaxiHail.AccentColor" : "#0057a3",
+   	"TaxiHail.AccentColor" : "#fcf600",
 	"TaxiHail.Version" : "1.1.0"
 }
