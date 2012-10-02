@@ -35,7 +35,26 @@
 
             this.$el.html(this.renderTemplate(data));
 
-            this.$('[data-action=savechanges]').addClass('disabled');
+            
+            this.$("#updateSettingsForm").validate({
+                rules: {
+                    name: "required",
+                    phone: "required",
+                    passengers: "required",
+                },
+                messages: {
+                    name: {
+                        required: TaxiHail.localize('error.NameRequired'),
+                    },
+                    phone: {
+                        required: TaxiHail.localize('error.PhoneRequired'),
+                    },
+                    passengers: {
+                        required: TaxiHail.localize('error.PassengersRequired'),
+                    }
+                }, success: function (label) {
+                }
+            });
 
             return this;
         },
@@ -43,9 +62,9 @@
         savechanges : function (e) {
             e.preventDefault();
             var settings = this.model.get('settings');
-                   // if (settings.isValid() ) {
+            if (this.$("#updateSettingsForm").valid() ) {
                             
-                            if (settingschanged) {
+  
                                     
                                     jQuery.ajax({
                                                 type: 'PUT',
@@ -54,19 +73,13 @@
                                                 success: function () {
                                                     $("#notif-bar").html(TaxiHail.localize('Settings Changed'));
                                                     
-                                                    settingschanged = false;
                                                     
                                                   },
                                                   error: this.showErrors,
                                                   dataType: 'json'
                                     });
-                                    this.$('[data-action=savechanges]').addClass('disabled');
                         }
                
-                   /*         } else {
-                        $("#notif-bar").html(TaxiHail.localize('Settings incorrect'));
-                        this.showErrors(this.model, result);
-                    }*/
                 
         },
         

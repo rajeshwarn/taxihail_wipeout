@@ -9,6 +9,8 @@
 	"error.PassengersRequired" : "The number of passengers is required",
 	"error.VehicleTypeRequired" : "The vehicle type is required",
 	"error.ChargeTypeRequired" : "The charge type is required",		
+	"error.EmailRequired" : "The email is required",
+	"error.NotEmailFormat" : "This should be an email address",	
 	"signup.confirmation" : "Account created. You will receive an email shortly with a link you need to click on to confirm your registration.",	
 	"search.no-result": "Start typing an address or a place name",
 	"Loading": "Loading..." ,
@@ -25,6 +27,8 @@
 	"Warning_when_booking_without_destination": "Please note that the price provided by this app is an estimated price and the meter will prevail on the price quoted on the site in accordance with the Act of transportation by taxi.",
 	"Password required" : "Password is required",
 	"Password are not the same" : "Passwords are not the same",
-	"UpdatePassword_NotSame" : "Wrong current password"
+	"UpdatePassword_NotSame" : "Wrong current password",
+	"resetPassword.emailSent" : "An email with new password has been sent to you",
+	"resetPassword.accountNotFound" : "Account not found"
 
 }

@@ -20,7 +20,7 @@
             return null;
         },
 
-        clearCurrentOrder: function() {
+        clearCurrentOrder: function() {        
             this.store.removeItem(currentOrderKey);
         }
     });

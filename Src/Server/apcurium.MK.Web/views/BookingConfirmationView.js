@@ -54,6 +54,27 @@
             if (this.model.get('dropOffAddress')) {
                 this.showInfos(TaxiHail.localize('Warning_when_booking_without_destination'));
             }
+            
+
+            this.$("#updateBookingSettingsForm").validate({
+                rules: {
+                    name: "required",
+                    phone: "required",
+                    passengers: "required",
+                },
+                messages: {
+                    name: {
+                        required: TaxiHail.localize('error.NameRequired'),
+                    },
+                    phone: {
+                        required: TaxiHail.localize('error.PhoneRequired'),
+                    },
+                    passengers: {
+                        required: TaxiHail.localize('error.PassengersRequired'),
+                    }
+                }, success: function (label) {
+                }
+            });
 
             return this;
         },
@@ -68,19 +89,21 @@
         },
         
         book: function (e) {
-            this.$('#bookBt').button('loading');
+            
             e.preventDefault();
             //this.model.set('settings', settings);
-            this.model.save({}, {
+            if (this.$("#updateBookingSettingsForm").valid()) {
+                this.$('#bookBt').button('loading');
+                this.model.save({}, {
                 success : TaxiHail.postpone(function (model) {
                     // Wait for order to be created before redirecting to status
                         TaxiHail.app.navigate('status/' + model.id, { trigger: true, replace: true /* Prevent user from coming back to this screen */ });
                 }, this),
                 error: this.showErrors
             });
-            
+            }
         },
-
+        
         cancel: function (e) {
             e.preventDefault();
             this.model.destroyLocal();
