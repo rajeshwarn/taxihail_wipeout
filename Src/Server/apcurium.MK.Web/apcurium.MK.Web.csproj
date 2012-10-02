@@ -275,17 +275,27 @@
     <Content Include="assets\img\target.png" />
     <Content Include="assets\img\taxi_label.png" />
     <Content Include="assets\img\validFieldGreen.png" />
-    <Content Include="assets\js\backbone-validation.js" />
     <Content Include="assets\js\backbone.js" />
-    <Content Include="assets\js\backbone.validation.bootstrap.js" />
     <Content Include="assets\js\handlebars-1.0.rc.1.js" />
     <Content Include="assets\js\modernizr.js" />
     <Content Include="assets\js\spin.js" />
     <Content Include="assets\js\underscore.js" />
     <Content Include="collections\AddressCollection.js" />
+    <Content Include="collections\OrderCollection.js" />
     <Content Include="Config.aspx" />
     <Content Include="default.aspx" />
     <Content Include="Global.asax" />
+    <Content Include="assets\bootstrap-datepicker\less\datepicker.less" />
+    <Content Include="assets\bootstrap-timepicker\less\timepicker.less" />
+    <Content Include="assets\bootstrap-timepicker\README.md" />
+    <Content Include="assets\less\TaxiHail-buttons.less" />
+    <Content Include="assets\less\TaxiHail-forms.less" />
+    <Content Include="assets\less\TaxiHail-mixins.less" />
+    <Content Include="assets\less\TaxiHail-navs.less" />
+    <Content Include="assets\less\TaxiHail-wells.less" />
+    <Content Include="assets\less\TaxiHail.less.orig" />
+    <Content Include="localization\BookLater.json" />
+    <None Include="localization\OrderHistory.json" />
     <Content Include="log4net.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -312,6 +322,7 @@
     <Content Include="templates\BookLater.html" />
     <Content Include="templates\login.html" />
     <Content Include="templates\LoginStatus.html" />
+    <Content Include="templates\OrderHistory.html" />
     <Content Include="templates\Profile.html" />
     <Content Include="templates\ResetPassword.html" />
     <Content Include="templates\Signup.html" />
@@ -321,6 +332,9 @@
     <Content Include="themes\AtlantaCheckerCab\img\header-bg.png" />
     <Content Include="themes\AtlantaCheckerCab\img\location.png" />
     <Content Include="themes\AtlantaCheckerCab\img\logo.png" />
+    <Content Include="themes\generic\img\header-bg.png" />
+    <Content Include="themes\generic\img\logo.png" />
+    <Content Include="themes\generic\img\target.png" />
     <Content Include="themes\TaxiHail\img\header-bg.png" />
     <Content Include="themes\TaxiHail\img\logo.png" />
     <Content Include="utils.js" />
@@ -335,6 +349,7 @@
     <Content Include="views\LoginStatusView.js" />
     <Content Include="views\LoginView.js" />
     <Content Include="views\MapView.js" />
+    <Content Include="views\OrderHistoryView.js" />
     <Content Include="views\ProfileView.js" />
     <Content Include="views\ResetPasswordView.js" />
     <Content Include="views\SignupView.js" />
@@ -350,6 +365,12 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
+    <Content Include="themes\AtlantaCheckerCab\less\combined-responsive.less" />
+    <Content Include="themes\AtlantaCheckerCab\less\combined.less" />
+    <Content Include="themes\AtlantaCheckerCab\less\style.less" />
+    <Content Include="themes\AtlantaCheckerCab\less\variables.less" />
+    <Content Include="themes\TaxiHail\less\combined-responsive.less" />
+    <Content Include="themes\TaxiHail\less\combined.less" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config.aspx.cs">
@@ -361,7 +382,6 @@
     </Compile>
     <Compile Include="default.aspx.cs">
       <DependentUpon>default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="default.aspx.designer.cs">
       <DependentUpon>default.aspx</DependentUpon>
@@ -535,6 +555,15 @@
     <Content Include="localization\Login.json" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="themes\generic\less\style.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\generic\less\combined.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\generic\less\variables.less" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="assets\less\bootstrap-common.less" />
   </ItemGroup>
   <ItemGroup>
@@ -557,15 +586,13 @@
     <Content Include="localization\Signup.json" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="themes\generic\less\combined-responsive.less" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="assets\less\TaxiHail-variables.less" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="localization\BookingStatus.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="assets\bootstrap-datepicker\less\datepicker.less" />
-    <Content Include="assets\bootstrap-timepicker\less\timepicker.less" />
-    <Content Include="assets\bootstrap-timepicker\README.md" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="localization\Profile.json" />
@@ -574,23 +601,7 @@
     <Content Include="localization\UpdatePassword.json" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="localization\BookLater.json" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="localization\ResetPassword.json" />
-    <Content Include="assets\less\TaxiHail-buttons.less" />
-    <Content Include="assets\less\TaxiHail-forms.less" />
-    <Content Include="assets\less\TaxiHail-mixins.less" />
-    <Content Include="assets\less\TaxiHail-navs.less" />
-    <Content Include="assets\less\TaxiHail-wells.less" />
-    <None Include="Properties\PublishProfiles\Local.pubxml" />
-    <None Include="Properties\PublishProfiles\LocalAtlanta.pubxml" />
-    <Content Include="themes\AtlantaCheckerCab\less\combined-responsive.less" />
-    <Content Include="themes\AtlantaCheckerCab\less\combined.less" />
-    <Content Include="themes\AtlantaCheckerCab\less\style.less" />
-    <Content Include="themes\AtlantaCheckerCab\less\variables.less" />
-    <Content Include="themes\TaxiHail\less\combined-responsive.less" />
-    <Content Include="themes\TaxiHail\less\combined.less" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

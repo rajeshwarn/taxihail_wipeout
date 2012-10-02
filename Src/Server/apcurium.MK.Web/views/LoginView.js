@@ -42,7 +42,7 @@
 
             if (isValid) {
                 this.$(':submit').button('loading');
-                TaxiHail.auth.login(this.$('[name=email]').val(), this.$('[name=password]').val())
+                TaxiHail.auth.login(this.$('[name=email]').val(), this.$('[name=password]').val(), this.model.get('url'))
                     .fail(_.bind(function(response) {
                         this.showErrors(this.model, response);
                     }, this));

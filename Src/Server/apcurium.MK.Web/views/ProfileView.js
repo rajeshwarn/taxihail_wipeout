@@ -13,6 +13,15 @@
             this.referenceData.fetch();
             this.referenceData.on('change', this.render, this);
 
+            $.validator.addMethod(
+                "regex",
+                function(value, element, regexp) {
+                    var re = new RegExp(regexp);
+                    return this.optional(element) || re.test(value);
+                }
+                
+            );
+
         },
 
         render: function () {
@@ -39,8 +48,14 @@
             this.$("#updateSettingsForm").validate({
                 rules: {
                     name: "required",
-                    phone: "required",
-                    passengers: "required",
+                    phone: {
+                        required : true,
+                        regex: /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/
+                    },
+                    passengers: {
+                        required: true,
+                        number : true
+                    }
                 },
                 messages: {
                     name: {
@@ -48,11 +63,20 @@
                     },
                     phone: {
                         required: TaxiHail.localize('error.PhoneRequired'),
+                        regex: TaxiHail.localize('error.PhoneBadFormat')
                     },
                     passengers: {
                         required: TaxiHail.localize('error.PassengersRequired'),
+                        number: TaxiHail.localize('error.NotANumber'),
                     }
+                }, 
+                highlight: function (label) {
+                    $(label).closest('.control-group').addClass('error');
+                    $(label).prevAll('.valid-input').addClass('hidden');
                 }, success: function (label) {
+                    $(label).closest('.control-group').removeClass('error');
+                    label.prevAll('.valid-input').removeClass('hidden');
+                
                 }
             });
 

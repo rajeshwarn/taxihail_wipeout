@@ -8,50 +8,73 @@
             "submit": "onsubmit",
             "change :text": "onPropertyChanged",
             "change :password": "onPropertyChanged",
-            "keyup :text": "onKeyPress",
-            "keyup :password": "onKeyPress",
-            "blur :text": "onKeyPress",
-            "blur :password": "onKeyPress"
+            "click [data-action=dosignup]" : "onsubmit"
         },
         
         initialize:function () {
             _.bindAll(this, "onerror");
+            $.validator.addMethod(
+        "regex",
+        function (value, element, regexp) {
+            var re = new RegExp(regexp);
+            return this.optional(element) || re.test(value);
+        }
+);
+
         },
 
         render: function () {
             this.$el.html(this.renderTemplate());
-            _.extend(Backbone.Validation.messages, {
-                required: this.localize('error.Required'),
-                pattern: this.localize('error.Pattern'),
-                equalTo: this.localize('error.EqualTo')
+
+            this.$("#signupForm").validate({
+                rules: {
+                    email: {
+                        required:true,
+                        email:true
+                    },
+                    name: "required",
+                    phone: {
+                        regex: /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/,
+                        required:true,
+                    },
+                    password: {
+                        required: true,
+                    },
+                    confirmPassword: {
+                        required: true,
+                        equalTo: "#signup-password"
+                    }
+                },
+                messages: {
+                    email: {
+                        required: TaxiHail.localize('error.EmailRequired'),
+                        email: TaxiHail.localize('error.NotEmailFormat'),
+                    },
+                    name: {
+                        required: TaxiHail.localize('error.NameRequired'),
+                    },
+                    phone: {
+                        required: TaxiHail.localize('error.PhoneRequired'),
+                        regex: TaxiHail.localize('error.PhoneBadFormat')
+                    },
+                    password: {
+                        required: TaxiHail.localize('Password required'),
+                    },
+                    confirmPassword: {
+                        required: TaxiHail.localize('Password required'),
+                        equalTo: TaxiHail.localize('Password are not the same')
+                    }
+                },
+                highlight: function (label) {
+                    $(label).closest('.control-group').addClass('error');
+                    $(label).prevAll('.valid-input').addClass('hidden');
+                }, success: function (label) {
+                    $(label).closest('.control-group').removeClass('error');
+                    label.prevAll('.valid-input').removeClass('hidden');
+                }
             });
 
-            Backbone.Validation.bind(this);
             return this;
-        },
-        
-        onKeyPress: function (e) {
-
-            //ignore tab key
-            if (e.keyCode != 9) {
-                var $input = $(e.currentTarget);
-                var attrName = $input.attr('name');
-                var attrValue = $input.val();
-
-                this.model.set(attrName, attrValue, { silent: true });
-                var errorMessage = this.model.preValidate(attrName, attrValue);
-
-                if (errorMessage) {
-                    //hide valid status image
-                    $input.next().addClass('hidden');
-                    //display error message
-                    Backbone.Validation.callbacks.invalid(this, attrName, errorMessage, "name");
-                } else {
-                    //show valid status image
-                    $input.next().removeClass('hidden');
-                    Backbone.Validation.callbacks.valid(this, attrName, "name");
-                }
-            }
         },
         
         onPropertyChanged: function (e) {
@@ -60,10 +83,12 @@
         },
         
         onsubmit: function (e) {
-            this.$(':submit').button('loading');
             e.preventDefault();
-            this.$('.errors').empty();
-            this.model.save({}, { error: this.onerror });
+            if (this.$("#signupForm").valid()) {
+                this.$(':submit').button('loading');
+                this.$('.errors').empty();
+                this.model.save({}, { error: this.onerror });
+            }
         },
         
         onerror: function (model, result) {
