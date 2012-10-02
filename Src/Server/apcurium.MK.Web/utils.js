@@ -28,15 +28,21 @@
         if(_.isString(date) && date.indexOf('-') && date.indexOf('T') && date.indexOf(':'))
         {
             // Wild assumption that we have a date in the format : yyyy-mm-ddThh:mm:ss
+            var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+            var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
             var parts = date.split('T');
             var dateParts = parts[0].split('-');
             var timeParts = parts[1].split(':');
             if(dateParts.length === 3 && timeParts.length >= 2) {
-                var year = dateParts[0];
-                var month = dateParts[1];
-                var day = dateParts[2];
-                var hour = timeParts[0];
-                var minute = timeParts[1];
+                var year = parseInt(dateParts[0], 10);
+                var month = parseInt(dateParts[1], 10) -1;
+                var day = parseInt(dateParts[2], 10);
+                var hour = parseInt(timeParts[0], 10);
+                var minute = parseInt(timeParts[1], 10);
+
+                date = new Date(year, month, day, hour, minute, 0);
+
+                var dayOfTheWeek = date.getDay();
 
                 var meridian = "AM";
                 if (hour === 0) {
@@ -50,7 +56,10 @@
                    meridian = "AM";
                 }
 
-                return new Handlebars.SafeString(month + '/' + day + '/' + year + '\u00A0@\u00A0' + hour + ":" + minute + "\u00A0" + meridian);
+                minute = minute < 10 ? '0' + minute : minute;
+
+                // Format: Monday, August 17 at 2:35 PM
+                return new Handlebars.SafeString(days[dayOfTheWeek] + ',\u00a0 ' + months[month] + ' ' + day + '\u00a0at\u00a0' + hour + ":" + minute + "\u00a0" + meridian);
             }
         }
         // not needed yet
