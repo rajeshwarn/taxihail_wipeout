@@ -59,7 +59,7 @@ namespace DatabaseInitializer.Sql
 
         public void AddUserAndRighst(string masterConnString, string dbConnString, string user, string dbName)
         {
-            AddLoginToSqlServer(masterConnString, user);
+            AddLoginToSqlServer(masterConnString, user); 
             AddUserToDatabase(dbConnString, user, dbName);
             AddReadWriteRigthsToUserForADatabase(dbConnString, user, dbName);
         }
@@ -72,7 +72,9 @@ namespace DatabaseInitializer.Sql
 
         private void AddUserToDatabase(string connectionString, string user, string dbName)
         {
-            DatabaseHelper.ExecuteNonQuery(connectionString, "IF NOT EXISTS (SELECT dp.name FROM [" + dbName + "].sys.database_principals dp JOIN [" + dbName + "].sys.server_principals sp ON dp.sid = sp.sid WHERE sp.name = '" + user + "') CREATE USER [" + user + "] FOR LOGIN [" + user + "] WITH DEFAULT_SCHEMA=[dbo]");
+            DatabaseHelper.ExecuteNonQuery(connectionString, "IF NOT EXISTS (SELECT dp.name FROM [" + dbName + "].sys.database_principals dp JOIN [" + dbName + "].sys.server_principals sp ON dp.sid = sp.sid WHERE sp.name = '" + user + "') CREATE USER [" + user + "] FOR LOGIN [" + user + "]");
+            DatabaseHelper.ExecuteNonQuery(connectionString, "EXEC sp_addrolemember N'db_datareader', N'" + user + "'");
+            DatabaseHelper.ExecuteNonQuery(connectionString, "EXEC sp_addrolemember N'db_datawriter', N'" + user + "'");
         }
 
         private void AddReadWriteRigthsToUserForADatabase(string connectionString, string user, string dbName)

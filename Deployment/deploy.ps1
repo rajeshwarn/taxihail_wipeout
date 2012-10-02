@@ -1,20 +1,13 @@
-﻿Import-Module -Name WebAdministration #see cmdlets http://technet.microsoft.com/en-us/library/ee790599.aspx
+﻿param([string]$env = "Staging")
+Import-Module -Name WebAdministration #see cmdlets http://technet.microsoft.com/en-us/library/ee790599.aspx
 $scriptpath = $MyInvocation.MyCommand.Path
 $base_dir = Split-Path $scriptpath
 
 Write-Host "***************Base Directory $base_dir *************************"
-#. $base_dir'\deployProps.ps1'
-$companyName= "AtlantaCheckerCab"
-$dbtoolPath = "$base_dir\Database"
-$dbTool = "$dbtoolPath\DatabaseInitializer.exe" 
-$sqlServerInstance = "MSSQL11.MSSQLSERVER"
+. $base_dir\deploy.$env.ps1
+$dbTool = "$dbtoolPath\DatabaseInitializer.exe"
 
-$websiteFiles = "$base_dir\Website\"
-$deployWwwRoot = "C:\Data\TaxiHail"
-$site = 'Default Web Site'
 $connString =  "Data Source=.;Initial Catalog=$companyName;Integrated Security=True; MultipleActiveResultSets=True"
-
-$version = Read-Host "Version ?"
 
 $existingWebApp = Get-WebApplication -Name $companyName
 if($existingWebApp)
@@ -25,15 +18,14 @@ if($existingWebApp)
 }else{
    #need to create the app pool to get the IIS user to be addedin the sql server
    New-WebAppPool -Name $companyName
+   Set-ItemProperty IIS:\AppPools\$companyName managedRuntimeVersion v4.0
    Stop-WebAppPool $companyName
 }
 
-$deplyoDB = Read-Host "Deploy Database? Y/N"
 if($deplyoDB -eq 'Y')
 {
     Write-Host "***************Start Deploy DB ************************" 
-    $actionDb = Read-Host "[C]reate (with delete existing) or [U]pdate database? C/U"
-
+    
     $psi = New-Object System.Diagnostics.ProcessStartInfo($dbTool, "$companyName `"$connString`" $actionDb $sqlServerInstance")
     $psi.WorkingDirectory = $dbtoolPath
     $process = [Diagnostics.Process]::Start($psi)
@@ -41,8 +33,7 @@ if($deplyoDB -eq 'Y')
     Write-Host "***************End Deploy DB ************************" 
  }
 
- $deplyoWebsite = Read-Host "Deploy WebSite? Y/N"
- $targetDir = "$deployWwwRoot\$companyname\$version"
+$targetDir = "$deployWwwRoot\$companyname\$version"
 if($deplyoWebsite -eq 'Y')
 {
     Write-Host "***************Start Deploy WebSite ************************"     

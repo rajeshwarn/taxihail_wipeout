@@ -27,8 +27,6 @@
         <script src="http://jzaefferer.github.com/jquery-validation/jquery.validate.js"></script>
         <script src="assets/js/underscore.js"></script>
         <script src="assets/js/backbone.js"></script>
-        <script src="assets/js/backbone-validation.js"></script>
-        <script src="assets/js/backbone.validation.bootstrap.js"></script>
         <script src="assets/bootstrap/js/bootstrap-alert.js"></script>
         <script src="assets/bootstrap/js/bootstrap-transition.js"></script>
         <script src="assets/bootstrap/js/bootstrap-button.js"></script>
@@ -57,6 +55,7 @@
         <script src="models/ReferenceData.js"></script>
         <!-- collections -->
         <script src="collections/AddressCollection.js"></script>
+        <script src="collections/OrderCollection.js"></script>
         <!-- views -->
         <script src="views/TemplatedView.js"></script>
         <script src="views/BookView.js"></script>
@@ -75,6 +74,7 @@
         <script src="views/ProfileView.js"></script>
         <script src="views/UpdatePasswordView.js"></script>
         <script src="views/ResetPasswordView.js"></script>
+        <script src="views/OrderHistoryView.js"></script>
 
 
         <script src="services/AuthService.js"></script>
