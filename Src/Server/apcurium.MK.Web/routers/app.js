@@ -22,7 +22,8 @@
         routes: {
             "": "book",   // #
             "confirmationbook": "confirmationbook",
-            "login": "login", // #login
+            "login/:url": "login", // #login
+            "login": "login",
             "signup": "signup", // #signup
             "signupconfirmation": "signupconfirmation",
             "status/:id": "status",
@@ -34,7 +35,7 @@
 
 
             TaxiHail.auth.initialize(function(isloggedIn) {
-                /*if(isloggedIn) {
+                if(isloggedIn) {
                     // Check if an order exists
                     // If order is not saved, go to confirmation
                     // If order is saved and status is active, go to status
@@ -55,33 +56,20 @@
                     } else {
                         this.navigate('', { trigger: true });
                     }
-                }*/
+                }
             }, this);
 
-            TaxiHail.auth.on('change', function(isloggedIn) {
-                //this.navigate('', { trigger: true });
+            TaxiHail.auth.on('change', function(isloggedIn, urlToRedirect) {
                 if (isloggedIn) {
-                    // Check if an order exists
-                    // If order is not saved, go to confirmation
-                    // If order is saved and status is active, go to status
-                    var order = TaxiHail.orderService.getCurrentOrder();
-                    if (order) {
-                        if (order.isNew()) {
-                            this.navigate('confirmationbook', { trigger: true });
-                        } else {
-                            order.getStatus().fetch({
-                                success: _.bind(function(model, resp) {
-                                    if (model.isActive()) {
-                                        this.navigate('status/' + order.id, { trigger: true });
-                                    }
-                                }, this)
-                            });
-                        }
+                    TaxiHail.auth.account.fetch();
+                    if (urlToRedirect) {
+                        this.navigate(urlToRedirect, { trigger: true });
+
                     } else {
+                        
                         this.navigate('', { trigger: true });
                     }
-                }
-                else {
+                } else {
                     this.navigate('', { trigger: true });
                 }
             }, this);
@@ -134,7 +122,7 @@
                         renderView(TaxiHail.BookingConfirmationView, currentOrder);
                     },
                     error: _.bind(function(model) {
-                        this.navigate('login', {trigger: true});
+                        this.navigate('login/confirmationbook', {trigger: true});
                     }, this)
                 });
                 
@@ -161,8 +149,10 @@
         },
 
         
-        login: function () {
-            renderView(TaxiHail.LoginView);
+        login: function (url) {
+            renderView(TaxiHail.LoginView, new Backbone.Model({
+                url : url
+            }));
         },
         signup: function () {
             var model = new TaxiHail.NewAccount();
