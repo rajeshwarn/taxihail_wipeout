@@ -12,6 +12,7 @@ $sqlServerInstance = "MSSQL11.MSSQLSERVER"
 $websiteFiles = "$base_dir\Website\"
 $deployWwwRoot = "C:\Data\TaxiHail"
 $site = 'Default Web Site'
+$connString =  "Data Source=.;Initial Catalog=$companyName;Integrated Security=True; MultipleActiveResultSets=True"
 
 $version = Read-Host "Version ?"
 
@@ -33,9 +34,7 @@ if($deplyoDB -eq 'Y')
     Write-Host "***************Start Deploy DB ************************" 
     $actionDb = Read-Host "[C]reate (with delete existing) or [U]pdate database? C/U"
 
-    $psi = New-Object System.Diagnostics.ProcessStartInfo($dbTool, "$companyName $actionDb $sqlServerInstance")
-    $psi.FileName = $dbTool
-    $psi.Arguments = "$companyName $actionDb $sqlServerInstance"
+    $psi = New-Object System.Diagnostics.ProcessStartInfo($dbTool, "$companyName `"$connString`" $actionDb $sqlServerInstance")
     $psi.WorkingDirectory = $dbtoolPath
     $process = [Diagnostics.Process]::Start($psi)
     $process.WaitForExit()
@@ -61,10 +60,10 @@ if($deplyoWebsite -eq 'Y')
     $xml = [xml](get-content "$targetDir\Web.config")     
     $root = $xml.get_DocumentElement();
     # Change existing node
-    $root.connectionStrings.add.connectionString = "Data Source=.;Initial Catalog=$companyName;Integrated Security=True; MultipleActiveResultSets=True"
+    $root.connectionStrings.add.connectionString = $connString
     $xml.Save("$targetDir\Web.config")
     Write-Host "***************End Deploy WebSite ************************"
 }
 
-Write-Host "***************Start Website $companyName ************************"
+Write-Host "***************Start Pool $companyName ************************"
 Start-WebAppPool -Name $companyName

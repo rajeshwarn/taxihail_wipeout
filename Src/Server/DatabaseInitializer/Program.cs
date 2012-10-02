@@ -24,14 +24,20 @@ namespace DatabaseInitializer
                 companyName = args[0];
             }
 
-            var connectionString = ConfigurationManager.ConnectionStrings[companyName];
+            var connectionString = new ConnectionStringSettings("MkWeb",
+                                                                "Data Source=.;Initial Catalog=MKWebDev;Integrated Security=True; MultipleActiveResultSets=True");
+            if (args.Length > 1)
+            {
+                connectionString.ConnectionString = args[1];
+            }
+
             var connStringMaster = connectionString.ConnectionString.Replace(companyName, "master");
 
             //Init or Update
             var isUpdate = true;
-            if (args.Length > 1)
+            if (args.Length > 2)
             {
-                isUpdate = args[1].ToUpperInvariant() == "U";
+                isUpdate = args[2].ToUpperInvariant() == "U";
             }else
             {
                 Console.WriteLine("[C]reate (drop existing) or [U]pdate database ? C/U");
@@ -40,9 +46,9 @@ namespace DatabaseInitializer
 
             //SQL Instance name
             var sqlInstanceName = "MSSQL11.MSSQLSERVER";
-            if (args.Length > 2)
+            if (args.Length > 3)
             {
-                sqlInstanceName = args[2];
+                sqlInstanceName = args[3];
             }else
             {
                 Console.WriteLine("Sql Instance name ? Default is MSSQL11.MSSQLSERVER");
