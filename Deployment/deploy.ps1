@@ -25,8 +25,7 @@ if($existingWebApp)
 if($deplyoDB -eq 'Y')
 {
     Write-Host "***************Start Deploy DB ************************" 
-    $actionDb = Read-Host "[C]reate (with delete existing) or [U]pdate database? C/U"
-
+    
     $psi = New-Object System.Diagnostics.ProcessStartInfo($dbTool, "$companyName `"$connString`" $actionDb $sqlServerInstance")
     $psi.WorkingDirectory = $dbtoolPath
     $process = [Diagnostics.Process]::Start($psi)
