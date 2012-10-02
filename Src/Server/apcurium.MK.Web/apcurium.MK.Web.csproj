@@ -293,7 +293,6 @@
     <Content Include="assets\less\TaxiHail-mixins.less" />
     <Content Include="assets\less\TaxiHail-navs.less" />
     <Content Include="assets\less\TaxiHail-wells.less" />
-    <Content Include="assets\less\TaxiHail.less.orig" />
     <Content Include="localization\BookLater.json" />
     <None Include="localization\OrderHistory.json" />
     <Content Include="log4net.xml">
