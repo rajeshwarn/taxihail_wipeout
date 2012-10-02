@@ -5,7 +5,6 @@ using DatabaseInitializer.Services;
 using DatabaseInitializer.Sql;
 using Infrastructure.Messaging;
 using Microsoft.Practices.Unity;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.IBS;
@@ -60,6 +59,12 @@ namespace DatabaseInitializer
 
             creatorDb.CreateDatabase(connStringMaster, companyName, sqlInstanceName);
             creatorDb.CreateSchemas(connectionString);
+
+            //add user for IIS IIS APPPOOL\MyCompany
+            if (companyName != "MKWebDev")
+            {
+                creatorDb.AddUserAndRighst(connStringMaster, connectionString.ConnectionString, "IIS APPPOOL\\" + companyName, companyName);
+            }
 
             //Copy Domain Events
             if (isUpdate)
