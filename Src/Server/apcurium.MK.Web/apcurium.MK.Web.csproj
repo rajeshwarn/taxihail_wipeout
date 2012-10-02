@@ -572,6 +572,11 @@
     <Content Include="localization\BookLater.json" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="assets\less\TaxiHail-buttons.less" />
+    <Content Include="assets\less\TaxiHail-forms.less" />
+    <Content Include="assets\less\TaxiHail-mixins.less" />
+    <Content Include="assets\less\TaxiHail-navs.less" />
+    <Content Include="assets\less\TaxiHail-wells.less" />
     <None Include="Properties\PublishProfiles\Local.pubxml" />
     <None Include="Properties\PublishProfiles\LocalAtlanta.pubxml" />
     <Content Include="themes\AtlantaCheckerCab\less\combined-responsive.less" />

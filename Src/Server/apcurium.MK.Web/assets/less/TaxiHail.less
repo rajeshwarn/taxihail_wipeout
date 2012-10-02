@@ -1,20 +1,15 @@
-﻿@map-z-index: 10;
+﻿@import "TaxiHail-mixins.less";
+@import "TaxiHail-forms.less";
+@import "TaxiHail-buttons.less";
+@import "TaxiHail-navs.less";
+@import "TaxiHail-wells.less";
+
+@map-z-index: 10;
 @container-z-index: @map-z-index * 10;
 @login-status-z-index: @map-z-index * 100;
 @header-height: 63px;
 
-// Gradients
-#gradient {
-.vertical-no-filter(@startColor: #555, @endColor: #333) {
-    background-color: mix(@startColor, @endColor, 60%);
-    background-image: -moz-linear-gradient(top, @startColor, @endColor); // FF 3.6+
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@startColor), to(@endColor)); // Safari 4+, Chrome 2+
-    background-image: -webkit-linear-gradient(top, @startColor, @endColor); // Safari 5.1+, Chrome 10+
-    background-image: -o-linear-gradient(top, @startColor, @endColor); // Opera 11.10
-    background-image: linear-gradient(to bottom, @startColor, @endColor); // Standard, IE10
-    background-repeat: repeat-x;
-  }
-}
+
 
 html, body {
     height: 100%
@@ -95,31 +90,7 @@ header {
     width: 113px
 }
 
-.well {
-    min-height: 20px;
-    padding: 18px;
-    margin-bottom: 20px;
-    background-color: @wellBackground;
-    border: 1px solid #6A6855;
-    .border-radius(8px);
 
-    &.well-form-actions {
-    padding-bottom: 0;
-    }
-
-    .form-actions {
-        margin-right: -18px;
-        margin-left: -18px;
-        margin-bottom: 0;
-        margin-top: 0;
-        padding-left:0;
-        padding-top:10px;
-        padding-bottom:10px;
-        background: transparent;
-        border-top-color: #5E5D4F;
-    }
-
-}
 
 .estimate .fare {
     font-weight: bold;
@@ -219,59 +190,6 @@ header {
     z-index: -100;
 }
 
-// BUTTONS
-
-// Custom Gradient Bar Colors for buttons and alerts
-.gradientBarCustom(@primaryColor, @secondaryColor, @textColor: #fff, @textShadow: 0 1px 1px rgba(0,0,0,.25)) {
-  color: @textColor;
-  text-shadow: @textShadow;
-  #gradient > .vertical-three-colors(@primaryColor, @primaryColor, 65%, @secondaryColor);
-  border-color: @secondaryColor @secondaryColor darken(@secondaryColor, 15%);
-  border-color: rgba(0,0,0,.1) rgba(0,0,0,.1) fadein(rgba(0,0,0,.1), 15%);
-}
-
-.buttonBackgroundCustom(@startColor, @endColor, @textColor: #fff, @textShadow: 0 1px 1px rgba(0,0,0,.25)) {
-  // gradientBar will set the background to a pleasing blend of these, to support IE<=9
-  .gradientBarCustom(@startColor, @endColor, @textColor, @textShadow);
-  *background-color: @endColor; /* Darken IE7 buttons by default so they stand out more given they won't have borders */
-  .reset-filter();
-
-  // in these cases the gradient won't cover the background, so we override
-  &:hover, &:active, &.active, &.disabled, &[disabled] {
-    color: @textColor;
-    background-color: @endColor;
-    *background-color: darken(@endColor, 5%);
-  }
-
-  // IE 7 + 8 can't handle box-shadow to show active, so we darken a bit ourselves
-  &:active,
-  &.active {
-    background-color: darken(@endColor, 10%) e("\9");
-  }
-}
-
-.btn {
-    .border-radius(2px);
-    font-size: 18px;
-    font-weight: bold;
-    .buttonBackgroundCustom(@btnBackgroundHighlight, @btnBackground);
-}
-
-.btn-primary {
-    .buttonBackgroundCustom(@btnPrimaryBackgroundHighlight, @btnPrimaryBackground, @btnPrimaryTextColor);
-}
-
-.btn-danger {
-    .buttonBackgroundCustom(@btnDangerBackgroundHighlight, @btnDangerBackground);
-}
-
-.btn-inverse {
-    .buttonBackgroundCustom(@btnInverseBackgroundHighlight, @btnInverseBackground);
-}  
-
-.btn-flat {
-    background: @taxiHailBlue;
-}
 
 // FORMS 
 
@@ -279,56 +197,6 @@ header {
    margin-left: 5px;
 }
 
-legend {
-    color: @textColor;
-    font-weight:bold;
-    border: none;
-    line-height: @baseLineHeight;
-    margin-bottom:5px;
-}
-
-.form-horizontal {
-
-    .hidden {
-        display:none;
-    }
-
-    .control-group {
-        margin-bottom:10px;
-    }
-
-    .control-label {
-        color: black;
-        text-align: left;
-        line-height: 20px;
-        width:120px;
-    }  
-
-	.center-control-label {
-		color: black;
-        margin-right: 10px;
-		margin-left: 10px;
-        line-height: 20px;
-        width: 120px;
-		font-weight: bold;
-		}
-
-    .input-block-level {
-        height: 40px;
-        min-height: 40px;
-    }
-
-    .controls {
-
-        margin-left: 120px;
-
-        label {
-            line-height: 20px;
-            padding-top: 5px;
-        }
-
-    }   
-}
 
 .signup-view {
     .input-block-level {
@@ -345,89 +213,6 @@ legend {
     }
 }
 
-label {
-    color: @textColor;
-    font-weight:bold;
-    padding-top:0;
-
-    &.lbl-large {
-        font-size: 18px;
-        margin-bottom: 10px;
-    }
-}
-
-textarea,
-input[type="text"],
-input[type="password"],
-input[type="datetime"],
-input[type="datetime-local"],
-input[type="date"],
-input[type="month"],
-input[type="time"],
-input[type="week"],
-input[type="number"],
-input[type="email"],
-input[type="url"],
-input[type="search"],
-input[type="tel"],
-input[type="color"],
-select,
-{
-  border: 1px solid @inputBorder;
-  .box-shadow(inset 0 0 6px rgba(0,0,0,.70));
-  color:@black;
-  height: 30px;
-  font-size:14px;
-}
-
-
-
-.input-prepend,
-.input-append {
-    .btn {
-        line-height: 30px;
-        border: 1px solid @inputBorder;
-    }
-
-    .add-on {
-        width:30px;
-        height:30px;
-    }
-
-}
-
-
-//TABS
-.tabs-below > .nav-tabs{
-
-    width: 377px;
-    background: @white;
-    border-bottom: 1px solid @inputBorder;
-    border-left: 1px solid @inputBorder;
-    border-right: 1px solid @inputBorder;
-
-    >li {
-
-        width:130px;
-        text-align:center;
-        border:none;
-        background:transparent;
-
-        >a, >a:hover {
-            color: #767676;
-            font-weight:normal;
-            margin:0;
-        }
-
-
-        &.active>a, &.active>a:hover {
-            color: @taxiHailBlue;
-            font-weight:bold;
-            border:none;
-            background:transparent;
-        }
-    }
-}
 
 
 //CONFIRM SETINGS 
@@ -459,4 +244,4 @@ select,
 
 .active {
 	background-color: rgba(255, 255, 255, 0.8);
-	}
+}
