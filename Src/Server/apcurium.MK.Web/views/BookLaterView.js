@@ -3,6 +3,7 @@
     TaxiHail.BookLaterView = TaxiHail.TemplatedView.extend({
 
         tagName: 'form',
+        className: 'form-horizontal',
 
         events: {
             'submit': 'onsubmit'
@@ -12,12 +13,14 @@
 
             var now = new Date();
             var data = _.extend(this.model.toJSON(), {
-                today: now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + now.getDate()
+                today: ''
             });
 
             this.$el.html(this.renderTemplate(data));
-            this.$('[data-role=datepicker]').datepicker();
-            this.$('[data-role=timepicker]').timepicker();
+            this.$('[data-role=datepicker]').datepicker().datepicker('setValue',new Date());
+            this.$('[data-role=timepicker]').timepicker({
+                defaultTime: 'current+30'
+            });
 
             return this;
 
