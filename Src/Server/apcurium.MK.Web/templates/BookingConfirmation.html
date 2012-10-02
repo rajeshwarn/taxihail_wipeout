@@ -6,7 +6,11 @@
         <table>
             <tr>
                 <td class="settings-label">{{localize "Pickup Time"}}</td>
-                <td class="settings-value">Now</td>
+                {{#if pickupDate}}
+                    <td class="settings-value">{{niceDate pickupDate}}</td>
+                {{else}}
+                    <td class="settings-value">Now</td>
+                {{/if}}
             </tr>
             <tr>
                 <td class="settings-label">{{localize "Pickup"}}</td>
