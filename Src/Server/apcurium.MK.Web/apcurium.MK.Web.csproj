@@ -268,9 +268,7 @@
     <Content Include="assets\img\pin_red.png" />
     <Content Include="assets\img\taxi_label.png" />
     <Content Include="assets\img\validFieldGreen.png" />
-    <Content Include="assets\js\backbone-validation.js" />
     <Content Include="assets\js\backbone.js" />
-    <Content Include="assets\js\backbone.validation.bootstrap.js" />
     <Content Include="assets\js\handlebars-1.0.rc.1.js" />
     <Content Include="assets\js\modernizr.js" />
     <Content Include="assets\js\spin.js" />
@@ -305,6 +303,7 @@
     <Content Include="templates\login.html" />
     <Content Include="templates\LoginStatus.html" />
     <Content Include="templates\Profile.html" />
+    <Content Include="templates\ResetPassword.html" />
     <Content Include="templates\Signup.html" />
     <Content Include="templates\UpdatePassword.html" />
     <Content Include="templates\UserAccount.html" />
@@ -323,6 +322,7 @@
     <Content Include="views\LoginView.js" />
     <Content Include="views\MapView.js" />
     <Content Include="views\ProfileView.js" />
+    <Content Include="views\ResetPasswordView.js" />
     <Content Include="views\SignupView.js" />
     <Content Include="views\TemplatedView.js" />
     <Content Include="views\UpdatePasswordView.js" />
@@ -558,6 +558,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="localization\UpdatePassword.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="localization\ResetPassword.json" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

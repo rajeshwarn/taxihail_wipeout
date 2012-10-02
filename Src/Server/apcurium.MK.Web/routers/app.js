@@ -172,7 +172,7 @@
                         renderView(TaxiHail.UserAccountView, account);
                     },
                     error: _.bind(function (model) {
-                        this.navigate('login', { trigger: true });
+                        this.navigate('login/useraccount', { trigger: true });
                     }, this)
                 });
         },
