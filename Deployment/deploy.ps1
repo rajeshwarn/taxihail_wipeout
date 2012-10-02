@@ -4,7 +4,7 @@ $base_dir = Split-Path $scriptpath
 
 Write-Host "***************Base Directory $base_dir *************************"
 #. $base_dir'\deployProps.ps1'
-$companyName= "MyCompany"
+$companyName= "AtlantaCheckerCab"
 $dbtoolPath = "$base_dir\Database"
 $dbTool = "$dbtoolPath\DatabaseInitializer.exe" 
 $sqlServerInstance = "MSSQL11.MSSQLSERVER"
