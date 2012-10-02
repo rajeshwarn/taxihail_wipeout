@@ -66,7 +66,8 @@ namespace apcurium.MK.Booking.Api.Services
             var templateData = new
             {
                 ApplicationName = _configurationManager.GetSetting("TaxiHail.ApplicationName"),
-                RootUrl = root
+                RootUrl = root,
+                AccentColor = _configurationManager.GetSetting("TaxiHail.AccentColor")
             };
             var body = _templateService.Render(template, templateData);
             return new HttpResult(body, ContentType.Html);
