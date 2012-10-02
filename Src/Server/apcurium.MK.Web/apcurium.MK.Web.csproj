@@ -310,6 +310,7 @@
     <Content Include="templates\login.html" />
     <Content Include="templates\LoginStatus.html" />
     <Content Include="templates\Profile.html" />
+    <Content Include="templates\ResetPassword.html" />
     <Content Include="templates\Signup.html" />
     <Content Include="templates\UpdatePassword.html" />
     <Content Include="templates\UserAccount.html" />
@@ -332,6 +333,7 @@
     <Content Include="views\LoginView.js" />
     <Content Include="views\MapView.js" />
     <Content Include="views\ProfileView.js" />
+    <Content Include="views\ResetPasswordView.js" />
     <Content Include="views\SignupView.js" />
     <Content Include="views\TemplatedView.js" />
     <Content Include="views\UpdatePasswordView.js" />
@@ -572,6 +574,7 @@
     <Content Include="localization\BookLater.json" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="localization\ResetPassword.json" />
     <Content Include="assets\less\TaxiHail-buttons.less" />
     <Content Include="assets\less\TaxiHail-forms.less" />
     <Content Include="assets\less\TaxiHail-mixins.less" />
