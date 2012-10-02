@@ -3,6 +3,10 @@
 // --------------------------------------------------
 
 
+@headerBackground: #00407B;
+@headerBackgroundDark: #0057A3;
+@headerTextColor: #fff;
+
 // Global values
 // --------------------------------------------------
 
@@ -17,7 +21,6 @@
 @grayLighter:           #eee;
 @white:                 #fff;
 
-
 // Accent colors
 // -------------------------
 @blue:                  #049cdb;
@@ -28,12 +31,13 @@
 @orange:                #f89406;
 @pink:                  #c3325f;
 @purple:                #7a43b6;
+@taxiHailBlue:          #00539C;
 
 
 // Scaffolding
 // -------------------------
-@bodyBackground:        @white;
-@textColor:             @grayDark;
+@bodyBackground:        #bcbcbc;
+@textColor:             @taxiHailBlue;
 
 
 // Links
@@ -72,6 +76,7 @@
 
 @btnPrimaryBackground:              #0F5A9B;
 @btnPrimaryBackgroundHighlight:     #1166B0;
+@btnPrimaryTextColor:               @white;
 
 @btnInfoBackground:                 #5bc0de;
 @btnInfoBackgroundHighlight:        #2f96b4;
@@ -92,8 +97,8 @@
 // Forms
 // -------------------------
 @inputBackground:               @white;
-@inputBorder:                   #ccc;
-@inputBorderRadius:             3px;
+@inputBorder:                   #4f4f4f;
+@inputBorderRadius:             1px;
 @inputDisabledBackground:       @grayLighter;
 @formActionsBackground:         #f5f5f5;
 
@@ -151,7 +156,7 @@
 
 // Wells
 // -------------------------
-@wellBackground:                  #f5f5f5;
+@wellBackground:                  fade(@white, 80%);
 
 
 // Navbar
