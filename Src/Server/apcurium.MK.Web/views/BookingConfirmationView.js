@@ -6,6 +6,7 @@
         
         events: {
             'click [data-action=book]': 'book',
+            'click [data-action=startOver]': 'cancelbook',
             'change :text[data-action=changepickup]': 'onPickupPropertyChanged',
             'change :text[data-action=changesettings]': 'onSettingsPropertyChanged',
             'change :input[data-action=changesettings]': 'onSettingsPropertyChanged'
@@ -101,8 +102,10 @@
                 error: this.showErrors
             });
             }
-            
-            
+        },
+        
+        cancelbook : function (e) {
+            TaxiHail.orderService.cancelCurrentOrder();
         },
         
         showErrors: function (model, result) {

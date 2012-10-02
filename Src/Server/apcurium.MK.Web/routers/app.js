@@ -34,7 +34,7 @@
 
 
             TaxiHail.auth.initialize(function(isloggedIn) {
-                if(isloggedIn) {
+                /*if(isloggedIn) {
                     // Check if an order exists
                     // If order is not saved, go to confirmation
                     // If order is saved and status is active, go to status
@@ -52,12 +52,38 @@
                                 }, this)
                             });
                         }
+                    } else {
+                        this.navigate('', { trigger: true });
                     }
-                }
+                }*/
             }, this);
 
             TaxiHail.auth.on('change', function(isloggedIn) {
-                this.navigate('', { trigger: true });
+                //this.navigate('', { trigger: true });
+                if (isloggedIn) {
+                    // Check if an order exists
+                    // If order is not saved, go to confirmation
+                    // If order is saved and status is active, go to status
+                    var order = TaxiHail.orderService.getCurrentOrder();
+                    if (order) {
+                        if (order.isNew()) {
+                            this.navigate('confirmationbook', { trigger: true });
+                        } else {
+                            order.getStatus().fetch({
+                                success: _.bind(function(model, resp) {
+                                    if (model.isActive()) {
+                                        this.navigate('status/' + order.id, { trigger: true });
+                                    }
+                                }, this)
+                            });
+                        }
+                    } else {
+                        this.navigate('', { trigger: true });
+                    }
+                }
+                else {
+                    this.navigate('', { trigger: true });
+                }
             }, this);
 
             mapView = new TaxiHail.MapView({
