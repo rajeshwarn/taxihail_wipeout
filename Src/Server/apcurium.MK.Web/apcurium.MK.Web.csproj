@@ -295,7 +295,7 @@
     <Content Include="assets\less\TaxiHail-navs.less" />
     <Content Include="assets\less\TaxiHail-wells.less" />
     <Content Include="localization\BookLater.json" />
-    <None Include="localization\OrderHistory.json" />
+    <Content Include="localization\OrderHistory.json" />
     <Content Include="log4net.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
