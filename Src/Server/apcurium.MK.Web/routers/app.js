@@ -113,7 +113,7 @@
 
         later: function() {
             var currentOrder = TaxiHail.orderService.getCurrentOrder();
-            if (currentOrder) {
+            if (currentOrder && currentOrder.isNew()) {
                 renderView(TaxiHail.BookLaterView, currentOrder);
             } else {
                 this.navigate('', { trigger: true });
