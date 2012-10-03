@@ -4,6 +4,7 @@
         initialize : function () {
             _.bindAll(this, "geolocdone", "geoloc");
             this.streetZoomLevel = 17;
+            this.cityZoomLevel = 12;
         },
         
         setModel: function(model, centerMapOnAddressChange) {
@@ -17,9 +18,7 @@
                 if(model.isValidAddress('pickupAddress')) {
                     var location = new google.maps.LatLng(value.latitude, value.longitude);
                     if (centerMapOnAddressChange) {
-                        if (this._map.getZoom() < this.streetZoomLevel) {
-                            this._map.setZoom(this.streetZoomLevel);
-                        }
+                        this.zoomMap(this.streetZoomLevel);
                         this.centerMap(location);
                     }
                 }
@@ -60,8 +59,8 @@
         render: function() {
 
             var mapOptions = {
-                zoom: 12,
-                center: new google.maps.LatLng(45.516667, -73.65) /* Montreal */,
+                zoom: 5,
+                center: new google.maps.LatLng(46.0730555556, -100.546666667) /* North America */,
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
                 zoomControlOptions: {
                     position: google.maps.ControlPosition.LEFT_CENTER
@@ -123,6 +122,13 @@
         
         goToPickup: function () {
             if (this._pickupPin) this.centerMap(this._pickupPin.getPosition());
+        },
+        
+        zoomMap: function (zoomLevel) {
+            
+            if (this._map.getZoom() < zoomLevel) {
+                this._map.setZoom(zoomLevel);
+            }
         },
 
         centerMap: function (location) {

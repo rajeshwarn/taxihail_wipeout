@@ -104,7 +104,8 @@
                 // If geoloc doesn't work, center map on default location
                 .fail(function(){
                     $.get('api/settings/defaultlocation', function (address) {
-                            mapView.centerMap(new google.maps.LatLng(address.latitude, address.longitude));
+                        mapView.zoomMap(mapView.cityZoomLevel);
+                        mapView.centerMap(new google.maps.LatLng(address.latitude, address.longitude));
                     }, "json");
                 });
 
