@@ -58,14 +58,14 @@
            
         render: function() {
 
+            //default lat and long are defined in the default.aspx
             var mapOptions = {
-                zoom: 5,
-                center: new google.maps.LatLng(46.0730555556, -100.546666667) /* North America */,
+                zoom: 12,
+                center: new google.maps.LatLng(TaxiHail.parameters.defaultLatitude, TaxiHail.parameters.defaultLongitude),
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
                 zoomControlOptions: {
                     position: google.maps.ControlPosition.LEFT_CENTER
                 }
-
             };
 
             this._map = new google.maps.Map(this.el, mapOptions);

@@ -1,0 +1,12 @@
+﻿{
+	"Pickup Time" : "Pickup Time",
+	"Pickup" : "Pickup",
+	"Destination" : "Destination",
+	"Estimate" : "Estimate",
+	"Rebook" : "Rebook",
+	"Delete" : "Delete",
+	"Cancel" : "Cancel",
+	"Order details" : "Order Details",
+	"OrderStatus" : "OrderStatus",
+	"iBSOrderIdLabel" : "Order #"
+}
