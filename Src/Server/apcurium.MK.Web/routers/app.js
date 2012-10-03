@@ -34,7 +34,10 @@
 
         initialize: function () {
 
-
+            var expire = new Date();
+            expire.setTime(expire.getTime() + 3600000 * 24 * 365);
+            document.cookie = "ss-opt=perm" + ";expires=" + expire.toGMTString();
+            
             TaxiHail.auth.initialize(function(isloggedIn) {
                 if(isloggedIn) {
                     // Check if an order exists
