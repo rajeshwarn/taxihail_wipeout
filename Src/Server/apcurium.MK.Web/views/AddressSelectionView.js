@@ -9,12 +9,20 @@
         },
 
         initialize: function () {
-            _.bindAll(this, 'hide');
-            TaxiHail.auth.on('change', this.render, this);
+            _.bindAll(this, 'hide', 'ondownarrow', 'onuparrow', 'onenter');
+            TaxiHail.auth.on('change init', this.render, this);
+            $(document).bind('keydown', 'down', this.ondownarrow);
+            $(document).bind('keydown', 'up', this.onuparrow);
+            $(document).bind('keydown', 'return', this.onenter);
         },
 
         render: function () {
-            this.$el.html(this.renderTemplate(this.model.toJSON()));
+
+            var data = _.extend(this.model.toJSON(), {
+                isLoggedIn: TaxiHail.auth.isLoggedIn()
+            });
+
+            this.$el.html(this.renderTemplate(data));
 
             this.tab.search.call(this);
 
@@ -23,6 +31,10 @@
 
         remove: function() {
             TaxiHail.auth.off(null, null, this);
+            $(document).unbind('keydown', this.ondownarrow);
+            $(document).unbind('keydown', this.onuparrow);
+            $(document).unbind('keydown', this.onenter);
+
             this.$el.remove();
             return this;
         },
@@ -66,17 +78,56 @@
 
         },
 
+        ondownarrow: function(e) {
+            var $addresses = this.$el.find('[data-action=select-address]'),
+                $active = $addresses.filter('.active');
+            if(!$active.length) {
+                $addresses.first().addClass('active');
+            } else {
+                $active.removeClass('active').parent('li').next().find('[data-action=select-address]').addClass('active');
+            }
+        },
+
+        onuparrow: function(e) {
+            var $addresses = this.$el.find('[data-action=select-address]'),
+                $active = $addresses.filter('.active');
+            if(!$active.length) {
+                $addresses.last().addClass('active');
+            } else {
+                $active.removeClass('active').parent('li').prev().find('[data-action=select-address]').addClass('active');
+            }
+        },
+
+        onenter: function(e) {
+            var $addresses = this.$el.find('[data-action=select-address]'),
+                $active = $addresses.filter('.active');
+            if($active.length) {
+                $active.click();
+            }
+        },
+
         tab: {
             favorites: function() {
 
                 var addresses = new TaxiHail.AddressCollection(),
-                    view = new TaxiHail.AddressListView({
+                    view = new TaxiHail.FavoritesAndHistoryListView({
                         collection: addresses
                     });
 
-                addresses.fetch({
-                    url: 'api/account/addresses'
+                var favorites = new TaxiHail.AddressCollection();
+                var history = new TaxiHail.AddressCollection();
+                favorites.fetch({
+                    url: 'api/account/addresses',
+                    success: function(collection, resp) {
+                        history.fetch({
+                            url: 'api/account/addresses/history',
+                            success: function(collection, resp) {
+                                addresses.reset(favorites.models.concat(history.models));
+                            }
+                        });
+                    }
                 });
+                
 
                 addresses.on('selected', function (model, collection) {
                     this.trigger('selected', model, collection);
@@ -111,7 +162,7 @@
                             }, this));
                     } else {
                         this.trigger('selected', model, collection);
-                    } 
+                    }
                     
                 }, this);
 

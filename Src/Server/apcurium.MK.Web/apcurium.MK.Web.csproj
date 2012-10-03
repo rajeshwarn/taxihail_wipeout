@@ -277,6 +277,7 @@
     <Content Include="assets\img\validFieldGreen.png" />
     <Content Include="assets\js\backbone.js" />
     <Content Include="assets\js\handlebars-1.0.rc.1.js" />
+    <Content Include="assets\js\jquery.hotkeys.js" />
     <Content Include="assets\js\modernizr.js" />
     <Content Include="assets\js\spin.js" />
     <Content Include="assets\js\underscore.js" />
@@ -344,6 +345,7 @@
     <Content Include="views\BookingStatusView.js" />
     <Content Include="views\BookLaterView.js" />
     <Content Include="views\BookView.js" />
+    <Content Include="views\FavoritesAndHistoryListView.js" />
     <Content Include="views\LoginStatusView.js" />
     <Content Include="views\LoginView.js" />
     <Content Include="views\MapView.js" />
