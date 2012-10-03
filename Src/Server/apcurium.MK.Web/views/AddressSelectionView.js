@@ -14,6 +14,21 @@
             $(document).bind('keydown', 'down', this.ondownarrow);
             $(document).bind('keydown', 'up', this.onuparrow);
             $(document).bind('keydown', 'return', this.onenter);
+            
+            this.spinnerOptions = {
+                lines: 11, // The number of lines to draw
+                length: 3, // The length of each line
+                width: 3, // The line thickness
+                radius: 6, // The radius of the inner circle
+                corners: 1, // Corner roundness (0..1)
+                rotate: 0, // The rotation offset
+                speed: 1, // Rounds per second
+                trail: 60, // Afterglow percentage
+                shadow: false, // Whether to render a shadow
+                hwaccel: false, // Whether to use hardware acceleration
+                className: 'spinner-address', // The CSS class to assign to the spinner
+                zIndex: 2e9 // The z-index (defaults to 2000000000)
+            };
         },
 
         render: function () {
@@ -109,6 +124,9 @@
         tab: {
             favorites: function() {
 
+                var spinner = new Spinner(this.spinnerOptions).spin();
+                this.$('.tab-content').html(spinner.el);
+                
                 var addresses = new TaxiHail.AddressCollection(),
                     view = new TaxiHail.FavoritesAndHistoryListView({
                         collection: addresses
@@ -118,22 +136,20 @@
                 var history = new TaxiHail.AddressCollection();
                 favorites.fetch({
                     url: 'api/account/addresses',
-                    success: function(collection, resp) {
+                    success: _.bind(function(collection, resp) {
                         history.fetch({
                             url: 'api/account/addresses/history',
-                            success: function(collection, resp) {
+                            success: _.bind(function(collection, resp) {
                                 addresses.reset(favorites.models.concat(history.models));
-                            }
+                                this.$('.tab-content').html(view.el);
+                            }, this)
                         });
-                    }
+                    }, this)
                 });
                 
-
                 addresses.on('selected', function (model, collection) {
                     this.trigger('selected', model, collection);
                 }, this);
-
-                this.$('.tab-content').html(view.el);
             },
 
             search: function() {
@@ -170,24 +186,8 @@
             },
 
             places: function () {
-
-                var opts = {
-                    lines: 11, // The number of lines to draw
-                    length: 3, // The length of each line
-                    width: 3, // The line thickness
-                    radius: 6, // The radius of the inner circle
-                    corners: 1, // Corner roundness (0..1)
-                    rotate: 0, // The rotation offset
-                    speed: 1, // Rounds per second
-                    trail: 60, // Afterglow percentage
-                    shadow: false, // Whether to render a shadow
-                    hwaccel: false, // Whether to use hardware acceleration
-                    className: 'spinner-address', // The CSS class to assign to the spinner
-                    zIndex: 2e9 // The z-index (defaults to 2000000000)
-                };
-            
                
-                var spinner = new Spinner(opts).spin();
+                var spinner = new Spinner(this.spinnerOptions).spin();
                 this.$('.tab-content').html(spinner.el);
                 
                TaxiHail.geolocation.getCurrentPosition()
