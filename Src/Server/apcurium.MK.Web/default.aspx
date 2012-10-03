@@ -16,11 +16,11 @@
         </header>
         <div class="container">
             <div class='notification-zone'></div>
-            <div class='modal-zone'></div>
+            
             <div id='main'></div>
         </div>
         <div class="map-zone"></div>
-        
+        <div class='modal-zone'></div>
         
 
         <!-- assets -->
@@ -87,6 +87,7 @@
         <script src="views/OrderHistoryView.js"></script>
         <script src="views/OrderHistoryDetailView.js"></script>
         <script src="views/OrderItemView.js"></script>
+        <script src="views/BootstrapConfirmationView.js"></script>
 
 
         <script src="services/AuthService.js"></script>

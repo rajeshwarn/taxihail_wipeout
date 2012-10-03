@@ -17,6 +17,20 @@
         postpone: function (func, context) {
             return _.debounce(_.bind(func, context), 800);
         },
+        
+        confirm: function (title, message, okfunc) {
+            var view = new TaxiHail.BootstrapConfirmationView({
+                model: new Backbone.Model({
+                    title: title,
+                    message: message
+                })
+            });
+
+            $('.modal-zone').html(view.render().el);
+
+            view.show();
+            view.on('ok', _.once(okfunc));
+        }
 
     });
 
