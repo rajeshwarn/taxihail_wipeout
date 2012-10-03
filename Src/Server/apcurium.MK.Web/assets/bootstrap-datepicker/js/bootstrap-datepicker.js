@@ -144,6 +144,11 @@
 		
 		place: function(){
 			var offset = this.component ? this.component.offset() : this.element.offset();
+			// If we use a Bootstrap Input Append, place the calendar on the textbox
+			if(this.component && this.component.parents('.input-append').find(':text').length){
+				var $input = this.component.parents('.input-append').find(':text');
+				offset = $input.offset();
+			}
 			this.picker.css({
 				top: offset.top + this.height,
 				left: offset.left

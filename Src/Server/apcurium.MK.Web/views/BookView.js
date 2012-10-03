@@ -13,10 +13,10 @@
 
             this.model.on('change', function(model, value) {
                 
-                // Enable the "Book Now!" button if model is valid
+                // Enable the buttons if model is valid
                 if(this.model.isValidAddress('pickupAddress')) {
-                    this.$('[data-action=book]').removeClass('disabled');
-                } else this.$('[data-action=book]').addClass('disabled');
+                    this.$('.buttons .btn').removeClass('disabled');
+                } else this.$('.buttons .btn').addClass('disabled');
 
             }, this);
 
@@ -109,7 +109,7 @@
             }, this);
 
             if(!this.model.isValidAddress('pickupAddress')){
-                this.$('[data-action=book]').addClass('disabled');
+                this.$('.buttons .btn').addClass('disabled');
             }
             return this;
         },
