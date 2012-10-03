@@ -1,5 +1,6 @@
 var TaxiHail = {
-    resources: {}
+    resources: {},
+    parameters: {}
 };
 
 TaxiHail.loader = {

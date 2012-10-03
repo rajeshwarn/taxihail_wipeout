@@ -10,6 +10,8 @@
 	"Email.NoReply" : "noreply@apcurium.com",
 	"GeoLoc.AddressFilter" : "",
 	"GeoLoc.SearchFilter" : "{0},atlanta,ga",
+	"GeoLoc.DefaultLatitude" : "33.4518",
+	"GeoLoc.DefaultLongitude" : "-84.2324",
 	"IBS.AutoDispatch" : "TRUE",
 	"IBS.DefaultAccountPassword" : "password",
 	"IBS.WebServicesPassword" : "test",

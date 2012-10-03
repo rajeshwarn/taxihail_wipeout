@@ -12,12 +12,16 @@ namespace apcurium.MK.Web
     public partial class _default : System.Web.UI.Page
     {
         protected string ApplicationKey { get; private set; }
+        protected string DefaultLatitude { get; private set; }
+        protected string DefaultLongitude { get; private set; }
 
         protected void Page_Load(object sender, EventArgs e)
         {
             var config = ServiceLocator.Current.GetInstance<IConfigurationManager>();
 
             ApplicationKey = config.GetSetting("TaxiHail.ApplicationKey");
+            DefaultLatitude = config.GetSetting("GeoLoc.DefaultLatitude");
+            DefaultLongitude = config.GetSetting("GeoLoc.DefaultLongitude");
         }
     }
 }

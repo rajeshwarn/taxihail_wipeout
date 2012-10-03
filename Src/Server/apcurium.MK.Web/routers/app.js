@@ -97,20 +97,15 @@
         book: function () {
 
             var model = new TaxiHail.Order();
+            //default lat and long are defined in the deault.aspx
+            TaxiHail.geocoder.initialize(TaxiHail.parameters.defaultLatitude, TaxiHail.parameters.defaultLongitude);
 
-            TaxiHail.geolocation
-                .getCurrentPosition()
+            TaxiHail.geolocation.getCurrentPosition()
                 // By default, set pickup address to current user location
-                .done(TaxiHail.postpone(function(address){
+                .done(TaxiHail.postpone(function(address) {
                     model.set('pickupAddress', address);
-                }))
-                // If geoloc doesn't work, center map on default location
-                .fail(function(){
-                    $.get('api/settings/defaultlocation', function (address) {
-                        mapView.zoomMap(mapView.cityZoomLevel);
-                        mapView.centerMap(new google.maps.LatLng(address.latitude, address.longitude));
-                    }, "json");
-                });
+            }));
+                
 
             mapView.setModel(model, true);
             renderView(TaxiHail.BookView, model);

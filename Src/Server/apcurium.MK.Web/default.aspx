@@ -20,6 +20,8 @@
             <div id='main'></div>
         </div>
         <div class="map-zone"></div>
+        
+        
 
         <!-- assets -->
         <script src="assets/js/handlebars-1.0.rc.1.js"></script>
@@ -43,6 +45,12 @@
         
         <!-- app -->
         <script src="taxi-hail.js"></script>
+        
+        <script type="text/javascript">
+            TaxiHail.parameters.defaultLatitude = <%: this.DefaultLatitude %>;
+            TaxiHail.parameters.defaultLongitude = <%: this.DefaultLongitude %>;
+        </script>
+
         <script src="utils.js"></script>
         
         <!-- models -->
