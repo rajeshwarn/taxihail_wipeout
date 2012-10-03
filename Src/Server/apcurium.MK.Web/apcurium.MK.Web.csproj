@@ -367,6 +367,7 @@
     <Content Include="themes\AtlantaCheckerCab\less\variables.less" />
     <Content Include="themes\TaxiHail\less\combined-responsive.less" />
     <Content Include="themes\TaxiHail\less\combined.less" />
+    <Content Include="themes\TaxiHail\less\style.less" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config.aspx.cs">
