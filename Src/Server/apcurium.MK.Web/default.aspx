@@ -26,6 +26,7 @@
         <!-- assets -->
         <script src="assets/js/handlebars-1.0.rc.1.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <script src="assets/js/jquery.hotkeys.js"></script>
         <script src="http://jzaefferer.github.com/jquery-validation/jquery.validate.js"></script>
         <script src="assets/js/underscore.js"></script>
         <script src="assets/js/backbone.js"></script>
@@ -72,6 +73,7 @@
         <script src="views/AddressControlView.js"></script>
         <script src="views/AddressSelectionView.js"></script>
         <script src="views/AddressListView.js"></script>
+        <script src="views/FavoritesAndHistoryListView.js"></script>
         <script src="views/AddressItemView.js"></script>
         <script src="views/BookingConfirmationView.js"></script>
         <script src="views/BookingStatusView.js"></script>
@@ -83,6 +85,8 @@
         <script src="views/UpdatePasswordView.js"></script>
         <script src="views/ResetPasswordView.js"></script>
         <script src="views/OrderHistoryView.js"></script>
+        <script src="views/OrderHistoryDetailView.js"></script>
+        <script src="views/OrderItemView.js"></script>
 
 
         <script src="services/AuthService.js"></script>
