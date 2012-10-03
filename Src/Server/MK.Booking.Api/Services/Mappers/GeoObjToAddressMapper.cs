@@ -12,7 +12,7 @@ namespace apcurium.MK.Booking.Api.Services.Mappers
             var address = new Address
             {
                 FullAddress = geoCodeResult.Formatted_address,
-                Id = Guid.Empty,
+                Id = Guid.NewGuid(),
                 Latitude = geoCodeResult.Geometry.Location.Lat,
                 Longitude = geoCodeResult.Geometry.Location.Lng
             };
