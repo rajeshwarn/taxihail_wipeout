@@ -5,31 +5,38 @@
     var isSupported = navigator.geolocation;
 
     TaxiHail.geolocation = {
+
         getCurrentPosition: function () {
+            
             // Try W3C Geolocation (Preferred)
             var defer = $.Deferred();
+            
+            if (this.currentAddress) {
+                defer.resolve(this.currentAddress);
+            }else {
+                if (isSupported) {
 
-            if (isSupported) {
+                    navigator.geolocation.getCurrentPosition(_.bind(function (position) {
 
-                navigator.geolocation.getCurrentPosition(function(position) {
+                        TaxiHail.geocoder.geocode(position.coords.latitude, position.coords.longitude)
+                            .done(_.bind(function (result) {
 
-                    TaxiHail.geocoder.geocode(position.coords.latitude, position.coords.longitude)
-                        .done(function(result) {
+                                if (result.addresses && result.addresses.length) {
+                                    this.currentAddress = result.addresses[0];
+                                    defer.resolve(result.addresses[0]);
+                                }
+                                else defer.reject();
 
-                            if(result.addresses && result.addresses.length) {
-                                defer.resolve(result.addresses[0]);
-                            }
-                            else defer.reject();
+                            }, this))
+                            .fail(defer.reject);
 
-                        })
-                        .fail(defer.reject);
-
-                }, defer.reject);
+                    }, this), defer.reject);
+                }
+                else {
+                    window.setTimeout(defer.reject, 1);
+                }
             }
-            else {
-                window.setTimeout(defer.reject, 1);
-            }
-
+            
             return defer.promise();
         }
     };

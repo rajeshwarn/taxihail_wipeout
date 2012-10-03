@@ -104,9 +104,8 @@
                 // By default, set pickup address to current user location
                 .done(TaxiHail.postpone(function(address) {
                     model.set('pickupAddress', address);
-            }));
-                
-
+                }));
+            
             mapView.setModel(model, true);
             renderView(TaxiHail.BookView, model);
            
