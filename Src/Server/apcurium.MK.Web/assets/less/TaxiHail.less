@@ -150,8 +150,12 @@ header {
             overflow:hidden;
             color: @black;
 
-            a, a:link, a:active, a:visited, a:hover {
+            a, a:link, a:active, a:visited, a:hover, a.active {
                 color: @black;
+            }
+
+            a.active {
+                text-decoration: underline;
             }
 
             &:last-child {

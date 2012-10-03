@@ -277,6 +277,7 @@
     <Content Include="assets\img\validFieldGreen.png" />
     <Content Include="assets\js\backbone.js" />
     <Content Include="assets\js\handlebars-1.0.rc.1.js" />
+    <Content Include="assets\js\jquery.hotkeys.js" />
     <Content Include="assets\js\modernizr.js" />
     <Content Include="assets\js\spin.js" />
     <Content Include="assets\js\underscore.js" />

@@ -9,8 +9,11 @@
         },
 
         initialize: function () {
-            _.bindAll(this, 'hide');
+            _.bindAll(this, 'hide', 'ondownarrow', 'onuparrow', 'onenter');
             TaxiHail.auth.on('change init', this.render, this);
+            $(document).bind('keydown', 'down', this.ondownarrow);
+            $(document).bind('keydown', 'up', this.onuparrow);
+            $(document).bind('keydown', 'return', this.onenter);
         },
 
         render: function () {
@@ -28,6 +31,10 @@
 
         remove: function() {
             TaxiHail.auth.off(null, null, this);
+            $(document).unbind('keydown', this.ondownarrow);
+            $(document).unbind('keydown', this.onuparrow);
+            $(document).unbind('keydown', this.onenter);
+
             this.$el.remove();
             return this;
         },
@@ -69,6 +76,34 @@
             this.selectTab($tab);
             this.tab[tabName].call(this);
 
+        },
+
+        ondownarrow: function(e) {
+            var $addresses = this.$el.find('[data-action=select-address]'),
+                $active = $addresses.filter('.active');
+            if(!$active.length) {
+                $addresses.first().addClass('active');
+            } else {
+                $active.removeClass('active').parent('li').next().find('[data-action=select-address]').addClass('active');
+            }
+        },
+
+        onuparrow: function(e) {
+            var $addresses = this.$el.find('[data-action=select-address]'),
+                $active = $addresses.filter('.active');
+            if(!$active.length) {
+                $addresses.last().addClass('active');
+            } else {
+                $active.removeClass('active').parent('li').prev().find('[data-action=select-address]').addClass('active');
+            }
+        },
+
+        onenter: function(e) {
+            var $addresses = this.$el.find('[data-action=select-address]'),
+                $active = $addresses.filter('.active');
+            if($active.length) {
+                $active.click();
+            }
         },
 
         tab: {

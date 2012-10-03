@@ -135,7 +135,9 @@
         },
 
         onkeyup: function(e) {
-            this._selector && this._selector.search($(e.currentTarget).val());
+            if(!jQuery.hotkeys.specialKeys[ e.which ]) {
+                this._selector && this._selector.search($(e.currentTarget).val());
+            }
         },
 
         ondocumentclick: function(e) {
