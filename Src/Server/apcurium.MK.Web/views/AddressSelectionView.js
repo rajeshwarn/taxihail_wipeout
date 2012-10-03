@@ -75,13 +75,24 @@
             favorites: function() {
 
                 var addresses = new TaxiHail.AddressCollection(),
-                    view = new TaxiHail.AddressListView({
+                    view = new TaxiHail.FavoritesAndHistoryListView({
                         collection: addresses
                     });
 
-                addresses.fetch({
-                    url: 'api/account/addresses'
+                var favorites = new TaxiHail.AddressCollection();
+                var history = new TaxiHail.AddressCollection();
+                favorites.fetch({
+                    url: 'api/account/addresses',
+                    success: function(collection, resp) {
+                        history.fetch({
+                            url: 'api/account/addresses/history',
+                            success: function(collection, resp) {
+                                addresses.reset(favorites.models.concat(history.models));
+                            }
+                        });
+                    }
                 });
+                
 
                 addresses.on('selected', function (model, collection) {
                     this.trigger('selected', model, collection);
@@ -116,7 +127,7 @@
                             }, this));
                     } else {
                         this.trigger('selected', model, collection);
-                    } 
+                    }
                     
                 }, this);
 

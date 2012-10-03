@@ -64,6 +64,7 @@
         <script src="views/AddressControlView.js"></script>
         <script src="views/AddressSelectionView.js"></script>
         <script src="views/AddressListView.js"></script>
+        <script src="views/FavoritesAndHistoryListView.js"></script>
         <script src="views/AddressItemView.js"></script>
         <script src="views/BookingConfirmationView.js"></script>
         <script src="views/BookingStatusView.js"></script>
