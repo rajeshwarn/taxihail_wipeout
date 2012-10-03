@@ -322,6 +322,8 @@
     <Content Include="templates\login.html" />
     <Content Include="templates\LoginStatus.html" />
     <Content Include="templates\OrderHistory.html" />
+    <Content Include="templates\OrderHistoryDetail.html" />
+    <Content Include="templates\OrderItem.html" />
     <Content Include="templates\Profile.html" />
     <Content Include="templates\ResetPassword.html" />
     <Content Include="templates\Signup.html" />
@@ -345,7 +347,9 @@
     <Content Include="views\LoginStatusView.js" />
     <Content Include="views\LoginView.js" />
     <Content Include="views\MapView.js" />
+    <Content Include="views\OrderHistoryDetailView.js" />
     <Content Include="views\OrderHistoryView.js" />
+    <Content Include="views\OrderItemView.js" />
     <Content Include="views\ProfileView.js" />
     <Content Include="views\ResetPasswordView.js" />
     <Content Include="views\SignupView.js" />
@@ -367,6 +371,8 @@
     <Content Include="themes\AtlantaCheckerCab\less\variables.less" />
     <Content Include="themes\TaxiHail\less\combined-responsive.less" />
     <Content Include="themes\TaxiHail\less\combined.less" />
+    <Content Include="localization\OrderHistoryDetail.json" />
+    <Content Include="localization\OrderItem.json" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config.aspx.cs">
@@ -378,6 +384,7 @@
     </Compile>
     <Compile Include="default.aspx.cs">
       <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="default.aspx.designer.cs">
       <DependentUpon>default.aspx</DependentUpon>

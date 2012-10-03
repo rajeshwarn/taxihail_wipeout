@@ -75,6 +75,8 @@
         <script src="views/UpdatePasswordView.js"></script>
         <script src="views/ResetPasswordView.js"></script>
         <script src="views/OrderHistoryView.js"></script>
+        <script src="views/OrderHistoryDetailView.js"></script>
+        <script src="views/OrderItemView.js"></script>
 
 
         <script src="services/AuthService.js"></script>

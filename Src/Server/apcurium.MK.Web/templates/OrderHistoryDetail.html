@@ -1,0 +1,39 @@
+﻿<h3>{{localize "Order details"}}</h3>
+        <div class="infos" style="margin-top: 10px;"></div>
+<table>
+    <tr>
+        <td class="settings-label">{{localize "iBSOrderIdLabel"}}</td>
+        <td class="settings-value">{{iBSOrderId}}</td>
+    </tr>
+    <tr>
+        <td class="settings-label">{{localize "Pickup Time"}}</td>
+        {{#if pickupDate}}
+        <td class="settings-value">{{niceDate pickupDate}}</td>
+        {{else}}
+        <td class="settings-value">Now</td>
+        {{/if}}
+    </tr>
+    <tr>
+        <td class="settings-label">{{localize "Pickup"}}</td>
+        <td class="settings-value">{{pickupAddress.fullAddress}}</td>
+    </tr>
+    <tr>
+        <td class="settings-label">{{localize "Destination"}}</td>
+        <td class="settings-value">{{dropOffAddress.fullAddress}}</td>
+    </tr>
+    <tr>
+        <td class="settings-label">{{localize "Estimate"}}</td>
+        <td class="settings-value">{{distanceEstimate}} - {{priceEstimate}}</td>
+    </tr>
+
+    <tr>
+        <td class="settings-label">{{localize "OrderStatus"}}</td>
+        <td class="settings-value">{{{orderStatus.iBSStatusDescription}}</td>
+    </tr>
+</table>
+<button class="btn" data-action="rebook">{{localize "Rebook"}}</button>
+{{#if canExecute }}
+<button class="btn" data-action="cancel">{{localize "Cancel"}}</button>
+{{else}}
+<button class="btn" data-action="remove">{{localize "Delete"}}</button>
+{{/if}}
