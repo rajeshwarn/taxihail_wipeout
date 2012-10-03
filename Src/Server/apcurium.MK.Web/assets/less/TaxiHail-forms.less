@@ -79,9 +79,8 @@ input[type="color"],
 select,
 {
   border: 1px solid @inputBorder;
-  .box-shadow(inset 0 0 6px rgba(0,0,0,.70));
+  .box-shadow(inset 0 0 3px #8F8F8F);
   color:@black;
-  height: 30px;
   font-size:14px;
 }
 
@@ -90,13 +89,13 @@ select,
 .input-prepend,
 .input-append {
     .btn {
-        line-height: 30px;
+        //line-height: @baseLineHeight;
         border: 1px solid @inputBorder;
     }
 
     .add-on {
-        width:30px;
-        height:30px;
+        //width:@baselineheight;
+        //height:@baseLineHeight;
     }
 
 }
