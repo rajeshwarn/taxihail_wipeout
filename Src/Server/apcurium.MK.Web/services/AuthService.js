@@ -49,6 +49,7 @@
                     if(oninitialized) {
                         oninitialized.call(context, isLoggedIn);
                     }
+                    this.trigger('init', isLoggedIn);
                 }, this)
             });
 

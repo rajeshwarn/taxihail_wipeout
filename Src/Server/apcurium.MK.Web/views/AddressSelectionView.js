@@ -10,11 +10,16 @@
 
         initialize: function () {
             _.bindAll(this, 'hide');
-            TaxiHail.auth.on('change', this.render, this);
+            TaxiHail.auth.on('change init', this.render, this);
         },
 
         render: function () {
-            this.$el.html(this.renderTemplate(this.model.toJSON()));
+
+            var data = _.extend(this.model.toJSON(), {
+                isLoggedIn: TaxiHail.auth.isLoggedIn()
+            });
+
+            this.$el.html(this.renderTemplate(data));
 
             this.tab.search.call(this);
 

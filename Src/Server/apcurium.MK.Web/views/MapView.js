@@ -37,7 +37,7 @@
                 this._target.set('visible',  this.model.get('isPickupActive') || this.model.get('isDropOffActive'));
             }, this);
 
-            this.model.getStatus().on('change:vehicleLatitude, change:vehicleLongitude', (function(self) {
+            this.model.getStatus().on('change:vehicleLatitude change:vehicleLongitude', (function(self) {
                 var isAssigned = false;
                 return _.bind(function(model) {
                     this.updateVehiclePosition(model);
