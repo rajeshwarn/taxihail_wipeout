@@ -342,6 +342,7 @@
     <Content Include="views\BookingStatusView.js" />
     <Content Include="views\BookLaterView.js" />
     <Content Include="views\BookView.js" />
+    <Content Include="views\FavoritesAndHistoryListView.js" />
     <Content Include="views\LoginStatusView.js" />
     <Content Include="views\LoginView.js" />
     <Content Include="views\MapView.js" />
@@ -379,6 +380,7 @@
     </Compile>
     <Compile Include="default.aspx.cs">
       <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="default.aspx.designer.cs">
       <DependentUpon>default.aspx</DependentUpon>
