@@ -98,13 +98,6 @@ header {
 
 
 // ICONS
-.icon-pin {
-    display:inline-block;
-    width:19px;
-    height:28px;
-    background: url(../img/pin-icon.png) top left no-repeat;
-    margin-top:-3px;
-}
 .icon-locate {
     display:inline-block;
     width:15px;
@@ -127,10 +120,27 @@ header {
 
 /* Address selector */
 .address-picker {
+
+    .btn-pin {
+        width:30px;
+        height:30px;
+        background: #b6b6b6;
+        border:none;
+        .border-radius(8px);
+
+        >.icon-pin {
+            display: inline-block;
+            background: url(../img/pin-icon.png) top left no-repeat;
+            width:13px;
+            height:19px;
+            margin-left: -5px;
+        }
+    }
+
     position: relative;
 
     input.address {
-        width:385px;
+        width:396px;
     }
 
     .tab-content {
