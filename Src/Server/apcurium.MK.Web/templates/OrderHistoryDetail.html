@@ -31,9 +31,9 @@
         <td class="settings-value">{{{orderStatus.iBSStatusDescription}}</td>
     </tr>
 </table>
-<button class="btn" data-action="rebook">{{localize "Rebook"}}</button>
+<button class="btn btn-primary" data-action="rebook">{{localize "Rebook"}}</button>
 {{#if canExecute }}
-<button class="btn" data-action="cancel">{{localize "Cancel"}}</button>
+<button class="btn btn-danger" data-action="cancel">{{localize "Cancel"}}</button>
 {{else}}
-<button class="btn" data-action="remove">{{localize "Delete"}}</button>
+<button class="btn btn-danger" data-action="remove">{{localize "Delete"}}</button>
 {{/if}}
