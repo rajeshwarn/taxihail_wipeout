@@ -372,6 +372,7 @@
     <Content Include="themes\TaxiHail\less\combined-responsive.less" />
     <Content Include="themes\TaxiHail\less\combined.less" />
     <Content Include="localization\OrderHistoryDetail.json" />
+    <Content Include="themes\TaxiHail\less\style.less" />
     <Content Include="localization\OrderItem.json" />
   </ItemGroup>
   <ItemGroup>
