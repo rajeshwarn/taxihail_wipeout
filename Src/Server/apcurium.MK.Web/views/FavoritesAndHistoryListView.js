@@ -26,7 +26,7 @@
                 this.$el.append($('<li>').addClass('no-result').text(TaxiHail.localize('favorites.no-result')));
             }
 
-            this.$el.append($('<li>').addClass('optgroup').text(TaxiHail.localize('History')));
+            this.$el.append($('<li>').addClass('optgroup').text(TaxiHail.localize('Address History')));
 
             if(history.length)
             {

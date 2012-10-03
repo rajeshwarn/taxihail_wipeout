@@ -169,8 +169,22 @@
                 this.$('.tab-content').html(view.render().el);
             },
 
-            places: function() {
-                this.$('.tab-content').empty();
+            places: function () {
+                
+                $.get('api/places', {
+                    lat: TaxiHail.parameters.defaultLatitude,
+                    lng: TaxiHail.parameters.defaultLongitude,
+                    format: 'json'
+                }, _.bind(function (result) {
+
+                    this._searchResults = new TaxiHail.AddressCollection(),
+                        view = new TaxiHail.AddressListView({
+                            collection: this._searchResults
+                        });
+                    this._searchResults.reset(result);
+                    this.$('.tab-content').html(view.render().el);
+
+                }, this));
             }
 
         }
