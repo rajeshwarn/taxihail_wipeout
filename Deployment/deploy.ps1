@@ -58,3 +58,5 @@ if($deplyoWebsite -eq 'Y')
 
 Write-Host "***************Start Pool $companyName ************************"
 Start-WebAppPool -Name $companyName
+
+Write-Host "***************Deployment $companyName finished ************************"
