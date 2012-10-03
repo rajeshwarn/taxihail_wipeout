@@ -171,22 +171,35 @@
 
             places: function () {
                 
+                TaxiHail.geolocation.getCurrentPosition()
+                        .done(TaxiHail.postpone(_.bind(function (address) {
+                            this.fetchPlaces(address.latitude, address.longitude);
+                        }, this)))
+                        .fail(_.bind(function () {
+                            this.fetchPlaces(TaxiHail.parameters.defaultLatitude, TaxiHail.parameters.defaultLongitude);
+                        }, this));
+            }
+        },
+        
+        fetchPlaces: function(latitude, longitude) {
                 $.get('api/places', {
-                    lat: TaxiHail.parameters.defaultLatitude,
-                    lng: TaxiHail.parameters.defaultLongitude,
+                    lat: latitude,
+                    lng: longitude,
                     format: 'json'
                 }, _.bind(function (result) {
-
+                    
                     this._searchResults = new TaxiHail.AddressCollection(),
                         view = new TaxiHail.AddressListView({
                             collection: this._searchResults
                         });
                     this._searchResults.reset(result);
+                    
+                    this._searchResults.on('selected', function (model, collection) {
+                        this.trigger('selected', model, collection);
+                    }, this);
+                    
                     this.$('.tab-content').html(view.render().el);
-
-                }, this));
-            }
-
+            }, this));
         }
 
     });

@@ -17,15 +17,7 @@
             }
             else {
                 // Assume parameter is an address
-                return $.get('api/searchlocation', { name: addressOrLat, lat: this.latitude, lng: this.longitude }, function(){}, 'json')
-                    .done(function(result){
-                        if(result && result.addresses) {
-                            _.each(result.addresses, function(address){
-                                // BUGFIX: All addresses have the same empty Guid as id
-                                delete address.id
-                            });
-                        }
-                    });
+                return $.get('api/searchlocation', { name: addressOrLat, lat: this.latitude, lng: this.longitude }, function(){}, 'json');
             }
         }
     };
