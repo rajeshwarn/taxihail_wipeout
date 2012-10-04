@@ -6,7 +6,11 @@
         <table>
             <tr>
                 <td class="settings-label">{{localize "Pickup Time"}}</td>
-                <td class="settings-value">Now</td>
+                {{#if pickupDate}}
+                    <td class="settings-value">{{niceDate pickupDate}}</td>
+                {{else}}
+                    <td class="settings-value">Now</td>
+                {{/if}}
             </tr>
             <tr>
                 <td class="settings-label">{{localize "Pickup"}}</td>
@@ -31,6 +35,7 @@
                 <div class="control-group">
                     <label class="control-label" for="inputName">{{localize "Name"}}</label>
                     <div class="controls">
+                        <span style="float: right" class="valid-input hidden"><img src="assets/img/validFieldGreen.png" width="8" height="8" alt="valid field"/></span>
                         <input type="text"  id="inputName" name="name" data-action="changesettings" value="{{settings.name}}" class='input-block-level'>
                     </div>
                 </div>
@@ -38,6 +43,7 @@
                 <div class="control-group">
                     <label class="control-label" for="inputPhone">{{localize "Phone"}}</label>
                     <div class="controls">
+                        <span style="float: right" class="valid-input hidden"><img src="assets/img/validFieldGreen.png" width="8" height="8" alt="valid field"/></span>
                         <input type="text" id="inputPhone" name="phone" data-action="changesettings" value="{{settings.phone}}" class='input-block-level'>
                     </div>
                 </div>
@@ -58,15 +64,15 @@
                         <input style="width: 60px;" type="text" id="inputPassengers" name="passengers" data-action="changesettings" value="{{settings.passengers}}" class='input-block-level'>
                         <span class="center-control-label">{{localize "Vehicle Type"}}</span>
 
-                       <select style="float:right;width: 175px; " data-action="changesettings" name="vehicleTypeId" id="Select1" class="select-taxihail">
-                                  {{#each vehiclesList}}
-                                  {{#ifCond this.id ../vehicleTypeId}}
-                                  <option value="{{this.id}}" selected>{{this.display}}</option>
-                                  {{else}}
-                                  <option value="{{this.id}}">{{this.display}}</option>
-                                  {{/ifCond}}
-                                  {{/each}}
-                              </select>
+                        <select style="float:right;width: 175px; " data-action="changesettings" name="vehicleTypeId" id="Select1" class="select-taxihail">
+                            {{#each vehiclesList}}
+                            {{#ifCond this.id ../vehicleTypeId}}
+                            <option value="{{this.id}}" selected>{{this.display}}</option>
+                            {{else}}
+                            <option value="{{this.id}}">{{this.display}}</option>
+                            {{/ifCond}}
+                            {{/each}}
+                        </select>
                     </div>
                 </div>
 

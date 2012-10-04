@@ -377,10 +377,15 @@
 
         , setDefaultTime: function(defaultTime){
             if (defaultTime) {
-                if (defaultTime === 'current') {
+                if (defaultTime.indexOf('current') === 0) {
                     var dTime = new Date();
+                    var offset = 0;
+                    if(defaultTime.split('+').length === 2) {
+                        offset = parseInt(defaultTime.split('+')[1], 10);
+                        dTime.setMinutes(dTime.getMinutes() + offset);
+                    }
                     var hours = dTime.getHours();
-                    var minutes = Math.floor(dTime.getMinutes() / this.minuteStep) * this.minuteStep;
+                    var minutes = Math.floor( dTime.getMinutes() / this.minuteStep) * this.minuteStep;
                     var seconds = Math.floor(dTime.getSeconds() / this.secondStep) * this.secondStep;
                     var meridian = "AM";
                     if (this.showMeridian) {

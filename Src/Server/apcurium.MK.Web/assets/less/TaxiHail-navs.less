@@ -1,14 +1,51 @@
+.nav-tabs {
+
+    border-bottom: none;
+
+    >li {
+        border-bottom:none;
+        font-weight: bold;
+
+        &.active {
+
+            >a, >a:hover {
+                border: 1px solid @inputBorder;
+                border-bottom-color: transparent;
+                padding-top: 8px;
+                padding-bottom: 8px;
+                margin-top:0;
+            }
+        }
+
+        >a, >a:hover {
+            color: @grayLight;
+            border: 1px solid @inputBorder;
+            background-color: @wellBackground;
+            .border-radius(0);
+            margin-right: -1px;
+            padding-top: 6px;
+            padding-bottom: 6px;
+            margin-top:4px;
+        }
+    }
+
+    +.well {
+        margin-top:-20px;
+        .border-radius(0 0 8px 8px);
+    }
+}
+
 .tabs-below > .nav-tabs{
 
-    width: 377px;
+    width: 375px;
     background: @white;
     border-bottom: 1px solid @inputBorder;
     border-left: 1px solid @inputBorder;
     border-right: 1px solid @inputBorder;
 
     >li {
-
-        width:130px;
+        margin-top:0;
+        width:125px;
         text-align:center;
         border:none;
         background:transparent;
@@ -17,11 +54,14 @@
             color: #767676;
             font-weight:normal;
             margin:0;
+            padding-top: 8px;
+            padding-bottom: 8px;
+            border:none;
         }
 
 
         &.active>a, &.active>a:hover {
-            color: @taxiHailBlue;
+            color: @textColor;
             font-weight:bold;
             border:none;
             background:transparent;

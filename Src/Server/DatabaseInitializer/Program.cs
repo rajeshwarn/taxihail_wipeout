@@ -67,7 +67,7 @@ namespace DatabaseInitializer
             creatorDb.CreateSchemas(connectionString);
 
             //add user for IIS IIS APPPOOL\MyCompany
-            if (companyName != "MKWebDev" && companyName != "MKWebStaging")
+            if (companyName != "MKWebDev")
             {
                 creatorDb.AddUserAndRighst(connStringMaster, connectionString.ConnectionString, "IIS APPPOOL\\" + companyName, companyName);
             }

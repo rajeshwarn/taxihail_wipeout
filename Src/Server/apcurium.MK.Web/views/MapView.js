@@ -4,6 +4,7 @@
         initialize : function () {
             _.bindAll(this, "geolocdone", "geoloc");
             this.streetZoomLevel = 17;
+            this.cityZoomLevel = 12;
         },
         
         setModel: function(model, centerMapOnAddressChange) {
@@ -17,9 +18,7 @@
                 if(model.isValidAddress('pickupAddress')) {
                     var location = new google.maps.LatLng(value.latitude, value.longitude);
                     if (centerMapOnAddressChange) {
-                        if (this._map.getZoom() < this.streetZoomLevel) {
-                            this._map.setZoom(this.streetZoomLevel);
-                        }
+                        this.zoomMap(this.streetZoomLevel);
                         this.centerMap(location);
                     }
                 }
@@ -38,7 +37,7 @@
                 this._target.set('visible',  this.model.get('isPickupActive') || this.model.get('isDropOffActive'));
             }, this);
 
-            this.model.getStatus().on('change:vehicleLatitude, change:vehicleLongitude', (function(self) {
+            this.model.getStatus().on('change:vehicleLatitude change:vehicleLongitude', (function(self) {
                 var isAssigned = false;
                 return _.bind(function(model) {
                     this.updateVehiclePosition(model);
@@ -59,14 +58,14 @@
            
         render: function() {
 
+            //default lat and long are defined in the default.aspx
             var mapOptions = {
                 zoom: 12,
-                center: new google.maps.LatLng(45.516667, -73.65) /* Montreal */,
+                center: new google.maps.LatLng(TaxiHail.parameters.defaultLatitude, TaxiHail.parameters.defaultLongitude),
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
                 zoomControlOptions: {
                     position: google.maps.ControlPosition.LEFT_CENTER
                 }
-
             };
 
             this._map = new google.maps.Map(this.el, mapOptions);
@@ -123,6 +122,13 @@
         
         goToPickup: function () {
             if (this._pickupPin) this.centerMap(this._pickupPin.getPosition());
+        },
+        
+        zoomMap: function (zoomLevel) {
+            
+            if (this._map.getZoom() < zoomLevel) {
+                this._map.setZoom(zoomLevel);
+            }
         },
 
         centerMap: function (location) {

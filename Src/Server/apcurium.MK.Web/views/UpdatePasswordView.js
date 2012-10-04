@@ -37,7 +37,13 @@
                         required: TaxiHail.localize('Password required'),
                         equalTo: TaxiHail.localize('Password are not the same')
                     }
-                }, success: function(label) {
+                },
+                highlight: function (label) {
+                    $(label).closest('.control-group').addClass('error');
+                    $(label).prevAll('.valid-input').addClass('hidden');
+                }, success: function (label) {
+                    $(label).closest('.control-group').removeClass('error');
+                    label.prevAll('.valid-input').removeClass('hidden');
             }
             });
 

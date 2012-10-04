@@ -39,7 +39,24 @@
         },
         
         goToHistory : function (e) {
-            e.preventDefault();
+            if (e) {
+                e.preventDefault();
+            }
+            var orders = new TaxiHail.OrderCollection();
+            orders.fetch({
+                url: 'api/account/orders',
+                success: _.bind(function (model) {
+                    this._history = new TaxiHail.OrderHistoryView({
+                        collection:model
+                    });
+                    this._history.render();
+                    this.$("#user-account-container").html(this._history.el);
+                }, this)
+                
+            });
+            
+            
+            
         },
         
         goToPassword : function (e) {

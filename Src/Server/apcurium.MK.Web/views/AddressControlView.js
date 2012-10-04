@@ -94,7 +94,6 @@
                 radius: 6, // The radius of the inner circle
                 corners: 1, // Corner roundness (0..1)
                 rotate: 0, // The rotation offset
-                color: '#fff', // #rgb or #rrggbb
                 speed: 1, // Rounds per second
                 trail: 60, // Afterglow percentage
                 shadow: false, // Whether to render a shadow
@@ -135,7 +134,9 @@
         },
 
         onkeyup: function(e) {
-            this._selector && this._selector.search($(e.currentTarget).val());
+            if(!jQuery.hotkeys.specialKeys[ e.which ]) {
+                this._selector && this._selector.search($(e.currentTarget).val());
+            }
         },
 
         ondocumentclick: function(e) {

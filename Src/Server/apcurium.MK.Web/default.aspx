@@ -16,19 +16,20 @@
         </header>
         <div class="container">
             <div class='notification-zone'></div>
-            <div class='modal-zone'></div>
+            
             <div id='main'></div>
         </div>
         <div class="map-zone"></div>
+        <div class='modal-zone'></div>
+        
 
         <!-- assets -->
         <script src="assets/js/handlebars-1.0.rc.1.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <script src="assets/js/jquery.hotkeys.js"></script>
         <script src="http://jzaefferer.github.com/jquery-validation/jquery.validate.js"></script>
         <script src="assets/js/underscore.js"></script>
         <script src="assets/js/backbone.js"></script>
-        <script src="assets/js/backbone-validation.js"></script>
-        <script src="assets/js/backbone.validation.bootstrap.js"></script>
         <script src="assets/bootstrap/js/bootstrap-alert.js"></script>
         <script src="assets/bootstrap/js/bootstrap-transition.js"></script>
         <script src="assets/bootstrap/js/bootstrap-button.js"></script>
@@ -45,6 +46,12 @@
         
         <!-- app -->
         <script src="taxi-hail.js"></script>
+        
+        <script type="text/javascript">
+            TaxiHail.parameters.defaultLatitude = <%: this.DefaultLatitude %>;
+            TaxiHail.parameters.defaultLongitude = <%: this.DefaultLongitude %>;
+        </script>
+
         <script src="utils.js"></script>
         
         <!-- models -->
@@ -57,6 +64,7 @@
         <script src="models/ReferenceData.js"></script>
         <!-- collections -->
         <script src="collections/AddressCollection.js"></script>
+        <script src="collections/OrderCollection.js"></script>
         <!-- views -->
         <script src="views/TemplatedView.js"></script>
         <script src="views/BookView.js"></script>
@@ -65,6 +73,7 @@
         <script src="views/AddressControlView.js"></script>
         <script src="views/AddressSelectionView.js"></script>
         <script src="views/AddressListView.js"></script>
+        <script src="views/FavoritesAndHistoryListView.js"></script>
         <script src="views/AddressItemView.js"></script>
         <script src="views/BookingConfirmationView.js"></script>
         <script src="views/BookingStatusView.js"></script>
@@ -75,6 +84,10 @@
         <script src="views/ProfileView.js"></script>
         <script src="views/UpdatePasswordView.js"></script>
         <script src="views/ResetPasswordView.js"></script>
+        <script src="views/OrderHistoryView.js"></script>
+        <script src="views/OrderHistoryDetailView.js"></script>
+        <script src="views/OrderItemView.js"></script>
+        <script src="views/BootstrapConfirmationView.js"></script>
 
 
         <script src="services/AuthService.js"></script>

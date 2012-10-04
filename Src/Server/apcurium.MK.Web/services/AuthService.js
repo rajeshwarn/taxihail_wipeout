@@ -8,13 +8,14 @@
 
     TaxiHail.auth = _.extend(Backbone.Events, {
         account: null,
-        login: function (email, password) {
+        login: function (email, password, url) {
             return $.post('api/auth/credentials', {
                 userName: email,
                 password: password
             },_.bind(function () {
                 isLoggedIn = true;
-                this.trigger('change', isLoggedIn);
+                
+                this.trigger('change', isLoggedIn, url);
             }, this), 'json');
         },
 
@@ -48,6 +49,7 @@
                     if(oninitialized) {
                         oninitialized.call(context, isLoggedIn);
                     }
+                    this.trigger('init', isLoggedIn);
                 }, this)
             });
 
