@@ -4,9 +4,9 @@ $sqlServerInstance = "MSSQL10_50.MSSQLSERVER" #instance name, to have it copy th
 
 $version = "1.0" + [DateTime]::Now.Ticks #version / todo replace with tag...
 
-$dbtoolPath = "C:\Data\teamcity\server\buildAgent\work\ada9756f55920a09\Src\Server\DatabaseInitializer\bin\Staging" #path to the DatabaseInitiliazer.exe, you can use $base_dir which is the current dir
+$dbtoolPath = "C:\Data\teamcity\server\buildAgent\work\ada9756f55920a09\Src\Server\DatabaseInitializer\bin\Debug" #path to the DatabaseInitiliazer.exe, you can use $base_dir which is the current dir
 
-$websiteFiles = "C:\Data\teamcity\server\buildAgent\work\ada9756f55920a09\Src\Server\apcurium.MK.Web\obj\Staging\Package\PackageTmp\" #path to the webapp files to be deployed
+$websiteFiles = "C:\Data\teamcity\server\buildAgent\work\ada9756f55920a09\Src\Server\apcurium.MK.Web\obj\\Debug\Package\PackageTmp\" #path to the webapp files to be deployed
 
 $deployWwwRoot = "C:\Data\TaxiHail" #where the web app will be deployed
 
