@@ -2,13 +2,7 @@
         <form class="form-horizontal" id="AddFavoritesForm">
             <div id="settingsContent">
                 
-                <div class="control-group">
-                    <label class="control-label" for="inputName">{{localize "Friendly Name"}}</label>
-                    <div class="controls">
-                        <span style="float: right" class="valid-input hidden"><img src="assets/img/validFieldGreen.png" width="8" height="8" alt="valid field"/></span>
-                        <input type="text" id="inputFriendlyName" data-action="changesettings" name="friendlyName" value="{{friendlyName}}" class='input-block-level'>
-                    </div>
-                </div>
+                
                 
                 <div class="control-group">
                     <label class="control-label">{{localize 'Full Address'}}</label>
@@ -34,6 +28,14 @@
                     <div class="controls">
                         <span style="float: right" class="valid-input hidden"><img src="assets/img/validFieldGreen.png" width="8" height="8" alt="valid field"/></span>
                         <input type="text" id="Text1" name="ringCode" data-action="changesettings"  value="{{ringCode}}" class='input-block-level'>
+                    </div>
+                </div>
+                <h3>{{localize "Give it a name"}}</h3>
+                <div class="control-group">
+                    <label class="control-label" for="inputName">{{localize "Friendly Name"}}</label>
+                    <div class="controls">
+                        <span style="float: right" class="valid-input hidden"><img src="assets/img/validFieldGreen.png" width="8" height="8" alt="valid field"/></span>
+                        <input type="text" id="inputFriendlyName" data-action="changesettings" name="friendlyName" value="{{friendlyName}}" class='input-block-level'>
                     </div>
                 </div>
 
