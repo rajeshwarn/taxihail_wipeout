@@ -1,6 +1,9 @@
 (function() {
     TaxiHail.SignupView = TaxiHail.TemplatedView.extend({
-        
+    
+        tagName: 'form',
+        className: 'signup-view form-horizontal',
+
        events: {
             "submit": "onsubmit",
             "change :text": "onPropertyChanged",
@@ -23,7 +26,7 @@
         render: function () {
             this.$el.html(this.renderTemplate());
 
-            this.$("#signupForm").validate({
+            this.$el.validate({
                 rules: {
                     email: {
                         required:true,
@@ -32,10 +35,10 @@
                     name: "required",
                     phone: {
                         regex: /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/,
-                        required:true,
+                        required:true
                     },
                     password: {
-                        required: true,
+                        required: true
                     },
                     confirmPassword: {
                         required: true,
@@ -45,17 +48,17 @@
                 messages: {
                     email: {
                         required: TaxiHail.localize('error.EmailRequired'),
-                        email: TaxiHail.localize('error.NotEmailFormat'),
+                        email: TaxiHail.localize('error.NotEmailFormat')
                     },
                     name: {
-                        required: TaxiHail.localize('error.NameRequired'),
+                        required: TaxiHail.localize('error.NameRequired')
                     },
                     phone: {
                         required: TaxiHail.localize('error.PhoneRequired'),
                         regex: TaxiHail.localize('error.PhoneBadFormat')
                     },
                     password: {
-                        required: TaxiHail.localize('Password required'),
+                        required: TaxiHail.localize('Password required')
                     },
                     confirmPassword: {
                         required: TaxiHail.localize('Password required'),
@@ -82,7 +85,7 @@
         
         onsubmit: function (e) {
             e.preventDefault();
-            if (this.$("#signupForm").valid()) {
+            if (this.$el.valid()) {
                 this.$(':submit').button('loading');
                 this.$('.errors').empty();
                 this.model.save({}, { error: this.onerror });
