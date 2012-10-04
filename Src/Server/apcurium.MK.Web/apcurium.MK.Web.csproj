@@ -314,6 +314,7 @@
     <Content Include="services\GeolocationService.js" />
     <Content Include="services\OrderService.js" />
     <Content Include="taxi-hail.js" />
+    <Content Include="templates\AddFavorite.html" />
     <Content Include="templates\AddressControl.html" />
     <Content Include="templates\AddressItem.html" />
     <Content Include="templates\AddressSelection.html" />
@@ -322,6 +323,8 @@
     <Content Include="templates\BookingStatus.html" />
     <Content Include="templates\BookLater.html" />
     <Content Include="templates\BootstrapConfirmation.html" />
+    <Content Include="templates\FavoriteDetails.html" />
+    <Content Include="templates\Favorites.html" />
     <Content Include="templates\login.html" />
     <Content Include="templates\LoginStatus.html" />
     <Content Include="templates\OrderHistory.html" />
@@ -339,6 +342,7 @@
     <Content Include="themes\TaxiHail\img\header-bg.png" />
     <Content Include="themes\TaxiHail\img\logo.png" />
     <Content Include="utils.js" />
+    <Content Include="views\AddFavoriteView.js" />
     <Content Include="views\AddressControlView.js" />
     <Content Include="views\AddressItemView.js" />
     <Content Include="views\AddressListView.js" />
@@ -348,7 +352,9 @@
     <Content Include="views\BookLaterView.js" />
     <Content Include="views\BookView.js" />
     <Content Include="views\BootstrapConfirmationView.js" />
+    <Content Include="views\FavoriteDetailsView.js" />
     <Content Include="views\FavoritesAndHistoryListView.js" />
+    <Content Include="views\FavoritesView.js" />
     <Content Include="views\LoginStatusView.js" />
     <Content Include="views\LoginView.js" />
     <Content Include="views\MapView.js" />
