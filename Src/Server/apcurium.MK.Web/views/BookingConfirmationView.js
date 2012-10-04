@@ -151,10 +151,13 @@
         },
         
         showInfos : function (message) {
-            var infos = $('<div class="alert alert-block" />').text(message);
 
-            
-            this.$('.infos').html(infos);
+            $('[data-popover]').popover({
+                content: message,
+                trigger: 'manual',
+                offsetX: -22
+            }).popover('show');
+
         },
         
         onPickupPropertyChanged: function (e) {
