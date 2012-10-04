@@ -36,10 +36,26 @@
             if (e) {
                 e.preventDefault();
             }
-            this._favorites = new TaxiHail.FavoritesView({
+            
+            var addresses = new TaxiHail.AddressCollection(),
+                    view = new TaxiHail.FavoritesView({
+                        collection: addresses
+                    });
+
+            var favorites = new TaxiHail.AddressCollection();
+            var history = new TaxiHail.AddressCollection();
+            favorites.fetch({
+                url: 'api/account/addresses',
+                success: _.bind(function (collection, resp) {
+                    history.fetch({
+                        url: 'api/account/addresses/history',
+                        success: _.bind(function (collection, resp) {
+                            addresses.reset(favorites.models.concat(history.models));
+                            this.$("#user-account-container").html(view.el);
+                        }, this)
+                    });
+                }, this)
             });
-            this._favorites.render();
-            this.$("#user-account-container").html(this._favorites.el);
         },
         
         goToHistory : function (e) {

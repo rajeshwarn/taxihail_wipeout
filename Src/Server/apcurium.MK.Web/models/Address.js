@@ -1,6 +1,6 @@
 ﻿(function() {
 
-    var Address = TaxiHail.Address = Backbone.Model.extend({ });
+    var Address = TaxiHail.Address = Backbone.Model.extend({ urlRoot : 'api/account/addresses' });
 
     Address.fromGeocodingResult = function(result)
     {

@@ -38,6 +38,9 @@
 	"Cancel Order" : "Cancel Order",
 	"Remove Order" : "Remove Order",
 	"modal.remove.message" : "Are you sure you want to remove it ?",
-	"modal.cancel.message" : "Are you sure you want to cancel it ?"
+	"modal.cancel.message" : "Are you sure you want to cancel it ?",
+	"Favorites Locations" : "Favorites Locations",
+	"Location History" : "Location History",
+	"favorites.add-new" : "Add new favorite"
 
 }

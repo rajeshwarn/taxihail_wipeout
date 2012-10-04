@@ -29,7 +29,7 @@ namespace apcurium.MK.Booking.Api
             AutoMapper.Mapper.CreateMap<RegisterAccount, Commands.RegisterFacebookAccount>();
 
             AutoMapper.Mapper.CreateMap<SaveAddress, Commands.AddFavoriteAddress>()
-                .ForMember(x => x.AddressId, opt => opt.MapFrom(x => x.Id));
+                .ForMember(x => x.AddressId, opt => opt.ResolveUsing(x => x.Id == Guid.Empty ? Guid.NewGuid() : x.Id));
 
             AutoMapper.Mapper.CreateMap<SaveAddress, Commands.UpdateFavoriteAddress>()
                 .ForMember(x => x.AddressId, opt => opt.MapFrom(x => x.Id));
