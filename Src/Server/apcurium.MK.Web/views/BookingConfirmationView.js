@@ -44,18 +44,6 @@
             // Otherwise it will stay there forever
             this.$('[data-popover]').popover('hide');
 
-            this.$el.html(this.renderTemplate(this.model.toJSON()));
-            //this.renderItem(this.model);
-            
-
-            Handlebars.registerHelper('ifCond', function (v1, v2, options) {
-                if (v1 == v2) {
-                    return options.fn(this);
-                } else {
-                    return options.inverse(this);
-                }
-            });
-
             var data = this.model.toJSON();
 
             _.extend(data, {
@@ -126,7 +114,6 @@
         book: function (e) {
             
             e.preventDefault();
-            //this.model.set('settings', settings);
             if (this.$("#updateBookingSettingsForm").valid()) {
                 this.$('#bookBt').button('loading');
                 this.model.save({}, {

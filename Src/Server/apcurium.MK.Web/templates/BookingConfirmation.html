@@ -67,7 +67,7 @@
 
                             <select style="float:right;width: 175px; " data-action="changesettings" name="vehicleTypeId" id="Select1">
                                 {{#each vehiclesList}}
-                                {{#ifCond this.id ../vehicleTypeId}}
+                                {{#ifCond this.id ../settings.vehicleTypeId}}
                                 <option value="{{this.id}}" selected>{{this.display}}</option>
                                 {{else}}
                                 <option value="{{this.id}}">{{this.display}}</option>
@@ -83,7 +83,7 @@
                         <div class="controls">
                             <select data-action="changesettings" id="inputChargeType" name="chargeTypeId" class='input-block-level'>
                                 {{#each paymentsList}}
-                                    {{#ifCond this.id ../chargeTypeId}}
+                                    {{#ifCond this.id ../settings.chargeTypeId}}
                                         <option value="{{this.id}}" selected>{{this.display}}</option>
                                     {{else}}
                                         <option value="{{this.id}}">{{this.display}}</option>
