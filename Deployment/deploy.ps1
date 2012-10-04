@@ -1,4 +1,4 @@
-﻿param([string]$env = "Staging")
+﻿param([string]$env = "Dev")
 Import-Module -Name WebAdministration #see cmdlets http://technet.microsoft.com/en-us/library/ee790599.aspx
 $scriptpath = $MyInvocation.MyCommand.Path
 $base_dir = Split-Path $scriptpath
@@ -29,7 +29,14 @@ if($deplyoDB -eq 'Y')
     $psi = New-Object System.Diagnostics.ProcessStartInfo($dbTool, "$companyName `"$connString`" $actionDb $sqlServerInstance")
     $psi.WorkingDirectory = $dbtoolPath
     $process = [Diagnostics.Process]::Start($psi)
+    $process.StartInfo.WindowStyle = 1 #hidden
     $process.WaitForExit()
+    $exitcode = $process.ExitCode
+    if($exitcode -eq -1)
+    {
+        Write-Host "***************ERROR IN DATABASE DEPLOYEMENT SEE Log File in the Programm directory, Exiting  ************************"
+        exit $exitcode
+    }
     Write-Host "***************End Deploy DB ************************" 
  }
 

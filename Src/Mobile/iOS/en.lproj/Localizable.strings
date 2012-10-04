@@ -242,3 +242,10 @@
 "InvalidLocalContactTitle"="Invalid contact";
 "InvalidLocalContactMessage"="The address associated to this contact cannot be validated.";
 "EstimatedFareNotAvailable"="Estimated fare not available";
+"InvalidLocalContactTitle"="Invalid contact";
+"InvalidLocalContactMessage"="The address associated to this contact cannot be validated.";
+"ErrorCreatingOrderTitle"="Booking cannot be completed";
+"ServiceError_ErrorCreatingOrderMessage"="Please contact {0} at {1} for further assistance.";
+"ServiceErrorCreateOrder_CannotCreateInIbs_1002"="The specified Pickup address lies outside the regular service area. Please contact {0} at {1} for further assistance.";
+"LocalContactCannotBeResolverTitle"="Invalid Contact";
+"LocalContactCannotBeResolverMessage"="Cannot find the address associated to this contact.";
