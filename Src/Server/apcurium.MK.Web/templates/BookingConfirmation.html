@@ -64,7 +64,7 @@
                         <input style="width: 60px;" type="text" id="inputPassengers" name="passengers" data-action="changesettings" value="{{settings.passengers}}" class='input-block-level'>
                         <span class="center-control-label">{{localize "Vehicle Type"}}</span>
 
-                        <select style="float:right;width: 175px; " data-action="changesettings" name="vehicleTypeId" id="Select1" class="select-taxihail">
+                        <select style="float:right;width: 175px; " data-action="changesettings" name="vehicleTypeId" id="Select1">
                             {{#each vehiclesList}}
                             {{#ifCond this.id ../vehicleTypeId}}
                             <option value="{{this.id}}" selected>{{this.display}}</option>
@@ -80,7 +80,7 @@
                 <div class="control-group">
                     <label class="control-label" for="inputChargeType">{{localize "Charge Type"}}</label>
                     <div class="controls">
-                        <select data-action="changesettings" id="inputChargeType" name="chargeTypeId" class="select-taxihail">
+                        <select data-action="changesettings" id="inputChargeType" name="chargeTypeId" class='input-block-level'>
                             {{#each paymentsList}}
                                 {{#ifCond this.id ../chargeTypeId}}
                                     <option value="{{this.id}}" selected>{{this.display}}</option>
@@ -103,8 +103,8 @@
                     </div>
                 </div>
                 <div class="control-group">
-                    <a href='#' style="width:75px;" class='btn btn-large pull-right span2' data-action='cancel'>{{localize "Cancel"}}</a>
-                    <a href='#' style="width:150px;" id="bookBt" class='btn btn-primary btn-large pull-right span2' data-action='book' data-loading-text="{{localize 'Loading'}}">{{localize "Book Now!"}}</a>                
+                    <a href='#' class='btn pull-right span' data-action='cancel'>{{localize "Cancel"}}</a>
+                    <a href='#' id="bookBt" class='btn btn-primary pull-right span' data-action='book' data-loading-text="{{localize 'Loading'}}">{{localize "Book Now!"}}</a>                
                 </div>
             </div>
         </form>

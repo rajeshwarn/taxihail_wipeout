@@ -93,23 +93,21 @@ header {
 
 
 
-.estimate .fare {
-    font-weight: bold;
+.estimate {
+
+    margin-top: 5px;
+
+    .fare {
+        font-weight: bold;
+    }
 }
 
 
 // ICONS
-.icon-pin {
-    display:inline-block;
-    width:19px;
-    height:28px;
-    background: url(../img/pin-icon.png) top left no-repeat;
-    margin-top:-3px;
-}
 .icon-locate {
     display:inline-block;
-    width:19px;
-    height:21px;
+    width:15px;
+    height:15px;
     background: url(../img/location.png) top left no-repeat;
 }
 
@@ -120,23 +118,57 @@ header {
 }
 .icon-clear {
     display:inline-block;
-    width:20px;
-    height:20px;
+    width:14px;
+    height:15px;
     background: url(../img/cancel-icon.png) top left no-repeat;
 }
 
 
 /* Address selector */
 .address-picker {
+
+    .control-group{
+        margin-bottom: 20px;
+    }
+
+    .btn-pin {
+        width:30px;
+        height:30px;
+        background: #b6b6b6;
+        border:none;
+        .border-radius(8px);
+
+        &.active {
+
+            &.btn-pin-green {
+                background: #19A64A;
+            }
+
+            &.btn-pin-red {
+                background: #C62127;
+            }
+        }
+
+        >.icon-pin {
+            display: inline-block;
+            background: url(../img/pin-icon.png) top left no-repeat;
+            width:13px;
+            height:19px;
+            margin-left: -5px;
+        }
+
+
+    }
+
     position: relative;
 
     input.address {
-        width:363px;
+        width:396px;
     }
 
     .tab-content {
 
-        width:375px;
+        width:408px;
         min-height: 123px;
         max-height: 200px;
         background: @white;
@@ -187,8 +219,8 @@ header {
 
 .address-selector-container {
     position:absolute;
-    top: 40px;
-    left:47px;
+    top: 30px;
+    left:39px;
 }
 
 
@@ -217,7 +249,6 @@ header {
    float:right;
 }
 
-		width : 95%;
 
 .signup-view {
     .input-block-level {
@@ -251,8 +282,3 @@ header {
     font-weight: bold;
 }
 
-.select-taxihail {
-    height: 40px;
-    min-height: 40px;
-	width: 100%;
-}
