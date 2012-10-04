@@ -88,11 +88,15 @@ select,
 
 .input-prepend,
 .input-append {
-    .btn {
+    .add-on {
         border: 1px solid @inputBorder;
         background: @taxiHailBlue;
         .box-shadow(none);
         border-color: @addOnBorderColor;
+    }
+    
+    input {
+        border-right-color: @addOnBorderColor
     }
 
 
