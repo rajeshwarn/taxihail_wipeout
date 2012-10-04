@@ -1,6 +1,7 @@
 ﻿(function () {
-    var settings;
-    var settingschanged = false;
+    var settings,
+        settingschanged = false,
+        popoverTemplate = '<div class="popover popover-warning"><div class="arrow"></div><div class="popover-inner"><div class="popover-content"><p></p></div></div></div>';
     
     TaxiHail.BookingConfirmationView = TaxiHail.TemplatedView.extend({
         
@@ -155,7 +156,8 @@
             $('[data-popover]').popover({
                 content: message,
                 trigger: 'manual',
-                offsetX: -22
+                offsetX: -22,
+                template: popoverTemplate
             }).popover('show');
 
         },
