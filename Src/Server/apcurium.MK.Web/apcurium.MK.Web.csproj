@@ -272,6 +272,7 @@
     <Content Include="assets\img\pin-icon.png" />
     <Content Include="assets\img\pin_green.png" />
     <Content Include="assets\img\pin_red.png" />
+    <Content Include="assets\img\small-arrow.png" />
     <Content Include="assets\img\target.png" />
     <Content Include="assets\img\taxi_label.png" />
     <Content Include="assets\img\validFieldGreen.png" />
