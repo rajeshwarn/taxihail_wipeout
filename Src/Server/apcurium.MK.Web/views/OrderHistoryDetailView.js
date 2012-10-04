@@ -10,14 +10,6 @@
 
             this.model.on('change', this.render, this);
             
-            _.bindAll(this, "renderResults");
-
-            var pickup = this.model.get('pickupAddress');
-            var dest = this.model.get('dropOffAddress');
-            if (pickup && dest) {
-                TaxiHail.directionInfo.getInfo(pickup['latitude'], pickup['longitude'], dest['latitude'], dest['longitude']).done(this.renderResults);
-            }
-
             this.model.id = this.model.get('id');
             this.model.getStatus().fetch({
                 success: _.bind(function(model) {
@@ -41,15 +33,6 @@
             this.$el.html(this.renderTemplate(this.model.toJSON()));
             
             return this;
-        },
-        
-        renderResults: function (result) {
-
-            this.model.set({
-                'priceEstimate': result.formattedPrice,
-                'distanceEstimate': result.formattedDistance
-            });
-            this.render();
         },
         
         rebook : function () {
