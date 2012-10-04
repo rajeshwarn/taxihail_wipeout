@@ -11,8 +11,6 @@
 
         initialize: function() {
 
-           
-
         },
 
         render: function () {
@@ -35,7 +33,13 @@
         },
         
         goToFavorites : function(e){
-            e.preventDefault();
+            if (e) {
+                e.preventDefault();
+            }
+            this._favorites = new TaxiHail.FavoritesView({
+            });
+            this._favorites.render();
+            this.$("#user-account-container").html(this._favorites.el);
         },
         
         goToHistory : function (e) {
