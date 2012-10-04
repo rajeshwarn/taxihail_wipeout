@@ -88,8 +88,10 @@
         <script src="views/OrderHistoryDetailView.js"></script>
         <script src="views/OrderItemView.js"></script>
         <script src="views/BootstrapConfirmationView.js"></script>
-
-
+        <script src="views/FavoriteDetailsView.js"></script>
+        <script src="views/AddFavoriteView.js"></script>
+        <script src="views/FavoritesView.js"></script>
+        
         <script src="services/AuthService.js"></script>
         <script src="services/OrderService.js"></script>
         <script src="services/GeocodingService.js"></script>

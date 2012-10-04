@@ -1,10 +1,7 @@
 (function() {
     TaxiHail.SignupView = TaxiHail.TemplatedView.extend({
         
-        tagName: "form",
-        className: 'signup-view form-horizontal',
-        
-        events: {
+       events: {
             "submit": "onsubmit",
             "change :text": "onPropertyChanged",
             "change :password": "onPropertyChanged",
@@ -70,7 +67,8 @@
                     $(label).prevAll('.valid-input').addClass('hidden');
                 }, success: function (label) {
                     $(label).closest('.control-group').removeClass('error');
-                    label.prevAll('.valid-input').removeClass('hidden');
+                    $(label).prevAll('.valid-input').removeClass('hidden');
+                    $(label).remove();
                 }
             });
 
