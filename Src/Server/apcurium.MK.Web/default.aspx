@@ -36,6 +36,7 @@
         <script src="assets/bootstrap/js/bootstrap-modal.js"></script>
         <script src="assets/bootstrap/js/bootstrap-dropdown.js"></script>
         <script src="assets/bootstrap/js/bootstrap-tooltip.js"></script>
+        <script src="assets/js/bootstrap-tooltip.js"></script>
         <script src="assets/bootstrap/js/bootstrap-popover.js"></script>
         <script src="assets/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
         <script src="assets/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
