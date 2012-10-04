@@ -578,6 +578,9 @@
   <ItemGroup>
     <Content Include="localization\BootstrapConfirmation.json" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="assets\less\TaxiHail-tables.less" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
