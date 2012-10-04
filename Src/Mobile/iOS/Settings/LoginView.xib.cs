@@ -176,7 +176,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 			this.AddBindings(new Dictionary<object, string>() {
 				{ btnSignIn, "{'TouchUpInside':{'Path':'SignInCommand'}}"},
-				{ this.View, "{'UserInteractionEnabled':{'Path':'UserInteractionEnabled'}}"},
+				//{ this.View, "{'UserInteractionEnabled':{'Path':'UserInteractionEnabled'}}"},
 				{ txtEmail, "{'Text':{'Path':'Email'}}"},
 				{ txtPassword, "{'Text':{'Path':'Password'}}"},
 			});
