@@ -35,11 +35,11 @@
 
                         <select style="float:right;width: 175px; " data-action="changesettings" name="vehicleTypeId" id="Select1" class="select-taxihail">
                             {{#each vehiclesList}}
-                            {{#ifCond this.id ../vehicleTypeId}}
-                            <option value="{{this.id}}" selected>{{this.display}}</option>
-                            {{else}}
-                            <option value="{{this.id}}">{{this.display}}</option>
-                            {{/ifCond}}
+                                {{#ifCond this.id ../settings.vehicleTypeId}}
+                                    <option value="{{this.id}}" selected>{{this.display}}</option>
+                                {{else}}
+                                    <option value="{{this.id}}">{{this.display}}</option>
+                                {{/ifCond}}
                             {{/each}}
                         </select>
                     </div>
@@ -51,11 +51,11 @@
                     <div class="controls">
                         <select data-action="changesettings" id="inputChargeType" name="chargeTypeId" class="select-taxihail">
                             {{#each paymentsList}}
-                            {{#ifCond this.id ../chargeTypeId}}
-                            <option value="{{this.id}}" selected>{{this.display}}</option>
-                            {{else}}
-                            <option value="{{this.id}}">{{this.display}}</option>
-                            {{/ifCond}}
+                                {{#ifCond this.id ../settings.chargeTypeId}}
+                                    <option value="{{this.id}}" selected>{{this.display}}</option>
+                                {{else}}
+                                    <option value="{{this.id}}">{{this.display}}</option>
+                                {{/ifCond}}
                             {{/each}}
                         </select>
                     </div>
