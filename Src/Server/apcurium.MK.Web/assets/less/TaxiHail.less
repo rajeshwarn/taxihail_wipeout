@@ -1,5 +1,6 @@
 ﻿@import "TaxiHail-mixins.less";
 @import "TaxiHail-forms.less";
+@import "TaxiHail-tables.less";
 @import "TaxiHail-buttons.less";
 @import "TaxiHail-navs.less";
 @import "TaxiHail-wells.less";
@@ -133,6 +134,17 @@ header {
         border:none;
         .border-radius(8px);
 
+        &.active {
+
+            &.btn-pin-green {
+                background: #19A64A;
+            }
+
+            &.btn-pin-red {
+                background: #C62127;
+            }
+        }
+
         >.icon-pin {
             display: inline-block;
             background: url(../img/pin-icon.png) top left no-repeat;
@@ -140,6 +152,8 @@ header {
             height:19px;
             margin-left: -5px;
         }
+
+
     }
 
     position: relative;
