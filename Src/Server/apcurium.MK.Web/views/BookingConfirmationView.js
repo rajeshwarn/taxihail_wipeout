@@ -12,7 +12,7 @@
             'change :text[data-action=changesettings]': 'onSettingsPropertyChanged',
             'change :input[data-action=changesettings]': 'onSettingsPropertyChanged'
         },
-        initialize: function () { 
+        initialize: function () {
 
             _.bindAll(this, "renderResults", 'showErrors');
             
@@ -40,6 +40,10 @@
 
         render: function (param) {
 
+            // Close popover if it is open
+            // Otherwise it will stay there forever
+            this.$('[data-popover]').popover('hide');
+
             this.$el.html(this.renderTemplate(this.model.toJSON()));
             //this.renderItem(this.model);
             
@@ -61,8 +65,8 @@
 
             this.$el.html(this.renderTemplate(data));
 
-            if (this.model.get('dropOffAddress')) {
-                this.showInfos(TaxiHail.localize('Warning_when_booking_without_destination'));
+            if (this.model.has('dropOffAddress')) {
+                this.showEstimatedFareWarning();
             }
             
 
@@ -80,7 +84,7 @@
                 },
                 messages: {
                     name: {
-                        required: TaxiHail.localize('error.NameRequired'),
+                        required: TaxiHail.localize('error.NameRequired')
                     },
                     phone: {
                         required: TaxiHail.localize('error.PhoneRequired'),
@@ -88,7 +92,7 @@
                     },
                     passengers: {
                         required: TaxiHail.localize('error.PassengersRequired'),
-                        number: TaxiHail.localize('error.NotANumber'),
+                        number: TaxiHail.localize('error.NotANumber')
                     }
                 },
                 highlight: function (label) {
@@ -111,6 +115,12 @@
                 'distanceEstimate': result.formattedDistance
             });
             this.render();
+        },
+
+        remove: function() {
+
+            this.$('[data-popover]').popover('hide');
+            this.$el.remove();
         },
         
         book: function (e) {
@@ -151,10 +161,10 @@
             this.$('.errors').html($alert);
         },
         
-        showInfos : function (message) {
+        showEstimatedFareWarning : function () {
 
             $('[data-popover]').popover({
-                content: message,
+                content: this.localize('EstimatedFareWarning'),
                 trigger: 'manual',
                 offsetX: -22,
                 template: popoverTemplate
