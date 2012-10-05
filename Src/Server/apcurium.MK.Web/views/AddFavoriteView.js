@@ -4,6 +4,7 @@
             "click [data-action=save]": "save",
             "change :text[data-action=changesettings]": "onSettingsPropertyChanged",
             'focus [name=fullAddress]': 'onfocus',
+            'click [data-action=remove]': 'remove',
         },
         
         initialize :function () {
@@ -71,8 +72,17 @@
                         }, 'json').fail(function (response) {
                         });
                     }
+                    this.model.trigger('reset');
                 }
             }
+        },
+        
+        remove:function (e) {
+            TaxiHail.confirm(this.localize('Remove Favorites'),
+                this.localize('modal.remove.message'),
+                _.bind(function () {
+                    this.model.destroy();
+                }, this));
         },
         
         open: function (e) {

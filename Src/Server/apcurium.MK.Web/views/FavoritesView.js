@@ -10,7 +10,7 @@
         },
 
         initialize: function () {
-            this.collection.on('reset', this.render, this);
+            this.collection.on('destroy reset change', this.render, this);
             this.collection.on('selected', this.edit, this);
         },
 

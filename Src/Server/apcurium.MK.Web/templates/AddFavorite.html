@@ -43,6 +43,10 @@
 
 
                 <div class="control-group">
+                    {{#if isNew }}
+                    {{else}}
+                    <a href='#' class='btn btn-danger pull-right span' data-action='remove'>{{localize "Remove"}}</a>
+                    {{/if}}
                     <a href='#' class='btn pull-right span' data-action='cancel'>{{localize "Cancel"}}</a>
                     <a href='#' id="saveBt" class='btn btn-primary pull-right span' data-action='save' data-loading-text="{{localize 'Loading'}}">{{localize "Save"}}</a>                
                 </div>
