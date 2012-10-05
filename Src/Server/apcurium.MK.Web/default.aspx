@@ -27,6 +27,7 @@
         <script src="assets/js/handlebars-1.0.rc.1.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         <script src="assets/js/jquery.hotkeys.js"></script>
+        <script src="assets/js/jquery.edit-in-place.js"></script>
         <script src="http://jzaefferer.github.com/jquery-validation/jquery.validate.js"></script>
         <script src="assets/js/underscore.js"></script>
         <script src="assets/js/backbone.js"></script>

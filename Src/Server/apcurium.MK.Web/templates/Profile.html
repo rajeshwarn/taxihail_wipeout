@@ -1,68 +1,68 @@
 ﻿<h3 class="table-title">{{localize "Edit Profile"}}</h3>
-        <form class="form-horizontal" id="updateSettingsForm">
-            <div id="notif-bar"></div>
-            <div id="settingsContent">
-            
-                <div class="control-group">
-                    <label class="control-label" for="inputName">{{localize "Name"}}</label>
-                    <div class="controls">
-                        <span style="float: right" class="valid-input hidden"><img src="assets/img/validFieldGreen.png" width="8" height="8" alt="valid field"/></span>
-                        <input type="text"  id="inputName" name="name" data-action="changesettings" value="{{settings.name}}" class='input-block-level'>
-                    </div>
-                </div>
-                
-                <div class="control-group">
-                    <label class="control-label" >{{localize "Email"}}</label>
-                    <div class="controls">
-                        <label class='input-block-level'>{{email}}</label>
-                    </div>
-                </div>
-
-                <div class="control-group">
-                    <label class="control-label" for="inputPhone">{{localize "Phone"}}</label>
-                    <div class="controls">
-                        <span style="float: right" class="valid-input hidden"><img src="assets/img/validFieldGreen.png" width="8" height="8" alt="valid field"/></span>
-                        <input type="text" id="inputPhone" name="phone" data-action="changesettings" value="{{settings.phone}}" class='input-block-level'>
-                    </div>
-                </div>
-
-                <div class="control-group">
-                    <label class="control-label" for="inputPassengers">{{localize "Passengers"}}</label>
-                    <div class="controls">
-                        <span style="float: right" class="valid-input hidden"><img src="assets/img/validFieldGreen.png" width="8" height="8" alt="valid field"/></span>
-                        <input style="width: 60px;" type="text" id="inputPassengers" name="passengers" data-action="changesettings" value="{{settings.passengers}}" class='input-block-level'>
-                        <span class="center-control-label">{{localize "Vehicle Type"}}</span>
-
-                        <select style="float:right;width: 175px; " data-action="changesettings" name="vehicleTypeId" id="Select1" class="select-taxihail">
-                            {{#each vehiclesList}}
-                                {{#ifCond this.id ../settings.vehicleTypeId}}
-                                    <option value="{{this.id}}" selected>{{this.display}}</option>
-                                {{else}}
-                                    <option value="{{this.id}}">{{this.display}}</option>
-                                {{/ifCond}}
-                            {{/each}}
-                        </select>
-                    </div>
-                </div>
-
-
-                <div class="control-group">
-                    <label class="control-label" for="inputChargeType">{{localize "Charge Type"}}</label>
-                    <div class="controls">
-                        <select data-action="changesettings" id="inputChargeType" name="chargeTypeId" class="select-taxihail">
-                            {{#each paymentsList}}
-                                {{#ifCond this.id ../settings.chargeTypeId}}
-                                    <option value="{{this.id}}" selected>{{this.display}}</option>
-                                {{else}}
-                                    <option value="{{this.id}}">{{this.display}}</option>
-                                {{/ifCond}}
-                            {{/each}}
-                        </select>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <a href='#' class='btn pull-right span' data-action='startOver'>{{localize "Cancel"}}</a>
-                    <a href='#' id="bookBt" class='btn btn-primary pull-right span' data-action='savechanges' data-loading-text="{{localize 'Loading'}}">{{localize "Saves changes"}}</a>                
-                </div>
+<form class="form-horizontal" id="updateSettingsForm">
+    <div id="notif-bar"></div>
+    <div id="settingsContent">
+    
+        <div class="control-group">
+            <label class="control-label" for="inputName">{{localize "Name"}}</label>
+            <div class="controls">
+                <span style="float: right" class="valid-input hidden"><img src="assets/img/validFieldGreen.png" width="8" height="8" alt="valid field"/></span>
+                <input type="text"  id="inputName" name="name" data-action="changesettings" value="{{settings.name}}" class='input-block-level'>
             </div>
-        </form>
+        </div>
+        
+        <div class="control-group">
+            <label class="control-label" >{{localize "Email"}}</label>
+            <div class="controls">
+                <label class='input-block-level'>{{email}}</label>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="inputPhone">{{localize "Phone"}}</label>
+            <div class="controls">
+                <span style="float: right" class="valid-input hidden"><img src="assets/img/validFieldGreen.png" width="8" height="8" alt="valid field"/></span>
+                <input type="text" id="inputPhone" name="phone" data-action="changesettings" value="{{settings.phone}}" class='input-block-level'>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="inputPassengers">{{localize "Passengers"}}</label>
+            <div class="controls">
+                <span style="float: right" class="valid-input hidden"><img src="assets/img/validFieldGreen.png" width="8" height="8" alt="valid field"/></span>
+                <input style="width: 60px;" type="text" id="inputPassengers" name="passengers" data-action="changesettings" value="{{settings.passengers}}" class='input-block-level'>
+                <span class="center-control-label">{{localize "Vehicle Type"}}</span>
+
+                <select style="float:right;width: 175px; " data-action="changesettings" name="vehicleTypeId" id="Select1" class="select-taxihail">
+                    {{#each vehiclesList}}
+                        {{#ifCond this.id ../settings.vehicleTypeId}}
+                            <option value="{{this.id}}" selected>{{this.display}}</option>
+                        {{else}}
+                            <option value="{{this.id}}">{{this.display}}</option>
+                        {{/ifCond}}
+                    {{/each}}
+                </select>
+            </div>
+        </div>
+
+
+        <div class="control-group">
+            <label class="control-label" for="inputChargeType">{{localize "Charge Type"}}</label>
+            <div class="controls">
+                <select data-action="changesettings" id="inputChargeType" name="chargeTypeId" class="select-taxihail">
+                    {{#each paymentsList}}
+                        {{#ifCond this.id ../settings.chargeTypeId}}
+                            <option value="{{this.id}}" selected>{{this.display}}</option>
+                        {{else}}
+                            <option value="{{this.id}}">{{this.display}}</option>
+                        {{/ifCond}}
+                    {{/each}}
+                </select>
+            </div>
+        </div>
+        <div class="control-group">
+            <a href='#' class='btn pull-right span' data-action='startOver'>{{localize "Cancel"}}</a>
+            <a href='#' id="bookBt" class='btn btn-primary pull-right span' data-action='savechanges' data-loading-text="{{localize 'Loading'}}">{{localize "Saves changes"}}</a>                
+        </div>
+    </div>
+</form>

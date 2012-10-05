@@ -21,7 +21,7 @@
                 </tr>
                 <tr data-popover data-placement='left'>
                     <td class="settings-label" >
-                        {{localize "Estimate"}}
+                        {{localize "Estimated Fare"}}
                     </td>
                     <td class="settings-value">{{distanceEstimate}} - {{priceEstimate}}</td>
                 </tr>
@@ -37,7 +37,8 @@
                         <label class="control-label" for="inputName">{{localize "Name"}}</label>
                         <div class="controls">
                             <span style="float: right" class="valid-input hidden"><img src="assets/img/validFieldGreen.png" width="8" height="8" alt="valid field"/></span>
-                            <input type="text"  id="inputName" name="name" data-action="changesettings" value="{{settings.name}}" class='input-block-level'>
+                                <input type="text"  id="inputName" name="name" data-action="changesettings" value="{{settings.name}}" class='edit-in-place input-block-level'>
+                            </div>
                         </div>
                     </div>
 

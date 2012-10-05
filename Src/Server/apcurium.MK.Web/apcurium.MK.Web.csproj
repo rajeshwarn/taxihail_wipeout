@@ -279,6 +279,7 @@
     <Content Include="assets\js\backbone.js" />
     <Content Include="assets\js\bootstrap-tooltip.js" />
     <Content Include="assets\js\handlebars-1.0.rc.1.js" />
+    <Content Include="assets\js\jquery.edit-in-place.js" />
     <Content Include="assets\js\jquery.hotkeys.js" />
     <Content Include="assets\js\modernizr.js" />
     <Content Include="assets\js\spin.js" />
