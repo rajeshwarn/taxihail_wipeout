@@ -34,7 +34,7 @@
 	"UpdatePassword_NotSame" : "Wrong current password.",
 	"resetPassword.emailSent" : "An email with new password has been sent to you.",
 	"resetPassword.accountNotFound" : "Account not found.",
-	"order.no-result" : "No orders was found.",
+	"order.no-result" : "No order was found.",
 	"Cancel Order" : "Cancel Order",
 	"Remove Order" : "Remove Order",
 	"modal.remove.message" : "Are you sure you want to remove it ?",
