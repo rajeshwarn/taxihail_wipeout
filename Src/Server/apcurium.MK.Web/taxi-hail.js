@@ -41,7 +41,24 @@ $(function () {
         function () {
 
             // Application starts here
-            TaxiHail.app = new TaxiHail.App();
-            Backbone.history.start();
+            // If user is logged in, we need to load its Account before we continue
+            if(TaxiHail.parameters.isLoggedIn) {
+
+                new TaxiHail.UserAccount().fetch({
+                    success: function(model) {
+
+                        TaxiHail.app = new TaxiHail.App({
+                            account: model
+                        });
+                        Backbone.history.start();
+
+                    }
+                });
+                
+            } else {
+                TaxiHail.app = new TaxiHail.App();
+                Backbone.history.start();
+            }
+
         });
 });

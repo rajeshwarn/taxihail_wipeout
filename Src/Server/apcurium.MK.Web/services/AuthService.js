@@ -31,30 +31,19 @@
             return isLoggedIn;
         },
 
-        initialize: function(oninitialized, context) {
-            this.account = new TaxiHail.UserAccount();
+        initialize: function(account) {
+            if(account == null) {
+                isLoggedIn = false;
+                this.account = new TaxiHail.UserAccount();
+            }
+            else {
+                isLoggedIn = true;
+                this.account = new TaxiHail.UserAccount(account.toJSON());
+            }
 
             this.on('change', function(isLoggedIn){
                 if(!isLoggedIn) this.account.clear();
             }, this);
-
-            // Fetch user account
-            // We use a different instance of UserAccount
-            // In order to be able to set the isLoggedIn flag
-            // Before setting the auth.account attributes
-            new TaxiHail.UserAccount().fetch({
-                success: _.bind(function(model) {
-                    isLoggedIn = true;
-                    this.account.set(model.toJSON());
-                    if(oninitialized) {
-                        oninitialized.call(context, isLoggedIn);
-                    }
-                    this.trigger('init', isLoggedIn);
-                }, this)
-            });
-
-
-
         }
     
     });

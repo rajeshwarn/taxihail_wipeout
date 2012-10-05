@@ -29,6 +29,7 @@ namespace apcurium.MK.Booking.Api.Security
         {
             var account = Dao.FindByFacebookId(session.UserAuthName);
             session.UserAuthId = account.Id.ToString();
+            session.IsAuthenticated = true;
             authService.SaveSession(session, SessionExpiry);
         }
     }

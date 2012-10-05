@@ -52,6 +52,7 @@
         <script type="text/javascript">
             TaxiHail.parameters.defaultLatitude = <%: this.DefaultLatitude %>;
             TaxiHail.parameters.defaultLongitude = <%: this.DefaultLongitude %>;
+            TaxiHail.parameters.isLoggedIn = <%: this.IsAuthenticated ? "true" : "false" %>;
         </script>
 
         <script src="utils.js"></script>
