@@ -4,6 +4,7 @@
             "click [data-action=save]": "save",
             "change :text[data-action=changesettings]": "onSettingsPropertyChanged",
             'focus [name=fullAddress]': 'onfocus',
+            'click [data-action=remove]': 'remove',
         },
         
         initialize :function () {
@@ -59,9 +60,30 @@
             e.preventDefault();
             if (this.$("#AddFavoritesForm").valid()) {
                 if (this.model.has('fullAddress')) {
+                    if (this.model.get('isHistoric') == false) {
                         this.model.save();
+                    } else {
+                        $.post('api/account/addresses', {
+                            friendlyName: this.model.get('friendlyName'),
+                            fullAddress: this.model.get('fullAddress'),
+                            apartment: this.model.get('apartment'),
+                            ringCode: this.model.get('ringCode')
+                        }, function () {
+                        }, 'json').fail(function (response) {
+                        });
+                    }
+                    this.model.trigger('reset');
                 }
             }
+        },
+        
+        remove: function (e) {
+            e.preventDefault();
+            TaxiHail.confirm(this.localize('Remove Favorites'),
+                this.localize('modal.remove.message'),
+                _.bind(function () {
+                    this.model.destroy();
+                }, this));
         },
         
         open: function (e) {
