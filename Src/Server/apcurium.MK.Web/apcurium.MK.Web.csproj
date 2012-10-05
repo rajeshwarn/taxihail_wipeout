@@ -412,6 +412,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="PageBase.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="PingdomCheck.ashx.cs">
       <DependentUpon>PingdomCheck.ashx</DependentUpon>
     </Compile>

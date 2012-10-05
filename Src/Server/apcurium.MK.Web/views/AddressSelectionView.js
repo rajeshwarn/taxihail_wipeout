@@ -10,7 +10,7 @@
 
         initialize: function () {
             _.bindAll(this, 'hide', 'ondownarrow', 'onuparrow', 'onenter');
-            TaxiHail.auth.on('change init', this.render, this);
+            TaxiHail.auth.on('change', this.render, this);
             $(document).bind('keydown', 'down', this.ondownarrow);
             $(document).bind('keydown', 'up', this.onuparrow);
             $(document).bind('keydown', 'return', this.onenter);

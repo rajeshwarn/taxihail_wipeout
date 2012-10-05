@@ -33,7 +33,8 @@
             "resetpassword": "resetpassword"
         },
 
-        initialize: function () {
+        initialize: function (options) {
+            options = options || {};
 
             var expire = new Date();
             expire.setTime(expire.getTime() + 3600000 * 24 * 365);
@@ -42,30 +43,30 @@
             //default lat and long are defined in the deault.aspx
             TaxiHail.geocoder.initialize(TaxiHail.parameters.defaultLatitude, TaxiHail.parameters.defaultLongitude);
             
-            TaxiHail.auth.initialize(function(isloggedIn) {
-                if(isloggedIn) {
-                    // Check if an order exists
-                    // If order is not saved, go to confirmation
-                    // If order is saved and status is active, go to status
-                    var order = TaxiHail.orderService.getCurrentOrder();
-                    if(order) {
-                        if(order.isNew()){
-                            this.navigate('confirmationbook', { trigger: true });
-                        }
-                        else {
-                            order.getStatus().fetch({
-                                success: _.bind(function(model, resp) {
-                                    if(model.isActive()){
-                                        this.navigate('status/' + order.id , { trigger: true });
-                                    }
-                                }, this)
-                            });
-                        }
-                    } else {
-                        this.navigate('', { trigger: true });
+            TaxiHail.auth.initialize(options.account);
+            if( TaxiHail.auth.isLoggedIn() ) {
+                // Check if an order exists
+                // If order is not saved, go to confirmation
+                // If order is saved and status is active, go to status
+                var order = TaxiHail.orderService.getCurrentOrder();
+                if(order) {
+                    if(order.isNew()){
+                        this.navigate('confirmationbook', { trigger: true });
                     }
+                    else {
+                        order.getStatus().fetch({
+                            success: _.bind(function(model, resp) {
+                                if(model.isActive()){
+                                    this.navigate('status/' + order.id , { trigger: true });
+                                }
+                            }, this)
+                        });
+                    }
+                } else {
+                    this.navigate('', { trigger: true });
                 }
-            }, this);
+            }
+                    
 
             TaxiHail.auth.on('change', function(isloggedIn, urlToRedirect) {
                 if (isloggedIn) {
@@ -183,7 +184,7 @@
                         renderView(TaxiHail.UserAccountView, account);
                     }
                     currentView.selectTab(tabName);
-                    
+
                 },
                 error: _.bind(function (model) {
                     this.navigate('login/useraccount', { trigger: true });

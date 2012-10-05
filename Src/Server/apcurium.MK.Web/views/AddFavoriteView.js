@@ -4,8 +4,8 @@
             "click [data-action=save]": "save",
             "change :text[data-action=changesettings]": "onSettingsPropertyChanged",
             'focus [name=fullAddress]': 'onfocus',
-            'click [data-action=destroy]': 'destroyAddress'
-            'click [data-action=cancel]': 'cancel',
+            'click [data-action=destroy]': 'destroyAddress',
+            'click [data-action=cancel]': 'cancel'
         },
         
         initialize :function () {
