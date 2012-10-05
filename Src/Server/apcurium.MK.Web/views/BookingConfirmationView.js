@@ -54,7 +54,7 @@
             this.$el.html(this.renderTemplate(data));
 
 
-            this.$(':text, select').editInPlace();
+            //this.$(':text, select').editInPlace();
 
             if (this.model.has('dropOffAddress')) {
                 this.showEstimatedFareWarning();

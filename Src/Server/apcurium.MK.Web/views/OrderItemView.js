@@ -2,7 +2,7 @@
 
     TaxiHail.OrderItemView = TaxiHail.TemplatedView.extend({
 
-        tagName: 'tr',
+        tagName: 'li',
         
 
         events: {
@@ -10,7 +10,6 @@
         },
 
         render: function () {
-            //this.$el.attrs('style', 'border-bottom: 1px solid #000;');
             this.$el.html(this.renderTemplate(this.model.toJSON()));
 
             return this;

@@ -5,6 +5,8 @@
 @import "TaxiHail-navs.less";
 @import "TaxiHail-wells.less";
 @import "TaxiHail-popover.less";
+@import "TaxiHail-address-picker.less";
+@import "TaxiHail-locations.less";
 
 @map-z-index: 10;
 @container-z-index: @map-z-index * 10;
@@ -124,94 +126,6 @@ header {
     background: url(../img/cancel-icon.png) top left no-repeat;
 }
 
-
-/* Address selector */
-.address-picker {
-
-    .control-group{
-        margin-bottom: 20px;
-    }
-
-    .btn-pin {
-        width:30px;
-        height:30px;
-        padding:0;
-        margin:0;
-        background: #b6b6b6;
-        border:none;
-        .border-radius(8px);
-
-        &.active {
-
-            &.btn-pin-green {
-                background: #19A64A;
-            }
-
-            &.btn-pin-red {
-                background: #C62127;
-            }
-        }
-
-        >.icon-pin {
-            display: inline-block;
-            background: url(../img/pin-icon.png) top left no-repeat;
-            width:13px;
-            height:19px;
-        }
-
-
-    }
-
-    position: relative;
-
-    input.address {
-        width:396px;
-    }
-
-    .tab-content {
-
-        width:408px;
-        min-height: 123px;
-        max-height: 200px;
-        background: @white;
-        border-left: 1px solid @inputBorder;
-        border-right: 1px solid @inputBorder;
-        
-        ul {
-            margin:10px;
-            padding:0;
-        }
-
-        li {
-            display: block;
-            overflow:hidden;
-            color: @black;
-            height: @baseLineHeight;
-
-            a, a:link, a:active, a:visited, a:hover, a.active {
-                color: @black;
-            }
-
-            a.active {
-                text-decoration: underline;
-            }
-
-            &:last-child {
-                .border-radius(0 0 4px 4px);
-            }
-
-            &.no-result {
-                font-style: italic;
-            }
-
-            &.optgroup {
-                font-weight: bold;
-            }
-
-        }
-
-    }
-}
 
 .spinner-address {
     margin-right: auto;
