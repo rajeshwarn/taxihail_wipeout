@@ -6,6 +6,10 @@
         render: function () {
             var html = this.renderTemplate(this.model.toJSON());
             this.$el.html(html);
+            
+            
+
+
             return this;
         },
 

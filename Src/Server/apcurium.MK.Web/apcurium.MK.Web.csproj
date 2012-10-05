@@ -346,6 +346,7 @@
     <Content Include="themes\TaxiHail\img\header-bg.png" />
     <Content Include="themes\TaxiHail\img\logo.png" />
     <Content Include="utils.js" />
+    <Content Include="views\AccountFavoritesAndHistoryListView.js" />
     <Content Include="views\AddFavoriteView.js" />
     <Content Include="views\AddressControlView.js" />
     <Content Include="views\AddressItemView.js" />
@@ -615,6 +616,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\less\TaxiHail-tables.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="localization\AddFavorite.json" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
