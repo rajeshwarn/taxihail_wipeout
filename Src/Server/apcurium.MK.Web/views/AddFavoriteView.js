@@ -4,7 +4,7 @@
             "click [data-action=save]": "save",
             "change :text[data-action=changesettings]": "onSettingsPropertyChanged",
             'focus [name=fullAddress]': 'onfocus',
-            'click [data-action=remove]': 'remove',
+            'click [data-action=destroy]': 'destroyAddress',
         },
         
         initialize :function () {
@@ -58,9 +58,9 @@
         
         save: function (e) {
             e.preventDefault();
-            if (this.$("#AddFavoritesForm").valid()) {
+            if (this.$("form").valid()) {
                 if (this.model.has('fullAddress')) {
-                    if (this.model.get('isHistoric') == false) {
+                    if (!this.model.get('isHistoric')) {
                         this.model.save();
                     } else {
                         $.post('api/account/addresses', {
@@ -69,21 +69,27 @@
                             apartment: this.model.get('apartment'),
                             ringCode: this.model.get('ringCode')
                         }, function () {
-                        }, 'json').fail(function (response) {
-                        });
+                        }, 'json');
                     }
                     this.model.trigger('reset');
                 }
             }
         },
         
-        remove: function (e) {
+        destroyAddress: function (e) {
             e.preventDefault();
             TaxiHail.confirm(this.localize('Remove Favorites'),
                 this.localize('modal.remove.message'),
                 _.bind(function () {
                     this.model.destroy();
                 }, this));
+        },
+
+        remove: function() {
+            if(this._selector) this._selector.remove();
+            $(document).off('click', this.ondocumentclick);
+            this.$el.remove();
+            return this;
         },
         
         open: function (e) {
@@ -119,7 +125,7 @@
         },
         
         ondocumentclick: function (e) {
-            if (!this.$el.find(e.target).length) {
+            if (!this.$('.address-picker').find(e.target).length) {
                 this.close();
             }
         }
