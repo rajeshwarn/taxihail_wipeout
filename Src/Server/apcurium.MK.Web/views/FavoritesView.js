@@ -7,8 +7,9 @@
         },
 
         initialize: function () {
-            this.collection.on('destroy reset change', this.render, this);
+            this.collection.on('destroy reset sync', this.render, this);
             this.collection.on('selected', this.edit, this);
+            
             this._addFavoriteView = null;
         },
 
@@ -62,6 +63,7 @@
             var view = this._addFavoriteView = new TaxiHail.AddFavoriteView({
                 model: model
             });
+            view.on('cancel', this.render, this);
             this.$el.html(view.render().el);
             TaxiHail.app.navigate('favorites/edit');
         },
@@ -69,11 +71,13 @@
         addfavorites: function (e) {
             e.preventDefault();
             this.model = new TaxiHail.Address();
+            this.model.on('sync', this.render, this);
             this.model.set('isNew', true);
             var view = this._addFavoriteView = new TaxiHail.AddFavoriteView(
                 {
-                    model : this.model
+                    model: this.model,
                 });
+            view.on('cancel', this.render, this);
             this.$el.html(view.render().el);
             TaxiHail.app.navigate('favorites/add');
         }
