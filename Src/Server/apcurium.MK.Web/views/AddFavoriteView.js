@@ -4,7 +4,7 @@
             "click [data-action=save]": "save",
             "change :text[data-action=changesettings]": "onSettingsPropertyChanged",
             'focus [name=fullAddress]': 'onfocus',
-            'click [data-action=destroy]': 'destroyAddress',
+            'click [data-action=destroy]': 'destroyAddress'
             'click [data-action=cancel]': 'cancel',
         },
         
@@ -18,17 +18,17 @@
             var html = this.renderTemplate(this.model.toJSON());
             this.$el.html(html);
             
-            this.$("#AddFavoritesForm").validate({
+            this.$("form").validate({
                 rules: {
                     friendlyName: "required",
-                    fullAddress: "required",
+                    fullAddress: "required"
                 },
                 messages: {
                     friendlyName: {
-                        required: TaxiHail.localize('error.friendlyNameRequired'),
+                        required: TaxiHail.localize('error.friendlyNameRequired')
                     },
                     fullAddress: {
-                        required: TaxiHail.localize('error.fullAddressRequired'),
+                        required: TaxiHail.localize('error.fullAddressRequired')
                     }
                 },
                 highlight: function (label) {
