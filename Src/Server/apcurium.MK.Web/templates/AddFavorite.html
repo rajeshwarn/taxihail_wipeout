@@ -1,8 +1,9 @@
-﻿<div class="errors" style="margin-top: 10px;"></div>
+﻿<h3 class="table-title">{{localize "Add to Favorites"}}</h3>
+
+<div class="errors" style="margin-top: 10px;"></div>
+
         <form class="form-horizontal" id="AddFavoritesForm">
             <div id="settingsContent">
-                
-                
                 
                 <div class="control-group">
                     <label class="control-label">{{localize 'Full Address'}}</label>
@@ -10,32 +11,33 @@
                         <span style="float: right" class="valid-input hidden"><img src="assets/img/validFieldGreen.png" width="8" height="8" alt="valid field"/></span>
                         <input type="text" id="inputFullAddress" name="fullAddress"  value="{{fullAddress}}" class='input-block-level'>
                     </div>
-                    <div class='address-selector-container raise100' />
+                    
              </div>
+                <div class='address-selector-container raise100' />
                 
+                
+                <div class="control-group">
+                        <label class="control-label">{{localize 'Apartment'}}</label>
+                    <div class="controls">
+                        <input type="text" style="width: 35%;" id="inputApartment" data-action="changesettings" name="apartment" value="{{apartment}}" class='input-block-level'>
+                        <span class="center-control-label">{{localize 'Ring Code'}}</span>
+                        <input type="text" style="float:right;width: 35%; " data-action="changesettings" id="inputRingCode" name="ringCode"  value="{{ringCode}}" class='input-block-level'>
+                    </div>
+                    </div>
                 
 
                 <div class="control-group">
-                    <label class="control-label" for="inputPhone">{{localize "Apartment"}}</label>
+                    <label class="control-label" >{{localize "Building Name"}}</label>
                     <div class="controls">
                         <span style="float: right" class="valid-input hidden"><img src="assets/img/validFieldGreen.png" width="8" height="8" alt="valid field"/></span>
-                        <input type="text" id="inputApartment" data-action="changesettings" name="apartment" value="{{apartment}}" class='input-block-level'>
+                        <input type="text" data-action="changesettings" name="buildingName" value="{{buildingName}}" class='input-block-level'>
                     </div>
                 </div>
-                
+                <h3 style="margin-left: auto; margin-right: auto; width: 200px">{{localize "Give it a name"}}</h3>
                 <div class="control-group">
-                    <label class="control-label">{{localize 'Ring Code'}}</label>
                     <div class="controls">
                         <span style="float: right" class="valid-input hidden"><img src="assets/img/validFieldGreen.png" width="8" height="8" alt="valid field"/></span>
-                        <input type="text" id="Text1" name="ringCode" data-action="changesettings"  value="{{ringCode}}" class='input-block-level'>
-                    </div>
-                </div>
-                <h3>{{localize "Give it a name"}}</h3>
-                <div class="control-group">
-                    <label class="control-label" for="inputName">{{localize "Friendly Name"}}</label>
-                    <div class="controls">
-                        <span style="float: right" class="valid-input hidden"><img src="assets/img/validFieldGreen.png" width="8" height="8" alt="valid field"/></span>
-                        <input type="text" id="inputFriendlyName" data-action="changesettings" name="friendlyName" value="{{friendlyName}}" class='input-block-level'>
+                        <input type="text" id="inputFriendlyName" data-action="changesettings" name="friendlyName" value="{{friendlyName}}">
                     </div>
                 </div>
 

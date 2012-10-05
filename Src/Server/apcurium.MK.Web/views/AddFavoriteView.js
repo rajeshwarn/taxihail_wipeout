@@ -59,7 +59,18 @@
             e.preventDefault();
             if (this.$("#AddFavoritesForm").valid()) {
                 if (this.model.has('fullAddress')) {
+                    if (this.model.get('isHistoric') == false) {
                         this.model.save();
+                    } else {
+                        $.post('api/account/addresses', {
+                            friendlyName: this.model.get('friendlyName'),
+                            fullAddress: this.model.get('fullAddress'),
+                            apartment: this.model.get('apartment'),
+                            ringCode: this.model.get('ringCode')
+                        }, function () {
+                        }, 'json').fail(function (response) {
+                        });
+                    }
                 }
             }
         },
