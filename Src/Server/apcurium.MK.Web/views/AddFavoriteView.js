@@ -4,7 +4,7 @@
             "click [data-action=save]": "save",
             "change :text[data-action=changesettings]": "onSettingsPropertyChanged",
             'focus [name=fullAddress]': 'onfocus',
-            'click [data-action=destroy]': 'destroyAddress'
+            'click [data-action=destroy]': 'destroyAddress',
             'click [data-action=cancel]': 'cancel',
         },
         
@@ -62,7 +62,8 @@
             if (this.$("form").valid()) {
                 if (this.model.has('fullAddress')) {
                     if (!this.model.get('isHistoric')) {
-                        this.model.save();
+                        this.model.save({ wait: true });
+                        this.collection.add(this.model);
                     } else {
                         $.post('api/account/addresses', {
                             friendlyName: this.model.get('friendlyName'),
@@ -70,9 +71,13 @@
                             apartment: this.model.get('apartment'),
                             ringCode: this.model.get('ringCode')
                         }, function () {
+                            
+                            
                         }, 'json');
+                        this.model.set('isHistoric', false);
+                        this.collection.add(this.model);
+                        this.collection.trigger('sync');
                     }
-                    this.model.trigger('reset');
                 }
             }
         },
