@@ -6,8 +6,13 @@
     border: 1px solid #6A6855;
     .border-radius(8px);
 
-    >h4 {
-        margin-top:0;   
+    h4 {
+        margin-top:0;
+        &.table-title {
+            border-bottom: 2px solid @taxiHailAccentColor;
+            padding-left: 8px;
+            padding-bottom: 5px;
+        }   
     }
 
     &.well-form-actions {

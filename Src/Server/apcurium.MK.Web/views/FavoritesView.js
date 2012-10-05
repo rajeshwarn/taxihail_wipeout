@@ -60,7 +60,8 @@
             this.$el.html(view.render().el);
         },
         
-        addfavorites: function () {
+        addfavorites: function (e) {
+            e.preventDefault();
             this.model = new TaxiHail.Address();
             this.model.set('isNew', true);
             var view = new TaxiHail.AddFavoriteView(

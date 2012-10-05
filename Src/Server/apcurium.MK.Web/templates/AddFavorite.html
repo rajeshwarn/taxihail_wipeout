@@ -1,4 +1,4 @@
-﻿<h3 class="table-title">{{localize "Add to Favorites"}}</h3>
+﻿<h4 class="table-title">{{localize "Add to Favorites"}}</h4>
 
 <div class="errors" style="margin-top: 10px;"></div>
 
@@ -33,20 +33,19 @@
                         <input type="text" data-action="changesettings" name="buildingName" value="{{buildingName}}" class='input-block-level'>
                     </div>
                 </div>
-                <h3 style="margin-left: auto; margin-right: auto; width: 200px">{{localize "Give it a name"}}</h3>
-                <div class="control-group">
+                <h4 style="text-align: center">{{localize "Give it a name"}}</h4>
+                <div class="control-group no-label">
                     <div class="controls">
                         <span style="float: right" class="valid-input hidden"><img src="assets/img/validFieldGreen.png" width="8" height="8" alt="valid field"/></span>
-                        <input type="text" id="inputFriendlyName" data-action="changesettings" name="friendlyName" value="{{friendlyName}}">
+                        <input type="text" id="inputFriendlyName" data-action="changesettings" name="friendlyName" value="{{friendlyName}}" class='input-block-level'>
                     </div>
                 </div>
 
 
                 <div class="control-group">
-                    {{#if isNew }}
-                    {{else}}
-                    <a href='#' class='btn btn-danger pull-right span' data-action='remove'>{{localize "Remove"}}</a>
-                    {{/if}}
+                    {{#unless isNew }}
+                        <a href='#' class='btn btn-danger pull-right span' data-action='remove'>{{localize "Remove"}}</a>
+                    {{/unless}}
                     <a href='#' class='btn pull-right span' data-action='cancel'>{{localize "Cancel"}}</a>
                     <a href='#' id="saveBt" class='btn btn-primary pull-right span' data-action='save' data-loading-text="{{localize 'Loading'}}">{{localize "Save"}}</a>                
                 </div>
