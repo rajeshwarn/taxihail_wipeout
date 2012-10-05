@@ -1,12 +1,9 @@
 ﻿(function () {
 
-    TaxiHail.FavoritesView = Backbone.View.extend({
+    TaxiHail.FavoritesView = TaxiHail.TemplatedView.extend({
         
-        className: 'unstyled',
-        tagName: 'ul',
-
         events :{
-            'click [data-action=addfavorites]': 'addfavorites',
+            'click [data-action=addfavorites]': 'addfavorites'
         },
 
         initialize: function () {
@@ -16,23 +13,29 @@
 
         render: function () {
 
-            this.$el.empty();
+            this.$el.html(this.renderTemplate());
             var favorites = this.collection.filter(function (model) {
                 return !model.get('isHistoric');
             }),
                 history = this.collection.filter(function (model) {
                     return model.get('isHistoric');
                 });
-            this.$el.append($('<h3>').addClass('table-title').text(TaxiHail.localize('Favorites Locations')));
-            if (favorites.length) {
-                _.each(favorites, this.renderItem, this);
-            } 
-                this.$el.append($('<li data-action=addfavorites>').addClass('no-result').text(TaxiHail.localize('favorites.add-new')));
 
-            this.$el.append($('<h3>').addClass('table-title').text(TaxiHail.localize('Location History')));
+            var $ul = this.$('ul');
+            if (favorites.length) {
+                _.each(favorites, function(model) {
+                    this.renderItem(model, $ul[0]);
+                }, this);
+            }
+
+            var $add = $('<a href="#" data-action=addfavorites>').addClass('new').text(TaxiHail.localize('favorites.add-new'));
+
+            $ul.first().append($('<li>').append($add));
 
             if (history.length) {
-                _.each(history, this.renderItem, this);
+                _.each(history, function(model) {
+                    this.renderItem(model, $ul[1]);
+                }, this);
             } else {
                 this.$el.append($('<li>').addClass('no-result').text(TaxiHail.localize('history.no-result')));
             }
@@ -40,12 +43,12 @@
             return this;
         },
 
-        renderItem: function (model) {
+        renderItem: function (model, container) {
 
             var itemView = new TaxiHail.AddressItemView({
                 model: model
             });
-            this.$el.append(itemView.render().el);
+            $(container).append(itemView.render().el);
         },
         
         edit:function (model) {
@@ -65,17 +68,8 @@
                     model : this.model
                 });
             this.$el.html(view.render().el);
-        },
+        }
         
-        editfavorites: function () {
-            this.model.set('isNew', false);
-            var view = new TaxiHail.AddFavoriteView(
-                {
-                    model: this.model
-                });
-            this.$el.html(view.render().el);
-        },
-
     });
 
 }());

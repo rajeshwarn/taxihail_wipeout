@@ -11,6 +11,7 @@ ul.locations {
 
             display: block;
             padding: 2px 33px 2px 12px;
+            color: @black;
 
             &:link {
                 text-decoration: none;
@@ -20,17 +21,23 @@ ul.locations {
                 background-color: #EBF0F5;
                 background: #EBF0F5 url(../img/small-arrow-with-padding.png) center right no-repeat;
             }
+
+            &.new {
+                font-style: italic;
+                background: url(../img/plus-icon-with-padding.png) center right no-repeat;
+                &:hover {
+                    background-color: #EBF0F5;
+                }
+            }
         }
 
         .location-title {
             display:block;
             font-weight: bold;
-            color: @black;
         }
 
         .location-value {
             display:block;
-            color: @black;
         }
     }
 
