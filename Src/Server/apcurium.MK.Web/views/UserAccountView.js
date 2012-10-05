@@ -7,11 +7,6 @@
             return this;
         },
         
-        goToProfile: function () {
-            
-            
-        },
-
         tab: {
             profile: function() {
                 this._profile = new TaxiHail.ProfileView({
