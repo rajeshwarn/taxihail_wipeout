@@ -77,7 +77,8 @@
             }
         },
         
-        remove:function (e) {
+        remove: function (e) {
+            e.preventDefault();
             TaxiHail.confirm(this.localize('Remove Favorites'),
                 this.localize('modal.remove.message'),
                 _.bind(function () {
