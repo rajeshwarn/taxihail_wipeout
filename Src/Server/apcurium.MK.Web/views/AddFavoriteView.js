@@ -5,6 +5,7 @@
             "change :text[data-action=changesettings]": "onSettingsPropertyChanged",
             'focus [name=fullAddress]': 'onfocus',
             'click [data-action=destroy]': 'destroyAddress',
+            'click [data-action=cancel]': 'cancel',
         },
         
         initialize :function () {
@@ -116,6 +117,11 @@
             if (!jQuery.hotkeys.specialKeys[e.which]) {
                 this._selector && this._selector.search($(e.currentTarget).val());
             }
+        },
+        
+        cancel : function (e) {
+            e.preventDefault();
+            this.trigger('cancel', this);
         },
         
         onSettingsPropertyChanged: function (e) {
