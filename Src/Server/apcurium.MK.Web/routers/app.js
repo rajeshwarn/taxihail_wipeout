@@ -29,6 +29,7 @@
             "signupconfirmation": "signupconfirmation",
             "status/:id": "status",
             "useraccount": "useraccount",
+            "useraccount/:tab": "useraccount",
             "resetpassword": "resetpassword"
         },
 
@@ -37,6 +38,9 @@
             var expire = new Date();
             expire.setTime(expire.getTime() + 3600000 * 24 * 365);
             document.cookie = "ss-opt=perm" + ";expires=" + expire.toGMTString();
+
+            //default lat and long are defined in the deault.aspx
+            TaxiHail.geocoder.initialize(TaxiHail.parameters.defaultLatitude, TaxiHail.parameters.defaultLongitude);
             
             TaxiHail.auth.initialize(function(isloggedIn) {
                 if(isloggedIn) {
@@ -97,9 +101,6 @@
         book: function () {
 
             var model = new TaxiHail.Order();
-            //default lat and long are defined in the deault.aspx
-            TaxiHail.geocoder.initialize(TaxiHail.parameters.defaultLatitude, TaxiHail.parameters.defaultLongitude);
-
             TaxiHail.geolocation.getCurrentPosition()
                 // By default, set pickup address to current user location
                 .done(TaxiHail.postpone(function(address) {
@@ -172,17 +173,22 @@
             renderView(TaxiHail.SignupView, model);
         },
         
-        useraccount: function () {
-                TaxiHail.auth.account.fetch({
-                    success: function (model) {
-                        
+        useraccount: function (tabName) {
+            tabName = tabName || 'profile';
+            TaxiHail.auth.account.fetch({
+                success: function (model) {
+
+                    if(!(currentView instanceof TaxiHail.UserAccountView)) {
                         var account = new TaxiHail.UserAccount(model);
                         renderView(TaxiHail.UserAccountView, account);
-                    },
-                    error: _.bind(function (model) {
-                        this.navigate('login/useraccount', { trigger: true });
-                    }, this)
-                });
+                    }
+                    currentView.selectTab(tabName);
+                    
+                },
+                error: _.bind(function (model) {
+                    this.navigate('login/useraccount', { trigger: true });
+                }, this)
+            });
         },
         
         resetpassword : function () {
