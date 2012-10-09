@@ -58,7 +58,7 @@ namespace apcurium.MK.Booking.ConfigTool
             var process = new Process();
             var startInfo = new ProcessStartInfo();
             //startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            startInfo.FileName = "keytool.exe";
+            startInfo.FileName = @"C:\Program Files (x86)\Java\jdk1.6.0_31\bin\keytool.exe";
             startInfo.Arguments = command;
             startInfo.UseShellExecute = false;
             startInfo.RedirectStandardOutput = true;
@@ -107,7 +107,7 @@ namespace apcurium.MK.Booking.ConfigTool
             var process = new Process();
             var startInfo = new ProcessStartInfo();
             //startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            startInfo.FileName = "keytool.exe";
+            startInfo.FileName = @"C:\Program Files (x86)\Java\jdk1.6.0_31\bin\keytool.exe"; ;
             startInfo.Arguments = command;
             process.StartInfo = startInfo;
             process.Start();
