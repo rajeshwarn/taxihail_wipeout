@@ -36,6 +36,7 @@ namespace apcurium.MK.Booking.Api.Client
         private ServiceClientBase CreateClient()
         {
             var client = new JsonServiceClient(_url);
+            client.Timeout = new TimeSpan(0, 0, 0, 20, 0);
             var uri = new Uri(_url);
             if (!string.IsNullOrEmpty(_sessionId))
             {

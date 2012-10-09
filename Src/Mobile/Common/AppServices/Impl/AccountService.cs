@@ -17,6 +17,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using TinyIoC;
 using apcurium.MK.Common.Diagnostic;
+using System.Net;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -29,7 +30,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public void EnsureListLoaded()
         {
-            if (_refData == null)
+            if ( (_refData == null) || ( _refData.CompaniesList.Count() == 0 ) )
             {
                 UseServiceClient<ReferenceDataServiceClient>(service =>
                 {
@@ -253,7 +254,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         }
 
-        public Account GetAccount(string email, string password, out string error)
+        public Account GetAccount(string email, string password)
         {
             try
             {
@@ -264,11 +265,22 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 SaveCredentials(authResponse);
 
                 parameters.Add("credential", authResponse);
-                return GetAccount(parameters, out error);
+                return GetAccount(parameters, true);
+            }
+            catch (WebException ex)
+            {
+                TinyIoC.TinyIoCContainer.Current.Resolve<IErrorHandler>().HandleError(ex);
+                
+                return null;
             }
             catch (Exception e)
             {
-                error = "Invalid login or password";
+                var title =TinyIoCContainer.Current.Resolve<IAppResource>().GetString( "InvalidLoginMessageTitle" );
+                var message =TinyIoCContainer.Current.Resolve<IAppResource>().GetString( "InvalidLoginMessage" );
+
+                TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage( title, message );                
+
+                
                 return null;
             }
             
@@ -281,47 +293,30 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             cache.Set("SessionId", authResponse.SessionId);
         }
 
-        public Account GetFacebookAccount(string facebookId, out string error)
+        public Account GetFacebookAccount(string facebookId)
         {
-            try
-            {
-                var parameters = new NamedParameterOverloads();
-                var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
-                var authResponse = auth.AuthenticateFacebook(facebookId);
-                SaveCredentials(authResponse);
+            var parameters = new NamedParameterOverloads();
+            var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
+            var authResponse = auth.AuthenticateFacebook(facebookId);
+            SaveCredentials(authResponse);
 
-                parameters.Add("credential", authResponse);
-                return GetAccount(parameters, out error);
-            }
-            catch (Exception e)
-            {
-                error = "Invalid login or password";
-                return null;
-            }
+            parameters.Add("credential", authResponse);
+            return GetAccount(parameters,false);
         }
 
-        public Account GetTwitterAccount(string twitterId, out string error)
+        public Account GetTwitterAccount(string twitterId)
         {
-            try
-            {
-                var parameters = new NamedParameterOverloads();
-                var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
-                var authResponse = auth.AuthenticateTwitter(twitterId);
-                SaveCredentials(authResponse);
+            var parameters = new NamedParameterOverloads();
+            var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
+            var authResponse = auth.AuthenticateTwitter(twitterId);
+            SaveCredentials(authResponse);
 
-                parameters.Add("credential", authResponse);
-                return GetAccount(parameters, out error);
-            }
-            catch (Exception e)
-            {
-                error = "Invalid login or password";
-                return null;
-            }
+            parameters.Add("credential", authResponse);
+            return GetAccount(parameters, false);
         }
 
-        private Account GetAccount(NamedParameterOverloads parameters, out string error)
-        {
-            error = "";
+        private Account GetAccount(NamedParameterOverloads parameters, bool showInvalidMessage)
+        {            
             string resultError = "";
             bool isSuccess = false;
             Account data = null;
@@ -343,12 +338,22 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 EnsureListLoaded();
                 isSuccess = true;
             }
-            catch (Exception ex)
+            catch (WebException ex)
             {
-                TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("***************AUTH ERROR " + ex.Message);
-                error = ex.Message;
-                isSuccess = false;
+                TinyIoC.TinyIoCContainer.Current.Resolve<IErrorHandler>().HandleError(ex);
+                return null;
             }
+            catch (Exception e)
+            {
+                if (showInvalidMessage)
+                {
+                    var title = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("InvalidLoginMessageTitle");
+                    var message = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("InvalidLoginMessage");
+                    TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage(title, message);
+                }
+
+                return null;
+            }            
             return data;
         }
 

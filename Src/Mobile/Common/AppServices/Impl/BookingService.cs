@@ -14,7 +14,7 @@ using apcurium.MK.Common.Extensions;
 using Address = apcurium.MK.Common.Entity.Address;
 using ServiceStack.ServiceClient.Web;
 using Cirrious.MvvmCross.Interfaces.Platform.Tasks;
-
+using apcurium.MK.Booking.Mobile.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -86,8 +86,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             TinyIoCContainer.Current.Resolve<IMvxPhoneCallTask>().MakePhoneCall(name, number);
             RefreshBookingView();
         }
-
-
+ 
         private void RefreshBookingView()
         {
 
@@ -125,7 +124,53 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     statusId.SoftEqual("wosCANCELLED_DONE");
         }
 
+        public string GetFareEstimateDisplay(CreateOrder order, string formatString , string defaultFare)
+        {
+            var appResource = TinyIoCContainer.Current.Resolve<IAppResource>();
+            var fareEstimate = appResource.GetString(defaultFare);
 
+            if (order != null && order.PickupAddress.HasValidCoordinate() && order.DropOffAddress.HasValidCoordinate())
+            {
+                var directionInfo = TinyIoCContainer.Current.Resolve<IGeolocService>().GetDirectionInfo(order.PickupAddress.Latitude, order.PickupAddress.Longitude, order.DropOffAddress.Latitude, order.DropOffAddress.Longitude);
+                if (directionInfo != null)
+                {
+                    if (directionInfo.Price.HasValue)
+                    {
+                        if (directionInfo.Price.Value > 100)
+                        {
+                            fareEstimate = appResource.GetString("EstimatePriceOver100");
+                        }
+                        else
+                        {
+                            if (formatString.HasValue())
+                            {
+                                fareEstimate = String.Format(appResource.GetString(formatString), directionInfo.FormattedPrice);
+                            }
+                            else
+                            {
+                                fareEstimate = directionInfo.FormattedPrice;
+                            }
+                            
+                        }
+
+                        if (directionInfo.Distance.HasValue)
+                        {
+                            fareEstimate += " " + String.Format(appResource.GetString("EstimateDistance"), directionInfo.FormattedDistance);
+
+                        }
+                    }
+                    else
+                    {
+                        fareEstimate = String.Format(appResource.GetString("EstimatedFareNotAvailable"));
+                    }
+
+
+                }
+
+            }
+
+            return fareEstimate;
+        }
         public bool CancelOrder(Guid orderId)
         {
             bool isCompleted = false;

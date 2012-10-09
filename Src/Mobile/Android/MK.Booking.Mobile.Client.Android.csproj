@@ -84,9 +84,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activities\BaseActivity.cs" />
     <Compile Include="Activities\Book\BookDetailActivity.cs" />
     <Compile Include="Activities\Book\BookingStatusActivity.cs" />
-    <Compile Include="Activities\Book\Bookv2Activity.cs" />
+    <Compile Include="Activities\Book\BookActivity.cs" />
     <Compile Include="Activities\Book\DateTimePickerActivity.cs" />
     <Compile Include="Activities\Book\LocationListener.cs" />
     <Compile Include="Activities\Book\LocationService.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="Controls\AutoCompleteBindableTextView.cs" />
     <Compile Include="Controls\BaloonLayout.cs" />
     <Compile Include="Controls\BindableSelectionButton.cs" />
+    <Compile Include="Controls\HeaderedLayout.cs" />
     <Compile Include="Controls\TextButton.cs" />
     <Compile Include="Controls\IconActionControl.cs" />
     <Compile Include="Controls\TouchMap.cs" />
@@ -117,6 +119,7 @@
     <Compile Include="Diagnostic\Logger.cs" />
     <Compile Include="Helpers\AlertDialogHelper.cs" />
     <Compile Include="Helpers\Confirmation.cs" />
+    <Compile Include="Helpers\DrawHelper.cs" />
     <Compile Include="Helpers\SerializerHelper.cs" />
     <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="Helpers\ThreadHelper.cs" />
@@ -136,7 +139,7 @@
     <Compile Include="Models\HistoryModel.cs" />
     <Compile Include="Models\IconAction.cs" />
     <Compile Include="Models\LocationModel.cs" />
-    <Compile Include="Models\LocationTypes.cs" />
+    <Compile Include="Models\LocationType.cs" />
     <Compile Include="Activities\Account\PasswordRecoveryActivity.cs" />
     <Compile Include="Models\NavigationStrings.cs" />
     <Compile Include="Models\OrderItemListModel.cs" />
@@ -149,7 +152,6 @@
     <AndroidResource Include="Resources\Layout\TitleSubTitleListItem.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Layout\dropdownRow.axml" />
     <AndroidResource Include="Resources\Layout\IconActionLayout.axml" />
     <AndroidResource Include="Resources\Drawable\cell_bottom_full_state.xml">
       <SubType>AndroidResource</SubType>
@@ -199,13 +201,13 @@
     <AndroidAsset Include="Assets\HelveticaNeueLTPro-Th.otf" />
     <AndroidAsset Include="Assets\HelveticaNeueLTPro-Roman2.otf" />
     <AndroidAsset Include="Assets\HelveticaNeueLTPro-Bd.otf" />
-    <AndroidResource Include="Resources\Layout\Login.axml">
+    <AndroidResource Include="Resources\Layout\View_Login.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Layout\SignUp.axml">
+    <AndroidResource Include="Resources\Layout\View_SignUp.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Layout\PasswordRecovery.axml">
+    <AndroidResource Include="Resources\Layout\View_PasswordRecovery.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\ListHeader.axml">
@@ -214,17 +216,22 @@
     <AndroidResource Include="Resources\Layout\SimpleListItem.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Layout\About.axml">
+    <AndroidResource Include="Resources\Layout\View_About.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Layout\RideSettings.axml" />
-    <AndroidResource Include="Resources\Layout\LocationDetail.axml">
+    <AndroidResource Include="Resources\Layout\View_RideSettings.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Layout\HistoryDetail.axml">
+    <AndroidResource Include="Resources\Layout\View_LocationDetail.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\View_HistoryDetail.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\LabelValueCell.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\View_LocationList.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Values\String.xml">
@@ -232,7 +239,7 @@
     </AndroidResource>
     <AndroidResource Include="Resources\Values\Color.xml" />
     <AndroidResource Include="Resources\Drawable\roundedContainer.xml" />
-    <AndroidResource Include="Resources\Layout\BookingDetail.axml">
+    <AndroidResource Include="Resources\Layout\View_BookingDetail.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\SpinnerText.axml" />
@@ -249,32 +256,25 @@
     <AndroidResource Include="Resources\Layout\ChooseCompany.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Layout\BooleanCell.axml" />
-    <AndroidResource Include="Resources\Layout\BookingStatus.axml">
+    <AndroidResource Include="Resources\Layout\View_BookingStatus.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Layout\DateTimePicker.axml">
+    <AndroidResource Include="Resources\Layout\View_DateTimePicker.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Layout\Baloon.axml">
+    <AndroidResource Include="Resources\Layout\Control_Baloon.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Layout\LocationPick.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\Layout\HistoryListView.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\Layout\LocationList.axml">
+    <AndroidResource Include="Resources\Layout\View_HistoryList.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\TitleListItem.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Layout\Bookv2.axml">
+    <AndroidResource Include="Resources\Layout\View_Book.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Layout\SearchAddress.axml">
+    <AndroidResource Include="Resources\Layout\View_SearchAddress.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\MenuItem.axml" />
@@ -333,7 +333,6 @@
     <AndroidResource Include="Resources\Drawable\btnPickup.xml" />
     <AndroidResource Include="Resources\Drawable\btnDest.xml" />
     <AndroidResource Include="Resources\Drawable\background.png" />
-    <AndroidResource Include="Resources\Drawable\footer.png" />
     <AndroidResource Include="Resources\Drawable\header.png" />
     <AndroidResource Include="Resources\Drawable\topFieldBackgroundLg.png" />
     <AndroidResource Include="Resources\Drawable\topFieldBackgroundSm.png" />
@@ -482,8 +481,8 @@
     <AndroidResource Include="Resources\Drawable\bookLater_state.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\Drawable\Logo2.png" />
     <AndroidResource Include="Resources\Drawable\Logo.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\Logo.png" />
     <AndroidResource Include="Resources\Drawable\myLocationButton_state.xml" />
     <AndroidResource Include="Resources\Drawable\bookLaterButton_state.xml" />
     <AndroidResource Include="Resources\Drawable\drop_shadow.xml" />
@@ -503,6 +502,8 @@
     <AndroidResource Include="Resources\drawable-hdpi\pin_selected.png" />
     <AndroidResource Include="Resources\Drawable\cancel.png" />
     <AndroidResource Include="Resources\drawable-hdpi\cancel.png" />
+    <AndroidResource Include="Resources\Values\HeaderedLayoutAttributes.xml" />
+    <AndroidResource Include="Resources\Values\FontSize.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -525,7 +526,7 @@
       <Name>MK.Booking.Api.Contract.Android</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.Android.csproj">
-      <Project>{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}</Project>
+      <Project>{bdec449b-7c09-4302-aef1-af46b34be9a6}</Project>
       <Name>MK.Common.Android</Name>
     </ProjectReference>
     <ProjectReference Include="..\Common\MK.Booking.Mobile.Android.csproj">
@@ -544,12 +545,26 @@
       <Project>{43A48F1C-39F3-4C1C-8831-5D3EF45744FE}</Project>
       <Name>Cirrious.MvvmCross.Android.Maps</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Libraries\Newtonsoft.Json\Newtonsoft.Json\Newtonsoft.Json.MonoDroid.csproj">
+      <Project>{E6C3413C-919B-486D-8B6C-225CBD921B98}</Project>
+      <Name>Newtonsoft.Json.MonoDroid</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\HelveticaNeueLTPro-It.otf" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\RefineAddress.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Layout\Control_HeaderedLayout.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Layout\SubView_MainMenu.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>

@@ -76,24 +76,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			try
 			{
 				TinyIoCContainer.Current.Resolve<IMessageService>().ShowProgress(true);
-				UserInteractionEnabled = false;
-				string error = "";                      
-				var account = _accountService.GetAccount(Email, Password, out error);
+				UserInteractionEnabled = false;				
+				var account = _accountService.GetAccount(Email, Password);
 				if (account != null)
 				{
 					SetAccountInfo(account);
 				}
-				else
-				{
-					if (error.IsNullOrEmpty())
-					{
-						TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage( _appRessources.GetString("InvalidLoginMessageTitle"), _appRessources.GetString("AccountNotValidatedMessage"), _appRessources.GetString("ResendValidationButton"), () => _accountService.ResendConfirmationEmail(Email) );
-					}
-					else
-					{
-						TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage( _appRessources.GetString("InvalidLoginMessageTitle"), _appRessources.GetString("InvalidLoginMessage") + " (" + error + ")");
-					}
-				}
+                //else
+                //{
+                //    if (error.IsNullOrEmpty())
+                //    {
+                //        TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage( _appRessources.GetString("InvalidLoginMessageTitle"), _appRessources.GetString("AccountNotValidatedMessage"), _appRessources.GetString("ResendValidationButton"), () => _accountService.ResendConfirmationEmail(Email) );
+                //    }
+                //    else
+                //    {
+                //        TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage( _appRessources.GetString("InvalidLoginMessageTitle"), _appRessources.GetString("InvalidLoginMessage") + " (" + error + ")");
+                //    }
+                //}
 			}
 			finally
 			{
@@ -103,25 +102,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		public void SetAccountInfo(Account account)
-		{
-			_appContext.LastEmail = Email;
-			_appContext.LoggedInEmail = Email;
-			InvokeOnMainThread(() => _appContext.UpdateLoggedInUser(account, false));
-			RequestNavigate<BookViewModel>(true);
-
-//			if( CanClose() )
-//			{
-//				this.Close();
-//				//RequestClose( this );
-//			}
-
-
-//			if (_appContext.Controller.SelectedRefreshableViewController != null)
-//			{
-//				InvokeOnMainThread(() => { _appContext.Controller.SelectedRefreshableViewController.RefreshData(); });
-//			}
-		}
+        public void SetAccountInfo(Account account)
+        {
+            _appContext.LastEmail = Email;
+            _appContext.LoggedInEmail = Email;
+            InvokeOnMainThread(() => _appContext.UpdateLoggedInUser(account, false));
+            RequestNavigate<BookViewModel>(true);
+        }
 
 	}
 }

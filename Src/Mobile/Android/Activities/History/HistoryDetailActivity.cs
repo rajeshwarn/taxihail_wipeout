@@ -25,16 +25,20 @@ using apcurium.MK.Booking.Mobile.Messages;
 namespace apcurium.MK.Booking.Mobile.Client.Activities.History
 {
     [Activity(Label = "History Details", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
-    public class HistoryDetailActivity : Activity
+    public class HistoryDetailActivity : BaseActivity
     {
         private TinyMessageSubscriptionToken _closeViewToken;       
         private Order _data;
 
+        protected override int ViewTitleResourceId
+        {
+            get { return Resource.String.View_HistoryDetail; }
+        }
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
             _closeViewToken = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<CloseViewsToRoot>(m => Finish());            
-            SetContentView(Resource.Layout.HistoryDetail);
+            SetContentView(Resource.Layout.View_HistoryDetail);
             SetHistoryData(Guid.Parse(Intent.Extras.GetString(NavigationStrings.HistorySelectedId.ToString())));
             UpdateUI();
 

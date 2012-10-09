@@ -12,15 +12,22 @@ using Android.Widget;
 using Android.Util;
 using Android.Graphics;
 using Android.Text;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
 	public class SpinningSearch : LinearLayout
     {
+        private static int _progressSize = DrawHelper.GetPixels(28);
+        private static int _searchImageSearch = DrawHelper.GetPixels(20);
+        
+
         private bool _isProgressing;
         private ProgressBar _bar;
         private ImageView _image;
+
         
+
 		public SpinningSearch(Context context) : base(context)
         {
             Initialize();
@@ -46,7 +53,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             _bar.Indeterminate = true;
             _bar.Visibility = ViewStates.Gone;
 			_bar.IndeterminateDrawable.SetColorFilter( Color.Rgb(147,152,157), PorterDuff.Mode.Multiply );
-			var layout = new LinearLayout.LayoutParams(40, 40 );
+            var layout = new LinearLayout.LayoutParams(_progressSize, _progressSize);
             layout.Gravity = GravityFlags.CenterVertical | GravityFlags.Left;
             AddView(_bar, layout);
 
@@ -55,7 +62,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             _image.SetScaleType(ImageView.ScaleType.Center);
             
             _image.Visibility = ViewStates.Visible;
-			layout = new LayoutParams(30, 30);
+            layout = new LayoutParams(_searchImageSearch, _searchImageSearch);
             layout.Gravity = GravityFlags.CenterVertical | GravityFlags.Left;
             AddView(_image, layout);
 

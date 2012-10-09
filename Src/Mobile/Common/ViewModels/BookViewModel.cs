@@ -84,41 +84,41 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void CalculateEstimate(object state)
         {
-            _fareEstimate = _appResource.GetString("NoFareText");
+            _fareEstimate = TinyIoCContainer.Current.Resolve<IBookingService>().GetFareEstimateDisplay(Order, "EstimatePrice" , "NoFareText");
+
+            //_fareEstimate = _appResource.GetString("NoFareText");
+             
+            //if (Order != null && Order.PickupAddress.HasValidCoordinate() && Order.DropOffAddress.HasValidCoordinate())
+            //{
+            //    var directionInfo = TinyIoCContainer.Current.Resolve<IGeolocService>().GetDirectionInfo(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, Order.DropOffAddress.Latitude, Order.DropOffAddress.Longitude);
+            //    if (directionInfo != null)
+            //    {
+            //        if (directionInfo.Price.HasValue)
+            //        {
+            //            if (directionInfo.Price.Value > 100)
+            //            {
+            //                _fareEstimate = _appResource.GetString("EstimatePriceOver100");
+            //            }
+            //            else
+            //            {
+            //                _fareEstimate = String.Format(_appResource.GetString("EstimatePrice"), directionInfo.FormattedPrice);
+            //            }
+
+            //            if (directionInfo.Distance.HasValue)
+            //            {
+            //                _fareEstimate += " " + String.Format(_appResource.GetString("EstimateDistance"), directionInfo.FormattedDistance);
+
+            //            }
+            //        }
+            //        else
+            //        {
+            //            _fareEstimate = String.Format(_appResource.GetString("EstimatedFareNotAvailable"));
+            //        }
 
 
+            //    }
 
-			if (Order != null && Order.PickupAddress.HasValidCoordinate() && Order.DropOffAddress.HasValidCoordinate())
-            {
-                var directionInfo = TinyIoCContainer.Current.Resolve<IGeolocService>().GetDirectionInfo(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude, Order.DropOffAddress.Latitude, Order.DropOffAddress.Longitude);
-                if (directionInfo != null)
-                {
-                    if (directionInfo.Price.HasValue)
-                    {
-                        if (directionInfo.Price.Value > 100)
-                        {
-                            _fareEstimate = _appResource.GetString("EstimatePriceOver100");
-                        }
-                        else
-                        {
-                            _fareEstimate = String.Format(_appResource.GetString("EstimatePrice"), directionInfo.FormattedPrice);
-                        }
-
-                        if (directionInfo.Distance.HasValue)
-                        {
-                            _fareEstimate += " " + String.Format(_appResource.GetString("EstimateDistance"), directionInfo.FormattedDistance);
-
-                        }
-                    }
-                    else
-                    {
-                        _fareEstimate = String.Format(_appResource.GetString("EstimatedFareNotAvailable"));
-                    }
-
-
-                }
-
-            }
+            //}
 
             InvokeOnMainThread(() => FirePropertyChanged(() => FareEstimate));
 
