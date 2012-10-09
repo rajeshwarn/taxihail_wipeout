@@ -1,5 +1,8 @@
 ﻿(function () {
     TaxiHail.AddFavoriteView = TaxiHail.TemplatedView.extend({
+
+        className: 'add-favorite-view',
+
         events: {
             "click [data-action=save]": "save",
             "change :text[data-action=changesettings]": "onSettingsPropertyChanged",
