@@ -42,7 +42,7 @@
         },
 
         onServerError: function (model, result) {
-            this.$('form :submit').button('reset');
+            this.$(':submit').button('reset');
             //server validation error
             if (result.statusText) {
                var $alert = $('<div class="alert alert-error" />');
