@@ -77,8 +77,6 @@
         onsubmit: function (form) {
             this.model.save({}, { error: this.onServerError });
         }
-        
-        
     });
 
     _.extend(View.prototype, TaxiHail.ValidatedView);
