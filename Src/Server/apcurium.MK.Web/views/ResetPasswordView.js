@@ -47,7 +47,7 @@
                 $.post('api/account/resetpassword/' + email, {
                 emailAddress: email
             }, function () {
-                $("#notif-bar").html(TaxiHail.localize('resetPassword.emailSent'));
+                $("#notif-bar").html(TaxiHail.localize('resetPassword.reset'));
                 $("#email").val("");
             }, 'json').fail(function (response) {
                 if (response.status == 404) {
