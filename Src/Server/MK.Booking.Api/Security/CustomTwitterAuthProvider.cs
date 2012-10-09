@@ -28,6 +28,7 @@ namespace apcurium.MK.Booking.Api.Security
         {
             var account = Dao.FindByTwitterId(session.UserAuthName);
             session.UserAuthId = account.Id.ToString();
+            session.IsAuthenticated = true;
             authService.SaveSession(session, SessionExpiry);
         }
     }

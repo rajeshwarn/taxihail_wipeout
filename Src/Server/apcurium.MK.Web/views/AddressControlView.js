@@ -31,7 +31,7 @@
             var toggleClass = this.$("[data-action=toggletarget]").attr('class');
 
             var data = _.extend(this.model.toJSON(), {
-                options: _.pick(this.options, 'locate', 'clear')
+                options: _.pick(this.options, 'locate', 'clear', 'pin')
             });
 
             this.$el.html(this.renderTemplate(data));

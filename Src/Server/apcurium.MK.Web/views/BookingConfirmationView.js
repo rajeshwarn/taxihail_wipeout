@@ -1,6 +1,7 @@
 ﻿(function () {
-    var settings;
-    var settingschanged = false;
+    var settings,
+        settingschanged = false,
+        popoverTemplate = '<div class="popover popover-warning"><div class="arrow"></div><div class="popover-inner"><div class="popover-content"><p></p></div></div></div>';
     
     TaxiHail.BookingConfirmationView = TaxiHail.TemplatedView.extend({
         
@@ -11,7 +12,7 @@
             'change :text[data-action=changesettings]': 'onSettingsPropertyChanged',
             'change :input[data-action=changesettings]': 'onSettingsPropertyChanged'
         },
-        initialize: function () { 
+        initialize: function () {
 
             _.bindAll(this, "renderResults", 'showErrors');
             
@@ -39,17 +40,9 @@
 
         render: function (param) {
 
-            this.$el.html(this.renderTemplate(this.model.toJSON()));
-            //this.renderItem(this.model);
-            
-
-            Handlebars.registerHelper('ifCond', function (v1, v2, options) {
-                if (v1 == v2) {
-                    return options.fn(this);
-                } else {
-                    return options.inverse(this);
-                }
-            });
+            // Close popover if it is open
+            // Otherwise it will stay there forever
+            this.$('[data-popover]').popover('hide');
 
             var data = this.model.toJSON();
 
@@ -60,8 +53,13 @@
 
             this.$el.html(this.renderTemplate(data));
 
-            if (this.model.get('dropOffAddress')) {
-                this.showInfos(TaxiHail.localize('Warning_when_booking_without_destination'));
+
+            //this.$(':text, select').editInPlace();
+
+            if (this.model.has('dropOffAddress')) {
+                this.showEstimatedFareWarning();
+            } else {
+                this.$('[data-dropoff]').text(TaxiHail.localize('NotSpecified'));
             }
             
 
@@ -79,7 +77,7 @@
                 },
                 messages: {
                     name: {
-                        required: TaxiHail.localize('error.NameRequired'),
+                        required: TaxiHail.localize('error.NameRequired')
                     },
                     phone: {
                         required: TaxiHail.localize('error.PhoneRequired'),
@@ -87,7 +85,7 @@
                     },
                     passengers: {
                         required: TaxiHail.localize('error.PassengersRequired'),
-                        number: TaxiHail.localize('error.NotANumber'),
+                        number: TaxiHail.localize('error.NotANumber')
                     }
                 },
                 highlight: function (label) {
@@ -104,18 +102,26 @@
         },
         
         renderResults: function (result) {
-            
+            if (result.price > 100) {
+                this.model.set('priceEstimate', TaxiHail.localize("CallForPrice"));
+            } else {
+                this.model.set('priceEstimate', result.formattedPrice);
+            }
             this.model.set({
-                'priceEstimate': result.formattedPrice,
                 'distanceEstimate': result.formattedDistance
             });
             this.render();
+        },
+
+        remove: function() {
+
+            this.$('[data-popover]').popover('hide');
+            this.$el.remove();
         },
         
         book: function (e) {
             
             e.preventDefault();
-            //this.model.set('settings', settings);
             if (this.$("#updateBookingSettingsForm").valid()) {
                 this.$('#bookBt').button('loading');
                 this.model.save({}, {
@@ -150,11 +156,15 @@
             this.$('.errors').html($alert);
         },
         
-        showInfos : function (message) {
-            var infos = $('<div class="alert alert-block" />').text(message);
+        showEstimatedFareWarning : function () {
 
-            
-            this.$('.infos').html(infos);
+            $('[data-popover]').popover({
+                content: this.localize('EstimatedFareWarning'),
+                trigger: 'manual',
+                offsetX: -22,
+                template: popoverTemplate
+            }).popover('show');
+
         },
         
         onPickupPropertyChanged: function (e) {

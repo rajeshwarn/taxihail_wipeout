@@ -31,11 +31,18 @@
             }, this);
             
              this.model.on('change:estimate', function(model, value){
-                if(value.formattedPrice && value.formattedDistance) {
-                    this.$('.estimate')
-                        .removeClass('hidden')
-                        .find('.fare')
-                            .text(value.formattedPrice + ' (' + value.formattedDistance + ')');
+                 if (value.formattedPrice && value.formattedDistance) {
+                     this.$('.estimate')
+                        .removeClass('hidden') ;
+                     
+                     if (value.price > 100) {
+                         this.$('.estimate')
+                         .find('.fare')
+                            .text(TaxiHail.localize('CallForPrice') + ' (' + value.formattedDistance + ')');
+                     } else {
+                         this.$('.estimate').find('.fare').text(value.formattedPrice + ' (' + value.formattedDistance + ')');
+                     }
+                    
                 } else {
                     this.$('.estimate').addClass('hidden');
                 }
@@ -54,11 +61,13 @@
 
             this._pickupAddressView = new TaxiHail.AddressControlView({
                     model: pickupAddress,
-                    locate: true
+                    locate: true,
+                    pin: 'green'
                 });
             this._dropOffAddressView = new TaxiHail.AddressControlView({
                     model: dropOffAddress,
-                    clear: true
+                    clear: true,
+                    pin: 'red'
             });
             
             

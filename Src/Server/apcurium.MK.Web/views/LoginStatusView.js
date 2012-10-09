@@ -3,8 +3,7 @@
     TaxiHail.LoginStatusView = TaxiHail.TemplatedView.extend({
 
         events: {
-            'click [data-action=logout]': 'logout',
-            'click [data-action=goToUserAccount] ': 'goToUserAccount',
+            'click [data-action=logout]': 'logout'
         },
 
         initialize: function () {
@@ -14,7 +13,8 @@
         render: function () {
 
             var data = _.extend(this.model.toJSON(), {
-                isLoggedIn: TaxiHail.auth.isLoggedIn()
+                isLoggedIn: TaxiHail.auth.isLoggedIn(),
+                name: this.model.has('settings') ? this.model.get('settings').name : this.model.get('name')
             });
 
             this.$el.html(this.renderTemplate(data));
@@ -25,11 +25,6 @@
         logout: function (e) {
             e.preventDefault();
             TaxiHail.auth.logout();
-        },
-        
-        goToUserAccount : function (e) {
-            e.preventDefault();
-            TaxiHail.app.navigate('useraccount', { trigger: true });
         }
 
     });

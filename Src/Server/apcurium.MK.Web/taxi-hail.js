@@ -36,12 +36,29 @@ TaxiHail.loader = {
 };
 $(function () {
     TaxiHail.loader.load(
-        /* Localizations */["Home", "Book", "BookLater", "Login", "AddressSelection", "BookingConfirmation", "SettingsEdit", "Signup", "LoginStatus", "Map", "BookingStatus", "Profile", "UpdatePassword", "ResetPassword", "OrderHistory", "OrderHistoryDetail", "OrderItem", "BootstrapConfirmation", "Global"],
-        /* Templates*/["Home", "Book", "BookLater", "Login", "AddressSelection", "AddressItem", "AddressControl", "AddressSearch", "BookingConfirmation", "SettingsEdit", "Signup", "LoginStatus", "BookingStatus", "Profile", "UserAccount", "UpdatePassword", "ResetPassword", "OrderHistory", "OrderHistoryDetail", "OrderItem", "BootstrapConfirmation"],
+        /* Localizations */["Home", "Book", "BookLater", "Login", "AddressSelection", "BookingConfirmation", "SettingsEdit", "Signup", "LoginStatus", "Map", "BookingStatus", "Profile", "UpdatePassword", "ResetPassword", "OrderHistory", "OrderHistoryDetail", "OrderItem", "BootstrapConfirmation","AddFavorite", "Global"],
+        /* Templates*/["Home", "Book", "BookLater", "Login", "AddressSelection", "AddressItem", "AddressControl", "AddressSearch", "BookingConfirmation", "SettingsEdit", "Signup", "LoginStatus", "BookingStatus", "Profile", "UserAccount", "UpdatePassword", "ResetPassword", "OrderHistory", "OrderHistoryDetail", "OrderItem", "BootstrapConfirmation", "FavoriteDetails", "AddFavorite", "Favorites"],
         function () {
 
             // Application starts here
-            TaxiHail.app = new TaxiHail.App();
-            Backbone.history.start();
+            // If user is logged in, we need to load its Account before we continue
+            if(TaxiHail.parameters.isLoggedIn) {
+
+                new TaxiHail.UserAccount().fetch({
+                    success: function(model) {
+
+                        TaxiHail.app = new TaxiHail.App({
+                            account: model
+                        });
+                        Backbone.history.start();
+
+                    }
+                });
+                
+            } else {
+                TaxiHail.app = new TaxiHail.App();
+                Backbone.history.start();
+            }
+
         });
 });

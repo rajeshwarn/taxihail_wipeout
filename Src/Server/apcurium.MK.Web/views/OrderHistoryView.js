@@ -31,12 +31,9 @@
             var view = new TaxiHail.OrderItemView({
                 model: model
             });
-            this.$('.table').append(view.el);
+            this.$('ul').append(view.el);
             view.render();
-        },
-
-
-       
+        }
     });
 
 }());

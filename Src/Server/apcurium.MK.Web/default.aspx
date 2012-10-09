@@ -27,6 +27,7 @@
         <script src="assets/js/handlebars-1.0.rc.1.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         <script src="assets/js/jquery.hotkeys.js"></script>
+        <script src="assets/js/jquery.edit-in-place.js"></script>
         <script src="http://jzaefferer.github.com/jquery-validation/jquery.validate.js"></script>
         <script src="assets/js/underscore.js"></script>
         <script src="assets/js/backbone.js"></script>
@@ -36,6 +37,7 @@
         <script src="assets/bootstrap/js/bootstrap-modal.js"></script>
         <script src="assets/bootstrap/js/bootstrap-dropdown.js"></script>
         <script src="assets/bootstrap/js/bootstrap-tooltip.js"></script>
+        <script src="assets/js/bootstrap-tooltip.js"></script>
         <script src="assets/bootstrap/js/bootstrap-popover.js"></script>
         <script src="assets/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
         <script src="assets/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
@@ -50,6 +52,7 @@
         <script type="text/javascript">
             TaxiHail.parameters.defaultLatitude = <%: this.DefaultLatitude %>;
             TaxiHail.parameters.defaultLongitude = <%: this.DefaultLongitude %>;
+            TaxiHail.parameters.isLoggedIn = <%: this.IsAuthenticated ? "true" : "false" %>;
         </script>
 
         <script src="utils.js"></script>
@@ -88,8 +91,10 @@
         <script src="views/OrderHistoryDetailView.js"></script>
         <script src="views/OrderItemView.js"></script>
         <script src="views/BootstrapConfirmationView.js"></script>
-
-
+        <script src="views/FavoriteDetailsView.js"></script>
+        <script src="views/AddFavoriteView.js"></script>
+        <script src="views/FavoritesView.js"></script>
+        
         <script src="services/AuthService.js"></script>
         <script src="services/OrderService.js"></script>
         <script src="services/GeocodingService.js"></script>

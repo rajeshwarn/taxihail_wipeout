@@ -1,8 +1,12 @@
 ﻿@import "TaxiHail-mixins.less";
 @import "TaxiHail-forms.less";
+@import "TaxiHail-tables.less";
 @import "TaxiHail-buttons.less";
 @import "TaxiHail-navs.less";
 @import "TaxiHail-wells.less";
+@import "TaxiHail-popover.less";
+@import "TaxiHail-address-picker.less";
+@import "TaxiHail-locations.less";
 
 @map-z-index: 10;
 @container-z-index: @map-z-index * 10;
@@ -92,23 +96,21 @@ header {
 
 
 
-.estimate .fare {
-    font-weight: bold;
+.estimate {
+
+    margin-top: 5px;
+
+    .fare {
+        font-weight: bold;
+    }
 }
 
 
 // ICONS
-.icon-pin {
-    display:inline-block;
-    width:19px;
-    height:28px;
-    background: url(../img/pin-icon.png) top left no-repeat;
-    margin-top:-3px;
-}
 .icon-locate {
     display:inline-block;
-    width:19px;
-    height:21px;
+    width:15px;
+    height:15px;
     background: url(../img/location.png) top left no-repeat;
 }
 
@@ -119,64 +121,11 @@ header {
 }
 .icon-clear {
     display:inline-block;
-    width:20px;
-    height:20px;
+    width:14px;
+    height:15px;
     background: url(../img/cancel-icon.png) top left no-repeat;
 }
 
-
-/* Address selector */
-.address-picker {
-    position: relative;
-
-    input.address {
-        width:363px;
-    }
-
-    .tab-content {
-
-        width:375px;
-        min-height: 123px;
-        max-height: 200px;
-        background: @white;
-        border-left: 1px solid @inputBorder;
-        border-right: 1px solid @inputBorder;
-        
-        ul {
-            margin:10px;
-            padding:0;
-        }
-
-        li {
-            display: block;
-            overflow:hidden;
-            color: @black;
-            height: @baseLineHeight;
-
-            a, a:link, a:active, a:visited, a:hover, a.active {
-                color: @black;
-            }
-
-            a.active {
-                text-decoration: underline;
-            }
-
-            &:last-child {
-                .border-radius(0 0 4px 4px);
-            }
-
-            &.no-result {
-                font-style: italic;
-            }
-
-            &.optgroup {
-                font-weight: bold;
-            }
-
-        }
-
-    }
-}
 
 .spinner-address {
     margin-right: auto;
@@ -186,8 +135,8 @@ header {
 
 .address-selector-container {
     position:absolute;
-    top: 40px;
-    left:47px;
+    top: 30px;
+    left:39px;
 }
 
 
@@ -216,7 +165,8 @@ header {
    float:right;
 }
 
-		width : 95%;
+
+
 
 .signup-view {
     .input-block-level {
@@ -250,8 +200,3 @@ header {
     font-weight: bold;
 }
 
-.select-taxihail {
-    height: 40px;
-    min-height: 40px;
-	width: 100%;
-}

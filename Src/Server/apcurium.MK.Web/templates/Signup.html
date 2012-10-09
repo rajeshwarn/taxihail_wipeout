@@ -1,14 +1,13 @@
 ﻿<div class='row'>
     <div class='span6'>
         <div class="well">
-            <form class="form-horizontal" id="signupForm">
-                <h3>{{localize "SignupTitle"}}</h3>
+                <legend>{{localize "SignupTitle"}}</legend>
                 <div class="errors"></div>
                 <div class="control-group">
                     <label class="control-label" for="signup-email">{{localize "Email"}}</label>
                     <div class="controls">
-                        <input type="text" id="email" name="email" value="" data-error-style="inline" class='input-block-level'>
                         <span class="valid-input hidden"><img src="assets/img/validFieldGreen.png" width="8" height="8" alt="valid field"/></span>
+                        <input type="text" id="email" name="email" value="" data-error-style="inline" class='input-block-level'>
                     </div>
                 </div>
                 <div class="control-group">
@@ -41,10 +40,9 @@
                 </div>
             <div class="control-group">
                 <div class="controls">
-                    <button style="margin-right: 17px;" type="submit" class="btn btn-primary btn-large pull-right span2" data-action="dosignup" data-loading-text="{{localize 'Loading'}}">{{localize "CreateBt"}}</button>
+                    <button style="margin-right: 17px;" type="submit" class="btn btn-primary pull-right span" data-action="dosignup" data-loading-text="{{localize 'Loading'}}">{{localize "CreateBt"}}</button>
                 </div>
             </div>
-        </form>
         </div>
     </div>
 </div>
