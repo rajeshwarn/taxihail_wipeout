@@ -345,6 +345,10 @@
     <Content Include="themes\AtlantaCheckerCab\img\header-bg.png" />
     <Content Include="themes\AtlantaCheckerCab\img\location.png" />
     <Content Include="themes\AtlantaCheckerCab\img\logo.png" />
+    <Content Include="themes\CheckerYellowCabPalmetto\img\cancel-icon.png" />
+    <Content Include="themes\CheckerYellowCabPalmetto\img\header-bg.png" />
+    <Content Include="themes\CheckerYellowCabPalmetto\img\location.png" />
+    <Content Include="themes\CheckerYellowCabPalmetto\img\logo.png" />
     <Content Include="themes\TaxiHail\img\header-bg.png" />
     <Content Include="themes\TaxiHail\img\logo.png" />
     <Content Include="utils.js" />
@@ -629,6 +633,18 @@
     <Content Include="assets\less\TaxiHail-address-picker.less" />
     <Content Include="assets\less\TaxiHail-locations.less" />
     <Content Include="assets\less\TaxiHail-popover.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\CheckerYellowCabPalmetto\less\combined-responsive.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\CheckerYellowCabPalmetto\less\combined.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\CheckerYellowCabPalmetto\less\style.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\CheckerYellowCabPalmetto\less\variables.less" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
