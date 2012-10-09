@@ -28,7 +28,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         <script src="assets/js/jquery.hotkeys.js"></script>
         <script src="assets/js/jquery.edit-in-place.js"></script>
-        <script src="http://jzaefferer.github.com/jquery-validation/jquery.validate.js"></script>
+        <script src="assets/js/jquery.validate.js"></script>
         <script src="assets/js/underscore.js"></script>
         <script src="assets/js/backbone.js"></script>
         <script src="assets/bootstrap/js/bootstrap-alert.js"></script>
@@ -56,7 +56,11 @@
         </script>
 
         <script src="utils.js"></script>
-        
+
+
+        <!-- mixins -->
+        <script src="mixins/ValidatedView.js"></script>
+
         <!-- models -->
         <script src="models/Address.js"></script>
         <script src="models/Order.js"></script>

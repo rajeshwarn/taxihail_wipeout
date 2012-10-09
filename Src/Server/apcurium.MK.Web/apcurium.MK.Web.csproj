@@ -268,6 +268,7 @@
     <Content Include="assets\bootstrap\less\tests\forms.html" />
     <Content Include="assets\bootstrap\less\tests\navbar.html" />
     <Content Include="assets\img\cancel-icon.png" />
+    <Content Include="assets\img\green-dot-with-padding.png" />
     <Content Include="assets\img\location.png" />
     <Content Include="assets\img\pin-icon.png" />
     <Content Include="assets\img\pin_green.png" />
@@ -284,6 +285,7 @@
     <Content Include="assets\js\handlebars-1.0.rc.1.js" />
     <Content Include="assets\js\jquery.edit-in-place.js" />
     <Content Include="assets\js\jquery.hotkeys.js" />
+    <Content Include="assets\js\jquery.validate.js" />
     <Content Include="assets\js\modernizr.js" />
     <Content Include="assets\js\spin.js" />
     <Content Include="assets\js\underscore.js" />
@@ -305,6 +307,7 @@
     <Content Include="log4net.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="mixins\ValidatedView.js" />
     <Content Include="models\NewAccount.js" />
     <Content Include="models\OrderStatus.js" />
     <Content Include="models\ReferenceData.js" />

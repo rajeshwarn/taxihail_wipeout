@@ -1,18 +1,16 @@
 (function() {
-    TaxiHail.SignupView = TaxiHail.TemplatedView.extend({
+    var View = TaxiHail.SignupView = TaxiHail.TemplatedView.extend({
     
         tagName: 'form',
         className: 'signup-view form-horizontal',
 
        events: {
-            "submit": "onsubmit",
             "change :text": "onPropertyChanged",
-            "change :password": "onPropertyChanged",
-            "click [data-action=dosignup]" : "onsubmit"
+            "change :password": "onPropertyChanged"
         },
-        
+
         initialize:function () {
-            _.bindAll(this, "onerror");
+            _.bindAll(this, "onsubmit");
             $.validator.addMethod(
         "regex",
         function (value, element, regexp) {
@@ -26,7 +24,7 @@
         render: function () {
             this.$el.html(this.renderTemplate());
 
-            this.$el.validate({
+            this.validate({
                 rules: {
                     email: {
                         required:true,
@@ -65,14 +63,7 @@
                         equalTo: TaxiHail.localize('Password are not the same')
                     }
                 },
-                highlight: function (label) {
-                    $(label).closest('.control-group').addClass('error');
-                    $(label).prevAll('.valid-input').addClass('hidden');
-                }, success: function (label) {
-                    $(label).closest('.control-group').removeClass('error');
-                    $(label).prevAll('.valid-input').removeClass('hidden');
-                    $(label).remove();
-                }
+                submitHandler: this.onsubmit
             });
 
             return this;
@@ -83,24 +74,13 @@
             this.model.set($input.attr('name'), $input.val(), {silent: true});
         },
         
-        onsubmit: function (e) {
-            e.preventDefault();
-            if (this.$el.valid()) {
-                this.$(':submit').button('loading');
-                this.$('.errors').empty();
-                this.model.save({}, { error: this.onerror });
-            }
-        },
-        
-        onerror: function (model, result) {
-            this.$(':submit').button('reset');
-            //server validation error
-            if (result.statusText) {
-               var $alert = $('<div class="alert alert-error" />');
-               $alert.text(this.localize(result.statusText));
-               this.$('.errors').html($alert);
-            }
-            
+        onsubmit: function (form) {
+            this.model.save({}, { error: this.onServerError });
         }
+        
+        
     });
+
+    _.extend(View.prototype, TaxiHail.ValidatedView);
+
 })();
