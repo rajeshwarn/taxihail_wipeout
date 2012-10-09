@@ -4,6 +4,11 @@
 
         className: 'tabs-below',
 
+        options: {
+            showFavorites: true,
+            showPlaces: true
+        },
+
         events: {
             'click .nav-tabs li>a': 'ontabclick'
         },
@@ -14,7 +19,7 @@
             $(document).bind('keydown', 'down', this.ondownarrow);
             $(document).bind('keydown', 'up', this.onuparrow);
             $(document).bind('keydown', 'return', this.onenter);
-            
+
             this.spinnerOptions = {
                 lines: 11, // The number of lines to draw
                 length: 3, // The length of each line
@@ -34,7 +39,8 @@
         render: function () {
 
             var data = _.extend(this.model.toJSON(), {
-                isLoggedIn: TaxiHail.auth.isLoggedIn()
+                showFavorites: this.options.showFavorites && TaxiHail.auth.isLoggedIn(),
+                showPlaces: this.options.showPlaces
             });
 
             this.$el.html(this.renderTemplate(data));
