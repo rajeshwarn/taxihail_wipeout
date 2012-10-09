@@ -1,46 +1,46 @@
 ﻿<div class='row'>
     <div class='span6'>
         <div class="well">
-            <legend>{{localize "SignupTitle"}}</legend>
-            <div class="errors"></div>
-            <div class="control-group">
-                <label class="control-label" for="signup-email">{{localize "Email"}}</label>
-                <div class="controls">
-                    <input type="text" id="email" name="email" value="" data-error-style="inline" class='input-block-level'>
-                    <span class="valid-input hidden"><img src="assets/img/validFieldGreen.png" width="8" height="8" alt="valid field"/></span>
+                <legend>{{localize "SignupTitle"}}</legend>
+                <div class="errors"></div>
+                <div class="control-group">
+                    <label class="control-label" for="signup-email">{{localize "Email"}}</label>
+                    <div class="controls">
+                        <span class="valid-input hidden"><img src="assets/img/validFieldGreen.png" width="8" height="8" alt="valid field"/></span>
+                        <input type="text" id="email" name="email" value="" data-error-style="inline" class='input-block-level'>
+                    </div>
                 </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="signup-fullname">{{localize "FullName"}}</label>
-                <div class="controls">
-                    <input type="text" id="signup-fullname" name="name" value="" data-error-style="inline" class='input-block-level'>
-                    <span class="valid-input hidden"><img src="assets/img/validFieldGreen.png" width="8" height="8" alt="valid field"/></span>
+                <div class="control-group">
+                    <label class="control-label" for="signup-fullname">{{localize "FullName"}}</label>
+                    <div class="controls">
+                        <span class="valid-input hidden"><img src="assets/img/validFieldGreen.png" width="8" height="8" alt="valid field"/></span>
+                        <input type="text" id="signup-fullname" name="name" value="" data-error-style="inline" class='input-block-level'>
+                    </div>
                 </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="signup-phone">{{localize "Phone"}}</label>
-                <div class="controls">
-                    <input type="text" id="signup-phone" name="phone" value="" data-error-style="inline" class='input-block-level'>
-                    <span class="valid-input hidden"><img src="assets/img/validFieldGreen.png" width="8" height="8" alt="valid field"/></span>
+                <div class="control-group">
+                    <label class="control-label" for="signup-phone">{{localize "Phone"}}</label>
+                    <div class="controls">
+                        <span class="valid-input hidden"><img src="assets/img/validFieldGreen.png" width="8" height="8" alt="valid field"/></span>
+                        <input type="text" id="signup-phone" name="phone" value="" data-error-style="inline" class='input-block-level'>
+                    </div>
                 </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="signup-password">{{localize "Password"}}</label>
-                <div class="controls">
-                    <input type="password" id="signup-password" name="password" value="" data-error-style="inline" class='input-block-level'>
-                    <span class="valid-input hidden"><img src="assets/img/validFieldGreen.png" width="8" height="8" alt="valid field"/></span>
+                <div class="control-group">
+                    <label class="control-label" for="signup-password">{{localize "Password"}}</label>
+                    <div class="controls">
+                        <span class="valid-input hidden"><img src="assets/img/validFieldGreen.png" width="8" height="8" alt="valid field"/></span>
+                        <input type="password" id="signup-password" name="password" value="" data-error-style="inline" class='input-block-level'>
+                    </div>
                 </div>
-            </div>
+                <div class="control-group">
+                    <label class="control-label" for="signup-confirm-password">{{localize "ConfirmPassword"}}</label>
+                    <div class="controls">
+                        <span class="valid-input hidden"><img src="assets/img/validFieldGreen.png" width="8" height="8" alt="valid field"/></span>
+                        <input type="password" id="signup-confirm-password" name="confirmPassword" value="" data-error-style="inline" class='input-block-level'>
+                    </div>    
+                </div>
             <div class="control-group">
-                <label class="control-label" for="signup-confirm-password">{{localize "ConfirmPassword"}}</label>
                 <div class="controls">
-                    <input type="password" id="signup-confirm-password" name="confirmPassword" value="" data-error-style="inline" class='input-block-level'>
-                    <span class="valid-input hidden"><img src="assets/img/validFieldGreen.png" width="8" height="8" alt="valid field"/></span>
-                </div>    
-            </div>
-            <div class="control-group">
-                <div class="controls">
-                    <button style="margin-right: 17px;" type="submit" class="btn btn-primary btn-large pull-right span2" data-loading-text="{{localize 'Loading'}}">{{localize "CreateBt"}}</button>
+                    <button style="margin-right: 17px;" type="submit" class="btn btn-primary pull-right span" data-action="dosignup" data-loading-text="{{localize 'Loading'}}">{{localize "CreateBt"}}</button>
                 </div>
             </div>
         </div>

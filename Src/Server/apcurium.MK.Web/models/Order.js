@@ -36,6 +36,10 @@
             TaxiHail.orderService.setCurrentOrder(this);
         },
 
+        destroyLocal: function() {
+            TaxiHail.orderService.clearCurrentOrder();
+        },
+
         cancel: function() {
 
             return $.post(this.url() + '/cancel', {

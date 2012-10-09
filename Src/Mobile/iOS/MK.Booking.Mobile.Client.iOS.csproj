@@ -65,7 +65,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
-    <CodesignKey>iPhone Developer</CodesignKey>
+    <CodesignKey>iPhone Distribution</CodesignKey>
     <MtouchI18n />
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <IpaPackageName />
@@ -76,6 +76,7 @@
     <MtouchExtraArgs>-v -v -v -v  -aot "nrgctx-trampolines=2500" -aot "nimt-trampolines=2500" -aot "ntrampolines=2500"</MtouchExtraArgs>
     <DefineConstants>MONOTOUCH;NET35;SILVERLIGHT</DefineConstants>
     <MtouchArch>ARMv7</MtouchArch>
+    <CodesignProvision>62FBE518-CB2C-45E6-8A60-5D326E4EBCBA</CodesignProvision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Distribution|iPhone' ">
     <DebugType>none</DebugType>

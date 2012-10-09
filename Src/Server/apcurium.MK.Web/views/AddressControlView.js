@@ -31,7 +31,7 @@
             var toggleClass = this.$("[data-action=toggletarget]").attr('class');
 
             var data = _.extend(this.model.toJSON(), {
-                options: _.pick(this.options, 'locate', 'clear')
+                options: _.pick(this.options, 'locate', 'clear', 'pin')
             });
 
             this.$el.html(this.renderTemplate(data));
@@ -94,7 +94,6 @@
                 radius: 6, // The radius of the inner circle
                 corners: 1, // Corner roundness (0..1)
                 rotate: 0, // The rotation offset
-                color: '#fff', // #rgb or #rrggbb
                 speed: 1, // Rounds per second
                 trail: 60, // Afterglow percentage
                 shadow: false, // Whether to render a shadow
@@ -135,7 +134,9 @@
         },
 
         onkeyup: function(e) {
-            this._selector && this._selector.search($(e.currentTarget).val());
+            if(!jQuery.hotkeys.specialKeys[ e.which ]) {
+                this._selector && this._selector.search($(e.currentTarget).val());
+            }
         },
 
         ondocumentclick: function(e) {

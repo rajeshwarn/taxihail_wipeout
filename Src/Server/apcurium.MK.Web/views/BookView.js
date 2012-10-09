@@ -5,17 +5,18 @@
         className: 'book-view',
 
         events: {
-            'click [data-action=book]': 'book'
+            'click [data-action=book]': 'book',
+            'click [data-action=later]': 'later'
         },
         
         initialize: function () {
 
             this.model.on('change', function(model, value) {
                 
-                // Enable the "Book Now!" button if model is valid
+                // Enable the buttons if model is valid
                 if(this.model.isValidAddress('pickupAddress')) {
-                    this.$('[data-action=book]').removeClass('disabled');
-                } else this.$('[data-action=book]').addClass('disabled');
+                    this.$('.buttons .btn').removeClass('disabled');
+                } else this.$('.buttons .btn').addClass('disabled');
 
             }, this);
 
@@ -53,11 +54,13 @@
 
             this._pickupAddressView = new TaxiHail.AddressControlView({
                     model: pickupAddress,
-                    locate: true
+                    locate: true,
+                    pin: 'green'
                 });
             this._dropOffAddressView = new TaxiHail.AddressControlView({
                     model: dropOffAddress,
-                    clear: true
+                    clear: true,
+                    pin: 'red'
             });
             
             
@@ -108,7 +111,7 @@
             }, this);
 
             if(!this.model.isValidAddress('pickupAddress')){
-                this.$('[data-action=book]').addClass('disabled');
+                this.$('.buttons .btn').addClass('disabled');
             }
             return this;
         },
@@ -140,6 +143,14 @@
             if(this.model.isValidAddress('pickupAddress')) {
                 this.model.saveLocal();
                 TaxiHail.app.navigate('confirmationbook', { trigger:true });
+            }
+        },
+
+        later: function (e) {
+            e.preventDefault();
+            if(this.model.isValidAddress('pickupAddress')) {
+                this.model.saveLocal();
+                TaxiHail.app.navigate('later', { trigger:true });
             }
         }
     });

@@ -11,12 +11,12 @@ using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Booking.Mobile.Client.Converters;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common.Entity;
+using System.Reactive.Linq;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
     public class TouchMap : MapView
     {
-
         public event EventHandler MapTouchUp;
 
         public IMvxCommand MapMoved { get; set; }
@@ -49,23 +49,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         }
 
         private void Initialize()
-        {            
+        {
+            Observable.FromEventPattern(this, "MapTouchUp")
+              .Throttle(TimeSpan.FromSeconds(0.5))
+              .Subscribe(v => ExecuteCommand());
         }
 
 
         public override bool DispatchTouchEvent(Android.Views.MotionEvent e)
         {
+            if (e.Action == MotionEventActions.Down)
+            {
+                IsMapTouchDown = true;
+            }
+            
             if (e.Action == MotionEventActions.Up)
             {
-                
+                IsMapTouchDown = false;
                 if (MapTouchUp != null)
                 {
                     MapTouchUp(this, EventArgs.Empty);
-                }
-
-                if ( (MapMoved != null) && ( MapMoved.CanExecute()  ) )
-                {
-                    MapMoved.Execute(new Address { Latitude = CoordinatesHelper.ConvertFromE6(MapCenter.LatitudeE6), Longitude = CoordinatesHelper.ConvertFromE6(MapCenter.LongitudeE6) });
                 }
             }
 
@@ -80,8 +83,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 }
             }
 
-            Console.WriteLine(e.Action.ToString());
+            //Console.WriteLine(e.Action.ToString());
             return base.DispatchTouchEvent(e);
+        }
+
+        private bool IsMapTouchDown { get; set; }
+
+        private void ExecuteCommand()
+        {
+            Console.WriteLine("Execute command Is Map Touch Down " + IsMapTouchDown);
+            if (!IsMapTouchDown && (MapMoved != null) && (MapMoved.CanExecute()))
+            {
+                MapMoved.Execute(new Address
+                                     {
+                                         Latitude = CoordinatesHelper.ConvertFromE6(MapCenter.LatitudeE6),
+                                         Longitude = CoordinatesHelper.ConvertFromE6(MapCenter.LongitudeE6)
+                                     });
+            }
         }
 
         private bool IsIntoCircle(double x, double y, double xCircle, double yCircle, double rCircle)

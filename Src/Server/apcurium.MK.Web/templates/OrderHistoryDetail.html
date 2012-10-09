@@ -1,0 +1,39 @@
+﻿<h4 class="table-title">{{localize "Order details"}}</h4>
+        <div class="infos" style="margin-top: 10px;"></div>
+<table>
+    <tr>
+        <td class="settings-label">{{localize "iBSOrderIdLabel"}}</td>
+        <td class="normal-nocolor">{{iBSOrderId}}</td>
+    </tr>
+    <tr>
+        <td class="settings-label">{{localize "Pickup Time"}}</td>
+        {{#if pickupDate}}
+        <td class="normal-nocolor">{{niceDate pickupDate}}</td>
+        {{else}}
+        <td class="normal-nocolor">Now</td>
+        {{/if}}
+    </tr>
+    <tr>
+        <td class="settings-label">{{localize "Pickup"}}</td>
+        <td class="normal-nocolor">{{pickupAddress.fullAddress}}</td>
+    </tr>
+    <tr>
+        <td class="settings-label">{{localize "Destination"}}</td>
+        <td class="normal-nocolor">{{dropOffAddress.fullAddress}}</td>
+    </tr>
+
+    <tr>
+        <td class="settings-label">{{localize "OrderStatus"}}</td>
+        <td class="normal-nocolor">{{{orderStatus.iBSStatusDescription}}</td>
+    </tr>
+    
+</table>
+    <div class="control-group clearfix">
+        <button class="btn btn-large pull-right span2 btn-primary" data-action="rebook">{{localize "Rebook"}}</button>
+        {{#if canExecute }}
+        <button class="btn btn-large pull-right span2" data-action="cancel">{{localize "Cancel"}}</button>
+        {{else}}
+        <button class="btn btn-large pull-right span2" data-action="remove">{{localize "Delete"}}</button>
+        {{/if}}
+    </div>
+

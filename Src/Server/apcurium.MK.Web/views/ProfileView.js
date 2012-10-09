@@ -13,19 +13,18 @@
             this.referenceData.fetch();
             this.referenceData.on('change', this.render, this);
 
+            $.validator.addMethod(
+                "regex",
+                function(value, element, regexp) {
+                    var re = new RegExp(regexp);
+                    return this.optional(element) || re.test(value);
+                }
+                
+            );
+
         },
 
         render: function () {
-            this.$el.html(this.renderTemplate(this.model.toJSON()));
-            
-            Handlebars.registerHelper('ifCond', function (v1, v2, options) {
-                if (v1 == v2) {
-                    return options.fn(this);
-                } else {
-                    return options.inverse(this);
-                }
-            });
-
             var data = this.model.toJSON();
 
             _.extend(data, {
@@ -35,7 +34,41 @@
 
             this.$el.html(this.renderTemplate(data));
 
-            this.$('[data-action=savechanges]').addClass('disabled');
+            
+            this.$("#updateSettingsForm").validate({
+                rules: {
+                    name: "required",
+                    phone: {
+                        required : true,
+                        regex: /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/
+                    },
+                    passengers: {
+                        required: true,
+                        number : true
+                    }
+                },
+                messages: {
+                    name: {
+                        required: TaxiHail.localize('error.NameRequired'),
+                    },
+                    phone: {
+                        required: TaxiHail.localize('error.PhoneRequired'),
+                        regex: TaxiHail.localize('error.PhoneBadFormat')
+                    },
+                    passengers: {
+                        required: TaxiHail.localize('error.PassengersRequired'),
+                        number: TaxiHail.localize('error.NotANumber'),
+                    }
+                }, 
+                highlight: function (label) {
+                    $(label).closest('.control-group').addClass('error');
+                    $(label).prevAll('.valid-input').addClass('hidden');
+                }, success: function (label) {
+                    $(label).closest('.control-group').removeClass('error');
+                    label.prevAll('.valid-input').removeClass('hidden');
+                
+                }
+            });
 
             return this;
         },
@@ -43,9 +76,9 @@
         savechanges : function (e) {
             e.preventDefault();
             var settings = this.model.get('settings');
-                   // if (settings.isValid() ) {
+            if (this.$("#updateSettingsForm").valid() ) {
                             
-                            if (settingschanged) {
+  
                                     
                                     jQuery.ajax({
                                                 type: 'PUT',
@@ -54,19 +87,13 @@
                                                 success: function () {
                                                     $("#notif-bar").html(TaxiHail.localize('Settings Changed'));
                                                     
-                                                    settingschanged = false;
                                                     
                                                   },
                                                   error: this.showErrors,
                                                   dataType: 'json'
                                     });
-                                    this.$('[data-action=savechanges]').addClass('disabled');
                         }
                
-                   /*         } else {
-                        $("#notif-bar").html(TaxiHail.localize('Settings incorrect'));
-                        this.showErrors(this.model, result);
-                    }*/
                 
         },
         

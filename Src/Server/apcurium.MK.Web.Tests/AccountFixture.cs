@@ -192,6 +192,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
+        [Ignore]
         public void when_updating_account_password__user_is_logout()
         {
             var sut = new AccountServiceClient(BaseUrl, SessionId);
