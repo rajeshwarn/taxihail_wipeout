@@ -5,9 +5,11 @@
         tagName: 'form',
         className: 'form-horizontal',
 
-        options: {
-            "click [data-action=resetpassword]": "resetpassword",
+        events: {
             "click [data-action=fblogin]": "fblogin"
+        },
+
+        options: {
             returnUrl: ''
         },
 
