@@ -58,6 +58,8 @@
 
             if (this.model.has('dropOffAddress')) {
                 this.showEstimatedFareWarning();
+            } else {
+                this.$('[data-dropoff]').text(TaxiHail.localize('NotSpecified'));
             }
             
 
