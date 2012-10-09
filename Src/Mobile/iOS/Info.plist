@@ -3,14 +3,14 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>Atlanta Checker Cab</string>
+	<string>TaxiHail</string>
 	<key>CFBundleIconFiles</key>
 	<array>
 		<string>app.png</string>
 		<string>app@2x.png</string>
 	</array>
 	<key>CFBundleIdentifier</key>
-	<string>com.apcurium.MK.AtlantaCheckerCab.Dev</string>
+	<string>com.apcurium.MK.TaxiHail</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -18,13 +18,13 @@
 			<string>facebook</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb</string>
+				<string>fb134284363380764</string>
 				<string>taxihail</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1.0.16</string>
+	<string>1.0.17</string>
 	<key>MinimumOSVersion</key>
 	<string>3.0</string>
 	<key>NSMainNibFile</key>
