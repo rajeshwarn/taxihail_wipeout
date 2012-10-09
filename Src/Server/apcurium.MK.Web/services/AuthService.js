@@ -27,6 +27,36 @@
             }, this), 'json');
         },
         
+        fblogin: function () {
+            FB.Event.subscribe('auth.statusChange', function (response) {
+                if (response.authResponse) {
+                    // user has auth'd your app and is logged into Facebook
+                    FB.api('/me', function(me) {
+                        if (me.name) {
+                            isLoggedIn = true;
+                            this.trigger('change', isLoggedIn, url);
+                        }
+                    });
+                } 
+            });
+            FB.login();
+        },
+        
+        fblogout : function () {
+            FB.Event.subscribe('auth.statusChange', function (response) {
+                if (!response.authResponse) {
+                    // user has auth'd your app and is logged into Facebook
+                    FB.api('/me', function (me) {
+                        if (me.name) {
+                            isLoggedIn = false;
+                            this.trigger('change', isLoggedIn, url);
+                        }
+                    });
+                }
+            });
+            FB.logout();
+        },
+        
         isLoggedIn : function() {
             return isLoggedIn;
         },

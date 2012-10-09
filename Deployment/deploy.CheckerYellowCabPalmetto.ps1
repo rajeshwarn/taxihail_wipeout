@@ -1,5 +1,5 @@
 ﻿#see staging file for documentation
-$companyName= "AtlantaCheckerCab" 
+$companyName= "CheckerYellowCabPalmetto" 
 
 $sqlServerInstance = "MSSQL10_50.MSSQLSERVER"
 
@@ -15,6 +15,6 @@ $site = 'Default Web Site'
 
 $deplyoDB = 'Y'
 
-$actionDb = "U"
+$actionDb = "C"
 
 $deplyoWebsite = 'Y'

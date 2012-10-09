@@ -1,0 +1,20 @@
+{
+   "ApplicationName" : "Checker Yellow Cab",
+   "CanChangeServiceUrl" : "false",
+   "DefaultPhoneNumber" : "18037993311",
+   "DefaultPhoneNumberDisplay" : "803-799-3311",
+   "ErrorLog" : "",
+   "ErrorLogEnabled" : "false",
+   "FacebookAppId" : "",
+   "FacebookEnabled" : "false",
+   "ServiceUrl" : "http://services.taxihail.com/AtlantaCheckerCab/v1.1/api/",
+   "SiteUrl" : "http://www.atlantacheckercab.com/",
+   "SupportEmail" : "rickhewatt@atlantacheckercab.com",
+   "TwitterAccessTokenUrl" : "",
+   "TwitterAuthorizeUrl" : "",
+   "TwitterCallback" : "",
+   "TwitterConsumerKey" : "",
+   "TwitterConsumerSecret" : "",
+   "TwitterEnabled" : "false",
+   "TwitterRequestTokenUrl" : ""
+}

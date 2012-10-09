@@ -20,7 +20,7 @@
 	"Loading": "Loading..." ,
 	"CreateAccount_AccountAlreadyExist" : "An account is already registered with this email address.",
     "CreateOrder_InvalidPickupAddress": "Invalid Pickup Address",
-    "CreateOrder_CannotCreateInIbs": "Server Error, please try again or call us.",
+    "CreateOrder_CannotCreateInIbs": "Booking cannot be completed. The specified Pickup address lies outside the regular service area. Please contact {0} at {1} for further assistance.",
     "CreateOrder_SettingsRequired": "Settings required",
     "CreateOrder_NoProvider": "Bad Provider",
     "CreateOrder_InvalidProvider": "Invalid Provider",
