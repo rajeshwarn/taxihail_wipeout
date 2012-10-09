@@ -80,6 +80,7 @@ namespace apcurium.MK.Booking.ConfigTool
 
                 new ConfigFile(this){ Source="Default.png", Destination=@"Mobile\iOS\Default.png" },
                 new ConfigFile(this){ Source="Default@2x.png", Destination=@"Mobile\iOS\Default@2x.png" },
+                new ConfigFile(this){ Source="Default-568h@2x.png", Destination=@"Mobile\iOS\Default-568h@2x.png" },
 
                 new ConfigFile(this){ Source="Default.png", Destination=@"Mobile\iOS\Assets\background_full_nologo.png" },
                 new ConfigFile(this){ Source="Default@2x.png", Destination=@"Mobile\iOS\Assets\background_full_nologo@2x.png" },
