@@ -68,6 +68,8 @@
                         newPassword: this.model.get('newPassword')
                     }, function () {
                         $("#notif-bar").html(TaxiHail.localize('Password updated.'));
+                        $(".input-block-level").val('');
+                        $('.valid-input').addClass('hidden');
                     }, 'json').fail(function (response) {
                         $("#notif-bar").html(TaxiHail.localize(response.statusText));
                     });

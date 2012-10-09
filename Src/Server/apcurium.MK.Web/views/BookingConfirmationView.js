@@ -58,6 +58,8 @@
 
             if (this.model.has('dropOffAddress')) {
                 this.showEstimatedFareWarning();
+            } else {
+                this.$('[data-dropoff]').text(TaxiHail.localize('NotSpecified'));
             }
             
 
@@ -100,9 +102,12 @@
         },
         
         renderResults: function (result) {
-            
+            if (result.price > 100) {
+                this.model.set('priceEstimate', TaxiHail.localize("CallForPrice"));
+            } else {
+                this.model.set('priceEstimate', result.formattedPrice);
+            }
             this.model.set({
-                'priceEstimate': result.formattedPrice,
                 'distanceEstimate': result.formattedDistance
             });
             this.render();
