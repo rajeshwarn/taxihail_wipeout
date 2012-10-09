@@ -287,6 +287,7 @@
     <Content Include="assets\js\modernizr.js" />
     <Content Include="assets\js\spin.js" />
     <Content Include="assets\js\underscore.js" />
+    <Content Include="channel.html" />
     <Content Include="collections\AddressCollection.js" />
     <Content Include="collections\OrderCollection.js" />
     <Content Include="Config.aspx" />
