@@ -46,6 +46,7 @@
 	"favorites.add-new" : "Add new favorite",
 	"Settings Changed" : "Settings Changed",
 	"CallForPrice" : "Call for price",
-	"NotSpecified" : "Not Specified"
+	"NotSpecified" : "Not Specified",
+	"Password updated." : "Password updated."
 
 }
