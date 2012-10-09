@@ -29,11 +29,11 @@
     
 </table>
     <div class="control-group clearfix">
-        <button class="btn btn-large pull-right span2 btn-primary" data-action="rebook">{{localize "Rebook"}}</button>
         {{#if canExecute }}
-        <button class="btn btn-large pull-right span2" data-action="cancel">{{localize "Cancel"}}</button>
+        <button class="btn pull-right span2" data-action="cancel">{{localize "Cancel"}}</button>
         {{else}}
-        <button class="btn btn-large pull-right span2" data-action="remove">{{localize "Delete"}}</button>
+        <button class="btn pull-right span2" data-action="remove">{{localize "Delete"}}</button>
         {{/if}}
+        <button class="btn pull-right span2 btn-primary" data-action="rebook">{{localize "Rebook"}}</button>
     </div>
 

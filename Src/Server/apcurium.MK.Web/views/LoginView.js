@@ -6,6 +6,8 @@
         className: 'form-horizontal',
 
         options: {
+            "click [data-action=resetpassword]": "resetpassword",
+            "click [data-action=fblogin]": "fblogin"
             returnUrl: ''
         },
 
@@ -66,6 +68,11 @@
                 $alert.append($('<div />').text(this.localize(error.errorCode)));
             }, this);
             this.$('.errors').html($alert);
+        },
+        
+        fblogin : function (e) {
+            e.preventDefault();
+            TaxiHail.auth.fblogin();
         }
 
     });

@@ -1,11 +1,11 @@
 ﻿#see staging file for documentation
-$companyName= "AtlantaCheckerCab" 
+$companyName= "TaxiHailDemo" 
 
 $sqlServerInstance = "MSSQL10_50.MSSQLSERVER"
 
 $deployWwwRoot = "C:\Data\TaxiHail Sites"
 
-$version = "1.1." + [DateTime]::Now.Ticks #todo replace with tag...
+$version = "1.0" + [DateTime]::Now.Ticks #todo replace with tag...
 
 $dbtoolPath = "$base_dir\DatabaseInitializer"
 

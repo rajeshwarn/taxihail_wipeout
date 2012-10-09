@@ -14,6 +14,7 @@
         <header>
             <div class="login-status-zone"></div>
         </header>
+        <div id="fb-root"></div>
         <div class="container">
             <div class='notification-zone'></div>
             
