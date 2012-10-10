@@ -22,10 +22,8 @@
   <string name="HistoryViewTitle">History</string>
   <string name="LocationViewTitle">My Locations</string>
   <string name="LocationDetailViewTitle">Location</string>
-  
   <string name="SettingsViewTitle">Settings</string>
   <string name="DefaultRideSettingsViewTitle">Settings</string>
-  
   <string name="EmailLabel">Email</string>
   <string name="PasswordLabel">Password</string>
   <string name="SignInButton">Sign In</string>
@@ -50,7 +48,6 @@
   <string name="InvalidPickupAddress">Please enter a valid pickup address.</string>
   <string name="DestinationMapTitle">Destination location</string>
   <string name="PickupMapTitle">Pickup location</string>
-  
   <string name="CancelBoutton">Cancel</string>
   <string name="ConfirmButton">Confirm</string>
   <string name="ConfirmRideInformationTitle">Ride Information</string>
@@ -109,7 +106,7 @@
   <string name="InvalidAccountOnActivatedTitle">Invalid account</string>
   <string name="SaveAddressEmptyFieldMessage">The data is invalid, friendly name and address fields are required.</string>
   <string name="SaveAddressEmptyFieldTitle">Friendly name required</string>
-  <string name="DoneButton">Done</string>  
+  <string name="DoneButton">Done</string>
   <string name="FavoritesButton">Favorites</string>
   <string name="RideHistoryButton">Ride History</string>
   <string name="SendErrorLogButton">Send error log</string>
@@ -151,7 +148,7 @@
   <string name="YesButton">Yes</string>
   <string name="NoButton">No</string>
   <string name="HistoryViewStatusButton">View Status</string>
-  <string name="LoginForgotPasswordButton">Forgot Password?</string>  
+  <string name="LoginForgotPasswordButton">Forgot Password?</string>
   <string name="TechSupportEmailTitle">Support Android</string>
   <string name="PickupOnButtonImageName">Assets/Button/btnPickup_on_en.png</string>
   <string name="PickupOffButtonImageName">Assets/Button/btnPickup_off_en.png</string>
@@ -168,14 +165,14 @@
   <string name="EstimatePrice">Estimated Fare : {0}</string>
   <string name="ApproxPrice">Estimated Fare:</string>
   <string name="NotAvailable">N/A</string>
-  <string name="EstimatedFareNotAvailable">Estimated fare not available</string>  
-  <string name="AboutUsUrl">Assets/About_en.html</string>  
+  <string name="EstimatedFareNotAvailable">Estimated fare not available</string>
+  <string name="AboutUsUrl">Assets/About_en.html</string>
   <string name="ResetPasswordLabel">Email</string>
   <string name="ResetPasswordReset">Reset</string>
   <string name="ResetPasswordCancel">Cancel</string>
   <string name="ResetPasswordPlaceholder">Enter your email here</string>
   <string name="ResetPasswordInvalidDataTitle">Invalid email</string>
-  <string name="ResetPasswordInvalidDataMessage">The email is invalid.</string>  
+  <string name="ResetPasswordInvalidDataMessage">The email is invalid.</string>
   <string name="CreateAccoutEmailLabel">Email:</string>
   <string name="CreateAccoutTitleLabel">Title:</string>
   <string name="CreateAccoutFirstNameLabel">First name:</string>
@@ -245,7 +242,7 @@
   <string name="BookDropoffLocationEmptyPlaceholder">Tap to choose destination</string>
   <string name="AddressSearchingText">Searching...</string>
   <string name="NoFareText">Choose a destination to get a price estimate.</string>
-  <string name="PickupDateDisplay">Reservation for {0:dddd, MMMM d} at {0:h:mm tt}</string>    
+  <string name="PickupDateDisplay">Reservation for {0:dddd, MMMM d} at {0:h:mm tt}</string>
   <string name="DateTimePickerSetButton">Set</string>
   <string name="SendEmail">Send mail...</string>
   <string name="RefineAddressTitle">Refine an address</string>
@@ -265,24 +262,20 @@
   <string name="LocalContactCannotBeResolverMessage">Cannot find the address associated to this contact.</string>
   <string name="NetworkErrorTitle">No network connection</string>
   <string name="NetworkErrorMessage">Cannot connect to Internet. Please check your connection settings and try again.</string>
-
   <string name="View_About">About Us</string>
   <string name="View_BookingDetail">Confirmation</string>
   <string name="View_BookingStatus">Status</string>
   <string name="View_BookSettingMenu">Settings</string>
   <string name="View_HistoryDetail">Order Details</string>
   <string name="View_HistoryList">Orders</string>
-
   <string name="View_LocationDetail">Location Detail</string>
   <string name="View_LocationList">Locations</string>
-  
   <string name="View_PasswordRecovery">Reset Password</string>
   <string name="View_PasswordRecovery_Label">Reset Your Password</string>
-  
-  <string name="View_SignUp">Sign Up</string>    
+  <string name="View_SignUp">Sign Up</string>
   <string name="View_SignUp_Label">Create Your Profile</string>
-  <string name="View_SignIn"> </string>
-
+  <string name="View_SignIn">
+  </string>
   <string name="View_Book_Menu_MyLocations">Manage My Locations</string>
   <string name="View_Book_Menu_MyOrders">My Orders</string>
   <string name="View_Book_Menu_UpdateMyProfile">Update My Profile</string>

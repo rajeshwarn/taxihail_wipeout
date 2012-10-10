@@ -115,7 +115,7 @@
   <string name="BookItButtonImageNamePressed">Assets/Button/btnBookIt-Pressed_fr.png</string>
   <string name="InvalidAccountOnActivatedMessage">Votre compte ne peut être validé, vous devez vous connecter pour utiliser cette application </string>
   <string name="InvalidAccountOnActivatedTitle">Compte invalide</string>
-  <string name="DoneButton">OK</string>  
+  <string name="DoneButton">OK</string>
   <string name="ChangeDefaultRideSettings">Paramètres de commande</string>
   <string name="SendErrorLogButton">Envoyer log erreur</string>
   <string name="Version">v{0}</string>
@@ -178,13 +178,12 @@
   <string name="EstimatedFareNotAvailable">Estimation n\'est pas disponible</string>
   <string name="AboutButton">À propos de nous</string>
   <string name="AboutUsUrl">Assets/About_fr.html</string>
-  
   <string name="ResetPasswordLabel">Courriel</string>
   <string name="ResetPasswordReset">Réinitialiser</string>
   <string name="ResetPasswordCancel">Annuler</string>
   <string name="ResetPasswordPlaceholder">Entrer votre courriel ici</string>
   <string name="ResetPasswordInvalidDataTitle">Courriel invalide</string>
-  <string name="ResetPasswordInvalidDataMessage">Le courriel est invalide.</string>  
+  <string name="ResetPasswordInvalidDataMessage">Le courriel est invalide.</string>
   <string name="CreateAccoutEmailLabel">Courriel:</string>
   <string name="CreateAccoutTitleLabel">Titre:</string>
   <string name="CreateAccoutFirstNameLabel">Prénom:</string>
@@ -251,8 +250,6 @@
   <string name="AptNumber">Apt. No.</string>
   <string name="RingCode">Code pour sonner</string>
   <string name="BuildingName">Nom du batiment</string>
-  
   <string name="NetworkErrorTitle">Failed to connect</string>
   <string name="NetworkErrorMessage">Make sure your device is connected to the internet.</string>
-  
 </resources>
