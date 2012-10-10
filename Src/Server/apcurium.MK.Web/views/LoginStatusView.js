@@ -8,6 +8,7 @@
 
         initialize: function () {
             this.model.on('change', this.render, this);
+            this.model.on('checkloggedorsubscribe', this.checkloggedorsubscribe, this);
         },
 
         render: function () {
@@ -20,6 +21,10 @@
             this.$el.html(this.renderTemplate(data));
 
             return this;
+        },
+        
+        checkloggedorsubscribe : function () {
+            TaxiHail.auth.login();
         },
 
         logout: function (e) {
