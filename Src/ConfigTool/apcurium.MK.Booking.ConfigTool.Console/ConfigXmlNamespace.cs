@@ -27,8 +27,6 @@ namespace apcurium.MK.Booking.ConfigTool
             var f = Regex.Replace(file, Namespace + @"=""([^""]+)""", Namespace + @"=""http://schemas.android.com/apk/res/" + Value+ @""""); // .IsMatch(s, sPattern, System.Text.RegularExpressions.RegexOptions.IgnoreCase)
 
 
-
-
             using (var writer = new StreamWriter(destPath, false))
             {
                 writer.Write(f);
@@ -37,6 +35,10 @@ namespace apcurium.MK.Booking.ConfigTool
 
         }
 
+		public override string ToString ()
+		{
+			return string.Format ("[ConfigXmlNamespace: Destination={0}, Namespace={1}, Value={2}]", Destination, Namespace, Value);
+		}
         
     }
 }

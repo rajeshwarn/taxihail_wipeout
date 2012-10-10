@@ -38,7 +38,7 @@
                     FB.api('/me', function(me) {
                         if (me.name) {
                             isLoggedIn = true;
-                            this.trigger('change', isLoggedIn, url);
+                            this.trigger('checkloginorsubscribe', isLoggedIn, url);
                         }
                     });
                 }

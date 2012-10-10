@@ -32,7 +32,9 @@
             "login/:url": "login", // #login
             "login": "login",
             "signup": "signup", // #signup
+            "signup/:url": "signup",
             "signupconfirmation": "signupconfirmation",
+            "signupconfirmation/:url": "signupconfirmation",
             "status/:id": "status",
             "useraccount": "useraccount",
             "useraccount/:tab": "useraccount",
@@ -57,7 +59,8 @@
                 var order = TaxiHail.orderService.getCurrentOrder();
                 if(order) {
                     if(order.isNew()){
-                        this.navigate('confirmationbook', { trigger: true });
+                        //this.navigate('confirmationbook', { trigger: true });
+                        this.navigate('', { trigger: true });
                     }
                     else {
                         order.getStatus().fetch({
@@ -100,8 +103,10 @@
 
         },
 
-        signupconfirmation: function () {
-            var view = renderView(TaxiHail.LoginView);
+        signupconfirmation: function (url) {
+            var view = renderView(TaxiHail.LoginView, new Backbone.Model({
+                url : url
+            }));
             view.showConfirmationMessage();
         },
         
@@ -170,10 +175,14 @@
                 returnUrl: url
             }));
         },
-        signup: function () {
+        signup: function (url) {
             var model = new TaxiHail.NewAccount();
-            model.on('sync', function(){
-                this.navigate('signupconfirmation', { trigger: true });
+            model.on('sync', function () {
+                if (url) {
+                    this.navigate('signupconfirmation/' + url, { trigger: true });
+                } else {
+                    this.navigate('signupconfirmation', { trigger: true });
+                }
 
             }, this);
 

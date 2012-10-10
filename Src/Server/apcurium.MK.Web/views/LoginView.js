@@ -6,7 +6,8 @@
         className: 'form-horizontal',
 
         events: {
-            "click [data-action=fblogin]": "fblogin"
+            "click [data-action=fblogin]": "fblogin",
+            "click [data-action=signup]": "gotosignup"
         },
 
         options: {
@@ -54,7 +55,19 @@
             
             TaxiHail.auth.login($email.val(), $password.val(), this.options.returnUrl)
                 .fail(_.bind(this.showErrors, this, this.model));
+                if (!this.model.has('url')) {
+                    this.model.set('url', '');
+                }
 
+        },
+        
+        gotosignup: function (e) {
+            e.preventDefault();
+            if (!this.model.has('url')) {
+                TaxiHail.app.navigate('signup', { trigger: true });
+            } else {
+                TaxiHail.app.navigate('signup/' + this.model.get('url'), { trigger: true });
+            }
         },
 
         showErrors: function (model, result) {
