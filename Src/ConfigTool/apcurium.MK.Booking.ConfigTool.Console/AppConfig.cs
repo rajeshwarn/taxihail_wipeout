@@ -54,9 +54,9 @@ namespace apcurium.MK.Booking.ConfigTool
                 new ConfigXML(this){  Destination=@"Mobile\Android\Resources\Values\String.xml", NodeSelector=@"//resources/string[@name=""GoogleMapKey""]" , SetterEle= ( app, ele )=> ele.InnerText = app.GoogleMapKey  },                                                                          
 
 
-                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\Bookv2.axml", Namespace = "xmlns:local", Value= App.Package },
+                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_Book.axml", Namespace = "xmlns:local", Value= App.Package },
                 new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\SimpleListItem.axml", Namespace = "xmlns:local", Value= App.Package },
-                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\SearchAddress.axml", Namespace = "xmlns:local", Value= App.Package },
+                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_SearchAddress.axml", Namespace = "xmlns:local", Value= App.Package },
 
                 new ConfigXML(this){  Destination=@"Mobile\Android\MK.Booking.Mobile.Client.Android.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Debug|AnyCPU'"")]/a:AndroidSigningKeyAlias" , SetterEle= ( app, ele )=> ele.InnerText = app.AndroidSigningKeyAlias },               
                 new ConfigXML(this){  Destination=@"Mobile\Android\MK.Booking.Mobile.Client.Android.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Release|AnyCPU'"")]/a:AndroidSigningKeyAlias" , SetterEle= ( app, ele )=> ele.InnerText = app.AndroidSigningKeyAlias },               
@@ -148,12 +148,22 @@ namespace apcurium.MK.Booking.ConfigTool
 
         public string SrcDirectoryPath { get; private set; }
 
-        public void Apply()
-        {
-            foreach (var config in _configs)
-            {
-                config.Apply();
-            }
+        public void Apply ()
+		{
+			List<string> errorsList = new List<string> ();
+			foreach (var config in _configs) {
+				try {
+					config.Apply ();
+
+				} catch (Exception e) {
+					errorsList.Add (string.Format ("Error for {0} : {1} {2}", config.ToString (), e.Message, Environment.NewLine));
+				}
+			}
+
+			if (errorsList.Any ()) {
+
+				throw new Exception(errorsList.Aggregate((x, y) => x + " " + y));
+			}
         }
 
     }

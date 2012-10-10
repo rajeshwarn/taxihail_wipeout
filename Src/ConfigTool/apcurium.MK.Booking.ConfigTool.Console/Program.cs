@@ -77,8 +77,10 @@ namespace apcurium.MK.Booking.ConfigTool
 
           }catch(Exception e)
           {
-
-              return -1;
+			  Console.WriteLine("Errors:");
+			  Console.WriteLine(e.Message);
+			  Console.ReadKey();
+	          return -1;
           }
           return 0;
 

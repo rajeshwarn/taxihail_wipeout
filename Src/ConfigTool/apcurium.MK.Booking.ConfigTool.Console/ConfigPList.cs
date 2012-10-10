@@ -60,6 +60,11 @@ namespace apcurium.MK.Booking.ConfigTool
                 base.WriteDocType(name, pubid, sysid, subset);
             }
         }
+
+		public override string ToString ()
+		{
+			return string.Format ("[ConfigPList: Destination={0}, Key={1}, KeySubPath={2}, SetterEle={3}]", Destination, Key, KeySubPath, SetterEle);
+		}
     }
 
 
