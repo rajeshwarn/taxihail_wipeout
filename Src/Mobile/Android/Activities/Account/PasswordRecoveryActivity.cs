@@ -19,22 +19,19 @@ using apcurium.MK.Booking.Mobile.Client.Validation;
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {
     [Activity(Label = "Password Recovery", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation=Android.Content.PM.ScreenOrientation.Portrait)]
-    public class PasswordRecoveryActivity : Activity
+    public class PasswordRecoveryActivity : BaseActivity
     {
+        protected override int ViewTitleResourceId
+        {
+            get { return Resource.String.View_PasswordRecovery; }
+        }
+
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            SetContentView(Resource.Layout.PasswordRecovery);
-            var btnResetRecovery = FindViewById<Button>(Resource.Id.ResetPasswordBtn);
-            var cancelRecovery = FindViewById<Button>(Resource.Id.CancelBtn);
-            btnResetRecovery.Click += new EventHandler(btnResetRecovery_Click);
-            cancelRecovery.Click += new EventHandler(cancelRecovery_Click);
-
-        }
-
-        void cancelRecovery_Click(object sender, EventArgs e)
-        {
-            Finish();
+            SetContentView(Resource.Layout.View_PasswordRecovery);
+            var btnResetRecovery = FindViewById<Button>(Resource.Id.ResetPasswordBtn);            
+            btnResetRecovery.Click += new EventHandler(btnResetRecovery_Click);            
         }
 
         void btnResetRecovery_Click(object sender, EventArgs e)

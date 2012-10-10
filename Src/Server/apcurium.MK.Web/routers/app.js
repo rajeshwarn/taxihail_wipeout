@@ -1,15 +1,21 @@
 ﻿(function () {
     var currentView,
-        renderView = function(ctor, model) {
+        renderView = function(view, model) {
             // Call remove on current view
             // in case it was overriden with custom logic
             if(currentView && _.isFunction(currentView.remove)) {
                 currentView.remove();
             }
-            
-            currentView = new ctor({
-                model: model
-            }).render();
+
+            if(_.isFunction(view)) {
+                currentView = new view({
+                    model: model
+                }).render();
+            } else {
+                currentView = view;
+                view.model = model || view.model;
+                view.render();
+            }
 
             $('#main').html(currentView.el);
 
@@ -21,42 +27,69 @@
     TaxiHail.App = Backbone.Router.extend({
         routes: {
             "": "book",   // #
+            "later": "later",
             "confirmationbook": "confirmationbook",
-            "login": "login", // #login
+            "login/:url": "login", // #login
+            "login": "login",
             "signup": "signup", // #signup
+            "signup/:url": "signup",
             "signupconfirmation": "signupconfirmation",
+            "signupconfirmation/:url": "signupconfirmation",
             "status/:id": "status",
             "useraccount": "useraccount",
+            "useraccount/:tab": "useraccount",
+            "resetpassword": "resetpassword"
         },
 
-        initialize: function () {
+        initialize: function (options) {
+            options = options || {};
 
+            var expire = new Date();
+            expire.setTime(expire.getTime() + 3600000 * 24 * 365);
+            document.cookie = "ss-opt=perm" + ";expires=" + expire.toGMTString();
 
-            TaxiHail.auth.initialize(function(isloggedIn) {
-                if(isloggedIn) {
-                    // Check if an order exists
-                    // If order is not saved, go to confirmation
-                    // If order is saved and status is active, go to status
-                    var order = TaxiHail.orderService.getCurrentOrder();
-                    if(order) {
-                        if(order.isNew()){
-                            this.navigate('confirmationbook', { trigger: true });
-                        }
-                        else {
-                            order.getStatus().fetch({
-                                success: _.bind(function(model, resp) {
-                                    if(model.isActive()){
-                                        this.navigate('status/' + order.id , { trigger: true });
-                                    }
-                                }, this)
-                            });
-                        }
+            //default lat and long are defined in the deault.aspx
+            TaxiHail.geocoder.initialize(TaxiHail.parameters.defaultLatitude, TaxiHail.parameters.defaultLongitude);
+            
+            TaxiHail.auth.initialize(options.account);
+            if( TaxiHail.auth.isLoggedIn() ) {
+                // Check if an order exists
+                // If order is not saved, go to confirmation
+                // If order is saved and status is active, go to status
+                var order = TaxiHail.orderService.getCurrentOrder();
+                if(order) {
+                    if(order.isNew()){
+                        //this.navigate('confirmationbook', { trigger: true });
+                        this.navigate('', { trigger: true });
                     }
+                    else {
+                        order.getStatus().fetch({
+                            success: _.bind(function(model, resp) {
+                                if(model.isActive()){
+                                    this.navigate('status/' + order.id , { trigger: true });
+                                }
+                            }, this)
+                        });
+                    }
+                } else {
+                    this.navigate('', { trigger: true });
                 }
-            }, this);
+            }
+                    
 
-            TaxiHail.auth.on('change', function(isloggedIn) {
-                this.navigate('', { trigger: true });
+            TaxiHail.auth.on('change', function(isloggedIn, urlToRedirect) {
+                if (isloggedIn) {
+                    TaxiHail.auth.account.fetch();
+                    if (urlToRedirect) {
+                        this.navigate(urlToRedirect, { trigger: true });
+
+                    } else {
+                        
+                        this.navigate('', { trigger: true });
+                    }
+                } else {
+                    this.navigate('', { trigger: true });
+                }
             }, this);
 
             mapView = new TaxiHail.MapView({
@@ -70,31 +103,34 @@
 
         },
 
-        signupconfirmation: function () {
-            var view = renderView(TaxiHail.LoginView);
+        signupconfirmation: function (url) {
+            var view = renderView(TaxiHail.LoginView, new Backbone.Model({
+                url : url
+            }));
             view.showConfirmationMessage();
         },
         
         book: function () {
 
             var model = new TaxiHail.Order();
-
-            TaxiHail.geolocation
-                .getCurrentPosition()
+            TaxiHail.geolocation.getCurrentPosition()
                 // By default, set pickup address to current user location
-                .done(TaxiHail.postpone(function(address){
+                .done(TaxiHail.postpone(function(address) {
                     model.set('pickupAddress', address);
-                }))
-                // If geoloc doesn't work, center map on default location
-                .fail(function(){
-                    $.get('api/settings/defaultlocation', function (address) {
-                            mapView.centerMap(new google.maps.LatLng(address.latitude, address.longitude));
-                    }, "json");
-                });
-
+                }));
+            
             mapView.setModel(model, true);
             renderView(TaxiHail.BookView, model);
            
+        },
+
+        later: function() {
+            var currentOrder = TaxiHail.orderService.getCurrentOrder();
+            if (currentOrder && currentOrder.isNew()) {
+                renderView(TaxiHail.BookLaterView, currentOrder);
+            } else {
+                this.navigate('', { trigger: true });
+            }
         },
         
         confirmationbook: function () {
@@ -107,7 +143,7 @@
                         renderView(TaxiHail.BookingConfirmationView, currentOrder);
                     },
                     error: _.bind(function(model) {
-                        this.navigate('login', {trigger: true});
+                        this.navigate('login/confirmationbook', {trigger: true});
                     }, this)
                 });
                 
@@ -134,31 +170,46 @@
         },
 
         
-        login: function () {
-            renderView(TaxiHail.LoginView);
+        login: function (url) {
+            renderView(new TaxiHail.LoginView({
+                returnUrl: url
+            }));
         },
-        signup: function () {
+        signup: function (url) {
             var model = new TaxiHail.NewAccount();
-            model.on('sync', function(){
-                this.navigate('signupconfirmation', { trigger: true });
+            model.on('sync', function () {
+                if (url) {
+                    this.navigate('signupconfirmation/' + url, { trigger: true });
+                } else {
+                    this.navigate('signupconfirmation', { trigger: true });
+                }
 
             }, this);
 
             renderView(TaxiHail.SignupView, model);
         },
         
-        useraccount: function () {
-                TaxiHail.auth.account.fetch({
-                    success: function (model) {
-                        
+        useraccount: function (tabName) {
+            tabName = tabName || 'profile';
+            TaxiHail.auth.account.fetch({
+                success: function (model) {
+
+                    if(!(currentView instanceof TaxiHail.UserAccountView)) {
                         var account = new TaxiHail.UserAccount(model);
                         renderView(TaxiHail.UserAccountView, account);
-                    },
-                    error: _.bind(function (model) {
-                        this.navigate('login', { trigger: true });
-                    }, this)
-                });
+                    }
+                    currentView.selectTab(tabName);
+
+                },
+                error: _.bind(function (model) {
+                    this.navigate('login/useraccount', { trigger: true });
+                }, this)
+            });
         },
+        
+        resetpassword : function () {
+            renderView(TaxiHail.ResetPasswordView);
+        }
 
     });
 

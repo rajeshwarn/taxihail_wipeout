@@ -1,0 +1,133 @@
+legend {
+    font-size: 18px;
+    color: @textColor;
+    font-weight:bold;
+    border: none;
+    line-height: @baseLineHeight;
+    margin-bottom:5px;
+}
+
+label {
+    color: @taxiHailAccentColor;
+    font-weight:bold;
+    padding-top:0;
+
+    &.lbl-large {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+}
+
+.form-horizontal {
+
+    label {
+        color: @black;
+    }
+
+    .hidden {
+        display:none;
+    }
+
+    .control-group {
+        margin-bottom:10px;
+
+        &.left-control-group {
+            width: 38%;
+            float: left;
+        }
+
+        &.right-control-group {
+            width: 100%-38%;
+            float: left;
+            box-sizing: border-box;
+            padding-left: 20px;
+        }
+
+    }
+
+    .control-label {
+        text-align: left;
+        line-height: 20px;
+        width:120px;
+    }  
+
+    .center-control-label {
+        color: black;
+        margin-right: 10px;
+        margin-left: 10px;
+        line-height: 20px;
+        width: 120px;
+        font-weight: bold;
+    }
+
+    .no-label {
+        .controls {
+            margin-left:0;
+        }        
+    }
+
+
+    .controls {
+
+        margin-left: 120px;
+
+        label {
+            line-height: 20px;
+            padding-top: 5px;
+            margin-left: 10px;
+
+            &.error {
+                color: #B94A48;
+            }
+
+        }
+    }   
+}
+
+textarea,
+input[type="text"],
+input[type="password"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="date"],
+input[type="month"],
+input[type="time"],
+input[type="week"],
+input[type="number"],
+input[type="email"],
+input[type="url"],
+input[type="search"],
+input[type="tel"],
+input[type="color"],
+select,
+{
+  border: 1px solid @inputBorder;
+  .box-shadow(inset 0 0 3px #8F8F8F);
+  color:@black;
+  font-size:14px;
+}
+
+
+
+.input-prepend,
+.input-append {
+    .add-on {
+        border: 1px solid @inputBorder;
+        background: @taxiHailAccentColor;
+        .box-shadow(none);
+        border-color: @addOnBorderColor;
+    }
+    
+    input {
+        border-right-color: @addOnBorderColor
+    }
+}
+
+// Success
+.control-group.success {
+  input,
+  select,
+  textarea {
+    background: @white url(../img/green-dot-with-padding.png) center right no-repeat;
+  }
+}

@@ -6,7 +6,7 @@ namespace apcurium.MK.Common.Entity
 {
     public class ServiceConfigurationSettingConnectionFactory : IDbConnectionFactory
     {
-        private IDbConnectionFactory parent;
+        private readonly IDbConnectionFactory parent;
 
         public ServiceConfigurationSettingConnectionFactory(IDbConnectionFactory parent)
         {
@@ -18,36 +18,18 @@ namespace apcurium.MK.Common.Entity
             if (!IsConnectionString(nameOrConnectionString))
             {
                 var connectionStringName = "DbContext." + nameOrConnectionString;
-
-                //if (RoleEnvironment.IsAvailable)
-                //{
-                //    try
-                //    {
-                //        var settingValue = RoleEnvironment.GetConfigurationSettingValue(connectionStringName);
-                //        if (!string.IsNullOrEmpty(settingValue))
-                //        {
-                //            nameOrConnectionString = settingValue;
-                //        }
-                //    }
-                //    catch (RoleEnvironmentException)
-                //    {
-                //        // setting does not exist, use original value
-                //    }
-                //}
-                //else
-                //{
-                    try
+                try
+                {
+                    var connectionString = ConfigurationManager.ConnectionStrings[connectionStringName];
+                    if (connectionString != null)
                     {
-                        var connectionString = ConfigurationManager.ConnectionStrings[connectionStringName];
-                        if (connectionString != null)
-                        {
-                            nameOrConnectionString = connectionString.ConnectionString;
-                        }
+                        nameOrConnectionString = connectionString.ConnectionString;
                     }
-                    catch (ConfigurationErrorsException e)
-                    {
-                    }
-                //}
+                }
+                catch (ConfigurationErrorsException e)
+                {
+                }
+                
             }
 
             return this.parent.CreateConnection(nameOrConnectionString);

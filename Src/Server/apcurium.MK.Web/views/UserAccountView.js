@@ -1,63 +1,74 @@
 ﻿(function () {
 
     TaxiHail.UserAccountView = TaxiHail.TemplatedView.extend({
-        events: {
-            'click [data-action=goToProfile]': 'goToProfile',
-            'click [data-action=goToFavorites]': 'goToFavorites',
-            'click [data-action=goToHistory]': 'goToHistory',
-            'click [data-action=goToPassword]': 'goToPassword',
-            'click .nav-tabs li>a': 'ontabclick'
-        },
-
-        initialize: function() {
-
-           
-
-        },
 
         render: function () {
             this.$el.html(this.renderTemplate(this.model.toJSON()));
-            this.goToProfile();
-
             return this;
         },
         
-        goToProfile: function (e) {
-            if (e) {
-                e.preventDefault();
+        tab: {
+            profile: function() {
+                this._tabView = new TaxiHail.ProfileView({
+                    model: this.model
+                }).render();
+                this.$("#user-account-container").html(this._tabView.el);
+            },
+
+            favorites: function(){
+                var addresses = new TaxiHail.AddressCollection(),
+                        view = this._tabView = new TaxiHail.FavoritesView({
+                            collection: addresses
+                        });
+
+                var favorites = new TaxiHail.AddressCollection();
+                var history = new TaxiHail.AddressCollection();
+                favorites.fetch({
+                    url: 'api/account/addresses',
+                    success: _.bind(function (collection, resp) {
+                        history.fetch({
+                            url: 'api/account/addresses/history',
+                            success: _.bind(function (collection, resp) {
+                                addresses.reset(favorites.models.concat(history.models));
+                                this.$("#user-account-container").html(view.el);
+                            }, this)
+                        });
+                    }, this)
+                });
+            },
+            history: function () {
+                var orders = new TaxiHail.OrderCollection();
+                orders.fetch({
+                    url: 'api/account/orders',
+                    success: _.bind(function (model) {
+                        this._tabView = new TaxiHail.OrderHistoryView({
+                            collection:model
+                        });
+                        this._tabView.render();
+                        this.$("#user-account-container").html(this._tabView.el);
+                    }, this)
+                    
+                });
+                
+                
+                
+            },
+            password: function () {
+                this._tabView = new TaxiHail.UpdatePasswordView({
+                    model: this.model
+                });
+                this._tabView.render();
+                this.$("#user-account-container").html(this._tabView.el);
             }
-            this._profile = new TaxiHail.ProfileView({
-                model: this.model
-            });
-            this._profile.render();
-            this.$("#user-account-container").html(this._profile.el);
-            
-        },
-        
-        goToFavorites : function(e){
-            e.preventDefault();
-        },
-        
-        goToHistory : function (e) {
-            e.preventDefault();
-        },
-        
-        goToPassword : function (e) {
-            e.preventDefault();
-        },
-        
-        selectTab: function ($tab) {
-            $tab.addClass('active').siblings().removeClass('active');
-        },
-        
-        ontabclick: function (e) {
-            e.preventDefault();
-
-            var $tab = $(e.currentTarget).parent('li');
-
-            this.selectTab($tab);
 
         },
+        
+        selectTab: function (tabName) {
+            this.$('[data-tab=' + tabName + ']').addClass('active').siblings().removeClass('active');
+            this._tabView && this._tabView.remove();
+            this.tab[tabName].apply(this);
+
+        }
         
     });
 

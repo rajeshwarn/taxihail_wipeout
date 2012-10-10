@@ -1,7 +1,19 @@
-﻿@map-z-index: 10;
+﻿@import "TaxiHail-mixins.less";
+@import "TaxiHail-forms.less";
+@import "TaxiHail-tables.less";
+@import "TaxiHail-buttons.less";
+@import "TaxiHail-navs.less";
+@import "TaxiHail-wells.less";
+@import "TaxiHail-popover.less";
+@import "TaxiHail-address-picker.less";
+@import "TaxiHail-locations.less";
+
+@map-z-index: 10;
 @container-z-index: @map-z-index * 10;
 @login-status-z-index: @map-z-index * 100;
 @header-height: 63px;
+
+
 
 html, body {
     height: 100%
@@ -24,7 +36,7 @@ html, body {
 
 .container {
     position:relative;
-    top:101px;
+    top:132px;
     z-index: @container-z-index;
 }
 
@@ -33,6 +45,19 @@ header {
     height: @header-height;
     width: 100%;
     z-index: @login-status-z-index;
+
+    #gradient > .vertical-no-filter(@headerBackgroundDark, @headerBackground);
+    border-bottom: 1px solid #003666;
+
+    font-size: 18px;
+    color: @headerTextColor;
+    // text shadow is inverse of text Color
+    text-shadow: 0 1px 1px  hsl(hue(@headerTextColor), saturation(@headerTextColor), 100 - lightness(@headerTextColor));
+
+    a, a:link, a:active, a:hover, a:visited {
+        color: @headerTextColor;
+        font-weight: bold;
+    }
 
     .login-status-zone {
         .span(6);
@@ -53,49 +78,39 @@ header {
     }
 }
 
-.well {
-    min-height: 20px;
-    padding: 18px;
-    margin-bottom: 20px;
-    background-color: @wellBackground;
-    border: 1px solid #6A6855;
-    .border-radius(8px);
-
-    &.well-form-actions {
-    padding-bottom: 0;
-    }
-
-    .form-actions {
-        margin-right: -18px;
-        margin-left: -18px;
-        margin-bottom: 0;
-        margin-top: 0;
-        padding-left:0;
-        padding-top:10px;
-        padding-bottom:10px;
-        background: transparent;
-        border-top-color: #5E5D4F;
-    }
-
+// For IE9 and down
+.no-cssgradients header {
+    background-image: url(../img/header-bg.png);
+    background-position: top left;
+    background-repeat: repeat-x;
 }
 
-.estimate .fare {
-    font-weight: bold;
+.brand {
+    display: block;
+    background: url(../img/logo.png) no-repeat;
+    position: relative;
+    top: 17px;
+    height: 98px;
+    width: 144px
+}
+
+
+
+.estimate {
+
+    margin-top: 5px;
+
+    .fare {
+        font-weight: bold;
+    }
 }
 
 
 // ICONS
-.icon-pin {
-    display:inline-block;
-    width:19px;
-    height:28px;
-    background: url(../img/pin-icon.png) top left no-repeat;
-    margin-top:-3px;
-}
 .icon-locate {
     display:inline-block;
-    width:19px;
-    height:21px;
+    width:15px;
+    height:15px;
     background: url(../img/location.png) top left no-repeat;
 }
 
@@ -106,58 +121,32 @@ header {
 }
 .icon-clear {
     display:inline-block;
-    width:20px;
-    height:20px;
+    width:14px;
+    height:15px;
     background: url(../img/cancel-icon.png) top left no-repeat;
 }
 
 
-/* Address selector */
-.address-picker {
-    position: relative;
-
-    input.address {
-        width:363px;
-    }
-
-    .tab-content {
-
-        min-height: 123px;
-        background: @white;
-        border-left: 1px solid @inputBorder;
-        border-right: 1px solid @inputBorder;
-        
-        ul {
-            margin:10px;
-            padding:0;
-        }
-
-        li {
-            display: block;
-            overflow:hidden;
-            color: @black;
-
-            a, a:link, a:active, a:visited, a:hover {
-                color: @black;
-            }
-
-            &:last-child {
-                .border-radius(0 0 4px 4px);
-            }
-
-            &.no-result {
-                padding: 0 10px;
-            }
-
-        }
-
-    }
+.spinner-address {
+    margin-right: auto;
+    margin-left: auto;
+    top: 25px;
 }
 
-.address-selector-container {
+.book-view .address-selector-container {
     position:absolute;
-    top: 40px;
-    left:47px;
+    top: 30px;
+    left:39px;
+}
+.add-favorite-view .address-selector-container {
+    position:absolute;
+    top: 30px;
+    left:0;
+}
+.add-favorite-view .address-selector-container {
+    position:absolute;
+    top: 30px;
+    left:0;
 }
 
 
@@ -177,134 +166,13 @@ header {
     z-index: -100;
 }
 
-// Gradients
-#gradient {
-.vertical-no-filter(@startColor: #555, @endColor: #333) {
-    background-color: mix(@startColor, @endColor, 60%);
-    background-image: -moz-linear-gradient(top, @startColor, @endColor); // FF 3.6+
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@startColor), to(@endColor)); // Safari 4+, Chrome 2+
-    background-image: -webkit-linear-gradient(top, @startColor, @endColor); // Safari 5.1+, Chrome 10+
-    background-image: -o-linear-gradient(top, @startColor, @endColor); // Opera 11.10
-    background-image: linear-gradient(to bottom, @startColor, @endColor); // Standard, IE10
-    background-repeat: repeat-x;
-  }
-}
-
-// BUTTONS
-
-// Custom Gradient Bar Colors for buttons and alerts
-.gradientBarCustom(@primaryColor, @secondaryColor, @textColor: #fff, @textShadow: 0 1px 1px rgba(0,0,0,.25)) {
-  color: @textColor;
-  text-shadow: @textShadow;
-  #gradient > .vertical-three-colors(@primaryColor, @primaryColor, 65%, @secondaryColor);
-  border-color: @secondaryColor @secondaryColor darken(@secondaryColor, 15%);
-  border-color: rgba(0,0,0,.1) rgba(0,0,0,.1) fadein(rgba(0,0,0,.1), 15%);
-}
-
-.buttonBackgroundCustom(@startColor, @endColor, @textColor: #fff, @textShadow: 0 1px 1px rgba(0,0,0,.25)) {
-  // gradientBar will set the background to a pleasing blend of these, to support IE<=9
-  .gradientBarCustom(@startColor, @endColor, @textColor, @textShadow);
-  *background-color: @endColor; /* Darken IE7 buttons by default so they stand out more given they won't have borders */
-  .reset-filter();
-
-  // in these cases the gradient won't cover the background, so we override
-  &:hover, &:active, &.active, &.disabled, &[disabled] {
-    color: @textColor;
-    background-color: @endColor;
-    *background-color: darken(@endColor, 5%);
-  }
-
-  // IE 7 + 8 can't handle box-shadow to show active, so we darken a bit ourselves
-  &:active,
-  &.active {
-    background-color: darken(@endColor, 10%) e("\9");
-  }
-}
-
-.btn {
-    .border-radius(2px);
-    font-size: 18px;
-    font-weight: bold;
-    .buttonBackgroundCustom(@btnBackgroundHighlight, @btnBackground);
-}
-
-.btn-primary {
-    .buttonBackgroundCustom(@btnPrimaryBackgroundHighlight, @btnPrimaryBackground);
-}
-
-.btn-danger {
-    .buttonBackgroundCustom(@btnDangerBackgroundHighlight, @btnDangerBackground);
-}
-
-.btn-inverse {
-    .buttonBackgroundCustom(@btnInverseBackgroundHighlight, @btnInverseBackground);
-}  
-
-.btn-flat {
-    background: @taxiHailBlue;
-}
 
 // FORMS 
 
 .valid-input {
    margin-left: 5px;
-}
-
-legend {
-    color: @taxiHailBlue;
-    font-weight:bold;
-    border: none;
-    line-height: @baseLineHeight;
-    margin-bottom:5px;
-}
-
-.form-horizontal {
-
-    .hidden {
-        display:none;
-    }
-
-    .control-group {
-        margin-bottom:10px;
-    }
-
-    .control-label {
-        color: black;
-        text-align: left;
-        line-height: 20px;
-        width:120px;
-    }  
-
-	.center-control-label {
-		color: black;
-        margin-right: 10px;
-		margin-left: 10px;
-        line-height: 20px;
-        width: 120px;
-		font-weight: bold;
-		}
-
-    .input-block-level {
-        height: 40px;
-        min-height: 40px;
-    }
-
-    .controls {
-
-        margin-left: 120px;
-
-        label {
-            line-height: 20px;
-            padding-top: 5px;
-        }
-
-    }   
-}
-
-.signup-view {
-    .input-block-level {
-        width: 95%;
-    }
+   padding-top: 8px;
+   float:right;
 }
 
 .booking-status-view {
@@ -315,6 +183,8 @@ legend {
         margin-left: 40px;
     }
 }
+
+
 
 //CONFIRM SETINGS 
 .settings-label {
@@ -331,18 +201,3 @@ legend {
     font-weight: bold;
 }
 
-.select-taxihail {
-    height: 40px;
-    min-height: 40px;
-	width: 100%;
-}
-
-.li-tabs {
-	background-color: rgba(255, 255, 255, 0.6);
-	margin-right: 5px;
-	font-weight: bold;
-}
-
-.active {
-	background-color: rgba(255, 255, 255, 0.8);
-	}

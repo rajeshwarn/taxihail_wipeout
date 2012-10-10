@@ -15,11 +15,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         void UpdateSettings(BookingSettings settings);
 
-        Account GetAccount(string email, string password, out string error);
+        Account GetAccount(string email, string password);
 
-	    Account GetFacebookAccount(string facebookId, out string error);
+	    Account GetFacebookAccount(string facebookId);
 
-	    Account GetTwitterAccount(string twitterId, out string error);
+	    Account GetTwitterAccount(string twitterId);
 
         Account UpdateUser(Account data);
 

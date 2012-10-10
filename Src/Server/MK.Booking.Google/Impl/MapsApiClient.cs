@@ -68,19 +68,16 @@ namespace apcurium.MK.Booking.Google.Impl
                 { "key",  PlacesApiKey },            
             };
 
-            return client.Get<PlaceDetailResponse>("json" + BuildQueryString(@params)).Result;            
-            //https://maps.googleapis.com/maps/api/place/details/json?reference=CmRYAAAAciqGsTRX1mXRvuXSH2ErwW-jCINE1aLiwP64MCWDN5vkXvXoQGPKldMfmdGyqWSpm7BEYCgDm-iv7Kc2PF7QA7brMAwBbAcqMr5i1f4PwTpaovIZjysCEZTry8Ez30wpEhCNCXpynextCld2EBsDkRKsGhSLayuRyFsex6JA6NPh9dyupoTH3g&sensor=true&key=AIzaSyBzHXvi9heL8opeThi_uCIBOETLCDk575I
+            return client.Get<PlaceDetailResponse>("json" + BuildQueryString(@params)).Result;                        
         }
             
         public DirectionResult GetDirections(double originLat, double originLng, double destLat, double destLng)
         {
-
             var client = new JsonServiceClient(MapsServiceUrl);
 
             var resource = string.Format(CultureInfo.InvariantCulture, "directions/json?origin={0},{1}&destination={2},{3}&sensor=false", originLat, originLng, destLat, destLng);
 
             return client.Get<DirectionResult>(resource);
-
         }
 
         public GeoResult GeocodeAddress(string address)

@@ -18,6 +18,10 @@
                 return new TaxiHail.Order(JSON.parse(item));
             }
             return null;
+        },
+
+        clearCurrentOrder: function() {        
+            this.store.removeItem(currentOrderKey);
         }
     });
 

@@ -19,9 +19,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             CorporateColor,
             Silver,
             AlternateCorporateColor,
+            DarkGray,	
             Blue,
-            DarkGray,
-			LightBlue
+            LightBlue,
         };
 
     

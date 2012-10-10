@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "apcurium.MK.Booking.ConfigTool", "apcurium.MK.Booking.ConfigTool.Console\apcurium.MK.Booking.ConfigTool.csproj", "{730CE534-1EC9-466D-A6B1-DA7C347E2FAB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "T", "T\T.csproj", "{B4401BA7-1613-4C3F-B37A-DDDB78F381DE}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -15,10 +13,6 @@ Global
 		{730CE534-1EC9-466D-A6B1-DA7C347E2FAB}.Debug|x86.Build.0 = Debug|x86
 		{730CE534-1EC9-466D-A6B1-DA7C347E2FAB}.Release|x86.ActiveCfg = Release|x86
 		{730CE534-1EC9-466D-A6B1-DA7C347E2FAB}.Release|x86.Build.0 = Release|x86
-		{B4401BA7-1613-4C3F-B37A-DDDB78F381DE}.Debug|x86.ActiveCfg = Debug|x86
-		{B4401BA7-1613-4C3F-B37A-DDDB78F381DE}.Debug|x86.Build.0 = Debug|x86
-		{B4401BA7-1613-4C3F-B37A-DDDB78F381DE}.Release|x86.ActiveCfg = Release|x86
-		{B4401BA7-1613-4C3F-B37A-DDDB78F381DE}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = apcurium.MK.Booking.ConfigTool.Console\apcurium.MK.Booking.ConfigTool.csproj

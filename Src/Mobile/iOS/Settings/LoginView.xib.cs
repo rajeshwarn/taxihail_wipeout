@@ -176,7 +176,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 			this.AddBindings(new Dictionary<object, string>() {
 				{ btnSignIn, "{'TouchUpInside':{'Path':'SignInCommand'}}"},
-				{ this.View, "{'UserInteractionEnabled':{'Path':'UserInteractionEnabled'}}"},
+				//{ this.View, "{'UserInteractionEnabled':{'Path':'UserInteractionEnabled'}}"},
 				{ txtEmail, "{'Text':{'Path':'Email'}}"},
 				{ txtPassword, "{'Text':{'Path':'Password'}}"},
 			});
@@ -245,11 +245,11 @@ namespace apcurium.MK.Booking.Mobile.Client
                                 if (facebookId.HasValue())
                                 {
 
-                                    account = service.GetFacebookAccount(facebookId, out error);
+                                    account = service.GetFacebookAccount(facebookId);
                                 }
                                 else
                                 {
-                                    account = service.GetTwitterAccount(twitterId, out error);
+                                    account = service.GetTwitterAccount(twitterId);
                                 }
                                 if (account != null)
                                 {
@@ -354,7 +354,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
                             string error = "";
 
-                            var account = service.GetFacebookAccount(data.FacebookId, out error);
+                            var account = service.GetFacebookAccount(data.FacebookId);
                             if (account != null)
                             {
                                 ViewModel.SetAccountInfo(account);
@@ -414,7 +414,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                             var service = TinyIoCContainer.Current.Resolve<IAccountService>();
 
                             string error = "";
-                            Account account = service.GetTwitterAccount(data.TwitterId, out error);
+                            Account account = service.GetTwitterAccount(data.TwitterId);
                             if (account != null)
                             {
 								ViewModel.SetAccountInfo(account);

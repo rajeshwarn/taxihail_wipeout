@@ -13,40 +13,37 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
 	{
 		public const string ACTION_SERVICE_ERROR = "Mk_Taxi.SERVICE_ERROR";
 		public const string ACTION_EXTRA_ERROR = "Mk_Taxi.SERVICE_ERROR_Code";
-		
-		public void HandleError( Exception ex )
-		{
-            var exception =  ex as WebServiceException;
-			
-			if(exception != null)
+
+        public void HandleError(Exception ex)
+        {
+
+
+            if (ex is WebServiceException)
             {
+                var webServiceException = (WebServiceException)ex;
                 var title = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("ServiceErrorCallTitle");
                 var message = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("ServiceErrorDefaultMessage"); //= Resources.GetString(Resource.String.ServiceErrorDefaultMessage);
-                
+
                 try
                 {
 
-                    message = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("ServiceError" + exception.ErrorCode);                    
+                    message = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("ServiceError" + webServiceException.ErrorCode);
                 }
                 catch
                 {
 
                 }
                 TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage(title, message);
-
-
-
-                //var errorIntent = new Intent(ACTION_SERVICE_ERROR);
-                //errorIntent.PutExtra(ACTION_EXTRA_ERROR, exception.ErrorCode);
-
-                //AppContext.Current.App.SendBroadcast(errorIntent);
-
-                //if(exception.StatusCode == (int)HttpStatusCode.Unauthorized)
-                //{
-                //    AppContext.Current.SignOut();
-                //}
             }
-		}
+            else if (ex is WebException)
+            {
+                var title = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("NetworkErrorTitle");
+                var message = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("NetworkErrorMessage"); //= Resources.GetString(Resource.String.ServiceErrorDefaultMessage);
+                TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage(title, message);
+            }
+
+
+        }
 	}
 }
 

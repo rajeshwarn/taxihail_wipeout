@@ -29,7 +29,7 @@
             this.$el.html(this.renderTemplate(data));
             
             var status = this.model.getStatus();
-            if (status.get('iBSStatusId') == 'wosCANCELLED' || status.get('iBSStatusId') == 'wosCANCELLED_DONE' || status.get('iBSStatusId') == 'wosDONE' || status.get('iBSStatusId') == 'wosLOADED') {
+            if (!status.isActive()) {
                 this.$('[data-action=cancel]').addClass('disabled');
                 canCancel = false;
             } else {
@@ -60,11 +60,16 @@
         cancel: function(e) {
             e.preventDefault();
             if (canCancel == true) {
-                this.model.cancel()
-                .done(function(){
+                TaxiHail.confirm(this.localize('Cancel order'),
+                this.localize('modal.cancel.message'),
+                _.bind(function () {
+                    this.model.cancel()
+                .done(function () {
                     // Redirect to Home
                     TaxiHail.app.navigate('', { trigger: true });
                 });
+                }, this));
+                
             }
             
         }

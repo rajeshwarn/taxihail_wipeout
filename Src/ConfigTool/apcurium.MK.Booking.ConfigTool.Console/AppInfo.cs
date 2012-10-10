@@ -12,8 +12,5 @@ namespace apcurium.MK.Booking.ConfigTool
         public string AndroidSigningKeyAlias{ get; set; }
         public string AndroidSigningKeyPassStorePass { get; set; }
         public string GoogleMapKey{ get; set; }
-        
-
-
-    }
+	}
 }

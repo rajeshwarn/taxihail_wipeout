@@ -13,8 +13,6 @@ namespace apcurium.MK.Booking.Api.Validation
         public SaveFavoriteAddressValidator()
         {
             //Validation rules for all requests
-            RuleFor(r => r.Id).NotEmpty();
-            
 
             //Validation rules for POST and PUT request
             RuleSet(ApplyTo.Post | ApplyTo.Put, () =>

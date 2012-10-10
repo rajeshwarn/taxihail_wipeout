@@ -37,8 +37,10 @@
     <WarningLevel>4</WarningLevel>
     <IncludeIisSettings>false</IncludeIisSettings>
     <IncludeAppPool>false</IncludeAppPool>
-    <DeployIisAppPath>Default Web Site/apcurium.MK.Web_deploy</DeployIisAppPath>
-    <PackageAsSingleFile>true</PackageAsSingleFile>
+    <DeployIisAppPath>
+    </DeployIisAppPath>
+    <PackageAsSingleFile>false</PackageAsSingleFile>
+    <PublishDatabases>false</PublishDatabases>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -131,6 +133,10 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="assets\bootstrap-datepicker\css\datepicker.css" />
+    <Content Include="assets\bootstrap-datepicker\js\bootstrap-datepicker.js" />
+    <Content Include="assets\bootstrap-timepicker\compiled\timepicker.css" />
+    <Content Include="assets\bootstrap-timepicker\js\bootstrap-timepicker.js" />
     <Content Include="assets\bootstrap\.issue-guidelines.js" />
     <Content Include="assets\bootstrap\docs\assets\css\bootstrap-responsive.css" />
     <Content Include="assets\bootstrap\docs\assets\css\bootstrap.css" />
@@ -262,26 +268,47 @@
     <Content Include="assets\bootstrap\less\tests\forms.html" />
     <Content Include="assets\bootstrap\less\tests\navbar.html" />
     <Content Include="assets\img\cancel-icon.png" />
+    <Content Include="assets\img\green-dot-with-padding.png" />
     <Content Include="assets\img\location.png" />
     <Content Include="assets\img\pin-icon.png" />
     <Content Include="assets\img\pin_green.png" />
     <Content Include="assets\img\pin_red.png" />
+    <Content Include="assets\img\plus-icon-with-padding.png" />
+    <Content Include="assets\img\plus-icon.png" />
+    <Content Include="assets\img\small-arrow-with-padding.png" />
+    <Content Include="assets\img\small-arrow.png" />
+    <Content Include="assets\img\target.png" />
     <Content Include="assets\img\taxi_label.png" />
     <Content Include="assets\img\validFieldGreen.png" />
-    <Content Include="assets\js\backbone-validation.js" />
     <Content Include="assets\js\backbone.js" />
-    <Content Include="assets\js\backbone.validation.bootstrap.js" />
+    <Content Include="assets\js\bootstrap-tooltip.js" />
     <Content Include="assets\js\handlebars-1.0.rc.1.js" />
+    <Content Include="assets\js\jquery.edit-in-place.js" />
+    <Content Include="assets\js\jquery.hotkeys.js" />
+    <Content Include="assets\js\jquery.validate.js" />
     <Content Include="assets\js\modernizr.js" />
     <Content Include="assets\js\spin.js" />
     <Content Include="assets\js\underscore.js" />
+    <Content Include="channel.html" />
     <Content Include="collections\AddressCollection.js" />
+    <Content Include="collections\OrderCollection.js" />
     <Content Include="Config.aspx" />
-    <Content Include="Default.htm" />
+    <Content Include="default.aspx" />
     <Content Include="Global.asax" />
+    <Content Include="assets\bootstrap-datepicker\less\datepicker.less" />
+    <Content Include="assets\bootstrap-timepicker\less\timepicker.less" />
+    <Content Include="assets\bootstrap-timepicker\README.md" />
+    <Content Include="assets\less\TaxiHail-buttons.less" />
+    <Content Include="assets\less\TaxiHail-forms.less" />
+    <Content Include="assets\less\TaxiHail-mixins.less" />
+    <Content Include="assets\less\TaxiHail-navs.less" />
+    <Content Include="assets\less\TaxiHail-wells.less" />
+    <Content Include="localization\BookLater.json" />
+    <Content Include="localization\OrderHistory.json" />
     <Content Include="log4net.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="mixins\ValidatedView.js" />
     <Content Include="models\NewAccount.js" />
     <Content Include="models\OrderStatus.js" />
     <Content Include="models\ReferenceData.js" />
@@ -295,32 +322,66 @@
     <Content Include="services\GeocodingService.js" />
     <Content Include="services\GeolocationService.js" />
     <Content Include="services\OrderService.js" />
+    <Content Include="services\PlacesService.js" />
     <Content Include="taxi-hail.js" />
+    <Content Include="templates\AddFavorite.html" />
     <Content Include="templates\AddressControl.html" />
     <Content Include="templates\AddressItem.html" />
     <Content Include="templates\AddressSelection.html" />
     <Content Include="templates\book.html" />
     <Content Include="templates\BookingConfirmation.html" />
     <Content Include="templates\BookingStatus.html" />
+    <Content Include="templates\BookLater.html" />
+    <Content Include="templates\BootstrapConfirmation.html" />
+    <Content Include="templates\FavoriteDetails.html" />
+    <Content Include="templates\Favorites.html" />
     <Content Include="templates\login.html" />
     <Content Include="templates\LoginStatus.html" />
+    <Content Include="templates\OrderHistory.html" />
+    <Content Include="templates\OrderHistoryDetail.html" />
+    <Content Include="templates\OrderItem.html" />
+    <Content Include="templates\Profile.html" />
+    <Content Include="templates\ResetPassword.html" />
     <Content Include="templates\Signup.html" />
-    <Content Include="themes\generic\img\header-bg.png" />
-    <Content Include="themes\generic\img\logo.png" />
-    <Content Include="themes\generic\img\target.png" />
+    <Content Include="templates\UpdatePassword.html" />
+    <Content Include="templates\UserAccount.html" />
+    <Content Include="themes\AtlantaCheckerCab\img\cancel-icon.png" />
+    <Content Include="themes\AtlantaCheckerCab\img\header-bg.png" />
+    <Content Include="themes\AtlantaCheckerCab\img\location.png" />
+    <Content Include="themes\AtlantaCheckerCab\img\logo.png" />
+    <Content Include="themes\CheckerYellowCabPalmetto\img\cancel-icon.png" />
+    <Content Include="themes\CheckerYellowCabPalmetto\img\header-bg.png" />
+    <Content Include="themes\CheckerYellowCabPalmetto\img\location.png" />
+    <Content Include="themes\CheckerYellowCabPalmetto\img\logo.png" />
+    <Content Include="themes\TaxiHail\img\header-bg.png" />
+    <Content Include="themes\TaxiHail\img\logo.png" />
     <Content Include="utils.js" />
+    <Content Include="views\AccountFavoritesAndHistoryListView.js" />
+    <Content Include="views\AddFavoriteView.js" />
     <Content Include="views\AddressControlView.js" />
     <Content Include="views\AddressItemView.js" />
     <Content Include="views\AddressListView.js" />
     <Content Include="views\AddressSelectionView.js" />
     <Content Include="views\BookingConfirmationView.js" />
     <Content Include="views\BookingStatusView.js" />
+    <Content Include="views\BookLaterView.js" />
     <Content Include="views\BookView.js" />
+    <Content Include="views\BootstrapConfirmationView.js" />
+    <Content Include="views\FavoriteDetailsView.js" />
+    <Content Include="views\FavoritesAndHistoryListView.js" />
+    <Content Include="views\FavoritesView.js" />
     <Content Include="views\LoginStatusView.js" />
     <Content Include="views\LoginView.js" />
     <Content Include="views\MapView.js" />
+    <Content Include="views\OrderHistoryDetailView.js" />
+    <Content Include="views\OrderHistoryView.js" />
+    <Content Include="views\OrderItemView.js" />
+    <Content Include="views\ProfileView.js" />
+    <Content Include="views\ResetPasswordView.js" />
     <Content Include="views\SignupView.js" />
     <Content Include="views\TemplatedView.js" />
+    <Content Include="views\UpdatePasswordView.js" />
+    <Content Include="views\UserAccountView.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -330,6 +391,15 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
+    <Content Include="themes\AtlantaCheckerCab\less\combined-responsive.less" />
+    <Content Include="themes\AtlantaCheckerCab\less\combined.less" />
+    <Content Include="themes\AtlantaCheckerCab\less\style.less" />
+    <Content Include="themes\AtlantaCheckerCab\less\variables.less" />
+    <Content Include="themes\TaxiHail\less\combined-responsive.less" />
+    <Content Include="themes\TaxiHail\less\combined.less" />
+    <Content Include="localization\OrderHistoryDetail.json" />
+    <Content Include="themes\TaxiHail\less\style.less" />
+    <Content Include="localization\OrderItem.json" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config.aspx.cs">
@@ -339,10 +409,20 @@
     <Compile Include="Config.aspx.designer.cs">
       <DependentUpon>Config.aspx</DependentUpon>
     </Compile>
+    <Compile Include="default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Handlebars\HandlebarsHttpHandler.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="PageBase.cs">
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="PingdomCheck.ashx.cs">
       <DependentUpon>PingdomCheck.ashx</DependentUpon>
@@ -508,15 +588,6 @@
     <Content Include="localization\Login.json" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="themes\generic\less\style.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\generic\less\combined.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\generic\less\variables.less" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="assets\less\bootstrap-common.less" />
   </ItemGroup>
   <ItemGroup>
@@ -539,13 +610,45 @@
     <Content Include="localization\Signup.json" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="themes\generic\less\combined-responsive.less" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="assets\less\TaxiHail-variables.less" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="localization\BookingStatus.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="localization\Profile.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="localization\UpdatePassword.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="localization\ResetPassword.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="localization\BootstrapConfirmation.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="assets\less\TaxiHail-tables.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="localization\AddFavorite.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="assets\less\TaxiHail-address-picker.less" />
+    <Content Include="assets\less\TaxiHail-locations.less" />
+    <Content Include="assets\less\TaxiHail-popover.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\CheckerYellowCabPalmetto\less\combined-responsive.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\CheckerYellowCabPalmetto\less\combined.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\CheckerYellowCabPalmetto\less\style.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\CheckerYellowCabPalmetto\less\variables.less" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

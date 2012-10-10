@@ -1,16 +1,14 @@
 <div class='control-group'>
-    <div class="input-prepend input-append">
-        <a href='#' class="btn btn-inverse" data-action='toggletarget' data-toggle="button">
-            <i class='icon-pin'></i>
-        </a>
+    <div class="input-append pull-right">
         <input class="address" type="text" name='address' value='{{fullAddress}}'>
         {{#if options.locate }}
-            <a href='#' class="btn btn-flat" data-action='locate'><i class='icon-locate' id="locateIcon"></i></a>
+            <a href='#' class="add-on btn" data-action='locate'><i class='icon-locate' id="locateIcon"></i></a>
         {{/if}}
         {{#if options.clear }}
-            <a href='#' class="btn btn-flat" data-action='clear'><i class='icon-clear'></i></a>
+            <a href='#' class="add-on btn" data-action='clear'><i class='icon-clear'></i></a>
         {{/if}}
     </div>
+    <button type='button' class="btn btn-pin btn-pin-{{options.pin}}" data-action='toggletarget' data-toggle="button"><i class='icon-pin'></i></button>
 </div>
-<div class='address-selector-container raise100'>
-</div>
+<div class='address-selector-container raise100'></div>
+

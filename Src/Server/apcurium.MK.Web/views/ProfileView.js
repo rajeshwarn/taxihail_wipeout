@@ -1,31 +1,30 @@
 ﻿(function () {
-    var settingschanged = false;
-    TaxiHail.ProfileView = TaxiHail.TemplatedView.extend({
+    
+    var View = TaxiHail.ProfileView = TaxiHail.TemplatedView.extend({
         events: {
-            'click [data-action=savechanges]': 'savechanges',
-            'change :text': 'onPropertyChanged',
             'change :input': 'onPropertyChanged'
         },
 
         initialize: function () {
 
+            _.bindAll(this, 'savechanges');
+
             this.referenceData = new TaxiHail.ReferenceData();
             this.referenceData.fetch();
             this.referenceData.on('change', this.render, this);
 
+            $.validator.addMethod(
+                "regex",
+                function(value, element, regexp) {
+                    var re = new RegExp(regexp);
+                    return this.optional(element) || re.test(value);
+                }
+                
+            );
+
         },
 
         render: function () {
-            this.$el.html(this.renderTemplate(this.model.toJSON()));
-            
-            Handlebars.registerHelper('ifCond', function (v1, v2, options) {
-                if (v1 == v2) {
-                    return options.fn(this);
-                } else {
-                    return options.inverse(this);
-                }
-            });
-
             var data = this.model.toJSON();
 
             _.extend(data, {
@@ -34,51 +33,58 @@
             });
 
             this.$el.html(this.renderTemplate(data));
-
-            this.$('[data-action=savechanges]').addClass('disabled');
+            
+            this.validate({
+                rules: {
+                    name: "required",
+                    phone: {
+                        required : true,
+                        regex: /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/
+                    },
+                    passengers: {
+                        required: true,
+                        number : true
+                    }
+                },
+                messages: {
+                    name: {
+                        required: TaxiHail.localize('error.NameRequired')
+                    },
+                    phone: {
+                        required: TaxiHail.localize('error.PhoneRequired'),
+                        regex: TaxiHail.localize('error.PhoneBadFormat')
+                    },
+                    passengers: {
+                        required: TaxiHail.localize('error.PassengersRequired'),
+                        number: TaxiHail.localize('error.NotANumber')
+                    }
+                },
+                submitHandler: this.savechanges
+            });
 
             return this;
         },
         
-        savechanges : function (e) {
-            e.preventDefault();
-            var settings = this.model.get('settings');
-                   // if (settings.isValid() ) {
-                            
-                            if (settingschanged) {
-                                    
-                                    jQuery.ajax({
-                                                type: 'PUT',
-                                                url: 'api/account/bookingsettings',
-                                                data: settings,
-                                                success: function () {
-                                                    $("#notif-bar").html(TaxiHail.localize('Settings Changed'));
-                                                    
-                                                    settingschanged = false;
-                                                    
-                                                  },
-                                                  error: this.showErrors,
-                                                  dataType: 'json'
-                                    });
-                                    this.$('[data-action=savechanges]').addClass('disabled');
-                        }
-               
-                   /*         } else {
-                        $("#notif-bar").html(TaxiHail.localize('Settings incorrect'));
-                        this.showErrors(this.model, result);
-                    }*/
-                
+        savechanges : function (form) {
+            this.model.updateSettings()
+                .done(_.bind(function () {
+                    this.$("#notif-bar").html(TaxiHail.localize('Settings Changed'));
+                    this.$(':submit').button('reset');
+                }, this))
+                .fail(_.bind(function(){
+                    this.$(':submit').button('reset');
+                }, this));
         },
         
         onPropertyChanged : function (e) {
-            e.preventDefault();
             var $input = $(e.currentTarget);
             var settings = this.model.get('settings');
 
             settings[$input.attr("name")] = $input.val();
-            settingschanged = true;
-            this.$('[data-action=savechanges]').removeClass('disabled');
+            this.$(':submit').removeClass('disabled');
         }
     });
+
+    _.extend(View.prototype, TaxiHail.ValidatedView);
 
 }());

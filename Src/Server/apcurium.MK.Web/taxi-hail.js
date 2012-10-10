@@ -1,5 +1,6 @@
 var TaxiHail = {
-    resources: {}
+    resources: {},
+    parameters: {}
 };
 
 TaxiHail.loader = {
@@ -35,12 +36,47 @@ TaxiHail.loader = {
 };
 $(function () {
     TaxiHail.loader.load(
-        /* Localizations */ ["Home", "Book", "Login", "AddressSelection", "BookingConfirmation", "SettingsEdit", "Signup", "LoginStatus", "Map", "BookingStatus", "Profile", "Global"],
-        /* Templates*/["Home", "Book", "Login", "AddressSelection", "AddressItem", "AddressControl", "AddressSearch", "BookingConfirmation", "SettingsEdit", "Signup", "LoginStatus", "BookingStatus", "Profile", "UserAccount"],
+        /* Localizations */["Home", "Book", "BookLater", "Login", "AddressSelection", "BookingConfirmation", "SettingsEdit", "Signup", "LoginStatus", "Map", "BookingStatus", "Profile", "UpdatePassword", "ResetPassword", "OrderHistory", "OrderHistoryDetail", "OrderItem", "BootstrapConfirmation","AddFavorite", "Global"],
+        /* Templates*/["Home", "Book", "BookLater", "Login", "AddressSelection", "AddressItem", "AddressControl", "AddressSearch", "BookingConfirmation", "SettingsEdit", "Signup", "LoginStatus", "BookingStatus", "Profile", "UserAccount", "UpdatePassword", "ResetPassword", "OrderHistory", "OrderHistoryDetail", "OrderItem", "BootstrapConfirmation", "FavoriteDetails", "AddFavorite", "Favorites"],
         function () {
 
             // Application starts here
-            TaxiHail.app = new TaxiHail.App();
-            Backbone.history.start();
+            // If user is logged in, we need to load its Account before we continue
+            if(TaxiHail.parameters.isLoggedIn) {
+
+                new TaxiHail.UserAccount().fetch({
+                    success: function(model) {
+
+                        TaxiHail.app = new TaxiHail.App({
+                            account: model
+                        });
+                        Backbone.history.start();
+
+                    }
+                });
+                
+            } else {
+                TaxiHail.app = new TaxiHail.App();
+                Backbone.history.start();
+            }
+            
+            // initialize fb
+            window.fbAsyncInit = function() {
+                FB.init({
+                    appId: '107332039425159', // App ID
+                    channelUrl: '//' + window.location.hostname + '/channel.html', // Path to your Channel File
+                    status: true, // check login status
+                    cookie: true, // enable cookies to allow the server to access the session
+                    xfbml: true  // parse XFBML
+                });
+            };
+            // Load the SDK Asynchronously
+            (function (d) {
+                var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+                if (d.getElementById(id)) { return; }
+                js = d.createElement('script'); js.id = id; js.async = true;
+                js.src = "//connect.facebook.net/en_US/all.js";
+                ref.parentNode.insertBefore(js, ref);
+            }(document));
         });
 });

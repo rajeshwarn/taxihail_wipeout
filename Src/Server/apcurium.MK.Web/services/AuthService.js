@@ -8,13 +8,14 @@
 
     TaxiHail.auth = _.extend(Backbone.Events, {
         account: null,
-        login: function (email, password) {
+        login: function (email, password, url) {
             return $.post('api/auth/credentials', {
                 userName: email,
                 password: password
             },_.bind(function () {
                 isLoggedIn = true;
-                this.trigger('change', isLoggedIn);
+                
+                this.trigger('change', isLoggedIn, url);
             }, this), 'json');
         },
 
@@ -25,34 +26,58 @@
                 this.trigger('change', isLoggedIn);
             }, this), 'json');
         },
+
+        resetPassword: function(email) {
+            return $.post('api/account/resetpassword/' + email,{}, function () {}, 'json');
+        },
+        
+        fblogin: function () {
+            FB.Event.subscribe('auth.statusChange', function (response) {
+                if (response.authResponse) {
+                    // user has auth'd your app and is logged into Facebook
+                    FB.api('/me', function(me) {
+                        if (me.name) {
+                            isLoggedIn = true;
+                            this.trigger('checkloginorsubscribe', isLoggedIn, url);
+                        }
+                    });
+                }
+            });
+            FB.login();
+        },
+        
+        fblogout : function () {
+            FB.Event.subscribe('auth.statusChange', function (response) {
+                if (!response.authResponse) {
+                    // user has auth'd your app and is logged into Facebook
+                    FB.api('/me', function (me) {
+                        if (me.name) {
+                            isLoggedIn = false;
+                            this.trigger('change', isLoggedIn, url);
+                        }
+                    });
+                }
+            });
+            FB.logout();
+        },
         
         isLoggedIn : function() {
             return isLoggedIn;
         },
 
-        initialize: function(oninitialized, context) {
-            this.account = new TaxiHail.UserAccount();
+        initialize: function(account) {
+            if(account == null) {
+                isLoggedIn = false;
+                this.account = new TaxiHail.UserAccount();
+            }
+            else {
+                isLoggedIn = true;
+                this.account = new TaxiHail.UserAccount(account.toJSON());
+            }
 
             this.on('change', function(isLoggedIn){
                 if(!isLoggedIn) this.account.clear();
             }, this);
-
-            // Fetch user account
-            // We use a different instance of UserAccount
-            // In order to be able to set the isLoggedIn flag
-            // Before setting the auth.account attributes
-            new TaxiHail.UserAccount().fetch({
-                success: _.bind(function(model) {
-                    isLoggedIn = true;
-                    this.account.set(model.toJSON());
-                    if(oninitialized) {
-                        oninitialized.call(context, isLoggedIn);
-                    }
-                }, this)
-            });
-
-
-
         }
     
     });
