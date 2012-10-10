@@ -26,6 +26,10 @@
                 this.trigger('change', isLoggedIn);
             }, this), 'json');
         },
+
+        resetPassword: function(email) {
+            return $.post('api/account/resetpassword/' + email,{}, function () {}, 'json');
+        },
         
         fblogin: function () {
             FB.Event.subscribe('auth.statusChange', function (response) {
@@ -37,7 +41,7 @@
                             this.trigger('change', isLoggedIn, url);
                         }
                     });
-                } 
+                }
             });
             FB.login();
         },
