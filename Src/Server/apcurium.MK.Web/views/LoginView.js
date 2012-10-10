@@ -55,18 +55,18 @@
             
             TaxiHail.auth.login($email.val(), $password.val(), this.options.returnUrl)
                 .fail(_.bind(this.showErrors, this, this.model));
-                if (!this.model.has('url')) {
-                    this.model.set('url', '');
+            if (!this.options.returnUrl) {
+                this.options.returnUrl = '';
                 }
 
         },
         
         gotosignup: function (e) {
             e.preventDefault();
-            if (!this.model.has('url')) {
+            if (!this.options.returnUrl) {
                 TaxiHail.app.navigate('signup', { trigger: true });
             } else {
-                TaxiHail.app.navigate('signup/' + this.model.get('url'), { trigger: true });
+                TaxiHail.app.navigate('signup/' + this.options.returnUrl, { trigger: true });
             }
         },
 

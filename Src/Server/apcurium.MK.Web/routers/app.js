@@ -104,8 +104,8 @@
         },
 
         signupconfirmation: function (url) {
-            var view = renderView(TaxiHail.LoginView, new Backbone.Model({
-                url : url
+            var view = renderView(new TaxiHail.LoginView({
+                returnUrl: url
             }));
             view.showConfirmationMessage();
         },
