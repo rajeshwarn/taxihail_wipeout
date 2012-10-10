@@ -6,10 +6,6 @@ using ServiceStack.Text;
 using System.IO;
 using ServiceStack.ServiceClient.Web;
 
-#if OSX
-using ServiceStack.ServiceClient.Web;
-#endif
-
 namespace apcurium.MK.Booking.ConfigTool
 {
     public class AppConfig
@@ -28,55 +24,50 @@ namespace apcurium.MK.Booking.ConfigTool
         private void Init()
         {
             _configs = new Config[]
-                {
-#if !OSX
-                     
-                    new ConfigKeyStore(this){ },        
-#endif
+           {
+             
+                new ConfigKeyStore(this){ },        
+
+                new ConfigFile(this){ Source="Settings.json", Destination=@"Mobile\Common\Settings\Settings.json" },
+                new ConfigFile(this){ Source="Style.json", Destination=@"Mobile\Common\Style\Style.json" },
+
+                new ConfigFile(this){ Source="public.keystore", Destination=@"Mobile\Android\public.keystore" },
+                new ConfigFile(this){ Source="splash.png", Destination=@"Mobile\Android\Resources\Drawable\splash.png" },
+                new ConfigFile(this){ Source="splash.png", Destination=@"Mobile\Android\Resources\drawable-hdpi\splash.png" },
+                new ConfigFile(this){ Source="splash.png", Destination=@"Mobile\Android\Resources\drawable-mdpi\splash.png" },
+                new ConfigFile(this){ Source="Icon.png", Destination=@"Mobile\Android\Resources\Drawable\Icon.png" },            
+                new ConfigFile(this){ Source="header.png", Destination=@"Mobile\Android\Resources\Drawable\header.png" },            
+
+                new ConfigFile(this){ Source="navBar.png", Destination=@"Mobile\Android\Resources\Drawable\navBar.png" },            
+                new ConfigFile(this){ Source="navBar@2x.png", Destination=@"Mobile\Android\Resources\Drawable-hdpi\navBar.png" },                                
+
+                new ConfigFile(this){ Source="Logo.png", Destination=@"Mobile\Android\Resources\Drawable\Logo.png" },            
+                new ConfigFile(this){ Source="Logo@2x.png", Destination=@"Mobile\Android\Resources\Drawable-hdpi\Logo.png" },    
 
 
-
-                    new ConfigFile(this){ Source="Settings.json", Destination=@"Mobile\Common\Settings\Settings.json" },
-                    new ConfigFile(this){ Source="Style.json", Destination=@"Mobile\Common\Style\Style.json" },
-#if !OSX
-                    new ConfigFile(this){ Source="public.keystore", Destination=@"Mobile\Android\public.keystore" },
-                    new ConfigFile(this){ Source="splash.png", Destination=@"Mobile\Android\Resources\Drawable\splash.png" },
-                    new ConfigFile(this){ Source="splash.png", Destination=@"Mobile\Android\Resources\drawable-hdpi\splash.png" },
-                    new ConfigFile(this){ Source="splash.png", Destination=@"Mobile\Android\Resources\drawable-mdpi\splash.png" },
-                    new ConfigFile(this){ Source="Icon.png", Destination=@"Mobile\Android\Resources\Drawable\Icon.png" },            
-                    new ConfigFile(this){ Source="header.png", Destination=@"Mobile\Android\Resources\Drawable\header.png" },            
-
-                    new ConfigFile(this){ Source="navBar.png", Destination=@"Mobile\Android\Resources\Drawable\navBar.png" },            
-                    new ConfigFile(this){ Source="navBar@2x.png", Destination=@"Mobile\Android\Resources\Drawable-hdpi\navBar.png" },                                
-
-                    new ConfigFile(this){ Source="Logo.png", Destination=@"Mobile\Android\Resources\Drawable\Logo.png" },            
-                    new ConfigFile(this){ Source="Logo@2x.png", Destination=@"Mobile\Android\Resources\Drawable-hdpi\Logo.png" },    
+                new ConfigFile(this){ Source="backgroundblue.png", Destination=@"Mobile\Android\Resources\Drawable\backgroundblue.png" },                        
+                new ConfigXML(this){  Destination=@"Mobile\Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest", Attribute="package" , SetterAtt = ( app, att )=> att.Value = app.Package  },
+                new ConfigXML(this){  Destination=@"Mobile\Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest/application", Attribute="android:label" , SetterAtt = ( app, att )=> att.Value = app.AppName  },
+                new ConfigXML(this){  Destination=@"Mobile\Android\Resources\Values-fr\Strings.xml", NodeSelector=@"//resources/string[@name=""ApplicationName""]", SetterEle = ( app, ele )=> ele.InnerText = app.AppName  },
+                new ConfigXML(this){  Destination=@"Mobile\Android\Resources\Values\String.xml", NodeSelector=@"//resources/string[@name=""ApplicationName""]" , SetterEle= ( app, ele )=> ele.InnerText = app.AppName  },               
+                new ConfigXML(this){  Destination=@"Mobile\Android\Resources\Values-fr\Strings.xml", NodeSelector=@"//resources/string[@name=""GoogleMapKey""]", SetterEle = ( app, ele )=> ele.InnerText = app.GoogleMapKey  },
+                new ConfigXML(this){  Destination=@"Mobile\Android\Resources\Values\String.xml", NodeSelector=@"//resources/string[@name=""GoogleMapKey""]" , SetterEle= ( app, ele )=> ele.InnerText = app.GoogleMapKey  },                                                                          
 
 
-                    new ConfigFile(this){ Source="backgroundblue.png", Destination=@"Mobile\Android\Resources\Drawable\backgroundblue.png" },                        
-                    new ConfigXML(this){  Destination=@"Mobile\Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest", Attribute="package" , SetterAtt = ( app, att )=> att.Value = app.Package  },
-                    new ConfigXML(this){  Destination=@"Mobile\Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest/application", Attribute="android:label" , SetterAtt = ( app, att )=> att.Value = app.AppName  },
-                    new ConfigXML(this){  Destination=@"Mobile\Android\Resources\Values-fr\Strings.xml", NodeSelector=@"//resources/string[@name=""ApplicationName""]", SetterEle = ( app, ele )=> ele.InnerText = app.AppName  },
-                    new ConfigXML(this){  Destination=@"Mobile\Android\Resources\Values\String.xml", NodeSelector=@"//resources/string[@name=""ApplicationName""]" , SetterEle= ( app, ele )=> ele.InnerText = app.AppName  },               
-                    new ConfigXML(this){  Destination=@"Mobile\Android\Resources\Values-fr\Strings.xml", NodeSelector=@"//resources/string[@name=""GoogleMapKey""]", SetterEle = ( app, ele )=> ele.InnerText = app.GoogleMapKey  },
-                    new ConfigXML(this){  Destination=@"Mobile\Android\Resources\Values\String.xml", NodeSelector=@"//resources/string[@name=""GoogleMapKey""]" , SetterEle= ( app, ele )=> ele.InnerText = app.GoogleMapKey  },                                                                          
+                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\Bookv2.axml", Namespace = "xmlns:local", Value= App.Package },
+                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\SimpleListItem.axml", Namespace = "xmlns:local", Value= App.Package },
+                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\SearchAddress.axml", Namespace = "xmlns:local", Value= App.Package },
 
+                new ConfigXML(this){  Destination=@"Mobile\Android\MK.Booking.Mobile.Client.Android.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Debug|AnyCPU'"")]/a:AndroidSigningKeyAlias" , SetterEle= ( app, ele )=> ele.InnerText = app.AndroidSigningKeyAlias },               
+                new ConfigXML(this){  Destination=@"Mobile\Android\MK.Booking.Mobile.Client.Android.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Release|AnyCPU'"")]/a:AndroidSigningKeyAlias" , SetterEle= ( app, ele )=> ele.InnerText = app.AndroidSigningKeyAlias },               
 
-                    new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\Bookv2.axml", Namespace = "xmlns:local", Value= App.Package },
-                    new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\SimpleListItem.axml", Namespace = "xmlns:local", Value= App.Package },
-                    new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\SearchAddress.axml", Namespace = "xmlns:local", Value= App.Package },
+                new ConfigXML(this){  Destination=@"Mobile\Android\MK.Booking.Mobile.Client.Android.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Debug|AnyCPU'"")]/a:AndroidSigningKeyPass" , SetterEle= ( app, ele )=> ele.InnerText = app.AndroidSigningKeyPassStorePass},               
+                new ConfigXML(this){  Destination=@"Mobile\Android\MK.Booking.Mobile.Client.Android.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Release|AnyCPU'"")]/a:AndroidSigningKeyPass" , SetterEle= ( app, ele )=> ele.InnerText = app.AndroidSigningKeyPassStorePass },               
 
-                    new ConfigXML(this){  Destination=@"Mobile\Android\MK.Booking.Mobile.Client.Android.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Debug|AnyCPU'"")]/a:AndroidSigningKeyAlias" , SetterEle= ( app, ele )=> ele.InnerText = app.AndroidSigningKeyAlias },               
-                    new ConfigXML(this){  Destination=@"Mobile\Android\MK.Booking.Mobile.Client.Android.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Release|AnyCPU'"")]/a:AndroidSigningKeyAlias" , SetterEle= ( app, ele )=> ele.InnerText = app.AndroidSigningKeyAlias },               
+                
+                new ConfigXML(this){  Destination=@"Mobile\Android\MK.Booking.Mobile.Client.Android.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Debug|AnyCPU'"")]/a:AndroidSigningStorePass" , SetterEle= ( app, ele )=> ele.InnerText = app.AndroidSigningKeyPassStorePass},               
+                new ConfigXML(this){  Destination=@"Mobile\Android\MK.Booking.Mobile.Client.Android.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Release|AnyCPU'"")]/a:AndroidSigningStorePass" , SetterEle= ( app, ele )=> ele.InnerText = app.AndroidSigningKeyPassStorePass },               
 
-                    new ConfigXML(this){  Destination=@"Mobile\Android\MK.Booking.Mobile.Client.Android.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Debug|AnyCPU'"")]/a:AndroidSigningKeyPass" , SetterEle= ( app, ele )=> ele.InnerText = app.AndroidSigningKeyPassStorePass},               
-                    new ConfigXML(this){  Destination=@"Mobile\Android\MK.Booking.Mobile.Client.Android.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Release|AnyCPU'"")]/a:AndroidSigningKeyPass" , SetterEle= ( app, ele )=> ele.InnerText = app.AndroidSigningKeyPassStorePass },               
-
-                    
-                    new ConfigXML(this){  Destination=@"Mobile\Android\MK.Booking.Mobile.Client.Android.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Debug|AnyCPU'"")]/a:AndroidSigningStorePass" , SetterEle= ( app, ele )=> ele.InnerText = app.AndroidSigningKeyPassStorePass},               
-                    new ConfigXML(this){  Destination=@"Mobile\Android\MK.Booking.Mobile.Client.Android.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Release|AnyCPU'"")]/a:AndroidSigningStorePass" , SetterEle= ( app, ele )=> ele.InnerText = app.AndroidSigningKeyPassStorePass },               
-
-#else
 
                 new ConfigFile(this){ Source="Default.png", Destination=@"Mobile\iOS\Default.png" },
                 new ConfigFile(this){ Source="Default@2x.png", Destination=@"Mobile\iOS\Default@2x.png" },
@@ -103,17 +94,12 @@ namespace apcurium.MK.Booking.ConfigTool
                 new ConfigPList(this){ Destination=@"Mobile\iOS\Info.plist", Key = "CFBundleDisplayName",  SetterEle = ( ele )=> ele.InnerText = App.AppName },
                 new ConfigPList(this){ Destination=@"Mobile\iOS\Info.plist", Key = "CFBundleIdentifier",  SetterEle = ( ele )=> ele.InnerText = App.Package },
                 new ConfigPList(this){ Destination=@"Mobile\iOS\Info.plist", Key = "CFBundleURLSchemes",  SetterEle = ( ele )=> 
-                    {
-                        ele.InnerXml = string.Format( "<string>fb{0}</string><string>taxihail</string>", Config.FacebookAppId);
-                    }
-                },
+                {
+                    ele.InnerXml = string.Format( "<string>fb{0}</string><string>taxihail</string>", Config.FacebookAppId);
+                }
+               },             
 
-#endif
-  
-
-                    
-
-                };
+           };
         }
 
         private AppInfo _app;
@@ -130,7 +116,6 @@ namespace apcurium.MK.Booking.ConfigTool
                     }
                 }
                 return _app;
-
             }
         }
 
@@ -165,13 +150,10 @@ namespace apcurium.MK.Booking.ConfigTool
 
         public void Apply()
         {
-
             foreach (var config in _configs)
             {
                 config.Apply();
             }
-
-
         }
 
     }
