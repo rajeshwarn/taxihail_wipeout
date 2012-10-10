@@ -99,12 +99,14 @@
         <script src="views/FavoriteDetailsView.js"></script>
         <script src="views/AddFavoriteView.js"></script>
         <script src="views/FavoritesView.js"></script>
-        
+        <!-- services -->
         <script src="services/AuthService.js"></script>
         <script src="services/OrderService.js"></script>
         <script src="services/GeocodingService.js"></script>
         <script src="services/GeolocationService.js"></script>
+        <script src="services/PlacesService.js"></script>
         <script src="services/DirectionInfoService.js"></script>
+        
         <script src="routers/App.js"></script>
 
     </body>

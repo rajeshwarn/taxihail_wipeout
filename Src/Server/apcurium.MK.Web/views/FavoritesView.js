@@ -7,7 +7,7 @@
         },
 
         initialize: function () {
-            this.collection.on('destroy reset sync', this.refresh, this);
+            this.collection.on('destroy reset sync', TaxiHail.postpone(this.refresh, this), this);
             this.collection.on('selected', this.edit, this);
             
             this._addFavoriteView = null;
@@ -92,7 +92,6 @@
         addfavorites: function (e) {
             e.preventDefault();
             this.model = new TaxiHail.Address();
-            this.model.on('sync', this.render, this);
             var view = this._addFavoriteView = new TaxiHail.AddFavoriteView(
                 {
                     model: this.model,

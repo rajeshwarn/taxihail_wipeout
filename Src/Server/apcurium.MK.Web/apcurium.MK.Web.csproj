@@ -322,6 +322,7 @@
     <Content Include="services\GeocodingService.js" />
     <Content Include="services\GeolocationService.js" />
     <Content Include="services\OrderService.js" />
+    <Content Include="services\PlacesService.js" />
     <Content Include="taxi-hail.js" />
     <Content Include="templates\AddFavorite.html" />
     <Content Include="templates\AddressControl.html" />
