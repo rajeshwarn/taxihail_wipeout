@@ -1,17 +1,42 @@
 ﻿(function () {
 
-    TaxiHail.LoginView = TaxiHail.TemplatedView.extend({
+    var View = TaxiHail.LoginView = TaxiHail.TemplatedView.extend({
+
+        tagName: 'form',
+        className: 'form-horizontal',
 
         events: {
-            "submit form": 'onSubmit',
-            "click [data-action=resetpassword]": "resetpassword",
             "click [data-action=fblogin]": "fblogin",
             "click [data-action=signup]": "gotosignup"
+        },
+
+        options: {
+            returnUrl: ''
         },
 
         render: function () {
 
             this.$el.html(this.renderTemplate());
+
+            this.validate({
+                rules: {
+                    email: {
+                        required:true
+                    },
+                    password: {
+                        required: true
+                    }
+                },
+                messages: {
+                    email: {
+                        required: TaxiHail.localize('error.EmailRequired')
+                    },
+                    password: {
+                        required: TaxiHail.localize('Password required')
+                    }
+                },
+                submitHandler: this.onsubmit
+            });
 
             return this;
 
@@ -24,34 +49,15 @@
                 .html(this.localize('signup.confirmation'));
         },
 
-        onSubmit: function (e) {
+        onsubmit: function (form) {
             var $email = this.$('[name=email]'),
-                $password = this.$('[name=password]'),
-                isValid = true;
+                $password = this.$('[name=password]');
             
-            e.preventDefault();
-            
-            // Validate field values
-            if (!$email.val()) {
-                $email.parents('.control-group').addClass('error');
-                isValid = false;
-            }
-            
-            if (!$password.val()) {
-                $password.parents('.control-group').addClass('error');
-                isValid = false;
-            }
-
-            if (isValid) {
-                this.$(':submit').button('loading');
+            TaxiHail.auth.login($email.val(), $password.val(), this.options.returnUrl)
+                .fail(_.bind(this.showErrors, this, this.model));
                 if (!this.model.has('url')) {
                     this.model.set('url', '');
                 }
-                TaxiHail.auth.login(this.$('[name=email]').val(), this.$('[name=password]').val(), this.model.get('url'))
-                    .fail(_.bind(function(response) {
-                        this.showErrors(this.model, response);
-                    }, this));
-            }
 
         },
         
@@ -79,16 +85,13 @@
             this.$('.errors').html($alert);
         },
         
-        resetpassword : function (e) {
-            e.preventDefault();
-            TaxiHail.app.navigate('resetpassword', { trigger: true });
-        },
-        
         fblogin : function (e) {
             e.preventDefault();
             TaxiHail.auth.fblogin();
         }
 
     });
+
+    _.extend(View.prototype, TaxiHail.ValidatedView);
 
 }());

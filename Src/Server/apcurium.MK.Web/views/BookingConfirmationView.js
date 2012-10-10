@@ -1,20 +1,16 @@
 ﻿(function () {
     var settings,
-        settingschanged = false,
         popoverTemplate = '<div class="popover popover-warning"><div class="arrow"></div><div class="popover-inner"><div class="popover-content"><p></p></div></div></div>';
     
-    TaxiHail.BookingConfirmationView = TaxiHail.TemplatedView.extend({
+    var View = TaxiHail.BookingConfirmationView = TaxiHail.TemplatedView.extend({
         
         events: {
-            'click [data-action=book]': 'book',
             'click [data-action=cancel]': 'cancel',
-            'change :text[data-action=changepickup]': 'onPickupPropertyChanged',
-            'change :text[data-action=changesettings]': 'onSettingsPropertyChanged',
-            'change :input[data-action=changesettings]': 'onSettingsPropertyChanged'
+            'change :input': 'onPropertyChanged'
         },
         initialize: function () {
 
-            _.bindAll(this, "renderResults", 'showErrors');
+            _.bindAll(this, 'book', "renderResults", 'showErrors');
             
             var pickup = this.model.get('pickupAddress');
             var dest = this.model.get('dropOffAddress');
@@ -63,39 +59,32 @@
             }
             
 
-            this.$("#updateBookingSettingsForm").validate({
+            this.validate({
                 rules: {
-                    name: "required",
-                    phone: {
+                    'settings.name': "required",
+                    'settings.phone': {
                         required: true,
                         regex: /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/
                     },
-                    passengers: {
+                    'settings.passengers': {
                         required: true,
                         number: true
                     }
                 },
                 messages: {
-                    name: {
+                    'settings.name': {
                         required: TaxiHail.localize('error.NameRequired')
                     },
-                    phone: {
+                    'settings.phone': {
                         required: TaxiHail.localize('error.PhoneRequired'),
                         regex: TaxiHail.localize('error.PhoneBadFormat')
                     },
-                    passengers: {
+                    'settings.passengers': {
                         required: TaxiHail.localize('error.PassengersRequired'),
                         number: TaxiHail.localize('error.NotANumber')
                     }
                 },
-                highlight: function (label) {
-                    $(label).closest('.control-group').addClass('error');
-                    $(label).prevAll('.valid-input').addClass('hidden');
-                }, success: function (label) {
-                    $(label).closest('.control-group').removeClass('error');
-                    label.prevAll('.valid-input').removeClass('hidden');
-
-                }
+                submitHandler: this.book
             });
 
             return this;
@@ -119,19 +108,15 @@
             this.$el.remove();
         },
         
-        book: function (e) {
+        book: function (form) {
             
-            e.preventDefault();
-            if (this.$("#updateBookingSettingsForm").valid()) {
-                this.$('#bookBt').button('loading');
-                this.model.save({}, {
+            this.model.save({}, {
                 success : TaxiHail.postpone(function (model) {
                     // Wait for order to be created before redirecting to status
                         TaxiHail.app.navigate('status/' + model.id, { trigger: true, replace: true /* Prevent user from coming back to this screen */ });
                 }, this),
-                error: this.showErrors
-            });
-            }
+                    error: this.showErrors
+                });
         },
         
         cancel: function (e) {
@@ -141,7 +126,7 @@
         },
         
         showErrors: function (model, result) {
-            this.$('#bookBt').button('reset');
+            this.$(':submit').button('reset');
             
             if (result.responseText) {
                 result = JSON.parse(result.responseText).responseStatus;
@@ -167,23 +152,20 @@
 
         },
         
-        onPickupPropertyChanged: function (e) {
-            var $input = $(e.currentTarget);
-            var pickup = this.model.get('pickupAddress');
-            
-            pickup[$input.attr("name")] = $input.val();
-            settingschanged = true;
-        },
-        
-        onSettingsPropertyChanged : function (e) {
-            var $input = $(e.currentTarget);
-            var pickup = this.model.get('settings');
+        onPropertyChanged: function (e) {
+            var $input = $(e.currentTarget),
+                attr = $input.attr('name').split('.');
 
-            pickup[$input.attr("name")] = $input.val();
-            settingschanged = true;
+            if(attr.length > 1 && this.model.has(attr[0])) {
+                this.model.get(attr[0])[attr[1]] = $input.val();
+            } else {
+                this.model.set(attr[0], $input.val());
+            }
         }
         
     });
+
+    _.extend(View.prototype, TaxiHail.ValidatedView);
 
 }());
 

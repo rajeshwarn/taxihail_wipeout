@@ -206,13 +206,10 @@
             }
         },
         
-        fetchPlaces: function(latitude, longitude) {
-                $.get('api/places', {
-                    lat: latitude,
-                    lng: longitude,
-                    format: 'json'
-                }, _.bind(function (result) {
-                    
+        fetchPlaces: function(lat, lng) {
+            TaxiHail.places.search(lat, lng)
+                .done(_.bind(function (result) {
+                
                     this._searchResults = new TaxiHail.AddressCollection(),
                         view = new TaxiHail.AddressListView({
                             collection: this._searchResults
@@ -224,7 +221,8 @@
                     }, this);
                     
                     this.$('.tab-content').html(view.render().el);
-            }, this));
+                
+                }, this));
         }
 
     });
