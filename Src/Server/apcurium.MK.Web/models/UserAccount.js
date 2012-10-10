@@ -9,6 +9,15 @@
                 currentPassword: currentPassword,
                 newPassword: newPassword
             }, function(){}, 'json');
+        },
+
+        updateSettings: function() {
+            return $.ajax({
+                type: 'PUT',
+                url: 'api/account/bookingsettings',
+                data: this.get('settings'),
+                dataType: 'json'
+            });
         }
     });
 
