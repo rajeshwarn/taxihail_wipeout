@@ -4,7 +4,7 @@ CLIENT=CheckerYellowCabPalmetto
 echo Applying Config Tool for $CLIENT
 mono apcurium.MK.Booking.ConfigTool.exe $CLIENT
 
-CONFIGIOS="Debug|iPhone"
+CONFIGIOS="Release|iPhone"
 echo Building iOS App for $CLIENT with $CONFIGIOS configuration
 # /Applications/MonoDevelop.app/Contents/MacOS/mdtool build "--project:Newtonsoft_Json_MonoTouch"   "--configuration:$CONFIGIOS"  "../../Src/Mobile/MK.Booking.Mobile.Solution.All.sln"
 # /Applications/MonoDevelop.app/Contents/MacOS/mdtool build "--project:Cirrious.MvvmCross.Touch"   "--configuration:$CONFIGIOS"  "../../Src/Mobile/MK.Booking.Mobile.Solution.All.sln"
