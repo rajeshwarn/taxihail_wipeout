@@ -151,8 +151,7 @@ namespace apcurium.MK.Booking.ConfigTool
         public void Apply ()
 		{
 			List<string> errorsList = new List<string> ();
-			foreach (var config in _configs) 
-			{
+			foreach (var config in _configs) {
 				try {
 					config.Apply ();
 
