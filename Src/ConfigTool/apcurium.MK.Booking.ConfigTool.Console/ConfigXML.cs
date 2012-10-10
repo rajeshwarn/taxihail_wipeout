@@ -50,5 +50,10 @@ namespace apcurium.MK.Booking.ConfigTool
             
             
         }
+
+		public override string ToString ()
+		{
+			return string.Format ("[ConfigXML: Destination={0}, SetterAtt={1}, SetterEle={2}, NodeSelector={3}, Attribute={4}]", Destination, SetterAtt, SetterEle, NodeSelector, Attribute);
+		}
     }
 }
