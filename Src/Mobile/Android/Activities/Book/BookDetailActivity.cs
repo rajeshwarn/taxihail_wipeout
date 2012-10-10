@@ -26,7 +26,7 @@ using TinyMessenger;
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
     [Activity(Label = "Book Details", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation=Android.Content.PM.ScreenOrientation.Portrait )]
-    public class BookDetailActivity : Activity
+    public class BookDetailActivity : BaseActivity
     {
         private CreateOrder _bookingInfo;
         public CreateOrder BookingInfo
@@ -35,11 +35,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             private set { _bookingInfo = value; }
         }
 
+        protected override int ViewTitleResourceId
+        {
+            get { return Resource.String.View_BookingDetail; }
+        }
+
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
 
-            SetContentView(Resource.Layout.BookingDetail);
+            SetContentView(Resource.Layout.View_BookingDetail);
 
             var serialized = Intent.GetStringExtra("BookingInfo");
             var data = SerializerHelper.DeserializeObject<CreateOrder>(serialized);
@@ -140,11 +145,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         }
 
 
-        private string FormatDateTime(DateTime? pickupDate, DateTime? pickupTime)
+        private string FormatDateTime(DateTime? pickupDate )
         {
-            string result = pickupDate.HasValue ? pickupDate.Value.ToShortDateString() : Resources.GetString(Resource.String.DateToday);
-            result += @" / ";
-            result += pickupTime.HasValue && (pickupTime.Value.Hour != 0 && pickupTime.Value.Minute != 0) ? pickupTime.Value.ToShortTimeString() : Resources.GetString(Resource.String.TimeNow);
+            string format = "{0:dddd, MMM d}, {0:h:mm tt}";
+            string result = pickupDate.HasValue ? string.Format(format, pickupDate.Value) : Resources.GetString(Resource.String.TimeNow);
+            //result += @" / ";
+            //result += pickupTime.HasValue && (pickupTime.Value.Hour != 0 && pickupTime.Value.Minute != 0) ? pickupTime.Value.ToShortTimeString() : Resources.GetString(Resource.String.TimeNow);
             return result;
         }
 
@@ -170,7 +176,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             FindViewById<TextView>(Resource.Id.OriginTxt).Text = BookingInfo.PickupAddress.FullAddress;
             FindViewById<TextView>(Resource.Id.AptRingCode).Text = FormatAptRingCode(BookingInfo.PickupAddress.Apartment, BookingInfo.PickupAddress.RingCode);
             FindViewById<TextView>(Resource.Id.DestinationTxt).Text = BookingInfo.DropOffAddress.FullAddress.IsNullOrEmpty() ? Resources.GetString(Resource.String.ConfirmDestinationNotSpecified) : BookingInfo.DropOffAddress.FullAddress;
-            FindViewById<TextView>(Resource.Id.DateTimeTxt).Text = FormatDateTime(BookingInfo.PickupDate, BookingInfo.PickupDate);
+            FindViewById<TextView>(Resource.Id.DateTimeTxt).Text = FormatDateTime(BookingInfo.PickupDate );
             FindViewById<TextView>(Resource.Id.NameTxt).Text = BookingInfo.Settings.Name;
             FindViewById<TextView>(Resource.Id.PhoneTxt).Text = BookingInfo.Settings.Phone;
             FindViewById<TextView>(Resource.Id.PassengersTxt).Text = BookingInfo.Settings.Passengers == 0 ? AppContext.Current.LoggedUser.Settings.Passengers.ToString() : BookingInfo.Settings.Passengers.ToString();
@@ -181,22 +187,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             FindViewById<TextView>(Resource.Id.CompanyTxt).Text = model.ProviderName;
             FindViewById<TextView>(Resource.Id.ChargeTypeTxt).Text = model.ChargeTypeName;
 
-            var direction = new DirectionInfo();
-
-            if ( BookingInfo.PickupAddress.HasValidCoordinate() && BookingInfo.DropOffAddress.HasValidCoordinate() )
-            {
-                direction = TinyIoCContainer.Current.Resolve<IGeolocService>().GetDirectionInfo(BookingInfo.PickupAddress.Latitude, BookingInfo.PickupAddress.Longitude, BookingInfo.DropOffAddress.Latitude, BookingInfo.DropOffAddress.Longitude);
-            }
-            
-            //var price = BookingInfo.GetPrice(BookingInfo.GetDistance());
-            if (direction.Price.HasValue)
-            {
-                FindViewById<TextView>(Resource.Id.ApproxPriceTxt).Text = String.Format("{0:C}", direction.Price.Value);
-            }
-            else
-            {
-                FindViewById<TextView>(Resource.Id.ApproxPriceTxt).Text = Resources.GetString(Resource.String.NotAvailable);
-            }
+            FindViewById<TextView>(Resource.Id.ApproxPriceTxt).Text = TinyIoCContainer.Current.Resolve<IBookingService>().GetFareEstimateDisplay(BookingInfo, null, "NotAvailable");  
         }
 
 

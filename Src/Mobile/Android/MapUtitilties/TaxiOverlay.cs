@@ -118,7 +118,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             if (_noteBaloon == null)
             {
                 var layoutInflater = (LayoutInflater)Application.Context.GetSystemService(Context.LayoutInflaterService);
-                _noteBaloon = (BaloonLayout)layoutInflater.Inflate(Resource.Layout.Baloon, null);
+                _noteBaloon = (BaloonLayout)layoutInflater.Inflate(Resource.Layout.Control_Baloon, null);
                 var layoutParams = new RelativeLayout.LayoutParams(200, 100);
                 layoutParams.AddRule(LayoutRules.CenterVertical);
                 layoutParams.AddRule(LayoutRules.CenterHorizontal);

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<apcurium.mk.booking.mobile.client.controls.HeaderedLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center_horizontal"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingTop="5dip">
+            <LinearLayout
+                android:id="@+id/statusInfo"
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dip">
+                <TextView
+                    android:id="@+id/confirmationNo"
+                    style="@style/ListItemValue"
+                    android:text="@string/StatusDescription"
+                    android:layout_width="match_parent"
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <FrameLayout
+                android:id="@+id/statusMapSection"
+                android:layout_below="@id/statusInfo"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="0"
+                android:layout_gravity="bottom">
+                <apcurium.mk.booking.mobile.client.controls.TouchMap
+                    android:id="@+id/mapStatus"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:apiKey="@string/GoogleMapKey"
+                    android:enabled="true"
+                    android:clickable="true" />
+                <LinearLayout
+                    android:layout_weight="0.11"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#99000000"
+                    android:gravity="center_horizontal|center_vertical">
+                    <TextView
+                        android:layout_marginTop="2dip"
+                        android:layout_marginBottom="2dip"
+                        android:id="@+id/statusInfoText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Order #"
+                        android:gravity="center_horizontal|center_vertical"
+                        style="@style/BigTitleText"
+                        android:layout_gravity="center_horizontal|top" />
+                </LinearLayout>
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="3dip"
+                    android:layout_weight="0"
+                    android:background="@drawable/DropShadow"
+                    android:layout_gravity="top" />
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:background="@drawable/StatusBottomBarBackground"
+                    android:paddingTop="4dip"
+                    android:paddingBottom="4dip">
+                    <Button
+                        android:id="@+id/CancelBtn"
+                        style="@style/ButtonText"
+                        android:background="@drawable/red_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dip"
+                        android:layout_weight="0.5"
+                        android:text="@string/StatusCancelButton" />
+                    <Button
+                        android:id="@+id/CallBtn"
+                        style="@style/ButtonText"
+                        android:background="@drawable/black_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dip"
+                        android:layout_weight="0.5"
+                        android:text="@string/StatusCallButton" />
+                    <Button
+                        android:id="@+id/NewRideBtn"
+                        style="@style/ButtonText"
+                        android:background="@drawable/green_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dip"
+                        android:layout_weight="0.5"
+                        android:text="@string/StatusNewRideButton" />
+                </LinearLayout>
+            </FrameLayout>
+        </LinearLayout>
+    </RelativeLayout>
+  
+</apcurium.mk.booking.mobile.client.controls.HeaderedLayout>

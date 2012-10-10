@@ -49,65 +49,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
         }
 
 
-        protected override void OnResume()
-        {
-            base.OnResume();
-
-            
-            //DebugLogin();
-            //ThreadHelper.ExecuteInThread(this, () => TinyIoCContainer.Current.Resolve<IAccountService>().RefreshCache(AppContext.Current.LoggedUser != null), false);
-            //string err = "";
-            //var account = TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>();
-            
-            
-
-            //RunOnUiThread(() =>
-            //  {
-            //        Thread.Sleep( 2000 );
-            //        Finish();
-            //if (AppContext.Current.LoggedUser == null)
-            //{
-            //    //StartActivity(typeof(LoginActivity));
-            //    var dispatch = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
-            //    dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(LoginViewModel), null, false, MvxRequestedBy.UserAction));
-            //}
-            //else
-            //{
-                
-            //    var dispatch = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
-            //    dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(BookViewModel), null, false, MvxRequestedBy.UserAction));
-            //}
-            //  });
-                
-
-        }
-        private void DebugLogin()
-        {
-            ThreadHelper.ExecuteInThread(this, () => TinyIoCContainer.Current.Resolve<IAccountService>().RefreshCache(AppContext.Current.LoggedUser != null), false);
-            string err = "";
-            var account = TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().GetAccount("alex@e-nergik.com", "qqqqqq", out err);
-            if (account != null)
-            {
-                AppContext.Current.UpdateLoggedInUser(account, false);                
-                AppContext.Current.LastEmail = account.Email;
-                RunOnUiThread(() =>
-                {
-                    Finish();
-
-                    var dispatch = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
-                    dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(BookViewModel), null, false, MvxRequestedBy.UserAction));
-                    //RequestNavigate<BookViewModel>();
-                    //StartActivity(typeof(MainActivity));
-                });
-                return;
-            }
-        }
-
-        protected override void OnDestroy()
-        {
-            base.OnDestroy();
-        }
-
         
 
        

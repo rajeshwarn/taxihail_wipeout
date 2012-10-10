@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         protected override void OnViewModelSet()
         {
-            SetContentView(Resource.Layout.SearchAddress);
+            SetContentView(Resource.Layout.View_SearchAddress);
 
 			var _listView = FindViewById<MvxBindableListView>(Resource.Id.SearchAddressListView);
 			_listView.Divider = null;

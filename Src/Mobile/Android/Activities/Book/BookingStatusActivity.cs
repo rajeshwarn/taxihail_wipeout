@@ -23,7 +23,7 @@ using System.Collections.Generic;
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
     [Activity(Label = "Book Status", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
-    public class BookingStatusActivity : MapActivity
+    public class BookingStatusActivity : BaseMapActivity
     {
         private const string _doneStatus = "wosDONE";
         private const string _loadedStatus = "wosLOADED";
@@ -36,6 +36,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         public OrderStatusDetail OrderStatus { get; private set; }
         public Order Order { get; private set; }
 
+        protected override int ViewTitleResourceId
+        {
+            get { return Resource.String.View_BookingStatus; }
+        }
 
         protected override bool IsRouteDisplayed
         {
@@ -46,7 +50,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             base.OnCreate(bundle);
 
-            SetContentView(Resource.Layout.BookingStatus);
+            SetContentView(Resource.Layout.View_BookingStatus);
 
             LoadParameters();
 

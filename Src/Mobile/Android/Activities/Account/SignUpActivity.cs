@@ -27,14 +27,21 @@ using Cirrious.MvvmCross.Interfaces.ViewModels;
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {
     [Activity(Label = "Sign Up", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
-    public class SignUpActivity : Activity
+    public class SignUpActivity : BaseActivity
     {
         private bool IsCreatedFromSocial;
         private Bundle b;
+
+        protected override int ViewTitleResourceId
+        {
+            get { return Resource.String.View_SignUp; }
+        }
+
+
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            SetContentView(Resource.Layout.SignUp);
+            SetContentView(Resource.Layout.View_SignUp);
             IsCreatedFromSocial = false;
             b = Intent.Extras;
             //Si on vient de facebook ou twitter on prerempli les champs
@@ -93,11 +100,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                                                        Api.Contract.Resources.Account account = null;
                                                        if (data.TwitterId.HasValue())
                                                        {
-                                                           account = TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().GetTwitterAccount(data.TwitterId, out error);
+                                                           account = TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().GetTwitterAccount(data.TwitterId);
                                                        }
                                                        else if (data.FacebookId.HasValue())
                                                        {
-                                                           account = TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().GetFacebookAccount(data.FacebookId, out error);
+                                                           account = TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().GetFacebookAccount(data.FacebookId);
                                                        }
 
                                                        if (account != null)
