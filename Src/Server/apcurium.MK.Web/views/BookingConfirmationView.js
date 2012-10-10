@@ -58,6 +58,8 @@
 
             if (this.model.has('dropOffAddress')) {
                 this.showEstimatedFareWarning();
+            } else {
+                this.$('[data-dropoff]').text(TaxiHail.localize('NotSpecified'));
             }
             
 
@@ -100,9 +102,12 @@
         },
         
         renderResults: function (result) {
-            
+            if (result.price > 100) {
+                this.model.set('priceEstimate', TaxiHail.localize("CallForPrice"));
+            } else {
+                this.model.set('priceEstimate', result.formattedPrice);
+            }
             this.model.set({
-                'priceEstimate': result.formattedPrice,
                 'distanceEstimate': result.formattedDistance
             });
             this.render();
@@ -143,7 +148,11 @@
             }
             var $alert = $('<div class="alert alert-error" />');
             if (result.statusText) {
-                $alert.append($('<div />').text(this.localize(result.statusText)));
+                if (result.statusText == "CreateOrder_CannotCreateInIbs") {
+                    $alert.append($('<div />').text(this.localize(result.statusText).prototype.format('','')));
+                } else {
+                    $alert.append($('<div />').text(this.localize(result.statusText)));
+                }
             }
             _.each(result.errors, function (error) {
                 $alert.append($('<div />').text(this.localize(error.errorCode)));

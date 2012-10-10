@@ -1,5 +1,8 @@
 ﻿(function () {
     TaxiHail.AddFavoriteView = TaxiHail.TemplatedView.extend({
+
+        className: 'add-favorite-view',
+
         events: {
             "click [data-action=save]": "save",
             "change :text[data-action=changesettings]": "onSettingsPropertyChanged",
@@ -11,13 +14,17 @@
         initialize :function () {
             _.bindAll(this, 'onkeyup', 'ondocumentclick');
             this.model.on('change', this.render, this);
+            this.model.on('sync', this.refreshParent, this);
             $(document).on('click', this.ondocumentclick);
+        },
+        
+        refreshParent : function () {
+            this.collection.trigger('sync');
         },
 
         render: function () {
             var html = this.renderTemplate(this.model.toJSON());
             this.$el.html(html);
-            
             this.$("form").validate({
                 rules: {
                     friendlyName: "required",
@@ -44,7 +51,8 @@
             //search address for full address
             this.$('[name=fullAddress]').on('keyup', _.debounce(this.onkeyup, 500));
             this._selector = new TaxiHail.AddressSelectionView({
-                model: this.model
+                model: this.model,
+                showFavorites: false
             }).on('selected', function (model, collection) {
                 this.model.set(model.toJSON());
                 this.close();
@@ -62,8 +70,8 @@
             if (this.$("form").valid()) {
                 if (this.model.has('fullAddress')) {
                     if (!this.model.get('isHistoric')) {
-                        this.model.save({ wait: true });
-                        this.collection.add(this.model);
+                        this.model.save({ });
+
                     } else {
                         $.post('api/account/addresses', {
                             friendlyName: this.model.get('friendlyName'),
@@ -71,11 +79,10 @@
                             apartment: this.model.get('apartment'),
                             ringCode: this.model.get('ringCode')
                         }, function () {
-                            
+                            this.model.trigger('sync');
                             
                         }, 'json');
                         this.model.set('isHistoric', false);
-                        this.collection.add(this.model);
                         this.collection.trigger('sync');
                     }
                 }

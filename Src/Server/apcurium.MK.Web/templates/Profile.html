@@ -49,7 +49,7 @@
         <div class="control-group">
             <label class="control-label" for="inputChargeType">{{localize "Charge Type"}}</label>
             <div class="controls">
-                <select data-action="changesettings" id="inputChargeType" name="chargeTypeId" class="select-taxihail">
+                <select style="width: 100%; " data-action="changesettings" id="inputChargeType" name="chargeTypeId" class="select-taxihail">
                     {{#each paymentsList}}
                         {{#ifCond this.id ../settings.chargeTypeId}}
                             <option value="{{this.id}}" selected>{{this.display}}</option>

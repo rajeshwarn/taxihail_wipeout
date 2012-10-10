@@ -4,7 +4,8 @@
 
         events: {
             "submit form": 'onSubmit',
-            "click [data-action=resetpassword]" : "resetpassword"
+            "click [data-action=resetpassword]": "resetpassword",
+            "click [data-action=fblogin]": "fblogin"
         },
 
         render: function () {
@@ -68,6 +69,11 @@
         resetpassword : function (e) {
             e.preventDefault();
             TaxiHail.app.navigate('resetpassword', { trigger: true });
+        },
+        
+        fblogin : function (e) {
+            e.preventDefault();
+            TaxiHail.auth.fblogin();
         }
 
     });
