@@ -25,7 +25,7 @@ namespace apcurium.MK.Web.Handlebars
 
         public void ProcessRequest(HttpContext context)
         {
-            var files = Directory.EnumerateFiles(HostingEnvironment.MapPath("~/templates/"), "*.html").ToArray();
+            var files = Directory.EnumerateFiles(HostingEnvironment.MapPath("~/templates/"), "*.handlebars").ToArray();
             context.Response.AddFileDependencies(files);
             context.Response.Cache.SetCacheability(HttpCacheability.Public);
             context.Response.Cache.SetExpires(DateTime.UtcNow.AddMinutes(10080.0));
@@ -38,7 +38,7 @@ namespace apcurium.MK.Web.Handlebars
             foreach (var filePath in files)
             {
                 var file = new FileInfo(filePath);
-                context.Response.Write("Handlebars.templates['" + file.Name.Replace(".html", "") + "'] = '" + File.ReadAllText(filePath).Replace("\\", "\\\\").Replace("'", "\\'").Replace("\r", "\\r").Replace("\n", "\\n") + "';");
+                context.Response.Write("Handlebars.templates['" + file.Name.Replace(".handlebars", "") + "'] = '" + File.ReadAllText(filePath).Replace("\\", "\\\\").Replace("'", "\\'").Replace("\r", "\\r").Replace("\n", "\\n") + "';");
             }
 
         }

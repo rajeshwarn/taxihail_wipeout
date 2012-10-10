@@ -5,7 +5,7 @@ var TaxiHail = {
 
 TaxiHail.loader = {
 
-    load: function (resources, views, callback) {
+    load: function (resources, callback) {
 
         var deferreds = [];
 
@@ -19,17 +19,6 @@ TaxiHail.loader = {
             }));
         });
 
-        // Load templates
-        $.each(views, function (index, view) {
-            if (TaxiHail[view + 'View']) {
-                deferreds.push($.get('templates/' + view + '.html', function (data) {
-                    TaxiHail[view + 'View'].prototype.template = Handlebars.compile(data);
-                }, 'html'));
-            } else {
-
-            }
-        });
-
         $.when.apply(null, deferreds).done(callback);
     }
 
@@ -37,7 +26,6 @@ TaxiHail.loader = {
 $(function () {
     TaxiHail.loader.load(
         /* Localizations */["Home", "Book", "BookLater", "Login", "AddressSelection", "BookingConfirmation", "SettingsEdit", "Signup", "LoginStatus", "Map", "BookingStatus", "Profile", "UpdatePassword", "ResetPassword", "OrderHistory", "OrderHistoryDetail", "OrderItem", "BootstrapConfirmation","AddFavorite", "Global"],
-        /* Templates*/[],
         function () {
 
             _.each(Handlebars.templates, function(value, key, list) {
