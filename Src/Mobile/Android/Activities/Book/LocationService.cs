@@ -198,7 +198,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             //TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Location changed : " + GetLocationText(location));
 
-            TinyIoCContainer.Current.Resolve<ICacheService>().Set("LastKnowLocation", new apcurium.MK.Common.Entity.Address { Longitude = location.Longitude, Latitude = location.Latitude });
+            //TinyIoCContainer.Current.Resolve<ICacheService>().Set("LastKnowLocation", new apcurium.MK.Common.Entity.Address { Longitude = location.Longitude, Latitude = location.Latitude });
             // this line make application frozen
             //TinyIoCContainer.Current.Resolve<ICacheService>().Set("LastKnowLocation", location );
             if (IsBetterLocation(location, LastLocation))

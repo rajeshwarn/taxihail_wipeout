@@ -13,12 +13,21 @@ using Android.Util;
 using Android.Graphics;
 using Android.Text;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
     public class TextProgressButton : LinearLayout
     {
         private static int _rightArrowDrawableId;
+
+        private static int _progressSize = DrawHelper.GetPixels(30);
+        private static int _xPositionText = DrawHelper.GetPixels(4);
+        private static int _yPositionTextL1 = DrawHelper.GetPixels(15);
+        private static int _yPositionTextL2 = DrawHelper.GetPixels(32);
+        private static int _fontTextL1 = DrawHelper.GetPixels(12);
+        private static int _fontTextL2 = DrawHelper.GetPixels(14);
+
         private bool _isProgressing;
         private ProgressBar _bar;
         private ImageView _image;
@@ -59,7 +68,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             _bar = new ProgressBar(Context, null, Android.Resource.Attribute.ProgressBarStyleLarge);
             _bar.Indeterminate = true;
             _bar.Visibility = ViewStates.Gone;
-            var layout = new LinearLayout.LayoutParams(40, 40);
+            var layout = new LinearLayout.LayoutParams(_progressSize, _progressSize);
             layout.Gravity = GravityFlags.CenterVertical | GravityFlags.Right;
             AddView(_bar, layout);
 
@@ -79,6 +88,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             ///android:drawableRight="@drawable/right_arrow"
 
         }
+        
 
 
         public bool IsProgressing
@@ -167,19 +177,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             base.OnDraw(canvas);
 
-
-            DrawText(canvas, TextLine1 ?? "", 8, 20, 15, AppFonts.Regular);
-            DrawText(canvas, TextLine2 ?? "", 8, 45, 20, IsProgressing || IsPlaceHolder ? AppFonts.Italic : AppFonts.Bold);
+            DrawText(canvas, TextLine1 ?? "", _xPositionText, _yPositionTextL1, _fontTextL1 , AppFonts.Regular);
+            DrawText(canvas, TextLine2 ?? "", _xPositionText, _yPositionTextL2, _fontTextL2, IsProgressing || IsPlaceHolder ? AppFonts.Italic : AppFonts.Bold);
 
 
         }
 
+   
+
         private void DrawText(Android.Graphics.Canvas canvas, string text, float x, float y, float textSize, Typeface typeFace)
         {
+            var wManager = (IWindowManager)Context.GetSystemService(Context.WindowService);
+
+            var metrics = new DisplayMetrics();
+            wManager.DefaultDisplay.GetMetrics(metrics);
+
+            
+
+
             TextPaint paintText = new TextPaint(PaintFlags.AntiAlias | Android.Graphics.PaintFlags.LinearText);
-            //var rect = new Rect();
             paintText.TextSize = textSize;
-            //paintText.GetTextBounds(text, 0, text.Length, rect);
             paintText.SetARGB(255, 49, 49, 49);
             paintText.SetTypeface(typeFace);
 

@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<apcurium.mk.booking.mobile.client.controls.HeaderedLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center_horizontal"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+  <RelativeLayout
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent">
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:layout_below="@+id/HeaderImage"
+        android:paddingTop="15dip">
+      <TextView
+          style="@style/TitleText"
+          android:text="@string/ConfirmRideInformationTitle"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content" />
+      <LinearLayout
+          android:orientation="vertical"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:paddingTop="5dip"
+          android:paddingBottom="5dip"
+          android:background="@drawable/WindowDisplay"
+          android:layout_marginLeft="5dp"
+          android:layout_marginRight="5dp">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dip"
+            android:paddingBottom="5dip">
+          <TextView
+              style="@style/GrayText"
+              android:text="@string/HistoryDetailOriginLabel"
+              android:layout_width="110dp"
+              android:gravity="right"
+              android:layout_height="wrap_content" />
+          <TextView
+              android:id="@+id/OriginTxt"
+              style="@style/DetailText"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:paddingLeft="5dp"
+              android:paddingRight="5dp" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dip"
+            android:paddingBottom="5dip">
+          <TextView
+              style="@style/GrayText"
+              android:text="@string/HistoryDetailAptRingCodeLabel"
+              android:layout_width="110dp"
+              android:gravity="right"
+              android:layout_height="wrap_content" />
+          <TextView
+              android:id="@+id/AptRingCode"
+              style="@style/DetailText"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:paddingLeft="5dp"
+              android:paddingRight="5dp" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:paddingTop="5dip"
+            android:paddingBottom="5dip"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+          <TextView
+              style="@style/GrayText"
+              android:text="@string/DestinationViewDestinationLabel"
+              android:layout_width="110dp"
+              android:gravity="right"
+              android:layout_height="wrap_content" />
+          <TextView
+              android:id="@+id/DestinationTxt"
+              style="@style/DetailText"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:paddingLeft="5dp"
+              android:paddingRight="5dp" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:paddingTop="5dip"
+            android:paddingBottom="5dip"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+          <TextView
+              style="@style/GrayText"
+              android:text="@string/ConfirmDateTimeLabel"
+              android:layout_width="110dp"
+              android:gravity="right"
+              android:layout_height="wrap_content" />
+          <TextView
+              android:id="@+id/DateTimeTxt"
+              style="@style/DetailText"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:paddingLeft="5dp"
+              android:paddingRight="5dp" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:paddingTop="5dip"
+            android:paddingBottom="5dip"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+          <TextView
+              style="@style/GrayText"
+              android:text="@string/ApproxPrice"
+              android:layout_width="110dp"
+              android:layout_height="wrap_content"
+              android:gravity="right" />
+          <TextView
+              android:id="@+id/ApproxPriceTxt"
+              style="@style/DetailText"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:paddingLeft="5dp"
+              android:paddingRight="5dp" />
+        </LinearLayout>
+      </LinearLayout>
+      <RelativeLayout
+          android:paddingTop="5dip"
+          android:paddingBottom="5dip"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:paddingRight="5dp">
+        <TextView
+            style="@style/TitleText"
+            android:text="@string/ConfirmPassengerSettingsTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true" />
+        <Button
+            android:id="@+id/EditBtn"
+            style="@style/ButtonText"
+            android:background="@drawable/black_button"
+            android:layout_width="50dip"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_height="36dip"
+            android:layout_alignParentRight="true"
+            android:text="@string/EditButton"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp" />
+      </RelativeLayout>
+      <LinearLayout
+          android:orientation="horizontal"
+          android:paddingTop="5dip"
+          android:paddingBottom="5dip"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content">
+        <TextView
+            style="@style/GrayText"
+            android:text="@string/ConfirmNameLabel"
+            android:layout_width="115dp"
+            android:gravity="right"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/NameTxt"
+            style="@style/DetailText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp" />
+      </LinearLayout>
+      <LinearLayout
+          android:orientation="horizontal"
+          android:paddingTop="5dip"
+          android:paddingBottom="5dip"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content">
+        <TextView
+            style="@style/GrayText"
+            android:text="@string/ConfirmPhoneLabel"
+            android:layout_width="115dp"
+            android:gravity="right"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/PhoneTxt"
+            style="@style/DetailText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp" />
+      </LinearLayout>
+      <LinearLayout
+          android:orientation="horizontal"
+          android:paddingTop="5dip"
+          android:paddingBottom="5dip"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content">
+        <TextView
+            style="@style/GrayText"
+            android:text="@string/ConfirmPassengersLabel"
+            android:layout_width="115dp"
+            android:layout_height="wrap_content"
+            android:gravity="right" />
+        <TextView
+            android:id="@+id/PassengersTxt"
+            style="@style/DetailText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp" />
+      </LinearLayout>
+      <LinearLayout
+          android:orientation="horizontal"
+          android:paddingTop="5dip"
+          android:paddingBottom="5dip"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content">
+        <TextView
+            style="@style/GrayText"
+            android:text="@string/ConfirmVehiculeTypeLabel"
+            android:layout_width="115dp"
+            android:layout_height="wrap_content"
+            android:gravity="right" />
+        <TextView
+            android:id="@+id/VehiculeTypeTxt"
+            style="@style/DetailText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp" />
+      </LinearLayout>
+      <LinearLayout
+          android:orientation="horizontal"
+          android:paddingTop="5dip"
+          android:paddingBottom="5dip"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content">
+        <TextView
+            style="@style/GrayText"
+            android:text="@string/ConfirmCompanyLabel"
+            android:layout_width="115dp"
+            android:layout_height="wrap_content"
+            android:gravity="right" />
+        <TextView
+            android:id="@+id/CompanyTxt"
+            style="@style/DetailText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp" />
+      </LinearLayout>
+      <LinearLayout
+          android:orientation="horizontal"
+          android:paddingTop="5dip"
+          android:paddingBottom="5dip"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content">
+        <TextView
+            style="@style/GrayText"
+            android:text="@string/RideSettingsChargeType"
+            android:layout_width="115dp"
+            android:layout_height="wrap_content"
+            android:gravity="right" />
+        <TextView
+            android:id="@+id/ChargeTypeTxt"
+            style="@style/DetailText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp" />
+      </LinearLayout>
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:paddingTop="4dip"
+        android:paddingBottom="4dip"
+        android:background="@drawable/StatusBottomBarBackground"
+        android:layout_alignParentBottom="true"
+        android:paddingRight="5dp"
+        android:paddingLeft="5dp">
+      <Button
+          android:id="@+id/CancelBtn"
+          style="@style/ButtonText"
+          android:background="@drawable/red_button"
+          android:layout_width="100dp"
+          android:layout_height="35dip"
+          android:text="@string/CancelBoutton"
+          android:layout_alignParentLeft="true"
+          android:layout_marginLeft="5dp" />
+      <Button
+          android:id="@+id/ConfirmBtn"
+          style="@style/ButtonText"
+          android:background="@drawable/green_button"
+          android:layout_width="150dp"
+          android:layout_height="35dip"
+          android:text="@string/ConfirmButton"
+          android:layout_alignParentRight="true"
+          android:layout_marginRight="5dp" />
+    </RelativeLayout>
+  </RelativeLayout>
+
+</apcurium.mk.booking.mobile.client.controls.HeaderedLayout>

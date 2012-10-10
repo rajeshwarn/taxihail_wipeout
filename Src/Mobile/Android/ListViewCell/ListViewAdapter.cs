@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.Mobile.Client.ListViewCell
 		{
 			_itemHandlerRegistry.Add<TextEditSectionItem,TextEditCell> (( item, tbl, context ) => new TextEditCell ((TextEditSectionItem)item, tbl, context));
 			_itemHandlerRegistry.Add<SpinnerSectionItem,SpinnerCell> (( item, tbl, context ) => new SpinnerCell ((SpinnerSectionItem)item, tbl, context));
-			_itemHandlerRegistry.Add<BooleanSectionItem,BooleanCell> (( item, tbl, context ) => new BooleanCell ((BooleanSectionItem)item, tbl, context));
+			//_itemHandlerRegistry.Add<BooleanSectionItem,BooleanCell> (( item, tbl, context ) => new BooleanCell ((BooleanSectionItem)item, tbl, context));
 		}
 
 		public static SectionItemCellRegistry ItemCellRegistry { get { return _itemHandlerRegistry; } }

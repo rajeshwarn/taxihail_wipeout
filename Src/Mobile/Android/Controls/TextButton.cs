@@ -55,12 +55,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             TextPaint paintText = new TextPaint(PaintFlags.AntiAlias | Android.Graphics.PaintFlags.LinearText);
             var rect = new Rect();
-            paintText.TextSize = textSize;
+            
+            var wManager = Context.GetSystemService( Context.WindowService );
+
+            paintText.TextSize = textSize;// / DisplayMetrics.DensityDefault ;
             paintText.GetTextBounds(text, 0, text.Length, rect);
             paintText.SetARGB(255, 49, 49, 49);
             paintText.SetTypeface(AppFonts.Regular);
             canvas.DrawText(text, x, y, paintText);
-
+            
         }
 
     }

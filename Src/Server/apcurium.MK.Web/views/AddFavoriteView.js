@@ -1,5 +1,8 @@
 ﻿(function () {
     TaxiHail.AddFavoriteView = TaxiHail.TemplatedView.extend({
+
+        className: 'add-favorite-view',
+
         events: {
             "click [data-action=save]": "save",
             "change :text[data-action=changesettings]": "onSettingsPropertyChanged",
@@ -48,7 +51,8 @@
             //search address for full address
             this.$('[name=fullAddress]').on('keyup', _.debounce(this.onkeyup, 500));
             this._selector = new TaxiHail.AddressSelectionView({
-                model: this.model
+                model: this.model,
+                showFavorites: false
             }).on('selected', function (model, collection) {
                 this.model.set(model.toJSON());
                 this.close();

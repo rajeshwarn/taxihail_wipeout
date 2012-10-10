@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             base.OnCreate(bundle);
 
-            SetContentView(Resource.Layout.DateTimePicker);
+            SetContentView(Resource.Layout.View_DateTimePicker);
 
             long dateTimeticks = this.Intent.GetLongExtra("SelectedDate", 0);
             DateTime selected = dateTimeticks > 0 ? new DateTime(dateTimeticks) :DateTime.Now;

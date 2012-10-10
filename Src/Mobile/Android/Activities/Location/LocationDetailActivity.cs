@@ -15,7 +15,7 @@ using apcurium.MK.Booking.Mobile.Messages;
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
 {
     [Activity(Label = "Location Details", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
-    public class LocationDetailActivity : Activity
+    public class LocationDetailActivity : BaseActivity
     {
         private TinyMessageSubscriptionToken _closeViewToken;       
         private Address _data;
@@ -26,10 +26,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
                 return _data.Id.IsNullOrEmpty();
             }
         }
+
+
+        protected override int ViewTitleResourceId
+        {
+            get { return Resource.String.View_LocationDetail; }
+        }
+
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            SetContentView(Resource.Layout.LocationDetail);
+            SetContentView(Resource.Layout.View_LocationDetail);
             SetLocationData(Intent.Extras.GetString(NavigationStrings.LocationSelectedId.ToString()));
             UpdateUI();
             _closeViewToken = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<CloseViewsToRoot>(m => Finish());

@@ -23,7 +23,7 @@ using apcurium.MK.Booking.Mobile.Messages;
 namespace apcurium.MK.Booking.Mobile.Client.Activities.History
 {
     [Activity(Label = "History", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
-    public class HistoryActivity : Activity
+    public class HistoryListActivity : BaseActivity 
     {
 
         private TinyMessageSubscriptionToken _closeViewToken;       
@@ -32,11 +32,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
         private ListView _listView;
 
 
+        protected override int ViewTitleResourceId
+        {
+            get { return Resource.String.View_HistoryList; }
+        }
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            _closeViewToken = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<CloseViewsToRoot>(m => Finish());            
-            SetContentView(Resource.Layout.HistoryListView);
+            _closeViewToken = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<CloseViewsToRoot>(m => Finish());
+            SetContentView(Resource.Layout.View_HistoryList);
             _listView = FindViewById<ListView>(Resource.Id.HistoryList);
             _listView.ItemClick += new EventHandler<AdapterView.ItemClickEventArgs>(listView_ItemClick);
         }

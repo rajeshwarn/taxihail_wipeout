@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<apcurium.mk.booking.mobile.client.controls.HeaderedLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center_horizontal"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:paddingLeft="15dip"
+        android:paddingRight="15dip"
+        android:paddingTop="15dip"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/rideSettingsListHeader"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:text="@string/DefaultRideSettingsViewTitle"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:textColor="@color/darkgray"
+            android:background="#00000000" />
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="60dip"
+            android:orientation="vertical"
+            android:background="@drawable/roundedContainer">
+            <ListView
+                android:id="@+id/android:list"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:divider="@color/gray"
+                android:dividerHeight="1dp"
+                android:focusable="false"
+                android:background="#00000000"
+                android:cacheColorHint="#00000000" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="15dip"
+            android:background="@color/transparent">
+            <Button
+                android:id="@+id/SaveSettingsButton"
+                style="@style/ButtonText"
+                android:background="@drawable/green_button"
+                android:layout_width="fill_parent"
+                android:layout_height="40dip"
+                android:layout_weight="0.33"
+                android:singleLine="true"
+                android:lines="1"
+                android:text="@string/SaveButton" />
+        </LinearLayout>
+    </LinearLayout>
+</apcurium.mk.booking.mobile.client.controls.HeaderedLayout>
