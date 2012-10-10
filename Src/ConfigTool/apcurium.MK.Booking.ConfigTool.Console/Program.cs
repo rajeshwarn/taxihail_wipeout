@@ -10,57 +10,79 @@ namespace apcurium.MK.Booking.ConfigTool
     class Program
     {
         [STAThread]
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
-
-            var fullPath = Path.GetFullPath( PathConverter.Convert( ToolSettings.Default.RootDirectory) );       
-            var directories = Directory.GetDirectories(fullPath);
-            if (!directories.Any(dir => Path.GetFileName(dir).ToLower() == "config") ||
-                 !directories.Any(dir => Path.GetFileName(dir).ToLower() == "src"))
+            try
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Cannot find the config and src folder in : " + fullPath +  Environment.NewLine +"Press any key to exit...");
-                Console.ReadKey();
-                return;
-            }
+                var fullPath = Path.GetFullPath(PathConverter.Convert(ToolSettings.Default.RootDirectory));
+                var directories = Directory.GetDirectories(fullPath);
+                if (!directories.Any(dir => Path.GetFileName(dir).ToLower() == "config") ||
+                    !directories.Any(dir => Path.GetFileName(dir).ToLower() == "src"))
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Cannot find the config and src folder in : " + fullPath + Environment.NewLine +
+                                      "Press any key to exit...");
+                    Console.ReadKey();
+                    return -1;
+                }
 
-            var configRootFolder = directories.Single( dir => Path.GetFileName(dir).ToLower() == "config") ;  
-            var configDirectories = Directory.GetDirectories(configRootFolder);
-            var src = directories.Single(dir => Path.GetFileName(dir).ToLower() == "src");
+                var configRootFolder = directories.Single(dir => Path.GetFileName(dir).ToLower() == "config");
+                var configDirectories = Directory.GetDirectories(configRootFolder);
+                var src = directories.Single(dir => Path.GetFileName(dir).ToLower() == "src");
 
-            var config = configDirectories.Select( dir=> new AppConfig(  Path.GetFileName(dir) , dir, src ));
-           
-            Console.WriteLine("Choose the config to apply : ");
-            Console.WriteLine("");
+                var config = configDirectories.Select(dir => new AppConfig(Path.GetFileName(dir), dir, src));
 
-            for (int i = 0; i < config.Count(); i++)
-			{
-                Console.WriteLine( i.ToString() + " - " + config.ElementAt(i).Name );			 
-			}
-            Console.WriteLine("");
-            Console.WriteLine("Enter the config number:");
-            var selectedText = Console.ReadLine();
+                if (args.Length > 0)
+                {
+                    var configSelected = config.FirstOrDefault(x => x.Name == args[0]);
+                    if(configSelected != null)
+                    {
+                        configSelected.Apply();
+                    }else
+                    {
+                        Console.WriteLine("Invalid config selected. Press any key to exit...");
+                        Console.ReadKey();
+                        return -1;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Choose the config to apply : ");
+                    Console.WriteLine("");
 
-            int selected;
+                    for (int i = 0; i < config.Count(); i++)
+                    {
+                        Console.WriteLine(i.ToString() + " - " + config.ElementAt(i).Name);
+                    }
+                    Console.WriteLine("");
+                    Console.WriteLine("Enter the config number:");
+                    var selectedText = Console.ReadLine();
 
-            if (int.TryParse(selectedText, out selected) && selected >= 0 && selected < config.Count())
-            {
-                config.ElementAt(selected).Apply();
-            }
-            else
-            {
-                Console.WriteLine("Invalid config selected. Press any key to exit...");
-                Console.ReadKey();
-                return;
-            }
-            
+                    int selected;
 
-            
+                    if (int.TryParse(selectedText, out selected) && selected >= 0 && selected < config.Count())
+                    {
+                        config.ElementAt(selected).Apply();
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid config selected. Press any key to exit...");
+                        Console.ReadKey();
+                        return -1;
+                    }
+                }
 
-            
-            Console.WriteLine("Done. Closing...");
-            Thread.Sleep(2000);            
+                Console.WriteLine("Done. Closing...");
+                Thread.Sleep(2000);
 
+          }catch(Exception e)
+          {
+			  Console.WriteLine("Errors:");
+			  Console.WriteLine(e.Message);
+			  Console.ReadKey();
+	          return -1;
+          }
+          return 0;
 
         }
     }

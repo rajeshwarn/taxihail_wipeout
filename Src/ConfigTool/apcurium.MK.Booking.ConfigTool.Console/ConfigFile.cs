@@ -23,7 +23,10 @@ namespace apcurium.MK.Booking.ConfigTool
             File.Copy(sourcePath, destPath, true);
         }
 
-
+		public override string ToString ()
+		{
+			return string.Format ("[ConfigFile: Source={0}, Destination={1}]", Source, Destination);
+		}
         
     }
 
