@@ -5,7 +5,8 @@
         events: {
             "submit form": 'onSubmit',
             "click [data-action=resetpassword]": "resetpassword",
-            "click [data-action=fblogin]": "fblogin"
+            "click [data-action=fblogin]": "fblogin",
+            "click [data-action=signup]": "gotosignup"
         },
 
         render: function () {
@@ -43,12 +44,24 @@
 
             if (isValid) {
                 this.$(':submit').button('loading');
+                if (!this.model.has('url')) {
+                    this.model.set('url', '');
+                }
                 TaxiHail.auth.login(this.$('[name=email]').val(), this.$('[name=password]').val(), this.model.get('url'))
                     .fail(_.bind(function(response) {
                         this.showErrors(this.model, response);
                     }, this));
             }
 
+        },
+        
+        gotosignup: function (e) {
+            e.preventDefault();
+            if (!this.model.has('url')) {
+                TaxiHail.app.navigate('signup', { trigger: true });
+            } else {
+                TaxiHail.app.navigate('signup/' + this.model.get('url'), { trigger: true });
+            }
         },
 
         showErrors: function (model, result) {
