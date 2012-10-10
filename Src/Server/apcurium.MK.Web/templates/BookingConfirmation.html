@@ -31,81 +31,82 @@
             
             <div class="errors" style="margin-top: 10px;"></div>
             <form class="form-horizontal" id="updateBookingSettingsForm">
-                <div id="settingsContent">
-                    
-                    <div class="control-group">
-                        <label class="control-label" for="inputName">{{localize "Name"}}</label>
-                        <div class="controls">
-                            <span style="float: right" class="valid-input hidden"><img src="assets/img/validFieldGreen.png" width="8" height="8" alt="valid field"/></span>
-                                <input type="text"  id="inputName" name="name" data-action="changesettings" value="{{settings.name}}" class='edit-in-place input-block-level'>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="control-group">
-                        <label class="control-label" for="inputPhone">{{localize "Phone"}}</label>
-                        <div class="controls">
-                            <span style="float: right" class="valid-input hidden"><img src="assets/img/validFieldGreen.png" width="8" height="8" alt="valid field"/></span>
-                            <input type="text" id="inputPhone" name="phone" data-action="changesettings" value="{{settings.phone}}" class='input-block-level'>
-                        </div>
-                    </div>
-                    
-                    <div class="control-group">
-                        <label class="control-label">{{localize 'Apt No.'}}</label>
-                        <div class="controls">
-                            <input type="text" style="width: 60px;" id="inputApt" data-action="changepickup" name="apartment" placeholder="{{localize 'Apt No.'}}" value="{{pickupAddress.apartment}}" class='input-block-level span2'>
-                            <span class="center-control-label">{{localize 'Ring Code'}}</span>
-    	
-                            <input type="text" style="float:right;width: 175px; " data-action="changepickup" id="inputRingCode" name="ringCode"  placeholder="{{localize 'Ring Code'}}" value="{{pickupAddress.ringCode}}" class='input-block-level span2'>
-                        </div>
-                    </div>
-
-                    <div class="control-group">
-                        <label class="control-label" for="inputPassengers">{{localize "Passengers"}}</label>
-                        <div class="controls">
-                            <input style="width: 60px;" type="text" id="inputPassengers" name="passengers" data-action="changesettings" value="{{settings.passengers}}" class='input-block-level'>
-                            <span class="center-control-label">{{localize "Vehicle Type"}}</span>
-
-                            <select style="float:right;width: 175px; " data-action="changesettings" name="vehicleTypeId" id="Select1">
-                                {{#each vehiclesList}}
-                                {{#ifCond this.id ../settings.vehicleTypeId}}
-                                <option value="{{this.id}}" selected>{{this.display}}</option>
-                                {{else}}
-                                <option value="{{this.id}}">{{this.display}}</option>
-                                {{/ifCond}}
-                                {{/each}}
-                            </select>
-                        </div>
-                    </div>
-
-
-                    <div class="control-group">
-                        <label class="control-label" for="inputChargeType">{{localize "Charge Type"}}</label>
-                        <div class="controls">
-                            <select data-action="changesettings" id="inputChargeType" name="chargeTypeId" class='input-block-level'>
-                                {{#each paymentsList}}
-                                    {{#ifCond this.id ../settings.chargeTypeId}}
-                                        <option value="{{this.id}}" selected>{{this.display}}</option>
-                                    {{else}}
-                                        <option value="{{this.id}}">{{this.display}}</option>
-                                    {{/ifCond}}
-                                {{/each}}
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="control-group">
-                        <label class="control-label" for="inputNotes">{{localize "Notes"}}</label>
-                        <div class="controls">
-                            <input type="text" id="inputNotes" name="notes" placeholder="Notes" class='input-block-level'>
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <a href='#' class='btn pull-right span' data-action='cancel'>{{localize "Cancel"}}</a>
-                        <a href='#' id="bookBt" class='btn btn-primary pull-right span' data-action='book' data-loading-text="{{localize 'Loading'}}">{{localize "Book Now!"}}</a>                
+                <div class="control-group">
+                    <label class="control-label" for="inputName">{{localize "Name"}}</label>
+                    <div class="controls">
+                        <input type="text"  id="inputName" name="settings.name" value="{{settings.name}}" class='input-block-level'>
                     </div>
                 </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="inputPhone">{{localize "Phone"}}</label>
+                    <div class="controls">
+                        <input type="text" id="inputPhone" name="settings.phone" value="{{settings.phone}}" class='input-block-level'>
+                    </div>
+                </div>
+                
+                <div class="control-group left-control-group">
+                    <label class="control-label">{{localize 'Apt No.'}}</label>
+                    <div class='controls'>
+                        <input type="text" id="inputApt" name="pickupAddress.apartment" placeholder="{{localize 'Apt No.'}}" value="{{pickupAddress.apartment}}" class='input-block-level'>
+                    </div>
+                </div>
+
+                <div class="control-group right-control-group">
+                    <label class="control-label">{{localize 'Ring Code'}}</label>
+                    <div class='controls'><input type="text" id="inputRingCode" name="pickupAddress.ringCode"  placeholder="{{localize 'Ring Code'}}" value="{{pickupAddress.ringCode}}" class='input-block-level'></div>
+                </div>
+
+                <div class="control-group left-control-group">
+                    <label class="control-label" for="inputPassengers">{{localize "Passengers"}}</label>
+                    <div class="controls">
+                        <input type="text" id="inputPassengers" name="settings.passengers" value="{{settings.passengers}}" class='input-block-level'>
+                    </div>
+                </div>
+
+                <div class="control-group right-control-group">
+                    <label class="control-label" for="inputPassengers">{{localize "Vehicle Type"}}</label>
+                    <div class="controls">
+                        <select name="settings.vehicleTypeId" class='input-block-level'>
+                            {{#each vehiclesList}}
+                            {{#ifCond this.id ../settings.vehicleTypeId}}
+                            <option value="{{this.id}}" selected>{{this.display}}</option>
+                            {{else}}
+                            <option value="{{this.id}}">{{this.display}}</option>
+                            {{/ifCond}}
+                            {{/each}}
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="control-group">
+                    <label class="control-label" for="inputChargeType">{{localize "Charge Type"}}</label>
+                    <div class="controls">
+                        <select id="inputChargeType" name="settings.chargeTypeId" class='input-block-level'>
+                            {{#each paymentsList}}
+                                {{#ifCond this.id ../settings.chargeTypeId}}
+                                    <option value="{{this.id}}" selected>{{this.display}}</option>
+                                {{else}}
+                                    <option value="{{this.id}}">{{this.display}}</option>
+                                {{/ifCond}}
+                            {{/each}}
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label" for="inputNotes">{{localize "Notes"}}</label>
+                    <div class="controls">
+                        <input type="text" id="inputNotes" name="note" placeholder="Notes" class='input-block-level'>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <a href='#' class='btn pull-right span' data-action='cancel'>{{localize "Cancel"}}</a>
+                    <button type='submit' class='btn btn-primary pull-right span' data-loading-text="{{localize 'Loading'}}">{{localize "Book Now!"}}</button>                
+                </div>
             </form>
+
         </div>
     </div>
 </div>

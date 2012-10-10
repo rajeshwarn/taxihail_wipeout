@@ -9,16 +9,15 @@
         
         tab: {
             profile: function() {
-                this._profile = new TaxiHail.ProfileView({
+                this._tabView = new TaxiHail.ProfileView({
                     model: this.model
-                    });
-                this._profile.render();
-                this.$("#user-account-container").html(this._profile.el);
+                }).render();
+                this.$("#user-account-container").html(this._tabView.el);
             },
 
             favorites: function(){
                 var addresses = new TaxiHail.AddressCollection(),
-                        view = new TaxiHail.FavoritesView({
+                        view = this._tabView = new TaxiHail.FavoritesView({
                             collection: addresses
                         });
 
@@ -42,11 +41,11 @@
                 orders.fetch({
                     url: 'api/account/orders',
                     success: _.bind(function (model) {
-                        this._history = new TaxiHail.OrderHistoryView({
+                        this._tabView = new TaxiHail.OrderHistoryView({
                             collection:model
                         });
-                        this._history.render();
-                        this.$("#user-account-container").html(this._history.el);
+                        this._tabView.render();
+                        this.$("#user-account-container").html(this._tabView.el);
                     }, this)
                     
                 });
@@ -55,17 +54,18 @@
                 
             },
             password: function () {
-                this._password = new TaxiHail.UpdatePasswordView({
+                this._tabView = new TaxiHail.UpdatePasswordView({
                     model: this.model
                 });
-                this._password.render();
-                this.$("#user-account-container").html(this._password.el);
+                this._tabView.render();
+                this.$("#user-account-container").html(this._tabView.el);
             }
 
         },
         
         selectTab: function (tabName) {
             this.$('[data-tab=' + tabName + ']').addClass('active').siblings().removeClass('active');
+            this._tabView && this._tabView.remove();
             this.tab[tabName].apply(this);
 
         }

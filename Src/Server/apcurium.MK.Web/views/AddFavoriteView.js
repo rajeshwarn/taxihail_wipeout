@@ -1,21 +1,20 @@
 ﻿(function () {
-    TaxiHail.AddFavoriteView = TaxiHail.TemplatedView.extend({
+    
+    var View = TaxiHail.AddFavoriteView = TaxiHail.TemplatedView.extend({
 
         className: 'add-favorite-view',
 
         events: {
-            "click [data-action=save]": "save",
-            "change :text[data-action=changesettings]": "onSettingsPropertyChanged",
+            "change :input": "onPropertyChanged",
             'focus [name=fullAddress]': 'onfocus',
             'click [data-action=destroy]': 'destroyAddress',
             'click [data-action=cancel]': 'cancel'
         },
         
         initialize :function () {
-            _.bindAll(this, 'onkeyup', 'ondocumentclick');
-            this.model.on('change', this.render, this);
+            _.bindAll(this, 'save', 'onkeyup', 'ondocumentclick');
             this.model.on('sync', this.refreshParent, this);
-            $(document).on('click', this.ondocumentclick);
+            _.defer(_.bind(function() { $(document).on('click', this.ondocumentclick); }, this));
         },
         
         refreshParent : function () {
@@ -25,7 +24,8 @@
         render: function () {
             var html = this.renderTemplate(this.model.toJSON());
             this.$el.html(html);
-            this.$("form").validate({
+
+            this.validate({
                 rules: {
                     friendlyName: "required",
                     fullAddress: "required"
@@ -38,14 +38,7 @@
                         required: TaxiHail.localize('error.fullAddressRequired')
                     }
                 },
-                highlight: function (label) {
-                    $(label).closest('.control-group').addClass('error');
-                    $(label).prevAll('.valid-input').addClass('hidden');
-                }, success: function (label) {
-                    $(label).closest('.control-group').removeClass('error');
-                    label.prevAll('.valid-input').removeClass('hidden');
-
-                }
+                submitHandler: this.save
             });
             
             //search address for full address
@@ -65,26 +58,12 @@
             return this;
         },
         
-        save: function (e) {
-            e.preventDefault();
-            if (this.$("form").valid()) {
-                if (this.model.has('fullAddress')) {
-                    if (!this.model.get('isHistoric')) {
-                        this.model.save({ });
-
-                    } else {
-                        $.post('api/account/addresses', {
-                            friendlyName: this.model.get('friendlyName'),
-                            fullAddress: this.model.get('fullAddress'),
-                            apartment: this.model.get('apartment'),
-                            ringCode: this.model.get('ringCode')
-                        }, function () {
-                            this.model.trigger('sync');
-                            
-                        }, 'json');
-                        this.model.set('isHistoric', false);
-                        this.collection.trigger('sync');
-                    }
+        save: function (form) {
+            if (this.model.has('fullAddress')) {
+                if (!this.model.get('isHistoric')) {
+                    this.model.save();
+                } else {
+                    this.collection.create(_.pick(this.model.toJSON(), 'friendlyName', 'fullAddress', 'apartment', 'ringCode', 'buildingName'), {wait: true});
                 }
             }
         },
@@ -116,9 +95,13 @@
         },
 
         close: function () {
+            var $input =  this.$('[name=fullAddress]');
+            
             this._selector && this._selector.hide();
             // Set address in textbox back to the value of the model
-            this.$('[name=fullAddress]').val(this.model.get('fullAddress'));
+            $input.val(this.model.get('fullAddress'));
+            // Force validation of the Address field
+            this.$('form').data().validator.element($input);
         },
 
         onfocus: function (e) {
@@ -133,11 +116,15 @@
         
         cancel : function (e) {
             e.preventDefault();
+            this.model.set(this.model.previousAttributes);
             this.trigger('cancel', this);
         },
         
-        onSettingsPropertyChanged: function (e) {
+        onPropertyChanged: function (e) {
             var $input = $(e.currentTarget);
+            if($input.attr('name') === 'fullAddress') {
+                return;
+            }
 
             this.model.set($input.attr("name"), $input.val());
         },
@@ -148,5 +135,7 @@
             }
         }
     });
+
+    _.extend(View.prototype, TaxiHail.ValidatedView);
 
 }());

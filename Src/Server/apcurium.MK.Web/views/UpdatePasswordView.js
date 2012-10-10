@@ -1,50 +1,42 @@
 ﻿(function () {
     var settingschanged = false;
-    TaxiHail.UpdatePasswordView = TaxiHail.TemplatedView.extend({
-        events: {
-            'click [data-action=updatepassword]': 'updatepassword',
-            'change :text': 'onPropertyChanged',
-            'change :input': 'onPropertyChanged'
-        },
+    
+    var View = TaxiHail.UpdatePasswordView = TaxiHail.TemplatedView.extend({
+        
+        tagName: 'form',
+        className: 'form-horizontal',
 
-        initialize: function () {
-
+        initialize: function() {
+            _.bindAll(this, 'onsubmit');
         },
 
         render: function () {
             this.$el.html(this.renderTemplate(this.model.toJSON()));
             
-            this.$("#updatePasswordForm").validate({
+            this.validate({
                 rules: {
                     password: "required",
-                    newPassword: {
-                        required: true,
-                        equalTo: "#confirmPassword"
+                    'new-password': {
+                        required: true
                     },
-                    confirmPassword: {
+                    'confirm-password': {
                         required: true,
                         equalTo: "#newPassword"
                     }
                 },
                 messages: {
                     password : {
-                        required : TaxiHail.localize('Password required'),
+                        required : TaxiHail.localize('Password required')
                     },
-                    newPassword : {
-                        required: TaxiHail.localize('Password required'),
+                    'new-password' : {
+                        required: TaxiHail.localize('Password required')
                     },
-                    confirmPassword: {
+                    'confirm-password': {
                         required: TaxiHail.localize('Password required'),
                         equalTo: TaxiHail.localize('Password are not the same')
                     }
                 },
-                highlight: function (label) {
-                    $(label).closest('.control-group').addClass('error');
-                    $(label).prevAll('.valid-input').addClass('hidden');
-                }, success: function (label) {
-                    $(label).closest('.control-group').removeClass('error');
-                    label.prevAll('.valid-input').removeClass('hidden');
-            }
+                submitHandler: this.onsubmit
             });
 
             return this;
@@ -58,23 +50,23 @@
             this.model.set($input.attr("name"),  $input.val());
         },
         
-        updatepassword: function (e) {
-            e.preventDefault();
-            if (this.$("#updatePasswordForm").valid()) {
-                var accountId = this.model.get('id');
-                    $.post('api/accounts/' + accountId + '/updatePassword', {
-                        accountId: accountId,
-                        currentPassword: this.model.get('password'),
-                        newPassword: this.model.get('newPassword')
-                    }, function () {
-                        $("#notif-bar").html(TaxiHail.localize('Password updated.'));
-                        $(".input-block-level").val('');
-                        $('.valid-input').addClass('hidden');
-                    }, 'json').fail(function (response) {
-                        $("#notif-bar").html(TaxiHail.localize(response.statusText));
-                    });
-                }
+        onsubmit: function (form) {
+            var currentPassword = $(form).find('[name=password]').val(),
+                newPassword = $(form).find('[name=new-password]').val();
+
+            this.model.updatePassword(currentPassword, newPassword)
+                .done(_.bind(function(){
+                    this.$("#notif-bar").html(TaxiHail.localize('Password updated.'));
+                    $(form).find(":text, :password").val('');
+                    $(form).find(':submit').button('reset');
+
+                }, this))
+                .fail(_.bind(function(response){
+                    this.$("#notif-bar").html(TaxiHail.localize(response.statusText));
+                }, this));
         }
     });
+
+    _.extend(View.prototype, TaxiHail.ValidatedView);
 
 }());
