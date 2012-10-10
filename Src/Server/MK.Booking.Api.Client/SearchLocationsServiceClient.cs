@@ -1,4 +1,5 @@
 ﻿using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Common.Entity;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -15,12 +16,12 @@ namespace apcurium.MK.Booking.Api.Client
         }       
 
 
-        public AddressList Search(string name, double latitude, double longitude )
+        public Address[] Search(string name, double latitude, double longitude )
         {
             var resource = string.Format(CultureInfo.InvariantCulture, "/searchlocation?Name={0}&Lat={1}&Lng={2}", name, latitude, longitude);
 
             Console.WriteLine(resource);
-            var result = Client.Get<AddressList>(resource);
+            var result = Client.Get<Address[]>(resource);
             return result;
         }
     }

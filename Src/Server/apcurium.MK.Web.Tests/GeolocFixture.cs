@@ -45,8 +45,8 @@ namespace apcurium.MK.Web.Tests
         {
             var sut = new GeocodingServiceClient(BaseUrl, SessionId);
             var addresses = sut.Search("11 hines");
-            Assert.True(addresses.Addresses.Count() == 1);
-            Assert.True(addresses.Addresses.ElementAt(0).FullAddress.Contains( "11" ));
+            Assert.True(addresses.Count() == 1);
+            Assert.True(addresses.ElementAt(0).FullAddress.Contains( "11" ));
         }
 
         [Test]
@@ -54,8 +54,8 @@ namespace apcurium.MK.Web.Tests
         {
             var sut = new GeocodingServiceClient(BaseUrl, SessionId);
             var addresses = sut.Search("5661 avenue chateaubriand, Montreal");
-            Assert.AreEqual(2, addresses.Addresses.Count());
-            var address = addresses.Addresses.ElementAt(0);
+            Assert.AreEqual(2, addresses.Count());
+            var address = addresses.ElementAt(0);
             Assert.AreEqual(true, address.FullAddress.Contains("Chateaubriand"));
             Assert.AreEqual("5661", address.StreetNumber);
             Assert.AreEqual("Avenue de Chateaubriand", address.Street);
@@ -69,7 +69,7 @@ namespace apcurium.MK.Web.Tests
         {
             var sut = new GeocodingServiceClient(BaseUrl, SessionId);
             var addresses = sut.Search( 45.5062, -73.5726);
-            Assert.True(addresses.Addresses.Count() >= 1);            
+            Assert.True(addresses.Count() >= 1);            
         }
 
 
@@ -78,10 +78,10 @@ namespace apcurium.MK.Web.Tests
         {
             var sut = new GeocodingServiceClient(BaseUrl, SessionId);
             var addresses = sut.Search(45.5227967351675, -73.6242310144007);
-            Assert.True(addresses.Addresses.Count() >= 1);
+            Assert.True(addresses.Count() >= 1);
 
-            Assert.False(addresses.Addresses.First().StreetNumber.Contains("-"));
-            Assert.False(addresses.Addresses.First().FullAddress.Split(' ')[0].Contains("-"));
+            Assert.False(addresses.First().StreetNumber.Contains("-"));
+            Assert.False(addresses.First().FullAddress.Split(' ')[0].Contains("-"));
         }
 
         [Test]
@@ -91,10 +91,10 @@ namespace apcurium.MK.Web.Tests
             var addresses = sut.Search(45.5227967351675, -73.6242310144007);                     
                         
 
-            Assert.True(addresses.Addresses.Count() >= 1);
+            Assert.True(addresses.Count() >= 1);
 
-            Assert.False(addresses.Addresses.First().StreetNumber.Contains("-"));
-            Assert.False(addresses.Addresses.First().FullAddress.Split(' ')[0].Contains("-"));
+            Assert.False(addresses.First().StreetNumber.Contains("-"));
+            Assert.False(addresses.First().FullAddress.Split(' ')[0].Contains("-"));
         }
     }
 }

@@ -283,6 +283,8 @@
   <string name="View_SignUp_Label">Create Your Profile</string>
   <string name="View_SignIn"> </string>
 
+  <string name="View_RideSettings">Profile</string>
+  
   <string name="View_Book_Menu_MyLocations">Manage My Locations</string>
   <string name="View_Book_Menu_MyOrders">My Orders</string>
   <string name="View_Book_Menu_UpdateMyProfile">Update My Profile</string>

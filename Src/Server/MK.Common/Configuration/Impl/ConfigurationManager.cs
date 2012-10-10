@@ -15,6 +15,19 @@ namespace apcurium.MK.Common.Configuration.Impl
 
         private Dictionary<string, string> _settings = null;
 
+        public void Reset()
+        {
+            _settings = null;
+        }
+
+        public IDictionary<string, string> GetAllSettings()
+        {
+            if (_settings == null)
+            {
+                Load();
+            }
+            return _settings;            
+        }
         public string GetSetting(string key)
         {
             if (_settings == null)

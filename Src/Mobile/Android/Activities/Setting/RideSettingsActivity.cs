@@ -23,10 +23,15 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 {
     [Activity(Label = "RideSettingsActivity", Theme = "@android:style/Theme.NoTitleBar", WindowSoftInputMode = SoftInput.AdjustPan, ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
-    public class RideSettingsActivity : ListActivity
+    public class RideSettingsActivity : BaseListActivity
     {
         private RideSettingsModel _model;
         private bool _updateDefaultSettings;
+
+        protected override int ViewTitleResourceId
+        {
+            get { return Resource.String.View_RideSettings; }
+        }
 
         protected override void OnCreate(Bundle bundle)
         {

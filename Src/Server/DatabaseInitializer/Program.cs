@@ -58,9 +58,10 @@ namespace DatabaseInitializer
                 }
                 else
                 {
-                    Console.WriteLine("Sql Instance name ? Default is MSSQL11.MSSQLSERVER");
+                    Console.WriteLine("Sql Instance name ? Default is MSSQL11.MSSQLSERVER , 1- MSSQL10_50.MSSQLSERVER");
                     var userSqlInstance = Console.ReadLine();
-                    sqlInstanceName = string.IsNullOrEmpty(userSqlInstance) ? sqlInstanceName : userSqlInstance;
+
+                    sqlInstanceName = string.IsNullOrEmpty(userSqlInstance) ? sqlInstanceName : userSqlInstance == "1" ?"MSSQL10_50.MSSQLSERVER" : userSqlInstance;
                 }
 
                 var creatorDb = new DatabaseCreator();

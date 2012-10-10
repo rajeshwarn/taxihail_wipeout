@@ -1,4 +1,4 @@
-{
+{	
 	"DefaultBookingSettings.ChargeTypeId" : "1",
 	"DefaultBookingSettings.NbPassenger" : "1",
 	"DefaultBookingSettings.ProviderId" : "1",
@@ -8,7 +8,6 @@
 	"Direction.RatePerKm" : "1.25",
 	"DistanceFormat" : "MILE",
 	"Email.NoReply" : "noreply@apcurium.com",
-	"GeoLoc.AddressFilter" : "",
 	"GeoLoc.SearchFilter" : "{0},atlanta,ga",
 	"GeoLoc.DefaultLatitude" : "33.7489",
 	"GeoLoc.DefaultLongitude" : "-84.3881",

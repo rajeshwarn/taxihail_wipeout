@@ -1,51 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using ServiceStack.ServiceInterface;
-using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using ServiceStack.ServiceClient.Web;
-using apcurium.MK.Booking.Google;
-using apcurium.MK.Common.Extensions;
-using ServiceStack.Common.Web;
-using System.Net;
-using System.Globalization;
+﻿using apcurium.MK.Booking.Google;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace apcurium.MK.Booking.Api.Services
+namespace apcurium.MK.Booking.Maps.Impl
 {
-
-    public enum DistanceFormat
+    public class Directions : IDirections
     {
-        Km,
-        Mile,
-    }
 
+        public enum DistanceFormat
+        {
+            Km,
+            Mile,
+        }
 
-
-    public class DirectionsService : RestServiceBase<DirectionsRequest>
-    {
+        
         private readonly IMapsApiClient _client;
         private readonly IConfigurationManager _configManager;
-        public DirectionsService(IMapsApiClient client, IConfigurationManager configManager)
+        
+        public Directions(IMapsApiClient client, IConfigurationManager configManager)
         {
             _client = client;
             _configManager = configManager;
         }
 
 
-        public override object OnGet(DirectionsRequest request)
+        public Direction GetDirection(double? originLat, double? originLng, double? destinationLat, double? destinationLng)
         {
-            
-            var result = new DirectionInfo();
-            var directions = _client.GetDirections(request.OriginLat.GetValueOrDefault(), request.OriginLng.GetValueOrDefault(), request.DestinationLat.GetValueOrDefault(), request.DestinationLng.GetValueOrDefault());
+            var result = new Direction();
+            var directions = _client.GetDirections(originLat.GetValueOrDefault(), originLng.GetValueOrDefault(), destinationLat.GetValueOrDefault(), destinationLng.GetValueOrDefault());
 
-            if (directions.Status == Google.Resources.ResultStatus.OK) 
+            if (directions.Status == Google.Resources.ResultStatus.OK)
             {
                 var route = directions.Routes.ElementAt(0);
-                if ( route.Legs.Count > 0 )
+                if (route.Legs.Count > 0)
                 {
                     var distance = route.Legs.Sum(leg => leg.Distance.Value);
                     result.Distance = distance;
@@ -55,7 +48,7 @@ namespace apcurium.MK.Booking.Api.Services
                     result.FormattedDistance = FormatDistance(result.Distance);
                 }
             }
-            
+
             return result;
         }
 
@@ -68,9 +61,9 @@ namespace apcurium.MK.Booking.Api.Services
             }
             else
             {
-                return "";                
+                return "";
             }
-            
+
         }
         private string FormatDistance(int? distance)
         {
@@ -79,7 +72,7 @@ namespace apcurium.MK.Booking.Api.Services
                 var format = _configManager.GetSetting("DistanceFormat").ToEnum<DistanceFormat>(true, DistanceFormat.Km);
                 if (format == DistanceFormat.Km)
                 {
-                    double distanceInKM = Math.Round( (double)distance.Value / 1000, 1);
+                    double distanceInKM = Math.Round((double)distance.Value / 1000, 1);
                     return string.Format("{0:n1} km", distanceInKM);
                 }
                 else
@@ -92,16 +85,16 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 return "";
             }
-            
+
         }
 
 
         private double? GetPrice(int? distance)
         {
-            double callCost = double.Parse(  _configManager.GetSetting("Direction.FlateRate"), CultureInfo.InvariantCulture );
-            double costPerKm = double.Parse( _configManager.GetSetting("Direction.RatePerKm"), CultureInfo.InvariantCulture );
-            double maxDistance = double.Parse( _configManager.GetSetting("Direction.MaxDistance"), CultureInfo.InvariantCulture );
-            
+            double callCost = double.Parse(_configManager.GetSetting("Direction.FlateRate"), CultureInfo.InvariantCulture);
+            double costPerKm = double.Parse(_configManager.GetSetting("Direction.RatePerKm"), CultureInfo.InvariantCulture);
+            double maxDistance = double.Parse(_configManager.GetSetting("Direction.MaxDistance"), CultureInfo.InvariantCulture);
+
 
 
             double? price = null;
@@ -161,6 +154,5 @@ namespace apcurium.MK.Booking.Api.Services
 
             return price;
         }
-
     }
 }

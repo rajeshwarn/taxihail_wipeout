@@ -3,7 +3,8 @@ using System.Linq;
 using apcurium.MK.Booking.Google.Resources;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
-namespace apcurium.MK.Booking.Api.Services.Mappers
+
+namespace apcurium.MK.Booking.Maps.Impl.Mappers
 {
     public class GeoObjToAddressMapper
     {

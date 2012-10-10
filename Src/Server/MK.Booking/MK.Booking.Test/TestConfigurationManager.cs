@@ -22,7 +22,17 @@ namespace apcurium.MK.Booking.Common.Tests
                 _config.Add(token.Key, token.Value.ToString());
             }
         }
-        
+
+        public void Reset()
+        { }
+
+        public IDictionary<string, string> GetAllSettings()
+        {
+
+            return _config;
+
+        }
+
         public string GetSetting(string key)
         {
 

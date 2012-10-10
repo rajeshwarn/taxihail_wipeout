@@ -1,45 +1,50 @@
-﻿using System;
-using System.Linq;
-using System.Net;
-using apcurium.MK.Booking.Google;
-using ServiceStack.Common.Web;
-using ServiceStack.ServiceInterface;
-using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Common.Configuration;
+﻿using apcurium.MK.Booking.Google;
 using apcurium.MK.Booking.Google.Resources;
+using apcurium.MK.Booking.Maps.Impl.Mappers;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace apcurium.MK.Booking.Api.Services
+namespace apcurium.MK.Booking.Maps.Impl
 {
-    public class NearbyPlacesService : RestServiceBase<NearbyPlacesRequest>
+    public class Places : IPlaces
     {
         private IMapsApiClient _client;
         private readonly IConfigurationManager _configurationManager;
 
-        public NearbyPlacesService(IMapsApiClient client, IConfigurationManager configurationManager)
+        public Places(IMapsApiClient client, IConfigurationManager configurationManager)
         {
             _client = client;
             _configurationManager = configurationManager;
         }
 
-        public override object OnGet(NearbyPlacesRequest request)
+        public Address GetPlaceDetail(string referenceId)
         {
-            if (string.IsNullOrEmpty(request.Name) 
-                && request.IsLocationEmpty())
-            {
-                throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.NearbyPlaces_LocationRequired.ToString());
-            }
+            var place = _client.GetPlaceDetail(referenceId);
+
+            var result = new GeoObjToAddressMapper().ConvertToAddress(place);
+
+            result.PlaceReference = referenceId;
+
+            return result;
+        }
+
+        public Address[] SearchPlaces(string name, double? latitude, double? longitude, int? radius)
+        {
 
             int defaultRadius;
-            if(!Int32.TryParse(_configurationManager.GetSetting("NearbyPlacesService.DefaultRadius"), out defaultRadius))
+            if (!Int32.TryParse(_configurationManager.GetSetting("NearbyPlacesService.DefaultRadius"), out defaultRadius))
             {
                 //fallback
                 defaultRadius = 500;
             }
 
-            var results = _client.GetNearbyPlaces(request.Lat.Value, request.Lng.Value, request.Name, "en", false, request.Radius ?? defaultRadius);
+            var results = _client.GetNearbyPlaces(latitude, longitude, name, "en", false, radius.HasValue? radius.Value : defaultRadius);
 
             return results.Select(ConvertToAddress).ToArray();
         }
@@ -68,8 +73,7 @@ namespace apcurium.MK.Booking.Api.Services
                 }
             }
 
-           return address;
+            return address;
         }
-
     }
 }
