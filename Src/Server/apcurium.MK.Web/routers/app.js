@@ -51,7 +51,8 @@
                 var order = TaxiHail.orderService.getCurrentOrder();
                 if(order) {
                     if(order.isNew()){
-                        this.navigate('confirmationbook', { trigger: true });
+                        //this.navigate('confirmationbook', { trigger: true });
+                        this.navigate('', { trigger: true });
                     }
                     else {
                         order.getStatus().fetch({
