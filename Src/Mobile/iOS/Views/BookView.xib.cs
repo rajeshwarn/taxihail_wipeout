@@ -77,7 +77,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 			TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub>().Subscribe<RebookRequested>( msg => {
 				ViewModel.Rebook( msg.Content );
-				BookTaxi();
 			});
 			TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub>().Subscribe<DateTimePicked>( msg => _onDateTimePicked() );
 			_dateTimePicker = new DateTimePicker( );

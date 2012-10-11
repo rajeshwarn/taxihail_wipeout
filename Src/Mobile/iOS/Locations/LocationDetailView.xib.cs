@@ -250,6 +250,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             var order = new Order();
             order.PickupAddress = _data;
             order.Settings = AppContext.Current.LoggedUser.Settings;
+			InvokeOnMainThread( () => NavigationController.PopToRootViewController(true) );
 			InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new RebookRequested(this, order)));
         }
 
