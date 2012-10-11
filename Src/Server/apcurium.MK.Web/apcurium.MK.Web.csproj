@@ -318,6 +318,10 @@
     <Content Include="models\Address.js" />
     <Content Include="models\Order.js" />
     <Content Include="routers\app.js" />
+    <Content Include="scripts\assets.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="scripts\app.xml" />
     <Content Include="services\AuthService.js" />
     <Content Include="services\DirectionInfoService.js" />
     <Content Include="services\GeocodingService.js" />
@@ -408,6 +412,7 @@
       <DependentUpon>PingdomCheck.ashx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="scripts\AjaxMinHttpHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Hosting;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Xml.Linq;
 using Microsoft.Practices.ServiceLocation;
 using apcurium.MK.Common.Configuration;
 
@@ -15,6 +17,8 @@ namespace apcurium.MK.Web
         protected string DefaultLatitude { get; private set; }
         protected string DefaultLongitude { get; private set; }
         protected bool IsAuthenticated { get; private set; }
+        protected string JSAssetsSource { get; set; }
+        protected string JSAppSource { get; set; }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -24,6 +28,20 @@ namespace apcurium.MK.Web
             DefaultLatitude = config.GetSetting("GeoLoc.DefaultLatitude");
             DefaultLongitude = config.GetSetting("GeoLoc.DefaultLongitude");
             IsAuthenticated = base.UserSession.IsAuthenticated;
+
+#if DEBUG
+            var reader = XDocument.Load(HostingEnvironment.MapPath("~/scripts/assets.xml")).Root.CreateReader();
+            reader.MoveToContent();
+            JSAssetsSource = reader.ReadInnerXml();
+
+            reader = XDocument.Load(HostingEnvironment.MapPath("~/scripts/assets.xml")).Root.CreateReader();
+            reader.MoveToContent();
+            JSAppSource = reader.ReadInnerXml();
+#else
+            JSAssetsSource = "<script src='minified.js?source=assets'></script>";
+            JSAppSource = "<script src='minified.js?source=app'></script>";
+#endif
         }
+
     }
 }
