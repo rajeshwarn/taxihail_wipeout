@@ -43,5 +43,5 @@ echo Building Android App for $CLIENT with $CONFIGANDROID configuration
 	mv ../../Src/Mobile/Android/bin/Release/*Signed.ipa /Volumes/WwwMobileApps/$CLIENT
 fi
 
-#hg update -r default -C
-#hg purge
+hg update -r default -C
+hg purge
