@@ -121,7 +121,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 			var s = new InfoStructure( 50, false );
 			var sect = s.AddSection( Resources.HistoryViewTitle );
-			historic.ForEach( item => sect.AddItem( new TwoLinesAddressItem( item.Id, string.Format( Resources.OrderHistoryListTitle, item.IBSOrderId.Value.ToString() ), item.PickupAddress.FullAddress ) { Data = item } ) );
+			historic.ForEach( item => sect.AddItem( new TwoLinesAddressItem( item.Id, string.Format( Resources.OrderHistoryListTitle, item.IBSOrderId.Value.ToString(), item.CreatedDate ), item.PickupAddress.FullAddress ) { Data = item } ) );
 
 			return s;
 
