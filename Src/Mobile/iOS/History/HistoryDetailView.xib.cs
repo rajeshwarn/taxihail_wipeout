@@ -52,7 +52,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 //            var view = AppContext.Current.Controller.GetTitleView(null, Resources.HistoryDetailViewTitle, true);
             
             this.NavigationItem.HidesBackButton = false;
-			this.NavigationItem.TitleView = new TitleView(null, Resources.HistoryDetailViewTitle, true);
+			this.NavigationItem.TitleView = new TitleView(null, Resources.View_HistoryDetail, true);
             
             
             lblConfirmationNo.Text = Resources.HistoryDetailConfirmationLabel;
@@ -127,7 +127,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         void RebookTouched(object sender, EventArgs e)
         {
-			//InvokeOnMainThread( () => NavigationController.PopToRootViewController(true) ), _searchCancellationToken.Token);
+			InvokeOnMainThread( () => NavigationController.PopToRootViewController(true) );
+
 			TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new RebookRequested(this, _data));
         }
 

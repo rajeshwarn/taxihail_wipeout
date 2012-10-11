@@ -82,17 +82,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 					SetAccountInfo(account);
 				}
-                //else
-                //{
-                //    if (error.IsNullOrEmpty())
-                //    {
-                //        TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage( _appRessources.GetString("InvalidLoginMessageTitle"), _appRessources.GetString("AccountNotValidatedMessage"), _appRessources.GetString("ResendValidationButton"), () => _accountService.ResendConfirmationEmail(Email) );
-                //    }
-                //    else
-                //    {
-                //        TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage( _appRessources.GetString("InvalidLoginMessageTitle"), _appRessources.GetString("InvalidLoginMessage") + " (" + error + ")");
-                //    }
-                //}
 			}
 			finally
 			{

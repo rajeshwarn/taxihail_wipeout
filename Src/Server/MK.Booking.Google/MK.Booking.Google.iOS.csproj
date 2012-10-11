@@ -5,21 +5,22 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{52A964D2-F9FE-47CD-9C50-781CCEC560ED}</ProjectGuid>
+    <ProjectGuid>{50A4C580-4D47-48CF-80A8-79FDF81D9845}</ProjectGuid>
     <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <RootNamespace>MK.Booking.Api.Client.iOS</RootNamespace>
+    <RootNamespace>MK.Booking.Google.iOS</RootNamespace>
+    <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
+    <AssemblyName>MK.Booking.Google.iOS</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>False</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;CLIENT;TRACE</DefineConstants>
+    <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
-    <AssemblyName>MK.Booking.Api.Client.iOS</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -28,31 +29,20 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
-    <DefineConstants>CLIENT</DefineConstants>
-    <AssemblyName>MK.Booking.Api.Client.iOS</AssemblyName>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Distribution|iPhone' ">
-    <DebugType>none</DebugType>
-    <Optimize>False</Optimize>
-    <OutputPath>bin\iPhone\Distribution</OutputPath>
-    <WarningLevel>4</WarningLevel>
-    <AssemblyName>MKBookingApiClientiOS</AssemblyName>
-    <CodesignKey>iPhone Developer</CodesignKey>
-    <DefineConstants>CLIENT</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="monotouch" />
-    <Reference Include="ServiceStack.Text.MonoTouch">
-      <HintPath>..\..\Mobile\Libraries\Monotouch\ServiceStack.Text.MonoTouch.dll</HintPath>
+    <Reference Include="ServiceStack.Common.MonoTouch">
+      <HintPath>..\..\Mobile\Libraries\Monotouch\ServiceStack.Common.MonoTouch.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.Interfaces.MonoTouch">
       <HintPath>..\..\Mobile\Libraries\Monotouch\ServiceStack.Interfaces.MonoTouch.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Common.MonoTouch">
-      <HintPath>..\..\Mobile\Libraries\Monotouch\ServiceStack.Common.MonoTouch.dll</HintPath>
+    <Reference Include="ServiceStack.Text.MonoTouch">
+      <HintPath>..\..\Mobile\Libraries\Monotouch\ServiceStack.Text.MonoTouch.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
@@ -61,24 +51,36 @@
       <Project>{CF82F47F-A55D-45C6-B605-822458968E12}</Project>
       <Name>MK.Common.iOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MK.Booking.Api.Contract\MK.Booking.Api.Contract.iOS.csproj">
-      <Project>{0C54E2DC-0852-4EED-A882-60B68FE41C8D}</Project>
-      <Name>MK.Booking.Api.Contract.iOS</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccountServiceClient.cs" />
-    <Compile Include="BaseServiceClient.cs" />
-    <Compile Include="DirectionsServiceClient.cs" />
-    <Compile Include="GeocodingServiceClient.cs" />
-    <Compile Include="OrderServiceClient.cs" />
-    <Compile Include="ReferenceDataServiceClient.cs" />
+    <Folder Include="Impl\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Impl\MapsApiClient.cs" />
+    <Compile Include="IMapsApiClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="AuthServiceClient.cs" />
-    <Compile Include="NearbyPlacesClient.cs" />
-    <Compile Include="ApplicationInfoServiceClient.cs" />
-    <Compile Include="PlaceDetailServiceClient.cs" />
-    <Compile Include="SearchLocationsServiceClient.cs" />
-    <Compile Include="ConfigurationClientService.cs" />
+    <Compile Include="Resources\AddressComponent.cs" />
+    <Compile Include="Resources\AddressComponentType.cs" />
+    <Compile Include="Resources\Bounds.cs" />
+    <Compile Include="Resources\DirectionResult.cs" />
+    <Compile Include="Resources\Distance.cs" />
+    <Compile Include="Resources\Duration.cs" />
+    <Compile Include="Resources\Event.cs" />
+    <Compile Include="Resources\GeoObj.cs" />
+    <Compile Include="Resources\GeoResult.cs" />
+    <Compile Include="Resources\Geometry.cs" />
+    <Compile Include="Resources\Leg.cs" />
+    <Compile Include="Resources\Location.cs" />
+    <Compile Include="Resources\OverviewPolyline.cs" />
+    <Compile Include="Resources\Place.cs" />
+    <Compile Include="Resources\PlaceDetail.cs" />
+    <Compile Include="Resources\PlaceDetailResponse.cs" />
+    <Compile Include="Resources\PlaceTypes.cs" />
+    <Compile Include="Resources\PlacesResponse.cs" />
+    <Compile Include="Resources\Polyline.cs" />
+    <Compile Include="Resources\ResultStatus.cs" />
+    <Compile Include="Resources\Route.cs" />
+    <Compile Include="Resources\Step.cs" />
+    <Compile Include="Resources\Viewport.cs" />
   </ItemGroup>
 </Project>

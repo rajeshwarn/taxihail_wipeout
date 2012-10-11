@@ -114,16 +114,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			get { return GetValue ("LocationDetailViewTitle"); }
 		}
 
-
-
-            public static string BookFromLocationButton {
-            get { return GetValue ("BookFromLocationButton"); }
-        }
-
-		public static string HistoryDetailViewTitle {
-			get { return GetValue ("HistoryDetailViewTitle"); }
-		}
-
 		public static string SettingsViewTitle {
 			get { return GetValue ("SettingsViewTitle"); }
 		}
@@ -132,9 +122,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			get { return GetValue ("DefaultRideSettingsViewTitle"); }
 		}
 
-		public static string SignInViewTitle {
-			get { return GetValue ("SignInViewTitle"); }
-		}
 
 		public static string EmailLabel {
 			get { return GetValue ("EmailLabel"); }
@@ -167,25 +154,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public static string InvalidLoginMessageTitle {
 			get { return GetValue ("InvalidLoginMessageTitle"); }
 		}
-
-		public static string AccountNotValidatedMessage {
-			get { return GetValue ("AccountNotValidatedMessage"); }
-		}
-
-		public static string ResendValidationButton {
-			get { return GetValue ("ResendValidationButton"); }
-		}
-
+	
 		public static string BookItButton {
 			get { return GetValue ("BookItButton"); }
 		}
 
 		public static string InvalidChoiceTitle {
 			get { return GetValue ("InvalidChoiceTitle"); }
-		}
-
-		public static string InvalidVehiculeTypeForNbPassenger {
-			get { return GetValue ("InvalidVehiculeTypeForNbPassenger"); }
 		}
 
 		public static string BookPickupLabel {
@@ -240,20 +215,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 			get { return GetValue ("PickupMapTitle"); }
 		}
 
-		public static string ConfirmationViewTitle {
-			get { return GetValue ("ConfirmationViewTitle"); }
-		}
-
 		public static string CancelBoutton {
 			get { return GetValue ("CancelBoutton"); }
 		}
 
 		public static string ConfirmButton {
 			get { return GetValue ("ConfirmButton"); }
-		}
-
-		public static string NotesToDriverButton {
-			get { return GetValue ("NotesToDriverButton"); }
 		}
 
 		public static string ConfirmOriginLablel {
@@ -319,10 +286,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public static string ChangeBookingSettingsButton {
 			get { return GetValue ("ChangeBookingSettingsButton"); }
 		}
-
-		public static string CallCompanyButton {
-			get { return GetValue ("CallCompanyButton"); }
-		}
 			
 		public static string HistoryInfo {
 			get { return GetValue ("HistoryInfo"); }
@@ -330,10 +293,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		public static string NoHistoryLabel {
 			get { return GetValue ("NoHistoryLabel"); }
-		}
-
-		public static string LocationAddFavorite {
-			get { return GetValue ("LocationAddFavorite"); }
 		}
 
 		public static string LocationNoHistory {
@@ -396,14 +355,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			get { return GetValue ("CreateAccountTitle"); }
 		}
 
-		public static string CreateAccountFirstName {
-			get { return GetValue ("CreateAccountFirstName"); }
-		}
-
-		public static string CreateAccountLastName {
-			get { return GetValue ("CreateAccountLastName"); }
-		}
-
 		public static string CreateAccountPhone {
 			get { return GetValue ("CreateAccountPhone"); }
 		}
@@ -454,14 +405,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		public static string DoneButton {
 			get { return GetValue ("DoneButton"); }
-		}
-
-		public static string SignOutButton {
-			get { return GetValue ("SignOutButton"); }
-		}
-
-		public static string ChangeDefaultRideSettings {
-			get { return GetValue ("ChangeDefaultRideSettings"); }
 		}
 
 		public static string SendErrorLogButton {
@@ -564,10 +507,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			get { return GetValue ("TaxiMapTitle"); }
 		}
 
-		public static string ErrorCreatingOrderMessage {
-			get { return GetValue ("ErrorCreatingOrderMessage"); }
-		}
-
 		public static string ErrorCreatingOrderTitle {
 			get { return GetValue ("ErrorCreatingOrderTitle"); }
 		}
@@ -614,10 +553,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		public static string LoginForgotPasswordButton {
 			get { return GetValue ("LoginForgotPasswordButton"); }
-		}
-
-		public static string TechSupportButton {
-			get { return GetValue ("TechSupportButton"); }
 		}
 
 		public static string PickupOnButtonImageName {
@@ -672,11 +607,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			get { return GetValue ("NotAvailable"); }
 		}
 
-		public static string AboutButton {
-
-			get { return GetValue ("AboutButton"); }
-		}
-
 		public static string AboutUsUrl {
 			get { return GetValue ("AboutUsUrl"); }
 		}
@@ -721,15 +651,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			get { return GetValue ("CreateAccoutTitleLabel"); }
 		}
 
-		public static string CreateAccoutFullNameLabel {
-			get { return GetValue ("CreateAccoutFullNameLabel"); }
-		}
-
-		
-		public static string CreateAccoutPhoneNumberLabel {
-			get { return GetValue ("CreateAccoutPhoneNumberLabel"); }
-		}
-	
 		public static string CreateAccoutLanguageLabel {
 			get { return GetValue ("CreateAccoutLanguageLabel"); }
 		}
@@ -826,37 +747,15 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public static string CarAssignedStatic {
 			get { return GetValue ("CarAssigned"); }
 		}
-		public static string FacebookLoginBtn {
-			get { return GetValue ("FacebookLoginBtn"); }
-		}
-
-		public static string TwitterLoginBtn {
-			get { return GetValue ("TwitterLoginBtn"); }
-		}
-
-		public static string Exceptions {
-			get { return GetValue ("Exceptions"); }
-		}
 
 		public static string MobileUserStatic {
-			get { return GetValue ("MobileUser"); }
+			get { return GetValue ("OrderNote"); }
 		}
 
 		public static string NotesStatic {
-			get { return GetValue ("Notes"); }
+			get { return ""; }
 		}    
-        public static string ErrorGettingStatus
-        {
-            get { return GetValue ("ErrorGettingStatus"); }
-        }
-        public static string LocationAddFavoriteDetails
-        {
-            get { return GetValue ("LocationAddFavoriteDetails"); }
-        }
-        public static string LocationNoHistoryDetails
-        {
-            get { return GetValue ("LocationNoHistoryDetails"); }
-        }
+
         public static string StatusCallButton
         {
             get { return GetValue ("StatusCallButton"); }
@@ -877,45 +776,10 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             get { return GetValue ("ChargeTypeLabel"); }
         }	
-        public static string UnAuthorizedCallTitle
-        {
-            get { return GetValue ("UnAuthorizedCallTitle"); }
-        }
-        public static string UnAuthorizedCallMessage
-        {
-            get { return GetValue ("UnAuthorizedCallMessage"); }
-		}
-		public static string PickupLater
-		{
-			get { return GetValue ("PickupLater"); }
-		}
-		public static string OrderNumber
-		{
-			get { return GetValue ("OrderNumber"); }
-		}
-		public static string SearchButton
-		{
-			get { return GetValue ("SearchButton"); }
-		}
-		public static string ContactsButton
-		{
-			get { return GetValue ("ContactsButton"); }
-		}
+
 		public static string FavoritesButton
 		{
 			get { return GetValue ("FavoritesButton"); }
-		}
-		public static string PlacesButton
-		{
-			get { return GetValue ("PlacesButton"); }
-		}
-		public static string SearchPlaceholder
-		{
-			get { return GetValue ("SearchPlaceholder"); }
-		}
-		public static string Profile
-		{
-			get { return GetValue ("Profile"); }
 		}
 		public static string BookPickupLocationButtonTitle
 		{
@@ -944,14 +808,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public static string PickupDateDisplay
 		{
 			get { return GetValue ("PickupDateDisplay"); }
-		}
-		public static string SettingsFavorites
-		{
-			get { return GetValue ("SettingsFavorites"); }
-		}
-		public static string SettingsRideHistory
-		{
-			get { return GetValue ("SettingsRideHistory"); }
 		}
 		public static string DateTimePickerSetButton
 		{
@@ -1001,13 +857,110 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			get { return GetValue ("InvalidLocalContactMessage"); }
 		}
-		public static string DateTimePickerCurrentButton
-		{
-			get { return GetValue ("DateTimePickerCurrentButton"); }
-		}
+
 		public static string EstimatedFareNotAvailable
 		{
 			get { return GetValue ("EstimatedFareNotAvailable"); }
+		}
+		public static string ApplicationName
+		{
+			get { return GetValue ("ApplicationName"); }
+		}
+		public static string OrderHistoryListTitle
+		{
+			get { return GetValue ("OrderHistoryListTitle"); }
+		}
+		public static string FacebookButton
+		{
+			get { return GetValue ("FacebookButton"); }
+		}
+		public static string TwitterButton
+		{
+			get { return GetValue ("TwitterButton"); }
+		}
+		public static string View_HistoryDetail
+		{
+			get { return GetValue ("View_HistoryDetail"); }
+		}
+		public static string CreateAccountFullName
+		{
+			get { return GetValue ("CreateAccountFullName"); }
+		}
+		public static string View_BookingDetail
+		{
+			get { return GetValue ("View_BookingDetail"); }
+		}
+		public static string ServiceErrorCallTitle
+		{
+			get { return GetValue ("ServiceErrorCallTitle"); }
+		}
+		public static string ServiceErrorUnauthorized
+		{
+			get { return GetValue ("ServiceErrorUnauthorized"); }
+		}
+		public static string TabSearch
+		{
+			get { return GetValue ("TabSearch"); }
+		}
+		public static string TabFavorites
+		{
+			get { return GetValue ("TabFavorites"); }
+		}
+		public static string TabContacts
+		{
+			get { return GetValue ("TabContacts"); }
+		}
+		public static string TabPlaces
+		{
+			get { return GetValue ("TabPlaces"); }
+		}
+		public static string SearchHint
+		{
+			get { return GetValue ("searchHint"); }
+		}
+		public static string View_Book_Menu_UpdateMyProfile
+		{
+			get { return GetValue ("View_Book_Menu_UpdateMyProfile"); }
+		}
+		public static string View_Book_Menu_AboutUs
+		{
+			get { return GetValue ("View_Book_Menu_AboutUs"); }
+		}
+		public static string View_Book_Menu_ReportProblem
+		{
+			get { return GetValue ("View_Book_Menu_ReportProblem"); }
+		}
+		public static string TechSupportEmailTitle
+		{
+			get { return GetValue ("TechSupportEmailTitle"); }
+		}
+		public static string View_Book_Menu_SignOut
+		{
+			get { return GetValue ("View_Book_Menu_SignOut"); }
+		}
+		public static string CreateAccoutPhoneNumberLabel
+		{
+			get { return GetValue ("CreateAccoutPhoneNumberLabel"); }
+		}
+		public static string View_RefineAddress
+		{
+			get { return GetValue ("View_RefineAddress"); }
+		}
+		public static string View_RideSettings
+		{
+			get { return GetValue ("View_RideSettings"); }
+		}
+		public static string HistoryDetailBuildingNameNotSpecified
+		{
+			get { return GetValue ("HistoryDetailBuildingNameNotSpecified"); }
+		}
+		public static string HistoryDetailBuildingNameLabel
+		{
+			get { return GetValue ("HistoryDetailBuildingNameLabel"); }
+		}
+		public static string View_SignUp
+		{
+			get { return GetValue ("View_SignUp"); }
 		}
 	}
 }

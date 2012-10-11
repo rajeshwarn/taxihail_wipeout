@@ -95,7 +95,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             AppButtons.FormatStandardButton((GradientButton)btnSave, Resources.SaveButton, AppStyle.ButtonColor.Green); 
 
-            ((GradientButton)btnBook).SetTitle(Resources.BookFromLocationButton, UIControlState.Normal);
+			((GradientButton)btnBook).SetTitle(Resources.BookItButton, UIControlState.Normal);
             AppButtons.FormatStandardButton((GradientButton)btnDelete, Resources.DeleteButton, AppStyle.ButtonColor.Red); 
 
             btnBook.TouchUpInside += BtnBookTouchUpInside;
@@ -250,6 +250,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             var order = new Order();
             order.PickupAddress = _data;
             order.Settings = AppContext.Current.LoggedUser.Settings;
+			InvokeOnMainThread( () => NavigationController.PopToRootViewController(true) );
 			InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new RebookRequested(this, order)));
         }
 

@@ -5,10 +5,12 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{CF82F47F-A55D-45C6-B605-822458968E12}</ProjectGuid>
+    <ProjectGuid>{3A0351D4-4B1A-4E70-B923-B11519A6B5D5}</ProjectGuid>
     <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <RootNamespace>MK.Common.iOS</RootNamespace>
+    <RootNamespace>MK.Booking.Maps.iOS</RootNamespace>
+    <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
+    <AssemblyName>MK.Booking.Maps.iOS</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -19,7 +21,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
-    <AssemblyName>MK.Common.iOS</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -28,15 +29,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
-    <AssemblyName>MK.Common.iOS</AssemblyName>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Distribution|iPhone' ">
-    <DebugType>none</DebugType>
-    <Optimize>False</Optimize>
-    <OutputPath>bin\iPhone\Distribution</OutputPath>
-    <WarningLevel>4</WarningLevel>
-    <AssemblyName>MKCommoniOS</AssemblyName>
-    <CodesignKey>iPhone Developer</CodesignKey>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -46,26 +38,25 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <Compile Include="Diagnostic\ILogger.cs" />
-    <Compile Include="Entity\ListItem.cs" />
-    <Compile Include="Extensions\AssemblyExtensions.cs" />
-    <Compile Include="Extensions\CollectionExtensions.cs" />
-    <Compile Include="Extensions\DateTimeExtensions.cs" />
-    <Compile Include="Extensions\DictionaryExtensions.cs" />
-    <Compile Include="Extensions\EnumerableExtensions.cs" />
-    <Compile Include="Extensions\EventExtension.cs" />
-    <Compile Include="Extensions\GuidExtensions.cs" />
-    <Compile Include="Extensions\NullableExtension.cs" />
-    <Compile Include="Extensions\ObjectExtensions.cs" />
-    <Compile Include="Extensions\StreamExtensions.cs" />
-    <Compile Include="Extensions\StringBuilderExtensions.cs" />
-    <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Params.cs" />
-    <Compile Include="Diagnostic\IErrorHandler.cs" />
-    <Compile Include="Entity\Address.cs" />
-    <Compile Include="Configuration\IConfigurationManager.cs" />
+    <Compile Include="Direction.cs" />
+    <Compile Include="IAddresses.cs" />
+    <Compile Include="IDirections.cs" />
+    <Compile Include="IGeocoding.cs" />
+    <Compile Include="IPlaces.cs" />
+    <Compile Include="Impl\Addresses.cs" />
+    <Compile Include="Impl\Directions.cs" />
+    <Compile Include="Impl\Geocoding.cs" />
+    <Compile Include="Impl\Places.cs" />
+    <Compile Include="Impl\Mappers\GeoObjToAddressMapper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Configuration\" />
+    <ProjectReference Include="..\MK.Common\MK.Common.iOS.csproj">
+      <Project>{CF82F47F-A55D-45C6-B605-822458968E12}</Project>
+      <Name>MK.Common.iOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MK.Booking.Google\MK.Booking.Google.iOS.csproj">
+      <Project>{50A4C580-4D47-48CF-80A8-79FDF81D9845}</Project>
+      <Name>MK.Booking.Google.iOS</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

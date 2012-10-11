@@ -87,7 +87,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 					_navController.PushViewController(new HistoryTabView(), true);
 				})				
 			});
-			sect.AddItem( new SingleLineItem( Resources.Profile ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
+			sect.AddItem( new SingleLineItem( Resources.View_Book_Menu_UpdateMyProfile ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
 					AnimateMenu();
 					var rideSettingsView = new RideSettingsView (AppContext.Current.LoggedUser.Settings, true, false);
 					_navController.PushViewController( rideSettingsView, true);
@@ -100,12 +100,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 					           TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumberDisplay (AppContext.Current.LoggedUser.Settings.ProviderId.Value));
 				})				
 			});
-			sect.AddItem( new SingleLineItem( Resources.AboutButton ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
+			sect.AddItem( new SingleLineItem( Resources.View_Book_Menu_AboutUs ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
 					AnimateMenu();
 					_navController.PushViewController(new AboutUsView(), true);
 				})				
 			});
-			sect.AddItem( new SingleLineItem( Resources.TechSupportButton ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
+			sect.AddItem( new SingleLineItem( Resources.View_Book_Menu_ReportProblem ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
 					AnimateMenu();
 					if (!MFMailComposeViewController.CanSendMail)
 					{
@@ -121,7 +121,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 					
 					mailComposer.SetToRecipients (new string[] { TinyIoCContainer.Current.Resolve<IAppSettings>().SupportEmail  });
 					mailComposer.SetMessageBody ("", false);
-					mailComposer.SetSubject (Resources.TechSupportButton);
+					mailComposer.SetSubject (Resources.TechSupportEmailTitle);
 					mailComposer.Finished += delegate(object mailsender, MFComposeResultEventArgs mfce) {
 						mailComposer.DismissModalViewControllerAnimated (true);
 						if (File.Exists (TinyIoCContainer.Current.Resolve<IAppSettings>().ErrorLog))
@@ -132,7 +132,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 					_navController.PresentModalViewController(mailComposer, true);
 				})				
 			});
-			sect.AddItem( new SingleLineItem( Resources.SignOutButton ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
+			sect.AddItem( new SingleLineItem( Resources.View_Book_Menu_SignOut ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
 					AnimateMenu();
 					AppContext.Current.WarnEstimate = true;
 					ViewModel.SignOut();
