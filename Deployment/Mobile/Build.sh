@@ -28,9 +28,10 @@ echo Building Android app? Y / N
 read BUILDANDROID
 
 if [ "$BUILDANDROID" = "Y" ]; then
-CONFIGANDROID="Release"
-TARGET="SignAndroidPackage"
-echo Building Android App for $CLIENT with $CONFIGANDROID configuration
+
+	CONFIGANDROID="Release"
+	TARGET="SignAndroidPackage"
+	echo Building Android App for $CLIENT with $CONFIGANDROID configuration
 	/Applications/MonoDevelop.app/Contents/MacOS/mdtool build "--project:Newtonsoft.Json.MonoDroid" "--configuration:$CONFIGANDROID" "../../Src/Mobile/MK.Booking.Mobile.Solution.Android.sln"
 	/Applications/MonoDevelop.app/Contents/MacOS/mdtool build "--project:Cirrious.MvvmCross.Android" "--configuration:$CONFIGANDROID"  "../../Src/Mobile/MK.Booking.Mobile.Solution.Android.sln"
 	/Applications/MonoDevelop.app/Contents/MacOS/mdtool build "--project:Cirrious.MvvmCross.Binding.Android" "--configuration:$CONFIGANDROID"  "../../Src/Mobile/MK.Booking.Mobile.Solution.Android.sln"
@@ -40,8 +41,8 @@ echo Building Android App for $CLIENT with $CONFIGANDROID configuration
 	/Applications/MonoDevelop.app/Contents/MacOS/mdtool build "--project:MK.Booking.Api.Client.Android" "--configuration:$CONFIGANDROID"  "../../Src/Mobile/MK.Booking.Mobile.Solution.Android.sln"
 	/Applications/MonoDevelop.app/Contents/MacOS/mdtool build "--project:MK.Booking.Mobile.Android" "--configuration:$CONFIGANDROID"  "../../Src/Mobile/MK.Booking.Mobile.Solution.Android.sln"
 	/Applications/MonoDevelop.app/Contents/MacOS/mdtool build "--project:MK.Booking.Mobile.Client.Android" "--configuration:$CONFIGANDROID" "--target:$TARGET"  "../../Src/Mobile/MK.Booking.Mobile.Solution.Android.sln"	
-	mv ../../Src/Mobile/Android/bin/Release/*Signed.ipa /Volumes/WwwMobileApps/$CLIENT
+	mv ../../Src/Mobile/Android/bin/Release/*Signed.apk /Volumes/WwwMobileApps/$CLIENT
 fi
 
-hg update -r default -C
-hg purge
+#hg update -r default -C
+#hg purge
