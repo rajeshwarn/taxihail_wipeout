@@ -127,7 +127,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         void RebookTouched(object sender, EventArgs e)
         {
-			//InvokeOnMainThread( () => NavigationController.PopToRootViewController(true) ), _searchCancellationToken.Token);
+			InvokeOnMainThread( () => NavigationController.PopToRootViewController(true) );
+
 			TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new RebookRequested(this, _data));
         }
 
