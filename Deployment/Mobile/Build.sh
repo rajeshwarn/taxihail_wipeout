@@ -44,5 +44,9 @@ if [ "$BUILDANDROID" = "Y" ]; then
 	mv ../../Src/Mobile/Android/bin/Release/*Signed.apk /Volumes/WwwMobileApps/$CLIENT
 fi
 
-#hg update -r default -C
-#hg purge
+echo Rollback changes in source directory ? Y / N
+read ROLLBACK
+if [ "$ROLLBACK" = "Y" ]; then
+	hg update -r default -C
+	hg purge
+fi
