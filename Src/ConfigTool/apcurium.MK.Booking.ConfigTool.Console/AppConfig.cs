@@ -59,6 +59,7 @@ namespace apcurium.MK.Booking.ConfigTool
                 new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_SearchAddress.axml", Namespace = "xmlns:local", Value= App.Package },
 				new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\SubView_MainMenu.axml", Namespace = "xmlns:local", Value= App.Package },
 				new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_Login.axml", Namespace = "xmlns:local", Value= App.Package },
+				new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_RefineAddress.axml", Namespace = "xmlns:local", Value= App.Package },
 
                 new ConfigXML(this){  Destination=@"Mobile\Android\MK.Booking.Mobile.Client.Android.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Debug|AnyCPU'"")]/a:AndroidSigningKeyAlias" , SetterEle= ( app, ele )=> ele.InnerText = app.AndroidSigningKeyAlias },               
                 new ConfigXML(this){  Destination=@"Mobile\Android\MK.Booking.Mobile.Client.Android.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Release|AnyCPU'"")]/a:AndroidSigningKeyAlias" , SetterEle= ( app, ele )=> ele.InnerText = app.AndroidSigningKeyAlias },               
