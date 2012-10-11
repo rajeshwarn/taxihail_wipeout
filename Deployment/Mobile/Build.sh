@@ -6,7 +6,7 @@ echo Applying Config Tool for $CLIENT
 mono apcurium.MK.Booking.ConfigTool.exe $CLIENT
 
 echo Building iOS app? Y / N
-READ BUILDIOS
+read BUILDIOS
 
 if [ "$BUILDIOS" = "Y" ]; then
 	CONFIGIOS="Release|iPhone"
@@ -25,7 +25,7 @@ if [ "$BUILDIOS" = "Y" ]; then
 fi
 
 echo Building Android app? Y / N
-READ BUILDANDROID
+read BUILDANDROID
 
 if [ "$BUILDANDROID" = "Y" ]; then
 CONFIGANDROID="Release"
