@@ -23,6 +23,18 @@
 
         render: function () {
             this.$el.html(this.renderTemplate());
+            var item = window.localStorage.getItem('fbinfos');
+            var fbinfos = JSON.parse(item);
+            if (fbinfos) {
+                this.model.set('facebookId', fbinfos.id);
+                this.$('#email').val(fbinfos.email);
+                this.model.set('email', fbinfos.email);
+                this.$('#signup-fullname').val(fbinfos.name);
+                this.model.set('name', fbinfos.name);
+                this.$('#signup-password-div').addClass('hidden');
+                this.$('#signup-confirm-password-div').addClass('hidden');
+                window.localStorage.removeItem('fbinfos');
+            }
 
             this.validate({
                 rules: {
