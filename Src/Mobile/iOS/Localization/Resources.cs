@@ -942,6 +942,26 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			get { return GetValue ("CreateAccoutPhoneNumberLabel"); }
 		}
+		public static string View_RefineAddress
+		{
+			get { return GetValue ("View_RefineAddress"); }
+		}
+		public static string View_RideSettings
+		{
+			get { return GetValue ("View_RideSettings"); }
+		}
+		public static string HistoryDetailBuildingNameNotSpecified
+		{
+			get { return GetValue ("HistoryDetailBuildingNameNotSpecified"); }
+		}
+		public static string HistoryDetailBuildingNameLabel
+		{
+			get { return GetValue ("HistoryDetailBuildingNameLabel"); }
+		}
+		public static string View_SignUp
+		{
+			get { return GetValue ("View_SignUp"); }
+		}
 	}
 }
 

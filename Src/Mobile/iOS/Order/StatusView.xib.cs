@@ -114,7 +114,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 
 //                var view = AppContext.Current.Controller.GetTitleView(null, Resources.StatusViewTitle);
                 
-				this.NavigationItem.TitleView = new TitleView(null, Resources.StatusViewTitle);
+				this.NavigationItem.TitleView = new TitleView(null, Resources.GenericTitle, false);
 
 				View.BringSubviewToFront( bottomBar );
             

@@ -21,6 +21,7 @@
 
         logout: function () {
             isLogged = false;
+            window.localStorage.removeItem('fbId');
             return $.post('api/auth/logout', _.bind(function () {
                 isLoggedIn = false;
                 this.trigger('change', isLoggedIn);
@@ -31,35 +32,34 @@
             return $.post('api/account/resetpassword/' + email,{}, function () {}, 'json');
         },
         
-        fblogin: function () {
-            FB.Event.subscribe('auth.statusChange', function (response) {
-                if (response.authResponse) {
-                    // user has auth'd your app and is logged into Facebook
-                    FB.api('/me', function(me) {
-                        if (me.name) {
-                            isLoggedIn = true;
-                            this.trigger('checkloginorsubscribe', isLoggedIn, url);
-                        }
-                    });
-                }
-            });
-            FB.login();
+        fblogin: function (url) {
+          
+                            FB.api('/me', _.bind(function (me) {
+                                if (me.name) {
+
+                                    $.post('api/auth/credentialsfb', {
+                                        userName: me.id,
+                                        password: me.id
+                                    }, 'json')
+                                        .success(_.bind(function () {
+                                            isLoggedIn = true;
+                                            this.trigger('change', isLoggedIn,url);
+                                        }, this))
+                                        .error(function (e) {
+                                            if (e.status == 401) {
+                                                window.localStorage.setItem('fbinfos', JSON.stringify(me));
+                                                window.localStorage.setItem('fbId', me.id);
+                                                if (url) {
+                                                    TaxiHail.app.navigate('signup/'+url, { trigger: true });
+                                                } else {
+                                                    TaxiHail.app.navigate('signup', { trigger: true });
+                                                }
+                                            }
+                                        });
+                                }
+                            }, this));
         },
-        
-        fblogout : function () {
-            FB.Event.subscribe('auth.statusChange', function (response) {
-                if (!response.authResponse) {
-                    // user has auth'd your app and is logged into Facebook
-                    FB.api('/me', function (me) {
-                        if (me.name) {
-                            isLoggedIn = false;
-                            this.trigger('change', isLoggedIn, url);
-                        }
-                    });
-                }
-            });
-            FB.logout();
-        },
+      
         
         isLoggedIn : function() {
             return isLoggedIn;
