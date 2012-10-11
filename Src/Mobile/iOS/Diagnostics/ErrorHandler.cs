@@ -21,7 +21,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			if( ex is WebServiceException && ((WebServiceException)ex).StatusCode == (int)HttpStatusCode.Unauthorized )
 			{
-				MessageHelper.Show( Resources.UnAuthorizedCallTitle, Resources.UnAuthorizedCallMessage, () => {
+				MessageHelper.Show( Resources.ServiceErrorCallTitle, Resources.ServiceErrorUnauthorized, () => {
 					AppContext.Current.Controller.InvokeOnMainThread( () => {
                         var dispatch = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
                         dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(LoginViewModel), null, true, MvxRequestedBy.UserAction));

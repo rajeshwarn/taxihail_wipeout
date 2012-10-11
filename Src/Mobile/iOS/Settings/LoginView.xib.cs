@@ -150,14 +150,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             if (settings.FacebookEnabled)
             {
-                var btnFbLogin = AppButtons.CreateStandardButton(new RectangleF(55, 281, 211, 41), Resources.FacebookLoginBtn, AppStyle.ButtonColor.AlternateCorporateColor, "Assets/Social/FB/fbIcon.png");
+				var btnFbLogin = AppButtons.CreateStandardButton(new RectangleF(55, 281, 211, 41), Resources.FacebookButton, AppStyle.ButtonColor.AlternateCorporateColor, "Assets/Social/FB/fbIcon.png");
                 View.AddSubview(btnFbLogin);
                 btnFbLogin.TouchUpInside += FacebookLogin;  
             }
 
             if (settings.TwitterEnabled)
             {
-                var btnTwLogin = AppButtons.CreateStandardButton(new RectangleF(55, 342, 211, 41), Resources.TwitterLoginBtn, AppStyle.ButtonColor.AlternateCorporateColor, "Assets/Social/TW/twIcon.png" );
+				var btnTwLogin = AppButtons.CreateStandardButton(new RectangleF(55, 342, 211, 41), Resources.TwitterButton, AppStyle.ButtonColor.AlternateCorporateColor, "Assets/Social/TW/twIcon.png" );
                 View.AddSubview(btnTwLogin);
                 btnTwLogin.TouchUpInside += TwitterLogin;   
             }

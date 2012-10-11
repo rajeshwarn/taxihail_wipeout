@@ -66,14 +66,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 			View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
 
-			var searchBtn = TopBar.AddButton( Resources.SearchButton, "SearchBtn" );
-			var favoritesBtn = TopBar.AddButton( Resources.FavoritesButton, "FavoritesBtn" );
-			var contactsBtn = TopBar.AddButton( Resources.ContactsButton, "ContactsBtn" );
-			var placesBtn = TopBar.AddButton( Resources.PlacesButton, "PlacesBtn" );
+			var searchBtn = TopBar.AddButton( Resources.TabSearch, "SearchBtn" );
+			var favoritesBtn = TopBar.AddButton( Resources.TabFavorites, "FavoritesBtn" );
+			var contactsBtn = TopBar.AddButton( Resources.TabContacts, "ContactsBtn" );
+			var placesBtn = TopBar.AddButton( Resources.TabPlaces, "PlacesBtn" );
 			TopBar.SetSelected( 0 );
 
 			((SearchTextField)SearchTextField).SetImage( "Assets/Search/SearchIcon.png" );
-			SearchTextField.Placeholder = Resources.SearchPlaceholder;
+			SearchTextField.Placeholder = Resources.SearchHint;
 
 			AppButtons.FormatStandardButton( (GradientButton)CancelButton, Resources.CancelBoutton, AppStyle.ButtonColor.Silver );
 

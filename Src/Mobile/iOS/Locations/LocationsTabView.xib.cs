@@ -197,12 +197,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 				sectFav.SectionLabelTextColor = AppStyle.TitleTextColor.ToArray();
 				sectFav.EditMode = Mode == LocationsTabViewMode.Edit;
-				favorites.ForEach( item => sectFav.AddItem( new TwoLinesAddressItem( item.Id,  item.Id.IsNullOrEmpty() ? Resources.LocationAddFavorite : item.FriendlyName, item.Id.IsNullOrEmpty() ? Resources.LocationAddFavoriteDetails : item.FullAddress ) { Data = item, ShowRightArrow = Mode == LocationsTabViewMode.Edit && !item.Id.IsNullOrEmpty(), ShowPlusSign = item.Id.IsNullOrEmpty() } ) );
+				favorites.ForEach( item => sectFav.AddItem( new TwoLinesAddressItem( item.Id,  item.FriendlyName, item.FullAddress ) { Data = item, ShowRightArrow = Mode == LocationsTabViewMode.Edit && !item.Id.IsNullOrEmpty(), ShowPlusSign = item.Id.IsNullOrEmpty() } ) );
 
 				var sectHist = structure.AddSection( Resources.LocationHistoryTitle );
 				sectHist.SectionLabelTextColor = AppStyle.TitleTextColor.ToArray();
 				sectHist.EditMode = Mode == LocationsTabViewMode.Edit;
-				historic.ForEach( item => sectHist.AddItem( new TwoLinesAddressItem( item.Id,  item.Id.IsNullOrEmpty() ? Resources.LocationNoHistory : item.FriendlyName, item.Id.IsNullOrEmpty() ? Resources.LocationNoHistoryDetails : item.FullAddress ) { Data = item, ShowRightArrow = Mode == LocationsTabViewMode.Edit && !item.Id.IsNullOrEmpty(), Enabled = () => !item.Id.IsNullOrEmpty() } ) );
+				historic.ForEach( item => sectHist.AddItem( new TwoLinesAddressItem( item.Id,  item.FriendlyName, item.FullAddress ) { Data = item, ShowRightArrow = Mode == LocationsTabViewMode.Edit && !item.Id.IsNullOrEmpty(), Enabled = () => !item.Id.IsNullOrEmpty() } ) );
 			}
 			else if( Mode == LocationsTabViewMode.NearbyPlacesSelector )
 			{
