@@ -222,6 +222,7 @@
   <string name="DateTimePickerPickTitle">Date et heure de réservation</string>
   <string name="DateTimePickerPickInvalidDateTitle">Date / Heure Invalide</string>
   <string name="DateTimePickerPickInvalidDateMessage">La date de réservation doit être dans le future.</string>
+  <string name="InvalidChoiceTitle">Choix Invalide</string>
   <string name="EditButton">Modifier</string>
   <string name="SupportEmail">techsupport@apcurium.com</string>
   <string name="TechSupportEmailTitle">Support Android</string>

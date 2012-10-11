@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			};
 			AddSubview( accept );
 			
-			var reset = AppButtons.CreateStandardButton( new RectangleF (_screenBounds.Width - 140, 5, 100, 35), Resources.DateTimePickerCurrentButton, AppStyle.ButtonColor.Silver );
+			var reset = AppButtons.CreateStandardButton( new RectangleF (_screenBounds.Width - 140, 5, 100, 35), Resources.TimeNow, AppStyle.ButtonColor.Silver );
 			reset.TouchUpInside += delegate {
 				SetSelectedDate (null);
 			};

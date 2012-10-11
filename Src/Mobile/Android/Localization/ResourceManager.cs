@@ -52,7 +52,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Localization
 
         public string MobileUser
         {
-            get { return "This booking was made using the mobile application."; }
+			get { return Application.Context.GetString(Resource.String.OrderNote); }
         }
 
         public string PaiementType
