@@ -25,8 +25,8 @@
     };
 
     function cleanupResult(result) {
-        if(result && result.addresses) {
-            _.each(result.addresses, function(address){
+        if(result && result.length) {
+            _.each(result, function(address){
                 // BUGFIX: All addresses have the same empty Guid as id
                 delete address.id;
             });

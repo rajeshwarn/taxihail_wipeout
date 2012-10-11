@@ -182,11 +182,11 @@
         },
         
         geolocdone : function (result) {
-            if (result.addresses && result.addresses.length) {
+            if (result && result.length) {
                 if (this.model.get('isPickupActive')) {
-                    this.model.set('pickupAddress', result.addresses[0]);
+                    this.model.set('pickupAddress', result[0]);
                 } else {
-                    this.model.set('dropOffAddress', result.addresses[0]);
+                    this.model.set('dropOffAddress', result[0]);
                 }
             }
         },
