@@ -3,7 +3,7 @@
         events: {
             "click [data-action=rebook]": "rebook",
             "click [data-action=cancel]": "cancel",
-            "click [data-action=remove]": "remove",
+            "click [data-action=remove]": "remove"
         },
 
         initialize: function () {
