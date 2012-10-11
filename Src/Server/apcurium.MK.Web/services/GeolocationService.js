@@ -21,9 +21,9 @@
                         TaxiHail.geocoder.geocode(position.coords.latitude, position.coords.longitude)
                             .done(_.bind(function (result) {
 
-                                if (result.addresses && result.addresses.length) {
-                                    this.currentAddress = result.addresses[0];
-                                    defer.resolve(result.addresses[0]);
+                                if (result && result.length) {
+                                    this.currentAddress = result[0];
+                                    defer.resolve(result[0]);
                                 }
                                 else defer.reject();
 

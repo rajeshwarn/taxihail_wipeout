@@ -13,7 +13,7 @@
             
 
             if (errors.length) return { errors: errors };
-        },
+        }
     });
 
 }());

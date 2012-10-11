@@ -8,7 +8,7 @@
         <title>Taxi Hail</title>
         <link rel="stylesheet" href='themes/<%: this.ApplicationKey %>/less/combined.less'/>
         <link rel="stylesheet" href='themes/<%: this.ApplicationKey %>/less/combined-responsive.less'/>
-        <script src="assets/js/modernizr.js"></script>
+        <script src="assets/js/modernizr.custom.20404.js"></script>
     </head>
     <body>
         <header>
