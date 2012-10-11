@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Api.Client
         public IList<Order> GetOrders()
         {            
             var req = string.Format("/account/orders");
-            var result = Client.Get<IList<Order>>(req);
+            var result = Client.Get<IList<Order>>(req).ToArray();
             return result;
         }
 

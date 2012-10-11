@@ -16,6 +16,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.Views;
 using Java.Lang;
+using Cirrious.MvvmCross.Interfaces.Platform.Location;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities
 {
@@ -33,7 +34,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 
         public override Android.Views.View OnCreateView(string name, Android.Content.Context context, Android.Util.IAttributeSet attrs)
         {
+            
+
             return base.OnCreateView(name, context, attrs);
+
+            
+
+
         }
         protected override void OnCreate(Bundle bundle)
         {
@@ -45,9 +52,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
             _locationService.Start();
 
 
-
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+         
+        }
+
+
+
+        
 
         
 

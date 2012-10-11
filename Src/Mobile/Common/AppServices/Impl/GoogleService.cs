@@ -1,6 +1,7 @@
 using System;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Booking.Maps;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -14,34 +15,37 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
 
             Address result = null;
-            UseServiceClient<PlaceDetailServiceClient>(service =>
+            //UseServiceClient<PlaceDetailServiceClient>(service =>
+            UseServiceClient<IPlaces>(service =>
             {
                 result = service.GetPlaceDetail(reference);
             });
 
             return result;
         }
-		public Address[] GetNearbyPlaces(double? latitude, double? longitude, int? radius)
+		public Address[] GetNearbyPlaces(double? latitude, double? longitude, int? radius = null)
 		{
 			Address[] places = null;
-			UseServiceClient<NearbyPlacesClient>(service =>
+			//UseServiceClient<NearbyPlacesClient>(service =>
+              
+            UseServiceClient<IPlaces>(service =>
 			{
-				places = service.GetNearbyPlaces( latitude, longitude, radius );                   
+				places = service.SearchPlaces( null, latitude, longitude, radius );                   
 			});
 
 			return places;
 		}
 
-		public Address[] GetNearbyPlaces(double? latitude, double? longitude)
-		{
-			Address[] places = null;
-			UseServiceClient<NearbyPlacesClient>(service =>
-			{
-				places = service.GetNearbyPlaces( latitude, longitude );                   
-			});
+        //public Address[] GetNearbyPlaces(double? latitude, double? longitude)
+        //{
+        //    Address[] places = null;
+        //    UseServiceClient<IPlaces>(service =>
+        //    {
+        //        places = service.Search( latitude, longitude );                   
+        //    });
 
-			return places;
-		}
+        //    return places;
+        //}
 	}
 }
 

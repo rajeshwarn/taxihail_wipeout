@@ -22,7 +22,11 @@ namespace apcurium.MK.Booking.Api.Services
 
         public override object OnGet(ConfigurationsRequest request)
         {
-            return _configManager.GetAllSettings();
+            var keys = new string[] { "PriceFormat", "DistanceFormat", "Direction.FlateRate", "Direction.RatePerKm", "Direction.MaxDistance", "GeoLoc.SearchFilter", "NearbyPlacesService.DefaultRadius", "Map.PlacesApiKey" };
+
+            var allKeys = _configManager.GetAllSettings();
+
+            return allKeys.Where(k => keys.Contains(k.Key)).ToArray();
             //return true;
         }
 

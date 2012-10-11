@@ -27,7 +27,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
             base.OnResume();
             
             var txt = FindViewById<TextView>(Resource.Id.ViewTitle);
-            txt.Text = GetString(ViewTitleResourceId);
+            if (txt != null)
+            {
+                txt.Text = GetString(ViewTitleResourceId);
+            }
         }
     }
 

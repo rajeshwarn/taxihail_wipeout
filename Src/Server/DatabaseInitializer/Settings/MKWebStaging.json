@@ -15,6 +15,7 @@
    "IBS.WebServicesPassword" : "test",
    "IBS.WebServicesUrl" : "http://72.38.252.190:6928/XDS_IASPI.DLL/soap/",
    "IBS.WebServicesUserName" : "taxi",
+   "IBS.ExcludedVehicleTypeId" : "22;21",
    "IBS.DefaultAccountPassword" : "password",
    "Map.PlacesApiKey" : "AIzaSyAd-ezA2SeVTSNqsu6aMmAkdlP3UqEVPWE",
    "NearbyPlacesService.DefaultRadius" : "500",

@@ -20,6 +20,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Newtonsoft.Json.MonoDroid",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cirrious.MvvmCross.Android.Maps", "Infrastructure\Cirrious.MvvmCross.Android.Maps\Cirrious.MvvmCross.Android.Maps.csproj", "{43A48F1C-39F3-4C1C-8831-5D3EF45744FE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.Maps.Android", "..\Server\MK.Booking.Maps\MK.Booking.Maps.Android.csproj", "{7ABA8DC0-BC56-48FA-826A-286DE83D6C75}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.Google.Android", "..\Server\MK.Booking.Google\MK.Booking.Google.Android.csproj", "{742B3C55-5630-4DCA-BBBD-035C313A4647}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -64,6 +68,14 @@ Global
 		{43A48F1C-39F3-4C1C-8831-5D3EF45744FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{43A48F1C-39F3-4C1C-8831-5D3EF45744FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{43A48F1C-39F3-4C1C-8831-5D3EF45744FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7ABA8DC0-BC56-48FA-826A-286DE83D6C75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7ABA8DC0-BC56-48FA-826A-286DE83D6C75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7ABA8DC0-BC56-48FA-826A-286DE83D6C75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7ABA8DC0-BC56-48FA-826A-286DE83D6C75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{742B3C55-5630-4DCA-BBBD-035C313A4647}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{742B3C55-5630-4DCA-BBBD-035C313A4647}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{742B3C55-5630-4DCA-BBBD-035C313A4647}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{742B3C55-5630-4DCA-BBBD-035C313A4647}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

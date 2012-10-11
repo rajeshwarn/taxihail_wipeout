@@ -56,15 +56,11 @@
     <Compile Include="AccountServiceClient.cs" />
     <Compile Include="AuthServiceClient.cs" />
     <Compile Include="BaseServiceClient.cs" />
-    <Compile Include="DirectionsServiceClient.cs" />
-    <Compile Include="GeocodingServiceClient.cs" />
-    <Compile Include="NearbyPlacesClient.cs" />
+    <Compile Include="ConfigurationClientService.cs" />
     <Compile Include="OrderServiceClient.cs" />
-    <Compile Include="PlaceDetailServiceClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReferenceDataServiceClient.cs" />
     <Compile Include="ApplicationInfoServiceClient.cs" />
-    <Compile Include="SearchLocationsServiceClient.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

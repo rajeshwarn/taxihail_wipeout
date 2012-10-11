@@ -1,58 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<apcurium.mk.booking.mobile.client.controls.HeaderedLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:gravity="center_horizontal"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
     <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="58dip"
-        android:id="@+id/HeaderImage"
-        android:layout_marginBottom="-8dip">
-        <ImageView
-            android:layout_width="fill_parent"
-            android:layout_height="50dip"
-            android:adjustViewBounds="true"
-            android:src="@drawable/navBar"
-            android:scaleType="fitXY" />
-        <ImageView
-            android:layout_width="wrap_content"
-            android:adjustViewBounds="true"
-            android:src="@drawable/Logo"
-            android:scaleType="fitStart"
-            android:layout_marginTop="1dip"
-            android:layout_marginLeft="11dip"
-            android:layout_height="80dip" />
-        <TextView
-            android:text="@string/RefineAddressTitle"
-            style="@style/BigTitleText"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dip"
-            android:gravity="center" />
-    </RelativeLayout>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:minWidth="25px"
-        android:minHeight="25px"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dip"
-        android:layout_marginLeft="10dip"
-        android:layout_marginRight="10dip">
-        <EditText
-            android:inputType="numberDecimal"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:id="@+id/streetNumberEditText"
-            android:layout_marginRight="15dip"
-            android:layout_weight="1"
-            android:gravity="right" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:id="@+id/addressTextView"
-            android:layout_weight="4" />
-    </LinearLayout>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
     <LinearLayout
         android:orientation="horizontal"
         android:minWidth="25px"

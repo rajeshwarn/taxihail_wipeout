@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Linq;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using ServiceStack.Text;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.IBS.Impl
 {
@@ -75,7 +77,9 @@ namespace apcurium.MK.Booking.IBS.Impl
             order.PickupTime = new TWEBTimeStamp { Hour = pickupDateTime.Hour, Minute = pickupDateTime.Minute, Second = 0, Fractions = 0 };
 
             order.ChargeTypeID = chargeTypeId;
-            order.PickupAddress = new TWEBAddress { StreetPlace = pickup.FullAddress, AptBaz = pickup.Apartment, Longitude = pickup.Longitude, Latitude = pickup.Latitude };
+            var aptRing = Params.Get(pickup.Apartment, pickup.RingCode).Where(s => s.HasValue()).JoinBy(" / ");
+
+            order.PickupAddress = new TWEBAddress { StreetPlace = pickup.FullAddress, AptBaz = aptRing, Longitude = pickup.Longitude, Latitude = pickup.Latitude };
             order.DropoffAddress = dropoff == null ? new TWEBAddress() : new TWEBAddress { StreetPlace = dropoff.FullAddress, AptBaz = dropoff.Apartment, Longitude = dropoff.Longitude, Latitude = dropoff.Latitude };
             order.Passengers = nbPassengers;
             order.VehicleTypeID = vehicleTypeId;

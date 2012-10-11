@@ -75,6 +75,7 @@
     <Compile Include="ApplicationInfoServiceClient.cs" />
     <Compile Include="AuthServiceClient.cs" />
     <Compile Include="BaseServiceClient.cs" />
+    <Compile Include="ConfigurationClientService.cs" />
     <Compile Include="DirectionsServiceClient.cs" />
     <Compile Include="GeocodingServiceClient.cs" />
     <Compile Include="NearbyPlacesClient.cs" />

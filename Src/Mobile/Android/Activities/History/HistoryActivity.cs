@@ -71,13 +71,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
                 }, true );               
         }
 
-        private IDictionary<string, object> CreateItem(string title, HistoryModel model)
-        {
-            IDictionary<string, object> item = new Dictionary<string, object>();
-            item.Add(ITEM_TITLE, model.Display);
-            item.Add(ITEM_ID, model.Id);
-            return item;
-        }
+        //private IDictionary<string, object> CreateItem(string title, HistoryModel model)
+        //{
+        //    IDictionary<string, object> item = new Dictionary<string, object>();
+        //    item.Add(ITEM_TITLE, model.Display);
+        //    item.Add(ITEM_ID, model.Id);
+        //    return item;
+        //}
 
         void listView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {

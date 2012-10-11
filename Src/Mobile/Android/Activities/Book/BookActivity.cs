@@ -29,6 +29,7 @@ using SocialNetworks.Services;
 using apcurium.MK.Booking.Mobile.Client.Activities.Account;
 using Android.Content.PM;
 using apcurium.MK.Booking.Mobile.Client.Controls;
+using Cirrious.MvvmCross.Interfaces.Platform.Location;
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
     [Activity(Label = "Book", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
@@ -134,6 +135,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                         }
                     }, true);
             }
+
+            
         }
 
 

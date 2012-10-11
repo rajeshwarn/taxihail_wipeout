@@ -6,6 +6,8 @@ using ServiceStack.ServiceClient.Web;
 using Android.Content;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using TinyIoC;
+using Android.App;
+using Android.Net;
 
 namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
 {
@@ -37,9 +39,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
             }
             else if (ex is WebException)
             {
-                var title = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("NetworkErrorTitle");
-                var message = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("NetworkErrorMessage"); //= Resources.GetString(Resource.String.ServiceErrorDefaultMessage);
-                TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage(title, message);
+                var cm = (ConnectivityManager)Application.Context.GetSystemService(Context.ConnectivityService);
+                if ((cm == null) || (!cm.ActiveNetworkInfo.IsConnectedOrConnecting))
+                {
+                    var title = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("NetworkErrorTitle");
+                    var message = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("NetworkErrorMessage"); //= Resources.GetString(Resource.String.ServiceErrorDefaultMessage);
+                    TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage(title, message);
+                }
             }
 
 

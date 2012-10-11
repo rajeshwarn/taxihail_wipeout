@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Maps;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -18,8 +19,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             try
             {
-                var addresses = TinyIoCContainer.Current.Resolve<GeocodingServiceClient>().Search(address);
-                return addresses.Addresses.FirstOrDefault();
+                //var addresses = TinyIoCContainer.Current.Resolve<GeocodingServiceClient>().Search(address);
+                var addresses = TinyIoCContainer.Current.Resolve<IGeocoding>().Search(address);
+                return addresses.FirstOrDefault();
             }
             catch (Exception ex)
             {
@@ -31,10 +33,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public Address[] SearchAddress(double latitude, double longitude)
         {
             try
-            {
-                Console.Write( "La" + latitude.ToString() + " - Lo" + longitude.ToString());
-                var addresses = TinyIoCContainer.Current.Resolve<GeocodingServiceClient>().Search(latitude, longitude);
-                return addresses.Addresses;
+            {                
+                //var addresses = TinyIoCContainer.Current.Resolve<GeocodingServiceClient>().Search(latitude, longitude);
+                var addresses = TinyIoCContainer.Current.Resolve<IGeocoding>().Search(latitude, longitude);
+                return addresses;
             }
             catch
             {
@@ -45,11 +47,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public Address[] SearchAddress(string address, double latitude, double longitude)
         {
             try
-            {
-                //var localAddress = FindSimilar(address);
-                var addresses = TinyIoCContainer.Current.Resolve<SearchLocationsServiceClient>().Search(address, latitude, longitude );
-
-                return addresses.Addresses;
+            {                
+                //var addresses = TinyIoCContainer.Current.Resolve<SearchLocationsServiceClient>().Search(address, latitude, longitude );
+                var addresses = TinyIoCContainer.Current.Resolve<IAddresses>().Search(address, latitude, longitude);
+                return addresses;
             }
             catch( Exception ex )
             {
@@ -75,8 +76,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             try
             {
-                var direction = TinyIoCContainer.Current.Resolve<DirectionsServiceClient>().GetDirectionDistance(originLat, originLong, destLat, destLong);
-                return direction;
+                //var direction = TinyIoCContainer.Current.Resolve<DirectionsServiceClient>().GetDirectionDistance(originLat, originLong, destLat, destLong);
+                var direction = TinyIoCContainer.Current.Resolve<IDirections>().GetDirection(originLat, originLong, destLat, destLong);
+                return new DirectionInfo { Distance = direction.Distance, FormattedDistance = direction.FormattedDistance, FormattedPrice = direction.FormattedPrice, Price = direction.Price };
             }
             catch
             {
