@@ -5,7 +5,7 @@
     <head>
         <meta charset='utf-8' />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-        <title>Taxi Hail</title>
+        <title><%: ApplicationName %></title>
         <link rel="stylesheet" href='themes/<%: this.ApplicationKey %>/less/combined.less'/>
         <link rel="stylesheet" href='themes/<%: this.ApplicationKey %>/less/combined-responsive.less'/>
         <script src="assets/js/modernizr.custom.20404.js"></script>

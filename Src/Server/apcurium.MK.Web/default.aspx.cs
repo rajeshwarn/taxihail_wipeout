@@ -14,6 +14,7 @@ namespace apcurium.MK.Web
     public partial class _default : PageBase
     {
         protected string ApplicationKey { get; private set; }
+        protected string ApplicationName { get; private set; }
         protected string DefaultLatitude { get; private set; }
         protected string DefaultLongitude { get; private set; }
         protected bool IsAuthenticated { get; private set; }
@@ -25,6 +26,7 @@ namespace apcurium.MK.Web
             var config = ServiceLocator.Current.GetInstance<IConfigurationManager>();
 
             ApplicationKey = config.GetSetting("TaxiHail.ApplicationKey");
+            ApplicationName = config.GetSetting("TaxiHail.ApplicationName");
             DefaultLatitude = config.GetSetting("GeoLoc.DefaultLatitude");
             DefaultLongitude = config.GetSetting("GeoLoc.DefaultLongitude");
             IsAuthenticated = base.UserSession.IsAuthenticated;
