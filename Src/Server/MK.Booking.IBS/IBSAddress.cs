@@ -17,5 +17,7 @@ namespace apcurium.MK.Booking.IBS
         public string Apartment { get; set; }
 
         public string RingCode { get; set; }
+
+        public string BuildingName { get; set; }
     }
 }

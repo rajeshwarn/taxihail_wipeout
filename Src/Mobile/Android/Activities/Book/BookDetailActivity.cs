@@ -22,6 +22,10 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Messages;
 using TinyMessenger;
+using Cirrious.MvvmCross.Interfaces.Views;
+using Cirrious.MvvmCross.Views;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -57,6 +61,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             FindViewById<Button>(Resource.Id.ConfirmBtn).Click += new EventHandler(Confirm_Click);
             FindViewById<Button>(Resource.Id.CancelBtn).Click += new EventHandler(Cancel_Click);
             FindViewById<Button>(Resource.Id.EditBtn).Click += new EventHandler(Edit_Click);
+            FindViewById<Button>(Resource.Id.EditAptCodeBuildingName).Click += EditRingCodeApt_Click;
             if (TinyIoCContainer.Current.Resolve<ICacheService>().Get<string>("WarningEstimateDontShow").IsNullOrEmpty() && _bookingInfo.DropOffAddress.HasValidCoordinate())
             {
                 ShowAlertDialog();
@@ -68,6 +73,49 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 {
                     ShowChooseProviderDialog();
                 }
+            }
+        }
+
+        
+        private TinyMessageSubscriptionToken _token;
+        void EditRingCodeApt_Click(object sender, EventArgs e)
+        {
+            var dispatch = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
+
+            UnsubscribeRefineAddress();
+
+            var parameters = new Dictionary<string,string>() {{"apt",  BookingInfo.PickupAddress.Apartment}, {"ringCode", BookingInfo.PickupAddress.RingCode}, {"buildingName", BookingInfo.PickupAddress.BuildingName}};
+
+            _token = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<AddressRefinedMessage>(m =>
+                {
+                    this.BookingInfo.PickupAddress.Apartment = m.Content.AptNumber;
+                    this.BookingInfo.PickupAddress.RingCode = m.Content.RingCode;
+                    this.BookingInfo.PickupAddress.BuildingName = m.Content.BuildingName;
+                    RunOnUiThread(() =>
+                        {
+                            FindViewById<TextView>(Resource.Id.AptRingCode).Text = FormatAptRingCode(BookingInfo.PickupAddress.Apartment, BookingInfo.PickupAddress.RingCode);
+                            FindViewById<TextView>(Resource.Id.BuildingName).Text = FormatBuildingName(BookingInfo.PickupAddress.BuildingName);
+                        });
+                });
+       
+            dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(RefineAddressViewModel), parameters, false, MvxRequestedBy.UserAction));
+
+            
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            UnsubscribeRefineAddress();
+        }
+
+        private void UnsubscribeRefineAddress()
+        {
+            if (_token != null)
+            {
+                TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Unsubscribe<AddressRefinedMessage>(_token);
+                _token.Dispose();
+                _token = null;
             }
         }
 
@@ -154,6 +202,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             return result;
         }
 
+        private string FormatBuildingName(string buildingName)
+        {
+            if ( buildingName.HasValue() )
+            {
+                return buildingName;
+            }
+            else
+            {
+                return Resources.GetString(Resource.String.HistoryDetailBuildingNameNotSpecified);
+            }
+                        
+        }
+
         private string FormatAptRingCode(string apt, string rCode)
         {
 
@@ -175,6 +236,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             FindViewById<TextView>(Resource.Id.OriginTxt).Text = BookingInfo.PickupAddress.FullAddress;
             FindViewById<TextView>(Resource.Id.AptRingCode).Text = FormatAptRingCode(BookingInfo.PickupAddress.Apartment, BookingInfo.PickupAddress.RingCode);
+            FindViewById<TextView>(Resource.Id.BuildingName).Text = FormatBuildingName(BookingInfo.PickupAddress.BuildingName );
+
+            
+
             FindViewById<TextView>(Resource.Id.DestinationTxt).Text = BookingInfo.DropOffAddress.FullAddress.IsNullOrEmpty() ? Resources.GetString(Resource.String.ConfirmDestinationNotSpecified) : BookingInfo.DropOffAddress.FullAddress;
             FindViewById<TextView>(Resource.Id.DateTimeTxt).Text = FormatDateTime(BookingInfo.PickupDate );
             FindViewById<TextView>(Resource.Id.NameTxt).Text = BookingInfo.Settings.Name;
@@ -189,6 +254,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             FindViewById<TextView>(Resource.Id.ApproxPriceTxt).Text = TinyIoCContainer.Current.Resolve<IBookingService>().GetFareEstimateDisplay(BookingInfo, null, "NotAvailable");  
         }
+
+        
 
 
     }

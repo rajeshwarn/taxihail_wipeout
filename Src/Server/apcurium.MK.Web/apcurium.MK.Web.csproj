@@ -71,9 +71,6 @@
     <Reference Include="EntityFramework, Version=4.3.1.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.4.3.1\lib\net40\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="Jurassic">
-      <HintPath>..\packages\Jurassic.2.1.1\lib\Jurassic.dll</HintPath>
-    </Reference>
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
     </Reference>
@@ -463,6 +460,10 @@
     <ProjectReference Include="..\MK.Booking.IBS\MK.Booking.IBS.csproj">
       <Project>{7B615EA9-4232-4FFB-B66C-AC7B833973C9}</Project>
       <Name>MK.Booking.IBS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MK.Booking.Maps\MK.Booking.Maps.csproj">
+      <Project>{c41ea1b3-0e19-41ae-8efc-ae242532b248}</Project>
+      <Name>MK.Booking.Maps</Name>
     </ProjectReference>
     <ProjectReference Include="..\MK.Booking\MK.Booking.Test\MK.Booking.Test.csproj">
       <Project>{2AD48D85-462D-4763-8016-A2AA10F185A7}</Project>

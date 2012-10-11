@@ -5,7 +5,7 @@ var TaxiHail = {
 
 TaxiHail.loader = {
 
-    load: function (resources, views, callback) {
+    load: function (resources, callback) {
 
         var deferreds = [];
 
@@ -19,17 +19,6 @@ TaxiHail.loader = {
             }));
         });
 
-        // Load templates
-        $.each(views, function (index, view) {
-            if (TaxiHail[view + 'View']) {
-                deferreds.push($.get('templates/' + view + '.html', function (data) {
-                    TaxiHail[view + 'View'].prototype.template = Handlebars.compile(data);
-                }, 'html'));
-            } else {
-
-            }
-        });
-
         $.when.apply(null, deferreds).done(callback);
     }
 
@@ -37,8 +26,13 @@ TaxiHail.loader = {
 $(function () {
     TaxiHail.loader.load(
         /* Localizations */["Home", "Book", "BookLater", "Login", "AddressSelection", "BookingConfirmation", "SettingsEdit", "Signup", "LoginStatus", "Map", "BookingStatus", "Profile", "UpdatePassword", "ResetPassword", "OrderHistory", "OrderHistoryDetail", "OrderItem", "BootstrapConfirmation","AddFavorite", "Global"],
-        /* Templates*/["Home", "Book", "BookLater", "Login", "AddressSelection", "AddressItem", "AddressControl", "AddressSearch", "BookingConfirmation", "SettingsEdit", "Signup", "LoginStatus", "BookingStatus", "Profile", "UserAccount", "UpdatePassword", "ResetPassword", "OrderHistory", "OrderHistoryDetail", "OrderItem", "BootstrapConfirmation", "FavoriteDetails", "AddFavorite", "Favorites"],
         function () {
+
+            _.each(Handlebars.templates, function(value, key, list) {
+                if(TaxiHail[key + 'View']) {
+                    TaxiHail[key + 'View'].prototype.template = Handlebars.compile(value);
+                }
+            });
 
             // Application starts here
             // If user is logged in, we need to load its Account before we continue

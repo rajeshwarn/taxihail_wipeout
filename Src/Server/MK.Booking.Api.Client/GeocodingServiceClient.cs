@@ -12,18 +12,18 @@ namespace apcurium.MK.Booking.Api.Client
         }
 
 
-        public AddressList Search( string addressName )
+        public Address[] Search( string addressName )
         {
             var resource = string.Format("/geocode?Name={0}", addressName);
-            var result = Client.Get<AddressList>(resource);
+            var result = Client.Get<Address[]>(resource);
             return result;
         }
 
 
-        public AddressList Search(double latitude, double longitude )
+        public Address[] Search(double latitude, double longitude)
         {
             var resource = string.Format(CultureInfo.InvariantCulture, "/geocode?Lat={0}&Lng={1}", latitude, longitude );
-            var result = Client.Get<AddressList>(resource);
+            var result = Client.Get<Address[]>(resource);
             return result;
         }
 

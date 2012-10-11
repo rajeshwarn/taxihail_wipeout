@@ -557,7 +557,7 @@
     <AndroidAsset Include="Assets\HelveticaNeueLTPro-It.otf" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\Layout\RefineAddress.axml">
+    <AndroidResource Include="Resources\Layout\View_RefineAddress.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>

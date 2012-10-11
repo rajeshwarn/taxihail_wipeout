@@ -47,7 +47,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
-    <CodesignKey>iPhone Developer: Daniel Boissonneault (8N23K7P2GB)</CodesignKey>
+    <CodesignKey>iPhone Distribution</CodesignKey>
     <MtouchDebug>True</MtouchDebug>
     <MtouchI18n />
     <MtouchUseArmv7>false</MtouchUseArmv7>
@@ -88,11 +88,10 @@
     <IpaPackageName />
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <MtouchI18n />
-    <CodesignProvision>3F3DE1DD-7B47-4311-AA91-C9FC285FAE43</CodesignProvision>
     <AssemblyName>TaxiMobileApp</AssemblyName>
     <ConsolePause>False</ConsolePause>
     <BuildIpa>True</BuildIpa>
-    <CodesignKey>iPhone Distribution: Baventure Group Inc.</CodesignKey>
+    <CodesignKey>iPhone Distribution</CodesignKey>
     <MtouchArch>ARMv7</MtouchArch>
   </PropertyGroup>
   <ItemGroup>

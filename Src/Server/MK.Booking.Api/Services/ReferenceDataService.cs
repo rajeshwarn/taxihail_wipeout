@@ -8,6 +8,7 @@ using apcurium.MK.Booking.IBS;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using System.Collections.Generic;
+using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -15,12 +16,14 @@ namespace apcurium.MK.Booking.Api.Services
     {
         private readonly IStaticDataWebServiceClient _staticDataWebServiceClient;
         private readonly ICacheClient _cacheClient;
-        private const string CacheKey = "IBS.StaticData";
+        private IConfigurationManager _configManager;
+        public const string CacheKey = "IBS.StaticData";
 
-        public ReferenceDataService(IStaticDataWebServiceClient staticDataWebServiceClient, ICacheClient cacheClient)
+        public ReferenceDataService(IStaticDataWebServiceClient staticDataWebServiceClient, ICacheClient cacheClient, IConfigurationManager configManager)
         {
             _staticDataWebServiceClient = staticDataWebServiceClient;
             _cacheClient = cacheClient;
+            _configManager = configManager;
         }
 
         public override object OnGet(ReferenceDataRequest request)
@@ -35,10 +38,12 @@ namespace apcurium.MK.Booking.Api.Services
                 IList<ListItem> dropCities= new ListItem[0];
                 IList<ListItem> pickCities= new ListItem[0];
 
+                var excludedVehicleTypeId =_configManager.GetSetting("IBS.ExcludedVehicleTypeId");
+                int[] excluded = excludedVehicleTypeId.IsNullOrEmpty() ? new int[0] : excludedVehicleTypeId.Split(';').Select(e => int.Parse(e)).ToArray(); 
                 foreach (var company in companies)
                 {
                     payments = _staticDataWebServiceClient.GetPaymentsList(company);
-                    vehicles = _staticDataWebServiceClient.GetVehiclesList(company);
+                    vehicles = _staticDataWebServiceClient.GetVehiclesList(company).Where( c=> excluded.None( e=> e == c.Id ) ).ToArray() ;
                     dropCities = _staticDataWebServiceClient.GetDropoffCity(company);
                     pickCities = _staticDataWebServiceClient.GetPickupCity(company);                    
                 }

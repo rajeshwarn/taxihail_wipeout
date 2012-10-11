@@ -7,7 +7,7 @@
    "ErrorLogEnabled" : "false",
    "FacebookAppId" : "",
    "FacebookEnabled" : "false",
-   "ServiceUrl" : "http://services.taxihail.com/TaxiHailDemo/v1.1/api/",
+   "ServiceUrl" : "http://services.taxihail.com/CheckerYellowCabPalmetto/api/",
    "SiteUrl" : "http://www.checkeryellowcab.com/",
    "SupportEmail" : "appsupport@checkeryellowcab.com",
    "TwitterAccessTokenUrl" : "",

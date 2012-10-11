@@ -132,6 +132,8 @@
   <string name="StatusStatusLabel">Status: {0}</string>
   <string name="HistoryDetailPickupDateLabel">Pickup Date:</string>
   <string name="HistoryDetailAptRingCodeLabel">Apt / Ring code:</string>
+  <string name="HistoryDetailBuildingNameLabel">Building Name:</string>
+  <string name="HistoryDetailBuildingNameNotSpecified">Not specified</string>
   <string name="DestinationViewDestinationLabel">Destination:</string>
   <string name="PickupViewPickupLabel">Pickup:</string>
   <string name="PickupViewDestinationLabel">Destination &gt;&gt;</string>
@@ -226,8 +228,7 @@
   <string name="UpdateBookingSettingsEmptyField">The data is invalid, all the fields are required.</string>
   <string name="AccountActivationTitle">Sign Up</string>
   <string name="AccountActivationMessage">You will receive an email shortly with a link you need to click on to confirm your registration.</string>
-  <string name="OrderHistoryListTitle">Order #{0}</string>
-  <string name="ServiceErrorCallTitle">Server Error</string>
+   <string name="ServiceErrorCallTitle">Server Error</string>
   <string name="ServiceErrorDefaultMessage">An error occurred. Please try again.</string>
   <string name="ServiceErrorCreateOrder_CannotCreateInIbs">Order cannot be created. Please try again or call us.</string>
   <string name="ServiceErrorCreateOrder_NoProvider">Order cannot be created, no provider specified. Please try again or call us.</string>
@@ -236,7 +237,7 @@
   <string name="ServiceErrorCreateAccount_AccountAlreadyExist">The account cannot be created, this email is already in use.</string>
   <string name="ServiceErrorUnauthorized">An unauthorized call has been made to server, you will be redirected to login page.</string>
   <string name="BookDateLabel">Pick Me Up Later</string>
-  <string name="OrderHistoryListTitle">Order #{0}</string>
+  <string name="OrderHistoryListTitle">Order #{0} ({1:ddd, MMM d},{1:h:mm tt})</string>
   <string name="GoogleMapKey">0XEY3WqKVmJMzXNRJfhbH1yM6RkpBMOaZWUoMAw</string>
   <string name="searchHint">Search</string>
   <string name="BookPickupLocationButtonTitle">Pickup</string>
@@ -245,7 +246,7 @@
   <string name="BookDropoffLocationEmptyPlaceholder">Tap to choose destination</string>
   <string name="AddressSearchingText">Searching...</string>
   <string name="NoFareText">Choose a destination to get a price estimate.</string>
-  <string name="PickupDateDisplay">Reservation for {0:dddd, MMMM d} at {0:h:mm tt}</string>    
+  <string name="PickupDateDisplay">Reservation for {0:ddd, MMM d} at {0:h:mm tt}</string>    
   <string name="DateTimePickerSetButton">Set</string>
   <string name="SendEmail">Send mail...</string>
   <string name="RefineAddressTitle">Refine an address</string>
@@ -283,6 +284,8 @@
   <string name="View_SignUp_Label">Create Your Profile</string>
   <string name="View_SignIn"> </string>
 
+  <string name="View_RideSettings">Profile</string>
+  
   <string name="View_Book_Menu_MyLocations">Manage My Locations</string>
   <string name="View_Book_Menu_MyOrders">My Orders</string>
   <string name="View_Book_Menu_UpdateMyProfile">Update My Profile</string>
@@ -290,4 +293,7 @@
   <string name="View_Book_Menu_AboutUs">About Us</string>
   <string name="View_Book_Menu_ReportProblem">Report A Problem</string>
   <string name="View_Book_Menu_SignOut">Sign Out</string>
+  
+  <string name="View_RefineAddress">Pickup Details</string>
+  
 </resources>

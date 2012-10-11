@@ -1,4 +1,4 @@
-{
+{	
 	"DefaultBookingSettings.ChargeTypeId" : "1",
 	"DefaultBookingSettings.NbPassenger" : "1",
 	"DefaultBookingSettings.ProviderId" : "1",
@@ -8,7 +8,6 @@
 	"Direction.RatePerKm" : "1.25",
 	"DistanceFormat" : "MILE",
 	"Email.NoReply" : "noreply@apcurium.com",
-	"GeoLoc.AddressFilter" : "",
 	"GeoLoc.SearchFilter" : "{0},atlanta,ga",
 	"GeoLoc.DefaultLatitude" : "33.7489",
 	"GeoLoc.DefaultLongitude" : "-84.3881",
@@ -17,6 +16,7 @@
 	"IBS.WebServicesPassword" : "test",
 	"IBS.WebServicesUrl" : "http://cibs-atlanta.taxihail.com:2555/IBSCab/IBSCab.dll/soap/",
 	"IBS.WebServicesUserName" : "taxi",
+	"IBS.ExcludedVehicleTypeId" : "22;21",
 	"Map.PlacesApiKey" : "AIzaSyAd-ezA2SeVTSNqsu6aMmAkdlP3UqEVPWE",
 	"NearbyPlacesService.DefaultRadius" : "500",
 	"OrderStatus.CabDriverNumberAssigned" : "Cab #{0} is assigned to you",

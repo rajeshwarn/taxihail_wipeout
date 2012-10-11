@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\IConfigurationManager.cs" />
     <Compile Include="Diagnostic\ILogger.cs" />
     <Compile Include="Entity\Address.cs" />
     <Compile Include="Entity\ListItem.cs" />

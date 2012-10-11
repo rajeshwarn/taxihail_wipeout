@@ -1,14 +1,19 @@
 using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Common.Entity;
+using TinyIoC;
+using TinyMessenger;
+using apcurium.MK.Booking.Mobile.Messages;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class RefineAddressViewModel : BaseViewModel
     {
-        public RefineAddressViewModel(Address address)
+        public RefineAddressViewModel( string apt, string ringCode, string buildingName)
         {
-            
+            AptNumber = apt;
+            RingCode  = ringCode;
+            BuildingName = buildingName;
         }
 
         private string _streetNumber;
@@ -70,7 +75,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return new MvxRelayCommand(() => RequestClose(this));
+                
+                return new MvxRelayCommand(() => 
+                    {
+                        TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new AddressRefinedMessage(this, this));
+                        RequestClose(this);
+                    });
             }
         }
     }

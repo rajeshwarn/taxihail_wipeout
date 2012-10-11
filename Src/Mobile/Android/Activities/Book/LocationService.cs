@@ -49,7 +49,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
 
             _locMgr.RequestLocationUpdates(LocationManager.GpsProvider, 0, 0, _gpsListener);
-            //_locMgr.RequestLocationUpdates(LocationManager.NetworkProvider, 0, 0, _networkListener);
+            _locMgr.RequestLocationUpdates(LocationManager.NetworkProvider, 0, 0, _networkListener);
 
 
 
@@ -76,7 +76,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Start WaitForAccurateLocation");
 
             _locMgr.RequestLocationUpdates(LocationManager.GpsProvider, 0, 0, _gpsListener);
-            //_locMgr.RequestLocationUpdates(LocationManager.NetworkProvider, 0, 0, _networkListener);
+            _locMgr.RequestLocationUpdates(LocationManager.NetworkProvider, 0, 0, _networkListener);
 
 
             timeoutExpired = true;
