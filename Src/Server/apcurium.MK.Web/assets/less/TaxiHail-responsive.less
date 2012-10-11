@@ -21,6 +21,43 @@
 
 @media (max-width: 767px) {
 
+    body {
+        padding-left:0;
+        padding-right:0;
+    }
+
+    header .login-status-zone {
+        width:100%;
+    }
+
+    .container {
+        padding-left:20px;
+        padding-right:20px;
+    }
+
+    .book-view {
+        .pull-right {
+            float:none;
+        }
+    }
+
+    .address-picker {
+        .add-on {
+            display:none;
+        }
+
+        input.address {
+            width: 100%;
+            .box-sizing(border-box);
+        }
+
+        .address-selector-container {
+            width:100%;
+            .box-sizing(border-box);
+            left:0;
+        }
+    }
+
   /*.map-zone {
         height: 320px;
     }
@@ -34,6 +71,12 @@
 
 @media (max-width: 480px) {
 
+    .btn-pin {
+        display:none;
+    }
 
+    .map-zone {
+        display:none;
+    }
 
 }

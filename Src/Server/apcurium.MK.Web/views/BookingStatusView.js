@@ -38,7 +38,7 @@
 
             this.$('[data-action=call]').popover({
                     title: this.localize("Call us at"),
-                    content:"1 866 624 5330"
+                    content: TaxiHail.parameters.defaultPhoneNumber
                 });
 
             return this;

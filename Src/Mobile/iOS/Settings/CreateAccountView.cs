@@ -49,7 +49,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             View.BackgroundColor = UIColor.Clear; // UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             TableView.BackgroundView = new UIView{ BackgroundColor = UIColor.Clear };
             TableView.BackgroundColor = UIColor.Clear;
-            ((UINavigationController ) ParentViewController ).NavigationBar.TopItem.TitleView = new TitleView(null, Resources.CreateAccoutTitle, false);
+			((UINavigationController ) ParentViewController ).NavigationBar.TopItem.TitleView = new TitleView(null, Resources.View_SignUp, false);
             ((UINavigationController ) ParentViewController ).View.BackgroundColor =UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
 
 

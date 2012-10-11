@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             try
             {                
                 //var addresses = TinyIoCContainer.Current.Resolve<GeocodingServiceClient>().Search(latitude, longitude);
-                var addresses = TinyIoCContainer.Current.Resolve<IGeocoding>().Search(latitude, longitude);
+				var addresses = TinyIoCContainer.Current.Resolve<IGeocoding>().Search(latitude, longitude);
                 return addresses;
             }
             catch

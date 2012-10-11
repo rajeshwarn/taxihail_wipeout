@@ -35,9 +35,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 			_titleText.BackgroundColor = UIColor.Clear;
 			AddSubview(_titleText);
 
-			_img = new UIImageView(UIImage.FromFile("Assets/Logo.png"));
-			_img.Frame = new System.Drawing.RectangleF(0, 5, 72, 49);            
+			var image = UIImage.FromFile("Assets/Logo.png");
+			_img = new UIImageView(image);
+			_img.Frame = new System.Drawing.RectangleF(0, 5, image.Size.Width, image.Size.Height );            
 			_img.BackgroundColor = UIColor.Clear;
+			_img.ContentMode = UIViewContentMode.ScaleAspectFit;
 			_img.Hidden = true;
 			AddSubview(_img);
 		}

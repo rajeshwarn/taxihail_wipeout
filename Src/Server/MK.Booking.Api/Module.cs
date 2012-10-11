@@ -25,8 +25,10 @@ namespace apcurium.MK.Booking.Api
             AutoMapper.Mapper.CreateMap<Address, IBSAddress>();
             AutoMapper.Mapper.CreateMap<RegisterAccount, Commands.RegisterAccount>()
                 .ForMember(p => p.AccountId, options => options.ResolveUsing(x => x.AccountId == Guid.Empty ? Guid.NewGuid() : x.AccountId));
-            AutoMapper.Mapper.CreateMap<RegisterAccount, Commands.RegisterTwitterAccount>();
-            AutoMapper.Mapper.CreateMap<RegisterAccount, Commands.RegisterFacebookAccount>();
+            AutoMapper.Mapper.CreateMap<RegisterAccount, Commands.RegisterTwitterAccount>()
+                .ForMember(p => p.AccountId, options => options.ResolveUsing(x => x.AccountId == Guid.Empty ? Guid.NewGuid() : x.AccountId)); ;
+            AutoMapper.Mapper.CreateMap<RegisterAccount, Commands.RegisterFacebookAccount>()
+                .ForMember(p => p.AccountId, options => options.ResolveUsing(x => x.AccountId == Guid.Empty ? Guid.NewGuid() : x.AccountId)); ;
 
             AutoMapper.Mapper.CreateMap<SaveAddress, Commands.AddFavoriteAddress>()
                 .ForMember(x => x.AddressId, opt => opt.ResolveUsing(x => x.Id == Guid.Empty ? Guid.NewGuid() : x.Id));
