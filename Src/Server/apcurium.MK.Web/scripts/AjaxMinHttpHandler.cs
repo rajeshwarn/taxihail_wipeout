@@ -27,17 +27,29 @@ namespace apcurium.MK.Web.Scripts
 
         public void ProcessRequest(HttpContext context)
         {
-            var source = context.Request.QueryString["source"];
+
+            var source = Path.GetFileNameWithoutExtension(context.Request.FilePath);
+            source = source.Replace("minified.", "");
             context.Response.AddHeader("Content-Type", "application/javascript");
             var scripts = XDocument.Load(HostingEnvironment.MapPath("~/scripts/" + source + ".xml"));
 
+            var files = scripts.Root.Elements("script")
+                .Select(x=> (string)x.Attribute("src"))
+                .Select(x => x.StartsWith("/") ? x : "~/" + x)
+                .Select(HostingEnvironment.MapPath)
+                .ToArray();
+
+            context.Response.AddFileDependencies(files);
+            context.Response.Cache.SetCacheability(HttpCacheability.Public);
+            context.Response.Cache.SetExpires(DateTime.UtcNow.AddMinutes(10080.0));
+            context.Response.Cache.SetETagFromFileDependencies();
+            context.Response.Cache.SetLastModifiedFromFileDependencies();
+            context.Response.Cache.SetVaryByCustom("Accept-Encoding");
+
             var minifier = new Minifier();
-            foreach (var script in scripts.Root.Elements("script"))
+            foreach (var path in files)
             {
-                var filePath = (string) script.Attribute("src");
-                if (!filePath.StartsWith("/")) filePath = "~/" + filePath;
-                filePath = HostingEnvironment.MapPath(filePath);
-                var content = File.ReadAllText(filePath);
+                var content = File.ReadAllText(path);
                 context.Response.Write(";" + minifier.MinifyJavaScript(content));
             }
 
