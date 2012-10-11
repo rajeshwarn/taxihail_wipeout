@@ -958,6 +958,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			get { return GetValue ("HistoryDetailBuildingNameLabel"); }
 		}
+		public static string View_SignUp
+		{
+			get { return GetValue ("View_SignUp"); }
+		}
 	}
 }
 
