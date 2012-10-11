@@ -35,6 +35,29 @@
         padding-right:20px;
     }
 
+    .book-view {
+        .pull-right {
+            float:none;
+        }
+    }
+
+    .address-picker {
+        .add-on {
+            display:none;
+        }
+
+        input.address {
+            width: 100%;
+            .box-sizing(border-box);
+        }
+
+        .address-selector-container {
+            width:100%;
+            .box-sizing(border-box);
+            left:0;
+        }
+    }
+
   /*.map-zone {
         height: 320px;
     }
@@ -49,6 +72,10 @@
 @media (max-width: 480px) {
 
     .btn-pin {
+        display:none;
+    }
+
+    .map-zone {
         display:none;
     }
 
