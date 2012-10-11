@@ -8,7 +8,7 @@
         <title>Taxi Hail</title>
         <link rel="stylesheet" href='themes/<%: this.ApplicationKey %>/less/combined.less'/>
         <link rel="stylesheet" href='themes/<%: this.ApplicationKey %>/less/combined-responsive.less'/>
-        <script src="assets/js/modernizr.js"></script>
+        <script src="assets/js/modernizr.custom.20404.js"></script>
     </head>
     <body>
         <header>
@@ -25,7 +25,6 @@
         
 
         <!-- assets -->
-        <script src="assets/js/persist-min.js"></script>
         <script src="assets/js/handlebars-1.0.rc.1.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         <script src="assets/js/jquery.hotkeys.js"></script>

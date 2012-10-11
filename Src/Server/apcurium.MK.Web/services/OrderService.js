@@ -2,6 +2,9 @@
 
     var currentOrderKey = "TaxiHail.currentOrder",
         OrderService = function () {
+            
+            
+
             if (Modernizr.localstorage) {
                 this.store = window.localStorage;
             } else {
