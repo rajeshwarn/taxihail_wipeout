@@ -1,0 +1,48 @@
+﻿<h4 class="table-title">{{localize "Add to Favorites"}}</h4>
+
+<div class="errors" style="margin-top: 10px;"></div>
+
+<form class="form-horizontal" >
+    <div class="control-group">
+        <label class="control-label">{{localize 'Full Address'}}</label>
+        <div class="controls address-picker">
+            <input type="text" id="inputFullAddress" name="fullAddress"  value="{{fullAddress}}" class='input-block-level'>
+            <div class='address-selector-container raise100' ></div>
+        </div>
+    </div>
+    
+    <div class="control-group left-control-group">
+        <label class="control-label">{{localize 'Apartment'}}</label>
+        <div class="controls">
+            <input type="text" id="inputApartment" name="apartment" value="{{apartment}}" class='input-block-level'>
+        </div>
+    </div>
+
+    <div class="control-group right-control-group">
+        <label class="control-label">{{localize 'Ring Code'}}</label>
+        <div class="controls">
+            <input type="text" id="inputRingCode" name="ringCode"  value="{{ringCode}}" class='input-block-level'>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label" >{{localize "Building Name"}}</label>
+        <div class="controls">
+            <input type="text" name="buildingName" value="{{buildingName}}" class='input-block-level'>
+        </div>
+    </div>
+    <h4 style="text-align: center">{{localize "Give it a name"}}</h4>
+    <div class="control-group no-label">
+        <div class="controls">
+            <input type="text" id="inputFriendlyName" name="friendlyName" value="{{friendlyName}}" class='input-block-level'>
+        </div>
+    </div>
+
+    <div class="control-group">
+        {{#unless isNew }}
+            <a href='#' class='btn btn-danger pull-right span' data-action='destroy'>{{localize "Remove"}}</a>
+        {{/unless}}
+        <a href='#' class='btn pull-right span' data-action='cancel'>{{localize "Cancel"}}</a>
+        <button type='submit' class='btn btn-primary pull-right span' data-loading-text="{{localize 'Loading'}}">{{localize "Save"}}</a>                
+    </div>
+</form>

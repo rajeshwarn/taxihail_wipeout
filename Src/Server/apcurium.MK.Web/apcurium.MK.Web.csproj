@@ -71,9 +71,6 @@
     <Reference Include="EntityFramework, Version=4.3.1.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.4.3.1\lib\net40\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="Jurassic">
-      <HintPath>..\packages\Jurassic.2.1.1\lib\Jurassic.dll</HintPath>
-    </Reference>
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
     </Reference>
@@ -243,6 +240,7 @@
     <Content Include="assets\bootstrap\js\bootstrap-tooltip.js" />
     <Content Include="assets\bootstrap\js\bootstrap-transition.js" />
     <Content Include="assets\bootstrap\js\bootstrap-typeahead.js" />
+    <Content Include="assets\js\persist-min.js" />
     <Content Include="assets\bootstrap\js\tests\index.html" />
     <Content Include="assets\bootstrap\js\tests\phantom.js" />
     <Content Include="assets\bootstrap\js\tests\server.js" />
@@ -268,6 +266,7 @@
     <Content Include="assets\bootstrap\less\tests\forms.html" />
     <Content Include="assets\bootstrap\less\tests\navbar.html" />
     <Content Include="assets\img\cancel-icon.png" />
+    <Content Include="assets\img\green-dot-with-padding.png" />
     <Content Include="assets\img\location.png" />
     <Content Include="assets\img\pin-icon.png" />
     <Content Include="assets\img\pin_green.png" />
@@ -284,6 +283,7 @@
     <Content Include="assets\js\handlebars-1.0.rc.1.js" />
     <Content Include="assets\js\jquery.edit-in-place.js" />
     <Content Include="assets\js\jquery.hotkeys.js" />
+    <Content Include="assets\js\jquery.validate.js" />
     <Content Include="assets\js\modernizr.js" />
     <Content Include="assets\js\spin.js" />
     <Content Include="assets\js\underscore.js" />
@@ -306,6 +306,7 @@
     <Content Include="log4net.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="mixins\ValidatedView.js" />
     <Content Include="models\NewAccount.js" />
     <Content Include="models\OrderStatus.js" />
     <Content Include="models\ReferenceData.js" />
@@ -319,6 +320,7 @@
     <Content Include="services\GeocodingService.js" />
     <Content Include="services\GeolocationService.js" />
     <Content Include="services\OrderService.js" />
+    <Content Include="services\PlacesService.js" />
     <Content Include="taxi-hail.js" />
     <Content Include="templates\AddFavorite.html" />
     <Content Include="templates\AddressControl.html" />

@@ -1,13 +1,13 @@
 ﻿(function () {
-    var settingschanged = false;
-    TaxiHail.ProfileView = TaxiHail.TemplatedView.extend({
+    
+    var View = TaxiHail.ProfileView = TaxiHail.TemplatedView.extend({
         events: {
-            'click [data-action=savechanges]': 'savechanges',
-            'change :text': 'onPropertyChanged',
             'change :input': 'onPropertyChanged'
         },
 
         initialize: function () {
+
+            _.bindAll(this, 'savechanges');
 
             this.referenceData = new TaxiHail.ReferenceData();
             this.referenceData.fetch();
@@ -33,9 +33,8 @@
             });
 
             this.$el.html(this.renderTemplate(data));
-
             
-            this.$("#updateSettingsForm").validate({
+            this.validate({
                 rules: {
                     name: "required",
                     phone: {
@@ -49,7 +48,7 @@
                 },
                 messages: {
                     name: {
-                        required: TaxiHail.localize('error.NameRequired'),
+                        required: TaxiHail.localize('error.NameRequired')
                     },
                     phone: {
                         required: TaxiHail.localize('error.PhoneRequired'),
@@ -57,55 +56,35 @@
                     },
                     passengers: {
                         required: TaxiHail.localize('error.PassengersRequired'),
-                        number: TaxiHail.localize('error.NotANumber'),
+                        number: TaxiHail.localize('error.NotANumber')
                     }
-                }, 
-                highlight: function (label) {
-                    $(label).closest('.control-group').addClass('error');
-                    $(label).prevAll('.valid-input').addClass('hidden');
-                }, success: function (label) {
-                    $(label).closest('.control-group').removeClass('error');
-                    label.prevAll('.valid-input').removeClass('hidden');
-                
-                }
+                },
+                submitHandler: this.savechanges
             });
 
             return this;
         },
         
-        savechanges : function (e) {
-            e.preventDefault();
-            var settings = this.model.get('settings');
-            if (this.$("#updateSettingsForm").valid() ) {
-                            
-  
-                                    
-                                    jQuery.ajax({
-                                                type: 'PUT',
-                                                url: 'api/account/bookingsettings',
-                                                data: settings,
-                                                success: function () {
-                                                    $("#notif-bar").html(TaxiHail.localize('Settings Changed'));
-                                                    
-                                                    
-                                                  },
-                                                  error: this.showErrors,
-                                                  dataType: 'json'
-                                    });
-                        }
-               
-                
+        savechanges : function (form) {
+            this.model.updateSettings()
+                .done(_.bind(function () {
+                    this.$("#notif-bar").html(TaxiHail.localize('Settings Changed'));
+                    this.$(':submit').button('reset');
+                }, this))
+                .fail(_.bind(function(){
+                    this.$(':submit').button('reset');
+                }, this));
         },
         
         onPropertyChanged : function (e) {
-            e.preventDefault();
             var $input = $(e.currentTarget);
             var settings = this.model.get('settings');
 
             settings[$input.attr("name")] = $input.val();
-            settingschanged = true;
-            this.$('[data-action=savechanges]').removeClass('disabled');
+            this.$(':submit').removeClass('disabled');
         }
     });
+
+    _.extend(View.prototype, TaxiHail.ValidatedView);
 
 }());

@@ -1,0 +1,30 @@
+﻿<div class="row">
+    <div class='span6'>
+        <div class="well">
+            <legend>{{localize "Login"}}</legend>
+            <div id="alert"></div>
+            <div class='errors'></div>
+            <div class="control-group">
+                <label class="control-label" for="login-email">{{localize "Email Address"}}</label>
+                <div class="controls">
+                    <input type="text" class='input-block-level' id="login-email" name="email" value="">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="login-password">{{localize "Password"}}</label>
+                <div class="controls">
+                    <input type="password" class='input-block-level' id="login-password" name="password" value="">
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                        <a href='#signup' class='btn pull-right span' data-action='signup'>{{localize "Signup"}}</a>
+                        <!--a href="#" class=' pull-right span' data-action='fblogin' data-loading-text="{{localize 'Loading'}}">{{localize "fb"}}</a-->
+                    <button type="submit" class='btn btn-primary pull-right span' data-loading-text="{{localize 'Loading'}}">{{localize "Login"}}</button>
+                    <a href='#resetpassword' class=' pull-right span'>{{localize "Forgot password"}}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

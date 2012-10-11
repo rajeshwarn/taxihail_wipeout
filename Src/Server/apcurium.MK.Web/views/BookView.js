@@ -10,7 +10,6 @@
         },
         
         initialize: function () {
-
             this.model.on('change', function(model, value) {
                 
                 // Enable the buttons if model is valid

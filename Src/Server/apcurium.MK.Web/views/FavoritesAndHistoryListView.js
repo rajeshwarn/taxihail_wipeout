@@ -2,7 +2,7 @@
 
     TaxiHail.FavoritesAndHistoryListView = Backbone.View.extend({
 
-        className: 'unstyled',
+        className: 'unstyled locations',
         tagName: 'ul',
 
         initialize: function() {

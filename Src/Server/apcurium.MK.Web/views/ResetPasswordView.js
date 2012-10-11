@@ -1,10 +1,9 @@
 ﻿(function () {
-    var email;
-    TaxiHail.ResetPasswordView = TaxiHail.TemplatedView.extend({
-        events: {
-            "click [data-action=resetpassword]": "resetpassword",
-            'change :input': 'onPropertyChanged'
-        },
+    
+    var View = TaxiHail.ResetPasswordView = TaxiHail.TemplatedView.extend({
+
+        tagName: 'form',
+        className: 'form-horizontal',
 
         initialize: function () {
 
@@ -13,7 +12,7 @@
         render: function () {
             this.$el.html(this.renderTemplate());
 
-            this.$("#resetPasswordForm").validate({
+            this.validate({
                 rules: {
                     email: {
                         required: true,
@@ -23,42 +22,32 @@
                 messages: {
                     email: {
                         required: TaxiHail.localize('error.EmailRequired'),
-                        email: TaxiHail.localize('error.NotEmailFormat'),
+                        email: TaxiHail.localize('error.NotEmailFormat')
                     }
                 },
-                success: function(label) {
-                }
+                submitHandler: this.resetpassword
             });
         
             return this;
         },
-        
-        onPropertyChanged: function (e) {
-            e.preventDefault();
-            
-            var $input = $(e.currentTarget);
-
-            email = $input.val();
-        },
-        
-        resetpassword : function (e) {
-            e.preventDefault();
-            if (this.$("#resetPasswordForm").valid()) {
-                $.post('api/account/resetpassword/' + email, {
-                emailAddress: email
-            }, function () {
-                $("#notif-bar").html(TaxiHail.localize('resetPassword.reset'));
-                $("#email").val("");
-            }, 'json').fail(function (response) {
-                if (response.status == 404) {
-                    $("#notif-bar").html(TaxiHail.localize('resetPassword.accountNotFound'));
-                }
-                //$("#notif-bar").html(TaxiHail.localize(response.statusText));
-            });
-            }
-            
+               
+        resetpassword : function (form) {
+            TaxiHail.auth.resetPassword($(form).find('[name=email]').val())
+                .done(_.bind(function() {
+                    this.$(':submit').button('reset');
+                    this.$("#notif-bar").html(TaxiHail.localize('resetPassword.reset'));
+                    this.$("[name=email]").val("");
+                }, this))
+                .fail(_.bind(function (response) {
+                    this.$(':submit').button('reset');
+                    if (response.status == 404) {
+                        this.$("#notif-bar").html(TaxiHail.localize('resetPassword.accountNotFound'));
+                    }
+                }, this));
         }
 
     });
+
+    _.extend(View.prototype, TaxiHail.ValidatedView);
 
 }());

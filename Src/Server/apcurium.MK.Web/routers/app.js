@@ -1,15 +1,21 @@
 ﻿(function () {
     var currentView,
-        renderView = function(ctor, model) {
+        renderView = function(view, model) {
             // Call remove on current view
             // in case it was overriden with custom logic
             if(currentView && _.isFunction(currentView.remove)) {
                 currentView.remove();
             }
-            
-            currentView = new ctor({
-                model: model
-            }).render();
+
+            if(_.isFunction(view)) {
+                currentView = new view({
+                    model: model
+                }).render();
+            } else {
+                currentView = view;
+                view.model = model || view.model;
+                view.render();
+            }
 
             $('#main').html(currentView.el);
 
@@ -98,8 +104,8 @@
         },
 
         signupconfirmation: function (url) {
-            var view = renderView(TaxiHail.LoginView, new Backbone.Model({
-                url : url
+            var view = renderView(new TaxiHail.LoginView({
+                returnUrl: url
             }));
             view.showConfirmationMessage();
         },
@@ -165,8 +171,8 @@
 
         
         login: function (url) {
-            renderView(TaxiHail.LoginView, new Backbone.Model({
-                url : url
+            renderView(new TaxiHail.LoginView({
+                returnUrl: url
             }));
         },
         signup: function (url) {
