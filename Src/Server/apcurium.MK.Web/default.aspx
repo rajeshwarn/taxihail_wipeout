@@ -8,7 +8,7 @@
         <title><%: ApplicationName %></title>
         <link rel="stylesheet" href='themes/<%: this.ApplicationKey %>/less/combined.less'/>
         <link rel="stylesheet" href='themes/<%: this.ApplicationKey %>/less/combined-responsive.less'/>
-        <script src="assets/js/modernizr.custom.20404.js"></script>
+        <script src="assets/js/modernizr.min.js"></script>
     </head>
     <body>
         <header>
@@ -36,6 +36,7 @@
         <script type="text/javascript">
             TaxiHail.parameters.defaultLatitude = <%: this.DefaultLatitude %>;
             TaxiHail.parameters.defaultLongitude = <%: this.DefaultLongitude %>;
+            TaxiHail.parameters.defaultPhoneNumber = '<%: this.DefaultPhoneNumber %>';
             TaxiHail.parameters.isLoggedIn = <%: this.IsAuthenticated ? "true" : "false" %>;
         </script>
 

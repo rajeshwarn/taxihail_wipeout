@@ -244,7 +244,7 @@
     <Content Include="assets\bootstrap\js\bootstrap-transition.js" />
     <Content Include="assets\bootstrap\js\bootstrap-typeahead.js" />
     <Content Include="assets\js\json2.js" />
-    <Content Include="assets\js\modernizr.custom.20404.js" />
+    <Content Include="assets\js\modernizr.min.js" />
     <Content Include="assets\js\persist-min.js" />
     <Content Include="assets\bootstrap\js\tests\index.html" />
     <Content Include="assets\bootstrap\js\tests\phantom.js" />
