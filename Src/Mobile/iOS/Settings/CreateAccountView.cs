@@ -293,7 +293,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                     _emailEntry.AutocapitalizationType = UITextAutocapitalizationType.None;
                     _emailEntry.AutocorrectionType = UITextAutocorrectionType.No;
                                 
-                    _fullNameEntry = CreateTextEntry(_settings, Resources.CreateAccoutFullNameLabel, null, s => _data.Name = s, () => _data.Name);                   
+					_fullNameEntry = CreateTextEntry(_settings, Resources.CreateAccountFullName, null, s => _data.Name = s, () => _data.Name);                   
                     //_fullNameEntry.OffsetX = 30;                    
                     
                     _phoneEntry = CreateTextEntry(_settings, Resources.CreateAccoutPhoneNumberLabel, null, s => _data.Phone = s, () => _data.Phone);

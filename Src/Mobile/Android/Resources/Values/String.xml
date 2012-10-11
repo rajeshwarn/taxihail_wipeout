@@ -221,6 +221,7 @@
   <string name="DateTimePickerPickTime">Select your pickup time:</string>
   <string name="DateTimePickerPickTitle">Pickup date and time</string>
   <string name="DateTimePickerPickInvalidDateTitle">Invalid date / time</string>
+  <string name="InvalidChoiceTitle">Invalid Choice</string>
   <string name="DateTimePickerPickInvalidDateMessage">The pickup date must be in the future.</string>
   <string name="EditButton">Edit</string>
   <string name="StatusCannotBeDisplayed">Cannot get status. Please call provider.</string>
