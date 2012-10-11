@@ -4,8 +4,11 @@
 <html>
     <head>
         <meta charset='utf-8' />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
         <title><%: ApplicationName %></title>
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="viewport" content="width=device-width,target-densitydpi=device-dpi,initial-scale=1.0, user-scalable=no">
+        <meta http-equiv="cleartype" content="on">
         <link rel="stylesheet" href='themes/<%: this.ApplicationKey %>/less/combined.less'/>
         <link rel="stylesheet" href='themes/<%: this.ApplicationKey %>/less/combined-responsive.less'/>
         <script src="assets/js/modernizr.min.js"></script>

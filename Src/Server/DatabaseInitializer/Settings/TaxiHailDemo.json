@@ -41,6 +41,8 @@
    "Smtp.Host" : "smtp.gmail.com",
    "Smtp.Port" : "587",
    "Smtp.UseDefaultCredentials" : "false",
+   "DefaultPhoneNumber" : "18666245330",
+   "DefaultPhoneNumberDisplay" : "1.866.624.5330",
    "TaxiHail.ApplicationName" : "Taxi Hail",
    "TaxiHail.ApplicationKey" : "TaxiHail",
    "TaxiHail.AccentColor" : "#0057a3",

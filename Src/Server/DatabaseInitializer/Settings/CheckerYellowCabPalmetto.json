@@ -41,6 +41,8 @@
 	"Smtp.Host" : "smtpout.secureserver.net",
 	"Smtp.Port" : "465",
 	"Smtp.UseDefaultCredentials" : "FALSE",
+	"DefaultPhoneNumber" : "18666245330",
+    "DefaultPhoneNumberDisplay" : "1.866.624.5330",
 	"TaxiHail.ApplicationName" : "Checker Yellow Cab",
 	"TaxiHail.SiteName" : "Checker Yellow Cab",
 	"TaxiHail.ApplicationKey" : "CheckerYellowCabPalmetto",

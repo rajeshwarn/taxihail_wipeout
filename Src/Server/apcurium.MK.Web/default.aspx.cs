@@ -38,7 +38,7 @@ namespace apcurium.MK.Web
             reader.MoveToContent();
             JSAssetsSource = reader.ReadInnerXml();
 
-            reader = XDocument.Load(HostingEnvironment.MapPath("~/scripts/assets.xml")).Root.CreateReader();
+            reader = XDocument.Load(HostingEnvironment.MapPath("~/scripts/app.xml")).Root.CreateReader();
             reader.MoveToContent();
             JSAppSource = reader.ReadInnerXml();
 #else
