@@ -61,8 +61,9 @@
             e.preventDefault();
             if (canCancel == true) {
                 TaxiHail.confirm({
-                    title: this.localize('Cancel order'),
-                    message: this.localize('modal.cancel.message')
+                    title: this.localize('Cancel Order'),
+                    message: this.localize('modal.cancelOrder.message'),
+                    cancelButton: this.localize('modal.cancelOrder.cancelButton')
                 }).on('ok', function () {
                     this.model.cancel().done(function () {
                         // Redirect to Home
