@@ -71,8 +71,8 @@
         destroyAddress: function (e) {
             e.preventDefault();
             TaxiHail.confirm({
-                title: this.localize('Remove Favorites'),
-                message: this.localize('modal.remove.message')
+                title: this.localize('Remove Favorite Address'),
+                message: this.localize('modal.removeFavorite.message')
             }).on('ok', function () {
                     this.model.destroy();
             }, this);
