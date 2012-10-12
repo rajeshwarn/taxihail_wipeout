@@ -2,7 +2,7 @@
 
 <div class="errors" style="margin-top: 10px;"></div>
 
-<form class="form-horizontal" >
+<form class="form-horizontal clearfix" >
     <div class="control-group">
         <label class="control-label">{{localize 'Full Address'}}</label>
         <div class="controls address-picker">
@@ -38,11 +38,11 @@
         </div>
     </div>
 
-    <div class="control-group">
-        {{#unless isNew }}
-            <a href='#' class='btn btn-danger pull-right span' data-action='destroy'>{{localize "Remove"}}</a>
-        {{/unless}}
-        <a href='#' class='btn pull-right span' data-action='cancel'>{{localize "Cancel"}}</a>
-        <button type='submit' class='btn btn-primary pull-right span' data-loading-text="{{localize 'Loading'}}">{{localize "Save"}}</a>                
+    <div class="control-group btn-right-alignment" >
+        <button type='submit' class='btn btn-primary span' data-loading-text="{{localize 'Loading'}}">{{localize "Save"}}</button>
+      <a href='#' class='btn  span' data-action='cancel'>{{localize "Cancel"}}</a>
+      {{#unless isNew }}
+      <a href='#' class='btn btn-danger  span' data-action='destroy'>{{localize "Remove"}}</a>
+      {{/unless}}
     </div>
 </form>

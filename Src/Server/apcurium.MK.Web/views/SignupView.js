@@ -23,18 +23,30 @@
 
         render: function () {
             this.$el.html(this.renderTemplate());
-            var item = window.localStorage.getItem('fbinfos');
-            var fbinfos = JSON.parse(item);
-            if (fbinfos) {
-                this.model.set('facebookId', fbinfos.id);
-                this.$('#email').val(fbinfos.email);
-                this.model.set('email', fbinfos.email);
-                this.$('#signup-fullname').val(fbinfos.name);
-                this.model.set('name', fbinfos.name);
+            var itemfb = window.localStorage.getItem('fbinfos');
+            var itemtw = window.localStorage.getItem('twinfos');
+            var infos;
+            if (itemfb) {
+                infos = JSON.parse(itemfb);
+                window.localStorage.removeItem('fbinfos');
+            } else {
+                if (itemtw) {
+                    infos = JSON.parse(itemtw);
+                    window.localStorage.removeItem('twinfos');
+                }
+            }
+            if (infos) {
+                 this.model.set('facebookId', infos.id);
+                this.$('#email').val(infos.email);
+                this.model.set('email', infos.email);
+                this.$('#signup-fullname').val(infos.name);
+                this.model.set('name', infos.name);
                 this.$('#signup-password-div').addClass('hidden');
                 this.$('#signup-confirm-password-div').addClass('hidden');
-                window.localStorage.removeItem('fbinfos');
+                
             }
+           
+            
 
             this.validate({
                 rules: {

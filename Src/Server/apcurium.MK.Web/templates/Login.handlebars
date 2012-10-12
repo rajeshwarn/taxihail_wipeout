@@ -1,6 +1,6 @@
 ﻿<div class="row">
     <div class='span6'>
-        <div class="well">
+        <div class="well clearfix">
             <legend>{{localize "Login"}}</legend>
             <div id="alert"></div>
             <div class='errors'></div>
@@ -17,12 +17,16 @@
                 </div>
             </div>
             <div class="control-group">
-                <div class="controls">
-                        <a href='#signup' class='btn pull-right span' data-action='signup'>{{localize "Signup"}}</a>
-                        <a href="#" class=' pull-right span' data-action='fblogin' data-loading-text="{{localize 'Loading'}}">{{localize "fb"}}</a>
-                    <button type="submit" class='btn btn-primary pull-right span' data-loading-text="{{localize 'Loading'}}">{{localize "Login"}}</button>
-                    <a href='#resetpassword' class=' pull-right span'>{{localize "Forgot password"}}</a>
+                <div class="controls btn-right-alignment">
+                  <button type="submit" class='btn btn-primary span' data-loading-text="{{localize 'Loading'}}">{{localize "Login"}}</button>
+                  <a href="#" class='span' data-action='fblogin' data-loading-text="{{localize 'Loading'}}">{{localize "fb"}}</a>
+                  <!-->a href="#" class='span' data-action='twlogin' data-loading-text="{{localize 'Loading'}}">{{localize "tw"}}</a-->
+                  <a href='#signup' class='btn span' data-action='signup'>{{localize "Signup"}}</a>
+                  
+
                 </div>
+              <a href='#resetpassword' class=' span'>{{localize "Forgot password"}}</a>
+
             </div>
         </div>
     </div>
