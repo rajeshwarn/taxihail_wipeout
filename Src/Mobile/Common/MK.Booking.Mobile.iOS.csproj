@@ -200,6 +200,14 @@
       <Project>{E042EDD9-E89D-4928-BF4D-27F0FC29CEDA}</Project>
       <Name>Cirrious.MvvmCross.Touch</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Server\MK.Booking.Google\MK.Booking.Google.iOS.csproj">
+      <Project>{50A4C580-4D47-48CF-80A8-79FDF81D9845}</Project>
+      <Name>MK.Booking.Google.iOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Server\MK.Booking.Maps\MK.Booking.Maps.iOS.csproj">
+      <Project>{3A0351D4-4B1A-4E70-B923-B11519A6B5D5}</Project>
+      <Name>MK.Booking.Maps.iOS</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Settings\Settings.json" />

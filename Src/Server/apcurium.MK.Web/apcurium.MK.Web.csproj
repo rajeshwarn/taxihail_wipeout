@@ -65,6 +65,9 @@
     <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AjaxMin">
+      <HintPath>..\packages\AjaxMin.4.69.4665.24361\lib\net40\AjaxMin.dll</HintPath>
+    </Reference>
     <Reference Include="dotless.Core">
       <HintPath>..\packages\dotless.1.3.0.5\lib\dotless.Core.dll</HintPath>
     </Reference>
@@ -240,6 +243,8 @@
     <Content Include="assets\bootstrap\js\bootstrap-tooltip.js" />
     <Content Include="assets\bootstrap\js\bootstrap-transition.js" />
     <Content Include="assets\bootstrap\js\bootstrap-typeahead.js" />
+    <Content Include="assets\js\json2.js" />
+    <Content Include="assets\js\modernizr.min.js" />
     <Content Include="assets\js\persist-min.js" />
     <Content Include="assets\bootstrap\js\tests\index.html" />
     <Content Include="assets\bootstrap\js\tests\phantom.js" />
@@ -315,6 +320,10 @@
     <Content Include="models\Address.js" />
     <Content Include="models\Order.js" />
     <Content Include="routers\app.js" />
+    <Content Include="scripts\assets.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="scripts\app.xml" />
     <Content Include="services\AuthService.js" />
     <Content Include="services\DirectionInfoService.js" />
     <Content Include="services\GeocodingService.js" />
@@ -322,27 +331,6 @@
     <Content Include="services\OrderService.js" />
     <Content Include="services\PlacesService.js" />
     <Content Include="taxi-hail.js" />
-    <Content Include="templates\AddFavorite.html" />
-    <Content Include="templates\AddressControl.html" />
-    <Content Include="templates\AddressItem.html" />
-    <Content Include="templates\AddressSelection.html" />
-    <Content Include="templates\book.html" />
-    <Content Include="templates\BookingConfirmation.html" />
-    <Content Include="templates\BookingStatus.html" />
-    <Content Include="templates\BookLater.html" />
-    <Content Include="templates\BootstrapConfirmation.html" />
-    <Content Include="templates\FavoriteDetails.html" />
-    <Content Include="templates\Favorites.html" />
-    <Content Include="templates\login.html" />
-    <Content Include="templates\LoginStatus.html" />
-    <Content Include="templates\OrderHistory.html" />
-    <Content Include="templates\OrderHistoryDetail.html" />
-    <Content Include="templates\OrderItem.html" />
-    <Content Include="templates\Profile.html" />
-    <Content Include="templates\ResetPassword.html" />
-    <Content Include="templates\Signup.html" />
-    <Content Include="templates\UpdatePassword.html" />
-    <Content Include="templates\UserAccount.html" />
     <Content Include="themes\AtlantaCheckerCab\img\cancel-icon.png" />
     <Content Include="themes\AtlantaCheckerCab\img\header-bg.png" />
     <Content Include="themes\AtlantaCheckerCab\img\location.png" />
@@ -426,6 +414,7 @@
       <DependentUpon>PingdomCheck.ashx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="scripts\AjaxMinHttpHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -651,6 +640,29 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="themes\CheckerYellowCabPalmetto\less\variables.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="templates\AddFavorite.handlebars" />
+    <Content Include="templates\AddressControl.handlebars" />
+    <Content Include="templates\AddressItem.handlebars" />
+    <Content Include="templates\AddressSelection.handlebars" />
+    <Content Include="templates\Book.handlebars" />
+    <Content Include="templates\BookingConfirmation.handlebars" />
+    <Content Include="templates\BookingStatus.handlebars" />
+    <Content Include="templates\BookLater.handlebars" />
+    <Content Include="templates\BootstrapConfirmation.handlebars" />
+    <Content Include="templates\FavoriteDetails.handlebars" />
+    <Content Include="templates\Favorites.handlebars" />
+    <Content Include="templates\Login.handlebars" />
+    <Content Include="templates\LoginStatus.handlebars" />
+    <Content Include="templates\OrderHistory.handlebars" />
+    <Content Include="templates\OrderHistoryDetail.handlebars" />
+    <Content Include="templates\OrderItem.handlebars" />
+    <Content Include="templates\Profile.handlebars" />
+    <Content Include="templates\ResetPassword.handlebars" />
+    <Content Include="templates\Signup.handlebars" />
+    <Content Include="templates\UpdatePassword.handlebars" />
+    <Content Include="templates\UserAccount.handlebars" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

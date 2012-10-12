@@ -23,9 +23,7 @@
             return this;
         },
         
-        checkloggedorsubscribe : function () {
-            TaxiHail.auth.login();
-        },
+       
 
         logout: function (e) {
             e.preventDefault();

@@ -36,6 +36,7 @@ $(function () {
 
             // Application starts here
             // If user is logged in, we need to load its Account before we continue
+
             if(TaxiHail.parameters.isLoggedIn) {
 
                 new TaxiHail.UserAccount().fetch({

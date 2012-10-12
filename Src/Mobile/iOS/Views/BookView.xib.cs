@@ -77,7 +77,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 			TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub>().Subscribe<RebookRequested>( msg => {
 				ViewModel.Rebook( msg.Content );
-				BookTaxi();
 			});
 			TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub>().Subscribe<DateTimePicked>( msg => _onDateTimePicked() );
 			_dateTimePicker = new DateTimePicker( );
@@ -356,17 +355,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 						LoadStatusView(new Order { Id = bi.Id, IBSOrderId = orderStatus.IBSOrderId,  CreatedDate = DateTime.Now, DropOffAddress = bi.DropOffAddress, PickupAddress  = bi.PickupAddress , Settings = bi.Settings   }, orderStatus, false);
 
-                    }
-                    else
-                    {
-                        if (error.HasValue())
-                        {
-                            MessageHelper.Show(Resources.ErrorCreatingOrderTitle, Resources.ErrorCreatingOrderMessage);
-                        }
-                        else
-                        {
-                            MessageHelper.Show(Resources.ErrorCreatingOrderTitle, Resources.ErrorCreatingOrderMessage);
-                        }
                     }   
                 }
                 finally

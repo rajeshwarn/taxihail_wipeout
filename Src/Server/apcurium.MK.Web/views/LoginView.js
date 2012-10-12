@@ -87,7 +87,14 @@
         
         fblogin : function (e) {
             e.preventDefault();
-            TaxiHail.auth.fblogin();
+            var url = this.options.returnUrl;
+            if (url) {
+                FB.login(_.bind(function () { TaxiHail.auth.fblogin(url); }, { scope: 'email' }, this));
+            } else {
+                FB.login(function () { TaxiHail.auth.fblogin(); }, { scope: 'email' });
+            }
+
+            //TaxiHail.auth.fbcallandlogin();
         }
 
     });

@@ -74,6 +74,8 @@
                 } else {
                     this.navigate('', { trigger: true });
                 }
+                
+                    
             }
                     
 
@@ -91,6 +93,7 @@
                     this.navigate('', { trigger: true });
                 }
             }, this);
+      
 
             mapView = new TaxiHail.MapView({
                 el: $('.map-zone')[0],
@@ -100,14 +103,37 @@
             $('.login-status-zone').html(new TaxiHail.LoginStatusView({
                 model: TaxiHail.auth.account
             }).render().el);
+            
+            Modernizr.load([{
+
+                test: window.JSON,
+
+                nope: 'assets/js/json2.js'
+
+            },
+                {
+                    test: Modernizr.localstorage,
+                    nope: 'assets/js/persist-min.js'
+                }
+            ]);
 
         },
-
+        
         signupconfirmation: function (url) {
-            var view = renderView(new TaxiHail.LoginView({
-                returnUrl: url
-            }));
-            view.showConfirmationMessage();
+            var fbId = window.localStorage.getItem('fbId');
+            if (fbId) {
+                if (url) {
+                    TaxiHail.auth.fblogin(url);
+                } else {
+                    TaxiHail.auth.fblogin();
+                }
+            } else {
+                var view = renderView(new TaxiHail.LoginView({
+                    returnUrl: url
+                }));
+                view.showConfirmationMessage();
+            }
+            
         },
         
         book: function () {

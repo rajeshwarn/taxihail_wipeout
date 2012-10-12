@@ -6,8 +6,8 @@
                 OriginLat: originLat,
                 OriginLng: originLng,
                 DestinationLat: destLat,
-                DestinationLng: destLng,
+                DestinationLng: destLng
             },function(){}, 'json');
-        },
+        }
     });
 }());

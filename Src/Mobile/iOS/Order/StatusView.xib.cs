@@ -114,7 +114,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 
 //                var view = AppContext.Current.Controller.GetTitleView(null, Resources.StatusViewTitle);
                 
-				this.NavigationItem.TitleView = new TitleView(null, Resources.StatusViewTitle);
+				this.NavigationItem.TitleView = new TitleView(null, Resources.GenericTitle, false);
 
 				View.BringSubviewToFront( bottomBar );
             
@@ -200,7 +200,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                       TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumberDisplay(Order.Settings.ProviderId.Value));
         }
 
-        private void LoadOrderInfo()
+		private void LoadOrderInfo()
         {
 
             try
@@ -251,50 +251,51 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
             catch (Exception ex)
             {
-                lblTitle.Text =  Resources.ErrorGettingStatus;
+				Logger.LogError(ex);
             }
             
         }
 
         private void RefreshStatusDisplay()
         {
-            if ( Status == null )
-            {
-                 lblTitle.Text =  Resources.ErrorGettingStatus;
-                return;
-            }
+            try
+			{
+				InvokeOnMainThread(() => lblTitle.Text = Status.IBSStatusDescription);
+	            if ((Status.VehicleLatitude.HasValue) && (Status.VehicleLongitude.HasValue) && (Status.VehicleLatitude.Value != 0) && (Status.VehicleLongitude.Value != 0))
+	            {
+	                CLLocationCoordinate2D taxiCoordinate = new CLLocationCoordinate2D(Status.VehicleLatitude.Value, Status.VehicleLongitude.Value);
+	                if (_taxiPosition != null)
+	                {
+	                    InvokeOnMainThread(() => 
+	                    {
+	                        mapStatus.RemoveAnnotations(mapStatus.Annotations.OfType<AddressAnnotation>().Where(a => a.AddressType == AddressAnnotationType.Taxi).ToArray());
+	                    }
+	                    );
+	                }
 
-			InvokeOnMainThread(() => lblTitle.Text = Status.IBSStatusDescription);
-            if ((Status.VehicleLatitude.HasValue) && (Status.VehicleLongitude.HasValue) && (Status.VehicleLatitude.Value != 0) && (Status.VehicleLongitude.Value != 0))
-            {
-                CLLocationCoordinate2D taxiCoordinate = new CLLocationCoordinate2D(Status.VehicleLatitude.Value, Status.VehicleLongitude.Value);
-                if (_taxiPosition != null)
-                {
-                    InvokeOnMainThread(() => 
-                    {
-                        mapStatus.RemoveAnnotations(mapStatus.Annotations.OfType<AddressAnnotation>().Where(a => a.AddressType == AddressAnnotationType.Taxi).ToArray());
-                    }
-                    );
-                }
+	                _taxiPosition = new AddressAnnotation(taxiCoordinate, AddressAnnotationType.Taxi, Resources.TaxiMapTitle, Status.VehicleNumber);
 
-                _taxiPosition = new AddressAnnotation(taxiCoordinate, AddressAnnotationType.Taxi, Resources.TaxiMapTitle, Status.VehicleNumber);
-
-				var pickupCoordinate = Order.PickupAddress.GetCoordinate();
-				double latDelta = Math.Abs(taxiCoordinate.Latitude - pickupCoordinate.Latitude);
-				double longDelta = Math.Abs(taxiCoordinate.Longitude - pickupCoordinate.Longitude);
-            
-				var center = new CLLocationCoordinate2D((taxiCoordinate.Latitude + pickupCoordinate.Latitude) / 2, (taxiCoordinate.Longitude + pickupCoordinate.Longitude) / 2);
-				//                    
-				//                        
-                InvokeOnMainThread(() => 
-                {
-                    mapStatus.AddAnnotation(_taxiPosition);
-                    //mapStatus.SetCenterCoordinate(taxiCoordinate, true);
-                   // mapStatus.SetRegion(new MKCoordinateRegion(taxiCoordinate, new MKCoordinateSpan(0.01, 0.01)), true);
-					mapStatus.SetRegion(new MKCoordinateRegion(center, new MKCoordinateSpan(latDelta * 1.5f, longDelta * 1.5f)), true);
-                }
-                );
-            }
+					var pickupCoordinate = Order.PickupAddress.GetCoordinate();
+					double latDelta = Math.Abs(taxiCoordinate.Latitude - pickupCoordinate.Latitude);
+					double longDelta = Math.Abs(taxiCoordinate.Longitude - pickupCoordinate.Longitude);
+	            
+					var center = new CLLocationCoordinate2D((taxiCoordinate.Latitude + pickupCoordinate.Latitude) / 2, (taxiCoordinate.Longitude + pickupCoordinate.Longitude) / 2);
+					//                    
+					//                        
+	                InvokeOnMainThread(() => 
+	                {
+	                    mapStatus.AddAnnotation(_taxiPosition);
+	                    //mapStatus.SetCenterCoordinate(taxiCoordinate, true);
+	                   // mapStatus.SetRegion(new MKCoordinateRegion(taxiCoordinate, new MKCoordinateSpan(0.01, 0.01)), true);
+						mapStatus.SetRegion(new MKCoordinateRegion(center, new MKCoordinateSpan(latDelta * 1.5f, longDelta * 1.5f)), true);
+	                }
+	                );
+	            }
+			}
+			catch(Exception ex)
+			{
+				Logger.LogError(ex);
+			}
         }
 
         private void RefreshStatus()
@@ -302,12 +303,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             ThreadHelper.ExecuteInThread(() =>
             {
 
-                if ( Order == null )
-                {
-                    InvokeOnMainThread(() => lblTitle.Text =  Resources.ErrorGettingStatus);
-                    return;
-                }
-                
                 try
                 {
                     if (_closeScreenWhenCompleted)
@@ -453,41 +448,41 @@ namespace apcurium.MK.Booking.Mobile.Client
             call.Call(settings.PhoneNumber(Order.Settings.ProviderId.Value), settings.PhoneNumberDisplay(Order.Settings.ProviderId.Value));
         }
 
-        void CallTouchUpInside(object sender, EventArgs e)
-        {
-            
-            var actionSheet = new UIActionSheet("");
-            actionSheet.AddButton(Resources.CallCompanyButton);
-            actionSheet.AddButton(Resources.StatusActionBookButton);
-            actionSheet.AddButton(Resources.StatusActionCancelButton);
-            actionSheet.AddButton(Resources.CancelBoutton);
-            actionSheet.CancelButtonIndex = 3;
-            actionSheet.DestructiveButtonIndex = 2;
-            actionSheet.Clicked += delegate(object se, UIButtonEventArgs ea)
-            {
-                
-                if (ea.ButtonIndex == 0)
-                {
-                    CallProvider();
-                }
-                else if (ea.ButtonIndex == 1)
-                {
-                    Rebook();
-                    
-                }
-                else if (ea.ButtonIndex == 2)
-                {
-                    CancelOrder();
-                }
-                
-                
-            };
-            actionSheet.ShowInView(AppContext.Current.Controller.View);
-            
-            
-            
-            
-        }
+//        void CallTouchUpInside(object sender, EventArgs e)
+//        {
+//            
+//            var actionSheet = new UIActionSheet("");
+//            actionSheet.AddButton(Resources.CallCompanyButton);
+//            actionSheet.AddButton(Resources.StatusActionBookButton);
+//            actionSheet.AddButton(Resources.StatusActionCancelButton);
+//            actionSheet.AddButton(Resources.CancelBoutton);
+//            actionSheet.CancelButtonIndex = 3;
+//            actionSheet.DestructiveButtonIndex = 2;
+//            actionSheet.Clicked += delegate(object se, UIButtonEventArgs ea)
+//            {
+//                
+//                if (ea.ButtonIndex == 0)
+//                {
+//                    CallProvider();
+//                }
+//                else if (ea.ButtonIndex == 1)
+//                {
+//                    Rebook();
+//                    
+//                }
+//                else if (ea.ButtonIndex == 2)
+//                {
+//                    CancelOrder();
+//                }
+//                
+//                
+//            };
+//            actionSheet.ShowInView(AppContext.Current.Controller.View);
+//            
+//            
+//            
+//            
+//        }
         
         
         #endregion

@@ -78,7 +78,7 @@
             }
             
             TaxiHail.geocoder.geocode(query).done(_.bind(function(result) {
-                this._searchResults && this._searchResults.reset(result.addresses);
+                this._searchResults && this._searchResults.reset(result);
             }, this));
 
 
@@ -171,10 +171,10 @@
                     {
                         TaxiHail.geocoder.geocode(model.get('latitude'), model.get('longitude'))
                             .done(function(result){
-                                if(result.addresses && result.addresses.length)
+                                if(result && result.length)
                                 {
                                     model.set({
-                                        fullAddress: result.addresses[0].fullAddress
+                                        fullAddress: result[0].fullAddress
                                     });
                                 }
 

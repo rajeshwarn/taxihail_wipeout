@@ -49,7 +49,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             View.BackgroundColor = UIColor.Clear; // UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             TableView.BackgroundView = new UIView{ BackgroundColor = UIColor.Clear };
             TableView.BackgroundColor = UIColor.Clear;
-            ((UINavigationController ) ParentViewController ).NavigationBar.TopItem.TitleView = new TitleView(null, Resources.CreateAccoutTitle, false);
+			((UINavigationController ) ParentViewController ).NavigationBar.TopItem.TitleView = new TitleView(null, Resources.View_SignUp, false);
             ((UINavigationController ) ParentViewController ).View.BackgroundColor =UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
 
 
@@ -293,7 +293,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                     _emailEntry.AutocapitalizationType = UITextAutocapitalizationType.None;
                     _emailEntry.AutocorrectionType = UITextAutocorrectionType.No;
                                 
-                    _fullNameEntry = CreateTextEntry(_settings, Resources.CreateAccoutFullNameLabel, null, s => _data.Name = s, () => _data.Name);                   
+					_fullNameEntry = CreateTextEntry(_settings, Resources.CreateAccountFullName, null, s => _data.Name = s, () => _data.Name);                   
                     //_fullNameEntry.OffsetX = 30;                    
                     
                     _phoneEntry = CreateTextEntry(_settings, Resources.CreateAccoutPhoneNumberLabel, null, s => _data.Phone = s, () => _data.Phone);
