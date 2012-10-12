@@ -66,7 +66,7 @@
                     this.renderItem(model, $ul[1]);
                 }, this);
             } else {
-                this.$el.append($('<li>').addClass('no-result').text(TaxiHail.localize('history.no-result')));
+                $('<li>').addClass('no-result').text(TaxiHail.localize('history.no-result')).appendTo($ul[1]);
             }
 
             return this;
