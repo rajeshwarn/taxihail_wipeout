@@ -115,7 +115,7 @@
                 android:id="@+id/relativeLayout1">
                 <TextView
                     style="@style/TitleText"
-                    android:text="@string/View_BookingDetail_TitleRideSettings"
+                    android:text="@string/View_BookingDetail_TitlePickupDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
@@ -181,7 +181,7 @@
                 android:id="@+id/relativeLayout1">
                 <TextView
                     style="@style/TitleText"
-                    android:text="@string/ConfirmPassengerSettingsTitle"
+                    android:text="@string/View_BookingDetail_TitleRideSettings"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"

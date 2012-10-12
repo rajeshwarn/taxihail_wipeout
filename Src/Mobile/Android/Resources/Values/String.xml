@@ -51,7 +51,6 @@
   <string name="CancelBoutton">Cancel</string>
   <string name="ConfirmButton">Confirm</string>
   <string name="ConfirmRideInformationTitle">Ride Information</string>
-  <string name="ConfirmPassengerSettingsTitle">Passenger Settings</string>
   <string name="ConfirmOriginLablel">Origin:</string>
   <string name="ConfirmAptRingCodeLabel">Apt / Ring code:</string>
   <string name="ConfirmDestinationLabel">Destination:</string>
@@ -267,7 +266,9 @@
   <string name="View_About">About Us</string>
   <string name="View_BookingDetail">Confirmation</string>
   <string name="View_BookingDetail_TitleRideSettings">Ride Settings</string>
-  <string name="View_BookingStatus">Status</string>
+  <string name="View_BookingDetail_TitlePickupDetails">Pickup Details</string>
+  <string name="View_BookingStatus">
+  </string>
   <string name="View_BookSettingMenu">Settings</string>
   <string name="View_HistoryDetail">Order Details</string>
   <string name="View_HistoryList">Orders</string>
