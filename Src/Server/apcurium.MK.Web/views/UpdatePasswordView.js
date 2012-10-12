@@ -42,6 +42,15 @@
             return this;
         },
 
+        renderConfirmationMessage: function() {
+            var view = new TaxiHail.AlertView({
+                message: TaxiHail.localize('Password updated.'),
+                type: 'success'
+            });
+            view.on('ok', this.render, this);
+            this.$el.html(view.render().el);
+        },
+
         onPropertyChanged: function (e) {
             e.preventDefault();
             
@@ -55,14 +64,22 @@
                 newPassword = $(form).find('[name=new-password]').val();
 
             this.model.updatePassword(currentPassword, newPassword)
-                .done(_.bind(function(){
-                    this.$("#notif-bar").html(TaxiHail.localize('Password updated.'));
-                    $(form).find(":text, :password").val('');
-                    $(form).find(':submit').button('reset');
+                .done(_.bind(function() {
+
+                    this.renderConfirmationMessage();
 
                 }, this))
                 .fail(_.bind(function(response){
-                    this.$("#notif-bar").html(TaxiHail.localize(response.statusText));
+
+                    this.$(':submit').button('reset');
+
+                    var alert = new TaxiHail.AlertView({
+                        message: TaxiHail.localize(response.statusText),
+                        type: 'error'
+                    });
+                    alert.on('ok', alert.remove, alert);
+                    this.$('.errors').html(alert.render().el);
+
                 }, this));
         }
     });
