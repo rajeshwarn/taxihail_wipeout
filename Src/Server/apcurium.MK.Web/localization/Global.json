@@ -33,7 +33,6 @@
 	"Password are not the same" : "Passwords are not the same.",
 	"UpdatePassword_NotSame" : "Wrong current password.",
 	"resetPassword.emailSent" : "An email with new password has been sent to you.",
-	"resetPassword.reset" : "The password was reset successfully",
 	"resetPassword.accountNotFound" : "Account not found.",
 	"order.no-result" : "No order was found.",
 	"Cancel Order" : "Cancel Order",

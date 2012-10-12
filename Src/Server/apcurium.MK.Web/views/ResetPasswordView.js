@@ -5,10 +5,6 @@
         tagName: 'form',
         className: 'form-horizontal',
 
-        initialize: function () {
-
-        },
-
         render: function () {
             this.$el.html(this.renderTemplate());
 
@@ -30,18 +26,33 @@
         
             return this;
         },
+
+        renderConfirmationMessage: function() {
+            var view = new TaxiHail.AlertView({
+                message: TaxiHail.localize('resetPassword.emailSent'),
+                type: 'success'
+            });
+            view.on('ok', this.render, this);
+            this.$('.well').html(view.render().el);
+        },
                
         resetpassword : function (form) {
             TaxiHail.auth.resetPassword($(form).find('[name=email]').val())
                 .done(_.bind(function() {
-                    this.$(':submit').button('reset');
-                    this.$("#notif-bar").html(TaxiHail.localize('resetPassword.reset'));
-                    this.$("[name=email]").val("");
+
+                    this.renderConfirmationMessage();
+
+
                 }, this))
                 .fail(_.bind(function (response) {
                     this.$(':submit').button('reset');
                     if (response.status == 404) {
-                        this.$("#notif-bar").html(TaxiHail.localize('resetPassword.accountNotFound'));
+                        var alert = new TaxiHail.AlertView({
+                            message: TaxiHail.localize('resetPassword.accountNotFound'),
+                            type: 'error'
+                        });
+                        alert.on('ok', alert.remove, alert);
+                        this.$('.errors').html(alert.render().el);
                     }
                 }, this));
         }
