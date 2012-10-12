@@ -6,11 +6,13 @@ using System.Text;
 using Android.App;
 using Android.Content;
 using Android.Graphics;
+using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.Util;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.Style;
 
@@ -73,9 +75,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 contentLayout.AddView(child);
             }
 
+            var logo = this.FindViewById<ImageView>(Resource.Id.MainLogo);
             if (HideLogo)
             {
-                this.FindViewById<ImageView>(Resource.Id.MainLogo).Visibility = ViewStates.Invisible;
+                logo.Visibility = ViewStates.Invisible;
+            }
+            else
+            {
+                var d = Context.Resources.GetDrawable(Resource.Drawable.Logo) as BitmapDrawable;
+                var w = d.Bitmap.Width;
+                var h = d.Bitmap.Height;
+                var layoutParams = new RelativeLayout.LayoutParams(DrawHelper.GetPixels((56 * w) / h), DrawHelper.GetPixels(56));
+                layoutParams.AlignWithParent = true;
+                logo.LayoutParameters = layoutParams;
+                //var h = logo.MeasuredHeight;
+                //h.ToString();
+                //this.FindViewById<ImageView>(Resource.Id.MainLogo).Visibility = ViewStates.Invisible;
             }
 
             if (string.IsNullOrEmpty(RightButtonSource))
