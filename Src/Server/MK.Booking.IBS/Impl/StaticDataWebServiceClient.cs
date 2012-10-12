@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             UseService(service =>
             {
                 var companies = service.GetProviders(UserNameApp, PasswordApp);
-                items= companies.Select(x => new ListItem { Display = x.ProviderName, Id = x.ProviderNum }).ToArray();
+                items= companies.Select(x => new ListItem { Display = x.ProviderName, Id = x.ProviderNum , IsDefault = x.isDefault }).ToArray();
             });
             return items;
         }
@@ -56,7 +56,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             UseService(service =>
             {
                 var vehicules = service.GetVehicleTypes(UserNameApp, PasswordApp, company.Id);
-                items = vehicules.Select(x => new ListItem { Display = x.Name, Id = x.ID, Parent = company }).ToArray();
+                items = vehicules.Select(x => new ListItem { Display = x.Name, Id = x.ID, Parent = company, IsDefault = x.isDefault }).ToArray();
             });
             return items;
         }
@@ -67,7 +67,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             UseService(service =>
             {
                 var payments = service.GetChargeTypes(UserNameApp, PasswordApp, company.Id);
-                items = payments.Select(x => new ListItem { Display = x.ChargeTypeName, Id = x.ChargeTypeID, Parent = company }).ToArray();
+                items = payments.Select(x => new ListItem { Display = x.ChargeTypeName, Id = x.ChargeTypeID, Parent = company}).ToArray();
             });
             return items;
         }

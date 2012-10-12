@@ -98,6 +98,7 @@ namespace DatabaseInitializer
                 {
                     configurationManager.SetSetting(token.Key, token.Value.ToString());
                 }
+                 
 
                 //Init container
                 var container = new UnityContainer();
@@ -113,6 +114,9 @@ namespace DatabaseInitializer
                 }
                 else
                 {
+                    
+
+
                     //Init data
                     var commandBus = container.Resolve<ICommandBus>();
 
