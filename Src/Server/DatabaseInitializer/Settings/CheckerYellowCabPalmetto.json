@@ -41,11 +41,20 @@
 	"Smtp.Host" : "smtpout.secureserver.net",
 	"Smtp.Port" : "3535",
 	"Smtp.UseDefaultCredentials" : "FALSE",
-	"DefaultPhoneNumber" : "18666245330",
-    "DefaultPhoneNumberDisplay" : "1.866.624.5330",
+	"DefaultPhoneNumber" : "18037993311",
+    "DefaultPhoneNumberDisplay" : "1.803.799.3311",
 	"TaxiHail.ApplicationName" : "Checker Yellow Cab",
 	"TaxiHail.SiteName" : "Checker Yellow Cab",
 	"TaxiHail.ApplicationKey" : "CheckerYellowCabPalmetto",
    	"TaxiHail.AccentColor" : "#fcf600",
-	"TaxiHail.Version" : "1.1.0"
+	"TaxiHail.Version" : "1.1.0",
+	"FacebookAppId" : "",
+	"FacebookEnabled" : "false",
+	"TwitterAccessTokenUrl" : "",
+    "TwitterAuthorizeUrl" : "",
+    "TwitterCallback" : "",
+    "TwitterConsumerKey" : "",
+    "TwitterConsumerSecret" : "",
+    "TwitterEnabled" : "false",
+    "TwitterRequestTokenUrl" : ""
 }

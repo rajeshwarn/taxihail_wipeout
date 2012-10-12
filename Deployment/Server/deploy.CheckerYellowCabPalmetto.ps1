@@ -15,6 +15,6 @@ $site = 'Default Web Site'
 
 $deplyoDB = 'Y'
 
-$actionDb = "C"
+$actionDb = "U"
 
 $deplyoWebsite = 'Y'

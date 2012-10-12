@@ -5,12 +5,14 @@ using System.Text;
 
 using Android.App;
 using Android.Content;
+using Android.Graphics;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.Util;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Booking.Mobile.Style;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -29,7 +31,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
 
             var att = Context.ObtainStyledAttributes(attrs, new int[] { Resource.Attribute.HideLogo }, 0, 0);
-            HideLogo = att.GetBoolean(0, false);
+            HideLogo = att.GetBoolean(0, true);
 
             att = Context.ObtainStyledAttributes(attrs, new int[] { Resource.Attribute.RightButtonSource }, 0, 0);
             RightButtonSource = att.GetText(0);
@@ -91,6 +93,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 var id = Resources.GetIdentifier(BackgroundSource, "drawable", Context.PackageName);
                 this.FindViewById<ImageView>(Resource.Id.BackgroundImage).SetImageResource(id);
             }
+
+            if ( StyleManager.Current.NavigationTitleColor!= null )
+            {
+                var txt = FindViewById<TextView>(Resource.Id.ViewTitle);
+                txt.SetTextColor(new Color(StyleManager.Current.NavigationTitleColor.Red, StyleManager.Current.NavigationTitleColor.Green, StyleManager.Current.NavigationTitleColor.Blue ));  
+            }
+
 
         }
 

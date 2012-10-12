@@ -17,6 +17,10 @@
         render: function () {
 
             this.$el.html(this.renderTemplate());
+            
+            if (TaxiHail.parameters.facebookEnabled == false) {
+                this.$('[data-action=fblogin]').addClass('hidden');
+            }
 
             this.validate({
                 rules: {
