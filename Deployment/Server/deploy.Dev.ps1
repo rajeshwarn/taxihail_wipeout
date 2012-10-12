@@ -4,13 +4,13 @@ $sqlServerInstance = "MSSQL11.MSSQLSERVER"
 
 $dbtoolPath = "C:\Users\matthieu.duluc\Documents\Dev\MkTaxi\Src\Server\DatabaseInitializer\bin\Debug" 
 
-$deplyoDB = 'Y'
+$deplyoDB = 'N'
 
 $actionDb = "C" 
 
-$deplyoWebsite = 'N' 
+$deplyoWebsite = 'Y' 
 
-$websiteFiles = "C:\Data\teamcity\server\buildAgent\work\ada9756f55920a09\Src\Server\apcurium.MK.Web\obj\\Debug\Package\PackageTmp\" 
+$websiteFiles = "C:\Windows\Temp\TaxiHail" 
 
 $deployWwwRoot = "C:\Data\TaxiHail" 
 

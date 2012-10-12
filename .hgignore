@@ -44,5 +44,6 @@ ClientBin*/
 packages/
 Deployment/WebSite/*
 Deployment/Server/Package*/*
+Src/Server/apcurium.MK.Web/logs/*
 syntax: regexp
 Deployment/Database/*

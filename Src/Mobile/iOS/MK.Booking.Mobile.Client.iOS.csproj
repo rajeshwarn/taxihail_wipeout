@@ -288,6 +288,12 @@
     <Compile Include="Controls\BarButtonItem.cs" />
     <Compile Include="Controls\ToastMessage.cs" />
     <Compile Include="PlatformIntegration\AddressBookService.cs" />
+    <Compile Include="Views\RefineAddressView.cs" >
+      <DependentUpon>RefineAddressView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RefineAddressView.designer.cs">
+      <DependentUpon>RefineAddressView.xib</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -334,6 +340,7 @@
     <InterfaceDefinition Include="Views\BookView.xib" />
     <InterfaceDefinition Include="Views\AddressSearchView.xib" />
     <InterfaceDefinition Include="Views\PanelMenuView.xib" />
+    <InterfaceDefinition Include="Views\RefineAddressView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />

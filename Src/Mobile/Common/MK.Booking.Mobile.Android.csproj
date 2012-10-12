@@ -224,6 +224,6 @@
   </Target>
   -->
   <ItemGroup>
-    <Content Include="Style\Style.json" />
+    <EmbeddedResource Include="Style\Style.json" />
   </ItemGroup>
 </Project>

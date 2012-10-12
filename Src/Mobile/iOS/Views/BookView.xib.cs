@@ -291,10 +291,10 @@ namespace apcurium.MK.Booking.Mobile.Client
                             CreateOrder(view.BI);
                         };
 
-                        view.NoteChanged += delegate(string note)
-                        {
-                            BookingInfo.Note = note;
-                        };
+//                        view.NoteChanged += delegate(string note)
+//                        {
+//                            BookingInfo.Note = note;
+//                        };
 
 
                     });
