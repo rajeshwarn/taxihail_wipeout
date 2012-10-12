@@ -57,7 +57,7 @@
             if (!this.model.getStatus().isActive()) {
                 TaxiHail.confirm({
                     title: this.localize('Remove Order'),
-                    message: this.localize('modal.remove.message')
+                    message: this.localize('modal.removeOrder.message')
                 }).on('ok', function () {
                     this.model.destroy();
                 }, this);
