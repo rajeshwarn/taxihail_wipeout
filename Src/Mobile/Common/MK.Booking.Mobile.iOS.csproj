@@ -178,6 +178,8 @@
     <Compile Include="Messages\LogOutRequested.cs" />
     <Compile Include="ViewModels\SectionAddressViewModel.cs" />
     <Compile Include="Infrastructure\IAddressBookService.cs" />
+    <Compile Include="ViewModels\RefineAddressViewModel.cs" />
+    <Compile Include="Messages\AddressRefinedMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">

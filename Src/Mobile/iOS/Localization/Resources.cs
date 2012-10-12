@@ -962,6 +962,18 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			get { return GetValue ("View_SignUp"); }
 		}
+		public static string NbPassenger
+		{
+			get { return GetValue ("NbPassenger"); }
+		}
+		public static string NbPassengers
+		{
+			get { return GetValue ("NbPassengers"); }
+		}
+		public static string ApproxPrice
+		{
+			get { return GetValue ("ApproxPrice"); }
+		}
 	}
 }
 
