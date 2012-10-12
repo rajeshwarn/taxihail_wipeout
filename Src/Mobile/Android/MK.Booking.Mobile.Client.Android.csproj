@@ -571,9 +571,4 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\Layout\layout1.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
-  </ItemGroup>
 </Project>

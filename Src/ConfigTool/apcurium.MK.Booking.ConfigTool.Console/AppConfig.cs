@@ -54,6 +54,8 @@ namespace apcurium.MK.Booking.ConfigTool
                 new ConfigXML(this){  Destination=@"Mobile\Android\Resources\Values\String.xml", NodeSelector=@"//resources/string[@name=""GoogleMapKey""]" , SetterEle= ( app, ele )=> ele.InnerText = app.GoogleMapKey  },                                                                          
 
 
+                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_BookingStatus.axml", Namespace = "xmlns:local", Value= App.Package },
+
                 new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_Book.axml", Namespace = "xmlns:local", Value= App.Package },
                 new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\SimpleListItem.axml", Namespace = "xmlns:local", Value= App.Package },
                 new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_SearchAddress.axml", Namespace = "xmlns:local", Value= App.Package },
