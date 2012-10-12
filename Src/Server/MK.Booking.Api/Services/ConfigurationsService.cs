@@ -26,7 +26,9 @@ namespace apcurium.MK.Booking.Api.Services
 
             var allKeys = _configManager.GetAllSettings();
 
-            return allKeys.Where(k => keys.Contains(k.Key)).ToArray();
+            var result = allKeys.Where(k => keys.Contains(k.Key)).ToDictionary(k => k.Key, v => v.Value);
+
+            return result;
             //return true;
         }
 

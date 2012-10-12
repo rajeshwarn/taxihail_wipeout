@@ -106,7 +106,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             _appContext.LastEmail = Email;
             _appContext.LoggedInEmail = Email;
-            InvokeOnMainThread(() => _appContext.UpdateLoggedInUser(account, false));
+            InvokeOnMainThread(() => _appContext.UpdateLoggedInUser(account));
             RequestNavigate<BookViewModel>(true);
         }
 

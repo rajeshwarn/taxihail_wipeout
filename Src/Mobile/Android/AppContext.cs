@@ -89,7 +89,7 @@ namespace apcurium.MK.Booking.Mobile.Client
     /// </summary>
 
 
-    public class AppContext :  IAppContext, ILocationListener
+    public class AppContext :  IAppContext
     {
         private const string _sharedPreferences = "TaxiMobile.SharedPreferences";
 		
@@ -169,7 +169,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		
 
-        public void UpdateLoggedInUser(Account data, bool syncWithServer)
+        public void UpdateLoggedInUser(Account data)
         {
 
             Logger.LogMessage("UpdateLoggedInUser");
@@ -177,10 +177,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
                 Logger.LogMessage("UpdateLoggedInUser != null");
                 LoggedUser = data;                
-                if (syncWithServer)
-                {
-                    TinyIoCContainer.Current.Resolve<IAccountService>().UpdateUser(data);
-                }
             }
             else
             {
@@ -306,28 +302,28 @@ namespace apcurium.MK.Booking.Mobile.Client
             dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(LoginViewModel), null, false, MvxRequestedBy.UserAction));
         }
 
-        public void OnLocationChanged(Location location)
-        {
-            if ( ( CurrentLocation == null ) || ( CurrentLocation.Accuracy > location.Accuracy ) )
-            {
-                CurrentLocation = location;
-            }
-        }
+        //public void OnLocationChanged(Location location)
+        //{
+        //    if ( ( CurrentLocation == null ) || ( CurrentLocation.Accuracy > location.Accuracy ) )
+        //    {
+        //        CurrentLocation = location;
+        //    }
+        //}
 
-        public void OnProviderDisabled(string provider)
-        {
+        //public void OnProviderDisabled(string provider)
+        //{
         
-        }
+        //}
 
-        public void OnProviderEnabled(string provider)
-        {
+        //public void OnProviderEnabled(string provider)
+        //{
         
-        }
+        //}
 
-        public void OnStatusChanged(string provider, Availability status, Bundle extras)
-        {
+        //public void OnStatusChanged(string provider, Availability status, Bundle extras)
+        //{
         
-        }
+        //}
 		
    
 		

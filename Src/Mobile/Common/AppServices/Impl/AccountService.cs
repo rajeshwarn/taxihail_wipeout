@@ -316,9 +316,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         }
 
         private Account GetAccount(NamedParameterOverloads parameters, bool showInvalidMessage)
-        {            
-            string resultError = "";
-            bool isSuccess = false;
+        {
             Account data = null;
 
             try
@@ -331,12 +329,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 var account = service.GetMyAccount();
                 if (account != null)
                 {
-                    context.UpdateLoggedInUser(account, false);
+                    context.UpdateLoggedInUser(account);
                     data = account;
 
                 }
                 EnsureListLoaded();
-                isSuccess = true;
             }
             catch (WebException ex)
             {
@@ -507,46 +504,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         }
 
-        public Account UpdateUser(Account data)
-        {
-            Account r = null;
-            //UseService(service =>
-            //{
-            //    Logger.LogMessage("Update user");
-
-            //    var sessionId = service.Authenticate("iphone", "test", 1);
-
-            //    var account = service.GetAccount(sessionId, data.Email, data.Password);
-
-            //    if (account.Error == IBS.ErrorCode.NoError)
-            //    {
-            //        Logger.LogMessage("Update user : No error");
-            //        var toUpdate = new AccountMapping().ToWSData(account.Account, data);
-            //        new SettingMapper().SetWSSetting(toUpdate, data);
-            //        toUpdate.Password = data.Password;
-
-
-            //        var result = service.UpdateAccount(sessionId, toUpdate);
-            //        if (result.Error != IBS.ErrorCode.NoError)
-            //        {
-            //            r = data;
-            //        }
-            //        else
-            //        {
-            //            var loggedUser = TinyIoCContainer.Current.Resolve<IAppContext>().LoggedUser;
-            //            r = new AccountMapping().ToData(loggedUser, result.Account);
-            //        }
-            //    }
-
-            //    else
-            //    {
-            //        Logger.LogMessage("Update user : Error : " + account.Error.ToString() + " - " + account.ErrorMessage.ToSafeString());
-            //    }
-
-
-            //});
-            return data;
-        }
+      
 
         public IEnumerable<ListItem> GetCompaniesList()
         {

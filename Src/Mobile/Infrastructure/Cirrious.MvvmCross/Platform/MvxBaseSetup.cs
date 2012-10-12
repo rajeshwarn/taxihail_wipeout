@@ -323,8 +323,7 @@ namespace Cirrious.MvvmCross.Platform
                 case MvxSetupState.InitializingPrimary:
                 case MvxSetupState.InitializedPrimary:
                 case MvxSetupState.InitializingSecondary:
-                    throw new MvxException("The default EnsureInitialized method does not handle partial initialization");
-                    break;
+                    throw new MvxException("The default EnsureInitialized method does not handle partial initialization");                    
                 case MvxSetupState.Initialized:                    
                     break;
                 default:

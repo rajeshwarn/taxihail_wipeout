@@ -2,18 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-#if !IOS
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-#endif
 using apcurium.MK.Booking.Api.Contract.Resources;
 using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.Interfaces.Commands;
-using Xamarin.Geolocation;
 using System.Threading.Tasks;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Messages;
@@ -27,7 +18,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class BookAddressViewModel : BaseViewModel
     {
-        private Geolocator _geolocator;
+        private ILocationService _geolocator;
         private CancellationTokenSource _cancellationToken;
         private TaskScheduler _scheduler = TaskScheduler.FromCurrentSynchronizationContext();
         private bool _isExecuting;
@@ -37,7 +28,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private string _searchingTitle;
 
         public event EventHandler AddressChanged;
-        public BookAddressViewModel(Func<Address> getAddress, Action<Address> setAddress, Geolocator geolocator)
+        public BookAddressViewModel(Func<Address> getAddress, Action<Address> setAddress, ILocationService geolocator)
         {
             _getAddress = getAddress;
             _setAddress = setAddress;
@@ -225,7 +216,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     CancelCurrentLocationCommand.Execute();
                     IsExecuting = true;
                     _cancellationToken = new CancellationTokenSource();
-                    _geolocator.GetPositionAsync(30000, _cancellationToken.Token).ContinueWith(t =>
+                    _geolocator.GetPositionAsync(30000, 200,_cancellationToken.Token).ContinueWith(t =>
                     {
                         try
                         {

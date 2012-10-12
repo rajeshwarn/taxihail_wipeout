@@ -79,7 +79,7 @@ namespace apcurium.MK.Booking.Mobile
             TinyIoCContainer.Current.Register<IPlaces, Places>();
             TinyIoCContainer.Current.Register<IMapsApiClient, MapsApiClient>();
 
-            JsConfig.DateHandler = JsonDateHandler.ISO8601;
+            
 
             TinyIoCContainer.Current.Resolve<IUserPositionService>().Refresh();
             

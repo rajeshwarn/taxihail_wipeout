@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     public class BookViewModel : BaseViewModel
     {
         private IAccountService _accountService;
-        private Geolocator _geolocator;
+        private ILocationService _geolocator;
         private bool _pickupIsActive = true;
         private bool _dropoffIsActive = false;
         private IAppResource _appResource;
@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private IEnumerable<CoordinateViewModel> _mapCenter;
         private string _fareEstimate;
 
-        public BookViewModel(IAccountService accountService, IAppResource appResource, Geolocator geolocator)
+        public BookViewModel(IAccountService accountService, IAppResource appResource, ILocationService geolocator)
         {
             _appResource = appResource;
             _accountService = accountService;

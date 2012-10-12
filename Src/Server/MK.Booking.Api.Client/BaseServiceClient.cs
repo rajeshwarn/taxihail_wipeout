@@ -6,6 +6,8 @@ using ServiceStack.ServiceInterface.Auth;
 using ServiceStack.Common.ServiceClient.Web;
 #endif
 using ServiceStack.ServiceClient.Web;
+using ServiceStack.Text;
+using ServiceStack.Text.Common;
 
 namespace apcurium.MK.Booking.Api.Client
 {
@@ -35,8 +37,13 @@ namespace apcurium.MK.Booking.Api.Client
 
         private ServiceClientBase CreateClient()
         {
+
+
+            JsConfig.DateHandler = JsonDateHandler.ISO8601;         
+            
             var client = new JsonServiceClient(_url);
             client.Timeout = new TimeSpan(0, 0, 0, 20, 0);
+            
             var uri = new Uri(_url);
             if (!string.IsNullOrEmpty(_sessionId))
             {

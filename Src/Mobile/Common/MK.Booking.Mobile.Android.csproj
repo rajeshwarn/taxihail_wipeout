@@ -117,6 +117,7 @@
     <Compile Include="Infrastructure\IAppResource.cs" />
     <Compile Include="Infrastructure\IAppSettings.cs" />
     <Compile Include="Infrastructure\ICacheService.cs" />
+    <Compile Include="Infrastructure\ILocationService.cs" />
     <Compile Include="Infrastructure\ILogger.cs" />
     <Compile Include="Infrastructure\IMessageService.cs" />
     <Compile Include="Infrastructure\IPackageInfo.cs" />
@@ -161,6 +162,7 @@
     <Compile Include="Style\ShadowDefinition.cs" />
     <Compile Include="Style\StyleManager.cs" />
     <Compile Include="TaxiHailApp.cs" />
+    <Compile Include="ViewModels\BookDetailViewModel.cs" />
     <Compile Include="ViewModels\PanelViewModel.cs" />
     <Compile Include="ViewModels\SearchAddress\AddressSearchBaseViewModel.cs" />
     <Compile Include="ViewModels\SearchAddress\AddressSearchByContactViewModel.cs" />

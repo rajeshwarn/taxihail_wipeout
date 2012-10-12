@@ -249,3 +249,5 @@
 "ServiceErrorCreateOrder_CannotCreateInIbs_1002"="The specified Pickup address lies outside the regular service area. Please contact {0} at {1} for further assistance.";
 "LocalContactCannotBeResolverTitle"="Invalid Contact";
 "LocalContactCannotBeResolverMessage"="Cannot find the address associated to this contact.";
+"BookingService_MobileBookingNote"="Booked mobile device.";
+"BookingService_MobileBookingNoteBuildingName"="Building name {0}.";  

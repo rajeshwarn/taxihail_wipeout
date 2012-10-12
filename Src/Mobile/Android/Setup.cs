@@ -24,6 +24,7 @@ using SocialNetworks.Services.OAuth;
 using SocialNetworks.Services.MonoDroid;
 using apcurium.MK.Booking.Mobile.Client.Activities.Account;
 using SocialNetworks.Services;
+using apcurium.MK.Booking.Mobile.Client.Activities.Book;
 
 
 namespace apcurium.MK.Booking.Mobile.Client
@@ -62,6 +63,11 @@ namespace apcurium.MK.Booking.Mobile.Client
             TinyIoCContainer.Current.Register<Geolocator>(new Geolocator(this.ApplicationContext) { DesiredAccuracy = 10000 }, CoordinatePrecision.BallPark.ToString());
             TinyIoCContainer.Current.Register<Geolocator>(new Geolocator(this.ApplicationContext) { DesiredAccuracy = 1000 }, CoordinatePrecision.Coarse.ToString());
             TinyIoCContainer.Current.Register<Geolocator>(new Geolocator(this.ApplicationContext) { DesiredAccuracy = 900 }, CoordinatePrecision.Medium.ToString());
+
+            var locationService = new LocationService();            
+            
+            TinyIoCContainer.Current.Register<ILocationService>(locationService);
+
             InitializeSocialNetwork();
         }
 

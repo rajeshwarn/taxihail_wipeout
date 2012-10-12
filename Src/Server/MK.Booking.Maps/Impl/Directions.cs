@@ -41,7 +41,9 @@ namespace apcurium.MK.Booking.Maps.Impl
                 if (route.Legs.Count > 0)
                 {
                     var distance = route.Legs.Sum(leg => leg.Distance.Value);
-                    result.Distance = distance;
+
+                    var format = _configManager.GetSetting("DistanceFormat").ToEnum<DistanceFormat>(true, DistanceFormat.Km);
+                    result.Distance = format == DistanceFormat.Km ? distance : Convert.ToInt32( Math.Round(distance / 1.609344,0));
                     result.Price = GetPrice(distance);
 
                     result.FormattedPrice = FormatPrice(result.Price);
@@ -77,7 +79,7 @@ namespace apcurium.MK.Booking.Maps.Impl
                 }
                 else
                 {
-                    double distanceInMiles = Math.Round((double)distance.Value / 1000, 1);
+                    double distanceInMiles = Math.Round(((double)distance.Value / 1000) / 1.609344, 1);
                     return string.Format("{0:n1} miles", distanceInMiles);
                 }
             }

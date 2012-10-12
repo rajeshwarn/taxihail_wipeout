@@ -102,7 +102,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
                         var currentAccount = AppContext.Current.LoggedUser;
                         currentAccount.Settings = _model.Data;
                         TinyIoCContainer.Current.Resolve<IAccountService>().UpdateBookingSettings(_model.Data);
-                        AppContext.Current.UpdateLoggedInUser(currentAccount, true);
+                        AppContext.Current.UpdateLoggedInUser(currentAccount);
 
                     }
                     else

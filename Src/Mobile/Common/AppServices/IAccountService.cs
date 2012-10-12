@@ -20,8 +20,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 	    Account GetFacebookAccount(string facebookId);
 
 	    Account GetTwitterAccount(string twitterId);
-
-        Account UpdateUser(Account data);
+        
 
 	    void UpdateBookingSettings(BookingSettings bookingSettings);
 		

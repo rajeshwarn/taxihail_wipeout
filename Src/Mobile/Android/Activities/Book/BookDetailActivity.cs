@@ -30,7 +30,7 @@ using Cirrious.MvvmCross.Interfaces.ViewModels;
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
     [Activity(Label = "Book Details", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation=Android.Content.PM.ScreenOrientation.Portrait )]
-    public class BookDetailActivity : BaseActivity
+    public class BookDetailActivity : BaseBindingActivity<BookDetailViewModel>
     {
         private CreateOrder _bookingInfo;
         public CreateOrder BookingInfo
@@ -44,14 +44,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             get { return Resource.String.View_BookingDetail; }
         }
 
-        protected override void OnCreate(Bundle bundle)
-        {
-            base.OnCreate(bundle);
+
+        protected override void OnViewModelSet()
+        {            
 
             SetContentView(Resource.Layout.View_BookingDetail);
 
-            var serialized = Intent.GetStringExtra("BookingInfo");
-            var data = SerializerHelper.DeserializeObject<CreateOrder>(serialized);
+            
+
+            
+            var data = SerializerHelper.DeserializeObject<CreateOrder>(this.ViewModel.Order);
             BookingInfo = data;
             var currentSettings = AppContext.Current.LoggedUser.Settings;
             BookingInfo.Settings = currentSettings;

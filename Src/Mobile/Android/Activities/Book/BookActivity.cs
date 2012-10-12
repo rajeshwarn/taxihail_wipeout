@@ -1,8 +1,12 @@
 using System;
+using System.Collections.Generic;
 using Android.App;
 using Android.Views;
 using Android.Views.Animations;
 using Android.Widget;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Interfaces.Views;
+using Cirrious.MvvmCross.Views;
 using SlidingPanel;
 using Cirrious.MvvmCross.Binding.Android.Views;
 
@@ -30,6 +34,7 @@ using apcurium.MK.Booking.Mobile.Client.Activities.Account;
 using Android.Content.PM;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using Cirrious.MvvmCross.Interfaces.Platform.Location;
+using System.Threading;
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
     [Activity(Label = "Book", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
@@ -57,11 +62,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             SetContentView(Resource.Layout.View_Book);
 
-            var bottomLayout = FindViewById<FrameLayout>(Resource.Id.bottomLayout);
-            AlphaAnimation alpha = new AlphaAnimation(0.1F, 0.1F);
-            alpha.Duration = 0;
-            alpha.FillAfter = true;
-            bottomLayout.StartAnimation(alpha);
+            //var bottomLayout = FindViewById<FrameLayout>(Resource.Id.bottomLayout);
+            //AlphaAnimation alpha = new AlphaAnimation(0.1F, 0.1F);
+            //alpha.Duration = 0;
+            //alpha.FillAfter = true;
+            //bottomLayout.StartAnimation(alpha);
             var mainSettingsButton = FindViewById<HeaderedLayout>(Resource.Id.MainLayout).FindViewById<ImageButton>(Resource.Id.ViewNavBarRightButton);
             mainSettingsButton.Click -= MainSettingsButtonOnClick;
             mainSettingsButton.Click += MainSettingsButtonOnClick;
@@ -136,7 +141,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                     }, true);
             }
 
-            
+
+        
+
+
+
+
         }
 
 
@@ -412,10 +422,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                     _orderConfirmedSubscription = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<OrderConfirmed>(OnOrderConfirmed);
                     RunOnUiThread(() =>
                     {
-                        Intent i = new Intent(this, typeof(BookDetailActivity));
                         var serializedInfo = ViewModel.Order.Serialize();
-                        i.PutExtra("BookingInfo", serializedInfo);
-                        StartActivityForResult(i, (int)ActivityEnum.BookConfirmation);
+                        var parameters = new Dictionary<string, string>() { { "order", serializedInfo }};
+                        var dispatch = TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
+                        dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(BookDetailViewModel), parameters, false, MvxRequestedBy.UserAction));
+
+                        //Intent i = new Intent(this, typeof(BookDetailActivity));
+                        //var serializedInfo = ViewModel.Order.Serialize();
+                        //i.PutExtra("BookingInfo", serializedInfo);
+                        //StartActivityForResult(i, (int)ActivityEnum.BookConfirmation);
                     });
                 }
             }, true);

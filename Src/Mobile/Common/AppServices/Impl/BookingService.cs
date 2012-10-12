@@ -35,7 +35,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public OrderStatusDetail CreateOrder(CreateOrder order)
         {
-            order.Note = TinyIoCContainer.Current.Resolve<IAppResource>().MobileUser;
+            order.Note = TinyIoCContainer.Current.Resolve<IAppResource>().GetString( "BookingService_MobileBookingNote");
+            if ( order.PickupAddress.BuildingName.HasValue())
+            {
+                var buildingNote = TinyIoCContainer.Current.Resolve<IAppResource>().GetString( "BookingService_MobileBookingNoteBuildingName");
+                order.Note += @"\" + string.Format(buildingNote, order.PickupAddress.BuildingName);
+            }
+
             var orderDetail = new OrderStatusDetail();
             UseServiceClient<OrderServiceClient>(service =>
                 {
@@ -99,7 +105,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             UseServiceClient<OrderServiceClient>(service =>
                 {
                     r = service.GetOrderStatus(orderId);
-                });
+                }, ex=> TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex));
 
             return r;
         }
