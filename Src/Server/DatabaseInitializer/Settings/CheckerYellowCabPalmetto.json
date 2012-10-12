@@ -47,5 +47,14 @@
 	"TaxiHail.SiteName" : "Checker Yellow Cab",
 	"TaxiHail.ApplicationKey" : "CheckerYellowCabPalmetto",
    	"TaxiHail.AccentColor" : "#fcf600",
-	"TaxiHail.Version" : "1.1.0"
+	"TaxiHail.Version" : "1.1.0",
+	"FacebookAppId" : "",
+	"FacebookEnabled" : "false",
+	"TwitterAccessTokenUrl" : "",
+    "TwitterAuthorizeUrl" : "",
+    "TwitterCallback" : "",
+    "TwitterConsumerKey" : "",
+    "TwitterConsumerSecret" : "",
+    "TwitterEnabled" : "false",
+    "TwitterRequestTokenUrl" : ""
 }

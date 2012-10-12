@@ -41,6 +41,8 @@
             TaxiHail.parameters.defaultLongitude = <%: this.DefaultLongitude %>;
             TaxiHail.parameters.defaultPhoneNumber = '<%: this.DefaultPhoneNumber %>';
             TaxiHail.parameters.isLoggedIn = <%: this.IsAuthenticated ? "true" : "false" %>;
+            TaxiHail.parameters.facebookAppId = <%: this.FacebookAppId %>;
+            TaxiHail.parameters.facebookEnabled = <%: this.FacebookEnabled %>;
         </script>
 
         <%= JSAppSource %>

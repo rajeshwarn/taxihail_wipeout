@@ -19,6 +19,8 @@ namespace apcurium.MK.Web
         protected string DefaultLongitude { get; private set; }
         protected string DefaultPhoneNumber { get; private set; }
         protected bool IsAuthenticated { get; private set; }
+        protected string FacebookAppId { get; private set; }
+        protected string FacebookEnabled { get; private set; }
         protected string JSAssetsSource { get; set; }
         protected string JSAppSource { get; set; }
 
@@ -32,6 +34,8 @@ namespace apcurium.MK.Web
             DefaultLongitude = config.GetSetting("GeoLoc.DefaultLongitude");
             DefaultPhoneNumber = config.GetSetting("DefaultPhoneNumberDisplay");
             IsAuthenticated = base.UserSession.IsAuthenticated;
+            FacebookAppId = config.GetSetting("FacebookAppId");
+            FacebookEnabled = config.GetSetting("FacebookEnabled");
 
 #if DEBUG
             var reader = XDocument.Load(HostingEnvironment.MapPath("~/scripts/assets.xml")).Root.CreateReader();

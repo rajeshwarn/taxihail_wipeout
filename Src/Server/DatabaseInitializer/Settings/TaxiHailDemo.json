@@ -47,6 +47,15 @@
    "TaxiHail.ApplicationKey" : "TaxiHail",
    "TaxiHail.AccentColor" : "#0057a3",
    "TaxiHail.SiteName" : "Demo",
-   "TaxiHail.Version" : "1.1.3"
+   "TaxiHail.Version" : "1.1.3",
+   "FacebookAppId" : "",
+	"FacebookEnabled" : "false",
+	"TwitterAccessTokenUrl" : "",
+	"TwitterAuthorizeUrl" : "",
+	"TwitterCallback" : "",
+	"TwitterConsumerKey" : "",
+	"TwitterConsumerSecret" : "",
+	"TwitterEnabled" : "false",
+	"TwitterRequestTokenUrl" : ""
 }
 
