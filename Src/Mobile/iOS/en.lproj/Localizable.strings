@@ -290,7 +290,9 @@
   "View_Book_Menu_SignOut"="Sign Out";
   
   "View_RefineAddress"="Pickup Details";
-
+  
+  "NbPassenger"=" ({0} passenger)";
+  "NbPassengers"=" ({0} passengers)";
 
 "ResetPasswordTitle" = "Reset Password";
 "InvalidChoiceTitle" = "Invalid Choice";

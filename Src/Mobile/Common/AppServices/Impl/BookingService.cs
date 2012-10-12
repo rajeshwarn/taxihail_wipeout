@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public OrderStatusDetail CreateOrder(CreateOrder order)
         {
-            order.Note = TinyIoCContainer.Current.Resolve<IAppResource>().MobileUser;
+			order.Note += order.Note.IsNullOrEmpty() ? TinyIoCContainer.Current.Resolve<IAppResource>().MobileUser : "\n" + TinyIoCContainer.Current.Resolve<IAppResource>().MobileUser;
             var orderDetail = new OrderStatusDetail();
             UseServiceClient<OrderServiceClient>(service =>
                 {
