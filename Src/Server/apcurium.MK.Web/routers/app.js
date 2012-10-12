@@ -121,11 +121,18 @@
         
         signupconfirmation: function (url) {
             var fbId = window.localStorage.getItem('fbId');
+            var twId = window.localStorage.getItem('twId');
             if (fbId) {
                 if (url) {
                     TaxiHail.auth.fblogin(url);
                 } else {
                     TaxiHail.auth.fblogin();
+                }
+            } else if (twId) {
+                if (url) {
+                    TaxiHail.auth.twlogin(url);
+                } else {
+                    TaxiHail.auth.twlogin();
                 }
             } else {
                 var view = renderView(new TaxiHail.LoginView({

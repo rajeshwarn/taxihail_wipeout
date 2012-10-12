@@ -14,10 +14,12 @@
         <script src="assets/js/modernizr.min.js"></script>
     </head>
     <body>
+        <div id="fb-root"></div>
+        
         <header>
             <div class="login-status-zone"></div>
         </header>
-        <div id="fb-root"></div>
+        
         <div class="container">
             <div class='notification-zone'></div>
             
@@ -41,12 +43,11 @@
             TaxiHail.parameters.defaultLongitude = <%: this.DefaultLongitude %>;
             TaxiHail.parameters.defaultPhoneNumber = '<%: this.DefaultPhoneNumber %>';
             TaxiHail.parameters.isLoggedIn = <%: this.IsAuthenticated ? "true" : "false" %>;
-            TaxiHail.parameters.facebookAppId = <%: this.FacebookAppId %>;
+            TaxiHail.parameters.facebookAppId = '<%: this.FacebookAppId %>';
             TaxiHail.parameters.facebookEnabled = <%: this.FacebookEnabled %>;
         </script>
 
         <%= JSAppSource %>
-
     </body>
 </html>
 

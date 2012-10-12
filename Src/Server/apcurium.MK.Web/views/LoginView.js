@@ -7,6 +7,7 @@
 
         events: {
             "click [data-action=fblogin]": "fblogin",
+            "click [data-action=twlogin]": "twlogin",
             "click [data-action=signup]": "gotosignup"
         },
 
@@ -97,8 +98,16 @@
             } else {
                 FB.login(function () { TaxiHail.auth.fblogin(); }, { scope: 'email' });
             }
-
-            //TaxiHail.auth.fbcallandlogin();
+        },
+        
+        twlogin : function (e) {
+            e.preventDefault();
+            var url = this.options.returnUrl;
+            if (url) {
+                TaxiHail.auth.twlogin(url);
+            } else {
+                TaxiHail.auth.twlogin();
+            }
         }
 
     });
