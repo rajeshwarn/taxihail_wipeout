@@ -18,18 +18,26 @@
             return _.debounce(_.bind(func, context), 800);
         },
         
-        confirm: function (title, message, okfunc) {
-            var view = new TaxiHail.BootstrapConfirmationView({
-                model: new Backbone.Model({
-                    title: title,
-                    message: message
-                })
-            });
+        confirm: function (options) {
+
+            var defaults = {
+                title: '[Title]',
+                message: '[Message]',
+                confirmButton: TaxiHail.localize('modal.default.confirmButton'),
+                cancelButton: TaxiHail.localize('modal.default.cancelButton')
+            }, events = _.extend({}, Backbone.Events);
+
+            options = _.extend(defaults, options);
+
+            var view = new TaxiHail.BootstrapConfirmationView(options);
 
             $('.modal-zone').html(view.render().el);
 
             view.show();
-            view.on('ok', _.once(okfunc));
+            view.on('ok', _.once(function(){
+                events.trigger('ok');
+            }));
+            return events;
         }
 
     });

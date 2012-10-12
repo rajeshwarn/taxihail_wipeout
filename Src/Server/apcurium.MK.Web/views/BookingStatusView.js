@@ -60,16 +60,15 @@
         cancel: function(e) {
             e.preventDefault();
             if (canCancel == true) {
-                TaxiHail.confirm(this.localize('Cancel order'),
-                this.localize('modal.cancel.message'),
-                _.bind(function () {
-                    this.model.cancel()
-                .done(function () {
-                    // Redirect to Home
-                    TaxiHail.app.navigate('', { trigger: true });
-                });
-                }, this));
-                
+                TaxiHail.confirm({
+                    title: this.localize('Cancel order'),
+                    message: this.localize('modal.cancel.message')
+                }).on('ok', function () {
+                    this.model.cancel().done(function () {
+                        // Redirect to Home
+                        TaxiHail.app.navigate('', { trigger: true });
+                    });
+                }, this);
             }
             
         }
