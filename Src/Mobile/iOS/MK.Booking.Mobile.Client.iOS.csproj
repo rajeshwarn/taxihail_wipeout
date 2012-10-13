@@ -288,12 +288,14 @@
     <Compile Include="Controls\BarButtonItem.cs" />
     <Compile Include="Controls\ToastMessage.cs" />
     <Compile Include="PlatformIntegration\AddressBookService.cs" />
-    <Compile Include="Views\RefineAddressView.cs" >
+    <Compile Include="Views\RefineAddressView.cs">
       <DependentUpon>RefineAddressView.xib</DependentUpon>
     </Compile>
     <Compile Include="Views\RefineAddressView.designer.cs">
       <DependentUpon>RefineAddressView.xib</DependentUpon>
     </Compile>
+    <Compile Include="PlatformIntegration\LocationService.cs" />
+    <Compile Include="PlatformIntegration\LocationManagerDelegate.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

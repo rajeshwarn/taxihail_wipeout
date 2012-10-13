@@ -5,7 +5,6 @@ using Cirrious.MvvmCross.ViewModels;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.AppServices;
-using Xamarin.Geolocation;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Navigation;
 using TinyIoC;
