@@ -254,6 +254,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         }
 
+		public string UpdatePassword( Guid accountId, string currentPassword, string newPassword )
+		{
+			string response = null;
+			QueueCommand<AccountServiceClient>(service => {                     
+				response = service.UpdatePassword( new UpdatePassword() { AccountId = accountId, CurrentPassword = currentPassword, NewPassword = newPassword });
+			});
+
+			return response;
+		}
+
         public Account GetAccount(string email, string password)
         {
             try

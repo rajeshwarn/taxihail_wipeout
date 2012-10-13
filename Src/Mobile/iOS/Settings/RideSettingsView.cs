@@ -2,13 +2,19 @@ using System;
 using System.Linq;
 using MonoTouch.Dialog;
 using MonoTouch.UIKit;
-using apcurium.Framework.Extensions;
+//using apcurium.Framework.Extensions;
 using apcurium.Framework;
 using TinyIoC;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.AppServices;
+using Cirrious.MvvmCross.Interfaces.Views;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Views;
+using apcurium.MK.Common.Extensions;
+using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -17,6 +23,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public event EventHandler Closed;
 
 		private BookingSettings _settings;
+		private RootElement _updatePasswordElement;
 		private RightAlignedEntryElement _nameEntry;
 		private RightAlignedEntryElement _phoneEntry;
 		private RightAlignedEntryElement _passengerEntry;
@@ -26,6 +33,15 @@ namespace apcurium.MK.Booking.Mobile.Client
 		private int _selected = 0;
 		private bool _autoSave;
 		private bool _companyOnly;
+		private Guid? _accountId = null;
+
+		public RideSettingsView (Account account, bool autoSave, bool companyOnly) : base(null)
+		{
+			_companyOnly = companyOnly;
+			_autoSave = autoSave;
+			_settings = account.Settings.Copy ();
+			_accountId = account.Id;
+		}
 
 		public RideSettingsView (BookingSettings settings, bool autoSave, bool companyOnly) : base(null)
 		{
@@ -45,10 +61,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 				CloseView (); });
 			NavigationItem.HidesBackButton = true;
 			NavigationItem.RightBarButtonItem = button;
-
-
-
-			
 		}
 
         public override void ViewWillAppear(bool animated)
@@ -299,10 +311,21 @@ namespace apcurium.MK.Booking.Mobile.Client
 					}
 					var chargeTypeEntry = new CustomRootElement (Resources.RideSettingsChargeType, new RadioGroup (selected));
 					chargeTypeEntry.Add (chargeTypes);
-					
+
 
 					menu.Add (settings);
+
+					if( !_accountId.IsNullOrEmpty() )
+					{
+						_updatePasswordElement = new NavigationRootElement( Resources.View_UpdatePassword, () => {
+							var args = new Dictionary<string, string>(){ {"accountId", _accountId.Value.ToString()} };
+							var dispatch = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
+							dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(UpdatePasswordViewModel), args, false, MvxRequestedBy.UserAction));
+						});
 					
+						settings.Add ( _updatePasswordElement );
+					}
+
 					settings.Add (_nameEntry);
 					settings.Add (_phoneEntry);
 					

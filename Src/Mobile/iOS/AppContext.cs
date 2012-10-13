@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         public UIWindow Window  { get; private set; }
             
 
-        public void UpdateLoggedInUser(Account data, bool syncWithServer)
+        public void UpdateLoggedInUser(Account data)
         {
             Logger.LogMessage("UpdateLoggedInUser");
             if (data != null)
@@ -48,10 +48,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                     "TaxiMobile.Account.CurrentUser"
                 );
                     
-                if (syncWithServer)
-                {
-                    TinyIoCContainer.Current.Resolve<IAccountService>().UpdateUser(data);
-                }
+                TinyIoCContainer.Current.Resolve<IAccountService>().UpdateBookingSettings(data.Settings);
             }
             else
             {
