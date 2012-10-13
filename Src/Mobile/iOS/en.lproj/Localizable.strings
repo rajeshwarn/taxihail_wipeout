@@ -26,6 +26,9 @@
   
   "EmailLabel"="Email";
   "PasswordLabel"="Password";
+  "CurrentPasswordLabel"="Current Password";
+  "NewPasswordLabel"="New Password";
+  "NewPasswordConfirmationLabel"="Confirmation";
   "SignInButton"="Sign In";
   "SignUpButton"="Sign Up";
   "FacebookButton"="Sign In with Facebook";
@@ -274,7 +277,9 @@
   
   "View_PasswordRecovery"="Reset Password";
   "View_PasswordRecovery_Label"="Reset Your Password";
-  
+
+  "View_UpdatePassword"="Update Password";
+    
   "View_SignUp"="Sign Up";    
   "View_SignUp_Label"="Create Your Profile";
   "View_SignIn"=" ";
@@ -294,5 +299,4 @@
   "NbPassenger"=" ({0} passenger)";
   "NbPassengers"=" ({0} passengers)";
 
-"ResetPasswordTitle" = "Reset Password";
 "InvalidChoiceTitle" = "Invalid Choice";

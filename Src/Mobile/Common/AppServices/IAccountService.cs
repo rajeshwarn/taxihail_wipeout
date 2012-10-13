@@ -36,6 +36,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		bool ResetPassword( string email );
 
+		string UpdatePassword( Guid accountId, string currentPassword, string newPassword );
+
 		void ResendConfirmationEmail(string email);
 		
 		bool Register (RegisterAccount data, out string error);
