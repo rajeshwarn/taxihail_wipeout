@@ -283,14 +283,6 @@
     <AndroidResource Include="Resources\Layout\MenuItem.axml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="Assets\images\arrow-right%402x.png" />
-    <AndroidAsset Include="Assets\images\target-icon%402x.png" />
-    <AndroidAsset Include="Assets\images\dropdown-bkgd%402x.png" />
-    <AndroidAsset Include="Assets\images\dropdownreverse-bkgd%402x.png" />
-    <AndroidAsset Include="Assets\images\favorite-icon%402x.png" />
-    <AndroidAsset Include="Assets\images\location-icon%402x.png" />
-    <AndroidAsset Include="Assets\images\nearby-icon%402x.png" />
-    <AndroidAsset Include="Assets\images\contacts%402x.png" />
     <Content Include="Properties\AndroidManifest.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -439,7 +431,9 @@
     <AndroidResource Include="Resources\Drawable\textedit_background.9.png" />
     <AndroidResource Include="Resources\Drawable\textedit_background_std.xml" />
     <AndroidResource Include="Resources\Drawable\textedit_background_disabled.9.png" />
-    <AndroidResource Include="Resources\Drawable\gray_button.xml" />
+    <AndroidResource Include="Resources\Drawable\gray_button.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <AndroidResource Include="Resources\Drawable\server_button_state.xml" />
     <AndroidResource Include="Resources\Drawable\server_button.png" />
     <AndroidResource Include="Resources\drawable-hdpi\server_button.png" />

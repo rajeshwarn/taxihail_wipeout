@@ -11,6 +11,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 // ==============================================================================================================
 
+using System;
+
 namespace Infrastructure.EventSourcing
 {
     using Infrastructure.Messaging;
@@ -24,5 +26,7 @@ namespace Infrastructure.EventSourcing
         /// Gets the version or order of the event in the stream.
         /// </summary>
         int Version { get; }
+
+        DateTime EventDate { get; set; }
     }
 }

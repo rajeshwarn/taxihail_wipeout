@@ -7,7 +7,7 @@ using ServiceStack.ServiceHost;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [RestService("/geocode", "GET,OPTIONS")]
+    [RestService("/geocode", "GET")]
     public class GeocodingRequest : BaseDTO
     {
         public string Name{ get; set; }

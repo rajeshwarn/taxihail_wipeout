@@ -133,6 +133,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ApiDoc.aspx" />
     <Content Include="assets\bootstrap-datepicker\css\datepicker.css" />
     <Content Include="assets\bootstrap-datepicker\js\bootstrap-datepicker.js" />
     <Content Include="assets\bootstrap-timepicker\compiled\timepicker.css" />
@@ -299,6 +300,13 @@
     <Content Include="localization\OrderItem.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiDoc.aspx.cs">
+      <DependentUpon>ApiDoc.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ApiDoc.aspx.designer.cs">
+      <DependentUpon>ApiDoc.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Config.aspx.cs">
       <DependentUpon>Config.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

@@ -3,7 +3,7 @@ using ServiceStack.ServiceInterface;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [RestService("/places", "GET, OPTIONS")]
+    [RestService("/places", "GET")]
     public class NearbyPlacesRequest : BaseDTO
     {
         public double? Lat { get; set; }
