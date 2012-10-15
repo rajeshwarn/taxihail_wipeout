@@ -115,7 +115,9 @@ namespace Infrastructure.Sql.EventSourcing
                     AggregateType = sourceType,
                     Version = e.Version,
                     Payload = writer.ToString(),
-                    CorrelationId = correlationId
+                    CorrelationId = correlationId,
+                    EventType = e.GetType().FullName,
+                    EventDate = DateTime.UtcNow
                 };
             }
             return serialized;

@@ -106,8 +106,11 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var address = context.Find<AddressDetails>(@event.AddressId);
-                context.Set<AddressDetails>().Remove(address);
-                context.SaveChanges();
+                if(address != null)
+                {
+                    context.Set<AddressDetails>().Remove(address);
+                    context.SaveChanges();
+                }
             }
         }
     }

@@ -93,8 +93,8 @@ namespace DatabaseInitializer.Sql
         public void CopyDomainEventFromOldToNewDatabase(string connString, string oldDatabase, string newDatabase)
         {
 
-            var queryForEvents = string.Format("INSERT INTO [{0}].[Events].[Events]([AggregateId] ,[AggregateType] ,[Version] ,[Payload] ,[CorrelationId]) " +
-                                               "SELECT [AggregateId] ,[AggregateType] ,[Version] ,[Payload] ,[CorrelationId] " +
+            var queryForEvents = string.Format("INSERT INTO [{0}].[Events].[Events]([AggregateId] ,[AggregateType] ,[Version] ,[Payload] ,[CorrelationId], [EventType], [EventDate]) " +
+                                               "SELECT [AggregateId] ,[AggregateType] ,[Version] ,[Payload] ,[CorrelationId], [EventType], [EventDate] " +
                                                "FROM [{1}].[Events].[Events] ", newDatabase, oldDatabase);
 
             DatabaseHelper.ExecuteNonQuery(connString, queryForEvents);
