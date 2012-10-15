@@ -356,23 +356,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 MapCenter = new CoordinateViewModel[] { new CoordinateViewModel { Coordinate = new Coordinate { Latitude = Dropoff.Model.Latitude, Longitude = Dropoff.Model.Longitude }, Zoom = changeZoom ? ZoomLevel.Close : ZoomLevel.DontChange } , 
                                             new CoordinateViewModel { Coordinate = new Coordinate { Latitude = Pickup.Model.Latitude, Longitude = Pickup.Model.Longitude }, Zoom = ZoomLevel.DontChange }};
             }
-            else
-            {
-                //var position = TinyIoCContainer.Current.Resolve<IUserPositionService>().LastKnownPosition;
-                //if (position.IsUsable)
-                //{
-                //    MapCenter = new CoordinateViewModel[] { new CoordinateViewModel { Coordinate = new Coordinate { Latitude = position.Latitude, Longitude = position.Longitude }, Zoom = changeZoom ? ZoomLevel.Close : ZoomLevel.DontChange } };
-                //}
-                //else if ((position.RefreshTime == CoordinateRefreshTime.Recently) || (position.RefreshTime == CoordinateRefreshTime.NotRecently))
-                //{
-                //    MapCenter = new CoordinateViewModel[] { new CoordinateViewModel { Coordinate = new Coordinate { Latitude = position.Latitude, Longitude = position.Longitude }, Zoom = = changeZoom ? ZoomLevel.Medium : ZoomLevel.DontChange } };
-                //}
-                //else
-                //{
-                //    MapCenter = new CoordinateViewModel[] { new CoordinateViewModel { Coordinate = new Coordinate { Latitude = position.Latitude, Longitude = position.Longitude }, Zoom = = changeZoom ? ZoomLevel.Overview: ZoomLevel.DontChange } };
-                //}
 
-            }
         }
 
 

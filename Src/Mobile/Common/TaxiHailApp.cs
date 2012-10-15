@@ -68,7 +68,7 @@ namespace apcurium.MK.Booking.Mobile
 
             TinyIoCContainer.Current.Register<IAccountService, AccountService>();
             TinyIoCContainer.Current.Register<IBookingService, BookingService>();
-            TinyIoCContainer.Current.Register<IUserPositionService, UserPositionService>();
+
             TinyIoCContainer.Current.Register<IGeolocService, GeolocService>();
             TinyIoCContainer.Current.Register<IGoogleService, GoogleService>();
             TinyIoCContainer.Current.Register<IApplicationInfoService, ApplicationInfoService>();
@@ -81,8 +81,6 @@ namespace apcurium.MK.Booking.Mobile
 
             
 
-            TinyIoCContainer.Current.Resolve<IUserPositionService>().Refresh();
-            
         }
         
         private void InitialiseStartNavigation()

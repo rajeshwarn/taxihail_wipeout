@@ -18,6 +18,21 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
         }
 
+        public Position LastKnownPosition
+        {
+            get
+            { 
+                if ((_locationDelegate != null) && (_locationDelegate.LastKnownLocation != null))
+                {
+                    return new Position{ Latitude =  _locationDelegate.LastKnownLocation.Coordinate.Latitude, Longitude = _locationDelegate.LastKnownLocation.Coordinate.Longitude };
+                }
+                else
+                {
+                    return new Position{ Longitude = 98, Latitude = 40 };
+                }
+            }
+        }
+
         public CLLocation WaitForAccurateLocation(int timeout, float accuracy, out bool timeoutExpired)
         {
            
@@ -39,10 +54,10 @@ namespace apcurium.MK.Booking.Mobile.Client
                 if (_locationDelegate.LastKnownLocation != null)
                 {                   
                     result = _locationDelegate.LastKnownLocation;
-                    if ( (result.HorizontalAccuracy <= accuracy) || ( result.VerticalAccuracy <= accuracy ) )
+                    if ((result.HorizontalAccuracy <= accuracy) || (result.VerticalAccuracy <= accuracy))
                     {
                         TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Good location found! : " +
-                                                                               result.HorizontalAccuracy.ToString());
+                            result.HorizontalAccuracy.ToString());
                         timeoutExpiredResult = false;
                         exit = true;
                     }
@@ -51,7 +66,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 
                 Thread.Sleep(200);
                 
-                if ( watch.ElapsedMilliseconds >= timeout )
+                if (watch.ElapsedMilliseconds >= timeout)
                 {
                     exit = true;
                     timeoutExpiredResult = true;
@@ -75,24 +90,24 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public void Initialize()
         {
-            if ( _locationManager != null  )
+            if (_locationManager != null)
             {
                 return;
             }
 
-            _locationManager = new CLLocationManager ();
+            _locationManager = new CLLocationManager();
             _locationManager.DesiredAccuracy = CLLocation.AccuracyBest;
             _locationManager.DistanceFilter = -1;
             _locationDelegate = new LocationManagerDelegate();
             _locationManager.Delegate = _locationDelegate;
-            _locationManager.StartUpdatingLocation ();
+            _locationManager.StartUpdatingLocation();
         }
 
         public Task<Position> GetPositionAsync(int timeout, float accuracy, CancellationToken cancelToken)
         {
             Initialize();
             var task = new Task<Position>(() =>
-                                          {
+            {
                 bool timedout = false;
                 var result = WaitForAccurateLocation(timeout, accuracy, out timedout);
 
