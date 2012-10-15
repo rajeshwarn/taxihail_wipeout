@@ -72,7 +72,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			_menu = new PanelMenuView( bookView, this.NavigationController );
 			View.InsertSubviewBelow( _menu.View, bookView );
 
-            AppButtons.FormatStandardButton((GradientButton)refreshCurrentLocationButton, "", AppStyle.ButtonColor.LightBlue, "");
+            AppButtons.FormatStandardButton((GradientButton)refreshCurrentLocationButton, "", AppStyle.ButtonColor.Blue, "");
 			AppButtons.FormatStandardButton((GradientButton)cancelBtn, "", AppStyle.ButtonColor.Red, "Assets/cancel.png");
 
 			TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub>().Subscribe<RebookRequested>( msg => {

@@ -7,7 +7,7 @@ using ServiceStack.ServiceHost;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [RestService("/directions", "GET,OPTIONS")]
+    [RestService("/directions", "GET")]
     public class DirectionsRequest : BaseDTO
     {
         public double? OriginLat { get; set; }
