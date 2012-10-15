@@ -59,6 +59,35 @@
                                 }
                             }, this));
         },
+        
+        twlogin: function (url) {
+
+            twttr.anywhere(_.bind(function (T) {
+                
+                if (T.isConnected()) {
+                    var me = T.currentUser;
+                    $.post('api/auth/credentialstw', {
+                        userName: me.id,
+                        password: me.id
+                    }, 'json')
+                        .success(_.bind(function () {
+                            isLoggedIn = true;
+                            this.trigger('change', isLoggedIn, url);
+                        }, this))
+                        .error(function (e) {
+                            if (e.status == 401) {
+                                window.localStorage.setItem('twinfos', JSON.stringify(me));
+                                window.localStorage.setItem('twId', me.id);
+                                if (url) {
+                                    TaxiHail.app.navigate('signup/' + url, { trigger: true });
+                                } else {
+                                    TaxiHail.app.navigate('signup', { trigger: true });
+                                }
+                            }
+                        });
+                }
+            }, this));
+        },
       
         
         isLoggedIn : function() {

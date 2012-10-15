@@ -31,17 +31,36 @@ label {
     .control-group {
         margin-bottom:10px;
 
-        &.left-control-group {
+    }
+
+    .left-control-group {
             width: 38%;
             float: left;
         }
 
-        &.right-control-group {
-            width: 100%-38%;
-            float: left;
-            .box-sizing(border-box);
-            padding-left: 20px;
+    .right-control-group {
+        width: 100%-38%;
+        float: left;
+        .box-sizing(border-box);
+        padding-left: 20px;
+    }
+
+    .half-control-group {
+
+        float: left;
+        margin-right:28px;
+        .control-label {
+            width: 90px;
         }
+
+        .controls {
+            margin-left:90px;
+        }
+
+        &+.half-control-group {
+            margin-right: 0;
+        }
+		
 
     }
 
@@ -131,3 +150,7 @@ select,
     background: @white url(../img/green-dot-with-padding.png) center right no-repeat;
   }
 }
+
+.btn-right-alignment{
+			float:right;
+			}

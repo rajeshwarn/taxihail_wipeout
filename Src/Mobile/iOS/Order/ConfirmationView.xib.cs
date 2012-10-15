@@ -88,7 +88,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			lblCompany.Text = Resources.ConfirmCompanyLabel;
 			lblBuildingName.Text = Resources.HistoryDetailBuildingNameLabel;
 
-//            lblDistance.Text = Resources.RideSettingsChargeType;
 			lblPrice.Text = Resources.ApproxPrice;
             
             txtOrigin.Text = _parent.BookingInfo.PickupAddress.FullAddress;         
@@ -96,7 +95,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             txtDateTime.Text = FormatDateTime(_parent.BookingInfo.PickupDate, _parent.BookingInfo.PickupDate);
             
 			txtAptRing.Text = FormatAptRingCode(_parent.BookingInfo.PickupAddress.Apartment, _parent.BookingInfo.PickupAddress.RingCode);  
-			txtBuildingName.Text = _parent.BookingInfo.PickupAddress.BuildingName;
+            txtBuildingName.Text = FormatBuildingName( _parent.BookingInfo.PickupAddress.BuildingName );
 
 			var directionInfo = TinyIoCContainer.Current.Resolve<IGeolocService>().GetDirectionInfo(_parent.BookingInfo.PickupAddress, _parent.BookingInfo.DropOffAddress);
             txtPrice.Text = directionInfo.Price.HasValue ? directionInfo.FormattedPrice : Resources.NotAvailable;
@@ -114,9 +113,25 @@ namespace apcurium.MK.Booking.Mobile.Client
 				_parent.BookingInfo.PickupAddress.Apartment = msg.Content.AptNumber;
 				_parent.BookingInfo.PickupAddress.BuildingName = msg.Content.BuildingName;
 				_parent.BookingInfo.PickupAddress.RingCode = msg.Content.RingCode;
+
+                txtAptRing.Text = FormatAptRingCode(_parent.BookingInfo.PickupAddress.Apartment, _parent.BookingInfo.PickupAddress.RingCode);  
+                txtBuildingName.Text = FormatBuildingName(_parent.BookingInfo.PickupAddress.BuildingName);
+
+
 			});
         }
 
+        private string FormatBuildingName( string buildingName )
+        {
+            if ( buildingName.HasValue() )
+            {
+                return buildingName;
+            }
+            else
+            {
+                return Resources.GetValue( "HistoryDetailBuildingNameNotSpecified" );
+            }
+        }
         void EditPickupDetails (object sender, EventArgs e)
         {
 			var args = new Dictionary<string, string>(){ {"apt", _parent.BookingInfo.PickupAddress.Apartment}, {"ringCode", _parent.BookingInfo.PickupAddress.RingCode},  {"buildingName", _parent.BookingInfo.PickupAddress.BuildingName} };

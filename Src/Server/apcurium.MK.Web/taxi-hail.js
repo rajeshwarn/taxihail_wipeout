@@ -56,10 +56,10 @@ $(function () {
             }
             
             // initialize fb
-            window.fbAsyncInit = function() {
+            window.fbAsyncInit = function () {
                 FB.init({
                     appId: TaxiHail.parameters.facebookAppId, // App ID
-                    channelUrl: '//' + window.location.hostname + '/channel.html', // Path to your Channel File
+                    channelUrl: 'http://localhost/apcurium.MK.Web/channel.html', // Path to your Channel File
                     status: true, // check login status
                     cookie: true, // enable cookies to allow the server to access the session
                     xfbml: true  // parse XFBML
@@ -73,6 +73,16 @@ $(function () {
                 js.src = "//connect.facebook.net/en_US/all.js";
                 ref.parentNode.insertBefore(js, ref);
             }(document));
+            
+            // initialize twitter asynchronously
+            var twApiKey = "AaXTjhWMzbhEAzL1ac4N3g";
+            (function (d) {
+                var js, id = 'twitter-anywhere', ref = d.getElementsByTagName('script')[0];
+                if (d.getElementById(id)) { return; }
+                js = d.createElement('script'); js.id = id; js.async = true;
+                
+                js.src = "//platform.twitter.com/anywhere.js?id=" + twApiKey + "&v=1";
+                ref.parentNode.insertBefore(js, ref);
+            }(document));
         });
-
 });

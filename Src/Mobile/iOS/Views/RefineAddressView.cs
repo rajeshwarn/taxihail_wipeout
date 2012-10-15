@@ -68,8 +68,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 					ViewModel.SaveCommand.Execute();
 				}
 			});
-			NavigationItem.HidesBackButton = false;
+			NavigationItem.HidesBackButton = true;
 			NavigationItem.RightBarButtonItem = btnDone;
+            NavigationItem.Title = Resources.GetValue( "View_RefineAddress");
 
 			this.AddBindings(new Dictionary<object, string>(){
 				{txtAptNumber, "{'Text':{'Path':'AptNumber'}}"} ,
