@@ -1,0 +1,7 @@
+{
+   "AndroidSigningKeyAlias" : "MKStyleTransportation",
+   "AndroidSigningKeyPassStorePass" : "mkStyleTransportation0001.",
+   "AppName" : "Style Transportation",
+   "GoogleMapKey" : "",
+   "Package" : "com.apcurium.MK.StyleTransportation"
+}
