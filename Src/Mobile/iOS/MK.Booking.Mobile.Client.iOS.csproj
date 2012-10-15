@@ -76,7 +76,6 @@
     <MtouchExtraArgs>-v -v -v -v  -aot "nrgctx-trampolines=2500" -aot "nimt-trampolines=2500" -aot "ntrampolines=2500"</MtouchExtraArgs>
     <DefineConstants>MONOTOUCH;NET35;SILVERLIGHT</DefineConstants>
     <MtouchArch>ARMv7</MtouchArch>
-    <CodesignProvision>598CE647-49AC-440B-99E0-7062DB940152</CodesignProvision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Distribution|iPhone' ">
     <DebugType>none</DebugType>
