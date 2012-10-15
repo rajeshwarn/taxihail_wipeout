@@ -283,14 +283,6 @@
     <AndroidResource Include="Resources\Layout\MenuItem.axml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="Assets\images\arrow-right%402x.png" />
-    <AndroidAsset Include="Assets\images\target-icon%402x.png" />
-    <AndroidAsset Include="Assets\images\dropdown-bkgd%402x.png" />
-    <AndroidAsset Include="Assets\images\dropdownreverse-bkgd%402x.png" />
-    <AndroidAsset Include="Assets\images\favorite-icon%402x.png" />
-    <AndroidAsset Include="Assets\images\location-icon%402x.png" />
-    <AndroidAsset Include="Assets\images\nearby-icon%402x.png" />
-    <AndroidAsset Include="Assets\images\contacts%402x.png" />
     <Content Include="Properties\AndroidManifest.xml">
       <SubType>Designer</SubType>
     </Content>
