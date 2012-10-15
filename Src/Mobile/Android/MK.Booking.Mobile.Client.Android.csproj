@@ -431,7 +431,9 @@
     <AndroidResource Include="Resources\Drawable\textedit_background.9.png" />
     <AndroidResource Include="Resources\Drawable\textedit_background_std.xml" />
     <AndroidResource Include="Resources\Drawable\textedit_background_disabled.9.png" />
-    <AndroidResource Include="Resources\Drawable\gray_button.xml" />
+    <AndroidResource Include="Resources\Drawable\gray_button.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <AndroidResource Include="Resources\Drawable\server_button_state.xml" />
     <AndroidResource Include="Resources\Drawable\server_button.png" />
     <AndroidResource Include="Resources\drawable-hdpi\server_button.png" />
