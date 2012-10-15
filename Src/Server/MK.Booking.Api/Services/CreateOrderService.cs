@@ -82,8 +82,17 @@ namespace apcurium.MK.Booking.Api.Services
             var ibsPickupAddress = Mapper.Map<IBSAddress>(request.PickupAddress);
             var ibsDropOffAddress = IsValid(request.DropOffAddress) ? Mapper.Map<IBSAddress>(request.DropOffAddress) : (IBSAddress)null;
 
+            // Building Name is not handled by IBS
+            // Put Building Name in note, if specified
+            var note = request.Note;
+            if(!string.IsNullOrWhiteSpace(request.PickupAddress.BuildingName))
+            {
+                var buildingName = "Building Name: " + request.PickupAddress.BuildingName;
+                note = (buildingName + Environment.NewLine + note).Trim();
+            }
+
             var result = _bookingWebServiceClient.CreateOrder(request.Settings.ProviderId, account.IBSAccountId, request.Settings.Name, request.Settings.Phone, request.Settings.Passengers,
-                                                    request.Settings.VehicleTypeId, request.Settings.ChargeTypeId, request.Note, request.PickupDate.Value, ibsPickupAddress, ibsDropOffAddress);
+                                                    request.Settings.VehicleTypeId, request.Settings.ChargeTypeId, note, request.PickupDate.Value, ibsPickupAddress, ibsDropOffAddress);
 
             return result;
         }

@@ -7,7 +7,7 @@ namespace apcurium.MK.Web.Tests
 
         public static Address GetAddress1()
         {
-            return new Address { Apartment = "3939", FullAddress = "1234 rue Saint-Hubert", RingCode = "3131", Latitude = 45.515065, Longitude = -73.558064 };
+            return new Address { Apartment = "3939", FullAddress = "1234 rue Saint-Hubert", RingCode = "3131", BuildingName = "Hôtel de Ville", Latitude = 45.515065, Longitude = -73.558064 };
         }
 
         public static Address GetAddress2()

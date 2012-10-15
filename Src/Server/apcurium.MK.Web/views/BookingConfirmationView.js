@@ -91,7 +91,7 @@
         },
         
         renderResults: function (result) {
-            if (result.price > 100) {
+            if (result.callForPrice) {
                 this.model.set('priceEstimate', TaxiHail.localize("CallForPrice"));
             } else {
                 this.model.set('priceEstimate', result.formattedPrice);

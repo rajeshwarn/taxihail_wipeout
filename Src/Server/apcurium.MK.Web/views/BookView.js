@@ -29,18 +29,20 @@
                 this._dropOffAddressView.model.set(value);
             }, this);
             
-             this.model.on('change:estimate', function(model, value){
-                 if (value.formattedPrice && value.formattedDistance) {
-                     this.$('.estimate')
-                        .removeClass('hidden') ;
+            this.model.on('change:estimate', function(model, value){
+                if (value.formattedPrice && value.formattedDistance) {
+                    this.$('.estimate').removeClass('hidden') ;
                      
-                     if (value.price > 100) {
-                         this.$('.estimate')
-                         .find('.fare')
+                    if (value.callForPrice) {
+                        this.$('.estimate')
+                            .find('.fare')
                             .text(TaxiHail.localize('CallForPrice') + ' (' + value.formattedDistance + ')');
-                     } else {
-                         this.$('.estimate').find('.fare').text(value.formattedPrice + ' (' + value.formattedDistance + ')');
-                     }
+                        this.$('.estimate')
+                            .find('.label').hide();
+                    } else {
+                        this.$('.estimate').find('.fare').text(value.formattedPrice + ' (' + value.formattedDistance + ')');
+                        this.$('.estimate').find('.label').show();
+                    }
                     
                 } else {
                     this.$('.estimate').addClass('hidden');

@@ -28,6 +28,7 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
                     Apartment = @event.Apartment,
                     FullAddress = @event.FullAddress,
                     RingCode = @event.RingCode,
+                    BuildingName = @event.BuildingName,
                     Latitude = @event.Latitude,
                     Longitude = @event.Longitude,
                     IsHistoric = false
