@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			_label = new UILabel( new RectangleF(0,0,Frame.Width,44) );
 			_label.BackgroundColor = UIColor.Clear;
 			_label.TextAlignment = UITextAlignment.Center;
-			_label.TextColor = UIColor.White;
+			_label.TextColor = AppStyle.NavigationTitleColor;
 			_label.Font = AppStyle.GetButtonFont( 20 );
 			AddSubview( _label );
 		}
@@ -47,7 +47,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			var shadowBlurRadius = 2.5f;
 
 			var titleRectanglePath = UIBezierPath.FromRect(new RectangleF(0,0,rect.Width,44));
-			UIColor.FromRGBA(0,58,110,255).SetFill();
+
+            AppStyle.NavigationBarColor.SetFill();
 			titleRectanglePath.Fill();
 
 			var rectanglePath = UIBezierPath.FromRect(rect);
