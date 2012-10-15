@@ -28,11 +28,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			_structure = structure;
 		}
 
-//		public override float GetHeightForRow (UITableView tableView, NSIndexPath indexPath)
-//		{
-//			return 30;
-//		}
-//		
 
 		private Address _lastSelected;
 

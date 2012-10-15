@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 				CloseView (); });
 			NavigationItem.HidesBackButton = true;
 			NavigationItem.RightBarButtonItem = button;
-
+            NavigationItem.Title = Resources.GetValue( "View_RideSettings");
 
 
 			
@@ -56,9 +56,11 @@ namespace apcurium.MK.Booking.Mobile.Client
             base.ViewWillAppear(animated);
 
 			NavigationController.NavigationBar.Hidden = false;
-            //((UINavigationController ) ParentViewController ).NavigationBar.TopItem.TitleView = AppContext.Current.Controller.GetTitleView(null, Resources.DefaultRideSettingsViewTitle, false);
+        
+
+
             ((UINavigationController ) ParentViewController ).View.BackgroundColor =UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
-			//View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
+			
             View.BackgroundColor = UIColor.Clear; 
             TableView.BackgroundColor = UIColor.Clear;
             TableView.BackgroundView = new UIView { BackgroundColor = UIColor.Clear };

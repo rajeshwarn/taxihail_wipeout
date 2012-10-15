@@ -18,6 +18,7 @@ using MonoTouch.CoreLocation;
 using apcurium.MK.Common.Entity;
 using System.Threading;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using MonoTouch.UIKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -256,6 +257,37 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             base.SetRegion(region, animated);
         }
 
+        public override void SubviewAdded(MonoTouch.UIKit.UIView uiview)
+        {
+            base.SubviewAdded(uiview);
+
+            if (Subviews != null)
+            {
+
+                UIView legalView = null;
+
+                foreach (var subview in Subviews)
+                {
+                    if (subview is UILabel)
+                    { 
+                        legalView = subview;
+                    }
+                    else if (subview is UIImageView)
+                    {
+                        // google image iOS 5 and lower
+                        legalView = subview;
+                    }
+                }
+                if ( legalView !=null )
+                {
+                    legalView.ToString();
+                    legalView.Frame  = new RectangleF ( legalView.Frame.X, legalView.Frame.Y - 60, legalView.Frame.Width, legalView.Frame.Height );
+                    //legalView.Frame = 
+                }
+            }
+
+            
+        }
     }
 }
 

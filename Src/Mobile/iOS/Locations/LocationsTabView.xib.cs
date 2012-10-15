@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using apcurium.Framework.Extensions;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.AppServices;
@@ -27,7 +26,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 	}
 	public partial class LocationsTabView : UIViewController
 	{
-//		private TableView _tableLocations;
 		private CancellationTokenSource _searchCancellationToken = new CancellationTokenSource();
 		public event EventHandler Canceled;
 		public event EventHandler LocationSelected;
@@ -65,6 +63,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 				View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
 				NavigationItem.RightBarButtonItem = new UIBarButtonItem( UIBarButtonSystemItem.Cancel , CanceledTouchUpInside );			
 			}
+
+            this.NavigationItem.TitleView = new TitleView(null, Resources.GetValue("View_LocationList"), true);
 
 			tableLocations.SectionHeaderHeight = 33;
 
@@ -107,9 +107,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 					tableLocations.DataSource = new LocationTableViewDataSource (this, task.Result);
 					tableLocations.Delegate = new LocationTableViewDelegate (this, task.Result);
 					tableLocations.ReloadData ();
+                    TinyIoCContainer.Current.Resolve<IMessageService>().ShowProgress(false);
 				});
 			}
-			TinyIoCContainer.Current.Resolve<IMessageService>().ShowProgress(false);
+			
 		}
 
 		private void CancelCurrentTask()
@@ -136,7 +137,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			if ( Mode == LocationsTabViewMode.Edit )
 			{
-				favorites.Add (new Address());
+                favorites.Add (new Address{ FriendlyName=Resources.GetValue("LocationAddFavoriteTitle"), FullAddress = Resources.GetValue("LocationAddFavoriteSubtitle")} );
 			}
 			return favorites;
 		}
@@ -147,6 +148,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             var adrs =TinyIoCContainer.Current.Resolve<IAccountService>().GetHistoryAddresses();
             if ( adrs.Count() > 0 )
             {
+                adrs.ForEach( a=> a.IsHistoric = true);
                 historics.AddRange( adrs );
             }
             return historics;

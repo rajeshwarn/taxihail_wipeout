@@ -83,11 +83,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         }
 
-		public override void ViewWillAppear (bool animated)
-		{
-			base.ViewWillAppear (animated);
-			NavigationController.NavigationBar.Hidden = false;
-		}
+        public override void ViewWillAppear(bool animated)
+        {
+            base.ViewWillAppear(animated);
+            NavigationController.NavigationBar.Hidden = false;
+        }
 
         public override void ViewDidLoad()
         {
@@ -97,26 +97,26 @@ namespace apcurium.MK.Booking.Mobile.Client
                 NavigationItem.HidesBackButton = true;                
                 View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
 
-				View.BringSubviewToFront( lblTitle );
-				lblTitle.Text = Resources.LoadingMessage;
+                View.BringSubviewToFront(lblTitle);
+                lblTitle.Text = Resources.LoadingMessage;
 
                 btnChangeBooking.SetTitle(Resources.ChangeBookingSettingsButton, UIControlState.Normal);
              
-				AppButtons.FormatStandardButton((GradientButton)btnCall, Resources.StatusCallButton, AppStyle.ButtonColor.Black );
-				AppButtons.FormatStandardButton((GradientButton)btnCancel, Resources.StatusCancelButton, AppStyle.ButtonColor.Red );
-				AppButtons.FormatStandardButton((GradientButton)btnNewRide, Resources.StatusNewRideButton, AppStyle.ButtonColor.Green );
+                AppButtons.FormatStandardButton((GradientButton)btnCall, Resources.StatusCallButton, AppStyle.ButtonColor.Black);
+                AppButtons.FormatStandardButton((GradientButton)btnCancel, Resources.StatusCancelButton, AppStyle.ButtonColor.Red);
+                AppButtons.FormatStandardButton((GradientButton)btnNewRide, Resources.StatusNewRideButton, AppStyle.ButtonColor.Green);
 
                 btnCall.TouchUpInside += CallProvider;
-				btnCancel.TouchUpInside += CancelOrder;
-				btnNewRide.TouchUpInside += Rebook;
+                btnCancel.TouchUpInside += CancelOrder;
+                btnNewRide.TouchUpInside += Rebook;
                 
                 mapStatus.Delegate = new AddressMapDelegate(false);
                 
 //                var view = AppContext.Current.Controller.GetTitleView(null, Resources.StatusViewTitle);
                 
-				this.NavigationItem.TitleView = new TitleView(null, Resources.GenericTitle, false);
+                this.NavigationItem.TitleView = new TitleView(null, Resources.GenericTitle, false);
 
-				View.BringSubviewToFront( bottomBar );
+                View.BringSubviewToFront(bottomBar);
             
             }
             catch (Exception ex)
@@ -125,9 +125,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
         }
 
-        void Rebook (object sender, EventArgs e)
+        void Rebook(object sender, EventArgs e)
         {
-			var newBooking = new Confirmation();
+            var newBooking = new Confirmation();
             newBooking.Action(Resources.StatusConfirmNewBooking, () =>
             {
                 _timer.Dispose();
@@ -140,7 +140,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             );
         }
 
-        void CancelOrder (object sender, EventArgs e)
+        void CancelOrder(object sender, EventArgs e)
         {
             var newBooking = new Confirmation();
             newBooking.Action(Resources.StatusConfirmCancelRide, () => 
@@ -189,10 +189,10 @@ namespace apcurium.MK.Booking.Mobile.Client
             );
         }
 
-        void CallProvider (object sender, EventArgs e)
+        void CallProvider(object sender, EventArgs e)
         {
-            if ( !Order.Settings.ProviderId.HasValue  )             
-                {
+            if (!Order.Settings.ProviderId.HasValue)
+            {
                 return;
             }
             var call = new Confirmation();
@@ -200,14 +200,25 @@ namespace apcurium.MK.Booking.Mobile.Client
                       TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumberDisplay(Order.Settings.ProviderId.Value));
         }
 
-		private void LoadOrderInfo()
+        void UpdateStatus()
+        {
+            if (!Order.IBSOrderId.HasValue )
+            {
+                lblTitle.Text =  "Invalid order";
+            }
+            else
+            {
+                var conf = string.Format(Resources.GetValue("StatusDescription"), Order.IBSOrderId.Value );
+                lblTitle.Text =  conf+ Environment.NewLine + Status.IBSStatusDescription;
+            }
+        }
+
+        private void LoadOrderInfo()
         {
 
             try
             {
-
-//                lblTitle.Text = string.Format(Resources.StatusDescription, Order.IBSOrderId);
-
+               
                 if (mapStatus.Annotations != null)
                 {
                     mapStatus.RemoveAnnotations(mapStatus.Annotations.OfType<MKAnnotation>().ToArray());
@@ -218,7 +229,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             
                 if (Status.IBSStatusDescription.HasValue())
                 {
-					lblTitle.Text = Status.IBSStatusDescription;
+                    UpdateStatus();
                 }
             
                 if (Order.DropOffAddress.HasValidCoordinate())
@@ -227,31 +238,21 @@ namespace apcurium.MK.Booking.Mobile.Client
                     try
                     {                                       
                         var dcoordinate = Order.DropOffAddress.GetCoordinate();
-                        mapStatus.AddAnnotation(new AddressAnnotation(dcoordinate, AddressAnnotationType.Destination, Resources.DestinationMapTitle, Order.DropOffAddress.FullAddress));
-                    
-//                        double latDelta = Math.Abs(dcoordinate.Latitude - pcoordinate.Latitude);
-//                        double longDelta = Math.Abs(dcoordinate.Longitude - pcoordinate.Longitude);
-//                    
-//                        var center = new CLLocationCoordinate2D((pcoordinate.Latitude + dcoordinate.Latitude) / 2, (pcoordinate.Longitude + dcoordinate.Longitude) / 2);
-//                    
-//                        mapStatus.SetRegion(new MKCoordinateRegion(center, new MKCoordinateSpan(latDelta, longDelta)), true);
-                    
+                        mapStatus.AddAnnotation(new AddressAnnotation(dcoordinate, AddressAnnotationType.Destination, Resources.DestinationMapTitle, Order.DropOffAddress.FullAddress));                    
                     }
                     catch (Exception ex)
                     {
                         Console.Write(ex.Message);
                     }
                 }
-//                else
-//                {
-                    mapStatus.SetRegion(new MKCoordinateRegion(pcoordinate, new MKCoordinateSpan(0.004f, 0.004f)), true);
-                
-//                }
+
+                mapStatus.SetRegion(new MKCoordinateRegion(pcoordinate, new MKCoordinateSpan(0.004f, 0.004f)), true);
+               
             
             }
             catch (Exception ex)
             {
-				Logger.LogError(ex);
+                Logger.LogError(ex);
             }
             
         }
@@ -259,43 +260,39 @@ namespace apcurium.MK.Booking.Mobile.Client
         private void RefreshStatusDisplay()
         {
             try
-			{
-				InvokeOnMainThread(() => lblTitle.Text = Status.IBSStatusDescription);
-	            if ((Status.VehicleLatitude.HasValue) && (Status.VehicleLongitude.HasValue) && (Status.VehicleLatitude.Value != 0) && (Status.VehicleLongitude.Value != 0))
-	            {
-	                CLLocationCoordinate2D taxiCoordinate = new CLLocationCoordinate2D(Status.VehicleLatitude.Value, Status.VehicleLongitude.Value);
-	                if (_taxiPosition != null)
-	                {
-	                    InvokeOnMainThread(() => 
-	                    {
-	                        mapStatus.RemoveAnnotations(mapStatus.Annotations.OfType<AddressAnnotation>().Where(a => a.AddressType == AddressAnnotationType.Taxi).ToArray());
-	                    }
-	                    );
-	                }
+            {
+                InvokeOnMainThread(() => UpdateStatus());
+                if ((Status.VehicleLatitude.HasValue) && (Status.VehicleLongitude.HasValue) && (Status.VehicleLatitude.Value != 0) && (Status.VehicleLongitude.Value != 0))
+                {
+                    CLLocationCoordinate2D taxiCoordinate = new CLLocationCoordinate2D(Status.VehicleLatitude.Value, Status.VehicleLongitude.Value);
+                    if (_taxiPosition != null)
+                    {
+                        InvokeOnMainThread(() => 
+                        {
+                            mapStatus.RemoveAnnotations(mapStatus.Annotations.OfType<AddressAnnotation>().Where(a => a.AddressType == AddressAnnotationType.Taxi).ToArray());
+                        }
+                        );
+                    }
 
-	                _taxiPosition = new AddressAnnotation(taxiCoordinate, AddressAnnotationType.Taxi, Resources.TaxiMapTitle, Status.VehicleNumber);
+                    _taxiPosition = new AddressAnnotation(taxiCoordinate, AddressAnnotationType.Taxi, Resources.TaxiMapTitle, Status.VehicleNumber);
 
-					var pickupCoordinate = Order.PickupAddress.GetCoordinate();
-					double latDelta = Math.Abs(taxiCoordinate.Latitude - pickupCoordinate.Latitude);
-					double longDelta = Math.Abs(taxiCoordinate.Longitude - pickupCoordinate.Longitude);
-	            
-					var center = new CLLocationCoordinate2D((taxiCoordinate.Latitude + pickupCoordinate.Latitude) / 2, (taxiCoordinate.Longitude + pickupCoordinate.Longitude) / 2);
-					//                    
-					//                        
-	                InvokeOnMainThread(() => 
-	                {
-	                    mapStatus.AddAnnotation(_taxiPosition);
-	                    //mapStatus.SetCenterCoordinate(taxiCoordinate, true);
-	                   // mapStatus.SetRegion(new MKCoordinateRegion(taxiCoordinate, new MKCoordinateSpan(0.01, 0.01)), true);
-						mapStatus.SetRegion(new MKCoordinateRegion(center, new MKCoordinateSpan(latDelta * 1.5f, longDelta * 1.5f)), true);
-	                }
-	                );
-	            }
-			}
-			catch(Exception ex)
-			{
-				Logger.LogError(ex);
-			}
+                    var pickupCoordinate = Order.PickupAddress.GetCoordinate();
+                    double latDelta = Math.Abs(taxiCoordinate.Latitude - pickupCoordinate.Latitude);
+                    double longDelta = Math.Abs(taxiCoordinate.Longitude - pickupCoordinate.Longitude);
+                
+                    var center = new CLLocationCoordinate2D((taxiCoordinate.Latitude + pickupCoordinate.Latitude) / 2, (taxiCoordinate.Longitude + pickupCoordinate.Longitude) / 2);
+                    InvokeOnMainThread(() => 
+                    {
+                        mapStatus.AddAnnotation(_taxiPosition);
+                        mapStatus.SetRegion(new MKCoordinateRegion(center, new MKCoordinateSpan(latDelta * 1.5f, longDelta * 1.5f)), true);
+                    }
+                    );
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex);
+            }
         }
 
         private void RefreshStatus()
@@ -309,10 +306,9 @@ namespace apcurium.MK.Booking.Mobile.Client
                     {
                         var isCompleted = TinyIoCContainer.Current.Resolve<IBookingService>().IsCompleted(Order.Id);
                         
-                        //|| (_debugCoordinatesIndex == 6))
+
                         if (isCompleted)
-                        {
-                            //_debugCoordinatesIndex = 0;
+                        {                        
                             _timer.Dispose();
                             _timer = null;
                             if (CloseRequested != null)
@@ -361,9 +357,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             try
             {
                 base.ViewDidDisappear(animated);
-                if ( _timer != null )
+                if (_timer != null)
                 {
-                       _timer.Dispose();
+                    _timer.Dispose();
                 }
 
             }
