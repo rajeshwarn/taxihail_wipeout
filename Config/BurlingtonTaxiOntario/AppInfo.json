@@ -1,0 +1,7 @@
+{
+   "AndroidSigningKeyAlias" : "MKBurlingtonTaxiOntario",
+   "AndroidSigningKeyPassStorePass" : "mkBurlingtonTaxiOntario0001.",
+   "AppName" : "Burlington Taxi Ontario",
+   "GoogleMapKey" : "0XEY3WqKVmJMQaTpxqj-_F_w73I0VnVShVisy1A",
+   "Package" : "com.apcurium.MK.BurlingtonTaxiOntario"
+}
