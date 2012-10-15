@@ -33,7 +33,7 @@
                 if (value.formattedPrice && value.formattedDistance) {
                     this.$('.estimate').removeClass('hidden') ;
                      
-                    if (value.price > 100) {
+                    if (value.callForPrice) {
                         this.$('.estimate')
                             .find('.fare')
                             .text(TaxiHail.localize('CallForPrice') + ' (' + value.formattedDistance + ')');
