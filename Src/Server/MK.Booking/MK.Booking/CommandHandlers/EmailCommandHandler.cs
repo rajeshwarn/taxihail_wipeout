@@ -9,7 +9,7 @@ using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.CommandHandlers
 {
-    public class EmailCommandHandler : ICommandHandler<SendPasswordResetEmail>, ICommandHandler<SendAccountConfirmationEmail>
+    public class EmailCommandHandler : ICommandHandler<SendPasswordResetEmail>, ICommandHandler<SendAccountConfirmationEmail>, ICommandHandler<SendReceipt>
     {
         const string ApplicationNameSetting = "TaxiHail.ApplicationName";
         const string AccentColorSetting = "TaxiHail.AccentColor";
@@ -17,6 +17,8 @@ namespace apcurium.MK.Booking.CommandHandlers
         const string AccountConfirmationTemplateName = "AccountConfirmation";
         const string PasswordResetEmailSubject = "{{ ApplicationName }} - Your password has been reset";
         const string AccountConfirmationEmailSubject = "Welcome to {{ ApplicationName }}";
+        const string ReceiptEmailSubject = "{{ ApplicationName }} - Receipt";
+        const string ReceiptTemplateName = "Receipt";
 
         private readonly IConfigurationManager _configurationManager;
         private readonly ITemplateService _templateService;
@@ -55,6 +57,19 @@ namespace apcurium.MK.Booking.CommandHandlers
                                    };
             
             SendEmail(command.EmailAddress, template, AccountConfirmationEmailSubject, templateData);
+        }
+
+        public void Handle(SendReceipt command)
+        {
+            var template = _templateService.Find(ReceiptTemplateName);
+            if(template == null) throw new InvalidOperationException("Template not found: " + ReceiptTemplateName);
+
+            var templateData = new {
+                                       ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
+                                       AccentColor = _configurationManager.GetSetting(AccentColorSetting)
+                                   };
+
+            SendEmail(command.EmailAddress, template, ReceiptEmailSubject, templateData);
         }
 
         private void SendEmail(string to, string bodyTemplate, string subjectTemplate, object templateData, params KeyValuePair<string,string>[] embeddedIMages)

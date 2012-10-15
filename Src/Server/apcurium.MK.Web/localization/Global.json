@@ -27,7 +27,7 @@
     "CreateOrder_NoProvider": "Bad Provider",
     "CreateOrder_InvalidProvider": "Invalid Provider",
     "CreateOrder_VehicleType": "Vehicle Type Invalid",
-    "CancelOrder_OrderNotInIbs": "Unkown Order",
+    "OrderNotInIbs": "Unkown Order",
     "NearbyPlaces_LocationRequired": "Location required",
     "Search_Locations_NameRequired": "Name required",
 	"EstimatedFareWarning": "Please note that the price provided by this app is an estimated price and the meter will prevail on the price quoted on the site in accordance with the Act of transportation by taxi.",
