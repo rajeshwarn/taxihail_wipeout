@@ -136,7 +136,7 @@
      ,
 	  {
 	      "Key": "LightBlue",
-          "Colors": [  { "Red": "71", "Green": "160", "Blue": "222", "Alpha": "255",  "Location": "1"  } ,
+          "Colors": [  { "Red": "240", "Green": "240", "Blue": "240", "Alpha": "255",  "Location": "0"  } ,
                     { "Red": "222", "Green": "222", "Blue": "222", "Alpha": "255",  "Location": "0.93"  } ,
                     { "Red": "200", "Green": "200", "Blue": "200", "Alpha": "255",  "Location": "1"  } ],
 	      "SelectedColors": [  { "Red": "41", "Green": "90", "Blue": "178", "Alpha": "255",  "Location": "0"  } ,

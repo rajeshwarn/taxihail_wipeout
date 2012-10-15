@@ -204,7 +204,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 				var sectHist = structure.AddSection( Resources.LocationHistoryTitle );
 				sectHist.SectionLabelTextColor = AppStyle.TitleTextColor.ToArray();
 				sectHist.EditMode = Mode == LocationsTabViewMode.Edit;
-				historic.ForEach( item => sectHist.AddItem( new TwoLinesAddressItem( item.Id,  item.FriendlyName, item.FullAddress ) { Data = item, ShowRightArrow = Mode == LocationsTabViewMode.Edit && !item.Id.IsNullOrEmpty(), Enabled = () => !item.Id.IsNullOrEmpty() } ) );
+                historic.ForEach( item => sectHist.AddItem( new TwoLinesAddressItem( item.Id,    item.FriendlyName, item.FullAddress ) { Data = item, ShowRightArrow = Mode == LocationsTabViewMode.Edit && !item.Id.IsNullOrEmpty(), Enabled = () => !item.Id.IsNullOrEmpty() } ) );
 			}
 			else if( Mode == LocationsTabViewMode.NearbyPlacesSelector )
 			{

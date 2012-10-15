@@ -91,8 +91,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 			JsConfig.RegisterTypeForAot<PhoneType>();
 			JsConfig.RegisterTypeForAot<Contact>();
 
-            JsConfig.RegisterTypeForAot<IDictionary<string,string>>();
-            JsConfig.RegisterTypeForAot<Dictionary<string,string>>();
+
+
+            JsConfig.RegisterTypeForAot<apcurium.MK.Booking.Api.Contract.Resources.AppSetting>();
+
 
             JsConfig.RegisterTypeForAot< apcurium.MK.Booking.Google.Resources.ResultStatus>();
 
