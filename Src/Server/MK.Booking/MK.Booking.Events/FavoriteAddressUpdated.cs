@@ -15,5 +15,6 @@ namespace apcurium.MK.Booking.Events
         public double Latitude { get; set; }
         public string Apartment { get; set; }
         public string RingCode { get; set; }
+        public string BuildingName { get; set; }
     }
 }

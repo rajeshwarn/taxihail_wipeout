@@ -50,6 +50,7 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
                 Apartment = "3939",
                 FullAddress = "1234 rue Saint-Hubert",
                 RingCode = "3131",
+                BuildingName = "Hôtel de Ville",
                 Latitude = 45.515065,
                 Longitude = -73.558064
             });
@@ -66,6 +67,7 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
                 Assert.AreEqual("3939", dto.Apartment);
                 Assert.AreEqual("1234 rue Saint-Hubert", dto.FullAddress);
                 Assert.AreEqual("3131", dto.RingCode);
+                Assert.AreEqual("Hôtel de Ville", dto.BuildingName);
                 Assert.AreEqual(45.515065, dto.Latitude);
                 Assert.AreEqual(-73.558064, dto.Longitude);
             }
@@ -120,7 +122,8 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
                                     SourceId = _accountId,
                                     AddressId = _addressId,
                                     FriendlyName = "Chez Costo !",
-                                    FullAddress = "25 rue Berri Montreal"
+                                    FullAddress = "25 rue Berri Montreal",
+                                    BuildingName = "Hôtel de Ville",
                                 });
 
             using (var context = new BookingDbContext(dbName))
@@ -132,6 +135,7 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
                 Assert.AreEqual("Chez Costo !", address.FriendlyName);
                 Assert.Null(address.RingCode);
                 Assert.Null(address.Apartment);
+                Assert.AreEqual("Hôtel de Ville", address.BuildingName);
                 Assert.AreEqual(0, address.Latitude);
                 Assert.AreEqual(0, address.Longitude);
             }
@@ -151,6 +155,7 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
                                         FullAddress = address,
                                         Apartment = "3939",
                                         RingCode = "3131",
+                                        BuildingName = "Hôtel de Ville",
                                         Latitude = 45.515065,
                                         Longitude = -73.558064,
                                     }
@@ -161,6 +166,7 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
                                     Apartment = "3939",
                                     RingCode = "3131",
                                     FriendlyName = "La Boite à Jojo",
+                                    BuildingName = "Hôtel de Ville",
                                     FullAddress = address,
                                     Longitude = -73.558064,
                                     Latitude = 45.515065,
@@ -197,6 +203,7 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
                                                             FullAddress = "1234 rue Saint-Hubert",
                                                             Apartment = "3939",
                                                             RingCode = "3131",
+                                                            BuildingName = "Hôtel de Ville",
                                                             Latitude = 45.515065,
                                                             Longitude = -73.558064,
                                                         },
@@ -220,6 +227,7 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
                 Assert.AreEqual("3939", dto.Apartment);
                 Assert.AreEqual("1234 rue Saint-Hubert", dto.FullAddress);
                 Assert.AreEqual("3131", dto.RingCode);
+                Assert.AreEqual("Hôtel de Ville", dto.BuildingName);
                 Assert.AreEqual(45.515065, dto.Latitude);
                 Assert.AreEqual(-73.558064, dto.Longitude);
             }

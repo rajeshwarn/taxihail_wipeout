@@ -34,6 +34,12 @@ namespace apcurium.MK.Booking.ReadModel
             set;
         }
 
+        public string BuildingName
+        {
+            get;
+            set;
+        }
+
         public double Longitude
         {
             get;
