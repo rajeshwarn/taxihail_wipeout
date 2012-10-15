@@ -172,6 +172,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Model.FullAddress = address.FullAddress;
             Model.Longitude = address.Longitude;
             Model.Latitude = address.Latitude;
+            Model.Apartment = address.Apartment;
+            Model.RingCode = address.RingCode;
+            Model.BuildingName = address.BuildingName;
 
             FirePropertyChanged(() => Display);
             FirePropertyChanged(() => Model);

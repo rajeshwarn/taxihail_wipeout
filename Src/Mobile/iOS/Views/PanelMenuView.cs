@@ -45,12 +45,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		}
 
-//		public PanelMenuView (  ) : base("PanelMenuView", null)
-//		{
-//
-//
-//
-//		}
 		
 		public override void DidReceiveMemoryWarning ()
 		{
@@ -77,35 +71,35 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			var structure = new InfoStructure( 44, false );
 			var sect = structure.AddSection();
-			sect.AddItem( new SingleLineItem( Resources.FavoriteLocationsTitle ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
+            sect.AddItem( new SingleLineItem( Resources.GetValue("View_Book_Menu_MyLocations")) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
 					AnimateMenu();
 					_navController.PushViewController(new LocationsTabView(), true);
 				})				
 			});
-			sect.AddItem( new SingleLineItem( Resources.HistoryViewTitle ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
+            sect.AddItem( new SingleLineItem( Resources.GetValue("View_Book_Menu_MyOrders") ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
 					AnimateMenu();
 					_navController.PushViewController(new HistoryTabView(), true);
 				})				
 			});
-			sect.AddItem( new SingleLineItem( Resources.View_Book_Menu_UpdateMyProfile ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
+            sect.AddItem( new SingleLineItem( Resources.GetValue("View_Book_Menu_UpdateMyProfile")   ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
 					AnimateMenu();
 					var rideSettingsView = new RideSettingsView (AppContext.Current.LoggedUser, true, false);
 					_navController.PushViewController( rideSettingsView, true);
 				})				
 			});
-			sect.AddItem( new SingleLineItem( Resources.CallButton ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
+            sect.AddItem( new SingleLineItem( Resources.GetValue("View_Book_Menu_CallDispatch")   ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
 					AnimateMenu();
 					var call = new Confirmation ();
 					call.Call ( TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumber(AppContext.Current.LoggedUser.Settings.ProviderId.Value),
 					           TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumberDisplay (AppContext.Current.LoggedUser.Settings.ProviderId.Value));
 				})				
 			});
-			sect.AddItem( new SingleLineItem( Resources.View_Book_Menu_AboutUs ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
+            sect.AddItem( new SingleLineItem( Resources.GetValue("View_Book_Menu_AboutUs") ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
 					AnimateMenu();
 					_navController.PushViewController(new AboutUsView(), true);
 				})				
 			});
-			sect.AddItem( new SingleLineItem( Resources.View_Book_Menu_ReportProblem ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
+            sect.AddItem( new SingleLineItem( Resources.GetValue("View_Book_Menu_ReportProblem") ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
 					AnimateMenu();
 					if (!MFMailComposeViewController.CanSendMail)
 					{

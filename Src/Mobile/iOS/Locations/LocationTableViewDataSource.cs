@@ -35,11 +35,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 		}
 
 
-//		public override string TitleForHeader (UITableView tableView, int section)
-//		{
-//			return _structure.Sections.ElementAt( section ).SectionLabel;
-//		}
-
 		public override int RowsInSection (UITableView tableview, int section)
 		{
 			return _structure.Sections.ElementAt( section ).Items.Count();

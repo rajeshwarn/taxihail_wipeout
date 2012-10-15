@@ -49,12 +49,11 @@ namespace apcurium.MK.Booking.Mobile.Client
             base.ViewDidLoad();
             View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             
-//            var view = AppContext.Current.Controller.GetTitleView(null, Resources.HistoryDetailViewTitle, true);
+
             
             this.NavigationItem.HidesBackButton = false;
-			this.NavigationItem.TitleView = new TitleView(null, Resources.View_HistoryDetail, true);
-            
-            
+            this.NavigationItem.TitleView = new TitleView(null, Resources.GetValue("View_HistoryDetail"), true);
+
             lblConfirmationNo.Text = Resources.HistoryDetailConfirmationLabel;
             lblRequested.Text = Resources.HistoryDetailRequestedLabel;
             lblOrigin.Text = Resources.HistoryDetailOriginLabel;
@@ -62,7 +61,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             lblStatus.Text = Resources.HistoryDetailStatusLabel;
             lblPickupDate.Text = Resources.HistoryDetailPickupDateLabel;
             lblAptRingCode.Text = Resources.HistoryDetailAptRingCodeLabel;
-//            btnHide.SetTitle(Resources.HistoryDetailHideButton, UIControlState.Normal);
+
             btnRebook.SetTitle(Resources.HistoryDetailRebookButton, UIControlState.Normal);
             
             
@@ -87,8 +86,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             AppContext.Current.LastOrder = _data.Id;
 			InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new RebookRequested(this, null)));
-//            AppContext.Current.Controller.Rebook(null);
-			this.NavigationController.PopToRootViewController( true ); //.PopViewControllerAnimated(true);
+			this.NavigationController.PopToRootViewController( true ); 
         }
 
         void CancelTouchUpInside(object sender, EventArgs e)

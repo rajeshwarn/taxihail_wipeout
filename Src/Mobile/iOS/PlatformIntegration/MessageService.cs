@@ -39,12 +39,18 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 		{
 			if( show )
 			{
+                AppContext.Current.Controller.InvokeOnMainThread ( () =>
+                                                                  {
 				_owner = AppContext.Current.Controller.TopViewController;
 				LoadingOverlay.StartAnimatingLoading(  _owner.View, LoadingOverlayPosition.Center, null, 130, 30, cancel );
+                });
 			}
 			else
 			{
+                AppContext.Current.Controller.InvokeOnMainThread ( () =>
+                                                                  {
 				LoadingOverlay.StopAnimatingLoading( _owner.View );
+                });
 			}
 		}
 

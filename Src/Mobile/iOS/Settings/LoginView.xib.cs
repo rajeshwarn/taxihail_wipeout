@@ -99,6 +99,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             if (AppContext.Current.LastEmail.HasValue())
             {
                 txtEmail.Text = AppContext.Current.LastEmail;
+                ViewModel.Email = AppContext.Current.LastEmail;
             }
 
             var btnSignIn = AppButtons.CreateStandardButton(new RectangleF(25, 179, 120, 37), Resources.SignInButton, AppStyle.ButtonColor.Black);
@@ -142,6 +143,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             txtEmail.EditingDidEnd += delegate
             {
                 txtEmail.Text = StringHelper.RemoveDiacritics(txtEmail.Text).ToLower();
+                ViewModel.Email = StringHelper.RemoveDiacritics(txtEmail.Text).ToLower();
             };
             
 
@@ -244,7 +246,6 @@ namespace apcurium.MK.Booking.Mobile.Client
                                 var service = TinyIoCContainer.Current.Resolve<IAccountService>();
                                 if (facebookId.HasValue())
                                 {
-
                                     account = service.GetFacebookAccount(facebookId);
                                 }
                                 else
@@ -268,7 +269,11 @@ namespace apcurium.MK.Booking.Mobile.Client
                     }
                     else
                     {
-                        InvokeOnMainThread(() => txtEmail.Text = ((RegisterAccount)data).Email);
+                        InvokeOnMainThread(() => 
+                                           { 
+                            txtEmail.Text = ((RegisterAccount)data).Email;
+                            ViewModel.Email = ((RegisterAccount)data).Email;
+                        });
                     }
                 }
             };
