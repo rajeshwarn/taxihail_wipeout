@@ -62,11 +62,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             SetContentView(Resource.Layout.View_Book);
 
-            //var bottomLayout = FindViewById<FrameLayout>(Resource.Id.bottomLayout);
-            //AlphaAnimation alpha = new AlphaAnimation(0.1F, 0.1F);
-            //alpha.Duration = 0;
-            //alpha.FillAfter = true;
-            //bottomLayout.StartAnimation(alpha);
             var mainSettingsButton = FindViewById<HeaderedLayout>(Resource.Id.MainLayout).FindViewById<ImageButton>(Resource.Id.ViewNavBarRightButton);
             mainSettingsButton.Click -= MainSettingsButtonOnClick;
             mainSettingsButton.Click += MainSettingsButtonOnClick;
@@ -510,74 +505,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 StartActivityForResult(i, 101);
             });
         }
-
-
-        /*protected override MapView Map
-    {
-        get { return FindViewById<MapView>(Resource.Id.mapPickup); }
-    }
-
-    protected override int TitleResourceId
-    {
-        get { return Resource.String.PickupMapTitle; }
-    }
-
-    protected override Address Location { get; set; }
-
-    protected override bool NeedFindCurrentLocation
-    {
-        get
-        {
-            return false;
-        }
-    }
-
-    protected override bool AddressCanBeEmpty
-    {
-        get { return true; }
-    }
-
-    protected override AutoCompleteTextView Address
-    {
-        get { return new AutoCompleteTextView(this); }
-    }
-
-    protected override Drawable MapPin
-    {
-        get { return Resources.GetDrawable(Resource.Drawable.pin_green); }
-    }*/
-
-
-        /* protected void InitializeDropDownMenu()
-         {
-             //Initialize dropdown control
-
-             // Address book intent
-             var contactIntent = new Intent(Intent.ActionPick, ContactsContract.CommonDataKinds.StructuredPostal.ContentUri);
-             // Favorite address intent
-             var locationIntent = new Intent(this, typeof(LocationsActivity));
-             locationIntent.PutExtra(NavigationStrings.ParentScreen.ToString(), (int)ParentScreens.BookScreen);
-             //gps intent
-             var gpsIntent = new Intent(LocationBroadcastReceiver.ACTION_RESP);
-             //nearby places intent
-             var placesIntent = new Intent(this, typeof(LocationsActivity));
-             placesIntent.PutExtra(NavigationStrings.ParentScreen.ToString(), (int)ParentScreens.BookScreen);
-             placesIntent.PutExtra(NavigationStrings.LocationType.ToString(), (int)LocationTypes.NearbyPlaces);
-
-             IntentFilter filter = new IntentFilter(LocationBroadcastReceiver.ACTION_RESP);
-             filter.AddCategory(Intent.CategoryDefault);
-             //var receiver = new LocationBroadcastReceiver(this);
-             //RegisterReceiver(receiver, filter);
-
-             //DropDownMenu definition
-             var iconActionControl = new IconActionControl(this, "images/arrow-right@2x.png", new List<IconAction>() { 
-                 new IconAction("images/location-icon@2x.png", gpsIntent, null), 
-                 new IconAction("images/favorite-icon@2x.png", locationIntent, (int)ActivityEnum.Pickup), 
-                 new IconAction("images/contacts@2x.png", contactIntent, 42),
-                 new IconAction("images/nearby-icon@2x.png", placesIntent, (int)ActivityEnum.NearbyPlaces )
-             }, false);
-             var dropDownControlLayout = FindViewById<LinearLayout>(Resource.Id.linear_iconaction);
-             dropDownControlLayout.AddView(iconActionControl);
-         }*/
+     
     }
 }

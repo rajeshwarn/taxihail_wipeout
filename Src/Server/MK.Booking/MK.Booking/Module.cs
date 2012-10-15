@@ -51,6 +51,7 @@ namespace apcurium.MK.Booking
                 .ForMember(p => p.Apartment, opt => opt.MapFrom(m => m.PickupAddress.Apartment))
                 .ForMember(p => p.FullAddress, opt => opt.MapFrom(m => m.PickupAddress.FullAddress))
                 .ForMember(p => p.RingCode, opt => opt.MapFrom(m => m.PickupAddress.RingCode))
+                .ForMember(p=> p.BuildingName, opt => opt.MapFrom(m=>m.PickupAddress.BuildingName))
                 .ForMember(p => p.Latitude, opt => opt.MapFrom(m => m.PickupAddress.Latitude))
                 .ForMember(p => p.Longitude, opt => opt.MapFrom(m => m.PickupAddress.Longitude));
 

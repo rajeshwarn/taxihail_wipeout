@@ -11,19 +11,16 @@
 
         render: function() {
 
-            var now = new Date();
-            var data = _.extend(this.model.toJSON(), {
-                today: ''
-            });
+            var now = new Date(),
+                today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
-            this.$el.html(this.renderTemplate(data));
-            this.$('[data-role=datepicker]').datepicker().datepicker('setValue',new Date());
+            this.$el.html(this.renderTemplate(this.model.toJSON()));
+            this.$('[data-role=datepicker]').datepicker().datepicker('setValue', today);
             this.$('[data-role=timepicker]').timepicker({
                 defaultTime: 'current+30'
             });
 
             return this;
-
         },
 
         onsubmit: function(e) {

@@ -140,7 +140,7 @@ namespace apcurium.MK.Booking.Domain
             });  
         }
 
-        public void AddFavoriteAddress(Guid id, string friendlyName, string apartment, string fullAddress, string ringCode, double latitude, double longitude)
+        public void AddFavoriteAddress(Guid id, string friendlyName, string apartment, string fullAddress, string ringCode, string buildingName, double latitude, double longitude)
         {
             ValidateFavoriteAddress(friendlyName, fullAddress, latitude, longitude);
 
@@ -151,12 +151,13 @@ namespace apcurium.MK.Booking.Domain
                 Apartment = apartment,
                 FullAddress = fullAddress,
                 RingCode = ringCode,
+                BuildingName = buildingName,
                 Latitude = latitude,
-                Longitude = longitude
+                Longitude = longitude,
             });
         }
 
-        public void UpdateFavoriteAddress(Guid id, string friendlyName, string apartment, string fullAddress, string ringCode, double latitude, double longitude)
+        public void UpdateFavoriteAddress(Guid id, string friendlyName, string apartment, string fullAddress, string ringCode, string buildingName, double latitude, double longitude)
         {
             ValidateFavoriteAddress(friendlyName, fullAddress, latitude, longitude);
 
@@ -167,6 +168,7 @@ namespace apcurium.MK.Booking.Domain
                 Apartment = apartment,
                 FullAddress = fullAddress,
                 RingCode = ringCode,
+                BuildingName = buildingName,
                 Latitude = latitude,
                 Longitude = longitude
             });

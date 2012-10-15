@@ -57,6 +57,7 @@ namespace apcurium.MK.Web.Tests
                                            Apartment = "3939",
                                            FullAddress = "1234 rue Saint-Hubert",
                                            RingCode = "3131",
+                                           BuildingName = "Hôtel de Ville",
                                            Latitude = 45.515065,
                                            Longitude = -73.558064
                                        });
@@ -64,6 +65,13 @@ namespace apcurium.MK.Web.Tests
             var addresses = sut.GetFavoriteAddresses();
 
             Assert.AreEqual(1, addresses.Count(x => x.Id == addressId));
+            var address = addresses.Single(x => x.Id == addressId);
+            Assert.AreEqual("3939", address.Apartment);
+            Assert.AreEqual("3131", address.RingCode);
+            Assert.AreEqual("1234 rue Saint-Hubert", address.FullAddress);
+            Assert.AreEqual("Hôtel de Ville", address.BuildingName);
+            Assert.AreEqual(45.515065, address.Latitude);
+            Assert.AreEqual(-73.558064, address.Longitude);
         }
 
         [Test]
@@ -86,6 +94,7 @@ namespace apcurium.MK.Web.Tests
                 Apartment = "3939",
                 FullAddress = "1234 rue Saint-Hubert",
                 RingCode = "3131",
+                BuildingName = "Le Manoir",
                 Latitude = 12,
                 Longitude = 34
             });
@@ -96,6 +105,7 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual("3939", address.Apartment);
             Assert.AreEqual("1234 rue Saint-Hubert", address.FullAddress);
             Assert.AreEqual("3131", address.RingCode);
+            Assert.AreEqual("Le Manoir", address.BuildingName);
             Assert.AreEqual(12, address.Latitude);
             Assert.AreEqual(34, address.Longitude);
 

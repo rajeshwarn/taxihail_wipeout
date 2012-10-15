@@ -36,8 +36,7 @@ namespace apcurium.MK.Booking.ConfigTool
                 new ConfigFile(this){ Source="splash.png", Destination=@"Mobile\Android\Resources\drawable-hdpi\splash.png" },
                 new ConfigFile(this){ Source="splash.png", Destination=@"Mobile\Android\Resources\drawable-mdpi\splash.png" },
                 new ConfigFile(this){ Source="Icon.png", Destination=@"Mobile\Android\Resources\Drawable\Icon.png" },            
-                new ConfigFile(this){ Source="header.png", Destination=@"Mobile\Android\Resources\Drawable\header.png" },            
-
+               
                 new ConfigFile(this){ Source="navBar.png", Destination=@"Mobile\Android\Resources\Drawable\navBar.png" },            
                 new ConfigFile(this){ Source="navBar@2x.png", Destination=@"Mobile\Android\Resources\Drawable-hdpi\navBar.png" },                                
 
@@ -89,9 +88,6 @@ namespace apcurium.MK.Booking.ConfigTool
 
                 new ConfigFile(this){ Source="navBar.png", Destination=@"Mobile\iOS\Assets\navBar.png" },
                 new ConfigFile(this){ Source="navBar@2x.png", Destination=@"Mobile\iOS\Assets\navBar@2x.png" },
-
-
-                new ConfigFile(this){ Source="Default@2x.png", Destination=@"Mobile\iOS\Default@2x.png" },
 
                 new ConfigFile(this){ Source="app.png", Destination=@"Mobile\iOS\app.png" },
                 new ConfigFile(this){ Source="app@2x.png", Destination=@"Mobile\iOS\app@2x.png" },

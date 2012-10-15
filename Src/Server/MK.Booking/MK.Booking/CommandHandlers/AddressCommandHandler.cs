@@ -24,6 +24,7 @@ namespace apcurium.MK.Booking.BackOffice.CommandHandlers
                 apartment: command.Apartment,
                 fullAddress: command.FullAddress,
                 ringCode: command.RingCode,
+                buildingName: command.BuildingName,
                 latitude: command.Latitude,
                 longitude: command.Longitude);
             
@@ -48,6 +49,7 @@ namespace apcurium.MK.Booking.BackOffice.CommandHandlers
                 apartment: command.Apartment,
                 fullAddress: command.FullAddress,
                 ringCode: command.RingCode,
+                buildingName: command.BuildingName,
                 latitude: command.Latitude,
                 longitude: command.Longitude);
 
