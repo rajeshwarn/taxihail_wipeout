@@ -41,23 +41,26 @@
         },
         
         cancel : function () {
-            if (this.model.getStatus().isActive() == true) {
-                TaxiHail.confirm(this.localize('Cancel Order'),
-                this.localize('modal.cancel.message'),
-                _.bind(function () {
+            if (this.model.getStatus().isActive()) {
+                TaxiHail.confirm({
+                    title: this.localize('Cancel Order'),
+                    message: this.localize('modal.cancelOrder.message'),
+                    cancelButton: this.localize('modal.cancelOrder.cancelButton')
+                }).on('ok', function () {
                     this.model.cancel();
                     this.model.trigger('cancel', this);
-                }, this));
+                }, this);
             }
         },
         
         remove: function () {
-            if (this.model.getStatus().isActive() == false) {
-                TaxiHail.confirm(this.localize('Remove Order'),
-                this.localize('modal.remove.message'),
-                _.bind(function () {
+            if (!this.model.getStatus().isActive()) {
+                TaxiHail.confirm({
+                    title: this.localize('Remove Order'),
+                    message: this.localize('modal.removeOrder.message')
+                }).on('ok', function () {
                     this.model.destroy();
-                }, this));
+                }, this);
             }
         }
     });

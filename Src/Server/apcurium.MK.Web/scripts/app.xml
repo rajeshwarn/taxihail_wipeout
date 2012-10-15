@@ -16,6 +16,7 @@
   <script src="collections/OrderCollection.js"></script>
   <!-- views -->
   <script src="views/TemplatedView.js"></script>
+  <script src="views/AlertView.js"></script>
   <script src="views/BookView.js"></script>
   <script src="views/BookLaterView.js"></script>
   <script src="views/LoginView.js"></script>

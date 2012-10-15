@@ -32,7 +32,7 @@ $BuildArgs = @{
  
 # Start the build
 $p = Start-Process @BuildArgs
-$p.WaitForExit()
+
 
 Get-ChildItem $rootDir\Src\Server\DatabaseInitializer\bin\$Configuration -Recurse | Copy-Item -Filter "*.*" -Force -Destination {Join-Path $base_dir\Package$env\DatabaseInitializer $_.FullName.Substring("$rootDir\Src\Server\DatabaseInitializer\bin\$Configuration".length)} 
 
@@ -47,7 +47,6 @@ $BuildArgs = @{
 
 # Start the build
 $p = Start-Process @BuildArgs
-$p.WaitForExit()
 
 Get-ChildItem $rootDir\Src\Server\apcurium.MK.Web\obj\$Configuration\Package\PackageTmp\ -Recurse | Copy-Item -Filter "*.*" -Force -Destination {Join-Path $base_dir\Package$env\WebSites $_.FullName.Substring("$rootDir\Src\Server\apcurium.MK.Web\obj\$Configuration\Package\PackageTmp\".length)} 
 

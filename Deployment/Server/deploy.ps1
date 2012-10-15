@@ -60,6 +60,14 @@ if($deplyoWebsite -eq 'Y')
     # Change existing node
     $root.connectionStrings.add.connectionString = $connString
     $xml.Save("$targetDir\Web.config")
+
+
+    #modify log4net in web.config
+    $xml = [xml](get-content "$targetDir\log4net.xml")     
+    $node = $xml.SelectSingleNode("//appender[@name = 'Courriel']")
+    $node.subject.value = "[$companyName] - Error log from Web App"
+    $xml.Save("$targetDir\log4net.xml")
+
     Write-Host "***************End Deploy WebSite ************************"
 }
 

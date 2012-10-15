@@ -11,6 +11,10 @@
         render: function () {
             this.$el.html(this.renderTemplate(this.model.toJSON()));
 
+            if(!this.model.get('friendlyName') || !this.model.get('fullAddress')) {
+                this.$el.addClass('single-line');
+            }
+
             return this;
         },
         

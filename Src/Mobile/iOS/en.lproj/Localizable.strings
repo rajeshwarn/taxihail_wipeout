@@ -26,6 +26,9 @@
   
   "EmailLabel"="Email";
   "PasswordLabel"="Password";
+  "CurrentPasswordLabel"="Current Password";
+  "NewPasswordLabel"="New Password";
+  "NewPasswordConfirmationLabel"="Confirmation";
   "SignInButton"="Sign In";
   "SignUpButton"="Sign Up";
   "FacebookButton"="Sign In with Facebook";
@@ -259,6 +262,8 @@
   "ServiceErrorCreateOrder_CannotCreateInIbs_1002"="The specified Pickup address lies outside the regular service area. Please contact {0} at {1} for further assistance.";
   "LocalContactCannotBeResolverTitle"="Invalid Contact";
   "LocalContactCannotBeResolverMessage"="Cannot find the address associated to this contact.";
+  "NetworkErrorTitle"="No network connection";
+  "NetworkErrorMessage"="Cannot connect to Internet. Please check your connection settings and try again.";
 
   "View_About"="About Us";
   "View_BookingDetail"="Confirmation";
@@ -272,7 +277,9 @@
   
   "View_PasswordRecovery"="Reset Password";
   "View_PasswordRecovery_Label"="Reset Your Password";
-  
+
+  "View_UpdatePassword"="Update Password";
+    
   "View_SignUp"="Sign Up";    
   "View_SignUp_Label"="Create Your Profile";
   "View_SignIn"=" ";
@@ -288,7 +295,8 @@
   "View_Book_Menu_SignOut"="Sign Out";
   
   "View_RefineAddress"="Pickup Details";
+  
+  "NbPassenger"=" ({0} passenger)";
+  "NbPassengers"=" ({0} passengers)";
 
-
-"ResetPasswordTitle" = "Reset Password";
 "InvalidChoiceTitle" = "Invalid Choice";

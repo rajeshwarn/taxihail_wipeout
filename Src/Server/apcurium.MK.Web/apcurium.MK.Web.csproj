@@ -259,6 +259,7 @@
     <Content Include="views\AddressItemView.js" />
     <Content Include="views\AddressListView.js" />
     <Content Include="views\AddressSelectionView.js" />
+    <Content Include="views\AlertView.js" />
     <Content Include="views\BookingConfirmationView.js" />
     <Content Include="views\BookingStatusView.js" />
     <Content Include="views\BookLaterView.js" />

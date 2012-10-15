@@ -70,11 +70,12 @@
         
         destroyAddress: function (e) {
             e.preventDefault();
-            TaxiHail.confirm(this.localize('Remove Favorites'),
-                this.localize('modal.remove.message'),
-                _.bind(function () {
+            TaxiHail.confirm({
+                title: this.localize('Remove Favorite Address'),
+                message: this.localize('modal.removeFavorite.message')
+            }).on('ok', function () {
                     this.model.destroy();
-                }, this));
+            }, this);
         },
 
         remove: function() {

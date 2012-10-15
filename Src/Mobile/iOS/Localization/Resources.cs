@@ -611,10 +611,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			get { return GetValue ("AboutUsUrl"); }
 		}
 
-		public static string ResetPasswordTitle {
-			get { return GetValue ("ResetPasswordTitle"); }
-		}
-
 		public static string ResetPasswordLabel {
 			get { return GetValue ("ResetPasswordLabel"); }
 		}
@@ -961,6 +957,38 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public static string View_SignUp
 		{
 			get { return GetValue ("View_SignUp"); }
+		}
+		public static string NbPassenger
+		{
+			get { return GetValue ("NbPassenger"); }
+		}
+		public static string NbPassengers
+		{
+			get { return GetValue ("NbPassengers"); }
+		}
+		public static string ApproxPrice
+		{
+			get { return GetValue ("ApproxPrice"); }
+		}
+		public static string View_UpdatePassword
+		{
+			get { return GetValue ("View_UpdatePassword"); }
+		}
+		public static string CurrentPasswordLabel
+		{
+			get { return GetValue ("CurrentPasswordLabel"); }
+		}
+		public static string NewPasswordLabel
+		{
+			get { return GetValue ("NewPasswordLabel"); }
+		}
+		public static string NewPasswordConfirmationLabel
+		{
+			get { return GetValue ("NewPasswordConfirmationLabel"); }
+		}
+		public static string View_PasswordRecovery
+		{
+			get { return GetValue ("View_PasswordRecovery"); }
 		}
 	}
 }
