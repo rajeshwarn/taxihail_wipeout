@@ -35,11 +35,11 @@
    "OrderStatus.wosWAITING" : "Waiting for driver to be assigned",
    "PriceFormat" : "en-US",
    "Smtp.Credentials.Password" : "2wsxCDE#",
-   "Smtp.Credentials.Username" : "donotreply@apcurium.com",
-   "Smtp.DeliveryMethod" : "Network",
-   "Smtp.EnableSsl" : "true",
-   "Smtp.Host" : "smtp.gmail.com",
-   "Smtp.Port" : "587",
+	"Smtp.Credentials.Username" : "donotreply@apcurium.com",
+	"Smtp.DeliveryMethod" : "Network",
+	"Smtp.EnableSsl" : "TRUE",
+	"Smtp.Host" : "smtp.gmail.com",
+	"Smtp.Port" : "587",
    "Smtp.UseDefaultCredentials" : "false",
    "DefaultPhoneNumber" : "19053333333",
    "DefaultPhoneNumberDisplay" : "1.905.333.3333",
@@ -56,6 +56,7 @@
 	"TwitterConsumerKey" : "",
 	"TwitterConsumerSecret" : "",
 	"TwitterEnabled" : "false",
-	"TwitterRequestTokenUrl" : ""
+	"TwitterRequestTokenUrl" : "",
+	"Receipt.Note": "Thank You!<br><b>Go Taxi Des Moines</b>"
 }
 

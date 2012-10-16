@@ -27,7 +27,7 @@
     "CreateOrder_NoProvider": "Bad Provider",
     "CreateOrder_InvalidProvider": "Invalid Provider",
     "CreateOrder_VehicleType": "Vehicle Type Invalid",
-    "CancelOrder_OrderNotInIbs": "Unkown Order",
+    "OrderNotInIbs": "Unkown Order",
     "NearbyPlaces_LocationRequired": "Location required",
     "Search_Locations_NameRequired": "Name required",
 	"EstimatedFareWarning": "Please note that the price provided by this App is an estimate only. The fare amount as calculated by the meter, along with any applicable minimums and extras will be charged at the end of the trip.",
