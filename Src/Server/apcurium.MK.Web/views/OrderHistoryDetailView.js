@@ -15,15 +15,10 @@
             this.model.getStatus().fetch({
                 success: _.bind(function(model) {
                     var data = model.toJSON();
-                    if (!data.iBSStatusDescription) {
-                        data.iBSStatusDescription = TaxiHail.localize('Processing');
+                    if (!model.get('iBSStatusDescription')) {
+                        model.set('iBSStatusDescription', TaxiHail.localize('Processing'));
                     }
-                    if (model.isActive()) {
-                        this.model.set('canExecute', true);
-                    } else {
-                        this.model.set('canExecute', false);
-                    }
-                    this.model.set('orderStatus', data);
+                    this.render();
                 },this)
             });
 
@@ -31,7 +26,16 @@
         },
 
         render: function () {
-            this.$el.html(this.renderTemplate(this.model.toJSON()));
+
+            var data = this.model.toJSON();
+            _.extend(data, {
+                orderStatus:     this.model.getStatus().toJSON(),
+                canCancel:       this.model.getStatus().isActive(),
+                canDelete:      !this.model.getStatus().isActive(),
+                canPrintReceipt: this.model.getStatus().isCompleted()
+            });
+
+            this.$el.html(this.renderTemplate(data));
             
             return this;
         },
@@ -67,7 +71,15 @@
 
         sendReceipt: function() {
             if (this.model.getStatus().isCompleted()) {
-                this.model.sendReceipt();
+                
+                var $button = this.$('[data-action=send-receipt]');
+                $button.button('loading');
+                
+                TaxiHail.postpone(function() {
+                    this.model.sendReceipt().done(_.bind(function(){
+                        $button.addClass('btn-success').text(this.localize('Receipt Sent'));
+                    }, this));
+                }, this)();
             }
         }
     });
