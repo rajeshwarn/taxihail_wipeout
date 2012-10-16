@@ -164,7 +164,7 @@ namespace DatabaseInitializer
                         Email = "taxihail@apcurium.com",
                         Name = "Administrator",
                         Phone = "5146543024",
-                        Password = "password",
+                        Password = "1l1k3B4n4n@",
                         IsAdmin = true
                     };
 
