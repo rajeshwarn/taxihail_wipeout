@@ -259,6 +259,10 @@
     <Content Include="themes\SanJoseForARide\img\header-bg.png" />
     <Content Include="themes\SanJoseForARide\img\location.png" />
     <Content Include="themes\SanJoseForARide\img\logo.png" />
+    <Content Include="themes\StLouisTaxi\img\cancel-icon.png" />
+    <Content Include="themes\StLouisTaxi\img\header-bg.png" />
+    <Content Include="themes\StLouisTaxi\img\location.png" />
+    <Content Include="themes\StLouisTaxi\img\logo.png" />
     <Content Include="themes\StyleTransportation\img\cancel-icon.png" />
     <Content Include="themes\StyleTransportation\img\header-bg.png" />
     <Content Include="themes\StyleTransportation\img\location.png" />
@@ -269,6 +273,10 @@
     <Content Include="themes\GoTaxiDesMoines\img\logo.png" />
     <Content Include="themes\TaxiHail\img\header-bg.png" />
     <Content Include="themes\TaxiHail\img\logo.png" />
+    <Content Include="themes\YellowCabSavannah\img\cancel-icon.png" />
+    <Content Include="themes\YellowCabSavannah\img\header-bg.png" />
+    <Content Include="themes\YellowCabSavannah\img\location.png" />
+    <Content Include="themes\YellowCabSavannah\img\logo.png" />
     <Content Include="utils.js" />
     <Content Include="views\AccountFavoritesAndHistoryListView.js" />
     <Content Include="views\AddFavoriteView.js" />
@@ -606,6 +614,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="themes\SanJoseForARide\less\variables.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\StLouisTaxi\less\combined-responsive.less" />
+    <Content Include="themes\StLouisTaxi\less\combined.less" />
+    <Content Include="themes\StLouisTaxi\less\style.less" />
+    <Content Include="themes\StLouisTaxi\less\variables.less" />
+    <Content Include="themes\YellowCabSavannah\less\combined-responsive.less" />
+    <Content Include="themes\YellowCabSavannah\less\combined.less" />
+    <Content Include="themes\YellowCabSavannah\less\style.less" />
+    <Content Include="themes\YellowCabSavannah\less\variables.less" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
