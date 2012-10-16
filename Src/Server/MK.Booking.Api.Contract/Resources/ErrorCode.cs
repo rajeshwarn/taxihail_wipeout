@@ -15,9 +15,10 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
         CreateOrder_NoProvider,
         CreateOrder_InvalidProvider,
         CreateOrder_VehiculeType,
-        CancelOrder_OrderNotInIbs,
         NearbyPlaces_LocationRequired,
         Search_Locations_NameRequired,
         UpdatePassword_NotSame,
+        OrderNotInIbs,
+        OrderNotCompleted
     }
 }

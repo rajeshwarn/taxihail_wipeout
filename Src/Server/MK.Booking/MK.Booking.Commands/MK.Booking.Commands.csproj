@@ -63,6 +63,7 @@
     <Compile Include="RemoveFavoriteAddress.cs" />
     <Compile Include="ResetAccountPassword.cs" />
     <Compile Include="SendPasswordResetEmail.cs" />
+    <Compile Include="SendReceipt.cs" />
     <Compile Include="UpdateAccount.cs" />
     <Compile Include="UpdateAccountPassword.cs" />
     <Compile Include="UpdateBookingSettings.cs" />

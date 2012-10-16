@@ -25,7 +25,9 @@ namespace apcurium.MK.Web.Handlebars
 
         public void ProcessRequest(HttpContext context)
         {
-            var files = Directory.EnumerateFiles(HostingEnvironment.MapPath("~/templates/"), "*.handlebars").ToArray();
+            var filepath = HostingEnvironment.MapPath(context.Request.Url.PathAndQuery);
+            var directory = Path.GetDirectoryName(filepath);
+            var files = Directory.EnumerateFiles(directory, "*.handlebars").ToArray();
             context.Response.AddFileDependencies(files);
             context.Response.Cache.SetCacheability(HttpCacheability.Public);
             context.Response.Cache.SetExpires(DateTime.UtcNow.AddMinutes(10080.0));

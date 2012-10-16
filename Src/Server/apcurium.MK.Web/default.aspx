@@ -34,7 +34,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         
         <%= JSAssetsSource %>
-        <script src="templates.js"></script>
+        <script src="templates/templates.js"></script>
 
         <script src="taxi-hail.js"></script>
         
@@ -45,6 +45,7 @@
             TaxiHail.parameters.isLoggedIn = <%: this.IsAuthenticated ? "true" : "false" %>;
             TaxiHail.parameters.facebookAppId = '<%: this.FacebookAppId %>';
             TaxiHail.parameters.facebookEnabled = <%: this.FacebookEnabled %>;
+            TaxiHail.parameters.apiRoot = "api";
         </script>
 
         <%= JSAppSource %>

@@ -47,6 +47,11 @@
             }, function(){}, 'json');
 
         },
+
+        sendReceipt: function() {
+            return $.post(this.url() + '/sendreceipt', {}, function(){}, 'json');
+        },
+
         getStatus: function() {
             return this._status || (this._status = new TaxiHail.OrderStatus({
                 id: this.id
