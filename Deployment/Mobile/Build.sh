@@ -1,4 +1,10 @@
 #!/bin/bash	
+echo Building Android app? Y / N
+read BUILDANDROID
+
+echo Building iOS app? Y / N
+read BUILDIOS
+
 echo Enter client name i.e. folder name in Config or empty for all configuration
 read CLIENTNAME
 
@@ -14,9 +20,6 @@ do
 	echo $CLIENT
 	echo Applying Config Tool for $CLIENT
 	mono apcurium.MK.Booking.ConfigTool.exe $CLIENT
-
-	echo Building iOS app? Y / N
-	read BUILDIOS
 
 	if [ "$BUILDIOS" = "Y" ]; then
 		CONFIGIOS="Release|iPhone"
@@ -34,10 +37,7 @@ do
 		/Applications/MonoDevelop.app/Contents/MacOS/mdtool build "--project:MK.Booking.Mobile.iOS"   "--configuration:$CONFIGIOS"  "../../Src/Mobile/MK.Booking.Mobile.Solution.iOS.sln"
 		/Applications/MonoDevelop.app/Contents/MacOS/mdtool build "--project:MK.Booking.Mobile.Client.iOS"   "--configuration:$CONFIGIOS"  "../../Src/Mobile/MK.Booking.Mobile.Solution.iOS.sln"
 		mv ../../Src/Mobile/iOS/bin/iPhone/Release/*.ipa /Volumes/WwwMobileApps/$CLIENT
-	fi
-
-	echo Building Android app? Y / N
-	read BUILDANDROID
+	fi	
 
 	if [ "$BUILDANDROID" = "Y" ]; then
 
