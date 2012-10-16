@@ -35,8 +35,8 @@
         
         <%= JSAssetsSource %>
         <script src="templates/templates.js"></script>
-
         <script src="taxi-hail.js"></script>
+        <script src="localization/resources.js"></script>
         
         <script type="text/javascript">
             TaxiHail.parameters.defaultLatitude = <%: this.DefaultLatitude %>;
