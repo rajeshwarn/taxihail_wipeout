@@ -326,6 +326,21 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 }
             }
 
+            [Test]
+            public void when_account_granted_admin_access_then_account_dto_populated()
+            {
+                this.sut.Handle(new AdminRightGranted()
+                {
+                    SourceId = _accountId,
+                });
+
+                using (var context = new BookingDbContext(dbName))
+                {
+                    var dto = context.Find<AccountDetail>(_accountId);
+                    Assert.AreEqual(true, dto.IsAdmin);
+                }
+            }
+
         }
     }
 }

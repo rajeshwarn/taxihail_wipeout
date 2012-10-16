@@ -120,6 +120,9 @@ namespace DatabaseInitializer
                     //Init data
                     var commandBus = container.Resolve<ICommandBus>();
 
+
+                    //Register normal account
+
                     var registerAccountCommand = new RegisterAccount
                                                      {
                                                          Id = Guid.NewGuid(),
@@ -148,6 +151,42 @@ namespace DatabaseInitializer
                                             AccountId = registerAccountCommand.AccountId,
                                             ConfimationToken = registerAccountCommand.ConfimationToken
                                         });
+
+
+
+
+                    //Register admin account
+
+                    var registerAdminAccountCommand = new RegisterAccount
+                    {
+                        Id = Guid.NewGuid(),
+                        AccountId = Guid.NewGuid(),
+                        Email = "taxihail@apcurium.com",
+                        Name = "Administrator",
+                        Phone = "5146543024",
+                        Password = "1l1k3B4n4n@",
+                        IsAdmin = true
+                    };
+
+                    var confirmationAdminToken = Guid.NewGuid();
+                    registerAdminAccountCommand.ConfimationToken = confirmationAdminToken.ToString();
+
+                    registerAdminAccountCommand.IbsAccountId =
+                        accountWebServiceClient.CreateAccount(registerAdminAccountCommand.AccountId,
+                                                              registerAdminAccountCommand.Email,
+                                                              string.Empty,
+                                                              registerAdminAccountCommand.Name,
+                                                              registerAdminAccountCommand.Phone);
+                    commandBus.Send(registerAdminAccountCommand);
+
+
+                    commandBus.Send(new ConfirmAccount
+                    {
+                        AccountId = registerAdminAccountCommand.AccountId,
+                        ConfimationToken = registerAdminAccountCommand.ConfimationToken
+                    });
+
+
                 }
             }catch(Exception e)
             {

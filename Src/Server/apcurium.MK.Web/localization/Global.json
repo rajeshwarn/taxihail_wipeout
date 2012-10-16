@@ -30,7 +30,7 @@
     "OrderNotInIbs": "Unkown Order",
     "NearbyPlaces_LocationRequired": "Location required",
     "Search_Locations_NameRequired": "Name required",
-	"EstimatedFareWarning": "Please note that the price provided by this app is an estimated price and the meter will prevail on the price quoted on the site in accordance with the Act of transportation by taxi.",
+	"EstimatedFareWarning": "Please note that the price provided by this App is an estimate only. The fare amount as calculated by the meter, along with any applicable minimums and extras will be charged at the end of the trip.",
 	"Password required" : "Password is required.",
 	"Password are not the same" : "Passwords are not the same.",
 	"UpdatePassword_NotSame" : "Wrong current password.",
@@ -56,6 +56,7 @@
 	"Settings Changed" : "Settings Changed",
 	"CallForPrice" : "Call for price",
 	"NotSpecified" : "Not Specified",
-	"Password updated." : "The password was updated successfully"
+	"Password updated." : "The password was updated successfully",
+	"Now" : "Now"
 
 }

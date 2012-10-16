@@ -108,6 +108,7 @@
     <Compile Include="Services\ConfigurationsService.cs" />
     <Compile Include="Services\ConfirmAccountService.cs" />
     <Compile Include="Services\CreateOrderService.cs" />
+    <Compile Include="Services\GrantAdminRightService.cs" />
     <Compile Include="Services\Maps\DefaultGeoLocationService.cs" />
     <Compile Include="Services\Maps\DirectionsService.cs" />
     <Compile Include="Services\Maps\GeocodingService.cs" />
@@ -126,6 +127,7 @@
     <Compile Include="Services\SearchLocationsService.cs" />
     <Compile Include="Services\SendReceiptService.cs" />
     <Compile Include="Services\TestOnlyReqGetTestAccountService.cs" />
+    <Compile Include="Services\TestOnlyReqGetTestAdminAccountService.cs" />
     <Compile Include="Services\UpdatePasswordService.cs" />
     <Compile Include="Validation\CreateOrderValidator.cs" />
     <Compile Include="Validation\SaveFavoriteAddressValidator.cs" />

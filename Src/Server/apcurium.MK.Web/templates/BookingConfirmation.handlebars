@@ -2,7 +2,7 @@
     <div class="span6">
         <div class="well">
             <h4>{{localize "Confirm Information"}}</h4>
-            <table>
+          <!--table>
                 <tr>
                     <td class="settings-label">{{localize "Pickup Time"}}</td>
                     {{#if pickupDate}}
@@ -25,12 +25,40 @@
                     </td>
                     <td class="settings-value">{{distanceEstimate}} - {{priceEstimate}}</td>
                 </tr>
-            </table>
-            
-            <br/>
+            </table-->
             
             <div class="errors" style="margin-top: 10px;"></div>
             <form class="form-horizontal clearfix" id="updateBookingSettingsForm">
+              
+              <div class="control-group">
+                <label class="control-label" for="inputTime">{{localize "Pickup Time"}}</label>
+                <div class="controls">
+                  {{#if pickupDate}}
+                  <label class='input-block-level'  id="inputTime">{{niceDate pickupDate}}</label>
+                  {{else}}
+                  <label class='input-block-level'  id="inputTime">{{localize "Now"}}</label>
+                  {{/if}}
+                </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label" for="inputPickup">{{localize "Pickup"}}</label>
+                <div class="controls">
+                  <label id="inputPickup" class='input-block-level'>{{pickupAddress.fullAddress}}</label>
+                </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label" for="inputDestination">{{localize "Destination"}}</label>
+                <div class="controls">
+                  <label id="inputDestination" data-dropoff class='input-block-level'>{{dropOffAddress.fullAddress}}</label>
+                </div>
+              </div>
+              <div class="control-group" data-popover data-placement="left">
+                <label class="control-label" for="inputEstimate">{{localize "Estimated Fare"}}</label>
+                <div class="controls">
+                  <label id="inputEstimate" class='input-block-level'>{{distanceEstimate}} - {{priceEstimate}}</label>
+                </div>
+              </div>
+              <br/>
                 <div class="control-group">
                     <label class="control-label" for="inputName">{{localize "Name"}}</label>
                     <div class="controls">

@@ -10,8 +10,7 @@
   "TabContacts"="Contacts";
   "TabPlaces"="Places";
   "Close"="Close";
-  "GenericTitle"="
-  ";
+  "GenericTitle"="  ";
   "NoConnectionTitle"="Connection error";
   "NoConnectionMessage"=" The server cannot be contacted, it might be down temporarily or you may have lost your connection to the Internet.";
   "FavoriteLocationsTitle"="Favorite locations";
@@ -203,7 +202,7 @@
   "CreateAccountErrorMessage"="The account cannot be created.";
   "CreateAccountErrorNotSpecified"="The server didn't specify why the account could not be created, if the error persist try creating the account from the web site.";
   "RideSettingsNumberOfTaxi"="Nb. Taxi:";
-  "WarningEstimate"="Please note that the price provided by this app is an estimated price and the meter will prevail on the price quoted on the site in accordance with the Act of transportation by taxi.";
+  "WarningEstimate"="Please note that the price provided by this App is an estimate only. The fare amount as calculated by the meter, along with any applicable minimums and extras will be charged at the end of the trip.";
   "WarningEstimateTitle"="Warning";
   "WarningEstimateDontShow"="Don't warn";
   "ResetPasswordConfirmationTitle"="Password sent";

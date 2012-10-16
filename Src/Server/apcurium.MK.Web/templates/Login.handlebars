@@ -19,13 +19,16 @@
             <div class="control-group">
                 <div class="controls btn-right-alignment">
                   <button type="submit" class='btn btn-primary span' data-loading-text="{{localize 'Loading'}}">{{localize "Login"}}</button>
-                  <a href="#" class='span' data-action='fblogin' data-loading-text="{{localize 'Loading'}}">{{localize "fb"}}</a>
-                  <!-->a href="#" class='span' data-action='twlogin' data-loading-text="{{localize 'Loading'}}">{{localize "tw"}}</a-->
+                  
+                  <!--a href="#" class='span' data-action='twlogin' data-loading-text="{{localize 'Loading'}}">{{localize "tw"}}</a-->
                   <a href='#signup' class='btn span' data-action='signup'>{{localize "Signup"}}</a>
                   
 
                 </div>
-              <a href='#resetpassword' class=' span'>{{localize "Forgot password"}}</a>
+              <div class="controls btn-right-alignment">
+              <a href="#"><img class='span'  style='margin-top:10px;width:35px;height:35px;' data-action='fblogin' src='assets/img/facebook-button.jpg'></img></a>
+                </div>
+              <a href='#resetpassword' style='margin-top:10px;' class=' span'>{{localize "Forgot password"}}</a>
 
             </div>
         </div>

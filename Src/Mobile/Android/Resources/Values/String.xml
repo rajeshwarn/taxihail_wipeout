@@ -202,7 +202,7 @@
   <string name="CreateAccountErrorMessage">The account cannot be created.</string>
   <string name="CreateAccountErrorNotSpecified">The server didn\'t specify why the account could not be created, if the error persist try creating the account from the web site.</string>
   <string name="RideSettingsNumberOfTaxi">Nb. Taxi:</string>
-  <string name="WarningEstimate">Please note that the price provided by this app is an estimated price and the meter will prevail on the price quoted on the site in accordance with the Act of transportation by taxi.</string>
+  <string name="WarningEstimate">Please note that the price provided by this App is an estimate only. The fare amount as calculated by the meter, along with any applicable minimums and extras will be charged at the end of the trip.</string>  
   <string name="WarningEstimateTitle">Warning</string>
   <string name="WarningEstimateDontShow">Don\'t warn</string>
   <string name="ResetPasswordConfirmationTitle">Password sent</string>
@@ -251,7 +251,7 @@
   <string name="CannotCancelOrderMessage">You can no longer cancel this order.</string>
   <string name="AptNumber">Apt. No.</string>
   <string name="RingCode">Ring Code</string>
-  <string name="BuildingName">Building Name</string>
+  <string name="BuildingName">Building Name / Remark</string>
   <string name="DropoffWasActivatedToastMessage">Destination selection is active.</string>
   <string name="PickupWasActivatedToastMessage">Pickup selection is active.</string>
   <string name="InvalidLocalContactTitle">Invalid contact</string>
