@@ -365,7 +365,7 @@
     <Compile Include="default.aspx.designer.cs">
       <DependentUpon>default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Handlebars\HandlebarsHttpHandler.cs" />
+    <Compile Include="Optimization\HandlebarsHttpHandler.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -378,7 +378,7 @@
       <DependentUpon>PingdomCheck.ashx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="scripts\AjaxMinHttpHandler.cs" />
+    <Compile Include="Optimization\AjaxMinHttpHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

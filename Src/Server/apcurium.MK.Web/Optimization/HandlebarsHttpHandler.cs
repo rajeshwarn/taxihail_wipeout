@@ -5,7 +5,7 @@ using System.Text;
 using System.Web;
 using System.Web.Hosting;
 
-namespace apcurium.MK.Web.Handlebars
+namespace apcurium.MK.Web.Optimization
 {
     public class HandlebarsHttpHandler : IHttpHandler
     {
