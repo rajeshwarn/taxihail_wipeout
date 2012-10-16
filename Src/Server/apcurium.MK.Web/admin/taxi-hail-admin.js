@@ -9,28 +9,22 @@ TaxiHail.loader = {
 
         var deferreds = [];
 
-        // Load resource sets
-        $.each(resources, function (index, resourceSet) {
-            deferreds.push($.get('localization/' + resourceSet + '.json', function (data) {
-                TaxiHail.addResourceSet(resourceSet, data);
-                if (TaxiHail[resourceSet + 'View']) {
-                    TaxiHail[resourceSet + 'View'].prototype.resourceSet = resourceSet;
-                }
-            }));
-        });
-
         $.when.apply(null, deferreds).done(callback);
     }
 
 };
 $(function () {
-    TaxiHail.loader.load(
-        /* Localizations */["Global","GrantAdminAccess"],
-        function () {
+    TaxiHail.loader.load(function () {
 
             _.each(Handlebars.templates, function(value, key, list) {
                 if(TaxiHail[key + 'View']) {
                     TaxiHail[key + 'View'].prototype.template = Handlebars.compile(value);
+                }
+            });
+            
+            _.each(TaxiHail.resources, function (data, resourceSet, list) {
+                if (TaxiHail[resourceSet + 'View']) {
+                    TaxiHail[resourceSet + 'View'].prototype.resourceSet = resourceSet;
                 }
             });
 
