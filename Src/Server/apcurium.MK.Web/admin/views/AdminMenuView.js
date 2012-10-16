@@ -1,0 +1,34 @@
+﻿(function () {
+
+    TaxiHail.AdminMenuView = TaxiHail.TemplatedView.extend({
+       
+
+        events: {
+            'click [data-tabname=grantadmin]': 'tograntadmin',
+            'click [data-tabname=managefavoritesdefault]': 'tomanagefavoritesdefault',
+        },
+
+        render: function() {
+            this.$el.html(this.renderTemplate());
+            this.$('[data-tabname=grantadmin]').addClass('active').siblings().removeClass('active');
+
+            return this;
+        },
+        
+        initialize : function() {
+            
+        },
+        
+        tograntadmin : function (e) {
+            e.preventDefault();
+            this.$('[data-tabname=grantadmin]').addClass('active').siblings().removeClass('active');
+            TaxiHail.app.navigate('', { trigger: true });
+        },
+        
+        tomanagefavoritesdefault: function (e) {
+            e.preventDefault();
+            this.$('[data-tabname=managefavoritesdefault]').addClass('active').siblings().removeClass('active');
+            TaxiHail.app.navigate('managefavoritesdefault', { trigger: true });
+        }
+    });
+    }());
