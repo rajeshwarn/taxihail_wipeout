@@ -72,7 +72,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			_menu = new PanelMenuView( bookView, this.NavigationController );
 			View.InsertSubviewBelow( _menu.View, bookView );
 
-            AppButtons.FormatStandardButton((GradientButton)refreshCurrentLocationButton, "", AppStyle.ButtonColor.LightBlue, "");
+            AppButtons.FormatStandardButton((GradientButton)refreshCurrentLocationButton, "", AppStyle.ButtonColor.Blue, "");
 			AppButtons.FormatStandardButton((GradientButton)cancelBtn, "", AppStyle.ButtonColor.Red, "Assets/cancel.png");
 
 			TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub>().Subscribe<RebookRequested>( msg => {
@@ -177,14 +177,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             BookTaxi();
         }
 
-//        private CreateOrder _toRebookData;
-
-//        public void Rebook(Order data)
-//        {
-//            _toRebookData = JsonSerializer.DeserializeFromString<CreateOrder>(JsonSerializer.SerializeToString<Order>(data));
-//            _toRebookData.Id = Guid.Empty;
-//            _toRebookData.PickupDate = null;
-//        }
 
         private void RemoveStatusView()
         {
@@ -291,10 +283,6 @@ namespace apcurium.MK.Booking.Mobile.Client
                             CreateOrder(view.BI);
                         };
 
-//                        view.NoteChanged += delegate(string note)
-//                        {
-//                            BookingInfo.Note = note;
-//                        };
 
 
                     });
@@ -331,20 +319,21 @@ namespace apcurium.MK.Booking.Mobile.Client
                     var service = TinyIoCContainer.Current.Resolve<IBookingService>();
                     
                     string error;
-                    
-//                    if (!AppSettings.ShowNumberOfTaxi)
-//                    {                    
+
                     bi.Settings.NumberOfTaxi = 1;
-                    //}
                 
 
                     bi.Id = Guid.NewGuid();
 
                     var orderStatus = service.CreateOrder(bi);
+                    if ( orderStatus != null )
+                    {
                     orderStatus.OrderId = bi.Id;
 
-                    if (orderStatus.IBSOrderId.HasValue)
+                    if ( orderStatus.IBSOrderId.HasValue)
                     {
+
+
                         AppContext.Current.LastOrder = orderStatus.OrderId;
 
                         var accountId = TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount.Id;
@@ -355,7 +344,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 						LoadStatusView(new Order { Id = bi.Id, IBSOrderId = orderStatus.IBSOrderId,  CreatedDate = DateTime.Now, DropOffAddress = bi.DropOffAddress, PickupAddress  = bi.PickupAddress , Settings = bi.Settings   }, orderStatus, false);
 
-                    }   
+                    }
+                    }
                 }
                 finally
                 {

@@ -51,12 +51,13 @@ namespace apcurium.MK.Booking.Test.AddressesFixture
         [Test]
         public void when_address_updated_successfully()
         {
-            this.sut.When(new UpdateFavoriteAddress { AccountId = _accountId, AddressId = _addressId, FriendlyName = "Chez Costo", FullAddress = "1234 rue Saint-Hubert" });
+            this.sut.When(new UpdateFavoriteAddress { AccountId = _accountId, AddressId = _addressId, FriendlyName = "Chez Costo", FullAddress = "1234 rue Saint-Hubert", BuildingName = "Hôtel de Ville" });
 
             Assert.AreEqual(1, sut.Events.Count());
             var evt = (FavoriteAddressUpdated)sut.Events.Single();
             Assert.AreEqual(_accountId, evt.SourceId);
             Assert.AreEqual(_addressId, evt.AddressId);
+            Assert.AreEqual("Hôtel de Ville", evt.BuildingName);
         }
 
         [Test]

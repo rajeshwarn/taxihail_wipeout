@@ -3,12 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Api.Client
 {
     public class ConfigurationClientService : BaseServiceClient, IConfigurationManager
     {
-        private static IDictionary<string, string> _settings = null;
+        private static Dictionary<string, string> _settings = null;
 
         public ConfigurationClientService(string url, string sessionId)
             : base(url, sessionId)
@@ -31,7 +33,10 @@ namespace apcurium.MK.Booking.Api.Client
 
         private void Load()
         {            
-            _settings = Client.Get<IDictionary<string,string>>("/settings");
+
+            var settings = Client.Get<AppSetting[]>("/settings");
+            _settings = new Dictionary<string, string>();
+            settings.ForEach( s=> _settings.Add( s.Key, s.Value ));
             _settings.ToString();
         }
 

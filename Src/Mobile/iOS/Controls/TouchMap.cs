@@ -16,8 +16,9 @@ using System.Drawing;
 using MonoTouch.Foundation;
 using MonoTouch.CoreLocation;
 using apcurium.MK.Common.Entity;
-using Xamarin.Geolocation;
 using System.Threading;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using MonoTouch.UIKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -28,14 +29,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         public event EventHandler MapTouchUp;
 
-
-
-
         private IMvxCommand _mapMoved;
-
         private Address _pickup;
         private Address _dropoff;
-		private CancellationTokenSource _cancelToken;
+        private CancellationTokenSource _cancelToken;
         
         protected TouchMap(RectangleF rect)
             : base(rect)
@@ -68,29 +65,33 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         }
 
         private void Initialize()
-		{   
-			_cancelToken = new CancellationTokenSource();
-			var geolocator = TinyIoCContainer.Current.Resolve<Geolocator>( CoordinatePrecision.BallPark.ToString() );
-			geolocator.GetPositionAsync( 5000, _cancelToken.Token ).ContinueWith( t => {
-				if( t.IsCompleted && !t.IsCanceled )
-				{
-					if( t.Result.Latitude != 0 && t.Result.Longitude != 0 )
-					{
-						SetRegionAndZoom( new MKCoordinateRegion(), new CLLocationCoordinate2D( t.Result.Latitude, t.Result.Longitude ), 0.2, 0.2 );
-					}
-				}
-			});
+        {   
+            _cancelToken = new CancellationTokenSource();
+
+
+            TinyIoCContainer.Current.Resolve<ILocationService>().GetPositionAsync(5000, 4000, _cancelToken.Token).ContinueWith(t => {
+                if (t.IsCompleted && !t.IsCanceled)
+                {
+                    InvokeOnMainThread(() =>
+                    {
+                        if (t.Result.Latitude != 0 && t.Result.Longitude != 0)
+                        {
+                            SetRegionAndZoom(new MKCoordinateRegion(), new CLLocationCoordinate2D(t.Result.Latitude, t.Result.Longitude), 0.2, 0.2);
+                        }
+                    });
+                }
+            });
         }
 
-		public void OnRegionChanged()
-		{
+        public void OnRegionChanged()
+        {
             try
             {
                 if (_gesture.GetLastTouchDelay() < 1000)
                 {
-                     if ( ( MapMoved != null ) && ( MapMoved.CanExecute() ) )
+                    if ((MapMoved != null) && (MapMoved.CanExecute()))
                     {
-                        MapMoved.Execute(new Address{ Latitude = CenterCoordinate.Latitude , Longitude = CenterCoordinate.Longitude } );
+                        MapMoved.Execute(new Address{ Latitude = CenterCoordinate.Latitude , Longitude = CenterCoordinate.Longitude });
                     }
                 }
             }
@@ -98,7 +99,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             {
 
             }
-		}
+        }
 
         private void InitializeGesture()
         {
@@ -110,13 +111,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-        public IMvxCommand MapMoved 
+        public IMvxCommand MapMoved
         {
             get{ return _mapMoved;} 
             set
             { 
-                _mapMoved=value;
-                if ( _mapMoved != null )
+                _mapMoved = value;
+                if (_mapMoved != null)
                 {
                     InitializeGesture();
                 }
@@ -190,9 +191,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
 
             var region = new MKCoordinateRegion();
-			double? deltaLat = null;
-			double? deltaLng = null;
-			CLLocationCoordinate2D center;
+            double? deltaLat = null;
+            double? deltaLng = null;
+            CLLocationCoordinate2D center;
 
             if (adressesToDisplay.Count() == 1)
             {
@@ -201,61 +202,92 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
                 if (adressesToDisplay.ElementAt(0).Zoom == ViewModels.ZoomLevel.DontChange)
                 {
-					region = Region;
+                    region = Region;
                 }
-				else
-				{
-					deltaLat =  0.004;
-					deltaLng = 0.004;
+                else
+                {
+                    deltaLat = 0.004;
+                    deltaLng = 0.004;
 
-				}
-				center = new CLLocationCoordinate2D(lat, lon);
+                }
+                center = new CLLocationCoordinate2D(lat, lon);
 
             }
-			else
-			{
-	            var minLat = adressesToDisplay.Min(a => a.Coordinate.Latitude);
-	            var maxLat = adressesToDisplay.Max(a => a.Coordinate.Latitude);
-	            var minLon = adressesToDisplay.Min(a => a.Coordinate.Longitude);
-	            var maxLon = adressesToDisplay.Max(a => a.Coordinate.Longitude);
+            else
+            {
+                var minLat = adressesToDisplay.Min(a => a.Coordinate.Latitude);
+                var maxLat = adressesToDisplay.Max(a => a.Coordinate.Latitude);
+                var minLon = adressesToDisplay.Min(a => a.Coordinate.Longitude);
+                var maxLon = adressesToDisplay.Max(a => a.Coordinate.Longitude);
 
-				deltaLat = (Math.Abs(maxLat - minLat)) * 1.5;
-				deltaLng = (Math.Abs(maxLon - minLon)) * 1.5;
-				center = new CLLocationCoordinate2D((maxLat + minLat) / 2, (maxLon + minLon) / 2);
+                deltaLat = (Math.Abs(maxLat - minLat)) * 1.5;
+                deltaLng = (Math.Abs(maxLon - minLon)) * 1.5;
+                center = new CLLocationCoordinate2D((maxLat + minLat) / 2, (maxLon + minLon) / 2);
 
-			}
+            }
 
-			SetRegionAndZoom( region, center, deltaLat, deltaLng );
+            SetRegionAndZoom(region, center, deltaLat, deltaLng);
        
         }
 
-		private void SetRegionAndZoom( MKCoordinateRegion region, CLLocationCoordinate2D center, double? deltaLat, double? deltaLng )
-		{
-			region.Center = center;
-			if( deltaLat.HasValue && deltaLng.HasValue )
-			{
-				region.Span = new MKCoordinateSpan(deltaLat.Value, deltaLng.Value );
-			}
-			SetRegion( region, true );
-			RegionThatFits(region);
-		}
+        private void SetRegionAndZoom(MKCoordinateRegion region, CLLocationCoordinate2D center, double? deltaLat, double? deltaLng)
+        {
+            region.Center = center;
+            if (deltaLat.HasValue && deltaLng.HasValue)
+            {
+                region.Span = new MKCoordinateSpan(deltaLat.Value, deltaLng.Value);
+            }
+            SetRegion(region, true);
+            RegionThatFits(region);
+        }
 
-		private void CancelInitialZooming()
-		{
-			if (_cancelToken != null && _cancelToken.Token.CanBeCanceled)
-			{
-				_cancelToken.Cancel();
-				_cancelToken.Dispose();
-				_cancelToken = null;
-			}
-		}
+        private void CancelInitialZooming()
+        {
+            if (_cancelToken != null && _cancelToken.Token.CanBeCanceled)
+            {
+                _cancelToken.Cancel();
+                _cancelToken.Dispose();
+                _cancelToken = null;
+            }
+        }
 
-		public override void SetRegion (MKCoordinateRegion region, bool animated)
-		{
-			CancelInitialZooming();
-			base.SetRegion (region, animated);
-		}
+        public override void SetRegion(MKCoordinateRegion region, bool animated)
+        {
+            CancelInitialZooming();
+            base.SetRegion(region, animated);
+        }
 
+        public override void SubviewAdded(MonoTouch.UIKit.UIView uiview)
+        {
+            base.SubviewAdded(uiview);
+
+            if (Subviews != null)
+            {
+
+                UIView legalView = null;
+
+                foreach (var subview in Subviews)
+                {
+                    if (subview is UILabel)
+                    { 
+                        legalView = subview;
+                    }
+                    else if (subview is UIImageView)
+                    {
+                        // google image iOS 5 and lower
+                        legalView = subview;
+                    }
+                }
+                if ( legalView !=null )
+                {
+                    legalView.ToString();
+                    legalView.Frame  = new RectangleF ( legalView.Frame.X, legalView.Frame.Y - 60, legalView.Frame.Width, legalView.Frame.Height );
+                    //legalView.Frame = 
+                }
+            }
+
+            
+        }
     }
 }
 

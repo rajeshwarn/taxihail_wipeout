@@ -60,9 +60,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 	
 		public static void ShowToast ( string message, int duration )
 		{
-			var toast = new ToastMessage( AppContext.Current.Controller.TopViewController.View, message );
+			
 			AppContext.Current.Controller.InvokeOnMainThread ( delegate 
 			                                                  {									
+                var toast = new ToastMessage( AppContext.Current.Controller.TopViewController.View, message );
 				toast.Show(duration);
 			} );
 			

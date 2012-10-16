@@ -40,10 +40,10 @@ namespace apcurium.MK.Booking.Api.Client
 
 
             JsConfig.DateHandler = JsonDateHandler.ISO8601;         
-            
+            JsConfig.ThrowOnDeserializationError = true;
             var client = new JsonServiceClient(_url);
             client.Timeout = new TimeSpan(0, 0, 0, 20, 0);
-            
+
             var uri = new Uri(_url);
             if (!string.IsNullOrEmpty(_sessionId))
             {

@@ -20,5 +20,7 @@ namespace Infrastructure.EventSourcing
         public Guid SourceId { get; set; }
 
         public int Version { get; set; }
+
+        public DateTime EventDate { get; set; }
     }
 }

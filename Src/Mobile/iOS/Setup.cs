@@ -1,6 +1,4 @@
 using System;
-
-using System;
 using System.Collections.Generic;
 using Cirrious.MvvmCross.Application;
 using Cirrious.MvvmCross.Dialog.Touch;
@@ -10,7 +8,6 @@ using Cirrious.MvvmCross.Binding.Binders;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using Cirrious.MvvmCross.ExtensionMethods;
 using MK.Booking.Mobile.Infrastructure.Practices;
-using Xamarin.Geolocation;
 using apcurium.MK.Booking.Mobile.Data;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
@@ -68,12 +65,17 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             TinyIoCServiceProviderSetup.Initialize();
 
+            var locationService = new LocationService( );
+            locationService.Initialize();
+            TinyIoCContainer.Current.Register<ILocationService>(locationService );
 
-            TinyIoCContainer.Current.Register<Geolocator>(new Geolocator() { DesiredAccuracy = 5000 });                        
-			TinyIoCContainer.Current.Register<Geolocator>(new Geolocator() { DesiredAccuracy = 10000 }, CoordinatePrecision.BallPark.ToString());
-			TinyIoCContainer.Current.Register<Geolocator>(new Geolocator() { DesiredAccuracy = 5000 }, CoordinatePrecision.Coarse.ToString());
-            TinyIoCContainer.Current.Register<Geolocator>(new Geolocator() { DesiredAccuracy = 5000 }, CoordinatePrecision.Medium.ToString());
-
+//            TinyIoCContainer.Current.Register<ILocationService>(new Geolocator() { DesiredAccuracy = 5000 });                        
+//
+//            TinyIoCContainer.Current.Register<Geolocator>(new Geolocator() { DesiredAccuracy = 5000 });                        
+//			TinyIoCContainer.Current.Register<Geolocator>(new Geolocator() { DesiredAccuracy = 10000 }, CoordinatePrecision.BallPark.ToString());
+//			TinyIoCContainer.Current.Register<Geolocator>(new Geolocator() { DesiredAccuracy = 5000 }, CoordinatePrecision.Coarse.ToString());
+//            TinyIoCContainer.Current.Register<Geolocator>(new Geolocator() { DesiredAccuracy = 5000 }, CoordinatePrecision.Medium.ToString());
+//
 			TinyIoCContainer.Current.Register<IAddressBookService>(new AddressBookService());
 			TinyIoCContainer.Current.Register<IMessageService>(new MessageService());
             TinyIoCContainer.Current.Register<IAppSettings>(new AppSettings());

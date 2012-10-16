@@ -28,6 +28,7 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
                     Apartment = @event.Apartment,
                     FullAddress = @event.FullAddress,
                     RingCode = @event.RingCode,
+                    BuildingName = @event.BuildingName,
                     Latitude = @event.Latitude,
                     Longitude = @event.Longitude,
                     IsHistoric = false
@@ -54,7 +55,7 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var address = context.Find<AddressDetails>(@event.AddressId);
-                if (!address.IsHistoric)
+                if (address != null && !address.IsHistoric)
                 {
                     context.Set<AddressDetails>().Remove(address);
                     context.SaveChanges();
@@ -67,9 +68,13 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var address = context.Find<AddressDetails>(@event.AddressId);
-                address.IsHistoric = false;
-                AutoMapper.Mapper.Map(@event, address);
-                context.SaveChanges();
+                if(address != null)
+                {
+                     address.IsHistoric = false;
+                    AutoMapper.Mapper.Map(@event, address);
+                    context.SaveChanges();
+                }
+               
             }
         }
 
@@ -102,8 +107,11 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var address = context.Find<AddressDetails>(@event.AddressId);
-                context.Set<AddressDetails>().Remove(address);
-                context.SaveChanges();
+                if(address != null)
+                {
+                    context.Set<AddressDetails>().Remove(address);
+                    context.SaveChanges();
+                }
             }
         }
     }

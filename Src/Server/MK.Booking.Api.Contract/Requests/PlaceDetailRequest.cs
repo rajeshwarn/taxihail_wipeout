@@ -7,7 +7,7 @@ using ServiceStack.ServiceInterface;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [RestService("/places/{ReferenceId}", "GET, OPTIONS")]
+    [RestService("/places/{ReferenceId}", "GET")]
     public class PlaceDetailRequest
     {
         public string ReferenceId { get; set; }

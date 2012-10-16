@@ -5,7 +5,7 @@
             'click [data-action=confirm]': 'onConfirm'
         },
         render: function () {
-            var html = this.renderTemplate(this.model.toJSON());
+            var html = this.renderTemplate(_.pick(this.options, 'title', 'message', 'confirmButton', 'cancelButton'));
             this.$el.html(html);
             return this;
         },

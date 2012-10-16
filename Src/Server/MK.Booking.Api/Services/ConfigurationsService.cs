@@ -1,4 +1,5 @@
 ﻿using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Configuration;
 using ServiceStack.ServiceInterface;
 using System;
@@ -26,7 +27,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             var allKeys = _configManager.GetAllSettings();
 
-            var result = allKeys.Where(k => keys.Contains(k.Key)).ToDictionary(k => k.Key, v => v.Value);
+            var result = allKeys.Where(k => keys.Contains(k.Key)).Select(s => new AppSetting {Key = s.Key, Value = s.Value}).ToArray();
 
             return result;
             //return true;

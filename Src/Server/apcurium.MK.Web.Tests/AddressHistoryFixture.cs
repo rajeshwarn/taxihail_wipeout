@@ -53,6 +53,14 @@ namespace apcurium.MK.Web.Tests
             var sut = new AccountServiceClient(BaseUrl, SessionId);
             var addresses = sut.GetHistoryAddresses(newAccount.Id);
             Assert.AreEqual(1, addresses.Count());
+            var address = addresses.Single();
+
+            Assert.AreEqual(order.PickupAddress.Apartment, address.Apartment);
+            Assert.AreEqual(order.PickupAddress.RingCode, address.RingCode);
+            Assert.AreEqual(order.PickupAddress.FullAddress, address.FullAddress);
+            Assert.AreEqual(order.PickupAddress.BuildingName, address.BuildingName);
+            Assert.AreEqual(order.PickupAddress.Latitude, address.Latitude);
+            Assert.AreEqual(order.PickupAddress.Longitude, address.Longitude);
         }
 
         

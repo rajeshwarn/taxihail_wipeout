@@ -7,7 +7,10 @@
                 OriginLng: originLng,
                 DestinationLat: destLat,
                 DestinationLng: destLng
-            },function(){}, 'json');
+            },function(){}, 'json')
+            .done(function(result){
+                result.callForPrice = (result.price > 100);
+            });
         }
     });
 }());

@@ -4,15 +4,19 @@
             <legend>{{localize "Pickup date and time"}}</legend>
             <div class='errors'>
             </div>
-            <div class='control-group'>
+            <div class='control-group half-control-group'>
                 <label class='control-label' for='book-later-date'>{{localize "Date"}}</label>
                 <div class='controls'>
-                    <div class="input-append date pull-left" data-role='datepicker' data-date="{{ today }}">
-                        <input id='book-later-date' class="input-small" type="text" value="{{ today }}">
+                    <div class="input-append date" data-role='datepicker' data-date="">
+                        <input id='book-later-date' class="input-small" type="text">
                         <span class="add-on"><i class="icon-white icon-calendar"></i></span>
                     </div>
-                    <label class='pull-left' for='book-later-date'>{{localize "Time"}}</label>
-                    <div class="input-append bootstrap-timepicker-component pull-right">
+                </div>
+            </div>
+            <div class='control-group half-control-group'>
+                <label class='control-label' for='book-later-time'>{{localize "Time"}}</label>
+                <div class='controls'>
+                    <div class="input-append bootstrap-timepicker-component">
                         <input id='book-later-time' type="text" data-role='timepicker' class="input-small">
                         <span class="add-on">
                             <i class="icon-white icon-time"></i>
@@ -20,8 +24,8 @@
                     </div>
                 </div>
             </div>
-            <div class='control-group'>
-                <button type='submit' class='btn btn-primary pull-right' >{{ localize "Set Time" }}</button>
+            <div class='control-group' style='clear:both;'>
+                <button type='submit' class='btn btn-primary pull-right' >{{localize "Set Time"}}</button>
             </div>
         </div>
     </div>

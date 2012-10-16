@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             View.BackgroundColor = UIColor.Clear; // UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             TableView.BackgroundView = new UIView{ BackgroundColor = UIColor.Clear };
             TableView.BackgroundColor = UIColor.Clear;
-            ((UINavigationController ) ParentViewController ).NavigationBar.TopItem.TitleView = new TitleView(null, Resources.ResetPasswordTitle, false);
+			((UINavigationController ) ParentViewController ).NavigationBar.TopItem.TitleView = new TitleView(null, Resources.View_PasswordRecovery, false);
             ((UINavigationController ) ParentViewController ).View.BackgroundColor =UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
         }
         private void ResetPassword()
@@ -122,9 +122,9 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             
             
-            var menu = new RootElement(Resources.ResetPasswordTitle);
+			var menu = new RootElement(Resources.View_PasswordRecovery);
             
-            var settings = new Section(Resources.ResetPasswordTitle);
+			var settings = new Section(Resources.View_PasswordRecovery);
             
             
 
