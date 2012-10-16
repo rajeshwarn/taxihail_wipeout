@@ -13,7 +13,7 @@
    "GeoLoc.SearchFilter" : "{0},burlington,on,canada&region=ca",
    "IBS.AutoDispatch" : "true",
    "IBS.WebServicesPassword" : "test",
-   "IBS.WebServicesUrl" : "http://drivelinq.dyndns-ip.com:6928/XDS_IASPI.DLL/soap/",
+   "IBS.WebServicesUrl" : "http://btmdt.no-ip.info:6928/XDS_IASPI.DLL/soap/",
    "IBS.WebServicesUserName" : "taxi",
    "IBS.DefaultAccountPassword" : "password",
    "IBS.ExcludedVehicleTypeId" : "22;21",
