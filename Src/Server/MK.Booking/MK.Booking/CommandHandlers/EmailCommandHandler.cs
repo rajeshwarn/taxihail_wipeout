@@ -66,7 +66,12 @@ namespace apcurium.MK.Booking.CommandHandlers
 
             var templateData = new {
                                        ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
-                                       AccentColor = _configurationManager.GetSetting(AccentColorSetting)
+                                       AccentColor = _configurationManager.GetSetting(AccentColorSetting),
+                                       VehicleNumber = command.VehicleNumber,
+                                       Fare = command.Fare,
+                                       Toll = command.Toll,
+                                       Tip = command.Tip,
+                                       TotalFare = command.TotalFare
                                    };
 
             SendEmail(command.EmailAddress, template, ReceiptEmailSubject, templateData);

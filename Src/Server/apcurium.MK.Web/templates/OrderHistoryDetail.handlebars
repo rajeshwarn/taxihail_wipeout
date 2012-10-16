@@ -30,12 +30,13 @@
 
   </table>
   <div class="control-group btn-right-alignment " >
-    <button class="btn  span2 btn-primary" data-action="rebook">{{localize "Rebook"}}</button>
+    <button type='button' class="btn  span2 btn-primary" data-action="rebook">{{localize "Rebook"}}</button>
     {{#if canExecute }}
-    <button class="btn span2" data-action="cancel">{{localize "Cancel"}}</button>
+    <button type='button' class="btn span2" data-action="cancel">{{localize "Cancel"}}</button>
     {{else}}
-    <button class="btn span2" data-action="remove">{{localize "Delete"}}</button>
+    <button type='button' class="btn span2" data-action="remove">{{localize "Delete"}}</button>
     {{/if}}
+    <button type='button' class="btn span2" data-action="send-receipt">{{localize "Send Receipt"}}</button>
 
   </div>
 

@@ -3,7 +3,8 @@
         events: {
             "click [data-action=rebook]": "rebook",
             "click [data-action=cancel]": "cancel",
-            "click [data-action=remove]": "remove"
+            "click [data-action=remove]": "remove",
+            "click [data-action=send-receipt]": "sendReceipt"
         },
 
         initialize: function () {
@@ -61,6 +62,12 @@
                 }).on('ok', function () {
                     this.model.destroy();
                 }, this);
+            }
+        },
+
+        sendReceipt: function() {
+            if (this.model.getStatus().isCompleted()) {
+                this.model.sendReceipt();
             }
         }
     });
