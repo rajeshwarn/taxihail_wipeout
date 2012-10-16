@@ -27,9 +27,11 @@
     TaxiHail.App = Backbone.Router.extend({
         routes: {
             "": "grantadminaccess",   // #
+            "managefavoritesdefault": "managefavoritesdefault"
         },
 
         initialize: function (options) {
+            $('.menuadmin').html(new TaxiHail.AdminMenuView().render().el);
             /*TaxiHail.auth.account.fetch()
             {
                 success: _.bind(function() {
@@ -44,6 +46,10 @@
         admin: function() {
 
 
+        },
+        
+        managefavoritesdefault : function () {
+            renderView(TaxiHail.ManageDefaultAddressesView);
         },
         
         grantadminaccess : function () {

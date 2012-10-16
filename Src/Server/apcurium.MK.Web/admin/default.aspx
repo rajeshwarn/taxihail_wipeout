@@ -19,6 +19,8 @@
             <div class="login-status-zone"></div>
         </header>
         
+        <div class="pull-left menuadmin"></div>
+        
         <div class="container">
             <div class='notification-zone'></div>
             
