@@ -17,6 +17,7 @@ namespace apcurium.MK.Booking.Commands
         public Guid OrderId { get; set; }
         public string EmailAddress { get; set; }
         public int IBSOrderId { get; set; }
+        public DateTime TransactionDate { get; set; }
         public string VehicleNumber { get; set; }
         public double Tip { get; set; }
         public double Fare { get; set; }

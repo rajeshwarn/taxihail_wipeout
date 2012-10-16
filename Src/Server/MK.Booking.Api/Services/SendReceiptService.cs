@@ -58,6 +58,7 @@ namespace apcurium.MK.Booking.Api.Services
                 OrderId = request.OrderId,
                 EmailAddress = account.Email,
                 IBSOrderId = order.IBSOrderId.Value,
+                TransactionDate = order.PickupDate,
                 VehicleNumber = IBSOrder.VehicleNumber,
                 Fare = IBSOrder.Fare.GetValueOrDefault(),
                 Toll = IBSOrder.Toll.GetValueOrDefault(),
