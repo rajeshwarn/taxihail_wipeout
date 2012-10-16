@@ -8,7 +8,6 @@ read BUILDIOS
 echo Enter client name i.e. folder name in Config or empty for all configuration
 read CLIENTNAME
 
-
 if [[ -z "$CLIENTNAME" ]]; then
 	LISTCLIENT=$(ls -l ../../Config | egrep '^d' | awk '{print $9}')
 else
