@@ -1,0 +1,7 @@
+{
+   "AndroidSigningKeyAlias" : "MKSanJoseForARide",
+   "AndroidSigningKeyPassStorePass" : "mkSanJoseForARide0001.",
+   "AppName" : "ForARide",
+   "GoogleMapKey" : "",
+   "Package" : "com.apcurium.MK.SanJoseForARide"
+}
