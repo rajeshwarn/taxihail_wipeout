@@ -45,5 +45,7 @@ packages/
 Deployment/WebSite/*
 Deployment/Server/Package*/*
 Src/Server/apcurium.MK.Web/logs/*
+Config/TaxiHail/._AppInfo.json
+Src/Mobile/iOS/Assets/._poweredby.png
 syntax: regexp
 Deployment/Database/*

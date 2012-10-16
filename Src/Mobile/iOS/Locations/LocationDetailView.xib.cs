@@ -53,20 +53,18 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             base.ViewDidLoad();
             View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
-            
-//            var view = AppContext.Current.Controller.GetTitleView(null, Resources.LocationDetailViewTitle, true);
-            
+
             this.NavigationItem.HidesBackButton = false;
-			this.NavigationItem.TitleView = new TitleView(null, Resources.LocationDetailViewTitle, true);
+            this.NavigationItem.TitleView = new TitleView(null, Resources.GetValue("View_LocationDetail"), true);
             
             
             lblSaveAsAFavorite.Text = Resources.LocationDetailInstructionLabel;
             lblName.Text = Resources.LocationDetailGiveItANameLabel;
 
-            ((TextField)txtAddress).PaddingLeft =3;
-            ((TextField)txtAptNumber).PaddingLeft =3;
-            ((TextField)txtRingCode).PaddingLeft =3;
-            ((TextField)txtName).PaddingLeft =3;
+            ((TextField)txtAddress).PaddingLeft = 3;
+            ((TextField)txtAptNumber).PaddingLeft = 3;
+            ((TextField)txtRingCode).PaddingLeft = 3;
+            ((TextField)txtName).PaddingLeft = 3;
 
             txtAddress.Placeholder = Resources.LocationDetailStreetAddressPlaceholder;
             txtAptNumber.Placeholder = Resources.LocationDetailAptPlaceholder;
@@ -95,13 +93,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             AppButtons.FormatStandardButton((GradientButton)btnSave, Resources.SaveButton, AppStyle.ButtonColor.Green); 
 
-			((GradientButton)btnBook).SetTitle(Resources.BookItButton, UIControlState.Normal);
+            ((GradientButton)btnBook).SetTitle(Resources.BookItButton, UIControlState.Normal);
             AppButtons.FormatStandardButton((GradientButton)btnDelete, Resources.DeleteButton, AppStyle.ButtonColor.Red); 
 
             btnBook.TouchUpInside += BtnBookTouchUpInside;
             btnSave.TouchUpInside += BtnSaveTouchUpInside;
             btnDelete.TouchUpInside += BtnDeleteTouchUpInside;
-			btnDelete.Hidden = false;
+            btnDelete.Hidden = false;
 
         }
 
@@ -242,16 +240,14 @@ namespace apcurium.MK.Booking.Mobile.Client
             );
             
         }
-
-
     
         void BtnBookTouchUpInside(object sender, EventArgs e)
         {
             var order = new Order();
             order.PickupAddress = _data;
             order.Settings = AppContext.Current.LoggedUser.Settings;
-			InvokeOnMainThread( () => NavigationController.PopToRootViewController(true) );
-			InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new RebookRequested(this, order)));
+            InvokeOnMainThread(() => NavigationController.PopToRootViewController(true));
+            InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new RebookRequested(this, order)));
         }
 
         public void LoadData(Address data)
@@ -260,16 +256,14 @@ namespace apcurium.MK.Booking.Mobile.Client
             
             if (txtName != null)
             {
-                txtAddress.Text = _data.FullAddress;
-                txtAptNumber.Text = _data.Apartment;
-                txtRingCode.Text = _data.RingCode;
-                txtName.Text = _data.FriendlyName;
-                
-//                if (_data.Id.IsNullOrEmpty())
-//                {
-//                    btnSave.Frame = new System.Drawing.RectangleF(btnSave.Frame.X + 40, btnSave.Frame.Y, btnSave.Frame.Width, btnSave.Frame.Height);
-//                    btnCancel.Frame = new System.Drawing.RectangleF(btnCancel.Frame.X - 40, btnCancel.Frame.Y, btnCancel.Frame.Width, btnCancel.Frame.Height);
-//                }
+                if ((!_data.Id.IsNullOrEmpty()) || (_data.IsHistoric))
+                {
+                    txtAddress.Text = _data.FullAddress;
+                    txtAptNumber.Text = _data.Apartment;
+                    txtRingCode.Text = _data.RingCode;
+                    txtName.Text = _data.FriendlyName;
+                }
+
 
             }
         }

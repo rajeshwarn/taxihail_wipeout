@@ -91,6 +91,27 @@ namespace apcurium.MK.Booking.Mobile.Client
 			JsConfig.RegisterTypeForAot<PhoneType>();
 			JsConfig.RegisterTypeForAot<Contact>();
 
+
+
+            JsConfig.RegisterTypeForAot<apcurium.MK.Booking.Api.Contract.Resources.AppSetting>();
+
+
+            JsConfig.RegisterTypeForAot< apcurium.MK.Booking.Google.Resources.ResultStatus>();
+
+
+            JsConfig.RegisterTypeForAot<apcurium.MK.Booking.Google.Resources.AddressComponentType>();
+            JsConfig.RegisterTypeForAot<apcurium.MK.Booking.Google.Resources.AddressComponent>();
+            JsConfig.RegisterTypeForAot<apcurium.MK.Booking.Google.Resources.Bounds>();
+            JsConfig.RegisterTypeForAot<apcurium.MK.Booking.Google.Resources.DirectionResult>();
+            JsConfig.RegisterTypeForAot<apcurium.MK.Booking.Google.Resources.Distance>();
+            JsConfig.RegisterTypeForAot<apcurium.MK.Booking.Google.Resources.Duration>();
+            JsConfig.RegisterTypeForAot<apcurium.MK.Booking.Google.Resources.Event>();
+            JsConfig.RegisterTypeForAot<apcurium.MK.Booking.Google.Resources.Geometry>();
+            JsConfig.RegisterTypeForAot<apcurium.MK.Booking.Google.Resources.GeoObj>();
+            JsConfig.RegisterTypeForAot<apcurium.MK.Booking.Google.Resources.GeoResult>();
+
+
+
             if (!_callbackFromFB)
             {    
 				if( AppContext.Current.Controller != null && AppContext.Current.Controller.TopViewController is BookView )

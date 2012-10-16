@@ -18,10 +18,6 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 		{		
 		}
 
-//		[Export("initWithCoder:")]
-//		public TwoLinesAddressCell (NSCoder coder) : base(coder)
-//		{			
-//		}
 		
 		public TwoLinesAddressCell (TwoLinesAddressItem data, string cellIdentifier) : base( UITableViewCellStyle.Subtitle, new NSString(cellIdentifier)   )
 		{					

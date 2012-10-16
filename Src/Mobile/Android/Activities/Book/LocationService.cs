@@ -242,5 +242,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             return task;
 
         }
+
+
+        public Position LastKnownPosition
+        {
+            get { return new Position{ Latitude = _lastLocation.Latitude, Longitude = _lastLocation.Longitude } ;}  
+        }
     }
 }

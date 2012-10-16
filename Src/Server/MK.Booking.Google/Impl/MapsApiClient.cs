@@ -54,7 +54,9 @@ namespace apcurium.MK.Booking.Google.Impl
                 @params.Add("query",name);
             }
 
-            return client.Get<PlacesResponse>("json" + BuildQueryString(@params)).Results.ToArray();
+            var r = "json" + BuildQueryString(@params);
+            Console.WriteLine(r);
+            return client.Get<PlacesResponse>(r).Results.ToArray();
 
         }
 

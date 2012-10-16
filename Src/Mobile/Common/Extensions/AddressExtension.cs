@@ -19,6 +19,7 @@ namespace apcurium.MK.Booking.Mobile.Extensions
             copy.Latitude = instance.Latitude;
             copy.Apartment = instance.Apartment;
             copy.RingCode = instance.RingCode;
+            copy.IsHistoric = instance.IsHistoric;
 
             return copy;
         }
