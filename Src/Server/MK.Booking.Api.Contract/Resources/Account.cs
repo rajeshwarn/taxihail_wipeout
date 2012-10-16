@@ -22,5 +22,7 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
         public BookingSettings Settings { get; set; }
 
         public string Language { get; set; }
+
+        public bool IsAdmin { get; set; }
     }
 }

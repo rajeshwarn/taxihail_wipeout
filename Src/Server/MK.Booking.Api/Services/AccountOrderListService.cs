@@ -26,7 +26,6 @@ namespace apcurium.MK.Booking.Api.Services
             var orders = Dao.FindByAccountId(new Guid(session.UserAuthId)).OrderByDescending(c => c.CreatedDate).Select(read => new OrderMapper().ToResource(read)); 
             var o =orders.ToArray();
             return o;
-            
         }
     }
 }

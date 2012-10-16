@@ -1,42 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Text;
-
-using ServiceStack.ServiceInterface;
-using apcurium.MK.Booking.ReadModel.Query;
-using apcurium.MK.Booking.Api.Contract.Requests;
-using ServiceStack.ServiceInterface.Auth;
-using apcurium.MK.Booking.Api.Contract.Requests;
-using Infrastructure.Messaging;
 using System.Threading;
-using ServiceStack.ServiceHost;
-using ServiceStack.Common.Web;
-
+using Infrastructure.Messaging;
+using ServiceStack.ServiceInterface;
+using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.ReadModel.Query;
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class TestOnlyReqGetTestAccountService : RestServiceBase<TestOnlyReqGetTestAccount>
+    public class TestOnlyReqGetTestAdminAccountService: RestServiceBase<TestOnlyReqGetAdminTestAccount>
     {
 
         private ICommandBus _commandBus;
         private IAccountDao _dao;
 
-        public TestOnlyReqGetTestAccountService(IAccountDao dao, ICommandBus commandBus)
+        public TestOnlyReqGetTestAdminAccountService(IAccountDao dao, ICommandBus commandBus)
         {
             _dao = dao;
             _commandBus = commandBus;
         }
 
-        protected string TestUserEmail { get { return "apcurium.test{0}@apcurium.com"; } }
+        protected string TestUserEmail { get { return "apcurium.testadmin{0}@apcurium.com"; } }
 
         protected string TestUserPassword { get { return "password1"; } }
 
 
 
 
-        public override object OnGet(TestOnlyReqGetTestAccount request)
+        public override object OnGet(TestOnlyReqGetAdminTestAccount request)
         {
             //This method can only be used for unit test.  
             //if (!((RequestContext.EndpointAttributes & EndpointAttributes.Localhost) == EndpointAttributes.Localhost))
@@ -63,7 +56,7 @@ namespace apcurium.MK.Booking.Api.Services
                 IbsAccountId = 999,
                 ConfimationToken = Guid.NewGuid().ToString("N"),
                 Language = "en",
-                IsAdmin = false
+                IsAdmin = true
             };
 
             _commandBus.Send(command);

@@ -13,7 +13,8 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<AccountUpdated>,
         IEventHandler<BookingSettingsUpdated>,
         IEventHandler<AccountPasswordReset>,
-        IEventHandler<AccountPasswordUpdated>
+        IEventHandler<AccountPasswordUpdated>,
+        IEventHandler<AdminRightGranted>
     {
         private readonly Func<BookingDbContext> _contextFactory;
         private IConfigurationManager _configurationManager;
@@ -38,7 +39,8 @@ namespace apcurium.MK.Booking.EventHandlers
                                      IBSAccountId = @event.IbsAcccountId,
                                      FacebookId = @event.FacebookId,
                                      TwitterId = @event.TwitterId,
-                                     Language = @event.Language
+                                     Language = @event.Language,
+                                     IsAdmin = @event.IsAdmin
                                  };
 
 
@@ -110,6 +112,16 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 var account = context.Find<AccountDetail>(@event.SourceId);
                 account.Password = @event.Password;
+                context.Save(account);
+            }
+        }
+
+        public void Handle(AdminRightGranted @event)
+        {
+            using(var context= _contextFactory.Invoke())
+            {
+                var account = context.Find<AccountDetail>(@event.SourceId);
+                account.IsAdmin = true;
                 context.Save(account);
             }
         }
