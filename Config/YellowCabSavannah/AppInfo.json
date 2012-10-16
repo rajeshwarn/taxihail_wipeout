@@ -1,0 +1,7 @@
+{
+   "AndroidSigningKeyAlias" : "MKYellowCabSavannah",
+   "AndroidSigningKeyPassStorePass" : "mkYellowCabSavannah0001.",
+   "AppName" : "Yellow Cab of Savannah",
+   "GoogleMapKey" : "",
+   "Package" : "com.apcurium.MK.YellowCabSavannah"
+}
