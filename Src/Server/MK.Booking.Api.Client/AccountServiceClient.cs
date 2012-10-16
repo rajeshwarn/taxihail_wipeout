@@ -100,10 +100,5 @@ namespace apcurium.MK.Booking.Api.Client
             Client.Delete<string>(req);
         }
 
-        public void GrantAdminAccess(GrantAdminRightRequest request)
-        {
-            var req = string.Format("/account/grantadmin");
-            Client.Put<string>(req, request);
-        }
     }
 }
