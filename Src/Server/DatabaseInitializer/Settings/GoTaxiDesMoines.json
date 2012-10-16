@@ -13,7 +13,7 @@
    "GeoLoc.SearchFilter" : "{0},des moines,ia",
    "IBS.AutoDispatch" : "true",
    "IBS.WebServicesPassword" : "test",
-   "IBS.WebServicesUrl" : "http://drivelinq.dyndns-ip.com:6928/XDS_IASPI.DLL/soap/",
+   "IBS.WebServicesUrl" : "http://transiowa.dyndns.org:6928/XDS_IASPI.DLL/soap/",
    "IBS.WebServicesUserName" : "taxi",
    "IBS.DefaultAccountPassword" : "password",
    "IBS.ExcludedVehicleTypeId" : "22;21",

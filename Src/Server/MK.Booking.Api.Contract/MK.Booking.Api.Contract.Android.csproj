@@ -103,4 +103,7 @@
       <Name>MK.Common.Android</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Security\" />
+  </ItemGroup>
 </Project>
