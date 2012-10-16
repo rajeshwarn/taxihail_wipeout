@@ -14,7 +14,7 @@
 	"IBS.AutoDispatch" : "TRUE",
 	"IBS.DefaultAccountPassword" : "password",
 	"IBS.WebServicesPassword" : "test",
-	"IBS.WebServicesUrl" : http://stlouisccgate.dyndns.org:2555/IBSCab/IBSCab.dll/soap/",
+	"IBS.WebServicesUrl" : "http://stlouisccgate.dyndns.org:2555/IBSCab/IBSCab.dll/soap/",
 	"IBS.WebServicesUserName" : "taxi",
 	"IBS.ExcludedVehicleTypeId" : "22;21",
 	"Map.PlacesApiKey" : "AIzaSyAd-ezA2SeVTSNqsu6aMmAkdlP3UqEVPWE",
