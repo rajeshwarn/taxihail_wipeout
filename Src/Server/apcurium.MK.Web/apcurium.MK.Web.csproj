@@ -133,6 +133,15 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="admin\default.aspx" />
+    <Content Include="admin\routers\app.js" />
+    <Content Include="admin\scripts\app.xml" />
+    <Content Include="admin\scripts\assets.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="admin\taxi-hail-admin.js" />
+    <Content Include="admin\views\GrantAdminAccessView.js" />
+    <Content Include="admin\views\TemplatedView.js" />
     <Content Include="ApiDoc.aspx" />
     <Content Include="assets\bootstrap-datepicker\css\datepicker.css" />
     <Content Include="assets\bootstrap-datepicker\js\bootstrap-datepicker.js" />
@@ -205,8 +214,15 @@
     <Content Include="assets\js\spin.js" />
     <Content Include="assets\js\underscore.js" />
     <Content Include="channel.html" />
-    <Content Include="collections\AddressCollection.js" />
     <Content Include="collections\OrderCollection.js" />
+    <Content Include="common\collections\AddressCollection.js" />
+    <Content Include="common\models\Address.js" />
+    <Content Include="common\models\UserAccount.js" />
+    <Content Include="common\services\AuthService.js" />
+    <Content Include="common\services\GeocodingService.js" />
+    <Content Include="common\utils.js" />
+    <Content Include="common\views\LoginStatusView.js" />
+    <Content Include="common\views\TemplatedView.js" />
     <Content Include="Config.aspx" />
     <Content Include="default.aspx" />
     <Content Include="Global.asax" />
@@ -228,8 +244,6 @@
     <Content Include="models\OrderStatus.js" />
     <Content Include="models\ReferenceData.js" />
     <Content Include="models\Settings.js" />
-    <Content Include="models\UserAccount.js" />
-    <Content Include="models\Address.js" />
     <Content Include="models\Order.js" />
     <Content Include="routers\app.js" />
     <Content Include="scripts\assets.xml">
@@ -269,7 +283,6 @@
     <Content Include="themes\GoTaxiDesMoines\img\logo.png" />
     <Content Include="themes\TaxiHail\img\header-bg.png" />
     <Content Include="themes\TaxiHail\img\logo.png" />
-    <Content Include="utils.js" />
     <Content Include="views\AccountFavoritesAndHistoryListView.js" />
     <Content Include="views\AddFavoriteView.js" />
     <Content Include="views\AddressControlView.js" />
@@ -294,7 +307,6 @@
     <Content Include="views\ProfileView.js" />
     <Content Include="views\ResetPasswordView.js" />
     <Content Include="views\SignupView.js" />
-    <Content Include="views\TemplatedView.js" />
     <Content Include="views\UpdatePasswordView.js" />
     <Content Include="views\UserAccountView.js" />
     <Content Include="Web.config">
@@ -317,6 +329,13 @@
     <Content Include="localization\OrderItem.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="admin\default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ApiDoc.aspx.cs">
       <DependentUpon>ApiDoc.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -606,6 +625,22 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="themes\SanJoseForARide\less\variables.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="admin\collections\" />
+    <Folder Include="admin\models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="admin\templates\GrantAdminAccess.handlebars" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="admin\localization\GrantAdminAccess.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="admin\localization\Global.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="common\templates\LoginStatus.handlebars" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

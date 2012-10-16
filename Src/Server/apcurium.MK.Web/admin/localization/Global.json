@@ -1,0 +1,4 @@
+﻿{
+	"grantAdminSuccess" : "User has correctly been granted with administrators privilege" ,
+	"grantAdminError" : "Error ! check that mail is correct"
+}
