@@ -1,0 +1,276 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="apcurium.MK.Booking.Api.Contract.ContractDocument" Collapsed="true">
+    <Position X="7" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ContractDocument.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="apcurium.MK.Booking.Api.Contract.ContractDocumentReport" Collapsed="true">
+    <Position X="8.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAAAABAAAAAAAAAAAAAABAAAAAAA=</HashCode>
+      <FileName>ContractDocument.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="apcurium.MK.Booking.Api.Contract.Requests.AccountOrderListRequest" Collapsed="true">
+    <Position X="16" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Requests\AccountOrderListRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="apcurium.MK.Booking.Api.Contract.Requests.Addresses" Collapsed="true">
+    <Position X="10.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Requests\Addresses.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="apcurium.MK.Booking.Api.Contract.Requests.AddressHistoryRequest" Collapsed="true">
+    <Position X="11.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Requests\AddressHistoryRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="apcurium.MK.Booking.Api.Contract.Requests.ApplicationInfoRequest" Collapsed="true">
+    <Position X="3.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Requests\ApplicationInfoRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="apcurium.MK.Booking.Api.Contract.Requests.BookingSettingsRequest">
+    <Position X="0.5" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAAABAhAAAAAQAAAgAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Requests\BookingSettingsRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="apcurium.MK.Booking.Api.Contract.Requests.CancelOrder" Collapsed="true">
+    <Position X="7.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Requests\CancelOrder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="apcurium.MK.Booking.Api.Contract.Requests.ConfigurationResetRequest">
+    <Position X="8.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Requests\ConfigurationResetRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="apcurium.MK.Booking.Api.Contract.Requests.ConfigurationsRequest" Collapsed="true">
+    <Position X="2.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Requests\ConfigurationsRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="apcurium.MK.Booking.Api.Contract.Requests.ConfirmAccountRequest" Collapsed="true">
+    <Position X="5.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAgAAAAA=</HashCode>
+      <FileName>Requests\ConfirmAccountRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="apcurium.MK.Booking.Api.Contract.Requests.CreateOrder">
+    <Position X="6.5" Y="2.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAQAAAAAAAAACAAAAAAAAgABAAAEAAAA=</HashCode>
+      <FileName>Requests\CreateOrder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="apcurium.MK.Booking.Api.Contract.Requests.CurrentAccount" Collapsed="true">
+    <Position X="19.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Requests\CurrentAccount.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="apcurium.MK.Booking.Api.Contract.Requests.DefaultGeoLocationRequest" Collapsed="true">
+    <Position X="3.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Requests\DefaultGeoLocationRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="apcurium.MK.Booking.Api.Contract.Requests.DirectionsRequest" Collapsed="true">
+    <Position X="9.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAABAIAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Requests\DirectionsRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="apcurium.MK.Booking.Api.Contract.Requests.GeocodingRequest">
+    <Position X="17.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAACAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Requests\GeocodingRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="apcurium.MK.Booking.Api.Contract.Requests.NearbyPlacesRequest" Collapsed="true">
+    <Position X="20.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAIAAAAACAAAAAAAABAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Requests\NearbyPlacesRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="apcurium.MK.Booking.Api.Contract.Requests.OrderRequest" Collapsed="true">
+    <Position X="13.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Requests\OrderRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="apcurium.MK.Booking.Api.Contract.Requests.OrderStatusRequest" Collapsed="true">
+    <Position X="15.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Requests\OrderStatusRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="apcurium.MK.Booking.Api.Contract.Requests.PlaceDetailRequest" Collapsed="true">
+    <Position X="5.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Requests\PlaceDetailRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="apcurium.MK.Booking.Api.Contract.Requests.RegisterAccount">
+    <Position X="11.5" Y="0.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACCAAAAAAAkAAAAQAAAAAAABCAAAAIAAAAAA=</HashCode>
+      <FileName>Requests\RegisterAccount.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="apcurium.MK.Booking.Api.Contract.Requests.ResetPassword" Collapsed="true">
+    <Position X="20.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>Requests\ResetPassword.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="apcurium.MK.Booking.Api.Contract.Requests.SaveAddress">
+    <Position X="7" Y="8.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAEAAAQAAAAAIAAAAAAAAAAAEAAAQQAAAAAQ=</HashCode>
+      <FileName>Requests\SaveAddress.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="apcurium.MK.Booking.Api.Contract.Requests.SearchLocationsRequest" Collapsed="true">
+    <Position X="15.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAACAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Requests\SearchLocationsRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="apcurium.MK.Booking.Api.Contract.Requests.TestOnlyReqGetTestAccount" Collapsed="true">
+    <Position X="18" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Requests\TestOnlyReqGetTestAccount.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="apcurium.MK.Booking.Api.Contract.Requests.UpdatePassword">
+    <Position X="21.5" Y="2.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAhAAAAAAAAAAAAAAAAABAAAAAAA=</HashCode>
+      <FileName>Requests\UpdatePassword.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="apcurium.MK.Booking.Api.Contract.Resources.Account">
+    <Position X="3.5" Y="1.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AEACAAAACCAAAAAAAEAAAAQAAAAAAABAgAAAIAAAAAA=</HashCode>
+      <FileName>Resources\Account.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="apcurium.MK.Booking.Api.Contract.Resources.ApplicationInfo">
+    <Position X="14" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>Resources\ApplicationInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="apcurium.MK.Booking.Api.Contract.Resources.AppSetting">
+    <Position X="5.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Resources\AppSetting.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="apcurium.MK.Booking.Api.Contract.Resources.BookingSettings">
+    <Position X="19.5" Y="11" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAAABAhAAAAAQAAAgAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Resources\BookingSettings.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="apcurium.MK.Booking.Api.Contract.Resources.DirectionInfo">
+    <Position X="18" Y="4.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAABAABAQAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAA=</HashCode>
+      <FileName>Resources\DirectionInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="apcurium.MK.Booking.Api.Contract.Resources.Order">
+    <Position X="16" Y="9.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAACACCAAAAAAQAAACAABAACAAAAABAAggBAAAEAAAA=</HashCode>
+      <FileName>Resources\Order.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="DropOffAddress" />
+      <Property Name="PickupAddress" />
+      <Property Name="Settings" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="apcurium.MK.Booking.Api.Contract.Resources.OrderStatusDetail">
+    <Position X="11.5" Y="7.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>EAgAACAEAAAAAEAAAAAAAAAQAAAAAAABAAAAAACAAAA=</HashCode>
+      <FileName>Resources\OrderStatusDetail.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="apcurium.MK.Booking.Api.Contract.Resources.ReferenceData">
+    <Position X="9.25" Y="11" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAgABAAAAAAAAAAAAAAAAACAAgAAAAAAAAA=</HashCode>
+      <FileName>Resources\ReferenceData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="apcurium.MK.Common.Entity.Address">
+    <Position X="19.5" Y="6.75" Width="3" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="apcurium.MK.Common.Entity.ListItem">
+    <Position X="12.5" Y="11" Width="3" />
+    <TypeIdentifier />
+  </Class>
+  <Interface Name="System.Collections.Generic.IList&lt;T&gt;" Collapsed="true">
+    <Position X="14.75" Y="8" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Enum Name="apcurium.MK.Booking.Api.Contract.Resources.ErrorCode" Collapsed="true">
+    <Position X="3.5" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAQwAACAAAAAAAAAAAACAAAAAIAAAQiBAQAAAAA=</HashCode>
+      <FileName>Resources\ErrorCode.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="apcurium.MK.Booking.Api.Contract.Resources.OrderStatus" Collapsed="true">
+    <Position X="5.25" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAgAAAAAAAAAAAAAQAAAAAIAAAABA=</HashCode>
+      <FileName>Resources\OrderStatus.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
