@@ -79,6 +79,7 @@
     <Compile Include="Requests\UpdatePassword.cs" />
     <Compile Include="Resources\Account.cs" />
     <Compile Include="Resources\AddressList.cs" />
+    <Compile Include="Resources\AppSetting.cs" />
     <Compile Include="Resources\BookingSettings.cs" />
     <Compile Include="Resources\DirectionInfo.cs" />
     <Compile Include="Resources\ErrorCode.cs" />

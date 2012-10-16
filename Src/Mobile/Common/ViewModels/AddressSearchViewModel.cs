@@ -29,7 +29,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _ownerId = ownerId;
             _googleService = googleService;
             _appResource = appResource;
-            TinyIoCContainer.Current.Resolve<IUserPositionService>().Refresh();
             SearchViewModelSelected = TinyIoCContainer.Current.Resolve<AddressSearchByGeoCodingViewModel>();
             Criteria = search;
             SearchSelected = true;

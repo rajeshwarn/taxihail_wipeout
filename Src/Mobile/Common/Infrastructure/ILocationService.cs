@@ -12,6 +12,8 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
         void Initialize();
 
         Task<Position> GetPositionAsync(int timeout, float accuracy, CancellationToken cancelToken);
+
+        Position LastKnownPosition {get;}
     }
 
     public class Position

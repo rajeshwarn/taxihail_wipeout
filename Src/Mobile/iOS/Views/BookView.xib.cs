@@ -326,10 +326,14 @@ namespace apcurium.MK.Booking.Mobile.Client
                     bi.Id = Guid.NewGuid();
 
                     var orderStatus = service.CreateOrder(bi);
+                    if ( orderStatus != null )
+                    {
                     orderStatus.OrderId = bi.Id;
 
-                    if (orderStatus.IBSOrderId.HasValue)
+                    if ( orderStatus.IBSOrderId.HasValue)
                     {
+
+
                         AppContext.Current.LastOrder = orderStatus.OrderId;
 
                         var accountId = TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount.Id;
@@ -340,7 +344,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 						LoadStatusView(new Order { Id = bi.Id, IBSOrderId = orderStatus.IBSOrderId,  CreatedDate = DateTime.Now, DropOffAddress = bi.DropOffAddress, PickupAddress  = bi.PickupAddress , Settings = bi.Settings   }, orderStatus, false);
 
-                    }   
+                    }
+                    }
                 }
                 finally
                 {

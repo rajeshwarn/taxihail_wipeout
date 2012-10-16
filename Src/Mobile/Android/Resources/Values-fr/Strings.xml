@@ -231,7 +231,7 @@
   <string name="SaveAddressEmptyFieldMessage">Données manquantes, le nom et l\'addresse sont requis.</string>
   <string name="SaveAddressEmptyFieldTitle">Nom manquant</string>
   <string name="OrderHistoryListTitle">Commande #{0}</string>
-  <string name="GoogleMapKey">0XEY3WqKVmJMzXNRJfhbH1yM6RkpBMOaZWUoMAw</string>
+  <string name="GoogleMapKey">0XEY3WqKVmJPBRHcuYAiXmD9llX1jZHBuLpgKDw</string>
   <string name="ServiceErrorCallTitle">Erreur du serveur</string>
   <string name="ServiceErrorDefaultMessage">Une erreur s\'est produite, veuillez recommencer.</string>
   <string name="ServiceErrorCreateOrder_CannotCreateInIbs">Impossible de passer votre commande.</string>

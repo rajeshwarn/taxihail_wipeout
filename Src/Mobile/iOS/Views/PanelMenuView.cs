@@ -29,7 +29,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public PanelMenuView(UIView viewToAnimate, UINavigationController navController) 
 			: base(new MvxShowViewModelRequest<PanelViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
 		{
-			_navController = navController;
+ 			_navController = navController;
 			_viewToAnimate = viewToAnimate;
 		}
 		
