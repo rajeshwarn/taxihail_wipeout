@@ -250,7 +250,7 @@ namespace apcurium.MK.Web.Tests
             CreateAndAuthenticateTestAdminAccount();
             sut = new AdministrationServiceClient(BaseUrl, SessionId);
             
-            //Assert.DoesNotThrow(() => sut.GrantAdminAccess(new GrantAdminRightRequest() { AccountEmail = fbAccount.Email }));
+            Assert.DoesNotThrow(() => sut.GrantAdminAccess(new GrantAdminRightRequest() { AccountEmail = fbAccount.Email }));
 
         }
 
@@ -265,7 +265,7 @@ namespace apcurium.MK.Web.Tests
             var newAccount = asc.CreateTestAccount();
             new AuthServiceClient(BaseUrl, SessionId).Authenticate(newAccount.Email, TestAccountPassword);
              sut = new AdministrationServiceClient(BaseUrl, SessionId);
-            //Assert.Throws<WebServiceException>(() => sut.GrantAdminAccess(new GrantAdminRightRequest() {AccountEmail = fbAccount.Email}));
+            Assert.Throws<WebServiceException>(() => sut.GrantAdminAccess(new GrantAdminRightRequest() {AccountEmail = fbAccount.Email}));
 
         }
 
