@@ -62,7 +62,8 @@ namespace apcurium.MK.Booking.Api.Services
                 Phone = "123456",
                 IbsAccountId = 999,
                 ConfimationToken = Guid.NewGuid().ToString("N"),
-                Language = "en"
+                Language = "en",
+                IsAdmin = false
             };
 
             _commandBus.Send(command);

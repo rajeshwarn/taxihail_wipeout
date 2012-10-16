@@ -86,7 +86,15 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             Assert.AreEqual(true, service.IsValid("Yop", _accountId.ToString(), @event.Password));
         }
 
-       
+        [Test]
+        public void when_granting_admin_rights_successfully()
+        {
+            this.sut.When(new GrantAdminRight() { AccountId = _accountId });
 
+            var @event = sut.ThenHasSingle<AdminRightGranted>();
+
+            Assert.AreEqual(_accountId, @event.SourceId);
+
+        }
     }
 }

@@ -56,6 +56,7 @@
 	"Settings Changed" : "Settings Changed",
 	"CallForPrice" : "Call for price",
 	"NotSpecified" : "Not Specified",
-	"Password updated." : "The password was updated successfully"
+	"Password updated." : "The password was updated successfully",
+	"Now" : "Now"
 
 }

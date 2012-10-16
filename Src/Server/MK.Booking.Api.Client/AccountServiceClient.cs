@@ -33,6 +33,12 @@ namespace apcurium.MK.Booking.Api.Client
             return result;
         }
 
+        public Account CreateTestAdminAccount()
+        {
+            var result = Client.Get<Account>("/account/test/admin/" + Guid.NewGuid());
+            return result;
+        }
+
         public void RegisterAccount(RegisterAccount account)
         {
             Client.Post<Account>("/account/register", account);         
@@ -92,6 +98,12 @@ namespace apcurium.MK.Booking.Api.Client
         {
             var req = string.Format("/account/addresses/history/{0}", addressId);
             Client.Delete<string>(req);
+        }
+
+        public void GrantAdminAccess(GrantAdminRightRequest request)
+        {
+            var req = string.Format("/account/grantadmin");
+            Client.Put<string>(req, request);
         }
     }
 }

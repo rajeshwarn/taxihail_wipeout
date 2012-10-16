@@ -154,6 +154,7 @@
     <Content Include="assets\bootstrap\js\bootstrap-tooltip.js" />
     <Content Include="assets\bootstrap\js\bootstrap-transition.js" />
     <Content Include="assets\bootstrap\js\bootstrap-typeahead.js" />
+    <Content Include="assets\img\facebook-button.jpg" />
     <Content Include="assets\js\json2.js" />
     <Content Include="assets\js\modernizr.min.js" />
     <Content Include="assets\js\persist-min.js" />
@@ -250,8 +251,32 @@
     <Content Include="themes\CheckerYellowCabPalmetto\img\header-bg.png" />
     <Content Include="themes\CheckerYellowCabPalmetto\img\location.png" />
     <Content Include="themes\CheckerYellowCabPalmetto\img\logo.png" />
+    <Content Include="themes\BurlingtonTaxiOntario\img\cancel-icon.png" />
+    <Content Include="themes\BurlingtonTaxiOntario\img\header-bg.png" />
+    <Content Include="themes\BurlingtonTaxiOntario\img\location.png" />
+    <Content Include="themes\BurlingtonTaxiOntario\img\logo.png" />
+    <Content Include="themes\SanJoseForARide\img\cancel-icon.png" />
+    <Content Include="themes\SanJoseForARide\img\header-bg.png" />
+    <Content Include="themes\SanJoseForARide\img\location.png" />
+    <Content Include="themes\SanJoseForARide\img\logo.png" />
+    <Content Include="themes\StLouisTaxi\img\cancel-icon.png" />
+    <Content Include="themes\StLouisTaxi\img\header-bg.png" />
+    <Content Include="themes\StLouisTaxi\img\location.png" />
+    <Content Include="themes\StLouisTaxi\img\Logo.png" />
+    <Content Include="themes\StyleTransportation\img\cancel-icon.png" />
+    <Content Include="themes\StyleTransportation\img\header-bg.png" />
+    <Content Include="themes\StyleTransportation\img\location.png" />
+    <Content Include="themes\StyleTransportation\img\logo.png" />
+    <Content Include="themes\GoTaxiDesMoines\img\cancel-icon.png" />
+    <Content Include="themes\GoTaxiDesMoines\img\header-bg.png" />
+    <Content Include="themes\GoTaxiDesMoines\img\location.png" />
+    <Content Include="themes\GoTaxiDesMoines\img\logo.png" />
     <Content Include="themes\TaxiHail\img\header-bg.png" />
     <Content Include="themes\TaxiHail\img\logo.png" />
+    <Content Include="themes\YellowCabSavannah\img\cancel-icon.png" />
+    <Content Include="themes\YellowCabSavannah\img\header-bg.png" />
+    <Content Include="themes\YellowCabSavannah\img\location.png" />
+    <Content Include="themes\YellowCabSavannah\img\Logo.png" />
     <Content Include="utils.js" />
     <Content Include="views\AccountFavoritesAndHistoryListView.js" />
     <Content Include="views\AddFavoriteView.js" />
@@ -445,7 +470,9 @@
     <Content Include="assets\less\TaxiHail-responsive.less" />
     <Content Include="assets\less\TaxiHail.less" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="themes\BurlingtonTaxiOntario\less\combined-responsive.less" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="localization\Home.json" />
     <Content Include="localization\Global.json" />
@@ -521,14 +548,18 @@
     <Content Include="templates\AddressControl.handlebars" />
     <Content Include="templates\AddressItem.handlebars" />
     <Content Include="templates\AddressSelection.handlebars" />
-    <Content Include="templates\Book.handlebars" />
+    <Content Include="templates\Book.handlebars">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="templates\BookingConfirmation.handlebars" />
     <Content Include="templates\BookingStatus.handlebars" />
     <Content Include="templates\BookLater.handlebars" />
     <Content Include="templates\BootstrapConfirmation.handlebars" />
     <Content Include="templates\FavoriteDetails.handlebars" />
     <Content Include="templates\Favorites.handlebars" />
-    <Content Include="templates\Login.handlebars" />
+    <Content Include="templates\Login.handlebars">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="templates\LoginStatus.handlebars" />
     <Content Include="templates\OrderHistory.handlebars" />
     <Content Include="templates\OrderHistoryDetail.handlebars" />
@@ -538,6 +569,61 @@
     <Content Include="templates\Signup.handlebars" />
     <Content Include="templates\UpdatePassword.handlebars" />
     <Content Include="templates\UserAccount.handlebars" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\BurlingtonTaxiOntario\less\combined.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\BurlingtonTaxiOntario\less\style.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\BurlingtonTaxiOntario\less\variables.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\StyleTransportation\less\combined-responsive.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\GoTaxiDesMoines\less\combined-responsive.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\GoTaxiDesMoines\less\combined.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\GoTaxiDesMoines\less\style.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\GoTaxiDesMoines\less\variables.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\StyleTransportation\less\combined.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\StyleTransportation\less\style.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\StyleTransportation\less\variables.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\SanJoseForARide\less\combined-responsive.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\SanJoseForARide\less\combined.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\SanJoseForARide\less\style.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\SanJoseForARide\less\variables.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\StLouisTaxi\less\combined-responsive.less" />
+    <Content Include="themes\StLouisTaxi\less\combined.less" />
+    <Content Include="themes\StLouisTaxi\less\style.less" />
+    <Content Include="themes\StLouisTaxi\less\variables.less" />
+    <Content Include="themes\YellowCabSavannah\less\combined-responsive.less" />
+    <Content Include="themes\YellowCabSavannah\less\combined.less" />
+    <Content Include="themes\YellowCabSavannah\less\style.less" />
+    <Content Include="themes\YellowCabSavannah\less\variables.less" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
