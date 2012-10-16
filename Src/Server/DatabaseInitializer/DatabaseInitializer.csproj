@@ -145,7 +145,7 @@
     <Content Include="Settings\CheckerYellowCabPalmetto.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Settings\BurlingtonTaxi.json">
+    <Content Include="Settings\BurlingtonTaxiOntario.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Settings\GoTaxiDesMoines.json">
