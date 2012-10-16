@@ -27,7 +27,7 @@ namespace apcurium.MK.Web.Optimization
 
         public void ProcessRequest(HttpContext context)
         {
-            var directory = Path.GetDirectoryName(context.Request.FilePath);
+            var directory = Path.GetDirectoryName( HostingEnvironment.MapPath(context.Request.Url.PathAndQuery));
             var source = Path.GetFileNameWithoutExtension(context.Request.FilePath);
             source = source.Replace("minified.", "");
             context.Response.AddHeader("Content-Type", "application/javascript");
