@@ -245,10 +245,11 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void when_granting_admin_access()
         {
-            var sut = new AccountServiceClient(BaseUrl, SessionId);
+            var sut = new AdministrationServiceClient(BaseUrl, SessionId);
             var fbAccount = this.GetNewFacebookAccount();
             CreateAndAuthenticateTestAdminAccount();
-            sut = new AccountServiceClient(BaseUrl, SessionId);
+            sut = new AdministrationServiceClient(BaseUrl, SessionId);
+            
             Assert.DoesNotThrow(() => sut.GrantAdminAccess(new GrantAdminRightRequest() { AccountEmail = fbAccount.Email }));
 
         }
@@ -256,13 +257,14 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void when_granting_admin_access_with_incorrect_rights()
         {
-            var sut = new AccountServiceClient(BaseUrl, SessionId);
+            var sut = new AdministrationServiceClient(BaseUrl, SessionId);
+            var asc = new AccountServiceClient(BaseUrl, null);
 
             var fbAccount = this.GetNewFacebookAccount();
 
-            var newAccount = sut.CreateTestAccount();
+            var newAccount = asc.CreateTestAccount();
             new AuthServiceClient(BaseUrl, SessionId).Authenticate(newAccount.Email, TestAccountPassword);
-
+             sut = new AdministrationServiceClient(BaseUrl, SessionId);
             Assert.Throws<WebServiceException>(() => sut.GrantAdminAccess(new GrantAdminRightRequest() {AccountEmail = fbAccount.Email}));
 
         }

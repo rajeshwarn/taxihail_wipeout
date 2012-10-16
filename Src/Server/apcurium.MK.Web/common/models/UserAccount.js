@@ -2,7 +2,7 @@
 
     TaxiHail.UserAccount = Backbone.Model.extend({
         
-        url: 'api/account',
+        url: TaxiHail.parameters.apiRoot+'/account',
 
         updatePassword: function(currentPassword, newPassword) {
             return $.post('api/accounts/' + this.id + '/updatePassword', {
