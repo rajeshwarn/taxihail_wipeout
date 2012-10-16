@@ -262,7 +262,7 @@
     <Content Include="themes\StLouisTaxi\img\cancel-icon.png" />
     <Content Include="themes\StLouisTaxi\img\header-bg.png" />
     <Content Include="themes\StLouisTaxi\img\location.png" />
-    <Content Include="themes\StLouisTaxi\img\logo.png" />
+    <Content Include="themes\StLouisTaxi\img\Logo.png" />
     <Content Include="themes\StyleTransportation\img\cancel-icon.png" />
     <Content Include="themes\StyleTransportation\img\header-bg.png" />
     <Content Include="themes\StyleTransportation\img\location.png" />
@@ -276,7 +276,7 @@
     <Content Include="themes\YellowCabSavannah\img\cancel-icon.png" />
     <Content Include="themes\YellowCabSavannah\img\header-bg.png" />
     <Content Include="themes\YellowCabSavannah\img\location.png" />
-    <Content Include="themes\YellowCabSavannah\img\logo.png" />
+    <Content Include="themes\YellowCabSavannah\img\Logo.png" />
     <Content Include="utils.js" />
     <Content Include="views\AccountFavoritesAndHistoryListView.js" />
     <Content Include="views\AddFavoriteView.js" />
