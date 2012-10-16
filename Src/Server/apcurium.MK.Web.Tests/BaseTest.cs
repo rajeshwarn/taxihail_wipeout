@@ -19,6 +19,8 @@ namespace apcurium.MK.Web.Tests
         //protected string BaseUrl { get { return "http://demo.taxihail.biz/Dev/api/"; } }
         //
         protected Account TestAccount { get; set; }
+        protected Account TestAdminAccount { get; set; }
+        protected string TestAdminAccountPassword { get { return "password1"; } }
         protected string TestAccountPassword { get { return "password1"; } }
         protected string SessionId { get; set; }
 
@@ -33,7 +35,6 @@ namespace apcurium.MK.Web.Tests
         public virtual void TestFixtureSetup()
         {
             _appHost.Start(BaseUrl);
-
             var sut = new AccountServiceClient(BaseUrl, null);
             TestAccount = sut.GetTestAccount(0);
 
@@ -64,7 +65,15 @@ namespace apcurium.MK.Web.Tests
             return newAccount;
         }
 
+        protected Account CreateAndAuthenticateTestAdminAccount()
+        {
+            var newAccount = new AccountServiceClient(BaseUrl, null).CreateTestAdminAccount();
+            var authResponse = new AuthServiceClient(BaseUrl, null).Authenticate(newAccount.Email, TestAccountPassword);
+            SessionId = authResponse.SessionId;
+            return newAccount;
+        }
         
+
         protected Account GetNewFacebookAccount()
         {
             var newAccount = new RegisterAccount { AccountId = Guid.NewGuid(), Phone = "5146543024", Email = GetTempEmail(), Name = "First Name Test", FacebookId = Guid.NewGuid().ToString(), Language = "en" };

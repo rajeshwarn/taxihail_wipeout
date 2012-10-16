@@ -24,7 +24,10 @@ namespace apcurium.MK.Booking.Domain
             base.Handles<BookingSettingsUpdated>(OnBookingSettingsUpdated);
             base.Handles<AccountPasswordUpdated>(OnAccountPasswordUpdated);
             base.Handles<AddressRemovedFromHistory>(OnAddressRemoved);
+            base.Handles<AdminRightGranted>(OnAdminRightGranted);
         }
+
+        
 
         public Account(Guid id, IEnumerable<IVersionedEvent> history)
             : this(id)
@@ -32,7 +35,7 @@ namespace apcurium.MK.Booking.Domain
             this.LoadFrom(history);
         }
 
-        public Account(Guid id, string name,string phone, string email, byte[] password, int ibsAccountId, string confirmationToken, string language)
+        public Account(Guid id, string name,string phone, string email, byte[] password, int ibsAccountId, string confirmationToken, string language, bool isAdmin=false)
             : this(id)
         {
             if (Params.Get(name, phone, email, confirmationToken).Any(p => p.IsNullOrEmpty())
@@ -49,11 +52,12 @@ namespace apcurium.MK.Booking.Domain
                 Password = password,
                 IbsAcccountId = ibsAccountId,
                 ConfirmationToken = confirmationToken,
-                Language = language
+                Language = language,
+                IsAdmin = isAdmin
             });
         }
 
-        public Account(Guid id, string name, string phone, string email, int ibsAccountId, string facebookId = null, string twitterId = null, string language = null)
+        public Account(Guid id, string name, string phone, string email, int ibsAccountId, string facebookId = null, string twitterId = null, string language = null, bool isAdmin = false)
             : this(id)
         {
             if (Params.Get(name, phone, email).Any(p => p.IsNullOrEmpty())
@@ -70,7 +74,8 @@ namespace apcurium.MK.Booking.Domain
                 IbsAcccountId = ibsAccountId,
                 TwitterId = twitterId,
                 FacebookId = facebookId,
-                Language = language
+                Language = language,
+                IsAdmin = isAdmin
             });
         }
 
@@ -187,6 +192,11 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
+        public void GrantAdminRight()
+        {
+            this.Update(new AdminRightGranted());
+        }
+
         private void OnAccountRegistered(AccountRegistered @event)
         {
             _confirmationToken = @event.ConfirmationToken;
@@ -239,6 +249,10 @@ namespace apcurium.MK.Booking.Domain
 
         }
 
+        private void OnAdminRightGranted(AdminRightGranted obj)
+        {
+        }
+
 
         private static void ValidateFavoriteAddress(string friendlyName, string fullAddress, double latitude, double longitude)
         {
@@ -262,5 +276,7 @@ namespace apcurium.MK.Booking.Domain
         {
             this.Update(new AddressRemovedFromHistory() { AddressId = addressId });
         }
+
+        
     }
 }

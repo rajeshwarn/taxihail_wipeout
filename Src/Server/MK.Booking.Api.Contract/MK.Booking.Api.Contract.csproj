@@ -86,6 +86,7 @@
     <Compile Include="Requests\DefaultGeoLocationRequest.cs" />
     <Compile Include="Requests\DirectionsRequest.cs" />
     <Compile Include="Requests\GeocodingRequest.cs" />
+    <Compile Include="Requests\GrantAdminRightRequest.cs" />
     <Compile Include="Requests\NearbyPlacesRequest.cs" />
     <Compile Include="Requests\OrderRequest.cs" />
     <Compile Include="Requests\OrderStatusRequest.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="Requests\Addresses.cs" />
     <Compile Include="Requests\RegisterAccount.cs" />
     <Compile Include="Requests\SearchLocationsRequest.cs" />
+    <Compile Include="Requests\TestOnlyReqGetAdminTestAccount.cs" />
     <Compile Include="Requests\TestOnlyReqGetTestAccount.cs" />
     <Compile Include="Requests\UpdatePassword.cs" />
     <Compile Include="Resources\Account.cs" />
@@ -110,8 +112,13 @@
     <Compile Include="Resources\OrderStatusDetail.cs" />
     <Compile Include="Resources\OrderStatus.cs" />
     <Compile Include="Resources\ReferenceData.cs" />
+    <Compile Include="Security\AuthorizationRequiredAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MK.Booking\MK.Booking\MK.Booking.csproj">
+      <Project>{baf90740-9220-4bb0-b857-1e5927e464e9}</Project>
+      <Name>MK.Booking %28MK.Booking\MK.Booking%29</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MK.Common\MK.Common.csproj">
       <Project>{65033050-1D55-465A-A772-F3192F9E2428}</Project>
       <Name>MK.Common</Name>

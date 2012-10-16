@@ -51,6 +51,7 @@
     <Compile Include="CancelOrder.cs" />
     <Compile Include="CompleteOrder.cs" />
     <Compile Include="ConfirmAccount.cs" />
+    <Compile Include="GrantAdminRight.cs" />
     <Compile Include="RemoveAddressFromHistory.cs" />
     <Compile Include="RemoveOrderFromHistory.cs" />
     <Compile Include="SendAccountConfirmationEmail.cs" />

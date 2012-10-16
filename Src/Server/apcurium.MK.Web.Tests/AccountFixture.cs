@@ -242,6 +242,31 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(404, exception.StatusCode);
         }
 
+        [Test]
+        public void when_granting_admin_access()
+        {
+            var sut = new AccountServiceClient(BaseUrl, SessionId);
+            var fbAccount = this.GetNewFacebookAccount();
+            CreateAndAuthenticateTestAdminAccount();
+            sut = new AccountServiceClient(BaseUrl, SessionId);
+            Assert.DoesNotThrow(() => sut.GrantAdminAccess(new GrantAdminRightRequest() { AccountEmail = fbAccount.Email }));
+
+        }
+
+        [Test]
+        public void when_granting_admin_access_with_incorrect_rights()
+        {
+            var sut = new AccountServiceClient(BaseUrl, SessionId);
+
+            var fbAccount = this.GetNewFacebookAccount();
+
+            var newAccount = sut.CreateTestAccount();
+            new AuthServiceClient(BaseUrl, SessionId).Authenticate(newAccount.Email, TestAccountPassword);
+
+            Assert.Throws<WebServiceException>(() => sut.GrantAdminAccess(new GrantAdminRightRequest() {AccountEmail = fbAccount.Email}));
+
+        }
+
 
         [Test]
         public void UpdateBookingSettingsAccountTest()
