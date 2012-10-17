@@ -551,6 +551,18 @@ namespace apcurium.MK.Booking.Mobile.Client
 			get { return GetValue ("HistoryViewStatusButton"); }
 		}
 
+		public static string HistoryViewSendReceiptButton {
+			get { return GetValue ("HistoryViewSendReceiptButton"); }
+		}
+
+		public static string HistoryViewSendReceiptSuccess {
+			get { return GetValue ("HistoryViewSendReceiptSuccess"); }
+		}
+
+		public static string HistoryViewSendReceiptError {
+			get { return GetValue ("HistoryViewSendReceiptError"); }
+		}
+
 		public static string LoginForgotPasswordButton {
 			get { return GetValue ("LoginForgotPasswordButton"); }
 		}

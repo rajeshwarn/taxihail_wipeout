@@ -7,7 +7,7 @@
    "ErrorLogEnabled" : "false",
    "FacebookAppId" : "",
    "FacebookEnabled" : "false",
-   "ServiceUrl" : "http://services.taxihail.com/AtlantaCheckerCab/api/",
+   "ServiceUrl" : "http://services.taxihail.com/TaxiHailDemo/api/",
    "SiteUrl" : "http://www.atlantacheckercab.com/",
    "SupportEmail" : "rickhewatt@atlantacheckercab.com",
    "TwitterAccessTokenUrl" : "",

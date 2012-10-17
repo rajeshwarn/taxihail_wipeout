@@ -86,6 +86,7 @@
     <Compile Include="BaseDTO.cs" />
     <Compile Include="Resources\ApplicationInfo.cs" />
     <Compile Include="Resources\AppSetting.cs" />
+    <Compile Include="Requests\SendReceipt.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MK.Common\MK.Common.iOS.csproj">

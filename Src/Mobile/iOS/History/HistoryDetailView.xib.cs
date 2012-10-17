@@ -67,14 +67,16 @@ namespace apcurium.MK.Booking.Mobile.Client
             
             btnCancel.SetTitle(Resources.StatusActionCancelButton, UIControlState.Normal);
             btnStatus.SetTitle(Resources.HistoryViewStatusButton, UIControlState.Normal);
-			AppButtons.FormatStandardButton((GradientButton)btnHide, Resources.DeleteButton, AppStyle.ButtonColor.Red );
+			btnSendReceipt.SetTitle (Resources.HistoryViewSendReceiptButton, UIControlState.Normal);
+		    AppButtons.FormatStandardButton((GradientButton)btnHide, Resources.DeleteButton, AppStyle.ButtonColor.Red );
 
             btnCancel.TouchUpInside += CancelTouchUpInside;
-
             btnStatus.TouchUpInside += StatusTouchUpInside;
+			btnSendReceipt.TouchUpInside += SendReceiptTouchUpInside;
             
             btnCancel.Hidden = true;
             btnStatus.Hidden = true;
+			btnSendReceipt.Hidden = true;
             
             
             btnHide.TouchUpInside += HideTouchUpInside;          
@@ -91,7 +93,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         void CancelTouchUpInside(object sender, EventArgs e)
         {
-            LoadingOverlay.StartAnimatingLoading(this.View, LoadingOverlayPosition.Center, null, 130, 30);
+			TinyIoCContainer.Current.Resolve<IBookingService>().RemoveFromHistory( _data.Id );
             View.UserInteractionEnabled = false;
             
             ThreadHelper.ExecuteInThread(() =>
@@ -122,6 +124,39 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
             );
         }
+
+		void SendReceiptTouchUpInside(object sender, EventArgs e)
+		{
+			View.UserInteractionEnabled = false;
+			
+			ThreadHelper.ExecuteInThread(() =>
+			                             {
+				try
+				{
+					var isSuccess = TinyIoCContainer.Current.Resolve<IBookingService>().SendReceipt( _data.Id);
+					
+					if (isSuccess)
+					{
+						MessageHelper.Show(Resources.HistoryViewSendReceiptSuccess);
+					}
+					else
+					{
+						
+						MessageHelper.Show(Resources.HistoryViewSendReceiptError);
+					}
+				}
+				finally
+				{
+					InvokeOnMainThread(() =>
+					                   {
+						LoadingOverlay.StopAnimatingLoading(this.View);
+						View.UserInteractionEnabled = true;
+					}
+					);
+				}
+			}
+			);
+		}
 
         void RebookTouched(object sender, EventArgs e)
         {
@@ -176,12 +211,13 @@ namespace apcurium.MK.Booking.Mobile.Client
                 var status = TinyIoCContainer.Current.Resolve<IBookingService>().GetOrderStatus( _data.Id);
                 
                 bool isCompleted = TinyIoCContainer.Current.Resolve<IBookingService>().IsStatusCompleted(status.IBSStatusId);
+				bool isDone      = TinyIoCContainer.Current.Resolve<IBookingService>().IsStatusDone(status.IBSStatusId);
                 
                 InvokeOnMainThread(() => txtStatus.Text = status.IBSStatusDescription);
                 InvokeOnMainThread(() => btnCancel.Hidden = isCompleted);
                 InvokeOnMainThread(() => btnStatus.Hidden = isCompleted);
 				InvokeOnMainThread(() => btnHide.Hidden = !isCompleted);
-                
+				InvokeOnMainThread(() => btnSendReceipt.Hidden = !isDone);
             }
             );
         }
