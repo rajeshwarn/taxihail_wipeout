@@ -49,7 +49,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             View.BackgroundColor = UIColor.Clear; // UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             TableView.BackgroundView = new UIView{ BackgroundColor = UIColor.Clear };
             TableView.BackgroundColor = UIColor.Clear;
-			((UINavigationController ) ParentViewController ).NavigationBar.TopItem.TitleView = new TitleView(null, Resources.View_SignUp, false);
+			((UINavigationController ) ParentViewController ).NavigationBar.TopItem.TitleView = new TitleView(null, Resources.View_SignUp, true);
             ((UINavigationController ) ParentViewController ).View.BackgroundColor =UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
 
 
@@ -280,7 +280,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                     }
                     _elementAreLoaded = true;
                     
-                    _menu = new CustomRootElement(Resources.CreateAccoutTitle);
+                    _menu = new CustomRootElement(Resources.GetValue("View_SignUp_Label"));
                     
                     _settings = new Section(Resources.CreateAccoutTitle);
 

@@ -25,7 +25,7 @@ TaxiHail.loader = {
 };
 $(function () {
     TaxiHail.loader.load(
-        /* Localizations */["Global","GrantAdminAccess"],
+        /* Localizations */["Global","GrantAdminAccess", "AddFavorite"],
         function () {
 
             _.each(Handlebars.templates, function(value, key, list) {

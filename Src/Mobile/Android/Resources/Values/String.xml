@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="ApplicationName">TaxiHail</string>
+  <string name="ApplicationName">Atlanta Checker Cab</string>
   <string name="Language">English</string>
   <string name="LanguageCode">en</string>
   <string name="TabBook">Book</string>
@@ -203,7 +203,7 @@
   <string name="CreateAccountErrorMessage">The account cannot be created.</string>
   <string name="CreateAccountErrorNotSpecified">The server didn\'t specify why the account could not be created, if the error persist try creating the account from the web site.</string>
   <string name="RideSettingsNumberOfTaxi">Nb. Taxi:</string>
-  <string name="WarningEstimate">Please note that the price provided by this App is an estimate only. The fare amount as calculated by the meter, along with any applicable minimums and extras will be charged at the end of the trip.</string>  
+  <string name="WarningEstimate">Please note that the price provided by this App is an estimate only. The fare amount as calculated by the meter, along with any applicable minimums and extras will be charged at the end of the trip.</string>
   <string name="WarningEstimateTitle">Warning</string>
   <string name="WarningEstimateDontShow">Don\'t warn</string>
   <string name="ResetPasswordConfirmationTitle">Password sent</string>
@@ -236,7 +236,7 @@
   <string name="ServiceErrorUnauthorized">An unauthorized call has been made to server, you will be redirected to login page.</string>
   <string name="BookDateLabel">Pick Me Up Later</string>
   <string name="OrderHistoryListTitle">Order #{0} ({1:ddd, MMM d},{1:h:mm tt})</string>
-  <string name="GoogleMapKey">0XEY3WqKVmJPBRHcuYAiXmD9llX1jZHBuLpgKDw</string>
+  <string name="GoogleMapKey">0XEY3WqKVmJMQaTpxqj-_F_w73I0VnVShVisy1A</string>
   <string name="searchHint">Search</string>
   <string name="BookPickupLocationButtonTitle">Pickup</string>
   <string name="BookDropoffLocationButtonTitle">Destination</string>

@@ -45,5 +45,6 @@
    "TaxiHail.ApplicationKey" : "TaxiHail",
    "TaxiHail.AccentColor" : "#0057a3",
    "TaxiHail.SiteName" : "Dev",
-   "TaxiHail.Version" : "1.0"
+   "TaxiHail.Version" : "1.0",
+   "Receipt.Note": "Thank You!<br>The Taxi Hail Team"
 }

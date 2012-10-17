@@ -13,13 +13,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 		private UIView _owner;
 
 		private float _sidePadding = 10f;
-		private float _interiorPadding = 10f;
+		private float _interiorPadding = 5f;
 		private float _bottomPadding = 80f;
 
 		private NSTimer _timer;
-		private int _toastDuration = 3; //seconds
+		private int _toastDuration = 2; //seconds
 
-		private double _animationDuration = 3;
+		private double _animationDuration = 2;
 		private float _minimumToastHeight = 50f;
 
 
@@ -33,8 +33,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 		private void Initialize()
 		{
 			this.BackgroundColor = UIColor.FromRGBA( 0, 0, 0, 128 );
-			this.Layer.CornerRadius = AppStyle.ButtonCornerRadius;
-			this.Layer.BorderWidth = 1f;
+            this.Layer.CornerRadius = 3; //AppStyle.ButtonCornerRadius;
+			this.Layer.BorderWidth = 1;
 			this.Layer.BorderColor = UIColor.FromRGBA(0,0,0,192).CGColor;
 
 			var screenSize = UIScreen.MainScreen.Bounds;

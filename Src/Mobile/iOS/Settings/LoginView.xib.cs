@@ -140,11 +140,11 @@ namespace apcurium.MK.Booking.Mobile.Client
                 return textField.ResignFirstResponder();
             };
             
-            txtEmail.EditingDidEnd += delegate
-            {
-                txtEmail.Text = StringHelper.RemoveDiacritics(txtEmail.Text).ToLower();
-                ViewModel.Email = StringHelper.RemoveDiacritics(txtEmail.Text).ToLower();
-            };
+//            txtEmail.EditingDidEnd += delegate
+//            {
+//                txtEmail.Text = StringHelper.RemoveDiacritics(txtEmail.Text).ToLower();
+//                ViewModel.Email = StringHelper.RemoveDiacritics(txtEmail.Text).ToLower();
+//            };
             
 
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();

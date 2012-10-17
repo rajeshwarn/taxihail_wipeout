@@ -14,9 +14,10 @@ else
 	LISTCLIENT=$CLIENTNAME
 fi
 
-for CLIENT in "${LISTCLIENT[@]}"
+for CLIENT in ${LISTCLIENT[@]}
 do
 	echo $CLIENT
+	echo "-------------------------------"
 	echo Applying Config Tool for $CLIENT
 	mono apcurium.MK.Booking.ConfigTool.exe $CLIENT
 

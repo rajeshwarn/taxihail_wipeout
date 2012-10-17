@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public void EnsureListLoaded()
         {
-            if ( (_refData == null) || ( _refData.CompaniesList.Count() == 0 ) )
+            if ((_refData == null) || (_refData.CompaniesList.Count() == 0))
             {
                 UseServiceClient<ReferenceDataServiceClient>(service =>
                 {
@@ -58,17 +58,20 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             TinyIoCContainer.Current.Resolve<ICacheService>().Clear("SessionId");
             TinyIoCContainer.Current.Resolve<ICacheService>().ClearAll();
         
-            try{
-            TinyIoCContainer.Current.Resolve<ITwitterService>().Disconnect();
+            try
+            {
+                TinyIoCContainer.Current.Resolve<ITwitterService>().Disconnect();
             }
             catch
             {
             }
-            try{
-            TinyIoCContainer.Current.Resolve<IFacebookService>().Disconnect();
+            try
+            {
+                TinyIoCContainer.Current.Resolve<IFacebookService>().Disconnect();
             }
             catch
-            {}
+            {
+            }
 
         }
 
@@ -254,15 +257,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         }
 
-		public string UpdatePassword( Guid accountId, string currentPassword, string newPassword )
-		{
-			string response = null;
-			QueueCommand<AccountServiceClient>(service => {                     
-				response = service.UpdatePassword( new UpdatePassword() { AccountId = accountId, CurrentPassword = currentPassword, NewPassword = newPassword });
-			});
+        public string UpdatePassword(Guid accountId, string currentPassword, string newPassword)
+        {
+            string response = null;
+            QueueCommand<AccountServiceClient>(service => {                     
+                response = service.UpdatePassword(new UpdatePassword() { AccountId = accountId, CurrentPassword = currentPassword, NewPassword = newPassword });
+            });
 
-			return response;
-		}
+            return response;
+        }
 
         public Account GetAccount(string email, string password)
         {
@@ -285,10 +288,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
             catch (Exception e)
             {
-                var title =TinyIoCContainer.Current.Resolve<IAppResource>().GetString( "InvalidLoginMessageTitle" );
-                var message =TinyIoCContainer.Current.Resolve<IAppResource>().GetString( "InvalidLoginMessage" );
+                var title = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("InvalidLoginMessageTitle");
+                var message = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("InvalidLoginMessage");
 
-                TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage( title, message );                
+                TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage(title, message);                
 
                 
                 return null;
@@ -305,17 +308,27 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public Account GetFacebookAccount(string facebookId)
         {
-            var parameters = new NamedParameterOverloads();
-            var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
-            var authResponse = auth.AuthenticateFacebook(facebookId);
-            SaveCredentials(authResponse);
+            try
+            {
+                var parameters = new NamedParameterOverloads();
+                var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
 
-            parameters.Add("credential", authResponse);
-            return GetAccount(parameters,false);
+                var authResponse = auth.AuthenticateFacebook(facebookId);
+                SaveCredentials(authResponse);
+
+                parameters.Add("credential", authResponse);
+                return GetAccount(parameters, false);
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public Account GetTwitterAccount(string twitterId)
         {
+            try
+            {
             var parameters = new NamedParameterOverloads();
             var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
             var authResponse = auth.AuthenticateTwitter(twitterId);
@@ -323,6 +336,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             parameters.Add("credential", authResponse);
             return GetAccount(parameters, false);
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         private Account GetAccount(NamedParameterOverloads parameters, bool showInvalidMessage)
@@ -368,11 +386,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             bool isSuccess = false;
 
-			UseServiceClient<AccountServiceClient>( "NotAuthenticated", service => {
-				//service = TinyIoCContainer.Current.Resolve<AccountServiceClient>("NotAuthenticated");
+            UseServiceClient<AccountServiceClient>("NotAuthenticated", service => {
+                //service = TinyIoCContainer.Current.Resolve<AccountServiceClient>("NotAuthenticated");
                 service.ResetPassword(email);
                 isSuccess = true;
-			});
+            });
 
 //            try
 //            {
@@ -513,8 +531,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 
         }
-
-      
 
         public IEnumerable<ListItem> GetCompaniesList()
         {

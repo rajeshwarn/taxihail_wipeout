@@ -140,7 +140,9 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="admin\taxi-hail-admin.js" />
+    <Content Include="admin\views\AdminMenuView.js" />
     <Content Include="admin\views\GrantAdminAccessView.js" />
+    <Content Include="admin\views\ManageDefaultAddressesView.js" />
     <Content Include="admin\views\TemplatedView.js" />
     <Content Include="ApiDoc.aspx" />
     <Content Include="assets\bootstrap-datepicker\css\datepicker.css" />
@@ -657,6 +659,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="common\templates\LoginStatus.handlebars" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="admin\templates\AdminMenu.handlebars" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="admin\templates\ManageDefaultAddresses.handlebars" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
