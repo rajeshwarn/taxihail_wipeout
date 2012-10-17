@@ -13,6 +13,8 @@
   <script src="../common/views/TemplatedView.js"></script>
   <script src="../common/views/LoginStatusView.js"></script>
   <script src="views/GrantAdminAccessView.js"></script>
+  <script src="views/AdminMenuView.js"></script>
+  <script src="views/ManageDefaultAddressesView.js"></script>
   <!-- services -->
   <script src="../common/services/AuthService.js"></script>
   <script src="../common/services/GeocodingService.js"></script>
