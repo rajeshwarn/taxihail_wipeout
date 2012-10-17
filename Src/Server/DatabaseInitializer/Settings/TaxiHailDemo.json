@@ -56,6 +56,7 @@
 	"TwitterConsumerKey" : "",
 	"TwitterConsumerSecret" : "",
 	"TwitterEnabled" : "false",
-	"TwitterRequestTokenUrl" : ""
+	"TwitterRequestTokenUrl" : "",
+	"Receipt.Note": "Thank You!<br>The Taxi Hail Team"
 }
 

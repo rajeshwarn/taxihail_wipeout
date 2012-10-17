@@ -1,0 +1,35 @@
+// Geocoding service
+
+(function () {
+
+    TaxiHail.geocoder = {
+        
+        initialize: function (lat, long) {
+            this.latitude = lat;
+            this.longitude = long;
+        },
+
+        geocode: function (addressOrLat, lng) {
+
+            if(arguments.length > 1) {
+                // Assume parameters are latitude and longitude
+                return $.get(TaxiHail.parameters.apiRoot + '/geocode', { lat: addressOrLat, lng: lng }, function () { }, 'json')
+                    .done(cleanupResult);
+            }
+            else {
+                // Assume parameter is an address
+                return $.get(TaxiHail.parameters.apiRoot + '/searchlocation', { name: addressOrLat, lat: this.latitude, lng: this.longitude }, function () { }, 'json')
+                    .done(cleanupResult);
+            }
+        }
+    };
+
+    function cleanupResult(result) {
+        if(result && result.length) {
+            _.each(result, function(address){
+                // BUGFIX: All addresses have the same empty Guid as id
+                delete address.id;
+            });
+        }
+    }
+}());

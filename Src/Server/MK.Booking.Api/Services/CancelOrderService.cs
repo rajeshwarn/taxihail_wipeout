@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (!order.IBSOrderId.HasValue)
             {
-                throw new HttpError(ErrorCode.CancelOrder_OrderNotInIbs.ToString());
+                throw new HttpError(ErrorCode.OrderNotInIbs.ToString());
             }
 
             if(account.Id != order.AccountId)
@@ -47,7 +47,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (!isSuccessful)
             {
-                throw new HttpError(ErrorCode.CancelOrder_OrderNotInIbs.ToString());
+                throw new HttpError(ErrorCode.OrderNotInIbs.ToString());
             }
 
             var command = new Commands.CancelOrder();

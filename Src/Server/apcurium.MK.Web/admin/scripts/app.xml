@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<scripts>
+  <script src="../common/utils.js"></script>
+  <!-- mixins -->
+  
+  <!-- models -->
+  <script src="../common/models/Address.js"></script>
+  <script src="../common/models/UserAccount.js"></script>
+
+
+  <!-- mixins -->
+  <script src="../common/mixins/ValidatedView.js"></script>
+  <!-- collections -->
+  <script src="../common/collections/AddressCollection.js"></script>
+  <!-- views -->
+  <script src="../common/views/TemplatedView.js"></script>
+  <script src="../common/views/LoginStatusView.js"></script>
+  <script src="../common/views/AddressItemView.js"></script>
+  <script src="../common/views/AddressSelectionView.js"></script>
+  <script src="../common/views/AddressListView.js"></script>
+  <script src="../common/views/AddFavoriteView.js"></script>
+  <script src="../common/views/BootstrapConfirmationView.js"></script>
+  <script src="views/GrantAdminAccessView.js"></script>
+  <script src="views/AdminMenuView.js"></script>
+  <script src="views/ManageDefaultAddressesView.js"></script>
+  <!-- services -->
+  <script src="../common/services/AuthService.js"></script>
+  <script src="../common/services/GeocodingService.js"></script>
+
+  <script src="routers/App.js"></script>
+</scripts>

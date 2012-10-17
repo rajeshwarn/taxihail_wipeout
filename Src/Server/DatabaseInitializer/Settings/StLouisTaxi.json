@@ -14,7 +14,7 @@
 	"IBS.AutoDispatch" : "TRUE",
 	"IBS.DefaultAccountPassword" : "password",
 	"IBS.WebServicesPassword" : "test",
-	"IBS.WebServicesUrl" : http://stlouisccgate.dyndns.org:2555/IBSCab/IBSCab.dll/soap/",
+	"IBS.WebServicesUrl" : "http://stlouisccgate.dyndns.org:2555/IBSCab/IBSCab.dll/soap/",
 	"IBS.WebServicesUserName" : "taxi",
 	"IBS.ExcludedVehicleTypeId" : "22;21",
 	"Map.PlacesApiKey" : "AIzaSyAd-ezA2SeVTSNqsu6aMmAkdlP3UqEVPWE",
@@ -34,8 +34,8 @@
 	"OrderStatus.wosSCHED" : "Scheduled",
 	"OrderStatus.wosWAITING" : "Waiting for driver to be assigned",
 	"PriceFormat" : "en-US",
-	"Smtp.Credentials.Password" : "tennis1963",
-	"Smtp.Credentials.Username" : "donotreply@countycab.com",
+	"Smtp.Credentials.Password" : "2wsxCDE#",
+	"Smtp.Credentials.Username" : "donotreply@apcurium.com",
 	"Smtp.DeliveryMethod" : "Network",
 	"Smtp.EnableSsl" : "TRUE",
 	"Smtp.Host" : "smtp.gmail.com",
@@ -56,5 +56,6 @@
     "TwitterConsumerKey" : "",
     "TwitterConsumerSecret" : "",
     "TwitterEnabled" : "false",
-    "TwitterRequestTokenUrl" : ""
+    "TwitterRequestTokenUrl" : "",
+	"Receipt.Note": "Thank You!<br><b>St. Louis Taxi</b>"
 }

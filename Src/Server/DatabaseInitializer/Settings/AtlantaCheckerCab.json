@@ -56,5 +56,6 @@
     "TwitterConsumerKey" : "",
     "TwitterConsumerSecret" : "",
     "TwitterEnabled" : "false",
-    "TwitterRequestTokenUrl" : ""
+    "TwitterRequestTokenUrl" : "",
+	"Receipt.Note": "Thank You!<br><b>Atlanta Checker</b>"
 }

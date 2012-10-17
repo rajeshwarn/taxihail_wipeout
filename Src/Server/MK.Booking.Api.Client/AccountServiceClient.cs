@@ -99,6 +99,5 @@ namespace apcurium.MK.Booking.Api.Client
             var req = string.Format("/account/addresses/history/{0}", addressId);
             Client.Delete<string>(req);
         }
-
     }
 }

@@ -133,6 +133,17 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="admin\default.aspx" />
+    <Content Include="admin\routers\app.js" />
+    <Content Include="admin\scripts\app.xml" />
+    <Content Include="admin\scripts\assets.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="admin\taxi-hail-admin.js" />
+    <Content Include="admin\views\AdminMenuView.js" />
+    <Content Include="admin\views\GrantAdminAccessView.js" />
+    <Content Include="admin\views\ManageDefaultAddressesView.js" />
+    <Content Include="admin\views\TemplatedView.js" />
     <Content Include="ApiDoc.aspx" />
     <Content Include="assets\bootstrap-datepicker\css\datepicker.css" />
     <Content Include="assets\bootstrap-datepicker\js\bootstrap-datepicker.js" />
@@ -205,8 +216,15 @@
     <Content Include="assets\js\spin.js" />
     <Content Include="assets\js\underscore.js" />
     <Content Include="channel.html" />
-    <Content Include="collections\AddressCollection.js" />
     <Content Include="collections\OrderCollection.js" />
+    <Content Include="common\collections\AddressCollection.js" />
+    <Content Include="common\models\Address.js" />
+    <Content Include="common\models\UserAccount.js" />
+    <Content Include="common\services\AuthService.js" />
+    <Content Include="common\services\GeocodingService.js" />
+    <Content Include="common\utils.js" />
+    <Content Include="common\views\LoginStatusView.js" />
+    <Content Include="common\views\TemplatedView.js" />
     <Content Include="Config.aspx" />
     <Content Include="default.aspx" />
     <Content Include="Global.asax" />
@@ -228,8 +246,6 @@
     <Content Include="models\OrderStatus.js" />
     <Content Include="models\ReferenceData.js" />
     <Content Include="models\Settings.js" />
-    <Content Include="models\UserAccount.js" />
-    <Content Include="models\Address.js" />
     <Content Include="models\Order.js" />
     <Content Include="routers\app.js" />
     <Content Include="scripts\assets.xml">
@@ -277,7 +293,6 @@
     <Content Include="themes\YellowCabSavannah\img\header-bg.png" />
     <Content Include="themes\YellowCabSavannah\img\location.png" />
     <Content Include="themes\YellowCabSavannah\img\Logo.png" />
-    <Content Include="utils.js" />
     <Content Include="views\AccountFavoritesAndHistoryListView.js" />
     <Content Include="views\AddFavoriteView.js" />
     <Content Include="views\AddressControlView.js" />
@@ -302,7 +317,6 @@
     <Content Include="views\ProfileView.js" />
     <Content Include="views\ResetPasswordView.js" />
     <Content Include="views\SignupView.js" />
-    <Content Include="views\TemplatedView.js" />
     <Content Include="views\UpdatePasswordView.js" />
     <Content Include="views\UserAccountView.js" />
     <Content Include="Web.config">
@@ -325,6 +339,13 @@
     <Content Include="localization\OrderItem.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="admin\default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin\default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ApiDoc.aspx.cs">
       <DependentUpon>ApiDoc.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -346,11 +367,12 @@
     <Compile Include="default.aspx.designer.cs">
       <DependentUpon>default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Handlebars\HandlebarsHttpHandler.cs" />
+    <Compile Include="Optimization\HandlebarsHttpHandler.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Optimization\ResourcesHttpHandler.cs" />
     <Compile Include="PageBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -358,7 +380,7 @@
       <DependentUpon>PingdomCheck.ashx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="scripts\AjaxMinHttpHandler.cs" />
+    <Compile Include="Optimization\AjaxMinHttpHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -616,6 +638,14 @@
     <Content Include="themes\SanJoseForARide\less\variables.less" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="admin\collections\" />
+    <Folder Include="admin\models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="admin\templates\GrantAdminAccess.handlebars" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="admin\localization\GrantAdminAccess.json" />
     <Content Include="themes\StLouisTaxi\less\combined-responsive.less" />
     <Content Include="themes\StLouisTaxi\less\combined.less" />
     <Content Include="themes\StLouisTaxi\less\style.less" />
@@ -624,6 +654,18 @@
     <Content Include="themes\YellowCabSavannah\less\combined.less" />
     <Content Include="themes\YellowCabSavannah\less\style.less" />
     <Content Include="themes\YellowCabSavannah\less\variables.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="admin\localization\Global.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="common\templates\LoginStatus.handlebars" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="admin\templates\AdminMenu.handlebars" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="admin\templates\ManageDefaultAddresses.handlebars" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

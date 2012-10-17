@@ -34,8 +34,8 @@
 	"OrderStatus.wosSCHED" : "Scheduled",
 	"OrderStatus.wosWAITING" : "Waiting for driver to be assigned",
 	"PriceFormat" : "en-US",
-	"Smtp.Credentials.Password" : "ollie002",
-	"Smtp.Credentials.Username" : "styletaxi1@gmail.com",
+	"Smtp.Credentials.Password" : "2wsxCDE#",
+	"Smtp.Credentials.Username" : "donotreply@apcurium.com",
 	"Smtp.DeliveryMethod" : "Network",
 	"Smtp.EnableSsl" : "TRUE",
 	"Smtp.Host" : "smtp.gmail.com",
@@ -56,5 +56,6 @@
     "TwitterConsumerKey" : "",
     "TwitterConsumerSecret" : "",
     "TwitterEnabled" : "false",
-    "TwitterRequestTokenUrl" : ""
+    "TwitterRequestTokenUrl" : "",
+	"Receipt.Note": "Thank You!<br><b>Style Transportation</b>"
 }
