@@ -13,12 +13,12 @@
 
             if(arguments.length > 1) {
                 // Assume parameters are latitude and longitude
-                return $.get('api/geocode', { lat: addressOrLat, lng: lng }, function(){}, 'json')
+                return $.get(TaxiHail.parameters.apiRoot + '/geocode', { lat: addressOrLat, lng: lng }, function () { }, 'json')
                     .done(cleanupResult);
             }
             else {
                 // Assume parameter is an address
-                return $.get('api/searchlocation', { name: addressOrLat, lat: this.latitude, lng: this.longitude }, function(){}, 'json')
+                return $.get(TaxiHail.parameters.apiRoot + '/searchlocation', { name: addressOrLat, lat: this.latitude, lng: this.longitude }, function () { }, 'json')
                     .done(cleanupResult);
             }
         }
