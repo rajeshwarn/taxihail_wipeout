@@ -43,7 +43,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
             UpdateUI();
 
 
-        }
+        } 
 
         protected override void OnDestroy()
         {
@@ -67,15 +67,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
             var btnCancel = FindViewById<Button>(Resource.Id.CancelTripBtn);
             var btnStatus = FindViewById<Button>(Resource.Id.StatusBtn);
             var btnRebook = FindViewById<Button>(Resource.Id.RebookTripBtn);
+            var btnSendReceipt = FindViewById<Button>(Resource.Id.SendReceiptBtn);
             var btnDelete = FindViewById<Button>(Resource.Id.HistoryOrderDeleteBtn);
 
             btnCancel.Visibility = ViewStates.Gone;
             btnStatus.Visibility = ViewStates.Gone;
+            btnSendReceipt.Visibility = ViewStates.Gone;
 
-            btnCancel.Click += new EventHandler(btnCancel_Click);
-            btnStatus.Click += new EventHandler(btnStatus_Click);
-            btnRebook.Click += new EventHandler(btnRebook_Click);
-            btnDelete.Click += new EventHandler(btnDelete_Click);
+            btnCancel.Click      += new EventHandler(btnCancel_Click);
+            btnStatus.Click      += new EventHandler(btnStatus_Click);
+            btnRebook.Click      += new EventHandler(btnRebook_Click);
+            btnSendReceipt.Click += new EventHandler(btnSendReceipt_Click);
+            btnDelete.Click      += new EventHandler(btnDelete_Click);
 
         }
 
@@ -84,6 +87,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
             
             TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new RebookRequested(this, _data));
             TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new CloseViewsToRoot(this));
+        }
+
+        void btnSendReceipt_Click(object sender, EventArgs e)
+        {
+            ThreadHelper.ExecuteInThread(this, () =>
+            {
+                if (Common.Extensions.GuidExtensions.HasValue(_data.Id))
+                {
+                    TinyIoCContainer.Current.Resolve<IBookingService>().SendReceipt(_data.Id);
+                }
+
+                RunOnUiThread(() => Finish());
+            }, true);
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -160,18 +176,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
                 var status = TinyIoCContainer.Current.Resolve<IBookingService>().GetOrderStatus(_data.Id);
 
                 bool isCompleted = false;
+                bool isDone      = false;
                 if (status.IBSStatusId.HasValue())
                 {
                     isCompleted = TinyIoCContainer.Current.Resolve<IBookingService>().IsStatusCompleted(status.IBSStatusId);
+                    isDone = TinyIoCContainer.Current.Resolve<IBookingService>().IsStatusDone(status.IBSStatusId);
                 }
 
                 RunOnUiThread(() => FindViewById<TextView>(Resource.Id.StatusTxt).Text = status.IBSStatusDescription);
                 var btnCancel = FindViewById<Button>(Resource.Id.CancelTripBtn);
                 var btnStatus = FindViewById<Button>(Resource.Id.StatusBtn);
                 var btnDelete = FindViewById<Button>(Resource.Id.HistoryOrderDeleteBtn);
-                RunOnUiThread(() => btnCancel.Visibility = isCompleted ? ViewStates.Gone : ViewStates.Visible);
-                RunOnUiThread(() => btnStatus.Visibility = isCompleted ? ViewStates.Gone : ViewStates.Visible);
-                RunOnUiThread(() => btnDelete.Visibility = isCompleted ? ViewStates.Visible : ViewStates.Gone);
+                var btnSendReceipt = FindViewById<Button>(Resource.Id.SendReceiptBtn);
+                RunOnUiThread(() => {
+                    btnCancel.Visibility =      isCompleted ? ViewStates.Gone : ViewStates.Visible;
+                    btnStatus.Visibility =      isCompleted ? ViewStates.Gone : ViewStates.Visible;
+                    btnDelete.Visibility =      isCompleted ? ViewStates.Visible : ViewStates.Gone;
+                    btnSendReceipt.Visibility = isDone      ? ViewStates.Visible : ViewStates.Gone;
+                });
 
             }, false);
         }

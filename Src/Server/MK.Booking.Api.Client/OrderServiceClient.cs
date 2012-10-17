@@ -27,6 +27,12 @@ namespace apcurium.MK.Booking.Api.Client
             Client.Post<string>(req, new CancelOrder { OrderId = orderId  });            
         }
 
+        public void SendReceipt(Guid orderId)
+        {
+            var req = string.Format("/account/orders/{0}/sendreceipt", orderId);
+            Client.Post<string>(req, new SendReceipt());
+        }
+
         public IList<Order> GetOrders()
         {            
             var req = string.Format("/account/orders");

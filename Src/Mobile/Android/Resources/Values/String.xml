@@ -120,6 +120,7 @@
   <string name="RideSettingsCompany">Company:</string>
   <string name="HistoryDetailHideButton">Hide from history</string>
   <string name="HistoryDetailRebookButton">Rebook trip</string>
+  <string name="HistoryDetailSendReceiptButton">Send receipt</string>
   <string name="HistoryDetailDestinationLabel">Destination:</string>
   <string name="HistoryDetailRequestedLabel">Requested:</string>
   <string name="HistoryDetailOriginLabel">Pickup:</string>
