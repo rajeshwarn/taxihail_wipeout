@@ -34,8 +34,8 @@
         
         <%= JSAssetsSource %>
         <script src="templates/templates.js"></script>
-
         <script src="taxi-hail-admin.js"></script>
+        <script src="localization/resources.js"></script>
         
         <script type="text/javascript">
             TaxiHail.parameters.isLoggedIn = <%: this.IsAuthenticated ? "true" : "false" %>;
