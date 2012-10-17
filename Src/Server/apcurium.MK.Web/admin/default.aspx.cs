@@ -40,8 +40,8 @@ namespace apcurium.MK.Web.admin
             reader.MoveToContent();
             JSAppSource = reader.ReadInnerXml();
 #else
-            JSAssetsSource = "<script src='minified.assets.js'></script>";
-            JSAppSource = "<script src='minified.app.js'></script>";
+            JSAssetsSource = "<script src='scripts/minified.assets.js'></script>";
+            JSAppSource = "<script src='scripts/minified.app.js'></script>";
 #endif
         }
 

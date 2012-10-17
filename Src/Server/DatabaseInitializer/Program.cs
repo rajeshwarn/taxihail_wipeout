@@ -30,8 +30,7 @@ namespace DatabaseInitializer
                     companyName = args[0];
                 }
 
-                var connectionString = new ConnectionStringSettings("MkWeb",
-                                                                    "Data Source=.;Initial Catalog=MKWebDev;Integrated Security=True; MultipleActiveResultSets=True");
+                var connectionString = new ConnectionStringSettings("MkWeb", string.Format( "Data Source=.;Initial Catalog={0};Integrated Security=True; MultipleActiveResultSets=True", companyName ));
                 if (args.Length > 1)
                 {
                     connectionString.ConnectionString = args[1];

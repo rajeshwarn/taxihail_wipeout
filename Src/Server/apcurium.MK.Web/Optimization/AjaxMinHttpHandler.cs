@@ -7,7 +7,7 @@ using System.Web.Hosting;
 using System.Xml.Linq;
 using Microsoft.Ajax.Utilities;
 
-namespace apcurium.MK.Web.Scripts
+namespace apcurium.MK.Web.Optimization
 {
     public class AjaxMinHttpHandler : IHttpHandler
     {
@@ -27,11 +27,11 @@ namespace apcurium.MK.Web.Scripts
 
         public void ProcessRequest(HttpContext context)
         {
-
+            var directory = Path.GetDirectoryName( HostingEnvironment.MapPath(context.Request.Url.PathAndQuery));
             var source = Path.GetFileNameWithoutExtension(context.Request.FilePath);
             source = source.Replace("minified.", "");
             context.Response.AddHeader("Content-Type", "application/javascript");
-            var scripts = XDocument.Load(HostingEnvironment.MapPath("~/scripts/" + source + ".xml"));
+            var scripts = XDocument.Load(Path.Combine(directory, source + ".xml"));
 
             var files = scripts.Root.Elements("script")
                 .Select(x=> (string)x.Attribute("src"))
