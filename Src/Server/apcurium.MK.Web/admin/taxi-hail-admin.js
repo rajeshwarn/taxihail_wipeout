@@ -5,7 +5,7 @@ var TaxiHail = {
 
 TaxiHail.loader = {
 
-    load: function (resources, callback) {
+    load: function (callback) {
 
         var deferreds = [];
 
