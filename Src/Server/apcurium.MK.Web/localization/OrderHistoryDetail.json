@@ -11,5 +11,6 @@
 	"iBSOrderIdLabel" : "Order #", 
 	"Send Receipt": "Send Receipt",
 	"Sending...": "Sending...",
-	"Receipt Sent": "Receipt Sent"
+	"Receipt Sent": "Receipt Sent",
+	"Cannot Send Receipt": "Cannot Send Receipt"
 }
