@@ -75,11 +75,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandHandlers\AccountCommandHandler.cs" />
+    <Compile Include="CommandHandlers\CompanyCommandHandler.cs" />
     <Compile Include="CommandHandlers\EmailCommandHandler.cs" />
     <Compile Include="CommandHandlers\AddressCommandHandler.cs" />
     <Compile Include="CommandHandlers\OrderCommandHandler.cs" />
     <Compile Include="Database\BookingDbContext.cs" />
     <Compile Include="Domain\Account.cs" />
+    <Compile Include="Domain\Company.cs" />
     <Compile Include="Domain\Order.cs" />
     <Compile Include="Domain\BookingSettings.cs" />
     <Compile Include="Domain\OrderStatus.cs" />
@@ -97,12 +99,15 @@
     <Compile Include="ReadModel\AccountDetail.cs" />
     <Compile Include="ReadModel\BookingSetting.cs" />
     <Compile Include="ReadModel\AddressDetails.cs" />
+    <Compile Include="ReadModel\DefaultAddressDetails.cs" />
     <Compile Include="ReadModel\OrderDetail.cs" />
     <Compile Include="ReadModel\OrderStatus.cs" />
     <Compile Include="ReadModel\Query\AccountDao.cs" />
     <Compile Include="ReadModel\Query\AddressDao.cs" />
+    <Compile Include="ReadModel\Query\DefaultAddressDao.cs" />
     <Compile Include="ReadModel\Query\IAccountDao.cs" />
     <Compile Include="ReadModel\Query\IAddressDao.cs" />
+    <Compile Include="ReadModel\Query\IDefaultAddressDao.cs" />
     <Compile Include="ReadModel\Query\IOrderDao.cs" />
     <Compile Include="ReadModel\Query\OrderDao.cs" />
     <Compile Include="Security\IPasswordService.cs" />

@@ -218,11 +218,16 @@
     <Content Include="channel.html" />
     <Content Include="collections\OrderCollection.js" />
     <Content Include="common\collections\AddressCollection.js" />
+    <Content Include="common\mixins\ValidatedView.js" />
     <Content Include="common\models\Address.js" />
     <Content Include="common\models\UserAccount.js" />
     <Content Include="common\services\AuthService.js" />
     <Content Include="common\services\GeocodingService.js" />
     <Content Include="common\utils.js" />
+    <Content Include="common\views\AddFavoriteView.js" />
+    <Content Include="common\views\AddressItemView.js" />
+    <Content Include="common\views\AddressListView.js" />
+    <Content Include="common\views\AddressSelectionView.js" />
     <Content Include="common\views\LoginStatusView.js" />
     <Content Include="common\views\TemplatedView.js" />
     <Content Include="Config.aspx" />
@@ -296,19 +301,15 @@
     <Content Include="views\AccountFavoritesAndHistoryListView.js" />
     <Content Include="views\AddFavoriteView.js" />
     <Content Include="views\AddressControlView.js" />
-    <Content Include="views\AddressItemView.js" />
-    <Content Include="views\AddressListView.js" />
-    <Content Include="views\AddressSelectionView.js" />
     <Content Include="views\AlertView.js" />
     <Content Include="views\BookingConfirmationView.js" />
     <Content Include="views\BookingStatusView.js" />
     <Content Include="views\BookLaterView.js" />
     <Content Include="views\BookView.js" />
-    <Content Include="views\BootstrapConfirmationView.js" />
+    <Content Include="common\views\BootstrapConfirmationView.js" />
     <Content Include="views\FavoriteDetailsView.js" />
     <Content Include="views\FavoritesAndHistoryListView.js" />
     <Content Include="views\FavoritesView.js" />
-    <Content Include="views\LoginStatusView.js" />
     <Content Include="views\LoginView.js" />
     <Content Include="views\MapView.js" />
     <Content Include="views\OrderHistoryDetailView.js" />
@@ -665,6 +666,27 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\templates\ManageDefaultAddresses.handlebars" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="common\templates\AddressItem.handlebars" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="common\templates\AddressSelection.handlebars" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="admin\templates\AddressItem.handlebars" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="admin\templates\AddressSelection.handlebars" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="admin\templates\AddFavorite.handlebars" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="admin\templates\BootstrapConfirmation.handlebars" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="admin\localization\AddFavorite.json" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

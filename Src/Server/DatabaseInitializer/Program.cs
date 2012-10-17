@@ -8,6 +8,7 @@ using Microsoft.Practices.Unity;
 using Newtonsoft.Json.Linq;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.IBS;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
 using log4net;
 using log4net.Config;
@@ -119,6 +120,14 @@ namespace DatabaseInitializer
 
                     //Init data
                     var commandBus = container.Resolve<ICommandBus>();
+
+                    // Create Default company
+
+                   
+                    commandBus.Send(new CreateCompany
+                    {
+                        Id = AppConstants.CompanyId
+                    });
 
 
                     //Register normal account
