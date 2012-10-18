@@ -7,7 +7,7 @@
    "ErrorLogEnabled" : "false",
    "FacebookAppId" : "",
    "FacebookEnabled" : "false",
-   "ServiceUrl" : "http://services.taxihail.com/GoTaxiDesMoines/api/",
+   "ServiceUrl" : "http://project.apcurium.com/GoTaxiDesMoines/api/",
    "SiteUrl" : "http://www.transiowa.com/",
    "SupportEmail" : "info@transiowa.com",
    "TwitterAccessTokenUrl" : "",

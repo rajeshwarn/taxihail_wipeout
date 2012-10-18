@@ -7,7 +7,7 @@
    "ErrorLogEnabled" : "false",
    "FacebookAppId" : "",
    "FacebookEnabled" : "false",
-   "ServiceUrl" : "http://services.taxihail.com/BurlingtonTaxiOntario/api/",
+   "ServiceUrl" : "http://project.apcurium.com/BurlingtonTaxiOntario/api/",
    "SiteUrl" : "http://www.burlingtontaxi.com/",
    "SupportEmail" : "appsupport@burlingtontaxi.com",
    "TwitterAccessTokenUrl" : "",
