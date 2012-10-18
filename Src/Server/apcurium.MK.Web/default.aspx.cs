@@ -21,8 +21,6 @@ namespace apcurium.MK.Web
         protected bool IsAuthenticated { get; private set; }
         protected string FacebookAppId { get; private set; }
         protected string FacebookEnabled { get; private set; }
-        protected string JSAssetsSource { get; set; }
-        protected string JSAppSource { get; set; }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -36,19 +34,6 @@ namespace apcurium.MK.Web
             IsAuthenticated = base.UserSession.IsAuthenticated;
             FacebookAppId = config.GetSetting("FacebookAppId");
             FacebookEnabled = config.GetSetting("FacebookEnabled");
-
-#if DEBUG
-            var reader = XDocument.Load(HostingEnvironment.MapPath("~/scripts/assets.xml")).Root.CreateReader();
-            reader.MoveToContent();
-            JSAssetsSource = reader.ReadInnerXml();
-
-            reader = XDocument.Load(HostingEnvironment.MapPath("~/scripts/app.xml")).Root.CreateReader();
-            reader.MoveToContent();
-            JSAppSource = reader.ReadInnerXml();
-#else
-            JSAssetsSource = "<script src='scripts/minified.assets.js'></script>";
-            JSAppSource = "<script src='scripts/minified.app.js'></script>";
-#endif
         }
 
     }

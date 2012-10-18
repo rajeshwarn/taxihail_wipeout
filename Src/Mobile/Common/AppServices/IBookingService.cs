@@ -15,10 +15,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         bool IsValid(ref CreateOrder info);
 				
 		bool IsCompleted(Guid orderId);
-		
-		bool IsStatusCompleted( string statusId );
+
+        bool IsStatusCompleted(string statusId);
+
+        bool IsStatusDone(string statusId);
         
         bool CancelOrder(Guid orderId);
+
+        bool SendReceipt(Guid orderId);
 
         OrderStatusDetail CreateOrder(CreateOrder info);
 

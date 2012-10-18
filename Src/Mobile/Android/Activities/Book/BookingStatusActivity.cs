@@ -153,10 +153,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _timer.Dispose();
             _timer = null;
             AppContext.Current.LastOrder = null;
-            RunOnUiThread(() =>
-                {                    
-                    Finish();
-                });
+            RunOnUiThread(Finish);
         }
 
         private void CallCompany()

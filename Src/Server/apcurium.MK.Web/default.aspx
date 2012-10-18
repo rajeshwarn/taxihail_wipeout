@@ -1,4 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="default.aspx.cs" Inherits="apcurium.MK.Web._default" %>
+<%@ Import Namespace="System.Web.Optimization" %>
 
 <!DOCTYPE html>
 <html>
@@ -33,10 +34,10 @@
         <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         
-        <%= JSAssetsSource %>
-        <script src="templates/templates.js"></script>
+         <%: Scripts.Render("~/bundles/assets") %>
+        <script src="<%: BundleTable.Bundles.ResolveBundleUrl("~/bundles/templates") %>"></script>
         <script src="taxi-hail.js"></script>
-        <script src="localization/resources.js"></script>
+        <script src="<%: BundleTable.Bundles.ResolveBundleUrl("~/bundles/resources") %>"></script>
         
         <script type="text/javascript">
             TaxiHail.parameters.defaultLatitude = <%: this.DefaultLatitude %>;
@@ -48,7 +49,8 @@
             TaxiHail.parameters.apiRoot = "api";
         </script>
 
-        <%= JSAppSource %>
+        <%: Scripts.Render("~/bundles/app") %>
+
     </body>
 </html>
 

@@ -130,6 +130,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     statusId.SoftEqual("wosCANCELLED_DONE");
         }
 
+        public bool IsStatusDone(string statusId)
+        {
+            return statusId.SoftEqual("wosDONE");
+        }
+
         public string GetFareEstimateDisplay(CreateOrder order, string formatString , string defaultFare)
         {
             var appResource = TinyIoCContainer.Current.Resolve<IAppResource>();
@@ -184,6 +189,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             UseServiceClient<OrderServiceClient>(service =>
             {
                 service.CancelOrder(orderId);
+                isCompleted = true;
+            });
+            return isCompleted;
+        }
+
+        public bool SendReceipt(Guid orderId)
+        {
+            bool isCompleted = false;
+
+            UseServiceClient<OrderServiceClient>(service =>
+            {
+                service.SendReceipt(orderId);
                 isCompleted = true;
             });
             return isCompleted;

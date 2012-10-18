@@ -52,6 +52,11 @@ namespace apcurium.MK.Booking.Api.Services
 
             var IBSOrder = _bookingWebServiceClient.GetOrderDetails(order.IBSOrderId.Value, account.IBSAccountId, order.Settings.Phone);
 
+            if(IBSOrder.Fare.GetValueOrDefault() < .1)
+            {
+                throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.OrderNotCompleted.ToString());
+            }
+
             var command = new Commands.SendReceipt
             {
                 Id = Guid.NewGuid(), 

@@ -76,9 +76,13 @@
                 $button.button('loading');
                 
                 TaxiHail.postpone(function() {
-                    this.model.sendReceipt().done(_.bind(function(){
-                        $button.addClass('btn-success').text(this.localize('Receipt Sent'));
-                    }, this));
+                    this.model.sendReceipt()
+                        .done(_.bind(function(){
+                            $button.addClass('btn-success').text(this.localize('Receipt Sent'));
+                        }, this))
+                        .fail(_.bind(function(){
+                            $button.text(this.localize('Cannot Send Receipt'));
+                        }, this));
                 }, this)();
             }
         }

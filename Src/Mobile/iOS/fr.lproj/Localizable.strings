@@ -151,6 +151,9 @@
   "YesButton"="Oui";
   "NoButton"="Non";
   "HistoryViewStatusButton"="Voir statut";
+  "HistoryViewSendReceiptButton"="Envoyer un reçu";
+  "HistoryViewSendReceiptSuccess"="Reçu envoyé";
+  "HistoryViewSendReceiptError"="Erreur lors de l'envoi du reçu";
   "LoginForgotPasswordButton"="Mot de passe oublié?";
   "TechSupportButton"="Signaler un problème";
   "PickupOnButtonImageName"="Assets/Button/btnPickup_on_fr.png";
