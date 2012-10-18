@@ -22,7 +22,7 @@
             </TabItem>
             <TabItem Header="IBS Servers">
                 <StackPanel Background="#FFE5E5E5">
-                    <DataGrid CanUserAddRows="True" CanUserDeleteRows="True" HorizontalAlignment="Left" Margin="10,10,10,10" Width="650" MinHeight="200" AutoGenerateColumns="False" ItemsSource="{Binding ConfigurationProperties}" Height="194">
+                    <DataGrid  CanUserAddRows="True" CanUserDeleteRows="True" HorizontalAlignment="Left" Margin="10,10,10,10" Width="650" MinHeight="200" AutoGenerateColumns="False" ItemsSource="{Binding IBSServers}" Height="194">
                         <DataGrid.Columns>
                             <DataGridTextColumn Width="100" Header="Name" Binding="{Binding Name}" />
                             <DataGridTextColumn Width="250" Header="Url" Binding="{Binding Url}" />
@@ -30,7 +30,7 @@
                             <DataGridTextColumn Width="100" Header="Password" Binding="{Binding Password}" />
                         </DataGrid.Columns>
                     </DataGrid>
-                    <Button Content="Save" HorizontalAlignment="Left" Margin="10,10,10,10" Width="500" Click="SaveCompany" />
+                    <Button Content="Save" HorizontalAlignment="Left" Margin="10,10,10,10" Width="125" Click="SaveIBSServer" />
                 </StackPanel>
             </TabItem>
             <TabItem Header="Envrionnements">

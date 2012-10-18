@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Migrations;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
 using MK.ConfigurationManager.Entities;
+using Newtonsoft.Json.Linq;
 
 namespace MK.ConfigurationManager
 {
@@ -21,6 +25,8 @@ namespace MK.ConfigurationManager
 
         public ObservableCollection<Company> Companies { get; set; }
 
+        public ObservableCollection<IBSServer> IBSServers { get; set; }
+
         public ObservableCollection<MyCustomKeyValuePair> ConfigurationProperties { get; set; } 
 
         public Company CurrentCompany
@@ -32,10 +38,6 @@ namespace MK.ConfigurationManager
                 OnPropertyChanged("CurrentCompany");
                 ConfigurationProperties.Clear(); 
                 CurrentCompany.ConfigurationProperties.ToList().ForEach(x => ConfigurationProperties.Add(new MyCustomKeyValuePair(x.Key, x.Value)));
-                //if(!ConfigurationProperties.Any())
-                //{
-                //    ConfigurationProperties.Add(new MyCustomKeyValuePair(null, null));
-                //}
             }
         }
 
@@ -49,6 +51,7 @@ namespace MK.ConfigurationManager
 
             Companies = new ObservableCollection<Company>();
             ConfigurationProperties = new ObservableCollection<MyCustomKeyValuePair>();
+            IBSServers = new ObservableCollection<IBSServer>();
         }
 
         void MainWindowLoaded(object sender, RoutedEventArgs e)
@@ -57,15 +60,40 @@ namespace MK.ConfigurationManager
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<ConfigurationManagerDbContext, SimpleDbMigrationsConfiguration>("MKConfig"));
             DbContext = new ConfigurationManagerDbContext(System.Configuration.ConfigurationManager.ConnectionStrings["MKConfig"].ConnectionString);
             this.currentDbCs.Text = System.Configuration.ConfigurationManager.ConnectionStrings["MKConfig"].ConnectionString;
+
+
             DbContext.Set<Company>().ToList().ForEach(Companies.Add);
+            DbContext.Set<IBSServer>().ToList().ForEach(IBSServers.Add);
+            IBSServers.CollectionChanged += IBSServers_CollectionChanged;
+        }
+
+        void IBSServers_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if(e.Action == NotifyCollectionChangedAction.Add)
+            {
+               e.NewItems.OfType<IBSServer>().ToList().ForEach(x =>
+                                                                   {
+                                                                       x.Id = Guid.NewGuid();
+                                                                       DbContext.Set<IBSServer>().Add(x);
+                                                                   });
+            }
         }
 
         private void addCompabyBt_Click(object sender, RoutedEventArgs e)
         {
-            CurrentCompany = new Company() {Id = Guid.NewGuid()};
-            DbContext.Set<Company>().Add(CurrentCompany);
-            Companies.Add(CurrentCompany);
+            var newCompany = new Company() {Id = Guid.NewGuid()};
+            var jsonSettings = File.ReadAllText(Path.Combine(AssemblyDirectory, "Entities\\Companytemplate.json"));
+            var objectSettings = JObject.Parse(jsonSettings);
+
+            foreach (var token in objectSettings)
+            {
+                newCompany.ConfigurationProperties.Add(token.Key, token.Value.ToString());
+            }
+
+            DbContext.Set<Company>().Add(newCompany);
+            Companies.Add(newCompany);
             ConfigurationProperties.Clear();
+            CurrentCompany = newCompany;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -80,6 +108,22 @@ namespace MK.ConfigurationManager
         {
             CurrentCompany.ConfigurationProperties = ConfigurationProperties.ToDictionary(x => x.Key, y => y.Value);
             DbContext.SaveChanges();
+        }
+
+        private void SaveIBSServer(object sender, RoutedEventArgs e)
+        {
+            DbContext.SaveChanges();
+        }
+
+        static public string AssemblyDirectory
+        {
+            get
+            {
+                string codeBase = Assembly.GetExecutingAssembly().CodeBase;
+                UriBuilder uri = new UriBuilder(codeBase);
+                string path = Uri.UnescapeDataString(uri.Path);
+                return Path.GetDirectoryName(path);
+            }
         }
     }
 
