@@ -27,7 +27,11 @@ namespace MK.ConfigurationManager
 
         public ObservableCollection<IBSServer> IBSServers { get; set; }
 
-        public ObservableCollection<MyCustomKeyValuePair> ConfigurationProperties { get; set; } 
+        public ObservableCollection<TaxiHailEnvironment> TaxiHailEnvironments { get; set; }
+
+        public ObservableCollection<MyCustomKeyValuePair> ConfigurationProperties { get; set; }
+
+        public ObservableCollection<DeploymentJob> DeploymentJobs { get; set; } 
 
         public Company CurrentCompany
         {
@@ -52,6 +56,8 @@ namespace MK.ConfigurationManager
             Companies = new ObservableCollection<Company>();
             ConfigurationProperties = new ObservableCollection<MyCustomKeyValuePair>();
             IBSServers = new ObservableCollection<IBSServer>();
+            TaxiHailEnvironments = new ObservableCollection<TaxiHailEnvironment>();
+            DeploymentJobs = new ObservableCollection<DeploymentJob>();
         }
 
         void MainWindowLoaded(object sender, RoutedEventArgs e)
@@ -60,14 +66,31 @@ namespace MK.ConfigurationManager
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<ConfigurationManagerDbContext, SimpleDbMigrationsConfiguration>("MKConfig"));
             DbContext = new ConfigurationManagerDbContext(System.Configuration.ConfigurationManager.ConnectionStrings["MKConfig"].ConnectionString);
             this.currentDbCs.Text = System.Configuration.ConfigurationManager.ConnectionStrings["MKConfig"].ConnectionString;
-
-
+            
             DbContext.Set<Company>().ToList().ForEach(Companies.Add);
+
             DbContext.Set<IBSServer>().ToList().ForEach(IBSServers.Add);
-            IBSServers.CollectionChanged += IBSServers_CollectionChanged;
+            IBSServers.CollectionChanged += IBSServersCollectionChanged;
+
+            DbContext.Set<TaxiHailEnvironment>().ToList().ForEach(TaxiHailEnvironments.Add);
+            TaxiHailEnvironments.CollectionChanged += TaxiHailEnvironmentsOnCollectionChanged;
+
+            DbContext.Set<DeploymentJob>().ToList().ForEach(DeploymentJobs.Add);
         }
 
-        void IBSServers_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void TaxiHailEnvironmentsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                e.NewItems.OfType<TaxiHailEnvironment>().ToList().ForEach(x =>
+                {
+                    x.Id = Guid.NewGuid();
+                    DbContext.Set<TaxiHailEnvironment>().Add(x);
+                });
+            }
+        }
+
+        void IBSServersCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if(e.Action == NotifyCollectionChangedAction.Add)
             {
@@ -115,6 +138,11 @@ namespace MK.ConfigurationManager
             DbContext.SaveChanges();
         }
 
+        private void SaveTaxiHailEnvironment(object sender, RoutedEventArgs e)
+        {
+            DbContext.SaveChanges();
+        }
+
         static public string AssemblyDirectory
         {
             get
@@ -124,6 +152,37 @@ namespace MK.ConfigurationManager
                 string path = Uri.UnescapeDataString(uri.Path);
                 return Path.GetDirectoryName(path);
             }
+        }
+
+        public Company DeployCompany { get; set; }
+        public IBSServer DeployIBSServer { get; set; }
+        public TaxiHailEnvironment DeployTaxiHailEnv { get; set; }
+        public bool DeployInitDatabse { get; set; }
+        public bool DeployServer { get; set; }
+        public bool DeployIos { get; set; }
+        public bool DeployAndroid { get; set; }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            var job = new DeploymentJob();
+            job.Id = Guid.NewGuid();
+            job.Company = DeployCompany;
+            job.IBSServer = DeployIBSServer;
+            job.TaxHailEnv = DeployTaxiHailEnv;
+            job.InitDatabase = DeployInitDatabse;
+            job.Android = DeployAndroid;
+            job.Server = DeployServer;
+            job.iOS = DeployIos;
+            job.Status = JobStatus.REQUESTED;
+            DbContext.Set<DeploymentJob>().Add(job);
+            DbContext.SaveChanges();
+            DeploymentJobs.Add(job);
+        }
+
+        private void RefreshDeployments(object sender, RoutedEventArgs e)
+        {
+            DeploymentJobs.Clear();
+            DbContext.Set<DeploymentJob>().ToList().ForEach(DeploymentJobs.Add);
         }
     }
 

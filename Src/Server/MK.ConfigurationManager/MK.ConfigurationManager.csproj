@@ -79,6 +79,7 @@
     <Compile Include="ConfigurationManagerDbContext.cs" />
     <Compile Include="Entities\Company.cs" />
     <Compile Include="Entities\ConfigurationProperty.cs" />
+    <Compile Include="Entities\DeploymentJob.cs" />
     <Compile Include="Entities\IBSServer.cs" />
     <Compile Include="Entities\TaxiHailEnvironment.cs" />
     <Compile Include="MainWindow.xaml.cs">
