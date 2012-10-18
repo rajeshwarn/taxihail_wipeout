@@ -1,0 +1,33 @@
+﻿<Window x:Class="MK.ConfigurationManager.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="500" Width="600">
+    <StackPanel>
+        <TabControl HorizontalAlignment="Left" VerticalAlignment="Top" Height="437" Width="592">
+            <TabItem Header="Companies">
+                <Grid Background="#FFE5E5E5" Height="412" VerticalAlignment="Top" Margin="0,0,0,-3"/>
+            </TabItem>
+            <TabItem Header="IBS Servers">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+            <TabItem Header="Envrionnements">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+            <TabItem Header="Deploy">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+            <TabItem Header="Options">
+                <StackPanel Background="#FFE5E5E5">
+                    <TextBox x:Name="currentDbCs" Margin="10,10,22,0" Background="White" Height="23" />
+                    <Button Content="Update" x:Name="updateCS" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="99" />
+                    <Button Content="Create Schema" x:Name="createSchemaBt" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="99" Click="CreateSchemaBtClick"/>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+        <StatusBar x:Name="StatusBar" HorizontalAlignment="Left" VerticalAlignment="Top" Width="592" Height="30">
+            <StatusBarItem>
+                <TextBlock x:Name="statusBarTb"></TextBlock>
+            </StatusBarItem>
+        </StatusBar>
+    </StackPanel>
+</Window>
