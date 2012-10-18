@@ -76,8 +76,8 @@ namespace apcurium.MK.Booking.Test.AddressesFixture
                 Longitude = -73.558064
             });
 
-            Assert.AreEqual(2, companySut.Events.Count);
-            var evt = (DefaultFavoriteAddressAdded)companySut.Events[1];
+            Assert.AreEqual(1, companySut.Events.Count);
+            var evt = (DefaultFavoriteAddressAdded)companySut.Events[0];
             Assert.AreEqual(addressId, evt.AddressId);
             Assert.AreEqual("Chez François", evt.FriendlyName);
             Assert.AreEqual("3939", evt.Apartment);

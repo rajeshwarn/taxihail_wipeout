@@ -49,14 +49,14 @@
         },
         
         managefavoritesdefault: function () {
-            var addresses = new TaxiHail.AddressCollection(),
+            var addresses = new TaxiHail.CompanyDefaultAddressCollection(),
                         view = this._tabView = new TaxiHail.ManageDefaultAddressesView({
                             collection: addresses
                         });
 
-            var favorites = new TaxiHail.AddressCollection();
+            var favorites = new TaxiHail.CompanyDefaultAddressCollection();
             favorites.fetch({
-                url: '../api/account/addresses',
+                url: '../api/admin/addresses',
                 success: _.bind(function (collection, resp) {
                             addresses.reset(favorites.models);
                             renderView(view);

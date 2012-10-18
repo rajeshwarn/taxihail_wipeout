@@ -12,24 +12,28 @@ namespace apcurium.MK.Booking.Domain
     {
         public Company(Guid id) : base(id)
         {
-            base.Handles<DefaultFavoriteAddressAdded>(OnDefaultFavoriteAddressAdded);
-            base.Handles<DefaultFavoriteAddressRemoved>(OnDefaultFavoriteAddressRemoved);
-            base.Handles<DefaultFavoriteAddressUpdated>(OnDefaultFavoriteAddressUpdated);
-            base.Handles<CompanyCreated>(OnCompanyCreated);
+            RegisterHandlers();
             this.Update(new CompanyCreated
             {
                 SourceId = id,
             });
         }
 
-        
-
-
         public Company(Guid id, IEnumerable<IVersionedEvent> history)
-            : this(id)
-        {               
+            : base(id)
+        {
+            RegisterHandlers();
             this.LoadFrom(history);
         }
+
+        private void RegisterHandlers()
+        {
+            base.Handles<DefaultFavoriteAddressAdded>(OnDefaultFavoriteAddressAdded);
+            base.Handles<DefaultFavoriteAddressRemoved>(OnDefaultFavoriteAddressRemoved);
+            base.Handles<DefaultFavoriteAddressUpdated>(OnDefaultFavoriteAddressUpdated);
+            base.Handles<CompanyCreated>(OnCompanyCreated);
+        }
+
 
         public void AddDefaultFavoriteAddress(Guid id, string friendlyName, string apartment, string fullAddress, string ringCode, string buildingName, double latitude, double longitude)
         {

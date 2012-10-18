@@ -36,7 +36,7 @@ namespace apcurium.MK.Web.Tests
             sut.AddDefaultFavoriteAddress(new DefaultFavoriteAddress
             {
                 Id = (_knownAddressId = Guid.NewGuid()),
-                FriendlyName = "La Boite à Jojo",
+                FriendlyName = "La Boite à Jojo le barjo",
                 FullAddress = "1234 rue Saint-Denis",
                 Latitude = 45.515065,
                 Longitude = -73.558064
@@ -52,8 +52,8 @@ namespace apcurium.MK.Web.Tests
             sut.AddDefaultFavoriteAddress(new DefaultFavoriteAddress
             {
                 Id = addressId,
-                FriendlyName = "Chez François Cuvelier",
-                Apartment = "3939",
+                FriendlyName = "Chez François Cuvelier le bg",
+                Apartment = "39398",
                 FullAddress = "1234 rue Saint-Hubert",
                 RingCode = "3131",
                 BuildingName = "Hôtel de Ville",
@@ -65,7 +65,7 @@ namespace apcurium.MK.Web.Tests
 
             Assert.AreEqual(1, addresses.Count(x => x.Id == addressId));
             var address = addresses.Single(x => x.Id == addressId);
-            Assert.AreEqual("3939", address.Apartment);
+            Assert.AreEqual("39398", address.Apartment);
             Assert.AreEqual("3131", address.RingCode);
             Assert.AreEqual("1234 rue Saint-Hubert", address.FullAddress);
             Assert.AreEqual("Hôtel de Ville", address.BuildingName);
@@ -93,7 +93,7 @@ namespace apcurium.MK.Web.Tests
                 Apartment = "3939",
                 FullAddress = "1234 rue Saint-Hubert",
                 RingCode = "3131",
-                BuildingName = "Le Manoir",
+                BuildingName = "Le Manoir playboy",
                 Latitude = 12,
                 Longitude = 34
             });
@@ -104,7 +104,7 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual("3939", address.Apartment);
             Assert.AreEqual("1234 rue Saint-Hubert", address.FullAddress);
             Assert.AreEqual("3131", address.RingCode);
-            Assert.AreEqual("Le Manoir", address.BuildingName);
+            Assert.AreEqual("Le Manoir playboy", address.BuildingName);
             Assert.AreEqual(12, address.Latitude);
             Assert.AreEqual(34, address.Longitude);
 

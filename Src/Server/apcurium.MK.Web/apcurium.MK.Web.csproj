@@ -133,7 +133,9 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="admin\collections\CompanyDefaultAddressCollection.js" />
     <Content Include="admin\default.aspx" />
+    <Content Include="admin\models\CompanyDefaultAddress.js" />
     <Content Include="admin\routers\app.js" />
     <Content Include="admin\scripts\app.xml" />
     <Content Include="admin\scripts\assets.xml">
@@ -638,10 +640,7 @@
   <ItemGroup>
     <Content Include="themes\SanJoseForARide\less\variables.less" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="admin\collections\" />
-    <Folder Include="admin\models\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="admin\templates\GrantAdminAccess.handlebars" />
   </ItemGroup>

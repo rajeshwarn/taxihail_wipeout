@@ -4,14 +4,14 @@
   <!-- mixins -->
   
   <!-- models -->
-  <script src="../common/models/Address.js"></script>
   <script src="../common/models/UserAccount.js"></script>
+  <script src="models/CompanyDefaultAddress.js"></script>
 
 
   <!-- mixins -->
   <script src="../common/mixins/ValidatedView.js"></script>
   <!-- collections -->
-  <script src="../common/collections/AddressCollection.js"></script>
+  <script src="collections/CompanyDefaultAddressCollection.js"></script>
   <!-- views -->
   <script src="../common/views/TemplatedView.js"></script>
   <script src="../common/views/LoginStatusView.js"></script>

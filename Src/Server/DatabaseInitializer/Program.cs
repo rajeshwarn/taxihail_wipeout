@@ -125,7 +125,8 @@ namespace DatabaseInitializer
                    
                     commandBus.Send(new CreateCompany
                     {
-                        Id = AppConstants.CompanyId
+                        CompanyId = AppConstants.CompanyId,
+                        Id = Guid.NewGuid()
                     });
 
 

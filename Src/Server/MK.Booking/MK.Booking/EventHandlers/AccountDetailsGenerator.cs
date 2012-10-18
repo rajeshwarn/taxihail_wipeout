@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.Database;
@@ -52,6 +53,23 @@ namespace apcurium.MK.Booking.EventHandlers
                 account.Settings = new BookingSettingsDetails { ChargeTypeId = chargeTypeId, Name = account.Name, NumberOfTaxi = 1, Passengers = nbPassenger, Phone = account.Phone, ProviderId = providerId, VehicleTypeId = vehicleTypeId };
 
                 context.Save(account);
+                var defaultCompanyAddress = (from a in context.Query<DefaultAddressDetails>()
+                                             select a).ToList();
+                //add default company favorite address
+                defaultCompanyAddress.ForEach(c => context.Set<AddressDetails>().Add(new AddressDetails()
+                {
+                    AccountId = account.Id,
+                    Apartment = c.Apartment,
+                    BuildingName = c.BuildingName,
+                    FriendlyName = c.FriendlyName,
+                    FullAddress = c.FullAddress,
+                    Id = Guid.NewGuid(),
+                    IsHistoric = false,
+                    Latitude = c.Latitude,
+                    Longitude = c.Longitude,
+                    RingCode = c.RingCode
+                }));
+                context.SaveChanges();
 
             }
         }
@@ -60,10 +78,13 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
+                
                 var account = context.Find<AccountDetail>(@event.SourceId);
                 account.IsConfirmed = true;
-
                 context.Save(account);
+                
+                //context.SaveChanges();
+
             }
         }
 

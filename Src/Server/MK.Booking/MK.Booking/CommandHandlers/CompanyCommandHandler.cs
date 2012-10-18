@@ -21,6 +21,7 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(CreateCompany command)
         {
+
             var company = new Company(command.CompanyId);
             _repository.Save(company, command.Id.ToString());
         }
