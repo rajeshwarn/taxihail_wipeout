@@ -64,13 +64,4 @@
     <appender-ref ref="RollingLogFileAppender" />
     <appender-ref ref="Courriel" />
   </root>
-  <logger name="apcurium.MK.Booking.IBS.Impl">
-    <level value="ERROR" />
-  </logger>
-  <logger name="apcurium.MK.Booking.Api.Services">
-    <level value="ERROR" />
-  </logger>
-  <logger name="TraceOutput">
-    <level value="ERROR" />
-  </logger>
 </log4net>
