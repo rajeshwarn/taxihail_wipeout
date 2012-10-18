@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Infrastructure.Messaging;
+using ServiceStack.CacheAccess;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -22,21 +23,23 @@ namespace apcurium.MK.Booking.Api.Services
         private IStaticDataWebServiceClient _staticDataWebServiceClient;
 
         private IAccountDao _accountDao;
+        private ICacheClient _cacheClient;
 
         public CreateOrderService(ICommandBus commandBus,
                                     IBookingWebServiceClient bookingWebServiceClient,
                                     IStaticDataWebServiceClient staticDataWebServiceClient,
-                                    IAccountDao accountDao)
+                                    IAccountDao accountDao,
+                                    ICacheClient cacheClient)
         {
             _commandBus = commandBus;
             _bookingWebServiceClient = bookingWebServiceClient;
             _staticDataWebServiceClient = staticDataWebServiceClient;
             _accountDao = accountDao;
+            _cacheClient = cacheClient;
         }
 
         public override object OnPost(CreateOrder request)
         {
-
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
 
             //TODO : need to check ibs setup for shortesst time.
@@ -57,6 +60,14 @@ namespace apcurium.MK.Booking.Api.Services
             command.IBSOrderId = emailCommand.IBSOrderId = ibsOrderId.Value;
             command.AccountId = account.Id;
             emailCommand.EmailAddress = account.Email;
+
+            // Get Charge Type and Vehicle Type from reference data
+            var referenceData = _cacheClient.Get<ReferenceData>(ReferenceDataService.CacheKey);
+            var chargeType = referenceData.PaymentsList.Where(x => x.Id == request.Settings.ChargeTypeId).Select(x => x.Display).FirstOrDefault();
+            var vehicleType = referenceData.VehiclesList.Where(x => x.Id == request.Settings.VehicleTypeId).Select(x => x.Display).FirstOrDefault();
+
+            emailCommand.Settings.ChargeType = chargeType;
+            emailCommand.Settings.VehicleType = vehicleType;
 
             _commandBus.Send(command);
             _commandBus.Send(emailCommand);

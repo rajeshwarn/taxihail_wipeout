@@ -18,22 +18,15 @@ namespace apcurium.MK.Booking.Commands
         public Address PickupAddress { get; set; }
         public Address DropOffAddress { get; set; }
         public BookingSettings Settings { get; set; }
+        public string Note { get; set; }
 
         public class BookingSettings
         {
             public string Name { get; set; }
-
             public string Phone { get; set; }
-
             public int Passengers { get; set; }
-
-            public int VehicleTypeId { get; set; }
-
-            public int ChargeTypeId { get; set; }
-
-            public int? ProviderId { get; set; }
-
-            public int NumberOfTaxi { get; set; }
+            public string VehicleType { get; set; }
+            public string ChargeType { get; set; }
         }
     }
 }

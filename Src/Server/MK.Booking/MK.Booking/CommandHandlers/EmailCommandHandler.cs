@@ -85,6 +85,16 @@ namespace apcurium.MK.Booking.CommandHandlers
                 PickupTime = command.PickupDate.ToString("t" /* Short time pattern */),
                 PickupAddress = command.PickupAddress.FullAddress,
                 DropOffAddress = hasDropOffAddress ? command.DropOffAddress.FullAddress : "-",
+                /* Mandatory settings */
+                Name = command.Settings.Name,
+                Phone = command.Settings.Phone,
+                Passengers = command.Settings.Passengers,
+                VehicleType = command.Settings.VehicleType,
+                ChargeType = command.Settings.ChargeType,
+                /* Optional settings */
+                Note = string.IsNullOrWhiteSpace(command.Note) ? "-" : command.Note,
+                Apartment = string.IsNullOrWhiteSpace(command.PickupAddress.Apartment) ? "-" : command.PickupAddress.Apartment,
+                RingCode = string.IsNullOrWhiteSpace(command.PickupAddress.RingCode) ? "-" : command.PickupAddress.RingCode,
             };
 
             SendEmail(command.EmailAddress, template, BookingConfirmationEmailSubject, templateData);
