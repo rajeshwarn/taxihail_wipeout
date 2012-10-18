@@ -52,6 +52,7 @@
     <Compile Include="CancelOrder.cs" />
     <Compile Include="CompleteOrder.cs" />
     <Compile Include="ConfirmAccount.cs" />
+    <Compile Include="SendBookingConfirmationEmail.cs" />
     <Compile Include="CreateCompany.cs" />
     <Compile Include="GrantAdminRight.cs" />
     <Compile Include="RemoveAddressFromHistory.cs" />

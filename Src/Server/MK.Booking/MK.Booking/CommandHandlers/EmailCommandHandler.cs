@@ -9,16 +9,26 @@ using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.CommandHandlers
 {
-    public class EmailCommandHandler : ICommandHandler<SendPasswordResetEmail>, ICommandHandler<SendAccountConfirmationEmail>, ICommandHandler<SendReceipt>
+    public class EmailCommandHandler : ICommandHandler<SendPasswordResetEmail>, 
+        ICommandHandler<SendAccountConfirmationEmail>, 
+        ICommandHandler<SendBookingConfirmationEmail>,
+        ICommandHandler<SendReceipt>
     {
         const string ApplicationNameSetting = "TaxiHail.ApplicationName";
         const string AccentColorSetting = "TaxiHail.AccentColor";
+
         const string PasswordResetTemplateName = "PasswordReset";
-        const string AccountConfirmationTemplateName = "AccountConfirmation";
         const string PasswordResetEmailSubject = "{{ ApplicationName }} - Your password has been reset";
+
+        const string AccountConfirmationTemplateName = "AccountConfirmation";
         const string AccountConfirmationEmailSubject = "Welcome to {{ ApplicationName }}";
+        
         const string ReceiptEmailSubject = "{{ ApplicationName }} - Receipt";
         const string ReceiptTemplateName = "Receipt";
+
+        const string BookingConfirmationTemplateName = "BookingConfirmation";
+        const string BookingConfirmationEmailSubject = "{{ ApplicationName }} - Booking confirmation";
+        
 
         private readonly IConfigurationManager _configurationManager;
         private readonly ITemplateService _templateService;
@@ -57,6 +67,37 @@ namespace apcurium.MK.Booking.CommandHandlers
                                    };
             
             SendEmail(command.EmailAddress, template, AccountConfirmationEmailSubject, templateData);
+        }
+
+        public void Handle(SendBookingConfirmationEmail command)
+        {
+            var template = _templateService.Find(BookingConfirmationTemplateName);
+            if (template == null) throw new InvalidOperationException("Template not found: " + BookingConfirmationTemplateName);
+
+            var hasDropOffAddress = command.DropOffAddress != null && !string.IsNullOrWhiteSpace(command.DropOffAddress.FullAddress);
+
+            var templateData = new
+            {
+                ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
+                AccentColor = _configurationManager.GetSetting(AccentColorSetting),
+                IBSOrderId = command.IBSOrderId,
+                PickupDate = command.PickupDate.ToString("dddd, MMMM d"),
+                PickupTime = command.PickupDate.ToString("t" /* Short time pattern */),
+                PickupAddress = command.PickupAddress.FullAddress,
+                DropOffAddress = hasDropOffAddress ? command.DropOffAddress.FullAddress : "-",
+                /* Mandatory settings */
+                Name = command.Settings.Name,
+                Phone = command.Settings.Phone,
+                Passengers = command.Settings.Passengers,
+                VehicleType = command.Settings.VehicleType,
+                ChargeType = command.Settings.ChargeType,
+                /* Optional settings */
+                Note = string.IsNullOrWhiteSpace(command.Note) ? "-" : command.Note,
+                Apartment = string.IsNullOrWhiteSpace(command.PickupAddress.Apartment) ? "-" : command.PickupAddress.Apartment,
+                RingCode = string.IsNullOrWhiteSpace(command.PickupAddress.RingCode) ? "-" : command.PickupAddress.RingCode,
+            };
+
+            SendEmail(command.EmailAddress, template, BookingConfirmationEmailSubject, templateData);
         }
 
         public void Handle(SendReceipt command)
