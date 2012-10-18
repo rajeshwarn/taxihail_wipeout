@@ -150,10 +150,6 @@
     <Content Include="admin\default.aspx" />
     <Content Include="admin\models\CompanyDefaultAddress.js" />
     <Content Include="admin\routers\app.js" />
-    <Content Include="admin\scripts\app.xml" />
-    <Content Include="admin\scripts\assets.xml">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="admin\taxi-hail-admin.js" />
     <Content Include="admin\views\AdminMenuView.js" />
     <Content Include="admin\views\GrantAdminAccessView.js" />
@@ -268,10 +264,6 @@
     <Content Include="models\Settings.js" />
     <Content Include="models\Order.js" />
     <Content Include="routers\app.js" />
-    <Content Include="scripts\assets.xml">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="scripts\app.xml" />
     <Content Include="services\AuthService.js" />
     <Content Include="services\DirectionInfoService.js" />
     <Content Include="services\GeocodingService.js" />
