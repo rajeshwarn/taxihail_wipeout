@@ -29,6 +29,7 @@ namespace apcurium.MK.Booking.Domain
 
         
 
+
         public Account(Guid id, IEnumerable<IVersionedEvent> history)
             : this(id)
         {               

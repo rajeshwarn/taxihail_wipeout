@@ -29,6 +29,7 @@ namespace apcurium.MK.Booking
             container.RegisterInstance<IAddressDao>(new AddressDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IAccountDao>(new AccountDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IOrderDao>(new OrderDao(() => container.Resolve<BookingDbContext>()));
+            container.RegisterInstance<IDefaultAddressDao>(new DefaultAddressDao(() => container.Resolve<BookingDbContext>()));
 
             container.RegisterInstance<IPasswordService>(new PasswordService());
             container.RegisterInstance<ITemplateService>(new TemplateService());
@@ -58,8 +59,12 @@ namespace apcurium.MK.Booking
             AutoMapper.Mapper.CreateMap<FavoriteAddressAdded, AddressDetails>()
                 .ForMember(p => p.AccountId, opt => opt.MapFrom(m => m.SourceId));
 
-            AutoMapper.Mapper.CreateMap<FavoriteAddressUpdated, ReadModel.AddressDetails>()
+            AutoMapper.Mapper.CreateMap<FavoriteAddressUpdated, AddressDetails>()
                 .ForMember(p => p.Id, options => options.MapFrom(m => m.AddressId));
+
+            AutoMapper.Mapper.CreateMap<DefaultFavoriteAddressAdded, DefaultAddressDetails>();
+
+            AutoMapper.Mapper.CreateMap<DefaultFavoriteAddressUpdated, DefaultAddressDetails>();
         }
 
         private static void RegisterEventHandlers(IUnityContainer container)
@@ -75,6 +80,7 @@ namespace apcurium.MK.Booking
             container.RegisterType<ICommandHandler, AddressCommandHandler>("FavoriteAddressCommandHandler");
             container.RegisterType<ICommandHandler, EmailCommandHandler>("EmailCommandHandler");
             container.RegisterType<ICommandHandler, OrderCommandHandler>("OrderCommandHandler");
+            container.RegisterType<ICommandHandler, CompanyCommandHandler>("CompanyCommandHandler");
         }
     }
 }

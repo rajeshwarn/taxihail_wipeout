@@ -160,7 +160,7 @@
 
             search: function() {
 
-                this._searchResults = new TaxiHail.AddressCollection(),
+                this._searchResults = new Backbone.Collection(),
                     view = new TaxiHail.AddressListView({
                         collection: this._searchResults
                     });
@@ -210,7 +210,7 @@
             TaxiHail.places.search(lat, lng)
                 .done(_.bind(function (result) {
                 
-                    this._searchResults = new TaxiHail.AddressCollection(),
+                    this._searchResults = new Backbone.Collection(),
                         view = new TaxiHail.AddressListView({
                             collection: this._searchResults
                         });

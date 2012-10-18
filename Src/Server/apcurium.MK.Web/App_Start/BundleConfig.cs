@@ -115,10 +115,10 @@ namespace apcurium.MK.Web
 
             bundles.Add(new ScriptBundle("~/admin/bundles/app").Include(
                 "~/common/utils.js",
-                "~/common/models/Address.js",
+                "~/admin/models/CompanyDefaultAddress.js",
                 "~/common/models/UserAccount.js",
                 "~/common/mixins/ValidatedView.js",
-                "~/common/collections/AddressCollection.js",
+                "~/admin/collections/CompanyDefaultAddressCollection.js",
                 "~/common/views/TemplatedView.js",
                 "~/common/views/LoginStatusView.js",
                 "~/common/views/AddressItemView.js",

@@ -65,6 +65,9 @@
     <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AjaxMin">
+      <HintPath>..\packages\AjaxMin.4.69.4665.24361\lib\net40\AjaxMin.dll</HintPath>
+    </Reference>
     <Reference Include="Antlr3.Runtime">
       <HintPath>..\packages\WebGrease.1.1.0\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
@@ -143,8 +146,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="admin\collections\CompanyDefaultAddressCollection.js" />
     <Content Include="admin\default.aspx" />
+    <Content Include="admin\models\CompanyDefaultAddress.js" />
     <Content Include="admin\routers\app.js" />
+    <Content Include="admin\scripts\app.xml" />
+    <Content Include="admin\scripts\assets.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="admin\taxi-hail-admin.js" />
     <Content Include="admin\views\AdminMenuView.js" />
     <Content Include="admin\views\GrantAdminAccessView.js" />
@@ -234,7 +243,6 @@
     <Content Include="common\views\AddressItemView.js" />
     <Content Include="common\views\AddressListView.js" />
     <Content Include="common\views\AddressSelectionView.js" />
-    <Content Include="common\views\BootstrapConfirmationView.js" />
     <Content Include="common\views\LoginStatusView.js" />
     <Content Include="common\views\TemplatedView.js" />
     <Content Include="Config.aspx" />
@@ -260,6 +268,10 @@
     <Content Include="models\Settings.js" />
     <Content Include="models\Order.js" />
     <Content Include="routers\app.js" />
+    <Content Include="scripts\assets.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="scripts\app.xml" />
     <Content Include="services\AuthService.js" />
     <Content Include="services\DirectionInfoService.js" />
     <Content Include="services\GeocodingService.js" />
@@ -309,6 +321,7 @@
     <Content Include="views\BookingStatusView.js" />
     <Content Include="views\BookLaterView.js" />
     <Content Include="views\BookView.js" />
+    <Content Include="common\views\BootstrapConfirmationView.js" />
     <Content Include="views\FavoriteDetailsView.js" />
     <Content Include="views\FavoritesAndHistoryListView.js" />
     <Content Include="views\FavoritesView.js" />
@@ -433,6 +446,12 @@
       <Project>{65033050-1D55-465A-A772-F3192F9E2428}</Project>
       <Name>MK.Common</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Web.Staging.config">
+      <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="PingdomCheck.ashx" />
@@ -634,10 +653,7 @@
   <ItemGroup>
     <Content Include="themes\SanJoseForARide\less\variables.less" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="admin\collections\" />
-    <Folder Include="admin\models\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="admin\templates\GrantAdminAccess.handlebars" />
   </ItemGroup>
@@ -666,16 +682,24 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="common\templates\AddressItem.handlebars" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="common\templates\AddressSelection.handlebars" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="admin\localization\AddFavorite.json" />
+    <Content Include="admin\templates\AddressItem.handlebars" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="admin\templates\AddressSelection.handlebars" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\templates\AddFavorite.handlebars" />
-    <Content Include="admin\templates\AddressItem.handlebars" />
-    <Content Include="admin\templates\AddressSelection.handlebars" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="admin\templates\BootstrapConfirmation.handlebars" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="admin\localization\AddFavorite.json" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
