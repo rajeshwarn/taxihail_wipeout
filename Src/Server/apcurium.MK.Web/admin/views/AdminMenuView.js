@@ -29,6 +29,10 @@
             e.preventDefault();
             this.$('[data-tabname=managefavoritesdefault]').addClass('active').siblings().removeClass('active');
             TaxiHail.app.navigate('managefavoritesdefault', { trigger: true });
+        },
+        
+        setActive : function (tabName) {
+            this.$('[data-tabname='+tabName+']').addClass('active').siblings().removeClass('active');
         }
     });
     }());

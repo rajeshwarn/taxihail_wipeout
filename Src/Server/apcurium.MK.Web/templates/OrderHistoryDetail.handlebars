@@ -1,34 +1,41 @@
 ﻿<h4 class="table-title">{{localize "Order details"}}</h4>
         <div class="infos" style="margin-top: 10px;"></div>
-<div class="clearfix">
-  <table>
-    <tr>
-      <td class="settings-label">{{localize "iBSOrderIdLabel"}}</td>
-      <td class="normal-nocolor">{{iBSOrderId}}</td>
-    </tr>
-    <tr>
-      <td class="settings-label">{{localize "Pickup Time"}}</td>
+<div class="clearfix form-horizontal">
+  <div class="control-group">
+    <label class="control-label" for="labelOrderId">{{localize "iBSOrderIdLabel"}}</label>
+    <div class="controls">
+      <label id="labelOrderId" class='input-block-level'>{{iBSOrderId}}</label>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="labelPickupTime">{{localize "Pickup Time"}}</label>
+    <div class="controls">
       {{#if pickupDate}}
-      <td class="normal-nocolor">{{niceDate pickupDate}}</td>
+      <label id="labelPickupTime" class='input-block-level'>{{niceDate pickupDate}}</label>
       {{else}}
-      <td class="normal-nocolor">Now</td>
+      <label id="labelPickupTime" class='input-block-level'>Now</label>
       {{/if}}
-    </tr>
-    <tr>
-      <td class="settings-label">{{localize "Pickup"}}</td>
-      <td class="normal-nocolor">{{pickupAddress.fullAddress}}</td>
-    </tr>
-    <tr>
-      <td class="settings-label">{{localize "Destination"}}</td>
-      <td class="normal-nocolor">{{dropOffAddress.fullAddress}}</td>
-    </tr>
-
-    <tr>
-      <td class="settings-label">{{localize "OrderStatus"}}</td>
-      <td class="normal-nocolor">{{{orderStatus.iBSStatusDescription}}</td>
-    </tr>
-
-  </table>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="labelPickup">{{localize "Pickup"}}</label>
+    <div class="controls">
+      <label id="labelPickup" class='input-block-level'>{{pickupAddress.fullAddress}}</label>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="labelDropOff">{{localize "Destination"}}</label>
+    <div class="controls">
+      <label id="labelDropOff" class='input-block-level'>{{dropOffAddress.fullAddress}}</label>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label" for="labelOrderStatus">{{localize "OrderStatus"}}</label>
+    <div class="controls">
+      <label id="labelOrderStatus" class='input-block-level'>{{{orderStatus.iBSStatusDescription}}</label>
+    </div>
+  </div>
+  
   <div class="control-group btn-right-alignment " >
     <button type='button' class="btn  span btn-primary" data-action="rebook">{{localize "Rebook"}}</button>
     {{#if canPrintReceipt}}

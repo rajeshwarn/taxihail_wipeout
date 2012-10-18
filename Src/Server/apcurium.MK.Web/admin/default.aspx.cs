@@ -7,6 +7,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml.Linq;
 using Microsoft.Practices.ServiceLocation;
+using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Web.admin
@@ -26,7 +27,10 @@ namespace apcurium.MK.Web.admin
             ApplicationName = config.GetSetting("TaxiHail.ApplicationName");
            
             IsAuthenticated = base.UserSession.IsAuthenticated;
-           
+            if(!base.UserSession.HasPermission(Permissions.Admin))
+            {
+                this.Response.Redirect("~");
+            }
         }
 
     }
