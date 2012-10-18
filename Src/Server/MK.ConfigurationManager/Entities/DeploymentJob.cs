@@ -29,7 +29,6 @@ namespace MK.ConfigurationManager.Entities
     public enum JobStatus   
     {
         REQUESTED,
-        STARTED,
         INPROGRESS,
         SUCCESS,
         ERROR
