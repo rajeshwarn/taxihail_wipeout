@@ -7,6 +7,11 @@ namespace MK.ConfigurationManager
     {
         public const string SchemaName = "MkConfig";
 
+        public ConfigurationManagerDbContext()
+        {
+            
+        }
+
         public ConfigurationManagerDbContext(string nameOrConnectionString)
             : base(nameOrConnectionString)
         {
