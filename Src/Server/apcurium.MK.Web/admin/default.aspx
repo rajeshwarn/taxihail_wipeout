@@ -1,4 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="default.aspx.cs" Inherits="apcurium.MK.Web.admin._default" %>
+<%@ Import Namespace="System.Web.Optimization" %>
 
 <!DOCTYPE html>
 <html>
@@ -32,17 +33,17 @@
         <!-- assets -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         
-        <%= JSAssetsSource %>
-        <script src="templates/templates.js"></script>
+        <%: Scripts.Render("~/admin/bundles/assets") %>
+        <script src="<%: BundleTable.Bundles.ResolveBundleUrl("~/admin/bundles/templates") %>"></script>
         <script src="taxi-hail-admin.js"></script>
-        <script src="localization/resources.js"></script>
+        <script src="<%: BundleTable.Bundles.ResolveBundleUrl("~/admin/bundles/resources") %>"></script>
         
         <script type="text/javascript">
             TaxiHail.parameters.isLoggedIn = <%: this.IsAuthenticated ? "true" : "false" %>;
             TaxiHail.parameters.apiRoot = "../api";
         </script>
 
-        <%= JSAppSource %>
+        <%: Scripts.Render("~/admin/bundles/app") %>
     </body>
 </html>
 
