@@ -51,14 +51,15 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(ErrorCode.CreateOrder_CannotCreateInIbs.ToString() + code);
             }
 
-            var command = new Commands.CreateOrder();
+            var command = Mapper.Map<Commands.CreateOrder>(request);
+            var emailCommand = Mapper.Map<Commands.SendBookingConfirmationEmail>(request);
 
-            Mapper.Map(request, command);
-
-            command.IBSOrderId = ibsOrderId.Value;
+            command.IBSOrderId = emailCommand.IBSOrderId = ibsOrderId.Value;
             command.AccountId = account.Id;
+            emailCommand.EmailAddress = account.Email;
 
             _commandBus.Send(command);
+            _commandBus.Send(emailCommand);
 
             return new OrderStatusDetail { OrderId = command.OrderId, Status = OrderStatus.Created, IBSOrderId = ibsOrderId, IBSStatusId = "", IBSStatusDescription = "Processing your order" };
         }
