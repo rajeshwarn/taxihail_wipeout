@@ -2,6 +2,10 @@
 
     TaxiHail.UserAccountView = TaxiHail.TemplatedView.extend({
 
+        events: {
+            'click .active a': 'reloadActiveTab'
+        },
+
         render: function () {
             this.$el.html(this.renderTemplate(this.model.toJSON()));
             return this;
@@ -68,6 +72,12 @@
             this._tabView && this._tabView.remove();
             this.tab[tabName].apply(this);
 
+        },
+
+        reloadActiveTab: function(e) {
+            e.preventDefault();
+            var tabName = this.$('.active').data().tab;
+            this.selectTab(tabName);
         }
         
     });
