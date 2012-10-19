@@ -150,10 +150,22 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:apiKey="@string/GoogleMapKey"
+                android:layout_marginTop="-50px"
+                android:layout_marginBottom="-50px"
                 android:enabled="true"
                 android:layout_margin="-20dip"
                 local:MvxBind="{&apos;Pickup&apos;:{&apos;Path&apos;:&apos;Pickup.Model&apos;}, &apos;Dropoff&apos;:{&apos;Path&apos;:&apos;Dropoff.Model&apos;} , &apos;IsDropoffActive&apos;:{&apos;Path&apos;:&apos;DropoffIsActive&apos;}, &apos;IsPickupActive&apos;:{&apos;Path&apos;:&apos;PickupIsActive&apos;} , &apos;MapMoved&apos;:{&apos;Path&apos;:&apos;SelectedAddress.SearchCommand&apos;}, &apos;Center&apos;:{&apos;Path&apos;:&apos;MapCenter&apos;} }"
                 android:clickable="true" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignWithParentIfMissing="true"
+                android:layout_centerInParent="true"                
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="2dip"
+                            android:layout_marginRight="10dip"
+                            android:layout_marginBottom="65dip"
+                android:src="@drawable/poweredby2" />
             <ImageView
                 android:layout_width="30dip"
                 android:layout_height="30dip"

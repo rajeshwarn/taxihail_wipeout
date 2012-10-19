@@ -302,3 +302,7 @@
   "NbPassengers"=" ({0} passengers)";
 
 "InvalidChoiceTitle" = "Invalid Choice";
+
+"AppNeedUpdateTitle" = "Update available";
+"AppNeedUpdateMessage" = "A new version of the application is available, please update the app to continue.";
+

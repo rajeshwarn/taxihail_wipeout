@@ -46,7 +46,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
             }
             else
             {
-                currentSettings = AppContext.Current.LoggedUser.Settings;
+
+                currentSettings = TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount.Settings;
                 _updateDefaultSettings = true;
             }
 
@@ -98,11 +99,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
                 {
                     if (_updateDefaultSettings)
                     {
-
-                        var currentAccount = AppContext.Current.LoggedUser;
-                        currentAccount.Settings = _model.Data;
+                        
                         TinyIoCContainer.Current.Resolve<IAccountService>().UpdateBookingSettings(_model.Data);
-                        AppContext.Current.UpdateLoggedInUser(currentAccount);
 
                     }
                     else

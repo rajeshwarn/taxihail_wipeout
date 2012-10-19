@@ -263,8 +263,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
             account = TinyIoCContainer.Current.Resolve<IAccountService>().GetFacebookAccount( infos.Id);
             if (account != null)
-            {
-                AppContext.Current.UpdateLoggedInUser(account);
+            {                
                 AppContext.Current.LastEmail = account.Email;
                 RunOnUiThread(() =>
                     {
@@ -298,8 +297,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             }
             if (account != null)
             {
-
-                AppContext.Current.UpdateLoggedInUser(account);
+                
                 AppContext.Current.LastEmail = account.Email;
 
                 RunOnUiThread(() =>
@@ -373,8 +371,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                 {                    
                     var account = TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().GetAccount(txtUserName.Text, txtPassword.Text);
                     if (account != null)
-                    {
-                        AppContext.Current.UpdateLoggedInUser(account);						
+                    {                        
                         AppContext.Current.LastEmail = account.Email;
                         RunOnUiThread(() =>
                         {

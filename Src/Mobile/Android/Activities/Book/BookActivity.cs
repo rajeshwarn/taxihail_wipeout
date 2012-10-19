@@ -97,8 +97,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             FindViewById<Button>(Resource.Id.settingsAbout).Click += new EventHandler(About_Click);
 
 
-            FindViewById<Button>(Resource.Id.settingsLogout).Click -= new EventHandler(Logout_Click);
-            FindViewById<Button>(Resource.Id.settingsLogout).Click += new EventHandler(Logout_Click);
+            //FindViewById<Button>(Resource.Id.settingsLogout).Click -= new EventHandler(Logout_Click);
+            //FindViewById<Button>(Resource.Id.settingsLogout).Click += new EventHandler(Logout_Click);
 
             FindViewById<Button>(Resource.Id.settingsSupport).Click -= new EventHandler(ReportProblem_Click);
             FindViewById<Button>(Resource.Id.settingsSupport).Click += new EventHandler(ReportProblem_Click);
@@ -200,56 +200,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         private void CallCie_Click(object sender, EventArgs e)
         {
-
-            if (AppContext.Current.LoggedUser.Settings.ProviderId.HasValue)
+            var currentAccount = TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount;
+            if (currentAccount.Settings.ProviderId.HasValue)
             {
-                RunOnUiThread(() => AlertDialogHelper.Show(this, "", TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumberDisplay(AppContext.Current.LoggedUser.Settings.ProviderId.Value), this.GetString(Resource.String.CallButton), CallCie, this.GetString(Resource.String.CancelBoutton), delegate { }));
+                RunOnUiThread(() => AlertDialogHelper.Show(this, "", TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumberDisplay(currentAccount.Settings.ProviderId.Value), this.GetString(Resource.String.CallButton), CallCie, this.GetString(Resource.String.CancelBoutton), delegate { }));
             }
 
         }
 
         private void CallCie(object sender, EventArgs e)
         {
-
-            Intent callIntent = new Intent(Intent.ActionCall, Android.Net.Uri.Parse("tel:" + TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumberDisplay(AppContext.Current.LoggedUser.Settings.ProviderId.Value)));
+            var currentAccount = TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount;
+            Intent callIntent = new Intent(Intent.ActionCall, Android.Net.Uri.Parse("tel:" + TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumberDisplay(currentAccount.Settings.ProviderId.Value)));
             StartActivity(callIntent);
             ToggleSettingsScreenVisibility();
 
         }
 
-        private void Logout_Click(object sender, EventArgs e)
-        {
-            AppContext.Current.SignOut();
-            try
-            {
-                var facebook = TinyIoC.TinyIoCContainer.Current.Resolve<IFacebookService>();
-                if (facebook.IsConnected)
-                {
-                    facebook.SetCurrentContext(this);
-                    facebook.Disconnect();
-                }
-            }
-            catch { }
-
-            try
-            {
-                var twitterService = TinyIoC.TinyIoCContainer.Current.Resolve<ITwitterService>();
-                if (twitterService.IsConnected)
-                {
-                    twitterService.Disconnect();
-                }
-
-            }
-            catch { }
-            TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService>().ClearAll();
-            RunOnUiThread(() =>
-            {
-                Finish();
-
-                ViewModel.Logout.Execute();
-            });
-        }
-
+  
         private void ReportProblem_Click(object sender, EventArgs e)
         {
 
@@ -442,6 +410,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             if (_menuIsShown)
             {
                 ToggleSettingsScreenVisibility();
+            }
+            else
+            {
+                base.OnBackPressed();
+
             }
         }
         private void OnOrderConfirmed(OrderConfirmed orderConfirmed)

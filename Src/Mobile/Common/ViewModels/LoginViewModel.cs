@@ -5,6 +5,7 @@ using System.Text;
 using Cirrious.MvvmCross.ViewModels;
 using Cirrious.MvvmCross.Commands;
 using TinyIoC;
+using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.AppServices;
@@ -58,11 +59,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return new MvxRelayCommand(() => {
 					try
 					{
-						_appContext.SignOut();
-
+						TinyIoCContainer.Current.Resolve<IAccountService>().SignOut();
 						ThreadPool.QueueUserWorkItem( SignIn );  
-
-
 					}
 					finally
 					{
@@ -75,13 +73,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			try
 			{
+                TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("SignIn with server {0}", TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl);            
 				TinyIoCContainer.Current.Resolve<IMessageService>().ShowProgress(true);
 				UserInteractionEnabled = false;				
 				var account = _accountService.GetAccount(Email, Password);
-				if (account != null)
-				{
-					SetAccountInfo(account);
-				}
+				
 			}
 			finally
 			{
@@ -91,13 +87,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-        public void SetAccountInfo(Account account)
-        {
-            _appContext.LastEmail = Email;
-            _appContext.LoggedInEmail = Email;
-            InvokeOnMainThread(() => _appContext.UpdateLoggedInUser(account));
-            RequestNavigate<BookViewModel>(true);
-        }
+       
 
 	}
 }

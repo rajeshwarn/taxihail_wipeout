@@ -107,34 +107,36 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public void RefreshResults(Task<IEnumerable<AddressViewModel>> task)
         {
-            if (task.IsCompleted
-                && !task.IsCanceled)
-            {
+          
                 InvokeOnMainThread(() =>
                 {
-                    IsSearching = false;
-                    AddressViewModels = task.Result.Where(x => !x.Address.IsHistoric).ToList();
-                    HistoricAddressViewModels = task.Result.Where(x => x.Address.IsHistoric).ToList();
-                    HistoricIsHidden = !HistoricAddressViewModels.Any();
-                    var allAddresses = new List<SectionAddressViewModel>();
-                    if (SearchViewModelSelected is AddressSearchByFavoritesViewModel)
+                    if (task.IsCompleted
+              && !task.IsCanceled)
                     {
-                        allAddresses.Add(new SectionAddressViewModel() { SectionTitle = _appResource.GetString("FavoriteLocationsTitle"), Addresses = AddressViewModels });
-                        allAddresses.Add(new SectionAddressViewModel() { SectionTitle = _appResource.GetString("HistoryViewTitle"), Addresses = HistoricAddressViewModels });
-                    }
-                    else
-                    {
-                        allAddresses.Add(new SectionAddressViewModel() { SectionTitle = "", Addresses = AddressViewModels });
-                    }
+                        IsSearching = false;
+                        AddressViewModels = task.Result.Where(x => !x.Address.IsHistoric).ToList();
+                        HistoricAddressViewModels = task.Result.Where(x => x.Address.IsHistoric).ToList();
+                        HistoricIsHidden = !HistoricAddressViewModels.Any();
+                        var allAddresses = new List<SectionAddressViewModel>();
+                        if (SearchViewModelSelected is AddressSearchByFavoritesViewModel)
+                        {
+                            allAddresses.Add(new SectionAddressViewModel() {SectionTitle = _appResource.GetString("FavoriteLocationsTitle"), Addresses = AddressViewModels});
+                            allAddresses.Add(new SectionAddressViewModel() {SectionTitle = _appResource.GetString("HistoryViewTitle"), Addresses = HistoricAddressViewModels});
+                        }
+                        else
+                        {
+                            allAddresses.Add(new SectionAddressViewModel() {SectionTitle = "", Addresses = AddressViewModels});
+                        }
 
-                    AllAddresses = allAddresses;
+                        AllAddresses = allAddresses;
 
-                    FirePropertyChanged(() => AddressViewModels);
-                    FirePropertyChanged(() => HistoricAddressViewModels);
-                    FirePropertyChanged(() => AllAddresses);
-                    FirePropertyChanged(() => HistoricIsHidden);
+                        FirePropertyChanged(() => AddressViewModels);
+                        FirePropertyChanged(() => HistoricAddressViewModels);
+                        FirePropertyChanged(() => AllAddresses);
+                        FirePropertyChanged(() => HistoricIsHidden);
+                    }
                 });
-            }
+            
         }
 
         private void ClearResults()

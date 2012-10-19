@@ -35,7 +35,10 @@
 
             view.show();
             view.on('ok', _.once(function(){
-                events.trigger('ok');
+                events.trigger('ok', view);
+            }));
+            view.on('cancel', _.once(function(){
+                events.trigger('cancel', view);
             }));
             return events;
         }
