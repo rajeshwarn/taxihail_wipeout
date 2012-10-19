@@ -32,9 +32,9 @@
     <WarningLevel>4</WarningLevel>
     <AndroidKeyStore>True</AndroidKeyStore>
     <AndroidSigningKeyStore>public.keystore</AndroidSigningKeyStore>
-    <AndroidSigningStorePass>mkAtlantaCheckerCab0001.</AndroidSigningStorePass>
-    <AndroidSigningKeyAlias>MKAtlantaCheckerCab</AndroidSigningKeyAlias>
-    <AndroidSigningKeyPass>mkAtlantaCheckerCab0001.</AndroidSigningKeyPass>
+    <AndroidSigningStorePass>mkt0001.</AndroidSigningStorePass>
+    <AndroidSigningKeyAlias>MKTaxiHail</AndroidSigningKeyAlias>
+    <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
     <AndroidLinkMode>None</AndroidLinkMode>
     <AndroidSupportedAbis>armeabi,armeabi-v7a,x86</AndroidSupportedAbis>
     <DebugSymbols>True</DebugSymbols>
@@ -50,9 +50,9 @@
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
     <AndroidKeyStore>True</AndroidKeyStore>
     <AndroidSigningKeyStore>public.keystore</AndroidSigningKeyStore>
-    <AndroidSigningStorePass>mkAtlantaCheckerCab0001.</AndroidSigningStorePass>
-    <AndroidSigningKeyAlias>MKAtlantaCheckerCab</AndroidSigningKeyAlias>
-    <AndroidSigningKeyPass>mkAtlantaCheckerCab0001.</AndroidSigningKeyPass>
+    <AndroidSigningStorePass>mkt0001.</AndroidSigningStorePass>
+    <AndroidSigningKeyAlias>MKTaxiHail</AndroidSigningKeyAlias>
+    <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
     <AndroidSupportedAbis>armeabi-v7a,x86</AndroidSupportedAbis>
   </PropertyGroup>

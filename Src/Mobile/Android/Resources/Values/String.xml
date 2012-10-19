@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="ApplicationName">Atlanta</string>
+  <string name="ApplicationName">TaxiHail</string>
   <string name="Language">English</string>
   <string name="LanguageCode">en</string>
   <string name="TabBook">Book</string>
@@ -235,7 +235,7 @@
   <string name="ServiceErrorUnauthorized">An unauthorized call has been made to server, you will be redirected to login page.</string>
   <string name="BookDateLabel">Pick Me Up Later</string>
   <string name="OrderHistoryListTitle">Order #{0} ({1:ddd, MMM d},{1:h:mm tt})</string>
-  <string name="GoogleMapKey">0XEY3WqKVmJMQaTpxqj-_F_w73I0VnVShVisy1A</string>
+  <string name="GoogleMapKey">0XEY3WqKVmJPBRHcuYAiXmD9llX1jZHBuLpgKDw</string>
   <string name="searchHint">Search</string>
   <string name="BookPickupLocationButtonTitle">Pickup</string>
   <string name="BookDropoffLocationButtonTitle">Destination</string>
@@ -291,8 +291,6 @@
   <string name="View_RefineAddress">Pickup Details</string>
   <string name="BookingService_MobileBookingNote">Booked mobile device.</string>
   <string name="BookingService_MobileBookingNoteBuildingName">Building name {0}.</string>
-
   <string name="AppNeedUpdateTitle">Update available</string>
   <string name="AppNeedUpdateMessage">A new version of the application is available, please update the app to continue.</string>
-  
 </resources>
