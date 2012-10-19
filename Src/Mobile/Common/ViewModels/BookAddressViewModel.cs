@@ -95,7 +95,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     }, token)
                     .ContinueWith(t =>
                         {
-                            if ( (t.IsCompleted) && ( !t.IsCanceled ) )
+                            if (t.IsCompleted && !t.IsCanceled && !t.IsFaulted)
                             {
                                 RequestMainThreadAction(() =>
                                 {
@@ -225,8 +225,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         {
                             if (t.IsFaulted)
                             {
-								IsExecuting = false;
-                                // PositionStatus.Text = ((GeolocationException)t.Exception.InnerException).Error.ToString();
+								IsExecuting = false;                                
                             }
                             else if ( t.IsCompleted && !t.IsCanceled )
                             {

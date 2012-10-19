@@ -57,6 +57,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public void SignOut()
         {
 
+            var serverUrl = TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl;
             
         
             try
@@ -88,8 +89,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             TinyIoCContainer.Current.Resolve<ICacheService>().Clear("SessionId");
             TinyIoCContainer.Current.Resolve<ICacheService>().ClearAll();
 
-            
 
+            TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl = serverUrl;
 
             var dispatch = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
             dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(LoginViewModel), null, false, MvxRequestedBy.UserAction));

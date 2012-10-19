@@ -85,6 +85,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                     var task = SearchViewModelSelected.OnSearchExecute(_searchCancellationToken.Token);
                     task.ContinueWith(RefreshResults);
+
                     if (!(SearchViewModelSelected is AddressSearchByContactViewModel))
                     {
                         task.Start();
@@ -110,8 +111,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
           
                 InvokeOnMainThread(() =>
                 {
-                    if (task.IsCompleted
-              && !task.IsCanceled)
+                    
+                    if (task.IsCompleted && !task.IsCanceled &&  !task.IsFaulted )
                     {
                         IsSearching = false;
                         AddressViewModels = task.Result.Where(x => !x.Address.IsHistoric).ToList();
@@ -168,6 +169,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                     {
                                         var placeAddress = _googleService.GetPlaceDetail(address.Address.PlaceReference);
                                         placeAddress.FriendlyName = address.Address.FriendlyName;
+                                        placeAddress.BuildingName = address.Address.FriendlyName;
                                         InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new AddressSelected(this, placeAddress, _ownerId)));
                                         RequestClose(this);
                                     }
