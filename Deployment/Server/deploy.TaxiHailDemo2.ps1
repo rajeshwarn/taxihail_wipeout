@@ -1,5 +1,5 @@
 ﻿#see staging file for documentation
-$companyName= "TaxiHailDemo" 
+$companyName= "TaxiHailDemo2" 
 
 $sqlServerInstance = "MSSQL10_50.MSSQLSERVER"
 
