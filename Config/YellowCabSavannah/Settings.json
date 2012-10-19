@@ -7,7 +7,7 @@
    "ErrorLogEnabled" : "false",
    "FacebookAppId" : "",
    "FacebookEnabled" : "false",
-   "ServiceUrl" : "http://project.apcurium.com/YellowCabSavannah/api/",
+   "ServiceUrl" : "http://services.taxihail.com/YellowCabSavannah/api/",
    "SiteUrl" : "http://www.yellowcabofsavannah.com",
    "SupportEmail" : "savannahcab@gmail.com",
    "TwitterAccessTokenUrl" : "",

@@ -37,13 +37,15 @@ namespace apcurium.MK.Web.Tests
             _appHost.Start(BaseUrl);
             var sut = new AccountServiceClient(BaseUrl, null);
             TestAccount = sut.GetTestAccount(0);
-
+            var referenceClient = new ReferenceDataServiceClient(BaseUrl, null);
+            referenceClient.GetReferenceData();
         }
 
         public virtual void Setup()
         {
             var authResponse = new AuthServiceClient(BaseUrl, null).Authenticate(TestAccount.Email, TestAccountPassword);
             SessionId = authResponse.SessionId;
+           
         }
 
         public virtual void TestFixtureTearDown()

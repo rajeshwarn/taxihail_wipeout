@@ -40,6 +40,7 @@
         <script src="<%: BundleTable.Bundles.ResolveBundleUrl("~/bundles/resources") %>"></script>
         
         <script type="text/javascript">
+            TaxiHail.parameters.applicationName = "<%: this.ApplicationName %>";
             TaxiHail.parameters.defaultLatitude = <%: this.DefaultLatitude %>;
             TaxiHail.parameters.defaultLongitude = <%: this.DefaultLongitude %>;
             TaxiHail.parameters.defaultPhoneNumber = '<%: this.DefaultPhoneNumber %>';
