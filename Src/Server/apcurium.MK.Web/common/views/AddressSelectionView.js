@@ -167,14 +167,14 @@
 
                 this._searchResults.on('selected', function (model, collection) {
 
-                    if(!model.get('fullAddress'))
+                    if(!model.get('fullAddress') && model.has('placeReference'))
                     {
-                        TaxiHail.geocoder.geocode(model.get('latitude'), model.get('longitude'))
+                        TaxiHail.places.getPlaceDetails(model.get('placeReference'))
                             .done(function(result){
-                                if(result && result.length)
+                                if(result)
                                 {
                                     model.set({
-                                        fullAddress: result[0].fullAddress
+                                        fullAddress: result.fullAddress
                                     });
                                 }
 
