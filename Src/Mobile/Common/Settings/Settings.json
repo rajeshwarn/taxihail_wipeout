@@ -7,7 +7,7 @@
    "ErrorLogEnabled" : "false",
    "FacebookAppId" : "134284363380764",
    "FacebookEnabled" : "true",
-   "ServiceUrl" : "http://192.168.12.121/apcurium.Mk.Web/api/",
+   "ServiceUrl" : "http://project.apcurium.com/MKWebStaging/api/",
    "SiteUrl" : "http://www.mobile-knowledge.com/index.html",
    "TwitterAccessTokenUrl" : "https://twitter.com/oauth/access_token",
    "TwitterAuthorizeUrl" : "https://twitter.com/oauth/authorize",
