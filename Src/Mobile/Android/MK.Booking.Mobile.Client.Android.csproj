@@ -502,6 +502,11 @@
     <AndroidResource Include="Resources\Values\HeaderedLayoutAttributes.xml" />
     <AndroidResource Include="Resources\Values\FontSize.xml" />
     <AndroidResource Include="Resources\drawable-hdpi\Logo.png" />
+    <AndroidResource Include="Resources\Drawable\splash_resizable.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Drawable\poweredby.png" />
+    <AndroidResource Include="Resources\Drawable\poweredby2.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

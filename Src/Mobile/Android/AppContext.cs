@@ -112,77 +112,73 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         
 
-        public Account LoggedUser
-        {
+        //public Account LoggedUser
+        //{
 
-            get
-            {
-                if( _loggedUser == null )
-				{
-                    var pref = Application.Context.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
-	                var serializedUser = pref.GetString("LoggedUser", "");
-	                if (serializedUser.HasValue())
-	                {
-	                    _loggedUser = SerializerHelper.DeserializeObject<Account>(serializedUser);
-	                }
-                    if (_loggedUser != null)
-                    {
-                        if (_loggedUser.Settings == null)
-                        {
-                            _loggedUser.Settings = new BookingSettings();
-                        }
-                        /*if (_loggedUser.Settings.ProviderId != 12)
-                        {
-                            _loggedUser.Settings.ProviderId = 12;                            
-                        }*/
-                    }
-//	                else
-//	                {
-//	                    return null;
-//	                }
-				}
-				return _loggedUser;
-            }
-            private set
-            {
-				_loggedUser = value;
-                if (value != null)
-                {
-                    string serializedUser = SerializerHelper.Serialize(value);
-                    var pref = Application.Context.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
-                    pref.Edit().PutString("LoggedUser", serializedUser).Commit();
+        //    get
+        //    {
+        //        if( _loggedUser == null )
+        //        {
 
-                    AppContext.Current.LoggedInEmail = value.Email;
+        //            _loggedUser = TinyIoCContainer.Current.Resolve<ICacheService>().Get<Account>("LoggedUser");
+
+        //            var pref = Application.Context.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
+
+        //            var serializedUser = pref.GetString("LoggedUser", "");
+        //            if (serializedUser.HasValue())
+        //            {
+        //                _loggedUser = SerializerHelper.DeserializeObject<Account>(serializedUser);
+        //            }
+        //            if (_loggedUser != null)
+        //            {
+        //                if (_loggedUser.Settings == null)
+        //                {
+        //                    _loggedUser.Settings = new BookingSettings();
+        //                }                        
+        //            }
+        //        }
+        //        return _loggedUser;
+        //    }
+        //    private set
+        //    {
+        //        _loggedUser = value;
+        //        if (value != null)
+        //        {
+        //            string serializedUser = SerializerHelper.Serialize(value);
+        //            var pref = Application.Context.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
+        //            pref.Edit().PutString("LoggedUser", serializedUser).Commit();
+
+        //            AppContext.Current.LoggedInEmail = value.Email;
                     
-                }
-                else
-                {
-                    var pref = Application.Context.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
-                    pref.Edit().PutString("LoggedUser", "").Commit();
-					pref.Edit().PutString("ServerName", "" ).Commit();
-					pref.Edit().PutString("ServerVersion", "" ).Commit();
-					AppContext.Current.LoggedInEmail = "";
-                    AppContext.Current.LoggedInPassword = "";
-                }
-            }
-        }
+        //        }
+        //        else
+        //        {
+        //            var pref = Application.Context.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
+        //            pref.Edit().PutString("LoggedUser", "").Commit();
+        //            pref.Edit().PutString("ServerName", "" ).Commit();
+        //            pref.Edit().PutString("ServerVersion", "" ).Commit();
+        //            AppContext.Current.LoggedInEmail = "";
+        //            AppContext.Current.LoggedInPassword = "";
+        //        }
+        //    }
+        //}
 
 		
 
-        public void UpdateLoggedInUser(Account data)
-        {
+        //public void UpdateLoggedInUser(Account data)
+        //{
 
-            Logger.LogMessage("UpdateLoggedInUser");
-            if (data != null)
-            {
-                Logger.LogMessage("UpdateLoggedInUser != null");
-                LoggedUser = data;                
-            }
-            else
-            {
-                Logger.LogMessage("UpdateLoggedInUser == null");
-            }
-        }
+        //    Logger.LogMessage("UpdateLoggedInUser");
+        //    if (data != null)
+        //    {
+        //        Logger.LogMessage("UpdateLoggedInUser != null");
+        //        LoggedUser = data;                
+        //    }
+        //    else
+        //    {
+        //        Logger.LogMessage("UpdateLoggedInUser == null");
+        //    }
+        //}
         public string LastEmail
         {
 
@@ -269,62 +265,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         
 		public Location CurrentLocation { get; set; }
 
-        public void SignOut()
-        {
-
-            LoggedUser = null;
-
-            try
-            {
-                TinyIoCContainer.Current.Resolve<IAccountService>().SignOut();
-                var facebook = TinyIoC.TinyIoCContainer.Current.Resolve<IFacebookService>();
-                if (facebook.IsConnected)
-                {
-                    facebook.SetCurrentContext(this);
-                    facebook.Disconnect();
-                }
-
-                var twitterService = TinyIoC.TinyIoCContainer.Current.Resolve<ITwitterService>();
-                if (twitterService.IsConnected)
-                {
-                    twitterService.Disconnect();
-                }
-            }
-            catch
-            {
-
-            }
-
-            TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService>().ClearAll();
-
-
-            var dispatch = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
-            dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(LoginViewModel), null, false, MvxRequestedBy.UserAction));
-        }
-
-        //public void OnLocationChanged(Location location)
-        //{
-        //    if ( ( CurrentLocation == null ) || ( CurrentLocation.Accuracy > location.Accuracy ) )
-        //    {
-        //        CurrentLocation = location;
-        //    }
-        //}
-
-        //public void OnProviderDisabled(string provider)
-        //{
-        
-        //}
-
-        //public void OnProviderEnabled(string provider)
-        //{
-        
-        //}
-
-        //public void OnStatusChanged(string provider, Availability status, Bundle extras)
-        //{
-        
-        //}
-		
+   
    
 		
 		public void Dispose()

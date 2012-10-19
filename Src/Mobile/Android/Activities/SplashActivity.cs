@@ -27,38 +27,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
         public SplashActivity()
         {
             
-
+            
         }
 
+
+       
+        
         public static LocationService _locationService = new LocationService();
 
-        public override Android.Views.View OnCreateView(string name, Android.Content.Context context, Android.Util.IAttributeSet attrs)
-        {
-            
-
-            return base.OnCreateView(name, context, attrs);
-
-            
-
-
-        }
         protected override void OnCreate(Bundle bundle)
         {
-            
-
             base.OnCreate(bundle);
-            
-
             _locationService.Start();
-
-
         }
-
-        protected override void OnResume()
-        {
-            base.OnResume();
-         
-        }
+        
 
 
 

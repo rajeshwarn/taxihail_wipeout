@@ -18,7 +18,7 @@ using apcurium.MK.Booking.Mobile.Messages;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-    [Activity(Label = "AlertDialogActivity", Theme = "@android:style/Theme.Dialog")]
+    [Activity(Theme = "@android:style/Theme.Dialog")]
     public class AlertDialogActivity : Activity
     {
         private string _title;

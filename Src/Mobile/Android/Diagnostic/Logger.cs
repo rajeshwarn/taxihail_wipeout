@@ -66,9 +66,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
         {
 
         }
-        public void LogMessage(string message)
+        public void LogMessage(string message , params object[] args)
         {
-
+            if ((args != null) && (args.Length > 0))
+            {
+                message = string.Format(message, args);
+            }
 
             Write("Message on " + DateTime.Now.ToString() + " : " + message);
 

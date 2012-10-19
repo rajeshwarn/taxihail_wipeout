@@ -55,7 +55,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             
             var data = SerializerHelper.DeserializeObject<CreateOrder>(this.ViewModel.Order);
             BookingInfo = data;
-            var currentSettings = AppContext.Current.LoggedUser.Settings;
+
+            var account = TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount;
+            var currentSettings = account.Settings;
             BookingInfo.Settings = currentSettings;
 
             UpdateDisplay();
@@ -68,7 +70,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 ShowAlertDialog();
             }
-            //TinyIoCContainer.Current.Resolve<ICacheService>().ClearAll();
+            
             if (TinyIoCContainer.Current.Resolve<IAppSettings>().CanChooseProvider)
             {
                 if(BookingInfo.Settings.ProviderId ==null)
@@ -231,7 +233,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
 
             var service = TinyIoCContainer.Current.Resolve<IAccountService>();
-            
+            var currentAccount = service.CurrentAccount;
             var companies = service.GetCompaniesList();
             //TODO : data depends on company selected            
 
@@ -246,7 +248,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             FindViewById<TextView>(Resource.Id.DateTimeTxt).Text = FormatDateTime(BookingInfo.PickupDate );
             FindViewById<TextView>(Resource.Id.NameTxt).Text = BookingInfo.Settings.Name;
             FindViewById<TextView>(Resource.Id.PhoneTxt).Text = BookingInfo.Settings.Phone;
-            FindViewById<TextView>(Resource.Id.PassengersTxt).Text = BookingInfo.Settings.Passengers == 0 ? AppContext.Current.LoggedUser.Settings.Passengers.ToString() : BookingInfo.Settings.Passengers.ToString();
+            FindViewById<TextView>(Resource.Id.PassengersTxt).Text = BookingInfo.Settings.Passengers == 0 ? currentAccount.Settings.Passengers.ToString() : BookingInfo.Settings.Passengers.ToString();
 
             var model = new RideSettingsModel(BookingInfo.Settings, companies, service.GetVehiclesList(), service.GetPaymentsList());
             //TODO:Fix this

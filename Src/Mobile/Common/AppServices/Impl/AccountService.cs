@@ -1,6 +1,9 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Interfaces.Views;
+using Cirrious.MvvmCross.Views;
 using SocialNetworks.Services;
 
 #if IOS
@@ -13,6 +16,7 @@ using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using TinyIoC;
@@ -53,26 +57,42 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public void SignOut()
         {
 
-            TinyIoCContainer.Current.Resolve<ICacheService>().Clear(_historyAddressesCacheKey);
-            TinyIoCContainer.Current.Resolve<ICacheService>().Clear(_favoriteAddressesCacheKey);
-            TinyIoCContainer.Current.Resolve<ICacheService>().Clear("SessionId");
-            TinyIoCContainer.Current.Resolve<ICacheService>().ClearAll();
+            
         
             try
             {
-                TinyIoCContainer.Current.Resolve<ITwitterService>().Disconnect();
+                var facebook = TinyIoCContainer.Current.Resolve<IFacebookService>();
+                if (facebook.IsConnected)
+                {
+                    facebook.SetCurrentContext(this);
+                    facebook.Disconnect();
+                }
             }
             catch
             {
             }
             try
             {
-                TinyIoCContainer.Current.Resolve<IFacebookService>().Disconnect();
+                var twitterService = TinyIoCContainer.Current.Resolve<ITwitterService>();
+                if (twitterService.IsConnected)
+                {
+                    twitterService.Disconnect();
+                }
             }
             catch
             {
             }
 
+            TinyIoCContainer.Current.Resolve<ICacheService>().Clear(_historyAddressesCacheKey);
+            TinyIoCContainer.Current.Resolve<ICacheService>().Clear(_favoriteAddressesCacheKey);
+            TinyIoCContainer.Current.Resolve<ICacheService>().Clear("SessionId");
+            TinyIoCContainer.Current.Resolve<ICacheService>().ClearAll();
+
+            
+
+
+            var dispatch = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
+            dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(LoginViewModel), null, false, MvxRequestedBy.UserAction));
         }
 
         public void RefreshCache(bool reload)
@@ -226,7 +246,20 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             get
             {
-                return TinyIoCContainer.Current.Resolve<IAppContext>().LoggedUser;
+
+                var account = TinyIoCContainer.Current.Resolve<ICacheService>().Get<Account>("LoggedUser");
+                return account;
+            }
+            private set
+            {
+                if ( value != null )
+                {
+                    TinyIoCContainer.Current.Resolve<ICacheService>().Set("LoggedUser", value );    
+                }
+                else
+                {
+                    TinyIoCContainer.Current.Resolve<ICacheService>().Clear("LoggedUser");
+                }                
             }
         }
 
@@ -252,6 +285,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             {                     
                 service.UpdateBookingSettings(new BookingSettingsRequest{ Name =  settings.Name, Phone=settings.Phone, Passengers = settings.Passengers, VehicleTypeId = settings.VehicleTypeId, ChargeTypeId = settings.ChargeTypeId, ProviderId = settings.ProviderId });
                 CurrentAccount.Settings = settings;
+                //Set to update the cache
+                CurrentAccount = CurrentAccount;
             }
             );
 
@@ -271,14 +306,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             try
             {
-                var parameters = new NamedParameterOverloads();
                 var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
                 var authResponse = auth.Authenticate(email, password);
-
-                SaveCredentials(authResponse);
-
-                parameters.Add("credential", authResponse);
-                return GetAccount(parameters, true);
+                SaveCredentials(authResponse);                
+                return GetAccount( true);
             }
             catch (WebException ex)
             {
@@ -310,14 +341,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             try
             {
-                var parameters = new NamedParameterOverloads();
                 var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient>();
-
                 var authResponse = auth.AuthenticateFacebook(facebookId);
                 SaveCredentials(authResponse);
-
-                parameters.Add("credential", authResponse);
-                return GetAccount(parameters, false);
+                return GetAccount(false);
             }
             catch
             {
@@ -335,7 +362,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             SaveCredentials(authResponse);
 
             parameters.Add("credential", authResponse);
-            return GetAccount(parameters, false);
+            return GetAccount( false);
             }
             catch
             {
@@ -343,7 +370,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 
-        private Account GetAccount(NamedParameterOverloads parameters, bool showInvalidMessage)
+        private Account GetAccount(bool showInvalidMessage)
         {
             Account data = null;
 
@@ -352,14 +379,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 TinyIoCContainer.Current.Resolve<ICacheService>().Clear(_historyAddressesCacheKey);
                 TinyIoCContainer.Current.Resolve<ICacheService>().Clear(_favoriteAddressesCacheKey);
 
-                var context = TinyIoCContainer.Current.Resolve<IAppContext>();                                
                 var service = TinyIoCContainer.Current.Resolve<AccountServiceClient>("Authenticate");
                 var account = service.GetMyAccount();
                 if (account != null)
                 {
-                    context.UpdateLoggedInUser(account);
+                    CurrentAccount = account;
                     data = account;
-
                 }
                 EnsureListLoaded();
             }
@@ -378,7 +403,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 }
 
                 return null;
-            }            
+            }
+
             return data;
         }
 
@@ -386,23 +412,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             bool isSuccess = false;
 
-            UseServiceClient<AccountServiceClient>("NotAuthenticated", service => {
-                //service = TinyIoCContainer.Current.Resolve<AccountServiceClient>("NotAuthenticated");
+            UseServiceClient<AccountServiceClient>("NotAuthenticated", service => {               
                 service.ResetPassword(email);
                 isSuccess = true;
             });
 
-//            try
-//            {
-//                var service = TinyIoCContainer.Current.Resolve<AccountServiceClient>("NotAuthenticated");
-//                service.ResetPassword(email);
-//                isSuccess = true;
-//            }
-//            catch (Exception ex)
-//            {
-//                TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Error resetting the password");
-//                TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex);
-//            }
 
             return isSuccess;
         }
@@ -424,11 +438,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     service.RegisterAccount(data);
                     isSuccess = true;
                 }
-                );
-                //var service = TinyIoCContainer.Current.Resolve<AccountServiceClient>();
-                //var service = new AccountServiceClient("http://192.168.12.125/apcurium.MK.Web/api/");
-                //service.RegisterAccount(data);
-                //isSuccess = true;
+                );                
             }
             catch (Exception ex)
             {

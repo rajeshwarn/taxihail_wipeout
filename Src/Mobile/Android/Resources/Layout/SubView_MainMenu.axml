@@ -108,7 +108,7 @@
                     android:paddingRight="10dip"
                     android:paddingLeft="10dip"
                     android:gravity="left|center_vertical"
-                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;GoToLogout&apos;}}" />
+                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;Logout&apos;}}" />
             </LinearLayout>
             <RelativeLayout
                 android:id="@+id/apcuriumLogoLayout"
