@@ -17,6 +17,7 @@ using Cirrious.MvvmCross.Binding.Touch.Views;
 using Cirrious.MvvmCross.Views;
 using System.Collections.Generic;
 using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
+using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -69,6 +70,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		private void InitializeMenu()
 		{
+            var account = TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount;
 			var structure = new InfoStructure( 44, false );
 			var sect = structure.AddSection();
             sect.AddItem( new SingleLineItem( Resources.GetValue("View_Book_Menu_MyLocations")) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
@@ -83,15 +85,15 @@ namespace apcurium.MK.Booking.Mobile.Client
 			});
             sect.AddItem( new SingleLineItem( Resources.GetValue("View_Book_Menu_UpdateMyProfile")   ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
 					AnimateMenu();
-					var rideSettingsView = new RideSettingsView (AppContext.Current.LoggedUser, true, false);
+                    var rideSettingsView = new RideSettingsView (account, true, false);
 					_navController.PushViewController( rideSettingsView, true);
 				})				
 			});
             sect.AddItem( new SingleLineItem( Resources.GetValue("View_Book_Menu_CallDispatch")   ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
 					AnimateMenu();
 					var call = new Confirmation ();
-					call.Call ( TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumber(AppContext.Current.LoggedUser.Settings.ProviderId.Value),
-					           TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumberDisplay (AppContext.Current.LoggedUser.Settings.ProviderId.Value));
+                    call.Call ( TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumber(account.Settings.ProviderId.Value),
+                               TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumberDisplay (account.Settings.ProviderId.Value));
 				})				
 			});
             sect.AddItem( new SingleLineItem( Resources.GetValue("View_Book_Menu_AboutUs") ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 

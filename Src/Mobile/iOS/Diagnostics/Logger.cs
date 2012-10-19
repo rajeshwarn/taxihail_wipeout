@@ -6,6 +6,7 @@ using System.Diagnostics;
 using apcurium.MK.Common.Diagnostic;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -16,9 +17,15 @@ namespace apcurium.MK.Booking.Mobile.Client
             Logger.LogError(ex);
         }
         
-        public void LogMessage(string message)
+        public void LogMessage(string message, params object[] args)
         {
+            if ( ( args != null ) && ( args.Length > 0 ) )
+            {
+                message = string.Format( message, args );
+            }
+
             Logger.LogMessage(message);
+
         }
         
         public void StartStopwatch(string message)
@@ -119,9 +126,10 @@ namespace apcurium.MK.Booking.Mobile.Client
             try
             {
                 string user = @" N\A with version " + TinyIoCContainer.Current.Resolve<IPackageInfo>().Version;
-                if (AppContext.Current.LoggedUser != null)
+                var account = TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount;
+                if (account != null)
                 {
-                    user = AppContext.Current.LoggedUser.Email;                             
+                    user = account.Email;                             
                 }
                 
                 Console.WriteLine(message + " by :" + user + " with version " + TinyIoCContainer.Current.Resolve<IPackageInfo>().Version);            

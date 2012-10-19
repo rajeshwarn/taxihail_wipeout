@@ -39,7 +39,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 		
 		public static void Show ( string title, string message )
 		{
-			AppContext.Current.Controller.InvokeOnMainThread ( delegate
+
+            UIApplication.SharedApplication.InvokeOnMainThread( delegate
 			{					
 				var av = new UIAlertView ( title, message, null, Resources.Close, null );
 				av.Show (  );

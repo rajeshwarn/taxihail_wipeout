@@ -252,10 +252,6 @@ namespace apcurium.MK.Booking.Mobile.Client
                                 {
                                     account = service.GetTwitterAccount(twitterId);
                                 }
-                                if (account != null)
-                                {
-									ViewModel.SetAccountInfo(account);
-                                }
                             }
                             catch
                             {
@@ -348,7 +344,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
                 try
                 {
-                    AppContext.Current.SignOut();
                     ThreadHelper.ExecuteInThread(() =>
                     {
                         try
@@ -360,11 +355,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                             string error = "";
 
                             var account = service.GetFacebookAccount(data.FacebookId);
-                            if (account != null)
-                            {
-                                ViewModel.SetAccountInfo(account);
-                            }
-                            else
+                            if (account == null)
                             {
                                 InvokeOnMainThread(() => ShowSignUp(data));
                             }
@@ -410,7 +401,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         
                 try
                 {
-                    AppContext.Current.SignOut();
+                   
                     ThreadHelper.ExecuteInThread(() =>
                     {
                         try
@@ -420,12 +411,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 
                             string error = "";
                             Account account = service.GetTwitterAccount(data.TwitterId);
-                            if (account != null)
-                            {
-								ViewModel.SetAccountInfo(account);
-                            }
-                            else
-                            {
+                            if (account == null)
+                            {								
                                 InvokeOnMainThread(() => ShowSignUp(data));
                             }
                             
