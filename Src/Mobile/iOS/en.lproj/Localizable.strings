@@ -237,7 +237,7 @@
   "ServiceErrorCreateAccount_AccountAlreadyExist"="The account cannot be created, this email is already in use.";
   "ServiceErrorUnauthorized"="An unauthorized call has been made to server, you will be redirected to login page.";
   "BookDateLabel"="Pick Me Up Later";
-  "OrderHistoryListTitle"="Order #{0} ({1:ddd, MMM d},{1:h:mm tt})";
+  "OrderHistoryListTitle"="Order #{0} ({1:ddd, MMM d}, {1:h:mm tt})";
   "GoogleMapKey"="0XEY3WqKVmJMzXNRJfhbH1yM6RkpBMOaZWUoMAw";
   "searchHint"="Search";
   "BookPickupLocationButtonTitle"="Pickup";

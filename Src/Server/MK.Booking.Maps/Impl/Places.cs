@@ -53,9 +53,10 @@ namespace apcurium.MK.Booking.Maps.Impl
         {
             var address = new Address
             {
+                
                 Id = Guid.NewGuid(),
                 PlaceReference = place.Reference,
-                FriendlyName = place.Name,
+                FriendlyName = place.Name + " (" + place.Types.FirstOrDefault().ToSafeString()+")",
                 FullAddress = place.Vicinity,
                 Latitude = place.Geometry.Location.Lat,
                 Longitude = place.Geometry.Location.Lng,
