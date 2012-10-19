@@ -47,12 +47,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddDefaultFavoriteAddress.cs" />
     <Compile Include="AddFavoriteAddress.cs" />
     <Compile Include="CancelOrder.cs" />
     <Compile Include="CompleteOrder.cs" />
     <Compile Include="ConfirmAccount.cs" />
+    <Compile Include="SendBookingConfirmationEmail.cs" />
+    <Compile Include="CreateCompany.cs" />
     <Compile Include="GrantAdminRight.cs" />
     <Compile Include="RemoveAddressFromHistory.cs" />
+    <Compile Include="RemoveDefaultFavoriteAddress.cs" />
     <Compile Include="RemoveOrderFromHistory.cs" />
     <Compile Include="SendAccountConfirmationEmail.cs" />
     <Compile Include="CreateOrder.cs" />
@@ -67,6 +71,7 @@
     <Compile Include="UpdateAccount.cs" />
     <Compile Include="UpdateAccountPassword.cs" />
     <Compile Include="UpdateBookingSettings.cs" />
+    <Compile Include="UpdateDefaultFavoriteAddress.cs" />
     <Compile Include="UpdateFavoriteAddress.cs" />
   </ItemGroup>
   <ItemGroup>

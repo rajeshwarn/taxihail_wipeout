@@ -72,6 +72,40 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
                 Assert.AreEqual(-73.558064, dto.Longitude);
             }
         }
+
+        [Test]
+        public void when_address_is_added_to_companydefaultfavorites_then_list_updated()
+        {
+            var addressId = Guid.NewGuid();
+
+            this.sut.Handle(new DefaultFavoriteAddressAdded
+            {
+                AddressId = addressId,
+                FriendlyName = "Chez François",
+                Apartment = "3938",
+                FullAddress = "1234 rue Saint-Hubert",
+                RingCode = "3131",
+                BuildingName = "Hôtel de Ville",
+                Latitude = 45.515065,
+                Longitude = -73.558064
+            });
+
+            using (var context = new BookingDbContext(dbName))
+            {
+                var list = context.Query<DefaultAddressDetails>().Where(x => x.Id == addressId);
+
+                Assert.AreEqual(1, list.Count());
+                var dto = list.Single();
+                Assert.AreEqual(addressId, dto.Id);
+                Assert.AreEqual("Chez François", dto.FriendlyName);
+                Assert.AreEqual("3938", dto.Apartment);
+                Assert.AreEqual("1234 rue Saint-Hubert", dto.FullAddress);
+                Assert.AreEqual("3131", dto.RingCode);
+                Assert.AreEqual("Hôtel de Ville", dto.BuildingName);
+                Assert.AreEqual(45.515065, dto.Latitude);
+                Assert.AreEqual(-73.558064, dto.Longitude);
+            }
+        }
     }
 
     [TestFixture]
@@ -79,11 +113,13 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
     {
         private readonly Guid _accountId = Guid.NewGuid();
         private Guid _addressId;
+        private Guid _companyDefaultAddressId;
 
         [SetUp]
         public void Setup()
         {
             _addressId = Guid.NewGuid();
+            _companyDefaultAddressId = Guid.NewGuid();
             sut.Handle(new FavoriteAddressAdded
                            {
                                AddressId = _addressId,
@@ -95,6 +131,17 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
                                Latitude = 45.515065,
                                Longitude = -73.558064
                            });
+
+            sut.Handle(new DefaultFavoriteAddressAdded
+            {
+                AddressId = _addressId,
+                FriendlyName = "Chez François",
+                Apartment = Guid.NewGuid().ToString(),
+                FullAddress = "1234 rue Saint-Hubert",
+                RingCode = "3131",
+                Latitude = 45.515065,
+                Longitude = -73.558064
+            });
 
         }
 
@@ -110,6 +157,21 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
             using (var context = new BookingDbContext(dbName))
             {
                 var address = context.Find<AddressDetails>(_addressId);
+                Assert.IsNull(address);
+            }
+        }
+
+        [Test]
+        public void when_company_default_address_is_removed_from_favorites_then_list_updated()
+        {
+            this.sut.Handle(new DefaultFavoriteAddressRemoved
+            {
+                AddressId = _addressId
+            });
+
+            using (var context = new BookingDbContext(dbName))
+            {
+                var address = context.Find<DefaultAddressDetails>(_addressId);
                 Assert.IsNull(address);
             }
         }
@@ -133,6 +195,32 @@ namespace apcurium.MK.Booking.Test.Integration.FavoriteAddressFixture
                 Assert.NotNull(address);
                 Assert.AreEqual("25 rue Berri Montreal", address.FullAddress);
                 Assert.AreEqual("Chez Costo !", address.FriendlyName);
+                Assert.Null(address.RingCode);
+                Assert.Null(address.Apartment);
+                Assert.AreEqual("Hôtel de Ville", address.BuildingName);
+                Assert.AreEqual(0, address.Latitude);
+                Assert.AreEqual(0, address.Longitude);
+            }
+        }
+
+        [Test]
+        public void when_company_default_address_is_updated_successfully()
+        {
+            this.sut.Handle(new DefaultFavoriteAddressUpdated
+            {
+                AddressId = _addressId,
+                FriendlyName = "Chez Costo2 !",
+                FullAddress = "25 rue Berri Montreal",
+                BuildingName = "Hôtel de Ville",
+            });
+
+            using (var context = new BookingDbContext(dbName))
+            {
+                var address = context.Find<DefaultAddressDetails>(_addressId);
+
+                Assert.NotNull(address);
+                Assert.AreEqual("25 rue Berri Montreal", address.FullAddress);
+                Assert.AreEqual("Chez Costo2 !", address.FriendlyName);
                 Assert.Null(address.RingCode);
                 Assert.Null(address.Apartment);
                 Assert.AreEqual("Hôtel de Ville", address.BuildingName);

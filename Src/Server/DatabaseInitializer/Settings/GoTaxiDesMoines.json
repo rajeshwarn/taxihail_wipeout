@@ -1,7 +1,7 @@
 {
    "DefaultBookingSettings.ChargeTypeId" : "1",
    "DefaultBookingSettings.NbPassenger" : "1",
-   "DefaultBookingSettings.ProviderId" : "9",
+   "DefaultBookingSettings.ProviderId" : "7",
    "DefaultBookingSettings.VehicleTypeId" : "1",
    "Direction.FlateRate" : "2.00",
    "Direction.MaxDistance" : "50",

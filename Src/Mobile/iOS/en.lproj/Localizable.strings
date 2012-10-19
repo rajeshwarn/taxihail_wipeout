@@ -153,6 +153,9 @@
   "YesButton"="Yes";
   "NoButton"="No";
   "HistoryViewStatusButton"="View Status";
+  "HistoryViewSendReceiptButton"="Send Receipt";
+  "HistoryViewSendReceiptSuccess"="Receipt sent";
+  "HistoryViewSendReceiptError"="Error sending receipt for this order";
   "LoginForgotPasswordButton"="Forgot Password?";  
   "TechSupportEmailTitle"="Support Android";
   "PickupOnButtonImageName"="Assets/Button/btnPickup_on_en.png";

@@ -8,7 +8,7 @@ using apcurium.MK.Booking.ReadModel;
 
 namespace apcurium.MK.Booking.BackOffice.EventHandlers
 {
-    public class AddressListGenerator : IEventHandler<FavoriteAddressAdded>, IEventHandler<FavoriteAddressRemoved>, IEventHandler<FavoriteAddressUpdated>, IEventHandler<OrderCreated>, IEventHandler<AddressRemovedFromHistory>
+    public class AddressListGenerator : IEventHandler<FavoriteAddressAdded>, IEventHandler<FavoriteAddressRemoved>, IEventHandler<FavoriteAddressUpdated>, IEventHandler<OrderCreated>, IEventHandler<AddressRemovedFromHistory>, IEventHandler<DefaultFavoriteAddressAdded>, IEventHandler<DefaultFavoriteAddressRemoved>, IEventHandler<DefaultFavoriteAddressUpdated>
     {
         private readonly Func<BookingDbContext> _contextFactory;
         public AddressListGenerator(Func<BookingDbContext> contextFactory)
@@ -74,7 +74,6 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
                     AutoMapper.Mapper.Map(@event, address);
                     context.SaveChanges();
                 }
-               
             }
         }
 
@@ -110,6 +109,50 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
                 if(address != null)
                 {
                     context.Set<AddressDetails>().Remove(address);
+                    context.SaveChanges();
+                }
+            }
+        }
+
+        public void Handle(DefaultFavoriteAddressAdded @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                context.Save(new DefaultAddressDetails
+                {
+                    Id = @event.AddressId,
+                    FriendlyName = @event.FriendlyName,
+                    Apartment = @event.Apartment,
+                    FullAddress = @event.FullAddress,
+                    RingCode = @event.RingCode,
+                    BuildingName = @event.BuildingName,
+                    Latitude = @event.Latitude,
+                    Longitude = @event.Longitude,
+                });
+            }
+        }
+
+        public void Handle(DefaultFavoriteAddressRemoved @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var address = context.Find<DefaultAddressDetails>(@event.AddressId);
+                if (address != null )
+                {
+                    context.Set<DefaultAddressDetails>().Remove(address);
+                    context.SaveChanges();
+                }
+            }
+        }
+
+        public void Handle(DefaultFavoriteAddressUpdated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var address = context.Find<DefaultAddressDetails>(@event.AddressId);
+                if (address != null)
+                {
+                    AutoMapper.Mapper.Map(@event, address);
                     context.SaveChanges();
                 }
             }

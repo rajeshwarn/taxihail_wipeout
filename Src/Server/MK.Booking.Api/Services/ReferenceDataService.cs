@@ -48,8 +48,6 @@ namespace apcurium.MK.Booking.Api.Services
                     pickCities = _staticDataWebServiceClient.GetPickupCity(company);                    
                 }
 
-
-
                 result = new ReferenceData
                              {
                                  CompaniesList = companies,

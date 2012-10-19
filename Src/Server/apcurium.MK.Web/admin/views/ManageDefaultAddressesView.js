@@ -18,10 +18,9 @@
             var addresses;
 
 
-            var favorites = new TaxiHail.AddressCollection();
-            var history = new TaxiHail.AddressCollection();
+            var favorites = new TaxiHail.CompanyDefaultAddressCollection();
             favorites.fetch({
-                url: '../api/account/addresses',
+                url: '../api/admin/addresses',
                 success: _.bind(function (collection, resp) {
                             this.collection.reset(favorites.models, { silent: true });
                             this.$("#user-account-container").html(this.el);
@@ -76,7 +75,7 @@
 
         addfavorites: function (e) {
             e.preventDefault();
-            this.model = new TaxiHail.Address();
+            this.model = new TaxiHail.CompanyDefaultAddress();
             var view = this._addFavoriteView = new TaxiHail.AddFavoriteView(
                 {
                     model: this.model,

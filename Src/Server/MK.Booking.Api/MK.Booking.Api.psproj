@@ -6,7 +6,7 @@
   <Using File="..\packages\PostSharp-Diagnostics-Toolkit.2.1.1.3\tools\PostSharp.Toolkit.Diagnostics.Weaver.dll" />
   <Using File="..\packages\PostSharp-Diagnostics-Toolkit-Log4Net.2.1.1.3\tools\PostSharp.Toolkit.Diagnostics.Weaver.Log4Net.dll" />
   <Tasks>
-    <XmlMulticast />
+    <!--<XmlMulticast />-->
   </Tasks>
   <Data Name="XmlMulticast">
 	<LogAttribute xmlns="clr-namespace:PostSharp.Toolkit.Diagnostics;assembly:PostSharp.Toolkit.Diagnostics" AttributeTargetMemberAttributes="NonAbstract" />

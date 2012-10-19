@@ -21,7 +21,11 @@ namespace apcurium.MK.Booking.Api
                 .ForMember(p=> p.Id, options=> options.Ignore())
                 .ForMember(p => p.OrderId, options => options.ResolveUsing(x => x.Id == Guid.Empty ? Guid.NewGuid() : x.Id));
 
+            AutoMapper.Mapper.CreateMap<apcurium.MK.Booking.Api.Contract.Requests.CreateOrder, Commands.SendBookingConfirmationEmail>()
+                .ForMember(p => p.Id, options => options.Ignore());
+
             AutoMapper.Mapper.CreateMap<BookingSettings, Commands.CreateOrder.BookingSettings>();
+            AutoMapper.Mapper.CreateMap<BookingSettings, Commands.SendBookingConfirmationEmail.BookingSettings>();
             AutoMapper.Mapper.CreateMap<Address, IBSAddress>();
             AutoMapper.Mapper.CreateMap<RegisterAccount, Commands.RegisterAccount>()
                 .ForMember(p => p.AccountId, options => options.ResolveUsing(x => x.AccountId == Guid.Empty ? Guid.NewGuid() : x.AccountId));
@@ -34,6 +38,12 @@ namespace apcurium.MK.Booking.Api
                 .ForMember(x => x.AddressId, opt => opt.ResolveUsing(x => x.Id == Guid.Empty ? Guid.NewGuid() : x.Id));
 
             AutoMapper.Mapper.CreateMap<SaveAddress, Commands.UpdateFavoriteAddress>()
+                .ForMember(x => x.AddressId, opt => opt.MapFrom(x => x.Id));
+
+            AutoMapper.Mapper.CreateMap<DefaultFavoriteAddress, Commands.AddDefaultFavoriteAddress>()
+               .ForMember(x => x.AddressId, opt => opt.ResolveUsing(x => x.Id == Guid.Empty ? Guid.NewGuid() : x.Id));
+
+            AutoMapper.Mapper.CreateMap<DefaultFavoriteAddress, Commands.UpdateDefaultFavoriteAddress>()
                 .ForMember(x => x.AddressId, opt => opt.MapFrom(x => x.Id));
         }
     }

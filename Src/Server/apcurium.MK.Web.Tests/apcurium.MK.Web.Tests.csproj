@@ -89,6 +89,7 @@
     <Compile Include="ApplicationInfoFixture.cs" />
     <Compile Include="AuthFixture.cs" />
     <Compile Include="BaseTest.cs" />
+    <Compile Include="CompanyDefaultFavoriteAddressFixture.cs" />
     <Compile Include="PlaceDetailFixture.cs" />
     <Compile Include="SearchLocationsFixture.cs" />
     <Compile Include="DirectionsFixture.cs" />

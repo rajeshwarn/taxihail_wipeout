@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Web;
+using System.Web.Optimization;
 using Microsoft.Practices.Unity;
 using ServiceStack.ServiceInterface.Validation;
 using ServiceStack.Text;
@@ -63,6 +64,7 @@ namespace apcurium.MK.Web
 
         protected void Application_Start(object sender, EventArgs e)
         {
+            BundleConfig.RegisterBundles(BundleTable.Bundles);
             XmlConfigurator.Configure();
             new MKWebAppHost().Init();
             

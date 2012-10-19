@@ -7,7 +7,7 @@
    "ErrorLogEnabled" : "false",
    "FacebookAppId" : "",
    "FacebookEnabled" : "false",
-   "ServiceUrl" : "http://services.taxihail.com/StyleTransportation/api/",
+   "ServiceUrl" : "http://project.apcurium.com/StyleTransportation/api/",
    "SiteUrl" : "http://www.styletaxi.com/",
    "SupportEmail" : "styletaxi1@gmail.com",
    "TwitterAccessTokenUrl" : "",
