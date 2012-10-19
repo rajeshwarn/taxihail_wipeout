@@ -121,6 +121,9 @@ namespace apcurium.MK.Booking.Api.Services
                             //FormatPrice
                             var total = Params.Get<double?>(orderDetails.Toll, orderDetails.Fare, orderDetails.Tip).Where(amount => amount.HasValue).Select(amount => amount.Value).Sum();
                             desc = string.Format(_configManager.GetSetting("OrderStatus.OrderDoneFareAvailable"), FormatPrice(total ));
+
+                            //Set 
+                            status.FareAvailable = true;
                         }
                         else
                         {

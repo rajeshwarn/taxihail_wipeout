@@ -27,12 +27,14 @@
 
         render: function () {
 
-            var data = this.model.toJSON();
+            var data = this.model.toJSON(),
+                status = this.model.getStatus();
+
             _.extend(data, {
-                orderStatus:     this.model.getStatus().toJSON(),
-                canCancel:       this.model.getStatus().isActive(),
-                canDelete:      !this.model.getStatus().isActive(),
-                canPrintReceipt: this.model.getStatus().isCompleted()
+                orderStatus:     status.toJSON(),
+                canCancel:       status.isActive(),
+                canDelete:      !status.isActive(),
+                canPrintReceipt: status.canSendReceipt()
             });
 
             this.$el.html(this.renderTemplate(data));
