@@ -1,10 +1,15 @@
 ﻿{
     "Your Order": "Your Order",
-	"ConfirmationNumber" : "Confirmation #",
+    "ConfirmationNumber" : "Confirmation #",
     "Status": "Status",
     "Cancel": "Cancel",
     "Call": "Call",
     "New Ride": "New Ride",
     "Processing": "Processing...",
-    "Call us at": "Call us at"
+    "Call us at": "Call us at",
+    "ThankYouNoteFormat": "Thank you for riding with {{ApplicationName}}, we look forward to serving you again soon.",
+    "Ride Complete": "Ride Complete",
+    "Send Receipt": "Send Receipt",
+    "Sending...": "Sending...",
+    "Cannot Send Receipt": "Cannot Send Receipt"
 }
