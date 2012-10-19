@@ -32,6 +32,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private Guid _lastOrder;
         private Timer _timer;
         private bool _isInit = false;
+        private bool _isThankYouDialogDisplayed = false;
 
         public OrderStatusDetail OrderStatus { get; private set; }
         public Order Order { get; private set; }
@@ -99,6 +100,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         protected override void OnStart()
         {
             base.OnStart();
+            _isThankYouDialogDisplayed = false;
             _timer = new Timer(o => RefreshStatus(), null, 0, 6000);
 
         }
@@ -203,22 +205,54 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 try
                 {
                     var status = TinyIoCContainer.Current.Resolve<IBookingService>().GetOrderStatus(Order.Id);
-
-                
+                    var isDone = TinyIoCContainer.Current.Resolve<IBookingService>().IsStatusDone(status.IBSStatusId);
                     _lastOrder = OrderStatus.OrderId;
 
                     if (status != null)
                     {                        
                         OrderStatus = status;
                         DisplayStatus(Order, status);
+                        if(isDone)
+                        {
+                            if (!_isThankYouDialogDisplayed)
+                            {
+                                _isThankYouDialogDisplayed = true;
+                                RunOnUiThread(ShowThankYouDialog);
+                            }
+                        }
                     }
-
                 }
                 catch (Exception ex)
                 {
                     TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex);
                 }
             }, false);
+        }
+
+        private void ShowThankYouDialog()
+        {
+            var alert = new AlertDialog.Builder(this);
+            var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
+            alert.SetTitle(Resources.GetString(Resource.String.View_BookingStatus_ThankYouTitle));
+            alert.SetMessage(String.Format(Resources.GetString(Resource.String.View_BookingStatus_ThankYouMessage), settings.ApplicationName));
+
+            alert.SetPositiveButton("Ok", (s, e) => alert.Dispose());
+
+            alert.SetNegativeButton(Resource.String.HistoryDetailSendReceiptButton, (s, e) =>
+            {
+                ThreadHelper.ExecuteInThread(this, () =>
+                {
+                    if (Common.Extensions.GuidExtensions.HasValue(Order.Id))
+                    {
+                        TinyIoCContainer.Current.Resolve<IBookingService>().SendReceipt(Order.Id);
+                    }
+
+                    RunOnUiThread(() => Finish());
+                }, true);
+                alert.Dispose();
+            });
+
+            alert.Show();
         }
 
         private void DisplayStatus(Order order, OrderStatusDetail status)
