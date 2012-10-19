@@ -73,12 +73,12 @@ namespace DatabaseInitializer
                 creatorDb.CreateDatabase(connStringMaster, companyName, sqlInstanceName);
                 creatorDb.CreateSchemas(connectionString);
 
-                //add user for IIS IIS APPPOOL\MyCompany
-                if (companyName != "MKWebDev")
-                {
-                    creatorDb.AddUserAndRighst(connStringMaster, connectionString.ConnectionString,
-                                               "IIS APPPOOL\\" + companyName, companyName);
-                }
+                ////add user for IIS IIS APPPOOL\MyCompany
+                //if (companyName != "MKWebDev")
+                //{
+                //    creatorDb.AddUserAndRighst(connStringMaster, connectionString.ConnectionString,
+                //                               "IIS APPPOOL\\" + companyName, companyName);
+                //}
 
                 //Copy Domain Events
                 if (isUpdate)

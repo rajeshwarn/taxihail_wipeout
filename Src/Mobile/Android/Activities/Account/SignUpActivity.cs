@@ -108,8 +108,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                                                        }
 
                                                        if (account != null)
-                                                       {
-                                                           AppContext.Current.UpdateLoggedInUser(account);
+                                                       {                                                           
                                                            AppContext.Current.LastEmail = account.Email;
 
                                                            RunOnUiThread(() =>

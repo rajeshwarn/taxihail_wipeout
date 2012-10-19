@@ -32,9 +32,9 @@
     <WarningLevel>4</WarningLevel>
     <AndroidKeyStore>True</AndroidKeyStore>
     <AndroidSigningKeyStore>public.keystore</AndroidSigningKeyStore>
-    <AndroidSigningStorePass>mkt0001.</AndroidSigningStorePass>
-    <AndroidSigningKeyAlias>MKTaxiHail</AndroidSigningKeyAlias>
-    <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
+    <AndroidSigningStorePass>mkAtlantaCheckerCab0001.</AndroidSigningStorePass>
+    <AndroidSigningKeyAlias>MKAtlantaCheckerCab</AndroidSigningKeyAlias>
+    <AndroidSigningKeyPass>mkAtlantaCheckerCab0001.</AndroidSigningKeyPass>
     <AndroidLinkMode>None</AndroidLinkMode>
     <AndroidSupportedAbis>armeabi,armeabi-v7a,x86</AndroidSupportedAbis>
     <DebugSymbols>True</DebugSymbols>
@@ -50,9 +50,9 @@
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
     <AndroidKeyStore>True</AndroidKeyStore>
     <AndroidSigningKeyStore>public.keystore</AndroidSigningKeyStore>
-    <AndroidSigningStorePass>mkt0001.</AndroidSigningStorePass>
-    <AndroidSigningKeyAlias>MKTaxiHail</AndroidSigningKeyAlias>
-    <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
+    <AndroidSigningStorePass>mkAtlantaCheckerCab0001.</AndroidSigningStorePass>
+    <AndroidSigningKeyAlias>MKAtlantaCheckerCab</AndroidSigningKeyAlias>
+    <AndroidSigningKeyPass>mkAtlantaCheckerCab0001.</AndroidSigningKeyPass>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
     <AndroidSupportedAbis>armeabi-v7a,x86</AndroidSupportedAbis>
   </PropertyGroup>
@@ -502,6 +502,11 @@
     <AndroidResource Include="Resources\Values\HeaderedLayoutAttributes.xml" />
     <AndroidResource Include="Resources\Values\FontSize.xml" />
     <AndroidResource Include="Resources\drawable-hdpi\Logo.png" />
+    <AndroidResource Include="Resources\Drawable\splash_resizable.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Drawable\poweredby.png" />
+    <AndroidResource Include="Resources\Drawable\poweredby2.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

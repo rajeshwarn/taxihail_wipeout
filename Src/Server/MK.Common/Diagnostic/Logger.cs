@@ -1,4 +1,5 @@
 ﻿using System;
+
 using System.Diagnostics;
 
 namespace apcurium.MK.Common.Diagnostic
@@ -14,8 +15,12 @@ namespace apcurium.MK.Common.Diagnostic
             }
         }
 
-        public void LogMessage(string message)
-        {
+        public void LogMessage(string message, params object[] args)  
+         {
+            if ( ( args != null ) && ( args.Length > 0 ))
+            {
+                message = string.Format(message, args);
+            }
             Trace.WriteLine(message);            
         }
 
