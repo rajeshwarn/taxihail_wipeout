@@ -74,6 +74,7 @@
                                     <RowDefinition />
                                     <RowDefinition />
                                     <RowDefinition />
+                                    <RowDefinition />
                                 </Grid.RowDefinitions>
                                 
                                 <TextBlock VerticalAlignment="Center">Company</TextBlock>
@@ -85,14 +86,16 @@
                                 <TextBlock Grid.Row="2" VerticalAlignment="Center">Environment</TextBlock>
                                 <ComboBox Grid.Row="2" Grid.Column="1" DisplayMemberPath="Name" SelectedItem="{Binding DeployTaxiHailEnv,Mode=TwoWay}" ItemsSource="{Binding TaxiHailEnvironments}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
 
-                                <TextBlock Grid.Row="3" VerticalAlignment="Center">InitDatabase</TextBlock>
-                                <CheckBox Grid.Row="3" Grid.Column="1" Content="Drop/Create a new databse" IsChecked="{Binding DeployInitDatabse}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
+                                <TextBlock Grid.Row="3" VerticalAlignment="Center">Revision</TextBlock>
+                                <TextBox Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Width="100" Margin="10,10,10,10"></TextBox>
 
-                                <CheckBox Grid.Row="4" Grid.Column="1" Content="Server" IsChecked="{Binding DeployServer}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
-                                <CheckBox Grid.Row="5" Grid.Column="1" Content="Android" IsChecked="{Binding DeployAndroid}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
-                                <CheckBox Grid.Row="6" Grid.Column="1" Content="iOS" IsChecked="{Binding DeployIos}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
+                                <CheckBox Grid.Row="4" Grid.Column="1" Content="Drop/Create a new databse" IsChecked="{Binding DeployInitDatabse}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
 
-                                <Button Grid.Row="7" Grid.Column="1" Content="Deploy" Width="100" HorizontalAlignment="Left" Margin="10" Click="Button_Click_1" />
+                                <CheckBox Grid.Row="5" Grid.Column="1" Content="Server" IsChecked="{Binding DeployServer}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
+                                <CheckBox Grid.Row="6" Grid.Column="1" Content="Android" IsChecked="{Binding DeployAndroid}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
+                                <CheckBox Grid.Row="7" Grid.Column="1" Content="iOS" IsChecked="{Binding DeployIos}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
+
+                                <Button Grid.Row="8" Grid.Column="1" Content="Deploy" Width="100" HorizontalAlignment="Left" Margin="10" Click="Button_Click_1" />
                             </Grid>
                         </StackPanel>
                     </GroupBox>

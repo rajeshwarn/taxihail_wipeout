@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.Entity;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using MK.ConfigurationManager;
@@ -48,6 +49,13 @@ namespace MK.DeploymentService
                 {
                     job.Status = JobStatus.INPROGRESS;
                     DbContext.SaveChanges();
+
+                    //pull source from bitbucket
+                    var revision = string.IsNullOrEmpty(job.Revision) ? string.Empty : "-r " + job.Revision;
+                    var commandClone =
+                        string.Format(@"hg clone {1} https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi {0}", Path.Combine(Path.GetTempPath(), job.Id.ToString()) , revision);
+
+
 
                     if(job.Server)
                     {
