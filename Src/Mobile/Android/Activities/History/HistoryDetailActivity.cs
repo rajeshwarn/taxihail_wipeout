@@ -180,7 +180,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
                 if (status.IBSStatusId.HasValue())
                 {
                     isCompleted = TinyIoCContainer.Current.Resolve<IBookingService>().IsStatusCompleted(status.IBSStatusId);
-                    isDone = TinyIoCContainer.Current.Resolve<IBookingService>().IsStatusDone(status.IBSStatusId);
                 }
 
                 RunOnUiThread(() => FindViewById<TextView>(Resource.Id.StatusTxt).Text = status.IBSStatusDescription);
@@ -192,7 +191,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
                     btnCancel.Visibility =      isCompleted ? ViewStates.Gone : ViewStates.Visible;
                     btnStatus.Visibility =      isCompleted ? ViewStates.Gone : ViewStates.Visible;
                     btnDelete.Visibility =      isCompleted ? ViewStates.Visible : ViewStates.Gone;
-                    btnSendReceipt.Visibility = isDone      ? ViewStates.Visible : ViewStates.Gone;
+                    btnSendReceipt.Visibility = status.FareAvailable ? ViewStates.Visible : ViewStates.Gone;
                 });
 
             }, false);
