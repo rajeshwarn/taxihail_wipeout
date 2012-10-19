@@ -253,4 +253,6 @@
   <string name="BuildingName">Nom du batiment</string>
   <string name="NetworkErrorTitle">Failed to connect</string>
   <string name="NetworkErrorMessage">Make sure your device is connected to the internet.</string>
+  <string name="View_BookingStatus_ThankYouTitle">Merci</string>
+  <string name="View_BookingStatus_ThankYouMessage">Merci d\'avoir voyagé avec {0}, nous sommes impatients de vous servir à nouveau bientôt</string>
 </resources>

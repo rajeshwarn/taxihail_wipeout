@@ -292,6 +292,8 @@
   <string name="View_RefineAddress">Pickup Details</string>
   <string name="BookingService_MobileBookingNote">Booked mobile device.</string>
   <string name="BookingService_MobileBookingNoteBuildingName">Building name {0}.</string>
+  <string name="View_BookingStatus_ThankYouTitle">Thank you</string>
+  <string name="View_BookingStatus_ThankYouMessage">Thank you for riding with {0}, we look forward to serving you again soon</string>
   <string name="AppNeedUpdateTitle">Update available</string>
   <string name="AppNeedUpdateMessage">A new version of the application is available, please update the app to continue.</string>
 </resources>
