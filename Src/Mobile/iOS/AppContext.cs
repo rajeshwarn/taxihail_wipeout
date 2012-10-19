@@ -35,49 +35,49 @@ namespace apcurium.MK.Booking.Mobile.Client
         public UIWindow Window  { get; private set; }
             
 
-        public void UpdateLoggedInUser(Account data)
-        {
-            Logger.LogMessage("UpdateLoggedInUser");
-            if (data != null)
-            {
-                Logger.LogMessage("UpdateLoggedInUser != null");
-                _loggedUser = data;
-                                
-                NSUserDefaults.StandardUserDefaults.SetSerializedObject<Account>(
-                    data,
-                    "TaxiMobile.Account.CurrentUser"
-                );
-                    
-               
-            }
-            else
-            {
-                Logger.LogMessage("UpdateLoggedInUser == null");
-            }
-        }
-        
-        public void SignOut()
-        {           
-            Logger.LogMessage("SignOutUser");      
-            _loggedUser = null;                                             
-            NSUserDefaults.StandardUserDefaults.SetStringOrClear( null, "TaxiMobile.Account.CurrentUser" );    
-            NSUserDefaults.StandardUserDefaults.SetStringOrClear( null, "TaxiMobile.ServerName" ); 
+//        public void UpdateLoggedInUser(Account data)
+//        {
+//            Logger.LogMessage("UpdateLoggedInUser");
+//            if (data != null)
+//            {
+//                Logger.LogMessage("UpdateLoggedInUser != null");
+//                _loggedUser = data;
+//                                
+//                NSUserDefaults.StandardUserDefaults.SetSerializedObject<Account>(
+//                    data,
+//                    "TaxiMobile.Account.CurrentUser"
+//                );
+//                    
+//               
+//            }
+//            else
+//            {
+//                Logger.LogMessage("UpdateLoggedInUser == null");
+//            }
+//        }
+//        
+//        public void SignOut()
+//        {           
+//            Logger.LogMessage("SignOutUser");      
+//            _loggedUser = null;                                             
+//            NSUserDefaults.StandardUserDefaults.SetStringOrClear( null, "TaxiMobile.Account.CurrentUser" );    
+//            NSUserDefaults.StandardUserDefaults.SetStringOrClear( null, "TaxiMobile.ServerName" ); 
+//
+//            TinyIoCContainer.Current.Resolve<IAccountService>().SignOut();
+//        }
 
-            TinyIoCContainer.Current.Resolve<IAccountService>().SignOut();
-        }
-
-        public Account LoggedUser
-        {
-            get
-            {
-                                
-                if (_loggedUser == null)
-                {
-                    _loggedUser = NSUserDefaults.StandardUserDefaults.GetSerializedObject<Account>("TaxiMobile.Account.CurrentUser");                  
-                }
-                return _loggedUser;
-            }
-        }
+//        public Account LoggedUser
+//        {
+//            get
+//            {
+//                                
+//                if (_loggedUser == null)
+//                {
+//                    _loggedUser = NSUserDefaults.StandardUserDefaults.GetSerializedObject<Account>("TaxiMobile.Account.CurrentUser");                  
+//                }
+//                return _loggedUser;
+//            }
+//        }
 
         public string LastEmail
         {

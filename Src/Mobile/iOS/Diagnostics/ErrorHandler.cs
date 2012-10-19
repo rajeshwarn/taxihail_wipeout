@@ -8,6 +8,7 @@ using Cirrious.MvvmCross.Interfaces.Views;
 using Cirrious.MvvmCross.Views;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -26,7 +27,10 @@ namespace apcurium.MK.Booking.Mobile.Client
                         var dispatch = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
                         dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(LoginViewModel), null, true, MvxRequestedBy.UserAction));
 					});
-					AppContext.Current.SignOut ();
+
+                    TinyIoCContainer.Current.Resolve<IAccountService>().SignOut();
+
+					
 				});
 			}
 		}

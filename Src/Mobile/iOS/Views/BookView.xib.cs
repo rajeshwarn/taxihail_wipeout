@@ -165,8 +165,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			var btn = new UIBarButtonItem( new BarButtonItem( new RectangleF(0,0, 40, 33) , "Assets/settings.png", () => _menu.AnimateMenu() ) );
 			navBar.TopItem.RightBarButtonItem = btn;
 			navBar.TopItem.RightBarButtonItem.SetTitlePositionAdjustment( new UIOffset( -10,0 ), UIBarMetrics.Default );
-
-            if ((AppContext.Current.LastOrder.HasValue) && (AppContext.Current.LoggedUser != null))
+            var account = TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount;
+            if ((AppContext.Current.LastOrder.HasValue) && (account != null))
             {
                 LoadStatusView(true);
             }
@@ -242,7 +242,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             if (BookingInfo.Settings.Passengers == 0)
             {
-                BookingInfo.Settings = AppContext.Current.LoggedUser.Settings;
+                var account = TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount;
+                BookingInfo.Settings = account.Settings;
             }
 
             LoadingOverlay.StartAnimatingLoading(this.bookView, LoadingOverlayPosition.Center, null, 130, 30);

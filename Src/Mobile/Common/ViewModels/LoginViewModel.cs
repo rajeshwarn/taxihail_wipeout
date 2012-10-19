@@ -77,6 +77,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				TinyIoCContainer.Current.Resolve<IMessageService>().ShowProgress(true);
 				UserInteractionEnabled = false;				
 				var account = _accountService.GetAccount(Email, Password);
+
+                //var dispatch = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
+                RequestNavigate<BookViewModel>(true );
+                //dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(BookViewModel), null, false, MvxRequestedBy.UserAction));
 				
 			}
 			finally

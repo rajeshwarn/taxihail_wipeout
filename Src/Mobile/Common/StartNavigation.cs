@@ -18,15 +18,16 @@ namespace apcurium.MK.Booking.Mobile
 
             var app = TinyIoCContainer.Current.Resolve<IApplicationInfoService>().GetAppInfo();
 
-            bool isUpToDate = app.Version.StartsWith("1.1.");
+            bool isUpToDate = app.Version.StartsWith("1.0");
 
             if (!isUpToDate)
             {
 
                 var title = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("AppNeedUpdateTitle");
                 var msg = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("AppNeedUpdateMessage");
-                TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage(title, msg);
-                
+                var mService = TinyIoCContainer.Current.Resolve<IMessageService>();
+                mService.ShowMessage(title, msg);
+                RequestNavigate<LoginViewModel>(true);
 
             }
             else if (TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount == null)

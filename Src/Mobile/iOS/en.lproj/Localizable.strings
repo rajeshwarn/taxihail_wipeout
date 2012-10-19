@@ -306,3 +306,9 @@
 "AppNeedUpdateTitle" = "Update available";
 "AppNeedUpdateMessage" = "A new version of the application is available, please update the app to continue.";
 
+"BookingService_MobileBookingNote"="Booked mobile device.";
+"BookingService_MobileBookingNoteBuildingName"="Building name {0}.";
+ 
+"View_BookingStatus_ThankYouTitle" = "Thank you";
+"View_BookingStatus_ThankYouMessage" = "Thank you for riding with {0}, we look forward to serving you again soon.";
+
