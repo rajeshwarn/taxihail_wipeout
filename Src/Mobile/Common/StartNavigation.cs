@@ -18,7 +18,7 @@ namespace apcurium.MK.Booking.Mobile
 
             var app = TinyIoCContainer.Current.Resolve<IApplicationInfoService>().GetAppInfo();
 
-            bool isUpToDate = app.Version.StartsWith("1.0");
+            bool isUpToDate = app.Version.StartsWith("1.1.");
 
             if (!isUpToDate)
             {
