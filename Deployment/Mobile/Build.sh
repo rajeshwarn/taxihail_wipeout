@@ -1,10 +1,4 @@
 #!/bin/bash	
-# function randfilename() {
-#    [ "$2" == "0" ] && CHAR="[:alnum:]" || CHAR="[:graph:]"
-#      NAME = $(cat /dev/urandom | tr -cd "$CHAR" | head -c ${1:-32})
-#      return $NAME
-#  }
-
 echo Building Android app? Y / N
 read BUILDANDROID
 
@@ -49,8 +43,10 @@ do
 
 		if [ "$PUBLISHIOS" = "Y" ]; then
 
-			# curl --form file=@TaxiMobileApp-1.1.27.ipa --form filename=blob --form name=p198v4oua31ipgev14241k611kmh4.ipa http://www.diawi.com/upload.php	
-			# curl --form uploader_0_tmpname=p198v4oua31ipgev14241k611kmh4.ipa --form uploader_0_name=TaxiMobileApp-1.1.27.ipa --form uploader_0_status=done --form uploader_count=1 --form password=-taxihail --form email=matthieu.duluc@apcurium.com http://www.diawi.com/result.php
+			TEMPNAME=$(UUIDGEN)
+			FILE=$(find ../../Src/Mobile/iOS/bin/iPhone/Release -name \*.ipa)
+			curl --form file=@./../Src/Mobile/iOS/bin/iPhone/Release/$FILE --form filename=blob --form name=$TEMPNAME.ipa http://www.diawi.com/upload.php	
+			curl --form uploader_0_tmpname=$TEMPNAME.ipa --form uploader_0_name=$FILE --form uploader_0_status=done --form uploader_count=1 --form password=-taxihail --form email=matthieu.duluc@apcurium.com http://www.diawi.com/result.php
 		fi
 	fi	
 
