@@ -1,9 +1,18 @@
 #!/bin/bash	
+# function randfilename() {
+#    [ "$2" == "0" ] && CHAR="[:alnum:]" || CHAR="[:graph:]"
+#      NAME = $(cat /dev/urandom | tr -cd "$CHAR" | head -c ${1:-32})
+#      return $NAME
+#  }
+
 echo Building Android app? Y / N
 read BUILDANDROID
 
 echo Building iOS app? Y / N
 read BUILDIOS
+
+echo Publish iOS app on diawi? Y / N
+read PUBLISHIOS
 
 echo Enter client name i.e. folder name in Config or empty for all configuration
 read CLIENTNAME
@@ -37,6 +46,12 @@ do
 		/Applications/MonoDevelop.app/Contents/MacOS/mdtool build "--project:MK.Booking.Mobile.iOS"   "--configuration:$CONFIGIOS"  "../../Src/Mobile/MK.Booking.Mobile.Solution.iOS.sln"
 		/Applications/MonoDevelop.app/Contents/MacOS/mdtool build "--project:MK.Booking.Mobile.Client.iOS"   "--configuration:$CONFIGIOS"  "../../Src/Mobile/MK.Booking.Mobile.Solution.iOS.sln"
 		mv ../../Src/Mobile/iOS/bin/iPhone/Release/*.ipa /Volumes/WwwMobileApps/$CLIENT
+
+		if [ "$PUBLISHIOS" = "Y" ]; then
+
+			# curl --form file=@TaxiMobileApp-1.1.27.ipa --form filename=blob --form name=p198v4oua31ipgev14241k611kmh4.ipa http://www.diawi.com/upload.php	
+			# curl --form uploader_0_tmpname=p198v4oua31ipgev14241k611kmh4.ipa --form uploader_0_name=TaxiMobileApp-1.1.27.ipa --form uploader_0_status=done --form uploader_count=1 --form password=-taxihail --form email=matthieu.duluc@apcurium.com http://www.diawi.com/result.php
+		fi
 	fi	
 
 	if [ "$BUILDANDROID" = "Y" ]; then
