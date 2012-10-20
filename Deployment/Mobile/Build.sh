@@ -39,14 +39,17 @@ do
 		/Applications/MonoDevelop.app/Contents/MacOS/mdtool build "--project:MK.Booking.Api.Client.iOS"   "--configuration:$CONFIGIOS"  "../../Src/Mobile/MK.Booking.Mobile.Solution.iOS.sln"
 		/Applications/MonoDevelop.app/Contents/MacOS/mdtool build "--project:MK.Booking.Mobile.iOS"   "--configuration:$CONFIGIOS"  "../../Src/Mobile/MK.Booking.Mobile.Solution.iOS.sln"
 		/Applications/MonoDevelop.app/Contents/MacOS/mdtool build "--project:MK.Booking.Mobile.Client.iOS"   "--configuration:$CONFIGIOS"  "../../Src/Mobile/MK.Booking.Mobile.Solution.iOS.sln"
-		mv ../../Src/Mobile/iOS/bin/iPhone/Release/*.ipa /Volumes/WwwMobileApps/$CLIENT
+		cp ../../Src/Mobile/iOS/bin/iPhone/Release/*.ipa /Volumes/WwwMobileApps/$CLIENT
 
 		if [ "$PUBLISHIOS" = "Y" ]; then
 
-			TEMPNAME=$(UUIDGEN)
-			FILE=$(find ../../Src/Mobile/iOS/bin/iPhone/Release -name \*.ipa)
-			curl --form file=@./../Src/Mobile/iOS/bin/iPhone/Release/$FILE --form filename=blob --form name=$TEMPNAME.ipa http://www.diawi.com/upload.php	
-			curl --form uploader_0_tmpname=$TEMPNAME.ipa --form uploader_0_name=$FILE --form uploader_0_status=done --form uploader_count=1 --form password=-taxihail --form email=matthieu.duluc@apcurium.com http://www.diawi.com/result.php
+			TEMPNAME=$(LC_CTYPE=C tr -dc "[:alpha:]" < /dev/urandom | head -c 10)".ipa"
+			cp  ../../Src/Mobile/iOS/bin/iPhone/Release/*.ipa .
+			FILE=$(find . -name \*.ipa)
+			echo ${FILE:2} $TEMPNAME
+			curl -F file=@${FILE:2} -F filename=blob -F name=$TEMPNAME http://www.diawi.com/upload.php
+			curl -F uploader_0_tmpname=$TEMPNAME -F uploader_0_name=$FILE -F uploader_0_status=done -F uploader_count=1 -F email=matthieu.duluc@apcurium.com -F comment=$CLIENT http://www.diawi.com/result.php
+			rm -f $FILE
 		fi
 	fi	
 
