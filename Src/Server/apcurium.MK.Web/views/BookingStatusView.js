@@ -84,36 +84,46 @@
                 window.clearInterval(this.interval);
                 
                 var message = this.localize('ThankYouNoteFormat').replace('{{ApplicationName}}', TaxiHail.parameters.applicationName);
-
-                TaxiHail.confirm({
+                var options = {
                     title: this.localize('Ride Complete'),
                     message: message,
-                    confirmButton: this.localize('Send Receipt'),
                     autoHide: false
-                }).on('cancel', function(view) {
+                };
 
-                    TaxiHail.app.navigate('', {trigger: true});
-                    view.hide();
+                if(model.canSendReceipt()) {
+                    options.confirmButton = this.localize('Send Receipt');
+                } else {
+                    options.cancelButton = null; // Hide Cancel button
+                    options.confirmButton = "OK";
+                }
 
-                }, this).on('ok', function(view) {
+                TaxiHail.confirm(options)
+                    .on('cancel', function(view) {
+                        view.hide();
+                    }, this).on('ok', function(view) {
 
-                    // display "Sending..." for a brief delay before redirecting to home
-                    var $button = view.$('[data-action=confirm]')
-                        .data('loadingText', this.localize('Sending...'))
-                        .button('loading');
-                    
-                    TaxiHail.postpone(function(){
-                        this.model.sendReceipt()
-                            .done(function(){
-                                    view.hide();
-                                    TaxiHail.app.navigate('', {trigger: true});
-                                })
-                            .fail(function(){
-                                $button.text(TaxiHail.localize('Cannot Send Receipt'));
-                            });
-                        }, this).call();
+                        if(model.canSendReceipt()) {
+                            // display "Sending..." for a brief delay before redirecting to home
+                            var $button = view.$('[data-action=confirm]')
+                                .data('loadingText', this.localize('Sending...'))
+                                .button('loading');
+                            
+                            TaxiHail.postpone(function() {
+                                this.model.sendReceipt()
+                                    .done(function(){
+                                            view.hide();
+                                            TaxiHail.app.navigate('', {trigger: true});
+                                        })
+                                    .fail(_.bind(function(){
+                                        $button.text(this.localize('Cannot Send Receipt'));
+                                    }, this));
+                                }, this).call();
+                        } else {
+                            view.hide();
+                            TaxiHail.app.navigate('', {trigger: true});
+                        }
 
-                }, this);
+                    }, this);
             }
         }
 
