@@ -22,6 +22,8 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using Cirrious.MvvmCross.Views;
 using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
+using Cirrious.MvvmCross.Interfaces.Views;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -124,9 +126,10 @@ namespace apcurium.MK.Booking.Mobile.Client
             txtEmail.AutocapitalizationType = UITextAutocapitalizationType.None;
             txtEmail.AutocorrectionType = UITextAutocorrectionType.No;
             txtEmail.KeyboardType = UIKeyboardType.EmailAddress;
-            txtEmail.ShouldReturn = delegate(UITextField textField)
-            {
-                return textField.ResignFirstResponder();
+            txtEmail.ShouldReturn = delegate
+            {                          
+                txtEmail.ResignFirstResponder();
+                return true;
             };
 
             ((TextField)txtPassword).PaddingLeft = 5;
@@ -135,16 +138,11 @@ namespace apcurium.MK.Booking.Mobile.Client
             txtPassword.Placeholder = Resources.PasswordLabel;
             txtPassword.SecureTextEntry = true;
             txtPassword.ReturnKeyType = UIReturnKeyType.Done;
-            txtPassword.ShouldReturn = delegate(UITextField textField)
-            {
-                return textField.ResignFirstResponder();
+            txtPassword.ShouldReturn = delegate
+            {                          
+                txtPassword.ResignFirstResponder();
+                return true;
             };
-            
-//            txtEmail.EditingDidEnd += delegate
-//            {
-//                txtEmail.Text = StringHelper.RemoveDiacritics(txtEmail.Text).ToLower();
-//                ViewModel.Email = StringHelper.RemoveDiacritics(txtEmail.Text).ToLower();
-//            };
             
 
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
@@ -235,9 +233,8 @@ namespace apcurium.MK.Booking.Mobile.Client
                             try
                             {
                                 Thread.Sleep(500);                             
-                                Account account = null;
-                                string error = "";
                                 var service = TinyIoCContainer.Current.Resolve<IAccountService>();
+                                Account account;
                                 if (facebookId.HasValue())
                                 {
                                     account = service.GetFacebookAccount(facebookId);
@@ -245,6 +242,11 @@ namespace apcurium.MK.Booking.Mobile.Client
                                 else
                                 {
                                     account = service.GetTwitterAccount(twitterId);
+                                }
+                                if ( account != null )
+                                {
+                                    var dispatch = TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
+                                    dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(BookViewModel), null, true, MvxRequestedBy.UserAction));
                                 }
                             }
                             catch
@@ -344,9 +346,6 @@ namespace apcurium.MK.Booking.Mobile.Client
                         {
                             InvokeOnMainThread(() => this.View.UserInteractionEnabled = false);
                             var service = TinyIoCContainer.Current.Resolve<IAccountService>();
-
-
-                            string error = "";
 
                             var account = service.GetFacebookAccount(data.FacebookId);
                             if (account == null)

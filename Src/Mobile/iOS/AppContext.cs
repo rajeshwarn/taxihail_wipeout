@@ -52,26 +52,26 @@ namespace apcurium.MK.Booking.Mobile.Client
             get
             {
                 Console.WriteLine("getting : LoggedInEmail");
-                return NSUserDefaults.StandardUserDefaults.StringForKey("TaxiMobile.LoggedInEmail");
+                return NSUserDefaults.StandardUserDefaults.StringForKey("MK.Booking.Cache.LoggedInEmail");
             }
             set
             { 
 
                 if (value != LoggedInEmail)
                 {
-                    NSUserDefaults.StandardUserDefaults.SetStringOrClear(value, "TaxiMobile.LoggedInEmail");
+                    NSUserDefaults.StandardUserDefaults.SetStringOrClear(value, "MK.Booking.Cache.LoggedInEmail");
                 }
             }
         }
 
         public string LoggedInPassword
         {
-            get { return NSUserDefaults.StandardUserDefaults.StringForKey("TaxiMobile.LoggedInPassword"); }
+            get { return NSUserDefaults.StandardUserDefaults.StringForKey("MK.Booking.Cache.LoggedInPassword"); }
             set
             {
                 if (value != LoggedInPassword)
                 {
-                    NSUserDefaults.StandardUserDefaults.SetStringOrClear(value, "TaxiMobile.LoggedInPassword");
+                    NSUserDefaults.StandardUserDefaults.SetStringOrClear(value, "MK.Booking.Cache.LoggedInPassword");
                 }
             }
         }
@@ -80,7 +80,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             get
             {
-                string val = NSUserDefaults.StandardUserDefaults.StringForKey("TaxiMobile.WarnEstimate");
+                string val = NSUserDefaults.StandardUserDefaults.StringForKey("MK.Booking.Cache.WarnEstimate");
                 bool r = true;
                 if ((val == null) || (!bool.TryParse(val, out r)))
                 {
@@ -95,7 +95,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
                 NSUserDefaults.StandardUserDefaults.SetStringOrClear(
                     value.ToString(),
-                    "TaxiMobile.WarnEstimate"
+                    "MK.Booking.Cache.WarnEstimate"
                 );
             }
         }
@@ -110,7 +110,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             get
             {
-                var lOrder = NSUserDefaults.StandardUserDefaults.StringForKey("TaxiMobile.LastOrder");
+                var lOrder = NSUserDefaults.StandardUserDefaults.StringForKey("MK.Booking.Cache.LastOrder");
                 if (lOrder.HasValue())
                 {
                     Guid r;
@@ -127,14 +127,14 @@ namespace apcurium.MK.Booking.Mobile.Client
                 {
                     NSUserDefaults.StandardUserDefaults.SetStringOrClear(
                         value.ToString(),
-                        "TaxiMobile.LastOrder"
+                        "MK.Booking.Cache.LastOrder"
                     );
                 }
                 else
                 {
                     NSUserDefaults.StandardUserDefaults.SetStringOrClear(
                         null,
-                        "TaxiMobile.LastOrder"
+                        "MK.Booking.Cache.LastOrder"
                     );
                 }
             }

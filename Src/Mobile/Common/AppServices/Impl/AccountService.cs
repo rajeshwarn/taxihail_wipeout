@@ -57,6 +57,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public void ClearCache ()
         {
             var serverUrl = TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl;
+            _refData = null;
             TinyIoCContainer.Current.Resolve<ICacheService>().Clear(_historyAddressesCacheKey);
             TinyIoCContainer.Current.Resolve<ICacheService>().Clear(_favoriteAddressesCacheKey);
             TinyIoCContainer.Current.Resolve<ICacheService>().Clear("SessionId");
