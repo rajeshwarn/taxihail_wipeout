@@ -54,10 +54,20 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         }
 
+        public void ClearCache ()
+        {
+            var serverUrl = TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl;
+            TinyIoCContainer.Current.Resolve<ICacheService>().Clear(_historyAddressesCacheKey);
+            TinyIoCContainer.Current.Resolve<ICacheService>().Clear(_favoriteAddressesCacheKey);
+            TinyIoCContainer.Current.Resolve<ICacheService>().Clear("SessionId");
+            TinyIoCContainer.Current.Resolve<ICacheService>().ClearAll();
+            TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl = serverUrl; 
+        }
+
         public void SignOut()
         {
 
-            var serverUrl = TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl;
+
             
         
             try
@@ -84,13 +94,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             {
             }
 
-            TinyIoCContainer.Current.Resolve<ICacheService>().Clear(_historyAddressesCacheKey);
-            TinyIoCContainer.Current.Resolve<ICacheService>().Clear(_favoriteAddressesCacheKey);
-            TinyIoCContainer.Current.Resolve<ICacheService>().Clear("SessionId");
-            TinyIoCContainer.Current.Resolve<ICacheService>().ClearAll();
+             ClearCache ();
 
 
-            TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl = serverUrl;
+
 
             var dispatch = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
             dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(LoginViewModel), null, false, MvxRequestedBy.UserAction));

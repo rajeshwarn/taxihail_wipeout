@@ -170,15 +170,9 @@ namespace apcurium.MK.Booking.Mobile.Client
                 btnServer.TouchUpInside += ChangeServerTouchUpInside;
                 View.AddSubview(btnServer);            
             }
-            //btnTwLogin.TouchUpInside += TwitterLogin;   
-
-
-
-            //txtEmail.BecomeFirstResponder();
 
 			this.AddBindings(new Dictionary<object, string>() {
-				{ btnSignIn, "{'TouchUpInside':{'Path':'SignInCommand'}}"},
-				//{ this.View, "{'UserInteractionEnabled':{'Path':'UserInteractionEnabled'}}"},
+				{ btnSignIn, "{'TouchUpInside':{'Path':'SignInCommand'}}"},			
 				{ txtEmail, "{'Text':{'Path':'Email'}}"},
 				{ txtPassword, "{'Text':{'Path':'Password'}}"},
 			});

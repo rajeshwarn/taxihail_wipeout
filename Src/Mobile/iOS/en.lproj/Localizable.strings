@@ -312,3 +312,4 @@
 "View_BookingStatus_ThankYouTitle" = "Thank you";
 "View_BookingStatus_ThankYouMessage" = "Thank you for riding with {0}, we look forward to serving you again soon.";
 
+"CreateAccount_AccountAlreadyExist" = "The account cannot be created, this email is already in use.";

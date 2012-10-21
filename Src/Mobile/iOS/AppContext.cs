@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         }
         
         private UINavigationController _controller;
-        private Account _loggedUser;
+
 
         private AppContext(UIWindow window)
         {
@@ -34,50 +34,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public UIWindow Window  { get; private set; }
             
-
-//        public void UpdateLoggedInUser(Account data)
-//        {
-//            Logger.LogMessage("UpdateLoggedInUser");
-//            if (data != null)
-//            {
-//                Logger.LogMessage("UpdateLoggedInUser != null");
-//                _loggedUser = data;
-//                                
-//                NSUserDefaults.StandardUserDefaults.SetSerializedObject<Account>(
-//                    data,
-//                    "TaxiMobile.Account.CurrentUser"
-//                );
-//                    
-//               
-//            }
-//            else
-//            {
-//                Logger.LogMessage("UpdateLoggedInUser == null");
-//            }
-//        }
-//        
-//        public void SignOut()
-//        {           
-//            Logger.LogMessage("SignOutUser");      
-//            _loggedUser = null;                                             
-//            NSUserDefaults.StandardUserDefaults.SetStringOrClear( null, "TaxiMobile.Account.CurrentUser" );    
-//            NSUserDefaults.StandardUserDefaults.SetStringOrClear( null, "TaxiMobile.ServerName" ); 
-//
-//            TinyIoCContainer.Current.Resolve<IAccountService>().SignOut();
-//        }
-
-//        public Account LoggedUser
-//        {
-//            get
-//            {
-//                                
-//                if (_loggedUser == null)
-//                {
-//                    _loggedUser = NSUserDefaults.StandardUserDefaults.GetSerializedObject<Account>("TaxiMobile.Account.CurrentUser");                  
-//                }
-//                return _loggedUser;
-//            }
-//        }
 
         public string LastEmail
         {
@@ -191,21 +147,21 @@ namespace apcurium.MK.Booking.Mobile.Client
         }
 
 
-		public string ServerName {
-			get {
-				return NSUserDefaults.StandardUserDefaults.StringForKey("TaxiMobile.ServerName");
-			}
-			set {
-				NSUserDefaults.StandardUserDefaults.SetStringOrClear( value, "TaxiMobile.ServerName" );
-			}
-		}
-
-		public string ServerVersion {
-			get {
-				//return TinyIoCContainer.Current.Resolve<IApplicationInfoService>().GetServerVersion();
-				return "1.0" ;
-			}
-		}        
+//		public string ServerName {
+//			get {
+//				return NSUserDefaults.StandardUserDefaults.StringForKey("TaxiMobile.ServerName");
+//			}
+//			set {
+//				NSUserDefaults.StandardUserDefaults.SetStringOrClear( value, "TaxiMobile.ServerName" );
+//			}
+//		}
+//
+//		public string ServerVersion {
+//			get {
+//				//return TinyIoCContainer.Current.Resolve<IApplicationInfoService>().GetServerVersion();
+//				return "1.0" ;
+//			}
+//		}        
         
     }
 	
