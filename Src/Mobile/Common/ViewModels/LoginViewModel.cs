@@ -59,7 +59,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return new MvxRelayCommand(() => {
 					try
 					{
-						TinyIoCContainer.Current.Resolve<IAccountService>().SignOut();
+                        TinyIoCContainer.Current.Resolve<IAccountService>().ClearCache();
 						ThreadPool.QueueUserWorkItem( SignIn );  
 					}
 					finally
@@ -78,9 +78,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				UserInteractionEnabled = false;				
 				var account = _accountService.GetAccount(Email, Password);
 
-                //var dispatch = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
-                RequestNavigate<BookViewModel>(true );
-                //dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(BookViewModel), null, false, MvxRequestedBy.UserAction));
+                if ( account != null )
+                {                   
+                    RequestNavigate<BookViewModel>(true );
+                }
+               
 				
 			}
 			finally
