@@ -8,7 +8,7 @@ namespace apcurium.MK.Booking.Maps.Impl.Mappers
 {
     public class GeoObjToAddressMapper
     {
-        public Address ConvertToAddress(GeoObj geoCodeResult)
+        public Address ConvertToAddress(GeoObj geoCodeResult, string placeName)
         {
             var address = new Address
             {
@@ -34,7 +34,11 @@ namespace apcurium.MK.Booking.Maps.Impl.Mappers
                 address.StreetNumber = address.StreetNumber.Split('-')[0].Trim();
             }
 
-            if (address.FullAddress.HasValue() &&
+            if ( address.StreetNumber.IsNullOrEmpty() && placeName.HasValue())
+            {
+                address.FullAddress = placeName +", " + address.FullAddress.ToSafeString();
+            }
+            else if (address.FullAddress.HasValue() &&
                 address.FullAddress.Contains("-"))
             {
                 var firstWordStreetNumber = address.FullAddress.Split(' ')[0];

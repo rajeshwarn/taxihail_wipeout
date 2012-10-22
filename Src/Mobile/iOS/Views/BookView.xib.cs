@@ -110,6 +110,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             ((GradientButton)refreshCurrentLocationButton).SetImage( "Assets/gpsRefreshIcon.png" );
 
             AppButtons.FormatStandardButton((GradientButton)bookBtn, Resources.BookItButton, AppStyle.ButtonColor.Green);
+            bookBtn.TouchUpInside -= BookitButtonTouchUpInside;
             bookBtn.TouchUpInside += BookitButtonTouchUpInside;
 
 
@@ -139,6 +140,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 				ViewModel.Initialize();
 			}
 
+        }
+
+        protected override void OnViewModelChanged()
+        {
+            base.OnViewModelChanged();
         }
 
         public override void ViewWillAppear(bool animated)
@@ -269,7 +275,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
                     this.InvokeOnMainThread(() =>
                     {
-                        var view = new ConfirmationView(this);
+                        var view = new ConfirmationView(ViewModel.Order);
                         view.HidesBottomBarWhenPushed = true;
                         this.NavigationController.PushViewController(view, true);
                         
@@ -281,7 +287,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                         
                         view.Confirmed += delegate(object sender, EventArgs e)
                         {
-                            CreateOrder(view.BI);
+                            CreateOrder(view.Order);
                         };
 
 
@@ -317,12 +323,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
                 try
                 {
-                    var service = TinyIoCContainer.Current.Resolve<IBookingService>();
-                    
-                    string error;
+                    var service = TinyIoCContainer.Current.Resolve<IBookingService>();                   
 
-                    bi.Settings.NumberOfTaxi = 1;
-                
+                    bi.Settings.NumberOfTaxi = 1;                
 
                     bi.Id = Guid.NewGuid();
 

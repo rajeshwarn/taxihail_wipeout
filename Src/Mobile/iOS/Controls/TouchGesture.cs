@@ -16,7 +16,9 @@ namespace apcurium.MK.Booking.Mobile.Client
     {
 
          private Stopwatch _stopWatch;
-        private TouchGesture _gesture;
+
+        public event EventHandler TouchBegin;
+
         public TouchGesture ()  : base()
         {
             Initialize();                       
@@ -70,6 +72,10 @@ namespace apcurium.MK.Booking.Mobile.Client
         public override void TouchesBegan (NSSet touches, UIEvent evt)
         {                       
             UserIsTouching = true;
+            if ( TouchBegin != null )
+            {
+                TouchBegin( this, EventArgs.Empty );
+            }
             base.TouchesBegan (touches, evt);
         }
         
