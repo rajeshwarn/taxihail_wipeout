@@ -127,6 +127,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public void Reset()
         {
             Load();
+            ForceRefresh();
         }
 
         public void Rebook(Order order)
@@ -151,12 +152,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             FirePropertyChanged(() => Dropoff);
             FirePropertyChanged(() => SelectedAddress);
 
-            FirePropertyChanged(() => IsInTheFuture);
+
             FirePropertyChanged(() => PickupIsActive);
             FirePropertyChanged(() => DropoffIsActive);
 
 
 			FirePropertyChanged(() => FareEstimate);
+
+            FirePropertyChanged(() => IsInTheFuture);
         }
 
 

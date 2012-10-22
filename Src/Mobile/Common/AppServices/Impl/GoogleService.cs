@@ -11,14 +11,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		{
 
 		}
-        public Address GetPlaceDetail(string reference)
+        public Address GetPlaceDetail(string name, string reference)
         {
 
             Address result = null;
             //UseServiceClient<PlaceDetailServiceClient>(service =>
             UseServiceClient<IPlaces>(service =>
             {
-                result = service.GetPlaceDetail(reference);
+                result = service.GetPlaceDetail( name, reference);
             });
 
             return result;

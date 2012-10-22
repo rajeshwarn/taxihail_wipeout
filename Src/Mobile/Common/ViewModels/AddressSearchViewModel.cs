@@ -167,7 +167,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                                     if ((address.Address.AddressType == "place") && (address.Address.PlaceReference.HasValue()))
                                     {
-                                        var placeAddress = _googleService.GetPlaceDetail(address.Address.PlaceReference);
+                                var placeAddress = _googleService.GetPlaceDetail(address.Address.FriendlyName, address.Address.PlaceReference);
                                         placeAddress.FriendlyName = address.Address.FriendlyName;
                                         placeAddress.BuildingName = address.Address.FriendlyName;
                                         InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new AddressSelected(this, placeAddress, _ownerId)));

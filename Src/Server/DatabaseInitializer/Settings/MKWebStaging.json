@@ -57,6 +57,6 @@
     "TwitterConsumerSecret" : "",
     "TwitterEnabled" : "false",
     "TwitterRequestTokenUrl" : "",
-	"Receipt.Note": "Thank You!<br>The Taxi Hail Team",
+	"Receipt.Note": "Thank You!",
 	"Booking.ConfirmationEmail" : "true"
 }

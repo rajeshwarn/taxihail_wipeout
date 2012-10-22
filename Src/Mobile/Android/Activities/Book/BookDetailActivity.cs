@@ -199,7 +199,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         private string FormatDateTime(DateTime? pickupDate )
         {
-            string format = "{0:dddd, MMM d}, {0:h:mm tt}";
+            string format = "{0:ddd, MMM d}, {0:h:mm tt}";
             string result = pickupDate.HasValue ? string.Format(format, pickupDate.Value) : Resources.GetString(Resource.String.TimeNow);
             //result += @" / ";
             //result += pickupTime.HasValue && (pickupTime.Value.Hour != 0 && pickupTime.Value.Minute != 0) ? pickupTime.Value.ToShortTimeString() : Resources.GetString(Resource.String.TimeNow);

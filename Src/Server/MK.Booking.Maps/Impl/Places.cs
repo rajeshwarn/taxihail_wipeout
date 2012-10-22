@@ -23,11 +23,11 @@ namespace apcurium.MK.Booking.Maps.Impl
             _configurationManager = configurationManager;
         }
 
-        public Address GetPlaceDetail(string referenceId)
+        public Address GetPlaceDetail(string name, string referenceId)
         {
             var place = _client.GetPlaceDetail(referenceId);
 
-            var result = new GeoObjToAddressMapper().ConvertToAddress(place);
+            var result = new GeoObjToAddressMapper().ConvertToAddress(place, name);
 
             result.PlaceReference = referenceId;
 
