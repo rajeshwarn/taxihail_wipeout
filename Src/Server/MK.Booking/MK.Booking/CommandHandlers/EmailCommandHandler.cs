@@ -110,7 +110,7 @@ namespace apcurium.MK.Booking.CommandHandlers
                                        AccentColor = _configurationManager.GetSetting(AccentColorSetting),
                                        IBSOrderId = command.IBSOrderId,
                                        VehicleNumber = command.VehicleNumber,
-                                       Date = command.TransactionDate.ToString("dddd, MMMM d"),
+                                       Date = command.TransactionDate.ToString("dddd, MMMM d, yyyy"),
                                        Fare = command.Fare.ToString("F"),
                                        Toll = command.Toll.ToString("F"),
                                        Tip = command.Tip.ToString("F"),
