@@ -8,7 +8,7 @@
         },
 
         initialize: function () {
-            this.collection.on('destroy reset sync', TaxiHail.postpone(this.refresh, this), this);
+            this.collection.on('destroy  sync', TaxiHail.postpone(this.refresh, this), this);
             this.collection.on('selected', this.edit, this);
 
             this._addFavoriteView = null;
@@ -27,7 +27,7 @@
                             this.render();
                         }, this)
             });
-
+            this.$("#user-account-container").html(this.el);
         },
 
         render: function () {

@@ -27,7 +27,7 @@
 
                 var favorites = new TaxiHail.AddressCollection();
                 var history = new TaxiHail.AddressCollection();
-                favorites.fetch({
+                /*favorites.fetch({
                     url: 'api/account/addresses',
                     success: _.bind(function (collection, resp) {
                         history.fetch({
@@ -38,7 +38,9 @@
                             }, this)
                         });
                     }, this)
-                });
+                });*/
+                addresses.reset();
+                this.$("#user-account-container").html(view.el);
             },
             history: function () {
                 var orders = new TaxiHail.OrderCollection();

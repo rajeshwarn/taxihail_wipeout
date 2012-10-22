@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 
@@ -21,6 +22,7 @@ namespace apcurium.MK.Booking.Api.Services
         private ICommandBus _commandBus;
         private IBookingWebServiceClient _bookingWebServiceClient;
         private IStaticDataWebServiceClient _staticDataWebServiceClient;
+        private readonly IConfigurationManager _configurationManager;
 
         private IAccountDao _accountDao;
         private ICacheClient _cacheClient;
@@ -29,13 +31,15 @@ namespace apcurium.MK.Booking.Api.Services
                                     IBookingWebServiceClient bookingWebServiceClient,
                                     IStaticDataWebServiceClient staticDataWebServiceClient,
                                     IAccountDao accountDao,
-                                    ICacheClient cacheClient)
+                                    ICacheClient cacheClient,
+                                    IConfigurationManager configurationManager)
         {
             _commandBus = commandBus;
             _bookingWebServiceClient = bookingWebServiceClient;
             _staticDataWebServiceClient = staticDataWebServiceClient;
             _accountDao = accountDao;
             _cacheClient = cacheClient;
+            _configurationManager = configurationManager;
         }
 
         public override object OnPost(CreateOrder request)
@@ -70,8 +74,10 @@ namespace apcurium.MK.Booking.Api.Services
             emailCommand.Settings.VehicleType = vehicleType;
 
             _commandBus.Send(command);
-            _commandBus.Send(emailCommand);
-
+            if (bool.Parse(_configurationManager.GetSetting("Booking.ConfirmationEmail")))
+            {
+                _commandBus.Send(emailCommand);
+            }
             return new OrderStatusDetail { OrderId = command.OrderId, Status = OrderStatus.Created, IBSOrderId = ibsOrderId, IBSStatusId = "", IBSStatusDescription = "Processing your order" };
         }
 
