@@ -49,7 +49,8 @@ do
 			echo ${FILE:2} $TEMPNAME
 			curl -F file=@${FILE:2} -F filename=blob -F name=$TEMPNAME http://www.diawi.com/upload.php
 			curl -F uploader_0_tmpname=$TEMPNAME -F uploader_0_name=$FILE -F uploader_0_status=done -F uploader_count=1 -F email=matthieu.duluc@apcurium.com -F comment=$CLIENT http://www.diawi.com/result.php
-			rm -f $FILE
+			rm -rf $FILE
+			rm -rf ../../Src/Mobile/iOS/bin/iPhone/Release/*.*
 		fi
 	fi	
 
