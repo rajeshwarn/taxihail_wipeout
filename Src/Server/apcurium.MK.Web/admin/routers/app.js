@@ -31,7 +31,7 @@
         },
 
         initialize: function (options) {
-            $('.menuadmin').html(new TaxiHail.AdminMenuView().render().el);
+            $('.menu-zone').html(new TaxiHail.AdminMenuView().render().el);
             
         },
 
