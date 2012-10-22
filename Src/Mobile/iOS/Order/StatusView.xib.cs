@@ -309,7 +309,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
                     if ( isDone )
                     {
-                        InvokeOnMainThread( ShowThankYouMessage );
+                        InvokeOnMainThread(()=> ShowThankYouMessage(Status));
 
                         return;
                     }
@@ -362,7 +362,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         }
 
 
-        private void ShowThankYouMessage()
+        private void ShowThankYouMessage(OrderStatusDetail status)
         {
             if ( _timer != null )
             {
@@ -377,7 +377,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
             msg = string.Format( msg, settings.ApplicationName );
 
-            var av = new UIAlertView ( title, msg, null, Resources.Close, Resources.HistoryViewSendReceiptButton );
+            var av = new UIAlertView ( title, msg, null, Resources.Close, status.FareAvailable ? Resources.HistoryViewSendReceiptButton :null );
             av.Dismissed += (sender, e) => CloseRequested(this, EventArgs.Empty);
             av.Clicked += delegate(object sender, UIButtonEventArgs e) {
                 if (e.ButtonIndex == 1) {                    
