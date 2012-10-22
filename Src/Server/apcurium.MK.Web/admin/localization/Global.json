@@ -15,5 +15,9 @@
 	"Remove Favorite Address" : "Remove Default Favorite Address",
 	"Favorites Locations" : "Default Favorites Locations",
 	"favorites.add-new" : "Add new default favorite",
-	"error.fullAddressRequired": "Address is required"
+	"error.fullAddressRequired": "Address is required",
+	"Search" : "Search",
+	"Places" : "Places",
+	"error.friendlyNameRequired" : "Friendly Name is required",
+	"Loading" : "Loading"
 }
