@@ -1,6 +1,6 @@
 ﻿{
 	"grantAdminSuccess" : "User has correctly been granted with administrators privilege" ,
-	"grantAdminError" : "Error ! check that mail is correct",
+	"grantAdminError" : "Check that the email address exists in the system",
 	"search.no-result": "Start typing an address or a place name",
 	"favorites.no-result": "You don't have any favorite address yet",
 	"modal.remove.message" : "Are you sure you want to remove it ?",
