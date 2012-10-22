@@ -42,7 +42,11 @@ namespace MK.DeploymentService
 
         private void CheckAndRunJob()
         {
-            var job = DbContext.Set<DeploymentJob>().Where(x => x.Status == JobStatus.REQUESTED).FirstOrDefault();
+            var job = DbContext.Set<DeploymentJob>()
+                .Include(x => x.Company)
+                .Include(x => x.IBSServer)
+                .Include(x => x.TaxHailEnv)
+                .FirstOrDefault(x => x.Status == JobStatus.REQUESTED);
             if(job != null)
             {
                 try
@@ -55,7 +59,7 @@ namespace MK.DeploymentService
                     var directory = Path.Combine(Path.GetTempPath(), job.Id.ToString());
                     var args = string.Format(@"clone {1} https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi {0}", directory , revision);
 
-                    var startInfo = new ProcessStartInfo
+                    var hgClone = new ProcessStartInfo
                     {
                         FileName = "hg.exe",
                         WindowStyle = ProcessWindowStyle.Hidden,
@@ -64,21 +68,42 @@ namespace MK.DeploymentService
                         Arguments = args
                     };
 
-                    using (var exeProcess = Process.Start(startInfo))
-                    {
-                        exeProcess.WaitForExit();
-                    }
+                    //using (var exeProcess = Process.Start(hgClone))
+                    //{
+                    //    exeProcess.WaitForExit();
+                        //if (exeProcess.ExitCode > 0)
+                        //{
+                        //    throw new Exception("Error during pull source code step");
+                        //}
+                    //}
 
 
                     //build server?
                     if(job.Server)
                     {
-                        
+                        var buildPackage = new ProcessStartInfo
+                        {
+                            FileName = "Powershell.exe",
+                            WindowStyle = ProcessWindowStyle.Hidden,
+                            UseShellExecute = false,
+                            LoadUserProfile = true,
+                            CreateNoWindow = false,
+                            Arguments = string.Format("-executionpolicy ByPass -File \"" + directory + "\\Deployment\\Server\\BuildPackage.ps1\" \"-env {0}\"", job.Company.ConfigurationProperties["TaxiHail.ApplicationKey"]) 
+                        };
+
+                        using (var exeProcess = Process.Start(buildPackage))
+                        {
+                            exeProcess.WaitForExit();
+                            if(exeProcess.ExitCode > 0)
+                            {
+                                throw  new Exception("Error during build step");
+                            }
+                        }
                     }
 
 
 
-                    job.Status = JobStatus.SUCCESS;
+                    //job.Status = JobStatus.SUCCESS;
                     DbContext.SaveChanges();
 
                 }catch(Exception e)
