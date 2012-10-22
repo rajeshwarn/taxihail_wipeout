@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.Api.Services
         public override object OnGet(PlaceDetailRequest request)
         {
 
-            return _client.GetPlaceDetail(request.ReferenceId);
+            return _client.GetPlaceDetail(request.PlaceName, request.ReferenceId);
             
 
         }
