@@ -287,6 +287,9 @@ namespace apcurium.MK.Booking.Mobile.Client
                         mapStatus.SetRegion(new MKCoordinateRegion(center, new MKCoordinateSpan(latDelta * 1.5f, longDelta * 1.5f)), true);
                     }
                     );
+
+
+
                 }
             }
             catch (Exception ex)
@@ -302,10 +305,19 @@ namespace apcurium.MK.Booking.Mobile.Client
 
                 try
                 {
+                    var isDone = TinyIoCContainer.Current.Resolve<IBookingService>().IsStatusDone(Status.IBSStatusId);
+
+                    if ( isDone )
+                    {
+                        InvokeOnMainThread(()=> ShowThankYouMessage(Status));
+
+                        return;
+                    }
+
                     if (_closeScreenWhenCompleted)
                     {
+
                         var isCompleted = TinyIoCContainer.Current.Resolve<IBookingService>().IsCompleted(Order.Id);
-                        
 
                         if (isCompleted)
                         {                        
@@ -337,6 +349,8 @@ namespace apcurium.MK.Booking.Mobile.Client
                     {                        
                         RefreshStatusDisplay();                        
                     }
+
+
                     
                 }
                 catch (Exception ex)
@@ -347,6 +361,42 @@ namespace apcurium.MK.Booking.Mobile.Client
             );
         }
 
+
+        private void ShowThankYouMessage(OrderStatusDetail status)
+        {
+            if ( _timer != null )
+            {
+            _timer.Dispose();
+            _timer = null;
+            }
+
+            string title = Resources.GetValue("View_BookingStatus_ThankYouTitle" );
+            string msg = Resources.GetValue("View_BookingStatus_ThankYouMessage" );
+
+
+            var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
+            msg = string.Format( msg, settings.ApplicationName );
+
+            var av = new UIAlertView ( title, msg, null, Resources.Close, status.FareAvailable ? Resources.HistoryViewSendReceiptButton :null );
+            av.Dismissed += (sender, e) => CloseRequested(this, EventArgs.Empty);
+            av.Clicked += delegate(object sender, UIButtonEventArgs e) {
+                if (e.ButtonIndex == 1) {                    
+                    var isSuccess = TinyIoCContainer.Current.Resolve<IBookingService>().SendReceipt( Order.Id);
+                    
+                    if (isSuccess)
+                    {
+                        MessageHelper.Show(Resources.HistoryViewSendReceiptSuccess);
+                    }
+                    else
+                    {
+                        
+                        MessageHelper.Show(Resources.HistoryViewSendReceiptError);
+                    }
+                    av.Dispose();
+                }};
+            
+            av.Show (  );   
+        }
         void RefreshButtonTouchUpInside(object sender, EventArgs e)
         {
             

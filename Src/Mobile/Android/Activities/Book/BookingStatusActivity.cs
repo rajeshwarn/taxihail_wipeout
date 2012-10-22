@@ -217,7 +217,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                             if (!_isThankYouDialogDisplayed)
                             {
                                 _isThankYouDialogDisplayed = true;
-                                RunOnUiThread(ShowThankYouDialog);
+                                RunOnUiThread(()=>ShowThankYouDialog(status));
                             }
                         }
                     }
@@ -229,28 +229,35 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }, false);
         }
 
-        private void ShowThankYouDialog()
+        private void ShowThankYouDialog(OrderStatusDetail status)
         {
             var alert = new AlertDialog.Builder(this);
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
             alert.SetTitle(Resources.GetString(Resource.String.View_BookingStatus_ThankYouTitle));
             alert.SetMessage(String.Format(Resources.GetString(Resource.String.View_BookingStatus_ThankYouMessage), settings.ApplicationName));
 
-            alert.SetPositiveButton("Ok", (s, e) => alert.Dispose());
-
-            alert.SetNegativeButton(Resource.String.HistoryDetailSendReceiptButton, (s, e) =>
+            alert.SetPositiveButton("Ok", (s, e) =>
             {
-                ThreadHelper.ExecuteInThread(this, () =>
-                {
-                    if (Common.Extensions.GuidExtensions.HasValue(Order.Id))
-                    {
-                        TinyIoCContainer.Current.Resolve<IBookingService>().SendReceipt(Order.Id);
-                    }
-
-                    RunOnUiThread(() => Finish());
-                }, true);
                 alert.Dispose();
+                RunOnUiThread(Finish);
             });
+
+            if (status.FareAvailable)
+            {
+                alert.SetNegativeButton(Resource.String.HistoryDetailSendReceiptButton, (s, e) =>
+                {
+                    ThreadHelper.ExecuteInThread(this, () =>
+                    {
+                        if (Common.Extensions.GuidExtensions.HasValue(Order.Id))
+                        {
+                            TinyIoCContainer.Current.Resolve<IBookingService>().SendReceipt(Order.Id);
+                        }
+
+                        RunOnUiThread(Finish);
+                    }, true);
+                    alert.Dispose();
+                });
+            }
 
             alert.Show();
         }

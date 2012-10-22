@@ -25,8 +25,9 @@ namespace apcurium.MK.Booking.Mobile
 
                 var title = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("AppNeedUpdateTitle");
                 var msg = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("AppNeedUpdateMessage");
-                TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage(title, msg);
-                
+                var mService = TinyIoCContainer.Current.Resolve<IMessageService>();
+                mService.ShowMessage(title, msg);
+                RequestNavigate<LoginViewModel>(true);
 
             }
             else if (TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount == null)
