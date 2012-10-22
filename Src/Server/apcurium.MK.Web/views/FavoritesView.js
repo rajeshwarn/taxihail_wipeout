@@ -82,10 +82,12 @@
             this._addFavoriteView && this._addFavoriteView.remove();
         },
         
-        edit:function (model) {
+        edit: function (model) {
+            model.set('isNew', false);
             var view = this._addFavoriteView = new TaxiHail.AddFavoriteView({
                 model: model,
-                collection : this.collection
+                collection: this.collection,
+                showPlaces: true
             });
             view.on('cancel', this.render, this);
             this.$el.html(view.render().el);
@@ -94,10 +96,12 @@
         addfavorites: function (e) {
             e.preventDefault();
             this.model = new TaxiHail.Address();
+            this.model.set('isNew', true);
             var view = this._addFavoriteView = new TaxiHail.AddFavoriteView(
                 {
                     model: this.model,
-                    collection: this.collection
+                    collection: this.collection,
+                    showPlaces:true
                 });
             view.on('cancel', this.render, this);
             this.$el.html(view.render().el);

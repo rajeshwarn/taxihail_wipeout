@@ -13,6 +13,10 @@
 
         isCompleted: function() {
             return this.get('iBSStatusId') === 'wosDONE';
+        },
+
+        canSendReceipt: function() {
+            return this.isCompleted() && !!this.get('fareAvailable');
         }
     });
 

@@ -29,7 +29,7 @@
                     $container = this.$("#user-account-container");
 
                 TaxiHail.showSpinner($container);
-                favorites.fetch({
+                /*favorites.fetch({
                     url: 'api/account/addresses',
                     success: _.bind(function (collection, resp) {
                         history.fetch({
@@ -40,7 +40,9 @@
                             }, this)
                         });
                     }, this)
-                });
+                });*/
+                addresses.reset();
+                this.$("#user-account-container").html(view.el);
             },
             history: function () {
                 var orders = new TaxiHail.OrderCollection();

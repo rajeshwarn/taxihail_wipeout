@@ -580,8 +580,12 @@
     <Content Include="templates\Book.handlebars">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="templates\BookingConfirmation.handlebars" />
-    <Content Include="templates\BookingStatus.handlebars" />
+    <Content Include="templates\BookingConfirmation.handlebars">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="templates\BookingStatus.handlebars">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="templates\BookLater.handlebars" />
     <Content Include="templates\BootstrapConfirmation.handlebars" />
     <Content Include="templates\FavoriteDetails.handlebars" />

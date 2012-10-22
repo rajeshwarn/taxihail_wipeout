@@ -57,6 +57,7 @@
 	"TwitterConsumerSecret" : "",
 	"TwitterEnabled" : "false",
 	"TwitterRequestTokenUrl" : "",
-	"Receipt.Note": "Thank You!<br><b>Go Taxi Des Moines</b>"
+	"Receipt.Note": "Thank You!<br><b>Go Taxi Des Moines</b>",
+	"Booking.ConfirmationEmail" : "true"
 }
 

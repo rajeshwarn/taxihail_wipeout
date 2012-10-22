@@ -56,7 +56,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.Google.Tests", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.Maps", "MK.Booking.Maps\MK.Booking.Maps.csproj", "{C41EA1B3-0E19-41AE-8EFC-AE242532B248}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.Maps.Tests", "MK.Booking.Maps.Tests\MK.Booking.Maps.Tests.csproj", "{2C8FA5B0-B175-43E9-949F-C83157151CC2}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{9B51688D-9CE2-4AF9-8859-1FA3ABF80CBF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.ConfigurationManager", "MK.ConfigurationManager\MK.ConfigurationManager.csproj", "{837FF6C8-C15F-4D21-8D43-5A14AC9965DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.DeploymentService", "MK.DeploymentService\MK.DeploymentService.csproj", "{5F1A8169-BD43-48D8-AB4E-E6B3E97D8454}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -277,16 +281,26 @@ Global
 		{C41EA1B3-0E19-41AE-8EFC-AE242532B248}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{C41EA1B3-0E19-41AE-8EFC-AE242532B248}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{C41EA1B3-0E19-41AE-8EFC-AE242532B248}.Release|x86.ActiveCfg = Release|Any CPU
-		{2C8FA5B0-B175-43E9-949F-C83157151CC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2C8FA5B0-B175-43E9-949F-C83157151CC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2C8FA5B0-B175-43E9-949F-C83157151CC2}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{2C8FA5B0-B175-43E9-949F-C83157151CC2}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{2C8FA5B0-B175-43E9-949F-C83157151CC2}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{2C8FA5B0-B175-43E9-949F-C83157151CC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2C8FA5B0-B175-43E9-949F-C83157151CC2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2C8FA5B0-B175-43E9-949F-C83157151CC2}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{2C8FA5B0-B175-43E9-949F-C83157151CC2}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{2C8FA5B0-B175-43E9-949F-C83157151CC2}.Release|x86.ActiveCfg = Release|Any CPU
+		{837FF6C8-C15F-4D21-8D43-5A14AC9965DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{837FF6C8-C15F-4D21-8D43-5A14AC9965DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{837FF6C8-C15F-4D21-8D43-5A14AC9965DB}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{837FF6C8-C15F-4D21-8D43-5A14AC9965DB}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{837FF6C8-C15F-4D21-8D43-5A14AC9965DB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{837FF6C8-C15F-4D21-8D43-5A14AC9965DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{837FF6C8-C15F-4D21-8D43-5A14AC9965DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{837FF6C8-C15F-4D21-8D43-5A14AC9965DB}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{837FF6C8-C15F-4D21-8D43-5A14AC9965DB}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{837FF6C8-C15F-4D21-8D43-5A14AC9965DB}.Release|x86.ActiveCfg = Release|Any CPU
+		{5F1A8169-BD43-48D8-AB4E-E6B3E97D8454}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F1A8169-BD43-48D8-AB4E-E6B3E97D8454}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F1A8169-BD43-48D8-AB4E-E6B3E97D8454}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{5F1A8169-BD43-48D8-AB4E-E6B3E97D8454}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{5F1A8169-BD43-48D8-AB4E-E6B3E97D8454}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5F1A8169-BD43-48D8-AB4E-E6B3E97D8454}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F1A8169-BD43-48D8-AB4E-E6B3E97D8454}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F1A8169-BD43-48D8-AB4E-E6B3E97D8454}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{5F1A8169-BD43-48D8-AB4E-E6B3E97D8454}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{5F1A8169-BD43-48D8-AB4E-E6B3E97D8454}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -309,7 +323,9 @@ Global
 		{26C054F2-4984-4FE5-811C-4D94EF7EAE15} = {E0F34126-87A5-46FA-AE8A-6EEEC29C7B79}
 		{EAD58094-9B43-4FF6-90D3-F721B00033CF} = {E0F34126-87A5-46FA-AE8A-6EEEC29C7B79}
 		{0933E3FC-6332-43C0-B133-16299DF47B2D} = {E0F34126-87A5-46FA-AE8A-6EEEC29C7B79}
-		{2C8FA5B0-B175-43E9-949F-C83157151CC2} = {E0F34126-87A5-46FA-AE8A-6EEEC29C7B79}
+		{51717880-85AA-4BCB-AE92-8EDF27E37DFB} = {9B51688D-9CE2-4AF9-8859-1FA3ABF80CBF}
+		{837FF6C8-C15F-4D21-8D43-5A14AC9965DB} = {9B51688D-9CE2-4AF9-8859-1FA3ABF80CBF}
+		{5F1A8169-BD43-48D8-AB4E-E6B3E97D8454} = {9B51688D-9CE2-4AF9-8859-1FA3ABF80CBF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35;packages\Unity.Interception.2.1.505.0\lib\NET35;packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\TransientFaultHandling.Core.5.0.1118.2\lib\NET35;packages\EnterpriseLibrary.WindowsAzure.TransientFaultHandling.5.0.1118.2\lib\NET4;packages\EnterpriseLibrary.WindowsAzure.TransientFaultHandling.5.0.1118.2\DesignTime;packages\Unity.2.1.505.2\lib\NET35
