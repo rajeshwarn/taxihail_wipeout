@@ -52,11 +52,25 @@ namespace MK.DeploymentService
 
                     //pull source from bitbucket
                     var revision = string.IsNullOrEmpty(job.Revision) ? string.Empty : "-r " + job.Revision;
-                    var commandClone =
-                        string.Format(@"hg clone {1} https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi {0}", Path.Combine(Path.GetTempPath(), job.Id.ToString()) , revision);
+                    var directory = Path.Combine(Path.GetTempPath(), job.Id.ToString());
+                    var args = string.Format(@"clone {1} https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi {0}", directory , revision);
+
+                    var startInfo = new ProcessStartInfo
+                    {
+                        FileName = "hg.exe",
+                        WindowStyle = ProcessWindowStyle.Hidden,
+                        UseShellExecute = false,
+                        CreateNoWindow = false,
+                        Arguments = args
+                    };
+
+                    using (var exeProcess = Process.Start(startInfo))
+                    {
+                        exeProcess.WaitForExit();
+                    }
 
 
-
+                    //build server?
                     if(job.Server)
                     {
                         
