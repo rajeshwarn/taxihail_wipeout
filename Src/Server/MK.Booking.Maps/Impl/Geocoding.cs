@@ -32,12 +32,12 @@ namespace apcurium.MK.Booking.Maps.Impl
 
             if ((geoResult.Status == ResultStatus.OK) || ( geoResult.Results.Count > 0 ))
             {
-                result = ConvertGeoResultToAddresses(geoResult);
+                result = ConvertGeoResultToAddresses(geoResult,null);
             }
 
             if (( result == null ) || ( result.Count() == 0 ) )
             {
-                result = ConvertGeoResultToAddresses(SearchUsingName(addressName, false));                                                
+                result = ConvertGeoResultToAddresses(SearchUsingName(addressName, false),null);                                                
             }
             return result;
 
@@ -64,7 +64,7 @@ namespace apcurium.MK.Booking.Maps.Impl
             var geoResult = _mapApi.GeocodeLocation(latitude, longitude);
             if (geoResult.Status == ResultStatus.OK)
             {
-                return ConvertGeoResultToAddresses(geoResult);
+                return ConvertGeoResultToAddresses(geoResult,null);
             }
             else
             {
@@ -75,7 +75,7 @@ namespace apcurium.MK.Booking.Maps.Impl
          
         }
 
-        private Address[] ConvertGeoResultToAddresses(GeoResult geoResult)
+        private Address[] ConvertGeoResultToAddresses(GeoResult geoResult, string placeName)
         {
             if ((geoResult.Status != ResultStatus.OK) || (geoResult.Results == null) || (geoResult.Results.Count == 0))
             {
@@ -87,7 +87,7 @@ namespace apcurium.MK.Booking.Maps.Impl
                                                   r.Geometry.Location.Lng != 0 && r.Geometry.Location.Lat != 0 &&
                                                   (r.AddressComponentTypes.Any(type => type == AddressComponentType.Street_address) ||
                                                   (r.Types.Any(t => _otherTypesAllowed.Any(o => o.ToLower() == t.ToLower())))))
-                                     .Select(new GeoObjToAddressMapper().ConvertToAddress).ToArray();
+                                     .Select(r=>new GeoObjToAddressMapper().ConvertToAddress(r,placeName)).ToArray();
         }
 
       

@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 {
     public partial class ConfirmationView : UIViewController
     {
-        private BookView _parent;
+
 
         public event EventHandler Confirmed;
         public event EventHandler Canceled;
@@ -46,14 +46,20 @@ namespace apcurium.MK.Booking.Mobile.Client
             Initialize();
         }
 
-        public ConfirmationView(BookView parent) : base("ConfirmationView", null)
+        public ConfirmationView(CreateOrder order) : base("ConfirmationView", null)
         {
-            _parent = parent;
+            Order = order;
             Initialize();
         }
 
         void Initialize()
         {
+        }
+
+        public CreateOrder Order
+        {
+            get;
+            set;
         }
 
 		public override void ViewWillAppear (bool animated)
@@ -90,14 +96,17 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 			lblPrice.Text = Resources.ApproxPrice;
             
-            txtOrigin.Text = _parent.BookingInfo.PickupAddress.FullAddress;         
-            txtDestination.Text = _parent.BookingInfo.DropOffAddress.FullAddress.HasValue() ? _parent.BookingInfo.DropOffAddress.FullAddress : Resources.ConfirmDestinationNotSpecified;            
-            txtDateTime.Text = FormatDateTime(_parent.BookingInfo.PickupDate, _parent.BookingInfo.PickupDate);
-            
-			txtAptRing.Text = FormatAptRingCode(_parent.BookingInfo.PickupAddress.Apartment, _parent.BookingInfo.PickupAddress.RingCode);  
-            txtBuildingName.Text = FormatBuildingName( _parent.BookingInfo.PickupAddress.BuildingName );
+            txtOrigin.Text = Order.PickupAddress.FullAddress;         
+            txtDestination.Text = Order.DropOffAddress.FullAddress.HasValue() ? Order.DropOffAddress.FullAddress : Resources.ConfirmDestinationNotSpecified;            
+            txtDateTime.Text = FormatDateTime(Order.PickupDate);
 
-			var directionInfo = TinyIoCContainer.Current.Resolve<IGeolocService>().GetDirectionInfo(_parent.BookingInfo.PickupAddress, _parent.BookingInfo.DropOffAddress);
+
+
+
+			txtAptRing.Text = FormatAptRingCode(Order.PickupAddress.Apartment, Order.PickupAddress.RingCode);  
+            txtBuildingName.Text = FormatBuildingName( Order.PickupAddress.BuildingName );
+
+			var directionInfo = TinyIoCContainer.Current.Resolve<IGeolocService>().GetDirectionInfo(Order.PickupAddress, Order.DropOffAddress);
             txtPrice.Text = directionInfo.Price.HasValue ? directionInfo.FormattedPrice : Resources.NotAvailable;
 
 			SetRideSettingsFields();
@@ -110,12 +119,12 @@ namespace apcurium.MK.Booking.Mobile.Client
             View.BringSubviewToFront( bottomBar );    
 
 			TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub>().Subscribe<AddressRefinedMessage>( msg => {
-				_parent.BookingInfo.PickupAddress.Apartment = msg.Content.AptNumber;
-				_parent.BookingInfo.PickupAddress.BuildingName = msg.Content.BuildingName;
-				_parent.BookingInfo.PickupAddress.RingCode = msg.Content.RingCode;
+				Order.PickupAddress.Apartment = msg.Content.AptNumber;
+				Order.PickupAddress.BuildingName = msg.Content.BuildingName;
+				Order.PickupAddress.RingCode = msg.Content.RingCode;
 
-                txtAptRing.Text = FormatAptRingCode(_parent.BookingInfo.PickupAddress.Apartment, _parent.BookingInfo.PickupAddress.RingCode);  
-                txtBuildingName.Text = FormatBuildingName(_parent.BookingInfo.PickupAddress.BuildingName);
+                txtAptRing.Text = FormatAptRingCode(Order.PickupAddress.Apartment, Order.PickupAddress.RingCode);  
+                txtBuildingName.Text = FormatBuildingName(Order.PickupAddress.BuildingName);
 
 
 			});
@@ -134,18 +143,18 @@ namespace apcurium.MK.Booking.Mobile.Client
         }
         void EditPickupDetails (object sender, EventArgs e)
         {
-			var args = new Dictionary<string, string>(){ {"apt", _parent.BookingInfo.PickupAddress.Apartment}, {"ringCode", _parent.BookingInfo.PickupAddress.RingCode},  {"buildingName", _parent.BookingInfo.PickupAddress.BuildingName} };
+			var args = new Dictionary<string, string>(){ {"apt", Order.PickupAddress.Apartment}, {"ringCode", Order.PickupAddress.RingCode},  {"buildingName", Order.PickupAddress.BuildingName} };
 			var dispatch = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
 			dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(RefineAddressViewModel), args, false, MvxRequestedBy.UserAction));
         }
 
         void EditRideSettings (object sender, EventArgs e)
         {
-            var settings = new  RideSettingsView(_parent.BookingInfo.Settings, false, false);
+            var settings = new  RideSettingsView(Order.Settings, false, false);
 
             settings.Closed += delegate
             {
-                _parent.BookingInfo.Settings = settings.Result;
+                Order.Settings = settings.Result;
 				SetRideSettingsFields();                 
             };
             
@@ -156,19 +165,19 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
             var service = TinyIoCContainer.Current.Resolve<IAccountService>();            
             var companies = service.GetCompaniesList();
-            var model = new RideSettingsModel(_parent.BookingInfo.Settings, companies, service.GetVehiclesList(), service.GetPaymentsList());
+            var model = new RideSettingsModel(Order.Settings, companies, service.GetVehiclesList(), service.GetPaymentsList());
 
-            txtName.Text = _parent.BookingInfo.Settings.Name;
+            txtName.Text = Order.Settings.Name;
 
             try
             {
-                var cleaned = new string(_parent.BookingInfo.Settings.Phone.ToArray().Where(c => Char.IsDigit(c)).ToArray());
+                var cleaned = new string(Order.Settings.Phone.ToArray().Where(c => Char.IsDigit(c)).ToArray());
                 var phone = Regex.Replace(cleaned, @"(\d{3})(\d{3})(\d{4})", "$1-$2-$3");
                 txtPhone.Text = phone;
             }
             catch
             {
-                txtPhone.Text = _parent.BookingInfo.Settings.Phone;
+                txtPhone.Text = Order.Settings.Phone;
             }
 
 			int nbPassenger = 0;
@@ -176,6 +185,16 @@ namespace apcurium.MK.Booking.Mobile.Client
 			var passengerFormat = nbPassenger == 1 ? Resources.NbPassenger : Resources.NbPassengers;
 			txtVehiculeType.Text = model.VehicleTypeName + string.Format(passengerFormat, model.NbOfPassenger);
 			txtChargeType.Text = model.ChargeTypeName;
+
+            var company = model.CompanyList.FirstOrDefault( c=>c.Id == Order.Settings.ProviderId );
+            if ( company == null )
+            {
+                company = model.CompanyList.First( c=>c.IsDefault.HasValue && c.IsDefault.Value );
+                Order.Settings.ProviderId = company.Id;
+            }
+
+            txtCompany.Text = company.Display;
+
 		}
 
         public override void ViewDidAppear(bool animated)
@@ -184,7 +203,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             LoadLayout();       
             
             
-            if  ( AppContext.Current.WarnEstimate && _parent.BookingInfo.DropOffAddress.HasValidCoordinate() ) 
+            if  ( AppContext.Current.WarnEstimate && Order.DropOffAddress.HasValidCoordinate() ) 
             {
                 MessageHelper.Show(Resources.WarningEstimateTitle, Resources.WarningEstimate, Resources.WarningEstimateDontShow, ( ) => AppContext.Current.WarnEstimate = false); 
             }
@@ -195,11 +214,18 @@ namespace apcurium.MK.Booking.Mobile.Client
 			this.NavigationItem.TitleView = new TitleView(null, Resources.View_BookingDetail, true);
         }
 
-        private string FormatDateTime(DateTime? pickupDate, DateTime? pickupTime)
+//        private string FormatDateTime(DateTime? pickupDate, DateTime? pickupTime)
+//        {
+//            string result = pickupDate.HasValue ? pickupDate.Value.ToShortDateString() : Resources.DateToday;
+//            result += @" / ";
+//            result += pickupTime.HasValue ? pickupTime.Value.ToShortTimeString() : Resources.TimeNow;
+//            return result;
+//        }
+
+        private string FormatDateTime(DateTime? pickupDate )
         {
-            string result = pickupDate.HasValue ? pickupDate.Value.ToShortDateString() : Resources.DateToday;
-            result += @" / ";
-            result += pickupTime.HasValue ? pickupTime.Value.ToShortTimeString() : Resources.TimeNow;
+            string format = "{0:ddd, MMM d}, {0:h:mm tt}";
+            string result = pickupDate.HasValue ? string.Format(format, pickupDate.Value) : Resources.TimeNow;
             return result;
         }
 
@@ -228,7 +254,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             if (Confirmed != null)
             {
-                Confirmed(this, EventArgs.Empty);
+                Confirmed(Order, EventArgs.Empty);
             }
         }
 
@@ -240,11 +266,11 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
         }
 
-        public CreateOrder BI
-        {
-            get { return _parent.BookingInfo; }
-        }
-        
+//        public CreateOrder BI
+//        {
+//            get { return Order; }
+//        }
+//        
         #endregion
     }
 }

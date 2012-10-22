@@ -233,6 +233,7 @@
   <string name="ServiceErrorCreateOrder_InvalidProvider">Order cannot be created, invalid provider. Please try again or call us.</string>
   <string name="ServiceErrorCreateOrder_VehiculeType">Order cannot be created, invalid vehicle type. Please try again or call us.</string>
   <string name="ServiceErrorCreateAccount_AccountAlreadyExist">The account cannot be created, this email is already in use.</string>
+  <string name="CreateAccount_AccountAlreadyExist">The account cannot be created, this email is already in use.</string>
   <string name="ServiceErrorUnauthorized">An unauthorized call has been made to server, you will be redirected to login page.</string>
   <string name="BookDateLabel">Pick Me Up Later</string>
   <string name="OrderHistoryListTitle">Order #{0} ({1:ddd, MMM d}, {1:h:mm tt})</string>
