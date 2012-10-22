@@ -7,7 +7,8 @@
         },
 
         initialize: function () {
-            this.collection.on('destroy reset sync', TaxiHail.postpone(this.refresh, this), this);
+            this.collection.on('destroy sync', TaxiHail.postpone(this.refresh, this), this);
+            this.collection.on('reset', this.render, this);
             this.collection.on('selected', this.edit, this);
             
             this._addFavoriteView = null;
@@ -15,7 +16,6 @@
         
         refresh: function () {
             var addresses;
-            
 
             var favorites = new TaxiHail.AddressCollection();
             var history = new TaxiHail.AddressCollection();
@@ -25,9 +25,7 @@
                     history.fetch({
                         url: 'api/account/addresses/history',
                         success: _.bind(function (collection, resp) {
-                            this.collection.reset(favorites.models.concat(history.models), {silent : true});
-                            this.$("#user-account-container").html(this.el);
-                            this.render();
+                            this.collection.reset(favorites.models.concat(history.models));
                         }, this)
                     });
                 }, this)
