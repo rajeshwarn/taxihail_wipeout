@@ -26,20 +26,12 @@
 
     TaxiHail.App = Backbone.Router.extend({
         routes: {
-            "": "grantadminaccess",   // #
-            "managefavoritesdefault": "managefavoritesdefault"
+            "": "manageFavoritesDefault",   // #
+            "grantadmin": "grantAdminAccess"
         },
 
         initialize: function (options) {
             $('.menuadmin').html(new TaxiHail.AdminMenuView().render().el);
-            /*TaxiHail.auth.account.fetch()
-            {
-                success: _.bind(function() {
-                    $('.login-status-zone').html(new TaxiHail.LoginStatusView({
-                        model: TaxiHail.auth.account
-                    }).render().el);
-                });
-            };*/
             
         },
 
@@ -48,7 +40,7 @@
 
         },
         
-        managefavoritesdefault: function () {
+        manageFavoritesDefault: function () {
             var addresses = new TaxiHail.CompanyDefaultAddressCollection(),
                         view = this._tabView = new TaxiHail.ManageDefaultAddressesView({
                             collection: addresses
@@ -64,7 +56,7 @@
             });
         },
         
-        grantadminaccess : function () {
+        grantAdminAccess : function () {
             renderView(TaxiHail.GrantAdminAccessView);
         }
     });
