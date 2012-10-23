@@ -29,7 +29,7 @@
    "TwitterConsumerSecret" : "",
    "TwitterEnabled" : "false",
    "TwitterRequestTokenUrl" : "",
-   "TaxiHail.ServerCompanyName" : "TaxiHail"
+   "TaxiHail.ServerCompanyName" : "TaxiHail",
    "Booking.ConfirmationEmail" : "true",
    "Client.HideCallDispatchButton" : "false"
 }
