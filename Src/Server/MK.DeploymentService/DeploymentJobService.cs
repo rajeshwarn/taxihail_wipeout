@@ -57,24 +57,28 @@ namespace MK.DeploymentService
                     //pull source from bitbucket
                     var revision = string.IsNullOrEmpty(job.Revision) ? string.Empty : "-r " + job.Revision;
                     var directory = Path.Combine(Path.GetTempPath(), job.Id.ToString());
-                    var args = string.Format(@"clone {1} https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi {0}", directory , revision);
+                    //if(Directory.Exists(directory))
+                    //{
+                    //    Directory.Delete(directory, true);
+                    //}
+                    //var args = string.Format(@"clone {1} https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi {0}", directory , revision);
 
-                    var hgClone = new ProcessStartInfo
-                    {
-                        FileName = "hg.exe",
-                        WindowStyle = ProcessWindowStyle.Hidden,
-                        UseShellExecute = false,
-                        CreateNoWindow = false,
-                        Arguments = args
-                    };
+                    //var hgClone = new ProcessStartInfo
+                    //{
+                    //    FileName = "hg.exe",
+                    //    WindowStyle = ProcessWindowStyle.Hidden,
+                    //    UseShellExecute = false,
+                    //    CreateNoWindow = false,
+                    //    Arguments = args
+                    //};
 
                     //using (var exeProcess = Process.Start(hgClone))
                     //{
                     //    exeProcess.WaitForExit();
-                        //if (exeProcess.ExitCode > 0)
-                        //{
-                        //    throw new Exception("Error during pull source code step");
-                        //}
+                    //    if (exeProcess.ExitCode > 0)
+                    //    {
+                    //        throw new Exception("Error during pull source code step");
+                    //    }
                     //}
 
 
@@ -88,15 +92,39 @@ namespace MK.DeploymentService
                             UseShellExecute = false,
                             LoadUserProfile = true,
                             CreateNoWindow = false,
-                            Arguments = string.Format("-executionpolicy ByPass -File \"" + directory + "\\Deployment\\Server\\BuildPackage.ps1\" \"-env {0}\"", job.Company.ConfigurationProperties["TaxiHail.ApplicationKey"]) 
+                            Arguments = "-Executionpolicy ByPass -File \"" + directory + "\\Deployment\\Server\\BuildPackage.ps1\""
                         };
 
-                        using (var exeProcess = Process.Start(buildPackage))
+                        //using (var exeProcess = Process.Start(buildPackage))
+                        //{
+                        //    exeProcess.WaitForExit();
+                        //    if (exeProcess.ExitCode > 0)
+                        //    {
+                        //        throw new Exception("Error during build step");
+                        //    }
+                        //}
+
+                        var argsPowershell = string.Format("-companyName \"{0}\" -sqlServerInstance \"{1}\" -version \"1.1.{2}\" -actionDb \"{3}\"",
+                                                            job.Company.ConfigurationProperties["TaxiHail.ApplicationKey"],
+                                                            job.TaxHailEnv.SqlServerInstance,
+                                                            job.Revision ?? DateTime.UtcNow.Ticks.ToString(),
+                                                            job.InitDatabase ? "C" : "U");
+
+                        var deployPackage = new ProcessStartInfo
+                        {
+                            FileName = "Powershell.exe",
+                            LoadUserProfile = true,
+                            UseShellExecute = true,
+                            CreateNoWindow = false,
+                            Arguments = string.Format("-NoProfile -ExecutionPolicy Unrestricted -File \"" + directory + "\\Deployment\\Server\\Deploy.ps1\" {0}", argsPowershell)
+                        };
+
+                        using (var exeProcess = Process.Start(deployPackage))
                         {
                             exeProcess.WaitForExit();
-                            if(exeProcess.ExitCode > 0)
+                            if (exeProcess.ExitCode > 0)
                             {
-                                throw  new Exception("Error during build step");
+                                throw new Exception("Error during deply step");
                             }
                         }
                     }
@@ -104,13 +132,13 @@ namespace MK.DeploymentService
 
 
                     //job.Status = JobStatus.SUCCESS;
-                    DbContext.SaveChanges();
+                    //DbContext.SaveChanges();
 
                 }catch(Exception e)
                 {
-                    job.Status = JobStatus.ERROR;
-                    job.Details = e.Message;
-                    DbContext.SaveChanges();
+                    //job.Status = JobStatus.ERROR;
+                    //job.Details = e.Message;
+                    //DbContext.SaveChanges();
                 }
             }
         }
