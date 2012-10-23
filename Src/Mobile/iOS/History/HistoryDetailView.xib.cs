@@ -116,7 +116,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 {
                     InvokeOnMainThread(() =>
                     {
-                        LoadingOverlay.StopAnimatingLoading(this.View);
+                        LoadingOverlay.StopAnimatingLoading();
                         View.UserInteractionEnabled = true;
                     }
                     );
@@ -149,7 +149,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 				{
 					InvokeOnMainThread(() =>
 					                   {
-						LoadingOverlay.StopAnimatingLoading(this.View);
+						LoadingOverlay.StopAnimatingLoading();
 						View.UserInteractionEnabled = true;
 					}
 					);

@@ -11,8 +11,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 		
 		public static void Show ( string title, string message, string additionalActionTitle , Action additionalAction )
 		{
-			AppContext.Current.Controller.InvokeOnMainThread ( delegate
+
+			UIApplication.SharedApplication.InvokeOnMainThread ( delegate
 			{					
+                LoadingOverlay.StopAnimatingLoading();
 				var av = new UIAlertView ( title, message, null, Resources.Close, additionalActionTitle );
 				av.Clicked += delegate(object sender, UIButtonEventArgs e) {
 				if (e.ButtonIndex == 1) {
@@ -27,8 +29,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 		
 		public static void Show ( string title, string message, Action onDismiss )
 		{
-			AppContext.Current.Controller.InvokeOnMainThread ( delegate
+			UIApplication.SharedApplication.InvokeOnMainThread ( delegate
 			{					
+                LoadingOverlay.StopAnimatingLoading();
 				var av = new UIAlertView ( title, message, null, Resources.Close, null );
 				av.Dismissed += delegate {
 					onDismiss();
@@ -42,6 +45,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             UIApplication.SharedApplication.InvokeOnMainThread( delegate
 			{					
+                LoadingOverlay.StopAnimatingLoading();
 				var av = new UIAlertView ( title, message, null, Resources.Close, null );
 				av.Show (  );
 				
@@ -51,8 +55,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 		
 		public static void Show ( string message )
 		{
-			AppContext.Current.Controller.InvokeOnMainThread ( delegate
-			{									
+			UIApplication.SharedApplication.InvokeOnMainThread ( delegate
+			{								
+                LoadingOverlay.StopAnimatingLoading();
 				var av = new UIAlertView (  Resources.GenericTitle, message, null, Resources.Close, null );
 				av.Show (  );
 			} );
@@ -62,8 +67,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public static void ShowToast ( string message, int duration )
 		{
 			
-			AppContext.Current.Controller.InvokeOnMainThread ( delegate 
+			UIApplication.SharedApplication.InvokeOnMainThread ( delegate 
 			                                                  {									
+                LoadingOverlay.StopAnimatingLoading();
                 var toast = new ToastMessage( AppContext.Current.Controller.TopViewController.View, message );
 				toast.Show(duration);
 			} );

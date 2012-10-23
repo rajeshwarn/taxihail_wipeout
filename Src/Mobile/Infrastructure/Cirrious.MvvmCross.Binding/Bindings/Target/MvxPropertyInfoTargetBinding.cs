@@ -10,7 +10,10 @@
 #endregion
 
 using System;
+using System.Linq;
 using System.Reflection;
+using Cirrious.MvvmCross.Binding.Attributes;
+using Cirrious.MvvmCross.Binding.ExtensionMethods;
 using Cirrious.MvvmCross.Binding.Interfaces;
 using Cirrious.MvvmCross.Exceptions;
 using Cirrious.MvvmCross.Interfaces.Platform.Diagnostics;
@@ -30,6 +33,22 @@ namespace Cirrious.MvvmCross.Binding.Bindings.Target
             _targetPropertyInfo = targetPropertyInfo;
         }
 
+        protected override void Dispose(bool isDisposing)
+        {
+            if (isDisposing)
+            {
+                // if the target property should be set to NULL on dispose then we clear it here
+                // this is a fix for the possible memory leaks discussion started https://github.com/slodge/MvvmCross/issues/17#issuecomment-8527392
+                var setToNullAttribute = Attribute.GetCustomAttribute(_targetPropertyInfo, typeof(MvxSetToNullAfterBindingAttribute), true);
+                if (setToNullAttribute != null)
+                {
+                    SetValue(null);
+                }
+            }
+
+            base.Dispose(isDisposing);
+        }
+
         protected object Target { get { return _target; } }
 
         public override Type TargetType
@@ -39,7 +58,7 @@ namespace Cirrious.MvvmCross.Binding.Bindings.Target
 
         public override MvxBindingMode DefaultMode
         {
-            get { return MvxBindingMode.TwoWay; }
+            get { return MvxBindingMode.OneWay; }
         }
 
         sealed public override void SetValue(object value)
@@ -51,47 +70,13 @@ namespace Cirrious.MvvmCross.Binding.Bindings.Target
             try
             {
                 _updatingState = UpdatingState.UpdatingTarget;
-                var safeValue = MakeValueSafeForTarget(value);
+                var safeValue = _targetPropertyInfo.PropertyType.MakeSafeValue(value);
                 _targetPropertyInfo.SetValue(_target, safeValue, null);
             }
             finally 
             {
                 _updatingState = UpdatingState.None;
             }
-        }
-
-        private object MakeValueSafeForTarget(object value)
-        {
-            object toReturn = value;
-
-#warning not sure about nullable types here too
-#warning not sure about value type hack here + could also add enum checking/parsing (Enum.ToObject())?
-            if (_targetPropertyInfo.PropertyType.IsValueType)
-            {
-                if (toReturn == null)
-                {
-                    toReturn = Activator.CreateInstance(_targetPropertyInfo.PropertyType);
-                    return toReturn;
-                }
-            }
-
-            if (_targetPropertyInfo.PropertyType == typeof (string))
-            {
-                if (!(toReturn is string))
-                {
-                    if (toReturn != null)
-                    {
-                        toReturn = toReturn.ToString();
-                    }
-                    else
-                    {
-#warning not sure about string.empty here
-                        toReturn = string.Empty;
-                    }
-                }
-            }
-
-            return toReturn;
         }
 
         sealed protected override void FireValueChanged(object newValue)
