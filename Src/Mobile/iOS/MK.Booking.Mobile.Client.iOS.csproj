@@ -25,8 +25,6 @@
     <MtouchSdkVersion>5.1</MtouchSdkVersion>
     <MtouchProfiling>True</MtouchProfiling>
     <AssemblyName>TaxiHail</AssemblyName>
-    <MtouchExtraArgs>
-    </MtouchExtraArgs>
     <MtouchUseLlvm>True</MtouchUseLlvm>
     <MtouchArch>ARMv7</MtouchArch>
   </PropertyGroup>
@@ -159,12 +157,6 @@
     </Compile>
     <Compile Include="History\HistoryTabView.xib.designer.cs">
       <DependentUpon>HistoryTabView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Settings\LoginView.xib.cs">
-      <DependentUpon>LoginView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Settings\LoginView.xib.designer.cs">
-      <DependentUpon>LoginView.xib</DependentUpon>
     </Compile>
     <Compile Include="Locations\LocationsTabView.xib.cs">
       <DependentUpon>LocationsTabView.xib</DependentUpon>
@@ -311,6 +303,12 @@
       <DependentUpon>UpdatePasswordView.xib</DependentUpon>
     </Compile>
     <Compile Include="MonoTouchDialog\NavigationElement.cs" />
+    <Compile Include="Views\LoginView.xib.cs">
+      <DependentUpon>LoginView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LoginView.xib.designer.cs">
+      <DependentUpon>LoginView.xib</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -347,7 +345,6 @@
   <ItemGroup>
     <InterfaceDefinition Include="MainWindow.xib" xmlns="" />
     <InterfaceDefinition Include="History\HistoryTabView.xib" xmlns="" />
-    <InterfaceDefinition Include="Settings\LoginView.xib" xmlns="" />
     <InterfaceDefinition Include="Locations\LocationsTabView.xib" xmlns="" />
     <InterfaceDefinition Include="Locations\LocationDetailView.xib" xmlns="" />
     <InterfaceDefinition Include="History\HistoryDetailView.xib" xmlns="" />
@@ -359,6 +356,7 @@
     <InterfaceDefinition Include="Views\PanelMenuView.xib" />
     <InterfaceDefinition Include="Views\RefineAddressView.xib" />
     <InterfaceDefinition Include="Views\UpdatePasswordView.xib" />
+    <InterfaceDefinition Include="Views\LoginView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />

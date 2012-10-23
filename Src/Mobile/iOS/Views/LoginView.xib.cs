@@ -63,17 +63,6 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
         }
 
-        public override void ViewDidUnload()
-        {
-            base.ViewDidUnload();
-
-        }
-
-        public override void ViewDidDisappear(bool animated)
-        {
-            base.ViewDidDisappear(animated);            
-        }
-
 		public override void ViewWillAppear (bool animated)
 		{
 			base.ViewWillAppear (animated);
@@ -106,8 +95,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             var btnSignIn = AppButtons.CreateStandardButton(new RectangleF(25, 179, 120, 37), Resources.SignInButton, AppStyle.ButtonColor.Black);
             View.AddSubview(btnSignIn);
-            
-			//btnSignIn.TouchUpInside += SignInClicked;
 
             var btnSignUp = AppButtons.CreateStandardButton(new RectangleF(175, 179, 120, 37), Resources.SignUpButton, AppStyle.ButtonColor.Black);
             View.AddSubview(btnSignUp);
@@ -227,7 +214,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                     {
                         var facebookId = ((RegisterAccount)data).FacebookId;
                         var twitterId = ((RegisterAccount)data).TwitterId;
-                        LoadingOverlay.StartAnimatingLoading(this.View, LoadingOverlayPosition.Center, null, 130, 30);
+                        LoadingOverlay.StartAnimatingLoading(LoadingOverlayPosition.Center, null, 130, 30);
                         ThreadHelper.ExecuteInThread(() =>
                         {
                             try
@@ -254,7 +241,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                             }
                             finally
                             {                 
-                                LoadingOverlay.StopAnimatingLoading(this.View);
+                                LoadingOverlay.StopAnimatingLoading();
                             }
                         }
                         );
@@ -330,7 +317,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         private void DoFbLogin()
         {
-            LoadingOverlay.StartAnimatingLoading(this.View, LoadingOverlayPosition.Center, null, 130, 30);
+            LoadingOverlay.StartAnimatingLoading(LoadingOverlayPosition.Center, null, 130, 30);
 
             TinyIoCContainer.Current.Resolve<IFacebookService>().GetUserInfos(info => {
                 var data = new RegisterAccount();
@@ -357,7 +344,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                         finally
                         {
                             InvokeOnMainThread(() => this.View.UserInteractionEnabled = true);
-                            LoadingOverlay.StopAnimatingLoading(this.View);
+                            LoadingOverlay.StopAnimatingLoading();
                         }
                     }
                     );
@@ -385,7 +372,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         private void DoTwLogin()
         {
-            LoadingOverlay.StartAnimatingLoading(this.View, LoadingOverlayPosition.Center, null, 130, 30);
+            LoadingOverlay.StartAnimatingLoading(LoadingOverlayPosition.Center, null, 130, 30);
 
             TinyIoCContainer.Current.Resolve<ITwitterService>().GetUserInfos(info => {
                 var data = new RegisterAccount();
@@ -402,7 +389,6 @@ namespace apcurium.MK.Booking.Mobile.Client
                             InvokeOnMainThread(() => this.View.UserInteractionEnabled = false);
                             var service = TinyIoCContainer.Current.Resolve<IAccountService>();
 
-                            string error = "";
                             Account account = service.GetTwitterAccount(data.TwitterId);
                             if (account == null)
                             {								
@@ -412,8 +398,11 @@ namespace apcurium.MK.Booking.Mobile.Client
                         }
                         finally
                         {
-                            InvokeOnMainThread(() => this.View.UserInteractionEnabled = true);
-                            LoadingOverlay.StopAnimatingLoading(this.View);
+                            InvokeOnMainThread(() => 
+                                {
+                                    this.View.UserInteractionEnabled = true;
+                                    LoadingOverlay.StopAnimatingLoading();
+                                });
                         }
                     }
                     );

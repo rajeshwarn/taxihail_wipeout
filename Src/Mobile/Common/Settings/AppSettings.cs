@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using ServiceStack.Text;
 using System.Reflection;
 using System.IO;
+using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Settings
 {
@@ -99,6 +100,8 @@ namespace apcurium.MK.Booking.Mobile.Settings
             {
                 if (CanChangeServiceUrl)
                 {
+                    TinyIoC.TinyIoCContainer.Current.Resolve<IConfigurationManager>().Reset();
+
                     if (string.IsNullOrEmpty(value))
                     {
                         TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService>().Clear("TaxiHail.ServiceUrl");

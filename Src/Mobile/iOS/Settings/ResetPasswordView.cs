@@ -52,7 +52,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             
             
             
-            LoadingOverlay.StartAnimatingLoading(this.View, LoadingOverlayPosition.Center, null, 130, 30);
+            LoadingOverlay.StartAnimatingLoading( LoadingOverlayPosition.Center, null, 130, 30);
             ThreadHelper.ExecuteInThread(() =>
             {
                 try
@@ -71,7 +71,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 finally
                 {
                     InvokeOnMainThread(() => this.View.UserInteractionEnabled = true);
-                    LoadingOverlay.StopAnimatingLoading(this.View);
+                    LoadingOverlay.StopAnimatingLoading();
                 }
             }
             );
