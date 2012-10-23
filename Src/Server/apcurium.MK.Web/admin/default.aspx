@@ -18,7 +18,9 @@
     <body>
         
         <header>
-            <div class="login-status-zone"></div>
+            <div class="login-status-zone">
+                <div><a href='#' class='brand'></a></div>
+            </div>
         </header>
         
         
