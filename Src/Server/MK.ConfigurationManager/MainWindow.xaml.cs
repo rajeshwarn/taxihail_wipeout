@@ -126,7 +126,7 @@ namespace MK.ConfigurationManager
         private void addCompabyBt_Click(object sender, RoutedEventArgs e)
         {
             var newCompany = new Company() {Id = Guid.NewGuid()};
-            var jsonSettings = File.ReadAllText(Path.Combine(AssemblyDirectory, "Entities\\Companytemplate.json"));
+            var jsonSettings = File.ReadAllText(Path.Combine(AssemblyDirectory, "Entities\\CompanyTemplate.json"));
             var objectSettings = JObject.Parse(jsonSettings);
 
             foreach (var token in objectSettings)
