@@ -24,17 +24,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			_accountService = accountService;
 			_appRessources = appResources;
-			_appContext = appContext;
-			_userInteractionEnabled = true;
+			_appContext = appContext;			
 		}
 
-		private bool _userInteractionEnabled;
-		public bool UserInteractionEnabled {
-			get { return _userInteractionEnabled; }
-			set { _userInteractionEnabled = value;
-				FirePropertyChanged( () => UserInteractionEnabled );
-			}
-		}
+	
 
 		private string _email;
 		public string Email {
@@ -74,8 +67,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			try
 			{
                 TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("SignIn with server {0}", TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl);            
-				TinyIoCContainer.Current.Resolve<IMessageService>().ShowProgress(true);
-				UserInteractionEnabled = false;				
+                var s =TinyIoCContainer.Current.Resolve<IMessageService>();
+                s.ShowProgress(true);				
 				var account = _accountService.GetAccount(Email, Password);
 
                 if ( account != null )
@@ -87,7 +80,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 			finally
 			{
-				UserInteractionEnabled = true;
+				
 				TinyIoCContainer.Current.Resolve<IMessageService>().ShowProgress(false);
 
 			}
