@@ -5,6 +5,7 @@ using Android.App;
 using Android.Content;
 using Android.GoogleMaps;
 using Android.OS;
+using Android.Views;
 using Android.Widget;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
@@ -14,6 +15,7 @@ using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Converters;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
@@ -63,10 +65,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             SetStatusText(GetString(Resource.String.LoadingMessage));
             FindViewById<Button>(Resource.Id.CancelBtn).Enabled = true;
 			FindViewById<Button>(Resource.Id.CancelBtn).Click += delegate {	CancelOrder(); };
-			FindViewById<Button>(Resource.Id.CallBtn).Click += delegate { CallCompany(); };
+			var callBtn = FindViewById<Button>(Resource.Id.CallBtn);
+            callBtn.Click += delegate {  CallCompany(); };
 			FindViewById<Button>(Resource.Id.NewRideBtn).Click += delegate { CloseActivity(); };
 
             var map = FindViewById<MapView>(Resource.Id.mapStatus);
+            var _configurationManager = TinyIoCContainer.Current.Resolve<IConfigurationManager>();
+            if (bool.Parse(_configurationManager.GetSetting("Client.HideCallDispatchButton")))
+            {
+                callBtn.Visibility = ViewStates.Gone; 
+            }
 
             ThreadHelper.ExecuteInThread(this, () =>
                 {

@@ -309,6 +309,7 @@
     <Compile Include="Views\LoginView.xib.designer.cs">
       <DependentUpon>LoginView.xib</DependentUpon>
     </Compile>
+    <Compile Include="Extensions\UIViewExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

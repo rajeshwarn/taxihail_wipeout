@@ -57,5 +57,7 @@
     "TwitterConsumerSecret" : "",
     "TwitterEnabled" : "false",
     "TwitterRequestTokenUrl" : "",
-	"Receipt.Note": "Thank You!<br><b>Checker Yellow Cab</b>"
+	"Receipt.Note": "Thank You!<br><b>Checker Yellow Cab</b>",
+	"Booking.ConfirmationEmail" : "true",
+	"Client.HideCallDispatchButton" : "false"
 }
