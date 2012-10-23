@@ -304,6 +304,7 @@
       <DependentUpon>UpdatePasswordView.xib</DependentUpon>
     </Compile>
     <Compile Include="MonoTouchDialog\NavigationElement.cs" />
+    <Compile Include="Extensions\UIViewExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

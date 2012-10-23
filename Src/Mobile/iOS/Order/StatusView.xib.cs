@@ -13,6 +13,7 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Client.MapUtilities;
+using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -106,9 +107,19 @@ namespace apcurium.MK.Booking.Mobile.Client
                 AppButtons.FormatStandardButton((GradientButton)btnCancel, Resources.StatusCancelButton, AppStyle.ButtonColor.Red);
                 AppButtons.FormatStandardButton((GradientButton)btnNewRide, Resources.StatusNewRideButton, AppStyle.ButtonColor.Green);
 
+				var config = TinyIoCContainer.Current.Resolve<IConfigurationManager>();
+
                 btnCall.TouchUpInside += CallProvider;
                 btnCancel.TouchUpInside += CancelOrder;
-                btnNewRide.TouchUpInside += Rebook;
+				btnNewRide.TouchUpInside += Rebook;
+
+				if(bool.Parse(config.GetSetting("Client.HideCallDispatchButton")))
+				{
+					btnCall.Hidden = true;
+					btnCancel.SetPosition(x: btnCancel.Frame.X + 25);
+					btnNewRide.SetPosition(x: btnNewRide.Frame.X - 25);
+
+				}
                 
                 mapStatus.Delegate = new AddressMapDelegate(false);
                 
