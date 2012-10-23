@@ -31,18 +31,13 @@ namespace DatabaseInitializer
                 }
 
                 var connectionString = new ConnectionStringSettings("MkWeb", string.Format( "Data Source=.;Initial Catalog={0};Integrated Security=True; MultipleActiveResultSets=True", companyName ));
-                if (args.Length > 1)
-                {
-                    connectionString.ConnectionString = args[1];
-                }
-
                 var connStringMaster = connectionString.ConnectionString.Replace(companyName, "master");
 
                 //Init or Update
                 bool isUpdate;
-                if (args.Length > 2)
+                if (args.Length > 1)
                 {
-                    isUpdate = args[2].ToUpperInvariant() == "U";
+                    isUpdate = args[1].ToUpperInvariant() == "U";
                 }
                 else
                 {
@@ -52,9 +47,9 @@ namespace DatabaseInitializer
 
                 //SQL Instance name
                 var sqlInstanceName = "MSSQL11.MSSQLSERVER";
-                if (args.Length > 3)
+                if (args.Length > 2)
                 {
-                    sqlInstanceName = args[3];
+                    sqlInstanceName = args[2];
                 }
                 else
                 {

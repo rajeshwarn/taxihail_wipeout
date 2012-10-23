@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading;
 using MK.ConfigurationManager;
 using MK.ConfigurationManager.Entities;
+using Microsoft.Web.Administration;
 
 namespace MK.DeploymentService
 {
@@ -56,7 +57,7 @@ namespace MK.DeploymentService
 
                     //pull source from bitbucket
                     var revision = string.IsNullOrEmpty(job.Revision) ? string.Empty : "-r " + job.Revision;
-                    var directory = Path.Combine(Path.GetTempPath(), job.Id.ToString());
+                    var sourceDirectory = Path.Combine(Path.GetTempPath(), job.Id.ToString());
                     //if(Directory.Exists(directory))
                     //{
                     //    Directory.Delete(directory, true);
@@ -82,18 +83,20 @@ namespace MK.DeploymentService
                     //}
 
 
-                    //build server?
-                    if(job.Server)
+                    //build server and deploy
+                    if (job.DeployServer || job.DeployDB)
                     {
                         var buildPackage = new ProcessStartInfo
-                        {
-                            FileName = "Powershell.exe",
-                            WindowStyle = ProcessWindowStyle.Hidden,
-                            UseShellExecute = false,
-                            LoadUserProfile = true,
-                            CreateNoWindow = false,
-                            Arguments = "-Executionpolicy ByPass -File \"" + directory + "\\Deployment\\Server\\BuildPackage.ps1\""
-                        };
+                                               {
+                                                   FileName = "Powershell.exe",
+                                                   WindowStyle = ProcessWindowStyle.Hidden,
+                                                   UseShellExecute = false,
+                                                   LoadUserProfile = true,
+                                                   CreateNoWindow = false,
+                                                   Arguments =
+                                                       "-Executionpolicy ByPass -File \"" + sourceDirectory +
+                                                       "\\Deployment\\Server\\BuildPackage.ps1\""
+                                               };
 
                         //using (var exeProcess = Process.Start(buildPackage))
                         //{
@@ -104,31 +107,85 @@ namespace MK.DeploymentService
                         //    }
                         //}
 
-                        var argsPowershell = string.Format("-companyName \"{0}\" -sqlServerInstance \"{1}\" -version \"1.1.{2}\" -actionDb \"{3}\"",
-                                                            job.Company.ConfigurationProperties["TaxiHail.ApplicationKey"],
-                                                            job.TaxHailEnv.SqlServerInstance,
-                                                            job.Revision ?? DateTime.UtcNow.Ticks.ToString(),
-                                                            job.InitDatabase ? "C" : "U");
-
-                        var deployPackage = new ProcessStartInfo
+                        var companyName = job.Company.ConfigurationProperties["TaxiHail.ApplicationKey"];
+                        var iisManager = new ServerManager();
+                        var appPool = iisManager.ApplicationPools.FirstOrDefault(x => x.Name == companyName);
+                        if (appPool == null)
                         {
-                            FileName = "Powershell.exe",
-                            LoadUserProfile = true,
-                            UseShellExecute = true,
-                            CreateNoWindow = false,
-                            Arguments = string.Format("-NoProfile -ExecutionPolicy Unrestricted -File \"" + directory + "\\Deployment\\Server\\Deploy.ps1\" {0}", argsPowershell)
-                        };
+                            //create a new one
+                            appPool = iisManager.ApplicationPools.Add(companyName);
+                            appPool.ManagedRuntimeVersion = "v4.0";
+                            iisManager.CommitChanges();
+                        }
+                        if (appPool.State == ObjectState.Started) appPool.Stop();
 
-                        using (var exeProcess = Process.Start(deployPackage))
+                        if(job.DeployDB)
                         {
-                            exeProcess.WaitForExit();
-                            if (exeProcess.ExitCode > 0)
+                            //TODO add company settings from DB
+
+                            var deployDB = new ProcessStartInfo
                             {
-                                throw new Exception("Error during deply step");
+                                FileName = Path.Combine(sourceDirectory, "Deployment\\Server\\Package\\DatabaseInitializer\\") + "DatabaseInitializer.exe",
+                                WindowStyle = ProcessWindowStyle.Hidden,
+                                UseShellExecute = false,
+                                LoadUserProfile = true,
+                                CreateNoWindow = false,
+                                Arguments = string.Format("{0} {1} {2}", companyName ,job.InitDatabase ? "C" : "U", job.TaxHailEnv.SqlServerInstance),
+                            };
+
+                            using (var exeProcess = Process.Start(deployDB))
+                            {
+                                exeProcess.WaitForExit();
+                                if (exeProcess.ExitCode > 0)
+                                {
+                                    throw new Exception("Error during deploy DB step");
+                                }
                             }
                         }
-                    }
 
+                        if(job.DeployServer)
+                        {
+                            var subFolder = job.Version + job.Revision+ "\\";
+                            var targetWeDirectory = Path.Combine(job.TaxHailEnv.WebSitesFolder, companyName, subFolder);
+                            
+                            if(Directory.Exists(targetWeDirectory))
+                            {
+                                Directory.Delete(targetWeDirectory, true);
+                            }
+                            Directory.CreateDirectory(targetWeDirectory);
+
+                            var sourcePath = Path.Combine(sourceDirectory, @"Deployment\Server\Package\WebSites\");
+
+                            foreach (var dirPath in Directory.GetDirectories(sourcePath, "*", SearchOption.AllDirectories))
+                                Directory.CreateDirectory(dirPath.Replace(sourcePath, targetWeDirectory));
+
+                            foreach (var newPath in Directory.GetFiles(sourcePath, "*.*", SearchOption.AllDirectories))
+                                File.Copy(newPath, newPath.Replace(sourcePath, targetWeDirectory));
+
+                            var website = iisManager.Sites["Default Web Site"];
+                            var webApp = website.Applications.FirstOrDefault(x => x.Path == "/" + companyName);
+                            if(webApp != null)
+                            {
+                                webApp.VirtualDirectories["/"].PhysicalPath = targetWeDirectory;
+                                iisManager.CommitChanges();
+                                
+                            }else
+                            {
+                                webApp = website.Applications.Add("/" + companyName, targetWeDirectory);
+                                iisManager.CommitChanges();
+                            }
+
+                            var configuration = webApp.GetWebConfiguration();
+                            var section = configuration.GetSection("connectionStrings").GetCollection().First(x => x.Attributes["name"].Value.ToString() == "MKWeb");
+                            var connSting = section.Attributes["connectionString"];
+                            connSting.Value = string.Format("Data Source=.;Initial Catalog={0};Integrated Security=True; MultipleActiveResultSets=True", companyName);
+                            iisManager.CommitChanges();
+
+                        }
+
+                        appPool.Start();
+
+                    }
 
 
                     //job.Status = JobStatus.SUCCESS;
