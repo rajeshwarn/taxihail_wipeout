@@ -21,13 +21,14 @@
 
             return currentView;
 
-        },
-        mapView;
+        };
 
     TaxiHail.App = Backbone.Router.extend({
         routes: {
             "": "manageFavoritesDefault",   // #
-            "grantadmin": "grantAdminAccess"
+            "grantadmin": "grantAdminAccess",
+            "rates": "manageRates", //#rates
+            "rates/add": "addRate" //#rates/new
         },
 
         initialize: function (options) {
@@ -35,11 +36,6 @@
             
         },
 
-        admin: function() {
-
-
-        },
-        
         manageFavoritesDefault: function () {
             var addresses = new TaxiHail.CompanyDefaultAddressCollection(),
                         view = this._tabView = new TaxiHail.ManageDefaultAddressesView({
@@ -58,6 +54,14 @@
         
         grantAdminAccess : function () {
             renderView(TaxiHail.GrantAdminAccessView);
+        },
+
+        manageRates: function() {
+            TaxiHail.Controller.action(TaxiHail.RatesController, 'index');
+        },
+
+        addRate: function() {
+            TaxiHail.Controller.action(TaxiHail.RatesController, 'add');
         }
     });
 

@@ -115,10 +115,14 @@ namespace apcurium.MK.Web
 
             bundles.Add(new ScriptBundle("~/admin/bundles/app").Include(
                 "~/common/utils.js",
+                "~/common/mixins/ValidatedView.js",
+                "~/admin/controllers/Controller.js",
+                "~/admin/controllers/RatesController.js",
                 "~/admin/models/CompanyDefaultAddress.js",
                 "~/common/models/UserAccount.js",
-                "~/common/mixins/ValidatedView.js",
+                "~/common/models/Rate.js",
                 "~/admin/collections/CompanyDefaultAddressCollection.js",
+                "~/admin/collections/RateCollection.js",
                 "~/common/views/TemplatedView.js",
                 "~/common/views/LoginStatusView.js",
                 "~/common/views/AddressItemView.js",
@@ -129,6 +133,8 @@ namespace apcurium.MK.Web
                 "~/admin/views/GrantAdminAccessView.js",
                 "~/admin/views/AdminMenuView.js",
                 "~/admin/views/ManageDefaultAddressesView.js",
+                "~/admin/views/ManageRatesView.js",
+                "~/admin/views/AddRateView.js",
                 "~/common/services/AuthService.js",
                 "~/common/services/GeocodingService.js",
                 "~/admin/routers/App.js"));
