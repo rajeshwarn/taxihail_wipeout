@@ -167,7 +167,5 @@ namespace apcurium.MK.Booking.Mobile.Settings
         {
             get { return _data.SupportEmail; }
         }
-        
-
     }
 }

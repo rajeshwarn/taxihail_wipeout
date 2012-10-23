@@ -58,6 +58,7 @@
 	"TwitterEnabled" : "false",
 	"TwitterRequestTokenUrl" : "",
 	"Receipt.Note": "Thank You!<br><b>Go Taxi Des Moines</b>",
-	"Booking.ConfirmationEmail" : "true"
+	"Booking.ConfirmationEmail" : "true",
+	"Client.HideCallDispatchButton" : "false"
 }
 

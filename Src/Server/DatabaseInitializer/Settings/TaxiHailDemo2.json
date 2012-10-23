@@ -58,6 +58,7 @@
 	"TwitterEnabled" : "false",
 	"TwitterRequestTokenUrl" : "",
 	"Receipt.Note": "Thank You!",
-	"Booking.ConfirmationEmail" : "true"
+	"Booking.ConfirmationEmail" : "true",
+	"Client.HideCallDispatchButton" : "false"
 }
 

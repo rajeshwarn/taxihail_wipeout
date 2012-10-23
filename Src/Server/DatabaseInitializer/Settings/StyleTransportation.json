@@ -58,5 +58,6 @@
     "TwitterEnabled" : "false",
     "TwitterRequestTokenUrl" : "",
 	"Receipt.Note": "Thank You!<br><b>Style Transportation</b>",
-	"Booking.ConfirmationEmail" : "true"
+	"Booking.ConfirmationEmail" : "true",
+	"Client.HideCallDispatchButton" : "false"
 }

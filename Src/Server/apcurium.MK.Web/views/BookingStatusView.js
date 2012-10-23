@@ -28,7 +28,9 @@
             }
 
             this.$el.html(this.renderTemplate(data));
-            
+            if (TaxiHail.parameters.HideDispatchButton == true) {
+                this.$('#callDispatchButton').addClass('hidden');
+            }
             var status = this.model.getStatus();
             if (!status.isActive()) {
                 this.$('[data-action=cancel]').addClass('disabled');
