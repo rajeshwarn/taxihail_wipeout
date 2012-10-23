@@ -22,7 +22,7 @@ namespace Cirrious.MvvmCross.Platform.Json
         {
 #if NETFX_CORE
             return objectType.GetTypeInfo().IsEnum;
-#else            
+#else
             return objectType.IsEnum;
 #endif
         }

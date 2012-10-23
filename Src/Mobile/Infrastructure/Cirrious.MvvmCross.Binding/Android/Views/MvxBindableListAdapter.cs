@@ -16,6 +16,7 @@ using Android.Content;
 using Android.Views;
 using Android.Widget;
 using Cirrious.MvvmCross.Binding.Android.Interfaces.Views;
+using Cirrious.MvvmCross.Binding.Attributes;
 using Cirrious.MvvmCross.Exceptions;
 using Cirrious.MvvmCross.Interfaces.Platform.Diagnostics;
 using Java.Lang;
@@ -28,6 +29,7 @@ namespace Cirrious.MvvmCross.Binding.Android.Views
         private readonly IMvxBindingActivity _bindingActivity;
         private readonly Context _context;
         private int _itemTemplateId;
+        private int _dropDownItemTemplateId;
         private IList _itemsSource;
 
         public MvxBindableListAdapter(Context context)
@@ -44,6 +46,7 @@ namespace Cirrious.MvvmCross.Binding.Android.Views
 
         public int SimpleViewLayoutId { get; set; }
 
+        [MvxSetToNullAfterBinding]
         public IList ItemsSource
         {
             get { return _itemsSource; }
@@ -60,6 +63,21 @@ namespace Cirrious.MvvmCross.Binding.Android.Views
                 if (_itemTemplateId == value)
                     return;
                 _itemTemplateId = value;
+
+                // since the template has changed then let's force the list to redisplay by firing NotifyDataSetChanged()
+                if (_itemsSource != null)
+                    NotifyDataSetChanged();
+            }
+        }
+
+        public int DropDownItemTemplateId
+        {
+            get { return _dropDownItemTemplateId; }
+            set
+            {
+                if (_dropDownItemTemplateId == value)
+                    return;
+                _dropDownItemTemplateId = value;
 
                 // since the template has changed then let's force the list to redisplay by firing NotifyDataSetChanged()
                 if (_itemsSource != null)
@@ -121,7 +139,17 @@ namespace Cirrious.MvvmCross.Binding.Android.Views
             return position;
         }
 
+        public override View GetDropDownView(int position, View convertView, ViewGroup parent)
+        {
+            return GetView(position, convertView, parent, DropDownItemTemplateId);
+        }
+
         public override View GetView(int position, View convertView, ViewGroup parent)
+        {
+            return GetView(position, convertView, parent, ItemTemplateId);
+        }
+
+        private View GetView(int position, View convertView, ViewGroup parent, int templateId)
         {
             if (_itemsSource == null)
             {
@@ -137,7 +165,7 @@ namespace Cirrious.MvvmCross.Binding.Android.Views
 
             var source = _itemsSource[position];
 
-            return GetBindableView(convertView, source);
+            return GetBindableView(convertView, source, templateId);
         }
 
         protected virtual View GetSimpleView(View convertView, object source)

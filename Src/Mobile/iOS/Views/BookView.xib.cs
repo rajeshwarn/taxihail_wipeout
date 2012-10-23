@@ -252,7 +252,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 BookingInfo.Settings = account.Settings;
             }
 
-            LoadingOverlay.StartAnimatingLoading(this.bookView, LoadingOverlayPosition.Center, null, 130, 30);
+            LoadingOverlay.StartAnimatingLoading(LoadingOverlayPosition.Center, null, 130, 30);
             bookView.UserInteractionEnabled = false;
             
             ThreadHelper.ExecuteInThread(() =>
@@ -298,7 +298,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 {
                     InvokeOnMainThread(() =>
                     {
-                        LoadingOverlay.StopAnimatingLoading(this.bookView);
+                        LoadingOverlay.StopAnimatingLoading();
                         bookView.UserInteractionEnabled = true;
                     });
                 }
@@ -316,7 +316,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 this.NavigationController.PopViewControllerAnimated(false);
             }
             
-            LoadingOverlay.StartAnimatingLoading(this.bookView, LoadingOverlayPosition.Center, null, 130, 30);
+            LoadingOverlay.StartAnimatingLoading( LoadingOverlayPosition.Center, null, 130, 30);
             bookView.UserInteractionEnabled = false;
             
             ThreadHelper.ExecuteInThread(() =>
@@ -355,7 +355,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 {
                     InvokeOnMainThread(() =>
                     {
-                        LoadingOverlay.StopAnimatingLoading(this.bookView);
+                        LoadingOverlay.StopAnimatingLoading();
                         bookView.UserInteractionEnabled = true;
                     });
                 }

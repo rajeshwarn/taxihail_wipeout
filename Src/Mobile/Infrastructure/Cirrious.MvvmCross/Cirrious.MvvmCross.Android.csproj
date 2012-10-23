@@ -19,9 +19,9 @@
     <TargetFrameworkVersion>v1.6</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>True</DebugSymbols>
+    <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>False</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>TRACE;DEBUG;MonoDroid</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -30,13 +30,13 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
-    <Optimize>True</Optimize>
+    <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>DEBUG;TRACE;MonoDroid</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
-    <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
@@ -52,12 +52,15 @@
     <Compile Include="Android\Interfaces\IMvxAndroidActivityLifeTimeListener.cs" />
     <Compile Include="Android\Interfaces\IMvxAndroidGlobals.cs" />
     <Compile Include="Android\Interfaces\IMvxAndroidSplashScreenActivity.cs" />
+    <Compile Include="Android\Interfaces\IMvxIntentResultSink.cs" />
+    <Compile Include="Android\Interfaces\IMvxIntentResultSource.cs" />
     <Compile Include="Android\Interfaces\MvxIntentRequestCode.cs" />
     <Compile Include="Android\Interfaces\MvxIntentResultEventArgs.cs" />
     <Compile Include="Android\Interfaces\MvxTranslatedIntent.cs" />
     <Compile Include="Android\Platform\Images\MvxAndroidImage.cs" />
     <Compile Include="Android\Platform\Images\MvxAndroidLocalFileImageLoader.cs" />
     <Compile Include="Android\Platform\MvxAndroidSetupSingleton.cs" />
+    <Compile Include="Android\Platform\MvxIntentResultSink.cs" />
     <Compile Include="Android\Platform\Tasks\MvxShareTask.cs" />
     <Compile Include="Android\Platform\Tasks\MvxComposeEmailTask.cs" />
     <Compile Include="Android\Platform\Tasks\MvxPictureChooserTask.cs" />
@@ -359,7 +362,7 @@
     <Folder Include="Android\Platform\SoundEffects\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Libraries\Newtonsoft.Json\Newtonsoft.Json\Newtonsoft.Json.MonoDroid.csproj">
+    <ProjectReference Include="..\..\Library\Newtonsoft.Json\Newtonsoft.Json\Newtonsoft.Json.MonoDroid.csproj">
       <Project>{E6C3413C-919B-486D-8B6C-225CBD921B98}</Project>
       <Name>Newtonsoft.Json.MonoDroid</Name>
     </ProjectReference>

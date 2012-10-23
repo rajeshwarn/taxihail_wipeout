@@ -16,8 +16,6 @@ namespace Cirrious.MvvmCross.Interfaces.ViewModels
     public interface IMvxViewModel
         :  IMvxViewTracker
     {
-
-
         MvxRequestedBy RequestedBy { get; set; }
     }
 }
