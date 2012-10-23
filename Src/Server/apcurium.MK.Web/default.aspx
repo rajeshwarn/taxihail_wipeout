@@ -47,6 +47,7 @@
             TaxiHail.parameters.isLoggedIn = <%: this.IsAuthenticated ? "true" : "false" %>;
             TaxiHail.parameters.facebookAppId = '<%: this.FacebookAppId %>';
             TaxiHail.parameters.facebookEnabled = <%: this.FacebookEnabled %>;
+            TaxiHail.parameters.HideDispatchButton = <%: this.HideDispatchButton%>;
             TaxiHail.parameters.apiRoot = "api";
         </script>
 
