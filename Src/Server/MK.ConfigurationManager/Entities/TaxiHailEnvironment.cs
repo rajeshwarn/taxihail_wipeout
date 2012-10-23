@@ -15,5 +15,7 @@ namespace MK.ConfigurationManager.Entities
         public string Url { get; set; }
 
         public string SqlServerInstance { get; set; }
+
+        public string WebSitesFolder { get; set; }
     }
 }
