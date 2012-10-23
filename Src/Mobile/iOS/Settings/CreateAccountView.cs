@@ -123,7 +123,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             //var count = jobId.Count(x => Char.IsDigit(x));
 
-            LoadingOverlay.StartAnimatingLoading(this.View, LoadingOverlayPosition.Center, null, 130, 30);
+            LoadingOverlay.StartAnimatingLoading( LoadingOverlayPosition.Center, null, 130, 30);
             ThreadHelper.ExecuteInThread(() =>
             {
                 try
@@ -162,8 +162,11 @@ namespace apcurium.MK.Booking.Mobile.Client
                 }
                 finally
                 {
-                    InvokeOnMainThread(() => this.View.UserInteractionEnabled = true);
-                    LoadingOverlay.StopAnimatingLoading(this.View);
+                    InvokeOnMainThread(() => 
+                                       {
+                        this.View.UserInteractionEnabled = true;
+                    LoadingOverlay.StopAnimatingLoading();
+                    });
                 }
             }
             );

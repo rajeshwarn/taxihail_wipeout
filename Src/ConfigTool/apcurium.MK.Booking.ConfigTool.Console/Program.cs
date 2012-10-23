@@ -14,7 +14,8 @@ namespace apcurium.MK.Booking.ConfigTool
         {
             try
             {
-                var fullPath = Path.GetFullPath(PathConverter.Convert(ToolSettings.Default.RootDirectory));
+
+				var fullPath = Path.GetFullPath(PathConverter.Convert(ToolSettings.Default.RootDirectory));
                 var directories = Directory.GetDirectories(fullPath);
                 if (!directories.Any(dir => Path.GetFileName(dir).ToLower() == "config") ||
                     !directories.Any(dir => Path.GetFileName(dir).ToLower() == "src"))
@@ -30,7 +31,7 @@ namespace apcurium.MK.Booking.ConfigTool
                 var configDirectories = Directory.GetDirectories(configRootFolder);
                 var src = directories.Single(dir => Path.GetFileName(dir).ToLower() == "src");
 
-                var config = configDirectories.Select(dir => new AppConfig(Path.GetFileName(dir), dir, src));
+                var config = configDirectories.Select(dir => new AppConfig(Path.GetFileName(dir), dir, src)).ToArray ();
 
                 if (args.Length > 0)
                 {

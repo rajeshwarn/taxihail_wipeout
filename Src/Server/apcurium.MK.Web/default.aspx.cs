@@ -21,6 +21,7 @@ namespace apcurium.MK.Web
         protected bool IsAuthenticated { get; private set; }
         protected string FacebookAppId { get; private set; }
         protected string FacebookEnabled { get; private set; }
+        protected string HideDispatchButton { get; private set; }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -34,6 +35,7 @@ namespace apcurium.MK.Web
             IsAuthenticated = base.UserSession.IsAuthenticated;
             FacebookAppId = config.GetSetting("FacebookAppId");
             FacebookEnabled = config.GetSetting("FacebookEnabled");
+            HideDispatchButton = config.GetSetting("Client.HideCallDispatchButton");
         }
 
     }

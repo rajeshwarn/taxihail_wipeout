@@ -13,6 +13,7 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Client.MapUtilities;
+using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -106,9 +107,19 @@ namespace apcurium.MK.Booking.Mobile.Client
                 AppButtons.FormatStandardButton((GradientButton)btnCancel, Resources.StatusCancelButton, AppStyle.ButtonColor.Red);
                 AppButtons.FormatStandardButton((GradientButton)btnNewRide, Resources.StatusNewRideButton, AppStyle.ButtonColor.Green);
 
+				var config = TinyIoCContainer.Current.Resolve<IConfigurationManager>();
+
                 btnCall.TouchUpInside += CallProvider;
                 btnCancel.TouchUpInside += CancelOrder;
-                btnNewRide.TouchUpInside += Rebook;
+				btnNewRide.TouchUpInside += Rebook;
+
+				if(bool.Parse(config.GetSetting("Client.HideCallDispatchButton")))
+				{
+					btnCall.Hidden = true;
+					btnCancel.SetPosition(x: btnCancel.Frame.X + 25);
+					btnNewRide.SetPosition(x: btnNewRide.Frame.X - 25);
+
+				}
                 
                 mapStatus.Delegate = new AddressMapDelegate(false);
                 
@@ -145,7 +156,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             var newBooking = new Confirmation();
             newBooking.Action(Resources.StatusConfirmCancelRide, () => 
             {
-                LoadingOverlay.StartAnimatingLoading(this.View, LoadingOverlayPosition.Center, null, 130, 30);
+                LoadingOverlay.StartAnimatingLoading( LoadingOverlayPosition.Center, null, 130, 30);
                 View.UserInteractionEnabled = false;
                 ThreadHelper.ExecuteInThread(() => 
                 {
@@ -178,7 +189,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                     {
                         InvokeOnMainThread(() => 
                         {
-                            LoadingOverlay.StopAnimatingLoading(this.View);
+                            LoadingOverlay.StopAnimatingLoading();
                             View.UserInteractionEnabled = true;
                         }
                         );
@@ -428,7 +439,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             var newBooking = new Confirmation();
             newBooking.Action(Resources.StatusConfirmCancelRide, () => 
             {
-                LoadingOverlay.StartAnimatingLoading(this.View, LoadingOverlayPosition.Center, null, 130, 30);
+                LoadingOverlay.StartAnimatingLoading( LoadingOverlayPosition.Center, null, 130, 30);
                 View.UserInteractionEnabled = false;
                 ThreadHelper.ExecuteInThread(() => 
                 {
@@ -461,7 +472,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                     {
                         InvokeOnMainThread(() => 
                         {
-                            LoadingOverlay.StopAnimatingLoading(this.View);
+                            LoadingOverlay.StopAnimatingLoading();
                             View.UserInteractionEnabled = true;
                         }
                         );
@@ -539,7 +550,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 //            var newBooking = new Confirmation();
 //            newBooking.Action(Resources.StatusConfirmCancelRide, () => 
 //            {
-//                LoadingOverlay.StartAnimatingLoading(this.View, LoadingOverlayPosition.Center, null, 130, 30);
+//                LoadingOverlay.StartAnimatingLoading( LoadingOverlayPosition.Center, null, 130, 30);
 //                View.UserInteractionEnabled = false;
 //                ThreadHelper.ExecuteInThread(() => 
 //                {
@@ -564,7 +575,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 //                    {
 //                        InvokeOnMainThread(() => 
 //                        {
-//                            LoadingOverlay.StopAnimatingLoading(this.View);
+//                            LoadingOverlay.StopAnimatingLoading();
 //                            View.UserInteractionEnabled = true;
 //                        });
 //                    }

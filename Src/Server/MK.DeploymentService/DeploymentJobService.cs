@@ -3,9 +3,13 @@ using System.Data.Entity;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using MK.ConfigurationManager;
 using MK.ConfigurationManager.Entities;
+using Microsoft.Web.Administration;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace MK.DeploymentService
 {
@@ -56,8 +60,12 @@ namespace MK.DeploymentService
 
                     //pull source from bitbucket
                     var revision = string.IsNullOrEmpty(job.Revision) ? string.Empty : "-r " + job.Revision;
-                    var directory = Path.Combine(Path.GetTempPath(), job.Id.ToString());
-                    var args = string.Format(@"clone {1} https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi {0}", directory , revision);
+                    var sourceDirectory = Path.Combine(Path.GetTempPath(), job.Id.ToString());
+                    if (Directory.Exists(sourceDirectory))
+                    {
+                        Directory.Delete(sourceDirectory, true);
+                    }
+                    var args = string.Format(@"clone {1} https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi {0}", sourceDirectory, revision);
 
                     var hgClone = new ProcessStartInfo
                     {
@@ -68,42 +76,136 @@ namespace MK.DeploymentService
                         Arguments = args
                     };
 
-                    //using (var exeProcess = Process.Start(hgClone))
-                    //{
-                    //    exeProcess.WaitForExit();
-                        //if (exeProcess.ExitCode > 0)
-                        //{
-                        //    throw new Exception("Error during pull source code step");
-                        //}
-                    //}
-
-
-                    //build server?
-                    if(job.Server)
+                    using (var exeProcess = Process.Start(hgClone))
                     {
-                        var buildPackage = new ProcessStartInfo
+                        exeProcess.WaitForExit();
+                        if (exeProcess.ExitCode > 0)
                         {
-                            FileName = "Powershell.exe",
-                            WindowStyle = ProcessWindowStyle.Hidden,
-                            UseShellExecute = false,
-                            LoadUserProfile = true,
-                            CreateNoWindow = false,
-                            Arguments = string.Format("-executionpolicy ByPass -File \"" + directory + "\\Deployment\\Server\\BuildPackage.ps1\" \"-env {0}\"", job.Company.ConfigurationProperties["TaxiHail.ApplicationKey"]) 
-                        };
-
-                        using (var exeProcess = Process.Start(buildPackage))
-                        {
-                            exeProcess.WaitForExit();
-                            if(exeProcess.ExitCode > 0)
-                            {
-                                throw  new Exception("Error during build step");
-                            }
+                            throw new Exception("Error during pull source code step");
                         }
                     }
 
 
+                    //build server and deploy
+                    if (job.DeployServer || job.DeployDB)
+                    {
+                        var buildPackage = new ProcessStartInfo
+                                               {
+                                                   FileName = "Powershell.exe",
+                                                   WindowStyle = ProcessWindowStyle.Hidden,
+                                                   UseShellExecute = false,
+                                                   LoadUserProfile = true,
+                                                   CreateNoWindow = false,
+                                                   Arguments =
+                                                       "-Executionpolicy ByPass -File \"" + sourceDirectory +
+                                                       "\\Deployment\\Server\\BuildPackage.ps1\""
+                                               };
 
-                    //job.Status = JobStatus.SUCCESS;
+                        using (var exeProcess = Process.Start(buildPackage))
+                        {
+                            exeProcess.WaitForExit();
+                            if (exeProcess.ExitCode > 0)
+                            {
+                                throw new Exception("Error during build step");
+                            }
+                        }
+
+                        var companyName = job.Company.ConfigurationProperties["TaxiHail.ServerCompanyName"];
+                        var iisManager = new ServerManager();
+                        var appPool = iisManager.ApplicationPools.FirstOrDefault(x => x.Name == companyName);
+                        if (appPool == null)
+                        {
+                            //create a new one
+                            appPool = iisManager.ApplicationPools.Add(companyName);
+                            appPool.ManagedRuntimeVersion = "v4.0";
+                            iisManager.CommitChanges();
+                            Thread.Sleep(2000);
+                        }
+                        if (appPool.State == ObjectState.Started) appPool.Stop();
+
+                        if(job.DeployDB)
+                        {
+                            
+                            var jsonSettings = new JObject();
+                            foreach (var setting in job.Company.ConfigurationProperties)
+                            {
+                                jsonSettings.Add(setting.Key, JToken.FromObject(setting.Value));
+                            }
+
+                            jsonSettings.Add("IBS.WebServicesUrl", JToken.FromObject(job.IBSServer.Url));
+                            jsonSettings.Add("IBS.WebServicesUserName", JToken.FromObject(job.IBSServer.Username));
+                            jsonSettings.Add("IBS.WebServicesPassword", JToken.FromObject(job.IBSServer.Password));
+
+                            var fileSettings = Path.Combine(sourceDirectory, "Deployment\\Server\\Package\\DatabaseInitializer\\Settings\\") + companyName + ".json";
+                            var stringBuilder = new StringBuilder();
+                            jsonSettings.WriteTo(new JsonTextWriter(new StringWriter(stringBuilder)));
+                            File.WriteAllText(fileSettings, stringBuilder.ToString());
+
+                            var deployDB = new ProcessStartInfo
+                            {
+                                FileName = Path.Combine(sourceDirectory, "Deployment\\Server\\Package\\DatabaseInitializer\\") + "DatabaseInitializer.exe",
+                                WindowStyle = ProcessWindowStyle.Hidden,
+                                UseShellExecute = false,
+                                LoadUserProfile = true,
+                                CreateNoWindow = false,
+                                Arguments = string.Format("{0} {1} {2}", companyName ,job.InitDatabase ? "C" : "U", job.TaxHailEnv.SqlServerInstance),
+                            };
+
+                            using (var exeProcess = Process.Start(deployDB))
+                            {
+                                exeProcess.WaitForExit();
+                                if (exeProcess.ExitCode > 0)
+                                {
+                                    throw new Exception("Error during deploy DB step");
+                                }
+                            }
+                        }
+
+                        if(job.DeployServer)
+                        {
+                            var subFolder = job.Company.ConfigurationProperties["TaxiHail.Version"] + job.Revision+ "\\";
+                            var targetWeDirectory = Path.Combine(job.TaxHailEnv.WebSitesFolder, companyName, subFolder);
+                            
+                            if(Directory.Exists(targetWeDirectory))
+                            {
+                                Directory.Delete(targetWeDirectory, true);
+                            }
+                            Directory.CreateDirectory(targetWeDirectory);
+
+                            var sourcePath = Path.Combine(sourceDirectory, @"Deployment\Server\Package\WebSites\");
+
+                            foreach (var dirPath in Directory.GetDirectories(sourcePath, "*", SearchOption.AllDirectories))
+                                Directory.CreateDirectory(dirPath.Replace(sourcePath, targetWeDirectory));
+
+                            foreach (var newPath in Directory.GetFiles(sourcePath, "*.*", SearchOption.AllDirectories))
+                                File.Copy(newPath, newPath.Replace(sourcePath, targetWeDirectory));
+
+                            var website = iisManager.Sites["Default Web Site"];
+                            var webApp = website.Applications.FirstOrDefault(x => x.Path == "/" + companyName);
+                            if(webApp != null)
+                            {
+                                webApp.VirtualDirectories["/"].PhysicalPath = targetWeDirectory;
+                                iisManager.CommitChanges();
+                                
+                            }else
+                            {
+                                webApp = website.Applications.Add("/" + companyName, targetWeDirectory);
+                                iisManager.CommitChanges();
+                            }
+
+                            var configuration = webApp.GetWebConfiguration();
+                            var section = configuration.GetSection("connectionStrings").GetCollection().First(x => x.Attributes["name"].Value.ToString() == "MKWeb");
+                            var connSting = section.Attributes["connectionString"];
+                            connSting.Value = string.Format("Data Source=.;Initial Catalog={0};Integrated Security=True; MultipleActiveResultSets=True", companyName);
+                            iisManager.CommitChanges();
+
+                        }
+
+                        appPool.Start();
+
+                    }
+
+                    job.Status = JobStatus.SUCCESS;
                     DbContext.SaveChanges();
 
                 }catch(Exception e)

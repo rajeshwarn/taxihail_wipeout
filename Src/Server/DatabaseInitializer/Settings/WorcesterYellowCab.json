@@ -58,5 +58,6 @@
     "TwitterEnabled" : "false",
     "TwitterRequestTokenUrl" : "",
 	"Receipt.Note": "Thank You!<br><b>Worcester Yellow Cab</b>",
-	"Booking.ConfirmationEmail" : "true"
+	"Booking.ConfirmationEmail" : "true",
+	"Client.HideCallDispatchButton" : "false"
 }
