@@ -72,6 +72,7 @@ namespace apcurium.MK.Booking
             container.RegisterType<IEventHandler, AccountDetailsGenerator>("AccountDetailsGenerator");
             container.RegisterType<IEventHandler, AddressListGenerator>("AddressListGenerator");
             container.RegisterType<IEventHandler, OrderGenerator>("OrderGenerator");
+            container.RegisterType<IEventHandler, RateDetailsGenerator>("RateDetailsOrderGenerator");
         }
 
         private void RegisterCommandHandlers(IUnityContainer container)

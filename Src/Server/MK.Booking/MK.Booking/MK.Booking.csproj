@@ -94,6 +94,7 @@
     <Compile Include="EventHandlers\AccountDetailsGenerator.cs" />
     <Compile Include="EventHandlers\AddressListGenerator.cs" />
     <Compile Include="EventHandlers\OrderGenerator.cs" />
+    <Compile Include="EventHandlers\RateDetailsGenerator.cs" />
     <Compile Include="Logging\Log4NetTraceListenerAdapter.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -112,6 +113,7 @@
     <Compile Include="ReadModel\Query\IDefaultAddressDao.cs" />
     <Compile Include="ReadModel\Query\IOrderDao.cs" />
     <Compile Include="ReadModel\Query\OrderDao.cs" />
+    <Compile Include="ReadModel\RateDetail.cs" />
     <Compile Include="Security\IPasswordService.cs" />
     <Compile Include="Security\PasswordService.cs" />
     <Compile Include="Security\RolesPermissions.cs" />
