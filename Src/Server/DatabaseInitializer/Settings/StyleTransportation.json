@@ -11,6 +11,7 @@
 	"GeoLoc.SearchFilter" : "{0},Sandy Springs,ga",
 	"GeoLoc.DefaultLatitude" : "33.9375",
 	"GeoLoc.DefaultLongitude" : "-84.368611",
+	"Geoloc.PopularAddress.Range" : "500",
 	"IBS.AutoDispatch" : "TRUE",
 	"IBS.DefaultAccountPassword" : "password",
 	"IBS.WebServicesPassword" : "test",

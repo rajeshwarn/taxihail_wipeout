@@ -11,6 +11,7 @@
 	"GeoLoc.SearchFilter" : "{0},St. Louis, mo",
 	"GeoLoc.DefaultLatitude" : "38.627222",
 	"GeoLoc.DefaultLongitude" : "-90.197778",
+	"Geoloc.PopularAddress.Range" : "500",
 	"IBS.AutoDispatch" : "TRUE",
 	"IBS.DefaultAccountPassword" : "password",
 	"IBS.WebServicesPassword" : "test",

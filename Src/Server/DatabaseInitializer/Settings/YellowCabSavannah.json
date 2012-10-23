@@ -11,6 +11,7 @@
 	"GeoLoc.SearchFilter" : "{0},Savannah,ga",
 	"GeoLoc.DefaultLatitude" : "32.081111",
 	"GeoLoc.DefaultLongitude" : "-81.091111",
+	"Geoloc.PopularAddress.Range" : "500",
 	"IBS.AutoDispatch" : "TRUE",
 	"IBS.DefaultAccountPassword" : "password",
 	"IBS.WebServicesPassword" : "test",

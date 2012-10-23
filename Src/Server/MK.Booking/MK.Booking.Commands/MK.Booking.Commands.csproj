@@ -49,9 +49,11 @@
   <ItemGroup>
     <Compile Include="AddDefaultFavoriteAddress.cs" />
     <Compile Include="AddFavoriteAddress.cs" />
+    <Compile Include="AddPopularAddress.cs" />
     <Compile Include="CancelOrder.cs" />
     <Compile Include="CompleteOrder.cs" />
     <Compile Include="ConfirmAccount.cs" />
+    <Compile Include="RemovePopularAddress.cs" />
     <Compile Include="SendBookingConfirmationEmail.cs" />
     <Compile Include="CreateCompany.cs" />
     <Compile Include="GrantAdminRight.cs" />
@@ -73,6 +75,7 @@
     <Compile Include="UpdateBookingSettings.cs" />
     <Compile Include="UpdateDefaultFavoriteAddress.cs" />
     <Compile Include="UpdateFavoriteAddress.cs" />
+    <Compile Include="UpdatePopularAddress.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Infrastructure\Infrastructure\Infrastructure.csproj">

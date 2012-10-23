@@ -11,6 +11,7 @@
 	"GeoLoc.SearchFilter" : "{0},columbia,sc",
 	"GeoLoc.DefaultLatitude" : "34.000556",
 	"GeoLoc.DefaultLongitude" : "-81.044167",
+    "Geoloc.PopularAddress.Range" : "500",
 	"IBS.AutoDispatch" : "TRUE",
 	"IBS.DefaultAccountPassword" : "password",
 	"IBS.WebServicesPassword" : "test",

@@ -11,6 +11,7 @@
 	"GeoLoc.SearchFilter" : "{0},San Jose,ca",
 	"GeoLoc.DefaultLatitude" : "37.335278",
 	"GeoLoc.DefaultLongitude" : "-121.891944",
+	"Geoloc.PopularAddress.Range" : "500",
 	"IBS.AutoDispatch" : "TRUE",
 	"IBS.DefaultAccountPassword" : "password",
 	"IBS.WebServicesPassword" : "test",

@@ -11,6 +11,7 @@
    "GeoLoc.DefaultLatitude" : "51.507222",
    "GeoLoc.DefaultLongitude" : "-0.1275",
    "GeoLoc.SearchFilter" : "{0}",
+   "Geoloc.PopularAddress.Range" : "500",
    "IBS.AutoDispatch" : "true",
    "IBS.WebServicesPassword" : "test",
    "IBS.WebServicesUrl" : "http://mkuk.dnsalias.com:6928/xds_iaspi.dll/soap/",

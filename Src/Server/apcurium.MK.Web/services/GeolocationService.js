@@ -17,6 +17,22 @@
                 if (isSupported) {
 
                     navigator.geolocation.getCurrentPosition(_.bind(function (position) {
+                        
+                        // search for popular address in range
+                        
+                        var popular = new TaxiHail.CompanyPopularAddressCollection();
+                        var addressInRange = new Backbone.Collection();
+                       /* popular.fetch({
+                            url: 'api/admin/popularaddresses',
+                            success: _.bind(function(collection, resp) {
+                                _.each(popular.models, _.bind(function(address) {
+                                    if (TaxiHail.math.distanceBeetweenTwoLatLgt(address.attributes.latitude, address.attributes.longitude, position.coords.latitude, position.coords.longitude) < TaxiHail.parameters.GeolocPopularRange) {
+                                        addressInRange.add(address);
+                                        alert(TaxiHail.math.distanceBeetweenTwoLatLgt(address.attributes.latitude, address.attributes.longitude, position.coords.latitude, position.coords.longitude).toString());
+                                    }
+                                }, this));
+                            }, this)
+                        });*/
 
                         TaxiHail.geocoder.geocode(position.coords.latitude, position.coords.longitude)
                             .done(_.bind(function (result) {

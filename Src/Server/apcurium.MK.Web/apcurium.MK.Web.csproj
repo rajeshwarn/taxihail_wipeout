@@ -147,13 +147,17 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\collections\CompanyDefaultAddressCollection.js" />
+    <Content Include="common\collections\CompanyPopularAddressCollection.js" />
     <Content Include="admin\default.aspx" />
     <Content Include="admin\models\CompanyDefaultAddress.js" />
+    <Content Include="common\models\CompanyPopularAddress.js" />
     <Content Include="admin\routers\app.js" />
     <Content Include="admin\taxi-hail-admin.js" />
+    <Content Include="admin\views\AddPopularAddressView.js" />
     <Content Include="admin\views\AdminMenuView.js" />
     <Content Include="admin\views\GrantAdminAccessView.js" />
     <Content Include="admin\views\ManageDefaultAddressesView.js" />
+    <Content Include="admin\views\ManagePopularAddressesView.js" />
     <Content Include="admin\views\TemplatedView.js" />
     <Content Include="ApiDoc.aspx" />
     <Content Include="assets\bootstrap-datepicker\css\datepicker.css" />
@@ -258,6 +262,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="mixins\ValidatedView.js" />
+    <Content Include="services\MathService.js" />
     <Content Include="models\NewAccount.js" />
     <Content Include="models\OrderStatus.js" />
     <Content Include="models\ReferenceData.js" />
@@ -648,7 +653,9 @@
   <ItemGroup>
     <Content Include="themes\SanJoseForARide\less\variables.less" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="admin\templates\ManagePopularAddresses.handlebars" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="admin\templates\GrantAdminAccess.handlebars" />
   </ItemGroup>
@@ -695,6 +702,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\localization\AddFavorite.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="admin\localization\AdminMenu.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="admin\templates\AddPopularAddress.handlebars" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="admin\localization\AddPopularAddress.json" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

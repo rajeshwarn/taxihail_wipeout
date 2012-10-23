@@ -59,6 +59,9 @@
     <Compile Include="OrderCompleted.cs" />
     <Compile Include="OrderCreated.cs" />
     <Compile Include="OrderRemovedFromHistory.cs" />
+    <Compile Include="PopularAddressAdded.cs" />
+    <Compile Include="PopularAddressRemoved.cs" />
+    <Compile Include="PopularAddressUpdated.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

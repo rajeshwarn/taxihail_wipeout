@@ -11,6 +11,7 @@
 	"GeoLoc.SearchFilter" : "{0},atlanta,ga",
 	"GeoLoc.DefaultLatitude" : "33.7489",
 	"GeoLoc.DefaultLongitude" : "-84.3881",
+	"Geoloc.PopularAddress.Range" : "500",
 	"IBS.AutoDispatch" : "TRUE",
 	"IBS.DefaultAccountPassword" : "password",
 	"IBS.WebServicesPassword" : "test",

@@ -36,12 +36,14 @@ namespace apcurium.MK.Web
                 "~/common/mixins/ValidatedView.js",
                 "~/common/models/Address.js",
                 "~/common/models/UserAccount.js",
+                "~/common/models/CompanyPopularAddress.js",
                 "~/models/Order.js",
                 "~/models/OrderStatus.js",
                 "~/models/Settings.js",
                 "~/models/NewAccount.js",
                 "~/models/ReferenceData.js",
                 "~/common/collections/AddressCollection.js",
+                "~/common/collections/CompanyPopularAddressCollection.js",
                 "~/collections/OrderCollection.js",
                 "~/common/views/TemplatedView.js",
                 "~/common/views/LoginStatusView.js",
@@ -75,6 +77,7 @@ namespace apcurium.MK.Web
                 "~/services/GeolocationService.js",
                 "~/services/PlacesService.js",
                 "~/services/DirectionInfoService.js",
+                "~/services/MathService.js",
                 "~/routers/App.js"));
 
             var templateBundle = new Bundle("~/bundles/templates")
@@ -115,11 +118,15 @@ namespace apcurium.MK.Web
 
             bundles.Add(new ScriptBundle("~/admin/bundles/app").Include(
                 "~/common/utils.js",
+                "~/common/views/TemplatedView.js",
                 "~/admin/models/CompanyDefaultAddress.js",
+                "~/admin/models/CompanyPopularAddress.js",
                 "~/common/models/UserAccount.js",
+                "~/common/models/CompanyPopularAddress.js",
                 "~/common/mixins/ValidatedView.js",
                 "~/admin/collections/CompanyDefaultAddressCollection.js",
-                "~/common/views/TemplatedView.js",
+                "~/common/collections/CompanyPopularAddressCollection.js",
+                "~/admin/views/AddPopularAddressView.js",
                 "~/common/views/LoginStatusView.js",
                 "~/common/views/AddressItemView.js",
                 "~/common/views/AddressSelectionView.js",
@@ -129,6 +136,7 @@ namespace apcurium.MK.Web
                 "~/admin/views/GrantAdminAccessView.js",
                 "~/admin/views/AdminMenuView.js",
                 "~/admin/views/ManageDefaultAddressesView.js",
+                "~/admin/views/ManagePopularAddressesView.js",
                 "~/common/services/AuthService.js",
                 "~/common/services/GeocodingService.js",
                 "~/admin/routers/App.js"));

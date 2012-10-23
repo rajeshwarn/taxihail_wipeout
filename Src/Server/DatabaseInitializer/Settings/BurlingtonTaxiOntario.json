@@ -11,6 +11,7 @@
    "GeoLoc.DefaultLatitude" : "43.325",
    "GeoLoc.DefaultLongitude" : "-79.8",
    "GeoLoc.SearchFilter" : "{0},burlington,on,canada&region=ca",
+   "Geoloc.PopularAddress.Range" : "500",
    "IBS.AutoDispatch" : "true",
    "IBS.WebServicesPassword" : "test",
    "IBS.WebServicesUrl" : "http://btmdt.no-ip.info:6929/XDS_IASPI.DLL/soap/",

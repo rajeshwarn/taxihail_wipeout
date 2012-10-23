@@ -11,6 +11,7 @@
    "GeoLoc.DefaultLatitude" : "41.590833",
    "GeoLoc.DefaultLongitude" : "-93.620833",
    "GeoLoc.SearchFilter" : "{0},des moines,ia",
+   "Geoloc.PopularAddress.Range" : "500",
    "IBS.AutoDispatch" : "true",
    "IBS.WebServicesPassword" : "test",
    "IBS.WebServicesUrl" : "http://transiowa.dyndns.org:6928/XDS_IASPI.DLL/soap/",
