@@ -1,11 +1,19 @@
-﻿param([string]$env = "Dev")
+﻿param([string]$companyName = "TaxiHail")
+param([string]$sqlServerInstance = "MSSQL10_50.MSSQLSERVER")
+param([string]$version = "1.0")
+param([string]$site = "Default Web Site")
+param([string]$deplyoDB = "Y")
+param([string]$actionDb = "U")
+param([string]$deplyoWebsite = "Y")
+param([string]$dbtoolPath = "Package\DatabaseInitializer")
+param([string]$websiteFiles = "Package\WebSites")
+
 Import-Module -Name WebAdministration #see cmdlets http://technet.microsoft.com/en-us/library/ee790599.aspx
 $scriptpath = $MyInvocation.MyCommand.Path
 $base_dir = Split-Path $scriptpath
 
 Write-Host "***************Base Directory $base_dir *************************"
-. $base_dir\deploy.$env.ps1
-$dbTool = "$dbtoolPath\DatabaseInitializer.exe"
+$dbTool = "$base_dir\$dbtoolPath\DatabaseInitializer.exe"
 
 $connString =  "Data Source=.;Initial Catalog=$companyName;Integrated Security=True; MultipleActiveResultSets=True"
 
@@ -46,7 +54,7 @@ if($deplyoWebsite -eq 'Y')
     Write-Host "***************Start Deploy WebSite ************************"     
     #create dir and copy files
     New-Item $targetDir -type directory    
-    Get-ChildItem $websiteFiles -Recurse | Copy-Item -Filter "*.*" -Force -Destination {Join-Path $targetDir $_.FullName.Substring($websiteFiles.length)} 
+    Get-ChildItem $base_dir\$websiteFiles -Recurse | Copy-Item -Filter "*.*" -Force -Destination {Join-Path $targetDir $_.FullName.Substring("$base_dir\$websiteFiles".length)} 
     #change IIS configuration  
     if($existingWebApp)
     {
