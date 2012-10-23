@@ -33,26 +33,24 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             MessageHelper.Show( title, message, positiveButtonTitle, positiveAction );
         }
 
-
-		private UIViewController _owner;
+        		
 		public void ShowProgress( bool show, Action cancel )
 		{
 			if( show )
 			{
-                AppContext.Current.Controller.InvokeOnMainThread ( () =>
-                                                                  {
-				_owner = AppContext.Current.Controller.TopViewController;
-				LoadingOverlay.StartAnimatingLoading(  _owner.View, LoadingOverlayPosition.Center, null, 130, 30, cancel );
+                UIApplication.SharedApplication.InvokeOnMainThread ( () =>
+                                                                  {				
+				LoadingOverlay.StartAnimatingLoading(   LoadingOverlayPosition.Center, null, 130, 30, cancel );
                 });
 			}
 			else
-			{
-                AppContext.Current.Controller.InvokeOnMainThread ( () =>
+            {
+                UIApplication.SharedApplication.InvokeOnMainThread ( () =>
                                                                   {
-				LoadingOverlay.StopAnimatingLoading( _owner.View );
+				LoadingOverlay.StopAnimatingLoading(  );
                 });
 			}
-		}
+        }
 
 		public void ShowProgress( bool show )
 		{

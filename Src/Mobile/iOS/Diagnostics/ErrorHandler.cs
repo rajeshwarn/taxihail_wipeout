@@ -9,6 +9,7 @@ using Cirrious.MvvmCross.Views;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
 using TinyIoC;
+using MonoTouch.UIKit;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -23,7 +24,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			if( ex is WebServiceException && ((WebServiceException)ex).StatusCode == (int)HttpStatusCode.Unauthorized )
 			{
 				MessageHelper.Show( Resources.ServiceErrorCallTitle, Resources.ServiceErrorUnauthorized, () => {
-					AppContext.Current.Controller.InvokeOnMainThread( () => {
+					UIApplication.SharedApplication.InvokeOnMainThread( () => {
                         var dispatch = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
                         dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(LoginViewModel), null, true, MvxRequestedBy.UserAction));
 					});
