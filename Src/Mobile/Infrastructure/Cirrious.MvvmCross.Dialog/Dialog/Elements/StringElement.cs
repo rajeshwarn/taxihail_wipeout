@@ -33,10 +33,8 @@ namespace Cirrious.MvvmCross.Dialog.Touch.Dialog.Elements
             }
             cell.Accessory = UITableViewCellAccessory.None;
 
-
             return cell;
         }
-
 
         protected override void UpdateDetailDisplay(UITableViewCell cell)
         {
