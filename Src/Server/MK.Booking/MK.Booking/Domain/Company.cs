@@ -5,6 +5,7 @@ using System.Text;
 using Infrastructure.EventSourcing;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Domain
 {
@@ -32,8 +33,8 @@ namespace apcurium.MK.Booking.Domain
             base.Handles<DefaultFavoriteAddressRemoved>(OnDefaultFavoriteAddressRemoved);
             base.Handles<DefaultFavoriteAddressUpdated>(OnDefaultFavoriteAddressUpdated);
             base.Handles<CompanyCreated>(OnCompanyCreated);
+            base.Handles<RateCreated>(OnRateCreated);
         }
-
 
         public void AddDefaultFavoriteAddress(Guid id, string friendlyName, string apartment, string fullAddress, string ringCode, string buildingName, double latitude, double longitude)
         {
@@ -77,6 +78,20 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
+        public void CreateRate(Guid rateId, decimal flatRate, double distanceMultiplicator, double timeAdustmentFactor, decimal pricePerPassenger, DayOfTheWeek daysOfTheWeek)
+        {
+            this.Update(new RateCreated
+            {
+                RateId = rateId,
+                FlatRate = flatRate,
+                DistanceMultiplicator = distanceMultiplicator,
+                TimeAdjustmentFactor = timeAdustmentFactor,
+                PricePerPassenger = pricePerPassenger,
+                DaysOfTheWeek = daysOfTheWeek,
+            });
+        }
+
+
         private static void ValidateFavoriteAddress(string friendlyName, string fullAddress, double latitude, double longitude)
         {
             if (Params.Get(friendlyName, fullAddress).Any(string.IsNullOrEmpty))
@@ -112,5 +127,11 @@ namespace apcurium.MK.Booking.Domain
         private void OnDefaultFavoriteAddressAdded(DefaultFavoriteAddressAdded obj)
         {
         }
+
+        private void OnRateCreated(RateCreated @event)
+        {
+        }
+
+        
     }
 }

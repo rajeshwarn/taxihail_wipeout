@@ -9,7 +9,7 @@ using apcurium.MK.Booking.Domain;
 
 namespace apcurium.MK.Booking.CommandHandlers
 {
-    public class CompanyCommandHandler : ICommandHandler<CreateCompany>
+    public class CompanyCommandHandler : ICommandHandler<CreateCompany>, ICommandHandler<CreateRate>
     {
 
         private readonly IEventSourcedRepository<Company> _repository;
@@ -23,6 +23,20 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
 
             var company = new Company(command.CompanyId);
+            _repository.Save(company, command.Id.ToString());
+        }
+
+        public void Handle(CreateRate command)
+        {
+            var company = _repository.Get(command.CompanyId);
+
+            company.CreateRate(rateId: command.RateId,
+                flatRate: command.FlatRate,
+                distanceMultiplicator: command.DistanceMultiplicator,
+                timeAdustmentFactor: command.TimeAdjustmentFactor,
+                pricePerPassenger: command.PricePerPassenger,
+                daysOfTheWeek: command.DaysOfTheWeek);
+
             _repository.Save(company, command.Id.ToString());
         }
     }

@@ -32,12 +32,5 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
             Assert.AreEqual(1, sut.Events.Count);
             Assert.AreEqual(_companyId, ((CompanyCreated)sut.Events.Single()).SourceId);
         }
-
-        [Test]
-        public void when_creating_a_new_rate()
-        {
-            var rateId = Guid.NewGuid();
-            this.sut.When(new CreateRate { CompanyId = _companyId, RateId = rateId, FlatRate = 3.50, });
-        }
     }
 }
