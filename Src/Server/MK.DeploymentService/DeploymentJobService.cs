@@ -3,10 +3,13 @@ using System.Data.Entity;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using MK.ConfigurationManager;
 using MK.ConfigurationManager.Entities;
 using Microsoft.Web.Administration;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace MK.DeploymentService
 {
@@ -58,29 +61,29 @@ namespace MK.DeploymentService
                     //pull source from bitbucket
                     var revision = string.IsNullOrEmpty(job.Revision) ? string.Empty : "-r " + job.Revision;
                     var sourceDirectory = Path.Combine(Path.GetTempPath(), job.Id.ToString());
-                    //if(Directory.Exists(directory))
-                    //{
-                    //    Directory.Delete(directory, true);
-                    //}
-                    //var args = string.Format(@"clone {1} https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi {0}", directory , revision);
+                    if (Directory.Exists(sourceDirectory))
+                    {
+                        Directory.Delete(sourceDirectory, true);
+                    }
+                    var args = string.Format(@"clone {1} https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi {0}", sourceDirectory, revision);
 
-                    //var hgClone = new ProcessStartInfo
-                    //{
-                    //    FileName = "hg.exe",
-                    //    WindowStyle = ProcessWindowStyle.Hidden,
-                    //    UseShellExecute = false,
-                    //    CreateNoWindow = false,
-                    //    Arguments = args
-                    //};
+                    var hgClone = new ProcessStartInfo
+                    {
+                        FileName = "hg.exe",
+                        WindowStyle = ProcessWindowStyle.Hidden,
+                        UseShellExecute = false,
+                        CreateNoWindow = false,
+                        Arguments = args
+                    };
 
-                    //using (var exeProcess = Process.Start(hgClone))
-                    //{
-                    //    exeProcess.WaitForExit();
-                    //    if (exeProcess.ExitCode > 0)
-                    //    {
-                    //        throw new Exception("Error during pull source code step");
-                    //    }
-                    //}
+                    using (var exeProcess = Process.Start(hgClone))
+                    {
+                        exeProcess.WaitForExit();
+                        if (exeProcess.ExitCode > 0)
+                        {
+                            throw new Exception("Error during pull source code step");
+                        }
+                    }
 
 
                     //build server and deploy
@@ -98,16 +101,16 @@ namespace MK.DeploymentService
                                                        "\\Deployment\\Server\\BuildPackage.ps1\""
                                                };
 
-                        //using (var exeProcess = Process.Start(buildPackage))
-                        //{
-                        //    exeProcess.WaitForExit();
-                        //    if (exeProcess.ExitCode > 0)
-                        //    {
-                        //        throw new Exception("Error during build step");
-                        //    }
-                        //}
+                        using (var exeProcess = Process.Start(buildPackage))
+                        {
+                            exeProcess.WaitForExit();
+                            if (exeProcess.ExitCode > 0)
+                            {
+                                throw new Exception("Error during build step");
+                            }
+                        }
 
-                        var companyName = job.Company.ConfigurationProperties["TaxiHail.ApplicationKey"];
+                        var companyName = job.Company.ConfigurationProperties["TaxiHail.ServerCompanyName"];
                         var iisManager = new ServerManager();
                         var appPool = iisManager.ApplicationPools.FirstOrDefault(x => x.Name == companyName);
                         if (appPool == null)
@@ -116,12 +119,27 @@ namespace MK.DeploymentService
                             appPool = iisManager.ApplicationPools.Add(companyName);
                             appPool.ManagedRuntimeVersion = "v4.0";
                             iisManager.CommitChanges();
+                            Thread.Sleep(2000);
                         }
                         if (appPool.State == ObjectState.Started) appPool.Stop();
 
                         if(job.DeployDB)
                         {
-                            //TODO add company settings from DB
+                            
+                            var jsonSettings = new JObject();
+                            foreach (var setting in job.Company.ConfigurationProperties)
+                            {
+                                jsonSettings.Add(setting.Key, JToken.FromObject(setting.Value));
+                            }
+
+                            jsonSettings.Add("IBS.WebServicesUrl", JToken.FromObject(job.IBSServer.Url));
+                            jsonSettings.Add("IBS.WebServicesUserName", JToken.FromObject(job.IBSServer.Username));
+                            jsonSettings.Add("IBS.WebServicesPassword", JToken.FromObject(job.IBSServer.Password));
+
+                            var fileSettings = Path.Combine(sourceDirectory, "Deployment\\Server\\Package\\DatabaseInitializer\\Settings\\") + companyName + ".json";
+                            var stringBuilder = new StringBuilder();
+                            jsonSettings.WriteTo(new JsonTextWriter(new StringWriter(stringBuilder)));
+                            File.WriteAllText(fileSettings, stringBuilder.ToString());
 
                             var deployDB = new ProcessStartInfo
                             {
@@ -145,7 +163,7 @@ namespace MK.DeploymentService
 
                         if(job.DeployServer)
                         {
-                            var subFolder = job.Version + job.Revision+ "\\";
+                            var subFolder = job.Company.ConfigurationProperties["TaxiHail.Version"] + job.Revision+ "\\";
                             var targetWeDirectory = Path.Combine(job.TaxHailEnv.WebSitesFolder, companyName, subFolder);
                             
                             if(Directory.Exists(targetWeDirectory))
@@ -187,15 +205,14 @@ namespace MK.DeploymentService
 
                     }
 
-
-                    //job.Status = JobStatus.SUCCESS;
-                    //DbContext.SaveChanges();
+                    job.Status = JobStatus.SUCCESS;
+                    DbContext.SaveChanges();
 
                 }catch(Exception e)
                 {
-                    //job.Status = JobStatus.ERROR;
-                    //job.Details = e.Message;
-                    //DbContext.SaveChanges();
+                    job.Status = JobStatus.ERROR;
+                    job.Details = e.Message;
+                    DbContext.SaveChanges();
                 }
             }
         }

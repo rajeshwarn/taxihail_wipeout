@@ -90,9 +90,6 @@
                                 <TextBlock Grid.Row="2" VerticalAlignment="Center">Environment</TextBlock>
                                 <ComboBox Grid.Row="2" Grid.Column="1" DisplayMemberPath="Name" SelectedItem="{Binding DeployTaxiHailEnv,Mode=TwoWay}" ItemsSource="{Binding TaxiHailEnvironments}" Width="250" HorizontalAlignment="Left" Margin="10,10,10,10"/>
 
-                                <TextBlock Grid.Row="3" VerticalAlignment="Center">Version</TextBlock>
-                                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding DeployVersion}"  VerticalAlignment="Center" HorizontalAlignment="Left" Width="100" Margin="10,10,10,10"></TextBox>
-
                                 <TextBlock Grid.Row="4" VerticalAlignment="Center">Revision</TextBlock>
                                 <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding DeployRevision}"  VerticalAlignment="Center" HorizontalAlignment="Left" Width="100" Margin="10,10,10,10"></TextBox>
                                 

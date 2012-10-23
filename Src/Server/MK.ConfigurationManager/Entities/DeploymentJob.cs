@@ -13,8 +13,6 @@ namespace MK.ConfigurationManager.Entities
 
         public string Details { get; set; }
 
-        public string Version { get; set; }
-
         public string Revision { get; set; }
 
         public Company Company { get; set; }

@@ -87,8 +87,15 @@ namespace DatabaseInitializer
                     apcurium.MK.Common.Configuration.Impl.ConfigurationManager(
                     () => new ConfigurationDbContext(connectionString.ConnectionString));
 
-                var jsonSettings = File.ReadAllText(Path.Combine(AssemblyDirectory, "Settings\\", companyName + ".json"));
+                var jsonSettings = File.ReadAllText(Path.Combine(AssemblyDirectory, "Settings\\Common.json"));
                 var objectSettings = JObject.Parse(jsonSettings);
+                foreach (var token in objectSettings)
+                {
+                    configurationManager.SetSetting(token.Key, token.Value.ToString());
+                }
+
+                jsonSettings = File.ReadAllText(Path.Combine(AssemblyDirectory, "Settings\\", companyName + ".json"));
+                objectSettings = JObject.Parse(jsonSettings);
                 foreach (var token in objectSettings)
                 {
                     configurationManager.SetSetting(token.Key, token.Value.ToString());

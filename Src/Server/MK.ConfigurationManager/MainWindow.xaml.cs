@@ -172,7 +172,6 @@ namespace MK.ConfigurationManager
             job.Company = DeployCompany;
             job.IBSServer = DeployIBSServer;
             job.Revision = DeployRevision;
-            job.Version = DeployVersion;
             job.TaxHailEnv = DeployTaxiHailEnv;
             job.DeployDB = DeployDB;
             job.InitDatabase = DeployInitDatabse;
