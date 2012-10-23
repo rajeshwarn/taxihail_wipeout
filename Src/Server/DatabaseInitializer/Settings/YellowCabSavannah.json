@@ -57,5 +57,6 @@
     "TwitterConsumerSecret" : "",
     "TwitterEnabled" : "false",
     "TwitterRequestTokenUrl" : "",
-	"Receipt.Note": "Thank You!<br><b>Yellow Cab of Savannah</b>"
+	"Receipt.Note": "Thank You!<br><b>Yellow Cab of Savannah</b>",
+	"Booking.ConfirmationEmail" : "true"
 }

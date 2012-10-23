@@ -23,22 +23,26 @@
                 var addresses = new TaxiHail.AddressCollection(),
                         view = this._tabView = new TaxiHail.FavoritesView({
                             collection: addresses
-                        });
+                        }),
+                    favorites = new TaxiHail.AddressCollection(),
+                    history = new TaxiHail.AddressCollection(),
+                    $container = this.$("#user-account-container");
 
-                var favorites = new TaxiHail.AddressCollection();
-                var history = new TaxiHail.AddressCollection();
-                favorites.fetch({
+                TaxiHail.showSpinner($container);
+                /*favorites.fetch({
                     url: 'api/account/addresses',
                     success: _.bind(function (collection, resp) {
                         history.fetch({
                             url: 'api/account/addresses/history',
                             success: _.bind(function (collection, resp) {
                                 addresses.reset(favorites.models.concat(history.models));
-                                this.$("#user-account-container").html(view.el);
+                                $container.html(view.el);
                             }, this)
                         });
                     }, this)
-                });
+                });*/
+                addresses.reset();
+                this.$("#user-account-container").html(view.el);
             },
             history: function () {
                 var orders = new TaxiHail.OrderCollection();

@@ -107,17 +107,13 @@ namespace apcurium.MK.Booking.Maps.Impl
             {
                 if (distance.HasValue && (distance.Value > 0))
                 {
-                    double km = (distance.Value / 1000);
+                    double km = ((double)distance.Value / 1000);
 
-                    if (km < 5)
+                    if (km < maxDistance)
                     {
                         price = callCost + (km * costPerKm) + (((km * costPerKm) + callCost) * 0.2);
                     }
-                    else if (km < maxDistance)
-                    {
-                        price = callCost + (km * costPerKm) + (((km * costPerKm) + callCost) * 0.2) + 2;
-                    }
-                    else
+                    else 
                     {
                         price = 1000;
                     }

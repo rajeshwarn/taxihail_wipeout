@@ -6,6 +6,8 @@ using MonoTouch.CoreFoundation;
 using MonoTouch.Foundation;
 using System.Drawing;
 using Cirrious.MvvmCross.Interfaces.Commands;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -27,12 +29,41 @@ namespace apcurium.MK.Booking.Mobile.Client
         }
 
         private void Initialize()
-        {
+        {         
+
             this.EditingChanged += delegate
             {
-                OnTextChanged();            
+                CancelMoveMap();
+                
+                _moveMapCommand = new CancellationTokenSource();
+                
+                var t = new Task(() =>
+                {
+                    Thread.Sleep(700);
+                }, _moveMapCommand.Token);
+                
+                t.ContinueWith(r =>
+                {
+                    if (r.IsCompleted && !r.IsCanceled && !r.IsFaulted)
+                    {
+                        OnTextChanged();  
+                    }        
+                }, _moveMapCommand.Token);
+                t.Start();
             };
 
+        }
+
+        private CancellationTokenSource _moveMapCommand;
+
+        void CancelMoveMap()
+        {
+            if ((_moveMapCommand != null) && _moveMapCommand.Token.CanBeCanceled)
+            {
+                _moveMapCommand.Cancel();
+                _moveMapCommand.Dispose();
+                _moveMapCommand = null;
+            }
         }
 
         void OnTextChanged()
@@ -59,16 +90,13 @@ namespace apcurium.MK.Booking.Mobile.Client
             set
             {
                 _textChangedCommand = value;
-                if ( ( _textChangedCommand != null ) && _hasDelayedChangeEvent ) 
+                if ((_textChangedCommand != null) && _hasDelayedChangeEvent)
                 {
                     _hasDelayedChangeEvent = false;
                     OnTextChanged();
                 }
             }
         }
-
-
-
 
         public override string Text
         {

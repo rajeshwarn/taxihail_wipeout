@@ -283,10 +283,6 @@
     <Content Include="themes\BurlingtonTaxiOntario\img\header-bg.png" />
     <Content Include="themes\BurlingtonTaxiOntario\img\location.png" />
     <Content Include="themes\BurlingtonTaxiOntario\img\logo.png" />
-    <Content Include="themes\WorcesterYellowCab\img\cancel-icon.png" />
-    <Content Include="themes\WorcesterYellowCab\img\header-bg.png" />
-    <Content Include="themes\WorcesterYellowCab\img\location.png" />
-    <Content Include="themes\WorcesterYellowCab\img\Logo.png" />
     <Content Include="themes\SanJoseForARide\img\cancel-icon.png" />
     <Content Include="themes\SanJoseForARide\img\header-bg.png" />
     <Content Include="themes\SanJoseForARide\img\location.png" />
@@ -310,7 +306,6 @@
     <Content Include="themes\YellowCabSavannah\img\location.png" />
     <Content Include="themes\YellowCabSavannah\img\Logo.png" />
     <Content Include="views\AccountFavoritesAndHistoryListView.js" />
-    <Content Include="views\AddFavoriteView.js" />
     <Content Include="views\AddressControlView.js" />
     <Content Include="views\AlertView.js" />
     <Content Include="views\BookingConfirmationView.js" />
@@ -585,8 +580,12 @@
     <Content Include="templates\Book.handlebars">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="templates\BookingConfirmation.handlebars" />
-    <Content Include="templates\BookingStatus.handlebars" />
+    <Content Include="templates\BookingConfirmation.handlebars">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="templates\BookingStatus.handlebars">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="templates\BookLater.handlebars" />
     <Content Include="templates\BootstrapConfirmation.handlebars" />
     <Content Include="templates\FavoriteDetails.handlebars" />
@@ -649,9 +648,7 @@
   <ItemGroup>
     <Content Include="themes\SanJoseForARide\less\variables.less" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\WorcesterYellowCab\less\combined-responsive.less" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="admin\templates\GrantAdminAccess.handlebars" />
   </ItemGroup>
@@ -698,15 +695,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\localization\AddFavorite.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\WorcesterYellowCab\less\combined.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\WorcesterYellowCab\less\style.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="themes\WorcesterYellowCab\less\variables.less" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

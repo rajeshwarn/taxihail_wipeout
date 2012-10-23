@@ -40,11 +40,16 @@ namespace apcurium.MK.Booking.Mobile.Client
             NSUserDefaults.StandardUserDefaults.SetStringOrClear(null, _baseKey + key);               
         }
 
+        private void ClearFullKey(string fullKey)
+        {
+            NSUserDefaults.StandardUserDefaults.SetStringOrClear(null, fullKey);               
+        }
+
         public void ClearAll()
         {
 
             var keys = NSUserDefaults.StandardUserDefaults.AsDictionary ().Keys;
-            keys.Where (k => k.ToString ().StartsWith(_baseKey)).ForEach (k => Clear( k.ToString() ) );
+            keys.Where (k => k.ToString ().StartsWith(_baseKey)).ForEach (k => ClearFullKey( k.ToString() ) );
         }
         #endregion
 

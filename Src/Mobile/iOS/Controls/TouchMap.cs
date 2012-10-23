@@ -19,6 +19,7 @@ using apcurium.MK.Common.Entity;
 using System.Threading;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using MonoTouch.UIKit;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -26,9 +27,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
     public class TouchMap : MKMapView
     {
         private TouchGesture _gesture;
-
-        public event EventHandler MapTouchUp;
-
         private IMvxCommand _mapMoved;
         private Address _pickup;
         private Address _dropoff;
@@ -89,13 +87,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             {
                 if (_gesture.GetLastTouchDelay() < 1000)
                 {
-                    if ((MapMoved != null) && (MapMoved.CanExecute()))
-                    {
-                        MapMoved.Execute(new Address{ Latitude = CenterCoordinate.Latitude , Longitude = CenterCoordinate.Longitude });
-                    }
+                    ExecuteMoveMapCommand();
                 }
             }
-            catch (Exception ex)
+            catch
             {
 
             }
@@ -106,9 +101,54 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             if (_gesture == null)
             {
                 _gesture = new TouchGesture();
-            
+                _gesture.TouchBegin += HandleTouchBegin;
                 AddGestureRecognizer(_gesture);
             }
+        }
+
+        private CancellationTokenSource _moveMapCommand;
+
+        void CancelMoveMap()
+        {
+            if ((_moveMapCommand != null) && _moveMapCommand.Token.CanBeCanceled)
+            {
+                _moveMapCommand.Cancel();
+                _moveMapCommand.Dispose();
+                _moveMapCommand = null;
+            }
+        }
+
+        void ExecuteMoveMapCommand()
+        {
+            CancelMoveMap();
+
+            _moveMapCommand = new CancellationTokenSource();
+                                
+            var t = new Task(() =>
+                             {
+                Thread.Sleep(500);
+            }, _moveMapCommand.Token );
+
+            t.ContinueWith(r =>
+            {
+                if (r.IsCompleted && !r.IsCanceled && !r.IsFaulted)
+                {
+                    InvokeOnMainThread(() =>
+                    {
+                        if ((MapMoved != null) && (MapMoved.CanExecute()))
+                        {
+                            Console.WriteLine("MapMovedMapMovedMapMovedMapMovedMapMovedMapMovedMapMoved");
+                            MapMoved.Execute(new Address {            Latitude = CenterCoordinate.Latitude,              Longitude = CenterCoordinate.Longitude });
+                        }
+                    });
+                }        
+            },_moveMapCommand.Token );
+            t.Start();
+        }
+
+        void HandleTouchBegin(object sender, EventArgs e)
+        {
+            CancelMoveMap();
         }
 
         public IMvxCommand MapMoved
@@ -278,10 +318,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                         legalView = subview;
                     }
                 }
-                if ( legalView !=null )
+                if (legalView != null)
                 {
                     legalView.ToString();
-                    legalView.Frame  = new RectangleF ( legalView.Frame.X, legalView.Frame.Y - 60, legalView.Frame.Width, legalView.Frame.Height );
+                    legalView.Frame = new RectangleF(legalView.Frame.X, legalView.Frame.Y - 60, legalView.Frame.Width, legalView.Frame.Height);
                     //legalView.Frame = 
                 }
             }
