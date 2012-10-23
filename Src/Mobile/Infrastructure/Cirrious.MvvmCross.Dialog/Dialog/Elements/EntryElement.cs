@@ -66,7 +66,7 @@ namespace Cirrious.MvvmCross.Dialog.Touch.Dialog.Elements
         public UITextAutocapitalizationType AutocapitalizationType
         {
             get {
-                return autocapitalizationType;  
+                return autocapitalizationType;	
             }
             set { 
                 autocapitalizationType = value;
@@ -211,26 +211,7 @@ namespace Cirrious.MvvmCross.Dialog.Touch.Dialog.Elements
                 return cellkey;
             }
         }
-
-
-        public UITextField Entry {
-            get{ return _entry;}         
-        }
-
-        private bool _isEnabled =true;
-        public bool Enabled {
-            get {  return _isEnabled;
-            }
-            set { 
-                _isEnabled = value;
-                if ( _entry != null )
-                {
-                	_entry.Enabled = value;
-					_entry.TextColor = _isEnabled ? UIColor.Black : UIColor.LightGray;
-                }
-            }
-        }
-
+        
         protected override UITableViewCell GetCellImpl (UITableView tv)
         {
             var cell = tv.DequeueReusableCell (CellKey);
@@ -246,13 +227,12 @@ namespace Cirrious.MvvmCross.Dialog.Touch.Dialog.Elements
                 float width = cell.ContentView.Bounds.Width - size.Width;
                 
                 _entry = CreateTextField (new RectangleF (size.Width, yOffset, width, size.Height));
-                _entry.Enabled = _isEnabled;
-
+                
                 _entry.ValueChanged += delegate {
                                                    FetchAndUpdateValue ();
                 };
                 _entry.EditingChanged += delegate {
-                                                     FetchAndUpdateValue ();                    
+                                                     FetchAndUpdateValue ();					
                 };
                 _entry.Ended += delegate {
                                             FetchAndUpdateValue ();
@@ -321,7 +301,6 @@ namespace Cirrious.MvvmCross.Dialog.Touch.Dialog.Elements
             _entry.AutocorrectionType = AutocorrectionType;
             
             cell.TextLabel.Text = Caption;
-			_entry.TextColor = _isEnabled ? UIColor.Black : UIColor.LightGray;
             cell.ContentView.AddSubview (_entry);
             return cell;
         }
