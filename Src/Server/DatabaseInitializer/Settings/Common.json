@@ -24,6 +24,8 @@
    "Smtp.Host" : "smtp.gmail.com",
    "Smtp.Port" : "587",
    "Smtp.UseDefaultCredentials" : "false",  
-   "Receipt.Note": "Thank You!"
+   "Receipt.Note": "Thank You!",
+   "Booking.ConfirmationEmail" : "true",
+   "Client.HideCallDispatchButton" : "false"
 }
 

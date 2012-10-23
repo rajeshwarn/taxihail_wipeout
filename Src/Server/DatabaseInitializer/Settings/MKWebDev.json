@@ -31,7 +31,5 @@
    "TwitterConsumerKey" : "",
    "TwitterConsumerSecret" : "",
    "TwitterEnabled" : "false",
-   "TwitterRequestTokenUrl" : "",
-	"Booking.ConfirmationEmail" : "true",
-	"Client.HideCallDispatchButton" : "false"
+   "TwitterRequestTokenUrl" : ""
 }
