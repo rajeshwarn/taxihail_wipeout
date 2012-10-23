@@ -7,7 +7,8 @@
         },
 
         initialize: function () {
-            this.collection.on('destroy reset sync', TaxiHail.postpone(this.refresh, this), this);
+            this.collection.on('destroy sync', TaxiHail.postpone(this.refresh, this), this);
+            this.collection.on('reset', this.render, this);
             this.collection.on('selected', this.edit, this);
             
             this._addFavoriteView = null;
@@ -15,7 +16,6 @@
         
         refresh: function () {
             var addresses;
-            
 
             var favorites = new TaxiHail.AddressCollection();
             var history = new TaxiHail.AddressCollection();
@@ -25,9 +25,7 @@
                     history.fetch({
                         url: 'api/account/addresses/history',
                         success: _.bind(function (collection, resp) {
-                            this.collection.reset(favorites.models.concat(history.models), {silent : true});
-                            this.$("#user-account-container").html(this.el);
-                            this.render();
+                            this.collection.reset(favorites.models.concat(history.models));
                         }, this)
                     });
                 }, this)
@@ -79,11 +77,17 @@
             });
             $(container).append(itemView.render().el);
         },
+
+        remove: function() {
+            this._addFavoriteView && this._addFavoriteView.remove();
+        },
         
-        edit:function (model) {
+        edit: function (model) {
+            model.set('isNew', false);
             var view = this._addFavoriteView = new TaxiHail.AddFavoriteView({
                 model: model,
-                collection : this.collection
+                collection: this.collection,
+                showPlaces: true
             });
             view.on('cancel', this.render, this);
             this.$el.html(view.render().el);
@@ -92,10 +96,12 @@
         addfavorites: function (e) {
             e.preventDefault();
             this.model = new TaxiHail.Address();
+            this.model.set('isNew', true);
             var view = this._addFavoriteView = new TaxiHail.AddFavoriteView(
                 {
                     model: this.model,
-                    collection: this.collection
+                    collection: this.collection,
+                    showPlaces:true
                 });
             view.on('cancel', this.render, this);
             this.$el.html(view.render().el);

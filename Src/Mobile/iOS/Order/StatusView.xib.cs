@@ -13,6 +13,7 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Client.MapUtilities;
+using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -106,9 +107,19 @@ namespace apcurium.MK.Booking.Mobile.Client
                 AppButtons.FormatStandardButton((GradientButton)btnCancel, Resources.StatusCancelButton, AppStyle.ButtonColor.Red);
                 AppButtons.FormatStandardButton((GradientButton)btnNewRide, Resources.StatusNewRideButton, AppStyle.ButtonColor.Green);
 
+				var config = TinyIoCContainer.Current.Resolve<IConfigurationManager>();
+
                 btnCall.TouchUpInside += CallProvider;
                 btnCancel.TouchUpInside += CancelOrder;
-                btnNewRide.TouchUpInside += Rebook;
+				btnNewRide.TouchUpInside += Rebook;
+
+				if(bool.Parse(config.GetSetting("Client.HideCallDispatchButton")))
+				{
+					btnCall.Hidden = true;
+					btnCancel.SetPosition(x: btnCancel.Frame.X + 25);
+					btnNewRide.SetPosition(x: btnNewRide.Frame.X - 25);
+
+				}
                 
                 mapStatus.Delegate = new AddressMapDelegate(false);
                 
@@ -309,7 +320,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
                     if ( isDone )
                     {
-                        InvokeOnMainThread( ShowThankYouMessage );
+                        InvokeOnMainThread(()=> ShowThankYouMessage(Status));
 
                         return;
                     }
@@ -362,7 +373,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         }
 
 
-        private void ShowThankYouMessage()
+        private void ShowThankYouMessage(OrderStatusDetail status)
         {
             if ( _timer != null )
             {
@@ -377,7 +388,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
             msg = string.Format( msg, settings.ApplicationName );
 
-            var av = new UIAlertView ( title, msg, null, Resources.Close, Resources.HistoryViewSendReceiptButton );
+            var av = new UIAlertView ( title, msg, null, Resources.Close, status.FareAvailable ? Resources.HistoryViewSendReceiptButton :null );
             av.Dismissed += (sender, e) => CloseRequested(this, EventArgs.Empty);
             av.Clicked += delegate(object sender, UIButtonEventArgs e) {
                 if (e.ButtonIndex == 1) {                    

@@ -45,7 +45,8 @@
             this.$('[name=fullAddress]').on('keyup', _.debounce(this.onkeyup, 500));
             this._selector = new TaxiHail.AddressSelectionView({
                 model: this.model,
-                showFavorites: false
+                showFavorites: false,
+                showPlaces : this.options.showPlaces
             }).on('selected', function (model, collection) {
                 this.model.set(model.toJSON());
                 this.close();

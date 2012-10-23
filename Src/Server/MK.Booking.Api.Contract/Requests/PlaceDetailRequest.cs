@@ -11,5 +11,6 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
     public class PlaceDetailRequest
     {
         public string ReferenceId { get; set; }
+        public string PlaceName { get; set; }
     }
 }

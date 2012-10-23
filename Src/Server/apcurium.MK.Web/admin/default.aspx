@@ -11,21 +11,25 @@
         <meta name="viewport" content="width=device-width,target-densitydpi=device-dpi,initial-scale=1.0, user-scalable=no">
         <meta http-equiv="cleartype" content="on">
         <link rel="stylesheet" href='../themes/<%: this.ApplicationKey %>/less/combined.less'/>
+        <link rel="stylesheet" href='assets/less/TaxiHail-admin-grid.less'/>
         <link rel="stylesheet" href='../themes/<%: this.ApplicationKey %>/less/combined-responsive.less'/>
         <script src="../assets/js/modernizr.min.js"></script>
     </head>
     <body>
         
         <header>
-            <div class="login-status-zone"></div>
+            <div class="login-status-zone">
+                <div><a href='#' class='brand'></a></div>
+            </div>
         </header>
         
-        <div class="pull-left menuadmin"></div>
         
         <div class="container">
             <div class='notification-zone'></div>
-            
-            <div id='main'></div>
+            <div class='row'>
+                <div class="menu-zone span3"></div>
+                <div id='main' class='span9'></div>
+            </div>
         </div>
         <div class='modal-zone'></div>
         

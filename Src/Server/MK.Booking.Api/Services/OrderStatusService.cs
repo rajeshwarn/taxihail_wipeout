@@ -55,6 +55,11 @@ namespace apcurium.MK.Booking.Api.Services
             var order = _orderDao.FindById(request.OrderId);
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
 
+            if(order == null)
+            {
+                throw new HttpError(HttpStatusCode.NotFound, "Order Not Found");
+            }
+
             if (!order.IBSOrderId.HasValue)
             {
                 return new OrderStatusDetail { IBSStatusDescription = "Error getting the order status" };
@@ -121,6 +126,8 @@ namespace apcurium.MK.Booking.Api.Services
                             //FormatPrice
                             var total = Params.Get<double?>(orderDetails.Toll, orderDetails.Fare, orderDetails.Tip).Where(amount => amount.HasValue).Select(amount => amount.Value).Sum();
                             desc = string.Format(_configManager.GetSetting("OrderStatus.OrderDoneFareAvailable"), FormatPrice(total ));
+
+                            status.FareAvailable = true;
                         }
                         else
                         {

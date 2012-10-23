@@ -57,5 +57,7 @@
     "TwitterConsumerSecret" : "",
     "TwitterEnabled" : "false",
     "TwitterRequestTokenUrl" : "",
-	"Receipt.Note": "Thank You!<br><b>Atlanta Checker</b>"
+	"Receipt.Note": "Thank You!<br><b>Atlanta Checker</b>",
+	"Booking.ConfirmationEmail" : "true",
+	"Client.HideCallDispatchButton" : "false"
 }

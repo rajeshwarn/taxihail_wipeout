@@ -27,10 +27,10 @@ namespace apcurium.MK.Web.admin
             ApplicationName = config.GetSetting("TaxiHail.ApplicationName");
            
             IsAuthenticated = base.UserSession.IsAuthenticated;
-            /*if(!base.UserSession.HasPermission(Permissions.Admin))
+            if(!base.UserSession.HasPermission(Permissions.Admin))
             {
                 this.Response.Redirect("~");
-            }*/
+            }
         }
 
     }

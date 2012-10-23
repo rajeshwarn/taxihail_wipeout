@@ -8,7 +8,7 @@
         },
 
         initialize: function () {
-            this.collection.on('destroy reset sync', TaxiHail.postpone(this.refresh, this), this);
+            this.collection.on('destroy  sync', TaxiHail.postpone(this.refresh, this), this);
             this.collection.on('selected', this.edit, this);
 
             this._addFavoriteView = null;
@@ -27,7 +27,7 @@
                             this.render();
                         }, this)
             });
-
+            this.$("#user-account-container").html(this.el);
         },
 
         render: function () {
@@ -64,10 +64,16 @@
             $(container).append(itemView.render().el);
         },
 
+        remove: function() {
+            this._addFavoriteView && this._addFavoriteView.remove();
+        },
+
         edit: function (model) {
+            model.set('isNew', false);
             var view = this._addFavoriteView = new TaxiHail.AddFavoriteView({
                 model: model,
-                collection: this.collection
+                collection: this.collection,
+                showPlaces:false
             });
             view.on('cancel', this.render, this);
             this.$el.html(view.render().el);
@@ -76,10 +82,12 @@
         addfavorites: function (e) {
             e.preventDefault();
             this.model = new TaxiHail.CompanyDefaultAddress();
+            this.model.set('isNew', true);
             var view = this._addFavoriteView = new TaxiHail.AddFavoriteView(
                 {
                     model: this.model,
-                    collection: this.collection
+                    collection: this.collection,
+                    showPlaces: false
                 });
             view.on('cancel', this.render, this);
             this.$el.html(view.render().el);

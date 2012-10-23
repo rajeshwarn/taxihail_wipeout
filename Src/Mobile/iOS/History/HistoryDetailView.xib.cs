@@ -211,13 +211,12 @@ namespace apcurium.MK.Booking.Mobile.Client
                 var status = TinyIoCContainer.Current.Resolve<IBookingService>().GetOrderStatus( _data.Id);
                 
                 bool isCompleted = TinyIoCContainer.Current.Resolve<IBookingService>().IsStatusCompleted(status.IBSStatusId);
-				bool isDone      = TinyIoCContainer.Current.Resolve<IBookingService>().IsStatusDone(status.IBSStatusId);
-                
+
                 InvokeOnMainThread(() => txtStatus.Text = status.IBSStatusDescription);
                 InvokeOnMainThread(() => btnCancel.Hidden = isCompleted);
                 InvokeOnMainThread(() => btnStatus.Hidden = isCompleted);
 				InvokeOnMainThread(() => btnHide.Hidden = !isCompleted);
-				InvokeOnMainThread(() => btnSendReceipt.Hidden = !isDone);
+				InvokeOnMainThread(() => btnSendReceipt.Hidden = !status.FareAvailable);
             }
             );
         }

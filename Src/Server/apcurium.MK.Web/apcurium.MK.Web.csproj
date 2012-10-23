@@ -306,7 +306,6 @@
     <Content Include="themes\YellowCabSavannah\img\location.png" />
     <Content Include="themes\YellowCabSavannah\img\Logo.png" />
     <Content Include="views\AccountFavoritesAndHistoryListView.js" />
-    <Content Include="views\AddFavoriteView.js" />
     <Content Include="views\AddressControlView.js" />
     <Content Include="views\AlertView.js" />
     <Content Include="views\BookingConfirmationView.js" />
@@ -581,8 +580,12 @@
     <Content Include="templates\Book.handlebars">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="templates\BookingConfirmation.handlebars" />
-    <Content Include="templates\BookingStatus.handlebars" />
+    <Content Include="templates\BookingConfirmation.handlebars">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="templates\BookingStatus.handlebars">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="templates\BookLater.handlebars" />
     <Content Include="templates\BootstrapConfirmation.handlebars" />
     <Content Include="templates\FavoriteDetails.handlebars" />

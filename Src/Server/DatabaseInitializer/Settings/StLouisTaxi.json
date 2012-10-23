@@ -57,5 +57,7 @@
     "TwitterConsumerSecret" : "",
     "TwitterEnabled" : "false",
     "TwitterRequestTokenUrl" : "",
-	"Receipt.Note": "Thank You!<br><b>St. Louis Taxi</b>"
+	"Receipt.Note": "Thank You!<br><b>St. Louis Taxi</b>",
+	"Booking.ConfirmationEmail" : "true",
+	"Client.HideCallDispatchButton" : "false"
 }

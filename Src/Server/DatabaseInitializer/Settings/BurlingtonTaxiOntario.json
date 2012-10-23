@@ -57,6 +57,8 @@
 	"TwitterConsumerSecret" : "",
 	"TwitterEnabled" : "false",
 	"TwitterRequestTokenUrl" : "",
-	"Receipt.Note": "Thank You!<br><b>Burlington Taxi</b>"
+	"Receipt.Note": "Thank You!<br><b>Burlington Taxi</b>",
+	"Booking.ConfirmationEmail" : "true",
+	"Client.HideCallDispatchButton" : "false"
 }
 

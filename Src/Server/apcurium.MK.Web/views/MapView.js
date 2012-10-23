@@ -63,6 +63,11 @@
                 zoom: 12,
                 center: new google.maps.LatLng(TaxiHail.parameters.defaultLatitude, TaxiHail.parameters.defaultLongitude),
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
+                overviewMapControl: false,
+                panControl: false,
+                rotateControl: false,
+                streetViewControl: false,
+                scaleControl: false,
                 zoomControlOptions: {
                     position: google.maps.ControlPosition.LEFT_CENTER
                 }

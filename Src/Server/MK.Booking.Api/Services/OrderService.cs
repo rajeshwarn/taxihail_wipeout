@@ -27,6 +27,11 @@ namespace apcurium.MK.Booking.Api.Services
             var orderDetail = Dao.FindById(request.OrderId);
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
 
+            if(orderDetail == null)
+            {
+                throw new HttpError(HttpStatusCode.NotFound, "Order Not Found");
+            }
+
             if (account.Id != orderDetail.AccountId)
             {
                 throw new HttpError(HttpStatusCode.Unauthorized, "Can't access another account's order");

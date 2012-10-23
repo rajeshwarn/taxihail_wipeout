@@ -57,6 +57,9 @@
 	"CallForPrice" : "Call for price",
 	"NotSpecified" : "Not Specified",
 	"Password updated." : "The password was updated successfully",
-	"Now" : "Now"
+	"Now" : "Now",
+	"Send Receipt" : "Send Receipt",
+	"Sending..." : "Sending...",
+	"Cannot Send Receipt" : "Cannot Send Receipt"
 
 }

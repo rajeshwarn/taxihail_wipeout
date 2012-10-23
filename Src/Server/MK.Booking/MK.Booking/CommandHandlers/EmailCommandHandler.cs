@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Net.Mail;
 using System.Text;
 using Infrastructure.Messaging.Handling;
@@ -105,16 +106,18 @@ namespace apcurium.MK.Booking.CommandHandlers
             var template = _templateService.Find(ReceiptTemplateName);
             if(template == null) throw new InvalidOperationException("Template not found: " + ReceiptTemplateName);
 
+            var priceFormat = CultureInfo.GetCultureInfo(_configurationManager.GetSetting("PriceFormat"));
+
             var templateData = new {
                                        ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
                                        AccentColor = _configurationManager.GetSetting(AccentColorSetting),
                                        IBSOrderId = command.IBSOrderId,
                                        VehicleNumber = command.VehicleNumber,
-                                       Date = command.TransactionDate.ToString("dddd, MMMM d"),
-                                       Fare = command.Fare.ToString("F"),
-                                       Toll = command.Toll.ToString("F"),
-                                       Tip = command.Tip.ToString("F"),
-                                       TotalFare = command.TotalFare.ToString("F"),
+                                       Date = command.TransactionDate.ToString("dddd, MMMM d, yyyy"),
+                                       Fare = command.Fare.ToString("C", priceFormat),
+                                       Toll = command.Toll.ToString("C", priceFormat),
+                                       Tip = command.Tip.ToString("C", priceFormat),
+                                       TotalFare = command.TotalFare.ToString("C", priceFormat),
                                        Note = _configurationManager.GetSetting("Receipt.Note")
                                    };
 

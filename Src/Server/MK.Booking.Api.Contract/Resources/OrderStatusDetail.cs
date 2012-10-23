@@ -10,6 +10,8 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
         public string VehicleNumber { get; set; }
         public double? VehicleLatitude { get; set; }
         public double? VehicleLongitude { get; set; }
+        public bool FareAvailable { get; set; }
         public Guid OrderId { get; set; }
+
     }
 }
