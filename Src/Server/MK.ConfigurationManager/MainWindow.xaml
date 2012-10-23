@@ -110,7 +110,7 @@
             <TabItem Header="Options">
                 <StackPanel Background="#FFE5E5E5">
                     <TextBox x:Name="currentDbCs" Margin="10,10,22,0" Background="White" Height="23" />
-                    <Button Content="Update" x:Name="updateCS" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="99" />
+                    <Button Content="Update" x:Name="updateCS" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="99" Click="updateCS_Click" />
                 </StackPanel>
             </TabItem>
         </TabControl>

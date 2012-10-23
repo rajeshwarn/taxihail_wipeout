@@ -58,23 +58,38 @@ namespace MK.ConfigurationManager
             IBSServers = new ObservableCollection<IBSServer>();
             TaxiHailEnvironments = new ObservableCollection<TaxiHailEnvironment>();
             DeploymentJobs = new ObservableCollection<DeploymentJob>();
+
+            this.currentDbCs.Text = System.Configuration.ConfigurationManager.ConnectionStrings["MKConfig"].ConnectionString;
         }
 
         void MainWindowLoaded(object sender, RoutedEventArgs e)
         {
-            //DbContext.Database.CreateIfNotExists();
+            RefreshData();
+        }
+
+        private void updateCS_Click(object sender, RoutedEventArgs e)
+        {
+            RefreshData();
+        }
+
+        private void RefreshData()
+        {
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<ConfigurationManagerDbContext, SimpleDbMigrationsConfiguration>("MKConfig"));
-            DbContext = new ConfigurationManagerDbContext(System.Configuration.ConfigurationManager.ConnectionStrings["MKConfig"].ConnectionString);
-            this.currentDbCs.Text = System.Configuration.ConfigurationManager.ConnectionStrings["MKConfig"].ConnectionString;
-            
+            DbContext = new ConfigurationManagerDbContext(this.currentDbCs.Text);
+            DbContext.Database.CreateIfNotExists();
+
+            Companies.Clear();
             DbContext.Set<Company>().ToList().ForEach(Companies.Add);
 
+            IBSServers.Clear();
             DbContext.Set<IBSServer>().ToList().ForEach(IBSServers.Add);
             IBSServers.CollectionChanged += IBSServersCollectionChanged;
 
+            TaxiHailEnvironments.Clear();
             DbContext.Set<TaxiHailEnvironment>().ToList().ForEach(TaxiHailEnvironments.Add);
             TaxiHailEnvironments.CollectionChanged += TaxiHailEnvironmentsOnCollectionChanged;
 
+            DeploymentJobs.Clear();
             DbContext.Set<DeploymentJob>().ToList().ForEach(DeploymentJobs.Add);
         }
 
@@ -84,8 +99,11 @@ namespace MK.ConfigurationManager
             {
                 e.NewItems.OfType<TaxiHailEnvironment>().ToList().ForEach(x =>
                 {
-                    x.Id = Guid.NewGuid();
-                    DbContext.Set<TaxiHailEnvironment>().Add(x);
+                    if(x.Id == Guid.Empty)
+                    {
+                        x.Id = Guid.NewGuid();
+                        DbContext.Set<TaxiHailEnvironment>().Add(x);
+                    }
                 });
             }
         }
@@ -96,8 +114,11 @@ namespace MK.ConfigurationManager
             {
                e.NewItems.OfType<IBSServer>().ToList().ForEach(x =>
                                                                    {
-                                                                       x.Id = Guid.NewGuid();
-                                                                       DbContext.Set<IBSServer>().Add(x);
+                                                                       if(x.Id == Guid.Empty)
+                                                                       {
+                                                                           x.Id = Guid.NewGuid();
+                                                                           DbContext.Set<IBSServer>().Add(x);
+                                                                       }
                                                                    });
             }
         }
