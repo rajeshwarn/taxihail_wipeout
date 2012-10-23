@@ -10,6 +10,7 @@ using MK.ConfigurationManager.Entities;
 using Microsoft.Web.Administration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using log4net;
 
 namespace MK.DeploymentService
 {
@@ -17,11 +18,13 @@ namespace MK.DeploymentService
     {
         private readonly Timer timer;
         private readonly ReaderWriterLockSlim @lock = new ReaderWriterLockSlim();
+        private readonly ILog logger;
         ConfigurationManagerDbContext DbContext { get; set; }
 
         public DeploymentJobService()
         {
             timer = new Timer(TimerOnElapsed, null, Timeout.Infinite, Timeout.Infinite);
+            logger = LogManager.GetLogger("DeploymentJobService");
         }
 
         private void TimerOnElapsed(object state)
@@ -190,6 +193,7 @@ namespace MK.DeploymentService
                             }else
                             {
                                 webApp = website.Applications.Add("/" + companyName, targetWeDirectory);
+                                webApp.ApplicationPoolName = companyName;
                                 iisManager.CommitChanges();
                             }
 
@@ -198,18 +202,18 @@ namespace MK.DeploymentService
                             var connSting = section.Attributes["connectionString"];
                             connSting.Value = string.Format("Data Source=.;Initial Catalog={0};Integrated Security=True; MultipleActiveResultSets=True", companyName);
                             iisManager.CommitChanges();
-
                         }
-
                         appPool.Start();
 
                     }
 
+                    job.Details = string.Empty;
                     job.Status = JobStatus.SUCCESS;
                     DbContext.SaveChanges();
 
                 }catch(Exception e)
                 {
+                    logger.Fatal(e.Message, e);
                     job.Status = JobStatus.ERROR;
                     job.Details = e.Message;
                     DbContext.SaveChanges();

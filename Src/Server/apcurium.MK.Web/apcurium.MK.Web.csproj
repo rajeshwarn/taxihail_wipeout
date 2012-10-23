@@ -301,6 +301,10 @@
     <Content Include="themes\GoTaxiDesMoines\img\logo.png" />
     <Content Include="themes\TaxiHail\img\header-bg.png" />
     <Content Include="themes\TaxiHail\img\logo.png" />
+    <Content Include="themes\WorcesterYellowCab\img\cancel-icon.png" />
+    <Content Include="themes\WorcesterYellowCab\img\header-bg.png" />
+    <Content Include="themes\WorcesterYellowCab\img\location.png" />
+    <Content Include="themes\WorcesterYellowCab\img\Logo.png" />
     <Content Include="themes\YellowCabSavannah\img\cancel-icon.png" />
     <Content Include="themes\YellowCabSavannah\img\header-bg.png" />
     <Content Include="themes\YellowCabSavannah\img\location.png" />
@@ -648,7 +652,6 @@
   <ItemGroup>
     <Content Include="themes\SanJoseForARide\less\variables.less" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="admin\templates\GrantAdminAccess.handlebars" />
   </ItemGroup>
@@ -695,6 +698,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\localization\AddFavorite.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\WorcesterYellowCab\less\combined-responsive.less" />
+    <Content Include="themes\WorcesterYellowCab\less\combined.less" />
+    <Content Include="themes\WorcesterYellowCab\less\style.less" />
+    <Content Include="themes\WorcesterYellowCab\less\variables.less" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
