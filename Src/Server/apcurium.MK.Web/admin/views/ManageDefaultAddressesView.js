@@ -64,6 +64,10 @@
             $(container).append(itemView.render().el);
         },
 
+        remove: function() {
+            this._addFavoriteView && this._addFavoriteView.remove();
+        },
+
         edit: function (model) {
             model.set('isNew', false);
             var view = this._addFavoriteView = new TaxiHail.AddFavoriteView({
