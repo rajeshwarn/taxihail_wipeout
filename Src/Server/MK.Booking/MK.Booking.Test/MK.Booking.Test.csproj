@@ -62,6 +62,7 @@
     <Compile Include="AccountFixture\given_no_account.cs" />
     <Compile Include="AccountFixture\given_one_account.cs" />
     <Compile Include="AccountFixture\given_an_email_address.cs" />
+    <Compile Include="CompanyFixture\given_a_company.cs" />
     <Compile Include="CompanyFixture\given_no_company.cs" />
     <Compile Include="EnumerableEventsExtensions.cs" />
     <Compile Include="EventSourcingTestHelper.cs" />

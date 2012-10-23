@@ -12,25 +12,17 @@ using apcurium.MK.Booking.Events;
 namespace apcurium.MK.Booking.Test.CompanyFixture
 {
     [TestFixture]
-    class given_no_company
+    public class given_a_company
     {
         private EventSourcingTestHelper<Company> sut;
-        private Guid _companyId = Guid.NewGuid();
+        readonly Guid _companyId = Guid.NewGuid();
 
         [SetUp]
-        public void given_no_company_setup()
+        public void given_a_company_setup()
         {
             this.sut = new EventSourcingTestHelper<Company>();
             this.sut.Setup(new CompanyCommandHandler(this.sut.Repository));
-        }
-
-        [Test]
-        public void when_registering_company_successfully()
-        {
-            this.sut.When(new CreateCompany { CompanyId = _companyId});
-
-            Assert.AreEqual(1, sut.Events.Count);
-            Assert.AreEqual(_companyId, ((CompanyCreated)sut.Events.Single()).SourceId);
+            this.sut.Given(new CompanyCreated{ SourceId = _companyId});
         }
 
         [Test]
@@ -38,6 +30,13 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
         {
             var rateId = Guid.NewGuid();
             this.sut.When(new CreateRate { CompanyId = _companyId, RateId = rateId, FlatRate = 3.50, });
+
+            Assert.AreEqual(1, sut.Events.Count);
+            var evt = (RateCreated) sut.Events.Single();
+            Assert.AreEqual(_companyId, evt.SourceId);
+            Assert.AreEqual(rateId, evt.RateId);
+            Assert.AreEqual(3.50, evt.FlatRate);
+
         }
     }
 }
