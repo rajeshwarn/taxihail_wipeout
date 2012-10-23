@@ -44,7 +44,7 @@ namespace Cirrious.MvvmCross.Binding.Bindings.Target
 
         public override MvxBindingMode DefaultMode
         {
-            get { return MvxBindingMode.TwoWay; }
+            get { return MvxBindingMode.OneWay; }
         }
 
         protected override void Dispose(bool isDisposing)

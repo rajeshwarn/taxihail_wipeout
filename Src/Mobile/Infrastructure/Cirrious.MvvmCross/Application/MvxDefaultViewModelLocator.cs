@@ -7,9 +7,6 @@
 // </copyright>
 // 
 // Project Lead - Stuart Lodge, Cirrious. http://www.cirrious.com
-using Cirrious.MvvmCross.IoC;
-
-
 #endregion
 
 using System;
@@ -29,21 +26,19 @@ namespace Cirrious.MvvmCross.Application
         public bool TryLoad(Type viewModelType, IDictionary<string, string> parameters, out IMvxViewModel model)
         {
             model = null;
-            var loadMethod = viewModelType
+            var constructor = viewModelType
 #if NETFX_CORE
                 .GetTypeInfo().DeclaredConstructors
 #else
-                .GetMethods( )
+                .GetConstructors()
 #endif
-                .FirstOrDefault(c => c.Name == "Load" &&  c.GetParameters().All(p=> p.ParameterType == typeof(string)));
+                .FirstOrDefault(c => c.GetParameters().All(p=> p.ParameterType == typeof(string)));
 
-            if (loadMethod == null)
-            {
-                MvxTrace.Trace("Missing Load method to {0} ", viewModelType );
+            if (constructor == null)
                 return false;
-            }
+
             var invokeWith = new List<object>();
-            foreach (var parameter in loadMethod.GetParameters())
+            foreach (var parameter in constructor.GetParameters())
             {
                 string parameterValue = null;
                 if (parameters == null ||
@@ -55,12 +50,7 @@ namespace Cirrious.MvvmCross.Application
                 invokeWith.Add(parameterValue);
             }
 
-
-            model = MvxOpenNetCfContainer.Current.Resolve( viewModelType )as IMvxViewModel;
-
-            loadMethod.Invoke( model, invokeWith.ToArray() );
-
-            //model = Activator.CreateInstance(viewModelType, invokeWith.ToArray()) as IMvxViewModel;
+            model = Activator.CreateInstance(viewModelType, invokeWith.ToArray()) as IMvxViewModel;
             return (model != null);
         }
 

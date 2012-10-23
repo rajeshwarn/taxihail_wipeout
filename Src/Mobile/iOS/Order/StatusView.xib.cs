@@ -156,7 +156,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             var newBooking = new Confirmation();
             newBooking.Action(Resources.StatusConfirmCancelRide, () => 
             {
-                LoadingOverlay.StartAnimatingLoading(this.View, LoadingOverlayPosition.Center, null, 130, 30);
+                LoadingOverlay.StartAnimatingLoading( LoadingOverlayPosition.Center, null, 130, 30);
                 View.UserInteractionEnabled = false;
                 ThreadHelper.ExecuteInThread(() => 
                 {
@@ -189,7 +189,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                     {
                         InvokeOnMainThread(() => 
                         {
-                            LoadingOverlay.StopAnimatingLoading(this.View);
+                            LoadingOverlay.StopAnimatingLoading();
                             View.UserInteractionEnabled = true;
                         }
                         );
@@ -439,7 +439,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             var newBooking = new Confirmation();
             newBooking.Action(Resources.StatusConfirmCancelRide, () => 
             {
-                LoadingOverlay.StartAnimatingLoading(this.View, LoadingOverlayPosition.Center, null, 130, 30);
+                LoadingOverlay.StartAnimatingLoading( LoadingOverlayPosition.Center, null, 130, 30);
                 View.UserInteractionEnabled = false;
                 ThreadHelper.ExecuteInThread(() => 
                 {
@@ -472,7 +472,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                     {
                         InvokeOnMainThread(() => 
                         {
-                            LoadingOverlay.StopAnimatingLoading(this.View);
+                            LoadingOverlay.StopAnimatingLoading();
                             View.UserInteractionEnabled = true;
                         }
                         );
@@ -550,7 +550,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 //            var newBooking = new Confirmation();
 //            newBooking.Action(Resources.StatusConfirmCancelRide, () => 
 //            {
-//                LoadingOverlay.StartAnimatingLoading(this.View, LoadingOverlayPosition.Center, null, 130, 30);
+//                LoadingOverlay.StartAnimatingLoading( LoadingOverlayPosition.Center, null, 130, 30);
 //                View.UserInteractionEnabled = false;
 //                ThreadHelper.ExecuteInThread(() => 
 //                {
@@ -575,7 +575,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 //                    {
 //                        InvokeOnMainThread(() => 
 //                        {
-//                            LoadingOverlay.StopAnimatingLoading(this.View);
+//                            LoadingOverlay.StopAnimatingLoading();
 //                            View.UserInteractionEnabled = true;
 //                        });
 //                    }

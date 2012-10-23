@@ -137,7 +137,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         void BtnDeleteTouchUpInside(object sender, EventArgs e)
         {
-            LoadingOverlay.StartAnimatingLoading(this.View, LoadingOverlayPosition.Center, null, 130, 30);
+            LoadingOverlay.StartAnimatingLoading(LoadingOverlayPosition.Center, null, 130, 30);
             View.UserInteractionEnabled = false;
             ThreadHelper.ExecuteInThread(() =>
             {
@@ -160,7 +160,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 {
                     InvokeOnMainThread(() =>
                     {
-                        LoadingOverlay.StopAnimatingLoading(this.View);
+                        LoadingOverlay.StopAnimatingLoading();
                         View.UserInteractionEnabled = true;
                     }
                     );
@@ -185,7 +185,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             txtRingCode.ResignFirstResponder();
             txtName.ResignFirstResponder();
             
-            LoadingOverlay.StartAnimatingLoading(this.View, LoadingOverlayPosition.Center, null, 130, 30);
+            LoadingOverlay.StartAnimatingLoading( LoadingOverlayPosition.Center, null, 130, 30);
             View.UserInteractionEnabled = false;
 
             ThreadHelper.ExecuteInThread(() =>
@@ -231,7 +231,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 {
                     InvokeOnMainThread(() =>
                     {
-                        LoadingOverlay.StopAnimatingLoading(this.View);
+                        LoadingOverlay.StopAnimatingLoading();
                         View.UserInteractionEnabled = true;
                     }
                     );
