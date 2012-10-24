@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Controls;
 using MK.ConfigurationManager.Entities;
 using Newtonsoft.Json.Linq;
 
@@ -58,8 +59,6 @@ namespace MK.ConfigurationManager
             IBSServers = new ObservableCollection<IBSServer>();
             TaxiHailEnvironments = new ObservableCollection<TaxiHailEnvironment>();
             DeploymentJobs = new ObservableCollection<DeploymentJob>();
-
-            this.currentDbCs.Text = System.Configuration.ConfigurationManager.ConnectionStrings["MKConfig"].ConnectionString;
         }
 
         void MainWindowLoaded(object sender, RoutedEventArgs e)
@@ -75,7 +74,13 @@ namespace MK.ConfigurationManager
         private void RefreshData()
         {
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<ConfigurationManagerDbContext, SimpleDbMigrationsConfiguration>("MKConfig"));
-            DbContext = new ConfigurationManagerDbContext(this.currentDbCs.Text);
+
+            var connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MKConfig"].ConnectionString;
+            if (this.currentDbList.SelectedItem != null)
+            {
+                connectionString = (this.currentDbList.SelectedItem as ComboBoxItem).Content.ToString();
+            }
+            DbContext = new ConfigurationManagerDbContext(connectionString);
             DbContext.Database.CreateIfNotExists();
 
             Companies.Clear();
@@ -91,6 +96,7 @@ namespace MK.ConfigurationManager
 
             DeploymentJobs.Clear();
             DbContext.Set<DeploymentJob>().ToList().ForEach(DeploymentJobs.Add);
+            statusBarTb.Text = "Done";
         }
 
         private void TaxiHailEnvironmentsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
