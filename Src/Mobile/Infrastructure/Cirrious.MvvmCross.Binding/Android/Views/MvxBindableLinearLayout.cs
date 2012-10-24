@@ -15,6 +15,7 @@ using System.Collections.Specialized;
 using Android.Content;
 using Android.Util;
 using Android.Widget;
+using Cirrious.MvvmCross.Binding.Attributes;
 
 namespace Cirrious.MvvmCross.Binding.Android.Views
 {
@@ -24,7 +25,7 @@ namespace Cirrious.MvvmCross.Binding.Android.Views
         public MvxBindableLinearLayout(Context context, IAttributeSet attrs)
             : base(context, attrs)
         {
-            var itemTemplateId = MvxBindableListViewHelpers.ReadTemplatePath(context, attrs);
+            var itemTemplateId = MvxBindableListViewHelpers.ReadAttributeValue(context, attrs, MvxAndroidBindingResource.Instance.BindableListViewStylableGroupId, MvxAndroidBindingResource.Instance.BindableListItemTemplateId);
             Adapter = new MvxBindableListAdapterWithChangedEvent(context);
             Adapter.ItemTemplateId = itemTemplateId;
             Adapter.DataSetChanged += AdapterOnDataSetChanged;
@@ -42,6 +43,7 @@ namespace Cirrious.MvvmCross.Binding.Android.Views
 
         public MvxBindableListAdapterWithChangedEvent Adapter { get; set; }
 
+        [MvxSetToNullAfterBinding]
         public IList ItemsSource
         {
             get { return Adapter.ItemsSource; }

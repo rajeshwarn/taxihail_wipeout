@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using DatabaseInitializer.Services;
 using DatabaseInitializer.Sql;
@@ -9,7 +10,9 @@ using Newtonsoft.Json.Linq;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Extensions;
 using log4net;
 using log4net.Config;
 
@@ -31,18 +34,13 @@ namespace DatabaseInitializer
                 }
 
                 var connectionString = new ConnectionStringSettings("MkWeb", string.Format( "Data Source=.;Initial Catalog={0};Integrated Security=True; MultipleActiveResultSets=True", companyName ));
-                if (args.Length > 1)
-                {
-                    connectionString.ConnectionString = args[1];
-                }
-
                 var connStringMaster = connectionString.ConnectionString.Replace(companyName, "master");
 
                 //Init or Update
                 bool isUpdate;
-                if (args.Length > 2)
+                if (args.Length > 1)
                 {
-                    isUpdate = args[2].ToUpperInvariant() == "U";
+                    isUpdate = args[1].ToUpperInvariant() == "U";
                 }
                 else
                 {
@@ -52,9 +50,9 @@ namespace DatabaseInitializer
 
                 //SQL Instance name
                 var sqlInstanceName = "MSSQL11.MSSQLSERVER";
-                if (args.Length > 3)
+                if (args.Length > 2)
                 {
-                    sqlInstanceName = args[3];
+                    sqlInstanceName = args[2];
                 }
                 else
                 {
@@ -88,12 +86,19 @@ namespace DatabaseInitializer
                 }
 
                 //Create settings
-                var configurationManager = new
+                IConfigurationManager configurationManager = new
                     apcurium.MK.Common.Configuration.Impl.ConfigurationManager(
                     () => new ConfigurationDbContext(connectionString.ConnectionString));
 
-                var jsonSettings = File.ReadAllText(Path.Combine(AssemblyDirectory, "Settings\\", companyName + ".json"));
+                var jsonSettings = File.ReadAllText(Path.Combine(AssemblyDirectory, "Settings\\Common.json"));
                 var objectSettings = JObject.Parse(jsonSettings);
+                foreach (var token in objectSettings)
+                {
+                    configurationManager.SetSetting(token.Key, token.Value.ToString());
+                }
+
+                jsonSettings = File.ReadAllText(Path.Combine(AssemblyDirectory, "Settings\\", companyName + ".json"));
+                objectSettings = JObject.Parse(jsonSettings);
                 foreach (var token in objectSettings)
                 {
                     configurationManager.SetSetting(token.Key, token.Value.ToString());
@@ -114,21 +119,36 @@ namespace DatabaseInitializer
                 }
                 else
                 {
-                    
-
-
                     //Init data
                     var commandBus = container.Resolve<ICommandBus>();
 
-                    // Create Default company
 
-                   
+                    //Get default settings from IBS
+                    var referenceDataService = container.Resolve<IStaticDataWebServiceClient>();
+                    var defaultCompany = referenceDataService.GetCompaniesList().FirstOrDefault(x => x.IsDefault.HasValue && x.IsDefault.Value) 
+                                        ?? referenceDataService.GetCompaniesList().FirstOrDefault();
+                    
+                    if(defaultCompany != null)
+                    {
+                        configurationManager = container.Resolve<IConfigurationManager>();
+                        configurationManager.SetSetting("DefaultBookingSettings.ProviderId", defaultCompany.Id.ToString());
+
+                        var defaultvehicule = referenceDataService.GetVehiclesList(defaultCompany).FirstOrDefault(x => x.IsDefault.HasValue && x.IsDefault.Value) ??
+                                              referenceDataService.GetVehiclesList(defaultCompany).First();
+                        configurationManager.SetSetting("DefaultBookingSettings.VehicleTypeId", defaultvehicule.Id.ToString());
+                        
+                        var defaultchargetype = referenceDataService.GetPaymentsList(defaultCompany).FirstOrDefault(x => x.Display.HasValue() && x.Display.Contains("Cash"))
+                            ?? referenceDataService.GetPaymentsList(defaultCompany).First();
+                        configurationManager.SetSetting("DefaultBookingSettings.ChargeTypeId", defaultchargetype.Id.ToString());
+                        
+                    }
+
+                    // Create Default company
                     commandBus.Send(new CreateCompany
                     {
                         CompanyId = AppConstants.CompanyId,
                         Id = Guid.NewGuid()
                     });
-
 
                     //Register normal account
 

@@ -18,10 +18,10 @@ namespace MK.ConfigurationManager.Entities
         public Company Company { get; set; }
 
         public IBSServer IBSServer { get; set; }
-
+       
+        public bool DeployServer { get; set; }
+        public bool DeployDB { get; set; }
         public bool InitDatabase { get; set; }
-
-        public bool Server { get; set; }
         public bool Android { get; set; }
         public bool iOS { get; set; }
 

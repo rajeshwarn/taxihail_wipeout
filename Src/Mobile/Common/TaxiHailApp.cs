@@ -79,10 +79,11 @@ namespace apcurium.MK.Booking.Mobile
             this.RegisterServiceInstance<IMvxStartNavigation>(startApplicationObject);
         }
 
-        protected override IMvxViewModelLocator GetDefaultLocator()
+        protected override IMvxViewModelLocator CreateDefaultViewModelLocator()
         {
-            return new TinyIocViewModelLocator();
+            return new TinyIocViewModelLocator(); //base.CreateDefaultViewModelLocator();
         }
+
 
         
     }

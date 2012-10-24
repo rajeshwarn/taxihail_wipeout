@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Controls;
 using MK.ConfigurationManager.Entities;
 using Newtonsoft.Json.Linq;
 
@@ -62,20 +63,40 @@ namespace MK.ConfigurationManager
 
         void MainWindowLoaded(object sender, RoutedEventArgs e)
         {
-            //DbContext.Database.CreateIfNotExists();
+            RefreshData();
+        }
+
+        private void updateCS_Click(object sender, RoutedEventArgs e)
+        {
+            RefreshData();
+        }
+
+        private void RefreshData()
+        {
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<ConfigurationManagerDbContext, SimpleDbMigrationsConfiguration>("MKConfig"));
-            DbContext = new ConfigurationManagerDbContext(System.Configuration.ConfigurationManager.ConnectionStrings["MKConfig"].ConnectionString);
-            this.currentDbCs.Text = System.Configuration.ConfigurationManager.ConnectionStrings["MKConfig"].ConnectionString;
-            
+
+            var connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MKConfig"].ConnectionString;
+            if (this.currentDbList.SelectedItem != null)
+            {
+                connectionString = (this.currentDbList.SelectedItem as ComboBoxItem).Content.ToString();
+            }
+            DbContext = new ConfigurationManagerDbContext(connectionString);
+            DbContext.Database.CreateIfNotExists();
+
+            Companies.Clear();
             DbContext.Set<Company>().ToList().ForEach(Companies.Add);
 
+            IBSServers.Clear();
             DbContext.Set<IBSServer>().ToList().ForEach(IBSServers.Add);
             IBSServers.CollectionChanged += IBSServersCollectionChanged;
 
+            TaxiHailEnvironments.Clear();
             DbContext.Set<TaxiHailEnvironment>().ToList().ForEach(TaxiHailEnvironments.Add);
             TaxiHailEnvironments.CollectionChanged += TaxiHailEnvironmentsOnCollectionChanged;
 
+            DeploymentJobs.Clear();
             DbContext.Set<DeploymentJob>().ToList().ForEach(DeploymentJobs.Add);
+            statusBarTb.Text = "Done";
         }
 
         private void TaxiHailEnvironmentsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -84,8 +105,11 @@ namespace MK.ConfigurationManager
             {
                 e.NewItems.OfType<TaxiHailEnvironment>().ToList().ForEach(x =>
                 {
-                    x.Id = Guid.NewGuid();
-                    DbContext.Set<TaxiHailEnvironment>().Add(x);
+                    if(x.Id == Guid.Empty)
+                    {
+                        x.Id = Guid.NewGuid();
+                        DbContext.Set<TaxiHailEnvironment>().Add(x);
+                    }
                 });
             }
         }
@@ -96,8 +120,11 @@ namespace MK.ConfigurationManager
             {
                e.NewItems.OfType<IBSServer>().ToList().ForEach(x =>
                                                                    {
-                                                                       x.Id = Guid.NewGuid();
-                                                                       DbContext.Set<IBSServer>().Add(x);
+                                                                       if(x.Id == Guid.Empty)
+                                                                       {
+                                                                           x.Id = Guid.NewGuid();
+                                                                           DbContext.Set<IBSServer>().Add(x);
+                                                                       }
                                                                    });
             }
         }
@@ -105,7 +132,7 @@ namespace MK.ConfigurationManager
         private void addCompabyBt_Click(object sender, RoutedEventArgs e)
         {
             var newCompany = new Company() {Id = Guid.NewGuid()};
-            var jsonSettings = File.ReadAllText(Path.Combine(AssemblyDirectory, "Entities\\Companytemplate.json"));
+            var jsonSettings = File.ReadAllText(Path.Combine(AssemblyDirectory, "Entities\\CompanyTemplate.json"));
             var objectSettings = JObject.Parse(jsonSettings);
 
             foreach (var token in objectSettings)
@@ -161,6 +188,9 @@ namespace MK.ConfigurationManager
         public bool DeployServer { get; set; }
         public bool DeployIos { get; set; }
         public bool DeployAndroid { get; set; }
+        public bool DeployDB { get; set; }
+        public string DeployRevision { get; set; }
+        public string DeployVersion { get; set; }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
@@ -168,10 +198,12 @@ namespace MK.ConfigurationManager
             job.Id = Guid.NewGuid();
             job.Company = DeployCompany;
             job.IBSServer = DeployIBSServer;
+            job.Revision = DeployRevision;
             job.TaxHailEnv = DeployTaxiHailEnv;
+            job.DeployDB = DeployDB;
             job.InitDatabase = DeployInitDatabse;
             job.Android = DeployAndroid;
-            job.Server = DeployServer;
+            job.DeployServer = DeployServer;
             job.iOS = DeployIos;
             job.Status = JobStatus.REQUESTED;
             DbContext.Set<DeploymentJob>().Add(job);
@@ -192,7 +224,6 @@ namespace MK.ConfigurationManager
         {
             AutomaticMigrationsEnabled = true;
             AutomaticMigrationDataLossAllowed = true;
-            
         }
     }
 
