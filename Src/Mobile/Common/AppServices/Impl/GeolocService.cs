@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Entity;
 using TinyIoC;
 using apcurium.MK.Booking.Api.Client;
@@ -13,7 +14,7 @@ using apcurium.MK.Booking.Maps;
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
 
-    public class GeolocService : IGeolocService
+    public class GeolocService : BaseService, IGeolocService
     {
         public Address ValidateAddress(string address)
         {
@@ -120,8 +121,30 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
 
             return addresses.Where(a => a.FullAddress.HasValue() && a.FullAddress.ToLower().StartsWith(address.ToLower())).ToArray();
-
         }
+
+        /*public IEnumerable<Address> GetPopularAddress(double latitude, double longitude)
+        {
+            var _popularAddressesCacheKey = "sss";
+            var cached = TinyIoCContainer.Current.Resolve<ICacheService>().Get<Address[]>(_popularAddressesCacheKey);
+
+            if (cached != null)
+            {
+                return cached;
+            }
+            else
+            {
+
+                IEnumerable<Address> result = new Address[0];
+                UseServiceClient<PopularAddressServiceClient>(service =>
+                {
+                    result = service.GetPopular();
+                }
+                );
+                TinyIoCContainer.Current.Resolve<ICacheService>().Set(_popularAddressesCacheKey, result.ToArray());
+                return result;
+            }
+        }*/
 
 
     }

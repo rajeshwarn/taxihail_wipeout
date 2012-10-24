@@ -266,6 +266,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             IsExecuting = false;
         }
 
+        private void GetPopularAddressForCoordinate(Position p)
+        {
+            var address = TinyIoC.TinyIoCContainer.Current.Resolve<IGeolocService>().SearchAddress(p.Latitude, p.Longitude);
+        }
+
 
 
     }

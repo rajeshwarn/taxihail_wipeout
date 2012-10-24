@@ -27,8 +27,12 @@ namespace apcurium.MK.Booking.Api.Services
             Dao = dao; 
         }
 
-
         public override object OnGet(ClientPopularAddress request)
+        {
+            return Dao.GetAll();
+        }
+
+        /*public override object OnGet(ClientPopularAddress request)
         {
             float range = float.Parse(_configManager.GetSetting("Geoloc.PopularAddress.Range"));
             const double R = 6378137;
@@ -55,7 +59,7 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 return null;
             }
-        }
+        }*/
     }
     public static class DoubleExtension
     {

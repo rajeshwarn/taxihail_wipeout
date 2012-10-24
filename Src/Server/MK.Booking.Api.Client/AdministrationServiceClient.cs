@@ -44,12 +44,6 @@ namespace apcurium.MK.Booking.Api.Client
             var response = Client.Delete<string>(req);
         }
 
-        public IList<Address> GetPopularAddresses()
-        {
-            var req = string.Format("/admin/popularaddresses");
-            var addresses = Client.Get<IList<Address>>(req);
-            return addresses;
-        }
 
         public void AddPopularAddress(PopularAddress address)
         {
@@ -67,6 +61,13 @@ namespace apcurium.MK.Booking.Api.Client
         {
             var req = string.Format("/admin/popularaddresses/{0}", addressId);
             var response = Client.Delete<string>(req);
+        }
+
+        public IList<Address> GetPopularAddresses()
+        {
+            var req = string.Format("/popularaddresses");
+            var addresses = Client.Get<IList<Address>>(req);
+            return addresses;
         }
     }
 }

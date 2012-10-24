@@ -1,4 +1,5 @@
-﻿using apcurium.MK.Booking.Google;
+﻿using MK.Common.Android.Provider;
+using apcurium.MK.Booking.Google;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using System;
@@ -13,11 +14,13 @@ namespace apcurium.MK.Booking.Maps.Impl
     {
         private readonly IMapsApiClient _client;
         private IConfigurationManager _configManager;
+        private readonly IPopularAddressProvider _popularAddressProvider;
 
-        public Addresses(IMapsApiClient client, IConfigurationManager configurationManager)
+        public Addresses(IMapsApiClient client, IConfigurationManager configurationManager, IPopularAddressProvider popularAddressProvider )
         {
             _client = client;
             _configManager = configurationManager;
+            _popularAddressProvider = popularAddressProvider;
         }
 
         public Address[] Search(string name, double latitude, double longitude)
@@ -31,7 +34,7 @@ namespace apcurium.MK.Booking.Maps.Impl
             if (isNumeric)
             {
 
-                var geoCodingService = new Geocoding(_client, _configManager);
+                var geoCodingService = new Geocoding(_client, _configManager, _popularAddressProvider);
                 var list = (Address[])geoCodingService.Search(name);
                 addresses = list;
             }

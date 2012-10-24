@@ -24,10 +24,7 @@ namespace apcurium.MK.Booking.Api.Services
             Dao = dao;
         }
 
-        public override object OnGet(PopularAddress request)
-        {
-            return Dao.GetAll();
-        }
+        
 
         public override object OnPost(PopularAddress request)
         {

@@ -9,8 +9,6 @@ using apcurium.MK.Booking.Security;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    
-    [RestService("/admin/popularaddresses", "GET")]
     [Authenticate]
     [AuthorizationRequired(ApplyTo.All, Permissions.Admin)]
     [RestService("/admin/popularaddresses", "POST")]

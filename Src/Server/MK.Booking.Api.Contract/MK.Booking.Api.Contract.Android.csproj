@@ -61,6 +61,7 @@
     <Compile Include="Requests\ApplicationInfoRequest.cs" />
     <Compile Include="Requests\BookingSettingsRequest.cs" />
     <Compile Include="Requests\CancelOrder.cs" />
+    <Compile Include="Requests\ClientPopularAddress.cs" />
     <Compile Include="Requests\ConfirmAccountRequest.cs" />
     <Compile Include="Requests\CreateOrder.cs" />
     <Compile Include="Requests\CurrentAccount.cs" />

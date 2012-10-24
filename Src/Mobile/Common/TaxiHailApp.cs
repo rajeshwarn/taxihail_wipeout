@@ -4,6 +4,7 @@ using Cirrious.MvvmCross.Interfaces.Localization;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
 using MK.Booking.Mobile.Infrastructure.Mvx;
+using MK.Common.Android.Provider;
 using TinyIoC;
 using TinyMessenger;
 using apcurium.MK.Booking.Mobile.AppServices;
@@ -66,6 +67,7 @@ namespace apcurium.MK.Booking.Mobile
             TinyIoCContainer.Current.Register<IGeocoding, Geocoding>();
             TinyIoCContainer.Current.Register<IPlaces, Places>();
             TinyIoCContainer.Current.Register<IMapsApiClient, MapsApiClient>();
+            TinyIoCContainer.Current.Register<IPopularAddressProvider, PopularAddressProvider>();
 
             
 

@@ -58,6 +58,7 @@
     <Compile Include="BaseServiceClient.cs" />
     <Compile Include="ConfigurationClientService.cs" />
     <Compile Include="OrderServiceClient.cs" />
+    <Compile Include="PopularAddressesServiceClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReferenceDataServiceClient.cs" />
     <Compile Include="ApplicationInfoServiceClient.cs" />
