@@ -31,8 +31,15 @@ namespace apcurium.MK.Booking.Domain
             base.Handles<DefaultFavoriteAddressAdded>(OnDefaultFavoriteAddressAdded);
             base.Handles<DefaultFavoriteAddressRemoved>(OnDefaultFavoriteAddressRemoved);
             base.Handles<DefaultFavoriteAddressUpdated>(OnDefaultFavoriteAddressUpdated);
+
+            base.Handles<PopularAddressAdded>(OnPopularAddressAdded);
+            base.Handles<PopularAddressRemoved>(OnPopularAddressRemoved);
+            base.Handles<PopularAddressUpdated>(OnPopularAddressUpdated);
+
             base.Handles<CompanyCreated>(OnCompanyCreated);
         }
+
+        
 
 
         public void AddDefaultFavoriteAddress(Guid id, string friendlyName, string apartment, string fullAddress, string ringCode, string buildingName, double latitude, double longitude)
@@ -77,6 +84,48 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
+        public void AddPopularAddress(Guid id, string friendlyName, string apartment, string fullAddress, string ringCode, string buildingName, double latitude, double longitude)
+        {
+            ValidateFavoriteAddress(friendlyName, fullAddress, latitude, longitude);
+
+            this.Update(new PopularAddressAdded
+            {
+                AddressId = id,
+                FriendlyName = friendlyName,
+                Apartment = apartment,
+                FullAddress = fullAddress,
+                RingCode = ringCode,
+                BuildingName = buildingName,
+                Latitude = latitude,
+                Longitude = longitude,
+            });
+        }
+
+        public void UpdatePopularAddress(Guid id, string friendlyName, string apartment, string fullAddress, string ringCode, string buildingName, double latitude, double longitude)
+        {
+            ValidateFavoriteAddress(friendlyName, fullAddress, latitude, longitude);
+
+            this.Update(new PopularAddressUpdated()
+            {
+                AddressId = id,
+                FriendlyName = friendlyName,
+                Apartment = apartment,
+                FullAddress = fullAddress,
+                RingCode = ringCode,
+                BuildingName = buildingName,
+                Latitude = latitude,
+                Longitude = longitude
+            });
+        }
+
+        public void RemovePopularAddress(Guid addressId)
+        {
+            this.Update(new PopularAddressRemoved
+            {
+                AddressId = addressId
+            });
+        }
+
         private static void ValidateFavoriteAddress(string friendlyName, string fullAddress, double latitude, double longitude)
         {
             if (Params.Get(friendlyName, fullAddress).Any(string.IsNullOrEmpty))
@@ -111,6 +160,21 @@ namespace apcurium.MK.Booking.Domain
 
         private void OnDefaultFavoriteAddressAdded(DefaultFavoriteAddressAdded obj)
         {
+        }
+
+        private void OnPopularAddressUpdated(PopularAddressUpdated obj)
+        {
+
+        }
+
+        private void OnPopularAddressRemoved(PopularAddressRemoved obj)
+        {
+
+        }
+
+        private void OnPopularAddressAdded(PopularAddressAdded obj)
+        {
+
         }
     }
 }

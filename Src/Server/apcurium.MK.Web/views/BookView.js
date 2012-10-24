@@ -63,12 +63,14 @@
             this._pickupAddressView = new TaxiHail.AddressControlView({
                     model: pickupAddress,
                     locate: true,
-                    pin: 'green'
+                    pin: 'green',
+                    locatepopular : true
                 });
             this._dropOffAddressView = new TaxiHail.AddressControlView({
                     model: dropOffAddress,
                     clear: true,
-                    pin: 'red'
+                    pin: 'red',
+                    locatepopular : true
             });
             
             

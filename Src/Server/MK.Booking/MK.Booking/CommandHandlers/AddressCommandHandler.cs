@@ -8,6 +8,7 @@ using apcurium.MK.Common;
 namespace apcurium.MK.Booking.BackOffice.CommandHandlers
 {
     public class AddressCommandHandler : ICommandHandler<AddFavoriteAddress>, ICommandHandler<RemoveFavoriteAddress>, ICommandHandler<UpdateFavoriteAddress>, ICommandHandler<RemoveAddressFromHistory>, ICommandHandler<AddDefaultFavoriteAddress>, ICommandHandler<RemoveDefaultFavoriteAddress>, ICommandHandler<UpdateDefaultFavoriteAddress>
+        , ICommandHandler<AddPopularAddress>, ICommandHandler<RemovePopularAddress>, ICommandHandler<UpdatePopularAddress>
     {
         private readonly IEventSourcedRepository<Account> _repository;
         private readonly IEventSourcedRepository<Company> _companyRepository;
@@ -95,6 +96,45 @@ namespace apcurium.MK.Booking.BackOffice.CommandHandlers
             var company = _companyRepository.Get(AppConstants.CompanyId);
 
             company.UpdateDefaultFavoriteAddress(id: command.AddressId,
+                friendlyName: command.FriendlyName,
+                apartment: command.Apartment,
+                fullAddress: command.FullAddress,
+                ringCode: command.RingCode,
+                buildingName: command.BuildingName,
+                latitude: command.Latitude,
+                longitude: command.Longitude);
+
+            _companyRepository.Save(company, command.Id.ToString());
+        }
+
+        public void Handle(AddPopularAddress command)
+        {
+            var company = _companyRepository.Get(AppConstants.CompanyId);
+            company.AddPopularAddress(id: command.AddressId,
+                friendlyName: command.FriendlyName,
+                apartment: command.Apartment,
+                fullAddress: command.FullAddress,
+                ringCode: command.RingCode,
+                buildingName: command.BuildingName,
+                latitude: command.Latitude,
+                longitude: command.Longitude);
+            _companyRepository.Save(company, command.Id.ToString());
+        }
+
+        public void Handle(RemovePopularAddress command)
+        {
+            var company = _companyRepository.Get(AppConstants.CompanyId);
+
+            company.RemovePopularAddress(command.AddressId);
+
+            _companyRepository.Save(company, command.Id.ToString());
+        }
+
+        public void Handle(UpdatePopularAddress command)
+        {
+            var company = _companyRepository.Get(AppConstants.CompanyId);
+
+            company.UpdatePopularAddress(id: command.AddressId,
                 friendlyName: command.FriendlyName,
                 apartment: command.Apartment,
                 fullAddress: command.FullAddress,

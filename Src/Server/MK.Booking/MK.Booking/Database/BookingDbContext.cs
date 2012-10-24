@@ -29,6 +29,7 @@ namespace apcurium.MK.Booking.Database
             modelBuilder.Entity<AddressDetails>().ToTable("AddressDetails", SchemaName);
             modelBuilder.Entity<OrderDetail>().ToTable("OrderDetail", SchemaName);
             modelBuilder.Entity<DefaultAddressDetails>().ToTable("DefaultAddressDetails", SchemaName);
+            modelBuilder.Entity<PopularAddressDetails>().ToTable("PopularAddressDetails", SchemaName);
         }
 
         public T Find<T>(Guid id) where T : class
