@@ -20,6 +20,12 @@
             var route = $item.data().route;
             $item.addClass('active').siblings().removeClass('active');
             TaxiHail.app.navigate(route, { trigger: true });
+        },
+        
+        tomanagepopularaddresses : function (e) {
+            e.preventDefault();
+            this.$('[data-tabname=managepopularaddresses]').addClass('active').siblings().removeClass('active');
+            TaxiHail.app.navigate('managepopularaddresses', { trigger: true });
 
         }
     });

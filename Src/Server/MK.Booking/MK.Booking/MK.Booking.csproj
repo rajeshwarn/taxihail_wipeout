@@ -105,6 +105,7 @@
     <Compile Include="ReadModel\DefaultAddressDetails.cs" />
     <Compile Include="ReadModel\OrderDetail.cs" />
     <Compile Include="ReadModel\OrderStatus.cs" />
+    <Compile Include="ReadModel\PopularAddressDetails.cs" />
     <Compile Include="ReadModel\Query\AccountDao.cs" />
     <Compile Include="ReadModel\Query\AddressDao.cs" />
     <Compile Include="ReadModel\Query\DefaultAddressDao.cs" />
@@ -113,8 +114,10 @@
     <Compile Include="ReadModel\Query\IDefaultAddressDao.cs" />
     <Compile Include="ReadModel\Query\IOrderDao.cs" />
     <Compile Include="ReadModel\Query\IRateDao.cs" />
+    <Compile Include="ReadModel\Query\IPopularAddressDao.cs" />
     <Compile Include="ReadModel\Query\OrderDao.cs" />
     <Compile Include="ReadModel\Query\RateDao.cs" />
+    <Compile Include="ReadModel\Query\PopularAddressDao.cs" />
     <Compile Include="ReadModel\RateDetail.cs" />
     <Compile Include="Security\IPasswordService.cs" />
     <Compile Include="Security\PasswordService.cs" />

@@ -27,6 +27,7 @@
         routes: {
             "": "manageFavoritesDefault",   // #
             "grantadmin": "grantAdminAccess",
+            "managepopularaddresses": "managePopularAddresses",
             "rates": "manageRates", //#rates
             "rates/add": "addRate" //#rates/new
         },
@@ -49,6 +50,22 @@
                             addresses.reset(favorites.models);
                             renderView(view);
                         }, this)
+            });
+        },
+        
+        managePopularAddresses : function () {
+            var addresses = new TaxiHail.CompanyPopularAddressCollection(),
+                        view = this._tabView = new TaxiHail.ManagePopularAddressesView({
+                            collection: addresses
+                        });
+
+            var popular = new TaxiHail.CompanyPopularAddressCollection();
+            popular.fetch({
+                url: '../api/admin/popularaddresses',
+                success: _.bind(function (collection, resp) {
+                    addresses.reset(popular.models);
+                    renderView(view);
+                }, this)
             });
         },
         

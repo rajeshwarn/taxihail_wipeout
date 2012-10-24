@@ -147,13 +147,17 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\collections\CompanyDefaultAddressCollection.js" />
+    <Content Include="common\collections\CompanyPopularAddressCollection.js" />
     <Content Include="admin\default.aspx" />
     <Content Include="admin\models\CompanyDefaultAddress.js" />
+    <Content Include="common\models\CompanyPopularAddress.js" />
     <Content Include="admin\routers\app.js" />
     <Content Include="admin\taxi-hail-admin.js" />
+    <Content Include="admin\views\AddPopularAddressView.js" />
     <Content Include="admin\views\AdminMenuView.js" />
     <Content Include="admin\views\GrantAdminAccessView.js" />
     <Content Include="admin\views\ManageDefaultAddressesView.js" />
+    <Content Include="admin\views\ManagePopularAddressesView.js" />
     <Content Include="admin\views\TemplatedView.js" />
     <Content Include="ApiDoc.aspx" />
     <Content Include="assets\bootstrap-datepicker\css\datepicker.css" />
@@ -258,6 +262,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="mixins\ValidatedView.js" />
+    <Content Include="services\MathService.js" />
     <Content Include="models\NewAccount.js" />
     <Content Include="models\OrderStatus.js" />
     <Content Include="models\ReferenceData.js" />
@@ -281,6 +286,18 @@
     <Content Include="themes\BurlingtonTaxiOntario\img\header-bg.png" />
     <Content Include="themes\BurlingtonTaxiOntario\img\location.png" />
     <Content Include="themes\BurlingtonTaxiOntario\img\logo.png" />
+    <Content Include="themes\BostonCab\img\cancel-icon.png" />
+    <Content Include="themes\BostonCab\img\header-bg.png" />
+    <Content Include="themes\BostonCab\img\location.png" />
+    <Content Include="themes\BostonCab\img\logo.png" />
+    <Content Include="themes\VictoriaTaxi\img\cancel-icon.png" />
+    <Content Include="themes\VictoriaTaxi\img\header-bg.png" />
+    <Content Include="themes\VictoriaTaxi\img\location.png" />
+    <Content Include="themes\VictoriaTaxi\img\Logo.png" />
+    <Content Include="themes\YellowCabTampa\img\cancel-icon.png" />
+    <Content Include="themes\YellowCabTampa\img\header-bg.png" />
+    <Content Include="themes\YellowCabTampa\img\location.png" />
+    <Content Include="themes\YellowCabTampa\img\Logo.png" />
     <Content Include="themes\SanJoseForARide\img\cancel-icon.png" />
     <Content Include="themes\SanJoseForARide\img\header-bg.png" />
     <Content Include="themes\SanJoseForARide\img\location.png" />
@@ -651,6 +668,9 @@
     <Content Include="themes\SanJoseForARide\less\variables.less" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="admin\templates\ManagePopularAddresses.handlebars" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="admin\templates\GrantAdminAccess.handlebars" />
   </ItemGroup>
   <ItemGroup>
@@ -702,6 +722,51 @@
     <Content Include="themes\WorcesterYellowCab\less\combined.less" />
     <Content Include="themes\WorcesterYellowCab\less\style.less" />
     <Content Include="themes\WorcesterYellowCab\less\variables.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="admin\localization\AdminMenu.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="admin\templates\AddPopularAddress.handlebars" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\YellowCabTampa\less\combined-responsive.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="admin\localization\AddPopularAddress.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\YellowCabTampa\less\combined.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\YellowCabTampa\less\style.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\YellowCabTampa\less\variables.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\BostonCab\less\combined-responsive.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\BostonCab\less\combined.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\BostonCab\less\style.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\BostonCab\less\variables.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\VictoriaTaxi\less\combined-responsive.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\VictoriaTaxi\less\combined.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\VictoriaTaxi\less\style.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\VictoriaTaxi\less\variables.less" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

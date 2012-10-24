@@ -9,6 +9,7 @@ using apcurium.MK.Booking.ReadModel;
 namespace apcurium.MK.Booking.BackOffice.EventHandlers
 {
     public class AddressListGenerator : IEventHandler<FavoriteAddressAdded>, IEventHandler<FavoriteAddressRemoved>, IEventHandler<FavoriteAddressUpdated>, IEventHandler<OrderCreated>, IEventHandler<AddressRemovedFromHistory>, IEventHandler<DefaultFavoriteAddressAdded>, IEventHandler<DefaultFavoriteAddressRemoved>, IEventHandler<DefaultFavoriteAddressUpdated>
+        , IEventHandler<PopularAddressAdded>, IEventHandler<PopularAddressRemoved>, IEventHandler<PopularAddressUpdated>
     {
         private readonly Func<BookingDbContext> _contextFactory;
         public AddressListGenerator(Func<BookingDbContext> contextFactory)
@@ -150,6 +151,50 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var address = context.Find<DefaultAddressDetails>(@event.AddressId);
+                if (address != null)
+                {
+                    AutoMapper.Mapper.Map(@event, address);
+                    context.SaveChanges();
+                }
+            }
+        }
+
+        public void Handle(PopularAddressAdded @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                context.Save(new PopularAddressDetails
+                {
+                    Id = @event.AddressId,
+                    FriendlyName = @event.FriendlyName,
+                    Apartment = @event.Apartment,
+                    FullAddress = @event.FullAddress,
+                    RingCode = @event.RingCode,
+                    BuildingName = @event.BuildingName,
+                    Latitude = @event.Latitude,
+                    Longitude = @event.Longitude,
+                });
+            }
+        }
+
+        public void Handle(PopularAddressRemoved @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var address = context.Find<PopularAddressDetails>(@event.AddressId);
+                if (address != null)
+                {
+                    context.Set<PopularAddressDetails>().Remove(address);
+                    context.SaveChanges();
+                }
+            }
+        }
+
+        public void Handle(PopularAddressUpdated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var address = context.Find<PopularAddressDetails>(@event.AddressId);
                 if (address != null)
                 {
                     AutoMapper.Mapper.Map(@event, address);

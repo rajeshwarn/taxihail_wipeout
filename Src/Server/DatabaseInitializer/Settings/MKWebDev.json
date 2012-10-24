@@ -1,6 +1,6 @@
 {
    "IBS.WebServicesPassword" : "test",
-   "IBS.WebServicesUrl" : "http://72.38.252.190:6928/XDS_IASPI.DLL/soap/",
+   "IBS.WebServicesUrl" : "http://drivelinq.dyndns-ip.com:6928/XDS_IASPI.DLL/soap/",
    "IBS.WebServicesUserName" : "taxi",  
    "DefaultBookingSettings.NbPassenger" : "1",
    "Direction.FlateRate" : "3.45",
@@ -11,6 +11,7 @@
    "GeoLoc.DefaultLatitude" : "45.516667",
    "GeoLoc.DefaultLongitude" : "-73.65",
    "GeoLoc.SearchFilter" : "{0},ottawa,on,canada&region=ca", 
+   "Geoloc.PopularAddress.Range" : "500",
    "IBS.ExcludedVehicleTypeId" : "22;21",  
    "PriceFormat" : "en-US",   
    "DefaultPhoneNumber" : "18666245330",
