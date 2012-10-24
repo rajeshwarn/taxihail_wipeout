@@ -125,7 +125,8 @@ namespace DatabaseInitializer
 
                     //Get default settings from IBS
                     var referenceDataService = container.Resolve<IStaticDataWebServiceClient>();
-                    var defaultCompany = referenceDataService.GetCompaniesList().FirstOrDefault(x => x.IsDefault.HasValue && x.IsDefault.Value) ?? referenceDataService.GetCompaniesList().First();
+                    var defaultCompany = referenceDataService.GetCompaniesList().FirstOrDefault(x => x.IsDefault.HasValue && x.IsDefault.Value) 
+                                        ?? referenceDataService.GetCompaniesList().FirstOrDefault();
                     
                     if(defaultCompany != null)
                     {
