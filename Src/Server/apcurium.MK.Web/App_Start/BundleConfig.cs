@@ -69,12 +69,12 @@ namespace apcurium.MK.Web
                 "~/views/FavoriteDetailsView.js",
                 "~/common/views/AddFavoriteView.js",
                 "~/views/FavoritesView.js",
-                "~/services/AuthService.js",
                 "~/services/OrderService.js",
-                "~/services/GeocodingService.js",
-                "~/services/GeolocationService.js",
-                "~/services/PlacesService.js",
                 "~/services/DirectionInfoService.js",
+                "~/common/services/AuthService.js",
+                "~/common/services/GeocodingService.js",
+                "~/common/services/GeolocationService.js",
+                "~/common/services/PlacesService.js",
                 "~/routers/App.js"));
 
             var templateBundle = new Bundle("~/bundles/templates")
@@ -137,6 +137,8 @@ namespace apcurium.MK.Web
                 "~/admin/views/AddRateView.js",
                 "~/common/services/AuthService.js",
                 "~/common/services/GeocodingService.js",
+                "~/common/services/GeolocationService.js",
+                "~/common/services/PlacesService.js",
                 "~/admin/routers/App.js"));
 
             var adminTemplateBundle = new Bundle("~/admin/bundles/templates")
