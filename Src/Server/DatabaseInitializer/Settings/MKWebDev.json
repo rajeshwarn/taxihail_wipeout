@@ -1,11 +1,8 @@
 {
    "IBS.WebServicesPassword" : "test",
    "IBS.WebServicesUrl" : "http://72.38.252.190:6928/XDS_IASPI.DLL/soap/",
-   "IBS.WebServicesUserName" : "taxi",
-   "DefaultBookingSettings.ChargeTypeId" : "1",
+   "IBS.WebServicesUserName" : "taxi",  
    "DefaultBookingSettings.NbPassenger" : "1",
-   "DefaultBookingSettings.ProviderId" : "13",
-   "DefaultBookingSettings.VehicleTypeId" : "1",
    "Direction.FlateRate" : "3.45",
    "Direction.MaxDistance" : "50",
    "Direction.RatePerKm" : "1.70",

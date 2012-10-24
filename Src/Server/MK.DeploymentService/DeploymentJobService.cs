@@ -19,8 +19,7 @@ namespace MK.DeploymentService
         private readonly Timer timer;
         private readonly ReaderWriterLockSlim @lock = new ReaderWriterLockSlim();
         private readonly ILog logger;
-        ConfigurationManagerDbContext DbContext { get; set; }
-
+        
         public DeploymentJobService()
         {
             timer = new Timer(TimerOnElapsed, null, Timeout.Infinite, Timeout.Infinite);
@@ -49,6 +48,7 @@ namespace MK.DeploymentService
 
         private void CheckAndRunJob()
         {
+            var DbContext = new ConfigurationManagerDbContext(System.Configuration.ConfigurationManager.ConnectionStrings["MKConfig"].ConnectionString);
             var job = DbContext.Set<DeploymentJob>()
                 .Include(x => x.Company)
                 .Include(x => x.IBSServer)
@@ -207,6 +207,8 @@ namespace MK.DeploymentService
 
                     }
 
+                    Directory.Delete(sourceDirectory, true);
+
                     job.Details = string.Empty;
                     job.Status = JobStatus.SUCCESS;
                     DbContext.SaveChanges();
@@ -224,10 +226,8 @@ namespace MK.DeploymentService
         public void Start()
         {
             Database.SetInitializer<ConfigurationManagerDbContext>(null);
-            DbContext = new ConfigurationManagerDbContext(System.Configuration.ConfigurationManager.ConnectionStrings["MKConfig"].ConnectionString);
             timer.Change(0, 2000);
         }
-
         
 
         public void Stop()
