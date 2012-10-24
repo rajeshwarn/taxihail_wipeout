@@ -4,7 +4,7 @@
 
         initialize: function() {
             this.collection = new TaxiHail.RateCollection();
-            //this.collection.fetch();
+            this.collection.fetch();
         },
 
         index: function() {

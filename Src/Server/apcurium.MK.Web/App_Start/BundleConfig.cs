@@ -120,7 +120,7 @@ namespace apcurium.MK.Web
                 "~/admin/controllers/RatesController.js",
                 "~/admin/models/CompanyDefaultAddress.js",
                 "~/common/models/UserAccount.js",
-                "~/common/models/Rate.js",
+                "~/admin/models/Rate.js",
                 "~/admin/collections/CompanyDefaultAddressCollection.js",
                 "~/admin/collections/RateCollection.js",
                 "~/common/views/TemplatedView.js",

@@ -112,7 +112,9 @@
     <Compile Include="ReadModel\Query\IAddressDao.cs" />
     <Compile Include="ReadModel\Query\IDefaultAddressDao.cs" />
     <Compile Include="ReadModel\Query\IOrderDao.cs" />
+    <Compile Include="ReadModel\Query\IRateDao.cs" />
     <Compile Include="ReadModel\Query\OrderDao.cs" />
+    <Compile Include="ReadModel\Query\RateDao.cs" />
     <Compile Include="ReadModel\RateDetail.cs" />
     <Compile Include="Security\IPasswordService.cs" />
     <Compile Include="Security\PasswordService.cs" />

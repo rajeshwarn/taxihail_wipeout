@@ -11,20 +11,43 @@
         <div class="control-group">
             <label class="control-label">{{localize 'Distance Multiplicator'}}</label>
             <div class="controls">
-                <input type="text" name="flatRate"  value="{{flatRate}}" class='input-block-level'>
+                <input type="text" name="distanceMultiplicator"  value="{{flatRate}}" class='input-block-level'>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">{{localize 'Time Adjustment Factor'}}</label>
             <div class="controls">
-                <input type="text" name="flatRate"  value="{{flatRate}}" class='input-block-level'>
+                <input type="text" name="timeAdjustmentFactor"  value="{{flatRate}}" class='input-block-level'>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">{{localize 'Price Per Passenger'}}</label>
             <div class="controls">
-                <input type="text" name="flatRate"  value="{{flatRate}}" class='input-block-level'>
+                <input type="text" name="pricePerPassenger"  value="{{flatRate}}" class='input-block-level'>
             </div>
+        </div>
+        <div class="control-group">
+            <label class="checkbox inline">
+                <input type="checkbox" name='daysOfTheWeek' value="0"> Sunday
+            </label>
+            <label class="checkbox inline">
+                <input type="checkbox" name='daysOfTheWeek' value="1"> Monday
+            </label>
+            <label class="checkbox inline">
+                <input type="checkbox" name='daysOfTheWeek' value="2"> Tuesday
+            </label>
+            <label class="checkbox inline">
+                <input type="checkbox" name='daysOfTheWeek' value="3"> Wednesday
+            </label>
+            <label class="checkbox inline">
+                <input type="checkbox" name='daysOfTheWeek' value="4"> Thursday
+            </label>
+            <label class="checkbox inline">
+                <input type="checkbox" name='daysOfTheWeek' value="5"> Friday
+            </label>
+            <label class="checkbox inline">
+                <input type="checkbox" name='daysOfTheWeek' value="6"> Saturday
+            </label>
         </div>
         <button type='submit' class='btn btn-primary'>{{localize "Add Rate"}}</button>
     </form>
