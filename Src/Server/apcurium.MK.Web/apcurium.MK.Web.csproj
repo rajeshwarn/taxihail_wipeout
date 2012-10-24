@@ -264,12 +264,10 @@
     <Content Include="models\Settings.js" />
     <Content Include="models\Order.js" />
     <Content Include="routers\app.js" />
-    <Content Include="services\AuthService.js" />
     <Content Include="services\DirectionInfoService.js" />
-    <Content Include="services\GeocodingService.js" />
-    <Content Include="services\GeolocationService.js" />
+    <Content Include="common\services\GeolocationService.js" />
     <Content Include="services\OrderService.js" />
-    <Content Include="services\PlacesService.js" />
+    <Content Include="common\services\PlacesService.js" />
     <Content Include="taxi-hail.js" />
     <Content Include="themes\AtlantaCheckerCab\img\cancel-icon.png" />
     <Content Include="themes\AtlantaCheckerCab\img\header-bg.png" />

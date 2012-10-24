@@ -90,10 +90,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     var token = _cancellationToken.Token;
                     _searchTask = Task.Factory.StartNew(() =>
                     {
+
                         if (!token.IsCancellationRequested)
                         {
                             IsExecuting = true;
-                            return TinyIoC.TinyIoCContainer.Current.Resolve<IGeolocService>().SearchAddress(coordinate.Latitude, coordinate.Longitude);
+                            var adresses = TinyIoC.TinyIoCContainer.Current.Resolve<IGeolocService>().SearchAddress(coordinate.Latitude, coordinate.Longitude).ToArray();
+                            return adresses;
                         }
                         return null;
 
@@ -114,7 +116,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             });
                         }
                         IsExecuting = false;
-                    }, token);
+                    });
 
                 });
             }

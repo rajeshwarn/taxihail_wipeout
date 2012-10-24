@@ -136,7 +136,7 @@
     <Compile Include="MvxBindingTrace.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Library\Newtonsoft.Json\Newtonsoft.Json\Newtonsoft.Json.MonoDroid.csproj">
+    <ProjectReference Include="..\..\Libraries\Newtonsoft.Json\Newtonsoft.Json\Newtonsoft.Json.MonoDroid.csproj">
       <Project>{E6C3413C-919B-486D-8B6C-225CBD921B98}</Project>
       <Name>Newtonsoft.Json.MonoDroid</Name>
     </ProjectReference>
