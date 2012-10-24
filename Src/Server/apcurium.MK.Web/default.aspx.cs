@@ -37,7 +37,7 @@ namespace apcurium.MK.Web
             FacebookAppId = config.GetSetting("FacebookAppId");
             FacebookEnabled = config.GetSetting("FacebookEnabled");
             HideDispatchButton = config.GetSetting("Client.HideCallDispatchButton");
-            GeolocPopularRange = config.GetSetting("Geoloc.PopularAddress.Range");
+            GeolocPopularRange = config.GetSetting("GeoLoc.PopularAddress.Range");
         }
 
     }

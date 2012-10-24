@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				var addresses = TinyIoCContainer.Current.Resolve<IGeocoding>().Search(latitude, longitude);
                 return addresses;
             }
-            catch
+            catch(Exception ex)
             {
                 return new Address[0];
             }

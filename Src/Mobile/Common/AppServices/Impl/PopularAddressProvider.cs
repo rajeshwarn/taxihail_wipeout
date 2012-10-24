@@ -9,11 +9,11 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using MK.Common.Android.Provider;
 using TinyIoC;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Provider;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {

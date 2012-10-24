@@ -4,7 +4,6 @@ using Cirrious.MvvmCross.Interfaces.Localization;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
 using MK.Booking.Mobile.Infrastructure.Mvx;
-using MK.Common.Android.Provider;
 using TinyIoC;
 using TinyMessenger;
 using apcurium.MK.Booking.Mobile.AppServices;
@@ -19,6 +18,7 @@ using apcurium.MK.Common.Configuration;
 using Cirrious.MvvmCross.Interfaces.Platform.Location;
 using System;
 using ServiceStack.Text;
+using apcurium.MK.Common.Provider;
 
 namespace apcurium.MK.Booking.Mobile
 {

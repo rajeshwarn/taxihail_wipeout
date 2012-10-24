@@ -1,5 +1,4 @@
-﻿using MK.Common.Android.Provider;
-using apcurium.MK.Booking.Google;
+﻿using apcurium.MK.Booking.Google;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using System;
@@ -7,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using apcurium.MK.Common.Provider;
 
 namespace apcurium.MK.Booking.Maps.Impl
 {

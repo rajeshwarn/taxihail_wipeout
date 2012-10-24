@@ -1,6 +1,4 @@
-﻿using MK.Common.Android.Extensions;
-using MK.Common.Android.Provider;
-using apcurium.MK.Booking.Google;
+﻿using apcurium.MK.Booking.Google;
 using apcurium.MK.Booking.Google.Resources;
 using apcurium.MK.Booking.Maps.Impl.Mappers;
 using apcurium.MK.Common.Configuration;
@@ -11,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using apcurium.MK.Common.Provider;
 
 namespace apcurium.MK.Booking.Maps.Impl
 {
@@ -80,7 +79,7 @@ namespace apcurium.MK.Booking.Maps.Impl
 
         private Address[] GetPopularAddressesInRange(double latitude, double longitude)
         {
-            float range = float.Parse(_configManager.GetSetting("Geoloc.PopularAddress.Range"));
+            float range = float.Parse(_configManager.GetSetting("GeoLoc.PopularAddress.Range"));
             const double R = 6378137;
 
             var addressesInRange = from a in _popularAddressProvider.GetPopularAddresses()
