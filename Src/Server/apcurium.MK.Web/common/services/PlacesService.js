@@ -6,12 +6,12 @@
         
         search: function (lat, lng) {
 
-            return $.get('api/places', { lat: lat, lng: lng }, function () {}, 'json')
+            return $.get(TaxiHail.parameters.apiRoot + '/places', { lat: lat, lng: lng }, function () {}, 'json')
                 .done(cleanupResult);
         },
 
         getPlaceDetails: function(reference) {
-            return $.get('api/places/' + reference, {}, function () {}, 'json')
+            return $.get(TaxiHail.parameters.apiRoot + '/places/' + reference, {}, function () {}, 'json')
                 .done(cleanupResult);
         }
     };
