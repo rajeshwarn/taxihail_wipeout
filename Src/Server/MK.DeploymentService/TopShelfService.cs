@@ -14,7 +14,7 @@ namespace MK.DeploymentService
                     s.WhenStarted(tc => tc.Start());             
                     s.WhenStopped(tc => tc.Stop());              
                 });
-                x.RunAsLocalSystem();                            
+                x.RunAsPrompt();             
 
                 x.SetDescription("TaxiHail Deployment Service");
                 x.SetDisplayName("TaxiHailDeploymentService");

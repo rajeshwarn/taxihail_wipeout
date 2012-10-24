@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using Android.Content;
 using Android.GoogleMaps;
 using Android.Runtime;
@@ -23,6 +25,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private Address _pickup;
         private Address _dropoff;
+
+        
 
         protected TouchMap(IntPtr javaReference, JniHandleOwnership transfer)
             : base(javaReference, transfer)
@@ -50,17 +54,29 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private void Initialize()
         {
-            Observable.FromEventPattern(this, "MapTouchUp")
-              .Throttle(TimeSpan.FromSeconds(0.5))
-              .Subscribe(v => ExecuteCommand());
+            
+            //Observable.FromEventPattern(this, "MapTouchUp")
+            //  .Throttle(TimeSpan.FromSeconds(0.4))
+            //  .Subscribe(v => ExecuteCommand());
         }
+        private CancellationTokenSource _moveMapCommand;
 
+        void CancelMoveMap()
+        {
+            if ((_moveMapCommand != null) && _moveMapCommand.Token.CanBeCanceled)
+            {
+                _moveMapCommand.Cancel();
+                _moveMapCommand.Dispose();
+                _moveMapCommand = null;
+            }
+        }
 
         public override bool DispatchTouchEvent(Android.Views.MotionEvent e)
         {
             if (e.Action == MotionEventActions.Down)
             {
-                IsMapTouchDown = true;
+                   IsMapTouchDown = true;
+                   CancelMoveMap();
             }
             
             if (e.Action == MotionEventActions.Up)
@@ -70,10 +86,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 {
                     MapTouchUp(this, EventArgs.Empty);
                 }
+                ExecuteCommand();
             }
 
             if (e.Action == MotionEventActions.Move)
             {
+                CancelMoveMap();
                 if (this.Overlays != null)
                 {
                     foreach (var i in this.Overlays.OfType<PushPinOverlay>())
@@ -89,17 +107,38 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private bool IsMapTouchDown { get; set; }
 
+
+
         private void ExecuteCommand()
         {
-            Console.WriteLine("Execute command Is Map Touch Down " + IsMapTouchDown);
-            if (!IsMapTouchDown && (MapMoved != null) && (MapMoved.CanExecute()))
+
+            CancelMoveMap();
+
+            _moveMapCommand = new CancellationTokenSource();
+
+            var t = new Task(() =>
             {
-                MapMoved.Execute(new Address
-                                     {
-                                         Latitude = CoordinatesHelper.ConvertFromE6(MapCenter.LatitudeE6),
-                                         Longitude = CoordinatesHelper.ConvertFromE6(MapCenter.LongitudeE6)
-                                     });
-            }
+                Thread.Sleep(500);
+            }, _moveMapCommand.Token);
+
+            t.ContinueWith(r =>
+            {
+                if (r.IsCompleted && !r.IsCanceled && !r.IsFaulted)
+                {
+                    Console.WriteLine("Execute command Is Map Touch Down " + IsMapTouchDown);
+                    if (!IsMapTouchDown && (MapMoved != null) && (MapMoved.CanExecute()))
+                    {
+                        MapMoved.Execute(new Address
+                        {
+                            Latitude = CoordinatesHelper.ConvertFromE6(MapCenter.LatitudeE6),
+                            Longitude = CoordinatesHelper.ConvertFromE6(MapCenter.LongitudeE6)
+                        });
+                    }
+                }
+            }, _moveMapCommand.Token);
+            t.Start();
+
+          
         }
 
         private bool IsIntoCircle(double x, double y, double xCircle, double yCircle, double rCircle)

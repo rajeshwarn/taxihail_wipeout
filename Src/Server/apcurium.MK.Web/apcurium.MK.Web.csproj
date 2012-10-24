@@ -264,12 +264,10 @@
     <Content Include="models\Settings.js" />
     <Content Include="models\Order.js" />
     <Content Include="routers\app.js" />
-    <Content Include="services\AuthService.js" />
     <Content Include="services\DirectionInfoService.js" />
-    <Content Include="services\GeocodingService.js" />
-    <Content Include="services\GeolocationService.js" />
+    <Content Include="common\services\GeolocationService.js" />
     <Content Include="services\OrderService.js" />
-    <Content Include="services\PlacesService.js" />
+    <Content Include="common\services\PlacesService.js" />
     <Content Include="taxi-hail.js" />
     <Content Include="themes\AtlantaCheckerCab\img\cancel-icon.png" />
     <Content Include="themes\AtlantaCheckerCab\img\header-bg.png" />
@@ -283,6 +281,14 @@
     <Content Include="themes\BurlingtonTaxiOntario\img\header-bg.png" />
     <Content Include="themes\BurlingtonTaxiOntario\img\location.png" />
     <Content Include="themes\BurlingtonTaxiOntario\img\logo.png" />
+    <Content Include="themes\BostonCab\img\cancel-icon.png" />
+    <Content Include="themes\BostonCab\img\header-bg.png" />
+    <Content Include="themes\BostonCab\img\location.png" />
+    <Content Include="themes\BostonCab\img\logo.png" />
+    <Content Include="themes\YellowCabTampa\img\cancel-icon.png" />
+    <Content Include="themes\YellowCabTampa\img\header-bg.png" />
+    <Content Include="themes\YellowCabTampa\img\location.png" />
+    <Content Include="themes\YellowCabTampa\img\Logo.png" />
     <Content Include="themes\SanJoseForARide\img\cancel-icon.png" />
     <Content Include="themes\SanJoseForARide\img\header-bg.png" />
     <Content Include="themes\SanJoseForARide\img\location.png" />
@@ -704,6 +710,30 @@
     <Content Include="themes\WorcesterYellowCab\less\combined.less" />
     <Content Include="themes\WorcesterYellowCab\less\style.less" />
     <Content Include="themes\WorcesterYellowCab\less\variables.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\YellowCabTampa\less\combined-responsive.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\YellowCabTampa\less\combined.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\YellowCabTampa\less\style.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\YellowCabTampa\less\variables.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\BostonCab\less\combined-responsive.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\BostonCab\less\combined.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\BostonCab\less\style.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="themes\BostonCab\less\variables.less" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
