@@ -20,8 +20,7 @@
     <AndroidSupportedAbis>armeabi%3barmeabi-v7a%3bx86</AndroidSupportedAbis>
     <AndroidStoreUncompressedFileExtensions />
     <MandroidI18n />
-    <TargetFrameworkVersion>v2.1</TargetFrameworkVersion>
-    <AndroidLinkSkip />
+    <TargetFrameworkVersion>v2.3</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -529,7 +528,7 @@
       <Name>MK.Booking.Api.Contract.Android</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.Android.csproj">
-      <Project>{bdec449b-7c09-4302-aef1-af46b34be9a6}</Project>
+      <Project>{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}</Project>
       <Name>MK.Common.Android</Name>
     </ProjectReference>
     <ProjectReference Include="..\Common\MK.Booking.Mobile.Android.csproj">
