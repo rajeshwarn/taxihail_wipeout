@@ -146,7 +146,7 @@
         book: function () {
 
             var model = new TaxiHail.Order();
-            TaxiHail.geolocation.getCurrentPosition()
+            TaxiHail.geolocation.getCurrentPosition(true)
                 // By default, set pickup address to current user location
                 .done(TaxiHail.postpone(function(address) {
                     model.set('pickupAddress', address);

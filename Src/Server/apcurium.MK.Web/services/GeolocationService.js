@@ -6,7 +6,7 @@
 
     TaxiHail.geolocation = {
 
-        getCurrentPosition: function () {
+        getCurrentPosition: function (searchPopular) {
             
             // Try W3C Geolocation (Preferred)
             var defer = $.Deferred();
@@ -18,22 +18,6 @@
 
                     navigator.geolocation.getCurrentPosition(_.bind(function (position) {
                         
-                        // search for popular address in range
-                        
-                        var popular = new TaxiHail.CompanyPopularAddressCollection();
-                        var addressInRange = new Backbone.Collection();
-                       /* popular.fetch({
-                            url: 'api/admin/popularaddresses',
-                            success: _.bind(function(collection, resp) {
-                                _.each(popular.models, _.bind(function(address) {
-                                    if (TaxiHail.math.distanceBeetweenTwoLatLgt(address.attributes.latitude, address.attributes.longitude, position.coords.latitude, position.coords.longitude) < TaxiHail.parameters.GeolocPopularRange) {
-                                        addressInRange.add(address);
-                                        alert(TaxiHail.math.distanceBeetweenTwoLatLgt(address.attributes.latitude, address.attributes.longitude, position.coords.latitude, position.coords.longitude).toString());
-                                    }
-                                }, this));
-                            }, this)
-                        });*/
-
                         TaxiHail.geocoder.geocode(position.coords.latitude, position.coords.longitude)
                             .done(_.bind(function (result) {
 
@@ -45,7 +29,19 @@
 
                             }, this))
                             .fail(defer.reject);
-
+                        
+                        if(searchPopular == true) {
+                            $.ajax({
+                                url: 'api/popularaddresses/' + position.coords.longitude + '/' + position.coords.latitude,
+                                dataType: 'json',
+                                success: _.bind(function (e) {
+                                    if (e) {
+                                        this.currentAddress = e;
+                                        defer.resolve(e);
+                                    }
+                                }, this)
+                            });
+                        }
                     }, this), defer.reject);
                 }
                 else {

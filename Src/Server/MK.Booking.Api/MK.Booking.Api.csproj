@@ -105,6 +105,7 @@
     <Compile Include="Services\ApplicationInfoService.cs" />
     <Compile Include="Services\BookingSettingsService.cs" />
     <Compile Include="Services\CancelOrderService.cs" />
+    <Compile Include="Services\ClientPopularAddressService.cs" />
     <Compile Include="Services\ConfigurationResetService.cs" />
     <Compile Include="Services\ConfigurationsService.cs" />
     <Compile Include="Services\ConfirmAccountService.cs" />
