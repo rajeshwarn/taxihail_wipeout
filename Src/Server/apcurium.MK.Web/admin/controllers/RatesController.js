@@ -13,8 +13,14 @@
             });
         },
 
-        add: function() {
-            return this.view = new TaxiHail.AddRateView({
+        addRecurring: function() {
+            return this.view = new TaxiHail.AddRecurringRateView({
+                collection: this.collection
+            });
+        },
+
+        addDay: function() {
+            return this.view = new TaxiHail.AddDayRateView({
                 collection: this.collection
             });
         }

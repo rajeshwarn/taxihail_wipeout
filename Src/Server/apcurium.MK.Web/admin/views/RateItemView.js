@@ -2,11 +2,11 @@
     
     TaxiHail.RateItemView = TaxiHail.TemplatedView.extend({
 
-        tagName: 'li',
+        tagName: 'tr',
 
         render: function() {
 
-            var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+            var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
                 selectedDays = [];
             _.each(days, function(dayName, index){
                 var day = 1 << index;
@@ -17,7 +17,6 @@
 
             var data = this.model.toJSON();
             data.daysOfTheWeek = selectedDays.join(' - ');
-
 
             this.$el.html(this.renderTemplate(data));
 

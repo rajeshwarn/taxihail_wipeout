@@ -2,6 +2,7 @@
     <h4 class="table-title">{{localize "Add Rate"}}</h4>
     <div class="errors" style="margin-top: 10px;"></div>
     <form class="form-horizontal clearfix" >
+        <input type='hidden' name='type' value='recurring' />
         <div class="control-group">
             <label class="control-label">{{localize 'Flat Rate'}}</label>
             <div class="controls">
@@ -11,19 +12,19 @@
         <div class="control-group">
             <label class="control-label">{{localize 'Distance Multiplicator'}}</label>
             <div class="controls">
-                <input type="text" name="distanceMultiplicator"  value="{{flatRate}}" class='input-block-level'>
+                <input type="text" name="distanceMultiplicator"  value="{{distanceMultiplicator}}" class='input-block-level'>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">{{localize 'Time Adjustment Factor'}}</label>
             <div class="controls">
-                <input type="text" name="timeAdjustmentFactor"  value="{{flatRate}}" class='input-block-level'>
+                <input type="text" name="timeAdjustmentFactor"  value="{{timeAdjustmentFactor}}" class='input-block-level'>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">{{localize 'Price Per Passenger'}}</label>
             <div class="controls">
-                <input type="text" name="pricePerPassenger"  value="{{flatRate}}" class='input-block-level'>
+                <input type="text" name="pricePerPassenger"  value="{{pricePerPassenger}}" class='input-block-level'>
             </div>
         </div>
         <div class="control-group">

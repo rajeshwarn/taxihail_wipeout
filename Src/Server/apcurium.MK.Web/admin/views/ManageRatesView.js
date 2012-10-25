@@ -21,7 +21,7 @@
 
             new TaxiHail.RateItemView({
                 model: rate
-            }).render().$el.appendTo(this.$('ul'));
+            }).render().$el.appendTo(this.$('tbody'));
             
         }
     });

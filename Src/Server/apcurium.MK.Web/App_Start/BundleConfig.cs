@@ -142,7 +142,7 @@ namespace apcurium.MK.Web
                 "~/admin/views/ManageRatesView.js",
                 "~/admin/views/ManagePopularAddressesView.js",
                 "~/admin/views/RateItemView.js",
-                "~/admin/views/AddRateView.js",
+                "~/admin/views/AddRecurringRateView.js",
                 "~/common/services/AuthService.js",
                 "~/common/services/GeocodingService.js",
                 "~/common/services/GeolocationService.js",

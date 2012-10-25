@@ -29,7 +29,8 @@
             "grantadmin": "grantAdminAccess",
             "managepopularaddresses": "managePopularAddresses",
             "rates": "manageRates", //#rates
-            "rates/add": "addRate" //#rates/new
+            "rates/add/recurring": "addRecurringRate", //#rates/add/recurring
+            "rates/add/day": "addDayRate" //#rates/add/day
         },
 
         initialize: function (options) {
@@ -77,8 +78,12 @@
             TaxiHail.Controller.action(TaxiHail.RatesController, 'index');
         },
 
-        addRate: function() {
-            TaxiHail.Controller.action(TaxiHail.RatesController, 'add');
+        addRecurringRate: function() {
+            TaxiHail.Controller.action(TaxiHail.RatesController, 'addRecurring');
+        },
+
+        addDayRate: function() {
+            TaxiHail.Controller.action(TaxiHail.RatesController, 'addDay');
         }
     });
 

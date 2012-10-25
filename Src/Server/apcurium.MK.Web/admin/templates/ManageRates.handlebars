@@ -1,8 +1,20 @@
 <div class='well clearfix'>
     <h4 class="table-title">{{localize "Manage Rates"}}</h4>
 
-    <a href='#rates/add' class='btn'>{{localize "Add Rate (Recurring)"}}</a> 
-    <a href='#rates/add' class='btn'>{{localize "Add Rate (One day)"}}</a> 
+    <a href='#rates/add/recurring' class='btn'>{{localize "Add Rate (Recurring)"}}</a> 
+    <a href='#rates/add/day' class='btn'>{{localize "Add Rate (One day)"}}</a> 
 
-    <ul class="unstyled locations"></ul>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>{{localize "Days"}}</th>
+                <th>{{localize "Flat Rate"}}</th>
+                <th>{{localize "Distance Multiplicator"}}</th>
+                <th>{{localize "Time Adjustment Factor"}}</th>
+                <th>{{localize "Price Per Passenger"}}</th>
+                <th width=60>&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
 </div>
