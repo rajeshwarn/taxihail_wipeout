@@ -9,8 +9,6 @@ New-Item -ItemType directory $base_dir\Package\WebSites
 
 Write-Host "***************Copy scripts *************************"
 
-Copy-Item $base_dir\deploy.ps1 $base_dir\Package\deploy.ps1
-
 $MsBuild = $env:systemroot + "\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe";
 $rootDir = (get-item $base_dir).parent.parent.FullName
 $SlnFilePath = "$rootDir\Src\Server\MKBooking.sln"
