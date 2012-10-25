@@ -46,7 +46,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 {
                     if (r.IsCompleted && !r.IsCanceled && !r.IsFaulted)
                     {
-                        OnTextChanged();  
+						InvokeOnMainThread(OnTextChanged); 
                     }        
                 }, _moveMapCommand.Token);
                 t.Start();
