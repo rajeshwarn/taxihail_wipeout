@@ -27,6 +27,6 @@
    "Receipt.Note": "Thank You!",
    "Booking.ConfirmationEmail" : "true",
    "Client.HideCallDispatchButton" : "false",
-   "Geoloc.PopularAddress.Range" : "500"
+   "GeoLoc.PopularAddress.Range" : "500"
 }
 

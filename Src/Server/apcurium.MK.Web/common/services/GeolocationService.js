@@ -6,7 +6,7 @@
 
     TaxiHail.geolocation = {
 
-        getCurrentPosition: function () {
+        getCurrentAddress: function () {
             
             // Try W3C Geolocation (Preferred)
             var defer = $.Deferred();
@@ -35,6 +35,25 @@
                 else {
                     window.setTimeout(defer.reject, 1);
                 }
+            }
+            
+            return defer.promise();
+        },
+
+        getCurrentPosition: function() {
+            // Try W3C Geolocation (Preferred)
+            var defer = $.Deferred();
+        
+            if (isSupported) {
+
+                navigator.geolocation.getCurrentPosition(_.bind(function (position) {
+
+                    defer.resolve(position.coords);
+
+                }, this), defer.reject);
+            }
+            else {
+                window.setTimeout(defer.reject, 1);
             }
             
             return defer.promise();

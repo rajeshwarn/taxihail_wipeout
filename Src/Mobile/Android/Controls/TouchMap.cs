@@ -130,8 +130,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     {
                         MapMoved.Execute(new Address
                         {
-                            Latitude = CoordinatesHelper.ConvertFromE6(MapCenter.LatitudeE6),
-                            Longitude = CoordinatesHelper.ConvertFromE6(MapCenter.LongitudeE6)
+                            Latitude = MapCenter.LatitudeE6.ConvertFromE6(),
+                            Longitude = MapCenter.LongitudeE6.ConvertFromE6()
                         });
                     }
                 }
