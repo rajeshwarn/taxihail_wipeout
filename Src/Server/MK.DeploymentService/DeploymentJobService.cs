@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Xml;
+using System.Xml.Linq;
 using MK.ConfigurationManager;
 using MK.ConfigurationManager.Entities;
 using Microsoft.Web.Administration;
@@ -201,7 +203,27 @@ namespace MK.DeploymentService
                             var section = configuration.GetSection("connectionStrings").GetCollection().First(x => x.Attributes["name"].Value.ToString() == "MKWeb");
                             var connSting = section.Attributes["connectionString"];
                             connSting.Value = string.Format("Data Source=.;Initial Catalog={0};Integrated Security=True; MultipleActiveResultSets=True", companyName);
+
+                            //log4net comn
+                            var document = XDocument.Load(targetWeDirectory + "log4net.xml");
+
+                            var atttribute = (from XElement e in document.Descendants("appender ")
+                                             where e.Attribute("name").Value == "Courriel" 
+                                             select e).FirstOrDefault();
+
+                            if (atttribute != null)
+                            {
+                                var attribute = atttribute.Descendants("subject").Attributes("value").FirstOrDefault();
+                                if (attribute != null)
+                                    attribute.SetValue(string.Format("[{0}] - TaxiHail Error", companyName));
+                            }
+
+                            document.Save(targetWeDirectory + "log4net.xml");
+
+                            
                             iisManager.CommitChanges();
+
+
                         }
                         appPool.Start();
 
