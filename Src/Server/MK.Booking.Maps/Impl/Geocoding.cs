@@ -62,9 +62,14 @@ namespace apcurium.MK.Booking.Maps.Impl
         }
 
 
-        public Address[] Search(double latitude, double longitude)
+        public Address[] Search(double latitude, double longitude, bool searchPopularAddress = false)
         {
-            var addressesInRange = GetPopularAddressesInRange(latitude, longitude);
+            var addressesInRange = new Address[0];
+            if (searchPopularAddress)
+            {
+                addressesInRange = GetPopularAddressesInRange(latitude, longitude);
+            }
+
             var geoResult = _mapApi.GeocodeLocation(latitude, longitude);
             if (geoResult.Status == ResultStatus.OK)
             {

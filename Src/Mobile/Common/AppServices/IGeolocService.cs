@@ -8,7 +8,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
     {
         Address ValidateAddress(string address);
 
-        Address[] SearchAddress(double latitude, double longitude);
+        Address[] SearchAddress(double latitude, double longitude, bool searchPopularAddresses = false);
 
 		Address[] SearchAddress(string address, double latitude, double longitude);
 

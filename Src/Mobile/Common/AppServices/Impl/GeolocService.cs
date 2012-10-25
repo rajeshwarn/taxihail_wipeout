@@ -31,12 +31,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         }
 
 
-        public Address[] SearchAddress(double latitude, double longitude)
+        public Address[] SearchAddress(double latitude, double longitude, bool searchPopularAddresses = false)
         {
             try
             {                
                 //var addresses = TinyIoCContainer.Current.Resolve<GeocodingServiceClient>().Search(latitude, longitude);
-				var addresses = TinyIoCContainer.Current.Resolve<IGeocoding>().Search(latitude, longitude);
+                var addresses = TinyIoCContainer.Current.Resolve<IGeocoding>().Search(latitude, longitude, searchPopularAddresses);
                 return addresses;
             }
             catch(Exception ex)
