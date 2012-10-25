@@ -48,7 +48,7 @@
             expire.setTime(expire.getTime() + 3600000 * 24 * 365);
             document.cookie = "ss-opt=perm" + ";expires=" + expire.toGMTString();
 
-            //default lat and long are defined in the deault.aspx
+            //default lat and long are defined in the default.aspx
             TaxiHail.geocoder.initialize(TaxiHail.parameters.defaultLatitude, TaxiHail.parameters.defaultLongitude);
             
             TaxiHail.auth.initialize(options.account);
@@ -146,7 +146,7 @@
         book: function () {
 
             var model = new TaxiHail.Order();
-            TaxiHail.geolocation.getCurrentPosition(true)
+            TaxiHail.geolocation.getCurrentAddress()
                 // By default, set pickup address to current user location
                 .done(TaxiHail.postpone(function(address) {
                     model.set('pickupAddress', address);
