@@ -49,7 +49,7 @@ namespace apcurium.MK.Booking.Maps.Impl
             }
 
             var popularAddresses = Enumerable.Empty<Address>();
-            if(latitude.HasValue && longitude.HasValue)
+            if(name != null && latitude.HasValue && longitude.HasValue)
             {
                 var words = name.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                 popularAddresses = from a in GetPopularAddressesInRange(new Position(latitude.Value, longitude.Value))
