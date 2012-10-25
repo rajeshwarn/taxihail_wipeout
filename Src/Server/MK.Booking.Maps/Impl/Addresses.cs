@@ -40,8 +40,8 @@ namespace apcurium.MK.Booking.Maps.Impl
             }
             else
             {
-                var nearbyService = new Places(_client, _configManager);
-                addresses = (Address[])nearbyService.SearchPlaces( name, latitude,longitude, null ); // .OnGet(new NearbyPlacesRequest { Name = request.Name, Lat = request.Lat, Lng = request.Lng });
+                var nearbyService = new Places(_client, _configManager, _popularAddressProvider);
+                addresses = (Address[])nearbyService.SearchPlaces( name, latitude,longitude, null );
             }
 
             return addresses.Take(5).ToArray();

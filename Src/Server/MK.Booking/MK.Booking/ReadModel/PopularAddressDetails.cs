@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.ReadModel
 {

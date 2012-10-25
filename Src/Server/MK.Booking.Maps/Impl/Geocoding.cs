@@ -1,5 +1,6 @@
 ﻿using apcurium.MK.Booking.Google;
 using apcurium.MK.Booking.Google.Resources;
+using apcurium.MK.Booking.Maps.Geo;
 using apcurium.MK.Booking.Maps.Impl.Mappers;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
@@ -67,7 +68,7 @@ namespace apcurium.MK.Booking.Maps.Impl
             var addressesInRange = new Address[0];
             if (searchPopularAddress)
             {
-                addressesInRange = GetPopularAddressesInRange(latitude, longitude);
+                addressesInRange = GetPopularAddressesInRange(new Position(latitude, longitude));
             }
 
             var geoResult = _mapApi.GeocodeLocation(latitude, longitude);
@@ -82,13 +83,13 @@ namespace apcurium.MK.Booking.Maps.Impl
          
         }
 
-        private Address[] GetPopularAddressesInRange(double latitude, double longitude)
+        private Address[] GetPopularAddressesInRange(Position position)
         {
             float range = float.Parse(_configManager.GetSetting("GeoLoc.PopularAddress.Range"));
             const double R = 6378137;
 
             var addressesInRange = from a in _popularAddressProvider.GetPopularAddresses()
-                                   let distance = CalculateDistance(latitude, longitude, a.Latitude, a.Longitude)
+                                   let distance = position.DistanceTo(new Position(a.Latitude, a.Longitude))
                                    where distance <= range
                                    orderby distance ascending
                                    select a;
@@ -96,15 +97,7 @@ namespace apcurium.MK.Booking.Maps.Impl
             return addressesInRange.ToArray();
         }
 
-        private static double CalculateDistance(double latitude1, double longitude1, double latitude2 , double longitude2)
-        {
-            const int R = 6378137;
-            var d =
-                Math.Acos(Math.Sin(latitude2.ToRad())*Math.Sin(latitude1.ToRad()) +
-                          Math.Cos(latitude2.ToRad())*Math.Cos(latitude1.ToRad())*
-                          Math.Cos(longitude1.ToRad() - longitude2.ToRad()))*R;
-            return d;
-        }
+        
 
         private Address[] ConvertGeoResultToAddresses(GeoResult geoResult, string placeName)
         {

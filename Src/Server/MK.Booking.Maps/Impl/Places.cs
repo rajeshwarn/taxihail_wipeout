@@ -1,5 +1,6 @@
 ﻿using apcurium.MK.Booking.Google;
 using apcurium.MK.Booking.Google.Resources;
+using apcurium.MK.Booking.Maps.Geo;
 using apcurium.MK.Booking.Maps.Impl.Mappers;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
@@ -9,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using apcurium.MK.Common.Provider;
 
 namespace apcurium.MK.Booking.Maps.Impl
 {
@@ -16,11 +18,13 @@ namespace apcurium.MK.Booking.Maps.Impl
     {
         private IMapsApiClient _client;
         private readonly IConfigurationManager _configurationManager;
+        private readonly IPopularAddressProvider _popularAddressProvider;
 
-        public Places(IMapsApiClient client, IConfigurationManager configurationManager)
+        public Places(IMapsApiClient client, IConfigurationManager configurationManager, IPopularAddressProvider popularAddressProvider)
         {
             _client = client;
             _configurationManager = configurationManager;
+            _popularAddressProvider = popularAddressProvider;
         }
 
         public Address GetPlaceDetail(string name, string referenceId)
@@ -44,9 +48,19 @@ namespace apcurium.MK.Booking.Maps.Impl
                 defaultRadius = 500;
             }
 
-            var results = _client.GetNearbyPlaces(latitude, longitude, name, "en", false, radius.HasValue? radius.Value : defaultRadius);
+            var popularAddresses = Enumerable.Empty<Address>();
+            if(latitude.HasValue && longitude.HasValue)
+            {
+                var words = name.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                popularAddresses = from a in GetPopularAddressesInRange(new Position(latitude.Value, longitude.Value))
+                    where words.All(w => a.FriendlyName.ToUpper().Contains(w.ToUpper()))
+                    select a;
 
-            return results.Select(ConvertToAddress).ToArray();
+            }
+
+            var googlePlaces = _client.GetNearbyPlaces(latitude, longitude, name, "en", false, radius.HasValue? radius.Value : defaultRadius);
+
+            return popularAddresses.Concat(googlePlaces.Select(ConvertToAddress)).ToArray();
         }
 
         private Address ConvertToAddress(Place place)
@@ -76,5 +90,21 @@ namespace apcurium.MK.Booking.Maps.Impl
 
             return address;
         }
+
+        private Address[] GetPopularAddressesInRange(Position position)
+        {
+            float range = float.Parse(_configurationManager.GetSetting("GeoLoc.PopularAddress.Range"));
+            const double R = 6378137;
+
+            var addressesInRange = from a in _popularAddressProvider.GetPopularAddresses()
+                                   let distance = position.DistanceTo(new Position(a.Latitude, a.Longitude))
+                                   where distance <= range
+                                   orderby distance ascending
+                                   select a;
+
+            return addressesInRange.ToArray();
+        }
+
+       
     }
 }
