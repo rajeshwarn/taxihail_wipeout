@@ -11,7 +11,7 @@ namespace apcurium.MK.Booking.Maps
         Address[] Search(string addressName);
 
 
-        Address[] Search(double latitude, double longitude);
+        Address[] Search(double latitude, double longitude, bool searchPopularAddresses  = false);
         
         
 

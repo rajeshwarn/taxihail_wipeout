@@ -18,6 +18,7 @@ using apcurium.MK.Common.Configuration;
 using Cirrious.MvvmCross.Interfaces.Platform.Location;
 using System;
 using ServiceStack.Text;
+using apcurium.MK.Common.Provider;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -45,6 +46,7 @@ namespace apcurium.MK.Booking.Mobile
 
             TinyIoCContainer.Current.Register<AccountServiceClient>((c, p) => new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, c.Resolve<ICacheService>().Get<string>("SessionId")));
             TinyIoCContainer.Current.Register<ReferenceDataServiceClient>((c, p) => new ReferenceDataServiceClient(c.Resolve<IAppSettings>().ServiceUrl, c.Resolve<ICacheService>().Get<string>("SessionId")));
+            TinyIoCContainer.Current.Register<PopularAddressesServiceClient>((c, p) => new PopularAddressesServiceClient(c.Resolve<IAppSettings>().ServiceUrl, c.Resolve<ICacheService>().Get<string>("SessionId")));
 
             TinyIoCContainer.Current.Register<OrderServiceClient>((c, p) => new OrderServiceClient(c.Resolve<IAppSettings>().ServiceUrl, c.Resolve<ICacheService>().Get<string>("SessionId")));
 
@@ -66,6 +68,7 @@ namespace apcurium.MK.Booking.Mobile
             TinyIoCContainer.Current.Register<IGeocoding, Geocoding>();
             TinyIoCContainer.Current.Register<IPlaces, Places>();
             TinyIoCContainer.Current.Register<IMapsApiClient, MapsApiClient>();
+            TinyIoCContainer.Current.Register<IPopularAddressProvider, PopularAddressProvider>();
 
             
 

@@ -182,6 +182,7 @@
     <Compile Include="Messages\AddressRefinedMessage.cs" />
     <Compile Include="Infrastructure\ILocationService.cs" />
     <Compile Include="ViewModels\UpdatePasswordViewModel.cs" />
+    <Compile Include="AppServices\Impl\PopularAddressProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">

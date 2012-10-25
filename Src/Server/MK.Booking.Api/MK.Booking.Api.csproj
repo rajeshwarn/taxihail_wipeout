@@ -97,6 +97,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Module.cs" />
+    <Compile Include="Providers\PopularAddressProvider.cs" />
     <Compile Include="Security\CustomTwitterAuthProvider.cs" />
     <Compile Include="Security\CustomCredentialsAuthProvider.cs" />
     <Compile Include="Security\CustomFacebookAuthProvider.cs" />

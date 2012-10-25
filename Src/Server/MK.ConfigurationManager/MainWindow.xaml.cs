@@ -213,8 +213,7 @@ namespace MK.ConfigurationManager
 
         private void RefreshDeployments(object sender, RoutedEventArgs e)
         {
-            DeploymentJobs.Clear();
-            DbContext.Set<DeploymentJob>().ToList().ForEach(DeploymentJobs.Add);
+            RefreshData();
         }
     }
 

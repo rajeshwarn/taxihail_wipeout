@@ -77,7 +77,7 @@
                 this.tab.search.call(this);
             }
             
-            TaxiHail.geocoder.geocode(query).done(_.bind(function(result) {
+            TaxiHail.geocoder.search(query).done(_.bind(function(result) {
                 this._searchResults && this._searchResults.reset(result);
             }, this));
 
@@ -197,8 +197,8 @@
                 this.$('.tab-content').html(spinner.el);
                 
                TaxiHail.geolocation.getCurrentPosition()
-                .done(TaxiHail.postpone(_.bind(function (address) {
-                    this.fetchPlaces(address.latitude, address.longitude);
+                .done(TaxiHail.postpone(_.bind(function (coords) {
+                    this.fetchPlaces(coords.latitude, coords.longitude);
                 }, this)))
                 .fail(_.bind(function () {
                     this.fetchPlaces(TaxiHail.parameters.defaultLatitude, TaxiHail.parameters.defaultLongitude);

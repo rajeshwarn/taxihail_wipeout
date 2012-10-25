@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Xml;
+using System.Xml.Linq;
 using MK.ConfigurationManager;
 using MK.ConfigurationManager.Entities;
 using Microsoft.Web.Administration;
@@ -61,30 +63,57 @@ namespace MK.DeploymentService
                     job.Status = JobStatus.INPROGRESS;
                     DbContext.SaveChanges();
 
-                    //pull source from bitbucket
+                    //pull source from bitbucket if not done yet
                     var revision = string.IsNullOrEmpty(job.Revision) ? string.Empty : "-r " + job.Revision;
-                    var sourceDirectory = Path.Combine(Path.GetTempPath(), job.Id.ToString());
-                    if (Directory.Exists(sourceDirectory))
-                    {
-                        Directory.Delete(sourceDirectory, true);
-                    }
-                    var args = string.Format(@"clone {1} https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi {0}", sourceDirectory, revision);
+                    var sourceDirectory = Path.Combine(Path.GetTempPath(), "TaxiHailSource");
 
-                    var hgClone = new ProcessStartInfo
+                    if (!Directory.Exists(sourceDirectory))
                     {
-                        FileName = "hg.exe",
-                        WindowStyle = ProcessWindowStyle.Hidden,
-                        UseShellExecute = false,
-                        CreateNoWindow = false,
-                        Arguments = args
-                    };
+                        Directory.CreateDirectory(sourceDirectory);
+                        var args = string.Format(@"clone {1} https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi {0}", sourceDirectory, revision);
 
-                    using (var exeProcess = Process.Start(hgClone))
-                    {
-                        exeProcess.WaitForExit();
-                        if (exeProcess.ExitCode > 0)
+                        var hgClone = new ProcessStartInfo
                         {
-                            throw new Exception("Error during pull source code step");
+                            FileName = "hg.exe",
+                            WindowStyle = ProcessWindowStyle.Hidden,
+                            UseShellExecute = false,
+                            CreateNoWindow = false,
+                            Arguments = args
+                        };
+
+                        using (var exeProcess = Process.Start(hgClone))
+                        {
+                            exeProcess.WaitForExit();
+                            if (exeProcess.ExitCode > 0)
+                            {
+                                throw new Exception("Error during clone source code step");
+                            }
+                        }
+                    }else
+                    {
+                        //already clone just do a revert and update the source
+                        RevertAndPull(sourceDirectory);
+                    }
+                    
+
+                    if(!string.IsNullOrEmpty(job.Revision))
+                    {
+                        var hgUpdate = new ProcessStartInfo
+                        {
+                            FileName = "hg.exe",
+                            WindowStyle = ProcessWindowStyle.Hidden,
+                            UseShellExecute = false,
+                            CreateNoWindow = false,
+                            Arguments = string.Format("update --repository {0} -r {1}", sourceDirectory, job.Revision)
+                        };
+
+                        using (var exeProcess = Process.Start(hgUpdate))
+                        {
+                            exeProcess.WaitForExit();
+                            if (exeProcess.ExitCode > 0)
+                            {
+                                throw new Exception("Error during revert source code step");
+                            }
                         }
                     }
 
@@ -201,13 +230,31 @@ namespace MK.DeploymentService
                             var section = configuration.GetSection("connectionStrings").GetCollection().First(x => x.Attributes["name"].Value.ToString() == "MKWeb");
                             var connSting = section.Attributes["connectionString"];
                             connSting.Value = string.Format("Data Source=.;Initial Catalog={0};Integrated Security=True; MultipleActiveResultSets=True", companyName);
+
+                            //log4net comn
+                            var document = XDocument.Load(targetWeDirectory + "log4net.xml");
+
+                            var atttribute = (from XElement e in document.Descendants("appender")
+                                             where e.Attribute("name").Value == "Courriel" 
+                                             select e).FirstOrDefault();
+
+                            if (atttribute != null)
+                            {
+                                var attribute = atttribute.Descendants("subject").Attributes("value").FirstOrDefault();
+                                if (attribute != null)
+                                    attribute.SetValue(string.Format("[{0}] - TaxiHail Error", companyName));
+                            }
+
+                            document.Save(targetWeDirectory + "log4net.xml");
+
+                            
                             iisManager.CommitChanges();
+
+
                         }
                         appPool.Start();
 
                     }
-
-                    Directory.Delete(sourceDirectory, true);
 
                     job.Details = string.Empty;
                     job.Status = JobStatus.SUCCESS;
@@ -219,6 +266,81 @@ namespace MK.DeploymentService
                     job.Status = JobStatus.ERROR;
                     job.Details = e.Message;
                     DbContext.SaveChanges();
+                }
+            }
+        }
+
+        private void RevertAndPull(string repository)
+        {
+            var hgRevert = new ProcessStartInfo
+                               {
+                                   FileName = "hg.exe",
+                                   WindowStyle = ProcessWindowStyle.Hidden,
+                                   UseShellExecute = false,
+                                   CreateNoWindow = false,
+                                   Arguments = string.Format("update --repository {0} -C -r default", repository)
+                               };
+
+            using (var exeProcess = Process.Start(hgRevert))
+            {
+                exeProcess.WaitForExit();
+                if (exeProcess.ExitCode > 0)
+                {
+                    throw new Exception("Error during revert source code step");
+                }
+            }
+
+            var hgPurge = new ProcessStartInfo
+                              {
+                                  FileName = "hg.exe",
+                                  WindowStyle = ProcessWindowStyle.Hidden,
+                                  UseShellExecute = false,
+                                  CreateNoWindow = false,
+                                  Arguments = string.Format("purge --all --repository {0}", repository)
+                              };
+
+            using (var exeProcess = Process.Start(hgPurge))
+            {
+                exeProcess.WaitForExit();
+                if (exeProcess.ExitCode > 0)
+                {
+                    throw new Exception("Error during purge source code step");
+                }
+            }
+
+            var hgPull = new ProcessStartInfo
+                             {
+                                 FileName = "hg.exe",
+                                 WindowStyle = ProcessWindowStyle.Hidden,
+                                 UseShellExecute = false,
+                                 CreateNoWindow = false,
+                                 Arguments = string.Format("pull https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi --repository {0}", repository)
+                             };
+
+            using (var exeProcess = Process.Start(hgPull))
+            {
+                exeProcess.WaitForExit();
+                if (exeProcess.ExitCode > 0)
+                {
+                    throw new Exception("Error during pull source code step");
+                }
+            }
+
+            var hgUpdate = new ProcessStartInfo
+            {
+                FileName = "hg.exe",
+                WindowStyle = ProcessWindowStyle.Hidden,
+                UseShellExecute = false,
+                CreateNoWindow = false,
+                Arguments = string.Format("update --repository {0}", repository)
+            };
+
+            using (var exeProcess = Process.Start(hgUpdate))
+            {
+                exeProcess.WaitForExit();
+                if (exeProcess.ExitCode > 0)
+                {
+                    throw new Exception("Error during revert source code step");
                 }
             }
         }

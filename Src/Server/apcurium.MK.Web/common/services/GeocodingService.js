@@ -4,23 +4,31 @@
 
     TaxiHail.geocoder = {
         
-        initialize: function (lat, long) {
+        initialize: function (lat, lng) {
             this.latitude = lat;
-            this.longitude = long;
+            this.longitude = lng;
         },
 
-        geocode: function (addressOrLat, lng) {
+        geocode: function (lat, lng) {
 
-            if(arguments.length > 1) {
-                // Assume parameters are latitude and longitude
-                return $.get(TaxiHail.parameters.apiRoot + '/geocode', { lat: addressOrLat, lng: lng }, function () { }, 'json')
+            return $.get(TaxiHail.parameters.apiRoot + '/geocode', { lat: lat, lng: lng }, function () { }, 'json')
                     .done(cleanupResult);
-            }
-            else {
-                // Assume parameter is an address
-                return $.get(TaxiHail.parameters.apiRoot + '/searchlocation', { name: addressOrLat, lat: this.latitude, lng: this.longitude }, function () { }, 'json')
-                    .done(cleanupResult);
-            }
+            
+        },
+
+        search: function(address) {
+
+            var defaultLatitude = this.latitude,
+                defaultLongitude = this.longitude;
+
+            return TaxiHail.geolocation.getCurrentPosition()
+                .pipe(function(coords) {
+                    return $.get(TaxiHail.parameters.apiRoot + '/searchlocation',  {
+                        name: address,
+                        lat: coords.latitude || defaultlatitude,
+                        lng: coords.longitude || defaultlongitude
+                    }, function () { }, 'json').done(cleanupResult);
+                });
         }
     };
 
