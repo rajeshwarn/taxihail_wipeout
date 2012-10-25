@@ -2,8 +2,12 @@
 using Microsoft.Practices.Unity;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Api.Providers;
 using apcurium.MK.Booking.IBS;
+using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Provider;
 
 namespace apcurium.MK.Booking.Api
 {
@@ -12,6 +16,8 @@ namespace apcurium.MK.Booking.Api
         public void Init(IUnityContainer container)
         {
             RegisterMaps();
+
+            container.RegisterInstance<IPopularAddressProvider>(new PopularAddressProvider(container.Resolve<IPopularAddressDao>()));
         }
 
         private void RegisterMaps()
@@ -27,6 +33,7 @@ namespace apcurium.MK.Booking.Api
             AutoMapper.Mapper.CreateMap<BookingSettings, Commands.CreateOrder.BookingSettings>();
             AutoMapper.Mapper.CreateMap<BookingSettings, Commands.SendBookingConfirmationEmail.BookingSettings>();
             AutoMapper.Mapper.CreateMap<Address, IBSAddress>();
+            AutoMapper.Mapper.CreateMap<PopularAddressDetails, Address>();
             AutoMapper.Mapper.CreateMap<RegisterAccount, Commands.RegisterAccount>()
                 .ForMember(p => p.AccountId, options => options.ResolveUsing(x => x.AccountId == Guid.Empty ? Guid.NewGuid() : x.AccountId));
             AutoMapper.Mapper.CreateMap<RegisterAccount, Commands.RegisterTwitterAccount>()

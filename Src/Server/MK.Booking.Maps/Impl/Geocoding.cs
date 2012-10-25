@@ -1,5 +1,6 @@
 ﻿using apcurium.MK.Booking.Google;
 using apcurium.MK.Booking.Google.Resources;
+using apcurium.MK.Booking.Maps.Geo;
 using apcurium.MK.Booking.Maps.Impl.Mappers;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
@@ -9,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using apcurium.MK.Common.Provider;
 
 namespace apcurium.MK.Booking.Maps.Impl
 {
@@ -17,11 +19,13 @@ namespace apcurium.MK.Booking.Maps.Impl
         private string[] _otherTypesAllowed = new string[] { "airport", "transit_station", "bus_station", "train_station" };
         private IMapsApiClient _mapApi;        
         private IConfigurationManager _configManager;
+        private readonly IPopularAddressProvider _popularAddressProvider;
 
-        public Geocoding(IMapsApiClient mapApi, IConfigurationManager configManager)
+        public Geocoding(IMapsApiClient mapApi, IConfigurationManager configManager, IPopularAddressProvider popularAddressProvider)
         {
             _mapApi = mapApi;
             _configManager = configManager;
+            _popularAddressProvider = popularAddressProvider;
         }
 
         public Address[] Search(string addressName)
@@ -59,21 +63,41 @@ namespace apcurium.MK.Booking.Maps.Impl
         }
 
 
-        public Address[] Search(double latitude, double longitude)
+        public Address[] Search(double latitude, double longitude, bool searchPopularAddress = false)
         {
+            var addressesInRange = new Address[0];
+            if (searchPopularAddress)
+            {
+                addressesInRange = GetPopularAddressesInRange(new Position(latitude, longitude));
+            }
+
             var geoResult = _mapApi.GeocodeLocation(latitude, longitude);
             if (geoResult.Status == ResultStatus.OK)
             {
-                return ConvertGeoResultToAddresses(geoResult,null);
+                return addressesInRange.Concat(ConvertGeoResultToAddresses(geoResult, null)).ToArray();
             }
             else
             {
-                return new Address[0];
+                return addressesInRange;
             }
-
-
          
         }
+
+        private Address[] GetPopularAddressesInRange(Position position)
+        {
+            float range = float.Parse(_configManager.GetSetting("GeoLoc.PopularAddress.Range"));
+            const double R = 6378137;
+
+            var addressesInRange = from a in _popularAddressProvider.GetPopularAddresses()
+                                   let distance = position.DistanceTo(new Position(a.Latitude, a.Longitude))
+                                   where distance <= range
+                                   orderby distance ascending
+                                   select a;
+
+            return addressesInRange.ToArray();
+        }
+
+        
 
         private Address[] ConvertGeoResultToAddresses(GeoResult geoResult, string placeName)
         {

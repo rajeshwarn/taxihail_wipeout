@@ -80,5 +80,6 @@
     <Compile Include="PlaceDetailServiceClient.cs" />
     <Compile Include="SearchLocationsServiceClient.cs" />
     <Compile Include="ConfigurationClientService.cs" />
+    <Compile Include="PopularAddressesServiceClient.cs" />
   </ItemGroup>
 </Project>

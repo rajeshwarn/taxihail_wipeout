@@ -254,7 +254,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private void SearchAddressForCoordinate(Position p)
         {
             Console.WriteLine("Start Call SearchAddress : " + p.Latitude.ToString() + ", " + p.Longitude.ToString());
-            var address = TinyIoC.TinyIoCContainer.Current.Resolve<IGeolocService>().SearchAddress(p.Latitude, p.Longitude);
+            var address = TinyIoC.TinyIoCContainer.Current.Resolve<IGeolocService>().SearchAddress(p.Latitude, p.Longitude, searchPopularAddresses: true);
             Console.WriteLine("Call SearchAddress finsihed");
             if (address.Count() > 0)
             {
@@ -267,8 +267,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Console.WriteLine("Exiting SearchAddress thread");
             IsExecuting = false;
         }
-
-
 
     }
 }
