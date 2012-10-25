@@ -2,8 +2,10 @@
 using Microsoft.Practices.Unity;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Api.Providers;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Provider;
 
 namespace apcurium.MK.Booking.Api
 {
@@ -12,6 +14,8 @@ namespace apcurium.MK.Booking.Api
         public void Init(IUnityContainer container)
         {
             RegisterMaps();
+
+            container.RegisterInstance<IPopularAddressProvider>(new PopularAddressProvider());
         }
 
         private void RegisterMaps()
