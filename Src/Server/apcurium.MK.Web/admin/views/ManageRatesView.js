@@ -3,6 +3,11 @@
     "use strict";
 
     TaxiHail.ManageRatesView = TaxiHail.TemplatedView.extend({
+
+        initialize: function() {
+            this.collection.on('reset', this.render, this);
+        },
+
         render: function() {
 
             this.$el.html(this.renderTemplate());

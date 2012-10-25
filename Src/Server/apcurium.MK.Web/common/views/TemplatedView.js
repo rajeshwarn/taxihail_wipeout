@@ -7,6 +7,9 @@
         resourceSet: null,
 
         renderTemplate: function (context) {
+            if(!_.isFunction(this.template)) {
+                throw new Error('Missing template');
+            }
             context = _.extend(context || {}, {
                 resourceSet: this.resourceSet
             });
