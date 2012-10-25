@@ -60,6 +60,7 @@ namespace MK.DeploymentService
             {
                 try
                 {
+                    logger.DebugFormat("New Job for {0}", job.Company.Name);
                     job.Status = JobStatus.INPROGRESS;
                     DbContext.SaveChanges();
 
@@ -69,6 +70,7 @@ namespace MK.DeploymentService
 
                     if (!Directory.Exists(sourceDirectory))
                     {
+                        logger.DebugFormat("Clone Source Code");
                         Directory.CreateDirectory(sourceDirectory);
                         var args = string.Format(@"clone {1} https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi {0}", sourceDirectory, revision);
 
@@ -91,6 +93,7 @@ namespace MK.DeploymentService
                         }
                     }else
                     {
+                        logger.DebugFormat("Revert, Purge and Update Source Code");
                         //already clone just do a revert and update the source
                         RevertAndPull(sourceDirectory);
                     }
@@ -98,6 +101,7 @@ namespace MK.DeploymentService
 
                     if(!string.IsNullOrEmpty(job.Revision))
                     {
+                        logger.DebugFormat("Update to revision {0}", job.Revision);
                         var hgUpdate = new ProcessStartInfo
                         {
                             FileName = "hg.exe",
@@ -121,6 +125,7 @@ namespace MK.DeploymentService
                     //build server and deploy
                     if (job.DeployServer || job.DeployDB)
                     {
+                        logger.DebugFormat("Build Solution");
                         var buildPackage = new ProcessStartInfo
                                                {
                                                    FileName = "Powershell.exe",
@@ -142,6 +147,7 @@ namespace MK.DeploymentService
                             }
                         }
 
+                        logger.DebugFormat("Deploying");
                         var companyName = job.Company.ConfigurationProperties["TaxiHail.ServerCompanyName"];
                         var iisManager = new ServerManager();
                         var appPool = iisManager.ApplicationPools.FirstOrDefault(x => x.Name == companyName);
@@ -157,7 +163,7 @@ namespace MK.DeploymentService
 
                         if(job.DeployDB)
                         {
-                            
+                            logger.DebugFormat("Deploying DB");
                             var jsonSettings = new JObject();
                             foreach (var setting in job.Company.ConfigurationProperties)
                             {
@@ -193,8 +199,10 @@ namespace MK.DeploymentService
                             }
                         }
 
+                        
                         if(job.DeployServer)
                         {
+                            logger.DebugFormat("Deploying IIS");
                             var subFolder = job.Company.ConfigurationProperties["TaxiHail.Version"] + job.Revision+ "\\";
                             var targetWeDirectory = Path.Combine(job.TaxHailEnv.WebSitesFolder, companyName, subFolder);
                             
@@ -253,7 +261,7 @@ namespace MK.DeploymentService
 
                         }
                         appPool.Start();
-
+                        logger.DebugFormat("Job Done");
                     }
 
                     job.Details = string.Empty;
@@ -262,7 +270,7 @@ namespace MK.DeploymentService
 
                 }catch(Exception e)
                 {
-                    logger.Fatal(e.Message, e);
+                    logger.Error(e.Message, e);
                     job.Status = JobStatus.ERROR;
                     job.Details = e.Message;
                     DbContext.SaveChanges();
