@@ -98,7 +98,23 @@ namespace MK.DeploymentService
 
                     if(!string.IsNullOrEmpty(job.Revision))
                     {
-                        
+                        var hgUpdate = new ProcessStartInfo
+                        {
+                            FileName = "hg.exe",
+                            WindowStyle = ProcessWindowStyle.Hidden,
+                            UseShellExecute = false,
+                            CreateNoWindow = false,
+                            Arguments = string.Format("update --repository {0} -r {1}", sourceDirectory, job.Revision)
+                        };
+
+                        using (var exeProcess = Process.Start(hgUpdate))
+                        {
+                            exeProcess.WaitForExit();
+                            if (exeProcess.ExitCode > 0)
+                            {
+                                throw new Exception("Error during revert source code step");
+                            }
+                        }
                     }
 
 
@@ -262,7 +278,7 @@ namespace MK.DeploymentService
                                    WindowStyle = ProcessWindowStyle.Hidden,
                                    UseShellExecute = false,
                                    CreateNoWindow = false,
-                                   Arguments = string.Format("update --repository {0} -r default -C", repository)
+                                   Arguments = string.Format("update --repository {0} -C -r default", repository)
                                };
 
             using (var exeProcess = Process.Start(hgRevert))
@@ -307,6 +323,24 @@ namespace MK.DeploymentService
                 if (exeProcess.ExitCode > 0)
                 {
                     throw new Exception("Error during pull source code step");
+                }
+            }
+
+            var hgUpdate = new ProcessStartInfo
+            {
+                FileName = "hg.exe",
+                WindowStyle = ProcessWindowStyle.Hidden,
+                UseShellExecute = false,
+                CreateNoWindow = false,
+                Arguments = string.Format("update --repository {0}", repository)
+            };
+
+            using (var exeProcess = Process.Start(hgUpdate))
+            {
+                exeProcess.WaitForExit();
+                if (exeProcess.ExitCode > 0)
+                {
+                    throw new Exception("Error during revert source code step");
                 }
             }
         }
