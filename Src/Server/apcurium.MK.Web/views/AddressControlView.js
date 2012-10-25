@@ -114,7 +114,7 @@
             this.trigger('target', this, false);
 
             
-            TaxiHail.geolocation.getCurrentPosition()
+            TaxiHail.geolocation.getCurrentPosition(this.options.locatepopular)
                 .done(_.bind(function(address){
                     this.model.set(address);
                 }, this))

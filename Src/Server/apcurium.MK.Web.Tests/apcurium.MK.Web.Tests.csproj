@@ -90,6 +90,7 @@
     <Compile Include="AuthFixture.cs" />
     <Compile Include="BaseTest.cs" />
     <Compile Include="CompanyDefaultFavoriteAddressFixture.cs" />
+    <Compile Include="CompanyPopularAddressFixture.cs" />
     <Compile Include="PlaceDetailFixture.cs" />
     <Compile Include="SearchLocationsFixture.cs" />
     <Compile Include="DirectionsFixture.cs" />

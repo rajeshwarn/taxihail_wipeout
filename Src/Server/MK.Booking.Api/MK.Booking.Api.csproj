@@ -105,6 +105,7 @@
     <Compile Include="Services\ApplicationInfoService.cs" />
     <Compile Include="Services\BookingSettingsService.cs" />
     <Compile Include="Services\CancelOrderService.cs" />
+    <Compile Include="Services\ClientPopularAddressService.cs" />
     <Compile Include="Services\ConfigurationResetService.cs" />
     <Compile Include="Services\ConfigurationsService.cs" />
     <Compile Include="Services\ConfirmAccountService.cs" />
@@ -122,6 +123,7 @@
     <Compile Include="Services\OrderService.cs" />
     <Compile Include="Services\OrderStatusService.cs" />
     <Compile Include="Services\Maps\PlaceDetailService.cs" />
+    <Compile Include="Services\PopularAddressService.cs" />
     <Compile Include="Services\ReferenceDataService.cs" />
     <Compile Include="Services\RegisterAccountService.cs" />
     <Compile Include="Services\ResetPasswordService.cs" />

@@ -26,6 +26,7 @@
    "Smtp.UseDefaultCredentials" : "false",  
    "Receipt.Note": "Thank You!",
    "Booking.ConfirmationEmail" : "true",
-   "Client.HideCallDispatchButton" : "false"
+   "Client.HideCallDispatchButton" : "false",
+   "Geoloc.PopularAddress.Range" : "500"
 }
 

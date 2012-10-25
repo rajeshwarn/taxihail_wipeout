@@ -30,6 +30,7 @@ namespace apcurium.MK.Booking
             container.RegisterInstance<IAccountDao>(new AccountDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IOrderDao>(new OrderDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IDefaultAddressDao>(new DefaultAddressDao(() => container.Resolve<BookingDbContext>()));
+            container.RegisterInstance<IPopularAddressDao>(new PopularAddressDao(() => container.Resolve<BookingDbContext>()));
 
             container.RegisterInstance<IPasswordService>(new PasswordService());
             container.RegisterInstance<ITemplateService>(new TemplateService());
@@ -65,6 +66,10 @@ namespace apcurium.MK.Booking
             AutoMapper.Mapper.CreateMap<DefaultFavoriteAddressAdded, DefaultAddressDetails>();
 
             AutoMapper.Mapper.CreateMap<DefaultFavoriteAddressUpdated, DefaultAddressDetails>();
+
+            AutoMapper.Mapper.CreateMap<PopularAddressAdded, PopularAddressDetails>();
+
+            AutoMapper.Mapper.CreateMap<PopularAddressUpdated, PopularAddressDetails>();
         }
 
         private static void RegisterEventHandlers(IUnityContainer container)

@@ -48,6 +48,7 @@
             TaxiHail.parameters.facebookAppId = '<%: this.FacebookAppId %>';
             TaxiHail.parameters.facebookEnabled = <%: this.FacebookEnabled %>;
             TaxiHail.parameters.HideDispatchButton = <%: this.HideDispatchButton%>;
+            TaxiHail.parameters.GeolocPopularRange = <%: this.GeolocPopularRange%>;
             TaxiHail.parameters.apiRoot = "api";
         </script>
 

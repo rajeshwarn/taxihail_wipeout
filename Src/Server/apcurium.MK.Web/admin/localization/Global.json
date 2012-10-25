@@ -6,6 +6,7 @@
 	"modal.remove.message" : "Are you sure you want to remove it ?",
     "modal.cancel.message" : "Are you sure you want to cancel it ?",
     "modal.removeFavorite.message" : "Please confirm that you want to delete this favorite address.",
+	"modal.removePopular.message" : "Please confirm that you want to delete this popular address.",
     "modal.removeOrder.message" : "Please confirm that you want to remove this order from your history.",
     "modal.cancelOrder.message" : "Please confirm that you want to cancel your order.",
     "modal.cancelOrder.confirmButton" : "Cancel my order",
@@ -13,11 +14,14 @@
     "modal.default.confirmButton" : "Confirm",
     "modal.default.cancelButton" : "Cancel",
 	"Remove Favorite Address" : "Remove Default Favorite Address",
+	"Remove Popular Address" : "Remove Popular Address",
 	"Favorites Locations" : "Default Favorites Locations",
 	"favorites.add-new" : "Add new default favorite",
+	"popular.add-new" : "Add new popular address",
 	"error.fullAddressRequired": "Address is required",
 	"Search" : "Search",
 	"Places" : "Places",
 	"error.friendlyNameRequired" : "Friendly Name is required",
-	"Loading" : "Loading"
+	"Loading" : "Loading",
+	"Popular Locations" : "Popular Locations"
 }

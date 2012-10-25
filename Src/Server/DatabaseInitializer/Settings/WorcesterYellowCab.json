@@ -11,6 +11,7 @@
 	"GeoLoc.SearchFilter" : "{0},Worcester,ma",
 	"GeoLoc.DefaultLatitude" : "42.266667",
 	"GeoLoc.DefaultLongitude" : "-71.8",
+	"Geoloc.PopularAddress.Range" : "500",
 	"IBS.AutoDispatch" : "TRUE",
 	"IBS.DefaultAccountPassword" : "password",
 	"IBS.WebServicesPassword" : "test",

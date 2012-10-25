@@ -79,6 +79,7 @@
     <Compile Include="ConfigurationClientService.cs" />
     <Compile Include="DirectionsServiceClient.cs" />
     <Compile Include="GeocodingServiceClient.cs" />
+    <Compile Include="GeolocationServiceClient.cs" />
     <Compile Include="NearbyPlacesClient.cs" />
     <Compile Include="OrderServiceClient.cs" />
     <Compile Include="PlaceDetailServiceClient.cs" />

@@ -11,6 +11,7 @@
    "GeoLoc.DefaultLatitude" : "45.516667",
    "GeoLoc.DefaultLongitude" : "-73.65",
    "GeoLoc.SearchFilter" : "{0},ottawa,on,canada&region=ca", 
+   "Geoloc.PopularAddress.Range" : "500",
    "IBS.ExcludedVehicleTypeId" : "22;21",  
    "PriceFormat" : "en-US",   
    "DefaultPhoneNumber" : "18666245330",
