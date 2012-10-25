@@ -53,11 +53,17 @@ namespace apcurium.MK.Booking.Api.Services
         {
             var status = new OrderStatusDetail();
             var order = _orderDao.FindById(request.OrderId);
+
+            if ( order  == null ) //Order could be null if creating the order takes a lot of time and this method is called before the create finishes
+            {
+                return new OrderStatusDetail { OrderId = request.OrderId, Status = OrderStatus.Created, IBSOrderId = 0, IBSStatusId = "", IBSStatusDescription = "Processing your order" };
+            }
+
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
 
             if (!order.IBSOrderId.HasValue)
             {
-                return new OrderStatusDetail { IBSStatusDescription = "Error getting the order status" };
+                return new OrderStatusDetail { IBSStatusDescription = "Can't contact dispatch company" };
             }
 
             if (account.Id != order.AccountId)
