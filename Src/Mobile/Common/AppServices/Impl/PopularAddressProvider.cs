@@ -19,6 +19,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public PopularAddressProvider(ICacheService cacheService)
         {
             _cacheService = cacheService;
+			_cacheService.Clear(_popularAddressesCacheKey);
         }
 
         public IEnumerable<Address> GetPopularAddresses()
@@ -26,12 +27,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             var cached = _cacheService.Get<Address[]>(_popularAddressesCacheKey);
 
-            //if (cached != null)
-            //{
-            //    return cached;
-            //}
-            //else
-            //{
+            if (cached != null)
+            {
+                return cached;
+            }
+            else
+            {
 
                 IEnumerable<Address> result = new Address[0];
                 UseServiceClient<PopularAddressesServiceClient>(service =>
@@ -41,7 +42,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     );
                 _cacheService.Set(_popularAddressesCacheKey, result.ToArray());
                 return result;
-            //}
+            }
         }
     }
 }

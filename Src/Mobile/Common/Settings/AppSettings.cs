@@ -83,8 +83,17 @@ namespace apcurium.MK.Booking.Mobile.Settings
         {
             get
             {
+				var url = TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService>().Get<string>("TaxiHail.ServiceUrl");
+				if (string.IsNullOrEmpty(url))
+				{
+					
+					return _data.ServiceUrl;
+				}
+				else
+				{
+					return url;
+				}
 
-                return _data.ServiceUrl;
             }
             set
             {
