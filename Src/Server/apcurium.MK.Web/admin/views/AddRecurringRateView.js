@@ -17,9 +17,12 @@
                 return memo;
             }, {}));
 
+
             this.$el.html(this.renderTemplate(data));
 
-            this.$('[data-role=timepicker]').timepicker();
+            this.$('[data-role=timepicker]').timepicker({
+                defaultTime: 'value'
+            });
 
             this.validate({
                 rules: {

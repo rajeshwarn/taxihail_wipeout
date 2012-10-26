@@ -38,7 +38,7 @@
                 <label class="control-label">{{localize 'Start'}}</label>
                 <div class="controls">
                     <div class="input-append bootstrap-timepicker-component">
-                        <input name='startTime' type="text" data-role='timepicker' class="input-small">
+                        <input name='startTime' value='{{niceTime startTime}}' type="text" data-role='timepicker' class="input-small">
                         <span class="add-on">
                             <i class="icon-white icon-time"></i>
                         </span>
@@ -49,7 +49,7 @@
                 <label class="control-label">{{localize 'End'}}</label>
                 <div class="controls">
                     <div class="input-append bootstrap-timepicker-component">
-                        <input name='endTime' type="text" data-role='timepicker' class="input-small">
+                        <input name='endTime' value='{{niceTime endTime}}' type="text" data-role='timepicker' class="input-small">
                         <span class="add-on">
                             <i class="icon-white icon-time"></i>
                         </span>
