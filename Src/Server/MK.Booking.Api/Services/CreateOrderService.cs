@@ -24,18 +24,19 @@ namespace apcurium.MK.Booking.Api.Services
 
         private IAccountDao _accountDao;
         private ICacheClient _cacheClient;
-
+        private ReferenceDataService _referenceDataService;
         public CreateOrderService(ICommandBus commandBus,
                                     IBookingWebServiceClient bookingWebServiceClient,
                                     IStaticDataWebServiceClient staticDataWebServiceClient,
                                     IAccountDao accountDao,
-                                    ICacheClient cacheClient)
+                                    ICacheClient cacheClient, ReferenceDataService referenceDataService)
         {
             _commandBus = commandBus;
             _bookingWebServiceClient = bookingWebServiceClient;
             _staticDataWebServiceClient = staticDataWebServiceClient;
             _accountDao = accountDao;
             _cacheClient = cacheClient;
+            _referenceDataService = referenceDataService;
         }
 
         public override object OnPost(CreateOrder request)
@@ -62,7 +63,8 @@ namespace apcurium.MK.Booking.Api.Services
             emailCommand.EmailAddress = account.Email;
 
             // Get Charge Type and Vehicle Type from reference data
-            var referenceData = _cacheClient.Get<ReferenceData>(ReferenceDataService.CacheKey);
+            
+            var referenceData = (ReferenceData) _referenceDataService.OnGet(new ReferenceDataRequest());
             var chargeType = referenceData.PaymentsList.Where(x => x.Id == request.Settings.ChargeTypeId).Select(x => x.Display).FirstOrDefault();
             var vehicleType = referenceData.VehiclesList.Where(x => x.Id == request.Settings.VehicleTypeId).Select(x => x.Display).FirstOrDefault();
 
