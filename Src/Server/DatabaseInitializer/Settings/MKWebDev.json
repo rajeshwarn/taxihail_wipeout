@@ -1,6 +1,6 @@
 {
    "IBS.WebServicesPassword" : "test",
-   "IBS.WebServicesUrl" : "http://drivelinq.dyndns-ip.com:6928/XDS_IASPI.DLL/soap/",
+   "IBS.WebServicesUrl" : "http://72.38.252.190:6928/XDS_IASPI.DLL/soap/",
    "IBS.WebServicesUserName" : "taxi",  
    "DefaultBookingSettings.NbPassenger" : "1",
    "Direction.FlateRate" : "3.45",
@@ -20,7 +20,7 @@
    "TaxiHail.ApplicationKey" : "TaxiHail",
    "TaxiHail.AccentColor" : "#0057a3",
    "TaxiHail.SiteName" : "Dev",
-   "TaxiHail.Version" : "1.1",
+   "TaxiHail.Version" : "1.1.0",
    "FacebookAppId" : "",
    "FacebookEnabled" : "false",
    "TwitterAccessTokenUrl" : "",
@@ -29,5 +29,7 @@
    "TwitterConsumerKey" : "",
    "TwitterConsumerSecret" : "",
    "TwitterEnabled" : "false",
-   "TwitterRequestTokenUrl" : ""
+   "TwitterRequestTokenUrl" : "",
+"IBS.TimeDifference" : "0",
+   "Receipt.Note": "Thank You!<br>The Taxi Hail Team"
 }
