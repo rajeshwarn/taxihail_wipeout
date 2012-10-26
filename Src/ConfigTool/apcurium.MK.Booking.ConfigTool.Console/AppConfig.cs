@@ -96,7 +96,14 @@ namespace apcurium.MK.Booking.ConfigTool
                 new ConfigPList(this){ Destination=@"Mobile\iOS\Info.plist", Key = "CFBundleIdentifier",  SetterEle = ( ele )=> ele.InnerText = App.Package },
                 new ConfigPList(this){ Destination=@"Mobile\iOS\Info.plist", Key = "CFBundleURLSchemes",  SetterEle = ( ele )=> 
                 {
-                    ele.InnerXml = string.Format( "<string>fb{0}</string><string>taxihail</string>", Config.FacebookAppId);
+						if ( string.IsNullOrEmpty( Config.FacebookAppId ) )
+						{
+							ele.InnerXml = string.Format( "<string>taxihail</string>", Config.FacebookAppId);
+						}
+						else
+						{
+							ele.InnerXml = string.Format( "<string>fb{0}</string><string>taxihail</string>", Config.FacebookAppId);
+						}
                 }
                },             
 
