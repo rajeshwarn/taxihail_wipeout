@@ -10,19 +10,16 @@ namespace apcurium.MK.Booking.IBS.Impl
 {
     public class BookingWebServiceClient : BaseService<WebOrder7Service>, IBookingWebServiceClient
     {
-
-        private const int _invalidZoneErrorCode = -1002;
-        private IStaticDataWebServiceClient _staticDataWebServiceClient;
-
-        public BookingWebServiceClient(IConfigurationManager configManager, ILogger logger, IStaticDataWebServiceClient staticDataWebServiceClient)
-            : base(configManager, logger)
-        {
-            _staticDataWebServiceClient = staticDataWebServiceClient;
-        }
-
         protected override string GetUrl()
         {
             return base.GetUrl() + "IWEBOrder_7";
+        }
+
+
+        public BookingWebServiceClient(IConfigurationManager configManager, ILogger logger)
+            : base(configManager, logger)
+        {
+
         }
 
         public IBSOrderStauts GetOrderStatus(int orderId, int accountId)
@@ -35,7 +32,7 @@ namespace apcurium.MK.Booking.IBS.Impl
 
                 double latitude = 0;
                 double longitude = 0;
-                var result = service.GetVehicleLocation(UserNameApp, PasswordApp, orderId, ref longitude, ref latitude);
+                var result = service.GetVehicleLocation(UserNameApp, PasswordApp, orderId, ref longitude,ref latitude);
 
                 if (result == 0)
                 {
@@ -100,18 +97,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             order.ContactPhone = phone;
             order.OrderStatus = TWEBOrderStatusValue.wosPost;
 
-
             int? orderId = null;
-
-            if ( !ValidateZoneAddresses(order))
-            {
-                return _invalidZoneErrorCode;
-            }
-
-            
-
-
-            
 
 
             UseService(service =>
@@ -125,46 +111,6 @@ namespace apcurium.MK.Booking.IBS.Impl
                 Logger.LogMessage("WebService Create Order, orderid receveid : " + orderId);
             });
             return orderId;
-        }
-
-        private bool ValidateZoneAddresses(TBookOrder_5 order)
-        {
-            if (!ValidateZone(order.PickupAddress, "IBS.ValidatePickupZone", "IBS.PickupZoneToExclude"))
-            {
-                return false;
-            }
-
-            if ((order.DropoffAddress != null) && (order.DropoffAddress.Latitude != 0) && (order.DropoffAddress.Latitude != 0))
-            {
-                if (!ValidateZone(order.DropoffAddress, "IBS.ValidateDestinationZone", "IBS.DestinationZoneToExclude"))
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        private bool ValidateZone(TWEBAddress tWEBAddress, string enableValidationKey, string excludedZoneKey)
-        {
-            var isValidationEnabled = bool.Parse(ConfigManager.GetSetting(enableValidationKey));
-            if (isValidationEnabled)
-            {
-                var zone = _staticDataWebServiceClient.GetZoneByCoordinate(tWEBAddress.Latitude, tWEBAddress.Longitude);
-                if ( zone.ToSafeString().Trim().IsNullOrEmpty())
-                {
-                    return false;
-                }
-
-                var excludedZones = ConfigManager.GetSetting(excludedZoneKey).Split(',');
-                if (excludedZones.Any() && excludedZones.Any(z => z.SoftEqual(zone)))
-                {
-                    return false;
-                }
-
-            }
-            return true;
-
         }
 
         public bool CancelOrder(int orderId, int accountId, string contactPhone)

@@ -58,9 +58,5 @@
     "TwitterEnabled" : "false",
     "TwitterRequestTokenUrl" : "",
 "IBS.TimeDifference" : "0",
-"IBS.DestinationZoneToExclude" : "",
-	"IBS.PickupZoneToExclude" : "",
-	"IBS.ValidateDestinationZone" : "false",
-	"IBS.ValidatePickupZone" : "true",
 	"Receipt.Note": "Thank You!<br><b>Yellow Cab of Savannah</b>"
 }

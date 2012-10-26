@@ -9,6 +9,5 @@ namespace apcurium.MK.Booking.IBS
         ListItem[] GetPaymentsList(ListItem company);
         ListItem[] GetPickupCity(ListItem company);
         ListItem[] GetDropoffCity(ListItem company);
-        string GetZoneByCoordinate(double latitude, double longitude);
     }
 }

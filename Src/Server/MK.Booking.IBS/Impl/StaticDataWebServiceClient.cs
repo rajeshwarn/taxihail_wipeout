@@ -42,21 +42,10 @@ namespace apcurium.MK.Booking.IBS.Impl
             var items = new ListItem[] { };
             UseService(service =>
             {
-                var cities = service.GetDropoffCityList(UserNameApp, PasswordApp, company.Id);                
+                var cities = service.GetDropoffCityList(UserNameApp, PasswordApp, company.Id);
                 items = cities.Select(x => new ListItem { Display = x.Name, Id = x.CityID, Parent = company }).ToArray();
             });
             return items;
-        }
-
-
-        public string GetZoneByCoordinate(double latitude, double longitude)
-        {
-            string zone = "";
-            UseService(service =>
-                           {
-                               zone = service.GetZoneByGPS(UserNameApp, PasswordApp, latitude, longitude);
-                           });
-            return zone;
         }
 
 

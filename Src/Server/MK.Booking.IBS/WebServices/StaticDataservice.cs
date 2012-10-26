@@ -60,8 +60,6 @@ public partial class StaticDataservice : System.Web.Services.Protocols.SoapHttpC
     private System.Threading.SendOrPostCallback GetProvidersOperationCompleted;
     
     private System.Threading.SendOrPostCallback GetChargeTypesOperationCompleted;
-
-    private System.Threading.SendOrPostCallback GetZoneByGPSOperationCompleted;
     
     /// <remarks/>
     public StaticDataservice() {
@@ -106,10 +104,7 @@ public partial class StaticDataservice : System.Web.Services.Protocols.SoapHttpC
     
     /// <remarks/>
     public event GetChargeTypesCompletedEventHandler GetChargeTypesCompleted;
-
-    /// <remarks/>
-    public event GetZoneByGPSCompletedEventHandler GetZoneByGPSCompleted;
-
+    
     /// <remarks/>
     [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:StaticDataIntf-IStaticData#GetVehicleTypes", RequestNamespace="urn:StaticDataIntf-IStaticData", ResponseNamespace="urn:StaticDataIntf-IStaticData")]
     [return: System.Xml.Serialization.SoapElementAttribute("return")]
@@ -748,67 +743,7 @@ public partial class StaticDataservice : System.Web.Services.Protocols.SoapHttpC
             this.GetChargeTypesCompleted(this, new GetChargeTypesCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
-
-
-    /// <remarks/>
-    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:StaticDataIntf-IStaticData#GetZoneByGPS", RequestNamespace = "urn:StaticDataIntf-IStaticData", ResponseNamespace = "urn:StaticDataIntf-IStaticData")]
-    [return: System.Xml.Serialization.SoapElementAttribute("return")]
-    public string GetZoneByGPS(string Login, string Password, double Lat, double Lon)
-    {
-        object[] results = this.Invoke("GetZoneByGPS", new object[] {
-                    Login,
-                    Password,
-                    Lat,
-                    Lon});
-        return ((string)(results[0]));
-    }
-
-    /// <remarks/>
-    public System.IAsyncResult BeginGetZoneByGPS(string Login, string Password, double Lat, double Lon, System.AsyncCallback callback, object asyncState)
-    {
-        return this.BeginInvoke("GetZoneByGPS", new object[] {
-                    Login,
-                    Password,
-                    Lat,
-                    Lon}, callback, asyncState);
-    }
-
-    /// <remarks/>
-    public string EndGetZoneByGPS(System.IAsyncResult asyncResult)
-    {
-        object[] results = this.EndInvoke(asyncResult);
-        return ((string)(results[0]));
-    }
-
-    /// <remarks/>
-    public void GetZoneByGPSAsync(string Login, string Password, double Lat, double Lon)
-    {
-        this.GetZoneByGPSAsync(Login, Password, Lat, Lon, null);
-    }
-
-    /// <remarks/>
-    public void GetZoneByGPSAsync(string Login, string Password, double Lat, double Lon, object userState)
-    {
-        if ((this.GetZoneByGPSOperationCompleted == null))
-        {
-            this.GetZoneByGPSOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetZoneByGPSOperationCompleted);
-        }
-        this.InvokeAsync("GetZoneByGPS", new object[] {
-                    Login,
-                    Password,
-                    Lat,
-                    Lon}, this.GetZoneByGPSOperationCompleted, userState);
-    }
-
-    private void OnGetZoneByGPSOperationCompleted(object arg)
-    {
-        if ((this.GetZoneByGPSCompleted != null))
-        {
-            System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-            this.GetZoneByGPSCompleted(this, new GetZoneByGPSCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-        }
-    }
-
+    
     /// <remarks/>
     public new void CancelAsync(object userState) {
         base.CancelAsync(userState);
@@ -1944,36 +1879,6 @@ public partial class GetChargeTypesCompletedEventArgs : System.ComponentModel.As
         get {
             this.RaiseExceptionIfNecessary();
             return ((TChargeTypeItem[])(this.results[0]));
-        }
-    }
-}
-
-/// <remarks/>
-[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.17929")]
-public delegate void GetZoneByGPSCompletedEventHandler(object sender, GetZoneByGPSCompletedEventArgs e);
-
-/// <remarks/>
-[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.17929")]
-[System.Diagnostics.DebuggerStepThroughAttribute()]
-[System.ComponentModel.DesignerCategoryAttribute("code")]
-public partial class GetZoneByGPSCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
-{
-
-    private object[] results;
-
-    internal GetZoneByGPSCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
-        base(exception, cancelled, userState)
-    {
-        this.results = results;
-    }
-
-    /// <remarks/>
-    public string Result
-    {
-        get
-        {
-            this.RaiseExceptionIfNecessary();
-            return ((string)(this.results[0]));
         }
     }
 }

@@ -57,11 +57,7 @@
     "TwitterConsumerSecret" : "",
     "TwitterEnabled" : "false",
     "TwitterRequestTokenUrl" : "",
-	"IBS.TimeDifference" : "0",	
-	"IBS.DestinationZoneToExclude" : "",
-	"IBS.PickupZoneToExclude" : "",
-	"IBS.ValidateDestinationZone" : "false",
-	"IBS.ValidatePickupZone" : "true",
+"IBS.TimeDifference" : "0",
 	"Receipt.Note": "Thank You!<br><b>Atlanta Checker</b>"
 
 }
