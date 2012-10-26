@@ -1,18 +1,23 @@
 (function(){
     
 
-    var View = TaxiHail.AddRecurringRateView  = TaxiHail.TemplatedView.extend({
+    var View = TaxiHail.EditRateView = TaxiHail.AddRecurringRateView  = TaxiHail.TemplatedView.extend({
 
         render: function() {
 
-            var defaults = {
-                flatRate: 0,
-                pricePerPassenger: 0,
-                distanceMultiplicator: 1,
-                timeAdjustmentFactor: 1
-            };
+            var daysOfTheWeek = this.model.get('daysOfTheWeek'),
+                data = this.model.toJSON();
 
-            this.$el.html(this.renderTemplate(defaults));
+            // Determine if the checkbox for each days should be checked
+            // Will produce un object like this
+            // { checked0: 'checked', checked1: '' ... }
+            _.extend(data, _(_.range(7)).reduce(function(memo, num) {
+                var isChecked = (daysOfTheWeek & num) === num;
+                memo['checked' + num] = isChecked ? 'checked' : '';
+                return memo;
+            }, {}));
+
+            this.$el.html(this.renderTemplate(data));
 
             this.$('[data-role=timepicker]').timepicker();
 

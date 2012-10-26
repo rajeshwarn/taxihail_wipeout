@@ -30,7 +30,8 @@
             "managepopularaddresses": "managePopularAddresses",
             "rates": "manageRates", //#rates
             "rates/add/recurring": "addRecurringRate", //#rates/add/recurring
-            "rates/add/day": "addDayRate" //#rates/add/day
+            "rates/add/day": "addDayRate", //#rates/add/day
+            "rates/edit/:id": "editRate" //#rates/edit/{GUID}
         },
 
         initialize: function (options) {
@@ -84,6 +85,10 @@
 
         addDayRate: function() {
             TaxiHail.Controller.action(TaxiHail.RatesController, 'addDay');
+        },
+
+        editRate: function(id) {
+            TaxiHail.Controller.action(TaxiHail.RatesController, 'edit', id);
         }
     });
 

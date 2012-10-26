@@ -4,7 +4,7 @@
 
         initialize: function() {
             this.collection = new TaxiHail.RateCollection();
-            this.collection.fetch();
+            $.when(this.collection.fetch()).then(this.ready);
         },
 
         index: function() {
@@ -15,13 +15,23 @@
 
         addRecurring: function() {
             return this.view = new TaxiHail.AddRecurringRateView({
-                collection: this.collection
+                collection: this.collection,
+                model: new TaxiHail.Rate()
             });
         },
 
         addDay: function() {
             return this.view = new TaxiHail.AddDayRateView({
-                collection: this.collection
+                collection: this.collection,
+                model: new TaxiHail.Rate()
+            });
+        },
+
+        edit: function(id) {
+            var model = this.collection.get(id);
+            return this.view = new TaxiHail.EditRateView({
+                collection: this.collection,
+                model: model
             });
         }
 
