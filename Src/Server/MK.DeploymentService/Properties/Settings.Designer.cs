@@ -25,7 +25,7 @@ namespace MK.DeploymentService.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Local")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Build")]
         public string Mode {
             get {
                 return ((string)(this["Mode"]));
