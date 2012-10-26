@@ -69,5 +69,17 @@ namespace apcurium.MK.Booking.Api.Client
             var addresses = Client.Get<IList<Address>>(req);
             return addresses;
         }
+
+        public void CreateRate(Rates rate)
+        {
+            var req = string.Format("/admin/rates");
+            var response = Client.Post<string>(req, rate);
+        }
+
+        public IList<Rates> GetRates()
+        {
+            var req = string.Format("/admin/rates");
+            return Client.Get<IList<Rates>>(req);
+        }
     }
 }

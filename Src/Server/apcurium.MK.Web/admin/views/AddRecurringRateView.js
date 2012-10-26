@@ -18,6 +18,7 @@
 
             this.validate({
                 rules: {
+                    name: 'required',
                     flatRate: {
                         required: true,
                         min: 0

@@ -31,6 +31,7 @@ namespace apcurium.MK.Booking.CommandHandlers
             var company = _repository.Get(command.CompanyId);
 
             company.CreateRate(rateId: command.RateId,
+                name: command.Name,
                 flatRate: command.FlatRate,
                 distanceMultiplicator: command.DistanceMultiplicator,
                 timeAdustmentFactor: command.TimeAdjustmentFactor,

@@ -12,6 +12,7 @@ namespace apcurium.MK.Booking.ReadModel
         [Key]
         public Guid Id { get; set; }
         public Guid CompanyId { get; set; }
+        public string Name { get; set; }
         public decimal FlatRate { get; set; }
         public double DistanceMultiplicator { get; set; }
         public double TimeAdjustmentFactor { get; set; }

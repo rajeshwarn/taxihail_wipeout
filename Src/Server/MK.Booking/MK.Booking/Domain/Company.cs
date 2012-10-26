@@ -127,7 +127,7 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void CreateRate(Guid rateId, decimal flatRate, double distanceMultiplicator, double timeAdustmentFactor, decimal pricePerPassenger, DayOfTheWeek daysOfTheWeek, DateTime startTime, DateTime endTime)
+        public void CreateRate(Guid rateId, string name, decimal flatRate, double distanceMultiplicator, double timeAdustmentFactor, decimal pricePerPassenger, DayOfTheWeek daysOfTheWeek, DateTime startTime, DateTime endTime)
         {
             // Ensure StartTime and EndTime are the same day
             startTime = DateTime.Today.AddHours(startTime.Hour).AddMinutes(startTime.Minute);
@@ -141,6 +141,7 @@ namespace apcurium.MK.Booking.Domain
             this.Update(new RateCreated
             {
                 RateId = rateId,
+                Name = name,
                 FlatRate = flatRate,
                 DistanceMultiplicator = distanceMultiplicator,
                 TimeAdjustmentFactor = timeAdustmentFactor,

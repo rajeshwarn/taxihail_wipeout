@@ -10,6 +10,7 @@ namespace apcurium.MK.Booking.Events
     public class RateCreated : VersionedEvent
     {
         public Guid RateId { get; set; }
+        public string Name { get; set; }
         public decimal FlatRate { get; set; }
         public double DistanceMultiplicator { get; set; }
         public double TimeAdjustmentFactor { get; set; }
@@ -17,5 +18,6 @@ namespace apcurium.MK.Booking.Events
         public DayOfTheWeek DaysOfTheWeek { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
+
     }
 }

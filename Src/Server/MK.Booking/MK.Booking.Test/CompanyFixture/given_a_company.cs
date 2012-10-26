@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
         {
             this.sut = new EventSourcingTestHelper<Company>();
             this.sut.Setup(new CompanyCommandHandler(this.sut.Repository));
-            this.sut.Given(new CompanyCreated{ SourceId = _companyId});
+            this.sut.Given(new CompanyCreated { SourceId = _companyId });
         }
 
         [Test]
@@ -35,6 +35,7 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
                               {
                                   CompanyId = _companyId,
                                   RateId = rateId,
+                                  Name = "Week-End", 
                                   FlatRate = 3.50m,
                                   DistanceMultiplicator = 1.1,
                                   TimeAdjustmentFactor = 1.2,
@@ -48,6 +49,7 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
             var evt = (RateCreated) sut.Events.Single();
             Assert.AreEqual(_companyId, evt.SourceId);
             Assert.AreEqual(rateId, evt.RateId);
+            Assert.AreEqual("Week-End", evt.Name);
             Assert.AreEqual(3.50, evt.FlatRate);
             Assert.AreEqual(1.1, evt.DistanceMultiplicator);
             Assert.AreEqual(1.2, evt.TimeAdjustmentFactor);
@@ -80,5 +82,7 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
             }));
 
         }
+
+
     }
 }

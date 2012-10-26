@@ -4,6 +4,12 @@
     <form class="form-horizontal clearfix" >
         <input type='hidden' name='type' value='recurring' />
         <div class="control-group">
+            <label class="control-label">{{localize 'Name'}}</label>
+            <div class="controls">
+                <input type="text" name="name"  value="{{name}}" class='input-block-level'>
+            </div>
+        </div>
+        <div class="control-group">
             <label class="control-label">{{localize 'Flat Rate'}}</label>
             <div class="controls">
                 <input type="text" name="flatRate"  value="{{flatRate}}" class='input-block-level'>

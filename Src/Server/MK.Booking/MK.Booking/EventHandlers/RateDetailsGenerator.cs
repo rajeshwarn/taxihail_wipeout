@@ -26,6 +26,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 {
                     CompanyId = @event.SourceId,
                     Id = @event.RateId,
+                    Name = @event.Name,
                     FlatRate = @event.FlatRate,
                     DistanceMultiplicator = @event.DistanceMultiplicator,
                     TimeAdjustmentFactor = @event.TimeAdjustmentFactor,
