@@ -30,6 +30,7 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
         public void when_creating_a_new_rate()
         {
             var rateId = Guid.NewGuid();
+
             this.sut.When(new CreateRate
                               {
                                   CompanyId = _companyId,
@@ -38,7 +39,9 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
                                   DistanceMultiplicator = 1.1,
                                   TimeAdjustmentFactor = 1.2,
                                   PricePerPassenger = 1.3m,
-                                  DaysOfTheWeek = DayOfTheWeek.Saturday | DayOfTheWeek.Sunday
+                                  DaysOfTheWeek = DayOfTheWeek.Saturday | DayOfTheWeek.Sunday,
+                                  StartTime = DateTime.Today.AddHours(12).AddMinutes(30),
+                                  EndTime = DateTime.Today.AddHours(20)
                               });
 
             Assert.AreEqual(1, sut.Events.Count);
@@ -51,6 +54,30 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
             Assert.AreEqual(1.3m, evt.PricePerPassenger);
             Assert.AreEqual(DayOfTheWeek.Saturday, evt.DaysOfTheWeek & DayOfTheWeek.Saturday);
             Assert.AreEqual(DayOfTheWeek.Sunday, evt.DaysOfTheWeek & DayOfTheWeek.Sunday);
+            Assert.AreEqual(12, evt.StartTime.Hour);
+            Assert.AreEqual(30, evt.StartTime.Minute);
+            Assert.AreEqual(20, evt.EndTime.Hour);
+            Assert.AreEqual(00, evt.EndTime.Minute);
+
+        }
+
+        [Test]
+        public void when_creating_a_rate_with_EndTime_before_StartTime()
+        {
+            var rateId = Guid.NewGuid();
+
+            Assert.Throws<InvalidOperationException>(() => this.sut.When(new CreateRate
+            {
+                CompanyId = _companyId,
+                RateId = rateId,
+                FlatRate = 3.50m,
+                DistanceMultiplicator = 1.1,
+                TimeAdjustmentFactor = 1.2,
+                PricePerPassenger = 1.3m,
+                DaysOfTheWeek = DayOfTheWeek.Monday,
+                StartTime = DateTime.Today.AddHours(20),
+                EndTime = DateTime.Today.AddHours(12)
+            }));
 
         }
     }

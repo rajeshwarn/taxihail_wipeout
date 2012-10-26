@@ -35,7 +35,9 @@ namespace apcurium.MK.Booking.CommandHandlers
                 distanceMultiplicator: command.DistanceMultiplicator,
                 timeAdustmentFactor: command.TimeAdjustmentFactor,
                 pricePerPassenger: command.PricePerPassenger,
-                daysOfTheWeek: command.DaysOfTheWeek);
+                daysOfTheWeek: command.DaysOfTheWeek,
+                startTime: command.StartTime,
+                endTime: command.EndTime);
 
             _repository.Save(company, command.Id.ToString());
         }

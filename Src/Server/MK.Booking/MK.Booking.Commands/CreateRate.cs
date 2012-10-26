@@ -24,6 +24,8 @@ namespace apcurium.MK.Booking.Commands
         public double DistanceMultiplicator { get; set; }
         public double TimeAdjustmentFactor { get; set; }
         public decimal PricePerPassenger { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
         public DayOfTheWeek DaysOfTheWeek { get; set; }
     }
 }

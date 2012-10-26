@@ -46,7 +46,9 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
                 DistanceMultiplicator = 1.1,
                 TimeAdjustmentFactor = 1.2,
                 PricePerPassenger = 2.0m,
-                DaysOfTheWeek = DayOfTheWeek.Saturday | DayOfTheWeek.Sunday
+                DaysOfTheWeek = DayOfTheWeek.Saturday | DayOfTheWeek.Sunday,
+                StartTime = DateTime.MinValue.AddHours(12).AddMinutes(55),
+                EndTime = DateTime.MinValue.AddHours(20).AddMinutes(15)
             });
 
             using (var context = new BookingDbContext(dbName))
@@ -61,6 +63,10 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
                 Assert.AreEqual(1.2, dto.TimeAdjustmentFactor);
                 Assert.AreEqual(2.0m, dto.PricePerPassenger);
                 Assert.AreEqual((int)(DayOfTheWeek.Saturday | DayOfTheWeek.Sunday), dto.DaysOfTheWeek);
+                Assert.AreEqual(12, dto.StartTime.Hour);
+                Assert.AreEqual(55, dto.StartTime.Minute);
+                Assert.AreEqual(20, dto.EndTime.Hour);
+                Assert.AreEqual(15, dto.EndTime.Minute);
             }
         }
     }

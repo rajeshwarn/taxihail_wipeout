@@ -31,6 +31,8 @@ namespace apcurium.MK.Booking.EventHandlers
                     TimeAdjustmentFactor = @event.TimeAdjustmentFactor,
                     PricePerPassenger = @event.PricePerPassenger,
                     DaysOfTheWeek = (int)@event.DaysOfTheWeek,
+                    StartTime = @event.StartTime,
+                    EndTime = @event.EndTime
                 });   
             }
         }

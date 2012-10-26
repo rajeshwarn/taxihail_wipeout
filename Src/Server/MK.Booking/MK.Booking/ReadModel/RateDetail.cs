@@ -17,5 +17,7 @@ namespace apcurium.MK.Booking.ReadModel
         public double TimeAdjustmentFactor { get; set; }
         public decimal PricePerPassenger { get; set; }
         public int DaysOfTheWeek { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
     }
 }

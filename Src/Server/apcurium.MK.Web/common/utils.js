@@ -60,6 +60,25 @@
             }).spin();
             
             $(container).html(spinner.el);
+        },
+
+        date: {
+            toISO8601: function(date) {
+                var year = date.getFullYear(),
+                    month = date.getMonth() + 1,
+                    day = date.getDate(),
+                    hour = date.getHours(),
+                    minute = date.getMinutes(),
+                    second = date.getSeconds();
+
+                month = month < 10 ? '0' + month : month;
+                day = day < 10 ? '0' + day : day;
+                hour = hour < 10 ? '0' + hour : hour;
+                minute = minute < 10 ? '0' + minute : minute;
+                second = second < 10 ? '0' + second : second;
+
+                return year + '-' + month + '-' + day + 'T' + hour + ':' + minute + ':' + second;
+            }
         }
 
     });
@@ -112,6 +131,38 @@
 
                 // Format: Monday, August 17 at 2:35 PM
                 return new Handlebars.SafeString(days[dayOfTheWeek] + ',\u00a0 ' + months[month] + ' ' + day + '\u00a0at\u00a0' + hour + ":" + minute + "\u00a0" + meridian);
+            }
+        }
+        // not needed yet
+        return '';
+    });
+
+    Handlebars.registerHelper('niceTime', function(date) {
+         if(_.isString(date) && date.indexOf('-') && date.indexOf('T') && date.indexOf(':'))
+        {
+            // We assume that we have a date in the format : yyyy-mm-ddThh:mm:ss
+            var parts = date.split('T'),
+                timeParts = parts[1].split(':'),
+                meridian = "AM";
+            if(timeParts.length >= 2) {
+                var hour = parseInt(timeParts[0], 10);
+                var minute = parseInt(timeParts[1], 10);
+
+                if (hour === 0) {
+                    hour = 12;
+                } else if (hour >= 12) {
+                    if (hour > 12) {
+                        hour = hour - 12;
+                    }
+                    meridian = "PM";
+                } else {
+                   meridian = "AM";
+                }
+
+                minute = minute < 10 ? '0' + minute : minute;
+
+                // Format: 2:35 PM
+                return new Handlebars.SafeString(hour + ":" + minute + "\u00a0" + meridian);
             }
         }
         // not needed yet

@@ -85,21 +85,8 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void CreateRate(Guid rateId, decimal flatRate, double distanceMultiplicator, double timeAdustmentFactor, decimal pricePerPassenger, DayOfTheWeek daysOfTheWeek)
+        public void AddPopularAddress(Guid id, string friendlyName, string apartment, string fullAddress, string ringCode, string buildingName, double latitude, double longitude)
         {
-            this.Update(new RateCreated
-            {
-                RateId = rateId,
-                FlatRate = flatRate,
-                DistanceMultiplicator = distanceMultiplicator,
-                TimeAdjustmentFactor = timeAdustmentFactor,
-                PricePerPassenger = pricePerPassenger,
-                DaysOfTheWeek = daysOfTheWeek,
-            });
-        }
-
-public void AddPopularAddress(Guid id, string friendlyName, string apartment, string fullAddress, string ringCode, string buildingName, double latitude, double longitude)
-{
             ValidateFavoriteAddress(friendlyName, fullAddress, latitude, longitude);
 
             this.Update(new PopularAddressAdded
@@ -137,6 +124,30 @@ public void AddPopularAddress(Guid id, string friendlyName, string apartment, st
             this.Update(new PopularAddressRemoved
             {
                 AddressId = addressId
+            });
+        }
+
+        public void CreateRate(Guid rateId, decimal flatRate, double distanceMultiplicator, double timeAdustmentFactor, decimal pricePerPassenger, DayOfTheWeek daysOfTheWeek, DateTime startTime, DateTime endTime)
+        {
+            // Ensure StartTime and EndTime are the same day
+            startTime = DateTime.Today.AddHours(startTime.Hour).AddMinutes(startTime.Minute);
+            endTime = DateTime.Today.AddHours(endTime.Hour).AddMinutes(endTime.Minute);
+
+            if(endTime <= startTime)
+            {
+                throw new InvalidOperationException("Start time must be before end time");
+            }
+
+            this.Update(new RateCreated
+            {
+                RateId = rateId,
+                FlatRate = flatRate,
+                DistanceMultiplicator = distanceMultiplicator,
+                TimeAdjustmentFactor = timeAdustmentFactor,
+                PricePerPassenger = pricePerPassenger,
+                DaysOfTheWeek = daysOfTheWeek,
+                StartTime = startTime,
+                EndTime = endTime
             });
         }
 
