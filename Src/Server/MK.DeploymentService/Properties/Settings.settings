@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="Mode" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">Local</Value>
+      <Value Profile="(Default)">Build</Value>
     </Setting>
     <Setting Name="DeployFolder" Type="System.String" Scope="Application">
       <Value Profile="(Default)">C:\Data\</Value>
