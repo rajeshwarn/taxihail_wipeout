@@ -93,7 +93,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         void CancelTouchUpInside(object sender, EventArgs e)
         {
-			TinyIoCContainer.Current.Resolve<IBookingService>().RemoveFromHistory( _data.Id );
+			
             View.UserInteractionEnabled = false;
             
             ThreadHelper.ExecuteInThread(() =>
