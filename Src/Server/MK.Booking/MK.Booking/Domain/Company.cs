@@ -29,16 +29,17 @@ namespace apcurium.MK.Booking.Domain
 
         private void RegisterHandlers()
         {
-            base.Handles<DefaultFavoriteAddressAdded>(OnDefaultFavoriteAddressAdded);
-            base.Handles<DefaultFavoriteAddressRemoved>(OnDefaultFavoriteAddressRemoved);
-            base.Handles<DefaultFavoriteAddressUpdated>(OnDefaultFavoriteAddressUpdated);
+            base.Handles<DefaultFavoriteAddressAdded>(OnEventDoNothing);
+            base.Handles<DefaultFavoriteAddressRemoved>(OnEventDoNothing);
+            base.Handles<DefaultFavoriteAddressUpdated>(OnEventDoNothing);
 
-            base.Handles<PopularAddressAdded>(OnPopularAddressAdded);
-            base.Handles<PopularAddressRemoved>(OnPopularAddressRemoved);
-            base.Handles<PopularAddressUpdated>(OnPopularAddressUpdated);
+            base.Handles<PopularAddressAdded>(OnEventDoNothing);
+            base.Handles<PopularAddressRemoved>(OnEventDoNothing);
+            base.Handles<PopularAddressUpdated>(OnEventDoNothing);
 
-            base.Handles<CompanyCreated>(OnCompanyCreated);
-            base.Handles<RateCreated>(OnRateCreated);
+            base.Handles<CompanyCreated>(OnEventDoNothing);
+            base.Handles<RateCreated>(OnEventDoNothing);
+            base.Handles<RateDeleted>(OnEventDoNothing);
         }
 
 
@@ -152,6 +153,15 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
+        public void DeleteRate(Guid rateId)
+        {
+            this.Update(new RateDeleted
+            {
+                RateId = rateId
+            });
+
+        }
+
         private static void ValidateFavoriteAddress(string friendlyName, string fullAddress, double latitude, double longitude)
         {
             if (Params.Get(friendlyName, fullAddress).Any(string.IsNullOrEmpty))
@@ -170,43 +180,11 @@ namespace apcurium.MK.Booking.Domain
             }
         }
 
-        private void OnCompanyCreated(CompanyCreated obj)
+        
+        private void OnEventDoNothing<T>(T @event) where T: VersionedEvent
         {
-
+            // Do nothing
         }
-
-        private void OnDefaultFavoriteAddressUpdated(DefaultFavoriteAddressUpdated obj)
-        {
-
-        }
-
-        private void OnDefaultFavoriteAddressRemoved(DefaultFavoriteAddressRemoved obj)
-        {
-        }
-
-        private void OnDefaultFavoriteAddressAdded(DefaultFavoriteAddressAdded obj)
-        {
-        }
-
-        private void OnPopularAddressUpdated(PopularAddressUpdated obj)
-        {
-
-        }
-
-        private void OnPopularAddressRemoved(PopularAddressRemoved obj)
-        {
-
-        }
-
-        private void OnPopularAddressAdded(PopularAddressAdded obj)
-        {
-
-        }
-
-        private void OnRateCreated(RateCreated @event)
-        {
-        }
-
         
     }
 }

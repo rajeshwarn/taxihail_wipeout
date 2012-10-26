@@ -4,6 +4,14 @@
 
         tagName: 'tr',
 
+        events: {
+            'click [data-action=delete]': 'ondelete'
+        },
+
+        initialize: function() {
+            this.model.on('destroy', this.remove, this);
+        },
+
         render: function() {
 
             var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
@@ -21,6 +29,11 @@
             this.$el.html(this.renderTemplate(data));
 
             return this;
+        },
+
+        ondelete: function(e) {
+            e.preventDefault();
+            this.model.destroy();
         }
 
     });

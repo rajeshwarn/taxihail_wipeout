@@ -12,6 +12,8 @@ namespace apcurium.MK.Web.Tests
     [TestFixture]
     public class RatesFixture: BaseTest
     {
+        private Guid _knownRateId;
+
         [TestFixtureSetUp]
         public override void TestFixtureSetup()
         {
@@ -32,6 +34,7 @@ namespace apcurium.MK.Web.Tests
             var sut = new AdministrationServiceClient(BaseUrl, SessionId);
             sut.CreateRate(new Rates
             {
+                Id = (_knownRateId = Guid.NewGuid()),
                 DaysOfTheWeek = DayOfTheWeek.Sunday,
                 StartTime =DateTime.MinValue.AddHours(2),
                 EndTime = DateTime.MinValue.AddHours(3),
@@ -75,6 +78,18 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(1.3m, rate.PricePerPassenger);
             Assert.AreEqual(1.4, rate.TimeAdjustmentFactor);
             
+        }
+
+        [Test]
+        public void DeleteRate()
+        {
+            var sut = new AdministrationServiceClient(BaseUrl, SessionId);
+
+            sut.DeleteRate(_knownRateId);
+
+            var rates = sut.GetRates();
+
+            Assert.IsFalse(rates.Any(x=> x.Id == _knownRateId));
         }
     }
 }

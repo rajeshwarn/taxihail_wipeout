@@ -47,8 +47,8 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
                 TimeAdjustmentFactor = 1.2,
                 PricePerPassenger = 2.0m,
                 DaysOfTheWeek = DayOfTheWeek.Saturday | DayOfTheWeek.Sunday,
-                StartTime = DateTime.MinValue.AddHours(12).AddMinutes(55),
-                EndTime = DateTime.MinValue.AddHours(20).AddMinutes(15)
+                StartTime = DateTime.Today.AddHours(12).AddMinutes(55),
+                EndTime = DateTime.Today.AddHours(20).AddMinutes(15)
             });
 
             using (var context = new BookingDbContext(dbName))
@@ -67,6 +67,44 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
                 Assert.AreEqual(55, dto.StartTime.Minute);
                 Assert.AreEqual(20, dto.EndTime.Hour);
                 Assert.AreEqual(15, dto.EndTime.Minute);
+            }
+        }
+    }
+
+    [TestFixture]
+    public class given_a_rate : given_a_view_model_generator
+    {
+        private Guid _companyId;
+        private Guid _rateId;
+
+        [SetUp]
+        public void SetUp()
+        {
+
+            this.sut.Handle(new RateCreated
+                                {
+                                    SourceId = (_companyId = Guid.NewGuid()),
+                                    RateId = (_rateId = Guid.NewGuid()),
+                                    DaysOfTheWeek = DayOfTheWeek.Sunday,
+                                    StartTime = DateTime.Today,
+                                    EndTime = DateTime.Today,
+                                    Name = "Rate " + Guid.NewGuid()
+                                });
+        }
+
+
+        [Test]
+        public void when_rate_deleted()
+        {
+            this.sut.Handle(new RateDeleted
+            {
+                SourceId = _companyId,
+                RateId = _rateId
+            });
+
+            using (var context = new BookingDbContext(dbName))
+            {
+                Assert.IsFalse(context.Query<RateDetail>().Any(x => x.Id == _rateId));
             }
         }
     }

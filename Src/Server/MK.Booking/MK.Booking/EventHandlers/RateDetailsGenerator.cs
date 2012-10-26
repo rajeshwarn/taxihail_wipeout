@@ -9,7 +9,7 @@ using apcurium.MK.Booking.ReadModel;
 
 namespace apcurium.MK.Booking.EventHandlers
 {
-    public class RateDetailsGenerator: IEventHandler<RateCreated>
+    public class RateDetailsGenerator: IEventHandler<RateCreated>, IEventHandler<RateDeleted>
     {
         private readonly Func<BookingDbContext> _contextFactory;
 
@@ -35,6 +35,19 @@ namespace apcurium.MK.Booking.EventHandlers
                     StartTime = @event.StartTime,
                     EndTime = @event.EndTime
                 });   
+            }
+        }
+
+        public void Handle(RateDeleted @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var rate = context.Find<RateDetail>(@event.RateId);
+                if (rate != null)
+                {
+                    context.Set<RateDetail>().Remove(rate);
+                    context.SaveChanges();
+                }
             }
         }
     }

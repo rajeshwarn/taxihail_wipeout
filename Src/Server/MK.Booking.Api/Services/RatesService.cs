@@ -11,6 +11,7 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -49,5 +50,14 @@ namespace apcurium.MK.Booking.Api.Services
                 Id = command.RateId
             };
         }
+
+        public override object OnDelete(Rates request)
+        {
+            var command = new DeleteRate {CompanyId = AppConstants.CompanyId, RateId = request.Id};
+            _commandBus.Send(command);
+
+            return new HttpResult(HttpStatusCode.OK, "OK");
+        }
     }
+
 }

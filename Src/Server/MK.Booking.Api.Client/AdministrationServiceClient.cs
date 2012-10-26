@@ -76,10 +76,18 @@ namespace apcurium.MK.Booking.Api.Client
             var response = Client.Post<string>(req, rate);
         }
 
+        public void DeleteRate(Guid rateId)
+        {
+            var req = string.Format("/admin/rates/" + rateId);
+            var response = Client.Delete<string>(req);
+        }
+
         public IList<Rates> GetRates()
         {
             var req = string.Format("/admin/rates");
             return Client.Get<IList<Rates>>(req);
         }
+
+        
     }
 }
