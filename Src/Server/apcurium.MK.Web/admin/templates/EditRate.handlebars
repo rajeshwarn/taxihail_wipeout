@@ -1,5 +1,11 @@
 <div class='well'>
-    <h4 class="table-title">{{localize "Add Rate"}}</h4>
+    <h4 class="table-title">
+        {{#if editMode}}
+        {{localize "Edit Rate"}}
+        {{else}}
+        {{localize "Add Rate"}}
+        {{/if}}
+    </h4>
     <div class="errors" style="margin-top: 10px;"></div>
     <form class="form-horizontal clearfix" >
         <input type='hidden' name='type' value='{{type}}' />
@@ -12,30 +18,33 @@
         <div class="control-group">
             <label class="control-label">{{localize 'Flat Rate'}}</label>
             <div class="controls">
-                <input type="text" name="flatRate"  value="{{flatRate}}" class='input-block-level'>
+                <input type="text" name="flatRate"  value="{{flatRate}}" class='input-mini'>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">{{localize 'Distance Multiplicator'}}</label>
             <div class="controls">
-                <input type="text" name="distanceMultiplicator"  value="{{distanceMultiplicator}}" class='input-block-level'>
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label">{{localize 'Time Adjustment Factor'}}</label>
-            <div class="controls">
-                <input type="text" name="timeAdjustmentFactor"  value="{{timeAdjustmentFactor}}" class='input-block-level'>
+                <input type="text" name="distanceMultiplicator"  value="{{distanceMultiplicator}}" class='input-mini'>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">{{localize 'Price Per Passenger'}}</label>
             <div class="controls">
-                <input type="text" name="pricePerPassenger"  value="{{pricePerPassenger}}" class='input-block-level'>
+                <input type="text" name="pricePerPassenger"  value="{{pricePerPassenger}}" class='input-mini'>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">{{localize 'Time Adjustment Factor'}}</label>
+            <div class="controls">
+                <div class='input-append'>
+                    <input type="text" name="timeAdjustmentFactor"  value="{{timeAdjustmentFactor}}" class='input-mini'>
+                    <span class="add-on">%</span>
+                </div>
             </div>
         </div>
         <div class='clearfix'>
-            <div class="control-group half-control-group">
-                <label class="control-label">{{localize 'Start'}}</label>
+            <div class="control-group">
+                <label class="control-label">{{localize 'Start Time'}}</label>
                 <div class="controls">
                     <div class="input-append bootstrap-timepicker-component">
                         <input name='startTime' value='{{niceTime startTime}}' type="text" data-role='timepicker' class="input-small">
@@ -45,8 +54,8 @@
                     </div>
                 </div>
             </div>
-            <div class="control-group half-control-group">
-                <label class="control-label">{{localize 'End'}}</label>
+            <div class="control-group">
+                <label class="control-label">{{localize 'End Time'}}</label>
                 <div class="controls">
                     <div class="input-append bootstrap-timepicker-component">
                         <input name='endTime' value='{{niceTime endTime}}' type="text" data-role='timepicker' class="input-small">
@@ -92,6 +101,6 @@
             </div>
         </div>
         {{/if}}
-        <button type='submit' class='btn btn-primary'>{{localize "Add Rate"}}</button>
+        <button type='submit' class='btn btn-primary'>{{localize "Save Rate"}}</button>
     </form>
 </div>

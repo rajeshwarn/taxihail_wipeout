@@ -25,6 +25,7 @@
 
             var data = this.model.toJSON();
             data.daysOfTheWeek = selectedDays.join(' - ');
+            data.recurring = +this.model.get('type') === TaxiHail.Rate.type.recurring;
 
             this.$el.html(this.renderTemplate(data));
 

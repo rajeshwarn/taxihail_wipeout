@@ -11,6 +11,7 @@
                 data = this.model.toJSON();
 
             data.recurring = +this.model.get('type') === TaxiHail.Rate.type.recurring;
+            data.editMode = !this.model.isNew();
 
             // Determine if the checkbox for each days should be checked
             // Will produce un object like this
@@ -50,10 +51,19 @@
                         required: true,
                         min: 0
                     },
-                    daysOfTheWeek: {
-                        required: true
+                    'daysOfTheWeek': {
+                        required: true,
+                        minlength: 1
                     },
                     date: 'required'
+                },
+                errorPlacement: function($label, $element) {
+                    if($element.attr('name') === 'daysOfTheWeek')
+                    {
+                        $element = $element.closest('.control-group').children().last();
+                    }
+                    $label.insertAfter($element);
+
                 },
                 submitHandler: this.save
             });

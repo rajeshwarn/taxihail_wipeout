@@ -172,7 +172,7 @@ namespace apcurium.MK.Booking.Domain
             this.Update(new RateCreated
             {
                 RateId = rateId,
-                Type = RateType.Recurring,
+                Type = RateType.Day,
                 Name = name,
                 FlatRate = flatRate,
                 DistanceMultiplicator = distanceMultiplicator,

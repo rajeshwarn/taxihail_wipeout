@@ -1,5 +1,9 @@
 <td>{{name}}</td>
+{{#if recurring}}
 <td>{{daysOfTheWeek}}</td>
+{{else}}
+<td>{{niceDate startTime}}</td>
+{{/if}}
 <td>{{niceTime startTime}}&nbsp;-&nbsp;{{niceTime endTime}}</td>
 <td>
     <a type='button' class='btn btn-mini' href='#rates/edit/{{id}}'>
