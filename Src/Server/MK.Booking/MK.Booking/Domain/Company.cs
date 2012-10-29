@@ -40,8 +40,8 @@ namespace apcurium.MK.Booking.Domain
             base.Handles<PopularAddressUpdated>(OnEventDoNothing);
 
             base.Handles<CompanyCreated>(OnEventDoNothing);
-            base.Handles<AppSettingsAdded>(OnAppSettingsAdded);
-            base.Handles<AppSettingsUpdated>(OnAppSettingsUpdated);
+            base.Handles<AppSettingsAdded>(OnEventDoNothing);
+            base.Handles<AppSettingsUpdated>(OnEventDoNothing);
             base.Handles<RateCreated>(OnRateCreated);
             base.Handles<RateUpdated>(OnEventDoNothing);
             base.Handles<RateDeleted>(OnEventDoNothing);
@@ -150,7 +150,7 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-public void CreateDefaultRate(Guid rateId, string name, decimal flatRate, double distanceMultiplicator, double timeAdustmentFactor, decimal pricePerPassenger)
+        public void CreateDefaultRate(Guid rateId, string name, decimal flatRate, double distanceMultiplicator, double timeAdustmentFactor, decimal pricePerPassenger)
         {
             if(_defaultRateId.HasValue)
             {
@@ -258,15 +258,6 @@ public void CreateDefaultRate(Guid rateId, string name, decimal flatRate, double
         {
             // Do nothing
         }
-
-        private void OnAppSettingsUpdated(AppSettingsUpdated obj)
-        {
-        }
-
-        private void OnAppSettingsAdded(AppSettingsAdded obj)
-        {
-        }
-
         
     }
 }

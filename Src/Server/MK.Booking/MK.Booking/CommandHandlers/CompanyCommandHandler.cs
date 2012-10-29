@@ -12,9 +12,7 @@ using apcurium.MK.Common;
 namespace apcurium.MK.Booking.CommandHandlers
 {
     public class CompanyCommandHandler : ICommandHandler<CreateCompany>, ICommandHandler<CreateRate>, ICommandHandler<UpdateRate>, ICommandHandler<DeleteRate>, ICommandHandler<AddAppSettings>, ICommandHandler<UpdateAppSettings>
-
     {
-
         private readonly IEventSourcedRepository<Company> _repository;
 
         public CompanyCommandHandler(IEventSourcedRepository<Company> repository)
@@ -108,7 +106,6 @@ namespace apcurium.MK.Booking.CommandHandlers
 
             _repository.Save(company, command.Id.ToString());
         }
-
         
     }
 }
