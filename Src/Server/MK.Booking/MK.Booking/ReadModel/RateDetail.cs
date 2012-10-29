@@ -20,5 +20,6 @@ namespace apcurium.MK.Booking.ReadModel
         public int DaysOfTheWeek { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
+        public int Type { get; set; }
     }
 }

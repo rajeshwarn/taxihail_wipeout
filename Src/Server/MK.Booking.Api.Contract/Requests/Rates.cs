@@ -18,6 +18,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
     public class Rates
     {
         public Guid Id { get; set; }
+        public RateType Type { get; set; }
         public string Name { get; set; }
         public decimal FlatRate { get; set; }
         public decimal PricePerPassenger { get; set; }

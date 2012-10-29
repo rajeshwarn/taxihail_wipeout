@@ -14,16 +14,20 @@
         },
 
         addRecurring: function() {
-            return this.view = new TaxiHail.AddRecurringRateView({
+            return this.view = new TaxiHail.EditRateView({
                 collection: this.collection,
-                model: new TaxiHail.Rate()
+                model: new TaxiHail.Rate({
+                    type: TaxiHail.Rate.type.recurring
+                })
             });
         },
 
         addDay: function() {
-            return this.view = new TaxiHail.AddDayRateView({
+            return this.view = new TaxiHail.EditRateView({
                 collection: this.collection,
-                model: new TaxiHail.Rate()
+                model: new TaxiHail.Rate({
+                    type: TaxiHail.Rate.type.day
+                })
             });
         },
 

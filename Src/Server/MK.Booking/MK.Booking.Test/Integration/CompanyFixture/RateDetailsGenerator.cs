@@ -48,7 +48,8 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
                 PricePerPassenger = 2.0m,
                 DaysOfTheWeek = DayOfTheWeek.Saturday | DayOfTheWeek.Sunday,
                 StartTime = DateTime.Today.AddHours(12).AddMinutes(55),
-                EndTime = DateTime.Today.AddHours(20).AddMinutes(15)
+                EndTime = DateTime.Today.AddHours(20).AddMinutes(15),
+                Type = RateType.Day,
             });
 
             using (var context = new BookingDbContext(dbName))
@@ -67,6 +68,7 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
                 Assert.AreEqual(55, dto.StartTime.Minute);
                 Assert.AreEqual(20, dto.EndTime.Hour);
                 Assert.AreEqual(15, dto.EndTime.Minute);
+                Assert.AreEqual((int)RateType.Day, dto.Type);
             }
         }
     }
@@ -92,6 +94,40 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
                                 });
         }
 
+
+        [Test]
+        public void when_rate_updated_then_dto_updated()
+        {
+            this.sut.Handle(new RateUpdated
+            {
+                SourceId = _companyId,
+                RateId = _rateId,
+                DaysOfTheWeek = DayOfTheWeek.Tuesday,
+                DistanceMultiplicator = 19,
+                FlatRate = 20,
+                PricePerPassenger = 21,
+                TimeAdjustmentFactor = 22,
+                StartTime = DateTime.Today.AddHours(23),
+                EndTime = DateTime.Today.AddHours(24),
+                Name = "Updated Rate",
+            });
+
+            using (var context = new BookingDbContext(dbName))
+            {
+                var list = context.Query<RateDetail>().Where(x => x.Id == _rateId);
+                Assert.AreEqual(1, list.Count());
+                var dto = list.Single();
+                Assert.AreEqual(_rateId, dto.Id);
+                Assert.AreEqual(_companyId, dto.CompanyId);
+                Assert.AreEqual(20, dto.FlatRate);
+                Assert.AreEqual(19, dto.DistanceMultiplicator);
+                Assert.AreEqual(22, dto.TimeAdjustmentFactor);
+                Assert.AreEqual(21, dto.PricePerPassenger);
+                Assert.AreEqual((int)(DayOfTheWeek.Tuesday), dto.DaysOfTheWeek);
+                Assert.AreEqual(23, dto.StartTime.Hour);
+                Assert.AreEqual(0, dto.EndTime.Hour);
+            }
+        }
 
         [Test]
         public void when_rate_deleted()

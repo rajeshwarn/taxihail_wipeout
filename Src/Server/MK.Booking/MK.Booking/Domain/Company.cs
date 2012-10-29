@@ -11,6 +11,8 @@ namespace apcurium.MK.Booking.Domain
 {
     public class Company : EventSourced
     {
+        private Guid? _defaultRateId;
+
         public Company(Guid id) : base(id)
         {
             RegisterHandlers();
@@ -38,10 +40,10 @@ namespace apcurium.MK.Booking.Domain
             base.Handles<PopularAddressUpdated>(OnEventDoNothing);
 
             base.Handles<CompanyCreated>(OnEventDoNothing);
-            base.Handles<RateCreated>(OnEventDoNothing);
+            base.Handles<RateCreated>(OnRateCreated);
+            base.Handles<RateUpdated>(OnEventDoNothing);
             base.Handles<RateDeleted>(OnEventDoNothing);
         }
-
 
 
         public void AddDefaultFavoriteAddress(Guid id, string friendlyName, string apartment, string fullAddress, string ringCode, string buildingName, double latitude, double longitude)
@@ -128,18 +130,61 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void CreateRate(Guid rateId, string name, decimal flatRate, double distanceMultiplicator, double timeAdustmentFactor, decimal pricePerPassenger, DayOfTheWeek daysOfTheWeek, DateTime startTime, DateTime endTime)
+        public void CreateDefaultRate(Guid rateId, string name, decimal flatRate, double distanceMultiplicator, double timeAdustmentFactor, decimal pricePerPassenger)
         {
-            // Ensure StartTime and EndTime are the same day
-            startTime = DateTime.Today.AddHours(startTime.Hour).AddMinutes(startTime.Minute);
-            endTime = DateTime.Today.AddHours(endTime.Hour).AddMinutes(endTime.Minute);
-
-            if(endTime <= startTime)
+            if(_defaultRateId.HasValue)
             {
-                throw new InvalidOperationException("Start time must be before end time");
+                throw new InvalidOperationException("Only one default rate can be created");
             }
 
             this.Update(new RateCreated
+            {
+                RateId = rateId,
+                Type = RateType.Default,
+                Name = name,
+                FlatRate = flatRate,
+                DistanceMultiplicator = distanceMultiplicator,
+                TimeAdjustmentFactor = timeAdustmentFactor,
+                PricePerPassenger = pricePerPassenger,
+            });
+
+        }
+
+        public void CreateRecurringRate(Guid rateId, string name, decimal flatRate, double distanceMultiplicator, double timeAdustmentFactor, decimal pricePerPassenger, DayOfTheWeek daysOfTheWeek, DateTime startTime, DateTime endTime)
+        {
+            this.Update(new RateCreated
+            {
+                RateId = rateId,
+                Type = RateType.Recurring,
+                Name = name,
+                FlatRate = flatRate,
+                DistanceMultiplicator = distanceMultiplicator,
+                TimeAdjustmentFactor = timeAdustmentFactor,
+                PricePerPassenger = pricePerPassenger,
+                DaysOfTheWeek = daysOfTheWeek,
+                StartTime = startTime,
+                EndTime = endTime
+            });
+        }
+
+        public void CreateDayRate(Guid rateId, string name, decimal flatRate, double distanceMultiplicator, double timeAdustmentFactor, decimal pricePerPassenger, DateTime startTime, DateTime endTime)
+        {
+            this.Update(new RateCreated
+            {
+                RateId = rateId,
+                Type = RateType.Recurring,
+                Name = name,
+                FlatRate = flatRate,
+                DistanceMultiplicator = distanceMultiplicator,
+                TimeAdjustmentFactor = timeAdustmentFactor,
+                PricePerPassenger = pricePerPassenger,
+                StartTime = startTime,
+                EndTime = endTime
+            });
+        }
+        public void UpdateRate(Guid rateId, string name, decimal flatRate, double distanceMultiplicator, double timeAdustmentFactor, decimal pricePerPassenger, DayOfTheWeek daysOfTheWeek, DateTime startTime, DateTime endTime)
+        {
+            this.Update(new RateUpdated
             {
                 RateId = rateId,
                 Name = name,
@@ -180,11 +225,20 @@ namespace apcurium.MK.Booking.Domain
             }
         }
 
+        private void OnRateCreated(RateCreated @event)
+        {
+            if(@event.Type == RateType.Default)
+            {
+                this._defaultRateId = @event.RateId;
+            }
+        }
+
         
         private void OnEventDoNothing<T>(T @event) where T: VersionedEvent
         {
             // Do nothing
         }
+
         
     }
 }

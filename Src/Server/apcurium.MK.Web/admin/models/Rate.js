@@ -1,8 +1,7 @@
 (function(){
 
-    TaxiHail.Rate = Backbone.Model.extend({
+    var Rate = TaxiHail.Rate = Backbone.Model.extend({
         defaults: {
-            type: 'recurring',
             name: '',
             flatRate: 0,
             pricePerPassenger: 0,
@@ -12,6 +11,13 @@
             endTime: null,
             daysOfTheWeek: 0
         }
+    }, {
+        type: {
+            recurring: 1,
+            day: 2
+        }
     });
+
+    Rate.prototype.defaults.type = Rate.type.recurring;
 
 }());

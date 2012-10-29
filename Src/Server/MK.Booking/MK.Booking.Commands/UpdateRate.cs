@@ -7,20 +7,17 @@ using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Commands
 {
-    public class CreateRate : ICommand
+    public class UpdateRate : ICommand
     {
-        public CreateRate()
+        public UpdateRate()
         {
             Id = Guid.NewGuid();
         }
 
-        public Guid Id { get; set; }
-
+        public Guid Id { get; private set; }
         public Guid CompanyId { get; set; }
-
         public Guid RateId { get; set; }
         public string Name { get; set; }
-
         public decimal FlatRate { get; set; }
         public double DistanceMultiplicator { get; set; }
         public double TimeAdjustmentFactor { get; set; }
@@ -28,7 +25,5 @@ namespace apcurium.MK.Booking.Commands
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         public DayOfTheWeek DaysOfTheWeek { get; set; }
-        public RateType Type { get; set; }
-
     }
 }

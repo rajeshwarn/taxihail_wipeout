@@ -78,6 +78,7 @@
     <Compile Include="UpdateDefaultFavoriteAddress.cs" />
     <Compile Include="UpdateFavoriteAddress.cs" />
     <Compile Include="UpdatePopularAddress.cs" />
+    <Compile Include="UpdateRate.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Infrastructure\Infrastructure\Infrastructure.csproj">

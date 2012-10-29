@@ -51,6 +51,21 @@ namespace apcurium.MK.Booking.Api.Services
             };
         }
 
+        public override object OnPut(Rates request)
+        {
+            //Check if rate with same name already exists
+            if (_dao.GetAll().Any(x => x.Id != request.Id && x.Name == request.Name))
+            {
+                throw new HttpError(HttpStatusCode.Conflict, ErrorCode.Rate_DuplicateName.ToString());
+            }
+
+            var command = Mapper.Map<UpdateRate>(request);
+
+            _commandBus.Send(command);
+
+            return new HttpResult(HttpStatusCode.OK, "OK");
+        }
+
         public override object OnDelete(Rates request)
         {
             var command = new DeleteRate {CompanyId = AppConstants.CompanyId, RateId = request.Id};

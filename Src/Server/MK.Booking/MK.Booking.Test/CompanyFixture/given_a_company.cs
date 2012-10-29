@@ -27,6 +27,34 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
         }
 
         [Test]
+        public void when_creating_two_default_rates()
+        {
+            var rateId = Guid.NewGuid();
+
+            this.sut.Given(new RateCreated
+            {
+                SourceId = _companyId,
+                RateId = rateId,
+                FlatRate = 3.50m,
+                DistanceMultiplicator = 1.1,
+                TimeAdjustmentFactor = 1.2,
+                PricePerPassenger = 1.3m,
+                Type = RateType.Default
+            });
+
+            Assert.Throws<InvalidOperationException>(() => this.sut.When(new CreateRate
+            {
+                CompanyId = _companyId,
+                RateId = rateId,
+                FlatRate = 3.50m,
+                DistanceMultiplicator = 1.1,
+                TimeAdjustmentFactor = 1.2,
+                PricePerPassenger = 1.3m,
+                Type = RateType.Default
+            }));
+        }
+
+        [Test]
         public void when_creating_a_new_rate()
         {
             var rateId = Guid.NewGuid();
@@ -42,7 +70,8 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
                                   PricePerPassenger = 1.3m,
                                   DaysOfTheWeek = DayOfTheWeek.Saturday | DayOfTheWeek.Sunday,
                                   StartTime = DateTime.Today.AddHours(12).AddMinutes(30),
-                                  EndTime = DateTime.Today.AddHours(20)
+                                  EndTime = DateTime.Today.AddHours(20),
+                                  Type = RateType.Recurring
                               });
 
             Assert.AreEqual(1, sut.Events.Count);
@@ -60,6 +89,7 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
             Assert.AreEqual(30, evt.StartTime.Minute);
             Assert.AreEqual(20, evt.EndTime.Hour);
             Assert.AreEqual(00, evt.EndTime.Minute);
+            Assert.AreEqual(RateType.Recurring, evt.Type);
 
         }
 

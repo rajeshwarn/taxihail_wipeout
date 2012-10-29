@@ -35,6 +35,7 @@ namespace apcurium.MK.Web.Tests
             sut.CreateRate(new Rates
             {
                 Id = (_knownRateId = Guid.NewGuid()),
+                Type = RateType.Recurring,
                 DaysOfTheWeek = DayOfTheWeek.Sunday,
                 StartTime =DateTime.MinValue.AddHours(2),
                 EndTime = DateTime.MinValue.AddHours(3),
@@ -55,6 +56,7 @@ namespace apcurium.MK.Web.Tests
             sut.CreateRate(new Rates
             {
                 Id = rateId,
+                Type = RateType.Recurring,
                 DaysOfTheWeek = DayOfTheWeek.Sunday,
                 StartTime = DateTime.MinValue.AddHours(2),
                 EndTime = DateTime.MinValue.AddHours(3),
