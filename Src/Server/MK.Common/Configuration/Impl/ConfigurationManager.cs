@@ -13,68 +13,39 @@ namespace apcurium.MK.Common.Configuration.Impl
             _contextFactory = contextFactory;
         }
 
-        private Dictionary<string, string> _settings = null;
+        public IDictionary<string, string> GetAllSettings()
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                return context.Query<AppSetting>().Select(x => x).ToDictionary(x=>x.Key,r=>r.Value);
+            }
+        }
 
         public void Reset()
         {
-            _settings = null;
+            
         }
 
-        public IDictionary<string, string> GetAllSettings()
-        {
-            if (_settings == null)
-            {
-                Load();
-            }
-            return _settings;            
-        }
         public string GetSetting(string key)
         {
-            if (_settings == null)
+            using (var context = _contextFactory.Invoke())
             {
-                Load();
+                return context.Query<AppSetting>().Where(x => x.Key.Equals(key)).Select(x=>x.Value).FirstOrDefault();
             }
-            return _settings[key];
         }
 
         public void SetSetting(string key, string value)
         {
-            if (_settings == null)
-            {
-                Load();
-            }
-            _settings[key] = value;
-            Save(key, value);
         }
 
         private void Save(string key, string value)
         {
-            using (var context = _contextFactory.Invoke())
-            {
-                var setting = context.Query<AppSetting>().FirstOrDefault(x => x.Key == key);
-                if(setting == null)
-                {
-                    setting = new AppSetting(key, value);
-                    context.Set<AppSetting>().Add(setting);
-                }else
-                {
-                    setting.Value = value;
-                }
-                context.SaveChanges();
-            }
+           
         }
 
         private void Load()
         {
-            _settings = new Dictionary<string, string>();
-            using(var context = _contextFactory.Invoke())
-            {
-                var settings = context.Query<AppSetting>().Select(x => x).ToList();
-                foreach(var setting in settings)
-                {
-                    _settings[setting.Key] = setting.Value;
-                }
-            }
+          
         }
     }
 }

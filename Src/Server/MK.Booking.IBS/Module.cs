@@ -9,9 +9,12 @@ namespace apcurium.MK.Booking.IBS
     {
         public void Init(IUnityContainer container)
         {
-            container.RegisterInstance<IAccountWebServiceClient>(new AccountWebServiceClient(container.Resolve<IConfigurationManager>(), new Logger()));
-            container.RegisterInstance<IStaticDataWebServiceClient>(new StaticDataWebServiceClient(container.Resolve<IConfigurationManager>(), new Logger()));
-            container.RegisterInstance<IBookingWebServiceClient>(new BookingWebServiceClient(container.Resolve<IConfigurationManager>(), new Logger(), container.Resolve<IStaticDataWebServiceClient>()));
+            container.RegisterType<IAccountWebServiceClient,AccountWebServiceClient>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IStaticDataWebServiceClient, StaticDataWebServiceClient>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IBookingWebServiceClient, BookingWebServiceClient>(new ContainerControlledLifetimeManager());
+            //, container.Resolve<IStaticDataWebServiceClient>()
+            //container.RegisterInstance<IStaticDataWebServiceClient>(new StaticDataWebServiceClient(container.Resolve<IConfigurationManager>(), new Logger()));
+            //container.RegisterInstance<IBookingWebServiceClient>(new BookingWebServiceClient(container.Resolve<IConfigurationManager>(), new Logger()));
         }
     }
 }

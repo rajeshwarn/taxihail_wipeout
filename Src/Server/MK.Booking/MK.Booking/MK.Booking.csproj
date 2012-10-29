@@ -93,6 +93,7 @@
     <Compile Include="Email\TemplateService.cs" />
     <Compile Include="EventHandlers\AccountDetailsGenerator.cs" />
     <Compile Include="EventHandlers\AddressListGenerator.cs" />
+    <Compile Include="EventHandlers\AppSettingsGenerator.cs" />
     <Compile Include="EventHandlers\OrderGenerator.cs" />
     <Compile Include="EventHandlers\RateDetailsGenerator.cs" />
     <Compile Include="Logging\Log4NetTraceListenerAdapter.cs" />

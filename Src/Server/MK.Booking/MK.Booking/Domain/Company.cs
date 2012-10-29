@@ -40,6 +40,8 @@ namespace apcurium.MK.Booking.Domain
             base.Handles<PopularAddressUpdated>(OnEventDoNothing);
 
             base.Handles<CompanyCreated>(OnEventDoNothing);
+            base.Handles<AppSettingsAdded>(OnAppSettingsAdded);
+            base.Handles<AppSettingsUpdated>(OnAppSettingsUpdated);
             base.Handles<RateCreated>(OnRateCreated);
             base.Handles<RateUpdated>(OnEventDoNothing);
             base.Handles<RateDeleted>(OnEventDoNothing);
@@ -72,7 +74,7 @@ namespace apcurium.MK.Booking.Domain
                 AddressId = id,
                 FriendlyName = friendlyName,
                 Apartment = apartment,
-                FullAddress = fullAddress,
+                FullAddress = fullAddress, 
                 RingCode = ringCode,
                 BuildingName = buildingName,
                 Latitude = latitude,
@@ -130,7 +132,25 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void CreateDefaultRate(Guid rateId, string name, decimal flatRate, double distanceMultiplicator, double timeAdustmentFactor, decimal pricePerPassenger)
+        public void AddAppSettings(string key, string value)
+        {
+            this.Update(new AppSettingsAdded
+                            {
+                                Key = key,
+                                Value = value,
+                            });
+        }
+
+        public void UpdateAppSettings(string key, string value)
+        {
+            this.Update(new AppSettingsUpdated
+            {
+                Key = key,
+                Value = value,
+            });
+        }
+
+public void CreateDefaultRate(Guid rateId, string name, decimal flatRate, double distanceMultiplicator, double timeAdustmentFactor, decimal pricePerPassenger)
         {
             if(_defaultRateId.HasValue)
             {
@@ -237,6 +257,14 @@ namespace apcurium.MK.Booking.Domain
         private void OnEventDoNothing<T>(T @event) where T: VersionedEvent
         {
             // Do nothing
+        }
+
+        private void OnAppSettingsUpdated(AppSettingsUpdated obj)
+        {
+        }
+
+        private void OnAppSettingsAdded(AppSettingsAdded obj)
+        {
         }
 
         

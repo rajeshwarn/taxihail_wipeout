@@ -8,24 +8,31 @@ namespace apcurium.MK.Booking.Email
 {
     public class EmailSender : IEmailSender
     {
-        private readonly SmtpConfiguration _configuration;
+        private readonly IConfigurationManager _configurationManager;
+        private SmtpConfiguration _configuration;
+        
 
         public EmailSender(IConfigurationManager configurationManager)
         {
-            _configuration = new SmtpConfiguration
-            {
-                Host = configurationManager.GetSetting("Smtp.Host"),
-                Port = System.Convert.ToInt32(configurationManager.GetSetting("Smtp.Port"), CultureInfo.InvariantCulture),
-                EnableSsl = System.Convert.ToBoolean(configurationManager.GetSetting("Smtp.EnableSsl"), CultureInfo.InvariantCulture),
-                DeliveryMethod = (SmtpDeliveryMethod)Enum.Parse(typeof(SmtpDeliveryMethod), configurationManager.GetSetting("Smtp.DeliveryMethod")),
-                UseDefaultCredentials = Convert.ToBoolean(configurationManager.GetSetting("Smtp.UseDefaultCredentials"), CultureInfo.InvariantCulture),
-                Username = configurationManager.GetSetting("Smtp.Credentials.Username"),
-                Password = configurationManager.GetSetting("Smtp.Credentials.Password"),
-            };
+            _configurationManager = configurationManager;
         }
 
         public void Send(MailMessage message)
         {
+            if(_configuration==null)
+            {
+                _configuration = new SmtpConfiguration
+                {
+                    Host = _configurationManager.GetSetting("Smtp.Host"),
+                    Port = System.Convert.ToInt32(_configurationManager.GetSetting("Smtp.Port"), CultureInfo.InvariantCulture),
+                    EnableSsl = System.Convert.ToBoolean(_configurationManager.GetSetting("Smtp.EnableSsl"), CultureInfo.InvariantCulture),
+                    DeliveryMethod = (SmtpDeliveryMethod)Enum.Parse(typeof(SmtpDeliveryMethod), _configurationManager.GetSetting("Smtp.DeliveryMethod")),
+                    UseDefaultCredentials = Convert.ToBoolean(_configurationManager.GetSetting("Smtp.UseDefaultCredentials"), CultureInfo.InvariantCulture),
+                    Username = _configurationManager.GetSetting("Smtp.Credentials.Username"),
+                    Password = _configurationManager.GetSetting("Smtp.Credentials.Password"),
+                };
+            }
+            
             var client = new System.Net.Mail.SmtpClient();
             AutoMapper.Mapper.Map(_configuration, client);
 
