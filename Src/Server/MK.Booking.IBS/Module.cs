@@ -12,6 +12,7 @@ namespace apcurium.MK.Booking.IBS
             container.RegisterType<IAccountWebServiceClient,AccountWebServiceClient>(new ContainerControlledLifetimeManager());
             container.RegisterType<IStaticDataWebServiceClient, StaticDataWebServiceClient>(new ContainerControlledLifetimeManager());
             container.RegisterType<IBookingWebServiceClient, BookingWebServiceClient>(new ContainerControlledLifetimeManager());
+            //, container.Resolve<IStaticDataWebServiceClient>()
             //container.RegisterInstance<IStaticDataWebServiceClient>(new StaticDataWebServiceClient(container.Resolve<IConfigurationManager>(), new Logger()));
             //container.RegisterInstance<IBookingWebServiceClient>(new BookingWebServiceClient(container.Resolve<IConfigurationManager>(), new Logger()));
         }

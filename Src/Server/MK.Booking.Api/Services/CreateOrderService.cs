@@ -39,6 +39,7 @@ namespace apcurium.MK.Booking.Api.Services
             _accountDao = accountDao;
             _cacheClient = cacheClient;            
             _configurationManager = configurationManager;
+            _referenceDataService = referenceDataService;
         }
 
         public override object OnPost(CreateOrder request)
