@@ -96,6 +96,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Services\AppSettingsService.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Providers\PopularAddressProvider.cs" />
     <Compile Include="Security\CustomTwitterAuthProvider.cs" />

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Api.Client
@@ -68,6 +69,26 @@ namespace apcurium.MK.Booking.Api.Client
             var req = string.Format("/popularaddresses");
             var addresses = Client.Get<IList<Address>>(req);
             return addresses;
+        }
+
+        public IDictionary<string, string> GetAllAppSettings()
+        {
+            var req = string.Format("/admin/appsettings/");
+            var address = Client.Get<IDictionary<string, string>>(req);
+            return address;
+        }
+
+        public void AddAppSettings(AppSettingsRequest appReq)
+        {
+            var req = string.Format("/admin/appsettings/");
+            Client.Post<string>(req, appReq);
+        }
+
+        public string UpdateAppSettings(AppSettingsRequest appReq)
+        {
+            var req = string.Format("/admin/appsettings/{0}",appReq.Key);
+            return Client.Put<string>(req, appReq);
+            
         }
     }
 }

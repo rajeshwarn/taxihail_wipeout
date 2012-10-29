@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -45,7 +46,7 @@ namespace DatabaseInitializer
                 else
                 {
                     Console.WriteLine("[C]reate (drop existing) or [U]pdate database ?");
-                    isUpdate = Console.ReadLine() == "U";
+                    isUpdate = Console.ReadLine().ToUpperInvariant() == "U";
                 }
 
                 //SQL Instance name
@@ -64,9 +65,14 @@ namespace DatabaseInitializer
 
                 var creatorDb = new DatabaseCreator();
                 string oldDatabase = null;
+                IConfigurationManager configurationManager = new
+                    apcurium.MK.Common.Configuration.Impl.ConfigurationManager(
+                    () => new ConfigurationDbContext(connectionString.ConnectionString));
+                IDictionary<string, string> settingsInDb = null;
                 if (isUpdate)
                 {
-                    oldDatabase = creatorDb.RenameDatabase(connStringMaster, companyName);
+                   settingsInDb = configurationManager.GetAllSettings();
+                   oldDatabase = creatorDb.RenameDatabase(connStringMaster, companyName);
                 }
 
                 creatorDb.CreateDatabase(connStringMaster, companyName, sqlInstanceName);
@@ -84,43 +90,70 @@ namespace DatabaseInitializer
                 {
                     creatorDb.CopyDomainEventFromOldToNewDatabase(connStringMaster, oldDatabase, companyName);
                 }
-
-                //Create settings
-                IConfigurationManager configurationManager = new
-                    apcurium.MK.Common.Configuration.Impl.ConfigurationManager(
-                    () => new ConfigurationDbContext(connectionString.ConnectionString));
-
-                var jsonSettings = File.ReadAllText(Path.Combine(AssemblyDirectory, "Settings\\Common.json"));
-                var objectSettings = JObject.Parse(jsonSettings);
-                foreach (var token in objectSettings)
-                {
-                    configurationManager.SetSetting(token.Key, token.Value.ToString());
-                }
-
-                jsonSettings = File.ReadAllText(Path.Combine(AssemblyDirectory, "Settings\\", companyName + ".json"));
-                objectSettings = JObject.Parse(jsonSettings);
-                foreach (var token in objectSettings)
-                {
-                    configurationManager.SetSetting(token.Key, token.Value.ToString());
-                }
-                 
-
                 //Init container
                 var container = new UnityContainer();
                 var module = new Module();
                 module.Init(container, connectionString);
+
+                //Init data
+                var commandBus = container.Resolve<ICommandBus>();
+                if(!isUpdate)
+                {
+                    // Create Default company
+                    commandBus.Send(new CreateCompany
+                    {
+                        CompanyId = AppConstants.CompanyId,
+                        Id = Guid.NewGuid()
+                    });
+                }
+                //Create settings
+
+                
+
+                var jsonSettings = File.ReadAllText(Path.Combine(AssemblyDirectory, "Settings\\Common.json"));
+                var objectSettings = JObject.Parse(jsonSettings);
+                if(isUpdate)
+                {
+                    settingsInDb.ForEach(setting => objectSettings.Remove(setting.Key));
+                }
+                foreach (var token in objectSettings)
+                {
+                    //configurationManager.SetSetting(token.Key, token.Value.ToString());
+                    commandBus.Send(new AddAppSettings()
+                                        {
+                                            Key = token.Key,
+                                            Value = token.Value.ToString()
+                                        });
+                }
+
+                jsonSettings = File.ReadAllText(Path.Combine(AssemblyDirectory, "Settings\\", companyName + ".json"));
+                objectSettings = JObject.Parse(jsonSettings);
+                if (isUpdate)
+                {
+                    settingsInDb.ForEach(setting => objectSettings.Remove(setting.Key));
+                }
+                foreach (var token in objectSettings)
+                {
+                    //configurationManager.SetSetting(token.Key, token.Value.ToString());
+                    commandBus.Send(new AddAppSettings()
+                    {
+                        Key = token.Key,
+                        Value = token.Value.ToString()
+                    });
+                }
+                 
+
+               
 
                 if (isUpdate)
                 {
                     //replay events
                     var replayService = container.Resolve<IEventsPlayBackService>();
                     replayService.ReplayAllEvents();
-
                 }
                 else
                 {
-                    //Init data
-                    var commandBus = container.Resolve<ICommandBus>();
+                   
 
 
                     //Get default settings from IBS
@@ -130,28 +163,42 @@ namespace DatabaseInitializer
                     
                     if(defaultCompany != null)
                     {
-                        configurationManager = container.Resolve<IConfigurationManager>();
-                        configurationManager.SetSetting("DefaultBookingSettings.ProviderId", defaultCompany.Id.ToString());
+                        //configurationManager = container.Resolve<IConfigurationManager>();
+                        //configurationManager.SetSetting("DefaultBookingSettings.ProviderId", defaultCompany.Id.ToString());
+
+                        commandBus.Send(new AddAppSettings()
+                        {
+                            Key = "DefaultBookingSettings.ProviderId",
+                            Value = defaultCompany.Id.ToString()
+                        });
 
                         var defaultvehicule = referenceDataService.GetVehiclesList(defaultCompany).FirstOrDefault(x => x.IsDefault.HasValue && x.IsDefault.Value) ??
                                               referenceDataService.GetVehiclesList(defaultCompany).First();
-                        configurationManager.SetSetting("DefaultBookingSettings.VehicleTypeId", defaultvehicule.Id.ToString());
+                        //configurationManager.SetSetting("DefaultBookingSettings.VehicleTypeId", defaultvehicule.Id.ToString());
+
+                        commandBus.Send(new AddAppSettings()
+                        {
+                            Key = "DefaultBookingSettings.VehicleTypeId",
+                            Value = defaultvehicule.Id.ToString()
+                        });
                         
                         var defaultchargetype = referenceDataService.GetPaymentsList(defaultCompany).FirstOrDefault(x => x.Display.HasValue() && x.Display.Contains("Cash"))
                             ?? referenceDataService.GetPaymentsList(defaultCompany).First();
-                        configurationManager.SetSetting("DefaultBookingSettings.ChargeTypeId", defaultchargetype.Id.ToString());
+                        commandBus.Send(new AddAppSettings()
+                        {
+                            Key = "DefaultBookingSettings.ChargeTypeId",
+                            Value = defaultchargetype.Id.ToString()
+                        });
+                        //configurationManager.SetSetting("DefaultBookingSettings.ChargeTypeId", defaultchargetype.Id.ToString());
                         
                     }
 
-                    // Create Default company
-                    commandBus.Send(new CreateCompany
-                    {
-                        CompanyId = AppConstants.CompanyId,
-                        Id = Guid.NewGuid()
-                    });
+                    
 
                     //Register normal account
-
+                    //configurationManager = container.Resolve<IConfigurationManager>();
+                    //configurationManager.Reset();
+                    
                     var registerAccountCommand = new RegisterAccount
                                                      {
                                                          Id = Guid.NewGuid(),

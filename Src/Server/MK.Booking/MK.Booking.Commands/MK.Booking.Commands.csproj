@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddAppSettings.cs" />
     <Compile Include="AddDefaultFavoriteAddress.cs" />
     <Compile Include="AddFavoriteAddress.cs" />
     <Compile Include="AddPopularAddress.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="SendReceipt.cs" />
     <Compile Include="UpdateAccount.cs" />
     <Compile Include="UpdateAccountPassword.cs" />
+    <Compile Include="UpdateAppSettings.cs" />
     <Compile Include="UpdateBookingSettings.cs" />
     <Compile Include="UpdateDefaultFavoriteAddress.cs" />
     <Compile Include="UpdateFavoriteAddress.cs" />

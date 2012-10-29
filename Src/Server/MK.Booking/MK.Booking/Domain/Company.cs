@@ -37,6 +37,8 @@ namespace apcurium.MK.Booking.Domain
             base.Handles<PopularAddressUpdated>(OnPopularAddressUpdated);
 
             base.Handles<CompanyCreated>(OnCompanyCreated);
+            base.Handles<AppSettingsAdded>(OnAppSettingsAdded);
+            base.Handles<AppSettingsUpdated>(OnAppSettingsUpdated);
         }
 
         
@@ -68,7 +70,7 @@ namespace apcurium.MK.Booking.Domain
                 AddressId = id,
                 FriendlyName = friendlyName,
                 Apartment = apartment,
-                FullAddress = fullAddress,
+                FullAddress = fullAddress, 
                 RingCode = ringCode,
                 BuildingName = buildingName,
                 Latitude = latitude,
@@ -126,6 +128,24 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
+        public void AddAppSettings(string key, string value)
+        {
+            this.Update(new AppSettingsAdded
+                            {
+                                Key = key,
+                                Value = value,
+                            });
+        }
+
+        public void UpdateAppSettings(string key, string value)
+        {
+            this.Update(new AppSettingsUpdated
+            {
+                Key = key,
+                Value = value,
+            });
+        }
+
         private static void ValidateFavoriteAddress(string friendlyName, string fullAddress, double latitude, double longitude)
         {
             if (Params.Get(friendlyName, fullAddress).Any(string.IsNullOrEmpty))
@@ -175,6 +195,14 @@ namespace apcurium.MK.Booking.Domain
         private void OnPopularAddressAdded(PopularAddressAdded obj)
         {
 
+        }
+
+        private void OnAppSettingsUpdated(AppSettingsUpdated obj)
+        {
+        }
+
+        private void OnAppSettingsAdded(AppSettingsAdded obj)
+        {
         }
     }
 }

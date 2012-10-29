@@ -16,6 +16,7 @@ using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking
 {
@@ -25,6 +26,7 @@ namespace apcurium.MK.Booking
         {
             System.Data.Entity.Database.SetInitializer<BookingDbContext>(null);
             container.RegisterType<BookingDbContext>(new TransientLifetimeManager(), new InjectionConstructor(container.Resolve<ConnectionStringSettings>(apcurium.MK.Common.Module.MKConnectionString).ConnectionString));
+
 
             container.RegisterInstance<IAddressDao>(new AddressDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IAccountDao>(new AccountDao(() => container.Resolve<BookingDbContext>()));
@@ -77,6 +79,7 @@ namespace apcurium.MK.Booking
             container.RegisterType<IEventHandler, AccountDetailsGenerator>("AccountDetailsGenerator");
             container.RegisterType<IEventHandler, AddressListGenerator>("AddressListGenerator");
             container.RegisterType<IEventHandler, OrderGenerator>("OrderGenerator");
+            container.RegisterType<IEventHandler, AppSettingsGenerator>("AppSettingsGenerator");
         }
 
         private void RegisterCommandHandlers(IUnityContainer container)
