@@ -28,5 +28,6 @@
    "TwitterRequestTokenUrl" : "",
    "TaxiHail.ServerCompanyName" : "TaxiHail",
    "Booking.ConfirmationEmail" : "true",
-   "Client.HideCallDispatchButton" : "false"
+   "Client.HideCallDispatchButton" : "false",
+   "IBS.TimeDifference" : "0"
 }

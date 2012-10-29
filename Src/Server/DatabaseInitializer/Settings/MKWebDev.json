@@ -29,5 +29,11 @@
    "TwitterConsumerKey" : "",
    "TwitterConsumerSecret" : "",
    "TwitterEnabled" : "false",
-   "TwitterRequestTokenUrl" : ""
+   "TwitterRequestTokenUrl" : "",
+"IBS.TimeDifference" : "0",
+"IBS.DestinationZoneToExclude" : "",
+	"IBS.PickupZoneToExclude" : "",
+	"IBS.ValidateDestinationZone" : "false",
+	"IBS.ValidatePickupZone" : "true",
+   "Receipt.Note": "Thank You!<br>The Taxi Hail Team"
 }
