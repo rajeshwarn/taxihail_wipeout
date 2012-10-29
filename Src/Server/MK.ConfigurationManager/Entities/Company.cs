@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+#if NETFWK
+	using System.ComponentModel.DataAnnotations.Schema;
+#endif
 using System.IO;
 using System.Runtime.Serialization;
 

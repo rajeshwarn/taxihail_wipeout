@@ -26,6 +26,14 @@ namespace MK.ConfigurationManager.Entities
         public bool iOS { get; set; }
 
         public TaxiHailEnvironment TaxHailEnv { get; set; }
+
+		/**use by peca poco on mono */
+		[NotMapped]
+		public Guid Company_Id { get; set; }
+		[NotMapped]
+		public Guid IBSServer_Id { get; set; }
+		[NotMapped]
+		public Guid TaxHailEnv_Id { get; set; }
     }
 
     public enum JobStatus   
