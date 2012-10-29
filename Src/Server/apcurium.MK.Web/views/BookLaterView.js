@@ -45,7 +45,7 @@
             pickupDate.setMinutes(minute);
 
             if(this.validate(pickupDate)){
-                this.model.set('pickupDate', toISO8601(pickupDate));
+                this.model.set('pickupDate', TaxiHail.date.toISO8601(pickupDate));
                 this.model.saveLocal();
                 TaxiHail.app.navigate('confirmationbook', { trigger: true });
             }
@@ -71,22 +71,5 @@
         }
 
     });
-
-    function toISO8601(date) {
-        var year = date.getFullYear(),
-            month = date.getMonth() + 1,
-            day = date.getDate(),
-            hour = date.getHours(),
-            minute = date.getMinutes(),
-            second = date.getSeconds();
-
-        month = month < 10 ? '0' + month : month;
-        day = day < 10 ? '0' + day : day;
-        hour = hour < 10 ? '0' + hour : hour;
-        minute = minute < 10 ? '0' + minute : minute;
-        second = second < 10 ? '0' + second : second;
-
-        return year + '-' + month + '-' + day + 'T' + hour + ':' + minute + ':' + second;
-    }
 
 }());

@@ -301,7 +301,7 @@
 
         , setValues: function(time) {
             if (this.showMeridian) {
-                var arr = time.split(' ');
+                var arr = time.split(/[ \u00a0]+/); /* Will split on space and Unicode non breakable space */
                 var timeArray = arr[0].split(':');
                 this.meridian = arr[1];
             } else {

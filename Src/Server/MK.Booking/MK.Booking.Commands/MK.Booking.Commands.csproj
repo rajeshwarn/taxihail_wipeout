@@ -54,6 +54,8 @@
     <Compile Include="CancelOrder.cs" />
     <Compile Include="CompleteOrder.cs" />
     <Compile Include="ConfirmAccount.cs" />
+    <Compile Include="CreateRate.cs" />
+    <Compile Include="DeleteRate.cs" />
     <Compile Include="RemovePopularAddress.cs" />
     <Compile Include="SendBookingConfirmationEmail.cs" />
     <Compile Include="CreateCompany.cs" />
@@ -78,6 +80,7 @@
     <Compile Include="UpdateDefaultFavoriteAddress.cs" />
     <Compile Include="UpdateFavoriteAddress.cs" />
     <Compile Include="UpdatePopularAddress.cs" />
+    <Compile Include="UpdateRate.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Infrastructure\Infrastructure\Infrastructure.csproj">
@@ -88,10 +91,6 @@
       <Project>{65033050-1D55-465A-A772-F3192F9E2428}</Project>
       <Name>MK.Common</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

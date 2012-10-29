@@ -60,6 +60,78 @@
             }).spin();
             
             $(container).html(spinner.el);
+        },
+
+        date: {
+            toISO8601: function(date) {
+                var year = date.getFullYear(),
+                    month = date.getMonth() + 1,
+                    day = date.getDate(),
+                    hour = date.getHours(),
+                    minute = date.getMinutes(),
+                    second = date.getSeconds();
+
+                month = month < 10 ? '0' + month : month;
+                day = day < 10 ? '0' + day : day;
+                hour = hour < 10 ? '0' + hour : hour;
+                minute = minute < 10 ? '0' + minute : minute;
+                second = second < 10 ? '0' + second : second;
+
+                return year + '-' + month + '-' + day + 'T' + hour + ':' + minute + ':' + second;
+            },
+            niceDate: function(date) {
+                if(_.isString(date) && date.indexOf('-') && date.indexOf('T') && date.indexOf(':')) {
+                    // We assume that we have a date in the format : yyyy-mm-ddThh:mm:ss
+                    var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+                    var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                    var parts = date.split('T');
+                    var dateParts = parts[0].split('-');
+                    if(dateParts.length === 3) {
+                        var year = parseInt(dateParts[0], 10),
+                            month = parseInt(dateParts[1], 10) -1,
+                            day = parseInt(dateParts[2], 10);
+
+                        date = new Date(year, month, day, 0, 0, 0);
+
+                        var dayOfTheWeek = date.getDay();
+
+                        // Format: Monday, August 17
+                        return new Handlebars.SafeString(days[dayOfTheWeek] + ',\u00a0 ' + months[month] + ' ' + day);
+                    }
+                }
+                // not needed yet
+                return '';
+            },
+            niceTime: function(date) {
+                if(_.isString(date) && date.indexOf('-') && date.indexOf('T') && date.indexOf(':')) {
+                    // We assume that we have a date in the format : yyyy-mm-ddThh:mm:ss
+                    var parts = date.split('T'),
+                        timeParts = parts[1].split(':'),
+                        meridian = "AM";
+                    if(timeParts.length >= 2) {
+                        var hour = parseInt(timeParts[0], 10);
+                        var minute = parseInt(timeParts[1], 10);
+
+                        if (hour === 0) {
+                            hour = 12;
+                        } else if (hour >= 12) {
+                            if (hour > 12) {
+                                hour = hour - 12;
+                            }
+                            meridian = "PM";
+                        } else {
+                           meridian = "AM";
+                        }
+
+                        minute = minute < 10 ? '0' + minute : minute;
+
+                        // Format: 2:35 PM
+                        return new Handlebars.SafeString(hour + ":" + minute + "\u00a0" + meridian);
+                    }
+                }
+                // not needed yet
+                return '';
+            }
         }
 
     });
@@ -76,46 +148,17 @@
         }
     });
 
+    Handlebars.registerHelper('niceDateAndTime', function (date) {
+        // Format: Monday, August 17 at 2:35 PM
+        return new Handlebars.SafeString(TaxiHail.date.niceDate(date) + '\u00a0at\u00a0' + TaxiHail.date.niceTime(date));
+    });
+
     Handlebars.registerHelper('niceDate', function (date) {
-        if(_.isString(date) && date.indexOf('-') && date.indexOf('T') && date.indexOf(':'))
-        {
-            // Wild assumption that we have a date in the format : yyyy-mm-ddThh:mm:ss
-            var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-            var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-            var parts = date.split('T');
-            var dateParts = parts[0].split('-');
-            var timeParts = parts[1].split(':');
-            if(dateParts.length === 3 && timeParts.length >= 2) {
-                var year = parseInt(dateParts[0], 10);
-                var month = parseInt(dateParts[1], 10) -1;
-                var day = parseInt(dateParts[2], 10);
-                var hour = parseInt(timeParts[0], 10);
-                var minute = parseInt(timeParts[1], 10);
+        return new Handlebars.SafeString(TaxiHail.date.niceDate(date));
+    });
 
-                date = new Date(year, month, day, hour, minute, 0);
-
-                var dayOfTheWeek = date.getDay();
-
-                var meridian = "AM";
-                if (hour === 0) {
-                    hour = 12;
-                } else if (hour >= 12) {
-                    if (hour > 12) {
-                        hour = hour - 12;
-                    }
-                    meridian = "PM";
-                } else {
-                   meridian = "AM";
-                }
-
-                minute = minute < 10 ? '0' + minute : minute;
-
-                // Format: Monday, August 17 at 2:35 PM
-                return new Handlebars.SafeString(days[dayOfTheWeek] + ',\u00a0 ' + months[month] + ' ' + day + '\u00a0at\u00a0' + hour + ":" + minute + "\u00a0" + meridian);
-            }
-        }
-        // not needed yet
-        return '';
+    Handlebars.registerHelper('niceTime', function(date) {
+        return new Handlebars.SafeString(TaxiHail.date.niceTime(date));
     });
 
 
