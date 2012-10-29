@@ -1,6 +1,6 @@
 {
-   "AndroidSigningKeyAlias" : "MK",
-   "AndroidSigningKeyPassStorePass" : "mk 0001.",
+   "AppInfo.AndroidSigningKeyAlias" : "MK",
+   "AppInfo.AndroidSigningKeyPassStorePass" : "mk 0001.",
    "AppInfo.AppName" : "",
    "AppInfo.GoogleMapKey" : "",
    "AppInfo.Package" : "com.apcurium.MK.",
