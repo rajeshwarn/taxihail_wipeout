@@ -5,10 +5,11 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
-using System.Data.Entity.Migrations;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using MK.ConfigurationManager.Entities;
@@ -32,6 +33,8 @@ namespace MK.ConfigurationManager
 
         public ObservableCollection<MyCustomKeyValuePair> ConfigurationProperties { get; set; }
 
+        public ObservableCollection<MyCustomKeyValuePair> MobileConfigurationProperties { get; set; }
+
         public ObservableCollection<DeploymentJob> DeploymentJobs { get; set; } 
 
         public Company CurrentCompany
@@ -43,6 +46,8 @@ namespace MK.ConfigurationManager
                 OnPropertyChanged("CurrentCompany");
                 ConfigurationProperties.Clear(); 
                 CurrentCompany.ConfigurationProperties.ToList().ForEach(x => ConfigurationProperties.Add(new MyCustomKeyValuePair(x.Key, x.Value)));
+                MobileConfigurationProperties.Clear();
+                CurrentCompany.MobileConfigurationProperties.ToList().ForEach(x => MobileConfigurationProperties.Add(new MyCustomKeyValuePair(x.Key, x.Value)));
             }
         }
 
@@ -56,6 +61,7 @@ namespace MK.ConfigurationManager
 
             Companies = new ObservableCollection<Company>();
             ConfigurationProperties = new ObservableCollection<MyCustomKeyValuePair>();
+            MobileConfigurationProperties = new ObservableCollection<MyCustomKeyValuePair>();
             IBSServers = new ObservableCollection<IBSServer>();
             TaxiHailEnvironments = new ObservableCollection<TaxiHailEnvironment>();
             DeploymentJobs = new ObservableCollection<DeploymentJob>();
@@ -131,7 +137,7 @@ namespace MK.ConfigurationManager
 
         private void addCompabyBt_Click(object sender, RoutedEventArgs e)
         {
-            var newCompany = new Company() {Id = Guid.NewGuid()};
+            var newCompany = new Company {Id = Guid.NewGuid()};
             var jsonSettings = File.ReadAllText(Path.Combine(AssemblyDirectory, "Entities\\CompanyTemplate.json"));
             var objectSettings = JObject.Parse(jsonSettings);
 
@@ -140,9 +146,18 @@ namespace MK.ConfigurationManager
                 newCompany.ConfigurationProperties.Add(token.Key, token.Value.ToString());
             }
 
+            jsonSettings = File.ReadAllText(Path.Combine(AssemblyDirectory, "Entities\\CompanyMobileTemplate.json"));
+            objectSettings = JObject.Parse(jsonSettings);
+
+            foreach (var token in objectSettings)
+            {
+                newCompany.MobileConfigurationProperties.Add(token.Key, token.Value.ToString());
+            }
+
             DbContext.Set<Company>().Add(newCompany);
             Companies.Add(newCompany);
             ConfigurationProperties.Clear();
+            MobileConfigurationProperties.Clear();
             CurrentCompany = newCompany;
         }
 
@@ -157,6 +172,7 @@ namespace MK.ConfigurationManager
         private void SaveCompany(object sender, RoutedEventArgs e)
         {
             CurrentCompany.ConfigurationProperties = ConfigurationProperties.ToDictionary(x => x.Key, y => y.Value);
+            CurrentCompany.MobileConfigurationProperties = MobileConfigurationProperties.ToDictionary(x => x.Key, y => y.Value);
             DbContext.SaveChanges();
         }
 
@@ -215,32 +231,72 @@ namespace MK.ConfigurationManager
         {
             RefreshData();
         }
-    }
 
-    class SimpleDbMigrationsConfiguration  : DbMigrationsConfiguration<ConfigurationManagerDbContext>
-    {
-        public SimpleDbMigrationsConfiguration()
+        private void GenerateKeyStoreAndMapKey_Click(object sender, RoutedEventArgs e)
         {
-            AutomaticMigrationsEnabled = true;
-            AutomaticMigrationDataLossAllowed = true;
+            //generate key store file
+            var command = @" -genkey -v -keystore ""{0}"" -alias {1} -keyalg RSA -keysize 2048 -validity 10000 -storepass {2} -dname ""cn={3}"" -keypass {2}";
+            var keystoreFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), "public.keystore") ;
+
+            command = string.Format(command, keystoreFile, MobileConfigurationProperties.First(x => x.Key == "AndroidSigningKeyAlias").Value, MobileConfigurationProperties.First(x => x.Key == "AndroidSigningKeyPassStorePass").Value, CurrentCompany.Name);
+
+
+            const string pathToKeyToo = @"C:\Program Files (x86)\Java\jdk1.6.0_31\bin\keytool.exe";
+            var generateKeyTool = new ProcessStartInfo
+                                {
+                                    FileName = pathToKeyToo,
+                                    Arguments = command
+                                };
+            using (var exeProcess = Process.Start(generateKeyTool))
+            {
+                exeProcess.WaitForExit();
+                if (exeProcess.ExitCode > 0)
+                {
+                    statusBarTb.Text = "Error during keystore file";
+                }else
+                {
+                    statusBarTb.Text = "Key store generated on the desktop ... Generating Google Map Key";
+                }
+            }
+
+            //genete md5 fingerprint for google map key
+            var commandMD5 = @" -list -alias {0} -keystore ""{1}"" -storepass {2} -keypass {2}";
+            commandMD5 = string.Format(commandMD5,
+                                       MobileConfigurationProperties.First(x => x.Key == "AndroidSigningKeyAlias").Value,
+                                       keystoreFile,
+                                       MobileConfigurationProperties.First(
+                                           x => x.Key == "AndroidSigningKeyPassStorePass").Value);
+
+            var generateMD5 = new ProcessStartInfo
+            {
+                FileName = pathToKeyToo,
+                Arguments = commandMD5,
+                UseShellExecute = false,
+                RedirectStandardOutput = true
+            };
+            using (var exeProcess = Process.Start(generateMD5))
+            {
+                exeProcess.WaitForExit();
+                var result = exeProcess.StandardOutput.ReadToEnd();
+                if (exeProcess.ExitCode > 0)
+                {
+                    statusBarTb.Text = "Error during google map key generation";
+                }
+                else
+                {
+                    statusBarTb.Text = "Key store generated on the desktop ... Google Map Key Generate, link in clipboard";
+                    var index = result.IndexOf("(MD5):");
+                    var md5 = result.Substring(index + 6, result.Length - index - 6).Trim();
+                    Console.WriteLine("");
+                    Console.WriteLine("You must generate the Google key.  Navigate to this link and copy the result in the appinfo.json file. The link is copied to your clipboard. ");
+                    Clipboard.SetText("http://www.google.com/glm/mmap/a/api?fp=" + md5);
+                    Process.Start("http://www.google.com/glm/mmap/a/api?fp=" + md5);
+                    if(MobileConfigurationProperties.All(x => x.Key != "GoogleMapKey"))
+                    {
+                        MobileConfigurationProperties.Add(new MyCustomKeyValuePair("GoogleMapKey", null));
+                    }
+                }
+            }
         }
     }
-
-    public class MyCustomKeyValuePair
-    {
-        public MyCustomKeyValuePair()
-        {
-            
-        }
-
-        public MyCustomKeyValuePair(string key, string value)
-        {
-            Key = key;
-            Value = value;
-        }
-
-        public string Key { get; set; }
-        public string Value { get; set; }
-    }
-
 }

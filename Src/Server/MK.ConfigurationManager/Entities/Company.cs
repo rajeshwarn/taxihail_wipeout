@@ -12,6 +12,7 @@ namespace MK.ConfigurationManager.Entities
         public Company()
         {
             ConfigurationProperties = new Dictionary<string, string>();
+            MobileConfigurationProperties = new Dictionary<string, string>();
         }
 
         [Key]
@@ -21,6 +22,13 @@ namespace MK.ConfigurationManager.Entities
 
         [NotMapped]
         public Dictionary<string, string> ConfigurationProperties
+        {
+            get;
+            set;
+        }
+
+        [NotMapped]
+        public Dictionary<string, string> MobileConfigurationProperties
         {
             get;
             set;
@@ -38,8 +46,21 @@ namespace MK.ConfigurationManager.Entities
             }
         }
 
+        public string MObileDictionaryAsXml
+        {
+            get
+            {
+                return ToXml(MobileConfigurationProperties);
+            }
+            set
+            {
+                MobileConfigurationProperties = FromXml(value);
+            }
+        }
+
         private Dictionary<string, string> FromXml(string value)
         {
+            if(value == null) return new Dictionary<string, string>();
             using (Stream stream = new MemoryStream())
             {
                 byte[] data = System.Text.Encoding.UTF8.GetBytes(value);

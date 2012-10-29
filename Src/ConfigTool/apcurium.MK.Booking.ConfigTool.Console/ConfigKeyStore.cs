@@ -22,11 +22,6 @@ namespace apcurium.MK.Booking.ConfigTool
             if (!File.Exists(keystoreFile))
             {
                CreateKeyStore(keystoreFile);
-
-                
-            
-
-
             }
 
             //if ( string.IsNullOrEmpty( Parent.App.
@@ -74,9 +69,6 @@ namespace apcurium.MK.Booking.ConfigTool
             var index = result.IndexOf("(MD5):");
 
             var md5 = result.Substring( index + 6, result.Length - index - 6 ).Trim();
-         
-   
-            
 
 
             Console.WriteLine("");
