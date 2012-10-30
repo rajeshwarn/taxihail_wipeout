@@ -2,7 +2,7 @@
 
     TaxiHail.CompanySettingsCollection = Backbone.Collection.extend({
         model: TaxiHail.CompanySetting,
-        url: "../api/settings"
+        url: TaxiHail.parameters.apiRoot + "/settings"
     });
 
 }());

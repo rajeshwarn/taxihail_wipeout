@@ -4,13 +4,19 @@
         initialize: function() {
 
             this.referenceData = new TaxiHail.ReferenceData();
-            $.when(this.referenceData.fetch()).then(this.ready);
+            this.settings = new TaxiHail.CompanySettingsCollection();
+            $.when(this.referenceData.fetch(), this.settings.fetch({
+                data: {
+                    appSettingsType: 1
+                }
+            })).then(this.ready);
 
         },
 
         index: function() {
             return this.view = new TaxiHail.ManageExclusionsView({
-                model: this.referenceData
+                model: this.referenceData,
+                settings: this.settings
             });
         }
     });

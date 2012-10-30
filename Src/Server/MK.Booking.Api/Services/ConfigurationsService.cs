@@ -36,7 +36,13 @@ namespace apcurium.MK.Booking.Api.Services
             }
             else if(request.AppSettingsType.Equals(AppSettingsType.Webapp))
             {
-                 keys = new string[] { "PriceFormat", "DistanceFormat", "Direction.FlateRate", "Direction.RatePerKm", "Direction.MaxDistance", "GeoLoc.SearchFilter", "GeoLoc.PopularAddress.Range", "NearbyPlacesService.DefaultRadius", "Map.PlacesApiKey", "Client.HideCallDispatchButton" };
+                keys = new string[]
+                           {
+                               "PriceFormat", "DistanceFormat", "Direction.FlateRate", "Direction.RatePerKm",
+                               "Direction.MaxDistance", "GeoLoc.SearchFilter", "GeoLoc.PopularAddress.Range",
+                               "NearbyPlacesService.DefaultRadius", "Map.PlacesApiKey", "Client.HideCallDispatchButton",
+                               "IBS.ExcludedVehicleTypeId", "IBS.ExcludedPaymentTypeId", "IBS.ExcludedProviderId"
+                           };
             }
 
             var allKeys = _configManager.GetAllSettings();
@@ -64,11 +70,11 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 var command = new Commands.UpdateAppSettings { Key = request.Key, Value = request.Value };
                 _commandBus.Send(command);
-                return new HttpResult(HttpStatusCode.OK);
+                return new HttpResult(HttpStatusCode.OK, "OK");
             }
             else
             {
-                return new HttpResult(HttpStatusCode.Conflict);
+                return new HttpResult(HttpStatusCode.Conflict, "Conflict");
             }
         }
 

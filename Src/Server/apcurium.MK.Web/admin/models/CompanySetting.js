@@ -1,7 +1,7 @@
 ﻿(function() {
 
     TaxiHail.CompanySetting = Backbone.Model.extend({
-        urlRoot: '../api/settings',
+        urlRoot: TaxiHail.parameters.apiRoot + '/settings',
         idAttribute: "key"
     });
 
