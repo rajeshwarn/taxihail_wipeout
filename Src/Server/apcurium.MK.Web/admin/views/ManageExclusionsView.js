@@ -40,8 +40,30 @@
 
 
             $.when(excludedVehicleTypeSetting.save(), excludedPaymentTypeSetting.save(), excludedProviderSetting.save())
-                .then(_.bind(function(){
+                .always(_.bind(function() {
+
                     this.$(':submit').button('reset');
+
+                }, this))
+                .done(_.bind(function(){
+
+                    var alert = new TaxiHail.AlertView({
+                        message: this.localize('Settings Saved'),
+                        type: 'success'
+                    });
+                    alert.on('ok', alert.remove, alert);
+                    this.$('.message').html(alert.render().el);
+
+                }, this))
+                .fail(_.bind(function(){
+
+                    var alert = new TaxiHail.AlertView({
+                        message: this.localize('Error Saving Settings'),
+                        type: 'error'
+                    });
+                    alert.on('ok', alert.remove, alert);
+                    this.$('.message').html(alert.render().el);
+
                 }, this));
 
         },
