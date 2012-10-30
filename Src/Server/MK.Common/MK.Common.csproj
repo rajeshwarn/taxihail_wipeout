@@ -83,6 +83,7 @@
     <Compile Include="Entity\ListItem.cs" />
     <Compile Include="Entity\RateType.cs" />
     <Compile Include="Entity\ServiceConfigurationSettingConnectionFactory.cs" />
+    <Compile Include="Enumeration\AppSettingsType.cs" />
     <Compile Include="Extensions\AssemblyExtensions.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />

@@ -38,7 +38,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _accountService = accountService;
             _geolocator = geolocator;
             _appResource = appResource;
-
 			TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub>().Subscribe<LogOutRequested>( msg => Logout.Execute() );
 
 

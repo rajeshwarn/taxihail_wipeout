@@ -152,6 +152,11 @@
     <Content Include="admin\controllers\RatesController.js" />
     <Content Include="admin\models\Rate.js" />
     <Content Include="admin\views\EditRateView.js" />
+    <None Include="admin\templates\ManageCompanySettings.handlebars" />
+    <Content Include="admin\collections\CompanySettingsCollection.js" />
+    <Content Include="admin\models\CompanySetting.js" />
+    <Content Include="admin\views\ManageCompanySettingsView.js" />
+    <Content Include="admin\views\SettingsItemView.js" />
     <Content Include="admin\views\ManageRatesView.js" />
     <Content Include="admin\views\RateItemView.js" />
     <Content Include="common\collections\CompanyPopularAddressCollection.js" />
@@ -369,6 +374,7 @@
     <Content Include="localization\OrderHistoryDetail.json" />
     <Content Include="themes\TaxiHail\less\style.less" />
     <Content Include="localization\OrderItem.json" />
+    <Content Include="admin\templates\SettingsItem.handlebars" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\default.aspx.cs">

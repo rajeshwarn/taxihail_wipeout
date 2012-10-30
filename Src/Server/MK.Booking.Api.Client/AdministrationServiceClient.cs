@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -71,22 +72,22 @@ namespace apcurium.MK.Booking.Api.Client
             return addresses;
         }
 
-        public IDictionary<string, string> GetAllAppSettings()
+        public IEnumerable GetAllAppSettings()
         {
-            var req = string.Format("/admin/appsettings/");
-            var address = Client.Get<IDictionary<string, string>>(req);
+            var req = string.Format("/settings/");
+            var address = Client.Get<IEnumerable>(req);
             return address;
         }
 
-        public void AddAppSettings(AppSettingsRequest appReq)
+        public string AddAppSettings(ConfigurationsRequest appReq)
         {
-            var req = string.Format("/admin/appsettings/");
-            Client.Post<string>(req, appReq);
+            var req = string.Format("/settings/");
+            return Client.Post<string>(req, appReq);
         }
 
-        public string UpdateAppSettings(AppSettingsRequest appReq)
+        public string UpdateAppSettings(ConfigurationsRequest appReq)
         {
-            var req = string.Format("/admin/appsettings/{0}",appReq.Key);
+            var req = string.Format("/settings/{0}", appReq.Key);
             return Client.Put<string>(req, appReq);
             
         }

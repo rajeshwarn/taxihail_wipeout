@@ -33,7 +33,7 @@ namespace apcurium.MK.Web.Tests
             base.Setup();
             CreateAndAuthenticateTestAdminAccount();
             var sut = new AdministrationServiceClient(BaseUrl, SessionId);
-            sut.AddAppSettings(new AppSettingsRequest()
+            sut.AddAppSettings(new ConfigurationsRequest()
                                    {
                                        Key = "Key.DefaultSetupWeb",
                                        Value = "Value.DefaultSetupWeb"
@@ -46,17 +46,12 @@ namespace apcurium.MK.Web.Tests
             var sut = new AdministrationServiceClient(BaseUrl, SessionId);
 
 
-            sut.AddAppSettings(new AppSettingsRequest()
+            Assert.AreEqual(HttpStatusCode.OK.ToString(),sut.AddAppSettings(new ConfigurationsRequest()
                                    {
                                        Key = "Key.DefaultWeb",
                                        Value = "Value.DefaultWeb"
-                                   });
+                                   }).ToString(CultureInfo.InvariantCulture));
 
-            var settings = sut.GetAllAppSettings();
-
-            Assert.AreEqual(1, settings.Count(x => x.Key.Equals("Key.DefaultWeb")));
-            var setting = settings.Single(x => x.Key.Equals("Key.DefaultWeb"));
-            Assert.AreEqual("Value.DefaultWeb", setting.Value);
         }
 
         [Test]
@@ -64,17 +59,11 @@ namespace apcurium.MK.Web.Tests
         {
             var sut = new AdministrationServiceClient(BaseUrl, SessionId);
 
-            sut.UpdateAppSettings(new AppSettingsRequest()
+             Assert.AreEqual(HttpStatusCode.OK.ToString(),sut.UpdateAppSettings(new ConfigurationsRequest()
                                       {
                                           Key = "Key.DefaultSetupWeb",
                                           Value = "Value.DefaultSetupWebUpdated"
-                                      });
-
-            var settings = sut.GetAllAppSettings();
-
-            Assert.AreEqual(1, settings.Count(x => x.Key.Equals("Key.DefaultSetupWeb")));
-            var setting = settings.Single(x => x.Key.Equals("Key.DefaultSetupWeb"));
-            Assert.AreEqual("Value.DefaultSetupWebUpdated", setting.Value);
+                                      }).ToString(CultureInfo.InvariantCulture));
 
         }
 
@@ -84,7 +73,7 @@ namespace apcurium.MK.Web.Tests
             var sut = new AdministrationServiceClient(BaseUrl, SessionId);
 
             Assert.AreEqual(HttpStatusCode.Conflict.ToString(), sut
-                                                         .UpdateAppSettings(new AppSettingsRequest()
+                                                         .UpdateAppSettings(new ConfigurationsRequest()
                                                                                 {
                                                                                     Key = "Key.DefaultSetewfupWeb",
                                                                                     Value =

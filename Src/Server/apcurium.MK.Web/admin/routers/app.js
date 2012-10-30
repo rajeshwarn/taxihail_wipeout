@@ -28,6 +28,7 @@
             "": "manageFavoritesDefault",   // #
             "grantadmin": "grantAdminAccess",
             "managepopularaddresses": "managePopularAddresses",
+            "managecompanysettings" : "manageCompanySettings",
             /* Rates */
             "rates": "manageRates", //#rates
             "rates/add/recurring": "addRecurringRate", //#rates/add/recurring
@@ -42,6 +43,20 @@
             
         },
 
+        
+        manageCompanySettings : function () {
+            var settings = new TaxiHail.CompanySettingsCollection(),
+                view = this._tabView = new TaxiHail.ManageCompanySettingsView({
+                    collection: settings
+                });
+            settings.fetch({
+                url: '../api/settings',
+                success: _.bind(function(collection, resp) {
+                    renderView(view);
+                }, this)
+            });
+        },
+           
         manageFavoritesDefault: function () {
             var addresses = new TaxiHail.CompanyDefaultAddressCollection(),
                         view = this._tabView = new TaxiHail.ManageDefaultAddressesView({
