@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -13,6 +14,7 @@ using apcurium.MK.Booking.IBS;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using log4net;
 using log4net.Config;
@@ -108,8 +110,6 @@ namespace DatabaseInitializer
                 }
                 //Create settings
 
-                
-
                 var jsonSettings = File.ReadAllText(Path.Combine(AssemblyDirectory, "Settings\\Common.json"));
                 var objectSettings = JObject.Parse(jsonSettings);
                 if(isUpdate)
@@ -141,8 +141,21 @@ namespace DatabaseInitializer
                         Value = token.Value.ToString()
                     });
                 }
-                 
 
+                // Create default rate
+                var flatRate = configurationManager.GetSetting("Direction.FlateRate");
+                var ratePerKm = configurationManager.GetSetting("Direction.RatePerKm");
+
+                commandBus.Send(new CreateRate
+                {
+                    Type = RateType.Default,
+                    DistanceMultiplicator = double.Parse(ratePerKm, CultureInfo.InvariantCulture),
+                    FlatRate = decimal.Parse(flatRate, CultureInfo.InvariantCulture),
+                    TimeAdjustmentFactor = 20,
+                    PricePerPassenger = 0m,
+                    CompanyId = AppConstants.CompanyId,
+                    RateId = Guid.NewGuid(),
+                });
                
 
                 if (isUpdate)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 using Infrastructure.Messaging.Handling;
@@ -32,8 +33,8 @@ namespace apcurium.MK.Booking.EventHandlers
                     TimeAdjustmentFactor = @event.TimeAdjustmentFactor,
                     PricePerPassenger = @event.PricePerPassenger,
                     DaysOfTheWeek = (int)@event.DaysOfTheWeek,
-                    StartTime = @event.StartTime,
-                    EndTime = @event.EndTime,
+                    StartTime =  @event.StartTime < (DateTime)SqlDateTime.MinValue ? (DateTime)SqlDateTime.MinValue:  @event.StartTime,
+                    EndTime = @event.EndTime < (DateTime)SqlDateTime.MinValue ? (DateTime)SqlDateTime.MinValue : @event.EndTime,
                     Type = (int)@event.Type
                 });   
             }
@@ -50,8 +51,12 @@ namespace apcurium.MK.Booking.EventHandlers
                 rate.TimeAdjustmentFactor = @event.TimeAdjustmentFactor;
                 rate.PricePerPassenger = @event.PricePerPassenger;
                 rate.DaysOfTheWeek = (int) @event.DaysOfTheWeek;
-                rate.StartTime = @event.StartTime;
-                rate.EndTime = @event.EndTime;
+                rate.StartTime = @event.StartTime < (DateTime)SqlDateTime.MinValue
+                                ? (DateTime) SqlDateTime.MinValue
+                                : @event.StartTime;
+                rate.EndTime = @event.EndTime < (DateTime)SqlDateTime.MinValue
+                              ? (DateTime) SqlDateTime.MinValue
+                              : @event.EndTime;
 
                 context.SaveChanges();
             }
