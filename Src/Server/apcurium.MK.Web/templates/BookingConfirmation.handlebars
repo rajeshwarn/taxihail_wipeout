@@ -10,7 +10,7 @@
                 <label class="control-label" for="inputTime">{{localize "Pickup Time"}}</label>
                 <div class="controls">
                   {{#if pickupDate}}
-                  <label class='input-block-level'  id="inputTime">{{niceDate pickupDate}}</label>
+                  <label class='input-block-level'  id="inputTime">{{niceDateAndTime pickupDate}}</label>
                   {{else}}
                   <label class='input-block-level'  id="inputTime">{{localize "Now"}}</label>
                   {{/if}}

@@ -4,27 +4,23 @@
        
 
         events: {
-            'click [data-tabname=grantadmin]': 'tograntadmin',
-            'click [data-tabname=managefavoritesdefault]': 'tomanagefavoritesdefault',
-            'click [data-tabname=managepopularaddresses]': 'tomanagepopularaddresses',
-            'click [data-tabname=managecompanysettings]': 'tomanagecompanysettings'
+            'click [data-route] a': 'onitemclick'
+
         },
 
         render: function() {
             this.$el.html(this.renderTemplate());
-            this.$('[data-tabname]').first().addClass('active').siblings().removeClass('active');
+            this.$('[data-route]').first().addClass('active').siblings().removeClass('active');
 
             return this;
         },
         
-        initialize : function() {
-            
-        },
-        
-        tograntadmin : function (e) {
+        onitemclick: function(e) {
             e.preventDefault();
-            this.$('[data-tabname=grantadmin]').addClass('active').siblings().removeClass('active');
-            TaxiHail.app.navigate('grantadmin', { trigger: true });
+            var $item = $(e.currentTarget).closest('li');
+            var route = $item.data().route;
+            $item.addClass('active').siblings().removeClass('active');
+            TaxiHail.app.navigate(route, { trigger: true });
         },
         
         tomanagefavoritesdefault: function (e) {
@@ -43,10 +39,7 @@
             e.preventDefault();
             this.$('[data-tabname=managecompanysettings]').addClass('active').siblings().removeClass('active');
             TaxiHail.app.navigate('managecompanysettings', { trigger: true });
-        },
-        
-        setActive : function (tabName) {
-            this.$('[data-tabname='+tabName+']').addClass('active').siblings().removeClass('active');
+
         }
     });
 }());

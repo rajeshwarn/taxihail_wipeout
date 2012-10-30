@@ -32,6 +32,7 @@ namespace apcurium.MK.Booking
             container.RegisterInstance<IAccountDao>(new AccountDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IOrderDao>(new OrderDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IDefaultAddressDao>(new DefaultAddressDao(() => container.Resolve<BookingDbContext>()));
+            container.RegisterInstance<IRateDao>(new RateDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IPopularAddressDao>(new PopularAddressDao(() => container.Resolve<BookingDbContext>()));
 
             container.RegisterInstance<IPasswordService>(new PasswordService());
@@ -79,6 +80,7 @@ namespace apcurium.MK.Booking
             container.RegisterType<IEventHandler, AccountDetailsGenerator>("AccountDetailsGenerator");
             container.RegisterType<IEventHandler, AddressListGenerator>("AddressListGenerator");
             container.RegisterType<IEventHandler, OrderGenerator>("OrderGenerator");
+            container.RegisterType<IEventHandler, RateDetailsGenerator>("RateDetailsOrderGenerator");
             container.RegisterType<IEventHandler, AppSettingsGenerator>("AppSettingsGenerator");
         }
 

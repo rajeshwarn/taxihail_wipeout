@@ -5,11 +5,14 @@ using System.Text;
 using Infrastructure.EventSourcing;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Domain
 {
     public class Company : EventSourced
     {
+        private Guid? _defaultRateId;
+
         public Company(Guid id) : base(id)
         {
             RegisterHandlers();
@@ -28,20 +31,21 @@ namespace apcurium.MK.Booking.Domain
 
         private void RegisterHandlers()
         {
-            base.Handles<DefaultFavoriteAddressAdded>(OnDefaultFavoriteAddressAdded);
-            base.Handles<DefaultFavoriteAddressRemoved>(OnDefaultFavoriteAddressRemoved);
-            base.Handles<DefaultFavoriteAddressUpdated>(OnDefaultFavoriteAddressUpdated);
+            base.Handles<DefaultFavoriteAddressAdded>(OnEventDoNothing);
+            base.Handles<DefaultFavoriteAddressRemoved>(OnEventDoNothing);
+            base.Handles<DefaultFavoriteAddressUpdated>(OnEventDoNothing);
 
-            base.Handles<PopularAddressAdded>(OnPopularAddressAdded);
-            base.Handles<PopularAddressRemoved>(OnPopularAddressRemoved);
-            base.Handles<PopularAddressUpdated>(OnPopularAddressUpdated);
+            base.Handles<PopularAddressAdded>(OnEventDoNothing);
+            base.Handles<PopularAddressRemoved>(OnEventDoNothing);
+            base.Handles<PopularAddressUpdated>(OnEventDoNothing);
 
-            base.Handles<CompanyCreated>(OnCompanyCreated);
-            base.Handles<AppSettingsAdded>(OnAppSettingsAdded);
-            base.Handles<AppSettingsUpdated>(OnAppSettingsUpdated);
+            base.Handles<CompanyCreated>(OnEventDoNothing);
+            base.Handles<AppSettingsAdded>(OnEventDoNothing);
+            base.Handles<AppSettingsUpdated>(OnEventDoNothing);
+            base.Handles<RateCreated>(OnRateCreated);
+            base.Handles<RateUpdated>(OnEventDoNothing);
+            base.Handles<RateDeleted>(OnEventDoNothing);
         }
-
-        
 
 
         public void AddDefaultFavoriteAddress(Guid id, string friendlyName, string apartment, string fullAddress, string ringCode, string buildingName, double latitude, double longitude)
@@ -146,6 +150,83 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
+        public void CreateDefaultRate(Guid rateId, string name, decimal flatRate, double distanceMultiplicator, double timeAdustmentFactor, decimal pricePerPassenger)
+        {
+            if(_defaultRateId.HasValue)
+            {
+                throw new InvalidOperationException("Only one default rate can be created");
+            }
+
+            this.Update(new RateCreated
+            {
+                RateId = rateId,
+                Type = RateType.Default,
+                Name = name,
+                FlatRate = flatRate,
+                DistanceMultiplicator = distanceMultiplicator,
+                TimeAdjustmentFactor = timeAdustmentFactor,
+                PricePerPassenger = pricePerPassenger,
+            });
+
+        }
+
+        public void CreateRecurringRate(Guid rateId, string name, decimal flatRate, double distanceMultiplicator, double timeAdustmentFactor, decimal pricePerPassenger, DayOfTheWeek daysOfTheWeek, DateTime startTime, DateTime endTime)
+        {
+            this.Update(new RateCreated
+            {
+                RateId = rateId,
+                Type = RateType.Recurring,
+                Name = name,
+                FlatRate = flatRate,
+                DistanceMultiplicator = distanceMultiplicator,
+                TimeAdjustmentFactor = timeAdustmentFactor,
+                PricePerPassenger = pricePerPassenger,
+                DaysOfTheWeek = daysOfTheWeek,
+                StartTime = startTime,
+                EndTime = endTime
+            });
+        }
+
+        public void CreateDayRate(Guid rateId, string name, decimal flatRate, double distanceMultiplicator, double timeAdustmentFactor, decimal pricePerPassenger, DateTime startTime, DateTime endTime)
+        {
+            this.Update(new RateCreated
+            {
+                RateId = rateId,
+                Type = RateType.Day,
+                Name = name,
+                FlatRate = flatRate,
+                DistanceMultiplicator = distanceMultiplicator,
+                TimeAdjustmentFactor = timeAdustmentFactor,
+                PricePerPassenger = pricePerPassenger,
+                StartTime = startTime,
+                EndTime = endTime
+            });
+        }
+        public void UpdateRate(Guid rateId, string name, decimal flatRate, double distanceMultiplicator, double timeAdustmentFactor, decimal pricePerPassenger, DayOfTheWeek daysOfTheWeek, DateTime startTime, DateTime endTime)
+        {
+            this.Update(new RateUpdated
+            {
+                RateId = rateId,
+                Name = name,
+                FlatRate = flatRate,
+                DistanceMultiplicator = distanceMultiplicator,
+                TimeAdjustmentFactor = timeAdustmentFactor,
+                PricePerPassenger = pricePerPassenger,
+                DaysOfTheWeek = daysOfTheWeek,
+                StartTime = startTime,
+                EndTime = endTime
+            });
+        }
+
+        public void DeleteRate(Guid rateId)
+        {
+            this.Update(new RateDeleted
+            {
+                RateId = rateId
+            });
+
+        }
+
         private static void ValidateFavoriteAddress(string friendlyName, string fullAddress, double latitude, double longitude)
         {
             if (Params.Get(friendlyName, fullAddress).Any(string.IsNullOrEmpty))
@@ -164,45 +245,19 @@ namespace apcurium.MK.Booking.Domain
             }
         }
 
-        private void OnCompanyCreated(CompanyCreated obj)
+        private void OnRateCreated(RateCreated @event)
         {
-
+            if(@event.Type == RateType.Default)
+            {
+                this._defaultRateId = @event.RateId;
+            }
         }
 
-        private void OnDefaultFavoriteAddressUpdated(DefaultFavoriteAddressUpdated obj)
+        
+        private void OnEventDoNothing<T>(T @event) where T: VersionedEvent
         {
-
+            // Do nothing
         }
-
-        private void OnDefaultFavoriteAddressRemoved(DefaultFavoriteAddressRemoved obj)
-        {
-        }
-
-        private void OnDefaultFavoriteAddressAdded(DefaultFavoriteAddressAdded obj)
-        {
-        }
-
-        private void OnPopularAddressUpdated(PopularAddressUpdated obj)
-        {
-
-        }
-
-        private void OnPopularAddressRemoved(PopularAddressRemoved obj)
-        {
-
-        }
-
-        private void OnPopularAddressAdded(PopularAddressAdded obj)
-        {
-
-        }
-
-        private void OnAppSettingsUpdated(AppSettingsUpdated obj)
-        {
-        }
-
-        private void OnAppSettingsAdded(AppSettingsAdded obj)
-        {
-        }
+        
     }
 }

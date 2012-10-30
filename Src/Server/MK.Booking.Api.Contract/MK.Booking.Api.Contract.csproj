@@ -93,6 +93,7 @@
     <Compile Include="Requests\OrderRequest.cs" />
     <Compile Include="Requests\OrderStatusRequest.cs" />
     <Compile Include="Requests\PlaceDetailRequest.cs" />
+    <Compile Include="Requests\Rates.cs" />
     <Compile Include="Requests\PopularAddress.cs" />
     <Compile Include="Requests\ReferenceDataRequest.cs" />
     <Compile Include="Requests\ResetPassword.cs" />

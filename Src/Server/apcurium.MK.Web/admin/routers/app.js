@@ -21,24 +21,24 @@
 
             return currentView;
 
-        },
-        mapView;
+        };
 
     TaxiHail.App = Backbone.Router.extend({
         routes: {
             "": "manageFavoritesDefault",   // #
             "grantadmin": "grantAdminAccess",
             "managepopularaddresses": "managePopularAddresses",
-            "managecompanysettings" : "manageCompanySettings"
+            "managecompanysettings" : "manageCompanySettings",
+            "rates": "manageRates", //#rates
+            "rates/add/recurring": "addRecurringRate", //#rates/add/recurring
+            "rates/add/day": "addDayRate", //#rates/add/day
+            "rates/edit/:id": "editRate" //#rates/edit/{GUID}
         },
 
         initialize: function (options) {
             $('.menu-zone').html(new TaxiHail.AdminMenuView().render().el);
             
         },
-
-        admin: function() {
-
 
         },
         
@@ -54,8 +54,6 @@
                 }, this)
             });
            
-        },
-        
         manageFavoritesDefault: function () {
             var addresses = new TaxiHail.CompanyDefaultAddressCollection(),
                         view = this._tabView = new TaxiHail.ManageDefaultAddressesView({
@@ -90,6 +88,22 @@
         
         grantAdminAccess : function () {
             renderView(TaxiHail.GrantAdminAccessView);
+        },
+
+        manageRates: function() {
+            TaxiHail.Controller.action(TaxiHail.RatesController, 'index');
+        },
+
+        addRecurringRate: function() {
+            TaxiHail.Controller.action(TaxiHail.RatesController, 'addRecurring');
+        },
+
+        addDayRate: function() {
+            TaxiHail.Controller.action(TaxiHail.RatesController, 'addDay');
+        },
+
+        editRate: function(id) {
+            TaxiHail.Controller.action(TaxiHail.RatesController, 'edit', id);
         }
     });
 
