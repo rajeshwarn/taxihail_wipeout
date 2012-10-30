@@ -90,10 +90,3 @@ do
 		echo Done Building Android App
 	fi
 done
-
-echo Rollback changes in source directory ? Y / N
-read ROLLBACK
-if [ "$ROLLBACK" = "Y" ]; then
-	hg update -r default -C
-	hg purge
-fi
