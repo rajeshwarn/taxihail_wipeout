@@ -1,0 +1,28 @@
+<div class='well clearfix'>
+  <h4 class="table-title">{{localize "Manage IBS Exclusions"}}</h4>
+  <div class='span2'>
+    List 1
+    {{#each paymentsList}}
+    <label class="checkbox">
+        <input type="checkbox" name='paymentsList' value="{{id}}" >{{display}}
+    </label>
+    {{/each}}
+  </div>
+  <div class='span2'>
+    List 2
+    {{#each vehiclesList}}
+    <label class="checkbox">
+        <input type="checkbox" name='vehiclesList' value="{{id}}" >{{display}}
+    </label>
+    {{/each}} 
+  </div>
+  <div class='span2'>
+    List 3
+    {{#each companiesList}}
+    <label class="checkbox">
+        <input type="checkbox" name='companiesList' value="{{id}}" >{{display}}
+    </label>
+    {{/each}} 
+  </div>
+  <button type='submit' >{{localize "Save"}}</button>
+</div>

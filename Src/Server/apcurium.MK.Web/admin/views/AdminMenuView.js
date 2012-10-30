@@ -1,7 +1,6 @@
 ﻿(function () {
 
     TaxiHail.AdminMenuView = TaxiHail.TemplatedView.extend({
-       
 
         events: {
             'click [data-route] a': 'onitemclick'
@@ -19,6 +18,7 @@
             var $item = $(e.currentTarget).closest('li');
             var route = $item.data().route;
             $item.addClass('active').siblings().removeClass('active');
+            
             TaxiHail.app.navigate(route, { trigger: true });
         },
         
