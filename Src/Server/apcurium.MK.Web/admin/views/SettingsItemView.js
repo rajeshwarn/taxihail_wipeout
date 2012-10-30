@@ -21,22 +21,20 @@
         saveSettings: function (e) {
             e.preventDefault();
             if (canExecute == true) {
-                var f = this.model.trigger('selected', this.model, this.model.collection);
+                 this.model.trigger('selected', this.model, this.model.collection);
             }
         },
         
         onPropertyChanged: function (e) {
-            var $input = $(e.currentTarget),
-                attr = $input.attr('name');
-
+            var $input = $(e.currentTarget);
                 this.model.set('value', $input.val());
             
         },
         changeButtonState: function (e) {
-            canExecute = false
+            canExecute = false;
             var attr = this.model.attributes.key;
             $(".btn[name='" + attr + "']").addClass('btn-success').text('Saved');
-            var timeoutID = window.setTimeout(function () {
+            window.setTimeout(function () {
                 $(".btn[name='" + attr + "']").removeClass('btn-success').text('Save');
                 canExecute = true;
             }, 3000);
