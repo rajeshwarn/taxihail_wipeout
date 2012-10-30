@@ -22,11 +22,13 @@ namespace apcurium.MK.Booking.Maps.Impl
         
         private readonly IMapsApiClient _client;
         private readonly IConfigurationManager _configManager;
-        
-        public Directions(IMapsApiClient client, IConfigurationManager configManager)
+        private readonly IPriceCalculator _priceCalculator;
+
+        public Directions(IMapsApiClient client, IConfigurationManager configManager, IPriceCalculator priceCalculator)
         {
             _client = client;
             _configManager = configManager;
+            _priceCalculator = priceCalculator;
         }
 
 
@@ -43,7 +45,7 @@ namespace apcurium.MK.Booking.Maps.Impl
                     var distance = route.Legs.Sum(leg => leg.Distance.Value);
                     
                     result.Distance = distance;                                        
-                    result.Price = GetPrice(distance);
+                    result.Price = _priceCalculator.GetPrice(distance, DateTime.Now);
 
                     result.FormattedPrice = FormatPrice(result.Price);
                     result.FormattedDistance = FormatDistance(result.Distance);
@@ -92,68 +94,6 @@ namespace apcurium.MK.Booking.Maps.Impl
             }
 
         }
-
-
-        private double? GetPrice(int? distance)
-        {
-            double callCost = double.Parse(_configManager.GetSetting("Direction.FlateRate"), CultureInfo.InvariantCulture);
-            double costPerKm = double.Parse(_configManager.GetSetting("Direction.RatePerKm"), CultureInfo.InvariantCulture);
-            double maxDistance = double.Parse(_configManager.GetSetting("Direction.MaxDistance"), CultureInfo.InvariantCulture);
-
-
-
-            double? price = null;
-            try
-            {
-                if (distance.HasValue && (distance.Value > 0))
-                {
-                    double km = ((double)distance.Value / 1000);
-
-                    if (km < maxDistance)
-                    {
-                        price = callCost + (km * costPerKm) + (((km * costPerKm) + callCost) * 0.2);
-                    }
-                    else 
-                    {
-                        price = 1000;
-                    }
-
-                    if (price.HasValue)
-                    {
-
-                        price = Math.Round(price.Value, 2);
-
-                        Console.WriteLine(price);
-
-                        price = price.Value * 100;
-
-                        int q = (int)(price.Value / 5.0);
-
-                        int r;
-
-                        Math.DivRem((int)price.Value, 5, out r);
-                        Console.WriteLine(" r : " + r.ToString());
-                        if (r > 0)
-                        {
-                            q++;
-                        }
-
-                        price = q * 5;
-
-                        Console.WriteLine(price);
-
-                        price = price.Value / 100;
-
-                        Console.WriteLine(price);
-
-                    }
-                }
-            }
-            catch
-            {
-            }
-
-            return price;
-        }
+        
     }
 }

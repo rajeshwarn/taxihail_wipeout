@@ -68,6 +68,8 @@ namespace apcurium.MK.Booking.Api
 
             AutoMapper.Mapper.CreateMap<PopularAddress, Commands.UpdatePopularAddress>()
                 .ForMember(x => x.AddressId, opt => opt.MapFrom(x => x.Id));
+
+            AutoMapper.Mapper.CreateMap<Rate, RateDetail>();
         }
     }
 }

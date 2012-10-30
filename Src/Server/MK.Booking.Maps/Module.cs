@@ -15,6 +15,7 @@ namespace apcurium.MK.Booking.Maps
             container.RegisterType<IDirections, Directions>();
             container.RegisterType<IGeocoding, Geocoding>();
             container.RegisterType<IPlaces, Places>();
+            container.RegisterType<IPriceCalculator, PriceCalculator>();
 
         }
     }
