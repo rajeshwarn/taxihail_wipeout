@@ -1,8 +1,8 @@
 ﻿(function () {
 
     TaxiHail.ManageCompanySettingsView = TaxiHail.TemplatedView.extend({
-        tagName: 'div',
-        className: 'well',
+        tagName: 'form',
+        className: 'well clearfix form-horizontal',
         
         
         
@@ -18,7 +18,7 @@
                 this.collection.each(this.renderItem, this);
                 //this.$el.append($('<button>').addClass('btn save-settings').text(TaxiHail.localize('settings.save')));
             } else {
-                this.$el.append($('<li>').addClass('no-result').text(TaxiHail.localize('settings.no-result')));
+                this.$el.append($('<div>').addClass('no-result').text(TaxiHail.localize('settings.no-result')));
             }
 
             return this;
