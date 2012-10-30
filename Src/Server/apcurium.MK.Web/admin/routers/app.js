@@ -28,7 +28,7 @@
             "": "manageFavoritesDefault",   // #
             "grantadmin": "grantAdminAccess",
             "managepopularaddresses": "managePopularAddresses",
-            "managecompanysettings" : "manageCompanySettings",
+            "settings" : "manageCompanySettings",
             /* Rates */
             "rates": "manageRates", //#rates
             "rates/add/recurring": "addRecurringRate", //#rates/add/recurring
