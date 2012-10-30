@@ -39,5 +39,7 @@ namespace apcurium.MK.Booking.ReadModel
         public double? Toll { get; set; }
 
         public double? Tip { get; set; }
+
+        public bool IsRemovedFromHistory { get; set; }
     }
 }
