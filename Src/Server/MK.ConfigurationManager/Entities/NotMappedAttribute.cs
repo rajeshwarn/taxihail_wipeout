@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Runtime.Serialization;
 
-namespace MK.ConfigurationManager.Entities
+namespace System.ComponentModel.DataAnnotations.Schema
 {
 	public class NotMappedAttribute : Attribute
 	{

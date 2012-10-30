@@ -4,6 +4,7 @@ using log4net;
 using MK.ConfigurationManager.Entities;
 using System.IO;
 using System.Diagnostics;
+using apcurium.MK.Booking.ConfigTool;
 
 namespace MK.DeploymentService.Mobile
 {
@@ -34,21 +35,23 @@ namespace MK.DeploymentService.Mobile
 		
 		private void CheckAndRunJobWithBuild ()
 		{
+			var db = new PetaPoco.Database ("MKConfig");
+			var job = db.FirstOrDefault<DeploymentJob> ("Select * from [MkConfig].[DeploymentJob] where Status=0 AND (ANDROID=1 OR iOS=1)");
 			try {
-				var db = new PetaPoco.Database ("MKConfig");
-				var job = db.FirstOrDefault<DeploymentJob> ("Select * from [MkConfig].[DeploymentJob] where Status=0 AND (ANDROID=1 OR iOS=1)");
+
 
 				if (job != null) {
 					var company = db.First<Company>("Select * from [MkConfig].[Company] where Id=@0", job.Company_Id);
 					var taxiHailEnv = db.First<TaxiHailEnvironment>("Select * from [MkConfig].[TaxiHailEnvironment] where Id=@0", job.TaxHailEnv_Id);
 					logger.Debug ("Begin work on " + company.Name);
-					//db.Update("[MkConfig].[DeploymentJob]", "Id", new { status = JobStatus.INPROGRESS }, job.Id);
+					db.Update("[MkConfig].[DeploymentJob]", "Id", new { status = JobStatus.INPROGRESS }, job.Id);
 
 					var sourceDirectory = Path.Combine(Path.GetTempPath(), "TaxiHailSource");
-					FetchSourceAndBuild(job, sourceDirectory);
+					FetchSourceAndBuild(job, sourceDirectory, company);
 				}
 			} catch (Exception e) {
 				logger.Error(e.Message);
+				db.Update("[MkConfig].[DeploymentJob]", "Id", new { status = JobStatus.ERROR }, job.Id);
 			}
 		}
 
@@ -57,7 +60,7 @@ namespace MK.DeploymentService.Mobile
 			timer.Change(Timeout.Infinite, Timeout.Infinite);
 		}
 
-		private void FetchSourceAndBuild(DeploymentJob job, string sourceDirectory)
+		private void FetchSourceAndBuild(DeploymentJob job, string sourceDirectory, Company company)
 		{
 			//pull source from bitbucket if not done yet
 			var revision = string.IsNullOrEmpty(job.Revision) ? string.Empty : "-r " + job.Revision;
@@ -117,21 +120,24 @@ namespace MK.DeploymentService.Mobile
 			}
 
 			//Customization of the app
-
+			logger.DebugFormat("Run Customization");
+			var configCompanyFolder = Path.Combine(sourceDirectory, "Config", company.Name);
+			var sourceFolder = Path.Combine(sourceDirectory, "Src");
+			var appConfigTool = new AppConfig(company.Name, configCompanyFolder, sourceFolder);
+			appConfigTool.Apply();
 
 			//Build
+			logger.DebugFormat("Launch Customization");
+			var buildScriptFolder = Path.Combine(sourceDirectory, "Deployment", "Mobile");
 			
 			logger.DebugFormat("Build Solution");
 			var buildPackage = new ProcessStartInfo
 			{
-				FileName = "Powershell.exe",
+				FileName = Path.Combine (buildScriptFolder, "Build.sh"),
+				WorkingDirectory = buildScriptFolder,
 				WindowStyle = ProcessWindowStyle.Hidden,
 				UseShellExecute = false,
-				LoadUserProfile = true,
-				CreateNoWindow = false,
-				Arguments =
-				"-Executionpolicy ByPass -File \"" + sourceDirectory +
-				"\\Deployment\\Server\\BuildPackage.ps1\""
+				CreateNoWindow = false
 			};
 			
 			using (var exeProcess = Process.Start(buildPackage))

@@ -40,6 +40,17 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="ServiceStack.Common">
+      <HintPath>packages\ServiceStack.Common.3.9.25\lib\net35\ServiceStack.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Interfaces">
+      <HintPath>packages\ServiceStack.Common.3.9.25\lib\net35\ServiceStack.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Text">
+      <HintPath>packages\ServiceStack.Text.3.9.27\lib\net35\ServiceStack.Text.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -67,6 +78,30 @@
     <Compile Include="..\MK.ConfigurationManager\Entities\NotMappedAttribute.cs">
       <Link>FakeAttributes\NotMappedAttribute.cs</Link>
     </Compile>
+    <Compile Include="..\..\ConfigTool\apcurium.MK.Booking.ConfigTool.Console\AppConfig.cs">
+      <Link>ConfigTool\AppConfig.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ConfigTool\apcurium.MK.Booking.ConfigTool.Console\AppConfigFile.cs">
+      <Link>ConfigTool\AppConfigFile.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ConfigTool\apcurium.MK.Booking.ConfigTool.Console\Config.cs">
+      <Link>ConfigTool\Config.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ConfigTool\apcurium.MK.Booking.ConfigTool.Console\ConfigFile.cs">
+      <Link>ConfigTool\ConfigFile.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ConfigTool\apcurium.MK.Booking.ConfigTool.Console\ConfigPList.cs">
+      <Link>ConfigTool\ConfigPList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ConfigTool\apcurium.MK.Booking.ConfigTool.Console\ConfigXML.cs">
+      <Link>ConfigTool\ConfigXML.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ConfigTool\apcurium.MK.Booking.ConfigTool.Console\ConfigXmlNamespace.cs">
+      <Link>ConfigTool\ConfigXmlNamespace.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ConfigTool\apcurium.MK.Booking.ConfigTool.Console\PathConverter.cs">
+      <Link>ConfigTool\PathConverter.cs</Link>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -75,6 +110,7 @@
   <ItemGroup>
     <Folder Include="Entities\" />
     <Folder Include="FakeAttributes\" />
+    <Folder Include="ConfigTool\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="log4net.xml">

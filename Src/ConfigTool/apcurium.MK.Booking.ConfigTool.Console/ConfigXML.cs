@@ -9,15 +9,15 @@ namespace apcurium.MK.Booking.ConfigTool
 {
     public class ConfigXML : Config
     {
-        public ConfigXML(AppConfig parent)
+		public ConfigXML(AppConfig parent)
             : base(parent)
         {
         }
 
         public string Destination{ get; set; }
 
-        public Action<AppInfo, XmlAttribute> SetterAtt { get; set; }
-        public Action<AppInfo, XmlElement> SetterEle { get; set; }
+		public Action<AppConfigFile, XmlAttribute> SetterAtt { get; set; }
+		public Action<AppConfigFile, XmlElement> SetterEle { get; set; }
 
         public string NodeSelector { get; set; }
         public string Attribute { get; set; }
@@ -30,21 +30,18 @@ namespace apcurium.MK.Booking.ConfigTool
             doc.Load(destPath);
 
             XmlNamespaceManager nsManager = new XmlNamespaceManager(doc.NameTable);
-            nsManager.AddNamespace(
-                         "a",
-                         "http://schemas.microsoft.com/developer/msbuild/2003"
-                          );
+            nsManager.AddNamespace("a", "http://schemas.microsoft.com/developer/msbuild/2003");
 
             var node = doc.SelectSingleNode(NodeSelector, nsManager  ); 
 
             if (string.IsNullOrEmpty(Attribute))
             {
-                SetterEle(Parent.App, node as XmlElement);
+                SetterEle(Parent.Config, node as XmlElement);
             }
             else
             {
                 XmlAttribute att = node.Attributes[Attribute];
-                SetterAtt(Parent.App, att);
+				SetterAtt(Parent.Config, att);
             }
             doc.Save(destPath);
             
