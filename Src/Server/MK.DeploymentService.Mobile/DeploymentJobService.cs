@@ -48,6 +48,8 @@ namespace MK.DeploymentService.Mobile
 
 					var sourceDirectory = Path.Combine(Path.GetTempPath(), "TaxiHailSource");
 					FetchSourceAndBuild(job, sourceDirectory, company);
+
+					db.Update("[MkConfig].[DeploymentJob]", "Id", new { status = JobStatus.SUCCESS }, job.Id);
 				}
 			} catch (Exception e) {
 				logger.Error(e.Message);
@@ -60,16 +62,15 @@ namespace MK.DeploymentService.Mobile
 			timer.Change(Timeout.Infinite, Timeout.Infinite);
 		}
 
-		private void FetchSourceAndBuild(DeploymentJob job, string sourceDirectory, Company company)
+		private void FetchSourceAndBuild (DeploymentJob job, string sourceDirectory, Company company)
 		{
 			//pull source from bitbucket if not done yet
-			var revision = string.IsNullOrEmpty(job.Revision) ? string.Empty : "-r " + job.Revision;
+			var revision = string.IsNullOrEmpty (job.Revision) ? string.Empty : "-r " + job.Revision;
 			
-			if (!Directory.Exists(sourceDirectory))
-			{
-				logger.DebugFormat("Clone Source Code");
-				Directory.CreateDirectory(sourceDirectory);
-				var args = string.Format(@"clone {1} https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi {0}",
+			if (!Directory.Exists (sourceDirectory)) {
+				logger.DebugFormat ("Clone Source Code");
+				Directory.CreateDirectory (sourceDirectory);
+				var args = string.Format (@"clone {1} https://buildapcurium:apcurium5200!@bitbucket.org/apcurium/mk-taxi {0}",
 				                         sourceDirectory, revision);
 				
 				var hgClone = new ProcessStartInfo
@@ -79,26 +80,21 @@ namespace MK.DeploymentService.Mobile
 					Arguments = args
 				};
 				
-				using (var exeProcess = Process.Start(hgClone))
-				{
-					exeProcess.WaitForExit();
-					if (exeProcess.ExitCode > 0)
-					{
-						throw new Exception("Error during clone source code step");
+				using (var exeProcess = Process.Start(hgClone)) {
+					exeProcess.WaitForExit ();
+					if (exeProcess.ExitCode > 0) {
+						throw new Exception ("Error during clone source code step");
 					}
 				}
-			}
-			else
-			{
-				logger.DebugFormat("Revert, Purge and Update Source Code");
+			} else {
+				logger.DebugFormat ("Revert, Purge and Update Source Code");
 				//already clone just do a revert and update the source
-				RevertAndPull(sourceDirectory);
+				RevertAndPull (sourceDirectory);
 			}
 			
-			
-			if (!string.IsNullOrEmpty(job.Revision))
-			{
-				logger.DebugFormat("Update to revision {0}", job.Revision);
+			//fetch revision if needed
+			if (!string.IsNullOrEmpty (job.Revision)) {
+				logger.DebugFormat ("Update to revision {0}", job.Revision);
 				var hgUpdate = new ProcessStartInfo
 				{
 					FileName = "hg",
@@ -109,50 +105,42 @@ namespace MK.DeploymentService.Mobile
 					string.Format("update --repository {0} -r {1}", sourceDirectory, job.Revision)
 				};
 				
-				using (var exeProcess = Process.Start(hgUpdate))
-				{
-					exeProcess.WaitForExit();
-					if (exeProcess.ExitCode > 0)
-					{
-						throw new Exception("Error during revert source code step");
+				using (var exeProcess = Process.Start(hgUpdate)) {
+					exeProcess.WaitForExit ();
+					if (exeProcess.ExitCode > 0) {
+						throw new Exception ("Error during revert source code step");
 					}
 				}
 			}
 
 			//Customization of the app
-			logger.DebugFormat("Run Customization");
-			var configCompanyFolder = Path.Combine(sourceDirectory, "Config", company.Name);
-			var sourceFolder = Path.Combine(sourceDirectory, "Src");
-			var appConfigTool = new AppConfig(company.Name, configCompanyFolder, sourceFolder);
-			appConfigTool.Apply();
+			logger.DebugFormat ("Run Customization");
+			var configCompanyFolder = Path.Combine (sourceDirectory, "Config", company.Name);
+			var sourceFolder = Path.Combine (sourceDirectory, "Src");
+			var appConfigTool = new AppConfig (company.Name, configCompanyFolder, sourceFolder);
+			appConfigTool.Apply ();
 
 			//Build
-			logger.DebugFormat("Launch Customization");
-			var buildScriptFolder = Path.Combine(sourceDirectory, "Deployment", "Mobile");
-			var buildArgs = string.Format("{0} {1} {2} {3}", 
-			                              	job.Android ? "Y" : "N",
-			                              	job.iOS ? "Y" : "N",
-			                              	job.iOS ? "Y" : "N",
-			                              	company.Name);
-			
-			logger.DebugFormat("Build Solution");
-			var buildPackage = new ProcessStartInfo
-			{
-				FileName = Path.Combine (buildScriptFolder, "Build.sh"),
-				WorkingDirectory = buildScriptFolder,
-				WindowStyle = ProcessWindowStyle.Hidden,
-				UseShellExecute = false,
-				CreateNoWindow = false,
-				Arguments = buildArgs
-			};
-			
-			using (var exeProcess = Process.Start(buildPackage))
-			{
-				exeProcess.WaitForExit();
-				if (exeProcess.ExitCode > 0)
+			logger.DebugFormat ("Launch Customization");
+			var sourceMobileFolder = Path.Combine (sourceDirectory, "Src", "Mobile");
+
+			logger.DebugFormat ("Build Solution");
+			if (job.iOS) {
+
+				var configIOS = "Release|iPhone";
+				var buildArgs = string.Format("build \"--project:{0}\" \"--configuration:{1}\"  \"{2}/MK.Booking.Mobile.Solution.iOS.sln\"",
+				                              "Newtonsoft_Json_MonoTouch",
+				                              configIOS,
+				                              sourceMobileFolder);
+
+				var buildiOSproject = new ProcessStartInfo
 				{
-					throw new Exception("Error during build step");
-				}
+					FileName = "/Applications/MonoDevelop.app/Contents/MacOS/mdtool",
+					UseShellExecute = false,
+					Arguments = "build \"--project:Newtonsoft_Json_MonoTouch\" \"--configuration:Release|iPhone\"  \"/var/folders/jr/74w_3kc15432vc_l7jqyv58h0000gn/T/TaxiHailSource/Src/Mobile/MK.Booking.Mobile.Solution.iOS.sln\""
+				};
+				var exeProcess = Process.Start(buildiOSproject);
+				exeProcess.WaitForExit();
 			}
 		}
 
