@@ -70,6 +70,7 @@
     <Compile Include="AppServices\Impl\BaseService.cs" />
     <Compile Include="AppServices\Impl\GeolocService.cs" />
     <Compile Include="AppServices\Impl\PopularAddressProvider.cs" />
+    <Compile Include="AppServices\Impl\RateProvider.cs" />
     <Compile Include="AppServices\Impl\UserPositionService.cs" />
     <Compile Include="AppServices\IUserPositionService.cs" />
     <Compile Include="BindingConverter\BoolInverter.cs" />

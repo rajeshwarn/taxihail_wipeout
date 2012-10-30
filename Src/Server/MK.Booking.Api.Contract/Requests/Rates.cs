@@ -5,14 +5,18 @@ using System.Text;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.ServiceModel;
+#if !CLIENT
 using apcurium.MK.Booking.Api.Contract.Security;
 using apcurium.MK.Booking.Security;
+#endif
 using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
+#if !CLIENT
     [AuthorizationRequired(ApplyTo.All, Permissions.Admin)]
+#endif
     [RestService("/admin/rates", "GET, POST")]
     [RestService("/admin/rates/{Id}", "PUT, DELETE")]
     public class Rates

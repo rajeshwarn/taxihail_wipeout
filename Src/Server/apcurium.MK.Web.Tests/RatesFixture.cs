@@ -31,7 +31,7 @@ namespace apcurium.MK.Web.Tests
         {
             base.Setup();
             CreateAndAuthenticateTestAdminAccount();
-            var sut = new AdministrationServiceClient(BaseUrl, SessionId);
+            var sut = new RatesServiceClient(BaseUrl, SessionId);
             sut.CreateRate(new Rates
             {
                 Id = (_knownRateId = Guid.NewGuid()),
@@ -51,7 +51,7 @@ namespace apcurium.MK.Web.Tests
         public void AddRate()
         {
             var rateId = Guid.NewGuid();
-            var sut = new AdministrationServiceClient(BaseUrl, SessionId);
+            var sut = new RatesServiceClient(BaseUrl, SessionId);
 
             sut.CreateRate(new Rates
             {
@@ -85,7 +85,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void DeleteRate()
         {
-            var sut = new AdministrationServiceClient(BaseUrl, SessionId);
+            var sut = new RatesServiceClient(BaseUrl, SessionId);
 
             sut.DeleteRate(_knownRateId);
 

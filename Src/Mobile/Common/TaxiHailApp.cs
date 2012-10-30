@@ -63,12 +63,14 @@ namespace apcurium.MK.Booking.Mobile
             TinyIoCContainer.Current.Register<IGoogleService, GoogleService>();
             TinyIoCContainer.Current.Register<IApplicationInfoService, ApplicationInfoService>();
 
+            TinyIoCContainer.Current.Register<IPriceCalculator, PriceCalculator>();
             TinyIoCContainer.Current.Register<IAddresses, Addresses>();
             TinyIoCContainer.Current.Register<IDirections, Directions>();
             TinyIoCContainer.Current.Register<IGeocoding, Geocoding>();
             TinyIoCContainer.Current.Register<IPlaces, Places>();
             TinyIoCContainer.Current.Register<IMapsApiClient, MapsApiClient>();
             TinyIoCContainer.Current.Register<IPopularAddressProvider, PopularAddressProvider>();
+            TinyIoCContainer.Current.Register<IRateProvider, RateProvider>();
 
             
 
