@@ -129,6 +129,11 @@ namespace MK.DeploymentService.Mobile
 			//Build
 			logger.DebugFormat("Launch Customization");
 			var buildScriptFolder = Path.Combine(sourceDirectory, "Deployment", "Mobile");
+			var buildArgs = string.Format("{0} {1} {2} {3}", 
+			                              	job.Android ? "Y" : "N",
+			                              	job.iOS ? "Y" : "N",
+			                              	job.iOS ? "Y" : "N",
+			                              	company.Name);
 			
 			logger.DebugFormat("Build Solution");
 			var buildPackage = new ProcessStartInfo
@@ -137,7 +142,8 @@ namespace MK.DeploymentService.Mobile
 				WorkingDirectory = buildScriptFolder,
 				WindowStyle = ProcessWindowStyle.Hidden,
 				UseShellExecute = false,
-				CreateNoWindow = false
+				CreateNoWindow = false,
+				Arguments = buildArgs
 			};
 			
 			using (var exeProcess = Process.Start(buildPackage))

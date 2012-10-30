@@ -21,6 +21,7 @@ else
 fi
 
 if [ -z "$4" ]; then
+	CLIENTNAME=$4
 else
     CLIENTNAME=$4
 fi
