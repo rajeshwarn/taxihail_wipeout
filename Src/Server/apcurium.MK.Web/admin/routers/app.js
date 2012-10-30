@@ -40,19 +40,19 @@
             
         },
 
-        },
         
-        manageCompanySettings: function () {
+        manageCompanySettings : function () {
             var settings = new TaxiHail.CompanySettingsCollection(),
-                        view = this._tabView = new TaxiHail.ManageCompanySettingsView({
-                            collection: settings
-                        });
+                view = this._tabView = new TaxiHail.ManageCompanySettingsView({
+                    collection: settings
+                });
             settings.fetch({
                 url: '../api/settings',
-                success: _.bind(function (collection, resp) {
+                success: _.bind(function(collection, resp) {
                     renderView(view);
                 }, this)
             });
+        },
            
         manageFavoritesDefault: function () {
             var addresses = new TaxiHail.CompanyDefaultAddressCollection(),
