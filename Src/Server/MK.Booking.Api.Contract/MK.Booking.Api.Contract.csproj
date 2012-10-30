@@ -77,7 +77,6 @@
     <Compile Include="Requests\AccountOrderListRequest.cs" />
     <Compile Include="BaseDTO.cs" />
     <Compile Include="Requests\ApplicationInfoRequest.cs" />
-    <Compile Include="Requests\AppSettingsRequest.cs" />
     <Compile Include="Requests\BookingSettingsRequest.cs" />
     <Compile Include="Requests\CancelOrder.cs" />
     <Compile Include="Requests\ClientPopularAddress.cs" />

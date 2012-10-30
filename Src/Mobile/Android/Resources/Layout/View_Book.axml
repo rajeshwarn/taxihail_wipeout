@@ -230,7 +230,7 @@
                   android:layout_width="150dip"
                   android:layout_height="40dip"
                   android:text="@string/BookItButton"
-                  android:layout_centerInParent="true" />
+                  android:layout_centerInParent="true"/>
               <ImageButton
                   android:id="@+id/pickupDateButton"
                   android:src="@drawable/bookLater_state"

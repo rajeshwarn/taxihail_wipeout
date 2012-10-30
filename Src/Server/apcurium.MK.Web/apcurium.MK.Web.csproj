@@ -147,6 +147,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\collections\CompanyDefaultAddressCollection.js" />
+    <None Include="admin\templates\ManageCompanySettings.handlebars" />
+    <Content Include="admin\collections\CompanySettingsCollection.js" />
+    <Content Include="admin\models\CompanySetting.js" />
+    <Content Include="admin\views\ManageCompanySettingsView.js" />
+    <Content Include="admin\views\SettingsItemView.js" />
     <Content Include="common\collections\CompanyPopularAddressCollection.js" />
     <Content Include="admin\default.aspx" />
     <Content Include="admin\models\CompanyDefaultAddress.js" />
@@ -363,6 +368,7 @@
     <Content Include="localization\OrderHistoryDetail.json" />
     <Content Include="themes\TaxiHail\less\style.less" />
     <Content Include="localization\OrderItem.json" />
+    <Content Include="admin\templates\SettingsItem.handlebars" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\default.aspx.cs">

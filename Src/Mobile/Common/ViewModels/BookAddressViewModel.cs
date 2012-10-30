@@ -105,7 +105,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         {
                             RequestMainThreadAction(() =>
                             {
-                                if (t.Result.Count() > 0)
+                                if (t.Result != null && t.Result.Any())
                                 {
                                     SetAddress(t.Result[0], true);
                                 }

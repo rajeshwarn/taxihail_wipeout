@@ -15,10 +15,17 @@ namespace apcurium.MK.Booking.Mobile
     {
         public void Start()
         {
+            bool isUpToDate;
+            try
+            {
+                var app = TinyIoCContainer.Current.Resolve<IApplicationInfoService>().GetAppInfo();
 
-            var app = TinyIoCContainer.Current.Resolve<IApplicationInfoService>().GetAppInfo();
-
-            bool isUpToDate = app.Version.StartsWith("1.1.");
+                 isUpToDate = app.Version.StartsWith("1.1.");
+            }
+            catch(Exception e)
+            {
+                 isUpToDate = false;
+            }
 
             if (!isUpToDate)
             {

@@ -6,7 +6,8 @@
         events: {
             'click [data-tabname=grantadmin]': 'tograntadmin',
             'click [data-tabname=managefavoritesdefault]': 'tomanagefavoritesdefault',
-            'click [data-tabname=managepopularaddresses]' : 'tomanagepopularaddresses'
+            'click [data-tabname=managepopularaddresses]': 'tomanagepopularaddresses',
+            'click [data-tabname=managecompanysettings]': 'tomanagecompanysettings'
         },
 
         render: function() {
@@ -36,6 +37,12 @@
             e.preventDefault();
             this.$('[data-tabname=managepopularaddresses]').addClass('active').siblings().removeClass('active');
             TaxiHail.app.navigate('managepopularaddresses', { trigger: true });
+        },
+        
+        tomanagecompanysettings : function (e) {
+            e.preventDefault();
+            this.$('[data-tabname=managecompanysettings]').addClass('active').siblings().removeClass('active');
+            TaxiHail.app.navigate('managecompanysettings', { trigger: true });
         },
         
         setActive : function (tabName) {

@@ -28,7 +28,8 @@
         routes: {
             "": "manageFavoritesDefault",   // #
             "grantadmin": "grantAdminAccess",
-            "managepopularaddresses": "managePopularAddresses"
+            "managepopularaddresses": "managePopularAddresses",
+            "managecompanysettings" : "manageCompanySettings"
         },
 
         initialize: function (options) {
@@ -39,6 +40,20 @@
         admin: function() {
 
 
+        },
+        
+        manageCompanySettings: function () {
+            var settings = new TaxiHail.CompanySettingsCollection(),
+                        view = this._tabView = new TaxiHail.ManageCompanySettingsView({
+                            collection: settings
+                        });
+            settings.fetch({
+                url: '../api/settings',
+                success: _.bind(function (collection, resp) {
+                    renderView(view);
+                }, this)
+            });
+           
         },
         
         manageFavoritesDefault: function () {
