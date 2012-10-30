@@ -24,5 +24,6 @@
 	"error.friendlyNameRequired" : "Friendly Name is required",
 	"Loading" : "Loading",
 	"Popular Locations" : "Popular Locations",
-	"Save" : "Save"
+	"Save" : "Save",
+	"Saved" : "Saved"
 }

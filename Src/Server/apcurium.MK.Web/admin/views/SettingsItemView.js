@@ -33,9 +33,9 @@
         changeButtonState: function (e) {
             canExecute = false;
             var attr = this.model.attributes.key;
-            $(".btn[name='" + attr + "']").addClass('btn-success').text('Saved');
+            $(".btn[name='" + attr + "']").addClass('btn-success').text(TaxiHail.localize('Saved'));
             window.setTimeout(function () {
-                $(".btn[name='" + attr + "']").removeClass('btn-success').text('Save');
+                $(".btn[name='" + attr + "']").removeClass('btn-success').text(TaxiHail.localize('Save'));
                 canExecute = true;
             }, 3000);
         }
