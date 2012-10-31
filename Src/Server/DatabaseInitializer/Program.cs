@@ -123,6 +123,7 @@ namespace DatabaseInitializer
                     //configurationManager.SetSetting(token.Key, token.Value.ToString());
                     commandBus.Send(new AddAppSettings()
                                         {
+                                            CompanyId = AppConstants.CompanyId,
                                             Key = token.Key,
                                             Value = token.Value.ToString()
                                         });
@@ -139,6 +140,7 @@ namespace DatabaseInitializer
                     //configurationManager.SetSetting(token.Key, token.Value.ToString());
                     commandBus.Send(new AddAppSettings()
                     {
+                        CompanyId = AppConstants.CompanyId,
                         Key = token.Key,
                         Value = token.Value.ToString()
                     });
@@ -179,6 +181,7 @@ namespace DatabaseInitializer
 
                         commandBus.Send(new AddAppSettings()
                         {
+                            CompanyId = AppConstants.CompanyId,
                             Key = "DefaultBookingSettings.ProviderId",
                             Value = defaultCompany.Id.ToString()
                         });
@@ -189,6 +192,7 @@ namespace DatabaseInitializer
 
                         commandBus.Send(new AddAppSettings()
                         {
+                            CompanyId = AppConstants.CompanyId,
                             Key = "DefaultBookingSettings.VehicleTypeId",
                             Value = defaultvehicule.Id.ToString()
                         });
@@ -197,6 +201,7 @@ namespace DatabaseInitializer
                             ?? referenceDataService.GetPaymentsList(defaultCompany).First();
                         commandBus.Send(new AddAppSettings()
                         {
+                            CompanyId = AppConstants.CompanyId,
                             Key = "DefaultBookingSettings.ChargeTypeId",
                             Value = defaultchargetype.Id.ToString()
                         });

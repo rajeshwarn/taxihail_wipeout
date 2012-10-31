@@ -65,7 +65,6 @@
     <Compile Include="CompanyFixture\given_a_company.cs" />
     <Compile Include="CompanyFixture\given_a_rate.cs" />
     <Compile Include="CompanyFixture\given_no_company.cs" />
-    <Compile Include="CompanyFixture\give_one_company.cs" />
     <Compile Include="EnumerableEventsExtensions.cs" />
     <Compile Include="EventSourcingTestHelper.cs" />
     <Compile Include="AddressesFixture\given_an_address.cs" />

@@ -24,6 +24,7 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
             this.sut = new EventSourcingTestHelper<Company>();
             this.sut.Setup(new CompanyCommandHandler(this.sut.Repository));
             this.sut.Given(new CompanyCreated { SourceId = _companyId });
+            this.sut.Given(new AppSettingsAdded() { Key = "Key.Default", Value = "Value.Default" });
         }
 
         [Test]
@@ -93,26 +94,30 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
 
         }
 
-        [Test]
-        public void when_creating_a_rate_with_EndTime_before_StartTime()
+       [Test]
+        public void when_appsettings_added_successfully()
         {
-            var rateId = Guid.NewGuid();
+            this.sut.When(new AddAppSettings() { CompanyId = _companyId,  Key = "Key.hi", Value = "Value.hi" });
 
-            Assert.Throws<InvalidOperationException>(() => this.sut.When(new CreateRate
-            {
-                CompanyId = _companyId,
-                RateId = rateId,
-                FlatRate = 3.50m,
-                DistanceMultiplicator = 1.1,
-                TimeAdjustmentFactor = 1.2,
-                PricePerPassenger = 1.3m,
-                DaysOfTheWeek = DayOfTheWeek.Monday,
-                StartTime = DateTime.Today.AddHours(20),
-                EndTime = DateTime.Today.AddHours(12)
-            }));
-
+            Assert.AreEqual(1, sut.Events.Count);
+            var evt = (AppSettingsAdded)sut.Events.Single();
+            Assert.AreEqual(_companyId, evt.SourceId);
+            Assert.AreEqual("Key.hi", evt.Key);
+            Assert.AreEqual("Value.hi", evt.Value);
         }
 
+        [Test]
+        public void when_appsettings_updated_successfully()
+        {
+            this.sut.When(new UpdateAppSettings() { CompanyId = _companyId, Key = "Key.Default", Value = "Value.newValue" });
+
+            Assert.AreEqual(1, sut.Events.Count);
+            var evt = (AppSettingsUpdated)sut.Events.Single();
+            Assert.AreEqual(_companyId, evt.SourceId);
+            Assert.AreEqual("Key.Default", evt.Key);
+            Assert.AreEqual("Value.newValue", evt.Value);
+
+        }
 
     }
 }

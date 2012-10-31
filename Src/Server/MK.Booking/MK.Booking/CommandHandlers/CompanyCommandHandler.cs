@@ -29,14 +29,14 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(AddAppSettings command)
         {
-            var company = _repository.Find(AppConstants.CompanyId);
+            var company = _repository.Find(command.CompanyId);
             company.AddAppSettings(command.Key, command.Value);
             _repository.Save(company,command.Id.ToString());
         }
 
         public void Handle(UpdateAppSettings command)
         {
-            var company = _repository.Find(AppConstants.CompanyId);
+            var company = _repository.Find(command.CompanyId);
             company.UpdateAppSettings(command.Key, command.Value);
             _repository.Save(company, command.Id.ToString());
         }

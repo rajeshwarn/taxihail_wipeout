@@ -220,6 +220,10 @@ namespace apcurium.MK.Booking.Domain
 
         public void DeleteRate(Guid rateId)
         {
+            if(rateId == this._defaultRateId)
+            {
+                throw new InvalidOperationException("Cannot delete default rate");
+            }
             this.Update(new RateDeleted
             {
                 RateId = rateId

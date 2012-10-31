@@ -18,6 +18,7 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
         private EventSourcingTestHelper<Company> sut;
         readonly Guid _companyId = Guid.NewGuid();
         readonly Guid _rateId = Guid.NewGuid();
+        readonly Guid _defaultRateId = Guid.NewGuid();
 
         [SetUp]
         public void given_a_rate_setup()
@@ -25,7 +26,7 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
             this.sut = new EventSourcingTestHelper<Company>();
             this.sut.Setup(new CompanyCommandHandler(this.sut.Repository));
             this.sut.Given(new CompanyCreated { SourceId = _companyId });
-            this.sut.Given(new RateCreated { SourceId = _companyId });
+            this.sut.Given(new RateCreated { SourceId = _companyId, RateId = _defaultRateId, Type = RateType.Default });
         }
 
         [Test]
@@ -71,5 +72,15 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
             Assert.AreEqual(_companyId, evt.SourceId);
             Assert.AreEqual(_rateId, evt.RateId);
         }
+
+        [Test]
+        public void when_deleting_default_rate()
+        {
+            Assert.Throws<InvalidOperationException>(
+                () => sut.When(new DeleteRate {CompanyId = _companyId, RateId = _defaultRateId}));
+
+        }
+
+        
     }
 }
