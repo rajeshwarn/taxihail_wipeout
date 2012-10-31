@@ -2,7 +2,7 @@
 
     "use strict";
 
-    TaxiHail.ManageRatesView = TaxiHail.TemplatedView.extend({
+    TaxiHail.ManageTariffsView = TaxiHail.TemplatedView.extend({
 
         initialize: function() {
             this.collection.on('reset', this.render, this);
@@ -19,7 +19,7 @@
 
         renderItem: function(rate) {
 
-            new TaxiHail.RateItemView({
+            new TaxiHail.TariffItemView({
                 model: rate
             }).render().$el.appendTo(this.$('tbody'));
             

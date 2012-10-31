@@ -1,7 +1,7 @@
 (function(){
     
 
-    var View = TaxiHail.EditRateView = TaxiHail.TemplatedView.extend({
+    var View = TaxiHail.EditTariffView = TaxiHail.TemplatedView.extend({
 
         render: function() {
 
@@ -10,7 +10,7 @@
                 today = new Date(now.getFullYear(), now.getMonth(), now.getDate()),
                 data = this.model.toJSON();
 
-            data.recurring = +this.model.get('type') === TaxiHail.Rate.type.recurring;
+            data.recurring = +this.model.get('type') === TaxiHail.Tariff.type.recurring;
             data.editMode = !this.model.isNew();
 
             // Determine if the checkbox for each days should be checked
@@ -79,7 +79,7 @@
                 startTime = this._getTime(this.$('[data-role=timepicker][name=startTime]')),
                 endTime = this._getTime(this.$('[data-role=timepicker][name=endTime]'));
 
-            if(+serialized.type === TaxiHail.Rate.type.recurring ) {
+            if(+serialized.type === TaxiHail.Tariff.type.recurring ) {
                 serialized.daysOfTheWeek =  _([serialized.daysOfTheWeek])
                     .flatten()
                     .reduce(function(memo, num){ return memo + (1<<num); }, 0);
@@ -99,7 +99,7 @@
             this.model.save(serialized, {
                 success: _.bind(function(model) {
                     this.collection.add(model);
-                    TaxiHail.app.navigate('rates', {trigger: true});
+                    TaxiHail.app.navigate('tariffs', {trigger: true});
                 }, this),
                 error: function(model, xhr, options) {
                     this.$(':submit').button('reset');

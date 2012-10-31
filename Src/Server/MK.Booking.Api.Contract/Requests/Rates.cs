@@ -17,8 +17,8 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 #if !CLIENT
     [AuthorizationRequired(ApplyTo.All, Permissions.Admin)]
 #endif
-    [RestService("/admin/rates", "GET, POST")]
-    [RestService("/admin/rates/{Id}", "PUT, DELETE")]
+    [RestService("/admin/tariffs", "GET, POST")]
+    [RestService("/admin/tariffs/{Id}", "PUT, DELETE")]
     public class Rates
     {
         public Guid Id { get; set; }

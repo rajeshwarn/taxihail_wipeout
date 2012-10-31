@@ -16,19 +16,19 @@ namespace apcurium.MK.Booking.Api.Client
 
         public void CreateRate(Rates rate)
         {
-            var req = string.Format("/admin/rates");
+            var req = string.Format("/admin/tariffs");
             var response = Client.Post<string>(req, rate);
         }
 
         public void DeleteRate(Guid rateId)
         {
-            var req = string.Format("/admin/rates/" + rateId);
+            var req = string.Format("/admin/tariffs/" + rateId);
             var response = Client.Delete<string>(req);
         }
 
         public IList<Rate> GetRates()
         {
-            var req = string.Format("/admin/rates");
+            var req = string.Format("/admin/tariffs");
             return Client.Get<IList<Rate>>(req);
         }
     }

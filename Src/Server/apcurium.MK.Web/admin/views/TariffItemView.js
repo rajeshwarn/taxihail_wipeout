@@ -1,6 +1,6 @@
 (function(){
     
-    TaxiHail.RateItemView = TaxiHail.TemplatedView.extend({
+    TaxiHail.TariffItemView = TaxiHail.TemplatedView.extend({
 
         tagName: 'tr',
 
@@ -25,8 +25,8 @@
 
             var data = this.model.toJSON();
             data.daysOfTheWeek = selectedDays.join(' - ');
-            data.recurring = +this.model.get('type') === TaxiHail.Rate.type.recurring;
-            data.isDefault = +this.model.get('type') === TaxiHail.Rate.type['default'];
+            data.recurring = +this.model.get('type') === TaxiHail.Tariff.type.recurring;
+            data.isDefault = +this.model.get('type') === TaxiHail.Tariff.type['default'];
 
             this.$el.html(this.renderTemplate(data));
 

@@ -1,7 +1,7 @@
 (function(){
 
-    var Rate = TaxiHail.Rate = Backbone.Model.extend({
-        urlRoot: TaxiHail.parameters.apiRoot + '/admin/rates',
+    var Tariff = TaxiHail.Tariff = Backbone.Model.extend({
+        urlRoot: TaxiHail.parameters.apiRoot + '/admin/tariffs',
         defaults: {
             name: '',
             flatRate: 0,
@@ -20,6 +20,6 @@
         }
     });
 
-    Rate.prototype.defaults.type = Rate.type.recurring;
+    Tariff.prototype.defaults.type = Tariff.type.recurring;
 
 }());
