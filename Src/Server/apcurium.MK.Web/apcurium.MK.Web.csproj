@@ -147,6 +147,18 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\collections\CompanyDefaultAddressCollection.js" />
+    <Content Include="admin\controllers\Controller.js" />
+    <Content Include="admin\controllers\ExclusionsController.js" />
+    <Content Include="admin\controllers\RatesController.js" />
+    <Content Include="admin\models\Rate.js" />
+    <Content Include="admin\views\EditRateView.js" />
+    <None Include="admin\templates\ManageCompanySettings.handlebars" />
+    <Content Include="admin\collections\CompanySettingsCollection.js" />
+    <Content Include="admin\models\CompanySetting.js" />
+    <Content Include="admin\views\ManageCompanySettingsView.js" />
+    <Content Include="admin\views\SettingsItemView.js" />
+    <Content Include="admin\views\ManageRatesView.js" />
+    <Content Include="admin\views\RateItemView.js" />
     <Content Include="common\collections\CompanyPopularAddressCollection.js" />
     <Content Include="admin\default.aspx" />
     <Content Include="admin\models\CompanyDefaultAddress.js" />
@@ -235,6 +247,7 @@
     <Content Include="common\collections\AddressCollection.js" />
     <Content Include="common\mixins\ValidatedView.js" />
     <Content Include="common\models\Address.js" />
+    <Content Include="common\models\ReferenceData.js" />
     <Content Include="common\models\UserAccount.js" />
     <Content Include="common\services\AuthService.js" />
     <Content Include="common\services\GeocodingService.js" />
@@ -261,11 +274,9 @@
     <Content Include="log4net.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="mixins\ValidatedView.js" />
     <Content Include="services\MathService.js" />
     <Content Include="models\NewAccount.js" />
     <Content Include="models\OrderStatus.js" />
-    <Content Include="models\ReferenceData.js" />
     <Content Include="models\Settings.js" />
     <Content Include="models\Order.js" />
     <Content Include="routers\app.js" />
@@ -363,6 +374,7 @@
     <Content Include="localization\OrderHistoryDetail.json" />
     <Content Include="themes\TaxiHail\less\style.less" />
     <Content Include="localization\OrderItem.json" />
+    <Content Include="admin\templates\SettingsItem.handlebars" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\default.aspx.cs">
@@ -767,6 +779,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="themes\VictoriaTaxi\less\variables.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="admin\templates\EditRate.handlebars" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="admin\templates\ManageRates.handlebars" />
+    <Content Include="admin\templates\RateItem.handlebars" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="mixins\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

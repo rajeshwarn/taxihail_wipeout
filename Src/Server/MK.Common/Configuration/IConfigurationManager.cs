@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+
 namespace apcurium.MK.Common.Configuration
 {
     public interface IConfigurationManager

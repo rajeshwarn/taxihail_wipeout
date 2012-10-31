@@ -110,6 +110,7 @@
     <Compile Include="Controls\AutoCompleteBindableTextView.cs" />
     <Compile Include="Controls\BaloonLayout.cs" />
     <Compile Include="Controls\BindableSelectionButton.cs" />
+    <Compile Include="Controls\EditTextDelete.cs" />
     <Compile Include="Controls\HeaderedLayout.cs" />
     <Compile Include="Controls\TextButton.cs" />
     <Compile Include="Controls\IconActionControl.cs" />

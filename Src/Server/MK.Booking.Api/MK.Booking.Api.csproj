@@ -97,7 +97,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Providers\RateProvider.cs" />
-    <Compile Include="Services\AppSettingsService.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Providers\PopularAddressProvider.cs" />
     <Compile Include="Security\CustomTwitterAuthProvider.cs" />
@@ -138,6 +137,7 @@
     <Compile Include="Services\TestOnlyReqGetTestAdminAccountService.cs" />
     <Compile Include="Services\UpdatePasswordService.cs" />
     <Compile Include="Validation\CreateOrderValidator.cs" />
+    <Compile Include="Validation\DefaultFavoriteAddressValidator.cs" />
     <Compile Include="Validation\RatesValidator.cs" />
     <Compile Include="Validation\SaveFavoriteAddressValidator.cs" />
   </ItemGroup>

@@ -35,8 +35,7 @@
                     android:drawableRight="@drawable/right_arrow"
                     android:paddingRight="10dip"
                     android:paddingLeft="10dip"
-                    android:gravity="left|center_vertical"
-                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;GoToFavorites&apos;}}" />
+                    android:gravity="left|center_vertical" />
                 <Button
                     android:id="@+id/settingsHistory"
                     style="@style/BigTitleTextBlack"
@@ -47,8 +46,7 @@
                     android:drawableRight="@drawable/right_arrow"
                     android:paddingRight="10dip"
                     android:paddingLeft="10dip"
-                    android:gravity="left|center_vertical"
-                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;GoToRideHistory&apos;}}" />
+                    android:gravity="left|center_vertical" />
                 <Button
                     android:id="@+id/settingsProfile"
                     style="@style/BigTitleTextBlack"
@@ -59,8 +57,7 @@
                     android:drawableRight="@drawable/right_arrow"
                     android:paddingRight="10dip"
                     android:paddingLeft="10dip"
-                    android:gravity="left|center_vertical"
-                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;GoToProfile&apos;}}" />
+                    android:gravity="left|center_vertical"/>
                 <Button
                     android:id="@+id/settingsCallCompany"
                     style="@style/BigTitleTextBlack"
@@ -71,8 +68,7 @@
                     android:drawableRight="@drawable/right_arrow"
                     android:paddingRight="10dip"
                     android:paddingLeft="10dip"
-                    android:gravity="left|center_vertical"
-                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;GoToCall&apos;}}" />
+                    android:gravity="left|center_vertical"/>
                 <Button
                     android:id="@+id/settingsAbout"
                     style="@style/BigTitleTextBlack"
@@ -83,8 +79,7 @@
                     android:drawableRight="@drawable/right_arrow"
                     android:paddingRight="10dip"
                     android:paddingLeft="10dip"
-                    android:gravity="left|center_vertical"
-                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;GoToAbout&apos;}}" />
+                    android:gravity="left|center_vertical"/>
                 <Button
                     android:id="@+id/settingsSupport"
                     style="@style/BigTitleTextBlack"
@@ -95,8 +90,7 @@
                     android:drawableRight="@drawable/right_arrow"
                     android:paddingRight="10dip"
                     android:paddingLeft="10dip"
-                    android:gravity="left|center_vertical"
-                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;GoToSupport&apos;}}" />
+                    android:gravity="left|center_vertical"/>
                 <Button
                     android:id="@+id/settingsLogout"
                     style="@style/BigTitleTextBlack"

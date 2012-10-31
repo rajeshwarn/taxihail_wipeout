@@ -62,7 +62,7 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var order = context.Find<OrderDetail>(@event.SourceId);
-                context.Set<OrderDetail>().Remove(order);
+                order.IsRemovedFromHistory = true;
                 context.SaveChanges();
             }
         }

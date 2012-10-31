@@ -23,5 +23,7 @@
 	"Places" : "Places",
 	"error.friendlyNameRequired" : "Friendly Name is required",
 	"Loading" : "Loading",
-	"Popular Locations" : "Popular Locations"
+	"Popular Locations" : "Popular Locations",
+	"Save" : "Save",
+	"Saved" : "Saved"
 }

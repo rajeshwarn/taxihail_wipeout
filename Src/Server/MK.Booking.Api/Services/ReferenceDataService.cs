@@ -28,37 +28,56 @@ namespace apcurium.MK.Booking.Api.Services
 
         public override object OnGet(ReferenceDataRequest request)
         {
+            if (request.WithoutFiltering)
+                return GetReferenceData(request.WithoutFiltering);
+
             var result = _cacheClient.Get<ReferenceData>(CacheKey);
 
             if (result == null)
             {
-                var companies = _staticDataWebServiceClient.GetCompaniesList();
-                IList<ListItem> payments = new ListItem[0];
-                IList<ListItem> vehicles = new ListItem[0];
-                IList<ListItem> dropCities= new ListItem[0];
-                IList<ListItem> pickCities= new ListItem[0];
-
-                var excludedVehicleTypeId =_configManager.GetSetting("IBS.ExcludedVehicleTypeId");
-                int[] excluded = excludedVehicleTypeId.IsNullOrEmpty() ? new int[0] : excludedVehicleTypeId.Split(';').Select(e => int.Parse(e)).ToArray(); 
-                foreach (var company in companies)
-                {
-                    payments = _staticDataWebServiceClient.GetPaymentsList(company);
-                    vehicles = _staticDataWebServiceClient.GetVehiclesList(company).Where( c=> excluded.None( e=> e == c.Id ) ).ToArray() ;
-                    dropCities = _staticDataWebServiceClient.GetDropoffCity(company);
-                    pickCities = _staticDataWebServiceClient.GetPickupCity(company);                    
-                }
-
-                result = new ReferenceData
-                             {
-                                 CompaniesList = companies,
-                                 PaymentsList = payments,
-                                 VehiclesList = vehicles,
-                                 DropoffCityList = dropCities,
-                                 PickupCityList = pickCities,
-                             };
+                result = GetReferenceData(request.WithoutFiltering);
                 _cacheClient.Add(CacheKey, result, TimeSpan.FromMinutes(60));
             }
+
             return result;
+        }
+
+        private ReferenceData GetReferenceData(bool withoutFiltering)
+        {
+            ReferenceData result;
+
+            var companies = _staticDataWebServiceClient.GetCompaniesList();
+            IList<ListItem> payments = new ListItem[0];
+            IList<ListItem> vehicles = new ListItem[0];
+            IList<ListItem> dropCities = new ListItem[0];
+            IList<ListItem> pickCities = new ListItem[0];
+
+            foreach (var company in companies)
+            {
+                payments = _staticDataWebServiceClient.GetPaymentsList(company);
+                vehicles = _staticDataWebServiceClient.GetVehiclesList(company).ToArray();
+                dropCities = _staticDataWebServiceClient.GetDropoffCity(company);
+                pickCities = _staticDataWebServiceClient.GetPickupCity(company);
+            }
+
+            result = new ReferenceData
+                         {
+                             CompaniesList = withoutFiltering ? companies : FilterReferenceData(companies, "IBS.ExcludedProviderId"),
+                             PaymentsList = withoutFiltering ? payments : FilterReferenceData(payments, "IBS.ExcludedPaymentTypeId"),
+                             VehiclesList = withoutFiltering ? vehicles : FilterReferenceData(vehicles, "IBS.ExcludedVehicleTypeId"),
+                             DropoffCityList =  dropCities,
+                             PickupCityList = pickCities,
+                         };
+
+            return result;
+        }
+
+        private IList<ListItem> FilterReferenceData(IEnumerable<ListItem> reference, string settingName)
+        {
+            var excludedVehicleTypeId = _configManager.GetSetting(settingName);
+            int[] excluded = excludedVehicleTypeId.IsNullOrEmpty()  ? new int[0] : excludedVehicleTypeId.Split(';').Select(int.Parse).ToArray();
+
+            return reference.Where(c => excluded.None(e => e == c.Id)).ToList();
         }
     }
 }

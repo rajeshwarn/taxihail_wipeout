@@ -28,10 +28,14 @@
             "": "manageFavoritesDefault",   // #
             "grantadmin": "grantAdminAccess",
             "managepopularaddresses": "managePopularAddresses",
+            "settings" : "manageCompanySettings",
+            /* Rates */
             "rates": "manageRates", //#rates
             "rates/add/recurring": "addRecurringRate", //#rates/add/recurring
             "rates/add/day": "addDayRate", //#rates/add/day
-            "rates/edit/:id": "editRate" //#rates/edit/{GUID}
+            "rates/edit/:id": "editRate", //#rates/edit/{GUID}
+            /* IBS exclusions */
+            "exclusions": "manageIBSExclusions"
         },
 
         initialize: function (options) {
@@ -39,6 +43,20 @@
             
         },
 
+        
+        manageCompanySettings : function () {
+            var settings = new TaxiHail.CompanySettingsCollection(),
+                view = this._tabView = new TaxiHail.ManageCompanySettingsView({
+                    collection: settings
+                });
+            settings.fetch({
+                url: '../api/settings',
+                success: _.bind(function(collection, resp) {
+                    renderView(view);
+                }, this)
+            });
+        },
+           
         manageFavoritesDefault: function () {
             var addresses = new TaxiHail.CompanyDefaultAddressCollection(),
                         view = this._tabView = new TaxiHail.ManageDefaultAddressesView({
@@ -89,6 +107,10 @@
 
         editRate: function(id) {
             TaxiHail.Controller.action(TaxiHail.RatesController, 'edit', id);
+        },
+
+        manageIBSExclusions: function() {
+            TaxiHail.Controller.action(TaxiHail.ExclusionsController, 'index');
         }
     });
 

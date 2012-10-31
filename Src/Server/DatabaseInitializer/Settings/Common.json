@@ -1,6 +1,9 @@
 {
    "IBS.AutoDispatch" : "true",   
-   "IBS.DefaultAccountPassword" : "password",   
+   "IBS.DefaultAccountPassword" : "password",
+   "IBS.ExcludedVehicleTypeId" : "22;21",
+   "IBS.ExcludedPaymentTypeId" : "",
+   "IBS.ExcludedProviderId" : "",     
    "Map.PlacesApiKey" : "AIzaSyAd-ezA2SeVTSNqsu6aMmAkdlP3UqEVPWE",
    "NearbyPlacesService.DefaultRadius" : "500",
    "OrderStatus.CabDriverNumberAssigned" : "Cab #{0} is assigned to you",

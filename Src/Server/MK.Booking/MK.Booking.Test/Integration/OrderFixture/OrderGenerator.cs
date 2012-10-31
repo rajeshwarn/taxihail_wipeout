@@ -128,7 +128,7 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
         }
 
         [Test]
-        public void when_removed_then_no_longer_in_db()
+        public void when_removed_then_dto_updated()
         {
             var orderRemovedFromHistory = new OrderRemovedFromHistory(){ SourceId = _orderId };
             this.sut.Handle(orderRemovedFromHistory);
@@ -136,7 +136,8 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
             using (var context = new BookingDbContext(dbName))
             {
                 var dto = context.Find<OrderDetail>(_orderId);
-                Assert.IsNull(dto);
+                Assert.NotNull(dto);
+                Assert.IsTrue(dto.IsRemovedFromHistory);
             }
         }
 

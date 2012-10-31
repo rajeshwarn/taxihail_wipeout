@@ -1,7 +1,7 @@
 ﻿(function () {
 
     TaxiHail.ReferenceData = Backbone.Model.extend({
-        url: 'api/referencedata'
+        urlRoot: TaxiHail.parameters.apiRoot + '/referencedata'
     });
 
 }());
