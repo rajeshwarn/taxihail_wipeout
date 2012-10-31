@@ -8,9 +8,9 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 
 namespace apcurium.MK.Booking.Api.Validation
 {
-    public class RatesValidator : AbstractValidator<Rates>
+    public class TariffValidator : AbstractValidator<Tariff>
     {
-        public RatesValidator()
+        public TariffValidator()
         {
             RuleSet(ApplyTo.Post | ApplyTo.Put, () =>
             {

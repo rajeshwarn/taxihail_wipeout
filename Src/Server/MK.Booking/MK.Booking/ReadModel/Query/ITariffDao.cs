@@ -5,8 +5,8 @@ using System.Text;
 
 namespace apcurium.MK.Booking.ReadModel.Query
 {
-    public interface IRateDao
+    public interface ITariffDao
     {
-        IList<RateDetail> GetAll();
+        IList<TariffDetail> GetAll();
     }
 }

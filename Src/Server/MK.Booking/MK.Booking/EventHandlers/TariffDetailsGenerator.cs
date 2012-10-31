@@ -10,23 +10,23 @@ using apcurium.MK.Booking.ReadModel;
 
 namespace apcurium.MK.Booking.EventHandlers
 {
-    public class RateDetailsGenerator: IEventHandler<RateCreated>, IEventHandler<RateUpdated>, IEventHandler<RateDeleted>
+    public class TariffDetailsGenerator: IEventHandler<TariffCreated>, IEventHandler<TariffUpdated>, IEventHandler<TariffDeleted>
     {
         private readonly Func<BookingDbContext> _contextFactory;
 
-        public RateDetailsGenerator(Func<BookingDbContext> contextFactory)
+        public TariffDetailsGenerator(Func<BookingDbContext> contextFactory)
         {
             _contextFactory = contextFactory;
         }
 
-        public void Handle(RateCreated @event)
+        public void Handle(TariffCreated @event)
         {
             using (var context = _contextFactory.Invoke())
             {
-                context.Save(new RateDetail
+                context.Save(new TariffDetail
                 {
                     CompanyId = @event.SourceId,
-                    Id = @event.RateId,
+                    Id = @event.TariffId,
                     Name = @event.Name,
                     FlatRate = @event.FlatRate,
                     DistanceMultiplicator = @event.DistanceMultiplicator,
@@ -40,21 +40,21 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
-        public void Handle(RateUpdated @event)
+        public void Handle(TariffUpdated @event)
         {
             using (var context = _contextFactory.Invoke())
             {
-                var rate = context.Find<RateDetail>(@event.RateId);
-                rate.Name = @event.Name;
-                rate.FlatRate = @event.FlatRate;
-                rate.DistanceMultiplicator = @event.DistanceMultiplicator;
-                rate.TimeAdjustmentFactor = @event.TimeAdjustmentFactor;
-                rate.PricePerPassenger = @event.PricePerPassenger;
-                rate.DaysOfTheWeek = (int) @event.DaysOfTheWeek;
-                rate.StartTime = @event.StartTime < (DateTime)SqlDateTime.MinValue
+                var tariff = context.Find<TariffDetail>(@event.TariffId);
+                tariff.Name = @event.Name;
+                tariff.FlatRate = @event.FlatRate;
+                tariff.DistanceMultiplicator = @event.DistanceMultiplicator;
+                tariff.TimeAdjustmentFactor = @event.TimeAdjustmentFactor;
+                tariff.PricePerPassenger = @event.PricePerPassenger;
+                tariff.DaysOfTheWeek = (int) @event.DaysOfTheWeek;
+                tariff.StartTime = @event.StartTime < (DateTime)SqlDateTime.MinValue
                                 ? (DateTime) SqlDateTime.MinValue
                                 : @event.StartTime;
-                rate.EndTime = @event.EndTime < (DateTime)SqlDateTime.MinValue
+                tariff.EndTime = @event.EndTime < (DateTime)SqlDateTime.MinValue
                               ? (DateTime) SqlDateTime.MinValue
                               : @event.EndTime;
 
@@ -63,14 +63,14 @@ namespace apcurium.MK.Booking.EventHandlers
             
         }
 
-        public void Handle(RateDeleted @event)
+        public void Handle(TariffDeleted @event)
         {
             using (var context = _contextFactory.Invoke())
             {
-                var rate = context.Find<RateDetail>(@event.RateId);
-                if (rate != null)
+                var tariff = context.Find<TariffDetail>(@event.TariffId);
+                if (tariff != null)
                 {
-                    context.Set<RateDetail>().Remove(rate);
+                    context.Set<TariffDetail>().Remove(tariff);
                     context.SaveChanges();
                 }
             }

@@ -11,19 +11,19 @@ using apcurium.MK.Common.Provider;
 
 namespace apcurium.MK.Booking.Api.Providers
 {
-    public class RateProvider : IRateProvider
+    public class TariffProvider : ITariffProvider
     {
-        private readonly IRateDao _rateDao;
+        private readonly ITariffDao _rateDao;
 
-        public RateProvider(IRateDao rateDao)
+        public TariffProvider(ITariffDao rateDao)
         {
             _rateDao = rateDao;
         }
 
 
-        public IEnumerable<Rate> GetRates()
+        public IEnumerable<Tariff> GetTariffs()
         {
-            return _rateDao.GetAll().Select(Mapper.Map<Rate>);
+            return _rateDao.GetAll().Select(Mapper.Map<Tariff>);
         }
     }
 }

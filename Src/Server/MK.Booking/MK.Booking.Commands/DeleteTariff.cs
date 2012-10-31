@@ -3,14 +3,14 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Booking.Commands
 {
-    public class DeleteRate : ICommand
+    public class DeleteTariff : ICommand
     {
-        public DeleteRate()
+        public DeleteTariff()
         {
             Id = Guid.NewGuid();
         }
         public Guid Id { get; private set; }
         public Guid CompanyId { get; set; }
-        public Guid RateId { get; set; }
+        public Guid TariffId { get; set; }
     }
 }

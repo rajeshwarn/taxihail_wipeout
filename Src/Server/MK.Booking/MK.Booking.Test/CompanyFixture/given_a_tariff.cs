@@ -13,29 +13,29 @@ using apcurium.MK.Common.Entity;
 namespace apcurium.MK.Booking.Test.CompanyFixture
 {
     [TestFixture]
-    public class given_a_rate
+    public class given_a_tariff
     {
         private EventSourcingTestHelper<Company> sut;
         readonly Guid _companyId = Guid.NewGuid();
-        readonly Guid _rateId = Guid.NewGuid();
-        readonly Guid _defaultRateId = Guid.NewGuid();
+        readonly Guid _tariffId = Guid.NewGuid();
+        readonly Guid _tariffRateId = Guid.NewGuid();
 
         [SetUp]
-        public void given_a_rate_setup()
+        public void SetUp()
         {
             this.sut = new EventSourcingTestHelper<Company>();
             this.sut.Setup(new CompanyCommandHandler(this.sut.Repository));
             this.sut.Given(new CompanyCreated { SourceId = _companyId });
-            this.sut.Given(new RateCreated { SourceId = _companyId, RateId = _defaultRateId, Type = RateType.Default });
+            this.sut.Given(new TariffCreated { SourceId = _companyId, TariffId = _tariffRateId, Type = TariffType.Default });
         }
 
         [Test]
-        public void when_updating_rate()
+        public void when_updating_tariff()
         {
-            sut.When(new UpdateRate
+            sut.When(new UpdateTariff
                          {
                              CompanyId = _companyId,
-                             RateId = _rateId,
+                             TariffId = _tariffId,
                              FlatRate = 12m,
                              PricePerPassenger = 13,
                              DistanceMultiplicator = 14,
@@ -47,10 +47,10 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
                          });
 
             Assert.AreEqual(1, sut.Events.Count);
-            Assert.IsInstanceOf<RateUpdated>(sut.Events.Single());
-            var evt = (RateUpdated)sut.Events.Single();
+            Assert.IsInstanceOf<TariffUpdated>(sut.Events.Single());
+            var evt = (TariffUpdated)sut.Events.Single();
             Assert.AreEqual(_companyId, evt.SourceId);
-            Assert.AreEqual(_rateId, evt.RateId);
+            Assert.AreEqual(_tariffId, evt.TariffId);
             Assert.AreEqual(12, evt.FlatRate);
             Assert.AreEqual(13, evt.PricePerPassenger);
             Assert.AreEqual(14, evt.DistanceMultiplicator);
@@ -63,21 +63,21 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
         }
 
         [Test]
-        public void when_deleting_rate()
+        public void when_deleting_tariff()
         {
-            sut.When(new DeleteRate{ CompanyId = _companyId, RateId = _rateId});
+            sut.When(new DeleteTariff{ CompanyId = _companyId, TariffId = _tariffId});
             Assert.AreEqual(1, sut.Events.Count);
-            Assert.IsInstanceOf<RateDeleted>(sut.Events.Single());
-            var evt = (RateDeleted)sut.Events.Single();
+            Assert.IsInstanceOf<TariffDeleted>(sut.Events.Single());
+            var evt = (TariffDeleted)sut.Events.Single();
             Assert.AreEqual(_companyId, evt.SourceId);
-            Assert.AreEqual(_rateId, evt.RateId);
+            Assert.AreEqual(_tariffId, evt.TariffId);
         }
 
         [Test]
-        public void when_deleting_default_rate()
+        public void when_deleting_default_tariff()
         {
             Assert.Throws<InvalidOperationException>(
-                () => sut.When(new DeleteRate {CompanyId = _companyId, RateId = _defaultRateId}));
+                () => sut.When(new DeleteTariff {CompanyId = _companyId, TariffId = _tariffRateId}));
 
         }
 

@@ -7,9 +7,9 @@ using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Events
 {
-    public class RateCreated : VersionedEvent
+    public class TariffCreated : VersionedEvent
     {
-        public Guid RateId { get; set; }
+        public Guid TariffId { get; set; }
         public string Name { get; set; }
         public decimal FlatRate { get; set; }
         public double DistanceMultiplicator { get; set; }
@@ -18,6 +18,6 @@ namespace apcurium.MK.Booking.Events
         public DayOfTheWeek DaysOfTheWeek { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
-        public RateType Type { get; set; }
+        public TariffType Type { get; set; }
     }
 }

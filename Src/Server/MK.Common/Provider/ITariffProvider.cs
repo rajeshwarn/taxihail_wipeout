@@ -6,8 +6,8 @@ using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Common.Provider
 {
-    public interface IRateProvider
+    public interface ITariffProvider
     {
-        IEnumerable<Rate> GetRates();
+        IEnumerable<Tariff> GetTariffs();
     }
 }

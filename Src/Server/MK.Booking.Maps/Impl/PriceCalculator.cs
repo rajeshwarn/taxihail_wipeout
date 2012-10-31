@@ -12,19 +12,19 @@ namespace apcurium.MK.Booking.Maps.Impl
     public class PriceCalculator : IPriceCalculator
     {
         private readonly IConfigurationManager _configManager;
-        private readonly IRateProvider _rateProvider;
+        private readonly ITariffProvider _tariffProvider;
 
-        public PriceCalculator(IConfigurationManager configManager, IRateProvider rateProvider)
+        public PriceCalculator(IConfigurationManager configManager, ITariffProvider tariffProvider)
         {
             _configManager = configManager;
-            _rateProvider = rateProvider;
+            _tariffProvider = tariffProvider;
         }
 
         public double? GetPrice(int? distance, DateTime pickupDate)
         {
-            var rate = GetRateFor(pickupDate);
+            var tariff = GetTariffFor(pickupDate);
 
-            if (rate == null) return null;
+            if (tariff == null) return null;
 
             double maxDistance = double.Parse(_configManager.GetSetting("Direction.MaxDistance"), CultureInfo.InvariantCulture);
             double? price = null;
@@ -38,7 +38,7 @@ namespace apcurium.MK.Booking.Maps.Impl
                     {
                         decimal d = 1;
                         
-                        price = ((double)rate.FlatRate + (km*rate.DistanceMultiplicator))*(1 + rate.TimeAdjustmentFactor/100);
+                        price = ((double)tariff.FlatRate + (km*tariff.DistanceMultiplicator))*(1 + tariff.TimeAdjustmentFactor/100);
                     }
                     else
                     {
@@ -83,45 +83,45 @@ namespace apcurium.MK.Booking.Maps.Impl
             return price;
         }
 
-        public Rate GetRateFor(DateTime pickupDate)
+        public Tariff GetTariffFor(DateTime pickupDate)
         {
-            var rates = _rateProvider.GetRates().ToArray();
+            var tariffs = _tariffProvider.GetTariffs().ToArray();
 
-            // Case 1: A rate exists for the specific date
-            var rate = (from r in rates
-                        where r.Type == (int) RateType.Day
+            // Case 1: A tariff exists for the specific date
+            var tariff = (from r in tariffs
+                        where r.Type == (int) TariffType.Day
                         where IsDayMatch(r, pickupDate)
                         select r).FirstOrDefault();
 
-            // Case 2: A rate exists for the day of the week
-            if (rate == null)
+            // Case 2: A tariff exists for the day of the week
+            if (tariff == null)
             {
-                rate = (from r in rates
-                        where r.Type == (int) RateType.Recurring
+                tariff = (from r in tariffs
+                        where r.Type == (int) TariffType.Recurring
                         where IsRecurringMatch(r, pickupDate)
                         select r).FirstOrDefault();
             }
 
-            // Case 3: Use default rate
-            if(rate == null)
+            // Case 3: Use default tariff
+            if(tariff == null)
             {
-                rate = rates.FirstOrDefault(x => x.Type == (int) RateType.Default);
+                tariff = tariffs.FirstOrDefault(x => x.Type == (int) TariffType.Default);
             }
 
-            return rate;
+            return tariff;
 
         }
 
-        private bool IsDayMatch(Rate rate, DateTime date)
+        private bool IsDayMatch(Tariff tariff, DateTime date)
         {
-            if (rate.Type == (int)RateType.Day)
+            if (tariff.Type == (int)TariffType.Day)
             {
-                var startTime = rate.StartTime;
-                var endTime = rate.StartTime.Date.AddHours(rate.EndTime.Hour).AddMinutes(rate.EndTime.Minute);
+                var startTime = tariff.StartTime;
+                var endTime = tariff.StartTime.Date.AddHours(tariff.EndTime.Hour).AddMinutes(tariff.EndTime.Minute);
 
                 if (endTime < startTime)
                 {
-                    //The rate spans across two days
+                    //The tariff spans across two days
                     endTime = endTime.AddDays(1);
                 }
 
@@ -130,23 +130,23 @@ namespace apcurium.MK.Booking.Maps.Impl
             return false;
         }
 
-        private bool IsRecurringMatch(Rate rate, DateTime date)
+        private bool IsRecurringMatch(Tariff tariff, DateTime date)
         {
-            if (rate.Type == (int)RateType.Recurring)
+            if (tariff.Type == (int)TariffType.Recurring)
             {
                 // Represents the candidate date day of the week value in the DayOfTheWeek enum
                 var dayOfTheWeek = 1 << (int) date.DayOfWeek;
 
-                var startTime = DateTime.MinValue.AddHours(rate.StartTime.Hour).AddMinutes(rate.StartTime.Minute);
-                var endTime = DateTime.MinValue.AddHours(rate.EndTime.Hour).AddMinutes(rate.EndTime.Minute);
+                var startTime = DateTime.MinValue.AddHours(tariff.StartTime.Hour).AddMinutes(tariff.StartTime.Minute);
+                var endTime = DateTime.MinValue.AddHours(tariff.EndTime.Hour).AddMinutes(tariff.EndTime.Minute);
                 var time = DateTime.MinValue.AddHours(date.Hour).AddMinutes(date.Minute);
 
                 if (endTime < startTime)
                 {
-                    //The rate spans across two days
+                    //The tariff spans across two days
                     if (time < endTime)
                     {
-                        //The candidate date is on the second day of the rate
+                        //The candidate date is on the second day of the tariff
                         time = time.AddDays(1);
                     }
                     endTime = endTime.AddDays(1);
@@ -160,17 +160,17 @@ namespace apcurium.MK.Booking.Maps.Impl
                     // Now determine if the day of the week is correct
                     if (startTime.Date == time.Date)
                     {
-                        // The candidate date is the same day defined for the rate
-                        return (rate.DaysOfTheWeek & dayOfTheWeek) == dayOfTheWeek;
+                        // The candidate date is the same day defined for the tariff
+                        return (tariff.DaysOfTheWeek & dayOfTheWeek) == dayOfTheWeek;
                     }
                     else if (endTime.Date == time.Date)
                     {
-                        // The candidate date is the next day defined for the rate
-                        // We have to check if a rate exist for the previous day
+                        // The candidate date is the next day defined for the tariff
+                        // We have to check if a tariff exist for the previous day
                         var previousDayOfTheWeek = dayOfTheWeek == (int)DayOfTheWeek.Sunday
                                                        ? (int) DayOfTheWeek.Saturday
                                                        : dayOfTheWeek >> 1;
-                        return (rate.DaysOfTheWeek & previousDayOfTheWeek) == previousDayOfTheWeek;
+                        return (tariff.DaysOfTheWeek & previousDayOfTheWeek) == previousDayOfTheWeek;
                     }
                 }
             }

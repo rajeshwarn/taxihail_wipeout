@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
-using apcurium.MK.Common.Entity;
 
-namespace apcurium.MK.Booking.ReadModel
+namespace apcurium.MK.Common.Entity
 {
-    public class RateDetail
+    public class Tariff
     {
-        [Key]
         public Guid Id { get; set; }
         public Guid CompanyId { get; set; }
         public string Name { get; set; }

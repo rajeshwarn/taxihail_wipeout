@@ -11,353 +11,347 @@ using apcurium.MK.Common.Provider;
 namespace apcurium.MK.Booking.Test.Maps.PriceCalculatorFixture
 {
     [TestFixture]
-    public class given_a_day_rate_ending_the_same_day
+    public class given_a_day_tariff_ending_the_same_day
     {
         private PriceCalculator sut;
-        private FakeRateProvider _rateProvider;
+        private FakeTariffProvider _tariffProvider;
 
         [SetUp]
         public void Setup()
         {
-            var defaultRate = new Rate
+            var tariff1 = new Tariff
             {
-                Name = "Default",
-                Type = (int) RateType.Default
-            };
-
-            var rate1 = new Rate
-            {
-                Name = "Day rate ending the same day",
+                Name = "Day tariff ending the same day",
                 StartTime = new DateTime(2012, 12, 17, 8, 0, 0),
                 EndTime = new DateTime(2012, 12, 17, 20, 0, 0),
-                Type = (int)RateType.Day // Monday
+                Type = (int)TariffType.Day // Monday
             };
            
-            _rateProvider = new FakeRateProvider(new[]
+            _tariffProvider = new FakeTariffProvider(new[]
             {
-                rate1
+                tariff1
             });
-            sut = new PriceCalculator(new TestConfigurationManager(), _rateProvider);
+            sut = new PriceCalculator(new TestConfigurationManager(), _tariffProvider);
         }
 
         [Test]
         public void when_date_match_day_and_inside_time_period()
         {
-            var rate = sut.GetRateFor(new DateTime(2012, 12, 17, 9, 0, 0));
+            var tariff = sut.GetTariffFor(new DateTime(2012, 12, 17, 9, 0, 0));
 
-            Assert.NotNull(rate);
-            Assert.AreEqual("Day rate ending the same day", rate.Name);
+            Assert.NotNull(tariff);
+            Assert.AreEqual("Day tariff ending the same day", tariff.Name);
         }
 
         [Test]
         public void when_date_match_day_but_before_start_time()
         {
-            var rate = sut.GetRateFor(new DateTime(2012, 12, 17, 6, 0, 0));
+            var tariff = sut.GetTariffFor(new DateTime(2012, 12, 17, 6, 0, 0));
 
-            Assert.Null(rate);
+            Assert.Null(tariff);
         }
 
         [Test]
         public void when_date_match_day_and_start_time_exactly()
         {
-            var rate = sut.GetRateFor(new DateTime(2012, 12, 17, 8, 0, 0));
+            var tariff = sut.GetTariffFor(new DateTime(2012, 12, 17, 8, 0, 0));
 
-            Assert.NotNull(rate);
-            Assert.AreEqual("Day rate ending the same day", rate.Name);
+            Assert.NotNull(tariff);
+            Assert.AreEqual("Day tariff ending the same day", tariff.Name);
         }
 
         [Test]
         public void when_date_match_day_and_end_time_exactly()
         {
-            var rate = sut.GetRateFor(new DateTime(2012, 12, 17, 20, 0, 0));
+            var tariff = sut.GetTariffFor(new DateTime(2012, 12, 17, 20, 0, 0));
 
-            Assert.Null(rate);
+            Assert.Null(tariff);
         }
 
         [Test]
         public void when_date_match_day_but_after_end_time()
         {
-            var rate = sut.GetRateFor(new DateTime(2012, 12, 17, 21, 0, 0));
+            var tariff = sut.GetTariffFor(new DateTime(2012, 12, 17, 21, 0, 0));
 
-            Assert.Null(rate);
+            Assert.Null(tariff);
         }
         [Test]
         public void when_date_doesnt_match_day()
         {
-            var rate = sut.GetRateFor(new DateTime(2012, 12, 3, 21, 0, 0));
+            var tariff = sut.GetTariffFor(new DateTime(2012, 12, 3, 21, 0, 0));
 
-            Assert.Null(rate);
+            Assert.Null(tariff);
         }
 
         
     }
 
     [TestFixture]
-    public class given_a_day_rate_ending_the_next_day
+    public class given_a_day_tariff_ending_the_next_day
     {
         private PriceCalculator sut;
-        private FakeRateProvider _rateProvider;
+        private FakeTariffProvider _tariffProvider;
 
         [SetUp]
         public void Setup()
         {
-            var rate1 = new Rate
+            var tariff1 = new Tariff
             {
-                Name = "Day rate ending the next day",
+                Name = "Day tariff ending the next day",
                 StartTime = new DateTime(2012, 12, 18, 20, 0, 0),
                 EndTime = new DateTime(2012, 12, 19, 8, 0, 0),
-                Type = (int)RateType.Day //Tuesday
+                Type = (int)TariffType.Day //Tuesday
             };
            
-            _rateProvider = new FakeRateProvider(new[]
+            _tariffProvider = new FakeTariffProvider(new[]
             {
-                rate1
+                tariff1
             });
-            sut = new PriceCalculator(new TestConfigurationManager(), _rateProvider);
+            sut = new PriceCalculator(new TestConfigurationManager(), _tariffProvider);
         }
 
         [Test]
         public void when_date_match_day_and_inside_time_period()
         {
-            var rate = sut.GetRateFor(new DateTime(2012, 12, 18, 21, 0, 0));
+            var tariff = sut.GetTariffFor(new DateTime(2012, 12, 18, 21, 0, 0));
 
-            Assert.NotNull(rate);
-            Assert.AreEqual("Day rate ending the next day", rate.Name);
+            Assert.NotNull(tariff);
+            Assert.AreEqual("Day tariff ending the next day", tariff.Name);
         }
 
         [Test]
         public void when_date_match_next_day_and_inside_time_period()
         {
-            var rate = sut.GetRateFor(new DateTime(2012, 12, 19, 1, 0, 0));
+            var tariff = sut.GetTariffFor(new DateTime(2012, 12, 19, 1, 0, 0));
 
-            Assert.NotNull(rate);
-            Assert.AreEqual("Day rate ending the next day", rate.Name);
+            Assert.NotNull(tariff);
+            Assert.AreEqual("Day tariff ending the next day", tariff.Name);
         }
 
         [Test]
         public void when_date_match_day_but_before_start_time()
         {
-            var rate = sut.GetRateFor(new DateTime(2012, 12, 18, 19, 0, 0));
+            var tariff = sut.GetTariffFor(new DateTime(2012, 12, 18, 19, 0, 0));
 
-            Assert.Null(rate);
+            Assert.Null(tariff);
         }
 
         [Test]
         public void when_date_match_day_and_start_time_exactly()
         {
-            var rate = sut.GetRateFor(new DateTime(2012, 12, 18, 20, 0, 0));
+            var tariff = sut.GetTariffFor(new DateTime(2012, 12, 18, 20, 0, 0));
 
-            Assert.NotNull(rate);
-            Assert.AreEqual("Day rate ending the next day", rate.Name);
+            Assert.NotNull(tariff);
+            Assert.AreEqual("Day tariff ending the next day", tariff.Name);
         }
 
         [Test]
         public void when_date_match_next_day_and_end_time_exactly()
         {
-            var rate = sut.GetRateFor(new DateTime(2012, 12, 19, 8, 0, 0));
+            var tariff = sut.GetTariffFor(new DateTime(2012, 12, 19, 8, 0, 0));
 
-            Assert.Null(rate);
+            Assert.Null(tariff);
         }
 
         [Test]
         public void when_date_match_next_day_but_after_end_time()
         {
-            var rate = sut.GetRateFor(new DateTime(2012, 12, 19, 21, 0, 0));
+            var tariff = sut.GetTariffFor(new DateTime(2012, 12, 19, 21, 0, 0));
 
-            Assert.Null(rate);
+            Assert.Null(tariff);
         }
 
         [Test]
         public void when_date_doesnt_match_day()
         {
-            var rate = sut.GetRateFor(new DateTime(2012, 12, 3, 21, 0, 0));
+            var tariff = sut.GetTariffFor(new DateTime(2012, 12, 3, 21, 0, 0));
 
-            Assert.Null(rate);
+            Assert.Null(tariff);
         }
 
 
     }
 
     [TestFixture]
-    public class given_a_recurring_rate_ending_the_same_day
+    public class given_a_recurring_tariff_ending_the_same_day
     {
         private PriceCalculator sut;
-        private FakeRateProvider _rateProvider;
+        private FakeTariffProvider _tariffProvider;
 
         [SetUp]
         public void Setup()
         {
-            var rate1 = new Rate
+            var tariff1 = new Tariff
             {
-                Name = "Recurring rate ending the same day",
+                Name = "Recurring tariff ending the same day",
                 StartTime = new DateTime(1900, 1, 1, 8, 0, 0),
                 EndTime = new DateTime(1900, 1, 1, 20, 0, 0),
                 DaysOfTheWeek = (int)(DayOfTheWeek.Thursday | DayOfTheWeek.Friday | DayOfTheWeek.Saturday),
-                Type = (int)RateType.Recurring
+                Type = (int)TariffType.Recurring
             };
 
-            _rateProvider = new FakeRateProvider(new[]
+            _tariffProvider = new FakeTariffProvider(new[]
                                                      {
-                                                         rate1
+                                                         tariff1
                                                      });
-            sut = new PriceCalculator(new TestConfigurationManager(), _rateProvider);
+            sut = new PriceCalculator(new TestConfigurationManager(), _tariffProvider);
         }
 
         [Test]
         public void when_date_match_day_and_inside_time_period()
         {
-            var rate = sut.GetRateFor(new DateTime(2012, 12, 21, 9, 0, 0) /* Friday */);
+            var tariff = sut.GetTariffFor(new DateTime(2012, 12, 21, 9, 0, 0) /* Friday */);
 
-            Assert.NotNull(rate);
-            Assert.AreEqual("Recurring rate ending the same day", rate.Name);
+            Assert.NotNull(tariff);
+            Assert.AreEqual("Recurring tariff ending the same day", tariff.Name);
         }
 
         [Test]
         public void when_date_match_day_but_before_start_time()
         {
-            var rate = sut.GetRateFor(new DateTime(2012, 12, 21, 7, 0, 0));
+            var tariff = sut.GetTariffFor(new DateTime(2012, 12, 21, 7, 0, 0));
 
-            Assert.Null(rate);
+            Assert.Null(tariff);
         }
 
         [Test]
         public void when_date_match_day_and_start_time_exactly()
         {
-            var rate = sut.GetRateFor(new DateTime(2012, 12, 21, 8, 0, 0));
+            var tariff = sut.GetTariffFor(new DateTime(2012, 12, 21, 8, 0, 0));
 
-            Assert.NotNull(rate);
-            Assert.AreEqual("Recurring rate ending the same day", rate.Name);
+            Assert.NotNull(tariff);
+            Assert.AreEqual("Recurring tariff ending the same day", tariff.Name);
         }
 
         [Test]
         public void when_date_match_day_and_end_time_exactly()
         {
-            var rate = sut.GetRateFor(new DateTime(2012, 12, 21, 20, 0, 0));
+            var tariff = sut.GetTariffFor(new DateTime(2012, 12, 21, 20, 0, 0));
 
-            Assert.Null(rate);
+            Assert.Null(tariff);
         }
 
         [Test]
         public void when_date_match_day_but_after_end_time()
         {
-            var rate = sut.GetRateFor(new DateTime(2012, 12, 21, 22, 0, 0));
+            var tariff = sut.GetTariffFor(new DateTime(2012, 12, 21, 22, 0, 0));
 
-            Assert.Null(rate);
+            Assert.Null(tariff);
         }
 
         [Test]
         public void when_date_doesnt_match_day()
         {
-            var rate = sut.GetRateFor(new DateTime(2012, 12, 3, 21, 0, 0));
+            var tariff = sut.GetTariffFor(new DateTime(2012, 12, 3, 21, 0, 0));
 
-            Assert.Null(rate);
+            Assert.Null(tariff);
         }
     }
 
     [TestFixture]
-    public class given_a_recurring_rate_ending_the_next_day
+    public class given_a_recurring_tariff_ending_the_next_day
     {
         private PriceCalculator sut;
-        private FakeRateProvider _rateProvider;
+        private FakeTariffProvider _tariffProvider;
 
         [SetUp]
         public void Setup()
         {
-            var rate1 = new Rate
+            var tariff1 = new Tariff
             {
-                Name = "Recurring rate ending the next day",
+                Name = "Recurring tariff ending the next day",
                 StartTime = new DateTime(1900, 1, 1, 20, 0, 0),
                 EndTime = new DateTime(1900, 1, 2, 8, 0, 0),
                 DaysOfTheWeek = (int)(DayOfTheWeek.Friday | DayOfTheWeek.Saturday),
-                Type = (int)RateType.Recurring
+                Type = (int)TariffType.Recurring
             };
 
-            _rateProvider = new FakeRateProvider(new[]
+            _tariffProvider = new FakeTariffProvider(new[]
             {
-                rate1
+                tariff1
             });
-            sut = new PriceCalculator(new TestConfigurationManager(), _rateProvider);
+            sut = new PriceCalculator(new TestConfigurationManager(), _tariffProvider);
         }
 
         [Test]
         public void when_date_match_day_and_inside_time_period()
         {
-            var rate = sut.GetRateFor(new DateTime(2012, 12, 21, 21, 0, 0));
+            var tariff = sut.GetTariffFor(new DateTime(2012, 12, 21, 21, 0, 0));
 
-            Assert.NotNull(rate);
-            Assert.AreEqual("Recurring rate ending the next day", rate.Name);
+            Assert.NotNull(tariff);
+            Assert.AreEqual("Recurring tariff ending the next day", tariff.Name);
         }
 
         [Test]
         public void when_date_match_next_day_and_inside_time_period()
         {
-            var rate = sut.GetRateFor(new DateTime(2012, 12, 22, 7, 0, 0));
+            var tariff = sut.GetTariffFor(new DateTime(2012, 12, 22, 7, 0, 0));
 
-            Assert.NotNull(rate);
-            Assert.AreEqual("Recurring rate ending the next day", rate.Name);
+            Assert.NotNull(tariff);
+            Assert.AreEqual("Recurring tariff ending the next day", tariff.Name);
         }
 
         [Test]
         public void when_date_match_day_but_before_start_time()
         {
-            var rate = sut.GetRateFor(new DateTime(2012, 12, 21, 10, 0, 0));
+            var tariff = sut.GetTariffFor(new DateTime(2012, 12, 21, 10, 0, 0));
 
-            Assert.Null(rate);
+            Assert.Null(tariff);
         }
 
         [Test]
         public void when_date_match_day_and_start_time_exactly()
         {
-            var rate = sut.GetRateFor(new DateTime(2012, 12, 21, 20, 0, 0));
+            var tariff = sut.GetTariffFor(new DateTime(2012, 12, 21, 20, 0, 0));
 
-            Assert.NotNull(rate);
-            Assert.AreEqual("Recurring rate ending the next day", rate.Name);
+            Assert.NotNull(tariff);
+            Assert.AreEqual("Recurring tariff ending the next day", tariff.Name);
         }
 
         [Test]
         public void when_date_match_next_day_and_end_time_exactly()
         {
-            var rate = sut.GetRateFor(new DateTime(2012, 12, 22, 8, 0, 0));
+            var tariff = sut.GetTariffFor(new DateTime(2012, 12, 22, 8, 0, 0));
 
-            Assert.Null(rate);
+            Assert.Null(tariff);
         }
 
         [Test]
         public void when_date_match_next_day_but_after_end_time()
         {
-            var rate = sut.GetRateFor(new DateTime(2012, 12, 22, 12, 0, 0));
+            var tariff = sut.GetTariffFor(new DateTime(2012, 12, 22, 12, 0, 0));
 
-            Assert.Null(rate);
+            Assert.Null(tariff);
         }
 
         [Test]
         public void when_date_doesnt_match_day()
         {
-            var rate = sut.GetRateFor(new DateTime(2012, 12, 3, 21, 0, 0));
+            var tariff = sut.GetTariffFor(new DateTime(2012, 12, 3, 21, 0, 0));
 
-            Assert.Null(rate);
+            Assert.Null(tariff);
         }
 
 
     }
 
-    public class FakeRateProvider : IRateProvider
+    public class FakeTariffProvider : ITariffProvider
     {
-        private readonly IList<Rate> _rates;
+        private readonly IList<Tariff> _tariffs;
 
-        public FakeRateProvider(IEnumerable<Rate> rates)
+        public FakeTariffProvider(IEnumerable<Tariff> tariffs)
         {
-            _rates = rates.ToList();
+            _tariffs = tariffs.ToList();
         }
 
-        public void AddRate(Rate rate)
+        public void AddRate(Tariff tariff)
         {
-            _rates.Add(rate);
+            _tariffs.Add(tariff);
         }
 
-        public IEnumerable<Rate> GetRates()
+        public IEnumerable<Tariff> GetTariffs()
         {
-            return _rates;
+            return _tariffs;
         }
     }
 }

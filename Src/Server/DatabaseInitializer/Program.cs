@@ -155,18 +155,18 @@ namespace DatabaseInitializer
                     var replayService = container.Resolve<IEventsPlayBackService>();
                     replayService.ReplayAllEvents();
 
-                    var rates = new RateDao(() => new BookingDbContext(connectionString.ConnectionString));
-                    if(rates.GetAll().All(x => x.Type != (int)RateType.Default))
+                    var tariffs = new TariffDao(() => new BookingDbContext(connectionString.ConnectionString));
+                    if(tariffs.GetAll().All(x => x.Type != (int)TariffType.Default))
                     {
                        // Default rate does not exist for this company 
-                        CreateDefaultRate(configurationManager, commandBus);
+                        CreateDefaultTariff(configurationManager, commandBus);
                     }
                 }
                 else
                 {
 
                     // Create default rate for company
-                    CreateDefaultRate(configurationManager, commandBus);
+                    CreateDefaultTariff(configurationManager, commandBus);
 
 
                     //Get default settings from IBS
@@ -289,20 +289,20 @@ namespace DatabaseInitializer
             return 0;
         }
 
-        private static void CreateDefaultRate(IConfigurationManager configurationManager, ICommandBus commandBus)
+        private static void CreateDefaultTariff(IConfigurationManager configurationManager, ICommandBus commandBus)
         {
             var flatRate = configurationManager.GetSetting("Direction.FlateRate");
             var ratePerKm = configurationManager.GetSetting("Direction.RatePerKm");
 
-            commandBus.Send(new CreateRate
+            commandBus.Send(new CreateTariff
             {
-                Type = RateType.Default,
+                Type = TariffType.Default,
                 DistanceMultiplicator = double.Parse(ratePerKm, CultureInfo.InvariantCulture),
                 FlatRate = decimal.Parse(flatRate, CultureInfo.InvariantCulture),
                 TimeAdjustmentFactor = 20,
                 PricePerPassenger = 0m,
                 CompanyId = AppConstants.CompanyId,
-                RateId = Guid.NewGuid(),
+                TariffId = Guid.NewGuid(),
             });
         }
 

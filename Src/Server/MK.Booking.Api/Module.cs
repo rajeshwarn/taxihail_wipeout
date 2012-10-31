@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Linq;
 using Microsoft.Practices.Unity;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Providers;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Common;
-using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Provider;
@@ -20,7 +18,7 @@ namespace apcurium.MK.Booking.Api
             RegisterMaps();
 
             container.RegisterInstance<IPopularAddressProvider>(new PopularAddressProvider(container.Resolve<IPopularAddressDao>()));
-            container.RegisterInstance<IRateProvider>(new RateProvider(container.Resolve<IRateDao>()));
+            container.RegisterInstance<ITariffProvider>(new TariffProvider(container.Resolve<ITariffDao>()));
         }
 
         private void RegisterMaps()
@@ -55,12 +53,12 @@ namespace apcurium.MK.Booking.Api
             AutoMapper.Mapper.CreateMap<DefaultFavoriteAddress, Commands.UpdateDefaultFavoriteAddress>()
                 .ForMember(x => x.AddressId, opt => opt.MapFrom(x => x.Id));
 
-            AutoMapper.Mapper.CreateMap<Rates, Commands.CreateRate>()
-                .ForMember(p => p.RateId, opt => opt.ResolveUsing(x => x.Id == Guid.Empty ? Guid.NewGuid() : x.Id))
+            AutoMapper.Mapper.CreateMap<Contract.Requests.Tariff, Commands.CreateTariff>()
+                .ForMember(p => p.TariffId, opt => opt.ResolveUsing(x => x.Id == Guid.Empty ? Guid.NewGuid() : x.Id))
                 .ForMember(p => p.CompanyId, opt => opt.UseValue(AppConstants.CompanyId));
 
-            AutoMapper.Mapper.CreateMap<Rates, Commands.UpdateRate>()
-               .ForMember(p => p.RateId, opt => opt.ResolveUsing(x => x.Id == Guid.Empty ? Guid.NewGuid() : x.Id))
+            AutoMapper.Mapper.CreateMap<Contract.Requests.Tariff, Commands.UpdateTariff>()
+               .ForMember(p => p.TariffId, opt => opt.ResolveUsing(x => x.Id == Guid.Empty ? Guid.NewGuid() : x.Id))
                .ForMember(p => p.CompanyId, opt => opt.UseValue(AppConstants.CompanyId));
                 
             AutoMapper.Mapper.CreateMap<PopularAddress, Commands.AddPopularAddress>()

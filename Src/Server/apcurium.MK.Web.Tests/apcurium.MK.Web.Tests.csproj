@@ -93,7 +93,7 @@
     <Compile Include="CompanyDefaultFavoriteAddressFixture.cs" />
     <Compile Include="CompanyPopularAddressFixture.cs" />
     <Compile Include="PlaceDetailFixture.cs" />
-    <Compile Include="RatesFixture.cs" />
+    <Compile Include="TariffFixture.cs" />
     <Compile Include="SearchLocationsFixture.cs" />
     <Compile Include="DirectionsFixture.cs" />
     <Compile Include="FavoriteAddressFixture.cs" />

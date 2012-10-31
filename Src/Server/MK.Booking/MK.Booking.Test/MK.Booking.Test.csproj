@@ -63,7 +63,7 @@
     <Compile Include="AccountFixture\given_one_account.cs" />
     <Compile Include="AccountFixture\given_an_email_address.cs" />
     <Compile Include="CompanyFixture\given_a_company.cs" />
-    <Compile Include="CompanyFixture\given_a_rate.cs" />
+    <Compile Include="CompanyFixture\given_a_tariff.cs" />
     <Compile Include="CompanyFixture\given_no_company.cs" />
     <Compile Include="EnumerableEventsExtensions.cs" />
     <Compile Include="EventSourcingTestHelper.cs" />
@@ -71,7 +71,7 @@
     <Compile Include="AddressesFixture\given_no_address.cs" />
     <Compile Include="Integration\AccountFixture\AccountDetailsGenerator.cs" />
     <Compile Include="Integration\AddressListFixture\AddressListGenerator.cs" />
-    <Compile Include="Integration\CompanyFixture\RateDetailsGenerator.cs" />
+    <Compile Include="Integration\CompanyFixture\TariffDetailsGenerator.cs" />
     <Compile Include="Integration\AppSettingsFixture\AppSettingsGenerator.cs" />
     <Compile Include="Integration\GivenAConfigReadModelDatabase.cs" />
     <Compile Include="Integration\GivenAReadModelDatabase.cs" />

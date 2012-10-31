@@ -6,13 +6,14 @@ using NUnit.Framework;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Common.Entity;
+using Tariff = apcurium.MK.Booking.Api.Contract.Requests.Tariff;
 
 namespace apcurium.MK.Web.Tests
 {
     [TestFixture]
-    public class RatesFixture: BaseTest
+    public class TariffFixture: BaseTest
     {
-        private Guid _knownRateId;
+        private Guid _knownTariffId;
 
         [TestFixtureSetUp]
         public override void TestFixtureSetup()
@@ -31,11 +32,11 @@ namespace apcurium.MK.Web.Tests
         {
             base.Setup();
             CreateAndAuthenticateTestAdminAccount();
-            var sut = new RatesServiceClient(BaseUrl, SessionId);
-            sut.CreateRate(new Rates
+            var sut = new TariffsServiceClient(BaseUrl, SessionId);
+            sut.CreateTariff(new Tariff
             {
-                Id = (_knownRateId = Guid.NewGuid()),
-                Type = RateType.Recurring,
+                Id = (_knownTariffId = Guid.NewGuid()),
+                Type = TariffType.Recurring,
                 DaysOfTheWeek = DayOfTheWeek.Sunday,
                 StartTime =DateTime.MinValue.AddHours(2),
                 EndTime = DateTime.MinValue.AddHours(3),
@@ -48,31 +49,31 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void AddRate()
+        public void AddTariff()
         {
-            var rateId = Guid.NewGuid();
-            var sut = new RatesServiceClient(BaseUrl, SessionId);
+            var tariffId = Guid.NewGuid();
+            var sut = new TariffsServiceClient(BaseUrl, SessionId);
 
-            sut.CreateRate(new Rates
+            sut.CreateTariff(new Tariff
             {
-                Id = rateId,
-                Type = RateType.Recurring,
+                Id = tariffId,
+                Type = TariffType.Recurring,
                 DaysOfTheWeek = DayOfTheWeek.Sunday,
                 StartTime = DateTime.MinValue.AddHours(2),
                 EndTime = DateTime.MinValue.AddHours(3),
-                Name = "Rate " + rateId.ToString(),
+                Name = "Rate " + tariffId.ToString(),
                 DistanceMultiplicator = 1.1,
                 FlatRate = 1.2m,
                 PricePerPassenger = 1.3m,
                 TimeAdjustmentFactor = 1.4
             });
 
-            var rates = sut.GetRates();
+            var rates = sut.GetTariffs();
 
-            Assert.AreEqual(1, rates.Count(x => x.Id == rateId));
-            var rate = rates.Single(x => x.Id == rateId);
+            Assert.AreEqual(1, rates.Count(x => x.Id == tariffId));
+            var rate = rates.Single(x => x.Id == tariffId);
             Assert.AreEqual((int)DayOfTheWeek.Sunday, rate.DaysOfTheWeek);
-            Assert.AreEqual("Rate " + rateId.ToString(), rate.Name);
+            Assert.AreEqual("Rate " + tariffId.ToString(), rate.Name);
             Assert.AreEqual(2, rate.StartTime.Hour);
             Assert.AreEqual(3, rate.EndTime.Hour);
             Assert.AreEqual(1.1, rate.DistanceMultiplicator);
@@ -83,15 +84,15 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void DeleteRate()
+        public void DeleteTariff()
         {
-            var sut = new RatesServiceClient(BaseUrl, SessionId);
+            var sut = new TariffsServiceClient(BaseUrl, SessionId);
 
-            sut.DeleteRate(_knownRateId);
+            sut.DeleteTariff(_knownTariffId);
 
-            var rates = sut.GetRates();
+            var rates = sut.GetTariffs();
 
-            Assert.IsFalse(rates.Any(x=> x.Id == _knownRateId));
+            Assert.IsFalse(rates.Any(x=> x.Id == _knownTariffId));
         }
     }
 }

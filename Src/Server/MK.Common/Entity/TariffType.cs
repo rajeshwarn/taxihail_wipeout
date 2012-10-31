@@ -5,7 +5,7 @@ using System.Text;
 
 namespace apcurium.MK.Common.Entity
 {
-    public enum RateType
+    public enum TariffType
     {
         Default = 0,
         Recurring = 1,

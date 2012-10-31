@@ -5,20 +5,20 @@ using apcurium.MK.Booking.Database;
 
 namespace apcurium.MK.Booking.ReadModel.Query
 {
-    public class RateDao : IRateDao
+    public class TariffDao : ITariffDao
     {
         private readonly Func<BookingDbContext> _contextFactory;
 
-        public RateDao(Func<BookingDbContext> contextFactory)
+        public TariffDao(Func<BookingDbContext> contextFactory)
         {            
             _contextFactory = contextFactory;
         }
 
-        public IList<RateDetail> GetAll()
+        public IList<TariffDetail> GetAll()
         {
             using (var context = _contextFactory.Invoke())
             {
-                return context.Query<RateDetail>().ToList();
+                return context.Query<TariffDetail>().ToList();
             }
         }
     }

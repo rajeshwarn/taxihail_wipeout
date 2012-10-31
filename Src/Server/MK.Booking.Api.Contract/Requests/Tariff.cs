@@ -19,10 +19,10 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 #endif
     [RestService("/admin/tariffs", "GET, POST")]
     [RestService("/admin/tariffs/{Id}", "PUT, DELETE")]
-    public class Rates
+    public class Tariff
     {
         public Guid Id { get; set; }
-        public RateType Type { get; set; }
+        public TariffType Type { get; set; }
         public string Name { get; set; }
         public decimal FlatRate { get; set; }
         public decimal PricePerPassenger { get; set; }
@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public DateTime EndTime { get; set; }
     }
 
-    public class RatesResponse: IHasResponseStatus
+    public class TariffResponse: IHasResponseStatus
     {
         public ResponseStatus ResponseStatus { get; set; }
     }

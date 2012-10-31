@@ -15,12 +15,12 @@ using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class RatesService : RestServiceBase<Rates>
+    public class TariffsService : RestServiceBase<Tariff>
     {
         private readonly ICommandBus _commandBus;
-        private readonly IRateDao _dao;
+        private readonly ITariffDao _dao;
 
-        public RatesService(IRateDao dao, ICommandBus commandBus)
+        public TariffsService(ITariffDao dao, ICommandBus commandBus)
         {
             _commandBus = commandBus;
             _dao = dao;
@@ -28,47 +28,47 @@ namespace apcurium.MK.Booking.Api.Services
 
 
 
-        public override object OnGet(Rates request)
+        public override object OnGet(Tariff request)
         {
             return _dao.GetAll();
         }
 
-        public override object OnPost(Rates request)
+        public override object OnPost(Tariff request)
         {
             //Check if rate with same name already exists
             if (_dao.GetAll().Any(x => x.Name == request.Name))
             {
-                throw new HttpError(HttpStatusCode.Conflict, ErrorCode.Rate_DuplicateName.ToString());
+                throw new HttpError(HttpStatusCode.Conflict, ErrorCode.Tariff_DuplicateName.ToString());
             }
 
-            var command = Mapper.Map<CreateRate>(request);
+            var command = Mapper.Map<CreateTariff>(request);
 
             _commandBus.Send(command);
 
             return new
             {
-                Id = command.RateId
+                Id = command.TariffId
             };
         }
 
-        public override object OnPut(Rates request)
+        public override object OnPut(Tariff request)
         {
             //Check if rate with same name already exists
             if (_dao.GetAll().Any(x => x.Id != request.Id && x.Name == request.Name))
             {
-                throw new HttpError(HttpStatusCode.Conflict, ErrorCode.Rate_DuplicateName.ToString());
+                throw new HttpError(HttpStatusCode.Conflict, ErrorCode.Tariff_DuplicateName.ToString());
             }
 
-            var command = Mapper.Map<UpdateRate>(request);
+            var command = Mapper.Map<UpdateTariff>(request);
 
             _commandBus.Send(command);
 
             return new HttpResult(HttpStatusCode.OK, "OK");
         }
 
-        public override object OnDelete(Rates request)
+        public override object OnDelete(Tariff request)
         {
-            var command = new DeleteRate {CompanyId = AppConstants.CompanyId, RateId = request.Id};
+            var command = new DeleteTariff {CompanyId = AppConstants.CompanyId, TariffId = request.Id};
             _commandBus.Send(command);
 
             return new HttpResult(HttpStatusCode.OK, "OK");

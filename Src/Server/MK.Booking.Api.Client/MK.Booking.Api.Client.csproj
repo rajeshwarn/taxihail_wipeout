@@ -84,7 +84,7 @@
     <Compile Include="OrderServiceClient.cs" />
     <Compile Include="PlaceDetailServiceClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RatesServiceClient.cs" />
+    <Compile Include="TariffsServiceClient.cs" />
     <Compile Include="ReferenceDataServiceClient.cs" />
     <Compile Include="SearchLocationsServiceClient.cs" />
   </ItemGroup>
