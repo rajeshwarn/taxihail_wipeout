@@ -66,6 +66,10 @@
     <Compile Include="Configuration\IConfigurationManager.cs" />
     <Compile Include="Provider\IPopularAddressProvider.cs" />
     <Compile Include="Extensions\DoubleExtensions.cs" />
+    <Compile Include="Entity\DayOfTheWeek.cs" />
+    <Compile Include="Entity\Tariff.cs" />
+    <Compile Include="Entity\TariffType.cs" />
+    <Compile Include="Provider\ITariffProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Configuration\" />

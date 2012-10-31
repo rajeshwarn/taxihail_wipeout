@@ -49,6 +49,8 @@
     <Compile Include="Impl\Places.cs" />
     <Compile Include="Impl\Mappers\GeoObjToAddressMapper.cs" />
     <Compile Include="Geo\Position.cs" />
+    <Compile Include="Impl\PriceCalculator.cs" />
+    <Compile Include="IPriceCalculator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MK.Common\MK.Common.iOS.csproj">
