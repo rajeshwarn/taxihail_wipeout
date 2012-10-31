@@ -1,8 +1,11 @@
 <div class='well clearfix'>
   <h4 class="table-title">{{localize "Manage IBS Exclusions"}}</h4>
+
+  <div class="message"></div>
+
   <div class='clearfix'>
       <div class='span2'>
-        List 1
+        <label>{{localize "Payment Types"}}</label>
         {{#each paymentsList}}
         <label class="checkbox">
             <input type="checkbox" name='paymentsList' value="{{id}}" {{checked}} >{{display}}
@@ -10,15 +13,15 @@
         {{/each}}
       </div>
       <div class='span2'>
-        List 2
+        <label>{{localize "Vehicle Types"}}</label>
         {{#each vehiclesList}}
         <label class="checkbox">
             <input type="checkbox" name='vehiclesList' value="{{id}}" {{checked}} >{{display}}
         </label>
         {{/each}} 
       </div>
-      <div class='span2'>
-        List 3
+      <div class='span3'>
+        <label>{{localize "Companies"}}</label>
         {{#each companiesList}}
         <label class="checkbox">
             <input type="checkbox" name='companiesList' value="{{id}}" {{checked}} >{{display}}
@@ -27,6 +30,6 @@
       </div>
     </div>
     <div>
-      <button type='submit' class='btn btn-primary' >{{localize "Save"}}</button>
+      <button type='submit' class='btn btn-primary' >{{localize "Exclude these values"}}</button>
     </div>
 </div>

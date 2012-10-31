@@ -24,24 +24,33 @@
 
             var data = this.serializeForm(form);
 
+            $.when(this._save(data.vehiclesList, 'IBS.ExcludedVehicleTypeId'),
+                   this._save(data.paymentsList, 'IBS.ExcludedPaymentTypeId'),
+                   this._save(data.companiesList, 'IBS.ExcludedProviderId'))
+                .always(_.bind(function() {
 
-            var excludedVehicleTypeSetting = this.options.settings.get('IBS.ExcludedVehicleTypeId');
-            var excludedPaymentTypeSetting = this.options.settings.get('IBS.ExcludedPaymentTypeId');
-            var excludedProviderSetting = this.options.settings.get('IBS.ExcludedProviderId');
-            excludedVehicleTypeSetting.set({
-                value: _([data.vehiclesList]).flatten().join(';')
-            });
-            excludedPaymentTypeSetting.set({
-                value: _([data.paymentsList]).flatten().join(';')
-            });
-            excludedProviderSetting.set({
-                value: _([data.companiesList]).flatten().join(';')
-            });
-
-
-            $.when(excludedVehicleTypeSetting.save(), excludedPaymentTypeSetting.save(), excludedProviderSetting.save())
-                .then(_.bind(function(){
                     this.$(':submit').button('reset');
+
+                }, this))
+                .done(_.bind(function(){
+
+                    var alert = new TaxiHail.AlertView({
+                        message: this.localize('Settings Saved'),
+                        type: 'success'
+                    });
+                    alert.on('ok', alert.remove, alert);
+                    this.$('.message').html(alert.render().el);
+
+                }, this))
+                .fail(_.bind(function(){
+
+                    var alert = new TaxiHail.AlertView({
+                        message: this.localize('Error Saving Settings'),
+                        type: 'error'
+                    });
+                    alert.on('ok', alert.remove, alert);
+                    this.$('.message').html(alert.render().el);
+
                 }, this));
 
         },
@@ -59,6 +68,17 @@
             _.each(items, function(item) {
                 item.checked = _.contains(checkedIds, item.id) ? 'checked' : '';
             }, this);
+        },
+
+        _save: function(items, settingKey) {
+            var setting = this.options.settings.get(settingKey);
+            if(!setting) {
+                return null;
+            }
+
+            return setting.save({
+                value: _([items]).flatten().join(';')
+            });
         }
     });
 
