@@ -147,18 +147,25 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\collections\CompanyDefaultAddressCollection.js" />
+    <Content Include="admin\collections\TariffCollection.js" />
     <Content Include="admin\controllers\Controller.js" />
     <Content Include="admin\controllers\ExclusionsController.js" />
-    <Content Include="admin\controllers\RatesController.js" />
-    <Content Include="admin\models\Rate.js" />
-    <Content Include="admin\views\EditRateView.js" />
+    <Content Include="admin\controllers\TariffsController.js" />
+    <Content Include="admin\models\Tariff.js" />
+    <Content Include="admin\localization\EditTariff.json" />
+    <Content Include="admin\localization\ManageExclusions.json" />
+    <Content Include="admin\localization\ManageTariffs.json" />
+    <Content Include="admin\localization\TariffItem.json" />
+    <Content Include="admin\templates\EditTariff.handlebars" />
     <None Include="admin\templates\ManageCompanySettings.handlebars" />
     <Content Include="admin\collections\CompanySettingsCollection.js" />
     <Content Include="admin\models\CompanySetting.js" />
+    <Content Include="admin\views\EditTariffView.js" />
     <Content Include="admin\views\ManageCompanySettingsView.js" />
+    <Content Include="admin\views\ManageExclusionsView.js" />
+    <Content Include="admin\views\ManageTariffsView.js" />
     <Content Include="admin\views\SettingsItemView.js" />
-    <Content Include="admin\views\ManageRatesView.js" />
-    <Content Include="admin\views\RateItemView.js" />
+    <Content Include="admin\views\TariffItemView.js" />
     <Content Include="common\collections\CompanyPopularAddressCollection.js" />
     <Content Include="admin\default.aspx" />
     <Content Include="admin\models\CompanyDefaultAddress.js" />
@@ -368,6 +375,9 @@
     <Content Include="themes\TaxiHail\less\style.less" />
     <Content Include="localization\OrderItem.json" />
     <Content Include="admin\templates\SettingsItem.handlebars" />
+    <Content Include="admin\templates\ManageExclusions.handlebars" />
+    <Content Include="admin\templates\ManageTariffs.handlebars" />
+    <Content Include="admin\templates\TariffItem.handlebars" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\default.aspx.cs">
@@ -766,13 +776,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="themes\VictoriaTaxi\less\variables.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="admin\templates\EditRate.handlebars" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="admin\templates\ManageRates.handlebars" />
-    <Content Include="admin\templates\RateItem.handlebars" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="mixins\" />

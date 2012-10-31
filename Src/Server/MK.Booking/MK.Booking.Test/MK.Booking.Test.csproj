@@ -63,20 +63,20 @@
     <Compile Include="AccountFixture\given_one_account.cs" />
     <Compile Include="AccountFixture\given_an_email_address.cs" />
     <Compile Include="CompanyFixture\given_a_company.cs" />
-    <Compile Include="CompanyFixture\given_a_rate.cs" />
+    <Compile Include="CompanyFixture\given_a_tariff.cs" />
     <Compile Include="CompanyFixture\given_no_company.cs" />
-    <Compile Include="CompanyFixture\give_one_company.cs" />
     <Compile Include="EnumerableEventsExtensions.cs" />
     <Compile Include="EventSourcingTestHelper.cs" />
     <Compile Include="AddressesFixture\given_an_address.cs" />
     <Compile Include="AddressesFixture\given_no_address.cs" />
     <Compile Include="Integration\AccountFixture\AccountDetailsGenerator.cs" />
     <Compile Include="Integration\AddressListFixture\AddressListGenerator.cs" />
-    <Compile Include="Integration\CompanyFixture\RateDetailsGenerator.cs" />
+    <Compile Include="Integration\CompanyFixture\TariffDetailsGenerator.cs" />
     <Compile Include="Integration\AppSettingsFixture\AppSettingsGenerator.cs" />
     <Compile Include="Integration\GivenAConfigReadModelDatabase.cs" />
     <Compile Include="Integration\GivenAReadModelDatabase.cs" />
     <Compile Include="Integration\OrderFixture\OrderGenerator.cs" />
+    <Compile Include="Maps\PriceCalculatorFixture\given_a_date.cs" />
     <Compile Include="OrderFixture\given_an_email_address.cs" />
     <Compile Include="OrderFixture\given_no_order.cs" />
     <Compile Include="OrderFixture\given_one_order.cs" />
@@ -99,6 +99,10 @@
     <ProjectReference Include="..\..\MK.Booking.IBS\MK.Booking.IBS.csproj">
       <Project>{7B615EA9-4232-4FFB-B66C-AC7B833973C9}</Project>
       <Name>MK.Booking.IBS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\MK.Booking.Maps\MK.Booking.Maps.csproj">
+      <Project>{C41EA1B3-0E19-41AE-8EFC-AE242532B248}</Project>
+      <Name>MK.Booking.Maps</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\MK.Common\MK.Common.csproj">
       <Project>{65033050-1D55-465A-A772-F3192F9E2428}</Project>

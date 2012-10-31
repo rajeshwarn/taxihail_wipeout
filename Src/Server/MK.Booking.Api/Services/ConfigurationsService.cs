@@ -3,6 +3,7 @@ using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using ServiceStack.ServiceInterface;
 using System;
@@ -56,25 +57,24 @@ namespace apcurium.MK.Booking.Api.Services
         public override object OnPost(ConfigurationsRequest request)
         {
 
-            var command = new Commands.AddAppSettings { Key = request.Key, Value = request.Value };
+            var command = new Commands.AddAppSettings { CompanyId = AppConstants.CompanyId, Key = request.Key, Value = request.Value };
             _commandBus.Send(command);
             return new HttpResult(HttpStatusCode.OK);
         }
 
         public override object OnPut(ConfigurationsRequest request)
         {
-
             var setting = _configManager.GetSetting(request.Key);
 
             if (setting != null)
             {
-                var command = new Commands.UpdateAppSettings { Key = request.Key, Value = request.Value };
+                var command = new Commands.UpdateAppSettings { CompanyId = AppConstants.CompanyId,  Key = request.Key, Value = request.Value };
                 _commandBus.Send(command);
-                return new HttpResult(HttpStatusCode.OK, "OK");
+                return new HttpResult(HttpStatusCode.OK);
             }
             else
             {
-                return new HttpResult(HttpStatusCode.Conflict, "Conflict");
+                return new HttpResult(HttpStatusCode.BadRequest);
             }
         }
 

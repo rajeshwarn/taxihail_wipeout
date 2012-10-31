@@ -81,5 +81,6 @@
     <Compile Include="SearchLocationsServiceClient.cs" />
     <Compile Include="ConfigurationClientService.cs" />
     <Compile Include="PopularAddressesServiceClient.cs" />
+    <Compile Include="TariffsServiceClient.cs" />
   </ItemGroup>
 </Project>

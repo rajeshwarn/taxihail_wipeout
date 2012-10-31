@@ -11,7 +11,7 @@ namespace apcurium.MK.Booking.Domain
 {
     public class Company : EventSourced
     {
-        private Guid? _defaultRateId;
+        private Guid? _defaultTariffId;
 
         public Company(Guid id) : base(id)
         {
@@ -42,9 +42,9 @@ namespace apcurium.MK.Booking.Domain
             base.Handles<CompanyCreated>(OnEventDoNothing);
             base.Handles<AppSettingsAdded>(OnEventDoNothing);
             base.Handles<AppSettingsUpdated>(OnEventDoNothing);
-            base.Handles<RateCreated>(OnRateCreated);
-            base.Handles<RateUpdated>(OnEventDoNothing);
-            base.Handles<RateDeleted>(OnEventDoNothing);
+            base.Handles<TariffCreated>(OnRateCreated);
+            base.Handles<TariffUpdated>(OnEventDoNothing);
+            base.Handles<TariffDeleted>(OnEventDoNothing);
         }
 
 
@@ -150,17 +150,17 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void CreateDefaultRate(Guid rateId, string name, decimal flatRate, double distanceMultiplicator, double timeAdustmentFactor, decimal pricePerPassenger)
+        public void CreateDefaultTariff(Guid tariffId, string name, decimal flatRate, double distanceMultiplicator, double timeAdustmentFactor, decimal pricePerPassenger)
         {
-            if(_defaultRateId.HasValue)
+            if(_defaultTariffId.HasValue)
             {
-                throw new InvalidOperationException("Only one default rate can be created");
+                throw new InvalidOperationException("Only one default tariff can be created");
             }
 
-            this.Update(new RateCreated
+            this.Update(new TariffCreated
             {
-                RateId = rateId,
-                Type = RateType.Default,
+                TariffId = tariffId,
+                Type = TariffType.Default,
                 Name = name,
                 FlatRate = flatRate,
                 DistanceMultiplicator = distanceMultiplicator,
@@ -170,43 +170,12 @@ namespace apcurium.MK.Booking.Domain
 
         }
 
-        public void CreateRecurringRate(Guid rateId, string name, decimal flatRate, double distanceMultiplicator, double timeAdustmentFactor, decimal pricePerPassenger, DayOfTheWeek daysOfTheWeek, DateTime startTime, DateTime endTime)
+        public void CreateRecurringTariff(Guid tariffId, string name, decimal flatRate, double distanceMultiplicator, double timeAdustmentFactor, decimal pricePerPassenger, DayOfTheWeek daysOfTheWeek, DateTime startTime, DateTime endTime)
         {
-            this.Update(new RateCreated
+            this.Update(new TariffCreated
             {
-                RateId = rateId,
-                Type = RateType.Recurring,
-                Name = name,
-                FlatRate = flatRate,
-                DistanceMultiplicator = distanceMultiplicator,
-                TimeAdjustmentFactor = timeAdustmentFactor,
-                PricePerPassenger = pricePerPassenger,
-                DaysOfTheWeek = daysOfTheWeek,
-                StartTime = startTime,
-                EndTime = endTime
-            });
-        }
-
-        public void CreateDayRate(Guid rateId, string name, decimal flatRate, double distanceMultiplicator, double timeAdustmentFactor, decimal pricePerPassenger, DateTime startTime, DateTime endTime)
-        {
-            this.Update(new RateCreated
-            {
-                RateId = rateId,
-                Type = RateType.Day,
-                Name = name,
-                FlatRate = flatRate,
-                DistanceMultiplicator = distanceMultiplicator,
-                TimeAdjustmentFactor = timeAdustmentFactor,
-                PricePerPassenger = pricePerPassenger,
-                StartTime = startTime,
-                EndTime = endTime
-            });
-        }
-        public void UpdateRate(Guid rateId, string name, decimal flatRate, double distanceMultiplicator, double timeAdustmentFactor, decimal pricePerPassenger, DayOfTheWeek daysOfTheWeek, DateTime startTime, DateTime endTime)
-        {
-            this.Update(new RateUpdated
-            {
-                RateId = rateId,
+                TariffId = tariffId,
+                Type = TariffType.Recurring,
                 Name = name,
                 FlatRate = flatRate,
                 DistanceMultiplicator = distanceMultiplicator,
@@ -218,11 +187,46 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void DeleteRate(Guid rateId)
+        public void CreateDayTariff(Guid tariffId, string name, decimal flatRate, double distanceMultiplicator, double timeAdustmentFactor, decimal pricePerPassenger, DateTime startTime, DateTime endTime)
         {
-            this.Update(new RateDeleted
+            this.Update(new TariffCreated
             {
-                RateId = rateId
+                TariffId = tariffId,
+                Type = TariffType.Day,
+                Name = name,
+                FlatRate = flatRate,
+                DistanceMultiplicator = distanceMultiplicator,
+                TimeAdjustmentFactor = timeAdustmentFactor,
+                PricePerPassenger = pricePerPassenger,
+                StartTime = startTime,
+                EndTime = endTime
+            });
+        }
+        public void UpdateTariff(Guid tariffId, string name, decimal flatRate, double distanceMultiplicator, double timeAdustmentFactor, decimal pricePerPassenger, DayOfTheWeek daysOfTheWeek, DateTime startTime, DateTime endTime)
+        {
+            this.Update(new TariffUpdated
+            {
+                TariffId = tariffId,
+                Name = name,
+                FlatRate = flatRate,
+                DistanceMultiplicator = distanceMultiplicator,
+                TimeAdjustmentFactor = timeAdustmentFactor,
+                PricePerPassenger = pricePerPassenger,
+                DaysOfTheWeek = daysOfTheWeek,
+                StartTime = startTime,
+                EndTime = endTime
+            });
+        }
+
+        public void DeleteTariff(Guid tariffId)
+        {
+            if(tariffId == this._defaultTariffId)
+            {
+                throw new InvalidOperationException("Cannot delete default tariff");
+            }
+            this.Update(new TariffDeleted
+            {
+                TariffId = tariffId
             });
 
         }
@@ -245,11 +249,11 @@ namespace apcurium.MK.Booking.Domain
             }
         }
 
-        private void OnRateCreated(RateCreated @event)
+        private void OnRateCreated(TariffCreated @event)
         {
-            if(@event.Type == RateType.Default)
+            if(@event.Type == TariffType.Default)
             {
-                this._defaultRateId = @event.RateId;
+                this._defaultTariffId = @event.TariffId;
             }
         }
 

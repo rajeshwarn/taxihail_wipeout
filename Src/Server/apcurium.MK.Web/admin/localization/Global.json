@@ -25,5 +25,6 @@
 	"Loading" : "Loading",
 	"Popular Locations" : "Popular Locations",
 	"Save" : "Save",
-	"Saved" : "Saved"
+	"Saved" : "Saved",
+    "Tariff_DuplicateName": "This tariff already exists"
 }

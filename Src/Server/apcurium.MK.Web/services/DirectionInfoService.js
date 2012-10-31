@@ -1,12 +1,13 @@
 ﻿(function () {
 
     TaxiHail.directionInfo = _.extend(Backbone.Events, {
-        getInfo: function (originLat, originLng, destLat, destLng) {
+        getInfo: function (originLat, originLng, destinationLat, destinationLng, date) {
             return $.get('api/directions/', {
-                OriginLat: originLat,
-                OriginLng: originLng,
-                DestinationLat: destLat,
-                DestinationLng: destLng
+                originLat: originLat,
+                originLng: originLng,
+                destinationLat: destinationLat,
+                destinationLng: destinationLng,
+                date: date
             },function(){}, 'json')
             .done(function(result){
                 result.callForPrice = (result.price > 100);

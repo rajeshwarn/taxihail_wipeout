@@ -30,8 +30,14 @@ namespace apcurium.MK.Booking.Api.Services
 
         public override object OnGet(DirectionsRequest request)
         {
-            var result = _client.GetDirection(request.OriginLat, request.OriginLng, request.DestinationLat, request.DestinationLng);
-            return new DirectionInfo { Distance = result.Distance, FormattedDistance = result.FormattedDistance, FormattedPrice = result.FormattedPrice, Price = result.Price };          
+            var result = _client.GetDirection(request.OriginLat, request.OriginLng, request.DestinationLat, request.DestinationLng, date: request.Date);
+            return new DirectionInfo
+            {
+                Distance = result.Distance,
+                FormattedDistance = result.FormattedDistance,
+                FormattedPrice = result.FormattedPrice,
+                Price = result.Price
+            };
         }
 
       

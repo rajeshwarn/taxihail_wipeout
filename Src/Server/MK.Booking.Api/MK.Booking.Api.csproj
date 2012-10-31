@@ -96,6 +96,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Providers\TariffProvider.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Providers\PopularAddressProvider.cs" />
     <Compile Include="Security\CustomTwitterAuthProvider.cs" />
@@ -124,7 +125,7 @@
     <Compile Include="Services\OrderService.cs" />
     <Compile Include="Services\OrderStatusService.cs" />
     <Compile Include="Services\Maps\PlaceDetailService.cs" />
-    <Compile Include="Services\RatesService.cs" />
+    <Compile Include="Services\TariffsService.cs" />
     <Compile Include="Services\PopularAddressService.cs" />
     <Compile Include="Services\ReferenceDataService.cs" />
     <Compile Include="Services\RegisterAccountService.cs" />
@@ -137,7 +138,7 @@
     <Compile Include="Services\UpdatePasswordService.cs" />
     <Compile Include="Validation\CreateOrderValidator.cs" />
     <Compile Include="Validation\DefaultFavoriteAddressValidator.cs" />
-    <Compile Include="Validation\RatesValidator.cs" />
+    <Compile Include="Validation\TariffValidator.cs" />
     <Compile Include="Validation\SaveFavoriteAddressValidator.cs" />
   </ItemGroup>
   <ItemGroup>

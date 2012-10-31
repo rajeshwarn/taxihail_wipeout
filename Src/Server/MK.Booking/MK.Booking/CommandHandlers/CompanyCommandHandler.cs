@@ -11,7 +11,7 @@ using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.CommandHandlers
 {
-    public class CompanyCommandHandler : ICommandHandler<CreateCompany>, ICommandHandler<CreateRate>, ICommandHandler<UpdateRate>, ICommandHandler<DeleteRate>, ICommandHandler<AddAppSettings>, ICommandHandler<UpdateAppSettings>
+    public class CompanyCommandHandler : ICommandHandler<CreateCompany>, ICommandHandler<CreateTariff>, ICommandHandler<UpdateTariff>, ICommandHandler<DeleteTariff>, ICommandHandler<AddAppSettings>, ICommandHandler<UpdateAppSettings>
     {
         private readonly IEventSourcedRepository<Company> _repository;
 
@@ -29,34 +29,34 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(AddAppSettings command)
         {
-            var company = _repository.Find(AppConstants.CompanyId);
+            var company = _repository.Find(command.CompanyId);
             company.AddAppSettings(command.Key, command.Value);
             _repository.Save(company,command.Id.ToString());
         }
 
         public void Handle(UpdateAppSettings command)
         {
-            var company = _repository.Find(AppConstants.CompanyId);
+            var company = _repository.Find(command.CompanyId);
             company.UpdateAppSettings(command.Key, command.Value);
             _repository.Save(company, command.Id.ToString());
         }
 
-        public void Handle(CreateRate command)
+        public void Handle(CreateTariff command)
         {
             var company = _repository.Get(command.CompanyId);
 
-            if(command.Type == RateType.Default)
+            if(command.Type == TariffType.Default)
             {
-                company.CreateDefaultRate(rateId: command.RateId,
+                company.CreateDefaultTariff(tariffId: command.TariffId,
                     name: command.Name,
                     flatRate: command.FlatRate,
                     distanceMultiplicator: command.DistanceMultiplicator,
                     timeAdustmentFactor: command.TimeAdjustmentFactor,
                     pricePerPassenger: command.PricePerPassenger);
             } 
-            else if (command.Type == RateType.Recurring)
+            else if (command.Type == TariffType.Recurring)
             {
-                company.CreateRecurringRate(rateId: command.RateId,
+                company.CreateRecurringTariff(tariffId: command.TariffId,
                     name: command.Name,
                     flatRate: command.FlatRate,
                     distanceMultiplicator: command.DistanceMultiplicator,
@@ -66,9 +66,9 @@ namespace apcurium.MK.Booking.CommandHandlers
                     startTime: command.StartTime,
                     endTime: command.EndTime);
             }
-            else if (command.Type == RateType.Day)
+            else if (command.Type == TariffType.Day)
             {
-                company.CreateDayRate(rateId: command.RateId,
+                company.CreateDayTariff(tariffId: command.TariffId,
                     name: command.Name,
                     flatRate: command.FlatRate,
                     distanceMultiplicator: command.DistanceMultiplicator,
@@ -81,11 +81,11 @@ namespace apcurium.MK.Booking.CommandHandlers
             _repository.Save(company, command.Id.ToString());
         }
 
-        public void Handle(UpdateRate command)
+        public void Handle(UpdateTariff command)
         {
             var company = _repository.Get(command.CompanyId);
 
-            company.UpdateRate(rateId: command.RateId,
+            company.UpdateTariff(tariffId: command.TariffId,
                     name: command.Name,
                     flatRate: command.FlatRate,
                     distanceMultiplicator: command.DistanceMultiplicator,
@@ -98,11 +98,11 @@ namespace apcurium.MK.Booking.CommandHandlers
             _repository.Save(company, command.Id.ToString());
         }
 
-        public void Handle(DeleteRate command)
+        public void Handle(DeleteTariff command)
         {
             var company = _repository.Get(command.CompanyId);
 
-            company.DeleteRate(command.RateId);
+            company.DeleteTariff(command.TariffId);
 
             _repository.Save(company, command.Id.ToString());
         }

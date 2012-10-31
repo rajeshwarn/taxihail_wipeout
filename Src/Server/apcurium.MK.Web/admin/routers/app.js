@@ -29,11 +29,11 @@
             "grantadmin": "grantAdminAccess",
             "managepopularaddresses": "managePopularAddresses",
             "settings" : "manageCompanySettings",
-            /* Rates */
-            "rates": "manageRates", //#rates
-            "rates/add/recurring": "addRecurringRate", //#rates/add/recurring
-            "rates/add/day": "addDayRate", //#rates/add/day
-            "rates/edit/:id": "editRate", //#rates/edit/{GUID}
+            /* Tariffs */
+            "tariffs": "manageTariffs", //#tariffs
+            "tariffs/add/recurring": "addRecurringTariff", //#tariffs/add/recurring
+            "tariffs/add/day": "addDayTariff", //#tariffs/add/day
+            "tariffs/edit/:id": "editTariff", //#tariffs/edit/{GUID}
             /* IBS exclusions */
             "exclusions": "manageIBSExclusions"
         },
@@ -93,20 +93,20 @@
             renderView(TaxiHail.GrantAdminAccessView);
         },
 
-        manageRates: function() {
-            TaxiHail.Controller.action(TaxiHail.RatesController, 'index');
+        manageTariffs: function() {
+            TaxiHail.Controller.action(TaxiHail.TariffsController, 'index');
         },
 
-        addRecurringRate: function() {
-            TaxiHail.Controller.action(TaxiHail.RatesController, 'addRecurring');
+        addRecurringTariff: function() {
+            TaxiHail.Controller.action(TaxiHail.TariffsController, 'addRecurring');
         },
 
-        addDayRate: function() {
-            TaxiHail.Controller.action(TaxiHail.RatesController, 'addDay');
+        addDayTariff: function() {
+            TaxiHail.Controller.action(TaxiHail.TariffsController, 'addDay');
         },
 
-        editRate: function(id) {
-            TaxiHail.Controller.action(TaxiHail.RatesController, 'edit', id);
+        editTariff: function(id) {
+            TaxiHail.Controller.action(TaxiHail.TariffsController, 'edit', id);
         },
 
         manageIBSExclusions: function() {

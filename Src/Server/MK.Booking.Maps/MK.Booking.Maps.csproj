@@ -63,7 +63,9 @@
     <Compile Include="Impl\Addresses.cs" />
     <Compile Include="Impl\Mappers\GeoObjToAddressMapper.cs" />
     <Compile Include="Impl\Places.cs" />
+    <Compile Include="Impl\PriceCalculator.cs" />
     <Compile Include="IPlaces.cs" />
+    <Compile Include="IPriceCalculator.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -27,29 +27,5 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
             this.sut.Given(new AppSettingsAdded(){Key = "Key.Default", Value = "Value.Default"});
         }
 
-        [Test]
-        public void when_appsettings_added_successfully()
-        {
-            this.sut.When(new AddAppSettings() { Key = "Key.hi", Value = "Value.hi"});
-
-            Assert.AreEqual(1, sut.Events.Count);
-            var evt = (AppSettingsAdded)sut.Events.Single();
-            Assert.AreEqual(_companyId, evt.SourceId);
-            Assert.AreEqual("Key.hi", evt.Key);
-            Assert.AreEqual("Value.hi", evt.Value);
-        }
-
-        [Test]
-        public void when_appsettings_updated_successfully()
-        {
-            this.sut.When(new UpdateAppSettings() { Key = "Key.Default", Value = "Value.newValue" });
-
-            Assert.AreEqual(1, sut.Events.Count);
-            var evt = (AppSettingsUpdated)sut.Events.Single();
-            Assert.AreEqual(_companyId, evt.SourceId);
-            Assert.AreEqual("Key.Default", evt.Key);
-            Assert.AreEqual("Value.newValue", evt.Value);
-
-        }
     }
 }

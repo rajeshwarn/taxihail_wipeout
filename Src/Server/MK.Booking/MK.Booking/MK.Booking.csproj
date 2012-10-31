@@ -95,7 +95,7 @@
     <Compile Include="EventHandlers\AddressListGenerator.cs" />
     <Compile Include="EventHandlers\AppSettingsGenerator.cs" />
     <Compile Include="EventHandlers\OrderGenerator.cs" />
-    <Compile Include="EventHandlers\RateDetailsGenerator.cs" />
+    <Compile Include="EventHandlers\TariffDetailsGenerator.cs" />
     <Compile Include="Logging\Log4NetTraceListenerAdapter.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -114,12 +114,12 @@
     <Compile Include="ReadModel\Query\IAddressDao.cs" />
     <Compile Include="ReadModel\Query\IDefaultAddressDao.cs" />
     <Compile Include="ReadModel\Query\IOrderDao.cs" />
-    <Compile Include="ReadModel\Query\IRateDao.cs" />
+    <Compile Include="ReadModel\Query\ITariffDao.cs" />
     <Compile Include="ReadModel\Query\IPopularAddressDao.cs" />
     <Compile Include="ReadModel\Query\OrderDao.cs" />
-    <Compile Include="ReadModel\Query\RateDao.cs" />
+    <Compile Include="ReadModel\Query\TariffDao.cs" />
     <Compile Include="ReadModel\Query\PopularAddressDao.cs" />
-    <Compile Include="ReadModel\RateDetail.cs" />
+    <Compile Include="ReadModel\TariffDetail.cs" />
     <Compile Include="ReadModel\RateOrderDetails.cs" />
     <Compile Include="ReadModel\RatingScoreDetails.cs" />
     <Compile Include="Security\IPasswordService.cs" />
