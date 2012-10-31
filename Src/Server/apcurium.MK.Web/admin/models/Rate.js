@@ -7,7 +7,7 @@
             flatRate: 0,
             pricePerPassenger: 0,
             distanceMultiplicator: 0,
-            timeAdjustmentFactor: 10,
+            timeAdjustmentFactor: 20,
             startTime: null,
             endTime: null,
             daysOfTheWeek: 0

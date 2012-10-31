@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.Maps.Impl
         }
 
 
-        public Direction GetDirection(double? originLat, double? originLng, double? destinationLat, double? destinationLng)
+        public Direction GetDirection(double? originLat, double? originLng, double? destinationLat, double? destinationLng, DateTime? date = default(DateTime?))
         {
             var result = new Direction();
             var directions = _client.GetDirections(originLat.GetValueOrDefault(), originLng.GetValueOrDefault(), destinationLat.GetValueOrDefault(), destinationLng.GetValueOrDefault());
@@ -44,8 +44,8 @@ namespace apcurium.MK.Booking.Maps.Impl
                 {
                     var distance = route.Legs.Sum(leg => leg.Distance.Value);
                     
-                    result.Distance = distance;                                        
-                    result.Price = _priceCalculator.GetPrice(distance, DateTime.Now);
+                    result.Distance = distance;
+                    result.Price = _priceCalculator.GetPrice(distance, date ?? DateTime.Now);
 
                     result.FormattedPrice = FormatPrice(result.Price);
                     result.FormattedDistance = FormatDistance(result.Distance);
