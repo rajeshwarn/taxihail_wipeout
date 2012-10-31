@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading;
 using log4net;
 using MK.ConfigurationManager.Entities;
@@ -6,6 +7,9 @@ using System.IO;
 using System.Diagnostics;
 using apcurium.MK.Booking.ConfigTool;
 using System.Collections.Generic;
+using System.Text;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace MK.DeploymentService.Mobile
 {
@@ -49,12 +53,19 @@ namespace MK.DeploymentService.Mobile
 					db.Update("[MkConfig].[DeploymentJob]", "Id", new { status = JobStatus.INPROGRESS }, job.Id);
 
 					var sourceDirectory = Path.Combine(Path.GetTempPath(), "TaxiHailSource");
+					var releaseiOSDir = Path.Combine(sourceDirectory, "Src", "Mobile", "iOS", "bin", "iPhone", "Release");
+					if(Directory.Exists(releaseiOSDir)) Directory.Delete(releaseiOSDir, true);
+
+					var releaseAndroidDir = Path.Combine(sourceDirectory, "Src", "Mobile", "Android", "bin", "Release");
+					if(Directory.Exists(releaseAndroidDir)) Directory.Delete(releaseAndroidDir, true);
 
 					FetchSource(job, sourceDirectory, company);
 
-					Customize (sourceDirectory, company);
+					Customize (sourceDirectory, company, taxiHailEnv);
 
 					Build(job, sourceDirectory, company);
+
+					Deploy(job, sourceDirectory, company, releaseiOSDir, releaseAndroidDir);
 
 					db.Update("[MkConfig].[DeploymentJob]", "Id", new { status = JobStatus.SUCCESS }, job.Id);
 				}
@@ -67,6 +78,21 @@ namespace MK.DeploymentService.Mobile
 		public void Stop()
 		{
 			timer.Change(Timeout.Infinite, Timeout.Infinite);
+		}
+
+		void Deploy (DeploymentJob job, string sourceDirectory, Company company, string ipaPath, string apkPath)
+		{
+			if (job.Android) {
+			}
+
+			if (job.iOS) {
+				var releaseIosDir = Path.Combine(sourceDirectory, "Src", "Mobile", "iOS", "bin", "iPhone", "Release");
+				var ipaFile = Directory.EnumerateFiles(ipaPath, "*.ipa", SearchOption.TopDirectoryOnly).FirstOrDefault();
+				if(ipaFile != null)
+				{
+
+				}
+			}
 		}
 
 		private void FetchSource (DeploymentJob job, string sourceDirectory, Company company)
@@ -121,8 +147,30 @@ namespace MK.DeploymentService.Mobile
 
 		}
 
-		void Customize (string sourceDirectory, Company company)
+		void Customize (string sourceDirectory, Company company, TaxiHailEnvironment taxiHailEnv)
 		{
+			logger.DebugFormat ("Generate Settings");
+
+			var jsonSettings = new JObject ();
+			foreach (var setting in company.MobileConfigurationProperties) {
+				jsonSettings.Add (setting.Key, JToken.FromObject (setting.Value));
+			}
+
+			var serviceUrl = string.Format ("{0}/{1}/api/", taxiHailEnv.Url, company.ConfigurationProperties["TaxiHail.ServerCompanyName"]);
+
+			if (company.MobileConfigurationProperties.ContainsKey ("ServiceUrl")) 
+			{
+				jsonSettings["ServiceUrl"] = JToken.FromObject(serviceUrl);
+			} else 
+			{
+				jsonSettings.Add("ServiceUrl", JToken.FromObject(serviceUrl));
+			}
+			
+			var jsonSettingsFile = Path.Combine(sourceDirectory, "Config" , company.Name, "Settings.json");
+			var stringBuilder = new StringBuilder();
+			jsonSettings.WriteTo(new JsonTextWriter(new StringWriter(stringBuilder)));
+			File.WriteAllText(jsonSettingsFile, stringBuilder.ToString());
+
 			logger.DebugFormat ("Run Customization");
 
 			var configCompanyFolder = Path.Combine (sourceDirectory, "Config", company.Name);

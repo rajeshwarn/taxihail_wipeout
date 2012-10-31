@@ -51,6 +51,9 @@
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>packages\Newtonsoft.Json.4.5.10\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -102,6 +105,7 @@
     <Compile Include="..\..\ConfigTool\apcurium.MK.Booking.ConfigTool.Console\PathConverter.cs">
       <Link>ConfigTool\PathConverter.cs</Link>
     </Compile>
+    <Compile Include="FileUploader.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
