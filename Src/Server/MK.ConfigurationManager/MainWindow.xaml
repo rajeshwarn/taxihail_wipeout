@@ -25,6 +25,7 @@
                         <StackPanel Orientation="Horizontal">
                             <Button Content="Save" HorizontalAlignment="Left" Margin="10,10,10,10" Width="200" Click="SaveCompany" />
                             <Button Content="Generate keystore and google map key" HorizontalAlignment="Left" Margin="10,10,10,10" Width="250" x:Name="GenerateKeyStoreAndMapKey" Click="GenerateKeyStoreAndMapKey_Click" />
+                            <Button Content="Import mobile template Settings" HorizontalAlignment="Left" Margin="10,10,10,10" Width="250" x:Name="ImportMobileSettings" Click="ImportMobileSettings_Click" />
                         </StackPanel>
                         
                     </StackPanel>

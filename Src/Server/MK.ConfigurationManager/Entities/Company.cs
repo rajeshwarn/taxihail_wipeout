@@ -46,7 +46,7 @@ namespace MK.ConfigurationManager.Entities
             }
         }
 
-        public string MObileDictionaryAsXml
+        public string MobileDictionaryAsXml
         {
             get
             {

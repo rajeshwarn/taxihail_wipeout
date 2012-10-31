@@ -298,5 +298,25 @@ namespace MK.ConfigurationManager
                 }
             }
         }
+
+        
+
+        private void ImportMobileSettings_Click(object sender, RoutedEventArgs e)
+        {
+            var dlg = new Microsoft.Win32.OpenFileDialog();
+            var result = dlg.ShowDialog();
+            if (result == true)
+            {
+                var filename = dlg.FileName;
+                var jsonSettings = File.ReadAllText(filename);
+                var objectSettings = JObject.Parse(jsonSettings);
+
+                foreach (var token in objectSettings)
+                {
+                    MobileConfigurationProperties.Add(new MyCustomKeyValuePair(token.Key, token.Value.ToString()));
+                }
+            }
+
+        }
     }
 }
