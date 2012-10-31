@@ -52,7 +52,9 @@ namespace MK.DeploymentService.Mobile
 
 					FetchSource(job, sourceDirectory, company);
 
-					CustomizeAndBuild(job, sourceDirectory, company);
+					Customize (sourceDirectory, company);
+
+					Build(job, sourceDirectory, company);
 
 					db.Update("[MkConfig].[DeploymentJob]", "Id", new { status = JobStatus.SUCCESS }, job.Id);
 				}
@@ -119,14 +121,20 @@ namespace MK.DeploymentService.Mobile
 
 		}
 
-		private void CustomizeAndBuild (DeploymentJob job, string sourceDirectory, Company company)
+		void Customize (string sourceDirectory, Company company)
 		{
-			//Customization of the app
 			logger.DebugFormat ("Run Customization");
+
 			var configCompanyFolder = Path.Combine (sourceDirectory, "Config", company.Name);
 			var sourceFolder = Path.Combine (sourceDirectory, "Src");
 			var appConfigTool = new AppConfig (company.Name, configCompanyFolder, sourceFolder);
 			appConfigTool.Apply ();
+			logger.DebugFormat ("Customization Finished");
+		}
+
+		private void Build (DeploymentJob job, string sourceDirectory, Company company)
+		{
+
 			
 			//Build
 			logger.DebugFormat ("Launch Customization");
