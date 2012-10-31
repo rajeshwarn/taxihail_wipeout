@@ -83,6 +83,7 @@
     <Compile Include="Entity\ListItem.cs" />
     <Compile Include="Entity\Tariff.cs" />
     <Compile Include="Entity\TariffType.cs" />
+    <Compile Include="Entity\RatingScore.cs" />
     <Compile Include="Entity\ServiceConfigurationSettingConnectionFactory.cs" />
     <Compile Include="Enumeration\AppSettingsType.cs" />
     <Compile Include="Extensions\AssemblyExtensions.cs" />
