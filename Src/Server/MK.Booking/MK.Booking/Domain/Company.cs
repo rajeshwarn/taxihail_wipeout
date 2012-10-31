@@ -6,6 +6,7 @@ using Infrastructure.EventSourcing;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Domain
 {
@@ -42,11 +43,15 @@ namespace apcurium.MK.Booking.Domain
             base.Handles<CompanyCreated>(OnEventDoNothing);
             base.Handles<AppSettingsAdded>(OnEventDoNothing);
             base.Handles<AppSettingsUpdated>(OnEventDoNothing);
+
             base.Handles<RateCreated>(OnRateCreated);
             base.Handles<RateUpdated>(OnEventDoNothing);
             base.Handles<RateDeleted>(OnEventDoNothing);
-        }
 
+            base.Handles<RatingTypeAdded>(OnEventDoNothing);
+            base.Handles<RatingTypeHidded>(OnEventDoNothing);
+            base.Handles<RatingTypeUpdated>(OnEventDoNothing);
+        }
 
         public void AddDefaultFavoriteAddress(Guid id, string friendlyName, string apartment, string fullAddress, string ringCode, string buildingName, double latitude, double longitude)
         {
@@ -147,6 +152,38 @@ namespace apcurium.MK.Booking.Domain
             {
                 Key = key,
                 Value = value,
+            });
+        }
+
+        public void AddRatingType(string name, Guid ratingTypeId)
+        {
+            if(name.IsNullOrEmpty())
+                throw new ArgumentException("Rating name cannot be null or empty");
+
+            Update(new RatingTypeAdded()
+                       {
+                           Name = name,
+                           RatingTypeId = ratingTypeId
+                       });
+        }
+
+        public void UpdateRatingType(string name, Guid ratingTypeId)
+        {
+            if (name.IsNullOrEmpty())
+                throw new ArgumentException("Rating name cannot be null or empty");
+
+            Update(new RatingTypeUpdated()
+            {
+                Name = name,
+                RatingTypeId = ratingTypeId
+            });
+        }
+
+        public void HideRatingType(Guid ratingTypeId)
+        {
+            Update(new RatingTypeHidded
+            {
+                RatingTypeId = ratingTypeId
             });
         }
 
@@ -253,11 +290,9 @@ namespace apcurium.MK.Booking.Domain
             }
         }
 
-        
         private void OnEventDoNothing<T>(T @event) where T: VersionedEvent
         {
             // Do nothing
         }
-        
     }
 }

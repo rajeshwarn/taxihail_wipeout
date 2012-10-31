@@ -52,10 +52,12 @@
     <Compile Include="AddFavoriteAddress.cs" />
     <Compile Include="AddPopularAddress.cs" />
     <Compile Include="CancelOrder.cs" />
+    <Compile Include="AddRatingType.cs" />
     <Compile Include="CompleteOrder.cs" />
     <Compile Include="ConfirmAccount.cs" />
     <Compile Include="CreateRate.cs" />
     <Compile Include="DeleteRate.cs" />
+    <Compile Include="HideRatingType.cs" />
     <Compile Include="RemovePopularAddress.cs" />
     <Compile Include="SendBookingConfirmationEmail.cs" />
     <Compile Include="CreateCompany.cs" />
@@ -81,6 +83,7 @@
     <Compile Include="UpdateFavoriteAddress.cs" />
     <Compile Include="UpdatePopularAddress.cs" />
     <Compile Include="UpdateRate.cs" />
+    <Compile Include="UpdateRatingType.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Infrastructure\Infrastructure\Infrastructure.csproj">

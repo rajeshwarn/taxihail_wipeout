@@ -96,6 +96,7 @@
     <Compile Include="EventHandlers\AppSettingsGenerator.cs" />
     <Compile Include="EventHandlers\OrderGenerator.cs" />
     <Compile Include="EventHandlers\RateDetailsGenerator.cs" />
+    <Compile Include="EventHandlers\RatingTypeDetailsGenerator.cs" />
     <Compile Include="Logging\Log4NetTraceListenerAdapter.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -103,6 +104,9 @@
     <Compile Include="ReadModel\AccountDetail.cs" />
     <Compile Include="ReadModel\BookingSetting.cs" />
     <Compile Include="ReadModel\AddressDetails.cs" />
+    <Compile Include="ReadModel\Query\IRatingTypeDao.cs" />
+    <Compile Include="ReadModel\Query\RatingTypeDao.cs" />
+    <Compile Include="ReadModel\RatingTypeDetail.cs" />
     <Compile Include="ReadModel\DefaultAddressDetails.cs" />
     <Compile Include="ReadModel\OrderDetail.cs" />
     <Compile Include="ReadModel\OrderStatus.cs" />
