@@ -14,6 +14,7 @@
         }
     }, {
         type: {
+            'default': 0,
             recurring: 1,
             day: 2
         }

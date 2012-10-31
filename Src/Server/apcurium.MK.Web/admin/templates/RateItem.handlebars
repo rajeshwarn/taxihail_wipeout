@@ -1,15 +1,24 @@
-<td>{{name}}</td>
-{{#if recurring}}
-<td>{{daysOfTheWeek}}</td>
+
+{{#if isDefault}}
+    <td>{{localize "Default"}}</td>
+    <td>-</td>
+    <td>-</td>
 {{else}}
-<td>{{niceDate startTime}}</td>
+    <td>{{name}}</td>
+    {{#if recurring}}
+    <td>{{daysOfTheWeek}}</td>
+    {{else}}
+    <td>{{niceDate startTime}}</td>
+    {{/if}}
+    <td>{{niceTime startTime}}&nbsp;-&nbsp;{{niceTime endTime}}</td>
 {{/if}}
-<td>{{niceTime startTime}}&nbsp;-&nbsp;{{niceTime endTime}}</td>
-<td>
-    <a type='button' class='btn btn-mini' href='#rates/edit/{{id}}'>
-        <i class="icon-edit icon-white"></i>
-    </a>
-    <button type='button' class='btn btn-mini btn-danger' data-action='delete'>
-        <i class="icon-trash icon-white"></i>
-    </button>
-</td>
+    <td>
+        <a type='button' class='btn btn-mini' href='#rates/edit/{{id}}'>
+            <i class="icon-edit icon-white"></i>
+        </a>
+        {{#unless isDefault}}
+        <button type='button' class='btn btn-mini btn-danger' data-action='delete'>
+            <i class="icon-trash icon-white"></i>
+        </button>
+        {{/unless}}
+    </td>

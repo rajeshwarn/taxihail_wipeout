@@ -1,6 +1,3 @@
 {
-    "Flat Rate" : "Flat Rate",
-    "Distance Multiplicator" : "Distance Multiplicator",
-    "Time Adjustment Factor" : "Time Adjustment Factor",
-    "Price Per Passenger" : "Price Per Passenger"
+    "Default": "Default"
 }
