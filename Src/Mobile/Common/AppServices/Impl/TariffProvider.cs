@@ -9,22 +9,22 @@ using apcurium.MK.Common.Provider;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
-    public class RateProvider: BaseService, IRateProvider
+    public class TariffProvider: BaseService, ITariffProvider
     {
         private readonly ICacheService _cacheService;
 
-        const string CacheKey = "Company.Rates";
+        const string CacheKey = "Company.Tariffs";
 
-        public RateProvider(ICacheService cacheService)
+        public TariffProvider(ICacheService cacheService)
         {
             _cacheService = cacheService;
             _cacheService.Clear(CacheKey);
         }
 
-        public IEnumerable<Rate> GetRates()
+        public IEnumerable<Tariff> GetTariffs()
         {
 
-            var cached = _cacheService.Get<Rate[]>(CacheKey);
+            var cached = _cacheService.Get<Tariff[]>(CacheKey);
 
             if (cached != null)
             {
@@ -33,10 +33,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             else
             {
 
-                IEnumerable<Rate> result = new Rate[0];
-                UseServiceClient<RatesServiceClient>(service =>
+                IEnumerable<Tariff> result = new Tariff[0];
+                UseServiceClient<TariffsServiceClient>(service =>
                 {
-                    result = service.GetRates();
+                    result = service.GetTariffs();
                 }
                     );
                 _cacheService.Set(CacheKey, result.ToArray());

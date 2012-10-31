@@ -33,11 +33,11 @@ namespace apcurium.MK.Web.Tests
             base.Setup();
             CreateAndAuthenticateTestAdminAccount();
             var sut = new TariffsServiceClient(BaseUrl, SessionId);
-            sut.CreateTariff(new Tariff
+            sut.CreateTariff(new Common.Entity.Tariff
             {
                 Id = (_knownTariffId = Guid.NewGuid()),
-                Type = TariffType.Recurring,
-                DaysOfTheWeek = DayOfTheWeek.Sunday,
+                Type = (int)TariffType.Recurring,
+                DaysOfTheWeek = (int)DayOfTheWeek.Sunday,
                 StartTime =DateTime.MinValue.AddHours(2),
                 EndTime = DateTime.MinValue.AddHours(3),
                 Name = "Rate "  + Guid.NewGuid().ToString(),
@@ -54,11 +54,11 @@ namespace apcurium.MK.Web.Tests
             var tariffId = Guid.NewGuid();
             var sut = new TariffsServiceClient(BaseUrl, SessionId);
 
-            sut.CreateTariff(new Tariff
+            sut.CreateTariff(new Common.Entity.Tariff
             {
                 Id = tariffId,
-                Type = TariffType.Recurring,
-                DaysOfTheWeek = DayOfTheWeek.Sunday,
+                Type = (int)TariffType.Recurring,
+                DaysOfTheWeek = (int)DayOfTheWeek.Sunday,
                 StartTime = DateTime.MinValue.AddHours(2),
                 EndTime = DateTime.MinValue.AddHours(3),
                 Name = "Rate " + tariffId.ToString(),

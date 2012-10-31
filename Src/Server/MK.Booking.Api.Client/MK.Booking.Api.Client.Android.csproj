@@ -61,9 +61,9 @@
     <Compile Include="OrderServiceClient.cs" />
     <Compile Include="PopularAddressesServiceClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RatesServiceClient.cs" />
     <Compile Include="ReferenceDataServiceClient.cs" />
     <Compile Include="ApplicationInfoServiceClient.cs" />
+    <Compile Include="TariffsServiceClient.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

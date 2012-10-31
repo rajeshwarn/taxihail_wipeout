@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Api.Client
 {

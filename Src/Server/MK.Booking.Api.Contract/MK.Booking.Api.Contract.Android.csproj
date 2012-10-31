@@ -71,13 +71,13 @@
     <Compile Include="Requests\OrderRequest.cs" />
     <Compile Include="Requests\OrderStatusRequest.cs" />
     <Compile Include="Requests\PlaceDetailRequest.cs" />
-    <Compile Include="Requests\Rates.cs" />
     <Compile Include="Requests\ReferenceDataRequest.cs" />
     <Compile Include="Requests\RegisterAccount.cs" />
     <Compile Include="Requests\ResetPassword.cs" />
     <Compile Include="Requests\SaveAddress.cs" />
     <Compile Include="Requests\SearchLocationsRequest.cs" />
     <Compile Include="Requests\SendReceipt.cs" />
+    <Compile Include="Requests\Tariff.cs" />
     <Compile Include="Requests\TestOnlyReqGetTestAccount.cs" />
     <Compile Include="Requests\UpdatePassword.cs" />
     <Compile Include="Resources\Account.cs" />

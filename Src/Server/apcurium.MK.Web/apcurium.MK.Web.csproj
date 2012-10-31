@@ -151,7 +151,6 @@
     <Content Include="admin\controllers\Controller.js" />
     <Content Include="admin\controllers\ExclusionsController.js" />
     <Content Include="admin\controllers\TariffsController.js" />
-    <Content Include="admin\models\Rate.js" />
     <Content Include="admin\models\Tariff.js" />
     <Content Include="admin\localization\EditTariff.json" />
     <Content Include="admin\localization\ManageExclusions.json" />
