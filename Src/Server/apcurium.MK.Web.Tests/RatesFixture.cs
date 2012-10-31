@@ -71,7 +71,7 @@ namespace apcurium.MK.Web.Tests
 
             Assert.AreEqual(1, rates.Count(x => x.Id == rateId));
             var rate = rates.Single(x => x.Id == rateId);
-            Assert.AreEqual(DayOfTheWeek.Sunday, rate.DaysOfTheWeek);
+            Assert.AreEqual((int)DayOfTheWeek.Sunday, rate.DaysOfTheWeek);
             Assert.AreEqual("Rate " + rateId.ToString(), rate.Name);
             Assert.AreEqual(2, rate.StartTime.Hour);
             Assert.AreEqual(3, rate.EndTime.Hour);

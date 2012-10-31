@@ -6,7 +6,6 @@ using System.Text;
 using AutoMapper;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Provider;
 
@@ -14,12 +13,10 @@ namespace apcurium.MK.Booking.Api.Providers
 {
     public class RateProvider : IRateProvider
     {
-        private readonly IConfigurationManager _configManager;
         private readonly IRateDao _rateDao;
 
-        public RateProvider(IConfigurationManager configManager, IRateDao rateDao)
+        public RateProvider(IRateDao rateDao)
         {
-            _configManager = configManager;
             _rateDao = rateDao;
         }
 

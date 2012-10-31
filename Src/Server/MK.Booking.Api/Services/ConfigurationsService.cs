@@ -64,18 +64,17 @@ namespace apcurium.MK.Booking.Api.Services
 
         public override object OnPut(ConfigurationsRequest request)
         {
-
             var setting = _configManager.GetSetting(request.Key);
 
             if (setting != null)
             {
                 var command = new Commands.UpdateAppSettings { CompanyId = AppConstants.CompanyId,  Key = request.Key, Value = request.Value };
                 _commandBus.Send(command);
-                return new HttpResult(HttpStatusCode.OK, "OK");
+                return new HttpResult(HttpStatusCode.OK);
             }
             else
             {
-                return new HttpResult(HttpStatusCode.Conflict, "Conflict");
+                return new HttpResult(HttpStatusCode.BadRequest);
             }
         }
 
