@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.Database
             modelBuilder.Entity<RatingTypeDetail>().ToTable("RatingTypeDetail", SchemaName);
             modelBuilder.Entity<DefaultAddressDetails>().ToTable("DefaultAddressDetails", SchemaName);
             modelBuilder.Entity<PopularAddressDetails>().ToTable("PopularAddressDetails", SchemaName);
-            modelBuilder.Entity<RateOrderDetails>().ToTable("RateOrderDetails", SchemaName);
+            modelBuilder.Entity<OrderRatingDetails>().ToTable("OrderRatingDetails", SchemaName);
             modelBuilder.Entity<RatingScoreDetails>().ToTable("RatingScoreDetails", SchemaName);
         }
 

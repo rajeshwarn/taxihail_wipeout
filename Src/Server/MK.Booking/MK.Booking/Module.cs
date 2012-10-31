@@ -34,6 +34,8 @@ namespace apcurium.MK.Booking
             container.RegisterInstance<IDefaultAddressDao>(new DefaultAddressDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IRateDao>(new RateDao(() => container.Resolve<BookingDbContext>()));
 
+            container.RegisterInstance<IOrderRatingsDao>(new OrderRatingsDao(() => container.Resolve<BookingDbContext>()));
+
             container.RegisterInstance<IRatingTypeDao>(new RatingTypeDao(() => container.Resolve<BookingDbContext>()));
 
             container.RegisterInstance<IPopularAddressDao>(new PopularAddressDao(() => container.Resolve<BookingDbContext>()));

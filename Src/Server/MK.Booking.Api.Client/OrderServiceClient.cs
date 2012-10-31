@@ -59,5 +59,17 @@ namespace apcurium.MK.Booking.Api.Client
             var result = Client.Get<OrderStatusDetail>(req);
             return result;
         }
+
+        public void RateOrder(OrderRatingsRequest orderRatingRequest)
+        {
+            Client.Post<string>("/ratings/", orderRatingRequest);
+        }
+
+        public OrderRatings GetOrderRatings(Guid orderId)
+        {
+            var req = string.Format("/ratings/{0}", orderId);
+
+            return Client.Get<OrderRatings>(req);
+        }
     }
 }

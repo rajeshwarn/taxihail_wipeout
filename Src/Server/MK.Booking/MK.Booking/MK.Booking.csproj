@@ -104,7 +104,9 @@
     <Compile Include="ReadModel\AccountDetail.cs" />
     <Compile Include="ReadModel\BookingSetting.cs" />
     <Compile Include="ReadModel\AddressDetails.cs" />
+    <Compile Include="ReadModel\Query\IOrderRatingsDao.cs" />
     <Compile Include="ReadModel\Query\IRatingTypeDao.cs" />
+    <Compile Include="ReadModel\Query\OrderRatingsDao.cs" />
     <Compile Include="ReadModel\Query\RatingTypeDao.cs" />
     <Compile Include="ReadModel\RatingTypeDetail.cs" />
     <Compile Include="ReadModel\DefaultAddressDetails.cs" />
@@ -124,7 +126,7 @@
     <Compile Include="ReadModel\Query\RateDao.cs" />
     <Compile Include="ReadModel\Query\PopularAddressDao.cs" />
     <Compile Include="ReadModel\RateDetail.cs" />
-    <Compile Include="ReadModel\RateOrderDetails.cs" />
+    <Compile Include="ReadModel\OrderRatingDetails.cs" />
     <Compile Include="ReadModel\RatingScoreDetails.cs" />
     <Compile Include="Security\IPasswordService.cs" />
     <Compile Include="Security\PasswordService.cs" />

@@ -6,7 +6,7 @@ using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.CommandHandlers
 {
-    public class OrderCommandHandler : ICommandHandler<CreateOrder>, ICommandHandler<CancelOrder>, ICommandHandler<CompleteOrder>, ICommandHandler<RemoveOrderFromHistory>
+    public class OrderCommandHandler : ICommandHandler<CreateOrder>, ICommandHandler<CancelOrder>, ICommandHandler<CompleteOrder>, ICommandHandler<RemoveOrderFromHistory>, ICommandHandler<RateOrder>
     {
         private readonly IEventSourcedRepository<Order> _repository;
 
@@ -42,6 +42,13 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var order = _repository.Find(command.OrderId);
             order.RemoveFromHistory();
+            _repository.Save(order, command.Id.ToString());
+        }
+
+        public void Handle(RateOrder command)
+        {
+            var order = _repository.Find(command.OrderId);
+            order.RateOrder(command.Note, command.RatingScores);
             _repository.Save(order, command.Id.ToString());
         }
     }

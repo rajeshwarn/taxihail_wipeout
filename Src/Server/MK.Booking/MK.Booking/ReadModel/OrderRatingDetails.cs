@@ -6,7 +6,7 @@ using System.Text;
 
 namespace apcurium.MK.Booking.ReadModel
 {
-    public class RateOrderDetails
+    public class OrderRatingDetails
     {
         [Key]
         public Guid Id { get; set; }
