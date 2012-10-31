@@ -56,6 +56,7 @@
     <Compile Include="ConfirmAccount.cs" />
     <Compile Include="CreateRate.cs" />
     <Compile Include="DeleteRate.cs" />
+    <Compile Include="RateOrder.cs" />
     <Compile Include="RemovePopularAddress.cs" />
     <Compile Include="SendBookingConfirmationEmail.cs" />
     <Compile Include="CreateCompany.cs" />
