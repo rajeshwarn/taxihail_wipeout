@@ -124,6 +124,8 @@
     <Compile Include="ReadModel\Query\RateDao.cs" />
     <Compile Include="ReadModel\Query\PopularAddressDao.cs" />
     <Compile Include="ReadModel\RateDetail.cs" />
+    <Compile Include="ReadModel\RateOrderDetails.cs" />
+    <Compile Include="ReadModel\RatingScoreDetails.cs" />
     <Compile Include="Security\IPasswordService.cs" />
     <Compile Include="Security\PasswordService.cs" />
     <Compile Include="Security\RolesPermissions.cs" />
