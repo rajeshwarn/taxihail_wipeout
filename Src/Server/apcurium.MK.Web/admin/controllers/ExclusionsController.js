@@ -5,7 +5,11 @@
 
             this.referenceData = new TaxiHail.ReferenceData();
             this.settings = new TaxiHail.CompanySettingsCollection();
-            $.when(this.referenceData.fetch(), this.settings.fetch({
+            $.when(this.referenceData.fetch( {
+                data: {
+                    withoutFiltering: true
+                }
+            }), this.settings.fetch({
                 data: {
                     appSettingsType: 1
                 }
