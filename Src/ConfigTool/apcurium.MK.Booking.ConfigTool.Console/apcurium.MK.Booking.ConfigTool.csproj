@@ -44,9 +44,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppInfo.cs" />
     <Compile Include="Config.cs" />
-    <Compile Include="ConfigKeyStore.cs" />
     <Compile Include="ConfigFile.cs" />
     <Compile Include="AppConfig.cs" />
     <Compile Include="ConfigXML.cs" />

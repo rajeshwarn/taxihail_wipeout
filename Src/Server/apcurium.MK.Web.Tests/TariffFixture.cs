@@ -41,10 +41,10 @@ namespace apcurium.MK.Web.Tests
                 StartTime =DateTime.MinValue.AddHours(2),
                 EndTime = DateTime.MinValue.AddHours(3),
                 Name = "Rate "  + Guid.NewGuid().ToString(),
-                DistanceMultiplicator = 1.1,
+                KilometricRate = 1.1,
                 FlatRate = 1.2m,
-                PricePerPassenger = 1.3m,
-                TimeAdjustmentFactor = 1.4
+                PassengerRate = 1.3m,
+                MarginOfError = 1.4
             });
         }
 
@@ -62,10 +62,10 @@ namespace apcurium.MK.Web.Tests
                 StartTime = DateTime.MinValue.AddHours(2),
                 EndTime = DateTime.MinValue.AddHours(3),
                 Name = "Rate " + tariffId.ToString(),
-                DistanceMultiplicator = 1.1,
+                KilometricRate = 1.1,
                 FlatRate = 1.2m,
-                PricePerPassenger = 1.3m,
-                TimeAdjustmentFactor = 1.4
+                PassengerRate = 1.3m,
+                MarginOfError = 1.4
             });
 
             var rates = sut.GetTariffs();
@@ -76,10 +76,10 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual("Rate " + tariffId.ToString(), rate.Name);
             Assert.AreEqual(2, rate.StartTime.Hour);
             Assert.AreEqual(3, rate.EndTime.Hour);
-            Assert.AreEqual(1.1, rate.DistanceMultiplicator);
+            Assert.AreEqual(1.1, rate.KilometricRate);
             Assert.AreEqual(1.2m, rate.FlatRate);
-            Assert.AreEqual(1.3m, rate.PricePerPassenger);
-            Assert.AreEqual(1.4, rate.TimeAdjustmentFactor);
+            Assert.AreEqual(1.3m, rate.PassengerRate);
+            Assert.AreEqual(1.4, rate.MarginOfError);
             
         }
 

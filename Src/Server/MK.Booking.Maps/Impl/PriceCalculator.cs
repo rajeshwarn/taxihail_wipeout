@@ -38,7 +38,7 @@ namespace apcurium.MK.Booking.Maps.Impl
                     {
                         decimal d = 1;
                         
-                        price = ((double)tariff.FlatRate + (km*tariff.DistanceMultiplicator))*(1 + tariff.TimeAdjustmentFactor/100);
+                        price = ((double)tariff.FlatRate + (km*tariff.KilometricRate))*(1 + tariff.MarginOfError/100);
                     }
                     else
                     {

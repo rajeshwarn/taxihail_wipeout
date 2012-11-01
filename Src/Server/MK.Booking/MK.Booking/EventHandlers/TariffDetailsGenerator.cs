@@ -29,9 +29,9 @@ namespace apcurium.MK.Booking.EventHandlers
                     Id = @event.TariffId,
                     Name = @event.Name,
                     FlatRate = @event.FlatRate,
-                    DistanceMultiplicator = @event.DistanceMultiplicator,
-                    TimeAdjustmentFactor = @event.TimeAdjustmentFactor,
-                    PricePerPassenger = @event.PricePerPassenger,
+                    KilometricRate = @event.KilometricRate,
+                    MarginOfError = @event.MarginOfError,
+                    PassengerRate = @event.PassengerRate,
                     DaysOfTheWeek = (int)@event.DaysOfTheWeek,
                     StartTime =  @event.StartTime < (DateTime)SqlDateTime.MinValue ? (DateTime)SqlDateTime.MinValue:  @event.StartTime,
                     EndTime = @event.EndTime < (DateTime)SqlDateTime.MinValue ? (DateTime)SqlDateTime.MinValue : @event.EndTime,
@@ -47,9 +47,9 @@ namespace apcurium.MK.Booking.EventHandlers
                 var tariff = context.Find<TariffDetail>(@event.TariffId);
                 tariff.Name = @event.Name;
                 tariff.FlatRate = @event.FlatRate;
-                tariff.DistanceMultiplicator = @event.DistanceMultiplicator;
-                tariff.TimeAdjustmentFactor = @event.TimeAdjustmentFactor;
-                tariff.PricePerPassenger = @event.PricePerPassenger;
+                tariff.KilometricRate = @event.KilometricRate;
+                tariff.MarginOfError = @event.MarginOfError;
+                tariff.PassengerRate = @event.PassengerRate;
                 tariff.DaysOfTheWeek = (int) @event.DaysOfTheWeek;
                 tariff.StartTime = @event.StartTime < (DateTime)SqlDateTime.MinValue
                                 ? (DateTime) SqlDateTime.MinValue

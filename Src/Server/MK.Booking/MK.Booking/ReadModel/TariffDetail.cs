@@ -14,9 +14,9 @@ namespace apcurium.MK.Booking.ReadModel
         public Guid CompanyId { get; set; }
         public string Name { get; set; }
         public decimal FlatRate { get; set; }
-        public double DistanceMultiplicator { get; set; }
-        public double TimeAdjustmentFactor { get; set; }
-        public decimal PricePerPassenger { get; set; }
+        public double KilometricRate { get; set; }
+        public double MarginOfError { get; set; }
+        public decimal PassengerRate { get; set; }
         public int DaysOfTheWeek { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }

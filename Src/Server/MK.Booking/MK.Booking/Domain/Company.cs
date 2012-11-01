@@ -163,9 +163,9 @@ namespace apcurium.MK.Booking.Domain
                 Type = TariffType.Default,
                 Name = name,
                 FlatRate = flatRate,
-                DistanceMultiplicator = distanceMultiplicator,
-                TimeAdjustmentFactor = timeAdustmentFactor,
-                PricePerPassenger = pricePerPassenger,
+                KilometricRate = distanceMultiplicator,
+                MarginOfError = timeAdustmentFactor,
+                PassengerRate = pricePerPassenger,
             });
 
         }
@@ -178,9 +178,9 @@ namespace apcurium.MK.Booking.Domain
                 Type = TariffType.Recurring,
                 Name = name,
                 FlatRate = flatRate,
-                DistanceMultiplicator = distanceMultiplicator,
-                TimeAdjustmentFactor = timeAdustmentFactor,
-                PricePerPassenger = pricePerPassenger,
+                KilometricRate = distanceMultiplicator,
+                MarginOfError = timeAdustmentFactor,
+                PassengerRate = pricePerPassenger,
                 DaysOfTheWeek = daysOfTheWeek,
                 StartTime = startTime,
                 EndTime = endTime
@@ -195,9 +195,9 @@ namespace apcurium.MK.Booking.Domain
                 Type = TariffType.Day,
                 Name = name,
                 FlatRate = flatRate,
-                DistanceMultiplicator = distanceMultiplicator,
-                TimeAdjustmentFactor = timeAdustmentFactor,
-                PricePerPassenger = pricePerPassenger,
+                KilometricRate = distanceMultiplicator,
+                MarginOfError = timeAdustmentFactor,
+                PassengerRate = pricePerPassenger,
                 StartTime = startTime,
                 EndTime = endTime
             });
@@ -209,9 +209,9 @@ namespace apcurium.MK.Booking.Domain
                 TariffId = tariffId,
                 Name = name,
                 FlatRate = flatRate,
-                DistanceMultiplicator = distanceMultiplicator,
-                TimeAdjustmentFactor = timeAdustmentFactor,
-                PricePerPassenger = pricePerPassenger,
+                KilometricRate = distanceMultiplicator,
+                MarginOfError = timeAdustmentFactor,
+                PassengerRate = pricePerPassenger,
                 DaysOfTheWeek = daysOfTheWeek,
                 StartTime = startTime,
                 EndTime = endTime

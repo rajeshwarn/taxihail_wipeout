@@ -297,10 +297,10 @@ namespace DatabaseInitializer
             commandBus.Send(new CreateTariff
             {
                 Type = TariffType.Default,
-                DistanceMultiplicator = double.Parse(ratePerKm, CultureInfo.InvariantCulture),
+                KilometricRate = double.Parse(ratePerKm, CultureInfo.InvariantCulture),
                 FlatRate = decimal.Parse(flatRate, CultureInfo.InvariantCulture),
-                TimeAdjustmentFactor = 20,
-                PricePerPassenger = 0m,
+                MarginOfError = 20,
+                PassengerRate = 0m,
                 CompanyId = AppConstants.CompanyId,
                 TariffId = Guid.NewGuid(),
             });
