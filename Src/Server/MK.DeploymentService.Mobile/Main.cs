@@ -6,9 +6,9 @@ namespace MK.DeploymentService.Mobile
 	{
 		public static void Main (string[] args)
 		{
-			var service = new DeploymentJobService ();
-			service.Start ();
-			while (true) { }
+            var service = new DeploymentJobService();
+            service.Start();
+            while (true) { }
 		}
 	}
 }

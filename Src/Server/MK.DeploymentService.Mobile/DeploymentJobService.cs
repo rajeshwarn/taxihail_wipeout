@@ -1,4 +1,5 @@
 using System;
+using System.Configuration;
 using System.Linq;
 using System.Threading;
 using log4net;
@@ -83,16 +84,28 @@ namespace MK.DeploymentService.Mobile
 		void Deploy (DeploymentJob job, string sourceDirectory, Company company, string ipaPath, string apkPath)
 		{
 			if (job.Android) {
+                logger.DebugFormat("Copy Apk");
+                var apkFile = Directory.EnumerateFiles(apkPath, "*-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault();
+                if(apkFile != null)
+			    {
+                    File.Copy(apkFile, System.Configuration.ConfigurationManager.AppSettings["AndroidDeployDir"]);
+			    }else
+				{
+				    throw new Exception("Can't find th APK file in the release dir");
+				}
+                
 			}
 
 			if (job.iOS) {
 				logger.DebugFormat ("Uploading IPA");
-				var releaseIosDir = Path.Combine(sourceDirectory, "Src", "Mobile", "iOS", "bin", "iPhone", "Release");
 				var ipaFile = Directory.EnumerateFiles(ipaPath, "*.ipa", SearchOption.TopDirectoryOnly).FirstOrDefault();
 				if(ipaFile != null)
 				{
 					var fileUplaoder = new FileUploader();
 					fileUplaoder.Upload(ipaFile);
+				}else
+				{
+				    throw new Exception("Can't find th IPA file in the release dir");
 				}
 			}
 		}
