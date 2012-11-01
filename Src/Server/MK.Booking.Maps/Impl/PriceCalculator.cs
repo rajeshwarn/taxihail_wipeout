@@ -141,7 +141,7 @@ namespace apcurium.MK.Booking.Maps.Impl
                 var endTime = DateTime.MinValue.AddHours(tariff.EndTime.Hour).AddMinutes(tariff.EndTime.Minute);
                 var time = DateTime.MinValue.AddHours(date.Hour).AddMinutes(date.Minute);
 
-                if (endTime < startTime)
+                if (endTime <= startTime)
                 {
                     //The tariff spans across two days
                     if (time < endTime)

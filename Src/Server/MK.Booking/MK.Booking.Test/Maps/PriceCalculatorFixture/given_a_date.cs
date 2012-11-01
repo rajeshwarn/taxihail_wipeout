@@ -335,6 +335,41 @@ namespace apcurium.MK.Booking.Test.Maps.PriceCalculatorFixture
 
     }
 
+    [TestFixture]
+    public class given_a_recurring_tariff_starting_and_ending_at_midnight
+    {
+        private PriceCalculator sut;
+        private FakeTariffProvider _tariffProvider;
+
+        [SetUp]
+        public void Setup()
+        {
+            var tariff1 = new Tariff
+                              {
+                                  Name = "Recurring tariff",
+                                  StartTime = new DateTime(1900, 1, 1, 0, 0, 0),
+                                  EndTime = new DateTime(1900, 1, 2, 0, 0, 0),
+                                  DaysOfTheWeek = (int) (DayOfTheWeek.Friday | DayOfTheWeek.Saturday),
+                                  Type = (int) TariffType.Recurring
+                              };
+
+            _tariffProvider = new FakeTariffProvider(new[]
+                                                         {
+                                                             tariff1
+                                                         });
+            sut = new PriceCalculator(new TestConfigurationManager(), _tariffProvider);
+        }
+
+        [Test]
+        public void when_date_match_day_and_inside_time_period()
+        {
+            var tariff = sut.GetTariffFor(new DateTime(2012, 12, 21, 21, 0, 0));
+
+            Assert.NotNull(tariff);
+            Assert.AreEqual("Recurring tariff", tariff.Name);
+        }
+    }
+
     public class FakeTariffProvider : ITariffProvider
     {
         private readonly IList<Tariff> _tariffs;
