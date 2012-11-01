@@ -14,7 +14,26 @@
             this.$el.html(this.renderTemplate(data));
 
             this.validate({
-                submitHandler: this.save
+                submitHandler: this.save,
+                rules: {
+                    vehiclesList: { checkboxesNotAllChecked: { options: data.vehiclesList/*, optionsName: this.localize("Vehicle Types") */} },
+                    paymentsList: { checkboxesNotAllChecked: { options: data.paymentsList/*, optionsName: this.localize("Payment Types") */} },
+                    companiesList: { checkboxesNotAllChecked: { options: data.companiesList/*, optionsName: this.localize("Companies") */} }
+                },
+                errorPlacement: function (error, element) {
+                    if (error.text() == "") {
+                    } else {
+                        var $form = element.closest("form");
+
+                        var alert = new TaxiHail.AlertView({
+                            message: error,
+                            type: 'error'
+                        });
+
+                        alert.on('ok', alert.remove, alert);
+                        $form.find('.message').html(alert.render().el);
+                    }
+                }
             });
 
             return this;

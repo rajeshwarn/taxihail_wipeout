@@ -41,16 +41,22 @@ namespace apcurium.MK.Booking.Api.Client
         }
 
         public void SetSetting(string key, string value)
-        {            
+        {
+            throw new NotImplementedException();
         }
 
-        public IDictionary<string, string> GetAllSettings()
+        public IDictionary<string, string> GetSettings()
         {
             if (_settings == null)
             {
                 Load();
             }
             return _settings;            
+        }
+
+        public void SetSettings(IDictionary<string, string> appSettings)
+        {
+            throw new NotImplementedException();
         }
     }
 }

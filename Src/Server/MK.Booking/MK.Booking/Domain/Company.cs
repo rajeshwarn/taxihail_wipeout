@@ -40,8 +40,7 @@ namespace apcurium.MK.Booking.Domain
             base.Handles<PopularAddressUpdated>(OnEventDoNothing);
 
             base.Handles<CompanyCreated>(OnEventDoNothing);
-            base.Handles<AppSettingsAdded>(OnEventDoNothing);
-            base.Handles<AppSettingsUpdated>(OnEventDoNothing);
+            base.Handles<AppSettingsAddedOrUpdated>(OnEventDoNothing);
             base.Handles<RateCreated>(OnRateCreated);
             base.Handles<RateUpdated>(OnEventDoNothing);
             base.Handles<RateDeleted>(OnEventDoNothing);
@@ -132,21 +131,11 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void AddAppSettings(string key, string value)
+        public void AddOrUpdateAppSettings(IDictionary<string, string> appSettings)
         {
-            this.Update(new AppSettingsAdded
-                            {
-                                Key = key,
-                                Value = value,
-                            });
-        }
-
-        public void UpdateAppSettings(string key, string value)
-        {
-            this.Update(new AppSettingsUpdated
+            this.Update(new AppSettingsAddedOrUpdated
             {
-                Key = key,
-                Value = value,
+                AppSettings = appSettings
             });
         }
 

@@ -156,6 +156,7 @@
     <Content Include="admin\collections\CompanySettingsCollection.js" />
     <Content Include="admin\models\CompanySetting.js" />
     <Content Include="admin\views\ManageCompanySettingsView.js" />
+    <Content Include="admin\views\ManageExclusionsView.js" />
     <Content Include="admin\views\SettingsItemView.js" />
     <Content Include="admin\views\ManageRatesView.js" />
     <Content Include="admin\views\RateItemView.js" />

@@ -13,39 +13,53 @@ namespace apcurium.MK.Common.Configuration.Impl
             _contextFactory = contextFactory;
         }
 
-        public IDictionary<string, string> GetAllSettings()
+        public string GetSetting(string key)
+        {
+            string value;
+
+            GetSettings().TryGetValue(key, out value);
+
+            return value;
+        }
+
+        public IDictionary<string, string> GetSettings()
         {
             using (var context = _contextFactory.Invoke())
             {
-                return context.Query<AppSetting>().Select(x => x).ToList().ToDictionary(x=>x.Key,r=>r.Value);
+                return context.Query<AppSetting>().Select(x => x).ToList().ToDictionary(x => x.Key, r => r.Value);
             }
+        }
+
+        public void SetSettings(IDictionary<string, string> appSettings)
+        {
+            throw new NotImplementedException();
         }
 
         public void Reset()
         {
-            
+
         }
 
-        public string GetSetting(string key)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                return context.Query<AppSetting>().Where(x => x.Key.Equals(key)).Select(x=>x.Value).FirstOrDefault();
-            }
-        }
+        //public string GetSetting(string key)
+        //{
+        //    using (var context = _contextFactory.Invoke())
+        //    {
+        //        return context.Query<AppSetting>().Where(x => x.Key.Equals(key)).Select(x=>x.Value).FirstOrDefault();
+        //    }
+        //}
 
-        public void SetSetting(string key, string value)
-        {
-        }
+        //public void SetSetting(string key, string value)
+        //{
+        //}
 
         private void Save(string key, string value)
         {
-           
+
         }
 
         private void Load()
         {
-          
+
         }
     }
 }

@@ -71,7 +71,7 @@ namespace DatabaseInitializer
                 IDictionary<string, string> settingsInDb = null;
                 if (isUpdate)
                 {
-                   settingsInDb = configurationManager.GetAllSettings();
+                   settingsInDb = configurationManager.GetSettings();
                    oldDatabase = creatorDb.RenameDatabase(connStringMaster, companyName);
                 }
 
@@ -108,7 +108,8 @@ namespace DatabaseInitializer
                 }
                 //Create settings
 
-                
+                var appSettings = new Dictionary<string, string>();
+
 
                 var jsonSettings = File.ReadAllText(Path.Combine(AssemblyDirectory, "Settings\\Common.json"));
                 var objectSettings = JObject.Parse(jsonSettings);
@@ -119,11 +120,12 @@ namespace DatabaseInitializer
                 foreach (var token in objectSettings)
                 {
                     //configurationManager.SetSetting(token.Key, token.Value.ToString());
-                    commandBus.Send(new AddAppSettings()
-                                        {
-                                            Key = token.Key,
-                                            Value = token.Value.ToString()
-                                        });
+                    //commandBus.Send(new AddAppSettings()
+                    //                    {
+                    //                        Key = token.Key,
+                    //                        Value = token.Value.ToString()
+                    //                    });
+                    appSettings[token.Key] = token.Value.ToString();
                 }
 
                 jsonSettings = File.ReadAllText(Path.Combine(AssemblyDirectory, "Settings\\", companyName + ".json"));
@@ -135,15 +137,17 @@ namespace DatabaseInitializer
                 foreach (var token in objectSettings)
                 {
                     //configurationManager.SetSetting(token.Key, token.Value.ToString());
-                    commandBus.Send(new AddAppSettings()
-                    {
-                        Key = token.Key,
-                        Value = token.Value.ToString()
-                    });
-                }
-                 
+                    //commandBus.Send(new AddAppSettings()
+                    //{
+                    //    Key = token.Key,
+                    //    Value = token.Value.ToString()
+                    //});
 
-               
+                    appSettings[token.Key] = token.Value.ToString();
+                }
+
+                //Save settings so that next calls to referenceDataService has the IBS Url
+                appSettings = AddOrUpdateAppSettings(commandBus, appSettings);
 
                 if (isUpdate)
                 {
@@ -166,34 +170,41 @@ namespace DatabaseInitializer
                         //configurationManager = container.Resolve<IConfigurationManager>();
                         //configurationManager.SetSetting("DefaultBookingSettings.ProviderId", defaultCompany.Id.ToString());
 
-                        commandBus.Send(new AddAppSettings()
-                        {
-                            Key = "DefaultBookingSettings.ProviderId",
-                            Value = defaultCompany.Id.ToString()
-                        });
+                        //commandBus.Send(new AddAppSettings()
+                        //{
+                        //    Key = "DefaultBookingSettings.ProviderId",
+                        //    Value = defaultCompany.Id.ToString()
+                        //});
+
+                        appSettings["DefaultBookingSettings.ProviderId"] = defaultCompany.Id.ToString();
 
                         var defaultvehicule = referenceDataService.GetVehiclesList(defaultCompany).FirstOrDefault(x => x.IsDefault.HasValue && x.IsDefault.Value) ??
                                               referenceDataService.GetVehiclesList(defaultCompany).First();
                         //configurationManager.SetSetting("DefaultBookingSettings.VehicleTypeId", defaultvehicule.Id.ToString());
 
-                        commandBus.Send(new AddAppSettings()
-                        {
-                            Key = "DefaultBookingSettings.VehicleTypeId",
-                            Value = defaultvehicule.Id.ToString()
-                        });
+                        //commandBus.Send(new AddAppSettings()
+                        //{
+                        //    Key = "DefaultBookingSettings.VehicleTypeId",
+                        //    Value = defaultvehicule.Id.ToString()
+                        //});
+
+                        appSettings["DefaultBookingSettings.VehicleTypeId"] = defaultvehicule.Id.ToString();
                         
                         var defaultchargetype = referenceDataService.GetPaymentsList(defaultCompany).FirstOrDefault(x => x.Display.HasValue() && x.Display.Contains("Cash"))
                             ?? referenceDataService.GetPaymentsList(defaultCompany).First();
-                        commandBus.Send(new AddAppSettings()
-                        {
-                            Key = "DefaultBookingSettings.ChargeTypeId",
-                            Value = defaultchargetype.Id.ToString()
-                        });
+
+                        //commandBus.Send(new AddAppSettings()
+                        //{
+                        //    Key = "DefaultBookingSettings.ChargeTypeId",
+                        //    Value = defaultchargetype.Id.ToString()
+                        //});
+                        appSettings["DefaultBookingSettings.ChargeTypeId"] = defaultchargetype.Id.ToString();
                         //configurationManager.SetSetting("DefaultBookingSettings.ChargeTypeId", defaultchargetype.Id.ToString());
                         
                     }
 
-                    
+                    //Save settings so that registerAccountCommand succeed
+                    appSettings = AddOrUpdateAppSettings(commandBus, appSettings);
 
                     //Register normal account
                     //configurationManager = container.Resolve<IConfigurationManager>();
@@ -264,6 +275,11 @@ namespace DatabaseInitializer
 
 
                 }
+
+                commandBus.Send(new AddOrUpdateAppSettings()
+                {
+                    AppSettings = appSettings
+                });
             }catch(Exception e)
             {
                 Console.WriteLine(e.Message + " " +e.StackTrace);
@@ -271,6 +287,16 @@ namespace DatabaseInitializer
                 return -1;
             }
             return 0;
+        }
+
+        private static Dictionary<string, string> AddOrUpdateAppSettings(ICommandBus commandBus, Dictionary<string, string> appSettings)
+        {
+            commandBus.Send(new AddOrUpdateAppSettings
+                                {
+                                    AppSettings = appSettings
+                                });
+
+            return   new Dictionary<string, string>();
         }
 
         static public string AssemblyDirectory
