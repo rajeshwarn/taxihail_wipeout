@@ -43,9 +43,9 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
                 SourceId = companyId,
                 TariffId = tariffId,
                 FlatRate = 3.50m,
-                DistanceMultiplicator = 1.1,
-                TimeAdjustmentFactor = 1.2,
-                PricePerPassenger = 2.0m,
+                KilometricRate = 1.1,
+                MarginOfError = 1.2,
+                PassengerRate = 2.0m,
                 DaysOfTheWeek = DayOfTheWeek.Saturday | DayOfTheWeek.Sunday,
                 StartTime = DateTime.Today.AddHours(12).AddMinutes(55),
                 EndTime = DateTime.Today.AddHours(20).AddMinutes(15),
@@ -60,9 +60,9 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
                 Assert.AreEqual(tariffId, dto.Id);
                 Assert.AreEqual(companyId, dto.CompanyId);
                 Assert.AreEqual(3.50m, dto.FlatRate);
-                Assert.AreEqual(1.1, dto.DistanceMultiplicator);
-                Assert.AreEqual(1.2, dto.TimeAdjustmentFactor);
-                Assert.AreEqual(2.0m, dto.PricePerPassenger);
+                Assert.AreEqual(1.1, dto.KilometricRate);
+                Assert.AreEqual(1.2, dto.MarginOfError);
+                Assert.AreEqual(2.0m, dto.PassengerRate);
                 Assert.AreEqual((int)(DayOfTheWeek.Saturday | DayOfTheWeek.Sunday), dto.DaysOfTheWeek);
                 Assert.AreEqual(12, dto.StartTime.Hour);
                 Assert.AreEqual(55, dto.StartTime.Minute);
@@ -103,10 +103,10 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
                 SourceId = _companyId,
                 TariffId = _tariffId,
                 DaysOfTheWeek = DayOfTheWeek.Tuesday,
-                DistanceMultiplicator = 19,
+                KilometricRate = 19,
                 FlatRate = 20,
-                PricePerPassenger = 21,
-                TimeAdjustmentFactor = 22,
+                PassengerRate = 21,
+                MarginOfError = 22,
                 StartTime = DateTime.Today.AddHours(23),
                 EndTime = DateTime.Today.AddHours(24),
                 Name = "Updated Rate",
@@ -120,9 +120,9 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
                 Assert.AreEqual(_tariffId, dto.Id);
                 Assert.AreEqual(_companyId, dto.CompanyId);
                 Assert.AreEqual(20, dto.FlatRate);
-                Assert.AreEqual(19, dto.DistanceMultiplicator);
-                Assert.AreEqual(22, dto.TimeAdjustmentFactor);
-                Assert.AreEqual(21, dto.PricePerPassenger);
+                Assert.AreEqual(19, dto.KilometricRate);
+                Assert.AreEqual(22, dto.MarginOfError);
+                Assert.AreEqual(21, dto.PassengerRate);
                 Assert.AreEqual((int)(DayOfTheWeek.Tuesday), dto.DaysOfTheWeek);
                 Assert.AreEqual(23, dto.StartTime.Hour);
                 Assert.AreEqual(0, dto.EndTime.Hour);

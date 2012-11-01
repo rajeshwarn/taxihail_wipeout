@@ -50,18 +50,18 @@ namespace apcurium.MK.Booking.CommandHandlers
                 company.CreateDefaultTariff(tariffId: command.TariffId,
                     name: command.Name,
                     flatRate: command.FlatRate,
-                    distanceMultiplicator: command.DistanceMultiplicator,
-                    timeAdustmentFactor: command.TimeAdjustmentFactor,
-                    pricePerPassenger: command.PricePerPassenger);
+                    distanceMultiplicator: command.KilometricRate,
+                    timeAdustmentFactor: command.MarginOfError,
+                    pricePerPassenger: command.PassengerRate);
             } 
             else if (command.Type == TariffType.Recurring)
             {
                 company.CreateRecurringTariff(tariffId: command.TariffId,
                     name: command.Name,
                     flatRate: command.FlatRate,
-                    distanceMultiplicator: command.DistanceMultiplicator,
-                    timeAdustmentFactor: command.TimeAdjustmentFactor,
-                    pricePerPassenger: command.PricePerPassenger,
+                    distanceMultiplicator: command.KilometricRate,
+                    timeAdustmentFactor: command.MarginOfError,
+                    pricePerPassenger: command.PassengerRate,
                     daysOfTheWeek: command.DaysOfTheWeek,
                     startTime: command.StartTime,
                     endTime: command.EndTime);
@@ -71,9 +71,9 @@ namespace apcurium.MK.Booking.CommandHandlers
                 company.CreateDayTariff(tariffId: command.TariffId,
                     name: command.Name,
                     flatRate: command.FlatRate,
-                    distanceMultiplicator: command.DistanceMultiplicator,
-                    timeAdustmentFactor: command.TimeAdjustmentFactor,
-                    pricePerPassenger: command.PricePerPassenger,
+                    distanceMultiplicator: command.KilometricRate,
+                    timeAdustmentFactor: command.MarginOfError,
+                    pricePerPassenger: command.PassengerRate,
                     startTime: command.StartTime,
                     endTime: command.EndTime);
             }
@@ -88,9 +88,9 @@ namespace apcurium.MK.Booking.CommandHandlers
             company.UpdateTariff(tariffId: command.TariffId,
                     name: command.Name,
                     flatRate: command.FlatRate,
-                    distanceMultiplicator: command.DistanceMultiplicator,
-                    timeAdustmentFactor: command.TimeAdjustmentFactor,
-                    pricePerPassenger: command.PricePerPassenger,
+                    distanceMultiplicator: command.KilometricRate,
+                    timeAdustmentFactor: command.MarginOfError,
+                    pricePerPassenger: command.PassengerRate,
                     daysOfTheWeek: command.DaysOfTheWeek,
                     startTime: command.StartTime,
                     endTime: command.EndTime);
