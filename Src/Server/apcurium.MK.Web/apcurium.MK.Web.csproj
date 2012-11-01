@@ -143,6 +143,7 @@
     <Content Include="admin\localization\ManageTariffs.json" />
     <Content Include="admin\localization\TariffItem.json" />
     <Content Include="admin\templates\EditTariff.handlebars" />
+    <Content Include="admin\assets\less\TaxiHail-admin-grid.less" />
     <None Include="admin\templates\ManageCompanySettings.handlebars" />
     <Content Include="admin\collections\CompanySettingsCollection.js" />
     <Content Include="admin\models\CompanySetting.js" />
