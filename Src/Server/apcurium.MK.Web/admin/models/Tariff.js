@@ -6,9 +6,9 @@
             var today = new Date();
             return { name: '',
                 flatRate: 0,
-                pricePerPassenger: 0,
-                distanceMultiplicator: 0,
-                timeAdjustmentFactor: 20,
+                passengerRate: 0,
+                kilometricRate: 0,
+                marginOfError: 20,
                 startTime: TaxiHail.date.toISO8601(new Date(today.getYear(), today.getMonth(), today.getDate())),
                 endTime: TaxiHail.date.toISO8601(new Date(today.getYear(), today.getMonth(), today.getDate() + 1)),
                 daysOfTheWeek: 0

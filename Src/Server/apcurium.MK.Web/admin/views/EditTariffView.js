@@ -39,15 +39,15 @@
                         required: true,
                         min: 0
                     },
-                    distanceMultiplicator: {
+                    kilometricRate: {
                         required: true,
                         min:0
                     },
-                    timeAdjustmentFactor: {
+                    marginOfError: {
                         required: true,
                         min:0
                     },
-                    pricePerPassenger: {
+                    passengerRate: {
                         required: true,
                         min: 0
                     },
