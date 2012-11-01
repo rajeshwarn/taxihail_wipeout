@@ -295,6 +295,8 @@
     <Content Include="themes\BostonCab\img\header-bg.png" />
     <Content Include="themes\BostonCab\img\location.png" />
     <Content Include="themes\BostonCab\img\logo.png" />
+    <Content Include="themes\Taxiworld\img\header-bg.png" />
+    <Content Include="themes\Taxiworld\img\logo.png" />
     <Content Include="themes\VictoriaTaxi\img\cancel-icon.png" />
     <Content Include="themes\VictoriaTaxi\img\header-bg.png" />
     <Content Include="themes\VictoriaTaxi\img\location.png" />
@@ -365,6 +367,9 @@
     <Content Include="admin\templates\ManageExclusions.handlebars" />
     <Content Include="admin\templates\ManageTariffs.handlebars" />
     <Content Include="admin\templates\TariffItem.handlebars" />
+    <Content Include="themes\Taxiworld\less\combined-responsive.less" />
+    <Content Include="themes\Taxiworld\less\combined.less" />
+    <Content Include="themes\Taxiworld\less\style.less" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
