@@ -3,6 +3,10 @@
 
     var View = TaxiHail.EditTariffView = TaxiHail.TemplatedView.extend({
 
+        events: {
+            'change [data-role=timepicker]': 'ontimepickerchange'
+        },
+
         render: function() {
 
             var daysOfTheWeek = this.model.get('daysOfTheWeek'),
@@ -126,9 +130,25 @@
             
         },
 
+        ontimepickerchange: function(e) {
+            var startTime = this._getTime(this.$('[data-role=timepicker][name=startTime]')),
+                endTime = this._getTime(this.$('[data-role=timepicker][name=endTime]'));
+
+            if(endTime <= startTime) {
+                this.$('.next-day-warning').removeClass('hidden');
+            } else {
+                this.$('.next-day-warning').addClass('hidden');
+            }
+        },
+
         _getTime: function($timepicker, date) {
-            var timepicker = $timepicker.data('timepicker'),
-                hour = timepicker.hour;
+            var timepicker = $timepicker.data('timepicker');
+
+            if(!timepicker) {
+                return date;
+            }
+
+            var hour = timepicker.hour;
 
             date = _.isDate(date) ? new Date(date) : new Date();
 
