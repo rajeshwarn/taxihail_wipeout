@@ -67,12 +67,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             SetStatusText(GetString(Resource.String.LoadingMessage));
             FindViewById<Button>(Resource.Id.CancelBtn).Enabled = true;
 			FindViewById<Button>(Resource.Id.CancelBtn).Click += delegate {	CancelOrder(); };
-			FindViewById<Button>(Resource.Id.CallBtn).Click += delegate { CallCompany(); };
+			
 			FindViewById<Button>(Resource.Id.NewRideBtn).Click += delegate { CloseActivity(); };
+            
+            var callBtn = FindViewById<Button>(Resource.Id.CallBtn);            
+            callBtn.Click += delegate { CallCompany(); };
 
             var map = FindViewById<MapView>(Resource.Id.mapStatus);
-            var _configurationManager = TinyIoCContainer.Current.Resolve<IConfigurationManager>();
-            if (bool.Parse(_configurationManager.GetSetting("Client.HideCallDispatchButton")))
+            var configurationManager = TinyIoCContainer.Current.Resolve<IConfigurationManager>();
+            if (bool.Parse(configurationManager.GetSetting("Client.HideCallDispatchButton")))
             {
                 callBtn.Visibility = ViewStates.Gone; 
             }
