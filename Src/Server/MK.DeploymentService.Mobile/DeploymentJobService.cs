@@ -88,7 +88,8 @@ namespace MK.DeploymentService.Mobile
                 var apkFile = Directory.EnumerateFiles(apkPath, "*-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault();
                 if(apkFile != null)
 			    {
-					var targetDir = Path.Combine(System.Configuration.ConfigurationManager.AppSettings["AndroidDeployDir"], company.Name);
+					var fileInfo = new FileInfo(apkFile); 
+					var targetDir = Path.Combine(System.Configuration.ConfigurationManager.AppSettings["AndroidDeployDir"], company.Name, fileInfo.Name);
 					File.Copy(apkFile, targetDir);
 			    }else
 				{
