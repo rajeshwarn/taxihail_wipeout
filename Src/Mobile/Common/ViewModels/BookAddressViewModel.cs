@@ -13,6 +13,7 @@ using System.Threading;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -84,7 +85,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return new MvxRelayCommand<Address>(coordinate =>
                 {
                     CancelCurrentLocationCommand.Execute();
-                                      
+
                     _cancellationToken = new CancellationTokenSource();
 
                     var token = _cancellationToken.Token;
@@ -169,34 +170,56 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public void SetAddress(Address address, bool userInitiated)
         {
-            if (IsExecuting)
-            {
-                CancelCurrentLocationCommand.Execute();
-            }
-            Model.FullAddress = address.FullAddress;
-            Model.Longitude = address.Longitude;
-            Model.Latitude = address.Latitude;
-            Model.Apartment = address.Apartment;
-            Model.RingCode = address.RingCode;
-            Model.BuildingName = address.BuildingName;
-
-            FirePropertyChanged(() => Display);
-            FirePropertyChanged(() => Model);
+            InvokeOnMainThread(() =>
+                                   {
+                                       IsExecuting = true;
+                                       try
+                                       {
 
 
-            if (AddressChanged != null)
-            {
-                AddressChanged(userInitiated, EventArgs.Empty);
-            }
+                                           if (IsExecuting)
+                                           {
+                                               CancelCurrentLocationCommand.Execute();
+                                           }
+                                           Model.FullAddress = address.FullAddress;
+                                           Model.Longitude = address.Longitude;
+                                           Model.Latitude = address.Latitude;
+                                           Model.Apartment = address.Apartment;
+                                           Model.RingCode = address.RingCode;
+                                           Model.BuildingName = address.BuildingName;
+
+                                           FirePropertyChanged(() => Display);
+                                           FirePropertyChanged(() => Model);
+
+
+                                           if (AddressChanged != null)
+                                           {
+                                               AddressChanged(userInitiated, EventArgs.Empty);
+                                           }
+
+                                       }
+                                       finally
+                                       {
+
+
+                                           IsExecuting = false;
+                                       }
+
+                                   });
         }
 
         public void ClearAddress()
         {
-            Model.FullAddress = null;
-            Model.Longitude = 0;
-            Model.Latitude = 0;
-            FirePropertyChanged(() => Display);
-            FirePropertyChanged(() => Model);
+            InvokeOnMainThread(() =>
+                                   {
+
+                                       Model.FullAddress = null;
+                                       Model.Longitude = 0;
+                                       Model.Latitude = 0;
+                                       FirePropertyChanged(() => Display);
+                                       FirePropertyChanged(() => Model);
+                                       IsExecuting = false;
+                                   });
         }
 
         public IMvxCommand ClearPositionCommand
@@ -204,11 +227,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get
             {
 
-                return new MvxRelayCommand(() =>
-                {
-                    ClearAddress();
-
-                });
+                return new MvxRelayCommand(ClearAddress);
             }
         }
 
@@ -218,34 +237,34 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return new MvxRelayCommand(() =>
                 {
+
                     CancelCurrentLocationCommand.Execute();
                     IsExecuting = true;
                     _cancellationToken = new CancellationTokenSource();
-                    _geolocator.GetPositionAsync(30000, 200, _cancellationToken.Token).ContinueWith(t =>
+                    _geolocator.GetPositionAsync(5000, 50, 2000, 2000, _cancellationToken.Token).ContinueWith(t =>
                     {
                         try
                         {
+                            TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Request Location Command");
                             if (t.IsFaulted)
                             {
-                                IsExecuting = false;                                
+                                TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Request Location Command : FAULTED");
+                                IsExecuting = false;
                             }
                             else if (t.IsCompleted && !t.IsCanceled)
                             {
+                                TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Request Location Command :SUCCESS La {0}, Ln{1}", t.Result.Latitude, t.Result.Longitude);
                                 ThreadPool.QueueUserWorkItem(pos => SearchAddressForCoordinate((Position)pos), t.Result);
 
                             }
                         }
-                        catch
+                        catch (Exception ex)
                         {
+                            TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex);
                             IsExecuting = false;
-                        }
-                        finally
-                        {
-                            
                         }
 
                     }, _scheduler);
-
                 });
             }
 
@@ -253,18 +272,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void SearchAddressForCoordinate(Position p)
         {
-            Console.WriteLine("Start Call SearchAddress : " + p.Latitude.ToString() + ", " + p.Longitude.ToString());
-            var address = TinyIoC.TinyIoCContainer.Current.Resolve<IGeolocService>().SearchAddress(p.Latitude, p.Longitude, searchPopularAddresses: true);
-            Console.WriteLine("Call SearchAddress finsihed");
+            IsExecuting = true;
+            TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Start Call SearchAddress : " + p.Latitude.ToString() + ", " + p.Longitude.ToString());
+            var address = TinyIoC.TinyIoCContainer.Current.Resolve<IGeolocService>().SearchAddress(p.Latitude, p.Longitude);
+
+
+
+            TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Call SearchAddress finsihed, found {0} addresses", address.Count());
             if (address.Count() > 0)
             {
+                TinyIoCContainer.Current.Resolve<ILogger>().LogMessage(" found {0} addresses", address.Count());
                 SetAddress(address[0], false);
             }
             else
             {
+                TinyIoCContainer.Current.Resolve<ILogger>().LogMessage(" clear addresses");
+
                 ClearAddress();
             }
-            Console.WriteLine("Exiting SearchAddress thread");
+            TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Exiting SearchAddress thread");
             IsExecuting = false;
         }
 

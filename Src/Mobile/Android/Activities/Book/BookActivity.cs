@@ -77,7 +77,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
 
             _menuWidth = WindowManager.DefaultDisplay.Width - 100;
-            _menuIsShown = false;            
+            _menuIsShown = false;
 
             FindViewById<Button>(Resource.Id.BookItBtn).Click -= new EventHandler(BookItBtn_Click);
             FindViewById<Button>(Resource.Id.BookItBtn).Click += new EventHandler(BookItBtn_Click);
@@ -112,32 +112,35 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
 
 
-            if (ViewModel != null)
-            {
-                ViewModel.Initialize();
-            }
+            ThreadHelper.ExecuteInThread(this, () =>
+                 {
 
-            if (AppContext.Current.LastOrder.HasValue)
-            {
+                     if (ViewModel != null)
+                     {
+                         ViewModel.Initialize();
+                     }
 
-                ThreadHelper.ExecuteInThread(this, () =>
-                    {
-                        var orderStatus = TinyIoCContainer.Current.Resolve<IBookingService>().GetOrderStatus(AppContext.Current.LastOrder.Value);
-                        var isCompleted = TinyIoCContainer.Current.Resolve<IBookingService>().IsStatusCompleted(orderStatus.IBSStatusId);
-                        if (isCompleted)
-                        {
-                            AppContext.Current.LastOrder = null;
-                        }
-                        else
-                        {
-                            var order = TinyIoCContainer.Current.Resolve<IAccountService>().GetHistoryOrder(AppContext.Current.LastOrder.Value);
-                            ShowStatusActivity(order, orderStatus);
-                        }
-                    }, true);
-            }
+                     if (AppContext.Current.LastOrder.HasValue)
+                     {
 
 
-        
+                         var orderStatus = TinyIoCContainer.Current.Resolve<IBookingService>().GetOrderStatus(AppContext.Current.LastOrder.Value);
+                         var isCompleted = TinyIoCContainer.Current.Resolve<IBookingService>().IsStatusCompleted(orderStatus.IBSStatusId);
+                         if (isCompleted)
+                         {
+                             AppContext.Current.LastOrder = null;
+                         }
+                         else
+                         {
+                             var order = TinyIoCContainer.Current.Resolve<IAccountService>().GetHistoryOrder(AppContext.Current.LastOrder.Value);
+                             ShowStatusActivity(order, orderStatus);
+                         }
+
+                     }
+
+                 }, true);
+
+
 
 
 
@@ -217,7 +220,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         }
 
-  
+
         private void ReportProblem_Click(object sender, EventArgs e)
         {
 
@@ -231,7 +234,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 emailIntent.PutExtra(Intent.ExtraCc, new String[] { AppContext.Current.LoggedInEmail });
                 emailIntent.PutExtra(Intent.ExtraSubject, Resources.GetString(Resource.String.TechSupportEmailTitle));
 
-                emailIntent.PutExtra(Intent.ExtraStream, Android.Net.Uri.Parse(@"file:///" + LoggerImpl.LogFilename)); 
+                emailIntent.PutExtra(Intent.ExtraStream, Android.Net.Uri.Parse(@"file:///" + LoggerImpl.LogFilename));
 
                 if (TinyIoCContainer.Current.Resolve<IAppSettings>().ErrorLogEnabled && File.Exists(TinyIoCContainer.Current.Resolve<IAppSettings>().ErrorLog))
                 {
@@ -386,7 +389,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                     RunOnUiThread(() =>
                     {
                         var serializedInfo = ViewModel.Order.Serialize();
-                        var parameters = new Dictionary<string, string>() { { "order", serializedInfo }};
+                        var parameters = new Dictionary<string, string>() { { "order", serializedInfo } };
                         var dispatch = TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
                         dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(BookDetailViewModel), parameters, false, MvxRequestedBy.UserAction));
 
@@ -478,6 +481,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 StartActivityForResult(i, 101);
             });
         }
-     
+
     }
 }

@@ -29,12 +29,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
     {
         private const string _doneStatus = "wosDONE";
         private const string _loadedStatus = "wosLOADED";
-        
+        private const int _refreshPeriod = 20 * 1000; //20 sec
+
         private bool _closeScreenWhenCompleted;
         private Guid _lastOrder;
         private Timer _timer;
         private bool _isInit = false;
         private bool _isThankYouDialogDisplayed = false;
+        
 
         public OrderStatusDetail OrderStatus { get; private set; }
         public Order Order { get; private set; }
@@ -65,8 +67,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             SetStatusText(GetString(Resource.String.LoadingMessage));
             FindViewById<Button>(Resource.Id.CancelBtn).Enabled = true;
 			FindViewById<Button>(Resource.Id.CancelBtn).Click += delegate {	CancelOrder(); };
-			var callBtn = FindViewById<Button>(Resource.Id.CallBtn);
-            callBtn.Click += delegate {  CallCompany(); };
+			FindViewById<Button>(Resource.Id.CallBtn).Click += delegate { CallCompany(); };
 			FindViewById<Button>(Resource.Id.NewRideBtn).Click += delegate { CloseActivity(); };
 
             var map = FindViewById<MapView>(Resource.Id.mapStatus);
@@ -76,10 +77,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 callBtn.Visibility = ViewStates.Gone; 
             }
 
-            ThreadHelper.ExecuteInThread(this, () =>
-                {
-                    DisplayStatus(Order, OrderStatus);
-                }, false);
+             ThreadHelper.ExecuteInThread(this, () => DisplayStatus(Order, OrderStatus), false);
 
         }
 
@@ -109,7 +107,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             base.OnStart();
             _isThankYouDialogDisplayed = false;
-            _timer = new Timer(o => RefreshStatus(), null, 0, 6000);
+            _timer = new Timer(o => RefreshStatus(), null, 0, _refreshPeriod);
 
         }
         protected override void OnStop()
@@ -144,7 +142,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             if (loc.HasValidCoordinate())
             {
-                var point = new GeoPoint(CoordinatesHelper.ConvertToE6(loc.Latitude), CoordinatesHelper.ConvertToE6(loc.Longitude));
+                var point = new GeoPoint(loc.Latitude.ConvertToE6(), loc.Longitude.ConvertToE6());
                 var pushpin = Resources.GetDrawable(graphic);
                 var title = GetString(titleId);
                 var pushpinOverlay = new PushPinOverlay(map, pushpin, title, point);
@@ -186,23 +184,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             
             var newBooking = new Confirmation();
-            newBooking.Action(this, Resource.String.StatusConfirmCancelRide, () =>
-            {
-                ThreadHelper.ExecuteInThread(this, () =>
-                {
-                    var isSuccess = TinyIoCContainer.Current.Resolve<IBookingService>().CancelOrder(Order.Id);
+            newBooking.Action(this, Resource.String.StatusConfirmCancelRide, () => ThreadHelper.ExecuteInThread(this, () =>
+                                                                                                                          {
+                                                                                                                              var isSuccess = TinyIoCContainer.Current.Resolve<IBookingService>().CancelOrder(Order.Id);
 
-                    if (isSuccess)
-                    {                        
-                        CloseActivity();
-                    }
-                    else
-                    {
-                        RunOnUiThread(() => this.ShowAlert(Resource.String.StatusConfirmCancelRideErrorTitle, Resource.String.StatusConfirmCancelRideError));
-                    }
+                                                                                                                              if (isSuccess)
+                                                                                                                              {                        
+                                                                                                                                  CloseActivity();
+                                                                                                                              }
+                                                                                                                              else
+                                                                                                                              {
+                                                                                                                                  RunOnUiThread(() => this.ShowAlert(Resource.String.StatusConfirmCancelRideErrorTitle, Resource.String.StatusConfirmCancelRideError));
+                                                                                                                              }
 
-                }, true);
-            });
+                                                                                                                          }, true));
 	
         }
 
@@ -255,7 +250,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                         TinyIoCContainer.Current.Resolve<IBookingService>().SendReceipt(Order.Id);
                     }
 
-                    RunOnUiThread(() => Finish());
+                    RunOnUiThread(Finish);
                 }, true);
                 alert.Dispose();
             });
@@ -267,11 +262,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             if (status.IBSStatusDescription.HasValue())
             {
-                RunOnUiThread(() =>
-                    {
-
-                        SetStatusText(status.IBSStatusDescription);
-                    });
+                RunOnUiThread(() => SetStatusText(status.IBSStatusDescription));
             }
 
 
