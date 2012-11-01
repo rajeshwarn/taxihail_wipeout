@@ -313,7 +313,14 @@ namespace MK.ConfigurationManager
 
                 foreach (var token in objectSettings)
                 {
-                    MobileConfigurationProperties.Add(new MyCustomKeyValuePair(token.Key, token.Value.ToString()));
+                    if (MobileConfigurationProperties.Any(x => x.Key == token.Key))
+                    {
+                        MobileConfigurationProperties.First(x => x.Key == token.Key).Value = token.Value.ToString();
+                    }else
+                    {
+                        MobileConfigurationProperties.Add(new MyCustomKeyValuePair(token.Key, token.Value.ToString()));
+                    }
+                    
                 }
             }
 
