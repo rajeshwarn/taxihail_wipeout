@@ -57,7 +57,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Dropoff.AddressChanged -= new EventHandler(AddressChanged);
             Dropoff.AddressChanged += new EventHandler(AddressChanged);
 
-            _fareEstimate = appResource.GetString("NoFareText");
+			_fareEstimate = appResource.GetString("NoFareText");
 
             CenterMap(true);
 
@@ -395,7 +395,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             FirePropertyChanged(() => IsInTheFuture);
             FirePropertyChanged(() => PickupDateDisplay);
-
+            ThreadPool.QueueUserWorkItem(CalculateEstimate);
         }
 		public IMvxCommand PickupDateSelectedCommand
 		{

@@ -142,7 +142,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             if (order != null && order.PickupAddress.HasValidCoordinate() && order.DropOffAddress.HasValidCoordinate())
             {
-                var directionInfo = TinyIoCContainer.Current.Resolve<IGeolocService>().GetDirectionInfo(order.PickupAddress.Latitude, order.PickupAddress.Longitude, order.DropOffAddress.Latitude, order.DropOffAddress.Longitude);
+                var directionInfo = TinyIoCContainer.Current.Resolve<IGeolocService>().GetDirectionInfo(order.PickupAddress.Latitude, order.PickupAddress.Longitude, order.DropOffAddress.Latitude, order.DropOffAddress.Longitude, order.PickupDate);
                 if (directionInfo != null)
                 {
                     if (directionInfo.Price.HasValue)
