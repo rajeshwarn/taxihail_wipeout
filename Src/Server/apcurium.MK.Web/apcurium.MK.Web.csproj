@@ -50,20 +50,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Staging|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisLogFile>bin\apcurium.MK.Web.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
-    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
-    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
-    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="AjaxMin">
       <HintPath>..\packages\AjaxMin.4.69.4665.24361\lib\net40\AjaxMin.dll</HintPath>
@@ -378,6 +364,12 @@
     <Content Include="admin\templates\ManageExclusions.handlebars" />
     <Content Include="admin\templates\ManageTariffs.handlebars" />
     <Content Include="admin\templates\TariffItem.handlebars" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\default.aspx.cs">
