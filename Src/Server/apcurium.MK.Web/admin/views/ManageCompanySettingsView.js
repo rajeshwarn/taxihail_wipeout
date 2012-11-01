@@ -3,16 +3,14 @@
     TaxiHail.ManageCompanySettingsView = TaxiHail.TemplatedView.extend({
         tagName: 'form',
         className: 'well clearfix form-horizontal',
-        
-        
-        
-        initialize : function () {
+
+        initialize: function () {
             this.collection.on('selected', this.saveSettings, this);
         },
-        
+
         render: function () {
             this.$el.html(this.renderTemplate());
-            
+
             this.$el.empty();
             if (this.collection.length) {
                 this.collection.each(this.renderItem, this);
@@ -32,7 +30,7 @@
 
             this.$el.append(itemView.render().el);
         },
-        
+
         saveSettings: function (model) {
 
             model.save();
