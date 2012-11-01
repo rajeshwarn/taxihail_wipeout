@@ -11,6 +11,7 @@
                 data = this.model.toJSON();
 
             data.recurring = +this.model.get('type') === TaxiHail.Tariff.type.recurring;
+            data.isDefault = +this.model.get('type') === TaxiHail.Tariff.type['default'];
             data.editMode = !this.model.isNew();
 
             // Determine if the checkbox for each days should be checked
@@ -76,25 +77,35 @@
 
             var serialized = this.serializeForm(form),
                 date = new Date(),
-                startTime = this._getTime(this.$('[data-role=timepicker][name=startTime]')),
-                endTime = this._getTime(this.$('[data-role=timepicker][name=endTime]'));
+                startTime,
+                endTime;
 
-            if(+serialized.type === TaxiHail.Tariff.type.recurring ) {
-                serialized.daysOfTheWeek =  _([serialized.daysOfTheWeek])
-                    .flatten()
-                    .reduce(function(memo, num){ return memo + (1<<num); }, 0);
-            } else {
-                date = new Date(this.$('[data-role=datepicker]').data('datepicker').date.toString());
-                startTime = this._getTime(this.$('[data-role=timepicker][name=startTime]'), date);
-                endTime   = this._getTime(this.$('[data-role=timepicker][name=endTime]'  ), date);
+            if(+serialized.type) {
+                // Not a default rate
+
+                if(+serialized.type === TaxiHail.Tariff.type.recurring ) {
+
+                    startTime = this._getTime(this.$('[data-role=timepicker][name=startTime]'));
+                    endTime = this._getTime(this.$('[data-role=timepicker][name=endTime]'));
+                    serialized.daysOfTheWeek =  _([serialized.daysOfTheWeek])
+                        .flatten()
+                        .reduce(function(memo, num){ return memo + (1<<num); }, 0);
+
+                } else if(+serialized.type === TaxiHail.Tariff.type.day) {
+                    
+                    date = new Date(this.$('[data-role=datepicker]').data('datepicker').date.toString());
+                    startTime = this._getTime(this.$('[data-role=timepicker][name=startTime]'), date);
+                    endTime   = this._getTime(this.$('[data-role=timepicker][name=endTime]'  ), date);
+                
+                }
+
+                if(startTime > endTime) {
+                    endTime.setDate(endTime.getDate() + 1);
+                }
+
+                serialized.startTime = TaxiHail.date.toISO8601(startTime);
+                serialized.endTime   = TaxiHail.date.toISO8601(endTime);
             }
-
-            if(startTime > endTime) {
-                endTime.setDate(endTime.getDate() + 1);
-            }
-
-            serialized.startTime = TaxiHail.date.toISO8601(startTime);
-            serialized.endTime   = TaxiHail.date.toISO8601(endTime);
 
             this.model.save(serialized, {
                 success: _.bind(function(model) {
