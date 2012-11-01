@@ -88,7 +88,8 @@ namespace MK.DeploymentService.Mobile
                 var apkFile = Directory.EnumerateFiles(apkPath, "*-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault();
                 if(apkFile != null)
 			    {
-                    File.Copy(apkFile, System.Configuration.ConfigurationManager.AppSettings["AndroidDeployDir"]);
+					var targetDir = Path.Combine(System.Configuration.ConfigurationManager.AppSettings["AndroidDeployDir"], company.Name);
+					File.Copy(apkFile, targetDir);
 			    }else
 				{
 				    throw new Exception("Can't find th APK file in the release dir");
