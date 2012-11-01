@@ -2,18 +2,41 @@ using System;
 using System.Collections.Specialized;
 using System.Net;
 using System.IO;
+using System.Text;
 
 namespace MK.DeploymentService.Mobile
 {
 	public class FileUploader
 	{
-		public void SendIpa(string filename, string file)
+		private static Random random = new Random((int)DateTime.Now.Ticks);//thanks to McAden
+		private string RandomString(int size)
+		{
+			StringBuilder builder = new StringBuilder();
+			char ch;
+			for (int i = 0; i < size; i++)
+			{
+				ch = Convert.ToChar(Convert.ToInt32(Math.Floor(26 * random.NextDouble() + 65)));                 
+				builder.Append(ch);
+			}
+			
+			return builder.ToString();
+		}
+
+		public void Upload (string filePath)
+		{
+			var tempName = RandomString(8) + ".ipa";
+			UploadFilesToDiawi(tempName, filePath);
+			var fileInfo = new FileInfo(filePath);
+			SendIpa(tempName, fileInfo.Name);
+		}
+
+		private void SendIpa(string tempName, string fileName)
 		{
 			
 			//setup some variables end			
 			String result = string.Empty;
 			String strPost = string.Format("uploader_0_tmpname={0}&uploader_0_name={1}&ploader_0_status=done&uploader_count=1&email=matthieu.duluc@apcurium.com",
-			                               filename, file);
+			                               tempName, fileName);
 			StreamWriter myWriter = null;
 			
 			var objRequest = (HttpWebRequest)WebRequest.Create("http://www.diawi.com/result.php");
@@ -38,9 +61,10 @@ namespace MK.DeploymentService.Mobile
 			}
 		}
 
-		public static void UploadFilesToDiawi(string file,string filename)
+		private static void UploadFilesToDiawi(string tempName, string filePath)
 		{
 			NameValueCollection nvc = new NameValueCollection();
+			//nvc.Add("name", tempName);
 
 			long length = 0;
 			string boundary = "----------------------------" + DateTime.Now.Ticks.ToString("x");
@@ -70,12 +94,12 @@ namespace MK.DeploymentService.Mobile
 			
 			string headerTemplate = "Content-Disposition: form-data; name=\"{0}\"; filename=\"blob\"\r\n Content-Type: application/octet-stream\r\n\r\n";
 			
-			string header = string.Format(headerTemplate, filename, file);			
+			string header = string.Format(headerTemplate, tempName);			
 			byte[] headerbytes = System.Text.Encoding.UTF8.GetBytes(header);			
 			memStream.Write(headerbytes, 0, headerbytes.Length);
 
 			
-			FileStream fileStream = new FileStream(file, FileMode.Open,
+			FileStream fileStream = new FileStream(filePath, FileMode.Open,
 			                                       FileAccess.Read);
 			byte[] buffer = new byte[1024];
 			

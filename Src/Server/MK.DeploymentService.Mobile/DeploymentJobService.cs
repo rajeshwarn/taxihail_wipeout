@@ -86,14 +86,18 @@ namespace MK.DeploymentService.Mobile
 			}
 
 			if (job.iOS) {
+				logger.DebugFormat ("Uploading IPA");
 				var releaseIosDir = Path.Combine(sourceDirectory, "Src", "Mobile", "iOS", "bin", "iPhone", "Release");
 				var ipaFile = Directory.EnumerateFiles(ipaPath, "*.ipa", SearchOption.TopDirectoryOnly).FirstOrDefault();
 				if(ipaFile != null)
 				{
-
+					var fileUplaoder = new FileUploader();
+					fileUplaoder.Upload(ipaFile);
 				}
 			}
 		}
+
+
 
 		private void FetchSource (DeploymentJob job, string sourceDirectory, Company company)
 		{
