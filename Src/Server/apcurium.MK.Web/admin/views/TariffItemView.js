@@ -35,7 +35,13 @@
 
         ondelete: function(e) {
             e.preventDefault();
-            this.model.destroy();
+
+            TaxiHail.confirm({
+                title: this.localize('modal.deleteTariff.title'),
+                message: this.localize('modal.deleteTariff.message')
+            }).on('ok', function(){
+                this.model.destroy();
+            }, this);
         }
 
     });
