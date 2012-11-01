@@ -156,7 +156,7 @@
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\IconActionLayout.axml" />
     <AndroidResource Include="Resources\Drawable\cell_bottom_full_state.xml">
-      <SubType>AndroidResource</SubType>
+      <SubType>Designer</SubType>
     </AndroidResource>
     <Compile Include="Services\MessageService.cs" />
     <Compile Include="Setup.cs" />

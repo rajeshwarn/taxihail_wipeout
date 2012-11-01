@@ -103,7 +103,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             _locationManager.StartUpdatingLocation();
         }
 
-        public Task<Position> GetPositionAsync(int timeout, float accuracy, CancellationToken cancelToken)
+        public Task<Position> GetPositionAsync(int timeout, float accuracy, int fallbackTimeout, float fallbackAccuracy, CancellationToken cancelToken)
         {
             Initialize();
             var task = new Task<Position>(() =>
