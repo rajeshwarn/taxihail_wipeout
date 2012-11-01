@@ -43,9 +43,7 @@
 
             var data = this.serializeForm(form);
 
-            $.when(this._save(data.vehiclesList, 'IBS.ExcludedVehicleTypeId'),
-                   this._save(data.paymentsList, 'IBS.ExcludedPaymentTypeId'),
-                   this._save(data.companiesList, 'IBS.ExcludedProviderId'))
+           this._save(data)
                 .always(_.bind(function() {
 
                     this.$(':submit').button('reset');
@@ -89,15 +87,13 @@
             }, this);
         },
 
-        _save: function(items, settingKey) {
-            var setting = this.options.settings.get(settingKey);
-            if(!setting) {
-                return null;
-            }
+        _save: function(data) {
 
-            return setting.save({
-                value: _([items]).flatten().join(';')
-            });
+            return this.options.settings.batchSave([
+                { key: 'IBS.ExcludedVehicleTypeId', value: _([data.vehiclesList]).flatten().join(';') },
+                { key: 'IBS.ExcludedPaymentTypeId', value: _([data.paymentsList]).flatten().join(';') },
+                { key: 'IBS.ExcludedProviderId', value: _([data.companiesList]).flatten().join(';') }
+            ]);
         }
     });
 
