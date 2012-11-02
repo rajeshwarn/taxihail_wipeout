@@ -147,6 +147,7 @@
     <Content Include="admin\assets\less\TaxiHail-admin-grid.less" />
     <None Include="admin\templates\ManageCompanySettings.handlebars" />
     <Content Include="admin\models\CompanySettings.js" />
+    <Content Include="admin\views\AddFavoriteView.js" />
     <Content Include="admin\views\EditTariffView.js" />
     <Content Include="admin\views\ManageCompanySettingsView.js" />
     <Content Include="admin\views\ManageExclusionsView.js" />
@@ -246,7 +247,6 @@
     <Content Include="common\services\AuthService.js" />
     <Content Include="common\services\GeocodingService.js" />
     <Content Include="common\utils.js" />
-    <Content Include="common\views\AddFavoriteView.js" />
     <Content Include="common\views\AddressItemView.js" />
     <Content Include="common\views\AddressListView.js" />
     <Content Include="common\views\AddressSelectionView.js" />
@@ -323,6 +323,7 @@
     <Content Include="themes\YellowCabSavannah\img\location.png" />
     <Content Include="themes\YellowCabSavannah\img\Logo.png" />
     <Content Include="views\AccountFavoritesAndHistoryListView.js" />
+    <Content Include="views\AddFavoriteView.js" />
     <Content Include="views\AddressControlView.js" />
     <Content Include="views\BookingConfirmationView.js" />
     <Content Include="views\BookingStatusView.js" />

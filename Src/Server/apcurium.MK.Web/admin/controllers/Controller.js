@@ -23,8 +23,10 @@
             currentController.initialize();
         }
         currentController.then(function() {
-            var view = currentController[action].apply(currentController, actionParams);
-            $('#main').html(view.render().el);
+            var previousView = this.view;
+            previousView && previousView.remove();
+            this.view = currentController[action].apply(currentController, actionParams);
+            $('#main').html(this.view.render().el);
         });
     };
 
