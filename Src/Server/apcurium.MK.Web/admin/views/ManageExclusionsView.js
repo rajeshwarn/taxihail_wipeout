@@ -73,12 +73,12 @@
         },
 
         _checkItems: function(items, settingKey) {
-            var setting = this.options.settings.get(settingKey);
-            if(!setting) {
+            var settingValue = this.options.settings.get(settingKey);
+            if (!settingValue) {
                 return items;
             }
 
-            var checkedIds = (setting.get('value') || '').split(';');
+            var checkedIds = settingValue.split(';');
             // Transform list into list of Numbers
             checkedIds = _.map(checkedIds, function(item){ return +item; });
 
@@ -87,13 +87,15 @@
             }, this);
         },
 
-        _save: function(data) {
+        _save: function (data) {
 
-            return this.options.settings.batchSave([
-                { key: 'IBS.ExcludedVehicleTypeId', value: _([data.vehiclesList]).flatten().join(';') },
-                { key: 'IBS.ExcludedPaymentTypeId', value: _([data.paymentsList]).flatten().join(';') },
-                { key: 'IBS.ExcludedProviderId', value: _([data.companiesList]).flatten().join(';') }
-            ]);
+            var settings = {
+                'IBS.ExcludedVehicleTypeId': _([data.vehiclesList]).flatten().join(';'),
+                'IBS.ExcludedPaymentTypeId': _([data.paymentsList]).flatten().join(';'),
+                'IBS.ExcludedProviderId': _([data.companiesList]).flatten().join(';')
+            };
+
+            return this.options.settings.batchSave(settings);
         }
     });
 

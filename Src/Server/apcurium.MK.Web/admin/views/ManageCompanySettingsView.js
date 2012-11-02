@@ -1,41 +1,61 @@
 ﻿(function () {
 
-    TaxiHail.ManageCompanySettingsView = TaxiHail.TemplatedView.extend({
+    var View = TaxiHail.ManageCompanySettingsView = TaxiHail.TemplatedView.extend({
         tagName: 'form',
         className: 'well clearfix form-horizontal',
 
-        initialize: function () {
-            this.collection.on('selected', this.saveSettings, this);
-        },
-
         render: function () {
-            this.$el.html(this.renderTemplate());
+            
+            var data = this.model.toJSON();
+            
+            var sum = _.reduce(data, function (memo, value, key) {
+                memo.push({ key: key, value: value });
+                return memo;
+            }, []);
 
-            this.$el.empty();
-            if (this.collection.length) {
-                this.collection.each(this.renderItem, this);
-                //this.$el.append($('<button>').addClass('btn save-settings').text(TaxiHail.localize('settings.save')));
-            } else {
-                this.$el.append($('<div>').addClass('no-result').text(TaxiHail.localize('settings.no-result')));
-            }
+            this.$el.html(this.renderTemplate({ settings: sum }));
+            
+            this.validate({
+                submitHandler: this.save
+            });
 
             return this;
         },
 
-        renderItem: function (model) {
+        save: function (form) {
+            
+            var data = this.serializeForm(form);
 
-            var itemView = new TaxiHail.SettingsItemView({
-                model: model
-            });
+            this.model.batchSave(data)
+                 .always(_.bind(function() {
 
-            this.$el.append(itemView.render().el);
-        },
+                     this.$(':submit').button('reset');
 
-        saveSettings: function (model) {
+                 }, this))
+                 .done(_.bind(function(){
 
-            model.save();
+                     var alert = new TaxiHail.AlertView({
+                         message: this.localize('Settings Saved'),
+                         type: 'success'
+                     });
+                     alert.on('ok', alert.remove, alert);
+                     this.$('.message').html(alert.render().el);
+
+                 }, this))
+                 .fail(_.bind(function(){
+
+                     var alert = new TaxiHail.AlertView({
+                         message: this.localize('Error Saving Settings'),
+                         type: 'error'
+                     });
+                     alert.on('ok', alert.remove, alert);
+                     this.$('.message').html(alert.render().el);
+
+                 }, this));
         }
 
     });
+
+    _.extend(View.prototype, TaxiHail.ValidatedView);
 
 }());
