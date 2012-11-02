@@ -11,7 +11,9 @@
         initialize: function() {
 
             var status = this.model.getStatus();
-            this.interval = window.setInterval(_.bind(status.fetch, status), 5000);
+            this.interval = window.setInterval(_.bind(function() {
+                this.fetch();
+            }, status), 5000);
             status.on('change:iBSStatusId', this.render, this);
             status.on('change:iBSStatusId', this.onStatusChanged, this);
         },
