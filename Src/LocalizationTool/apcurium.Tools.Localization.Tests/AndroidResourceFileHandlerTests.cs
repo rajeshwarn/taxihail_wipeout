@@ -7,22 +7,41 @@ using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using apcurium.Tools.Localization.Android;
+using apcurium.Tools.Localization.iOS;
 
 namespace apcurium.Tools.Localization.Tests
 {
-    public class AndroidResourceFileHandlerTests
+    public class ResourceFileHandlerTests
     {
         [Test]
-        public void TestX()
+        public void AndroidResourceFileHandler()
         {
-            const string relativeFilePath = @"\mk-taxi\Src\Mobile\Android\Resources\Values\String.xml";
+            const string relativePath = @"\mk-taxi\Src\Mobile\Android\Resources\Values\String.xml";
+
+            var androidResourceFileHandler = new AndroidResourceFileHandler(GetFullPath(relativePath));
+
+            Assert.That(androidResourceFileHandler.Count, Is.GreaterThan(0));
+            Assert.That(androidResourceFileHandler.DuplicateKeys.Count, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void iOSResourceFileHandler()
+        {
+            const string relativePath = @"\mk-taxi\Src\Mobile\iOS\en.lproj\Localizable.strings";
+
+            var iOSResourceFileHandler = new iOSResourceFileHandler(GetFullPath(relativePath));
+
+            Assert.That(iOSResourceFileHandler.Count, Is.GreaterThan(0));
+            Assert.That(iOSResourceFileHandler.DuplicateKeys.Count, Is.EqualTo(0));
+        }
+
+        private string GetFullPath(string relativePath)
+        {
             string basePath = GetCurrentAssemblyExecutingPath();
             var index = basePath.IndexOf(@"\mk-taxi\Src\", StringComparison.OrdinalIgnoreCase);
             basePath = basePath.Substring(0, index);
 
-            var androidResourceFileHandler = new AndroidResourceFileHandler(basePath +relativeFilePath);
-
-            Assert.That(androidResourceFileHandler.Count, Is.GreaterThan(0));
+            return basePath + relativePath;
         }
 
         private static string GetCurrentAssemblyExecutingPath()

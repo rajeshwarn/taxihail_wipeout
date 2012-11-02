@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -11,9 +12,11 @@ namespace apcurium.Tools.Localization
     public abstract class ResourceFileHandlerBase : Dictionary<string, string>
     {
         private readonly string _filePath;
+        private readonly HashSet<string> _duplicateKeys;
 
         protected ResourceFileHandlerBase(string filePath)
         {
+            _duplicateKeys = new HashSet<string>();
             _filePath = filePath;
         }
 
@@ -21,5 +24,19 @@ namespace apcurium.Tools.Localization
         {
             get { return Path.GetFileName(_filePath); }
         }
+
+        protected void TryAdd(string key, string value)
+        {
+            if (ContainsKey(key))
+            {
+                _duplicateKeys.Add(key);
+            }
+            else
+            {
+                Add(key, value);
+            }
+        }
+
+        public ReadOnlyCollection<string> DuplicateKeys { get { return _duplicateKeys.ToList().AsReadOnly(); } }
     }
 }
