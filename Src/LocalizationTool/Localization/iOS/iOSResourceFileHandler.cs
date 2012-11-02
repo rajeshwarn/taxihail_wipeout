@@ -7,38 +7,11 @@ using System.Threading.Tasks;
 
 namespace apcurium.Tools.Localization.iOS
 {
-    public class iOSResourceFileHandler : IResourceFileHandler
+    public class iOSResourceFileHandler : ResourceFileHandlerBase
     {
-
-
-        private string _fileName;
-        public void Load(string fileName)
+        public iOSResourceFileHandler(string filePath)
+            : base(filePath)
         {
-            _fileName = fileName;
-        }
-        public string Name
-        {
-            get { return Path.GetFileName(_fileName); }
-        }
-
-        public string[] Keys
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public string GetValue(string key)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetValue(string key, string value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Save()
-        {
-            throw new NotImplementedException();
         }
     }
 }
