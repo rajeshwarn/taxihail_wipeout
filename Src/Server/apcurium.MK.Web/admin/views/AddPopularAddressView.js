@@ -5,7 +5,6 @@
         className: 'add-favorite-view',
 
         events: {
-            "change :input": "onPropertyChanged",
             'focus [name=fullAddress]': 'onfocus',
             'click [data-action=destroy]': 'destroyAddress',
             'click [data-action=cancel]': 'cancel'
@@ -13,12 +12,7 @@
 
         initialize: function () {
             _.bindAll(this, 'save', 'onkeyup', 'ondocumentclick');
-            this.model.on('sync', this.refreshParent, this);
             _.defer(_.bind(function () { $(document).on('click', this.ondocumentclick); }, this));
-        },
-
-        refreshParent: function () {
-            this.collection.trigger('sync');
         },
 
         render: function () {
@@ -60,13 +54,15 @@
         },
 
         save: function (form) {
-            if (this.model.has('fullAddress')) {
-                if (!this.model.get('isHistoric')) {
-                    this.model.save();
-                } else {
-                    this.collection.create(_.pick(this.model.toJSON(), 'friendlyName', 'fullAddress', 'apartment', 'ringCode', 'buildingName'), { wait: true });
-                }
-            }
+            var data = this.serializeForm(form);
+            this.model.save(data, {
+                success: _.bind(function(model){
+
+                    this.collection.add(model);
+                    TaxiHail.app.navigate('', {trigger: true});
+
+                }, this)
+            });
         },
 
         destroyAddress: function (e) {
@@ -76,11 +72,12 @@
                 message: this.localize('modal.removePopular.message')
             }).on('ok', function () {
                 this.model.destroy();
+                TaxiHail.app.navigate('addresses/popular', {trigger: true});
             }, this);
         },
 
         remove: function () {
-            if (this._selector) this._selector.remove();
+            if(this._selector) this._selector.remove();
             $(document).off('click', this.ondocumentclick);
             this.$el.remove();
             return this;
@@ -120,15 +117,6 @@
             e.preventDefault();
             this.model.set(this.model.previousAttributes);
             this.trigger('cancel', this);
-        },
-
-        onPropertyChanged: function (e) {
-            var $input = $(e.currentTarget);
-            if ($input.attr('name') === 'fullAddress') {
-                return;
-            }
-
-            this.model.set($input.attr("name"), $input.val());
         },
 
         ondocumentclick: function (e) {

@@ -154,10 +154,8 @@
     <Content Include="admin\views\ManageTariffsView.js" />
     <Content Include="admin\views\SettingsItemView.js" />
     <Content Include="admin\views\TariffItemView.js" />
-    <Content Include="common\collections\CompanyPopularAddressCollection.js" />
     <Content Include="admin\default.aspx" />
     <Content Include="admin\models\CompanyDefaultAddress.js" />
-    <Content Include="common\models\CompanyPopularAddress.js" />
     <Content Include="admin\routers\app.js" />
     <Content Include="admin\taxi-hail-admin.js" />
     <Content Include="admin\views\AddPopularAddressView.js" />

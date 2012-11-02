@@ -25,12 +25,22 @@
 
     TaxiHail.App = Backbone.Router.extend({
         routes: {
+            /* Favorite addresses*/
             "": "manageDefaultAddresses",   // #
             'addresses/default/add': 'addDefaultAddress',
             'addresses/default/edit/:id': 'editDefaultAddress',
+
+            /* popular addresses*/
+            "addresses/popular": "managePopularAddresses",
+            "addresses/popular/add": "addPopularAddress",
+            "addresses/popular/edit/:id": "editPopularAddress",
+
+            /* Admin right*/
             "grantadmin": "grantAdminAccess",
-            "managepopularaddresses": "managePopularAddresses",
+            
+            /* settings */
             "settings" : "manageCompanySettings",
+
             /* Tariffs */
             "tariffs": "manageTariffs", //#tariffs
             "tariffs/add/recurring": "addRecurringTariff", //#tariffs/add/recurring
@@ -63,19 +73,7 @@
         },
         
         managePopularAddresses : function () {
-            var addresses = new TaxiHail.CompanyPopularAddressCollection(),
-                        view = this._tabView = new TaxiHail.ManagePopularAddressesView({
-                            collection: addresses
-                        });
-
-            var popular = new TaxiHail.CompanyPopularAddressCollection();
-            popular.fetch({
-                url: '../api/admin/popularaddresses',
-                success: _.bind(function (collection, resp) {
-                    addresses.reset(popular.models);
-                    renderView(view);
-                }, this)
-            });
+            TaxiHail.Controller.action(TaxiHail.PopularAddressesController, 'index');
         },
         
         grantAdminAccess : function () {

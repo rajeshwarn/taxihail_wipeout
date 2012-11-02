@@ -71,9 +71,8 @@
                 title: this.localize('Remove Favorite Address'),
                 message: this.localize('modal.removeFavorite.message')
             }).on('ok', function () {
-                    this.model.destroy();
-                    TaxiHail.app.navigate('', {trigger: true});
-                    
+                this.model.destroy();
+                TaxiHail.app.navigate('', {trigger: true});
             }, this);
         },
 
@@ -95,7 +94,7 @@
         },
 
         close: function () {
-            var $input =  this.$('[name=fullAddress]');
+            var $input = this.$('[name=fullAddress]');
             
             this._selector && this._selector.hide();
             // Set address in textbox back to the value of the model
