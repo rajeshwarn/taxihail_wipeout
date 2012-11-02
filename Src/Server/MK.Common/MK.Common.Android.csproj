@@ -47,6 +47,9 @@
     <Compile Include="Diagnostic\ILogger.cs" />
     <Compile Include="Entity\Address.cs" />
     <Compile Include="Entity\ListItem.cs" />
+    <Compile Include="Entity\OrderRatings.cs" />
+    <Compile Include="Entity\RatingScore.cs" />
+    <Compile Include="Entity\RatingType.cs" />
     <Compile Include="Extensions\AssemblyExtensions.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />

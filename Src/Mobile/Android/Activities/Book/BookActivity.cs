@@ -193,8 +193,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         private void About_Click(object sender, EventArgs e)
         {
-            var intent = new Intent().SetClass(this, typeof(AboutActivity));
-            StartActivity(intent);
+           // var intent = new Intent().SetClass(this, typeof(AboutActivity));
+           // var intent = new Intent(this, typeof(BookingRateActivity));
+            //StartActivity(intent);
             ToggleSettingsScreenVisibility();
         }
 

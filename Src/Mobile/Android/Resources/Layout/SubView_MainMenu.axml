@@ -57,7 +57,7 @@
                     android:drawableRight="@drawable/right_arrow"
                     android:paddingRight="10dip"
                     android:paddingLeft="10dip"
-                    android:gravity="left|center_vertical"/>
+                    android:gravity="left|center_vertical" />
                 <Button
                     android:id="@+id/settingsCallCompany"
                     style="@style/BigTitleTextBlack"
@@ -68,7 +68,7 @@
                     android:drawableRight="@drawable/right_arrow"
                     android:paddingRight="10dip"
                     android:paddingLeft="10dip"
-                    android:gravity="left|center_vertical"/>
+                    android:gravity="left|center_vertical" />
                 <Button
                     android:id="@+id/settingsAbout"
                     style="@style/BigTitleTextBlack"
@@ -79,7 +79,8 @@
                     android:drawableRight="@drawable/right_arrow"
                     android:paddingRight="10dip"
                     android:paddingLeft="10dip"
-                    android:gravity="left|center_vertical"/>
+                    android:gravity="left|center_vertical" 
+                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;NavigateToRateOrder&apos;}}" />
                 <Button
                     android:id="@+id/settingsSupport"
                     style="@style/BigTitleTextBlack"
@@ -90,7 +91,7 @@
                     android:drawableRight="@drawable/right_arrow"
                     android:paddingRight="10dip"
                     android:paddingLeft="10dip"
-                    android:gravity="left|center_vertical"/>
+                    android:gravity="left|center_vertical" />
                 <Button
                     android:id="@+id/settingsLogout"
                     style="@style/BigTitleTextBlack"

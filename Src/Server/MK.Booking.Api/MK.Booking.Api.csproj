@@ -127,6 +127,7 @@
     <Compile Include="Services\Maps\PlaceDetailService.cs" />
     <Compile Include="Services\RatesService.cs" />
     <Compile Include="Services\PopularAddressService.cs" />
+    <Compile Include="Services\RatingTypesService.cs" />
     <Compile Include="Services\ReferenceDataService.cs" />
     <Compile Include="Services\RegisterAccountService.cs" />
     <Compile Include="Services\ResetPasswordService.cs" />

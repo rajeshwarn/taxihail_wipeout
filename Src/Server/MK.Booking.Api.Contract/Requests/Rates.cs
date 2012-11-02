@@ -13,8 +13,8 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
     [AuthorizationRequired(ApplyTo.All, Permissions.Admin)]
-    [RestService("/admin/rates", "GET, POST")]
-    [RestService("/admin/rates/{Id}", "PUT, DELETE")]
+    [RestService("/rates", "GET, POST")]
+    [RestService("/rates/{Id}", "PUT, DELETE")]
     public class Rates
     {
         public Guid Id { get; set; }

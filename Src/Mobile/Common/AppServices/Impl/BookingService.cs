@@ -10,6 +10,7 @@ using TinyIoC;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using Address = apcurium.MK.Common.Entity.Address;
 using ServiceStack.ServiceClient.Web;
@@ -204,6 +205,22 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 isCompleted = true;
             });
             return isCompleted;
+        }
+
+        public List<RatingType> GetRatingType()
+        {
+            var ratingType = new List<RatingType>();
+            UseServiceClient<OrderServiceClient>(service =>
+            {
+                 ratingType= service.GetRatingTypes();
+            });
+            return ratingType;
+        }
+
+        public void SendRatingReview(Common.Entity.OrderRatings orderRatings)
+        {
+            var request = new OrderRatingsRequest() { Note = orderRatings.Note, OrderId = orderRatings.OrderId, RatingScores = orderRatings.RatingScores };
+            UseServiceClient<OrderServiceClient>(service => service.RateOrder(request));
         }
 
         public List<Address> GetAddressFromAddressBook(Predicate<Contact> criteria)

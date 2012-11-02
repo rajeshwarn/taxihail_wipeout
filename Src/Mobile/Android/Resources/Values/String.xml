@@ -280,8 +280,7 @@
   <string name="View_PasswordRecovery_Label">Reset Your Password</string>
   <string name="View_SignUp">Sign Up</string>
   <string name="View_SignUp_Label">Create Your Profile</string>
-  <string name="View_SignIn">
-  </string>
+  <string name="View_SignIn"></string>
   <string name="View_RideSettings">Profile</string>
   <string name="View_Book_Menu_MyLocations">Manage My Locations</string>
   <string name="View_Book_Menu_MyOrders">My Orders</string>
@@ -291,6 +290,7 @@
   <string name="View_Book_Menu_ReportProblem">Report A Problem</string>
   <string name="View_Book_Menu_SignOut">Sign Out</string>
   <string name="View_RefineAddress">Pickup Details</string>
+  <string name="View_RatePage">Rate Your Ride</string>
   <string name="BookingService_MobileBookingNote">Booked mobile device.</string>
   <string name="BookingService_MobileBookingNoteBuildingName">Building name {0}.</string>
   <string name="View_BookingStatus_ThankYouTitle">Thank you</string>

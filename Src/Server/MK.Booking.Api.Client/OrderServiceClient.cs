@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Common.Entity;
+using OrderRatings = apcurium.MK.Booking.Api.Contract.Resources.OrderRatings;
 
 namespace apcurium.MK.Booking.Api.Client
 {
@@ -58,6 +60,11 @@ namespace apcurium.MK.Booking.Api.Client
             var req = string.Format("/account/orders/{0}/status", orderId);
             var result = Client.Get<OrderStatusDetail>(req);
             return result;
+        }
+
+        public List<RatingType> GetRatingTypes()
+        {
+            return Client.Get<List<RatingType>>("/ratingtypes");
         }
 
         public void RateOrder(OrderRatingsRequest orderRatingRequest)

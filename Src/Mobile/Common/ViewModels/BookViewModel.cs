@@ -418,7 +418,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-
+        public IMvxCommand NavigateToRateOrder
+        {
+            get
+            {
+                return new MvxRelayCommand(() =>
+                {
+                    RequestNavigate<BookRatingViewModel>();
+                });
+            }
+        }
 
     }
 }
