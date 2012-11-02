@@ -64,7 +64,7 @@
                     'settings.name': "required",
                     'settings.phone': {
                         required: true,
-                        regex: /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/
+                        regex: /^\(?([0-9]{3})\)?[\-. ]?([0-9]{3})[\-. ]?([0-9]{4})$/
                     },
                     'settings.passengers': {
                         required: true,
