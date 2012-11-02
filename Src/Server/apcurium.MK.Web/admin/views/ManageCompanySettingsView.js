@@ -1,6 +1,6 @@
 ﻿(function () {
 
-    TaxiHail.ManageCompanySettingsView = TaxiHail.TemplatedView.extend({
+    TaxiHail.ManageCompanySettingsView = Backbone.View.extend({
         tagName: 'form',
         className: 'well clearfix form-horizontal',
         
@@ -11,7 +11,7 @@
         },
         
         render: function () {
-            this.$el.html(this.renderTemplate());
+            //this.$el.html(this.renderTemplate());
             
             this.$el.empty();
             if (this.collection.length) {
