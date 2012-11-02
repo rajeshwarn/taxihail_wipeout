@@ -57,7 +57,7 @@ namespace apcurium.MK.Booking.Api.Services
         {
             if (request.AppSettings.Any())
             {
-                var command = new Commands.AddOrUpdateAppSettings { AppSettings = request.AppSettings };
+                var command = new Commands.AddOrUpdateAppSettings { AppSettings = request.AppSettings,  CompanyId = AppConstants.CompanyId };
                 _commandBus.Send(command);
 
                 if(request.AppSettings.Any(s => s.Key.ToLower().StartsWith("ibs.")))

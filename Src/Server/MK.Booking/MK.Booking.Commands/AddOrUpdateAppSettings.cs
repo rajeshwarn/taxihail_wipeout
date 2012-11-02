@@ -13,9 +13,12 @@ namespace apcurium.MK.Booking.Commands
             Id = Guid.NewGuid();
             AppSettings = new Dictionary<string, string>();
         }
+
         public Guid Id { get;  set; }
         //public string Key { get;  set; }
         //public string Value { get;  set; }
         public IDictionary<string, string> AppSettings { get; set; }
+
+        public Guid CompanyId { get; set; }
     }
 }

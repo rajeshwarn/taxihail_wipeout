@@ -290,7 +290,8 @@ namespace DatabaseInitializer
 
                 commandBus.Send(new AddOrUpdateAppSettings()
                 {
-                    AppSettings = appSettings
+                    AppSettings = appSettings,
+                    CompanyId = AppConstants.CompanyId
                 });
             }catch(Exception e)
             {
@@ -305,7 +306,8 @@ namespace DatabaseInitializer
        { 
             commandBus.Send(new AddOrUpdateAppSettings
                                 {
-                                    AppSettings = appSettings
+                                    AppSettings = appSettings,
+                                    CompanyId = AppConstants.CompanyId
                                 });
 
             return   new Dictionary<string, string>();
