@@ -4,40 +4,31 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace apcurium.Tools.Localization.Android
 {
-    public class AndroidResourceFileHandler : IResourceFileHandler
+    //\mk-taxi\Src\Mobile\Android\Resources\Values\String.xml
+    public class AndroidResourceFileHandler : ResourceFileHandlerBase
     {
+        public AndroidResourceFileHandler(string filePath) : base(filePath)
+        {
+            var document = XElement.Load(filePath);
+            var duplicateKeys = new HashSet<string>();
 
-        private string _fileName;
-        public void Load(string fileName)
-        {
-            _fileName = fileName;
-        }
-        public string Name
-        {
-            get { return Path.GetFileName(_fileName); }
-        }
+            foreach (var localization in document.Elements())
+            {
+                var key = localization.FirstAttribute.Value;
 
-        public string[] Keys
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public string GetValue(string key)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetValue(string key, string value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Save()
-        {
-            throw new NotImplementedException();
+                if(ContainsKey(key))
+                {
+                    duplicateKeys.Add(key);
+                }
+                else
+                {
+                    Add(key, localization.Value);
+                }
+            }
         }
     }
 }
