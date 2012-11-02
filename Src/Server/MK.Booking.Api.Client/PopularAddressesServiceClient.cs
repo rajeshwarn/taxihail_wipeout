@@ -23,10 +23,12 @@ namespace apcurium.MK.Booking.Api.Client
             return addresses;
         }
 
+#if  !CLIENT
         public void Add(PopularAddress address )
         {
             var req = string.Format("/admin/popularaddresses");
             Client.Post<object>(req, address);
         }
+#endif
     }
 }

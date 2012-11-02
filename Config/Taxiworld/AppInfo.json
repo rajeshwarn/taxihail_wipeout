@@ -1,7 +1,7 @@
 {
-   "AndroidSigningKeyAlias" : "MKTaxiHail",
+   "AndroidSigningKeyAlias" : "MKTaxiworld",
    "AndroidSigningKeyPassStorePass" : "mkt0001.",
-   "AppName" : "TaxiHail",
-   "GoogleMapKey" : "0XEY3WqKVmJPhADLxOCPUweMcqYg3AfqCp8BvWw",
-   "Package" : "com.apcurium.MK.TaxiHailDemo"
+   "AppName" : "Taxiworld",
+   "GoogleMapKey" : "0XEY3WqKVmJPKgUaBK0NC_GfL7VtrnaAAs1hieQ",
+   "Package" : "com.apcurium.MK.TaxiworldDemo"
 }

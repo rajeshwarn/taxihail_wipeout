@@ -53,7 +53,7 @@ namespace apcurium.MK.Booking.Maps.Impl
             {
                 var words = name.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                 popularAddresses = from a in GetPopularAddressesInRange(new Position(latitude.Value, longitude.Value))
-                    where words.All(w => a.FriendlyName.ToUpper().Contains(w.ToUpper()))
+                    where words.All(w => a.FriendlyName.ToUpper().Contains(w.ToUpper()) || a.FullAddress.Contains(w.ToUpper()))
                     select a;
 
             }
@@ -98,7 +98,7 @@ namespace apcurium.MK.Booking.Maps.Impl
 
             var addressesInRange = from a in _popularAddressProvider.GetPopularAddresses()
                                    let distance = position.DistanceTo(new Position(a.Latitude, a.Longitude))
-                                   where distance <= range
+                                   //where distance <= range
                                    orderby distance ascending
                                    select a;
 

@@ -18,11 +18,9 @@
   "LocationHistoryTitle"="Locations history";
   "HistoryViewTitle"="History";
   "LocationViewTitle"="My Locations";
-  "LocationDetailViewTitle"="Location";
-  
+  "LocationDetailViewTitle"="Location";  
   "SettingsViewTitle"="Settings";
-  "DefaultRideSettingsViewTitle"="Settings";
-  
+  "DefaultRideSettingsViewTitle"="Settings";  
   "EmailLabel"="Email";
   "PasswordLabel"="Password";
   "CurrentPasswordLabel"="Current Password";
@@ -49,8 +47,7 @@
   "InvalidBookinInfo"="To book a ride, you need to enter a valid pickup address.";
   "InvalidPickupAddress"="Please enter a valid pickup address.";
   "DestinationMapTitle"="Destination location";
-  "PickupMapTitle"="Pickup location";
-  
+  "PickupMapTitle"="Pickup location";  
   "CancelBoutton"="Cancel";
   "ConfirmButton"="Confirm";
   "ConfirmRideInformationTitle"="Ride Information";
