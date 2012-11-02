@@ -4,17 +4,16 @@
         initialize: function() {
 
             this.referenceData = new TaxiHail.ReferenceData();
-            this.settings = new TaxiHail.CompanySettingsCollection();
+            this.settings = new TaxiHail.CompanySettings();
+            
             $.when(this.referenceData.fetch({
                 data: {
                     withoutFiltering: true
-                }
-            }), this.settings.fetch({
+                }}), this.settings.fetch({
                 data: {
                     appSettingsType: 1
                 }
             })).then(this.ready);
-
         },
 
         index: function() {

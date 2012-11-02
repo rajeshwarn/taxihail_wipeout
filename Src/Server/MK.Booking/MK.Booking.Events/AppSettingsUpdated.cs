@@ -6,9 +6,13 @@ using Infrastructure.EventSourcing;
 
 namespace apcurium.MK.Booking.Events
 {
-    public class AppSettingsUpdated : VersionedEvent
+    public class AppSettingsAddedOrUpdated : VersionedEvent
     {
-        public string Key { get; set; }
-        public string Value { get; set; }
+        public AppSettingsAddedOrUpdated()
+        {
+            AppSettings = new Dictionary<string, string>();
+        }
+
+        public IDictionary<string, string> AppSettings { get; set; }
     }
 }

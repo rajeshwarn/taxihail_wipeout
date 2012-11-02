@@ -27,18 +27,24 @@ namespace apcurium.MK.Booking.Common.Tests
         public void Reset()
         { }
 
-        public IDictionary<string, string> GetAllSettings()
+        public IDictionary<string, string> GetSettings()
         {
 
             return _config;
 
         }
 
+        public void SetSettings(IDictionary<string, string> appSettings)
+        {
+            foreach (var appSetting in appSettings)
+            {
+                SetSetting(appSetting.Key, appSetting.Value);
+            }
+        }
+
         public string GetSetting(string key)
         {
-
             return _config[key];
-            
         }
 
         public void SetSetting(string key, string value)

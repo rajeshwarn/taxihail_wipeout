@@ -23,9 +23,17 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
         {
             this.sut = new EventSourcingTestHelper<Company>();
             this.sut.Setup(new CompanyCommandHandler(this.sut.Repository));
-            this.sut.Given(new CompanyCreated(){SourceId = _companyId} );
-            this.sut.Given(new AppSettingsAdded(){Key = "Key.Default", Value = "Value.Default"});
+            this.sut.Given(new CompanyCreated() { SourceId = _companyId });
+            this.sut.Given(new AppSettingsAddedOrUpdated { AppSettings = new Dictionary<string, string> { { "Key.Default", "Value.Default" } } });
         }
 
+            this.sut.When(new AddOrUpdateAppSettings() { AppSettings = new Dictionary<string, string> { { "Key.hi", "Value.hi" } }  });
+            var evt = (AppSettingsAddedOrUpdated)sut.Events.Single();
+            Assert.AreEqual("Key.hi", evt.AppSettings.First().Key);
+            Assert.AreEqual("Value.hi", evt.AppSettings.First().Value);
+            this.sut.When(new AddOrUpdateAppSettings() { AppSettings = new Dictionary<string, string> { { "Key.Default", "Value.newValue" } } });
+            var evt = (AppSettingsAddedOrUpdated)sut.Events.Single();
+            Assert.AreEqual("Key.Default", evt.AppSettings.First().Key);
+            Assert.AreEqual("Value.newValue", evt.AppSettings.First().Value);
     }
 }

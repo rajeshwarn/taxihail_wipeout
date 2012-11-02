@@ -14,7 +14,26 @@
             this.$el.html(this.renderTemplate(data));
 
             this.validate({
-                submitHandler: this.save
+                submitHandler: this.save,
+                rules: {
+                    vehiclesList: { checkboxesNotAllChecked: { options: data.vehiclesList/*, optionsName: this.localize("Vehicle Types") */} },
+                    paymentsList: { checkboxesNotAllChecked: { options: data.paymentsList/*, optionsName: this.localize("Payment Types") */} },
+                    companiesList: { checkboxesNotAllChecked: { options: data.companiesList/*, optionsName: this.localize("Companies") */} }
+                },
+                errorPlacement: function (error, element) {
+                    if (error.text() == "") {
+                    } else {
+                        var $form = element.closest("form");
+
+                        var alert = new TaxiHail.AlertView({
+                            message: error,
+                            type: 'error'
+                        });
+
+                        alert.on('ok', alert.remove, alert);
+                        $form.find('.message').html(alert.render().el);
+                    }
+                }
             });
 
             return this;
@@ -24,9 +43,7 @@
 
             var data = this.serializeForm(form);
 
-            $.when(this._save(data.vehiclesList, 'IBS.ExcludedVehicleTypeId'),
-                   this._save(data.paymentsList, 'IBS.ExcludedPaymentTypeId'),
-                   this._save(data.companiesList, 'IBS.ExcludedProviderId'))
+           this._save(data)
                 .always(_.bind(function() {
 
                     this.$(':submit').button('reset');
@@ -56,12 +73,12 @@
         },
 
         _checkItems: function(items, settingKey) {
-            var setting = this.options.settings.get(settingKey);
-            if(!setting) {
+            var settingValue = this.options.settings.get(settingKey);
+            if (!settingValue) {
                 return items;
             }
 
-            var checkedIds = (setting.get('value') || '').split(';');
+            var checkedIds = settingValue.split(';');
             // Transform list into list of Numbers
             checkedIds = _.map(checkedIds, function(item){ return +item; });
 
@@ -70,15 +87,15 @@
             }, this);
         },
 
-        _save: function(items, settingKey) {
-            var setting = this.options.settings.get(settingKey);
-            if(!setting) {
-                return null;
-            }
+        _save: function (data) {
 
-            return setting.save({
-                value: _([items]).flatten().join(';')
-            });
+            var settings = {
+                'IBS.ExcludedVehicleTypeId': _([data.vehiclesList]).flatten().join(';'),
+                'IBS.ExcludedPaymentTypeId': _([data.paymentsList]).flatten().join(';'),
+                'IBS.ExcludedProviderId': _([data.companiesList]).flatten().join(';')
+            };
+
+            return this.options.settings.batchSave(settings);
         }
     });
 

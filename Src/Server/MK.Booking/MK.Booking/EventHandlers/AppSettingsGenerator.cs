@@ -10,50 +10,36 @@ using apcurium.MK.Common.Configuration.Impl;
 namespace apcurium.MK.Booking.EventHandlers
 {
     public class AppSettingsGenerator :
-        IEventHandler<AppSettingsAdded>,
-        IEventHandler<AppSettingsUpdated>
+        IEventHandler<AppSettingsAddedOrUpdated>
     {
         private readonly Func<ConfigurationDbContext> _contextFactory;
-        private IConfigurationManager _configurationManager;
 
-        public AppSettingsGenerator(IConfigurationManager configurationManager, Func<ConfigurationDbContext> contextFactory )
+        public AppSettingsGenerator(Func<ConfigurationDbContext> contextFactory)
         {
-            _configurationManager = configurationManager;
             _contextFactory = contextFactory;
         }
 
-        public void Handle(AppSettingsAdded @event)
+        public void Handle(AppSettingsAddedOrUpdated @event)
         {
             using (var context = _contextFactory.Invoke())
             {
-                var setting = context.Set<AppSetting>().FirstOrDefault(x => x.Key.Equals(@event.Key));
-               
-                if (setting != null)
+                var settings = context.Query<AppSetting>().ToList();
+
+                foreach (var appSetting in @event.AppSettings)
                 {
-                    setting.Value = @event.Value;
-                    context.Set<AppSetting>().Attach(setting);
+                    var setting = settings.FirstOrDefault(x => x.Key.Equals(appSetting.Key));
+
+                    if (setting != null)
+                    {
+                        setting.Value = appSetting.Value;
+                    }
+                    else
+                    {
+                        context.Set<AppSetting>().Add(new AppSetting(appSetting.Key, appSetting.Value));
+                    }
                 }
-                else
-                {
-                    context.Set<AppSetting>().Add(new AppSetting(@event.Key, @event.Value));
-                }
+
                 context.SaveChanges();
-
-            }
-        }
-
-        public void Handle(AppSettingsUpdated @event)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                
-                var setting = context.Query<AppSetting>().SingleOrDefault(c => c.Key.Equals(@event.Key));
-                if (setting !=null)
-                {
-                    setting.Key = @event.Key;
-                    setting.Value = @event.Value;
-                    context.SaveChanges();
-                }
             }
         }
     }

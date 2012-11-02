@@ -135,6 +135,7 @@
     <Content Include="admin\collections\CompanyDefaultAddressCollection.js" />
     <Content Include="admin\collections\TariffCollection.js" />
     <Content Include="admin\controllers\Controller.js" />
+    <Content Include="admin\controllers\CompanySettingsController.js" />
     <Content Include="admin\controllers\ExclusionsController.js" />
     <Content Include="admin\controllers\TariffsController.js" />
     <Content Include="admin\models\Tariff.js" />
@@ -145,8 +146,7 @@
     <Content Include="admin\templates\EditTariff.handlebars" />
     <Content Include="admin\assets\less\TaxiHail-admin-grid.less" />
     <None Include="admin\templates\ManageCompanySettings.handlebars" />
-    <Content Include="admin\collections\CompanySettingsCollection.js" />
-    <Content Include="admin\models\CompanySetting.js" />
+    <Content Include="admin\models\CompanySettings.js" />
     <Content Include="admin\views\EditTariffView.js" />
     <Content Include="admin\views\ManageCompanySettingsView.js" />
     <Content Include="admin\views\ManageExclusionsView.js" />
@@ -363,7 +363,7 @@
     <Content Include="localization\OrderHistoryDetail.json" />
     <Content Include="themes\TaxiHail\less\style.less" />
     <Content Include="localization\OrderItem.json" />
-    <Content Include="admin\templates\SettingsItem.handlebars" />
+    <Content Include="admin\templates\ManageExclusions.handlebars" />
     <Content Include="admin\templates\ManageExclusions.handlebars" />
     <Content Include="admin\templates\ManageTariffs.handlebars" />
     <Content Include="admin\templates\TariffItem.handlebars" />

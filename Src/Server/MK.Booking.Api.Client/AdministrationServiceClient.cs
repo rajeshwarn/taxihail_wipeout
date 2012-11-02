@@ -74,22 +74,15 @@ namespace apcurium.MK.Booking.Api.Client
 
         public IEnumerable GetAllAppSettings()
         {
-            var req = string.Format("/settings/");
+            var req = string.Format("/settings");
             var address = Client.Get<IEnumerable>(req);
             return address;
         }
 
-        public string AddAppSettings(ConfigurationsRequest appReq)
+        public string AddOrUpdateAppSettings(ConfigurationsRequest appReq)
         {
-            var req = string.Format("/settings/");
+            var req = string.Format("/settings");
             return Client.Post<string>(req, appReq);
-        }
-
-        public string UpdateAppSettings(ConfigurationsRequest appReq)
-        {
-            var req = string.Format("/settings/{0}", appReq.Key);
-            return Client.Put<string>(req, appReq);
-            
         }
 
     }

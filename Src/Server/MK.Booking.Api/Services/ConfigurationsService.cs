@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using Infrastructure.Messaging;
+using ServiceStack.CacheAccess;
 using ServiceStack.Common.Web;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -14,69 +15,58 @@ using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class ConfigurationsService: RestServiceBase<ConfigurationsRequest>
+    public class ConfigurationsService : RestServiceBase<ConfigurationsRequest>
     {
-
         private readonly IConfigurationManager _configManager;
         private readonly ICommandBus _commandBus;
+        private readonly ICacheClient _cacheClient;
 
-
-        public ConfigurationsService(IConfigurationManager configManager, ICommandBus commandBus )
+        public ConfigurationsService(IConfigurationManager configManager, ICommandBus commandBus, ICacheClient cacheClient)
         {
             _configManager = configManager;
             _commandBus = commandBus;
+            _cacheClient = cacheClient;
         }
 
         public override object OnGet(ConfigurationsRequest request)
         {
-            string[] keys = new string[0];
-            if(request.AppSettingsType.Equals(AppSettingsType.Mobile) || request.AppSettingsType == null)
+            string[] keys;
+
+            if (request.AppSettingsType.Equals(AppSettingsType.Webapp))
             {
-                 keys = new string[] { "PriceFormat", "DistanceFormat", "Direction.FlateRate", "Direction.RatePerKm", "Direction.MaxDistance", "GeoLoc.SearchFilter", "GeoLoc.PopularAddress.Range", "NearbyPlacesService.DefaultRadius", "Map.PlacesApiKey", "Client.HideCallDispatchButton" };
-                
-            }
-            else if(request.AppSettingsType.Equals(AppSettingsType.Webapp))
-            {
-                keys = new string[]
-                           {
-                               "PriceFormat", "DistanceFormat", "Direction.FlateRate", "Direction.RatePerKm",
+                keys = new[] { "PriceFormat", "DistanceFormat", "Direction.FlateRate", "Direction.RatePerKm",
                                "Direction.MaxDistance", "GeoLoc.SearchFilter", "GeoLoc.PopularAddress.Range",
                                "NearbyPlacesService.DefaultRadius", "Map.PlacesApiKey", "Client.HideCallDispatchButton",
                                "IBS.ExcludedVehicleTypeId", "IBS.ExcludedPaymentTypeId", "IBS.ExcludedProviderId"
                            };
             }
+            else //AppSettingsType.Mobile
+            {
+                keys = new[] { "PriceFormat", "DistanceFormat", "Direction.FlateRate", "Direction.RatePerKm", "Direction.MaxDistance", 
+                    "GeoLoc.SearchFilter", "GeoLoc.PopularAddress.Range", "NearbyPlacesService.DefaultRadius", "Map.PlacesApiKey", "Client.HideCallDispatchButton" };
+            }
 
-            var allKeys = _configManager.GetAllSettings();
+            var allKeys = _configManager.GetSettings();
 
-            var result = allKeys.Where(k => keys.Contains(k.Key)).Select(s => new AppSetting {Key = s.Key, Value = s.Value}).ToArray();
+            var result = allKeys.Where(k => keys.Contains(k.Key)).ToDictionary(s => s.Key, s => s.Value);
 
             return result;
-            //return true;
         }
 
         public override object OnPost(ConfigurationsRequest request)
         {
-
-            var command = new Commands.AddAppSettings { CompanyId = AppConstants.CompanyId, Key = request.Key, Value = request.Value };
-            _commandBus.Send(command);
-            return new HttpResult(HttpStatusCode.OK);
-        }
-
-        public override object OnPut(ConfigurationsRequest request)
-        {
-            var setting = _configManager.GetSetting(request.Key);
-
-            if (setting != null)
+            if (request.AppSettings.Any())
             {
-                var command = new Commands.UpdateAppSettings { CompanyId = AppConstants.CompanyId,  Key = request.Key, Value = request.Value };
+                var command = new Commands.AddOrUpdateAppSettings { AppSettings = request.AppSettings };
                 _commandBus.Send(command);
-                return new HttpResult(HttpStatusCode.OK);
-            }
-            else
-            {
-                return new HttpResult(HttpStatusCode.BadRequest);
-            }
-        }
 
+                if(request.AppSettings.Any(s => s.Key.ToLower().StartsWith("ibs.")))
+                {
+                    _cacheClient.Remove(ReferenceDataService.CacheKey);
+                }
+            }
+
+            return "";
+        }
     }
 }

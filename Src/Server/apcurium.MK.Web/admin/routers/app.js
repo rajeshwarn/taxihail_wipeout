@@ -44,17 +44,8 @@
         },
 
         
-        manageCompanySettings : function () {
-            var settings = new TaxiHail.CompanySettingsCollection(),
-                view = this._tabView = new TaxiHail.ManageCompanySettingsView({
-                    collection: settings
-                });
-            settings.fetch({
-                url: '../api/settings',
-                success: _.bind(function(collection, resp) {
-                    renderView(view);
-                }, this)
-            });
+        manageCompanySettings: function () {
+            TaxiHail.Controller.action(TaxiHail.CompanySettingsController, 'index');
         },
            
         manageFavoritesDefault: function () {
