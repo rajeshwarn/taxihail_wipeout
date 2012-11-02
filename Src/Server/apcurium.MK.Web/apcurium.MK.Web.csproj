@@ -153,6 +153,7 @@
     <Content Include="admin\controllers\RatesController.js" />
     <Content Include="admin\models\Rate.js" />
     <Content Include="admin\views\EditRateView.js" />
+    <Content Include="admin\localization\ManageExclusions.json" />
     <None Include="admin\templates\ManageCompanySettings.handlebars" />
     <Content Include="admin\models\CompanySettings.js" />
     <Content Include="admin\views\ManageCompanySettingsView.js" />

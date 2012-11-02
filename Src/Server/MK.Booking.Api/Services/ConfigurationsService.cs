@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using Infrastructure.Messaging;
+using ServiceStack.CacheAccess;
 using ServiceStack.Common.Web;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -17,11 +18,13 @@ namespace apcurium.MK.Booking.Api.Services
     {
         private readonly IConfigurationManager _configManager;
         private readonly ICommandBus _commandBus;
+        private readonly ICacheClient _cacheClient;
 
-        public ConfigurationsService(IConfigurationManager configManager, ICommandBus commandBus)
+        public ConfigurationsService(IConfigurationManager configManager, ICommandBus commandBus, ICacheClient cacheClient)
         {
             _configManager = configManager;
             _commandBus = commandBus;
+            _cacheClient = cacheClient;
         }
 
         public override object OnGet(ConfigurationsRequest request)
@@ -44,15 +47,23 @@ namespace apcurium.MK.Booking.Api.Services
 
             var allKeys = _configManager.GetSettings();
 
-            var result = allKeys.Where(k => keys.Contains(k.Key)).ToDictionary(s => s.Key, s =>  s.Value);
+            var result = allKeys.Where(k => keys.Contains(k.Key)).ToDictionary(s => s.Key, s => s.Value);
 
             return result;
         }
 
         public override object OnPost(ConfigurationsRequest request)
         {
-            var command = new Commands.AddOrUpdateAppSettings { AppSettings = request.AppSettings };
-            _commandBus.Send(command);
+            if (request.AppSettings.Any())
+            {
+                var command = new Commands.AddOrUpdateAppSettings { AppSettings = request.AppSettings };
+                _commandBus.Send(command);
+
+                if(request.AppSettings.Any(s => s.Key.ToLower().StartsWith("ibs.")))
+                {
+                    _cacheClient.Remove(ReferenceDataService.CacheKey);
+                }
+            }
 
             return "";
         }
