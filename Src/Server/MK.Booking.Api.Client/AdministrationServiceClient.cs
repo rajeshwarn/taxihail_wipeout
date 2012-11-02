@@ -79,10 +79,10 @@ namespace apcurium.MK.Booking.Api.Client
             return address;
         }
 
-        public string AddOrUpdateAppSettings(ConfigurationsRequest appReq)
+        public void AddOrUpdateAppSettings(ConfigurationsRequest appReq)
         {
             var req = string.Format("/settings");
-            return Client.Post<string>(req, appReq);
+            Client.Post<string>(req, appReq);
         }
 
     }
