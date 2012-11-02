@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.Api.Services
             if (result == null)
             {
                 result = GetReferenceData();
-                _cacheClient.Add(CacheKey, result, TimeSpan.FromMinutes(60));
+                _cacheClient.Add(CacheKey, result);
             }
 
             if (!request.WithoutFiltering)
