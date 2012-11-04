@@ -132,7 +132,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="admin\collections\CompanyDefaultAddressCollection.js" />
     <Content Include="admin\collections\TariffCollection.js" />
     <Content Include="admin\controllers\Controller.js" />
     <Content Include="admin\controllers\CompanySettingsController.js" />
@@ -155,7 +154,6 @@
     <Content Include="admin\views\SettingsItemView.js" />
     <Content Include="admin\views\TariffItemView.js" />
     <Content Include="admin\default.aspx" />
-    <Content Include="admin\models\CompanyDefaultAddress.js" />
     <Content Include="admin\routers\app.js" />
     <Content Include="admin\taxi-hail-admin.js" />
     <Content Include="admin\views\AddPopularAddressView.js" />

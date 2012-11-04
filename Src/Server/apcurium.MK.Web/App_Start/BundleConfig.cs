@@ -118,14 +118,12 @@ namespace apcurium.MK.Web
                 "~/common/mixins/ValidatedView.js",
                 "~/common/views/TemplatedView.js",
                 /* Models */
-                "~/admin/models/CompanyDefaultAddress.js",
                 "~/common/models/UserAccount.js",
                 "~/common/models/ReferenceData.js",
                 "~/common/models/Address.js",
                 "~/admin/models/Tariff.js",
                 "~/admin/models/CompanySettings.js",
                 /* Collections */
-                "~/admin/collections/CompanyDefaultAddressCollection.js",
                 "~/common/collections/AddressCollection.js",
                 "~/admin/collections/CompanySettingsCollection.js",
                 "~/admin/collections/TariffCollection.js",

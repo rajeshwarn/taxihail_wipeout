@@ -9,21 +9,16 @@
         render: function () {
 
             this.$el.html(this.renderTemplate());
-            var favorites = this.collection.filter(function(model) {
-                return !model.get('isHistoric');
-            });
 
             var $ul = this.$('ul');
-            if (favorites.length) {
-                var items = _.reduce(favorites, function (memo, model) {
-                    memo.push(new TaxiHail.AddressItemView({
-                        model: model
-                    }).render().el);
-                    return memo;
-                }, []);
+            var items = this.collection.reduce(function (memo, model) {
+                memo.push(new TaxiHail.AddressItemView({
+                    model: model
+                }).render().el);
+                return memo;
+            }, []);
 
-                $ul.first().append(items);
-            }
+            $ul.first().append(items);
 
             var $add = $('<a href="#addresses/default/add">').addClass('new').text(TaxiHail.localize('favorites.add-new'));
 

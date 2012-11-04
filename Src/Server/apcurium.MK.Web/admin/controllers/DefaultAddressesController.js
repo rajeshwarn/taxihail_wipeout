@@ -1,9 +1,18 @@
 (function(TaxiHail){
 
+    var Model = TaxiHail.Address.extend({
+        urlRoot: '../api/admin/addresses'
+    });
+
+    var Collection = TaxiHail.AddressCollection.extend({
+        model: Model,
+        url: TaxiHail.parameters.apiRoot + '/admin/addresses'
+    });
+
     var Controller = TaxiHail.DefaultAddressesController = TaxiHail.Controller.extend({
         initialize: function() {
 
-            this.addresses = new TaxiHail.CompanyDefaultAddressCollection();
+            this.addresses = new Collection();
         
             $.when(this.addresses.fetch()).then(this.ready);
 
@@ -16,7 +25,7 @@
         },
 
         add: function() {
-            var model = new TaxiHail.CompanyDefaultAddress({
+            var model = new Model({
                 isNew: true
             });
 
