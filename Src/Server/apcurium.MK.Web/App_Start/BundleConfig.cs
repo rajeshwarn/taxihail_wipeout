@@ -117,21 +117,26 @@ namespace apcurium.MK.Web
                 "~/common/utils.js",
                 "~/common/mixins/ValidatedView.js",
                 "~/common/views/TemplatedView.js",
+                /* Models */
+                "~/admin/models/CompanyDefaultAddress.js",
+                "~/common/models/UserAccount.js",
+                "~/common/models/ReferenceData.js",
+                "~/common/models/Address.js",
+                "~/admin/models/Tariff.js",
+                "~/admin/models/CompanySettings.js",
+                /* Collections */
+                "~/admin/collections/CompanyDefaultAddressCollection.js",
+                "~/common/collections/AddressCollection.js",
+                "~/admin/collections/CompanySettingsCollection.js",
+                "~/admin/collections/TariffCollection.js",
                 /* Controllers */
                 "~/admin/controllers/Controller.js",
                 "~/admin/controllers/TariffsController.js",
                 "~/admin/controllers/ExclusionsController.js",
                 "~/admin/controllers/CompanySettingsController.js",
                 "~/admin/controllers/DefaultAddressesController.js",
-                /* Models */
-                "~/admin/models/CompanyDefaultAddress.js",
-                "~/common/models/UserAccount.js",
-                "~/common/models/ReferenceData.js",
-                "~/admin/models/Tariff.js",
-                "~/admin/models/CompanySettings.js",
-                "~/admin/collections/CompanyDefaultAddressCollection.js",
-                "~/admin/collections/CompanySettingsCollection.js",
-                "~/admin/collections/TariffCollection.js",
+                "~/admin/controllers/PopularAddressesController.js",
+                /* Views */
                 "~/admin/views/AddPopularAddressView.js",
                 "~/common/views/AlertView.js",
                 "~/common/views/LoginStatusView.js",
@@ -150,6 +155,7 @@ namespace apcurium.MK.Web
                 "~/admin/views/TariffItemView.js",
                 "~/admin/views/EditTariffView.js",
                 "~/admin/views/ManageExclusionsView.js",
+                /* Services */
                 "~/common/services/AuthService.js",
                 "~/common/services/GeocodingService.js",
                 "~/common/services/GeolocationService.js",

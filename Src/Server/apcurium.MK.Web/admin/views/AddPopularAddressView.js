@@ -59,7 +59,7 @@
                 success: _.bind(function(model){
 
                     this.collection.add(model);
-                    TaxiHail.app.navigate('', {trigger: true});
+                    TaxiHail.app.navigate('addresses/popular', {trigger: true});
 
                 }, this)
             });

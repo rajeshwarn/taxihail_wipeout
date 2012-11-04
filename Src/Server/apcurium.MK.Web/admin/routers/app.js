@@ -75,7 +75,15 @@
         managePopularAddresses : function () {
             TaxiHail.Controller.action(TaxiHail.PopularAddressesController, 'index');
         },
+
+        addPopularAddress : function () {
+            TaxiHail.Controller.action(TaxiHail.PopularAddressesController, 'add');
+        },
         
+        editPopularAddress : function (id) {
+            TaxiHail.Controller.action(TaxiHail.PopularAddressesController, 'edit', id);
+        },
+
         grantAdminAccess : function () {
             renderView(TaxiHail.GrantAdminAccessView);
         },

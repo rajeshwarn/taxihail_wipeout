@@ -1,11 +1,18 @@
 (function(){
 
+    var Model = TaxiHail.Address.extend({
+        urlRoot: '../api/admin/popularaddresses'
+    });
+
+    var Collection = TaxiHail.AddressCollection.extend({
+        model: Model,
+        url: '../api/admin/popularaddresses'
+    });
+
     var Controller = TaxiHail.PopularAddressesController  = TaxiHail.Controller.extend({
 
         initialize: function() {
-            this.addresses = new TaxiHail.AddressCollection({
-                url: '../api/admin/popularaddresses'
-            });
+            this.addresses = new Collection();
 
             $.when(this.addresses.fetch()).then(this.ready);
         },
@@ -18,11 +25,11 @@
 
         add: function() {
 
-            var model = new TaxiHail.Address({
+            var model = new Model({
                 isNew: true
             });
             return new TaxiHail.AddPopularAddressView({
-                model: this.model,
+                model: model,
                 collection: this.addresses,
                 showPlaces: false
             }).on('cancel', function() {
