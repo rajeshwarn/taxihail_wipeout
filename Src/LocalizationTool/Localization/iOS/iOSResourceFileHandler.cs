@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -7,38 +8,31 @@ using System.Threading.Tasks;
 
 namespace apcurium.Tools.Localization.iOS
 {
-    public class iOSResourceFileHandler : IResourceFileHandler
+    public class iOSResourceFileHandler : ResourceFileHandlerBase
     {
-
-
-        private string _fileName;
-        public void Load(string fileName)
+        public iOSResourceFileHandler(string filePath)
+            : base(filePath)
         {
-            _fileName = fileName;
-        }
-        public string Name
-        {
-            get { return Path.GetFileName(_fileName); }
-        }
+            var lines = File.ReadAllLines(filePath);
 
-        public string[] Keys
-        {
-            get { throw new NotImplementedException(); }
-        }
+            foreach (var line in lines)
+            {
+                var trimmedLine = line.Trim(' ', ';');
 
-        public string GetValue(string key)
-        {
-            throw new NotImplementedException();
-        }
+                var keyValue = trimmedLine.Split(new[] { '=' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim().Trim('"')).ToList();
 
-        public void SetValue(string key, string value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Save()
-        {
-            throw new NotImplementedException();
+                if (keyValue.Any())
+                {
+                    if(keyValue.Count == 2)
+                    {
+                        TryAdd(keyValue.First(), keyValue.ElementAt(1));
+                    }
+                    else
+                    {
+                        throw new Exception("Conflict with line in localizations:" + line);
+                    }
+                }
+            }
         }
     }
 }

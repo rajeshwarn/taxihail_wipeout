@@ -1,43 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace apcurium.Tools.Localization.Android
 {
-    public class AndroidResourceFileHandler : IResourceFileHandler
+    //\mk-taxi\Src\Mobile\Android\Resources\Values\String.xml
+    public class AndroidResourceFileHandler : ResourceFileHandlerBase
     {
+       
 
-        private string _fileName;
-        public void Load(string fileName)
+        public AndroidResourceFileHandler(string filePath) : base(filePath)
         {
-            _fileName = fileName;
-        }
-        public string Name
-        {
-            get { return Path.GetFileName(_fileName); }
-        }
+            var document = XElement.Load(filePath);
+        
 
-        public string[] Keys
-        {
-            get { throw new NotImplementedException(); }
-        }
+            foreach (var localization in document.Elements())
+            {
+                var key = localization.FirstAttribute.Value;
 
-        public string GetValue(string key)
-        {
-            throw new NotImplementedException();
+                TryAdd(key, localization.Value);
+            }
         }
 
-        public void SetValue(string key, string value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Save()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

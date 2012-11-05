@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{AD8EC0B5-FABF-47DB-9783-145BD922E7E8}</ProjectGuid>
+    <ProjectGuid>{33211AEA-A9FC-4290-BE5F-2FEEEEB7A950}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>apcurium.Tools.Localization</RootNamespace>
-    <AssemblyName>apcurium.Tools.Localization</AssemblyName>
+    <RootNamespace>apcurium.Tools.Localization.Tests</RootNamespace>
+    <AssemblyName>apcurium.Tools.Localization.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -42,29 +42,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Android\AndroidResourceFileHandler.cs" />
-    <Compile Include="Extensions.cs" />
-    <Compile Include="iOS\iOSResourceFileHandler.cs" />
-    <Compile Include="ResourceFileHandlerBase.cs" />
+    <Compile Include="AndroidResourceFileHandlerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResourceFileConfig.cs" />
-    <Compile Include="ResourceFilesConfig.cs" />
-    <Compile Include="ResourceManager.cs" />
-    <Compile Include="ResourceType.cs" />
-    <Compile Include="Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Localization\Localization.csproj">
+      <Project>{ad8ec0b5-fabf-47db-9783-145bd922e7e8}</Project>
+      <Name>Localization</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
