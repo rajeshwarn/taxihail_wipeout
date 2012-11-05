@@ -20,7 +20,6 @@
         var actionParams = Array.prototype.slice.call(arguments, 2);
         if(!(currentController instanceof Ctor)) {
             currentController = new Ctor();
-            currentController.initialize();
         }
         currentController.then(_.bind(function() {
             var previousView = currentView;
