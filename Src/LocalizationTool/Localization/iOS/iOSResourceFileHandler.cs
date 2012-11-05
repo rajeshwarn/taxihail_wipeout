@@ -34,5 +34,18 @@ namespace apcurium.Tools.Localization.iOS
                 }
             }
         }
+
+        protected override string GetFileText()
+        {
+            var stringBuilder = new StringBuilder();
+
+            //"key"="value"\n;
+            foreach (var resource in this)
+            {
+                stringBuilder.AppendFormat("\"{0}\"=\"{1}\"\n;", resource.Key, resource.Value);
+            }
+
+            return stringBuilder.ToString();
+        }
     }
 }

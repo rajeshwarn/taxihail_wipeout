@@ -15,6 +15,7 @@ namespace apcurium.Tools.Localization
         private readonly HashSet<string> _duplicateKeys;
 
         protected ResourceFileHandlerBase(string filePath)
+            : base(StringComparer.OrdinalIgnoreCase)
         {
             _duplicateKeys = new HashSet<string>();
             _filePath = filePath;
@@ -35,6 +36,34 @@ namespace apcurium.Tools.Localization
             {
                 Add(key, value);
             }
+        }
+
+        public string Save(bool backupOldFile = true)
+        {
+            string backupFilePath = null;
+
+            if (backupOldFile)
+            {
+                var resourceFileHandler = Activator.CreateInstance(GetType(), _filePath) as ResourceFileHandlerBase;
+                backupFilePath = GetBackupFilePath();
+
+                File.WriteAllText(backupFilePath, resourceFileHandler.GetFileText());
+            }
+
+            File.WriteAllText(_filePath, GetFileText());
+
+            return backupFilePath;
+        }
+
+        protected abstract string GetFileText();
+
+        //TODO: A confirmer
+        protected string GetBackupFilePath()
+        {
+            return string.Format("{3}\\{0}-{1:yyyy-MM-dd_hh-mm-ss-tt}{2}",
+                Path.GetFileNameWithoutExtension(_filePath), DateTime.Now,
+                Path.GetExtension(_filePath),
+                Path.GetDirectoryName(_filePath));
         }
 
         public ReadOnlyCollection<string> DuplicateKeys { get { return _duplicateKeys.ToList().AsReadOnly(); } }
