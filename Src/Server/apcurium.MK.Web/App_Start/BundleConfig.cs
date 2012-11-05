@@ -129,6 +129,7 @@ namespace apcurium.MK.Web
                 "~/admin/collections/TariffCollection.js",
                 /* Controllers */
                 "~/admin/controllers/Controller.js",
+                "~/admin/controllers/SecurityController.js",
                 "~/admin/controllers/TariffsController.js",
                 "~/admin/controllers/ExclusionsController.js",
                 "~/admin/controllers/CompanySettingsController.js",

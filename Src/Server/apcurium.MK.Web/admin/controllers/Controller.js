@@ -3,10 +3,10 @@
     'use strict';
 
     var Controller = TaxiHail.Controller = function(){
-        this.initialize.apply(this, arguments);
         this._dfd = new $.Deferred();
         this._dfd.promise(this);
         this.ready = this._dfd.resolve;
+        this.initialize.apply(this, arguments);
     };
 
     _.extend(Controller.prototype, {
@@ -14,7 +14,7 @@
     });
 
     // Static methods
-    var currentController;
+    var currentController, currentView;
     Controller.extend = Backbone.Router.extend;
     Controller.action = function(Ctor, action) {
         var actionParams = Array.prototype.slice.call(arguments, 2);
@@ -22,12 +22,12 @@
             currentController = new Ctor();
             currentController.initialize();
         }
-        currentController.then(function() {
-            var previousView = this.view;
+        currentController.then(_.bind(function() {
+            var previousView = currentView;
             previousView && previousView.remove();
-            this.view = currentController[action].apply(currentController, actionParams);
-            $('#main').html(this.view.render().el);
-        });
+            currentView = currentController[action].apply(currentController, actionParams);
+            $('#main').html(currentView.render().el);
+        }, this));
     };
 
 }(TaxiHail, Backbone, _, jQuery));

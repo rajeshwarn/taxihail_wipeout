@@ -19,7 +19,7 @@
         
         grantadmin: function (e) {
             e.preventDefault();
-            var email = this.$('.email').val();
+            var email = this.$('[name=email]').val();
             return $.ajax({
                 type: 'PUT',
                 url: '../api/account/grantadmin',
@@ -29,15 +29,10 @@
                 dataType: 'json',
                 success : _.bind(function() {
                     this.$('.errors').text(TaxiHail.localize('grantAdminSuccess'));
-            },this)
+                },this)
             }).fail(_.bind(function (e) {
                 this.$('.errors').text(TaxiHail.localize('grantAdminError'));
-            }
-                ),this);
-                /*.error(function(e) {
-                    this.$('.notification-zone').text('error ! check that mail is correct' +e );
-                }
-                );*/
+            }),this);
         }
 
    
