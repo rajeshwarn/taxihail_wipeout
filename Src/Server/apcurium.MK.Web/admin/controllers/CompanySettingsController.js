@@ -7,7 +7,7 @@
         },
 
         index: function() {
-            return this.view = new TaxiHail.ManageCompanySettingsView({
+            return new TaxiHail.ManageCompanySettingsView({
                 model: this.settings
             });
         }

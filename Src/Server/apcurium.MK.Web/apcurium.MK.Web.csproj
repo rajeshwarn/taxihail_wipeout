@@ -132,11 +132,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="admin\collections\CompanyDefaultAddressCollection.js" />
     <Content Include="admin\collections\TariffCollection.js" />
     <Content Include="admin\controllers\Controller.js" />
     <Content Include="admin\controllers\CompanySettingsController.js" />
+    <Content Include="admin\controllers\DefaultAddressesController.js" />
     <Content Include="admin\controllers\ExclusionsController.js" />
+    <Content Include="admin\controllers\PopularAddressesController.js" />
     <Content Include="admin\controllers\TariffsController.js" />
     <Content Include="admin\models\Tariff.js" />
     <Content Include="admin\localization\EditTariff.json" />
@@ -145,18 +146,17 @@
     <Content Include="admin\localization\TariffItem.json" />
     <Content Include="admin\templates\EditTariff.handlebars" />
     <Content Include="admin\assets\less\TaxiHail-admin-grid.less" />
+    <Content Include="admin\controllers\SecurityController" />
     <None Include="admin\templates\ManageCompanySettings.handlebars" />
     <Content Include="admin\models\CompanySettings.js" />
+    <Content Include="admin\views\AddFavoriteView.js" />
     <Content Include="admin\views\EditTariffView.js" />
     <Content Include="admin\views\ManageCompanySettingsView.js" />
     <Content Include="admin\views\ManageExclusionsView.js" />
     <Content Include="admin\views\ManageTariffsView.js" />
     <Content Include="admin\views\SettingsItemView.js" />
     <Content Include="admin\views\TariffItemView.js" />
-    <Content Include="common\collections\CompanyPopularAddressCollection.js" />
     <Content Include="admin\default.aspx" />
-    <Content Include="admin\models\CompanyDefaultAddress.js" />
-    <Content Include="common\models\CompanyPopularAddress.js" />
     <Content Include="admin\routers\app.js" />
     <Content Include="admin\taxi-hail-admin.js" />
     <Content Include="admin\views\AddPopularAddressView.js" />
@@ -246,7 +246,6 @@
     <Content Include="common\services\AuthService.js" />
     <Content Include="common\services\GeocodingService.js" />
     <Content Include="common\utils.js" />
-    <Content Include="common\views\AddFavoriteView.js" />
     <Content Include="common\views\AddressItemView.js" />
     <Content Include="common\views\AddressListView.js" />
     <Content Include="common\views\AddressSelectionView.js" />
@@ -323,6 +322,7 @@
     <Content Include="themes\YellowCabSavannah\img\location.png" />
     <Content Include="themes\YellowCabSavannah\img\Logo.png" />
     <Content Include="views\AccountFavoritesAndHistoryListView.js" />
+    <Content Include="views\AddFavoriteView.js" />
     <Content Include="views\AddressControlView.js" />
     <Content Include="views\BookingConfirmationView.js" />
     <Content Include="views\BookingStatusView.js" />

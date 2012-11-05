@@ -8,13 +8,13 @@
         },
 
         index: function() {
-            return this.view = new TaxiHail.ManageTariffsView({
+            return new TaxiHail.ManageTariffsView({
                 collection: this.collection
             });
         },
 
         addRecurring: function() {
-            return this.view = new TaxiHail.EditTariffView({
+            return new TaxiHail.EditTariffView({
                 collection: this.collection,
                 model: new TaxiHail.Tariff({
                     type: TaxiHail.Tariff.type.recurring
@@ -23,7 +23,7 @@
         },
 
         addDay: function() {
-            return this.view = new TaxiHail.EditTariffView({
+            return new TaxiHail.EditTariffView({
                 collection: this.collection,
                 model: new TaxiHail.Tariff({
                     type: TaxiHail.Tariff.type.day
@@ -33,7 +33,7 @@
 
         edit: function(id) {
             var model = this.collection.get(id);
-            return this.view = new TaxiHail.EditTariffView({
+            return new TaxiHail.EditTariffView({
                 collection: this.collection,
                 model: model
             });

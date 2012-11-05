@@ -17,7 +17,7 @@
         },
 
         index: function() {
-            return this.view = new TaxiHail.ManageExclusionsView({
+            return new TaxiHail.ManageExclusionsView({
                 model: this.referenceData,
                 settings: this.settings
             });
