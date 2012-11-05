@@ -119,6 +119,7 @@
   <string name="RideSettingsCompany">Company:</string>
   <string name="HistoryDetailHideButton">Hide from history</string>
   <string name="HistoryDetailRebookButton">Rebook trip</string>
+  <string name="HistoryDetailSendReceiptButton">Send receipt</string>
   <string name="HistoryDetailDestinationLabel">Destination:</string>
   <string name="HistoryDetailRequestedLabel">Requested:</string>
   <string name="HistoryDetailOriginLabel">Pickup:</string>
@@ -189,6 +190,7 @@
   <string name="CreateAccountInvalidPhone">The phone number is invalid. It must contain 10 numbers.</string>
   <string name="CreateAccountEmptyField">The data is invalid, all the fields are required.</string>
   <string name="CreateAccountInvalidDataTitle">Invalid account info</string>
+  <string name="CreateAccountTitleArray">MrMrs</string>
   <string name="CreateAccountTitleMr">Mr</string>
   <string name="CreateAccountTitleMrs">Mrs</string>
   <string name="CreateAccountLanguageFrench">French</string>
@@ -227,6 +229,7 @@
   <string name="ServiceErrorCreateOrder_InvalidProvider">Order cannot be created, invalid provider. Please try again or call us.</string>
   <string name="ServiceErrorCreateOrder_VehiculeType">Order cannot be created, invalid vehicle type. Please try again or call us.</string>
   <string name="ServiceErrorCreateAccount_AccountAlreadyExist">The account cannot be created, this email is already in use.</string>
+  <string name="CreateAccount_AccountAlreadyExist">The account cannot be created, this email is already in use.</string>
   <string name="ServiceErrorUnauthorized">An unauthorized call has been made to server, you will be redirected to login page.</string>
   <string name="BookDateLabel">Pick Me Up Later</string>
   <string name="OrderHistoryListTitle">Order #{0} ({1:ddd, MMM d}, {1:h:mm tt})</string>
@@ -260,6 +263,8 @@
   <string name="NetworkErrorMessage">Cannot connect to Internet. Please check your connection settings and try again.</string>
   <string name="View_About">About Us</string>
   <string name="View_BookingDetail">Confirmation</string>
+  <string name="View_BookingDetail_TitleRideSettings">Ride Settings</string>
+  <string name="View_BookingDetail_TitlePickupDetails">Pickup Details</string>
   <string name="View_BookingStatus">Status</string>
   <string name="View_BookSettingMenu">Settings</string>
   <string name="View_HistoryDetail">Order Details</string>
@@ -280,25 +285,10 @@
   <string name="View_Book_Menu_ReportProblem">Report A Problem</string>
   <string name="View_Book_Menu_SignOut">Sign Out</string>
   <string name="View_RefineAddress">Pickup Details</string>
-  <string name="AppNeedUpdateTitle">Update available</string>
-  <string name="AppNeedUpdateMessage">A new version of the application is available, please update the app to continue.</string>
   <string name="BookingService_MobileBookingNote">Booked mobile device.</string>
   <string name="BookingService_MobileBookingNoteBuildingName">Building name {0}.</string>
   <string name="View_BookingStatus_ThankYouTitle">Thank you</string>
   <string name="View_BookingStatus_ThankYouMessage">Thank you for riding with {0}, we look forward to serving you again soon.</string>
-  <string name="CreateAccount_AccountAlreadyExist">The account cannot be created, this email is already in use.</string>
-  <string name="CurrentPasswordLabel">Current Password</string>
-  <string name="NewPasswordLabel">New Password</string>
-  <string name="NewPasswordConfirmationLabel">Confirmation</string>
-  <string name="ConfirmPassengerSettingsTitle">Passenger Settings</string>
-  <string name="HistoryViewSendReceiptButton">Send Receipt</string>
-  <string name="HistoryViewSendReceiptSuccess">Receipt sent</string>
-  <string name="HistoryViewSendReceiptError">Error sending receipt for this order</string>
-  <string name="View_UpdatePassword">Update Password</string>
-  <string name="NbPassenger"> ({0} passenger)</string>
-  <string name="NbPassengers"> ({0} passengers)</string>
-  <string name="HistoryDetailSendReceiptButton">Send receipt</string>
-  <string name="CreateAccountTitleArray">MrMrs</string>
-  <string name="View_BookingDetail_TitleRideSettings">Ride Settings</string>
-  <string name="View_BookingDetail_TitlePickupDetails">Pickup Details</string>
+  <string name="AppNeedUpdateTitle">Update available</string>
+  <string name="AppNeedUpdateMessage">A new version of the application is available, please update the app to continue.</string>
 </resources>
