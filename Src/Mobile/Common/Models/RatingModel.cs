@@ -67,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.Models
             }
         }
 
-        private enum RatingState { Mad, Unhappy, Neutral, Happy, Ecstatic }
+        private enum RatingState { Mad = 1, Unhappy = 2, Neutral = 3, Happy = 4, Ecstatic = 5 }
 
         private void DeselectAllState()
         {
@@ -88,30 +88,25 @@ namespace apcurium.MK.Booking.Mobile.Models
                                                          if (Enum.TryParse(tag.ToString(), true, out state))
                                                          {
                                                              DeselectAllState();
+                                                             Score = (int)state;
                                                              switch (state)
                                                              {
                                                                  case RatingState.Mad:
-                                                                     Score = 1;
                                                                      MadSelected = true;
                                                                      break;
                                                                  case RatingState.Unhappy:
-                                                                     Score = 2;
                                                                      UnhappySelected = true;
                                                                      break;
                                                                  case RatingState.Neutral:
-                                                                     Score = 3;
                                                                      NeutralSelected = true;
                                                                      break;
                                                                  case RatingState.Happy:
-                                                                     Score = 4;
                                                                      HappySelected = true;
                                                                      break;
                                                                  case RatingState.Ecstatic:
-                                                                     Score = 5;
                                                                      EcstaticSelected = true;
                                                                      break;
                                                              }
-                                                             RequestNavigate<BookViewModel>();
                                                          }
                                                                             }));
             }

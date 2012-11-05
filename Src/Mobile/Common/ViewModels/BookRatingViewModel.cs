@@ -20,7 +20,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set { _ratingList = value; FirePropertyChanged("RatingList"); }
         }
         
-        private String _note;
+        private string _note;
 
         public string Note
         {
@@ -28,12 +28,42 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set { _note = value; FirePropertyChanged("Note"); }
         }
 
+        private bool _canRating;
 
-       
+        public bool CanRating
+        {
+            get
+            {
+                return _canRating;
+            }
+            set { _canRating = value;FirePropertyChanged("CanRating"); }
+
+        }
+
+        private string _orderId;
+
+        public string OrderId
+        {
+            get
+            {
+                return _orderId;
+            }
+            set { _orderId = value; FirePropertyChanged("OrderId"); }
+
+        }
 
         public BookRatingViewModel()
         {
             _ratingList = TinyIoCContainer.Current.Resolve<IBookingService>().GetRatingType().Select(c => new RatingModel() { RatingTypeId = c.Id, RatingTypeName = c.Name }).ToList();
+            CanRating = false;
+        }
+       
+
+        public BookRatingViewModel(string orderId, string canRate="false")
+        {
+            _ratingList = TinyIoCContainer.Current.Resolve<IBookingService>().GetRatingType().Select(c => new RatingModel() { RatingTypeId = c.Id, RatingTypeName = c.Name }).ToList();
+            OrderId = orderId;
+            CanRating = bool.Parse(canRate);
         }
 
 
@@ -47,8 +77,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     var orderRating = new OrderRatings()
                     {
-                        Note = this._note,
-                        OrderId = Guid.Parse("C03C043B-1532-4EC9-AFB7-7171D02CA1A7"),
+                        Note = this.Note,
+                        OrderId = Guid.Parse(this.OrderId),
                         RatingScores =
                             this._ratingList.Select(
                                 c => new RatingScore() { RatingTypeId = c.RatingTypeId, Score = c.Score }).

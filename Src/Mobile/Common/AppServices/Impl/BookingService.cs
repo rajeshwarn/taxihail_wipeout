@@ -16,6 +16,7 @@ using Address = apcurium.MK.Common.Entity.Address;
 using ServiceStack.ServiceClient.Web;
 using Cirrious.MvvmCross.Interfaces.Platform.Tasks;
 using apcurium.MK.Booking.Mobile.Extensions;
+using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -215,6 +216,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                  ratingType= service.GetRatingTypes();
             });
             return ratingType;
+        }
+
+        public apcurium.MK.Common.Entity.OrderRatings GetOrderRating(Guid orderId)
+        {
+            var orderRate = new OrderRatings();
+            UseServiceClient<OrderServiceClient>(service =>
+            {
+                orderRate = service.GetOrderRatings(orderId);
+            });
+            return orderRate;
         }
 
         public void SendRatingReview(Common.Entity.OrderRatings orderRatings)

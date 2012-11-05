@@ -605,4 +605,7 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Layout\SimpleOrderListItem.axml" />
+  </ItemGroup>
 </Project>

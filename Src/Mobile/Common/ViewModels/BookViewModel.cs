@@ -423,9 +423,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get
             {
                 return new MvxRelayCommand(() =>
-                {
-                    RequestNavigate<BookRatingViewModel>();
-                });
+                                               {
+                                                   RequestNavigate<BookRatingViewModel>(
+                                                       new KeyValuePair<string, bool>("canRate", true));
+                                               });
+               
+            }
+        }
+
+        public IMvxCommand NavigateToHistoryList
+        {
+            get
+            {
+                return new MvxRelayCommand(() =>
+                                               {
+                                                   RequestNavigate<HistoryViewModel>();
+                                               });
+
             }
         }
 

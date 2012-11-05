@@ -297,4 +297,8 @@
   <string name="View_BookingStatus_ThankYouMessage">Thank you for riding with {0}, we look forward to serving you again soon</string>
   <string name="AppNeedUpdateTitle">Update available</string>
   <string name="AppNeedUpdateMessage">A new version of the application is available, please update the app to continue.</string>
+  <string name="Notes">Notes</string>
+  <string name="Submit">Submit</string>
+<string name="RateBtn">Rate this order</string>
+<string name="ViewRatingBtn">View rating for this order</string>
 </resources>

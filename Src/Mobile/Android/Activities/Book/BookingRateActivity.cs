@@ -39,7 +39,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-
+            _listView = FindViewById<ListView>(Resource.Id.RatingListView);
+            _listView.Divider = null;
+            _listView.DividerHeight = 0;
+            _listView.SetPadding(10, 0, 10, 0);
 
             //UpdateUI();
         }

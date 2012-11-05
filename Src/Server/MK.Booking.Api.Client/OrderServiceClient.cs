@@ -72,11 +72,11 @@ namespace apcurium.MK.Booking.Api.Client
             Client.Post<string>("/ratings/", orderRatingRequest);
         }
 
-        public OrderRatings GetOrderRatings(Guid orderId)
+        public Common.Entity.OrderRatings GetOrderRatings(Guid orderId)
         {
             var req = string.Format("/ratings/{0}", orderId);
 
-            return Client.Get<OrderRatings>(req);
+            return Client.Get<Common.Entity.OrderRatings>(req);
         }
     }
 }

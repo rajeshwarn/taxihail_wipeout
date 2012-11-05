@@ -90,8 +90,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             FindViewById<Button>(Resource.Id.settingsFavorites).Click -= new EventHandler(ShowFavorites_Click);
             FindViewById<Button>(Resource.Id.settingsFavorites).Click += new EventHandler(ShowFavorites_Click);
 
-            FindViewById<Button>(Resource.Id.settingsHistory).Click -= new EventHandler(ShowHistory_Click);
-            FindViewById<Button>(Resource.Id.settingsHistory).Click += new EventHandler(ShowHistory_Click);
+            //FindViewById<Button>(Resource.Id.settingsHistory).Click -= new EventHandler(ShowHistory_Click);
+            //FindViewById<Button>(Resource.Id.settingsHistory).Click += new EventHandler(ShowHistory_Click);
 
             FindViewById<Button>(Resource.Id.settingsAbout).Click -= new EventHandler(About_Click);
             FindViewById<Button>(Resource.Id.settingsAbout).Click += new EventHandler(About_Click);

@@ -17,26 +17,31 @@
             android:id="@+id/RatingListView"
             android:layout_marginBottom="5dip"
             local:MvxItemTemplate="@layout/ratinglistitem"
-            local:MvxBind="{&apos;ItemsSource&apos;:{&apos;Path&apos;:&apos;RatingList&apos;}}" />
+            local:MvxBind="{&apos;ItemsSource&apos;:{&apos;Path&apos;:&apos;RatingList&apos;}}"
+            android:layout_centerHorizontal="true" />
         <EditText
             android:id="@+id/RatingNote"
             android:layout_below="@id/RatingListView"
             android:layout_width="fill_parent"
-            android:layout_height="42dp"
+            android:layout_height="84dp"
             android:textSize="14dp"
             android:paddingLeft="5dip"
             android:paddingRight="5dip"
             android:inputType="text"
-            local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Note&apos;}}" />
+            local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Note&apos;},&apos;Focusable&apos;:{&apos;Path&apos;:&apos;CanRating&apos;}}"
+            android:hint="@string/Notes"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="10dip"
+            android:layout_marginBottom="10dip"
+            android:layout_centerHorizontal="true" />
         <Button
             android:id="@+id/RateOrderButton"
             android:layout_below="@id/RatingNote"
-            android:text="Rate"
+            android:text="@string/Submit"
             android:layout_height="40dip"
             android:layout_gravity="fill"
-            android:layout_width="40dip"
+            android:layout_width="150dip"
             android:padding="7dip"
-            android:layout_marginTop="1dip"
-            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;RateOrder&apos;}}" />
+            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;RateOrder&apos;},'Visibility':{'Path':'CanRating','Converter':'Visibility'}}" />
     </RelativeLayout>
 </apcurium.mk.booking.mobile.client.controls.HeaderedLayout>

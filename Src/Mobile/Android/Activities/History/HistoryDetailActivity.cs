@@ -9,6 +9,9 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Interfaces.Views;
+using Cirrious.MvvmCross.Views;
 using apcurium.Framework.Extensions;
 using TinyIoC;
 
@@ -21,11 +24,12 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Client.Activities.Book;
 using TinyMessenger;
 using apcurium.MK.Booking.Mobile.Messages;
+using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.History
 {
     [Activity(Label = "History Details", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
-    public class HistoryDetailActivity : BaseActivity
+    public class HistoryDetailActivity : BaseBindingActivity<HistoryDetailViewModel>
     {
         private TinyMessageSubscriptionToken _closeViewToken;       
         private Order _data;
@@ -38,11 +42,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
         {
             base.OnCreate(bundle);
             _closeViewToken = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<CloseViewsToRoot>(m => Finish());            
-            SetContentView(Resource.Layout.View_HistoryDetail);
-            SetHistoryData(Guid.Parse(Intent.Extras.GetString(NavigationStrings.HistorySelectedId.ToString())));
-            UpdateUI();
-
-
+            //SetContentView(Resource.Layout.View_HistoryDetail);
         } 
 
         protected override void OnDestroy()
@@ -52,6 +52,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
             {
                 TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Unsubscribe<CloseViewsToRoot>(_closeViewToken);
             }
+        }
+
+        protected override void OnViewModelSet()
+        {
+            SetContentView(Resource.Layout.View_HistoryDetail);
+            SetHistoryData(Guid.Parse(this.ViewModel.OrderId));
+            UpdateUI();
         }
 
         private void UpdateUI()
@@ -69,6 +76,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
             var btnRebook = FindViewById<Button>(Resource.Id.RebookTripBtn);
             var btnSendReceipt = FindViewById<Button>(Resource.Id.SendReceiptBtn);
             var btnDelete = FindViewById<Button>(Resource.Id.HistoryOrderDeleteBtn);
+            var btnRate = FindViewById<Button>(Resource.Id.RateBtn);
+            var btnViewRate = FindViewById<Button>(Resource.Id.ViewRatingBtn);
 
             btnCancel.Visibility = ViewStates.Gone;
             btnStatus.Visibility = ViewStates.Gone;
@@ -79,7 +88,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
             btnRebook.Click      += new EventHandler(btnRebook_Click);
             btnSendReceipt.Click += new EventHandler(btnSendReceipt_Click);
             btnDelete.Click      += new EventHandler(btnDelete_Click);
+           // btnRate.Click        += new EventHandler(btnRate_Click);
+            //btnViewRate.Click    += new EventHandler(btnViewRate_Click);
 
+
+        }
+
+        private void btnViewRate_Click(object sender, EventArgs e)
+        {
+            var parameters = new Dictionary<string, string>() { { "canRate", "false" } };
+            var dispatch = TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
+            dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(BookRatingViewModel), parameters, false, MvxRequestedBy.UserAction));
+        }
+
+        private void btnRate_Click(object sender, EventArgs e)
+        {
+            var parameters = new Dictionary<string, string>() { { "canRate", "true" } };
+            var dispatch = TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
+            dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(BookRatingViewModel), parameters, false, MvxRequestedBy.UserAction));
         }
 
         void btnRebook_Click(object sender, EventArgs e)

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <apcurium.mk.booking.mobile.client.controls.HeaderedLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.TaxiHailDemo"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -9,7 +10,18 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
-        <ListView
+        <TextView
+            android:id="@+id/HistoricListViewTitle"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="9dip"
+            android:paddingBottom="2dip"
+            android:paddingLeft="5dip"
+            style="@style/HeaderGroupTitle"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:text="@string/HistoryInfo" />
+        <cirrious.mvvmCross.binding.android.views.MvxBindableListView
             android:id="@+id/HistoryList"
             android:minWidth="25px"
             android:minHeight="25px"
@@ -17,6 +29,12 @@
             android:layout_height="fill_parent"
             android:background="@android:color/transparent"
             android:cacheColorHint="@android:color/transparent"
-            android:layout_marginBottom="5dip" />
+            android:layout_marginBottom="5dip"
+            android:layout_marginLeft="5dip"
+            android:layout_marginRight="5dip"
+            android:layout_marginTop="10dip"
+            android:layout_below="@id/HistoricListViewTitle"
+            local:MvxItemTemplate="@layout/simpleorderlistitem"
+            local:MvxBind="{&apos;ItemsSource&apos;:{&apos;Path&apos;:&apos;Orders&apos;},&apos;ItemClick&apos;:{&apos;Path&apos;:&apos;NavigateToHistoryDetailPage&apos;}}" />
     </RelativeLayout>
 </apcurium.mk.booking.mobile.client.controls.HeaderedLayout>

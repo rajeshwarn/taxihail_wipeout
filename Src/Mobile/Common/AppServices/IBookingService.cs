@@ -37,6 +37,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 	    List<RatingType> GetRatingType();
 
+	    apcurium.MK.Common.Entity.OrderRatings GetOrderRating(Guid orderId);
+
 	    void SendRatingReview(Common.Entity.OrderRatings orderRatings);
 
 	}
