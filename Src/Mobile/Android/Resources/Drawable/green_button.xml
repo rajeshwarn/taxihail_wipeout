@@ -15,19 +15,6 @@
           android:bottom="1dp" />
     </shape>
   </item>
-  <item >
-    <shape >
-      <solid android:color="#cfff" />
-      <stroke android:width="0px" />
-      <corners
-          android:radius="2dp" />
-      <padding
-          android:left="0px"
-          android:top="1dp"
-          android:right="0px"
-          android:bottom="0px" />
-    </shape>
-  </item>
   <item>
     <selector>
       <item android:state_pressed="true" >
@@ -45,20 +32,37 @@
         </shape>
       </item>
       <item>
-        <shape>
-          <gradient
-              android:startColor="#8fcf0f"
-              android:endColor="#57b109"
-              android:angle="270" />
-          <stroke android:width="0px" />
-          <corners
-              android:radius="2dp" />
-          <padding
-              android:left="10dp"
-              android:top="20dp"
-              android:right="10dp"
-              android:bottom="20dp" />
-        </shape>
+        <layer-list>
+          <item>
+            <shape >
+              <solid android:color="#cfff" />
+              <stroke android:width="0px" />
+              <corners
+                  android:radius="2dp" />
+              <padding
+                  android:left="0px"
+                  android:top="1dp"
+                  android:right="0px"
+                  android:bottom="0px" />
+            </shape>
+          </item>
+          <item>
+            <shape>
+              <gradient
+                  android:startColor="#8fcf0f"
+                  android:endColor="#57b109"
+                  android:angle="270" />
+              <stroke android:width="0px" />
+              <corners
+                  android:radius="2dp" />
+              <padding
+                  android:left="10dp"
+                  android:top="20dp"
+                  android:right="10dp"
+                  android:bottom="20dp" />
+            </shape>
+          </item>
+        </layer-list>
       </item>
     </selector>
   </item>
