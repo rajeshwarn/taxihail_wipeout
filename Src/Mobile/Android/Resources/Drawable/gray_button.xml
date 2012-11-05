@@ -35,7 +35,7 @@
       </item>
       <item>
         <shape >
-          <solid android:color="#cfff" />
+          <solid android:color="#fff" />
           <stroke android:width="0px" />
           <corners
               android:radius="2dp" />
