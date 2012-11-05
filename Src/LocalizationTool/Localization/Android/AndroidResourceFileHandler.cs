@@ -12,14 +12,12 @@ namespace apcurium.Tools.Localization.Android
     //\mk-taxi\Src\Mobile\Android\Resources\Values\String.xml
     public class AndroidResourceFileHandler : ResourceFileHandlerBase
     {
-       
-
-        public AndroidResourceFileHandler(string filePath) : base(filePath)
+        public AndroidResourceFileHandler(string filePath)
+            : base(filePath)
         {
             var document = XElement.Load(filePath);
-        
 
-            foreach (var localization in document.Elements())
+            foreach (var localization in document.Elements().Where(e => e.Name.ToString().Equals("string", StringComparison.OrdinalIgnoreCase)))
             {
                 var key = localization.FirstAttribute.Value;
 
@@ -27,5 +25,21 @@ namespace apcurium.Tools.Localization.Android
             }
         }
 
+        protected override string GetFileText()
+        {
+            var stringBuilder = new StringBuilder();
+
+            stringBuilder.Append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<resources>\r\n");
+
+            //<string name="ApplicationName">TaxiHail</string>
+            foreach (var resource in this)
+            {
+                stringBuilder.AppendFormat("  <string name=\"{0}\">{1}</string>\r\n", resource.Key, resource.Value.Replace(">", "&gt;"));
+            }
+
+            stringBuilder.Append("</resources>");
+
+            return stringBuilder.ToString();
+        }
     }
 }

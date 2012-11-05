@@ -51,6 +51,7 @@
     <Compile Include="ResourceFilesConfig.cs" />
     <Compile Include="ResourceManager.cs" />
     <Compile Include="ResourceType.cs" />
+    <Compile Include="Resx\ResxResourceFileHandler.cs" />
     <Compile Include="Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
