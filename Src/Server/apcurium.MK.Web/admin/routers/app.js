@@ -1,34 +1,24 @@
 ﻿(function () {
-    var currentView,
-        renderView = function(view, model) {
-            // Call remove on current view
-            // in case it was overriden with custom logic
-            if(currentView && _.isFunction(currentView.remove)) {
-                currentView.remove();
-            }
-
-            if(_.isFunction(view)) {
-                currentView = new view({
-                    model: model
-                }).render();
-            } else {
-                currentView = view;
-                view.model = model || view.model;
-                view.render();
-            }
-
-            $('#main').html(currentView.el);
-
-            return currentView;
-
-        };
+    var action = TaxiHail.Controller.action;
 
     TaxiHail.App = Backbone.Router.extend({
         routes: {
-            "": "manageFavoritesDefault",   // #
-            "grantadmin": "grantAdminAccess",
-            "managepopularaddresses": "managePopularAddresses",
+            /* Favorite addresses*/
+            "": "manageDefaultAddresses",   // #
+            'addresses/default/add': 'addDefaultAddress',
+            'addresses/default/edit/:id': 'editDefaultAddress',
+
+            /* popular addresses*/
+            "addresses/popular": "managePopularAddresses",
+            "addresses/popular/add": "addPopularAddress",
+            "addresses/popular/edit/:id": "editPopularAddress",
+
+            /* Admin right*/
+            "security": "manageSecurity",
+            
+            /* settings */
             "settings" : "manageCompanySettings",
+
             /* Tariffs */
             "tariffs": "manageTariffs", //#tariffs
             "tariffs/add/recurring": "addRecurringTariff", //#tariffs/add/recurring
@@ -42,66 +32,57 @@
             $('.menu-zone').html(new TaxiHail.AdminMenuView().render().el);
             
         },
-
         
         manageCompanySettings: function () {
-            TaxiHail.Controller.action(TaxiHail.CompanySettingsController, 'index');
+            action(TaxiHail.CompanySettingsController, 'index');
         },
            
-        manageFavoritesDefault: function () {
-            var addresses = new TaxiHail.CompanyDefaultAddressCollection(),
-                        view = this._tabView = new TaxiHail.ManageDefaultAddressesView({
-                            collection: addresses
-                        });
+        manageDefaultAddresses: function () {
+            action(TaxiHail.DefaultAddressesController, 'index');
+        },
 
-            var favorites = new TaxiHail.CompanyDefaultAddressCollection();
-            favorites.fetch({
-                url: '../api/admin/addresses',
-                success: _.bind(function (collection, resp) {
-                            addresses.reset(favorites.models);
-                            renderView(view);
-                        }, this)
-            });
+        addDefaultAddress: function () {
+            action(TaxiHail.DefaultAddressesController, 'add');
+        },
+
+        editDefaultAddress: function(id) {
+            action(TaxiHail.DefaultAddressesController, 'edit', id);
         },
         
         managePopularAddresses : function () {
-            var addresses = new TaxiHail.CompanyPopularAddressCollection(),
-                        view = this._tabView = new TaxiHail.ManagePopularAddressesView({
-                            collection: addresses
-                        });
+            action(TaxiHail.PopularAddressesController, 'index');
+        },
 
-            var popular = new TaxiHail.CompanyPopularAddressCollection();
-            popular.fetch({
-                url: '../api/admin/popularaddresses',
-                success: _.bind(function (collection, resp) {
-                    addresses.reset(popular.models);
-                    renderView(view);
-                }, this)
-            });
+        addPopularAddress : function () {
+            action(TaxiHail.PopularAddressesController, 'add');
         },
         
-        grantAdminAccess : function () {
-            renderView(TaxiHail.GrantAdminAccessView);
+        editPopularAddress : function (id) {
+            action(TaxiHail.PopularAddressesController, 'edit', id);
+        },
+
+        manageSecurity: function () {
+            action(TaxiHail.SecurityController, 'index');
         },
 
         manageTariffs: function() {
-            TaxiHail.Controller.action(TaxiHail.TariffsController, 'index');
+            action(TaxiHail.TariffsController, 'index');
         },
 
         addRecurringTariff: function() {
-            TaxiHail.Controller.action(TaxiHail.TariffsController, 'addRecurring');
+            action(TaxiHail.TariffsController, 'addRecurring');
         },
 
         addDayTariff: function() {
-            TaxiHail.Controller.action(TaxiHail.TariffsController, 'addDay');
+            action(TaxiHail.TariffsController, 'addDay');
         },
 
         editTariff: function(id) {
-            TaxiHail.Controller.action(TaxiHail.TariffsController, 'edit', id);
+            action(TaxiHail.TariffsController, 'edit', id);
         },
 
         manageIBSExclusions: function() {
-            TaxiHail.Controller.action(TaxiHail.ExclusionsController, 'index');
+            action(TaxiHail.ExclusionsController, 'index');
         }
     });
 
