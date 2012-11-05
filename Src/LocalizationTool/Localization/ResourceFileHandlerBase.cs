@@ -21,6 +21,13 @@ namespace apcurium.Tools.Localization
             _filePath = filePath;
         }
 
+        protected ResourceFileHandlerBase(string filePath, IDictionary<string, string> dictionary)
+            : base(dictionary, StringComparer.OrdinalIgnoreCase)
+        {
+            _duplicateKeys = new HashSet<string>();
+            _filePath = filePath;
+        }
+
         public virtual string Name
         {
             get { return Path.GetFileName(_filePath); }
