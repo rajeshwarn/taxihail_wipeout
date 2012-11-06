@@ -23,7 +23,7 @@ using OrderStatusDetail = apcurium.MK.Booking.Api.Contract.Resources.OrderStatus
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class OrderStatusService : RestServiceBase<Contract.Requests.OrderStatusDetail>
+    public class OrderStatusService : RestServiceBase<Contract.Requests.OrderStatusRequest>
     {
         private static Dictionary<Guid, List<Location>> _fakeTaxiPositions = new Dictionary<Guid, List<Location>>();
         private static Dictionary<Guid, int> _fakeTaxiPositionsIndex = new Dictionary<Guid, int>();
@@ -50,14 +50,14 @@ namespace apcurium.MK.Booking.Api.Services
 
         }
 
-        public override object OnGet(Contract.Requests.OrderStatusDetail request)
+        public override object OnGet(Contract.Requests.OrderStatusRequest request)
         {
-            var status = new OrderStatusDetailResponse();
+            var status = new OrderStatusRequestResponse();
             var order = _orderDao.FindById(request.OrderId);
 
             if ( order  == null ) //Order could be null if creating the order takes a lot of time and this method is called before the create finishes
             {
-                return new OrderStatusDetailResponse { OrderId = request.OrderId, Status = OrderStatus.Created, IBSOrderId = 0, IBSStatusId = "", IBSStatusDescription = "Processing your order" };
+                return new OrderStatusRequestResponse { OrderId = request.OrderId, Status = OrderStatus.Created, IBSOrderId = 0, IBSStatusId = "", IBSStatusDescription = "Processing your order" };
             }
 
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
@@ -69,7 +69,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (!order.IBSOrderId.HasValue)
             {
-                return new OrderStatusDetailResponse { IBSStatusDescription = "Can't contact dispatch company" };
+                return new OrderStatusRequestResponse { IBSStatusDescription = "Can't contact dispatch company" };
             }
 
             if (account.Id != order.AccountId)
