@@ -704,7 +704,10 @@ $.extend($.validator, {
 					this.settings.success( label, element );
 				}
 			}
-			this.toShow = this.toShow.add(label);
+			// BUGFIX: Do not show validation label if no message
+			if(message){
+				this.toShow = this.toShow.add(label);
+			}
 		},
 
 		errorsFor: function(element) {
@@ -840,10 +843,10 @@ $.extend($.validator, {
 			var value;
 
 			// support for <input required> in both html5 and older browsers
-            // *****************************************
-            // BUGFIX for IE8
-            // Added $element.is('[required]') condition
-            // *****************************************
+			// *****************************************
+			// BUGFIX for IE8
+			// Added $element.is('[required]') condition
+			// *****************************************
 			if (method === 'required' && $element.is('[required]')) {
 				value = $element.get(0).getAttribute(method);
 				// Some browsers return an empty string for the required attribute

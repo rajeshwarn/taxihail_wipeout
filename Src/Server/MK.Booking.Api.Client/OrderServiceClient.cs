@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using OrderStatusDetail = apcurium.MK.Booking.Api.Contract.Resources.OrderStatusDetail;
 
 namespace apcurium.MK.Booking.Api.Client
 {
