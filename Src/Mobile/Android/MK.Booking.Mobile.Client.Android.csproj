@@ -569,4 +569,7 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>
+  <PropertyGroup>
+    <PreBuildEvent>$(SolutionDir)\LocalizationTool\LocalizationTool.exe -t android</PreBuildEvent>
+  </PropertyGroup>
 </Project>
