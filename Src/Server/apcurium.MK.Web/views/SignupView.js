@@ -99,7 +99,7 @@
         },
         
         onsubmit: function (form) {
-            this.model.save({}, { error: this.onServerError });
+            this.model.save({}, { error: _.bind(this.onServerError, this) });
         }
     });
 
