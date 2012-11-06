@@ -18,7 +18,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         }
 
         public Guid Id { get; set; }
-
+        
         public DateTime? PickupDate { get; set; }
 
         public string Note { get; set; }
