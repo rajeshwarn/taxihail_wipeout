@@ -76,18 +76,10 @@ namespace apcurium.MK.Booking.IBS.Impl
 
             var autoDispatch = ConfigManager.GetSetting("IBS.AutoDispatch").SelectOrDefault( setting => bool.Parse( setting ) , true );
             order.DispByAuto = autoDispatch;
+                       
 
-            var ibsServerTimeDifference = ConfigManager.GetSetting("IBS.TimeDifference").SelectOrDefault(setting => long.Parse(setting), 0);
-            var offsetedPickupDateTime = pickupDateTime;
-            if (ibsServerTimeDifference != 0)
-            {
-                 offsetedPickupDateTime = pickupDateTime.Add(new TimeSpan(ibsServerTimeDifference));
-            }
-
-
-
-            order.PickupDate = new TWEBTimeStamp { Year = offsetedPickupDateTime.Year, Month = offsetedPickupDateTime.Month, Day = offsetedPickupDateTime.Day };
-            order.PickupTime = new TWEBTimeStamp { Hour = offsetedPickupDateTime.Hour, Minute = offsetedPickupDateTime.Minute, Second = 0, Fractions = 0 };
+            order.PickupDate = new TWEBTimeStamp { Year = pickupDateTime.Year, Month = pickupDateTime.Month, Day = pickupDateTime.Day };
+            order.PickupTime = new TWEBTimeStamp { Hour = pickupDateTime.Hour, Minute = pickupDateTime.Minute, Second = 0, Fractions = 0 };
 
             order.ChargeTypeID = chargeTypeId;
             var aptRing = Params.Get(pickup.Apartment, pickup.RingCode).Where(s => s.HasValue()).JoinBy(" / ");
