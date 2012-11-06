@@ -33,12 +33,21 @@ namespace apcurium.MK.Booking.Api.Services
             var order = _orderDao.FindById(request.OrderId);
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
 
+            if (order != null)
+            {
+                var command = new Commands.CancelOrder();
+                command.Id = Guid.NewGuid();
+                command.OrderId = request.OrderId;
+                _commandBus.Send(command);
+
+            }
+
             if (!order.IBSOrderId.HasValue)
             {
                 throw new HttpError(ErrorCode.OrderNotInIbs.ToString());
             }
 
-            if(account.Id != order.AccountId)
+            if (account.Id != order.AccountId)
             {
                 throw new HttpError(HttpStatusCode.Unauthorized, "Can't cancel another account's order");
             }
@@ -47,15 +56,13 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (!isSuccessful)
             {
-                throw new HttpError(ErrorCode.OrderNotInIbs.ToString());
+                isSuccessful = _bookingWebServiceClient.CancelOrder(order.IBSOrderId.Value, account.IBSAccountId, order.Settings.Phone);
+                if (!isSuccessful)
+                {
+                    throw new HttpError(ErrorCode.OrderNotInIbs.ToString());
+                }
             }
-
-            var command = new Commands.CancelOrder();
-
-            command.Id = Guid.NewGuid();
-            command.OrderId = request.OrderId;
-            _commandBus.Send(command);
-
+            
             return new HttpResult(HttpStatusCode.OK);
         }
     }
