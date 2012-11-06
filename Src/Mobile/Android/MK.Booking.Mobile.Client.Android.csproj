@@ -570,6 +570,6 @@
     </AndroidResource>
   </ItemGroup>
   <PropertyGroup>
-    <PreBuildEvent>$(SolutionDir)\LocalizationTool\LocalizationTool.exe -t android</PreBuildEvent>
+    <PreBuildEvent>"$(SolutionDir)..\LocalizationTool\LocalizationTool.exe" -t android -s "$(SolutionDir)Common\Localization\Master.resx" -d "$(ProjectDir)Resources\Values\String.xml"</PreBuildEvent>
   </PropertyGroup>
 </Project>

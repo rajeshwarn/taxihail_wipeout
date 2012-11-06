@@ -70,7 +70,7 @@
     <Compile Include="Requests\GeocodingRequest.cs" />
     <Compile Include="Requests\NearbyPlacesRequest.cs" />
     <Compile Include="Requests\OrderRequest.cs" />
-    <Compile Include="Requests\OrderStatusDetail.cs" />
+    <Compile Include="Requests\OrderStatusRequest.cs" />
     <Compile Include="Requests\PlaceDetailRequest.cs" />
     <Compile Include="Requests\ReferenceDataRequest.cs" />
     <Compile Include="Requests\RegisterAccount.cs" />
