@@ -206,9 +206,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             set
             {
                 _center = value;                
-                
-                SetZoom(Center);                   
-                
+                if(Center!= null)
+                {
+                    SetZoom(Center);                   
+                }
             }
         }
 

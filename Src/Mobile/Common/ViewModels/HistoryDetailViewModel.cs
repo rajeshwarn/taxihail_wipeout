@@ -4,8 +4,12 @@ using System.Linq;
 using System.Text;
 
 using Cirrious.MvvmCross.Commands;
+using Cirrious.MvvmCross.Interfaces.Commands;
+using ServiceStack.Text;
 using TinyIoC;
+using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Models;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -78,6 +82,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                                    var canRate = IsDone && !HasRated;
                                                    RequestNavigate<BookRatingViewModel>(new { orderId = OrderId, canRate = canRate.ToString() });
                                                });
+            }
+        }
+
+        public IMvxCommand NavigateToOrderStatus
+        {
+            get
+            {
+                return new MvxRelayCommand<Dictionary<string,object>>(order =>
+                                                                  {
+                                                                      var orderGet = (Order) order["order"];
+                                                                      var orderInfoGet = (OrderStatusDetail) order["orderInfo"];
+                                                                      var orderWithStatus = new OrderWithStatusModel() { Order = orderGet, OrderStatusDetail = orderInfoGet };
+                                                                      var serialized = JsonSerializer.SerializeToString(orderWithStatus, typeof(OrderWithStatusModel));
+                                                                      RequestNavigate<BookingStatusViewModel>(new {order = serialized});
+                });
             }
         }
     }

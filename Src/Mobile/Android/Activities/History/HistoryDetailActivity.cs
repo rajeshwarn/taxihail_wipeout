@@ -146,7 +146,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
         void btnStatus_Click(object sender, EventArgs e)
         {
 
-            Intent i = new Intent(this, typeof(BookingStatusActivity));
+            /*Intent i = new Intent(this, typeof(BookingStatusActivity));
 
             OrderStatusDetail orderInfo = new OrderStatusDetail { IBSOrderId = _data.IBSOrderId, IBSStatusDescription = "Loading...", IBSStatusId = "", OrderId = _data.Id, Status = OrderStatus.Unknown, VehicleLatitude = null, VehicleLongitude = null };
 
@@ -157,9 +157,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
             i.PutExtra("OrderStatusDetail", serialized);
 
 
-            StartActivityForResult(i, 101);
-
-
+            StartActivityForResult(i, 101);*/
+            var orderInfo = new OrderStatusDetail { IBSOrderId = _data.IBSOrderId, IBSStatusDescription = "Loading...", IBSStatusId = "", OrderId = _data.Id, Status = OrderStatus.Unknown, VehicleLatitude = null, VehicleLongitude = null };
+            var param = new Dictionary<string, object>() { { "order", _data }, { "orderInfo", orderInfo } };
+            ViewModel.NavigateToOrderStatus.Execute(param);
             //Intent intent = new Intent();
             //intent.SetFlags(ActivityFlags.ForwardResult);
             //intent.PutExtra("Book", _data.Id.ToString());

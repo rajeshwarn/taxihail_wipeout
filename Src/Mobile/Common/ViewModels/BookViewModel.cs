@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.AppServices;
 using System.Threading.Tasks;
+using apcurium.MK.Booking.Mobile.Models;
 using apcurium.MK.Booking.Mobile.Navigation;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
@@ -422,11 +423,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return new MvxRelayCommand(() =>
-                                               {
-                                                   RequestNavigate<BookRatingViewModel>(
-                                                       new KeyValuePair<string, bool>("canRate", true));
-                                               });
+                return new MvxRelayCommand(() => RequestNavigate<BookRatingViewModel>(
+                    new KeyValuePair<string, bool>("canRate", true)));
                
             }
         }
@@ -435,13 +433,32 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return new MvxRelayCommand(() =>
-                                               {
-                                                   RequestNavigate<HistoryViewModel>();
-                                               });
+                return new MvxRelayCommand(() => RequestNavigate<HistoryViewModel>());
 
             }
         }
 
-    }
+        public IMvxCommand NavigateToOrderStatus
+        {
+            get
+            {
+                return new MvxRelayCommand<Dictionary<string,object>>(order =>
+                                                                  {
+                                                                      //var param = new Dictionary<string, object> { { "order", Order }, { "orderStatusDetail", orderInfos } };
+                                                                      //RequestNavigate<BookingStatusViewModel>(param);
+                                                                      var orderGet = (Order) order["order"];
+                                                                      
+                                                                      var orderInfoGet = (OrderStatusDetail) order["orderInfo"];
+                                                                      var orderWithStatus = new OrderWithStatusModel() { Order = orderGet, OrderStatusDetail = orderInfoGet };
+
+                                                                      var serialized = JsonSerializer.SerializeToString(orderWithStatus, typeof(OrderWithStatusModel));
+
+                                                                     // var toSend = new KeyValuePair<string, string>("order", serialized);
+                                                                      
+                                                                      RequestNavigate<BookingStatusViewModel>(new {order = serialized});
+                });
+            }
+        }
+
+   }
 }

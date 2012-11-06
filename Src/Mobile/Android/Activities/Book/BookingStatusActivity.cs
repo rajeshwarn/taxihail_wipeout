@@ -7,6 +7,7 @@ using Android.GoogleMaps;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
+using Cirrious.MvvmCross.Binding.Android.Views;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
 using apcurium.MK.Booking.Mobile.AppServices;
@@ -26,7 +27,7 @@ using System.Collections.Generic;
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
     [Activity(Label = "Book Status", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
-    public class BookingStatusActivity : BaseMapActivity
+    public class BookingStatusActivity : MvxBindingMapActivityView<BookingStatusViewModel>
     {
         private const string _doneStatus = "wosDONE";
         private const string _loadedStatus = "wosLOADED";
@@ -40,7 +41,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         public OrderStatusDetail OrderStatus { get; private set; }
         public Order Order { get; private set; }
 
-        protected override int ViewTitleResourceId
+        protected int ViewTitleResourceId
         {
             get { return Resource.String.View_BookingStatus; }
         }
@@ -54,9 +55,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             base.OnCreate(bundle);
 
-            SetContentView(Resource.Layout.View_BookingStatus);
+            //SetContentView(Resource.Layout.View_BookingStatus);
 
-            LoadParameters();
+            /*LoadParameters();
 
             if (OrderStatus.IBSOrderId.HasValue)
             {
@@ -80,8 +81,38 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             ThreadHelper.ExecuteInThread(this, () =>
                 {
                     DisplayStatus(Order, OrderStatus);
-                }, false);
+                }, false);*/
 
+        }
+
+        protected override void OnViewModelSet()
+        {
+            SetContentView(Resource.Layout.View_BookingStatus);
+            LoadParameters();
+
+            if (OrderStatus.IBSOrderId.HasValue)
+            {
+                FindViewById<TextView>(Resource.Id.confirmationNo).Text = string.Format(GetString(Resource.String.StatusDescription), OrderStatus.IBSOrderId.Value);
+            }
+
+            SetStatusText(GetString(Resource.String.LoadingMessage));
+            FindViewById<Button>(Resource.Id.CancelBtn).Enabled = true;
+            FindViewById<Button>(Resource.Id.CancelBtn).Click += delegate { CancelOrder(); };
+            var callBtn = FindViewById<Button>(Resource.Id.CallBtn);
+            callBtn.Click += delegate { CallCompany(); };
+            FindViewById<Button>(Resource.Id.NewRideBtn).Click += delegate { CloseActivity(); };
+
+            var map = FindViewById<MapView>(Resource.Id.mapStatus);
+            var _configurationManager = TinyIoCContainer.Current.Resolve<IConfigurationManager>();
+            if (bool.Parse(_configurationManager.GetSetting("Client.HideCallDispatchButton")))
+            {
+                callBtn.Visibility = ViewStates.Gone;
+            }
+
+            ThreadHelper.ExecuteInThread(this, () =>
+            {
+                DisplayStatus(Order, OrderStatus);
+            }, false);
         }
 
         protected override void OnResume()
@@ -131,13 +162,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         private void LoadParameters()
         {
-            var serialized = Intent.GetStringExtra("OrderStatusDetail");
+           /* var serialized = Intent.GetStringExtra("OrderStatusDetail");
             var status = SerializerHelper.DeserializeObject<OrderStatusDetail>(serialized);
-            OrderStatus = status;
+            OrderStatus = status;*/
+            OrderStatus = ViewModel.OrderStatusDetail;
 
-            serialized = Intent.GetStringExtra("Order");
+            
+
+            /*serialized = Intent.GetStringExtra("Order");
             var order = SerializerHelper.DeserializeObject<Order>(serialized);
-            Order = order;
+            Order = order;*/
+            Order = ViewModel.Order;
 
         }
 
@@ -267,7 +302,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                                                                                                            {
                                                                                                                if((Common.Extensions.GuidExtensions.HasValue(Order.Id)))
                                                                                                                {
-                                                                                                                   //RequestNavigate<BookRatingViewModel>(new { orderId = Order.Id, canRate = true });
+                                                                                                                   ViewModel.Order.Id = Order.Id;
+                                                                                                                   ViewModel.NavigateToRatingPage.Execute();
                                                                                                                }
                                                                                                                RunOnUiThread(()=>Finish());
                                                                                                            },true);
