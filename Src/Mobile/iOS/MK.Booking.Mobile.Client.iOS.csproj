@@ -27,6 +27,11 @@
     <AssemblyName>TaxiHail</AssemblyName>
     <MtouchUseLlvm>True</MtouchUseLlvm>
     <MtouchArch>ARMv7</MtouchArch>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="BeforeBuild" command="${SolutionDir}/LocalizationTool/LocalizationTool.exe -t ios" />
+      </CustomCommands>
+    </CustomCommands>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
