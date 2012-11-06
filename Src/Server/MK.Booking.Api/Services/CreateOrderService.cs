@@ -12,6 +12,7 @@ using apcurium.MK.Common.Extensions;
 
 using AutoMapper;
 using ServiceStack.Common.Web;
+using OrderStatusDetail = apcurium.MK.Booking.Api.Contract.Resources.OrderStatusDetail;
 
 
 namespace apcurium.MK.Booking.Api.Services
