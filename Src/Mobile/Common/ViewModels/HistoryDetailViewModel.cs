@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 
 using Cirrious.MvvmCross.Commands;
+using TinyIoC;
+using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -21,15 +23,36 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         }
 
-        private bool _canRate;
+        private bool _isDone;
 
-        public bool CanRate
+        public bool IsDone
         {
             get
             {
-                return _canRate;
+                return _isDone;
             }
-            set { _canRate = value; FirePropertyChanged("CanRate"); }
+            set { _isDone = value; FirePropertyChanged("IsDone"); }
+
+        }
+
+        private bool _hasRated;
+
+        public bool HasRated
+        {
+            get
+            {
+                return _hasRated;
+            }
+            set { _hasRated = value; FirePropertyChanged("HasRated"); }
+
+        }
+
+        private bool _showRateButton;
+
+        public bool ShowRateButton
+        {
+            get { return IsDone && !HasRated; }
+            set { _showRateButton = value; FirePropertyChanged("ShowRateButton"); }
 
         }
 
@@ -41,12 +64,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public HistoryDetailViewModel(string orderId)
         {
             OrderId = orderId;
-        }
-
-        public HistoryDetailViewModel(string orderId, string canRate)
-        {
-            OrderId = orderId;
-            CanRate = bool.Parse(canRate);
+            HasRated = TinyIoCContainer.Current.Resolve<IBookingService>().GetOrderRating(Guid.Parse(orderId)).RatingScores.Any();
+            var status = TinyIoCContainer.Current.Resolve<IBookingService>().GetOrderStatus(Guid.Parse(orderId));
+            IsDone = TinyIoCContainer.Current.Resolve<IBookingService>().IsStatusDone(status.IBSStatusId);
         }
 
         public MvxRelayCommand NavigateToRatingPage
@@ -55,7 +75,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return new MvxRelayCommand(() =>
                                                {
-                                                   RequestNavigate<BookRatingViewModel>(new { orderId = OrderId, canRate = CanRate.ToString() });
+                                                   var canRate = IsDone && !HasRated;
+                                                   RequestNavigate<BookRatingViewModel>(new { orderId = OrderId, canRate = canRate.ToString() });
                                                });
             }
         }

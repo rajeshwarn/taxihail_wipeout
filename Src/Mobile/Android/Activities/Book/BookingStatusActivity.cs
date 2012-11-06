@@ -15,6 +15,7 @@ using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Converters;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
@@ -260,6 +261,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 alert.Dispose();
             });
 
+            alert.SetNeutralButton(Resource.String.RateBtn, (sender, args) =>
+                                                                {
+                                                                    ThreadHelper.ExecuteInThread(this, ()=>
+                                                                                                           {
+                                                                                                               if((Common.Extensions.GuidExtensions.HasValue(Order.Id)))
+                                                                                                               {
+                                                                                                                   //RequestNavigate<BookRatingViewModel>(new { orderId = Order.Id, canRate = true });
+                                                                                                               }
+                                                                                                               RunOnUiThread(()=>Finish());
+                                                                                                           },true);
+                                                                    alert.Dispose();
+                                                                                                           });
             alert.Show();
         }
 

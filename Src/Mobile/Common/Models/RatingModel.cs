@@ -15,7 +15,7 @@ namespace apcurium.MK.Booking.Mobile.Models
         private bool _madSelected;
         public bool MadSelected
         {
-            get { return _madSelected; }
+            get { return Score == 1; }
             set
             {
                 _madSelected = value;
@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Mobile.Models
         private bool _unhappySelected;
         public bool UnhappySelected
         {
-            get { return _unhappySelected; }
+            get { return Score == 2; }
             set
             {
                 _unhappySelected = value;
@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile.Models
         private bool _neutralSelected;
         public bool NeutralSelected
         {
-            get { return _neutralSelected; }
+            get { return Score == 3; }
             set
             {
                 _neutralSelected = value;
@@ -48,7 +48,7 @@ namespace apcurium.MK.Booking.Mobile.Models
         private bool _happySelected;
         public bool HappySelected
         {
-            get { return _happySelected; }
+            get { return Score == 4; }
             set
             {
                 _happySelected = value;
@@ -59,12 +59,17 @@ namespace apcurium.MK.Booking.Mobile.Models
         private bool _ecstaticSelected;
         public bool EcstaticSelected
         {
-            get { return _ecstaticSelected; }
+            get { return Score == 5; }
             set
             {
                 _ecstaticSelected = value;
                 FirePropertyChanged(() => EcstaticSelected);
             }
+        }
+
+        public RatingModel(bool canRate=false)
+        {
+            this.CanRating = canRate;
         }
 
         private enum RatingState { Mad = 1, Unhappy = 2, Neutral = 3, Happy = 4, Ecstatic = 5 }
@@ -78,17 +83,31 @@ namespace apcurium.MK.Booking.Mobile.Models
             MadSelected = false;
         }
 
+        private bool _canRating;
+
+        public bool CanRating
+        {
+            get
+            {
+                return _canRating;
+            }
+            set { _canRating = value; FirePropertyChanged("CanRating"); }
+
+        }
+
         public IMvxCommand SetRateCommand
         {
             get
             {
                 return new MvxRelayCommand<object>(param => param.Maybe(tag =>
                                                                             {
+                                                                                
                                                                                 RatingState state;
                                                          if (Enum.TryParse(tag.ToString(), true, out state))
                                                          {
-                                                             DeselectAllState();
+                                                             
                                                              Score = (int)state;
+                                                             DeselectAllState();
                                                              switch (state)
                                                              {
                                                                  case RatingState.Mad:

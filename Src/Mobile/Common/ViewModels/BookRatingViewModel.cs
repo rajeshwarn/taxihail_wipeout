@@ -54,20 +54,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public BookRatingViewModel()
         {
-            _ratingList = TinyIoCContainer.Current.Resolve<IBookingService>().GetRatingType().Select(c => new RatingModel() { RatingTypeId = c.Id, RatingTypeName = c.Name }).ToList();
+            RatingList = TinyIoCContainer.Current.Resolve<IBookingService>().GetRatingType().Select(c => new RatingModel() { RatingTypeId = c.Id, RatingTypeName = c.Name }).ToList();
             CanRating = false;
         }
        
 
         public BookRatingViewModel(string orderId, string canRate="false")
         {
-            _ratingList = TinyIoCContainer.Current.Resolve<IBookingService>().GetRatingType().Select(c => new RatingModel() { RatingTypeId = c.Id, RatingTypeName = c.Name }).ToList();
+            RatingList = TinyIoCContainer.Current.Resolve<IBookingService>().GetRatingType().Select(c => new RatingModel(canRate: bool.Parse(canRate)) { RatingTypeId = c.Id, RatingTypeName = c.Name }).ToList();
             OrderId = orderId;
             CanRating = bool.Parse(canRate);
+            if(!CanRating)
+            {
+                var orderRatings = TinyIoCContainer.Current.Resolve<IBookingService>().GetOrderRating(Guid.Parse(orderId));
+                Note = orderRatings.Note;
+                RatingList = orderRatings.RatingScores.Select(c=> new RatingModel(canRate:false){Score = c.Score}).ToList();
+            }
         }
-
-
-
 
         public IMvxCommand RateOrder
         {

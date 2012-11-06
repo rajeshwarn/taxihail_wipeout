@@ -32,7 +32,7 @@
             android:padding="7dip"
             android:layout_marginTop="1dip"
             android:tag="Mad"
-            local:MvxBind="{&apos;SelectedChangedCommand&apos;:{&apos;Path&apos;:&apos;SetRateCommand&apos;},&apos;Selected&apos;:{&apos;Path&apos;:&apos;MadSelected&apos;}}"
+            local:MvxBind="{&apos;SelectedChangedCommand&apos;:{&apos;Path&apos;:&apos;SetRateCommand&apos;},&apos;Selected&apos;:{&apos;Path&apos;:&apos;MadSelected&apos;},&apos;Enabled&apos;:{&apos;Path&apos;:&apos;CanRating&apos;}}"
             android:layout_marginRight="15dip" />
         <apcurium.mk.booking.mobile.client.controls.BindableSelectionButton
             android:id="@+id/RatingScore2"
@@ -43,7 +43,7 @@
             android:padding="7dip"
             android:layout_marginTop="1dip"
             android:tag="Unhappy"
-            local:MvxBind="{&apos;SelectedChangedCommand&apos;:{&apos;Path&apos;:&apos;SetRateCommand&apos;},&apos;Selected&apos;:{&apos;Path&apos;:&apos;UnhappySelected&apos;}}"
+            local:MvxBind="{&apos;SelectedChangedCommand&apos;:{&apos;Path&apos;:&apos;SetRateCommand&apos;},&apos;Selected&apos;:{&apos;Path&apos;:&apos;UnhappySelected&apos;},&apos;Enabled&apos;:{&apos;Path&apos;:&apos;CanRating&apos;}}"
             android:layout_marginRight="15dip" />
         <apcurium.mk.booking.mobile.client.controls.BindableSelectionButton
             android:id="@+id/RatingScore3"
@@ -54,7 +54,7 @@
             android:padding="7dip"
             android:layout_marginTop="1dip"
             android:tag="Neutral"
-            local:MvxBind="{&apos;SelectedChangedCommand&apos;:{&apos;Path&apos;:&apos;SetRateCommand&apos;},&apos;Selected&apos;:{&apos;Path&apos;:&apos;NeutralSelected&apos;}}"
+            local:MvxBind="{&apos;SelectedChangedCommand&apos;:{&apos;Path&apos;:&apos;SetRateCommand&apos;},&apos;Selected&apos;:{&apos;Path&apos;:&apos;NeutralSelected&apos;},&apos;Enabled&apos;:{&apos;Path&apos;:&apos;CanRating&apos;}}"
             android:layout_marginRight="15dip" />
         <apcurium.mk.booking.mobile.client.controls.BindableSelectionButton
             android:id="@+id/RatingScore4"
@@ -65,7 +65,7 @@
             android:padding="7dip"
             android:layout_marginTop="1dip"
             android:tag="Happy"
-            local:MvxBind="{&apos;SelectedChangedCommand&apos;:{&apos;Path&apos;:&apos;SetRateCommand&apos;},&apos;Selected&apos;:{&apos;Path&apos;:&apos;HappySelected&apos;}}"
+            local:MvxBind="{&apos;SelectedChangedCommand&apos;:{&apos;Path&apos;:&apos;SetRateCommand&apos;},&apos;Selected&apos;:{&apos;Path&apos;:&apos;HappySelected&apos;},&apos;Enabled&apos;:{&apos;Path&apos;:&apos;CanRating&apos;}}"
             android:layout_marginRight="15dip" />
         <apcurium.mk.booking.mobile.client.controls.BindableSelectionButton
             android:id="@+id/RatingScore5"
@@ -76,6 +76,6 @@
             android:padding="7dip"
             android:layout_marginTop="1dip"
             android:tag="Ecstatic"
-            local:MvxBind="{&apos;SelectedChangedCommand&apos;:{&apos;Path&apos;:&apos;SetRateCommand&apos;},&apos;Selected&apos;:{&apos;Path&apos;:&apos;EcstaticSelected&apos;}}" />
+            local:MvxBind="{&apos;SelectedChangedCommand&apos;:{&apos;Path&apos;:&apos;SetRateCommand&apos;},&apos;Selected&apos;:{&apos;Path&apos;:&apos;EcstaticSelected&apos;},&apos;Enabled&apos;:{&apos;Path&apos;:&apos;CanRating&apos;}}" />
     </LinearLayout>
 </LinearLayout>

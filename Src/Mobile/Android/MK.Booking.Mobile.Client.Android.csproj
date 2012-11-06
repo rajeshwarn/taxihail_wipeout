@@ -602,7 +602,7 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_BookingRating.axml">
-      <SubType>AndroidResource</SubType>
+      <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>

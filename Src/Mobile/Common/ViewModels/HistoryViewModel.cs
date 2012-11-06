@@ -34,24 +34,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             IEnumerable<Order> orders = new Order[0];
             orders = TinyIoCContainer.Current.Resolve<IAccountService>().GetHistoryOrders().ToList();
             Orders = orders.Select(x =>
-                                           new OrderViewModel()
+                                       {
+                                          
+                                           return new OrderViewModel()
                                                {
                                                    IBSOrderId = x.IBSOrderId,
                                                    Id = x.Id,
                                                    CreatedDate = x.CreatedDate,
                                                    PickupAddress = x.PickupAddress,
                                                    IsCompleted = x.IsCompleted,
-                                                   Title = string.Format(titleFormat,x.IBSOrderId.ToString(), x.CreatedDate),
+                                                   Title = String.Format(titleFormat, x.IBSOrderId.ToString(), x.CreatedDate),
                                                    IsFirst = x.Equals(orders.First()),
                                                    IsLast = x.Equals(orders.Last()),
                                                    ShowRightArrow = true
-                                               }
+                                               };
+                                       }
                                        ).ToList();
-            Orders.ForEach(c=>
-                               {
-                                   c.OrderRatings =
-                                       TinyIoCContainer.Current.Resolve<IBookingService>().GetOrderRating(c.Id);
-                               });
         }
 
 
@@ -59,15 +57,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return new MvxRelayCommand<OrderViewModel>(vm => 
-                {
-                    
-                    var not = !vm.IsCompleted;
-                    if(vm.OrderRatings.RatingScores.Any())
-                    {
-                        not = false;
-                    }
-                    RequestNavigate<HistoryDetailViewModel>(new { orderId = vm.Id, canRate = not.ToString()});
+                return new MvxRelayCommand<OrderViewModel>(vm =>
+                                                               {
+                                                                   RequestNavigate<HistoryDetailViewModel>(new { orderId = vm.Id});
                 });
             }
         }

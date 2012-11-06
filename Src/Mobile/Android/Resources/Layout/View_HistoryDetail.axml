@@ -192,7 +192,7 @@
                     android:text="@string/RateBtn"
                     android:layout_width="fill_parent"
                     android:layout_height="40dip"
-                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;NavigateToRatingPage&apos;}, &apos;Enabled&apos;:{&apos;Path&apos;:&apos;CanRate&apos;},&apos;Visibility&apos;:{&apos;Path&apos;:&apos;CanRate&apos;,&apos;Converter&apos;:&apos;Visibility&apos;}}" />
+                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;NavigateToRatingPage&apos;}, &apos;Enabled&apos;:{&apos;Path&apos;:&apos;ShowRateButton&apos;},&apos;Visibility&apos;:{&apos;Path&apos;:&apos;ShowRateButton&apos;,&apos;Converter&apos;:&apos;Visibility&apos;}}" />
                 <Button
                     android:id="@+id/ViewRatingBtn"
                     android:background="@drawable/gray_button"
@@ -200,7 +200,7 @@
                     android:text="@string/ViewRatingBtn"
                     android:layout_width="fill_parent"
                     android:layout_height="40dip"
-                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;NavigateToRatingPage&apos;}, &apos;Enabled&apos;:{&apos;Path&apos;:&apos;CanRate&apos;,&apos;Converter&apos;:&apos;BoolInverter&apos;},&apos;Visibility&apos;:{&apos;Path&apos;:&apos;CanRate&apos;,&apos;Converter&apos;:&apos;InvertedVisibility&apos;}}" />
+                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;NavigateToRatingPage&apos;}, &apos;Enabled&apos;:{&apos;Path&apos;:&apos;HasRated&apos;},&apos;Visibility&apos;:{&apos;Path&apos;:&apos;HasRated&apos;,&apos;Converter&apos;:&apos;Visibility&apos;}}" />
                 <Button
                     android:paddingTop="5dip"
                     android:paddingBottom="5dip"
