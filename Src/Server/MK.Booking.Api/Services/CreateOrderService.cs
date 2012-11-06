@@ -75,7 +75,7 @@ namespace apcurium.MK.Booking.Api.Services
             emailCommand.Settings.VehicleType = vehicleType;
 
             _commandBus.Send(command);
-            if (bool.Parse(_configurationManager.GetSetting("Booking.ConfirmationEmail")))
+            if (bool.Parse(_configManager.GetSetting("Booking.ConfirmationEmail")))
             {
                 _commandBus.Send(emailCommand);
             }
