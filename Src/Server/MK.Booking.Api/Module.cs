@@ -3,6 +3,7 @@ using Microsoft.Practices.Unity;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.IBS;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Api
@@ -45,6 +46,9 @@ namespace apcurium.MK.Booking.Api
 
             AutoMapper.Mapper.CreateMap<DefaultFavoriteAddress, Commands.UpdateDefaultFavoriteAddress>()
                 .ForMember(x => x.AddressId, opt => opt.MapFrom(x => x.Id));
+
+            AutoMapper.Mapper.CreateMap<AccountDetail, CurrentAccountResponse>();
+            AutoMapper.Mapper.CreateMap<BookingSettingsDetails, BookingSettings>();
         }
     }
 }
