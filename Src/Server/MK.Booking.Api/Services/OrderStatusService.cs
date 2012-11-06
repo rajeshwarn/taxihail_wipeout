@@ -19,10 +19,11 @@ using apcurium.MK.Common;
 using apcurium.MK.Common.Diagnostic;
 using log4net;
 using ServiceStack.Text;
+using OrderStatusDetail = apcurium.MK.Booking.Api.Contract.Resources.OrderStatusDetail;
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class OrderStatusService : RestServiceBase<OrderStatusRequest>
+    public class OrderStatusService : RestServiceBase<Contract.Requests.OrderStatusDetail>
     {
         private static Dictionary<Guid, List<Location>> _fakeTaxiPositions = new Dictionary<Guid, List<Location>>();
         private static Dictionary<Guid, int> _fakeTaxiPositionsIndex = new Dictionary<Guid, int>();
@@ -49,21 +50,21 @@ namespace apcurium.MK.Booking.Api.Services
 
         }
 
-        public override object OnGet(OrderStatusRequest request)
+        public override object OnGet(Contract.Requests.OrderStatusDetail request)
         {
-            var status = new OrderStatusDetail();
+            var status = new OrderStatusDetailResponse();
             var order = _orderDao.FindById(request.OrderId);
 
             if ( order  == null ) //Order could be null if creating the order takes a lot of time and this method is called before the create finishes
             {
-                return new OrderStatusDetail { OrderId = request.OrderId, Status = OrderStatus.Created, IBSOrderId = 0, IBSStatusId = "", IBSStatusDescription = "Processing your order" };
+                return new OrderStatusDetailResponse { OrderId = request.OrderId, Status = OrderStatus.Created, IBSOrderId = 0, IBSStatusId = "", IBSStatusDescription = "Processing your order" };
             }
 
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
 
             if (!order.IBSOrderId.HasValue)
             {
-                return new OrderStatusDetail { IBSStatusDescription = "Can't contact dispatch company" };
+                return new OrderStatusDetailResponse { IBSStatusDescription = "Can't contact dispatch company" };
             }
 
             if (account.Id != order.AccountId)

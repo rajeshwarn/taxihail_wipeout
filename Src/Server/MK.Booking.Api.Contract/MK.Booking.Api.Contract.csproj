@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ContractDocument.cs" />
+    <Compile Include="Http\NoCacheAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Requests\AddressHistoryRequest.cs" />
     <Compile Include="Requests\AccountOrderListRequest.cs" />
@@ -93,7 +94,7 @@
     <Compile Include="Requests\GrantAdminRightRequest.cs" />
     <Compile Include="Requests\NearbyPlacesRequest.cs" />
     <Compile Include="Requests\OrderRequest.cs" />
-    <Compile Include="Requests\OrderStatusRequest.cs" />
+    <Compile Include="Requests\OrderStatusDetail.cs" />
     <Compile Include="Requests\PlaceDetailRequest.cs" />
     <Compile Include="Requests\ReferenceDataRequest.cs" />
     <Compile Include="Requests\ResetPassword.cs" />
