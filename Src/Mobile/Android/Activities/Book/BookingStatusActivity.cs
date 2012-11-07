@@ -9,6 +9,7 @@ using Android.Views;
 using Android.Widget;
 using Cirrious.MvvmCross.Binding.Android.Views;
 using TinyIoC;
+using TinyMessenger;
 using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Infrastructure;
@@ -16,6 +17,7 @@ using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Converters;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
@@ -280,7 +282,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             alert.SetTitle(Resources.GetString(Resource.String.View_BookingStatus_ThankYouTitle));
             alert.SetMessage(String.Format(Resources.GetString(Resource.String.View_BookingStatus_ThankYouMessage), settings.ApplicationName));
 
-            alert.SetPositiveButton("Ok", (s, e) => alert.Dispose());
+            alert.SetPositiveButton("Ok", (s, e) =>
+                                              {
+                                                  alert.Dispose();
+                                                  RunOnUiThread(() => Finish());
+                                              });
 
             alert.SetNegativeButton(Resource.String.HistoryDetailSendReceiptButton, (s, e) =>
             {
@@ -295,21 +301,29 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 }, true);
                 alert.Dispose();
             });
-
-            alert.SetNeutralButton(Resource.String.RateBtn, (sender, args) =>
+            if(ViewModel.ShowRatingButton)
+            {
+                 alert.SetNeutralButton(Resource.String.RateBtn, (sender, args) =>
                                                                 {
                                                                     ThreadHelper.ExecuteInThread(this, ()=>
                                                                                                            {
                                                                                                                if((Common.Extensions.GuidExtensions.HasValue(Order.Id)))
                                                                                                                {
-                                                                                                                   ViewModel.Order.Id = Order.Id;
+                                                                                                                   ViewModel.Order.Id = Order.Id; 
+                                                                                                                   TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<OrderRated>(HideRatingButton);
                                                                                                                    ViewModel.NavigateToRatingPage.Execute();
                                                                                                                }
-                                                                                                               RunOnUiThread(()=>Finish());
                                                                                                            },true);
                                                                     alert.Dispose();
                                                                                                            });
+            }
+           
             alert.Show();
+        }
+
+        private void HideRatingButton(OrderRated orderRated)
+        {
+            ShowThankYouDialog();
         }
 
         private void DisplayStatus(Order order, OrderStatusDetail status)

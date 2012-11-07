@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.Interfaces.Commands;
+using Cirrious.MvvmCross.ViewModels;
 using TinyIoC;
+using TinyMessenger;
 using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Booking.Mobile.Models;
 using apcurium.MK.Common.Entity;
 
@@ -78,16 +81,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return new MvxRelayCommand(() =>
                 {
-                    var orderRating = new OrderRatings()
+                    if(_ratingList.All(c => c.Score != 0))
                     {
-                        Note = this.Note,
-                        OrderId = Guid.Parse(this.OrderId),
-                        RatingScores =
-                            this._ratingList.Select(
-                                c => new RatingScore() { RatingTypeId = c.RatingTypeId, Score = c.Score }).
-                            ToList()
-                    };
-                    TinyIoCContainer.Current.Resolve<IBookingService>().SendRatingReview(orderRating);
+                        var orderRating = new OrderRatings()
+                        {
+                            Note = this.Note,
+                            OrderId = Guid.Parse(this.OrderId),
+                            RatingScores =
+                                this._ratingList.Select(
+                                    c => new RatingScore() { RatingTypeId = c.RatingTypeId, Score = c.Score }).
+                                ToList()
+                        };
+                        try
+                        {
+                            TinyIoCContainer.Current.Resolve<IBookingService>().SendRatingReview(orderRating);
+                            InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new OrderRated(this, OrderId)));
+                            RequestClose(this);
+                        }
+                        catch (Exception e)
+                        {
+                            throw;
+                        }
+                    }
                 });
             }
         }

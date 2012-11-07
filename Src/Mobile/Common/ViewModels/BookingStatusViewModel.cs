@@ -11,7 +11,10 @@ using Android.Views;
 using Android.Widget;
 using Cirrious.MvvmCross.Commands;
 using ServiceStack.Text;
+using TinyIoC;
+using TinyMessenger;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Booking.Mobile.Models;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -43,9 +46,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+        private bool _showRatingButton;
+
+        public bool ShowRatingButton
+        {
+            get { return _showRatingButton; }
+            set 
+            { 
+                _showRatingButton = value;
+                FirePropertyChanged(()=>ShowRatingButton);
+            }
+        }
+
         public BookingStatusViewModel()
         {
-            
+            ShowRatingButton = true;
         }
 
         public BookingStatusViewModel(string order)
@@ -53,6 +68,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             OrderWithStatusModel orderWithStatus = JsonSerializer.DeserializeFromString < OrderWithStatusModel>(order);
             Order = orderWithStatus.Order;
             OrderStatusDetail = orderWithStatus.OrderStatusDetail;
+            ShowRatingButton = true;
         }
 
         public MvxRelayCommand NavigateToRatingPage
@@ -61,9 +77,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return new MvxRelayCommand(() =>
                 {
+                    TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<OrderRated>(HideRatingButton);
                     RequestNavigate<BookRatingViewModel>(new { orderId = Order.Id.ToString(), canRate = "true" });
                 });
             }
+        }
+
+        private void HideRatingButton(OrderRated orderRated)
+        {
+            ShowRatingButton = false;
         }
     }
 }
