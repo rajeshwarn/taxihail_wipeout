@@ -636,7 +636,9 @@
   <ItemGroup>
     <Content Include="themes\SanJoseForARide\less\variables.less" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Properties\PublishProfiles\d.pubxml" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="admin\templates\GrantAdminAccess.handlebars" />
   </ItemGroup>
