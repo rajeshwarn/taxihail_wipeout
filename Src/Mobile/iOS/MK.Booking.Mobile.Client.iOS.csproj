@@ -29,7 +29,7 @@
     <MtouchArch>ARMv7</MtouchArch>
     <CustomCommands>
       <CustomCommands>
-        <Command type="BeforeBuild" command="${SolutionDir}/LocalizationTool/LocalizationTool.exe -t ios" />
+        <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/LocalizationTool.exe&quot; -t ios -s &quot;$(SolutionDir)/Common/Localization/Master.resx&quot; -d &quot;$(ProjectDir)/en.lproj/localizable.strings&quot;" />
       </CustomCommands>
     </CustomCommands>
   </PropertyGroup>

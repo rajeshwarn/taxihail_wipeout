@@ -226,4 +226,7 @@
     <Folder Include="ListViewStructure\" />
     <Folder Include="Messages\" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Localization\Master.resx" />
+  </ItemGroup>
 </Project>
