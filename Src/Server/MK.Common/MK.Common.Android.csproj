@@ -46,9 +46,12 @@
     <Compile Include="Configuration\IConfigurationManager.cs" />
     <Compile Include="Diagnostic\ILogger.cs" />
     <Compile Include="Entity\Address.cs" />
+    <Compile Include="Entity\DayOfTheWeek.cs" />
     <Compile Include="Entity\ListItem.cs" />
     <Compile Include="Entity\OrderRatings.cs" />
     <Compile Include="Entity\RatingScore.cs" />
+    <Compile Include="Entity\Tariff.cs" />
+    <Compile Include="Entity\TariffType.cs" />
     <Compile Include="Entity\RatingType.cs" />
     <Compile Include="Extensions\AssemblyExtensions.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
@@ -69,6 +72,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Diagnostic\IErrorHandler.cs" />
     <Compile Include="Provider\IPopularAddressProvider.cs" />
+    <Compile Include="Provider\ITariffProvider.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />

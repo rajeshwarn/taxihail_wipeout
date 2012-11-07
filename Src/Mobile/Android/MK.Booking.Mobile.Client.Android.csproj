@@ -20,7 +20,7 @@
     <AndroidSupportedAbis>armeabi%3barmeabi-v7a%3bx86</AndroidSupportedAbis>
     <AndroidStoreUncompressedFileExtensions />
     <MandroidI18n />
-    <TargetFrameworkVersion>v2.3</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v2.2</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -53,7 +53,7 @@
     <AndroidSigningKeyAlias>MKTaxiHail</AndroidSigningKeyAlias>
     <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
-    <AndroidSupportedAbis>armeabi-v7a,x86</AndroidSupportedAbis>
+    <AndroidSupportedAbis>armeabi-v7a%3bx86</AndroidSupportedAbis>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
@@ -160,7 +160,7 @@
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\IconActionLayout.axml" />
     <AndroidResource Include="Resources\Drawable\cell_bottom_full_state.xml">
-      <SubType>AndroidResource</SubType>
+      <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\RatingListItem.axml" />
     <Compile Include="Services\MessageService.cs" />
@@ -468,8 +468,6 @@
     <AndroidResource Include="Resources\Drawable\backPickupDestination.png" />
     <AndroidResource Include="Resources\Drawable\bookLaterIcon.png" />
     <AndroidResource Include="Resources\Values\MvxBindingAttributes.xml" />
-    <AndroidResource Include="Resources\Drawable\laterbutton.png" />
-    <AndroidResource Include="Resources\Drawable\mylocationbutton.png" />
     <AndroidResource Include="Resources\Drawable\navBar.png" />
     <AndroidResource Include="Resources\drawable-hdpi\navBar.png" />
     <AndroidResource Include="Resources\Drawable\roundedContainer_pressed.xml" />
@@ -608,4 +606,7 @@
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\SimpleOrderListItem.axml" />
   </ItemGroup>
+  <PropertyGroup>
+    <PreBuildEvent>IF NOT "$(SolutionDir)" == "*Undefined*" "$(SolutionDir)..\LocalizationTool\LocalizationTool.exe" -t android -s "$(SolutionDir)Common\Localization\Master.resx" -d "$(ProjectDir)Resources\Values\String.xml"</PreBuildEvent>
+  </PropertyGroup>
 </Project>

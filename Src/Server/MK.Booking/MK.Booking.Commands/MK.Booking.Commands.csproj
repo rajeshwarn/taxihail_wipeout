@@ -47,7 +47,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddAppSettings.cs" />
     <Compile Include="AddDefaultFavoriteAddress.cs" />
     <Compile Include="AddFavoriteAddress.cs" />
     <Compile Include="AddPopularAddress.cs" />
@@ -55,8 +54,8 @@
     <Compile Include="AddRatingType.cs" />
     <Compile Include="CompleteOrder.cs" />
     <Compile Include="ConfirmAccount.cs" />
-    <Compile Include="CreateRate.cs" />
-    <Compile Include="DeleteRate.cs" />
+    <Compile Include="CreateTariff.cs" />
+    <Compile Include="DeleteTariff.cs" />
     <Compile Include="HideRatingType.cs" />
     <Compile Include="RateOrder.cs" />
     <Compile Include="RemovePopularAddress.cs" />
@@ -78,12 +77,12 @@
     <Compile Include="SendReceipt.cs" />
     <Compile Include="UpdateAccount.cs" />
     <Compile Include="UpdateAccountPassword.cs" />
-    <Compile Include="UpdateAppSettings.cs" />
+    <Compile Include="AddOrUpdateAppSettings.cs" />
     <Compile Include="UpdateBookingSettings.cs" />
     <Compile Include="UpdateDefaultFavoriteAddress.cs" />
     <Compile Include="UpdateFavoriteAddress.cs" />
     <Compile Include="UpdatePopularAddress.cs" />
-    <Compile Include="UpdateRate.cs" />
+    <Compile Include="UpdateTariff.cs" />
     <Compile Include="UpdateRatingType.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -15,7 +15,12 @@
             var pickup = this.model.get('pickupAddress');
             var dest = this.model.get('dropOffAddress');
             if (pickup && dest) {
-                TaxiHail.directionInfo.getInfo(pickup['latitude'], pickup['longitude'], dest['latitude'], dest['longitude']).done(this.renderResults);
+                TaxiHail.directionInfo.getInfo(pickup.latitude,
+                    pickup.longitude,
+                    dest.latitude,
+                    dest.longitude,
+                    this.model.get('pickupDate')
+                    ).done(this.renderResults);
             }
             
 
@@ -64,7 +69,7 @@
                     'settings.name': "required",
                     'settings.phone': {
                         required: true,
-                        regex: /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/
+                        regex: /^\(?([0-9]{3})\)?[\-. ]?([0-9]{3})[\-. ]?([0-9]{4})$/
                     },
                     'settings.passengers': {
                         required: true,

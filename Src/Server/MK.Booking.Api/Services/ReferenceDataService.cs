@@ -16,7 +16,7 @@ namespace apcurium.MK.Booking.Api.Services
     {
         private readonly IStaticDataWebServiceClient _staticDataWebServiceClient;
         private readonly ICacheClient _cacheClient;
-        private IConfigurationManager _configManager;
+        private readonly IConfigurationManager _configManager;
         public const string CacheKey = "IBS.StaticData";
 
         public ReferenceDataService(IStaticDataWebServiceClient staticDataWebServiceClient, ICacheClient cacheClient, IConfigurationManager configManager)
@@ -28,24 +28,26 @@ namespace apcurium.MK.Booking.Api.Services
 
         public override object OnGet(ReferenceDataRequest request)
         {
-            if (request.WithoutFiltering)
-                return GetReferenceData(request.WithoutFiltering);
-
             var result = _cacheClient.Get<ReferenceData>(CacheKey);
 
             if (result == null)
             {
-                result = GetReferenceData(request.WithoutFiltering);
-                _cacheClient.Add(CacheKey, result, TimeSpan.FromMinutes(60));
+                result = GetReferenceData();
+                _cacheClient.Add(CacheKey, result);
+            }
+
+            if (!request.WithoutFiltering)
+            {
+                result.VehiclesList = FilterReferenceData(result.VehiclesList, "IBS.ExcludedVehicleTypeId");
+                result.CompaniesList = FilterReferenceData(result.CompaniesList, "IBS.ExcludedProviderId");
+                result.PaymentsList = FilterReferenceData(result.PaymentsList, "IBS.ExcludedPaymentTypeId");
             }
 
             return result;
         }
 
-        private ReferenceData GetReferenceData(bool withoutFiltering)
+        private ReferenceData GetReferenceData()
         {
-            ReferenceData result;
-
             var companies = _staticDataWebServiceClient.GetCompaniesList();
             IList<ListItem> payments = new ListItem[0];
             IList<ListItem> vehicles = new ListItem[0];
@@ -60,14 +62,14 @@ namespace apcurium.MK.Booking.Api.Services
                 pickCities = _staticDataWebServiceClient.GetPickupCity(company);
             }
 
-            result = new ReferenceData
-                         {
-                             CompaniesList = withoutFiltering ? companies : FilterReferenceData(companies, "IBS.ExcludedProviderId"),
-                             PaymentsList = withoutFiltering ? payments : FilterReferenceData(payments, "IBS.ExcludedPaymentTypeId"),
-                             VehiclesList = withoutFiltering ? vehicles : FilterReferenceData(vehicles, "IBS.ExcludedVehicleTypeId"),
-                             DropoffCityList =  dropCities,
-                             PickupCityList = pickCities,
-                         };
+            var result = new ReferenceData
+                                       {
+                                           CompaniesList = companies,
+                                           PaymentsList = payments,
+                                           VehiclesList = vehicles,
+                                           DropoffCityList = dropCities,
+                                           PickupCityList = pickCities,
+                                       };
 
             return result;
         }
@@ -75,7 +77,7 @@ namespace apcurium.MK.Booking.Api.Services
         private IList<ListItem> FilterReferenceData(IEnumerable<ListItem> reference, string settingName)
         {
             var excludedVehicleTypeId = _configManager.GetSetting(settingName);
-            int[] excluded = excludedVehicleTypeId.IsNullOrEmpty()  ? new int[0] : excludedVehicleTypeId.Split(';').Select(int.Parse).ToArray();
+            var excluded = excludedVehicleTypeId.IsNullOrEmpty() ? new int[0] : excludedVehicleTypeId.Split(';').Select(int.Parse).ToArray();
 
             return reference.Where(c => excluded.None(e => e == c.Id)).ToList();
         }

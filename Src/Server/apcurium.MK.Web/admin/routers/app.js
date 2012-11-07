@@ -1,39 +1,29 @@
 ﻿(function () {
-    var currentView,
-        renderView = function(view, model) {
-            // Call remove on current view
-            // in case it was overriden with custom logic
-            if(currentView && _.isFunction(currentView.remove)) {
-                currentView.remove();
-            }
-
-            if(_.isFunction(view)) {
-                currentView = new view({
-                    model: model
-                }).render();
-            } else {
-                currentView = view;
-                view.model = model || view.model;
-                view.render();
-            }
-
-            $('#main').html(currentView.el);
-
-            return currentView;
-
-        };
+    var action = TaxiHail.Controller.action;
 
     TaxiHail.App = Backbone.Router.extend({
         routes: {
-            "": "manageFavoritesDefault",   // #
-            "grantadmin": "grantAdminAccess",
-            "managepopularaddresses": "managePopularAddresses",
+            /* Favorite addresses*/
+            "": "manageDefaultAddresses",   // #
+            'addresses/default/add': 'addDefaultAddress',
+            'addresses/default/edit/:id': 'editDefaultAddress',
+
+            /* popular addresses*/
+            "addresses/popular": "managePopularAddresses",
+            "addresses/popular/add": "addPopularAddress",
+            "addresses/popular/edit/:id": "editPopularAddress",
+
+            /* Admin right*/
+            "security": "manageSecurity",
+            
+            /* settings */
             "settings" : "manageCompanySettings",
-            /* Rates */
-            "rates": "manageRates", //#rates
-            "rates/add/recurring": "addRecurringRate", //#rates/add/recurring
-            "rates/add/day": "addDayRate", //#rates/add/day
-            "rates/edit/:id": "editRate", //#rates/edit/{GUID}
+
+            /* Tariffs */
+            "tariffs": "manageTariffs", //#tariffs
+            "tariffs/add/recurring": "addRecurringTariff", //#tariffs/add/recurring
+            "tariffs/add/day": "addDayTariff", //#tariffs/add/day
+            "tariffs/edit/:id": "editTariff", //#tariffs/edit/{GUID}
             /* IBS exclusions */
             "exclusions": "manageIBSExclusions"
         },
@@ -42,75 +32,57 @@
             $('.menu-zone').html(new TaxiHail.AdminMenuView().render().el);
             
         },
-
         
-        manageCompanySettings : function () {
-            var settings = new TaxiHail.CompanySettingsCollection(),
-                view = this._tabView = new TaxiHail.ManageCompanySettingsView({
-                    collection: settings
-                });
-            settings.fetch({
-                url: '../api/settings',
-                success: _.bind(function(collection, resp) {
-                    renderView(view);
-                }, this)
-            });
+        manageCompanySettings: function () {
+            action(TaxiHail.CompanySettingsController, 'index');
         },
            
-        manageFavoritesDefault: function () {
-            var addresses = new TaxiHail.CompanyDefaultAddressCollection(),
-                        view = this._tabView = new TaxiHail.ManageDefaultAddressesView({
-                            collection: addresses
-                        });
+        manageDefaultAddresses: function () {
+            action(TaxiHail.DefaultAddressesController, 'index');
+        },
 
-            var favorites = new TaxiHail.CompanyDefaultAddressCollection();
-            favorites.fetch({
-                url: '../api/admin/addresses',
-                success: _.bind(function (collection, resp) {
-                            addresses.reset(favorites.models);
-                            renderView(view);
-                        }, this)
-            });
+        addDefaultAddress: function () {
+            action(TaxiHail.DefaultAddressesController, 'add');
+        },
+
+        editDefaultAddress: function(id) {
+            action(TaxiHail.DefaultAddressesController, 'edit', id);
         },
         
         managePopularAddresses : function () {
-            var addresses = new TaxiHail.CompanyPopularAddressCollection(),
-                        view = this._tabView = new TaxiHail.ManagePopularAddressesView({
-                            collection: addresses
-                        });
+            action(TaxiHail.PopularAddressesController, 'index');
+        },
 
-            var popular = new TaxiHail.CompanyPopularAddressCollection();
-            popular.fetch({
-                url: '../api/admin/popularaddresses',
-                success: _.bind(function (collection, resp) {
-                    addresses.reset(popular.models);
-                    renderView(view);
-                }, this)
-            });
+        addPopularAddress : function () {
+            action(TaxiHail.PopularAddressesController, 'add');
         },
         
-        grantAdminAccess : function () {
-            renderView(TaxiHail.GrantAdminAccessView);
+        editPopularAddress : function (id) {
+            action(TaxiHail.PopularAddressesController, 'edit', id);
         },
 
-        manageRates: function() {
-            TaxiHail.Controller.action(TaxiHail.RatesController, 'index');
+        manageSecurity: function () {
+            action(TaxiHail.SecurityController, 'index');
         },
 
-        addRecurringRate: function() {
-            TaxiHail.Controller.action(TaxiHail.RatesController, 'addRecurring');
+        manageTariffs: function() {
+            action(TaxiHail.TariffsController, 'index');
         },
 
-        addDayRate: function() {
-            TaxiHail.Controller.action(TaxiHail.RatesController, 'addDay');
+        addRecurringTariff: function() {
+            action(TaxiHail.TariffsController, 'addRecurring');
         },
 
-        editRate: function(id) {
-            TaxiHail.Controller.action(TaxiHail.RatesController, 'edit', id);
+        addDayTariff: function() {
+            action(TaxiHail.TariffsController, 'addDay');
+        },
+
+        editTariff: function(id) {
+            action(TaxiHail.TariffsController, 'edit', id);
         },
 
         manageIBSExclusions: function() {
-            TaxiHail.Controller.action(TaxiHail.ExclusionsController, 'index');
+            action(TaxiHail.ExclusionsController, 'index');
         }
     });
 

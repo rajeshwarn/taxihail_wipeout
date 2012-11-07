@@ -17,6 +17,7 @@ using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking
 {
@@ -32,7 +33,7 @@ namespace apcurium.MK.Booking
             container.RegisterInstance<IAccountDao>(new AccountDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IOrderDao>(new OrderDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IDefaultAddressDao>(new DefaultAddressDao(() => container.Resolve<BookingDbContext>()));
-            container.RegisterInstance<IRateDao>(new RateDao(() => container.Resolve<BookingDbContext>()));
+            container.RegisterInstance<ITariffDao>(new TariffDao(() => container.Resolve<BookingDbContext>()));
 
             container.RegisterInstance<IOrderRatingsDao>(new OrderRatingsDao(() => container.Resolve<BookingDbContext>()));
 
@@ -61,7 +62,7 @@ namespace apcurium.MK.Booking
                 .ForMember(p => p.Apartment, opt => opt.MapFrom(m => m.PickupAddress.Apartment))
                 .ForMember(p => p.FullAddress, opt => opt.MapFrom(m => m.PickupAddress.FullAddress))
                 .ForMember(p => p.RingCode, opt => opt.MapFrom(m => m.PickupAddress.RingCode))
-                .ForMember(p=> p.BuildingName, opt => opt.MapFrom(m=>m.PickupAddress.BuildingName))
+                .ForMember(p => p.BuildingName, opt => opt.MapFrom(m => m.PickupAddress.BuildingName))
                 .ForMember(p => p.Latitude, opt => opt.MapFrom(m => m.PickupAddress.Latitude))
                 .ForMember(p => p.Longitude, opt => opt.MapFrom(m => m.PickupAddress.Longitude));
 
@@ -76,8 +77,10 @@ namespace apcurium.MK.Booking
             AutoMapper.Mapper.CreateMap<DefaultFavoriteAddressUpdated, DefaultAddressDetails>();
 
             AutoMapper.Mapper.CreateMap<PopularAddressAdded, PopularAddressDetails>();
-
             AutoMapper.Mapper.CreateMap<PopularAddressUpdated, PopularAddressDetails>();
+            AutoMapper.Mapper.CreateMap<PopularAddressDetails, Address>();
+            AutoMapper.Mapper.CreateMap<TariffDetail, Tariff>();
+
         }
 
         private static void RegisterEventHandlers(IUnityContainer container)
@@ -85,7 +88,7 @@ namespace apcurium.MK.Booking
             container.RegisterType<IEventHandler, AccountDetailsGenerator>("AccountDetailsGenerator");
             container.RegisterType<IEventHandler, AddressListGenerator>("AddressListGenerator");
             container.RegisterType<IEventHandler, OrderGenerator>("OrderGenerator");
-            container.RegisterType<IEventHandler, RateDetailsGenerator>("RateDetailsOrderGenerator");
+            container.RegisterType<IEventHandler, TariffDetailsGenerator>("TariffDetailsGenerator");
             container.RegisterType<IEventHandler, RatingTypeDetailsGenerator>("RatingTypeDetailsGenerator");
             container.RegisterType<IEventHandler, AppSettingsGenerator>("AppSettingsGenerator");
         }

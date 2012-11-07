@@ -74,42 +74,16 @@ namespace apcurium.MK.Booking.Api.Client
 
         public IEnumerable GetAllAppSettings()
         {
-            var req = string.Format("/settings/");
+            var req = string.Format("/settings");
             var address = Client.Get<IEnumerable>(req);
             return address;
         }
 
-        public string AddAppSettings(ConfigurationsRequest appReq)
+        public void AddOrUpdateAppSettings(ConfigurationsRequest appReq)
         {
-            var req = string.Format("/settings/");
-            return Client.Post<string>(req, appReq);
+            var req = string.Format("/settings");
+            Client.Post<string>(req, appReq);
         }
 
-        public string UpdateAppSettings(ConfigurationsRequest appReq)
-        {
-            var req = string.Format("/settings/{0}", appReq.Key);
-            return Client.Put<string>(req, appReq);
-            
-        }
-
-        public void CreateRate(Rates rate)
-        {
-            var req = string.Format("/admin/rates");
-            var response = Client.Post<string>(req, rate);
-        }
-
-        public void DeleteRate(Guid rateId)
-        {
-            var req = string.Format("/admin/rates/" + rateId);
-            var response = Client.Delete<string>(req);
-        }
-
-        public IList<Rates> GetRates()
-        {
-            var req = string.Format("/admin/rates");
-            return Client.Get<IList<Rates>>(req);
-        }
-
-        
     }
 }

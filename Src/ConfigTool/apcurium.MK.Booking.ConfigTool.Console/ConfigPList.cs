@@ -38,9 +38,7 @@ namespace apcurium.MK.Booking.ConfigTool
             var w = new NullSubsetXmlTextWriter(destPath, Encoding.UTF8);
             doc.Save( w );
             w.Close();
-            w = null;
-
-            
+            w = null;            
             
         }
 

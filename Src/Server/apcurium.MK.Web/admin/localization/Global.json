@@ -9,6 +9,8 @@
 	"modal.removePopular.message" : "Please confirm that you want to delete this popular address.",
     "modal.removeOrder.message" : "Please confirm that you want to remove this order from your history.",
     "modal.cancelOrder.message" : "Please confirm that you want to cancel your order.",
+    "modal.deleteTariff.message" : "Please confirm that you want to delete this tariff.",
+    "modal.deleteTariff.title" : "Delete Tariff",
     "modal.cancelOrder.confirmButton" : "Cancel my order",
 	"modal.cancelOrder.cancelButton" : "Nevermind",
     "modal.default.confirmButton" : "Confirm",
@@ -25,5 +27,7 @@
 	"Loading" : "Loading",
 	"Popular Locations" : "Popular Locations",
 	"Save" : "Save",
-	"Saved" : "Saved"
+	"Saved" : "Saved",
+    "Tariff_DuplicateName": "This tariff already exists",
+	"You cannot exclude all options from a list." : "You cannot exclude all options from a list."
 }

@@ -8,6 +8,6 @@ namespace apcurium.MK.Booking.Maps
 {
     public interface IDirections
     {
-        Direction GetDirection(double? originLat, double? originLng, double? destinationLat, double? destinationLng);
+        Direction GetDirection(double? originLat, double? originLng, double? destinationLat, double? destinationLng, DateTime? date = default(DateTime?));
     }
 }

@@ -9,7 +9,7 @@
         &.active {
 
             >a, >a:hover {
-                color: @taxiHailAccentColor;
+                color: @textColor;
                 font-size: 16px;
                 border: 1px solid @inputBorder;
                 border-bottom-color: transparent;
@@ -22,6 +22,7 @@
         >a, >a:hover {
             color: #626262;
             border: 1px solid @inputBorder;
+            background-color: #fff; /* For IE8 (no transparency)  */
             background-color: @wellBackground;
             .border-radius(0);
             margin-right: -1px;

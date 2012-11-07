@@ -35,6 +35,7 @@
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Mono.Android" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -62,6 +63,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReferenceDataServiceClient.cs" />
     <Compile Include="ApplicationInfoServiceClient.cs" />
+    <Compile Include="TariffsServiceClient.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

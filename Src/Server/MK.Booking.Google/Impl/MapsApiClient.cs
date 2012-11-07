@@ -15,24 +15,24 @@ namespace apcurium.MK.Booking.Google.Impl
         private const string PlacesServiceUrl = "https://maps.googleapis.com/maps/api/place/search/";
         private const string PlacesTextServiceUrl = "https://maps.googleapis.com/maps/api/place/textsearch/";
         private const string MapsServiceUrl = "http://maps.googleapis.com/maps/api/";
-        
+
         private IConfigurationManager _conifManager;
         public MapsApiClient(IConfigurationManager conifManager)
         {
             _conifManager = conifManager;
         }
 
-        protected string PlacesApiKey 
+        protected string PlacesApiKey
         {
-            get{ 
-                return  _conifManager.GetSetting( "Map.PlacesApiKey" );
+            get
+            {
+                return _conifManager.GetSettings()["Map.PlacesApiKey"];
             }
         }
-        
 
-        public Place[] GetNearbyPlaces(double? latitude, double? longitude,string name, string languageCode, bool sensor, int radius, string pipedTypeList = null)
+        public Place[] GetNearbyPlaces(double? latitude, double? longitude, string name, string languageCode, bool sensor, int radius, string pipedTypeList = null)
         {
-            pipedTypeList = pipedTypeList == null ?  new PlaceTypes().GetPipedTypeList() : pipedTypeList;
+            pipedTypeList = pipedTypeList == null ? new PlaceTypes().GetPipedTypeList() : pipedTypeList;
             var client = name != null ? new JsonServiceClient(PlacesTextServiceUrl) : new JsonServiceClient(PlacesServiceUrl);
             var @params = new Dictionary<string, string>
             {
@@ -51,7 +51,7 @@ namespace apcurium.MK.Booking.Google.Impl
 
             if (name != null)
             {
-                @params.Add("query",name);
+                @params.Add("query", name);
             }
 
             var r = "json" + BuildQueryString(@params);
@@ -62,7 +62,7 @@ namespace apcurium.MK.Booking.Google.Impl
 
         public GeoObj GetPlaceDetail(string reference)
         {
-             var client = new JsonServiceClient(PlaceDetailsServiceUrl);
+            var client = new JsonServiceClient(PlaceDetailsServiceUrl);
             var @params = new Dictionary<string, string>
             {
                 { "reference", reference },
@@ -70,9 +70,9 @@ namespace apcurium.MK.Booking.Google.Impl
                 { "key",  PlacesApiKey },            
             };
 
-            return client.Get<PlaceDetailResponse>("json" + BuildQueryString(@params)).Result;                        
+            return client.Get<PlaceDetailResponse>("json" + BuildQueryString(@params)).Result;
         }
-            
+
         public DirectionResult GetDirections(double originLat, double originLng, double destLat, double destLng)
         {
             var client = new JsonServiceClient(MapsServiceUrl);
@@ -100,7 +100,7 @@ namespace apcurium.MK.Booking.Google.Impl
             return client.Get<GeoResult>(resource);
         }
 
-        private string BuildQueryString(IDictionary<string,string> @params )
+        private string BuildQueryString(IDictionary<string, string> @params)
         {
             return "?" + string.Join("&", @params.Select(x => string.Join("=", x.Key, x.Value)));
         }

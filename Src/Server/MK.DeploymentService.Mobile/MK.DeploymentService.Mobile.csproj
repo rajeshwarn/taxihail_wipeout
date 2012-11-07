@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{04E8898F-E0D0-4F5C-914E-89D4891E452C}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>MK.DeploymentService.Mobile</RootNamespace>
+    <AssemblyName>MK.DeploymentService.Mobile</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+    <ConsolePause>False</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>none</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+    <Externalconsole>True</Externalconsole>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="log4net">
+      <HintPath>packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="ServiceStack.Common">
+      <HintPath>packages\ServiceStack.Common.3.9.25\lib\net35\ServiceStack.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Interfaces">
+      <HintPath>packages\ServiceStack.Common.3.9.25\lib\net35\ServiceStack.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Text">
+      <HintPath>packages\ServiceStack.Text.3.9.27\lib\net35\ServiceStack.Text.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>packages\Newtonsoft.Json.4.5.10\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Main.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="DeploymentJobService.cs" />
+    <Compile Include="PetaPoco.cs" />
+    <Compile Include="..\MK.ConfigurationManager\Entities\Company.cs">
+      <Link>Entities\Company.cs</Link>
+    </Compile>
+    <Compile Include="..\MK.ConfigurationManager\Entities\ConfigurationProperty.cs">
+      <Link>Entities\ConfigurationProperty.cs</Link>
+    </Compile>
+    <Compile Include="..\MK.ConfigurationManager\Entities\DeploymentJob.cs">
+      <Link>Entities\DeploymentJob.cs</Link>
+    </Compile>
+    <Compile Include="..\MK.ConfigurationManager\Entities\IBSServer.cs">
+      <Link>Entities\IBSServer.cs</Link>
+    </Compile>
+    <Compile Include="..\MK.ConfigurationManager\Entities\TaxiHailEnvironment.cs">
+      <Link>Entities\TaxiHailEnvironment.cs</Link>
+    </Compile>
+    <Compile Include="..\MK.ConfigurationManager\Entities\KeyAttribute.cs">
+      <Link>FakeAttributes\KeyAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\MK.ConfigurationManager\Entities\NotMappedAttribute.cs">
+      <Link>FakeAttributes\NotMappedAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ConfigTool\apcurium.MK.Booking.ConfigTool.Console\AppConfig.cs">
+      <Link>ConfigTool\AppConfig.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ConfigTool\apcurium.MK.Booking.ConfigTool.Console\AppConfigFile.cs">
+      <Link>ConfigTool\AppConfigFile.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ConfigTool\apcurium.MK.Booking.ConfigTool.Console\Config.cs">
+      <Link>ConfigTool\Config.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ConfigTool\apcurium.MK.Booking.ConfigTool.Console\ConfigFile.cs">
+      <Link>ConfigTool\ConfigFile.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ConfigTool\apcurium.MK.Booking.ConfigTool.Console\ConfigPList.cs">
+      <Link>ConfigTool\ConfigPList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ConfigTool\apcurium.MK.Booking.ConfigTool.Console\ConfigXML.cs">
+      <Link>ConfigTool\ConfigXML.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ConfigTool\apcurium.MK.Booking.ConfigTool.Console\ConfigXmlNamespace.cs">
+      <Link>ConfigTool\ConfigXmlNamespace.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ConfigTool\apcurium.MK.Booking.ConfigTool.Console\PathConverter.cs">
+      <Link>ConfigTool\PathConverter.cs</Link>
+    </Compile>
+    <Compile Include="FileUploader.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Entities\" />
+    <Folder Include="FakeAttributes\" />
+    <Folder Include="ConfigTool\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="log4net.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+</Project>

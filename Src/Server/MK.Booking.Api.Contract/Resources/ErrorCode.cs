@@ -20,6 +20,6 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
         UpdatePassword_NotSame,
         OrderNotInIbs,
         OrderNotCompleted,
-        Rate_DuplicateName,
+        Tariff_DuplicateName,
     }
 }

@@ -15,5 +15,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 
         public double? DestinationLat { get; set; }
         public double? DestinationLng { get; set; }
+
+        public DateTime? Date { get; set; }
     }
 }

@@ -33,15 +33,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 
        
         
-        public static LocationService _locationService = new LocationService();
+        
 
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            _locationService.Start();
+            
         }
-        
 
+        protected override void OnResume()
+        {            
+            var service = new LocationService();
+            service.Start();
+            base.OnResume();
+        }
 
 
         

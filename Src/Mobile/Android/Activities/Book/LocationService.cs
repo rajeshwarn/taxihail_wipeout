@@ -77,7 +77,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             var autoReset = new AutoResetEvent(false);
             var result = LastLocation;
-
+            
             TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Start WaitForAccurateLocation");
 
             timeoutExpired = true;
@@ -88,7 +88,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             Thread.Sleep(500);
 
             var watch = new Stopwatch();
-            watch.Start();            
+            watch.Start();
+
+            LastLocation = _locMgr.GetLastKnownLocation(_locMgr.GetBestProvider(new Criteria(), true));
             while (!exit)
             {
                 if (LastLocation != null)
@@ -105,8 +107,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                     }
                 }
 
-
-                Thread.Sleep(200);
+                
+                Thread.Sleep(500);
+                
 
                 if ( watch.ElapsedMilliseconds >= timeout )
                 {
@@ -118,10 +121,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             if (timeoutExpiredResult)
             {
-                TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Location search timed out");
+                TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Location search timed out");                
                 result = LastLocation;
             }
 
+            TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("xxxxxxxxxxxxxxxxxxxCurrent location : " + result.Provider + " pos Lat : " + result.Latitude.ToString() + "Pos Long : " + result.Longitude.ToString() + " + Accuracy : " + result.Accuracy.ToString());
             TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Done WaitForAccurateLocation");
 
             timeoutExpired = timeoutExpiredResult;
@@ -228,14 +232,35 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             Start();
         }
 
-        public Task<Position> GetPositionAsync(int timeout, float accuracy, CancellationToken cancelToken)
+        public Task<Position> GetPositionAsync(int timeout, float accuracy, int fallbackTimeout, float fallbackAccuracy, CancellationToken cancelToken)
         {
             Start();
             var task = new Task<Position>(() =>
                                               {
+                                                  TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("GetPositionAsync");
                                                   bool timedout = false;
-                                                  var result = WaitForAccurateLocation(timeout, accuracy, out timedout);
-                                                  return new Position { Latitude = result.Latitude, Longitude = result.Longitude };
+                                                  Android.Locations.Location result;
+                                                  var firstResult = WaitForAccurateLocation(timeout, accuracy, out timedout);
+                                                  if (!timedout )
+                                                  {
+                                                      result = firstResult;
+                                                  }
+                                                  else
+                                                  {
+                                                      var secondResult = WaitForAccurateLocation(fallbackTimeout, fallbackAccuracy , out timedout);    
+                                                      if ( IsBetterLocation( secondResult, firstResult  ))
+                                                      {
+                                                          result = secondResult;
+                                                      }
+                                                      else
+                                                      {
+                                                          result = firstResult;
+                                                      }
+                                                  }
+                                                  
+                                                  var r = new Position { Latitude = result.Latitude, Longitude = result.Longitude };
+                                                  TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("END GetPositionAsync La {0} , ln{1}" , result.Latitude, result.Longitude );
+                                                  return r;
                                               }, cancelToken);
 
             task.Start();

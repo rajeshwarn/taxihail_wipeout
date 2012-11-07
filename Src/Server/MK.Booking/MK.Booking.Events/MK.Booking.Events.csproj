@@ -47,14 +47,12 @@
     <Compile Include="AccountUpdated.cs" />
     <Compile Include="AddressRemovedFromHistory.cs" />
     <Compile Include="AdminRightGranted.cs" />
-    <Compile Include="AppSettingsAdded.cs" />
     <Compile Include="AppSettingsUpdated.cs" />
     <Compile Include="BookingSettingsUpdated.cs" />
     <Compile Include="CompanyCreated.cs" />
     <Compile Include="DefaultFavoriteAddressAdded.cs" />
     <Compile Include="DefaultFavoriteAddressRemoved.cs" />
     <Compile Include="DefaultFavoriteAddressUpdated.cs" />
-    <Compile Include="DefaultRateCreated.cs" />
     <Compile Include="FavoriteAddressRemoved.cs" />
     <Compile Include="FavoriteAddressAdded.cs" />
     <Compile Include="FavoriteAddressUpdated.cs" />
@@ -67,9 +65,9 @@
     <Compile Include="PopularAddressRemoved.cs" />
     <Compile Include="PopularAddressUpdated.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RateCreated.cs" />
-    <Compile Include="RateDeleted.cs" />
-    <Compile Include="RateUpdated.cs" />
+    <Compile Include="TariffCreated.cs" />
+    <Compile Include="TariffDeleted.cs" />
+    <Compile Include="TariffUpdated.cs" />
     <Compile Include="RatingTypeAdded.cs" />
     <Compile Include="RatingTypeHidded.cs" />
     <Compile Include="RatingTypeUpdated.cs" />

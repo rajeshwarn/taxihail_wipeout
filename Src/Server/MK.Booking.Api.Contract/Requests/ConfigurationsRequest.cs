@@ -12,14 +12,10 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
     [AuthorizationRequired(ApplyTo.Post, Permissions.Admin)]
-    [AuthorizationRequired(ApplyTo.Put, Permissions.Admin)]
-    [RestService("/settings", "POST")]
-    [RestService("/settings/{Key}", "PUT")]
-    [RestService("/settings", "GET")]
+    [RestService("/settings", "GET, POST")]
     public class ConfigurationsRequest
     {
-        public string Key { get; set; }
-        public string Value { get; set; }
+        public Dictionary<string, string> AppSettings { get; set; } 
         public AppSettingsType AppSettingsType { get; set; }
     }
 }

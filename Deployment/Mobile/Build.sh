@@ -1,15 +1,30 @@
-#!/bin/bash	
-echo Building Android app? Y / N
-read BUILDANDROID
+#!/bin/bash
+if [ -z "$1" ]; then
+    echo Building Android app? Y / N
+    read BUILDANDROID
+else
+    BUILDANDROID=$1
+fi
 
-echo Building iOS app? Y / N
-read BUILDIOS
+if [ -z "$2" ]; then
+    echo Building iOS app? Y / N
+    read BUILDIOS
+else
+    BUILDIOS=$2
+fi
 
-echo Publish iOS app on diawi? Y / N
-read PUBLISHIOS
+if [ -z "$3" ]; then
+    echo Publish iOS app on diawi? Y / N
+    read PUBLISHIOS
+else
+    PUBLISHIOS=$3
+fi
 
-echo Enter client name i.e. folder name in Config or empty for all configuration
-read CLIENTNAME
+if [ -z "$4" ]; then
+	CLIENTNAME=$4
+else
+    CLIENTNAME=$4
+fi
 
 if [[ -z "$CLIENTNAME" ]]; then
 	LISTCLIENT=$(ls -l ../../Config | egrep '^d' | awk '{print $9}')
@@ -23,9 +38,7 @@ do
 	rm -f $CLIENT.iOS.log
 	rm -f $CLIENT.Android.log
 	echo "-------------------------------"
-	echo Applying Config Tool for $CLIENT
-	mono apcurium.MK.Booking.ConfigTool.exe $CLIENT
-
+	
 	if [ "$BUILDIOS" = "Y" ]; then
 		CONFIGIOS="Release|iPhone"
 		echo Building iOS App for $CLIENT with $CONFIGIOS configuration
@@ -77,10 +90,3 @@ do
 		echo Done Building Android App
 	fi
 done
-
-echo Rollback changes in source directory ? Y / N
-read ROLLBACK
-if [ "$ROLLBACK" = "Y" ]; then
-	hg update -r default -C
-	hg purge
-fi
