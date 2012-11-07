@@ -15,7 +15,7 @@
     <DebugType>full</DebugType>
     <Optimize>False</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
+    <DefineConstants>DEBUG;CLIENT;IOS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
@@ -87,6 +87,7 @@
     <Compile Include="Resources\ApplicationInfo.cs" />
     <Compile Include="Resources\AppSetting.cs" />
     <Compile Include="Requests\SendReceipt.cs" />
+    <Compile Include="Http\NoCacheAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MK.Common\MK.Common.iOS.csproj">

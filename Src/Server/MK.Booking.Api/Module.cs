@@ -5,6 +5,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Providers;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Common;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Provider;
@@ -53,6 +54,8 @@ namespace apcurium.MK.Booking.Api
             AutoMapper.Mapper.CreateMap<DefaultFavoriteAddress, Commands.UpdateDefaultFavoriteAddress>()
                 .ForMember(x => x.AddressId, opt => opt.MapFrom(x => x.Id));
 
+            AutoMapper.Mapper.CreateMap<AccountDetail, CurrentAccountResponse>();
+            AutoMapper.Mapper.CreateMap<BookingSettingsDetails, BookingSettings>();
             AutoMapper.Mapper.CreateMap<Contract.Requests.Tariff, Commands.CreateTariff>()
                 .ForMember(p => p.TariffId, opt => opt.ResolveUsing(x => x.Id == Guid.Empty ? Guid.NewGuid() : x.Id))
                 .ForMember(p => p.CompanyId, opt => opt.UseValue(AppConstants.CompanyId));
