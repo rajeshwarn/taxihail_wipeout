@@ -6,7 +6,6 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Entity;
 using OrderStatusDetail = apcurium.MK.Booking.Api.Contract.Resources.OrderStatusDetail;
-using OrderRatings = apcurium.MK.Booking.Api.Contract.Resources.OrderRatings;
 
 namespace apcurium.MK.Booking.Api.Client
 {
