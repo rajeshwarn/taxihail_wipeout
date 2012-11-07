@@ -23,8 +23,7 @@ namespace apcurium.MK.Booking.Api.Services
         private ICommandBus _commandBus;
         private IBookingWebServiceClient _bookingWebServiceClient;
         private IStaticDataWebServiceClient _staticDataWebServiceClient;
-        private readonly IConfigurationManager _configurationManager;
-
+        private IConfigurationManager _configManager;
         private IAccountDao _accountDao;
         private ICacheClient _cacheClient;
         private ReferenceDataService _referenceDataService;
@@ -32,23 +31,24 @@ namespace apcurium.MK.Booking.Api.Services
                                     IBookingWebServiceClient bookingWebServiceClient,
                                     IStaticDataWebServiceClient staticDataWebServiceClient,
                                     IAccountDao accountDao,
-                                    ICacheClient cacheClient,  IConfigurationManager configurationManager, ReferenceDataService referenceDataService)
+                                    ICacheClient cacheClient, 
+                                    IConfigurationManager configManager,
+                                    ReferenceDataService referenceDataService)
         {
             _commandBus = commandBus;
             _bookingWebServiceClient = bookingWebServiceClient;
             _staticDataWebServiceClient = staticDataWebServiceClient;
             _accountDao = accountDao;
-            _cacheClient = cacheClient;            
-            _configurationManager = configurationManager;
+            _cacheClient = cacheClient;
             _referenceDataService = referenceDataService;
+            _configManager = configManager;
         }
 
         public override object OnPost(CreateOrder request)
         {
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
 
-            //TODO : need to check ibs setup for shortesst time.
-            request.PickupDate = request.PickupDate.HasValue ? request.PickupDate.Value : DateTime.Now.AddMinutes(2);
+            request.PickupDate = request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime() ;
 
             var ibsOrderId = CreateIBSOrder(account, request);
 
@@ -76,11 +76,25 @@ namespace apcurium.MK.Booking.Api.Services
             emailCommand.Settings.VehicleType = vehicleType;
 
             _commandBus.Send(command);
-            if (bool.Parse(_configurationManager.GetSetting("Booking.ConfirmationEmail")))
+            if (bool.Parse(_configManager.GetSetting("Booking.ConfirmationEmail")))
             {
                 _commandBus.Send(emailCommand);
             }
             return new OrderStatusDetail { OrderId = command.OrderId, Status = OrderStatus.Created, IBSOrderId = ibsOrderId, IBSStatusId = "", IBSStatusDescription = "Processing your order" };
+        }
+
+        private DateTime GetCurrentOffsetedTime()
+        {
+            //TODO : need to check ibs setup for shortesst time.
+
+            var ibsServerTimeDifference = _configManager.GetSetting("IBS.TimeDifference").SelectOrDefault(setting => long.Parse(setting), 0);
+            var offsetedTime =DateTime.Now.AddMinutes(2);
+            if (ibsServerTimeDifference != 0)
+            {
+                offsetedTime = offsetedTime.Add(new TimeSpan(ibsServerTimeDifference));
+            }
+
+            return offsetedTime;
         }
 
         private int? CreateIBSOrder(ReadModel.AccountDetail account, CreateOrder request)
