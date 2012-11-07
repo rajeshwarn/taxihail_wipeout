@@ -218,6 +218,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Localization\Master.resx" />
     <EmbeddedResource Include="Settings\Settings.json" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
