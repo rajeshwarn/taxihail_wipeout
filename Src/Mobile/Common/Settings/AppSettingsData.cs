@@ -34,6 +34,8 @@ namespace apcurium.MK.Booking.Mobile.Settings
         public string FacebookAppId{ get; set; }
 
         public string SupportEmail { get; set; }
+
+        public bool RatingEnabled { get; set; }
         
         
 

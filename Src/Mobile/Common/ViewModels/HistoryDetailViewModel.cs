@@ -10,6 +10,7 @@ using TinyIoC;
 using TinyMessenger;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Booking.Mobile.Models;
 
@@ -47,7 +48,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return _hasRated;
+                if (!TinyIoCContainer.Current.Resolve<IAppSettings>().RatingEnabled)
+                {
+                    return false;
+                }
+                else
+                {
+                    return _hasRated;
+                }
+                
             }
             set { _hasRated = value; FirePropertyChanged("HasRated"); FirePropertyChanged("ShowRateButton"); }
 
@@ -57,7 +66,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public bool ShowRateButton
         {
-            get { return IsDone && !HasRated; }
+            get
+            {
+                if (!TinyIoCContainer.Current.Resolve<IAppSettings>().RatingEnabled)
+                {
+                    return false;
+                }
+                else
+                {
+                    return IsDone && !HasRated;
+                }
+            }
             set { _showRateButton = value; FirePropertyChanged("ShowRateButton"); }
 
         }
@@ -75,11 +94,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public void RefreshOrderStatus(OrderRated orderRated)
         {
-            
                                                    HasRated = TinyIoCContainer.Current.Resolve<IBookingService>().GetOrderRating(Guid.Parse(OrderId)).RatingScores.Any();
                                                    var status = TinyIoCContainer.Current.Resolve<IBookingService>().GetOrderStatus(Guid.Parse(OrderId));
                                                    IsDone = TinyIoCContainer.Current.Resolve<IBookingService>().IsStatusDone(status.IBSStatusId);
-
         }
 
         public MvxRelayCommand NavigateToRatingPage

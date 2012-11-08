@@ -180,23 +180,23 @@
                     android:paddingBottom="5dip" />
                 <Button
                     android:id="@+id/StatusBtn"
+                    style="@style/ButtonText"
                     android:background="@drawable/gray_button"
-                    style="@style/ButtonTextGray"
                     android:text="@string/HistoryViewStatusButton"
                     android:layout_width="fill_parent"
                     android:layout_height="40dip" />
                 <Button
                     android:id="@+id/RateBtn"
+                    style="@style/ButtonText"
                     android:background="@drawable/gray_button"
-                    style="@style/ButtonTextGray"
                     android:text="@string/RateBtn"
                     android:layout_width="fill_parent"
                     android:layout_height="40dip"
                     local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;NavigateToRatingPage&apos;}, &apos;Enabled&apos;:{&apos;Path&apos;:&apos;ShowRateButton&apos;},&apos;Visibility&apos;:{&apos;Path&apos;:&apos;ShowRateButton&apos;,&apos;Converter&apos;:&apos;Visibility&apos;}}" />
                 <Button
                     android:id="@+id/ViewRatingBtn"
+                    style="@style/ButtonText"
                     android:background="@drawable/gray_button"
-                    style="@style/ButtonTextGray"
                     android:text="@string/ViewRatingBtn"
                     android:layout_width="fill_parent"
                     android:layout_height="40dip"

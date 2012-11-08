@@ -169,5 +169,10 @@ namespace apcurium.MK.Booking.Mobile.Settings
         {
             get { return _data.SupportEmail; }
         }
+
+        public bool RatingEnabled
+        {
+            get { return _data.RatingEnabled; }
+        }
     }
 }

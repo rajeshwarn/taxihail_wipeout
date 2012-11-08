@@ -162,7 +162,9 @@
     <AndroidResource Include="Resources\Drawable\cell_bottom_full_state.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Layout\RatingListItem.axml" />
+    <AndroidResource Include="Resources\Layout\RatingListItem.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <Compile Include="Services\MessageService.cs" />
     <Compile Include="Setup.cs" />
     <Compile Include="TaxiMobileApp.cs" />

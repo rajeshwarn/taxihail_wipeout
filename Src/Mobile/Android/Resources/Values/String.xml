@@ -280,7 +280,6 @@
   <string name="View_Book_Menu_ReportProblem">Report A Problem</string>
   <string name="View_Book_Menu_SignOut">Sign Out</string>
   <string name="View_RefineAddress">Pickup Details</string>
-  <string name="View_RatePage">Rate Your Ride</string>
   <string name="AppNeedUpdateTitle">Update available</string>
   <string name="AppNeedUpdateMessage">A new version of the application is available, please update the app to continue.</string>
   <string name="BookingService_MobileBookingNote">Booked mobile device.</string>
@@ -289,10 +288,6 @@
   <string name="View_BookingStatus_ThankYouMessage">Thank you for riding with {0}, we look forward to serving you again soon.</string>
   <string name="CreateAccount_AccountAlreadyExist">The account cannot be created, this email is already in use.</string>
   <string name="CurrentPasswordLabel">Current Password</string>
-  <string name="Notes">Notes</string>
-  <string name="Submit">Submit</string>
-<string name="RateBtn">Rate this order</string>
-<string name="ViewRatingBtn">View rating for this order</string>
   <string name="NewPasswordLabel">New Password</string>
   <string name="NewPasswordConfirmationLabel">Confirmation</string>
   <string name="ConfirmPassengerSettingsTitle">Passenger Settings</string>
@@ -306,4 +301,9 @@
   <string name="CreateAccountTitleArray">MrMrs</string>
   <string name="View_BookingDetail_TitleRideSettings">Ride Settings</string>
   <string name="View_BookingDetail_TitlePickupDetails">Pickup Details</string>
+  <string name="Notes">Notes</string>
+  <string name="RateBtn">Rate your trip</string>
+  <string name="Submit">Submit</string>
+  <string name="ViewRatingBtn">View ratings</string>
+  <string name="View_RatePage">Rate your trip</string>
 </resources>

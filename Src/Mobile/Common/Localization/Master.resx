@@ -1020,4 +1020,19 @@
   <data name="View_BookingDetail_TitlePickupDetails" xml:space="preserve">
     <value>Pickup Details</value>
   </data>
+  <data name="Notes" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="RateBtn" xml:space="preserve">
+    <value>Rate your trip</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>Submit</value>
+  </data>
+  <data name="ViewRatingBtn" xml:space="preserve">
+    <value>View ratings</value>
+  </data>
+  <data name="View_RatePage" xml:space="preserve">
+    <value>Rate your trip</value>
+  </data>
 </root>

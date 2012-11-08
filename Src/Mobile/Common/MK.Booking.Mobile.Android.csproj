@@ -190,7 +190,6 @@
     <Compile Include="ViewModels\SearchAddress\AddressSearchByPlacesViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\RefineAddressViewModel.cs" />
-    <Compile Include="ViewModels\OrderStatusViewModel.cs" />
     <Compile Include="ViewModels\SearchAddress\AddressSearchByFavoritesViewModel.cs" />
     <Compile Include="ViewModels\SectionAddressViewModel.cs" />
     <Compile Include="ViewModels\ZoomLevel.cs" />
