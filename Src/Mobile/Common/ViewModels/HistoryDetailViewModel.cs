@@ -94,11 +94,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public void RefreshOrderStatus(OrderRated orderRated)
         {
-            
                                                    HasRated = TinyIoCContainer.Current.Resolve<IBookingService>().GetOrderRating(Guid.Parse(OrderId)).RatingScores.Any();
                                                    var status = TinyIoCContainer.Current.Resolve<IBookingService>().GetOrderStatus(Guid.Parse(OrderId));
                                                    IsDone = TinyIoCContainer.Current.Resolve<IBookingService>().IsStatusDone(status.IBSStatusId);
-
         }
 
         public MvxRelayCommand NavigateToRatingPage
