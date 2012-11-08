@@ -45,9 +45,12 @@
             this.$(':submit').button('reset');
             //server validation error
             if (result.statusText) {
-               var $alert = $('<div class="alert alert-error" />');
-               $alert.text(this.localize(result.statusText));
-               this.$('.errors').html($alert);
+               var alert = new TaxiHail.AlertView({
+                   message: this.localize(result.statusText),
+                   type: 'error'
+               });
+               alert.on('ok', alert.remove, alert);
+               this.$('.errors').html(alert.render().el);
             }
         },
 

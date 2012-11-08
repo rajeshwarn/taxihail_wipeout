@@ -142,7 +142,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
                     using (var w = new StreamWriter(fs))
                     {
                         w.BaseStream.Seek(0, SeekOrigin.End);
-                        w.WriteLine(message +"\r\n");
+                        w.WriteLine(msgToLog + "\r\n");
                         w.Flush();
                         w.Close();
                     }

@@ -50,20 +50,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Staging|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisLogFile>bin\apcurium.MK.Web.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
-    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
-    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
-    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="AjaxMin">
       <HintPath>..\packages\AjaxMin.4.69.4665.24361\lib\net40\AjaxMin.dll</HintPath>
@@ -91,35 +77,37 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack, Version=3.9.4.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ServiceStack, Version=3.9.25.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.3.9.4\lib\net40\ServiceStack.dll</HintPath>
+      <HintPath>..\packages\ServiceStack.3.9.25\lib\net35\ServiceStack.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Common, Version=3.9.4.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ServiceStack.Common, Version=3.9.25.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.Common.3.9.4\lib\net35\ServiceStack.Common.dll</HintPath>
+      <HintPath>..\packages\ServiceStack.Common.3.9.25\lib\net35\ServiceStack.Common.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Interfaces, Version=3.9.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ServiceStack.Common.3.9.4\lib\net35\ServiceStack.Interfaces.dll</HintPath>
+    <Reference Include="ServiceStack.Interfaces, Version=3.9.25.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\ServiceStack.Common.3.9.25\lib\net35\ServiceStack.Interfaces.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.OrmLite, Version=3.9.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ServiceStack.OrmLite.SqlServer.3.9.4\lib\ServiceStack.OrmLite.dll</HintPath>
+    <Reference Include="ServiceStack.OrmLite, Version=3.9.26.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\ServiceStack.OrmLite.SqlServer.3.9.26\lib\ServiceStack.OrmLite.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.OrmLite.SqlServer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ServiceStack.OrmLite.SqlServer.3.9.4\lib\ServiceStack.OrmLite.SqlServer.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Razor, Version=2.1.4601.5200, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.3.9.4\lib\net40\ServiceStack.Razor.dll</HintPath>
+      <HintPath>..\packages\ServiceStack.OrmLite.SqlServer.3.9.26\lib\ServiceStack.OrmLite.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Redis, Version=3.9.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ServiceStack.Redis.3.9.4\lib\net35\ServiceStack.Redis.dll</HintPath>
+    <Reference Include="ServiceStack.Redis, Version=3.9.25.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\ServiceStack.Redis.3.9.25\lib\net35\ServiceStack.Redis.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.ServiceInterface, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ServiceStack.3.9.4\lib\net40\ServiceStack.ServiceInterface.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\ServiceStack.3.9.25\lib\net35\ServiceStack.ServiceInterface.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Text">
-      <HintPath>..\packages\ServiceStack.Text.3.9.4\lib\net35\ServiceStack.Text.dll</HintPath>
+    <Reference Include="ServiceStack.Text, Version=3.9.27.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\ServiceStack.Text.3.9.27\lib\net35\ServiceStack.Text.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data.Entity" />
@@ -146,23 +134,31 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="admin\collections\CompanyDefaultAddressCollection.js" />
+    <Content Include="admin\collections\TariffCollection.js" />
     <Content Include="admin\controllers\Controller.js" />
+    <Content Include="admin\controllers\CompanySettingsController.js" />
+    <Content Include="admin\controllers\DefaultAddressesController.js" />
     <Content Include="admin\controllers\ExclusionsController.js" />
-    <Content Include="admin\controllers\RatesController.js" />
-    <Content Include="admin\models\Rate.js" />
-    <Content Include="admin\views\EditRateView.js" />
+    <Content Include="admin\controllers\PopularAddressesController.js" />
+    <Content Include="admin\controllers\TariffsController.js" />
+    <Content Include="admin\models\Tariff.js" />
+    <Content Include="admin\localization\EditTariff.json" />
+    <Content Include="admin\localization\ManageExclusions.json" />
+    <Content Include="admin\localization\ManageTariffs.json" />
+    <Content Include="admin\localization\TariffItem.json" />
+    <Content Include="admin\templates\EditTariff.handlebars" />
+    <Content Include="admin\assets\less\TaxiHail-admin-grid.less" />
+    <Content Include="admin\controllers\SecurityController" />
     <None Include="admin\templates\ManageCompanySettings.handlebars" />
-    <Content Include="admin\collections\CompanySettingsCollection.js" />
-    <Content Include="admin\models\CompanySetting.js" />
+    <Content Include="admin\models\CompanySettings.js" />
+    <Content Include="admin\views\AddFavoriteView.js" />
+    <Content Include="admin\views\EditTariffView.js" />
     <Content Include="admin\views\ManageCompanySettingsView.js" />
+    <Content Include="admin\views\ManageExclusionsView.js" />
+    <Content Include="admin\views\ManageTariffsView.js" />
     <Content Include="admin\views\SettingsItemView.js" />
-    <Content Include="admin\views\ManageRatesView.js" />
-    <Content Include="admin\views\RateItemView.js" />
-    <Content Include="common\collections\CompanyPopularAddressCollection.js" />
+    <Content Include="admin\views\TariffItemView.js" />
     <Content Include="admin\default.aspx" />
-    <Content Include="admin\models\CompanyDefaultAddress.js" />
-    <Content Include="common\models\CompanyPopularAddress.js" />
     <Content Include="admin\routers\app.js" />
     <Content Include="admin\taxi-hail-admin.js" />
     <Content Include="admin\views\AddPopularAddressView.js" />
@@ -252,7 +248,6 @@
     <Content Include="common\services\AuthService.js" />
     <Content Include="common\services\GeocodingService.js" />
     <Content Include="common\utils.js" />
-    <Content Include="common\views\AddFavoriteView.js" />
     <Content Include="common\views\AddressItemView.js" />
     <Content Include="common\views\AddressListView.js" />
     <Content Include="common\views\AddressSelectionView.js" />
@@ -286,21 +281,20 @@
     <Content Include="common\services\PlacesService.js" />
     <Content Include="taxi-hail.js" />
     <Content Include="themes\AtlantaCheckerCab\img\cancel-icon.png" />
-    <Content Include="themes\AtlantaCheckerCab\img\header-bg.png" />
     <Content Include="themes\AtlantaCheckerCab\img\location.png" />
     <Content Include="themes\AtlantaCheckerCab\img\logo.png" />
     <Content Include="themes\CheckerYellowCabPalmetto\img\cancel-icon.png" />
-    <Content Include="themes\CheckerYellowCabPalmetto\img\header-bg.png" />
     <Content Include="themes\CheckerYellowCabPalmetto\img\location.png" />
     <Content Include="themes\CheckerYellowCabPalmetto\img\logo.png" />
     <Content Include="themes\BurlingtonTaxiOntario\img\cancel-icon.png" />
-    <Content Include="themes\BurlingtonTaxiOntario\img\header-bg.png" />
     <Content Include="themes\BurlingtonTaxiOntario\img\location.png" />
     <Content Include="themes\BurlingtonTaxiOntario\img\logo.png" />
     <Content Include="themes\BostonCab\img\cancel-icon.png" />
     <Content Include="themes\BostonCab\img\header-bg.png" />
     <Content Include="themes\BostonCab\img\location.png" />
     <Content Include="themes\BostonCab\img\logo.png" />
+    <Content Include="themes\Taxiworld\img\header-bg.png" />
+    <Content Include="themes\Taxiworld\img\logo.png" />
     <Content Include="themes\VictoriaTaxi\img\cancel-icon.png" />
     <Content Include="themes\VictoriaTaxi\img\header-bg.png" />
     <Content Include="themes\VictoriaTaxi\img\location.png" />
@@ -310,32 +304,27 @@
     <Content Include="themes\YellowCabTampa\img\location.png" />
     <Content Include="themes\YellowCabTampa\img\Logo.png" />
     <Content Include="themes\SanJoseForARide\img\cancel-icon.png" />
-    <Content Include="themes\SanJoseForARide\img\header-bg.png" />
     <Content Include="themes\SanJoseForARide\img\location.png" />
     <Content Include="themes\SanJoseForARide\img\logo.png" />
     <Content Include="themes\StLouisTaxi\img\cancel-icon.png" />
-    <Content Include="themes\StLouisTaxi\img\header-bg.png" />
     <Content Include="themes\StLouisTaxi\img\location.png" />
     <Content Include="themes\StLouisTaxi\img\Logo.png" />
     <Content Include="themes\StyleTransportation\img\cancel-icon.png" />
-    <Content Include="themes\StyleTransportation\img\header-bg.png" />
     <Content Include="themes\StyleTransportation\img\location.png" />
     <Content Include="themes\StyleTransportation\img\logo.png" />
     <Content Include="themes\GoTaxiDesMoines\img\cancel-icon.png" />
-    <Content Include="themes\GoTaxiDesMoines\img\header-bg.png" />
     <Content Include="themes\GoTaxiDesMoines\img\location.png" />
     <Content Include="themes\GoTaxiDesMoines\img\logo.png" />
-    <Content Include="themes\TaxiHail\img\header-bg.png" />
     <Content Include="themes\TaxiHail\img\logo.png" />
     <Content Include="themes\WorcesterYellowCab\img\cancel-icon.png" />
     <Content Include="themes\WorcesterYellowCab\img\header-bg.png" />
     <Content Include="themes\WorcesterYellowCab\img\location.png" />
     <Content Include="themes\WorcesterYellowCab\img\Logo.png" />
     <Content Include="themes\YellowCabSavannah\img\cancel-icon.png" />
-    <Content Include="themes\YellowCabSavannah\img\header-bg.png" />
     <Content Include="themes\YellowCabSavannah\img\location.png" />
     <Content Include="themes\YellowCabSavannah\img\Logo.png" />
     <Content Include="views\AccountFavoritesAndHistoryListView.js" />
+    <Content Include="views\AddFavoriteView.js" />
     <Content Include="views\AddressControlView.js" />
     <Content Include="views\BookingConfirmationView.js" />
     <Content Include="views\BookingStatusView.js" />
@@ -367,7 +356,19 @@
     <Content Include="localization\OrderHistoryDetail.json" />
     <Content Include="themes\TaxiHail\less\style.less" />
     <Content Include="localization\OrderItem.json" />
-    <Content Include="admin\templates\SettingsItem.handlebars" />
+    <Content Include="admin\templates\ManageExclusions.handlebars" />
+    <Content Include="admin\templates\ManageExclusions.handlebars" />
+    <Content Include="admin\templates\ManageTariffs.handlebars" />
+    <Content Include="admin\templates\TariffItem.handlebars" />
+    <Content Include="themes\Taxiworld\less\combined-responsive.less" />
+    <Content Include="themes\Taxiworld\less\combined.less" />
+    <Content Include="themes\Taxiworld\less\style.less" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="admin\default.aspx.cs">
@@ -766,13 +767,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="themes\VictoriaTaxi\less\variables.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="admin\templates\EditRate.handlebars" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="admin\templates\ManageRates.handlebars" />
-    <Content Include="admin\templates\RateItem.handlebars" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="mixins\" />

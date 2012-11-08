@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -9,10 +10,13 @@ using Infrastructure.Messaging;
 using Microsoft.Practices.Unity;
 using Newtonsoft.Json.Linq;
 using apcurium.MK.Booking.Commands;
+using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.IBS;
+using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using log4net;
 using log4net.Config;
@@ -71,7 +75,7 @@ namespace DatabaseInitializer
                 IDictionary<string, string> settingsInDb = null;
                 if (isUpdate)
                 {
-                   settingsInDb = configurationManager.GetAllSettings();
+                   settingsInDb = configurationManager.GetSettings();
                    oldDatabase = creatorDb.RenameDatabase(connStringMaster, companyName);
                 }
 
@@ -108,8 +112,7 @@ namespace DatabaseInitializer
                 }
                 //Create settings
 
-                
-
+                var appSettings = new Dictionary<string, string>();
                 var jsonSettings = File.ReadAllText(Path.Combine(AssemblyDirectory, "Settings\\Common.json"));
                 var objectSettings = JObject.Parse(jsonSettings);
                 if(isUpdate)
@@ -119,11 +122,12 @@ namespace DatabaseInitializer
                 foreach (var token in objectSettings)
                 {
                     //configurationManager.SetSetting(token.Key, token.Value.ToString());
-                    commandBus.Send(new AddAppSettings()
-                                        {
-                                            Key = token.Key,
-                                            Value = token.Value.ToString()
-                                        });
+                    //commandBus.Send(new AddAppSettings()
+                    //                    {
+                    //                        Key = token.Key,
+                    //                        Value = token.Value.ToString()
+                    //                    });
+                    appSettings[token.Key] = token.Value.ToString();
                 }
 
                 jsonSettings = File.ReadAllText(Path.Combine(AssemblyDirectory, "Settings\\", companyName + ".json"));
@@ -135,25 +139,37 @@ namespace DatabaseInitializer
                 foreach (var token in objectSettings)
                 {
                     //configurationManager.SetSetting(token.Key, token.Value.ToString());
-                    commandBus.Send(new AddAppSettings()
-                    {
-                        Key = token.Key,
-                        Value = token.Value.ToString()
-                    });
-                }
-                 
+                    //commandBus.Send(new AddAppSettings()
+                    //{
+                    //    Key = token.Key,
+                    //    Value = token.Value.ToString()
+                    //});
 
-               
+                
+                    appSettings[token.Key] = token.Value.ToString();
+                }
+
+                //Save settings so that next calls to referenceDataService has the IBS Url
+                appSettings = AddOrUpdateAppSettings(commandBus, appSettings);
 
                 if (isUpdate)
                 {
                     //replay events
                     var replayService = container.Resolve<IEventsPlayBackService>();
                     replayService.ReplayAllEvents();
+
+                    var tariffs = new TariffDao(() => new BookingDbContext(connectionString.ConnectionString));
+                    if(tariffs.GetAll().All(x => x.Type != (int)TariffType.Default))
+                    {
+                       // Default rate does not exist for this company 
+                        CreateDefaultTariff(configurationManager, commandBus);
+                    }
                 }
                 else
                 {
-                   
+
+                    // Create default rate for company
+                    CreateDefaultTariff(configurationManager, commandBus);
 
 
                     //Get default settings from IBS
@@ -166,34 +182,41 @@ namespace DatabaseInitializer
                         //configurationManager = container.Resolve<IConfigurationManager>();
                         //configurationManager.SetSetting("DefaultBookingSettings.ProviderId", defaultCompany.Id.ToString());
 
-                        commandBus.Send(new AddAppSettings()
-                        {
-                            Key = "DefaultBookingSettings.ProviderId",
-                            Value = defaultCompany.Id.ToString()
-                        });
+                        //commandBus.Send(new AddAppSettings()
+                        //{
+                        //    Key = "DefaultBookingSettings.ProviderId",
+                        //    Value = defaultCompany.Id.ToString()
+                        //});
+
+                        appSettings["DefaultBookingSettings.ProviderId"] = defaultCompany.Id.ToString();
 
                         var defaultvehicule = referenceDataService.GetVehiclesList(defaultCompany).FirstOrDefault(x => x.IsDefault.HasValue && x.IsDefault.Value) ??
                                               referenceDataService.GetVehiclesList(defaultCompany).First();
                         //configurationManager.SetSetting("DefaultBookingSettings.VehicleTypeId", defaultvehicule.Id.ToString());
 
-                        commandBus.Send(new AddAppSettings()
-                        {
-                            Key = "DefaultBookingSettings.VehicleTypeId",
-                            Value = defaultvehicule.Id.ToString()
-                        });
+                        //commandBus.Send(new AddAppSettings()
+                        //{
+                        //    Key = "DefaultBookingSettings.VehicleTypeId",
+                        //    Value = defaultvehicule.Id.ToString()
+                        //});
+
+                        appSettings["DefaultBookingSettings.VehicleTypeId"] = defaultvehicule.Id.ToString();
                         
                         var defaultchargetype = referenceDataService.GetPaymentsList(defaultCompany).FirstOrDefault(x => x.Display.HasValue() && x.Display.Contains("Cash"))
                             ?? referenceDataService.GetPaymentsList(defaultCompany).First();
-                        commandBus.Send(new AddAppSettings()
-                        {
-                            Key = "DefaultBookingSettings.ChargeTypeId",
-                            Value = defaultchargetype.Id.ToString()
-                        });
+
+                        //commandBus.Send(new AddAppSettings()
+                        //{
+                        //    Key = "DefaultBookingSettings.ChargeTypeId",
+                        //    Value = defaultchargetype.Id.ToString()
+                        //});
+                        appSettings["DefaultBookingSettings.ChargeTypeId"] = defaultchargetype.Id.ToString();
                         //configurationManager.SetSetting("DefaultBookingSettings.ChargeTypeId", defaultchargetype.Id.ToString());
                         
                     }
 
-                    
+                    //Save settings so that registerAccountCommand succeed
+                    appSettings = AddOrUpdateAppSettings(commandBus, appSettings);
 
                     //Register normal account
                     //configurationManager = container.Resolve<IConfigurationManager>();
@@ -269,6 +292,12 @@ namespace DatabaseInitializer
                     //    Name = "Cab Cleanliness"
                     //});
                 }
+
+                commandBus.Send(new AddOrUpdateAppSettings()
+                {
+                    AppSettings = appSettings,
+                    CompanyId = AppConstants.CompanyId
+                });
             }catch(Exception e)
             {
                 Console.WriteLine(e.Message + " " +e.StackTrace);
@@ -276,6 +305,37 @@ namespace DatabaseInitializer
                 return -1;
             }
             return 0;
+        }
+
+        private static Dictionary<string, string> AddOrUpdateAppSettings(ICommandBus commandBus, Dictionary<string, string> appSettings)
+       { 
+            commandBus.Send(new AddOrUpdateAppSettings
+                                {
+                                    AppSettings = appSettings,
+                                    CompanyId = AppConstants.CompanyId
+                                });
+
+            return   new Dictionary<string, string>();
+            }
+            
+            private static void CreateDefaultTariff(IConfigurationManager configurationManager, ICommandBus commandBus)
+        {
+
+            
+            var flatRate = configurationManager.GetSetting("Direction.FlateRate");
+            var ratePerKm = configurationManager.GetSetting("Direction.RatePerKm");
+
+            
+            commandBus.Send(new CreateTariff
+            {
+                Type = TariffType.Default,
+                KilometricRate = double.Parse(ratePerKm, CultureInfo.InvariantCulture),
+                FlatRate = decimal.Parse(flatRate, CultureInfo.InvariantCulture),
+                MarginOfError = 20,
+                PassengerRate = 0m,
+                CompanyId = AppConstants.CompanyId,
+                TariffId = Guid.NewGuid(),
+            });
         }
 
         static public string AssemblyDirectory

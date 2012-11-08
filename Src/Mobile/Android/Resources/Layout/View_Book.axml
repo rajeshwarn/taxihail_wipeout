@@ -204,8 +204,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_marginLeft="10dip"
-                            android:layout_marginRight="10dip"
-                            android:layout_marginBottom="7dip">
+                android:layout_marginRight="10dip"
+                android:layout_marginBottom="7dip">
               <ImageButton
                   local:MvxBind="{'Click':{'Path':'SelectedAddress.RequestCurrentLocationCommand'}, 'Enabled':{'Path':'CanClearAddress','Converter':'BoolInverter'},'Visibility':{'Path':'CanClearAddress','Converter':'InvertedVisibility'}}"
                   android:src="@drawable/target_selected"
@@ -230,7 +230,7 @@
                   android:layout_width="150dip"
                   android:layout_height="40dip"
                   android:text="@string/BookItButton"
-                  android:layout_centerInParent="true"/>
+                  android:layout_centerHorizontal="true"/>
               <ImageButton
                   android:id="@+id/pickupDateButton"
                   android:src="@drawable/bookLater_state"

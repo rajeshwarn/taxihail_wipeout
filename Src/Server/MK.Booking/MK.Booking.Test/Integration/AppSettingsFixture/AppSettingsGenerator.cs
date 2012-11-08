@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Test.Integration.AppSettingsFixture
             bus.Setup(x => x.Send(It.IsAny<IEnumerable<Envelope<ICommand>>>()))
                 .Callback<IEnumerable<Envelope<ICommand>>>(x => this.commands.AddRange(x.Select(e => e.Body)));
 
-            this.sut = new AppSettingsGenerator(new TestConfigurationManager(), () => new ConfigurationDbContext(dbName));
+            this.sut = new AppSettingsGenerator(() => new ConfigurationDbContext(dbName));
         }
     }
 
@@ -39,11 +39,10 @@ namespace apcurium.MK.Booking.Test.Integration.AppSettingsFixture
             var companyId = Guid.NewGuid();
 
 
-            this.sut.Handle(new AppSettingsAdded()
+            this.sut.Handle(new AppSettingsAddedOrUpdated
                                 {
                                     SourceId = companyId,
-                                    Key = "Key.Default",
-                                    Value = "Value.Default"
+                                    AppSettings = new Dictionary<string, string> { { "Key.Default", "Value.Default" } }
                                 });
 
             using (var context = new ConfigurationDbContext(dbName))
@@ -67,11 +66,10 @@ namespace apcurium.MK.Booking.Test.Integration.AppSettingsFixture
         public void Setup()
         {
 
-            sut.Handle(new AppSettingsAdded()
+            sut.Handle(new AppSettingsAddedOrUpdated()
                            {
                                SourceId = _companyId,
-                               Key = "Key.Default",
-                               Value = "Value.Default"
+                               AppSettings = new Dictionary<string, string> { { "Key.Default", "Value.Default" } }
                            });
 
         }
@@ -79,11 +77,10 @@ namespace apcurium.MK.Booking.Test.Integration.AppSettingsFixture
         [Test]
         public void when_appsettings_is_updated_then_list_updated()
         {
-            this.sut.Handle(new AppSettingsUpdated()
+            this.sut.Handle(new AppSettingsAddedOrUpdated
                                 {
                                     SourceId = _companyId,
-                                    Key = "Key.Default",
-                                    Value = "Value.Updated"
+                                    AppSettings = new Dictionary<string, string> { { "Key.Default", "Value.Updated" } }
                                 });
 
             using (var context = new ConfigurationDbContext(dbName))
@@ -99,18 +96,17 @@ namespace apcurium.MK.Booking.Test.Integration.AppSettingsFixture
         [Test]
         public void when_appsettings_is_updated_when_no_settings_before_then_list_updated()
         {
-            this.sut.Handle(new AppSettingsUpdated()
+            this.sut.Handle(new AppSettingsAddedOrUpdated
             {
                 SourceId = _companyId,
-                Key = "Key.Defaulte",
-                Value = "Value.Updated"
+                AppSettings = new Dictionary<string, string> { { "Key.Defaulte", "Value.Updated" } }
             });
 
             using (var context = new ConfigurationDbContext(dbName))
             {
                 var list = context.Query<AppSetting>().Where(x => x.Key == "Key.Defaulte");
 
-                Assert.AreEqual(0, list.Count());
+                Assert.AreEqual(1, list.Count());
             }
         }
     }

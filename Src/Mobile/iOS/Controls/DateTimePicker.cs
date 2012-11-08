@@ -30,6 +30,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			var accept = AppButtons.CreateStandardButton( new RectangleF (40, 5, 100, 35), Resources.DateTimePickerSetButton, AppStyle.ButtonColor.Silver );
 			accept.TouchUpInside += delegate { 
 				SetSelectedDate( ((DateTime)_picker.Date).ToLocalTime () );
+
 			};
 			AddSubview( accept );
 			

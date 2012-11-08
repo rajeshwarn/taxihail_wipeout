@@ -67,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             _cancelToken = new CancellationTokenSource();
 
 
-            TinyIoCContainer.Current.Resolve<ILocationService>().GetPositionAsync(5000, 4000, _cancelToken.Token).ContinueWith(t => {
+            TinyIoCContainer.Current.Resolve<ILocationService>().GetPositionAsync(5000, 4000, 5000, 8000, _cancelToken.Token).ContinueWith(t => {
                 if (t.IsCompleted && !t.IsCanceled)
                 {
                     InvokeOnMainThread(() =>

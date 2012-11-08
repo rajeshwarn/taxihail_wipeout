@@ -46,7 +46,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Adapters
             {
                 controller = new TitleSubTitleListItemController(convertView);
             }
-            var title = string.Format(_context.GetString(Resource.String.OrderHistoryListTitle), this.ListOrder[position].Order.IBSOrderId.ToString(), this.ListOrder[position].Order.CreatedDate );
+            var title = string.Format(_context.GetString(Resource.String.OrderHistoryListTitle), this.ListOrder[position].Order.IBSOrderId.ToString(), this.ListOrder[position].Order.PickupDate );
             controller.Title = title;
             controller.SubTitle = this.ListOrder[position].Order.PickupAddress.FullAddress;
             controller.SetBackImage( this.ListOrder[position].BackgroundImageResource );

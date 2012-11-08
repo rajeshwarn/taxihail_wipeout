@@ -38,7 +38,10 @@ namespace apcurium.MK.Booking.Api.Services
 
             _commandBus.Send(command);
 
-            return new HttpResult(HttpStatusCode.OK);
+            return new
+                       {
+                           Id = command.AddressId
+                       };
         }
 
         public override object OnDelete(DefaultFavoriteAddress request)
@@ -51,7 +54,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             _commandBus.Send(command);
 
-            return new HttpResult(HttpStatusCode.OK);
+            return string.Empty;
         }
 
         public override object OnPut(DefaultFavoriteAddress request)
@@ -62,7 +65,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             _commandBus.Send(command);
 
-            return new HttpResult(HttpStatusCode.OK);
+            return string.Empty;
         }
 
     }

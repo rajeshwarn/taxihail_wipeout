@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using AutoMapper;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.Api.Contract.Requests;
@@ -26,8 +26,7 @@ namespace apcurium.MK.Booking.Api.Services
         {
             var session = this.GetSession() ;
             var account = Dao.FindById( new Guid( session.UserAuthId) );
-            account.Settings.ToString(); 
-            return account;
+            return Mapper.Map<CurrentAccountResponse>(account);
         }
     }
 }

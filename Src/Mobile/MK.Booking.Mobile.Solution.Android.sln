@@ -1,4 +1,4 @@
-Microsoft Visual Studio Solution File, Format Version 11.00
+Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.Mobile.Client.Android", "Android\MK.Booking.Mobile.Client.Android.csproj", "{9F666743-C8EE-4553-A079-03FB36F979E0}"
 EndProject
@@ -23,6 +23,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.Maps.Android", "..\Server\MK.Booking.Maps\MK.Booking.Maps.Android.csproj", "{7ABA8DC0-BC56-48FA-826A-286DE83D6C75}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.Google.Android", "..\Server\MK.Booking.Google\MK.Booking.Google.Android.csproj", "{742B3C55-5630-4DCA-BBBD-035C313A4647}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AF46E3C4-F5C7-4107-BDFF-7001DB516F0F}"
+	ProjectSection(SolutionItems) = preProject
+		..\LocalizationTool\Master.resx = ..\LocalizationTool\Master.resx
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

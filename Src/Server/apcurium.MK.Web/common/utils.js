@@ -161,5 +161,13 @@
         return new Handlebars.SafeString(TaxiHail.date.niceTime(date));
     });
 
+    $.validator.addMethod("checkboxesNotAllChecked", function (value, elem, param) {
+        if ($(elem).closest("div").find(":checked").length == param.options.length) {
+            return false;
+        } else {
+            return true;
+        }
+    }, TaxiHail.localize("You cannot exclude all options from a list."));
+
 
 }());

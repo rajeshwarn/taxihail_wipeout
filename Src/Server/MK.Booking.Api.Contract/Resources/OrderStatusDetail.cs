@@ -3,7 +3,7 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
 {
     public class OrderStatusDetail : BaseDTO
     {
-        public OrderStatus Status { get; set; }
+        public Resources.OrderStatus Status { get; set; }
         public int? IBSOrderId { get; set; }                
         public string IBSStatusId { get; set; }
         public string IBSStatusDescription { get; set; }

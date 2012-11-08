@@ -3,7 +3,7 @@
     TaxiHail.UserAccountView = TaxiHail.TemplatedView.extend({
 
         events: {
-            'click .active a': 'reloadActiveTab'
+            'click [data-role=profile-tabs] .active a': 'reloadActiveTab'
         },
 
         render: function () {

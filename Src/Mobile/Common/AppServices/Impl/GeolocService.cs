@@ -72,13 +72,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 return new DirectionInfo();
             }
         }
-        public DirectionInfo GetDirectionInfo(double originLat, double originLong, double destLat, double destLong)
+        public DirectionInfo GetDirectionInfo(double originLat, double originLong, double destLat, double destLong, DateTime? date = null)
         {
 
             try
             {
                 //var direction = TinyIoCContainer.Current.Resolve<DirectionsServiceClient>().GetDirectionDistance(originLat, originLong, destLat, destLong);
-                var direction = TinyIoCContainer.Current.Resolve<IDirections>().GetDirection(originLat, originLong, destLat, destLong);
+                var direction = TinyIoCContainer.Current.Resolve<IDirections>().GetDirection(originLat, originLong, destLat, destLong, date);
                 return new DirectionInfo { Distance = direction.Distance, FormattedDistance = direction.FormattedDistance, FormattedPrice = direction.FormattedPrice, Price = direction.Price };
             }
             catch

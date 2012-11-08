@@ -98,7 +98,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			});
             sect.AddItem( new SingleLineItem( Resources.GetValue("View_Book_Menu_AboutUs") ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
 					AnimateMenu();
-					_navController.PushViewController(new AboutUsView(), true);
+					//_navController.PushViewController(new AboutUsView(), true);
+					ViewModel.NavigateToRatingPage.Execute();
 				})				
 			});
             sect.AddItem( new SingleLineItem( Resources.GetValue("View_Book_Menu_ReportProblem") ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 

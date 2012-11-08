@@ -47,6 +47,7 @@ namespace apcurium.MK.Booking.Mobile
             TinyIoCContainer.Current.Register<AccountServiceClient>((c, p) => new AccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, c.Resolve<ICacheService>().Get<string>("SessionId")));
             TinyIoCContainer.Current.Register<ReferenceDataServiceClient>((c, p) => new ReferenceDataServiceClient(c.Resolve<IAppSettings>().ServiceUrl, c.Resolve<ICacheService>().Get<string>("SessionId")));
             TinyIoCContainer.Current.Register<PopularAddressesServiceClient>((c, p) => new PopularAddressesServiceClient(c.Resolve<IAppSettings>().ServiceUrl, c.Resolve<ICacheService>().Get<string>("SessionId")));
+            TinyIoCContainer.Current.Register<TariffsServiceClient>((c, p) => new TariffsServiceClient(c.Resolve<IAppSettings>().ServiceUrl, c.Resolve<ICacheService>().Get<string>("SessionId")));
 
             TinyIoCContainer.Current.Register<OrderServiceClient>((c, p) => new OrderServiceClient(c.Resolve<IAppSettings>().ServiceUrl, c.Resolve<ICacheService>().Get<string>("SessionId")));
 
@@ -63,12 +64,14 @@ namespace apcurium.MK.Booking.Mobile
             TinyIoCContainer.Current.Register<IGoogleService, GoogleService>();
             TinyIoCContainer.Current.Register<IApplicationInfoService, ApplicationInfoService>();
 
+            TinyIoCContainer.Current.Register<IPriceCalculator, PriceCalculator>();
             TinyIoCContainer.Current.Register<IAddresses, Addresses>();
             TinyIoCContainer.Current.Register<IDirections, Directions>();
             TinyIoCContainer.Current.Register<IGeocoding, Geocoding>();
             TinyIoCContainer.Current.Register<IPlaces, Places>();
             TinyIoCContainer.Current.Register<IMapsApiClient, MapsApiClient>();
             TinyIoCContainer.Current.Register<IPopularAddressProvider, PopularAddressProvider>();
+            TinyIoCContainer.Current.Register<ITariffProvider, TariffProvider>();
 
             
 

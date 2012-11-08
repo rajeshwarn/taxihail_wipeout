@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using apcurium.MK.Common.Entity;
  using apcurium.MK.Booking.Api.Contract.Resources;
+using System;
 
 namespace apcurium.MK.Booking.Mobile.AppServices
 {
@@ -12,7 +13,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		Address[] SearchAddress(string address, double latitude, double longitude);
 
-        DirectionInfo GetDirectionInfo(double originLat, double originLong, double destLat, double destLong);
+        DirectionInfo GetDirectionInfo(double originLat, double originLong, double destLat, double destLong, DateTime? date= null);
 
         DirectionInfo GetDirectionInfo(Address origin, Address dest);
 
