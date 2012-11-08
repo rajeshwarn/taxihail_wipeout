@@ -7,6 +7,7 @@ using ServiceStack.Text;
 using TinyIoC;
 using TinyMessenger;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Booking.Mobile.Models;
 
@@ -43,7 +44,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public bool ShowRatingButton
         {
-            get { return _showRatingButton; }
+            get
+            {
+                if (!TinyIoCContainer.Current.Resolve<IAppSettings>().RatingEnabled)
+                {
+                    return false;
+                }
+                else
+                {
+                    return _showRatingButton;
+                }
+            }
             set 
             { 
                 _showRatingButton = value;
