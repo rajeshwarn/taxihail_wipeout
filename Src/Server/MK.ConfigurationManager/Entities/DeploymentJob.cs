@@ -34,6 +34,8 @@ namespace MK.ConfigurationManager.Entities
 		public Guid IBSServer_Id { get; set; }
 		[NotMapped]
 		public Guid TaxHailEnv_Id { get; set; }
+
+        public DateTime? RequestedDate { get; set; }
     }
 
     public enum JobStatus   

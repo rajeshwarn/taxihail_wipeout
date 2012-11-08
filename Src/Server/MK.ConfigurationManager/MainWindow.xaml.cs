@@ -211,6 +211,7 @@ namespace MK.ConfigurationManager
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             var job = new DeploymentJob();
+            job.RequestedDate = DateTime.Now;
             job.Id = Guid.NewGuid();
             job.Company = DeployCompany;
             job.IBSServer = DeployIBSServer;
