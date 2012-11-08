@@ -157,16 +157,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 			set{ if(happyBtn != null) happyBtn.Selected = value; }
 		}
 
-		public bool EcstaticMadSelected {
+		public bool EcstaticSelected {
 			get{ return ecstaticBtn.Selected;}
 			set{ if(ecstaticBtn != null) ecstaticBtn.Selected = value; }
 		}
 
-
-
-
-		
-
+	
 	}
 }
 

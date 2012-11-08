@@ -54,8 +54,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			};
 					
 			this.AddBindings(new Dictionary<object, string>()                            {
-				//{ notesTextField, "{'Text':{'Path':'Note'}}"},                
 				{ submitRatingBtn, "{'TouchUpInside':{'Path':'RateOrder'}, 'Hidden':{'Path': 'CanRating', 'Converter':'BoolInverter'}}"},                
+				{ notesTextField, "{'Text': {'Path':'Note'}}"},
 				{ source, "{'ItemsSource':{'Path':'RatingList'}}" }
 			});
 
