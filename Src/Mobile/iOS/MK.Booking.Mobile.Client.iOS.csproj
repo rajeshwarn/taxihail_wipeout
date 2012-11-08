@@ -324,6 +324,10 @@
       <DependentUpon>BookRatingTableCellView.cs</DependentUpon>
     </Compile>
     <Compile Include="Order\RatingTableViewSource.cs" />
+    <Compile Include="Order\BookRatingCell.cs" />
+    <Compile Include="Order\BookRatingCell.designer.cs">
+      <DependentUpon>BookRatingCell.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -374,6 +378,7 @@
     <InterfaceDefinition Include="Views\LoginView.xib" />
     <InterfaceDefinition Include="Order\BookRatingView.xib" />
     <InterfaceDefinition Include="Order\BookRatingTableCellView.xib" />
+    <InterfaceDefinition Include="Order\BookRatingCell.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />
