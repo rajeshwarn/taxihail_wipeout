@@ -90,10 +90,10 @@ namespace MK.ConfigurationManager
             DbContext.Database.CreateIfNotExists();
 
             Companies.Clear();
-            DbContext.Set<Company>().ToList().ForEach(Companies.Add);
+            DbContext.Set<Company>().OrderBy(x => x.Name).ToList().ForEach(Companies.Add);
 
             IBSServers.Clear();
-            DbContext.Set<IBSServer>().ToList().ForEach(IBSServers.Add);
+            DbContext.Set<IBSServer>().OrderBy(x => x.Name).ToList().ForEach(IBSServers.Add);
             IBSServers.CollectionChanged += IBSServersCollectionChanged;
 
             TaxiHailEnvironments.Clear();
