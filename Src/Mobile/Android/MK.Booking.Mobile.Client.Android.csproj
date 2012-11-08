@@ -569,7 +569,7 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>
-  <PropertyGroup>
+  <!--<PropertyGroup>
     <PreBuildEvent>IF NOT "$(SolutionDir)" == "*Undefined*" "$(SolutionDir)..\LocalizationTool\LocalizationTool.exe" -t android -s "$(SolutionDir)Common\Localization\Master.resx" -d "$(ProjectDir)Resources\Values\String.xml"</PreBuildEvent>
-  </PropertyGroup>
+  </PropertyGroup>-->
 </Project>
