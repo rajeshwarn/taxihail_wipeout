@@ -96,6 +96,7 @@ namespace MK.DeploymentService.Mobile
 			    {
 					var fileInfo = new FileInfo(apkFile); 
 					var targetDir = Path.Combine(System.Configuration.ConfigurationManager.AppSettings["AndroidDeployDir"], company.Name, fileInfo.Name);
+					if(File.Exists(targetDir)) File.Delete(targetDir);
 					File.Copy(apkFile, targetDir);
 			    }else
 				{
