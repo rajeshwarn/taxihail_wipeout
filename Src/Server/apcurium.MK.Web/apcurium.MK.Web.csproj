@@ -149,6 +149,7 @@
     <Content Include="admin\localization\TariffItem.json" />
     <Content Include="admin\templates\EditTariff.handlebars" />
     <Content Include="admin\assets\less\TaxiHail-admin-grid.less" />
+    <Content Include="admin\localization\ManageCompanySettings.json" />
     <None Include="admin\templates\ManageCompanySettings.handlebars" />
     <Content Include="admin\models\CompanySettings.js" />
     <Content Include="admin\views\AddFavoriteView.js" />
@@ -363,6 +364,7 @@
     <Content Include="themes\Taxiworld\less\combined-responsive.less" />
     <Content Include="themes\Taxiworld\less\combined.less" />
     <Content Include="themes\Taxiworld\less\style.less" />
+    <Content Include="admin\templates\SettingsItem.handlebars" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
