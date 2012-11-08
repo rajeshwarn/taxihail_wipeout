@@ -274,6 +274,10 @@
     <Content Include="themes\AtlantaCheckerCab\img\cancel-icon.png" />
     <Content Include="themes\AtlantaCheckerCab\img\location.png" />
     <Content Include="themes\AtlantaCheckerCab\img\logo.png" />
+    <Content Include="themes\BostonCab\img\cancel-icon.png" />
+    <Content Include="themes\BostonCab\img\header-bg.png" />
+    <Content Include="themes\BostonCab\img\location.png" />
+    <Content Include="themes\BostonCab\img\logo.png" />
     <Content Include="themes\CheckerYellowCabPalmetto\img\cancel-icon.png" />
     <Content Include="themes\CheckerYellowCabPalmetto\img\location.png" />
     <Content Include="themes\CheckerYellowCabPalmetto\img\logo.png" />
@@ -293,6 +297,10 @@
     <Content Include="themes\GoTaxiDesMoines\img\location.png" />
     <Content Include="themes\GoTaxiDesMoines\img\logo.png" />
     <Content Include="themes\TaxiHail\img\logo.png" />
+    <Content Include="themes\VictoriaTaxi\img\cancel-icon.png" />
+    <Content Include="themes\VictoriaTaxi\img\header-bg.png" />
+    <Content Include="themes\VictoriaTaxi\img\location.png" />
+    <Content Include="themes\VictoriaTaxi\img\Logo.png" />
     <Content Include="themes\WorcesterYellowCab\img\cancel-icon.png" />
     <Content Include="themes\WorcesterYellowCab\img\header-bg.png" />
     <Content Include="themes\WorcesterYellowCab\img\location.png" />
@@ -300,6 +308,10 @@
     <Content Include="themes\YellowCabSavannah\img\cancel-icon.png" />
     <Content Include="themes\YellowCabSavannah\img\location.png" />
     <Content Include="themes\YellowCabSavannah\img\Logo.png" />
+    <Content Include="themes\YellowCabTampa\img\cancel-icon.png" />
+    <Content Include="themes\YellowCabTampa\img\header-bg.png" />
+    <Content Include="themes\YellowCabTampa\img\location.png" />
+    <Content Include="themes\YellowCabTampa\img\Logo.png" />
     <Content Include="views\AccountFavoritesAndHistoryListView.js" />
     <Content Include="views\AddFavoriteView.js" />
     <Content Include="views\AddressControlView.js" />
@@ -646,6 +658,18 @@
     <Content Include="themes\WorcesterYellowCab\less\combined.less" />
     <Content Include="themes\WorcesterYellowCab\less\style.less" />
     <Content Include="themes\WorcesterYellowCab\less\variables.less" />
+    <Content Include="themes\BostonCab\less\combined-responsive.less" />
+    <Content Include="themes\BostonCab\less\combined.less" />
+    <Content Include="themes\BostonCab\less\style.less" />
+    <Content Include="themes\BostonCab\less\variables.less" />
+    <Content Include="themes\VictoriaTaxi\less\combined-responsive.less" />
+    <Content Include="themes\VictoriaTaxi\less\combined.less" />
+    <Content Include="themes\VictoriaTaxi\less\style.less" />
+    <Content Include="themes\VictoriaTaxi\less\variables.less" />
+    <Content Include="themes\YellowCabTampa\less\combined-responsive.less" />
+    <Content Include="themes\YellowCabTampa\less\combined.less" />
+    <Content Include="themes\YellowCabTampa\less\style.less" />
+    <Content Include="themes\YellowCabTampa\less\variables.less" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\templates\GrantAdminAccess.handlebars" />
