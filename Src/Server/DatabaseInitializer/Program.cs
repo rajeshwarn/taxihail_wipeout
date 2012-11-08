@@ -101,15 +101,12 @@ namespace DatabaseInitializer
 
                 //Init data
                 var commandBus = container.Resolve<ICommandBus>();
-                if(!isUpdate)
+                // Create Default company
+                commandBus.Send(new CreateCompany
                 {
-                    // Create Default company
-                    commandBus.Send(new CreateCompany
-                    {
-                        CompanyId = AppConstants.CompanyId,
-                        Id = Guid.NewGuid()
-                    });
-                }
+                    CompanyId = AppConstants.CompanyId,
+                    Id = Guid.NewGuid()
+                });
                 //Create settings
 
                 var appSettings = new Dictionary<string, string>();
@@ -117,35 +114,24 @@ namespace DatabaseInitializer
                 var objectSettings = JObject.Parse(jsonSettings);
                 if(isUpdate)
                 {
-                    settingsInDb.ForEach(setting => objectSettings.Remove(setting.Key));
+                    settingsInDb.ForEach(setting =>
+                                             {
+                                                 objectSettings[setting.Key] = setting.Value;
+                                             });
                 }
                 foreach (var token in objectSettings)
                 {
-                    //configurationManager.SetSetting(token.Key, token.Value.ToString());
-                    //commandBus.Send(new AddAppSettings()
-                    //                    {
-                    //                        Key = token.Key,
-                    //                        Value = token.Value.ToString()
-                    //                    });
-                    appSettings[token.Key] = token.Value.ToString();
+                   appSettings[token.Key] = token.Value.ToString();
                 }
 
                 jsonSettings = File.ReadAllText(Path.Combine(AssemblyDirectory, "Settings\\", companyName + ".json"));
                 objectSettings = JObject.Parse(jsonSettings);
                 if (isUpdate)
                 {
-                    settingsInDb.ForEach(setting => objectSettings.Remove(setting.Key));
+                    settingsInDb.ForEach(setting => objectSettings[setting.Key] = setting.Value);
                 }
                 foreach (var token in objectSettings)
                 {
-                    //configurationManager.SetSetting(token.Key, token.Value.ToString());
-                    //commandBus.Send(new AddAppSettings()
-                    //{
-                    //    Key = token.Key,
-                    //    Value = token.Value.ToString()
-                    //});
-
-                
                     appSettings[token.Key] = token.Value.ToString();
                 }
 
@@ -179,39 +165,17 @@ namespace DatabaseInitializer
                     
                     if(defaultCompany != null)
                     {
-                        //configurationManager = container.Resolve<IConfigurationManager>();
-                        //configurationManager.SetSetting("DefaultBookingSettings.ProviderId", defaultCompany.Id.ToString());
-
-                        //commandBus.Send(new AddAppSettings()
-                        //{
-                        //    Key = "DefaultBookingSettings.ProviderId",
-                        //    Value = defaultCompany.Id.ToString()
-                        //});
-
-                        appSettings["DefaultBookingSettings.ProviderId"] = defaultCompany.Id.ToString();
+                       appSettings["DefaultBookingSettings.ProviderId"] = defaultCompany.Id.ToString();
 
                         var defaultvehicule = referenceDataService.GetVehiclesList(defaultCompany).FirstOrDefault(x => x.IsDefault.HasValue && x.IsDefault.Value) ??
                                               referenceDataService.GetVehiclesList(defaultCompany).First();
-                        //configurationManager.SetSetting("DefaultBookingSettings.VehicleTypeId", defaultvehicule.Id.ToString());
-
-                        //commandBus.Send(new AddAppSettings()
-                        //{
-                        //    Key = "DefaultBookingSettings.VehicleTypeId",
-                        //    Value = defaultvehicule.Id.ToString()
-                        //});
-
-                        appSettings["DefaultBookingSettings.VehicleTypeId"] = defaultvehicule.Id.ToString();
+                       appSettings["DefaultBookingSettings.VehicleTypeId"] = defaultvehicule.Id.ToString();
                         
                         var defaultchargetype = referenceDataService.GetPaymentsList(defaultCompany).FirstOrDefault(x => x.Display.HasValue() && x.Display.Contains("Cash"))
                             ?? referenceDataService.GetPaymentsList(defaultCompany).First();
 
-                        //commandBus.Send(new AddAppSettings()
-                        //{
-                        //    Key = "DefaultBookingSettings.ChargeTypeId",
-                        //    Value = defaultchargetype.Id.ToString()
-                        //});
+                        
                         appSettings["DefaultBookingSettings.ChargeTypeId"] = defaultchargetype.Id.ToString();
-                        //configurationManager.SetSetting("DefaultBookingSettings.ChargeTypeId", defaultchargetype.Id.ToString());
                         
                     }
 
@@ -219,10 +183,7 @@ namespace DatabaseInitializer
                     appSettings = AddOrUpdateAppSettings(commandBus, appSettings);
 
                     //Register normal account
-                    //configurationManager = container.Resolve<IConfigurationManager>();
-                    //configurationManager.Reset();
-                    
-                    var registerAccountCommand = new RegisterAccount
+                   var registerAccountCommand = new RegisterAccount
                                                      {
                                                          Id = Guid.NewGuid(),
                                                          AccountId = Guid.NewGuid(),
