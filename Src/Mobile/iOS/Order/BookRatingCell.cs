@@ -6,13 +6,20 @@ using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using MonoTouch.ObjCRuntime;
+using Cirrious.MvvmCross.Interfaces.Commands;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
 	public partial class BookRatingCell : MvxBindableTableViewCell
 	{
 		public static NSString Identifier = new NSString("BookRatingCell");
-		public const string BindingText = "{'RatingTypeName':{'Path':'RatingTypeName'}}";
+		public const string BindingText = @"{'RatingTypeName':{'Path':'RatingTypeName'},
+'SetRateCommand': {'Path': 'SetRateCommand'},
+'MadSelected': {'Path': 'MadSelected'},
+'UnhappySelected': {'Path': 'UnhappySelected'},
+'NeutralSelected': {'Path': 'NeutralSelected'},
+'HappySelected': {'Path': 'HappySelected'},
+'EcstaticSelected': {'Path': 'EcstaticSelected'}}";
 		
 		public static BookRatingCell LoadFromNib(NSObject owner)
 		{
@@ -25,6 +32,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			cell2.Initialise();
 			return cell2;
 		}
+
 		
 		public BookRatingCell(IntPtr handle)
 			: base(BindingText, handle)
@@ -43,6 +51,25 @@ namespace apcurium.MK.Booking.Mobile.Client
 		
 		private void Initialise()
 		{
+			madBtn.SetImage(UIImage.FromBundle("Assets/Rating/mad"), UIControlState.Normal);
+			madBtn.SetImage(UIImage.FromBundle("Assets/Rating/mad-selected"), UIControlState.Selected);
+			madBtn.TouchUpInside += OnMadBtnTouchUpInside;
+
+			unhappyBtn.SetImage(UIImage.FromBundle("Assets/Rating/unhappy"), UIControlState.Normal);
+			unhappyBtn.SetImage(UIImage.FromBundle("Assets/Rating/unhappy-selected"), UIControlState.Selected);
+			unhappyBtn.TouchUpInside += OnUnhappyBtnTouchUpInside;
+
+			neutralBtn.SetImage(UIImage.FromBundle("Assets/Rating/neutral"), UIControlState.Normal);
+			neutralBtn.SetImage(UIImage.FromBundle("Assets/Rating/neutral-selected"), UIControlState.Selected);
+			neutralBtn.TouchUpInside += OnNeutralBtnTouchUpInside;
+
+			happyBtn.SetImage(UIImage.FromBundle("Assets/Rating/happy"), UIControlState.Normal);
+			happyBtn.SetImage(UIImage.FromBundle("Assets/Rating/happy-selected"), UIControlState.Selected);
+			happyBtn.TouchUpInside += OnHappyBtnTouchUpInside;
+
+			ecstaticBtn.SetImage(UIImage.FromBundle("Assets/Rating/ecstatic"), UIControlState.Normal);
+			ecstaticBtn.SetImage(UIImage.FromBundle("Assets/Rating/ecstatic-selected"), UIControlState.Selected);
+			ecstaticBtn.TouchUpInside += OnEcstasticBtnTouchUpInside;
 
 		}	
 		
@@ -71,6 +98,71 @@ namespace apcurium.MK.Booking.Mobile.Client
 			get { return ratingTypeName.Text; }
 			set { if (ratingTypeName != null) ratingTypeName.Text = value; }
 		}
+	
+
+		public IMvxCommand SetRateCommand {
+			get ;
+			set ;
+		}
+
+		private void OnMadBtnTouchUpInside (object sender, EventArgs args)
+		{
+			if (SetRateCommand != null) {
+				SetRateCommand.Execute ("Mad");
+			
+			}
+		}
+		private void OnUnhappyBtnTouchUpInside (object sender, EventArgs args)
+		{
+			if (SetRateCommand != null) {
+				SetRateCommand.Execute ("Unhappy");
+			}
+		}
+		private void OnNeutralBtnTouchUpInside (object sender, EventArgs args)
+		{
+			if (SetRateCommand != null) {
+				SetRateCommand.Execute ("Neutral");
+			}
+		}
+		private void OnHappyBtnTouchUpInside (object sender, EventArgs args)
+		{
+			if (SetRateCommand != null) {
+				SetRateCommand.Execute ("Happy");
+			}
+		}
+		private void OnEcstasticBtnTouchUpInside (object sender, EventArgs args)
+		{
+			if (SetRateCommand != null) {
+				SetRateCommand.Execute ("Ecstatic");
+			}
+		}
+
+		public bool MadSelected {
+			get{ return madBtn.Selected;}
+			set{ if(madBtn != null) madBtn.Selected = value; }
+		}
+
+		public bool UnhappySelected {
+			get{ return unhappyBtn.Selected;}
+			set{ if(unhappyBtn != null) unhappyBtn.Selected = value; }
+		}
+
+		public bool NeutralSelected {
+			get{ return neutralBtn.Selected;}
+			set{ if(neutralBtn != null) neutralBtn.Selected = value; }
+		}
+
+		public bool HappySelected {
+			get{ return happyBtn.Selected;}
+			set{ if(happyBtn != null) happyBtn.Selected = value; }
+		}
+
+		public bool EcstaticMadSelected {
+			get{ return ecstaticBtn.Selected;}
+			set{ if(ecstaticBtn != null) ecstaticBtn.Selected = value; }
+		}
+
+
 
 
 		

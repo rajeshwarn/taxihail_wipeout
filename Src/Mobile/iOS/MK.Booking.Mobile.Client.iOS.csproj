@@ -319,10 +319,6 @@
     <Compile Include="Order\BookRatingView.designer.cs">
       <DependentUpon>BookRatingView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Order\BookRatingTableCellView.cs" />
-    <Compile Include="Order\BookRatingTableCellView.designer.cs">
-      <DependentUpon>BookRatingTableCellView.cs</DependentUpon>
-    </Compile>
     <Compile Include="Order\RatingTableViewSource.cs" />
     <Compile Include="Order\BookRatingCell.cs" />
     <Compile Include="Order\BookRatingCell.designer.cs">
@@ -377,7 +373,6 @@
     <InterfaceDefinition Include="Views\UpdatePasswordView.xib" />
     <InterfaceDefinition Include="Views\LoginView.xib" />
     <InterfaceDefinition Include="Order\BookRatingView.xib" />
-    <InterfaceDefinition Include="Order\BookRatingTableCellView.xib" />
     <InterfaceDefinition Include="Order\BookRatingCell.xib" />
   </ItemGroup>
   <ItemGroup>

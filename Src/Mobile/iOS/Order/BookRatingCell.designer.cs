@@ -13,12 +13,52 @@ namespace apcurium.MK.Booking.Mobile.Client
 	{
 		[Outlet]
 		MonoTouch.UIKit.UILabel ratingTypeName { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UIButton madBtn { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UIButton unhappyBtn { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UIButton neutralBtn { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UIButton happyBtn { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UIButton ecstaticBtn { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
 			if (ratingTypeName != null) {
 				ratingTypeName.Dispose ();
 				ratingTypeName = null;
+			}
+
+			if (madBtn != null) {
+				madBtn.Dispose ();
+				madBtn = null;
+			}
+
+			if (unhappyBtn != null) {
+				unhappyBtn.Dispose ();
+				unhappyBtn = null;
+			}
+
+			if (neutralBtn != null) {
+				neutralBtn.Dispose ();
+				neutralBtn = null;
+			}
+
+			if (happyBtn != null) {
+				happyBtn.Dispose ();
+				happyBtn = null;
+			}
+
+			if (ecstaticBtn != null) {
+				ecstaticBtn.Dispose ();
+				ecstaticBtn = null;
 			}
 		}
 	}
