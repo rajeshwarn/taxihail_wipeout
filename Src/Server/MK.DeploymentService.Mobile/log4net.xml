@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <log4net>
   <appender name="RollingLogFileAppender" type="log4net.Appender.RollingFileAppender">
-    <file value="logdeploy.log" />     
-    <datePattern value=".yyyyMMdd-HHmm" />
+    <file value="logdeploy.log" />  
     <maxSizeRollBackups value="3" />
     <maximumFileSize value="20MB" />
     <layout type="log4net.Layout.PatternLayout">
