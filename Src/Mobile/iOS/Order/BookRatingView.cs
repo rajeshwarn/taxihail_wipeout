@@ -61,6 +61,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 				{ source, "{'ItemsSource':{'Path':'RatingList'}}" }
 			});
 
+            ratingTableView.BackgroundColor = UIColor.Clear;
+            ratingTableView.BackgroundView = new UIView();
 			ratingTableView.Source = source;
 			ratingTableView.ReloadData();
 
