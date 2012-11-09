@@ -41,24 +41,28 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			base.ViewDidLoad ();
 
+			View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
+			submitRatingBtn.SetTitle(Resources.Submit, UIControlState.Normal);
+
 			var source = new MvxActionBasedBindableTableViewSource(
 				ratingTableView,
 				UITableViewCellStyle.Default,
-				new NSString("BookListView"),
-				"",
+				BookRatingCell.Identifier ,
+				BookRatingCell.BindingText,
 				UITableViewCellAccessory.None);
 			
 			source.CellCreator = (tableView, indexPath, item) =>
 			{
-				return new BookRatingTableCellView("{'RatingTitle': {'Path':'RatingTypeName'}}");
+				return BookRatingCell.LoadFromNib(tableView);
 			};
 					
 			this.AddBindings(new Dictionary<object, string>()                            {
-				//{ notesTextField, "{'Text':{'Path':'Note'}}"},                
 				{ submitRatingBtn, "{'TouchUpInside':{'Path':'RateOrder'}, 'Hidden':{'Path': 'CanRating', 'Converter':'BoolInverter'}}"},                
-				//{ source, "{'ItemsSource':{'Path':'RatingList'}}" }
+				{ source, "{'ItemsSource':{'Path':'RatingList'}}" }
 			});
 
+            ratingTableView.BackgroundColor = UIColor.Clear;
+            ratingTableView.BackgroundView = new UIView();
 			ratingTableView.Source = source;
 			ratingTableView.ReloadData();
 
@@ -81,6 +85,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// Return true for supported orientations
 			return (toInterfaceOrientation != UIInterfaceOrientation.PortraitUpsideDown);
 		}
+
+
 	}
 }
 

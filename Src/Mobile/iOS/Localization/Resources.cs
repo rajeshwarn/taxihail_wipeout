@@ -1002,6 +1002,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			get { return GetValue ("View_PasswordRecovery"); }
 		}
+		public static string Submit 
+		{
+			get { return GetValue("Submit"); }
+		}
+		public static string RateBtn 
+		{
+			get { return GetValue("RateBtn"); }
+		}
 	}
 }
 

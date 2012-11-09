@@ -29,6 +29,7 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
     <AssemblyName>MK.Booking.Api.Contract.iOS</AssemblyName>
+    <DefineConstants>;CLIENT;IOS</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Distribution|iPhone' ">
     <DebugType>none</DebugType>

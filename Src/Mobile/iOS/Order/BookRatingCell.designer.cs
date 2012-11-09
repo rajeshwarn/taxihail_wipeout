@@ -8,9 +8,12 @@ using MonoTouch.Foundation;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-	[Register ("BookRatingTableCellView")]
-	partial class BookRatingTableCellView
+	[Register ("BookRatingCell")]
+	partial class BookRatingCell
 	{
+		[Outlet]
+		MonoTouch.UIKit.UILabel ratingTypeName { get; set; }
+
 		[Outlet]
 		MonoTouch.UIKit.UIButton madBtn { get; set; }
 
@@ -25,12 +28,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		[Outlet]
 		MonoTouch.UIKit.UIButton ecstaticBtn { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UILabel titleText { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (ratingTypeName != null) {
+				ratingTypeName.Dispose ();
+				ratingTypeName = null;
+			}
+
 			if (madBtn != null) {
 				madBtn.Dispose ();
 				madBtn = null;
@@ -54,11 +59,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			if (ecstaticBtn != null) {
 				ecstaticBtn.Dispose ();
 				ecstaticBtn = null;
-			}
-
-			if (titleText != null) {
-				titleText.Dispose ();
-				titleText = null;
 			}
 		}
 	}
