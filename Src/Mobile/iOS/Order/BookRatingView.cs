@@ -55,7 +55,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 					
 			this.AddBindings(new Dictionary<object, string>()                            {
 				{ submitRatingBtn, "{'TouchUpInside':{'Path':'RateOrder'}, 'Hidden':{'Path': 'CanRating', 'Converter':'BoolInverter'}}"},                
-				{ notesTextField, "{'Text': {'Path':'Note'}}"},
 				{ source, "{'ItemsSource':{'Path':'RatingList'}}" }
 			});
 
@@ -81,6 +80,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// Return true for supported orientations
 			return (toInterfaceOrientation != UIInterfaceOrientation.PortraitUpsideDown);
 		}
+
+
 	}
 }
 

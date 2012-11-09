@@ -16,9 +16,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		[Outlet]
 		MonoTouch.UIKit.UITableView ratingTableView { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UITextField notesTextField { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
@@ -30,11 +27,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			if (ratingTableView != null) {
 				ratingTableView.Dispose ();
 				ratingTableView = null;
-			}
-
-			if (notesTextField != null) {
-				notesTextField.Dispose ();
-				notesTextField = null;
 			}
 		}
 	}
