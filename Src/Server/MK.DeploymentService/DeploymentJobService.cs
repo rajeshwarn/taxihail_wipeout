@@ -179,6 +179,11 @@ namespace MK.DeploymentService
                 throw new Exception(buildResult.Exception.Message, buildResult.Exception);
             }
 
+            var targetDir = Path.Combine(sourceDirectory, @"Deployment\Server\Package\DatabaseInitializer");
+            var sourcePath = Path.Combine(sourceDirectory, @"Src\Server\DatabaseInitializer\bin\Release");
+            CopyFiles(sourcePath, targetDir);
+
+            logger.DebugFormat("Build Web Site");
             slnFilePath = Path.Combine(sourceDirectory, @"Src\Server\apcurium.MK.Web\") + "apcurium.MK.Web.csproj";
             buildRequestData = new BuildRequestData(slnFilePath, globalProperty, null, new[] { "Package" }, null);
             var buildResultWeb = BuildManager.DefaultBuildManager.Build(new BuildParameters(pc), buildRequestData);
@@ -187,6 +192,25 @@ namespace MK.DeploymentService
             {
                 throw new Exception(buildResultWeb.Exception.Message, buildResult.Exception);
             }
+
+            targetDir = Path.Combine(sourceDirectory, @"Deployment\Server\Package\WebSites");
+            sourcePath = Path.Combine(sourceDirectory, @"Src\Server\apcurium.MK.Web\obj\Release\Package\PackageTmp");
+            CopyFiles(sourcePath, targetDir);
+        }
+
+        private void CopyFiles(string source, string target)
+        {
+            if (Directory.Exists(target))
+            {
+                Directory.Delete(target, true);
+            }
+            Directory.CreateDirectory(target);
+
+            foreach (var dirPath in Directory.GetDirectories(source, "*", SearchOption.AllDirectories))
+                Directory.CreateDirectory(dirPath.Replace(source, target));
+
+            foreach (var newPath in Directory.GetFiles(source, "*.*", SearchOption.AllDirectories))
+                File.Copy(newPath, newPath.Replace(source, target));
         }
 
         private void DeployTaxiHail(DeploymentJob job, string packagesDirectory)
@@ -263,20 +287,9 @@ namespace MK.DeploymentService
             logger.DebugFormat("Deploying IIS");
             var subFolder = job.Company.ConfigurationProperties["TaxiHail.Version"] + job.Revision + "\\";
             var targetWeDirectory = Path.Combine(job.TaxHailEnv.WebSitesFolder, companyName, subFolder);
-
-            if (Directory.Exists(targetWeDirectory))
-            {
-                Directory.Delete(targetWeDirectory, true);
-            }
-            Directory.CreateDirectory(targetWeDirectory);
-
             var sourcePath = Path.Combine(packagesDirectory, @"WebSites\");
 
-            foreach (var dirPath in Directory.GetDirectories(sourcePath, "*", SearchOption.AllDirectories))
-                Directory.CreateDirectory(dirPath.Replace(sourcePath, targetWeDirectory));
-
-            foreach (var newPath in Directory.GetFiles(sourcePath, "*.*", SearchOption.AllDirectories))
-                File.Copy(newPath, newPath.Replace(sourcePath, targetWeDirectory));
+            CopyFiles(sourcePath, targetWeDirectory);
 
             var website = iisManager.Sites["Default Web Site"];
             var webApp = website.Applications.FirstOrDefault(x => x.Path == "/" + companyName);
