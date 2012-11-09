@@ -258,7 +258,7 @@ namespace DatabaseInitializer
             {
                 Console.WriteLine(e.Message + " " +e.StackTrace);
                 loggger.Fatal(e.Message, e);
-                return -1;
+                return 1;
             }
             return 0;
         }

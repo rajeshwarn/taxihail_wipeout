@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Diagnostics;
 using System.IO;
@@ -9,6 +10,8 @@ using System.Xml;
 using System.Xml.Linq;
 using MK.ConfigurationManager;
 using MK.ConfigurationManager.Entities;
+using Microsoft.Build.Evaluation;
+using Microsoft.Build.Execution;
 using Microsoft.Web.Administration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -164,26 +167,25 @@ namespace MK.DeploymentService
                 }
             }
 
-            logger.DebugFormat("Build Solution");
-            var buildPackage = new ProcessStartInfo
-                                   {
-                                       FileName = "Powershell.exe",
-                                       WindowStyle = ProcessWindowStyle.Hidden,
-                                       UseShellExecute = false,
-                                       LoadUserProfile = true,
-                                       CreateNoWindow = false,
-                                       Arguments =
-                                           "-Executionpolicy ByPass -File \"" + sourceDirectory +
-                                           "\\Deployment\\Server\\BuildPackage.ps1\""
-                                   };
+            logger.DebugFormat("Build Databse Initializer");
+            var slnFilePath = Path.Combine(sourceDirectory, @"Src\Server\") + "MKBooking.sln";
+            var pc = new ProjectCollection();
+            var globalProperty = new Dictionary<string, string> {{"Configuration", "Release"}};
+            var buildRequestData = new BuildRequestData(slnFilePath, globalProperty, null, new[] { "Build" }, null);
+            var buildResult = BuildManager.DefaultBuildManager.Build(new BuildParameters(pc), buildRequestData);
 
-            using (var exeProcess = Process.Start(buildPackage))
+            if(buildResult.Exception != null)
             {
-                exeProcess.WaitForExit();
-                if (exeProcess.ExitCode > 0)
-                {
-                    throw new Exception("Error during build step");
-                }
+                throw new Exception(buildResult.Exception.Message, buildResult.Exception);
+            }
+
+            slnFilePath = Path.Combine(sourceDirectory, @"Src\Server\apcurium.MK.Web\") + "apcurium.MK.Web.csproj";
+            buildRequestData = new BuildRequestData(slnFilePath, globalProperty, null, new[] { "Package" }, null);
+            var buildResultWeb = BuildManager.DefaultBuildManager.Build(new BuildParameters(pc), buildRequestData);
+
+            if (buildResultWeb.Exception != null)
+            {
+                throw new Exception(buildResultWeb.Exception.Message, buildResult.Exception);
             }
         }
 
