@@ -44,10 +44,10 @@ namespace MK.ConfigurationManager
             {
                 _currentCompany = value;
                 OnPropertyChanged("CurrentCompany");
-                ConfigurationProperties.Clear(); 
-                CurrentCompany.ConfigurationProperties.ToList().ForEach(x => ConfigurationProperties.Add(new MyCustomKeyValuePair(x.Key, x.Value)));
+                ConfigurationProperties.Clear();
+                CurrentCompany.ConfigurationProperties.OrderBy(x => x.Key).ToList().ForEach(x => ConfigurationProperties.Add(new MyCustomKeyValuePair(x.Key, x.Value)));
                 MobileConfigurationProperties.Clear();
-                CurrentCompany.MobileConfigurationProperties.ToList().ForEach(x => MobileConfigurationProperties.Add(new MyCustomKeyValuePair(x.Key, x.Value)));
+                CurrentCompany.MobileConfigurationProperties.OrderBy(x => x.Key).ToList().ForEach(x => MobileConfigurationProperties.Add(new MyCustomKeyValuePair(x.Key, x.Value)));
             }
         }
 
@@ -125,13 +125,13 @@ namespace MK.ConfigurationManager
             if(e.Action == NotifyCollectionChangedAction.Add)
             {
                e.NewItems.OfType<IBSServer>().ToList().ForEach(x =>
-                                                                   {
-                                                                       if(x.Id == Guid.Empty)
-                                                                       {
-                                                                           x.Id = Guid.NewGuid();
-                                                                           DbContext.Set<IBSServer>().Add(x);
-                                                                       }
-                                                                   });
+                {
+                    if(x.Id == Guid.Empty)
+                    {
+                        x.Id = Guid.NewGuid();
+                        DbContext.Set<IBSServer>().Add(x);
+                    }
+                });
             }
         }
 
