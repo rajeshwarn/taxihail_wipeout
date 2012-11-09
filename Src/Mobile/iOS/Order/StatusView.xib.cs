@@ -380,10 +380,14 @@ namespace apcurium.MK.Booking.Mobile.Client
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
             msg = string.Format( msg, settings.ApplicationName );
 
-            var av = new UIAlertView ( title, msg, null, Resources.Close, status.FareAvailable ? Resources.HistoryViewSendReceiptButton :null );
+			var av = new UIAlertView ( title, msg, null, Resources.Close, Resources.RateBtn, status.FareAvailable ? Resources.HistoryViewSendReceiptButton :null );
             av.Dismissed += (sender, e) => CloseRequested();
             av.Clicked += delegate(object sender, UIButtonEventArgs e) {
-                if (e.ButtonIndex == 1) {                    
+                if (e.ButtonIndex == 1) {
+					ViewModel.NavigateToRatingPage.Execute();
+					av.Dispose();
+				}
+				else if (e.ButtonIndex == 2) {                    
                     var isSuccess = TinyIoCContainer.Current.Resolve<IBookingService>().SendReceipt( Order.Id);
                     
                     if (isSuccess)

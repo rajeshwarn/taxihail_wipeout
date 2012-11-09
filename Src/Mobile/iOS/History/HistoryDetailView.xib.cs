@@ -10,6 +10,10 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using TinyMessenger;
 using apcurium.MK.Booking.Mobile.Messages;
+using Cirrious.MvvmCross.Interfaces.Views;
+using Cirrious.MvvmCross.Views;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
+using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -68,11 +72,13 @@ namespace apcurium.MK.Booking.Mobile.Client
             btnCancel.SetTitle(Resources.StatusActionCancelButton, UIControlState.Normal);
             btnStatus.SetTitle(Resources.HistoryViewStatusButton, UIControlState.Normal);
 			btnSendReceipt.SetTitle (Resources.HistoryViewSendReceiptButton, UIControlState.Normal);
+			btnRateTrip.SetTitle(Resources.RateBtn, UIControlState.Normal);
 		    AppButtons.FormatStandardButton((GradientButton)btnHide, Resources.DeleteButton, AppStyle.ButtonColor.Red );
 
             btnCancel.TouchUpInside += CancelTouchUpInside;
             btnStatus.TouchUpInside += StatusTouchUpInside;
 			btnSendReceipt.TouchUpInside += SendReceiptTouchUpInside;
+			btnRateTrip.TouchUpInside += RateTripTouchUpInside;
             
             btnCancel.Hidden = true;
             btnStatus.Hidden = true;
@@ -156,6 +162,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 				}
 			}
 			);
+		}
+
+		void RateTripTouchUpInside (object sender, EventArgs e)
+		{
+			var dispatch = TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
+			dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(BookRatingViewModel), null, true, MvxRequestedBy.UserAction));
 		}
 
         void RebookTouched(object sender, EventArgs e)
