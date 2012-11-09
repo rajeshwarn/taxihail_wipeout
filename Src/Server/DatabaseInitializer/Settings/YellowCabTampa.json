@@ -1,7 +1,7 @@
 {	
 	"DefaultBookingSettings.ChargeTypeId" : "1",
 	"DefaultBookingSettings.NbPassenger" : "1",
-	"DefaultBookingSettings.ProviderId" : "7",
+	"DefaultBookingSettings.ProviderId" : "1",
 	"DefaultBookingSettings.VehicleTypeId" : "1",
 	"Direction.FlateRate" : "2.5",
 	"Direction.MaxDistance" : "50",
@@ -14,7 +14,7 @@
 	"IBS.AutoDispatch" : "TRUE",
 	"IBS.DefaultAccountPassword" : "password",
 	"IBS.WebServicesPassword" : "test",
-	"IBS.WebServicesUrl" : "http://tampayellowcab.dyndns.org:2555/IBSCab.dll/soap/",
+	"IBS.WebServicesUrl" : "http://tampayellowcabhail.dyndns.org:2555/IBSCab/IBSCab.dll/soap/",
 	"IBS.WebServicesUserName" : "taxi",
 	"IBS.ExcludedVehicleTypeId" : "22;21",
 	"Map.PlacesApiKey" : "AIzaSyAd-ezA2SeVTSNqsu6aMmAkdlP3UqEVPWE",
