@@ -22,13 +22,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new LogOutRequested(this)));
 		}
 
-		public MvxRelayCommand NavigateToRatingPage
+		public MvxRelayCommand NavigateToOrderHistory
 		{
 			get
 			{
 				return new MvxRelayCommand(() =>
 				                           {
-					RequestNavigate<BookRatingViewModel>(new { orderId = "7BE53757-B6D0-4CD9-923A-F643F59454F5", canRate = true });
+					RequestNavigate<HistoryViewModel>();
 				});
 			}
 		}

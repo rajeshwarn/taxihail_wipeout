@@ -9,11 +9,13 @@ using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.ListViewStructure;
+using Cirrious.MvvmCross.Binding.Touch.Views;
+using apcurium.MK.Booking.Mobile.ViewModels;
 
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-	public class HistoryTableViewDelegate : UITableViewDelegate
+	public class HistoryTableViewDelegate : MvxBindableTableViewDelegate
 	{
 		private InfoStructure _structure;
 		private HistoryTabView _parent;
@@ -31,12 +33,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		public override void RowSelected (UITableView tableView, NSIndexPath indexPath)
 		{
-			var detail = new HistoryDetailView (_parent);
-			
-			detail.LoadData ( _structure.Sections.ElementAt( indexPath.Section ).Items.ElementAt( indexPath.Row ).Data as Order );
-							
-			_parent.NavigationController.PushViewController (detail, true);
-			
+			var order = (OrderViewModel)_structure.Sections.ElementAt( indexPath.Section ).Items.ElementAt( indexPath.Row ).Data;
+			_parent.ViewModel.NavigateToHistoryDetailPage.Execute(order);
 		}
 		
 	}

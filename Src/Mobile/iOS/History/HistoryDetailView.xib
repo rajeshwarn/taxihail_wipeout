@@ -46,7 +46,7 @@
 						<string key="NSFrame">{{59, 190}, {200, 37}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="248603988"/>
+						<reference key="NSNextKeyView" ref="839223936"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<object class="IBUIAccessibilityConfiguration" key="IBUIAccessibilityConfiguration">
 							<string key="IBUIAccessibilityLabel">Save</string>
@@ -112,28 +112,6 @@
 						<string key="NSFrame">{{59, 235}, {200, 37}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="839223936"/>
-						<bool key="IBUIOpaque">NO</bool>
-						<object class="IBUIAccessibilityConfiguration" key="IBUIAccessibilityConfiguration">
-							<string key="IBUIAccessibilityLabel">Don't Save</string>
-						</object>
-						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<int key="IBUIContentHorizontalAlignment">0</int>
-						<int key="IBUIContentVerticalAlignment">0</int>
-						<int key="IBUIButtonType">1</int>
-						<string key="IBUINormalTitle">View Status</string>
-						<reference key="IBUIHighlightedTitleColor" ref="111309999"/>
-						<reference key="IBUINormalTitleColor" ref="702973050"/>
-						<reference key="IBUINormalTitleShadowColor" ref="1071880947"/>
-						<reference key="IBUIFontDescription" ref="1009064756"/>
-						<reference key="IBUIFont" ref="402395527"/>
-					</object>
-					<object class="IBUIButton" id="839223936">
-						<reference key="NSNextResponder" ref="191373211"/>
-						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{59, 234}, {200, 37}}</string>
-						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="924545042"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<object class="IBUIAccessibilityConfiguration" key="IBUIAccessibilityConfiguration">
@@ -143,29 +121,7 @@
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
 						<int key="IBUIButtonType">1</int>
-						<string key="IBUINormalTitle">Rate this trip</string>
-						<reference key="IBUIHighlightedTitleColor" ref="111309999"/>
-						<reference key="IBUINormalTitleColor" ref="702973050"/>
-						<reference key="IBUINormalTitleShadowColor" ref="1071880947"/>
-						<reference key="IBUIFontDescription" ref="1009064756"/>
-						<reference key="IBUIFont" ref="402395527"/>
-					</object>
-					<object class="IBUIButton" id="849214944">
-						<reference key="NSNextResponder" ref="191373211"/>
-						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{60, 279}, {200, 37}}</string>
-						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
-						<bool key="IBUIOpaque">NO</bool>
-						<object class="IBUIAccessibilityConfiguration" key="IBUIAccessibilityConfiguration">
-							<string key="IBUIAccessibilityLabel">Don't Save</string>
-						</object>
-						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<int key="IBUIContentHorizontalAlignment">0</int>
-						<int key="IBUIContentVerticalAlignment">0</int>
-						<int key="IBUIButtonType">1</int>
-						<string key="IBUINormalTitle">Send Receipt</string>
+						<string key="IBUINormalTitle">View Status</string>
 						<reference key="IBUIHighlightedTitleColor" ref="111309999"/>
 						<reference key="IBUINormalTitleColor" ref="702973050"/>
 						<reference key="IBUINormalTitleShadowColor" ref="1071880947"/>
@@ -188,6 +144,50 @@
 						<int key="IBUIContentVerticalAlignment">0</int>
 						<int key="IBUIButtonType">1</int>
 						<string key="IBUINormalTitle">Cancel This Order</string>
+						<reference key="IBUIHighlightedTitleColor" ref="111309999"/>
+						<reference key="IBUINormalTitleColor" ref="702973050"/>
+						<reference key="IBUINormalTitleShadowColor" ref="1071880947"/>
+						<reference key="IBUIFontDescription" ref="1009064756"/>
+						<reference key="IBUIFont" ref="402395527"/>
+					</object>
+					<object class="IBUIButton" id="839223936">
+						<reference key="NSNextResponder" ref="191373211"/>
+						<int key="NSvFlags">292</int>
+						<string key="NSFrame">{{59, 279}, {200, 37}}</string>
+						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="248603988"/>
+						<bool key="IBUIOpaque">NO</bool>
+						<object class="IBUIAccessibilityConfiguration" key="IBUIAccessibilityConfiguration">
+							<string key="IBUIAccessibilityLabel">Don't Save</string>
+						</object>
+						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+						<int key="IBUIContentHorizontalAlignment">0</int>
+						<int key="IBUIContentVerticalAlignment">0</int>
+						<int key="IBUIButtonType">1</int>
+						<string key="IBUINormalTitle">Rate this trip</string>
+						<reference key="IBUIHighlightedTitleColor" ref="111309999"/>
+						<reference key="IBUINormalTitleColor" ref="702973050"/>
+						<reference key="IBUINormalTitleShadowColor" ref="1071880947"/>
+						<reference key="IBUIFontDescription" ref="1009064756"/>
+						<reference key="IBUIFont" ref="402395527"/>
+					</object>
+					<object class="IBUIButton" id="849214944">
+						<reference key="NSNextResponder" ref="191373211"/>
+						<int key="NSvFlags">292</int>
+						<string key="NSFrame">{{59, 323}, {200, 37}}</string>
+						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
+						<bool key="IBUIOpaque">NO</bool>
+						<object class="IBUIAccessibilityConfiguration" key="IBUIAccessibilityConfiguration">
+							<string key="IBUIAccessibilityLabel">Don't Save</string>
+						</object>
+						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+						<int key="IBUIContentHorizontalAlignment">0</int>
+						<int key="IBUIContentVerticalAlignment">0</int>
+						<int key="IBUIButtonType">1</int>
+						<string key="IBUINormalTitle">Send Receipt</string>
 						<reference key="IBUIHighlightedTitleColor" ref="111309999"/>
 						<reference key="IBUINormalTitleColor" ref="702973050"/>
 						<reference key="IBUINormalTitleShadowColor" ref="1071880947"/>
