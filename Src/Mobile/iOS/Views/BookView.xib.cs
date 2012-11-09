@@ -31,7 +31,7 @@ using apcurium.MK.Booking.Mobile.Messages;
  
 namespace apcurium.MK.Booking.Mobile.Client
 {
-    public partial class BookView : MvxBindingTouchViewController<BookViewModel>
+    public partial class BookView : MvxBindingTouchViewController<BookViewModel> , INavigationView
     {
         #region Constructors
 
@@ -55,6 +55,15 @@ namespace apcurium.MK.Booking.Mobile.Client
             : base(request, nibName, bundle)
         {
         }
+
+        #region INavigationView implementation
+
+        public bool HideNavigationBar
+        {
+            get { return true;}
+        }
+
+        #endregion
 
         public CreateOrder BookingInfo
         {

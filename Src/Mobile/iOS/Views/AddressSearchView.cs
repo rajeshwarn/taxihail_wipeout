@@ -20,7 +20,7 @@ using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-	public partial class AddressSearchView : MvxBindingTouchViewController<AddressSearchViewModel>
+    public partial class AddressSearchView : MvxBindingTouchViewController<AddressSearchViewModel>, INavigationView
 	{
 		private const string CELLID = "AdressCell";
 
@@ -50,6 +50,10 @@ namespace apcurium.MK.Booking.Mobile.Client
         }	
 		#endregion
 
+        public bool HideNavigationBar
+        {
+            get { return true;}
+        }
 		public override void DidReceiveMemoryWarning ()
 		{
 			// Releases the view if it doesn't have a superview.
