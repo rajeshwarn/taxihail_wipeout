@@ -39,7 +39,7 @@ ClientDependency*/
 ClientBin*/
 *.userprefs
 *.pidb
-
+.DS_Store
 
 #NuGet
 packages/
