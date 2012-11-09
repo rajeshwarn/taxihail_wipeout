@@ -1010,6 +1010,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			get { return GetValue("RateBtn"); }
 		}
+		public static string ViewRatingBtn 
+		{
+			get { return GetValue("ViewRatingBtn"); }
+		}
 	}
 }
 

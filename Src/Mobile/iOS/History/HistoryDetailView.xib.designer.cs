@@ -70,6 +70,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		[Outlet]
 		MonoTouch.UIKit.UIButton btnRateTrip { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UIButton btnViewRating { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
@@ -171,6 +174,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 			if (btnRateTrip != null) {
 				btnRateTrip.Dispose ();
 				btnRateTrip = null;
+			}
+
+			if (btnViewRating != null) {
+				btnViewRating.Dispose ();
+				btnViewRating = null;
 			}
 		}
 	}

@@ -46,7 +46,7 @@
 						<string key="NSFrame">{{59, 190}, {200, 37}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="839223936"/>
+						<reference key="NSNextKeyView" ref="248603988"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<object class="IBUIAccessibilityConfiguration" key="IBUIAccessibilityConfiguration">
 							<string key="IBUIAccessibilityLabel">Save</string>
@@ -134,7 +134,7 @@
 						<string key="NSFrame">{{59, 279}, {200, 37}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="849214944"/>
+						<reference key="NSNextKeyView" ref="839223936"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<object class="IBUIAccessibilityConfiguration" key="IBUIAccessibilityConfiguration">
 							<string key="IBUIAccessibilityLabel">Don't Save</string>
@@ -156,7 +156,7 @@
 						<string key="NSFrame">{{59, 279}, {200, 37}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="248603988"/>
+						<reference key="NSNextKeyView" ref="849214944"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<object class="IBUIAccessibilityConfiguration" key="IBUIAccessibilityConfiguration">
 							<string key="IBUIAccessibilityLabel">Don't Save</string>
@@ -172,13 +172,35 @@
 						<reference key="IBUIFontDescription" ref="1009064756"/>
 						<reference key="IBUIFont" ref="402395527"/>
 					</object>
+					<object class="IBUIButton" id="387583122">
+						<reference key="NSNextResponder" ref="191373211"/>
+						<int key="NSvFlags">292</int>
+						<string key="NSFrame">{{59, 279}, {200, 37}}</string>
+						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
+						<bool key="IBUIOpaque">NO</bool>
+						<object class="IBUIAccessibilityConfiguration" key="IBUIAccessibilityConfiguration">
+							<string key="IBUIAccessibilityLabel">Don't Save</string>
+						</object>
+						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+						<int key="IBUIContentHorizontalAlignment">0</int>
+						<int key="IBUIContentVerticalAlignment">0</int>
+						<int key="IBUIButtonType">1</int>
+						<string key="IBUINormalTitle">View Rating</string>
+						<reference key="IBUIHighlightedTitleColor" ref="111309999"/>
+						<reference key="IBUINormalTitleColor" ref="702973050"/>
+						<reference key="IBUINormalTitleShadowColor" ref="1071880947"/>
+						<reference key="IBUIFontDescription" ref="1009064756"/>
+						<reference key="IBUIFont" ref="402395527"/>
+					</object>
 					<object class="IBUIButton" id="849214944">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{59, 323}, {200, 37}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
+						<reference key="NSNextKeyView" ref="387583122"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<object class="IBUIAccessibilityConfiguration" key="IBUIAccessibilityConfiguration">
 							<string key="IBUIAccessibilityLabel">Don't Save</string>
@@ -697,6 +719,14 @@
 					</object>
 					<int key="connectionID">57</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">btnViewRating</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="387583122"/>
+					</object>
+					<int key="connectionID">59</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -734,6 +764,7 @@
 							<reference ref="849214944"/>
 							<reference ref="924545042"/>
 							<reference ref="839223936"/>
+							<reference ref="387583122"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -848,6 +879,11 @@
 						<reference key="object" ref="839223936"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">58</int>
+						<reference key="object" ref="387583122"/>
+						<reference key="parent" ref="191373211"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -881,6 +917,8 @@
 					<string>50.IBPluginDependency</string>
 					<string>56.CustomClassName</string>
 					<string>56.IBPluginDependency</string>
+					<string>58.CustomClassName</string>
+					<string>58.IBPluginDependency</string>
 					<string>8.CustomClassName</string>
 					<string>8.IBPluginDependency</string>
 					<string>9.CustomClassName</string>
@@ -919,6 +957,8 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>GradientButton</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>GradientButton</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="unlocalizedProperties">
@@ -933,7 +973,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">57</int>
+			<int key="maxID">59</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -959,6 +999,7 @@
 							<string>btnRebook</string>
 							<string>btnSendReceipt</string>
 							<string>btnStatus</string>
+							<string>btnViewRating</string>
 							<string>lblAptRingCode</string>
 							<string>lblConfirmationNo</string>
 							<string>lblDestination</string>
@@ -982,6 +1023,7 @@
 							<string>UIButton</string>
 							<string>UIButton</string>
 							<string>UIButton</string>
+							<string>GradientButton</string>
 							<string>UILabel</string>
 							<string>UILabel</string>
 							<string>UILabel</string>
@@ -1008,6 +1050,7 @@
 							<string>btnRebook</string>
 							<string>btnSendReceipt</string>
 							<string>btnStatus</string>
+							<string>btnViewRating</string>
 							<string>lblAptRingCode</string>
 							<string>lblConfirmationNo</string>
 							<string>lblDestination</string>
@@ -1048,6 +1091,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">btnStatus</string>
 								<string key="candidateClassName">UIButton</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">btnViewRating</string>
+								<string key="candidateClassName">GradientButton</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">lblAptRingCode</string>

@@ -61,17 +61,20 @@ namespace apcurium.MK.Booking.Mobile.Client
             btnStatus.SetTitle(Resources.HistoryViewStatusButton, UIControlState.Normal);
 			btnSendReceipt.SetTitle (Resources.HistoryViewSendReceiptButton, UIControlState.Normal);
 			btnRateTrip.SetTitle(Resources.RateBtn, UIControlState.Normal);
+			btnViewRating.SetTitle(Resources.ViewRatingBtn, UIControlState.Normal);
 		    AppButtons.FormatStandardButton((GradientButton)btnHide, Resources.DeleteButton, AppStyle.ButtonColor.Red );
 
             btnCancel.TouchUpInside += CancelTouchUpInside;
             btnStatus.TouchUpInside += StatusTouchUpInside;
 			btnSendReceipt.TouchUpInside += SendReceiptTouchUpInside;
 			btnRateTrip.TouchUpInside += RateTripTouchUpInside;
+			btnViewRating.TouchUpInside += ViewRatingTouchUpInside;
             
             btnCancel.Hidden = true;
             btnStatus.Hidden = true;
 			btnSendReceipt.Hidden = true;
 			btnRateTrip.Hidden = true;
+			btnViewRating.Hidden = true;
             
             
             btnHide.TouchUpInside += HideTouchUpInside;          
@@ -155,8 +158,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		void RateTripTouchUpInside (object sender, EventArgs e)
 		{
-			var dispatch = TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
-			dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(BookRatingViewModel), null, true, MvxRequestedBy.UserAction));
+			ViewModel.NavigateToRatingPage.Execute();
+		}
+
+		void ViewRatingTouchUpInside (object sender, EventArgs e)
+		{
+			ViewModel.NavigateToRatingPage.Execute();
 		}
 
         void RebookTouched(object sender, EventArgs e)
@@ -218,7 +225,8 @@ namespace apcurium.MK.Booking.Mobile.Client
                     btnCancel.Hidden = isCompleted;
                     btnStatus.Hidden = isCompleted;
 				    btnHide.Hidden = !isCompleted;
-					btnRateTrip.Hidden = !isDone;
+					btnRateTrip.Hidden = !(isDone && !ViewModel.HasRated);
+					btnViewRating.Hidden = !(isDone && ViewModel.HasRated);
 				    btnSendReceipt.Hidden = !status.FareAvailable;
             	});
 			});
