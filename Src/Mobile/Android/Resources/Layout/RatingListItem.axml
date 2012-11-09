@@ -8,14 +8,14 @@
     android:paddingBottom="2dip">
     <TextView
         android:id="@+id/RatingTypeNameId"
-        style="@style/GrayText"
         android:layout_width="110dp"
         android:layout_height="wrap_content"
-        local:MvxBind="{'Text':{'Path':'RatingTypeName'}}"
+        local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;RatingTypeName&apos;}}"
         android:layout_gravity="center_horizontal"
-        android:textAppearance="@style/ListTitle"
         android:gravity="left"
-        android:layout_marginRight="75dip" />
+        android:layout_marginRight="75dip"
+        android:text="salut"
+        android:textAppearance="@style/ListTitle" />
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
@@ -32,7 +32,7 @@
             android:padding="7dip"
             android:layout_marginTop="1dip"
             android:tag="Mad"
-            local:MvxBind="{'SelectedChangedCommand':{'Path':'SetRateCommand'},'Selected':{'Path':'MadSelected'},'Enabled':{'Path':'CanRating'}}"
+            local:MvxBind="{&apos;SelectedChangedCommand&apos;:{&apos;Path&apos;:&apos;SetRateCommand&apos;},&apos;Selected&apos;:{&apos;Path&apos;:&apos;MadSelected&apos;},&apos;Enabled&apos;:{&apos;Path&apos;:&apos;CanRating&apos;}}"
             android:layout_marginRight="15dip" />
         <apcurium.mk.booking.mobile.client.controls.BindableSelectionButton
             android:id="@+id/RatingScore2"
@@ -43,7 +43,7 @@
             android:padding="7dip"
             android:layout_marginTop="1dip"
             android:tag="Unhappy"
-            local:MvxBind="{'SelectedChangedCommand':{'Path':'SetRateCommand'},'Selected':{'Path':'UnhappySelected'},'Enabled':{'Path':'CanRating'}}"
+            local:MvxBind="{&apos;SelectedChangedCommand&apos;:{&apos;Path&apos;:&apos;SetRateCommand&apos;},&apos;Selected&apos;:{&apos;Path&apos;:&apos;UnhappySelected&apos;},&apos;Enabled&apos;:{&apos;Path&apos;:&apos;CanRating&apos;}}"
             android:layout_marginRight="15dip" />
         <apcurium.mk.booking.mobile.client.controls.BindableSelectionButton
             android:id="@+id/RatingScore3"
@@ -54,7 +54,7 @@
             android:padding="7dip"
             android:layout_marginTop="1dip"
             android:tag="Neutral"
-            local:MvxBind="{'SelectedChangedCommand':{'Path':'SetRateCommand'},'Selected':{'Path':'NeutralSelected'},'Enabled':{'Path':'CanRating'}}"
+            local:MvxBind="{&apos;SelectedChangedCommand&apos;:{&apos;Path&apos;:&apos;SetRateCommand&apos;},&apos;Selected&apos;:{&apos;Path&apos;:&apos;NeutralSelected&apos;},&apos;Enabled&apos;:{&apos;Path&apos;:&apos;CanRating&apos;}}"
             android:layout_marginRight="15dip" />
         <apcurium.mk.booking.mobile.client.controls.BindableSelectionButton
             android:id="@+id/RatingScore4"
@@ -65,7 +65,7 @@
             android:padding="7dip"
             android:layout_marginTop="1dip"
             android:tag="Happy"
-            local:MvxBind="{'SelectedChangedCommand':{'Path':'SetRateCommand'},'Selected':{'Path':'HappySelected'},'Enabled':{'Path':'CanRating'}}"
+            local:MvxBind="{&apos;SelectedChangedCommand&apos;:{&apos;Path&apos;:&apos;SetRateCommand&apos;},&apos;Selected&apos;:{&apos;Path&apos;:&apos;HappySelected&apos;},&apos;Enabled&apos;:{&apos;Path&apos;:&apos;CanRating&apos;}}"
             android:layout_marginRight="15dip" />
         <apcurium.mk.booking.mobile.client.controls.BindableSelectionButton
             android:id="@+id/RatingScore5"
@@ -76,6 +76,6 @@
             android:padding="7dip"
             android:layout_marginTop="1dip"
             android:tag="Ecstatic"
-            local:MvxBind="{'SelectedChangedCommand':{'Path':'SetRateCommand'},'Selected':{'Path':'EcstaticSelected'},'Enabled':{'Path':'CanRating'}}" />
+            local:MvxBind="{&apos;SelectedChangedCommand&apos;:{&apos;Path&apos;:&apos;SetRateCommand&apos;},&apos;Selected&apos;:{&apos;Path&apos;:&apos;EcstaticSelected&apos;},&apos;Enabled&apos;:{&apos;Path&apos;:&apos;CanRating&apos;}}" />
     </LinearLayout>
 </LinearLayout>
