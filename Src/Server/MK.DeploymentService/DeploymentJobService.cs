@@ -80,12 +80,12 @@ namespace MK.DeploymentService
                     //build server and deploy
                     if (job.DeployServer || job.DeployDB)
                     {
-                        var directory = sourceDirectory;
+                        var packagesDirectory = Path.Combine(sourceDirectory, "Deployment\\Server\\Package\\");
                         if (Properties.Settings.Default.Mode != "Build")
                         {
-                            directory = Properties.Settings.Default.DeployFolder;
+                            packagesDirectory = Properties.Settings.Default.DeployFolder;
                         }
-                        DeployTaxiHail(job, directory);
+                        DeployTaxiHail(job, packagesDirectory);
                         logger.DebugFormat("Job Done");
                     }
 
@@ -187,7 +187,7 @@ namespace MK.DeploymentService
             }
         }
 
-        private void DeployTaxiHail(DeploymentJob job, string sourceDirectory)
+        private void DeployTaxiHail(DeploymentJob job, string packagesDirectory)
         {
             logger.DebugFormat("Deploying");
             var companyName = job.Company.ConfigurationProperties["TaxiHail.ServerCompanyName"];
@@ -205,17 +205,17 @@ namespace MK.DeploymentService
 
             if (job.DeployDB)
             {
-                DeployDataBase(job, sourceDirectory, companyName);
+                DeployDataBase(job, packagesDirectory, companyName);
             }
 
             if (job.DeployServer)
             {
-                DeployServer(job, companyName, sourceDirectory, iisManager);
+                DeployServer(job, companyName, packagesDirectory, iisManager);
             }
             appPool.Start();
         }
 
-        private void DeployDataBase(DeploymentJob job, string sourceDirectory, string companyName)
+        private void DeployDataBase(DeploymentJob job, string packagesDirectory, string companyName)
         {
             logger.DebugFormat("Deploying DB");
             var jsonSettings = new JObject();
@@ -228,7 +228,7 @@ namespace MK.DeploymentService
             jsonSettings.Add("IBS.WebServicesUserName", JToken.FromObject(job.IBSServer.Username));
             jsonSettings.Add("IBS.WebServicesPassword", JToken.FromObject(job.IBSServer.Password));
 
-            var fileSettings = Path.Combine(sourceDirectory, "Deployment\\Server\\Package\\DatabaseInitializer\\Settings\\") +
+            var fileSettings = Path.Combine(packagesDirectory, "DatabaseInitializer\\Settings\\") +
                                companyName + ".json";
             var stringBuilder = new StringBuilder();
             jsonSettings.WriteTo(new JsonTextWriter(new StringWriter(stringBuilder)));
@@ -236,9 +236,7 @@ namespace MK.DeploymentService
 
             var deployDB = new ProcessStartInfo
                                {
-                                   FileName =
-                                       Path.Combine(sourceDirectory, "Deployment\\Server\\Package\\DatabaseInitializer\\") +
-                                       "DatabaseInitializer.exe",
+                                   FileName = Path.Combine(packagesDirectory, "DatabaseInitializer\\") +"DatabaseInitializer.exe",
                                    WindowStyle = ProcessWindowStyle.Hidden,
                                    UseShellExecute = false,
                                    LoadUserProfile = true,
@@ -258,7 +256,7 @@ namespace MK.DeploymentService
             }
         }
 
-        private void DeployServer(DeploymentJob job, string companyName, string sourceDirectory, ServerManager iisManager)
+        private void DeployServer(DeploymentJob job, string companyName, string packagesDirectory, ServerManager iisManager)
         {
             logger.DebugFormat("Deploying IIS");
             var subFolder = job.Company.ConfigurationProperties["TaxiHail.Version"] + job.Revision + "\\";
@@ -270,7 +268,7 @@ namespace MK.DeploymentService
             }
             Directory.CreateDirectory(targetWeDirectory);
 
-            var sourcePath = Path.Combine(sourceDirectory, @"Deployment\Server\Package\WebSites\");
+            var sourcePath = Path.Combine(packagesDirectory, @"WebSites\");
 
             foreach (var dirPath in Directory.GetDirectories(sourcePath, "*", SearchOption.AllDirectories))
                 Directory.CreateDirectory(dirPath.Replace(sourcePath, targetWeDirectory));
