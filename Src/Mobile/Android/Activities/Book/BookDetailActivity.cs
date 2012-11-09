@@ -55,7 +55,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             
             var data = SerializerHelper.DeserializeObject<CreateOrder>(this.ViewModel.Order);
             BookingInfo = data;
-
             var account = TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount;
             var currentSettings = account.Settings;
             BookingInfo.Settings = currentSettings;

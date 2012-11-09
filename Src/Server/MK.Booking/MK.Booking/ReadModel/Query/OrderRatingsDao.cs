@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
                 {
                     OrderId = orderRatingDetails.OrderId,
                     Note = orderRatingDetails.Note,
-                    RatingScores = ratingScoreDetails.Select(s => new RatingScore { RatingTypeId = s.RatingTypeId, Score = s.Score }).ToList()
+                    RatingScores = ratingScoreDetails.Select(s => new RatingScore { RatingTypeId = s.RatingTypeId, Score = s.Score, Name = s.Name}).ToList()
                 };
         }
     }

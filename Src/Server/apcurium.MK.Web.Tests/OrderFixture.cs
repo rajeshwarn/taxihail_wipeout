@@ -166,8 +166,8 @@ namespace apcurium.MK.Web.Tests
                     Note = "Note",
                     RatingScores = new List<RatingScore>
                                         {
-                                            new RatingScore {RatingTypeId = Guid.NewGuid(), Score = 1},
-                                            new RatingScore {RatingTypeId = Guid.NewGuid(), Score = 2}
+                                            new RatingScore {RatingTypeId = Guid.NewGuid(), Score = 1, Name = "Politness"},
+                                            new RatingScore {RatingTypeId = Guid.NewGuid(), Score = 2, Name = "Safety"}
                                         }
                 };
 

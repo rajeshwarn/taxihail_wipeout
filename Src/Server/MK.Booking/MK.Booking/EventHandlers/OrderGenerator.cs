@@ -85,7 +85,8 @@ namespace apcurium.MK.Booking.EventHandlers
                         Id = Guid.NewGuid(),
                         OrderId = @event.SourceId,
                         Score = ratingScore.Score,
-                        RatingTypeId = ratingScore.RatingTypeId
+                        RatingTypeId = ratingScore.RatingTypeId,
+                        Name = ratingScore.Name
                     });
                 }
 
