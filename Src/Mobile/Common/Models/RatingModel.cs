@@ -100,36 +100,34 @@ namespace apcurium.MK.Booking.Mobile.Models
             get
             {
                 return new MvxRelayCommand<object>(param => {
-					param.Maybe(tag =>
-                                                                            {
-                                                                                
-                                                                                RatingState state;
-                                                         if (Enum.TryParse(tag.ToString(), true, out state))
-                                                         {
-                                                             
-                                                             Score = (int)state;
-                                                             DeselectAllState();
-                                                             switch (state)
-                                                             {
-                                                                 case RatingState.Mad:
-                                                                     MadSelected = true;
-                                                                     break;
-                                                                 case RatingState.Unhappy:
-                                                                     UnhappySelected = true;
-                                                                     break;
-                                                                 case RatingState.Neutral:
-                                                                     NeutralSelected = true;
-                                                                     break;
-                                                                 case RatingState.Happy:
-                                                                     HappySelected = true;
-                                                                     break;
-                                                                 case RatingState.Ecstatic:
-                                                                     EcstaticSelected = true;
-                                                                     break;
-                                                             }
-                                                         }
-                                                                            }
-					);});
+					RatingState state;
+					if(CanRating
+					   && param != null
+					   && Enum.TryParse(param.ToString(), true, out state))
+					{
+
+						Score = (int)state;
+						DeselectAllState();
+						switch (state)
+						{
+							case RatingState.Mad:
+						    	MadSelected = true;
+						    	break;
+							case RatingState.Unhappy:
+						    	UnhappySelected = true;
+						    	break;
+							case RatingState.Neutral:
+						    	NeutralSelected = true;
+						     	break;
+						 	case RatingState.Happy:
+						     	HappySelected = true;
+						     	break;
+						 	case RatingState.Ecstatic:
+						     	EcstaticSelected = true;
+						     	break;
+						}
+					}
+				});
             }
         }
     }

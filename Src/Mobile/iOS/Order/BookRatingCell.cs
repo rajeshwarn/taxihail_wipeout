@@ -7,6 +7,7 @@ using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using MonoTouch.ObjCRuntime;
 using Cirrious.MvvmCross.Interfaces.Commands;
+using apcurium.Framework.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -15,6 +16,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public static NSString Identifier = new NSString("BookRatingCell");
 		public const string BindingText = @"{'RatingTypeName':{'Path':'RatingTypeName'},
 'SetRateCommand': {'Path': 'SetRateCommand'},
+'CanRate': {'Path': 'CanRating'},
 'MadSelected': {'Path': 'MadSelected'},
 'UnhappySelected': {'Path': 'UnhappySelected'},
 'NeutralSelected': {'Path': 'NeutralSelected'},
@@ -103,6 +105,16 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public IMvxCommand SetRateCommand {
 			get ;
 			set ;
+		}
+
+		private bool _canRate = true;
+		public bool CanRate {
+			get {
+				return _canRate;
+			}
+			set {
+				_canRate = value;
+			}
 		}
 
 		private void OnMadBtnTouchUpInside (object sender, EventArgs args)
