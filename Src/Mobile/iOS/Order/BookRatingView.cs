@@ -57,7 +57,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			};
 					
 			this.AddBindings(new Dictionary<object, string>()                            {
-				{ submitRatingBtn, "{'TouchUpInside':{'Path':'RateOrder'}, 'Hidden':{'Path': 'CanRating', 'Converter':'BoolInverter'}}"},                
+				{ submitRatingBtn, "{'TouchUpInside':{'Path':'RateOrder'}, 'Hidden':{'Path': 'CanRating', 'Converter':'BoolInverter'}, 'Enabled': {'Path': 'CanSubmit'}}"},                
 				{ source, "{'ItemsSource':{'Path':'RatingList'}}" }
 			});
 

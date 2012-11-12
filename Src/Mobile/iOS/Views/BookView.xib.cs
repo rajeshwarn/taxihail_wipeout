@@ -84,6 +84,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             AppButtons.FormatStandardButton((GradientButton)refreshCurrentLocationButton, "", AppStyle.ButtonColor.Blue, "");
 			AppButtons.FormatStandardButton((GradientButton)cancelBtn, "", AppStyle.ButtonColor.Red, "Assets/cancel.png");
 
+			TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub>().Subscribe<StatusCloseRequested>(OnStatusCloseRequested);
+
 			TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub>().Subscribe<RebookRequested>( msg => {
 				ViewModel.Rebook( msg.Content );
 			});
@@ -193,7 +195,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         }
 
 
-        private void RemoveStatusView()
+        /*private void RemoveStatusView()
         {
             if (_statusView != null)
             {
@@ -206,27 +208,26 @@ namespace apcurium.MK.Booking.Mobile.Client
                 {
                 }
             }
-        }
+        }*/
 
         private void LoadStatusView(Order order, OrderStatusDetail status, bool closeScreenWhenCompleted)
         {
             InvokeOnMainThread(() => {
-                RemoveStatusView();
-                _statusView = new StatusView(this, order, status, closeScreenWhenCompleted);
-                _statusView.HidesBottomBarWhenPushed = true;
-                _statusView.CloseRequested += delegate(object sender, EventArgs e)
+                //RemoveStatusView();
+				var param = new Dictionary<string, object>() {{"order", order}, {"orderInfo", status}};
+				ViewModel.NavigateToOrderStatus.Execute(param);
+
+
+                //_statusView = new StatusView(this, order, status, closeScreenWhenCompleted);
+                //_statusView.HidesBottomBarWhenPushed = true;
+                /*_statusView.CloseRequested += delegate(object sender, EventArgs e)
                 {
                     RemoveStatusView();
-                    AppContext.Current.LastOrder = null;
-					NavigationController.NavigationBar.Hidden = true;
-					this.NavigationController.PopToRootViewController(true);
-					ViewModel.Reset();
-					ViewModel.Dropoff.ClearAddress();
-					ViewModel.Initialize();
+                    
 
-                };
+                };*/
 
-                NavigationController.PushViewController(_statusView, true);
+                //NavigationController.PushViewController(_statusView, true);
             }); 
         }
 
@@ -247,6 +248,16 @@ namespace apcurium.MK.Booking.Mobile.Client
                 }
             }
         }
+
+		private void OnStatusCloseRequested(StatusCloseRequested msg)
+		{
+			AppContext.Current.LastOrder = null;
+			NavigationController.NavigationBar.Hidden = true;
+			this.NavigationController.PopToRootViewController(true);
+			ViewModel.Reset();
+			ViewModel.Dropoff.ClearAddress();
+			ViewModel.Initialize();
+		}
 
         public void BookTaxi()
         {

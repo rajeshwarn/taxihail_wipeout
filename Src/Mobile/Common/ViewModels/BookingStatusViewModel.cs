@@ -40,6 +40,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+		public bool CloseScreenWhenCompleted {
+			get;
+			set;
+		}
+
         private bool _showRatingButton;
 
         public bool ShowRatingButton
@@ -73,6 +78,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Order = orderWithStatus.Order;
             OrderStatusDetail = orderWithStatus.OrderStatusDetail;
             ShowRatingButton = true;
+			//CloseScreenWhenCompleted = bool.Parse(closeScreenWhenCompleted);
         }
 
         public MvxRelayCommand NavigateToRatingPage

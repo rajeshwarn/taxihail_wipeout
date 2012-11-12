@@ -43,6 +43,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         }
 
+		private bool _canSubmit;
+		public bool CanSubmit
+		{
+			get
+			{
+				return _canSubmit;
+			}
+			set
+			{
+				if(value != _canSubmit)
+				{
+					_canSubmit = value;
+					FirePropertyChanged("CanSubmit");
+				}
+			}
+			
+		}
+
         private string _orderId;
 
         public string OrderId
@@ -62,10 +80,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
        
 
-        public BookRatingViewModel(string orderId, string canRate="false")
-        {
-            var ratingTypes = TinyIoCContainer.Current.Resolve<IBookingService>().GetRatingType();
+        public BookRatingViewModel (string orderId, string canRate="false")
+		{
+			var ratingTypes = TinyIoCContainer.Current.Resolve<IBookingService> ().GetRatingType ();
             RatingList = ratingTypes.Select(c => new RatingModel(canRate: bool.Parse(canRate)) { RatingTypeId = c.Id, RatingTypeName = c.Name }).OrderBy(c=>c.RatingTypeId).ToList();
+			foreach (var rating in RatingList) {
+				rating.PropertyChanged += HandleRatingPropertyChanged;
+			}
+
+
             OrderId = orderId;
             CanRating = bool.Parse(canRate);
             if(!CanRating)
@@ -75,8 +98,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 RatingList = orderRatings.RatingScores.Select(c=> new RatingModel(canRate:false){RatingTypeId = c.RatingTypeId,Score = c.Score,RatingTypeName = c.Name}).OrderBy(c=>c.RatingTypeId).ToList();
 
             }
-            //RatingList.Sort(new Comparison<RatingModel>(
-              //                  (model, ratingModel) => model.RatingTypeId.CompareTo(ratingModel.RatingTypeId)));
+        }
+
+        void HandleRatingPropertyChanged (object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+			this.CanSubmit = _ratingList.All(c => c.Score != 0);
         }
 
         public IMvxCommand RateOrder

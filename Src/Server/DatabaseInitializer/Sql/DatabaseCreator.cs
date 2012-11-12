@@ -23,7 +23,7 @@ namespace DatabaseInitializer.Sql
 
             var oldSuffixe = DatabaseHelper.ExecuteScalarQuery(connectionString, "DECLARE @DATABASE_ID int " +
                                 "SET @DATABASE_ID = (SELECT database_id FROM master.sys.databases where name='" + databaseName + "') " +
-                                "SELECT SUBSTRING( name, (CHARINDEX(N'" + databaseName + "', LOWER(name)) + 5),  LEN(name)) " +
+                                "SELECT SUBSTRING( name, (CHARINDEX(N'" + databaseName + "', LOWER(name)) + " + databaseName.Length + "),  LEN(name)) " +
                                 "FROM master.sys.master_files " +
                                 "WHERE database_id = @DATABASE_ID AND file_id = 1");
 
