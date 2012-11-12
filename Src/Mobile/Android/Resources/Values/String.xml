@@ -90,7 +90,7 @@
   <string name="CreateAccountEmail">Email:</string>
   <string name="CreateAccountTitle">Title:</string>
   <string name="CreateAccountFullName">Full Name</string>
-  <string name="CreateAccountPhone">Phone</string>
+  <string name="CreateAccountPhone">Mobile</string>
   <string name="CreateAccountMobile">Mobile:</string>
   <string name="CreateAccountLanguage">Language:</string>
   <string name="CreateAccountLanguageEn">English</string>
@@ -179,7 +179,7 @@
   <string name="CreateAccoutTitleLabel">Title:</string>
   <string name="CreateAccoutFirstNameLabel">First name:</string>
   <string name="CreateAccoutLastNameLabel">Last name:</string>
-  <string name="CreateAccoutPhoneNumberLabel">Phone:</string>
+  <string name="CreateAccoutPhoneNumberLabel">Mobile:</string>
   <string name="CreateAccoutMobileLabel">Mobile:</string>
   <string name="CreateAccoutLanguageLabel">Language:</string>
   <string name="CreateAccoutPasswordLabel">Password:</string>

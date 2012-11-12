@@ -94,7 +94,7 @@
   "CreateAccountEmail"="Email:";
   "CreateAccountTitle"="Title:";
   "CreateAccountFullName"="Full Name";
-  "CreateAccountPhone"="Phone";
+  "CreateAccountPhone"="Mobile";
   "CreateAccountMobile"="Mobile:";
   "CreateAccountLanguage"="Language:";
   "CreateAccountLanguageEn"="English";
@@ -185,7 +185,7 @@
   "CreateAccoutTitleLabel"="Title:";
   "CreateAccoutFirstNameLabel"="First name:";
   "CreateAccoutLastNameLabel"="Last name:";
-  "CreateAccoutPhoneNumberLabel"="Phone:";
+  "CreateAccoutPhoneNumberLabel"="Mobile:";
   "CreateAccoutMobileLabel"="Mobile:";
   "CreateAccoutLanguageLabel"="Language:";
   "CreateAccoutPasswordLabel"="Password:";
