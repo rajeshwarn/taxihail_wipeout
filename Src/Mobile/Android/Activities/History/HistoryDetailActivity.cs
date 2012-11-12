@@ -130,7 +130,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            ThreadHelper.ExecuteInThread(this, () =>
+            /*ThreadHelper.ExecuteInThread(this, () =>
             {
                 if (Common.Extensions.GuidExtensions.HasValue(_data.Id))
                 {
@@ -139,7 +139,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
                 
 
                 RunOnUiThread(() => Finish());
-            }, true);
+            }, true);*/
+            this.ViewModel.DeleteOrder.Execute(_data.Id);
         }
 
 

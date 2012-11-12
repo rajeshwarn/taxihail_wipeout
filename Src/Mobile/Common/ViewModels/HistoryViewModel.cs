@@ -1,12 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.Interfaces.Commands;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Views;
 using TinyIoC;
+using TinyMessenger;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -15,9 +20,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     {
         //TODO : a remplacer quand les strings seront globalisee
         private const string titleFormat = "Order #{0} ({1:ddd, MMM d}, {1:h:mm tt})";
-        private List<OrderViewModel> _orders;
+        private ObservableCollection<OrderViewModel> _orders;
 
-        public List<OrderViewModel> Orders
+        public ObservableCollection<OrderViewModel> Orders
         {
             get { return _orders; }
             set { _orders = value; FirePropertyChanged("Orders"); }
@@ -25,8 +30,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public HistoryViewModel()
         {
             IEnumerable<Order> orders = new Order[0];
-            orders = TinyIoCContainer.Current.Resolve<IAccountService>().GetHistoryOrders().ToList();
-            Orders = orders.Select(x =>
+
+            orders = new ObservableCollection<Order>(TinyIoCContainer.Current.Resolve<IAccountService>().GetHistoryOrders().ToList());
+            Orders = new ObservableCollection<OrderViewModel>(orders.Select(x =>
                                        {
                                           
                                            return new OrderViewModel()
@@ -42,7 +48,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                                    ShowRightArrow = true
                                                };
                                        }
-                                       ).ToList();
+                                       ).ToList());
         }
 
 
