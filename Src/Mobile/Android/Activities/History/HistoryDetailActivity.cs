@@ -55,11 +55,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
             var btnSendReceipt = FindViewById<Button>(Resource.Id.SendReceiptBtn);
             var btnDelete = FindViewById<Button>(Resource.Id.HistoryOrderDeleteBtn);
 
-            btnCancel.Visibility = ViewStates.Gone;
             btnStatus.Visibility = ViewStates.Gone;
             btnSendReceipt.Visibility = ViewStates.Gone;
 
-            btnCancel.Click += new EventHandler(btnCancel_Click);
             btnStatus.Click += new EventHandler(btnStatus_Click);
             btnRebook.Click += new EventHandler(btnRebook_Click);
             btnSendReceipt.Click += new EventHandler(btnSendReceipt_Click);
@@ -129,51 +127,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
 
         void btnStatus_Click(object sender, EventArgs e)
         {
-
-            /*Intent i = new Intent(this, typeof(BookingStatusActivity));
-
-            OrderStatusDetail orderInfo = new OrderStatusDetail { IBSOrderId = _data.IBSOrderId, IBSStatusDescription = "Loading...", IBSStatusId = "", OrderId = _data.Id, Status = OrderStatus.Unknown, VehicleLatitude = null, VehicleLongitude = null };
-
-            var serialized = _data.Serialize();
-            i.PutExtra("Order", serialized);
-
-            serialized = orderInfo.Serialize();
-            i.PutExtra("OrderStatusDetail", serialized);
-
-
-            StartActivityForResult(i, 101);*/
             var orderInfo = new OrderStatusDetail { IBSOrderId = ViewModel.Order.IBSOrderId, IBSStatusDescription = "Loading...", IBSStatusId = "", OrderId = ViewModel.OrderId, Status = OrderStatus.Unknown, VehicleLatitude = null, VehicleLongitude = null };
             var param = new Dictionary<string, object>() { { "order", ViewModel.Order }, { "orderInfo", orderInfo } };
             ViewModel.NavigateToOrderStatus.Execute(param);
-            //Intent intent = new Intent();
-            //intent.SetFlags(ActivityFlags.ForwardResult);
-            //intent.PutExtra("Book", _data.Id.ToString());
-            //SetResult(Result.Ok, intent);
-            //Finish();
-        }
-
-        void btnCancel_Click(object sender, EventArgs e)
-        {
-            var newBooking = new Confirmation();
-            newBooking.Action(this, Resource.String.StatusConfirmCancelRide, () =>
-            {
-                ThreadHelper.ExecuteInThread(this, () =>
-                {
-                    var isSuccess = TinyIoCContainer.Current.Resolve<IBookingService>().CancelOrder(ViewModel.OrderId);
-                    if (isSuccess)
-                    {
-                        RefreshStatus();
-                    }
-                    else
-                    {
-                        RunOnUiThread(() =>
-                            {
-                                this.ShowAlert(Resources.GetString(Resource.String.StatusConfirmCancelRideErrorTitle), Resources.GetString(Resource.String.StatusConfirmCancelRideError));
-                            });
-                    }
-
-                }, false);
-            });
         }
 
         private void RefreshStatus()
@@ -187,12 +143,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
             RunOnUiThread(() =>
             {
                 FindViewById<TextView>(Resource.Id.StatusTxt).Text = ViewModel.Status.IBSStatusDescription;
-                var btnCancel = FindViewById<Button>(Resource.Id.CancelTripBtn);
                 var btnStatus = FindViewById<Button>(Resource.Id.StatusBtn);
                 var btnDelete = FindViewById<Button>(Resource.Id.HistoryOrderDeleteBtn);
                 var btnSendReceipt = FindViewById<Button>(Resource.Id.SendReceiptBtn);
 
-                btnCancel.Visibility = isCompleted ? ViewStates.Gone : ViewStates.Visible;
                 btnStatus.Visibility = isCompleted ? ViewStates.Gone : ViewStates.Visible;
                 btnDelete.Visibility = isCompleted ? ViewStates.Visible : ViewStates.Gone;
                 btnSendReceipt.Visibility = ViewModel.Status.FareAvailable ? ViewStates.Visible : ViewStates.Gone;

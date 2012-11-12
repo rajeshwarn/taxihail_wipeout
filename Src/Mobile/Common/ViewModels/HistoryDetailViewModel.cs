@@ -176,5 +176,33 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 });
             }
         }
+
+        public IMvxCommand CancelOrder
+        {
+            get
+            { 
+                return new MvxRelayCommand(()=>
+                {
+                    var messageService = TinyIoCContainer.Current.Resolve<IMessageService>();
+                    var resources = TinyIoCContainer.Current.Resolve<IAppResource>();
+                    messageService.ShowMessage(string.Empty, resources.GetString("StatusConfirmCancelRide"), resources.GetString("YesButton"), () =>
+                    {
+                        var bookingService = TinyIoCContainer.Current.Resolve<IBookingService>();
+                        var isSuccess = bookingService.CancelOrder(OrderId);
+
+                        if(isSuccess)
+                        {
+                            LoadStatus();
+                        }
+                        else
+                        {
+                            InvokeOnMainThread(() => messageService.ShowMessage(resources.GetString("StatusConfirmCancelRideErrorTitle"), resources.GetString("StatusConfirmCancelRideError")));
+                        }
+                    },
+                    resources.GetString("NoButton"), () => { });                          
+                }); 
+            }
+        }
+
     }
 }

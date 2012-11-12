@@ -210,7 +210,7 @@
                     android:text="@string/StatusActionCancelButton"
                     android:layout_width="fill_parent"
                     android:layout_height="40dip"
-                    local:MvxBind="{'Visibility': { 'Path': 'CanCancel', 'Converter': 'Visibility' }}"
+                    local:MvxBind="{'Click': {'Path': 'CancelOrder'}, 'Visibility': { 'Path': 'CanCancel', 'Converter': 'Visibility' }}"
                     />
                 <Button
                     android:paddingTop="5dip"
