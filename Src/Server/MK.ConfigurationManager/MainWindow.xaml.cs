@@ -101,7 +101,7 @@ namespace MK.ConfigurationManager
             TaxiHailEnvironments.CollectionChanged += TaxiHailEnvironmentsOnCollectionChanged;
 
             DeploymentJobs.Clear();
-            DbContext.Set<DeploymentJob>().ToList().ForEach(DeploymentJobs.Add);
+            DbContext.Set<DeploymentJob>().OrderByDescending(x => x.RequestedDate).ToList().ForEach(DeploymentJobs.Add);
             statusBarTb.Text = "Done";
         }
 
