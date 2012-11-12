@@ -59,6 +59,7 @@
     <Compile Include="OrderCancelled.cs" />
     <Compile Include="OrderCompleted.cs" />
     <Compile Include="OrderCreated.cs" />
+    <Compile Include="OrderRated.cs" />
     <Compile Include="OrderRemovedFromHistory.cs" />
     <Compile Include="PopularAddressAdded.cs" />
     <Compile Include="PopularAddressRemoved.cs" />
@@ -67,6 +68,9 @@
     <Compile Include="TariffCreated.cs" />
     <Compile Include="TariffDeleted.cs" />
     <Compile Include="TariffUpdated.cs" />
+    <Compile Include="RatingTypeAdded.cs" />
+    <Compile Include="RatingTypeHidded.cs" />
+    <Compile Include="RatingTypeUpdated.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Infrastructure\Infrastructure\Infrastructure.csproj">

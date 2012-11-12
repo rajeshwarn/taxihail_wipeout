@@ -21,6 +21,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             TinyIoCContainer.Current.Resolve<IAccountService>().SignOut();			
 			InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new LogOutRequested(this)));
 		}
+
+		public MvxRelayCommand NavigateToOrderHistory
+		{
+			get
+			{
+				return new MvxRelayCommand(() =>
+				                           {
+					RequestNavigate<HistoryViewModel>();
+				});
+			}
+		}
+
+
 	}
 }
 

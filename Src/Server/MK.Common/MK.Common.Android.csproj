@@ -48,8 +48,11 @@
     <Compile Include="Entity\Address.cs" />
     <Compile Include="Entity\DayOfTheWeek.cs" />
     <Compile Include="Entity\ListItem.cs" />
+    <Compile Include="Entity\OrderRatings.cs" />
+    <Compile Include="Entity\RatingScore.cs" />
     <Compile Include="Entity\Tariff.cs" />
     <Compile Include="Entity\TariffType.cs" />
+    <Compile Include="Entity\RatingType.cs" />
     <Compile Include="Extensions\AssemblyExtensions.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />

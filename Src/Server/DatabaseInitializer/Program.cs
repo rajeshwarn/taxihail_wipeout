@@ -246,7 +246,12 @@ namespace DatabaseInitializer
                         ConfimationToken = registerAdminAccountCommand.ConfimationToken
                     });
 
-
+                    //TODO: Add default rating types
+                    //commandBus.Send(new AddRatingType
+                    //{
+                    //    CompanyId = AppConstants.CompanyId, //TODO: Validate terms : Cab Cleanliness, Driver Politeness, Safety/Driving
+                    //    Name = "Cab Cleanliness"
+                    //});
                 }
 
                 commandBus.Send(new AddOrUpdateAppSettings()

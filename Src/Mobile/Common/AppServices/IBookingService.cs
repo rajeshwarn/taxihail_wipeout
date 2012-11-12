@@ -4,6 +4,7 @@ using Xamarin.Contacts;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using System.Collections.Generic;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Common.Entity;
 using Address = apcurium.MK.Common.Entity.Address;
 
 namespace apcurium.MK.Booking.Mobile.AppServices
@@ -33,6 +34,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         List<Address> GetAddressFromAddressBook(Predicate<Contact> criteria);
 
 	    Task LoadContacts();
+
+	    List<RatingType> GetRatingType();
+
+	    apcurium.MK.Common.Entity.OrderRatings GetOrderRating(Guid orderId);
+
+	    void SendRatingReview(Common.Entity.OrderRatings orderRatings);
 
 	}
 }

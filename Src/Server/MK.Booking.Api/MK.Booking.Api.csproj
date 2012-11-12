@@ -125,11 +125,13 @@
     <Compile Include="Services\AddressesService.cs" />
     <Compile Include="Services\Maps\NearbyPlacesService.cs" />
     <Compile Include="Services\OrderMapper.cs" />
+    <Compile Include="Services\OrderRatingsService.cs" />
     <Compile Include="Services\OrderService.cs" />
     <Compile Include="Services\OrderStatusService.cs" />
     <Compile Include="Services\Maps\PlaceDetailService.cs" />
     <Compile Include="Services\TariffsService.cs" />
     <Compile Include="Services\PopularAddressService.cs" />
+    <Compile Include="Services\RatingTypesService.cs" />
     <Compile Include="Services\ReferenceDataService.cs" />
     <Compile Include="Services\RegisterAccountService.cs" />
     <Compile Include="Services\ResetPasswordService.cs" />

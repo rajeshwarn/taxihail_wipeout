@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<apcurium.mk.booking.mobile.client.controls.ListViewCell2 xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.TaxiHailDemo"
+    android:id="@+id/listviencell1"
+    android:layout_width="fill_parent"
+    android:layout_height="50dip"
+    android:layout_weight="1"
+    android:paddingTop="5dip"
+    android:paddingBottom="5dip"
+    android:paddingLeft="15dip"
+    local:MvxBind="{&apos;TextLine1&apos;:{&apos;Path&apos;:&apos;Title&apos;}, &apos;TextLine2&apos;:{&apos;Path&apos;:&apos;PickupAddress.FullAddress&apos;}, &apos;IsTop&apos;:{&apos;Path&apos;:&apos;IsFirst&apos;}, &apos;IsBottom&apos;:{&apos;Path&apos;:&apos;IsLast&apos;}, &apos;ShowRightArrow&apos;:{&apos;Path&apos;:&apos;ShowRightArrow&apos;}}" />

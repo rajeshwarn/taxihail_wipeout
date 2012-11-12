@@ -76,5 +76,34 @@ namespace apcurium.MK.Booking.Test.OrderFixture
 
             sut.ThenHasSingle<OrderRemovedFromHistory>();
         }
+
+
+        [Test]
+        public void when_rating_order_successfully()
+        {
+            var rateOrder = new RateOrder
+                                {
+                                    OrderId = _orderId,
+                                    Note = "Note",
+                                    RatingScores = new List<RatingScore>
+                                                       {
+                                                           new RatingScore {RatingTypeId = Guid.NewGuid(), Score = 1, Name = "Politness"},
+                                                           new RatingScore {RatingTypeId = Guid.NewGuid(), Score = 2, Name = "Safety"}
+                                                       }
+                                };
+
+            this.sut.When(rateOrder);
+
+            var @event = sut.ThenHasSingle<OrderRated>();
+            Assert.AreEqual(_orderId, @event.SourceId);
+            Assert.That(@event.Note, Is.EqualTo(rateOrder.Note));
+            Assert.That(@event.RatingScores.Count, Is.EqualTo(2));
+            Assert.That(@event.RatingScores.First().Score, Is.EqualTo(rateOrder.RatingScores.First().Score));
+            Assert.That(@event.RatingScores.First().RatingTypeId, Is.EqualTo(rateOrder.RatingScores.First().RatingTypeId));
+            Assert.That(@event.RatingScores.First().Name, Is.EqualTo(rateOrder.RatingScores.First().Name));
+            Assert.That(@event.RatingScores.ElementAt(1).Score, Is.EqualTo(rateOrder.RatingScores.ElementAt(1).Score));
+            Assert.That(@event.RatingScores.ElementAt(1).RatingTypeId, Is.EqualTo(rateOrder.RatingScores.ElementAt(1).RatingTypeId));
+            Assert.That(@event.RatingScores.ElementAt(1).Name, Is.EqualTo(rateOrder.RatingScores.ElementAt(1).Name));
+        }
     }
 }

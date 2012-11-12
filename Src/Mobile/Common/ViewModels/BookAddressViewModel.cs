@@ -135,6 +135,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+        
+
         private void OnAddressSelected(AddressSelected selected)
         {
             SetAddress(selected.Content, true);

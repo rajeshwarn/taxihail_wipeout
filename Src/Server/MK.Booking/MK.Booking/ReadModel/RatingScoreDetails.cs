@@ -12,6 +12,7 @@ namespace apcurium.MK.Booking.ReadModel
         public Guid Id { get; set; }
         public Guid OrderId { get; set; }
         public Guid RatingTypeId { get; set; }
+        public string Name { get; set; }
         public int Score { get; set; }
     }
 }

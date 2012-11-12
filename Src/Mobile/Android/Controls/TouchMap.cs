@@ -206,9 +206,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             set
             {
                 _center = value;                
-                
-                SetZoom(Center);                   
-                
+                if(Center!= null)
+                {
+                    SetZoom(Center);                   
+                }
             }
         }
 
@@ -257,7 +258,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             var map = this;
             var mapController = this.Controller;
 
-            if (adressesToDisplay.Count() == 1)
+            if ( adressesToDisplay.Count() == 1)
             {
                 int lat = CoordinatesHelper.ConvertToE6(adressesToDisplay.ElementAt(0).Coordinate.Latitude);
                 int lon = CoordinatesHelper.ConvertToE6(adressesToDisplay.ElementAt(0).Coordinate.Longitude);

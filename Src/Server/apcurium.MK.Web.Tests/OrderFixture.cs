@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Web.Tests
 {
@@ -154,6 +155,30 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(false, orders.Any(x => x.Id == _orderId));
         }
 
+        [Test]
+        public void when_order_rated_ratings_should_not_be_null()
+        {
+            var sut = new OrderServiceClient(BaseUrl, SessionId);
+
+            var orderRatingsRequest = new OrderRatingsRequest
+                {
+                    OrderId =_orderId,
+                    Note = "Note",
+                    RatingScores = new List<RatingScore>
+                                        {
+                                            new RatingScore {RatingTypeId = Guid.NewGuid(), Score = 1, Name = "Politness"},
+                                            new RatingScore {RatingTypeId = Guid.NewGuid(), Score = 2, Name = "Safety"}
+                                        }
+                };
+
+            sut.RateOrder(orderRatingsRequest);
+
+            var orderRatingDetails = sut.GetOrderRatings(_orderId);
+
+            Assert.NotNull(orderRatingDetails);
+            Assert.That(orderRatingDetails.Note, Is.EqualTo(orderRatingsRequest.Note));
+            Assert.That(orderRatingDetails.RatingScores.Count, Is.EqualTo(orderRatingsRequest.RatingScores.Count));
+        }
 
         [Test]
         public void GetOrderList()

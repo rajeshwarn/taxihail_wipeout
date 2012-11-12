@@ -1,7 +1,5 @@
-
 using System;
 using System.Drawing;
-
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using apcurium.MK.Booking.Mobile.ListViewStructure;
@@ -80,7 +78,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			});
             sect.AddItem( new SingleLineItem( Resources.GetValue("View_Book_Menu_MyOrders") ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
 					AnimateMenu();
-					_navController.PushViewController(new HistoryTabView(), true);
+					ViewModel.NavigateToOrderHistory.Execute();
 				})				
 			});
             sect.AddItem( new SingleLineItem( Resources.GetValue("View_Book_Menu_UpdateMyProfile")   ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 

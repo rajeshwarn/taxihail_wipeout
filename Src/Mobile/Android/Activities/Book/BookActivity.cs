@@ -90,8 +90,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             FindViewById<Button>(Resource.Id.settingsFavorites).Click -= new EventHandler(ShowFavorites_Click);
             FindViewById<Button>(Resource.Id.settingsFavorites).Click += new EventHandler(ShowFavorites_Click);
 
-            FindViewById<Button>(Resource.Id.settingsHistory).Click -= new EventHandler(ShowHistory_Click);
-            FindViewById<Button>(Resource.Id.settingsHistory).Click += new EventHandler(ShowHistory_Click);
+            //FindViewById<Button>(Resource.Id.settingsHistory).Click -= new EventHandler(ShowHistory_Click);
+            //FindViewById<Button>(Resource.Id.settingsHistory).Click += new EventHandler(ShowHistory_Click);
 
             FindViewById<Button>(Resource.Id.settingsAbout).Click -= new EventHandler(About_Click);
             FindViewById<Button>(Resource.Id.settingsAbout).Click += new EventHandler(About_Click);
@@ -470,15 +470,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             RunOnUiThread(() =>
             {
-                Intent i = new Intent(this, typeof(BookingStatusActivity));
+                /*Intent i = new Intent(this, typeof(BookingStatusActivity));
                 var serialized = data.Serialize();
                 i.PutExtra("Order", serialized);
 
                 serialized = orderInfo.Serialize();
                 i.PutExtra("OrderStatusDetail", serialized);
 
-
-                StartActivityForResult(i, 101);
+                StartActivityForResult(i, 101);*/
+                var param = new Dictionary<string, object>() {{"order", data}, {"orderInfo", orderInfo}};
+                ViewModel.NavigateToOrderStatus.Execute(param);
             });
         }
 

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -88,6 +88,7 @@
   <ItemGroup>
     <Compile Include="Activities\BaseActivity.cs" />
     <Compile Include="Activities\Book\BookDetailActivity.cs" />
+    <Compile Include="Activities\Book\BookingRateActivity.cs" />
     <Compile Include="Activities\Book\BookingStatusActivity.cs" />
     <Compile Include="Activities\Book\BookActivity.cs" />
     <Compile Include="Activities\Book\DateTimePickerActivity.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="Adapters\IconActionAdapter.cs" />
     <Compile Include="Adapters\LocationListAdapter.cs" />
     <Compile Include="Adapters\OrderListAdapter.cs" />
+    <Compile Include="Adapters\RatingListAdapter.cs" />
     <Compile Include="Adapters\TitleSubTitleListItemController.cs" />
     <Compile Include="Animations\ResizeAnimation.cs" />
     <Compile Include="Animations\SlideAnimation.cs" />
@@ -147,6 +149,7 @@
     <Compile Include="Models\NavigationStrings.cs" />
     <Compile Include="Models\OrderItemListModel.cs" />
     <Compile Include="Models\ParentScreens.cs" />
+    <Compile Include="Models\RatingModel.cs" />
     <Compile Include="PlatformIntegration\MessageService.cs" />
     <Compile Include="PlatformIntegration\PackageInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -157,6 +160,9 @@
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\IconActionLayout.axml" />
     <AndroidResource Include="Resources\Drawable\cell_bottom_full_state.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\RatingListItem.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <Compile Include="Services\MessageService.cs" />
@@ -505,6 +511,31 @@
     </AndroidResource>
     <AndroidResource Include="Resources\Drawable\poweredby.png" />
     <AndroidResource Include="Resources\Drawable\poweredby2.png" />
+    <AndroidResource Include="Resources\Drawable\rate_unhappy_selected.png" />
+    <AndroidResource Include="Resources\Drawable\rate_ecstatic.png" />
+    <AndroidResource Include="Resources\Drawable\rate_ecstatic_selected.png" />
+    <AndroidResource Include="Resources\Drawable\rate_happy.png" />
+    <AndroidResource Include="Resources\Drawable\rate_happy_selected.png" />
+    <AndroidResource Include="Resources\Drawable\rate_mad.png" />
+    <AndroidResource Include="Resources\Drawable\rate_mad_selected.png" />
+    <AndroidResource Include="Resources\Drawable\rate_neutral.png" />
+    <AndroidResource Include="Resources\Drawable\rate_neutral_selected.png" />
+    <AndroidResource Include="Resources\Drawable\rate_unhappy.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\rate_mad.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\rate_mad_selected.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\rate_neutral.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\rate_neutral_selected.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\rate_unhappy.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\rate_unhappy_selected.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\rate_ecstatic.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\rate_ecstatic_selected.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\rate_happy.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\rate_happy_selected.png" />
+    <AndroidResource Include="Resources\Drawable\rate_ecstatic_state.xml" />
+    <AndroidResource Include="Resources\Drawable\rate_happy_state.xml" />
+    <AndroidResource Include="Resources\Drawable\rate_mad_state.xml" />
+    <AndroidResource Include="Resources\Drawable\rate_neutral_state.xml" />
+    <AndroidResource Include="Resources\Drawable\rate_unhappy_state.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -569,7 +600,15 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>
-  <!--<PropertyGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Layout\View_BookingRating.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Layout\SimpleOrderListItem.axml" />
+  </ItemGroup>
+  <PropertyGroup>
     <PreBuildEvent>IF NOT "$(SolutionDir)" == "*Undefined*" "$(SolutionDir)..\LocalizationTool\LocalizationTool.exe" -t android -s "$(SolutionDir)Common\Localization\Master.resx" -d "$(ProjectDir)Resources\Values\String.xml"</PreBuildEvent>
-  </PropertyGroup>-->
+  </PropertyGroup>
 </Project>
