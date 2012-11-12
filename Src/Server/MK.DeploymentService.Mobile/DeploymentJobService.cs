@@ -43,36 +43,42 @@ namespace MK.DeploymentService.Mobile
 		
 		private void CheckAndRunJobWithBuild ()
 		{
-			var db = new PetaPoco.Database ("MKConfig");
-			var job = db.FirstOrDefault<DeploymentJob> ("Select * from [MkConfig].[DeploymentJob] where Status=0 AND (ANDROID=1 OR iOS=1)");
 			try {
+				var db = new PetaPoco.Database ("MKConfig");
+				var job = db.FirstOrDefault<DeploymentJob> ("Select * from [MkConfig].[DeploymentJob] where Status=0 AND (ANDROID=1 OR iOS=1)");
+				try {
 
-				if (job != null) {
-					var company = db.First<Company>("Select * from [MkConfig].[Company] where Id=@0", job.Company_Id);
-					var taxiHailEnv = db.First<TaxiHailEnvironment>("Select * from [MkConfig].[TaxiHailEnvironment] where Id=@0", job.TaxHailEnv_Id);
-					logger.Debug ("Begin work on " + company.Name);
-					db.Update("[MkConfig].[DeploymentJob]", "Id", new { status = JobStatus.INPROGRESS }, job.Id);
+					if (job != null) {
+						var company = db.First<Company> ("Select * from [MkConfig].[Company] where Id=@0", job.Company_Id);
+						var taxiHailEnv = db.First<TaxiHailEnvironment> ("Select * from [MkConfig].[TaxiHailEnvironment] where Id=@0", job.TaxHailEnv_Id);
+						logger.Debug ("Begin work on " + company.Name);
+						db.Update ("[MkConfig].[DeploymentJob]", "Id", new { status = JobStatus.INPROGRESS }, job.Id);
 
-					var sourceDirectory = Path.Combine(Path.GetTempPath(), "TaxiHailSource");
-					var releaseiOSDir = Path.Combine(sourceDirectory, "Src", "Mobile", "iOS", "bin", "iPhone", "Release");
-					if(Directory.Exists(releaseiOSDir)) Directory.Delete(releaseiOSDir, true);
+						var sourceDirectory = Path.Combine (Path.GetTempPath (), "TaxiHailSource");
+						var releaseiOSDir = Path.Combine (sourceDirectory, "Src", "Mobile", "iOS", "bin", "iPhone", "Release");
+						if (Directory.Exists (releaseiOSDir))
+							Directory.Delete (releaseiOSDir, true);
 
-					var releaseAndroidDir = Path.Combine(sourceDirectory, "Src", "Mobile", "Android", "bin", "Release");
-					if(Directory.Exists(releaseAndroidDir)) Directory.Delete(releaseAndroidDir, true);
+						var releaseAndroidDir = Path.Combine (sourceDirectory, "Src", "Mobile", "Android", "bin", "Release");
+						if (Directory.Exists (releaseAndroidDir))
+							Directory.Delete (releaseAndroidDir, true);
 
-					FetchSource(job, sourceDirectory, company);
+						FetchSource (job, sourceDirectory, company);
 
-					Customize (sourceDirectory, company, taxiHailEnv);
+						Customize (sourceDirectory, company, taxiHailEnv);
 
-					Build(job, sourceDirectory, company);
+						Build (job, sourceDirectory, company);
 
-					Deploy(job, sourceDirectory, company, releaseiOSDir, releaseAndroidDir);
+						Deploy (job, sourceDirectory, company, releaseiOSDir, releaseAndroidDir);
 
-					db.Update("[MkConfig].[DeploymentJob]", "Id", new { status = JobStatus.SUCCESS }, job.Id);
+						db.Update ("[MkConfig].[DeploymentJob]", "Id", new { status = JobStatus.SUCCESS }, job.Id);
+					}
+				} catch (Exception e) {
+					logger.Error (e.Message);
+					db.Update ("[MkConfig].[DeploymentJob]", "Id", new { status = JobStatus.ERROR }, job.Id);
 				}
 			} catch (Exception e) {
-				logger.Error(e.Message);
-				db.Update("[MkConfig].[DeploymentJob]", "Id", new { status = JobStatus.ERROR }, job.Id);
+				logger.Error (e.Message);
 			}
 		}
 
@@ -90,6 +96,7 @@ namespace MK.DeploymentService.Mobile
 			    {
 					var fileInfo = new FileInfo(apkFile); 
 					var targetDir = Path.Combine(System.Configuration.ConfigurationManager.AppSettings["AndroidDeployDir"], company.Name, fileInfo.Name);
+					if(File.Exists(targetDir)) File.Delete(targetDir);
 					File.Copy(apkFile, targetDir);
 			    }else
 				{
