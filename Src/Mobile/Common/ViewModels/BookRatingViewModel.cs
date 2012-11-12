@@ -57,7 +57,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public BookRatingViewModel()
         {
-            RatingList = TinyIoCContainer.Current.Resolve<IBookingService>().GetRatingType().Select(c => new RatingModel() { RatingTypeId = c.Id, RatingTypeName = c.Name }).ToList();
+            RatingList = TinyIoCContainer.Current.Resolve<IBookingService>().GetRatingType().Select(c => new RatingModel() { RatingTypeId = c.Id, RatingTypeName = c.Name }).OrderBy(c=>c.RatingTypeId).ToList();
             CanRating = false;
         }
        
@@ -65,16 +65,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public BookRatingViewModel(string orderId, string canRate="false")
         {
             var ratingTypes = TinyIoCContainer.Current.Resolve<IBookingService>().GetRatingType();
-            RatingList = ratingTypes.Select(c => new RatingModel(canRate: bool.Parse(canRate)) { RatingTypeId = c.Id, RatingTypeName = c.Name }).ToList();
+            RatingList = ratingTypes.Select(c => new RatingModel(canRate: bool.Parse(canRate)) { RatingTypeId = c.Id, RatingTypeName = c.Name }).OrderBy(c=>c.RatingTypeId).ToList();
             OrderId = orderId;
             CanRating = bool.Parse(canRate);
             if(!CanRating)
             {
                 var orderRatings = TinyIoCContainer.Current.Resolve<IBookingService>().GetOrderRating(Guid.Parse(orderId));
                 Note = orderRatings.Note;
-                RatingList = orderRatings.RatingScores.Select(c=> new RatingModel(canRate:false){Score = c.Score,RatingTypeName = c.Name}).ToList();
+                RatingList = orderRatings.RatingScores.Select(c=> new RatingModel(canRate:false){RatingTypeId = c.RatingTypeId,Score = c.Score,RatingTypeName = c.Name}).OrderBy(c=>c.RatingTypeId).ToList();
 
             }
+            //RatingList.Sort(new Comparison<RatingModel>(
+              //                  (model, ratingModel) => model.RatingTypeId.CompareTo(ratingModel.RatingTypeId)));
         }
 
         public IMvxCommand RateOrder

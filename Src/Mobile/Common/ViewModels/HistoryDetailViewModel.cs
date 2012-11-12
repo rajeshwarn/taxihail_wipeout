@@ -90,6 +90,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             OrderId = orderId;
             RefreshOrderStatus(new OrderRated(this, OrderId));
+            TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<OrderRated>(RefreshOrderStatus);
         }
 
         public void RefreshOrderStatus(OrderRated orderRated)
@@ -106,7 +107,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return new MvxRelayCommand(() =>
                                                {
                                                    var canRate = IsDone && !HasRated;
-                                                   TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<OrderRated>(RefreshOrderStatus);
                                                    RequestNavigate<BookRatingViewModel>(new { orderId = OrderId, canRate = canRate.ToString() });
                                                });
             }
