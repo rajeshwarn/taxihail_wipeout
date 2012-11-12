@@ -157,7 +157,7 @@
   "HistoryViewSendReceiptSuccess"="Receipt sent";
   "HistoryViewSendReceiptError"="Error sending receipt for this order";
   "LoginForgotPasswordButton"="Forgot Password?";  
-  "TechSupportEmailTitle"="Support Android";
+  "TechSupportEmailTitle"="Support Mobile Application";
   "PickupOnButtonImageName"="Assets/Button/btnPickup_on_en.png";
   "PickupOffButtonImageName"="Assets/Button/btnPickup_off_en.png";
   "DestinationOnButtonImageName"="Assets/Button/btnDest_on_en.png";

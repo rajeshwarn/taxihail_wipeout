@@ -601,9 +601,13 @@
     <Content Include="templates\OrderHistory.handlebars" />
     <Content Include="templates\OrderHistoryDetail.handlebars" />
     <Content Include="templates\OrderItem.handlebars" />
-    <Content Include="templates\Profile.handlebars" />
+    <Content Include="templates\Profile.handlebars">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="templates\ResetPassword.handlebars" />
-    <Content Include="templates\Signup.handlebars" />
+    <Content Include="templates\Signup.handlebars">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="templates\UpdatePassword.handlebars" />
     <Content Include="templates\UserAccount.handlebars" />
   </ItemGroup>
