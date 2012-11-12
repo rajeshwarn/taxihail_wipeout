@@ -240,4 +240,8 @@
   <ItemGroup>
     <EmbeddedResource Include="Style\Style.json" />
   </ItemGroup>
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
 </Project>

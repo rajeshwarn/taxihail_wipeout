@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.Api.Client
 
         public string GetSetting(string key)
         {
-            if (_settings == null)
+            if ( (_settings == null) || ( !_settings.ContainsKey( key ) ) )
             {
                 Load();
             }
