@@ -48,11 +48,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public override void Show(Cirrious.MvvmCross.Touch.Interfaces.IMvxTouchView view)
         {        
-
-            base.Show(view);
-
-
-            //_masterNavigationController.NavigationBarHidden = HideNavBar(view); 
+            base.Show(view);                      
             ((UIViewController)view).NavigationController.NavigationBar.Hidden = HideNavBar(view);
         }
 
