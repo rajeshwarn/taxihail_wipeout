@@ -30,7 +30,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Binding
 		public override int NumberOfSections (UITableView tableView)
 		{
 			var dataSource =  ((BindableAddressTableViewSource)tableView.Source).ItemsSource as IEnumerable<SectionAddressViewModel>;
-			return dataSource.Where( ds => (ds.Addresses != null) && ds.Addresses.Count() > 0 ).Count();
+			var nb =  dataSource.Where( ds => (ds.Addresses != null) && ds.Addresses.Count() > 0 ).Count();
+            return nb;
 		}
 
 		public override int RowsInSection (UITableView tableview, int section)
