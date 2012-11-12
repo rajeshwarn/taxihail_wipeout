@@ -209,7 +209,9 @@
                     android:background="@drawable/red_button"
                     android:text="@string/StatusActionCancelButton"
                     android:layout_width="fill_parent"
-                    android:layout_height="40dip" />
+                    android:layout_height="40dip"
+                    local:MvxBind="{'Visibility': { 'Path': 'CanCancel', 'Converter': 'Visibility' }}"
+                    />
                 <Button
                     android:paddingTop="5dip"
                     android:paddingBottom="5dip"

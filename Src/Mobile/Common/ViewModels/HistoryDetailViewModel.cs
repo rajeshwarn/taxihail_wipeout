@@ -43,7 +43,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
 
         private bool _isDone;
-
         public bool IsDone
         {
             get
@@ -55,7 +54,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
         private bool _hasRated;
-
         public bool HasRated
         {
             get
@@ -75,7 +73,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
         private bool _showRateButton;
-
         public bool ShowRateButton
         {
             get
@@ -91,6 +88,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
             set { _showRateButton = value; FirePropertyChanged("ShowRateButton"); }
 
+        }
+
+        private bool _canCancel;
+        public bool CanCancel
+        {
+            get { return _canCancel; }
+            set
+            {
+                if (value != _canCancel)
+                {
+                    _canCancel = value;
+                    FirePropertyChanged("CanCancel");
+                }
+            }
         }
 
         public HistoryDetailViewModel(string orderId)
@@ -127,9 +138,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public Task LoadStatus ()
 		{
 			return Task.Factory.StartNew(()=> {
-				HasRated = TinyIoCContainer.Current.Resolve<IBookingService> ().GetOrderRating (OrderId).RatingScores.Any ();
-				Status = TinyIoCContainer.Current.Resolve<IBookingService> ().GetOrderStatus (OrderId);
-				IsDone = TinyIoCContainer.Current.Resolve<IBookingService> ().IsStatusDone (Status.IBSStatusId);
+                var bookingService = TinyIoCContainer.Current.Resolve<IBookingService>();
+
+                HasRated = bookingService.GetOrderRating(OrderId).RatingScores.Any();
+                Status = bookingService.GetOrderStatus(OrderId);
+                IsDone = bookingService.IsStatusDone(Status.IBSStatusId);
+                var isCompleted = bookingService.IsStatusCompleted(Status.IBSStatusId);
+
+			    CanCancel = !isCompleted;
 			});
 
 		}
