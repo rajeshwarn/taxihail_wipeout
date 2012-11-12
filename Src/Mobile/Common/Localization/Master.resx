@@ -229,7 +229,7 @@
     <value>Apt/Suite Number</value>
   </data>
   <data name="RingCodeTextPlaceholder" xml:space="preserve">
-    <value>Ring code</value>
+    <value>Entry code</value>
   </data>
   <data name="PickupDateTextPlaceholder" xml:space="preserve">
     <value>Date: Today</value>
@@ -271,7 +271,7 @@
     <value>Origin:</value>
   </data>
   <data name="ConfirmAptRingCodeLabel" xml:space="preserve">
-    <value>Apt / Ring code:</value>
+    <value>Apt / Entry code:</value>
   </data>
   <data name="ConfirmDestinationLabel" xml:space="preserve">
     <value>Destination:</value>
@@ -346,7 +346,7 @@
     <value>Apt/Suite number</value>
   </data>
   <data name="LocationDetailRingCodePlaceholder" xml:space="preserve">
-    <value>Ring code</value>
+    <value>Entry code</value>
   </data>
   <data name="LocationDetailGiveItANamePlaceholder" xml:space="preserve">
     <value>Home, work, friend's house...</value>
@@ -385,7 +385,7 @@
     <value>Full Name</value>
   </data>
   <data name="CreateAccountPhone" xml:space="preserve">
-    <value>Phone</value>
+    <value>Mobile</value>
   </data>
   <data name="CreateAccountMobile" xml:space="preserve">
     <value>Mobile:</value>
@@ -496,7 +496,7 @@
     <value>Pickup Date:</value>
   </data>
   <data name="HistoryDetailAptRingCodeLabel" xml:space="preserve">
-    <value>Apt / Ring code:</value>
+    <value>Apt / Entry code:</value>
   </data>
   <data name="HistoryDetailBuildingNameLabel" xml:space="preserve">
     <value>Building Name:</value>
@@ -649,7 +649,7 @@
     <value>Last name:</value>
   </data>
   <data name="CreateAccoutPhoneNumberLabel" xml:space="preserve">
-    <value>Phone:</value>
+    <value>Mobile:</value>
   </data>
   <data name="CreateAccoutMobileLabel" xml:space="preserve">
     <value>Mobile:</value>
@@ -853,7 +853,7 @@
     <value>Apt. No.</value>
   </data>
   <data name="RingCode" xml:space="preserve">
-    <value>Ring Code</value>
+    <value>Entry Code</value>
   </data>
   <data name="BuildingName" xml:space="preserve">
     <value>Building Name / Remark</value>
