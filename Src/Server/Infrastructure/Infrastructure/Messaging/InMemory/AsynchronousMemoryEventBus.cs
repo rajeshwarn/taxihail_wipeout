@@ -17,6 +17,7 @@ using System.Globalization;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
+using Infrastructure.Serialization;
 
 namespace Infrastructure.Messaging.InMemory
 {
@@ -26,11 +27,13 @@ namespace Infrastructure.Messaging.InMemory
 
     public class AsynchronousMemoryEventBus : IEventBus, IEventHandlerRegistry
     {
+        private readonly ITextSerializer _serializer;
         private Dictionary<Type, List<Tuple<Type, Action<Envelope>>>> handlersByEventType;
         private Dictionary<Type, Action<IEvent, string, string, string>> dispatchersByEventType;
         
-        public AsynchronousMemoryEventBus(params IEventHandler[] handlers)
+        public AsynchronousMemoryEventBus(ITextSerializer serializer, params IEventHandler[] handlers)
         {
+            _serializer = serializer;
             this.handlersByEventType = new Dictionary<Type, List<Tuple<Type, Action<Envelope>>>>();
             this.dispatchersByEventType = new Dictionary<Type, Action<IEvent, string, string, string>>();
             foreach (var eventHandler in handlers)
@@ -180,7 +183,8 @@ namespace Infrastructure.Messaging.InMemory
 
                 }catch(Exception e)
                 {
-                    Trace.TraceError("Error in handling event " + @event.Body.GetType(), e);
+                    var payload = _serializer.Serialize(@event);
+                    Trace.TraceError("Error in handling event " + @event.Body.GetType() + Environment.NewLine + payload, e);
                 }
             });
         }

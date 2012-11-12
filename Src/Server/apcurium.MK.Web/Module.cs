@@ -53,12 +53,12 @@ namespace apcurium.MK.Web
             container.RegisterType(typeof(IEventSourcedRepository<>), typeof(SqlEventSourcedRepository<>), new ContainerControlledLifetimeManager());
 
             // Command bus
-            var commandBus = new AsynchronousMemoryCommandBus();
+            var commandBus = new AsynchronousMemoryCommandBus(container.Resolve<ITextSerializer>());
             container.RegisterInstance<ICommandBus>(commandBus);
             container.RegisterInstance<ICommandHandlerRegistry>(commandBus);
 
             // Event bus
-            var eventBus = new AsynchronousMemoryEventBus();
+            var eventBus = new AsynchronousMemoryEventBus(container.Resolve<ITextSerializer>());
             container.RegisterInstance<IEventBus>(eventBus);
             container.RegisterInstance<IEventHandlerRegistry>(eventBus);
         }
