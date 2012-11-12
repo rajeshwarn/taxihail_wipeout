@@ -40,7 +40,7 @@
   "BookPickupLabel"="Confirm your pickup location";
   "PickupTextPlaceholder"="Pickup street address";
   "AptNumberTextPlaceholder"="Apt/Suite Number";
-  "RingCodeTextPlaceholder"="Ring code";
+  "RingCodeTextPlaceholder"="Entry code";
   "PickupDateTextPlaceholder"="Date: Today";
   "PickupTimeTextPlaceholder"="Time: Now";
   "BookDestinationLabel"="Enter your destination";
@@ -56,7 +56,7 @@
   "ConfirmRideInformationTitle"="Ride Information";
   "ConfirmPassengerSettingsTitle"="Passenger Settings";
   "ConfirmOriginLablel"="Origin:";
-  "ConfirmAptRingCodeLabel"="Apt / Ring code:";
+  "ConfirmAptRingCodeLabel"="Apt / Entry code:";
   "ConfirmDestinationLabel"="Destination:";
   "ConfirmDateTimeLabel"="Date / Time:";
   "ConfirmNameLabel"="Name:";
@@ -81,7 +81,7 @@
   "LocationDetailGiveItANameLabel"="Give it a name";
   "LocationDetailStreetAddressPlaceholder"="Street address";
   "LocationDetailAptPlaceholder"="Apt/Suite number";
-  "LocationDetailRingCodePlaceholder"="Ring code";
+  "LocationDetailRingCodePlaceholder"="Entry code";
   "LocationDetailGiveItANamePlaceholder"="Home, work, friend's house...";
   "SaveButton"="Save";
   "DeleteButton"="Delete";
@@ -131,7 +131,7 @@
   "HistoryDetailConfirmationLabel"="Confirmation:";
   "StatusStatusLabel"="Status: {0}";
   "HistoryDetailPickupDateLabel"="Pickup Date:";
-  "HistoryDetailAptRingCodeLabel"="Apt / Ring code:";
+  "HistoryDetailAptRingCodeLabel"="Apt / Entry code:";
   "HistoryDetailBuildingNameLabel"="Building Name:";
   "HistoryDetailBuildingNameNotSpecified"="Not specified";
   "DestinationViewDestinationLabel"="Destination:";
@@ -253,7 +253,7 @@
   "CannotCancelOrderTitle"="Invalid Action";
   "CannotCancelOrderMessage"="You can no longer cancel this order.";
   "AptNumber"="Apt. No.";
-  "RingCode"="Ring Code";
+  "RingCode"="Entry Code";
   "BuildingName"="Building Name";
   "DropoffWasActivatedToastMessage"="Destination selection is active.";
   "PickupWasActivatedToastMessage"="Pickup selection is active.";

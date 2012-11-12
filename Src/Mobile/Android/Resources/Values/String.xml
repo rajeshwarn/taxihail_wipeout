@@ -38,7 +38,7 @@
   <string name="BookPickupLabel">Confirm your pickup location</string>
   <string name="PickupTextPlaceholder">Pickup street address</string>
   <string name="AptNumberTextPlaceholder">Apt/Suite Number</string>
-  <string name="RingCodeTextPlaceholder">Ring code</string>
+  <string name="RingCodeTextPlaceholder">Entry code</string>
   <string name="PickupDateTextPlaceholder">Date: Today</string>
   <string name="PickupTimeTextPlaceholder">Time: Now</string>
   <string name="BookDestinationLabel">Enter your destination</string>
@@ -52,7 +52,7 @@
   <string name="ConfirmButton">Confirm</string>
   <string name="ConfirmRideInformationTitle">Ride Information</string>
   <string name="ConfirmOriginLablel">Origin:</string>
-  <string name="ConfirmAptRingCodeLabel">Apt / Ring code:</string>
+  <string name="ConfirmAptRingCodeLabel">Apt / Entry code:</string>
   <string name="ConfirmDestinationLabel">Destination:</string>
   <string name="ConfirmDateTimeLabel">Date / Time:</string>
   <string name="ConfirmNameLabel">Name:</string>
@@ -77,7 +77,7 @@
   <string name="LocationDetailGiveItANameLabel">Give it a name</string>
   <string name="LocationDetailStreetAddressPlaceholder">Street address</string>
   <string name="LocationDetailAptPlaceholder">Apt/Suite number</string>
-  <string name="LocationDetailRingCodePlaceholder">Ring code</string>
+  <string name="LocationDetailRingCodePlaceholder">Entry code</string>
   <string name="LocationDetailGiveItANamePlaceholder">Home, work, friend\'s house...</string>
   <string name="SaveButton">Save</string>
   <string name="DeleteButton">Delete</string>
@@ -128,7 +128,7 @@
   <string name="HistoryDetailConfirmationLabel">Confirmation:</string>
   <string name="StatusStatusLabel">Status: {0}</string>
   <string name="HistoryDetailPickupDateLabel">Pickup Date:</string>
-  <string name="HistoryDetailAptRingCodeLabel">Apt / Ring code:</string>
+  <string name="HistoryDetailAptRingCodeLabel">Apt / Entry code:</string>
   <string name="HistoryDetailBuildingNameLabel">Building Name:</string>
   <string name="HistoryDetailBuildingNameNotSpecified">Not specified</string>
   <string name="DestinationViewDestinationLabel">Destination:</string>
@@ -252,7 +252,7 @@
   <string name="CannotCancelOrderTitle">Invalid Action</string>
   <string name="CannotCancelOrderMessage">You can no longer cancel this order.</string>
   <string name="AptNumber">Apt. No.</string>
-  <string name="RingCode">Ring Code</string>
+  <string name="RingCode">Entry Code</string>
   <string name="BuildingName">Building Name / Remark</string>
   <string name="DropoffWasActivatedToastMessage">Destination selection is active.</string>
   <string name="PickupWasActivatedToastMessage">Pickup selection is active.</string>
