@@ -61,9 +61,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			
 		}
 
-        private string _orderId;
+        private Guid _orderId;
 
-        public string OrderId
+        public Guid OrderId
         {
             get
             {
@@ -88,8 +88,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				rating.PropertyChanged += HandleRatingPropertyChanged;
 			}
 
-
-            OrderId = orderId;
+			Guid id;
+			if (Guid.TryParse (orderId, out id)) {
+				OrderId = id;
+			}
             CanRating = bool.Parse(canRate);
             if(!CanRating)
             {
@@ -116,7 +118,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         var orderRating = new OrderRatings()
                         {
                             Note = this.Note,
-                            OrderId = Guid.Parse(this.OrderId),
+                            OrderId = this.OrderId,
                             RatingScores =
                                 this._ratingList.Select(
                                     c => new RatingScore() { RatingTypeId = c.RatingTypeId, Score = c.Score, Name = c.RatingTypeName}).
