@@ -153,7 +153,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public Order GetHistoryOrder(Guid id)
         {
-            return GetHistoryOrders().SingleOrDefault(o => o.Id == id);
+			var result = default(Order);
+			UseServiceClient<OrderServiceClient>(service =>
+			                                     {
+				result = service.GetOrder(id);
+			}
+			);
+			return result;
         }
 
         public IEnumerable<Address> GetFavoriteAddresses()

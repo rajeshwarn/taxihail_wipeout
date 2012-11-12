@@ -13,14 +13,14 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Booking.Mobile.Models;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class HistoryDetailViewModel : BaseViewModel
     {
-        private string _orderId;
-
-        public string OrderId
+        private Guid _orderId;
+        public Guid OrderId
         {
             get
             {
@@ -29,6 +29,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set { _orderId = value; FirePropertyChanged("OrderId"); }
 
         }
+
+		private Order _order;
+		public Order Order {
+			get{ return _order; }
+			set{ _order = value; FirePropertyChanged("Order"); }
+		}
+
+		private OrderStatusDetail _status;
+		public OrderStatusDetail Status {
+			get{ return _status; }
+			set{ _status = value; FirePropertyChanged("Status"); }
+		}
 
         private bool _isDone;
 
@@ -81,23 +93,46 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         }
 
-        public HistoryDetailViewModel()
-        {
-            
-        }
-
         public HistoryDetailViewModel(string orderId)
         {
-            OrderId = orderId;
-            RefreshOrderStatus(new OrderRated(this, OrderId));
+			Guid id;
+            if(Guid.TryParse(orderId, out id)) {
+				OrderId = id;
+			}
         }
 
-        public void RefreshOrderStatus(OrderRated orderRated)
-        {
-                                                   HasRated = TinyIoCContainer.Current.Resolve<IBookingService>().GetOrderRating(Guid.Parse(OrderId)).RatingScores.Any();
-                                                   var status = TinyIoCContainer.Current.Resolve<IBookingService>().GetOrderStatus(Guid.Parse(OrderId));
-                                                   IsDone = TinyIoCContainer.Current.Resolve<IBookingService>().IsStatusDone(status.IBSStatusId);
+		public void Initialize ()
+		{
+			LoadOrder();
+			LoadStatus();
+			TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<OrderRated>(RefreshOrderStatus);
+			
+		}
+
+        public void RefreshOrderStatus (OrderRated orderRated)
+		{
+			if (orderRated.Content == this.OrderId) {
+				LoadStatus();
+			}
         }
+
+		public Task LoadOrder() 
+		{
+			return Task.Factory.StartNew(() => {
+				this.Order = TinyIoCContainer.Current.Resolve<IAccountService>().GetHistoryOrder(this.OrderId);
+			});
+
+		}
+
+		public Task LoadStatus ()
+		{
+			return Task.Factory.StartNew(()=> {
+				HasRated = TinyIoCContainer.Current.Resolve<IBookingService> ().GetOrderRating (OrderId).RatingScores.Any ();
+				Status = TinyIoCContainer.Current.Resolve<IBookingService> ().GetOrderStatus (OrderId);
+				IsDone = TinyIoCContainer.Current.Resolve<IBookingService> ().IsStatusDone (Status.IBSStatusId);
+			});
+
+		}
 
         public MvxRelayCommand NavigateToRatingPage
         {
@@ -106,7 +141,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return new MvxRelayCommand(() =>
                                                {
                                                    var canRate = IsDone && !HasRated;
-                                                   TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<OrderRated>(RefreshOrderStatus);
                                                    RequestNavigate<BookRatingViewModel>(new { orderId = OrderId, canRate = canRate.ToString() });
                                                });
             }

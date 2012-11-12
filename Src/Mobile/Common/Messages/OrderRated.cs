@@ -7,9 +7,9 @@ using TinyMessenger;
 
 namespace apcurium.MK.Booking.Mobile.Messages
 {
-    public class OrderRated: GenericTinyMessage<string>
+    public class OrderRated: GenericTinyMessage<Guid>
     {
-        public OrderRated(object sender, string orderId)
+        public OrderRated(object sender, Guid orderId)
             : base(sender, orderId)
         {            
         }
