@@ -14,6 +14,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{71F539
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "apcurium.Tools.Localization.UpdateTool", "apcurium.Tools.Localization.UpdateTool\apcurium.Tools.Localization.UpdateTool.csproj", "{7E152428-8C0B-4434-807B-CE93B28DF09A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{440475C6-46B8-4E36-8651-65419ADDEB52}"
+	ProjectSection(SolutionItems) = preProject
+		GenerateAndroidResources.bat = GenerateAndroidResources.bat
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
