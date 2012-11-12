@@ -24,7 +24,9 @@ namespace apcurium.MK.Booking.Mobile
             }
             catch(Exception e)
             {
-                 isUpToDate = false;
+             
+
+                isUpToDate = true;
             }
 
             if (!isUpToDate)

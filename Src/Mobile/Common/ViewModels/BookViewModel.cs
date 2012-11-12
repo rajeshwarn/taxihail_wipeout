@@ -331,6 +331,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 
 
+
         private void UpdateServerInfo(object state)
         {
 
@@ -429,6 +430,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+        public IMvxCommand  NavigateToConfirmationCommand
+        {
+            get
+            {
+
+                return new MvxRelayCommand(() => 
+                                           {
+
+                    var serialized = Order.ToJson (); // JsonSerializer.SerializeToString<.SerializeToString(, typeof(OrderWithStatusModel));
+                    RequestNavigate<BookConfirmationViewModel>(new {order = serialized});
+                });
+            }
+        }
+
         public IMvxCommand NavigateToHistoryList
         {
             get
@@ -442,19 +457,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get {
 				return new MvxRelayCommand<Dictionary<string,object>> (order =>
-				{
-					//var param = new Dictionary<string, object> { { "order", Order }, { "orderStatusDetail", orderInfos } };
-					//RequestNavigate<BookingStatusViewModel>(param);
-					var orderGet = (Order)order ["order"];
-                  
+				{					
+					var orderGet = (Order)order ["order"];                  
 					var orderInfoGet = (OrderStatusDetail)order ["orderInfo"];
 					var orderWithStatus = new OrderWithStatusModel () { Order = orderGet, OrderStatusDetail = orderInfoGet };
-
 					var serialized = JsonSerializer.SerializeToString (orderWithStatus, typeof(OrderWithStatusModel));
-
-					// var toSend = new KeyValuePair<string, string>("order", serialized);
-                  
-					RequestNavigate<BookingStatusViewModel> (new {order = serialized});
+                    RequestNavigate<BookingStatusViewModel> (new {order = serialized});
 				});
 			}
 		}

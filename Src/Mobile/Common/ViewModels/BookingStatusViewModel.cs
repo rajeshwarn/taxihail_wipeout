@@ -10,11 +10,31 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Booking.Mobile.Models;
+using apcurium.MK.Common.Extensions;
+
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class BookingStatusViewModel : BaseViewModel
     {
+
+
+        public BookingStatusViewModel(string order)
+        {
+            OrderWithStatusModel orderWithStatus = JsonSerializer.DeserializeFromString < OrderWithStatusModel>(order);
+            Order = orderWithStatus.Order;
+            OrderStatusDetail = orderWithStatus.OrderStatusDetail;
+            ShowRatingButton = true;
+            TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<OrderRated>( OnOrderRated , o=>o.Content.Equals (Order.Id) );
+                                                                            //CloseScreenWhenCompleted = bool.Parse(closeScreenWhenCompleted);
+        }
+
+        private void OnOrderRated(OrderRated msg )
+        {
+            IsRated = true;
+        }
+
+        public bool IsRated{get;set;}
 
         private Order _order;
 
@@ -72,14 +92,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             ShowRatingButton = true;
         }
 
-        public BookingStatusViewModel(string order)
-        {
-            OrderWithStatusModel orderWithStatus = JsonSerializer.DeserializeFromString < OrderWithStatusModel>(order);
-            Order = orderWithStatus.Order;
-            OrderStatusDetail = orderWithStatus.OrderStatusDetail;
-            ShowRatingButton = true;
-			//CloseScreenWhenCompleted = bool.Parse(closeScreenWhenCompleted);
-        }
+
 
         public MvxRelayCommand NavigateToRatingPage
         {

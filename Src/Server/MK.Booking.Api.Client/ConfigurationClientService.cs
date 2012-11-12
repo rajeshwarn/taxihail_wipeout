@@ -34,7 +34,7 @@ namespace apcurium.MK.Booking.Api.Client
         private void Load()
         {            
 
-            var settings = Client.Get<AppSetting[]>("/settings");
+            var settings = Client.Get<Dictionary<string,string>>("/settings");
             _settings = new Dictionary<string, string>();
             settings.ForEach( s=> _settings.Add( s.Key, s.Value ));
             _settings.ToString();

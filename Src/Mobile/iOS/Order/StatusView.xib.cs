@@ -16,10 +16,11 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using Cirrious.MvvmCross.Views;
+using TinyMessenger;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-	public partial class StatusView : MvxBindingTouchViewController<BookingStatusViewModel>
+    public partial class StatusView : MvxBindingTouchViewController<BookingStatusViewModel>
     {
 
         private AddressAnnotation _taxiPosition;
@@ -29,31 +30,29 @@ namespace apcurium.MK.Booking.Mobile.Client
         // The IntPtr and initWithCoder constructors are required for items that need 
         // to be able to be created from a xib rather than from managed code
 
-		public StatusView() 
-			: base(new MvxShowViewModelRequest<BookingStatusViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
-		{
-		}
-		
-		public StatusView(MvxShowViewModelRequest request) 
-			: base(request)
-		{
-		}
-		
-		public StatusView(MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
-			: base(request, nibName, bundle)
-		{
-		}
+        public StatusView () 
+            : base(new MvxShowViewModelRequest<BookingStatusViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
+        {
+        }
+        
+        public StatusView (MvxShowViewModelRequest request) 
+            : base(request)
+        {
+        }
+        
+        public StatusView (MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
+            : base(request, nibName, bundle)
+        {
+        }
 
-		protected Order Order
-		{
-			get { return ViewModel.Order; }
-		}
+        protected Order Order {
+            get { return ViewModel.Order; }
+        }
 
-        protected OrderStatusDetail Status
-		{ 
-			get { return ViewModel.OrderStatusDetail; }
-			set { ViewModel.OrderStatusDetail = value; }
-		}
+        protected OrderStatusDetail Status { 
+            get { return ViewModel.OrderStatusDetail; }
+            set { ViewModel.OrderStatusDetail = value; }
+        }
 
 //        public void Refresh(Order order, OrderStatusDetail status, bool closeScreenWhenCompleted)
 //        {
@@ -68,120 +67,108 @@ namespace apcurium.MK.Booking.Mobile.Client
 //
 //        }
 
-        public override void ViewDidAppear(bool animated)
+        public override void ViewDidAppear (bool animated)
         {
-            base.ViewDidAppear(animated);
+            base.ViewDidAppear (animated);
 
-            LoadOrderInfo();
-            RefreshStatusDisplay();
+            LoadOrderInfo ();
+            RefreshStatusDisplay ();
 
-            if (_timer == null)
-            {           
-                _timer = NSTimer.CreateRepeatingScheduledTimer(TimeSpan.FromSeconds(4), RefreshStatus);
+            if (_timer == null) {           
+                _timer = NSTimer.CreateRepeatingScheduledTimer (TimeSpan.FromSeconds (4), RefreshStatus);
             }
 
         }
 
-        public override void ViewWillAppear(bool animated)
+        public override void ViewWillAppear (bool animated)
         {
-            base.ViewWillAppear(animated);
+            base.ViewWillAppear (animated);
             NavigationController.NavigationBar.Hidden = false;
         }
 
-        public override void ViewDidLoad()
+        public override void ViewDidLoad ()
         {
-			base.ViewDidLoad();
+            base.ViewDidLoad ();
 
-            try
-            {
+            try {
                 NavigationItem.HidesBackButton = true;                
-                View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
+                View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
 
-                View.BringSubviewToFront(lblTitle);
+                View.BringSubviewToFront (lblTitle);
                 lblTitle.Text = Resources.LoadingMessage;
 
-                btnChangeBooking.SetTitle(Resources.ChangeBookingSettingsButton, UIControlState.Normal);
+                btnChangeBooking.SetTitle (Resources.ChangeBookingSettingsButton, UIControlState.Normal);
              
-                AppButtons.FormatStandardButton((GradientButton)btnCall, Resources.StatusCallButton, AppStyle.ButtonColor.Black);
-                AppButtons.FormatStandardButton((GradientButton)btnCancel, Resources.StatusCancelButton, AppStyle.ButtonColor.Red);
-                AppButtons.FormatStandardButton((GradientButton)btnNewRide, Resources.StatusNewRideButton, AppStyle.ButtonColor.Green);
+                AppButtons.FormatStandardButton ((GradientButton)btnCall, Resources.StatusCallButton, AppStyle.ButtonColor.Black);
+                AppButtons.FormatStandardButton ((GradientButton)btnCancel, Resources.StatusCancelButton, AppStyle.ButtonColor.Red);
+                AppButtons.FormatStandardButton ((GradientButton)btnNewRide, Resources.StatusNewRideButton, AppStyle.ButtonColor.Green);
 
-				var config = TinyIoCContainer.Current.Resolve<IConfigurationManager>();
+                var config = TinyIoCContainer.Current.Resolve<IConfigurationManager> ();
 
                 btnCall.TouchUpInside += CallProvider;
                 btnCancel.TouchUpInside += CancelOrder;
-				btnNewRide.TouchUpInside += Rebook;
+                btnNewRide.TouchUpInside += Rebook;
 
-				if(bool.Parse(config.GetSetting("Client.HideCallDispatchButton")))
-				{
-					btnCall.Hidden = true;
-					btnCancel.SetPosition(x: btnCancel.Frame.X + 25);
-					btnNewRide.SetPosition(x: btnNewRide.Frame.X - 25);
+                if (bool.Parse (config.GetSetting ("Client.HideCallDispatchButton"))) {
+                    btnCall.Hidden = true;
+                    btnCancel.SetPosition (x: btnCancel.Frame.X + 25);
+                    btnNewRide.SetPosition (x: btnNewRide.Frame.X - 25);
 
-				}
+                }
                 
-                mapStatus.Delegate = new AddressMapDelegate(false);
+                mapStatus.Delegate = new AddressMapDelegate (false);
 
-                this.NavigationItem.TitleView = new TitleView(null, Resources.GenericTitle, false);
+                this.NavigationItem.TitleView = new TitleView (null, Resources.GenericTitle, false);
 
-                View.BringSubviewToFront(bottomBar);
+                View.BringSubviewToFront (bottomBar);
+
+
+
             
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex);
+            } catch (Exception ex) {
+                Logger.LogError (ex);
             }
         }
 
-        void Rebook(object sender, EventArgs e)
+        void Rebook (object sender, EventArgs e)
         {
-            var newBooking = new Confirmation();
-            newBooking.Action(Resources.StatusConfirmNewBooking, () =>
+            var newBooking = new Confirmation ();
+            newBooking.Action (Resources.StatusConfirmNewBooking, () =>
             {
-                _timer.Dispose();
-                _timer = null;
-                InvokeOnMainThread(CloseRequested);
+                StopTimer();
+                InvokeOnMainThread (CloseRequested);
             }
             );
         }
 
-        void CancelOrder(object sender, EventArgs e)
+        void CancelOrder (object sender, EventArgs e)
         {
-            var newBooking = new Confirmation();
-            newBooking.Action(Resources.StatusConfirmCancelRide, () => 
+            var newBooking = new Confirmation ();
+            newBooking.Action (Resources.StatusConfirmCancelRide, () => 
             {
-                LoadingOverlay.StartAnimatingLoading( LoadingOverlayPosition.Center, null, 130, 30);
+                LoadingOverlay.StartAnimatingLoading (LoadingOverlayPosition.Center, null, 130, 30);
                 View.UserInteractionEnabled = false;
-                ThreadHelper.ExecuteInThread(() => 
+                ThreadHelper.ExecuteInThread (() => 
                 {
-                    try
-                    {
-                        var isSuccess = TinyIoCContainer.Current.Resolve<IBookingService>().CancelOrder(Order.Id);
-                        if (isSuccess)
-                        {
-                            _timer.Dispose();
-                            _timer = null;
-                            InvokeOnMainThread(CloseRequested);
+                    try {
+                        var isSuccess = TinyIoCContainer.Current.Resolve<IBookingService> ().CancelOrder (Order.Id);
+                        if (isSuccess) {
+                            StopTimer ();
+                            InvokeOnMainThread (CloseRequested);
                             
+                        } else {
+                            MessageHelper.Show (Resources.StatusConfirmCancelRideErrorTitle, Resources.StatusConfirmCancelRideError);
                         }
-                        else
-                        {
-                            MessageHelper.Show(Resources.StatusConfirmCancelRideErrorTitle, Resources.StatusConfirmCancelRideError);
-                        }
-                    }
-                    catch
-                    {
+                    } catch {
                          
-                        MessageHelper.Show(Resources.StatusConfirmCancelRideErrorTitle, Resources.StatusConfirmCancelRideError);
+                        MessageHelper.Show (Resources.StatusConfirmCancelRideErrorTitle, Resources.StatusConfirmCancelRideError);
                         AppContext.Current.LastOrder = null;
-                        InvokeOnMainThread(CloseRequested);
+                        InvokeOnMainThread (CloseRequested);
 
-                    }
-                    finally
-                    {
-                        InvokeOnMainThread(() => 
+                    } finally {
+                        InvokeOnMainThread (() => 
                         {
-                            LoadingOverlay.StopAnimatingLoading();
+                            LoadingOverlay.StopAnimatingLoading ();
                             View.UserInteractionEnabled = true;
                         }
                         );
@@ -192,288 +179,244 @@ namespace apcurium.MK.Booking.Mobile.Client
             );
         }
 
-        void CallProvider(object sender, EventArgs e)
+        void CallProvider (object sender, EventArgs e)
         {
-            if (!Order.Settings.ProviderId.HasValue)
-            {
+            if (!Order.Settings.ProviderId.HasValue) {
                 return;
             }
-            var call = new Confirmation();
-            call.Call(TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumber(Order.Settings.ProviderId.Value), 
-                      TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumberDisplay(Order.Settings.ProviderId.Value));
+            var call = new Confirmation ();
+            call.Call (TinyIoCContainer.Current.Resolve<IAppSettings> ().PhoneNumber (Order.Settings.ProviderId.Value), 
+                      TinyIoCContainer.Current.Resolve<IAppSettings> ().PhoneNumberDisplay (Order.Settings.ProviderId.Value));
         }
 
-        void UpdateStatus()
+        void UpdateStatus ()
         {
-            if (!Order.IBSOrderId.HasValue )
-            {
-                lblTitle.Text =  "Invalid order";
-            }
-            else
-            {
-                var conf = string.Format(Resources.GetValue("StatusDescription"), Order.IBSOrderId.Value );
-                lblTitle.Text =  conf+ Environment.NewLine + Status.IBSStatusDescription;
+            if (!Order.IBSOrderId.HasValue) {
+                lblTitle.Text = "Invalid order";
+            } else {
+                var conf = string.Format (Resources.GetValue ("StatusDescription"), Order.IBSOrderId.Value);
+                lblTitle.Text = conf + Environment.NewLine + Status.IBSStatusDescription;
             }
         }
 
-        private void LoadOrderInfo()
+        private void LoadOrderInfo ()
         {
 
-            try
-            {
+            try {
                
-                if (mapStatus.Annotations != null)
-                {
-                    mapStatus.RemoveAnnotations(mapStatus.Annotations.OfType<MKAnnotation>().ToArray());
+                if (mapStatus.Annotations != null) {
+                    mapStatus.RemoveAnnotations (mapStatus.Annotations.OfType<MKAnnotation> ().ToArray ());
                 }
             
-                var pcoordinate = Order.PickupAddress.GetCoordinate();
-                mapStatus.AddAnnotation(new AddressAnnotation(pcoordinate, AddressAnnotationType.Pickup, Resources.PickupMapTitle, Order.PickupAddress.FullAddress));
+                var pcoordinate = Order.PickupAddress.GetCoordinate ();
+                mapStatus.AddAnnotation (new AddressAnnotation (pcoordinate, AddressAnnotationType.Pickup, Resources.PickupMapTitle, Order.PickupAddress.FullAddress));
             
-                if (Status.IBSStatusDescription.HasValue())
-                {
-                    UpdateStatus();
+                if (Status.IBSStatusDescription.HasValue ()) {
+                    UpdateStatus ();
                 }
             
-                if (Order.DropOffAddress.HasValidCoordinate())
-                {
+                if (Order.DropOffAddress.HasValidCoordinate ()) {
                 
-                    try
-                    {                                       
-                        var dcoordinate = Order.DropOffAddress.GetCoordinate();
-                        mapStatus.AddAnnotation(new AddressAnnotation(dcoordinate, AddressAnnotationType.Destination, Resources.DestinationMapTitle, Order.DropOffAddress.FullAddress));                    
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.Write(ex.Message);
+                    try {                                       
+                        var dcoordinate = Order.DropOffAddress.GetCoordinate ();
+                        mapStatus.AddAnnotation (new AddressAnnotation (dcoordinate, AddressAnnotationType.Destination, Resources.DestinationMapTitle, Order.DropOffAddress.FullAddress));                    
+                    } catch (Exception ex) {
+                        Console.Write (ex.Message);
                     }
                 }
 
-                mapStatus.SetRegion(new MKCoordinateRegion(pcoordinate, new MKCoordinateSpan(0.004f, 0.004f)), true);
+                mapStatus.SetRegion (new MKCoordinateRegion (pcoordinate, new MKCoordinateSpan (0.004f, 0.004f)), true);
                
             
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex);
+            } catch (Exception ex) {
+                Logger.LogError (ex);
             }
             
         }
 
-        private void RefreshStatusDisplay()
+        private void RefreshStatusDisplay ()
         {
-            try
-            {
-                InvokeOnMainThread(() => UpdateStatus());
-                if ((Status.VehicleLatitude.HasValue) && (Status.VehicleLongitude.HasValue) && (Status.VehicleLatitude.Value != 0) && (Status.VehicleLongitude.Value != 0))
-                {
-                    CLLocationCoordinate2D taxiCoordinate = new CLLocationCoordinate2D(Status.VehicleLatitude.Value, Status.VehicleLongitude.Value);
-                    if (_taxiPosition != null)
-                    {
-                        InvokeOnMainThread(() => 
+            try {
+                InvokeOnMainThread (() => UpdateStatus ());
+                if ((Status.VehicleLatitude.HasValue) && (Status.VehicleLongitude.HasValue) && (Status.VehicleLatitude.Value != 0) && (Status.VehicleLongitude.Value != 0)) {
+                    CLLocationCoordinate2D taxiCoordinate = new CLLocationCoordinate2D (Status.VehicleLatitude.Value, Status.VehicleLongitude.Value);
+                    if (_taxiPosition != null) {
+                        InvokeOnMainThread (() => 
                         {
-                            mapStatus.RemoveAnnotations(mapStatus.Annotations.OfType<AddressAnnotation>().Where(a => a.AddressType == AddressAnnotationType.Taxi).ToArray());
+                            mapStatus.RemoveAnnotations (mapStatus.Annotations.OfType<AddressAnnotation> ().Where (a => a.AddressType == AddressAnnotationType.Taxi).ToArray ());
                         }
                         );
                     }
 
-                    _taxiPosition = new AddressAnnotation(taxiCoordinate, AddressAnnotationType.Taxi, Resources.TaxiMapTitle, Status.VehicleNumber);
+                    _taxiPosition = new AddressAnnotation (taxiCoordinate, AddressAnnotationType.Taxi, Resources.TaxiMapTitle, Status.VehicleNumber);
 
-                    var pickupCoordinate = Order.PickupAddress.GetCoordinate();
-                    double latDelta = Math.Abs(taxiCoordinate.Latitude - pickupCoordinate.Latitude);
-                    double longDelta = Math.Abs(taxiCoordinate.Longitude - pickupCoordinate.Longitude);
+                    var pickupCoordinate = Order.PickupAddress.GetCoordinate ();
+                    double latDelta = Math.Abs (taxiCoordinate.Latitude - pickupCoordinate.Latitude);
+                    double longDelta = Math.Abs (taxiCoordinate.Longitude - pickupCoordinate.Longitude);
                 
-                    var center = new CLLocationCoordinate2D((taxiCoordinate.Latitude + pickupCoordinate.Latitude) / 2, (taxiCoordinate.Longitude + pickupCoordinate.Longitude) / 2);
-                    InvokeOnMainThread(() => 
+                    var center = new CLLocationCoordinate2D ((taxiCoordinate.Latitude + pickupCoordinate.Latitude) / 2, (taxiCoordinate.Longitude + pickupCoordinate.Longitude) / 2);
+                    InvokeOnMainThread (() => 
                     {
-                        mapStatus.AddAnnotation(_taxiPosition);
-                        mapStatus.SetRegion(new MKCoordinateRegion(center, new MKCoordinateSpan(latDelta * 1.5f, longDelta * 1.5f)), true);
+                        mapStatus.AddAnnotation (_taxiPosition);
+                        mapStatus.SetRegion (new MKCoordinateRegion (center, new MKCoordinateSpan (latDelta * 1.5f, longDelta * 1.5f)), true);
                     }
                     );
 
 
 
                 }
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex);
+            } catch (Exception ex) {
+                Logger.LogError (ex);
             }
         }
 
-        private void RefreshStatus()
+        void StopTimer ()
         {
-            ThreadHelper.ExecuteInThread(() =>
+            if (_timer != null) {
+                _timer.Dispose ();
+                _timer = null;
+            }
+        }
+
+        private void RefreshStatus ()
+        {
+            ThreadHelper.ExecuteInThread (() =>
             {
 
-                try
-                {
-                    var isDone = TinyIoCContainer.Current.Resolve<IBookingService>().IsStatusDone(Status.IBSStatusId);
+                try {
+                    var isDone = TinyIoCContainer.Current.Resolve<IBookingService> ().IsStatusDone (Status.IBSStatusId);
 
-                    if ( isDone )
-                    {
-                        InvokeOnMainThread(()=> ShowThankYouMessage(Status));
-
-                        return;
+                    if ( (isDone) && ( !ViewModel.IsRated )) {
+                        StopTimer();
+                        InvokeOnMainThread (() => ShowThankYouMessage (Status));
                     }
 
-                    if (ViewModel.CloseScreenWhenCompleted)
-                    {
+                    if (ViewModel.CloseScreenWhenCompleted) {
 
-                        var isCompleted = TinyIoCContainer.Current.Resolve<IBookingService>().IsCompleted(Order.Id);
+                        var isCompleted = TinyIoCContainer.Current.Resolve<IBookingService> ().IsCompleted (Order.Id);
+                        StopTimer();
 
-                        if (isCompleted)
-                        {                        
-                            _timer.Dispose();
-                            _timer = null;
-                            InvokeOnMainThread(CloseRequested);
+                        if (isCompleted) {                  
+
+                            InvokeOnMainThread (CloseRequested);
                             
                             return;
                         }
                         
                     }
                     
-                    Console.WriteLine("Refreshing timer");
-                    Status = TinyIoCContainer.Current.Resolve<IBookingService>().GetOrderStatus(Order.Id);                   
+                    Console.WriteLine ("Refreshing timer");
+                    Status = TinyIoCContainer.Current.Resolve<IBookingService> ().GetOrderStatus (Order.Id);                   
                     
                     
-                    Console.WriteLine("Refreshing timer - S: " + Status.IBSStatusId);
-                    Console.WriteLine("Refreshing timer -LA: " + Status.VehicleLatitude.ToString());
-                    Console.WriteLine("Refreshing timer -LO: " + Status.VehicleLongitude.ToString());
+                    Console.WriteLine ("Refreshing timer - S: " + Status.IBSStatusId);
+                    Console.WriteLine ("Refreshing timer -LA: " + Status.VehicleLatitude.ToString ());
+                    Console.WriteLine ("Refreshing timer -LO: " + Status.VehicleLongitude.ToString ());
                     
-                    Console.WriteLine("Refreshing timer -Id: " + Order.Id.ToString());
-                    Console.WriteLine("Refreshing timer -Adrs: " + Order.PickupAddress.FullAddress.ToString());
-                    Console.WriteLine("Refreshing timer -Adrs LO: " + Order.PickupAddress.Longitude.ToString());
-                    Console.WriteLine("Refreshing timer -Adrs LA: " + Order.PickupAddress.Latitude.ToString());
+                    Console.WriteLine ("Refreshing timer -Id: " + Order.Id.ToString ());
+                    Console.WriteLine ("Refreshing timer -Adrs: " + Order.PickupAddress.FullAddress.ToString ());
+                    Console.WriteLine ("Refreshing timer -Adrs LO: " + Order.PickupAddress.Longitude.ToString ());
+                    Console.WriteLine ("Refreshing timer -Adrs LA: " + Order.PickupAddress.Latitude.ToString ());
                     
-                    if (Status != null)
-                    {                        
-                        RefreshStatusDisplay();                        
+                    if (Status != null) {                        
+                        RefreshStatusDisplay ();                        
                     }
 
 
                     
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(ex);
+                } catch (Exception ex) {
+                    Logger.LogError (ex);
                 }
             }
             );
         }
 
-
-        private void ShowThankYouMessage(OrderStatusDetail status)
+        private void ShowThankYouMessage (OrderStatusDetail status)
         {
-            if ( _timer != null )
-            {
-            _timer.Dispose();
-            _timer = null;
-            }
+           
 
-            string title = Resources.GetValue("View_BookingStatus_ThankYouTitle" );
-            string msg = Resources.GetValue("View_BookingStatus_ThankYouMessage" );
+            string title = Resources.GetValue ("View_BookingStatus_ThankYouTitle");
+            string msg = Resources.GetValue ("View_BookingStatus_ThankYouMessage");
 
 
-            var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
-            msg = string.Format( msg, settings.ApplicationName );
+            var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
+            msg = string.Format (msg, settings.ApplicationName);
 
             UIAlertView av = null;
-            if ( status.FareAvailable )
-            {
-                av = new UIAlertView ( title, msg, null, Resources.Close, Resources.RateBtn, Resources.HistoryViewSendReceiptButton );
+            if (status.FareAvailable) {
+                av = new UIAlertView (title, msg, null, Resources.Close, Resources.RateBtn, Resources.HistoryViewSendReceiptButton);
+            } else {
+                av = new UIAlertView (title, msg, null, Resources.Close, Resources.RateBtn);
             }
-            else
-            {
-                av = new UIAlertView ( title, msg, null, Resources.Close, Resources.RateBtn);
-            }
-			
-            av.Dismissed += (sender, e) => CloseRequested();
+            
+            //av.Dismissed += (sender, e) => CloseRequested();
             av.Clicked += delegate(object sender, UIButtonEventArgs e) {
-                if (e.ButtonIndex == 1) {
-					ViewModel.NavigateToRatingPage.Execute();
-					av.Dispose();
-				}
-				else if (e.ButtonIndex == 2) {                    
-                    var isSuccess = TinyIoCContainer.Current.Resolve<IBookingService>().SendReceipt( Order.Id);
+              
+                if (e.ButtonIndex == 0) {
+                    CloseRequested ();
+                } else if (e.ButtonIndex == 1) {
+                    ViewModel.NavigateToRatingPage.Execute ();
+                } else if (e.ButtonIndex == 2) {                    
+                    var isSuccess = TinyIoCContainer.Current.Resolve<IBookingService> ().SendReceipt (Order.Id);
                     
-                    if (isSuccess)
-                    {
-                        MessageHelper.Show(Resources.HistoryViewSendReceiptSuccess);
-                    }
-                    else
-                    {
+                    if (isSuccess) {
+                        MessageHelper.Show (Resources.HistoryViewSendReceiptSuccess);
+                    } else {
                         
-                        MessageHelper.Show(Resources.HistoryViewSendReceiptError);
-                    }
-                    av.Dispose();
-                }};
-            
-            av.Show (  );   
-        }
-        void RefreshButtonTouchUpInside(object sender, EventArgs e)
-        {
-            
-        }
-
-        public override void ViewDidDisappear(bool animated)
-        {
-            try
-            {
-                base.ViewDidDisappear(animated);
-                if (_timer != null)
-                {
-                    _timer.Dispose();
+                        MessageHelper.Show (Resources.HistoryViewSendReceiptError);
+                    }                
                 }
+            };
+            
+            av.Show ();   
+        }
 
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex);
-            }
-            finally
-            {
+        void RefreshButtonTouchUpInside (object sender, EventArgs e)
+        {
+            
+        }
+
+        public override void ViewDidDisappear (bool animated)
+        {
+            try {
+                base.ViewDidDisappear (animated);
+                StopTimer ();
+
+            } catch (Exception ex) {
+                Logger.LogError (ex);
+            } finally {
                 _timer = null;
             }
         }
 
-        private void CancelOrder()
+        private void CancelOrder ()
         {
-            var newBooking = new Confirmation();
-            newBooking.Action(Resources.StatusConfirmCancelRide, () => 
+            var newBooking = new Confirmation ();
+            newBooking.Action (Resources.StatusConfirmCancelRide, () => 
             {
-                LoadingOverlay.StartAnimatingLoading( LoadingOverlayPosition.Center, null, 130, 30);
+                LoadingOverlay.StartAnimatingLoading (LoadingOverlayPosition.Center, null, 130, 30);
                 View.UserInteractionEnabled = false;
-                ThreadHelper.ExecuteInThread(() => 
+                ThreadHelper.ExecuteInThread (() => 
                 {
-                    try
-                    {
-                        var isSuccess = TinyIoCContainer.Current.Resolve<IBookingService>().CancelOrder(Order.Id);
-                        if (isSuccess)
-                        {
-                            _timer.Dispose();
-                            _timer = null;
-                            InvokeOnMainThread(CloseRequested);
+                    try {
+                        var isSuccess = TinyIoCContainer.Current.Resolve<IBookingService> ().CancelOrder (Order.Id);
+                        if (isSuccess) {
+                            StopTimer ();
+                            InvokeOnMainThread (CloseRequested);
                             
+                        } else {
+                            MessageHelper.Show (Resources.StatusConfirmCancelRideErrorTitle, Resources.StatusConfirmCancelRideError);
                         }
-                        else
-                        {
-                            MessageHelper.Show(Resources.StatusConfirmCancelRideErrorTitle, Resources.StatusConfirmCancelRideError);
-                        }
-                    }
-                    catch
-                    {
+                    } catch {
                          
-                        MessageHelper.Show(Resources.StatusConfirmCancelRideErrorTitle, Resources.StatusConfirmCancelRideError);
+                        MessageHelper.Show (Resources.StatusConfirmCancelRideErrorTitle, Resources.StatusConfirmCancelRideError);
                         AppContext.Current.LastOrder = null;
-                        InvokeOnMainThread(CloseRequested);
+                        InvokeOnMainThread (CloseRequested);
 
-                    }
-                    finally
-                    {
-                        InvokeOnMainThread(() => 
+                    } finally {
+                        InvokeOnMainThread (() => 
                         {
-                            LoadingOverlay.StopAnimatingLoading();
+                            LoadingOverlay.StopAnimatingLoading ();
                             View.UserInteractionEnabled = true;
                         }
                         );
@@ -484,30 +427,29 @@ namespace apcurium.MK.Booking.Mobile.Client
             );
         }
 
-        private void Rebook()
+        private void Rebook ()
         {
-            var newBooking = new Confirmation();
-            newBooking.Action(Resources.StatusConfirmNewBooking, () =>
+            var newBooking = new Confirmation ();
+            newBooking.Action (Resources.StatusConfirmNewBooking, () =>
             {
-                _timer.Dispose();
-                _timer = null;
-                InvokeOnMainThread(CloseRequested);
+                StopTimer ();
+                InvokeOnMainThread (CloseRequested);
                 
             }
             );
         }
 
-        private void CallProvider()
+        private void CallProvider ()
         {
-            var call = new Confirmation();
-            var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
-            call.Call(settings.PhoneNumber(Order.Settings.ProviderId.Value), settings.PhoneNumberDisplay(Order.Settings.ProviderId.Value));
+            var call = new Confirmation ();
+            var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
+            call.Call (settings.PhoneNumber (Order.Settings.ProviderId.Value), settings.PhoneNumberDisplay (Order.Settings.ProviderId.Value));
         }
 
-        private void CloseRequested() 
-		{
-			TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub>().Publish(new StatusCloseRequested(this));
-		}
+        private void CloseRequested ()
+        {
+            TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub> ().Publish (new StatusCloseRequested (this));
+        }
 
 
 //        void CallTouchUpInside(object sender, EventArgs e)

@@ -17,10 +17,12 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Interfaces.Views;
 using apcurium.MK.Booking.Mobile.Messages;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Binding.Touch.Views;
+using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-    public partial class ConfirmationView : UIViewController
+    public partial class ConfirmationView : MvxBindingTouchViewController<BookConfirmationViewModel>
     {
 
 
@@ -35,32 +37,50 @@ namespace apcurium.MK.Booking.Mobile.Client
         // The IntPtr and initWithCoder constructors are required for items that need 
         // to be able to be created from a xib rather than from managed code
 
-        public ConfirmationView(IntPtr handle) : base(handle)
+        
+        public ConfirmationView() 
+            : base(new MvxShowViewModelRequest<BookingStatusViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
         {
-            Initialize();
+        }
+        
+        public ConfirmationView(MvxShowViewModelRequest request) 
+            : base(request)
+        {
+        }
+        
+        public ConfirmationView(MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
+            : base(request, nibName, bundle)
+        {
         }
 
-        [Export("initWithCoder:")]
-        public ConfirmationView(NSCoder coder) : base(coder)
-        {
-            Initialize();
-        }
 
-        public ConfirmationView(CreateOrder order) : base("ConfirmationView", null)
-        {
-            Order = order;
-            Initialize();
-        }
+//        public ConfirmationView(IntPtr handle) : base(handle)
+//        {
+//            Initialize();
+//        }
+//
+//        [Export("initWithCoder:")]
+//        public ConfirmationView(NSCoder coder) : base(coder)
+//        {
+//            Initialize();
+//        }
+//
+//        public ConfirmationView(CreateOrder order) : base("ConfirmationView", null)
+//        {
+//            Order = order;
+//            Initialize();
+//        }
 
+        public 
         void Initialize()
         {
         }
 
         public CreateOrder Order
         {
-            get;
-            set;
+            get { return ViewModel.Order; }
         }
+
 
 		public override void ViewWillAppear (bool animated)
 		{
@@ -111,12 +131,19 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 			SetRideSettingsFields();
 
-            btnCancel.TouchUpInside += CancelClicked;
-            btnConfirm.TouchUpInside += ConfirmClicked;
+
 			btnEdit.TouchUpInside += EditRideSettings;
 			btnEditPickupDetails.TouchUpInside += EditPickupDetails;
             
             View.BringSubviewToFront( bottomBar );    
+
+
+
+            this.AddBindings(new Dictionary<object, string>()                            {
+                { btnCancel, "{'TouchUpInside':{'Path':'CancelOrderCommand'}}"},                
+                { btnConfirm, "{'TouchUpInside':{'Path':'ConfirmOrderCommand'}}"},
+            });
+
 
 			TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub>().Subscribe<AddressRefinedMessage>( msg => {
 				Order.PickupAddress.Apartment = msg.Content.AptNumber;
@@ -238,33 +265,33 @@ namespace apcurium.MK.Booking.Mobile.Client
             return result;
         }
 
-        void ConfirmClicked(object sender, EventArgs e)
-        {
+//        void ConfirmClicked(object sender, EventArgs e)
+//        {
+//
+//            var phone = txtPhone.Text;
+//            if (phone.Count(x => Char.IsDigit(x)) < 10)
+//            {
+//                MessageHelper.Show(Resources.CreateAccountInvalidDataTitle, Resources.CreateAccountInvalidPhone);
+//                return;
+//            }
+//            else
+//            {
+//                txtPhone.Text = new string(phone.ToArray().Where(c => Char.IsDigit(c)).ToArray());
+//            }
+//
+//            if (Confirmed != null)
+//            {
+//                Confirmed(Order, EventArgs.Empty);
+//            }
+//        }
 
-            var phone = txtPhone.Text;
-            if (phone.Count(x => Char.IsDigit(x)) < 10)
-            {
-                MessageHelper.Show(Resources.CreateAccountInvalidDataTitle, Resources.CreateAccountInvalidPhone);
-                return;
-            }
-            else
-            {
-                txtPhone.Text = new string(phone.ToArray().Where(c => Char.IsDigit(c)).ToArray());
-            }
-
-            if (Confirmed != null)
-            {
-                Confirmed(Order, EventArgs.Empty);
-            }
-        }
-
-        void CancelClicked(object sender, EventArgs e)
-        {
-            if (Canceled != null)
-            {
-                Canceled(this, EventArgs.Empty);
-            }
-        }
+//        void CancelClicked(object sender, EventArgs e)
+//        {
+//            if (Canceled != null)
+//            {
+//                Canceled(this, EventArgs.Empty);
+//            }
+//        }
 
 //        public CreateOrder BI
 //        {

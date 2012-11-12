@@ -35,6 +35,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                                    Id = x.Id,
                                                    CreatedDate = x.CreatedDate,
                                                    PickupAddress = x.PickupAddress,
+                                                   PickupDate = x.PickupDate, 
                                                    IsCompleted = x.IsCompleted,
                                                    Title = String.Format(titleFormat, x.IBSOrderId.ToString(), x.CreatedDate),
                                                    IsFirst = x.Equals(orders.First()),
