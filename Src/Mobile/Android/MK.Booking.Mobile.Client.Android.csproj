@@ -609,11 +609,7 @@
     <AndroidResource Include="Resources\Layout\SimpleOrderListItem.axml" />
   </ItemGroup>
   <PropertyGroup>
-    <PreBuildEvent>IF "$(DevEnvDir)" == "*Undefined*" (
-IF NOT "$(SolutionDir)" == "*Undefined*" "mono --runtime=v4.0 $(SolutionDir)..\LocalizationTool\LocalizationTool.exe" -t android -s "$(SolutionDir)Common\Localization\Master.resx" -d "$(ProjectDir)Resources\Values\String.xml"
-)
-IF NOT "$(DevEnvDir)" == "*Undefined*" (
-IF NOT "$(SolutionDir)" == "*Undefined*" "$(SolutionDir)..\LocalizationTool\LocalizationTool.exe" -t android -s "$(SolutionDir)Common\Localization\Master.resx" -d "$(ProjectDir)Resources\Values\String.xml"
-)</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
 </Project>
