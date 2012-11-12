@@ -6,7 +6,7 @@
     var isLoggedIn = false;
 
 
-    TaxiHail.auth = _.extend(Backbone.Events, {
+    TaxiHail.auth = _.extend({}, Backbone.Events, {
         account: null,
         login: function (email, password, url) {
             return $.post('api/auth/credentials', {

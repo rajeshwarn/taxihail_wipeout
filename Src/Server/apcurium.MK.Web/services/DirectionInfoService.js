@@ -1,6 +1,6 @@
 ﻿(function () {
 
-    TaxiHail.directionInfo = _.extend(Backbone.Events, {
+    TaxiHail.directionInfo = _.extend({}, Backbone.Events, {
         getInfo: function (originLat, originLng, destinationLat, destinationLng, date) {
             return $.get('api/directions/', {
                 originLat: originLat,

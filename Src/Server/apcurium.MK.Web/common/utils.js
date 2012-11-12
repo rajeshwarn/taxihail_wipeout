@@ -34,7 +34,8 @@
             $('.modal-zone').html(view.render().el);
 
             view.show();
-            view.on('ok', _.once(function(){
+
+            view.on('ok', _.once(function(arg1, arg2, arg3){
                 events.trigger('ok', view);
             }));
             view.on('cancel', _.once(function(){
