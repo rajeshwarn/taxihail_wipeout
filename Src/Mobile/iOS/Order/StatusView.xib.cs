@@ -121,9 +121,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 				}
                 
                 mapStatus.Delegate = new AddressMapDelegate(false);
-                
-//                var view = AppContext.Current.Controller.GetTitleView(null, Resources.StatusViewTitle);
-                
+
                 this.NavigationItem.TitleView = new TitleView(null, Resources.GenericTitle, false);
 
                 View.BringSubviewToFront(bottomBar);
@@ -380,7 +378,16 @@ namespace apcurium.MK.Booking.Mobile.Client
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
             msg = string.Format( msg, settings.ApplicationName );
 
-			var av = new UIAlertView ( title, msg, null, Resources.Close, Resources.RateBtn, status.FareAvailable ? Resources.HistoryViewSendReceiptButton :null );
+            UIAlertView av = null;
+            if ( status.FareAvailable )
+            {
+                av = new UIAlertView ( title, msg, null, Resources.Close, Resources.RateBtn, Resources.HistoryViewSendReceiptButton );
+            }
+            else
+            {
+                av = new UIAlertView ( title, msg, null, Resources.Close, Resources.RateBtn);
+            }
+			
             av.Dismissed += (sender, e) => CloseRequested();
             av.Clicked += delegate(object sender, UIButtonEventArgs e) {
                 if (e.ButtonIndex == 1) {

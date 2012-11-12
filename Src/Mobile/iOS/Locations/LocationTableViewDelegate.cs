@@ -52,7 +52,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 				else
 				{
 					_lastSelected = ((Address)_structure.Sections.ElementAt( indexPath.Section ).Items.ElementAt (indexPath.Row).Data).Copy();					
-                    _lastSelected.Id = Guid.Empty;
 				}
 				detail.LoadData (_lastSelected);
 

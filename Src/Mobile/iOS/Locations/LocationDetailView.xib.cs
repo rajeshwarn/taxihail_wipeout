@@ -188,11 +188,13 @@ namespace apcurium.MK.Booking.Mobile.Client
             LoadingOverlay.StartAnimatingLoading( LoadingOverlayPosition.Center, null, 130, 30);
             View.UserInteractionEnabled = false;
 
+            var address = txtAddress.Text;
+
             ThreadHelper.ExecuteInThread(() =>
             {
                 try
                 {
-                    var location = TinyIoCContainer.Current.Resolve<IGeolocService>().ValidateAddress(txtAddress.Text);
+                    var location = TinyIoCContainer.Current.Resolve<IGeolocService>().ValidateAddress(address);
                     
                     
                     if ((location == null) || location.FullAddress.IsNullOrEmpty() || !location.HasValidCoordinate())
