@@ -66,6 +66,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             this.NavigationItem.TitleView = new TitleView(null, Resources.GetValue("View_LocationList"), true);
 
+
 			tableLocations.SectionHeaderHeight = 33;
 
             tableLocations.BackgroundView = new UIView { BackgroundColor = UIColor.Clear };
@@ -181,7 +182,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		public void Update (Address data)
 		{
-			TinyIoCContainer.Current.Resolve<IAccountService>().UpdateAddress( data );           
+            if ( data.IsHistoric )
+            {
+                data.Id = Guid.Empty;
+            }
+
+			TinyIoCContainer.Current.Resolve<IAccountService>().UpdateAddress( data );     
+            data.IsHistoric= false;
             LoadGridData ();
 		}
 

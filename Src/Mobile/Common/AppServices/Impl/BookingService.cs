@@ -10,11 +10,13 @@ using TinyIoC;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using Address = apcurium.MK.Common.Entity.Address;
 using ServiceStack.ServiceClient.Web;
 using Cirrious.MvvmCross.Interfaces.Platform.Tasks;
 using apcurium.MK.Booking.Mobile.Extensions;
+using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -204,6 +206,32 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 isCompleted = true;
             });
             return isCompleted;
+        }
+
+        public List<RatingType> GetRatingType()
+        {
+            var ratingType = new List<RatingType>();
+            UseServiceClient<OrderServiceClient>(service =>
+            {
+                 ratingType= service.GetRatingTypes();
+            });
+            return ratingType;
+        }
+
+        public apcurium.MK.Common.Entity.OrderRatings GetOrderRating(Guid orderId)
+        {
+            var orderRate = new OrderRatings();
+            UseServiceClient<OrderServiceClient>(service =>
+            {
+                orderRate = service.GetOrderRatings(orderId);
+            });
+            return orderRate;
+        }
+
+        public void SendRatingReview(Common.Entity.OrderRatings orderRatings)
+        {
+            var request = new OrderRatingsRequest() { Note = orderRatings.Note, OrderId = orderRatings.OrderId, RatingScores = orderRatings.RatingScores };
+            UseServiceClient<OrderServiceClient>(service => service.RateOrder(request));
         }
 
         public List<Address> GetAddressFromAddressBook(Predicate<Contact> criteria)

@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,14 +13,15 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Client.MapUtilities;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using Cirrious.MvvmCross.Binding.Touch.Views;
+using Cirrious.MvvmCross.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-    public partial class StatusView : UIViewController
+	public partial class StatusView : MvxBindingTouchViewController<BookingStatusViewModel>
     {
-        public event EventHandler CloseRequested;
 
-        private bool _closeScreenWhenCompleted;
         private AddressAnnotation _taxiPosition;
         private NSTimer _timer;
         #region Constructors
@@ -29,33 +29,31 @@ namespace apcurium.MK.Booking.Mobile.Client
         // The IntPtr and initWithCoder constructors are required for items that need 
         // to be able to be created from a xib rather than from managed code
 
-        public StatusView(IntPtr handle) : base(handle)
-        {
-            Initialize();
-        }
+		public StatusView() 
+			: base(new MvxShowViewModelRequest<BookingStatusViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
+		{
+		}
+		
+		public StatusView(MvxShowViewModelRequest request) 
+			: base(request)
+		{
+		}
+		
+		public StatusView(MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
+			: base(request, nibName, bundle)
+		{
+		}
 
-        [Export("initWithCoder:")]
-        public StatusView(NSCoder coder) : base(coder)
-        {
-            Initialize();
-        }
+		protected Order Order
+		{
+			get { return ViewModel.Order; }
+		}
 
-        public StatusView(BookView parent, Order info, OrderStatusDetail status, bool closeScreenWhenCompleted) : base("StatusView", null)
-        {
-            _closeScreenWhenCompleted = closeScreenWhenCompleted;
-            Order = info;
-            Status = status;
-            Initialize();
-
-        }
-
-        void Initialize()
-        {
-        }
-
-        protected Order Order { get; set; }
-
-        protected OrderStatusDetail Status { get; set; }
+        protected OrderStatusDetail Status
+		{ 
+			get { return ViewModel.OrderStatusDetail; }
+			set { ViewModel.OrderStatusDetail = value; }
+		}
 
 //        public void Refresh(Order order, OrderStatusDetail status, bool closeScreenWhenCompleted)
 //        {
@@ -92,7 +90,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public override void ViewDidLoad()
         {
-            
+			base.ViewDidLoad();
+
             try
             {
                 NavigationItem.HidesBackButton = true;                
@@ -122,9 +121,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 				}
                 
                 mapStatus.Delegate = new AddressMapDelegate(false);
-                
-//                var view = AppContext.Current.Controller.GetTitleView(null, Resources.StatusViewTitle);
-                
+
                 this.NavigationItem.TitleView = new TitleView(null, Resources.GenericTitle, false);
 
                 View.BringSubviewToFront(bottomBar);
@@ -143,10 +140,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
                 _timer.Dispose();
                 _timer = null;
-                if (CloseRequested != null)
-                {
-                    InvokeOnMainThread(() => CloseRequested(this, EventArgs.Empty));
-                }
+                InvokeOnMainThread(CloseRequested);
             }
             );
         }
@@ -167,10 +161,8 @@ namespace apcurium.MK.Booking.Mobile.Client
                         {
                             _timer.Dispose();
                             _timer = null;
-                            if (CloseRequested != null)
-                            {
-                                InvokeOnMainThread(() => CloseRequested(this, EventArgs.Empty));
-                            }
+                            InvokeOnMainThread(CloseRequested);
+                            
                         }
                         else
                         {
@@ -182,7 +174,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                          
                         MessageHelper.Show(Resources.StatusConfirmCancelRideErrorTitle, Resources.StatusConfirmCancelRideError);
                         AppContext.Current.LastOrder = null;
-                        InvokeOnMainThread(() => CloseRequested(this, EventArgs.Empty));
+                        InvokeOnMainThread(CloseRequested);
 
                     }
                     finally
@@ -325,7 +317,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                         return;
                     }
 
-                    if (_closeScreenWhenCompleted)
+                    if (ViewModel.CloseScreenWhenCompleted)
                     {
 
                         var isCompleted = TinyIoCContainer.Current.Resolve<IBookingService>().IsCompleted(Order.Id);
@@ -334,10 +326,8 @@ namespace apcurium.MK.Booking.Mobile.Client
                         {                        
                             _timer.Dispose();
                             _timer = null;
-                            if (CloseRequested != null)
-                            {
-                                InvokeOnMainThread(() => CloseRequested(this, EventArgs.Empty));
-                            }
+                            InvokeOnMainThread(CloseRequested);
+                            
                             return;
                         }
                         
@@ -388,10 +378,23 @@ namespace apcurium.MK.Booking.Mobile.Client
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
             msg = string.Format( msg, settings.ApplicationName );
 
-            var av = new UIAlertView ( title, msg, null, Resources.Close, status.FareAvailable ? Resources.HistoryViewSendReceiptButton :null );
-            av.Dismissed += (sender, e) => CloseRequested(this, EventArgs.Empty);
+            UIAlertView av = null;
+            if ( status.FareAvailable )
+            {
+                av = new UIAlertView ( title, msg, null, Resources.Close, Resources.RateBtn, Resources.HistoryViewSendReceiptButton );
+            }
+            else
+            {
+                av = new UIAlertView ( title, msg, null, Resources.Close, Resources.RateBtn);
+            }
+			
+            av.Dismissed += (sender, e) => CloseRequested();
             av.Clicked += delegate(object sender, UIButtonEventArgs e) {
-                if (e.ButtonIndex == 1) {                    
+                if (e.ButtonIndex == 1) {
+					ViewModel.NavigateToRatingPage.Execute();
+					av.Dispose();
+				}
+				else if (e.ButtonIndex == 2) {                    
                     var isSuccess = TinyIoCContainer.Current.Resolve<IBookingService>().SendReceipt( Order.Id);
                     
                     if (isSuccess)
@@ -450,10 +453,8 @@ namespace apcurium.MK.Booking.Mobile.Client
                         {
                             _timer.Dispose();
                             _timer = null;
-                            if (CloseRequested != null)
-                            {
-                                InvokeOnMainThread(() => CloseRequested(this, EventArgs.Empty));
-                            }
+                            InvokeOnMainThread(CloseRequested);
+                            
                         }
                         else
                         {
@@ -465,7 +466,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                          
                         MessageHelper.Show(Resources.StatusConfirmCancelRideErrorTitle, Resources.StatusConfirmCancelRideError);
                         AppContext.Current.LastOrder = null;
-                        InvokeOnMainThread(() => CloseRequested(this, EventArgs.Empty));
+                        InvokeOnMainThread(CloseRequested);
 
                     }
                     finally
@@ -490,10 +491,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
                 _timer.Dispose();
                 _timer = null;
-                if (CloseRequested != null)
-                {
-                    InvokeOnMainThread(() => CloseRequested(this, EventArgs.Empty));
-                }
+                InvokeOnMainThread(CloseRequested);
+                
             }
             );
         }
@@ -504,6 +503,12 @@ namespace apcurium.MK.Booking.Mobile.Client
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
             call.Call(settings.PhoneNumber(Order.Settings.ProviderId.Value), settings.PhoneNumberDisplay(Order.Settings.ProviderId.Value));
         }
+
+        private void CloseRequested() 
+		{
+			TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub>().Publish(new StatusCloseRequested(this));
+		}
+
 
 //        void CallTouchUpInside(object sender, EventArgs e)
 //        {

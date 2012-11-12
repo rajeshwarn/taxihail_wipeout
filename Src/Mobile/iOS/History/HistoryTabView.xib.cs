@@ -12,29 +12,35 @@ using apcurium.MK.Booking.Mobile.ListViewStructure;
 using System.Threading.Tasks;
 using System.Threading;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using Cirrious.MvvmCross.Binding.Touch.Views;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using Cirrious.MvvmCross.Views;
+using apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-	public partial class HistoryTabView : UIViewController
+	public partial class HistoryTabView : MvxBindingTouchViewController<HistoryViewModel>
 	{
+		private CancellationTokenSource _searchCancellationToken = new CancellationTokenSource();
+		
 		#region Constructors
 
-		// The IntPtr and initWithCoder constructors are required for items that need 
-		// to be able to be created from a xib rather than from managed code
-		private CancellationTokenSource _searchCancellationToken = new CancellationTokenSource();
-
-		public HistoryTabView (IntPtr handle) : base(handle)
+		public HistoryTabView() 
+			: base(new MvxShowViewModelRequest<BookViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
+		{
+		}
+		
+		public HistoryTabView(MvxShowViewModelRequest request) 
+			: base(request)
+		{
+		}
+		
+		public HistoryTabView(MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
+			: base(request, nibName, bundle)
 		{
 		}
 
-		[Export("initWithCoder:")]
-		public HistoryTabView (NSCoder coder) : base(coder)
-		{
-		}
-
-		public HistoryTabView () : base("HistoryTabView", null)
-		{
-		}
+		#endregion
 
 		public override void ViewDidLoad ()
 		{
@@ -118,16 +124,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		private InfoStructure GetHistoricStructure()
 		{
-			var historic = TinyIoCContainer.Current.Resolve<IAccountService>().GetHistoryOrders();
-
 			var s = new InfoStructure( 50, false );
 			var sect = s.AddSection( Resources.HistoryViewTitle );
-            historic.ForEach(item => sect.AddItem(new TwoLinesAddressItem(item.Id, string.Format(Resources.OrderHistoryListTitle, item.IBSOrderId.Value.ToString(), item.PickupDate), item.PickupAddress.FullAddress) { Data = item }));
+			ViewModel.Orders.ForEach(item => sect.AddItem(new TwoLinesAddressItem(item.Id, string.Format(Resources.OrderHistoryListTitle, item.IBSOrderId.Value.ToString(), item.PickupDate), item.PickupAddress.FullAddress) { Data = item }));
 
 			return s;
-
 		}
-		#endregion
+
 	}
 }
 

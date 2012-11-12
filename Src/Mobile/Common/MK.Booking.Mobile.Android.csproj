@@ -74,6 +74,7 @@
     <Compile Include="AppServices\Impl\UserPositionService.cs" />
     <Compile Include="AppServices\IUserPositionService.cs" />
     <Compile Include="BindingConverter\BoolInverter.cs" />
+    <Compile Include="BindingConverter\BoolVisibilityInverter.cs" />
     <Compile Include="Data\Coordinate.cs" />
     <Compile Include="Data\CoordinatePrecision.cs" />
     <Compile Include="Data\CoordinateRefreshTime.cs" />
@@ -132,9 +133,12 @@
     <Compile Include="Messages\BookUsingAddress.cs" />
     <Compile Include="Messages\CloseViewsToRoot.cs" />
     <Compile Include="Messages\LogOutRequested.cs" />
+    <Compile Include="Messages\OrderRated.cs" />
     <Compile Include="Messages\RebookRequested.cs" />
     <Compile Include="Messages\DateTimePicked.cs" />
     <Compile Include="Messages\OrderConfirmed.cs" />
+    <Compile Include="Models\OrderWithStatusModel.cs" />
+    <Compile Include="Models\RatingModel.cs" />
     <Compile Include="Mvx\TinyIoCProvider.cs" />
     <Compile Include="Mvx\TinyIoCServiceProviderSetup.cs" />
     <Compile Include="Mvx\TinyIocViewModelLocator.cs" />
@@ -168,6 +172,11 @@
     <Compile Include="Style\StyleManager.cs" />
     <Compile Include="TaxiHailApp.cs" />
     <Compile Include="ViewModels\BookDetailViewModel.cs" />
+    <Compile Include="ViewModels\BookingStatusViewModel.cs" />
+    <Compile Include="ViewModels\BookRatingViewModel.cs" />
+    <Compile Include="ViewModels\HistoryViewModel.cs" />
+    <Compile Include="ViewModels\HistoryDetailViewModel.cs" />
+    <Compile Include="ViewModels\OrderViewModel.cs" />
     <Compile Include="ViewModels\PanelViewModel.cs" />
     <Compile Include="ViewModels\SearchAddress\AddressSearchBaseViewModel.cs" />
     <Compile Include="ViewModels\SearchAddress\AddressSearchByContactViewModel.cs" />
@@ -181,7 +190,6 @@
     <Compile Include="ViewModels\SearchAddress\AddressSearchByPlacesViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\RefineAddressViewModel.cs" />
-    <Compile Include="ViewModels\OrderStatusViewModel.cs" />
     <Compile Include="ViewModels\SearchAddress\AddressSearchByFavoritesViewModel.cs" />
     <Compile Include="ViewModels\SectionAddressViewModel.cs" />
     <Compile Include="ViewModels\ZoomLevel.cs" />

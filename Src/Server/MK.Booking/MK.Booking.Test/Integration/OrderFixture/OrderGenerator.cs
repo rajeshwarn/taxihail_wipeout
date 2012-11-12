@@ -160,6 +160,39 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 Assert.AreEqual(orderCompleted.Tip, dto.Tip);
             }
         }
+
+
+        [Test]
+        public void when_order_rated_then_order_dto_populated()
+        {
+            var orderRated = new OrderRated()
+            {
+                SourceId = _orderId,
+                Note = "Note",
+                RatingScores = new List<RatingScore>
+                    {
+                        new RatingScore {RatingTypeId = Guid.NewGuid(), Score = 1},
+                        new RatingScore {RatingTypeId = Guid.NewGuid(), Score = 2}
+                    }
+            };
+            this.sut.Handle(orderRated);
+
+            using (var context = new BookingDbContext(dbName))
+            {
+                var orderRatingDetailsDto = context.Query<OrderRatingDetails>().SingleOrDefault(o=> o.OrderId == _orderId);
+                Assert.NotNull(orderRatingDetailsDto);
+                Assert.That(orderRatingDetailsDto.Note, Is.EqualTo(orderRated.Note));
+
+                var  ratingScoreDetailsDto = context.Query<RatingScoreDetails>().Where(s => s.OrderId == _orderId).ToList();
+                Assert.That(ratingScoreDetailsDto.Count, Is.EqualTo(2));
+
+               var x1 = orderRated.RatingScores.Single(x => x.RatingTypeId == ratingScoreDetailsDto.First().RatingTypeId);
+               Assert.That(ratingScoreDetailsDto.First().Score, Is.EqualTo(x1.Score));
+
+               var x2 = orderRated.RatingScores.Single(x => x.RatingTypeId == ratingScoreDetailsDto.ElementAt(1).RatingTypeId);
+               Assert.That(ratingScoreDetailsDto.ElementAt(1).Score, Is.EqualTo(x2.Score));
+            }
+        }
     }
 
 }

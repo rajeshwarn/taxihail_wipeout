@@ -10,46 +10,40 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using TinyMessenger;
 using apcurium.MK.Booking.Mobile.Messages;
+using Cirrious.MvvmCross.Interfaces.Views;
+using Cirrious.MvvmCross.Views;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using Cirrious.MvvmCross.Binding.Touch.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-    public partial class HistoryDetailView : UIViewController
+	public partial class HistoryDetailView : MvxBindingTouchViewController<HistoryDetailViewModel>
     {
-        private HistoryTabView _parent;
         private Order _data;
 
         #region Constructors
 
-        // The IntPtr and initWithCoder constructors are required for items that need 
-        // to be able to be created from a xib rather than from managed code
-
-        public HistoryDetailView(IntPtr handle) : base(handle)
-        {
-            Initialize();
-        }
-
-        [Export("initWithCoder:")]
-        public HistoryDetailView(NSCoder coder) : base(coder)
-        {
-            Initialize();
-        }
-
-        public HistoryDetailView(HistoryTabView parent) : base("HistoryDetailView", null)
-        {
-            _parent = parent;
-            Initialize();
-        }
-
-        void Initialize()
-        {
-        }
+		public HistoryDetailView() 
+			: base(new MvxShowViewModelRequest<BookViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
+		{
+		}
+		
+		public HistoryDetailView(MvxShowViewModelRequest request) 
+			: base(request)
+		{
+		}
+		
+		public HistoryDetailView(MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
+			: base(request, nibName, bundle)
+		{
+		}
 
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
+			LoadData(Guid.Parse (ViewModel.OrderId));
             View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
-            
-
             
             this.NavigationItem.HidesBackButton = false;
             this.NavigationItem.TitleView = new TitleView(null, Resources.GetValue("View_HistoryDetail"), true);
@@ -63,20 +57,24 @@ namespace apcurium.MK.Booking.Mobile.Client
             lblAptRingCode.Text = Resources.HistoryDetailAptRingCodeLabel;
 
             btnRebook.SetTitle(Resources.HistoryDetailRebookButton, UIControlState.Normal);
-            
-            
             btnCancel.SetTitle(Resources.StatusActionCancelButton, UIControlState.Normal);
             btnStatus.SetTitle(Resources.HistoryViewStatusButton, UIControlState.Normal);
 			btnSendReceipt.SetTitle (Resources.HistoryViewSendReceiptButton, UIControlState.Normal);
+			btnRateTrip.SetTitle(Resources.RateBtn, UIControlState.Normal);
+			btnViewRating.SetTitle(Resources.ViewRatingBtn, UIControlState.Normal);
 		    AppButtons.FormatStandardButton((GradientButton)btnHide, Resources.DeleteButton, AppStyle.ButtonColor.Red );
 
             btnCancel.TouchUpInside += CancelTouchUpInside;
             btnStatus.TouchUpInside += StatusTouchUpInside;
 			btnSendReceipt.TouchUpInside += SendReceiptTouchUpInside;
+			btnRateTrip.TouchUpInside += RateTripTouchUpInside;
+			btnViewRating.TouchUpInside += ViewRatingTouchUpInside;
             
             btnCancel.Hidden = true;
             btnStatus.Hidden = true;
 			btnSendReceipt.Hidden = true;
+			btnRateTrip.Hidden = true;
+			btnViewRating.Hidden = true;
             
             
             btnHide.TouchUpInside += HideTouchUpInside;          
@@ -158,6 +156,16 @@ namespace apcurium.MK.Booking.Mobile.Client
 			);
 		}
 
+		void RateTripTouchUpInside (object sender, EventArgs e)
+		{
+			ViewModel.NavigateToRatingPage.Execute();
+		}
+
+		void ViewRatingTouchUpInside (object sender, EventArgs e)
+		{
+			ViewModel.NavigateToRatingPage.Execute();
+		}
+
         void RebookTouched(object sender, EventArgs e)
         {
 			InvokeOnMainThread( () => NavigationController.PopToRootViewController(true) );
@@ -172,9 +180,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             this.NavigationController.PopViewControllerAnimated(true);
         }
 
-        public void LoadData(Order data)
+        public void LoadData(Guid orderId)
         {
-            _data = data;
+			_data = TinyIoCContainer.Current.Resolve<IAccountService>().GetHistoryOrder(orderId);
         }
 
         private void RefreshData()
@@ -206,20 +214,23 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             ThreadHelper.ExecuteInThread(() =>
             {
-            
+				var bookingService = TinyIoCContainer.Current.Resolve<IBookingService>();
+				var status = bookingService.GetOrderStatus( _data.Id);
                 
-                var status = TinyIoCContainer.Current.Resolve<IBookingService>().GetOrderStatus( _data.Id);
-                
-                bool isCompleted = TinyIoCContainer.Current.Resolve<IBookingService>().IsStatusCompleted(status.IBSStatusId);
+				bool isCompleted = bookingService.IsStatusCompleted(status.IBSStatusId);
+				bool isDone = bookingService.IsStatusDone(status.IBSStatusId);
 
-                InvokeOnMainThread(() => txtStatus.Text = status.IBSStatusDescription);
-                InvokeOnMainThread(() => btnCancel.Hidden = isCompleted);
-                InvokeOnMainThread(() => btnStatus.Hidden = isCompleted);
-				InvokeOnMainThread(() => btnHide.Hidden = !isCompleted);
-				InvokeOnMainThread(() => btnSendReceipt.Hidden = !status.FareAvailable);
-            }
-            );
-        }
+                InvokeOnMainThread(() => {
+					txtStatus.Text = status.IBSStatusDescription;
+                    btnCancel.Hidden = isCompleted;
+                    btnStatus.Hidden = isCompleted;
+				    btnHide.Hidden = !isCompleted;
+					btnRateTrip.Hidden = !(isDone && !ViewModel.HasRated);
+					btnViewRating.Hidden = !(isDone && ViewModel.HasRated);
+				    btnSendReceipt.Hidden = !status.FareAvailable;
+            	});
+			});
+		}
 
         private string FormatDateTime(DateTime? pickupDate, DateTime? pickupTime)
         {
