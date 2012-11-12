@@ -149,7 +149,7 @@
   <string name="NoButton">No</string>
   <string name="HistoryViewStatusButton">View Status</string>
   <string name="LoginForgotPasswordButton">Forgot Password?</string>
-  <string name="TechSupportEmailTitle">Support Android</string>
+  <string name="TechSupportEmailTitle">Support Application Mobile</string>
   <string name="PickupOnButtonImageName">Assets/Button/btnPickup_on_en.png</string>
   <string name="PickupOffButtonImageName">Assets/Button/btnPickup_off_en.png</string>
   <string name="DestinationOnButtonImageName">Assets/Button/btnDest_on_en.png</string>
