@@ -16,7 +16,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public static string GetValue (string key)
 		{
 			string localizedValue = NSBundle.MainBundle.LocalizedString (key, "", "");
-			return string.IsNullOrEmpty (localizedValue) ? key : localizedValue;
+			return localizedValue ?? string.Empty;
 		}
 
 		public AppLanguage CurrentLanguage {
