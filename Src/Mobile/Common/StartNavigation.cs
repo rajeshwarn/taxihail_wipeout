@@ -24,7 +24,12 @@ namespace apcurium.MK.Booking.Mobile
             }
             catch(Exception e)
             {
-                 isUpToDate = false;
+                var title = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("NoConnectionTitle");
+                var msg = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("NoConnectionMessage");
+                var mService = TinyIoCContainer.Current.Resolve<IMessageService>();
+                mService.ShowMessage(title, msg);
+
+                isUpToDate = true;
             }
 
             if (!isUpToDate)
