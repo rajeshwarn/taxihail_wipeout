@@ -49,7 +49,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
             ViewModel.PropertyChanged += ViewModel_PropertyChanged;
             ViewModel.Initialize();
 
-            var btnCancel = FindViewById<Button>(Resource.Id.CancelTripBtn);
             var btnStatus = FindViewById<Button>(Resource.Id.StatusBtn);
             var btnRebook = FindViewById<Button>(Resource.Id.RebookTripBtn);
             var btnSendReceipt = FindViewById<Button>(Resource.Id.SendReceiptBtn);
@@ -57,7 +56,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
 
             btnStatus.Visibility = ViewStates.Gone;
             btnSendReceipt.Visibility = ViewStates.Gone;
-
             btnStatus.Click += new EventHandler(btnStatus_Click);
             btnRebook.Click += new EventHandler(btnRebook_Click);
             btnSendReceipt.Click += new EventHandler(btnSendReceipt_Click);
