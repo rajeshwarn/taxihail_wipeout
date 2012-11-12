@@ -300,7 +300,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 alert.Dispose();
             });
             if(ViewModel.ShowRatingButton)
-            {
+            { 
                  alert.SetNeutralButton(Resource.String.RateBtn, (sender, args) =>
                                                                 {
                                                                     ThreadHelper.ExecuteInThread(this, ()=>
