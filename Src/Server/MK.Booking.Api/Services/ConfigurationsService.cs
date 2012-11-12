@@ -37,7 +37,13 @@ namespace apcurium.MK.Booking.Api.Services
                 keys = new[] { "PriceFormat", "DistanceFormat", "Direction.FlateRate", "Direction.RatePerKm",
                                "Direction.MaxDistance", "GeoLoc.SearchFilter", "GeoLoc.PopularAddress.Range",
                                "NearbyPlacesService.DefaultRadius", "Map.PlacesApiKey", "Client.HideCallDispatchButton",
-                               "IBS.ExcludedVehicleTypeId", "IBS.ExcludedPaymentTypeId", "IBS.ExcludedProviderId"
+                               "IBS.ExcludedVehicleTypeId", "IBS.ExcludedPaymentTypeId", "IBS.ExcludedProviderId",
+                               "IBS.AutoDispatch",
+                               "IBS.DestinationZoneToExclude",	
+                               "IBS.PickupZoneToExclude",
+                               "IBS.TimeDifference",
+                               "IBS.ValidateDestinationZone",
+                               "IBS.ValidatePickupZone"
                            };
             }
             else //AppSettingsType.Mobile
