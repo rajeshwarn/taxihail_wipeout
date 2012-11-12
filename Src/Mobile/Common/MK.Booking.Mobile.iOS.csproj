@@ -164,8 +164,6 @@
     <Compile Include="Messages\DateTimePicked.cs" />
     <Compile Include="Messages\OrderConfirmed.cs" />
     <Compile Include="Messages\RebookRequested.cs" />
-    <Compile Include="AppServices\IUserPositionService.cs" />
-    <Compile Include="AppServices\Impl\UserPositionService.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="Infrastructure\IMessageService.cs" />
     <Compile Include="ViewModels\SearchAddress\AddressSearchBaseViewModel.cs" />

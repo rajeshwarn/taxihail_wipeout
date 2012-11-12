@@ -49,6 +49,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         IEnumerable<Address> GetFavoriteAddresses();
 
+
+
         void UpdateAddress(Address address);
 
 	    void DeleteFavoriteAddress(Guid addressId);

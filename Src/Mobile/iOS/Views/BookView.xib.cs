@@ -169,7 +169,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 _img = new UIImageView (UIImage.FromFile ("Assets/location.png"));
                 _img.BackgroundColor = UIColor.Clear;
                 _img.ContentMode = UIViewContentMode.Center;
-                _img.Frame = new System.Drawing.RectangleF (mapView.Frame.X + ((mapView.Frame.Width / 2) - 10), mapView.Frame.Y + (mapView.Frame.Height / 2), 20, 20);
+                _img.Frame = new System.Drawing.RectangleF (mapView.Frame.X + ((mapView.Frame.Width / 2) - 10), mapView.Frame.Y + (mapView.Frame.Height / 2)-20, 20, 20);
                 mapView.Superview.AddSubview (_img);
             }
         }

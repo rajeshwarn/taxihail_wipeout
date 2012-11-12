@@ -10,6 +10,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Maps;
+using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -25,6 +26,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
             catch (Exception ex)
             {
+                TinyIoCContainer.Current.Resolve<ILogger>().LogError (ex);
                 return null;
             }
         }
@@ -39,6 +41,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
             catch(Exception ex)
             {
+                TinyIoCContainer.Current.Resolve<ILogger>().LogError (ex);
                 return new Address[0];
             }
         }
@@ -52,7 +55,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
             catch( Exception ex )
             {
-                Console.WriteLine(ex.Message);
+                TinyIoCContainer.Current.Resolve<ILogger>().LogError (ex);
                 return new Address[0];
             }
 

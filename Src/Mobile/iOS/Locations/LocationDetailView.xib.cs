@@ -105,10 +105,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         void HandleTxtAddressEnded(object sender, EventArgs e)
         {
+            var address = txtAddress.Text;
             ThreadHelper.ExecuteInThread(() =>
             {
                 
-                var location = TinyIoCContainer.Current.Resolve<IGeolocService>().ValidateAddress(txtAddress.Text);
+                var location = TinyIoCContainer.Current.Resolve<IGeolocService>().ValidateAddress(address);
                 
                 
                 if ((location == null) || location.FullAddress.IsNullOrEmpty() || !location.HasValidCoordinate())
