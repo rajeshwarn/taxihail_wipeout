@@ -4,22 +4,16 @@ using Android.App;
 using Android.Views;
 using Android.Views.Animations;
 using Android.Widget;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
-using Cirrious.MvvmCross.Interfaces.Views;
-using Cirrious.MvvmCross.Views;
 using SlidingPanel;
 using Cirrious.MvvmCross.Binding.Android.Views;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common.Entity;
-using apcurium.MK.Common.Extensions;
-using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using Android.Content;
 using apcurium.MK.Booking.Mobile.Client.Models;
 using TinyIoC;
 using TinyMessenger;
 using apcurium.MK.Booking.Mobile.Messages;
-using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Client.Activities.Location;
@@ -33,19 +27,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
     [Activity(Label = "Book", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class BookActivity : MvxBindingMapActivityView<BookViewModel>
     {
-
         private bool _menuIsShown;
         private int _menuWidth = 400;
         private DecelerateInterpolator _interpolator = new DecelerateInterpolator(0.9f);
-        private TinyMessageSubscriptionToken _pickDateSubscription;
         private TinyMessageSubscriptionToken _orderConfirmedSubscription;
         private TinyMessageSubscriptionToken _bookUsingAddressSubscription;
-
+        
         protected override void OnViewModelSet()
         {
             UnsubscribeOrderConfirmed();
             UnsubscribeBookUsingAddress();
-            UnsubscribePickDate();
 
             _bookUsingAddressSubscription = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<BookUsingAddress>(m => BookUsingAddress(m.Content));
 
@@ -88,32 +79,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             FindViewById<Button>(Resource.Id.settingsCallCompany).Click -= CallCie_Click;
             FindViewById<Button>(Resource.Id.settingsCallCompany).Click += CallCie_Click;
 
-
-
-
-            ThreadHelper.ExecuteInThread(this, () =>
-                 {
-
-                     if (AppContext.Current.LastOrder.HasValue)
-                     {
-
-
-                         var orderStatus = TinyIoCContainer.Current.Resolve<IBookingService>().GetOrderStatus(AppContext.Current.LastOrder.Value);
-                         var isCompleted = TinyIoCContainer.Current.Resolve<IBookingService>().IsStatusCompleted(orderStatus.IBSStatusId);
-                         if (isCompleted)
-                         {
-                             AppContext.Current.LastOrder = null;
-                         }
-                         else
-                         {
-                             var order = TinyIoCContainer.Current.Resolve<IAccountService>().GetHistoryOrder(AppContext.Current.LastOrder.Value);
-                             ShowStatusActivity(order, orderStatus);
-                         }
-
-                     }
-
-                 }, true);
-
         }
 
         private void BookUsingAddress(Address address)
@@ -129,8 +94,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         void ShowFavorites_Click(object sender, EventArgs e)
         {
-
-
             RunOnUiThread(() =>
             {
                 Intent i = new Intent(this, typeof(LocationListActivity));
@@ -208,7 +171,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             base.OnDestroy();
             UnsubscribeOrderConfirmed();
             UnsubscribeBookUsingAddress();
-            UnsubscribePickDate();
         }
         
         private void UnsubscribeBookUsingAddress()
@@ -220,14 +182,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
         }
         
-        private void UnsubscribePickDate()
-        {
-            if (_pickDateSubscription != null)
-            {
-                TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Unsubscribe<DateTimePicked>(_pickDateSubscription);
-                _pickDateSubscription = null;
-            }
-        }
         private void UnsubscribeOrderConfirmed()
         {
             if (_orderConfirmedSubscription != null)
@@ -261,10 +215,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _menuIsShown = !_menuIsShown;
         }
 
-
-
-
-
         protected override bool IsRouteDisplayed
         {
             get { return true; }
@@ -273,10 +223,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         void PickDate_Click(object sender, EventArgs e)
         {
             UnsubscribeOrderConfirmed();
-            UnsubscribePickDate();
 
-
-            _pickDateSubscription = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<DateTimePicked>(OnDataTimePicked);
+            var messengerHub = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>();
+            var token = default(TinyMessageSubscriptionToken);
+            token = messengerHub.Subscribe<DateTimePicked>(msg =>
+            {
+                if(token!=null)
+                {
+                    messengerHub.Unsubscribe<DateTimePicked>(token);
+                }
+                if (msg.Content.HasValue)
+                {
+                    ViewModel.Order.PickupDate = msg.Content;
+                    ViewModel.PickupDateSelected();
+                }
+            });
 
             var intent = new Intent(this, typeof(DateTimePickerActivity));
             if (ViewModel.Order.PickupDate.HasValue)
@@ -284,13 +245,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 intent.PutExtra("SelectedDate", ViewModel.Order.PickupDate.Value.Ticks);
             }
             StartActivityForResult(intent, (int)ActivityEnum.DateTimePicked);
-        }
-
-        private void OnDataTimePicked(DateTimePicked picked)
-        {
-
-            ViewModel.Order.PickupDate = picked.Content;
-            ViewModel.PickupDateSelected();
         }
 
         public override void OnBackPressed()

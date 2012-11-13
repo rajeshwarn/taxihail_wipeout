@@ -59,5 +59,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                                Resource.String.DateTimePickerPickInvalidDateMessage);
             }
         }
+
+        public override void OnBackPressed()
+        {
+            TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new DateTimePicked(this, null)); 
+            base.OnBackPressed();
+        }
     }
 }

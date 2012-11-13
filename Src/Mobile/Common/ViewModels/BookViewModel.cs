@@ -28,11 +28,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class BookViewModel : BaseViewModel,
         IMvxServiceConsumer<IAccountService>,
-        IMvxServiceConsumer<ILocationService>
+        IMvxServiceConsumer<ILocationService>,
+        IMvxServiceConsumer<IBookingService>
+
     {
         private bool _initialized;
         private IAccountService _accountService;
         private ILocationService _geolocator;
+        private IBookingService _bookingService;
         private bool _pickupIsActive = true;
         private bool _dropoffIsActive = false;
         private string _version;
@@ -48,7 +51,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             PickupIsActive = true;
             DropoffIsActive = false;
             Pickup.RequestCurrentLocationCommand.Execute();
-            
+
+            _bookingService.GetLastOrderStatus().ContinueWith(t => 
+            {
+                var isCompleted = _bookingService.IsStatusCompleted(t.Result.IBSStatusId);
+                if (isCompleted)
+                {
+                    _bookingService.ClearLastOrder();
+                }
+                else
+                {
+                    var order = TinyIoCContainer.Current.Resolve<IAccountService>().GetHistoryOrder(t.Result.OrderId);
+                    ShowStatusActivity(order, t.Result);
+                }
+            }, TaskContinuationOptions.OnlyOnRanToCompletion);           
         }
 
         public BookViewModel(string order)
@@ -65,6 +81,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             _accountService = this.GetService<IAccountService>();
             _geolocator = this.GetService<ILocationService>();
+            _bookingService = this.GetService<IBookingService>();
 
             if (order != null)
             {
