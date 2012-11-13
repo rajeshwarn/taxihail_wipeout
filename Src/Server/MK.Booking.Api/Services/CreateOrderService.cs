@@ -115,11 +115,11 @@ namespace apcurium.MK.Booking.Api.Services
 
             // Building Name is not handled by IBS
             // Put Building Name in note, if specified
-            var note = request.Note;
+            var note = string.Format("Web or mobile booking.{0}{1}", Environment.NewLine, request.Note) ;
             if(!string.IsNullOrWhiteSpace(request.PickupAddress.BuildingName))
             {
                 var buildingName = "Building Name: " + request.PickupAddress.BuildingName;
-                note = (buildingName + Environment.NewLine + note).Trim();
+                note += (Environment.NewLine + buildingName).Trim();
             }
 
             var result = _bookingWebServiceClient.CreateOrder(request.Settings.ProviderId, account.IBSAccountId, request.Settings.Name, request.Settings.Phone, request.Settings.Passengers,
