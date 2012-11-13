@@ -239,7 +239,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 {
                     var status = TinyIoCContainer.Current.Resolve<IBookingService>().GetOrderStatus(Order.Id);
                     var isDone = TinyIoCContainer.Current.Resolve<IBookingService>().IsStatusDone(status.IBSStatusId);
-                    _lastOrder = OrderStatus.OrderId;
 
                     if (status != null)
                     {                        
