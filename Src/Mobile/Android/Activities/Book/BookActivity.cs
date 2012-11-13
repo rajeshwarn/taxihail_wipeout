@@ -171,7 +171,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             base.OnDestroy();
             UnsubscribeOrderConfirmed();
             UnsubscribeBookUsingAddress();
+            
         }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            apcurium.MK.Booking.Mobile.Client.Activities.Book.LocationService.Instance.Start();
+        }
+        protected override void OnStop()
+        {
+            
+            base.OnStop();
+            apcurium.MK.Booking.Mobile.Client.Activities.Book.LocationService.Instance.Stop();
+        }
+
         
         private void UnsubscribeBookUsingAddress()
         {
