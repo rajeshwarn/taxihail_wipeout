@@ -6,6 +6,7 @@ using Android.OS;
 using Android.App;
 using Android.Content;
 using Android.Widget;
+using ServiceStack.Text;
 using apcurium.Framework.Extensions;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Client.Adapters;
@@ -53,7 +54,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             
 
             
-            var data = SerializerHelper.DeserializeObject<CreateOrder>(this.ViewModel.Order);
+            var data = JsonSerializer.DeserializeFromString<CreateOrder>(this.ViewModel.Order);
             BookingInfo = data;
             var account = TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount;
             var currentSettings = account.Settings;

@@ -9,7 +9,6 @@ using Cirrious.MvvmCross.Interfaces.Views;
 using Cirrious.MvvmCross.Views;
 using SlidingPanel;
 using Cirrious.MvvmCross.Binding.Android.Views;
-
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
@@ -24,17 +23,11 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Client.Activities.Location;
-using apcurium.MK.Booking.Mobile.Client.Activities.History;
 using System.IO;
 using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 using apcurium.MK.Booking.Mobile.Client.Activities.Setting;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using SocialNetworks.Services;
-using apcurium.MK.Booking.Mobile.Client.Activities.Account;
-using Android.Content.PM;
 using apcurium.MK.Booking.Mobile.Client.Controls;
-using Cirrious.MvvmCross.Interfaces.Platform.Location;
-using System.Threading;
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
     [Activity(Label = "Book", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
@@ -75,28 +68,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _menuWidth = WindowManager.DefaultDisplay.Width - 100;
             _menuIsShown = false;
 
-            FindViewById<Button>(Resource.Id.BookItBtn).Click -= new EventHandler(BookItBtn_Click);
-            FindViewById<Button>(Resource.Id.BookItBtn).Click += new EventHandler(BookItBtn_Click);
-
-            FindViewById<ImageButton>(Resource.Id.pickupDateButton).Click -= new EventHandler(PickDate_Click);
-            FindViewById<ImageButton>(Resource.Id.pickupDateButton).Click += new EventHandler(PickDate_Click);
+            FindViewById<ImageButton>(Resource.Id.pickupDateButton).Click -= PickDate_Click;
+            FindViewById<ImageButton>(Resource.Id.pickupDateButton).Click += PickDate_Click;
 
             //Settings 
 
-            FindViewById<Button>(Resource.Id.settingsFavorites).Click -= new EventHandler(ShowFavorites_Click);
-            FindViewById<Button>(Resource.Id.settingsFavorites).Click += new EventHandler(ShowFavorites_Click);
+            FindViewById<Button>(Resource.Id.settingsFavorites).Click -= ShowFavorites_Click;
+            FindViewById<Button>(Resource.Id.settingsFavorites).Click += ShowFavorites_Click;
 
-            FindViewById<Button>(Resource.Id.settingsAbout).Click -= new EventHandler(About_Click);
-            FindViewById<Button>(Resource.Id.settingsAbout).Click += new EventHandler(About_Click);
+            FindViewById<Button>(Resource.Id.settingsAbout).Click -= About_Click;
+            FindViewById<Button>(Resource.Id.settingsAbout).Click += About_Click;
 
-            FindViewById<Button>(Resource.Id.settingsSupport).Click -= new EventHandler(ReportProblem_Click);
-            FindViewById<Button>(Resource.Id.settingsSupport).Click += new EventHandler(ReportProblem_Click);
+            FindViewById<Button>(Resource.Id.settingsSupport).Click -= ReportProblem_Click;
+            FindViewById<Button>(Resource.Id.settingsSupport).Click += ReportProblem_Click;
 
-            FindViewById<Button>(Resource.Id.settingsProfile).Click -= new EventHandler(ChangeDefaultRideSettings_Click);
-            FindViewById<Button>(Resource.Id.settingsProfile).Click += new EventHandler(ChangeDefaultRideSettings_Click);
+            FindViewById<Button>(Resource.Id.settingsProfile).Click -= ChangeDefaultRideSettings_Click;
+            FindViewById<Button>(Resource.Id.settingsProfile).Click += ChangeDefaultRideSettings_Click;
 
-            FindViewById<Button>(Resource.Id.settingsCallCompany).Click -= new EventHandler(CallCie_Click);
-            FindViewById<Button>(Resource.Id.settingsCallCompany).Click += new EventHandler(CallCie_Click);
+            FindViewById<Button>(Resource.Id.settingsCallCompany).Click -= CallCie_Click;
+            FindViewById<Button>(Resource.Id.settingsCallCompany).Click += CallCie_Click;
 
 
 
@@ -132,7 +122,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             ViewModel.InitializeOrder();
             ViewModel.Pickup.SetAddress(address, true);
             ViewModel.Dropoff.ClearAddress();
-            BookItBtn_Click(this, EventArgs.Empty);
+
+            ViewModel.ConfirmOrder.Execute();
         }
 
 
@@ -302,38 +293,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             ViewModel.PickupDateSelected();
         }
 
-        void BookItBtn_Click(object sender, EventArgs e)
-        {
-            ConfirmOrder();
-        }
-
-        private void ConfirmOrder()
-        {
-            ThreadHelper.ExecuteInThread(this, () =>
-            {
-
-                if ((ViewModel.Order.PickupAddress.FullAddress.IsNullOrEmpty()) || (!ViewModel.Order.PickupAddress.HasValidCoordinate()))
-                {
-                    RunOnUiThread(() => this.ShowAlert(Resource.String.InvalidBookinInfoTitle, Resource.String.InvalidBookinInfo));
-                }
-                else
-                {
-
-                    UnsubscribeOrderConfirmed();
-                    UnsubscribePickDate();
-
-                    _orderConfirmedSubscription = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<OrderConfirmed>(OnOrderConfirmed);
-                    RunOnUiThread(() =>
-                    {
-                        var serializedInfo = ViewModel.Order.Serialize();
-                        var parameters = new Dictionary<string, string>() { { "order", serializedInfo } };
-                        var dispatch = TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
-                        dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(BookDetailViewModel), parameters, false, MvxRequestedBy.UserAction));
-                    });
-                }
-            }, true);
-        }
-
         public override void OnBackPressed()
         {
             if (_menuIsShown)
@@ -346,64 +305,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             }
         }
-        private void OnOrderConfirmed(OrderConfirmed orderConfirmed)
-        {
-            CompleteOrder(orderConfirmed.Content);
-        }
-        private void CompleteOrder(CreateOrder order)
-        {
-            UnsubscribeOrderConfirmed();
-
-            ThreadHelper.ExecuteInThread(this, () =>
-            {
-                var service = TinyIoCContainer.Current.Resolve<IBookingService>();
-                order.Id = Guid.NewGuid();
-                try
-                {
-
-                    var orderInfo = service.CreateOrder(order);
-
-                    if (orderInfo.IBSOrderId.HasValue
-                        && orderInfo.IBSOrderId > 0)
-                    {
-                        AppContext.Current.LastOrder = order.Id;
-
-                        var orderCreated = new Order { CreatedDate = DateTime.Now, DropOffAddress = order.DropOffAddress, IBSOrderId = orderInfo.IBSOrderId, Id = order.Id, PickupAddress = order.PickupAddress, Note = order.Note, PickupDate = order.PickupDate.HasValue ? order.PickupDate.Value : DateTime.Now, Settings = order.Settings };
-
-                        ShowStatusActivity(orderCreated, orderInfo);
-
-                    }
-
-                    ViewModel.NewOrder();
-
-                }
-                catch (Exception ex)
-                {
-                    RunOnUiThread(() =>
-                    {
-                        string error = ex.Message;
-
-                        var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
-                        string err = string.Format(GetString(Resource.String.ServiceError_ErrorCreatingOrderMessage), settings.ApplicationName, settings.PhoneNumberDisplay(order.Settings.ProviderId.HasValue ? order.Settings.ProviderId.Value : 1));
-                        this.ShowAlert(GetString(Resource.String.ErrorCreatingOrderTitle), err);
-                    });
-                }
-
-            }, true);
-        }
 
         private void ShowStatusActivity(Order data, OrderStatusDetail orderInfo)
         {
             RunOnUiThread(() =>
             {
-                /*Intent i = new Intent(this, typeof(BookingStatusActivity));
-                var serialized = data.Serialize();
-                i.PutExtra("Order", serialized);
-
-                serialized = orderInfo.Serialize();
-                i.PutExtra("OrderStatusDetail", serialized);
-
-                StartActivityForResult(i, 101);*/
                 var param = new Dictionary<string, object>() {{"order", data}, {"orderInfo", orderInfo}};
                 ViewModel.NavigateToOrderStatus.Execute(param);
             });

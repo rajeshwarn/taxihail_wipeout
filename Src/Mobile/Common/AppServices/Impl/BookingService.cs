@@ -35,6 +35,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             get { return TinyIoCContainer.Current.Resolve<ILogger>(); }
         }
 
+        protected ICacheService Cache
+        {
+            get { return TinyIoCContainer.Current.Resolve<ICacheService>(); }
+        }
+
         public OrderStatusDetail CreateOrder(CreateOrder order)
         {
             var orderDetail = new OrderStatusDetail();
@@ -43,6 +48,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     orderDetail = service.CreateOrder(order);
                 }, ex => HandleCreateOrderError(ex, order));
 
+            if (orderDetail.IBSOrderId.HasValue && orderDetail.IBSOrderId > 0)
+            {
+                Cache.Set("LastOrderId", orderDetail.OrderId);
+            }
 
             ThreadPool.QueueUserWorkItem(o =>
             {

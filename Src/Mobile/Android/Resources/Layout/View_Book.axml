@@ -230,7 +230,9 @@
                   android:layout_width="150dip"
                   android:layout_height="40dip"
                   android:text="@string/BookItButton"
-                  android:layout_centerHorizontal="true"/>
+                  android:layout_centerHorizontal="true"
+                  local:MvxBind="{'Click': {'Path': 'ConfirmOrder'}}"
+                  />
               <ImageButton
                   android:id="@+id/pickupDateButton"
                   android:src="@drawable/bookLater_state"
