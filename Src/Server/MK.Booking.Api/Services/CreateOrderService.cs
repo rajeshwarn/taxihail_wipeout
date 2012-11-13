@@ -6,13 +6,14 @@ using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.IBS;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
-
 using AutoMapper;
 using ServiceStack.Common.Web;
+using OrderStatus = apcurium.MK.Booking.Api.Contract.Resources.OrderStatus;
 using OrderStatusDetail = apcurium.MK.Booking.Api.Contract.Resources.OrderStatusDetail;
 
 
@@ -22,10 +23,9 @@ namespace apcurium.MK.Booking.Api.Services
     {
         private ICommandBus _commandBus;
         private IBookingWebServiceClient _bookingWebServiceClient;
-        private IStaticDataWebServiceClient _staticDataWebServiceClient;
         private IConfigurationManager _configManager;
         private IAccountDao _accountDao;
-        private ICacheClient _cacheClient;
+
         private ReferenceDataService _referenceDataService;
         public CreateOrderService(ICommandBus commandBus,
                                     IBookingWebServiceClient bookingWebServiceClient,
@@ -37,9 +37,7 @@ namespace apcurium.MK.Booking.Api.Services
         {
             _commandBus = commandBus;
             _bookingWebServiceClient = bookingWebServiceClient;
-            _staticDataWebServiceClient = staticDataWebServiceClient;
             _accountDao = accountDao;
-            _cacheClient = cacheClient;
             _referenceDataService = referenceDataService;
             _configManager = configManager;
         }
@@ -47,10 +45,11 @@ namespace apcurium.MK.Booking.Api.Services
         public override object OnPost(CreateOrder request)
         {
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
+            var referenceData = (ReferenceData)_referenceDataService.OnGet(new ReferenceDataRequest());
 
             request.PickupDate = request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime() ;
 
-            var ibsOrderId = CreateIBSOrder(account, request);
+            var ibsOrderId = CreateIBSOrder(account, request, referenceData);
 
             if (!ibsOrderId.HasValue
                 || ibsOrderId <= 0)
@@ -67,8 +66,6 @@ namespace apcurium.MK.Booking.Api.Services
             emailCommand.EmailAddress = account.Email;
 
             // Get Charge Type and Vehicle Type from reference data
-            
-            var referenceData = (ReferenceData) _referenceDataService.OnGet(new ReferenceDataRequest());
             var chargeType = referenceData.PaymentsList.Where(x => x.Id == request.Settings.ChargeTypeId).Select(x => x.Display).FirstOrDefault();
             var vehicleType = referenceData.VehiclesList.Where(x => x.Id == request.Settings.VehicleTypeId).Select(x => x.Display).FirstOrDefault();
 
@@ -97,18 +94,18 @@ namespace apcurium.MK.Booking.Api.Services
             return offsetedTime;
         }
 
-        private int? CreateIBSOrder(ReadModel.AccountDetail account, CreateOrder request)
+        private int? CreateIBSOrder(AccountDetail account, CreateOrder request, ReferenceData referenceData)
         {
 
             if (!request.Settings.ProviderId.HasValue)
             {
                 throw new HttpError(ErrorCode.CreateOrder_NoProvider.ToString());
             }
-            else if (_staticDataWebServiceClient.GetCompaniesList().None(c => c.Id == request.Settings.ProviderId.Value))
+            else if (referenceData.CompaniesList.None(c => c.Id == request.Settings.ProviderId.Value))
             {
                 throw new HttpError(ErrorCode.CreateOrder_InvalidProvider.ToString());
             }
-            else if (_staticDataWebServiceClient.GetVehiclesList(_staticDataWebServiceClient.GetCompaniesList().Single(c => c.Id == request.Settings.ProviderId.Value)).None(v => v.Id == request.Settings.VehicleTypeId))
+            else if (referenceData.VehiclesList.Where(x => x.Parent.Id == request.Settings.ProviderId.Value).None(v => v.Id == request.Settings.VehicleTypeId))
             {
                 throw new HttpError(ErrorCode.CreateOrder_VehiculeType.ToString());
             }
@@ -118,11 +115,11 @@ namespace apcurium.MK.Booking.Api.Services
 
             // Building Name is not handled by IBS
             // Put Building Name in note, if specified
-            var note = request.Note;
+            var note = string.Format("Web or mobile booking.{0}{1}", Environment.NewLine, request.Note) ;
             if(!string.IsNullOrWhiteSpace(request.PickupAddress.BuildingName))
             {
                 var buildingName = "Building Name: " + request.PickupAddress.BuildingName;
-                note = (buildingName + Environment.NewLine + note).Trim();
+                note += (Environment.NewLine + buildingName).Trim();
             }
 
             var result = _bookingWebServiceClient.CreateOrder(request.Settings.ProviderId, account.IBSAccountId, request.Settings.Name, request.Settings.Phone, request.Settings.Passengers,
