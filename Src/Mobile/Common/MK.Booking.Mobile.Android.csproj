@@ -71,8 +71,6 @@
     <Compile Include="AppServices\Impl\GeolocService.cs" />
     <Compile Include="AppServices\Impl\PopularAddressProvider.cs" />
     <Compile Include="AppServices\Impl\TariffProvider.cs" />
-    <Compile Include="AppServices\Impl\UserPositionService.cs" />
-    <Compile Include="AppServices\IUserPositionService.cs" />
     <Compile Include="BindingConverter\BoolInverter.cs" />
     <Compile Include="BindingConverter\BoolVisibilityInverter.cs" />
     <Compile Include="Data\Coordinate.cs" />
@@ -171,6 +169,7 @@
     <Compile Include="Style\ShadowDefinition.cs" />
     <Compile Include="Style\StyleManager.cs" />
     <Compile Include="TaxiHailApp.cs" />
+    <Compile Include="ViewModels\BookConfirmationViewModel.cs" />
     <Compile Include="ViewModels\BookDetailViewModel.cs" />
     <Compile Include="ViewModels\BookingStatusViewModel.cs" />
     <Compile Include="ViewModels\BookRatingViewModel.cs" />
