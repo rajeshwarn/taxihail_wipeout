@@ -302,7 +302,7 @@
   <string name="View_BookingDetail_TitleRideSettings">Ride Settings</string>
   <string name="View_BookingDetail_TitlePickupDetails">Pickup Details</string>
   <string name="Notes">Notes</string>
-  <string name="RateBtn">Rate your trip</string>
+  <string name="RateBtn">Rate your drive</string>
   <string name="Submit">Submit</string>
   <string name="ViewRatingBtn">View ratings</string>
   <string name="View_RatePage">Rate your trip</string>

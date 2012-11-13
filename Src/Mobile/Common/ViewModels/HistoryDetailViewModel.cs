@@ -5,6 +5,7 @@ using System.Text;
 
 using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.Interfaces.Commands;
+using Cirrious.MvvmCross.ViewModels;
 using ServiceStack.Text;
 using TinyIoC;
 using TinyMessenger;
@@ -157,6 +158,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                                                       var orderWithStatus = new OrderWithStatusModel() { Order = orderGet, OrderStatusDetail = orderInfoGet };
                                                                       var serialized = JsonSerializer.SerializeToString(orderWithStatus, typeof(OrderWithStatusModel));
                                                                       RequestNavigate<BookingStatusViewModel>(new {order = serialized});
+                });
+            }
+        }
+
+        public IMvxCommand DeleteOrder
+        {
+            get
+            {
+                return new MvxRelayCommand<Guid>(orderId =>
+                {
+                    if (Common.Extensions.GuidExtensions.HasValue(orderId))
+                        {
+                            TinyIoCContainer.Current.Resolve<IBookingService>().RemoveFromHistory(orderId);
+                            this.RequestNavigate(typeof (HistoryViewModel));
+                        }
                 });
             }
         }
