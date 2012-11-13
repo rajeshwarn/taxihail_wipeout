@@ -1,8 +1,8 @@
 {
-    "Manage Tariffs": "Manage Tariffs",
+    "Manage Tariffs": "Manage Ride Estimates",
     "Name": "Name",
     "Days": "Days",
     "Time": "Time",
-    "Add Tariff (Recurring)": "Add Tariff (Recurring)",
-    "Add Tariff (One day)": "Add Tariff (One day)"
+    "Add Tariff (Recurring)": "Add Recurring Rate",
+    "Add Tariff (One day)": "Add Rate by Date"
 }
