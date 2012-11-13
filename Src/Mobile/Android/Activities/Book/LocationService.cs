@@ -13,6 +13,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
     public class LocationService : ILocationService
     {
+        private static LocationService  _instance;
+
+        public static LocationService Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new LocationService();
+                }
+                return _instance;
+            }
+        }
+
+
         private bool _isStarted = false;
         private LocationManager _locMgr;
 
@@ -21,12 +36,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         private Android.Locations.Location _lastLocation;
 
-        public LocationService()
+        private LocationService()
         {
             _gpsListener = new LocationListener(this);
             _networkListener = new LocationListener(this);
         }
 
+
+        
 
         public void Start()
         {
@@ -141,7 +158,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         }
 
         public void Stop()
-        {
+        {            
             _isStarted = false;
             _locMgr.RemoveUpdates(_networkListener);
             _locMgr.RemoveUpdates(_gpsListener);

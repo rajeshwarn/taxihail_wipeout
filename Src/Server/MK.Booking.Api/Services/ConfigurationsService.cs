@@ -30,21 +30,12 @@ namespace apcurium.MK.Booking.Api.Services
 
         public override object OnGet(ConfigurationsRequest request)
         {
-            string[] keys;
+            var keys = new string[0];
 
             if (request.AppSettingsType.Equals(AppSettingsType.Webapp))
             {
-                keys = new[] { "PriceFormat", "DistanceFormat", "Direction.FlateRate", "Direction.RatePerKm",
-                               "Direction.MaxDistance", "GeoLoc.SearchFilter", "GeoLoc.PopularAddress.Range",
-                               "NearbyPlacesService.DefaultRadius", "Map.PlacesApiKey", "Client.HideCallDispatchButton",
-                               "IBS.ExcludedVehicleTypeId", "IBS.ExcludedPaymentTypeId", "IBS.ExcludedProviderId",
-                               "IBS.AutoDispatch",
-                               "IBS.DestinationZoneToExclude",	
-                               "IBS.PickupZoneToExclude",
-                               "IBS.TimeDifference",
-                               "IBS.ValidateDestinationZone",
-                               "IBS.ValidatePickupZone"
-                           };
+                var listKeys = _configManager.GetSetting("Admin.CompanySettings");
+                if(listKeys != null) keys = listKeys.Split(',');
             }
             else //AppSettingsType.Mobile
             {

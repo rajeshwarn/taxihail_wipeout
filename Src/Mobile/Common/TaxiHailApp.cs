@@ -77,11 +77,15 @@ namespace apcurium.MK.Booking.Mobile
 
         }
         
+        
+        
         private void InitialiseStartNavigation()
         {
             var startApplicationObject = new StartNavigation();
             this.RegisterServiceInstance<IMvxStartNavigation>(startApplicationObject);
         }
+
+        
 
         protected override IMvxViewModelLocator CreateDefaultViewModelLocator()
         {
