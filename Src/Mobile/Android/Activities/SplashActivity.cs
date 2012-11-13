@@ -42,14 +42,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
         }
 
         protected override void OnResume()
-        {            
-            var service = new LocationService();
-            service.Start();
+        {
+            apcurium.MK.Booking.Mobile.Client.Activities.Book.LocationService.Instance.Start();
+            //service.Start();
             base.OnResume();
         }
 
 
-        
+        protected override void OnPause()
+        {
+            base.OnPause();
+        }
 
         
 
