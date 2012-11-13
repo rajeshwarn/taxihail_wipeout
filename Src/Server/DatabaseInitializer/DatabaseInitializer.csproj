@@ -136,9 +136,6 @@
     <Content Include="Settings\MKWebDev.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Settings\BostonCab.json" />
-    <None Include="Settings\VictoriaTaxi.json" />
-    <None Include="Settings\YellowCabTampa.json" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
