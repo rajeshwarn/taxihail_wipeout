@@ -50,14 +50,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
             ViewModel.Initialize();
 
             var btnStatus = FindViewById<Button>(Resource.Id.StatusBtn);
-            var btnRebook = FindViewById<Button>(Resource.Id.RebookTripBtn);
             var btnSendReceipt = FindViewById<Button>(Resource.Id.SendReceiptBtn);
             var btnDelete = FindViewById<Button>(Resource.Id.HistoryOrderDeleteBtn);
 
             btnStatus.Visibility = ViewStates.Gone;
             btnSendReceipt.Visibility = ViewStates.Gone;
             btnStatus.Click += new EventHandler(btnStatus_Click);
-            btnRebook.Click += new EventHandler(btnRebook_Click);
             btnSendReceipt.Click += new EventHandler(btnSendReceipt_Click);
             btnDelete.Click += new EventHandler(btnDelete_Click);
             FindViewById<TextView>(Resource.Id.StatusTxt).Text = Resources.GetString(Resource.String.LoadingMessage);
@@ -87,13 +85,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
                 FindViewById<TextView>(Resource.Id.DestinationTxt).Text = order.DropOffAddress.FullAddress.HasValue() ? order.DropOffAddress.FullAddress : Resources.GetString(Resource.String.ConfirmDestinationNotSpecified);
                 FindViewById<TextView>(Resource.Id.PickUpDateTxt).Text = FormatDateTime(order.PickupDate, order.PickupDate);
             });
-        }
-
-        void btnRebook_Click(object sender, EventArgs e)
-        {
-            
-            TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new RebookRequested(this, ViewModel.Order));
-            TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new CloseViewsToRoot(this));
         }
 
         void btnSendReceipt_Click(object sender, EventArgs e)

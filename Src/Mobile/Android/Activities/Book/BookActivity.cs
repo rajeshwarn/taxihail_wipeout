@@ -47,18 +47,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private TinyMessageSubscriptionToken _pickDateSubscription;
         private TinyMessageSubscriptionToken _orderConfirmedSubscription;
         private TinyMessageSubscriptionToken _bookUsingAddressSubscription;
-        private TinyMessageSubscriptionToken _rebookSubscription;
-
 
         protected override void OnViewModelSet()
         {
             UnsubscribeOrderConfirmed();
             UnsubscribeBookUsingAddress();
-            UnsubscribeRebook();
             UnsubscribePickDate();
 
             _bookUsingAddressSubscription = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<BookUsingAddress>(m => BookUsingAddress(m.Content));
-            _rebookSubscription = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<RebookRequested>(m => Rebook(m.Content));
 
             SetContentView(Resource.Layout.View_Book);
 
@@ -90,15 +86,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             FindViewById<Button>(Resource.Id.settingsFavorites).Click -= new EventHandler(ShowFavorites_Click);
             FindViewById<Button>(Resource.Id.settingsFavorites).Click += new EventHandler(ShowFavorites_Click);
 
-            //FindViewById<Button>(Resource.Id.settingsHistory).Click -= new EventHandler(ShowHistory_Click);
-            //FindViewById<Button>(Resource.Id.settingsHistory).Click += new EventHandler(ShowHistory_Click);
-
             FindViewById<Button>(Resource.Id.settingsAbout).Click -= new EventHandler(About_Click);
             FindViewById<Button>(Resource.Id.settingsAbout).Click += new EventHandler(About_Click);
-
-
-            //FindViewById<Button>(Resource.Id.settingsLogout).Click -= new EventHandler(Logout_Click);
-            //FindViewById<Button>(Resource.Id.settingsLogout).Click += new EventHandler(Logout_Click);
 
             FindViewById<Button>(Resource.Id.settingsSupport).Click -= new EventHandler(ReportProblem_Click);
             FindViewById<Button>(Resource.Id.settingsSupport).Click += new EventHandler(ReportProblem_Click);
@@ -114,11 +103,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             ThreadHelper.ExecuteInThread(this, () =>
                  {
-
-                     if (ViewModel != null)
-                     {
-                         ViewModel.Initialize();
-                     }
 
                      if (AppContext.Current.LastOrder.HasValue)
                      {
@@ -140,30 +124,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
                  }, true);
 
-
-
-
-
-
         }
-
-
-
-
-
-        private void Rebook(Order order)
-        {
-            ViewModel.Rebook(order);
-            BookItBtn_Click(this, EventArgs.Empty);
-        }
-
-
-
 
         private void BookUsingAddress(Address address)
         {
 
-            ViewModel.Load();
+            ViewModel.InitializeOrder();
             ViewModel.Pickup.SetAddress(address, true);
             ViewModel.Dropoff.ClearAddress();
             BookItBtn_Click(this, EventArgs.Empty);
@@ -179,17 +145,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 Intent i = new Intent(this, typeof(LocationListActivity));
 
                 StartActivity(i);
-            });
-            ToggleSettingsScreenVisibility();
-        }
-
-        void ShowHistory_Click(object sender, EventArgs e)
-        {
-            RunOnUiThread(() =>
-            {
-                Intent i = new Intent(this, typeof(HistoryListActivity));
-                StartActivity(i);
-
             });
             ToggleSettingsScreenVisibility();
         }
@@ -262,10 +217,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             base.OnDestroy();
             UnsubscribeOrderConfirmed();
             UnsubscribeBookUsingAddress();
-            UnsubscribeRebook();
             UnsubscribePickDate();
         }
-
+        
         private void UnsubscribeBookUsingAddress()
         {
             if (_bookUsingAddressSubscription != null)
@@ -274,15 +228,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 _bookUsingAddressSubscription = null;
             }
         }
-        private void UnsubscribeRebook()
-        {
-            if (_rebookSubscription != null)
-            {
-                TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Unsubscribe<RebookRequested>(_rebookSubscription);
-                _rebookSubscription = null;
-            }
-        }
-
+        
         private void UnsubscribePickDate()
         {
             if (_pickDateSubscription != null)
@@ -317,18 +263,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             menu.Visibility = _menuIsShown ? ViewStates.Gone : ViewStates.Visible;
 
 
-            //if (_menuIsShown)
-            //{
             var animation = new SlideAnimation(mainLayout, _menuIsShown ? -(_menuWidth) : 0, _menuIsShown ? 0 : -(_menuWidth), _interpolator);
             animation.Duration = 400;
             mainLayout.StartAnimation(animation);
-            //}
-            //else
-            //{
-            //    SlideAnimation a = new SlideAnimation(mainLayout, 0, -(_menuWidth), _interpolator);
-            //    a.Duration = 400;
-            //    mainLayout.StartAnimation(a);
-            //}
 
             _menuIsShown = !_menuIsShown;
         }
@@ -392,21 +329,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                         var parameters = new Dictionary<string, string>() { { "order", serializedInfo } };
                         var dispatch = TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
                         dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(BookDetailViewModel), parameters, false, MvxRequestedBy.UserAction));
-
-                        //Intent i = new Intent(this, typeof(BookDetailActivity));
-                        //var serializedInfo = ViewModel.Order.Serialize();
-                        //i.PutExtra("BookingInfo", serializedInfo);
-                        //StartActivityForResult(i, (int)ActivityEnum.BookConfirmation);
                     });
                 }
             }, true);
         }
-
-        private void StartNewOrder()
-        {
-            ViewModel.NewOrder();
-        }
-
 
         public override void OnBackPressed()
         {
@@ -448,7 +374,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
                     }
 
-                    StartNewOrder();
+                    ViewModel.NewOrder();
 
                 }
                 catch (Exception ex)

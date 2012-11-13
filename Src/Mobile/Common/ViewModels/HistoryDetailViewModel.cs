@@ -5,6 +5,7 @@ using System.Text;
 
 using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.Interfaces.Commands;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
 using ServiceStack.Text;
 using TinyIoC;
 using TinyMessenger;
@@ -201,6 +202,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     },
                     resources.GetString("NoButton"), () => { });                          
                 }); 
+            }
+        }
+
+        public IMvxCommand RebookOrder
+        {
+            get { return new MvxRelayCommand(()=>
+            {
+                var serialized = JsonSerializer.SerializeToString(Order);
+                RequestNavigate<BookViewModel>(new { order = serialized }, clearTop: true, requestedBy: MvxRequestedBy.UserAction);
+            });
             }
         }
 

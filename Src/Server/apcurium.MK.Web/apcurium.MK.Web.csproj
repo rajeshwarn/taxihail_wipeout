@@ -365,6 +365,7 @@
     <Content Include="themes\Taxiworld\less\combined.less" />
     <Content Include="themes\Taxiworld\less\style.less" />
     <Content Include="admin\templates\SettingsItem.handlebars" />
+    <Content Include="themes\TaxiHail\less\variables.less" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,6 +1,8 @@
 using System;
 using Cirrious.MvvmCross.Commands;
+using Cirrious.MvvmCross.ExtensionMethods;
 using Cirrious.MvvmCross.Interfaces.Commands;
+using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using Cirrious.MvvmCross.ViewModels;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Contract.Requests;
@@ -22,8 +24,12 @@ using System.Collections.ObjectModel;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class BookViewModel : BaseViewModel
+    public class BookViewModel : BaseViewModel,
+        IMvxServiceConsumer<IAccountService>,
+        IMvxServiceConsumer<IAppResource>,
+        IMvxServiceConsumer<ILocationService>
     {
+        private bool _initialized;
         private IAccountService _accountService;
         private ILocationService _geolocator;
         private bool _pickupIsActive = true;
@@ -33,32 +39,60 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private IEnumerable<CoordinateViewModel> _mapCenter;
         private string _fareEstimate;
 
-        public BookViewModel(IAccountService accountService, IAppResource appResource, ILocationService geolocator)
+        public BookViewModel()
         {
-            _appResource = appResource;
-            _accountService = accountService;
-            _geolocator = geolocator;
-            _appResource = appResource;
-			TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub>().Subscribe<LogOutRequested>( msg => Logout.Execute() );
+            InitializeViewModel();
 
+            MessengerHub.Subscribe<LogOutRequested>(msg => Logout.Execute());
 
-            Load();
-            Pickup = new BookAddressViewModel(() => Order.PickupAddress, address => Order.PickupAddress = address, _geolocator) { Title = appResource.GetString("BookPickupLocationButtonTitle"), EmptyAddressPlaceholder = appResource.GetString("BookPickupLocationEmptyPlaceholder") };
-            Dropoff = new BookAddressViewModel(() => Order.DropOffAddress, address => Order.DropOffAddress = address, _geolocator) { Title = appResource.GetString("BookDropoffLocationButtonTitle"), EmptyAddressPlaceholder = appResource.GetString("BookDropoffLocationEmptyPlaceholder") };
+            PickupIsActive = true;
+            DropoffIsActive = false;
+            Pickup.RequestCurrentLocationCommand.Execute();
+            
+        }
 
-            Pickup.PropertyChanged -= new PropertyChangedEventHandler(Address_PropertyChanged);
-            Pickup.PropertyChanged += new PropertyChangedEventHandler(Address_PropertyChanged);
+        public BookViewModel(string order)
+        {
+            InitializeViewModel(JsonSerializer.DeserializeFromString<CreateOrder>(order));
+            
+            Rebook(JsonSerializer.DeserializeFromString<Order>(order));
+        }
 
-            Dropoff.PropertyChanged -= new PropertyChangedEventHandler(Address_PropertyChanged);
-            Dropoff.PropertyChanged += new PropertyChangedEventHandler(Address_PropertyChanged);
+        private void InitializeViewModel(CreateOrder order = null)
+        {
+            if(_initialized) throw new InvalidOperationException();
+            _initialized = true;
 
-            Pickup.AddressChanged -= new EventHandler(AddressChanged);
-            Pickup.AddressChanged += new EventHandler(AddressChanged);
+            _appResource = this.GetService<IAppResource>();
+            _accountService = this.GetService<IAccountService>();
+            _geolocator = this.GetService<ILocationService>();
 
-            Dropoff.AddressChanged -= new EventHandler(AddressChanged);
-            Dropoff.AddressChanged += new EventHandler(AddressChanged);
+            if (order != null)
+            {
+                Order = order;
+            }
+            else
+            {
+                InitializeOrder();
+            }
 
-			_fareEstimate = appResource.GetString("NoFareText");
+            Pickup = new BookAddressViewModel(() => Order.PickupAddress, address => Order.PickupAddress = address, _geolocator)
+            {
+                Title = _appResource.GetString("BookPickupLocationButtonTitle"),
+                EmptyAddressPlaceholder = _appResource.GetString("BookPickupLocationEmptyPlaceholder")
+            };
+            Dropoff = new BookAddressViewModel(() => Order.DropOffAddress, address => Order.DropOffAddress = address, _geolocator)
+            {
+                Title = _appResource.GetString("BookDropoffLocationButtonTitle"),
+                EmptyAddressPlaceholder = _appResource.GetString("BookDropoffLocationEmptyPlaceholder")
+            };
+
+            Pickup.PropertyChanged += Address_PropertyChanged;
+            Dropoff.PropertyChanged += Address_PropertyChanged;
+            Pickup.AddressChanged += AddressChanged;
+            Dropoff.AddressChanged += AddressChanged;
+
+            _fareEstimate = _appResource.GetString("NoFareText");
 
             CenterMap(true);
 
@@ -72,7 +106,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             CenterMap(sender is bool ? !(bool)sender : false );
         }
 
-        void Address_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        void Address_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "Display")
             {
@@ -90,8 +124,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
 
-
-        public override void Load()
+        public void InitializeOrder()
         {
             Order = new CreateOrder();
             if (_accountService.CurrentAccount != null)
@@ -109,7 +142,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             RequestMainThreadAction(() =>
                 {
-                    Load();
+                    InitializeOrder();
 
                     ForceRefresh();
 
@@ -126,7 +159,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public void Reset()
         {
-            Load();
+            InitializeOrder();
             ForceRefresh();
         }
 
@@ -363,17 +396,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-
-        
-
-
-        public void Initialize()
-        {
-			PickupIsActive = true;
-			DropoffIsActive = false;
-            Pickup.RequestCurrentLocationCommand.Execute();
-        }
-
         public bool IsInTheFuture { get { return Order.PickupDate.HasValue; } }
 
         public string PickupDateDisplay
@@ -392,7 +414,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             }
         }
-
         public void PickupDateSelected()
         {
             FirePropertyChanged(() => IsInTheFuture);
