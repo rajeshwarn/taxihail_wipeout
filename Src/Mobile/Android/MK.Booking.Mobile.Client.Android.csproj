@@ -536,6 +536,8 @@
     <AndroidResource Include="Resources\Drawable\rate_mad_state.xml" />
     <AndroidResource Include="Resources\Drawable\rate_neutral_state.xml" />
     <AndroidResource Include="Resources\Drawable\rate_unhappy_state.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\erase_cross_btn.png" />
+    <AndroidResource Include="Resources\Drawable\erase_cross_btn.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

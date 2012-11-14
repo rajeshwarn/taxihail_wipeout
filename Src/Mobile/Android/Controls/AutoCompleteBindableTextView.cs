@@ -46,7 +46,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             {
                 TextChangedCommand.Execute(textChangedEvent.Text != null ? textChangedEvent.Text.ToString() : null);
             }
-
         }
 
         public IMvxCommand TextChangedCommand { get; set; }

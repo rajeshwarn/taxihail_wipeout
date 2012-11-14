@@ -46,6 +46,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             InitializeViewModel();
 
+
             MessengerHub.Subscribe<LogOutRequested>(msg => Logout.Execute());
 
             PickupIsActive = true;
@@ -111,8 +112,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _fareEstimate = Resources.GetString("NoFareText");
 
             CenterMap(true);
-
+            CheckVersion();
             ThreadPool.QueueUserWorkItem(UpdateServerInfo);
+        }
+
+        private void CheckVersion()
+        {
+            ThreadPool.QueueUserWorkItem(o =>
+            {
+                //The 2 second delay is required because the view might not be created.
+                Thread.Sleep(2000);
+                TinyIoCContainer.Current.Resolve<IApplicationInfoService>().CheckVersion();
+            });
+
         }
 
         void AddressChanged(object sender, EventArgs e)

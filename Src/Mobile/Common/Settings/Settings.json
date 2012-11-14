@@ -4,7 +4,7 @@
    "DefaultPhoneNumber" : "18666245330",
    "DefaultPhoneNumberDisplay" : "1.866.624.5330",
    "ErrorLog" : "",
-   "ErrorLogEnabled" : "false",
+   "ErrorLogEnabled" : "true",
    "FacebookAppId" : "134284363380764",
    "FacebookEnabled" : "true",
    "ServiceUrl" : "http://192.168.12.130/apcurium.mk.web/api/",
