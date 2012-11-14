@@ -31,6 +31,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
         public void ShowMessage(string title, string message)
         {
+            
             var i = new Intent(Context, typeof(AlertDialogActivity));
             i.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
             i.PutExtra("Title", title);

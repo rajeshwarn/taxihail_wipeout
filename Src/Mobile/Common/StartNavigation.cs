@@ -6,6 +6,8 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using TinyIoC;
 using apcurium.MK.Common.Diagnostic;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -15,35 +17,13 @@ namespace apcurium.MK.Booking.Mobile
     {
         public void Start()
         {
-            bool isUpToDate;
-            try
-            {
-                var app = TinyIoCContainer.Current.Resolve<IApplicationInfoService>().GetAppInfo();
 
-                 isUpToDate = app.Version.StartsWith("1.1.");
-            }
-            catch(Exception e)
-            {
-             
+            
 
-                isUpToDate = true;
-            }
 
-            if (!isUpToDate)
-            {
-
-                var title = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("AppNeedUpdateTitle");
-                var msg = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("AppNeedUpdateMessage");
-                var mService = TinyIoCContainer.Current.Resolve<IMessageService>();
-                mService.ShowMessage(title, msg);
-                RequestNavigate<LoginViewModel>(true);
-
-            }
-            else if (TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount == null)
+            if (TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount == null)
             {
                 RequestNavigate<LoginViewModel>();
-
-
             }
             else
             {
@@ -51,9 +31,11 @@ namespace apcurium.MK.Booking.Mobile
             }
 
 
-            TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Startup with server {0}", TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl);            
+            TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Startup with server {0}", TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl);
         }
-                
+
+       
+
         public bool ApplicationCanOpenBookmarks
         {
             get { return true; }

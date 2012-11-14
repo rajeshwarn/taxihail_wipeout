@@ -10,6 +10,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 	public interface IApplicationInfoService
 	{
         ApplicationInfo GetAppInfo();
+
+        void CheckVersion();
 	}
 }
 
