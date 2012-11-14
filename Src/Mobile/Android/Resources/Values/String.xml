@@ -55,7 +55,7 @@
   <string name="ConfirmDestinationLabel">Destination:</string>
   <string name="ConfirmDateTimeLabel">Date / Time:</string>
   <string name="ConfirmNameLabel">Name:</string>
-  <string name="ConfirmPhoneLabel">Phone:</string>
+  <string name="ConfirmPhoneLabel">Mobile:</string>
   <string name="ConfirmCompanyLabel">Company:</string>
   <string name="ConfirmPassengersLabel">Passengers:</string>
   <string name="ConfirmVehiculeTypeLabel">Vehicle type:</string>
@@ -302,7 +302,7 @@
   <string name="View_BookingDetail_TitleRideSettings">Ride Settings</string>
   <string name="View_BookingDetail_TitlePickupDetails">Pickup Details</string>
   <string name="Notes">Notes</string>
-  <string name="RateBtn">Rate your trip</string>
+  <string name="RateBtn">Rate your drive</string>
   <string name="Submit">Submit</string>
   <string name="ViewRatingBtn">View ratings</string>
   <string name="View_RatePage">Rate your trip</string>

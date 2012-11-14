@@ -43,9 +43,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {            
 
             SetContentView(Resource.Layout.View_BookingDetail);
-
-            
-
             
             var data = JsonSerializer.DeserializeFromString<CreateOrder>(this.ViewModel.Order);
             BookingInfo = data;
