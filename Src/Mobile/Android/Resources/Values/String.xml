@@ -113,7 +113,7 @@
   <string name="RideSettingsCannotLoadListMessage">The server cannot be contacted, try again later.</string>
   <string name="RideSettingsCannotLoadListTitle">Server error</string>
   <string name="RideSettingsName">Name:</string>
-  <string name="RideSettingsPhone">Phone:</string>
+  <string name="RideSettingsPhone">Mobile:</string>
   <string name="RideSettingsPassengers">Passengers:</string>
   <string name="RideSettingsVehiculeType">Vehicle type:</string>
   <string name="RideSettingsCompany">Company:</string>
@@ -186,7 +186,7 @@
   <string name="CreateAccoutCancel">Cancel</string>
   <string name="RideSettingsChargeType">Charge type:</string>
   <string name="CreateAccountInvalidPassword">The password is invalid.  The password and confirmation must be the same.  The password must also be between 6 and 10 characters.</string>
-  <string name="CreateAccountInvalidPhone">The phone number is invalid. It must contain 10 numbers.</string>
+  <string name="CreateAccountInvalidPhone">The mobile number is invalid. It must contain 10 numbers.</string>
   <string name="CreateAccountEmptyField">The data is invalid, all the fields are required.</string>
   <string name="CreateAccountInvalidDataTitle">Invalid account info</string>
   <string name="CreateAccountTitleMr">Mr</string>
