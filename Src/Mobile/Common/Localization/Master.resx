@@ -283,7 +283,7 @@
     <value>Name:</value>
   </data>
   <data name="ConfirmPhoneLabel" xml:space="preserve">
-    <value>Phone:</value>
+    <value>Mobile:</value>
   </data>
   <data name="ConfirmCompanyLabel" xml:space="preserve">
     <value>Company:</value>
@@ -1035,6 +1035,4 @@
   <data name="View_RatePage" xml:space="preserve">
     <value>Rate your trip</value>
   </data>
-  
-  
 </root>

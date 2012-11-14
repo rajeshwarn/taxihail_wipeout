@@ -55,7 +55,7 @@
   <string name="ConfirmDestinationLabel">Destination:</string>
   <string name="ConfirmDateTimeLabel">Date / Time:</string>
   <string name="ConfirmNameLabel">Name:</string>
-  <string name="ConfirmPhoneLabel">Phone:</string>
+  <string name="ConfirmPhoneLabel">Mobile:</string>
   <string name="ConfirmCompanyLabel">Company:</string>
   <string name="ConfirmPassengersLabel">Passengers:</string>
   <string name="ConfirmVehiculeTypeLabel">Vehicle type:</string>
