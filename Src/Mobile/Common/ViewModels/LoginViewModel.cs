@@ -24,9 +24,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			_accountService = accountService;
 			_appRessources = appResources;
-			_appContext = appContext;			
+			_appContext = appContext;
+
+            CheckVersion();
+          
 		}
 
+        private void CheckVersion()
+        {
+            ThreadPool.QueueUserWorkItem(o =>
+            {
+                //The 2 second delay is required because the view might not be created.
+                Thread.Sleep(2000);
+                TinyIoCContainer.Current.Resolve<IApplicationInfoService>().CheckVersion();
+            });
+
+        }
+
+
+        
 	
 
 		private string _email;

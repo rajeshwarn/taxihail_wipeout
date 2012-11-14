@@ -115,15 +115,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            ThreadHelper.ExecuteInThread(this, () =>
-            {
-                if (Common.Extensions.GuidExtensions.HasValue(ViewModel.OrderId))
-                {
-                    TinyIoCContainer.Current.Resolve<IBookingService>().RemoveFromHistory(ViewModel.OrderId);
-                }
-
-                RunOnUiThread(Finish);
-            }, true);
+            this.ViewModel.DeleteOrder.Execute(ViewModel.OrderId);
         }
 
 

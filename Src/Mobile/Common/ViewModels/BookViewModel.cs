@@ -38,7 +38,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _appResource = appResource;
             _accountService = accountService;
             _geolocator = geolocator;
-            _appResource = appResource;
+            
+
 			TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub>().Subscribe<LogOutRequested>( msg => Logout.Execute() );
 
 
@@ -61,8 +62,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_fareEstimate = appResource.GetString("NoFareText");
 
             CenterMap(true);
-
+            CheckVersion();
             ThreadPool.QueueUserWorkItem(UpdateServerInfo);
+        }
+
+        private void CheckVersion()
+        {
+            ThreadPool.QueueUserWorkItem(o =>
+            {
+                //The 2 second delay is required because the view might not be created.
+                Thread.Sleep(2000);
+                TinyIoCContainer.Current.Resolve<IApplicationInfoService>().CheckVersion();
+            });
+
         }
 
         void AddressChanged(object sender, EventArgs e)

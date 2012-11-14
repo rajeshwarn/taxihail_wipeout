@@ -10,7 +10,7 @@ using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
-    [Authenticate]
+    [Authenticate(ApplyTo.Post)]
     [AuthorizationRequired(ApplyTo.Post, Permissions.Admin)]
     [RestService("/settings", "GET, POST")]
     public class ConfigurationsRequest
