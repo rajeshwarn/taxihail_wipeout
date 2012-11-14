@@ -62,12 +62,12 @@
         android:layout_marginTop="5dip"
         android:layout_marginBottom="5dip"
         android:layout_marginLeft="7dip"
-        android:layout_marginRight="5dip">
+        android:layout_marginRight="8dip">
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
             <FrameLayout
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="fill_parent">
                 <apcurium.mk.booking.mobile.client.controls.AutoCompleteBindableTextView
                     android:id="@+id/SearchAddressText"
@@ -79,7 +79,6 @@
                     android:inputType="text"
                     android:layout_height="40dp"
                     android:maxLines="1"
-                    android:layout_marginRight="5dip"
                     android:layout_gravity="center_vertical"
                     android:background="@drawable/password_cell"
                     android:drawablePadding="1dp"
@@ -89,26 +88,14 @@
                 <Button
                     android:id="@+id/eraseTextButton"
                     android:background="@drawable/erase_cross_btn"
-                    android:layout_height="30dp"
-                    android:layout_width="30dp"
+                    android:layout_height="20dp"
+                    android:layout_width="20dp"
                     android:gravity="center"
                     android:layout_marginRight="5dip"
                     android:layout_gravity="center_vertical|right"
-                    android:layout_alignParentRight="true" />
+                    android:layout_alignParentRight="true"
+                    android:visibility="gone" />
             </FrameLayout>
-            <Button
-                android:id="@+id/validateSearchButton"
-                android:background="@drawable/gray_button"
-                android:text="@string/CancelBoutton"
-                style="@style/ButtonTextGray"
-                local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;CloseViewCommand&apos;}}"
-                android:layout_height="40dp"
-                android:layout_width="wrap_content"
-                android:gravity="center"
-                android:layout_gravity="center_vertical|right"
-                android:textSize="15dip"
-                android:layout_alignParentRight="true"
-                android:layout_toRightOf="@id/SearchAddressText" />
         </LinearLayout>
         <apcurium.mk.booking.mobile.client.controls.SpinningSearch
             android:id="@+id/spinning"

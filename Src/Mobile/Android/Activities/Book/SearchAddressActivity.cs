@@ -6,6 +6,7 @@ using System.Text;
 
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Runtime;
@@ -74,11 +75,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                                                                    });
                                              });
 
-            /*if(searchAddressText.Length()> 0)
+            if(searchAddressText.Length()> 0)
             {
-                searchAddressText.SelectAll();
-                searchAddressText.ExtendSelection(0);
-            }*/
+                button.Visibility = ViewStates.Visible;
+                //searchAddressText.SelectAll();
+                //searchAddressText.ExtendSelection(0);
+            }
 
 
 			
