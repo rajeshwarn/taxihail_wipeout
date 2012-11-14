@@ -33,7 +33,7 @@ namespace apcurium.MK.Web
 
                 ServiceStack.Text.JsConfig.Reset();
                 ServiceStack.Text.JsConfig.EmitCamelCaseNames = true;
-                //ServiceStack.Text.JsConfig.DateHandler = JsonDateHandler.ISO8601;                                
+                ServiceStack.Text.JsConfig.DateHandler = JsonDateHandler.ISO8601;                                
                 //ServiceStack.Text.JsConfig<CreateOrder>.RawDeserializeFn = DeSerializeOrder;
                 ServiceStack.Text.JsConfig<DateTime>.RawDeserializeFn = DateTimeRawDesirializtion;
                 ServiceStack.Text.JsConfig<DateTime?>.RawDeserializeFn = DateTimeRawDesirializtion2;
