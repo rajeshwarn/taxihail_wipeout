@@ -8,18 +8,12 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: Android.Runtime.ResourceDesignerAttribute("apcurium.MK.Booking.Mobile.Client.Resource", IsApplication=true)]
-
 namespace apcurium.MK.Booking.Mobile.Client
 {
 	
 	
 	public partial class Resource
 	{
-		
-		public static void UpdateIdValues()
-		{
-		}
 		
 		public partial class Array
 		{

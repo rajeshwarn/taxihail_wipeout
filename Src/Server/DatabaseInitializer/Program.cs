@@ -259,6 +259,24 @@ namespace DatabaseInitializer
                     AppSettings = appSettings,
                     CompanyId = AppConstants.CompanyId
                 });
+                commandBus.Send(new AddRatingType()
+                {
+                    CompanyId = AppConstants.CompanyId,
+                    Name = "Knowledgable driver",
+                    RatingTypeId = Guid.NewGuid()
+                });
+                commandBus.Send(new AddRatingType()
+                {
+                    CompanyId = AppConstants.CompanyId,
+                    Name = "Politness",
+                    RatingTypeId = Guid.NewGuid()
+                });
+                commandBus.Send(new AddRatingType()
+                {
+                    CompanyId = AppConstants.CompanyId,
+                    Name = "Safety",
+                    RatingTypeId = Guid.NewGuid()
+                });
             }catch(Exception e)
             {
                 Console.WriteLine(e.Message + " " +e.StackTrace);
