@@ -457,39 +457,54 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
+		public IMvxCommand BookTaxi
+		{
+			get
+			{
+				return ConfirmOrder;
+			}
+		}
+
         public IMvxCommand ConfirmOrder
         {
             get
             {
                 return new MvxRelayCommand(() =>
                 {
-                    if ((string.IsNullOrEmpty(Order.PickupAddress.FullAddress)) || (!Order.PickupAddress.HasValidCoordinate()))
+				
+
+					if (Order.Settings.Passengers == 0) {
+						var account = _accountService.CurrentAccount;
+						Order.Settings = account.Settings;
+					}
+
+					bool isValid = _bookingService.IsValid (Order);
+					if (!isValid)
                     {
                         InvokeOnMainThread(() => MessageService.ShowMessage(Resources.GetString("InvalidBookinInfoTitle"), Resources.GetString("InvalidBookinInfo")));
+						return;
                     }
-                    else
+
+					if (Order.PickupDate.HasValue && Order.PickupDate.Value < DateTime.Now) {
+						InvokeOnMainThread(() => MessageService.ShowMessage(Resources.GetString("InvalidBookinInfoTitle"), Resources.GetString("BookViewInvalidDate")));
+						return;
+					}
+
+                    TinyMessageSubscriptionToken token = null;
+                    token = MessengerHub.Subscribe<OrderConfirmed>(msg =>
                     {
-
-                        //UnsubscribeOrderConfirmed();
-                        //UnsubscribePickDate();
-
-                        TinyMessageSubscriptionToken token = null;
-                        token = MessengerHub.Subscribe<OrderConfirmed>(msg =>
+                        if (token != null)
                         {
-                            if (token != null)
-                            {
-                                MessengerHub.Unsubscribe<OrderConfirmed>(token);
-                            }
-                            CompleteOrder(msg.Content);
-                        });
+                            MessengerHub.Unsubscribe<OrderConfirmed>(token);
+                        }
+						Task.Factory.StartNew(() => CompleteOrder(msg.Content));
+                    });
 
-                        InvokeOnMainThread(() =>
-                        {
-                            var serializedInfo = JsonSerializer.SerializeToString(Order);
-                            var parameters = new Dictionary<string, string>() { { "order", serializedInfo } };
-                            RequestNavigate<BookDetailViewModel>(parameters, false, MvxRequestedBy.UserAction);
-                        });
-                    }
+                    InvokeOnMainThread(() =>
+                    {
+                        var serialized = Order.ToJson();
+						RequestNavigate<BookConfirmationViewModel>(new { order = serialized }, false, MvxRequestedBy.UserAction);
+                    });
                 });
             }
         }
@@ -501,20 +516,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return new MvxRelayCommand(() => RequestNavigate<BookRatingViewModel>(
                     new KeyValuePair<string, bool>("canRate", true)));
                
-            }
-        }
-
-        public IMvxCommand  NavigateToConfirmationCommand
-        {
-            get
-            {
-
-                return new MvxRelayCommand(() => 
-                                           {
-
-                    var serialized = Order.ToJson (); // JsonSerializer.SerializeToString<.SerializeToString(, typeof(OrderWithStatusModel));
-                    RequestNavigate<BookConfirmationViewModel>(new {order = serialized});
-                });
             }
         }
 
@@ -541,46 +542,40 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-        private void CompleteOrder(CreateOrder order)
-        {
-            //UnsubscribeOrderConfirmed();
+        private void CompleteOrder (CreateOrder order)
+		{
 
-            var service = TinyIoCContainer.Current.Resolve<IBookingService>();
-            order.Id = Guid.NewGuid();
-            try
-            {
-                var orderInfo = service.CreateOrder(order);
+			order.Id = Guid.NewGuid ();
+			try {
+				MessageService.ShowProgress (true);
+				var orderInfo = _bookingService.CreateOrder (order);
 
-                if (orderInfo.IBSOrderId.HasValue
-                    && orderInfo.IBSOrderId > 0)
-                {
-                    var orderCreated = new Order { CreatedDate = DateTime.Now, DropOffAddress = order.DropOffAddress, IBSOrderId = orderInfo.IBSOrderId, Id = order.Id, PickupAddress = order.PickupAddress, Note = order.Note, PickupDate = order.PickupDate.HasValue ? order.PickupDate.Value : DateTime.Now, Settings = order.Settings };
+				if (orderInfo.IBSOrderId.HasValue
+					&& orderInfo.IBSOrderId > 0) {
+					var orderCreated = new Order { CreatedDate = DateTime.Now, DropOffAddress = order.DropOffAddress, IBSOrderId = orderInfo.IBSOrderId, Id = order.Id, PickupAddress = order.PickupAddress, Note = order.Note, PickupDate = order.PickupDate.HasValue ? order.PickupDate.Value : DateTime.Now, Settings = order.Settings };
 
-                    ShowStatusActivity(orderCreated, orderInfo);
+					ShowStatusActivity (orderCreated, orderInfo);
 
-                }
+				}
 
-                NewOrder();
+				NewOrder ();
 
-            }
-            catch (Exception ex)
-            {
-                InvokeOnMainThread(() =>
-                {
-                    var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
-                    string err = string.Format(Resources.GetString("ServiceError_ErrorCreatingOrderMessage"), settings.ApplicationName, settings.PhoneNumberDisplay(order.Settings.ProviderId.HasValue ? order.Settings.ProviderId.Value : 1));
-                    MessageService.ShowMessage(Resources.GetString("ErrorCreatingOrderTitle"), err);
-                });
-            }
+			} catch (Exception ex) {
+				InvokeOnMainThread (() =>
+				{
+					var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
+					string err = string.Format (Resources.GetString ("ServiceError_ErrorCreatingOrderMessage"), settings.ApplicationName, settings.PhoneNumberDisplay (order.Settings.ProviderId.HasValue ? order.Settings.ProviderId.Value : 1));
+					MessageService.ShowMessage (Resources.GetString ("ErrorCreatingOrderTitle"), err);
+				});
+			} finally {
+				MessageService.ShowProgress(false);
+			}
         }
 
         private void ShowStatusActivity(Order data, OrderStatusDetail orderInfo)
         {
-            InvokeOnMainThread(() =>
-            {
-                var param = new Dictionary<string, object>() { { "order", data }, { "orderInfo", orderInfo } };
-                NavigateToOrderStatus.Execute(param);
-            });
+            var param = new Dictionary<string, object>() { { "order", data }, { "orderInfo", orderInfo } };
+            NavigateToOrderStatus.Execute(param);
         }
 
    }

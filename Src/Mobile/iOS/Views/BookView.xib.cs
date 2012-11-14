@@ -39,7 +39,6 @@ namespace apcurium.MK.Booking.Mobile.Client
         private PanelMenuView _menu;
         private DateTimePicker _dateTimePicker;
         private Action _onDateTimePicked;
-        private StatusView _statusView;
         private UIImageView _img;
 
         public BookView () 
@@ -65,10 +64,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         #endregion
 
-        public CreateOrder BookingInfo {
-            get { return ViewModel.Order; }
-        }
-
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
@@ -84,8 +79,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             AppButtons.FormatStandardButton ((GradientButton)cancelBtn, "", AppStyle.ButtonColor.Red, "Assets/cancel.png");
 
             TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub> ().Subscribe<StatusCloseRequested> (OnStatusCloseRequested);
-
-            TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub> ().Subscribe<OrderConfirmed> (OnOrderConfirmer);
 
             TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub> ().Subscribe<RebookRequested> (msg => {
                 ViewModel.Rebook (msg.Content);
@@ -122,9 +115,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             ((GradientButton)refreshCurrentLocationButton).SetImage ("Assets/gpsRefreshIcon.png");
 
             AppButtons.FormatStandardButton ((GradientButton)bookBtn, Resources.BookItButton, AppStyle.ButtonColor.Green);
-            bookBtn.TouchUpInside -= BookitButtonTouchUpInside;
-            bookBtn.TouchUpInside += BookitButtonTouchUpInside;
-
 
             mapView.MultipleTouchEnabled = true;
             mapView.Delegate = new AddressMapDelegate ();
@@ -144,12 +134,13 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { pickupDateLabel, "{'Text':{'Path':'PickupDateDisplay'}, 'Hidden':{'Path':'IsInTheFuture','Converter':'BoolInverter'}}" },
                 { _dateTimePicker, "{'DateChangedCommand':{'Path':'PickupDateSelectedCommand'}, 'CloseDatePickerCommand':{'Path':'CloseDatePickerCommand'}}" },
                 { cancelBtn, "{'Hidden':{'Path':'CanClearAddress', 'Converter':'BoolInverter'}, 'Enabled':{'Path':'CanClearAddress'}, 'TouchUpInside':{'Path':'SelectedAddress.ClearPositionCommand'}}" },
+				{ bookBtn, "{'TouchUpInside': {'Path': 'BookTaxi'}}" }
         
             });
 
-            if (ViewModel != null) {
-                ViewModel.Initialize ();
-            }
+            //if (ViewModel != null) {
+            //    ViewModel.Initialize ();
+            //}
 
         }
 
@@ -186,49 +177,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 LoadStatusView (true);
             }
         }
-
-        void BookitButtonTouchUpInside (object sender, EventArgs e)
-        {
-            BookTaxi ();
-        }
-
-
-        /*private void RemoveStatusView()
-        {
-            if (_statusView != null)
-            {
-                try
-                {
-                    _statusView.View.RemoveFromSuperview();                 
-                    _statusView = null;
-                }
-                catch
-                {
-                }
-            }
-        }*/
-
-        private void LoadStatusView (Order order, OrderStatusDetail status, bool closeScreenWhenCompleted)
-        {
-            InvokeOnMainThread (() => {
-                //RemoveStatusView();
-                var param = new Dictionary<string, object> () {{"order", order}, {"orderInfo", status}};
-                ViewModel.NavigateToOrderStatus.Execute (param);
-
-
-                //_statusView = new StatusView(this, order, status, closeScreenWhenCompleted);
-                //_statusView.HidesBottomBarWhenPushed = true;
-                /*_statusView.CloseRequested += delegate(object sender, EventArgs e)
-                {
-                    RemoveStatusView();
-                    
-
-                };*/
-
-                //NavigationController.PushViewController(_statusView, true);
-            }); 
-        }
-
+	
         private void LoadStatusView (bool closeScreenWhenCompleted)
         {
             if (AppContext.Current.LastOrder.HasValue) {
@@ -236,7 +185,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                     var order = TinyIoCContainer.Current.Resolve<IAccountService> ().GetHistoryOrder (AppContext.Current.LastOrder.Value);
                     var status = TinyIoCContainer.Current.Resolve<IBookingService> ().GetOrderStatus (AppContext.Current.LastOrder.Value);
                     if ((order != null) && (status != null)) {
-                        LoadStatusView (order, status, closeScreenWhenCompleted);
+                        //LoadStatusView (order, status, closeScreenWhenCompleted);
                     }
                 } catch (Exception ex) {
                     TinyIoCContainer.Current.Resolve<ILogger> ().LogError (ex);
@@ -252,118 +201,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             this.NavigationController.PopToRootViewController (true);
             ViewModel.Reset ();
             ViewModel.Dropoff.ClearAddress ();
-            ViewModel.Initialize ();
+            //ViewModel.Initialize ();
         }
-
-        public void BookTaxi ()
-        {
-            if (BookingInfo == null) {
-                return;
-            }
-
-            if (BookingInfo.Settings.Passengers == 0) {
-                var account = TinyIoCContainer.Current.Resolve<IAccountService> ().CurrentAccount;
-                BookingInfo.Settings = account.Settings;
-            }
-
-            LoadingOverlay.StartAnimatingLoading (LoadingOverlayPosition.Center, null, 130, 30);
-            bookView.UserInteractionEnabled = false;
-            
-            ThreadHelper.ExecuteInThread (() =>
-            {
-                try {
-                    var bookingInfo = BookingInfo;
-                    bool isValid = TinyIoCContainer.Current.Resolve<IBookingService> ().IsValid (ref bookingInfo);
-                    if (!isValid) {
-                        MessageHelper.Show (Resources.InvalidBookinInfoTitle, Resources.InvalidBookinInfo);
-                        return;
-                    }
-                    
-                    if (BookingInfo.PickupDate.HasValue && BookingInfo.PickupDate.Value < DateTime.Now) {
-                        MessageHelper.Show (Resources.InvalidBookinInfoTitle, Resources.BookViewInvalidDate);
-                        return;
-                    }
-
-                    this.InvokeOnMainThread (() =>
-                    {
-
-                        ViewModel.NavigateToConfirmationCommand.Execute ();
-
-//                        var view = new ConfirmationView(ViewModel.Order);
-//                        view.HidesBottomBarWhenPushed = true;
-//                        this.NavigationController.PushViewController(view, true);
-//                        
-//                        view.Canceled += delegate(object sender, EventArgs e)
-//                        {
-//                            this.NavigationController.PopViewControllerAnimated(true);
-//
-//                      };
-//                        
-//                        view.Confirmed += delegate(object sender, EventArgs e) {
-//                            CreateOrder (view.Order);
-//                        };
-////
-//
-
-                    });
-                } finally {
-                    InvokeOnMainThread (() =>
-                    {
-                        LoadingOverlay.StopAnimatingLoading ();
-                        bookView.UserInteractionEnabled = true;
-                    });
-                }
-                
-            });
-        }
-
-        private void OnOrderConfirmer (OrderConfirmed msg)
-        {
-            CreateOrder (msg.Content);
-        }
-
-        private void CreateOrder (CreateOrder bi)
-        {           
-            
-            LoadingOverlay.StartAnimatingLoading (LoadingOverlayPosition.Center, null, 130, 30);
-            bookView.UserInteractionEnabled = false;
-            
-            ThreadHelper.ExecuteInThread (() =>
-            {
-                try {
-                    var service = TinyIoCContainer.Current.Resolve<IBookingService> ();                   
-
-                    bi.Settings.NumberOfTaxi = 1;                
-
-                    bi.Id = Guid.NewGuid ();
-
-                    var orderStatus = service.CreateOrder (bi);
-                    if (orderStatus != null) {
-                        orderStatus.OrderId = bi.Id;
-                        if (orderStatus.IBSOrderId.HasValue) {
-                            AppContext.Current.LastOrder = orderStatus.OrderId;                                                   
-
-                            BookingInfo.Id = orderStatus.OrderId;
-                        
-                            BookingInfo.PickupDate = DateTime.Now;                       
-
-                            LoadStatusView (new Order { Id = bi.Id, IBSOrderId = orderStatus.IBSOrderId,  CreatedDate = DateTime.Now, DropOffAddress = bi.DropOffAddress, PickupAddress  = bi.PickupAddress , Settings = bi.Settings   }, orderStatus, false);
-
-                        }
-                    }
-                } finally {
-                    InvokeOnMainThread (() =>
-                    {
-                        LoadingOverlay.StopAnimatingLoading ();
-                        bookView.UserInteractionEnabled = true;
-                    });
-                }
-            });
-            
-        }
-    
-
-
 
         #endregion
 

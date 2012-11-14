@@ -24,9 +24,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
     {
         private List<Contact> _addresBook;
 
-        public bool IsValid(ref CreateOrder info)
+        public bool IsValid(CreateOrder info)
         {
-            return info.PickupAddress.FullAddress.HasValue() && info.PickupAddress.Latitude != 0 && info.PickupAddress.Longitude != 0;
+			return info.PickupAddress.FullAddress.HasValue() 
+				&& info.PickupAddress.HasValidCoordinate();
         }
 
 

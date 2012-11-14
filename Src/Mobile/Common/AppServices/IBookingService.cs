@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 	{
         string GetFareEstimateDisplay(CreateOrder order, string fareFormat, string noFareText);
 
-        bool IsValid(ref CreateOrder info);
+        bool IsValid(CreateOrder info);
 				
 		bool IsCompleted(Guid orderId);
 

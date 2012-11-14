@@ -19,28 +19,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public CreateOrder Order{get;private set;}
 
-        
-        //        void ConfirmClicked(object sender, EventArgs e)
-        //        {
-        //
-        //            var phone = txtPhone.Text;
-        //            if (phone.Count(x => Char.IsDigit(x)) < 10)
-        //            {
-        //                MessageHelper.Show(Resources.CreateAccountInvalidDataTitle, Resources.CreateAccountInvalidPhone);
-        //                return;
-        //            }
-        //            else
-        //            {
-        //                txtPhone.Text = new string(phone.ToArray().Where(c => Char.IsDigit(c)).ToArray());
-        //            }
-        //
-        //            if (Confirmed != null)
-        //            {
-        //                Confirmed(Order, EventArgs.Empty);
-        //            }
-        //        }
-
-
         public IMvxCommand ConfirmOrderCommand
         {
             get
