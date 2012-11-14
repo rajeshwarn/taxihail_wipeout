@@ -16,7 +16,6 @@ namespace apcurium.MK.Booking.Api.Validation
             {
                 RuleFor(x => x.Email).NotNull();
                 RuleFor(x => x.Name).NotNull();
-                RuleFor(x => x.Password).NotNull();
             });
         }
     }
