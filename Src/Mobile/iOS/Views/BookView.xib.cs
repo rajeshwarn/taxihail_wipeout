@@ -138,10 +138,6 @@ namespace apcurium.MK.Booking.Mobile.Client
         
             });
 
-            //if (ViewModel != null) {
-            //    ViewModel.Initialize ();
-            //}
-
         }
 
         protected override void OnViewModelChanged ()
@@ -172,26 +168,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             var btn = new UIBarButtonItem (new BarButtonItem (new RectangleF (0, 0, 40, 33), "Assets/settings.png", () => _menu.AnimateMenu ()));
             navBar.TopItem.RightBarButtonItem = btn;
             navBar.TopItem.RightBarButtonItem.SetTitlePositionAdjustment (new UIOffset (-10, 0), UIBarMetrics.Default);
-            var account = TinyIoCContainer.Current.Resolve<IAccountService> ().CurrentAccount;
-            if ((AppContext.Current.LastOrder.HasValue) && (account != null)) {
-                LoadStatusView (true);
-            }
-        }
-	
-        private void LoadStatusView (bool closeScreenWhenCompleted)
-        {
-            if (AppContext.Current.LastOrder.HasValue) {
-                try {
-                    var order = TinyIoCContainer.Current.Resolve<IAccountService> ().GetHistoryOrder (AppContext.Current.LastOrder.Value);
-                    var status = TinyIoCContainer.Current.Resolve<IBookingService> ().GetOrderStatus (AppContext.Current.LastOrder.Value);
-                    if ((order != null) && (status != null)) {
-                        //LoadStatusView (order, status, closeScreenWhenCompleted);
-                    }
-                } catch (Exception ex) {
-                    TinyIoCContainer.Current.Resolve<ILogger> ().LogError (ex);
-                    AppContext.Current.LastOrder = null;
-                }
-            }
         }
 
         private void OnStatusCloseRequested (StatusCloseRequested msg)
