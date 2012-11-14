@@ -16,6 +16,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
 		public const string ACTION_SERVICE_ERROR = "Mk_Taxi.SERVICE_ERROR";
 		public const string ACTION_EXTRA_ERROR = "Mk_Taxi.SERVICE_ERROR_Code";
 
+        public static DateTime _lastConnectError = DateTime.MinValue;
+
         public void HandleError(Exception ex)
         {
 
@@ -39,12 +41,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
             }
             else if (ex is WebException)
             {
-                var cm = (ConnectivityManager)Application.Context.GetSystemService(Context.ConnectivityService);
-                if ((cm == null) || (!cm.ActiveNetworkInfo.IsConnectedOrConnecting))
+                TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex);
+                if (_lastConnectError.Subtract(DateTime.Now).TotalSeconds < -2)
                 {
-                    var title = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("NetworkErrorTitle");
-                    var message = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("NetworkErrorMessage"); //= Resources.GetString(Resource.String.ServiceErrorDefaultMessage);
-                    TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage(title, message);
+                    _lastConnectError = DateTime.Now;
+                    var cm = (ConnectivityManager)Application.Context.GetSystemService(Context.ConnectivityService);
+                    if ((cm == null) || (cm.ActiveNetworkInfo == null) || (!cm.ActiveNetworkInfo.IsConnectedOrConnecting))
+                    {
+                        var title = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("NetworkErrorTitle");
+                        var message = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("NetworkErrorMessage"); //= Resources.GetString(Resource.String.ServiceErrorDefaultMessage);
+                        TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage(title, message);
+                    }
                 }
             }
 

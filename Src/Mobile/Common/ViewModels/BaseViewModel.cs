@@ -11,6 +11,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public virtual void Load()
         {}
+
+        
+
     }
 }
 
