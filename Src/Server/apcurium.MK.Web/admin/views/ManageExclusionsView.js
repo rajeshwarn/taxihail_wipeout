@@ -84,13 +84,11 @@
 
         _save: function (data) {
 
-            var settings = {
-                'IBS.ExcludedVehicleTypeId': _([data.vehiclesList]).flatten().join(';'),
-                'IBS.ExcludedPaymentTypeId': _([data.paymentsList]).flatten().join(';'),
-                'IBS.ExcludedProviderId': _([data.companiesList]).flatten().join(';')
-            };
-
-            return this.options.settings.batchSave(settings);
+            return this.options.exclusions.save({
+                excludedVehicleTypeId: _([data.vehiclesList || '']).flatten().map(function(value){ return +value; }),
+                excludedPaymentTypeId: _([data.paymentsList || '']).flatten().map(function(value){ return +value; }),
+                excludedProviderId: _([data.companiesList || '']).flatten().map(function(value){ return +value; })
+            });
         }
     });
 

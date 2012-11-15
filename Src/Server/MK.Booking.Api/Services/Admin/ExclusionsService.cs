@@ -6,6 +6,7 @@ using Infrastructure.Messaging;
 using ServiceStack.CacheAccess;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Api.Services.Admin
@@ -52,7 +53,9 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                 {"IBS.ExcludedPaymentTypeId", string.Join(";",request.ExcludedPaymentTypeId.Select(x=>x.ToString()))  },
                 {"IBS.ExcludedProviderId", string.Join(";",request.ExcludedProviderId.Select(x=>x.ToString()))  }
             };
-            _configManager.SetSettings(settings);
+
+            var command = new Commands.AddOrUpdateAppSettings { AppSettings = settings, CompanyId = AppConstants.CompanyId };
+            _commandBus.Send(command);
             _cacheClient.Remove(ReferenceDataService.CacheKey);
 
             return null;
