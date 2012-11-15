@@ -43,7 +43,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                                    PickupAddress = x.PickupAddress,
                                                    PickupDate = x.PickupDate, 
                                                    IsCompleted = x.IsCompleted,
-                                                   Title = String.Format(titleFormat, x.IBSOrderId.ToString(), x.CreatedDate),
+                                                   Title = String.Format(titleFormat, x.IBSOrderId.ToString(), x.PickupDate),
                                                    IsFirst = x.Equals(orders.First()),
                                                    IsLast = x.Equals(orders.Last()),
                                                    ShowRightArrow = true

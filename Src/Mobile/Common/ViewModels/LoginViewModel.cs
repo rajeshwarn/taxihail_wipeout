@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_appContext = appContext;
 
             CheckVersion();
-          
+
 		}
 
         private void CheckVersion()
@@ -88,7 +88,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				var account = _accountService.GetAccount(Email, Password);
 
                 if ( account != null )
-                {                   
+                {
+                    this.Password = "";
                     RequestNavigate<BookViewModel>(true );
                 }
                

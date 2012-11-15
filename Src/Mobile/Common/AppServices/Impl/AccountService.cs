@@ -108,7 +108,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public IEnumerable<Address> GetHistoryAddresses ()
         {
             var cached = TinyIoCContainer.Current.Resolve<ICacheService> ().Get<Address[]> (_historyAddressesCacheKey);
-
             if (cached != null) {
                 return cached;
             } else {
@@ -455,9 +454,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 address.Id = Guid.NewGuid ();
             }
 
-
-            address.IsHistoric = false;
-
+            if (address.IsHistoric)
+            {
+                address.IsHistoric = false;
+                RemoveFromCacheArray<Address>(_historyAddressesCacheKey, address.Id, (id, a) => a.Id == id);
+            }
             UpdateCacheArray (_favoriteAddressesCacheKey, address, (a1, a2) => a1.Id.Equals (a2.Id));
 
 
