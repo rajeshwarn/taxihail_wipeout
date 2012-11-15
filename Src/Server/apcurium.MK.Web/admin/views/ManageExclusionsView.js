@@ -7,9 +7,9 @@
 
             var data = this.model.toJSON();
 
-            this._checkItems(data.vehiclesList, 'IBS.ExcludedVehicleTypeId');
-            this._checkItems(data.paymentsList, 'IBS.ExcludedPaymentTypeId');
-            this._checkItems(data.companiesList, 'IBS.ExcludedProviderId');
+            this._checkItems(data.vehiclesList, this.options.exclusions.get('excludedVehicleTypeId'));
+            this._checkItems(data.paymentsList, this.options.exclusions.get('excludedPaymentTypeId'));
+            this._checkItems(data.companiesList, this.options.exclusions.get('excludedProviderId'));
             
             this.$el.html(this.renderTemplate(data));
 
@@ -72,18 +72,13 @@
 
         },
 
-        _checkItems: function(items, settingKey) {
-            var settingValue = this.options.settings.get(settingKey);
-            if (!settingValue) {
+        _checkItems: function(items, excludedValues) {
+            if (!(excludedValues && excludedValues.length)) {
                 return items;
             }
 
-            var checkedIds = settingValue.split(';');
-            // Transform list into list of Numbers
-            checkedIds = _.map(checkedIds, function(item){ return +item; });
-
             _.each(items, function(item) {
-                item.checked = _.contains(checkedIds, item.id) ? 'checked' : '';
+                item.checked = _.contains(excludedValues, item.id) ? 'checked' : '';
             }, this);
         },
 

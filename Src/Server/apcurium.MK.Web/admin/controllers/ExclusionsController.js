@@ -4,22 +4,19 @@
         initialize: function() {
 
             this.referenceData = new TaxiHail.ReferenceData();
-            this.settings = new TaxiHail.CompanySettings();
+            this.exclusions = new Backbone.Model();
+            this.exclusions.urlRoot = TaxiHail.parameters.apiRoot + '/admin/exclusions';
             
             $.when(this.referenceData.fetch({
                 data: {
                     withoutFiltering: true
-                }}), this.settings.fetch({
-                data: {
-                    appSettingsType: 1
-                }
-            })).then(this.ready);
+                }}), this.exclusions.fetch()).then(this.ready);
         },
 
         index: function() {
             return new TaxiHail.ManageExclusionsView({
                 model: this.referenceData,
-                settings: this.settings
+                exclusions: this.exclusions
             });
         }
     });
