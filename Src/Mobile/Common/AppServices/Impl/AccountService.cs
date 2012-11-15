@@ -258,14 +258,25 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public void UpdateSettings (BookingSettings settings)
         {
+            var bsr = new BookingSettingsRequest
+            {
+                Name = settings.Name,
+                Phone = settings.Phone,
+                Passengers = settings.Passengers,
+                VehicleTypeId = settings.VehicleTypeId,
+                ChargeTypeId = settings.ChargeTypeId,
+                ProviderId = settings.ProviderId
+            };
+
             QueueCommand<AccountServiceClient> (service =>
             {                     
-                service.UpdateBookingSettings (new BookingSettingsRequest{ Name =  settings.Name, Phone=settings.Phone, Passengers = settings.Passengers, VehicleTypeId = settings.VehicleTypeId, ChargeTypeId = settings.ChargeTypeId, ProviderId = settings.ProviderId });
-                CurrentAccount.Settings = settings;
-                //Set to update the cache
-                CurrentAccount = CurrentAccount;
-            }
-            );
+                service.UpdateBookingSettings (bsr);
+                
+            });
+            var account = CurrentAccount;
+            account.Settings = settings;
+            //Set to update the cache
+            CurrentAccount = account;
 
         }
 
@@ -426,24 +437,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
                 QueueCommand<AccountServiceClient> (service => service.RemoveAddress (toDelete));
             }
-        }
-
-        public void UpdateBookingSettings (BookingSettings bookingSettings)
-        {
-            BookingSettingsRequest bsr = new BookingSettingsRequest ()
-                                             {
-                                                 ChargeTypeId = bookingSettings.ChargeTypeId,
-                                                 Name = bookingSettings.Name,
-                                                 NumberOfTaxi = bookingSettings.NumberOfTaxi,
-                                                 Passengers = bookingSettings.Passengers,
-                                                 Phone = bookingSettings.Phone,
-                                                 ProviderId = bookingSettings.ProviderId,
-                                                 VehicleTypeId = bookingSettings.VehicleTypeId
-                                             };
-            QueueCommand<AccountServiceClient> (service =>
-            {
-                service.UpdateBookingSettings (bsr);
-            });
         }
 
         public void UpdateAddress (Address address)
