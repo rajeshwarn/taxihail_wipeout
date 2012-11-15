@@ -1,6 +1,7 @@
 using System;
 using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.Interfaces.Commands;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.ViewModels;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Contract.Requests;
@@ -311,7 +312,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return new MvxRelayCommand(() =>
                     {
-                        TinyIoCContainer.Current.Resolve<IAccountService>().SignOut();                        
+                        TinyIoCContainer.Current.Resolve<IAccountService>().SignOut();       
+                 
                         RequestNavigate<LoginViewModel>(true);
                         RequestClose(this);
                     });

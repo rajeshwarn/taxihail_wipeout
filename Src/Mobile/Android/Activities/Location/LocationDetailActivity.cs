@@ -4,9 +4,11 @@ using Android.OS;
 using Android.Views;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Client.Cache;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Models;
 using TinyIoC;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using TinyMessenger;
@@ -128,14 +130,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
                                 this.ShowAlert(Resource.String.InvalidAddressTitle, Resource.String.InvalidAddressMessage));                        
                             return;
                         }
-
                         RunOnUiThread(() =>
                         {
                             txtAddress.Text = address.FullAddress;
                             UpdateData();
                             _data.Latitude = address.Latitude;
                             _data.Longitude = address.Longitude;
+                            
                             TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().UpdateAddress(_data);
+                            if (_data.IsHistoric)
+                            {
+                                TinyIoCContainer.Current.Resolve<IAccountService>().DeleteHistoryAddress(address.Id);
+                            }
                             Finish();
                         });
                     }

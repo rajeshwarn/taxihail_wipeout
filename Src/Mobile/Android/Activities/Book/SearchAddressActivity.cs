@@ -28,7 +28,7 @@ using System.Reactive;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
-	[Activity(Label = "SearchActivity", Theme = "@android:style/Theme.NoTitleBar")]
+    [Activity(Label = "SearchActivity", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class SearchAddressActivity : MvxBindingActivityView<AddressSearchViewModel>
 	{
 	    private IObservable<string> subscription;
