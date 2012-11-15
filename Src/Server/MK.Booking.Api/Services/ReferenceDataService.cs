@@ -62,13 +62,14 @@ namespace apcurium.MK.Booking.Api.Services
                 pickCities.AddRange(_staticDataWebServiceClient.GetPickupCity(company));
             }
 
+            var equalityComparer = new ListItemEqualityComparer();
             var result = new ReferenceData
             {
-                CompaniesList = companies.ToArray(),
-                PaymentsList = payments.ToArray(),
-                VehiclesList = vehicles.ToArray(),
-                DropoffCityList = dropCities.ToArray(),
-                PickupCityList = pickCities.ToArray(),
+                CompaniesList = companies.Distinct(equalityComparer).ToArray(),
+                PaymentsList = payments.Distinct(equalityComparer).ToArray(),
+                VehiclesList = vehicles.Distinct(equalityComparer).ToArray(),
+                DropoffCityList = dropCities.Distinct(equalityComparer).ToArray(),
+                PickupCityList = pickCities.Distinct(equalityComparer).ToArray(),
             };
 
             return result;
@@ -80,6 +81,22 @@ namespace apcurium.MK.Booking.Api.Services
             var excluded = excludedVehicleTypeId.IsNullOrEmpty() ? new int[0] : excludedVehicleTypeId.Split(';').Select(int.Parse).ToArray();
 
             return reference.Where(c => excluded.None(e => e == c.Id)).ToList();
+        }
+
+        private class ListItemEqualityComparer: EqualityComparer<ListItem>
+        {
+            public override bool Equals(ListItem x, ListItem y)
+            {
+                if (x == null && y == null) return true;
+                if (x == null || y == null) return false;
+                return x.Id == y.Id;
+            }
+
+            public override int GetHashCode(ListItem obj)
+            {
+                if (obj == null) return 0;
+                return obj.Id.GetHashCode();
+            }
         }
     }
 }
