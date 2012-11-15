@@ -14,9 +14,7 @@ namespace apcurium.MK.Common.Diagnostic
         void StartStopwatch( string message );
 
         void StopStopwatch(string message);
-        
 
-            
 	}
 }
 
