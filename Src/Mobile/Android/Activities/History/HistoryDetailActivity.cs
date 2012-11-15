@@ -31,7 +31,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            _closeViewToken = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<CloseViewsToRoot>(m => Finish());            
+            _closeViewToken = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<CloseViewsToRoot>(m => Finish());
+            TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<OrderCanceled>(canceled =>
+                                                                                               {
+                                                                                                   ViewModel.LoadStatus();
+                                                                                                   this.RefreshStatus();
+                                                                                               });
         } 
 
         protected override void OnDestroy()
@@ -154,6 +159,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
                     var isSuccess = TinyIoCContainer.Current.Resolve<IBookingService>().CancelOrder(ViewModel.OrderId);
                     if (isSuccess)
                     {
+                        ViewModel.LoadStatus();
                         RefreshStatus();
                     }
                     else

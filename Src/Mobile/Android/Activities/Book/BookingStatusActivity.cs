@@ -103,7 +103,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             FindViewById<Button>(Resource.Id.CancelBtn).Enabled = true;
             FindViewById<Button>(Resource.Id.CancelBtn).Click += delegate { CancelOrder(); };
 			
-			FindViewById<Button>(Resource.Id.NewRideBtn).Click += delegate { CloseActivity(); };
+			//FindViewById<Button>(Resource.Id.NewRideBtn).Click += delegate { CloseActivity(); };
             
             var callBtn = FindViewById<Button>(Resource.Id.CallBtn);
             callBtn.Click += delegate { CallCompany(); };
@@ -230,7 +230,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                                                                                                                               var isSuccess = TinyIoCContainer.Current.Resolve<IBookingService>().CancelOrder(Order.Id);
 
                                                                                                                               if (isSuccess)
-                                                                                                                              {                        
+                                                                                                                              {
+                                                                                                                                  TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new OrderCanceled(this,Order,null));    
                                                                                                                                   CloseActivity();
                                                                                                                               }
                                                                                                                               else

@@ -131,6 +131,7 @@
     <Compile Include="Messages\BookUsingAddress.cs" />
     <Compile Include="Messages\CloseViewsToRoot.cs" />
     <Compile Include="Messages\LogOutRequested.cs" />
+    <Compile Include="Messages\OrderCanceled.cs" />
     <Compile Include="Messages\OrderRated.cs" />
     <Compile Include="Messages\RebookRequested.cs" />
     <Compile Include="Messages\DateTimePicked.cs" />

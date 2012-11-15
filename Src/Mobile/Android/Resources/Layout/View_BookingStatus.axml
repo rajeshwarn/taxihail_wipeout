@@ -101,7 +101,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="35dip"
                         android:layout_weight="0.5"
-                        android:text="@string/StatusNewRideButton" />
+                        android:text="@string/StatusNewRideButton" 
+                        local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;NewRide&apos;}}"/>
                 </LinearLayout>
             </FrameLayout>
         </LinearLayout>
