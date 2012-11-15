@@ -16,9 +16,9 @@
             this.validate({
                 submitHandler: this.save,
                 rules: {
-                    vehiclesList: { checkboxesNotAllChecked: { options: data.vehiclesList/*, optionsName: this.localize("Vehicle Types") */} },
-                    paymentsList: { checkboxesNotAllChecked: { options: data.paymentsList/*, optionsName: this.localize("Payment Types") */} },
-                    companiesList: { checkboxesNotAllChecked: { options: data.companiesList/*, optionsName: this.localize("Companies") */} }
+                    vehiclesList: { checkboxesNotAllChecked: { options: data.vehiclesList } },
+                    paymentsList: { checkboxesNotAllChecked: { options: data.paymentsList } },
+                    companiesList: { checkboxesNotAllChecked: { options: data.companiesList } }
                 },
                 errorPlacement: function (error, element) {
                     if (error.text() == "") {
