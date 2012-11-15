@@ -19,13 +19,11 @@ namespace apcurium.MK.Booking.Api.Services
     {
         private readonly IConfigurationManager _configManager;
         private readonly ICommandBus _commandBus;
-        private readonly ICacheClient _cacheClient;
 
-        public ConfigurationsService(IConfigurationManager configManager, ICommandBus commandBus, ICacheClient cacheClient)
+        public ConfigurationsService(IConfigurationManager configManager, ICommandBus commandBus)
         {
             _configManager = configManager;
             _commandBus = commandBus;
-            _cacheClient = cacheClient;
         }
 
         public override object OnGet(ConfigurationsRequest request)
@@ -56,11 +54,6 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 var command = new Commands.AddOrUpdateAppSettings { AppSettings = request.AppSettings,  CompanyId = AppConstants.CompanyId };
                 _commandBus.Send(command);
-
-                if(request.AppSettings.Any(s => s.Key.ToLower().StartsWith("ibs.")))
-                {
-                    _cacheClient.Remove(ReferenceDataService.CacheKey);
-                }
             }
 
             return "";

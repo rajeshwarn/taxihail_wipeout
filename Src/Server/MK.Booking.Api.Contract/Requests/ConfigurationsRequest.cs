@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ServiceStack.ServiceInterface;
+using apcurium.MK.Booking.Api.Contract.Http;
 using apcurium.MK.Booking.Api.Contract.Security;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Enumeration;

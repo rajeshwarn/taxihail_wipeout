@@ -71,6 +71,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             {
                 this.ShowAlert(Resource.String.CreateAccountInvalidDataTitle, Resource.String.CreateAccountInvalidPassword);
             }
+            else if (!ValidatePhoneNumber())
+            {
+                this.ShowAlert(Resource.String.CreateAccountInvalidDataTitle, Resource.String.CreateAccountInvalidPhone);
+            }
             else if (!ValidateOtherFields())
             {
                 this.ShowAlert(Resource.String.CreateAccountInvalidDataTitle, Resource.String.CreateAccountEmptyField);
@@ -153,6 +157,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             return data;
 
         }
+
+        private bool ValidatePhoneNumber()
+        {
+            var phone = FindViewById<EditText>(Resource.Id.SignUpPhone).Text;
+            return phone.Count(Char.IsDigit) >= 10;
+        }
+
         private bool ValidateOtherFields()
         {
             var password = FindViewById<EditText>(Resource.Id.SignUpPassword).Text;

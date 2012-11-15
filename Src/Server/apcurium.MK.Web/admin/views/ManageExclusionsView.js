@@ -7,18 +7,18 @@
 
             var data = this.model.toJSON();
 
-            this._checkItems(data.vehiclesList, 'IBS.ExcludedVehicleTypeId');
-            this._checkItems(data.paymentsList, 'IBS.ExcludedPaymentTypeId');
-            this._checkItems(data.companiesList, 'IBS.ExcludedProviderId');
+            this._checkItems(data.vehiclesList, this.options.exclusions.get('excludedVehicleTypeId'));
+            this._checkItems(data.paymentsList, this.options.exclusions.get('excludedPaymentTypeId'));
+            this._checkItems(data.companiesList, this.options.exclusions.get('excludedProviderId'));
             
             this.$el.html(this.renderTemplate(data));
 
             this.validate({
                 submitHandler: this.save,
                 rules: {
-                    vehiclesList: { checkboxesNotAllChecked: { options: data.vehiclesList/*, optionsName: this.localize("Vehicle Types") */} },
-                    paymentsList: { checkboxesNotAllChecked: { options: data.paymentsList/*, optionsName: this.localize("Payment Types") */} },
-                    companiesList: { checkboxesNotAllChecked: { options: data.companiesList/*, optionsName: this.localize("Companies") */} }
+                    vehiclesList: { checkboxesNotAllChecked: { options: data.vehiclesList } },
+                    paymentsList: { checkboxesNotAllChecked: { options: data.paymentsList } },
+                    companiesList: { checkboxesNotAllChecked: { options: data.companiesList } }
                 },
                 errorPlacement: function (error, element) {
                     if (error.text() == "") {
@@ -72,30 +72,23 @@
 
         },
 
-        _checkItems: function(items, settingKey) {
-            var settingValue = this.options.settings.get(settingKey);
-            if (!settingValue) {
+        _checkItems: function(items, excludedValues) {
+            if (!(excludedValues && excludedValues.length)) {
                 return items;
             }
 
-            var checkedIds = settingValue.split(';');
-            // Transform list into list of Numbers
-            checkedIds = _.map(checkedIds, function(item){ return +item; });
-
             _.each(items, function(item) {
-                item.checked = _.contains(checkedIds, item.id) ? 'checked' : '';
+                item.checked = _.contains(excludedValues, item.id) ? 'checked' : '';
             }, this);
         },
 
         _save: function (data) {
 
-            var settings = {
-                'IBS.ExcludedVehicleTypeId': _([data.vehiclesList]).flatten().join(';'),
-                'IBS.ExcludedPaymentTypeId': _([data.paymentsList]).flatten().join(';'),
-                'IBS.ExcludedProviderId': _([data.companiesList]).flatten().join(';')
-            };
-
-            return this.options.settings.batchSave(settings);
+            return this.options.exclusions.save({
+                excludedVehicleTypeId: _([data.vehiclesList || '']).flatten().map(function(value){ return +value; }),
+                excludedPaymentTypeId: _([data.paymentsList || '']).flatten().map(function(value){ return +value; }),
+                excludedProviderId: _([data.companiesList || '']).flatten().map(function(value){ return +value; })
+            });
         }
     });
 
