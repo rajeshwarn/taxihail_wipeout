@@ -189,18 +189,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         }
 
-        private void RemoveFromCacheArray<T> (string key, Guid toDeleteId, Func<Guid, T, bool> compare)
+        private bool RemoveFromCacheArray<T> (string key, Guid toDeleteId, Func<Guid, T, bool> compare)
         {
             var cached = TinyIoCContainer.Current.Resolve<ICacheService> ().Get<T[]> (key);
 
             if ((cached != null) && (cached.Length > 0)) {
                 var list = new List<T> (cached);
-                var toDelete = list.Single (item => compare (toDeleteId, item));
-                list.Remove (toDelete);
+                var toDelete = list.SingleOrDefault (item => compare (toDeleteId, item));
+                var removed = list.Remove (toDelete);
                 TinyIoCContainer.Current.Resolve<ICacheService> ().Set (key, list.ToArray ());
+				return removed;
             }
-
-
+			return false;
         }
 
         public Address FindInAccountAddresses (double latitude, double longitude)

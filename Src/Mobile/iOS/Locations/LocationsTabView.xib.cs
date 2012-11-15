@@ -182,12 +182,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		public void Update (Address data)
 		{
-            if ( data.IsHistoric )
-            {
-                data.Id = Guid.Empty;
-            }
-
-			TinyIoCContainer.Current.Resolve<IAccountService>().UpdateAddress( data );     
+            TinyIoCContainer.Current.Resolve<IAccountService>().UpdateAddress( data );     
             data.IsHistoric= false;
             LoadGridData ();
 		}
