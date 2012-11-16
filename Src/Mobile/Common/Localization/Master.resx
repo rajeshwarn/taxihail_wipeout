@@ -772,7 +772,7 @@
     <value>The data is invalid, all the fields are required.</value>
   </data>
   <data name="AccountActivationTitle" xml:space="preserve">
-    <value>Sign Up</value>
+    <value>Confirmation Required</value>
   </data>
   <data name="AccountActivationMessage" xml:space="preserve">
     <value>You will receive an email shortly with a link you need to click on to confirm your registration.</value>

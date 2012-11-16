@@ -118,7 +118,7 @@
 ;"DeleteBookItButtonImageNamePressed"="Assets/Button/btnBookIt-Pressed_en.png"
 ;"NoMailClient"="There are no email clients installed."
 ;"RideSettingsPassengers"="Passengers:"
-;"AccountActivationTitle"="Sign Up"
+;"AccountActivationTitle"="Confirmation Required"
 ;"DestinationViewDestinationLabel"="Destination:"
 ;"ListPromptSelectOne"="Select one"
 ;"View_BookingStatus"="Status"
