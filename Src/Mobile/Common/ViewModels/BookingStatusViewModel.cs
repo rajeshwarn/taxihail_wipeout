@@ -27,7 +27,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             OrderStatusDetail = orderWithStatus.OrderStatusDetail;
             ShowRatingButton = true;
             TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<OrderRated>( OnOrderRated , o=>o.Content.Equals (Order.Id) );
-                                                                            //CloseScreenWhenCompleted = bool.Parse(closeScreenWhenCompleted);
         }
 
         private void OnOrderRated(OrderRated msg )

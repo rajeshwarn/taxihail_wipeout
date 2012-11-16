@@ -143,7 +143,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return new MvxRelayCommand(() =>
                                                {
                                                    var canRate = IsDone && !HasRated;
-					RequestNavigate<BookRatingViewModel>(new { orderId = OrderId, canRate = canRate.ToString(), isFromStatus = false.ToString(CultureInfo.InvariantCulture) });
+					RequestNavigate<BookRatingViewModel>(new { orderId = OrderId, canRate = canRate.ToString()});
                                                });
             }
         }

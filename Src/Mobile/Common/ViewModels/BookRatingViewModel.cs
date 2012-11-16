@@ -16,7 +16,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     public class BookRatingViewModel : BaseViewModel
     {
         private List<RatingModel> _ratingList;
-		private bool _isFromStatus;
+
 
         public List<RatingModel> RatingList
         {
@@ -81,7 +81,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
        
 
-		public BookRatingViewModel (string orderId, string canRate="false", string isFromStatus = "false")
+		public BookRatingViewModel (string orderId, string canRate="false")
 		{
 			var ratingTypes = TinyIoCContainer.Current.Resolve<IBookingService> ().GetRatingType ();
             RatingList = ratingTypes.Select(c => new RatingModel(canRate: bool.Parse(canRate)) { RatingTypeId = c.Id, RatingTypeName = c.Name }).OrderBy(c=>c.RatingTypeId).ToList();
@@ -94,7 +94,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				OrderId = id;
 			}
             CanRating = bool.Parse(canRate);
-			_isFromStatus = bool.Parse(isFromStatus);
             if(!CanRating)
             {
                 var orderRatings = TinyIoCContainer.Current.Resolve<IBookingService>().GetOrderRating(Guid.Parse(orderId));
@@ -130,13 +129,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         {
                             TinyIoCContainer.Current.Resolve<IBookingService>().SendRatingReview(orderRating);
                             InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new OrderRated(this, OrderId)));
-							if(_isFromStatus)
-							{ 
-								TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub> ().Publish (new StatusCloseRequested (this));
-
-							}else{
-								RequestClose(this);
-							}
+							RequestClose(this);
 
                         }
                         catch (Exception e)
