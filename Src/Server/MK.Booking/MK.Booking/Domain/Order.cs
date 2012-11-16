@@ -14,6 +14,8 @@ namespace apcurium.MK.Booking.Domain
 
         private OrderStatus _status;
 
+        private bool _isRated;
+
         protected Order(Guid id)
             : base(id)
         {
@@ -70,7 +72,7 @@ namespace apcurium.MK.Booking.Domain
 
         private void OnOrderRated(OrderRated obj)
         {
-
+            _isRated = true;
         }
 
         public void Cancel()
@@ -100,11 +102,16 @@ namespace apcurium.MK.Booking.Domain
 
         public void RateOrder(string note, List<RatingScore> ratingScores)
         {
-            Update(new OrderRated
-                       {
-                           Note = note,
-                           RatingScores = ratingScores
-                       });
+            if (!_isRated)
+            {
+
+                _isRated = true;
+                Update(new OrderRated
+                           {
+                               Note = note,
+                               RatingScores = ratingScores
+                           });
+            }
         }
     }
 }
