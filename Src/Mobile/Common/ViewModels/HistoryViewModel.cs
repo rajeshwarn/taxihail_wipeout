@@ -13,6 +13,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Common.Extensions;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -29,28 +30,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
         public HistoryViewModel()
         {
-            IEnumerable<Order> orders = new Order[0];
-
-            orders = new ObservableCollection<Order>(TinyIoCContainer.Current.Resolve<IAccountService>().GetHistoryOrders().ToList());
-            Orders = new ObservableCollection<OrderViewModel>(orders.Select(x =>
-                                       {
-                                          
-                                           return new OrderViewModel()
-                                               {
-                                                   IBSOrderId = x.IBSOrderId,
-                                                   Id = x.Id,
-                                                   CreatedDate = x.CreatedDate,
-                                                   PickupAddress = x.PickupAddress,
-                                                   PickupDate = x.PickupDate, 
-                                                   IsCompleted = x.IsCompleted,
-                                                   Title = String.Format(titleFormat, x.IBSOrderId.ToString(), x.PickupDate),
-                                                   IsFirst = x.Equals(orders.First()),
-                                                   IsLast = x.Equals(orders.Last()),
-                                                   ShowRightArrow = true
-                                               };
-                                       }
-                                       ).ToList());
+			LoadOrders ();
         }
+
+		public Task LoadOrders ()
+		{
+			return Task.Factory.StartNew (() => {
+				var orders = TinyIoCContainer.Current.Resolve<IAccountService> ().GetHistoryOrders ();
+				Orders = new ObservableCollection<OrderViewModel> (orders.Select (x => new OrderViewModel ()
+					{
+						IBSOrderId = x.IBSOrderId,
+						Id = x.Id,
+						CreatedDate = x.CreatedDate,
+						PickupAddress = x.PickupAddress,
+						PickupDate = x.PickupDate, 
+						IsCompleted = x.IsCompleted,
+						Title = String.Format(titleFormat, x.IBSOrderId.ToString(), x.PickupDate),
+						IsFirst = x.Equals(orders.First()),
+						IsLast = x.Equals(orders.Last()),
+						ShowRightArrow = true
+					}));
+			});
+		}
 
 
         public IMvxCommand NavigateToHistoryDetailPage
