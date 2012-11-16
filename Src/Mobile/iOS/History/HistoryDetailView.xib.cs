@@ -15,12 +15,14 @@ using Cirrious.MvvmCross.Views;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Binding.Touch.Views;
+using System.Threading.Tasks;
+using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
 	public partial class HistoryDetailView : MvxBindingTouchViewController<HistoryDetailViewModel>
     {
-        private Order _data;
+        //private Order _data;
 
         #region Constructors
 
@@ -42,7 +44,9 @@ namespace apcurium.MK.Booking.Mobile.Client
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-			LoadData(Guid.Parse (ViewModel.OrderId));
+			ViewModel.PropertyChanged += HandlePropertyChanged;
+			ViewModel.Initialize();
+
             View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             
             this.NavigationItem.HidesBackButton = false;
@@ -79,12 +83,21 @@ namespace apcurium.MK.Booking.Mobile.Client
             
             btnHide.TouchUpInside += HideTouchUpInside;          
             btnRebook.TouchUpInside += RebookTouched;
-            RefreshData();
+
+        }
+
+        void HandlePropertyChanged (object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		{
+			if (e.PropertyName == "Order") {
+				RefreshData();
+			} else if(e.PropertyName == "Status") {
+				RefreshStatus();
+			}
         }
 
         void StatusTouchUpInside(object sender, EventArgs e)
         {
-            AppContext.Current.LastOrder = _data.Id;
+            AppContext.Current.LastOrder = ViewModel.OrderId;
 			InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new RebookRequested(this, null)));
 			this.NavigationController.PopToRootViewController( true ); 
         }
@@ -98,11 +111,11 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
                 try
                 {
-                    var isSuccess = TinyIoCContainer.Current.Resolve<IBookingService>().CancelOrder( _data.Id);
+                    var isSuccess = TinyIoCContainer.Current.Resolve<IBookingService>().CancelOrder(ViewModel.OrderId);
                     
                     if (isSuccess)
                     {
-                        RefreshStatus();
+						ViewModel.LoadStatus();
                     }
                     else
                     {
@@ -119,8 +132,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                     }
                     );
                 }
-            }
-            );
+            });
         }
 
 		void SendReceiptTouchUpInside(object sender, EventArgs e)
@@ -131,7 +143,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			                             {
 				try
 				{
-					var isSuccess = TinyIoCContainer.Current.Resolve<IBookingService>().SendReceipt( _data.Id);
+					var isSuccess = TinyIoCContainer.Current.Resolve<IBookingService>().SendReceipt(ViewModel.OrderId);
 					
 					if (isSuccess)
 					{
@@ -170,66 +182,57 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
 			InvokeOnMainThread( () => NavigationController.PopToRootViewController(true) );
 
-			TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new RebookRequested(this, _data));
+			TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new RebookRequested(this, ViewModel.Order));
         }
 
         void HideTouchUpInside(object sender, EventArgs e)
         {
-			TinyIoCContainer.Current.Resolve<IBookingService>().RemoveFromHistory( _data.Id );
+			TinyIoCContainer.Current.Resolve<IBookingService>().RemoveFromHistory( ViewModel.OrderId );
 
             this.NavigationController.PopViewControllerAnimated(true);
         }
 
-        public void LoadData(Guid orderId)
-        {
-			_data = TinyIoCContainer.Current.Resolve<IAccountService>().GetHistoryOrder(orderId);
-        }
-
         private void RefreshData()
         {
-            if (txtDestination != null)
-            {
-                if ( _data.IBSOrderId.HasValue )
-                {
-                    txtConfirmationNo.Text = "#" + _data.IBSOrderId.ToString();
-                }
-             
+			InvokeOnMainThread (() => {
+				var order = ViewModel.Order;
+	            if (txtDestination != null)
+	            {
+					if ( order.IBSOrderId.HasValue )
+	                {
+						txtConfirmationNo.Text = "#" + order.IBSOrderId.ToString();
+	                }
+	             
 
-                txtRequested.Text = _data.PickupDate.ToShortDateString() + " - " + _data.PickupDate.ToShortTimeString();
-                txtOrigin.Text = _data.PickupAddress.FullAddress;
-                txtAptCode.Text = FormatAptRingCode(_data.PickupAddress.Apartment, _data.PickupAddress.RingCode);
-                
-                txtDestination.Text = _data.DropOffAddress.FullAddress.HasValue() ? _data.DropOffAddress.FullAddress : Resources.ConfirmDestinationNotSpecified;
-                txtPickupDate.Text = FormatDateTime(_data.PickupDate, _data.PickupDate);
-                
-                txtStatus.Text = Resources.LoadingMessage;
-                
-                
-                RefreshStatus();
-                // _data.Status;                
-            }
+					txtRequested.Text = order.PickupDate.ToShortDateString() + " - " + order.PickupDate.ToShortTimeString();
+					txtOrigin.Text = order.PickupAddress.FullAddress;
+					txtAptCode.Text = FormatAptRingCode(order.PickupAddress.Apartment, order.PickupAddress.RingCode);
+	                
+					txtDestination.Text = order.DropOffAddress.FullAddress.HasValue() ? order.DropOffAddress.FullAddress : Resources.ConfirmDestinationNotSpecified;
+					txtPickupDate.Text = FormatDateTime(order.PickupDate, order.PickupDate);
+	                
+	                txtStatus.Text = Resources.LoadingMessage;
+	                        
+	            }
+			});
         }
 
         private void RefreshStatus()
         {
-            ThreadHelper.ExecuteInThread(() =>
-            {
-				var bookingService = TinyIoCContainer.Current.Resolve<IBookingService>();
-				var status = bookingService.GetOrderStatus( _data.Id);
-                
-				bool isCompleted = bookingService.IsStatusCompleted(status.IBSStatusId);
-				bool isDone = bookingService.IsStatusDone(status.IBSStatusId);
+			var bookingService = TinyIoCContainer.Current.Resolve<IBookingService>();
+            
+			bool isCompleted = bookingService.IsStatusCompleted(ViewModel.Status.IBSStatusId);
+			bool isDone = bookingService.IsStatusDone(ViewModel.Status.IBSStatusId);
 
-                InvokeOnMainThread(() => {
-					txtStatus.Text = status.IBSStatusDescription;
-                    btnCancel.Hidden = isCompleted;
-                    btnStatus.Hidden = isCompleted;
-				    btnHide.Hidden = !isCompleted;
-					btnRateTrip.Hidden = !(isDone && !ViewModel.HasRated);
-					btnViewRating.Hidden = !(isDone && ViewModel.HasRated);
-				    btnSendReceipt.Hidden = !status.FareAvailable;
-            	});
-			});
+            InvokeOnMainThread(() => {
+				txtStatus.Text = ViewModel.Status.IBSStatusDescription;
+                btnCancel.Hidden = isCompleted;
+                btnStatus.Hidden = isCompleted;
+			    btnHide.Hidden = !isCompleted;
+				btnRateTrip.Hidden = !(isDone && !ViewModel.HasRated);
+				btnViewRating.Hidden = !(isDone && ViewModel.HasRated);
+				btnSendReceipt.Hidden = !ViewModel.Status.FareAvailable;
+        	});
 		}
 
         private string FormatDateTime(DateTime? pickupDate, DateTime? pickupTime)

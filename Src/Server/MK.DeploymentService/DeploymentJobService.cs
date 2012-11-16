@@ -285,7 +285,7 @@ namespace MK.DeploymentService
         private void DeployServer(DeploymentJob job, string companyName, string packagesDirectory, ServerManager iisManager)
         {
             logger.DebugFormat("Deploying IIS");
-            var subFolder = job.Company.ConfigurationProperties["TaxiHail.Version"] + job.Revision + "\\";
+            var subFolder = job.Company.ConfigurationProperties["TaxiHail.Version"] + job.Revision + "." + DateTime.Now.Ticks +"\\";
             var targetWeDirectory = Path.Combine(job.TaxHailEnv.WebSitesFolder, companyName, subFolder);
             var sourcePath = Path.Combine(packagesDirectory, @"WebSites\");
 
