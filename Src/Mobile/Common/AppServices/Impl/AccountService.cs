@@ -189,18 +189,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         }
 
-        private void RemoveFromCacheArray<T> (string key, Guid toDeleteId, Func<Guid, T, bool> compare)
+        private bool RemoveFromCacheArray<T> (string key, Guid toDeleteId, Func<Guid, T, bool> compare)
         {
             var cached = TinyIoCContainer.Current.Resolve<ICacheService> ().Get<T[]> (key);
 
             if ((cached != null) && (cached.Length > 0)) {
                 var list = new List<T> (cached);
-                var toDelete = list.Single (item => compare (toDeleteId, item));
-                list.Remove (toDelete);
+                var toDelete = list.SingleOrDefault (item => compare (toDeleteId, item));
+                var removed = list.Remove (toDelete);
                 TinyIoCContainer.Current.Resolve<ICacheService> ().Set (key, list.ToArray ());
+				return removed;
             }
-
-
+			return false;
         }
 
         public Address FindInAccountAddresses (double latitude, double longitude)
@@ -258,14 +258,25 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public void UpdateSettings (BookingSettings settings)
         {
+            var bsr = new BookingSettingsRequest
+            {
+                Name = settings.Name,
+                Phone = settings.Phone,
+                Passengers = settings.Passengers,
+                VehicleTypeId = settings.VehicleTypeId,
+                ChargeTypeId = settings.ChargeTypeId,
+                ProviderId = settings.ProviderId
+            };
+
             QueueCommand<AccountServiceClient> (service =>
             {                     
-                service.UpdateBookingSettings (new BookingSettingsRequest{ Name =  settings.Name, Phone=settings.Phone, Passengers = settings.Passengers, VehicleTypeId = settings.VehicleTypeId, ChargeTypeId = settings.ChargeTypeId, ProviderId = settings.ProviderId });
-                CurrentAccount.Settings = settings;
-                //Set to update the cache
-                CurrentAccount = CurrentAccount;
-            }
-            );
+                service.UpdateBookingSettings (bsr);
+                
+            });
+            var account = CurrentAccount;
+            account.Settings = settings;
+            //Set to update the cache
+            CurrentAccount = account;
 
         }
 
@@ -426,24 +437,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
                 QueueCommand<AccountServiceClient> (service => service.RemoveAddress (toDelete));
             }
-        }
-
-        public void UpdateBookingSettings (BookingSettings bookingSettings)
-        {
-            BookingSettingsRequest bsr = new BookingSettingsRequest ()
-                                             {
-                                                 ChargeTypeId = bookingSettings.ChargeTypeId,
-                                                 Name = bookingSettings.Name,
-                                                 NumberOfTaxi = bookingSettings.NumberOfTaxi,
-                                                 Passengers = bookingSettings.Passengers,
-                                                 Phone = bookingSettings.Phone,
-                                                 ProviderId = bookingSettings.ProviderId,
-                                                 VehicleTypeId = bookingSettings.VehicleTypeId
-                                             };
-            QueueCommand<AccountServiceClient> (service =>
-            {
-                service.UpdateBookingSettings (bsr);
-            });
         }
 
         public void UpdateAddress (Address address)

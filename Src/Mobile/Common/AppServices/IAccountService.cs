@@ -23,8 +23,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         void ClearCache();
 
-	    void UpdateBookingSettings(BookingSettings bookingSettings);
-		
 		void EnsureListLoaded();
 
         Account CurrentAccount { get; }

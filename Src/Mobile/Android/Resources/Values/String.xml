@@ -307,5 +307,6 @@
   <string name="ViewRatingBtn">View ratings</string>
   <string name="View_RatePage">Rate your trip</string>
   <string name="ResetPasswordSucessTitle">Password resetted</string>
+  <string name="ReturnBookingScreen">Return to main screen</string>
   <string name="ResetPasswordSucessMessage">Password was successfully resetted</string>
 </resources>

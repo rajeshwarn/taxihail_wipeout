@@ -80,9 +80,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 			btnRateTrip.Hidden = true;
 			btnViewRating.Hidden = true;
             
-            
-            btnHide.TouchUpInside += HideTouchUpInside;          
+			btnHide.TouchUpInside += HideTouchUpInside;
             btnRebook.TouchUpInside += RebookTouched;
+
+			this.AddBindings(new Dictionary<object, string>()                            {
+				{ btnHide, "{'Hidden':{'Path': 'IsCompleted', 'Converter':'BoolInverter'}}"}
+			});
 
         }
 
@@ -187,9 +190,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         void HideTouchUpInside(object sender, EventArgs e)
         {
-			TinyIoCContainer.Current.Resolve<IBookingService>().RemoveFromHistory( ViewModel.OrderId );
-
-            this.NavigationController.PopViewControllerAnimated(true);
+			ViewModel.DeleteOrder.Execute(ViewModel.OrderId);
         }
 
         private void RefreshData()
@@ -228,7 +229,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 				txtStatus.Text = ViewModel.Status.IBSStatusDescription;
                 btnCancel.Hidden = isCompleted;
                 btnStatus.Hidden = isCompleted;
-			    btnHide.Hidden = !isCompleted;
 				btnRateTrip.Hidden = !(isDone && !ViewModel.HasRated);
 				btnViewRating.Hidden = !(isDone && ViewModel.HasRated);
 				btnSendReceipt.Hidden = !ViewModel.Status.FareAvailable;

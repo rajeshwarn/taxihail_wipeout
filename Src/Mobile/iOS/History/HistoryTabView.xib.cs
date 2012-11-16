@@ -67,14 +67,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public override void ViewWillAppear (bool animated)
 		{
 			base.ViewWillAppear (animated);
-
+			LoadGridData();
 			NavigationController.NavigationBar.Hidden = false;
 		}
 
 		public override void ViewDidAppear (bool animated)
 		{
 			base.ViewDidAppear (animated);
-			LoadGridData();
 		}
 
 		private void LoadGridData ()
@@ -86,7 +85,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			_searchCancellationToken = new CancellationTokenSource();
 			var task = new Task<InfoStructure>(() => GetHistoricStructure(), _searchCancellationToken.Token);
 			task.ContinueWith(RefreshData);
-			task.Start();
+			ViewModel.LoadOrders().ContinueWith(t => task.Start());
 		}
 
 		public void RefreshData( Task<InfoStructure>  task )

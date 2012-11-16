@@ -772,7 +772,7 @@
     <value>The data is invalid, all the fields are required.</value>
   </data>
   <data name="AccountActivationTitle" xml:space="preserve">
-    <value>Sign Up</value>
+    <value>Confirmation Required</value>
   </data>
   <data name="AccountActivationMessage" xml:space="preserve">
     <value>You will receive an email shortly with a link you need to click on to confirm your registration.</value>
@@ -796,7 +796,7 @@
     <value>Order cannot be created, invalid vehicle type. Please try again or call us.</value>
   </data>
   <data name="ServiceErrorCreateAccount_AccountAlreadyExist" xml:space="preserve">
-    <value>The account cannot be created, this email is already in use.</value>
+    <value>This email is already in use.</value>
   </data>
   <data name="ServiceErrorUnauthorized" xml:space="preserve">
     <value>An unauthorized call has been made to server, you will be redirected to login page.</value>
@@ -1034,6 +1034,9 @@
   </data>
   <data name="View_RatePage" xml:space="preserve">
     <value>Rate your trip</value>
+  </data>
+  <data name="ReturnBookingScreen" xml:space="preserve">
+    <value>Return to main screen</value>
   </data>
   <data name="ResetPasswordSucessMessage" xml:space="preserve">
     <value>Password was successfully resetted</value>

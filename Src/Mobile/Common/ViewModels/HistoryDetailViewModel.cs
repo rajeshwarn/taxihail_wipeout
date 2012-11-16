@@ -15,11 +15,13 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Booking.Mobile.Models;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class HistoryDetailViewModel : BaseViewModel
     {
+		public event EventHandler Deleted;
         private Guid _orderId;
         public Guid OrderId
         {
@@ -54,6 +56,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set { _isDone = value; FirePropertyChanged("IsDone"); FirePropertyChanged("ShowRateButton"); }
 
         }
+
+		private bool _isCompleted;
+		public bool IsCompleted {
+			get {
+				return _isCompleted;
+			}
+			set { 
+				if (value != _isCompleted) {
+					_isCompleted = value;
+					FirePropertyChanged ("IsCompleted");
+				}
+			}
+			
+		}
 
         private bool _hasRated;
 
@@ -131,6 +147,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				HasRated = TinyIoCContainer.Current.Resolve<IBookingService> ().GetOrderRating (OrderId).RatingScores.Any ();
 				Status = TinyIoCContainer.Current.Resolve<IBookingService> ().GetOrderStatus (OrderId);
 				IsDone = TinyIoCContainer.Current.Resolve<IBookingService> ().IsStatusDone (Status.IBSStatusId);
+				IsCompleted = TinyIoCContainer.Current.Resolve<IBookingService> ().IsStatusCompleted (Status.IBSStatusId);
 			});
 
 		}
@@ -142,7 +159,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return new MvxRelayCommand(() =>
                                                {
                                                    var canRate = IsDone && !HasRated;
-                                                   RequestNavigate<BookRatingViewModel>(new { orderId = OrderId, canRate = canRate.ToString() });
+					RequestNavigate<BookRatingViewModel>(new { orderId = OrderId, canRate = canRate.ToString()});
                                                });
             }
         }
@@ -171,7 +188,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     if (Common.Extensions.GuidExtensions.HasValue(orderId))
                         {
                             TinyIoCContainer.Current.Resolve<IBookingService>().RemoveFromHistory(orderId);
-                            this.RequestNavigate(typeof (HistoryViewModel));
+						    if(Deleted != null)
+							{
+								Deleted(this, EventArgs.Empty);
+							}
+						    RequestClose(this);
                         }
                 });
             }

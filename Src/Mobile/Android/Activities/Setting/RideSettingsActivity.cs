@@ -95,26 +95,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
         {
             if (ValidateRideSettings(_model.Data))
             {
-                ThreadHelper.ExecuteInThread(this, () =>
+                if (_updateDefaultSettings)
                 {
-                    if (_updateDefaultSettings)
-                    {
-                        
-                        TinyIoCContainer.Current.Resolve<IAccountService>().UpdateBookingSettings(_model.Data);
-
-                    }
-                    else
-                    {
-                        this.RunOnUiThread(() =>
-                            {
-                                Intent i = new Intent();
-                                i.SetFlags(ActivityFlags.ForwardResult);
-                                i.PutExtra("BookingSettings", _model.Data.Serialize());
-                                SetResult(Result.Ok, i);
-                                Finish();
-                            });
-                    }
-                }, true);
+                    TinyIoCContainer.Current.Resolve<IAccountService>().UpdateSettings(_model.Data);
+                }
+                else
+                {
+                    this.RunOnUiThread(() =>
+                        {
+                            Intent i = new Intent();
+                            i.SetFlags(ActivityFlags.ForwardResult);
+                            i.PutExtra("BookingSettings", _model.Data.Serialize());
+                            SetResult(Result.Ok, i);
+                            Finish();
+                        });
+                }
 
                 if (_updateDefaultSettings)
                 {

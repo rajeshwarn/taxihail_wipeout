@@ -30,6 +30,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     CreatedDate = @event.CreatedDate,
                     DropOffAddress = @event.DropOffAddress,
                     Status = (int)OrderStatus.Created,
+                    IsRated = false
                 });
             }
         }
@@ -89,6 +90,9 @@ namespace apcurium.MK.Booking.EventHandlers
                         Name = ratingScore.Name
                     });
                 }
+
+                var order = context.Find<OrderDetail>(@event.SourceId);
+                order.IsRated = true;
 
                 context.SaveChanges();
             }
