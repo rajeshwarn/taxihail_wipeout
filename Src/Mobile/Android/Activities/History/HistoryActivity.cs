@@ -60,6 +60,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
             }
         }
 
+        protected override void OnRestart()
+        {
+            base.OnRestart();
+            ViewModel.LoadOrders();
+        }
+
         private void SetAdapter()
         {
             /*ThreadHelper.ExecuteInThread(this, () =>
