@@ -92,8 +92,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             ShowRatingButton = true;
         }
 
-
-
         public MvxRelayCommand NavigateToRatingPage
         {
             get
@@ -109,6 +107,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private void HideRatingButton(OrderRated orderRated)
         {
             ShowRatingButton = false;
+        }
+
+        public MvxRelayCommand NewRide
+        {
+            get
+            {
+                return new MvxRelayCommand(() =>
+                                               {
+                                                   TinyIoCContainer.Current.Resolve<IAppContext>().LastOrder = null;
+                                                   RequestNavigate<BookViewModel>(clearTop:true);
+                });
+            }
         }
     }
 }

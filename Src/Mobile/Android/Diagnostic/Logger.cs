@@ -95,9 +95,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostic
             LogMessage(message + " Execution time : " + w.ElapsedMilliseconds.ToString() + " ms");
         }
 
-
-    
-
         public readonly static string BaseDir = System.IO.Path.Combine(Android.OS.Environment.ExternalStorageDirectory.ToString(), "TaxiHail"); //System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
 
         public readonly static string LogFilename = System.IO.Path.Combine(BaseDir, "log.txt");

@@ -45,6 +45,12 @@ namespace apcurium.MK.Booking.Api.Services
         public override object OnPost(CreateOrder request)
         {
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
+
+            if (request.Settings.Phone.Length > 10)
+            {
+                request.Settings.Phone = request.Settings.Phone.Right(10);
+            }
+
             var referenceData = (ReferenceData)_referenceDataService.OnGet(new ReferenceDataRequest());
 
             request.PickupDate = request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime() ;

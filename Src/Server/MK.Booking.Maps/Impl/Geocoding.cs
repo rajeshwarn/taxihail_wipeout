@@ -68,7 +68,7 @@ namespace apcurium.MK.Booking.Maps.Impl
             var addressesInRange = new Address[0];
             if (searchPopularAddress)
             {
-                addressesInRange = GetPopularAddressesInRange(new Position(latitude, longitude));
+               // addressesInRange = GetPopularAddressesInRange(new Position(latitude, longitude));
             }
 
             var geoResult = _mapApi.GeocodeLocation(latitude, longitude);
@@ -96,8 +96,6 @@ namespace apcurium.MK.Booking.Maps.Impl
 
             return addressesInRange.ToArray();
         }
-
-        
 
         private Address[] ConvertGeoResultToAddresses(GeoResult geoResult, string placeName)
         {

@@ -44,7 +44,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             else
             {
                 AppContext.Current.LastEmail = email;
-                ThreadHelper.ExecuteInThread(this, () => TinyIoCContainer.Current.Resolve<IAccountService>().ResetPassword(email), () => this.Finish() , true);                               
+                ThreadHelper.ExecuteInThread(this, () => TinyIoCContainer.Current.Resolve<IAccountService>().ResetPassword(email), ()
+                                                                                                                                  => RunOnUiThread(() => this.ShowAlert(Resource.String.ResetPasswordSucessTitle, Resource.String.ResetPasswordSucessMessage,this.Finish)), true);                               
             }
         }
 

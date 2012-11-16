@@ -52,9 +52,10 @@ namespace apcurium.MK.Booking.Maps.Impl
             if(name != null && latitude.HasValue && longitude.HasValue)
             {
                 var words = name.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                popularAddresses = from a in GetPopularAddressesInRange(new Position(latitude.Value, longitude.Value))
+                popularAddresses = from a in _popularAddressProvider.GetPopularAddresses()
                     where words.All(w => a.FriendlyName.ToUpper().Contains(w.ToUpper()) || a.FullAddress.Contains(w.ToUpper()))
                     select a;
+               // popularAddresses = _popularAddressProvider.GetPopularAddresses().Where(c => c.FullAddress.ToLower().Contains(words.ToLower()));
 
             }
 
@@ -90,21 +91,5 @@ namespace apcurium.MK.Booking.Maps.Impl
 
             return address;
         }
-
-        private Address[] GetPopularAddressesInRange(Position position)
-        {
-            float range = float.Parse(_configurationManager.GetSetting("GeoLoc.PopularAddress.Range"));
-            const double R = 6378137;
-
-            var addressesInRange = from a in _popularAddressProvider.GetPopularAddresses()
-                                   let distance = position.DistanceTo(new Position(a.Latitude, a.Longitude))
-                                   //where distance <= range
-                                   orderby distance ascending
-                                   select a;
-
-            return addressesInRange.ToArray();
-        }
-
-       
     }
 }

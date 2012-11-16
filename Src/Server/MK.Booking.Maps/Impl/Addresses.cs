@@ -25,26 +25,35 @@ namespace apcurium.MK.Booking.Maps.Impl
 
         public Address[] Search(string name, double latitude, double longitude)
         {
-            var term = name.Substring(0, 1);
+            var isNumeric = false;
+            if (!string.IsNullOrEmpty(name))
+            {
+                var term = name.Substring(0, 1);
 
-            int n;
-            var isNumeric = int.TryParse(term, out n);
+                int n;
+                isNumeric = int.TryParse(term, out n);
+            }
+            
 
             IEnumerable<Address> addresses = null;
             if (isNumeric)
             {
 
                 var geoCodingService = new Geocoding(_client, _configManager, _popularAddressProvider);
-                var list = (Address[])geoCodingService.Search(name);
-                addresses = list;
+                var list = (Address[])geoCodingService.Search(name).Take(5).ToArray();
+                var listPopular = _popularAddressProvider.GetPopularAddresses().Where(c=>c.FullAddress.Contains(name)).ToList();
+                foreach (var address in list)
+                {
+                    listPopular.Add(address);
+                }
+                addresses = listPopular;
             }
             else
             {
                 var nearbyService = new Places(_client, _configManager, _popularAddressProvider);
                 addresses = (Address[])nearbyService.SearchPlaces( name, latitude,longitude, null );
             }
-
-            return addresses.Take(5).ToArray();
+            return addresses.ToArray();
         }
 
     }
