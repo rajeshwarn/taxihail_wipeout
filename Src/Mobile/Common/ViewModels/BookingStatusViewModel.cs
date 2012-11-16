@@ -11,6 +11,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Booking.Mobile.Models;
 using apcurium.MK.Common.Extensions;
+using System.Globalization;
 
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -101,7 +102,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return new MvxRelayCommand(() =>
                 {
                     TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<OrderRated>(HideRatingButton);
-                    RequestNavigate<BookRatingViewModel>(new { orderId = Order.Id.ToString(), canRate = "true" });
+					RequestNavigate<BookRatingViewModel>(new { orderId = Order.Id.ToString(), canRate = true.ToString(CultureInfo.InvariantCulture), isFromStatus = true.ToString(CultureInfo.InvariantCulture) });
                 });
             }
         }

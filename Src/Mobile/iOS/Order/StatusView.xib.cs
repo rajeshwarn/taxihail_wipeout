@@ -360,7 +360,9 @@ namespace apcurium.MK.Booking.Mobile.Client
                     var isSuccess = TinyIoCContainer.Current.Resolve<IBookingService> ().SendReceipt (Order.Id);
                     
                     if (isSuccess) {
-                        MessageHelper.Show (Resources.HistoryViewSendReceiptSuccess);
+						Action backToHome = () => { InvokeOnMainThread (CloseRequested); };
+						MessageHelper.Show (Resources.GenericTitle, Resources.HistoryViewSendReceiptSuccess, backToHome );
+
                     } else {
                         
                         MessageHelper.Show (Resources.HistoryViewSendReceiptError);
