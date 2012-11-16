@@ -68,7 +68,7 @@ namespace apcurium.MK.Booking.Maps.Impl
             var addressesInRange = new Address[0];
             if (searchPopularAddress)
             {
-                addressesInRange = GetPopularAddressesInRange(new Position(latitude, longitude));
+               // addressesInRange = GetPopularAddressesInRange(new Position(latitude, longitude));
             }
 
             var geoResult = _mapApi.GeocodeLocation(latitude, longitude);
@@ -92,6 +92,14 @@ namespace apcurium.MK.Booking.Maps.Impl
                                    let distance = position.DistanceTo(new Position(a.Latitude, a.Longitude))
                                    where distance <= range
                                    orderby distance ascending
+                                   select a;
+
+            return addressesInRange.ToArray();
+        }
+
+        private Address[] GetAllPopularAddress()
+        {
+            var addressesInRange = from a in _popularAddressProvider.GetPopularAddresses()
                                    select a;
 
             return addressesInRange.ToArray();

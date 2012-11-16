@@ -35,8 +35,13 @@ namespace apcurium.MK.Booking.Maps.Impl
             {
 
                 var geoCodingService = new Geocoding(_client, _configManager, _popularAddressProvider);
-                var list = (Address[])geoCodingService.Search(name);
-                addresses = list;
+                var list = (Address[])geoCodingService.Search(name).Take(5).ToArray();
+                var listPopular = _popularAddressProvider.GetPopularAddresses().Where(c=>c.FullAddress.Contains(name)).ToList();
+                foreach (var address in list)
+                {
+                    listPopular.Add(address);
+                }
+                addresses = listPopular;
             }
             else
             {
@@ -44,7 +49,7 @@ namespace apcurium.MK.Booking.Maps.Impl
                 addresses = (Address[])nearbyService.SearchPlaces( name, latitude,longitude, null );
             }
 
-            return addresses.Take(5).ToArray();
+            return addresses.ToArray();
         }
 
     }
