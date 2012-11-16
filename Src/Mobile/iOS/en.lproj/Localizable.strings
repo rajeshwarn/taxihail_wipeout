@@ -12,7 +12,7 @@
 ;"ServiceError_ErrorCreatingOrderMessage"="Please contact {0} at {1} for further assistance."
 ;"ConfirmNoRingCode"="No code"
 ;"View_BookingDetail"="Confirmation"
-;"ServiceErrorCreateAccount_AccountAlreadyExist"="The account cannot be created, this email is already in use."
+;"ServiceErrorCreateAccount_AccountAlreadyExist"="This email is already in use."
 ;"DateTimePickerSetButton"="Set"
 ;"OrderNote"="Booked on mobile"
 ;"PickupTextPlaceholder"="Pickup street address"
