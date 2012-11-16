@@ -100,7 +100,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             paintText.GetTextBounds(text, 0, text.Length, rect);
             paintText.SetARGB(255, 49, 49, 49);
 			paintText.SetTypeface(typeface);
-            canvas.DrawText(text, x, y, paintText);
+
+            var p = new TextPaint();
+            p.SetTypeface(typeface);
+
+            p.TextSize = textSize;
+            var ellipsizedText = TextUtils.Ellipsize(text, p, this.Width - 45, TextUtils.TruncateAt.End);
+            if (ellipsizedText.IsNullOrEmpty())
+            {
+                ellipsizedText = text;
+            }
+
+
+            canvas.DrawText(ellipsizedText, x, y, paintText);
 
         }
 

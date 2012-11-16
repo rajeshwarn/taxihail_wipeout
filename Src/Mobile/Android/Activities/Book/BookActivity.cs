@@ -140,12 +140,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                      }
 
                  }, true);
-
-
-
-
-
-
         }
 
 
@@ -230,7 +224,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 Intent emailIntent = new Intent(Intent.ActionSend);
 
-                //emailIntent.SetType("application/octet-stream");
                 emailIntent.SetType("message/rfc822");
                 emailIntent.PutExtra(Intent.ExtraEmail, new String[] { TinyIoCContainer.Current.Resolve<IAppSettings>().SupportEmail });
                 emailIntent.PutExtra(Intent.ExtraCc, new String[] { AppContext.Current.LoggedInEmail });

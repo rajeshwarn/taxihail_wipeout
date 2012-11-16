@@ -91,21 +91,5 @@ namespace apcurium.MK.Booking.Maps.Impl
 
             return address;
         }
-
-        private Address[] GetPopularAddressesInRange(Position position)
-        {
-            float range = float.Parse(_configurationManager.GetSetting("GeoLoc.PopularAddress.Range"));
-            const double R = 6378137;
-
-            var addressesInRange = from a in _popularAddressProvider.GetPopularAddresses()
-                                   let distance = position.DistanceTo(new Position(a.Latitude, a.Longitude))
-                                   //where distance <= range
-                                   orderby distance ascending
-                                   select a;
-
-            return addressesInRange.ToArray();
-        }
-
-       
     }
 }

@@ -97,16 +97,6 @@ namespace apcurium.MK.Booking.Maps.Impl
             return addressesInRange.ToArray();
         }
 
-        private Address[] GetAllPopularAddress()
-        {
-            var addressesInRange = from a in _popularAddressProvider.GetPopularAddresses()
-                                   select a;
-
-            return addressesInRange.ToArray();
-        }
-
-        
-
         private Address[] ConvertGeoResultToAddresses(GeoResult geoResult, string placeName)
         {
             if ((geoResult.Status != ResultStatus.OK) || (geoResult.Results == null) || (geoResult.Results.Count == 0))
