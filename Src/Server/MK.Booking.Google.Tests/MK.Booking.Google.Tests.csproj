@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GeocodingFixture\given_a_gps_coordinate.cs" />
     <Compile Include="PlacesFixture\given_a_location.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
