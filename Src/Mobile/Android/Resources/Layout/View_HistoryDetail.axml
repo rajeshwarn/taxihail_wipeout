@@ -180,6 +180,7 @@
                     android:paddingTop="5dip"
                     android:paddingBottom="5dip"
                     local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;RebookOrder&apos;}}" />
+                    />
                 <Button
                     android:id="@+id/StatusBtn"
                     style="@style/ButtonText"

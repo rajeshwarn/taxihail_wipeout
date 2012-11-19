@@ -35,8 +35,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private const string _loadedStatus = "wosLOADED";
         private const int _refreshPeriod = 20 * 1000; //20 sec
 
-        private bool _closeScreenWhenCompleted;
-        private Guid _lastOrder;
         private Timer _timer;
         private bool _isInit = false;
         private bool _isThankYouDialogDisplayed = false;
@@ -165,18 +163,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         private void LoadParameters()
         {
-           /* var serialized = Intent.GetStringExtra("OrderStatusDetail");
-            var status = SerializerHelper.DeserializeObject<OrderStatusDetail>(serialized);
-            OrderStatus = status;*/
             OrderStatus = ViewModel.OrderStatusDetail;
-
-            
-
-            /*serialized = Intent.GetStringExtra("Order");
-            var order = SerializerHelper.DeserializeObject<Order>(serialized);
-            Order = order;*/
             Order = ViewModel.Order;
-
         }
 
         private void AddMapPin(MapView map, Address loc, int graphic, int titleId)
@@ -201,7 +189,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             _timer.Dispose();
             _timer = null;
-            AppContext.Current.LastOrder = null;
+
+            TinyIoCContainer.Current.Resolve<IBookingService>().ClearLastOrder();
             RunOnUiThread(Finish);
         }
 
@@ -251,7 +240,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 {
                     var status = TinyIoCContainer.Current.Resolve<IBookingService>().GetOrderStatus(Order.Id);
                     var isDone = TinyIoCContainer.Current.Resolve<IBookingService>().IsStatusDone(status.IBSStatusId);
-                    _lastOrder = OrderStatus.OrderId;
 
                     if (status != null)
                     {                        

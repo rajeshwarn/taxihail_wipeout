@@ -24,19 +24,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 {
     public partial class ConfirmationView : MvxBindingTouchViewController<BookConfirmationViewModel>
     {
-
-
-        public event EventHandler Confirmed;
-        public event EventHandler Canceled;
-//        public delegate void NoteChangedEventHandler(string note);
-//
-//        public event NoteChangedEventHandler NoteChanged;
-
         #region Constructors
-
-        // The IntPtr and initWithCoder constructors are required for items that need 
-        // to be able to be created from a xib rather than from managed code
-
         
         public ConfirmationView() 
             : base(new MvxShowViewModelRequest<BookingStatusViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
@@ -52,24 +40,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             : base(request, nibName, bundle)
         {
         }
-
-
-//        public ConfirmationView(IntPtr handle) : base(handle)
-//        {
-//            Initialize();
-//        }
-//
-//        [Export("initWithCoder:")]
-//        public ConfirmationView(NSCoder coder) : base(coder)
-//        {
-//            Initialize();
-//        }
-//
-//        public ConfirmationView(CreateOrder order) : base("ConfirmationView", null)
-//        {
-//            Order = order;
-//            Initialize();
-//        }
 
         public 
         void Initialize()
@@ -241,14 +211,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			this.NavigationItem.TitleView = new TitleView(null, Resources.View_BookingDetail, true);
         }
 
-//        private string FormatDateTime(DateTime? pickupDate, DateTime? pickupTime)
-//        {
-//            string result = pickupDate.HasValue ? pickupDate.Value.ToShortDateString() : Resources.DateToday;
-//            result += @" / ";
-//            result += pickupTime.HasValue ? pickupTime.Value.ToShortTimeString() : Resources.TimeNow;
-//            return result;
-//        }
-
         private string FormatDateTime(DateTime? pickupDate )
         {
             string format = "{0:ddd, MMM d}, {0:h:mm tt}";
@@ -264,40 +226,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             result += rCode.HasValue() ? rCode : Resources.ConfirmNoRingCode;
             return result;
         }
-
-//        void ConfirmClicked(object sender, EventArgs e)
-//        {
-//
-//            var phone = txtPhone.Text;
-//            if (phone.Count(x => Char.IsDigit(x)) < 10)
-//            {
-//                MessageHelper.Show(Resources.CreateAccountInvalidDataTitle, Resources.CreateAccountInvalidPhone);
-//                return;
-//            }
-//            else
-//            {
-//                txtPhone.Text = new string(phone.ToArray().Where(c => Char.IsDigit(c)).ToArray());
-//            }
-//
-//            if (Confirmed != null)
-//            {
-//                Confirmed(Order, EventArgs.Empty);
-//            }
-//        }
-
-//        void CancelClicked(object sender, EventArgs e)
-//        {
-//            if (Canceled != null)
-//            {
-//                Canceled(this, EventArgs.Empty);
-//            }
-//        }
-
-//        public CreateOrder BI
-//        {
-//            get { return Order; }
-//        }
-//        
+		  
         #endregion
     }
 }

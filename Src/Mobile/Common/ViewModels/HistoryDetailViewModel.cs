@@ -5,6 +5,7 @@ using System.Text;
 using Android.Widget;
 using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.Interfaces.Commands;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.ViewModels;
 using ServiceStack.Text;
 using TinyIoC;
@@ -49,7 +50,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
      
 
         private bool _isDone;
-
         public bool IsDone
         {
             get
@@ -75,7 +75,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
 
         private bool _hasRated;
-
         public bool HasRated
         {
             get
@@ -95,7 +94,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
         private bool _showRateButton;
-
         public bool ShowRateButton
         {
             get
@@ -111,6 +109,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
             set { _showRateButton = value; FirePropertyChanged("ShowRateButton"); }
 
+        }
+
+        private bool _canCancel;
+        public bool CanCancel
+        {
+            get { return _canCancel; }
+            set
+            {
+                if (value != _canCancel)
+                {
+                    _canCancel = value;
+                    FirePropertyChanged("CanCancel");
+                }
+            }
         }
 
         public HistoryDetailViewModel(string orderId)
@@ -150,10 +162,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public Task LoadStatus ()
 		{
 			return Task.Factory.StartNew(()=> {
-				HasRated = TinyIoCContainer.Current.Resolve<IBookingService> ().GetOrderRating (OrderId).RatingScores.Any ();
-				Status = TinyIoCContainer.Current.Resolve<IBookingService> ().GetOrderStatus (OrderId);
-				IsDone = TinyIoCContainer.Current.Resolve<IBookingService> ().IsStatusDone (Status.IBSStatusId);
+                var bookingService = TinyIoCContainer.Current.Resolve<IBookingService>();
+
+                HasRated = bookingService.GetOrderRating(OrderId).RatingScores.Any();
+                Status = bookingService.GetOrderStatus(OrderId);
 				IsCompleted = TinyIoCContainer.Current.Resolve<IBookingService> ().IsStatusCompleted (Status.IBSStatusId);
+                IsDone = bookingService.IsStatusDone(Status.IBSStatusId);
+                var isCompleted = bookingService.IsStatusCompleted(Status.IBSStatusId);
+
+			    CanCancel = !isCompleted;
 			});
 
 		}
@@ -234,22 +251,30 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand CancelOrder
+         public IMvxCommand CancelOrder
         {
             get
-            {
-                return new MvxRelayCommand(() =>
-                                               {
-                                                   var isSuccess = TinyIoCContainer.Current.Resolve<IBookingService>().CancelOrder(OrderId);
-                                                   if (isSuccess)
-                                                   {
-                                                       LoadStatus();
-                                                   }
-                                                   else
-                                                   {
-                                                       // send message to display error dialog
-                                                   }
-                                               });
+            { 
+                return new MvxRelayCommand(()=>
+                {
+                    var messageService = TinyIoCContainer.Current.Resolve<IMessageService>();
+                    var resources = TinyIoCContainer.Current.Resolve<IAppResource>();
+                    messageService.ShowMessage(string.Empty, resources.GetString("StatusConfirmCancelRide"), resources.GetString("YesButton"), () =>
+                    {
+                        var bookingService = TinyIoCContainer.Current.Resolve<IBookingService>();
+                        var isSuccess = bookingService.CancelOrder(OrderId);
+
+                        if(isSuccess)
+                        {
+                            LoadStatus();
+                        }
+                        else
+                        {
+                            InvokeOnMainThread(() => messageService.ShowMessage(resources.GetString("StatusConfirmCancelRideErrorTitle"), resources.GetString("StatusConfirmCancelRideError")));
+                        }
+                    },
+                    resources.GetString("NoButton"), () => { });                          
+                }); 
             }
         }
 

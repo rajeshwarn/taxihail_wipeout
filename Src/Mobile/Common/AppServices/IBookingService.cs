@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 	{
         string GetFareEstimateDisplay(CreateOrder order, string fareFormat, string noFareText);
 
-        bool IsValid(ref CreateOrder info);
+        bool IsValid(CreateOrder info);
 				
 		bool IsCompleted(Guid orderId);
 
@@ -28,6 +28,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         OrderStatusDetail CreateOrder(CreateOrder info);
 
         OrderStatusDetail GetOrderStatus(Guid orderId);
+        Task<OrderStatusDetail> GetLastOrderStatus();
+        void ClearLastOrder();
 
 	    void RemoveFromHistory(Guid orderId);
 
@@ -41,6 +43,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 	    void SendRatingReview(Common.Entity.OrderRatings orderRatings);
 
-	}
+
+    }
 }
 
