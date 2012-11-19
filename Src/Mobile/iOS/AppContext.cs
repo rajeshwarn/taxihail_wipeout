@@ -106,40 +106,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             set;
         }
         
-        public Guid? LastOrder
-        {
-            get
-            {
-                var lOrder = NSUserDefaults.StandardUserDefaults.StringForKey("MK.Booking.Cache.LastOrder");
-                if (lOrder.HasValue())
-                {
-                    Guid r;
-                    if (Guid.TryParse(lOrder, out r))
-                    {
-                        return r;
-                    }
-                }
-                return null;
-            }
-            set
-            {
-                if (value.HasValue)
-                {
-                    NSUserDefaults.StandardUserDefaults.SetStringOrClear(
-                        value.ToString(),
-                        "MK.Booking.Cache.LastOrder"
-                    );
-                }
-                else
-                {
-                    NSUserDefaults.StandardUserDefaults.SetStringOrClear(
-                        null,
-                        "MK.Booking.Cache.LastOrder"
-                    );
-                }
-            }
-        }
-
 		public UINavigationController Controller
         {
             get { return _controller; }

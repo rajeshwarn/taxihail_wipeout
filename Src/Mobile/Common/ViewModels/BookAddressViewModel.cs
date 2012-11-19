@@ -221,16 +221,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     _geolocator.GetPositionAsync (5000, 50, 2000, 2000, _cancellationToken.Token).ContinueWith (t =>
                     {
                         try {
-                            TinyIoCContainer.Current.Resolve<ILogger> ().LogMessage ("Request Location Command");
+                            Logger.LogMessage ("Request Location Command");
                             if (t.IsFaulted) {
-                                TinyIoCContainer.Current.Resolve<ILogger> ().LogMessage ("Request Location Command : FAULTED");
+                                Logger.LogMessage ("Request Location Command : FAULTED");
                                 IsExecuting = false;
                             } else if (t.IsCompleted && !t.IsCanceled) {
-                                TinyIoCContainer.Current.Resolve<ILogger> ().LogMessage ("Request Location Command :SUCCESS La {0}, Ln{1}", t.Result.Latitude, t.Result.Longitude);
+                                Logger.LogMessage ("Request Location Command :SUCCESS La {0}, Ln{1}", t.Result.Latitude, t.Result.Longitude);
                                 ThreadPool.QueueUserWorkItem (pos => SearchAddressForCoordinate ((Position)pos), t.Result);
                             }
                         } catch (Exception ex) {
-                            TinyIoCContainer.Current.Resolve<ILogger> ().LogError (ex);
+                            Logger.LogError (ex);
                             IsExecuting = false;
                         }
 

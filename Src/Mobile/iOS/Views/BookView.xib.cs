@@ -172,7 +172,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         private void OnStatusCloseRequested (StatusCloseRequested msg)
         {
-            AppContext.Current.LastOrder = null;
+			TinyIoCContainer.Current.Resolve<IBookingService> ().ClearLastOrder();
             NavigationController.NavigationBar.Hidden = true;
             this.NavigationController.PopToRootViewController (true);
             ViewModel.Reset ();

@@ -45,10 +45,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public BookViewModel()
         {
-            InitializeViewModel();
-
-
             MessengerHub.Subscribe<LogOutRequested>(msg => Logout.Execute());
+			InitializeOrder();
 
             PickupIsActive = true;
             DropoffIsActive = false;
@@ -71,12 +69,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public BookViewModel(string order)
         {
-            InitializeViewModel(JsonSerializer.DeserializeFromString<CreateOrder>(order));
-            
+			Order = JsonSerializer.DeserializeFromString<CreateOrder>(order);   
             Rebook(JsonSerializer.DeserializeFromString<Order>(order));
         }
 
-        private void InitializeViewModel(CreateOrder order = null)
+        protected override void Initialize()
         {
             if(_initialized) throw new InvalidOperationException();
             _initialized = true;
@@ -84,15 +81,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _accountService = this.GetService<IAccountService>();
             _geolocator = this.GetService<ILocationService>();
             _bookingService = this.GetService<IBookingService>();
-
-            if (order != null)
-            {
-                Order = order;
-            }
-            else
-            {
-                InitializeOrder();
-            }
 
             Pickup = new BookAddressViewModel(() => Order.PickupAddress, address => Order.PickupAddress = address, _geolocator)
             {
@@ -153,7 +141,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
 
-        public void InitializeOrder()
+        private void InitializeOrder()
         {
             Order = new CreateOrder();
             if (_accountService.CurrentAccount != null)
@@ -167,7 +155,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
 
-        public void NewOrder()
+        private void NewOrder()
         {
             RequestMainThreadAction(() =>
                 {
@@ -372,10 +360,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         
         private void CenterMap(bool changeZoom)
         {
-            var c = new ObservableCollection<string>();
-            
-            
-
             if (DropoffIsActive && Dropoff.Model.HasValidCoordinate())
             {
                 MapCenter = new CoordinateViewModel[] { new CoordinateViewModel { Coordinate = new Coordinate { Latitude = Dropoff.Model.Latitude, Longitude = Dropoff.Model.Longitude }, Zoom = changeZoom ? ZoomLevel.Close : ZoomLevel.DontChange } };
@@ -391,9 +375,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
 
         }
-
-
-
 
         private void UpdateServerInfo(object state)
         {

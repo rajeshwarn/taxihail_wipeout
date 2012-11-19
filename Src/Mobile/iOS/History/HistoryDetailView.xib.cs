@@ -100,8 +100,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         void StatusTouchUpInside(object sender, EventArgs e)
         {
-            AppContext.Current.LastOrder = ViewModel.OrderId;
-			InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new RebookRequested(this, null)));
+            InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new RebookRequested(this, null)));
 			this.NavigationController.PopToRootViewController( true ); 
         }
 
