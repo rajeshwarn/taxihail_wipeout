@@ -2,13 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using Android.Widget;
 using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using Cirrious.MvvmCross.ViewModels;
 using ServiceStack.Text;
 using TinyIoC;
 using TinyMessenger;
+using apcurium.Framework.Extensions;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Infrastructure;
@@ -42,8 +43,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private OrderStatusDetail _status;
 		public OrderStatusDetail Status {
 			get{ return _status; }
-			set{ _status = value; FirePropertyChanged("Status"); }
+            set { _status = value; FirePropertyChanged("Status");}
 		}
+
+     
 
         private bool _isDone;
 
@@ -123,7 +126,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			LoadOrder();
 			LoadStatus();
 			TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<OrderRated>(RefreshOrderStatus);
-			
 		}
 
         public void RefreshOrderStatus (OrderRated orderRated)
@@ -131,6 +133,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			if (orderRated.Content == this.OrderId) {
 				LoadStatus();
 			}
+            TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<OrderCanceled>(canceled =>
+            {
+                this.LoadStatus();
+            });
         }
 
 		public Task LoadOrder() 
@@ -168,13 +174,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return new MvxRelayCommand<Dictionary<string,object>>(order =>
-                                                                  {
-                                                                      var orderGet = (Order) order["order"];
-                                                                      var orderInfoGet = (OrderStatusDetail) order["orderInfo"];
-                                                                      var orderWithStatus = new OrderWithStatusModel() { Order = orderGet, OrderStatusDetail = orderInfoGet };
-                                                                      var serialized = JsonSerializer.SerializeToString(orderWithStatus, typeof(OrderWithStatusModel));
-                                                                      RequestNavigate<BookingStatusViewModel>(new {order = serialized});
+                return new MvxRelayCommand(() =>
+                                        {
+                                            var orderInfo = new OrderStatusDetail { IBSOrderId = Order.IBSOrderId, IBSStatusDescription = "Loading...", IBSStatusId = "", OrderId = OrderId, Status = OrderStatus.Unknown, VehicleLatitude = null, VehicleLongitude = null };
+                                            var order = new Dictionary<string, object>() { { "order", Order }, { "orderInfo", orderInfo } };
+
+                                            var orderGet = (Order) order["order"];
+                                            var orderInfoGet = (OrderStatusDetail) order["orderInfo"];
+                                            var orderWithStatus = new OrderWithStatusModel() { Order = orderGet, OrderStatusDetail = orderInfoGet };
+                                            var serialized = JsonSerializer.SerializeToString(orderWithStatus, typeof(OrderWithStatusModel));
+                                            RequestNavigate<BookingStatusViewModel>(new {order = serialized});
                 });
             }
         }
@@ -183,11 +192,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return new MvxRelayCommand<Guid>(orderId =>
+                return new MvxRelayCommand(() =>
                 {
-                    if (Common.Extensions.GuidExtensions.HasValue(orderId))
+                    if (Common.Extensions.GuidExtensions.HasValue(OrderId))
                         {
-                            TinyIoCContainer.Current.Resolve<IBookingService>().RemoveFromHistory(orderId);
+                            TinyIoCContainer.Current.Resolve<IBookingService>().RemoveFromHistory(OrderId);
 						    if(Deleted != null)
 							{
 								Deleted(this, EventArgs.Empty);
@@ -197,5 +206,68 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 });
             }
         }
+
+        public IMvxCommand RebookOrder
+        {
+            get
+            {
+                return new MvxRelayCommand(() =>
+                {
+                    TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new RebookRequested(this, Order));
+                    TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new CloseViewsToRoot(this));
+                });
+            }
+        }
+
+        public IMvxCommand SendReceipt
+        {
+            get
+            {
+                return new MvxRelayCommand(() =>
+                {
+                    if (Common.Extensions.GuidExtensions.HasValue(OrderId))
+                    {
+                        TinyIoCContainer.Current.Resolve<IBookingService>().SendReceipt(OrderId);
+                    }
+                    RequestClose(this);
+                });
+            }
+        }
+
+        public IMvxCommand CancelOrder
+        {
+            get
+            {
+                return new MvxRelayCommand(() =>
+                                               {
+                                                   var isSuccess = TinyIoCContainer.Current.Resolve<IBookingService>().CancelOrder(OrderId);
+                                                   if (isSuccess)
+                                                   {
+                                                       LoadStatus();
+                                                   }
+                                                   else
+                                                   {
+                                                       // send message to display error dialog
+                                                   }
+                                               });
+            }
+        }
+
+        /*private string FormatDateTime(DateTime? date, DateTime? time)
+        {
+            string result = date.HasValue ? date.Value.ToShortDateString() : Resources.GetString(Resource.String.DateToday);
+            result += @" / ";
+            result += time.HasValue ? time.Value.ToShortTimeString() : Resources.GetString(Resource.String.TimeNow);
+            return result;
+        }
+
+        private string FormatAptRingCode(string apt, string rCode)
+        {
+            string result = apt.HasValue() ? apt : Resources.GetString(Resource.String.ConfirmNoApt);
+
+            result += @" / ";
+            result += rCode.HasValue() ? rCode : Resources.GetString(Resource.String.ConfirmNoRingCode);
+            return result;
+        }*/
     }
 }

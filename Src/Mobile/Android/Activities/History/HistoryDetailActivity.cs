@@ -32,11 +32,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
         {
             base.OnCreate(bundle);
             _closeViewToken = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<CloseViewsToRoot>(m => Finish());
-            TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<OrderCanceled>(canceled =>
+           /* TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<OrderCanceled>(canceled =>
                                                                                                {
                                                                                                    ViewModel.LoadStatus();
-                                                                                                   this.RefreshStatus();
-                                                                                               });
+                                                                                                  // this.RefreshStatus();
+                                                                                               });*/
         } 
 
         protected override void OnDestroy()
@@ -54,7 +54,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
             ViewModel.PropertyChanged += ViewModel_PropertyChanged;
             ViewModel.Initialize();
 
-            var btnCancel = FindViewById<Button>(Resource.Id.CancelTripBtn);
+           /* var btnCancel = FindViewById<Button>(Resource.Id.CancelTripBtn);
             var btnStatus = FindViewById<Button>(Resource.Id.StatusBtn);
             var btnRebook = FindViewById<Button>(Resource.Id.RebookTripBtn);
             var btnSendReceipt = FindViewById<Button>(Resource.Id.SendReceiptBtn);
@@ -68,8 +68,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
             btnStatus.Click += new EventHandler(btnStatus_Click);
             btnRebook.Click += new EventHandler(btnRebook_Click);
             btnSendReceipt.Click += new EventHandler(btnSendReceipt_Click);
-            btnDelete.Click += new EventHandler(btnDelete_Click);
-            FindViewById<TextView>(Resource.Id.StatusTxt).Text = Resources.GetString(Resource.String.LoadingMessage);
+            btnDelete.Click += new EventHandler(btnDelete_Click);*/
+            //FindViewById<TextView>(Resource.Id.StatusTxt).Text = Resources.GetString(Resource.String.LoadingMessage);
 
         }
 
@@ -81,7 +81,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
             } 
             else if(e.PropertyName == "Status")
             {
-                RefreshStatus();
+                //ViewModel.LoadStatus();
+                //RefreshStatus();
             }
         }
 
@@ -98,7 +99,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
             });
         }
 
-        void btnRebook_Click(object sender, EventArgs e)
+       /* void btnRebook_Click(object sender, EventArgs e)
         {
             
             TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new RebookRequested(this, ViewModel.Order));
@@ -121,11 +122,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
         private void btnDelete_Click(object sender, EventArgs e)
         {
             this.ViewModel.DeleteOrder.Execute(ViewModel.OrderId);
-        }
+        }*/
 
 
-        void btnStatus_Click(object sender, EventArgs e)
-        {
+        //void btnStatus_Click(object sender, EventArgs e)
+       // {
 
             /*Intent i = new Intent(this, typeof(BookingStatusActivity));
 
@@ -139,17 +140,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
 
 
             StartActivityForResult(i, 101);*/
-            var orderInfo = new OrderStatusDetail { IBSOrderId = ViewModel.Order.IBSOrderId, IBSStatusDescription = "Loading...", IBSStatusId = "", OrderId = ViewModel.OrderId, Status = OrderStatus.Unknown, VehicleLatitude = null, VehicleLongitude = null };
-            var param = new Dictionary<string, object>() { { "order", ViewModel.Order }, { "orderInfo", orderInfo } };
-            ViewModel.NavigateToOrderStatus.Execute(param);
+
+
+
+           // var orderInfo = new OrderStatusDetail { IBSOrderId = ViewModel.Order.IBSOrderId, IBSStatusDescription = "Loading...", IBSStatusId = "", OrderId = ViewModel.OrderId, Status = OrderStatus.Unknown, VehicleLatitude = null, VehicleLongitude = null };
+            //var param = new Dictionary<string, object>() { { "order", ViewModel.Order }, { "orderInfo", orderInfo } };
+           // ViewModel.NavigateToOrderStatus.Execute(param);
+
+
+
             //Intent intent = new Intent();
             //intent.SetFlags(ActivityFlags.ForwardResult);
             //intent.PutExtra("Book", _data.Id.ToString());
             //SetResult(Result.Ok, intent);
             //Finish();
-        }
+       // }
 
-        void btnCancel_Click(object sender, EventArgs e)
+       /* void btnCancel_Click(object sender, EventArgs e)
         {
             var newBooking = new Confirmation();
             newBooking.Action(this, Resource.String.StatusConfirmCancelRide, () =>
@@ -160,7 +167,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
                     if (isSuccess)
                     {
                         ViewModel.LoadStatus();
-                        RefreshStatus();
+                        //RefreshStatus();
                     }
                     else
                     {
@@ -172,9 +179,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
 
                 }, false);
             });
-        }
+        }*/
 
-        private void RefreshStatus()
+       /* private void RefreshStatus()
         {
             bool isCompleted = false;
             if (ViewModel.Status.IBSStatusId.HasValue())
@@ -195,7 +202,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
                 btnDelete.Visibility = isCompleted ? ViewStates.Visible : ViewStates.Gone;
                 btnSendReceipt.Visibility = ViewModel.Status.FareAvailable ? ViewStates.Visible : ViewStates.Gone;
             });
-        }
+        }*/
 
         private string FormatDateTime(DateTime? date, DateTime? time)
         {
