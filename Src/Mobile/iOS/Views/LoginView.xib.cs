@@ -282,11 +282,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         void PasswordTouchUpInside(object sender, EventArgs e)
         {
-            var nav = new UINavigationController(new ResetPasswordView());
-            //nav.NavigationBar.TintColor = UIColor.FromRGB(255, 178, 14);
-            LoadBackgroundNavBar(nav.NavigationBar);
-            nav.Title = ".";
-            this.PresentModalViewController(nav, true);
+			var viewDispatcherProvider = TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>();
+			var viewDispatcher = viewDispatcherProvider.Dispatcher;
+			viewDispatcher.RequestNavigate(new MvxShowViewModelRequest(
+				typeof(ResetPasswordViewModel),
+				null,
+				false,
+				MvxRequestedBy.UserAction));          
         }
 
 
