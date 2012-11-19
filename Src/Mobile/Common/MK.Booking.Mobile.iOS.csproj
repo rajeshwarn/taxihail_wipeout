@@ -193,6 +193,7 @@
     <Compile Include="Messages\StatusCloseRequested.cs" />
     <Compile Include="ViewModels\BookConfirmationViewModel.cs" />
     <Compile Include="ViewModels\LocationDetailViewModel.cs" />
+    <Compile Include="Messages\OrderCanceled.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">
