@@ -185,13 +185,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return new MvxRelayCommand<Dictionary<string,object>>(order =>
+                return new MvxRelayCommand(() =>
                                                                   {
-                                                                      var orderGet = (Order) order["order"];
-                                                                      var orderInfoGet = (OrderStatusDetail) order["orderInfo"];
-                                                                      var orderWithStatus = new OrderWithStatusModel() { Order = orderGet, OrderStatusDetail = orderInfoGet };
-                                                                      var serialized = JsonSerializer.SerializeToString(orderWithStatus, typeof(OrderWithStatusModel));
-                                                                      RequestNavigate<BookingStatusViewModel>(new {order = serialized});
+					var orderStatus = new OrderStatusDetail
+					{ 
+						IBSOrderId = Order.IBSOrderId,
+						IBSStatusDescription = "Loading...",
+						IBSStatusId = "",
+						OrderId = OrderId,
+						Status = OrderStatus.Unknown,
+						VehicleLatitude = null,
+						VehicleLongitude = null
+					};
+					RequestNavigate<BookingStatusViewModel>(new {
+						order =  Order.ToJson(),
+						orderStatus = orderStatus.ToJson()
+					});
                 });
             }
         }

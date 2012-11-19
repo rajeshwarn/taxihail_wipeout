@@ -39,7 +39,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private IBookingService _bookingService;
         private bool _pickupIsActive = true;
         private bool _dropoffIsActive = false;
-        private string _version;
         private IEnumerable<CoordinateViewModel> _mapCenter;
         private string _fareEstimate;
 
@@ -47,6 +46,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             MessengerHub.Subscribe<LogOutRequested>(msg => Logout.Execute());
 			InitializeOrder();
+
+            CenterMap(true);
+            CheckVersion();
 
             PickupIsActive = true;
             DropoffIsActive = false;
@@ -100,8 +102,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             _fareEstimate = Resources.GetString("NoFareText");
 
-            CenterMap(true);
-            CheckVersion();
             ThreadPool.QueueUserWorkItem(UpdateServerInfo);
         }
 
@@ -378,33 +378,34 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void UpdateServerInfo(object state)
         {
-
-            _serverInfo = TinyIoCContainer.Current.Resolve<IApplicationInfoService>().GetAppInfo();
-            _version = null;
-            FirePropertyChanged(() => Version);
+			string appVersion = TinyIoCContainer.Current.Resolve<IPackageInfo>().Version;
+			var versionFormat = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("Version");
+            var serverInfo = TinyIoCContainer.Current.Resolve<IApplicationInfoService>().GetAppInfo();
+			var version = string.Format(versionFormat, appVersion);
+			if (serverInfo != null)
+			{
+				var serverVersionFormat = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("ServerInfo");
+				version += " " + string.Format(serverVersionFormat, serverInfo.SiteName, serverInfo.Version);
+			}
+			Version =  version;
 
         }
-        private ApplicationInfo _serverInfo;
 
-        public string Version
-        {
-            get
-            {
-                if (_version == null)
-                {
-                    string appVersion = TinyIoCContainer.Current.Resolve<IPackageInfo>().Version;
-                    var versionFormat = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("Version");
-                    _version = string.Format(versionFormat, appVersion);
-
-                    if (_serverInfo != null)
-                    {
-                        var serverVersionFormat = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("ServerInfo");
-                        _version += " " + string.Format(serverVersionFormat, _serverInfo.SiteName, _serverInfo.Version);
-                    }
-                }
-                return _version;
-                //android:text="v1.0.10 (Atlanta Checker v1.0.1)"           
-            }
+        private string _version;
+        public string Version {
+			get
+			{
+				return _version;
+				//android:text="v1.0.10 (Atlanta Checker v1.0.1)"           
+			}
+			set 
+			{
+				if(value != _version)
+				{
+					_version = value;
+					FirePropertyChanged("Versio");
+				}
+			}
         }
 
         public bool IsInTheFuture { get { return Order.PickupDate.HasValue; } }

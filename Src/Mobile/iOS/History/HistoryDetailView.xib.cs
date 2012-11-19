@@ -100,8 +100,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         void StatusTouchUpInside(object sender, EventArgs e)
         {
-            InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new RebookRequested(this, null)));
-			this.NavigationController.PopToRootViewController( true ); 
+			ViewModel.NavigateToOrderStatus.Execute();
         }
 
         void CancelTouchUpInside(object sender, EventArgs e)
@@ -182,9 +181,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         void RebookTouched(object sender, EventArgs e)
         {
-			InvokeOnMainThread( () => NavigationController.PopToRootViewController(true) );
-
-			TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new RebookRequested(this, ViewModel.Order));
+			ViewModel.RebookOrder.Execute();
         }
 
         void HideTouchUpInside(object sender, EventArgs e)

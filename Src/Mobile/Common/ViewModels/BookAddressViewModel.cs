@@ -70,8 +70,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public IMvxCommand SearchCommand {
             get {
-
-
                 return new MvxRelayCommand<Address> (coordinate =>
                 {
                     CancelCurrentLocationCommand.Execute ();

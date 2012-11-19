@@ -80,9 +80,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub> ().Subscribe<StatusCloseRequested> (OnStatusCloseRequested);
 
-            TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub> ().Subscribe<RebookRequested> (msg => {
-                ViewModel.Rebook (msg.Content);
-            });
             TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub> ().Subscribe<DateTimePicked> (msg => _onDateTimePicked ());
             _dateTimePicker = new DateTimePicker ();
             _dateTimePicker.ShowPastDate = false;
