@@ -195,6 +195,7 @@
     <Compile Include="ViewModels\ZoomLevel.cs" />
     <Compile Include="Infrastructure\IAddressBookService.cs" />
     <Compile Include="Messages\StatusCloseRequested.cs" />
+    <Compile Include="ViewModels\ResetPasswordViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">

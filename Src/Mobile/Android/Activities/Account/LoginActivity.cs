@@ -350,7 +350,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
         private void PasswordRecovery()
         {
-            StartActivity(typeof(PasswordRecoveryActivity));
+			var viewDispatcherProvider = TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>();
+			var viewDispatcher = viewDispatcherProvider.Dispatcher;
+			viewDispatcher.RequestNavigate(new MvxShowViewModelRequest(
+				typeof(ResetPasswordViewModel),
+				null,
+				false,
+				MvxRequestedBy.UserAction));          
+
         }
         void btnSignIn_Click(object sender, EventArgs e)
         {
