@@ -1,17 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Android.App;
-using Android.Content;
-using Android.OS;
 using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using TinyIoC;
-using apcurium.MK.Booking.Mobile.Practices;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
 
 
@@ -20,8 +10,6 @@ namespace apcurium.MK.Booking.Mobile.Client
     [Application]
     public class TaxiMobileApplication : Application
     {
-		//private Intent _errorHandlingServiceIntent;
-
         protected TaxiMobileApplication(IntPtr javaReference, JniHandleOwnership transfer)
             : base(javaReference, transfer)
         {
@@ -36,30 +24,19 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public override void OnCreate()
         {
-            //new AppModule().Initialize(this);
-            //new AppModule().InitializeSocialNetwork(this);
-
             base.OnCreate();
 
-            Android.Runtime.AndroidEnvironment.UnhandledExceptionRaiser += AndroidEnvironmentOnUnhandledExceptionRaiser;
+            AndroidEnvironment.UnhandledExceptionRaiser += AndroidEnvironmentOnUnhandledExceptionRaiser;
 
-            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
             Console.WriteLine("App created");
-
-			//_errorHandlingServiceIntent = new Intent( this, typeof(ErrorHandlingService) );
-			
-            //StartService( _errorHandlingServiceIntent );
-
-         
 
         }
 
 		public override void OnTerminate ()
 		{
 			base.OnTerminate ();
-            
-//			StopService( _errorHandlingServiceIntent );
 		}
 
         
@@ -87,8 +64,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
             catch (Exception)
             {
-                
-
                 throw;
             }
         }

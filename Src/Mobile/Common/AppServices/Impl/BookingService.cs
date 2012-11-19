@@ -24,15 +24,21 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
     {
         private List<Contact> _addresBook;
 
-        public bool IsValid(ref CreateOrder info)
+        public bool IsValid(CreateOrder info)
         {
-            return info.PickupAddress.FullAddress.HasValue() && info.PickupAddress.Latitude != 0 && info.PickupAddress.Longitude != 0;
+			return info.PickupAddress.FullAddress.HasValue() 
+				&& info.PickupAddress.HasValidCoordinate();
         }
 
 
         protected ILogger Logger
         {
             get { return TinyIoCContainer.Current.Resolve<ILogger>(); }
+        }
+
+        protected ICacheService Cache
+        {
+            get { return TinyIoCContainer.Current.Resolve<ICacheService>(); }
         }
 
         public OrderStatusDetail CreateOrder(CreateOrder order)
@@ -44,6 +50,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     orderDetail = service.CreateOrder(order);
                 }, ex => HandleCreateOrderError(ex, order));
 
+            if (orderDetail.IBSOrderId.HasValue && orderDetail.IBSOrderId > 0)
+            {
+                Cache.Set("LastOrderId", orderDetail.OrderId);
+            }
 
             ThreadPool.QueueUserWorkItem(o =>
             {
@@ -79,21 +89,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
             string err = string.Format(message, settings.ApplicationName, settings.PhoneNumberDisplay(order.Settings.ProviderId.HasValue ? order.Settings.ProviderId.Value : 0));
 
-            TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage(title, err, "Call", () => CallCompany(settings.ApplicationName, settings.PhoneNumber(order.Settings.ProviderId.HasValue ? order.Settings.ProviderId.Value : 0)), "Cancel", RefreshBookingView);
+            TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage(title, err, "Call", () => CallCompany(settings.ApplicationName, settings.PhoneNumber(order.Settings.ProviderId.HasValue ? order.Settings.ProviderId.Value : 0)), "Cancel", delegate {});
         }
 
         private void CallCompany(string name, string number)
         {
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
             TinyIoCContainer.Current.Resolve<IMvxPhoneCallTask>().MakePhoneCall(name, number);
-            RefreshBookingView();
         }
  
-        private void RefreshBookingView()
-        {
-
-        }
-
         public OrderStatusDetail GetOrderStatus(Guid orderId)
         {
             OrderStatusDetail r = new OrderStatusDetail();
@@ -104,6 +108,36 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 }, ex=> TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex));
 
             return r;
+        }
+
+        public Task<OrderStatusDetail> GetLastOrderStatus()
+        {
+            var task = Task.Factory.StartNew(() =>
+            {
+                OrderStatusDetail result = new OrderStatusDetail();
+                var lastOrderId = Cache.Get<Guid?>("LastOrderId");
+                if(!lastOrderId.HasValue)
+                {
+                    throw new InvalidOperationException();
+                }
+
+                UseServiceClient<OrderServiceClient>(service =>
+                {
+                    result = service.GetOrderStatus(lastOrderId.Value);
+                }, ex => TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex));
+
+                return result;
+            });
+
+            task.ContinueWith(t => Logger.LogError(t.Exception), TaskContinuationOptions.OnlyOnFaulted);
+
+            return task;
+
+        }
+
+        public void ClearLastOrder()
+        {
+            Cache.Set("LastOrderId", default(Guid?));
         }
 
         public void RemoveFromHistory(Guid orderId)

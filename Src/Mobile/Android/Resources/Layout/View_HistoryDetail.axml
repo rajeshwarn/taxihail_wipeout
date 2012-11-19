@@ -177,7 +177,9 @@
                     android:text="@string/HistoryDetailRebookButton"
                     android:layout_height="40dip"
                     android:paddingTop="5dip"
-                    android:paddingBottom="5dip" />
+                    android:paddingBottom="5dip"
+                    local:MvxBind="{'Click': {'Path': 'RebookOrder'}}"
+                    />
                 <Button
                     android:id="@+id/StatusBtn"
                     style="@style/ButtonText"
@@ -209,7 +211,9 @@
                     android:background="@drawable/red_button"
                     android:text="@string/StatusActionCancelButton"
                     android:layout_width="fill_parent"
-                    android:layout_height="40dip" />
+                    android:layout_height="40dip"
+                    local:MvxBind="{'Click': {'Path': 'CancelOrder'}, 'Visibility': { 'Path': 'CanCancel', 'Converter': 'Visibility' }}"
+                    />
                 <Button
                     android:paddingTop="5dip"
                     android:paddingBottom="5dip"

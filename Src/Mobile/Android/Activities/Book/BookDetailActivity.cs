@@ -1,19 +1,13 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.Text;
-using Android.OS;
 using Android.App;
 using Android.Content;
 using Android.Widget;
+using ServiceStack.Text;
 using apcurium.Framework.Extensions;
 using TinyIoC;
-using apcurium.MK.Booking.Mobile.Client.Adapters;
-using apcurium.MK.Booking.Mobile.Client.ListViewCell;
-using apcurium.MK.Booking.Mobile.Client.ListViewStructure;
-using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Client.Activities.Setting;
-using apcurium.MK.Booking.Mobile.Client.Models;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
@@ -50,7 +44,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             SetContentView(Resource.Layout.View_BookingDetail);
             
-            var data = SerializerHelper.DeserializeObject<CreateOrder>(this.ViewModel.Order);
+            var data = JsonSerializer.DeserializeFromString<CreateOrder>(this.ViewModel.Order);
             BookingInfo = data;
             var account = TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount;
             var currentSettings = account.Settings;
