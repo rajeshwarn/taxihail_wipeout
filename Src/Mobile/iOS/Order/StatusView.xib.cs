@@ -17,6 +17,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using Cirrious.MvvmCross.Views;
 using TinyMessenger;
+using apcurium.MK.Booking.Mobile.Messages;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -86,6 +87,11 @@ namespace apcurium.MK.Booking.Mobile.Client
             NavigationController.NavigationBar.Hidden = false;
         }
 
+		void OnOrderRated (OrderRated obj)
+		{
+			ShowThankYouMessage(Status);
+		}
+
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
@@ -122,7 +128,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
                 View.BringSubviewToFront (bottomBar);
 
-
+				TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<OrderRated>( OnOrderRated , o=>o.Content.Equals (Order.Id) );
 
             
             } catch (Exception ex) {
@@ -321,8 +327,6 @@ namespace apcurium.MK.Booking.Mobile.Client
                     if (Status != null) {                        
                         RefreshStatusDisplay ();                        
                     }
-
-
                     
                 } catch (Exception ex) {
                     Logger.LogError (ex);
@@ -342,25 +346,27 @@ namespace apcurium.MK.Booking.Mobile.Client
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
             msg = string.Format (msg, settings.ApplicationName);
 
-            UIAlertView av = null;
+            List<string> buttonsList = new List<string>();
+
             if (status.FareAvailable) {
-                av = new UIAlertView (title, msg, null, Resources.Close, Resources.RateBtn, Resources.HistoryViewSendReceiptButton);
-            } else {
-                av = new UIAlertView (title, msg, null, Resources.Close, Resources.RateBtn);
+				buttonsList.Add(Resources.HistoryViewSendReceiptButton);                
             }
+			if (!ViewModel.IsRated) {
+				buttonsList.Add(Resources.RateBtn);                
+			}
+			UIAlertView av = new UIAlertView (title, msg, null, Resources.Close, buttonsList.ToArray());
             
-            //av.Dismissed += (sender, e) => CloseRequested();
-            av.Clicked += delegate(object sender, UIButtonEventArgs e) {
-              
-                if (e.ButtonIndex == 0) {
+            av.Clicked += delegate(object sender, UIButtonEventArgs e) {              
+
+				if (e.ButtonIndex == 0) {
                     CloseRequested ();
-                } else if (e.ButtonIndex == 1) {
+				} else if (buttonsList[e.ButtonIndex-1] == Resources.RateBtn) {
                     ViewModel.NavigateToRatingPage.Execute ();
-                } else if (e.ButtonIndex == 2) {                    
-                    var isSuccess = TinyIoCContainer.Current.Resolve<IBookingService> ().SendReceipt (Order.Id);
-                    
+				} else if (buttonsList[e.ButtonIndex-1] == Resources.HistoryViewSendReceiptButton) {                    
+                    var isSuccess = TinyIoCContainer.Current.Resolve<IBookingService> ().SendReceipt (Order.Id);                    
                     if (isSuccess) {
-                        MessageHelper.Show (Resources.HistoryViewSendReceiptSuccess);
+						Action backToHome = () => { InvokeOnMainThread (CloseRequested); };
+						MessageHelper.Show (Resources.GenericTitle, Resources.HistoryViewSendReceiptSuccess, backToHome );
                     } else {
                         
                         MessageHelper.Show (Resources.HistoryViewSendReceiptError);

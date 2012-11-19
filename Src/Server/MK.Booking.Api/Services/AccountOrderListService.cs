@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.ReadModel.Query;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using ServiceStack.Text.Common;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -26,10 +21,11 @@ namespace apcurium.MK.Booking.Api.Services
             var orders = Dao.FindByAccountId(new Guid(session.UserAuthId))
                 .Where(x=> !x.IsRemovedFromHistory)
                 .OrderByDescending(c => c.CreatedDate)
-                .Select(read => new OrderMapper().ToResource(read)); 
+                .Select(read => new OrderMapper().ToResource(read));
 
-            var o =orders.ToArray();
-            return o;
+            var response = new AccountOrderListRequestResponse();
+            response.AddRange(orders);
+            return response;
         }
     }
 }

@@ -45,6 +45,11 @@ namespace apcurium.MK.Booking.Api.Services
         public override object OnPost(CreateOrder request)
         {
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
+
+            //TODO: Fix this when IBS will accept more than 10 digits phone numbers
+            //Send 10 digits maximum to IBS
+            request.Settings.Phone = new string(request.Settings.Phone.Where(Char.IsDigit).Reverse().Take(10).Reverse().ToArray());
+
             var referenceData = (ReferenceData)_referenceDataService.OnGet(new ReferenceDataRequest());
 
             request.PickupDate = request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime() ;
@@ -105,10 +110,7 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 throw new HttpError(ErrorCode.CreateOrder_InvalidProvider.ToString());
             }
-            else if (referenceData.VehiclesList.Where(x => x.Parent.Id == request.Settings.ProviderId.Value).None(v => v.Id == request.Settings.VehicleTypeId))
-            {
-                throw new HttpError(ErrorCode.CreateOrder_VehiculeType.ToString());
-            }
+            
 
             var ibsPickupAddress = Mapper.Map<IBSAddress>(request.PickupAddress);
             var ibsDropOffAddress = IsValid(request.DropOffAddress) ? Mapper.Map<IBSAddress>(request.DropOffAddress) : (IBSAddress)null;

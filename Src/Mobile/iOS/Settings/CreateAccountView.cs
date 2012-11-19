@@ -150,9 +150,9 @@ namespace apcurium.MK.Booking.Mobile.Client
                         {
                             error = Resources.CreateAccountErrorNotSpecified;
                         }
-                        if (Resources.GetValue("ErrorCode_" + error) != "ErrorCode_" + error)
+						if (Resources.GetValue("ServiceError" + error) != "ServiceError" + error)
                         {
-                            BeginInvokeOnMainThread(() => MessageHelper.Show(Resources.CreateAccountErrorTitle, Resources.CreateAccountErrorMessage + " " + Resources.GetValue("ErrorCode_" + error)));
+							BeginInvokeOnMainThread(() => MessageHelper.Show(Resources.CreateAccountErrorTitle, Resources.CreateAccountErrorMessage + " " + Resources.GetValue("ServiceError" + error)));
                         }
                         else
                         {

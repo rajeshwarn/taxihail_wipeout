@@ -376,6 +376,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                         RunOnUiThread(() =>
                         {
                             var dispatch = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
+                            txtPassword.Text = "";
                             dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(BookViewModel), null, false, MvxRequestedBy.UserAction));
                         });
                         return;

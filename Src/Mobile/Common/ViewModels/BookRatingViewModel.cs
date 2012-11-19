@@ -17,6 +17,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     {
         private List<RatingModel> _ratingList;
 
+
         public List<RatingModel> RatingList
         {
             get { return _ratingList; }
@@ -80,7 +81,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
        
 
-        public BookRatingViewModel (string orderId, string canRate="false")
+		public BookRatingViewModel (string orderId, string canRate="false")
 		{
 			var ratingTypes = TinyIoCContainer.Current.Resolve<IBookingService> ().GetRatingType ();
             RatingList = ratingTypes.Select(c => new RatingModel(canRate: bool.Parse(canRate)) { RatingTypeId = c.Id, RatingTypeName = c.Name }).OrderBy(c=>c.RatingTypeId).ToList();
@@ -128,7 +129,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         {
                             TinyIoCContainer.Current.Resolve<IBookingService>().SendRatingReview(orderRating);
                             InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new OrderRated(this, OrderId)));
-                            RequestClose(this);
+							RequestClose(this);
+
                         }
                         catch (Exception e)
                         {

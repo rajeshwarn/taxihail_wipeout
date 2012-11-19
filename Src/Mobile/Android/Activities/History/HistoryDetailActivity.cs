@@ -31,7 +31,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            _closeViewToken = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<CloseViewsToRoot>(m => Finish());            
+            _closeViewToken = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<CloseViewsToRoot>(m => Finish());
+            TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<OrderCanceled>(canceled =>
+                                                                                               {
+                                                                                                   ViewModel.LoadStatus();
+                                                                                                   this.RefreshStatus();
+                                                                                               });
         } 
 
         protected override void OnDestroy()
@@ -111,6 +116,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
             var orderInfo = new OrderStatusDetail { IBSOrderId = ViewModel.Order.IBSOrderId, IBSStatusDescription = "Loading...", IBSStatusId = "", OrderId = ViewModel.OrderId, Status = OrderStatus.Unknown, VehicleLatitude = null, VehicleLongitude = null };
             var param = new Dictionary<string, object>() { { "order", ViewModel.Order }, { "orderInfo", orderInfo } };
             ViewModel.NavigateToOrderStatus.Execute(param);
+                        ViewModel.LoadStatus();
         }
 
         private void RefreshStatus()

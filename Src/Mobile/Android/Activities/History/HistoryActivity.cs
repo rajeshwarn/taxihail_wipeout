@@ -38,6 +38,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
             }
         }
 
+        protected override void OnRestart()
+        {
+            base.OnRestart();
+            ViewModel.LoadOrders();
+        }
+
         protected override void OnViewModelSet()
         {
             SetContentView(Resource.Layout.View_HistoryList);

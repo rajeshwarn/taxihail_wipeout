@@ -131,7 +131,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             chooseProviderDialog.SetAdapter(adapter, (sender, args) => 
             {
                 BookingInfo.Settings.ProviderId = hashmap[(int)args.Which];
-                TinyIoCContainer.Current.Resolve<IAccountService>().UpdateBookingSettings(BookingInfo.Settings);
+                TinyIoCContainer.Current.Resolve<IAccountService>().UpdateSettings(BookingInfo.Settings);
                 FindViewById<TextView>(Resource.Id.CompanyTxt).Text = companyList.ElementAt(args.Which).Display;
                 chooseProviderDialog.Dispose();
             });

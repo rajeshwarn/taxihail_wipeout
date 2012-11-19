@@ -44,6 +44,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public OrderStatusDetail CreateOrder(CreateOrder order)
         {
             var orderDetail = new OrderStatusDetail();
+            
             UseServiceClient<OrderServiceClient>(service =>
                 {
                     orderDetail = service.CreateOrder(order);

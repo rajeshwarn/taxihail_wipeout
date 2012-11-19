@@ -101,7 +101,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             FindViewById<Button>(Resource.Id.CancelBtn).Enabled = true;
             FindViewById<Button>(Resource.Id.CancelBtn).Click += delegate { CancelOrder(); };
 			
-			FindViewById<Button>(Resource.Id.NewRideBtn).Click += delegate { CloseActivity(); };
+			//FindViewById<Button>(Resource.Id.NewRideBtn).Click += delegate { CloseActivity(); };
             
             var callBtn = FindViewById<Button>(Resource.Id.CallBtn);
             callBtn.Click += delegate { CallCompany(); };
@@ -219,7 +219,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                                                                                                                               var isSuccess = TinyIoCContainer.Current.Resolve<IBookingService>().CancelOrder(Order.Id);
 
                                                                                                                               if (isSuccess)
-                                                                                                                              {                        
+                                                                                                                              {
+                                                                                                                                  TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new OrderCanceled(this,Order,null));    
                                                                                                                                   CloseActivity();
                                                                                                                               }
                                                                                                                               else
@@ -268,7 +269,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             alert.SetTitle(Resources.GetString(Resource.String.View_BookingStatus_ThankYouTitle));
             alert.SetMessage(String.Format(Resources.GetString(Resource.String.View_BookingStatus_ThankYouMessage), settings.ApplicationName));
 
-            alert.SetPositiveButton("Ok", (s, e) =>
+            alert.SetPositiveButton(Resources.GetString(Resource.String.ReturnBookingScreen), (s, e) =>
                                               {
                                                   alert.Dispose();
                                                   RunOnUiThread(() => Finish());
@@ -288,7 +289,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 alert.Dispose();
             });
             if(ViewModel.ShowRatingButton)
-            {
+            { 
                  alert.SetNeutralButton(Resource.String.RateBtn, (sender, args) =>
                                                                 {
                                                                     ThreadHelper.ExecuteInThread(this, ()=>

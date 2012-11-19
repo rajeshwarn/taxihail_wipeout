@@ -91,6 +91,7 @@
     <Compile Include="Requests\DefaultFavoriteAddress.cs" />
     <Compile Include="Requests\DefaultGeoLocationRequest.cs" />
     <Compile Include="Requests\DirectionsRequest.cs" />
+    <Compile Include="Requests\ExclusionsRequest.cs" />
     <Compile Include="Requests\GeocodingRequest.cs" />
     <Compile Include="Requests\GrantAdminRightRequest.cs" />
     <Compile Include="Requests\NearbyPlacesRequest.cs" />

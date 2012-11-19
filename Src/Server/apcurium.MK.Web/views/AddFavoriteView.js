@@ -102,8 +102,14 @@
             this._selector && this._selector.hide();
             // Set address in textbox back to the value of the model
             $input.val(this.model.get('fullAddress'));
-            // Force validation of the Address field
-            this.$('form').data().validator.element($input);
+
+            if(this.$('form').data().validator == null) {
+                // Temporary bugfix for phantom view
+                this.remove();
+            } else {
+                // Force validation of the Address field
+                this.$('form').data().validator.element($input);
+            }
         },
 
         onfocus: function (e) {

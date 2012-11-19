@@ -38,7 +38,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
         {
             base.OnCreate(bundle);
 
-
             _closeViewToken = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<CloseViewsToRoot>(m => Finish());
             UpdateUI();
         }

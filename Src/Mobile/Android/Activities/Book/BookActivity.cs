@@ -7,6 +7,7 @@ using Android.Widget;
 using SlidingPanel;
 using Cirrious.MvvmCross.Binding.Android.Views;
 using apcurium.MK.Booking.Mobile.ViewModels;
+using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using Android.Content;
@@ -138,13 +139,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 Intent emailIntent = new Intent(Intent.ActionSend);
 
-                emailIntent.SetType("application/octet-stream");
+                emailIntent.SetType("message/rfc822");
                 emailIntent.PutExtra(Intent.ExtraEmail, new String[] { TinyIoCContainer.Current.Resolve<IAppSettings>().SupportEmail });
                 emailIntent.PutExtra(Intent.ExtraCc, new String[] { AppContext.Current.LoggedInEmail });
                 emailIntent.PutExtra(Intent.ExtraSubject, Resources.GetString(Resource.String.TechSupportEmailTitle));
 
                 emailIntent.PutExtra(Intent.ExtraStream, Android.Net.Uri.Parse(@"file:///" + LoggerImpl.LogFilename));
-
                 if (TinyIoCContainer.Current.Resolve<IAppSettings>().ErrorLogEnabled && File.Exists(TinyIoCContainer.Current.Resolve<IAppSettings>().ErrorLog))
                 {
                     emailIntent.PutExtra(Intent.ExtraStream, Android.Net.Uri.Parse(TinyIoCContainer.Current.Resolve<IAppSettings>().ErrorLog));

@@ -252,6 +252,7 @@
     <Content Include="common\views\AddressItemView.js" />
     <Content Include="common\views\AddressListView.js" />
     <Content Include="common\views\AddressSelectionView.js" />
+    <Content Include="common\views\AlertView.js" />
     <Content Include="common\views\LoginStatusView.js" />
     <Content Include="common\views\TemplatedView.js" />
     <Content Include="Config.aspx" />
@@ -378,6 +379,7 @@
     <Content Include="themes\Taxiworld\less\style.less" />
     <Content Include="admin\templates\SettingsItem.handlebars" />
     <Content Include="themes\TaxiHail\less\variables.less" />
+    <Content Include="admin\templates\ManagePopularAddresses.handlebars" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

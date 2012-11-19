@@ -23,14 +23,23 @@
 
             return TaxiHail.geolocation.getCurrentPosition()
                 .pipe(function(coords) {
-                    return $.get(TaxiHail.parameters.apiRoot + '/searchlocation',  {
-                        name: address,
-                        lat: coords.latitude || defaultlatitude,
-                        lng: coords.longitude || defaultlongitude
-                    }, function () { }, 'json').done(cleanupResult);
+                    return search(address, coords);
+                }, function() {
+                    return search(address, {
+                        latitude: defaultLatitude,
+                        longitude: defaultLongitude
+                    });
                 });
         }
     };
+
+    function search(address, coords) {
+        return $.get(TaxiHail.parameters.apiRoot + '/searchlocation',  {
+            name: address,
+            lat: coords.latitude,
+            lng: coords.longitude
+        }, function () { }, 'json').done(cleanupResult);
+    }
 
     function cleanupResult(result) {
         if(result && result.length) {

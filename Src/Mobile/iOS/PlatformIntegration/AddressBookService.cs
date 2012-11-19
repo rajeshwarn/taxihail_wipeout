@@ -19,13 +19,21 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public List<Contact> LoadContacts( )
 		{
 			NSError err;
-			var ab = ABAddressBook.Create( out err);
-			ab.RequestAccess( (success, e) => {
-				if( !success )
-				{
-					Console.WriteLine("Access not granted to AddressBook" );
-				}
-			});
+			ABAddressBook ab = default(ABAddressBook);
+			try
+			{
+				ab = ABAddressBook.Create( out err);
+				ab.RequestAccess( (success, e) => {
+					if( !success )
+					{
+						Console.WriteLine("Access not granted to AddressBook" );
+					}
+				});
+			}
+			catch(System.EntryPointNotFoundException e) {
+				// iOS5 or lower
+				ab = new ABAddressBook();
+			}
 
 			var list = new List<Contact>();
             var persons = ab.GetPeople().ToArray();

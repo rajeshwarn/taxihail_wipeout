@@ -5,6 +5,7 @@ using System.Text;
 
 using Android.App;
 using Android.Content;
+using Android.Locations;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
@@ -60,6 +61,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 
             var txt = FindViewById<TextView>(Resource.Id.ViewTitle);
             txt.Text = GetString(ViewTitleResourceId);
+        }
+
+        protected override void OnPause()
+        {
+            base.OnPause();
+            //var locmgr =(LocationManager) Application.Context.GetSystemService(Context.LocationService);
+              //  locmgr.
+            //Context.LocationService.
         }
     }
 
