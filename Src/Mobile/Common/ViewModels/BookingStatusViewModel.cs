@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Cirrious.MvvmCross.Commands;
+using Cirrious.MvvmCross.ExtensionMethods;
+using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using ServiceStack.Text;
 using TinyIoC;
 using TinyMessenger;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Booking.Mobile.Models;
@@ -16,9 +19,10 @@ using System.Globalization;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class BookingStatusViewModel : BaseViewModel
+    public class BookingStatusViewModel : BaseViewModel,
+        IMvxServiceConsumer<IBookingService>
     {
-
+        private readonly IBookingService _bookingService;
 
         public BookingStatusViewModel(string order)
         {
@@ -26,7 +30,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Order = orderWithStatus.Order;
             OrderStatusDetail = orderWithStatus.OrderStatusDetail;
             ShowRatingButton = true;
-            TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<OrderRated>( OnOrderRated , o=>o.Content.Equals (Order.Id) );
+            MessengerHub.Subscribe<OrderRated>( OnOrderRated , o=>o.Content.Equals (Order.Id) );
+            _bookingService = this.GetService<IBookingService>();
         }
 
         private void OnOrderRated(OrderRated msg )
@@ -98,7 +103,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return new MvxRelayCommand(() =>
                 {
-                    TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<OrderRated>(HideRatingButton);
+                    MessengerHub.Subscribe<OrderRated>(HideRatingButton);
 					RequestNavigate<BookRatingViewModel>(new { orderId = Order.Id.ToString(), canRate = true.ToString(CultureInfo.InvariantCulture), isFromStatus = true.ToString(CultureInfo.InvariantCulture) });
                 });
             }
@@ -115,7 +120,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return new MvxRelayCommand(() =>
                                                {
-                                                   TinyIoCContainer.Current.Resolve<IAppContext>().LastOrder = null;
+                                                   _bookingService.ClearLastOrder();
                                                    RequestNavigate<BookViewModel>(clearTop:true);
                 });
             }
