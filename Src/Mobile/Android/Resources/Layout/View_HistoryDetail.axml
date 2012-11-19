@@ -37,7 +37,7 @@
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
                     android:text="#185841"
-                    local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Status.IBSStatusDescription&apos;}}" />
+                    local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;ConfirmationTxt&apos;}}" />
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
@@ -58,7 +58,8 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
-                    android:text="24/02/2012 - 9:32 A" />
+                    android:text="24/02/2012 - 9:32 A"
+                    local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;RequestedTxt&apos;}}" />
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
@@ -79,7 +80,8 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
-                    android:text="5255 Rue Ferrier, Montreal" />
+                    android:text="5255 Rue Ferrier, Montreal"
+                    local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;OriginTxt&apos;}}" />
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
@@ -100,7 +102,8 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
-                    android:text="Test/No Code" />
+                    android:text="Test/No Code"
+                    local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;AptRingTxt&apos;}}" />
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
@@ -121,7 +124,8 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
-                    android:text="Destination Non specifie" />
+                    android:text="Destination Non specifie"
+                    local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;DestinationTxt&apos;}}" />
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
@@ -142,7 +146,8 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
-                    android:text="24/02/2012 / 9:32 A" />
+                    android:text="24/02/2012 / 9:32 A"
+                    local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;PickUpDateTxt&apos;}}" />
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
@@ -180,7 +185,6 @@
                     android:paddingTop="5dip"
                     android:paddingBottom="5dip"
                     local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;RebookOrder&apos;}}" />
-                    />
                 <Button
                     android:id="@+id/StatusBtn"
                     style="@style/ButtonText"

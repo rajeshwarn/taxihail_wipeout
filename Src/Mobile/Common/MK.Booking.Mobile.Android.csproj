@@ -73,6 +73,7 @@
     <Compile Include="AppServices\Impl\TariffProvider.cs" />
     <Compile Include="BindingConverter\BoolInverter.cs" />
     <Compile Include="BindingConverter\BoolVisibilityInverter.cs" />
+    <Compile Include="BindingConverter\FormatAptRingCode.cs" />
     <Compile Include="Data\Coordinate.cs" />
     <Compile Include="Data\CoordinatePrecision.cs" />
     <Compile Include="Data\CoordinateRefreshTime.cs" />

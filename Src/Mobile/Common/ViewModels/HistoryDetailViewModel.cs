@@ -38,7 +38,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private Order _order;
 		public Order Order {
 			get{ return _order; }
-			set{ _order = value; FirePropertyChanged("Order"); }
+            set { _order = value; FirePropertyChanged("Order"); 
+                FirePropertyChanged("ConfirmationTxt"); 
+                FirePropertyChanged("RequestedTxt"); 
+                FirePropertyChanged("OriginTxt"); 
+                FirePropertyChanged("AptRingTxt"); 
+                FirePropertyChanged("DestinationTxt"); 
+                FirePropertyChanged("PickUpDateTxt"); }
 		}
 
 		private OrderStatusDetail _status;
@@ -121,6 +127,100 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     _canCancel = value;
                     FirePropertyChanged("CanCancel");
+                }
+            }
+        }
+
+        public string ConfirmationTxt
+        {
+            get
+            {
+                if (Order != null)
+                {
+                    return Order.IBSOrderId.HasValue ? Order.IBSOrderId.Value.ToString() : "Error";
+                    
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+        public string RequestedTxt
+        {
+            get
+            {
+                if (Order != null)
+                {
+                    return FormatDateTime(Order.PickupDate, Order.PickupDate);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+        public string OriginTxt
+        {
+            get
+            {
+                if (Order != null)
+                {
+                    return Order.PickupAddress.FullAddress;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+        public string AptRingTxt
+        {
+            get
+            {
+                if (Order != null)
+                {
+                    return FormatAptRingCode(Order.PickupAddress.Apartment, Order.PickupAddress.RingCode);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+        public string DestinationTxt
+        {
+            get
+            {
+                if (Order != null)
+                {
+                    var resources = TinyIoCContainer.Current.Resolve<IAppResource>();
+                    return Order.DropOffAddress.FullAddress.HasValue()
+                               ? Order.DropOffAddress.FullAddress
+                               : resources.GetString("ConfirmDestinationNotSpecified");
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+        public string PickUpDateTxt
+        {
+            get
+            {
+                if (Order != null)
+                {
+                    return FormatDateTime(Order.PickupDate, Order.PickupDate);
+                }
+                else
+                {
+                    return null;
                 }
             }
         }
@@ -230,8 +330,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return new MvxRelayCommand(() =>
                 {
-                    TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new RebookRequested(this, Order));
-                    TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new CloseViewsToRoot(this));
+                    var serialized = JsonSerializer.SerializeToString(Order);
+                    RequestNavigate<BookViewModel>(new { order = serialized }, clearTop: true, requestedBy: MvxRequestedBy.UserAction);
                 });
             }
         }
@@ -278,21 +378,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        /*private string FormatDateTime(DateTime? date, DateTime? time)
+        private string FormatDateTime(DateTime? date, DateTime? time)
         {
-            string result = date.HasValue ? date.Value.ToShortDateString() : Resources.GetString(Resource.String.DateToday);
+            var resources = TinyIoCContainer.Current.Resolve<IAppResource>();
+            string result = date.HasValue ? date.Value.ToShortDateString() :  resources.GetString("DateToday");
             result += @" / ";
-            result += time.HasValue ? time.Value.ToShortTimeString() : Resources.GetString(Resource.String.TimeNow);
+            result += time.HasValue ? time.Value.ToShortTimeString() : resources.GetString("TimeNow");
             return result;
         }
 
         private string FormatAptRingCode(string apt, string rCode)
         {
-            string result = apt.HasValue() ? apt : Resources.GetString(Resource.String.ConfirmNoApt);
+            var resources = TinyIoCContainer.Current.Resolve<IAppResource>();
+            string result = apt.HasValue() ? apt : resources.GetString("ConfirmNoApt");
 
             result += @" / ";
-            result += rCode.HasValue() ? rCode : Resources.GetString(Resource.String.ConfirmNoRingCode);
+            result += rCode.HasValue() ? rCode : resources.GetString("ConfirmNoRingCode");
             return result;
-        }*/
+        }
     }
 }
