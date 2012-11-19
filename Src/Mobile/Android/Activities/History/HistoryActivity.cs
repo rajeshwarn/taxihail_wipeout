@@ -12,8 +12,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.History
     public class HistoryListActivity : BaseBindingActivity<HistoryViewModel> 
     {
         private TinyMessageSubscriptionToken _closeViewToken;       
-        public static string ITEM_TITLE = "TITLE";
-        public static string ITEM_ID = "ID";
         private ListView _listView;
 
         protected override int ViewTitleResourceId

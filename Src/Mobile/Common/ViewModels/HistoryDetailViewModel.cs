@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using Android.Widget;
 using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
@@ -10,6 +10,7 @@ using Cirrious.MvvmCross.ViewModels;
 using ServiceStack.Text;
 using TinyIoC;
 using TinyMessenger;
+using apcurium.Framework.Extensions;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Infrastructure;
@@ -37,14 +38,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private Order _order;
 		public Order Order {
 			get{ return _order; }
-			set{ _order = value; FirePropertyChanged("Order"); }
+            set { _order = value; FirePropertyChanged("Order"); 
+                FirePropertyChanged("ConfirmationTxt"); 
+                FirePropertyChanged("RequestedTxt"); 
+                FirePropertyChanged("OriginTxt"); 
+                FirePropertyChanged("AptRingTxt"); 
+                FirePropertyChanged("DestinationTxt"); 
+                FirePropertyChanged("PickUpDateTxt"); }
 		}
 
 		private OrderStatusDetail _status;
 		public OrderStatusDetail Status {
 			get{ return _status; }
-			set{ _status = value; FirePropertyChanged("Status"); }
+            set { _status = value; FirePropertyChanged("Status");}
 		}
+
+     
 
         private bool _isDone;
         public bool IsDone
@@ -122,6 +131,100 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+        public string ConfirmationTxt
+        {
+            get
+            {
+                if (Order != null)
+                {
+                    return Order.IBSOrderId.HasValue ? Order.IBSOrderId.Value.ToString() : "Error";
+                    
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+        public string RequestedTxt
+        {
+            get
+            {
+                if (Order != null)
+                {
+                    return FormatDateTime(Order.PickupDate, Order.PickupDate);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+        public string OriginTxt
+        {
+            get
+            {
+                if (Order != null)
+                {
+                    return Order.PickupAddress.FullAddress;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+        public string AptRingTxt
+        {
+            get
+            {
+                if (Order != null)
+                {
+                    return FormatAptRingCode(Order.PickupAddress.Apartment, Order.PickupAddress.RingCode);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+        public string DestinationTxt
+        {
+            get
+            {
+                if (Order != null)
+                {
+                    var resources = TinyIoCContainer.Current.Resolve<IAppResource>();
+                    return Order.DropOffAddress.FullAddress.HasValue()
+                               ? Order.DropOffAddress.FullAddress
+                               : resources.GetString("ConfirmDestinationNotSpecified");
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+        public string PickUpDateTxt
+        {
+            get
+            {
+                if (Order != null)
+                {
+                    return FormatDateTime(Order.PickupDate, Order.PickupDate);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
         public HistoryDetailViewModel(string orderId)
         {
 			Guid id;
@@ -135,7 +238,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			LoadOrder();
 			LoadStatus();
 			TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<OrderRated>(RefreshOrderStatus);
-			
 		}
 
         public void RefreshOrderStatus (OrderRated orderRated)
@@ -143,6 +245,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			if (orderRated.Content == this.OrderId) {
 				LoadStatus();
 			}
+            TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<OrderCanceled>(canceled =>
+            {
+                this.LoadStatus();
+            });
         }
 
 		public Task LoadOrder() 
@@ -186,7 +292,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get
             {
                 return new MvxRelayCommand(() =>
-                                                                  {
+                                        {
 					var orderStatus = new OrderStatusDetail
 					{ 
 						IBSOrderId = Order.IBSOrderId,
@@ -209,11 +315,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return new MvxRelayCommand<Guid>(orderId =>
+                return new MvxRelayCommand(() =>
                 {
-                    if (Common.Extensions.GuidExtensions.HasValue(orderId))
+                    if (Common.Extensions.GuidExtensions.HasValue(OrderId))
                         {
-                            TinyIoCContainer.Current.Resolve<IBookingService>().RemoveFromHistory(orderId);
+                            TinyIoCContainer.Current.Resolve<IBookingService>().RemoveFromHistory(OrderId);
 						    if(Deleted != null)
 							{
 								Deleted(this, EventArgs.Empty);
@@ -224,7 +330,34 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand CancelOrder
+        public IMvxCommand RebookOrder
+        {
+            get
+            {
+                return new MvxRelayCommand(() =>
+                {
+                    var serialized = JsonSerializer.SerializeToString(Order);
+                    RequestNavigate<BookViewModel>(new { order = serialized }, clearTop: true, requestedBy: MvxRequestedBy.UserAction);
+                });
+            }
+        }
+
+        public IMvxCommand SendReceipt
+        {
+            get
+            {
+                return new MvxRelayCommand(() =>
+                {
+                    if (Common.Extensions.GuidExtensions.HasValue(OrderId))
+                    {
+                        TinyIoCContainer.Current.Resolve<IBookingService>().SendReceipt(OrderId);
+                    }
+                    RequestClose(this);
+                });
+            }
+        }
+
+         public IMvxCommand CancelOrder
         {
             get
             { 
@@ -251,15 +384,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand RebookOrder
+        private string FormatDateTime(DateTime? date, DateTime? time)
         {
-            get { return new MvxRelayCommand(()=>
-            {
-                var serialized = JsonSerializer.SerializeToString(Order);
-                RequestNavigate<BookViewModel>(new { order = serialized }, clearTop: true, requestedBy: MvxRequestedBy.UserAction);
-            });
-            }
+            var resources = TinyIoCContainer.Current.Resolve<IAppResource>();
+            string result = date.HasValue ? date.Value.ToShortDateString() :  resources.GetString("DateToday");
+            result += @" / ";
+            result += time.HasValue ? time.Value.ToShortTimeString() : resources.GetString("TimeNow");
+            return result;
         }
 
+        private string FormatAptRingCode(string apt, string rCode)
+        {
+            var resources = TinyIoCContainer.Current.Resolve<IAppResource>();
+            string result = apt.HasValue() ? apt : resources.GetString("ConfirmNoApt");
+
+            result += @" / ";
+            result += rCode.HasValue() ? rCode : resources.GetString("ConfirmNoRingCode");
+            return result;
+        }
     }
 }
