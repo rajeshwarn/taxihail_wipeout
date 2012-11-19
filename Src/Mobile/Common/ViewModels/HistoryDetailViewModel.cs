@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Android.Widget;
 using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
@@ -233,7 +232,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
         }
 
-		public void Initialize ()
+		protected override void Initialize ()
 		{
 			LoadOrder();
 			LoadStatus();

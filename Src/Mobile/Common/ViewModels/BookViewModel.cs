@@ -4,7 +4,6 @@ using Cirrious.MvvmCross.ExtensionMethods;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.Interfaces.Views;
 using Cirrious.MvvmCross.ViewModels;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -201,14 +200,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             FirePropertyChanged(() => Pickup);
             FirePropertyChanged(() => Dropoff);
             FirePropertyChanged(() => SelectedAddress);
-
-
             FirePropertyChanged(() => PickupIsActive);
             FirePropertyChanged(() => DropoffIsActive);
-
-
 			FirePropertyChanged(() => FareEstimate);
-
             FirePropertyChanged(() => IsInTheFuture);
         }
 
