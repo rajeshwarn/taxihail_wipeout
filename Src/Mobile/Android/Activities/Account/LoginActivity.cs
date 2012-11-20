@@ -19,6 +19,10 @@ using Cirrious.MvvmCross.Views;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.Interfaces.Views;
 using Cirrious.MvvmCross.Binding.Android.Views;
+using apcurium.MK.Booking.Api.Contract.Requests;
+using ServiceStack.Text;
+using System.Collections.Generic;
+using TinyMessenger;
 
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
@@ -54,10 +58,41 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             get { return Resource.String.View_SignIn; }
         }
         
-        
+		void OnAccountCreated (AccountCreated accountCreated)
+		{
+			var data = accountCreated.Content;
+            
+			ThreadHelper.ExecuteInThread(this, () =>
+			{
+				apcurium.MK.Booking.Api.Contract.Resources.Account account = null;
+				if (data.TwitterId.HasValue())
+				{
+					account = TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().GetTwitterAccount(data.TwitterId);
+				}
+				else if (data.FacebookId.HasValue() )
+				{
+					account = TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().GetFacebookAccount(data.FacebookId);
+				}
+
+				RunOnUiThread(() =>{
+					if (account != null)
+					{         
+						var dispatch = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
+						dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(BookViewModel), null, false, MvxRequestedBy.UserAction));
+						Finish();
+						
+					}else{
+						FindViewById<EditText>(Resource.Id.Username).Text = data.Email;
+					}
+				});
+			}, true);			
+		}    
 
         protected override void OnViewModelSet()
         {
+			TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<AccountCreated>(account => 		                                                                                {
+				OnAccountCreated(account);
+			});
 
             TopInstance = this;
 
@@ -277,8 +312,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             else
             {
                 RunOnUiThread(() => _progressDialog.Dismiss());
-                DoSignUpWithParameter(infos.Firstname, infos.Lastname, infos.Email, "",
-                                      FacebookId: infos.Id);
+                DoSignUpWithParameter(infos.Firstname, infos.Lastname, infos.Email,string.Empty, facebookId: infos.Id);
             }
         }
 
@@ -312,7 +346,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             else
             {
                 RunOnUiThread(() => _progressDialog.Dismiss());
-                DoSignUpWithParameter(infos.Firstname, infos.Lastname, infos.Email, "", TwitterId: infos.Id);
+                DoSignUpWithParameter(infos.Firstname, infos.Lastname, infos.Email, "", twitterId: infos.Id);
             }
             //}, true));
         }
@@ -341,7 +375,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
       
         void SignUpButton_Click(object sender, EventArgs e)
         {
-            DoSignUp();
+            DoSignUp(null);
         }
         void ForgotPassword_Click(object sender, EventArgs e)
         {
@@ -395,28 +429,38 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
             }, true);
         }
-        private void DoSignUp()
-        {
-            StartActivity(typeof(SignUpActivity));
+		private void DoSignUp(RegisterAccount accountData)
+        {            
+			string serialized = null;
+			if (accountData != null) {
+				serialized = JsonSerializer.SerializeToString(accountData);
+			}
+			var viewDispatcherProvider = TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>();
+			var viewDispatcher = viewDispatcherProvider.Dispatcher;
+			viewDispatcher.RequestNavigate(new MvxShowViewModelRequest(
+				typeof(CreateAcccountViewModel),
+				new Dictionary<string, string>{ {"data", serialized } },
+			false,
+			MvxRequestedBy.UserAction));     
         }
 
-        private void DoSignUpWithParameter(string FirstName, string LastName, string Email, string Phone, string TwitterId = "", string FacebookId = "")
+        private void DoSignUpWithParameter(string firstName, string lastName, string email, string phone, string twitterId = "", string facebookId = "")
         {
-            Intent intent = new Intent(this, typeof(SignUpActivity));
-            Bundle b = new Bundle();
-            b.PutString("firstName", FirstName);
-            b.PutString("lastName", LastName);
-            b.PutString("email", Email);
-            b.PutString("phone", Phone);
-            b.PutString("twitterId", TwitterId);
-            b.PutString("facebookId", FacebookId);
-            intent.PutExtras(b);
-            if (TwitterId != string.Empty
-                || FacebookId != string.Empty)
-            {
-                Finish();
-            }
-            StartActivity(intent);
+			var registerData = new RegisterAccount{
+				FacebookId = facebookId,
+				TwitterId = twitterId,
+				Name = firstName + " " + lastName,
+				Phone = phone,
+				Email = email
+			};
+
+			DoSignUp(registerData);
+
+			if (twitterId != string.Empty
+			    || facebookId != string.Empty)
+			{
+				Finish();
+			}            
         }
     }
 }

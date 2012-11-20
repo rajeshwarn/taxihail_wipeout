@@ -58,7 +58,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			var menu = new RootElement(Resources.View_PasswordRecovery);            
 			var settings = new Section(Resources.View_PasswordRecovery); 
 
-			var _emailEntry = new EntryElement (Resources.ResetPasswordLabel, Resources.ResetPasswordPlaceholder);
+			var _emailEntry = new RightAlignedMvvmCrossEntryElement (Resources.ResetPasswordLabel, Resources.ResetPasswordPlaceholder);
             _emailEntry.KeyboardType = MonoTouch.UIKit.UIKeyboardType.EmailAddress;
             _emailEntry.AutocapitalizationType = UITextAutocapitalizationType.None;
             _emailEntry.AutocorrectionType = UITextAutocorrectionType.No;
@@ -89,7 +89,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             this.View.AddSubview(btn);
 			this.AddBindings(btn, "{'TouchUpInside': {'Path' : '" + command + "'}}");             
         }      
-        
         
     }
 }

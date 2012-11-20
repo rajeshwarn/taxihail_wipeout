@@ -322,6 +322,7 @@
       <DependentUpon>BookRatingCell.cs</DependentUpon>
     </Compile>
     <Compile Include="Navigation\INavigationView.cs" />
+    <Compile Include="MonoTouchDialog\RightAlignedMvvmCrossEntryElement.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
