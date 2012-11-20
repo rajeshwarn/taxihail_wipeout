@@ -38,7 +38,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             SetContentView(Resource.Layout.View_BookingDetail);
             
             FindViewById<Button>(Resource.Id.EditBtn).Click += new EventHandler(Edit_Click);
-            FindViewById<Button>(Resource.Id.EditAptCodeBuildingName).Click += EditRingCodeApt_Click;
             if (TinyIoCContainer.Current.Resolve<ICacheService>().Get<string>("WarningEstimateDontShow").IsNullOrEmpty() && ViewModel.Order.DropOffAddress.HasValidCoordinate())
             {
                 ShowAlertDialog();
@@ -50,49 +49,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 {
                     ShowChooseProviderDialog();
                 }
-            }
-        }
-
-        
-        private TinyMessageSubscriptionToken _token;
-        void EditRingCodeApt_Click(object sender, EventArgs e)
-        {
-            var dispatch = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
-
-            UnsubscribeRefineAddress();
-
-			var parameters = new Dictionary<string,string>() {{"apt",  ViewModel.Order.PickupAddress.Apartment}, {"ringCode", ViewModel.Order.PickupAddress.RingCode}, {"buildingName", ViewModel.Order.PickupAddress.BuildingName}};
-
-            _token = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<AddressRefinedMessage>(m =>
-                {
-				    ViewModel.Order.PickupAddress.Apartment = m.Content.AptNumber;
-					ViewModel.Order.PickupAddress.RingCode = m.Content.RingCode;
-					ViewModel.Order.PickupAddress.BuildingName = m.Content.BuildingName;
-                    RunOnUiThread(() =>
-                        {
-					FindViewById<TextView>(Resource.Id.AptRingCode).Text = "";//FormatAptRingCode(ViewModel.Order.PickupAddress.Apartment, ViewModel.Order.PickupAddress.RingCode);
-					        FindViewById<TextView>(Resource.Id.BuildingName).Text = "";//FormatBuildingName(Order.PickupAddress.BuildingName);
-                        });
-                });
-       
-            dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(RefineAddressViewModel), parameters, false, MvxRequestedBy.UserAction));
-
-            
-        }
-
-        protected override void OnDestroy()
-        {
-            base.OnDestroy();
-            UnsubscribeRefineAddress();
-        }
-
-        private void UnsubscribeRefineAddress()
-        {
-            if (_token != null)
-            {
-                TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Unsubscribe<AddressRefinedMessage>(_token);
-                _token.Dispose();
-                _token = null;
             }
         }
 

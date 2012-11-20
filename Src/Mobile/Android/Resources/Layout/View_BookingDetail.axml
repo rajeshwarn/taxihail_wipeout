@@ -136,7 +136,8 @@
                     android:text="@string/EditButton"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="5dp" />
+                    android:layout_marginRight="5dp"
+                    local:MvxBind="{&apos;Click&apos;: {&apos;Path&apos;: &apos;NavigateToRefineAddress&apos;}}" />
             </RelativeLayout>
             <LinearLayout
                 android:orientation="horizontal"

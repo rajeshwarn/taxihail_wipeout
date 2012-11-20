@@ -12,6 +12,7 @@ using apcurium.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Client;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using Cirrious.MvvmCross.ExtensionMethods;
+using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -72,7 +73,33 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-        public IMvxCommand ConfirmOrderCommand
+		public IMvxCommand NavigateToRefineAddress
+		{
+			get{
+				return new MvxRelayCommand(() => {
+
+					RequestSubNavigate<RefineAddressViewModel, RefineAddressViewModel>(new Dictionary<string, string>() {
+						{"apt", Order.PickupAddress.Apartment},
+						{"ringCode", Order.PickupAddress.RingCode},
+						{"buildingName", Order.PickupAddress.BuildingName},
+					}, result =>{
+						if(result != null)
+						{
+							Order.PickupAddress.Apartment = result.AptNumber;
+							Order.PickupAddress.RingCode = result.RingCode;
+							Order.PickupAddress.BuildingName = result.BuildingName;
+							InvokeOnMainThread(() => {
+								FirePropertyChanged("AptRingCode");
+								FirePropertyChanged("BuildingName");
+							});
+						}
+					});
+
+				});
+			}
+		}
+		
+		public IMvxCommand ConfirmOrderCommand
         {
             get
             {

@@ -195,6 +195,8 @@
     <Compile Include="Messages\StatusCloseRequested.cs" />
     <Compile Include="BindingConverter\EmptyToResourceConverter.cs" />
     <Compile Include="ViewModels\ResetPasswordViewModel.cs" />
+    <Compile Include="Messages\SubNavigationResultMessage.cs" />
+    <Compile Include="ViewModels\BaseSubViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">

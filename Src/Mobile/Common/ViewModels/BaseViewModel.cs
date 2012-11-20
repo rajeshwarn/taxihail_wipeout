@@ -4,6 +4,8 @@ using Cirrious.MvvmCross.ViewModels;
 using TinyMessenger;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
+using System.Collections.Generic;
+using System;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -47,6 +49,31 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		protected virtual void Initialize ()
 		{
 
+		}
+
+		protected bool RequestSubNavigate<TViewModel, TResult>(IDictionary<string, string> parameterValues, Action<TResult> onResult) 
+			where TViewModel : BaseSubViewModel<TResult>
+		{
+			parameterValues = parameterValues ?? new Dictionary<string, string>();
+			
+			if (parameterValues.ContainsKey("messageId"))
+				throw new ArgumentException("parameterValues cannot contain an item with the key 'messageId'");
+			
+			string messageId = Guid.NewGuid().ToString();
+			
+			parameterValues["messageId"] = messageId;
+			
+			TinyMessageSubscriptionToken token = null;
+			token = MessengerHub.Subscribe<SubNavigationResultMessage<TResult>>(msg =>
+			                                                                    {
+				if (token != null)
+					MessengerHub.Unsubscribe<SubNavigationResultMessage<TResult>>(token);
+				
+				onResult(msg.Result);
+			},
+			msg => msg.MessageId == messageId);
+			
+			return RequestNavigate<TViewModel>(parameterValues);
 		}
     }
 }
