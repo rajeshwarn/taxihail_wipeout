@@ -17,6 +17,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using System.Linq;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -151,6 +152,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					Resources.GetString("WarningEstimateDontShow"), () => this.GetService<ICacheService>().Set("WarningEstimateDontShow", "yes"));
 			}
 		}
+
+        public void ShowChooseProviderDialog()
+        {
+            var service = TinyIoCContainer.Current.Resolve<IAccountService>();
+            var companyList = service.GetCompaniesList();
+
+            MessageService.ShowDialog("Pick a provider", companyList, x=>x.Display, result => {
+                if(result != null) {
+                    Order.Settings.ProviderId =  result.Id;
+                }
+                this.GetService<IAccountService>().UpdateSettings(Order.Settings);
+            });
+        }
+
 		
 		private string FormatAptRingCode(string apt, string rCode)
 		{

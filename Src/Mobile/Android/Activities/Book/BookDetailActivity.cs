@@ -36,6 +36,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {            
             SetContentView(Resource.Layout.View_BookingDetail);
 			ViewModel.ShowFareEstimateAlertDialog();
+			ViewModel.ShowChooseProviderDialog();
         }
     }
 }

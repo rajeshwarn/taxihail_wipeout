@@ -86,18 +86,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 			lblPrice.Text = Resources.ApproxPrice;
             
-            txtOrigin.Text = Order.PickupAddress.FullAddress;         
-            txtDestination.Text = Order.DropOffAddress.FullAddress.HasValue() ? Order.DropOffAddress.FullAddress : Resources.ConfirmDestinationNotSpecified;            
-            txtDateTime.Text = FormatDateTime(Order.PickupDate);
 
 
-
-
-			txtAptRing.Text = FormatAptRingCode(Order.PickupAddress.Apartment, Order.PickupAddress.RingCode);  
-            txtBuildingName.Text = FormatBuildingName( Order.PickupAddress.BuildingName );
-
-			var directionInfo = TinyIoCContainer.Current.Resolve<IGeolocService>().GetDirectionInfo(Order.PickupAddress, Order.DropOffAddress);
-            txtPrice.Text = directionInfo.Price.HasValue ? directionInfo.FormattedPrice : Resources.NotAvailable;
+			
 
 			SetRideSettingsFields();
 
@@ -109,24 +100,21 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 
 
-            this.AddBindings(new Dictionary<object, string>()                            {
+            this.AddBindings(new Dictionary<object, string>() {
                 { btnCancel, "{'TouchUpInside':{'Path':'CancelOrderCommand'}}"},                
                 { btnConfirm, "{'TouchUpInside':{'Path':'ConfirmOrderCommand'}}"},
+                { txtOrigin, "{'Text': {'Path': 'Order.PickupAddress.FullAddress'}}" },
+                { txtDestination, "{'Text': {'Path': 'Order.DropOffAddress.FullAddress', 'Converter': 'EmptyToResourceConverter', 'ConverterParameter': 'ConfirmDestinationNotSpecified'}}" },
+                { txtDateTime, "{'Text': {'Path': 'FormattedPickupDate'}}" },
+                { txtAptRing, "{'Text': {'Path': 'AptRingCode'}}" },
+                { txtBuildingName, "{'Text': {'Path': 'BuildingName'}}" },
+                { txtPrice, "{'Text': {'Path': 'FareEstimate'}}" },
+                { txtName, "{'Text': {'Path': 'Order.Settings.Name'}}" },
+               
             });
-
         }
 
-        private string FormatBuildingName( string buildingName )
-        {
-            if ( buildingName.HasValue() )
-            {
-                return buildingName;
-            }
-            else
-            {
-                return Resources.GetValue( "HistoryDetailBuildingNameNotSpecified" );
-            }
-        }
+
         void EditPickupDetails (object sender, EventArgs e)
         {
 			var args = new Dictionary<string, string>(){ {"apt", Order.PickupAddress.Apartment}, {"ringCode", Order.PickupAddress.RingCode},  {"buildingName", Order.PickupAddress.BuildingName} };
@@ -153,19 +141,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             var companies = service.GetCompaniesList();
             var model = new RideSettingsModel(Order.Settings, companies, service.GetVehiclesList(), service.GetPaymentsList());
 
-            txtName.Text = Order.Settings.Name;
-
-            try
-            {
-                var cleaned = new string(Order.Settings.Phone.ToArray().Where(c => Char.IsDigit(c)).ToArray());
-                var phone = Regex.Replace(cleaned, @"(\d{3})(\d{3})(\d{4})", "$1-$2-$3");
-                txtPhone.Text = phone;
-            }
-            catch
-            {
-                txtPhone.Text = Order.Settings.Phone;
-            }
-
 			int nbPassenger = 0;
 			int.TryParse(model.NbOfPassenger, out nbPassenger);
 			var passengerFormat = nbPassenger == 1 ? Resources.NbPassenger : Resources.NbPassengers;
@@ -186,34 +161,9 @@ namespace apcurium.MK.Booking.Mobile.Client
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
-            LoadLayout();       
-            
-            
-            if  ( AppContext.Current.WarnEstimate && Order.DropOffAddress.HasValidCoordinate() ) 
-            {
-                MessageHelper.Show(Resources.WarningEstimateTitle, Resources.WarningEstimate, Resources.WarningEstimateDontShow, ( ) => AppContext.Current.WarnEstimate = false); 
-            }
-        }
+            this.NavigationItem.TitleView = new TitleView(null, Resources.View_BookingDetail, true);
+            ViewModel.ShowFareEstimateAlertDialog();
 
-        private void LoadLayout()
-        {
-			this.NavigationItem.TitleView = new TitleView(null, Resources.View_BookingDetail, true);
-        }
-
-        private string FormatDateTime(DateTime? pickupDate )
-        {
-            string format = "{0:ddd, MMM d}, {0:h:mm tt}";
-            string result = pickupDate.HasValue ? string.Format(format, pickupDate.Value) : Resources.TimeNow;
-            return result;
-        }
-
-        private string FormatAptRingCode(string apt, string rCode)
-        {
-            
-            string result = apt.HasValue() ? apt : Resources.ConfirmNoApt;
-            result += @" / ";
-            result += rCode.HasValue() ? rCode : Resources.ConfirmNoRingCode;
-            return result;
         }
 		  
         #endregion

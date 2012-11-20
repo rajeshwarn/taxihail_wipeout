@@ -75,31 +75,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 }
             }
         }
-        
-        public bool WarnEstimate
-        {
-            get
-            {
-                string val = NSUserDefaults.StandardUserDefaults.StringForKey("MK.Booking.Cache.WarnEstimate");
-                bool r = true;
-                if ((val == null) || (!bool.TryParse(val, out r)))
-                {
-                    return true;
-                }
-                else
-                {
-                    return r;
-                }
-            }
-            set
-            {
-                NSUserDefaults.StandardUserDefaults.SetStringOrClear(
-                    value.ToString(),
-                    "MK.Booking.Cache.WarnEstimate"
-                );
-            }
-        }
-        
+                       
         public bool ReceiveMemoryWarning
         {
             get;

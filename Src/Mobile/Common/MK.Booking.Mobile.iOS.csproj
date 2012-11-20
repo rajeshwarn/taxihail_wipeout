@@ -196,6 +196,10 @@
     <Compile Include="Messages\OrderCanceled.cs" />
     <Compile Include="ViewModels\BaseSubViewModel.cs" />
     <Compile Include="Messages\SubNavigationResultMessage.cs" />
+    <Compile Include="ViewModels\RideSettingsViewModel.cs" />
+    <Compile Include="BindingConverter\PhoneNumberConverter.cs" />
+    <Compile Include="BindingConverter\EmptyToResourceConverter.cs" />
+    <Compile Include="BindingConverter\BoolVisibilityInverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">

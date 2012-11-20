@@ -20,7 +20,6 @@
     <AndroidSupportedAbis>armeabi%3barmeabi-v7a%3bx86</AndroidSupportedAbis>
     <AndroidStoreUncompressedFileExtensions />
     <MandroidI18n />
-    <TargetFrameworkVersion>v2.2</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -199,6 +198,7 @@
     <Compile Include="Controls\TextProgressButton.cs" />
     <Compile Include="Controls\BindableListView.cs" />
     <Compile Include="PlatformIntegration\AddressBookService.cs" />
+    <Compile Include="Activities\SelectItemDialogActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\HelveticaNeue-Bold.otf" />
