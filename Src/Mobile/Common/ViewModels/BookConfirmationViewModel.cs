@@ -13,12 +13,17 @@ using apcurium.MK.Booking.Mobile.Client;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using Cirrious.MvvmCross.ExtensionMethods;
 using System.Collections.Generic;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using System.Linq;
+using apcurium.MK.Booking.Mobile.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class BookConfirmationViewModel : BaseViewModel,
 		IMvxServiceConsumer<IAccountService>,
-		IMvxServiceConsumer<IBookingService>
+		IMvxServiceConsumer<IBookingService>,
+		IMvxServiceConsumer<ICacheService>
     {
         public BookConfirmationViewModel (string order)
         {
@@ -73,6 +78,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
+		public IMvxCommand NavigateToEditBookingSettings {
+			get {
+				return new MvxRelayCommand(()=>{
+					RequestSubNavigate<RideSettingsViewModel, BookingSettings>(new Dictionary<string, string>{
+						{ "bookingSettings", Order.Settings.ToJson () }
+					}, result=>{
+						if(result != null)
+						{
+							Order.Settings = result;
+						}
+					});
+				});
+			}
+		}
+		
 		public IMvxCommand NavigateToRefineAddress
 		{
 			get{
@@ -121,6 +141,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+		public void ShowFareEstimateAlertDialog()
+		{
+			if(this.GetService<ICacheService>().Get<string>("WarningEstimateDontShow").IsNullOrEmpty() 
+			   && Order.DropOffAddress.HasValidCoordinate())
+			{
+				MessageService.ShowMessage(Resources.GetString("WarningEstimateTitle"), Resources.GetString("WarningEstimateTitle"),
+	           		"Ok", delegate {},
+					Resources.GetString("WarningEstimateDontShow"), () => this.GetService<ICacheService>().Set("WarningEstimateDontShow", "yes"));
+			}
+		}
+		
 		private string FormatAptRingCode(string apt, string rCode)
 		{
 			
