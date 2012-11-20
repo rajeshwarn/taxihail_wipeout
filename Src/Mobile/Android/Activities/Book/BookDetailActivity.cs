@@ -70,7 +70,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 					ViewModel.Order.PickupAddress.BuildingName = m.Content.BuildingName;
                     RunOnUiThread(() =>
                         {
-					FindViewById<TextView>(Resource.Id.AptRingCode).Text = FormatAptRingCode(ViewModel.Order.PickupAddress.Apartment, ViewModel.Order.PickupAddress.RingCode);
+					FindViewById<TextView>(Resource.Id.AptRingCode).Text = "";//FormatAptRingCode(ViewModel.Order.PickupAddress.Apartment, ViewModel.Order.PickupAddress.RingCode);
 					        FindViewById<TextView>(Resource.Id.BuildingName).Text = "";//FormatBuildingName(Order.PickupAddress.BuildingName);
                         });
                 });
@@ -155,17 +155,5 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 				ViewModel.Order.Settings = bookingSettings;
             }
         }
-
-        
-        private string FormatAptRingCode(string apt, string rCode)
-        {
-
-            string result = apt.HasValue() ? apt : Resources.GetString(Resource.String.ConfirmNoApt);
-            result += @" / ";
-            result += rCode.HasValue() ? rCode : Resources.GetString(Resource.String.ConfirmNoRingCode);
-            return result;
-        }
-
-
     }
 }

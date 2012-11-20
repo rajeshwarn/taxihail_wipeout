@@ -97,9 +97,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private string FormatAptRingCode(string apt, string rCode)
 		{
 			
-			string result = apt.HasValue() ? apt : Resources.GetString(Resources.GetString("ConfirmNoApt"));
+			string result = apt.HasValue() ? apt : Resources.GetString("ConfirmNoApt");
 			result += @" / ";
-			result += rCode.HasValue() ? rCode : Resources.GetString(Resources.GetString("ConfirmNoRingCode"));
+			result += rCode.HasValue() ? rCode : Resources.GetString("ConfirmNoRingCode");
 			return result;
 		}
 
