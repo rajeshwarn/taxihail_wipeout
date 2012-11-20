@@ -45,8 +45,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             base.ViewDidLoad();
 			ViewModel.PropertyChanged += HandlePropertyChanged;
-			ViewModel.Initialize();
-
+			
             View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             
             this.NavigationItem.HidesBackButton = false;
