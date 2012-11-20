@@ -140,7 +140,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
 
-        private void InitializeOrder()
+        public void InitializeOrder()
         {
             Order = new CreateOrder();
             if (_accountService.CurrentAccount != null)
