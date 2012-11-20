@@ -9,6 +9,7 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Client.InfoTableView;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.ListViewStructure;
+using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 using System.Threading.Tasks;
 using System.Threading;
 using apcurium.MK.Booking.Mobile.Infrastructure;
@@ -16,17 +17,27 @@ using Cirrious.MvvmCross.Binding.Touch.Views;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Views;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
 	public partial class HistoryTabView : MvxBindingTouchViewController<HistoryViewModel>
 	{
+
+		private const string CELLID = "HistoryCell";
+		
+		const string CellBindingText = @"
+                {
+                   'TitleText':{'Path':'Title'},
+                   'DetailText':{'Path':'PickupAddress.FullAddress'}
+				}";
+
 		private CancellationTokenSource _searchCancellationToken = new CancellationTokenSource();
 		
 		#region Constructors
 
 		public HistoryTabView() 
-			: base(new MvxShowViewModelRequest<BookViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
+			: base(new MvxShowViewModelRequest<HistoryViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
 		{
 		}
 		
@@ -56,6 +67,41 @@ namespace apcurium.MK.Booking.Mobile.Client
 			tableHistory.RowHeight = 35;
             tableHistory.BackgroundView = new UIView { BackgroundColor = UIColor.Clear };
             tableHistory.BackgroundColor = UIColor.Clear; // UIColor.Red ;
+
+			/*ViewModel.LoadOrders().ContinueWith( t=> 
+                    {
+				InvokeOnMainThread( () => 
+				                   {
+				var source = new MvxActionBasedBindableTableViewSource(
+					tableHistory, 
+					UITableViewCellStyle.Subtitle,
+					new NSString(CELLID), 
+					CellBindingText,
+					UITableViewCellAccessory.None);
+				
+				this.AddBindings(new Dictionary<object, string>(){
+					{source, "{'ItemsSource':{'Path':'Orders'}}"} ,
+				});
+				
+				tableHistory.Source = source;
+				});
+				}
+
+			);*/
+			/*var source = new MvxActionBasedBindableTableViewSource(
+				tableHistory, 
+				UITableViewCellStyle.Subtitle,
+				new NSString(CELLID), 
+				CellBindingText,
+				UITableViewCellAccessory.None);
+			
+			source.CellCreator = (tview , iPath, state ) => { return new TwoLinesCell( CELLID, CellBindingText ); };
+			this.AddBindings(new Dictionary<object, string>(){
+				{source, "{'ItemsSource':{'Path':'Orders'}}"} ,
+			});
+			
+			tableHistory.Source = source;*/
+
 		}
 
 
