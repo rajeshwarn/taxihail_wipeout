@@ -39,10 +39,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 TinyIoCContainer.Current.Resolve<IApplicationInfoService>().CheckVersion();
             });
 
-        }
-
-
-        
+        }        
 	
 
 		private string _email;

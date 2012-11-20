@@ -24,6 +24,8 @@ using Cirrious.MvvmCross.Views;
 using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 using Cirrious.MvvmCross.Interfaces.Views;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
+using TinyMessenger;
+using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -59,8 +61,61 @@ namespace apcurium.MK.Booking.Mobile.Client
 			Initialize();
 		}
 
+		void OnAccountCreated (AccountCreated accountCreated)
+		{
+			var data = accountCreated.Content;
+			if (data.FacebookId.HasValue() || data.TwitterId.HasValue())
+			{
+				var facebookId = data.FacebookId;
+				var twitterId = data.TwitterId;
+				LoadingOverlay.StartAnimatingLoading(LoadingOverlayPosition.Center, null, 130, 30);
+				ThreadHelper.ExecuteInThread(() =>
+				                             {
+					try
+					{
+						Thread.Sleep(500);                             
+						var service = TinyIoCContainer.Current.Resolve<IAccountService>();
+						Account account;
+						if (facebookId.HasValue())
+						{
+							account = service.GetFacebookAccount(facebookId);
+						}
+						else
+						{
+							account = service.GetTwitterAccount(twitterId);
+						}
+						if ( account != null )
+						{
+							var dispatch = TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
+							dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(BookViewModel), null, true, MvxRequestedBy.UserAction));
+						}
+					}
+					catch
+					{
+					}
+					finally
+					{                 
+						LoadingOverlay.StopAnimatingLoading();
+					}
+				}
+				);
+			}
+			else
+			{
+				InvokeOnMainThread(() => 
+				                   { 
+					txtEmail.Text = data.Email;
+					ViewModel.Email = data.Email;
+				});
+			}
+		}
+
         void Initialize()
         {
+			TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<AccountCreated>(account =>
+			{
+				OnAccountCreated(account);
+			});
         }
 
 		public override void ViewWillAppear (bool animated)
@@ -192,78 +247,20 @@ namespace apcurium.MK.Booking.Mobile.Client
             ShowSignUp(null);
         }
 
-        private void ShowSignUp(RegisterAccount accountData)
-        {
-            CreateAccountView view;
-            if (accountData != null)
-            {
-                view = new CreateAccountView(accountData);
-            }
-            else
-            {
-                view = new CreateAccountView();
-            }
-
-            view.AccountCreated += delegate(object data, EventArgs e2)
-            {
-
-                if (data is RegisterAccount)
-                {
-
-                    if (((RegisterAccount)data).FacebookId.HasValue() || ((RegisterAccount)data).TwitterId.HasValue())
-                    {
-                        var facebookId = ((RegisterAccount)data).FacebookId;
-                        var twitterId = ((RegisterAccount)data).TwitterId;
-                        LoadingOverlay.StartAnimatingLoading(LoadingOverlayPosition.Center, null, 130, 30);
-                        ThreadHelper.ExecuteInThread(() =>
-                        {
-                            try
-                            {
-                                Thread.Sleep(500);                             
-                                var service = TinyIoCContainer.Current.Resolve<IAccountService>();
-                                Account account;
-                                if (facebookId.HasValue())
-                                {
-                                    account = service.GetFacebookAccount(facebookId);
-                                }
-                                else
-                                {
-                                    account = service.GetTwitterAccount(twitterId);
-                                }
-                                if ( account != null )
-                                {
-                                    var dispatch = TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
-                                    dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(BookViewModel), null, true, MvxRequestedBy.UserAction));
-                                }
-                            }
-                            catch
-                            {
-                            }
-                            finally
-                            {                 
-                                LoadingOverlay.StopAnimatingLoading();
-                            }
-                        }
-                        );
-                    }
-                    else
-                    {
-                        InvokeOnMainThread(() => 
-                                           { 
-                            txtEmail.Text = ((RegisterAccount)data).Email;
-                            ViewModel.Email = ((RegisterAccount)data).Email;
-                        });
-                    }
-                }
-            };
-            
-            var nav = new UINavigationController();
-            //nav.NavigationBar.TintColor = UIColor.FromRGB(255, 178, 14);
-            LoadBackgroundNavBar(nav.NavigationBar);
-            nav.Title = ".";
-            this.PresentModalViewController(nav, true);
-
-            nav.SetViewControllers(new UIViewController[]{view}, false);
+        private void ShowSignUp (RegisterAccount accountData)
+		{
+			string serialized = null;
+			if (accountData != null) {
+				serialized = JsonSerializer.SerializeToString(accountData);
+			}
+            var viewDispatcherProvider = TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>();
+			var viewDispatcher = viewDispatcherProvider.Dispatcher;
+			viewDispatcher.RequestNavigate(new MvxShowViewModelRequest(
+				typeof(CreateAcccountViewModel),
+				new Dictionary<string, string>{ {"data", serialized } },
+				false,
+				MvxRequestedBy.UserAction));                    
+           
         }
 
         private void LoadBackgroundNavBar(UINavigationBar bar)
@@ -275,9 +272,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
                 bar.SetBackgroundImage(UIImage.FromFile("Assets/navBar.png"), UIBarMetrics.Default);
             }
-            catch
-            {
-            }
+            catch{ }
         }
 
         void PasswordTouchUpInside(object sender, EventArgs e)
@@ -290,10 +285,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 				false,
 				MvxRequestedBy.UserAction));          
         }
-
-
-
-
         #endregion
 
         private void FacebookLogin(object sender, EventArgs e)
