@@ -193,6 +193,7 @@
     <Compile Include="Messages\StatusCloseRequested.cs" />
     <Compile Include="ViewModels\BookConfirmationViewModel.cs" />
     <Compile Include="ViewModels\LocationDetailViewModel.cs" />
+    <Compile Include="ViewModels\ResetPasswordViewModel.cs" />
     <Compile Include="Messages\OrderCanceled.cs" />
   </ItemGroup>
   <ItemGroup>
