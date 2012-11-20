@@ -29,7 +29,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             private set;
         }
 
-        //TODO:Fix this
         public string Name
         {
             get { return Data.Name; }
@@ -64,14 +63,11 @@ namespace apcurium.MK.Booking.Mobile.Client
                 if (VehicleTypeList != null)
                 {
                     var vehicleType = VehicleTypeList.SingleOrDefault(vt => vt.Id == VehicleTypeId);
-                    //TODO:Fix this
-                    //Data.VehicleTypeName = vehicleType.Display;
                 }
             }
         }
 
         
-        //TODO:Fix this
         public string VehicleTypeName
         {
             get { return _vehicleTypeList.SingleOrDefault(v => v.Id == VehicleTypeId).SelectOrDefault(v => v.Display, ""); }            
@@ -87,7 +83,6 @@ namespace apcurium.MK.Booking.Mobile.Client
                 if (CompanyList != null)
                 {
                     var company = CompanyList.SingleOrDefault(c => c.Id == ProviderId);
-                    //Data.CompanyName = company.Display;
                 }
             }
         }
@@ -106,13 +101,10 @@ namespace apcurium.MK.Booking.Mobile.Client
                 if (ChargeTypeList != null)
                 {
                     var chargeType = ChargeTypeList.SingleOrDefault(ct => ct.Id == ChargeTypeId);
-                    //TODO:Fix this
-                    //Data.ChargeTypeName = chargeType.Display;
                 }
             }
         }
 
-        //TODO:Fix this
         public string ChargeTypeName
         {
             get { return _chargeTypeList.SingleOrDefault(v => v.Id == ChargeTypeId).SelectOrDefault(v => v.Display, ""); }            

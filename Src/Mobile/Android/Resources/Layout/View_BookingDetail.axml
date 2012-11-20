@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <apcurium.mk.booking.mobile.client.controls.HeaderedLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.TaxiHailDemo"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -43,7 +44,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="5dp"
-                        android:paddingRight="5dp" />
+                        android:paddingRight="5dp"
+                        local:MvxBind="{&apos;Text&apos;: {&apos;Path&apos;: &apos;Order.PickupAddress.FullAddress&apos;}}" />
                 </LinearLayout>
                 <LinearLayout
                     android:orientation="horizontal"
@@ -63,7 +65,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="5dp"
-                        android:paddingRight="5dp" />
+                        android:paddingRight="5dp"
+                        local:MvxBind="{&apos;Text&apos;: {&apos;Path&apos;: &apos;Order.DropOffAddress.FullAddress&apos;, &apos;Converter&apos;: &apos;EmptyToResource&apos;, &apos;ConverterParameter&apos;: &apos;ConfirmDestinationNotSpecified&apos;}}" />
                 </LinearLayout>
                 <LinearLayout
                     android:orientation="horizontal"
@@ -83,7 +86,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="5dp"
-                        android:paddingRight="5dp" />
+                        android:paddingRight="5dp"
+                        local:MvxBind="{&apos;Text&apos;: {&apos;Path&apos;: &apos;FormattedPickupDate&apos;}}" />
                 </LinearLayout>
                 <LinearLayout
                     android:orientation="horizontal"
@@ -103,7 +107,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="5dp"
-                        android:paddingRight="5dp" />
+                        android:paddingRight="5dp"
+                        local:MvxBind="{&apos;Text&apos;: {&apos;Path&apos;: &apos;FareEstimate&apos;}}" />
                 </LinearLayout>
             </LinearLayout>
             <RelativeLayout
@@ -131,7 +136,8 @@
                     android:text="@string/EditButton"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="5dp" />
+                    android:layout_marginRight="5dp"
+                    local:MvxBind="{&apos;Click&apos;: {&apos;Path&apos;: &apos;NavigateToRefineAddress&apos;}}" />
             </RelativeLayout>
             <LinearLayout
                 android:orientation="horizontal"
@@ -143,7 +149,8 @@
                     android:text="@string/HistoryDetailAptRingCodeLabel"
                     android:layout_width="110dp"
                     android:gravity="right"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    local:MvxBind="{&apos;Text&apos;: {&apos;Path&apos;: &apos;AptRingCode&apos;}}" />
                 <TextView
                     android:id="@+id/AptRingCode"
                     style="@style/DetailText"
@@ -217,7 +224,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
-                    android:paddingRight="5dp" />
+                    android:paddingRight="5dp"
+                    local:MvxBind="{&apos;Text&apos;: {&apos;Path&apos;: &apos;Order.Settings.Name&apos;}}" />
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
@@ -237,7 +245,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
-                    android:paddingRight="5dp" />
+                    android:paddingRight="5dp"
+                    local:MvxBind="{&apos;Text&apos;: {&apos;Path&apos;: &apos;Order.Settings.Phone&apos;}}" />
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
@@ -257,7 +266,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
-                    android:paddingRight="5dp" />
+                    android:paddingRight="5dp"
+                    local:MvxBind="{&apos;Text&apos;: {&apos;Path&apos;: &apos;Order.Settings.Passengers&apos;}}" />
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
@@ -277,7 +287,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
-                    android:paddingRight="5dp" />
+                    android:paddingRight="5dp"
+                    local:MvxBind="{&apos;Text&apos;: {&apos;Path&apos;: &apos;RideSettings.VehicleTypeName&apos;}}" />
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
@@ -297,7 +308,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
-                    android:paddingRight="5dp" />
+                    android:paddingRight="5dp"
+                    local:MvxBind="{&apos;Text&apos;: {&apos;Path&apos;: &apos;RideSettings.ProviderName&apos;}}" />
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
@@ -317,7 +329,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
-                    android:paddingRight="5dp" />
+                    android:paddingRight="5dp"
+                    local:MvxBind="{&apos;Text&apos;: {&apos;Path&apos;: &apos;RideSettings.ChargeTypeName&apos;}}" />
             </LinearLayout>
         </LinearLayout>
         <RelativeLayout
@@ -338,7 +351,8 @@
                 android:layout_height="35dip"
                 android:text="@string/CancelBoutton"
                 android:layout_alignParentLeft="true"
-                android:layout_marginLeft="5dp" />
+                android:layout_marginLeft="5dp"
+                local:MvxBind="{&apos;Click&apos;: {&apos;Path&apos;: &apos;CancelOrderCommand&apos;}}" />
             <Button
                 android:id="@+id/ConfirmBtn"
                 style="@style/ButtonText"
@@ -347,7 +361,8 @@
                 android:layout_height="35dip"
                 android:text="@string/ConfirmButton"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="5dp" />
+                android:layout_marginRight="5dp"
+                local:MvxBind="{&apos;Click&apos;: {&apos;Path&apos;: &apos;ConfirmOrderCommand&apos;}}" />
         </RelativeLayout>
     </RelativeLayout>
 </apcurium.mk.booking.mobile.client.controls.HeaderedLayout>

@@ -22,6 +22,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Converters
         public readonly MvxVisibilityConverter Visibility = new MvxVisibilityConverter();
         public readonly MvxInvertedVisibilityConverter InvertedVisibility = new MvxInvertedVisibilityConverter();
         public readonly BoolInverter BoolInverter = new BoolInverter();
+		public readonly EmptyToResourceConverter EmptyToResource = new EmptyToResourceConverter();
 
     }
 }

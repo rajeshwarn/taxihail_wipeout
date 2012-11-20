@@ -24,6 +24,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     {
         private readonly IBookingService _bookingService;
 
+		[Obsolete]
         public BookingStatusViewModel(string order)
         {
             OrderWithStatusModel orderWithStatus = JsonSerializer.DeserializeFromString < OrderWithStatusModel>(order);
@@ -33,6 +34,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             MessengerHub.Subscribe<OrderRated>( OnOrderRated , o=>o.Content.Equals (Order.Id) );
             _bookingService = this.GetService<IBookingService>();
         }
+
+		public BookingStatusViewModel(string order, string orderStatus)
+		{
+			Order = JsonSerializer.DeserializeFromString<Order>(order);
+			OrderStatusDetail = JsonSerializer.DeserializeFromString<OrderStatusDetail>(orderStatus);
+			ShowRatingButton = true;
+			MessengerHub.Subscribe<OrderRated>( OnOrderRated , o=>o.Content.Equals (Order.Id) );
+			_bookingService = this.GetService<IBookingService>();
+		}
+
 
         private void OnOrderRated(OrderRated msg )
         {

@@ -114,17 +114,6 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { btnConfirm, "{'TouchUpInside':{'Path':'ConfirmOrderCommand'}}"},
             });
 
-
-			TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub>().Subscribe<AddressRefinedMessage>( msg => {
-				Order.PickupAddress.Apartment = msg.Content.AptNumber;
-				Order.PickupAddress.BuildingName = msg.Content.BuildingName;
-				Order.PickupAddress.RingCode = msg.Content.RingCode;
-
-                txtAptRing.Text = FormatAptRingCode(Order.PickupAddress.Apartment, Order.PickupAddress.RingCode);  
-                txtBuildingName.Text = FormatBuildingName(Order.PickupAddress.BuildingName);
-
-
-			});
         }
 
         private string FormatBuildingName( string buildingName )

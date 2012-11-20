@@ -7,10 +7,10 @@ using TinyMessenger;
 
 namespace apcurium.MK.Booking.Mobile.Messages
 {
-    public class AddressRefinedMessage : GenericTinyMessage<RefineAddressViewModel>
+    public class AddressRefinedMessage : SubNavigationResultMessage<RefineAddressViewModel>
     {
-        public AddressRefinedMessage(object sender, RefineAddressViewModel address)
-            : base(sender, address)
+        public AddressRefinedMessage(object sender, string messageId, RefineAddressViewModel result)
+            : base(sender, messageId, result)
         {            
         }
     }

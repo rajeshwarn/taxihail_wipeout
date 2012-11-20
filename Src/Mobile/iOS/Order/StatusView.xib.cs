@@ -168,7 +168,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                     } catch {
                          
                         MessageHelper.Show (Resources.StatusConfirmCancelRideErrorTitle, Resources.StatusConfirmCancelRideError);
-                        AppContext.Current.LastOrder = null;
+						TinyIoCContainer.Current.Resolve<IBookingService> ().ClearLastOrder();
                         InvokeOnMainThread (CloseRequested);
 
                     } finally {
@@ -416,7 +416,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                     } catch {
                          
                         MessageHelper.Show (Resources.StatusConfirmCancelRideErrorTitle, Resources.StatusConfirmCancelRideError);
-                        AppContext.Current.LastOrder = null;
+						TinyIoCContainer.Current.Resolve<IBookingService> ().ClearLastOrder();
                         InvokeOnMainThread (CloseRequested);
 
                     } finally {
