@@ -47,8 +47,6 @@ namespace apcurium.MK.Booking.Mobile.Client
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            this.InvokeOnMainThread(() => NavigationItem.Title = " ");
-
             View.BackgroundColor = UIColor.Clear;
             TableView.BackgroundView = new UIView{ BackgroundColor = UIColor.Clear };
             TableView.BackgroundColor = UIColor.Clear;

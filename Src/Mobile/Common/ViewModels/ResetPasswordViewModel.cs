@@ -8,9 +8,9 @@ using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile
 {
-	public class ResetPasswordViewModel : BaseViewModel
+    public class ResetPasswordViewModel : BaseSubViewModel<string>
 	{
-		public ResetPasswordViewModel ()
+        public ResetPasswordViewModel (string messageId) : base(messageId)
 		{
 		}
 
@@ -34,7 +34,7 @@ namespace apcurium.MK.Booking.Mobile
 						if (result)
 						{
 							MessageService.ShowMessage(Resources.GetString("ResetPasswordConfirmationTitle"), Resources.GetString("ResetPasswordConfirmationMessage"));
-							Close();
+                            ReturnResult(Email);
 						}
 						else
 						{
