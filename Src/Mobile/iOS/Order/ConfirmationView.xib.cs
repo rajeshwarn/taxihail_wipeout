@@ -86,10 +86,11 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { txtAptRing, "{'Text': {'Path': 'AptRingCode'}}" },
                 { txtBuildingName, "{'Text': {'Path': 'BuildingName'}}" },
                 { txtPrice, "{'Text': {'Path': 'FareEstimate'}}" },
-                { txtName, "{'Text': {'Path': 'Order.Settings.Name'}}" },
+                { txtName, "{'Text': {'Path': 'RideSettings.Name'}}" },
                 { txtCompany, "{'Text': {'Path': 'RideSettings.ProviderName'}}" },
                 { txtVehiculeType, "{'Text': {'Path': 'RideSettings.VehicleTypeNameAndNbOfPassengers'}}" },
                 { txtChargeType, "{'Text': {'Path': 'RideSettings.ChargeTypeName'}}" },
+                { txtPhone, "{'Text': {'Path': 'RideSettings.Phone'}}"}
             });
 
             ViewModel.OnViewLoaded();

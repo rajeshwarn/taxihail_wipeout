@@ -97,6 +97,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						if(result != null)
 						{
 							Order.Settings = result;
+                            RideSettings.Data = result;
+                            FirePropertyChanged("RideSettings");
 						}
 					});
 				});
@@ -171,6 +173,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				MessageService.ShowDialog(Resources.GetString("ChooseProviderDialogTitle"), companyList, x=>x.Display, result => {
 					if(result != null) {
 						Order.Settings.ProviderId =  result.Id;
+                        RideSettings.Data = Order.Settings;
+                        FirePropertyChanged("RideSettings");
 					}
 					this.GetService<IAccountService>().UpdateSettings(Order.Settings);
 				});
@@ -180,7 +184,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		
 		private string FormatAptRingCode(string apt, string rCode)
 		{
-			
 			string result = apt.HasValue() ? apt : Resources.GetString("ConfirmNoApt");
 			result += @" / ";
 			result += rCode.HasValue() ? rCode : Resources.GetString("ConfirmNoRingCode");
@@ -197,7 +200,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				return Resources.GetString(Resources.GetString("HistoryDetailBuildingNameNotSpecified"));
 			}
-			
 		}
 
 		private string FormatDateTime(DateTime? pickupDate )
@@ -206,7 +208,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			string result = pickupDate.HasValue ? string.Format(format, pickupDate.Value) : Resources.GetString("TimeNow");
 			return result;
 		}
-
     }
 }
 
