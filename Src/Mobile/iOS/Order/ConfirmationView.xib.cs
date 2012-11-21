@@ -99,7 +99,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             View.BringSubviewToFront( bottomBar );    
 
 
-            ViewModel.ShowChooseProviderDialog();
+            ViewModel.OnViewLoaded();
 
             this.AddBindings(new Dictionary<object, string>() {
                 { btnCancel, "{'TouchUpInside':{'Path':'CancelOrderCommand'}}"},                
@@ -163,7 +163,6 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             base.ViewDidAppear(animated);
             this.NavigationItem.TitleView = new TitleView(null, Resources.View_BookingDetail, true);
-            ViewModel.ShowFareEstimateAlertDialog();
 
         }
 		  

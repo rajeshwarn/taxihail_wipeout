@@ -35,8 +35,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         protected override void OnViewModelSet()
         {            
             SetContentView(Resource.Layout.View_BookingDetail);
-			ViewModel.ShowFareEstimateAlertDialog();
-			ViewModel.ShowChooseProviderDialog();
+			ViewModel.OnViewLoaded();
         }
     }
 }

@@ -12,6 +12,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     public class BaseViewModel : MvxViewModel,
         IMvxServiceConsumer<ITinyMessengerHub>,
         IMvxServiceConsumer<IAppResource>,
+        IMvxServiceConsumer<IAppSettings>,
         IMvxServiceConsumer<IMessageService>,
         IMvxServiceConsumer<ILogger>
 
@@ -20,6 +21,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             MessengerHub = this.GetService<ITinyMessengerHub>();
             Resources = this.GetService<IAppResource>();
+			Settings = this.GetService<IAppSettings>();
             MessageService = this.GetService<IMessageService>();
 			Logger = this.GetService<ILogger>();
 
@@ -46,7 +48,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get; private set;
         }
 
+		protected IAppSettings Settings
+		{
+			get; private set;
+		}
+
 		protected virtual void Initialize ()
+		{
+
+		}
+
+		public virtual void OnViewLoaded ()
 		{
 
 		}

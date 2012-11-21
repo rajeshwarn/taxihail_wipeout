@@ -37,6 +37,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			FareEstimate = bookingService.GetFareEstimateDisplay(Order, null, "NotAvailable");
         }
 
+		public override void OnViewLoaded ()
+		{
+			base.OnViewLoaded ();
+
+			ShowFareEstimateAlertDialogIfNecessary();
+			ShowChooseProviderDialogIfNecessary();
+
+		}
+
         public CreateOrder Order { get; private set; }
 		public string AptRingCode {
 			get {
@@ -142,7 +151,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-		public void ShowFareEstimateAlertDialog()
+		private void ShowFareEstimateAlertDialogIfNecessary()
 		{
 			if(this.GetService<ICacheService>().Get<string>("WarningEstimateDontShow").IsNullOrEmpty() 
 			   && Order.DropOffAddress.HasValidCoordinate())
@@ -153,19 +162,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-        public void ShowChooseProviderDialog()
+        private void ShowChooseProviderDialogIfNecessary()
         {
             var service = TinyIoCContainer.Current.Resolve<IAccountService>();
             var companyList = service.GetCompaniesList();
-
-            MessageService.ShowDialog(Resources.GetString("ChooseProviderDialogTitle"), companyList, x=>x.Display, result => {
-                if(result != null) {
-                    Order.Settings.ProviderId =  result.Id;
-                }
-                this.GetService<IAccountService>().UpdateSettings(Order.Settings);
-            });
-        }
-
+			if (Settings.CanChooseProvider && Order.Settings.ProviderId ==null)
+			{
+				MessageService.ShowDialog(Resources.GetString("ChooseProviderDialogTitle"), companyList, x=>x.Display, result => {
+					if(result != null) {
+						Order.Settings.ProviderId =  result.Id;
+					}
+					this.GetService<IAccountService>().UpdateSettings(Order.Settings);
+				});
+			}
+		}
+		
 		
 		private string FormatAptRingCode(string apt, string rCode)
 		{
