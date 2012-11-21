@@ -226,24 +226,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public HistoryDetailViewModel(string orderId, string serialized = null)
         {
-               if (serialized != null)
-            {
-                this.Order = JsonSerializer.DeserializeFromString<Order>(serialized);
-            }
+            
 			Guid id;
             if(Guid.TryParse(orderId, out id)) {
 				OrderId = id;
 			}
+            LoadOrder();
+            LoadStatus();
+            TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<OrderRated>(RefreshOrderStatus);
         }
 
 		protected override void Initialize ()
 		{
-            if (Order == null)
-            {
-                LoadOrder();
-            }
-			LoadStatus();
-			TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<OrderRated>(RefreshOrderStatus);
+           
 		}
 
         public void RefreshOrderStatus (OrderRated orderRated)

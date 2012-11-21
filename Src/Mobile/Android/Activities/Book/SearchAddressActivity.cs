@@ -56,10 +56,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             button.Click += (sender, args) =>
                                 {
                                     searchAddressText.Text = "";
-                                    ViewModel.AddressViewModels.ToList().Clear();
-                                    ViewModel.HistoricAddressViewModels.ToList().Clear();
-                                    _listView.NotifyAll();
-                                    _historicListView.NotifyAll();
+                                    ViewModel.ClearResults();
+                                    
+
                                 };
 
              subscription = Observable.FromEventPattern<TextChangedEventArgs>(searchAddressText

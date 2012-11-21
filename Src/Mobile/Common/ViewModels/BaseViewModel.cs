@@ -55,12 +55,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		protected virtual void Initialize ()
 		{
-
 		}
 
 		public virtual void OnViewLoaded ()
 		{
-
 		}
 
 		protected bool RequestSubNavigate<TViewModel, TResult>(IDictionary<string, string> parameterValues, Action<TResult> onResult) 
