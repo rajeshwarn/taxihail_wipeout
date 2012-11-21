@@ -24,8 +24,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 {
     public partial class ConfirmationView : MvxBindingTouchViewController<BookConfirmationViewModel>
     {
-        #region Constructors
-        
         public ConfirmationView() 
             : base(new MvxShowViewModelRequest<BookingStatusViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
         {
@@ -41,18 +39,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
         }
 
-        public 
-        void Initialize()
-        {
-        }
-
-        public CreateOrder Order
-        {
-            get { return ViewModel.Order; }
-        }
-
-
-		public override void ViewWillAppear (bool animated)
+        public override void ViewWillAppear (bool animated)
 		{
 			base.ViewWillAppear (animated);
 			NavigationController.NavigationBar.Hidden = false;
@@ -85,25 +72,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			lblBuildingName.Text = Resources.HistoryDetailBuildingNameLabel;
 
 			lblPrice.Text = Resources.ApproxPrice;
-            
 
-
-			
-
-			SetRideSettingsFields();
-
-
-			btnEdit.TouchUpInside += EditRideSettings;
-			btnEditPickupDetails.TouchUpInside += EditPickupDetails;
-            
-            View.BringSubviewToFront( bottomBar );    
-
-
-            ViewModel.OnViewLoaded();
+			View.BringSubviewToFront( bottomBar );    
 
             this.AddBindings(new Dictionary<object, string>() {
                 { btnCancel, "{'TouchUpInside':{'Path':'CancelOrderCommand'}}"},                
                 { btnConfirm, "{'TouchUpInside':{'Path':'ConfirmOrderCommand'}}"},
+                { btnEdit, "{'TouchUpInside': {'Path': 'NavigateToEditBookingSettings'}}"},
+                { btnEditPickupDetails, "{'TouchUpInside': {'Path': 'NavigateToRefineAddress'}}"},
                 { txtOrigin, "{'Text': {'Path': 'Order.PickupAddress.FullAddress'}}" },
                 { txtDestination, "{'Text': {'Path': 'Order.DropOffAddress.FullAddress', 'Converter': 'EmptyToResourceConverter', 'ConverterParameter': 'ConfirmDestinationNotSpecified'}}" },
                 { txtDateTime, "{'Text': {'Path': 'FormattedPickupDate'}}" },
@@ -111,62 +87,19 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { txtBuildingName, "{'Text': {'Path': 'BuildingName'}}" },
                 { txtPrice, "{'Text': {'Path': 'FareEstimate'}}" },
                 { txtName, "{'Text': {'Path': 'Order.Settings.Name'}}" },
-               
+                { txtCompany, "{'Text': {'Path': 'RideSettings.ProviderName'}}" },
+                { txtVehiculeType, "{'Text': {'Path': 'RideSettings.VehicleTypeNameAndNbOfPassengers'}}" },
+                { txtChargeType, "{'Text': {'Path': 'RideSettings.ChargeTypeName'}}" },
             });
+
+            ViewModel.OnViewLoaded();
         }
-
-
-        void EditPickupDetails (object sender, EventArgs e)
-        {
-			var args = new Dictionary<string, string>(){ {"apt", Order.PickupAddress.Apartment}, {"ringCode", Order.PickupAddress.RingCode},  {"buildingName", Order.PickupAddress.BuildingName} };
-			var dispatch = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
-			dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(RefineAddressViewModel), args, false, MvxRequestedBy.UserAction));
-        }
-
-        void EditRideSettings (object sender, EventArgs e)
-        {
-            var settings = new  RideSettingsView(Order.Settings, false, false);
-
-            settings.Closed += delegate
-            {
-                Order.Settings = settings.Result;
-				SetRideSettingsFields();                 
-            };
-            
-            this.NavigationController.PushViewController(settings, true);
-        }
-
-		private void SetRideSettingsFields()
-		{
-            var service = TinyIoCContainer.Current.Resolve<IAccountService>();            
-            var companies = service.GetCompaniesList();
-            var model = new RideSettingsModel(Order.Settings, companies, service.GetVehiclesList(), service.GetPaymentsList());
-
-			int nbPassenger = 0;
-			int.TryParse(model.NbOfPassenger, out nbPassenger);
-			var passengerFormat = nbPassenger == 1 ? Resources.NbPassenger : Resources.NbPassengers;
-			txtVehiculeType.Text = model.VehicleTypeName + string.Format(passengerFormat, model.NbOfPassenger);
-			txtChargeType.Text = model.ChargeTypeName;
-
-            var company = model.CompanyList.FirstOrDefault( c=>c.Id == Order.Settings.ProviderId );
-            if ( company == null )
-            {
-                company = model.CompanyList.First( c=>c.IsDefault.HasValue && c.IsDefault.Value );
-                Order.Settings.ProviderId = company.Id;
-            }
-
-            txtCompany.Text = company.Display;
-
-		}
 
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
             this.NavigationItem.TitleView = new TitleView(null, Resources.View_BookingDetail, true);
-
         }
-		  
-        #endregion
     }
 }
 

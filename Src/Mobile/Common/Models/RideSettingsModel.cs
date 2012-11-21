@@ -6,6 +6,8 @@ using apcurium.Framework.Extensions;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using TinyIoC;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -23,10 +25,10 @@ namespace apcurium.MK.Booking.Mobile.Client
             Data = data;
         }
 
-        public BookingSettings Data
+        private BookingSettings Data
         {
             get;
-            private set;
+            set;
         }
 
         public string Name
@@ -60,10 +62,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             set
             {
                 Data.VehicleTypeId = value;
-                if (VehicleTypeList != null)
-                {
-                    var vehicleType = VehicleTypeList.SingleOrDefault(vt => vt.Id == VehicleTypeId);
-                }
             }
         }
 
@@ -73,6 +71,14 @@ namespace apcurium.MK.Booking.Mobile.Client
             get { return _vehicleTypeList.SingleOrDefault(v => v.Id == VehicleTypeId).SelectOrDefault(v => v.Display, ""); }            
         }
 
+        public string VehicleTypeNameAndNbOfPassengers {
+            get {
+                var resources = TinyIoCContainer.Current.Resolve<IAppResource>();            
+                var passengerFormat = Data.Passengers == 1 ? resources.GetString("NbPassenger") : resources.GetString("NbPassengers");
+                return VehicleTypeName + string.Format(passengerFormat, NbOfPassenger);
+            }
+        }
+
 
         public int? ProviderId
         {
@@ -80,10 +86,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             set
             {
                 Data.ProviderId = value;
-                if (CompanyList != null)
-                {
-                    var company = CompanyList.SingleOrDefault(c => c.Id == ProviderId);
-                }
             }
         }
 
@@ -98,10 +100,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             set
             {
                 Data.ChargeTypeId = value;
-                if (ChargeTypeList != null)
-                {
-                    var chargeType = ChargeTypeList.SingleOrDefault(ct => ct.Id == ChargeTypeId);
-                }
             }
         }
 
