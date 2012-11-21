@@ -2,6 +2,9 @@ using System;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using ServiceStack.Text;
+using apcurium.MK.Booking.Mobile.Extensions;
+using Cirrious.MvvmCross.Interfaces.Commands;
+using Cirrious.MvvmCross.Commands;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -17,6 +20,14 @@ namespace apcurium.MK.Booking.Mobile
 			get;
 			private set;
 		}
+
+        public IMvxCommand DoneCommand {
+            get {
+                return new MvxRelayCommand(()=> {
+                    this.ReturnResult(BookingSettings);
+                });
+            }
+        }
 	}
 }
 

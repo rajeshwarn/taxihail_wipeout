@@ -16,15 +16,15 @@ using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.Views;
 using apcurium.MK.Common.Extensions;
 using System.Collections.Generic;
+using Cirrious.MvvmCross.Dialog.Touch;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-    public class RideSettingsView : DialogViewController
+    public class RideSettingsView : MvxTouchDialogViewController<RideSettingsViewModel>
     {
         public event EventHandler Closed;
 
         private BookingSettings _settings;
-        private RootElement _updatePasswordElement;
         private RightAlignedEntryElement _nameEntry;
         private RightAlignedEntryElement _phoneEntry;
         private RightAlignedEntryElement _passengerEntry;
@@ -33,14 +33,24 @@ namespace apcurium.MK.Booking.Mobile.Client
         private int _selected = 0;
         private bool _autoSave;
         private bool _companyOnly;
-        private Guid? _accountId = null;
+
+        public RideSettingsView(MvxShowViewModelRequest request)
+            : base(request, UITableViewStyle.Grouped, null, false)
+        {
+            
+        }
+        
+        public RideSettingsView(MvxShowViewModelRequest request, UITableViewStyle style, Cirrious.MvvmCross.Dialog.Touch.Dialog.Elements.RootElement root, bool pushing)
+            : base(request, style, root, pushing)
+        {
+            
+        }
 
         public RideSettingsView(Account account, bool autoSave, bool companyOnly) : base(null)
         {
             _companyOnly = companyOnly;
             _autoSave = autoSave;
             _settings = account.Settings.Copy();
-            _accountId = account.Id;
         }
 
         public RideSettingsView(BookingSettings settings, bool autoSave, bool companyOnly) : base(null)
@@ -60,14 +70,11 @@ namespace apcurium.MK.Booking.Mobile.Client
             base.ViewDidLoad();
             var button = new MonoTouch.UIKit.UIBarButtonItem(Resources.DoneButton, UIBarButtonItemStyle.Plain, delegate
             {
-                CloseView();
+                ViewModel.DoneCommand.Execute();
             });
             NavigationItem.HidesBackButton = true;
             NavigationItem.RightBarButtonItem = button;
             NavigationItem.Title = Resources.GetValue("View_RideSettings");
-
-
-            
         }
 
         public override void ViewWillAppear(bool animated)
@@ -75,44 +82,23 @@ namespace apcurium.MK.Booking.Mobile.Client
             base.ViewWillAppear(animated);
 
             NavigationController.NavigationBar.Hidden = false;
-        
-
 
             ((UINavigationController)ParentViewController).View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             
             View.BackgroundColor = UIColor.Clear; 
             TableView.BackgroundColor = UIColor.Clear;
             TableView.BackgroundView = new UIView { BackgroundColor = UIColor.Clear };
-
-
-
         }
-
-//      protected override void SetTitleView ()
-//      {
-//          NavigationItem.TitleView = AppContext.Current.Controller.GetTitleView (null, GetTitle ());
-//      }
 
         public override void ViewDidAppear(bool animated)
         {
 
             base.ViewDidAppear(animated);
-            if (_companyOnly)
-            {
-                //LoadSettingsElementsForComaganies ();
-            }
-            else
-            {
-                LoadSettingsElements();
-            }
-
-            // ((UINavigationController ) ParentViewController ).NavigationBar.TopItem.TitleView = AppContext.Current.Controller.GetTitleView(null, Resources.DefaultRideSettingsViewTitle, false);
-
+            LoadSettingsElements();
         }
 
         private void CloseView()
         {
-            
             _nameEntry.Maybe(() => _nameEntry.FetchValue());            
             _phoneEntry.Maybe(() => _phoneEntry.FetchValue());          
             _numberOfTaxiEntry.Maybe(() => _numberOfTaxiEntry.FetchValue());
@@ -183,7 +169,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                     
                     
                     this.InvokeOnMainThread(() => {
-                        this.Root = companyEntry; });
+                        /*this.Root = companyEntry;*/ });
                     
                 }
                 finally
@@ -331,7 +317,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                         settings.Add(chargeTypeEntry);
                 
                     
-                        this.Root = menu; });
+                        /*this.Root = menu; */});
                     
                 }
                 finally
