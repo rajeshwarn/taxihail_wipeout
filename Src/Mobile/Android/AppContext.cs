@@ -105,23 +105,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public AppContext(Context appContext)
         {
-        }
-
-        public string LastEmail
-        {
-
-            get
-            {
-                var pref = Application.Context.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
-                return pref.GetString( "LastEmail" , "" );
-            }
-            set
-            {
-                var pref = Application.Context.GetSharedPreferences(_sharedPreferences, FileCreationMode.Private);
-                pref.Edit().PutString( "LastEmail", value ).Commit();
-            }
-        }
-
+        }        
         
         public string LoggedInEmail
         {
