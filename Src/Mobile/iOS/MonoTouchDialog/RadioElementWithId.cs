@@ -6,8 +6,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 {
     public class RadioElementWithId : RadioElement
     {
-        public RadioElementWithId(string caption) : base( caption )
+        public RadioElementWithId(int id, string caption) : base( caption )
         {
+            this.Id = id;
         }
        
         protected override UITableViewCell GetCellImpl (UITableView tv)
@@ -19,7 +20,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public int Id {
             get;
-            set;
+            private set;
         }
     }
 }

@@ -87,9 +87,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             var btn = AppButtons.CreateStandardButton(new System.Drawing.RectangleF(x, y, 130, 40), title, bcolor);
             btn.TextShadowColor = null;
             this.View.AddSubview(btn);
-			this.AddBindings(btn, "{'TouchUpInside': {'Path' : '" + command + "'}}");             
+			this.AddBindings(btn, "{'TouchUpInside': {'Path' : '" + command + "'}}");     
         }      
-        
     }
 }
 
