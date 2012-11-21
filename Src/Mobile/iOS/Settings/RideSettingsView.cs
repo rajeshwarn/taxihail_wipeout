@@ -36,7 +36,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             base.ViewDidLoad();
             var button = new MonoTouch.UIKit.UIBarButtonItem(Resources.DoneButton, UIBarButtonItemStyle.Plain, delegate
             {
-                ViewModel.CloseCommand.Execute();
+                ViewModel.SaveCommand.Execute();
             });
             NavigationItem.HidesBackButton = true;
             NavigationItem.RightBarButtonItem = button;
@@ -90,7 +90,10 @@ namespace apcurium.MK.Booking.Mobile.Client
                 foreach (ListItem vType in ViewModel.Vehicles)
                 {
                     var item = new RadioElementWithId(vType.Id, vType.Display);
-                    item.Tapped += ()=> ViewModel.SetVehiculeType.Execute(item.Id);
+                    item.Tapped += ()=> {
+                        ViewModel.SetVehiculeType.Execute(item.Id);
+                        ((UINavigationController)this.ParentViewController).PopViewControllerAnimated(true);
+                    };
                     vehiculeTypes.Add(item);
                     if (ViewModel.VehicleTypeId == vType.Id)
                     {
@@ -100,14 +103,18 @@ namespace apcurium.MK.Booking.Mobile.Client
 
                 var vehiculeTypeEntry = new CustomRootElement(Resources.RideSettingsVehiculeType, new RadioGroup(selected));
                 vehiculeTypeEntry.Add(vehiculeTypes);
-        
+
+
                 var chargeTypes = new SectionWithBackground(Resources.RideSettingsChargeType);
 
                 selected = 0;
                 foreach (ListItem pay in ViewModel.Payments)
                 {
                     var item = new RadioElementWithId(pay.Id, pay.Display);
-                    item.Tapped += () => ViewModel.SetChargeType.Execute(pay.Id);
+                    item.Tapped += () => {
+                        ViewModel.SetChargeType.Execute(pay.Id);
+                        ((UINavigationController)this.ParentViewController).PopViewControllerAnimated(true);
+                    };
                     chargeTypes.Add(item);
                     if (ViewModel.ChargeTypeId == pay.Id)
                     {

@@ -53,43 +53,40 @@ namespace apcurium.MK.Booking.Mobile
             }
         }
 
-        private string _name;
         public string Name {
             get {
                 return _bookingSettings.Name;
             }
             set {
-                if(value != _name)
+                if(value != _bookingSettings.Name)
                 {
-                    _name = value;
+                    _bookingSettings.Name = value;
                     FirePropertyChanged("Name");
                 }
             }
         }
 
-        private string _phone;
         public string Phone {
             get {
                 return _bookingSettings.Phone;
             }
             set {
-                if(value != _phone)
+                if(value != _bookingSettings.Phone)
                 {
-                    _phone = value;
+                    _bookingSettings.Phone = value;
                     FirePropertyChanged("Phone");
                 }
             }
         }
 
-        private int _passengers;
         public int Passengers {
             get {
                 return _bookingSettings.Passengers;
             }
             set {
-                if(value != _passengers)
+                if(value != _bookingSettings.Passengers)
                 {
-                    _passengers = value;
+                    _bookingSettings.Passengers = value;
                     FirePropertyChanged("Passengers");
                 }
             }
@@ -124,6 +121,18 @@ namespace apcurium.MK.Booking.Mobile
 
                     _bookingSettings.ProviderId = id;
 
+                });
+            }
+        }
+
+        public IMvxCommand SaveCommand
+        {
+            get
+            {
+                
+                return new MvxRelayCommand(() => 
+                                           {
+                    ReturnResult(_bookingSettings);
                 });
             }
         }
