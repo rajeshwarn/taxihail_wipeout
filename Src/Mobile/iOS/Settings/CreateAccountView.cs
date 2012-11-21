@@ -285,7 +285,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                     
                     _menu = new CustomRootElement(Resources.GetValue("View_SignUp_Label"));
                     
-                    _settings = new Section(Resources.CreateAccoutTitle);
+					_settings = new Section(Resources.GetValue("View_SignUp_Label"));
 
                     _menu.Add(_settings);
                    

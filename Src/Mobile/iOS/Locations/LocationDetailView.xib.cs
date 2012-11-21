@@ -267,9 +267,12 @@ namespace apcurium.MK.Booking.Mobile.Client
                     txtRingCode.Text = _data.RingCode;
                     txtName.Text = _data.FriendlyName;
                 }
-
-
             }
+			if(_data.Id.Equals(Guid.Empty))
+			{
+				btnDelete.Hidden = true;
+				btnBook.Hidden = true;
+			}
         }
         #endregion
     }
