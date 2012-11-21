@@ -18,6 +18,7 @@ namespace apcurium.Tools.Localization.UpdateTool
         const string AndroidRelativePath = @"\mk-taxi\Src\Mobile\Android\Resources\Values\String.xml";
         const string iOSRelativePath = @"\mk-taxi\Src\Mobile\iOS\en.lproj\Localizable.strings";
         const string MasterResxRelativePath = @"\mk-taxi\Src\LocalizationTool\Master.resx";
+        const string AppSettings = @"\mk-taxi\Src\Mobile\Common\Settings\Settings.json";
 
         static void Main(string[] args)
         {
