@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             Data = data;
         }
 
-        private BookingSettings Data
+        public BookingSettings Data
         {
             get;
             set;

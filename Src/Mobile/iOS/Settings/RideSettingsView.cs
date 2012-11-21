@@ -1,10 +1,6 @@
 using System;
 using System.Linq;
-using MonoTouch.Dialog;
 using MonoTouch.UIKit;
-
-//using apcurium.Framework.Extensions;
-using apcurium.Framework;
 using TinyIoC;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Entity;
@@ -17,6 +13,7 @@ using Cirrious.MvvmCross.Views;
 using apcurium.MK.Common.Extensions;
 using System.Collections.Generic;
 using Cirrious.MvvmCross.Dialog.Touch;
+using Cirrious.MvvmCross.Dialog.Touch.Dialog.Elements;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -25,11 +22,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         public event EventHandler Closed;
 
         private BookingSettings _settings;
-        private RightAlignedEntryElement _nameEntry;
-        private RightAlignedEntryElement _phoneEntry;
-        private RightAlignedEntryElement _passengerEntry;
         private CustomRootElement _vehiculeTypeEntry;
-        private RightAlignedEntryElement _numberOfTaxiEntry;
         private int _selected = 0;
         private bool _autoSave;
         private bool _companyOnly;
@@ -44,20 +37,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             : base(request, style, root, pushing)
         {
             
-        }
-
-        public RideSettingsView(Account account, bool autoSave, bool companyOnly) : base(null)
-        {
-            _companyOnly = companyOnly;
-            _autoSave = autoSave;
-            _settings = account.Settings.Copy();
-        }
-
-        public RideSettingsView(BookingSettings settings, bool autoSave, bool companyOnly) : base(null)
-        {
-            _companyOnly = companyOnly;
-            _autoSave = autoSave;
-            _settings = settings.Copy();
         }
 
         public BookingSettings Result
@@ -75,6 +54,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             NavigationItem.HidesBackButton = true;
             NavigationItem.RightBarButtonItem = button;
             NavigationItem.Title = Resources.GetValue("View_RideSettings");
+
+            
         }
 
         public override void ViewWillAppear(bool animated)
@@ -99,11 +80,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         private void CloseView()
         {
-            _nameEntry.Maybe(() => _nameEntry.FetchValue());            
-            _phoneEntry.Maybe(() => _phoneEntry.FetchValue());          
-            _numberOfTaxiEntry.Maybe(() => _numberOfTaxiEntry.FetchValue());
-            _passengerEntry.Maybe(() => _passengerEntry.FetchValue());
-            
             
             if (Closed != null)
             {
@@ -199,48 +175,20 @@ namespace apcurium.MK.Booking.Mobile.Client
                         var menu = new RootElement(this.Title);
                         var settings = new Section(Resources.DefaultRideSettingsViewTitle);
                     
-                        _nameEntry = new RightAlignedEntryElement(Resources.RideSettingsName, "", _settings.Name);
-                        _nameEntry.KeyboardType = MonoTouch.UIKit.UIKeyboardType.Default;
-                        _nameEntry.Changed += delegate
-                        {
-                            _nameEntry.FetchValue();
-                            _settings.Name = _nameEntry.Value;
-                            ApplyChanges();
-                        };
-                    
-                        _phoneEntry = new RightAlignedEntryElement(Resources.RideSettingsPhone, "", _settings.Phone);
-                        _phoneEntry.Changed += delegate
-                        {
-                            _phoneEntry.FetchValue();
-                            _settings.Phone = _phoneEntry.Value;
-                            ApplyChanges();
-                        };
-                    
-                        _phoneEntry.KeyboardType = MonoTouch.UIKit.UIKeyboardType.PhonePad;
-        
-                        _passengerEntry = new RightAlignedEntryElement(Resources.RideSettingsPassengers, "", _settings.Passengers.ToString());
-                        _passengerEntry.KeyboardType = MonoTouch.UIKit.UIKeyboardType.NumberPad;
-                    
-                        _passengerEntry.Changed += delegate
-                        {
-                            _passengerEntry.FetchValue();
-                            int r;
-                            if (int.TryParse(_passengerEntry.Value, out r))
-                            {
-                                _settings.Passengers = r;                           
-                            }
-                            else
-                            {
-                                _passengerEntry.Value = "1";
-                            }
-                            ApplyChanges();
+                        var nameEntry = new RightAlignedMvvmCrossEntryElement(Resources.RideSettingsName, "");
+                        nameEntry.KeyboardType = MonoTouch.UIKit.UIKeyboardType.Default;
+                        nameEntry.Bind (this, "{'Value':{'Path':'Name','Mode':'TwoWay'}}");
                         
-                        };
                     
+                        var phoneEntry = new RightAlignedMvvmCrossEntryElement(Resources.RideSettingsPhone, "");
+                        phoneEntry.KeyboardType = MonoTouch.UIKit.UIKeyboardType.PhonePad;
+                        phoneEntry.Bind (this, "{'Value':{'Path':'Phone','Mode':'TwoWay'}}");
+        
+                        var passengerEntry = new RightAlignedMvvmCrossEntryElement(Resources.RideSettingsPassengers, "");
+                        passengerEntry.KeyboardType = MonoTouch.UIKit.UIKeyboardType.NumberPad;
+                        passengerEntry.Bind (this, "{'Value':{'Path':'Passengers','Mode':'TwoWay'}}");
+                        
                         var vehiculeTypes = new SectionWithBackground(Resources.RideSettingsVehiculeType);
-                    
-                    
-                    
                         int index = 0;
                     
                     
@@ -309,10 +257,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 //                      settings.Add ( _updatePasswordElement );
 //                  }
 
-                        settings.Add(_nameEntry);
-                        settings.Add(_phoneEntry);
-                    
-                        settings.Add(_passengerEntry);
+                        settings.Add(nameEntry);
+                        settings.Add(phoneEntry);
+                        settings.Add(passengerEntry);
                         settings.Add(_vehiculeTypeEntry);
                         settings.Add(chargeTypeEntry);
                 
@@ -351,12 +298,6 @@ namespace apcurium.MK.Booking.Mobile.Client
         private void SetCompany(RadioElementWithId item)
         {
             _settings.ProviderId = item.Id;
-            ApplyChanges();
-        }
-
-        private void SetException(CheckboxElement item)
-        {
-            //_settings.Exceptions.Single( e => e.Id == item.ItemId ).Value = !_settings.Exceptions.Single( e => e.Id == item.ItemId ).Value;
             ApplyChanges();
         }
     

@@ -6,14 +6,21 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using TinyMessenger;
 using apcurium.MK.Booking.Mobile.Messages;
 using TinyIoC;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using Cirrious.MvvmCross.Interfaces.ServiceProvider;
+using Cirrious.MvvmCross.ExtensionMethods;
+using Params = System.Collections.Generic.Dictionary<string, string>;
+using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-	public class PanelViewModel : BaseViewModel
+	public class PanelViewModel : BaseViewModel,
+        IMvxServiceConsumer<IAccountService>
 	{
-
+        readonly IAccountService _accountService;
 		public PanelViewModel ()
 		{
+            _accountService = this.GetService<IAccountService>();
 		}
 
 		public void SignOut()
@@ -32,6 +39,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				});
 			}
 		}
+
+        public IMvxCommand NavigateToUpdateProfile
+        {
+            get
+            {
+                return new MvxRelayCommand(()=>{
+                    RequestSubNavigate<RideSettingsViewModel, BookingSettings>(new Params{
+                        { "bookingSettings", _accountService.CurrentAccount.Settings.ToJson()  }
+                    }, result => {
+                        if(result!=null)
+                        {
+                            _accountService.UpdateSettings(result);
+                        }
+                    });
+                });
+            }
+        }
 
 
 	}
