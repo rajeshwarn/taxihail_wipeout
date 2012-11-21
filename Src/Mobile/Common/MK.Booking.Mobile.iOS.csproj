@@ -199,7 +199,6 @@
     <Compile Include="ViewModels\RideSettingsViewModel.cs" />
     <Compile Include="BindingConverter\PhoneNumberConverter.cs" />
     <Compile Include="ViewModels\CreateAcccountViewModel.cs" />
-    <Compile Include="Messages\AccountCreated.cs" />
     <Compile Include="BindingConverter\EmptyToResourceConverter.cs" />
     <Compile Include="BindingConverter\BoolVisibilityInverter.cs" />
   </ItemGroup>

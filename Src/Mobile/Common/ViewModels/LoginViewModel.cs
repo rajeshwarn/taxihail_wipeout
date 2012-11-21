@@ -11,6 +11,8 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using System.Threading;
+using apcurium.MK.Booking.Api.Contract.Requests;
+using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -80,27 +82,81 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			try
 			{
                 TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("SignIn with server {0}", TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl);            
-                var s =TinyIoCContainer.Current.Resolve<IMessageService>();
-                s.ShowProgress(true);				
+                MessageService.ShowProgress(true);				
 				var account = _accountService.GetAccount(Email, Password);
 
                 if ( account != null )
                 {
                     this.Password = "";
                     RequestNavigate<BookViewModel>(true );
-                }
-               
+                }              
 				
 			}
 			finally
-			{
-				
+			{				
 				TinyIoCContainer.Current.Resolve<IMessageService>().ShowProgress(false);
-
 			}
 		}
 
-       
+        public MvxRelayCommand ResetPassword
+        {
+            get
+            {
+                return new MvxRelayCommand(() => 
+                { 
+                    RequestSubNavigate<ResetPasswordViewModel, string>(null, email => {
+                        if(email.HasValue())
+                        {
+                            Email = email;
+                        }
+                    });  
+                });
+            }
+        }
+
+        public MvxRelayCommand<RegisterAccount> Signup
+        {
+            get
+            {
+                return new MvxRelayCommand<RegisterAccount>(registerDataFromSocial => 
+                { 
+                    string serialized = null;
+                    if (registerDataFromSocial != null) {
+                        serialized = JsonSerializer.SerializeToString(registerDataFromSocial);
+                    }
+                    RequestSubNavigate<CreateAcccountViewModel, RegisterAccount>(new Dictionary<string, string>{ {"data", serialized } }, OnAccountCreated);  
+                });
+            }
+        }
+
+        void OnAccountCreated (RegisterAccount data)
+        {
+            if (data != null) {
+                if (data.FacebookId.HasValue () || data.TwitterId.HasValue ()) {
+                    var facebookId = data.FacebookId;
+                    var twitterId = data.TwitterId;
+                    MessageService.ShowProgress(true);                   
+                    try {
+                        Thread.Sleep (500);                             
+                        var service = TinyIoCContainer.Current.Resolve<IAccountService> ();
+                        Account account;
+                        if (facebookId.HasValue ()) {
+                            account = service.GetFacebookAccount (facebookId);
+                        } else {
+                            account = service.GetTwitterAccount (twitterId);
+                        }
+                        if (account != null) {
+                            RequestNavigate<BookViewModel>(true );
+                        }
+                    } catch {
+                    } finally {                 
+                        MessageService.ShowProgress(false);  
+                    }
+                } else {
+                    Email = data.Email;
+                }
+            }
+        }
 
 	}
 }

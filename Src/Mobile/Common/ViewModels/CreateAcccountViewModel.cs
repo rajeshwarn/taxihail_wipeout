@@ -12,14 +12,14 @@ using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile
 {
-	public class CreateAcccountViewModel: BaseViewModel
+    public class CreateAcccountViewModel: BaseSubViewModel<RegisterAccount>
 	{
 		public RegisterAccount Data { get; set; }
 		public string ConfirmPassword { get; set; }
 
 		public bool HasSocialInfo { get { return Data.FacebookId.HasValue () || Data.TwitterId.HasValue (); } }
 
-		public CreateAcccountViewModel (string data)
+        public CreateAcccountViewModel (string messageId, string data) : base(messageId)
 		{
 			if (data != null) {
 				Data = JsonSerializer.DeserializeFromString<RegisterAccount>(data);
@@ -95,8 +95,7 @@ namespace apcurium.MK.Booking.Mobile
 							{
 								MessageService.ShowMessage(Resources.GetString("AccountActivationTitle"), Resources.GetString("AccountActivationMessage"));
 							}
-							TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new AccountCreated(this, Data));
-							Close();
+                            ReturnResult(Data);
 						}
 						else
 						{

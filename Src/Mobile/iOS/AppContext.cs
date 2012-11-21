@@ -35,18 +35,6 @@ namespace apcurium.MK.Booking.Mobile.Client
         public UIWindow Window  { get; private set; }
             
 
-        public string LastEmail
-        {
-            get { return NSUserDefaults.StandardUserDefaults.StringForKey("TaxiMobile.LastEmailUsed"); }
-            set
-            {
-                NSUserDefaults.StandardUserDefaults.SetStringOrClear(
-                    value,
-                    "TaxiMobile.LastEmailUsed"
-                );
-            }
-        }
-
         public string LoggedInEmail
         {
             get

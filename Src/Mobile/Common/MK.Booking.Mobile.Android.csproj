@@ -199,7 +199,6 @@
     <Compile Include="ViewModels\BaseSubViewModel.cs" />
     <Compile Include="ViewModels\RideSettingsViewModel.cs" />
     <Compile Include="ViewModels\CreateAcccountViewModel.cs" />
-    <Compile Include="Messages\AccountCreated.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">
