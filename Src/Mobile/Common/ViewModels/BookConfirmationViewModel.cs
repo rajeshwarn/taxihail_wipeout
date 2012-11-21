@@ -204,6 +204,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private string FormatDateTime(DateTime? pickupDate )
 		{
+
 			string format = "{0:ddd, MMM d}, {0:h:mm tt}";
 			string result = pickupDate.HasValue ? string.Format(format, pickupDate.Value) : Resources.GetString("TimeNow");
 			return result;
