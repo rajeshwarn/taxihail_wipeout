@@ -53,8 +53,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             var searchAddressText = FindViewById<AutoCompleteBindableTextView>(Resource.Id.SearchAddressText);
 
             var button = FindViewById<Button>(Resource.Id.eraseTextButton);
-            button.Click += (sender, args) => searchAddressText.Text = "";
-            var drawable = new BitmapDrawable();
+            button.Click += (sender, args) =>
+                                {
+                                    searchAddressText.Text = "";
+                                    ViewModel.AddressViewModels.ToList().Clear();
+                                    ViewModel.HistoricAddressViewModels.ToList().Clear();
+                                    _listView.NotifyAll();
+                                    _historicListView.NotifyAll();
+                                };
 
              subscription = Observable.FromEventPattern<TextChangedEventArgs>(searchAddressText
                                                                                  , "TextChanged").Select(

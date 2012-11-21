@@ -7,11 +7,13 @@ using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.Views;
+using ServiceStack.Text;
 using TinyIoC;
 using TinyMessenger;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Messages;
+using apcurium.MK.Booking.Mobile.Models;
 using apcurium.MK.Common.Extensions;
 using System.Threading.Tasks;
 
@@ -58,7 +60,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return new MvxRelayCommand<OrderViewModel>(vm => RequestNavigate<HistoryDetailViewModel>(new { orderId = vm.Id}));
+                return new MvxRelayCommand<OrderViewModel>(vm =>
+                                                               {
+                                                                   var serial = JsonSerializer.SerializeToString(vm, typeof(OrderViewModel));
+                                                                   RequestNavigate<HistoryDetailViewModel>(
+                                                                       new {orderId = vm.Id, serialized = serial});
+                                                               });
             }
         }
     }

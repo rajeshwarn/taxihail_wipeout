@@ -225,8 +225,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public HistoryDetailViewModel(string orderId)
+        public HistoryDetailViewModel(string orderId, string serialized = null)
         {
+               if (serialized != null)
+            {
+                this.Order = JsonSerializer.DeserializeFromString<Order>(serialized);
+            }
 			Guid id;
             if(Guid.TryParse(orderId, out id)) {
 				OrderId = id;
@@ -235,7 +239,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public void Initialize ()
 		{
-			LoadOrder();
+            if (Order == null)
+            {
+                LoadOrder();
+            }
 			LoadStatus();
 			TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<OrderRated>(RefreshOrderStatus);
 		}
