@@ -158,7 +158,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             var service = TinyIoCContainer.Current.Resolve<IAccountService>();
             var companyList = service.GetCompaniesList();
 
-            MessageService.ShowDialog("Pick a provider", companyList, x=>x.Display, result => {
+            MessageService.ShowDialog(Resources.GetString("ChooseProviderDialogTitle"), companyList, x=>x.Display, result => {
                 if(result != null) {
                     Order.Settings.ProviderId =  result.Id;
                 }
