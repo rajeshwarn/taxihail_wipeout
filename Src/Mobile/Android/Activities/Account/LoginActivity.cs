@@ -19,6 +19,10 @@ using Cirrious.MvvmCross.Views;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.Interfaces.Views;
 using Cirrious.MvvmCross.Binding.Android.Views;
+using apcurium.MK.Booking.Api.Contract.Requests;
+using ServiceStack.Text;
+using System.Collections.Generic;
+using TinyMessenger;
 
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
@@ -26,7 +30,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
     [Activity(Label = "Login", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait, LaunchMode=Android.Content.PM.LaunchMode.SingleInstance)]
     public class LoginActivity : BaseBindingActivity<LoginViewModel>
     {
-
         public static LoginActivity TopInstance{get;set;}
 
         private ProgressDialog _progressDialog;
@@ -53,12 +56,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
         {
             get { return Resource.String.View_SignIn; }
         }
-        
-        
 
         protected override void OnViewModelSet()
         {
-
             TopInstance = this;
 
             SetContentView(Resource.Layout.View_Login);
@@ -77,21 +77,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
             _progressDialog = new ProgressDialog(this);
 
-            if (AppContext.Current.LastEmail.HasValue())
-            {
-                FindViewById<EditText>(Resource.Id.Username).Text = AppContext.Current.LastEmail;
-            }
-
-
-            FindViewById<Button>(Resource.Id.SignUpButton).Click += new EventHandler(SignUpButton_Click);
-
-            FindViewById<Button>(Resource.Id.SignInButton).Click += new EventHandler(btnSignIn_Click);
-
-            FindViewById<Button>(Resource.Id.ForgotPasswordButton).Click += new EventHandler(ForgotPassword_Click);
+            FindViewById<Button>(Resource.Id.SignInButton).Click += new EventHandler(btnSignIn_Click);            
 
             if (TinyIoCContainer.Current.Resolve<IAppSettings>().FacebookEnabled)
             {
-
                 FindViewById<Button>(Resource.Id.FacebookButton).Click += delegate
                 {
                     ShowProgressDialog();
@@ -107,15 +96,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                     {
                         facebook.Connect("email, publish_stream, publish_actions");
                     }
-
                 };
             }
             else
             {
                 FindViewById<Button>(Resource.Id.FacebookButton).Visibility = ViewStates.Gone;
             }
-
-
 
             if (TinyIoCContainer.Current.Resolve<IAppSettings>().CanChangeServiceUrl)
             {
@@ -156,7 +142,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             {
                 if (e.IsConnected)
                 {
-
                     twitterService.GetUserInfos(CheckIfTwitterAccountExist);
                 }
             };
@@ -212,8 +197,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
         {
             RunOnUiThread(() =>
             {
-
-                _progressDialog = ProgressDialog.Show(this, "", this.GetString(Resource.String.LoadingMessage), true, false);
+				_progressDialog = ProgressDialog.Show(this, "", this.GetString(Resource.String.LoadingMessage), true, false);
                 _progressDialog.Show();
 
             });
@@ -230,12 +214,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             input.Text = TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl;
             alert.SetView(input);
 
-
-
             alert.SetPositiveButton("Ok", (s, e) =>
                 {
-                    var serverUrl = input.Text;
-                    
+                    var serverUrl = input.Text;                    
                     TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl = serverUrl;
                 });
 
@@ -256,15 +237,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
         private void CheckIfFacebookAccountExist(UserInfos infos)
         {
-            //ShowProgressDialog();
-
-            string err = "";
+            string err = string.Empty;
             Api.Contract.Resources.Account account = null;
 
             account = TinyIoCContainer.Current.Resolve<IAccountService>().GetFacebookAccount( infos.Id);
             if (account != null)
             {                
-                AppContext.Current.LastEmail = account.Email;
                 RunOnUiThread(() =>
                     {
                         _progressDialog.Dismiss();
@@ -277,8 +255,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             else
             {
                 RunOnUiThread(() => _progressDialog.Dismiss());
-                DoSignUpWithParameter(infos.Firstname, infos.Lastname, infos.Email, "",
-                                      FacebookId: infos.Id);
+                DoSignUpWithParameter(infos.Firstname, infos.Lastname, infos.Email,string.Empty, facebookId: infos.Id);
             }
         }
 
@@ -296,10 +273,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                 account = null;
             }
             if (account != null)
-            {
-                
-                AppContext.Current.LastEmail = account.Email;
-
+            {               
                 RunOnUiThread(() =>
                 {
                     _progressDialog.Dismiss();
@@ -312,19 +286,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             else
             {
                 RunOnUiThread(() => _progressDialog.Dismiss());
-                DoSignUpWithParameter(infos.Firstname, infos.Lastname, infos.Email, "", TwitterId: infos.Id);
+                DoSignUpWithParameter(infos.Firstname, infos.Lastname, infos.Email, "", twitterId: infos.Id);
             }
-            //}, true));
         }
 
         protected override void OnResume()
         {
-            base.OnResume();
-
-            if (AppContext.Current.LastEmail.HasValue())
-            {
-                FindViewById<EditText>(Resource.Id.Username).Text = AppContext.Current.LastEmail;
-            }
+            base.OnResume();            
         }
 
 
@@ -339,19 +307,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             GC.Collect();
         }
       
-        void SignUpButton_Click(object sender, EventArgs e)
-        {
-            DoSignUp();
-        }
-        void ForgotPassword_Click(object sender, EventArgs e)
-        {
-            PasswordRecovery();
-        }
-
-        private void PasswordRecovery()
-        {
-            StartActivity(typeof(PasswordRecoveryActivity));
-        }
+               
         void btnSignIn_Click(object sender, EventArgs e)
         {
             DoSignIn();
@@ -371,8 +327,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                 {                    
                     var account = TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().GetAccount(txtUserName.Text, txtPassword.Text);
                     if (account != null)
-                    {                        
-                        AppContext.Current.LastEmail = account.Email;
+                    { 
                         RunOnUiThread(() =>
                         {
                             var dispatch = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
@@ -382,34 +337,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                         return;
                     }
                 }
-
-                
-
-
             }, true);
         }
-        private void DoSignUp()
-        {
-            StartActivity(typeof(SignUpActivity));
-        }
 
-        private void DoSignUpWithParameter(string FirstName, string LastName, string Email, string Phone, string TwitterId = "", string FacebookId = "")
+
+        private void DoSignUpWithParameter(string firstName, string lastName, string email, string phone, string twitterId = "", string facebookId = "")
         {
-            Intent intent = new Intent(this, typeof(SignUpActivity));
-            Bundle b = new Bundle();
-            b.PutString("firstName", FirstName);
-            b.PutString("lastName", LastName);
-            b.PutString("email", Email);
-            b.PutString("phone", Phone);
-            b.PutString("twitterId", TwitterId);
-            b.PutString("facebookId", FacebookId);
-            intent.PutExtras(b);
-            if (TwitterId != string.Empty
-                || FacebookId != string.Empty)
-            {
-                Finish();
-            }
-            StartActivity(intent);
+			var registerData = new RegisterAccount{
+				FacebookId = facebookId,
+				TwitterId = twitterId,
+				Name = firstName + " " + lastName,
+				Phone = phone,
+				Email = email
+			};
+
+			ViewModel.Signup.Execute(registerData);
+
+			if (twitterId != string.Empty
+			    || facebookId != string.Empty)
+			{
+				Finish();
+			}            
         }
     }
 }

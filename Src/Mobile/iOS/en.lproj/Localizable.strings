@@ -284,6 +284,7 @@
 ;"TwitterButton"="Sign In with Twitter"
 ;"StatusCannotBeDisplayed"="Cannot get status. Please call provider."
 ;"UnexpectedError"="Unexpected error"
+;"ChooseProviderDialogTitle"="Pick a provider"
 ;"LocalContactCannotBeResolverMessage"="Cannot find the address associated to this contact."
 ;"ChangeBookingSettingsButton"="Change booking settings"
 ;"HistoryViewTitle"="History"

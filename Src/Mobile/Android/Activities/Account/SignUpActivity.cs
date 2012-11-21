@@ -23,192 +23,24 @@ using Cirrious.MvvmCross.Views;
 using Cirrious.MvvmCross.Interfaces.Views;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
+using TinyMessenger;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {
     [Activity(Label = "Sign Up", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
-    public class SignUpActivity : BaseActivity
+	public class SignUpActivity : BaseBindingActivity<CreateAcccountViewModel> 
     {
         private bool IsCreatedFromSocial;
-        private Bundle b;
-
+        
         protected override int ViewTitleResourceId
         {
             get { return Resource.String.View_SignUp; }
         }
 
-
-        protected override void OnCreate(Bundle bundle)
-        {
-            base.OnCreate(bundle);
-            SetContentView(Resource.Layout.View_SignUp);
-            IsCreatedFromSocial = false;
-            b = Intent.Extras;
-            //Si on vient de facebook ou twitter on prerempli les champs
-            if (b != null)
-            {
-                FindViewById<EditText>(Resource.Id.SignUpEditEmail).Text = b.GetString("email");
-                FindViewById<EditText>(Resource.Id.SignUpName).Text = b.GetString("firstName") + " " + b.GetString("lastName");
-                FindViewById<EditText>(Resource.Id.SignUpPhone).Text = b.GetString("phone");
-                FindViewById<EditText>(Resource.Id.SignUpPassword).Visibility = ViewStates.Invisible;
-                FindViewById<EditText>(Resource.Id.SignUpConfirmPassword).Visibility = ViewStates.Invisible;
-                IsCreatedFromSocial = true;
-            }
-
-            var btnCreate = FindViewById<Button>(Resource.Id.SignUpCreateBtn);
-
-            btnCreate.Click += new EventHandler(Create_Click);
-        }
-
-
-        void Create_Click(object sender, EventArgs e)
-        {
-            if (!EmailValidation.IsValid(FindViewById<EditText>(Resource.Id.SignUpEditEmail).Text))
-            {
-                this.ShowAlert(Resource.String.CreateAccountInvalidDataTitle, Resource.String.ResetPasswordInvalidDataMessage);
-            }
-            else if (!ValidatePassword() && !IsCreatedFromSocial)
-            {
-                this.ShowAlert(Resource.String.CreateAccountInvalidDataTitle, Resource.String.CreateAccountInvalidPassword);
-            }
-            else if (!ValidatePhoneNumber())
-            {
-                this.ShowAlert(Resource.String.CreateAccountInvalidDataTitle, Resource.String.CreateAccountInvalidPhone);
-            }
-            else if (!ValidateOtherFields())
-            {
-                this.ShowAlert(Resource.String.CreateAccountInvalidDataTitle, Resource.String.CreateAccountEmptyField);
-            }
-            else
-            {
-                ThreadHelper.ExecuteInThread(this, () =>
-                    {
-                        var service = TinyIoCContainer.Current.Resolve<IAccountService>();
-                        var data = GetRegisterAccount();
-                        string error = "";
-                        service.Register(data, out error);
-                        if (error.HasValue())
-                        {
-                           // this.RunOnUiThread(() => this.ShowAlert(this.GetString(Resource.String.CreateAccountErrorMessage), error));
-                            return;
-                        }
-                        AppContext.Current.LastEmail = data.Email;
-                        this.RunOnUiThread(() =>
-                                               {
-
-
-                                                   if (IsCreatedFromSocial)
-                                                   {
-                                                       Thread.Sleep(500);
-
-                                                       Api.Contract.Resources.Account account = null;
-                                                       if (data.TwitterId.HasValue())
-                                                       {
-                                                           account = TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().GetTwitterAccount(data.TwitterId);
-                                                       }
-                                                       else if (data.FacebookId.HasValue())
-                                                       {
-                                                           account = TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().GetFacebookAccount(data.FacebookId);
-                                                       }
-
-                                                       if (account != null)
-                                                       {                                                           
-                                                           AppContext.Current.LastEmail = account.Email;
-
-                                                           RunOnUiThread(() =>
-                                                           {
-                                                               var dispatch = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
-                                                               dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(BookViewModel), null, false, MvxRequestedBy.UserAction));
-                                                               Finish();
-                                                           });
-                                                       }
-                                                       else
-                                                       {
-                                                           Finish();
-                                                       }
-
-
-
-
-                                                   }
-                                                   else
-                                                   {
-                                                       this.ShowAlert(Resource.String.AccountActivationTitle, Resource.String.AccountActivationMessage, () => Finish());
-                                                   }
-
-                                               });
-                    }, true);
-            }
-
-        }
-        private RegisterAccount GetRegisterAccount()
-        {
-            var data = new RegisterAccount();
-            data.Password = FindViewById<EditText>(Resource.Id.SignUpPassword).Text;
-            data.Email = FindViewById<EditText>(Resource.Id.SignUpEditEmail).Text;
-            data.Name = FindViewById<EditText>(Resource.Id.SignUpName).Text;
-            data.Phone = FindViewById<EditText>(Resource.Id.SignUpPhone).Text;
-            if (IsCreatedFromSocial)
-            {
-                data.FacebookId = string.IsNullOrEmpty(b.GetString("facebookId")) ? null : b.GetString("facebookId");
-                data.TwitterId = string.IsNullOrEmpty(b.GetString("twitterId")) ? null : b.GetString("twitterId");
-            }
-
-            return data;
-
-        }
-
-        private bool ValidatePhoneNumber()
-        {
-            var phone = FindViewById<EditText>(Resource.Id.SignUpPhone).Text;
-            return phone.Count(Char.IsDigit) >= 10;
-        }
-
-        private bool ValidateOtherFields()
-        {
-            var password = FindViewById<EditText>(Resource.Id.SignUpPassword).Text;
-            var confirmPassword = FindViewById<EditText>(Resource.Id.SignUpConfirmPassword).Text;
-            var email = FindViewById<EditText>(Resource.Id.SignUpEditEmail).Text;
-            var name = FindViewById<EditText>(Resource.Id.SignUpName).Text;
-            var phone = FindViewById<EditText>(Resource.Id.SignUpPhone).Text;
-            if (!IsCreatedFromSocial)
-            {
-                if ((string.IsNullOrEmpty(password)) || (string.IsNullOrEmpty(confirmPassword)) ||
-                (string.IsNullOrEmpty(email)) || (string.IsNullOrEmpty(name)) ||
-                (string.IsNullOrEmpty(phone)))
-                {
-                    return false;
-                }
-            }
-
-            if (IsCreatedFromSocial)
-            {
-                if ((string.IsNullOrEmpty(email)) || (string.IsNullOrEmpty(name)) ||
-                (string.IsNullOrEmpty(phone)))
-                {
-                    return false;
-                }
-            }
-
-            return true;
-
-        }
-
-        private bool ValidatePassword()
-        {
-            var password = FindViewById<EditText>(Resource.Id.SignUpPassword).Text;
-            var confirmPassword = FindViewById<EditText>(Resource.Id.SignUpConfirmPassword).Text;
-            if (password.Length >= 6 && password.Equals(confirmPassword))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-
-        }
-
-
-    }
+		protected override void OnViewModelSet()
+		{
+			SetContentView(Resource.Layout.View_SignUp);
+			IsCreatedFromSocial = ViewModel.HasSocialInfo;
+		}		    
+	}
 }

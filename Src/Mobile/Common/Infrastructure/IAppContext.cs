@@ -6,8 +6,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 {
 	public interface IAppContext
 	{
-        string LoggedInEmail { get; set; }
-		string LastEmail { get; set; }
+        string LoggedInEmail { get; set; }		
 		string LoggedInPassword { get; set; }
 	}
 }

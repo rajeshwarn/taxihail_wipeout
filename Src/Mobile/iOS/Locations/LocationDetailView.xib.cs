@@ -13,37 +13,36 @@ using apcurium.MK.Common.Diagnostic;
 using TinyMessenger;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Common.Entity;
+using Cirrious.MvvmCross.Binding.Touch.Views;
+using Cirrious.MvvmCross.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-    public partial class LocationDetailView : UIViewController
+	public partial class LocationDetailView : MvxBindingTouchViewController<LocationDetailViewModel>
     {
         #region Constructors
-
-        // The IntPtr and initWithCoder constructors are required for items that need 
-        // to be able to be created from a xib rather than from managed code
-
-        private Address _data;
 
         public event EventHandler Canceled;
         public event EventHandler Saved;
         public event EventHandler Deleted;
 
-        public LocationDetailView(IntPtr handle) : base(handle)
-        {
-            Initialize();
-        }
-
-        [Export("initWithCoder:")]
-        public LocationDetailView(NSCoder coder) : base(coder)
-        {
-            Initialize();
-        }
-
-        public LocationDetailView() : base("LocationDetailView", null)
-        {
-            Initialize();
-        }
+		public LocationDetailView () 
+			: base(new MvxShowViewModelRequest<LocationDetailViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
+		{
+			Initialize();
+		}
+		
+		public LocationDetailView (MvxShowViewModelRequest request) 
+			: base(request)
+		{
+			Initialize();
+		}
+		
+		public LocationDetailView (MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
+			: base(request, nibName, bundle)
+		{
+			Initialize();
+		}
 
         void Initialize()
         {
@@ -129,11 +128,11 @@ namespace apcurium.MK.Booking.Mobile.Client
         private void UpdateData()
         {
             
-            _data.FullAddress = txtAddress.Text;
+            ViewModel.Address.FullAddress = txtAddress.Text;
             Console.WriteLine("UpdateData" + txtAddress.Text);
-            _data.Apartment = txtAptNumber.Text;
-            _data.RingCode = txtRingCode.Text;
-            _data.FriendlyName = txtName.Text;
+			ViewModel.Address.Apartment = txtAptNumber.Text;
+			ViewModel.Address.RingCode = txtRingCode.Text;
+			ViewModel.Address.FriendlyName = txtName.Text;
         }
 
         void BtnDeleteTouchUpInside(object sender, EventArgs e)
@@ -213,8 +212,8 @@ namespace apcurium.MK.Booking.Mobile.Client
                         
                         UpdateData();
                         
-                        _data.Latitude = location.Latitude;
-                        _data.Longitude = location.Longitude;
+                        ViewModel.Address.Latitude = location.Latitude;
+						ViewModel.Address.Longitude = location.Longitude;
                         
                         if (Saved != null)
                         {                            
@@ -246,26 +245,21 @@ namespace apcurium.MK.Booking.Mobile.Client
     
         void BtnBookTouchUpInside(object sender, EventArgs e)
         {
-            var order = new Order();
-            order.PickupAddress = _data;
-            var account = TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount;
-            order.Settings = account.Settings;
-            InvokeOnMainThread(() => NavigationController.PopToRootViewController(true));
-            InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new RebookRequested(this, order)));
+			ViewModel.RebookOrder.Execute();
         }
 
         public void LoadData(Address data)
         {
-            _data = data;
+			ViewModel.Address = data;
             
             if (txtName != null)
             {
-                if ((!_data.Id.IsNullOrEmpty()) || (_data.IsHistoric))
+				if ((!ViewModel.Address.Id.IsNullOrEmpty()) || (ViewModel.Address.IsHistoric))
                 {
-                    txtAddress.Text = _data.FullAddress;
-                    txtAptNumber.Text = _data.Apartment;
-                    txtRingCode.Text = _data.RingCode;
-                    txtName.Text = _data.FriendlyName;
+					txtAddress.Text = ViewModel.Address.FullAddress;
+					txtAptNumber.Text = ViewModel.Address.Apartment;
+					txtRingCode.Text = ViewModel.Address.RingCode;
+					txtName.Text = ViewModel.Address.FriendlyName;
                 }
 
 

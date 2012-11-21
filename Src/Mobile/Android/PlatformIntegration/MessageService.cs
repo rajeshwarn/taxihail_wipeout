@@ -88,5 +88,36 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             toast.Show();
         }
 
+		public void ShowDialog<T> (string title, IEnumerable<T> items, Func<T, string> displayNameSelector, Action<T> onResult)
+		{
+			var messenger = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>();
+			var list = items.ToArray();
+			if (displayNameSelector == null) {
+				displayNameSelector = x => x.ToString ();
+			}
+			if (onResult == null) {
+				onResult = result => {};
+			}
+
+			string[] displayList = list.Select(displayNameSelector).ToArray();
+
+
+			var ownerId = Guid.NewGuid().ToString();
+			var i = new Intent(Context, typeof(SelectItemDialogActivity));
+			i.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
+			i.PutExtra("Title", title);
+			i.PutExtra("Items", displayList);
+			i.PutExtra("OwnerId", ownerId );
+			TinyMessageSubscriptionToken token = null;
+			token = messenger.Subscribe<SubNavigationResultMessage<int>>(msg =>
+			                                                                    {
+				if (token != null)
+					messenger.Unsubscribe<SubNavigationResultMessage<int>>(token);
+
+				onResult(list[msg.Result]);
+			},
+			msg => msg.MessageId == ownerId);
+			Context.StartActivity(i); 
+		}
     }
 }

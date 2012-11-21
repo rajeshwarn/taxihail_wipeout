@@ -39,15 +39,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             return app;
         }
         
-
-//        protected override void FillValueConverters(Cirrious.MvvmCross.Binding.Interfaces.Binders.IMvxValueConverterRegistry registry)
-//        {
-//            base.FillValueConverters(registry);
-//            
-//            var filler = new MvxInstanceBasedValueConverterRegistryFiller(registry);
-//            filler.AddFieldConverters(typeof(Converters));
-//        }
-        
 		protected override void InitializeApp ()
 		{
 			base.InitializeApp ();

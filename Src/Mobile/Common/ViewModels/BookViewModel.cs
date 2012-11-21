@@ -4,7 +4,6 @@ using Cirrious.MvvmCross.ExtensionMethods;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.Interfaces.Views;
 using Cirrious.MvvmCross.ViewModels;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -39,16 +38,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private IBookingService _bookingService;
         private bool _pickupIsActive = true;
         private bool _dropoffIsActive = false;
-        private string _version;
         private IEnumerable<CoordinateViewModel> _mapCenter;
         private string _fareEstimate;
 
         public BookViewModel()
         {
-            InitializeViewModel();
-
-
             MessengerHub.Subscribe<LogOutRequested>(msg => Logout.Execute());
+			InitializeOrder();
+
+            CenterMap(true);
+            CheckVersion();
 
             PickupIsActive = true;
             DropoffIsActive = false;
@@ -71,12 +70,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public BookViewModel(string order)
         {
-            InitializeViewModel(JsonSerializer.DeserializeFromString<CreateOrder>(order));
-            
+			Order = JsonSerializer.DeserializeFromString<CreateOrder>(order);   
             Rebook(JsonSerializer.DeserializeFromString<Order>(order));
         }
 
-        private void InitializeViewModel(CreateOrder order = null)
+        protected override void Initialize()
         {
             if(_initialized) throw new InvalidOperationException();
             _initialized = true;
@@ -84,15 +82,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _accountService = this.GetService<IAccountService>();
             _geolocator = this.GetService<ILocationService>();
             _bookingService = this.GetService<IBookingService>();
-
-            if (order != null)
-            {
-                Order = order;
-            }
-            else
-            {
-                InitializeOrder();
-            }
 
             Pickup = new BookAddressViewModel(() => Order.PickupAddress, address => Order.PickupAddress = address, _geolocator)
             {
@@ -112,8 +101,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             _fareEstimate = Resources.GetString("NoFareText");
 
-            CenterMap(true);
-            CheckVersion();
             ThreadPool.QueueUserWorkItem(UpdateServerInfo);
         }
 
@@ -167,7 +154,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
 
-        public void NewOrder()
+        private void NewOrder()
         {
             RequestMainThreadAction(() =>
                 {
@@ -213,14 +200,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             FirePropertyChanged(() => Pickup);
             FirePropertyChanged(() => Dropoff);
             FirePropertyChanged(() => SelectedAddress);
-
-
             FirePropertyChanged(() => PickupIsActive);
             FirePropertyChanged(() => DropoffIsActive);
-
-
 			FirePropertyChanged(() => FareEstimate);
-
             FirePropertyChanged(() => IsInTheFuture);
         }
 
@@ -372,10 +354,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         
         private void CenterMap(bool changeZoom)
         {
-            var c = new ObservableCollection<string>();
-            
-            
-
             if (DropoffIsActive && Dropoff.Model.HasValidCoordinate())
             {
                 MapCenter = new CoordinateViewModel[] { new CoordinateViewModel { Coordinate = new Coordinate { Latitude = Dropoff.Model.Latitude, Longitude = Dropoff.Model.Longitude }, Zoom = changeZoom ? ZoomLevel.Close : ZoomLevel.DontChange } };
@@ -392,38 +370,36 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         }
 
-
-
-
         private void UpdateServerInfo(object state)
         {
-
-            _serverInfo = TinyIoCContainer.Current.Resolve<IApplicationInfoService>().GetAppInfo();
-            _version = null;
-            FirePropertyChanged(() => Version);
+			string appVersion = TinyIoCContainer.Current.Resolve<IPackageInfo>().Version;
+			var versionFormat = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("Version");
+            var serverInfo = TinyIoCContainer.Current.Resolve<IApplicationInfoService>().GetAppInfo();
+			var version = string.Format(versionFormat, appVersion);
+			if (serverInfo != null)
+			{
+				var serverVersionFormat = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("ServerInfo");
+				version += " " + string.Format(serverVersionFormat, serverInfo.SiteName, serverInfo.Version);
+			}
+			Version =  version;
 
         }
-        private ApplicationInfo _serverInfo;
 
-        public string Version
-        {
-            get
-            {
-                if (_version == null)
-                {
-                    string appVersion = TinyIoCContainer.Current.Resolve<IPackageInfo>().Version;
-                    var versionFormat = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("Version");
-                    _version = string.Format(versionFormat, appVersion);
-
-                    if (_serverInfo != null)
-                    {
-                        var serverVersionFormat = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("ServerInfo");
-                        _version += " " + string.Format(serverVersionFormat, _serverInfo.SiteName, _serverInfo.Version);
-                    }
-                }
-                return _version;
-                //android:text="v1.0.10 (Atlanta Checker v1.0.1)"           
-            }
+        private string _version;
+        public string Version {
+			get
+			{
+				return _version;
+				//android:text="v1.0.10 (Atlanta Checker v1.0.1)"           
+			}
+			set 
+			{
+				if(value != _version)
+				{
+					_version = value;
+					FirePropertyChanged("Versio");
+				}
+			}
         }
 
         public bool IsInTheFuture { get { return Order.PickupDate.HasValue; } }
