@@ -65,10 +65,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public void SignOut ()
         {
-
-
-            
-        
             try {
                 var facebook = TinyIoCContainer.Current.Resolve<IFacebookService> ();
                 if (facebook.IsConnected) {

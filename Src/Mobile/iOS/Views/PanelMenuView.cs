@@ -128,7 +128,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			});
 			sect.AddItem( new SingleLineItem( Resources.View_Book_Menu_SignOut ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
 					AnimateMenu();
-					AppContext.Current.WarnEstimate = true;
 					ViewModel.SignOut();
 
 				})				

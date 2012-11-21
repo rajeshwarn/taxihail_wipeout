@@ -99,6 +99,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             View.BringSubviewToFront( bottomBar );    
 
 
+            ViewModel.ShowChooseProviderDialog();
 
             this.AddBindings(new Dictionary<object, string>() {
                 { btnCancel, "{'TouchUpInside':{'Path':'CancelOrderCommand'}}"},                
