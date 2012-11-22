@@ -88,9 +88,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			});
             sect.AddItem( new SingleLineItem( Resources.GetValue("View_Book_Menu_CallDispatch")   ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
 					AnimateMenu();
-					var call = new Confirmation ();
-                    call.Call ( TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumber(account.Settings.ProviderId.Value),
-                               TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumberDisplay (account.Settings.ProviderId.Value));
+                    ViewModel.Call.Execute();
 				})				
 			});
             sect.AddItem( new SingleLineItem( Resources.GetValue("View_Book_Menu_AboutUs") ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
