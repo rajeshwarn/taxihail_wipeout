@@ -140,6 +140,5 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 });
             }
         }
-
     }
 }

@@ -87,6 +87,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 				{ txtPickupDate, "{'Text':{'Path': 'PickUpDateTxt'}}"}
 			});
 
+            ViewModel.OnViewLoaded();
+
         }
     }
 }
