@@ -178,8 +178,6 @@
     <Compile Include="History\HistoryDetailView.xib.designer.cs">
       <DependentUpon>HistoryDetailView.xib</DependentUpon>
     </Compile>
-    <Compile Include="History\HistoryTableViewDataSource.cs" />
-    <Compile Include="History\HistoryTableViewDelegate.cs" />
     <Compile Include="Locations\LocationTableViewDataSource.cs" />
     <Compile Include="Locations\LocationTableViewDelegate.cs" />
     <Compile Include="Settings\LocationTableViewDataSource.cs" />
