@@ -201,6 +201,7 @@
     <Compile Include="ViewModels\CreateAcccountViewModel.cs" />
     <Compile Include="BindingConverter\EmptyToResourceConverter.cs" />
     <Compile Include="BindingConverter\BoolVisibilityInverter.cs" />
+    <Compile Include="Infrastructure\IPhoneService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">

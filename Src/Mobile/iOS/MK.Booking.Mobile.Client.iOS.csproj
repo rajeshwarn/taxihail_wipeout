@@ -322,6 +322,7 @@
     <Compile Include="Views\HistoryDetailView.xib.designer.cs">
       <DependentUpon>HistoryDetailView.xib</DependentUpon>
     </Compile>
+    <Compile Include="PlatformIntegration\PhoneService.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
