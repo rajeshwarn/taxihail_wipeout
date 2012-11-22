@@ -224,7 +224,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public HistoryDetailViewModel(string orderId, string serialized = null)
+        public HistoryDetailViewModel(string orderId)
         {
             
 			Guid id;

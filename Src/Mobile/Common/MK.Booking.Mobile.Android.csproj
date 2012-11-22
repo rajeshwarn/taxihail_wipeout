@@ -252,5 +252,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Converters\" />
+    <Folder Include="Fakes\" />
   </ItemGroup>
 </Project>

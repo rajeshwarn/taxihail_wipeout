@@ -10,6 +10,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
         void ShowMessage(string title, string message);
 		void ShowMessage(string title, string message, string additionnalActionButtonTitle, Action additionalAction );
         void ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction);
+        void ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction, string neutralButtonTitle, Action neutralAction);
 		void ShowProgress( bool show );
 		void ShowProgress( bool show, Action cancel );
 

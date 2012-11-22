@@ -23,6 +23,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         public void Call(string phoneNumber)
         {
             Intent callIntent = new Intent(Intent.ActionCall);
+            callIntent.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
             callIntent.SetData(Android.Net.Uri.Parse("tel:" + phoneNumber));
             Context.StartActivity(callIntent);
         }

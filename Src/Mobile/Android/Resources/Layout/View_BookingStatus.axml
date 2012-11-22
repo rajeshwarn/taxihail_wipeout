@@ -31,7 +31,8 @@
                     android:text="@string/StatusDescription"
                     android:layout_width="match_parent"
                     android:gravity="center_horizontal"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content" 
+                    local:MvxBind="{&apos;Text&apos;: {&apos;Path&apos;: &apos;ConfirmationNoTxt'}}" />
             </LinearLayout>
             <FrameLayout
                 android:id="@+id/statusMapSection"
@@ -46,6 +47,7 @@
                     android:layout_height="fill_parent"
                     android:apiKey="@string/GoogleMapKey"
                     android:enabled="true"
+                    local:MvxBind="{'Pickup':{'Path':'Pickup.Model'}, 'TaxiLocation':{'Path':'OrderStatusDetail'}, 'Center':{'Path':'MapCenter'} }"
                     android:clickable="true" />
                 <LinearLayout
                     android:layout_weight="0.11"
@@ -62,7 +64,8 @@
                         android:text="Order #"
                         android:gravity="center_horizontal|center_vertical"
                         style="@style/BigTitleText"
-                        android:layout_gravity="center_horizontal|top" />
+                        android:layout_gravity="center_horizontal|top" 
+                        local:MvxBind="{&apos;Text&apos;: {&apos;Path&apos;: &apos;StatusInfoText'}}" />
                 </LinearLayout>
                 <View
                     android:layout_width="fill_parent"
@@ -85,7 +88,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="35dip"
                         android:layout_weight="0.5"
-                        android:text="@string/StatusCancelButton" />
+                        android:text="@string/StatusCancelButton" 
+                        local:MvxBind="{&apos;Click&apos;: {&apos;Path&apos;: &apos;CancelOrder&apos;}}" />
                     <Button
                         android:id="@+id/CallBtn"
                         style="@style/ButtonText"
@@ -93,7 +97,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="35dip"
                         android:layout_weight="0.5"
-                        android:text="@string/StatusCallButton" />
+                        android:text="@string/StatusCallButton" 
+                        local:MvxBind="{&apos;Click&apos;: {&apos;Path&apos;: &apos;CallCompany&apos;}, 'Visibility':{'Path':'IsCallButtonVisible', 'Converter':'Visibility'}}" />
                     <Button
                         android:id="@+id/NewRideBtn"
                         style="@style/ButtonText"

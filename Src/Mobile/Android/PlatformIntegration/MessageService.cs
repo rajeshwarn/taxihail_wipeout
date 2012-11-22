@@ -69,8 +69,45 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
             Context.StartActivity(i); 
         }
+
+        public void ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction, string neutralButtonTitle, Action neutralAction)
+        {
+            var ownerId = Guid.NewGuid().ToString();
+            var i = new Intent(Context, typeof(AlertDialogActivity));
+            i.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
+            i.PutExtra("Title", title);
+            i.PutExtra("Message", message);
+
+            i.PutExtra("PositiveButtonTitle", positiveButtonTitle);
+            i.PutExtra("NegativeButtonTitle", negativeButtonTitle);
+            i.PutExtra("NeutralButtonTitle", neutralButtonTitle);
+            i.PutExtra("OwnerId", ownerId);
+
+            TinyMessageSubscriptionToken token = null;
+            token = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<ActivityCompleted>(a =>
+            {
+                if (a.Content == positiveButtonTitle)
+                {
+                    positiveAction();
+                }
+                else if (a.Content == negativeButtonTitle)
+                {
+                    negativeAction();
+                }
+                else if (a.Content == neutralButtonTitle)
+                {
+                    neutralAction();
+                }
+                TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Unsubscribe<ActivityCompleted>(token);
+                token.Dispose();
+            }, a => a.OwnerId == ownerId);
+
+            Context.StartActivity(i);
+        }
+
         public void ShowMessage(string title, string message,  string additionnalActionButtonTitle, Action additionalAction)
-        {            
+        {  
+          
         }
 
         public void ShowProgress(bool show)

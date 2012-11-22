@@ -69,6 +69,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
             dialog.Show();
         }
 
+        public static void Show(Activity owner, string title, string message, string positiveButtonTitle, EventHandler<DialogClickEventArgs> positiveClickHandler, string negativeButtonTitle, EventHandler<DialogClickEventArgs> negativeClickHandler, string neutralButtonTitle, EventHandler<DialogClickEventArgs> neutralClickHandler)
+        {
+            var dialog = new AlertDialog.Builder(owner);
+            dialog.SetPositiveButton(positiveButtonTitle, positiveClickHandler);
+            dialog.SetNegativeButton(negativeButtonTitle, negativeClickHandler);
+            dialog.SetNeutralButton(neutralButtonTitle, neutralClickHandler);
+            dialog.SetTitle(title);
+            if (message.HasValue())
+            {
+                dialog.SetMessage(message);
+            }
+            dialog.Create();
+            dialog.Show();
+        }
+
 		public static void Show(Activity owner, string title, string[] items, EventHandler<DialogClickEventArgs> onItemSelected)
 		{
 			if (onItemSelected == null) {

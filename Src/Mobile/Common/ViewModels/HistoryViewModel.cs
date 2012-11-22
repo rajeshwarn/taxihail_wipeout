@@ -76,12 +76,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return new MvxRelayCommand<OrderViewModel>(vm =>
-                                                               {
-                                                                   var serial = JsonSerializer.SerializeToString(vm, typeof(OrderViewModel));
-                                                                   RequestNavigate<HistoryDetailViewModel>(
-                                                                       new {orderId = vm.Id, serialized = serial});
-                                                               });
+                return new MvxRelayCommand<OrderViewModel>(vm => RequestNavigate<HistoryDetailViewModel>(
+                    new {orderId = vm.Id}));
             }
         }
     }

@@ -563,8 +563,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void ShowStatusActivity(Order data, OrderStatusDetail orderInfo)
         {
-            var param = new Dictionary<string, object>() { { "order", data }, { "orderInfo", orderInfo } };
-            NavigateToOrderStatus.Execute(param);
+            RequestNavigate<BookingStatusViewModel>(new
+            {
+                order = data.ToJson(),
+                orderStatus = orderInfo.ToJson()
+            });
         }
 
    }
