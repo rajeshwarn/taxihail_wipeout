@@ -36,8 +36,6 @@ namespace apcurium.MK.Booking.Mobile.Client
                    'IsLast':{'Path':'IsLast'}
 				}";
 
-		private CancellationTokenSource _searchCancellationToken = new CancellationTokenSource();
-		
 		#region Constructors
 
 		public HistoryTabView() 
