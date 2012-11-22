@@ -67,11 +67,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             FindViewById<Button>(Resource.Id.settingsAbout).Click -= About_Click;
             FindViewById<Button>(Resource.Id.settingsAbout).Click += About_Click;
-
-            FindViewById<Button>(Resource.Id.settingsSupport).Click -= ReportProblem_Click;
-            FindViewById<Button>(Resource.Id.settingsSupport).Click += ReportProblem_Click;       
-
-
         }
 
         private void BookUsingAddress(Address address)
@@ -103,36 +98,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             ToggleSettingsScreenVisibility();
         }       
 
-
-        private void ReportProblem_Click(object sender, EventArgs e)
-        {
-
-
-            ThreadHelper.ExecuteInThread(this, () =>
-            {
-                Intent emailIntent = new Intent(Intent.ActionSend);
-
-                emailIntent.SetType("message/rfc822");
-                emailIntent.PutExtra(Intent.ExtraEmail, new String[] { TinyIoCContainer.Current.Resolve<IAppSettings>().SupportEmail });
-                emailIntent.PutExtra(Intent.ExtraCc, new String[] { AppContext.Current.LoggedInEmail });
-                emailIntent.PutExtra(Intent.ExtraSubject, Resources.GetString(Resource.String.TechSupportEmailTitle));
-
-                emailIntent.PutExtra(Intent.ExtraStream, Android.Net.Uri.Parse(@"file:///" + LoggerImpl.LogFilename));
-                if (TinyIoCContainer.Current.Resolve<IAppSettings>().ErrorLogEnabled && File.Exists(TinyIoCContainer.Current.Resolve<IAppSettings>().ErrorLog))
-                {
-                    emailIntent.PutExtra(Intent.ExtraStream, Android.Net.Uri.Parse(TinyIoCContainer.Current.Resolve<IAppSettings>().ErrorLog));
-                }
-                try
-                {
-                    StartActivity(Intent.CreateChooser(emailIntent, this.GetString(Resource.String.SendEmail)));
-                    LoggerImpl.FlushNextWrite();
-                }
-                catch (Android.Content.ActivityNotFoundException ex)
-                {
-                    RunOnUiThread(() => Toast.MakeText(this, Resources.GetString(Resource.String.NoMailClient), ToastLength.Short).Show());
-                }
-            }, false);
-        }
 
         protected override void OnDestroy()
         {

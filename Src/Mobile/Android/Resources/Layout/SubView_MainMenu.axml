@@ -85,6 +85,7 @@
                     android:gravity="left|center_vertical" />
                 <Button
                     android:id="@+id/settingsSupport"
+                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;Panel.ReportProblem&apos;}}"
                     style="@style/BigTitleTextBlack"
                     android:background="@drawable/cell_middle_button_state"
                     android:layout_width="fill_parent"
