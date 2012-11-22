@@ -55,8 +55,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 				}
 				detail.LoadData (_lastSelected);
 
-				detail.Deleted += HandleDetailDeleted;
-				detail.Saved += HandleDetailSaved;
+				//detail.Deleted += HandleDetailDeleted;
+				//detail.Saved += HandleDetailSaved;
 				
 			}
 
@@ -85,7 +85,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			return header;
 		}
 
-		void HandleDetailSaved (object sender, EventArgs e)
+		/*void HandleDetailSaved (object sender, EventArgs e)
 		{
             _parent.Update (_lastSelected);             
 		}
@@ -94,7 +94,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		void HandleDetailDeleted (object sender, EventArgs e)
 		{
 			_parent.Delete (_lastSelected);
-		}
+		}*/
 		
 	}
 }

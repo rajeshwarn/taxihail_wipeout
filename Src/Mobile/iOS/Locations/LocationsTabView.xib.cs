@@ -15,6 +15,10 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using System.Threading.Tasks;
 using System.Threading;
+using Cirrious.MvvmCross.Binding.Touch.Views;
+using Cirrious.MvvmCross.Views;
+using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
+using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -24,29 +28,48 @@ namespace apcurium.MK.Booking.Mobile.Client
 		FavoritesSelector,
 		NearbyPlacesSelector
 	}
-	public partial class LocationsTabView : UIViewController
+    public partial class LocationsTabView : MvxBindingTouchViewController<MyLocationsViewModel>
 	{
+        const string CellBindingText = @"
+                {
+                   'FirstLine':{'Path':'Address.FriendlyName'},
+                   'SecondLine':{'Path':'Address.FullAddress'},
+                   'ShowRightArrow':{'Path':'ShowRightArrow'},
+                   'ShowPlusSign':{'Path':'ShowPlusSign'},
+                   'IsFirst':{'Path':'IsFirst'},
+                   'IsLast':{'Path':'IsLast'},
+                }";
+
 		private CancellationTokenSource _searchCancellationToken = new CancellationTokenSource();
 		public event EventHandler Canceled;
 		public event EventHandler LocationSelected;
 		#region Constructors
 
-		// The IntPtr and initWithCoder constructors are required for items that need 
-		// to be able to be created from a xib rather than from managed code
+        public LocationsTabView () 
+            : base(new MvxShowViewModelRequest<MyLocationsViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
+        {
+            Initialize();
+        }
+        
+        public LocationsTabView (MvxShowViewModelRequest request) 
+            : base(request)
+        {
+            Initialize();
+        }
+        
+        public LocationsTabView (MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
+            : base(request, nibName, bundle)
+        {
+            Initialize();
+        }
 
-		public LocationsTabView (IntPtr handle) : base(handle)
-		{
-		}
-
-		[Export("initWithCoder:")]
-		public LocationsTabView (NSCoder coder) : base(coder)
-		{
-		}
-
-		public LocationsTabView () : base("LocationsTabView", null)
-		{
-			Mode = LocationsTabViewMode.Edit;
-		}
+        #endregion
+        
+        
+        void Initialize()
+        {
+            Mode = LocationsTabViewMode.Edit;
+        }
 
 		public LocationsTabViewMode Mode { get; set; }
 
@@ -70,8 +93,24 @@ namespace apcurium.MK.Booking.Mobile.Client
 			tableLocations.SectionHeaderHeight = 33;
 
             tableLocations.BackgroundView = new UIView { BackgroundColor = UIColor.Clear };
-            tableLocations.BackgroundColor = UIColor.Clear; // UIColor.Red ;
-			LoadGridData ();
+            tableLocations.BackgroundColor = UIColor.Clear;
+			//LoadGridData ();
+
+            var source = new BindableAddressTableViewSource(
+                tableLocations, 
+                UITableViewCellStyle.Subtitle,
+                new NSString("LocationCell"), 
+                CellBindingText,
+                UITableViewCellAccessory.None);
+            
+            source.CellCreator = (tview , iPath, state ) => { return new TwoLinesCell( new NSString("LocationCell"), CellBindingText ); };
+
+            this.AddBindings(new Dictionary<object, string>{
+                { source, "{'ItemsSource': {'Path': 'AllAddresses'}}" },
+            });
+
+            tableLocations.Source = source;
+            ViewModel.OnViewLoaded();
 	
 		}
 
@@ -88,7 +127,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			}
 		}
 
-		private void LoadGridData ()
+		/*private void LoadGridData ()
 		{
 			if (tableLocations == null) {
 				return;
@@ -98,7 +137,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			var task = new Task<InfoStructure>(() => GetLocationsStructure(), _searchCancellationToken.Token);
 			task.ContinueWith(RefreshData);
 			task.Start();
-		}
+		}*/
 
 		public void RefreshData( Task<InfoStructure>  task )
 		{
@@ -127,7 +166,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		public List<Address> LocationList { get; set; }
 
-		private List<Address> GetFavorites()
+		/*private List<Address> GetFavorites()
 		{
 			List<Address> favorites = new List<Address>();
             var adrs =TinyIoCContainer.Current.Resolve<IAccountService>().GetFavoriteAddresses();
@@ -153,7 +192,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 historics.AddRange( adrs );
             }
             return historics;
-		}
+		}*/
 
 
 		public void DoSelect ( Address data )
@@ -167,7 +206,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		public Address SelectedLocation { get; set; }
 
-		public void Delete (Address data)
+		/*public void Delete (Address data)
 		{			
 			if( data.IsHistoric )
 			{
@@ -185,39 +224,31 @@ namespace apcurium.MK.Booking.Mobile.Client
             TinyIoCContainer.Current.Resolve<IAccountService>().UpdateAddress( data );     
             data.IsHistoric= false;
             LoadGridData ();
-		}
+		}*/
 
 		
-		private InfoStructure GetLocationsStructure()
+		/*private InfoStructure GetLocationsStructure()
 		{
 			var structure = new InfoStructure( 44, false );
 
-			if( Mode == LocationsTabViewMode.Edit || Mode == LocationsTabViewMode.FavoritesSelector )
-			{
-				var favorites = GetFavorites();
-				var historic = GetHistoric();
+			
+			var favorites = GetFavorites();
+			var historic = GetHistoric();
 
-				var sectFav = structure.AddSection( Resources.FavoriteLocationsTitle );
+			var sectFav = structure.AddSection( Resources.FavoriteLocationsTitle );
 
-				sectFav.SectionLabelTextColor = AppStyle.TitleTextColor.ToArray();
-				sectFav.EditMode = Mode == LocationsTabViewMode.Edit;
-				favorites.ForEach( item => sectFav.AddItem( new TwoLinesAddressItem( item.Id,  item.FriendlyName, item.FullAddress ) { Data = item, ShowRightArrow = Mode == LocationsTabViewMode.Edit && !item.Id.IsNullOrEmpty(), ShowPlusSign = item.Id.IsNullOrEmpty() } ) );
+			sectFav.SectionLabelTextColor = AppStyle.TitleTextColor.ToArray();
+			sectFav.EditMode = Mode == LocationsTabViewMode.Edit;
+			favorites.ForEach( item => sectFav.AddItem( new TwoLinesAddressItem( item.Id,  item.FriendlyName, item.FullAddress ) { Data = item, ShowRightArrow = Mode == LocationsTabViewMode.Edit && !item.Id.IsNullOrEmpty(), ShowPlusSign = item.Id.IsNullOrEmpty() } ) );
 
-				var sectHist = structure.AddSection( Resources.LocationHistoryTitle );
-				sectHist.SectionLabelTextColor = AppStyle.TitleTextColor.ToArray();
-				sectHist.EditMode = Mode == LocationsTabViewMode.Edit;
-                historic.ForEach( item => sectHist.AddItem( new TwoLinesAddressItem( item.Id,    item.FriendlyName, item.FullAddress ) { Data = item, ShowRightArrow = Mode == LocationsTabViewMode.Edit && !item.Id.IsNullOrEmpty(), Enabled = () => !item.Id.IsNullOrEmpty() } ) );
-			}
-			else if( Mode == LocationsTabViewMode.NearbyPlacesSelector )
-			{
-				var sectNearby = structure.AddSection( Resources.NearbyPlacesTitle );
-				sectNearby.EditMode = false;
-				LocationList.ForEach( item => sectNearby.AddItem( new TwoLinesAddressItem( item.Id,  item.FriendlyName, item.FullAddress ) { Data = item } ) );
-			}
+			var sectHist = structure.AddSection( Resources.LocationHistoryTitle );
+			sectHist.SectionLabelTextColor = AppStyle.TitleTextColor.ToArray();
+			sectHist.EditMode = Mode == LocationsTabViewMode.Edit;
+            historic.ForEach( item => sectHist.AddItem( new TwoLinesAddressItem( item.Id,    item.FriendlyName, item.FullAddress ) { Data = item, ShowRightArrow = Mode == LocationsTabViewMode.Edit && !item.Id.IsNullOrEmpty(), Enabled = () => !item.Id.IsNullOrEmpty() } ) );
+
 
 			return structure;
-		}
-		#endregion
+		}*/
 	}
 }
 
