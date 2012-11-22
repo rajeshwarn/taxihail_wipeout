@@ -86,6 +86,7 @@
                 <Button
                     android:id="@+id/SignInButton"
                     style="@style/ButtonText"
+                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;SignInCommand&apos;}}"
                     android:background="@drawable/newBlackButton"
                     android:nextFocusDown="@+id/Username"
                     android:nextFocusUp="@+id/Password"
@@ -127,6 +128,7 @@
                 android:layout_height="wrap_content">
                 <Button
                     android:id="@+id/FacebookButton"
+                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;LoginFacebook&apos;}}"
                     style="@style/ButtonText"
                     android:background="@drawable/social_media_login_btn_state"
                     android:text="@string/FacebookButton"
@@ -147,6 +149,7 @@
                     android:visibility="invisible" />
                 <Button
                     android:id="@+id/TwitterButton"
+                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;LoginTwitter&apos;}}"
                     style="@style/ButtonText"
                     android:background="@drawable/social_media_login_btn_state"
                     android:text="@string/TwitterButton"

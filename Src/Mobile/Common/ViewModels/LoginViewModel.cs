@@ -38,6 +38,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _twitterService.ConnectionStatusChanged += HandleTwitterConnectionStatusChanged;
 		}
 
+		public override void OnViewLoaded ()
+		{
+			base.OnViewLoaded ();
+		}
+
         private void CheckVersion()
         {
             ThreadPool.QueueUserWorkItem(o =>
