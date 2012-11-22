@@ -71,9 +71,7 @@ namespace apcurium.MK.Booking.Mobile
             TinyIoCContainer.Current.Register<IPlaces, Places>();
             TinyIoCContainer.Current.Register<IMapsApiClient, MapsApiClient>();
             TinyIoCContainer.Current.Register<IPopularAddressProvider, PopularAddressProvider>();
-            TinyIoCContainer.Current.Register<ITariffProvider, TariffProvider>();
-
-            
+            TinyIoCContainer.Current.Register<ITariffProvider, TariffProvider>();           
 
         }
         

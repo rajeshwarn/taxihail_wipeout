@@ -62,7 +62,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get
             {
                 return new MvxRelayCommand(()=>{
-                    Action call = () => {};
+                    Action call = () => { TinyIoCContainer.Current.Resolve<IPhoneService>().Call(Settings.PhoneNumber(_accountService.CurrentAccount.Settings.ProviderId.Value)); };
                     MessageService.ShowMessage(string.Empty, 
                                                Settings.PhoneNumberDisplay(_accountService.CurrentAccount.Settings.ProviderId.Value), 
                                                Resources.GetString("CallButton"), 
