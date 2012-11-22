@@ -54,9 +54,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             var menu = FindViewById(Resource.Id.BookSettingsMenu);
             menu.Visibility = ViewStates.Gone;
-
-
-
             _menuWidth = WindowManager.DefaultDisplay.Width - 100;
             _menuIsShown = false;
 
@@ -72,13 +69,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             FindViewById<Button>(Resource.Id.settingsAbout).Click += About_Click;
 
             FindViewById<Button>(Resource.Id.settingsSupport).Click -= ReportProblem_Click;
-            FindViewById<Button>(Resource.Id.settingsSupport).Click += ReportProblem_Click;
+            FindViewById<Button>(Resource.Id.settingsSupport).Click += ReportProblem_Click;       
 
-            FindViewById<Button>(Resource.Id.settingsProfile).Click -= ChangeDefaultRideSettings_Click;
-            FindViewById<Button>(Resource.Id.settingsProfile).Click += ChangeDefaultRideSettings_Click;
-
-            FindViewById<Button>(Resource.Id.settingsCallCompany).Click -= CallCie_Click;
-            FindViewById<Button>(Resource.Id.settingsCallCompany).Click += CallCie_Click;
 
         }
 
@@ -109,26 +101,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             var intent = new Intent().SetClass(this, typeof(AboutActivity));
             StartActivity(intent);
             ToggleSettingsScreenVisibility();
-        }
-
-        private void CallCie_Click(object sender, EventArgs e)
-        {
-            var currentAccount = TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount;
-            if (currentAccount.Settings.ProviderId.HasValue)
-            {
-                RunOnUiThread(() => AlertDialogHelper.Show(this, "", TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumberDisplay(currentAccount.Settings.ProviderId.Value), this.GetString(Resource.String.CallButton), CallCie, this.GetString(Resource.String.CancelBoutton), delegate { }));
-            }
-
-        }
-
-        private void CallCie(object sender, EventArgs e)
-        {
-            var currentAccount = TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount;
-            Intent callIntent = new Intent(Intent.ActionCall, Android.Net.Uri.Parse("tel:" + TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumberDisplay(currentAccount.Settings.ProviderId.Value)));
-            StartActivity(callIntent);
-            ToggleSettingsScreenVisibility();
-
-        }
+        }       
 
 
         private void ReportProblem_Click(object sender, EventArgs e)
@@ -161,11 +134,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }, false);
         }
 
-        private void ChangeDefaultRideSettings_Click(object sender, EventArgs e)
-        {
-            var intent = new Intent().SetClass(this, typeof(RideSettingsActivity));
-            StartActivity(intent);
-        }
         protected override void OnDestroy()
         {
             base.OnDestroy();

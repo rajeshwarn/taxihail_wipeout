@@ -14,8 +14,7 @@ using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-	public class PanelViewModel : BaseViewModel,
-        IMvxServiceConsumer<IAccountService>
+	public class PanelViewModel : BaseViewModel, IMvxServiceConsumer<IAccountService>
 	{
         readonly IAccountService _accountService;
 		public PanelViewModel ()
@@ -23,11 +22,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _accountService = this.GetService<IAccountService>();
 		}
 
-		public void SignOut()
+		public MvxRelayCommand SignOut
 		{
-            TinyIoCContainer.Current.Resolve<IAccountService>().SignOut();			
-			InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new LogOutRequested(this)));
+			get
+			{
+				return new MvxRelayCommand(() =>
+			{
+					_accountService.SignOut();			
+					InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new LogOutRequested(this)));
+				});
+			}
 		}
+
 
 		public MvxRelayCommand NavigateToOrderHistory
 		{
@@ -37,6 +43,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				                           {
 					RequestNavigate<HistoryViewModel>();
 				});
+			}
+		}
+
+		private string _version;
+		public string Version {
+			get
+			{
+				return _version;				         
+			}
+			set 
+			{
+				if(value != _version)
+				{
+					_version = value;
+					FirePropertyChanged("Version");
+				}
 			}
 		}
 
@@ -62,7 +84,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get
             {
                 return new MvxRelayCommand(()=>{
-                    Action call = () => { TinyIoCContainer.Current.Resolve<IPhoneService>().Call(Settings.PhoneNumber(_accountService.CurrentAccount.Settings.ProviderId.Value)); };
+                    Action call = () => { PhoneService.Call(Settings.PhoneNumber(_accountService.CurrentAccount.Settings.ProviderId.Value)); };
                     MessageService.ShowMessage(string.Empty, 
                                                Settings.PhoneNumberDisplay(_accountService.CurrentAccount.Settings.ProviderId.Value), 
                                                Resources.GetString("CallButton"), 
