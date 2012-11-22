@@ -345,7 +345,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     {
                         TinyIoCContainer.Current.Resolve<IAccountService>().SignOut();       
                  
-                        RequestNavigate<LoginViewModel>(true);
                         RequestClose(this);
                     });
             }
