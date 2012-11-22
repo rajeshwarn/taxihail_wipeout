@@ -28,8 +28,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 		
 		const string CellBindingText = @"
                 {
-                   'TitleText':{'Path':'Title'},
-                   'DetailText':{'Path':'PickupAddress.FullAddress'}
+                   'FirstLine':{'Path':'Title'},
+                   'SecondLine':{'Path':'PickupAddress.FullAddress'},
+                   'ShowRightArrow':{'Path':'ShowRightArrow'},
+                   'ShowPlusSign':{'Path':'ShowPlusSign'},
+                   'IsFirst':{'Path':'IsFirst'},
+                   'IsLast':{'Path':'IsLast'}
 				}";
 
 		private CancellationTokenSource _searchCancellationToken = new CancellationTokenSource();
@@ -62,120 +66,33 @@ namespace apcurium.MK.Booking.Mobile.Client
 			lblInfo.Text = Resources.HistoryInfo;	
 			lblInfo.TextColor = AppStyle.TitleTextColor;
 			lblNoHistory.Text = Resources.NoHistoryLabel;
-			lblNoHistory.Hidden = true;
-			tableHistory.Hidden = true;
-			tableHistory.RowHeight = 35;
             tableHistory.BackgroundView = new UIView { BackgroundColor = UIColor.Clear };
-            tableHistory.BackgroundColor = UIColor.Clear; // UIColor.Red ;
+            tableHistory.BackgroundColor = UIColor.Clear;
 
-			/*ViewModel.LoadOrders().ContinueWith( t=> 
-                    {
-				InvokeOnMainThread( () => 
-				                   {
-				var source = new MvxActionBasedBindableTableViewSource(
-					tableHistory, 
-					UITableViewCellStyle.Subtitle,
-					new NSString(CELLID), 
-					CellBindingText,
-					UITableViewCellAccessory.None);
-				
-				this.AddBindings(new Dictionary<object, string>(){
-					{source, "{'ItemsSource':{'Path':'Orders'}}"} ,
-				});
-				
-				tableHistory.Source = source;
-				});
-				}
-
-			);*/
-			/*var source = new MvxActionBasedBindableTableViewSource(
+            var source = new BindableCommandTableViewSource(
 				tableHistory, 
 				UITableViewCellStyle.Subtitle,
 				new NSString(CELLID), 
 				CellBindingText,
 				UITableViewCellAccessory.None);
 			
-			source.CellCreator = (tview , iPath, state ) => { return new TwoLinesCell( CELLID, CellBindingText ); };
+			source.CellCreator = (tview , iPath, state ) => { 
+                return new TwoLinesCell( CELLID, CellBindingText ); 
+            };
 			this.AddBindings(new Dictionary<object, string>(){
-				{source, "{'ItemsSource':{'Path':'Orders'}}"} ,
+                {tableHistory, "{'Hidden': {'Path': 'HasOrders', 'Converter': 'BoolInverter'}}"},
+                {lblNoHistory, "{'Hidden': {'Path': 'HasOrders'}}"},
+                {source, "{'ItemsSource':{'Path':'Orders'}, 'SelectedCommand':{'Path':'NavigateToHistoryDetailPage'}}"} ,
 			});
 			
-			tableHistory.Source = source;*/
-
-		}
-
-
-		public string GetTitle ()
-		{
-			return Resources.HistoryViewTitle;
+			tableHistory.Source = source;
 		}
 
 		public override void ViewWillAppear (bool animated)
 		{
 			base.ViewWillAppear (animated);
-			LoadGridData();
 			NavigationController.NavigationBar.Hidden = false;
 		}
-
-		public override void ViewDidAppear (bool animated)
-		{
-			base.ViewDidAppear (animated);
-		}
-
-		private void LoadGridData ()
-		{
-			if (tableHistory == null) {
-				return;
-			}
-			TinyIoCContainer.Current.Resolve<IMessageService>().ShowProgress(true, () => CancelCurrentTask() );
-			_searchCancellationToken = new CancellationTokenSource();
-			var task = new Task<InfoStructure>(() => GetHistoricStructure(), _searchCancellationToken.Token);
-			task.ContinueWith(RefreshData);
-			ViewModel.LoadOrders().ContinueWith(t => task.Start());
-		}
-
-		public void RefreshData( Task<InfoStructure>  task )
-		{
-			if(task.IsCompleted && !task.IsCanceled)
-			{
-				InvokeOnMainThread( () => {
-					if (task.Result.Sections.ElementAt(0).Items.Count () == 0) {
-						lblNoHistory.Hidden = false;
-						tableHistory.Hidden = true;
-					} else {
-						lblNoHistory.Hidden = true;
-						tableHistory.Hidden = false;
-						
-						tableHistory.DataSource = new HistoryTableViewDataSource (task.Result);
-						tableHistory.Delegate = new HistoryTableViewDelegate (this, task.Result );
-						tableHistory.ReloadData ();
-					}
-				});
-			}
-			TinyIoCContainer.Current.Resolve<IMessageService>().ShowProgress(false);
-		}
-		
-		private void CancelCurrentTask()
-		{
-			if (_searchCancellationToken != null
-			    && _searchCancellationToken.Token.CanBeCanceled)
-			{
-				_searchCancellationToken.Cancel();
-				_searchCancellationToken.Dispose();
-				_searchCancellationToken = null;
-			}
-		}
-
-
-		private InfoStructure GetHistoricStructure()
-		{
-			var s = new InfoStructure( 50, false );
-			var sect = s.AddSection( Resources.HistoryViewTitle );
-			ViewModel.Orders.ForEach(item => sect.AddItem(new TwoLinesAddressItem(item.Id, string.Format(Resources.OrderHistoryListTitle, item.IBSOrderId.Value.ToString(), item.PickupDate), item.PickupAddress.FullAddress) { Data = item }));
-
-			return s;
-		}
-
 	}
 }
 

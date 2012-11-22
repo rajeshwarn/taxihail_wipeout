@@ -9,7 +9,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Binding
 {
-	public class BindableAddressTableViewSource : MvxActionBasedBindableTableViewSource
+	public class BindableAddressTableViewSource : BindableCommandTableViewSource
 	{
 		private UITableView _tableView;
 		public BindableAddressTableViewSource (UITableView tableView, UITableViewCellStyle cellStyle, NSString identifier, string bindingText, UITableViewCellAccessory accessory ) : 
@@ -17,15 +17,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Binding
 		{
 			_tableView = tableView;
 		}
-
-		public override void RowSelected (UITableView tableView, NSIndexPath indexPath)
-		{
-			base.RowSelected (tableView, indexPath);
-			if ( SelectedCommand != null && SelectedCommand.CanExecute())
-			{
-				SelectedCommand.Execute( GetItemAt( indexPath ) as AddressViewModel );
-			}
-		}
+        	
 
 		public override int NumberOfSections (UITableView tableView)
 		{
@@ -52,8 +44,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Binding
 			var dataSource = ((BindableAddressTableViewSource)tableView.Source).ItemsSource as IEnumerable<SectionAddressViewModel>;
 			return dataSource.ElementAt(section).SectionTitle;
 		}
-
-		public IMvxCommand SelectedCommand { get; set; }
 
 	}
 }
