@@ -57,6 +57,31 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+        public IMvxCommand Call
+        {
+            get
+            {
+                return new MvxRelayCommand(()=>{
+                    Action call = () => {};
+                    MessageService.ShowMessage(string.Empty, 
+                                               Settings.PhoneNumberDisplay(_accountService.CurrentAccount.Settings.ProviderId.Value), 
+                                               Resources.GetString("CallButton"), 
+                                               call, Resources.GetString("CancelBoutton"), 
+                                               () => {});                    
+                });
+            }
+        }
+
+        public IMvxCommand ReportProblem
+        {
+            get
+            {
+                return new MvxRelayCommand(()=>{
+                           
+                });
+            }
+        }
+
 
 	}
 }
