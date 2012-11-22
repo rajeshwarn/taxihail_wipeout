@@ -13,6 +13,17 @@ namespace apcurium.MK.Booking.Mobile.Client.ListViewStructure
 			_getValue = getValue;
 			_setValue = setValue;
 		}
+
+		public TextEditSectionItem ( string label, Func<int> getValue, Action<int> setValue )
+		{
+			Label = label;	
+			_getValue = () => getValue().ToString();
+			_setValue = x => {
+				int value = 0;
+				int.TryParse(x, out value);
+				setValue(value);
+			};
+		}
 		
 		public Func<string> GetValue {
 			get{ return _getValue; }

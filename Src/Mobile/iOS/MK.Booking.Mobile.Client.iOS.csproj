@@ -154,12 +154,6 @@
     <Compile Include="Helper\XMLLinqHelper.cs" />
     <Compile Include="Localization\Resources.cs" />
     <Compile Include="Localization\StandardMessages.cs" />
-    <Compile Include="History\HistoryTabView.xib.cs">
-      <DependentUpon>HistoryTabView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="History\HistoryTabView.xib.designer.cs">
-      <DependentUpon>HistoryTabView.xib</DependentUpon>
-    </Compile>
     <Compile Include="Locations\LocationsTabView.xib.cs">
       <DependentUpon>LocationsTabView.xib</DependentUpon>
     </Compile>
@@ -172,14 +166,6 @@
     <Compile Include="Locations\LocationDetailView.xib.designer.cs">
       <DependentUpon>LocationDetailView.xib</DependentUpon>
     </Compile>
-    <Compile Include="History\HistoryDetailView.xib.cs">
-      <DependentUpon>HistoryDetailView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="History\HistoryDetailView.xib.designer.cs">
-      <DependentUpon>HistoryDetailView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="History\HistoryTableViewDataSource.cs" />
-    <Compile Include="History\HistoryTableViewDelegate.cs" />
     <Compile Include="Locations\LocationTableViewDataSource.cs" />
     <Compile Include="Locations\LocationTableViewDelegate.cs" />
     <Compile Include="Settings\LocationTableViewDataSource.cs" />
@@ -323,6 +309,19 @@
     </Compile>
     <Compile Include="Navigation\INavigationView.cs" />
     <Compile Include="MonoTouchDialog\RightAlignedMvvmCrossEntryElement.cs" />
+    <Compile Include="Controls\Binding\BindableCommandTableViewSource.cs" />
+    <Compile Include="Views\HistoryTabView.xib.cs">
+      <DependentUpon>HistoryTabView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Views\HistoryTabView.xib.designer.cs">
+      <DependentUpon>HistoryTabView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Views\HistoryDetailView.xib.cs">
+      <DependentUpon>HistoryDetailView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Views\HistoryDetailView.xib.designer.cs">
+      <DependentUpon>HistoryDetailView.xib</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -340,7 +339,6 @@
     <Folder Include="en.lproj\" />
     <Folder Include="Localization\" />
     <Folder Include="Locations\" />
-    <Folder Include="History\" />
     <Folder Include="Settings\" />
     <Folder Include="Controls\" />
     <Folder Include="Controls\Binding\" />
@@ -359,10 +357,8 @@
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="MainWindow.xib" xmlns="" />
-    <InterfaceDefinition Include="History\HistoryTabView.xib" xmlns="" />
     <InterfaceDefinition Include="Locations\LocationsTabView.xib" xmlns="" />
     <InterfaceDefinition Include="Locations\LocationDetailView.xib" xmlns="" />
-    <InterfaceDefinition Include="History\HistoryDetailView.xib" xmlns="" />
     <InterfaceDefinition Include="Settings\AboutUsView.xib" xmlns="" />
     <InterfaceDefinition Include="Order\ConfirmationView.xib" />
     <InterfaceDefinition Include="Order\StatusView.xib" />
@@ -374,6 +370,8 @@
     <InterfaceDefinition Include="Views\LoginView.xib" />
     <InterfaceDefinition Include="Order\BookRatingView.xib" />
     <InterfaceDefinition Include="Order\BookRatingCell.xib" />
+    <InterfaceDefinition Include="Views\HistoryTabView.xib" />
+    <InterfaceDefinition Include="Views\HistoryDetailView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />

@@ -83,8 +83,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			});
             sect.AddItem( new SingleLineItem( Resources.GetValue("View_Book_Menu_UpdateMyProfile")   ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
 					AnimateMenu();
-                    var rideSettingsView = new RideSettingsView (account, true, false);
-					_navController.PushViewController( rideSettingsView, true);
+                    ViewModel.NavigateToUpdateProfile.Execute();
 				})				
 			});
             sect.AddItem( new SingleLineItem( Resources.GetValue("View_Book_Menu_CallDispatch")   ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 

@@ -30,6 +30,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get { return _orders; }
             set { _orders = value; FirePropertyChanged("Orders"); }
         }
+
+        private bool _hasOrders;
+        public bool HasOrders {
+            get {
+                return _hasOrders;
+            }
+            set {
+                if(value != _hasOrders) {
+                    _hasOrders = value;
+                    FirePropertyChanged("HasOrders");
+                }
+            }
+        }
+
         public HistoryViewModel()
         {
 			LoadOrders ();
@@ -38,7 +52,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public Task LoadOrders ()
 		{
 			return Task.Factory.StartNew (() => {
-				var orders = TinyIoCContainer.Current.Resolve<IAccountService> ().GetHistoryOrders ();
+				var orders = TinyIoCContainer.Current.Resolve<IAccountService> ().GetHistoryOrders ().ToArray();
 				Orders = new ObservableCollection<OrderViewModel> (orders.Select (x => new OrderViewModel ()
 					{
 						IBSOrderId = x.IBSOrderId,
@@ -52,6 +66,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						IsLast = x.Equals(orders.Last()),
 						ShowRightArrow = true
 					}));
+
+                HasOrders = orders.Any();
 			});
 		}
 

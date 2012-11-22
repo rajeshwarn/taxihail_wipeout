@@ -22,8 +22,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 {
 	public partial class HistoryDetailView : MvxBindingTouchViewController<HistoryDetailViewModel>
     {
-        //private Order _data;
-
         #region Constructors
 
 		public HistoryDetailView() 
@@ -88,6 +86,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 				{ txtStatus, "{'Text':{'Path': 'Status.IBSStatusDescription'}}"},
 				{ txtPickupDate, "{'Text':{'Path': 'PickUpDateTxt'}}"}
 			});
+
+            ViewModel.OnViewLoaded();
 
         }
     }

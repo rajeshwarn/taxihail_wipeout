@@ -44,14 +44,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             View.BackgroundColor = UIColor.Clear;
             TableView.BackgroundView = new UIView{ BackgroundColor = UIColor.Clear };
             TableView.BackgroundColor = UIColor.Clear;
-			((UINavigationController ) ParentViewController ).NavigationBar.TopItem.TitleView = new TitleView(null, Resources.View_PasswordRecovery,true);
-            ((UINavigationController ) ParentViewController ).View.BackgroundColor =UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
-        }
-        
-        public override void LoadView()
-        {
-            base.LoadView();            
-        }
+            NavigationItem.HidesBackButton = true;
+        }       
+
 
         private void LoadSettingsElements()
         {          
@@ -71,25 +66,13 @@ namespace apcurium.MK.Booking.Mobile.Client
             this.InvokeOnMainThread(() => { this.Root = menu; });
         }
 
-        private void LoadBackgroundNavBar(UINavigationBar bar)
-        {
-            bar.TintColor =  AppStyle.NavigationBarColor; 
-            //It might crash on iOS version smaller than 5.0
-            try
-            {
-                bar.SetBackgroundImage(UIImage.FromFile("Assets/navBar.png"), UIBarMetrics.Default);
-            }
-            catch{ }
-        }
-
         private void AddButton(float x, float y, string title, UIColor normal, UIColor selected, string command, AppStyle.ButtonColor bcolor)
         {
             var btn = AppButtons.CreateStandardButton(new System.Drawing.RectangleF(x, y, 130, 40), title, bcolor);
             btn.TextShadowColor = null;
             this.View.AddSubview(btn);
-			this.AddBindings(btn, "{'TouchUpInside': {'Path' : '" + command + "'}}");             
+			this.AddBindings(btn, "{'TouchUpInside': {'Path' : '" + command + "'}}");     
         }      
-        
     }
 }
 

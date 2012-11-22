@@ -231,25 +231,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             if(Guid.TryParse(orderId, out id)) {
 				OrderId = id;
 			}
-            LoadOrder();
-            LoadStatus();
-            TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<OrderRated>(RefreshOrderStatus);
         }
 
 		protected override void Initialize ()
 		{
-           
+			MessengerHub.Subscribe<OrderRated>(RefreshOrderStatus);
 		}
+
+        public override void OnViewLoaded ()
+        {
+            base.OnViewLoaded ();
+            LoadOrder();
+            LoadStatus();
+        }
 
         public void RefreshOrderStatus (OrderRated orderRated)
 		{
 			if (orderRated.Content == this.OrderId) {
 				LoadStatus();
 			}
-            TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<OrderCanceled>(canceled =>
-            {
-                this.LoadStatus();
-            });
         }
 
 		public Task LoadOrder() 

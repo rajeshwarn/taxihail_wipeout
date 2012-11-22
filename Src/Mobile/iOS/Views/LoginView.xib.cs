@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +7,6 @@ using apcurium.Framework.Extensions;
 using TinyIoC;
 using MonoTouch.MessageUI;
 using System.IO;
-
 using System.Drawing;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.AppServices;
@@ -62,14 +60,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public override void ViewDidAppear(bool animated)
         {
-            base.ViewDidAppear(animated); 
-
-            TinyIoCContainer.Current.Resolve<IFacebookService>().ConnectionStatusChanged -= HandleFbConnectionStatusChanged;
-            TinyIoCContainer.Current.Resolve<IFacebookService>().ConnectionStatusChanged += HandleFbConnectionStatusChanged;
-             
-            TinyIoCContainer.Current.Resolve<ITwitterService>().ConnectionStatusChanged -= HandleTwitterConnectionStatusChanged;
-            TinyIoCContainer.Current.Resolve<ITwitterService>().ConnectionStatusChanged += HandleTwitterConnectionStatusChanged;
-             
+            base.ViewDidAppear(animated);          
         }
 
         public override void ViewDidLoad()
@@ -119,14 +110,14 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
 				var btnFbLogin = AppButtons.CreateStandardButton(new RectangleF(55, 281, 211, 41), Resources.FacebookButton, AppStyle.ButtonColor.AlternateCorporateColor, "Assets/Social/FB/fbIcon.png");
                 View.AddSubview(btnFbLogin);
-                btnFbLogin.TouchUpInside += FacebookLogin;  
+                this.AddBindings(btnFbLogin, "{'TouchUpInside':{'Path':'LoginFacebook'}}");
             }
 
             if (settings.TwitterEnabled)
             {
 				var btnTwLogin = AppButtons.CreateStandardButton(new RectangleF(55, 342, 211, 41), Resources.TwitterButton, AppStyle.ButtonColor.AlternateCorporateColor, "Assets/Social/TW/twIcon.png" );
                 View.AddSubview(btnTwLogin);
-                btnTwLogin.TouchUpInside += TwitterLogin;   
+                this.AddBindings(btnTwLogin, "{'TouchUpInside':{'Path':'LoginTwitter'}}");
             }
 
             if (settings.CanChangeServiceUrl)
@@ -139,7 +130,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			this.AddBindings(new Dictionary<object, string>() {
 				{ btnSignIn, "{'TouchUpInside':{'Path':'SignInCommand'}}"},	
                 { btnPassword, "{'TouchUpInside':{'Path':'ResetPassword'}}"}, 
-                { btnSignUp, "{'TouchUpInside':{'Path':'Signup'}}"}, 
+                { btnSignUp, "{'TouchUpInside':{'Path':'Signup'}}"},               
 				{ txtEmail, "{'Text':{'Path':'Email'}}"},
 				{ txtPassword, "{'Text':{'Path':'Password'}}"},
 			});
@@ -181,136 +172,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             catch{ }
         }       
         #endregion
-
-        private void FacebookLogin(object sender, EventArgs e)
-        {
-            if (TinyIoCContainer.Current.Resolve<IFacebookService>().IsConnected)
-            {
-                DoFbLogin();
-            }
-            else
-            {
-                TinyIoCContainer.Current.Resolve<IFacebookService>().Connect("email, publish_stream, publish_actions");
-
-            }
-        }
-
-        void HandleFbConnectionStatusChanged(object sender, SocialNetworks.Services.Entities.FacebookStatus e)
-        {
-            if (e.IsConnected)
-            {
-                DoFbLogin();
-            }
-        }
-
-        private void DoFbLogin()
-        {
-            LoadingOverlay.StartAnimatingLoading(LoadingOverlayPosition.Center, null, 130, 30);
-
-            TinyIoCContainer.Current.Resolve<IFacebookService>().GetUserInfos(info => {
-                var data = new RegisterAccount();
-                data.FacebookId = info.Id;
-                data.Email = info.Email;
-                data.Name = Params.Get(info.Firstname, info.Lastname).Where(n => n.HasValue()).JoinBy(" ");
-
-                try
-                {
-                    ThreadHelper.ExecuteInThread(() =>
-                    {
-                        try
-                        {
-                            InvokeOnMainThread(() => this.View.UserInteractionEnabled = false);
-                            var service = TinyIoCContainer.Current.Resolve<IAccountService>();
-
-                            var account = service.GetFacebookAccount(data.FacebookId);
-                            if (account == null)
-                            {
-                                InvokeOnMainThread(() => ViewModel.Signup.Execute(data));
-                            }
-                            
-                        }
-                        finally
-                        {
-                            InvokeOnMainThread(() => this.View.UserInteractionEnabled = true);
-                            LoadingOverlay.StopAnimatingLoading();
-                        }
-                    }
-                    );
-                }
-                finally
-                {
-                    
-                } 
-            }, () => Console.WriteLine("A") 
-            );
-        }
-
-        private void TwitterLogin(object sender, EventArgs e)
-        {
-            if (TinyIoCContainer.Current.Resolve<ITwitterService>().IsConnected)
-            {
-                DoTwLogin();
-            }
-            else
-            {
-                TinyIoCContainer.Current.Resolve<ITwitterService>().Connect();
-
-            }
-        }
-
-        private void DoTwLogin()
-        {
-            LoadingOverlay.StartAnimatingLoading(LoadingOverlayPosition.Center, null, 130, 30);
-
-            TinyIoCContainer.Current.Resolve<ITwitterService>().GetUserInfos(info => {
-                var data = new RegisterAccount();
-                data.TwitterId = info.Id;
-                data.Name = Params.Get(info.Firstname, info.Lastname).Where(n => n.HasValue()).JoinBy(" ");
-        
-                try
-                {
-                   
-                    ThreadHelper.ExecuteInThread(() =>
-                    {
-                        try
-                        {
-                            InvokeOnMainThread(() => this.View.UserInteractionEnabled = false);
-                            var service = TinyIoCContainer.Current.Resolve<IAccountService>();
-
-                            Account account = service.GetTwitterAccount(data.TwitterId);
-                            if (account == null)
-                            {								
-                                InvokeOnMainThread(() => ViewModel.Signup.Execute(data));
-                            }
-                            
-                        }
-                        finally
-                        {
-                            InvokeOnMainThread(() => 
-                                {
-                                    this.View.UserInteractionEnabled = true;
-                                    LoadingOverlay.StopAnimatingLoading();
-                                });
-                        }
-                    }
-                    );
-                }
-                finally
-                {
-                    
-                }
-            }
-            );
-        }
-
-        void HandleTwitterConnectionStatusChanged(object sender, SocialNetworks.Services.Entities.TwitterStatus e)
-        {
-            if (e.IsConnected)
-            {
-                DoTwLogin();
-            }
-        }
-
     }
 }
 
