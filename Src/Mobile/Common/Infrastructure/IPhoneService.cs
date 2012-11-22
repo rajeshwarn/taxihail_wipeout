@@ -8,5 +8,6 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
     public interface IPhoneService
     {
         void Call(string phoneNumber);
+        void SendFeedbackErrorLog(string errorLogPath, string supportEmail, string subject);
     }
 }

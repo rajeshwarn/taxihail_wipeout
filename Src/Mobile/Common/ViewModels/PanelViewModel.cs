@@ -99,7 +99,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get
             {
                 return new MvxRelayCommand(()=>{
-                           
+                    PhoneService.SendFeedbackErrorLog(Settings.ErrorLog, Settings.SupportEmail, Resources.GetString("TechSupportEmailTitle"));        
                 });
             }
         }
