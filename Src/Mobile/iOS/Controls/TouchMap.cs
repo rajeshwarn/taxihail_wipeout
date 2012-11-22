@@ -78,7 +78,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                         }
                     });
                 }
-            });
+            }, TaskContinuationOptions.OnlyOnRanToCompletion);
         }
 
         public void OnRegionChanged()
