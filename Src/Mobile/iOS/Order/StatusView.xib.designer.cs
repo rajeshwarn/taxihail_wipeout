@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		MonoTouch.UIKit.UILabel lblTitle { get; set; }
 
 		[Outlet]
-		MonoTouch.MapKit.MKMapView mapStatus { get; set; }
+        apcurium.MK.Booking.Mobile.Client.Controls.TouchMap mapStatus { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UIButton btnRefresh { get; set; }
