@@ -1,28 +1,21 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
-using Cirrious.MvvmCross.ViewModels;
 using ServiceStack.Text;
 using TinyIoC;
-using TinyMessenger;
 using apcurium.Framework.Extensions;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Messages;
-using apcurium.MK.Booking.Mobile.Models;
 using System.Threading.Tasks;
-using System.Globalization;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class HistoryDetailViewModel : BaseViewModel
     {
-		public event EventHandler Deleted;
         private Guid _orderId;
         public Guid OrderId
         {
@@ -321,11 +314,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     if (Common.Extensions.GuidExtensions.HasValue(OrderId))
                         {
                             TinyIoCContainer.Current.Resolve<IBookingService>().RemoveFromHistory(OrderId);
-						    if(Deleted != null)
-							{
-								Deleted(this, EventArgs.Empty);
-							}
-						    RequestClose(this);
+                            MessengerHub.Publish(new OrderDeleted(this,OrderId,null));
+                            RequestNavigate<HistoryViewModel>(true);
                         }
                 });
             }

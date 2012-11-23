@@ -24,6 +24,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         //TODO : a remplacer quand les strings seront globalisee
         private const string titleFormat = "Order #{0} ({1:ddd, MMM d}, {1:h:mm tt})";
         private ObservableCollection<OrderViewModel> _orders;
+        private TinyMessageSubscriptionToken orderDeletedToken = null;
 
         public ObservableCollection<OrderViewModel> Orders
         {
@@ -46,10 +47,32 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public HistoryViewModel()
         {
+            orderDeletedToken = MessengerHub.Subscribe<OrderDeleted>(c => OnOrderDeleted(c.Content));
 			LoadOrders ();
         }
 
-		public Task LoadOrders ()
+        private void OnOrderDeleted(Guid orderId)
+        {
+            Task.Factory.StartNew(() =>
+            {
+                Orders = new ObservableCollection<OrderViewModel>(Orders.Where(order=>!order.Id.Equals(orderId)).Select(x => new OrderViewModel()
+                {
+                    IBSOrderId = x.IBSOrderId,
+                    Id = x.Id,
+                    CreatedDate = x.CreatedDate,
+                    PickupAddress = x.PickupAddress,
+                    PickupDate = x.PickupDate,
+                    IsCompleted = x.IsCompleted,
+                    Title = String.Format(titleFormat, x.IBSOrderId.ToString(), x.PickupDate),
+                    IsFirst = x.Equals(Orders.First()),
+                    IsLast = x.Equals(Orders.Last()),
+                    ShowRightArrow = true
+                }));
+                HasOrders = Orders.Any();
+            });
+        }
+
+        public Task LoadOrders ()
 		{
 			return Task.Factory.StartNew (() => {
 				var orders = TinyIoCContainer.Current.Resolve<IAccountService> ().GetHistoryOrders ().ToArray();
@@ -66,7 +89,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						IsLast = x.Equals(orders.Last()),
 						ShowRightArrow = true
 					}));
-
                 HasOrders = orders.Any();
 			});
 		}
