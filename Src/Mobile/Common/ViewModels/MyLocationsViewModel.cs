@@ -8,6 +8,10 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using TinyIoC;
 using System.Linq;
 using System.Threading;
+using apcurium.MK.Common.Extensions;
+using Cirrious.MvvmCross.Interfaces.Commands;
+using Cirrious.MvvmCross.Commands;
+using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -68,6 +72,22 @@ namespace apcurium.MK.Booking.Mobile
             }
         }
 
+        public IMvxCommand NavigateToLocationDetailPage{
+            get{
+                return new MvxRelayCommand<AddressViewModel>(a => {
+
+                    if(a.Address.Id == Guid.Empty)
+                    {
+                        // New address
+                        RequestNavigate<LocationDetailViewModel>();
+                    } else {
+                        RequestNavigate<LocationDetailViewModel>(new Dictionary<string,string>{
+                            { "address", a.Address.ToJson() }
+                        });
+                    }
+                });
+            }
+        }
         public Task LoadAllAddresses ()
         {
             var tasks = new [] {
@@ -98,30 +118,36 @@ namespace apcurium.MK.Booking.Mobile
         }
         
 
-        public Task<AddressViewModel[]> LoadFavoriteAddresses()
+        private Task<AddressViewModel[]> LoadFavoriteAddresses()
         {
             return Task<AddressViewModel[]>.Factory.StartNew(()=>{
-                var adrs = _accountService.GetFavoriteAddresses().ToArray();
+                var adrs = _accountService.GetFavoriteAddresses().ToList();
+                adrs.Add (new Address
+                {
+                    FriendlyName=Resources.GetString("LocationAddFavoriteTitle"),
+                    FullAddress = Resources.GetString("LocationAddFavoriteSubtitle")
+                });
+
                 return adrs.Select(a => new AddressViewModel
                 { 
                     Address = a,
-                    ShowPlusSign = false,
-                    ShowRightArrow = false,
+                    ShowPlusSign = a.Id.IsNullOrEmpty(),
+                    ShowRightArrow = !a.Id.IsNullOrEmpty(),
                     IsFirst = a.Equals(adrs.First()),
                     IsLast = a.Equals(adrs.Last())
                 }).ToArray();
             }).HandleErrors();
         }
 
-        public Task<AddressViewModel[]> LoadHistoryAddresses()
+        private Task<AddressViewModel[]> LoadHistoryAddresses()
         {
             return Task<AddressViewModel[]>.Factory.StartNew(()=>{
                 var adrs = _accountService.GetHistoryAddresses();
                 return adrs.Select(a => new AddressViewModel
                 { 
                     Address = a,
-                    ShowPlusSign = false,
-                    ShowRightArrow = false,
+                    ShowPlusSign = a.Id.IsNullOrEmpty(),
+                    ShowRightArrow = !a.Id.IsNullOrEmpty(),
                     IsFirst = a.Equals(adrs.First()),
                     IsLast = a.Equals(adrs.Last()) 
                 }).ToArray();

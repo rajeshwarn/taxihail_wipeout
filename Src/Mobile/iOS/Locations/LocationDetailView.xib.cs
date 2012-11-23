@@ -15,6 +15,7 @@ using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Common.Entity;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using Cirrious.MvvmCross.Views;
+using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -22,11 +23,7 @@ namespace apcurium.MK.Booking.Mobile.Client
     {
         #region Constructors
 
-        public event EventHandler Canceled;
-        public event EventHandler Saved;
-        public event EventHandler Deleted;
-
-		public LocationDetailView () 
+        public LocationDetailView () 
 			: base(new MvxShowViewModelRequest<LocationDetailViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
 		{
 			Initialize();
@@ -43,6 +40,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			Initialize();
 		}
+
+        #endregion
 
         void Initialize()
         {
@@ -70,202 +69,34 @@ namespace apcurium.MK.Booking.Mobile.Client
             txtRingCode.Placeholder = Resources.LocationDetailRingCodePlaceholder;
             txtName.Placeholder = Resources.LocationDetailGiveItANamePlaceholder;
 
-            txtAddress.ShouldReturn = delegate(UITextField textField)
-            {
-                return textField.ResignFirstResponder();
-            };
-            txtAptNumber.ShouldReturn = delegate(UITextField textField)
-            {
-                return textField.ResignFirstResponder();
-            };
-            txtRingCode.ShouldReturn = delegate(UITextField textField)
-            {
-                return textField.ResignFirstResponder();
-            };
-            txtName.ShouldReturn = delegate(UITextField textField)
-            {
-                return textField.ResignFirstResponder();
-            };
-            
-            txtAddress.Ended += HandleTxtAddressEnded;
+            txtAddress.ShouldReturn = HandleShouldReturn;
+            txtAptNumber.ShouldReturn = HandleShouldReturn;
+            txtRingCode.ShouldReturn = HandleShouldReturn;
+            txtName.ShouldReturn = HandleShouldReturn;
 
 
             AppButtons.FormatStandardButton((GradientButton)btnSave, Resources.SaveButton, AppStyle.ButtonColor.Green); 
-
             ((GradientButton)btnBook).SetTitle(Resources.BookItButton, UIControlState.Normal);
             AppButtons.FormatStandardButton((GradientButton)btnDelete, Resources.DeleteButton, AppStyle.ButtonColor.Red); 
 
-            btnBook.TouchUpInside += BtnBookTouchUpInside;
-            btnSave.TouchUpInside += BtnSaveTouchUpInside;
-            btnDelete.TouchUpInside += BtnDeleteTouchUpInside;
-            btnDelete.Hidden = false;
+            this.AddBindings(new Dictionary<object, string>{
+                { txtAddress, "{'Text': {'Path': 'FullAddress'}, 'Ended': {'Path': 'ValidateAddress'}}" },
+                { txtAptNumber, "{'Text': {'Path': 'Apartment'}}" },
+                { txtRingCode, "{'Text': {'Path': 'RingCode'}}" },
+                { txtName, "{'Text': {'Path': 'FriendlyName'}}" },
+                { btnSave, "{'TouchUpInside': {'Path': 'SaveAddress'}}" },
+                { btnBook, "{'TouchUpInside': {'Path': 'RebookOrder'}, 'Hidden': {'Path': 'IsNew'}}" },
+                { btnDelete, "{'TouchUpInside': {'Path': 'DeleteAddress'}, 'Hidden': {'Path': 'IsNew'}}" },
+            });
 
         }
 
-        void HandleTxtAddressEnded(object sender, EventArgs e)
+        private bool HandleShouldReturn (UITextField textField)
         {
-            var address = txtAddress.Text;
-            ThreadHelper.ExecuteInThread(() =>
-            {
-                
-                var location = TinyIoCContainer.Current.Resolve<IGeolocService>().ValidateAddress(address);
-                
-                
-                if ((location == null) || location.FullAddress.IsNullOrEmpty() || !location.HasValidCoordinate())
-                {
-                    return;
-                }
-                
-                
-                InvokeOnMainThread(() => {
-                    txtAddress.Text = location.FullAddress; }
-                );
-            }
-            );
-            
+            return textField.ResignFirstResponder();
         }
 
-        private void UpdateData()
-        {
-            
-            ViewModel.Address.FullAddress = txtAddress.Text;
-            Console.WriteLine("UpdateData" + txtAddress.Text);
-			ViewModel.Address.Apartment = txtAptNumber.Text;
-			ViewModel.Address.RingCode = txtRingCode.Text;
-			ViewModel.Address.FriendlyName = txtName.Text;
-        }
-
-        void BtnDeleteTouchUpInside(object sender, EventArgs e)
-        {
-            LoadingOverlay.StartAnimatingLoading(LoadingOverlayPosition.Center, null, 130, 30);
-            View.UserInteractionEnabled = false;
-            ThreadHelper.ExecuteInThread(() =>
-            {
-                
-                try
-                {
-                    if (Deleted != null)
-                    {
-                        Deleted(this, EventArgs.Empty);
-                    }
-                    
-                    InvokeOnMainThread(() => btnDelete.Hidden = true);
-                    InvokeOnMainThread(() => this.NavigationController.PopViewControllerAnimated(true));
-                }
-                catch (Exception ex)
-                {
-                    TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex);
-                }
-                finally
-                {
-                    InvokeOnMainThread(() =>
-                    {
-                        LoadingOverlay.StopAnimatingLoading();
-                        View.UserInteractionEnabled = true;
-                    }
-                    );
-                }
-            }
-            );
-            
-            
-        }
-
-        void BtnSaveTouchUpInside(object sender, EventArgs e)
-        {
-            if (txtAddress.Text.IsNullOrEmpty())
-            {
-                MessageHelper.Show(Resources.InvalidAddressTitle, Resources.InvalidAddressMessage);
-                return;
-            }
-            
-            
-            txtAddress.ResignFirstResponder();
-            txtAptNumber.ResignFirstResponder();
-            txtRingCode.ResignFirstResponder();
-            txtName.ResignFirstResponder();
-            
-            LoadingOverlay.StartAnimatingLoading( LoadingOverlayPosition.Center, null, 130, 30);
-            View.UserInteractionEnabled = false;
-
-            var address = txtAddress.Text;
-
-            ThreadHelper.ExecuteInThread(() =>
-            {
-                try
-                {
-                    var location = TinyIoCContainer.Current.Resolve<IGeolocService>().ValidateAddress(address);
-                    
-                    
-                    if ((location == null) || location.FullAddress.IsNullOrEmpty() || !location.HasValidCoordinate())
-                    {
-                        
-                        InvokeOnMainThread(() => MessageHelper.Show(Resources.InvalidAddressTitle, Resources.InvalidAddressMessage));
-                        
-                        return;
-                        
-                    }
-                    
-                    InvokeOnMainThread(() =>
-                    {
-                        txtAddress.Text = location.FullAddress;
-                        
-                        UpdateData();
-                        
-                        ViewModel.Address.Latitude = location.Latitude;
-						ViewModel.Address.Longitude = location.Longitude;
-                        
-                        if (Saved != null)
-                        {                            
-                            Saved(this, EventArgs.Empty);
-                        }
-                        btnDelete.Hidden = false;
-                        this.NavigationController.PopViewControllerAnimated(true);
-                    }
-                    );
-                    
-                }
-                catch (Exception ex)
-                {
-                    TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex);
-                }
-                finally
-                {
-                    InvokeOnMainThread(() =>
-                    {
-                        LoadingOverlay.StopAnimatingLoading();
-                        View.UserInteractionEnabled = true;
-                    }
-                    );
-                }
-            }
-            );
-            
-        }
-    
-        void BtnBookTouchUpInside(object sender, EventArgs e)
-        {
-			ViewModel.RebookOrder.Execute();
-        }
-
-        public void LoadData(Address data)
-        {
-			ViewModel.Address = data;
-            
-            if (txtName != null)
-            {
-				if ((!ViewModel.Address.Id.IsNullOrEmpty()) || (ViewModel.Address.IsHistoric))
-                {
-					txtAddress.Text = ViewModel.Address.FullAddress;
-					txtAptNumber.Text = ViewModel.Address.Apartment;
-					txtRingCode.Text = ViewModel.Address.RingCode;
-					txtName.Text = ViewModel.Address.FriendlyName;
-                }
-
-
-            }
-        }
-        #endregion
+       
     }
 }
 

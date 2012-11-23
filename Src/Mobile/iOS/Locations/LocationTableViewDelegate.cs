@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public override void RowSelected (UITableView tableView, NSIndexPath indexPath)
 		{
 
-			if ( _structure.Sections.ElementAt( indexPath.Section ).EditMode )
+			/*if ( _structure.Sections.ElementAt( indexPath.Section ).EditMode )
 			{
 				var detail = new LocationDetailView ();
 				_parent.NavigationController.PushViewController (detail, true);
@@ -63,7 +63,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			else // if( !_structure.Sections.ElementAt( indexPath.Section ).Items.ElementAt( indexPath.Row ).Id.IsNullOrEmpty() )
 			{
 				_parent.DoSelect ( (Address)_structure.Sections.ElementAt( indexPath.Section ).Items.ElementAt (indexPath.Row).Data );
-			}
+			}*/
 			
 		}
 
