@@ -77,58 +77,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
         {
             _listView = FindViewById<ListView>(Resource.Id.LocationListView);
             _listView.CacheColorHint = Color.Transparent;
-            _listView.ItemClick += new EventHandler<AdapterView.ItemClickEventArgs>(listView_ItemClickNormal);
         }
 
-
-        private void listView_ItemClickNormal(object sender, AdapterView.ItemClickEventArgs e)
-        {
-            var adapter = _listView.Adapter as GroupedLocationListAdapter;
-            if (adapter == null || adapter.GetItem(e.Position) == null)
-            {
-                return;
-            }
-
-            var item = adapter.GetItem(e.Position).Cast<AddressItemListModel>();
-
-            if ((item.Address != null))
-            {
-
-                string data = item.Address.Serialize();
-
-                Intent i = new Intent(this, typeof(LocationDetailActivity));
-                i.PutExtra(NavigationStrings.LocationSelectedId.ToString(), data);
-                StartActivityForResult(i, (int)ActivityEnum.FavoriteLocations);
-            }
-        }
-        private void listView_ItemClickFromBook(object sender, AdapterView.ItemClickEventArgs e)
-        {
-            var adapter = _listView.Adapter as GroupedLocationListAdapter;
-            if (adapter == null || adapter.GetItem(e.Position) == null)
-            {
-                return;
-            }
-            var item = adapter.GetItem(e.Position).Cast<AddressItemListModel>();
-            if ((item.Address != null))
-            {
-                var data = item.Address.Serialize();
-                Intent intent = new Intent();
-                intent.SetFlags(ActivityFlags.ForwardResult);
-                intent.PutExtra("SelectedAddress", data);
-                SetResult(Result.Ok, intent);
-                Finish();
-            }
-        }
-
-        private IDictionary<string, object> CreateItem(Address location)
-        {
-            IDictionary<string, object> item = new Dictionary<string, object>();
-            //item.Add(ITEM_TITLE, location.Display());
-            item.Add(ITEM_TITLE, location.FriendlyName);
-            item.Add(ITEM_SUBTITLE, location.FullAddress);
-            item.Add(ITEM_DATA, location.Serialize());
-            return item;
-        }
+        
 
 
         private List<AddressItemListModel> GetLocations(LocationType type)
@@ -148,21 +99,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
                                                                                   BackgroundImageResource = Resource.Drawable.cell_middle_state,
                                                                                   NavigationIconResource = Resource.Drawable.right_arrow
                                                                               }).ToList();
-            if (ailm.Any())
-            {
-                ailm.First().BackgroundImageResource = Resource.Drawable.cell_top_state;
-                if (type.Equals(LocationType.History))
-                {
-                    if (ailm.Count().Equals(1))
-                    {
-                        ailm.First().BackgroundImageResource = Resource.Drawable.blank_single_state;
-                    }
-                    else
-                    {
-                        ailm.Last().BackgroundImageResource = Resource.Drawable.blank_bottom_state;
-                    }
-                }
-            }
+            
 
             return ailm;
         }
