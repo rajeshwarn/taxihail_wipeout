@@ -33,6 +33,11 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             MessageHelper.Show( title, message, positiveButtonTitle, positiveAction );
         }
 
+        public void ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction, string neutralButtonTitle, Action neutralAction)
+        {
+            throw new NotImplementedException();
+        }
+
         		
 		public void ShowProgress( bool show, Action cancel )
 		{
