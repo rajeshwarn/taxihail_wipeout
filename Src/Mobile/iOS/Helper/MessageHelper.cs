@@ -1,5 +1,7 @@
 using System;
 using MonoTouch.UIKit;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -25,6 +27,49 @@ namespace apcurium.MK.Booking.Mobile.Client
 				av.Show (  );							
 			} );
 		}
+
+        public static void Show ( string title, string message, string positiveActionTitle , Action positiveAction, string negativeActionTitle , Action negativeAction, string neutralActionTitle , Action neutralAction )
+        {
+            
+            UIApplication.SharedApplication.InvokeOnMainThread ( delegate
+                                                                {                   
+                LoadingOverlay.StopAnimatingLoading();
+                var av = new UIAlertView ( title, message, null, Resources.Close, positiveActionTitle,negativeActionTitle,neutralActionTitle );
+                av.Clicked += delegate(object sender, UIButtonEventArgs e) {
+                    if (e.ButtonIndex == 1) {
+                        
+                        positiveAction(); 
+                    }
+                    if (e.ButtonIndex == 2) {
+                        
+                        negativeAction(); 
+                    }
+                    if (e.ButtonIndex == 3) {
+                        
+                        neutralAction(); 
+                    }
+                    };
+                av.Show (  );                           
+            } );
+        }
+
+        public static void Show ( string title, string message, List<KeyValuePair<string,Action>> additionalButton)
+        {
+
+            UIApplication.SharedApplication.InvokeOnMainThread ( delegate
+                                                                {      
+                var listTitle = additionalButton.Select(c=>c.Key).ToArray();
+                LoadingOverlay.StopAnimatingLoading();
+                var av = new UIAlertView ( title, message, null, Resources.Close, listTitle );
+                av.Clicked += delegate(object sender, UIButtonEventArgs e) {
+                    if(e.ButtonIndex!=0)
+                    {
+                        additionalButton[e.ButtonIndex-1].Value();
+                    }
+                };
+                av.Show (  );                           
+            } );
+        }
 		
 		
 		public static void Show ( string title, string message, Action onDismiss )

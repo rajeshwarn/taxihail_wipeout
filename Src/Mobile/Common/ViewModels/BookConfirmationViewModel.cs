@@ -176,9 +176,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         RideSettings.Data = Order.Settings;
                         FirePropertyChanged("RideSettings");
 					}
+
 					this.GetService<IAccountService>().UpdateSettings(Order.Settings);
 				});
 			}
+            else if(Order.Settings.ProviderId == null)
+            {
+                Order.Settings.ProviderId = RideSettings.ProviderId;
+            }
 		}
 		
 		
