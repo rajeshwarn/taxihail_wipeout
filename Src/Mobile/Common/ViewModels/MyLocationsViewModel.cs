@@ -125,12 +125,13 @@ namespace apcurium.MK.Booking.Mobile
                 adrs.Add (new Address
                 {
                     FriendlyName=Resources.GetString("LocationAddFavoriteTitle"),
-                    FullAddress = Resources.GetString("LocationAddFavoriteSubtitle")
+                    FullAddress = Resources.GetString("LocationAddFavoriteSubtitle"),
                 });
 
                 return adrs.Select(a => new AddressViewModel
                 { 
                     Address = a,
+                    IsAddNew =  a.Id.IsNullOrEmpty(),
                     ShowPlusSign = a.Id.IsNullOrEmpty(),
                     ShowRightArrow = !a.Id.IsNullOrEmpty(),
                     IsFirst = a.Equals(adrs.First()),

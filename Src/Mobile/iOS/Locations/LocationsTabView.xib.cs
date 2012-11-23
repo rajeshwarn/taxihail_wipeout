@@ -32,6 +32,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                    'ShowPlusSign':{'Path':'ShowPlusSign'},
                    'IsFirst':{'Path':'IsFirst'},
                    'IsLast':{'Path':'IsLast'},
+                   'IsAddNewCell': {'Path': 'IsAddNew'}
                 }";
 
 		private CancellationTokenSource _searchCancellationToken = new CancellationTokenSource();
