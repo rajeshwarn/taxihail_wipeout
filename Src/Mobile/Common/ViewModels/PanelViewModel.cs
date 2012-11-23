@@ -22,6 +22,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _accountService = this.GetService<IAccountService>();
 		}
 
+        private bool _menuIsOpen = false;
+        public bool MenuIsOpen {
+            get {
+                return _menuIsOpen;
+            }
+            set{
+                if(value!= _menuIsOpen)
+                {
+                    _menuIsOpen = value;
+                    FirePropertyChanged("MenuIsOpen");
+                }
+            }
+        }
+
 		public MvxRelayCommand SignOut
 		{
 			get
