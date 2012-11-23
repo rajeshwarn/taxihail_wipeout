@@ -35,7 +35,8 @@
                     android:drawableRight="@drawable/right_arrow"
                     android:paddingRight="10dip"
                     android:paddingLeft="10dip"
-                    android:gravity="left|center_vertical" />
+                    android:gravity="left|center_vertical"
+                    local:MvxBind="{&apos;Click&apos;: {&apos;Path&apos;: &apos;Panel.NavigateToMyLocations&apos;}}" />
                 <Button
                     android:id="@+id/settingsHistory"
                     style="@style/BigTitleTextBlack"

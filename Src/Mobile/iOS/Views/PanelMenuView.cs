@@ -73,7 +73,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			var sect = structure.AddSection();
             sect.AddItem( new SingleLineItem( Resources.GetValue("View_Book_Menu_MyLocations")) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
 					AnimateMenu();
-					_navController.PushViewController(new LocationsTabView(), true);
+                    ViewModel.NavigateToMyLocations.Execute();
 				})				
 			});
             sect.AddItem( new SingleLineItem( Resources.GetValue("View_Book_Menu_MyOrders") ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 

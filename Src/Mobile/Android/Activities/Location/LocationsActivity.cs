@@ -15,11 +15,12 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Messages;
 using TinyMessenger;
 using apcurium.MK.Common.Entity;
+using Cirrious.MvvmCross.Binding.Android.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
 {
     [Activity(Label = "Locations", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
-    public class LocationListActivity : BaseActivity
+	public class LocationListActivity : BaseBindingActivity<MyLocationsViewModel>
     {
 
         private ListView _listView;
@@ -42,6 +43,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
             UpdateUI();
         }
 
+		protected override void OnViewModelSet()
+		{
+            this.SetContentView(Resource.Layout.View_LocationList);
+		}
+
         protected override void OnDestroy()
         {
             base.OnDestroy();
@@ -53,29 +59,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
 
         private void SetAdapter()
         {
-            ThreadHelper.ExecuteInThread(this, () =>
-            {
-
                 var adapter = new GroupedLocationListAdapter(this);
 
-
-                SetFavoriteAdapter(adapter);
+                //SetFavoriteAdapter(adapter);
 
 
                 RunOnUiThread(() =>
                 {
-                    _listView.Adapter = adapter;
+					((MvxBindableListView)_listView).Adapter = adapter;
                     _listView.Divider = null;
                     _listView.DividerHeight = 0;
                     _listView.SetPadding(10, 0, 10, 0);
                 });
-
-            }, true);
         }
 
         private void UpdateUI()
         {
-            this.SetContentView(Resource.Layout.View_LocationList);
             _listView = FindViewById<ListView>(Resource.Id.LocationListView);
             _listView.CacheColorHint = Color.Transparent;
             _listView.ItemClick += new EventHandler<AdapterView.ItemClickEventArgs>(listView_ItemClickNormal);
@@ -171,9 +170,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
         protected override void OnResume()
         {
             base.OnResume();
+			ViewModel.OnViewLoaded();
             SetAdapter();
         }
-
+		/*
         private void SetFavoriteAdapter(GroupedLocationListAdapter adapter)
         {
             var historyAddresses = GetLocations(LocationType.History);
@@ -190,10 +190,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
             });
 
 
-            adapter.AddSection(Resources.GetString(Resource.String.FavoriteLocationsTitle), new LocationListAdapter(this, favoriteAddresses));
+			adapter.AddSection(Resources.GetString(Resource.String.FavoriteLocationsTitle), new LocationListAdapter(this, favoriteAddresses));
             adapter.AddSection(Resources.GetString(Resource.String.LocationHistoryTitle), new LocationListAdapter(this, historyAddresses));
         }
-
+*/
       
 
 

@@ -46,6 +46,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
+        public MvxRelayCommand NavigateToMyLocations
+        {
+            get
+            {
+                return new MvxRelayCommand(() =>
+                                           {
+                    RequestNavigate<MyLocationsViewModel>();
+                });
+            }
+        }
+
 		private string _version;
 		public string Version {
 			get

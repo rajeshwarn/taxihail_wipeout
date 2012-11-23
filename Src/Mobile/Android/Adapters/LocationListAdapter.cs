@@ -13,19 +13,21 @@ using Android.Views;
 using Android.Widget;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Client.Models;
+using Cirrious.MvvmCross.Binding.Android.Views;
+using System.Collections;
+using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Adapters
 {
-    public class LocationListAdapter : BaseAdapter<AddressItemListModel>
+	public class LocationListAdapter : MvxBindableListAdapter
     {
         private readonly Activity _context;
-        public List<AddressItemListModel> ListAddress { get; set; }
 
-        public LocationListAdapter(Activity context, List<AddressItemListModel> objects)
-            : base()
+        public LocationListAdapter(Activity context, IList itemsSource)
+            : base(context)
         {
-            ListAddress = objects;
             this._context = context;
+			ItemsSource = itemsSource;
         }
 
         public override long GetItemId(int position)
@@ -35,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Adapters
 
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
-            var item = ListAddress[position];
+            var item = (AddressViewModel)ItemsSource[position];
             
             
             TitleSubTitleListItemController controller = null;
@@ -43,43 +45,37 @@ namespace apcurium.MK.Booking.Mobile.Client.Adapters
             {
                 if ((convertView == null) || new TitleSubTitleListItemController(convertView).HasSubTitle)
                 {
-                    controller = new TitleSubTitleListItemController(_context.LayoutInflater.Inflate(Resource.Layout.TitleListItem, null));
+					var source = ItemsSource[position];
+					var view = base.GetBindableView(convertView, source, Resource.Layout.TitleListItem);
+                    controller = new TitleSubTitleListItemController(view);
                 }
                 else
                 {
                     controller = new TitleSubTitleListItemController(convertView);
                 }
-                controller.Title = this.ListAddress[position].Address.FullAddress;                
+                controller.Title = item.Address.FullAddress;                
             }
             else
             {
                 if ((convertView == null) || !( new TitleSubTitleListItemController(convertView).HasSubTitle))
                 {
-                    controller = new TitleSubTitleListItemController(_context.LayoutInflater.Inflate(Resource.Layout.TitleSubTitleListItem, null));
+					var source = ItemsSource[position];
+					var view = base.GetBindableView(convertView, source, Resource.Layout.TitleSubTitleListItem);
+                    controller = new TitleSubTitleListItemController(view);
                 }
                 else
                 {
                     controller = new TitleSubTitleListItemController(convertView);
                 }                
-                controller.Title = this.ListAddress[position].Address.FriendlyName;                                
-                controller.SubTitle = this.ListAddress[position].Address.FullAddress;
+				controller.Title = item.Address.FriendlyName;                                
+				controller.SubTitle = item.Address.FullAddress;
                 
             }
 
-            controller.SetBackImage(this.ListAddress[position].BackgroundImageResource);
-            controller.SetNavIcon(this.ListAddress[position].NavigationIconResource);
+			//controller.SetBackImage(item.BackgroundImageResource);
+			//controller.SetNavIcon(item.NavigationIconResource);
 
             return controller.View;
-        }
-
-        public override int Count
-        {
-            get { return ListAddress.Count; }
-        }
-
-        public override AddressItemListModel this[int position]
-        {
-            get { return ListAddress[position]; }
         }
     }
 }
