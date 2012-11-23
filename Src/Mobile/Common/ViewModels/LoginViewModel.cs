@@ -41,6 +41,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public override void OnViewLoaded ()
 		{
 			base.OnViewLoaded ();
+#if DEBUG
+            Email = "john@taxihail.com";
+            Password = "password";
+#endif
 		}
 
         private void CheckVersion()

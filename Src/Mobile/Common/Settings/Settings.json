@@ -7,7 +7,7 @@
    "ErrorLogEnabled" : "true",
    "FacebookAppId" : "134284363380764",
    "FacebookEnabled" : "true",
-   "ServiceUrl" : "http://staging.taxihail.biz:8181/taxihailstaging/api/",
+   "ServiceUrl" : "http://192.168.12.114/apcurium.mk.web/api/",
    "SiteUrl" : "http://www.mobile-knowledge.com/index.html",
    "TwitterAccessTokenUrl" : "https://twitter.com/oauth/access_token",
    "TwitterAuthorizeUrl" : "https://twitter.com/oauth/authorize",

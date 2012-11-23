@@ -14,7 +14,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         IMvxServiceConsumer<IAppResource>,
         IMvxServiceConsumer<IAppSettings>,
         IMvxServiceConsumer<IMessageService>,
-        IMvxServiceConsumer<ILogger>
+        IMvxServiceConsumer<ILogger>,
+        IMvxServiceConsumer<IPhoneService>
 
     {
         protected BaseViewModel()
@@ -24,6 +25,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Settings = this.GetService<IAppSettings>();
             MessageService = this.GetService<IMessageService>();
 			Logger = this.GetService<ILogger>();
+            PhoneService = this.GetService<IPhoneService>();
 
 			Initialize();
         }
@@ -53,14 +55,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get; private set;
 		}
 
+        protected IPhoneService PhoneService
+        {
+            get;
+            private set;
+        }
+
 		protected virtual void Initialize ()
 		{
-
 		}
 
 		public virtual void OnViewLoaded ()
 		{
-
 		}
 
 		protected bool RequestSubNavigate<TViewModel, TResult>(IDictionary<string, string> parameterValues, Action<TResult> onResult) 

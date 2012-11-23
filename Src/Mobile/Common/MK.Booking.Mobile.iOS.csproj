@@ -57,6 +57,9 @@
     <Reference Include="Xamarin.Mobile">
       <HintPath>..\Libraries\Monotouch\Xamarin.Mobile.dll</HintPath>
     </Reference>
+    <Reference Include="SystemReactiveMonoTouch">
+      <HintPath>..\Libraries\Monotouch\SystemReactiveMonoTouch.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -202,6 +205,7 @@
     <Compile Include="BindingConverter\EmptyToResourceConverter.cs" />
     <Compile Include="BindingConverter\BoolVisibilityInverter.cs" />
     <Compile Include="ViewModels\MyLocationsViewModel.cs" />
+    <Compile Include="Infrastructure\IPhoneService.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

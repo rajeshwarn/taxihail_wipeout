@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			_titleText.TextAlignment = UITextAlignment.Center;
 			_titleText.Font = UIFont.BoldSystemFontOfSize(17);
 			_titleText.TextColor = AppStyle.NavigationTitleColor;
-			_titleText.BackgroundColor = UIColor.Clear;
+            _titleText.BackgroundColor = UIColor.Clear;
 			AddSubview(_titleText);
 
 			var image = UIImage.FromFile("Assets/Logo.png");

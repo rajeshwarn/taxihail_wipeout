@@ -226,6 +226,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public HistoryDetailViewModel(string orderId)
         {
+            
 			Guid id;
             if(Guid.TryParse(orderId, out id)) {
 				OrderId = id;

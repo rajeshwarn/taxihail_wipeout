@@ -88,9 +88,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			});
             sect.AddItem( new SingleLineItem( Resources.GetValue("View_Book_Menu_CallDispatch")   ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
 					AnimateMenu();
-					var call = new Confirmation ();
-                    call.Call ( TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumber(account.Settings.ProviderId.Value),
-                               TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumberDisplay (account.Settings.ProviderId.Value));
+                    ViewModel.Call.Execute();
 				})				
 			});
             sect.AddItem( new SingleLineItem( Resources.GetValue("View_Book_Menu_AboutUs") ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
@@ -100,35 +98,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 			});
             sect.AddItem( new SingleLineItem( Resources.GetValue("View_Book_Menu_ReportProblem") ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
 					AnimateMenu();
-					if (!MFMailComposeViewController.CanSendMail)
-					{
-						return;
-					}
-					
-					var mailComposer = new MFMailComposeViewController ();
-					
-					if (File.Exists (TinyIoCContainer.Current.Resolve<IAppSettings>().ErrorLog))
-					{
-						mailComposer.AddAttachmentData (NSData.FromFile (TinyIoCContainer.Current.Resolve<IAppSettings>().ErrorLog), "text", "errorlog.txt");
-					}
-					
-					mailComposer.SetToRecipients (new string[] { TinyIoCContainer.Current.Resolve<IAppSettings>().SupportEmail  });
-					mailComposer.SetMessageBody ("", false);
-					mailComposer.SetSubject (Resources.TechSupportEmailTitle);
-					mailComposer.Finished += delegate(object mailsender, MFComposeResultEventArgs mfce) {
-						mailComposer.DismissModalViewControllerAnimated (true);
-						if (File.Exists (TinyIoCContainer.Current.Resolve<IAppSettings>().ErrorLog))
-						{
-							File.Delete (TinyIoCContainer.Current.Resolve<IAppSettings>().ErrorLog);
-						}
-					};
-					_navController.PresentModalViewController(mailComposer, true);
+                    ViewModel.ReportProblem.Execute();					
 				})				
 			});
 			sect.AddItem( new SingleLineItem( Resources.View_Book_Menu_SignOut ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
 					AnimateMenu();
-					ViewModel.SignOut();
-
+					ViewModel.SignOut.Execute();
 				})				
 			});
 

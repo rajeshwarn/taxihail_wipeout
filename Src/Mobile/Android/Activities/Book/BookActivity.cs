@@ -54,9 +54,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             var menu = FindViewById(Resource.Id.BookSettingsMenu);
             menu.Visibility = ViewStates.Gone;
-
-
-
             _menuWidth = WindowManager.DefaultDisplay.Width - 100;
             _menuIsShown = false;
 
@@ -70,16 +67,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             FindViewById<Button>(Resource.Id.settingsAbout).Click -= About_Click;
             FindViewById<Button>(Resource.Id.settingsAbout).Click += About_Click;
-
-            FindViewById<Button>(Resource.Id.settingsSupport).Click -= ReportProblem_Click;
-            FindViewById<Button>(Resource.Id.settingsSupport).Click += ReportProblem_Click;
-
-            FindViewById<Button>(Resource.Id.settingsProfile).Click -= ChangeDefaultRideSettings_Click;
-            FindViewById<Button>(Resource.Id.settingsProfile).Click += ChangeDefaultRideSettings_Click;
-
-            FindViewById<Button>(Resource.Id.settingsCallCompany).Click -= CallCie_Click;
-            FindViewById<Button>(Resource.Id.settingsCallCompany).Click += CallCie_Click;
-
         }
 
         private void BookUsingAddress(Address address)
@@ -109,63 +96,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             var intent = new Intent().SetClass(this, typeof(AboutActivity));
             StartActivity(intent);
             ToggleSettingsScreenVisibility();
-        }
-
-        private void CallCie_Click(object sender, EventArgs e)
-        {
-            var currentAccount = TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount;
-            if (currentAccount.Settings.ProviderId.HasValue)
-            {
-                RunOnUiThread(() => AlertDialogHelper.Show(this, "", TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumberDisplay(currentAccount.Settings.ProviderId.Value), this.GetString(Resource.String.CallButton), CallCie, this.GetString(Resource.String.CancelBoutton), delegate { }));
-            }
-
-        }
-
-        private void CallCie(object sender, EventArgs e)
-        {
-            var currentAccount = TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount;
-            Intent callIntent = new Intent(Intent.ActionCall, Android.Net.Uri.Parse("tel:" + TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumberDisplay(currentAccount.Settings.ProviderId.Value)));
-            StartActivity(callIntent);
-            ToggleSettingsScreenVisibility();
-
-        }
+        }       
 
 
-        private void ReportProblem_Click(object sender, EventArgs e)
-        {
-
-
-            ThreadHelper.ExecuteInThread(this, () =>
-            {
-                Intent emailIntent = new Intent(Intent.ActionSend);
-
-                emailIntent.SetType("message/rfc822");
-                emailIntent.PutExtra(Intent.ExtraEmail, new String[] { TinyIoCContainer.Current.Resolve<IAppSettings>().SupportEmail });
-                emailIntent.PutExtra(Intent.ExtraCc, new String[] { AppContext.Current.LoggedInEmail });
-                emailIntent.PutExtra(Intent.ExtraSubject, Resources.GetString(Resource.String.TechSupportEmailTitle));
-
-                emailIntent.PutExtra(Intent.ExtraStream, Android.Net.Uri.Parse(@"file:///" + LoggerImpl.LogFilename));
-                if (TinyIoCContainer.Current.Resolve<IAppSettings>().ErrorLogEnabled && File.Exists(TinyIoCContainer.Current.Resolve<IAppSettings>().ErrorLog))
-                {
-                    emailIntent.PutExtra(Intent.ExtraStream, Android.Net.Uri.Parse(TinyIoCContainer.Current.Resolve<IAppSettings>().ErrorLog));
-                }
-                try
-                {
-                    StartActivity(Intent.CreateChooser(emailIntent, this.GetString(Resource.String.SendEmail)));
-                    LoggerImpl.FlushNextWrite();
-                }
-                catch (Android.Content.ActivityNotFoundException ex)
-                {
-                    RunOnUiThread(() => Toast.MakeText(this, Resources.GetString(Resource.String.NoMailClient), ToastLength.Short).Show());
-                }
-            }, false);
-        }
-
-        private void ChangeDefaultRideSettings_Click(object sender, EventArgs e)
-        {
-            var intent = new Intent().SetClass(this, typeof(RideSettingsActivity));
-            StartActivity(intent);
-        }
         protected override void OnDestroy()
         {
             base.OnDestroy();

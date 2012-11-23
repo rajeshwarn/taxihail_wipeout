@@ -26,9 +26,12 @@ namespace apcurium.MK.Booking.Mobile.Client
     public class Setup
         : MvxTouchDialogBindingSetup
     {
+        IMvxTouchViewPresenter _presenter;
+
         public Setup(MvxApplicationDelegate applicationDelegate, IMvxTouchViewPresenter presenter)
             : base(applicationDelegate, presenter)
         {
+            _presenter = presenter;
         }
         
         #region Overrides of MvxBaseSetup
@@ -71,12 +74,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			TinyIoCContainer.Current.Register<IMessageService>(new MessageService());
             TinyIoCContainer.Current.Register<IAppSettings>(new AppSettings());
             TinyIoCContainer.Current.Register<IPackageInfo>(new PackageInfo());
+            TinyIoCContainer.Current.Register<IMvxTouchViewPresenter>(_presenter);
             
             TinyIoCContainer.Current.Register<IAppContext>(AppContext.Current);            
             TinyIoCContainer.Current.Register<IAppResource, Resources>();
             TinyIoCContainer.Current.Register<ILogger, LoggerWrapper>();
             TinyIoCContainer.Current.Register<IErrorHandler, ErrorHandler>();            
             TinyIoCContainer.Current.Register<ICacheService>(new CacheService());
+            TinyIoCContainer.Current.Register<IPhoneService, PhoneService>();
             InitializeSocialNetwork();
         }
 

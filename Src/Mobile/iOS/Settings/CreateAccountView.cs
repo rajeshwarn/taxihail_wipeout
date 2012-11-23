@@ -18,11 +18,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 	public class CreateAccountView : MvxTouchDialogViewController<CreateAcccountViewModel>
     {
         
-        private EntryElement _emailEntry;
-        private EntryElement _fullNameEntry;
-        private EntryElement _phoneEntry;
-        private EntryElement _passwordEntry;
-        private EntryElement _confirmPasswordEntry;
         private bool _elementAreLoaded = false;
         
         public CreateAccountView(MvxShowViewModelRequest request)
@@ -50,20 +45,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             View.BackgroundColor = UIColor.Clear;
             TableView.BackgroundView = new UIView{ BackgroundColor = UIColor.Clear };
             TableView.BackgroundColor = UIColor.Clear;
-			((UINavigationController ) ParentViewController ).NavigationBar.TopItem.TitleView = new TitleView(null, Resources.View_SignUp, true);
-            ((UINavigationController ) ParentViewController ).View.BackgroundColor =UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
-
-        }   
-
-        private void LoadBackgroundNavBar(UINavigationBar bar)
-        {
-            bar.TintColor = AppStyle.NavigationBarColor;
-            //It might crash on iOS version smaller than 5.0
-            try
-            {
-                bar.SetBackgroundImage(UIImage.FromFile("Assets/navBar.png"), UIBarMetrics.Default);
-            }
-            catch   {}
+            NavigationItem.HidesBackButton = true;
         }
 
         private EntryElement CreateTextEntry(Section parentSection, string caption, string placeholder)
@@ -97,10 +79,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             
 			AddButton(footer, 170, 25, Resources.CreateAccoutCreate, "CreateAccount", apcurium.MK.Booking.Mobile.Client.AppStyle.ButtonColor.Green);
 			AddButton(footer, 20, 25, Resources.CreateAccoutCancel, "Cancel", apcurium.MK.Booking.Mobile.Client.AppStyle.ButtonColor.Grey);
-        }
-
-		private RootElement _menu;
-        private Section _settings;
+        }		
 
         private void LoadSettingsElements()
         {
@@ -112,41 +91,37 @@ namespace apcurium.MK.Booking.Mobile.Client
                 }
                 _elementAreLoaded = true;
                 
-				_menu = new CustomRootElement(null);
+                var _menu = new RootElement(Resources.View_SignUp);
                 
-                _settings = new Section(Resources.GetValue("View_SignUp_Label"));
+                var _settings = new Section(Resources.GetValue("View_SignUp_Label"));
 
                 _menu.Add(_settings);
                
-                _emailEntry = CreateTextEntry(_settings, Resources.CreateAccoutEmailLabel, "");
+                var _emailEntry = CreateTextEntry(_settings, Resources.CreateAccoutEmailLabel, "");
                 _emailEntry.KeyboardType = UIKeyboardType.EmailAddress;
                 _emailEntry.AutocapitalizationType = UITextAutocapitalizationType.None;
                 _emailEntry.AutocorrectionType = UITextAutocorrectionType.No;
 				_emailEntry.Bind (this, "{'Value':{'Path':'Data.Email','Mode':'TwoWay'}}");
                             
-				_fullNameEntry = CreateTextEntry(_settings, Resources.CreateAccountFullName, null); 
+                var _fullNameEntry = CreateTextEntry(_settings, Resources.CreateAccountFullName, null); 
 				_fullNameEntry.Bind (this, "{'Value':{'Path':'Data.Name','Mode':'TwoWay'}}");
                 
-                _phoneEntry = CreateTextEntry(_settings, Resources.CreateAccoutPhoneNumberLabel, null);
+                var _phoneEntry = CreateTextEntry(_settings, Resources.CreateAccoutPhoneNumberLabel, null);
                 _phoneEntry.KeyboardType = UIKeyboardType.PhonePad;
 				_phoneEntry.Bind (this, "{'Value':{'Path':'Data.Phone','Mode':'TwoWay'}}");
 
-                _passwordEntry = CreateTextEntry(_settings, Resources.CreateAccoutPasswordLabel, null, true, !ViewModel.HasSocialInfo);
+                 var _passwordEntry = CreateTextEntry(_settings, Resources.CreateAccoutPasswordLabel, null, true, !ViewModel.HasSocialInfo);
                 _passwordEntry.AutocapitalizationType = UITextAutocapitalizationType.None;
                 _passwordEntry.AutocorrectionType = UITextAutocorrectionType.No;
 				_passwordEntry.Bind (this, "{'Value':{'Path':'Data.Password','Mode':'TwoWay'}}");
                 
-				_confirmPasswordEntry = CreateTextEntry(_settings, Resources.CreateAccountPasswordConfrimation, null, true, !ViewModel.HasSocialInfo);                  
+                var _confirmPasswordEntry = CreateTextEntry(_settings, Resources.CreateAccountPasswordConfrimation, null, true, !ViewModel.HasSocialInfo);                  
                 _confirmPasswordEntry.AutocapitalizationType = UITextAutocapitalizationType.None;
                 _confirmPasswordEntry.AutocorrectionType = UITextAutocorrectionType.No;
 				_confirmPasswordEntry.Bind (this, "{'Value':{'Path':'ConfirmPassword','Mode':'TwoWay'}}");
-
-                this.InvokeOnMainThread(() => {
-                    this.Root = _menu; }
-                );
+                this.InvokeOnMainThread(() => { this.Root = _menu; });  
                 this.InvokeOnMainThread(() => LoadFooter());
-                this.InvokeOnMainThread(() => NavigationItem.Title = " ");  
-                
+
             }
             );
 

@@ -43,7 +43,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public BookViewModel()
         {
-            MessengerHub.Subscribe<LogOutRequested>(msg => Logout.Execute());
+			MessengerHub.Subscribe<LogOutRequested>(msg => RequestClose(this));
 			InitializeOrder();
 
             CenterMap(true);
@@ -93,6 +93,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 Title = Resources.GetString("BookDropoffLocationButtonTitle"),
                 EmptyAddressPlaceholder = Resources.GetString("BookDropoffLocationEmptyPlaceholder")
             };
+
+			Panel = new PanelViewModel();
 
             Pickup.PropertyChanged += Address_PropertyChanged;
             Dropoff.PropertyChanged += Address_PropertyChanged;
@@ -253,6 +255,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+		public PanelViewModel Panel { get; set; }
         public BookAddressViewModel Pickup { get; set; }
         public BookAddressViewModel Dropoff { get; set; }
 
@@ -337,20 +340,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public MvxRelayCommand Logout
-        {
-            get
-            {
-                return new MvxRelayCommand(() =>
-                    {
-                        TinyIoCContainer.Current.Resolve<IAccountService>().SignOut();       
-                 
-                        RequestClose(this);
-                    });
-            }
-        }
-
-        
+               
         private void CenterMap(bool changeZoom)
         {
             if (DropoffIsActive && Dropoff.Model.HasValidCoordinate())
@@ -380,26 +370,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				var serverVersionFormat = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("ServerInfo");
 				version += " " + string.Format(serverVersionFormat, serverInfo.SiteName, serverInfo.Version);
 			}
-			Version =  version;
-
+			Panel.Version =  version;
         }
 
-        private string _version;
-        public string Version {
-			get
-			{
-				return _version;
-				//android:text="v1.0.10 (Atlanta Checker v1.0.1)"           
-			}
-			set 
-			{
-				if(value != _version)
-				{
-					_version = value;
-					FirePropertyChanged("Versio");
-				}
-			}
-        }
+        
 
         public bool IsInTheFuture { get { return Order.PickupDate.HasValue; } }
 
@@ -508,15 +482,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand NavigateToHistoryList
-        {
-            get
-            {
-                return new MvxRelayCommand(() => RequestNavigate<HistoryViewModel>());
-
-            }
-        }
-
         public IMvxCommand NavigateToOrderStatus 
 		{
 			get {
@@ -563,8 +528,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void ShowStatusActivity(Order data, OrderStatusDetail orderInfo)
         {
-            var param = new Dictionary<string, object>() { { "order", data }, { "orderInfo", orderInfo } };
-            NavigateToOrderStatus.Execute(param);
+            RequestNavigate<BookingStatusViewModel>(new
+            {
+                order = data.ToJson(),
+                orderStatus = orderInfo.ToJson()
+            });
         }
 
    }

@@ -199,6 +199,7 @@
     <Compile Include="Controls\BindableListView.cs" />
     <Compile Include="PlatformIntegration\AddressBookService.cs" />
     <Compile Include="Activities\SelectItemDialogActivity.cs" />
+    <Compile Include="PlatformIntegration\PhoneService.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\HelveticaNeue-Bold.otf" />
