@@ -20,30 +20,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 		private void Initialize()
 		{
-//			TextFilterEnabled = true;
-
-
 		}
-
-//		private string _searchFilter;
-//		public string SearchFilter {
-//			get { return _searchFilter; }
-//			set {
-//				_searchFilter = value;
-////				SetFilter();
-//			}
-//		}
-
-//		private void SetFilter()
-//		{
-////			var f = ((MvxFilteringBindableListAdapter)Adapter).Filter;
-////			f.InvokeFilter( SearchFilter );
-//			
-////			((MvxFilteringBindableListAdapter)Adapter).Filter = (Filter)Filter.FromArray( new string[] {SearchFilter} );
-////			((MvxFilteringBindableListAdapter)Adapter).NotifyDataSetChanged();
-////			SetFilterText( SearchFilter );
-//		}
-
 	}
 }
 
