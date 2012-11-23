@@ -6,7 +6,7 @@ using System.Net;
 using System.Threading;
 using System.Web;
 using ServiceStack.ServiceClient.Web;
-using apcurium.MK.Booking.Api.Client;
+using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 
 namespace apcurium.MK.Web

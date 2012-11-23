@@ -1,12 +1,9 @@
-﻿using apcurium.MK.Common.Configuration;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
 
-namespace apcurium.MK.Booking.Api.Client
+namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class ConfigurationClientService : BaseServiceClient, IConfigurationManager
     {

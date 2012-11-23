@@ -1,8 +1,7 @@
-﻿using apcurium.MK.Booking.Api.Contract.Resources;
 using System.Globalization;
 using apcurium.MK.Common.Entity;
 
-namespace apcurium.MK.Booking.Api.Client
+namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class GeocodingServiceClient : BaseServiceClient
     {

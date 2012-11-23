@@ -1,7 +1,7 @@
-﻿using System.Globalization;
+using System.Globalization;
 using apcurium.MK.Common.Entity;
 
-namespace apcurium.MK.Booking.Api.Client
+namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class PlaceDetailServiceClient: BaseServiceClient
     {

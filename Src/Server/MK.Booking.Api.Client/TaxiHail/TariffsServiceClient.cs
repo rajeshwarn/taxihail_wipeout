@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using apcurium.MK.Common.Entity;
 
-namespace apcurium.MK.Booking.Api.Client
+namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class TariffsServiceClient : BaseServiceClient
     {
