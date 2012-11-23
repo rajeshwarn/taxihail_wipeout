@@ -85,7 +85,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 EmptyAddressPlaceholder = Resources.GetString("BookDropoffLocationEmptyPlaceholder")
             };
 
-		    var subscribe =  Observable.Interval(TimeSpan.FromSeconds(5)).Select(c=> new Unit());
+            var subscribe = Observable.Timer(TimeSpan.Zero, TimeSpan.FromSeconds(_refreshPeriod)).Select(c => new Unit());
 
 		    subscribe.Subscribe(unit => InvokeOnMainThread(RefreshStatus));
             CenterMap(true);
