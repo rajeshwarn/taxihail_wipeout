@@ -12,9 +12,16 @@ namespace apcurium.MK.Booking.Mobile.Client
 {
     public class LoggerWrapper :  ILogger
     {
-        public void LogError(Exception ex)
+        public void LogError (Exception ex)
         {
-            Logger.LogError(ex);
+            if (ex is AggregateException) {
+                ((AggregateException)ex).Handle(x=> {
+                    Logger.LogError(x);
+                    return true;
+                });
+            } else {            
+                Logger.LogError(ex);
+            }
         }
         
         public void LogMessage(string message, params object[] args)
