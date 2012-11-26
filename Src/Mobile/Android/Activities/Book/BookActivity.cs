@@ -76,7 +76,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             ViewModel.ConfirmOrder.Execute();
         }
 
-        }       
 
         protected override void OnResume()
         {
