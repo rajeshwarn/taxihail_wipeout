@@ -105,6 +105,12 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             Context.StartActivity(i);
         }
 
+        public void ShowMessage (string title, string message, List<KeyValuePair<string,Action>> additionalButton)
+		{
+			throw new NotImplementedException();
+		}
+		
+
         public void ShowMessage(string title, string message,  string additionnalActionButtonTitle, Action additionalAction)
         {  
           

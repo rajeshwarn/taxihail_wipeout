@@ -4,40 +4,54 @@ using System.Text;
 using Android.Widget;
 using Android.App;
 using Android.Views;
+using Cirrious.MvvmCross.Binding.Android.Views;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using System.Linq;
 
 namespace apcurium.MK.Booking.Mobile.Client.Adapters
 {
-    public class GroupedLocationListAdapter : BaseAdapter
+	public class GroupedLocationListAdapter : MvxBindableListAdapter
     {
         private Activity _context;
 
-        public IDictionary<string, LocationListAdapter> Sections { get; set; }
+        public IList<LocationListAdapter> Sections { get; set; }
         public ArrayAdapter<string> Headers { get; set; }
         public static int TYPE_SECTION_HEADER = 0;
 
 
         public GroupedLocationListAdapter(Activity context)
-            : base()
+            : base(context)
         {
             _context = context;
             Headers = new ArrayAdapter<string>(context, Resource.Layout.ListHeader);
-            Sections = new Dictionary<string, LocationListAdapter>();
+            Sections = new List<LocationListAdapter>();
         }
-        public void AddSection(string section, LocationListAdapter adapter)
-        {
-            Headers.Add(section);
-            Sections.Add(new KeyValuePair<string, LocationListAdapter>(section, adapter));
-        }
+        
+		protected override void SetItemsSource (System.Collections.IList value)
+		{
+			Sections.Clear ();
+			Headers.Clear();
+			var sections = value as IEnumerable<SectionAddressViewModel>;
+			if (sections != null) {
+				foreach (var section in sections) {
+					Sections.Add(new LocationListAdapter(_context, section.Addresses.ToList()));
+					Headers.Add (section.SectionTitle);
+				}
+			}
+			base.SetItemsSource (value);
+		}
 
         public override int Count
         {
             get
             {
                 int total = 0;
-                foreach (var adapter in this.Sections.Values)
-                {
-                    total += adapter.Count + 1;
-                }
+				var sections = ItemsSource as IEnumerable<SectionAddressViewModel>;
+                if(sections != null)
+					foreach (var section in sections)
+	                {
+	                    total += section.Addresses.Count() + 1;
+	                }
                 return total;
             }
         }
@@ -46,11 +60,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Adapters
             get
             {
                 int total = 1;
-                foreach (var adapter in this.Sections.Values)
-                {
-                    total += adapter.ViewTypeCount;
-                }
-
+				var sections = ItemsSource as IEnumerable<SectionAddressViewModel>;
+				if(sections != null)
+                	total += sections.Count();
 
                 return total;
             }
@@ -58,21 +70,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Adapters
 
         public override Java.Lang.Object GetItem(int position)
         {
-            foreach (var section in this.Sections.Keys)
-            {
-                LocationListAdapter adapter = Sections[section];
-                int size = adapter.Count + 1;
-                if (position == 0)
-                {
-                    return null;
-                }
-                if (position < size)
-                {
-                    return adapter.GetItem(position - 1);
-                }
-                position -= size;
-
-            }
+	            foreach (var adapter in Sections)
+	            {
+	                int size = adapter.Count + 1;
+	                if (position == 0)
+	                {
+	                    return null;
+	                }
+	                if (position < size)
+	                {
+	                    return adapter.GetItem(position - 1);
+	                }
+	                position -= size;
+	            }
 
             return null;
         }
@@ -80,9 +90,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Adapters
         public override int GetItemViewType(int position)
         {
             int type = 1;
-            foreach (var section in this.Sections.Keys)
+            foreach (var adapter in this.Sections)
             {
-                LocationListAdapter adapter = this.Sections[section];
                 int size = adapter.Count + 1;
                 if (position == 0)
                 {
@@ -90,10 +99,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Adapters
                 }
                 if (position < size)
                 {
-                    return type + adapter.GetItemViewType(position - 1);
+					return type + adapter.GetItemViewType(position - 1);
                 }
                 position -= size;
-                type += adapter.ViewTypeCount;
+				type += adapter.ViewTypeCount;
             }
             return -1;
         }
@@ -109,9 +118,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Adapters
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
             int sectionNum = 0;
-            foreach (var section in this.Sections.Keys)
+            foreach (var adapter in this.Sections)
             {
-                LocationListAdapter adapter = this.Sections[section];
                 int size = adapter.Count + 1;
 
                 // check if position inside this section

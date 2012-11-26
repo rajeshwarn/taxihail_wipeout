@@ -23,7 +23,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 	{
 		private UINavigationController _navController;
 		private UIView _viewToAnimate;
-		private bool _menuIsOpen = false;
 
 		public PanelMenuView(UIView viewToAnimate, UINavigationController navController) 
 			: base(new MvxShowViewModelRequest<PanelViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
@@ -73,7 +72,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			var sect = structure.AddSection();
             sect.AddItem( new SingleLineItem( Resources.GetValue("View_Book_Menu_MyLocations")) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
 					AnimateMenu();
-					_navController.PushViewController(new LocationsTabView(), true);
+                    ViewModel.NavigateToMyLocations.Execute();
 				})				
 			});
             sect.AddItem( new SingleLineItem( Resources.GetValue("View_Book_Menu_MyOrders") ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
@@ -108,7 +107,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			});
 
             menuListView.BackgroundView = new UIView { BackgroundColor = UIColor.Clear };
-            menuListView.BackgroundColor = UIColor.Clear; // UIColor.Red ;
+            menuListView.BackgroundColor = UIColor.Clear;
             menuListView.ScrollEnabled = false;
 			menuListView.DataSource = new TableViewDataSource( structure );
 			menuListView.Delegate = new TableViewDelegate( structure );
@@ -129,9 +128,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		public void AnimateMenu()
 		{
-			var slideAnimation = new SlideViewAnimation( _viewToAnimate, new SizeF( (_menuIsOpen ? menuView.Frame.Width : -menuView.Frame.Width), 0f ) );
+            var slideAnimation = new SlideViewAnimation( _viewToAnimate, new SizeF( (ViewModel.MenuIsOpen ? menuView.Frame.Width : -menuView.Frame.Width), 0f ) );
 			slideAnimation.Animate();
-			_menuIsOpen = !_menuIsOpen;
+            ViewModel.MenuIsOpen = !ViewModel.MenuIsOpen;
 		}
 
 
