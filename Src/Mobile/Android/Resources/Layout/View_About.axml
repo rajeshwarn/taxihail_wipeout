@@ -12,7 +12,8 @@
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"
       android:padding="15dip" 
-      android:layout_gravity="center_vertical|center_horizontal">
+      android:layout_gravity="center_vertical|center_horizontal"
+  >
   </WebView>
 
 </apcurium.mk.booking.mobile.client.controls.HeaderedLayout>

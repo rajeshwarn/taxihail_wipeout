@@ -65,8 +65,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             FindViewById<Button>(Resource.Id.settingsFavorites).Click -= ShowFavorites_Click;
             FindViewById<Button>(Resource.Id.settingsFavorites).Click += ShowFavorites_Click;
 
-            FindViewById<Button>(Resource.Id.settingsAbout).Click -= About_Click;
-            FindViewById<Button>(Resource.Id.settingsAbout).Click += About_Click;
+
         }
 
         private void BookUsingAddress(Address address)
@@ -91,12 +90,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             ToggleSettingsScreenVisibility();
         }
 
-        private void About_Click(object sender, EventArgs e)
-        {
-            var intent = new Intent().SetClass(this, typeof(AboutActivity));
-            StartActivity(intent);
-            ToggleSettingsScreenVisibility();
-        }       
 
 
         protected override void OnDestroy()

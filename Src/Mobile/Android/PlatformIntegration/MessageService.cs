@@ -2,13 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using System.Threading;
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Cirrious.MvvmCross.Interfaces.Views;
+using apcurium.MK.Booking.Mobile.Client.Activities;
+using apcurium.MK.Booking.Mobile.Client.Activities.Setting;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using TinyIoC;
 using TinyMessenger;
@@ -20,7 +24,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
     {
         public const string ACTION_SERVICE_MESSAGE = "Mk_Taxi.ACTION_SERVICE_MESSAGE";
         public const string ACTION_EXTRA_MESSAGE = "Mk_Taxi.ACTION_EXTRA_MESSAGE";
-
         public MessageService(Context context)
         {
             Context = context;
@@ -106,17 +109,36 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         }
 
         public void ShowMessage(string title, string message,  string additionnalActionButtonTitle, Action additionalAction)
-        {  
-          
+        {
+            throw new NotImplementedException();
         }
 
         public void ShowProgress(bool show)
-        {         
+        {
+            /*TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher.RequestMainThreadAction(
+                () =>
+                    {
+                        new ProgressDialog(Context).Show();.Show(Context, "", "LoadingMessage", true,
+                                                              false);
+                       _progressDialog.Show();
+                    }
+                );*/
+
+
         }
+
+
+            /* var i = new Intent(Context, typeof(ShowDialogActivity));
+            i.AddFlags(ActivityFlags.NewTask | ActivityFlags..ReorderToFront);
+            i.PutExtra("Show", show.ToString());
+            Context.StartActivity(i);
+            Context.ac*/
 
         public void ShowProgress(bool show, Action cancel)
         {
-            
+            var i = new Intent(Context, typeof(ShowDialogActivity));
+            i.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
+            i.PutExtra("Show", show.ToString());
         }
 
         public void ShowToast(string message, ToastDuration duration )

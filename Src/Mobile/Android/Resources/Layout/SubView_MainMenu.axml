@@ -75,6 +75,7 @@
                 <Button
                     android:id="@+id/settingsAbout"
                     style="@style/BigTitleTextBlack"
+                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;Panel.NavigateToAboutUs&apos;}}"
                     android:background="@drawable/cell_middle_button_state"
                     android:layout_width="fill_parent"
                     android:layout_height="40dip"

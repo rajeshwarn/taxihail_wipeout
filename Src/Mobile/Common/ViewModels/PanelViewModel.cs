@@ -79,7 +79,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand Call
+	    public IMvxCommand NavigateToAboutUs
+	    {
+	        get
+	        {
+	            return new MvxRelayCommand(() =>
+	                                           {
+	                                               RequestNavigate<AboutUsViewModel>();
+	                                           });
+	        }
+	    }
+
+	    public IMvxCommand Call
         {
             get
             {
