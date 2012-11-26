@@ -1,10 +1,10 @@
 ﻿using System.IO;
-using apcurium.MK.Booking.Api.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using System.Threading;
 

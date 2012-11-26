@@ -1,7 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 using ServiceStack.ServiceClient.Web;
-using apcurium.MK.Booking.Api.Client;
+using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 

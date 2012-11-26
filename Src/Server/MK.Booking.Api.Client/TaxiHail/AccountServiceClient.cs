@@ -1,12 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Entity;
 
-namespace apcurium.MK.Booking.Api.Client
+namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
-    public class AccountServiceClient : BaseServiceClient
+    public class AccountServiceClient : BaseServiceClient, IAccountServiceClient
     {
         public AccountServiceClient(string url, string sessionId)
             : base(url, sessionId)

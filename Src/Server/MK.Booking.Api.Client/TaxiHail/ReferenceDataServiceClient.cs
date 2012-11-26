@@ -1,6 +1,6 @@
-﻿using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Api.Contract.Resources;
 
-namespace apcurium.MK.Booking.Api.Client
+namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class ReferenceDataServiceClient : BaseServiceClient
     {
