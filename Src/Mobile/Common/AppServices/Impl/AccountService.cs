@@ -13,8 +13,10 @@ using ServiceStack.Common.ServiceClient.Web;
 using ServiceStack.Common.ServiceClient.Web;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Api.Client;
+using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Api.Contract.Security;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common.Entity;
@@ -310,7 +312,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             
         }
 
-        private static void SaveCredentials (AuthResponse authResponse)
+        private static void SaveCredentials (AuthenticationData authResponse)
         {
             var cache = TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService> ();
             cache.Set ("SessionId", authResponse.SessionId);

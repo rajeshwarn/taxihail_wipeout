@@ -1,14 +1,15 @@
 using System;
 using System.Net;
 using ServiceStack.ServiceClient.Web;
-using ServiceStack.ServiceInterface.Auth;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Api.Client.Client;
-using apcurium.MK.Common.Extensions;
+using apcurium.MK.Booking.Api.Client.Cmt.OAuth;
 
 #if !CLIENT
 #else
 using ServiceStack.Common.ServiceClient.Web;
+using apcurium.MK.Booking.Api.Client.Cmt.OAuth;
+
 #endif
 
 namespace apcurium.MK.Booking.Api.Client.Cmt
@@ -55,14 +56,9 @@ namespace apcurium.MK.Booking.Api.Client.Cmt
            if (Credentials != null)
            {
                request.Headers.Add("X-CMT-SessionToken", Credentials.SessionId);
-               var oauthProvider = new OAuthProvider
-                                       {
-                                           ConsumerKey = Credentials.ConsumerKey,
-                                           ConsumerSecret = Credentials.ConsumerSecret
-                                       };
-               
-
-               var oauthHeader = OAuthAuthorizer.AuthorizeRequest(oauthProvider,
+              
+               var oauthHeader = OAuthAuthorizer.AuthorizeRequest(Credentials.ConsumerKey,
+                                                                  Credentials.ConsumerSecret,
                                                                   Credentials.AccessToken,
                                                                   Credentials.AccessTokenSecret,
                                                                   request.Method,

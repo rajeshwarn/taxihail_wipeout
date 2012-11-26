@@ -1,4 +1,3 @@
-using ServiceStack.ServiceInterface.Auth;
 using apcurium.MK.Booking.Api.Contract.Security;
 
 namespace apcurium.MK.Booking.Api.Client
