@@ -27,10 +27,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 		MonoTouch.UIKit.UIView bookView { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.TextProgressButton pickupActivationButton { get; set; }
+        apcurium.MK.Booking.Mobile.Client.GradientButton pickupActivationButton { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.TextProgressButton dropoffActivationButton { get; set; }
+        apcurium.MK.Booking.Mobile.Client.GradientButton dropoffActivationButton { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.TextProgressButton pickupButton { get; set; }

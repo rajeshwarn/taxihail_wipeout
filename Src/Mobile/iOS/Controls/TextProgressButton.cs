@@ -6,7 +6,7 @@ using MonoTouch.Foundation;
 namespace apcurium.MK.Booking.Mobile.Client
 {
 	[Register ("TextProgressButton")]
-	public class TextProgressButton : GradientButton
+	public class TextProgressButton : UIControl
     {
 		private UILabel _line1Label;
 		private UILabel _line2Label;
@@ -18,11 +18,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			Initialize();
         }
         
-		public TextProgressButton(RectangleF rect, float cornerRadius, Style.ButtonStyle buttonStyle, string title, UIFont titleFont, string image = null) : base ( rect , cornerRadius, buttonStyle, title, titleFont, image )
-        {
-			Initialize();
-        }
-
+		
 		private void Initialize()
 		{
 			var image = UIImage.FromFile( "Assets/right_arrow.png" );

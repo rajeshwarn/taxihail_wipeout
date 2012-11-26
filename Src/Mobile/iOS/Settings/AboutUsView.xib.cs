@@ -6,42 +6,40 @@ using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using TinyIoC;
+using Cirrious.MvvmCross.Binding.Touch.Views;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using Cirrious.MvvmCross.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-	public partial class AboutUsView : UIViewController
+    public partial class AboutUsView : MvxBindingTouchViewController<AboutUsViewModel> 
 	{
 		#region Constructors
 
 		// The IntPtr and initWithCoder constructors are required for items that need 
 		// to be able to be created from a xib rather than from managed code
 
-		public AboutUsView (IntPtr handle) : base(handle)
-		{
-			Initialize ();
-		}
-
-		[Export("initWithCoder:")]
-		public AboutUsView (NSCoder coder) : base(coder)
-		{
-			Initialize ();
-		}
-
-		public AboutUsView () : base("AboutUsView", null)
-		{
-			Initialize ();
-		}
-
-		void Initialize ()
-		{
-		}
+        public AboutUsView () 
+            : base(new MvxShowViewModelRequest<AboutUsViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
+        {
+        }
+        
+        public AboutUsView (MvxShowViewModelRequest request) 
+            : base(request)
+        {
+        }
+        
+        public AboutUsView (MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
+            : base(request, nibName, bundle)
+        {
+        }
 		
 		public override void ViewDidLoad ()
 		{
 			base.ViewDidLoad ();
 			
             var url = TinyIoCContainer.Current.Resolve<IAppSettings>().SiteUrl;
-            webView.LoadRequest( NSUrlRequest.FromUrl( new NSUrl( url ) ) ); // )  );//  NSUrl.FromFilename( Resources.AboutUsUrl  ) ) );
+            webView.LoadRequest( NSUrlRequest.FromUrl( new NSUrl( ViewModel.Uri ) ) ); 
             webView.ScalesPageToFit = true;
 		}
 

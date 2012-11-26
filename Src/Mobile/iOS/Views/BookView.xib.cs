@@ -94,9 +94,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             };
 
 
-            AppButtons.FormatStandardButton ((GradientButton)dropoffButton, "", AppStyle.ButtonColor.Grey, "");
-            AppButtons.FormatStandardButton ((GradientButton)pickupButton, "", AppStyle.ButtonColor.Grey);
-
+            //AppButtons.FormatStandardButton ((GradientButton)dropoffButton, "", AppStyle.ButtonColor.Grey, "");
+            //AppButtons.FormatStandardButton ((GradientButton)pickupButton, "", AppStyle.ButtonColor.Grey);
+           
             AppButtons.FormatStandardButton ((GradientButton)dropoffActivationButton, "", AppStyle.ButtonColor.LightBlue, "");
             AppButtons.FormatStandardButton ((GradientButton)pickupActivationButton, "", AppStyle.ButtonColor.LightBlue);
 
