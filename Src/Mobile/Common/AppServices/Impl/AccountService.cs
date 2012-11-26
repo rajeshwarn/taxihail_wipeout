@@ -244,7 +244,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public bool CheckSession ()
         {
             try {
-                var client = TinyIoCContainer.Current.Resolve<AuthServiceClient> ();
+                var client = TinyIoCContainer.Current.Resolve<IAuthServiceClient> ();
                 client.CheckSession ();
 
                 return true;
@@ -291,7 +291,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public Account GetAccount (string email, string password)
         {
             try {
-                var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient> ();
+                var auth = TinyIoCContainer.Current.Resolve<IAuthServiceClient> ();
                 var authResponse = auth.Authenticate (email, password);
                 SaveCredentials (authResponse);                
                 return GetAccount (true);
@@ -321,7 +321,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public Account GetFacebookAccount (string facebookId)
         {
             try {
-                var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient> ();
+                var auth = TinyIoCContainer.Current.Resolve<IAuthServiceClient> ();
                 var authResponse = auth.AuthenticateFacebook (facebookId);
                 SaveCredentials (authResponse);
                 return GetAccount (false);
@@ -334,7 +334,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             try {
                 var parameters = new NamedParameterOverloads ();
-                var auth = TinyIoCContainer.Current.Resolve<AuthServiceClient> ();
+                var auth = TinyIoCContainer.Current.Resolve<IAuthServiceClient> ();
                 var authResponse = auth.AuthenticateTwitter (twitterId);
                 SaveCredentials (authResponse);
 
