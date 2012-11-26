@@ -47,7 +47,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             var menu = FindViewById(Resource.Id.BookSettingsMenu);
             menu.Visibility = ViewStates.Gone;
             _menuWidth = WindowManager.DefaultDisplay.Width - 100;
-            ViewModel.Panel.MenuIsOpen = false;
 
             FindViewById<ImageButton>(Resource.Id.pickupDateButton).Click -= PickDate_Click;
             FindViewById<ImageButton>(Resource.Id.pickupDateButton).Click += PickDate_Click;
@@ -56,6 +55,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             FindViewById<Button>(Resource.Id.settingsAbout).Click -= About_Click;
             FindViewById<Button>(Resource.Id.settingsAbout).Click += About_Click;
+
+			ViewModel.Panel.PropertyChanged -= HandlePropertyChanged;
+			ViewModel.Panel.PropertyChanged += HandlePropertyChanged;
+        }
+
+        void HandlePropertyChanged (object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		{
+			if (e.PropertyName == "MenuIsOpen") {
+				AnimateMenu();
+			}
         }
 
         private void BookUsingAddress(Address address)
@@ -72,7 +81,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             var intent = new Intent().SetClass(this, typeof(AboutActivity));
             StartActivity(intent);
-            ToggleSettingsScreenVisibility();
         }       
 
         protected override void OnResume()
@@ -90,24 +98,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         private void MainSettingsButtonOnClick(object sender, EventArgs eventArgs)
         {
-            ToggleSettingsScreenVisibility();
+			ViewModel.Panel.MenuIsOpen = !ViewModel.Panel.MenuIsOpen;
         }
 
-        private void ToggleSettingsScreenVisibility()
+        private void AnimateMenu()
         {
             var mainLayout = FindViewById(Resource.Id.MainLayout);
             mainLayout.ClearAnimation();
             mainLayout.DrawingCacheEnabled = true;
 
             var menu = FindViewById(Resource.Id.BookSettingsMenu);
-			menu.Visibility = ViewModel.Panel.MenuIsOpen ? ViewStates.Gone : ViewStates.Visible;
 
-
-			var animation = new SlideAnimation(mainLayout, ViewModel.Panel.MenuIsOpen ? -(_menuWidth) : 0, ViewModel.Panel.MenuIsOpen ? 0 : -(_menuWidth), _interpolator);
+			var animation = new SlideAnimation(mainLayout, ViewModel.Panel.MenuIsOpen ? 0: -(_menuWidth), ViewModel.Panel.MenuIsOpen ? -(_menuWidth): 0, _interpolator);
             animation.Duration = 400;
-            mainLayout.StartAnimation(animation);
+			animation.AnimationStart +=	 (sender, e) => {
+				if(ViewModel.Panel.MenuIsOpen) menu.Visibility = ViewStates.Visible;
+			};
+			animation.AnimationEnd +=	 (sender, e) => {
+				if(!ViewModel.Panel.MenuIsOpen) menu.Visibility = ViewStates.Gone;
+			};
 
-			ViewModel.Panel.MenuIsOpen = !ViewModel.Panel.MenuIsOpen;
+            mainLayout.StartAnimation(animation);
         }
 
         protected override bool IsRouteDisplayed
@@ -140,13 +151,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             StartActivityForResult(intent, (int)ActivityEnum.DateTimePicked);
         }
 
-        public override void OnBackPressed()
-        {
-			if (ViewModel.Panel.MenuIsOpen)
-            {
-                ToggleSettingsScreenVisibility();
-            }
-            else
+        public override void OnBackPressed ()
+		{
+			if (ViewModel.Panel.MenuIsOpen) {
+				ViewModel.Panel.MenuIsOpen = false;
+			}
+			else
             {
                 base.OnBackPressed();
 
@@ -161,6 +171,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 ViewModel.NavigateToOrderStatus.Execute(param);
             });
         }
+
+		protected override void OnDestroy ()
+		{
+			base.OnDestroy ();
+			if (ViewModel != null) {
+				ViewModel.Panel.PropertyChanged -= HandlePropertyChanged;
+			}
+		}
 
     }
 }
