@@ -141,23 +141,6 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             return null;
         }
-
-        public void Selected()
-        {
-            try
-            {
-
-
-            }
-            catch
-            {
-            }
-        }
-
-        public void RefreshData()
-        {
-            Selected();
-        }
 	}
 }
 

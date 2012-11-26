@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Client;

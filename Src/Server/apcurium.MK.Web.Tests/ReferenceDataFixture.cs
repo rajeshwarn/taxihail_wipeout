@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using NUnit.Framework;
-using apcurium.MK.Booking.Api.Client;
+using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Web.Tests

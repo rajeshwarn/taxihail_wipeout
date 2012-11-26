@@ -13,7 +13,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public bool ShowRightArrow { get; set; }
 		public bool ShowPlusSign { get; set; }
 		public bool IsFirst { get; set; }
-		public bool IsLast { get; set; }
+        public bool IsLast { get; set; }
+		public bool IsAddNew { get; set; }
 	}
 }
 

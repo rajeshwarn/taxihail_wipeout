@@ -63,6 +63,7 @@
     <Compile Include="Requests\BookingSettingsRequest.cs" />
     <Compile Include="Requests\CancelOrder.cs" />
     <Compile Include="Requests\ClientPopularAddress.cs" />
+    <Compile Include="Requests\Cmt\PreCogRequest.cs" />
     <Compile Include="Requests\ConfirmAccountRequest.cs" />
     <Compile Include="Requests\CreateOrder.cs" />
     <Compile Include="Requests\CurrentAccount.cs" />
@@ -86,6 +87,14 @@
     <Compile Include="Resources\AddressList.cs" />
     <Compile Include="Resources\AppSetting.cs" />
     <Compile Include="Resources\BookingSettings.cs" />
+    <Compile Include="Resources\Cmt\CmtResponse.cs" />
+    <Compile Include="Resources\Cmt\LinkData.cs" />
+    <Compile Include="Resources\Cmt\PreCogActionType.cs" />
+    <Compile Include="Resources\Cmt\PreCogChoice.cs" />
+    <Compile Include="Resources\Cmt\PreCogFeature.cs" />
+    <Compile Include="Resources\Cmt\PreCogMapItem.cs" />
+    <Compile Include="Resources\Cmt\PreCogMessage.cs" />
+    <Compile Include="Resources\Cmt\PreCogResponse.cs" />
     <Compile Include="Resources\DirectionInfo.cs" />
     <Compile Include="Resources\ErrorCode.cs" />
     <Compile Include="Resources\Order.cs" />
@@ -94,6 +103,7 @@
     <Compile Include="Resources\OrderStatusDetail.cs" />
     <Compile Include="Resources\ReferenceData.cs" />
     <Compile Include="Resources\ApplicationInfo.cs" />
+    <Compile Include="Security\AuthenticationData.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -109,7 +119,5 @@
       <Name>MK.Common.Android</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Security\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>

@@ -32,6 +32,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private ILocationService _geolocator;
         private const int _refreshPeriod = 20 ; //20 sec
         private bool _isThankYouDialogDisplayed = false;
+        private IObservable<Unit> timerSubscription = null;
+        private IDisposable timerDisposable = null;
 
 		[Obsolete]
         public BookingStatusViewModel(string order)
@@ -58,9 +60,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 EmptyAddressPlaceholder = Resources.GetString("BookDropoffLocationEmptyPlaceholder")
             };
 
-            var subscribe = Observable.Timer(TimeSpan.Zero,TimeSpan.FromSeconds(_refreshPeriod)).Select(c => new Unit());
+              timerSubscription = Observable.Timer(TimeSpan.Zero,TimeSpan.FromSeconds(_refreshPeriod)).Select(c => new Unit());
 
-           subscribe.Subscribe(unit => InvokeOnMainThread(RefreshStatus));
+            timerDisposable = timerSubscription.Subscribe(unit => InvokeOnMainThread(RefreshStatus));
             CenterMap(true);
         }
 
@@ -85,9 +87,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 EmptyAddressPlaceholder = Resources.GetString("BookDropoffLocationEmptyPlaceholder")
             };
 
-            var subscribe = Observable.Timer(TimeSpan.Zero, TimeSpan.FromSeconds(_refreshPeriod)).Select(c => new Unit());
+             timerSubscription = Observable.Timer(TimeSpan.Zero, TimeSpan.FromSeconds(_refreshPeriod)).Select(c => new Unit());
 
-		    subscribe.Subscribe(unit => InvokeOnMainThread(RefreshStatus));
+            timerDisposable = timerSubscription.Subscribe(unit => InvokeOnMainThread(RefreshStatus));
             CenterMap(true);
 		}
 
@@ -379,6 +381,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                                    PhoneService.Call(numberToCall);
                                                });
             }
+        }
+
+        protected override void Close ()
+        {
+            base.Close ();
+            timerDisposable.Dispose();
         }
     }
 }

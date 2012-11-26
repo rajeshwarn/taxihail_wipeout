@@ -1,6 +1,6 @@
 ﻿using System.Data.Entity;
 using System.IO;
-using apcurium.MK.Booking.Api.Client;
+using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Web.SelfHost;
@@ -16,8 +16,8 @@ namespace apcurium.MK.Web.Tests
 
         //staging url : http://project.apcurium.com/apcurium.MK.Web.csproj_deploy/
         protected string BaseUrl { get { return "http://localhost:6901/"; } }
-        //protected string BaseUrl { get { return "http://demo.taxihail.biz/Dev/api/"; } }
-        //
+        //protected string BaseUrl { get { return "http://192.168.12.114/apcurium.MK.Web/api/"; } }
+        
         protected Account TestAccount { get; set; }
         protected Account TestAdminAccount { get; set; }
         protected string TestAdminAccountPassword { get { return "password1"; } }

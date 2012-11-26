@@ -6,6 +6,7 @@ using Cirrious.MvvmCross.Interfaces.ViewModels;
 using MK.Booking.Mobile.Infrastructure.Mvx;
 using TinyIoC;
 using TinyMessenger;
+using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Mobile.Infrastructure;

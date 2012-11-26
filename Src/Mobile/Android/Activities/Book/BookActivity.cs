@@ -28,19 +28,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
     [Activity(Label = "Book", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class BookActivity : MvxBindingMapActivityView<BookViewModel>
     {
-        private bool _menuIsShown;
         private int _menuWidth = 400;
         private DecelerateInterpolator _interpolator = new DecelerateInterpolator(0.9f);
-        private TinyMessageSubscriptionToken _orderConfirmedSubscription;
-        private TinyMessageSubscriptionToken _bookUsingAddressSubscription;
         
         protected override void OnViewModelSet()
         {
-            UnsubscribeOrderConfirmed();
-            UnsubscribeBookUsingAddress();
-
-            _bookUsingAddressSubscription = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<BookUsingAddress>(m => BookUsingAddress(m.Content));
-
             SetContentView(Resource.Layout.View_Book);
 
             var mainSettingsButton = FindViewById<HeaderedLayout>(Resource.Id.MainLayout).FindViewById<ImageButton>(Resource.Id.ViewNavBarRightButton);
@@ -55,17 +47,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             var menu = FindViewById(Resource.Id.BookSettingsMenu);
             menu.Visibility = ViewStates.Gone;
             _menuWidth = WindowManager.DefaultDisplay.Width - 100;
-            _menuIsShown = false;
 
             FindViewById<ImageButton>(Resource.Id.pickupDateButton).Click -= PickDate_Click;
             FindViewById<ImageButton>(Resource.Id.pickupDateButton).Click += PickDate_Click;
 
-            //Settings 
-
-            FindViewById<Button>(Resource.Id.settingsFavorites).Click -= ShowFavorites_Click;
-            FindViewById<Button>(Resource.Id.settingsFavorites).Click += ShowFavorites_Click;
+            //Settings
 
 
+
+			ViewModel.Panel.PropertyChanged -= HandlePropertyChanged;
+			ViewModel.Panel.PropertyChanged += HandlePropertyChanged;
+        }
+
+        void HandlePropertyChanged (object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		{
+			if (e.PropertyName == "MenuIsOpen") {
+				AnimateMenu();
+			}
         }
 
         private void BookUsingAddress(Address address)
@@ -78,27 +76,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             ViewModel.ConfirmOrder.Execute();
         }
 
-
-        void ShowFavorites_Click(object sender, EventArgs e)
-        {
-            RunOnUiThread(() =>
-            {
-                Intent i = new Intent(this, typeof(LocationListActivity));
-
-                StartActivity(i);
-            });
-            ToggleSettingsScreenVisibility();
-        }
-
-
-
-        protected override void OnDestroy()
-        {
-            base.OnDestroy();
-            UnsubscribeOrderConfirmed();
-            UnsubscribeBookUsingAddress();
-            
-        }
+        }       
 
         protected override void OnResume()
         {
@@ -111,48 +89,31 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             base.OnStop();
             apcurium.MK.Booking.Mobile.Client.Activities.Book.LocationService.Instance.Stop();
         }
-
-        
-        private void UnsubscribeBookUsingAddress()
-        {
-            if (_bookUsingAddressSubscription != null)
-            {
-                TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Unsubscribe<BookUsingAddress>(_bookUsingAddressSubscription);
-                _bookUsingAddressSubscription = null;
-            }
-        }
-        
-        private void UnsubscribeOrderConfirmed()
-        {
-            if (_orderConfirmedSubscription != null)
-            {
-                TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Unsubscribe<OrderConfirmed>(_orderConfirmedSubscription);
-
-                _orderConfirmedSubscription.Dispose();
-                _orderConfirmedSubscription = null;
-            }
-        }
+		       
 
         private void MainSettingsButtonOnClick(object sender, EventArgs eventArgs)
         {
-            ToggleSettingsScreenVisibility();
+			ViewModel.Panel.MenuIsOpen = !ViewModel.Panel.MenuIsOpen;
         }
 
-        private void ToggleSettingsScreenVisibility()
+        private void AnimateMenu()
         {
             var mainLayout = FindViewById(Resource.Id.MainLayout);
             mainLayout.ClearAnimation();
             mainLayout.DrawingCacheEnabled = true;
 
             var menu = FindViewById(Resource.Id.BookSettingsMenu);
-            menu.Visibility = _menuIsShown ? ViewStates.Gone : ViewStates.Visible;
 
-
-            var animation = new SlideAnimation(mainLayout, _menuIsShown ? -(_menuWidth) : 0, _menuIsShown ? 0 : -(_menuWidth), _interpolator);
+			var animation = new SlideAnimation(mainLayout, ViewModel.Panel.MenuIsOpen ? 0: -(_menuWidth), ViewModel.Panel.MenuIsOpen ? -(_menuWidth): 0, _interpolator);
             animation.Duration = 400;
-            mainLayout.StartAnimation(animation);
+			animation.AnimationStart +=	 (sender, e) => {
+				if(ViewModel.Panel.MenuIsOpen) menu.Visibility = ViewStates.Visible;
+			};
+			animation.AnimationEnd +=	 (sender, e) => {
+				if(!ViewModel.Panel.MenuIsOpen) menu.Visibility = ViewStates.Gone;
+			};
 
-            _menuIsShown = !_menuIsShown;
+            mainLayout.StartAnimation(animation);
         }
 
         protected override bool IsRouteDisplayed
@@ -162,8 +123,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         void PickDate_Click(object sender, EventArgs e)
         {
-            UnsubscribeOrderConfirmed();
-
             var messengerHub = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>();
             var token = default(TinyMessageSubscriptionToken);
             token = messengerHub.Subscribe<DateTimePicked>(msg =>
@@ -187,13 +146,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             StartActivityForResult(intent, (int)ActivityEnum.DateTimePicked);
         }
 
-        public override void OnBackPressed()
-        {
-            if (_menuIsShown)
-            {
-                ToggleSettingsScreenVisibility();
-            }
-            else
+        public override void OnBackPressed ()
+		{
+			if (ViewModel.Panel.MenuIsOpen) {
+				ViewModel.Panel.MenuIsOpen = false;
+			}
+			else
             {
                 base.OnBackPressed();
 
@@ -208,6 +166,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 ViewModel.NavigateToOrderStatus.Execute(param);
             });
         }
+
+		protected override void OnDestroy ()
+		{
+			base.OnDestroy ();
+			if (ViewModel != null) {
+				ViewModel.Panel.PropertyChanged -= HandlePropertyChanged;
+			}
+		}
 
     }
 }

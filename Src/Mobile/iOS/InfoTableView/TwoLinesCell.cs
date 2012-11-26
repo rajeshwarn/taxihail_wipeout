@@ -67,6 +67,11 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 				((CustomCellBackgroundView)BackgroundView).IsBottom = _isLast;
 			}
 		}
+        public bool IsAddNewCell {
+            set {
+                ((CustomCellBackgroundView)BackgroundView).IsAddNewCell = value;
+            }
+        }
 
 		private void Initialize ()
 		{

@@ -22,12 +22,27 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _accountService = this.GetService<IAccountService>();
 		}
 
+        private bool _menuIsOpen = false;
+        public bool MenuIsOpen {
+            get {
+                return _menuIsOpen;
+            }
+            set{
+                if(value!= _menuIsOpen)
+                {
+                    _menuIsOpen = value;
+                    FirePropertyChanged("MenuIsOpen");
+                }
+            }
+        }
+
 		public MvxRelayCommand SignOut
 		{
 			get
 			{
 				return new MvxRelayCommand(() =>
 			{
+                    MenuIsOpen = false;
 					_accountService.SignOut();			
 					InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new LogOutRequested(this)));
 				});
@@ -41,10 +56,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				return new MvxRelayCommand(() =>
 				                           {
+                    MenuIsOpen = false;
 					RequestNavigate<HistoryViewModel>();
 				});
 			}
 		}
+
+        public MvxRelayCommand NavigateToMyLocations
+        {
+            get
+            {
+                return new MvxRelayCommand(() =>
+                                           {
+                    MenuIsOpen = false;
+                    RequestNavigate<MyLocationsViewModel>();
+                });
+            }
+        }
 
 		private string _version;
 		public string Version {
@@ -67,6 +95,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get
             {
                 return new MvxRelayCommand(()=>{
+                    MenuIsOpen = false;
                     RequestSubNavigate<RideSettingsViewModel, BookingSettings>(new Params{
                         { "bookingSettings", _accountService.CurrentAccount.Settings.ToJson()  }
                     }, result => {
@@ -95,6 +124,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get
             {
                 return new MvxRelayCommand(()=>{
+                    MenuIsOpen = false;
                     Action call = () => { PhoneService.Call(Settings.PhoneNumber(_accountService.CurrentAccount.Settings.ProviderId.Value)); };
                     MessageService.ShowMessage(string.Empty, 
                                                Settings.PhoneNumberDisplay(_accountService.CurrentAccount.Settings.ProviderId.Value), 
@@ -110,6 +140,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get
             {
                 return new MvxRelayCommand(()=>{
+                    MenuIsOpen = false;
                     PhoneService.SendFeedbackErrorLog(Settings.ErrorLog, Settings.SupportEmail, Resources.GetString("TechSupportEmailTitle"));        
                 });
             }

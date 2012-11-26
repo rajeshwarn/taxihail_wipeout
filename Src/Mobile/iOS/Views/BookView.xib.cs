@@ -72,7 +72,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             navBar.TopItem.TitleView = new TitleView (null, "", false);
 
             bookView.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
-            _menu = new PanelMenuView (bookView, this.NavigationController);
+            _menu = new PanelMenuView (bookView, this.NavigationController, ViewModel.Panel);
             View.InsertSubviewBelow (_menu.View, bookView);
 
             AppButtons.FormatStandardButton ((GradientButton)refreshCurrentLocationButton, "", AppStyle.ButtonColor.Blue, "");
@@ -162,7 +162,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             base.ViewDidAppear (animated);
 
-            var btn = new UIBarButtonItem (new BarButtonItem (new RectangleF (0, 0, 40, 33), "Assets/settings.png", () => _menu.AnimateMenu ()));
+            var btn = new UIBarButtonItem (new BarButtonItem (new RectangleF (0, 0, 40, 33), "Assets/settings.png", () => ViewModel.Panel.MenuIsOpen = !ViewModel.Panel.MenuIsOpen));
             navBar.TopItem.RightBarButtonItem = btn;
             navBar.TopItem.RightBarButtonItem.SetTitlePositionAdjustment (new UIOffset (-10, 0), UIBarMetrics.Default);
         }
