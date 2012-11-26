@@ -32,6 +32,8 @@ namespace apcurium.MK.Common.Entity
 
         public bool IsHistoric { get; set; }
 
+        public bool Favorites { get; set; }
+
         public string AddressType { get; set; } 
     }
 }

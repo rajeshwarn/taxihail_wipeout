@@ -1,12 +1,8 @@
-﻿using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Common.Entity;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
+using apcurium.MK.Common.Entity;
 
-namespace apcurium.MK.Booking.Api.Client
+namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class SearchLocationsServiceClient : BaseServiceClient
     {

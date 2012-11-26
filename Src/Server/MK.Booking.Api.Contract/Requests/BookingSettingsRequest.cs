@@ -8,7 +8,15 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
     [RestService("/account/bookingsettings", "PUT")]
     public class BookingSettingsRequest : BaseDTO
     {
-        public string Name { get; set; }        
+        public string Name { get; set; }
+
+        public string FirstName { get; set; }
+
+        public string AccountId { get; set; }
+
+        public string LastName { get; set; }
+
+        public string Email { get; set; } 
 
         public string Phone { get; set; }
 
