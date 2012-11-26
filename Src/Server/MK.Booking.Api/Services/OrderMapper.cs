@@ -21,6 +21,7 @@ namespace apcurium.MK.Booking.Api.Services
             resource.Tip = order.Tip;
             resource.Toll = order.Toll;
             resource.IsCompleted = order.Status == (int) OrderStatus.Completed;
+            resource.IsRated = order.IsRated;
             return resource;
         }
     }

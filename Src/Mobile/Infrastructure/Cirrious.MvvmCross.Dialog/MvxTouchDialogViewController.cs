@@ -38,7 +38,7 @@ namespace Cirrious.MvvmCross.Dialog.Touch
             ShowRequest = request;
         }
 
-        protected MvxTouchDialogViewController(MvxShowViewModelRequest request, UITableViewStyle style, RootElement root, bool pushing)
+		protected MvxTouchDialogViewController(MvxShowViewModelRequest request, UITableViewStyle style, RootElement root, bool pushing)
             : base(style, root, pushing)
         {
             ShowRequest = request;

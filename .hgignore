@@ -39,7 +39,8 @@ ClientDependency*/
 ClientBin*/
 *.userprefs
 *.pidb
-
+.DS_Store
+._.DS_Store
 
 #NuGet
 packages/
@@ -95,5 +96,7 @@ Src/Mobile/Infrastructure/Cirrious.MvvmCross/Platform/._MvxBaseSetup.cs
 Src/Mobile/Infrastructure/Cirrious.MvvmCross/Platform/Images/._MvxDynamicImageHelper.cs
 Src/Mobile/Infrastructure/Cirrious.MvvmCross/Platform/Json/._MvxGeneralJsonEnumConverter.cs
 Src/Mobile/Infrastructure/Cirrious.MvvmCross/Touch/Platform/Tasks/._MvxImagePickerTask.cs
+Config/._default device taxihail no 3gs apcurium.txt
+Config/._default device taxihail.txt
 syntax: regexp
 Deployment/Database/*

@@ -8,6 +8,7 @@ using Android.GoogleMaps;
 using Android.Runtime;
 using Android.Util;
 using Android.Views;
+using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Booking.Mobile.Client.Converters;
@@ -198,6 +199,32 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
+        private OrderStatusDetail _taxiLocation { get; set; }
+
+        private TaxiOverlay _taxiLocationPin;
+
+        public OrderStatusDetail TaxiLocation
+        {
+            get { return _taxiLocation; }
+            set
+            {
+                _taxiLocation = value;
+                if (_taxiLocationPin != null)
+                {
+                    this.Overlays.Remove(_dropoffPin);
+                    _taxiLocationPin = null;
+                }
+
+                if ((value != null) && (value.VehicleLatitude != 0) && (value.VehicleLongitude != 0))
+                {
+                    var point = new GeoPoint(CoordinatesHelper.ConvertToE6(value.VehicleLatitude.Value), CoordinatesHelper.ConvertToE6(value.VehicleLongitude.Value));
+                    _taxiLocationPin = new TaxiOverlay(this, Resources.GetDrawable(Resource.Drawable.taxi_label), Context.GetString(Resource.String.TaxiMapTitle), "#" + value.VehicleNumber, point);
+                   this.Overlays.Add(_taxiLocationPin);
+                }
+                Invalidate();
+            }
+        }
+
         private bool _isDropoffActive;
         private IEnumerable<CoordinateViewModel> _center;
         public IEnumerable<CoordinateViewModel> Center
@@ -206,9 +233,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             set
             {
                 _center = value;                
-                
-                SetZoom(Center);                   
-                
+                if(Center!= null)
+                {
+                    SetZoom(Center);                   
+                }
             }
         }
 
@@ -257,7 +285,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             var map = this;
             var mapController = this.Controller;
 
-            if (adressesToDisplay.Count() == 1)
+            if ( adressesToDisplay.Count() == 1)
             {
                 int lat = CoordinatesHelper.ConvertToE6(adressesToDisplay.ElementAt(0).Coordinate.Latitude);
                 int lon = CoordinatesHelper.ConvertToE6(adressesToDisplay.ElementAt(0).Coordinate.Longitude);

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <apcurium.mk.booking.mobile.client.controls.HeaderedLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.TaxiHailDemo"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -35,7 +36,8 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
-                    android:text="#185841" />
+                    android:text="#185841"
+                    local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;ConfirmationTxt&apos;}}" />
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
@@ -56,7 +58,8 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
-                    android:text="24/02/2012 - 9:32 A" />
+                    android:text="24/02/2012 - 9:32 A"
+                    local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;RequestedTxt&apos;}}" />
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
@@ -77,7 +80,8 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
-                    android:text="5255 Rue Ferrier, Montreal" />
+                    android:text="5255 Rue Ferrier, Montreal"
+                    local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;OriginTxt&apos;}}" />
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
@@ -98,7 +102,8 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
-                    android:text="Test/No Code" />
+                    android:text="Test/No Code"
+                    local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;AptRingTxt&apos;}}" />
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
@@ -119,7 +124,8 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
-                    android:text="Destination Non specifie" />
+                    android:text="Destination Non specifie"
+                    local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;DestinationTxt&apos;}}" />
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
@@ -140,7 +146,8 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
-                    android:text="24/02/2012 / 9:32 A" />
+                    android:text="24/02/2012 / 9:32 A"
+                    local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;PickUpDateTxt&apos;}}" />
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
@@ -161,7 +168,7 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
-                    android:text="Cancled/Deleted" />
+                    local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Status.IBSStatusDescription&apos;}}" />
             </LinearLayout>
             <LinearLayout
                 android:orientation="vertical"
@@ -176,14 +183,34 @@
                     android:text="@string/HistoryDetailRebookButton"
                     android:layout_height="40dip"
                     android:paddingTop="5dip"
-                    android:paddingBottom="5dip" />
+                    android:paddingBottom="5dip"
+                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;RebookOrder&apos;}}" />
                 <Button
                     android:id="@+id/StatusBtn"
+                    style="@style/ButtonText"
                     android:background="@drawable/gray_button"
-                    style="@style/ButtonTextGray"
                     android:text="@string/HistoryViewStatusButton"
                     android:layout_width="fill_parent"
-                    android:layout_height="40dip" />
+                    android:layout_height="40dip"
+                    android:visibility="gone"
+                    local:MvxBind="{&apos;Enabled&apos;:{&apos;Path&apos;:&apos;IsCompleted&apos;,&apos;Converter&apos;:&apos;BoolInverter&apos;},&apos;Visibility&apos;:{&apos;Path&apos;:&apos;IsCompleted&apos;,&apos;Converter&apos;:&apos;InvertedVisibility&apos;},&apos;Click&apos;:{&apos;Path&apos;:&apos;NavigateToOrderStatus&apos;}}" />
+                <Button
+                    android:id="@+id/RateBtn"
+                    style="@style/ButtonText"
+                    android:background="@drawable/gray_button"
+                    android:text="@string/RateBtn"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dip"
+                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;NavigateToRatingPage&apos;}, &apos;Enabled&apos;:{&apos;Path&apos;:&apos;ShowRateButton&apos;},&apos;Visibility&apos;:{&apos;Path&apos;:&apos;ShowRateButton&apos;,&apos;Converter&apos;:&apos;Visibility&apos;}}" />
+                <Button
+                    android:id="@+id/ViewRatingBtn"
+                    style="@style/ButtonText"
+                    android:background="@drawable/gray_button"
+                    android:text="@string/ViewRatingBtn"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dip"
+                    android:visibility="gone"
+                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;NavigateToRatingPage&apos;}, &apos;Enabled&apos;:{&apos;Path&apos;:&apos;HasRated&apos;},&apos;Visibility&apos;:{&apos;Path&apos;:&apos;HasRated&apos;,&apos;Converter&apos;:&apos;Visibility&apos;}}" />
                 <Button
                     android:paddingTop="5dip"
                     android:paddingBottom="5dip"
@@ -192,7 +219,9 @@
                     android:background="@drawable/red_button"
                     android:text="@string/StatusActionCancelButton"
                     android:layout_width="fill_parent"
-                    android:layout_height="40dip" />
+                    android:layout_height="40dip"
+                    android:visibility="gone"
+                    local:MvxBind="{&apos;Enabled&apos;:{&apos;Path&apos;:&apos;IsCompleted&apos;,&apos;Converter&apos;:&apos;BoolInverter&apos;},&apos;Visibility&apos;:{&apos;Path&apos;:&apos;IsCompleted&apos;,&apos;Converter&apos;:&apos;InvertedVisibility&apos;},&apos;Click&apos;:{&apos;Path&apos;:&apos;CancelOrder&apos;}}" />
                 <Button
                     android:paddingTop="5dip"
                     android:paddingBottom="5dip"
@@ -201,7 +230,9 @@
                     android:background="@drawable/gray_button"
                     android:text="@string/HistoryDetailSendReceiptButton"
                     android:layout_width="fill_parent"
-                    android:layout_height="40dip" />
+                    android:layout_height="40dip"
+                    android:visibility="gone"
+                    local:MvxBind="{&apos;Enabled&apos;:{&apos;Path&apos;:&apos;Status.FareAvailable&apos;},&apos;Visibility&apos;:{&apos;Path&apos;:&apos;Status.FareAvailable&apos;,&apos;Converter&apos;:&apos;Visibility&apos;},&apos;Click&apos;:{&apos;Path&apos;:&apos;SendReceipt&apos;}}" />
                 <Button
                     android:id="@+id/HistoryOrderDeleteBtn"
                     style="@style/ButtonText"
@@ -209,7 +240,9 @@
                     android:layout_width="fill_parent"
                     android:layout_height="40dip"
                     android:layout_weight="0.33"
-                    android:text="@string/DeleteButton" />
+                    android:text="@string/DeleteButton"
+                    android:visibility="gone"
+                    local:MvxBind="{&apos;Enabled&apos;:{&apos;Path&apos;:&apos;IsCompleted&apos;},&apos;Visibility&apos;:{&apos;Path&apos;:&apos;IsCompleted&apos;,&apos;Converter&apos;:&apos;Visibility&apos;},&apos;Click&apos;:{&apos;Path&apos;:&apos;DeleteOrder&apos;}}" />
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>

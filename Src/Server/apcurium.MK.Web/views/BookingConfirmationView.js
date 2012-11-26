@@ -137,8 +137,8 @@
                 result = JSON.parse(result.responseText).responseStatus;
             }
             var $alert = $('<div class="alert alert-error" />');
-            if (result.statusText) {
-                $alert.append($('<div />').text(this.localize(result.statusText)));
+            if (result.errorCode) {
+                $alert.append($('<div />').text(this.localize(result.errorCode)));
             }
             _.each(result.errors, function (error) {
                 $alert.append($('<div />').text(this.localize(error.errorCode)));

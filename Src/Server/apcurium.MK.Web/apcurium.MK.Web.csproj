@@ -140,6 +140,7 @@
     <Content Include="admin\controllers\DefaultAddressesController.js" />
     <Content Include="admin\controllers\ExclusionsController.js" />
     <Content Include="admin\controllers\PopularAddressesController.js" />
+    <Content Include="admin\controllers\SecurityController.js" />
     <Content Include="admin\controllers\TariffsController.js" />
     <Content Include="admin\models\Tariff.js" />
     <Content Include="admin\localization\EditTariff.json" />
@@ -148,8 +149,8 @@
     <Content Include="admin\localization\TariffItem.json" />
     <Content Include="admin\templates\EditTariff.handlebars" />
     <Content Include="admin\assets\less\TaxiHail-admin-grid.less" />
-    <Content Include="admin\controllers\SecurityController" />
-    <None Include="admin\templates\ManageCompanySettings.handlebars" />
+    <Content Include="admin\localization\ManageCompanySettings.json" />
+    <Content Include="admin\templates\ManageCompanySettings.handlebars" />
     <Content Include="admin\models\CompanySettings.js" />
     <Content Include="admin\views\AddFavoriteView.js" />
     <Content Include="admin\views\EditTariffView.js" />
@@ -251,6 +252,7 @@
     <Content Include="common\views\AddressItemView.js" />
     <Content Include="common\views\AddressListView.js" />
     <Content Include="common\views\AddressSelectionView.js" />
+    <Content Include="common\views\AlertView.js" />
     <Content Include="common\views\LoginStatusView.js" />
     <Content Include="common\views\TemplatedView.js" />
     <Content Include="Config.aspx" />
@@ -283,6 +285,10 @@
     <Content Include="themes\AtlantaCheckerCab\img\cancel-icon.png" />
     <Content Include="themes\AtlantaCheckerCab\img\location.png" />
     <Content Include="themes\AtlantaCheckerCab\img\logo.png" />
+    <Content Include="themes\BostonCab\img\cancel-icon.png" />
+    <Content Include="themes\BostonCab\img\header-bg.png" />
+    <Content Include="themes\BostonCab\img\location.png" />
+    <Content Include="themes\BostonCab\img\logo.png" />
     <Content Include="themes\CheckerYellowCabPalmetto\img\cancel-icon.png" />
     <Content Include="themes\CheckerYellowCabPalmetto\img\location.png" />
     <Content Include="themes\CheckerYellowCabPalmetto\img\logo.png" />
@@ -316,6 +322,10 @@
     <Content Include="themes\GoTaxiDesMoines\img\location.png" />
     <Content Include="themes\GoTaxiDesMoines\img\logo.png" />
     <Content Include="themes\TaxiHail\img\logo.png" />
+    <Content Include="themes\VictoriaTaxi\img\cancel-icon.png" />
+    <Content Include="themes\VictoriaTaxi\img\header-bg.png" />
+    <Content Include="themes\VictoriaTaxi\img\location.png" />
+    <Content Include="themes\VictoriaTaxi\img\Logo.png" />
     <Content Include="themes\WorcesterYellowCab\img\cancel-icon.png" />
     <Content Include="themes\WorcesterYellowCab\img\header-bg.png" />
     <Content Include="themes\WorcesterYellowCab\img\location.png" />
@@ -323,6 +333,10 @@
     <Content Include="themes\YellowCabSavannah\img\cancel-icon.png" />
     <Content Include="themes\YellowCabSavannah\img\location.png" />
     <Content Include="themes\YellowCabSavannah\img\Logo.png" />
+    <Content Include="themes\YellowCabTampa\img\cancel-icon.png" />
+    <Content Include="themes\YellowCabTampa\img\header-bg.png" />
+    <Content Include="themes\YellowCabTampa\img\location.png" />
+    <Content Include="themes\YellowCabTampa\img\Logo.png" />
     <Content Include="views\AccountFavoritesAndHistoryListView.js" />
     <Content Include="views\AddFavoriteView.js" />
     <Content Include="views\AddressControlView.js" />
@@ -363,6 +377,9 @@
     <Content Include="themes\Taxiworld\less\combined-responsive.less" />
     <Content Include="themes\Taxiworld\less\combined.less" />
     <Content Include="themes\Taxiworld\less\style.less" />
+    <Content Include="admin\templates\SettingsItem.handlebars" />
+    <Content Include="themes\TaxiHail\less\variables.less" />
+    <Content Include="admin\templates\ManagePopularAddresses.handlebars" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -616,9 +633,13 @@
     <Content Include="templates\OrderHistory.handlebars" />
     <Content Include="templates\OrderHistoryDetail.handlebars" />
     <Content Include="templates\OrderItem.handlebars" />
-    <Content Include="templates\Profile.handlebars" />
+    <Content Include="templates\Profile.handlebars">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="templates\ResetPassword.handlebars" />
-    <Content Include="templates\Signup.handlebars" />
+    <Content Include="templates\Signup.handlebars">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="templates\UpdatePassword.handlebars" />
     <Content Include="templates\UserAccount.handlebars" />
   </ItemGroup>
@@ -668,7 +689,23 @@
     <Content Include="themes\SanJoseForARide\less\variables.less" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="admin\templates\ManagePopularAddresses.handlebars" />
+    <None Include="Properties\PublishProfiles\d.pubxml" />
+    <Content Include="themes\WorcesterYellowCab\less\combined-responsive.less" />
+    <Content Include="themes\WorcesterYellowCab\less\combined.less" />
+    <Content Include="themes\WorcesterYellowCab\less\style.less" />
+    <Content Include="themes\WorcesterYellowCab\less\variables.less" />
+    <Content Include="themes\BostonCab\less\combined-responsive.less" />
+    <Content Include="themes\BostonCab\less\combined.less" />
+    <Content Include="themes\BostonCab\less\style.less" />
+    <Content Include="themes\BostonCab\less\variables.less" />
+    <Content Include="themes\VictoriaTaxi\less\combined-responsive.less" />
+    <Content Include="themes\VictoriaTaxi\less\combined.less" />
+    <Content Include="themes\VictoriaTaxi\less\style.less" />
+    <Content Include="themes\VictoriaTaxi\less\variables.less" />
+    <Content Include="themes\YellowCabTampa\less\combined-responsive.less" />
+    <Content Include="themes\YellowCabTampa\less\combined.less" />
+    <Content Include="themes\YellowCabTampa\less\style.less" />
+    <Content Include="themes\YellowCabTampa\less\variables.less" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\templates\GrantAdminAccess.handlebars" />

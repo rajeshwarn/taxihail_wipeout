@@ -16,7 +16,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public static string GetValue (string key)
 		{
 			string localizedValue = NSBundle.MainBundle.LocalizedString (key, "", "");
-			return string.IsNullOrEmpty (localizedValue) ? key : localizedValue;
+			return localizedValue ?? string.Empty;
 		}
 
 		public AppLanguage CurrentLanguage {
@@ -1001,6 +1001,18 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public static string View_PasswordRecovery
 		{
 			get { return GetValue ("View_PasswordRecovery"); }
+		}
+		public static string Submit 
+		{
+			get { return GetValue("Submit"); }
+		}
+		public static string RateBtn 
+		{
+			get { return GetValue("RateBtn"); }
+		}
+		public static string ViewRatingBtn 
+		{
+			get { return GetValue("ViewRatingBtn"); }
 		}
 	}
 }

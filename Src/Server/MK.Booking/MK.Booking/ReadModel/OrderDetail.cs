@@ -41,5 +41,7 @@ namespace apcurium.MK.Booking.ReadModel
         public double? Tip { get; set; }
 
         public bool IsRemovedFromHistory { get; set; }
+
+        public bool IsRated { get; set; }
     }
 }

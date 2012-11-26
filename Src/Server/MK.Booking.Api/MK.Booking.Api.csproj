@@ -107,6 +107,7 @@
     <Compile Include="Security\CustomFacebookAuthProvider.cs" />
     <Compile Include="Services\AddressHistoryService.cs" />
     <Compile Include="Services\AccountOrderListService.cs" />
+    <Compile Include="Services\Admin\ExclusionsService.cs" />
     <Compile Include="Services\ApplicationInfoService.cs" />
     <Compile Include="Services\BookingSettingsService.cs" />
     <Compile Include="Services\CancelOrderService.cs" />
@@ -125,11 +126,13 @@
     <Compile Include="Services\AddressesService.cs" />
     <Compile Include="Services\Maps\NearbyPlacesService.cs" />
     <Compile Include="Services\OrderMapper.cs" />
+    <Compile Include="Services\OrderRatingsService.cs" />
     <Compile Include="Services\OrderService.cs" />
     <Compile Include="Services\OrderStatusService.cs" />
     <Compile Include="Services\Maps\PlaceDetailService.cs" />
     <Compile Include="Services\TariffsService.cs" />
     <Compile Include="Services\PopularAddressService.cs" />
+    <Compile Include="Services\RatingTypesService.cs" />
     <Compile Include="Services\ReferenceDataService.cs" />
     <Compile Include="Services\RegisterAccountService.cs" />
     <Compile Include="Services\ResetPasswordService.cs" />
@@ -141,6 +144,7 @@
     <Compile Include="Services\UpdatePasswordService.cs" />
     <Compile Include="Validation\CreateOrderValidator.cs" />
     <Compile Include="Validation\DefaultFavoriteAddressValidator.cs" />
+    <Compile Include="Validation\RegisterAccountValidator.cs" />
     <Compile Include="Validation\TariffValidator.cs" />
     <Compile Include="Validation\SaveFavoriteAddressValidator.cs" />
   </ItemGroup>
@@ -182,6 +186,7 @@
       <Name>MK.Common</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <Import Project="..\packages\PostSharp.2.1.7.21\tools\PostSharp.targets" Condition="Exists('..\packages\PostSharp.2.1.7.21\tools\PostSharp.targets')" />

@@ -14,6 +14,8 @@ namespace apcurium.MK.Booking.Domain
 
         private OrderStatus _status;
 
+        private bool _isRated;
+
         protected Order(Guid id)
             : base(id)
         {
@@ -21,6 +23,7 @@ namespace apcurium.MK.Booking.Domain
             base.Handles<OrderCancelled>(OnOrderCancelled);
             base.Handles<OrderCompleted>(OnOrderCompleted);
             base.Handles<OrderRemovedFromHistory>(OnOrderRemoved);
+            base.Handles<OrderRated>(OnOrderRated);
         }
 
         public Order(Guid id, IEnumerable<IVersionedEvent> history)
@@ -67,6 +70,11 @@ namespace apcurium.MK.Booking.Domain
             _status = OrderStatus.Removed;
         }
 
+        private void OnOrderRated(OrderRated obj)
+        {
+            _isRated = true;
+        }
+
         public void Cancel()
         {
             this.Update(new OrderCancelled());
@@ -90,6 +98,20 @@ namespace apcurium.MK.Booking.Domain
         public void RemoveFromHistory()
         {
             this.Update(new OrderRemovedFromHistory());
+        }
+
+        public void RateOrder(string note, List<RatingScore> ratingScores)
+        {
+            if (!_isRated)
+            {
+
+                _isRated = true;
+                Update(new OrderRated
+                           {
+                               Note = note,
+                               RatingScores = ratingScores
+                           });
+            }
         }
     }
 }

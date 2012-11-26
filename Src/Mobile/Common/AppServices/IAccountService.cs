@@ -23,8 +23,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         void ClearCache();
 
-	    void UpdateBookingSettings(BookingSettings bookingSettings);
-		
 		void EnsureListLoaded();
 
         Account CurrentAccount { get; }
@@ -48,6 +46,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         IEnumerable<Address> GetHistoryAddresses();
 
         IEnumerable<Address> GetFavoriteAddresses();
+
+
 
         void UpdateAddress(Address address);
 

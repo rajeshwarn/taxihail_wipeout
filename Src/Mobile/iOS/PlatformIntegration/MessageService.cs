@@ -33,6 +33,16 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             MessageHelper.Show( title, message, positiveButtonTitle, positiveAction );
         }
 
+        public void ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction, string neutralButtonTitle, Action neutralAction)
+        {
+            MessageHelper.Show(title,message,positiveButtonTitle,positiveAction,negativeButtonTitle, negativeAction, neutralButtonTitle, neutralAction);
+        }
+
+        public void ShowMessage(string title, string message, List<KeyValuePair<string,Action>> additionalButton)
+        {
+            MessageHelper.Show( title, message,additionalButton);
+        }
+
         		
 		public void ShowProgress( bool show, Action cancel )
 		{
@@ -56,6 +66,22 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 		{
 			ShowProgress( show, null );
 		}
+
+        public void ShowDialog<T> (string title, IEnumerable<T> items, Func<T, string> displayNameSelector, Action<T> onItemSelected)
+        {
+            var list = items.ToList();
+            var displayList = items.Select(displayNameSelector).ToArray();
+            UIApplication.SharedApplication.InvokeOnMainThread(delegate {                               
+                LoadingOverlay.StopAnimatingLoading();
+                var av = new UIAlertView ( title, string.Empty, null, null, displayList );
+                av.Clicked += (object sender, UIButtonEventArgs e) => {
+                    onItemSelected(list[e.ButtonIndex]);
+                    av.Dispose();
+                    };
+                av.Show (  );
+            });
+                        
+        }
 
 		public void ShowToast(string message, ToastDuration duration)
 		{

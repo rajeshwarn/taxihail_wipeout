@@ -21,6 +21,7 @@ using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using Cirrious.MvvmCross.Touch.Interfaces;
 using apcurium.MK.Booking.Mobile.Data;
 using Xamarin.Contacts;
+using apcurium.MK.Booking.Mobile.Settings;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -45,7 +46,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
-            
+            ThreadHelper.ExecuteInThread ( () =>        MonoTouch.ObjCRuntime.Runtime.StartWWAN( new Uri ( new AppSettings().ServiceUrl ) ));
+
             ///UIApplication.CheckForIllegalCrossThreadCalls = false;
 
             Background.Load(window, "Assets/background_full_nologo.png", false, 0, 0);          
@@ -76,6 +78,9 @@ namespace apcurium.MK.Booking.Mobile.Client
         // This method is required in iPhoneOS 3.0
         public override void OnActivated(UIApplication application)
         {
+
+            ThreadHelper.ExecuteInThread ( () =>        MonoTouch.ObjCRuntime.Runtime.StartWWAN( new Uri ( new AppSettings().ServiceUrl ) ));
+
             Logger.LogMessage("OnActivated");
 
             JsConfig.RegisterTypeForAot<OrderStatus>();
@@ -117,7 +122,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 				if( AppContext.Current.Controller != null && AppContext.Current.Controller.TopViewController is BookView )
 				{
 					var model = ((BookView)AppContext.Current.Controller.TopViewController).ViewModel;
-					model.Maybe( () => model.Initialize() );
 				}
             }
             else

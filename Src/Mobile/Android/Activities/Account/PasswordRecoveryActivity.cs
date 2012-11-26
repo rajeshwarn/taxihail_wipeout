@@ -19,35 +19,16 @@ using apcurium.MK.Booking.Mobile.Client.Validation;
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {
     [Activity(Label = "Password Recovery", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation=Android.Content.PM.ScreenOrientation.Portrait)]
-    public class PasswordRecoveryActivity : BaseActivity
+	public class PasswordRecoveryActivity : BaseBindingActivity<ResetPasswordViewModel> 
     {
         protected override int ViewTitleResourceId
         {
             get { return Resource.String.View_PasswordRecovery; }
         }
 
-        protected override void OnCreate(Bundle bundle)
-        {
-            base.OnCreate(bundle);
-            SetContentView(Resource.Layout.View_PasswordRecovery);
-            var btnResetRecovery = FindViewById<Button>(Resource.Id.ResetPasswordBtn);            
-            btnResetRecovery.Click += new EventHandler(btnResetRecovery_Click);            
-        }
-
-        void btnResetRecovery_Click(object sender, EventArgs e)
-        {
-            var email = FindViewById<EditText>(Resource.Id.EditEmail).Text;
-            if (!EmailValidation.IsValid (email))
-            {
-                this.ShowAlert(Resource.String.ResetPasswordInvalidDataTitle, Resource.String.ResetPasswordInvalidDataMessage);                
-            }
-            else
-            {
-                AppContext.Current.LastEmail = email;
-                ThreadHelper.ExecuteInThread(this, () => TinyIoCContainer.Current.Resolve<IAccountService>().ResetPassword(email), () => this.Finish() , true);                               
-            }
-        }
-
-       
+        protected override void OnViewModelSet()
+		{
+			SetContentView(Resource.Layout.View_PasswordRecovery);
+		}
     }
 }

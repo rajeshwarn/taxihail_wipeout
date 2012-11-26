@@ -36,12 +36,15 @@ namespace apcurium.MK.Booking.Mobile.Settings
 
         public bool ErrorLogEnabled
         {
-            get { return false; }
+            get { return true; }
         }
 
         public string ErrorLog
         {
-            get { return ""; }
+            get { 
+                string path = Environment.GetFolderPath (Environment.SpecialFolder.Personal);
+                return  Path.Combine ( path , "errorlog.txt"); 
+            }
         }
 
         public string SiteUrl
@@ -168,6 +171,11 @@ namespace apcurium.MK.Booking.Mobile.Settings
         public string SupportEmail
         {
             get { return _data.SupportEmail; }
+        }
+
+        public bool RatingEnabled
+        {
+            get { return _data.RatingEnabled; }
         }
     }
 }

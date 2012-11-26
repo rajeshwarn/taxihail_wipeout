@@ -5,29 +5,22 @@ using System.Collections.Generic;
 using Android.App;
 using Android.Content;
 using Android.Graphics;
-using Android.Graphics.Drawables;
 using Android.OS;
-using Android.Views;
 using Android.Widget;
-using apcurium.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Models;
-using apcurium.MK.Booking.Mobile.Data;
-using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Adapters;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Mobile.Client.Activities.Book;
-using System.Globalization;
 using apcurium.MK.Booking.Mobile.Messages;
 using TinyMessenger;
 using apcurium.MK.Common.Entity;
+using Cirrious.MvvmCross.Binding.Android.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
 {
     [Activity(Label = "Locations", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
-    public class LocationListActivity : BaseActivity
+	public class LocationListActivity : BaseBindingActivity<MyLocationsViewModel>
     {
 
         private ListView _listView;
@@ -46,10 +39,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
         {
             base.OnCreate(bundle);
 
-
             _closeViewToken = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<CloseViewsToRoot>(m => Finish());
             UpdateUI();
         }
+
+		protected override void OnViewModelSet()
+		{
+            this.SetContentView(Resource.Layout.View_LocationList);
+		}
 
         protected override void OnDestroy()
         {
@@ -62,83 +59,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
 
         private void SetAdapter()
         {
-            ThreadHelper.ExecuteInThread(this, () =>
-            {
-
                 var adapter = new GroupedLocationListAdapter(this);
 
-
-                SetFavoriteAdapter(adapter);
+                //SetFavoriteAdapter(adapter);
 
 
                 RunOnUiThread(() =>
                 {
-                    _listView.Adapter = adapter;
+					((MvxBindableListView)_listView).Adapter = adapter;
                     _listView.Divider = null;
                     _listView.DividerHeight = 0;
                     _listView.SetPadding(10, 0, 10, 0);
                 });
-
-            }, true);
         }
 
         private void UpdateUI()
         {
-            this.SetContentView(Resource.Layout.View_LocationList);
             _listView = FindViewById<ListView>(Resource.Id.LocationListView);
             _listView.CacheColorHint = Color.Transparent;
-            _listView.ItemClick += new EventHandler<AdapterView.ItemClickEventArgs>(listView_ItemClickNormal);
         }
 
-
-        private void listView_ItemClickNormal(object sender, AdapterView.ItemClickEventArgs e)
-        {
-            var adapter = _listView.Adapter as GroupedLocationListAdapter;
-            if (adapter == null || adapter.GetItem(e.Position) == null)
-            {
-                return;
-            }
-
-            var item = adapter.GetItem(e.Position).Cast<AddressItemListModel>();
-
-            if ((item.Address != null))
-            {
-
-                string data = item.Address.Serialize();
-
-                Intent i = new Intent(this, typeof(LocationDetailActivity));
-                i.PutExtra(NavigationStrings.LocationSelectedId.ToString(), data);
-                StartActivityForResult(i, (int)ActivityEnum.FavoriteLocations);
-            }
-        }
-        private void listView_ItemClickFromBook(object sender, AdapterView.ItemClickEventArgs e)
-        {
-            var adapter = _listView.Adapter as GroupedLocationListAdapter;
-            if (adapter == null || adapter.GetItem(e.Position) == null)
-            {
-                return;
-            }
-            var item = adapter.GetItem(e.Position).Cast<AddressItemListModel>();
-            if ((item.Address != null))
-            {
-                var data = item.Address.Serialize();
-                Intent intent = new Intent();
-                intent.SetFlags(ActivityFlags.ForwardResult);
-                intent.PutExtra("SelectedAddress", data);
-                SetResult(Result.Ok, intent);
-                Finish();
-            }
-        }
-
-        private IDictionary<string, object> CreateItem(Address location)
-        {
-            IDictionary<string, object> item = new Dictionary<string, object>();
-            //item.Add(ITEM_TITLE, location.Display());
-            item.Add(ITEM_TITLE, location.FriendlyName);
-            item.Add(ITEM_SUBTITLE, location.FullAddress);
-            item.Add(ITEM_DATA, location.Serialize());
-            return item;
-        }
+        
 
 
         private List<AddressItemListModel> GetLocations(LocationType type)
@@ -158,21 +99,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
                                                                                   BackgroundImageResource = Resource.Drawable.cell_middle_state,
                                                                                   NavigationIconResource = Resource.Drawable.right_arrow
                                                                               }).ToList();
-            if (ailm.Any())
-            {
-                ailm.First().BackgroundImageResource = Resource.Drawable.cell_top_state;
-                if (type.Equals(LocationType.History))
-                {
-                    if (ailm.Count().Equals(1))
-                    {
-                        ailm.First().BackgroundImageResource = Resource.Drawable.blank_single_state;
-                    }
-                    else
-                    {
-                        ailm.Last().BackgroundImageResource = Resource.Drawable.blank_bottom_state;
-                    }
-                }
-            }
+            
 
             return ailm;
         }
@@ -180,9 +107,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
         protected override void OnResume()
         {
             base.OnResume();
+			ViewModel.OnViewLoaded();
             SetAdapter();
         }
-
+		/*
         private void SetFavoriteAdapter(GroupedLocationListAdapter adapter)
         {
             var historyAddresses = GetLocations(LocationType.History);
@@ -199,10 +127,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
             });
 
 
-            adapter.AddSection(Resources.GetString(Resource.String.FavoriteLocationsTitle), new LocationListAdapter(this, favoriteAddresses));
+			adapter.AddSection(Resources.GetString(Resource.String.FavoriteLocationsTitle), new LocationListAdapter(this, favoriteAddresses));
             adapter.AddSection(Resources.GetString(Resource.String.LocationHistoryTitle), new LocationListAdapter(this, historyAddresses));
         }
-
+*/
       
 
 

@@ -6,7 +6,7 @@ using apcurium.MK.Booking.ReadModel;
 
 namespace apcurium.MK.Booking.EventHandlers
 {
-    public class OrderGenerator : IEventHandler<OrderCreated>, IEventHandler<OrderCancelled>, IEventHandler<OrderCompleted>, IEventHandler<OrderRemovedFromHistory>
+    public class OrderGenerator : IEventHandler<OrderCreated>, IEventHandler<OrderCancelled>, IEventHandler<OrderCompleted>, IEventHandler<OrderRemovedFromHistory>, IEventHandler<OrderRated>
     {
 
         private readonly Func<BookingDbContext> _contextFactory;
@@ -30,6 +30,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     CreatedDate = @event.CreatedDate,
                     DropOffAddress = @event.DropOffAddress,
                     Status = (int)OrderStatus.Created,
+                    IsRated = false
                 });
             }
         }
@@ -63,6 +64,36 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 var order = context.Find<OrderDetail>(@event.SourceId);
                 order.IsRemovedFromHistory = true;
+                context.SaveChanges();
+            }
+        }
+
+        public void Handle(OrderRated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                context.Set<OrderRatingDetails>().Add(new OrderRatingDetails
+                {
+                    Id = Guid.NewGuid(),
+                    OrderId = @event.SourceId,
+                    Note = @event.Note,
+                });
+
+                foreach (var ratingScore in @event.RatingScores)
+                {
+                    context.Set<RatingScoreDetails>().Add(new RatingScoreDetails
+                    {
+                        Id = Guid.NewGuid(),
+                        OrderId = @event.SourceId,
+                        Score = ratingScore.Score,
+                        RatingTypeId = ratingScore.RatingTypeId,
+                        Name = ratingScore.Name
+                    });
+                }
+
+                var order = context.Find<OrderDetail>(@event.SourceId);
+                order.IsRated = true;
+
                 context.SaveChanges();
             }
         }

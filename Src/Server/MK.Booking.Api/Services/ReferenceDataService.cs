@@ -49,27 +49,28 @@ namespace apcurium.MK.Booking.Api.Services
         private ReferenceData GetReferenceData()
         {
             var companies = _staticDataWebServiceClient.GetCompaniesList();
-            IList<ListItem> payments = new ListItem[0];
-            IList<ListItem> vehicles = new ListItem[0];
-            IList<ListItem> dropCities = new ListItem[0];
-            IList<ListItem> pickCities = new ListItem[0];
+            IList<ListItem> payments = new List<ListItem>();
+            IList<ListItem> vehicles = new List<ListItem>();
+            IList<ListItem> dropCities = new List<ListItem>();
+            IList<ListItem> pickCities = new List<ListItem>();
 
             foreach (var company in companies)
             {
-                payments = _staticDataWebServiceClient.GetPaymentsList(company);
-                vehicles = _staticDataWebServiceClient.GetVehiclesList(company).ToArray();
-                dropCities = _staticDataWebServiceClient.GetDropoffCity(company);
-                pickCities = _staticDataWebServiceClient.GetPickupCity(company);
+                payments.AddRange(_staticDataWebServiceClient.GetPaymentsList(company));
+                vehicles.AddRange(_staticDataWebServiceClient.GetVehiclesList(company));
+                dropCities.AddRange(_staticDataWebServiceClient.GetDropoffCity(company));
+                pickCities.AddRange(_staticDataWebServiceClient.GetPickupCity(company));
             }
 
+            var equalityComparer = new ListItemEqualityComparer();
             var result = new ReferenceData
-                                       {
-                                           CompaniesList = companies,
-                                           PaymentsList = payments,
-                                           VehiclesList = vehicles,
-                                           DropoffCityList = dropCities,
-                                           PickupCityList = pickCities,
-                                       };
+            {
+                CompaniesList = companies.Distinct(equalityComparer).ToArray(),
+                PaymentsList = payments.Distinct(equalityComparer).ToArray(),
+                VehiclesList = vehicles.Distinct(equalityComparer).ToArray(),
+                DropoffCityList = dropCities.Distinct(equalityComparer).ToArray(),
+                PickupCityList = pickCities.Distinct(equalityComparer).ToArray(),
+            };
 
             return result;
         }
@@ -80,6 +81,22 @@ namespace apcurium.MK.Booking.Api.Services
             var excluded = excludedVehicleTypeId.IsNullOrEmpty() ? new int[0] : excludedVehicleTypeId.Split(';').Select(int.Parse).ToArray();
 
             return reference.Where(c => excluded.None(e => e == c.Id)).ToList();
+        }
+
+        private class ListItemEqualityComparer: EqualityComparer<ListItem>
+        {
+            public override bool Equals(ListItem x, ListItem y)
+            {
+                if (x == null && y == null) return true;
+                if (x == null || y == null) return false;
+                return x.Id == y.Id;
+            }
+
+            public override int GetHashCode(ListItem obj)
+            {
+                if (obj == null) return 0;
+                return obj.Id.GetHashCode();
+            }
         }
     }
 }

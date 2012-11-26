@@ -19,7 +19,7 @@
         
         <header>
             <div class="login-status-zone">
-                <div><a href='#' class='brand'></a></div>
+                <div><a href='../#' class='brand'></a></div>
             </div>
         </header>
         

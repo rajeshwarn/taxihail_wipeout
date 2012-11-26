@@ -31,5 +31,7 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
         public double? Tip { get; set; }
 
         public bool IsCompleted { get; set; }
+
+        public bool IsRated { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using Xamarin.Contacts;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using System.Collections.Generic;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Common.Entity;
 using Address = apcurium.MK.Common.Entity.Address;
 
 namespace apcurium.MK.Booking.Mobile.AppServices
@@ -12,7 +13,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 	{
         string GetFareEstimateDisplay(CreateOrder order, string fareFormat, string noFareText);
 
-        bool IsValid(ref CreateOrder info);
+        bool IsValid(CreateOrder info);
 				
 		bool IsCompleted(Guid orderId);
 
@@ -27,6 +28,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         OrderStatusDetail CreateOrder(CreateOrder info);
 
         OrderStatusDetail GetOrderStatus(Guid orderId);
+        Task<OrderStatusDetail> GetLastOrderStatus();
+        void ClearLastOrder();
 
 	    void RemoveFromHistory(Guid orderId);
 
@@ -34,6 +37,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 	    Task LoadContacts();
 
-	}
+	    List<RatingType> GetRatingType();
+
+	    apcurium.MK.Common.Entity.OrderRatings GetOrderRating(Guid orderId);
+
+	    void SendRatingReview(Common.Entity.OrderRatings orderRatings);
+
+
+    }
 }
 

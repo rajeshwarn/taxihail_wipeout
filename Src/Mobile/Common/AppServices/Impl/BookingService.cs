@@ -4,17 +4,20 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.Contacts;
+using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using TinyIoC;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using Address = apcurium.MK.Common.Entity.Address;
 using ServiceStack.ServiceClient.Web;
 using Cirrious.MvvmCross.Interfaces.Platform.Tasks;
 using apcurium.MK.Booking.Mobile.Extensions;
+using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -22,9 +25,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
     {
         private List<Contact> _addresBook;
 
-        public bool IsValid(ref CreateOrder info)
+        public bool IsValid(CreateOrder info)
         {
-            return info.PickupAddress.FullAddress.HasValue() && info.PickupAddress.Latitude != 0 && info.PickupAddress.Longitude != 0;
+			return info.PickupAddress.FullAddress.HasValue() 
+				&& info.PickupAddress.HasValidCoordinate();
         }
 
 
@@ -33,21 +37,24 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             get { return TinyIoCContainer.Current.Resolve<ILogger>(); }
         }
 
+        protected ICacheService Cache
+        {
+            get { return TinyIoCContainer.Current.Resolve<ICacheService>(); }
+        }
+
         public OrderStatusDetail CreateOrder(CreateOrder order)
         {
-            order.Note = TinyIoCContainer.Current.Resolve<IAppResource>().GetString( "BookingService_MobileBookingNote");
-            if ( order.PickupAddress.BuildingName.HasValue())
-            {
-                var buildingNote = TinyIoCContainer.Current.Resolve<IAppResource>().GetString( "BookingService_MobileBookingNoteBuildingName");
-                order.Note += @"\" + string.Format(buildingNote, order.PickupAddress.BuildingName);
-            }
-
             var orderDetail = new OrderStatusDetail();
+            
             UseServiceClient<OrderServiceClient>(service =>
                 {
                     orderDetail = service.CreateOrder(order);
                 }, ex => HandleCreateOrderError(ex, order));
 
+            if (orderDetail.IBSOrderId.HasValue && orderDetail.IBSOrderId > 0)
+            {
+                Cache.Set("LastOrderId", orderDetail.OrderId);
+            }
 
             ThreadPool.QueueUserWorkItem(o =>
             {
@@ -83,21 +90,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
             string err = string.Format(message, settings.ApplicationName, settings.PhoneNumberDisplay(order.Settings.ProviderId.HasValue ? order.Settings.ProviderId.Value : 0));
 
-            TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage(title, err, "Call", () => CallCompany(settings.ApplicationName, settings.PhoneNumber(order.Settings.ProviderId.HasValue ? order.Settings.ProviderId.Value : 0)), "Cancel", RefreshBookingView);
+            TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage(title, err, "Call", () => CallCompany(settings.ApplicationName, settings.PhoneNumber(order.Settings.ProviderId.HasValue ? order.Settings.ProviderId.Value : 0)), "Cancel", delegate {});
         }
 
         private void CallCompany(string name, string number)
         {
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
             TinyIoCContainer.Current.Resolve<IMvxPhoneCallTask>().MakePhoneCall(name, number);
-            RefreshBookingView();
         }
  
-        private void RefreshBookingView()
-        {
-
-        }
-
         public OrderStatusDetail GetOrderStatus(Guid orderId)
         {
             OrderStatusDetail r = new OrderStatusDetail();
@@ -108,6 +109,36 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 }, ex=> TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex));
 
             return r;
+        }
+
+        public Task<OrderStatusDetail> GetLastOrderStatus()
+        {
+            var task = Task.Factory.StartNew(() =>
+            {
+                OrderStatusDetail result = new OrderStatusDetail();
+                var lastOrderId = Cache.Get<Guid?>("LastOrderId");
+                if(!lastOrderId.HasValue)
+                {
+                    throw new InvalidOperationException();
+                }
+
+                UseServiceClient<OrderServiceClient>(service =>
+                {
+                    result = service.GetOrderStatus(lastOrderId.Value);
+                }, ex => TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex));
+
+                return result;
+            });
+
+            task.ContinueWith(t => Logger.LogError(t.Exception), TaskContinuationOptions.OnlyOnFaulted);
+
+            return task;
+
+        }
+
+        public void ClearLastOrder()
+        {
+            Cache.Set("LastOrderId", default(Guid?));
         }
 
         public void RemoveFromHistory(Guid orderId)
@@ -204,6 +235,32 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 isCompleted = true;
             });
             return isCompleted;
+        }
+
+        public List<RatingType> GetRatingType()
+        {
+            var ratingType = new List<RatingType>();
+            UseServiceClient<OrderServiceClient>(service =>
+            {
+                 ratingType= service.GetRatingTypes();
+            });
+            return ratingType;
+        }
+
+        public apcurium.MK.Common.Entity.OrderRatings GetOrderRating(Guid orderId)
+        {
+            var orderRate = new OrderRatings();
+            UseServiceClient<OrderServiceClient>(service =>
+            {
+                orderRate = service.GetOrderRatings(orderId);
+            });
+            return orderRate;
+        }
+
+        public void SendRatingReview(Common.Entity.OrderRatings orderRatings)
+        {
+            var request = new OrderRatingsRequest() { Note = orderRatings.Note, OrderId = orderRatings.OrderId, RatingScores = orderRatings.RatingScores };
+            UseServiceClient<OrderServiceClient>(service => service.RateOrder(request));
         }
 
         public List<Address> GetAddressFromAddressBook(Predicate<Contact> criteria)

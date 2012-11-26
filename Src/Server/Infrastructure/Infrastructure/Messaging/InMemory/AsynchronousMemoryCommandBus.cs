@@ -15,6 +15,7 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+using Infrastructure.Serialization;
 
 namespace Infrastructure.Messaging.InMemory
 {
@@ -27,10 +28,12 @@ namespace Infrastructure.Messaging.InMemory
     /// </summary>
     public class AsynchronousMemoryCommandBus : ICommandBus, ICommandHandlerRegistry
     {
+        private readonly ITextSerializer _serializer;
         private Dictionary<Type, ICommandHandler> handlers = new Dictionary<Type, ICommandHandler>();
         
-        public AsynchronousMemoryCommandBus(params ICommandHandler[] handlers)
+        public AsynchronousMemoryCommandBus(ITextSerializer serializer, params ICommandHandler[] handlers)
         {
+            _serializer = serializer;
             foreach (var commandHandler in handlers)
             {
                 Register(commandHandler);
@@ -82,10 +85,12 @@ namespace Infrastructure.Messaging.InMemory
                         Trace.WriteLine("-- Handled by " + handler.GetType().FullName);
                         ((dynamic)handler).Handle((dynamic)command.Body);
                     }
+                   
                 }
                 catch (Exception e)
                 {
-                    Trace.TraceError("Error in handling command " + command.Body.GetType() + Environment.NewLine + e.Message + Environment.NewLine + e.StackTrace);
+                    var payload = _serializer.Serialize(command);
+                    Trace.TraceError("Error in handling command " + command.Body.GetType() + Environment.NewLine + payload + Environment.NewLine + e.Message + Environment.NewLine + e.StackTrace);
                 }
             });
         }

@@ -100,12 +100,6 @@ namespace apcurium.MK.Booking.IBS.Impl
                 return _invalidZoneErrorCode;
             }
 
-            
-
-
-            
-
-
             UseService(service =>
             {
                 Logger.LogMessage("WebService Creating IBS Order : " +  JsonSerializer.SerializeToString( order, typeof( TBookOrder_5 ) ) );

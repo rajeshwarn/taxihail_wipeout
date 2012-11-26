@@ -4,6 +4,11 @@
    "IBS.ExcludedVehicleTypeId" : "22;21",
    "IBS.ExcludedPaymentTypeId" : "",
    "IBS.ExcludedProviderId" : "", 
+   "IBS.TimeDifference" : "0",
+   "IBS.DestinationZoneToExclude" : "",
+   "IBS.PickupZoneToExclude" : "",
+   "IBS.ValidateDestinationZone" : "false",
+   "IBS.ValidatePickupZone" : "false",
    "Email.NoReply" : "dotnotreply@taxihail.com",    
    "Map.PlacesApiKey" : "AIzaSyAd-ezA2SeVTSNqsu6aMmAkdlP3UqEVPWE",
    "NearbyPlacesService.DefaultRadius" : "500",
@@ -31,6 +36,7 @@
    "Receipt.Note": "Thank You!",
    "Booking.ConfirmationEmail" : "true",
    "Client.HideCallDispatchButton" : "false",
-   "GeoLoc.PopularAddress.Range" : "500"
+   "GeoLoc.PopularAddress.Range" : "500",
+   "Admin.CompanySettings": "IBS.TimeDifference,IBS.PickupZoneToExclude,IBS.DestinationZoneToExclude,IBS.ValidateDestinationZone,IBS.ValidatePickupZone,Booking.ConfirmationEmail,Client.HideCallDispatchButton,DefaultBookingSettings.ChargeTypeId,DefaultBookingSettings.NbPassenger,DefaultBookingSettings.ProviderId,DefaultBookingSettings.VehicleTypeId,Receipt.Note"
 }
 

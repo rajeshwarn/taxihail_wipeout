@@ -44,10 +44,10 @@ namespace MK.ConfigurationManager
             {
                 _currentCompany = value;
                 OnPropertyChanged("CurrentCompany");
-                ConfigurationProperties.Clear(); 
-                CurrentCompany.ConfigurationProperties.ToList().ForEach(x => ConfigurationProperties.Add(new MyCustomKeyValuePair(x.Key, x.Value)));
+                ConfigurationProperties.Clear();
+                CurrentCompany.ConfigurationProperties.OrderBy(x => x.Key).ToList().ForEach(x => ConfigurationProperties.Add(new MyCustomKeyValuePair(x.Key, x.Value)));
                 MobileConfigurationProperties.Clear();
-                CurrentCompany.MobileConfigurationProperties.ToList().ForEach(x => MobileConfigurationProperties.Add(new MyCustomKeyValuePair(x.Key, x.Value)));
+                CurrentCompany.MobileConfigurationProperties.OrderBy(x => x.Key).ToList().ForEach(x => MobileConfigurationProperties.Add(new MyCustomKeyValuePair(x.Key, x.Value)));
             }
         }
 
@@ -90,10 +90,10 @@ namespace MK.ConfigurationManager
             DbContext.Database.CreateIfNotExists();
 
             Companies.Clear();
-            DbContext.Set<Company>().ToList().ForEach(Companies.Add);
+            DbContext.Set<Company>().OrderBy(x => x.Name).ToList().ForEach(Companies.Add);
 
             IBSServers.Clear();
-            DbContext.Set<IBSServer>().ToList().ForEach(IBSServers.Add);
+            DbContext.Set<IBSServer>().OrderBy(x => x.Name).ToList().ForEach(IBSServers.Add);
             IBSServers.CollectionChanged += IBSServersCollectionChanged;
 
             TaxiHailEnvironments.Clear();
@@ -101,7 +101,7 @@ namespace MK.ConfigurationManager
             TaxiHailEnvironments.CollectionChanged += TaxiHailEnvironmentsOnCollectionChanged;
 
             DeploymentJobs.Clear();
-            DbContext.Set<DeploymentJob>().ToList().ForEach(DeploymentJobs.Add);
+            DbContext.Set<DeploymentJob>().OrderByDescending(x => x.RequestedDate).ToList().ForEach(DeploymentJobs.Add);
             statusBarTb.Text = "Done";
         }
 
@@ -125,13 +125,13 @@ namespace MK.ConfigurationManager
             if(e.Action == NotifyCollectionChangedAction.Add)
             {
                e.NewItems.OfType<IBSServer>().ToList().ForEach(x =>
-                                                                   {
-                                                                       if(x.Id == Guid.Empty)
-                                                                       {
-                                                                           x.Id = Guid.NewGuid();
-                                                                           DbContext.Set<IBSServer>().Add(x);
-                                                                       }
-                                                                   });
+                {
+                    if(x.Id == Guid.Empty)
+                    {
+                        x.Id = Guid.NewGuid();
+                        DbContext.Set<IBSServer>().Add(x);
+                    }
+                });
             }
         }
 
@@ -211,6 +211,7 @@ namespace MK.ConfigurationManager
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             var job = new DeploymentJob();
+            job.RequestedDate = DateTime.Now;
             job.Id = Guid.NewGuid();
             job.Company = DeployCompany;
             job.IBSServer = DeployIBSServer;

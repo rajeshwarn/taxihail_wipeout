@@ -78,7 +78,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                         }
                     });
                 }
-            });
+            }, TaskContinuationOptions.OnlyOnRanToCompletion);
         }
 
         public void OnRegionChanged()
@@ -226,6 +226,37 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 SetZoom(MapCenter);                   
             }
         }
+
+        private OrderStatusDetail _taxiLocation { get; set; }
+        
+        private MKAnnotation _taxiLocationPin;
+        
+        public OrderStatusDetail TaxiLocation
+        {
+            get { return _taxiLocation; }
+            set
+            {
+                _taxiLocation = value;
+                if (_taxiLocationPin != null)
+                {
+                    RemoveAnnotation(_taxiLocationPin);
+                    _taxiLocationPin = null;
+                }
+                
+                if ((value != null) && (value.VehicleLatitude != 0) && (value.VehicleLongitude != 0))
+                {
+                    CLLocationCoordinate2D coord = new CLLocationCoordinate2D(0,0);            
+                    if ( value.VehicleLongitude.Value!=0 && value.VehicleLatitude.Value !=0)
+                    {
+                        coord = new CLLocationCoordinate2D( value.VehicleLatitude.Value , value.VehicleLongitude.Value );
+                    }   
+                    _taxiLocationPin = new AddressAnnotation (coord, AddressAnnotationType.Taxi, Resources.TaxiMapTitle, value.VehicleNumber);
+                    AddAnnotation(_taxiLocationPin);
+                }
+                SetNeedsDisplay();
+            }
+        }
+
         
         private void SetZoom(IEnumerable<CoordinateViewModel> adressesToDisplay)
         {

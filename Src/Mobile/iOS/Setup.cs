@@ -26,9 +26,12 @@ namespace apcurium.MK.Booking.Mobile.Client
     public class Setup
         : MvxTouchDialogBindingSetup
     {
+        IMvxTouchViewPresenter _presenter;
+
         public Setup(MvxApplicationDelegate applicationDelegate, IMvxTouchViewPresenter presenter)
             : base(applicationDelegate, presenter)
         {
+            _presenter = presenter;
         }
         
         #region Overrides of MvxBaseSetup
@@ -38,15 +41,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             var app = new TaxiHailApp();
             return app;
         }
-        
-
-//        protected override void FillValueConverters(Cirrious.MvvmCross.Binding.Interfaces.Binders.IMvxValueConverterRegistry registry)
-//        {
-//            base.FillValueConverters(registry);
-//            
-//            var filler = new MvxInstanceBasedValueConverterRegistryFiller(registry);
-//            filler.AddFieldConverters(typeof(Converters));
-//        }
         
 		protected override void InitializeApp ()
 		{
@@ -80,12 +74,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			TinyIoCContainer.Current.Register<IMessageService>(new MessageService());
             TinyIoCContainer.Current.Register<IAppSettings>(new AppSettings());
             TinyIoCContainer.Current.Register<IPackageInfo>(new PackageInfo());
+            TinyIoCContainer.Current.Register<IMvxTouchViewPresenter>(_presenter);
             
             TinyIoCContainer.Current.Register<IAppContext>(AppContext.Current);            
             TinyIoCContainer.Current.Register<IAppResource, Resources>();
             TinyIoCContainer.Current.Register<ILogger, LoggerWrapper>();
             TinyIoCContainer.Current.Register<IErrorHandler, ErrorHandler>();            
             TinyIoCContainer.Current.Register<ICacheService>(new CacheService());
+            TinyIoCContainer.Current.Register<IPhoneService, PhoneService>();
             InitializeSocialNetwork();
         }
 

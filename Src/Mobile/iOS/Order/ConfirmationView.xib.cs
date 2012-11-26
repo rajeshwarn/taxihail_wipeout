@@ -17,52 +17,29 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Interfaces.Views;
 using apcurium.MK.Booking.Mobile.Messages;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Binding.Touch.Views;
+using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-    public partial class ConfirmationView : UIViewController
+    public partial class ConfirmationView : MvxBindingTouchViewController<BookConfirmationViewModel>
     {
-
-
-        public event EventHandler Confirmed;
-        public event EventHandler Canceled;
-//        public delegate void NoteChangedEventHandler(string note);
-//
-//        public event NoteChangedEventHandler NoteChanged;
-
-        #region Constructors
-
-        // The IntPtr and initWithCoder constructors are required for items that need 
-        // to be able to be created from a xib rather than from managed code
-
-        public ConfirmationView(IntPtr handle) : base(handle)
+        public ConfirmationView() 
+            : base(new MvxShowViewModelRequest<BookingStatusViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
         {
-            Initialize();
         }
-
-        [Export("initWithCoder:")]
-        public ConfirmationView(NSCoder coder) : base(coder)
+        
+        public ConfirmationView(MvxShowViewModelRequest request) 
+            : base(request)
         {
-            Initialize();
         }
-
-        public ConfirmationView(CreateOrder order) : base("ConfirmationView", null)
-        {
-            Order = order;
-            Initialize();
-        }
-
-        void Initialize()
+        
+        public ConfirmationView(MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
+            : base(request, nibName, bundle)
         {
         }
 
-        public CreateOrder Order
-        {
-            get;
-            set;
-        }
-
-		public override void ViewWillAppear (bool animated)
+        public override void ViewWillAppear (bool animated)
 		{
 			base.ViewWillAppear (animated);
 			NavigationController.NavigationBar.Hidden = false;
@@ -95,183 +72,35 @@ namespace apcurium.MK.Booking.Mobile.Client
 			lblBuildingName.Text = Resources.HistoryDetailBuildingNameLabel;
 
 			lblPrice.Text = Resources.ApproxPrice;
-            
-            txtOrigin.Text = Order.PickupAddress.FullAddress;         
-            txtDestination.Text = Order.DropOffAddress.FullAddress.HasValue() ? Order.DropOffAddress.FullAddress : Resources.ConfirmDestinationNotSpecified;            
-            txtDateTime.Text = FormatDateTime(Order.PickupDate);
 
+			View.BringSubviewToFront( bottomBar );    
 
+            this.AddBindings(new Dictionary<object, string>() {
+                { btnCancel, "{'TouchUpInside':{'Path':'CancelOrderCommand'}}"},                
+                { btnConfirm, "{'TouchUpInside':{'Path':'ConfirmOrderCommand'}}"},
+                { btnEdit, "{'TouchUpInside': {'Path': 'NavigateToEditBookingSettings'}}"},
+                { btnEditPickupDetails, "{'TouchUpInside': {'Path': 'NavigateToRefineAddress'}}"},
+                { txtOrigin, "{'Text': {'Path': 'Order.PickupAddress.FullAddress'}}" },
+                { txtDestination, "{'Text': {'Path': 'Order.DropOffAddress.FullAddress', 'Converter': 'EmptyToResourceConverter', 'ConverterParameter': 'ConfirmDestinationNotSpecified'}}" },
+                { txtDateTime, "{'Text': {'Path': 'FormattedPickupDate'}}" },
+                { txtAptRing, "{'Text': {'Path': 'AptRingCode'}}" },
+                { txtBuildingName, "{'Text': {'Path': 'BuildingName'}}" },
+                { txtPrice, "{'Text': {'Path': 'FareEstimate'}}" },
+                { txtName, "{'Text': {'Path': 'RideSettings.Name'}}" },
+                { txtCompany, "{'Text': {'Path': 'RideSettings.ProviderName'}}" },
+                { txtVehiculeType, "{'Text': {'Path': 'RideSettings.VehicleTypeNameAndNbOfPassengers'}}" },
+                { txtChargeType, "{'Text': {'Path': 'RideSettings.ChargeTypeName'}}" },
+                { txtPhone, "{'Text': {'Path': 'RideSettings.Phone'}}"}
+            });
 
-
-			txtAptRing.Text = FormatAptRingCode(Order.PickupAddress.Apartment, Order.PickupAddress.RingCode);  
-            txtBuildingName.Text = FormatBuildingName( Order.PickupAddress.BuildingName );
-
-			var directionInfo = TinyIoCContainer.Current.Resolve<IGeolocService>().GetDirectionInfo(Order.PickupAddress, Order.DropOffAddress);
-            txtPrice.Text = directionInfo.Price.HasValue ? directionInfo.FormattedPrice : Resources.NotAvailable;
-
-			SetRideSettingsFields();
-
-            btnCancel.TouchUpInside += CancelClicked;
-            btnConfirm.TouchUpInside += ConfirmClicked;
-			btnEdit.TouchUpInside += EditRideSettings;
-			btnEditPickupDetails.TouchUpInside += EditPickupDetails;
-            
-            View.BringSubviewToFront( bottomBar );    
-
-			TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub>().Subscribe<AddressRefinedMessage>( msg => {
-				Order.PickupAddress.Apartment = msg.Content.AptNumber;
-				Order.PickupAddress.BuildingName = msg.Content.BuildingName;
-				Order.PickupAddress.RingCode = msg.Content.RingCode;
-
-                txtAptRing.Text = FormatAptRingCode(Order.PickupAddress.Apartment, Order.PickupAddress.RingCode);  
-                txtBuildingName.Text = FormatBuildingName(Order.PickupAddress.BuildingName);
-
-
-			});
+            ViewModel.OnViewLoaded();
         }
-
-        private string FormatBuildingName( string buildingName )
-        {
-            if ( buildingName.HasValue() )
-            {
-                return buildingName;
-            }
-            else
-            {
-                return Resources.GetValue( "HistoryDetailBuildingNameNotSpecified" );
-            }
-        }
-        void EditPickupDetails (object sender, EventArgs e)
-        {
-			var args = new Dictionary<string, string>(){ {"apt", Order.PickupAddress.Apartment}, {"ringCode", Order.PickupAddress.RingCode},  {"buildingName", Order.PickupAddress.BuildingName} };
-			var dispatch = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
-			dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(RefineAddressViewModel), args, false, MvxRequestedBy.UserAction));
-        }
-
-        void EditRideSettings (object sender, EventArgs e)
-        {
-            var settings = new  RideSettingsView(Order.Settings, false, false);
-
-            settings.Closed += delegate
-            {
-                Order.Settings = settings.Result;
-				SetRideSettingsFields();                 
-            };
-            
-            this.NavigationController.PushViewController(settings, true);
-        }
-
-		private void SetRideSettingsFields()
-		{
-            var service = TinyIoCContainer.Current.Resolve<IAccountService>();            
-            var companies = service.GetCompaniesList();
-            var model = new RideSettingsModel(Order.Settings, companies, service.GetVehiclesList(), service.GetPaymentsList());
-
-            txtName.Text = Order.Settings.Name;
-
-            try
-            {
-                var cleaned = new string(Order.Settings.Phone.ToArray().Where(c => Char.IsDigit(c)).ToArray());
-                var phone = Regex.Replace(cleaned, @"(\d{3})(\d{3})(\d{4})", "$1-$2-$3");
-                txtPhone.Text = phone;
-            }
-            catch
-            {
-                txtPhone.Text = Order.Settings.Phone;
-            }
-
-			int nbPassenger = 0;
-			int.TryParse(model.NbOfPassenger, out nbPassenger);
-			var passengerFormat = nbPassenger == 1 ? Resources.NbPassenger : Resources.NbPassengers;
-			txtVehiculeType.Text = model.VehicleTypeName + string.Format(passengerFormat, model.NbOfPassenger);
-			txtChargeType.Text = model.ChargeTypeName;
-
-            var company = model.CompanyList.FirstOrDefault( c=>c.Id == Order.Settings.ProviderId );
-            if ( company == null )
-            {
-                company = model.CompanyList.First( c=>c.IsDefault.HasValue && c.IsDefault.Value );
-                Order.Settings.ProviderId = company.Id;
-            }
-
-            txtCompany.Text = company.Display;
-
-		}
 
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
-            LoadLayout();       
-            
-            
-            if  ( AppContext.Current.WarnEstimate && Order.DropOffAddress.HasValidCoordinate() ) 
-            {
-                MessageHelper.Show(Resources.WarningEstimateTitle, Resources.WarningEstimate, Resources.WarningEstimateDontShow, ( ) => AppContext.Current.WarnEstimate = false); 
-            }
+            this.NavigationItem.TitleView = new TitleView(null, Resources.View_BookingDetail, true);
         }
-
-        private void LoadLayout()
-        {
-			this.NavigationItem.TitleView = new TitleView(null, Resources.View_BookingDetail, true);
-        }
-
-//        private string FormatDateTime(DateTime? pickupDate, DateTime? pickupTime)
-//        {
-//            string result = pickupDate.HasValue ? pickupDate.Value.ToShortDateString() : Resources.DateToday;
-//            result += @" / ";
-//            result += pickupTime.HasValue ? pickupTime.Value.ToShortTimeString() : Resources.TimeNow;
-//            return result;
-//        }
-
-        private string FormatDateTime(DateTime? pickupDate )
-        {
-            string format = "{0:ddd, MMM d}, {0:h:mm tt}";
-            string result = pickupDate.HasValue ? string.Format(format, pickupDate.Value) : Resources.TimeNow;
-            return result;
-        }
-
-        private string FormatAptRingCode(string apt, string rCode)
-        {
-            
-            string result = apt.HasValue() ? apt : Resources.ConfirmNoApt;
-            result += @" / ";
-            result += rCode.HasValue() ? rCode : Resources.ConfirmNoRingCode;
-            return result;
-        }
-
-        void ConfirmClicked(object sender, EventArgs e)
-        {
-
-            var phone = txtPhone.Text;
-            if (phone.Count(x => Char.IsDigit(x)) < 10)
-            {
-                MessageHelper.Show(Resources.CreateAccountInvalidDataTitle, Resources.CreateAccountInvalidPhone);
-                return;
-            }
-            else
-            {
-                txtPhone.Text = new string(phone.ToArray().Where(c => Char.IsDigit(c)).ToArray());
-            }
-
-            if (Confirmed != null)
-            {
-                Confirmed(Order, EventArgs.Empty);
-            }
-        }
-
-        void CancelClicked(object sender, EventArgs e)
-        {
-            if (Canceled != null)
-            {
-                Canceled(this, EventArgs.Empty);
-            }
-        }
-
-//        public CreateOrder BI
-//        {
-//            get { return Order; }
-//        }
-//        
-        #endregion
     }
 }
 

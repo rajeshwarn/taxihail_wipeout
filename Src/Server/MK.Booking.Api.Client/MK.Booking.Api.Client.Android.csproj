@@ -38,6 +38,7 @@
     <Reference Include="Mono.Android" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -54,16 +55,32 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccountServiceClient.cs" />
-    <Compile Include="AuthServiceClient.cs" />
-    <Compile Include="BaseServiceClient.cs" />
-    <Compile Include="ConfigurationClientService.cs" />
-    <Compile Include="OrderServiceClient.cs" />
-    <Compile Include="PopularAddressesServiceClient.cs" />
+    <Compile Include="Client\CmtJsonServiceClient.cs" />
+    <Compile Include="Cmt\CmtAccountServiceClient.cs" />
+    <Compile Include="Cmt\CmtAuthCredentials.cs" />
+    <Compile Include="Cmt\CmtAuthResponse.cs" />
+    <Compile Include="Cmt\CmtAuthServiceClient.cs" />
+    <Compile Include="Cmt\CmtBaseServiceClient.cs" />
+    <Compile Include="Cmt\CmtLinkServiceClient.cs" />
+    <Compile Include="Cmt\CmtPreCogServiceClient.cs" />
+    <Compile Include="Cmt\OAuth\OAuthAuthorizer.cs" />
+    <Compile Include="IAccountServiceClient.cs" />
+    <Compile Include="IAuthServiceClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReferenceDataServiceClient.cs" />
-    <Compile Include="ApplicationInfoServiceClient.cs" />
-    <Compile Include="TariffsServiceClient.cs" />
+    <Compile Include="TaxiHail\AccountServiceClient.cs" />
+    <Compile Include="TaxiHail\ApplicationInfoServiceClient.cs" />
+    <Compile Include="TaxiHail\AuthServiceClient.cs" />
+    <Compile Include="TaxiHail\BaseServiceClient.cs" />
+    <Compile Include="TaxiHail\ConfigurationClientService.cs" />
+    <Compile Include="TaxiHail\DirectionsServiceClient.cs" />
+    <Compile Include="TaxiHail\GeocodingServiceClient.cs" />
+    <Compile Include="TaxiHail\NearbyPlacesClient.cs" />
+    <Compile Include="TaxiHail\OrderServiceClient.cs" />
+    <Compile Include="TaxiHail\PlaceDetailServiceClient.cs" />
+    <Compile Include="TaxiHail\PopularAddressesServiceClient.cs" />
+    <Compile Include="TaxiHail\ReferenceDataServiceClient.cs" />
+    <Compile Include="TaxiHail\SearchLocationsServiceClient.cs" />
+    <Compile Include="TaxiHail\TariffsServiceClient.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

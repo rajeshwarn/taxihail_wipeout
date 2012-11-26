@@ -11,7 +11,9 @@ using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.CommandHandlers
 {
-    public class CompanyCommandHandler : ICommandHandler<CreateCompany>, ICommandHandler<CreateTariff>, ICommandHandler<UpdateTariff>, ICommandHandler<DeleteTariff>, ICommandHandler<AddOrUpdateAppSettings>
+    public class CompanyCommandHandler : ICommandHandler<CreateCompany>, ICommandHandler<CreateTariff>, ICommandHandler<UpdateTariff>, ICommandHandler<DeleteTariff>, ICommandHandler<AddOrUpdateAppSettings>,
+        ICommandHandler<AddRatingType>,
+        ICommandHandler<UpdateRatingType>, ICommandHandler<HideRatingType>
     {
         private readonly IEventSourcedRepository<Company> _repository;
 
@@ -38,7 +40,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var company = _repository.Get(command.CompanyId);
 
-            if(command.Type == TariffType.Default)
+            if (command.Type == TariffType.Default)
             {
                 company.CreateDefaultTariff(tariffId: command.TariffId,
                     name: command.Name,
@@ -46,7 +48,7 @@ namespace apcurium.MK.Booking.CommandHandlers
                     distanceMultiplicator: command.KilometricRate,
                     timeAdustmentFactor: command.MarginOfError,
                     pricePerPassenger: command.PassengerRate);
-            } 
+            }
             else if (command.Type == TariffType.Recurring)
             {
                 company.CreateRecurringTariff(tariffId: command.TariffId,
@@ -99,6 +101,32 @@ namespace apcurium.MK.Booking.CommandHandlers
 
             _repository.Save(company, command.Id.ToString());
         }
-        
+
+        public void Handle(AddRatingType command)
+        {
+            var company = _repository.Get(command.CompanyId);
+
+            company.AddRatingType(command.Name, command.RatingTypeId);
+
+            _repository.Save(company, command.Id.ToString());
+        }
+
+        public void Handle(UpdateRatingType command)
+        {
+            var company = _repository.Get(command.CompanyId);
+
+            company.UpdateRatingType(command.Name, command.RatingTypeId);
+
+            _repository.Save(company, command.Id.ToString());
+        }
+
+        public void Handle(HideRatingType command)
+        {
+            var company = _repository.Get(command.CompanyId);
+
+            company.HideRatingType(command.RatingTypeId);
+
+            _repository.Save(company, command.Id.ToString());
+        }
     }
 }

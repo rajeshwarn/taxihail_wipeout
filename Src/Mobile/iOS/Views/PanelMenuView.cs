@@ -1,7 +1,5 @@
-
 using System;
 using System.Drawing;
-
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using apcurium.MK.Booking.Mobile.ListViewStructure;
@@ -21,31 +19,32 @@ using apcurium.MK.Booking.Mobile.AppServices;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-	public partial class PanelMenuView : MvxBindingTouchViewController<PanelViewModel>
+	public partial class PanelMenuView : UIViewController
 	{
 		private UINavigationController _navController;
-		private UIView _viewToAnimate;
-		private bool _menuIsOpen = false;
+        private UIView _viewToAnimate;
+        private PanelViewModel _viewModel;
 
-		public PanelMenuView(UIView viewToAnimate, UINavigationController navController) 
-			: base(new MvxShowViewModelRequest<PanelViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
+        public PanelMenuView (IntPtr handle) : base(handle)
+        {
+        }
+        
+        [Export("initWithCoder:")]
+        public PanelMenuView (NSCoder coder) : base(coder)
+        {
+        }
+        
+        public PanelMenuView () : base("PanelMenuView", null)
+        {
+        }
+
+		public PanelMenuView(UIView viewToAnimate, UINavigationController navController, PanelViewModel viewModel) 
+			: this()
 		{
  			_navController = navController;
 			_viewToAnimate = viewToAnimate;
+            _viewModel = viewModel;
 		}
-		
-		public PanelMenuView(MvxShowViewModelRequest request) 
-			: base(request)
-		{
-
-		}
-		
-		public PanelMenuView(MvxShowViewModelRequest request, string nibName, NSBundle bundle) 
-			: base(request, nibName, bundle)
-		{
-
-		}
-
 		
 		public override void DidReceiveMemoryWarning ()
 		{
@@ -74,95 +73,74 @@ namespace apcurium.MK.Booking.Mobile.Client
 			var structure = new InfoStructure( 44, false );
 			var sect = structure.AddSection();
             sect.AddItem( new SingleLineItem( Resources.GetValue("View_Book_Menu_MyLocations")) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
-					AnimateMenu();
-					_navController.PushViewController(new LocationsTabView(), true);
+                    _viewModel.NavigateToMyLocations.Execute();
 				})				
 			});
             sect.AddItem( new SingleLineItem( Resources.GetValue("View_Book_Menu_MyOrders") ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
-					AnimateMenu();
-					_navController.PushViewController(new HistoryTabView(), true);
+                    _viewModel.NavigateToOrderHistory.Execute();
 				})				
 			});
             sect.AddItem( new SingleLineItem( Resources.GetValue("View_Book_Menu_UpdateMyProfile")   ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
-					AnimateMenu();
-                    var rideSettingsView = new RideSettingsView (account, true, false);
-					_navController.PushViewController( rideSettingsView, true);
+                    _viewModel.NavigateToUpdateProfile.Execute();
 				})				
 			});
             sect.AddItem( new SingleLineItem( Resources.GetValue("View_Book_Menu_CallDispatch")   ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
-					AnimateMenu();
-					var call = new Confirmation ();
-                    call.Call ( TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumber(account.Settings.ProviderId.Value),
-                               TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumberDisplay (account.Settings.ProviderId.Value));
+                    _viewModel.Call.Execute();
 				})				
 			});
             sect.AddItem( new SingleLineItem( Resources.GetValue("View_Book_Menu_AboutUs") ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
-					AnimateMenu();
 					_navController.PushViewController(new AboutUsView(), true);
 				})				
 			});
             sect.AddItem( new SingleLineItem( Resources.GetValue("View_Book_Menu_ReportProblem") ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
-					AnimateMenu();
-					if (!MFMailComposeViewController.CanSendMail)
-					{
-						return;
-					}
-					
-					var mailComposer = new MFMailComposeViewController ();
-					
-					if (File.Exists (TinyIoCContainer.Current.Resolve<IAppSettings>().ErrorLog))
-					{
-						mailComposer.AddAttachmentData (NSData.FromFile (TinyIoCContainer.Current.Resolve<IAppSettings>().ErrorLog), "text", "errorlog.txt");
-					}
-					
-					mailComposer.SetToRecipients (new string[] { TinyIoCContainer.Current.Resolve<IAppSettings>().SupportEmail  });
-					mailComposer.SetMessageBody ("", false);
-					mailComposer.SetSubject (Resources.TechSupportEmailTitle);
-					mailComposer.Finished += delegate(object mailsender, MFComposeResultEventArgs mfce) {
-						mailComposer.DismissModalViewControllerAnimated (true);
-						if (File.Exists (TinyIoCContainer.Current.Resolve<IAppSettings>().ErrorLog))
-						{
-							File.Delete (TinyIoCContainer.Current.Resolve<IAppSettings>().ErrorLog);
-						}
-					};
-					_navController.PresentModalViewController(mailComposer, true);
+                    _viewModel.ReportProblem.Execute();					
 				})				
 			});
 			sect.AddItem( new SingleLineItem( Resources.View_Book_Menu_SignOut ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
-					AnimateMenu();
-					AppContext.Current.WarnEstimate = true;
-					ViewModel.SignOut();
-
+                    _viewModel.SignOut.Execute();
 				})				
 			});
 
             menuListView.BackgroundView = new UIView { BackgroundColor = UIColor.Clear };
-            menuListView.BackgroundColor = UIColor.Clear; // UIColor.Red ;
+            menuListView.BackgroundColor = UIColor.Clear;
             menuListView.ScrollEnabled = false;
 			menuListView.DataSource = new TableViewDataSource( structure );
 			menuListView.Delegate = new TableViewDelegate( structure );
 			menuListView.ReloadData();
-		}
-		
-		public override void ViewDidUnload ()
-		{
-			base.ViewDidUnload ();
-			
-			ReleaseDesignerOutlets ();
-		}
-		
-		public override bool ShouldAutorotateToInterfaceOrientation (UIInterfaceOrientation toInterfaceOrientation)
-		{
-			return (toInterfaceOrientation != UIInterfaceOrientation.PortraitUpsideDown);
+
+            _viewModel.PropertyChanged += HandlePropertyChanged;
 		}
 
-		public void AnimateMenu()
+        void HandlePropertyChanged (object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "MenuIsOpen") {
+                AnimateMenu();
+            }
+        }
+
+		private void AnimateMenu()
 		{
-			var slideAnimation = new SlideViewAnimation( _viewToAnimate, new SizeF( (_menuIsOpen ? menuView.Frame.Width : -menuView.Frame.Width), 0f ) );
+            var slideAnimation = new SlideViewAnimation( _viewToAnimate, new SizeF( (_viewModel.MenuIsOpen ? -menuView.Frame.Width : menuView.Frame.Width), 0f ) );
 			slideAnimation.Animate();
-			_menuIsOpen = !_menuIsOpen;
 		}
 
+        public override bool ShouldAutorotateToInterfaceOrientation (UIInterfaceOrientation toInterfaceOrientation)
+        {
+            return (toInterfaceOrientation != UIInterfaceOrientation.PortraitUpsideDown);
+        }
+
+        public override void ViewDidUnload ()
+        {
+            base.ViewDidUnload ();
+            
+            ReleaseDesignerOutlets ();
+        }
+
+        public override void ViewWillUnload ()
+        {
+            base.ViewWillUnload ();
+            _viewModel.PropertyChanged -= HandlePropertyChanged;
+        }
 
 	}
 }
