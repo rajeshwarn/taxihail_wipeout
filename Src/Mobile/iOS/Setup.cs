@@ -45,8 +45,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 		protected override void InitializeApp ()
 		{
 			base.InitializeApp ();
-
-
 		}
 
 		protected override IEnumerable<System.Type> ValueConverterHolders {
