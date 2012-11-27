@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.IO;
 using System.Threading;
 
@@ -28,10 +26,11 @@ namespace apcurium.MK.Booking.ConfigTool
                 }
 
                 var configRootFolder = directories.Single(dir => Path.GetFileName(dir).ToLower() == "config");
-                var configDirectories = Directory.GetDirectories(configRootFolder);
+                var configDirectories = Directory.GetDirectories(configRootFolder).Where(name => !Path.GetFileName(name).ToLower().Equals("common"));
                 var src = directories.Single(dir => Path.GetFileName(dir).ToLower() == "src");
+                var common = Directory.GetDirectories(configRootFolder).Single(name => Path.GetFileName(name).ToLower().Equals("common"));
 
-                var config = configDirectories.Select(dir => new AppConfig(Path.GetFileName(dir), dir, src)).ToArray ();
+                var config = configDirectories.Select(dir => new AppConfig(Path.GetFileName(dir), dir, src, common)).ToArray();
 
                 if (args.Length > 0)
                 {
