@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public void EnsureListLoaded ()
         {
             if ((_refData == null) || (_refData.CompaniesList.Count () == 0)) {
-                UseServiceClient<ReferenceDataServiceClient> (service =>
+                UseServiceClient<IReferenceDataServiceClient> (service =>
                 {
                     _refData = service.GetReferenceData ();
                 }

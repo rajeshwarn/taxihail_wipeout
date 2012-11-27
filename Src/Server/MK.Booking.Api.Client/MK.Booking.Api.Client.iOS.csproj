@@ -94,6 +94,8 @@
     <Compile Include="IAccountServiceClient.cs" />
     <Compile Include="IAuthServiceClient.cs" />
     <Compile Include="Client\CmtJsonServiceClient.cs" />
+    <Compile Include="IReferenceDataServiceClient.cs" />
+    <Compile Include="Cmt\CmtReferenceDataServiceClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Cmt\" />

@@ -34,6 +34,8 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
         string SupportEmail { get; }
 
         bool RatingEnabled { get; }
+
+        bool IsCMT { get; }
 	}
 }
 
