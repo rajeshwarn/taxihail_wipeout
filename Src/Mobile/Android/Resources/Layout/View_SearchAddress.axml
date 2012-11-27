@@ -85,16 +85,26 @@
                     android:paddingLeft="35dp"
                     local:MvxBind="{&apos;TextChangedCommand&apos;:{&apos;Path&apos;:&apos;SearchCommand&apos;}, &apos;Text&apos;:{&apos;Path&apos;:&apos;Criteria&apos;}}"
                     android:paddingRight="30dip" />
+              <FrameLayout android:layout_width="wrap_content"
+                            android:id="@+id/eraseTextFrame"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical|right"
+                            android:layout_alignParentRight="true"
+                            android:paddingLeft="10dip"
+                            android:paddingTop="10dip"
+                            android:paddingBottom="10dip"
+                            android:paddingRight="10dip">
                 <Button
                     android:id="@+id/eraseTextButton"
                     android:background="@drawable/erase_cross_btn"
                     android:layout_height="20dp"
                     android:layout_width="20dp"
                     android:gravity="center"
-                    android:layout_marginRight="5dip"
+                    android:layout_marginRight="0dip"
                     android:layout_gravity="center_vertical|right"
                     android:layout_alignParentRight="true"
                     android:visibility="gone" />
+              </FrameLayout>
             </FrameLayout>
         </LinearLayout>
         <apcurium.mk.booking.mobile.client.controls.SpinningSearch

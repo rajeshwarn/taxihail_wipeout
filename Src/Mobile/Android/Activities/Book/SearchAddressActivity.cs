@@ -52,8 +52,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             var searchAddressText = FindViewById<AutoCompleteBindableTextView>(Resource.Id.SearchAddressText);
 
+            var frame = FindViewById<FrameLayout>(Resource.Id.eraseTextFrame);
             var button = FindViewById<Button>(Resource.Id.eraseTextButton);
-            button.Click += (sender, args) =>
+            frame.Click += (sender, args) =>
                                 {
                                     searchAddressText.Text = "";
                                     ViewModel.ClearResults();

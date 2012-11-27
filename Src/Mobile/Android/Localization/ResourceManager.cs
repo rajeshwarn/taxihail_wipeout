@@ -9,6 +9,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using MK.Common.Android.Entity;
 using apcurium.MK.Booking.Mobile.Localization;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 
@@ -75,6 +76,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Localization
         {
             var identifier = _context.Resources.GetIdentifier(key,"string", _context.PackageName);
             return _context.Resources.GetString(identifier);
+        }
+
+        public List<TutorialItemModel> GetTutorialItemsList()
+        {
+            return new List<TutorialItemModel>()
+                                   {
+                                       new TutorialItemModel() {ImageUri = "", Text = "Page1"},
+                                       new TutorialItemModel() {ImageUri = "",  Text = "Page2"},
+                                       new TutorialItemModel() {ImageUri = "",  Text = "Page3"}
+                                   };
         }
 
     }
