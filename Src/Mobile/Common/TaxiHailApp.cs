@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.Mobile
         {
             if (TinyIoCContainer.Current.Resolve<IAppSettings> ().IsCMT) 
             {
-                RegisterServiceClientsCmt();
+                RegisterServiceCmt();
             }else
             {
                 RegisterServiceClients();
@@ -95,8 +95,11 @@ namespace apcurium.MK.Booking.Mobile
             return sessionId;
         }
 
-        private void RegisterServiceClientsCmt ()
+        private void RegisterServiceCmt ()
         {
+            var locationService = TinyIoCContainer.Current.Resolve<ILocationService>();
+            locationService.Initialize();
+            TinyIoCContainer.Current.Register<IPreCogService>((c, p) => new PreCogService(locationService, new CmtPreCogServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetCredentialsCmt(c))));            
             TinyIoCContainer.Current.Register<IAuthServiceClient>((c, p) => new CmtAuthServiceClient(c.Resolve<IAppSettings>().ServiceUrl, null));            
             TinyIoCContainer.Current.Register<IAccountServiceClient>((c, p) => new CmtAccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, null), "NotAuthenticated");
             TinyIoCContainer.Current.Register<IAccountServiceClient>((c, p) => new CmtAccountServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetCredentialsCmt(c)), "Authenticate");            

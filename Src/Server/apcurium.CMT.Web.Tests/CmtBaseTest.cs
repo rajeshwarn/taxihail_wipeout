@@ -1,4 +1,5 @@
-﻿using apcurium.MK.Booking.Api.Client.Cmt;
+﻿using ServiceStack.Text;
+using apcurium.MK.Booking.Api.Client.Cmt;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using System;
@@ -16,13 +17,14 @@ namespace apcurium.CMT.Web.Tests
 
         public virtual void TestFixtureSetup()
         {
+            JsConfig.EmitCamelCaseNames = true;
+            JsConfig.DateHandler = JsonDateHandler.ISO8601;
             Credentials = new CmtAuthCredentials { ConsumerKey = "AH7j9KweF235hP", ConsumerSecret = "K09JucBn23dDrehZa"};
         }
 
         public virtual void Setup()
         {
-            
-           
+
         }
 
         public virtual void TestFixtureTearDown()

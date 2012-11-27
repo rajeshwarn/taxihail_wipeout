@@ -42,9 +42,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _networkListener = new LocationListener(this);
         }
 
-
-        
-
         public void Start()
         {
             if (_isStarted)
@@ -52,11 +49,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 return;
             }
 
-
-
+            
             _isStarted = true;
             _locMgr = Application.Context.GetSystemService(Context.LocationService) as LocationManager;
-
+            IsGpsActive = !_locMgr.IsProviderEnabled(LocationManager.GpsProvider);
+            
             if (LastLocation != null)
             {
                 var lastDateTime = FromUnixTime(LastLocation.Time).ToLocalTime();
@@ -275,7 +272,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                                                       }
                                                   }
                                                   
-                                                  var r = new Position { Latitude = result.Latitude, Longitude = result.Longitude };
+                                                  var r = new Position
+                                                              {
+                                                                  Latitude = result.Latitude, 
+                                                                  Longitude = result.Longitude, 
+                                                                  Accuracy = result.Accuracy, 
+                                                                  Altitude = result.Altitude, 
+                                                                  Bearing = result.Bearing, 
+                                                                  Speed = result.Speed,
+                                                                  Time = FromUnixTime(result.Time)
+                                                              };
                                                   TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("END GetPositionAsync La {0} , ln{1}" , result.Latitude, result.Longitude );
                                                   return r;
                                               }, cancelToken);
@@ -288,7 +294,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         public Position LastKnownPosition
         {
-            get { return new Position{ Latitude = _lastLocation.Latitude, Longitude = _lastLocation.Longitude } ;}  
+            get { return _lastLocation != null ?  new Position
+                                                              {
+                                                                  Latitude = _lastLocation.Latitude, 
+                                                                  Longitude = _lastLocation.Longitude, 
+                                                                  Accuracy = _lastLocation.Accuracy, 
+                                                                  Altitude = _lastLocation.Altitude, 
+                                                                  Bearing = _lastLocation.Bearing, 
+                                                                  Speed = _lastLocation.Speed,
+                                                                  Time = FromUnixTime(_lastLocation.Time),
+                                                              } 
+                                                              : null; }  
         }
+
+        public bool IsGpsActive { get; private set; }
     }
 }
