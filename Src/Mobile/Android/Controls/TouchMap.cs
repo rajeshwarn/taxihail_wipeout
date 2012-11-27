@@ -15,6 +15,7 @@ using apcurium.MK.Booking.Mobile.Client.Converters;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common.Entity;
 using System.Reactive.Linq;
+using Android.Widget;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -26,6 +27,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private Address _pickup;
         private Address _dropoff;
+		private ImageView _mapCenterPin;
 
         
 
@@ -55,11 +57,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private void Initialize()
         {
-            
-            //Observable.FromEventPattern(this, "MapTouchUp")
-            //  .Throttle(TimeSpan.FromSeconds(0.4))
-            //  .Subscribe(v => ExecuteCommand());
         }
+
+		public void SetMapCenterPin (ImageView view)
+		{
+			this._mapCenterPin = view;
+		}
+
         private CancellationTokenSource _moveMapCommand;
 
         void CancelMoveMap()
@@ -76,8 +80,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             if (e.Action == MotionEventActions.Down)
             {
-                   IsMapTouchDown = true;
-                   CancelMoveMap();
+               IsMapTouchDown = true;
+
+				if (PickupIsActive) {
+					_mapCenterPin.Visibility = ViewStates.Visible;
+				    _mapCenterPin.SetImageDrawable(Resources.GetDrawable(Resource.Drawable.pin_green));
+				if(_pickupPin != null) this.Overlays.Remove(_pickupPin);
+					_pickupPin = null;
+
+				} else if (DropoffIsActive) {
+					_mapCenterPin.Visibility = ViewStates.Visible;
+					_mapCenterPin.SetImageDrawable(Resources.GetDrawable(Resource.Drawable.pin_red));
+				if(_dropoffPin != null) this.Overlays.Remove(_dropoffPin);
+					_dropoffPin = null;
+				}
+
+               CancelMoveMap();
             }
             
             if (e.Action == MotionEventActions.Up)
@@ -102,7 +120,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 }
             }
 
-            //Console.WriteLine(e.Action.ToString());
             return base.DispatchTouchEvent(e);
         }
 
@@ -112,7 +129,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private void ExecuteCommand()
         {
-
             CancelMoveMap();
 
             _moveMapCommand = new CancellationTokenSource();
@@ -157,26 +173,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             set 
             { 
                 _pickup = value;
-                if (_pickupPin != null)
-                {
-                    this.Overlays.Remove(_pickupPin);
-                    _pickupPin = null;
-                }
-
-
-                if ((value != null) && (value.Latitude != 0) && (value.Longitude != 0))
-                {
-                    _pickupPin = MapUtitilties.MapService.AddPushPin(this, Resources.GetDrawable(Resource.Drawable.pin_green), value,  _pickup.FullAddress);
-                }
-
+				ShowPickupPin(value);
                 Invalidate();
             }
-        }
-
-        protected override void OnAttachedToWindow()
-        {
-            base.OnAttachedToWindow();
-            Console.WriteLine(this.ChildCount.ToString());
         }
 
         public Address Dropoff
@@ -185,19 +184,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             set 
             { 
                 _dropoff = value;
-                if (_dropoffPin != null)
-                {
-                    this.Overlays.Remove(_dropoffPin);
-                    _dropoffPin = null;
-                }
-
-                if ((value != null) && (value.Latitude != 0) && (value.Longitude != 0))
-                {
-                    _dropoffPin = MapUtitilties.MapService.AddPushPin(this, Resources.GetDrawable(Resource.Drawable.pin_red), value, _dropoff.FullAddress);
-                }
+				ShowDropOffPin(value);
                 Invalidate();
             }
         }
+
+		protected override void OnAttachedToWindow()
+		{
+			base.OnAttachedToWindow();
+			Console.WriteLine(this.ChildCount.ToString());
+		}
 
         private OrderStatusDetail _taxiLocation { get; set; }
 
@@ -225,7 +221,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-        private bool _isDropoffActive;
         private IEnumerable<CoordinateViewModel> _center;
         public IEnumerable<CoordinateViewModel> Center
         {
@@ -242,47 +237,28 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         
 
-        //public bool IsDropoffActive
-        //{
-        //    get { return _isDropoffActive; }
-        //    set 
-        //    { 
-        //        _isDropoffActive = value;                
-        //    }
-        //}
+        private bool _isDropoffActive;
+        public bool DropoffIsActive
+        {
+            get { return _isDropoffActive; }
+            set 
+            { 
+                _isDropoffActive = value;                
+            }
+        }
 
-        //private bool _isPickupActive;
-
-        //public bool IsPickupActive
-        //{
-        //    get { return _isPickupActive; }
-        //    set 
-        //    { 
-        //        _isPickupActive = value;
-        //    }
-        //}
-
-
-
-        //private void RecenterMap()
-        //{
-        //    if (IsPickupActive && Pickup.HasValidCoordinate() )
-        //    {
-        //        SetZoom( Pickup );
-        //    }
-        //    else if ( IsDropoffActive && Dropoff.HasValidCoordinate())
-        //    {
-        //        SetZoom( Dropoff );
-        //    }
-        //    else if (!IsDropoffActive && !IsDropoffActive && Pickup.HasValidCoordinate() && Dropoff.HasValidCoordinate())
-        //    {
-        //        SetZoom(Pickup, Dropoff);
-        //    }
-        //}
+        private bool _isPickupActive;
+		public bool PickupIsActive
+        {
+            get { return _isPickupActive; }
+            set 
+            { 
+                _isPickupActive = value;
+            }
+        }
 
         private void SetZoom(IEnumerable<CoordinateViewModel> adressesToDisplay)
         {
-            var map = this;
             var mapController = this.Controller;
 
             if ( adressesToDisplay.Count() == 1)
@@ -333,8 +309,41 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             return base.OnTouchEvent(e);
         }
 
+		private void ShowDropOffPin (Address address)
+		{
+			if (_dropoffPin != null)
+			{
+				this.Overlays.Remove(_dropoffPin);
+				_dropoffPin = null;
+			}
 
-        
-        
+			if(address == null)
+				return;
+
+			if (address.Latitude != 0 && address.Longitude != 0)
+			{
+				_dropoffPin = MapUtitilties.MapService.AddPushPin(this, Resources.GetDrawable(Resource.Drawable.pin_red), address, address.FullAddress);
+				if(_mapCenterPin!= null) _mapCenterPin.Visibility = ViewStates.Gone;
+			}
+
+		}
+		
+		private void ShowPickupPin (Address address)
+		{
+			if (_pickupPin != null)
+			{
+				this.Overlays.Remove(_pickupPin);
+				_pickupPin = null;
+			}
+			
+			if(address == null)
+				return;
+
+			if (address.Latitude != 0 && address.Longitude != 0)
+			{
+				_pickupPin = MapUtitilties.MapService.AddPushPin(this, Resources.GetDrawable(Resource.Drawable.pin_green), address,  address.FullAddress);
+				if(_mapCenterPin!= null) _mapCenterPin.Visibility = ViewStates.Gone;
+			}
+		}
     }
 }

@@ -40,12 +40,6 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtilities
 			get { return base.Annotation; }
 			set
 			{
-//				if ( value == null && base.Annotation != null )
-//				{
-//					base.Annotation.Dispose (  );					
-//					return;
-//				}
-				
 				base.Annotation = value;
 				if( value != null )
 				{
@@ -54,28 +48,20 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtilities
 			}
 		}
 
-		public void RefreshPinImage()
-		{
-			switch( ((AddressAnnotation)Annotation).AddressType )
-			{
-			case AddressAnnotationType.Destination:
-				Image = UIImage.FromFile( "Assets/pin_red.png" );
-				break;
-			case AddressAnnotationType.Taxi:
-				Image = UIImage.FromFile( "Assets/taxi-label.png" );
-				var lblVehicleNumber = new UILabel(new RectangleF(0,0,Image.Size.Width,45));
-				lblVehicleNumber.BackgroundColor = UIColor.Clear;
-				lblVehicleNumber.TextColor = UIColor.White;
-				lblVehicleNumber. TextAlignment = UITextAlignment.Center;
-				lblVehicleNumber.Text = ((AddressAnnotation)Annotation).Subtitle;
-				this.AddSubview( lblVehicleNumber );
-			break;
-			case AddressAnnotationType.Pickup:
-			default:
-				Image = UIImage.FromFile( "Assets/pin_green.png" );
-				break;
-			}
-			CenterOffset = new PointF( 0, -Image.Size.Height + 7f  );
+		public void RefreshPinImage ()
+        {
+            var ann = ((AddressAnnotation)Annotation);
+            Image = UIImage.FromFile (ann.GetImageFilename ());
+
+            if (ann.AddressType == AddressAnnotationType.Taxi) {
+                var lblVehicleNumber = new UILabel(new RectangleF(0,0,Image.Size.Width,45));
+                lblVehicleNumber.BackgroundColor = UIColor.Clear;
+                lblVehicleNumber.TextColor = UIColor.White;
+                lblVehicleNumber. TextAlignment = UITextAlignment.Center;
+                lblVehicleNumber.Text = ((AddressAnnotation)Annotation).Subtitle;
+                this.AddSubview( lblVehicleNumber );
+            }
+			CenterOffset = new PointF( 0, -Image.Size.Height/2);
 		}
 		
 	}
