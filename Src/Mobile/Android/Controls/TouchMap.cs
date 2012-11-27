@@ -84,13 +84,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 				if (PickupIsActive) {
 					_mapCenterPin.Visibility = ViewStates.Visible;
-				    _mapCenterPin.SetImageDrawable(Resources.GetDrawable(Resource.Drawable.pin_green));
+				    _mapCenterPin.SetImageDrawable(Resources.GetDrawable(Resource.Drawable.pin_hail));
 				if(_pickupPin != null) this.Overlays.Remove(_pickupPin);
 					_pickupPin = null;
 
 				} else if (DropoffIsActive) {
 					_mapCenterPin.Visibility = ViewStates.Visible;
-					_mapCenterPin.SetImageDrawable(Resources.GetDrawable(Resource.Drawable.pin_red));
+					_mapCenterPin.SetImageDrawable(Resources.GetDrawable(Resource.Drawable.pin_destination));
 				if(_dropoffPin != null) this.Overlays.Remove(_dropoffPin);
 					_dropoffPin = null;
 				}
@@ -322,7 +322,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 			if (address.Latitude != 0 && address.Longitude != 0)
 			{
-				_dropoffPin = MapUtitilties.MapService.AddPushPin(this, Resources.GetDrawable(Resource.Drawable.pin_red), address, address.FullAddress);
+				_dropoffPin = MapUtitilties.MapService.AddPushPin(this, Resources.GetDrawable(Resource.Drawable.pin_destination), address, address.FullAddress);
 				if(_mapCenterPin!= null) _mapCenterPin.Visibility = ViewStates.Gone;
 			}
 
@@ -341,7 +341,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 			if (address.Latitude != 0 && address.Longitude != 0)
 			{
-				_pickupPin = MapUtitilties.MapService.AddPushPin(this, Resources.GetDrawable(Resource.Drawable.pin_green), address,  address.FullAddress);
+				_pickupPin = MapUtitilties.MapService.AddPushPin(this, Resources.GetDrawable(Resource.Drawable.pin_hail), address,  address.FullAddress);
 				if(_mapCenterPin!= null) _mapCenterPin.Visibility = ViewStates.Gone;
 			}
 		}

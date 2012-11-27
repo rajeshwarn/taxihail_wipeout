@@ -135,25 +135,33 @@
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:layout_below="@+id/pickupDateLayout">
-                        <apcurium.mk.booking.mobile.client.controls.TouchMap
-                            android:id="@+id/mapPickup"
+                        <RelativeLayout
                             android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:apiKey="@string/GoogleMapKey"
-                            android:layout_marginTop="-50px"
-                            android:layout_marginBottom="-50px"
-                            android:enabled="true"
-                            android:layout_margin="-20dip"
-                            local:MvxBind="{&apos;Pickup&apos;:{&apos;Path&apos;:&apos;Pickup.Model&apos;}, &apos;Dropoff&apos;:{&apos;Path&apos;:&apos;Dropoff.Model&apos;} , &apos;IsDropoffActive&apos;:{&apos;Path&apos;:&apos;DropoffIsActive&apos;}, &apos;IsPickupActive&apos;:{&apos;Path&apos;:&apos;PickupIsActive&apos;} , &apos;MapMoved&apos;:{&apos;Path&apos;:&apos;SelectedAddress.SearchCommand&apos;}, &apos;Center&apos;:{&apos;Path&apos;:&apos;MapCenter&apos;}, &apos;PickupIsActive&apos;: {&apos;Path&apos;: &apos;PickupIsActive&apos;}, &apos;DropoffIsActive&apos;: {&apos;Path&apos;: &apos;DropoffIsActive&apos;} }"
-                            android:clickable="true" />
-                        <ImageView
-                            android:id="@+id/mapCenterPin"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="48dip"
-                            android:layout_alignWithParentIfMissing="true"
-                            android:layout_centerInParent="true"
-                            android:layout_gravity="center" />
+                            android:layout_height="fill_parent">
+                            <apcurium.mk.booking.mobile.client.controls.TouchMap
+                                android:id="@+id/mapPickup"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:apiKey="@string/GoogleMapKey"
+                                android:layout_marginTop="-50px"
+                                android:layout_marginBottom="-50px"
+                                android:enabled="true"
+                                android:layout_margin="-20dip"
+                                local:MvxBind="{&apos;Pickup&apos;:{&apos;Path&apos;:&apos;Pickup.Model&apos;}, &apos;Dropoff&apos;:{&apos;Path&apos;:&apos;Dropoff.Model&apos;} , &apos;IsDropoffActive&apos;:{&apos;Path&apos;:&apos;DropoffIsActive&apos;}, &apos;IsPickupActive&apos;:{&apos;Path&apos;:&apos;PickupIsActive&apos;} , &apos;MapMoved&apos;:{&apos;Path&apos;:&apos;SelectedAddress.SearchCommand&apos;}, &apos;Center&apos;:{&apos;Path&apos;:&apos;MapCenter&apos;}, &apos;PickupIsActive&apos;: {&apos;Path&apos;: &apos;PickupIsActive&apos;}, &apos;DropoffIsActive&apos;: {&apos;Path&apos;: &apos;DropoffIsActive&apos;} }"
+                                android:clickable="true" />
+                            <View
+                                android:id="@+id/anchor"
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:layout_centerInParent="true" />
+                            <ImageView
+                                android:id="@+id/mapCenterPin"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_above="@id/anchor"
+                                android:layout_centerHorizontal="true"
+                                android:layout_gravity="center" />
+                        </RelativeLayout>
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
