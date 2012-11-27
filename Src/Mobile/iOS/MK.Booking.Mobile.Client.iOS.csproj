@@ -22,13 +22,13 @@
     <MtouchDebug>True</MtouchDebug>
     <MtouchI18n />
     <MtouchUseArmv7>false</MtouchUseArmv7>
-    <MtouchSdkVersion>5.1</MtouchSdkVersion>
+    <MtouchSdkVersion>6.0</MtouchSdkVersion>
     <MtouchProfiling>True</MtouchProfiling>
     <AssemblyName>TaxiHail</AssemblyName>
     <MtouchArch>ARMv7</MtouchArch>
     <CustomCommands>
       <CustomCommands>
-        <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/LocalizationTool.exe&quot; -t ios -s &quot;$(SolutionDir)/Common/Localization/Master.resx&quot; -d &quot;$(ProjectDir)/en.lproj/localizable.strings&quot;" />
+        <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/output/LocalizationTool.exe&quot; -t=ios -m=&quot;$(SolutionDir)/Common/Localization/Master.resx&quot; -d=&quot;$(ProjectDir)/en.lproj/localizable.strings&quot; -s=&quot;$(SolutionDir)/Common/Settings/Settings.json&quot;" />
       </CustomCommands>
     </CustomCommands>
   </PropertyGroup>

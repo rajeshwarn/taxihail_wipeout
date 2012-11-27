@@ -13,10 +13,7 @@ namespace apcurium.MK.Booking.Mobile
 
                 var logger = TinyIoCContainer.Current.Resolve<ILogger>();
 
-                t.Exception.Handle(x=>{
-                    logger.LogError(x);
-                    return true;
-                });
+                logger.LogError(t.Exception);
 
             }, TaskContinuationOptions.OnlyOnFaulted);
 

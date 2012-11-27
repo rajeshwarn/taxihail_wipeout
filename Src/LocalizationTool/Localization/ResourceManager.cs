@@ -11,22 +11,34 @@ namespace apcurium.Tools.Localization
 {
     public class ResourceManager
     {
-        private static readonly Dictionary<ResourceType, Type> _fileHandlers;
+        private readonly IList<ResourceFileHandlerBase> _sourceFileHandlers = new List<ResourceFileHandlerBase>();
+        private readonly IList<ResourceFileHandlerBase> _destinationFileHandlers = new List<ResourceFileHandlerBase>();
 
-        static ResourceManager()
+       public void AddSource(ResourceFileHandlerBase sourceFileHandler)
         {
-            _fileHandlers = new Dictionary<ResourceType, Type>();
-            _fileHandlers.Add(ResourceType.iOS, typeof(iOSResourceFileHandler));
-            _fileHandlers.Add(ResourceType.Android, typeof(AndroidResourceFileHandler));
+           if(sourceFileHandler == null) throw new ArgumentNullException();
+            _sourceFileHandlers.Add(sourceFileHandler);
         }
 
-        public ResourceManager()
+        public void AddDestination(ResourceFileHandlerBase destinationFileHandler)
         {
-            Files = Settings.Default.LocalizedFiles.Select(r => 
-                (ResourceFileHandlerBase) Activator.CreateInstance(_fileHandlers[r.Type], r.Path)).ToArray();
+            if(destinationFileHandler == null) throw new ArgumentNullException();
+            _destinationFileHandlers.Add(destinationFileHandler);
         }
+
+
+
 
         public ResourceFileHandlerBase[] Files { get; private set; }
 
+        public void Update()
+        {
+            foreach (var dest in _destinationFileHandlers)
+            foreach (var src in _sourceFileHandlers)
+            foreach (var key in src.Keys)
+            {
+                dest[key] = src[key];
+            }
+        }
     }
 }

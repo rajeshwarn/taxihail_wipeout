@@ -127,6 +127,11 @@
     <Compile Include="Infrastructure\IPackageInfo.cs" />
     <Compile Include="Infrastructure\IPhoneService.cs" />
     <Compile Include="Localization\AppLanguage.cs" />
+    <Compile Include="Localization\TaxiHail.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TaxiHail.resx</DependentUpon>
+    </Compile>
     <Compile Include="Messages\AddressRefinedMessage.cs" />
     <Compile Include="Messages\AddressSelected.cs" />
     <Compile Include="Messages\BookUsingAddress.cs" />
@@ -238,6 +243,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Localization\Master.resx" />
+    <EmbeddedResource Include="Localization\TaxiHail.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TaxiHail.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Settings\Settings.json" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />

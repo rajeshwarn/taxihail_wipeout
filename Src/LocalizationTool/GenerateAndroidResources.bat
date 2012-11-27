@@ -1,3 +1,5 @@
 ﻿echo Generate String Resources
-LocalizationTool.exe -t android -s "..\Mobile\Common\Localization\Master.resx" -d "..\Mobile\Android\Resources\Values\String.xml"
+output\LocalizationTool.exe -t=android -m="..\Mobile\Common\Localization\Master.resx" -d="..\Mobile\Android\Resources\Values\String.xml" -s="..\Mobile\Common\Settings\Settings.json"
+
+
 PAUSE
