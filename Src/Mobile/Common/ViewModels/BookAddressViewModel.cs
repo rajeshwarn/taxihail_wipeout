@@ -108,17 +108,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     }, TaskContinuationOptions.None);
 
                     task.ContinueWith (t =>
-                    {
-                        if (t.Result != null && t.Result.Any ()) {
-                            var address = t.Result[0];
-                            // Replace result coordinates  by search coordinates (= user position)
-                            address.Latitude = coordinate.Latitude;
-                            address.Longitude = coordinate.Longitude;
-                            SetAddress (address, true);
-                        } else {
-                            ClearAddress ();
-                        }
-                    }, CancellationToken.None, TaskContinuationOptions.OnlyOnRanToCompletion, TaskScheduler.FromCurrentSynchronizationContext());
+                    { 
+						InvokeOnMainThread(() => {
+							if (t.Result != null && t.Result.Any ()) {
+								var address = t.Result[0];
+								// Replace result coordinates  by search coordinates (= user position)
+								address.Latitude = coordinate.Latitude;
+								address.Longitude = coordinate.Longitude;
+								SetAddress (address, true);
+							} else {
+								ClearAddress ();
+							}
+						});
+                        
+                    }, TaskContinuationOptions.OnlyOnRanToCompletion);
 
                 });
             }

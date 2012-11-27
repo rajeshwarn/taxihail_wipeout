@@ -22,12 +22,10 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             : base(imagePushPint)
         {
             _owner = owner;
-            _item = new OverlayItem(point, title, null);
-            _title = title;
-            BoundCenterBottom(imagePushPint);
+			_item = new OverlayItem(point, title, null);
+   			_title = title;
+			BoundCenterBottom(imagePushPint);
             Populate();
-
-            
         }
 
         public string Title { get { return _item.Title; } }
@@ -88,5 +86,10 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
                 _noteBaloon.Visibility = ViewStates.Gone;
             }
         }
+
+		public override void Draw (Android.Graphics.Canvas canvas, MapView mapView, bool shadow)
+		{
+			base.Draw (canvas, mapView, false);
+		}
     }
 }
