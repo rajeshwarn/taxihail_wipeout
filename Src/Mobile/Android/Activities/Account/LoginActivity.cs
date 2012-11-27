@@ -19,6 +19,10 @@ using Cirrious.MvvmCross.Views;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.Interfaces.Views;
 using Cirrious.MvvmCross.Binding.Android.Views;
+using apcurium.MK.Booking.Api.Contract.Requests;
+using ServiceStack.Text;
+using System.Collections.Generic;
+using TinyMessenger;
 
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
@@ -26,7 +30,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
     [Activity(Label = "Login", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait, LaunchMode=Android.Content.PM.LaunchMode.SingleInstance)]
     public class LoginActivity : BaseBindingActivity<LoginViewModel>
     {
-
         public static LoginActivity TopInstance{get;set;}
 
         private ProgressDialog _progressDialog;
@@ -49,73 +52,28 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             (facebook as FacebookServicesMD).AuthorizeCallback(requestCode, (int)resultCode, data);
         }
 
+		public LoginActivity ()
+		{
+			TopInstance = this;
+		}
+
         protected override int ViewTitleResourceId
         {
             get { return Resource.String.View_SignIn; }
         }
-        
-        
 
         protected override void OnViewModelSet()
-        {
+        {            
 
-            TopInstance = this;
-
-            SetContentView(Resource.Layout.View_Login);
-
-            var facebook = TinyIoC.TinyIoCContainer.Current.Resolve<IFacebookService>();
-            facebook.SetCurrentContext(this);
-
-            var twitterService = TinyIoC.TinyIoCContainer.Current.Resolve<ITwitterService>();
-            twitterService.SetLoginContext(this);
-
-            facebook.ConnectionStatusChanged -= HandleFacebookConnection;
-            facebook.ConnectionStatusChanged += HandleFacebookConnection;
-
-            twitterService.ConnectionStatusChanged -= HandleTwitterConnection;
-            twitterService.ConnectionStatusChanged += HandleTwitterConnection;
+            SetContentView(Resource.Layout.View_Login);            
 
             _progressDialog = new ProgressDialog(this);
+                      
 
-            if (AppContext.Current.LastEmail.HasValue())
+            if (!TinyIoCContainer.Current.Resolve<IAppSettings>().FacebookEnabled)
             {
-                FindViewById<EditText>(Resource.Id.Username).Text = AppContext.Current.LastEmail;
+				FindViewById<Button>(Resource.Id.FacebookButton).Visibility = ViewStates.Gone;
             }
-
-
-            FindViewById<Button>(Resource.Id.SignUpButton).Click += new EventHandler(SignUpButton_Click);
-
-            FindViewById<Button>(Resource.Id.SignInButton).Click += new EventHandler(btnSignIn_Click);
-
-            FindViewById<Button>(Resource.Id.ForgotPasswordButton).Click += new EventHandler(ForgotPassword_Click);
-
-            if (TinyIoCContainer.Current.Resolve<IAppSettings>().FacebookEnabled)
-            {
-
-                FindViewById<Button>(Resource.Id.FacebookButton).Click += delegate
-                {
-                    ShowProgressDialog();
-                    if (facebook.IsConnected)
-                    {
-                        facebook.GetUserInfos(CheckIfFacebookAccountExist, () =>
-                        {
-                            facebook.Disconnect();
-                            HideProgressDialog();
-                        });
-                    }
-                    else
-                    {
-                        facebook.Connect("email, publish_stream, publish_actions");
-                    }
-
-                };
-            }
-            else
-            {
-                FindViewById<Button>(Resource.Id.FacebookButton).Visibility = ViewStates.Gone;
-            }
-
-
 
             if (TinyIoCContainer.Current.Resolve<IAppSettings>().CanChangeServiceUrl)
             {
@@ -129,37 +87,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                 FindViewById<Button>(Resource.Id.ServerButton).Visibility = ViewStates.Gone;
             }
 
-            if (TinyIoCContainer.Current.Resolve<IAppSettings>().TwitterEnabled)
+            if (!TinyIoCContainer.Current.Resolve<IAppSettings>().TwitterEnabled)
             {
-
-                FindViewById<Button>(Resource.Id.TwitterButton).Click += delegate
-                {
-                    if (twitterService.IsConnected)
-                    {
-                        twitterService.GetUserInfos(CheckIfTwitterAccountExist);
-                    }
-                    else
-                    {
-                        twitterService.Connect();
-                    }
-                };
-            }
-            else
-            {
-                FindViewById<Button>(Resource.Id.TwitterButton).Visibility = ViewStates.Gone;
-            }
-
-            facebook.ConnectionStatusChanged -= HandleFacebookConnection;
-            facebook.ConnectionStatusChanged += HandleFacebookConnection;
-
-            twitterService.ConnectionStatusChanged += (s, e) =>
-            {
-                if (e.IsConnected)
-                {
-
-                    twitterService.GetUserInfos(CheckIfTwitterAccountExist);
-                }
-            };
+				FindViewById<Button>(Resource.Id.TwitterButton).Visibility = ViewStates.Gone;
+            }           
 
 #if DEBUG
             FindViewById<EditText>(Resource.Id.Username).Text = "john@taxihail.com";
@@ -179,41 +110,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             });
         }
 
-        private void HandleFacebookConnection(object sender, FacebookStatus e)
-        {
-            if (e.IsConnected)
-            {
-                var facebook = TinyIoC.TinyIoCContainer.Current.Resolve<IFacebookService>();
-                facebook.ConnectionStatusChanged -= HandleFacebookConnection;
-                facebook.ConnectionStatusChanged += HandleFacebookConnection;
-                facebook.GetUserInfos(CheckIfFacebookAccountExist, () =>
-                {
-                    facebook.Disconnect();
-                    HideProgressDialog();
-                });
-            }
-            else
-            {
-                HideProgressDialog();
-            }
-        }
-
-        private void HandleTwitterConnection(object sender, TwitterStatus e)
-        {
-            if (e.IsConnected)
-            {
-                var twitter = TinyIoC.TinyIoCContainer.Current.Resolve<ITwitterService>();
-                twitter.ConnectionStatusChanged -= HandleTwitterConnection;
-                twitter.GetUserInfos(CheckIfTwitterAccountExist);
-            }
-        }
-
         private void ShowProgressDialog()
         {
             RunOnUiThread(() =>
             {
-
-                _progressDialog = ProgressDialog.Show(this, "", this.GetString(Resource.String.LoadingMessage), true, false);
+				_progressDialog = ProgressDialog.Show(this, "", this.GetString(Resource.String.LoadingMessage), true, false);
                 _progressDialog.Show();
 
             });
@@ -230,12 +131,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             input.Text = TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl;
             alert.SetView(input);
 
-
-
             alert.SetPositiveButton("Ok", (s, e) =>
                 {
-                    var serverUrl = input.Text;
-                    
+                    var serverUrl = input.Text;                    
                     TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl = serverUrl;
                 });
 
@@ -253,163 +151,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             _progressDialog.Cancel();
         }
 
-
-        private void CheckIfFacebookAccountExist(UserInfos infos)
-        {
-            //ShowProgressDialog();
-
-            string err = "";
-            Api.Contract.Resources.Account account = null;
-
-            account = TinyIoCContainer.Current.Resolve<IAccountService>().GetFacebookAccount( infos.Id);
-            if (account != null)
-            {                
-                AppContext.Current.LastEmail = account.Email;
-                RunOnUiThread(() =>
-                    {
-                        _progressDialog.Dismiss();
-                        var dispatch = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
-                        dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(BookViewModel), null, false, MvxRequestedBy.UserAction));
-                        Finish();
-                    });
-                return;
-            }
-            else
-            {
-                RunOnUiThread(() => _progressDialog.Dismiss());
-                DoSignUpWithParameter(infos.Firstname, infos.Lastname, infos.Email, "",
-                                      FacebookId: infos.Id);
-            }
-        }
-
-        private void CheckIfTwitterAccountExist(UserInfos infos)
-        {
-            ShowProgressDialog();            
-            Api.Contract.Resources.Account account = null;
-            try
-            {
-                account = TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().GetTwitterAccount(infos.Id);
-            }
-            catch (Exception)
-            {
-
-                account = null;
-            }
-            if (account != null)
-            {
-                
-                AppContext.Current.LastEmail = account.Email;
-
-                RunOnUiThread(() =>
-                {
-                    _progressDialog.Dismiss();
-                    var dispatch = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
-                    dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(BookViewModel), null, false, MvxRequestedBy.UserAction));
-                    Finish();
-                });
-                return;
-            }
-            else
-            {
-                RunOnUiThread(() => _progressDialog.Dismiss());
-                DoSignUpWithParameter(infos.Firstname, infos.Lastname, infos.Email, "", TwitterId: infos.Id);
-            }
-            //}, true));
-        }
-
         protected override void OnResume()
         {
-            base.OnResume();
-
-            if (AppContext.Current.LastEmail.HasValue())
-            {
-                FindViewById<EditText>(Resource.Id.Username).Text = AppContext.Current.LastEmail;
-            }
+            base.OnResume();            
         }
 
 
         protected override void OnDestroy()
         {
-            base.OnDestroy();
-            var facebook = TinyIoC.TinyIoCContainer.Current.Resolve<IFacebookService>();
-            facebook.ConnectionStatusChanged -= (HandleFacebookConnection);
-            var twitter = TinyIoC.TinyIoCContainer.Current.Resolve<ITwitterService>();
-            twitter.ConnectionStatusChanged -= (HandleTwitterConnection);
-            
+            base.OnDestroy();           
             GC.Collect();
         }
-      
-        void SignUpButton_Click(object sender, EventArgs e)
-        {
-            DoSignUp();
-        }
-        void ForgotPassword_Click(object sender, EventArgs e)
-        {
-            PasswordRecovery();
-        }
 
-        private void PasswordRecovery()
-        {
-            StartActivity(typeof(PasswordRecoveryActivity));
-        }
-        void btnSignIn_Click(object sender, EventArgs e)
-        {
-            DoSignIn();
-        }
-
-        private void DoSignIn()
-        {
-            ThreadHelper.ExecuteInThread(this, () =>
-            {
-
-                EditText txtUserName = FindViewById<EditText>(Resource.Id.Username);
-                EditText txtPassword = FindViewById<EditText>(Resource.Id.Password);
-
-                bool isValid = EmailValidation.IsValid(txtUserName.Text);
-
-                if (isValid)
-                {                    
-                    var account = TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().GetAccount(txtUserName.Text, txtPassword.Text);
-                    if (account != null)
-                    {                        
-                        AppContext.Current.LastEmail = account.Email;
-                        RunOnUiThread(() =>
-                        {
-                            var dispatch = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
-                            txtPassword.Text = "";
-                            dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(BookViewModel), null, false, MvxRequestedBy.UserAction));
-                        });
-                        return;
-                    }
-                }
-
-                
-
-
-            }, true);
-        }
-        private void DoSignUp()
-        {
-            StartActivity(typeof(SignUpActivity));
-        }
-
-        private void DoSignUpWithParameter(string FirstName, string LastName, string Email, string Phone, string TwitterId = "", string FacebookId = "")
-        {
-            Intent intent = new Intent(this, typeof(SignUpActivity));
-            Bundle b = new Bundle();
-            b.PutString("firstName", FirstName);
-            b.PutString("lastName", LastName);
-            b.PutString("email", Email);
-            b.PutString("phone", Phone);
-            b.PutString("twitterId", TwitterId);
-            b.PutString("facebookId", FacebookId);
-            intent.PutExtras(b);
-            if (TwitterId != string.Empty
-                || FacebookId != string.Empty)
-            {
-                Finish();
-            }
-            StartActivity(intent);
-        }
     }
 }

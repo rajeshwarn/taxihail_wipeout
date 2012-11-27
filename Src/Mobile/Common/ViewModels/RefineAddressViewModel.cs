@@ -7,9 +7,10 @@ using apcurium.MK.Booking.Mobile.Messages;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class RefineAddressViewModel : BaseViewModel
+    public class RefineAddressViewModel : BaseSubViewModel<RefineAddressViewModel>
     {
-        public RefineAddressViewModel( string apt, string ringCode, string buildingName)
+        public RefineAddressViewModel(string messageId, string apt, string ringCode, string buildingName)
+			:base(messageId)
         {
             AptNumber = apt;
             RingCode  = ringCode;
@@ -78,8 +79,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 
                 return new MvxRelayCommand(() => 
                     {
-                        TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new AddressRefinedMessage(this, this));
-                        RequestClose(this);
+						ReturnResult(this);
                     });
             }
         }

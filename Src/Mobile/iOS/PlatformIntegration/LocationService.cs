@@ -110,10 +110,16 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
                 bool timedout = false;
                 var result = WaitForAccurateLocation(timeout, accuracy, out timedout);
-
+                if(timedout)
+                {
+                    throw new Exception("Location search timed out");
+                }
                 return new Position { Latitude = result.Coordinate.Latitude, Longitude = result.Coordinate.Longitude };
             }, cancelToken);
-            
+
+            task.ContinueWith(t => {
+                TinyIoCContainer.Current.Resolve<ILogger>().LogError(t.Exception);
+            }, TaskContinuationOptions.OnlyOnFaulted );
             task.Start();
             return task;
 

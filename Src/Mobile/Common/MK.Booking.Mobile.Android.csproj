@@ -125,15 +125,21 @@
     <Compile Include="Infrastructure\ILogger.cs" />
     <Compile Include="Infrastructure\IMessageService.cs" />
     <Compile Include="Infrastructure\IPackageInfo.cs" />
+    <Compile Include="Infrastructure\IPhoneService.cs" />
     <Compile Include="Localization\AppLanguage.cs" />
+    <Compile Include="Localization\TaxiHail.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TaxiHail.resx</DependentUpon>
+    </Compile>
     <Compile Include="Messages\AddressRefinedMessage.cs" />
     <Compile Include="Messages\AddressSelected.cs" />
     <Compile Include="Messages\BookUsingAddress.cs" />
     <Compile Include="Messages\CloseViewsToRoot.cs" />
     <Compile Include="Messages\LogOutRequested.cs" />
     <Compile Include="Messages\OrderCanceled.cs" />
+    <Compile Include="Messages\OrderDeleted.cs" />
     <Compile Include="Messages\OrderRated.cs" />
-    <Compile Include="Messages\RebookRequested.cs" />
     <Compile Include="Messages\DateTimePicked.cs" />
     <Compile Include="Messages\OrderConfirmed.cs" />
     <Compile Include="Models\OrderWithStatusModel.cs" />
@@ -170,8 +176,8 @@
     <Compile Include="Style\ShadowDefinition.cs" />
     <Compile Include="Style\StyleManager.cs" />
     <Compile Include="TaxiHailApp.cs" />
+    <Compile Include="ViewModels\AboutUsViewModel.cs" />
     <Compile Include="ViewModels\BookConfirmationViewModel.cs" />
-    <Compile Include="ViewModels\BookDetailViewModel.cs" />
     <Compile Include="ViewModels\BookingStatusViewModel.cs" />
     <Compile Include="ViewModels\BookRatingViewModel.cs" />
     <Compile Include="ViewModels\HistoryViewModel.cs" />
@@ -195,6 +201,15 @@
     <Compile Include="ViewModels\ZoomLevel.cs" />
     <Compile Include="Infrastructure\IAddressBookService.cs" />
     <Compile Include="Messages\StatusCloseRequested.cs" />
+    <Compile Include="BindingConverter\EmptyToResourceConverter.cs" />
+    <Compile Include="ViewModels\ResetPasswordViewModel.cs" />
+    <Compile Include="Messages\SubNavigationResultMessage.cs" />
+    <Compile Include="ViewModels\BaseSubViewModel.cs" />
+    <Compile Include="ViewModels\RideSettingsViewModel.cs" />
+    <Compile Include="ViewModels\CreateAcccountViewModel.cs" />
+    <Compile Include="ViewModels\LocationDetailViewModel.cs" />
+    <Compile Include="ViewModels\MyLocationsViewModel.cs" />
+    <Compile Include="Extensions\TaskExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">
@@ -228,6 +243,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Localization\Master.resx" />
+    <EmbeddedResource Include="Localization\TaxiHail.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TaxiHail.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Settings\Settings.json" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
@@ -245,4 +264,8 @@
     <PreBuildEvent>
     </PreBuildEvent>
   </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Converters\" />
+    <Folder Include="Fakes\" />
+  </ItemGroup>
 </Project>

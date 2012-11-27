@@ -1,6 +1,6 @@
 using System;
-using MonoTouch.Dialog;
 using MonoTouch.UIKit;
+using Cirrious.MvvmCross.Dialog.Touch.Dialog.Elements;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -24,25 +24,22 @@ namespace apcurium.MK.Booking.Mobile.Client
         }
 
        
-        public override UITableViewCell GetCell(UITableView tv)
+        protected override UITableViewCell GetCellImpl (UITableView tv)
         {
-            var cell =  base.GetCell(tv);
+            var cell =  base.GetCellImpl(tv);
             cell.BackgroundColor = UIColor.Clear;
             return cell;
         }
+
         protected override void PrepareDialogViewController (UIViewController dvc)
         {
             dvc.View.BackgroundColor = UIColor.Clear;
-
-            dvc.View.BackgroundColor = UIColor.Clear; // UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
-
 
             ((UITableViewController)dvc).TableView.BackgroundColor = UIColor.Clear;
             ((UITableViewController)dvc).TableView.BackgroundView = new UIView{ BackgroundColor = UIColor.Clear};
 
             base.PrepareDialogViewController (dvc);
 
-           
         }
     }
 }

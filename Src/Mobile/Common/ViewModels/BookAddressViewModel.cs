@@ -14,10 +14,15 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
+using Cirrious.MvvmCross.Interfaces.ServiceProvider;
+using Cirrious.MvvmCross.ExtensionMethods;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class BookAddressViewModel : BaseViewModel
+    public class BookAddressViewModel : BaseViewModel,
+        IMvxServiceConsumer<ILocationService>,
+        IMvxServiceConsumer<IAccountService>,
+        IMvxServiceConsumer<IGeolocService>
     {
         private ILocationService _geolocator;
         private CancellationTokenSource _cancellationToken;
@@ -36,8 +41,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _setAddress = setAddress;
             _id = Guid.NewGuid ().ToString ();
             _geolocator = geolocator;
-            _searchingTitle = TinyIoC.TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("AddressSearchingText");
-            TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub> ().Subscribe<AddressSelected> (OnAddressSelected, selected => selected.OwnerId == _id);
+            _searchingTitle = Resources.GetString ("AddressSearchingText");
+            MessengerHub.Subscribe<AddressSelected> (OnAddressSelected, selected => selected.OwnerId == _id);
         }
 
         public string Title { get; set; }
@@ -66,12 +71,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public Address Model { get { return _getAddress (); } set { _setAddress (value); } }
 
-        private Task _searchTask;
-
         public IMvxCommand SearchCommand {
             get {
-
-
                 return new MvxRelayCommand<Address> (coordinate =>
                 {
                     CancelCurrentLocationCommand.Execute ();
@@ -79,38 +80,45 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     _cancellationToken = new CancellationTokenSource ();
 
                     var token = _cancellationToken.Token;
-                    _searchTask = Task.Factory.StartNew (() =>
+                    var task = Task.Factory.StartNew (() =>
                     {
-
                         if (!token.IsCancellationRequested) {
                             IsExecuting = true;
-                            var accountAddress = TinyIoCContainer.Current.Resolve<IAccountService> ().FindInAccountAddresses (coordinate.Latitude, coordinate.Longitude);
+                            var accountAddress = this.GetService<IAccountService> ().FindInAccountAddresses (coordinate.Latitude, coordinate.Longitude);
                             if (accountAddress != null) 
                             {
                                 return new Address[] { accountAddress};
                             }
                             else
                             {
-                                var adresses = TinyIoC.TinyIoCContainer.Current.Resolve<IGeolocService> ().SearchAddress (coordinate.Latitude, coordinate.Longitude).ToArray ();
-                                return adresses;
+                                return this.GetService<IGeolocService>().SearchAddress (coordinate.Latitude, coordinate.Longitude).ToArray ();
                             }
                         }
                         return null;
 
-                    }, token).ContinueWith (t =>
-                    {
-                        if (t.IsCompleted && !t.IsCanceled && !t.IsFaulted) {
-                            RequestMainThreadAction (() =>
-                            {
-                                if (t.Result != null && t.Result.Any ()) {
-                                    SetAddress (t.Result [0], true);
-                                } else {
-                                    ClearAddress ();
-                                }
-                            });
-                        }
+                    }, token);
+
+                    task.ContinueWith(t=> {
                         IsExecuting = false;
-                    });
+                        if(t.IsFaulted)
+                        {
+                            Logger.LogError(t.Exception);
+                        }
+
+                    }, TaskContinuationOptions.None);
+
+                    task.ContinueWith (t =>
+                    {
+                        if (t.Result != null && t.Result.Any ()) {
+                            var address = t.Result[0];
+                            // Replace result coordinates  by search coordinates (= user position)
+                            address.Latitude = coordinate.Latitude;
+                            address.Longitude = coordinate.Longitude;
+                            SetAddress (address, true);
+                        } else {
+                            ClearAddress ();
+                        }
+                    }, CancellationToken.None, TaskContinuationOptions.OnlyOnRanToCompletion, TaskScheduler.FromCurrentSynchronizationContext());
 
                 });
             }
@@ -221,16 +229,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     _geolocator.GetPositionAsync (5000, 50, 2000, 2000, _cancellationToken.Token).ContinueWith (t =>
                     {
                         try {
-                            TinyIoCContainer.Current.Resolve<ILogger> ().LogMessage ("Request Location Command");
+                            Logger.LogMessage ("Request Location Command");
                             if (t.IsFaulted) {
-                                TinyIoCContainer.Current.Resolve<ILogger> ().LogMessage ("Request Location Command : FAULTED");
+                                Logger.LogMessage ("Request Location Command : FAULTED");
                                 IsExecuting = false;
                             } else if (t.IsCompleted && !t.IsCanceled) {
-                                TinyIoCContainer.Current.Resolve<ILogger> ().LogMessage ("Request Location Command :SUCCESS La {0}, Ln{1}", t.Result.Latitude, t.Result.Longitude);
+                                Logger.LogMessage ("Request Location Command :SUCCESS La {0}, Ln{1}", t.Result.Latitude, t.Result.Longitude);
                                 ThreadPool.QueueUserWorkItem (pos => SearchAddressForCoordinate ((Position)pos), t.Result);
                             }
                         } catch (Exception ex) {
-                            TinyIoCContainer.Current.Resolve<ILogger> ().LogError (ex);
+                            Logger.LogError (ex);
                             IsExecuting = false;
                         }
 

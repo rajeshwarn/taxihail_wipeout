@@ -26,6 +26,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
     [Register ("TouchMap")]
     public class TouchMap : MKMapView
     {
+        private UIImageView _mapCenterPin;
+
         private TouchGesture _gesture;
         private IMvxCommand _mapMoved;
         private Address _pickup;
@@ -62,11 +64,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             Initialize();
         }
 
+
+
         private void Initialize()
         {   
             _cancelToken = new CancellationTokenSource();
-
-
             TinyIoCContainer.Current.Resolve<ILocationService>().GetPositionAsync(5000, 4000, 5000, 8000, _cancelToken.Token).ContinueWith(t => {
                 if (t.IsCompleted && !t.IsCanceled)
                 {
@@ -78,7 +80,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                         }
                     });
                 }
-            });
+            }, TaskContinuationOptions.OnlyOnRanToCompletion);
+        }
+
+        public override void MovedToSuperview ()
+        {
+            base.MovedToSuperview ();
+
+            if (_mapCenterPin == null) {
+                _mapCenterPin = new UIImageView (UIImage.FromFile ("Assets/pin_green.png"));
+                _mapCenterPin.BackgroundColor = UIColor.Red;
+                _mapCenterPin.ContentMode = UIViewContentMode.Center;
+                AddSubview(_mapCenterPin);
+                var p = this.ConvertCoordinate(this.CenterCoordinate,this);
+                _mapCenterPin.Frame = new RectangleF(p.X - 12, p.Y - 36, 24, 36);
+
+           }
         }
 
         public void OnRegionChanged()
@@ -226,6 +243,37 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 SetZoom(MapCenter);                   
             }
         }
+
+        private OrderStatusDetail _taxiLocation { get; set; }
+        
+        private MKAnnotation _taxiLocationPin;
+        
+        public OrderStatusDetail TaxiLocation
+        {
+            get { return _taxiLocation; }
+            set
+            {
+                _taxiLocation = value;
+                if (_taxiLocationPin != null)
+                {
+                    RemoveAnnotation(_taxiLocationPin);
+                    _taxiLocationPin = null;
+                }
+                
+                if ((value != null) && (value.VehicleLatitude != 0) && (value.VehicleLongitude != 0))
+                {
+                    CLLocationCoordinate2D coord = new CLLocationCoordinate2D(0,0);            
+                    if ( value.VehicleLongitude.Value!=0 && value.VehicleLatitude.Value !=0)
+                    {
+                        coord = new CLLocationCoordinate2D( value.VehicleLatitude.Value , value.VehicleLongitude.Value );
+                    }   
+                    _taxiLocationPin = new AddressAnnotation (coord, AddressAnnotationType.Taxi, Resources.TaxiMapTitle, value.VehicleNumber);
+                    AddAnnotation(_taxiLocationPin);
+                }
+                SetNeedsDisplay();
+            }
+        }
+
         
         private void SetZoom(IEnumerable<CoordinateViewModel> adressesToDisplay)
         {

@@ -64,7 +64,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             TinyIoCContainer.Current.Register<Geolocator>(new Geolocator(this.ApplicationContext) { DesiredAccuracy = 1000 }, CoordinatePrecision.Coarse.ToString());
             TinyIoCContainer.Current.Register<Geolocator>(new Geolocator(this.ApplicationContext) { DesiredAccuracy = 900 }, CoordinatePrecision.Medium.ToString());
 
-            
+			TinyIoCContainer.Current.Register<IPhoneService>(new PhoneService(this.ApplicationContext));
+
             TinyIoCContainer.Current.Register<ILocationService>(LocationService.Instance );
 
             InitializeSocialNetwork();

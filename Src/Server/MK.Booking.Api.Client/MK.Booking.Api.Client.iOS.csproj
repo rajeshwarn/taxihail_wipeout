@@ -54,6 +54,7 @@
     <Reference Include="ServiceStack.Common.MonoTouch">
       <HintPath>..\..\Mobile\Libraries\Monotouch\ServiceStack.Common.MonoTouch.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web.Services" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -67,20 +68,36 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccountServiceClient.cs" />
-    <Compile Include="BaseServiceClient.cs" />
-    <Compile Include="DirectionsServiceClient.cs" />
-    <Compile Include="GeocodingServiceClient.cs" />
-    <Compile Include="OrderServiceClient.cs" />
-    <Compile Include="ReferenceDataServiceClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="AuthServiceClient.cs" />
-    <Compile Include="NearbyPlacesClient.cs" />
-    <Compile Include="ApplicationInfoServiceClient.cs" />
-    <Compile Include="PlaceDetailServiceClient.cs" />
-    <Compile Include="SearchLocationsServiceClient.cs" />
-    <Compile Include="ConfigurationClientService.cs" />
-    <Compile Include="PopularAddressesServiceClient.cs" />
-    <Compile Include="TariffsServiceClient.cs" />
+    <Compile Include="Cmt\CmtAccountServiceClient.cs" />
+    <Compile Include="Cmt\CmtAuthCredentials.cs" />
+    <Compile Include="Cmt\CmtAuthResponse.cs" />
+    <Compile Include="Cmt\CmtAuthServiceClient.cs" />
+    <Compile Include="Cmt\CmtBaseServiceClient.cs" />
+    <Compile Include="Cmt\CmtLinkServiceClient.cs" />
+    <Compile Include="Cmt\CmtPreCogServiceClient.cs" />
+    <Compile Include="Cmt\OAuth\OAuthAuthorizer.cs" />
+    <Compile Include="TaxiHail\AccountServiceClient.cs" />
+    <Compile Include="TaxiHail\ApplicationInfoServiceClient.cs" />
+    <Compile Include="TaxiHail\AuthServiceClient.cs" />
+    <Compile Include="TaxiHail\BaseServiceClient.cs" />
+    <Compile Include="TaxiHail\ConfigurationClientService.cs" />
+    <Compile Include="TaxiHail\DirectionsServiceClient.cs" />
+    <Compile Include="TaxiHail\GeocodingServiceClient.cs" />
+    <Compile Include="TaxiHail\NearbyPlacesClient.cs" />
+    <Compile Include="TaxiHail\OrderServiceClient.cs" />
+    <Compile Include="TaxiHail\PlaceDetailServiceClient.cs" />
+    <Compile Include="TaxiHail\PopularAddressesServiceClient.cs" />
+    <Compile Include="TaxiHail\ReferenceDataServiceClient.cs" />
+    <Compile Include="TaxiHail\SearchLocationsServiceClient.cs" />
+    <Compile Include="TaxiHail\TariffsServiceClient.cs" />
+    <Compile Include="IAccountServiceClient.cs" />
+    <Compile Include="IAuthServiceClient.cs" />
+    <Compile Include="Client\CmtJsonServiceClient.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Cmt\" />
+    <Folder Include="TaxiHail\" />
+    <Folder Include="Client\" />
   </ItemGroup>
 </Project>

@@ -37,9 +37,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public AddressSearchBaseViewModel SearchViewModelSelected { get; set; }
 
-        public IEnumerable<AddressViewModel> AddressViewModels { get; set; }
+        private IEnumerable<AddressViewModel> _addressViewModels { get; set; } 
 
-        public IEnumerable<AddressViewModel> HistoricAddressViewModels { get; set; }
+        public IEnumerable<AddressViewModel> AddressViewModels { 
+            get { return this._addressViewModels; }
+            set { _addressViewModels = value; FirePropertyChanged("AddressViewModels"); }
+        }
+
+        private IEnumerable<AddressViewModel> _historicAddressViewModels { get; set; } 
+
+        public IEnumerable<AddressViewModel> HistoricAddressViewModels
+        {
+            get { return this._historicAddressViewModels; }
+            set { _historicAddressViewModels = value; FirePropertyChanged("HistoricAddressViewModels"); }
+        }
 
         public IEnumerable<SectionAddressViewModel> AllAddresses { get; set; }
 
@@ -130,7 +141,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             
         }
 
-        private void ClearResults ()
+        public void ClearResults ()
         {
             AddressViewModels = new AddressViewModel[0];
             HistoricAddressViewModels = new AddressViewModel[0];

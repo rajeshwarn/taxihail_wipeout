@@ -90,6 +90,16 @@
     <Compile Include="Requests\SendReceipt.cs" />
     <Compile Include="Http\NoCacheAttribute.cs" />
     <Compile Include="Requests\OrderRatingRequest.cs" />
+    <Compile Include="Requests\Cmt\PreCogRequest.cs" />
+    <Compile Include="Resources\Cmt\CmtResponse.cs" />
+    <Compile Include="Resources\Cmt\LinkData.cs" />
+    <Compile Include="Resources\Cmt\PreCogActionType.cs" />
+    <Compile Include="Resources\Cmt\PreCogChoice.cs" />
+    <Compile Include="Resources\Cmt\PreCogFeature.cs" />
+    <Compile Include="Resources\Cmt\PreCogMapItem.cs" />
+    <Compile Include="Resources\Cmt\PreCogMessage.cs" />
+    <Compile Include="Resources\Cmt\PreCogResponse.cs" />
+    <Compile Include="Security\AuthenticationData.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MK.Common\MK.Common.iOS.csproj">
@@ -99,5 +109,10 @@
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\OrderRatings.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Requests\Cmt\" />
+    <Folder Include="Resources\Cmt\" />
+    <Folder Include="Security\" />
   </ItemGroup>
 </Project>

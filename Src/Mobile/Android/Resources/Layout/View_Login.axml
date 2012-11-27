@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <apcurium.mk.booking.mobile.client.controls.HeaderedLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.TaxiHailDemo"                          
+    xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.TaxiHailDemo"
     local:HideLogo="false"
     android:orientation="vertical"
     android:layout_width="fill_parent"
@@ -26,6 +26,7 @@
             android:background="@android:color/transparent">
             <EditText
                 android:id="@+id/Username"
+                local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Email&apos;}}"
                 android:layout_width="fill_parent"
                 android:layout_height="40dip"
                 android:hint="@string/EmailLabel"
@@ -46,6 +47,7 @@
                 android:orientation="horizontal">
                 <EditText
                     android:id="@+id/Password"
+                    local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Password&apos;}}"
                     android:layout_width="fill_parent"
                     android:layout_height="40dip"
                     android:hint="@string/PasswordLabel"
@@ -61,6 +63,7 @@
                     android:textColorHint="#a3a3a3" />
                 <Button
                     android:id="@+id/ForgotPasswordButton"
+                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;ResetPassword&apos;}}"
                     style="@style/ButtonText"
                     android:background="@drawable/newBlackButton"
                     android:layout_width="270dip"
@@ -83,6 +86,7 @@
                 <Button
                     android:id="@+id/SignInButton"
                     style="@style/ButtonText"
+                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;SignInCommand&apos;}}"
                     android:background="@drawable/newBlackButton"
                     android:nextFocusDown="@+id/Username"
                     android:nextFocusUp="@+id/Password"
@@ -106,6 +110,7 @@
                     android:visibility="invisible" />
                 <Button
                     android:id="@+id/SignUpButton"
+                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;SignUp&apos;}}"
                     style="@style/ButtonText"
                     android:layout_height="40dip"
                     android:background="@drawable/newBlackButton"
@@ -123,6 +128,7 @@
                 android:layout_height="wrap_content">
                 <Button
                     android:id="@+id/FacebookButton"
+                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;LoginFacebook&apos;}}"
                     style="@style/ButtonText"
                     android:background="@drawable/social_media_login_btn_state"
                     android:text="@string/FacebookButton"
@@ -143,6 +149,7 @@
                     android:visibility="invisible" />
                 <Button
                     android:id="@+id/TwitterButton"
+                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;LoginTwitter&apos;}}"
                     style="@style/ButtonText"
                     android:background="@drawable/social_media_login_btn_state"
                     android:text="@string/TwitterButton"

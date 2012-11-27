@@ -34,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -59,8 +62,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /y "$(ProjectDir)$(OutDir)$(TargetFileName)" "$(SolutionDir)"
-xcopy /y "$(ProjectDir)$(OutDir)apcurium.Tools.Localization.dll" "$(SolutionDir)"</PostBuildEvent>
+    <PostBuildEvent>xcopy /y "$(ProjectDir)$(OutDir)$(TargetFileName)" "$(SolutionDir)output\"
+xcopy /y "$(ProjectDir)$(OutDir)apcurium.Tools.Localization.dll" "$(SolutionDir)output\"
+xcopy /y "$(ProjectDir)$(OutDir)Newtonsoft.Json.dll" "$(SolutionDir)output\"</PostBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

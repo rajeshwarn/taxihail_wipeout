@@ -27,7 +27,6 @@ namespace apcurium.Tools.Localization.Tests
             var androidResourceFileHandler = new AndroidResourceFileHandler(fullPath);
 
             Assert.That(androidResourceFileHandler.Count, Is.GreaterThan(0));
-            //Assert.That(androidResourceFileHandler.DuplicateKeys.Count, Is.EqualTo(0));
 
             string backupFilePath = androidResourceFileHandler.Save();
             var backupAndroidResourceFileHandler = new AndroidResourceFileHandler(backupFilePath);
@@ -64,27 +63,6 @@ namespace apcurium.Tools.Localization.Tests
             File.Delete(backupFilePath);
         }
 
-        [Test]
-        public void ResxResourceFileHandler()
-        {
-            var fullPath = GetFullPath(MasterResxRelativePath);
-
-            var resxResourceFileHandler = new ResxResourceFileHandler(fullPath);
-
-            Assert.That(resxResourceFileHandler.Count, Is.GreaterThan(0));
-
-            //string backupFilePath = iOSResourceFileHandler.Save();
-            //var backupIosResourceFileHandler = new iOSResourceFileHandler(backupFilePath);
-            //Assert.That(backupIosResourceFileHandler.Count, Is.EqualTo(iOSResourceFileHandler.Count));
-
-            //iOSResourceFileHandler.Add("maxime", "allo");
-            //iOSResourceFileHandler.Save(false);
-            //iOSResourceFileHandler = new iOSResourceFileHandler(fullPath);
-            //Assert.That(iOSResourceFileHandler.Count, Is.EqualTo(backupIosResourceFileHandler.Count + 1));
-
-            //File.Copy(backupFilePath, fullPath, true);
-            //File.Delete(backupFilePath);
-        }
 
         [Test]
         public void CompareMasterResxWithClientResourceFiles()

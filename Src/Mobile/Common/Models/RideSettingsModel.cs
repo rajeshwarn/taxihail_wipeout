@@ -6,6 +6,8 @@ using apcurium.Framework.Extensions;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using TinyIoC;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -26,10 +28,9 @@ namespace apcurium.MK.Booking.Mobile.Client
         public BookingSettings Data
         {
             get;
-            private set;
+            set;
         }
 
-        //TODO:Fix this
         public string Name
         {
             get { return Data.Name; }
@@ -61,20 +62,21 @@ namespace apcurium.MK.Booking.Mobile.Client
             set
             {
                 Data.VehicleTypeId = value;
-                if (VehicleTypeList != null)
-                {
-                    var vehicleType = VehicleTypeList.SingleOrDefault(vt => vt.Id == VehicleTypeId);
-                    //TODO:Fix this
-                    //Data.VehicleTypeName = vehicleType.Display;
-                }
             }
         }
 
         
-        //TODO:Fix this
         public string VehicleTypeName
         {
             get { return _vehicleTypeList.SingleOrDefault(v => v.Id == VehicleTypeId).SelectOrDefault(v => v.Display, ""); }            
+        }
+
+        public string VehicleTypeNameAndNbOfPassengers {
+            get {
+                var resources = TinyIoCContainer.Current.Resolve<IAppResource>();            
+                var passengerFormat = Data.Passengers == 1 ? resources.GetString("NbPassenger") : resources.GetString("NbPassengers");
+                return VehicleTypeName + string.Format(passengerFormat, NbOfPassenger);
+            }
         }
 
 
@@ -84,11 +86,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             set
             {
                 Data.ProviderId = value;
-                if (CompanyList != null)
-                {
-                    var company = CompanyList.SingleOrDefault(c => c.Id == ProviderId);
-                    //Data.CompanyName = company.Display;
-                }
             }
         }
 
@@ -103,16 +100,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             set
             {
                 Data.ChargeTypeId = value;
-                if (ChargeTypeList != null)
-                {
-                    var chargeType = ChargeTypeList.SingleOrDefault(ct => ct.Id == ChargeTypeId);
-                    //TODO:Fix this
-                    //Data.ChargeTypeName = chargeType.Display;
-                }
             }
         }
 
-        //TODO:Fix this
         public string ChargeTypeName
         {
             get { return _chargeTypeList.SingleOrDefault(v => v.Id == ChargeTypeId).SelectOrDefault(v => v.Display, ""); }            

@@ -106,7 +106,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="0dp" />
     </FrameLayout>
-    <apcurium.mk.booking.mobile.client.controls.BindableListView
+    <cirrious.mvvmCross.binding.android.views.MvxBindableListView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/SearchAddressListView"
@@ -127,7 +127,7 @@
         android:layout_marginRight="8dp"
         local:MvxBind="{&apos;Visibility&apos;:{&apos;Path&apos;:&apos;HistoricIsHidden&apos;,&apos;Converter&apos;:&apos;InvertedVisibility&apos;}}"
         android:visibility="gone" />
-    <apcurium.mk.booking.mobile.client.controls.BindableListView
+    <cirrious.mvvmCross.binding.android.views.MvxBindableListView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/HistoricListView"

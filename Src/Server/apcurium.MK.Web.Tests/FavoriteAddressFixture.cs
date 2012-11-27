@@ -5,7 +5,7 @@ using System.Text;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
 using ServiceStack.ServiceClient.Web;
-using apcurium.MK.Booking.Api.Client;
+using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Web.SelfHost;

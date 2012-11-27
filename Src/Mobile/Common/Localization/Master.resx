@@ -1044,4 +1044,7 @@
   <data name="ResetPasswordSucessTitle" xml:space="preserve">
     <value>Password resetted</value>
   </data>
+  <data name="ChooseProviderDialogTitle" xml:space="preserve">
+    <value>Pick a provider</value>
+  </data>
 </root>

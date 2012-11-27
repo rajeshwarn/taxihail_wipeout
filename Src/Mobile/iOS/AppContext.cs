@@ -35,18 +35,6 @@ namespace apcurium.MK.Booking.Mobile.Client
         public UIWindow Window  { get; private set; }
             
 
-        public string LastEmail
-        {
-            get { return NSUserDefaults.StandardUserDefaults.StringForKey("TaxiMobile.LastEmailUsed"); }
-            set
-            {
-                NSUserDefaults.StandardUserDefaults.SetStringOrClear(
-                    value,
-                    "TaxiMobile.LastEmailUsed"
-                );
-            }
-        }
-
         public string LoggedInEmail
         {
             get
@@ -75,71 +63,13 @@ namespace apcurium.MK.Booking.Mobile.Client
                 }
             }
         }
-        
-        public bool WarnEstimate
-        {
-            get
-            {
-                string val = NSUserDefaults.StandardUserDefaults.StringForKey("MK.Booking.Cache.WarnEstimate");
-                bool r = true;
-                if ((val == null) || (!bool.TryParse(val, out r)))
-                {
-                    return true;
-                }
-                else
-                {
-                    return r;
-                }
-            }
-            set
-            {
-                NSUserDefaults.StandardUserDefaults.SetStringOrClear(
-                    value.ToString(),
-                    "MK.Booking.Cache.WarnEstimate"
-                );
-            }
-        }
-        
+                       
         public bool ReceiveMemoryWarning
         {
             get;
             set;
         }
         
-        public Guid? LastOrder
-        {
-            get
-            {
-                var lOrder = NSUserDefaults.StandardUserDefaults.StringForKey("MK.Booking.Cache.LastOrder");
-                if (lOrder.HasValue())
-                {
-                    Guid r;
-                    if (Guid.TryParse(lOrder, out r))
-                    {
-                        return r;
-                    }
-                }
-                return null;
-            }
-            set
-            {
-                if (value.HasValue)
-                {
-                    NSUserDefaults.StandardUserDefaults.SetStringOrClear(
-                        value.ToString(),
-                        "MK.Booking.Cache.LastOrder"
-                    );
-                }
-                else
-                {
-                    NSUserDefaults.StandardUserDefaults.SetStringOrClear(
-                        null,
-                        "MK.Booking.Cache.LastOrder"
-                    );
-                }
-            }
-        }
-
 		public UINavigationController Controller
         {
             get { return _controller; }

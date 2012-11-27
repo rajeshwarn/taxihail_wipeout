@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Mobile.Client.ListViewCell
 
 		public static SectionItemCellRegistry ItemCellRegistry { get { return _itemHandlerRegistry; } }
 
-		public ListViewAdapter ( Context context, ListStructure structure ) : base()
+		public ListViewAdapter (Context context, ListStructure structure ) : base()
 		{
 			Structure = structure;
 			OwnerContext = context;

@@ -20,7 +20,6 @@
     <AndroidSupportedAbis>armeabi%3barmeabi-v7a%3bx86</AndroidSupportedAbis>
     <AndroidStoreUncompressedFileExtensions />
     <MandroidI18n />
-    <TargetFrameworkVersion>v2.2</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -97,6 +96,7 @@
     <Compile Include="Activities\Book\RefineAddressActivity.cs" />
     <Compile Include="Activities\Book\SearchAddressActivity.cs" />
     <Compile Include="Activities\Setting\AboutActivity.cs" />
+    <Compile Include="Activities\ShowDialogActivity.cs" />
     <Compile Include="Adapters\GroupedOrderListAdapter.cs" />
     <Compile Include="Adapters\GroupedLocationListAdapter.cs" />
     <Compile Include="Adapters\IconActionAdapter.cs" />
@@ -197,8 +197,9 @@
     <Compile Include="Controls\ListViewCell2.cs" />
     <Compile Include="Controls\SpinningSearch.cs" />
     <Compile Include="Controls\TextProgressButton.cs" />
-    <Compile Include="Controls\BindableListView.cs" />
     <Compile Include="PlatformIntegration\AddressBookService.cs" />
+    <Compile Include="Activities\SelectItemDialogActivity.cs" />
+    <Compile Include="PlatformIntegration\PhoneService.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\HelveticaNeue-Bold.otf" />
@@ -235,7 +236,7 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\View_HistoryDetail.axml">
-      <SubType>AndroidResource</SubType>
+      <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\LabelValueCell.axml">
       <SubType>AndroidResource</SubType>

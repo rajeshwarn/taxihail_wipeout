@@ -27,5 +27,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public string RingCode { get; set; }
 
         public string BuildingName { get; set; }
+
+        public bool Favorite { get; set; }
     }
 }

@@ -27,6 +27,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         private string _positiveButtonTitle;
         private string _negativeButtonTitle;
+        private string _neutralButtonTitle;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -37,6 +38,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             _ownerId = Intent.GetStringExtra("OwnerId");
             _positiveButtonTitle = Intent.GetStringExtra("PositiveButtonTitle");
             _negativeButtonTitle = Intent.GetStringExtra("NegativeButtonTitle");
+            _neutralButtonTitle = Intent.GetStringExtra("NeutralButtonTitle");
 
 
 
@@ -51,9 +53,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         private void DisplayError()
         {
-            if (_ownerId.HasValue() && _negativeButtonTitle.HasValue() && _positiveButtonTitle.HasValue())
+            if (_ownerId.HasValue() && _negativeButtonTitle.HasValue() && _positiveButtonTitle.HasValue() && !_neutralButtonTitle.HasValue())
             {
                 AlertDialogHelper.Show(this, _title, _message, _positiveButtonTitle, (s, e) => SendMessage(_positiveButtonTitle), _negativeButtonTitle, (s, e) => SendMessage(_negativeButtonTitle));
+            }
+            else if (_neutralButtonTitle.HasValue())
+            {
+                AlertDialogHelper.Show(this, _title, _message, _positiveButtonTitle, (s, e) => SendMessage(_positiveButtonTitle), _negativeButtonTitle, (s, e) => SendMessage(_negativeButtonTitle), _neutralButtonTitle, (s, e) => SendMessage(_neutralButtonTitle));
             }
             else
             {
