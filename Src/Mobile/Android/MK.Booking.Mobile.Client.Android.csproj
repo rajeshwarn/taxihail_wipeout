@@ -216,6 +216,7 @@
     <AndroidResource Include="Resources\Layout\test.axml" />
     <AndroidResource Include="Resources\Drawable\green_button_left.xml" />
     <AndroidResource Include="Resources\Drawable\green_button_right.xml" />
+    <AndroidResource Include="Resources\Drawable\address_selector_button.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
@@ -420,9 +421,6 @@
     <AndroidResource Include="Resources\Drawable\target.png" />
     <AndroidResource Include="Resources\Drawable\target_selected.png" />
     <AndroidResource Include="Resources\Drawable\mylocation.png" />
-    <AndroidResource Include="Resources\Drawable\main_btn_state.xml" />
-    <AndroidResource Include="Resources\Drawable\main_btn_selected.9.png" />
-    <AndroidResource Include="Resources\Drawable\main_btn_unselected.9.png" />
     <AndroidResource Include="Resources\drawable-hdpi\main_btn_unselected.9.png" />
     <AndroidResource Include="Resources\drawable-hdpi\main_btn_selected.9.png" />
     <AndroidResource Include="Resources\Drawable\target_state.xml" />

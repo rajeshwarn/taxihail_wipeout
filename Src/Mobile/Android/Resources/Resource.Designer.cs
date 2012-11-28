@@ -129,172 +129,172 @@ namespace apcurium.MK.Booking.Mobile.Client
 			public const int add_single_state = 2130837506;
 			
 			// aapt resource value: 0x7f020003
-			public const int apcuriumLogo = 2130837507;
+			public const int address_selector_button = 2130837507;
 			
 			// aapt resource value: 0x7f020004
-			public const int background = 2130837508;
+			public const int apcuriumLogo = 2130837508;
 			
 			// aapt resource value: 0x7f020005
-			public const int backgroundblue = 2130837509;
+			public const int background = 2130837509;
 			
 			// aapt resource value: 0x7f020006
-			public const int backPickupDestination = 2130837510;
+			public const int backgroundblue = 2130837510;
 			
 			// aapt resource value: 0x7f020007
-			public const int black_button = 2130837511;
+			public const int backPickupDestination = 2130837511;
 			
 			// aapt resource value: 0x7f020008
-			public const int blank_bottom = 2130837512;
+			public const int black_button = 2130837512;
 			
 			// aapt resource value: 0x7f020009
-			public const int blank_bottom_button_state = 2130837513;
+			public const int blank_bottom = 2130837513;
 			
 			// aapt resource value: 0x7f02000a
-			public const int blank_bottom_state = 2130837514;
+			public const int blank_bottom_button_state = 2130837514;
 			
 			// aapt resource value: 0x7f02000b
-			public const int blank_single = 2130837515;
+			public const int blank_bottom_state = 2130837515;
 			
 			// aapt resource value: 0x7f02000c
-			public const int blank_single_state = 2130837516;
+			public const int blank_single = 2130837516;
 			
 			// aapt resource value: 0x7f02000d
-			public const int bookLater_state = 2130837517;
+			public const int blank_single_state = 2130837517;
 			
 			// aapt resource value: 0x7f02000e
-			public const int bookLaterButton_state = 2130837518;
+			public const int bookLater_state = 2130837518;
 			
 			// aapt resource value: 0x7f02000f
-			public const int bookLaterIcon = 2130837519;
+			public const int bookLaterButton_state = 2130837519;
 			
 			// aapt resource value: 0x7f020010
-			public const int cancel = 2130837520;
+			public const int bookLaterIcon = 2130837520;
 			
 			// aapt resource value: 0x7f020011
-			public const int cell_borderTop = 2130837521;
+			public const int cancel = 2130837521;
 			
 			// aapt resource value: 0x7f020012
-			public const int cell_bottom = 2130837522;
+			public const int cell_borderTop = 2130837522;
 			
 			// aapt resource value: 0x7f020013
-			public const int cell_bottom_full = 2130837523;
+			public const int cell_bottom = 2130837523;
 			
 			// aapt resource value: 0x7f020014
-			public const int cell_bottom_full_state = 2130837524;
+			public const int cell_bottom_full = 2130837524;
 			
 			// aapt resource value: 0x7f020015
-			public const int cell_bottom_state = 2130837525;
+			public const int cell_bottom_full_state = 2130837525;
 			
 			// aapt resource value: 0x7f020016
-			public const int cell_middle = 2130837526;
+			public const int cell_bottom_state = 2130837526;
 			
 			// aapt resource value: 0x7f020017
-			public const int cell_middle_button_state = 2130837527;
+			public const int cell_middle = 2130837527;
 			
 			// aapt resource value: 0x7f020018
-			public const int cell_middle_state = 2130837528;
+			public const int cell_middle_button_state = 2130837528;
 			
 			// aapt resource value: 0x7f020019
-			public const int cell_top = 2130837529;
+			public const int cell_middle_state = 2130837529;
 			
 			// aapt resource value: 0x7f02001a
-			public const int cell_top_button_state = 2130837530;
+			public const int cell_top = 2130837530;
 			
 			// aapt resource value: 0x7f02001b
-			public const int cell_top_state = 2130837531;
+			public const int cell_top_button_state = 2130837531;
 			
 			// aapt resource value: 0x7f02001c
-			public const int close = 2130837532;
+			public const int cell_top_state = 2130837532;
 			
 			// aapt resource value: 0x7f02001d
-			public const int drop_shadow = 2130837533;
+			public const int close = 2130837533;
 			
 			// aapt resource value: 0x7f02001e
-			public const int dropdown = 2130837534;
+			public const int drop_shadow = 2130837534;
 			
 			// aapt resource value: 0x7f02001f
-			public const int DropShadow = 2130837535;
+			public const int dropdown = 2130837535;
 			
 			// aapt resource value: 0x7f020020
-			public const int email_cell = 2130837536;
+			public const int DropShadow = 2130837536;
 			
 			// aapt resource value: 0x7f020021
-			public const int erase_cross_btn = 2130837537;
+			public const int email_cell = 2130837537;
 			
 			// aapt resource value: 0x7f020022
-			public const int facebook_icon = 2130837538;
+			public const int erase_cross_btn = 2130837538;
 			
 			// aapt resource value: 0x7f020023
-			public const int facebook_icon_hit = 2130837539;
+			public const int facebook_icon = 2130837539;
 			
 			// aapt resource value: 0x7f020024
-			public const int facebook_icon_state = 2130837540;
+			public const int facebook_icon_hit = 2130837540;
 			
 			// aapt resource value: 0x7f020025
-			public const int flag = 2130837541;
+			public const int facebook_icon_state = 2130837541;
 			
 			// aapt resource value: 0x7f020026
-			public const int flag_selected = 2130837542;
+			public const int flag = 2130837542;
 			
 			// aapt resource value: 0x7f020027
-			public const int flag_state = 2130837543;
+			public const int flag_selected = 2130837543;
 			
 			// aapt resource value: 0x7f020028
-			public const int forgot_password_btn = 2130837544;
+			public const int flag_state = 2130837544;
 			
 			// aapt resource value: 0x7f020029
-			public const int forgot_password_btn_state = 2130837545;
+			public const int forgot_password_btn = 2130837545;
 			
 			// aapt resource value: 0x7f02002a
-			public const int gray_button = 2130837546;
+			public const int forgot_password_btn_state = 2130837546;
 			
 			// aapt resource value: 0x7f02002b
-			public const int green_button = 2130837547;
+			public const int gray_button = 2130837547;
 			
 			// aapt resource value: 0x7f02002c
-			public const int green_button_left = 2130837548;
+			public const int green_button = 2130837548;
 			
 			// aapt resource value: 0x7f02002d
-			public const int green_button_right = 2130837549;
+			public const int green_button_left = 2130837549;
 			
 			// aapt resource value: 0x7f02002e
-			public const int hail = 2130837550;
+			public const int green_button_right = 2130837550;
 			
 			// aapt resource value: 0x7f02002f
-			public const int hail_selected = 2130837551;
+			public const int hail = 2130837551;
 			
 			// aapt resource value: 0x7f020030
-			public const int hail_state = 2130837552;
+			public const int hail_selected = 2130837552;
 			
 			// aapt resource value: 0x7f020031
-			public const int header = 2130837553;
+			public const int hail_state = 2130837553;
 			
 			// aapt resource value: 0x7f020032
-			public const int Icon = 2130837554;
+			public const int header = 2130837554;
 			
 			// aapt resource value: 0x7f020033
-			public const int listleftarrow = 2130837555;
+			public const int Icon = 2130837555;
 			
 			// aapt resource value: 0x7f020034
-			public const int location = 2130837556;
+			public const int listleftarrow = 2130837556;
 			
 			// aapt resource value: 0x7f020035
-			public const int location_info = 2130837557;
+			public const int location = 2130837557;
 			
 			// aapt resource value: 0x7f020036
-			public const int Logo = 2130837558;
+			public const int location_info = 2130837558;
 			
 			// aapt resource value: 0x7f020037
-			public const int Logo2 = 2130837559;
+			public const int Logo = 2130837559;
 			
 			// aapt resource value: 0x7f020038
-			public const int loupe = 2130837560;
+			public const int Logo2 = 2130837560;
 			
 			// aapt resource value: 0x7f020039
-			public const int main_btn_selected = 2130837561;
+			public const int loupe = 2130837561;
 			
 			// aapt resource value: 0x7f02003a
-			public const int main_btn_state = 2130837562;
+			public const int main_btn_selected = 2130837562;
 			
 			// aapt resource value: 0x7f02003b
 			public const int main_btn_unselected = 2130837563;

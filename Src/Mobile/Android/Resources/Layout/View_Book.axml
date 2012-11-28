@@ -66,7 +66,7 @@
                             android:paddingRight="5dip" />
                         <ImageButton
                             android:id="@+id/pickupIsActiveButton"
-                            android:background="@drawable/main_btn_state"
+                            android:background="@drawable/address_selector_button"
                             android:src="@drawable/hail_state"
                             style="@style/ButtonTextGray"
                             android:layout_height="40dip"
@@ -101,7 +101,7 @@
                             android:drawableRight="@drawable/right_arrow" />
                         <ImageButton
                             android:id="@+id/destinationIsActiveButton"
-                            android:background="@drawable/main_btn_state"
+                            android:background="@drawable/address_selector_button"
                             android:src="@drawable/flag_state"
                             style="@style/ButtonTextGray"
                             local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;ActivateDropoff&apos;}, &apos;Selected&apos;:{&apos;Path&apos;:&apos;DropoffIsActive&apos;}}"
@@ -122,8 +122,8 @@
                         android:layout_gravity="center_horizontal|center_vertical"
                         android:paddingLeft="3dip"
                         android:paddingRight="3dip">
-            <TextView
-              android:id="@+id/FareEstimateLabel"
+                        <TextView
+                            android:id="@+id/FareEstimateLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text=""
@@ -161,16 +161,16 @@
                                 android:layout_height="wrap_content"
                                 android:layout_above="@id/anchor"
                                 android:layout_centerHorizontal="true"
-                                android:layout_gravity="center" 
-                            	android:src="@drawable/pin_hail" />
+                                android:layout_gravity="center"
+                                android:src="@drawable/pin_hail" />
                             <ImageView
                                 android:id="@+id/mapDropoffCenterPin"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_above="@id/anchor"
                                 android:layout_centerHorizontal="true"
-                                android:layout_gravity="center" 
-                           		android:src="@drawable/pin_destination" />
+                                android:layout_gravity="center"
+                                android:src="@drawable/pin_destination" />
                         </RelativeLayout>
                         <ImageView
                             android:layout_width="wrap_content"
@@ -214,11 +214,11 @@
                             android:layout_marginLeft="10dip"
                             android:layout_marginRight="10dip"
                             android:layout_marginBottom="7dip">
-                           
-			                 <include android:id="@+id/BookButtons"
-         android:layout_width="match_parent"
-         android:layout_height="match_parent"
-         layout="@layout/SubView_BookButtons"/>
+                            <include
+                                android:id="@+id/BookButtons"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                layout="@layout/SubView_BookButtons" />
                         </RelativeLayout>
                     </FrameLayout>
                 </RelativeLayout>
