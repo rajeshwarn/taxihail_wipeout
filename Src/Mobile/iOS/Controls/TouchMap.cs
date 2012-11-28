@@ -88,12 +88,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             base.MovedToSuperview ();
 
             if (_mapCenterPin == null) {
-                _mapCenterPin = new UIImageView (UIImage.FromFile ("Assets/pin_green.png"));
+                _mapCenterPin = new UIImageView(new UIImage(AddressAnnotation.GetImageFilename(AddressAnnotationType.Pickup)));
                 _mapCenterPin.BackgroundColor = UIColor.Clear;
                 _mapCenterPin.ContentMode = UIViewContentMode.Center;
                 AddSubview(_mapCenterPin);
                 var p = this.ConvertCoordinate(this.CenterCoordinate,this);
-                _mapCenterPin.Frame = new RectangleF(p.X - 12, p.Y - 36, 24, 36);
+                _mapCenterPin.Frame = new RectangleF(p.X - 21, p.Y - 57, 42, 57);
                 _mapCenterPin.Hidden = true;
 
            }

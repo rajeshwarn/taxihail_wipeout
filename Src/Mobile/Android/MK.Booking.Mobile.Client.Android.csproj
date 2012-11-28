@@ -200,6 +200,19 @@
     <Compile Include="PlatformIntegration\AddressBookService.cs" />
     <Compile Include="Activities\SelectItemDialogActivity.cs" />
     <Compile Include="PlatformIntegration\PhoneService.cs" />
+    <AndroidResource Include="Resources\Drawable\pin_cab.png" />
+    <AndroidResource Include="Resources\Drawable\pin_destination.png" />
+    <AndroidResource Include="Resources\Drawable\pin_hail.png" />
+    <AndroidResource Include="Resources\Drawable\flag.png" />
+    <AndroidResource Include="Resources\Drawable\flag_selected.png" />
+    <AndroidResource Include="Resources\Drawable\hail.png" />
+    <AndroidResource Include="Resources\Drawable\hail_selected.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\flag.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\flag_selected.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\hail.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\hail_selected.png" />
+    <AndroidResource Include="Resources\Drawable\hail_state.xml" />
+    <AndroidResource Include="Resources\Drawable\flag_state.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
@@ -340,8 +353,6 @@
     <AndroidResource Include="Resources\Drawable\pickDateNormal.png" />
     <AndroidResource Include="Resources\Drawable\location.png" />
     <AndroidResource Include="Resources\Drawable\pushPin.png" />
-    <AndroidResource Include="Resources\Drawable\pin_green.png" />
-    <AndroidResource Include="Resources\Drawable\pin_red.png" />
     <AndroidResource Include="Resources\Drawable\pin_grey.png" />
     <AndroidResource Include="Resources\Drawable\pin_yellow.png" />
     <AndroidResource Include="Resources\drawable-hdpi\splash.png" />
@@ -491,7 +502,6 @@
     <AndroidResource Include="Resources\Drawable\location_info.png" />
     <AndroidResource Include="Resources\Drawable\number_icon.png" />
     <AndroidResource Include="Resources\Drawable\number_icon_selected.png" />
-    <AndroidResource Include="Resources\Drawable\pin_state.xml" />
     <AndroidResource Include="Resources\Drawable\pin_selected.png" />
     <AndroidResource Include="Resources\Drawable\pin.png" />
     <AndroidResource Include="Resources\drawable-hdpi\pin.png" />

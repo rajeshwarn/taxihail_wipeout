@@ -34,6 +34,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         protected override void OnViewModelSet()
         {
             SetContentView(Resource.Layout.View_Book);
+			FindViewById<TouchMap>(Resource.Id.mapPickup).SetMapCenterPin(FindViewById<ImageView>(Resource.Id.mapCenterPin));
 
             var mainSettingsButton = FindViewById<HeaderedLayout>(Resource.Id.MainLayout).FindViewById<ImageButton>(Resource.Id.ViewNavBarRightButton);
             mainSettingsButton.Click -= MainSettingsButtonOnClick;

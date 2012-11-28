@@ -47,8 +47,14 @@ namespace apcurium.MK.Booking.ConfigTool
                 new ConfigFile(this){ Source="navBar@2x.png", Destination=@"Mobile\Android\Resources\Drawable-hdpi\navBar.png" },                                
 
                 new ConfigFile(this){ Source="Logo.png", Destination=@"Mobile\Android\Resources\Drawable\Logo.png" },            
-                new ConfigFile(this){ Source="Logo@2x.png", Destination=@"Mobile\Android\Resources\Drawable-hdpi\Logo.png" },    
+                new ConfigFile(this){ Source="Logo@2x.png", Destination=@"Mobile\Android\Resources\Drawable-hdpi\Logo.png" },
 
+				new ConfigFile(this) { Source="pin_cab.png", Destination=@"Mobile\Android\Resources\Drawable\pin_cab.png" },
+				new ConfigFile(this) { Source="pin_cab@2x.png", Destination=@"Mobile\Android\Resources\Drawable-hdpi\pin_cab.png" },
+				new ConfigFile(this) { Source="pin_hail.png", Destination=@"Mobile\Android\Resources\Drawable\pin_hail.png" },
+				new ConfigFile(this) { Source="pin_hail@2x.png", Destination=@"Mobile\Android\Resources\Drawable-hdpi\pin_hail.png" },
+				new ConfigFile(this) { Source="pin_destination.png", Destination=@"Mobile\Android\Resources\Drawable\pin_destination.png" },
+				new ConfigFile(this) { Source="pin_destination@2x.png", Destination=@"Mobile\Android\Resources\Drawable-hdpi\pin_destination.png" },
 
 
                 new ConfigFile(this){ Source="backgroundblue.png", Destination=@"Mobile\Android\Resources\Drawable\backgroundblue.png" },                        
@@ -113,6 +119,13 @@ namespace apcurium.MK.Booking.ConfigTool
 
                 new ConfigFile(this){ Source="app.png", Destination=@"Mobile\iOS\app.png" },
                 new ConfigFile(this){ Source="app@2x.png", Destination=@"Mobile\iOS\app@2x.png" },
+
+				new ConfigFile(this) { Source="pin_cab.png", Destination=@"Mobile\iOS\Assets\pin_cab.png" },
+				new ConfigFile(this) { Source="pin_cab@2x.png", Destination=@"Mobile\iOS\Assets\pin_cab@2x.png" },
+				new ConfigFile(this) { Source="pin_hail.png", Destination=@"Mobile\iOS\Assets\pin_hail.png" },
+				new ConfigFile(this) { Source="pin_hail@2x.png", Destination=@"Mobile\iOS\Assets\pin_hail@2x.png" },
+				new ConfigFile(this) { Source="pin_destination.png", Destination=@"Mobile\iOS\Assets\pin_destination.png" },
+				new ConfigFile(this) { Source="pin_destination@2x.png", Destination=@"Mobile\iOS\Assets\pin_destination@2x.png" },
 
                 new ConfigPList(this){ Destination=@"Mobile\iOS\Info.plist", Key = "CFBundleDisplayName",  SetterEle = ( ele )=> ele.InnerText = Config.AppName },
                 new ConfigPList(this){ Destination=@"Mobile\iOS\Info.plist", Key = "CFBundleIdentifier",  SetterEle = ( ele )=> ele.InnerText = Config.Package },
