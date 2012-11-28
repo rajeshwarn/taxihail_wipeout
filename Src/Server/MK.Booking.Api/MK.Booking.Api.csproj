@@ -116,6 +116,7 @@
     <Compile Include="Services\ConfigurationsService.cs" />
     <Compile Include="Services\ConfirmAccountService.cs" />
     <Compile Include="Services\CreateOrderService.cs" />
+    <Compile Include="Services\CreditCardService.cs" />
     <Compile Include="Services\DefaultFavoriteAddressService.cs" />
     <Compile Include="Services\GrantAdminRightService.cs" />
     <Compile Include="Services\Maps\DefaultGeoLocationService.cs" />

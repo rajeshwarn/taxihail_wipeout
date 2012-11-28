@@ -92,6 +92,7 @@
     <Compile Include="BaseTest.cs" />
     <Compile Include="CompanyDefaultFavoriteAddressFixture.cs" />
     <Compile Include="CompanyPopularAddressFixture.cs" />
+    <Compile Include="CreditCardFixture.cs" />
     <Compile Include="PlaceDetailFixture.cs" />
     <Compile Include="TariffFixture.cs" />
     <Compile Include="SearchLocationsFixture.cs" />

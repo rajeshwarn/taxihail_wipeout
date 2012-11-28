@@ -50,6 +50,7 @@
     <Compile Include="AppSettingsUpdated.cs" />
     <Compile Include="BookingSettingsUpdated.cs" />
     <Compile Include="CompanyCreated.cs" />
+    <Compile Include="CreditCardAdded.cs" />
     <Compile Include="DefaultFavoriteAddressAdded.cs" />
     <Compile Include="DefaultFavoriteAddressRemoved.cs" />
     <Compile Include="DefaultFavoriteAddressUpdated.cs" />

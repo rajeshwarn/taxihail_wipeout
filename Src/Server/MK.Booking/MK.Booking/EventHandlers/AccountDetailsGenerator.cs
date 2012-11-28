@@ -82,9 +82,6 @@ namespace apcurium.MK.Booking.EventHandlers
                 var account = context.Find<AccountDetail>(@event.SourceId);
                 account.IsConfirmed = true;
                 context.Save(account);
-                
-                //context.SaveChanges();
-
             }
         }
 

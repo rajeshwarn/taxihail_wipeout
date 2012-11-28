@@ -89,6 +89,7 @@
     <Compile Include="Requests\ConfirmAccountRequest.cs" />
     <Compile Include="Requests\ConfigurationsRequest.cs" />
     <Compile Include="Requests\CreateOrder.cs" />
+    <Compile Include="Requests\CreditCardRequest.cs" />
     <Compile Include="Requests\DefaultFavoriteAddress.cs" />
     <Compile Include="Requests\DefaultGeoLocationRequest.cs" />
     <Compile Include="Requests\DirectionsRequest.cs" />
@@ -127,6 +128,7 @@
     <Compile Include="Resources\Cmt\PreCogMapItem.cs" />
     <Compile Include="Resources\Cmt\PreCogMessage.cs" />
     <Compile Include="Resources\Cmt\PreCogResponse.cs" />
+    <Compile Include="Resources\CreditCardDetails.cs" />
     <Compile Include="Resources\DirectionInfo.cs" />
     <Compile Include="Resources\ErrorCode.cs" />
     <Compile Include="Resources\Order.cs" />
