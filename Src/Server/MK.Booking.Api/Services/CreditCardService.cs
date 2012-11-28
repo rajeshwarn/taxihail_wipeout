@@ -35,5 +35,15 @@ namespace apcurium.MK.Booking.Api.Services
 
             return HttpStatusCode.Accepted;
         }
+
+        public override object OnDelete(CreditCardRequest request)
+        {
+            var session = this.GetSession();
+            var command = new RemoveCreditCard { AccountId = new Guid(session.UserAuthId), CreditCardId = request.CreditCardId };
+           
+            _bus.Send(command);
+
+            return HttpStatusCode.Accepted;
+        }
     }
 }

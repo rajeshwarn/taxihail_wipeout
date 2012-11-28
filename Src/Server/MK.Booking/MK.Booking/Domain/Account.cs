@@ -26,6 +26,7 @@ namespace apcurium.MK.Booking.Domain
             base.Handles<AddressRemovedFromHistory>(OnAddressRemoved);
             base.Handles<AdminRightGranted>(OnAdminRightGranted);
             base.Handles<CreditCardAdded>(OnCreditCardAdded);
+            base.Handles<CreditCardRemoved>(OnCreditCardRemoved);
         }
 
 
@@ -257,6 +258,10 @@ namespace apcurium.MK.Booking.Domain
         {
         }
 
+        private void OnCreditCardRemoved(CreditCardRemoved obj)
+        {
+        }
+
 
         private static void ValidateFavoriteAddress(string friendlyName, string fullAddress, double latitude, double longitude)
         {
@@ -292,6 +297,14 @@ namespace apcurium.MK.Booking.Domain
                                 Last4Digits = last4Digits,
                                 Token = token
                             });
+        }
+
+        public void RemoveCreditCard(Guid creditCardId)
+        {
+            this.Update(new CreditCardRemoved
+            {
+               CreditCardId = creditCardId
+            });
         }
     }
 }

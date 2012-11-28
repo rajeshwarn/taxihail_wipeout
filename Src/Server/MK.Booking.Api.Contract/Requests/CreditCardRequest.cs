@@ -5,7 +5,8 @@ using ServiceStack.ServiceInterface;
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
-    [RestService("/account/creditcards")]    
+    [RestService("/account/creditcards")]
+    [RestService("/account/creditcards/{CreditCardId}", "DELETE")]    
     public class CreditCardRequest
     {
         public Guid CreditCardId { get; set; }

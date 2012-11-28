@@ -43,5 +43,17 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             Assert.AreEqual(last4Digits, @event.Last4Digits);
             Assert.AreEqual(token, @event.Token);
         }
+
+        [Test]
+        public void when_remove_credit_card()
+        {
+            var creditCardId = Guid.NewGuid();
+
+            this.sut.When(new RemoveCreditCard { AccountId = _accountId, CreditCardId = creditCardId });
+
+            var @event = sut.ThenHasSingle<CreditCardRemoved>();
+            Assert.AreEqual(_accountId, @event.SourceId);
+            Assert.AreEqual(creditCardId, @event.CreditCardId);
+        }
     }
 }

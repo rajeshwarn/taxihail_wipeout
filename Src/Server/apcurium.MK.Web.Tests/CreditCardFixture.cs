@@ -57,5 +57,31 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(last4Digits, creditcard.Last4Digits);
             Assert.AreEqual(token, creditcard.Token);
         }
+
+        [Test]
+        public void RemoveCreditCard()
+        {
+            var sut = new AccountServiceClient(BaseUrl, SessionId);
+
+            const string creditCardComapny = "visa";
+            const string friendlyName = "work credit card";
+            var creditCardId = Guid.NewGuid();
+            const string last4Digits = "4025";
+            const string token = "jjwcnSLWm85";
+
+            sut.AddCreditCard(new CreditCardRequest
+            {
+                CreditCardCompany = creditCardComapny,
+                FriendlyName = friendlyName,
+                CreditCardId = creditCardId,
+                Last4Digits = last4Digits,
+                Token = token
+            });
+
+            sut.RemoveCreditCard(creditCardId);
+
+            var creditCards = sut.GetCreditCards();
+            Assert.IsEmpty(creditCards.Where(x => x.CreditCardId == creditCardId));
+        }
     }
 }
