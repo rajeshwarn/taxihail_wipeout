@@ -408,7 +408,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             if (coords.Latitude != 0 && coords.Longitude != 0) {
                 _dropoffPin = new AddressAnnotation (coords, AddressAnnotationType.Destination, Resources.DestinationMapTitle, address.Display ());
                 AddAnnotation (_dropoffPin);
-                _dropoffCenterPin.Hidden = true;
+                if( _dropoffCenterPin!= null) _dropoffCenterPin.Hidden = true;
             }
 
         }
@@ -426,7 +426,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             if (coords.Latitude != 0 && coords.Longitude != 0) {
                 _pickupPin = new AddressAnnotation (coords, AddressAnnotationType.Pickup, Resources.PickupMapTitle, address.Display ());
                 AddAnnotation (_pickupPin);
-                _pickupCenterPin.Hidden = true;
+                if(_pickupCenterPin != null) _pickupCenterPin.Hidden = true;
             }
             
         }
