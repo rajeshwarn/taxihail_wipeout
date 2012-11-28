@@ -51,13 +51,14 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtilities
 		public void RefreshPinImage ()
         {
             var ann = ((AddressAnnotation)Annotation);
-            Image = UIImage.FromFile (ann.GetImageFilename ());
+            Image = UIImage.FromFile (ann.GetImageFilename());
 
             if (ann.AddressType == AddressAnnotationType.Taxi) {
-                var lblVehicleNumber = new UILabel(new RectangleF(0,0,Image.Size.Width,45));
+                var lblVehicleNumber = new UILabel(new RectangleF(0,0,Image.Size.Width, 16));
                 lblVehicleNumber.BackgroundColor = UIColor.Clear;
-                lblVehicleNumber.TextColor = UIColor.White;
-                lblVehicleNumber. TextAlignment = UITextAlignment.Center;
+                lblVehicleNumber.TextColor = UIColor.Black;
+                lblVehicleNumber.TextAlignment = UITextAlignment.Center;
+                lblVehicleNumber.Font = AppStyle.GetBoldFont(12);
                 lblVehicleNumber.Text = ((AddressAnnotation)Annotation).Subtitle;
                 this.AddSubview( lblVehicleNumber );
             }
