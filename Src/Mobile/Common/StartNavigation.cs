@@ -17,18 +17,18 @@ namespace apcurium.MK.Booking.Mobile
     {
         public void Start()
         {
-            if (TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount == null)
-            {
-                RequestNavigate<LoginViewModel>();
-            }
-            else
-            {
-                if(TinyIoCContainer.Current.Resolve<IAppSettings>().IsCMT)
-                   RequestNavigate<CmtBookViewModel>();
+            //if (TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount == null)
+            //{
+            //    RequestNavigate<LoginViewModel>();
+            //}
+            //else
+            //{
+            //    if(TinyIoCContainer.Current.Resolve<IAppSettings>().IsCMT)
+                   RequestNavigate<CmtHomeViewModel>();
 
-                if(!TinyIoCContainer.Current.Resolve<IAppSettings>().IsCMT)
-                    RequestNavigate<BookViewModel>();
-            }
+                //if(!TinyIoCContainer.Current.Resolve<IAppSettings>().IsCMT)
+                   // RequestNavigate<BookViewModel>();
+            //}
 
 
             TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Startup with server {0}", TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl);

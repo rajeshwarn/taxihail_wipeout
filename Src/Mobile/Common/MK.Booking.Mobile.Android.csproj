@@ -182,7 +182,7 @@
     <Compile Include="ViewModels\BookConfirmationViewModel.cs" />
     <Compile Include="ViewModels\BookingStatusViewModel.cs" />
     <Compile Include="ViewModels\BookRatingViewModel.cs" />
-    <Compile Include="ViewModels\CmtBookViewModel.cs" />
+    <Compile Include="ViewModels\CmtHomeViewModel.cs" />
     <Compile Include="ViewModels\HistoryViewModel.cs" />
     <Compile Include="ViewModels\HistoryDetailViewModel.cs" />
     <Compile Include="ViewModels\OrderViewModel.cs" />

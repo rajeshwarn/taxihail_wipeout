@@ -12,14 +12,14 @@ using Android.Widget;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Binding.Android.Views;
 
-namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
+namespace apcurium.MK.Booking.Mobile.Client.Activities
 {
     [Activity(Label = "CmtBookActivity")]
-    public class CmtBookActivity : MvxBindingMapActivityView<CmtBookViewModel>
+    public class CmtHomeActivity : MvxBindingMapActivityView<CmtHomeViewModel>
     {
         protected override void OnViewModelSet()
         {
-            SetContentView(Resource.Layout.View_BookCmt);
+            SetContentView(Resource.Layout.View_HomeCmt);
         }
 
         protected override bool IsRouteDisplayed

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.TaxiHailDemo"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <LinearLayout
+        android:id="@+id/pickupAddressLayout"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="false"
+        android:gravity="center_horizontal"
+        android:layout_marginLeft="7dip"
+        android:layout_marginRight="5dip"
+        android:layout_marginTop="5dip">
+        <apcurium.mk.booking.mobile.client.controls.TextProgressButton
+            android:id="@+id/pickupAddressButton"
+            android:layout_width="fill_parent"
+            android:layout_height="40dip"
+            android:layout_marginBottom="5dip"
+            android:gravity="left"
+            android:layout_weight="1"
+            android:background="@color/transparent"
+            android:layout_marginRight="5dip"
+            android:drawableRight="@drawable/right_arrow"
+            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;Pickup.PickAddress&apos;}, &apos;Cancel&apos;:{&apos;Path&apos;:&apos;Pickup.CancelCurrentLocationCommand&apos;},&apos;IsProgressing&apos;:{&apos;Path&apos;:&apos;Pickup.IsExecuting&apos;},&apos;TextLine1&apos; : {&apos;Path&apos;:&apos;Pickup.Title&apos;}, &apos;TextLine2&apos; : {&apos;Path&apos;:&apos;Pickup.Display&apos;},&apos;IsPlaceHolder&apos; : {&apos;Path&apos;:&apos;Pickup.IsPlaceHolder&apos;} }"
+            android:paddingRight="5dip" />
+      <!--<ImageButton
+            android:id="@+id/pickupIsActiveButton"
+            android:background="@drawable/main_btn_state"
+            android:src="@drawable/pin_state"
+            style="@style/ButtonTextGray"
+            android:layout_height="40dip"
+            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;ActivatePickup&apos;}, &apos;Selected&apos;:{&apos;Path&apos;:&apos;PickupIsActive&apos;}}"
+            android:layout_gravity="fill"
+            android:layout_width="40dip"
+            android:scaleType="fitCenter"
+            android:padding="7dip"
+            android:layout_marginTop="1dip" />-->
+    </LinearLayout>
+    <apcurium.mk.booking.mobile.client.controls.TouchMap
+        android:id="@+id/mapPickup"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:apiKey="@string/GoogleMapKey"
+        android:layout_marginTop="-50px"
+        android:layout_marginBottom="-50px"
+        android:enabled="true"
+        android:layout_margin="-20dip"
+        local:MvxBind="{&apos;Pickup&apos;:{&apos;Path&apos;:&apos;Pickup.Model&apos;}, &apos;Dropoff&apos;:{&apos;Path&apos;:&apos;Dropoff.Model&apos;} , &apos;IsDropoffActive&apos;:{&apos;Path&apos;:&apos;DropoffIsActive&apos;}, &apos;IsPickupActive&apos;:{&apos;Path&apos;:&apos;PickupIsActive&apos;} , &apos;MapMoved&apos;:{&apos;Path&apos;:&apos;SelectedAddress.SearchCommand&apos;}, &apos;Center&apos;:{&apos;Path&apos;:&apos;MapCenter&apos;}, &apos;PickupIsActive&apos;: {&apos;Path&apos;: &apos;PickupIsActive&apos;}, &apos;DropoffIsActive&apos;: {&apos;Path&apos;: &apos;DropoffIsActive&apos;} }"
+        android:clickable="true" />
+</LinearLayout>

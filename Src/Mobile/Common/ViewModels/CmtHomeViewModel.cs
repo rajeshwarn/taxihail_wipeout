@@ -9,10 +9,11 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class CmtBookViewModel : BaseViewModel,
+    public class CmtHomeViewModel : BaseViewModel,
         IMvxServiceConsumer<IAccountService>,
         IMvxServiceConsumer<ILocationService>,
         IMvxServiceConsumer<IBookingService>,
@@ -23,25 +24,34 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private IAccountService _accountService;
         private IPreCogService _preCogService;
 
+        private Address PickupAddress { get; set; }
+        private Address DestinationAddress { get; set; }
+
         protected override void Initialize()
         {
             _accountService = this.GetService<IAccountService>();
             _geolocator = this.GetService<ILocationService>();
             _bookingService = this.GetService<IBookingService>();
             _preCogService = this.GetService<IPreCogService>();
-            _preCogService.Start();
 
-            Pickup = new BookAddressViewModel(() => null, address => { }, _geolocator)
+            //_preCogService.Start();
+
+            PickupAddress = new Address();
+            DestinationAddress = new Address();
+
+            Pickup = new BookAddressViewModel(() => PickupAddress, address => { PickupAddress = address; }, _geolocator)
             {
                 Title = Resources.GetString("BookPickupLocationButtonTitle"),
                 EmptyAddressPlaceholder = Resources.GetString("BookPickupLocationEmptyPlaceholder")
             };
-            Dropoff = new BookAddressViewModel(() => null, address => { }, _geolocator)
+            Dropoff = new BookAddressViewModel(() => DestinationAddress, address => { DestinationAddress = address; }, _geolocator)
             {
                 Title = Resources.GetString("BookDropoffLocationButtonTitle"),
                 EmptyAddressPlaceholder = Resources.GetString("BookDropoffLocationEmptyPlaceholder")
             };
         }
+
+
 
         public BookAddressViewModel Pickup { get; set; }
 
