@@ -201,6 +201,9 @@
     <Compile Include="PlatformIntegration\AddressBookService.cs" />
     <Compile Include="Activities\SelectItemDialogActivity.cs" />
     <Compile Include="PlatformIntegration\PhoneService.cs" />
+    <AndroidResource Include="Resources\Drawable\pin_cab.png" />
+    <AndroidResource Include="Resources\Drawable\pin_destination.png" />
+    <AndroidResource Include="Resources\Drawable\pin_hail.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\HelveticaNeue-Bold.otf" />
@@ -347,8 +350,6 @@
     <AndroidResource Include="Resources\Drawable\pickDateNormal.png" />
     <AndroidResource Include="Resources\Drawable\location.png" />
     <AndroidResource Include="Resources\Drawable\pushPin.png" />
-    <AndroidResource Include="Resources\Drawable\pin_green.png" />
-    <AndroidResource Include="Resources\Drawable\pin_red.png" />
     <AndroidResource Include="Resources\Drawable\pin_grey.png" />
     <AndroidResource Include="Resources\Drawable\pin_yellow.png" />
     <AndroidResource Include="Resources\drawable-hdpi\splash.png" />

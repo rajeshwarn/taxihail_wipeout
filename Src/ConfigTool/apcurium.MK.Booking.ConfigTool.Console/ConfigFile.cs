@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
+﻿using System.IO;
 
 namespace apcurium.MK.Booking.ConfigTool
 {
@@ -20,6 +16,10 @@ namespace apcurium.MK.Booking.ConfigTool
         {
             var destPath = Path.Combine(Parent.SrcDirectoryPath, PathConverter.Convert(  Destination ) );
             var sourcePath = Path.Combine(Parent.ConfigDirectoryPath, PathConverter.Convert(  Source ) );
+            if (!File.Exists(sourcePath))
+            {
+                sourcePath = Path.Combine(Parent.CommonDirectoryPath, PathConverter.Convert(Source));
+            }
             File.Copy(sourcePath, destPath, true);
         }
 

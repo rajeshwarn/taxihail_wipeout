@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using ServiceStack.Text;
 using System.IO;
 using ServiceStack.ServiceClient.Web;
 
@@ -13,11 +11,12 @@ namespace apcurium.MK.Booking.ConfigTool
 
         private Config[] _configs;
         
-        public AppConfig(string name, string configDirectoryPath, string srcDirectoryPath)
+        public AppConfig(string name, string configDirectoryPath, string srcDirectoryPath, string commonDirectoryPath)
         {
             Name = name;
             ConfigDirectoryPath = configDirectoryPath;
             SrcDirectoryPath = srcDirectoryPath;
+            CommonDirectoryPath = commonDirectoryPath;
             Init();
         }
 
@@ -25,6 +24,7 @@ namespace apcurium.MK.Booking.ConfigTool
         {
             _configs = new Config[]
            {
+                new ConfigFile(this){ Source="Styles.xml", Destination=@"Mobile\Android\Resources\Values\Styles.xml" },    
              
                 new ConfigFile(this){ Source="Settings.json", Destination=@"Mobile\Common\Settings\Settings.json" },
                 new ConfigFile(this){ Source="Style.json", Destination=@"Mobile\Common\Style\Style.json" },
@@ -39,7 +39,14 @@ namespace apcurium.MK.Booking.ConfigTool
                 new ConfigFile(this){ Source="navBar@2x.png", Destination=@"Mobile\Android\Resources\Drawable-hdpi\navBar.png" },                                
 
                 new ConfigFile(this){ Source="Logo.png", Destination=@"Mobile\Android\Resources\Drawable\Logo.png" },            
-                new ConfigFile(this){ Source="Logo@2x.png", Destination=@"Mobile\Android\Resources\Drawable-hdpi\Logo.png" },    
+                new ConfigFile(this){ Source="Logo@2x.png", Destination=@"Mobile\Android\Resources\Drawable-hdpi\Logo.png" },
+
+				new ConfigFile(this) { Source="pin_cab.png", Destination=@"Mobile\Android\Resources\Drawable\pin_cab.png" },
+				new ConfigFile(this) { Source="pin_cab@2x.png", Destination=@"Mobile\Android\Resources\Drawable-hdpi\pin_cab.png" },
+				new ConfigFile(this) { Source="pin_hail.png", Destination=@"Mobile\Android\Resources\Drawable\pin_hail.png" },
+				new ConfigFile(this) { Source="pin_hail@2x.png", Destination=@"Mobile\Android\Resources\Drawable-hdpi\pin_hail.png" },
+				new ConfigFile(this) { Source="pin_destination.png", Destination=@"Mobile\Android\Resources\Drawable\pin_destination.png" },
+				new ConfigFile(this) { Source="pin_destination@2x.png", Destination=@"Mobile\Android\Resources\Drawable-hdpi\pin_destination.png" },
 
 
                 new ConfigFile(this){ Source="backgroundblue.png", Destination=@"Mobile\Android\Resources\Drawable\backgroundblue.png" },                        
@@ -90,6 +97,13 @@ namespace apcurium.MK.Booking.ConfigTool
                 new ConfigFile(this){ Source="app.png", Destination=@"Mobile\iOS\app.png" },
                 new ConfigFile(this){ Source="app@2x.png", Destination=@"Mobile\iOS\app@2x.png" },
 
+				new ConfigFile(this) { Source="pin_cab.png", Destination=@"Mobile\iOS\Assets\pin_cab.png" },
+				new ConfigFile(this) { Source="pin_cab@2x.png", Destination=@"Mobile\iOS\Assets\pin_cab@2x.png" },
+				new ConfigFile(this) { Source="pin_hail.png", Destination=@"Mobile\iOS\Assets\pin_hail.png" },
+				new ConfigFile(this) { Source="pin_hail@2x.png", Destination=@"Mobile\iOS\Assets\pin_hail@2x.png" },
+				new ConfigFile(this) { Source="pin_destination.png", Destination=@"Mobile\iOS\Assets\pin_destination.png" },
+				new ConfigFile(this) { Source="pin_destination@2x.png", Destination=@"Mobile\iOS\Assets\pin_destination@2x.png" },
+
                 new ConfigPList(this){ Destination=@"Mobile\iOS\Info.plist", Key = "CFBundleDisplayName",  SetterEle = ( ele )=> ele.InnerText = Config.AppName },
                 new ConfigPList(this){ Destination=@"Mobile\iOS\Info.plist", Key = "CFBundleIdentifier",  SetterEle = ( ele )=> ele.InnerText = Config.Package },
                 new ConfigPList(this){ Destination=@"Mobile\iOS\Info.plist", Key = "CFBundleURLSchemes",  SetterEle = ( ele )=> 
@@ -136,6 +150,8 @@ namespace apcurium.MK.Booking.ConfigTool
         public string ConfigDirectoryPath { get; private set; }
 
         public string SrcDirectoryPath { get; private set; }
+
+        public string CommonDirectoryPath { get; private set; }
 
         public void Apply ()
 		{

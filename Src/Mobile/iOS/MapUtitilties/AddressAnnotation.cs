@@ -42,6 +42,26 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtilities
 			get;
 			private set;
 		}
+
+        public string GetImageFilename ()
+        {
+            return GetImageFilename(AddressType);
+
+        }
+        public static string GetImageFilename (AddressAnnotationType addressType)
+        {
+            switch (addressType) {
+            case AddressAnnotationType.Destination:
+                return "Assets/pin_destination.png";
+            case  AddressAnnotationType.Taxi:
+                return "Assets/pin_cab.png";
+            case AddressAnnotationType.Pickup:
+            default:
+                return "Assets/pin_hail.png";
+                
+            }
+            
+        }
 	
 	}
 }
