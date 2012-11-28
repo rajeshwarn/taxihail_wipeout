@@ -304,10 +304,13 @@
   <string name="searchHint">Search</string>
   <string name="CreateAccountErrorTitle">Error</string>
   <string name="CreateAccountLanguageFrench">French</string>
-  <string name="BookItButton">TaxiHail rocks!</string>
+  <string name="BookItButton">Book Now</string>
   <string name="ConfirmDestinationLabel">Destination:</string>
   <string name="NearbyPlacesTitle">Nearby places</string>
   <string name="GenericTitle"></string>
   <string name="View_PasswordRecovery">Reset Password</string>
   <string name="InvalidLocalContactTitle">Invalid contact</string>
+  <string name="GuidanceDestinationRequest">where 2 {0}?</string>
+  <string name="GuidanceLocationConfirmation">I see you\'re at {0}</string>
+  <string name="GuidancePlease">guidance please</string>
 </resources>

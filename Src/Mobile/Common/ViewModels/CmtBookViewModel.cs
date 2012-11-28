@@ -5,6 +5,7 @@ using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.ExtensionMethods;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using TinyMessenger;
+using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
@@ -29,7 +30,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _bookingService = this.GetService<IBookingService>();
             _preCogService = this.GetService<IPreCogService>();
             _preCogService.Start();
+
+            Pickup = new BookAddressViewModel(() => null, address => { }, _geolocator)
+            {
+                Title = Resources.GetString("BookPickupLocationButtonTitle"),
+                EmptyAddressPlaceholder = Resources.GetString("BookPickupLocationEmptyPlaceholder")
+            };
+            Dropoff = new BookAddressViewModel(() => null, address => { }, _geolocator)
+            {
+                Title = Resources.GetString("BookDropoffLocationButtonTitle"),
+                EmptyAddressPlaceholder = Resources.GetString("BookDropoffLocationEmptyPlaceholder")
+            };
         }
+
+        public BookAddressViewModel Pickup { get; set; }
+
+        public BookAddressViewModel Dropoff { get; set; }
 
         public ObservableCollection<CmtMessageViewModel> Messages { get; set; }
 
@@ -40,9 +56,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return new MvxRelayCommand(() =>
                 {
                     Messages.Add(new CmtMessageViewModel { Message = Resources.GetString("GuidancePlease"), IsUser = true });
-                    Messages.Add(new CmtMessageViewModel { Message = Resources.GetString("GuidanceLocationConfirmation"), IsUser = false });
-                    Messages.Add(new CmtMessageViewModel { Message = Resources.GetString("GuidanceDestinationRequest"), IsUser = false });
-                    
+                    Messages.Add(new CmtMessageViewModel { Message = string.Format(Resources.GetString("GuidanceLocationConfirmation"), Pickup.Display), IsUser = false });
+                    Messages.Add(new CmtMessageViewModel { Message = string.Format(Resources.GetString("GuidanceDestinationRequest"), _accountService.CurrentAccount.Name), IsUser = false });
+
                 });
             }
         }
