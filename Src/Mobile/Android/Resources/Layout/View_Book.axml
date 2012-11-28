@@ -67,7 +67,7 @@
                         <ImageButton
                             android:id="@+id/pickupIsActiveButton"
                             android:background="@drawable/main_btn_state"
-                            android:src="@drawable/pin_state"
+                            android:src="@drawable/hail_state"
                             style="@style/ButtonTextGray"
                             android:layout_height="40dip"
                             local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;ActivatePickup&apos;}, &apos;Selected&apos;:{&apos;Path&apos;:&apos;PickupIsActive&apos;}}"
@@ -102,7 +102,7 @@
                         <ImageButton
                             android:id="@+id/destinationIsActiveButton"
                             android:background="@drawable/main_btn_state"
-                            android:src="@drawable/pin_state"
+                            android:src="@drawable/flag_state"
                             style="@style/ButtonTextGray"
                             local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;ActivateDropoff&apos;}, &apos;Selected&apos;:{&apos;Path&apos;:&apos;DropoffIsActive&apos;}}"
                             android:layout_height="40dip"
