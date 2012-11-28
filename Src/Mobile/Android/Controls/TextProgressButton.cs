@@ -188,13 +188,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private void DrawText(Android.Graphics.Canvas canvas, string text, float x, float y, float textSize, Typeface typeFace)
         {
             var systemService = Context.GetSystemService(Context.WindowService);
-            var wManager = (IWindowManager)systemService;
+			IWindowManager wManager = systemService.JavaCast<IWindowManager>();
 
             var metrics = new DisplayMetrics();
             wManager.DefaultDisplay.GetMetrics(metrics);
-
-            
-
 
             TextPaint paintText = new TextPaint(PaintFlags.AntiAlias | Android.Graphics.PaintFlags.LinearText);
             paintText.TextSize = textSize;
