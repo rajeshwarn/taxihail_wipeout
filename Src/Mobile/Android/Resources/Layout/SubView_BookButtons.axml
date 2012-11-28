@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.TaxiworldDemo">
+    xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.TaxiHailDemo">
     <ImageButton
         local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;SelectedAddress.RequestCurrentLocationCommand&apos;}, &apos;Enabled&apos;:{&apos;Path&apos;:&apos;CanClearAddress&apos;,&apos;Converter&apos;:&apos;BoolInverter&apos;},&apos;Visibility&apos;:{&apos;Path&apos;:&apos;CanClearAddress&apos;,&apos;Converter&apos;:&apos;InvertedVisibility&apos;}}"
         android:src="@drawable/target_selected"

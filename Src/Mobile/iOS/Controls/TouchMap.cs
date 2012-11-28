@@ -200,7 +200,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 _pickupIsActive = value;
                 if(value) {
                     _pickupCenterPin.Hidden = false;
-                    _pickupCenterPin.Image = new UIImage(AddressAnnotation.GetImageFilename( AddressAnnotationType.Pickup));
                     if(_pickupPin != null) RemoveAnnotation(_pickupPin);
                     _pickupPin = null;
                 }
@@ -220,7 +219,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 _dropoffIsActive = value;
                 if(value) {
                     _dropoffCenterPin.Hidden = false;
-                    _dropoffCenterPin.Image = new UIImage(AddressAnnotation.GetImageFilename( AddressAnnotationType.Destination));
                     if(_dropoffPin != null) RemoveAnnotation(_dropoffPin);
                     _dropoffPin = null;
                 } else {
