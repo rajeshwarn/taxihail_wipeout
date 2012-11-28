@@ -34,8 +34,7 @@ namespace apcurium.MK.Web.Tests
         {
             var sut = new SearchLocationsServiceClient(BaseUrl, SessionId);
             var addresses = sut.Search("museum", 45.5227967351675, -73.6242310144007);
-            Assert.True(addresses.Count() > 0);
-            Assert.True(addresses.Count() < 6);
+            Assert.True(addresses.Any());
             Assert.True(addresses.ElementAt(0).AddressType.Contains("place"));
         }
 
@@ -45,7 +44,6 @@ namespace apcurium.MK.Web.Tests
             var sut = new SearchLocationsServiceClient(BaseUrl, SessionId);
             var addresses = sut.Search("5661 chateaubriand", 45.5227967351675, -73.6242310144007);
             Assert.True(addresses.Count() > 0);
-            Assert.True(addresses.Count() < 6);
             Assert.True(addresses.ElementAt(0).AddressType.Contains("postal"));
         }
 
@@ -55,7 +53,6 @@ namespace apcurium.MK.Web.Tests
             var sut = new SearchLocationsServiceClient(BaseUrl, SessionId);
             var addresses = sut.Search("3939", 45.5227967351675, -73.6242310144007);
             Assert.True(addresses.Count() > 0);
-            Assert.True(addresses.Count() < 6);
             Assert.True(addresses.ElementAt(0).AddressType.Contains("postal"));
         }
                
