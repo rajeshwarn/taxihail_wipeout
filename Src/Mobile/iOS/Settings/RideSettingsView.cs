@@ -125,21 +125,6 @@ namespace apcurium.MK.Booking.Mobile.Client
                 chargeTypeEntry.Add(chargeTypes);
 
                 menu.Add(settings);
-
-//                  ******************************************************
-//                  Update password menu item, remove comments to activate
-//                  ******************************************************
-//                  if( !_accountId.IsNullOrEmpty() )
-//                  {
-//                      _updatePasswordElement = new NavigationElement( Resources.View_UpdatePassword, () => {
-//                          var args = new Dictionary<string, string>(){ {"accountId", _accountId.Value.ToString()} };
-//                          var dispatch = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher;
-//                          dispatch.RequestNavigate(new MvxShowViewModelRequest(typeof(UpdatePasswordViewModel), args, false, MvxRequestedBy.UserAction));
-//                      });
-//                  
-//                      settings.Add ( _updatePasswordElement );
-//                  }
-
                 settings.Add(nameEntry);
                 settings.Add(phoneEntry);
                 settings.Add(passengerEntry);
