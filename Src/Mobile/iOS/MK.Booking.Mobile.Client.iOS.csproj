@@ -162,7 +162,6 @@
     <Compile Include="Controls\Binding\Binding.cs" />
     <Compile Include="Controls\ISelectableViewController.cs" />
     <Compile Include="Controls\IRefreshableViewController.cs" />
-    <Compile Include="Settings\RideSettingsView.cs" />
     <Compile Include="Settings\AboutUsView.xib.cs">
       <DependentUpon>AboutUsView.xib</DependentUpon>
     </Compile>
@@ -321,6 +320,7 @@
     <Compile Include="Views\LocationDetailView.xib.designer.cs">
       <DependentUpon>LocationDetailView.xib</DependentUpon>
     </Compile>
+    <Compile Include="Views\RideSettingsView.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
