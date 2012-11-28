@@ -567,34 +567,31 @@ namespace apcurium.MK.Booking.Mobile.Client
 			public const int target_state = 2130837651;
 			
 			// aapt resource value: 0x7f020094
-			public const int taxi_label = 2130837652;
+			public const int textedit_background = 2130837652;
 			
 			// aapt resource value: 0x7f020095
-			public const int textedit_background = 2130837653;
+			public const int textedit_background_disabled = 2130837653;
 			
 			// aapt resource value: 0x7f020096
-			public const int textedit_background_disabled = 2130837654;
+			public const int textedit_background_std = 2130837654;
 			
 			// aapt resource value: 0x7f020097
-			public const int textedit_background_std = 2130837655;
+			public const int topFieldBackgroundLg = 2130837655;
 			
 			// aapt resource value: 0x7f020098
-			public const int topFieldBackgroundLg = 2130837656;
+			public const int topFieldBackgroundSm = 2130837656;
 			
 			// aapt resource value: 0x7f020099
-			public const int topFieldBackgroundSm = 2130837657;
+			public const int twitter_icon = 2130837657;
 			
 			// aapt resource value: 0x7f02009a
-			public const int twitter_icon = 2130837658;
+			public const int twitter_icon_hit = 2130837658;
 			
 			// aapt resource value: 0x7f02009b
-			public const int twitter_icon_hit = 2130837659;
+			public const int twitter_icon_state = 2130837659;
 			
 			// aapt resource value: 0x7f02009c
-			public const int twitter_icon_state = 2130837660;
-			
-			// aapt resource value: 0x7f02009d
-			public const int WindowDisplay = 2130837661;
+			public const int WindowDisplay = 2130837660;
 			
 			private Drawable()
 			{

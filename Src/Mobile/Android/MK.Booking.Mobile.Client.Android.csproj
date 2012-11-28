@@ -412,7 +412,6 @@
     </AndroidResource>
     <AndroidResource Include="Resources\Drawable\cell_bottom_state.xml" />
     <AndroidResource Include="Resources\Drawable\dropdown.png" />
-    <AndroidResource Include="Resources\Drawable\taxi_label.png" />
     <AndroidResource Include="Resources\Drawable\ddc_dropdown_bkgd.png" />
     <AndroidResource Include="Resources\Drawable\ddc_dropdown_endline.png" />
     <AndroidResource Include="Resources\Drawable\ddc_dropdownmiddle_bkgd.png" />

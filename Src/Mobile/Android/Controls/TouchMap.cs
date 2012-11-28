@@ -211,10 +211,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     _taxiLocationPin = null;
                 }
 
-                if ((value != null) && (value.VehicleLatitude != 0) && (value.VehicleLongitude != 0))
+                if ((value != null) && (value.VehicleLatitude.HasValue) && (value.VehicleLongitude.HasValue))
                 {
                     var point = new GeoPoint(CoordinatesHelper.ConvertToE6(value.VehicleLatitude.Value), CoordinatesHelper.ConvertToE6(value.VehicleLongitude.Value));
-                    _taxiLocationPin = new TaxiOverlay(this, Resources.GetDrawable(Resource.Drawable.taxi_label), Context.GetString(Resource.String.TaxiMapTitle), "#" + value.VehicleNumber, point);
+                    _taxiLocationPin = new TaxiOverlay(this, Resources.GetDrawable(Resource.Drawable.pin_cab), value.VehicleNumber, point);
                    this.Overlays.Add(_taxiLocationPin);
                 }
                 Invalidate();
