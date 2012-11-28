@@ -125,8 +125,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private bool IsMapTouchDown { get; set; }
 
-
-
         private void ExecuteCommand()
         {
             CancelMoveMap();
