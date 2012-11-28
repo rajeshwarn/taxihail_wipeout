@@ -64,6 +64,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 		{
 			this._pickupCenterPin = pickup;
 			this._dropoffCenterPin = dropoff;
+			// Since this method is called after the view is databound
+			// check if we need to display the pins
+			if(PickupIsActive) _pickupCenterPin.Visibility = ViewStates.Visible;
+			if(DropoffIsActive) _dropoffCenterPin.Visibility = ViewStates.Visible;
 		}
 
         private CancellationTokenSource _moveMapCommand;
@@ -228,12 +232,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 _isDropoffActive = value;
 				if(value)
 				{
-					_dropoffCenterPin.Visibility = ViewStates.Visible;
+					if(_dropoffCenterPin != null) _dropoffCenterPin.Visibility = ViewStates.Visible;
 					if(_dropoffPin != null) this.Overlays.Remove(_dropoffPin);
 					_dropoffPin = null;
 
 				} else {
-					ShowDropoffPin(Pickup);
+					ShowDropoffPin(Dropoff);
 					Invalidate();
 				}
             }
@@ -247,11 +251,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             { 
                 _isPickupActive = value;
 				if(value) {
-					_pickupCenterPin.Visibility = ViewStates.Visible;
+					if(_pickupCenterPin != null) _pickupCenterPin.Visibility = ViewStates.Visible;
 					if(_pickupPin != null) this.Overlays.Remove(_pickupPin);
 					_pickupPin = null;
 				} else {
-					ShowPickupPin(Dropoff);
+					ShowPickupPin(Pickup);
 					Invalidate();
 				}
 			}
