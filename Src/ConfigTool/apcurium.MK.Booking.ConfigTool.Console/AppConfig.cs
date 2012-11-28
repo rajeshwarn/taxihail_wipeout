@@ -68,6 +68,9 @@ namespace apcurium.MK.Booking.ConfigTool
 
                 new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_BookingStatus.axml", Namespace = "xmlns:local", Value= Config.Package },
 
+                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\SubView_BookButtons.axml", Namespace = "xmlns:local", Value= Config.Package },
+
+
                 new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_Book.axml", Namespace = "xmlns:local", Value= Config.Package },
                 new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\SimpleListItem.axml", Namespace = "xmlns:local", Value= Config.Package },
                 new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_SearchAddress.axml", Namespace = "xmlns:local", Value= Config.Package },

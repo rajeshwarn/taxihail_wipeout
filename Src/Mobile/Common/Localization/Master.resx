@@ -168,6 +168,10 @@
   <data name="NearbyPlacesTitle" xml:space="preserve">
     <value>Nearby places</value>
   </data>
+  <data name="BookItLaterButton" xml:space="preserve">
+    <value>Later</value>
+  </data>
+  
   <data name="LocationHistoryTitle" xml:space="preserve">
     <value>Locations history</value>
   </data>

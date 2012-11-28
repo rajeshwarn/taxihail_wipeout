@@ -31,7 +31,7 @@
     <AndroidKeyStore>True</AndroidKeyStore>
     <AndroidSigningKeyStore>public.keystore</AndroidSigningKeyStore>
     <AndroidSigningStorePass>mkt0001.</AndroidSigningStorePass>
-    <AndroidSigningKeyAlias>MKTaxiHail</AndroidSigningKeyAlias>
+    <AndroidSigningKeyAlias>MKTaxiworld</AndroidSigningKeyAlias>
     <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
     <AndroidLinkMode>None</AndroidLinkMode>
     <AndroidSupportedAbis>armeabi,armeabi-v7a,x86</AndroidSupportedAbis>
@@ -49,7 +49,7 @@
     <AndroidKeyStore>True</AndroidKeyStore>
     <AndroidSigningKeyStore>public.keystore</AndroidSigningKeyStore>
     <AndroidSigningStorePass>mkt0001.</AndroidSigningStorePass>
-    <AndroidSigningKeyAlias>MKTaxiHail</AndroidSigningKeyAlias>
+    <AndroidSigningKeyAlias>MKTaxiworld</AndroidSigningKeyAlias>
     <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
     <AndroidSupportedAbis>armeabi-v7a%3bx86</AndroidSupportedAbis>
@@ -213,6 +213,9 @@
     <AndroidResource Include="Resources\drawable-hdpi\hail_selected.png" />
     <AndroidResource Include="Resources\Drawable\hail_state.xml" />
     <AndroidResource Include="Resources\Drawable\flag_state.xml" />
+    <AndroidResource Include="Resources\Layout\test.axml" />
+    <AndroidResource Include="Resources\Drawable\green_button_left.xml" />
+    <AndroidResource Include="Resources\Drawable\green_button_right.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
@@ -325,16 +328,9 @@
     <AndroidResource Include="Resources\Drawable\history.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Values-fr\Strings.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\Drawable\green_button.xml" />
     <AndroidResource Include="Resources\Drawable\black_button.xml" />
     <AndroidResource Include="Resources\Drawable\apcuriumLogo.png" />
-    <AndroidResource Include="Resources\Drawable-fr\btnDest_off.png" />
-    <AndroidResource Include="Resources\Drawable-fr\btnPickup_off.png" />
-    <AndroidResource Include="Resources\Drawable-fr\btnDest_on.png" />
-    <AndroidResource Include="Resources\Drawable-fr\btnPickup_on.png" />
     <AndroidResource Include="Resources\Drawable\btnDest_off.png" />
     <AndroidResource Include="Resources\Drawable\btnDest_on.png" />
     <AndroidResource Include="Resources\Drawable\btnPickup_off.png" />
