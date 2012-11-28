@@ -158,7 +158,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			if(this.GetService<ICacheService>().Get<string>("WarningEstimateDontShow").IsNullOrEmpty() 
 			   && Order.DropOffAddress.HasValidCoordinate())
 			{
-				MessageService.ShowMessage(Resources.GetString("WarningEstimateTitle"), Resources.GetString("WarningEstimateTitle"),
+				MessageService.ShowMessage(Resources.GetString("WarningEstimateTitle"), Resources.GetString("WarningEstimate"),
 	           		"Ok", delegate {},
 					Resources.GetString("WarningEstimateDontShow"), () => this.GetService<ICacheService>().Set("WarningEstimateDontShow", "yes"));
 			}
