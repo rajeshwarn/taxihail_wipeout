@@ -52,8 +52,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             FindViewById<ImageButton>(Resource.Id.pickupDateButton).Click -= PickDate_Click;
             FindViewById<ImageButton>(Resource.Id.pickupDateButton).Click += PickDate_Click;
 
-            //Settings
-
+            
+            
+            
+            //txt.Typeface = AppFonts.Bold;
+            
+            
 
 
 			ViewModel.Panel.PropertyChanged -= HandlePropertyChanged;

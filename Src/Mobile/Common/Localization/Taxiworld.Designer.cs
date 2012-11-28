@@ -22,14 +22,14 @@ namespace apcurium.MK.Booking.Mobile.Localization {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class TaxiHail {
+    internal class Taxiworld {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal TaxiHail() {
+        internal Taxiworld() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Mobile.Localization {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("apcurium.MK.Booking.Mobile.Localization.TaxiHail", typeof(TaxiHail).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("apcurium.MK.Booking.Mobile.Localization.Taxiworld", typeof(Taxiworld).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,6 +57,15 @@ namespace apcurium.MK.Booking.Mobile.Localization {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pick Me Up Now.
+        /// </summary>
+        internal static string BookItButton {
+            get {
+                return ResourceManager.GetString("BookItButton", resourceCulture);
             }
         }
     }

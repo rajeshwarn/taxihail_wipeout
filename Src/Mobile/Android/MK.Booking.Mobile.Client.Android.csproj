@@ -215,15 +215,9 @@
     <AndroidResource Include="Resources\Drawable\flag_state.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="Assets\HelveticaNeue-Bold.otf" />
-    <AndroidAsset Include="Assets\HelveticaNeue-Medium.otf" />
-    <AndroidAsset Include="Assets\HelveticaNeueLTPro-Lt.otf" />
-    <AndroidAsset Include="Assets\HelveticaNeueLTPro-Md.otf" />
-    <AndroidAsset Include="Assets\HelveticaNeueLTPro-Ex.otf" />
-    <AndroidAsset Include="Assets\HelveticaNeueLTPro-Roman.otf" />
-    <AndroidAsset Include="Assets\HelveticaNeueLTPro-Th.otf" />
-    <AndroidAsset Include="Assets\HelveticaNeueLTPro-Roman2.otf" />
-    <AndroidAsset Include="Assets\HelveticaNeueLTPro-Bd.otf" />
+    <AndroidAsset Include="Assets\AppFont_Medium.otf" />
+    <AndroidAsset Include="Assets\AppFont_Regular.otf" />
+    <AndroidAsset Include="Assets\AppFont_Bold.otf" />
     <AndroidResource Include="Resources\Layout\View_Login.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -559,7 +553,7 @@
   </Target>
   -->
   <ItemGroup>
-    <Folder Include="Mapper\" />
+    <Folder Include="Localization\Mapper\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">
@@ -596,7 +590,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="Assets\HelveticaNeueLTPro-It.otf" />
+    <AndroidAsset Include="Assets\AppFont_Italic.otf" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_RefineAddress.axml">
@@ -620,6 +614,11 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\SimpleOrderListItem.axml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Layout\SubView_BookButtons.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <PropertyGroup>
     <PreBuildEvent>
