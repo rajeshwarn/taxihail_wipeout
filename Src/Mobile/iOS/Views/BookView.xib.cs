@@ -99,11 +99,11 @@ namespace apcurium.MK.Booking.Mobile.Client
             AppButtons.FormatStandardButton ((GradientButton)dropoffActivationButton, "", AppStyle.ButtonColor.LightBlue, "");
             AppButtons.FormatStandardButton ((GradientButton)pickupActivationButton, "", AppStyle.ButtonColor.LightBlue);
 
-            ((GradientButton)dropoffActivationButton).SetImage ("Assets/pin.png");
-            ((GradientButton)pickupActivationButton).SetImage ("Assets/pin.png");
+            ((GradientButton)dropoffActivationButton).SetImage ("Assets/hail.png");
+            ((GradientButton)pickupActivationButton).SetImage ("Assets/flag.png");
 
-            ((GradientButton)dropoffActivationButton).SetSelectedImage ("Assets/pin_selected.png");
-            ((GradientButton)pickupActivationButton).SetSelectedImage ("Assets/pin_selected.png");
+            ((GradientButton)dropoffActivationButton).SetSelectedImage ("Assets/hail_selected.png");
+            ((GradientButton)pickupActivationButton).SetSelectedImage ("Assets/flag_selected.png");
 
             headerBackgroundView.Image = UIImage.FromFile ("Assets/backPickupDestination.png");
 

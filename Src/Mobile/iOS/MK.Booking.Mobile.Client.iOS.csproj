@@ -483,10 +483,6 @@
     <Content Include="Assets\settings%402x.png" />
     <Content Include="Assets\right_arrow.png" />
     <Content Include="Assets\right_arrow%402x.png" />
-    <Content Include="Assets\pin.png" />
-    <Content Include="Assets\pin%402x.png" />
-    <Content Include="Assets\pin_selected.png" />
-    <Content Include="Assets\pin_selected%402x.png" />
     <Content Include="Assets\cancel.png" />
     <Content Include="Assets\cancel%402x.png" />
     <Content Include="Default-568h%402x.png" />
@@ -516,6 +512,14 @@
     <Content Include="Assets\pin_destination%402x.png" />
     <Content Include="Assets\pin_hail.png" />
     <Content Include="Assets\pin_hail%402x.png" />
+    <Content Include="Assets\flag.png" />
+    <Content Include="Assets\flag%402x.png" />
+    <Content Include="Assets\hail.png" />
+    <Content Include="Assets\hail%402x.png" />
+    <Content Include="Assets\flag_selected.png" />
+    <Content Include="Assets\flag_selected%402x.png" />
+    <Content Include="Assets\hail_selected.png" />
+    <Content Include="Assets\hail_selected%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.iOS.csproj">
