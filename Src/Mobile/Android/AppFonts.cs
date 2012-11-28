@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
                 if (_typefaceNormal == null)
                 {
-                    _typefaceNormal = Typeface.CreateFromAsset(Application.Context.Assets , "HelveticaNeueLTPro-Roman2.otf");
+                    _typefaceNormal = Typeface.CreateFromAsset(Application.Context.Assets , "AppFont_Regular.otf");
                 }
                 return _typefaceNormal;
             }
@@ -38,7 +38,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
                 if (_typefaceMedium == null)
                 {
-                    _typefaceMedium = Typeface.CreateFromAsset(Application.Context.Assets, "HelveticaNeueLTPro-Md.otf");
+                    _typefaceMedium = Typeface.CreateFromAsset(Application.Context.Assets, "AppFont_Medium.otf");
                 }
                 return _typefaceMedium;
             }
@@ -51,7 +51,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
                 if (_typefaceBold == null)
                 {
-                    _typefaceBold = Typeface.CreateFromAsset(Application.Context.Assets, "HelveticaNeueLTPro-Bd.otf");
+                    _typefaceBold = Typeface.CreateFromAsset(Application.Context.Assets, "AppFont_Bold.otf");
                 }
                 return _typefaceBold;
             }
@@ -63,7 +63,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
                 if (_typefaceItalic == null)
                 {
-                    _typefaceItalic = Typeface.CreateFromAsset(Application.Context.Assets, "HelveticaNeueLTPro-It.otf");
+                    _typefaceItalic = Typeface.CreateFromAsset(Application.Context.Assets, "AppFont_Italic.otf");
                 }
                 return _typefaceItalic;
             }
