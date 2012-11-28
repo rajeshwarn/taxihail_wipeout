@@ -45,7 +45,6 @@
               android:src="@drawable/backPickupDestination"
               android:layout_marginTop="0dip"
               android:layout_height="126dip" />
-
           <LinearLayout
                          android:id="@+id/pickupAddressLayout"
                          android:orientation="horizontal"
@@ -129,7 +128,8 @@
               android:layout_gravity="center_horizontal|center_vertical"
               android:paddingLeft="3dip"
               android:paddingRight="3dip">
-            <TextView
+            <TextView                
+              android:id="@+id/FareEstimateLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
@@ -204,41 +204,12 @@
                 android:layout_marginLeft="10dip"
                 android:layout_marginRight="10dip"
                 android:layout_marginBottom="7dip">
-              <ImageButton
-                  local:MvxBind="{'Click':{'Path':'SelectedAddress.RequestCurrentLocationCommand'}, 'Enabled':{'Path':'CanClearAddress','Converter':'BoolInverter'},'Visibility':{'Path':'CanClearAddress','Converter':'InvertedVisibility'}}"
-                  android:src="@drawable/target_selected"
-                  android:background="@drawable/myLocationButton_state"
-                  style="@style/ButtonTextGray"
-                  android:layout_width="40dip"
-                  android:layout_height="40dip"
-                  android:scaleType="fitCenter"                  
-                  android:layout_alignParentLeft="true" />
-              <ImageButton
-                local:MvxBind="{'Click':{'Path':'SelectedAddress.ClearPositionCommand'}, 'Enabled':{'Path':'CanClearAddress'},'Visibility':{'Path':'CanClearAddress','Converter':'Visibility'}}"
-                android:src="@drawable/cancel"
-                android:background="@drawable/red_button"
-                style="@style/ButtonTextGray"
-                android:layout_width="40dip"
-                android:layout_height="40dip"
-                android:layout_alignParentLeft="true" />
-              <Button
-                  android:id="@+id/BookItBtn"
-                  style="@style/ButtonText"
-                  android:background="@drawable/green_button"
-                  android:layout_width="150dip"
-                  android:layout_height="40dip"
-                  android:text="@string/BookItButton"
-                  android:layout_centerHorizontal="true"
-                  local:MvxBind="{'Click': {'Path': 'ConfirmOrder'}}"
-                  />
-              <ImageButton
-                  android:id="@+id/pickupDateButton"
-                  android:src="@drawable/bookLater_state"
-                  android:background="@drawable/bookLaterButton_state"
-                  style="@style/ButtonTextGray"
-                  android:layout_width="40dip"
-                  android:layout_height="40dip"
-                  android:layout_alignParentRight="true" />
+
+              <include android:id="@+id/BookButtons"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         layout="@layout/SubView_BookButtons"/>
+              
             </RelativeLayout>
           </FrameLayout>
         </RelativeLayout>

@@ -24,6 +24,14 @@ namespace apcurium.MK.Booking.ConfigTool
         {
             _configs = new Config[]
            {
+               
+               new ConfigFile(this){ Source="AppFont_Bold.otf", Destination=@"Mobile\Android\Assets\AppFont_Bold.otf" },    
+               new ConfigFile(this){ Source="AppFont_Italic.otf", Destination=@"Mobile\Android\Assets\AppFont_Italic.otf" },    
+               new ConfigFile(this){ Source="AppFont_Medium.otf", Destination=@"Mobile\Android\Assets\AppFont_Medium.otf" },    
+               new ConfigFile(this){ Source="AppFont_Regular.otf", Destination=@"Mobile\Android\Assets\AppFont_Regular.otf" },    
+               new ConfigFile(this){ Source="SubView_BookButtons.axml", Destination=@"Mobile\Android\Resources\Layout\SubView_BookButtons.axml" },    
+               
+
                 new ConfigFile(this){ Source="Styles.xml", Destination=@"Mobile\Android\Resources\Values\Styles.xml" },    
              
                 new ConfigFile(this){ Source="Settings.json", Destination=@"Mobile\Common\Settings\Settings.json" },
@@ -60,6 +68,21 @@ namespace apcurium.MK.Booking.ConfigTool
 				new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\SubView_MainMenu.axml", Namespace = "xmlns:local", Value= Config.Package },
 				new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_Login.axml", Namespace = "xmlns:local", Value= Config.Package },
 				new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_RefineAddress.axml", Namespace = "xmlns:local", Value= Config.Package },
+
+                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\RatingListItem.axml", Namespace = "xmlns:local", Value= Config.Package },
+                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\SimpleOrderListItem.axml", Namespace = "xmlns:local", Value= Config.Package },
+                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_BookingDetail.axml", Namespace = "xmlns:local", Value= Config.Package },
+                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_BookingRating.axml", Namespace = "xmlns:local", Value= Config.Package },
+                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_HistoryDetail.axml", Namespace = "xmlns:local", Value= Config.Package },
+                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_HistoryList.axml", Namespace = "xmlns:local", Value= Config.Package },
+
+                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_LocationDetail.axml", Namespace = "xmlns:local", Value= Config.Package },
+                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_LocationList.axml", Namespace = "xmlns:local", Value= Config.Package },
+                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_PasswordRecovery.axml", Namespace = "xmlns:local", Value= Config.Package },
+                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_RideSettings.axml", Namespace = "xmlns:local", Value= Config.Package },
+                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_SignUp.axml", Namespace = "xmlns:local", Value= Config.Package },
+
+
 
                 new ConfigXML(this){  Destination=@"Mobile\Android\MK.Booking.Mobile.Client.Android.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Debug|AnyCPU'"")]/a:AndroidSigningKeyAlias" , SetterEle= ( app, ele )=> ele.InnerText = Config.AndroidSigningKeyAlias },               
                 new ConfigXML(this){  Destination=@"Mobile\Android\MK.Booking.Mobile.Client.Android.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Release|AnyCPU'"")]/a:AndroidSigningKeyAlias" , SetterEle= ( app, ele )=> ele.InnerText = Config.AndroidSigningKeyAlias },               
