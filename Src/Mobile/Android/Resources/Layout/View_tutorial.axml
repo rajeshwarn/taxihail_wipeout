@@ -6,11 +6,10 @@
               android:layout_height="fill_parent"
               android:background="#ffffff"
               android:id="@+id/layout_main">
-    <apcurium.MK.Booking.Mobile.Client.Controls.TutorialPager
-        android:id="@+id/details"
+  <apcurium.MK.Booking.Mobile.Client.Controls.HorizontalPager
+      android:id="@+id/details"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:animationCache="true" 
         local:MvxBind="{&apos;TutorialItemModel&apos;: {&apos;Path&apos;: &apos;TutorialItemsList&apos;}}" />
   <TextView
     android:layout_width="wrap_content"

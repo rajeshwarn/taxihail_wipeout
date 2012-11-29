@@ -4,6 +4,11 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:id="@+id/tutorialLayout">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/TutorialTopText" />
     <ImageView
         android:layout_width="fill_parent"
         android:layout_height="200dip"
@@ -12,5 +17,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:id="@+id/TutorialText" />
+        android:id="@+id/TutorialBottomText" />
 </LinearLayout>
