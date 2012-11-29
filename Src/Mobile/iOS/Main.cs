@@ -48,8 +48,6 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             ThreadHelper.ExecuteInThread ( () =>        MonoTouch.ObjCRuntime.Runtime.StartWWAN( new Uri ( new AppSettings().ServiceUrl ) ));
 
-            ///UIApplication.CheckForIllegalCrossThreadCalls = false;
-
             Background.Load(window, "Assets/background_full_nologo.png", false, 0, 0);          
 
 			AppContext.Initialize(window);
@@ -130,6 +128,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             }           
         }
 
+
         public override void ReceiveMemoryWarning(UIApplication application)
         {
             AppContext.Current.ReceiveMemoryWarning = true;
@@ -138,6 +137,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         
         public override bool HandleOpenURL(UIApplication application, NSUrl url)
         {
+
             Console.WriteLine(url.ToString());
             if (url.AbsoluteString.StartsWith("fb" + TinyIoCContainer.Current.Resolve<IAppSettings>().FacebookAppId ))
             {

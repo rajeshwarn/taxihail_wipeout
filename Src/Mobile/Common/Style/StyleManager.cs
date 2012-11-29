@@ -52,12 +52,30 @@ namespace apcurium.MK.Booking.Mobile.Style
 
         }
 
-            
+
+        public bool UseCustomFonts{get;set;}
+
+        public string CustomRegularFont{get;set;}
+        public string CustomBoldFont{get;set;}
+        public string CustomMediumFont{get;set;}
+        public string CustomItalicFont{get;set;}
+
+
+
         public ButtonStyle[] Buttons {
             get;
             set;
         }
 
+        public float? ButtonCornerRadius {
+            get;
+            set;
+        }
+
+        public float? ButtonFontSize {
+            get;
+            set;
+        }
      
         public ColorDefinition LightCorporateTextColor {
             get;

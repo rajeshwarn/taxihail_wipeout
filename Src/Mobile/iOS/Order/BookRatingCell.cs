@@ -75,6 +75,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		}	
 		
+
 		protected override void Dispose (bool disposing)
 		{
 			if (disposing)

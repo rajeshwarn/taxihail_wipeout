@@ -39,6 +39,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         private PanelMenuView _menu;
         private DateTimePicker _dateTimePicker;
         private Action _onDateTimePicked;
+        private BookViewActionsView _bottomAction;
 
         public BookView () 
             : base(new MvxShowViewModelRequest<BookViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
@@ -73,29 +74,14 @@ namespace apcurium.MK.Booking.Mobile.Client
             bookView.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
             _menu = new PanelMenuView (bookView, this.NavigationController, ViewModel.Panel);
             View.InsertSubviewBelow (_menu.View, bookView);
-
-            AppButtons.FormatStandardButton ((GradientButton)refreshCurrentLocationButton, "", AppStyle.ButtonColor.Blue, "");
-            AppButtons.FormatStandardButton ((GradientButton)cancelBtn, "", AppStyle.ButtonColor.Red, "Assets/cancel.png");
-
+                               
             TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub> ().Subscribe<StatusCloseRequested> (OnStatusCloseRequested);
-
             TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub> ().Subscribe<DateTimePicked> (msg => _onDateTimePicked ());
             _dateTimePicker = new DateTimePicker ();
             _dateTimePicker.ShowPastDate = false;
             _onDateTimePicked = () => _dateTimePicker.Hide ();
-
             View.AddSubview (_dateTimePicker);
-
-            AppButtons.FormatStandardButton ((GradientButton)bookLaterButton, "", AppStyle.ButtonColor.DarkGray);
-
-            bookLaterButton.TouchUpInside += delegate {
-                _dateTimePicker.Show (ViewModel.Order.PickupDate);
-            };
-
-
-            //AppButtons.FormatStandardButton ((GradientButton)dropoffButton, "", AppStyle.ButtonColor.Grey, "");
-            //AppButtons.FormatStandardButton ((GradientButton)pickupButton, "", AppStyle.ButtonColor.Grey);
-           
+                       
             AppButtons.FormatStandardButton ((GradientButton)dropoffActivationButton, "", AppStyle.ButtonColor.LightBlue, "");
             AppButtons.FormatStandardButton ((GradientButton)pickupActivationButton, "", AppStyle.ButtonColor.LightBlue);
 
@@ -107,20 +93,23 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             headerBackgroundView.Image = UIImage.FromFile ("Assets/backPickupDestination.png");
 
-            ((GradientButton)bookLaterButton).SetImage ("Assets/bookLaterIcon.png");
-            ((GradientButton)refreshCurrentLocationButton).SetImage ("Assets/gpsRefreshIcon.png");
-
-            AppButtons.FormatStandardButton ((GradientButton)bookBtn, Resources.BookItButton, AppStyle.ButtonColor.Green);
-
             mapView.MultipleTouchEnabled = true;
             mapView.Delegate = new AddressMapDelegate ();
 
             bottomBar.UserInteractionEnabled = true;
             bookView.BringSubviewToFront (bottomBar);
-            bookView.BringSubviewToFront (bookBtn);
+            _bottomAction = new BookViewActionsView();
+            bottomBar.Subviews.ForEach ( v=>v.Hidden = true );
+            _bottomAction.Frame = new RectangleF( 0,0, bottomBar.Bounds.Width, bottomBar.Bounds.Height );
+            bottomBar.AddSubview( _bottomAction );
+
+            _bottomAction.BookLaterButton.TouchUpInside += delegate {
+                                _dateTimePicker.Show (ViewModel.Order.PickupDate);
+                            };                      
+
 
             this.AddBindings (new Dictionary<object, string> ()                            {
-                { refreshCurrentLocationButton, "{'TouchUpInside':{'Path':'SelectedAddress.RequestCurrentLocationCommand'}}"},                
+                { _bottomAction.RefreshCurrentLocationButton, "{'TouchUpInside':{'Path':'SelectedAddress.RequestCurrentLocationCommand'}}"},                
                 { pickupActivationButton, "{'TouchUpInside':{'Path':'ActivatePickup'},'Selected':{'Path':'PickupIsActive', 'Mode':'TwoWay'}}"},                
                 { dropoffActivationButton, "{'TouchUpInside':{'Path':'ActivateDropoff'},'Selected':{'Path':'DropoffIsActive', 'Mode':'TwoWay'}}"},       
                 { pickupButton, "{'TouchUpInside':{'Path':'Pickup.PickAddress'},'TextLine1':{'Path':'Pickup.Title', 'Mode':'TwoWay'}, 'TextLine2':{'Path':'Pickup.Display', 'Mode':'TwoWay'}, 'IsSearching':{'Path':'Pickup.IsExecuting', 'Mode':'TwoWay'}, 'IsPlaceholder':{'Path':'Pickup.IsPlaceHolder', 'Mode':'TwoWay'} }"},  
@@ -129,11 +118,11 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { infoLabel, "{'Text':{'Path':'FareEstimate'}}" },
                 { pickupDateLabel, "{'Text':{'Path':'PickupDateDisplay'}, 'Hidden':{'Path':'IsInTheFuture','Converter':'BoolInverter'}}" },
                 { _dateTimePicker, "{'DateChangedCommand':{'Path':'PickupDateSelectedCommand'}, 'CloseDatePickerCommand':{'Path':'CloseDatePickerCommand'}}" },
-                { cancelBtn, "{'Hidden':{'Path':'CanClearAddress', 'Converter':'BoolInverter'}, 'Enabled':{'Path':'CanClearAddress'}, 'TouchUpInside':{'Path':'SelectedAddress.ClearPositionCommand'}}" },
-				{ bookBtn, "{'TouchUpInside': {'Path': 'BookTaxi'}}" }
-        
+                { _bottomAction.ClearLocationButton, "{'Hidden':{'Path':'CanClearAddress', 'Converter':'BoolInverter'}, 'Enabled':{'Path':'CanClearAddress'}, 'TouchUpInside':{'Path':'SelectedAddress.ClearPositionCommand'}}" },
+                { _bottomAction.BookNowButton , "{'TouchUpInside': {'Path': 'BookTaxi'}}" }                  
             });
 
+            this.View.ApplyAppFont ();
         }
 
         protected override void OnViewModelChanged ()

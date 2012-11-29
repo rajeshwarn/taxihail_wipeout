@@ -77,6 +77,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 				{txtNewPassword, "{'Text':{'Path':'NewPassword'}}"} ,
 				{txtNewPasswordConfirmation, "{'Text':{'Path':'NewPasswordConfirmation'}}"} ,
 			});
+            this.View.ApplyAppFont ();
 		}
 		
 		public override void ViewDidUnload ()

@@ -306,6 +306,7 @@
   <string name="CreateAccountErrorTitle">Error</string>
   <string name="CreateAccountLanguageFrench">French</string>
   <string name="BookItButton">Pick Me Up Now</string>
+  <string name="BookItLaterButton">Later</string>
   <string name="ConfirmDestinationLabel">Destination:</string>
   <string name="NearbyPlacesTitle">Nearby places</string>
   <string name="GenericTitle">
