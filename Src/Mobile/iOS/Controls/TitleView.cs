@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 			_titleText = new UILabel(new System.Drawing.RectangleF(0, 2, 320, 40));
 			_titleText.TextAlignment = UITextAlignment.Center;
-			_titleText.Font = UIFont.BoldSystemFontOfSize(17);
+            _titleText.Font = AppStyle.GetBoldFont ( 20 ); 
 			_titleText.TextColor = AppStyle.NavigationTitleColor;
             _titleText.BackgroundColor = UIColor.Clear;
 			AddSubview(_titleText);

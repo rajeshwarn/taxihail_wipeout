@@ -77,6 +77,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 				{txtRingCode, "{'Text':{'Path':'RingCode'}}"} ,
 				{txtBuildingName, "{'Text':{'Path':'BuildingName'}}"} ,
 			});
+            this.View.ApplyAppFont ();
 		}
 		
 		public override void ViewDidUnload ()

@@ -249,7 +249,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public override bool ContinueTracking(UITouch uitouch, UIEvent uievent)
         {
-            Console.WriteLine ( "Cc" );
             var touch = uievent.AllTouches.AnyObject as UITouch;
             if (Bounds.Contains (touch.LocationInView (this)))
                 _pressed = true;

@@ -81,6 +81,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             } catch (Exception ex) {
                 Logger.LogError (ex);
             }
+
+            this.View.ApplyAppFont ();
         }
 
         #endregion
