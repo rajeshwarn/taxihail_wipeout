@@ -15,6 +15,83 @@
         android:paddingTop="15dip"
         android:orientation="vertical">
         <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/RideSettingsName"
+            android:textColor="@color/black"
+            android:layout_marginLeft="3dip"
+            android:layout_marginBottom="5dip"/>
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Name&apos;}}" />
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="5dip"
+            android:layout_marginBottom="5dip">
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/RideSettingsPhone"
+                android:layout_weight="1"
+                android:layout_marginRight="10dip"
+                android:textColor="@color/black"
+                android:layout_marginLeft="3dip" />
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/RideSettingsPassengers"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:layout_marginLeft="3dip" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/rideSettingsPassengersLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Phone&apos;}}"
+                android:layout_weight="1"
+                android:layout_marginRight="10dip"
+                android:maxLines="1"
+                android:singleLine="true" />
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Passengers&apos;}}"
+                android:layout_weight="1"
+                android:singleLine="true" />
+        </LinearLayout>
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/RideSettingsVehiculeType"
+            android:layout_marginTop="5dip"
+            android:layout_marginBottom="5dip"
+            android:textColor="@color/black"
+            android:layout_marginLeft="3dip" />
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+           local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;VehicleTypeDisplay&apos;}}"/>
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/RideSettingsChargeType"
+            android:layout_marginTop="5dip"
+            android:layout_marginBottom="5dip"
+            android:textColor="@color/black"
+            android:layout_marginLeft="3dip" />
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;ChargeTypeDisplay&apos;}}"/>
+    <!--TextView
             android:id="@+id/rideSettingsListHeader"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -57,6 +134,6 @@
                 android:lines="1"
                 android:text="@string/SaveButton"
                 local:MvxBind="{&apos;Click&apos;: {&apos;Path&apos;: &apos;SaveCommand&apos;}}" />
-        </LinearLayout>
+        </LinearLayout-->
     </LinearLayout>
 </apcurium.mk.booking.mobile.client.controls.HeaderedLayout>

@@ -1047,4 +1047,7 @@
   <data name="ChooseProviderDialogTitle" xml:space="preserve">
     <value>Pick a provider</value>
   </data>
+  <data name="View_Book_Menu_Tutorial" xml:space="preserve">
+    <value>Tutorial</value>
+  </data>
 </root>

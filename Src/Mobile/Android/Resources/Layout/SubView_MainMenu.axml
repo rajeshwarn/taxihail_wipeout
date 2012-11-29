@@ -74,6 +74,18 @@
                     android:paddingLeft="10dip"
                     android:gravity="left|center_vertical" />
                 <Button
+                    android:id="@+id/settingsTutorial"
+                    style="@style/BigTitleTextBlack"
+                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;Panel.NavigateToTutorial&apos;}}"
+                    android:background="@drawable/cell_middle_button_state"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dip"
+                    android:text="@string/View_Book_Menu_Tutorial"
+                    android:drawableRight="@drawable/right_arrow"
+                    android:paddingRight="10dip"
+                    android:paddingLeft="10dip"
+                    android:gravity="left|center_vertical" />
+                <Button
                     android:id="@+id/settingsAbout"
                     style="@style/BigTitleTextBlack"
                     local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;Panel.NavigateToAboutUs&apos;}}"

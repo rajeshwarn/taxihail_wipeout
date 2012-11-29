@@ -62,6 +62,16 @@ namespace apcurium.MK.Booking.Mobile
             }
         }
 
+	    public string VehicleTypeDisplay
+	    {
+            get { return Vehicles.Where(v => v.Id.Equals(VehicleTypeId)).Select(c => c.Display).FirstOrDefault(); }
+	    }
+
+        public string ChargeTypeDisplay
+        {
+            get { return Payments.Where(v => v.Id.Equals(ChargeTypeId)).Select(c => c.Display).FirstOrDefault(); }
+        }
+
         public int ChargeTypeId {
             get {
                 return _bookingSettings.ChargeTypeId;

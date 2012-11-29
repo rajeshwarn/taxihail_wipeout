@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using MK.Common.Android.Entity;
 using apcurium.MK.Booking.Mobile.Localization;
 
 namespace apcurium.MK.Booking.Mobile.Infrastructure
@@ -17,7 +19,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 		string CarAssigned{get;}
 
         string GetString(string key);
-
-    }
+	    List<TutorialItemModel> GetTutorialItemsList();
+	}
 }
 
