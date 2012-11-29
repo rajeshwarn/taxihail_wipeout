@@ -13,6 +13,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Util;
 using Android.Views;
+using Android.Views.Animations;
 using Android.Widget;
 using Java.IO;
 using MK.Common.Android.Entity;
@@ -21,6 +22,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
     public class TutorialPager : ViewFlipper
     {
+        private bool skipFirstPrev = true;
+        private bool skipFirstNext = true;
         private static String LOG_TAG = "MyApp";
 
         private static int MENU_VIEWFLIP_ANIM = Menu.First;
@@ -111,7 +114,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             {
                 View vw = inflater.Inflate(Resource.Layout.TutorialListItem, null);
                 vw.Id = Resource.Layout.TutorialListItem+i;
-                vw.FindViewById<TextView>(Resource.Id.TutorialText).Text = TutorialItemModel[i].Text;
+                vw.FindViewById<TextView>(Resource.Id.TutorialTopText).Text = TutorialItemModel[i].TopText;
+                vw.FindViewById<TextView>(Resource.Id.TutorialBottomText).Text = TutorialItemModel[i].BottomText;
                 var resource = Resources.GetIdentifier(TutorialItemModel[i].ImageUri, "drawable", Context.PackageName);
                 vw.FindViewById<ImageView>(Resource.Id.TutorialImage).SetImageResource(resource);
                 this.AddView(vw);
@@ -171,11 +175,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         public bool pageFlipWithFingerMoveNext(MotionEvent e)
         {
             float currentX = e.GetX();
+            
             switch (e.Action)
             {
                 case MotionEventActions.Down:
                     startX = e.GetX();
-
+                    skipFirstPrev = true;
+                    skipFirstNext = true;
                     currentView = this.CurrentView;
                     movePageThreshold = (currentView.Width/5);
 
@@ -234,33 +240,56 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
                     if (flipMode == FLIPMODE_PREV)
                     {
-                        prevView.Visibility = ViewStates.Invisible;
+                        nextView.Visibility = ViewStates.Invisible;
                         prevView.Layout(fingerPosX - prevView.Width,
                                         prevView.Top,
                                         fingerPosX,
                                         prevView.Bottom);
+                        currentView.Layout(fingerPosX + currentView.Width ,
+                                        currentView.Top,
+                                        fingerPosX,
+                                        currentView.Bottom);
                         
-                        prevView.Visibility = ViewStates.Visible;
-                        //this.BringChildToFront(prevView);
+                        if (skipFirstPrev)
+                        {
+                            skipFirstPrev = false;
+                        }
+                        else
+                        {
+                            prevView.Visibility = ViewStates.Visible;
+                            
+                        }
+                        this.BringChildToFront(prevView);
 
 
                     }
                     if (flipMode == FLIPMODE_NEXT)
                     {
                         nextView.Visibility = ViewStates.Invisible;
+                       
                         nextView.Layout(fingerPosX,
                                         nextView.Top,
                                         fingerPosX + currentView.Width + nextView.Width,
                                         nextView.Bottom);
-                       
-                        nextView.Visibility = ViewStates.Visible;
-                        //this.BringChildToFront(nextView);
+                 
+
+                        if (skipFirstNext)
+                        {
+                            skipFirstNext = false;
+                        }
+                        else
+                        {
+                            nextView.Visibility = ViewStates.Visible;
+
+                        }
+                        this.BringChildToFront(nextView);
                         
                     }
                     break;
 
                 case MotionEventActions.Up:
-
+                    skipFirstPrev = true;
+                    skipFirstNext = true;
                     int activeIdx = -1;
                     if ((this.startX - currentX) > movePageThreshold)
                     {
