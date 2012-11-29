@@ -169,7 +169,6 @@
       <DependentUpon>AboutUsView.xib</DependentUpon>
     </Compile>
     <Compile Include="Controls\ShinnyButton.cs" />
-    <Compile Include="Settings\CreateAccountView.cs" />
     <Compile Include="Settings\ResetPasswordView.cs" />
     <Compile Include="Controls\GraphicsUtil.cs" />
     <Compile Include="Controls\GlassButton.cs" />
@@ -325,6 +324,7 @@
       <DependentUpon>RideSettingsView.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\ModalTextField.cs" />
+    <Compile Include="Views\CreateAccountView.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
