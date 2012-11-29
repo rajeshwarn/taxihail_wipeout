@@ -31,7 +31,7 @@
     <AndroidKeyStore>True</AndroidKeyStore>
     <AndroidSigningKeyStore>public.keystore</AndroidSigningKeyStore>
     <AndroidSigningStorePass>mkt0001.</AndroidSigningStorePass>
-    <AndroidSigningKeyAlias>MKTaxiworld</AndroidSigningKeyAlias>
+    <AndroidSigningKeyAlias>MKTaxiHail</AndroidSigningKeyAlias>
     <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
     <AndroidLinkMode>None</AndroidLinkMode>
     <AndroidSupportedAbis>armeabi,armeabi-v7a,x86</AndroidSupportedAbis>
@@ -49,7 +49,7 @@
     <AndroidKeyStore>True</AndroidKeyStore>
     <AndroidSigningKeyStore>public.keystore</AndroidSigningKeyStore>
     <AndroidSigningStorePass>mkt0001.</AndroidSigningStorePass>
-    <AndroidSigningKeyAlias>MKTaxiworld</AndroidSigningKeyAlias>
+    <AndroidSigningKeyAlias>MKTaxiHail</AndroidSigningKeyAlias>
     <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
     <AndroidSupportedAbis>armeabi-v7a%3bx86</AndroidSupportedAbis>

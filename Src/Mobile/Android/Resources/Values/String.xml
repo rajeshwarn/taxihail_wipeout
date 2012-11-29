@@ -191,8 +191,8 @@
   <string name="CreateAccountInvalidDataTitle">Invalid account info</string>
   <string name="CurrentPasswordLabel">Current Password</string>
   <string name="StatusActionButton">Call / Book / Cancel</string>
-  <string name="GoogleMapKey">0XEY3WqKVmJPKgUaBK0NC_GfL7VtrnaAAs1hieQ</string>
-  <string name="ApplicationName">Taxiworld</string>
+  <string name="GoogleMapKey">0XEY3WqKVmJPhADLxOCPUweMcqYg3AfqCp8BvWw</string>
+  <string name="ApplicationName">TaxiHail</string>
   <string name="ChargeTypeLabel">Charge type:</string>
   <string name="EmailLabel">Email</string>
   <string name="CreateAccountPassword">Password</string>
