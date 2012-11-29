@@ -59,14 +59,5 @@ namespace apcurium.MK.Booking.Mobile.Localization {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to TaxiHail rocks!.
-        /// </summary>
-        internal static string BookItButton {
-            get {
-                return ResourceManager.GetString("BookItButton", resourceCulture);
-            }
-        }
     }
 }

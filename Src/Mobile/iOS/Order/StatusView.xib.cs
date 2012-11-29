@@ -77,6 +77,9 @@ namespace apcurium.MK.Booking.Mobile.Client
                     { btnCall, "{'Hidden':{'Path':'IsCallButtonVisible', 'Converter':'BoolInverter'}, 'Enabled':{'Path':'IsCallButtonVisible'}, 'TouchUpInside':{'Path':'CallCompany'}}" },
                     { btnNewRide, "{'TouchUpInside': {'Path': 'NewRide'}}" }
                 });
+                mapStatus.Delegate = new AddressMapDelegate ();
+                mapStatus.PickupIsActive = false;
+                mapStatus.DropoffIsActive = false;
             
             } catch (Exception ex) {
                 Logger.LogError (ex);

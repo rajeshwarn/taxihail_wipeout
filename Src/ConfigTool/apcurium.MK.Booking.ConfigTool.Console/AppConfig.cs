@@ -24,6 +24,14 @@ namespace apcurium.MK.Booking.ConfigTool
         {
             _configs = new Config[]
            {
+               
+               new ConfigFile(this){ Source="AppFont_Bold.otf", Destination=@"Mobile\Android\Assets\AppFont_Bold.otf" },    
+               new ConfigFile(this){ Source="AppFont_Italic.otf", Destination=@"Mobile\Android\Assets\AppFont_Italic.otf" },    
+               new ConfigFile(this){ Source="AppFont_Medium.otf", Destination=@"Mobile\Android\Assets\AppFont_Medium.otf" },    
+               new ConfigFile(this){ Source="AppFont_Regular.otf", Destination=@"Mobile\Android\Assets\AppFont_Regular.otf" },    
+               new ConfigFile(this){ Source="SubView_BookButtons.axml", Destination=@"Mobile\Android\Resources\Layout\SubView_BookButtons.axml" },    
+               
+
                 new ConfigFile(this){ Source="Styles.xml", Destination=@"Mobile\Android\Resources\Values\Styles.xml" },    
              
                 new ConfigFile(this){ Source="Settings.json", Destination=@"Mobile\Common\Settings\Settings.json" },
@@ -39,8 +47,14 @@ namespace apcurium.MK.Booking.ConfigTool
                 new ConfigFile(this){ Source="navBar@2x.png", Destination=@"Mobile\Android\Resources\Drawable-hdpi\navBar.png" },                                
 
                 new ConfigFile(this){ Source="Logo.png", Destination=@"Mobile\Android\Resources\Drawable\Logo.png" },            
-                new ConfigFile(this){ Source="Logo@2x.png", Destination=@"Mobile\Android\Resources\Drawable-hdpi\Logo.png" },    
+                new ConfigFile(this){ Source="Logo@2x.png", Destination=@"Mobile\Android\Resources\Drawable-hdpi\Logo.png" },
 
+				new ConfigFile(this) { Source="pin_cab.png", Destination=@"Mobile\Android\Resources\Drawable\pin_cab.png" },
+				new ConfigFile(this) { Source="pin_cab@2x.png", Destination=@"Mobile\Android\Resources\Drawable-hdpi\pin_cab.png" },
+				new ConfigFile(this) { Source="pin_hail.png", Destination=@"Mobile\Android\Resources\Drawable\pin_hail.png" },
+				new ConfigFile(this) { Source="pin_hail@2x.png", Destination=@"Mobile\Android\Resources\Drawable-hdpi\pin_hail.png" },
+				new ConfigFile(this) { Source="pin_destination.png", Destination=@"Mobile\Android\Resources\Drawable\pin_destination.png" },
+				new ConfigFile(this) { Source="pin_destination@2x.png", Destination=@"Mobile\Android\Resources\Drawable-hdpi\pin_destination.png" },
 
 
                 new ConfigFile(this){ Source="backgroundblue.png", Destination=@"Mobile\Android\Resources\Drawable\backgroundblue.png" },                        
@@ -60,6 +74,21 @@ namespace apcurium.MK.Booking.ConfigTool
 				new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\SubView_MainMenu.axml", Namespace = "xmlns:local", Value= Config.Package },
 				new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_Login.axml", Namespace = "xmlns:local", Value= Config.Package },
 				new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_RefineAddress.axml", Namespace = "xmlns:local", Value= Config.Package },
+
+                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\RatingListItem.axml", Namespace = "xmlns:local", Value= Config.Package },
+                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\SimpleOrderListItem.axml", Namespace = "xmlns:local", Value= Config.Package },
+                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_BookingDetail.axml", Namespace = "xmlns:local", Value= Config.Package },
+                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_BookingRating.axml", Namespace = "xmlns:local", Value= Config.Package },
+                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_HistoryDetail.axml", Namespace = "xmlns:local", Value= Config.Package },
+                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_HistoryList.axml", Namespace = "xmlns:local", Value= Config.Package },
+
+                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_LocationDetail.axml", Namespace = "xmlns:local", Value= Config.Package },
+                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_LocationList.axml", Namespace = "xmlns:local", Value= Config.Package },
+                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_PasswordRecovery.axml", Namespace = "xmlns:local", Value= Config.Package },
+                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_RideSettings.axml", Namespace = "xmlns:local", Value= Config.Package },
+                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_SignUp.axml", Namespace = "xmlns:local", Value= Config.Package },
+
+
 
                 new ConfigXML(this){  Destination=@"Mobile\Android\MK.Booking.Mobile.Client.Android.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Debug|AnyCPU'"")]/a:AndroidSigningKeyAlias" , SetterEle= ( app, ele )=> ele.InnerText = Config.AndroidSigningKeyAlias },               
                 new ConfigXML(this){  Destination=@"Mobile\Android\MK.Booking.Mobile.Client.Android.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Release|AnyCPU'"")]/a:AndroidSigningKeyAlias" , SetterEle= ( app, ele )=> ele.InnerText = Config.AndroidSigningKeyAlias },               
@@ -90,6 +119,13 @@ namespace apcurium.MK.Booking.ConfigTool
 
                 new ConfigFile(this){ Source="app.png", Destination=@"Mobile\iOS\app.png" },
                 new ConfigFile(this){ Source="app@2x.png", Destination=@"Mobile\iOS\app@2x.png" },
+
+				new ConfigFile(this) { Source="pin_cab.png", Destination=@"Mobile\iOS\Assets\pin_cab.png" },
+				new ConfigFile(this) { Source="pin_cab@2x.png", Destination=@"Mobile\iOS\Assets\pin_cab@2x.png" },
+				new ConfigFile(this) { Source="pin_hail.png", Destination=@"Mobile\iOS\Assets\pin_hail.png" },
+				new ConfigFile(this) { Source="pin_hail@2x.png", Destination=@"Mobile\iOS\Assets\pin_hail@2x.png" },
+				new ConfigFile(this) { Source="pin_destination.png", Destination=@"Mobile\iOS\Assets\pin_destination.png" },
+				new ConfigFile(this) { Source="pin_destination@2x.png", Destination=@"Mobile\iOS\Assets\pin_destination@2x.png" },
 
                 new ConfigPList(this){ Destination=@"Mobile\iOS\Info.plist", Key = "CFBundleDisplayName",  SetterEle = ( ele )=> ele.InnerText = Config.AppName },
                 new ConfigPList(this){ Destination=@"Mobile\iOS\Info.plist", Key = "CFBundleIdentifier",  SetterEle = ( ele )=> ele.InnerText = Config.Package },

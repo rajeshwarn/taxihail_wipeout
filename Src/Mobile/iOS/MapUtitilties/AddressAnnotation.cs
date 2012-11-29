@@ -52,12 +52,12 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtilities
         {
             switch (addressType) {
             case AddressAnnotationType.Destination:
-                return "Assets/pin_red.png";
+                return "Assets/pin_destination.png";
             case  AddressAnnotationType.Taxi:
-                return "Assets/taxi-label.png";
+                return "Assets/pin_cab.png";
             case AddressAnnotationType.Pickup:
             default:
-                return "Assets/pin_green.png";
+                return "Assets/pin_hail.png";
                 
             }
             

@@ -127,6 +127,11 @@
     <Compile Include="Infrastructure\IPackageInfo.cs" />
     <Compile Include="Infrastructure\IPhoneService.cs" />
     <Compile Include="Localization\AppLanguage.cs" />
+    <Compile Include="Localization\Taxiworld.Designer.cs">
+      <DependentUpon>Taxiworld.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Localization\TaxiHail.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -244,6 +249,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Localization\Master.resx" />
+    <EmbeddedResource Include="Localization\Taxiworld.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Taxiworld.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Localization\TaxiHail.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>TaxiHail.Designer.cs</LastGenOutput>

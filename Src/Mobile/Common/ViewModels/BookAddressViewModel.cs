@@ -158,7 +158,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     IsExecuting = false;
                     if ((_cancellationToken != null) && (_cancellationToken.Token.CanBeCanceled)) {
                         _cancellationToken.Cancel ();
-                        _cancellationToken.Dispose ();
                         _cancellationToken = null;
                     }
                 });
