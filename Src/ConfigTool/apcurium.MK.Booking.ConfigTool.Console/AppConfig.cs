@@ -35,8 +35,11 @@ namespace apcurium.MK.Booking.ConfigTool
                 new ConfigFile(this){ Source="black_button.xml", Destination=@"Mobile\Android\Resources\Drawable\black_button.xml" },    
                 new ConfigFile(this){ Source="button_no_background.xml", Destination=@"Mobile\Android\Resources\Drawable\button_no_background.xml" },    
                 new ConfigFile(this){ Source="gray_button.xml", Destination=@"Mobile\Android\Resources\Drawable\gray_button.xml" },    
-                new ConfigFile(this){ Source=".xml", Destination=@"Mobile\Android\Resources\Drawable\.xml" },    
-                new ConfigFile(this){ Source=".xml", Destination=@"Mobile\Android\Resources\Drawable\.xml" },    
+                new ConfigFile(this){ Source="green_button.xml", Destination=@"Mobile\Android\Resources\Drawable\green_button.xml" },    
+                new ConfigFile(this){ Source="red_button.xml", Destination=@"Mobile\Android\Resources\Drawable\red_button.xml" },    
+                new ConfigFile(this){ Source="address_selector_button.xml", Destination=@"Mobile\Android\Resources\Drawable\address_selector_button.xml" },    
+
+
 
 
                 new ConfigFile(this){ Source="AppFont_Bold.otf", Destination=@"Mobile\iOS\Assets\AppFont_Bold.otf" },    

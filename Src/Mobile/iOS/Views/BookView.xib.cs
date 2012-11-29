@@ -74,26 +74,14 @@ namespace apcurium.MK.Booking.Mobile.Client
             bookView.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
             _menu = new PanelMenuView (bookView, this.NavigationController, ViewModel.Panel);
             View.InsertSubviewBelow (_menu.View, bookView);
-
-            AppButtons.FormatStandardButton ((GradientButton)refreshCurrentLocationButton, "", AppStyle.ButtonColor.Blue, "");
-            AppButtons.FormatStandardButton ((GradientButton)cancelBtn, "", AppStyle.ButtonColor.Red, "Assets/cancel.png");
-
+                               
             TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub> ().Subscribe<StatusCloseRequested> (OnStatusCloseRequested);
-
             TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub> ().Subscribe<DateTimePicked> (msg => _onDateTimePicked ());
             _dateTimePicker = new DateTimePicker ();
             _dateTimePicker.ShowPastDate = false;
             _onDateTimePicked = () => _dateTimePicker.Hide ();
-
             View.AddSubview (_dateTimePicker);
-
-            AppButtons.FormatStandardButton ((GradientButton)bookLaterButton, "", AppStyle.ButtonColor.DarkGray);
-
-
-            bookLaterButton.TouchUpInside += delegate {
-                _dateTimePicker.Show (ViewModel.Order.PickupDate);
-            };                      
-           
+                       
             AppButtons.FormatStandardButton ((GradientButton)dropoffActivationButton, "", AppStyle.ButtonColor.LightBlue, "");
             AppButtons.FormatStandardButton ((GradientButton)pickupActivationButton, "", AppStyle.ButtonColor.LightBlue);
 
@@ -105,18 +93,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             headerBackgroundView.Image = UIImage.FromFile ("Assets/backPickupDestination.png");
 
-            ((GradientButton)bookLaterButton).SetImage ("Assets/bookLaterIcon.png");
-            ((GradientButton)refreshCurrentLocationButton).SetImage ("Assets/gpsRefreshIcon.png");
-
-            AppButtons.FormatStandardButton ((GradientButton)bookBtn, Resources.BookItButton, AppStyle.ButtonColor.Green);
-
             mapView.MultipleTouchEnabled = true;
             mapView.Delegate = new AddressMapDelegate ();
 
             bottomBar.UserInteractionEnabled = true;
             bookView.BringSubviewToFront (bottomBar);
-            bookView.BringSubviewToFront (bookBtn);
-
             _bottomAction = new BookViewActionsView();
             bottomBar.Subviews.ForEach ( v=>v.Hidden = true );
             _bottomAction.Frame = new RectangleF( 0,0, bottomBar.Bounds.Width, bottomBar.Bounds.Height );
