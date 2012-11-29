@@ -130,7 +130,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			this.AddBindings(new Dictionary<object, string>() {
 				{ btnSignIn, "{'TouchUpInside':{'Path':'SignInCommand'}}"},	
                 { btnPassword, "{'TouchUpInside':{'Path':'ResetPassword'}}"}, 
-                { btnSignUp, "{'TouchUpInside':{'Path':'Signup'}}"},               
+                { btnSignUp, "{'TouchUpInside':{'Path':'SignUp'}}"},               
 				{ txtEmail, "{'Text':{'Path':'Email'}}"},
 				{ txtPassword, "{'Text':{'Path':'Password'}}"},
 			});

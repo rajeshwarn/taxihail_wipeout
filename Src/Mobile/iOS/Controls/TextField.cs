@@ -31,7 +31,10 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             BorderStyle = UITextBorderStyle.Line;
             BackgroundColor = UIColor.Clear;
+            TextColor = UIColor.FromRGB(64, 64, 64);
+            Font = AppStyle.NormalTextFont;
             PaddingLeft = 5;
+            this.Bounds = new RectangleF(Bounds.X, Bounds.Y, Bounds.Width, 34);
         }
 
         public float PaddingLeft

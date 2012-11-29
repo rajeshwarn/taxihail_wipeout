@@ -25,7 +25,18 @@ namespace apcurium.MK.Booking.Mobile.Client
         }
 
         private void Initialize() {
-            TouchDown += HandleTouchDown;
+            EditingDidBegin += HandleEditingDidBegin;
+        }
+
+        void HandleEditingDidBegin (object sender, EventArgs e)
+        {
+            Controller.View.EndEditing(true);
+            if (_rootElement != null) {
+                var newDvc = new DialogViewController (_rootElement, true) {
+                    Autorotate = true
+                };
+                Controller.PresentViewController (newDvc, true, delegate { });
+            }
         }
 
         public void Configure (string title, ListItem[] values, int selectedId, Action<ListItem> onItemSelected)
@@ -54,13 +65,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         void HandleTouchDown (object sender, EventArgs e)
         {
-            Controller.View.EndEditing(true);
-            if (_rootElement != null) {
-                var newDvc = new DialogViewController (_rootElement, true) {
-                Autorotate = true
-            };
-                Controller.PresentViewController (newDvc, true, delegate { });
-            }
+
         }
 
         protected UIViewController Controller {

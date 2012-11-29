@@ -14,10 +14,8 @@ using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-    public partial class RideSettingsView : MvxBindingTouchViewController<RideSettingsViewModel>
+    public partial class RideSettingsView : BaseViewController<RideSettingsViewModel>
     {
-        CustomRootElement _vehiculeTypeEntry;
-
         #region Constructors
 
         public RideSettingsView () 
@@ -48,7 +46,15 @@ namespace apcurium.MK.Booking.Mobile.Client
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
+           
+            scrollView.ContentSize = new SizeF(320, 400);
 
+            lblName.Text= Resources.GetValue("RideSettingsName");
+            lblPassengers.Text= Resources.GetValue("RideSettingsPassengers");
+            lblPhone.Text= Resources.GetValue("RideSettingsPhone");
+            lblVehicleType.Text= Resources.GetValue("RideSettingsVehiculeType");
+            lblChargeType.Text= Resources.GetValue("RideSettingsChargeType");
+            
             var button = new MonoTouch.UIKit.UIBarButtonItem(Resources.DoneButton, UIBarButtonItemStyle.Plain, delegate {
                 ViewModel.SaveCommand.Execute();
             });
@@ -63,6 +69,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             ((ModalTextField)txtChargeType).Configure(Resources.RideSettingsVehiculeType, ViewModel.Payments, ViewModel.ChargeTypeId, x=> {
                 ViewModel.SetChargeType.Execute(x.Id);
             });
+
+
 
             this.AddBindings(new Dictionary<object, string>(){
                 { txtName, "{'Text': {'Path': 'Name'}}" },
@@ -89,7 +97,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         public override void ViewDidUnload ()
         {
             base.ViewDidUnload ();
-			
+            			
             // Clear any references to subviews of the main view in order to
             // allow the Garbage Collector to collect them sooner.
             //
@@ -103,6 +111,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             // Return true for supported orientations
             return (toInterfaceOrientation != UIInterfaceOrientation.PortraitUpsideDown);
         }
+
     }
 }
 

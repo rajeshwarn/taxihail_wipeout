@@ -55,7 +55,7 @@
 "View_HistoryDetail"="Order Details";
 "ServiceErrorCreateOrder_VehiculeType"="Order cannot be created, invalid vehicle type. Please try again or call us.";
 "NotAvailable"="N/A";
-"RideSettingsPhone"="Mobile:";
+"RideSettingsPhone"="Mobile";
 "InvalidAddressTextEdit"="Cannot validate adddress";
 "DestinationOnButtonImageName"="Assets/Button/btnDest_on_en.png";
 "FavoriteLocationsTitle"="Favorite locations";
@@ -70,7 +70,7 @@
 "AppNeedUpdateMessage"="A new version of the application is available, please update the app to continue.";
 "ApproxPrice"="Estimated Fare:";
 "HistoryDetailStatusLabel"="Status:";
-"RideSettingsCompany"="Company:";
+"RideSettingsCompany"="Company";
 "ConfirmOriginLablel"="Origin:";
 "UpdateBookingSettingsInvalidDataTitle"="Invalid booking settings info.";
 "DateTimePickerPickTitle"="Pickup date and time";
@@ -99,13 +99,13 @@
 "CancelBoutton"="Cancel";
 "InvalidAddressMessage"="The address you provided is invalid. Please verify this information";
 "View_Book_Menu_CallDispatch"="Call Dispatch Center";
-"RideSettingsVehiculeType"="Vehicle type:";
+"RideSettingsVehiculeType"="Vehicle type";
 "HistoryDetailDestinationLabel"="Destination:";
 "CreateAccountErrorMessage"="The account cannot be created.";
 "StatusConfirmCancelRide"="This action will cancel your order, do you want to continue ?";
 "Locating"="Finding your position...";
 "LanguageCode"="en";
-"RideSettingsNumberOfTaxi"="Nb. Taxi:";
+"RideSettingsNumberOfTaxi"="Nb. Taxi";
 "HistoryDetailAptRingCodeLabel"="Apt / Entry code:";
 "ParameterButton"="Parameters";
 "TabContacts"="Contacts";
@@ -118,7 +118,7 @@
 "CreateAccountTitle"="Title:";
 "DeleteBookItButtonImageNamePressed"="Assets/Button/btnBookIt-Pressed_en.png";
 "NoMailClient"="There are no email clients installed.";
-"RideSettingsPassengers"="Passengers:";
+"RideSettingsPassengers"="Passengers";
 "AccountActivationTitle"="Confirmation Required";
 "DestinationViewDestinationLabel"="Destination:";
 "ListPromptSelectOne"="Select one";
@@ -160,7 +160,7 @@
 "ResetPasswordLabel"="Email";
 "WarningEstimateDontShow"="Don't warn";
 "CarAssigned"="Your taxi #{0}";
-"RideSettingsChargeType"="Charge type:";
+"RideSettingsChargeType"="Charge type";
 "CreateAccountEmptyField"="The data is invalid, all the fields are required.";
 "View_RideSettings"="Profile";
 "AddressSearchingText"="Searching...";
@@ -274,7 +274,7 @@
 "NoConnectionTitle"="Connection error";
 "PickupOffButtonImageName"="Assets/Button/btnPickup_off_en.png";
 "View_RatePage"="Rate your trip";
-"RideSettingsName"="Name:";
+"RideSettingsName"="Name";
 "AptNumberTextPlaceholder"="Apt/Suite Number";
 "View_BookingStatus_ThankYouTitle"="Thank you";
 "CreateAccoutMobileLabel"="Mobile:";
@@ -308,3 +308,4 @@
 "GenericTitle"="";
 "View_PasswordRecovery"="Reset Password";
 "InvalidLocalContactTitle"="Invalid contact";
+"View_Book_Menu_Tutorial"="Tutorial";

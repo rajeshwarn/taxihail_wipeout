@@ -40,6 +40,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		[Outlet]
 		MonoTouch.UIKit.UITextField txtChargeType { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UIScrollView scrollView { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
@@ -91,6 +94,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 			if (txtChargeType != null) {
 				txtChargeType.Dispose ();
 				txtChargeType = null;
+			}
+
+			if (scrollView != null) {
+				scrollView.Dispose ();
+				scrollView = null;
 			}
 		}
 	}
