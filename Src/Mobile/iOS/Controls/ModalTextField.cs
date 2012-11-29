@@ -28,13 +28,13 @@ namespace apcurium.MK.Booking.Mobile.Client
             TouchDown += HandleTouchDown;
         }
 
-        public void SetValues (string title, ListItem[] values, int selectedId, Action<ListItem> onItemSelected)
+        public void Configure (string title, ListItem[] values, int selectedId, Action<ListItem> onItemSelected)
         {
             int selected = 0;
             var section = new SectionWithBackground(title);
             foreach (ListItem v in values)
             {
-                // Keep a reference to value in order fo callbacks to work correclty
+                // Keep a reference to value in order for callbacks to work correctly
                 var value = v;
                 var item = new RadioElementWithId(value.Id, value.Display);
                 item.Tapped += ()=> {
@@ -54,6 +54,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         void HandleTouchDown (object sender, EventArgs e)
         {
+            Controller.View.EndEditing(true);
             if (_rootElement != null) {
                 var newDvc = new DialogViewController (_rootElement, true) {
                 Autorotate = true

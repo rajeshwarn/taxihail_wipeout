@@ -320,7 +320,6 @@
     <Compile Include="Views\LocationDetailView.xib.designer.cs">
       <DependentUpon>LocationDetailView.xib</DependentUpon>
     </Compile>
-    <Compile Include="Views\RideSettingsView_old.cs" />
     <Compile Include="Views\RideSettingsView.cs" />
     <Compile Include="Views\RideSettingsView.designer.cs">
       <DependentUpon>RideSettingsView.cs</DependentUpon>

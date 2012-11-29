@@ -49,22 +49,40 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             base.ViewDidLoad ();
 
-            ((ModalTextField)txtVehicleType).SetValues(Resources.RideSettingsVehiculeType, ViewModel.Vehicles, ViewModel.VehicleTypeId, x=> {
+            var button = new MonoTouch.UIKit.UIBarButtonItem(Resources.DoneButton, UIBarButtonItemStyle.Plain, delegate {
+                ViewModel.SaveCommand.Execute();
+            });
+
+            NavigationItem.HidesBackButton = true;
+            NavigationItem.RightBarButtonItem = button;
+            NavigationItem.Title = Resources.GetValue("View_RideSettings");
+
+            ((ModalTextField)txtVehicleType).Configure(Resources.RideSettingsVehiculeType, ViewModel.Vehicles, ViewModel.VehicleTypeId, x=> {
                 ViewModel.SetVehiculeType.Execute(x.Id);
+            });
+            ((ModalTextField)txtChargeType).Configure(Resources.RideSettingsVehiculeType, ViewModel.Payments, ViewModel.ChargeTypeId, x=> {
+                ViewModel.SetChargeType.Execute(x.Id);
             });
 
             this.AddBindings(new Dictionary<object, string>(){
-                { txtVehicleType, "{'Text': {'Path': 'VehicleTypeName'}}" }
+                { txtName, "{'Text': {'Path': 'Name'}}" },
+                { txtPhone, "{'Text': {'Path': 'Phone'}}" },
+                { txtPassengers, "{'Text': {'Path': 'Passengers'}}" },
+                { txtVehicleType, "{'Text': {'Path': 'VehicleTypeName'}}" },
+                { txtChargeType, "{'Text': {'Path': 'ChargeTypeName'}}" },
             });
 
         }
 
-        void HandleVehicleTypeTouchDown (object sender, EventArgs e)
+        public override void ViewWillAppear(bool animated)
         {
-            var newDvc =new DialogViewController (_vehiculeTypeEntry, true) {
-                Autorotate = true
-            };
-            PresentViewController(newDvc,true, delegate {});
+            base.ViewWillAppear(animated);
+
+            NavigationController.NavigationBar.Hidden = false;
+            
+            ((UINavigationController)ParentViewController).View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
+            
+            View.BackgroundColor = UIColor.Clear; 
         }
 
 		

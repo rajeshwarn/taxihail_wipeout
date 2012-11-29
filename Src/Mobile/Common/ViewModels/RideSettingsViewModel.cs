@@ -69,8 +69,18 @@ namespace apcurium.MK.Booking.Mobile
 			set {
 				if(value != _bookingSettings.ChargeTypeId){
 					_bookingSettings.ChargeTypeId = value;
+                    FirePropertyChanged("ChargeTypeId");
+                    FirePropertyChanged("ChargeTypeName");
 				}
 			}
+        }
+
+        public string ChargeTypeName {
+            get {
+                var chargeType = this.Payments.FirstOrDefault(x=>x.Id == ChargeTypeId);
+                if(chargeType == null) return null;
+                return chargeType.Display; 
+            }
         }
 
         public string Name {
