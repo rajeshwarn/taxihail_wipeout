@@ -26,6 +26,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public TutorialViewModel()
         {
             TutorialItemsList = Resources.GetTutorialItemsList();
+
         }
     }
 }

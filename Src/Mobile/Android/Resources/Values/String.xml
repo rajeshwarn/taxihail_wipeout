@@ -310,4 +310,5 @@
   <string name="GenericTitle"></string>
   <string name="View_PasswordRecovery">Reset Password</string>
   <string name="InvalidLocalContactTitle">Invalid contact</string>
+  <string name="View_Book_Menu_Tutorial">Tutorial</string>
 </resources>

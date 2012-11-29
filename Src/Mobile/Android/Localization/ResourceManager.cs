@@ -82,9 +82,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Localization
         {
             return new List<TutorialItemModel>()
                                    {
-                                       new TutorialItemModel() {ImageUri = "", Text = "Page1"},
-                                       new TutorialItemModel() {ImageUri = "",  Text = "Page2"},
-                                       new TutorialItemModel() {ImageUri = "",  Text = "Page3"}
+                                       new TutorialItemModel() {ImageUri = "tuto01", Text = "Page1"},
+                                       new TutorialItemModel() {ImageUri = "tuto02",  Text = "Page2"}/*,
+                                       new TutorialItemModel() {ImageUri = "tuto03",  Text = "Page3"}*/
                                    };
         }
 
