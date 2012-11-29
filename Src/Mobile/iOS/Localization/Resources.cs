@@ -2,6 +2,8 @@ using System;
 using MonoTouch.Foundation;
 using apcurium.MK.Booking.Mobile.Localization;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using MK.Common.Android.Entity;
+using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -1014,6 +1016,15 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			get { return GetValue("ViewRatingBtn"); }
 		}
+
+        public List<TutorialItemModel> GetTutorialItemsList()
+        {
+            return new List<TutorialItemModel>()
+            {
+                new TutorialItemModel(){ImageUri = "tuto01", Text ="Page1"},
+                new TutorialItemModel(){ImageUri = "tuto02", Text ="Page2"}
+            };
+        }
 	}
 }
 

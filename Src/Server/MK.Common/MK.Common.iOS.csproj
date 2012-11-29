@@ -73,6 +73,7 @@
     <Compile Include="Entity\OrderRatings.cs" />
     <Compile Include="Entity\RatingType.cs" />
     <Compile Include="Entity\RatingScore.cs" />
+    <Compile Include="Entity\TutorialItemModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Configuration\" />
