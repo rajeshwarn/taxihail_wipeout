@@ -302,9 +302,10 @@
 "searchHint"="Search";
 "CreateAccountErrorTitle"="Error";
 "CreateAccountLanguageFrench"="French";
-"BookItButton"="TaxiHail rocks!";
+"BookItButton"="Pick Me Up Now";
 "ConfirmDestinationLabel"="Destination:";
 "NearbyPlacesTitle"="Nearby places";
 "GenericTitle"="";
 "View_PasswordRecovery"="Reset Password";
 "InvalidLocalContactTitle"="Invalid contact";
+"BookItLaterButton"="Later";

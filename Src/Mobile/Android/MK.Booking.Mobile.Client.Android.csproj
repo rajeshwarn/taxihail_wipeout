@@ -217,6 +217,7 @@
     <AndroidResource Include="Resources\Drawable\green_button_left.xml" />
     <AndroidResource Include="Resources\Drawable\green_button_right.xml" />
     <AndroidResource Include="Resources\Drawable\address_selector_button.xml" />
+    <AndroidResource Include="Resources\Drawable\button_no_background.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
@@ -259,7 +260,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Values\Color.xml" />
-    <AndroidResource Include="Resources\Drawable\roundedContainer.xml" />
     <AndroidResource Include="Resources\Layout\View_BookingDetail.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -431,8 +431,6 @@
     <AndroidResource Include="Resources\Values\MvxBindingAttributes.xml" />
     <AndroidResource Include="Resources\Drawable\navBar.png" />
     <AndroidResource Include="Resources\drawable-hdpi\navBar.png" />
-    <AndroidResource Include="Resources\Drawable\roundedContainer_pressed.xml" />
-    <AndroidResource Include="Resources\Drawable\roundedContainer_state.xml" />
     <AndroidResource Include="Resources\Drawable\mylocation_pressed.png" />
     <AndroidResource Include="Resources\drawable-hdpi\my_location_pressed.png" />
     <AndroidResource Include="Resources\Drawable\mylocation_state.xml">
