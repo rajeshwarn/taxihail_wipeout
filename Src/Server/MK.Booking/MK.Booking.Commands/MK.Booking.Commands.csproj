@@ -83,6 +83,7 @@
     <Compile Include="UpdateBookingSettings.cs" />
     <Compile Include="UpdateDefaultFavoriteAddress.cs" />
     <Compile Include="UpdateFavoriteAddress.cs" />
+    <Compile Include="UpdatePaymentProfile.cs" />
     <Compile Include="UpdatePopularAddress.cs" />
     <Compile Include="UpdateTariff.cs" />
     <Compile Include="UpdateRatingType.cs" />

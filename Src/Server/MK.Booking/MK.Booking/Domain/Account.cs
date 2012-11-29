@@ -27,6 +27,7 @@ namespace apcurium.MK.Booking.Domain
             base.Handles<AdminRightGranted>(OnAdminRightGranted);
             base.Handles<CreditCardAdded>(OnCreditCardAdded);
             base.Handles<CreditCardRemoved>(OnCreditCardRemoved);
+            base.Handles<PaymentProfileUpdated>(onPaymentProfileUpdated);
         }
 
 
@@ -262,6 +263,8 @@ namespace apcurium.MK.Booking.Domain
         {
         }
 
+        private void onPaymentProfileUpdated(PaymentProfileUpdated obj){}
+
 
         private static void ValidateFavoriteAddress(string friendlyName, string fullAddress, double latitude, double longitude)
         {
@@ -305,6 +308,16 @@ namespace apcurium.MK.Booking.Domain
             {
                CreditCardId = creditCardId
             });
+        }
+
+        public void UpdatePaymentProfile(Guid? defaultCreditCard, double? defaultTipAmount, double? defaultTipPercent)
+        {
+            this.Update(new PaymentProfileUpdated
+                            {
+                                DefaultCreditCard = defaultCreditCard,
+                                DefaultTipAmount = defaultTipAmount,
+                                DefaultTipPercent = defaultTipPercent
+                            });
         }
     }
 }

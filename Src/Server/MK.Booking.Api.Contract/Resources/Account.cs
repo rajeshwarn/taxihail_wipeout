@@ -24,5 +24,11 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
         public string Language { get; set; }
 
         public bool IsAdmin { get; set; }
+
+        public Guid? DefaultCreditCard { get; set; }
+
+        public double? DefaultTipAmount { get; set; }
+
+        public double? DefaultTipPercent { get; set; } 
     }
 }

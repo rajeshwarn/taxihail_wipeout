@@ -117,5 +117,11 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             var req = string.Format("/account/creditcards/" + creditCardId);
             var response = Client.Delete<string>(req);
         }
+
+        public void UpdatePaymentProfile(UpdatePaymentProfileRequest request)
+        {
+            var req = string.Format("/account/paymentprofile");
+            var response = Client.Post<string>(req, request);
+        }
     }
 }

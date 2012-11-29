@@ -22,7 +22,8 @@ namespace apcurium.MK.Booking.CommandHandlers
                                          ICommandHandler<UpdateAccountPassword>,
                                          ICommandHandler<GrantAdminRight>,
                                          ICommandHandler<AddCreditCard>,
-                                         ICommandHandler<RemoveCreditCard>
+                                         ICommandHandler<RemoveCreditCard>,
+                                         ICommandHandler<UpdatePaymentProfile>
     {
 
         private readonly IEventSourcedRepository<Account> _repository;
@@ -112,6 +113,13 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var account = _repository.Find(command.AccountId);
             account.RemoveCreditCard(command.CreditCardId);
+            _repository.Save(account, command.Id.ToString());
+        }
+
+        public void Handle(UpdatePaymentProfile command)
+        {
+            var account = _repository.Find(command.AccountId);
+            account.UpdatePaymentProfile(command.DefaultCreditCard, command.DefaultTipAmount, command.DefaultTipPercent);
             _repository.Save(account, command.Id.ToString());
         }
     }

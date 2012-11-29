@@ -73,6 +73,8 @@ namespace apcurium.MK.Booking.Api
             AutoMapper.Mapper.CreateMap<CreditCardRequest, Commands.AddCreditCard>()
                 .ForMember(x => x.CreditCardId, opt => opt.ResolveUsing(x => x.CreditCardId == Guid.Empty ? Guid.NewGuid() : x.CreditCardId));
 
+            AutoMapper.Mapper.CreateMap<UpdatePaymentProfileRequest, Commands.UpdatePaymentProfile>();
+
         }
     }
 }
