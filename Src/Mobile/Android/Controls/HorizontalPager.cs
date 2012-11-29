@@ -10,7 +10,6 @@ using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
-using MK.Common.Android.Entity;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
