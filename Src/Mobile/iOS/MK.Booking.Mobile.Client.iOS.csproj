@@ -320,7 +320,12 @@
     <Compile Include="Views\LocationDetailView.xib.designer.cs">
       <DependentUpon>LocationDetailView.xib</DependentUpon>
     </Compile>
+    <Compile Include="Views\RideSettingsView_old.cs" />
     <Compile Include="Views\RideSettingsView.cs" />
+    <Compile Include="Views\RideSettingsView.designer.cs">
+      <DependentUpon>RideSettingsView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ModalTextField.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -371,6 +376,7 @@
     <InterfaceDefinition Include="Views\HistoryDetailView.xib" />
     <InterfaceDefinition Include="Views\LocationsTabView.xib" />
     <InterfaceDefinition Include="Views\LocationDetailView.xib" />
+    <InterfaceDefinition Include="Views\RideSettingsView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />

@@ -213,6 +213,9 @@
     <AndroidResource Include="Resources\drawable-hdpi\hail_selected.png" />
     <AndroidResource Include="Resources\Drawable\hail_state.xml" />
     <AndroidResource Include="Resources\Drawable\flag_state.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\pin_cab.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\pin_destination.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\pin_hail.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
