@@ -98,7 +98,6 @@
     <Compile Include="Activities\Setting\AboutActivity.cs" />
     <Compile Include="Activities\ShowDialogActivity.cs" />
     <Compile Include="Activities\TutorialActivity.cs" />
-    <Compile Include="Activities\ViewFlipperActivity.cs" />
     <Compile Include="Adapters\GroupedOrderListAdapter.cs" />
     <Compile Include="Adapters\GroupedLocationListAdapter.cs" />
     <Compile Include="Adapters\IconActionAdapter.cs" />
@@ -106,7 +105,6 @@
     <Compile Include="Adapters\OrderListAdapter.cs" />
     <Compile Include="Adapters\RatingListAdapter.cs" />
     <Compile Include="Adapters\TitleSubTitleListItemController.cs" />
-    <Compile Include="Adapters\TutorialItemAdapter.cs" />
     <Compile Include="Animations\ResizeAnimation.cs" />
     <Compile Include="Animations\SlideAnimation.cs" />
     <Compile Include="AppContext.cs" />
@@ -294,10 +292,9 @@
     <AndroidResource Include="Resources\Layout\MenuItem.axml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidJavaLibrary Include="libs\android-support-v4.jar" />
-    <Content Include="Assets\tuto01.jpg" />
-    <Content Include="Assets\tuto02.jpg" />
-    <Content Include="Assets\tuto03.jpg" />
+    <AndroidResource Include="Resources\Drawable\tuto01.jpg" />
+    <AndroidResource Include="Resources\Drawable\tuto02.jpg" />
+    <AndroidResource Include="Resources\Drawable\tuto03.jpg" />
     <Content Include="Properties\AndroidManifest.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -547,11 +544,6 @@
     <AndroidResource Include="Resources\Drawable\rate_unhappy_state.xml" />
     <AndroidResource Include="Resources\drawable-hdpi\erase_cross_btn.png" />
     <AndroidResource Include="Resources\Drawable\erase_cross_btn.png" />
-    <AndroidResource Include="Resources\Layout\push_right_in.xml" />
-    <AndroidResource Include="Resources\Layout\push_right_out.xml" />
-    <AndroidResource Include="Resources\Drawable\tuto02.jpg" />
-    <AndroidResource Include="Resources\Drawable\tuto01.jpg" />
-    <AndroidResource Include="Resources\Drawable\tuto03.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -623,21 +615,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\SimpleOrderListItem.axml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\Layout\layout_page1.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\Layout\layout_page2.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\Layout\layout_page3.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_tutorial.axml">

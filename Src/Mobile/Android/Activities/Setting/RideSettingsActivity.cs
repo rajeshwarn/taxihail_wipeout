@@ -35,9 +35,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
             SetContentView(Resource.Layout.View_RideSettings);
 			var rideStructure = GetRideStructure(ViewModel);
 			var listAdapter = new ListViewAdapter(this, rideStructure);
-			var listView = FindViewById<ListView>(Resource.Id.RideSettingsList);
-			listView.Adapter = listAdapter;
-			FindViewById<TextView>(Resource.Id.rideSettingsListHeader).Text = GetString(Resource.String.DefaultRideSettingsViewTitle);
+			//var listView = FindViewById<ListView>(Resource.Id.RideSettingsList);
+			//listView.Adapter = listAdapter;
+			//FindViewById<TextView>(Resource.Id.rideSettingsListHeader).Text = GetString(Resource.String.DefaultRideSettingsViewTitle);
 		}
 
         protected override void OnCreate(Bundle bundle)
