@@ -1,7 +1,14 @@
 {
+  "UseCustomFonts" : "true",
+  "CustomRegularFont" : "ProximaNova-Regular",
+  "CustomBoldFont" : "ProximaNova-Bold",
+  "CustomMediumFont" : "ProximaNova-Semibold",
+  "CustomItalicFont" : "ProximaNova-RegularIt",
+  "ButtonFontSize" : "20",
+  "ButtonCornerRadius" : "7",
   "LightCorporateTextColor" : { "Red": "188", "Green": "217", "Blue": "242", "Alpha": "255",  "Location": "1"  },
   "NavigationTitleColor" : { "Red": "255", "Green": "255", "Blue": "255", "Alpha": "255",   "Location": "1"  },
-  "NavigationBarColor" : { "Red": "0", "Green": "78", "Blue": "145", "Alpha": "255", "Location": "1"  },
+  "NavigationBarColor" : { "Red": "240", "Green": "94", "Blue": "13", "Alpha": "255",   "Location": "1"  },
   "Buttons": [
     {
       "Key": "CorporateColor",
@@ -83,9 +90,9 @@
     ,
     {
       "Key": "Green",
-      "Colors": [  { "Red": "143", "Green": "207", "Blue": "15", "Alpha": "255",  "Location": "0"  } ,
-                    { "Red": "87", "Green": "177", "Blue": "9", "Alpha": "255",  "Location": "1"  } ],
-      "StrokeColor": {  "Red": "69", "Green": "103",  "Blue": "24", "Alpha": "255",  "Location": "1"  },
+      "Colors": [  { "Red": "255", "Green": "155", "Blue": "0", "Alpha": "255",  "Location": "0"  } ,
+                    { "Red": "255", "Green": "100", "Blue": "0", "Alpha": "255",  "Location": "1"  } ],
+      "StrokeColor": {  "Red": "175", "Green": "62",  "Blue": "0", "Alpha": "255",  "Location": "1"  },
       "TextColor": {  "Red": "255", "Green": "255",  "Blue": "255", "Alpha": "255",  "Location": "1"  },
       "TextShadowColor": {  "Red": "0", "Green": "0",  "Blue": "0", "Alpha": "128",  "Location": "1"  },
       "InnerShadow": {
