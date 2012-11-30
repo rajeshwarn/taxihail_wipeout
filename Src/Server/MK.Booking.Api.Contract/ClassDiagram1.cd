@@ -29,7 +29,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="apcurium.MK.Booking.Api.Contract.Requests.AddressHistoryRequest" Collapsed="true">
-    <Position X="11.25" Y="3.75" Width="1.5" />
+    <Position X="11" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Requests\AddressHistoryRequest.cs</FileName>
@@ -45,7 +45,7 @@
   <Class Name="apcurium.MK.Booking.Api.Contract.Requests.BookingSettingsRequest">
     <Position X="0.5" Y="1.75" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAQAAABAhAAAAAQAAAgAAAAAAAAAIAAAAAA=</HashCode>
+      <HashCode>AAAAAEAAACQAAABAhgAAAAQAAAgAAAAAAAAAIAAAAAg=</HashCode>
       <FileName>Requests\BookingSettingsRequest.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -66,7 +66,7 @@
   <Class Name="apcurium.MK.Booking.Api.Contract.Requests.ConfigurationsRequest" Collapsed="true">
     <Position X="2.75" Y="7.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA=</HashCode>
       <FileName>Requests\ConfigurationsRequest.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -101,7 +101,7 @@
   <Class Name="apcurium.MK.Booking.Api.Contract.Requests.DirectionsRequest" Collapsed="true">
     <Position X="9.5" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAIAAABAIAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAIAAABAIAAAAAAAAAAAAAAAAgAABAAAAAAAAAAA=</HashCode>
       <FileName>Requests\DirectionsRequest.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -136,14 +136,14 @@
   <Class Name="apcurium.MK.Booking.Api.Contract.Requests.PlaceDetailRequest" Collapsed="true">
     <Position X="5.25" Y="8.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAEAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Requests\PlaceDetailRequest.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="apcurium.MK.Booking.Api.Contract.Requests.RegisterAccount">
     <Position X="11.5" Y="0.75" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAACCAAAAAAAkAAAAQAAAAAAABCAAAAIAAAAAA=</HashCode>
+      <HashCode>AAAAAEAACCAAAAAAAkAAAAQACAAAAABCAAAAIAAAAAg=</HashCode>
       <FileName>Requests\RegisterAccount.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -157,7 +157,7 @@
   <Class Name="apcurium.MK.Booking.Api.Contract.Requests.SaveAddress">
     <Position X="7" Y="8.75" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAACAAAAAEAAAQAAAAAIAAAAAAAAAAAEAAAQQAAAAAQ=</HashCode>
+      <HashCode>AAACAAAAAEAAAQAAAAAIAAAAAAAAAAAEAACQQAAAAAQ=</HashCode>
       <FileName>Requests\SaveAddress.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -185,7 +185,7 @@
   <Class Name="apcurium.MK.Booking.Api.Contract.Resources.Account">
     <Position X="3.5" Y="1.75" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AEACAAAACCAAAAAAAEAAAAQAAAAAAABAgAAAIAAAAAA=</HashCode>
+      <HashCode>AEACAAEACCAAAAAAAEEAAAQACAAABABAgAAAIAAAAAA=</HashCode>
       <FileName>Resources\Account.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -204,7 +204,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="apcurium.MK.Booking.Api.Contract.Resources.BookingSettings">
-    <Position X="19.5" Y="11" Width="2.25" />
+    <Position X="19.5" Y="11.75" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAQAAABAhAAAAAQAAAgAAAAAAAAAIAAAAAA=</HashCode>
       <FileName>Resources\BookingSettings.cs</FileName>
@@ -220,19 +220,19 @@
   <Class Name="apcurium.MK.Booking.Api.Contract.Resources.Order">
     <Position X="16" Y="9.25" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AAACACCAAAAAAQAAACAABAACAAAAABAAggBAAAEAAAA=</HashCode>
+      <HashCode>ACACACCAAAAAAQAAACAABAACAAAAABAAggBAAAEAAAA=</HashCode>
       <FileName>Resources\Order.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="DropOffAddress" />
       <Property Name="PickupAddress" />
+      <Property Name="DropOffAddress" />
       <Property Name="Settings" />
     </ShowAsAssociation>
   </Class>
   <Class Name="apcurium.MK.Booking.Api.Contract.Resources.OrderStatusDetail">
     <Position X="11.5" Y="7.75" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>EAgAACAEAAAAAEAAAAAAAAAQAAAAAAABAAAAAACAAAA=</HashCode>
+      <HashCode>EAgAACAEgAAAAEAAAAAAAAAQAAAAAAABAAAAAACAAAA=</HashCode>
       <FileName>Resources\OrderStatusDetail.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -254,6 +254,27 @@
     <Position X="12.5" Y="11" Width="3" />
     <TypeIdentifier />
   </Class>
+  <Class Name="apcurium.MK.Booking.Api.Contract.Requests.CreditCardRequest">
+    <Position X="24.75" Y="7.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAAAAAIAAAAAAEAAAAAAAAAAQAAABAAA=</HashCode>
+      <FileName>Requests\CreditCardRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="apcurium.MK.Booking.Api.Contract.Requests.UpdatePaymentProfileRequest">
+    <Position X="27" Y="10.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAAAAAAAAEAAAAAAAAABAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Requests\UpdatePaymentProfileRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="apcurium.MK.Booking.Api.Contract.Resources.CreditCardDetails">
+    <Position X="28.75" Y="7" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAAAAAoAAAAAAEAAAAAAAAAAQAAABAAA=</HashCode>
+      <FileName>Resources\CreditCardDetails.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Interface Name="System.Collections.Generic.IList&lt;T&gt;" Collapsed="true">
     <Position X="14.75" Y="8" Width="1.5" />
     <TypeIdentifier />
@@ -261,7 +282,7 @@
   <Enum Name="apcurium.MK.Booking.Api.Contract.Resources.ErrorCode" Collapsed="true">
     <Position X="3.5" Y="10" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAIAQwAACAAAAAAAAAAAACAAAAAIAAAQiBAQAAAAA=</HashCode>
+      <HashCode>AAAAAAQwgACAAAAAAAAAAAACAAAAAIAAAQiBARAAIAA=</HashCode>
       <FileName>Resources\ErrorCode.cs</FileName>
     </TypeIdentifier>
   </Enum>
