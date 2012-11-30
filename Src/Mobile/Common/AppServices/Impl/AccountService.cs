@@ -84,8 +84,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
 
             ClearCache ();
-            var dispatch = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider> ().Dispatcher;
-            dispatch.RequestNavigate (new MvxShowViewModelRequest (typeof(LoginViewModel), null, false, MvxRequestedBy.UserAction));
+          
         }
 
         public void RefreshCache (bool reload)

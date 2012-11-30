@@ -114,9 +114,26 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 		}
 		
 
-        public void ShowMessage(string title, string message,  string additionnalActionButtonTitle, Action additionalAction)
-        {
-            throw new NotImplementedException();
+        public void ShowMessage(string title, string message, Action additionalAction)
+        {            
+			var ownerId = Guid.NewGuid().ToString();
+			var i = new Intent(Context, typeof(AlertDialogActivity));
+			i.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
+			i.PutExtra("Title", title);
+			i.PutExtra("Message", message);
+			
+			i.PutExtra("NeutralButtonTitle", "OK");
+			i.PutExtra("OwnerId", ownerId);
+			
+			TinyMessageSubscriptionToken token = null;
+			token = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<ActivityCompleted>(a =>
+			{				
+				additionalAction();				
+				TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Unsubscribe<ActivityCompleted>(token);
+				token.Dispose();
+			}, a => a.OwnerId == ownerId);
+			
+			Context.StartActivity(i);
         }
 
         public void ShowProgress(bool show)
@@ -129,16 +146,12 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                        _progressDialog.Show();
                     }
                 );*/
-
-
-        }
-
-
-            /* var i = new Intent(Context, typeof(ShowDialogActivity));
+			/* var i = new Intent(Context, typeof(ShowDialogActivity));
             i.AddFlags(ActivityFlags.NewTask | ActivityFlags..ReorderToFront);
             i.PutExtra("Show", show.ToString());
             Context.StartActivity(i);
             Context.ac*/
+        }          
 
         public void ShowProgress(bool show, Action cancel)
         {

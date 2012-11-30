@@ -949,7 +949,7 @@
   <data name="View_Book_Menu_UpdateMyProfile" xml:space="preserve">
     <value>Update My Profile</value>
   </data>
-  <data name="View_Book_Menu_UpdateMyPassword" xml:space="preserve">
+  <data name="View_RideSettings_BtUpdateMyPassword" xml:space="preserve">
     <value>Update My Password</value>
   </data>
   <data name="View_Book_Menu_CallDispatch" xml:space="preserve">
@@ -1061,7 +1061,7 @@
     <value>Tutorial</value>
   </data>
   <data name="ChangePasswordConfirmmation" xml:space="preserve">
-    <value>You password has been updated, please login in again.</value>
+    <value>You password has been updated, please sign in.</value>
   </data>
 
 </root>

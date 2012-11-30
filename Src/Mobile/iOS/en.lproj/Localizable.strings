@@ -312,4 +312,5 @@
 "BookItLaterButton"="Later";
 "View_Book_Menu_UpdateMyPassword"="Update My Password";
 "ServiceErrorUpdatePassword_NotSame"="The current password is not valid.";
-"ChangePasswordConfirmmation"="You password has been updated, please login in again.";
+"ChangePasswordConfirmmation"="You password has been updated, please sign in.";
+"View_RideSettings_BtUpdateMyPassword"="Update My Password";

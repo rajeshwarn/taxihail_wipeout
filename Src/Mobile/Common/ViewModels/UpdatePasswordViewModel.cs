@@ -80,13 +80,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					}
                     MessageService.ShowProgress(true);
                     try{
-                        _accountService.UpdatePassword( _accountService.CurrentAccount.Id, CurrentPassword, NewPassword );
-                        RequestClose(this);
-                        _accountService.SignOut();          
-                        InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new LogOutRequested(this)));
+                        _accountService.UpdatePassword( _accountService.CurrentAccount.Id, CurrentPassword, NewPassword );                        
+                        _accountService.SignOut();							
                         var msg = Resources.GetString("ChangePasswordConfirmmation");
-                        var title = Resources.GetString(Settings.ApplicationName);
-                        MessageService.ShowMessage(title, msg);;
+                        var title = Settings.ApplicationName;
+						MessageService.ShowMessage(title, msg, () => { 
+							RequestNavigate<LoginViewModel>(true); 
+						});
                     }catch(Exception e)
                     {
                         var msg = Resources.GetString("ServiceError" + e.Message);

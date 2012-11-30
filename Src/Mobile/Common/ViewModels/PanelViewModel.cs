@@ -44,7 +44,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
                     MenuIsOpen = false;
 					_accountService.SignOut();			
-					InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new LogOutRequested(this)));
+					RequestNavigate<LoginViewModel>(true);
 				});
 			}
 		}
@@ -105,14 +105,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         }
                     });
                 });
-            }
-        }
-
-        public IMvxCommand NavigateToUpdatePassword
-        {
-            get
-            {
-                return new MvxRelayCommand(() => RequestNavigate<UpdatePasswordViewModel>());
             }
         }
 

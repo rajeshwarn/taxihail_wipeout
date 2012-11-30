@@ -39,10 +39,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             _positiveButtonTitle = Intent.GetStringExtra("PositiveButtonTitle");
             _negativeButtonTitle = Intent.GetStringExtra("NegativeButtonTitle");
             _neutralButtonTitle = Intent.GetStringExtra("NeutralButtonTitle");
-
-
-
-
         }
 
         protected override void OnStart()
