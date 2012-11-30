@@ -1,5 +1,4 @@
 using System;
-using Cirrious.MvvmCross.Android.Views;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.Interfaces.ViewModels;

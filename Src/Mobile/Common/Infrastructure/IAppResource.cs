@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using apcurium.MK.Booking.Mobile.Localization;
 using apcurium.MK.Booking.Mobile.Client;
+using apcurium.MK.Booking.Mobile.Models;
 
 namespace apcurium.MK.Booking.Mobile.Infrastructure
 {

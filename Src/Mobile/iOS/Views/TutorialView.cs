@@ -8,12 +8,12 @@ using System.Collections.Generic;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using Cirrious.MvvmCross.Views;
-using MK.Common.Android.Entity;
 using Cirrious.MvvmCross.Touch.Interfaces;
+using apcurium.MK.Booking.Mobile.Models;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-    public partial class TutorialView : MvxBindingTouchViewController<TutorialViewModel>
+    public partial class TutorialView : MvxBindingTouchViewController<TutorialViewModel>, IMvxModalTouchView
     {
         #region Constructors
         
@@ -45,7 +45,6 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             // Releases the view if it doesn't have a superview.
             base.DidReceiveMemoryWarning ();
-			
             // Release any cached data, images, etc that aren't in use.
         }
 
@@ -55,39 +54,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             base.ViewDidLoad ();
             // Perform any additional setup after loading the view, typically from a nib.
-
-            /*List<UIColor> listColors = new List<UIColor>(){ UIColor.Red, UIColor.Green, UIColor.Blue};
-
-            for(int i = 0 ; i< listColors.Count; i++)
-            {
-                RectangleF frame;
-                frame.X = this.scrollview.Frame.Size.Width * i;
-                frame.Y = 0;
-                frame.Size = this.scrollview.Frame.Size;
-                UIView subView = new UIView(frame);
-                subView.BackgroundColor = listColors[i];
-                this.scrollview.AddSubview(subView);
-            }
-            this.scrollview.ContentSize.Width = this.scrollview.Frame.Size.Width * listColors.Count;
-            this.scrollview.ContentSize.Height = this.scrollview.Frame.Size.Height;*/
             CreatePanels(ViewModel.TutorialItemsList);
-
-            /*NSArray *colors = [NSArray arrayWithObjects:[UIColor redColor], [UIColor greenColor], [UIColor blueColor], nil];
-            for (int i = 0; i < colors.count; i++) {
-                CGRect frame;
-                frame.origin.x = self.scrollView.frame.size.width * i;
-                frame.origin.y = 0;
-                frame.size = self.scrollView.frame.size;
-                
-                UIView *subview = [[UIView alloc] initWithFrame:frame];
-                subview.backgroundColor = [colors objectAtIndex:i];
-                [self.scrollView addSubview:subview];
-                [subview release];
-            }
-            
-            self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width * colors.count, self.scrollView.frame.size.height);*/
-        
-
         }
 		
         public override void ViewDidUnload ()
