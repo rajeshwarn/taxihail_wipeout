@@ -142,14 +142,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             MeasureSpecMode widthMode = MeasureSpec.GetMode(widthMeasureSpec);
             if (widthMode != MeasureSpecMode.Exactly)
             {
-                throw new Exception("ViewSwitcher can only be used in EXACTLY mode.");
+            //    throw new Exception("ViewSwitcher can only be used in EXACTLY mode.");
             }
 
 
             MeasureSpecMode heightMode = MeasureSpec.GetMode(heightMeasureSpec);
             if (heightMode != MeasureSpecMode.Exactly)
             {
-                throw new Exception("ViewSwitcher can only be used in EXACTLY mode.");
+              //  throw new Exception("ViewSwitcher can only be used in EXACTLY mode.");
             }
 
 
@@ -168,16 +168,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
 
 
-            else if (width != mLastSeenLayoutWidth)
-            {
+            //else if (width != mLastSeenLayoutWidth)
+            //{
                 // Width has changed
                 /*
                  * Recalculate the width and scroll to the right position to be sure we're in the right
                  * place in the event that we had a rotation that didn't result in an activity restart
                  * (code by aveyD). Without this you can end up between two pages after a rotation.
                  */
-                Display display =
-                    ((IWindowManager) Context.GetSystemService(Context.WindowService)).DefaultDisplay;
+               /*var display = ((IWindowManager) Context.GetSystemService(Context.WindowService)).DefaultDisplay;
                 int displayWidth = display.Width;
 
 
@@ -187,7 +186,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 
                 mScroller.StartScroll(ScrollX, 0, delta, 0, 0);
-            }
+            }*/
 
 
             mLastSeenLayoutWidth = width;

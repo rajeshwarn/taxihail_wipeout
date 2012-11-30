@@ -16,6 +16,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 		void ShowProgress( bool show, Action cancel );
 
         void ShowToast(string message, ToastDuration duration);
+        void ShowDialogActivity(Type type);
 		void ShowDialog<T>(string title, IEnumerable<T> items, Func<T, string> displayNameSelector, Action<T> onResult);
     }
 

@@ -2010,6 +2010,54 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0700f6
 			public const int TimeNow = 2131165430;
 			
+			// aapt resource value: 0x7f07013d
+			public const int Tuto01Bottom = 2131165501;
+			
+			// aapt resource value: 0x7f070144
+			public const int Tuto01Top = 2131165508;
+			
+			// aapt resource value: 0x7f070145
+			public const int Tuto02Bottom = 2131165509;
+			
+			// aapt resource value: 0x7f07013c
+			public const int Tuto02Top = 2131165500;
+			
+			// aapt resource value: 0x7f07013f
+			public const int Tuto03Bottom = 2131165503;
+			
+			// aapt resource value: 0x7f070143
+			public const int Tuto03Top = 2131165507;
+			
+			// aapt resource value: 0x7f07013e
+			public const int Tuto04Bottom = 2131165502;
+			
+			// aapt resource value: 0x7f07013b
+			public const int Tuto04Top = 2131165499;
+			
+			// aapt resource value: 0x7f070146
+			public const int Tuto05Bottom = 2131165510;
+			
+			// aapt resource value: 0x7f070147
+			public const int Tuto05Top = 2131165511;
+			
+			// aapt resource value: 0x7f070140
+			public const int Tuto06Bottom = 2131165504;
+			
+			// aapt resource value: 0x7f070148
+			public const int Tuto06Top = 2131165512;
+			
+			// aapt resource value: 0x7f070141
+			public const int Tuto07Bottom = 2131165505;
+			
+			// aapt resource value: 0x7f070142
+			public const int Tuto07Top = 2131165506;
+			
+			// aapt resource value: 0x7f070149
+			public const int Tuto08Bottom = 2131165513;
+			
+			// aapt resource value: 0x7f07014a
+			public const int Tuto08Top = 2131165514;
+			
 			// aapt resource value: 0x7f07011b
 			public const int TwitterButton = 2131165467;
 			

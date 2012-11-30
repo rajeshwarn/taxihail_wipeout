@@ -17,6 +17,9 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using TinyIoC;
 using TinyMessenger;
 using apcurium.MK.Booking.Mobile.Messages;
+using Cirrious.MvvmCross.Android.Views;
+using Cirrious.MvvmCross.Views;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -30,6 +33,16 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         }
 
         public Context Context { get; set; }
+
+		/// <summary>
+		/// put the content of on activity on a modal dialog ( type = viewmodel Type )
+		/// </summary>
+		public void ShowDialogActivity(Type type)
+		{
+			var presenter = new MvxAndroidViewPresenter();
+			presenter.Show(new MvxShowViewModelRequest(type, null, false, MvxRequestedBy.UserAction));
+		}
+
 
 
         public void ShowMessage(string title, string message)

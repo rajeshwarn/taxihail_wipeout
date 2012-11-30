@@ -17,6 +17,15 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
 		}
 
+        #region IMessageService implementation
+
+        public void ShowDialogActivity (Type type)
+        {
+            throw new NotImplementedException ();
+        }
+
+        #endregion
+
 		public void ShowMessage(string title, string message)
 		{
 			MessageHelper.Show( title, message );
