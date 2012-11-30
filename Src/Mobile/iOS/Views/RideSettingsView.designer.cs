@@ -43,6 +43,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		[Outlet]
 		MonoTouch.UIKit.UIScrollView scrollView { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.GradientButton btnUpdatePassword { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
@@ -99,6 +102,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 			if (scrollView != null) {
 				scrollView.Dispose ();
 				scrollView = null;
+			}
+
+			if (btnUpdatePassword != null) {
+				btnUpdatePassword.Dispose ();
+				btnUpdatePassword = null;
 			}
 		}
 	}

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -805,6 +805,9 @@
   <data name="ServiceErrorUnauthorized" xml:space="preserve">
     <value>An unauthorized call has been made to server, you will be redirected to login page.</value>
   </data>
+   <data name="ServiceErrorUpdatePassword_NotSame" xml:space="preserve">
+    <value>The current password is not valid.</value>
+  </data>
   <data name="BookDateLabel" xml:space="preserve">
     <value>Pick Me Up Later</value>
   </data>
@@ -946,6 +949,9 @@
   <data name="View_Book_Menu_UpdateMyProfile" xml:space="preserve">
     <value>Update My Profile</value>
   </data>
+  <data name="View_RideSettings_BtUpdateMyPassword" xml:space="preserve">
+    <value>Update My Password</value>
+  </data>
   <data name="View_Book_Menu_CallDispatch" xml:space="preserve">
     <value>Call Dispatch Center</value>
   </data>
@@ -1054,6 +1060,10 @@
   <data name="View_Book_Menu_Tutorial" xml:space="preserve">
     <value>Tutorial</value>
   </data>
+  <data name="ChangePasswordConfirmmation" xml:space="preserve">
+    <value>You password has been updated, please sign in.</value>
+  </data>
+
   <data name="Tuto01Bottom" xml:space="preserve">
     <value>Start by selecting your current position.</value>
   </data>

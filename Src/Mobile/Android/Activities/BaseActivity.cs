@@ -20,9 +20,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
     {
         protected abstract int ViewTitleResourceId { get; }
 
-
-
-
         protected override void OnResume()
         {
             base.OnResume();

@@ -2,7 +2,7 @@
 <resources>
   <string name="EstimateDistance"> ({0})</string>
   <string name="CreateAccoutCancel">Cancel</string>
-  <string name="SignUpButton">Sign Up</string>
+  <string name="SignUpButton">Create a free account</string>
   <string name="ResetPasswordPlaceholder">Enter your email here</string>
   <string name="BookDropoffLocationButtonTitle">Destination</string>
   <string name="ConfirmPhoneLabel">Mobile:</string>
@@ -57,7 +57,7 @@
   <string name="View_HistoryDetail">Order Details</string>
   <string name="ServiceErrorCreateOrder_VehiculeType">Order cannot be created, invalid vehicle type. Please try again or call us.</string>
   <string name="NotAvailable">N/A</string>
-  <string name="RideSettingsPhone">Mobile:</string>
+  <string name="RideSettingsPhone">Mobile</string>
   <string name="InvalidAddressTextEdit">Cannot validate adddress</string>
   <string name="DestinationOnButtonImageName">Assets/Button/btnDest_on_en.png</string>
   <string name="FavoriteLocationsTitle">Favorite locations</string>
@@ -72,7 +72,7 @@
   <string name="AppNeedUpdateMessage">A new version of the application is available, please update the app to continue.</string>
   <string name="ApproxPrice">Estimated Fare:</string>
   <string name="HistoryDetailStatusLabel">Status:</string>
-  <string name="RideSettingsCompany">Company:</string>
+  <string name="RideSettingsCompany">Company</string>
   <string name="ConfirmOriginLablel">Origin:</string>
   <string name="UpdateBookingSettingsInvalidDataTitle">Invalid booking settings info.</string>
   <string name="DateTimePickerPickTitle">Pickup date and time</string>
@@ -101,13 +101,13 @@
   <string name="CancelBoutton">Cancel</string>
   <string name="InvalidAddressMessage">The address you provided is invalid. Please verify this information</string>
   <string name="View_Book_Menu_CallDispatch">Call Dispatch Center</string>
-  <string name="RideSettingsVehiculeType">Vehicle type:</string>
+  <string name="RideSettingsVehiculeType">Vehicle type</string>
   <string name="HistoryDetailDestinationLabel">Destination:</string>
   <string name="CreateAccountErrorMessage">The account cannot be created.</string>
   <string name="StatusConfirmCancelRide">This action will cancel your order, do you want to continue ?</string>
   <string name="Locating">Finding your position...</string>
   <string name="LanguageCode">en</string>
-  <string name="RideSettingsNumberOfTaxi">Nb. Taxi:</string>
+  <string name="RideSettingsNumberOfTaxi">Nb. Taxi</string>
   <string name="HistoryDetailAptRingCodeLabel">Apt / Entry code:</string>
   <string name="ParameterButton">Parameters</string>
   <string name="TabContacts">Contacts</string>
@@ -120,7 +120,7 @@
   <string name="CreateAccountTitle">Title:</string>
   <string name="DeleteBookItButtonImageNamePressed">Assets/Button/btnBookIt-Pressed_en.png</string>
   <string name="NoMailClient">There are no email clients installed.</string>
-  <string name="RideSettingsPassengers">Passengers:</string>
+  <string name="RideSettingsPassengers">Passengers</string>
   <string name="AccountActivationTitle">Confirmation Required</string>
   <string name="DestinationViewDestinationLabel">Destination:</string>
   <string name="ListPromptSelectOne">Select one</string>
@@ -162,7 +162,7 @@
   <string name="ResetPasswordLabel">Email</string>
   <string name="WarningEstimateDontShow">Don\'t warn</string>
   <string name="CarAssigned">Your taxi #{0}</string>
-  <string name="RideSettingsChargeType">Charge type:</string>
+  <string name="RideSettingsChargeType">Charge type</string>
   <string name="CreateAccountEmptyField">The data is invalid, all the fields are required.</string>
   <string name="View_RideSettings">Profile</string>
   <string name="AddressSearchingText">Searching...</string>
@@ -276,7 +276,7 @@
   <string name="NoConnectionTitle">Connection error</string>
   <string name="PickupOffButtonImageName">Assets/Button/btnPickup_off_en.png</string>
   <string name="View_RatePage">Rate your trip</string>
-  <string name="RideSettingsName">Name:</string>
+  <string name="RideSettingsName">Name</string>
   <string name="AptNumberTextPlaceholder">Apt/Suite Number</string>
   <string name="View_BookingStatus_ThankYouTitle">Thank you</string>
   <string name="CreateAccoutMobileLabel">Mobile:</string>
@@ -295,7 +295,7 @@
   <string name="UpdateBookingSettingsEmptyField">The data is invalid, all the fields are required.</string>
   <string name="RideSettingsCannotLoadListMessage">The server cannot be contacted, try again later.</string>
   <string name="ReturnBookingScreen">Return to main screen</string>
-  <string name="View_SignUp">Sign Up</string>
+  <string name="View_SignUp">Create Your Profile</string>
   <string name="Now">Now</string>
   <string name="ResetPasswordReset">Reset</string>
   <string name="ResetPasswordInvalidDataMessage">The email is invalid.</string>
@@ -312,20 +312,23 @@
   <string name="View_PasswordRecovery">Reset Password</string>
   <string name="InvalidLocalContactTitle">Invalid contact</string>
   <string name="View_Book_Menu_Tutorial">Tutorial</string>
-  <string name="Tuto01Bottom">Start by selecting your current position.</string>
-  <string name="Tuto01Top">Here\'s how to book a ride with just a couple of taps.</string>
-  <string name="Tuto02Bottom">If it\'s a little off, simply reposition the map to your actual location.</string>
-  <string name="Tuto02Top">We should be able to locate you using the GPS receiver in your mobile device.</string>
-  <string name="Tuto03Bottom">You can search for a specific address or pick one from your favorites, contacts or a list of nearby places.</string>
-  <string name="Tuto03Top">You may also select your pickup location by tapping the pickup address.</string>
-  <string name="Tuto04Bottom">Doing so will provide an estimate for the cost for the trip.</string>
+  <string name="ServiceErrorUpdatePassword_NotSame">The current password is not valid.</string>
+  <string name="ChangePasswordConfirmmation">You password has been updated, please sign in.</string>
+  <string name="View_RideSettings_BtUpdateMyPassword">Update My Password</string>
   <string name="Tuto04Top">If you want, you can also set your destination.</string>
-  <string name="Tuto05Bottom">Or Tap the Later button to schedule your pickup for a future time or date.</string>
-  <string name="Tuto05Top">Tap Book Now and a vehicle will be assigned as soon as possible.</string>
+  <string name="Tuto02Top">We should be able to locate you using the GPS receiver in your mobile device.</string>
+  <string name="Tuto01Bottom">Start by selecting your current position.</string>
+  <string name="Tuto04Bottom">Doing so will provide an estimate for the cost for the trip.</string>
+  <string name="Tuto03Bottom">You can search for a specific address or pick one from your favorites, contacts or a list of nearby places.</string>
   <string name="Tuto06Bottom">Tap Confirm when you are ready to go.</string>
-  <string name="Tuto06Top">The confirmation screen allows you to verify your trip details and to change any of your preferences for this specific ride.</string>
   <string name="Tuto07Bottom">Status updates are provided when the vehicles arrives at the pickup address, when you enter the vehicle, and at the end of the ride.</string>
   <string name="Tuto07Top">On the Status screen you will see a reservation number confirming your booking. Once a vehicle is assigned, you can watch as it progresses to your pickup location.</string>
+  <string name="Tuto03Top">You may also select your pickup location by tapping the pickup address.</string>
+  <string name="Tuto01Top">Here\'s how to book a ride with just a couple of taps.</string>
+  <string name="Tuto02Bottom">If it\'s a little off, simply reposition the map to your actual location.</string>
+  <string name="Tuto05Bottom">Or Tap the Later button to schedule your pickup for a future time or date.</string>
+  <string name="Tuto05Top">Tap Book Now and a vehicle will be assigned as soon as possible.</string>
+  <string name="Tuto06Top">The confirmation screen allows you to verify your trip details and to change any of your preferences for this specific ride.</string>
   <string name="Tuto08Bottom">We hope you find this application both convenient and intuitive.</string>
   <string name="Tuto08Top">You can review your order history at any time, and even rebook a previous trip with the push of a button</string>
 </resources>

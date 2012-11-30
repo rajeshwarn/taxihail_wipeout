@@ -142,6 +142,14 @@ namespace apcurium.MK.Booking.Mobile
             }
 
         }
+
+        public IMvxCommand NavigateToUpdatePassword
+        {
+            get
+            {
+                return new MvxRelayCommand(() => RequestNavigate<UpdatePasswordViewModel>());
+            }
+        }
         
         public IMvxCommand SetChargeType
         {

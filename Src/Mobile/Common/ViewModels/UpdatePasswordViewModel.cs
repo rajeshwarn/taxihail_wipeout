@@ -8,18 +8,18 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Extensions;
 using System;
+using Cirrious.MvvmCross.Interfaces.ServiceProvider;
+using Cirrious.MvvmCross.ExtensionMethods;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class UpdatePasswordViewModel : BaseViewModel
+    public class UpdatePasswordViewModel : BaseViewModel, IMvxServiceConsumer<IAccountService>
     {
-		private IAccountService _accountService;
-		private string _accountId;
+		private IAccountService _accountService;		
 
-		public UpdatePasswordViewModel( IAccountService accountService, string accountId )
+		public UpdatePasswordViewModel()
         {
-			_accountService = accountService;
-			_accountId = accountId;
+            _accountService = this.GetService<IAccountService>();
         }
 
         private string _currentPassword;
@@ -73,18 +73,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return new MvxRelayCommand(() => {
 					if (!CanUpdatePassword)
 					{
-						var title = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("View_UpdatePassword");
-						var msg = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("CreateAccountInvalidPassword");
-						TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage(title, msg);;
+                        var title = Resources.GetString("View_UpdatePassword");
+                        var msg = Resources.GetString("CreateAccountInvalidPassword");
+                        MessageService.ShowMessage(title, msg);;
 						return;
 					}
-					Guid accountId = new Guid();
-					Guid.TryParse( _accountId, out accountId );
-					var response = _accountService.UpdatePassword( accountId, CurrentPassword, NewPassword );
-					if( response.ToUpper() == "OK" )
-					{
-						RequestClose(this);
-					}
+                    MessageService.ShowProgress(true);
+                    try{
+                        _accountService.UpdatePassword( _accountService.CurrentAccount.Id, CurrentPassword, NewPassword );                        
+                        _accountService.SignOut();							
+                        var msg = Resources.GetString("ChangePasswordConfirmmation");
+                        var title = Settings.ApplicationName;
+						MessageService.ShowMessage(title, msg, () => { 
+							RequestNavigate<LoginViewModel>(true); 
+						});
+                    }catch(Exception e)
+                    {
+                        var msg = Resources.GetString("ServiceError" + e.Message);
+                        var title = Resources.GetString("ServiceErrorCallTitle");
+                        MessageService.ShowMessage(title, msg);;
+                    }finally{
+                        MessageService.ShowProgress(false);
+                    }					
 
 				});
             }

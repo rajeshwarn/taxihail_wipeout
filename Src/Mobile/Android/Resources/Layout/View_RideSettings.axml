@@ -20,7 +20,7 @@
             android:text="@string/RideSettingsName"
             android:textColor="@color/black"
             android:layout_marginLeft="3dip"
-            android:layout_marginBottom="5dip"/>
+            android:layout_marginBottom="5dip" />
         <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -78,7 +78,7 @@
         <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-           local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;VehicleTypeDisplay&apos;}}"/>
+            local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;VehicleTypeDisplay&apos;}}" />
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -90,7 +90,19 @@
         <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;ChargeTypeDisplay&apos;}}"/>
+            local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;ChargeTypeDisplay&apos;}}" />
+        <Button
+            android:id="@+id/UpdatePassword"
+            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;NavigateToUpdatePassword&apos;}}"
+            style="@style/ButtonText"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="40dip"
+            android:background="@drawable/gray_button"
+            android:text="@string/View_RideSettings_BtUpdateMyPassword"
+            android:layout_width="200dip"
+            android:paddingBottom="5dip"
+            android:paddingTop="5dip"
+            android:width="10dip" />
     <!--TextView
             android:id="@+id/rideSettingsListHeader"
             android:layout_width="fill_parent"
