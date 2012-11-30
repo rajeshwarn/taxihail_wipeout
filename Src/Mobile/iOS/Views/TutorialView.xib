@@ -38,8 +38,8 @@
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="IBUIScrollView" id="38039850">
 						<reference key="NSNextResponder" ref="191373211"/>
-						<int key="NSvFlags">306</int>
-						<string key="NSFrameSize">{320, 421}</string>
+						<int key="NSvFlags">319</int>
+						<string key="NSFrameSize">{320, 416}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="1017616623"/>
@@ -47,13 +47,16 @@
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIMultipleTouchEnabled">YES</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+						<bool key="IBUIDirectionalLockEnabled">YES</bool>
+						<bool key="IBUIAlwaysBounceVertical">YES</bool>
+						<bool key="IBUIAlwaysBounceHorizontal">YES</bool>
 						<bool key="IBUIPagingEnabled">YES</bool>
 						<bool key="IBUIShowsHorizontalScrollIndicator">NO</bool>
 						<bool key="IBUIShowsVerticalScrollIndicator">NO</bool>
 					</object>
 					<object class="IBUIPageControl" id="1017616623">
 						<reference key="NSNextResponder" ref="191373211"/>
-						<int key="NSvFlags">1290</int>
+						<int key="NSvFlags">1322</int>
 						<object class="NSPSMatrix" key="NSFrameMatrix"/>
 						<string key="NSFrame">{{96, 424}, {128, 36}}</string>
 						<reference key="NSSuperview" ref="191373211"/>

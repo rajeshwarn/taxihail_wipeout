@@ -9,6 +9,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using Cirrious.MvvmCross.Views;
 using MK.Common.Android.Entity;
+using Cirrious.MvvmCross.Touch.Interfaces;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -117,7 +118,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             RectangleF scrollFrame = scrollview.Frame;
             scrollFrame.Width = scrollFrame.Width * count;
             scrollview.ContentSize = scrollFrame.Size;
-            
+
             for (int i=0; i<count; i++)
             {
                 UIView view = new UIView();
@@ -128,11 +129,13 @@ namespace apcurium.MK.Booking.Mobile.Client
                 labelBottom.TextColor = UIColor.Black;
                 labelBottom.TextAlignment = UITextAlignment.Center;
                 labelBottom.Text = listTutorial[i].BottomText;
+                labelBottom.Lines = 3;
 
                 UILabel labelTop = new UILabel();
                 labelTop.TextColor = UIColor.Black;
                 labelTop.TextAlignment = UITextAlignment.Center;
                 labelTop.Text = listTutorial[i].TopText;
+                labelTop.Lines =3;
 
 
                 labelTop.SetDimensions(width:scrollview.Frame.Width,height:100);
@@ -157,7 +160,9 @@ namespace apcurium.MK.Booking.Mobile.Client
         private void ScrollViewScrolled (object sender, EventArgs e)
         {
             double page = Math.Floor((scrollview.ContentOffset.X - scrollview.Frame.Width / 2) / scrollview.Frame.Width) + 1;
-            
+
+            scrollview.ContentOffset = new PointF( scrollview.ContentOffset.X,0);
+
             pageControl.CurrentPage = (int)page;
         }
     }

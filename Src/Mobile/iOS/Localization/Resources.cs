@@ -1021,8 +1021,9 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             return new List<TutorialItemModel>()
             {
-                new TutorialItemModel(){ImageUri = "tuto01", Text ="Page1"},
-                new TutorialItemModel(){ImageUri = "tuto02", Text ="Page2"}
+                new TutorialItemModel() {ImageUri = "tuto01", TopText = "Here's how to book a ride with just a couple of taps.", BottomText = "Start by selecting your current position."},
+                new TutorialItemModel() {ImageUri = "tuto02",  TopText = "We should be able to locate you using the GPS receiver in your mobile device.", BottomText = "If it's abstract little off, simply reposition the map to your actual location."}/*,
+                                       new TutorialItemModel() {ImageUri = "tuto03",  Text = "Page3"}*/
             };
         }
 	}
