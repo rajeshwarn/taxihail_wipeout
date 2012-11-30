@@ -20,7 +20,7 @@
             android:text="@string/RideSettingsName"
             android:textColor="@color/black"
             android:layout_marginLeft="3dip"
-            android:layout_marginBottom="5dip"/>
+            android:layout_marginBottom="5dip" />
         <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -75,10 +75,10 @@
             android:layout_marginBottom="5dip"
             android:textColor="@color/black"
             android:layout_marginLeft="3dip" />
-        <EditText
+        <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-           local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;VehicleTypeDisplay&apos;}}"/>
+            local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;VehicleTypeName&apos;}, &apos;Data&apos;: {&apos;Path&apos;: &apos;Vehicles&apos;}, &apos;SelectedItem&apos;: {&apos;Path&apos;: &apos;VehicleTypeId&apos;}}" />
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -87,35 +87,10 @@
             android:layout_marginBottom="5dip"
             android:textColor="@color/black"
             android:layout_marginLeft="3dip" />
-        <EditText
+        <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;ChargeTypeDisplay&apos;}}"/>
-    <!--TextView
-            android:id="@+id/rideSettingsListHeader"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:focusable="false"
-            android:text="@string/DefaultRideSettingsViewTitle"
-            android:textStyle="bold"
-            android:textSize="14sp"
-            android:textColor="@color/darkgray"
-            android:background="#00000000" />
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="60dip"
-            android:orientation="vertical">
-            <ListView
-                android:id="@+id/RideSettingsList"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:divider="@color/gray"
-                android:dividerHeight="1dp"
-                android:focusable="false"
-                android:background="#00000000"
-                android:cacheColorHint="#00000000" />
-        </LinearLayout>
+            local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;ChargeTypeName&apos;}, &apos;Data&apos;: {&apos;Path&apos;: &apos;Payments&apos;}, &apos;SelectedItem&apos;: {&apos;Path&apos;: &apos;ChargeTypeId&apos;}}" />
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -133,6 +108,6 @@
                 android:lines="1"
                 android:text="@string/SaveButton"
                 local:MvxBind="{&apos;Click&apos;: {&apos;Path&apos;: &apos;SaveCommand&apos;}}" />
-        </LinearLayout-->
+        </LinearLayout>
     </LinearLayout>
 </apcurium.mk.booking.mobile.client.controls.HeaderedLayout>

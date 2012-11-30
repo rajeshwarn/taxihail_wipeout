@@ -224,6 +224,8 @@
     <AndroidResource Include="Resources\Drawable\green_button_right.xml" />
     <AndroidResource Include="Resources\Drawable\address_selector_button.xml" />
     <AndroidResource Include="Resources\Drawable\button_no_background.xml" />
+    <Compile Include="Controls\EditTextSpinner.cs" />
+    <Compile Include="Binding\EditTextSpinnerSelectedItemBinding.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
@@ -514,6 +516,7 @@
   -->
   <ItemGroup>
     <Folder Include="Localization\Mapper\" />
+    <Folder Include="Binding\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">
