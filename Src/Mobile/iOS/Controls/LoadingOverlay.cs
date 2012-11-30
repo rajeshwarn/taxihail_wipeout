@@ -289,7 +289,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 _label.TextColor = UIColor.White;
                 _label.TextAlignment = UITextAlignment.Center;
                 
-                _label.Font = TinyIoCContainer.Current.Resolve<IAppResource>().CurrentLanguage == AppLanguage.English ? UIFont.SystemFontOfSize(14) : UIFont.SystemFontOfSize(12);
+                _label.Font = TinyIoCContainer.Current.Resolve<IAppResource>().CurrentLanguage == AppLanguage.English ? AppStyle.GetNormalFont(14) : AppStyle.GetNormalFont(12);
                 
                 _label.Frame = new System.Drawing.RectangleF(36, 4, 86, 21);
                 

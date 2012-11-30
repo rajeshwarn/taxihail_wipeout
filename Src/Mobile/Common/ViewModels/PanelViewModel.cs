@@ -1,6 +1,9 @@
 using System;
+using Cirrious.MvvmCross.Android.Views;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using Cirrious.MvvmCross.Commands;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Views;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using TinyMessenger;
@@ -120,7 +123,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return new MvxRelayCommand(() => RequestNavigate<TutorialViewModel>());
+                return new MvxRelayCommand(() =>
+                                               {
+                                                   MenuIsOpen = false;
+                                                   MessageService.ShowDialogActivity(typeof (TutorialViewModel));
+                                                   //RequestNavigate<TutorialViewModel>()
+                                               });
             }
         }
 

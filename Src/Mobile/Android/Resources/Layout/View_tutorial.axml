@@ -8,11 +8,10 @@
               android:id="@+id/layout_main">
   <apcurium.MK.Booking.Mobile.Client.Controls.HorizontalPager
       android:id="@+id/details"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         local:MvxBind="{&apos;TutorialItemModel&apos;: {&apos;Path&apos;: &apos;TutorialItemsList&apos;}}" />
   <TextView
     android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-  android:text="koukou"/>
+        android:layout_height="wrap_content"/>
 </LinearLayout>

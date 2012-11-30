@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="EstimateDistance"> ({0})</string>
   <string name="CreateAccoutCancel">Cancel</string>
@@ -89,8 +89,7 @@
   <string name="CannotCancelOrderTitle">Invalid Action</string>
   <string name="DateTimePickerPickInvalidDateMessage">The pickup date must be in the future.</string>
   <string name="HistoryDetailPickupDateLabel">Pickup Date:</string>
-  <string name="View_SignIn">
-  </string>
+  <string name="View_SignIn"></string>
   <string name="HistoryDetailBuildingNameLabel">Building Name:</string>
   <string name="PickupTimeTextPlaceholder">Time: Now</string>
   <string name="AccountActivationMessage">You will receive an email shortly with a link you need to click on to confirm your registration.</string>
@@ -305,12 +304,28 @@
   <string name="searchHint">Search</string>
   <string name="CreateAccountErrorTitle">Error</string>
   <string name="CreateAccountLanguageFrench">French</string>
-  <string name="BookItButton">Pick Me Up Now</string>
+  <string name="BookItButton">TaxiHail rocks!</string>
+  <string name="BookItLaterButton">Later</string>
   <string name="ConfirmDestinationLabel">Destination:</string>
   <string name="NearbyPlacesTitle">Nearby places</string>
-  <string name="GenericTitle">
-  </string>
+  <string name="GenericTitle"></string>
   <string name="View_PasswordRecovery">Reset Password</string>
   <string name="InvalidLocalContactTitle">Invalid contact</string>
   <string name="View_Book_Menu_Tutorial">Tutorial</string>
+  <string name="Tuto01Bottom">Start by selecting your current position.</string>
+  <string name="Tuto01Top">Here\'s how to book a ride with just a couple of taps.</string>
+  <string name="Tuto02Bottom">If it\'s a little off, simply reposition the map to your actual location.</string>
+  <string name="Tuto02Top">We should be able to locate you using the GPS receiver in your mobile device.</string>
+  <string name="Tuto03Bottom">You can search for a specific address or pick one from your favorites, contacts or a list of nearby places.</string>
+  <string name="Tuto03Top">You may also select your pickup location by tapping the pickup address.</string>
+  <string name="Tuto04Bottom">Doing so will provide an estimate for the cost for the trip.</string>
+  <string name="Tuto04Top">If you want, you can also set your destination.</string>
+  <string name="Tuto05Bottom">Or Tap the Later button to schedule your pickup for a future time or date.</string>
+  <string name="Tuto05Top">Tap Book Now and a vehicle will be assigned as soon as possible.</string>
+  <string name="Tuto06Bottom">Tap Confirm when you are ready to go.</string>
+  <string name="Tuto06Top">The confirmation screen allows you to verify your trip details and to change any of your preferences for this specific ride.</string>
+  <string name="Tuto07Bottom">Status updates are provided when the vehicles arrives at the pickup address, when you enter the vehicle, and at the end of the ride.</string>
+  <string name="Tuto07Top">On the Status screen you will see a reservation number confirming your booking. Once a vehicle is assigned, you can watch as it progresses to your pickup location.</string>
+  <string name="Tuto08Bottom">We hope you find this application both convenient and intuitive.</string>
+  <string name="Tuto08Top">You can review your order history at any time, and even rebook a previous trip with the push of a button</string>
 </resources>

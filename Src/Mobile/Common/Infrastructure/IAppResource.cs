@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using MK.Common.Android.Entity;
 using apcurium.MK.Booking.Mobile.Localization;
+using apcurium.MK.Booking.Mobile.Client;
 
 namespace apcurium.MK.Booking.Mobile.Infrastructure
 {

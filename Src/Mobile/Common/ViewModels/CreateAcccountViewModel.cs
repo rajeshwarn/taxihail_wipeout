@@ -59,8 +59,8 @@ namespace apcurium.MK.Booking.Mobile
 						return;
 					}
 					
-					bool hasEmail = Data.Password.HasValue() && ConfirmPassword.HasValue();
-					if (Data.Email.IsNullOrEmpty() || Data.Name.IsNullOrEmpty() || Data.Phone.IsNullOrEmpty() || (!hasEmail && !HasSocialInfo))
+					bool hasPassword = Data.Password.HasValue() && ConfirmPassword.HasValue();
+                    if (Data.Email.IsNullOrEmpty() || Data.Name.IsNullOrEmpty() || Data.Phone.IsNullOrEmpty() || (!hasPassword && !HasSocialInfo))
 					{
 						MessageService.ShowMessage(Resources.GetString("CreateAccountInvalidDataTitle"), Resources.GetString("CreateAccountEmptyField"));
 						return;

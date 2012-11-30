@@ -89,6 +89,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             ViewModel.OnViewLoaded();
 
+            this.View.ApplyAppFont ();
+
         }
     }
 }

@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
-using MK.Common.Android.Entity;
 using apcurium.MK.Booking.Mobile.Models;
+using apcurium.MK.Booking.Mobile.Client;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {

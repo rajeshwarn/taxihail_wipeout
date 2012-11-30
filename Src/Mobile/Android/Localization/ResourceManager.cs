@@ -9,7 +9,6 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using MK.Common.Android.Entity;
 using apcurium.MK.Booking.Mobile.Localization;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 
@@ -82,9 +81,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Localization
         {
             return new List<TutorialItemModel>()
                                    {
-                                       new TutorialItemModel() {ImageUri = "tuto01", TopText = "Here's how to book a ride with just a couple of taps.", BottomText = "Start by selecting your current position."},
-                                       new TutorialItemModel() {ImageUri = "tuto02",  TopText = "We should be able to locate you using the GPS receiver in your mobile device.", BottomText = "If it's abstract little off, simply reposition the map to your actual location."}/*,
-                                       new TutorialItemModel() {ImageUri = "tuto03",  Text = "Page3"}*/
+                                       new TutorialItemModel() {ImageUri = "tuto01", TopText = GetString("Tuto01Top"), BottomText = GetString("Tuto01Bottom")},
+                                       new TutorialItemModel() {ImageUri = "tuto02",  TopText = GetString("Tuto02Top"), BottomText = GetString("Tuto02Bottom")},
+                                       new TutorialItemModel() {ImageUri = "tuto01",  TopText = GetString("Tuto02Top"), BottomText = GetString("Tuto03Bottom")},
+                                       new TutorialItemModel() {ImageUri = "tuto02",  TopText = GetString("Tuto03Top"), BottomText = GetString("Tuto04Bottom")},
+                                       new TutorialItemModel() {ImageUri = "tuto01",  TopText = GetString("Tuto04Top"), BottomText = GetString("Tuto05Bottom")},
+                                       new TutorialItemModel() {ImageUri = "tuto02",  TopText = GetString("Tuto05Top"), BottomText = GetString("Tuto06Bottom")},
+                                       new TutorialItemModel() {ImageUri = "tuto01",  TopText = GetString("Tuto06Top"), BottomText = GetString("Tuto07Bottom")},
+                                       new TutorialItemModel() {ImageUri = "tuto02",  TopText = GetString("Tuto07Top"), BottomText = GetString("Tuto08Bottom")}
                                    };
         }
 
