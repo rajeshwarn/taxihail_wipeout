@@ -315,6 +315,10 @@
     <Compile Include="Views\LocationDetailView.xib.designer.cs">
       <DependentUpon>LocationDetailView.xib</DependentUpon>
     </Compile>
+    <Compile Include="Views\TutorialView.cs" />
+    <Compile Include="Views\TutorialView.designer.cs">
+      <DependentUpon>TutorialView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\UndelinedLabel.cs" />
     <Compile Include="Controls\TitleView.cs" />
     <Compile Include="Views\BookViewActionsView.cs" />
@@ -381,6 +385,7 @@
     <InterfaceDefinition Include="Views\HistoryDetailView.xib" />
     <InterfaceDefinition Include="Views\LocationsTabView.xib" />
     <InterfaceDefinition Include="Views\LocationDetailView.xib" />
+    <InterfaceDefinition Include="Views\TutorialView.xib" />
     <InterfaceDefinition Include="Views\RideSettingsView.xib" />
     <InterfaceDefinition Include="Views\CreateAccountView.xib" />
   </ItemGroup>
@@ -527,6 +532,8 @@
     <Content Include="Assets\flag_selected%402x.png" />
     <Content Include="Assets\hail_selected.png" />
     <Content Include="Assets\hail_selected%402x.png" />
+    <Content Include="Assets\tuto01.png" />
+    <Content Include="Assets\tuto02.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.iOS.csproj">

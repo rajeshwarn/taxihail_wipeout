@@ -70,7 +70,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		private void InitializeMenu()
 		{
             var account = TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount;
-			var structure = new InfoStructure( 44, false );
+			var structure = new InfoStructure( 40, false );
 			var sect = structure.AddSection();
             sect.AddItem( new SingleLineItem( Resources.GetValue("View_Book_Menu_MyLocations")) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
                     _viewModel.NavigateToMyLocations.Execute();
@@ -84,7 +84,10 @@ namespace apcurium.MK.Booking.Mobile.Client
                     _viewModel.NavigateToUpdateProfile.Execute();
 				})				
 			});
-
+            sect.AddItem( new SingleLineItem( Resources.GetValue("View_Book_Menu_Tutorial")   ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
+                    _viewModel.NavigateToTutorial.Execute();
+                })              
+            });
             sect.AddItem( new SingleLineItem( Resources.GetValue("View_Book_Menu_CallDispatch")   ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
                     _viewModel.Call.Execute();
 				})				
