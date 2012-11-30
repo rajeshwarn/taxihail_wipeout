@@ -70,7 +70,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 ViewModel.SetChargeType.Execute(x.Id);
             });
 
-
+            AppButtons.FormatStandardButton(btnUpdatePassword, Resources.GetValue("View_RideSettings_BtUpdateMyPassword"), AppStyle.ButtonColor.Grey, null);
 
             this.AddBindings(new Dictionary<object, string>(){
                 { txtName, "{'Text': {'Path': 'Name'}}" },
@@ -78,6 +78,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { txtPassengers, "{'Text': {'Path': 'Passengers'}}" },
                 { txtVehicleType, "{'Text': {'Path': 'VehicleTypeName'}}" },
                 { txtChargeType, "{'Text': {'Path': 'ChargeTypeName'}}" },
+                { btnUpdatePassword, "{'TouchUpInside': {'Path': 'NavigateToUpdatePassword'}}" }
             });
 
         }

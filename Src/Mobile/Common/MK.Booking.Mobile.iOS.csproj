@@ -175,7 +175,6 @@
     <Compile Include="ViewModels\SearchAddress\AddressSearchByPlacesViewModel.cs" />
     <Compile Include="ViewModels\PanelViewModel.cs" />
     <Compile Include="BindingConverter\BoolInverter.cs" />
-    <Compile Include="Messages\LogOutRequested.cs" />
     <Compile Include="ViewModels\SectionAddressViewModel.cs" />
     <Compile Include="Infrastructure\IAddressBookService.cs" />
     <Compile Include="ViewModels\RefineAddressViewModel.cs" />

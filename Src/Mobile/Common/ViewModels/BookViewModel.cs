@@ -43,7 +43,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public BookViewModel()
         {
-			MessengerHub.Subscribe<LogOutRequested>(msg => RequestNavigate<LoginViewModel>(true));
 			InitializeOrder();
 
             CenterMap(true);

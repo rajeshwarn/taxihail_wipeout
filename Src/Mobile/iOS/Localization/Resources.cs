@@ -3,6 +3,7 @@ using MonoTouch.Foundation;
 using apcurium.MK.Booking.Mobile.Localization;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using System.Collections.Generic;
+using apcurium.MK.Booking.Mobile.Models;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -27,11 +28,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public string CurrentLanguageCode {
 			get { return GetValue ("LanguageCode"); }
 		}
-
-        public List<TutorialItemModel> GetTutorialItemsList()
-        {
-            throw new NotImplementedException();
-        }
 
 		public string OrderNote{ get { return Resources.OrderNoteStatic; } }
 
@@ -1020,6 +1016,16 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			get { return GetValue("ViewRatingBtn"); }
 		}
+
+        public List<TutorialItemModel> GetTutorialItemsList()
+        {
+            return new List<TutorialItemModel>()
+            {
+                new TutorialItemModel() {ImageUri = "tuto01", TopText = "Here's how to book a ride with just a couple of taps.", BottomText = "Start by selecting your current position."},
+                new TutorialItemModel() {ImageUri = "tuto02",  TopText = "We should be able to locate you using the GPS receiver in your mobile device.", BottomText = "If it's abstract little off, simply reposition the map to your actual location."}/*,
+                                       new TutorialItemModel() {ImageUri = "tuto03",  Text = "Page3"}*/
+            };
+        }
 	}
 }
 

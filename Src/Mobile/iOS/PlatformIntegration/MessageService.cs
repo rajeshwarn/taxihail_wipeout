@@ -4,6 +4,11 @@ using System.Linq;
 using System.Text;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using MonoTouch.UIKit;
+using Cirrious.MvvmCross.Touch.Interfaces;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Views;
+using Cirrious.MvvmCross.Touch.Views.Presenters;
+using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -17,14 +22,19 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
 		}
 
+        #region IMessageService implementation
+
+      
+        #endregion
+
 		public void ShowMessage(string title, string message)
 		{
 			MessageHelper.Show( title, message );
 		}
 
-		public void ShowMessage(string title, string message, string additionnalActionButtonTitle, Action additionalAction )
+		public void ShowMessage(string title, string message, Action additionalAction )
 		{
-			MessageHelper.Show( title, message, additionnalActionButtonTitle, additionalAction );
+            MessageHelper.Show( title, message, "OK", additionalAction );
 		}
 
 
@@ -66,6 +76,12 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 		{
 			ShowProgress( show, null );
 		}
+
+        public void ShowDialogActivity(Type type)
+        {
+            var presenter = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxTouchViewPresenter>();
+            presenter.Show(new MvxShowViewModelRequest(type,null, false, MvxRequestedBy.UserAction));
+        }
 
         public void ShowDialog<T> (string title, IEnumerable<T> items, Func<T, string> displayNameSelector, Action<T> onItemSelected)
         {

@@ -91,6 +91,18 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;ChargeTypeName&apos;}, &apos;Data&apos;: {&apos;Path&apos;: &apos;Payments&apos;}, &apos;SelectedItem&apos;: {&apos;Path&apos;: &apos;ChargeTypeId&apos;}}" />
+        <Button
+            android:id="@+id/UpdatePassword"
+            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;NavigateToUpdatePassword&apos;}}"
+            style="@style/ButtonText"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="40dip"
+            android:background="@drawable/gray_button"
+            android:text="@string/View_RideSettings_BtUpdateMyPassword"
+            android:layout_width="200dip"
+            android:paddingBottom="5dip"
+            android:paddingTop="5dip"
+            android:width="10dip" />
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
