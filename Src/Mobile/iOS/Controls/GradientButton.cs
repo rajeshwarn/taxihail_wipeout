@@ -25,6 +25,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			UIColor.FromRGB(222, 222, 222),
 			UIColor.FromRGB(200, 200, 200)
 		};
+
+        public UIRectCorner _roundedCorners = UIRectCorner.AllCorners;
 		private float[] _colorLocations = new float[] { 0f, 0.93f, 1f };
 		private float[] _selectedColorLocations = new float[] { 0f, 0.93f, 1f };
 		private float _strokeLineWidth = 1f;
@@ -249,7 +251,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public override bool ContinueTracking(UITouch uitouch, UIEvent uievent)
         {
-            Console.WriteLine ( "Cc" );
             var touch = uievent.AllTouches.AnyObject as UITouch;
             if (Bounds.Contains (touch.LocationInView (this)))
                 _pressed = true;
@@ -258,6 +259,16 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             SetNeedsDisplay();
             return base.ContinueTracking (uitouch, uievent);
+        }
+
+        public UIRectCorner RoundedCorners
+        {
+            get{ return _roundedCorners; }
+            set
+            {
+                _roundedCorners = value;
+                SetNeedsDisplay();
+            }
         }
 
         public override void SetTitle(string title, UIControlState forState)
@@ -282,7 +293,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             rect.X += _dropShadow != null && _dropShadow.OffsetX < 0 ? Math.Abs(_dropShadow.OffsetX) : 0;
             rect.Y += _dropShadow != null && _dropShadow.OffsetY < 0 ? Math.Abs(_dropShadow.OffsetY) : 0;
 
-            var roundedRectanglePath = UIBezierPath.FromRoundedRect(rect, _cornerRadius);
+            var roundedRectanglePath = UIBezierPath.FromRoundedRect(rect, RoundedCorners, new SizeF(  _cornerRadius , _cornerRadius ));
             context.SaveState();
             if (_dropShadow != null)
             {
@@ -376,7 +387,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             if (_pressed)
             {
                 var insideRect = rect.Inset(0f, 0f);
-                var container = UIBezierPath.FromRoundedRect(insideRect, _cornerRadius);
+                var container = UIBezierPath.FromRoundedRect(insideRect, RoundedCorners, new SizeF(  _cornerRadius , _cornerRadius ));
                 context.SaveState();
                 container.AddClip();
 

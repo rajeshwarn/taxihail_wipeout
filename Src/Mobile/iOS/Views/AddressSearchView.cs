@@ -72,7 +72,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 			var searchBtn = TopBar.AddButton( Resources.TabSearch, "SearchBtn" );
 			var favoritesBtn = TopBar.AddButton( Resources.TabFavorites, "FavoritesBtn" );
-			var contactsBtn = TopBar.AddButton( Resources.TabContacts, "ContactsBtn" );
+			//var contactsBtn = TopBar.AddButton( Resources.TabContacts, "ContactsBtn" );
 			var placesBtn = TopBar.AddButton( Resources.TabPlaces, "PlacesBtn" );
 			TopBar.SetSelected( 0 );
 
@@ -80,7 +80,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			SearchTextField.Placeholder = Resources.SearchHint;
 
 			AppButtons.FormatStandardButton( (GradientButton)CancelButton, Resources.CancelBoutton, AppStyle.ButtonColor.Silver );
-
+            ((GradientButton)CancelButton).TitleFont = AppStyle.GetBoldFont ( 16 );
 			var source = new BindableAddressTableViewSource(
                                 AddressListView, 
                                 UITableViewCellStyle.Subtitle,
@@ -94,7 +94,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 				{CancelButton, "{'TouchUpInside':{'Path':'CloseViewCommand'}}"},
 				{source, "{'ItemsSource':{'Path':'AllAddresses'}, 'SelectedCommand':{'Path':'RowSelectedCommand'}}"} ,
 				{favoritesBtn, "{'SelectedChangedCommand':{'Path':'SelectedChangedCommand'}, 'Selected':{'Path':'FavoritesSelected'}}"} ,
-				{contactsBtn, "{'SelectedChangedCommand':{'Path':'SelectedChangedCommand'}, 'Selected':{'Path':'ContactsSelected'}}"} ,
+			//	{contactsBtn, "{'SelectedChangedCommand':{'Path':'SelectedChangedCommand'}, 'Selected':{'Path':'ContactsSelected'}}"} ,
 				{placesBtn, "{'SelectedChangedCommand':{'Path':'SelectedChangedCommand'}, 'Selected':{'Path':'PlacesSelected'}}"} ,
 				{searchBtn, "{'SelectedChangedCommand':{'Path':'SelectedChangedCommand'}, 'Selected':{'Path':'SearchSelected'}}"} ,
                 {SearchTextField, "{'Text':{'Path':'Criteria'}, 'TextChangedCommand':{'Path':'SearchCommand'}, 'IsProgressing':{'Path':'IsSearching'}}"} ,
@@ -107,6 +107,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
 				return SearchTextField.ResignFirstResponder();
             };
+
+            this.View.ApplyAppFont ();
 		}
 
 		public override void ViewDidUnload ()
