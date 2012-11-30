@@ -64,7 +64,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			versionLabel.Text = TinyIoCContainer.Current.Resolve<IPackageInfo>().Version;
 
 			InitializeMenu();	
-
+            this.View.ApplyAppFont ();
 		}
 
 		private void InitializeMenu()

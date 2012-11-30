@@ -15,6 +15,7 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using ServiceStack.Text;
 using SocialNetworks.Services;
 using apcurium.Framework;
+using Cirrious.MvvmCross.Interfaces.Commands;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -129,20 +130,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public MvxRelayCommand<RegisterAccount> Signup
+        public IMvxCommand SignUp
         {
             get
             {
-                return new MvxRelayCommand<RegisterAccount>(registerDataFromSocial => 
-                { 
-                    string serialized = null;
-                    if (registerDataFromSocial != null) {
-                        serialized = JsonSerializer.SerializeToString(registerDataFromSocial);
-                    }
-                    RequestSubNavigate<CreateAcccountViewModel, RegisterAccount>(new Dictionary<string, string>{ {"data", serialized } }, OnAccountCreated);  
-                });
+                return new MvxRelayCommand(() => DoSignUp() );
             }
         }
+
+		private void DoSignUp (RegisterAccount registerDataFromSocial = null)
+		{
+			string serialized = null;
+			if (registerDataFromSocial != null) {
+				serialized = registerDataFromSocial.ToJson();
+			}
+			RequestSubNavigate<CreateAcccountViewModel, RegisterAccount>(new Dictionary<string, string>{ {"data", serialized } }, OnAccountCreated); 
+		}
 
         void OnAccountCreated (RegisterAccount data)
         {
@@ -229,7 +232,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     var account = _accountService.GetFacebookAccount(data.FacebookId);
                     if (account == null)
                     {
-                        Signup.Execute(data);
+                        DoSignUp(data);
                     }else{
                         RequestNavigate<BookViewModel>(true );
                     }
@@ -256,7 +259,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     var account = _accountService.GetTwitterAccount(data.TwitterId);
                     if (account == null)
                     {                               
-                        Signup.Execute(data);
+                        DoSignUp(data);
                     } else{
                         RequestNavigate<BookViewModel>(true );
                     }                   

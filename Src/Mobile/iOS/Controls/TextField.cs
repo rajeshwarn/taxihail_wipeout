@@ -5,6 +5,7 @@ using MonoTouch.CoreAnimation;
 using MonoTouch.CoreFoundation;
 using MonoTouch.Foundation;
 using System.Drawing;
+using apcurium.MK.Booking.Mobile.Style;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -31,6 +32,10 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             BorderStyle = UITextBorderStyle.Line;
             BackgroundColor = UIColor.Clear;
+            TextColor = UIColor.FromRGB(64, 64, 64);
+            Font = AppStyle.NormalTextFont;
+            PaddingLeft = 5;
+            this.Bounds = new RectangleF(Bounds.X, Bounds.Y, Bounds.Width, 34);
         }
 
         public float PaddingLeft
@@ -147,15 +152,18 @@ namespace apcurium.MK.Booking.Mobile.Client
             // Shadow Declarations
             var inner = color3.CGColor;
             var innerOffset = new SizeF(0, 1);
-            var innerBlurRadius = 2;
+
+            var radius = StyleManager.Current.ButtonCornerRadius.HasValue ? StyleManager.Current.ButtonCornerRadius.Value : 3;
+            var innerBlurRadius = radius- 1;
             var outer = color2.CGColor;
             var outerOffset = new SizeF(0, 1);
-            var outerBlurRadius = 1;
+            var outerBlurRadius = innerBlurRadius-1;
 
             // Rectangle Drawing
             context.SetShadowWithColor(outerOffset, outerBlurRadius, outer);
 
-            var rectanglePath = UIBezierPath.FromRoundedRect(new RectangleF(frame.GetMinX() + 1f, frame.GetMinY() + 1f, frame.Width - 2, frame.Height - 2), 3);
+
+            var rectanglePath = UIBezierPath.FromRoundedRect(new RectangleF(frame.GetMinX() + 1f, frame.GetMinY() + 1f, frame.Width - 2, frame.Height - 2), radius);
             UIColor.White.SetFill();
             rectanglePath.Fill();
 

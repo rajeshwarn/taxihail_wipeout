@@ -64,7 +64,7 @@
     <AssemblyName>TaxiMobileApp</AssemblyName>
     <MtouchExtraArgs>-v -v -v -v  -aot "nrgctx-trampolines=2500" -aot "nimt-trampolines=2500" -aot "ntrampolines=2500"</MtouchExtraArgs>
     <MtouchArch>ARMv7</MtouchArch>
-    <CodesignProvision>7B7390D8-92CE-4B20-AD8B-A18546B72C4A</CodesignProvision>
+    <CodesignProvision>8C57054F-2986-43C5-A2D0-38A965D37458</CodesignProvision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>none</DebugType>
@@ -162,7 +162,6 @@
     <Compile Include="Controls\Binding\Binding.cs" />
     <Compile Include="Controls\ISelectableViewController.cs" />
     <Compile Include="Controls\IRefreshableViewController.cs" />
-    <Compile Include="Settings\RideSettingsView.cs" />
     <Compile Include="Settings\AboutUsView.xib.cs">
       <DependentUpon>AboutUsView.xib</DependentUpon>
     </Compile>
@@ -170,7 +169,6 @@
       <DependentUpon>AboutUsView.xib</DependentUpon>
     </Compile>
     <Compile Include="Controls\ShinnyButton.cs" />
-    <Compile Include="Settings\CreateAccountView.cs" />
     <Compile Include="Settings\ResetPasswordView.cs" />
     <Compile Include="Controls\GraphicsUtil.cs" />
     <Compile Include="Controls\GlassButton.cs" />
@@ -196,9 +194,6 @@
     <Compile Include="Order\StatusView.xib.designer.cs">
       <DependentUpon>StatusView.xib</DependentUpon>
     </Compile>
-    <Compile Include="Order\BookItButton.cs" />
-    <Compile Include="Order\SimilarAddressTableDelegate.cs" />
-    <Compile Include="Order\SimilarAddressTableDatasource.cs" />
     <Compile Include="Order\ConfirmationCall.cs" />
     <Compile Include="Order\TouchableMapView.cs" />
     <Compile Include="Order\LocationDataExtension.cs" />
@@ -250,7 +245,6 @@
     <Compile Include="Controls\PanelView.cs" />
     <Compile Include="Controls\TextProgressButton.cs" />
     <Compile Include="Controls\SearchTextField.cs" />
-    <Compile Include="Controls\TitleView.cs" />
     <Compile Include="Controls\Binding\BindableAddressTableViewSource.cs" />
     <Compile Include="Controls\TouchMap.cs" />
     <Compile Include="MapUtitilties\AddressAnnotation.cs" />
@@ -321,6 +315,23 @@
     <Compile Include="Views\LocationDetailView.xib.designer.cs">
       <DependentUpon>LocationDetailView.xib</DependentUpon>
     </Compile>
+    <Compile Include="Controls\UndelinedLabel.cs" />
+    <Compile Include="Controls\TitleView.cs" />
+    <Compile Include="Views\BookViewActionsView.cs" />
+    <Compile Include="Views\RideSettingsView.cs" />
+    <Compile Include="Views\RideSettingsView.designer.cs">
+      <DependentUpon>RideSettingsView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ModalTextField.cs" />
+    <Compile Include="Views\CreateAccountView.cs" />
+    <Compile Include="Views\CreateAccountView.designer.cs">
+      <DependentUpon>CreateAccountView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\FormLabel.cs" />
+    <Compile Include="Views\BaseViewController.cs" />
+    <Compile Include="Views\BaseViewController.designer.cs">
+      <DependentUpon>BaseViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -334,7 +345,6 @@
   </ProjectExtensions>
   <ItemGroup>
     <Folder Include="Helper\" />
-    <Folder Include="fr.lproj\" />
     <Folder Include="en.lproj\" />
     <Folder Include="Localization\" />
     <Folder Include="Locations\" />
@@ -371,10 +381,11 @@
     <InterfaceDefinition Include="Views\HistoryDetailView.xib" />
     <InterfaceDefinition Include="Views\LocationsTabView.xib" />
     <InterfaceDefinition Include="Views\LocationDetailView.xib" />
+    <InterfaceDefinition Include="Views\RideSettingsView.xib" />
+    <InterfaceDefinition Include="Views\CreateAccountView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />
-    <Content Include="fr.lproj\Localizable.strings" />
     <Content Include="app%402x.png" />
     <Content Include="app.png" />
     <Content Include="Default.png" />
@@ -433,10 +444,6 @@
     <Content Include="Assets\Logo%402x.png" />
     <Content Include="Assets\navBar.png" />
     <Content Include="Assets\navBar%402x.png" />
-    <Content Include="Assets\TopFieldBackground-Lg.png" />
-    <Content Include="Assets\TopFieldBackground-Lg%402x.png" />
-    <Content Include="Assets\TopFieldBackground-Sm.png" />
-    <Content Include="Assets\TopFieldBackground-Sm%402x.png" />
     <Content Include="Assets\Social\FB\fbIcon.png" />
     <Content Include="Assets\Social\FB\fbIcon%402x.png" />
     <Content Include="Assets\Social\FB\login.png" />
@@ -558,5 +565,11 @@
       <Project>{50A4C580-4D47-48CF-80A8-79FDF81D9845}</Project>
       <Name>MK.Booking.Google.iOS</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Assets\AppFont_Regular.otf" />
+    <BundleResource Include="Assets\AppFont_Bold.otf" />
+    <BundleResource Include="Assets\AppFont_Italic.otf" />
+    <BundleResource Include="Assets\AppFont_Medium.otf" />
   </ItemGroup>
 </Project>

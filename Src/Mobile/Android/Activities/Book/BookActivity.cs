@@ -49,15 +49,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             menu.Visibility = ViewStates.Gone;
             _menuWidth = WindowManager.DefaultDisplay.Width - 100;
 
-            FindViewById<ImageButton>(Resource.Id.pickupDateButton).Click -= PickDate_Click;
-            FindViewById<ImageButton>(Resource.Id.pickupDateButton).Click += PickDate_Click;
+            FindViewById<View>(Resource.Id.pickupDateButton).Click -= PickDate_Click;
+            FindViewById<View>(Resource.Id.pickupDateButton).Click += PickDate_Click;
 
-            
-            
-            
-            //txt.Typeface = AppFonts.Bold;
-            
-            
 
 
 			ViewModel.Panel.PropertyChanged -= HandlePropertyChanged;

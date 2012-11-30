@@ -2,6 +2,7 @@ using System;
 using MonoTouch.Foundation;
 using apcurium.MK.Booking.Mobile.Localization;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -26,6 +27,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public string CurrentLanguageCode {
 			get { return GetValue ("LanguageCode"); }
 		}
+
+        public List<TutorialItemModel> GetTutorialItemsList()
+        {
+            throw new NotImplementedException();
+        }
 
 		public string OrderNote{ get { return Resources.OrderNoteStatic; } }
 

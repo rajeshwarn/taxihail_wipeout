@@ -168,6 +168,10 @@
   <data name="NearbyPlacesTitle" xml:space="preserve">
     <value>Nearby places</value>
   </data>
+  <data name="BookItLaterButton" xml:space="preserve">
+    <value>Later</value>
+  </data>
+  
   <data name="LocationHistoryTitle" xml:space="preserve">
     <value>Locations history</value>
   </data>
@@ -196,7 +200,7 @@
     <value>Sign In</value>
   </data>
   <data name="SignUpButton" xml:space="preserve">
-    <value>Sign Up</value>
+    <value>Create a free account</value>
   </data>
   <data name="FacebookButton" xml:space="preserve">
     <value>Sign In with Facebook</value>
@@ -454,19 +458,19 @@
     <value>Server error</value>
   </data>
   <data name="RideSettingsName" xml:space="preserve">
-    <value>Name:</value>
+    <value>Name</value>
   </data>
   <data name="RideSettingsPhone" xml:space="preserve">
-    <value>Mobile:</value>
+    <value>Mobile</value>
   </data>
   <data name="RideSettingsPassengers" xml:space="preserve">
-    <value>Passengers:</value>
+    <value>Passengers</value>
   </data>
   <data name="RideSettingsVehiculeType" xml:space="preserve">
-    <value>Vehicle type:</value>
+    <value>Vehicle type</value>
   </data>
   <data name="RideSettingsCompany" xml:space="preserve">
-    <value>Company:</value>
+    <value>Company</value>
   </data>
   <data name="HistoryDetailHideButton" xml:space="preserve">
     <value>Hide from history</value>
@@ -670,7 +674,7 @@
     <value>Cancel</value>
   </data>
   <data name="RideSettingsChargeType" xml:space="preserve">
-    <value>Charge type:</value>
+    <value>Charge type</value>
   </data>
   <data name="CreateAccountInvalidPassword" xml:space="preserve">
     <value>The password is invalid.  The password and confirmation must be the same.  The password must also be between 6 and 10 characters.</value>
@@ -706,7 +710,7 @@
     <value>The server didn't specify why the account could not be created, if the error persist try creating the account from the web site.</value>
   </data>
   <data name="RideSettingsNumberOfTaxi" xml:space="preserve">
-    <value>Nb. Taxi:</value>
+    <value>Nb. Taxi</value>
   </data>
   <data name="WarningEstimate" xml:space="preserve">
     <value>Please note that the price provided by this App is an estimate only. The fare amount as calculated by the meter, along with any applicable minimums and extras will be charged at the end of the trip.</value>
@@ -922,7 +926,7 @@
     <value>Reset Your Password</value>
   </data>
   <data name="View_SignUp" xml:space="preserve">
-    <value>Sign Up</value>
+    <value>Create Your Profile</value>
   </data>
   <data name="View_SignUp_Label" xml:space="preserve">
     <value>Create Your Profile</value>
