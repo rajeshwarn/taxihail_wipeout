@@ -10,13 +10,17 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Cirrious.MvvmCross.Android.Views;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.Interfaces.Views;
+using Cirrious.MvvmCross.Views;
 using apcurium.MK.Booking.Mobile.Client.Activities;
 using apcurium.MK.Booking.Mobile.Client.Activities.Setting;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using TinyIoC;
 using TinyMessenger;
 using apcurium.MK.Booking.Mobile.Messages;
+using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -151,6 +155,14 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         {
             Toast toast = Toast.MakeText(Context, message , duration == ToastDuration.Short ?  ToastLength.Short : ToastLength.Long );
             toast.Show();
+        }
+        /// <summary>
+        /// put the content of on activity on a modal dialog ( type = viewmodel Type )
+        /// </summary>
+        public void ShowDialogActivity(Type type)
+        {
+            var presenter = new MvxAndroidViewPresenter();
+            presenter.Show(new MvxShowViewModelRequest(type, null, false, MvxRequestedBy.UserAction));
         }
 
 		public void ShowDialog<T> (string title, IEnumerable<T> items, Func<T, string> displayNameSelector, Action<T> onResult)
