@@ -41,6 +41,9 @@ namespace apcurium.MK.Booking.ConfigTool
 
 
 
+                new ConfigFile(this){ Source="apcuriumLogo.png", Destination=@"Mobile\iOS\Assets\apcuriumLogo.png" },    
+                new ConfigFile(this){ Source="apcuriumLogo@2x.png", Destination=@"Mobile\iOS\Assets\apcuriumLogo@2x.png" },    
+
 
                 new ConfigFile(this){ Source="AppFont_Bold.otf", Destination=@"Mobile\iOS\Assets\AppFont_Bold.otf" },    
                 new ConfigFile(this){ Source="AppFont_Italic.otf", Destination=@"Mobile\iOS\Assets\AppFont_Italic.otf" },    

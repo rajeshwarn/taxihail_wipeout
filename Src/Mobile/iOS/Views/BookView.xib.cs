@@ -143,9 +143,15 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             base.ViewDidAppear (animated);
 
-            var btn = new UIBarButtonItem (new BarButtonItem (new RectangleF (0, 0, 40, 33), "Assets/settings.png", () => ViewModel.Panel.MenuIsOpen = !ViewModel.Panel.MenuIsOpen));
+            var button = AppButtons.CreateStandardButton( new RectangleF( 16,0,40,33 ) , "", AppStyle.ButtonColor.AlternateCorporateColor, "Assets/settings.png");
+            button.TouchUpInside += (sender, e) => ViewModel.Panel.MenuIsOpen = !ViewModel.Panel.MenuIsOpen;
+            var offsetView = new UIView( new RectangleF( 0,0,60,33) );
+            offsetView.AddSubview ( button );
+
+            //new BarButtonItem (new RectangleF (0, 0, 40, 33), "Assets/settings.png", () => ViewModel.Panel.MenuIsOpen = !ViewModel.Panel.MenuIsOpen)
+            var btn = new UIBarButtonItem ( offsetView );
             navBar.TopItem.RightBarButtonItem = btn;
-            navBar.TopItem.RightBarButtonItem.SetTitlePositionAdjustment (new UIOffset (-10, 0), UIBarMetrics.Default);
+            navBar.TopItem.RightBarButtonItem.SetTitlePositionAdjustment (new UIOffset (-20, 0), UIBarMetrics.Default);
         }
 
         private void OnStatusCloseRequested (StatusCloseRequested msg)

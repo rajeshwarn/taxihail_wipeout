@@ -16,7 +16,7 @@ namespace apcurium.MK.Booking.Maps.Impl
 {
     public class Geocoding : IGeocoding
     {
-        private string[] _otherTypesAllowed = new string[] { "airport", "transit_station", "bus_station", "train_station" };
+        private string[] _otherTypesAllowed = new string[] { "airport", "transit_station", "bus_station", "train_station", "route", "postal_code" };
         private IMapsApiClient _mapApi;        
         private IConfigurationManager _configManager;
         private readonly IPopularAddressProvider _popularAddressProvider;
@@ -68,8 +68,9 @@ namespace apcurium.MK.Booking.Maps.Impl
             var addressesInRange = new Address[0];
             if (searchPopularAddress)
             {
-               // addressesInRange = GetPopularAddressesInRange(new Position(latitude, longitude));
+               addressesInRange = GetPopularAddressesInRange(new Position(latitude, longitude));
             }
+
 
             var geoResult = _mapApi.GeocodeLocation(latitude, longitude);
             if (geoResult.Status == ResultStatus.OK)
@@ -85,7 +86,7 @@ namespace apcurium.MK.Booking.Maps.Impl
 
         private Address[] GetPopularAddressesInRange(Position position)
         {
-            float range = float.Parse(_configManager.GetSetting("GeoLoc.PopularAddress.Range"));
+            float range = 50;
             const double R = 6378137;
 
             var addressesInRange = from a in _popularAddressProvider.GetPopularAddresses()

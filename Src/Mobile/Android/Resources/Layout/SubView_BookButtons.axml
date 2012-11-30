@@ -1,38 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.TaxiHailDemo">
-    <ImageButton
-        local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;SelectedAddress.RequestCurrentLocationCommand&apos;}, &apos;Enabled&apos;:{&apos;Path&apos;:&apos;CanClearAddress&apos;,&apos;Converter&apos;:&apos;BoolInverter&apos;},&apos;Visibility&apos;:{&apos;Path&apos;:&apos;CanClearAddress&apos;,&apos;Converter&apos;:&apos;InvertedVisibility&apos;}}"
-        android:src="@drawable/target_selected"
-        android:background="@drawable/myLocationButton_state"
-        style="@style/ButtonTextGray"
-        android:layout_width="40dip"
-        android:layout_height="40dip"
-        android:scaleType="fitCenter"
-        android:layout_alignParentLeft="true" />
-    <ImageButton
-        local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;SelectedAddress.ClearPositionCommand&apos;}, &apos;Enabled&apos;:{&apos;Path&apos;:&apos;CanClearAddress&apos;},&apos;Visibility&apos;:{&apos;Path&apos;:&apos;CanClearAddress&apos;,&apos;Converter&apos;:&apos;Visibility&apos;}}"
-        android:src="@drawable/cancel"
-        android:background="@drawable/red_button"
-        style="@style/ButtonTextGray"
-        android:layout_width="40dip"
-        android:layout_height="40dip"
-        android:layout_alignParentLeft="true" />
-    <Button
-        android:id="@+id/BookItBtn"
-        style="@style/ButtonText"
-        android:background="@drawable/green_button"
-        android:layout_width="150dip"
-        android:layout_height="40dip"
-        android:text="@string/BookItButton"
-        android:layout_centerHorizontal="true"
-        local:MvxBind="{&apos;Click&apos;: {&apos;Path&apos;: &apos;ConfirmOrder&apos;}}" />
-    <ImageButton
-        android:id="@+id/pickupDateButton"
-        android:src="@drawable/bookLater_state"
-        android:background="@drawable/bookLaterButton_state"
-        style="@style/ButtonTextGray"
-        android:layout_width="40dip"
-        android:layout_height="40dip"
-        android:layout_alignParentRight="true" />
+    xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.TaxiworldDemo">
+    <LinearLayout
+        android:id="@+id/Table01"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="10dp">
+        <ImageButton
+            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;SelectedAddress.RequestCurrentLocationCommand&apos;}, &apos;Enabled&apos;:{&apos;Path&apos;:&apos;CanClearAddress&apos;,&apos;Converter&apos;:&apos;BoolInverter&apos;},&apos;Visibility&apos;:{&apos;Path&apos;:&apos;CanClearAddress&apos;,&apos;Converter&apos;:&apos;InvertedVisibility&apos;}}"
+            android:src="@drawable/target_selected"
+            android:background="@drawable/green_button"
+            style="@style/ButtonTextGray"
+            android:layout_width="40dip"
+            android:layout_height="40dip"
+            android:scaleType="fitCenter" />
+        <ImageButton
+            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;SelectedAddress.ClearPositionCommand&apos;}, &apos;Enabled&apos;:{&apos;Path&apos;:&apos;CanClearAddress&apos;},&apos;Visibility&apos;:{&apos;Path&apos;:&apos;CanClearAddress&apos;,&apos;Converter&apos;:&apos;Visibility&apos;}}"
+            android:src="@drawable/cancel"
+            android:background="@drawable/red_button"
+            style="@style/ButtonTextGray"
+            android:layout_width="40dip"
+            android:layout_height="40dip"
+            android:layout_alignParentLeft="true" />
+        <Button
+            android:id="@+id/BookItBtn"
+            style="@style/ButtonTextTaxiworld"
+            android:background="@drawable/green_button_left"
+            android:text="@string/BookItButton"
+            android:layout_marginLeft="5dip"
+            android:layout_weight="0.8"
+            android:layout_width="wrap_content"
+            android:layout_height="40dip"
+            android:adjustViewBounds="true"
+            local:MvxBind="{&apos;Click&apos;: {&apos;Path&apos;: &apos;ConfirmOrder&apos;}}" />
+        <Button
+            android:id="@+id/pickupDateButton"
+            style="@style/ButtonTextTaxiworld"
+            android:text="@string/BookItLaterButton"
+            android:background="@drawable/green_button_right"
+            android:layout_weight="0.2"
+            android:layout_marginLeft="-8dip"
+            android:adjustViewBounds="true"
+            android:layout_alignParentRight="true"
+            android:layout_height="40dip"
+            android:layout_width="wrap_content" />
+    </LinearLayout>
 </merge>

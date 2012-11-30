@@ -12,7 +12,7 @@ using apcurium.MK.Common.Extensions;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using Cirrious.MvvmCross.Commands;
 using ServiceStack.Text;
-
+using apcurium.MK.Booking.Mobile.Extensions;
 namespace apcurium.MK.Booking.Mobile
 {
     public class MyLocationsViewModel: BaseViewModel

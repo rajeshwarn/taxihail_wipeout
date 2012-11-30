@@ -16,6 +16,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using Cirrious.MvvmCross.ExtensionMethods;
+using apcurium.MK.Booking.Mobile.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -80,7 +81,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     _cancellationToken = new CancellationTokenSource ();
 
                     var token = _cancellationToken.Token;
-                    var task = Task.Factory.StartNew (() =>
+                    var task = Task.Factory.SafeStartNew (() =>
                     {
                         if (!token.IsCancellationRequested) {
                             IsExecuting = true;
@@ -98,25 +99,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                     }, token);
 
-                    task.ContinueWith(t=> {
-                        IsExecuting = false;
-                        if(t.IsFaulted)
-                        {
-                            Logger.LogError(t.Exception);
-                        }
-
-                    }, TaskContinuationOptions.None);
-
                     task.ContinueWith (t =>
                     { 
 						InvokeOnMainThread(() => {
 							if (t.Result != null && t.Result.Any ()) {
 								var address = t.Result[0];
+                                Console.WriteLine ( address.FullAddress );
 								// Replace result coordinates  by search coordinates (= user position)
 								address.Latitude = coordinate.Latitude;
 								address.Longitude = coordinate.Longitude;
 								SetAddress (address, true);
 							} else {
+                                TinyIoCContainer.Current.Resolve<ILogger>().LogMessage( "No address found for coordinate : La : {0} , Lg: {1} ", coordinate.Latitude , coordinate.Longitude );
 								ClearAddress ();
 							}
 						});
