@@ -122,7 +122,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
             pageControl.Hidden = false;
             pageControl.Pages = count;
-            pageControl.CurrentPage = 1;
         }
         private void ScrollViewScrolled (object sender, EventArgs e)
         {
