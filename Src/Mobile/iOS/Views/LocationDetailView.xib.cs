@@ -88,7 +88,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { btnBook, "{'TouchUpInside': {'Path': 'RebookOrder'}, 'Hidden': {'Path': 'IsNew'}}" },
                 { btnDelete, "{'TouchUpInside': {'Path': 'DeleteAddress'}, 'Hidden': {'Path': 'IsNew'}}" },
             });
-
+            this.View.ApplyAppFont ();
         }
 
         private bool HandleShouldReturn (UITextField textField)

@@ -34,7 +34,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         protected override void OnViewModelSet()
         {
             SetContentView(Resource.Layout.View_Book);
-			FindViewById<TouchMap>(Resource.Id.mapPickup).SetMapCenterPin(FindViewById<ImageView>(Resource.Id.mapCenterPin));
+			FindViewById<TouchMap>(Resource.Id.mapPickup).SetMapCenterPins(FindViewById<ImageView>(Resource.Id.mapPickupCenterPin), FindViewById<ImageView>(Resource.Id.mapDropoffCenterPin));
 
             var mainSettingsButton = FindViewById<HeaderedLayout>(Resource.Id.MainLayout).FindViewById<ImageButton>(Resource.Id.ViewNavBarRightButton);
             mainSettingsButton.Click -= MainSettingsButtonOnClick;
@@ -49,15 +49,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             menu.Visibility = ViewStates.Gone;
             _menuWidth = WindowManager.DefaultDisplay.Width - 100;
 
-            FindViewById<ImageButton>(Resource.Id.pickupDateButton).Click -= PickDate_Click;
-            FindViewById<ImageButton>(Resource.Id.pickupDateButton).Click += PickDate_Click;
+            FindViewById<View>(Resource.Id.pickupDateButton).Click -= PickDate_Click;
+            FindViewById<View>(Resource.Id.pickupDateButton).Click += PickDate_Click;
 
-            
-            
-            
-            //txt.Typeface = AppFonts.Bold;
-            
-            
 
 
 			ViewModel.Panel.PropertyChanged -= HandlePropertyChanged;

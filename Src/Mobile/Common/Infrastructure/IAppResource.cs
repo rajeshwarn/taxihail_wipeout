@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using apcurium.MK.Booking.Mobile.Localization;
+using apcurium.MK.Booking.Mobile.Client;
 
 namespace apcurium.MK.Booking.Mobile.Infrastructure
 {
@@ -17,7 +19,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 		string CarAssigned{get;}
 
         string GetString(string key);
-
-    }
+	    List<TutorialItemModel> GetTutorialItemsList();
+	}
 }
 

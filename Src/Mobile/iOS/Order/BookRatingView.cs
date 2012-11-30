@@ -66,6 +66,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			ratingTableView.Source = source;
 			ratingTableView.ReloadData();
 
+            this.View.ApplyAppFont ();
+
 		}
 		
 		public override void ViewDidUnload ()

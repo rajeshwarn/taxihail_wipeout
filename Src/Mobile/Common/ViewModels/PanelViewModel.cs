@@ -112,12 +112,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	    {
 	        get
 	        {
-	            return new MvxRelayCommand(() =>
-	                                           {
-	                                               RequestNavigate<AboutUsViewModel>();
-	                                           });
+	            return new MvxRelayCommand(() => RequestNavigate<AboutUsViewModel>());
 	        }
 	    }
+
+        public IMvxCommand NavigateToTutorial
+        {
+            get
+            {
+                return new MvxRelayCommand(() => RequestNavigate<TutorialViewModel>());
+            }
+        }
 
 	    public IMvxCommand Call
         {

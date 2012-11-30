@@ -91,7 +91,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             });
 
             tableLocations.Source = source;
-	
+            this.View.ApplyAppFont ();
 		}
 
 		public override void ViewWillAppear (bool animated)

@@ -11,110 +11,91 @@ using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Settings
 {
-
     public class AppSettings : IAppSettings
     {
 
         private AppSettingsData _data;
 
-
-        public AppSettings()
+        public AppSettings ()
         {
 
-            using (var stream = this.GetType().Assembly.GetManifestResourceStream("apcurium.MK.Booking.Mobile.Settings.Settings.json"))
-            {
-                using (StreamReader reader = new StreamReader(stream))
-                {
+            using (var stream = this.GetType().Assembly.GetManifestResourceStream("apcurium.MK.Booking.Mobile.Settings.Settings.json")) {
+                using (StreamReader reader = new StreamReader(stream)) {
                     
-                    string serializedData = reader.ReadToEnd();
-                    _data = JsonSerializer.DeserializeFromString<AppSettingsData>(serializedData);
+                    string serializedData = reader.ReadToEnd ();
+                    _data = JsonSerializer.DeserializeFromString<AppSettingsData> (serializedData);
                 }
             }
         }
 
         public bool CanChooseProvider { get { return _data.CanChooseProvider; } }
 
-        public bool ErrorLogEnabled
-        {
+        public bool ErrorLogEnabled {
             get { return true; }
         }
 
-        public string ErrorLog
-        {
+        public string ErrorLog {
             get { 
                 string path = Environment.GetFolderPath (Environment.SpecialFolder.Personal);
-                return  Path.Combine ( path , "errorlog.txt"); 
+                return  Path.Combine (path, "errorlog.txt"); 
             }
         }
 
-        public string SiteUrl
-        {
+        public string SiteUrl {
             get { return _data.SiteUrl; }
         }
 
-
-        public string PhoneNumber(int providerId)
+        public string PhoneNumber (int providerId)
         {
             return _data.DefaultPhoneNumber;
         }
-        public string PhoneNumberDisplay(int companyId)
+
+        public string PhoneNumberDisplay (int companyId)
         {
             return _data.DefaultPhoneNumberDisplay;
         }
 
-        public int[] InvalidProviderIds
-        {
+        public int[] InvalidProviderIds {
             get { return new int[0]; }
         }
 
         public string ApplicationName { get { return _data.ApplicationName; } }
 
-
-
-        public string DefaultServiceUrl
-        {
+        public string DefaultServiceUrl {
             get { return "http://services.taxihail.com/{0}/api/"; }
 
         }
 
-        public bool CanChangeServiceUrl
-        {
+        public bool CanChangeServiceUrl {
             get { return _data.CanChangeServiceUrl; }
         }
 
-        public string ServiceUrl
-        {
-            get
-            {
-				var url = TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService>().Get<string>("TaxiHail.ServiceUrl");
-				if (string.IsNullOrEmpty(url))
-				{
-					
-					return _data.ServiceUrl;
-				}
-				else
-				{
-					return url;
-				}
+        public string ServiceUrl {
+            get {
+                string url = "";
+                try {
+                    url = TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService> ().Get<string> ("TaxiHail.ServiceUrl");
+                } catch {
+                    return _data.ServiceUrl;
+                }
+                if (string.IsNullOrEmpty (url)) {
+                    
+                    return _data.ServiceUrl;
+                } else {
+                    return url;
+                }
 
             }
-            set
-            {
-                if (CanChangeServiceUrl)
-                {
-                    TinyIoC.TinyIoCContainer.Current.Resolve<IConfigurationManager>().Reset();
+            set {
+                if (CanChangeServiceUrl) {
+                    TinyIoC.TinyIoCContainer.Current.Resolve<IConfigurationManager> ().Reset ();
 
-                    if (string.IsNullOrEmpty(value))
-                    {
-                        TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService>().Clear("TaxiHail.ServiceUrl");
-                    }
-                    else if (value.ToLower().StartsWith("http"))
-                    {
-                        TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService>().Set<string>("TaxiHail.ServiceUrl", value);
-                    }
-                    else
-                    {
-                        TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService>().Set<string>("TaxiHail.ServiceUrl", string.Format(DefaultServiceUrl, value));
+                    if (string.IsNullOrEmpty (value)) {
+                        TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService> ().Clear ("TaxiHail.ServiceUrl");
+                    } else if (value.ToLower ().StartsWith ("http")) {
+                        TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService> ().Set<string> ("TaxiHail.ServiceUrl", value);
+                    } else {
+                        TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService> ().Set<string> ("TaxiHail.ServiceUrl", string.Format (DefaultServiceUrl, value));
                     }
                 }
 
@@ -122,59 +103,47 @@ namespace apcurium.MK.Booking.Mobile.Settings
 
         }
 
-
-        public bool TwitterEnabled
-        {
+        public bool TwitterEnabled {
             get { return _data.TwitterEnabled; }
         }
 
-        public string TwitterConsumerKey 
-        {
+        public string TwitterConsumerKey {
             get { return _data.TwitterConsumerKey; }
         }
 
-        public string TwitterCallback
-        {
+        public string TwitterCallback {
             get { return _data.TwitterCallback; }
         }
 
-        public string TwitterConsumerSecret
-        {
+        public string TwitterConsumerSecret {
             get { return _data.TwitterConsumerSecret; }
         }
 
-        public string TwitterRequestTokenUrl
-        {
+        public string TwitterRequestTokenUrl {
             get { return _data.TwitterRequestTokenUrl; }
         }
 
-        public string TwitterAccessTokenUrl
-        {
+        public string TwitterAccessTokenUrl {
             get { return _data.TwitterAccessTokenUrl; }
         }
 
-        public string TwitterAuthorizeUrl
-        {
+        public string TwitterAuthorizeUrl {
             get { return _data.TwitterAuthorizeUrl; }
         }
 
-        public bool FacebookEnabled
-        {
+        public bool FacebookEnabled {
             get { return _data.FacebookEnabled; }
         }
 
-        public string FacebookAppId
-        {
+        public string FacebookAppId {
             get { return _data.FacebookAppId; }
         }
 
-        public string SupportEmail
-        {
+        public string SupportEmail {
             get { return _data.SupportEmail; }
         }
 
-        public bool RatingEnabled
-        {
+        public bool RatingEnabled {
             get { return _data.RatingEnabled; }
         }
     }

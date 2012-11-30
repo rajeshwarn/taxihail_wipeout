@@ -40,7 +40,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			};
 			AddSubview( reset );
 			
-			_picker.MinuteInterval = 15;
+			_picker.MinuteInterval = 5;
 			_picker.Frame = new System.Drawing.RectangleF (0, 45, _screenBounds.Width, _pickerViewHeight - 40f);
 			AddSubview (_picker);
 		}
@@ -70,12 +70,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			}
 			else
 			{
-				_picker.SetDate( DateTime.Now.AddMinutes(15), true );
+				_picker.SetDate( DateTime.Now.AddMinutes(5), true );
 			}
 
 			if( !ShowPastDate )
 			{
-				_picker.MinimumDate = DateTime.Now.AddMinutes(15);
+				_picker.MinimumDate = DateTime.Now.AddMinutes(5);
 			}
 			Animate ( true );
 		}

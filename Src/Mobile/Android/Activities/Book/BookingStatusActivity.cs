@@ -25,6 +25,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common;
 using System.Collections.Generic;
+using apcurium.MK.Booking.Mobile.Client.Controls;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -78,11 +79,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             _isInit = true;
 
-            var map = FindViewById<MapView>(Resource.Id.mapStatus);
+			var map = FindViewById<TouchMap>(Resource.Id.mapStatus);
             map.SetBuiltInZoomControls(false);
             map.Clickable = true;
             map.Traffic = false;
             map.Satellite = false;
+
+			map.DropoffIsActive = false;
+			map.PickupIsActive = false;
 
         }
     }

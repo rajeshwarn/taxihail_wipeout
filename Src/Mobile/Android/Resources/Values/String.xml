@@ -306,10 +306,12 @@
   <string name="CreateAccountErrorTitle">Error</string>
   <string name="CreateAccountLanguageFrench">French</string>
   <string name="BookItButton">Pick Me Up Now</string>
+  <string name="BookItLaterButton">Later</string>
   <string name="ConfirmDestinationLabel">Destination:</string>
   <string name="NearbyPlacesTitle">Nearby places</string>
   <string name="GenericTitle">
   </string>
   <string name="View_PasswordRecovery">Reset Password</string>
   <string name="InvalidLocalContactTitle">Invalid contact</string>
+  <string name="View_Book_Menu_Tutorial">Tutorial</string>
 </resources>

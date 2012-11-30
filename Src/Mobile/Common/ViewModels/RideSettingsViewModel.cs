@@ -48,8 +48,28 @@ namespace apcurium.MK.Booking.Mobile
 			set {
 				if(value != _bookingSettings.VehicleTypeId){
 					_bookingSettings.VehicleTypeId = value;
+                    FirePropertyChanged("VehicleTypeId");
+                    FirePropertyChanged("VehicleTypeName");
 				}
 			}
+        }
+
+        public string VehicleTypeName {
+            get {
+                var vehicle = this.Vehicles.FirstOrDefault(x=>x.Id == VehicleTypeId);
+                if(vehicle == null) return null;
+                return vehicle.Display;
+            }
+        }
+
+	    public string VehicleTypeDisplay
+	    {
+            get { return Vehicles.Where(v => v.Id.Equals(VehicleTypeId)).Select(c => c.Display).FirstOrDefault(); }
+	    }
+
+        public string ChargeTypeDisplay
+        {
+            get { return Payments.Where(v => v.Id.Equals(ChargeTypeId)).Select(c => c.Display).FirstOrDefault(); }
         }
 
         public int ChargeTypeId {
@@ -59,8 +79,18 @@ namespace apcurium.MK.Booking.Mobile
 			set {
 				if(value != _bookingSettings.ChargeTypeId){
 					_bookingSettings.ChargeTypeId = value;
+                    FirePropertyChanged("ChargeTypeId");
+                    FirePropertyChanged("ChargeTypeName");
 				}
 			}
+        }
+
+        public string ChargeTypeName {
+            get {
+                var chargeType = this.Payments.FirstOrDefault(x=>x.Id == ChargeTypeId);
+                if(chargeType == null) return null;
+                return chargeType.Display; 
+            }
         }
 
         public string Name {
@@ -106,7 +136,7 @@ namespace apcurium.MK.Booking.Mobile
             get {
                 return new MvxRelayCommand<int>(id=>{
 
-                    _bookingSettings.VehicleTypeId = id;
+                    VehicleTypeId = id;
 
                 });
             }
@@ -118,7 +148,7 @@ namespace apcurium.MK.Booking.Mobile
             get{
                 return new MvxRelayCommand<int>(id=>{
 
-                    _bookingSettings.ChargeTypeId = id;
+                    ChargeTypeId = id;
 
                 });
             }
