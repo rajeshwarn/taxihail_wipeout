@@ -108,6 +108,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+        public IMvxCommand NavigateToUpdatePassword
+        {
+            get
+            {
+                return new MvxRelayCommand(() => RequestNavigate<UpdatePasswordViewModel>());
+            }
+        }
+
 	    public IMvxCommand NavigateToAboutUs
 	    {
 	        get

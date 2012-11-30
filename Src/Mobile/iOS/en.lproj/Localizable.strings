@@ -302,7 +302,7 @@
 "searchHint"="Search";
 "CreateAccountErrorTitle"="Error";
 "CreateAccountLanguageFrench"="French";
-"BookItButton"="Pick Me Up Now";
+"BookItButton"="TaxiHail rocks!";
 "ConfirmDestinationLabel"="Destination:";
 "NearbyPlacesTitle"="Nearby places";
 "GenericTitle"="";
@@ -310,3 +310,6 @@
 "InvalidLocalContactTitle"="Invalid contact";
 "View_Book_Menu_Tutorial"="Tutorial";
 "BookItLaterButton"="Later";
+"View_Book_Menu_UpdateMyPassword"="Update My Password";
+"ServiceErrorUpdatePassword_NotSame"="The current password is not valid.";
+"ChangePasswordConfirmmation"="You password has been updated, please login in again.";

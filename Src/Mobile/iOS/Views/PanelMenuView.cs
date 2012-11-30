@@ -84,6 +84,10 @@ namespace apcurium.MK.Booking.Mobile.Client
                     _viewModel.NavigateToUpdateProfile.Execute();
 				})				
 			});
+            sect.AddItem( new SingleLineItem( Resources.GetValue("View_Book_Menu_UpdateMyPassword")   ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
+                    _viewModel.NavigateToUpdatePassword.Execute();
+                })              
+            });
             sect.AddItem( new SingleLineItem( Resources.GetValue("View_Book_Menu_CallDispatch")   ) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
                     _viewModel.Call.Execute();
 				})				
