@@ -55,7 +55,9 @@ namespace apcurium.MK.Booking.Google.Impl
             }
 
             var r = "json" + BuildQueryString(@params);
-            Console.WriteLine(r);
+
+
+
             return client.Get<PlacesResponse>(r).Results.ToArray();
 
         }
@@ -77,7 +79,7 @@ namespace apcurium.MK.Booking.Google.Impl
         {
             var client = new JsonServiceClient(MapsServiceUrl);
 
-            var resource = string.Format(CultureInfo.InvariantCulture, "directions/json?origin={0},{1}&destination={2},{3}&sensor=false", originLat, originLng, destLat, destLng);
+            var resource = string.Format(CultureInfo.InvariantCulture, "directions/json?origin={0},{1}&destination={2},{3}&sensor=true", originLat, originLng, destLat, destLng);
 
             return client.Get<DirectionResult>(resource);
         }
@@ -86,7 +88,9 @@ namespace apcurium.MK.Booking.Google.Impl
         {
             var client = new JsonServiceClient(MapsServiceUrl);
 
-            var resource = string.Format(CultureInfo.InvariantCulture, "geocode/json?address={0}&sensor=false", address);
+            var resource = string.Format(CultureInfo.InvariantCulture, "geocode/json?address={0}&sensor=true", address);
+
+            Console.WriteLine ( "GeocodeLocation : " + MapsServiceUrl + @"/" + resource );
 
             return client.Get<GeoResult>(resource);
         }
@@ -95,7 +99,9 @@ namespace apcurium.MK.Booking.Google.Impl
         {
             var client = new JsonServiceClient(MapsServiceUrl);
 
-            var resource = string.Format(CultureInfo.InvariantCulture, "geocode/json?latlng={0},{1}&sensor=false", latitude, longitude);
+            var resource = string.Format(CultureInfo.InvariantCulture, "geocode/json?latlng={0},{1}&sensor=true", latitude, longitude);
+
+            Console.WriteLine ( "GeocodeLocation : " + MapsServiceUrl + @"/" + resource );
 
             return client.Get<GeoResult>(resource);
         }

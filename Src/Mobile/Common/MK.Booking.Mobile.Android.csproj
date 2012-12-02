@@ -217,6 +217,7 @@
     <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="Models\TutorialItemModel.cs" />
     <Compile Include="ViewModels\UpdatePasswordViewModel.cs" />
+    <Compile Include="Extensions\TaskFactoryExtension.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">

@@ -53,7 +53,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             if (orderDetail.IBSOrderId.HasValue && orderDetail.IBSOrderId > 0)
             {
-                Cache.Set("LastOrderId", orderDetail.OrderId);
+                Cache.Set("LastOrderId", orderDetail.OrderId.ToString ()); // Need to be cached as a string because of a jit error on device
             }
 
             ThreadPool.QueueUserWorkItem(o =>
@@ -116,15 +116,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             var task = Task.Factory.StartNew(() =>
             {
                 OrderStatusDetail result = new OrderStatusDetail();
-                var lastOrderId = Cache.Get<Guid?>("LastOrderId");
-                if(!lastOrderId.HasValue)
+                var lastOrderId = Cache.Get<string>("LastOrderId");  // Need to be cached as a string because of a jit error on device
+
+                if(!lastOrderId.HasValue())
                 {
                     throw new InvalidOperationException();
                 }
 
                 UseServiceClient<OrderServiceClient>(service =>
                 {
-                    result = service.GetOrderStatus(lastOrderId.Value);
+                    result = service.GetOrderStatus( new Guid(lastOrderId));
                 }, ex => TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex));
 
                 return result;
@@ -138,7 +139,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public void ClearLastOrder()
         {
-            Cache.Set("LastOrderId", default(Guid?));
+            Cache.Set("LastOrderId", (string)null); // Need to be cached as a string because of a jit error on device
         }
 
         public void RemoveFromHistory(Guid orderId)

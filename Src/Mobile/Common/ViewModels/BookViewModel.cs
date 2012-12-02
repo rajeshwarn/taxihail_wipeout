@@ -24,8 +24,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 
+
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
+
     public class BookViewModel : BaseViewModel,
         IMvxServiceConsumer<IAccountService>,
         IMvxServiceConsumer<ILocationService>,
@@ -81,6 +83,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _accountService = this.GetService<IAccountService>();
             _geolocator = this.GetService<ILocationService>();
             _bookingService = this.GetService<IBookingService>();
+                                 
 
             Pickup = new BookAddressViewModel(() => Order.PickupAddress, address => Order.PickupAddress = address, _geolocator)
             {
@@ -95,8 +98,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			Panel = new PanelViewModel();
 
-            Pickup.PropertyChanged += Address_PropertyChanged;
-            Dropoff.PropertyChanged += Address_PropertyChanged;
             Pickup.AddressChanged += AddressChanged;
             Dropoff.AddressChanged += AddressChanged;
 
@@ -121,18 +122,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             InvokeOnMainThread(() => FirePropertyChanged(() => Pickup));
             InvokeOnMainThread(() => FirePropertyChanged(() => Dropoff));
             CenterMap(sender is bool ? !(bool)sender : false );
+
+            Task.Factory.SafeStartNew( ()=> CalculateEstimate(  ) );
+            FirePropertyChanged ( () => CanClearAddress );
         }
 
-        void Address_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == "Display")
-            {
-                ThreadPool.QueueUserWorkItem(CalculateEstimate);
-                FirePropertyChanged(() => CanClearAddress);
-            }
-        }
 
-        private void CalculateEstimate(object state)
+        private void CalculateEstimate()
         {
             _fareEstimate = TinyIoCContainer.Current.Resolve<IBookingService>().GetFareEstimateDisplay(Order, "EstimatePrice" , "NoFareText");
             
@@ -396,7 +392,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             FirePropertyChanged(() => IsInTheFuture);
             FirePropertyChanged(() => PickupDateDisplay);
-            ThreadPool.QueueUserWorkItem(CalculateEstimate);
+            Task.Factory.SafeStartNew ( CalculateEstimate );
         }
 		public IMvxCommand PickupDateSelectedCommand
 		{

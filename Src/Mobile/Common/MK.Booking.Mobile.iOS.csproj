@@ -127,7 +127,6 @@
     <Compile Include="Framework\NullDisposable.cs" />
     <Compile Include="Framework\Params.cs" />
     <Compile Include="Models\RideSettingsModel.cs" />
-    <Compile Include="Extensions\OrderExtension.cs" />
     <Compile Include="AppServices\IGoogleService.cs" />
     <Compile Include="AppServices\Impl\GoogleService.cs" />
     <Compile Include="AppServices\Impl\ApplicationInfoService.cs" />
@@ -205,11 +204,12 @@
     <Compile Include="BindingConverter\BoolVisibilityInverter.cs" />
     <Compile Include="ViewModels\MyLocationsViewModel.cs" />
     <Compile Include="Infrastructure\IPhoneService.cs" />
-    <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="ViewModels\AboutUsViewModel.cs" />
     <Compile Include="Messages\OrderDeleted.cs" />
     <Compile Include="ViewModels\TutorialViewModel.cs" />
     <Compile Include="Models\TutorialItemModel.cs" />
+    <Compile Include="Extensions\TaskExtensions.cs" />
+    <Compile Include="Extensions\TaskFactoryExtension.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">
@@ -254,5 +254,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Localization\Master.resx" />
+    <None Include="Localization\Taxiworld.resx" />
   </ItemGroup>
 </Project>

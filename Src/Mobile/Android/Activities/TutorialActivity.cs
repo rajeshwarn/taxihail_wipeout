@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
         protected override void OnViewModelSet()
         {
             
-            SetContentView(Resource.Layout.View_tutorial);
+            SetContentView(Resource.Layout.View_Tutorial);
            
            // var intent = new Intent(this, typeof (ViewFlipperActivity));
           //  StartActivity(typeof(ViewFlipperActivity));
