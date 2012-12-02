@@ -255,5 +255,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Localization\Master.resx" />
+    <None Include="Localization\Taxiworld.resx" />
   </ItemGroup>
 </Project>
