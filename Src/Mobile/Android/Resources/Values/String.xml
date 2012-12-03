@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="ApplicationName">TaxiHail</string>
   <string name="Language">English</string>
@@ -12,7 +12,8 @@
   <string name="TabContacts">Contacts</string>
   <string name="TabPlaces">Places</string>
   <string name="Close">Close</string>
-  <string name="GenericTitle"></string>
+  <string name="GenericTitle">
+  </string>
   <string name="NoConnectionTitle">Connection error</string>
   <string name="NoConnectionMessage"> The server cannot be contacted, it might be down temporarily or you may have lost your connection to the Internet.</string>
   <string name="FavoriteLocationsTitle">Favorite locations</string>
@@ -270,7 +271,8 @@
   <string name="View_PasswordRecovery_Label">Reset Your Password</string>
   <string name="View_SignUp">Sign Up</string>
   <string name="View_SignUp_Label">Create Your Profile</string>
-  <string name="View_SignIn"></string>
+  <string name="View_SignIn">
+  </string>
   <string name="View_RideSettings">Profile</string>
   <string name="View_Book_Menu_MyLocations">Manage My Locations</string>
   <string name="View_Book_Menu_MyOrders">My Orders</string>

@@ -15,7 +15,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         public CLLocation LastKnownLocation
         {
             get;
-            private set;
+             set;
         }
 
 
