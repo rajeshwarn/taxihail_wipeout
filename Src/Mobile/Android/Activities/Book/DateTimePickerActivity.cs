@@ -41,7 +41,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             if ( !useAmPm )
             {
-                timePicker.SetIs24HourView(Java.Lang.Boolean.True);  
+                var h = timePicker.CurrentHour.IntValue ();               
+                timePicker.SetIs24HourView(Java.Lang.Boolean.True);                                       
+                timePicker.CurrentHour = new Integer(h);
             }
 
         }
