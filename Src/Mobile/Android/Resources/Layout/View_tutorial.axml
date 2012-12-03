@@ -1,17 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.TaxiHailDemo"
-              android:orientation="vertical"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              android:background="#ffffff"
-              android:id="@+id/layout_main">
-  <apcurium.MK.Booking.Mobile.Client.Controls.HorizontalPager
-      android:id="@+id/details"
+    xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.TaxiHailDemo"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/tutorial_background"
+    android:paddingLeft="0dip"
+    android:paddingRight="0dip"
+    android:paddingBottom="0dip"
+    android:id="@+id/layout_main">
+    <apcurium.MK.Booking.Mobile.Client.Controls.HorizontalPager
+        android:id="@+id/details"
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
+        android:layout_height="410dip"
         local:MvxBind="{&apos;TutorialItemModel&apos;: {&apos;Path&apos;: &apos;TutorialItemsList&apos;}}" />
-  <TextView
-    android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="20dip"
+        android:layout_marginBottom="5dip"
+        android:id="@+id/layout_pips"
+        android:layout_gravity="center_horizontal" />
 </LinearLayout>

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="wrap_content"
     android:id="@+id/tutorialLayout">
     <TextView
         android:layout_width="wrap_content"
@@ -15,11 +15,12 @@
         android:id="@+id/TutorialTopText"
         android:layout_marginLeft="30dip"
         android:layout_marginRight="30dip"
-        android:layout_marginTop="20dip"
-        android:layout_marginBottom="20dip" />
+        android:layout_marginTop="5dip"
+        android:layout_marginBottom="0dip"
+        android:color="@color/black" />
     <ImageView
         android:layout_width="fill_parent"
-        android:layout_height="200dip"
+        android:layout_height="210dip"
         android:id="@+id/TutorialImage" />
     <TextView
         android:layout_width="wrap_content"
@@ -32,6 +33,6 @@
         android:gravity="center"
         android:layout_marginLeft="30dip"
         android:layout_marginRight="30dip"
-        android:layout_marginTop="20dip"
-        android:layout_marginBottom="20dip" />
+        android:layout_marginTop="0dip"
+        android:layout_marginBottom="0dip" />
 </LinearLayout>

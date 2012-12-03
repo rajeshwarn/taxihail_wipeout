@@ -460,7 +460,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             {
                 mCurrentScreen = Math.Max(0, Math.Min(mNextScreen, ChildCount - 1));
 
-
                 // Notify observer about screen change
                 if (mOnScreenSwitchListener != null)
                 {

@@ -109,11 +109,13 @@
     <Compile Include="Animations\SlideAnimation.cs" />
     <Compile Include="AppContext.cs" />
     <Compile Include="AppFonts.cs" />
+    <Compile Include="Binding\EditTextSpinnerSelectedItemBinding.cs" />
     <Compile Include="Cache\CacheService.cs" />
     <Compile Include="Controls\AutoCompleteBindableTextView.cs" />
     <Compile Include="Controls\BaloonLayout.cs" />
     <Compile Include="Controls\BindableSelectionButton.cs" />
     <Compile Include="Controls\EditTextDelete.cs" />
+    <Compile Include="Controls\EditTextSpinner.cs" />
     <Compile Include="Controls\HeaderedLayout.cs" />
     <Compile Include="Controls\HorizontalPager.cs" />
     <Compile Include="Controls\TextButton.cs" />
@@ -224,13 +226,6 @@
     <AndroidResource Include="Resources\Drawable\green_button_right.xml" />
     <AndroidResource Include="Resources\Drawable\address_selector_button.xml" />
     <AndroidResource Include="Resources\Drawable\button_no_background.xml" />
-    <Compile Include="Controls\EditTextSpinner.cs" />
-    <Compile Include="Binding\EditTextSpinnerSelectedItemBinding.cs" />
-    <AndroidResource Include="Resources\Layout\View_UpdatePassword.axml" />
-    <Compile Include="Activities\Account\UpdatePasswordActivity.cs" />
-    <AndroidResource Include="Resources\Layout\View_Tutorial.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
@@ -314,9 +309,6 @@
     <AndroidResource Include="Resources\Layout\MenuItem.axml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\Drawable\tuto01.jpg" />
-    <AndroidResource Include="Resources\Drawable\tuto02.jpg" />
-    <AndroidResource Include="Resources\Drawable\tuto03.jpg" />
     <Content Include="Properties\AndroidManifest.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -496,6 +488,17 @@
     <AndroidResource Include="Resources\Drawable\rate_unhappy_state.xml" />
     <AndroidResource Include="Resources\drawable-hdpi\erase_cross_btn.png" />
     <AndroidResource Include="Resources\Drawable\erase_cross_btn.png" />
+    <AndroidResource Include="Resources\Drawable\tutorial_yellow_circle.png" />
+    <AndroidResource Include="Resources\Drawable\tutorial_background.png" />
+    <AndroidResource Include="Resources\Drawable\tutorial_grey_circle.png" />
+    <AndroidResource Include="Resources\Drawable\tutorial_screen01.png" />
+    <AndroidResource Include="Resources\Drawable\tutorial_screen02.png" />
+    <AndroidResource Include="Resources\Drawable\tutorial_screen03.png" />
+    <AndroidResource Include="Resources\Drawable\tutorial_screen04.png" />
+    <AndroidResource Include="Resources\Drawable\tutorial_screen05.png" />
+    <AndroidResource Include="Resources\Drawable\tutorial_screen06.png" />
+    <AndroidResource Include="Resources\Drawable\tutorial_screen07.png" />
+    <AndroidResource Include="Resources\Drawable\tutorial_screen08.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -507,7 +510,6 @@
   -->
   <ItemGroup>
     <Folder Include="Localization\Mapper\" />
-    <Folder Include="Binding\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">
@@ -571,6 +573,11 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\SubView_BookButtons.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Layout\View_Tutorial.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
