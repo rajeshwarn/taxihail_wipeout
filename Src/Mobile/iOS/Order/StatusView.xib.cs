@@ -59,6 +59,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
 
                 View.BringSubviewToFront (lblTitle);
+                View.BringSubviewToFront (lblStatus);
                 lblTitle.Text = Resources.LoadingMessage;
 
                 btnChangeBooking.SetTitle (Resources.ChangeBookingSettingsButton, UIControlState.Normal);
