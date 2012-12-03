@@ -90,7 +90,12 @@ namespace Infrastructure.Messaging.InMemory
                 catch (Exception e)
                 {
                     var payload = _serializer.Serialize(command);
-                    Trace.TraceError("Error in handling command " + command.Body.GetType() + Environment.NewLine + payload + Environment.NewLine + e.Message + Environment.NewLine + e.StackTrace);
+                    string innerException = string.Empty;
+                    if (e.InnerException != null)
+                    {
+                        innerException = e.InnerException.ToString();
+                    }
+                    Trace.TraceError("Error in handling command " + command.Body.GetType() + Environment.NewLine + payload + Environment.NewLine + e.Message + Environment.NewLine + e.StackTrace + Environment.NewLine + innerException);
                 }
             });
         }
