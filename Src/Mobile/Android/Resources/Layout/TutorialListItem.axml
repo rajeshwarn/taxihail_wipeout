@@ -7,32 +7,31 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:inputType="textMultiLine"
         android:singleLine="false"
-        android:lines="5"
         android:gravity="center"
+        android:lines="4"
+        android:layout_gravity="center_vertical"
         android:id="@+id/TutorialTopText"
         android:layout_marginLeft="30dip"
         android:layout_marginRight="30dip"
-        android:layout_marginTop="5dip"
+        android:layout_marginTop="15dip"
         android:layout_marginBottom="0dip"
-        android:color="@color/black" />
+        android:text="salut" />
     <ImageView
         android:layout_width="fill_parent"
-        android:layout_height="210dip"
+        android:layout_height="190dip"
         android:id="@+id/TutorialImage" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
         android:id="@+id/TutorialBottomText"
-        android:inputType="textMultiLine"
         android:singleLine="false"
-        android:lines="5"
         android:gravity="center"
+        android:lines="4"
+        android:layout_gravity="center_vertical"
         android:layout_marginLeft="30dip"
         android:layout_marginRight="30dip"
         android:layout_marginTop="0dip"
-        android:layout_marginBottom="0dip" />
+        android:layout_marginBottom="0dip"
+        android:text="salut" />
 </LinearLayout>

@@ -34,35 +34,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
                                                                CleanAllPips(pipsLayout);
                                                                ImageView currentPip = (ImageView)pipsLayout.GetChildAt(newScreen);
 
-                                                               //set fill image
                                                                currentPip.SetImageDrawable(Resources.GetDrawable(Resource.Drawable.tutorial_yellow_circle));
-                                                               //unfill image
-                                                               //previousPip.SetImageDrawable();
                                                            };
             for (int i = 0; i < ViewModel.TutorialItemsList.Count; i++)
             {
                 ImageView imageFill = new ImageView(this);
-                
                 imageFill.SetImageDrawable(Resources.GetDrawable(Resource.Drawable.tutorial_yellow_circle));
-                imageFill.SetMaxWidth(20);
+
                 ImageView imageNotFill = new ImageView(this);
-                
                 imageNotFill.SetImageDrawable(Resources.GetDrawable(Resource.Drawable.tutorial_grey_circle));
-                imageNotFill.SetMaxWidth(20);
                 if (i == 0)
                 {
-                    //image fill
                     pipsLayout.AddView(imageFill, i);
                 }
                 else
                 {
-                    //image not fill
                     pipsLayout.AddView(imageNotFill, i);
                 }
             }
-
-            // var intent = new Intent(this, typeof (ViewFlipperActivity));
-            //  StartActivity(typeof(ViewFlipperActivity));
         }
 
         public void CleanAllPips(LinearLayout pipsLayout)

@@ -12,13 +12,13 @@
     <apcurium.MK.Booking.Mobile.Client.Controls.HorizontalPager
         android:id="@+id/details"
         android:layout_width="wrap_content"
-        android:layout_height="410dip"
+        android:layout_height="390dip"
         local:MvxBind="{&apos;TutorialItemModel&apos;: {&apos;Path&apos;: &apos;TutorialItemsList&apos;}}" />
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="wrap_content"
-        android:layout_height="20dip"
-        android:layout_marginBottom="5dip"
+        android:layout_height="30dip"
         android:id="@+id/layout_pips"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal|top" 
+        android:layout_marginBottom="5dip" />
 </LinearLayout>

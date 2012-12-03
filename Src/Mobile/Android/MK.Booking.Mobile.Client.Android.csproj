@@ -298,7 +298,7 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\TitleListItem.axml">
-      <SubType>AndroidResource</SubType>
+      <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\View_Book.axml">
       <SubType>Designer</SubType>
@@ -306,7 +306,9 @@
     <AndroidResource Include="Resources\Layout\View_SearchAddress.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Layout\MenuItem.axml" />
+    <AndroidResource Include="Resources\Layout\MenuItem.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\AndroidManifest.xml">
