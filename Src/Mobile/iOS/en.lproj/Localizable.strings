@@ -12,9 +12,9 @@
 "ServiceErrorCreateOrder_NoProvider"="Order cannot be created, no provider specified. Please try again or call us.";
 "ServiceError_ErrorCreatingOrderMessage"="Please contact {0} at {1} for further assistance.";
 "ConfirmNoRingCode"="No code";
-"View_BookingDetail"="Confirmation";
+"View_BookingDetail"="Booking summary";
 "ServiceErrorCreateAccount_AccountAlreadyExist"="This email is already in use.";
-"DateTimePickerSetButton"="Set";
+"DateTimePickerSetButton"="Book";
 "OrderNote"="Booked on mobile";
 "PickupTextPlaceholder"="Pickup street address";
 "TechSupportEmailTitle"="Support Application Mobile";
@@ -22,7 +22,7 @@
 "HistoryDetailRebookButton"="Rebook trip";
 "DontHaveAnAccountLabel"="Don't have an account?";
 "HistoryInfo"="Displaying trips from the last month";
-"ConfirmAptRingCodeLabel"="Apt / Entry code:";
+"ConfirmAptRingCodeLabel"="Apartment / Entry code / Building Name";
 "View_Book_Menu_MyOrders"="My Orders";
 "PickupMapTitle"="Pickup location";
 "NbPassengers"=" ({0} passengers)";
@@ -51,7 +51,7 @@
 "InvalidAccountOnActivatedMessage"="Your account cannot be validated, you must log in to use this application";
 "RideSettingsCannotLoadListTitle"="Server error";
 "FacebookButton"="Sign In with Facebook";
-"ConfirmDateTimeLabel"="Date / Time:";
+"ConfirmDateTimeLabel"="Date / Time";
 "View_HistoryDetail"="Order Details";
 "ServiceErrorCreateOrder_VehiculeType"="Order cannot be created, invalid vehicle type. Please try again or call us.";
 "NotAvailable"="N/A";
@@ -68,10 +68,10 @@
 "CreateAccount_AccountAlreadyExist"="The account cannot be created, this email is already in use.";
 "SupportEmail"="techsupport@apcurium.com";
 "AppNeedUpdateMessage"="A new version of the application is available, please update the app to continue.";
-"ApproxPrice"="Estimated Fare:";
+"ApproxPrice"="Estimated Fare";
 "HistoryDetailStatusLabel"="Status:";
 "RideSettingsCompany"="Company";
-"ConfirmOriginLablel"="Origin:";
+"ConfirmOriginLablel"="Pickup";
 "UpdateBookingSettingsInvalidDataTitle"="Invalid booking settings info.";
 "DateTimePickerPickTitle"="Pickup date and time";
 "Close"="Close";
@@ -127,7 +127,7 @@
 "SendErrorLogButton"="Send error log";
 "StatusNewRideButton"="New Ride";
 "StatusConfirmCancelRideErrorTitle"="Cannot cancel";
-"ConfirmVehiculeTypeLabel"="Vehicle type:";
+"ConfirmVehiculeTypeLabel"="Vehicle type";
 "InvalidLocalContactMessage"="The address associated to this contact cannot be validated.";
 "CreateAccountErrorNotSpecified"="The server didn't specify why the account could not be created, if the error persist try creating the account from the web site.";
 "HistoryDetailOriginLabel"="Pickup:";
@@ -190,7 +190,7 @@
 "StatusActionButton"="Call / Book / Cancel";
 "GoogleMapKey"="0XEY3WqKVmJPhADLxOCPUweMcqYg3AfqCp8BvWw";
 "ApplicationName"="TaxiHail";
-"ChargeTypeLabel"="Charge type:";
+"ChargeTypeLabel"="Charge type";
 "EmailLabel"="Email";
 "CreateAccountPassword"="Password";
 "DestinationMapTitle"="Destination location";
@@ -244,7 +244,7 @@
 "LocationDetailInstructionLabel"="Save as a favorite location";
 "View_HistoryList"="Orders";
 "SaveAddressEmptyFieldMessage"="The data is invalid, friendly name and address fields are required.";
-"TimeNow"="Current";
+"TimeNow"="As soon as possible";
 "InvalidBookinInfoTitle"="Invalid booking info";
 "SettingViewLoginInfo"="You are currently signed in as : {0}";
 "TabSearch"="Search";
@@ -303,7 +303,7 @@
 "CreateAccountErrorTitle"="Error";
 "CreateAccountLanguageFrench"="French";
 "BookItButton"="TaxiHail rocks!";
-"ConfirmDestinationLabel"="Destination:";
+"ConfirmDestinationLabel"="Destination";
 "NearbyPlacesTitle"="Nearby places";
 "GenericTitle"="";
 "View_PasswordRecovery"="Reset Password";

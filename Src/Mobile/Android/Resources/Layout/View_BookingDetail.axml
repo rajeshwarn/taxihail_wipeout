@@ -34,7 +34,7 @@
                     android:paddingBottom="2dip">
                     <TextView
                         style="@style/GrayText"
-                        android:text="@string/HistoryDetailOriginLabel"
+                        android:text="@string/ConfirmOriginLablel"
                         android:layout_width="110dp"
                         android:gravity="right"
                         android:layout_height="wrap_content" />
@@ -55,7 +55,7 @@
                     android:layout_height="wrap_content">
                     <TextView
                         style="@style/GrayText"
-                        android:text="@string/DestinationViewDestinationLabel"
+                        android:text="@string/ConfirmDestinationLabel"
                         android:layout_width="110dp"
                         android:gravity="right"
                         android:layout_height="wrap_content" />

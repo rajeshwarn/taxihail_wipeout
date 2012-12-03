@@ -77,8 +77,9 @@ namespace apcurium.MK.Booking.Mobile.Client
                                
             TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub> ().Subscribe<StatusCloseRequested> (OnStatusCloseRequested);
             TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub> ().Subscribe<DateTimePicked> (msg => _onDateTimePicked ());
-            _dateTimePicker = new DateTimePicker ();
+            _dateTimePicker = new DateTimePicker (ViewModel.CultureInfo);
             _dateTimePicker.ShowPastDate = false;
+
             _onDateTimePicked = () => _dateTimePicker.Hide ();
             View.AddSubview (_dateTimePicker);
                        
@@ -115,8 +116,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { pickupButton, "{'TouchUpInside':{'Path':'Pickup.PickAddress'},'TextLine1':{'Path':'Pickup.Title', 'Mode':'TwoWay'}, 'TextLine2':{'Path':'Pickup.Display', 'Mode':'TwoWay'}, 'IsSearching':{'Path':'Pickup.IsExecuting', 'Mode':'TwoWay'}, 'IsPlaceholder':{'Path':'Pickup.IsPlaceHolder', 'Mode':'TwoWay'} }"},  
                 { dropoffButton, "{'TouchUpInside':{'Path':'Dropoff.PickAddress'},'TextLine1':{'Path':'Dropoff.Title', 'Mode':'TwoWay'}, 'TextLine2':{'Path':'Dropoff.Display', 'Mode':'TwoWay'}, 'IsSearching':{'Path':'Dropoff.IsExecuting', 'Mode':'TwoWay'}, 'IsPlaceholder':{'Path':'Dropoff.IsPlaceHolder', 'Mode':'TwoWay'} }"},             
                 { mapView, "{'Pickup':{'Path':'Pickup.Model'}, 'Dropoff':{'Path':'Dropoff.Model'} , 'MapMoved':{'Path':'SelectedAddress.SearchCommand'}, 'MapCenter':{'Path':'MapCenter'}, 'PickupIsActive': {'Path': 'PickupIsActive'}, 'DropoffIsActive': {'Path': 'DropoffIsActive'} }" },
-                { infoLabel, "{'Text':{'Path':'FareEstimate'}}" },
-                { pickupDateLabel, "{'Text':{'Path':'PickupDateDisplay'}, 'Hidden':{'Path':'IsInTheFuture','Converter':'BoolInverter'}}" },
+                { infoLabel, "{'Text':{'Path':'FareEstimate'}}" },              
                 { _dateTimePicker, "{'DateChangedCommand':{'Path':'PickupDateSelectedCommand'}, 'CloseDatePickerCommand':{'Path':'CloseDatePickerCommand'}}" },
                 { _bottomAction.ClearLocationButton, "{'Hidden':{'Path':'CanClearAddress', 'Converter':'BoolInverter'}, 'Enabled':{'Path':'CanClearAddress'}, 'TouchUpInside':{'Path':'SelectedAddress.ClearPositionCommand'}}" },
                 { _bottomAction.BookNowButton , "{'TouchUpInside': {'Path': 'BookTaxi'}}" }                  

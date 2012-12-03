@@ -51,47 +51,45 @@ namespace apcurium.MK.Booking.Mobile.Client
             View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             NavigationItem.HidesBackButton = true;
 
-			lblRideSettings.TextColor = AppStyle.TitleTextColor;
+            			
 			lblPickupDetails.TextColor = AppStyle.TitleTextColor;
 			lblPickupDetails.Text = Resources.View_RefineAddress;
 
 			AppButtons.FormatStandardButton((GradientButton)btnCancel, Resources.CancelBoutton, AppStyle.ButtonColor.Red );
-			AppButtons.FormatStandardButton((GradientButton)btnConfirm, Resources.ConfirmButton, AppStyle.ButtonColor.Green );
-			AppButtons.FormatStandardButton((GradientButton)btnEdit, Resources.EditButton, AppStyle.ButtonColor.Grey );
-			AppButtons.FormatStandardButton((GradientButton)btnEditPickupDetails, Resources.EditButton, AppStyle.ButtonColor.Grey );
+			AppButtons.FormatStandardButton((GradientButton)btnConfirm, Resources.ConfirmButton, AppStyle.ButtonColor.Green );			
 
             lblOrigin.Text = Resources.ConfirmOriginLablel;
             lblAptRing.Text = Resources.ConfirmAptRingCodeLabel;
             lblDestination.Text = Resources.ConfirmDestinationLabel;
             lblDateTime.Text = Resources.ConfirmDateTimeLabel;
-            lblName.Text = Resources.ConfirmNameLabel;
-            lblPhone.Text = Resources.ConfirmPhoneLabel;
             lblVehiculeType.Text = Resources.ConfirmVehiculeTypeLabel;
-			lblChargeType.Text = Resources.ChargeTypeLabel;
-			lblCompany.Text = Resources.ConfirmCompanyLabel;
-			lblBuildingName.Text = Resources.HistoryDetailBuildingNameLabel;
+			lblChargeType.Text = Resources.ChargeTypeLabel;			
+			
 
 			lblPrice.Text = Resources.ApproxPrice;
+
+
+            ((ModalTextField)pickerVehicleType).Configure(Resources.RideSettingsVehiculeType, ViewModel.Vehicles, ViewModel.Order.Settings.VehicleTypeId, x=> {
+                ViewModel.SetVehicleTypeId ( x.Id );});
+
+            ((ModalTextField)pickerChargeType).Configure(Resources.RideSettingsVehiculeType, ViewModel.Payments, ViewModel.Order.Settings.ChargeTypeId , x=> {
+                ViewModel.SetChargeTypeId( x.Id ); });
 
 			View.BringSubviewToFront( bottomBar );    
 
             this.AddBindings(new Dictionary<object, string>() {
                 { btnCancel, "{'TouchUpInside':{'Path':'CancelOrderCommand'}}"},                
                 { btnConfirm, "{'TouchUpInside':{'Path':'ConfirmOrderCommand'}}"},
-                { btnEdit, "{'TouchUpInside': {'Path': 'NavigateToEditBookingSettings'}}"},
-                { btnEditPickupDetails, "{'TouchUpInside': {'Path': 'NavigateToRefineAddress'}}"},
                 { txtOrigin, "{'Text': {'Path': 'Order.PickupAddress.FullAddress'}}" },
-                { txtDestination, "{'Text': {'Path': 'Order.DropOffAddress.FullAddress', 'Converter': 'EmptyToResourceConverter', 'ConverterParameter': 'ConfirmDestinationNotSpecified'}}" },
+
+                { txtDestination, "{'Text': {'Path': 'Order.DropOffAddress.FullAddress', 'Converter': 'EmptyToResource', 'ConverterParameter': 'ConfirmDestinationNotSpecified'}}" },
                 { txtDateTime, "{'Text': {'Path': 'FormattedPickupDate'}}" },
-                { txtAptRing, "{'Text': {'Path': 'AptRingCode'}}" },
-                { txtBuildingName, "{'Text': {'Path': 'BuildingName'}}" },
                 { txtPrice, "{'Text': {'Path': 'FareEstimate'}}" },
-                { txtName, "{'Text': {'Path': 'RideSettings.Name'}}" },
-                { txtCompany, "{'Text': {'Path': 'RideSettings.ProviderName'}}" },
-                { txtVehiculeType, "{'Text': {'Path': 'RideSettings.VehicleTypeNameAndNbOfPassengers'}}" },
-                { txtChargeType, "{'Text': {'Path': 'RideSettings.ChargeTypeName'}}" },
-                { txtPhone, "{'Text': {'Path': 'RideSettings.Phone'}}"}
+                { pickerVehicleType, "{'Text': {'Path': 'VehicleName'}}" },
+                { pickerChargeType, "{'Text': {'Path': 'ChargeType'}}" },
             });
+
+
 
             ViewModel.OnViewLoaded();
             this.View.ApplyAppFont ();

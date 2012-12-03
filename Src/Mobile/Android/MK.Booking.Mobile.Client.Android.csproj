@@ -226,10 +226,17 @@
     <AndroidResource Include="Resources\Drawable\green_button_right.xml" />
     <AndroidResource Include="Resources\Drawable\address_selector_button.xml" />
     <AndroidResource Include="Resources\Drawable\button_no_background.xml" />
+    <Compile Include="Controls\EditTextSpinner.cs" />
+    <Compile Include="Binding\EditTextSpinnerSelectedItemBinding.cs" />
+    <AndroidResource Include="Resources\Layout\View_UpdatePassword.axml" />
+    <Compile Include="Activities\Account\UpdatePasswordActivity.cs" />
+    <AndroidResource Include="Resources\Layout\View_Tutorial.axml">
+      <SubType>Designer</SubType>
     <Compile Include="Controls\EditTextNavigate.cs" />
     <AndroidResource Include="Resources\Layout\Control_EditTextNavigate.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\Drawable\right_arrow_light.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
@@ -272,9 +279,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Values\Color.xml" />
-    <AndroidResource Include="Resources\Layout\View_BookingDetail.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\Layout\SpinnerText.axml" />
     <AndroidResource Include="Resources\Layout\ListItemAutoComplete.axml">
       <SubType>AndroidResource</SubType>
