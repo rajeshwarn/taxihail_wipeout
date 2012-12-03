@@ -15,7 +15,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-	[Activity (Label = "UpdatePasswordActivity")]			
+	[Activity (Label = "UpdatePasswordActivity", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]	
 	public class UpdatePasswordActivity :  BaseBindingActivity<UpdatePasswordViewModel> 
 	{
 		protected override int ViewTitleResourceId
