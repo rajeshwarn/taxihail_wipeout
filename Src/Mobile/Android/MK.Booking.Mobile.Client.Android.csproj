@@ -235,7 +235,7 @@
     <AndroidResource Include="Resources\Layout\Control_EditTextNavigate.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Drawable\right_arrow_light.png" />
+    <AndroidResource Include="Resources\Layout\View_BookingDetail.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
