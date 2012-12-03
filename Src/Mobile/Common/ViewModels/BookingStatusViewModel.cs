@@ -234,8 +234,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     {
                         StatusInfoText = status.IBSStatusDescription;
                         CenterMap(true);
-                        this.OrderStatusDetail = status;
-                        ConfirmationNoTxt = string.Format(Resources.GetString("StatusDescription"), OrderStatusDetail.IBSOrderId.Value);
+                        //this.OrderStatusDetail = status;
+                        if (OrderStatusDetail.IBSOrderId.HasValue)
+                        {
+                            ConfirmationNoTxt = string.Format(Resources.GetString("StatusDescription"), OrderStatusDetail.IBSOrderId.Value);
+                        }
                         if (isDone)
                         {
                             if (!_isThankYouDialogDisplayed)
