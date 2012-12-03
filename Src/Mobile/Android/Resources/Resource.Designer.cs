@@ -418,85 +418,82 @@ namespace apcurium.MK.Booking.Mobile.Client
 			public const int right_arrow = 2130837605;
 			
 			// aapt resource value: 0x7f020066
-			public const int right_arrow_light = 2130837606;
+			public const int searchTabBtn_off = 2130837606;
 			
 			// aapt resource value: 0x7f020067
-			public const int searchTabBtn_off = 2130837607;
+			public const int searchTabBtn_on = 2130837607;
 			
 			// aapt resource value: 0x7f020068
-			public const int searchTabBtn_on = 2130837608;
+			public const int searchTabBtnSelector = 2130837608;
 			
 			// aapt resource value: 0x7f020069
-			public const int searchTabBtnSelector = 2130837609;
+			public const int server_button = 2130837609;
 			
 			// aapt resource value: 0x7f02006a
-			public const int server_button = 2130837610;
+			public const int server_button_state = 2130837610;
 			
 			// aapt resource value: 0x7f02006b
-			public const int server_button_state = 2130837611;
+			public const int sign_in_btn = 2130837611;
 			
 			// aapt resource value: 0x7f02006c
-			public const int sign_in_btn = 2130837612;
+			public const int social_media_login_btn = 2130837612;
 			
 			// aapt resource value: 0x7f02006d
-			public const int social_media_login_btn = 2130837613;
+			public const int social_media_login_btn_hit = 2130837613;
 			
 			// aapt resource value: 0x7f02006e
-			public const int social_media_login_btn_hit = 2130837614;
+			public const int social_media_login_btn_state = 2130837614;
 			
 			// aapt resource value: 0x7f02006f
-			public const int social_media_login_btn_state = 2130837615;
+			public const int SpinnerSelectorBackground = 2130837615;
 			
 			// aapt resource value: 0x7f020070
-			public const int SpinnerSelectorBackground = 2130837616;
+			public const int splash = 2130837616;
 			
 			// aapt resource value: 0x7f020071
-			public const int splash = 2130837617;
+			public const int splash_resizable = 2130837617;
 			
 			// aapt resource value: 0x7f020072
-			public const int splash_resizable = 2130837618;
+			public const int StatusBottomBarBackground = 2130837618;
 			
 			// aapt resource value: 0x7f020073
-			public const int StatusBottomBarBackground = 2130837619;
+			public const int target = 2130837619;
 			
 			// aapt resource value: 0x7f020074
-			public const int target = 2130837620;
+			public const int target_selected = 2130837620;
 			
 			// aapt resource value: 0x7f020075
-			public const int target_selected = 2130837621;
+			public const int target_state = 2130837621;
 			
 			// aapt resource value: 0x7f020076
-			public const int target_state = 2130837622;
+			public const int textedit_background = 2130837622;
 			
 			// aapt resource value: 0x7f020077
-			public const int textedit_background = 2130837623;
+			public const int textedit_background_disabled = 2130837623;
 			
 			// aapt resource value: 0x7f020078
-			public const int textedit_background_disabled = 2130837624;
+			public const int textedit_background_std = 2130837624;
 			
 			// aapt resource value: 0x7f020079
-			public const int textedit_background_std = 2130837625;
+			public const int tuto01 = 2130837625;
 			
 			// aapt resource value: 0x7f02007a
-			public const int tuto01 = 2130837626;
+			public const int tuto02 = 2130837626;
 			
 			// aapt resource value: 0x7f02007b
-			public const int tuto02 = 2130837627;
+			public const int tuto03 = 2130837627;
 			
 			// aapt resource value: 0x7f02007c
-			public const int tuto03 = 2130837628;
+			public const int twitter_icon = 2130837628;
 			
 			// aapt resource value: 0x7f02007d
-			public const int twitter_icon = 2130837629;
+			public const int twitter_icon_hit = 2130837629;
 			
 			// aapt resource value: 0x7f02007e
-			public const int twitter_icon_hit = 2130837630;
+			public const int twitter_icon_state = 2130837630;
 			
 			// aapt resource value: 0x7f02007f
-			public const int twitter_icon_state = 2130837631;
-			
-			// aapt resource value: 0x7f020080
-			public const int WindowDisplay = 2130837632;
+			public const int WindowDisplay = 2130837631;
 			
 			private Drawable()
 			{

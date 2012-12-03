@@ -231,7 +231,6 @@
     <AndroidResource Include="Resources\Layout\View_Tutorial.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Drawable\right_arrow_light.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
