@@ -548,8 +548,6 @@
     <Content Include="Assets\tutorial_screen06.png" />
     <Content Include="Assets\tutorial_screen07.png" />
     <Content Include="Assets\tutorial_screen08.png" />
-    <Content Include="Assets\tuto01.png" />
-    <Content Include="Assets\tuto02.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.iOS.csproj">

@@ -39,8 +39,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             base.ViewDidLoad ();		
 
             View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
-            lblStreetName.Text = Resources.GetValue("StreetNumberLabel");
-            btSearch.TitleLabel.Text = Resources.GetValue("StreetNumberSearchBt");
+            lblRefineAddress.Text = Resources.GetValue("StreetNumberLabel");
+            txtNavigateSearch.Text = Resources.GetValue("StreetNumberSearchBt");
+            txtNavigateSearch.NavigateCommand = ViewModel.NavigateToSearch;
 
             var button = new MonoTouch.UIKit.UIBarButtonItem(Resources.DoneButton, UIBarButtonItemStyle.Plain, delegate {
                 ViewModel.SaveCommand.Execute();
@@ -48,7 +49,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             NavigationItem.RightBarButtonItem = button;
 
             this.AddBindings(new Dictionary<object, string>() {
-                { btSearch, "{'TouchUpInside':{'Path':'NavigateToSearch'}}"},             
                 { txtStreetNumber, "{'Text': {'Path': 'StreetNumberOrBuildingName'}}"},
                 { lblStreetName, "{'Text': {'Path': 'Model.Street'}}"}
             });

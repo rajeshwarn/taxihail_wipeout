@@ -334,4 +334,5 @@
 "InvalidPhoneErrorMessage"="The mobile number is invalid. It must contain 10 numbers.";
 "StreetNumberSearchBt"="Search";
 "StreetNumberTitle"="Address's Details";
-"StreetNumberLabel"="Street number or building name";
+"StreetNumberLabel"="Refine your address";
+"RideSettingsPassword"="Password";

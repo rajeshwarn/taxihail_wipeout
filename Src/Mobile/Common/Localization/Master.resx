@@ -1092,7 +1092,7 @@
     <value>Address's Details</value>
   </data>
   <data name="StreetNumberLabel" xml:space="preserve">
-    <value>Street number or building name</value>
+    <value>Refine your address</value>
   </data>
   <data name="StreetNumberSearchBt" xml:space="preserve">
     <value>Search</value>
