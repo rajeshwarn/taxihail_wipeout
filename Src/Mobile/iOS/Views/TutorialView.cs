@@ -80,7 +80,6 @@ namespace apcurium.MK.Booking.Mobile.Client
         private void CreatePanels(List<TutorialItemModel> listTutorial)
         {
             scrollview.Scrolled += ScrollViewScrolled;
-            
             int count = listTutorial.Count;
             RectangleF scrollFrame = scrollview.Frame;
             scrollFrame.Width = scrollFrame.Width * count;
@@ -93,7 +92,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 //image.Frame = scrollview.Frame;
                 image.AutosizesSubviews =true;
                 UILabel labelBottom = new UILabel();
-                labelBottom.TextColor = UIColor.Black;
+                labelBottom.TextColor = UIColor.LightGray;
                 labelBottom.TextAlignment = UITextAlignment.Center;
                 labelBottom.Text = listTutorial[i].BottomText;
                 labelBottom.Lines = 3;
