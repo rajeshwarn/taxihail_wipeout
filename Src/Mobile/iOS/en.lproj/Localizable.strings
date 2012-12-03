@@ -332,3 +332,4 @@
 "CreateAccountCreate"="Create";
 "CreateAccountCancel"="Cancel";
 "InvalidPhoneErrorMessage"="The mobile number is invalid. It must contain 10 numbers.";
+"RideSettingsPassword"="Password";
