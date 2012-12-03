@@ -665,10 +665,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			get { return GetValue ("CreateAccountInvalidPassword"); }
 		}
 
-        public static string CreateAccountInvalidPhone {
-            get { return GetValue ("CreateAccountInvalidPhone"); }
-        }
-
 
 		public static string CreateAccountEmptyField {
 			get { return GetValue ("CreateAccountEmptyField"); }
