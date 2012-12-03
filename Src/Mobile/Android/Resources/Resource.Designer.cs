@@ -848,9 +848,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f06009e
 			public const int TwitterButton = 2131099806;
 			
-			// aapt resource value: 0x7f0600bc
-			public const int UpdatePassword = 2131099836;
-			
 			// aapt resource value: 0x7f060095
 			public const int Username = 2131099797;
 			
@@ -962,12 +959,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0600ba
 			public const int layout_main = 2131099834;
 			
+			// aapt resource value: 0x7f0600bc
+			public const int layout_pips = 2131099836;
+			
 			// aapt resource value: 0x7f060098
 			public const int linearLayout0 = 2131099800;
 			
 			// aapt resource value: 0x7f06009a
 			public const int linearLayout1 = 2131099802;
-			
 			
 			// aapt resource value: 0x7f060026
 			public const int listviencell1 = 2131099686;
@@ -1211,10 +1210,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f030023
 			public const int View_SignUp = 2130903075;
 			
+			// aapt resource value: 0x7f030024
 			public const int View_Tutorial = 2130903076;
 			
-			// aapt resource value: 0x7f030025
-			public const int View_UpdatePassword = 2130903077;
 			private Layout()
 			{
 			}
