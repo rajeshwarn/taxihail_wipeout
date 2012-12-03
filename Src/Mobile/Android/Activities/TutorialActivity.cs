@@ -12,6 +12,7 @@ using Android.Widget;
 using Cirrious.MvvmCross.Android.Views;
 using Cirrious.MvvmCross.Binding.Android.Views;
 using Cirrious.MvvmCross.Views;
+using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities
@@ -23,9 +24,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
         {
             
             SetContentView(Resource.Layout.View_tutorial);
-           
-           // var intent = new Intent(this, typeof (ViewFlipperActivity));
-          //  StartActivity(typeof(ViewFlipperActivity));
+            var rootLayout = this.FindViewById<LinearLayout>(Resource.Id.layout_main);
+            var horizontalPager = this.FindViewById<HorizontalPager>(Resource.Id.details);
+
+            horizontalPager.mOnScreenSwitchListener += (sender, args) =>
+                                                           {
+                                                               args.Screen.ToString();
+                                                               rootLayout.GetChildAt(args.Screen);
+                                                           };
+            for (int i = 0; i < ViewModel.TutorialItemsList.Count; i++)
+            {
+                rootLayout.AddView(new ImageView(this, at),i);
+            }
+
+            // var intent = new Intent(this, typeof (ViewFlipperActivity));
+            //  StartActivity(typeof(ViewFlipperActivity));
 
         }
     }

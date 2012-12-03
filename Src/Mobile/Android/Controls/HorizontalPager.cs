@@ -40,7 +40,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private bool mFirstLayout = true;
         private float mLastMotionX;
         private float mLastMotionY;
-        private OnScreenSwitchListener mOnScreenSwitchListener;
+        public event EventHandler<ScreenSwitchArgs> mOnScreenSwitchListener;
         private int mMaximumVelocity;
         private int mNextScreen = INVALID_SCREEN;
         private Scroller mScroller;
@@ -463,7 +463,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 // Notify observer about screen change
                 if (mOnScreenSwitchListener != null)
                 {
-                    mOnScreenSwitchListener.onScreenSwitched(mCurrentScreen);
+                    mOnScreenSwitchListener(this, new ScreenSwitchArgs(mCurrentScreen));
                 }
 
 
@@ -512,10 +512,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
          * @param onScreenSwitchListener The listener for switch events.
          */
 
-        public void setOnScreenSwitchListener(OnScreenSwitchListener onScreenSwitchListener)
-        {
-            mOnScreenSwitchListener = onScreenSwitchListener;
-        }
+        
 
 
         /**
@@ -612,5 +609,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
              */
             void onScreenSwitched(int screen);
         }
+    }
+
+    public class ScreenSwitchArgs : EventArgs
+    {
+        public ScreenSwitchArgs(int mCurrentScreen)
+        {
+            Screen = mCurrentScreen;
+        }
+
+        public int Screen { get; set; }
     }
 }
