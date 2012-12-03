@@ -120,4 +120,13 @@
   <data name="BookItButton" xml:space="preserve">
     <value>Pick Me Up Now</value>
   </data>
+    <data name="ConfirmAptRingCodeLabel" xml:space="preserve">
+    <value>Flat / Entry code / Building Name</value>
+  </data>
+   <data name="NbPassenger" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="NbPassengers" xml:space="preserve">
+    <value> </value>
+  </data>
 </root>

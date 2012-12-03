@@ -164,7 +164,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return statusId.SoftEqual ("wosDONE");
         }
 
-        public string GetFareEstimateDisplay (CreateOrder order, string formatString, string defaultFare)
+        public string GetFareEstimateDisplay (CreateOrder order, string formatString, string defaultFare, bool includeDistance)
         {
             var appResource = TinyIoCContainer.Current.Resolve<IAppResource> ();
             var fareEstimate = appResource.GetString (defaultFare);
@@ -184,7 +184,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                             
                         }
 
-                        if (directionInfo.Distance.HasValue) {
+                        if (includeDistance && directionInfo.Distance.HasValue) {
                             fareEstimate += " " + String.Format (appResource.GetString ("EstimateDistance"), directionInfo.FormattedDistance);
 
                         }

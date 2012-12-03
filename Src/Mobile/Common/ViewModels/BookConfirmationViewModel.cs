@@ -18,6 +18,8 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using System.Linq;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Configuration;
+using System.Globalization;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -34,10 +36,47 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Order.Settings = accountService.CurrentAccount.Settings;
 
 			RideSettings = new RideSettingsModel(Order.Settings, accountService.GetCompaniesList(), accountService.GetVehiclesList(), accountService.GetPaymentsList());
-			FareEstimate = bookingService.GetFareEstimateDisplay(Order, null, "NotAvailable");
+			FareEstimate = bookingService.GetFareEstimateDisplay(Order, null, "NotAvailable", false);
+
+
         }
 
+        public void SetVehicleTypeId( int id )
+        {
+            Order.Settings.VehicleTypeId = id;
+            FirePropertyChanged ( () => VehicleName );
+        }
 
+        public void SetChargeTypeId( int id )
+        {
+            Order.Settings.ChargeTypeId = id;
+            FirePropertyChanged ( () => ChargeType );
+        }
+
+            
+        public ListItem[] Vehicles {
+            get {
+                return RideSettings.VehicleTypeList;
+            }
+        }
+
+        public ListItem[] Payments {
+            get {
+                return RideSettings.ChargeTypeList;
+            }
+        }
+
+        public string VehicleName {
+            get {
+                return RideSettings.VehicleTypeName;
+            }
+        }
+
+        public string ChargeType{
+            get {
+                return RideSettings.ChargeTypeName;
+            }
+        }
 
 		public override void OnViewLoaded ()
 		{
@@ -214,11 +253,27 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private string FormatDateTime(DateTime? pickupDate )
 		{
-
-			string format = "{0:ddd, MMM d}, {0:h:mm tt}";
+            var formatTime = new CultureInfo( CultureInfoString ).DateTimeFormat.ShortTimePattern;
+			string format = "{0:ddd, MMM d}, {0:"+formatTime+"}";
 			string result = pickupDate.HasValue ? string.Format(format, pickupDate.Value) : Resources.GetString("TimeNow");
 			return result;
 		}
+
+        public string CultureInfoString
+        {
+            get{
+                var culture = TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting ( "PriceFormat" );
+                if ( culture.IsNullOrEmpty() )
+                {
+                    return "en-US";
+                }
+                else
+                {
+                    return culture;                
+                }
+            }
+        }
+
     }
 }
 
