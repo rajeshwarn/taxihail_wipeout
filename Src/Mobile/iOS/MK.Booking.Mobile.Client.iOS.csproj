@@ -195,7 +195,6 @@
       <DependentUpon>StatusView.xib</DependentUpon>
     </Compile>
     <Compile Include="Order\ConfirmationCall.cs" />
-    <Compile Include="Order\TouchableMapView.cs" />
     <Compile Include="Order\LocationDataExtension.cs" />
     <Compile Include="MonoTouchDialog\CustomRootElement.cs" />
     <Compile Include="MonoTouchDialog\RightAlignedEntryElement.cs" />
