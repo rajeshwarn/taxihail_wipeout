@@ -331,3 +331,6 @@
 "View_RideSettings_BtUpdateMyPassword"="Update My Password";
 "CreateAccountCreate"="Create";
 "CreateAccountCancel"="Cancel";
+"StreetNumberSearchBt"="Search";
+"StreetNumberTitle"="Address's Details";
+"StreetNumberLabel"="Street number or building name";

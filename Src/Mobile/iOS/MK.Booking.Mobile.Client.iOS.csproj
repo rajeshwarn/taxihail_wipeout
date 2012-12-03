@@ -336,6 +336,10 @@
     <Compile Include="Views\BaseViewController.designer.cs">
       <DependentUpon>BaseViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="Order\BookStreetNumberView.cs" />
+    <Compile Include="Order\BookStreetNumberView.designer.cs">
+      <DependentUpon>BookStreetNumberView.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -388,6 +392,7 @@
     <InterfaceDefinition Include="Views\TutorialView.xib" />
     <InterfaceDefinition Include="Views\RideSettingsView.xib" />
     <InterfaceDefinition Include="Views\CreateAccountView.xib" />
+    <InterfaceDefinition Include="Order\BookStreetNumberView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />
