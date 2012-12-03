@@ -49,6 +49,20 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
         }
 
+        protected void DismissKeyboardOnReturn (params UITextField[] textFields)
+        {
+            if (textFields == null)
+                return;
+            foreach (var textField in textFields) {
+                textField.ReturnKeyType = UIReturnKeyType.Done;
+                textField.ShouldReturn = ShouldReturn;
+            }
+        }
+        private bool ShouldReturn (UITextField textField)
+        {
+            return textField.ResignFirstResponder();
+        }
+
         protected virtual void RegisterForKeyboardNotifications ()
         {
             _keyboardObserverWillShow = NSNotificationCenter.DefaultCenter.AddObserver (UIKeyboard.DidShowNotification, KeyboardWillShowNotification);

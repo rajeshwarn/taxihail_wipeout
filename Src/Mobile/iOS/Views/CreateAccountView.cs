@@ -52,13 +52,10 @@ namespace apcurium.MK.Booking.Mobile.Client
             lblPassword.Text = Resources.GetValue("CreateAccountPassword");
             lblConfirmPassword.Text = Resources.GetValue("CreateAccountPasswordConfrimation");
 
-            txtEmail.ReturnKeyType = UIReturnKeyType.Done;
-            txtName.ReturnKeyType = UIReturnKeyType.Done;
-            txtPhone.ReturnKeyType = UIReturnKeyType.Done;
+            base.DismissKeyboardOnReturn(txtEmail, txtName, txtPhone, txtPassword, txtConfirmPassword);
+            
             txtPassword.SecureTextEntry = true;
-            txtPassword.ReturnKeyType = UIReturnKeyType.Done;
             txtConfirmPassword.SecureTextEntry = true;
-            txtConfirmPassword.ReturnKeyType = UIReturnKeyType.Done;
 
             var buttonsY = txtConfirmPassword.Frame.Y + txtConfirmPassword.Frame.Height + 25;
             AddButton(scrollView, 95, buttonsY, Resources.CreateAccountCreate, "CreateAccount", apcurium.MK.Booking.Mobile.Client.AppStyle.ButtonColor.Green);
