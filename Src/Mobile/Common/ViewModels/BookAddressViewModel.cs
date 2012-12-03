@@ -17,6 +17,7 @@ using apcurium.MK.Common.Diagnostic;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using Cirrious.MvvmCross.ExtensionMethods;
 using apcurium.MK.Booking.Mobile.Extensions;
+using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -56,8 +57,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (IsExecuting) {
                     return _searchingTitle;
                 }
-                if (Model.FullAddress.HasValue ()) {
-                    return Model.FullAddress;
+                if (Model.FullAddressDisplay.HasValue ()) {
+                    return Model.FullAddressDisplay;
                 } else {
                     return EmptyAddressPlaceholder;
                 }
@@ -126,7 +127,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return new MvxRelayCommand (() =>
                 {
                     CancelCurrentLocationCommand.Execute ();
-                    RequestNavigate<AddressSearchViewModel> (new { search = Model.FullAddress, ownerId = _id });
+                    if(Settings.StreetNumberScreenEnabled)
+                    {
+                        RequestNavigate<BookStreetNumberViewModel> (new { address = JsonSerializer.SerializeToString<Address>(Model), ownerId = _id });
+                    }else{
+                        RequestNavigate<AddressSearchViewModel> (new { search = Model.FullAddress, ownerId = _id });
+                    }
+
                 });
             }
         }
@@ -175,6 +182,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     Model.Apartment = address.Apartment;
                     Model.RingCode = address.RingCode;
                     Model.BuildingName = address.BuildingName;
+                    Model.Street = address.Street;
+                    Model.StreetNumber = address.StreetNumber;
 
                     FirePropertyChanged (() => Display);
                     FirePropertyChanged (() => Model);
