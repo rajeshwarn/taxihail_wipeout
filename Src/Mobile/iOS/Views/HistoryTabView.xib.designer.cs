@@ -19,5 +19,23 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel lblNoHistory { get; set; }
+		
+		void ReleaseDesignerOutlets ()
+		{
+			if (lblInfo != null) {
+				lblInfo.Dispose ();
+				lblInfo = null;
+			}
+
+			if (tableHistory != null) {
+				tableHistory.Dispose ();
+				tableHistory = null;
+			}
+
+			if (lblNoHistory != null) {
+				lblNoHistory.Dispose ();
+				lblNoHistory = null;
+			}
+		}
 	}
 }

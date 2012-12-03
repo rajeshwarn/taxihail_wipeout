@@ -1,7 +1,5 @@
-
 using System;
 using System.Drawing;
-
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Binding.Touch.Views;
@@ -54,6 +52,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             lblPhone.Text= Resources.GetValue("RideSettingsPhone");
             lblVehicleType.Text= Resources.GetValue("RideSettingsVehiculeType");
             lblChargeType.Text= Resources.GetValue("RideSettingsChargeType");
+
             base.DismissKeyboardOnReturn(txtName, txtPassengers, txtPhone);
             
             var button = new MonoTouch.UIKit.UIBarButtonItem(Resources.DoneButton, UIBarButtonItemStyle.Plain, delegate {
@@ -71,15 +70,13 @@ namespace apcurium.MK.Booking.Mobile.Client
                 ViewModel.SetChargeType.Execute(x.Id);
             });
 
-            AppButtons.FormatStandardButton(btnUpdatePassword, Resources.GetValue("View_RideSettings_BtUpdateMyPassword"), AppStyle.ButtonColor.Grey, null);
-
             this.AddBindings(new Dictionary<object, string>(){
                 { txtName, "{'Text': {'Path': 'Name'}}" },
                 { txtPhone, "{'Text': {'Path': 'Phone'}}" },
                 { txtPassengers, "{'Text': {'Path': 'Passengers'}}" },
                 { txtVehicleType, "{'Text': {'Path': 'VehicleTypeName'}}" },
                 { txtChargeType, "{'Text': {'Path': 'ChargeTypeName'}}" },
-                { btnUpdatePassword, "{'TouchUpInside': {'Path': 'NavigateToUpdatePassword'}}" }
+                { txtPassword, "{'NavigateCommand': {'Path': 'NavigateToUpdatePassword'}}" }
             });
 
         }

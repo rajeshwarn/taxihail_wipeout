@@ -59,7 +59,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			txtNewPassword.PaddingLeft = 5;
 			txtNewPasswordConfirmation.PaddingLeft = 5;
 			
-			txtCurrentPassword.ShouldReturn = ShouldReturnDelegate;
+            txtCurrentPassword.ShouldReturn = ShouldReturnDelegate;
 			txtNewPassword.ShouldReturn = ShouldReturnDelegate;
 			txtNewPasswordConfirmation.ShouldReturn = ShouldReturnDelegate;
 			
