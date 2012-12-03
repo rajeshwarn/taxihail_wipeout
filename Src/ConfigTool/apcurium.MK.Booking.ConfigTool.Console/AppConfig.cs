@@ -51,14 +51,8 @@ namespace apcurium.MK.Booking.ConfigTool
                 new ConfigXML(this){  Destination=@"Mobile\Android\Resources\Values\String.xml", NodeSelector=@"//resources/string[@name=""GoogleMapKey""]" , SetterEle= ( app, ele )=> ele.InnerText = Config.GoogleMapKey  },                                                                          
 
 
-                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_BookingStatus.axml", Namespace = "xmlns:local", Value= Config.Package },
-
-                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_Book.axml", Namespace = "xmlns:local", Value= Config.Package },
-                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\SimpleListItem.axml", Namespace = "xmlns:local", Value= Config.Package },
-                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_SearchAddress.axml", Namespace = "xmlns:local", Value= Config.Package },
-				new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\SubView_MainMenu.axml", Namespace = "xmlns:local", Value= Config.Package },
-				new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_Login.axml", Namespace = "xmlns:local", Value= Config.Package },
-				new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_RefineAddress.axml", Namespace = "xmlns:local", Value= Config.Package },
+                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\", Namespace = "xmlns:local", Value= Config.Package },
+              
 
                 new ConfigXML(this){  Destination=@"Mobile\Android\MK.Booking.Mobile.Client.Android.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Debug|AnyCPU'"")]/a:AndroidSigningKeyAlias" , SetterEle= ( app, ele )=> ele.InnerText = Config.AndroidSigningKeyAlias },               
                 new ConfigXML(this){  Destination=@"Mobile\Android\MK.Booking.Mobile.Client.Android.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Release|AnyCPU'"")]/a:AndroidSigningKeyAlias" , SetterEle= ( app, ele )=> ele.InnerText = Config.AndroidSigningKeyAlias },               
