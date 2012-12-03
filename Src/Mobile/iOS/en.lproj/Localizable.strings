@@ -331,3 +331,4 @@
 "View_RideSettings_BtUpdateMyPassword"="Update My Password";
 "CreateAccountCreate"="Create";
 "CreateAccountCancel"="Cancel";
+"InvalidPhoneErrorMessage"="The mobile number is invalid. It must contain 10 numbers.";

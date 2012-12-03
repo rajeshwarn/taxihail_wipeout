@@ -652,7 +652,7 @@
   <data name="CreateAccountInvalidPassword" xml:space="preserve">
     <value>The password is invalid.  The password and confirmation must be the same.  The password must also be between 6 and 10 characters.</value>
   </data>
-  <data name="CreateAccountInvalidPhone" xml:space="preserve">
+  <data name="InvalidPhoneErrorMessage" xml:space="preserve">
     <value>The mobile number is invalid. It must contain 10 numbers.</value>
   </data>
   <data name="CreateAccountEmptyField" xml:space="preserve">

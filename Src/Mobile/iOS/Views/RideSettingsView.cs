@@ -54,6 +54,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             lblPhone.Text= Resources.GetValue("RideSettingsPhone");
             lblVehicleType.Text= Resources.GetValue("RideSettingsVehiculeType");
             lblChargeType.Text= Resources.GetValue("RideSettingsChargeType");
+            base.DismissKeyboardOnReturn(txtName, txtPassengers, txtPhone);
             
             var button = new MonoTouch.UIKit.UIBarButtonItem(Resources.DoneButton, UIBarButtonItemStyle.Plain, delegate {
                 ViewModel.SaveCommand.Execute();
