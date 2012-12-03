@@ -380,10 +380,10 @@
     <value>Time</value>
   </data>
   <data name="CreateAccountEmail" xml:space="preserve">
-    <value>Email:</value>
+    <value>Email</value>
   </data>
   <data name="CreateAccountTitle" xml:space="preserve">
-    <value>Title:</value>
+    <value>Title</value>
   </data>
   <data name="CreateAccountFullName" xml:space="preserve">
     <value>Full Name</value>
@@ -392,10 +392,10 @@
     <value>Mobile</value>
   </data>
   <data name="CreateAccountMobile" xml:space="preserve">
-    <value>Mobile:</value>
+    <value>Mobile</value>
   </data>
   <data name="CreateAccountLanguage" xml:space="preserve">
-    <value>Language:</value>
+    <value>Language</value>
   </data>
   <data name="CreateAccountLanguageEn" xml:space="preserve">
     <value>English</value>
@@ -640,37 +640,10 @@
   <data name="ResetPasswordInvalidDataMessage" xml:space="preserve">
     <value>The email is invalid.</value>
   </data>
-  <data name="CreateAccoutEmailLabel" xml:space="preserve">
-    <value>Email:</value>
-  </data>
-  <data name="CreateAccoutTitleLabel" xml:space="preserve">
-    <value>Title:</value>
-  </data>
-  <data name="CreateAccoutFirstNameLabel" xml:space="preserve">
-    <value>First name:</value>
-  </data>
-  <data name="CreateAccoutLastNameLabel" xml:space="preserve">
-    <value>Last name:</value>
-  </data>
-  <data name="CreateAccoutPhoneNumberLabel" xml:space="preserve">
-    <value>Mobile:</value>
-  </data>
-  <data name="CreateAccoutMobileLabel" xml:space="preserve">
-    <value>Mobile:</value>
-  </data>
-  <data name="CreateAccoutLanguageLabel" xml:space="preserve">
-    <value>Language:</value>
-  </data>
-  <data name="CreateAccoutPasswordLabel" xml:space="preserve">
-    <value>Password:</value>
-  </data>
-  <data name="CreateAccoutPasswordConfirmLabel" xml:space="preserve">
-    <value>Confirm:</value>
-  </data>
-  <data name="CreateAccoutCreate" xml:space="preserve">
+  <data name="CreateAccountCreate" xml:space="preserve">
     <value>Create</value>
   </data>
-  <data name="CreateAccoutCancel" xml:space="preserve">
+  <data name="CreateAccountCancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
   <data name="RideSettingsChargeType" xml:space="preserve">

@@ -649,36 +649,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 			get { return GetValue ("ResetPasswordInvalidDataMessage"); }
 		}
 
-		public static string CreateAccoutTitle {
-			get { return GetValue ("CreateAccoutTitle"); }
+		public static string CreateAccountCreate {
+			get { return GetValue ("CreateAccountCreate"); }
 		}
 
-		public static string CreateAccoutEmailLabel {
-			get { return GetValue ("CreateAccoutEmailLabel"); }
-		}
-
-		public static string CreateAccoutTitleLabel {
-			get { return GetValue ("CreateAccoutTitleLabel"); }
-		}
-
-		public static string CreateAccoutLanguageLabel {
-			get { return GetValue ("CreateAccoutLanguageLabel"); }
-		}
-
-		public static string CreateAccoutPasswordLabel {
-			get { return GetValue ("CreateAccoutPasswordLabel"); }
-		}
-
-		public static string CreateAccoutPasswordConfirmLabel {
-			get { return GetValue ("CreateAccoutPasswordConfirmLabel"); }
-		}
-
-		public static string CreateAccoutCreate {
-			get { return GetValue ("CreateAccoutCreate"); }
-		}
-
-		public static string CreateAccoutCancel {
-			get { return GetValue ("CreateAccoutCancel"); }
+		public static string CreateAccountCancel {
+			get { return GetValue ("CreateAccountCancel"); }
 		}
 
 		public static string RideSettingsChargeType {
@@ -947,10 +923,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public static string View_Book_Menu_SignOut
 		{
 			get { return GetValue ("View_Book_Menu_SignOut"); }
-		}
-		public static string CreateAccoutPhoneNumberLabel
-		{
-			get { return GetValue ("CreateAccoutPhoneNumberLabel"); }
 		}
 		public static string View_RefineAddress
 		{

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="EstimateDistance"> ({0})</string>
   <string name="CreateAccoutCancel">Cancel</string>
@@ -8,7 +8,7 @@
   <string name="ConfirmPhoneLabel">Mobile:</string>
   <string name="AppNeedUpdateTitle">Update available</string>
   <string name="LoginForgotPasswordButton">Forgot Password?</string>
-  <string name="CreateAccountLanguage">Language:</string>
+  <string name="CreateAccountLanguage">Language</string>
   <string name="NbPassenger"> ({0} passenger)</string>
   <string name="ResetPasswordSucessTitle">Password resetted</string>
   <string name="ServiceErrorCreateOrder_NoProvider">Order cannot be created, no provider specified. Please try again or call us.</string>
@@ -89,8 +89,7 @@
   <string name="CannotCancelOrderTitle">Invalid Action</string>
   <string name="DateTimePickerPickInvalidDateMessage">The pickup date must be in the future.</string>
   <string name="HistoryDetailPickupDateLabel">Pickup Date:</string>
-  <string name="View_SignIn">
-  </string>
+  <string name="View_SignIn"></string>
   <string name="HistoryDetailBuildingNameLabel">Building Name:</string>
   <string name="PickupTimeTextPlaceholder">Time: Now</string>
   <string name="AccountActivationMessage">You will receive an email shortly with a link you need to click on to confirm your registration.</string>
@@ -117,8 +116,8 @@
   <string name="ConfirmRideInformationTitle">Ride Information</string>
   <string name="TabHistory">History</string>
   <string name="LocationDetailViewTitle">Location</string>
-  <string name="CreateAccountMobile">Mobile:</string>
-  <string name="CreateAccountTitle">Title:</string>
+  <string name="CreateAccountMobile">Mobile</string>
+  <string name="CreateAccountTitle">Title</string>
   <string name="DeleteBookItButtonImageNamePressed">Assets/Button/btnBookIt-Pressed_en.png</string>
   <string name="NoMailClient">There are no email clients installed.</string>
   <string name="RideSettingsPassengers">Passengers</string>
@@ -301,7 +300,7 @@
   <string name="ResetPasswordReset">Reset</string>
   <string name="ResetPasswordInvalidDataMessage">The email is invalid.</string>
   <string name="StatusCancelButton">Cancel</string>
-  <string name="CreateAccountEmail">Email:</string>
+  <string name="CreateAccountEmail">Email</string>
   <string name="searchHint">Search</string>
   <string name="CreateAccountErrorTitle">Error</string>
   <string name="CreateAccountLanguageFrench">French</string>
@@ -309,8 +308,7 @@
   <string name="BookItLaterButton">Later</string>
   <string name="ConfirmDestinationLabel">Destination:</string>
   <string name="NearbyPlacesTitle">Nearby places</string>
-  <string name="GenericTitle">
-  </string>
+  <string name="GenericTitle"></string>
   <string name="View_PasswordRecovery">Reset Password</string>
   <string name="InvalidLocalContactTitle">Invalid contact</string>
   <string name="View_Book_Menu_Tutorial">Tutorial</string>
@@ -333,4 +331,6 @@
   <string name="Tuto06Top">The confirmation screen allows you to verify your trip details and to change any of your preferences for this specific ride.</string>
   <string name="Tuto08Bottom">We hope you find this application both convenient and intuitive.</string>
   <string name="Tuto08Top">You can review your order history at any time, and even rebook a previous trip with the push of a button</string>
+  <string name="CreateAccountCreate">Create</string>
+  <string name="CreateAccountCancel">Cancel</string>
 </resources>

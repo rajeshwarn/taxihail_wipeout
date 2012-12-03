@@ -773,26 +773,23 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f06009b
 			public const int SignUpButton = 2131099803;
 			
-			// aapt resource value: 0x7f0600b8
-			public const int SignUpConfirmPassword = 2131099832;
-			
-			// aapt resource value: 0x7f0600b9
-			public const int SignUpCreateBtn = 2131099833;
-			
-			// aapt resource value: 0x7f0600b4
-			public const int SignUpEditEmail = 2131099828;
-			
-			// aapt resource value: 0x7f0600b5
-			public const int SignUpName = 2131099829;
-			
 			// aapt resource value: 0x7f0600b7
-			public const int SignUpPassword = 2131099831;
+			public const int SignUpConfirmPassword = 2131099831;
 			
-			// aapt resource value: 0x7f0600b6
-			public const int SignUpPhone = 2131099830;
+			// aapt resource value: 0x7f0600b8
+			public const int SignUpCreateBtn = 2131099832;
 			
 			// aapt resource value: 0x7f0600b3
-			public const int SignUpTitleView = 2131099827;
+			public const int SignUpEditEmail = 2131099827;
+			
+			// aapt resource value: 0x7f0600b4
+			public const int SignUpName = 2131099828;
+			
+			// aapt resource value: 0x7f0600b6
+			public const int SignUpPassword = 2131099830;
+			
+			// aapt resource value: 0x7f0600b5
+			public const int SignUpPhone = 2131099829;
 			
 			// aapt resource value: 0x7f06003c
 			public const int Space1 = 2131099708;
@@ -893,8 +890,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f060053
 			public const int destinationIsActiveButton = 2131099731;
 			
-			// aapt resource value: 0x7f0600bb
-			public const int details = 2131099835;
+			// aapt resource value: 0x7f0600ba
+			public const int details = 2131099834;
 			
 			// aapt resource value: 0x7f0600af
 			public const int eraseTextButton = 2131099823;
@@ -938,8 +935,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f060017
 			public const int labelValueCell = 2131099671;
 			
-			// aapt resource value: 0x7f0600ba
-			public const int layout_main = 2131099834;
+			// aapt resource value: 0x7f0600b9
+			public const int layout_main = 2131099833;
 			
 			// aapt resource value: 0x7f060097
 			public const int linearLayout0 = 2131099799;
@@ -1340,6 +1337,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f070081
 			public const int ConfirmVehiculeTypeLabel = 2131165313;
+			
+			// aapt resource value: 0x7f07014c
+			public const int CreateAccountCancel = 2131165516;
+			
+			// aapt resource value: 0x7f07014b
+			public const int CreateAccountCreate = 2131165515;
 			
 			// aapt resource value: 0x7f07012c
 			public const int CreateAccountEmail = 2131165484;
@@ -2195,11 +2198,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public partial class Style
 		{
 			
-			// aapt resource value: 0x7f080008
-			public const int BigTitleText = 2131230728;
+			// aapt resource value: 0x7f080009
+			public const int BigTitleText = 2131230729;
 			
-			// aapt resource value: 0x7f08000b
-			public const int BigTitleTextBlack = 2131230731;
+			// aapt resource value: 0x7f08000c
+			public const int BigTitleTextBlack = 2131230732;
 			
 			// aapt resource value: 0x7f080002
 			public const int ButtonText = 2131230722;
@@ -2207,29 +2210,32 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f080003
 			public const int ButtonTextGray = 2131230723;
 			
+			// aapt resource value: 0x7f080011
+			public const int DetailText = 2131230737;
+			
+			// aapt resource value: 0x7f08000b
+			public const int FinePrint = 2131230731;
+			
+			// aapt resource value: 0x7f080007
+			public const int FormLabelText = 2131230727;
+			
+			// aapt resource value: 0x7f08000e
+			public const int GrayText = 2131230734;
+			
 			// aapt resource value: 0x7f080010
-			public const int DetailText = 2131230736;
-			
-			// aapt resource value: 0x7f08000a
-			public const int FinePrint = 2131230730;
-			
-			// aapt resource value: 0x7f08000d
-			public const int GrayText = 2131230733;
-			
-			// aapt resource value: 0x7f08000f
-			public const int HeaderGroupTitle = 2131230735;
+			public const int HeaderGroupTitle = 2131230736;
 			
 			// aapt resource value: 0x7f080001
 			public const int LinkText = 2131230721;
 			
-			// aapt resource value: 0x7f080011
-			public const int ListItemLabel = 2131230737;
+			// aapt resource value: 0x7f080012
+			public const int ListItemLabel = 2131230738;
+			
+			// aapt resource value: 0x7f080014
+			public const int ListItemSpinnerValue = 2131230740;
 			
 			// aapt resource value: 0x7f080013
-			public const int ListItemSpinnerValue = 2131230739;
-			
-			// aapt resource value: 0x7f080012
-			public const int ListItemValue = 2131230738;
+			public const int ListItemValue = 2131230739;
 			
 			// aapt resource value: 0x7f080005
 			public const int ListSubTitle = 2131230725;
@@ -2237,26 +2243,26 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f080004
 			public const int ListTitle = 2131230724;
 			
-			// aapt resource value: 0x7f08000c
-			public const int SimpleText = 2131230732;
+			// aapt resource value: 0x7f08000d
+			public const int SimpleText = 2131230733;
 			
-			// aapt resource value: 0x7f08000e
-			public const int SimpleTextItem = 2131230734;
+			// aapt resource value: 0x7f08000f
+			public const int SimpleTextItem = 2131230735;
 			
-			// aapt resource value: 0x7f080009
-			public const int SmallTitle = 2131230729;
+			// aapt resource value: 0x7f08000a
+			public const int SmallTitle = 2131230730;
 			
 			// aapt resource value: 0x7f080000
 			public const int Theme_Splash = 2131230720;
 			
-			// aapt resource value: 0x7f080014
-			public const int Theme_Transparent = 2131230740;
+			// aapt resource value: 0x7f080015
+			public const int Theme_Transparent = 2131230741;
 			
 			// aapt resource value: 0x7f080006
 			public const int TitleText = 2131230726;
 			
-			// aapt resource value: 0x7f080007
-			public const int ViewTitleStyle = 2131230727;
+			// aapt resource value: 0x7f080008
+			public const int ViewTitleStyle = 2131230728;
 			
 			private Style()
 			{
