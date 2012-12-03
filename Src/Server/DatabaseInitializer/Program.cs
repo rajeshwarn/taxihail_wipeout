@@ -100,13 +100,21 @@ namespace DatabaseInitializer
                 module.Init(container, connectionString);
 
                 //Init data
+
                 var commandBus = container.Resolve<ICommandBus>();
-                // Create Default company
-                commandBus.Send(new CreateCompany
+
+                bool companyIsCreated = container.Resolve<IEventsPlayBackService>().CountEvent("Company") >0;
+
+                if (!companyIsCreated)
                 {
-                    CompanyId = AppConstants.CompanyId,
-                    Id = Guid.NewGuid()
-                });
+                    
+                    // Create Default company
+                    commandBus.Send(new CreateCompany
+                    {
+                        CompanyId = AppConstants.CompanyId,
+                        Id = Guid.NewGuid()
+                    });
+                }
                 //Create settings
 
                 var appSettings = new Dictionary<string, string>();
