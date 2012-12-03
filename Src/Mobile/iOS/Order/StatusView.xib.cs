@@ -70,9 +70,11 @@ namespace apcurium.MK.Booking.Mobile.Client
                 
                 View.BringSubviewToFront (bottomBar);
 
-                this.AddBindings (new Dictionary<object, string> ()                            {
+                this.AddBindings (new Dictionary<object, string> ()                            
+                {
                     { mapStatus, "{'Pickup':{'Path':'Pickup.Model'}, 'TaxiLocation':{'Path':'OrderStatusDetail'}, 'MapCenter':{'Path':'MapCenter'} }" },
                     { lblTitle, "{'Text':{'Path':'StatusInfoText'}}" },
+                    { lblStatus, "{'Text':{'Path':'ConfirmationNoTxt'}}" },
                     { btnCancel, "{'TouchUpInside': {'Path': 'CancelOrder'}}" },
                     { btnCall, "{'Hidden':{'Path':'IsCallButtonVisible', 'Converter':'BoolInverter'}, 'Enabled':{'Path':'IsCallButtonVisible'}, 'TouchUpInside':{'Path':'CallCompany'}}" },
                     { btnNewRide, "{'TouchUpInside': {'Path': 'NewRide'}}" }
