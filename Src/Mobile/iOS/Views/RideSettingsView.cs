@@ -52,6 +52,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             lblPhone.Text= Resources.GetValue("RideSettingsPhone");
             lblVehicleType.Text= Resources.GetValue("RideSettingsVehiculeType");
             lblChargeType.Text= Resources.GetValue("RideSettingsChargeType");
+            lblPassword.Text = Resources.GetValue("RideSettingsPassword");
 
             base.DismissKeyboardOnReturn(txtName, txtPassengers, txtPhone);
             

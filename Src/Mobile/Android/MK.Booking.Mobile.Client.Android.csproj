@@ -226,6 +226,10 @@
     <AndroidResource Include="Resources\Drawable\green_button_right.xml" />
     <AndroidResource Include="Resources\Drawable\address_selector_button.xml" />
     <AndroidResource Include="Resources\Drawable\button_no_background.xml" />
+    <Compile Include="Controls\EditTextNavigate.cs" />
+    <AndroidResource Include="Resources\Layout\Control_EditTextNavigate.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />

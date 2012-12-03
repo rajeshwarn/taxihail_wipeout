@@ -333,4 +333,6 @@
   <string name="Tuto08Top">You can review your order history at any time, and even rebook a previous trip with the push of a button</string>
   <string name="CreateAccountCreate">Create</string>
   <string name="CreateAccountCancel">Cancel</string>
+  <string name="RideSettingsPassword">Password</string>
+  <string name="InvalidPhoneErrorMessage">The mobile number is invalid. It must contain 10 numbers.</string>
 </resources>
