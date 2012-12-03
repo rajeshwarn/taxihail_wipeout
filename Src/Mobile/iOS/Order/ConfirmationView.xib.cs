@@ -51,7 +51,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             NavigationItem.HidesBackButton = true;
 
-			lblRideSettings.TextColor = AppStyle.TitleTextColor;
+            			
 			lblPickupDetails.TextColor = AppStyle.TitleTextColor;
 			lblPickupDetails.Text = Resources.View_RefineAddress;
 
@@ -64,11 +64,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             lblAptRing.Text = Resources.ConfirmAptRingCodeLabel;
             lblDestination.Text = Resources.ConfirmDestinationLabel;
             lblDateTime.Text = Resources.ConfirmDateTimeLabel;
-            lblName.Text = Resources.ConfirmNameLabel;
-            lblPhone.Text = Resources.ConfirmPhoneLabel;
             lblVehiculeType.Text = Resources.ConfirmVehiculeTypeLabel;
-			lblChargeType.Text = Resources.ChargeTypeLabel;
-			lblCompany.Text = Resources.ConfirmCompanyLabel;
+			lblChargeType.Text = Resources.ChargeTypeLabel;			
 			lblBuildingName.Text = Resources.HistoryDetailBuildingNameLabel;
 
 			lblPrice.Text = Resources.ApproxPrice;
@@ -81,16 +78,13 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { btnEdit, "{'TouchUpInside': {'Path': 'NavigateToEditBookingSettings'}}"},
                 { btnEditPickupDetails, "{'TouchUpInside': {'Path': 'NavigateToRefineAddress'}}"},
                 { txtOrigin, "{'Text': {'Path': 'Order.PickupAddress.FullAddress'}}" },
-                { txtDestination, "{'Text': {'Path': 'Order.DropOffAddress.FullAddress', 'Converter': 'EmptyToResourceConverter', 'ConverterParameter': 'ConfirmDestinationNotSpecified'}}" },
+                { txtDestination, "{'Text': {'Path': 'Order.DropOffAddress.FullAddress', 'Converter': 'EmptyToResource', 'ConverterParameter': 'ConfirmDestinationNotSpecified'}}" },
                 { txtDateTime, "{'Text': {'Path': 'FormattedPickupDate'}}" },
                 { txtAptRing, "{'Text': {'Path': 'AptRingCode'}}" },
                 { txtBuildingName, "{'Text': {'Path': 'BuildingName'}}" },
                 { txtPrice, "{'Text': {'Path': 'FareEstimate'}}" },
-                { txtName, "{'Text': {'Path': 'RideSettings.Name'}}" },
-                { txtCompany, "{'Text': {'Path': 'RideSettings.ProviderName'}}" },
                 { txtVehiculeType, "{'Text': {'Path': 'RideSettings.VehicleTypeNameAndNbOfPassengers'}}" },
                 { txtChargeType, "{'Text': {'Path': 'RideSettings.ChargeTypeName'}}" },
-                { txtPhone, "{'Text': {'Path': 'RideSettings.Phone'}}"}
             });
 
             ViewModel.OnViewLoaded();

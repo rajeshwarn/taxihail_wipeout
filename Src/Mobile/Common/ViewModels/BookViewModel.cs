@@ -54,6 +54,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             DropoffIsActive = false;
             Pickup.RequestCurrentLocationCommand.Execute();
 
+            if ( _bookingService.HasLastOrder )
+            {
             _bookingService.GetLastOrderStatus().ContinueWith(t => 
             {
                 var isCompleted = _bookingService.IsStatusCompleted(t.Result.IBSStatusId);
@@ -67,6 +69,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     ShowStatusActivity(order, t.Result);
                 }
             }, TaskContinuationOptions.OnlyOnRanToCompletion);           
+            }
         }
 
         public BookViewModel(string order)

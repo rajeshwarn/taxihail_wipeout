@@ -25,6 +25,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         bool SendReceipt(Guid orderId);
 
+        bool HasLastOrder{get;}
+
         OrderStatusDetail CreateOrder(CreateOrder info);
 
         OrderStatusDetail GetOrderStatus(Guid orderId);

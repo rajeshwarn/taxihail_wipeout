@@ -37,6 +37,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			FareEstimate = bookingService.GetFareEstimateDisplay(Order, null, "NotAvailable");
         }
 
+
+
 		public override void OnViewLoaded ()
 		{
 			base.OnViewLoaded ();

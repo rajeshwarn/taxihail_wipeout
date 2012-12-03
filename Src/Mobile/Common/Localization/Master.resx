@@ -272,13 +272,13 @@
     <value>Ride Information</value>
   </data>
   <data name="ConfirmOriginLablel" xml:space="preserve">
-    <value>Origin:</value>
+    <value>Pickup</value>
   </data>
   <data name="ConfirmAptRingCodeLabel" xml:space="preserve">
     <value>Apt / Entry code:</value>
   </data>
   <data name="ConfirmDestinationLabel" xml:space="preserve">
-    <value>Destination:</value>
+    <value>Destination</value>
   </data>
   <data name="ConfirmDateTimeLabel" xml:space="preserve">
     <value>Date / Time:</value>

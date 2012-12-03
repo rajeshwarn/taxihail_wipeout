@@ -25,186 +25,171 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
     {
         private List<Contact> _addresBook;
 
-        public bool IsValid(CreateOrder info)
+        public bool IsValid (CreateOrder info)
         {
-			return info.PickupAddress.FullAddress.HasValue() 
-				&& info.PickupAddress.HasValidCoordinate();
+            return info.PickupAddress.FullAddress.HasValue () 
+                && info.PickupAddress.HasValidCoordinate ();
         }
 
-
-        protected ILogger Logger
-        {
-            get { return TinyIoCContainer.Current.Resolve<ILogger>(); }
+        protected ILogger Logger {
+            get { return TinyIoCContainer.Current.Resolve<ILogger> (); }
         }
 
-        protected ICacheService Cache
-        {
-            get { return TinyIoCContainer.Current.Resolve<ICacheService>(); }
+        protected ICacheService Cache {
+            get { return TinyIoCContainer.Current.Resolve<ICacheService> (); }
         }
 
-        public OrderStatusDetail CreateOrder(CreateOrder order)
+        public OrderStatusDetail CreateOrder (CreateOrder order)
         {
-            var orderDetail = new OrderStatusDetail();
+            var orderDetail = new OrderStatusDetail ();
             
-            UseServiceClient<OrderServiceClient>(service =>
-                {
-                    orderDetail = service.CreateOrder(order);
-                }, ex => HandleCreateOrderError(ex, order));
-
-            if (orderDetail.IBSOrderId.HasValue && orderDetail.IBSOrderId > 0)
+            UseServiceClient<OrderServiceClient> (service =>
             {
-                Cache.Set("LastOrderId", orderDetail.OrderId.ToString ()); // Need to be cached as a string because of a jit error on device
+                orderDetail = service.CreateOrder (order);
+            }, ex => HandleCreateOrderError (ex, order));
+
+            if (orderDetail.IBSOrderId.HasValue && orderDetail.IBSOrderId > 0) {
+                Cache.Set ("LastOrderId", orderDetail.OrderId.ToString ()); // Need to be cached as a string because of a jit error on device
             }
 
-            ThreadPool.QueueUserWorkItem(o =>
+            ThreadPool.QueueUserWorkItem (o =>
             {
-                TinyIoCContainer.Current.Resolve<IAccountService>().RefreshCache(true);
+                TinyIoCContainer.Current.Resolve<IAccountService> ().RefreshCache (true);
             });
 
             return orderDetail;
 
         }
 
-        private void HandleCreateOrderError(Exception ex, CreateOrder order)
+        private void HandleCreateOrderError (Exception ex, CreateOrder order)
         {
-            var appResource = TinyIoCContainer.Current.Resolve<IAppResource>();
-            var title = appResource.GetString("ErrorCreatingOrderTitle");
+            var appResource = TinyIoCContainer.Current.Resolve<IAppResource> ();
+            var title = appResource.GetString ("ErrorCreatingOrderTitle");
 
 
-            var message = appResource.GetString("ServiceError_ErrorCreatingOrderMessage"); //= Resources.GetString(Resource.String.ServiceErrorDefaultMessage);
+            var message = appResource.GetString ("ServiceError_ErrorCreatingOrderMessage"); //= Resources.GetString(Resource.String.ServiceErrorDefaultMessage);
 
 
-            try
-            {
-                if (ex is WebServiceException)
-                {
-                    message = appResource.GetString("ServiceError" + ((WebServiceException) ex).ErrorCode);
+            try {
+                if (ex is WebServiceException) {
+                    message = appResource.GetString ("ServiceError" + ((WebServiceException)ex).ErrorCode);
                 }
-            }
-            catch
-            {
+            } catch {
 
             }
 
 
-            var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
-            string err = string.Format(message, settings.ApplicationName, settings.PhoneNumberDisplay(order.Settings.ProviderId.HasValue ? order.Settings.ProviderId.Value : 0));
+            var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
+            string err = string.Format (message, settings.ApplicationName, settings.PhoneNumberDisplay (order.Settings.ProviderId.HasValue ? order.Settings.ProviderId.Value : 0));
 
-            TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage(title, err, "Call", () => CallCompany(settings.ApplicationName, settings.PhoneNumber(order.Settings.ProviderId.HasValue ? order.Settings.ProviderId.Value : 0)), "Cancel", delegate {});
+            TinyIoCContainer.Current.Resolve<IMessageService> ().ShowMessage (title, err, "Call", () => CallCompany (settings.ApplicationName, settings.PhoneNumber (order.Settings.ProviderId.HasValue ? order.Settings.ProviderId.Value : 0)), "Cancel", delegate {
+            });
         }
 
-        private void CallCompany(string name, string number)
+        private void CallCompany (string name, string number)
         {
-            var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
-            TinyIoCContainer.Current.Resolve<IMvxPhoneCallTask>().MakePhoneCall(name, number);
+            var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
+            TinyIoCContainer.Current.Resolve<IMvxPhoneCallTask> ().MakePhoneCall (name, number);
         }
  
-        public OrderStatusDetail GetOrderStatus(Guid orderId)
+        public OrderStatusDetail GetOrderStatus (Guid orderId)
         {
-            OrderStatusDetail r = new OrderStatusDetail();
+            OrderStatusDetail r = new OrderStatusDetail ();
 
-            UseServiceClient<OrderServiceClient>(service =>
-                {
-                    r = service.GetOrderStatus(orderId);
-                }, ex=> TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex));
+            UseServiceClient<OrderServiceClient> (service =>
+            {
+                r = service.GetOrderStatus (orderId);
+            }, ex => TinyIoCContainer.Current.Resolve<ILogger> ().LogError (ex));
 
             return r;
         }
 
-        public Task<OrderStatusDetail> GetLastOrderStatus()
+        public bool HasLastOrder {
+            get{ return Cache.Get<string> ("LastOrderId").HasValue ();}
+        }
+
+        public Task<OrderStatusDetail> GetLastOrderStatus ()
         {
-            var task = Task.Factory.StartNew(() =>
+            var task = Task.Factory.StartNew (() =>
             {
-                OrderStatusDetail result = new OrderStatusDetail();
-                var lastOrderId = Cache.Get<string>("LastOrderId");  // Need to be cached as a string because of a jit error on device
+                OrderStatusDetail result = new OrderStatusDetail ();
 
-                if(!lastOrderId.HasValue())
-                {
-                    throw new InvalidOperationException();
+
+
+                if (!HasLastOrder) {
+                    throw new InvalidOperationException ();
                 }
-
-                UseServiceClient<OrderServiceClient>(service =>
+                var lastOrderId = Cache.Get<string> ("LastOrderId");  // Need to be cached as a string because of a jit error on device
+                UseServiceClient<OrderServiceClient> (service =>
                 {
-                    result = service.GetOrderStatus( new Guid(lastOrderId));
-                }, ex => TinyIoCContainer.Current.Resolve<ILogger>().LogError(ex));
+                    result = service.GetOrderStatus (new Guid (lastOrderId));
+                }, ex => TinyIoCContainer.Current.Resolve<ILogger> ().LogError (ex));
 
                 return result;
             });
 
-            task.ContinueWith(t => Logger.LogError(t.Exception), TaskContinuationOptions.OnlyOnFaulted);
+            task.ContinueWith (t => Logger.LogError (t.Exception), TaskContinuationOptions.OnlyOnFaulted);
 
             return task;
 
         }
 
-        public void ClearLastOrder()
+        public void ClearLastOrder ()
         {
-            Cache.Set("LastOrderId", (string)null); // Need to be cached as a string because of a jit error on device
+            Cache.Set ("LastOrderId", (string)null); // Need to be cached as a string because of a jit error on device
         }
 
-        public void RemoveFromHistory(Guid orderId)
+        public void RemoveFromHistory (Guid orderId)
         {
-            UseServiceClient<OrderServiceClient>(service => service.RemoveFromHistory(orderId));
+            UseServiceClient<OrderServiceClient> (service => service.RemoveFromHistory (orderId));
         }
 
-        public bool IsCompleted(Guid orderId)
+        public bool IsCompleted (Guid orderId)
         {
-            var status = GetOrderStatus(orderId);
-            return IsStatusCompleted(status.IBSStatusId);
+            var status = GetOrderStatus (orderId);
+            return IsStatusCompleted (status.IBSStatusId);
         }
 
-        public bool IsStatusCompleted(string statusId)
+        public bool IsStatusCompleted (string statusId)
         {
-            return statusId.IsNullOrEmpty() ||
-                    statusId.SoftEqual("wosCANCELLED") ||
-                    statusId.SoftEqual("wosDONE") ||
-                    statusId.SoftEqual("wosNOSHOW") ||
-                    statusId.SoftEqual("wosCANCELLED_DONE");
+            return statusId.IsNullOrEmpty () ||
+                statusId.SoftEqual ("wosCANCELLED") ||
+                statusId.SoftEqual ("wosDONE") ||
+                statusId.SoftEqual ("wosNOSHOW") ||
+                statusId.SoftEqual ("wosCANCELLED_DONE");
         }
 
-        public bool IsStatusDone(string statusId)
+        public bool IsStatusDone (string statusId)
         {
-            return statusId.SoftEqual("wosDONE");
+            return statusId.SoftEqual ("wosDONE");
         }
 
-        public string GetFareEstimateDisplay(CreateOrder order, string formatString , string defaultFare)
+        public string GetFareEstimateDisplay (CreateOrder order, string formatString, string defaultFare)
         {
-            var appResource = TinyIoCContainer.Current.Resolve<IAppResource>();
-            var fareEstimate = appResource.GetString(defaultFare);
+            var appResource = TinyIoCContainer.Current.Resolve<IAppResource> ();
+            var fareEstimate = appResource.GetString (defaultFare);
 
-            if (order != null && order.PickupAddress.HasValidCoordinate() && order.DropOffAddress.HasValidCoordinate())
-            {
-                var directionInfo = TinyIoCContainer.Current.Resolve<IGeolocService>().GetDirectionInfo(order.PickupAddress.Latitude, order.PickupAddress.Longitude, order.DropOffAddress.Latitude, order.DropOffAddress.Longitude, order.PickupDate);
-                if (directionInfo != null)
-                {
-                    if (directionInfo.Price.HasValue)
-                    {
-                        if (directionInfo.Price.Value > 100)
-                        {
-                            fareEstimate = appResource.GetString("EstimatePriceOver100");
-                        }
-                        else
-                        {
-                            if (formatString.HasValue())
-                            {
-                                fareEstimate = String.Format(appResource.GetString(formatString), directionInfo.FormattedPrice);
-                            }
-                            else
-                            {
+            if (order != null && order.PickupAddress.HasValidCoordinate () && order.DropOffAddress.HasValidCoordinate ()) {
+                var directionInfo = TinyIoCContainer.Current.Resolve<IGeolocService> ().GetDirectionInfo (order.PickupAddress.Latitude, order.PickupAddress.Longitude, order.DropOffAddress.Latitude, order.DropOffAddress.Longitude, order.PickupDate);
+                if (directionInfo != null) {
+                    if (directionInfo.Price.HasValue) {
+                        if (directionInfo.Price.Value > 100) {
+                            fareEstimate = appResource.GetString ("EstimatePriceOver100");
+                        } else {
+                            if (formatString.HasValue ()) {
+                                fareEstimate = String.Format (appResource.GetString (formatString), directionInfo.FormattedPrice);
+                            } else {
                                 fareEstimate = directionInfo.FormattedPrice;
                             }
                             
                         }
 
-                        if (directionInfo.Distance.HasValue)
-                        {
-                            fareEstimate += " " + String.Format(appResource.GetString("EstimateDistance"), directionInfo.FormattedDistance);
+                        if (directionInfo.Distance.HasValue) {
+                            fareEstimate += " " + String.Format (appResource.GetString ("EstimateDistance"), directionInfo.FormattedDistance);
 
                         }
-                    }
-                    else
-                    {
-                        fareEstimate = String.Format(appResource.GetString("EstimatedFareNotAvailable"));
+                    } else {
+                        fareEstimate = String.Format (appResource.GetString ("EstimatedFareNotAvailable"));
                     }
 
 
@@ -214,78 +199,78 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             return fareEstimate;
         }
-        public bool CancelOrder(Guid orderId)
+
+        public bool CancelOrder (Guid orderId)
         {
             bool isCompleted = false;
 
-            UseServiceClient<OrderServiceClient>(service =>
+            UseServiceClient<OrderServiceClient> (service =>
             {
-                service.CancelOrder(orderId);
+                service.CancelOrder (orderId);
                 isCompleted = true;
             });
             return isCompleted;
         }
 
-        public bool SendReceipt(Guid orderId)
+        public bool SendReceipt (Guid orderId)
         {
             bool isCompleted = false;
 
-            UseServiceClient<OrderServiceClient>(service =>
+            UseServiceClient<OrderServiceClient> (service =>
             {
-                service.SendReceipt(orderId);
+                service.SendReceipt (orderId);
                 isCompleted = true;
             });
             return isCompleted;
         }
 
-        public List<RatingType> GetRatingType()
+        public List<RatingType> GetRatingType ()
         {
-            var ratingType = new List<RatingType>();
-            UseServiceClient<OrderServiceClient>(service =>
+            var ratingType = new List<RatingType> ();
+            UseServiceClient<OrderServiceClient> (service =>
             {
-                 ratingType= service.GetRatingTypes();
+                ratingType = service.GetRatingTypes ();
             });
             return ratingType;
         }
 
-        public apcurium.MK.Common.Entity.OrderRatings GetOrderRating(Guid orderId)
+        public apcurium.MK.Common.Entity.OrderRatings GetOrderRating (Guid orderId)
         {
-            var orderRate = new OrderRatings();
-            UseServiceClient<OrderServiceClient>(service =>
+            var orderRate = new OrderRatings ();
+            UseServiceClient<OrderServiceClient> (service =>
             {
-                orderRate = service.GetOrderRatings(orderId);
+                orderRate = service.GetOrderRatings (orderId);
             });
             return orderRate;
         }
 
-        public void SendRatingReview(Common.Entity.OrderRatings orderRatings)
+        public void SendRatingReview (Common.Entity.OrderRatings orderRatings)
         {
-            var request = new OrderRatingsRequest() { Note = orderRatings.Note, OrderId = orderRatings.OrderId, RatingScores = orderRatings.RatingScores };
-            UseServiceClient<OrderServiceClient>(service => service.RateOrder(request));
+            var request = new OrderRatingsRequest () { Note = orderRatings.Note, OrderId = orderRatings.OrderId, RatingScores = orderRatings.RatingScores };
+            UseServiceClient<OrderServiceClient> (service => service.RateOrder (request));
         }
 
-        public List<Address> GetAddressFromAddressBook(Predicate<Contact> criteria)
+        public List<Address> GetAddressFromAddressBook (Predicate<Contact> criteria)
         {
-            var contacts = new List<Address>();
-			var queryable = _addresBook.Where(c => criteria(c) && c.Addresses.Any() ).ToList();
+            var contacts = new List<Address> ();
+            var queryable = _addresBook.Where (c => criteria (c) && c.Addresses.Any ()).ToList ();
 
-            foreach (var contact in queryable)
-            {
-                contact.Addresses.Where( a => a.StreetAddress != null ).ForEach(c => {
-					var list = new List<string>();
-					c.StreetAddress.Maybe( () => list.Add( c.StreetAddress ) );
-					c.City.Maybe( () => list.Add( c.City ) );
-					c.Country.Maybe( () => list.Add( c.Country ) );
-					contacts.Add(new Address
+            foreach (var contact in queryable) {
+                contact.Addresses.Where (a => a.StreetAddress != null).ForEach (c => {
+                    var list = new List<string> ();
+                    c.StreetAddress.Maybe (() => list.Add (c.StreetAddress));
+                    c.City.Maybe (() => list.Add (c.City));
+                    c.Country.Maybe (() => list.Add (c.Country));
+                    contacts.Add (new Address
                                 {
                                     FriendlyName = contact.DisplayName,
-									FullAddress = string.Join(", ", list ),
+                                    FullAddress = string.Join(", ", list ),
                                     City = c.City,
                                     IsHistoric = false,
                                     ZipCode = c.PostalCode,
                                     AddressType = "localContact"
-					});
-				});
+                    });
+                });
 
             }
             return contacts;
@@ -293,17 +278,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         private Task _task;
 
-        public Task LoadContacts()
+        public Task LoadContacts ()
         {
-            if (_task == null)
-            {
-                _task = new Task(() =>
+            if (_task == null) {
+                _task = new Task (() =>
                 {
-					var book = TinyIoCContainer.Current.Resolve<IAddressBookService>();
-					_addresBook = book.LoadContacts();
-					_addresBook.ToString();
-				});
-                _task.Start();
+                    var book = TinyIoCContainer.Current.Resolve<IAddressBookService> ();
+                    _addresBook = book.LoadContacts ();
+                    _addresBook.ToString ();
+                });
+                _task.Start ();
             }
             return _task;
         }

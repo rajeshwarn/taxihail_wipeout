@@ -12,12 +12,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 	partial class ConfirmationView
 	{
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblCompany { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UILabel txtCompany { get; set; }
-
-		[Outlet]
 		MonoTouch.UIKit.UILabel lblPickupDetails { get; set; }
 
 		[Outlet]
@@ -31,9 +25,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.GradientButton btnEdit { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UILabel lblRideSettings { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel lblChargeType { get; set; }
@@ -60,13 +51,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		MonoTouch.UIKit.UILabel lblDestination { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblName { get; set; }
-
-		[Outlet]
 		MonoTouch.UIKit.UILabel lblOrigin { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UILabel lblPhone { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel lblVehiculeType { get; set; }
@@ -81,41 +66,19 @@ namespace apcurium.MK.Booking.Mobile.Client
 		MonoTouch.UIKit.UILabel txtDestination { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel txtName { get; set; }
-
-		[Outlet]
 		MonoTouch.UIKit.UILabel txtOrigin { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UILabel txtPhone { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel txtVehiculeType { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblDistance { get; set; }
-
-		[Outlet]
 		MonoTouch.UIKit.UILabel lblPrice { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UILabel txtDistance { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel txtPrice { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (lblCompany != null) {
-				lblCompany.Dispose ();
-				lblCompany = null;
-			}
-
-			if (txtCompany != null) {
-				txtCompany.Dispose ();
-				txtCompany = null;
-			}
-
 			if (lblPickupDetails != null) {
 				lblPickupDetails.Dispose ();
 				lblPickupDetails = null;
@@ -139,11 +102,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			if (btnEdit != null) {
 				btnEdit.Dispose ();
 				btnEdit = null;
-			}
-
-			if (lblRideSettings != null) {
-				lblRideSettings.Dispose ();
-				lblRideSettings = null;
 			}
 
 			if (lblChargeType != null) {
@@ -186,19 +144,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 				lblDestination = null;
 			}
 
-			if (lblName != null) {
-				lblName.Dispose ();
-				lblName = null;
-			}
-
 			if (lblOrigin != null) {
 				lblOrigin.Dispose ();
 				lblOrigin = null;
-			}
-
-			if (lblPhone != null) {
-				lblPhone.Dispose ();
-				lblPhone = null;
 			}
 
 			if (lblVehiculeType != null) {
@@ -221,19 +169,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 				txtDestination = null;
 			}
 
-			if (txtName != null) {
-				txtName.Dispose ();
-				txtName = null;
-			}
-
 			if (txtOrigin != null) {
 				txtOrigin.Dispose ();
 				txtOrigin = null;
-			}
-
-			if (txtPhone != null) {
-				txtPhone.Dispose ();
-				txtPhone = null;
 			}
 
 			if (txtVehiculeType != null) {
@@ -241,19 +179,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 				txtVehiculeType = null;
 			}
 
-			if (lblDistance != null) {
-				lblDistance.Dispose ();
-				lblDistance = null;
-			}
-
 			if (lblPrice != null) {
 				lblPrice.Dispose ();
 				lblPrice = null;
-			}
-
-			if (txtDistance != null) {
-				txtDistance.Dispose ();
-				txtDistance = null;
 			}
 
 			if (txtPrice != null) {

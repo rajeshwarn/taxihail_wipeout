@@ -25,6 +25,7 @@ using apcurium.MK.Booking.Mobile.Settings;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
+
     public class Application
     {
         static void Main(string[] args)
@@ -43,9 +44,10 @@ namespace apcurium.MK.Booking.Mobile.Client
     public partial class AppDelegate : MvxApplicationDelegate, IMvxServiceConsumer<IMvxStartNavigation>
     {
         private bool _callbackFromFB = false;
-
+        private bool _isStarting = false;
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
+            _isStarting = true;
             ThreadHelper.ExecuteInThread ( () =>        MonoTouch.ObjCRuntime.Runtime.StartWWAN( new Uri ( new AppSettings().ServiceUrl ) ));
 
             Background.Load(window, "Assets/background_full_nologo.png", false, 0, 0);          
@@ -117,15 +119,24 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             if (!_callbackFromFB)
             {    
-				if( AppContext.Current.Controller != null && AppContext.Current.Controller.TopViewController is BookView )
+
+				if( !_isStarting &&  AppContext.Current.Controller != null && AppContext.Current.Controller.TopViewController is BookView )
 				{
 					var model = ((BookView)AppContext.Current.Controller.TopViewController).ViewModel;
+                    model.Reset ();
+                    if ( !model.PickupIsActive )
+                    {
+                        model.ActivatePickup.Execute ();
+                    }
+                    model.Pickup.RequestCurrentLocationCommand.Execute ();
 				}
             }
             else
             {
                 _callbackFromFB = false;
             }           
+
+            _isStarting = false;
         }
 
 

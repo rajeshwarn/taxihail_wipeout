@@ -68,19 +68,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private void Initialize()
         {   
-            _cancelToken = new CancellationTokenSource();
-            TinyIoCContainer.Current.Resolve<ILocationService>().GetPositionAsync(5000, 4000, 5000, 8000, _cancelToken.Token).ContinueWith(t => {
-                if (t.IsCompleted && !t.IsCanceled)
-                {
-                    InvokeOnMainThread(() =>
-                    {
-                        if (t.Result.Latitude != 0 && t.Result.Longitude != 0)
-                        {
-                            SetRegionAndZoom(new MKCoordinateRegion(), new CLLocationCoordinate2D(t.Result.Latitude, t.Result.Longitude), 0.2, 0.2);
-                        }
-                    });
-                }
-            }, TaskContinuationOptions.OnlyOnRanToCompletion);
+           /// _cancelToken = new CancellationTokenSource();
+
+            ShowsUserLocation = true;
+
+//            var task = TinyIoCContainer.Current.Resolve<ILocationService>().GetPositionAsync(5000, 4000, 5000, 8000, _cancelToken.Token).ContinueWith(t => {
+//                if (t.IsCompleted && !t.IsCanceled)
+//                {
+//                    InvokeOnMainThread(() =>
+//                    {
+//                        if (t.Result.Latitude != 0 && t.Result.Longitude != 0)
+//                        {
+//                            SetRegionAndZoom(new MKCoordinateRegion(), new CLLocationCoordinate2D(t.Result.Latitude, t.Result.Longitude), 0.2, 0.2);
+//                        }
+//                    });
+//                }
+//            }, TaskContinuationOptions.OnlyOnRanToCompletion);
+//
+//            task.Wait ( 1000 );
         }
 
         public override void MovedToSuperview ()
