@@ -14,7 +14,7 @@
 "ConfirmNoRingCode"="No code";
 "View_BookingDetail"="Confirmation";
 "ServiceErrorCreateAccount_AccountAlreadyExist"="This email is already in use.";
-"DateTimePickerSetButton"="Set";
+"DateTimePickerSetButton"="Book";
 "OrderNote"="Booked on mobile";
 "PickupTextPlaceholder"="Pickup street address";
 "TechSupportEmailTitle"="Support Application Mobile";
@@ -71,7 +71,7 @@
 "ApproxPrice"="Estimated Fare:";
 "HistoryDetailStatusLabel"="Status:";
 "RideSettingsCompany"="Company";
-"ConfirmOriginLablel"="Origin:";
+"ConfirmOriginLablel"="Pickup:";
 "UpdateBookingSettingsInvalidDataTitle"="Invalid booking settings info.";
 "DateTimePickerPickTitle"="Pickup date and time";
 "Close"="Close";
@@ -302,7 +302,7 @@
 "searchHint"="Search";
 "CreateAccountErrorTitle"="Error";
 "CreateAccountLanguageFrench"="French";
-"BookItButton"="TaxiHail rocks!";
+"BookItButton"="Pick Me Up Now";
 "ConfirmDestinationLabel"="Destination:";
 "NearbyPlacesTitle"="Nearby places";
 "GenericTitle"="";

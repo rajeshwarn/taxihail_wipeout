@@ -129,11 +129,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 {
                     messengerHub.Unsubscribe<DateTimePicked>(token);
                 }
-                if (msg.Content.HasValue)
-                {
-                    ViewModel.Order.PickupDate = msg.Content;
-                    ViewModel.PickupDateSelected();
-                }
+
+                ViewModel.PickupDateSelectedCommand.Execute(msg.Content);
             });
 
             var intent = new Intent(this, typeof(DateTimePickerActivity));
@@ -141,6 +138,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 intent.PutExtra("SelectedDate", ViewModel.Order.PickupDate.Value.Ticks);
             }
+            intent.PutExtra("UseAmPmFormat", ViewModel.UseAmPmFormat );
+
             StartActivityForResult(intent, (int)ActivityEnum.DateTimePicked);
         }
 
