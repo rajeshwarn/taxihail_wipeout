@@ -192,24 +192,6 @@
                             android:layout_gravity="bottom"
                             android:background="@drawable/StatusBottomBarBackground" />
                         <RelativeLayout
-                            android:layout_weight="0.11"
-                            android:layout_width="fill_parent"
-                            android:layout_height="19dip"
-                            android:layout_gravity="center_horizontal|bottom"
-                            local:MvxBind="{&apos;Visibility&apos;:{&apos;Path&apos;:&apos;IsInTheFuture&apos;,&apos;Converter&apos;:&apos;Visibility&apos;}}"
-                            android:gravity="center_horizontal|center_vertical"
-                            android:layout_marginBottom="60dip"
-                            android:background="#ee000000">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text=""
-                                local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;PickupDateDisplay&apos;}}"
-                                android:gravity="center_horizontal|top"
-                                style="@style/SmallTitle"
-                                android:layout_gravity="center_horizontal|top" />
-                        </RelativeLayout>
-                        <RelativeLayout
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="bottom"

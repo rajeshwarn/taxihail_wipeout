@@ -100,7 +100,7 @@
 								<string key="NSFrame">{{0, 171}, {320, 289}}</string>
 								<reference key="NSSuperview" ref="817439265"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="73135811"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<bool key="IBUIMultipleTouchEnabled">YES</bool>
@@ -239,48 +239,6 @@
 									</object>
 								</object>
 							</object>
-							<object class="IBUILabel" id="73135811">
-								<reference key="NSNextResponder" ref="817439265"/>
-								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{0, 391}, {320, 21}}</string>
-								<reference key="NSSuperview" ref="817439265"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="756231839"/>
-								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<object class="NSColor" key="IBUIBackgroundColor">
-									<int key="NSColorSpace">3</int>
-									<bytes key="NSWhite">MAA</bytes>
-								</object>
-								<bool key="IBUIOpaque">NO</bool>
-								<bool key="IBUIClipsSubviews">YES</bool>
-								<float key="IBUIAlpha">0.69999998807907104</float>
-								<int key="IBUIContentMode">7</int>
-								<bool key="IBUIUserInteractionEnabled">NO</bool>
-								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<string key="IBUIText">Label</string>
-								<object class="NSColor" key="IBUITextColor">
-									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MSAxIDEAA</bytes>
-									<object class="NSColorSpace" key="NSCustomColorSpace">
-										<int key="NSID">1</int>
-									</object>
-								</object>
-								<nil key="IBUIHighlightedColor"/>
-								<int key="IBUIBaselineAdjustment">0</int>
-								<float key="IBUIMinimumFontSize">10</float>
-								<int key="IBUITextAlignment">1</int>
-								<object class="IBUIFontDescription" key="IBUIFontDescription">
-									<string key="name">Helvetica</string>
-									<string key="family">Helvetica</string>
-									<int key="traits">0</int>
-									<double key="pointSize">13</double>
-								</object>
-								<object class="NSFont" key="IBUIFont">
-									<string key="NSName">Helvetica</string>
-									<double key="NSSize">13</double>
-									<int key="NSfFlags">16</int>
-								</object>
-							</object>
 						</object>
 						<string key="NSFrameSize">{320, 460}</string>
 						<reference key="NSSuperview" ref="191373211"/>
@@ -391,22 +349,6 @@
 					</object>
 					<int key="connectionID">71</int>
 				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">pickupDateLabel</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="73135811"/>
-					</object>
-					<int key="connectionID">95</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">pickupDtaeLabel</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="73135811"/>
-					</object>
-					<int key="connectionID">96</int>
-				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -452,7 +394,6 @@
 							<reference ref="1072163805"/>
 							<reference ref="182166954"/>
 							<reference ref="928904522"/>
-							<reference ref="73135811"/>
 							<reference ref="799716075"/>
 						</object>
 						<reference key="parent" ref="191373211"/>
@@ -514,11 +455,6 @@
 						<reference key="object" ref="821522654"/>
 						<reference key="parent" ref="928904522"/>
 					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">94</int>
-						<reference key="object" ref="73135811"/>
-						<reference key="parent" ref="817439265"/>
-					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -547,7 +483,6 @@
 					<string>82.IBPluginDependency</string>
 					<string>89.IBPluginDependency</string>
 					<string>90.IBPluginDependency</string>
-					<string>94.IBPluginDependency</string>
 				</object>
 				<object class="NSArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -569,7 +504,6 @@
 					<string>GradientButton</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>GradientButton</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>

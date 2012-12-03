@@ -232,6 +232,9 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Drawable\right_arrow_light.png" />
+    <AndroidResource Include="Resources\Layout\View_BookingDetail.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
@@ -274,9 +277,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Values\Color.xml" />
-    <AndroidResource Include="Resources\Layout\View_BookingDetail.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\Layout\SpinnerText.axml" />
     <AndroidResource Include="Resources\Layout\ListItemAutoComplete.axml">
       <SubType>AndroidResource</SubType>

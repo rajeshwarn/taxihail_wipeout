@@ -815,7 +815,7 @@
     <value>Reservation for {0:ddd, MMM d} at {0:h:mm tt}</value>
   </data>
   <data name="DateTimePickerSetButton" xml:space="preserve">
-    <value>Set</value>
+    <value>Book</value>
   </data>
   <data name="SendEmail" xml:space="preserve">
     <value>Send mail...</value>

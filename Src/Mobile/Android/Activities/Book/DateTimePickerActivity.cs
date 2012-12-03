@@ -31,12 +31,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             timePicker.SetIs24HourView(Java.Lang.Boolean.True);
             timePicker.CurrentHour = new Integer(selected.Hour);
             timePicker.CurrentMinute = new Integer(selected.Minute);
-            timePicker.SetIs24HourView(Java.Lang.Boolean.False);
-
+            timePicker.SetIs24HourView(Java.Lang.Boolean.False);  
             FindViewById<TimePicker>(Resource.Id.timePickerCtl).TimeChanged += TimeOnTimeChanged;
             FindViewById<DatePicker>(Resource.Id.datePickerCtl).UpdateDate(selected.Year, selected.Month - 1, selected.Day);
             FindViewById<Button>(Resource.Id.DoneButton).Click += DoneOnClick;
             FindViewById<Button>(Resource.Id.NowButton).Click += TimeOnClick;
+
+            var useAmPm = this.Intent.GetBooleanExtra("UseAmPmFormat", true );
+
+            if ( !useAmPm )
+            {
+                timePicker.SetIs24HourView(Java.Lang.Boolean.True);  
+            }
+
         }
 
         private DateTime GetNowWithInterval()

@@ -141,7 +141,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return new MvxRelayCommand(() => 
                     {
                         Close();
-                        MessengerHub.Publish(new OrderConfirmed(this, Order ));
+                        MessengerHub.Publish(new OrderConfirmed(this, Order, false ));
                     }); 
             }
         }
@@ -150,8 +150,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-
-                return new MvxRelayCommand(Close);               
+                return new MvxRelayCommand(() => 
+                                           {
+                    Close();
+                    MessengerHub.Publish(new OrderConfirmed(this, Order, true ));
+                });            
             }
         }
 
