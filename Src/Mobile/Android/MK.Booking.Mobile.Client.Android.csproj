@@ -231,6 +231,10 @@
     <AndroidResource Include="Resources\Layout\View_Tutorial.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
+    <Compile Include="Controls\EditTextNavigate.cs" />
+    <AndroidResource Include="Resources\Layout\Control_EditTextNavigate.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
