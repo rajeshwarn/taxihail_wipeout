@@ -23,6 +23,9 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Extensions;
+using System.Globalization;
 
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -150,6 +153,32 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+        public bool UseAmPmFormat
+        {
+            get{
+
+                return new CultureInfo( CultureInfo).DateTimeFormat.LongTimePattern.ToLower().Contains ( "tt" );
+
+
+            }
+        }
+
+        public string CultureInfo
+        {
+            get{
+                var culture = TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting ( "PriceFormat" );
+                if ( culture.IsNullOrEmpty() )
+                {
+                    return "en-US";
+                }
+                else
+                {
+                    return culture;                
+                }
+            }
+        }
+
+
 
         private void NewOrder()
         {
@@ -200,7 +229,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             FirePropertyChanged(() => PickupIsActive);
             FirePropertyChanged(() => DropoffIsActive);
 			FirePropertyChanged(() => FareEstimate);
-            FirePropertyChanged(() => IsInTheFuture);
         }
 
 
@@ -370,28 +398,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         
 
-        public bool IsInTheFuture { get { return Order.PickupDate.HasValue; } }
-
-        public string PickupDateDisplay
-        {
-            get
-            {
-                if (Order.PickupDate.HasValue)
-                {
-                    var format = Resources.GetString("PickupDateDisplay");
-                    return String.Format(format, Order.PickupDate.Value);
-                }
-                else
-                {
-                    return "";
-                }
-
-            }
-        }
         public void PickupDateSelected()
         {
-            FirePropertyChanged(() => IsInTheFuture);
-            FirePropertyChanged(() => PickupDateDisplay);
             Task.Factory.SafeStartNew ( CalculateEstimate );
         }
 		public IMvxCommand PickupDateSelectedCommand
@@ -409,6 +417,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					{
 						Order.PickupDate = date;
 						InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new DateTimePicked(this, Order.PickupDate )));
+                        if ( date.HasValue )
+                        {
+                            BookTaxi.Execute ();
+                        }
 					}
 					PickupDateSelected();
 				});
@@ -439,11 +451,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					bool isValid = _bookingService.IsValid (Order);
 					if (!isValid)
                     {
+                        Order.PickupDate = null;
                         InvokeOnMainThread(() => MessageService.ShowMessage(Resources.GetString("InvalidBookinInfoTitle"), Resources.GetString("InvalidBookinInfo")));
 						return;
                     }
 
 					if (Order.PickupDate.HasValue && Order.PickupDate.Value < DateTime.Now) {
+                        Order.PickupDate = null;
 						InvokeOnMainThread(() => MessageService.ShowMessage(Resources.GetString("InvalidBookinInfoTitle"), Resources.GetString("BookViewInvalidDate")));
 						return;
 					}
@@ -455,7 +469,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         {
                             MessengerHub.Unsubscribe<OrderConfirmed>(token);
                         }
-						Task.Factory.StartNew(() => CompleteOrder(msg.Content));
+                        if ( msg.IsCancelled )
+                        {
+                            //User cancelled
+                            Order.PickupDate = null;
+                        }
+                        else
+                        {
+						    Task.Factory.StartNew(() => CompleteOrder(msg.Content));
+                        }
                     });
 
                     InvokeOnMainThread(() =>
