@@ -81,11 +81,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public static UIFont CellSmallFont { get { return UIFont.FromName (BoldFontName, CellSmallFontSize); } }
 
-        public static float CellFontSize { get { return 14f; } }
+        public static float CellFontSize { get { return 16f; } }
 
         public static UIFont ButtonFont { get { return GetButtonFont (ButtonFontSize); } }
 
-        public static float CellSmallFontSize { get { return 10f; } }
+        public static float CellSmallFontSize { get { return 12f; } }
 
         public static float ButtonFontSize { get { return StyleManager.Current.ButtonFontSize.HasValue ? StyleManager.Current.ButtonFontSize.Value : 14f; } }
 

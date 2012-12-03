@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using Infrastructure.Messaging;
-using ServiceStack.CacheAccess;
+using Infrastructure.Serialization;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -27,11 +28,10 @@ namespace apcurium.MK.Booking.Api.Services
         private IAccountDao _accountDao;
 
         private ReferenceDataService _referenceDataService;
+
         public CreateOrderService(ICommandBus commandBus,
                                     IBookingWebServiceClient bookingWebServiceClient,
-                                    IStaticDataWebServiceClient staticDataWebServiceClient,
-                                    IAccountDao accountDao,
-                                    ICacheClient cacheClient, 
+                                    IAccountDao accountDao, 
                                     IConfigurationManager configManager,
                                     ReferenceDataService referenceDataService)
         {
@@ -44,6 +44,8 @@ namespace apcurium.MK.Booking.Api.Services
 
         public override object OnPost(CreateOrder request)
         {
+            Trace.WriteLine("Create order request : " + request);
+
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
 
             //TODO: Fix this when IBS will accept more than 10 digits phone numbers

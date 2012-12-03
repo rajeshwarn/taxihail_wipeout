@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -380,10 +380,10 @@
     <value>Time</value>
   </data>
   <data name="CreateAccountEmail" xml:space="preserve">
-    <value>Email:</value>
+    <value>Email</value>
   </data>
   <data name="CreateAccountTitle" xml:space="preserve">
-    <value>Title:</value>
+    <value>Title</value>
   </data>
   <data name="CreateAccountFullName" xml:space="preserve">
     <value>Full Name</value>
@@ -392,10 +392,10 @@
     <value>Mobile</value>
   </data>
   <data name="CreateAccountMobile" xml:space="preserve">
-    <value>Mobile:</value>
+    <value>Mobile</value>
   </data>
   <data name="CreateAccountLanguage" xml:space="preserve">
-    <value>Language:</value>
+    <value>Language</value>
   </data>
   <data name="CreateAccountLanguageEn" xml:space="preserve">
     <value>English</value>
@@ -640,37 +640,10 @@
   <data name="ResetPasswordInvalidDataMessage" xml:space="preserve">
     <value>The email is invalid.</value>
   </data>
-  <data name="CreateAccoutEmailLabel" xml:space="preserve">
-    <value>Email:</value>
-  </data>
-  <data name="CreateAccoutTitleLabel" xml:space="preserve">
-    <value>Title:</value>
-  </data>
-  <data name="CreateAccoutFirstNameLabel" xml:space="preserve">
-    <value>First name:</value>
-  </data>
-  <data name="CreateAccoutLastNameLabel" xml:space="preserve">
-    <value>Last name:</value>
-  </data>
-  <data name="CreateAccoutPhoneNumberLabel" xml:space="preserve">
-    <value>Mobile:</value>
-  </data>
-  <data name="CreateAccoutMobileLabel" xml:space="preserve">
-    <value>Mobile:</value>
-  </data>
-  <data name="CreateAccoutLanguageLabel" xml:space="preserve">
-    <value>Language:</value>
-  </data>
-  <data name="CreateAccoutPasswordLabel" xml:space="preserve">
-    <value>Password:</value>
-  </data>
-  <data name="CreateAccoutPasswordConfirmLabel" xml:space="preserve">
-    <value>Confirm:</value>
-  </data>
-  <data name="CreateAccoutCreate" xml:space="preserve">
+  <data name="CreateAccountCreate" xml:space="preserve">
     <value>Create</value>
   </data>
-  <data name="CreateAccoutCancel" xml:space="preserve">
+  <data name="CreateAccountCancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
   <data name="RideSettingsChargeType" xml:space="preserve">
@@ -804,6 +777,9 @@
   </data>
   <data name="ServiceErrorUnauthorized" xml:space="preserve">
     <value>An unauthorized call has been made to server, you will be redirected to login page.</value>
+  </data>
+   <data name="ServiceErrorUpdatePassword_NotSame" xml:space="preserve">
+    <value>The current password is not valid.</value>
   </data>
   <data name="BookDateLabel" xml:space="preserve">
     <value>Pick Me Up Later</value>
@@ -946,6 +922,9 @@
   <data name="View_Book_Menu_UpdateMyProfile" xml:space="preserve">
     <value>Update My Profile</value>
   </data>
+  <data name="View_RideSettings_BtUpdateMyPassword" xml:space="preserve">
+    <value>Update My Password</value>
+  </data>
   <data name="View_Book_Menu_CallDispatch" xml:space="preserve">
     <value>Call Dispatch Center</value>
   </data>
@@ -1054,6 +1033,10 @@
   <data name="View_Book_Menu_Tutorial" xml:space="preserve">
     <value>Tutorial</value>
   </data>
+  <data name="ChangePasswordConfirmmation" xml:space="preserve">
+    <value>You password has been updated, please sign in.</value>
+  </data>
+
   <data name="Tuto01Bottom" xml:space="preserve">
     <value>Start by selecting your current position.</value>
   </data>

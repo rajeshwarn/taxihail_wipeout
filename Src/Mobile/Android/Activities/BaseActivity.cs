@@ -20,9 +20,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
     {
         protected abstract int ViewTitleResourceId { get; }
 
-
-
-
         protected override void OnResume()
         {
             base.OnResume();
@@ -60,16 +57,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
             base.OnResume();
 
             var txt = FindViewById<TextView>(Resource.Id.ViewTitle);
-            txt.Text = GetString(ViewTitleResourceId);
+			if(txt!= null) txt.Text = GetString(ViewTitleResourceId);
         }
 
-        protected override void OnPause()
-        {
-            base.OnPause();
-            //var locmgr =(LocationManager) Application.Context.GetSystemService(Context.LocationService);
-              //  locmgr.
-            //Context.LocationService.
-        }
     }
 
     public abstract class BaseListActivity : ListActivity

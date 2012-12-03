@@ -141,7 +141,6 @@
     <Compile Include="Messages\AddressSelected.cs" />
     <Compile Include="Messages\BookUsingAddress.cs" />
     <Compile Include="Messages\CloseViewsToRoot.cs" />
-    <Compile Include="Messages\LogOutRequested.cs" />
     <Compile Include="Messages\OrderCanceled.cs" />
     <Compile Include="Messages\OrderDeleted.cs" />
     <Compile Include="Messages\OrderRated.cs" />
@@ -217,6 +216,8 @@
     <Compile Include="ViewModels\MyLocationsViewModel.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="Models\TutorialItemModel.cs" />
+    <Compile Include="ViewModels\UpdatePasswordViewModel.cs" />
+    <Compile Include="Extensions\TaskFactoryExtension.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">

@@ -84,8 +84,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
 
             ClearCache ();
-            var dispatch = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider> ().Dispatcher;
-            dispatch.RequestNavigate (new MvxShowViewModelRequest (typeof(LoginViewModel), null, false, MvxRequestedBy.UserAction));
+          
         }
 
         public void RefreshCache (bool reload)
@@ -277,9 +276,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public string UpdatePassword (Guid accountId, string currentPassword, string newPassword)
         {
             string response = null;
-            QueueCommand<IAccountServiceClient> (service => {                     
-                response = service.UpdatePassword (new UpdatePassword () { AccountId = accountId, CurrentPassword = currentPassword, NewPassword = newPassword });
-            });
+            response = UseServiceClient<IAccountServiceClient> (service => {                     
+                service.UpdatePassword (new UpdatePassword () { AccountId = accountId, CurrentPassword = currentPassword, NewPassword = newPassword });
+            }, ex => { throw ex; });
 
             return response;
         }

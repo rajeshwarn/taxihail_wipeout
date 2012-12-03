@@ -18,9 +18,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/RideSettingsName"
-            android:textColor="@color/black"
-            android:layout_marginLeft="3dip"
-            android:layout_marginBottom="5dip"/>
+            style="@style/FormLabelText"
+            />
         <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -28,24 +27,22 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="5dip"
-            android:layout_marginBottom="5dip">
+            android:orientation="horizontal">
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/RideSettingsPhone"
                 android:layout_weight="1"
-                android:layout_marginRight="10dip"
-                android:textColor="@color/black"
-                android:layout_marginLeft="3dip" />
+            	style="@style/FormLabelText"
+                />
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/RideSettingsPassengers"
                 android:layout_weight="1"
-                android:textColor="@color/black"
-                android:layout_marginLeft="3dip" />
+
+            	style="@style/FormLabelText"
+                />
         </LinearLayout>
         <LinearLayout
             android:id="@+id/rideSettingsPassengersLayout"
@@ -71,51 +68,34 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/RideSettingsVehiculeType"
-            android:layout_marginTop="5dip"
-            android:layout_marginBottom="5dip"
-            android:textColor="@color/black"
-            android:layout_marginLeft="3dip" />
-        <EditText
+            style="@style/FormLabelText"
+            />
+        <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-           local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;VehicleTypeDisplay&apos;}}"/>
+            local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;VehicleTypeName&apos;}, &apos;Data&apos;: {&apos;Path&apos;: &apos;Vehicles&apos;}, &apos;SelectedItem&apos;: {&apos;Path&apos;: &apos;VehicleTypeId&apos;}}" />
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/RideSettingsChargeType"
-            android:layout_marginTop="5dip"
-            android:layout_marginBottom="5dip"
-            android:textColor="@color/black"
-            android:layout_marginLeft="3dip" />
-        <EditText
+            style="@style/FormLabelText"
+            />
+        <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;ChargeTypeDisplay&apos;}}"/>
-    <!--TextView
-            android:id="@+id/rideSettingsListHeader"
+            local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;ChargeTypeName&apos;}, &apos;Data&apos;: {&apos;Path&apos;: &apos;Payments&apos;}, &apos;SelectedItem&apos;: {&apos;Path&apos;: &apos;ChargeTypeId&apos;}}" />
+        <Button
+            android:id="@+id/UpdatePassword"
+            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;NavigateToUpdatePassword&apos;}}"
+            style="@style/ButtonText"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="40dip"
+            android:background="@drawable/gray_button"
+            android:text="@string/View_RideSettings_BtUpdateMyPassword"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:focusable="false"
-            android:text="@string/DefaultRideSettingsViewTitle"
-            android:textStyle="bold"
-            android:textSize="14sp"
-            android:textColor="@color/darkgray"
-            android:background="#00000000" />
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="60dip"
-            android:orientation="vertical">
-            <ListView
-                android:id="@+id/RideSettingsList"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:divider="@color/gray"
-                android:dividerHeight="1dp"
-                android:focusable="false"
-                android:background="#00000000"
-                android:cacheColorHint="#00000000" />
-        </LinearLayout>
+            android:paddingBottom="5dip"
+            android:paddingTop="15dip"
+            android:width="10dip" />
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -133,6 +113,6 @@
                 android:lines="1"
                 android:text="@string/SaveButton"
                 local:MvxBind="{&apos;Click&apos;: {&apos;Path&apos;: &apos;SaveCommand&apos;}}" />
-        </LinearLayout-->
+        </LinearLayout>
     </LinearLayout>
 </apcurium.mk.booking.mobile.client.controls.HeaderedLayout>

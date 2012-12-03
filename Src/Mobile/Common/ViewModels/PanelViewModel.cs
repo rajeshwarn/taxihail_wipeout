@@ -1,5 +1,4 @@
 using System;
-using Cirrious.MvvmCross.Android.Views;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
@@ -47,7 +46,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
                     MenuIsOpen = false;
 					_accountService.SignOut();			
-					InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new LogOutRequested(this)));
+					RequestNavigate<LoginViewModel>(true);
 				});
 			}
 		}

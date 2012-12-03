@@ -224,6 +224,13 @@
     <AndroidResource Include="Resources\Drawable\green_button_right.xml" />
     <AndroidResource Include="Resources\Drawable\address_selector_button.xml" />
     <AndroidResource Include="Resources\Drawable\button_no_background.xml" />
+    <Compile Include="Controls\EditTextSpinner.cs" />
+    <Compile Include="Binding\EditTextSpinnerSelectedItemBinding.cs" />
+    <AndroidResource Include="Resources\Layout\View_UpdatePassword.axml" />
+    <Compile Include="Activities\Account\UpdatePasswordActivity.cs" />
+    <AndroidResource Include="Resources\Layout\View_Tutorial.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
@@ -331,7 +338,6 @@
     <AndroidResource Include="Resources\Drawable\pin_grey.png" />
     <AndroidResource Include="Resources\Drawable\pin_yellow.png" />
     <AndroidResource Include="Resources\drawable-hdpi\splash.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\splash.png" />
     <AndroidResource Include="Resources\Drawable\backgroundblue.png" />
     <AndroidResource Include="Resources\Drawable\right_arrow.png" />
     <AndroidResource Include="Resources\Drawable\cell_bottom.9.png" />
@@ -357,18 +363,6 @@
     <AndroidResource Include="Resources\drawable-hdpi\sign_in_btn.9.png" />
     <AndroidResource Include="Resources\drawable-hdpi\social_media_login_btn.9.png" />
     <AndroidResource Include="Resources\drawable-hdpi\twitter_icon.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\add_button.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\cell_bottom.9.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\cell_middle.9.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\cell_top.9.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\email_cell.9.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\facebook_icon.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\forgot_password_btn.9.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\password_cell.9.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\right_arrow.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\sign_in_btn.9.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\social_media_login_btn.9.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\twitter_icon.png" />
     <AndroidResource Include="Resources\Drawable\newBlackButton.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -414,7 +408,6 @@
     <AndroidResource Include="Resources\Drawable\server_button_state.xml" />
     <AndroidResource Include="Resources\Drawable\server_button.png" />
     <AndroidResource Include="Resources\drawable-hdpi\server_button.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\server_button.png" />
     <AndroidResource Include="Resources\Drawable\searchTabBtn_off.png" />
     <AndroidResource Include="Resources\Drawable\searchTabBtn_on.png" />
     <AndroidResource Include="Resources\drawable-hdpi\searchTabBtn_off.png" />
@@ -514,6 +507,7 @@
   -->
   <ItemGroup>
     <Folder Include="Localization\Mapper\" />
+    <Folder Include="Binding\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">
@@ -577,11 +571,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\SubView_BookButtons.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\Layout\View_tutorial.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

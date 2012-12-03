@@ -1,4 +1,4 @@
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Models
 {
     public class TutorialItemModel
     {

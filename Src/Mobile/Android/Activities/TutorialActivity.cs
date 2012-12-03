@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
         protected override void OnViewModelSet()
         {
             
-            SetContentView(Resource.Layout.View_tutorial);
+            SetContentView(Resource.Layout.View_Tutorial);
             var rootLayout = this.FindViewById<LinearLayout>(Resource.Id.layout_main);
             var horizontalPager = this.FindViewById<HorizontalPager>(Resource.Id.details);
 

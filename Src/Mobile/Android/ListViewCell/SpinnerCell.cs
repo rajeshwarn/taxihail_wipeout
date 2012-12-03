@@ -31,6 +31,7 @@ namespace apcurium.MK.Booking.Mobile.Client.ListViewCell
 			SpinnerCtl = (Spinner) CellView.FindViewById( Resource.Id.spinner );
 			SpinnerCtl.ItemSelected -= HandleSpinnerCtlItemSelected;
 			SpinnerCtl.ItemSelected += HandleSpinnerCtlItemSelected;
+
             
 		}
 

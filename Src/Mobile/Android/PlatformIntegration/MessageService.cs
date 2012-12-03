@@ -10,17 +10,16 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using Cirrious.MvvmCross.Android.Views;
-using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.Interfaces.Views;
-using Cirrious.MvvmCross.Views;
 using apcurium.MK.Booking.Mobile.Client.Activities;
 using apcurium.MK.Booking.Mobile.Client.Activities.Setting;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using TinyIoC;
 using TinyMessenger;
 using apcurium.MK.Booking.Mobile.Messages;
-using apcurium.MK.Booking.Mobile.ViewModels;
+using Cirrious.MvvmCross.Android.Views;
+using Cirrious.MvvmCross.Views;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -34,6 +33,16 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         }
 
         public Context Context { get; set; }
+
+		/// <summary>
+		/// put the content of on activity on a modal dialog ( type = viewmodel Type )
+		/// </summary>
+		public void ShowDialogActivity(Type type)
+		{
+			var presenter = new MvxAndroidViewPresenter();
+			presenter.Show(new MvxShowViewModelRequest(type, null, false, MvxRequestedBy.UserAction));
+		}
+
 
 
         public void ShowMessage(string title, string message)
@@ -118,9 +127,26 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 		}
 		
 
-        public void ShowMessage(string title, string message,  string additionnalActionButtonTitle, Action additionalAction)
-        {
-            throw new NotImplementedException();
+        public void ShowMessage(string title, string message, Action additionalAction)
+        {            
+			var ownerId = Guid.NewGuid().ToString();
+			var i = new Intent(Context, typeof(AlertDialogActivity));
+			i.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
+			i.PutExtra("Title", title);
+			i.PutExtra("Message", message);
+			
+			i.PutExtra("NeutralButtonTitle", "OK");
+			i.PutExtra("OwnerId", ownerId);
+			
+			TinyMessageSubscriptionToken token = null;
+			token = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<ActivityCompleted>(a =>
+			{				
+				additionalAction();				
+				TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Unsubscribe<ActivityCompleted>(token);
+				token.Dispose();
+			}, a => a.OwnerId == ownerId);
+			
+			Context.StartActivity(i);
         }
 
         public void ShowProgress(bool show)
@@ -133,16 +159,12 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                        _progressDialog.Show();
                     }
                 );*/
-
-
-        }
-
-
-            /* var i = new Intent(Context, typeof(ShowDialogActivity));
+			/* var i = new Intent(Context, typeof(ShowDialogActivity));
             i.AddFlags(ActivityFlags.NewTask | ActivityFlags..ReorderToFront);
             i.PutExtra("Show", show.ToString());
             Context.StartActivity(i);
             Context.ac*/
+        }          
 
         public void ShowProgress(bool show, Action cancel)
         {
@@ -155,14 +177,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         {
             Toast toast = Toast.MakeText(Context, message , duration == ToastDuration.Short ?  ToastLength.Short : ToastLength.Long );
             toast.Show();
-        }
-        /// <summary>
-        /// put the content of on activity on a modal dialog ( type = viewmodel Type )
-        /// </summary>
-        public void ShowDialogActivity(Type type)
-        {
-            var presenter = new MvxAndroidViewPresenter();
-            presenter.Show(new MvxShowViewModelRequest(type, null, false, MvxRequestedBy.UserAction));
         }
 
 		public void ShowDialog<T> (string title, IEnumerable<T> items, Func<T, string> displayNameSelector, Action<T> onResult)

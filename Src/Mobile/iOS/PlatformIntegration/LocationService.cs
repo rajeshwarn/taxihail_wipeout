@@ -54,7 +54,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 if (_locationDelegate.LastKnownLocation != null)
                 {                   
                     result = _locationDelegate.LastKnownLocation;
-                    if ((result.HorizontalAccuracy <= accuracy) || (result.VerticalAccuracy <= accuracy))
+                    if (result.HorizontalAccuracy <= accuracy) 
                     {
                         TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Good location found! : " +
                             result.HorizontalAccuracy.ToString());

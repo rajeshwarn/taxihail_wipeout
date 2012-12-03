@@ -11,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.Localization;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.Models;
 
 namespace apcurium.MK.Booking.Mobile.Client.Localization
 {

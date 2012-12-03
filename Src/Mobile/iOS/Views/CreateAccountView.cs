@@ -46,10 +46,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
             scrollView.ContentSize = new SizeF(scrollView.ContentSize.Width, 416);
 
-            lblEmail.Text = Resources.GetValue("CreateAccoutEmailLabel");
+            lblEmail.Text = Resources.GetValue("CreateAccountEmail");
             lblName.Text = Resources.GetValue("CreateAccountFullName");
-            lblPhone.Text = Resources.GetValue("CreateAccoutPhoneNumberLabel");
-            lblPassword.Text = Resources.GetValue("CreateAccoutPasswordLabel");
+            lblPhone.Text = Resources.GetValue("CreateAccountPhone");
+            lblPassword.Text = Resources.GetValue("CreateAccountPassword");
             lblConfirmPassword.Text = Resources.GetValue("CreateAccountPasswordConfrimation");
 
             txtEmail.ReturnKeyType = UIReturnKeyType.Done;
@@ -61,7 +61,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             txtConfirmPassword.ReturnKeyType = UIReturnKeyType.Done;
 
             var buttonsY = txtConfirmPassword.Frame.Y + txtConfirmPassword.Frame.Height + 25;
-            AddButton(scrollView, 95, buttonsY, Resources.CreateAccoutCreate, "CreateAccount", apcurium.MK.Booking.Mobile.Client.AppStyle.ButtonColor.Green);
+            AddButton(scrollView, 95, buttonsY, Resources.CreateAccountCreate, "CreateAccount", apcurium.MK.Booking.Mobile.Client.AppStyle.ButtonColor.Green);
 
             this.AddBindings(new Dictionary<object, string>{
                 { txtName, "{'Text': {'Path': 'Data.Name', 'Mode': 'TwoWay' }}" },

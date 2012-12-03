@@ -13,18 +13,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 		
 		public static void Show ( string title, string message, string additionalActionTitle , Action additionalAction )
 		{
-
 			UIApplication.SharedApplication.InvokeOnMainThread ( delegate
 			{					
                 LoadingOverlay.StopAnimatingLoading();
-				var av = new UIAlertView ( title, message, null, Resources.Close, additionalActionTitle );
+                var av = new UIAlertView ( title, message, null, additionalActionTitle);
 				av.Clicked += delegate(object sender, UIButtonEventArgs e) {
-				if (e.ButtonIndex == 1) {
-				
-						additionalAction();						
-				}};
-					
-				av.Show (  );							
+                    additionalAction();     
+                };					
+				av.Show();							
 			} );
 		}
 

@@ -184,7 +184,12 @@ namespace Infrastructure.Messaging.InMemory
                 }catch(Exception e)
                 {
                     var payload = _serializer.Serialize(@event);
-                    Trace.TraceError("Error in handling event " + @event.Body.GetType() + Environment.NewLine + payload, e);
+                    string innerException = string.Empty;
+                    if (e.InnerException != null)
+                    {
+                        innerException = e.InnerException.ToString();
+                    }
+                    Trace.TraceError("Error in handling event " + @event.Body.GetType() + Environment.NewLine + payload + Environment.NewLine + e.Message + Environment.NewLine + e.StackTrace + Environment.NewLine + innerException);
                 }
             });
         }

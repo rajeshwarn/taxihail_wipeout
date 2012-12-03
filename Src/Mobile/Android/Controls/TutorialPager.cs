@@ -16,6 +16,7 @@ using Android.Views;
 using Android.Views.Animations;
 using Android.Widget;
 using Java.IO;
+using apcurium.MK.Booking.Mobile.Models;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
