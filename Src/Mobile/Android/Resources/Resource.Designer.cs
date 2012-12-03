@@ -1341,6 +1341,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f070081
 			public const int ConfirmVehiculeTypeLabel = 2131165313;
 			
+			// aapt resource value: 0x7f07014c
+			public const int CreateAccountCancel = 2131165516;
+			
+			// aapt resource value: 0x7f07014b
+			public const int CreateAccountCreate = 2131165515;
+			
 			// aapt resource value: 0x7f07012c
 			public const int CreateAccountEmail = 2131165484;
 			

@@ -85,7 +85,7 @@
                         android:layout_height="45dip"
                         android:layout_weight="1"
                         local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;CreateAccount&apos;}}"
-                        android:text="@string/CreateAccoutCreate" />
+                        android:text="@string/CreateAccountCreate" />
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
