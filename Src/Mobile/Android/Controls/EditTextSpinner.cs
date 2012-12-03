@@ -55,6 +55,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			var layout = inflater.Inflate(Resource.Layout.SpinnerCell, this, true);
 
 			_label = (TextView) layout.FindViewById( Resource.Id.label );
+			_label.Focusable = false;
 			if(_text != null) _label.Text = _text;
 			var button = (Button)layout.FindViewById( Resource.Id.openSpinnerButton );
 			button.Click += (object sender, EventArgs e) => {

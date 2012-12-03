@@ -335,6 +335,9 @@
     <Compile Include="Views\BaseViewController.designer.cs">
       <DependentUpon>BaseViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\TextFieldWithArrow.cs" />
+    <Compile Include="Controls\NavigateTextField.cs" />
+    <Compile Include="Extensions\UIResponderExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
