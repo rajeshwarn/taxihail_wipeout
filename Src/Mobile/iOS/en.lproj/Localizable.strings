@@ -6,7 +6,7 @@
 "ConfirmPhoneLabel"="Mobile:";
 "AppNeedUpdateTitle"="Update available";
 "LoginForgotPasswordButton"="Forgot Password?";
-"CreateAccountLanguage"="Language:";
+"CreateAccountLanguage"="Language";
 "NbPassenger"=" ({0} passenger)";
 "ResetPasswordSucessTitle"="Password resetted";
 "ServiceErrorCreateOrder_NoProvider"="Order cannot be created, no provider specified. Please try again or call us.";
@@ -114,8 +114,8 @@
 "ConfirmRideInformationTitle"="Ride Information";
 "TabHistory"="History";
 "LocationDetailViewTitle"="Location";
-"CreateAccountMobile"="Mobile:";
-"CreateAccountTitle"="Title:";
+"CreateAccountMobile"="Mobile";
+"CreateAccountTitle"="Title";
 "DeleteBookItButtonImageNamePressed"="Assets/Button/btnBookIt-Pressed_en.png";
 "NoMailClient"="There are no email clients installed.";
 "RideSettingsPassengers"="Passengers";
@@ -298,7 +298,7 @@
 "ResetPasswordReset"="Reset";
 "ResetPasswordInvalidDataMessage"="The email is invalid.";
 "StatusCancelButton"="Cancel";
-"CreateAccountEmail"="Email:";
+"CreateAccountEmail"="Email";
 "searchHint"="Search";
 "CreateAccountErrorTitle"="Error";
 "CreateAccountLanguageFrench"="French";
@@ -329,3 +329,5 @@
 "ServiceErrorUpdatePassword_NotSame"="The current password is not valid.";
 "ChangePasswordConfirmmation"="You password has been updated, please sign in.";
 "View_RideSettings_BtUpdateMyPassword"="Update My Password";
+"CreateAccountCreate"="Create";
+"CreateAccountCancel"="Cancel";
