@@ -210,6 +210,9 @@
     <Compile Include="Models\TutorialItemModel.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="Extensions\TaskFactoryExtension.cs" />
+    <Compile Include="AppServices\ITutorialService.cs" />
+    <Compile Include="AppServices\Impl\TutorialService.cs" />
+    <Compile Include="Data\TutorialItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">
@@ -256,4 +259,13 @@
     <None Include="Localization\Master.resx" />
     <None Include="Localization\Taxiworld.resx" />
   </ItemGroup>
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <Policies>
+          <DotNetNamingPolicy DirectoryNamespaceAssociation="PrefixedHierarchical" ResourceNamePolicy="FileFormatDefault" />
+        </Policies>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
 </Project>

@@ -57,7 +57,9 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             base.ViewDidLoad ();
 
-
+            contentView.Layer.CornerRadius = 7;
+            btnClose.SetImage ( UIImage.FromFile ("Assets/closeButton.png"), UIControlState.Normal);
+            btnClose.SetTitle ( "", UIControlState.Normal );
             View.BackgroundColor = UIColor.FromRGBA (0,0,0,0.40f);
             this.AddBindings(new Dictionary<object, string>(){ 
                 { btnClose, "{'TouchUpInside':{'Path':'CloseCommand'}}"} 
@@ -79,16 +81,19 @@ namespace apcurium.MK.Booking.Mobile.Client
             for (int i=0; i<count; i++)
             {
                 UIView view = new UIView();
-                UIImageView image = new UIImageView( UIImage.FromFile("Assets/"+listTutorial[i].ImageUri+".png"));
+                view.BackgroundColor = UIColor.Clear;
+                UIImageView image = new UIImageView( UIImage.FromFile("Assets/Tutorial/"+listTutorial[i].ImageUri+".png"));
                 //image.Frame = scrollview.Frame;
-                image.AutosizesSubviews =true;
+                //image.AutosizesSubviews =true;
                 UILabel labelBottom = new UILabel();
                 labelBottom.TextColor = UIColor.LightGray;
+                labelBottom.BackgroundColor = UIColor.Clear;
                 labelBottom.TextAlignment = UITextAlignment.Center;
                 labelBottom.Text = listTutorial[i].BottomText;
                 labelBottom.Lines = 3;
 
                 UILabel labelTop = new UILabel();
+                labelTop.BackgroundColor = UIColor.Clear;
                 labelTop.TextColor = UIColor.Black;
                 labelTop.TextAlignment = UITextAlignment.Center;
                 labelTop.Text = listTutorial[i].TopText;
@@ -98,7 +103,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 labelTop.SetDimensions(width:scrollview.Frame.Width,height:100);
                 labelTop.SetPosition(scrollview.Frame.Width*i,0);
 
-                image.SetDimensions(width:scrollview.Frame.Width,height:200);
+
                 image.SetPosition(scrollview.Frame.Width*i,100);
 
                 labelBottom.SetDimensions(width:scrollview.Frame.Width,height:100);

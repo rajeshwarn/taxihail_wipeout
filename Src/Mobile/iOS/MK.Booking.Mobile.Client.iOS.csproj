@@ -344,7 +344,7 @@
     <MonoDevelop>
       <Properties>
         <Policies>
-          <DotNetNamingPolicy DirectoryNamespaceAssociation="None" ResourceNamePolicy="FileName" />
+          <DotNetNamingPolicy DirectoryNamespaceAssociation="PrefixedHierarchical" ResourceNamePolicy="FileName" />
         </Policies>
       </Properties>
     </MonoDevelop>
@@ -369,6 +369,7 @@
     <Folder Include="Animations\" />
     <Folder Include="Converters\" />
     <Folder Include="Navigation\" />
+    <Folder Include="Assets\Tutorial\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="MainWindow.xib" xmlns="" />
@@ -534,17 +535,25 @@
     <Content Include="Assets\flag_selected%402x.png" />
     <Content Include="Assets\hail_selected.png" />
     <Content Include="Assets\hail_selected%402x.png" />
-    <Content Include="Assets\tutorial_background.png" />
-    <Content Include="Assets\tutorial_screen01.png" />
-    <Content Include="Assets\tutorial_screen02.png" />
-    <Content Include="Assets\tutorial_screen03.png" />
-    <Content Include="Assets\tutorial_screen04.png" />
-    <Content Include="Assets\tutorial_screen05.png" />
-    <Content Include="Assets\tutorial_screen06.png" />
-    <Content Include="Assets\tutorial_screen07.png" />
-    <Content Include="Assets\tutorial_screen08.png" />
     <Content Include="Assets\closeButton.png" />
     <Content Include="Assets\closeButton%402x.png" />
+    <Content Include="Assets\Tutorial\tutorial_background.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen01.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen02.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen03.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen04.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen05.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen06.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen07.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen08.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen01%402x.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen02%402x.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen03%402x.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen04%402x.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen05%402x.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen06%402x.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen07%402x.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen08%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.iOS.csproj">
