@@ -15,8 +15,8 @@
             this.model.getStatus().fetch({
                 success: _.bind(function(model) {
                     var data = model.toJSON();
-                    if (!model.get('iBSStatusDescription')) {
-                        model.set('iBSStatusDescription', TaxiHail.localize('Processing'));
+                    if (!model.get('ibsStatusDescription')) {
+                        model.set('ibsStatusDescription', TaxiHail.localize('Processing'));
                     }
                     this.render();
                 },this)

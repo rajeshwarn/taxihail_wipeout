@@ -8,7 +8,7 @@
 	"Cancel" : "Cancel",
 	"Order details" : "Order Details",
 	"OrderStatus" : "OrderStatus",
-	"iBSOrderIdLabel" : "Order #", 
+	"ibsOrderIdLabel" : "Order #", 
 	"Send Receipt": "Send Receipt",
 	"Sending...": "Sending...",
 	"Receipt Sent": "Receipt Sent",
