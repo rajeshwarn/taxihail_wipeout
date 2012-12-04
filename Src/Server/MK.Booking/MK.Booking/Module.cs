@@ -54,17 +54,11 @@ namespace apcurium.MK.Booking
         {
             AutoMapper.Mapper.CreateMap<UpdateBookingSettings, BookingSettings>();
             AutoMapper.Mapper.CreateMap<CreateOrder.BookingSettings, BookingSettings>();
+            AutoMapper.Mapper.CreateMap<CreateOrder.BookingSettings, BookingSettings>();
+            AutoMapper.Mapper.CreateMap<Address, AddressDetails>();
 
             AutoMapper.Mapper.CreateMap<EmailSender.SmtpConfiguration, SmtpClient>()
                 .ForMember(x => x.Credentials, opt => opt.MapFrom(x => new NetworkCredential(x.Username, x.Password)));
-
-            AutoMapper.Mapper.CreateMap<OrderCreated, AddressDetails>()
-                .ForMember(p => p.Apartment, opt => opt.MapFrom(m => m.PickupAddress.Apartment))
-                .ForMember(p => p.FullAddress, opt => opt.MapFrom(m => m.PickupAddress.FullAddress))
-                .ForMember(p => p.RingCode, opt => opt.MapFrom(m => m.PickupAddress.RingCode))
-                .ForMember(p => p.BuildingName, opt => opt.MapFrom(m => m.PickupAddress.BuildingName))
-                .ForMember(p => p.Latitude, opt => opt.MapFrom(m => m.PickupAddress.Latitude))
-                .ForMember(p => p.Longitude, opt => opt.MapFrom(m => m.PickupAddress.Longitude));
 
             AutoMapper.Mapper.CreateMap<FavoriteAddressAdded, AddressDetails>()
                 .ForMember(p => p.AccountId, opt => opt.MapFrom(m => m.SourceId));

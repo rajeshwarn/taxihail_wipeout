@@ -1,10 +1,16 @@
 ﻿using System;
 using Infrastructure.EventSourcing;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Events
 {
     public class FavoriteAddressAdded : VersionedEvent
     {
+        public Address Address { get; set; }
+
+        /***
+         * to be deleted after migration
+         * **/
         public Guid AddressId { get; set; }
         public string FriendlyName { get; set; }
         public string FullAddress { get; set; }

@@ -9,6 +9,7 @@ using apcurium.MK.Booking.Common.Tests;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Test.AddressesFixture
 {
@@ -35,15 +36,19 @@ namespace apcurium.MK.Booking.Test.AddressesFixture
             var addressId = Guid.NewGuid();
             this.sut.When(new AddFavoriteAddress
                               {
-                                  AddressId = addressId,
-                                  AccountId =  _accountId,
-                                  FriendlyName = "Chez François",
-                                  Apartment = "3939",
-                                  FullAddress = "1234 rue Saint-Hubert",
-                                  RingCode = "3131",
-                                  BuildingName = "Hôtel de Ville",
-                                  Latitude   = 45.515065,
-                                  Longitude = -73.558064
+                                  
+                                  AccountId = _accountId,
+                                  Address = new Address
+                {
+                    Id = addressId,
+                    FriendlyName = "Chez François",
+                    Apartment = "3939",
+                    FullAddress = "1234 rue Saint-Hubert",
+                    RingCode = "3131",
+                    BuildingName = "Hôtel de Ville",
+                    Latitude = 45.515065,
+                    Longitude = -73.558064
+                }
                               });
 
             Assert.AreEqual(1, sut.Events.Count);
@@ -123,7 +128,11 @@ namespace apcurium.MK.Booking.Test.AddressesFixture
         [Test]
         public void when_adding_an_address_with_missing_required_fields()
         {
-            Assert.Throws<InvalidOperationException>(() => this.sut.When(new AddFavoriteAddress { AccountId = _accountId, FriendlyName = null, Apartment = "3939", FullAddress = null, RingCode = "3131", Latitude = 45.515065, Longitude = -73.558064 }));
+            Assert.Throws<InvalidOperationException>(() => this.sut.When(new AddFavoriteAddress
+            {
+                AccountId = _accountId,
+                Address = new Address { FriendlyName = null, Apartment = "3939", FullAddress = null, RingCode = "3131", Latitude = 45.515065, Longitude = -73.558064 }
+            }));
         }
 
         [Test]
@@ -146,24 +155,30 @@ namespace apcurium.MK.Booking.Test.AddressesFixture
                 .sut.When(new AddFavoriteAddress
                     {
                         AccountId = _accountId,
-                        FriendlyName = "Chez François",
-                        Apartment = "3939",
-                        FullAddress = "1234 rue Saint-Hubert",
-                        RingCode = "3131",
-                        Latitude = 180,
-                        Longitude = -73.558064
+                        Address = new Address
+                {
+                    FriendlyName = "Chez François",
+                    Apartment = "3939",
+                    FullAddress = "1234 rue Saint-Hubert",
+                    RingCode = "3131",
+                    Latitude = 180,
+                    Longitude = -73.558064
+                }
                     }));
 
             Assert.Throws<ArgumentOutOfRangeException>(() => this
                 .sut.When(new AddFavoriteAddress
                 {
                     AccountId = _accountId,
+                    Address = new Address
+                {
                     FriendlyName = "Chez François",
                     Apartment = "3939",
                     FullAddress = "1234 rue Saint-Hubert",
                     RingCode = "3131",
                     Latitude = 0,
                     Longitude = -200.558064
+                }
                 }));
         }
 

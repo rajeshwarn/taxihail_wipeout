@@ -165,9 +165,11 @@ namespace apcurium.MK.Booking.Mobile
                         InvokeOnMainThread (() =>
                         {
                             FullAddress = location.FullAddress;
-                            _address.Latitude = location.Latitude;
-                            _address.Longitude = location.Longitude;
-                            _accountService.UpdateAddress( _address );     
+                            location.FriendlyName = _address.FriendlyName;
+                            location.Apartment = location.Apartment;
+                            location.RingCode = location.RingCode;
+                            location.Id = _address.Id;
+                            _accountService.UpdateAddress(location);     
                             Close();
                         });
                     
