@@ -42,14 +42,7 @@ namespace apcurium.MK.Booking.BackOffice.CommandHandlers
         {
             var account = _repository.Get(command.AccountId);
 
-            account.UpdateFavoriteAddress(id: command.AddressId,
-                friendlyName: command.FriendlyName,
-                apartment: command.Apartment,
-                fullAddress: command.FullAddress,
-                ringCode: command.RingCode,
-                buildingName: command.BuildingName,
-                latitude: command.Latitude,
-                longitude: command.Longitude);
+            account.UpdateFavoriteAddress(command.AddressId, command.Address);
 
             _repository.Save(account, command.Id.ToString());
         }

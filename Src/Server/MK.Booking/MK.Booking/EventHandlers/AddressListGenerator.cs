@@ -23,6 +23,7 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
             {
                 var address = new AddressDetails();
                 address.Id = @event.AddressId;
+                address.AccountId = @event.SourceId;
                 AutoMapper.Mapper.Map(@event.Address, address);
                 context.Save(address);
 
@@ -63,7 +64,7 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
                 if(address != null)
                 {
                     address.IsHistoric = false;
-                    AutoMapper.Mapper.Map(@event, address);
+                    AutoMapper.Mapper.Map(@event.Address, address);
                     context.SaveChanges();
                 }
             }
@@ -87,6 +88,7 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
                     var address = new AddressDetails();
                     AutoMapper.Mapper.Map(@event.PickupAddress, address);
                     address.Id = Guid.NewGuid();
+                    address.AccountId = @event.AccountId;
                     address.IsHistoric = true;
                     context.Save(address);
                 }
