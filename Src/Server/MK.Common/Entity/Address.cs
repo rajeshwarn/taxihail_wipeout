@@ -55,7 +55,7 @@ namespace apcurium.MK.Common.Entity
                 prefixAddress = BuildingName;
             }
             var components = Params.Get (prefixAddress, Street, City, string.Format ("{0} {1}", State, ZipCode)).Where (s => s.HasValue () && s.Trim().HasValue()).ToList ();
-            if (components.Any ()) {
+            if (components.Count > 1) {
                 return components.FirstOrDefault () + components.Skip (1).Aggregate ((x,y) => {
                     return string.Format (" {0}, {1}", x.Trim (), y.Trim ());});
             } else {
@@ -70,6 +70,7 @@ namespace apcurium.MK.Common.Entity
                 if(streetNumberBuildingName.IsDigit())
                 {
                     StreetNumber = streetNumberBuildingName;
+                    BuildingName = null;
                 }
                 else
                 {

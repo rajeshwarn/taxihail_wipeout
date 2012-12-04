@@ -34,10 +34,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private Action<Address> _setAddress;
         private string _id;
         private string _searchingTitle;
+        bool _isPickup;
 
         public event EventHandler AddressChanged;
 
-        public BookAddressViewModel (Func<Address> getAddress, Action<Address> setAddress, ILocationService geolocator)
+        public BookAddressViewModel (Func<Address> getAddress, Action<Address> setAddress, ILocationService geolocator, bool isPickup = false)
         {
             _getAddress = getAddress;
             _setAddress = setAddress;
@@ -45,6 +46,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _geolocator = geolocator;
             _searchingTitle = Resources.GetString ("AddressSearchingText");
             MessengerHub.Subscribe<AddressSelected> (OnAddressSelected, selected => selected.OwnerId == _id);
+            _isPickup = isPickup;
         }
 
         public string Title { get; set; }
@@ -127,7 +129,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return new MvxRelayCommand (() =>
                 {
                     CancelCurrentLocationCommand.Execute ();
-                    if(Settings.StreetNumberScreenEnabled)
+                    if(Settings.StreetNumberScreenEnabled && _isPickup)
                     {
                         RequestNavigate<BookStreetNumberViewModel> (new { address = JsonSerializer.SerializeToString<Address>(Model), ownerId = _id });
                     }else{

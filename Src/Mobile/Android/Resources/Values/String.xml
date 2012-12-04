@@ -14,7 +14,7 @@
   <string name="ServiceErrorCreateOrder_NoProvider">Order cannot be created, no provider specified. Please try again or call us.</string>
   <string name="ServiceError_ErrorCreatingOrderMessage">Please contact {0} at {1} for further assistance.</string>
   <string name="ConfirmNoRingCode">No code</string>
-  <string name="View_BookingDetail">Confirmation</string>
+  <string name="View_BookingDetail">Booking summary</string>
   <string name="ServiceErrorCreateAccount_AccountAlreadyExist">This email is already in use.</string>
   <string name="DateTimePickerSetButton">Book</string>
   <string name="OrderNote">Booked on mobile</string>
@@ -24,7 +24,7 @@
   <string name="HistoryDetailRebookButton">Rebook trip</string>
   <string name="DontHaveAnAccountLabel">Don\'t have an account?</string>
   <string name="HistoryInfo">Displaying trips from the last month</string>
-  <string name="ConfirmAptRingCodeLabel">Apt / Entry code:</string>
+  <string name="ConfirmAptRingCodeLabel">Apartment / Entry code</string>
   <string name="View_Book_Menu_MyOrders">My Orders</string>
   <string name="PickupMapTitle">Pickup location</string>
   <string name="NbPassengers"> ({0} passengers)</string>
@@ -53,7 +53,7 @@
   <string name="InvalidAccountOnActivatedMessage">Your account cannot be validated, you must log in to use this application</string>
   <string name="RideSettingsCannotLoadListTitle">Server error</string>
   <string name="FacebookButton">Sign In with Facebook</string>
-  <string name="ConfirmDateTimeLabel">Date / Time:</string>
+  <string name="ConfirmDateTimeLabel">Date / Time</string>
   <string name="View_HistoryDetail">Order Details</string>
   <string name="ServiceErrorCreateOrder_VehiculeType">Order cannot be created, invalid vehicle type. Please try again or call us.</string>
   <string name="NotAvailable">N/A</string>
@@ -70,7 +70,7 @@
   <string name="CreateAccount_AccountAlreadyExist">The account cannot be created, this email is already in use.</string>
   <string name="SupportEmail">techsupport@apcurium.com</string>
   <string name="AppNeedUpdateMessage">A new version of the application is available, please update the app to continue.</string>
-  <string name="ApproxPrice">Estimated Fare:</string>
+  <string name="ApproxPrice">Estimated Fare</string>
   <string name="HistoryDetailStatusLabel">Status:</string>
   <string name="RideSettingsCompany">Company</string>
   <string name="ConfirmOriginLablel">Pickup</string>
@@ -89,8 +89,7 @@
   <string name="CannotCancelOrderTitle">Invalid Action</string>
   <string name="DateTimePickerPickInvalidDateMessage">The pickup date must be in the future.</string>
   <string name="HistoryDetailPickupDateLabel">Pickup Date:</string>
-  <string name="View_SignIn">
-  </string>
+  <string name="View_SignIn"></string>
   <string name="HistoryDetailBuildingNameLabel">Building Name:</string>
   <string name="PickupTimeTextPlaceholder">Time: Now</string>
   <string name="AccountActivationMessage">You will receive an email shortly with a link you need to click on to confirm your registration.</string>
@@ -130,7 +129,7 @@
   <string name="SendErrorLogButton">Send error log</string>
   <string name="StatusNewRideButton">New Ride</string>
   <string name="StatusConfirmCancelRideErrorTitle">Cannot cancel</string>
-  <string name="ConfirmVehiculeTypeLabel">Vehicle type:</string>
+  <string name="ConfirmVehiculeTypeLabel">Vehicle type</string>
   <string name="InvalidLocalContactMessage">The address associated to this contact cannot be validated.</string>
   <string name="CreateAccountErrorNotSpecified">The server didn\'t specify why the account could not be created, if the error persist try creating the account from the web site.</string>
   <string name="HistoryDetailOriginLabel">Pickup:</string>
@@ -193,7 +192,7 @@
   <string name="StatusActionButton">Call / Book / Cancel</string>
   <string name="GoogleMapKey">0XEY3WqKVmJPhADLxOCPUweMcqYg3AfqCp8BvWw</string>
   <string name="ApplicationName">TaxiHail</string>
-  <string name="ChargeTypeLabel">Charge type:</string>
+  <string name="ChargeTypeLabel">Charge type</string>
   <string name="EmailLabel">Email</string>
   <string name="CreateAccountPassword">Password</string>
   <string name="DestinationMapTitle">Destination location</string>
@@ -247,7 +246,7 @@
   <string name="LocationDetailInstructionLabel">Save as a favorite location</string>
   <string name="View_HistoryList">Orders</string>
   <string name="SaveAddressEmptyFieldMessage">The data is invalid, friendly name and address fields are required.</string>
-  <string name="TimeNow">Current</string>
+  <string name="TimeNow">As soon as possible</string>
   <string name="InvalidBookinInfoTitle">Invalid booking info</string>
   <string name="SettingViewLoginInfo">You are currently signed in as : {0}</string>
   <string name="TabSearch">Search</string>
@@ -305,12 +304,11 @@
   <string name="searchHint">Search</string>
   <string name="CreateAccountErrorTitle">Error</string>
   <string name="CreateAccountLanguageFrench">French</string>
-  <string name="BookItButton">Pick Me Up Now</string>
+  <string name="BookItButton">TaxiHail rocks!</string>
   <string name="BookItLaterButton">Later</string>
   <string name="ConfirmDestinationLabel">Destination</string>
   <string name="NearbyPlacesTitle">Nearby places</string>
-  <string name="GenericTitle">
-  </string>
+  <string name="GenericTitle"></string>
   <string name="View_PasswordRecovery">Reset Password</string>
   <string name="InvalidLocalContactTitle">Invalid contact</string>
   <string name="View_Book_Menu_Tutorial">Tutorial</string>
@@ -337,4 +335,8 @@
   <string name="CreateAccountCancel">Cancel</string>
   <string name="RideSettingsPassword">Password</string>
   <string name="InvalidPhoneErrorMessage">The mobile number is invalid. It must contain 10 numbers.</string>
+  <string name="StreetNumberSearchBt">Search</string>
+  <string name="StreetNumberTitle">Address\'s Details</string>
+  <string name="StreetNumberLabel">Refine your address</string>
+  <string name="StreetNumberDoneBt">use this address</string>
 </resources>

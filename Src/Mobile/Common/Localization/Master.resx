@@ -275,7 +275,7 @@
     <value>Pickup</value>
   </data>
   <data name="ConfirmAptRingCodeLabel" xml:space="preserve">
-    <value>Apartment / Entry code / Building Name</value>
+    <value>Apartment / Entry code</value>
   </data>
   <data name="ConfirmDestinationLabel" xml:space="preserve">
     <value>Destination</value>
@@ -1096,5 +1096,8 @@
   </data>
   <data name="StreetNumberSearchBt" xml:space="preserve">
     <value>Search</value>
+  </data>
+   <data name="StreetNumberDoneBt" xml:space="preserve">
+    <value>use this address</value>
   </data>
 </root>
