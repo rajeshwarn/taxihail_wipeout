@@ -22,7 +22,7 @@
 "HistoryDetailRebookButton"="Rebook trip";
 "DontHaveAnAccountLabel"="Don't have an account?";
 "HistoryInfo"="Displaying trips from the last month";
-"ConfirmAptRingCodeLabel"="Apartment / Entry code / Building Name";
+"ConfirmAptRingCodeLabel"="Apartment / Entry code";
 "View_Book_Menu_MyOrders"="My Orders";
 "PickupMapTitle"="Pickup location";
 "NbPassengers"=" ({0} passengers)";
@@ -332,4 +332,7 @@
 "CreateAccountCreate"="Create";
 "CreateAccountCancel"="Cancel";
 "InvalidPhoneErrorMessage"="The mobile number is invalid. It must contain 10 numbers.";
+"StreetNumberSearchBt"="Search";
+"StreetNumberTitle"="Address's Details";
+"StreetNumberLabel"="Refine your address";
 "RideSettingsPassword"="Password";

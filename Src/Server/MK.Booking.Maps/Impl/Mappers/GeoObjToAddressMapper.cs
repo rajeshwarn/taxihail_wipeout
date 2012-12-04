@@ -25,6 +25,7 @@ namespace apcurium.MK.Booking.Maps.Impl.Mappers
             component.Maybe(c => address.Street = c.Long_name);
             geoCodeResult.Address_components.FirstOrDefault(x => x.AddressComponentTypes.Any(t => t == AddressComponentType.Postal_code)).Maybe(x => address.ZipCode = x.Long_name);
             geoCodeResult.Address_components.FirstOrDefault(x => x.AddressComponentTypes.Any(t => t == AddressComponentType.Locality)).Maybe(x => address.City = x.Long_name);
+            geoCodeResult.Address_components.FirstOrDefault(x => x.AddressComponentTypes.Any(t => t == AddressComponentType.Administrative_area_level_1)).Maybe(x => address.State = x.Short_name);
 
             address.AddressType = "postal";
 
