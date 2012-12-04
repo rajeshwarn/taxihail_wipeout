@@ -80,7 +80,7 @@ namespace apcurium.MK.Booking.Test.AddressesFixture
         [Test]
         public void when_address_updated_successfully()
         {
-            this.sut.When(new UpdateFavoriteAddress { AccountId = _accountId, AddressId = _addressId, Address = new Address { FriendlyName = "Chez Costo", FullAddress = "1234 rue Saint-Hubert", BuildingName = "Hôtel de Ville" } });
+            this.sut.When(new UpdateFavoriteAddress { AccountId = _accountId, Address = new Address { Id = _addressId, FriendlyName = "Chez Costo", FullAddress = "1234 rue Saint-Hubert", BuildingName = "Hôtel de Ville" } });
 
             Assert.AreEqual(1, sut.Events.Count());
             var evt = (FavoriteAddressUpdated)sut.Events.Single();
@@ -114,7 +114,7 @@ namespace apcurium.MK.Booking.Test.AddressesFixture
         [Test]
         public void when_address_updated_with_missing_value()
         {
-            Assert.Throws<InvalidOperationException>(() => this.sut.When(new UpdateFavoriteAddress { AccountId = _accountId, AddressId = _addressId, Address = new Address { FriendlyName = "Chez Costo" } }));
+            Assert.Throws<InvalidOperationException>(() => this.sut.When(new UpdateFavoriteAddress { AccountId = _accountId, Address = new Address { Id = _addressId, FriendlyName = "Chez Costo" } }));
         }
 
         [Test]
