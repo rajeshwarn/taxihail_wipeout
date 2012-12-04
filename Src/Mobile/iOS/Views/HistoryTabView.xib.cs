@@ -93,6 +93,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 			base.ViewWillAppear (animated);
 			NavigationController.NavigationBar.Hidden = false;
 		}
+
+        public override void DidReceiveMemoryWarning ()
+        {
+            base.DidReceiveMemoryWarning ();
+            ViewModel.OnViewUnloaded();
+        }
 	}
 }
 
