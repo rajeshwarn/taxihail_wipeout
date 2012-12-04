@@ -24,14 +24,6 @@ namespace apcurium.MK.Common.Entity
 
         public string FullAddress{ get; set; }
 
-        public string BookAddress 
-        {
-            get 
-            {
-                return ConcatAddressComponents();
-            }
-        }
-
         public double Longitude { get; set; }
 
         public double Latitude { get; set; }
@@ -46,7 +38,15 @@ namespace apcurium.MK.Common.Entity
 
         public bool Favorites { get; set; }
 
-        public string AddressType { get; set; } 
+        public string AddressType { get; set; }
+
+        public string BookAddress
+        {
+            get
+            {
+                return ConcatAddressComponents();
+            }
+        }
 
         string ConcatAddressComponents ()
         {

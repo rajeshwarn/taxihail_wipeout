@@ -94,7 +94,7 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
                 if (!identicalAddresses.Any())
                 {
                     var address = new AddressDetails();
-                    AutoMapper.Mapper.Map(@event, address);
+                    AutoMapper.Mapper.Map(@event.PickupAddress, address);
                     address.Id = Guid.NewGuid();
                     address.IsHistoric = true;
                     context.Save(address);
