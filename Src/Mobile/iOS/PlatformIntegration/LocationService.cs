@@ -65,8 +65,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 }
                 
 
-
-                NSRunLoop.Current.RunUntil( new NSDate( ).
+                NSRunLoop.Current.RunUntil(DateTime.Now.AddMilliseconds(400));             
                 
                 if (watch.ElapsedMilliseconds >= timeout)
                 {
@@ -105,8 +104,15 @@ namespace apcurium.MK.Booking.Mobile.Client
             _locationManager.StartUpdatingLocation();
         }
 
+        private Task<Position> _last;
+
         public Task<Position> GetPositionAsync(int timeout, float accuracy, int fallbackTimeout, float fallbackAccuracy, CancellationToken cancelToken)
         {
+            if ( ( _last != null ) && ( _last.Status == TaskStatus.Running  ))
+            {
+                return _last;
+            }
+
             Initialize();
             _locationDelegate.LastKnownLocation = null;
             _locationManager.StartUpdatingLocation();
@@ -114,22 +120,26 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             Console.WriteLine ( "**********GetPositionAsync**********" );
 
-            var task = new Task<Position>(() =>
+            _last = new Task<Position>(() =>
             {
                 bool timedout = false;
                 var result = WaitForAccurateLocation(timeout, accuracy, out timedout);
                 if(timedout)
                 {
-                    throw new Exception("Location search timed out");
+                    result = WaitForAccurateLocation(fallbackTimeout, fallbackAccuracy, out timedout);
+                    if ( timedout )
+                    {
+                        throw new Exception("Location search timed out");
+                    }
                 }
                 return new Position { Latitude = result.Coordinate.Latitude, Longitude = result.Coordinate.Longitude };
-            }, cancelToken);
+            }, cancelToken);           
 
-            task.ContinueWith(t => {
+            _last.ContinueWith(t => {
                 TinyIoCContainer.Current.Resolve<ILogger>().LogError(t.Exception);
             }, TaskContinuationOptions.OnlyOnFaulted );
-            task.Start();
-            return task;
+            _last.Start();
+            return _last;
 
         }
 
