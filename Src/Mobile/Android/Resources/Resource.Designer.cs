@@ -848,6 +848,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f06009e
 			public const int TwitterButton = 2131099806;
 			
+			// aapt resource value: 0x7f0600bd
+			public const int UpdatePassword = 2131099837;
+			
 			// aapt resource value: 0x7f060095
 			public const int Username = 2131099797;
 			
@@ -1212,6 +1215,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f030024
 			public const int View_Tutorial = 2130903076;
+			
+			// aapt resource value: 0x7f030025
+			public const int View_UpdatePassword = 2130903077;
 			
 			private Layout()
 			{
@@ -2243,8 +2249,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f080002
 			public const int ButtonText = 2131230722;
 			
-			// aapt resource value: 0x7f080003
-			public const int ButtonTextGray = 2131230723;
+			// aapt resource value: 0x7f080004
+			public const int ButtonTextGray = 2131230724;
 			
 			// aapt resource value: 0x7f080011
 			public const int DetailText = 2131230737;
@@ -2252,8 +2258,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f08000b
 			public const int FinePrint = 2131230731;
 			
-			// aapt resource value: 0x7f080007
-			public const int FormLabelText = 2131230727;
+			// aapt resource value: 0x7f080003
+			public const int FormLabelText = 2131230723;
 			
 			// aapt resource value: 0x7f08000e
 			public const int GrayText = 2131230734;
@@ -2273,11 +2279,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f080013
 			public const int ListItemValue = 2131230739;
 			
-			// aapt resource value: 0x7f080005
-			public const int ListSubTitle = 2131230725;
+			// aapt resource value: 0x7f080006
+			public const int ListSubTitle = 2131230726;
 			
-			// aapt resource value: 0x7f080004
-			public const int ListTitle = 2131230724;
+			// aapt resource value: 0x7f080005
+			public const int ListTitle = 2131230725;
 			
 			// aapt resource value: 0x7f08000d
 			public const int SimpleText = 2131230733;
@@ -2297,8 +2303,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f080015
 			public const int Theme_Transparent = 2131230741;
 			
-			// aapt resource value: 0x7f080006
-			public const int TitleText = 2131230726;
+			// aapt resource value: 0x7f080007
+			public const int TitleText = 2131230727;
 			
 			// aapt resource value: 0x7f080008
 			public const int ViewTitleStyle = 2131230728;
