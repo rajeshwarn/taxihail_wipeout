@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Infrastructure.Messaging.Handling;
+﻿using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
 using Infrastructure.EventSourcing;

@@ -21,25 +21,29 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                var address = new AddressDetails();
-                address.Id = @event.AddressId;
-                address.AccountId = @event.SourceId;
-                AutoMapper.Mapper.Map(@event.Address, address);
-                context.Save(address);
+                var addressDetails = new AddressDetails();
+                addressDetails.AccountId = @event.SourceId;
+                AutoMapper.Mapper.Map(@event.Address, addressDetails);
+                context.Save(addressDetails);
 
-                var identicalHistoricAddress = (from a in context.Query<AddressDetails>().Where(x=>x.IsHistoric)
-                                    where a.AccountId == @event.SourceId
-                                    where (a.Apartment ?? string.Empty) == (@event.Address.Apartment ?? string.Empty)
-                                    where a.FullAddress == @event.Address.FullAddress
-                                                where (a.RingCode ?? string.Empty) == (@event.Address.RingCode ?? string.Empty)
-                                    select a).FirstOrDefault();
-
-                if (identicalHistoricAddress != null)
+                if (@event.Address != null)
                 {
-                    context.Set<AddressDetails>().Remove(identicalHistoricAddress);
-                    context.SaveChanges();
+                    var aptEvent = @event.Address.Apartment ?? string.Empty;
+                    var ringCodeEvent = @event.Address.RingCode ?? string.Empty;
+                    var fullAddressEvent = @event.Address.FullAddress;
+                    var identicalHistoricAddress = (from a in context.Query<AddressDetails>().Where(x => x.IsHistoric)
+                            where a.AccountId == @event.SourceId
+                            where (a.Apartment ?? string.Empty) == aptEvent
+                            where a.FullAddress == fullAddressEvent
+                            where (a.RingCode ?? string.Empty) == ringCodeEvent
+                            select a).FirstOrDefault();
+
+                    if (identicalHistoricAddress != null)
+                    {
+                        context.Set<AddressDetails>().Remove(identicalHistoricAddress);
+                        context.SaveChanges();
+                    }
                 }
-               
             }
         }
 

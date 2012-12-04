@@ -147,25 +147,23 @@ namespace apcurium.MK.Booking.Domain
             });  
         }
 
-        public void AddFavoriteAddress(Guid id, Address address)
+        public void AddFavoriteAddress(Address address)
         {
             ValidateFavoriteAddress(address.FriendlyName, address.FullAddress, address.Latitude, address.Longitude);
 
             this.Update(new FavoriteAddressAdded
             {
-                AddressId = id,
                 Address = address
             });
         }
 
-        public void UpdateFavoriteAddress(Guid id, Address address)
+        public void UpdateFavoriteAddress(Address address)
         {
             ValidateFavoriteAddress(address.FriendlyName, address.FullAddress, address.Latitude, address.Longitude);
 
             this.Update(new FavoriteAddressUpdated()
             {
-                AddressId = id,
-                Address = address
+               Address = address
             });
         }
 
@@ -204,7 +202,7 @@ namespace apcurium.MK.Booking.Domain
 
         private void OnAddressAdded(FavoriteAddressAdded @event)
         {
-            _favoriteAddresses.Add(@event.AddressId);
+            _favoriteAddresses.Add(@event.Address.Id);
         }
 
         private void OnAddressRemoved(FavoriteAddressRemoved @event)
@@ -214,9 +212,9 @@ namespace apcurium.MK.Booking.Domain
 
         private void OnAddressUpdated(FavoriteAddressUpdated @event)
         {
-            if (!_favoriteAddresses.Contains(@event.AddressId))
+            if (!_favoriteAddresses.Contains(@event.Address.Id))
             {
-                _favoriteAddresses.Add(@event.AddressId);
+                _favoriteAddresses.Add(@event.Address.Id);
             }
 
         }

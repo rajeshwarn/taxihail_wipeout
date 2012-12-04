@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.BackOffice.CommandHandlers
         {
             var account = _repository.Get(command.AccountId);
 
-            account.AddFavoriteAddress(command.AddressId, command.Address);
+            account.AddFavoriteAddress(command.Address);
             
             _repository.Save(account ,command.Id.ToString());
         }
@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.BackOffice.CommandHandlers
         {
             var account = _repository.Get(command.AccountId);
 
-            account.UpdateFavoriteAddress(command.AddressId, command.Address);
+            account.UpdateFavoriteAddress(command.Address);
 
             _repository.Save(account, command.Id.ToString());
         }
