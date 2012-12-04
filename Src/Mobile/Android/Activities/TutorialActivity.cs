@@ -38,7 +38,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 
                                                                currentPip.SetImageDrawable(Resources.GetDrawable(Resource.Drawable.tutorial_yellow_circle));
                                                            };
-            for (int i = 0; i < ViewModel.TutorialItemsList.Count; i++)
+            for (int i = 0; i < ViewModel.TutorialItemsList.Count(); i++)
             {
 
                 var d = Resources.GetDrawable(Resource.Drawable.tutorial_yellow_circle) as BitmapDrawable;
@@ -72,7 +72,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 
         public void CleanAllPips(LinearLayout pipsLayout)
         {
-            for (int i = 0; i < ViewModel.TutorialItemsList.Count; i++)
+            for (int i = 0; i < ViewModel.TutorialItemsList.Count(); i++)
             {
                 ((ImageView)pipsLayout.GetChildAt(i)).SetImageDrawable(Resources.GetDrawable(Resource.Drawable.tutorial_grey_circle));
             }
