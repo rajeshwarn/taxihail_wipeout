@@ -40,12 +40,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         }
 
-        public override void Close(Cirrious.MvvmCross.Interfaces.ViewModels.IMvxViewModel toClose)
-        {
-            base.Close(toClose);
-
-        }
-
+       
         public override void Show(Cirrious.MvvmCross.Touch.Interfaces.IMvxTouchView view)
         {        
             base.Show(view);                      
@@ -57,17 +52,11 @@ namespace apcurium.MK.Booking.Mobile.Client
             return ( view is INavigationView ) && (((INavigationView)view).HideNavigationBar );
         }
 
-        public override void Show(Cirrious.MvvmCross.Views.MvxShowViewModelRequest request)
+      
+        public override bool PresentModalViewController (UIViewController viewController, bool animated)
         {
-            base.Show(request);
-        }
-
-        protected override UIViewController CurrentTopViewController
-        {
-            get
-            {
-                return base.CurrentTopViewController;
-            }
+            CurrentTopViewController.NavigationController.ModalPresentationStyle = UIModalPresentationStyle.CurrentContext; 
+            return base.PresentModalViewController (viewController, animated);
         }
 
         private void LoadBackgroundNavBar(UINavigationBar navBar)

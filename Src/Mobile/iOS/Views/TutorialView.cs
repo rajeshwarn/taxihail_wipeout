@@ -1,13 +1,16 @@
 
 using System;
 using System.Drawing;
-
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using System.Collections.Generic;
-using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using Cirrious.MvvmCross.Views;
+using Cirrious.MvvmCross.Dialog.Touch.Dialog;
+using apcurium.MK.Common.Entity;
+using Cirrious.MvvmCross.Dialog.Touch.Dialog.Elements;
+using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
+using System.Collections.Generic;
+using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Touch.Interfaces;
 using apcurium.MK.Booking.Mobile.Models;
 
@@ -53,29 +56,17 @@ namespace apcurium.MK.Booking.Mobile.Client
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
-            // Perform any additional setup after loading the view, typically from a nib.
+
+
+            View.BackgroundColor = UIColor.FromRGBA (0,0,0,0.40f);
+            this.AddBindings(new Dictionary<object, string>(){ 
+                { btnClose, "{'TouchUpInside':{'Path':'CloseCommand'}}"} 
+            });
+            
             CreatePanels(ViewModel.TutorialItemsList);
         }
 		
-        public override void ViewDidUnload ()
-        {
-            base.ViewDidUnload ();
-			
-            // Clear any references to subviews of the main view in order to
-            // allow the Garbage Collector to collect them sooner.
-            //
-            // e.g. myOutlet.Dispose (); myOutlet = null;
-			
-            ReleaseDesignerOutlets ();
-        }
-		
-        public override bool ShouldAutorotateToInterfaceOrientation (UIInterfaceOrientation toInterfaceOrientation)
-        {
-            // Return true for supported orientations
-            return (toInterfaceOrientation != UIInterfaceOrientation.PortraitUpsideDown);
-        }
-
-      
+        
 
         private void CreatePanels(List<TutorialItemModel> listTutorial)
         {

@@ -15,6 +15,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 		MonoTouch.UIKit.UIPageControl pageControl { get; set; }
 
 		[Outlet]
+		MonoTouch.UIKit.UIButton btnClose { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UIScrollView scrollview { get; set; }
 		
 		void ReleaseDesignerOutlets ()
@@ -22,6 +25,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 			if (pageControl != null) {
 				pageControl.Dispose ();
 				pageControl = null;
+			}
+
+			if (btnClose != null) {
+				btnClose.Dispose ();
+				btnClose = null;
 			}
 
 			if (scrollview != null) {

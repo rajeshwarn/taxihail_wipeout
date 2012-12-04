@@ -16,7 +16,7 @@
   <string name="ConfirmNoRingCode">No code</string>
   <string name="View_BookingDetail">Confirmation</string>
   <string name="ServiceErrorCreateAccount_AccountAlreadyExist">This email is already in use.</string>
-  <string name="DateTimePickerSetButton">Set</string>
+  <string name="DateTimePickerSetButton">Book</string>
   <string name="OrderNote">Booked on mobile</string>
   <string name="PickupTextPlaceholder">Pickup street address</string>
   <string name="TechSupportEmailTitle">Support Application Mobile</string>
@@ -73,7 +73,7 @@
   <string name="ApproxPrice">Estimated Fare:</string>
   <string name="HistoryDetailStatusLabel">Status:</string>
   <string name="RideSettingsCompany">Company</string>
-  <string name="ConfirmOriginLablel">Origin:</string>
+  <string name="ConfirmOriginLablel">Pickup</string>
   <string name="UpdateBookingSettingsInvalidDataTitle">Invalid booking settings info.</string>
   <string name="DateTimePickerPickTitle">Pickup date and time</string>
   <string name="Close">Close</string>
@@ -89,7 +89,8 @@
   <string name="CannotCancelOrderTitle">Invalid Action</string>
   <string name="DateTimePickerPickInvalidDateMessage">The pickup date must be in the future.</string>
   <string name="HistoryDetailPickupDateLabel">Pickup Date:</string>
-  <string name="View_SignIn"></string>
+  <string name="View_SignIn">
+  </string>
   <string name="HistoryDetailBuildingNameLabel">Building Name:</string>
   <string name="PickupTimeTextPlaceholder">Time: Now</string>
   <string name="AccountActivationMessage">You will receive an email shortly with a link you need to click on to confirm your registration.</string>
@@ -304,11 +305,12 @@
   <string name="searchHint">Search</string>
   <string name="CreateAccountErrorTitle">Error</string>
   <string name="CreateAccountLanguageFrench">French</string>
-  <string name="BookItButton">TaxiHail rocks!</string>
+  <string name="BookItButton">Pick Me Up Now</string>
   <string name="BookItLaterButton">Later</string>
-  <string name="ConfirmDestinationLabel">Destination:</string>
+  <string name="ConfirmDestinationLabel">Destination</string>
   <string name="NearbyPlacesTitle">Nearby places</string>
-  <string name="GenericTitle"></string>
+  <string name="GenericTitle">
+  </string>
   <string name="View_PasswordRecovery">Reset Password</string>
   <string name="InvalidLocalContactTitle">Invalid contact</string>
   <string name="View_Book_Menu_Tutorial">Tutorial</string>

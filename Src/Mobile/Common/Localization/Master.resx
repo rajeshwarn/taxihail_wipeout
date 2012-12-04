@@ -272,16 +272,16 @@
     <value>Ride Information</value>
   </data>
   <data name="ConfirmOriginLablel" xml:space="preserve">
-    <value>Origin:</value>
+    <value>Pickup</value>
   </data>
   <data name="ConfirmAptRingCodeLabel" xml:space="preserve">
-    <value>Apt / Entry code:</value>
+    <value>Apartment / Entry code / Building Name</value>
   </data>
   <data name="ConfirmDestinationLabel" xml:space="preserve">
-    <value>Destination:</value>
+    <value>Destination</value>
   </data>
   <data name="ConfirmDateTimeLabel" xml:space="preserve">
-    <value>Date / Time:</value>
+    <value>Date / Time</value>
   </data>
   <data name="ConfirmNameLabel" xml:space="preserve">
     <value>Name:</value>
@@ -296,10 +296,10 @@
     <value>Passengers:</value>
   </data>
   <data name="ConfirmVehiculeTypeLabel" xml:space="preserve">
-    <value>Vehicle type:</value>
+    <value>Vehicle type</value>
   </data>
   <data name="ChargeTypeLabel" xml:space="preserve">
-    <value>Charge type:</value>
+    <value>Charge type</value>
   </data>
   <data name="ConfirmNoApt" xml:space="preserve">
     <value>No apt.</value>
@@ -314,7 +314,7 @@
     <value>Today</value>
   </data>
   <data name="TimeNow" xml:space="preserve">
-    <value>Current</value>
+    <value>As soon as possible</value>
   </data>
   <data name="StatusViewTitle" xml:space="preserve">
     <value>Confirmed</value>
@@ -611,7 +611,7 @@
     <value>Estimated Fare : {0}</value>
   </data>
   <data name="ApproxPrice" xml:space="preserve">
-    <value>Estimated Fare:</value>
+    <value>Estimated Fare</value>
   </data>
   <data name="NotAvailable" xml:space="preserve">
     <value>N/A</value>
@@ -818,7 +818,7 @@
     <value>Reservation for {0:ddd, MMM d} at {0:h:mm tt}</value>
   </data>
   <data name="DateTimePickerSetButton" xml:space="preserve">
-    <value>Set</value>
+    <value>Book</value>
   </data>
   <data name="SendEmail" xml:space="preserve">
     <value>Send mail...</value>
@@ -878,7 +878,7 @@
     <value>About Us</value>
   </data>
   <data name="View_BookingDetail" xml:space="preserve">
-    <value>Confirmation</value>
+    <value>Booking summary</value>
   </data>
   <data name="View_BookingStatus" xml:space="preserve">
     <value>Status</value>
