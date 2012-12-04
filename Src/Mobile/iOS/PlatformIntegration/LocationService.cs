@@ -6,6 +6,7 @@ using System.Threading;
 using TinyIoC;
 using apcurium.MK.Common.Diagnostic;
 using System.Diagnostics;
+using MonoTouch.Foundation;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -63,8 +64,9 @@ namespace apcurium.MK.Booking.Mobile.Client
                     }
                 }
                 
-                
-                Thread.Sleep(200);
+
+
+                NSRunLoop.Current.RunUntil( new NSDate( ).
                 
                 if (watch.ElapsedMilliseconds >= timeout)
                 {

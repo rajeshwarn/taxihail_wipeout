@@ -115,4 +115,13 @@
     <Folder Include="Resources\Cmt\" />
     <Folder Include="Security\" />
   </ItemGroup>
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <Policies>
+          <DotNetNamingPolicy DirectoryNamespaceAssociation="PrefixedHierarchical" ResourceNamePolicy="FileFormatDefault" />
+        </Policies>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
 </Project>

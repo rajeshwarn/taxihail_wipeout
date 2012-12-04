@@ -77,4 +77,13 @@
   <ItemGroup>
     <Folder Include="Configuration\" />
   </ItemGroup>
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <Policies>
+          <DotNetNamingPolicy DirectoryNamespaceAssociation="PrefixedHierarchical" ResourceNamePolicy="FileFormatDefault" />
+        </Policies>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
 </Project>

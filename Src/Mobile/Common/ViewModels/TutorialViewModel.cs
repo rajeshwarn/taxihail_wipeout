@@ -5,13 +5,17 @@ using System.Text;
 using apcurium.MK.Booking.Mobile.Models;
 using apcurium.MK.Booking.Mobile.Client;
 using Cirrious.MvvmCross.Commands;
-
+using Cirrious.MvvmCross.Interfaces.ServiceProvider;
+using apcurium.MK.Booking.Mobile.AppServices.Impl;
+using Cirrious.MvvmCross.ExtensionMethods;
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class TutorialViewModel : BaseViewModel
+    public class TutorialViewModel : BaseViewModel,                 
+            IMvxServiceConsumer<ITutorialService>
+
     {
-        private List<TutorialItemModel> _tutorialItemsList;
-        public List<TutorialItemModel> TutorialItemsList
+        private TutorialItemModel[] _tutorialItemsList;
+        public TutorialItemModel[] TutorialItemsList
         {
             get { return _tutorialItemsList; }
             set { _tutorialItemsList =value; FirePropertyChanged(()=>TutorialItemsList); }
@@ -19,8 +23,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public TutorialViewModel()
         {
-            TutorialItemsList = Resources.GetTutorialItemsList();
-
+            var service  = this.GetService<ITutorialService>();
+            TutorialItemsList = service.GetTutorialItems ( ).Select ( item => new TutorialItemModel { TopText = item.TopText, TopTitle = item.TopTitle , BottomText = item.BottomText , BottomTitle = item.BottomTitle, ImageUri = item.ImageUri }).ToArray (); 
         }
 
         public MvxRelayCommand CloseCommand

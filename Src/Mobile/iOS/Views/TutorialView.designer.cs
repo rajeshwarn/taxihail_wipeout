@@ -12,6 +12,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 	partial class TutorialView
 	{
 		[Outlet]
+		MonoTouch.UIKit.UIView contentView { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UIPageControl pageControl { get; set; }
 
 		[Outlet]
@@ -22,6 +25,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (contentView != null) {
+				contentView.Dispose ();
+				contentView = null;
+			}
+
 			if (pageControl != null) {
 				pageControl.Dispose ();
 				pageControl = null;

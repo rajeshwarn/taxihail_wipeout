@@ -100,4 +100,13 @@
     <Folder Include="TaxiHail\" />
     <Folder Include="Client\" />
   </ItemGroup>
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <Policies>
+          <DotNetNamingPolicy DirectoryNamespaceAssociation="PrefixedHierarchical" ResourceNamePolicy="FileFormatDefault" />
+        </Policies>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
 </Project>
