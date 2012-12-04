@@ -147,6 +147,10 @@ namespace DatabaseInitializer
 
                 if (isUpdate)
                 {
+                    //migrate events
+                    var migrator = container.Resolve<IEventsMigrator>();
+                    migrator.Do();
+
                     //replay events
                     var replayService = container.Resolve<IEventsPlayBackService>();
                     replayService.ReplayAllEvents();

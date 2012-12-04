@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.FluentValidation;
-using ServiceStack.FluentValidation.Results;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Validation;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Commands;
-using RegisterAccount = apcurium.MK.Booking.Api.Contract.Requests.RegisterAccount;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -27,18 +22,18 @@ namespace apcurium.MK.Booking.Api.Services
 
         public override object OnPost(SaveAddress request)
         {
-            var result = this.Validator.Validate(request);
+            var result = Validator.Validate(request);
 
             if (!result.IsValid)
             {
                 throw result.ToException();
             }
 
-            var command = new Commands.AddFavoriteAddress();
+            var command = new AddFavoriteAddress();
             
             AutoMapper.Mapper.Map(request, command);
             command.AccountId = new Guid(this.GetSession().UserAuthId);
-
+            command.Address.Id = request.Id == Guid.Empty ? Guid.NewGuid() : request.Id;
             _commandBus.Send(command);
 
             return new HttpResult(HttpStatusCode.OK);
@@ -46,7 +41,7 @@ namespace apcurium.MK.Booking.Api.Services
 
         public override object OnDelete(SaveAddress request)
         {
-            var command = new Commands.RemoveFavoriteAddress
+            var command = new RemoveFavoriteAddress
             {
                 Id = Guid.NewGuid(),
                 AddressId = request.Id,
@@ -60,10 +55,11 @@ namespace apcurium.MK.Booking.Api.Services
 
         public override object OnPut(SaveAddress request)
         {
-            var command = new Commands.UpdateFavoriteAddress();
+            var command = new UpdateFavoriteAddress();
 
             AutoMapper.Mapper.Map(request, command);
             command.AccountId = new Guid(this.GetSession().UserAuthId);
+            command.Address.Id = request.Id;
 
             _commandBus.Send(command);
 

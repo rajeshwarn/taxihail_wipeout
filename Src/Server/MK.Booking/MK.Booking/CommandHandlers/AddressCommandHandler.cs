@@ -4,6 +4,7 @@ using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.BackOffice.CommandHandlers
 {
@@ -23,14 +24,7 @@ namespace apcurium.MK.Booking.BackOffice.CommandHandlers
         {
             var account = _repository.Get(command.AccountId);
 
-            account.AddFavoriteAddress(id: command.AddressId, 
-                friendlyName: command.FriendlyName,
-                apartment: command.Apartment,
-                fullAddress: command.FullAddress,
-                ringCode: command.RingCode,
-                buildingName: command.BuildingName,
-                latitude: command.Latitude,
-                longitude: command.Longitude);
+            account.AddFavoriteAddress(command.Address);
             
             _repository.Save(account ,command.Id.ToString());
         }
@@ -48,14 +42,7 @@ namespace apcurium.MK.Booking.BackOffice.CommandHandlers
         {
             var account = _repository.Get(command.AccountId);
 
-            account.UpdateFavoriteAddress(id: command.AddressId,
-                friendlyName: command.FriendlyName,
-                apartment: command.Apartment,
-                fullAddress: command.FullAddress,
-                ringCode: command.RingCode,
-                buildingName: command.BuildingName,
-                latitude: command.Latitude,
-                longitude: command.Longitude);
+            account.UpdateFavoriteAddress(command.Address);
 
             _repository.Save(account, command.Id.ToString());
         }
