@@ -182,12 +182,6 @@
     <Compile Include="Extensions\LocationExtensionMD.cs" />
     <Compile Include="Cache\CacheService.cs" />
     <Compile Include="Controls\TextField.cs" />
-    <Compile Include="Order\ConfirmationView.xib.cs">
-      <DependentUpon>ConfirmationView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Order\ConfirmationView.xib.designer.cs">
-      <DependentUpon>ConfirmationView.xib</DependentUpon>
-    </Compile>
     <Compile Include="Order\StatusView.xib.cs">
       <DependentUpon>StatusView.xib</DependentUpon>
     </Compile>
@@ -338,6 +332,13 @@
     <Compile Include="Controls\TextFieldWithArrow.cs" />
     <Compile Include="Controls\NavigateTextField.cs" />
     <Compile Include="Extensions\UIResponderExtensions.cs" />
+    <Compile Include="Controls\ValignLabel.cs" />
+    <Compile Include="Views\ConfirmationView.xib.cs">
+      <DependentUpon>ConfirmationView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ConfirmationView.xib.designer.cs">
+      <DependentUpon>ConfirmationView.xib</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -374,7 +375,6 @@
   <ItemGroup>
     <InterfaceDefinition Include="MainWindow.xib" xmlns="" />
     <InterfaceDefinition Include="Settings\AboutUsView.xib" xmlns="" />
-    <InterfaceDefinition Include="Order\ConfirmationView.xib" />
     <InterfaceDefinition Include="Order\StatusView.xib" />
     <InterfaceDefinition Include="Views\BookView.xib" />
     <InterfaceDefinition Include="Views\AddressSearchView.xib" />
@@ -391,6 +391,7 @@
     <InterfaceDefinition Include="Views\TutorialView.xib" />
     <InterfaceDefinition Include="Views\RideSettingsView.xib" />
     <InterfaceDefinition Include="Views\CreateAccountView.xib" />
+    <InterfaceDefinition Include="Views\ConfirmationView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />

@@ -8,6 +8,13 @@ namespace apcurium.MK.Booking.Mobile.Data
         {
         }
 
+        public int Position
+        {
+            get;
+            set;
+        }
+
+
         public string TopTitle {
             get;
             set;
@@ -17,6 +24,24 @@ namespace apcurium.MK.Booking.Mobile.Data
             get;
             set;
         }
+
+        public string BottomTitle {
+            get;
+            set;
+        }
+
+        public string BottomText {
+            get;
+            set;
+        }
+        public string ImageUri {
+            get;
+            set;
+        }
+
+
+
+            
     }
 }
 
