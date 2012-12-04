@@ -452,13 +452,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             {
                 var toSave = new SaveAddress
                     {
-                        Apartment = address.Apartment,
-                        FriendlyName = address.FriendlyName,
-                        FullAddress = address.FullAddress,
                         Id = address.Id,
-                        Latitude = address.Latitude,
-                        Longitude = address.Longitude,
-                        RingCode = address.RingCode
+                        Address = address
                     };
 
                 var toMove = toSave;

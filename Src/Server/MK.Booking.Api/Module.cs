@@ -42,11 +42,9 @@ namespace apcurium.MK.Booking.Api
             AutoMapper.Mapper.CreateMap<RegisterAccount, Commands.RegisterFacebookAccount>()
                 .ForMember(p => p.AccountId, options => options.ResolveUsing(x => x.AccountId == Guid.Empty ? Guid.NewGuid() : x.AccountId)); ;
 
-            AutoMapper.Mapper.CreateMap<SaveAddress, Commands.AddFavoriteAddress>()
-                .ForMember(x => x.AddressId, opt => opt.ResolveUsing(x => x.Id == Guid.Empty ? Guid.NewGuid() : x.Id));
+            AutoMapper.Mapper.CreateMap<SaveAddress, Commands.AddFavoriteAddress>();
 
-            AutoMapper.Mapper.CreateMap<SaveAddress, Commands.UpdateFavoriteAddress>()
-                .ForMember(x => x.AddressId, opt => opt.MapFrom(x => x.Id));
+            AutoMapper.Mapper.CreateMap<SaveAddress, Commands.UpdateFavoriteAddress>();
 
             AutoMapper.Mapper.CreateMap<DefaultFavoriteAddress, Commands.AddDefaultFavoriteAddress>()
                .ForMember(x => x.AddressId, opt => opt.ResolveUsing(x => x.Id == Guid.Empty ? Guid.NewGuid() : x.Id));
