@@ -146,5 +146,9 @@ namespace apcurium.MK.Booking.Mobile.Settings
         public bool RatingEnabled {
             get { return _data.RatingEnabled; }
         }
+
+        public bool StreetNumberScreenEnabled {
+            get { return _data.StreetNumberScreenEnabled; }
+        }
     }
 }
