@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using apcurium.MK.Booking.Mobile.Models;
 using apcurium.MK.Booking.Mobile.Client;
+using Cirrious.MvvmCross.Commands;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -21,5 +22,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             TutorialItemsList = Resources.GetTutorialItemsList();
 
         }
+
+        public MvxRelayCommand CloseCommand
+        {
+            get
+            {
+                return new MvxRelayCommand(() =>
+                                           {
+                    RequestClose (this );
+                });
+            }
+        }
+
     }
 }
