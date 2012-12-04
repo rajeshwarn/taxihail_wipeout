@@ -11,6 +11,8 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using Cirrious.MvvmCross.ExtensionMethods;
 using apcurium.MK.Booking.Mobile.Extensions;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -19,6 +21,8 @@ namespace apcurium.MK.Booking.Mobile
         IMvxServiceConsumer<IAccountService>
 	{
         IAccountService _accountService;
+
+        CancellationTokenSource _validateAddressCancellationTokenSource = new CancellationTokenSource();
 
 		public LocationDetailViewModel (string address)
 		{
@@ -110,13 +114,20 @@ namespace apcurium.MK.Booking.Mobile
             get {
                 return new MvxRelayCommand(()=> {
                     MessageService.ShowProgress(true);
-                    try {
-                        var location = this.GetService<IGeolocService> ().ValidateAddress (FullAddress);
+                    var task = Task.Factory.StartNew(()=>{
+                        return this.GetService<IGeolocService> ().ValidateAddress (FullAddress);
+                    }, _validateAddressCancellationTokenSource.Token)
+                        .HandleErrors();
+                    task.ContinueWith(t=> {
+                                MessageService.ShowProgress(false);
+                    });
+                    task.ContinueWith(t=>{
+                        var location = t.Result;
                         if ((location == null) || string.IsNullOrWhiteSpace(location.FullAddress) || !location.HasValidCoordinate ()) {
                             MessageService.ShowMessage (Resources.GetString("InvalidAddressTitle"), Resources.GetString("InvalidAddressMessage"));
                             return;
                         }
-                        
+
                         InvokeOnMainThread (() =>
                                             {
                             FullAddress = location.FullAddress;
@@ -125,13 +136,15 @@ namespace apcurium.MK.Booking.Mobile
                             
                         });
                         
-                    } catch (Exception ex) {
-                        Logger.LogError (ex);
-                    } finally {
-                        MessageService.ShowProgress(false);
-                    }
+                    }, TaskContinuationOptions.OnlyOnRanToCompletion);
+
                 });
             }
+        }
+
+        public void StopValidatingAddresses ()
+        {
+            _validateAddressCancellationTokenSource.Cancel();
         }
 
         public IMvxCommand SaveAddress {

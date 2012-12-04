@@ -91,12 +91,16 @@ namespace apcurium.MK.Booking.Mobile.Client
             this.View.ApplyAppFont ();
         }
 
-        private bool HandleShouldReturn (UITextField textField)
+        public override void ViewWillDisappear (bool animated)
+        {
+            ViewModel.StopValidatingAddresses();
+        }
+
+        bool HandleShouldReturn (UITextField textField)
         {
             return textField.ResignFirstResponder();
         }
 
-       
     }
 }
 

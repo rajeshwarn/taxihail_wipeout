@@ -19,11 +19,16 @@ using apcurium.MK.Booking.Mobile.Messages;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
+using apcurium.MK.Common;
+using apcurium.MK.Booking.Mobile.Client.Controls;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
     public partial class ConfirmationView : MvxBindingTouchViewController<BookConfirmationViewModel>
     {
+
+        private bool _wasResized = false;
+
         public ConfirmationView() 
             : base(new MvxShowViewModelRequest<BookingStatusViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
         {
@@ -43,18 +48,32 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			base.ViewWillAppear (animated);
 			NavigationController.NavigationBar.Hidden = false;
+
+            if ( _wasResized )
+            {
+                return;
+            }
+            _wasResized = true;
+            if ( ((ValignLabel)txtDestination).CalculatedSize != null && ( ((ValignLabel)txtDestination).CalculatedSize.Height != ((ValignLabel)txtOrigin).CalculatedSize.Height ) )
+            {
+                var offset = ((ValignLabel)txtOrigin).CalculatedSize.Height - ((ValignLabel)txtDestination).CalculatedSize.Height;
+                
+                Params.Get<UIView>( lblDateTime, lblPrice, txtDateTime , txtPrice, lblAptRing, pickerAptEntryBuilding, lblVehiculeType , pickerVehicleType, lblChargeType, pickerChargeType ).ForEach ( v =>
+                                                                                                                                                                                                       {
+                    v.Frame = new System.Drawing.RectangleF( v.Frame.X , v.Frame.Y - offset, v.Frame.Width, v.Frame.Height );
+                });
+                
+            }
+
 		}
 
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
+            _wasResized = false;
             View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             NavigationItem.HidesBackButton = true;
-
-            			
-			lblPickupDetails.TextColor = AppStyle.TitleTextColor;
-			lblPickupDetails.Text = Resources.View_RefineAddress;
-
+                        		
 			AppButtons.FormatStandardButton((GradientButton)btnCancel, Resources.CancelBoutton, AppStyle.ButtonColor.Red );
 			AppButtons.FormatStandardButton((GradientButton)btnConfirm, Resources.ConfirmButton, AppStyle.ButtonColor.Green );			
 
@@ -64,9 +83,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             lblDateTime.Text = Resources.ConfirmDateTimeLabel;
             lblVehiculeType.Text = Resources.ConfirmVehiculeTypeLabel;
 			lblChargeType.Text = Resources.ChargeTypeLabel;			
-			
-
 			lblPrice.Text = Resources.ApproxPrice;
+
+
 
 
             ((ModalTextField)pickerVehicleType).Configure(Resources.RideSettingsVehiculeType, ViewModel.Vehicles, ViewModel.Order.Settings.VehicleTypeId, x=> {
@@ -95,10 +114,13 @@ namespace apcurium.MK.Booking.Mobile.Client
             this.View.ApplyAppFont ();
         }
 
+
+
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
             this.NavigationItem.TitleView = new TitleView(null, Resources.View_BookingDetail, true);
+          
         }
     }
 }
