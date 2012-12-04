@@ -17,10 +17,10 @@ namespace apcurium.MK.Booking.Api.Validation
             //Validation rules for POST and PUT request
             RuleSet(ApplyTo.Post | ApplyTo.Put, () =>
             {
-                RuleFor(r => r.FriendlyName).NotEmpty();
-                RuleFor(r => r.FullAddress).NotEmpty();
-                RuleFor(r => r.Latitude).InclusiveBetween(-90d, 90d);
-                RuleFor(r => r.Longitude).InclusiveBetween(-180d, 180d);
+                RuleFor(r => r.Address.FriendlyName).NotEmpty();
+                RuleFor(r => r.Address.FullAddress).NotEmpty();
+                RuleFor(r => r.Address.Latitude).InclusiveBetween(-90d, 90d);
+                RuleFor(r => r.Address.Longitude).InclusiveBetween(-180d, 180d);
             });
         }
     }

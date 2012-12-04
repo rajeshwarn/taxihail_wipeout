@@ -88,12 +88,15 @@ namespace apcurium.MK.Web.Tests
             sut.AddFavoriteAddress(new SaveAddress()
             {
                 Id = addressId,
-                FriendlyName = "La Boite à Jojo",
-                FullAddress = "1234 rue Saint-Denis",
-                Latitude = 45.515065,
-                Longitude = -73.558064,
-                Apartment = "3939",
-                RingCode = "3131"
+                Address = new Address
+                {
+                    FriendlyName = "La Boite à Jojo",
+                    FullAddress = "1234 rue Saint-Denis",
+                    Latitude = 45.515065,
+                    Longitude = -73.558064,
+                    Apartment = "3939",
+                    RingCode = "3131"
+                }
             });
 
             //Assert

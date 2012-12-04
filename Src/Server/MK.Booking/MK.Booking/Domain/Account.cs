@@ -5,6 +5,7 @@ using System.Text;
 using Infrastructure.EventSourcing;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 namespace apcurium.MK.Booking.Domain
 {
@@ -146,20 +147,14 @@ namespace apcurium.MK.Booking.Domain
             });  
         }
 
-        public void AddFavoriteAddress(Guid id, string friendlyName, string apartment, string fullAddress, string ringCode, string buildingName, double latitude, double longitude)
+        public void AddFavoriteAddress(Guid id, Address address)
         {
-            ValidateFavoriteAddress(friendlyName, fullAddress, latitude, longitude);
+            ValidateFavoriteAddress(address.FriendlyName, address.FullAddress, address.Latitude, address.Longitude);
 
             this.Update(new FavoriteAddressAdded
             {
                 AddressId = id,
-                FriendlyName = friendlyName,
-                Apartment = apartment,
-                FullAddress = fullAddress,
-                RingCode = ringCode,
-                BuildingName = buildingName,
-                Latitude = latitude,
-                Longitude = longitude,
+                Address = address
             });
         }
 

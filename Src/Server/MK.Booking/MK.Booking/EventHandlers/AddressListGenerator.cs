@@ -21,25 +21,16 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                context.Save(new AddressDetails
-                {
-                    Id = @event.AddressId,
-                    AccountId = @event.SourceId,
-                    FriendlyName = @event.FriendlyName,
-                    Apartment = @event.Apartment,
-                    FullAddress = @event.FullAddress,
-                    RingCode = @event.RingCode,
-                    BuildingName = @event.BuildingName,
-                    Latitude = @event.Latitude,
-                    Longitude = @event.Longitude,
-                    IsHistoric = false
-                });
+                var address = new AddressDetails();
+                address.Id = @event.AddressId;
+                AutoMapper.Mapper.Map(@event.Address, address);
+                context.Save(address);
 
                 var identicalHistoricAddress = (from a in context.Query<AddressDetails>().Where(x=>x.IsHistoric)
                                     where a.AccountId == @event.SourceId
-                                    where (a.Apartment ?? string.Empty) == (@event.Apartment ?? string.Empty)
-                                    where a.FullAddress == @event.FullAddress
-                                    where (a.RingCode ?? string.Empty) == (@event.RingCode ?? string.Empty)
+                                    where (a.Apartment ?? string.Empty) == (@event.Address.Apartment ?? string.Empty)
+                                    where a.FullAddress == @event.Address.FullAddress
+                                                where (a.RingCode ?? string.Empty) == (@event.Address.RingCode ?? string.Empty)
                                     select a).FirstOrDefault();
 
                 if (identicalHistoricAddress != null)

@@ -39,28 +39,28 @@ namespace apcurium.MK.Booking.Api.Client.Cmt
         {
             var req = string.Format("/accounts/{0}/addresses", Credentials.AccountId);
             var addresses = Client.Get<IList<Address>>(req);
-            return addresses.Where(x => x.Favorites).ToList();
+            return addresses.Where(x => x.Favorite).ToList();
         }
 
         public IList<Address> GetHistoryAddresses(Guid accountId)
         {
             var req = string.Format("/accounts/{0}/addresses", Credentials.AccountId);
             var addresses = Client.Get<IList<Address>>(req);
-            return addresses.Where(x => !x.Favorites).ToList();
+            return addresses.Where(x => !x.Favorite).ToList();
         }
 
-        public void AddFavoriteAddress(SaveAddress address)
+        public void AddFavoriteAddress(SaveAddress request)
         {
-            address.Favorite = true;
+            request.Address.Favorite = true;
             var req = string.Format("/accounts/{0}/addresses", Credentials.AccountId);
-            var response = Client.Post<CmtResponse>(req, address);
+            var response = Client.Post<CmtResponse>(req, request);
         }
 
-        public void UpdateFavoriteAddress(SaveAddress address)
+        public void UpdateFavoriteAddress(SaveAddress request)
         {
-            address.Favorite = true;
-            var req = string.Format("/accounts/{0}/addresses/{0}", Credentials.AccountId, address.Id);
-            var response = Client.Put<CmtResponse>(req, address);
+            request.Address.Favorite = true;
+            var req = string.Format("/accounts/{0}/addresses/{0}", Credentials.AccountId, request.Id);
+            var response = Client.Put<CmtResponse>(req, request);
         }
 
         public void RemoveFavoriteAddress(Guid addressId)
