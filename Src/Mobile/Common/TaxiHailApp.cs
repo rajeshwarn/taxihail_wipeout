@@ -62,6 +62,10 @@ namespace apcurium.MK.Booking.Mobile
             TinyIoCContainer.Current.Register<IAccountService, AccountService>();
             TinyIoCContainer.Current.Register<IBookingService, BookingService>();
 
+            TinyIoCContainer.Current.Register<ITutorialService, TutorialService>();
+
+
+
             TinyIoCContainer.Current.Register<IGeolocService, GeolocService>();
             TinyIoCContainer.Current.Register<IGoogleService, GoogleService>();
             TinyIoCContainer.Current.Register<IApplicationInfoService, ApplicationInfoService>();

@@ -64,7 +64,8 @@
     <AssemblyName>TaxiMobileApp</AssemblyName>
     <MtouchExtraArgs>-v -v -v -v  -aot "nrgctx-trampolines=2500" -aot "nimt-trampolines=2500" -aot "ntrampolines=2500"</MtouchExtraArgs>
     <MtouchArch>ARMv7</MtouchArch>
-    <CodesignProvision>11DAF04D-794E-48A0-B166-A72D333C49EF</CodesignProvision>
+    <CodesignProvision>E7092E56-A6F8-4BEE-8C1B-E591B9AD7DBE</CodesignProvision>
+    <MtouchUseLlvm>True</MtouchUseLlvm>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>none</DebugType>
@@ -182,12 +183,6 @@
     <Compile Include="Extensions\LocationExtensionMD.cs" />
     <Compile Include="Cache\CacheService.cs" />
     <Compile Include="Controls\TextField.cs" />
-    <Compile Include="Order\ConfirmationView.xib.cs">
-      <DependentUpon>ConfirmationView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Order\ConfirmationView.xib.designer.cs">
-      <DependentUpon>ConfirmationView.xib</DependentUpon>
-    </Compile>
     <Compile Include="Order\StatusView.xib.cs">
       <DependentUpon>StatusView.xib</DependentUpon>
     </Compile>
@@ -342,13 +337,20 @@
     <Compile Include="Order\BookStreetNumberView.designer.cs">
       <DependentUpon>BookStreetNumberView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ValignLabel.cs" />
+    <Compile Include="Views\ConfirmationView.xib.cs">
+      <DependentUpon>ConfirmationView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ConfirmationView.xib.designer.cs">
+      <DependentUpon>ConfirmationView.xib</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <MonoDevelop>
       <Properties>
         <Policies>
-          <DotNetNamingPolicy DirectoryNamespaceAssociation="None" ResourceNamePolicy="FileName" />
+          <DotNetNamingPolicy DirectoryNamespaceAssociation="PrefixedHierarchical" ResourceNamePolicy="FileName" />
         </Policies>
       </Properties>
     </MonoDevelop>
@@ -373,11 +375,11 @@
     <Folder Include="Animations\" />
     <Folder Include="Converters\" />
     <Folder Include="Navigation\" />
+    <Folder Include="Assets\Tutorial\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="MainWindow.xib" xmlns="" />
     <InterfaceDefinition Include="Settings\AboutUsView.xib" xmlns="" />
-    <InterfaceDefinition Include="Order\ConfirmationView.xib" />
     <InterfaceDefinition Include="Order\StatusView.xib" />
     <InterfaceDefinition Include="Views\BookView.xib" />
     <InterfaceDefinition Include="Views\AddressSearchView.xib" />
@@ -394,7 +396,7 @@
     <InterfaceDefinition Include="Views\TutorialView.xib" />
     <InterfaceDefinition Include="Views\RideSettingsView.xib" />
     <InterfaceDefinition Include="Views\CreateAccountView.xib" />
-    <InterfaceDefinition Include="Order\BookStreetNumberView.xib" />
+    <InterfaceDefinition Include="Views\ConfirmationView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />
@@ -539,17 +541,25 @@
     <Content Include="Assets\flag_selected%402x.png" />
     <Content Include="Assets\hail_selected.png" />
     <Content Include="Assets\hail_selected%402x.png" />
-    <Content Include="Assets\tutorial_background.png" />
-    <Content Include="Assets\tutorial_screen01.png" />
-    <Content Include="Assets\tutorial_screen02.png" />
-    <Content Include="Assets\tutorial_screen03.png" />
-    <Content Include="Assets\tutorial_screen04.png" />
-    <Content Include="Assets\tutorial_screen05.png" />
-    <Content Include="Assets\tutorial_screen06.png" />
-    <Content Include="Assets\tutorial_screen07.png" />
-    <Content Include="Assets\tutorial_screen08.png" />
     <Content Include="Assets\closeButton.png" />
     <Content Include="Assets\closeButton%402x.png" />
+    <Content Include="Assets\Tutorial\tutorial_background.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen01.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen02.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen03.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen04.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen05.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen06.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen07.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen08.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen01%402x.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen02%402x.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen03%402x.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen04%402x.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen05%402x.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen06%402x.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen07%402x.png" />
+    <Content Include="Assets\Tutorial\tutorial_screen08%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.iOS.csproj">

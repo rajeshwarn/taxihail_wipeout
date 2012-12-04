@@ -211,6 +211,10 @@
     <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="Extensions\TaskFactoryExtension.cs" />
     <Compile Include="ViewModels\BookStreetNumberViewModel.cs" />
+    <Compile Include="AppServices\ITutorialService.cs" />
+    <Compile Include="AppServices\Impl\TutorialService.cs" />
+    <Compile Include="Data\TutorialItem.cs" />
+    <Compile Include="Data\TutorialContent.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">
@@ -245,6 +249,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Settings\Settings.json" />
     <EmbeddedResource Include="Style\Style.json" />
+    <EmbeddedResource Include="TutorialContent\Tutorial.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Style\" />
@@ -252,9 +257,19 @@
     <Folder Include="Navigation\" />
     <Folder Include="ListViewStructure\" />
     <Folder Include="Messages\" />
+    <Folder Include="TutorialContent\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Localization\Master.resx" />
     <None Include="Localization\Taxiworld.resx" />
   </ItemGroup>
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <Policies>
+          <DotNetNamingPolicy DirectoryNamespaceAssociation="PrefixedHierarchical" ResourceNamePolicy="FileFormatDefault" />
+        </Policies>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
 </Project>
