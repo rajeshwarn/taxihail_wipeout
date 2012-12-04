@@ -67,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             ((ModalTextField)txtVehicleType).Configure(Resources.RideSettingsVehiculeType, ViewModel.Vehicles, ViewModel.VehicleTypeId, x=> {
                 ViewModel.SetVehiculeType.Execute(x.Id);
             });
-            ((ModalTextField)txtChargeType).Configure(Resources.RideSettingsVehiculeType, ViewModel.Payments, ViewModel.ChargeTypeId, x=> {
+            ((ModalTextField)txtChargeType).Configure(Resources.RideSettingsChargeType, ViewModel.Payments, ViewModel.ChargeTypeId, x=> {
                 ViewModel.SetChargeType.Execute(x.Id);
             });
 

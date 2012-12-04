@@ -275,7 +275,7 @@
     <value>Pickup</value>
   </data>
   <data name="ConfirmAptRingCodeLabel" xml:space="preserve">
-    <value>Apartment / Entry code / Building Name</value>
+    <value>Apartment / Entry code</value>
   </data>
   <data name="ConfirmDestinationLabel" xml:space="preserve">
     <value>Destination</value>
@@ -1087,5 +1087,17 @@
   </data>
   <data name="Tuto08Top" xml:space="preserve">
     <value>You can review your order history at any time, and even rebook a previous trip with the push of a button</value>
+  </data>
+  <data name="StreetNumberTitle" xml:space="preserve">
+    <value>Address's Details</value>
+  </data>
+  <data name="StreetNumberLabel" xml:space="preserve">
+    <value>Refine your address</value>
+  </data>
+  <data name="StreetNumberSearchBt" xml:space="preserve">
+    <value>Search</value>
+  </data>
+   <data name="StreetNumberDoneBt" xml:space="preserve">
+    <value>use this address</value>
   </data>
 </root>

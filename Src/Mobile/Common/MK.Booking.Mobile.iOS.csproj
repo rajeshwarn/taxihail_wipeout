@@ -210,6 +210,7 @@
     <Compile Include="Models\TutorialItemModel.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="Extensions\TaskFactoryExtension.cs" />
+    <Compile Include="ViewModels\BookStreetNumberViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">

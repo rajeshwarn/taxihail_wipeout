@@ -236,6 +236,8 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\View_BookingDetail.axml" />
+    <Compile Include="Activities\Book\BookStreetNumberActivity.cs" />
+    <AndroidResource Include="Resources\Layout\View_BookStreetNumber.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
