@@ -57,8 +57,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (IsExecuting) {
                     return _searchingTitle;
                 }
-                if (Model.FullAddressDisplay.HasValue ()) {
-                    return Model.FullAddressDisplay;
+                if (Model.BookAddress.HasValue ()) {
+                    return Model.BookAddress;
                 } else {
                     return EmptyAddressPlaceholder;
                 }
@@ -176,14 +176,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     if (IsExecuting) {
                         CancelCurrentLocationCommand.Execute ();
                     }
-                    Model.FullAddress = address.FullAddress;
-                    Model.Longitude = address.Longitude;
-                    Model.Latitude = address.Latitude;
-                    Model.Apartment = address.Apartment;
-                    Model.RingCode = address.RingCode;
-                    Model.BuildingName = address.BuildingName;
-                    Model.Street = address.Street;
-                    Model.StreetNumber = address.StreetNumber;
+
+                    address.Copy(Model);
 
                     FirePropertyChanged (() => Display);
                     FirePropertyChanged (() => Model);

@@ -6,8 +6,6 @@ namespace apcurium.MK.Common.Entity
 {
     public class Address
     {
-        private string fullStreeetWithoutNumber;
-
         public Guid Id { get; set; }
 
         public string PlaceReference { get; set; }
@@ -22,32 +20,15 @@ namespace apcurium.MK.Common.Entity
 
         public string ZipCode { get; set; }
 
-        string fullAddress;
-        public string FullAddress {
-            get {
-                return fullAddress;
-            }
-            set {
-                fullAddress = value;
-                UpdateAddressComponents(value);
-            }
-        }
+        public string State { get; set; }
 
-        public string FullAddressDisplay {
+        public string FullAddress{ get; set; }
+
+        public string BookAddress 
+        {
             get 
             {
-                var prefixAddress = string.Empty;
-                if(StreetNumber.HasValue())
-                {
-                    prefixAddress = StreetNumber + " " + prefixAddress;
-                }
-
-                if(BuildingName.HasValue())
-                {
-                    prefixAddress = BuildingName + " - " + prefixAddress;
-                }
-
-                return prefixAddress + fullStreeetWithoutNumber;
+                return ConcatAddressComponents();
             }
         }
 
@@ -67,29 +48,18 @@ namespace apcurium.MK.Common.Entity
 
         public string AddressType { get; set; } 
 
-        void UpdateAddressComponents (string fullAddress)
+        string ConcatAddressComponents ()
         {
-            if (fullAddress.HasValue ()) {
-
-                var fullStreeetSplit = fullAddress.Split(' ');
-                if (fullStreeetSplit.Length > 1)
-                {
-                    string newStreetNumber = fullStreeetSplit[0];
-
-                    if(newStreetNumber.Contains("-"))
-                    {
-                        newStreetNumber = newStreetNumber.Split('-')[0].Trim();
-                    }
-                    if(string.IsNullOrEmpty(StreetNumber)) StreetNumber = newStreetNumber;
-
-                    var newStreetName = fullStreeetWithoutNumber = fullStreeetSplit.Skip(1).Aggregate((x,y) => x + " " + y);
-                    if(newStreetName.Contains(","))
-                    {
-                        newStreetName = newStreetName.Split(',')[0].Trim();
-                    }
-                    if(string.IsNullOrEmpty(Street)) Street = newStreetName;
-
-                }
+            var prefixAddress = StreetNumber;
+            if (BuildingName.HasValue ()) {
+                prefixAddress = BuildingName;
+            }
+            var components = Params.Get (prefixAddress, Street, City, string.Format ("{0} {1}", State, ZipCode)).Where (s => s.HasValue () && s.Trim().HasValue()).ToList ();
+            if (components.Any ()) {
+                return components.FirstOrDefault () + components.Skip (1).Aggregate ((x,y) => {
+                    return string.Format (" {0}, {1}", x.Trim (), y.Trim ());});
+            } else {
+                return FullAddress;
             }
         }
 
@@ -100,14 +70,29 @@ namespace apcurium.MK.Common.Entity
                 if(streetNumberBuildingName.IsDigit())
                 {
                     StreetNumber = streetNumberBuildingName;
-                    BuildingName = null;
                 }
                 else
                 {
-                    StreetNumber = null;
                     BuildingName = streetNumberBuildingName;
                 }
             }
+        }
+
+        public void Copy (Address address)
+        {
+            if(address == null) return;
+            address.FullAddress = this.FullAddress;
+            address.Longitude = this.Longitude;
+            address.Latitude = this.Latitude;
+            address.Apartment = this.Apartment;
+            address.RingCode = this.RingCode;
+            address.BuildingName = this.BuildingName;
+            address.Street = this.Street;
+            address.StreetNumber = this.StreetNumber;
+            address.City = this.City;
+            address.ZipCode = this.ZipCode;
+            address.State = this.State;
+            address.PlaceReference = this.PlaceReference;
         }
     }
 }
