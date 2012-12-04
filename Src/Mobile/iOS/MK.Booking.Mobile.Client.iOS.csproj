@@ -396,6 +396,7 @@
     <InterfaceDefinition Include="Views\TutorialView.xib" />
     <InterfaceDefinition Include="Views\RideSettingsView.xib" />
     <InterfaceDefinition Include="Views\CreateAccountView.xib" />
+    <InterfaceDefinition Include="Views\ConfirmationView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />

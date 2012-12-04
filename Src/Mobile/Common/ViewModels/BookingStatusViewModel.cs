@@ -329,8 +329,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return new MvxRelayCommand(() =>
                                                {
-                                                   _bookingService.ClearLastOrder();
-                                                   RequestNavigate<BookViewModel>(clearTop:true);
+
+                    MessageService.ShowMessage( Resources.GetString("StatusNewRideButton") ,  Resources.GetString("StatusConfirmNewBooking"),  Resources.GetString("YesButton"), () =>
+                    {
+                        _bookingService.ClearLastOrder();
+                        RequestNavigate<BookViewModel>(clearTop:true);
+                    },
+                    Resources.GetString("NoButton"), () => { });   
+                                        
                 });
             }
         }

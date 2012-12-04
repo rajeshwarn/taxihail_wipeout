@@ -7,7 +7,7 @@
 "AppNeedUpdateTitle"="Update available";
 "LoginForgotPasswordButton"="Forgot Password?";
 "CreateAccountLanguage"="Language";
-"NbPassenger"=" ";
+"NbPassenger"=" ({0} passenger)";
 "ResetPasswordSucessTitle"="Password resetted";
 "ServiceErrorCreateOrder_NoProvider"="Order cannot be created, no provider specified. Please try again or call us.";
 "ServiceError_ErrorCreatingOrderMessage"="Please contact {0} at {1} for further assistance.";
@@ -22,10 +22,10 @@
 "HistoryDetailRebookButton"="Rebook trip";
 "DontHaveAnAccountLabel"="Don't have an account?";
 "HistoryInfo"="Displaying trips from the last month";
-"ConfirmAptRingCodeLabel"="Apartment / Entry code / Building Name";
+"ConfirmAptRingCodeLabel"="Apartment / Entry code";
 "View_Book_Menu_MyOrders"="My Orders";
 "PickupMapTitle"="Pickup location";
-"NbPassengers"=" ";
+"NbPassengers"=" ({0} passengers)";
 "BookPickupLabel"="Confirm your pickup location";
 "StatusViewTitle"="Confirmed";
 "CreateAccoutLanguageLabel"="Language:";
@@ -302,7 +302,7 @@
 "searchHint"="Search";
 "CreateAccountErrorTitle"="Error";
 "CreateAccountLanguageFrench"="French";
-"BookItButton"="Pick Me Up Now";
+"BookItButton"="TaxiHail rocks!";
 "ConfirmDestinationLabel"="Destination";
 "NearbyPlacesTitle"="Nearby places";
 "GenericTitle"="";
