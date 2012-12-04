@@ -16,7 +16,8 @@
         android:layout_marginRight="30dip"
         android:layout_marginTop="15dip"
         android:layout_marginBottom="0dip"
-        android:text="salut" />
+        android:text="salut"
+        android:textColor="@color/black" />
     <ImageView
         android:layout_width="fill_parent"
         android:layout_height="190dip"

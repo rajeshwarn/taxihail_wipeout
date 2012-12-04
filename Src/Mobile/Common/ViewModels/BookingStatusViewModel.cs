@@ -378,11 +378,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return new MvxRelayCommand(() =>
-                                               {
-                                                   var numberToCall = TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumber(Order.Settings.ProviderId.Value);
-                                                   PhoneService.Call(numberToCall);
-                                               });
+                return new MvxRelayCommand(()=>{
+                    Action call = () => { PhoneService.Call(Settings.PhoneNumber(Order.Settings.ProviderId.Value)); };
+                    MessageService.ShowMessage(string.Empty, 
+                                               Settings.PhoneNumberDisplay(Order.Settings.ProviderId.Value), 
+                                               Resources.GetString("CallButton"), 
+                                               call, Resources.GetString("CancelBoutton"), 
+                                               () => {});                    
+                });
             }
         }
 
