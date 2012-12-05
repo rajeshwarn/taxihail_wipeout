@@ -11,7 +11,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             UserInteractionEnabled = true;
 
-            RefreshCurrentLocationButton = AppButtons.CreateStandardButton( new RectangleF( 8,7,39,35 ) , "", AppStyle.ButtonColor.Green, "");
+            RefreshCurrentLocationButton = AppButtons.CreateStandardButton( new RectangleF( 8,7,39,35 ) , "", AppStyle.ButtonColor.Blue, "");
             ((GradientButton)RefreshCurrentLocationButton).SetImage ("Assets/gpsRefreshIcon.png");
             AddSubview ( RefreshCurrentLocationButton );
 
@@ -19,15 +19,12 @@ namespace apcurium.MK.Booking.Mobile.Client
             AddSubview ( ClearLocationButton );
 
 
-            BookNowButton = AppButtons.CreateStandardButton( new RectangleF( 55,7,178,35 ) , Resources.BookItButton, AppStyle.ButtonColor.Green, "");
-            ((GradientButton)BookNowButton).RoundedCorners = UIRectCorner.BottomLeft | UIRectCorner.TopLeft;
+            BookNowButton = AppButtons.CreateStandardButton( new RectangleF( 114,7,93,35 ) , Resources.BookItButton, AppStyle.ButtonColor.Green, "");
             AddSubview ( BookNowButton );
 
-            BookLaterButton = AppButtons.CreateStandardButton( new RectangleF( 232,7,80,35 ) , "Later", AppStyle.ButtonColor.AlternateCorporateColor, "");
-            ((GradientButton)BookLaterButton).RoundedCorners = UIRectCorner.BottomRight | UIRectCorner.TopRight;
+            BookLaterButton = AppButtons.CreateStandardButton( new RectangleF( 273,7,39,35 ) , "", AppStyle.ButtonColor.DarkGray, "");
             AddSubview ( BookLaterButton );
-
-
+            ((GradientButton)BookLaterButton).SetImage ("Assets/bookLaterIcon.png");                   
 
 
         }
