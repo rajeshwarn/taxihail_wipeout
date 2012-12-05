@@ -36,7 +36,7 @@
                 android:paddingRight="5dip"
                 android:hint="@string/LocationDetailStreetAddressPlaceholder"
                 android:inputType="text"
-                local:MvxBind="{&apos;Text&apos;: {&apos;Path&apos;: &apos;FullAddress&apos;}}" />
+                local:MvxBind="{&apos;Text&apos;: {&apos;Path&apos;: &apos;BookAddress&apos;}}" />
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
