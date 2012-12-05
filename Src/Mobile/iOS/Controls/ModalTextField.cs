@@ -67,11 +67,9 @@ namespace apcurium.MK.Booking.Mobile.Client
                 }
             }
             
-            _rootElement = new CustomRootElement(Resources.RideSettingsVehiculeType, new RadioGroup(selected));
+            _rootElement = new CustomRootElement(title, new RadioGroup(selected));
             _rootElement.Add(section);
         }
-
-
     }
 }
 
