@@ -282,17 +282,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         public Position LastKnownPosition
         {
-			get { return _lastLocation != null ?  new Position
-				{
-					Latitude = _lastLocation.Latitude, 
-					Longitude = _lastLocation.Longitude, 
-					Accuracy = _lastLocation.Accuracy, 
-					Altitude = _lastLocation.Altitude, 
-					Bearing = _lastLocation.Bearing, 
-					Speed = _lastLocation.Speed,
-					Time = FromUnixTime(_lastLocation.Time),
-				} 
-				: null; }  
+			get { return _lastLocation != null 
+					?  new Position
+						{
+							Latitude = _lastLocation.Latitude, 
+							Longitude = _lastLocation.Longitude, 
+						} 
+					: null;
+			}  
 
         }
     }
