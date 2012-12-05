@@ -16,7 +16,7 @@ namespace apcurium.MK.Web.Tests
     [TestFixture]
     public class FavoriteAddressFixture: BaseTest
     {
-        private Guid _knownAddressId = Guid.NewGuid();
+        private Guid _knownAddressId;
 
         [TestFixtureSetUp]
         public override void TestFixtureSetup()
@@ -33,6 +33,7 @@ namespace apcurium.MK.Web.Tests
         [SetUp]
         public override void Setup()
         {
+            _knownAddressId  = Guid.NewGuid();
             base.Setup();
             var sut = new AccountServiceClient(BaseUrl, SessionId);
             sut.AddFavoriteAddress(new SaveAddress
