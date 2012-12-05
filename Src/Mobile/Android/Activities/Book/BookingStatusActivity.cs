@@ -70,6 +70,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             InitMap();
         }
 
+		protected override void OnDestroy ()
+		{
+			base.OnDestroy ();
+			ViewModel.OnViewUnloaded();
+		}
+
         protected void InitMap()
         {
             if (_isInit)
