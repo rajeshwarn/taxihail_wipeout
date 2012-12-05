@@ -88,7 +88,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             ((ModalTextField)pickerVehicleType).Configure(Resources.RideSettingsVehiculeType, ViewModel.Vehicles, ViewModel.Order.Settings.VehicleTypeId, x=> {
                 ViewModel.SetVehicleTypeId ( x.Id );});
 
-            ((ModalTextField)pickerChargeType).Configure(Resources.RideSettingsVehiculeType, ViewModel.Payments, ViewModel.Order.Settings.ChargeTypeId , x=> {
+            ((ModalTextField)pickerChargeType).Configure(Resources.RideSettingsChargeType, ViewModel.Payments, ViewModel.Order.Settings.ChargeTypeId , x=> {
                 ViewModel.SetChargeTypeId( x.Id ); });
 
 			View.BringSubviewToFront( bottomBar );    
@@ -97,7 +97,6 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { btnCancel, "{'TouchUpInside':{'Path':'CancelOrderCommand'}}"},                
                 { btnConfirm, "{'TouchUpInside':{'Path':'ConfirmOrderCommand'}}"},
                 { txtOrigin, "{'Text': {'Path': 'Order.PickupAddress.BookAddress'}}" },
-
                 { txtDestination, "{'Text': {'Path': 'Order.DropOffAddress.FullAddress', 'Converter': 'EmptyToResource', 'ConverterParameter': 'ConfirmDestinationNotSpecified'}}" },
                 { txtDateTime, "{'Text': {'Path': 'FormattedPickupDate'}}" },
                 { txtPrice, "{'Text': {'Path': 'FareEstimate'}}" },
