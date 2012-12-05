@@ -8,25 +8,9 @@ namespace apcurium.MK.Booking.Mobile.Extensions
 {
     public static class AddressExtension
     {
-
-        public static Address Copy(this Address instance)
-        {
-            var copy = new Address();
-            copy.Id = instance.Id;
-            copy.FriendlyName = instance.FriendlyName;
-            copy.FullAddress = instance.FullAddress;
-            copy.Longitude = instance.Longitude;
-            copy.Latitude = instance.Latitude;
-            copy.Apartment = instance.Apartment;
-            copy.RingCode = instance.RingCode;
-            copy.IsHistoric = instance.IsHistoric;
-
-            return copy;
-        }
-
         public static string Display( this Address instance )
         {
-            return Params.Get( instance.FriendlyName ,instance.FullAddress ).Where( s=>s.HasValue() ).JoinBy( " - " );             
+            return Params.Get( instance.FriendlyName ,instance.BookAddress ).Where( s=>s.HasValue() ).JoinBy( " - " );             
         }
 
         public static bool HasValidCoordinate(this Address instance)
@@ -46,8 +30,5 @@ namespace apcurium.MK.Booking.Mobile.Extensions
                     instance.RingCode.SoftEqual(data.RingCode) &&
                     instance.Apartment.SoftEqual(data.Apartment));
         }
-
-
-
     }
 }
