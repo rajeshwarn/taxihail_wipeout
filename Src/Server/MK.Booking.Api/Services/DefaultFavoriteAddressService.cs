@@ -29,7 +29,7 @@ namespace apcurium.MK.Booking.Api.Services
             var command = new Commands.AddDefaultFavoriteAddress();
             
             AutoMapper.Mapper.Map(request, command);
-            command.Address.Id = request.Id;
+            command.Address.Id = request.Id == Guid.Empty ? Guid.NewGuid() : request.Id;
 
             _commandBus.Send(command);
 

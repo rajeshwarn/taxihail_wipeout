@@ -54,7 +54,8 @@
         },
         
         save: function (form) {
-            var data = this.serializeForm(form);
+            var address = this.serializeForm(form);
+            var data = { Address: address, Id: address.Id };
             this.model.save(data, {
                 success: _.bind(function(model){
 
