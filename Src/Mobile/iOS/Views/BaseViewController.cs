@@ -39,7 +39,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             base.ViewDidLoad ();
             // Setup keyboard event handlers
             RegisterForKeyboardNotifications();
-			
+
+            Background.LoadForRegularView( this.View );
+            View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
         }
 		
         public override void ViewDidUnload ()

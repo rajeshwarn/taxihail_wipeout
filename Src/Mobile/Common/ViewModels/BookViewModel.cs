@@ -34,7 +34,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     public class BookViewModel : BaseViewModel,
         IMvxServiceConsumer<IAccountService>,
         IMvxServiceConsumer<ILocationService>,
-        IMvxServiceConsumer<IBookingService>
+        IMvxServiceConsumer<IBookingService>,
+        IMvxServiceConsumer<ICacheService>
 
     {
         private bool _initialized;
@@ -56,6 +57,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             PickupIsActive = true;
             DropoffIsActive = false;
             Pickup.RequestCurrentLocationCommand.Execute();
+
+
 
             if ( _bookingService.HasLastOrder )
             {
@@ -110,6 +113,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _fareEstimate = Resources.GetString("NoFareText");
 
             ThreadPool.QueueUserWorkItem(UpdateServerInfo);
+
+            
+         
+
+
         }
 
         private void CheckVersion()

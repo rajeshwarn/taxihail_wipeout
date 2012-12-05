@@ -121,12 +121,24 @@
     <value>Pick Me Up Now</value>
   </data>
     <data name="ConfirmAptRingCodeLabel" xml:space="preserve">
-    <value>Flat / Entry code / Building Name</value>
+    <value>Flat / Entry Code</value>
   </data>
    <data name="NbPassenger" xml:space="preserve">
     <value> </value>
   </data>
   <data name="NbPassengers" xml:space="preserve">
     <value> </value>
+  </data>
+  <data name="LocationDetailAptPlaceholder" xml:space="preserve">
+    <value>Flat/Door number</value>
+  </data>
+  <data name="AptNumber" xml:space="preserve">
+    <value>Flat No.</value>
+  </data>
+  <data name="AptNumberTextPlaceholder" xml:space="preserve">
+    <value>Flat/Door Number</value>
+  </data>
+  <data name="ConfirmNoApt" xml:space="preserve">
+    <value>No flat</value>
   </data>
 </root>

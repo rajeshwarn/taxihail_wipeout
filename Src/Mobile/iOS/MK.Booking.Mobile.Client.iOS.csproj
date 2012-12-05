@@ -170,7 +170,6 @@
       <DependentUpon>AboutUsView.xib</DependentUpon>
     </Compile>
     <Compile Include="Controls\ShinnyButton.cs" />
-    <Compile Include="Settings\ResetPasswordView.cs" />
     <Compile Include="Controls\GraphicsUtil.cs" />
     <Compile Include="Controls\GlassButton.cs" />
     <Compile Include="Diagnostics\Logger.cs" />
@@ -344,6 +343,10 @@
     <Compile Include="Views\ConfirmationView.xib.designer.cs">
       <DependentUpon>ConfirmationView.xib</DependentUpon>
     </Compile>
+    <Compile Include="Views\ResetPasswordView.designer.cs">
+      <DependentUpon>ResetPasswordView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ResetPasswordView.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -397,6 +400,8 @@
     <InterfaceDefinition Include="Views\RideSettingsView.xib" />
     <InterfaceDefinition Include="Views\CreateAccountView.xib" />
     <InterfaceDefinition Include="Views\ConfirmationView.xib" />
+    <InterfaceDefinition Include="Views\ResetPasswordView.xib" />
+    <InterfaceDefinition Include="Order\BookStreetNumberView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />
