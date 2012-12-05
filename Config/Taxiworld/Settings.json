@@ -21,5 +21,6 @@
    "AndroidSigningKeyPassStorePass" : "mkt0001.",
    "AppName" : "Taxiworld",
    "GoogleMapKey" : "0XEY3WqKVmJPKgUaBK0NC_GfL7VtrnaAAs1hieQ",
-   "Package" : "com.apcurium.MK.TaxiworldDemo"
+   "Package" : "com.apcurium.MK.TaxiworldDemo",
+   "StreetNumberScreenEnabled":"true"
 }

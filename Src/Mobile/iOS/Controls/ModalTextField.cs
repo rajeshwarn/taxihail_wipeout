@@ -36,7 +36,15 @@ namespace apcurium.MK.Booking.Mobile.Client
             if (_rootElement != null) {
                 var newDvc = new DialogViewController (_rootElement, true) {
                     Autorotate = true
+
                 };
+                newDvc.View.BackgroundColor  = UIColor.FromRGB (230,230,230);
+                newDvc.TableView.BackgroundColor = UIColor.FromRGB (230,230,230);
+                  
+                //newDvc.TableView.  UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
+//                apcurium.MK.Booking.Mobile.Client.Background.GetBackgroundView (
+                newDvc.TableView.BackgroundView = new UIView{ BackgroundColor =  UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png")) }; 
+                  
                 controller.PresentViewController (newDvc, true, delegate { });
             }
         }
