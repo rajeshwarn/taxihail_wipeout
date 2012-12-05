@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using Infrastructure.Messaging.Handling;
-using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
@@ -64,7 +63,7 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                var address = context.Find<AddressDetails>(@event.AddressId);
+                var address = context.Find<AddressDetails>(@event.Address.Id);
                 if(address != null)
                 {
                     address.IsHistoric = false;

@@ -63,8 +63,7 @@ namespace apcurium.MK.Booking
             AutoMapper.Mapper.CreateMap<FavoriteAddressAdded, AddressDetails>()
                 .ForMember(p => p.AccountId, opt => opt.MapFrom(m => m.SourceId));
 
-            AutoMapper.Mapper.CreateMap<FavoriteAddressUpdated, AddressDetails>()
-                .ForMember(p => p.Id, options => options.MapFrom(m => m.AddressId));
+            AutoMapper.Mapper.CreateMap<FavoriteAddressUpdated, AddressDetails>();
 
             AutoMapper.Mapper.CreateMap<DefaultFavoriteAddressAdded, DefaultAddressDetails>();
 
