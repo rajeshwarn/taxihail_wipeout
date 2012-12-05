@@ -330,6 +330,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return new MvxRelayCommand(() =>
                 {
+                    // Close the menu if it was open
+                    Panel.MenuIsOpen = false;
+
                     PickupIsActive = !PickupIsActive;
                     if (DropoffIsActive && PickupIsActive)
                     {
@@ -355,6 +358,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return new MvxRelayCommand(() =>
                     {
+                        // Close the menu if it was open
+                        Panel.MenuIsOpen = false;
+
                         DropoffIsActive = !DropoffIsActive;
                         if (DropoffIsActive && PickupIsActive)
                         {

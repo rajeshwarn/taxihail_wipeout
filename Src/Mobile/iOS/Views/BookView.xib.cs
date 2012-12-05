@@ -105,8 +105,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             bottomBar.AddSubview( _bottomAction );
 
             _bottomAction.BookLaterButton.TouchUpInside += delegate {
-                                _dateTimePicker.Show (ViewModel.Order.PickupDate);
-                            };                      
+                ViewModel.Panel.MenuIsOpen = false;
+                _dateTimePicker.Show (ViewModel.Order.PickupDate);
+            };                      
 
 
             this.AddBindings (new Dictionary<object, string> ()                            {
