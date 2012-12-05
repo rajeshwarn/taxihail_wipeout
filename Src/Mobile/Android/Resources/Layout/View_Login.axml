@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <apcurium.mk.booking.mobile.client.controls.HeaderedLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.TaxiHailDemo"
+    xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.TaxiworldDemo"
     local:HideLogo="false"
     android:orientation="vertical"
     android:layout_width="fill_parent"
@@ -79,7 +79,8 @@
                     android:text="@string/LoginForgotPasswordButton"
                     android:layout_alignParentLeft="true"
                     android:layout_gravity="center_vertical|left" />
-                <Button
+                <apcurium.mk.booking.mobile.client.controls.StyledButton
+                    local:ButtonStyle="Black"
                     android:id="@+id/SignInButton"
                     style="@style/ButtonText"
                     android:layout_weight="1"
@@ -148,7 +149,8 @@
                     android:layout_width="20dip"
                     android:gravity="center"
                     android:visibility="invisible" />
-                <Button
+                <apcurium.mk.booking.mobile.client.controls.StyledButton
+                    local:ButtonStyle="Grey"
                     android:id="@+id/SignUpButton"
                     local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;SignUp&apos;}}"
                     style="@style/ButtonText"
