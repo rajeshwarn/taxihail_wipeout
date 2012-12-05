@@ -48,6 +48,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             base.ViewWillAppear (animated);
             NavigationController.NavigationBar.Hidden = false;
+            NavigationItem.HidesBackButton = true;  
         }
 
         public override void ViewDidLoad ()

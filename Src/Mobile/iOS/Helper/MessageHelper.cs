@@ -11,25 +11,19 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 		}
 		
-		public static void Show ( string title, string message, string additionalActionTitle , Action additionalAction )
-		{
-			UIApplication.SharedApplication.InvokeOnMainThread ( delegate
-			{					
+        public static void Show ( string title, string message, string additionalActionTitle , Action additionalAction )
+        {
+            UIApplication.SharedApplication.InvokeOnMainThread ( delegate
+                                                                {                                       
                 LoadingOverlay.StopAnimatingLoading();
+                var av = new UIAlertView ( title, message, null, additionalActionTitle);
+                av.Clicked += delegate(object sender, UIButtonEventArgs e) {
+                    additionalAction();     
+                };                                      
+                av.Show();                                                      
+            } );
+        }
 
-                var av = new UIAlertView ( title, message, null, Resources.StatusCancelButton, additionalActionTitle);
-				av.Clicked += delegate(object sender, UIButtonEventArgs e) {
-                    if(e.ButtonIndex.Equals(1))
-                    {
-                        additionalAction();     
-                    }
-                    else{
-                        av.Dispose();
-                    }
-                };					
-				av.Show();							
-			} );
-		}
 
         public static void Show ( string title, string message, string positiveActionTitle , Action positiveAction, string negativeActionTitle , Action negativeAction, string neutralActionTitle , Action neutralAction )
         {
@@ -52,6 +46,27 @@ namespace apcurium.MK.Booking.Mobile.Client
                         neutralAction(); 
                     }
                     };
+                av.Show (  );                           
+            } );
+        }
+
+        public static void Show ( string title, string message, string positiveActionTitle , Action positiveAction, string negativeActionTitle , Action negativeAction)
+        {
+            
+            UIApplication.SharedApplication.InvokeOnMainThread ( delegate
+                                                                {                   
+                LoadingOverlay.StopAnimatingLoading();
+                var av = new UIAlertView ( title, message, null,  positiveActionTitle, negativeActionTitle );
+                av.Clicked += delegate(object sender, UIButtonEventArgs e) {
+                    if (e.ButtonIndex == 0) {
+                        
+                        positiveAction(); 
+                    }
+                    if (e.ButtonIndex == 1) {
+                        
+                        negativeAction(); 
+                    }                  
+                };
                 av.Show (  );                           
             } );
         }

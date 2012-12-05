@@ -905,7 +905,7 @@
     <value>Reset Your Password</value>
   </data>
   <data name="View_SignUp" xml:space="preserve">
-    <value>Create Your Profile</value>
+    <value>Create Your Account</value>
   </data>
   <data name="View_SignUp_Label" xml:space="preserve">
     <value>Create Your Profile</value>
@@ -920,7 +920,7 @@
     <value>Manage My Locations</value>
   </data>
   <data name="View_Book_Menu_MyOrders" xml:space="preserve">
-    <value>My Orders</value>
+    <value>History And Current Bookings</value>
   </data>
   <data name="View_Book_Menu_UpdateMyProfile" xml:space="preserve">
     <value>Update My Profile</value>
@@ -1034,7 +1034,7 @@
     <value>Pick a provider</value>
   </data>
   <data name="View_Book_Menu_Tutorial" xml:space="preserve">
-    <value>Tutorial</value>
+    <value>View Tutorial</value>
   </data>
   <data name="ChangePasswordConfirmmation" xml:space="preserve">
     <value>You password has been updated, please sign in.</value>

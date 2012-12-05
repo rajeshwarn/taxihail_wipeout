@@ -40,7 +40,8 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
         public void ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction)
         {
-            MessageHelper.Show( title, message, positiveButtonTitle, positiveAction );
+
+            MessageHelper.Show( title, message,  positiveButtonTitle, positiveAction, negativeButtonTitle, negativeAction  );
         }
 
         public void ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction, string neutralButtonTitle, Action neutralAction)

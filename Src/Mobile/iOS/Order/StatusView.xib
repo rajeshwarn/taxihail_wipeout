@@ -2,7 +2,7 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">768</int>
-		<string key="IBDocument.SystemVersion">12C3006</string>
+		<string key="IBDocument.SystemVersion">12C60</string>
 		<string key="IBDocument.InterfaceBuilderVersion">2844</string>
 		<string key="IBDocument.AppKitVersion">1187.34</string>
 		<string key="IBDocument.HIToolboxVersion">625.00</string>
@@ -81,7 +81,7 @@
 					<object class="IBUILabel" id="153329394">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{0, 30}, {320, 38}}</string>
+						<string key="NSFrame">{{0, 30}, {320, 50}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="863703465"/>
@@ -90,22 +90,22 @@
 						<int key="IBUIContentMode">11</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<string key="IBUIText">Waiting to be assigned</string>
+						<string key="IBUIText">Waiting...</string>
 						<reference key="IBUITextColor" ref="516209594"/>
 						<reference key="IBUIHighlightedColor" ref="516209594"/>
 						<int key="IBUIBaselineAdjustment">1</int>
 						<float key="IBUIMinimumFontSize">10</float>
 						<int key="IBUINumberOfLines">2</int>
 						<int key="IBUITextAlignment">1</int>
-						<object class="IBUIFontDescription" key="IBUIFontDescription" id="1060363711">
+						<object class="IBUIFontDescription" key="IBUIFontDescription" id="812844466">
 							<string key="name">HelveticaNeue-Bold</string>
 							<string key="family">Helvetica Neue</string>
 							<int key="traits">2</int>
-							<double key="pointSize">12</double>
+							<double key="pointSize">18</double>
 						</object>
-						<object class="NSFont" key="IBUIFont" id="79803967">
+						<object class="NSFont" key="IBUIFont" id="240267095">
 							<string key="NSName">HelveticaNeue-Bold</string>
-							<double key="NSSize">12</double>
+							<double key="NSSize">18</double>
 							<int key="NSfFlags">16</int>
 						</object>
 						<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
@@ -130,8 +130,8 @@
 						<float key="IBUIMinimumFontSize">10</float>
 						<int key="IBUINumberOfLines">3</int>
 						<int key="IBUITextAlignment">1</int>
-						<reference key="IBUIFontDescription" ref="1060363711"/>
-						<reference key="IBUIFont" ref="79803967"/>
+						<reference key="IBUIFontDescription" ref="812844466"/>
+						<reference key="IBUIFont" ref="240267095"/>
 						<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 						<double key="preferredMaxLayoutWidth">320</double>
 					</object>
@@ -223,6 +223,7 @@
 								<string key="NSFrame">{{215, 5}, {95, 37}}</string>
 								<reference key="NSSuperview" ref="111396558"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<int key="IBUIContentHorizontalAlignment">0</int>

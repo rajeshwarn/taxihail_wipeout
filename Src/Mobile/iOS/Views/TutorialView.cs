@@ -66,8 +66,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             
             CreatePanels (ViewModel.TutorialItemsList);
 
-            //AppStyle.ApplyAppFont ();
 
+            this.View.ApplyAppFont ();
         }
 
         private void CreatePanels (TutorialItemModel[] listTutorial)

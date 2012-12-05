@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			Layer.MasksToBounds = false;
 
 			Layer.ShadowColor = UIColor.Black.CGColor;
-			Layer.ShadowOpacity = 0.85f;
+			Layer.ShadowOpacity = 0.65f;
 			Layer.ShadowRadius = 1f;
 			Layer.ShadowOffset  = new SizeF(0f, 0f);
 
