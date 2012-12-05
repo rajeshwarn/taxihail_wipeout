@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         private bool _wasResized = false;
 
         public ConfirmationView() 
-            : base(new MvxShowViewModelRequest<BookingStatusViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
+            : base(new MvxShowViewModelRequest<BookConfirmationViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
         {
         }
         

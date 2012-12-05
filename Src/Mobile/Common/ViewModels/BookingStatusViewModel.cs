@@ -35,37 +35,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private IObservable<Unit> timerSubscription = null;
         private IDisposable timerDisposable = null;
 
-		[Obsolete]
-        public BookingStatusViewModel(string order)
-        {
-            var orderWithStatus = JsonSerializer.DeserializeFromString <OrderWithStatusModel>(order);
-            Order = orderWithStatus.Order;
-            OrderStatusDetail = orderWithStatus.OrderStatusDetail;
-            ShowRatingButton = true;
-            MessengerHub.Subscribe<OrderRated>( OnOrderRated , o=>o.Content.Equals (Order.Id) );
-            _bookingService = this.GetService<IBookingService>();
-            StatusInfoText = string.Format(Resources.GetString("StatusStatusLabel"), Resources.GetString("LoadingMessage"));
-
-
-            _geolocator = this.GetService<ILocationService>();
-
-            Pickup = new BookAddressViewModel(() => Order.PickupAddress, address => Order.PickupAddress = address, _geolocator)
-            {
-                Title = Resources.GetString("BookPickupLocationButtonTitle"),
-                EmptyAddressPlaceholder = Resources.GetString("BookPickupLocationEmptyPlaceholder")
-            };
-            Dropoff = new BookAddressViewModel(() => Order.DropOffAddress, address => Order.DropOffAddress = address, _geolocator)
-            {
-                Title = Resources.GetString("BookDropoffLocationButtonTitle"),
-                EmptyAddressPlaceholder = Resources.GetString("BookDropoffLocationEmptyPlaceholder")
-            };
-
-              timerSubscription = Observable.Timer(TimeSpan.Zero,TimeSpan.FromSeconds(_refreshPeriod)).Select(c => new Unit());
-
-            timerDisposable = timerSubscription.Subscribe(unit => InvokeOnMainThread(RefreshStatus));
-            CenterMap(true);
-        }
-
 		public BookingStatusViewModel(string order, string orderStatus)
 		{
 			Order = JsonSerializer.DeserializeFromString<Order>(order);
