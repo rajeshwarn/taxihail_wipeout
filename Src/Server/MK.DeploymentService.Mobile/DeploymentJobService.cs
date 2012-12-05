@@ -201,7 +201,8 @@ namespace MK.DeploymentService.Mobile
 
 			var configCompanyFolder = Path.Combine (sourceDirectory, "Config", company.Name);
 			var sourceFolder = Path.Combine (sourceDirectory, "Src");
-			var appConfigTool = new AppConfig (company.Name, configCompanyFolder, sourceFolder);
+			var commonConfigFolder = Path.Combine (sourceDirectory, "Config", "Common");
+			var appConfigTool = new AppConfig (company.Name, configCompanyFolder, sourceFolder, commonConfigFolder);
 			appConfigTool.Apply ();
 			logger.DebugFormat ("Customization Finished");
 		}
