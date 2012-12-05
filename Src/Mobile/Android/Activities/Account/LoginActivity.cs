@@ -65,6 +65,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
         protected override void OnViewModelSet()
         {            
 
+            //FindViewById<TextView>(Resource.Id.ForgotPasswordButton).PaintFlags = (FindViewById<TextView>(Resource.Id.ForgotPasswordButton).PaintFlags | Android.Graphics.PaintFlags.UnderlineText);
+
             SetContentView(Resource.Layout.View_Login);            
 
             _progressDialog = new ProgressDialog(this);
