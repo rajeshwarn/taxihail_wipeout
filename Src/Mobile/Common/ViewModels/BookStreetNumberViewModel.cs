@@ -57,7 +57,7 @@ namespace apcurium.MK.Booking.Mobile
             get {
                 return new MvxRelayCommand (() =>
                  {
-                    RequestNavigate<AddressSearchViewModel> (new { search = Model.FullAddress, ownerId = _ownerId });                    
+                    RequestNavigate<AddressSearchViewModel> (new { search = Model.BookAddress, ownerId = _ownerId });                    
                 });
             }
         }

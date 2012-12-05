@@ -160,7 +160,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 if (Order != null)
                 {
-                    return Order.PickupAddress.FullAddress;
+                    return Order.PickupAddress.BookAddress;
                 }
                 else
                 {

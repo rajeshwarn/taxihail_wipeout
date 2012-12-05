@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public bool IsValid (CreateOrder info)
         {
-            return info.PickupAddress.FullAddress.HasValue () 
+            return info.PickupAddress.BookAddress.HasValue () 
                 && info.PickupAddress.HasValidCoordinate ();
         }
 
