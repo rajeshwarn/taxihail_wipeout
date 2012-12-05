@@ -36,10 +36,11 @@ namespace apcurium.MK.Booking.Test.AddressesFixture
             var addressId = Guid.NewGuid();
             this.sut.When(new AddFavoriteAddress
                               {
-                                  AddressId = addressId,
+                                  
                                   AccountId = _accountId,
                                   Address = new Address
                 {
+                    Id = addressId,
                     FriendlyName = "Chez François",
                     Apartment = "3939",
                     FullAddress = "1234 rue Saint-Hubert",

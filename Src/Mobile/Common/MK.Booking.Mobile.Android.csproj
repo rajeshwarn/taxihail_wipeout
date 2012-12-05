@@ -71,12 +71,17 @@
     <Compile Include="AppServices\Impl\GeolocService.cs" />
     <Compile Include="AppServices\Impl\PopularAddressProvider.cs" />
     <Compile Include="AppServices\Impl\TariffProvider.cs" />
+    <Compile Include="AppServices\Impl\TutorialService.cs" />
+    <Compile Include="AppServices\ISocialNetworksService.cs" />
+    <Compile Include="AppServices\ITutorialService.cs" />
     <Compile Include="BindingConverter\BoolInverter.cs" />
     <Compile Include="BindingConverter\BoolVisibilityInverter.cs" />
     <Compile Include="Data\Coordinate.cs" />
     <Compile Include="Data\CoordinatePrecision.cs" />
     <Compile Include="Data\CoordinateRefreshTime.cs" />
     <Compile Include="Data\ListItemValue.cs" />
+    <Compile Include="Data\TutorialContent.cs" />
+    <Compile Include="Data\TutorialItem.cs" />
     <Compile Include="Extensions\AddressExtension.cs" />
     <Compile Include="Extensions\BookingSettingsExtension.cs" />
     <Compile Include="Framework\DisposableAction.cs" />
@@ -261,6 +266,7 @@
       <LastGenOutput>TaxiHail.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Settings\Settings.json" />
+    <EmbeddedResource Include="TutorialContent\Tutorial.json" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
