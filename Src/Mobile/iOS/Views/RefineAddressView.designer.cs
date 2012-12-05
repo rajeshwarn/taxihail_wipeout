@@ -18,16 +18,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 		MonoTouch.UIKit.UILabel lblRingCode { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblBuildingName { get; set; }
-
-		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.TextField txtAptNumber { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.TextField txtRingCode { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.TextField txtBuildingName { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
@@ -41,11 +35,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 				lblRingCode = null;
 			}
 
-			if (lblBuildingName != null) {
-				lblBuildingName.Dispose ();
-				lblBuildingName = null;
-			}
-
 			if (txtAptNumber != null) {
 				txtAptNumber.Dispose ();
 				txtAptNumber = null;
@@ -54,11 +43,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			if (txtRingCode != null) {
 				txtRingCode.Dispose ();
 				txtRingCode = null;
-			}
-
-			if (txtBuildingName != null) {
-				txtBuildingName.Dispose ();
-				txtBuildingName = null;
 			}
 		}
 	}

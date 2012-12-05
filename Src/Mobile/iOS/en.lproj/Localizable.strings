@@ -23,7 +23,7 @@
 "DontHaveAnAccountLabel"="Don't have an account?";
 "HistoryInfo"="Displaying trips from the last month";
 "ConfirmAptRingCodeLabel"="Apartment / Entry code";
-"View_Book_Menu_MyOrders"="My Orders";
+"View_Book_Menu_MyOrders"="History And Current Bookings";
 "PickupMapTitle"="Pickup location";
 "NbPassengers"=" ({0} passengers)";
 "BookPickupLabel"="Confirm your pickup location";
@@ -293,7 +293,7 @@
 "UpdateBookingSettingsEmptyField"="The data is invalid, all the fields are required.";
 "RideSettingsCannotLoadListMessage"="The server cannot be contacted, try again later.";
 "ReturnBookingScreen"="Return to main screen";
-"View_SignUp"="Create Your Profile";
+"View_SignUp"="Create Your Account";
 "Now"="Now";
 "ResetPasswordReset"="Reset";
 "ResetPasswordInvalidDataMessage"="The email is invalid.";
@@ -308,7 +308,7 @@
 "GenericTitle"="";
 "View_PasswordRecovery"="Reset Password";
 "InvalidLocalContactTitle"="Invalid contact";
-"View_Book_Menu_Tutorial"="Tutorial";
+"View_Book_Menu_Tutorial"="View Tutorial";
 "BookItLaterButton"="Later";
 "Tuto04Top"="If you want, you can also set your destination.";
 "Tuto02Top"="We should be able to locate you using the GPS receiver in your mobile device.";

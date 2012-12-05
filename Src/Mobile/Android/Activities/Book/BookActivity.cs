@@ -121,6 +121,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         void PickDate_Click(object sender, EventArgs e)
         {
+			//Close Menu if open
+			ViewModel.Panel.MenuIsOpen = false;
+
             var messengerHub = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>();
             var token = default(TinyMessageSubscriptionToken);
             token = messengerHub.Subscribe<DateTimePicked>(msg =>

@@ -13,152 +13,151 @@ using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using Cirrious.MvvmCross.ExtensionMethods;
 using Params = System.Collections.Generic.Dictionary<string, string>;
 using ServiceStack.Text;
+using apcurium.MK.Common.Extensions;
+using apcurium.MK.Booking.Mobile.Extensions;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-	public class PanelViewModel : BaseViewModel, IMvxServiceConsumer<IAccountService>
-	{
+    public class PanelViewModel : BaseViewModel, IMvxServiceConsumer<IAccountService>,IMvxServiceConsumer<ICacheService>
+    {
         readonly IAccountService _accountService;
-		public PanelViewModel ()
-		{
-            _accountService = this.GetService<IAccountService>();
-		}
+
+        public PanelViewModel ()
+        {
+            _accountService = this.GetService<IAccountService> ();
+
+
+            Task.Factory.SafeStartNew (() =>
+            {
+                Thread.Sleep (2000);
+                var tutorialWasDisplayed = this.GetService<ICacheService> ().Get<string> ("TutorialWasDisplayed");
+                if (tutorialWasDisplayed.IsNullOrEmpty ()) {
+                    this.GetService<ICacheService> ().Set<string> ("TutorialWasDisplayed", true.ToString ());
+                    NavigateToTutorial.Execute ();
+                
+                }
+            });
+
+        }
 
         private bool _menuIsOpen = false;
+
         public bool MenuIsOpen {
             get {
                 return _menuIsOpen;
             }
-            set{
-                if(value!= _menuIsOpen)
-                {
+            set {
+                if (value != _menuIsOpen) {
                     _menuIsOpen = value;
-                    FirePropertyChanged("MenuIsOpen");
+                    FirePropertyChanged ("MenuIsOpen");
                 }
             }
         }
 
-		public MvxRelayCommand SignOut
-		{
-			get
-			{
-				return new MvxRelayCommand(() =>
-			{
+        public MvxRelayCommand SignOut {
+            get {
+                return new MvxRelayCommand (() =>
+                {
                     MenuIsOpen = false;
-					_accountService.SignOut();			
-					RequestNavigate<LoginViewModel>(true);
-				});
-			}
-		}
-
-
-		public MvxRelayCommand NavigateToOrderHistory
-		{
-			get
-			{
-				return new MvxRelayCommand(() =>
-				                           {
-                    MenuIsOpen = false;
-					RequestNavigate<HistoryViewModel>();
-				});
-			}
-		}
-
-        public MvxRelayCommand NavigateToMyLocations
-        {
-            get
-            {
-                return new MvxRelayCommand(() =>
-                                           {
-                    MenuIsOpen = false;
-                    RequestNavigate<MyLocationsViewModel>();
+                    _accountService.SignOut ();         
+                    RequestNavigate<LoginViewModel> (true);
                 });
             }
         }
 
-		private string _version;
-		public string Version {
-			get
-			{
-				return _version;				         
-			}
-			set 
-			{
-				if(value != _version)
-				{
-					_version = value;
-					FirePropertyChanged("Version");
-				}
-			}
-		}
-
-        public IMvxCommand NavigateToUpdateProfile
-        {
-            get
-            {
-                return new MvxRelayCommand(()=>{
+        public MvxRelayCommand NavigateToOrderHistory {
+            get {
+                return new MvxRelayCommand (() =>
+                {
                     MenuIsOpen = false;
-                    RequestSubNavigate<RideSettingsViewModel, BookingSettings>(new Params{
+                    RequestNavigate<HistoryViewModel> ();
+                });
+            }
+        }
+
+        public MvxRelayCommand NavigateToMyLocations {
+            get {
+                return new MvxRelayCommand (() =>
+                {
+                    MenuIsOpen = false;
+                    RequestNavigate<MyLocationsViewModel> ();
+                });
+            }
+        }
+
+        private string _version;
+
+        public string Version {
+            get {
+                return _version;                         
+            }
+            set {
+                if (value != _version) {
+                    _version = value;
+                    FirePropertyChanged ("Version");
+                }
+            }
+        }
+
+        public IMvxCommand NavigateToUpdateProfile {
+            get {
+                return new MvxRelayCommand (() => {
+                    MenuIsOpen = false;
+                    RequestSubNavigate<RideSettingsViewModel, BookingSettings> (new Params{
                         { "bookingSettings", _accountService.CurrentAccount.Settings.ToJson()  }
                     }, result => {
-                        if(result!=null)
-                        {
-                            _accountService.UpdateSettings(result);
+                        if (result != null) {
+                            _accountService.UpdateSettings (result);
                         }
                     });
                 });
             }
         }
 
-	    public IMvxCommand NavigateToAboutUs
-	    {
-	        get
-	        {
-	            return new MvxRelayCommand(() => RequestNavigate<AboutUsViewModel>());
-	        }
-	    }
-
-        public IMvxCommand NavigateToTutorial
-        {
-            get
-            {
-                return new MvxRelayCommand(() =>
-                                               {
-                                                   MenuIsOpen = false;
-                                                   MessageService.ShowDialogActivity(typeof (TutorialViewModel));
-                                                   //RequestNavigate<TutorialViewModel>()
-                                               });
+        public IMvxCommand NavigateToAboutUs {
+            get {
+                return new MvxRelayCommand (() => RequestNavigate<AboutUsViewModel> ());
             }
         }
 
-	    public IMvxCommand Call
-        {
-            get
-            {
-                return new MvxRelayCommand(()=>{
+        public IMvxCommand NavigateToTutorial {
+            get {
+                return new MvxRelayCommand (() =>
+                {
                     MenuIsOpen = false;
-                    Action call = () => { PhoneService.Call(Settings.PhoneNumber(_accountService.CurrentAccount.Settings.ProviderId.Value)); };
-                    MessageService.ShowMessage(string.Empty, 
-                                               Settings.PhoneNumberDisplay(_accountService.CurrentAccount.Settings.ProviderId.Value), 
-                                               Resources.GetString("CallButton"), 
-                                               call, Resources.GetString("CancelBoutton"), 
+                    MessageService.ShowDialogActivity (typeof(TutorialViewModel));
+                    //RequestNavigate<TutorialViewModel>()
+                });
+            }
+        }
+
+        public IMvxCommand Call {
+            get {
+                return new MvxRelayCommand (() => {
+                    MenuIsOpen = false;
+                    Action call = () => {
+                        PhoneService.Call (Settings.PhoneNumber (_accountService.CurrentAccount.Settings.ProviderId.Value)); };
+                    MessageService.ShowMessage (string.Empty, 
+                                               Settings.PhoneNumberDisplay (_accountService.CurrentAccount.Settings.ProviderId.Value), 
+                                               Resources.GetString ("CallButton"), 
+                                               call, Resources.GetString ("CancelBoutton"), 
                                                () => {});                    
                 });
             }
         }
 
-        public IMvxCommand ReportProblem
-        {
-            get
-            {
-                return new MvxRelayCommand(()=>{
+        public IMvxCommand ReportProblem {
+            get {
+                return new MvxRelayCommand (() => {
                     MenuIsOpen = false;
-                    PhoneService.SendFeedbackErrorLog(Settings.ErrorLog, Settings.SupportEmail, Resources.GetString("TechSupportEmailTitle"));        
+                    PhoneService.SendFeedbackErrorLog (Settings.ErrorLog, Settings.SupportEmail, Resources.GetString ("TechSupportEmailTitle"));        
                 });
             }
         }
 
 
-	}
+    }
 }
 

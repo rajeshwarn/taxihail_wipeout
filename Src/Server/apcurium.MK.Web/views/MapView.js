@@ -79,10 +79,10 @@
             this._vehicleMarker = new google.maps.Marker({
                 position: this._map.getCenter(),
                 map: this._map,
-                icon: new google.maps.MarkerImage('assets/img/taxi_label.png', new google.maps.Size(106,80)),
+                icon: new google.maps.MarkerImage('assets/img/spacer.png', new google.maps.Size(1,1)),
                 visible: false
             });
-            var label = new Label({
+            var label = new TaxiLabel({
                map: this._map
             });
             label.bindTo('position', this._vehicleMarker, 'position');
@@ -213,20 +213,22 @@
         }
     });
 
-    var Label = function(opt_options) {
+    var TaxiLabel = function(opt_options) {
         // Initialization
         this.setValues(opt_options);
 
-        // Label specific
+        // TaxiLabel specific
         var span = this.span_ = document.createElement('span');
-        span.style.cssText = 'position: relative; left: -50%; top: -66px; white-space: nowrap; font-size: 24px; font-weight: bold; color: white';
-
+        span.style.cssText = 'position: relative; display:block; width:100%; top: 13px; white-space: nowrap; font-size: 24px; font-weight: bold; color: white; text-align: center;';
+        var marker = this.marker_ = document.createElement('div');
+        marker.style.cssText = 'position: relative; width: 106px; height:80px; left: -53px; top: -70px; background: url(assets/img/taxi_label.png);';
+        marker.appendChild(span);
         var div = this.div_ = document.createElement('div');
-        div.appendChild(span);
-        div.style.cssText = 'position: absolute; display: none';
+        div.appendChild(marker);
+        div.style.cssText = 'position: absolute; display: none;';
     };
 
-    _.extend(Label.prototype, new google.maps.OverlayView(), {
+    _.extend(TaxiLabel.prototype, new google.maps.OverlayView(), {
         onAdd: function() {
             var pane = this.getPanes().overlayLayer;
             pane.style.zIndex = 121;
@@ -246,7 +248,7 @@
          onRemove: function() {
             this.div_.parentNode.removeChild(this.div_);
 
-            // Label is removed from the map, stop updating its position/text.
+            // TaxiLabel is removed from the map, stop updating its position/text.
             for (var i = 0, I = this.listeners_.length; i < I; ++i) {
                google.maps.event.removeListener(this.listeners_[i]);
             }

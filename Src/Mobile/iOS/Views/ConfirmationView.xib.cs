@@ -85,9 +85,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			lblChargeType.Text = Resources.ChargeTypeLabel;			
 			lblPrice.Text = Resources.ApproxPrice;
 
-
-
-
             ((ModalTextField)pickerVehicleType).Configure(Resources.RideSettingsVehiculeType, ViewModel.Vehicles, ViewModel.Order.Settings.VehicleTypeId, x=> {
                 ViewModel.SetVehicleTypeId ( x.Id );});
 
@@ -99,15 +96,16 @@ namespace apcurium.MK.Booking.Mobile.Client
             this.AddBindings(new Dictionary<object, string>() {
                 { btnCancel, "{'TouchUpInside':{'Path':'CancelOrderCommand'}}"},                
                 { btnConfirm, "{'TouchUpInside':{'Path':'ConfirmOrderCommand'}}"},
-                { txtOrigin, "{'Text': {'Path': 'Order.PickupAddress.FullAddress'}}" },
+                { txtOrigin, "{'Text': {'Path': 'Order.PickupAddress.BookAddress'}}" },
 
                 { txtDestination, "{'Text': {'Path': 'Order.DropOffAddress.FullAddress', 'Converter': 'EmptyToResource', 'ConverterParameter': 'ConfirmDestinationNotSpecified'}}" },
                 { txtDateTime, "{'Text': {'Path': 'FormattedPickupDate'}}" },
                 { txtPrice, "{'Text': {'Path': 'FareEstimate'}}" },
                 { pickerVehicleType, "{'Text': {'Path': 'VehicleName'}}" },
                 { pickerChargeType, "{'Text': {'Path': 'ChargeType'}}" },
+                { pickerAptEntryBuilding, "{'NavigateCommand': {'Path': 'NavigateToRefineAddress'}, 'Text':{'Path':'AptRingCode'}}"}
             });
-
+           
 
 
             ViewModel.OnViewLoaded();

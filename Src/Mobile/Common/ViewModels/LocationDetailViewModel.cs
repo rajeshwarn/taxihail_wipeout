@@ -166,8 +166,8 @@ namespace apcurium.MK.Booking.Mobile
                         {
                             FullAddress = location.FullAddress;
                             location.FriendlyName = _address.FriendlyName;
-                            location.Apartment = location.Apartment;
-                            location.RingCode = location.RingCode;
+                            location.Apartment = _address.Apartment;
+                            location.RingCode = _address.RingCode;
                             location.Id = _address.Id;
                             _accountService.UpdateAddress(location);     
                             Close();
