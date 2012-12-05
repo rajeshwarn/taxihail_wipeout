@@ -890,7 +890,7 @@
     <value>Order Details</value>
   </data>
   <data name="View_HistoryList" xml:space="preserve">
-    <value>Orders</value>
+    <value>History</value>
   </data>
   <data name="View_LocationDetail" xml:space="preserve">
     <value>Location Detail</value>
