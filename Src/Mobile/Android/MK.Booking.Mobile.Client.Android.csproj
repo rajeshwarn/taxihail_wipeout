@@ -238,7 +238,9 @@
     <AndroidResource Include="Resources\Layout\View_BookingDetail.axml" />
     <Compile Include="Activities\Book\BookStreetNumberActivity.cs" />
     <AndroidResource Include="Resources\Layout\View_BookStreetNumber.axml" />
+    <AndroidResource Include="Resources\Drawable\closeButton.png" />
     <Compile Include="Controls\UnderlineTextView.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\closeButton.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
