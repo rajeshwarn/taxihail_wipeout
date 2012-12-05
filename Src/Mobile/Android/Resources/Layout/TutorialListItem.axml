@@ -36,7 +36,7 @@
         android:textColor="@color/black" />
     <ImageView
         android:layout_width="fill_parent"
-        android:layout_height="190dip"
+        android:layout_height="180dip"
         android:id="@+id/TutorialImage"
         android:layout_gravity="center_horizontal" />
     <TextView
