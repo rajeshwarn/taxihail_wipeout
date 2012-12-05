@@ -182,12 +182,6 @@
     <Compile Include="Extensions\LocationExtensionMD.cs" />
     <Compile Include="Cache\CacheService.cs" />
     <Compile Include="Controls\TextField.cs" />
-    <Compile Include="Order\StatusView.xib.cs">
-      <DependentUpon>StatusView.xib</DependentUpon>
-    </Compile>
-    <Compile Include="Order\StatusView.xib.designer.cs">
-      <DependentUpon>StatusView.xib</DependentUpon>
-    </Compile>
     <Compile Include="Order\ConfirmationCall.cs" />
     <Compile Include="Order\LocationDataExtension.cs" />
     <Compile Include="MonoTouchDialog\CustomRootElement.cs" />
@@ -347,6 +341,12 @@
       <DependentUpon>ResetPasswordView.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\ResetPasswordView.cs" />
+    <Compile Include="Views\StatusView.xib.cs">
+      <DependentUpon>StatusView.xib</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StatusView.xib.designer.cs">
+      <DependentUpon>StatusView.xib</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -383,7 +383,6 @@
   <ItemGroup>
     <InterfaceDefinition Include="MainWindow.xib" xmlns="" />
     <InterfaceDefinition Include="Settings\AboutUsView.xib" xmlns="" />
-    <InterfaceDefinition Include="Order\StatusView.xib" />
     <InterfaceDefinition Include="Views\BookView.xib" />
     <InterfaceDefinition Include="Views\AddressSearchView.xib" />
     <InterfaceDefinition Include="Views\PanelMenuView.xib" />
@@ -402,6 +401,7 @@
     <InterfaceDefinition Include="Views\ConfirmationView.xib" />
     <InterfaceDefinition Include="Views\ResetPasswordView.xib" />
     <InterfaceDefinition Include="Order\BookStreetNumberView.xib" />
+    <InterfaceDefinition Include="Views\StatusView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />
