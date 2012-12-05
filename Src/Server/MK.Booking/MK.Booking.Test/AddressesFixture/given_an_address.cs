@@ -31,7 +31,20 @@ namespace apcurium.MK.Booking.Test.AddressesFixture
             this.sut.Setup(new AddressCommandHandler(this.sut.Repository, this.companySut.Repository));
             this.sut.Given(new AccountRegistered { SourceId = _accountId, Name = "Bob", Password = null, Email = "bob.smith@apcurium.com" });
             this.companySut.Given(new CompanyCreated { SourceId = AppConstants.CompanyId});
-            this.sut.Given(new FavoriteAddressAdded { AddressId = _addressId, SourceId = _accountId, FriendlyName = "Chez François", Apartment = "3939", FullAddress = "1234 rue Saint-Hubert", RingCode = "3131", Latitude = 45.515065, Longitude = -73.558064 });
+            this.sut.Given(new FavoriteAddressAdded
+            {
+                SourceId = _accountId,
+                Address = new Address
+                    {
+                        Id = _addressId,
+                        FriendlyName = "Chez François",
+                        Apartment = "3939",
+                        FullAddress = "1234 rue Saint-Hubert",
+                        RingCode = "3131",
+                        Latitude = 45.515065,
+                        Longitude = -73.558064
+                    }
+            });
             this.sut.Given(new DefaultFavoriteAddressAdded { AddressId = _addressId, FriendlyName = "Chez François", Apartment = "3939", FullAddress = "1234 rue Saint-Hubert", RingCode = "3131", Latitude = 45.515065, Longitude = -73.558064 });
             this.sut.Given(new PopularAddressAdded { AddressId = _addressId, FriendlyName = "Chez François popular", Apartment = "3939", FullAddress = "1234 rue Saint-Hubert", RingCode = "3131", Latitude = 45.515065, Longitude = -73.558064 });
         }
@@ -85,8 +98,8 @@ namespace apcurium.MK.Booking.Test.AddressesFixture
             Assert.AreEqual(1, sut.Events.Count());
             var evt = (FavoriteAddressUpdated)sut.Events.Single();
             Assert.AreEqual(_accountId, evt.SourceId);
-            Assert.AreEqual(_addressId, evt.AddressId);
-            Assert.AreEqual("Hôtel de Ville", evt.BuildingName);
+            Assert.AreEqual(_addressId, evt.Address.Id);
+            Assert.AreEqual("Hôtel de Ville", evt.Address.BuildingName);
         }
 
         [Test]

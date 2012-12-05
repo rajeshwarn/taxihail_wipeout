@@ -44,14 +44,22 @@ namespace DatabaseInitializer.Services
                 var events = context.Set<Event>().Where(x => x.EventType == typeof(FavoriteAddressAdded).FullName).ToList();
                 foreach (var message in events)
                 {
-                    var @event = _serializer.Deserialize<FavoriteAddressAdded>(message.Payload);
+                    var @event = _serializer.Deserialize<OldEvents.FavoriteAddressAddedv1>(message.Payload);
                     if (@event.Address == null)
                     {
-                        @event.Address = new Address();
-                        @event.Address.Id = @event.AddressId;
-                        @event.Address.FullAddress = @event.FullAddress;
-                        FillAdress(@event.Address, @event.FullAddress);
-                        message.Payload = _serializer.Serialize(@event);
+                        var newEvent = new FavoriteAddressAdded
+                        {
+                            SourceId = @event.SourceId,
+                            Version = @event.Version,
+                            Address =
+                                new Address
+                                    {
+                                        Id = @event.AddressId,
+                                        FullAddress = @event.FullAddress
+                                    }
+                        };
+                        FillAdress(newEvent.Address, @event.FullAddress);
+                        message.Payload = _serializer.Serialize(newEvent);
                     }
                 }
                 context.SaveChanges();
@@ -62,14 +70,22 @@ namespace DatabaseInitializer.Services
                 var events = context.Set<Event>().Where(x => x.EventType == typeof(FavoriteAddressUpdated).FullName).ToList();
                 foreach (var message in events)
                 {
-                    var @event = _serializer.Deserialize<FavoriteAddressUpdated>(message.Payload);
+                    var @event = _serializer.Deserialize<OldEvents.FavoriteAddressUpdatedv1>(message.Payload);
                     if (@event.Address == null)
                     {
-                        @event.Address = new Address();
-                        @event.Address.Id = @event.AddressId;
-                        @event.Address.FullAddress = @event.FullAddress;
+                        var newEvent = new FavoriteAddressUpdated
+                        {
+                            SourceId = @event.SourceId,
+                            Version = @event.Version,
+                            Address =
+                                new Address
+                                {
+                                    Id = @event.AddressId,
+                                    FullAddress = @event.FullAddress
+                                }
+                        };
                         FillAdress(@event.Address, @event.FullAddress);
-                        message.Payload = _serializer.Serialize(@event);
+                        message.Payload = _serializer.Serialize(newEvent);
                     }
                 }
                 context.SaveChanges();

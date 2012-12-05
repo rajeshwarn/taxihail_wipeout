@@ -26,9 +26,6 @@ namespace apcurium.MK.Booking.Mobile.Client
     {
         #region Constructors
 
-        // The IntPtr and initWithCoder constructors are required for items that need 
-        // to be able to be created from a xib rather than from managed code
-
         public StatusView () 
             : base(new MvxShowViewModelRequest<BookingStatusViewModel>( null, true, new Cirrious.MvvmCross.Interfaces.ViewModels.MvxRequestedBy()   ) )
         {
@@ -43,6 +40,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             : base(request, nibName, bundle)
         {
         }
+
+        #endregion
 
         public override void ViewWillAppear (bool animated)
         {
@@ -92,7 +91,12 @@ namespace apcurium.MK.Booking.Mobile.Client
             this.View.ApplyAppFont ();
         }
 
-        #endregion
+        public override void ViewWillDisappear (bool animated)
+        {
+            base.ViewWillDisappear (animated);
+            ViewModel.OnViewUnloaded();
+        }
+
     }
 
 }

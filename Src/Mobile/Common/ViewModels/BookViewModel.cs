@@ -526,7 +526,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					var orderInfoGet = (OrderStatusDetail)order ["orderInfo"];
 					var orderWithStatus = new OrderWithStatusModel () { Order = orderGet, OrderStatusDetail = orderInfoGet };
 					var serialized = JsonSerializer.SerializeToString (orderWithStatus, typeof(OrderWithStatusModel));
-                    RequestNavigate<BookingStatusViewModel> (new {order = serialized});
+                    RequestNavigate<BookingStatusViewModel>(new {
+                        order =  orderGet.ToJson(),
+                        orderStatus = orderInfoGet.ToJson()
+                    });
 				});
 			}
 		}

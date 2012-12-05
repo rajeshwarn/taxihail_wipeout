@@ -20,6 +20,8 @@ using System.Globalization;
 using System.Reactive.Linq;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
+using System.Reactive.Disposables;
+using apcurium.MK.Booking.Mobile.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -33,39 +35,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private ILocationService _geolocator;
         private const int _refreshPeriod = 20 ; //20 sec
         private bool _isThankYouDialogDisplayed = false;
-        private IObservable<Unit> timerSubscription = null;
-        private IDisposable timerDisposable = null;
 
-		[Obsolete]
-        public BookingStatusViewModel(string order)
-        {
-            var orderWithStatus = JsonSerializer.DeserializeFromString <OrderWithStatusModel>(order);
-            Order = orderWithStatus.Order;
-            OrderStatusDetail = orderWithStatus.OrderStatusDetail;
-            ShowRatingButton = true;
-            MessengerHub.Subscribe<OrderRated>( OnOrderRated , o=>o.Content.Equals (Order.Id) );
-            _bookingService = this.GetService<IBookingService>();
-            StatusInfoText = string.Format(Resources.GetString("StatusStatusLabel"), Resources.GetString("LoadingMessage"));
-
-
-            _geolocator = this.GetService<ILocationService>();
-
-            Pickup = new BookAddressViewModel(() => Order.PickupAddress, address => Order.PickupAddress = address, _geolocator)
-            {
-                Title = Resources.GetString("BookPickupLocationButtonTitle"),
-                EmptyAddressPlaceholder = Resources.GetString("BookPickupLocationEmptyPlaceholder")
-            };
-            Dropoff = new BookAddressViewModel(() => Order.DropOffAddress, address => Order.DropOffAddress = address, _geolocator)
-            {
-                Title = Resources.GetString("BookDropoffLocationButtonTitle"),
-                EmptyAddressPlaceholder = Resources.GetString("BookDropoffLocationEmptyPlaceholder")
-            };
-
-              timerSubscription = Observable.Timer(TimeSpan.Zero,TimeSpan.FromSeconds(_refreshPeriod)).Select(c => new Unit());
-
-            timerDisposable = timerSubscription.Subscribe(unit => InvokeOnMainThread(RefreshStatus));
-            CenterMap(true);
-        }
+        protected readonly CompositeDisposable Subscriptions = new CompositeDisposable();
 
 		public BookingStatusViewModel(string order, string orderStatus)
 		{
@@ -88,9 +59,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 EmptyAddressPlaceholder = Resources.GetString("BookDropoffLocationEmptyPlaceholder")
             };
 
-             timerSubscription = Observable.Timer(TimeSpan.Zero, TimeSpan.FromSeconds(_refreshPeriod)).Select(c => new Unit());
+            Observable.Timer(TimeSpan.Zero, TimeSpan.FromSeconds(_refreshPeriod)).Select(c => new Unit())
+                .Subscribe(unit => InvokeOnMainThread(RefreshStatus))
+                .DisposeWith(Subscriptions);
 
-            timerDisposable = timerSubscription.Subscribe(unit => InvokeOnMainThread(RefreshStatus));
             CenterMap(true);
 		}
 
@@ -397,10 +369,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        protected override void Close ()
+        public override void OnViewUnloaded ()
         {
-            base.Close ();
-            timerDisposable.Dispose();
+            base.OnViewUnloaded ();
+            Subscriptions.DisposeAll();
         }
     }
 }
