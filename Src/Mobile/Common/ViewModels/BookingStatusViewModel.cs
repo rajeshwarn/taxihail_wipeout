@@ -4,6 +4,7 @@ using System.Reactive;
 using System.Reactive.Subjects;
 using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.ExtensionMethods;
+using Cirrious.MvvmCross.Interfaces.Commands;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using ServiceStack.Text;
 using TinyIoC;
@@ -311,11 +312,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public MvxRelayCommand NavigateToRatingPage
+        public IMvxCommand NavigateToRatingPage
         {
             get
             {
-                return new MvxRelayCommand(() =>
+                return GetCommand(() =>
                 {
                     MessengerHub.Subscribe<OrderRated>(HideRatingButton);
                     RequestNavigate<BookRatingViewModel>(new { orderId = Order.Id.ToString(), canRate = true.ToString(CultureInfo.InvariantCulture), isFromStatus = true.ToString(CultureInfo.InvariantCulture) });
@@ -323,11 +324,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public MvxRelayCommand NewRide
+        public IMvxCommand NewRide
         {
             get
             {
-                return new MvxRelayCommand(() =>
+                return GetCommand(() =>
                                                {
 
                     MessageService.ShowMessage( Resources.GetString("StatusNewRideButton") ,  Resources.GetString("StatusConfirmNewBooking"),  Resources.GetString("YesButton"), () =>
@@ -344,11 +345,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
           
 
 
-        public MvxRelayCommand CancelOrder
+        public IMvxCommand CancelOrder
         {
             get
             {
-                return new MvxRelayCommand(() =>
+                return GetCommand(() =>
                                                {
                                                    if ((OrderStatusDetail.IBSStatusId == _doneStatus) || (OrderStatusDetail.IBSStatusId == _loadedStatus))
                                                    {
@@ -380,11 +381,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public MvxRelayCommand CallCompany
+        public IMvxCommand CallCompany
         {
             get
             {
-                return new MvxRelayCommand(()=>{
+                return GetCommand(() =>
+                {
                     Action call = () => { PhoneService.Call(Settings.PhoneNumber(Order.Settings.ProviderId.Value)); };
                     MessageService.ShowMessage(string.Empty, 
                                                Settings.PhoneNumberDisplay(Order.Settings.ProviderId.Value), 

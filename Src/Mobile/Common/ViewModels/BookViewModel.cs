@@ -324,11 +324,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get { return !DropoffIsActive && !PickupIsActive; }
         }
-        public MvxRelayCommand ActivatePickup
+        public IMvxCommand ActivatePickup
         {
             get
             {
-                return new MvxRelayCommand(() =>
+                return GetCommand(() =>
                 {
                     // Close the menu if it was open
                     Panel.MenuIsOpen = false;
@@ -352,11 +352,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
         
-        public MvxRelayCommand ActivateDropoff
+        public IMvxCommand ActivateDropoff
         {
             get
             {
-                return new MvxRelayCommand(() =>
+                return GetCommand(() =>
                     {
                         // Close the menu if it was open
                         Panel.MenuIsOpen = false;
@@ -423,7 +423,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				return new MvxRelayCommand<DateTime?>(date => {
+                return GetCommand<DateTime?>(date =>
+                {
 					if( date.HasValue && date < DateTime.Now )
 					{
 						var res = TinyIoCContainer.Current.Resolve<IAppResource>();
@@ -456,7 +457,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return new MvxRelayCommand(() =>
+                return GetCommand(() =>
                 {
 				
 
@@ -510,7 +511,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return new MvxRelayCommand(() => RequestNavigate<BookRatingViewModel>(
+                return GetCommand(() => RequestNavigate<BookRatingViewModel>(
                     new KeyValuePair<string, bool>("canRate", true)));
                
             }
@@ -519,7 +520,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public IMvxCommand NavigateToOrderStatus 
 		{
 			get {
-				return new MvxRelayCommand<Dictionary<string,object>> (order =>
+                return GetCommand<Dictionary<string, object>>(order =>
 				{					
 					var orderGet = (Order)order ["order"];                  
 					var orderInfoGet = (OrderStatusDetail)order ["orderInfo"];

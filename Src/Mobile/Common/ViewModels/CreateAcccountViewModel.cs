@@ -1,4 +1,5 @@
 using System;
+using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using Cirrious.MvvmCross.Commands;
@@ -39,19 +40,20 @@ namespace apcurium.MK.Booking.Mobile
 				return (false);
 		}
 
-		public MvxRelayCommand Cancel
+		public IMvxCommand Cancel
 		{
 			get
 			{
-				return new MvxRelayCommand(() => {  Close();});
+                return GetCommand(() => { Close(); });
 			}
 		}
 
-		public MvxRelayCommand CreateAccount
+		public IMvxCommand CreateAccount
 		{
 			get
 			{
-				return new MvxRelayCommand(() => {
+                return GetCommand(() =>
+                {
 					
 					if (!IsEmail(Data.Email))
 					{

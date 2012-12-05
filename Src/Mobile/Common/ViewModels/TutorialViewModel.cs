@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Booking.Mobile.Models;
 using apcurium.MK.Booking.Mobile.Client;
 using Cirrious.MvvmCross.Commands;
@@ -27,11 +28,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             TutorialItemsList = service.GetTutorialItems ( ).Select ( item => new TutorialItemModel { TopText = item.TopText, TopTitle = item.TopTitle , BottomText = item.BottomText , BottomTitle = item.BottomTitle, ImageUri = item.ImageUri }).ToArray (); 
         }
 
-        public MvxRelayCommand CloseCommand
+        public IMvxCommand CloseCommand
         {
             get
             {
-                return new MvxRelayCommand(() =>
+                return GetCommand(() =>
                                            {
                     RequestClose (this );
                 });

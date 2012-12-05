@@ -269,11 +269,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		}
 
-        public MvxRelayCommand NavigateToRatingPage
+        public IMvxCommand NavigateToRatingPage
         {
             get
             {
-                return new MvxRelayCommand(() =>
+                return GetCommand(() =>
                                                {
                                                    var canRate = IsDone && !HasRated;
 					RequestNavigate<BookRatingViewModel>(new { orderId = OrderId, canRate = canRate.ToString()});
@@ -285,7 +285,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return new MvxRelayCommand(() =>
+                return GetCommand(() =>
                                         {
 					var orderStatus = new OrderStatusDetail
 					{ 
@@ -309,7 +309,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return new MvxRelayCommand(() =>
+                return GetCommand(() =>
                 {
                     if (Common.Extensions.GuidExtensions.HasValue(OrderId))
                     {
@@ -325,7 +325,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return new MvxRelayCommand(() =>
+                return GetCommand(() =>
                 {
                     var serialized = JsonSerializer.SerializeToString(Order);
                     RequestNavigate<BookViewModel>(new { order = serialized }, clearTop: true, requestedBy: MvxRequestedBy.UserAction);
@@ -337,7 +337,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return new MvxRelayCommand(() =>
+                return GetCommand(() =>
                 {
                     if (Common.Extensions.GuidExtensions.HasValue(OrderId))
                     {
@@ -351,8 +351,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
          public IMvxCommand CancelOrder
         {
             get
-            { 
-                return new MvxRelayCommand(()=>
+            {
+                return GetCommand(() =>
                 {
                     var messageService = TinyIoCContainer.Current.Resolve<IMessageService>();
                     var resources = TinyIoCContainer.Current.Resolve<IAppResource>();

@@ -76,8 +76,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                
-                return new MvxRelayCommand(() => 
+
+                return GetCommand(() => 
                     {
 						ReturnResult(this);
                     });

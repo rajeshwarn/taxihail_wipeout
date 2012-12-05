@@ -48,15 +48,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             {
                 _isExecuting = true;
                 OnCanExecuteChanged();
-                try
-                {
-                    Task.Factory.StartNew(() => _execute()).HandleErrors();
-                }
-                finally
-                {
-                    _isExecuting = false;
-                    OnCanExecuteChanged();
-                }
+                Task.Factory.StartNew(() => _execute()).HandleErrors().ContinueWith(_ =>
+                                                                                        {
+                                                                                            _isExecuting = false;
+                                                                                            OnCanExecuteChanged();
+                                                                                        });
             }
         }
 
@@ -129,15 +125,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             {
                 _isExecuting = true;
                 OnCanExecuteChanged();
-                try
-                {
-                    Task.Factory.StartNew(() => _execute((T)parameter)).HandleErrors();
-                }
-                finally
-                {
-                    _isExecuting = false;
-                    OnCanExecuteChanged();
-                }
+                    Task.Factory.StartNew(() => _execute((T)parameter)).HandleErrors().ContinueWith(_ =>
+                                                                                                        {
+                                                                                                            _isExecuting = false;
+                                                                                                            OnCanExecuteChanged();
+                                                                                                        });
             }
         }
 

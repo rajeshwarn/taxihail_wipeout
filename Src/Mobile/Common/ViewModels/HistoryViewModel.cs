@@ -98,7 +98,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return new MvxRelayCommand<OrderViewModel>(vm => RequestNavigate<HistoryDetailViewModel>(
+                return GetCommand<OrderViewModel>(vm => RequestNavigate<HistoryDetailViewModel>(
                     new {orderId = vm.Id}));
             }
         }

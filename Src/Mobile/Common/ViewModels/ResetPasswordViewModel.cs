@@ -1,4 +1,5 @@
 using System;
+using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Commands;
 using apcurium.Framework.Extensions;
@@ -16,11 +17,12 @@ namespace apcurium.MK.Booking.Mobile
 
 		public string Email { get; set; }
 
-		public MvxRelayCommand ResetPassword
+		public IMvxCommand ResetPassword
 		{
 			get
 			{
-				return new MvxRelayCommand(() => {
+                return GetCommand(() =>
+                {
 					if (!IsEmail(Email))
 					{
 						MessageService.ShowMessage(Resources.GetString("ResetPasswordInvalidDataTitle"), Resources.GetString("ResetPasswordInvalidDataMessage"));
@@ -50,11 +52,11 @@ namespace apcurium.MK.Booking.Mobile
 			
 		}
 
-		public MvxRelayCommand Cancel
+		public IMvxCommand Cancel
 		{
 			get
 			{
-				return new MvxRelayCommand(() => {  Close();});
+                return GetCommand(() => { Close(); });
 		    }
 	    }
 

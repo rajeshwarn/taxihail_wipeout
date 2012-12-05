@@ -1,7 +1,10 @@
+using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.ExtensionMethods;
+using Cirrious.MvvmCross.Interfaces.Commands;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using Cirrious.MvvmCross.ViewModels;
 using TinyMessenger;
+using apcurium.MK.Booking.Mobile.AppServices.Impl;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
 using System.Collections.Generic;
@@ -99,6 +102,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			
 			return RequestNavigate<TViewModel>(parameterValues);
 		}
+
+        protected IMvxCommand GetCommand(Action action)
+        {
+            return new AsyncCommand(action);
+        }
+
+        protected IMvxCommand GetCommand<T>(Action<T> action)
+        {
+            return new AsyncCommand<T>(action);
+        }
     }
 }
 

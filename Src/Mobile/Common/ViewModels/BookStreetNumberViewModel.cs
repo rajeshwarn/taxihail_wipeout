@@ -55,7 +55,7 @@ namespace apcurium.MK.Booking.Mobile
 
         public IMvxCommand NavigateToSearch {
             get {
-                return new MvxRelayCommand (() =>
+                return GetCommand(() =>
                  {
                     RequestNavigate<AddressSearchViewModel> (new { search = Model.BookAddress, ownerId = _ownerId });                    
                 });
@@ -71,7 +71,7 @@ namespace apcurium.MK.Booking.Mobile
         {
             get
             {
-                return new MvxRelayCommand(() => 
+                return GetCommand(() => 
                 {
                     Model.UpdateStreetOrNumberBuildingName(StreetNumberOrBuildingName);
                     MessengerHub.Publish(new AddressSelected(this, Model,_ownerId));                    

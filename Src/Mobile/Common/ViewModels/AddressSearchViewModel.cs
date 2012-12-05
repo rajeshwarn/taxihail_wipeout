@@ -74,7 +74,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public IMvxCommand SearchCommand {
             get {
-                return new MvxRelayCommand<string> (criteria =>
+                return GetCommand<string> (criteria =>
                 {
                     SearchViewModelSelected.Criteria = criteria != null ? criteria.ToLowerInvariant () : null;
 
@@ -156,7 +156,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public IMvxCommand RowSelectedCommand {
             get {
-                return new MvxRelayCommand<AddressViewModel> (address =>
+                return GetCommand<AddressViewModel>(address =>
                 {
                     ThreadPool.QueueUserWorkItem (o =>
                     {
@@ -234,7 +234,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public IMvxCommand SelectedChangedCommand {
             get {
-                return new MvxRelayCommand<object> (param => param.Maybe (tag =>
+                return GetCommand<object>(param => param.Maybe(tag =>
                 {
                     ClearResults ();
                     TopBarButton btSelected;
@@ -287,7 +287,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
         public IMvxCommand CloseViewCommand {
-            get { return new MvxRelayCommand (() => RequestClose (this)); }
+            get { return GetCommand(() => RequestClose(this)); }
         }
 
 

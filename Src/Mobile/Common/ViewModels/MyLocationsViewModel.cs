@@ -74,7 +74,8 @@ namespace apcurium.MK.Booking.Mobile
 
         public IMvxCommand NavigateToLocationDetailPage{
             get{
-                return new MvxRelayCommand<AddressViewModel>(a => {
+                return GetCommand<AddressViewModel>(a =>
+                {
 
                     if(a.Address.Id == Guid.Empty)
                     {
