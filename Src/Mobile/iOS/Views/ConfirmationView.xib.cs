@@ -97,7 +97,6 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { btnCancel, "{'TouchUpInside':{'Path':'CancelOrderCommand'}}"},                
                 { btnConfirm, "{'TouchUpInside':{'Path':'ConfirmOrderCommand'}}"},
                 { txtOrigin, "{'Text': {'Path': 'Order.PickupAddress.BookAddress'}}" },
-
                 { txtDestination, "{'Text': {'Path': 'Order.DropOffAddress.FullAddress', 'Converter': 'EmptyToResource', 'ConverterParameter': 'ConfirmDestinationNotSpecified'}}" },
                 { txtDateTime, "{'Text': {'Path': 'FormattedPickupDate'}}" },
                 { txtPrice, "{'Text': {'Path': 'FareEstimate'}}" },
