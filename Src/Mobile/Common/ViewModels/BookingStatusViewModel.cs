@@ -370,7 +370,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public override void OnViewUnloaded ()
         {
             base.OnViewUnloaded ();
-            Subscriptions.Clear();
+            Subscriptions.DisposeAll();
         }
     }
 }

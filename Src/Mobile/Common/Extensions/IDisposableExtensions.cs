@@ -12,6 +12,19 @@ namespace apcurium.MK.Booking.Mobile.Extensions
 
             composite.Add (disposable);
         }
+
+        public static void DisposeAll (this CompositeDisposable composite)
+        {
+            if (composite == null)
+                throw new ArgumentNullException ("composite");
+
+            foreach (var disposable in composite) {
+                disposable.Dispose();
+            }
+            composite.Clear();
+
+
+        }
     }
 }
 
