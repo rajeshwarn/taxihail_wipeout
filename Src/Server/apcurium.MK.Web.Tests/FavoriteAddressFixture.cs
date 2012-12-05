@@ -37,7 +37,7 @@ namespace apcurium.MK.Web.Tests
             var sut = new AccountServiceClient(BaseUrl, SessionId);
             sut.AddFavoriteAddress(new SaveAddress
             {
-                Id = (_knownAddressId = Guid.NewGuid()),
+                Id = _knownAddressId,
                 Address = new Address
                 {
                     FriendlyName = "La Boite à Jojo",
