@@ -152,17 +152,9 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                context.Save(new PopularAddressDetails
-                {
-                    Id = @event.AddressId,
-                    FriendlyName = @event.FriendlyName,
-                    Apartment = @event.Apartment,
-                    FullAddress = @event.FullAddress,
-                    RingCode = @event.RingCode,
-                    BuildingName = @event.BuildingName,
-                    Latitude = @event.Latitude,
-                    Longitude = @event.Longitude,
-                });
+                var address = new PopularAddressDetails();
+                AutoMapper.Mapper.Map(@event.Address, address);
+                context.Save(address);
             }
         }
 
@@ -183,10 +175,10 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                var address = context.Find<PopularAddressDetails>(@event.AddressId);
+                var address = context.Find<PopularAddressDetails>(@event.Address.Id);
                 if (address != null)
                 {
-                    AutoMapper.Mapper.Map(@event, address);
+                    AutoMapper.Mapper.Map(@event.Address, address);
                     context.SaveChanges();
                 }
             }

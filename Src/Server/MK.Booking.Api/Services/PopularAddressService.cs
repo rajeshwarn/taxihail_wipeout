@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.FluentValidation;
@@ -31,6 +28,7 @@ namespace apcurium.MK.Booking.Api.Services
             var command = new Commands.AddPopularAddress();
             
             AutoMapper.Mapper.Map(request, command);
+            command.Address.Id = request.Id;
 
             _commandBus.Send(command);
 
@@ -53,8 +51,8 @@ namespace apcurium.MK.Booking.Api.Services
         public override object OnPut(PopularAddress request)
         {
             var command = new Commands.UpdatePopularAddress();
-
             AutoMapper.Mapper.Map(request, command);
+            command.Address.Id = request.Id;
 
             _commandBus.Send(command);
 

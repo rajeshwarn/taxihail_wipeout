@@ -78,37 +78,23 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void AddPopularAddress(Guid id, string friendlyName, string apartment, string fullAddress, string ringCode, string buildingName, double latitude, double longitude)
+        public void AddPopularAddress(Address address)
         {
-            ValidateFavoriteAddress(friendlyName, fullAddress, latitude, longitude);
+            ValidateFavoriteAddress(address.FriendlyName, address.FullAddress, address.Latitude, address.Longitude);
 
             this.Update(new PopularAddressAdded
             {
-                AddressId = id,
-                FriendlyName = friendlyName,
-                Apartment = apartment,
-                FullAddress = fullAddress,
-                RingCode = ringCode,
-                BuildingName = buildingName,
-                Latitude = latitude,
-                Longitude = longitude,
+                Address = address
             });
         }
 
-        public void UpdatePopularAddress(Guid id, string friendlyName, string apartment, string fullAddress, string ringCode, string buildingName, double latitude, double longitude)
+        public void UpdatePopularAddress(Address address)
         {
-            ValidateFavoriteAddress(friendlyName, fullAddress, latitude, longitude);
+            ValidateFavoriteAddress(address.FriendlyName, address.FullAddress, address.Latitude, address.Longitude);
 
-            this.Update(new PopularAddressUpdated()
+            this.Update(new PopularAddressUpdated
             {
-                AddressId = id,
-                FriendlyName = friendlyName,
-                Apartment = apartment,
-                FullAddress = fullAddress,
-                RingCode = ringCode,
-                BuildingName = buildingName,
-                Latitude = latitude,
-                Longitude = longitude
+                Address = address
             });
         }
 
