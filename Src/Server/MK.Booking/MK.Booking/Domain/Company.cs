@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Infrastructure.EventSourcing;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common;
@@ -51,37 +50,23 @@ namespace apcurium.MK.Booking.Domain
             base.Handles<RatingTypeUpdated>(OnEventDoNothing);
         }
 
-        public void AddDefaultFavoriteAddress(Guid id, string friendlyName, string apartment, string fullAddress, string ringCode, string buildingName, double latitude, double longitude)
+        public void AddDefaultFavoriteAddress(Address address)
         {
-            ValidateFavoriteAddress(friendlyName, fullAddress, latitude, longitude);
+            ValidateFavoriteAddress(address.FriendlyName, address.FullAddress, address.Latitude, address.Longitude);
 
             this.Update(new DefaultFavoriteAddressAdded
             {
-                AddressId = id,
-                FriendlyName = friendlyName,
-                Apartment = apartment,
-                FullAddress = fullAddress,
-                RingCode = ringCode,
-                BuildingName = buildingName,
-                Latitude = latitude,
-                Longitude = longitude,
+                Address = address
             });
         }
 
-        public void UpdateDefaultFavoriteAddress(Guid id, string friendlyName, string apartment, string fullAddress, string ringCode, string buildingName, double latitude, double longitude)
+        public void UpdateDefaultFavoriteAddress(Address address)
         {
-            ValidateFavoriteAddress(friendlyName, fullAddress, latitude, longitude);
+            ValidateFavoriteAddress(address.FriendlyName, address.FullAddress, address.Latitude, address.Longitude);
 
             this.Update(new DefaultFavoriteAddressUpdated()
             {
-                AddressId = id,
-                FriendlyName = friendlyName,
-                Apartment = apartment,
-                FullAddress = fullAddress, 
-                RingCode = ringCode,
-                BuildingName = buildingName,
-                Latitude = latitude,
-                Longitude = longitude
+                Address = address
             });
         }
 

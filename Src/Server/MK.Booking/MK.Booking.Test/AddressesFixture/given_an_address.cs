@@ -45,7 +45,10 @@ namespace apcurium.MK.Booking.Test.AddressesFixture
                         Longitude = -73.558064
                     }
             });
-            this.sut.Given(new DefaultFavoriteAddressAdded { AddressId = _addressId, FriendlyName = "Chez François", Apartment = "3939", FullAddress = "1234 rue Saint-Hubert", RingCode = "3131", Latitude = 45.515065, Longitude = -73.558064 });
+            this.sut.Given(new DefaultFavoriteAddressAdded
+            {
+                Address = new Address { Id = _addressId, FriendlyName = "Chez François", Apartment = "3939", FullAddress = "1234 rue Saint-Hubert", RingCode = "3131", Latitude = 45.515065, Longitude = -73.558064 }
+            });
             this.sut.Given(new PopularAddressAdded { AddressId = _addressId, FriendlyName = "Chez François popular", Apartment = "3939", FullAddress = "1234 rue Saint-Hubert", RingCode = "3131", Latitude = 45.515065, Longitude = -73.558064 });
         }
 
@@ -105,12 +108,15 @@ namespace apcurium.MK.Booking.Test.AddressesFixture
         [Test]
         public void when_company_default_address_updated_successfully()
         {
-            this.companySut.When(new UpdateDefaultFavoriteAddress { AddressId = _addressId, FriendlyName = "Chez Costo", FullAddress = "1234 rue Saint-Hubert", BuildingName = "Hôtel de Ville" });
+            this.companySut.When(new UpdateDefaultFavoriteAddress
+            {
+                Address = new Address { Id = _addressId, FriendlyName = "Chez Costo", FullAddress = "1234 rue Saint-Hubert", BuildingName = "Hôtel de Ville" }
+            });
 
             Assert.AreEqual(1, companySut.Events.Count());
             var evt = (DefaultFavoriteAddressUpdated)companySut.Events[0];
-            Assert.AreEqual(_addressId, evt.AddressId);
-            Assert.AreEqual("Hôtel de Ville", evt.BuildingName);
+            Assert.AreEqual(_addressId, evt.Address.Id);
+            Assert.AreEqual("Hôtel de Ville", evt.Address.BuildingName);
         }
 
         [Test]
@@ -133,7 +139,10 @@ namespace apcurium.MK.Booking.Test.AddressesFixture
         [Test]
         public void when_company_default_address_updated_with_missing_value()
         {
-            Assert.Throws<InvalidOperationException>(() => this.companySut.When(new UpdateDefaultFavoriteAddress { AddressId = _addressId, FriendlyName = "Chez Costo" }));
+            Assert.Throws<InvalidOperationException>(() => this.companySut.When(new UpdateDefaultFavoriteAddress
+            {
+                Address = new Address { Id = _addressId, FriendlyName = "Chez Costo" }
+            }));
         }
 
         [Test]

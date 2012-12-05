@@ -71,26 +71,29 @@ namespace apcurium.MK.Booking.Test.AddressesFixture
             var addressId = Guid.NewGuid();
             this.companySut.When(new AddDefaultFavoriteAddress
             {
-                AddressId = addressId,
-                FriendlyName = "Chez François",
-                Apartment = "3939",
-                FullAddress = "1234 rue Saint-Hubert",
-                RingCode = "3131",
-                BuildingName = "Hôtel de Ville",
-                Latitude = 45.515065,
-                Longitude = -73.558064
+                Address = new Address
+               {
+                   Id = addressId,
+                   FriendlyName = "Chez François",
+                   Apartment = "3939",
+                   FullAddress = "1234 rue Saint-Hubert",
+                   RingCode = "3131",
+                   BuildingName = "Hôtel de Ville",
+                   Latitude = 45.515065,
+                   Longitude = -73.558064
+               }
             });
 
             Assert.AreEqual(1, companySut.Events.Count);
             var evt = (DefaultFavoriteAddressAdded)companySut.Events[0];
-            Assert.AreEqual(addressId, evt.AddressId);
-            Assert.AreEqual("Chez François", evt.FriendlyName);
-            Assert.AreEqual("3939", evt.Apartment);
-            Assert.AreEqual("1234 rue Saint-Hubert", evt.FullAddress);
-            Assert.AreEqual("3131", evt.RingCode);
-            Assert.AreEqual("Hôtel de Ville", evt.BuildingName);
-            Assert.AreEqual(45.515065, evt.Latitude);
-            Assert.AreEqual(-73.558064, evt.Longitude);
+            Assert.AreEqual(addressId, evt.Address.Id);
+            Assert.AreEqual("Chez François",  evt.Address.FriendlyName);
+            Assert.AreEqual("3939", evt.Address.Apartment);
+            Assert.AreEqual("1234 rue Saint-Hubert", evt.Address.FullAddress);
+            Assert.AreEqual("3131", evt.Address.RingCode);
+            Assert.AreEqual("Hôtel de Ville", evt.Address.BuildingName);
+            Assert.AreEqual(45.515065, evt.Address.Latitude);
+            Assert.AreEqual(-73.558064, evt.Address.Longitude);
 
         }
 
@@ -138,7 +141,7 @@ namespace apcurium.MK.Booking.Test.AddressesFixture
         [Test]
         public void when_adding_an_company_default_address_with_missing_required_fields()
         {
-            Assert.Throws<InvalidOperationException>(() => this.companySut.When(new AddDefaultFavoriteAddress { FriendlyName = null, Apartment = "3939", FullAddress = null, RingCode = "3131", Latitude = 45.515065, Longitude = -73.558064 }));
+            Assert.Throws<InvalidOperationException>(() => this.companySut.When(new AddDefaultFavoriteAddress { Address = new Address { FriendlyName = null, Apartment = "3939", FullAddress = null, RingCode = "3131", Latitude = 45.515065, Longitude = -73.558064 } }));
         }
 
         [Test]

@@ -65,9 +65,7 @@ namespace apcurium.MK.Booking
 
             AutoMapper.Mapper.CreateMap<FavoriteAddressUpdated, AddressDetails>();
 
-            AutoMapper.Mapper.CreateMap<DefaultFavoriteAddressAdded, DefaultAddressDetails>();
-
-            AutoMapper.Mapper.CreateMap<DefaultFavoriteAddressUpdated, DefaultAddressDetails>();
+            AutoMapper.Mapper.CreateMap<Address, DefaultAddressDetails>();
 
             AutoMapper.Mapper.CreateMap<PopularAddressAdded, PopularAddressDetails>();
             AutoMapper.Mapper.CreateMap<PopularAddressUpdated, PopularAddressDetails>();

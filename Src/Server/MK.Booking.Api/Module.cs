@@ -48,11 +48,9 @@ namespace apcurium.MK.Booking.Api
 
             AutoMapper.Mapper.CreateMap<SaveAddress, Commands.UpdateFavoriteAddress>();
 
-            AutoMapper.Mapper.CreateMap<DefaultFavoriteAddress, Commands.AddDefaultFavoriteAddress>()
-               .ForMember(x => x.AddressId, opt => opt.ResolveUsing(x => x.Id == Guid.Empty ? Guid.NewGuid() : x.Id));
+            AutoMapper.Mapper.CreateMap<DefaultFavoriteAddress, Commands.AddDefaultFavoriteAddress>();
 
-            AutoMapper.Mapper.CreateMap<DefaultFavoriteAddress, Commands.UpdateDefaultFavoriteAddress>()
-                .ForMember(x => x.AddressId, opt => opt.MapFrom(x => x.Id));
+            AutoMapper.Mapper.CreateMap<DefaultFavoriteAddress, Commands.UpdateDefaultFavoriteAddress>();
 
             AutoMapper.Mapper.CreateMap<AccountDetail, CurrentAccountResponse>();
             AutoMapper.Mapper.CreateMap<BookingSettingsDetails, BookingSettings>();

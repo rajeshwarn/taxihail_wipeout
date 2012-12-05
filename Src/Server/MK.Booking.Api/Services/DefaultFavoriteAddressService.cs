@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
 using Infrastructure.Messaging;
-using ServiceStack.Common.Web;
 using ServiceStack.FluentValidation;
 using ServiceStack.ServiceInterface;
-using ServiceStack.ServiceInterface.Validation;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.ReadModel.Query;
 
@@ -35,13 +29,11 @@ namespace apcurium.MK.Booking.Api.Services
             var command = new Commands.AddDefaultFavoriteAddress();
             
             AutoMapper.Mapper.Map(request, command);
+            command.Address.Id = request.Id;
 
             _commandBus.Send(command);
 
-            return new
-                       {
-                           Id = command.AddressId
-                       };
+            return new { command.Address.Id };
         }
 
         public override object OnDelete(DefaultFavoriteAddress request)
@@ -62,6 +54,7 @@ namespace apcurium.MK.Booking.Api.Services
             var command = new Commands.UpdateDefaultFavoriteAddress();
 
             AutoMapper.Mapper.Map(request, command);
+            command.Address.Id = request.Id;
 
             _commandBus.Send(command);
 

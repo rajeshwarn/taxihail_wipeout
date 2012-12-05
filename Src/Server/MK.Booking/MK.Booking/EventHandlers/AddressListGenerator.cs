@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using AutoMapper;
 using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
@@ -115,17 +116,9 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                context.Save(new DefaultAddressDetails
-                {
-                    Id = @event.AddressId,
-                    FriendlyName = @event.FriendlyName,
-                    Apartment = @event.Apartment,
-                    FullAddress = @event.FullAddress,
-                    RingCode = @event.RingCode,
-                    BuildingName = @event.BuildingName,
-                    Latitude = @event.Latitude,
-                    Longitude = @event.Longitude,
-                });
+                var address = new DefaultAddressDetails();
+                AutoMapper.Mapper.Map(@event.Address, address);
+                context.Save(address);
             }
         }
 
@@ -146,10 +139,10 @@ namespace apcurium.MK.Booking.BackOffice.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                var address = context.Find<DefaultAddressDetails>(@event.AddressId);
+                var address = context.Find<DefaultAddressDetails>(@event.Address.Id);
                 if (address != null)
                 {
-                    AutoMapper.Mapper.Map(@event, address);
+                    AutoMapper.Mapper.Map(@event.Address, address);
                     context.SaveChanges();
                 }
             }
