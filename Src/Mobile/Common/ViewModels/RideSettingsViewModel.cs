@@ -124,7 +124,8 @@ namespace apcurium.MK.Booking.Mobile
 
         public IMvxCommand SetVehiculeType {
             get {
-                return new MvxRelayCommand<int>(id=>{
+                return GetCommand<int>(id =>
+                {
 
                     VehicleTypeId = id;
 
@@ -137,14 +138,15 @@ namespace apcurium.MK.Booking.Mobile
         {
             get
             {
-                return new MvxRelayCommand(() => RequestNavigate<UpdatePasswordViewModel>());
+                return GetCommand(() => RequestNavigate<UpdatePasswordViewModel>());
             }
         }
         
         public IMvxCommand SetChargeType
         {
             get{
-                return new MvxRelayCommand<int>(id=>{
+                return GetCommand<int>(id =>
+                {
 
                     ChargeTypeId = id;
 
@@ -155,7 +157,8 @@ namespace apcurium.MK.Booking.Mobile
         public IMvxCommand SetCompany
         {
             get{
-                return new MvxRelayCommand<int>(id=>{
+                return GetCommand<int>(id =>
+                {
 
                     _bookingSettings.ProviderId = id;
 
@@ -167,7 +170,7 @@ namespace apcurium.MK.Booking.Mobile
         {
             get
             {
-                return new MvxRelayCommand(() => 
+                return GetCommand(() => 
                                            {
 					if(ValidateRideSettings())
 					{

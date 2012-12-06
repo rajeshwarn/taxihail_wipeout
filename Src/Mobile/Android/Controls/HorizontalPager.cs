@@ -124,9 +124,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 
             // Calculate the density-dependent snap velocity in pixels
-            DisplayMetrics displayMetrics = new DisplayMetrics();
-            ((IWindowManager) Context.GetSystemService(Context.WindowService)).DefaultDisplay.GetMetrics(displayMetrics);
-            mDensityAdjustedSnapVelocity = (int) (displayMetrics.Density*SNAP_VELOCITY_DIP_PER_SECOND);
+           // DisplayMetrics displayMetrics = new DisplayMetrics();
+          //  ((IWindowManager) Context.GetSystemService(Context.WindowService)).DefaultDisplay.GetMetrics(displayMetrics);
+          //  mDensityAdjustedSnapVelocity = (int) (displayMetrics.Density*SNAP_VELOCITY_DIP_PER_SECOND);
 
 
             ViewConfiguration configuration = ViewConfiguration.Get(Context);

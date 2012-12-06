@@ -55,9 +55,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public MvxRelayCommand SignOut {
+        public IMvxCommand SignOut
+        {
             get {
-                return new MvxRelayCommand (() =>
+                return GetCommand(() =>
                 {
                     MenuIsOpen = false;
                     _accountService.SignOut ();         
@@ -66,9 +67,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public MvxRelayCommand NavigateToOrderHistory {
+        public IMvxCommand NavigateToOrderHistory {
             get {
-                return new MvxRelayCommand (() =>
+                return GetCommand(() =>
                 {
                     MenuIsOpen = false;
                     RequestNavigate<HistoryViewModel> ();
@@ -76,9 +77,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public MvxRelayCommand NavigateToMyLocations {
+        public IMvxCommand NavigateToMyLocations
+        {
             get {
-                return new MvxRelayCommand (() =>
+                return GetCommand(() =>
                 {
                     MenuIsOpen = false;
                     RequestNavigate<MyLocationsViewModel> ();
@@ -102,7 +104,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public IMvxCommand NavigateToUpdateProfile {
             get {
-                return new MvxRelayCommand (() => {
+                return GetCommand(() =>
+                {
                     MenuIsOpen = false;
                     RequestSubNavigate<RideSettingsViewModel, BookingSettings> (new Params{
                         { "bookingSettings", _accountService.CurrentAccount.Settings.ToJson()  }
@@ -117,13 +120,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public IMvxCommand NavigateToAboutUs {
             get {
-                return new MvxRelayCommand (() => RequestNavigate<AboutUsViewModel> ());
+                return GetCommand(() => RequestNavigate<AboutUsViewModel>());
             }
         }
 
         public IMvxCommand NavigateToTutorial {
             get {
-                return new MvxRelayCommand (() =>
+                return GetCommand(() =>
                 {
                     MenuIsOpen = false;
                     MessageService.ShowDialogActivity (typeof(TutorialViewModel));
@@ -134,7 +137,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public IMvxCommand Call {
             get {
-                return new MvxRelayCommand (() => {
+                return GetCommand(() =>
+                {
                     MenuIsOpen = false;
                     Action call = () => {
                         PhoneService.Call (Settings.PhoneNumber (_accountService.CurrentAccount.Settings.ProviderId.Value)); };
@@ -149,7 +153,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public IMvxCommand ReportProblem {
             get {
-                return new MvxRelayCommand (() => {
+                return GetCommand(() =>
+                {
                     MenuIsOpen = false;
                     PhoneService.SendFeedbackErrorLog (Settings.ErrorLog, Settings.SupportEmail, Resources.GetString ("TechSupportEmailTitle"));        
                 });

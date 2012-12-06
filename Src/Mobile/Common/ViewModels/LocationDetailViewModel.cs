@@ -112,7 +112,8 @@ namespace apcurium.MK.Booking.Mobile
 
         public IMvxCommand ValidateAddress {
             get {
-                return new MvxRelayCommand(()=> {
+                return GetCommand(() =>
+                {
                     MessageService.ShowProgress(true);
                     var task = Task.Factory.StartNew(()=>{
 						return this.GetService<IGeolocService> ().ValidateAddress (_address.FullAddress);
@@ -149,7 +150,8 @@ namespace apcurium.MK.Booking.Mobile
         public IMvxCommand SaveAddress {
             get {
 
-                return new MvxRelayCommand(()=> {
+                return GetCommand(() =>
+                {
                 
                     if (!ValidateFields()) return;
             
@@ -183,7 +185,8 @@ namespace apcurium.MK.Booking.Mobile
 
         public IMvxCommand DeleteAddress {
             get {
-                return new MvxRelayCommand (() => {
+                return GetCommand(() =>
+                {
 
                     MessageService.ShowProgress (true);
                 
@@ -208,7 +211,9 @@ namespace apcurium.MK.Booking.Mobile
 
 		public IMvxCommand RebookOrder
 		{
-			get { return new MvxRelayCommand(()=>
+            get
+            {
+                return GetCommand(() =>
 				                                 {
                  var order = new Order();
                  order.PickupAddress = _address;

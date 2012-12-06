@@ -143,7 +143,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public IMvxCommand NavigateToEditBookingSettings {
 			get {
-				return new MvxRelayCommand(()=>{
+                return GetCommand(() =>
+                {
 					RequestSubNavigate<RideSettingsViewModel, BookingSettings>(new Dictionary<string, string>{
 						{ "bookingSettings", Order.Settings.ToJson () }
 					}, result=>{
@@ -161,7 +162,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public IMvxCommand NavigateToRefineAddress
 		{
 			get{
-				return new MvxRelayCommand(() => {
+                return GetCommand(() =>
+                {
 
 					RequestSubNavigate<RefineAddressViewModel, RefineAddressViewModel>(new Dictionary<string, string>() {
 						{"apt", Order.PickupAddress.Apartment},
@@ -189,7 +191,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get
             {
 
-                return new MvxRelayCommand(() => 
+                return GetCommand(() => 
                     {
                         Close();
                         MessengerHub.Publish(new OrderConfirmed(this, Order, false ));
@@ -201,7 +203,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return new MvxRelayCommand(() => 
+                return GetCommand(() => 
                                            {
                     Close();
                     MessengerHub.Publish(new OrderConfirmed(this, Order, true ));

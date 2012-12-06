@@ -76,19 +76,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		public MvxRelayCommand SignInCommand
+		public IMvxCommand SignInCommand
 		{
 			get
 			{
-				return new MvxRelayCommand(() => {
-					try
-					{
-                        TinyIoCContainer.Current.Resolve<IAccountService>().ClearCache();
-						ThreadPool.QueueUserWorkItem( SignIn );  
-					}
-					finally
-					{
-					}
+				return GetCommand(() => {
+                    TinyIoCContainer.Current.Resolve<IAccountService>().ClearCache();
+					ThreadPool.QueueUserWorkItem( SignIn );  
 				});
 			}
 		}
@@ -114,11 +108,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-        public MvxRelayCommand ResetPassword
+        public IMvxCommand ResetPassword
         {
             get
             {
-                return new MvxRelayCommand(() => 
+                return GetCommand(() => 
                 { 
                     RequestSubNavigate<ResetPasswordViewModel, string>(null, email => {
                         if(email.HasValue())
@@ -134,7 +128,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return new MvxRelayCommand(() => DoSignUp() );
+                return GetCommand(() => DoSignUp() );
             }
         }
 
@@ -176,10 +170,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public MvxRelayCommand LoginFacebook
+        public IMvxCommand LoginFacebook
         {
             get{
-                return new MvxRelayCommand(() => { 
+                return GetCommand(() => { 
                     if (_facebookService.IsConnected)
                     {
                         CheckFacebookAccount();
@@ -193,10 +187,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public MvxRelayCommand LoginTwitter
+        public IMvxCommand LoginTwitter
         {
             get{
-                return new MvxRelayCommand(() => { 
+                return GetCommand(() =>
+                { 
                     if (_twitterService.IsConnected)
                     {
                         CheckTwitterAccount();

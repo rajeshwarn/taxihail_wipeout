@@ -19,9 +19,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.SearchAddress
         protected override IEnumerable<AddressViewModel> SearchAddresses ()
 		{
 			var position = TinyIoCContainer.Current.Resolve<ILocationService> ().LastKnownPosition;
-			if (position == null)  return Enumerable.Empty<AddressViewModel>();
 
-            var addresses = _geolocService.SearchAddress(Criteria, position.Latitude, position.Longitude);
+            var addresses = new apcurium.MK.Common.Entity.Address[0];
+
+            if (position == null)
+            {
+                addresses = _geolocService.SearchAddress(Criteria, 0, 0);
+                
+            }
+            else
+            {
+                addresses = _geolocService.SearchAddress(Criteria, position.Latitude, position.Longitude);
+            }
             return addresses.Select(a => new AddressViewModel() { Address = a, ShowPlusSign = false, ShowRightArrow = false, IsFirst = a.Equals(addresses.First()), IsLast = a.Equals(addresses.Last()) }).ToList();
         }
     }

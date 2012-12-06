@@ -77,7 +77,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public IMvxCommand SearchCommand {
             get {
-                return new MvxRelayCommand<Address> (coordinate =>
+                return GetCommand<Address>(coordinate =>
                 {
                     CancelCurrentLocationCommand.Execute ();
 
@@ -126,7 +126,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public IMvxCommand PickAddress {
             get {
-                return new MvxRelayCommand (() =>
+                return GetCommand(() =>
                 {
                     CancelCurrentLocationCommand.Execute ();
                     if(Settings.StreetNumberScreenEnabled && _isPickup)
@@ -156,7 +156,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public IMvxCommand CancelCurrentLocationCommand {
             get {
-                return new MvxRelayCommand (() =>
+                return GetCommand(() =>
                 {
                     IsExecuting = false;
                     if ((_cancellationToken != null) && (_cancellationToken.Token.CanBeCanceled)) {
@@ -215,13 +215,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public IMvxCommand ClearPositionCommand {
             get {
 
-                return new MvxRelayCommand (ClearAddress);
+                return GetCommand(ClearAddress);
             }
         }
 
         public IMvxCommand RequestCurrentLocationCommand {
             get {
-                return new MvxRelayCommand (() =>
+                return GetCommand(() =>
                 {
 
                     CancelCurrentLocationCommand.Execute ();

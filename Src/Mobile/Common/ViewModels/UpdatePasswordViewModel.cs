@@ -69,8 +69,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                
-                return new MvxRelayCommand(() => {
+
+                return GetCommand(() =>
+                {
 					if (!CanUpdatePassword)
 					{
                         var title = Resources.GetString("View_UpdatePassword");
