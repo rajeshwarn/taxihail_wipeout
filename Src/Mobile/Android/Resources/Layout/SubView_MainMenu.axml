@@ -32,7 +32,6 @@
                     android:layout_width="fill_parent"
                     android:layout_height="40dip"
                     android:text="@string/View_Book_Menu_MyLocations"
-                    android:drawableRight="@drawable/right_arrow"
                     android:paddingRight="10dip"
                     android:paddingLeft="10dip"
                     android:gravity="left|center_vertical"
@@ -44,7 +43,6 @@
                     android:layout_width="fill_parent"
                     android:layout_height="40dip"
                     android:text="@string/View_Book_Menu_MyOrders"
-                    android:drawableRight="@drawable/right_arrow"
                     android:paddingRight="10dip"
                     android:paddingLeft="10dip"
                     android:gravity="left|center_vertical"
@@ -57,7 +55,6 @@
                     android:layout_width="fill_parent"
                     android:layout_height="40dip"
                     android:text="@string/View_Book_Menu_UpdateMyProfile"
-                    android:drawableRight="@drawable/right_arrow"
                     android:paddingRight="10dip"
                     android:paddingLeft="10dip"
                     android:gravity="left|center_vertical" />
@@ -69,7 +66,6 @@
                     android:layout_width="fill_parent"
                     android:layout_height="40dip"
                     android:text="@string/View_Book_Menu_CallDispatch"
-                    android:drawableRight="@drawable/right_arrow"
                     android:paddingRight="10dip"
                     android:paddingLeft="10dip"
                     android:gravity="left|center_vertical" />
@@ -81,7 +77,6 @@
                     android:layout_width="fill_parent"
                     android:layout_height="40dip"
                     android:text="@string/View_Book_Menu_Tutorial"
-                    android:drawableRight="@drawable/right_arrow"
                     android:paddingRight="10dip"
                     android:paddingLeft="10dip"
                     android:gravity="left|center_vertical" />
@@ -93,7 +88,6 @@
                     android:layout_width="fill_parent"
                     android:layout_height="40dip"
                     android:text="@string/View_Book_Menu_AboutUs"
-                    android:drawableRight="@drawable/right_arrow"
                     android:paddingRight="10dip"
                     android:paddingLeft="10dip"
                     android:gravity="left|center_vertical" />
@@ -105,7 +99,6 @@
                     android:layout_width="fill_parent"
                     android:layout_height="40dip"
                     android:text="@string/View_Book_Menu_ReportProblem"
-                    android:drawableRight="@drawable/right_arrow"
                     android:paddingRight="10dip"
                     android:paddingLeft="10dip"
                     android:gravity="left|center_vertical" />
@@ -116,7 +109,6 @@
                     android:layout_width="fill_parent"
                     android:layout_height="40dip"
                     android:text="@string/View_Book_Menu_SignOut"
-                    android:drawableRight="@drawable/right_arrow"
                     android:paddingRight="10dip"
                     android:paddingLeft="10dip"
                     android:gravity="left|center_vertical"

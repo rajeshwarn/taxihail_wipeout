@@ -29,7 +29,8 @@
             android:layout_height="wrap_content"
             local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Model.Street&apos;}}"
             style="@style/FormLabelText" />
-        <Button
+        <apcurium.mk.booking.mobile.client.controls.StyledButton
+            local:ButtonStyle="Green"
             android:id="@+id/SaveSettingsButton"
             style="@style/ButtonText"
             android:background="@drawable/green_button"

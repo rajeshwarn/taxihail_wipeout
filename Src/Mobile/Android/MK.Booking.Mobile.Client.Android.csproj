@@ -52,7 +52,6 @@
     <AndroidSigningKeyAlias>MKTaxiHail</AndroidSigningKeyAlias>
     <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
-    <AndroidSupportedAbis>armeabi-v7a%3bx86</AndroidSupportedAbis>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
@@ -225,7 +224,6 @@
     <AndroidResource Include="Resources\Drawable\green_button_left.xml" />
     <AndroidResource Include="Resources\Drawable\green_button_right.xml" />
     <AndroidResource Include="Resources\Drawable\address_selector_button.xml" />
-    <AndroidResource Include="Resources\Drawable\button_no_background.xml" />
     <AndroidResource Include="Resources\Layout\View_UpdatePassword.axml" />
     <Compile Include="Activities\Account\UpdatePasswordActivity.cs" />
     <AndroidResource Include="Resources\Layout\View_Tutorial.axml">
@@ -240,6 +238,9 @@
     <AndroidResource Include="Resources\Layout\View_BookStreetNumber.axml" />
     <AndroidResource Include="Resources\Drawable\closeButton.png" />
     <Compile Include="Controls\UnderlineTextView.cs" />
+    <Compile Include="Controls\StyledButton.cs" />
+    <AndroidResource Include="Resources\Values\StyledButtonAttributes.xml" />
+    <AndroidResource Include="Resources\Drawable\button_no_background.xml" />
     <AndroidResource Include="Resources\drawable-hdpi\closeButton.png" />
   </ItemGroup>
   <ItemGroup>

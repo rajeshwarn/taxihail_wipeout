@@ -9,7 +9,8 @@
   <string name="AppNeedUpdateTitle">Update available</string>
   <string name="LoginForgotPasswordButton">Forgot Password?</string>
   <string name="CreateAccountLanguage">Language</string>
-  <string name="NbPassenger"> ({0} passenger)</string>
+  <string name="NbPassenger">
+  </string>
   <string name="ResetPasswordSucessTitle">Password resetted</string>
   <string name="ServiceErrorCreateOrder_NoProvider">Order cannot be created, no provider specified. Please try again or call us.</string>
   <string name="ServiceError_ErrorCreatingOrderMessage">Please contact {0} at {1} for further assistance.</string>
@@ -24,14 +25,15 @@
   <string name="HistoryDetailRebookButton">Rebook trip</string>
   <string name="DontHaveAnAccountLabel">Don\'t have an account?</string>
   <string name="HistoryInfo">Displaying trips from the last month</string>
-  <string name="ConfirmAptRingCodeLabel">Apartment / Entry code</string>
-  <string name="View_Book_Menu_MyOrders">My Orders</string>
+  <string name="ConfirmAptRingCodeLabel">Flat / Entry Code</string>
+  <string name="View_Book_Menu_MyOrders">History And Current Bookings</string>
   <string name="PickupMapTitle">Pickup location</string>
-  <string name="NbPassengers"> ({0} passengers)</string>
+  <string name="NbPassengers">
+  </string>
   <string name="BookPickupLabel">Confirm your pickup location</string>
   <string name="StatusViewTitle">Confirmed</string>
   <string name="CreateAccoutLanguageLabel">Language:</string>
-  <string name="AptNumber">Apt. No.</string>
+  <string name="AptNumber">Flat No.</string>
   <string name="View_SignUp_Label">Create Your Profile</string>
   <string name="InvalidBookinInfo">To book a ride, you need to enter a valid pickup address.</string>
   <string name="BookDateLabel">Pick Me Up Later</string>
@@ -154,7 +156,7 @@
   <string name="NewPasswordConfirmationLabel">Confirmation</string>
   <string name="SaveButton">Save</string>
   <string name="HistoryDetailRequestedLabel">Requested:</string>
-  <string name="LocationDetailAptPlaceholder">Apt/Suite number</string>
+  <string name="LocationDetailAptPlaceholder">Flat/Door number</string>
   <string name="DateTimePickerPickInvalidDateTitle">Invalid date / time</string>
   <string name="NoHistoryLabel">No booking history</string>
   <string name="LocationHistoryTitle">Locations history</string>
@@ -243,7 +245,7 @@
   <string name="View_BookSettingMenu">Settings</string>
   <string name="BookPickupLocationEmptyPlaceholder">Tap to choose pickup</string>
   <string name="WarningEstimate">Please note that the price provided by this App is an estimate only. The fare amount as calculated by the meter, along with any applicable minimums and extras will be charged at the end of the trip.</string>
-  <string name="ConfirmNoApt">No apt.</string>
+  <string name="ConfirmNoApt">No flat</string>
   <string name="LocationDetailInstructionLabel">Save as a favorite location</string>
   <string name="View_HistoryList">Orders</string>
   <string name="SaveAddressEmptyFieldMessage">The data is invalid, friendly name and address fields are required.</string>
@@ -278,7 +280,7 @@
   <string name="PickupOffButtonImageName">Assets/Button/btnPickup_off_en.png</string>
   <string name="View_RatePage">Rate your trip</string>
   <string name="RideSettingsName">Name</string>
-  <string name="AptNumberTextPlaceholder">Apt/Suite Number</string>
+  <string name="AptNumberTextPlaceholder">Flat/Door Number</string>
   <string name="View_BookingStatus_ThankYouTitle">Thank you</string>
   <string name="CreateAccoutMobileLabel">Mobile:</string>
   <string name="NoButton">No</string>
@@ -296,7 +298,7 @@
   <string name="UpdateBookingSettingsEmptyField">The data is invalid, all the fields are required.</string>
   <string name="RideSettingsCannotLoadListMessage">The server cannot be contacted, try again later.</string>
   <string name="ReturnBookingScreen">Return to main screen</string>
-  <string name="View_SignUp">Create Your Profile</string>
+  <string name="View_SignUp">Create Your Account</string>
   <string name="Now">Now</string>
   <string name="ResetPasswordReset">Reset</string>
   <string name="ResetPasswordInvalidDataMessage">The email is invalid.</string>
@@ -305,7 +307,7 @@
   <string name="searchHint">Search</string>
   <string name="CreateAccountErrorTitle">Error</string>
   <string name="CreateAccountLanguageFrench">French</string>
-  <string name="BookItButton">TaxiHail rocks!</string>
+  <string name="BookItButton">Pick Me Up Now</string>
   <string name="BookItLaterButton">Later</string>
   <string name="ConfirmDestinationLabel">Destination</string>
   <string name="NearbyPlacesTitle">Nearby places</string>
@@ -313,7 +315,7 @@
   </string>
   <string name="View_PasswordRecovery">Reset Password</string>
   <string name="InvalidLocalContactTitle">Invalid contact</string>
-  <string name="View_Book_Menu_Tutorial">Tutorial</string>
+  <string name="View_Book_Menu_Tutorial">View Tutorial</string>
   <string name="ServiceErrorUpdatePassword_NotSame">The current password is not valid.</string>
   <string name="ChangePasswordConfirmmation">You password has been updated, please sign in.</string>
   <string name="View_RideSettings_BtUpdateMyPassword">Update My Password</string>
