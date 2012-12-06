@@ -41,7 +41,7 @@ namespace apcurium.MK.Booking.Maps.Impl
             });
 
             Task t2 = null;
-            if (!isNumeric)
+            if  (!isNumeric)
             {
                 t2 = Task.Factory.StartNew(() =>
                 {
