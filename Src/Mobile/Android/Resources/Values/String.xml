@@ -247,7 +247,7 @@
   <string name="WarningEstimate">Please note that the price provided by this App is an estimate only. The fare amount as calculated by the meter, along with any applicable minimums and extras will be charged at the end of the trip.</string>
   <string name="ConfirmNoApt">No flat</string>
   <string name="LocationDetailInstructionLabel">Save as a favorite location</string>
-  <string name="View_HistoryList">Orders</string>
+  <string name="View_HistoryList">History</string>
   <string name="SaveAddressEmptyFieldMessage">The data is invalid, friendly name and address fields are required.</string>
   <string name="TimeNow">As soon as possible</string>
   <string name="InvalidBookinInfoTitle">Invalid booking info</string>
@@ -342,5 +342,5 @@
   <string name="StreetNumberSearchBt">Search</string>
   <string name="StreetNumberTitle">Address\'s Details</string>
   <string name="StreetNumberLabel">Refine your address</string>
-  <string name="StreetNumberDoneBt">use this address</string>
+  <string name="StreetNumberDoneBt">Use This Address</string>
 </resources>

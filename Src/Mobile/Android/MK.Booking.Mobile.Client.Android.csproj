@@ -217,9 +217,6 @@
     <AndroidResource Include="Resources\drawable-hdpi\hail_selected.png" />
     <AndroidResource Include="Resources\Drawable\hail_state.xml" />
     <AndroidResource Include="Resources\Drawable\flag_state.xml" />
-    <AndroidResource Include="Resources\drawable-hdpi\pin_cab.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\pin_destination.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\pin_hail.png" />
     <AndroidResource Include="Resources\Layout\test.axml" />
     <AndroidResource Include="Resources\Drawable\green_button_left.xml" />
     <AndroidResource Include="Resources\Drawable\green_button_right.xml" />
@@ -451,7 +448,9 @@
     <AndroidResource Include="Resources\Drawable\Logo2.png" />
     <AndroidResource Include="Resources\Drawable\Logo.png" />
     <AndroidResource Include="Resources\Drawable\myLocationButton_state.xml" />
-    <AndroidResource Include="Resources\Drawable\bookLaterButton_state.xml" />
+    <AndroidResource Include="Resources\Drawable\bookLaterButton_state.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <AndroidResource Include="Resources\Drawable\drop_shadow.xml" />
     <AndroidResource Include="Resources\Drawable\cell_top_button_state.xml" />
     <AndroidResource Include="Resources\Drawable\cell_middle_button_state.xml" />
@@ -464,8 +463,6 @@
     <AndroidResource Include="Resources\Drawable\number_icon_selected.png" />
     <AndroidResource Include="Resources\Drawable\pin_selected.png" />
     <AndroidResource Include="Resources\Drawable\pin.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\pin.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\pin_selected.png" />
     <AndroidResource Include="Resources\Drawable\cancel.png" />
     <AndroidResource Include="Resources\drawable-hdpi\cancel.png" />
     <AndroidResource Include="Resources\Values\HeaderedLayoutAttributes.xml" />

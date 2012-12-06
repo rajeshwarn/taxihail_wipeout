@@ -76,6 +76,8 @@ namespace DatabaseInitializer
                 if (isUpdate)
                 {
                    settingsInDb = configurationManager.GetSettings();
+                    //version would be updated from information in the Configuraton Manager DB
+                   settingsInDb.Remove("TaxiHail.Version");
                    oldDatabase = creatorDb.RenameDatabase(connStringMaster, companyName);
                 }
 
@@ -102,18 +104,18 @@ namespace DatabaseInitializer
                 //Init data
                 var commandBus = container.Resolve<ICommandBus>();
 
-                   bool companyIsCreated = container.Resolve<IEventsPlayBackService>().CountEvent("Company") >0;
+                bool companyIsCreated = container.Resolve<IEventsPlayBackService>().CountEvent("Company") >0;
 
-                   if (!companyIsCreated)
-                   {
+                if (!companyIsCreated)
+                {
 
-                       // Create Default company
-                       commandBus.Send(new CreateCompany
-                       {
-                           CompanyId = AppConstants.CompanyId,
-                           Id = Guid.NewGuid()
-                       });
-                   }
+                    // Create Default company
+                    commandBus.Send(new CreateCompany
+                    {
+                        CompanyId = AppConstants.CompanyId,
+                        Id = Guid.NewGuid()
+                    });
+                }
                 //Create settings
 
                 var appSettings = new Dictionary<string, string>();
@@ -142,14 +144,14 @@ namespace DatabaseInitializer
                     appSettings[token.Key] = token.Value.ToString();
                 }
 
-                //Save settings so that next calls to referenceDataService has the IBS Url
-                appSettings = AddOrUpdateAppSettings(commandBus, appSettings);
+               //Save settings so that next calls to referenceDataService has the IBS Url
+                AddOrUpdateAppSettings(commandBus, appSettings);
 
                 if (isUpdate)
                 {
                     //migrate events
                     var migrator = container.Resolve<IEventsMigrator>();
-                    migrator.Do();
+                    migrator.Do(appSettings["TaxiHail.Version"]);
 
                     //replay events
                     var replayService = container.Resolve<IEventsPlayBackService>();
@@ -164,7 +166,7 @@ namespace DatabaseInitializer
                 }
                 else
                 {
-
+                    appSettings.Clear();
                     // Create default rate for company
                     CreateDefaultTariff(configurationManager, commandBus);
 
@@ -191,7 +193,8 @@ namespace DatabaseInitializer
                     }
 
                     //Save settings so that registerAccountCommand succeed
-                    appSettings = AddOrUpdateAppSettings(commandBus, appSettings);
+                    AddOrUpdateAppSettings(commandBus, appSettings);
+                    appSettings.Clear();
 
                     //Register normal account
                    var registerAccountCommand = new RegisterAccount
@@ -297,18 +300,17 @@ namespace DatabaseInitializer
             return 0;
         }
 
-        private static Dictionary<string, string> AddOrUpdateAppSettings(ICommandBus commandBus, Dictionary<string, string> appSettings)
-       { 
+        private static  void AddOrUpdateAppSettings(ICommandBus commandBus, Dictionary<string, string> appSettings)
+        { 
             commandBus.Send(new AddOrUpdateAppSettings
-                                {
-                                    AppSettings = appSettings,
-                                    CompanyId = AppConstants.CompanyId
-                                });
+                            {
+                                AppSettings = appSettings,
+                                CompanyId = AppConstants.CompanyId
+                            });
 
-            return   new Dictionary<string, string>();
-            }
+        }
             
-            private static void CreateDefaultTariff(IConfigurationManager configurationManager, ICommandBus commandBus)
+        private static void CreateDefaultTariff(IConfigurationManager configurationManager, ICommandBus commandBus)
         {
 
             

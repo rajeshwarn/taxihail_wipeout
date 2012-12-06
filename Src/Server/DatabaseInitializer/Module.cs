@@ -30,7 +30,7 @@ namespace DatabaseInitializer
 
             RegisterEventHandlers(container);
             RegisterCommandHandlers(container);
-            container.RegisterInstance<IEventsMigrator>(new EventsMigrator(container.Resolve<IAddresses>(), () => container.Resolve<EventStoreDbContext>(), container.Resolve<ITextSerializer>()));
+            container.RegisterInstance<IEventsMigrator>(new EventsMigrator(container.Resolve<IAddresses>(), () => container.Resolve<EventStoreDbContext>()));
         }
 
         private void RegisterInfrastructure(IUnityContainer container, ConnectionStringSettings connectionString)
