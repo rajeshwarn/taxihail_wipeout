@@ -21,10 +21,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 		MonoTouch.UIKit.UILabel lblStreetName { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.NavigateTextField txtNavigateSearch { get; set; }
+		MonoTouch.UIKit.UILabel lblRefineAddress { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblRefineAddress { get; set; }
+		MonoTouch.UIKit.UIButton btnSearch { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
@@ -43,14 +43,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 				lblStreetName = null;
 			}
 
-			if (txtNavigateSearch != null) {
-				txtNavigateSearch.Dispose ();
-				txtNavigateSearch = null;
-			}
-
 			if (lblRefineAddress != null) {
 				lblRefineAddress.Dispose ();
 				lblRefineAddress = null;
+			}
+
+			if (btnSearch != null) {
+				btnSearch.Dispose ();
+				btnSearch = null;
 			}
 		}
 	}

@@ -40,8 +40,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             lblRefineAddress.Text = Resources.GetValue("StreetNumberLabel");
-            txtNavigateSearch.Text = Resources.GetValue("StreetNumberSearchBt");
-            txtNavigateSearch.NavigateCommand = ViewModel.NavigateToSearch;
+            AppButtons.FormatStandardButton((GradientButton)btnSearch, Resources.GetValue("StreetNumberSearchBt"), AppStyle.ButtonColor.Grey, "Assets/Search/SearchIcon.png", "Assets/Cells/rightArrow.png");
 
             var button = new MonoTouch.UIKit.UIBarButtonItem(Resources.DoneButton, UIBarButtonItemStyle.Plain, delegate {
                 ViewModel.SaveCommand.Execute();
@@ -50,7 +49,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             this.AddBindings(new Dictionary<object, string>() {
                 { txtStreetNumber, "{'Text': {'Path': 'StreetNumberOrBuildingName'}}"},
-                { lblStreetName, "{'Text': {'Path': 'Model.Street'}}"}
+                { lblStreetName, "{'Text': {'Path': 'Model.Street'}}"},
+                { btnSearch, "{'TouchUpInside': {'Path': 'NavigateToSearch'}}" }
             });
             
             ViewModel.OnViewLoaded();
