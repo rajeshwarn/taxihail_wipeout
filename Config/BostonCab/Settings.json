@@ -1,5 +1,10 @@
 {
    "ApplicationName" : "Boston Cab",
+   "AndroidSigningKeyAlias" : "MKBostonCab",
+   "AndroidSigningKeyPassStorePass" : "mkBostonCab0001.",
+   "AppName" : "Boston Cab",
+   "GoogleMapKey" : "0lx0CFUZu0f0ou_cOHu8JptxZpp71VK94gSoxEQ",
+   "Package" : "com.apcurium.MK.BostonCab",
    "CanChangeServiceUrl" : "false",
    "DefaultPhoneNumber" : "16175363200",
    "DefaultPhoneNumberDisplay" : "617-536-3200",
