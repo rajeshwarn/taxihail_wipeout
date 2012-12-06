@@ -183,8 +183,10 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
         public void ShowToast(string message, ToastDuration duration )
         {
-            Toast toast = Toast.MakeText(Context, message , duration == ToastDuration.Short ?  ToastLength.Short : ToastLength.Long );
-            toast.Show();
+			TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher.RequestMainThreadAction(() =>{
+	            Toast toast = Toast.MakeText(Context, message , duration == ToastDuration.Short ?  ToastLength.Short : ToastLength.Long );
+	            toast.Show();
+			});
         }
 
 		public void ShowDialog<T> (string title, IEnumerable<T> items, Func<T, string> displayNameSelector, Action<T> onResult)
