@@ -36,7 +36,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (tutorialWasDisplayed.IsNullOrEmpty ()) {
                     this.GetService<ICacheService> ().Set<string> ("TutorialWasDisplayed", true.ToString ());
                     NavigateToTutorial.Execute ();
-                
                 }
             });
 
