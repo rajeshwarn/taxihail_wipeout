@@ -65,7 +65,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
         protected override void OnViewModelSet()
         {            
 
-            //FindViewById<TextView>(Resource.Id.ForgotPasswordButton).PaintFlags = (FindViewById<TextView>(Resource.Id.ForgotPasswordButton).PaintFlags | Android.Graphics.PaintFlags.UnderlineText);
 
             SetContentView(Resource.Layout.View_Login);            
 
@@ -74,7 +73,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
             if (!TinyIoCContainer.Current.Resolve<IAppSettings>().FacebookEnabled)
             {
-				FindViewById<Button>(Resource.Id.FacebookButton).Visibility = ViewStates.Gone;
+				FindViewById<Button>(Resource.Id.FacebookButton).Visibility = ViewStates.Invisible;
             }
 
             if (TinyIoCContainer.Current.Resolve<IAppSettings>().CanChangeServiceUrl)
@@ -86,12 +85,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             }
             else
             {
-                FindViewById<Button>(Resource.Id.ServerButton).Visibility = ViewStates.Gone;
+                FindViewById<Button>(Resource.Id.ServerButton).Visibility = ViewStates.Invisible;
             }
 
             if (!TinyIoCContainer.Current.Resolve<IAppSettings>().TwitterEnabled)
             {
-				FindViewById<Button>(Resource.Id.TwitterButton).Visibility = ViewStates.Gone;
+                FindViewById<Button>(Resource.Id.TwitterButton).Visibility = ViewStates.Invisible;
             }           
 
 #if DEBUG

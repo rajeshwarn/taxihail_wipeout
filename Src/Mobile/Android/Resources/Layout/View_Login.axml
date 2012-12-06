@@ -79,7 +79,8 @@
                     android:text="@string/LoginForgotPasswordButton"
                     android:layout_alignParentLeft="true"
                     android:layout_gravity="center_vertical|left" />
-                <Button
+                <apcurium.mk.booking.mobile.client.controls.StyledButton
+                    local:ButtonStyle="Black"
                     android:id="@+id/SignInButton"
                     style="@style/ButtonText"
                     android:layout_weight="1"
@@ -148,7 +149,8 @@
                     android:layout_width="20dip"
                     android:gravity="center"
                     android:visibility="invisible" />
-                <Button
+                <apcurium.mk.booking.mobile.client.controls.StyledButton
+                    local:ButtonStyle="Grey"
                     android:id="@+id/SignUpButton"
                     local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;SignUp&apos;}}"
                     style="@style/ButtonText"

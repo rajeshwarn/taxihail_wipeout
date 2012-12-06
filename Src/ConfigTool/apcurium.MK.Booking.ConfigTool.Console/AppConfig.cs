@@ -45,6 +45,8 @@ namespace apcurium.MK.Booking.ConfigTool
                 new ConfigFile(this){ Source="apcuriumLogo.png", Destination=@"Mobile\iOS\Assets\apcuriumLogo.png" },    
                 new ConfigFile(this){ Source="apcuriumLogo@2x.png", Destination=@"Mobile\iOS\Assets\apcuriumLogo@2x.png" },    
 
+                new ConfigFile(this){ Source="apcuriumLogo@2x.png", Destination=@"Mobile\Android\Resources\Drawable\apcuriumLogo.png" },    
+
                 new ConfigFile(this){ Source="background.png", Destination=@"Mobile\iOS\Assets\background.png" },    
                 new ConfigFile(this){ Source="background@2x.png", Destination=@"Mobile\iOS\Assets\background@2x.png" },    
 
@@ -92,9 +94,7 @@ namespace apcurium.MK.Booking.ConfigTool
                 new ConfigFile(this){ Source="backgroundblue.png", Destination=@"Mobile\Android\Resources\Drawable\backgroundblue.png" },                        
                 new ConfigXML(this){  Destination=@"Mobile\Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest", Attribute="package" , SetterAtt = ( app, att )=> att.Value = Config.Package  },
                 new ConfigXML(this){  Destination=@"Mobile\Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest/application", Attribute="android:label" , SetterAtt = ( app, att )=> att.Value = Config.AppName  },
-                new ConfigXML(this){  Destination=@"Mobile\Android\Resources\Values-fr\Strings.xml", NodeSelector=@"//resources/string[@name=""ApplicationName""]", SetterEle = ( app, ele )=> ele.InnerText = Config.AppName  },
                 new ConfigXML(this){  Destination=@"Mobile\Android\Resources\Values\String.xml", NodeSelector=@"//resources/string[@name=""ApplicationName""]" , SetterEle= ( app, ele )=> ele.InnerText = Config.AppName  },               
-                new ConfigXML(this){  Destination=@"Mobile\Android\Resources\Values-fr\Strings.xml", NodeSelector=@"//resources/string[@name=""GoogleMapKey""]", SetterEle = ( app, ele )=> ele.InnerText = Config.GoogleMapKey  },
                 new ConfigXML(this){  Destination=@"Mobile\Android\Resources\Values\String.xml", NodeSelector=@"//resources/string[@name=""GoogleMapKey""]" , SetterEle= ( app, ele )=> ele.InnerText = Config.GoogleMapKey  },                                                                          
 
                 new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\", Namespace = "xmlns:local", Value= Config.Package },

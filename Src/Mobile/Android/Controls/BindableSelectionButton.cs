@@ -5,6 +5,8 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Cirrious.MvvmCross.Interfaces.Commands;
+using apcurium.MK.Booking.Mobile.Style;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -30,6 +32,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                                       SelectedChangedCommand.Execute(this.Tag);
                                   }
                               };
+
+            if ( StyleManager.Current.ButtonFontSize.HasValue )
+            {
+                TextSize = DrawHelper.GetPixelsFromPt(  StyleManager.Current.ButtonFontSize.Value * 0.3f );
+            }
+
         }
 
         public BindableSelectionButton(Context context) : base(context)
