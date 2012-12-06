@@ -38,7 +38,7 @@
             android:layout_height="40dip"
             android:text="@string/StreetNumberDoneBt"
             local:MvxBind="{&apos;Click&apos;: {&apos;Path&apos;: &apos;SaveCommand&apos;}}" />
-        <apcurium.mk.booking.mobile.client.controls.EditTextNavigate
+        <apcurium.mk.booking.mobile.client.controls.SearchButton
             android:id="@+id/StreetNumberBtSearch"
             android:paddingTop="50dip"
             local:MvxBind="{&apos;NavigateCommand&apos;:{&apos;Path&apos;:&apos;NavigateToSearch&apos;}}"

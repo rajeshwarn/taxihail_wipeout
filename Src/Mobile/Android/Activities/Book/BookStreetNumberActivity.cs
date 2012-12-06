@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		protected override void OnViewModelSet()
 		{
 			SetContentView(Resource.Layout.View_BookStreetNumber);
-			var buttonSearch = FindViewById<EditTextNavigate>(Resource.Id.StreetNumberBtSearch);
+			var buttonSearch = FindViewById<SearchButton>(Resource.Id.StreetNumberBtSearch);
 			buttonSearch.Text = Resources.GetString(Resource.String.StreetNumberSearchBt);
 		}
 	}
