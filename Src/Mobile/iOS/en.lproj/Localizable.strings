@@ -333,7 +333,7 @@
 "CreateAccountCancel"="Cancel";
 "InvalidPhoneErrorMessage"="The mobile number is invalid. It must contain 10 numbers.";
 "StreetNumberSearchBt"="Search";
-"StreetNumberTitle"="Address's Details";
+"StreetNumberTitle"="Address Details";
 "StreetNumberLabel"="Refine your address";
 "RideSettingsPassword"="Password";
 "StreetNumberDoneBt"="Use This Address";
