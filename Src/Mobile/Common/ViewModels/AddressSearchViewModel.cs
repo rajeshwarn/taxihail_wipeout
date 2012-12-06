@@ -83,7 +83,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                                    return;
                                                }
 
-                                               CancelCurrentSearch();
+                                               //CancelCurrentSearch();
 
                                                _searchCancellationToken = new CancellationTokenSource();
 
@@ -99,13 +99,30 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        private void CancelCurrentSearch ()
+       /* private void CancelCurrentSearch ()
         {
             if (_searchCancellationToken != null
                 && _searchCancellationToken.Token.CanBeCanceled) {
                 _searchCancellationToken.Cancel ();
                 _searchCancellationToken.Dispose ();
                 _searchCancellationToken = null;
+            }
+        }*/
+        public IMvxCommand CancelCurrentSearch
+        {
+            get
+            {
+              return GetCommand(() =>
+                    {
+                        
+                            if (_searchCancellationToken != null
+                                && _searchCancellationToken.Token.CanBeCanceled)
+                            {
+                                _searchCancellationToken.Cancel();
+                                _searchCancellationToken.Dispose();
+                                _searchCancellationToken = null;
+                            }
+                    });
             }
         }
 

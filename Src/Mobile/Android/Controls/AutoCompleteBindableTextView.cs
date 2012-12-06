@@ -37,6 +37,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         }
 
         private IDisposable _subscription;
+        private IDisposable _subscriptionTypeStart;
         protected override void OnVisibilityChanged(Android.Views.View changedView, Android.Views.ViewStates visibility)
         {
             base.OnVisibilityChanged(changedView, visibility);
@@ -47,35 +48,50 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 _subscription = null;
             }
 
+            if (_subscriptionTypeStart != null)
+            {
+                _subscriptionTypeStart.Dispose();
+                _subscriptionTypeStart = null;
+            }
+
             if (visibility == Android.Views.ViewStates.Visible)
             {
                 var subsciption = Observable.FromEvent<TextChangedEventArgs>(
                             ev => this.TextChanged += (sender2, e2) => { ev(e2); },
-                            ev => this.TextChanged -= (sender3, e3) => { ev(e3); });
+                            ev => this.TextChanged -= (sender3, e3) => { ev(e3); }).Select(c=>c.Text.ToString());
 
-                _subscription = subsciption.Throttle(TimeSpan.FromMilliseconds(700)).Subscribe(ExecuteCommand);
+                _subscription = subsciption.Throttle(TimeSpan.FromMilliseconds(1700)).Subscribe(ExecuteCommand);
+                _subscriptionTypeStart = subsciption.Subscribe(_ =>
+                                                                   {
+                                                                       if (IsAddressSearching)
+                                                                       {
+                                                                           OnTypeStarted.Execute();
+                                                                       }
+                                                                   });
 
                 if (Text.HasValue())
                 {
                     ExecuteCommand(Text);
                 }
+
+           
             }
         }
 
-        private void ExecuteCommand(string text)
-        {
-            ExecuteCommand(textChangedEvent.Text == null ? null : textChangedEvent.Text.ToString());
-        }
 
         private void ExecuteCommand(string text)
         {
             if ((TextChangedCommand != null) && (TextChangedCommand.CanExecute()))
             {
                 TextChangedCommand.Execute(text);
-            }
-        }
+             }
+         }
 
         public IMvxCommand TextChangedCommand { get; set; }
+
+        public IMvxCommand OnTypeStarted { get; set; }
+
+        public bool IsAddressSearching { get; set; }
 
     }
 }
