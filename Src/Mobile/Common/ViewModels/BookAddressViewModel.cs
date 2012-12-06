@@ -209,6 +209,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 FirePropertyChanged (() => Display);
                 FirePropertyChanged (() => Model);
                 IsExecuting = false;
+                if (AddressChanged != null) {
+                    AddressChanged (true, EventArgs.Empty);
+                }
             });
         }
 

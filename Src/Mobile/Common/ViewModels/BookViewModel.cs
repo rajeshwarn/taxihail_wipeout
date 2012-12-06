@@ -317,7 +317,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public bool CanClearAddress
         {
-            get { return DropoffIsActive && ( Dropoff != null) && (Dropoff.Model != null) && Dropoff.Model.HasValidCoordinate(); }
+            get { 
+                return DropoffIsActive && ( Dropoff != null) && (Dropoff.Model != null) && Dropoff.Model.HasValidCoordinate(); 
+            }
         }
 
         public bool NoAddressActiveSelection
