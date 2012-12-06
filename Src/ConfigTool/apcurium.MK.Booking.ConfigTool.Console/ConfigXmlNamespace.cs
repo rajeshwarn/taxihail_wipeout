@@ -43,6 +43,7 @@ namespace apcurium.MK.Booking.ConfigTool
 
         }
 
+
         public override string ToString()
         {
             return string.Format("[ConfigXmlNamespace: Destination={0}, Namespace={1}, Value={2}]", Destination, Namespace, Value);
