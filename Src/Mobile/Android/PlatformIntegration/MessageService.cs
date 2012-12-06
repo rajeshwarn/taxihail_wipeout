@@ -171,7 +171,8 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 					progress.Show();
 
 				}else{
-					if(progress != null)
+					if(progress != null
+					   && progress.IsShowing)
 					{
 						progress.Dismiss();
 						progressDialogs.Remove(activity.Title);

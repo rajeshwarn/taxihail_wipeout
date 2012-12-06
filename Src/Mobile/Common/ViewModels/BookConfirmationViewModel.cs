@@ -28,15 +28,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		IMvxServiceConsumer<IBookingService>,
 		IMvxServiceConsumer<ICacheService>
     {
+		IBookingService _bookingService;
+
         public BookConfirmationViewModel (string order)
         {
 			var accountService = this.GetService<IAccountService>();
-			var bookingService = this.GetService<IBookingService>();
+			_bookingService = this.GetService<IBookingService>();
             Order = JsonSerializer.DeserializeFromString<CreateOrder>( order );
 			Order.Settings = accountService.CurrentAccount.Settings;
 
 			RideSettings = new RideSettingsModel(Order.Settings, accountService.GetCompaniesList(), accountService.GetVehiclesList(), accountService.GetPaymentsList());
-			FareEstimate = bookingService.GetFareEstimateDisplay(Order, null, "NotAvailable", false);
+			FareEstimate = _bookingService.GetFareEstimateDisplay(Order, null, "NotAvailable", false);
 
 
         }
@@ -193,8 +195,34 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                 return GetCommand(() => 
                     {
-                        Close();
-                        MessengerHub.Publish(new OrderConfirmed(this, Order, false ));
+						Order.Id = Guid.NewGuid ();
+						try {
+						MessageService.ShowProgress (true);
+						var orderInfo = _bookingService.CreateOrder (Order);
+						
+						if (orderInfo.IBSOrderId.HasValue
+						    && orderInfo.IBSOrderId > 0) {
+							var orderCreated = new Order { CreatedDate = DateTime.Now, DropOffAddress = Order.DropOffAddress, IBSOrderId = orderInfo.IBSOrderId, Id = Order.Id, PickupAddress = Order.PickupAddress, Note = Order.Note, PickupDate = Order.PickupDate.HasValue ? Order.PickupDate.Value : DateTime.Now, Settings = Order.Settings };
+							
+							RequestNavigate<BookingStatusViewModel>(new
+							                                        {
+								order = orderCreated.ToJson(),
+								orderStatus = orderInfo.ToJson()
+							});	
+							Close();
+							MessengerHub.Publish(new OrderConfirmed(this, Order, false ));
+						}		
+						
+					} catch (Exception ex) {
+						InvokeOnMainThread (() =>
+						                    {
+							var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
+							string err = string.Format (Resources.GetString ("ServiceError_ErrorCreatingOrderMessage"), settings.ApplicationName, settings.PhoneNumberDisplay (Order.Settings.ProviderId.HasValue ? Order.Settings.ProviderId.Value : 1));
+							MessageService.ShowMessage (Resources.GetString ("ErrorCreatingOrderTitle"), err);
+						});
+					} finally {
+						MessageService.ShowProgress(false);
+					}                       
                     }); 
             }
         }
