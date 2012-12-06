@@ -40,12 +40,9 @@ namespace apcurium.MK.Booking.Mobile.Client
                 };
                 newDvc.View.BackgroundColor  = UIColor.FromRGB (230,230,230);
                 newDvc.TableView.BackgroundColor = UIColor.FromRGB (230,230,230);
-                  
-                //newDvc.TableView.  UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
-//                apcurium.MK.Booking.Mobile.Client.Background.GetBackgroundView (
                 newDvc.TableView.BackgroundView = new UIView{ BackgroundColor =  UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png")) }; 
-                  
-                controller.PresentViewController (newDvc, true, delegate { });
+
+                controller.NavigationController.PushViewController(newDvc, true);
             }
         }
 
@@ -61,7 +58,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 item.Tapped += ()=> {
                     onItemSelected(value);
                     var controller = this.FindViewController();
-                    if(controller != null) controller.DismissViewController(true, delegate {});
+                    if(controller != null) controller.NavigationController.PopViewControllerAnimated(true);
                 };
                 section.Add(item);
                 if (selectedId == value.Id)
@@ -70,11 +67,9 @@ namespace apcurium.MK.Booking.Mobile.Client
                 }
             }
             
-            _rootElement = new CustomRootElement(Resources.RideSettingsVehiculeType, new RadioGroup(selected));
+            _rootElement = new CustomRootElement(title, new RadioGroup(selected));
             _rootElement.Add(section);
         }
-
-
     }
 }
 

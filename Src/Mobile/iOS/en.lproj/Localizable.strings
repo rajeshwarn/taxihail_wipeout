@@ -242,7 +242,7 @@
 "WarningEstimate"="Please note that the price provided by this App is an estimate only. The fare amount as calculated by the meter, along with any applicable minimums and extras will be charged at the end of the trip.";
 "ConfirmNoApt"="No apt.";
 "LocationDetailInstructionLabel"="Save as a favorite location";
-"View_HistoryList"="Orders";
+"View_HistoryList"="History";
 "SaveAddressEmptyFieldMessage"="The data is invalid, friendly name and address fields are required.";
 "TimeNow"="As soon as possible";
 "InvalidBookinInfoTitle"="Invalid booking info";

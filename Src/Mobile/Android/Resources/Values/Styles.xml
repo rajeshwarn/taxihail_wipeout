@@ -7,10 +7,11 @@
   </style>
 
   <style name="LinkText">
-    <item name="android:textColor">#04328c</item>
+    <item name="android:textColor">#cccccc</item>
     <item name="android:textSize">16dp</item>
     <item name="android:textStyle">bold</item>
   </style>
+
   <style name="ButtonText">
     <item name="android:layout_width">fill_parent</item>
     <item name="android:layout_height">wrap_content</item>
@@ -161,9 +162,6 @@
   </style>
   <style name="Theme.Modal" parent="android:Theme.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:paddingLeft">5dip</item>
-        <item name="android:paddingRight">5dip</item>
-        <item name="android:paddingBottom">15dip</item>
   </style>
 
 </resources>

@@ -3,7 +3,6 @@ using System.Net;
 using System.Net.Mail;
 using Infrastructure.Messaging.Handling;
 using Microsoft.Practices.Unity;
-using apcurium.MK.Booking.BackOffice.CommandHandlers;
 using apcurium.MK.Booking.BackOffice.EventHandlers;
 using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
@@ -65,12 +64,9 @@ namespace apcurium.MK.Booking
 
             AutoMapper.Mapper.CreateMap<FavoriteAddressUpdated, AddressDetails>();
 
-            AutoMapper.Mapper.CreateMap<DefaultFavoriteAddressAdded, DefaultAddressDetails>();
+            AutoMapper.Mapper.CreateMap<Address, DefaultAddressDetails>();
 
-            AutoMapper.Mapper.CreateMap<DefaultFavoriteAddressUpdated, DefaultAddressDetails>();
-
-            AutoMapper.Mapper.CreateMap<PopularAddressAdded, PopularAddressDetails>();
-            AutoMapper.Mapper.CreateMap<PopularAddressUpdated, PopularAddressDetails>();
+            AutoMapper.Mapper.CreateMap<Address, PopularAddressDetails>();
             AutoMapper.Mapper.CreateMap<PopularAddressDetails, Address>();
             AutoMapper.Mapper.CreateMap<TariffDetail, Tariff>();
 

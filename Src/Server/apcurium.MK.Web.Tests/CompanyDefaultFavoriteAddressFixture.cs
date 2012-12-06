@@ -6,6 +6,7 @@ using NUnit.Framework;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Web.Tests
 {
@@ -36,10 +37,13 @@ namespace apcurium.MK.Web.Tests
             sut.AddDefaultFavoriteAddress(new DefaultFavoriteAddress
             {
                 Id = (_knownAddressId = Guid.NewGuid()),
-                FriendlyName = "La Boite à Jojo le barjo",
-                FullAddress = "1234 rue Saint-Denis",
-                Latitude = 45.515065,
-                Longitude = -73.558064
+                Address = new Address
+                {
+                    FriendlyName = "La Boite à Jojo le barjo",
+                    FullAddress = "1234 rue Saint-Denis",
+                    Latitude = 45.515065,
+                    Longitude = -73.558064
+                }
             });
         }
 
@@ -52,13 +56,16 @@ namespace apcurium.MK.Web.Tests
             sut.AddDefaultFavoriteAddress(new DefaultFavoriteAddress
             {
                 Id = addressId,
-                FriendlyName = "Chez François Cuvelier le bg",
-                Apartment = "39398",
-                FullAddress = "1234 rue Saint-Hubert",
-                RingCode = "3131",
-                BuildingName = "Hôtel de Ville",
-                Latitude = 45.515065,
-                Longitude = -73.558064
+                Address = new Address
+                {
+                    FriendlyName = "Chez François Cuvelier le bg",
+                    Apartment = "39398",
+                    FullAddress = "1234 rue Saint-Hubert",
+                    RingCode = "3131",
+                    BuildingName = "Hôtel de Ville",
+                    Latitude = 45.515065,
+                    Longitude = -73.558064
+                }
             });
 
             var addresses = sut.GetDefaultFavoriteAddresses();
@@ -89,13 +96,16 @@ namespace apcurium.MK.Web.Tests
             sut.UpdateDefaultFavoriteAddress(new DefaultFavoriteAddress
             {
                 Id = _knownAddressId,
-                FriendlyName = "Chez François Cuvelier",
-                Apartment = "3939",
-                FullAddress = "1234 rue Saint-Hubert",
-                RingCode = "3131",
-                BuildingName = "Le Manoir playboy",
-                Latitude = 12,
-                Longitude = 34
+                Address = new Address
+                {
+                    FriendlyName = "Chez François Cuvelier",
+                    Apartment = "3939",
+                    FullAddress = "1234 rue Saint-Hubert",
+                    RingCode = "3131",
+                    BuildingName = "Le Manoir playboy",
+                    Latitude = 12,
+                    Longitude = 34
+                }
             });
 
             var address = sut.GetDefaultFavoriteAddresses().Single(x => x.Id == _knownAddressId);
@@ -119,6 +129,8 @@ namespace apcurium.MK.Web.Tests
                 .UpdateDefaultFavoriteAddress(new DefaultFavoriteAddress
                 {
                     Id = _knownAddressId,
+                    Address = new Address
+                {
                     FriendlyName =
                         "Chez François Cuvelier",
                     Apartment = "3939",
@@ -127,6 +139,7 @@ namespace apcurium.MK.Web.Tests
                     RingCode = "3131",
                     Latitude = double.NaN,
                     Longitude = double.NaN
+                }
                 }));
 
         }

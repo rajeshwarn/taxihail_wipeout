@@ -80,7 +80,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             AppButtons.FormatStandardButton((GradientButton)btnDelete, Resources.DeleteButton, AppStyle.ButtonColor.Red); 
 
             this.AddBindings(new Dictionary<object, string>{
-                { txtAddress, "{'Text': {'Path': 'FullAddress'}, 'Ended': {'Path': 'ValidateAddress'}}" },
+                { txtAddress, "{'Text': {'Path': 'BookAddress'}, 'Ended': {'Path': 'ValidateAddress'}}" },
                 { txtAptNumber, "{'Text': {'Path': 'Apartment'}}" },
                 { txtRingCode, "{'Text': {'Path': 'RingCode'}}" },
                 { txtName, "{'Text': {'Path': 'FriendlyName'}}" },

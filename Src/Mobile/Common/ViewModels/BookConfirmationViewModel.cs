@@ -53,6 +53,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             FirePropertyChanged ( () => ChargeType );
         }
 
+
+        public int VehicleTypeId {
+            get { return Order.Settings.VehicleTypeId ; }
+            set {  SetVehicleTypeId( value ); }
+        }
+        public int ChargeTypeId {
+            get { return Order.Settings.ChargeTypeId ; }
+            set {  SetChargeTypeId( value ); }
+        }
+
+
+            
             
         public ListItem[] Vehicles {
             get {

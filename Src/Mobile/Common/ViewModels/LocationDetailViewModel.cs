@@ -44,15 +44,15 @@ namespace apcurium.MK.Booking.Mobile
 
 		private Address _address;
 		
-        public string FullAddress {
+        public string BookAddress {
             get {
-                return _address.FullAddress;
+                return _address.BookAddress;
             }
             set {
                 if(value != _address.FullAddress)
                 {
                     _address.FullAddress = value;
-                    FirePropertyChanged("FullAddress");
+                    FirePropertyChanged("BookAddress");
                 }
             }
         }
@@ -116,7 +116,7 @@ namespace apcurium.MK.Booking.Mobile
                 {
                     MessageService.ShowProgress(true);
                     var task = Task.Factory.StartNew(()=>{
-                        return this.GetService<IGeolocService> ().ValidateAddress (FullAddress);
+						return this.GetService<IGeolocService> ().ValidateAddress (_address.FullAddress);
                     }, _validateAddressCancellationTokenSource.Token)
                         .HandleErrors();
                     task.ContinueWith(t=> {
@@ -131,9 +131,8 @@ namespace apcurium.MK.Booking.Mobile
 
                         InvokeOnMainThread (() =>
                                             {
-                            FullAddress = location.FullAddress;
-                            _address.Latitude = location.Latitude;
-                            _address.Longitude = location.Longitude;
+							location.Copy(_address);
+							FirePropertyChanged("BookAddress");
                             
                         });
                         
@@ -158,7 +157,7 @@ namespace apcurium.MK.Booking.Mobile
             
                     MessageService.ShowProgress(true);
                     try {
-                        var location = this.GetService<IGeolocService> ().ValidateAddress (FullAddress);
+						var location = this.GetService<IGeolocService> ().ValidateAddress (_address.FullAddress);
                         if ((location == null) || string.IsNullOrWhiteSpace(location.FullAddress) || !location.HasValidCoordinate ()) {
                             MessageService.ShowMessage (Resources.GetString("InvalidAddressTitle"), Resources.GetString("InvalidAddressMessage"));
                             return;
@@ -166,7 +165,7 @@ namespace apcurium.MK.Booking.Mobile
                     
                         InvokeOnMainThread (() =>
                         {
-                            FullAddress = location.FullAddress;
+                            BookAddress = location.FullAddress;
                             location.FriendlyName = _address.FriendlyName;
                             location.Apartment = _address.Apartment;
                             location.RingCode = _address.RingCode;
@@ -228,7 +227,7 @@ namespace apcurium.MK.Booking.Mobile
 
         private bool ValidateFields()
         {
-            if (string.IsNullOrWhiteSpace(FullAddress))
+            if (string.IsNullOrWhiteSpace(BookAddress))
             {
                 MessageService.ShowMessage(Resources.GetString("InvalidAddressTitle"), Resources.GetString("InvalidAddressMessage"));
                 return false;

@@ -17,7 +17,7 @@
         android:layout_marginRight="30dip"
         android:layout_marginTop="0dip"
         android:layout_marginBottom="0dip"
-        android:text="salut"
+        android:text="salut22"
         android:textColor="@color/black"
         android:textStyle="bold" />
     <TextView
@@ -32,26 +32,13 @@
         android:layout_marginRight="30dip"
         android:layout_marginTop="0dip"
         android:layout_marginBottom="0dip"
-        android:text="salut"
+        android:text="salut22"
         android:textColor="@color/black" />
     <ImageView
         android:layout_width="fill_parent"
         android:layout_height="180dip"
         android:id="@+id/TutorialImage"
         android:layout_gravity="center_horizontal" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/TutorialBottomTitleText"
-        android:singleLine="true"
-        android:gravity="center"
-        android:layout_gravity="center"
-        android:layout_marginLeft="30dip"
-        android:layout_marginRight="30dip"
-        android:layout_marginTop="0dip"
-        android:layout_marginBottom="0dip"
-        android:text="salut"
-        android:textStyle="bold" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -65,4 +52,17 @@
         android:layout_marginTop="0dip"
         android:layout_marginBottom="0dip"
         android:text="salut" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/TutorialBottomTitleText"
+        android:singleLine="true"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_marginLeft="30dip"
+        android:layout_marginRight="30dip"
+        android:layout_marginTop="0dip"
+        android:layout_marginBottom="0dip"
+        android:text="salut"
+        android:textStyle="bold" />
 </LinearLayout>
