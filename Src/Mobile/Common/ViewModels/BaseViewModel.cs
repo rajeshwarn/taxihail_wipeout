@@ -67,7 +67,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public virtual void OnViewLoaded ()
 		{
+			Logger.LogMessage("View loaded: " + GetType().Name);
 		}
+
+        public virtual void OnViewUnloaded ()
+        {
+			Logger.LogMessage("View unloaded: " + GetType().Name);
+        }
 
 		protected bool RequestSubNavigate<TViewModel, TResult>(IDictionary<string, string> parameterValues, Action<TResult> onResult) 
 			where TViewModel : BaseSubViewModel<TResult>

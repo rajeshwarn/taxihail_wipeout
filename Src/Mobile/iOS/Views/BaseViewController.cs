@@ -39,7 +39,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             base.ViewDidLoad ();
             // Setup keyboard event handlers
             RegisterForKeyboardNotifications();
-			
+
+            Background.LoadForRegularView( this.View );
+            View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
         }
 		
         public override void ViewDidUnload ()
@@ -47,6 +49,20 @@ namespace apcurium.MK.Booking.Mobile.Client
             UnregisterKeyboardNotifications();
             base.ViewDidUnload ();
 			
+        }
+
+        protected void DismissKeyboardOnReturn (params UITextField[] textFields)
+        {
+            if (textFields == null)
+                return;
+            foreach (var textField in textFields) {
+                textField.ReturnKeyType = UIReturnKeyType.Done;
+                textField.ShouldReturn = ShouldReturn;
+            }
+        }
+        private bool ShouldReturn (UITextField textField)
+        {
+            return textField.ResignFirstResponder();
         }
 
         protected virtual void RegisterForKeyboardNotifications ()

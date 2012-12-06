@@ -272,16 +272,16 @@
     <value>Ride Information</value>
   </data>
   <data name="ConfirmOriginLablel" xml:space="preserve">
-    <value>Origin:</value>
+    <value>Pickup</value>
   </data>
   <data name="ConfirmAptRingCodeLabel" xml:space="preserve">
-    <value>Apt / Entry code:</value>
+    <value>Apartment / Entry code</value>
   </data>
   <data name="ConfirmDestinationLabel" xml:space="preserve">
-    <value>Destination:</value>
+    <value>Destination</value>
   </data>
   <data name="ConfirmDateTimeLabel" xml:space="preserve">
-    <value>Date / Time:</value>
+    <value>Date / Time</value>
   </data>
   <data name="ConfirmNameLabel" xml:space="preserve">
     <value>Name:</value>
@@ -296,10 +296,10 @@
     <value>Passengers:</value>
   </data>
   <data name="ConfirmVehiculeTypeLabel" xml:space="preserve">
-    <value>Vehicle type:</value>
+    <value>Vehicle type</value>
   </data>
   <data name="ChargeTypeLabel" xml:space="preserve">
-    <value>Charge type:</value>
+    <value>Charge type</value>
   </data>
   <data name="ConfirmNoApt" xml:space="preserve">
     <value>No apt.</value>
@@ -314,7 +314,7 @@
     <value>Today</value>
   </data>
   <data name="TimeNow" xml:space="preserve">
-    <value>Current</value>
+    <value>As soon as possible</value>
   </data>
   <data name="StatusViewTitle" xml:space="preserve">
     <value>Confirmed</value>
@@ -611,7 +611,7 @@
     <value>Estimated Fare : {0}</value>
   </data>
   <data name="ApproxPrice" xml:space="preserve">
-    <value>Estimated Fare:</value>
+    <value>Estimated Fare</value>
   </data>
   <data name="NotAvailable" xml:space="preserve">
     <value>N/A</value>
@@ -649,10 +649,13 @@
   <data name="RideSettingsChargeType" xml:space="preserve">
     <value>Charge type</value>
   </data>
+  <data name="RideSettingsPassword" xml:space="preserve">
+    <value>Password</value>
+  </data>
   <data name="CreateAccountInvalidPassword" xml:space="preserve">
     <value>The password is invalid.  The password and confirmation must be the same.  The password must also be between 6 and 10 characters.</value>
   </data>
-  <data name="CreateAccountInvalidPhone" xml:space="preserve">
+  <data name="InvalidPhoneErrorMessage" xml:space="preserve">
     <value>The mobile number is invalid. It must contain 10 numbers.</value>
   </data>
   <data name="CreateAccountEmptyField" xml:space="preserve">
@@ -815,7 +818,7 @@
     <value>Reservation for {0:ddd, MMM d} at {0:h:mm tt}</value>
   </data>
   <data name="DateTimePickerSetButton" xml:space="preserve">
-    <value>Set</value>
+    <value>Book</value>
   </data>
   <data name="SendEmail" xml:space="preserve">
     <value>Send mail...</value>
@@ -875,7 +878,7 @@
     <value>About Us</value>
   </data>
   <data name="View_BookingDetail" xml:space="preserve">
-    <value>Confirmation</value>
+    <value>Booking summary</value>
   </data>
   <data name="View_BookingStatus" xml:space="preserve">
     <value>Status</value>
@@ -887,7 +890,7 @@
     <value>Order Details</value>
   </data>
   <data name="View_HistoryList" xml:space="preserve">
-    <value>Orders</value>
+    <value>History</value>
   </data>
   <data name="View_LocationDetail" xml:space="preserve">
     <value>Location Detail</value>
@@ -902,7 +905,7 @@
     <value>Reset Your Password</value>
   </data>
   <data name="View_SignUp" xml:space="preserve">
-    <value>Create Your Profile</value>
+    <value>Create Your Account</value>
   </data>
   <data name="View_SignUp_Label" xml:space="preserve">
     <value>Create Your Profile</value>
@@ -917,7 +920,7 @@
     <value>Manage My Locations</value>
   </data>
   <data name="View_Book_Menu_MyOrders" xml:space="preserve">
-    <value>My Orders</value>
+    <value>History And Current Bookings</value>
   </data>
   <data name="View_Book_Menu_UpdateMyProfile" xml:space="preserve">
     <value>Update My Profile</value>
@@ -1031,7 +1034,7 @@
     <value>Pick a provider</value>
   </data>
   <data name="View_Book_Menu_Tutorial" xml:space="preserve">
-    <value>Tutorial</value>
+    <value>View Tutorial</value>
   </data>
   <data name="ChangePasswordConfirmmation" xml:space="preserve">
     <value>You password has been updated, please sign in.</value>
@@ -1084,5 +1087,17 @@
   </data>
   <data name="Tuto08Top" xml:space="preserve">
     <value>You can review your order history at any time, and even rebook a previous trip with the push of a button</value>
+  </data>
+  <data name="StreetNumberTitle" xml:space="preserve">
+    <value>Address's Details</value>
+  </data>
+  <data name="StreetNumberLabel" xml:space="preserve">
+    <value>Refine your address</value>
+  </data>
+  <data name="StreetNumberSearchBt" xml:space="preserve">
+    <value>Search</value>
+  </data>
+   <data name="StreetNumberDoneBt" xml:space="preserve">
+    <value>Use This Address</value>
   </data>
 </root>

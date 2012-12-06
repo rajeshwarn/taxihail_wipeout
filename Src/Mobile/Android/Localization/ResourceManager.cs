@@ -82,14 +82,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Localization
         {
             return new List<TutorialItemModel>()
                                    {
-                                       new TutorialItemModel() {ImageUri = "tuto01", TopText = GetString("Tuto01Top"), BottomText = GetString("Tuto01Bottom")},
-                                       new TutorialItemModel() {ImageUri = "tuto02",  TopText = GetString("Tuto02Top"), BottomText = GetString("Tuto02Bottom")},
-                                       new TutorialItemModel() {ImageUri = "tuto01",  TopText = GetString("Tuto02Top"), BottomText = GetString("Tuto03Bottom")},
-                                       new TutorialItemModel() {ImageUri = "tuto02",  TopText = GetString("Tuto03Top"), BottomText = GetString("Tuto04Bottom")},
-                                       new TutorialItemModel() {ImageUri = "tuto01",  TopText = GetString("Tuto04Top"), BottomText = GetString("Tuto05Bottom")},
-                                       new TutorialItemModel() {ImageUri = "tuto02",  TopText = GetString("Tuto05Top"), BottomText = GetString("Tuto06Bottom")},
-                                       new TutorialItemModel() {ImageUri = "tuto01",  TopText = GetString("Tuto06Top"), BottomText = GetString("Tuto07Bottom")},
-                                       new TutorialItemModel() {ImageUri = "tuto02",  TopText = GetString("Tuto07Top"), BottomText = GetString("Tuto08Bottom")}
+                                       new TutorialItemModel() {ImageUri = "tutorial_screen01", TopText = GetString("Tuto01Top"), BottomText = GetString("Tuto01Bottom")},
+                                       new TutorialItemModel() {ImageUri = "tutorial_screen02",  TopText = GetString("Tuto02Top"), BottomText = GetString("Tuto02Bottom")},
+                                       new TutorialItemModel() {ImageUri = "tutorial_screen03",  TopText = GetString("Tuto02Top"), BottomText = GetString("Tuto03Bottom")},
+                                       new TutorialItemModel() {ImageUri = "tutorial_screen04",  TopText = GetString("Tuto03Top"), BottomText = GetString("Tuto04Bottom")},
+                                       new TutorialItemModel() {ImageUri = "tutorial_screen05",  TopText = GetString("Tuto04Top"), BottomText = GetString("Tuto05Bottom")},
+                                       new TutorialItemModel() {ImageUri = "tutorial_screen06",  TopText = GetString("Tuto05Top"), BottomText = GetString("Tuto06Bottom")},
+                                       new TutorialItemModel() {ImageUri = "tutorial_screen07",  TopText = GetString("Tuto06Top"), BottomText = GetString("Tuto07Bottom")},
+                                       new TutorialItemModel() {ImageUri = "tutorial_screen08",  TopText = GetString("Tuto07Top"), BottomText = GetString("Tuto08Bottom")}
                                    };
         }
 

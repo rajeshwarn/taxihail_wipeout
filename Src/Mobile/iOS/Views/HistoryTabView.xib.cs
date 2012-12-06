@@ -29,7 +29,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		const string CellBindingText = @"
                 {
                    'FirstLine':{'Path':'Title'},
-                   'SecondLine':{'Path':'PickupAddress.FullAddress'},
+                   'SecondLine':{'Path':'PickupAddress.BookAddress'},
                    'ShowRightArrow':{'Path':'ShowRightArrow'},
                    'ShowPlusSign':{'Path':'ShowPlusSign'},
                    'IsFirst':{'Path':'IsFirst'},
@@ -93,6 +93,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 			base.ViewWillAppear (animated);
 			NavigationController.NavigationBar.Hidden = false;
 		}
+
+        public override void DidReceiveMemoryWarning ()
+        {
+            base.DidReceiveMemoryWarning ();
+            ViewModel.OnViewUnloaded();
+        }
 	}
 }
 

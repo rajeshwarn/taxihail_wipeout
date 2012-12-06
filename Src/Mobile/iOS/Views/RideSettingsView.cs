@@ -1,7 +1,5 @@
-
 using System;
 using System.Drawing;
-
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Binding.Touch.Views;
@@ -54,6 +52,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             lblPhone.Text= Resources.GetValue("RideSettingsPhone");
             lblVehicleType.Text= Resources.GetValue("RideSettingsVehiculeType");
             lblChargeType.Text= Resources.GetValue("RideSettingsChargeType");
+            lblPassword.Text = Resources.GetValue("RideSettingsPassword");
+
+            base.DismissKeyboardOnReturn(txtName, txtPassengers, txtPhone);
             
             var button = new MonoTouch.UIKit.UIBarButtonItem(Resources.DoneButton, UIBarButtonItemStyle.Plain, delegate {
                 ViewModel.SaveCommand.Execute();
@@ -66,11 +67,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             ((ModalTextField)txtVehicleType).Configure(Resources.RideSettingsVehiculeType, ViewModel.Vehicles, ViewModel.VehicleTypeId, x=> {
                 ViewModel.SetVehiculeType.Execute(x.Id);
             });
-            ((ModalTextField)txtChargeType).Configure(Resources.RideSettingsVehiculeType, ViewModel.Payments, ViewModel.ChargeTypeId, x=> {
+            ((ModalTextField)txtChargeType).Configure(Resources.RideSettingsChargeType, ViewModel.Payments, ViewModel.ChargeTypeId, x=> {
                 ViewModel.SetChargeType.Execute(x.Id);
             });
-
-            AppButtons.FormatStandardButton(btnUpdatePassword, Resources.GetValue("View_RideSettings_BtUpdateMyPassword"), AppStyle.ButtonColor.Grey, null);
 
             this.AddBindings(new Dictionary<object, string>(){
                 { txtName, "{'Text': {'Path': 'Name'}}" },
@@ -78,7 +77,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { txtPassengers, "{'Text': {'Path': 'Passengers'}}" },
                 { txtVehicleType, "{'Text': {'Path': 'VehicleTypeName'}}" },
                 { txtChargeType, "{'Text': {'Path': 'ChargeTypeName'}}" },
-                { btnUpdatePassword, "{'TouchUpInside': {'Path': 'NavigateToUpdatePassword'}}" }
+                { txtPassword, "{'NavigateCommand': {'Path': 'NavigateToUpdatePassword'}}" }
             });
 
         }

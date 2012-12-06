@@ -60,7 +60,8 @@
             android:orientation="vertical"
             android:padding="15dip"
             android:background="@color/transparent">
-            <Button
+            <apcurium.mk.booking.mobile.client.controls.StyledButton
+                local:ButtonStyle="Green"
                 android:id="@+id/SaveButton"
                 style="@style/ButtonText"
                 android:background="@drawable/green_button"

@@ -102,5 +102,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     new {orderId = vm.Id}));
             }
         }
+
+        public override void OnViewUnloaded ()
+        {
+            base.OnViewUnloaded ();
+            MessengerHub.Unsubscribe<OrderDeleted>(orderDeletedToken);
+        }
+
     }
 }

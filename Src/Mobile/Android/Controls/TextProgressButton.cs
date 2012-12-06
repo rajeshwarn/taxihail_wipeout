@@ -19,8 +19,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
     public class TextProgressButton : LinearLayout
     {
-        private static int _rightArrowDrawableId;
-
         private static int _progressSize = DrawHelper.GetPixels(30);
         private static int _xPositionText = DrawHelper.GetPixels(4);
         private static int _yPositionTextL1 = DrawHelper.GetPixels(15);
@@ -61,6 +59,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private void Initialize()
         {
+			this.Touch += HandleTouch;
             this.Click += new EventHandler(TextProgressButton_Click);
             this.SetGravity(GravityFlags.CenterVertical | GravityFlags.Right);
             this.Orientation = Android.Widget.Orientation.Vertical;
@@ -80,13 +79,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             layout.Gravity = GravityFlags.CenterVertical | GravityFlags.Right;
             AddView(_image, layout);
 
-            if (_rightArrowDrawableId == 0)
-            {
-                _rightArrowDrawableId = Context.Resources.GetIdentifier("right_arrow", "drawable", Context.PackageName);
-            }
-            _image.SetImageDrawable(Context.Resources.GetDrawable(_rightArrowDrawableId));
-            ///android:drawableRight="@drawable/right_arrow"
+			_image.SetImageDrawable(Context.Resources.GetDrawable(Resource.Drawable.right_arrow));
 
+        }
+
+        void HandleTouch (object sender, TouchEventArgs e)
+		{
+			if (e.Event.Action == MotionEventActions.Down) {
+				this.SetBackgroundColor(new Color(0,0,0,50));
+					
+			} else if (e.Event.Action == MotionEventActions.Up) {
+				this.SetBackgroundColor(new Color(0,0,0,0));
+			}
+			e.Handled=false;
         }
         
 

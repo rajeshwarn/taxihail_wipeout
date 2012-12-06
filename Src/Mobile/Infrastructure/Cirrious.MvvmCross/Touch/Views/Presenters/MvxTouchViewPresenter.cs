@@ -7,6 +7,10 @@
 // </copyright>
 // 
 // Project Lead - Stuart Lodge, Cirrious. http://www.cirrious.com
+using MonoTouch.Foundation;
+using System;
+
+
 #endregion
 
 using Cirrious.MvvmCross.Exceptions;
@@ -29,6 +33,8 @@ namespace Cirrious.MvvmCross.Touch.Views.Presenters
         private readonly UIWindow _window;
         
         private UINavigationController _masterNavigationController;
+
+       
         
         public MvxTouchViewPresenter (UIApplicationDelegate applicationDelegate, UIWindow window)
         {
@@ -92,7 +98,8 @@ namespace Cirrious.MvvmCross.Touch.Views.Presenters
                 return;
             }
 
-            _masterNavigationController.PopViewControllerAnimated(true);
+
+            _masterNavigationController.PopViewControllerAnimatedPause(true);
         }
 
         public override void ClearBackStack()
@@ -140,5 +147,39 @@ namespace Cirrious.MvvmCross.Touch.Views.Presenters
         {
             get { return _masterNavigationController.TopViewController; }
         }
-    }	
+    }
+
+    public static class NavigationControllerExtension        
+    {        
+        public static UIViewController PopViewControllerAnimatedPause(this UINavigationController navigationController, bool animated)            
+        {            
+            if (animated)                
+            {                
+                var existing = navigationController.Delegate;                
+                var navigationControllerDelegate = new NavigationControllerDelegate();               
+                                
+                navigationController.Delegate = navigationControllerDelegate;                
+                UIViewController result = navigationController.PopViewControllerAnimated(true);              
+                                
+                while (navigationControllerDelegate.Transitioning)                    
+                    NSRunLoop.Current.RunUntil(DateTime.Now.AddMilliseconds(50));             
+                
+                navigationController.Delegate = existing;           
+                
+                return result;                
+            }      
+                        
+            return navigationController.PopViewControllerAnimated(false);            
+        }        
+    }
+
+    public class NavigationControllerDelegate : UINavigationControllerDelegate
+    {
+        public bool Transitioning = true;
+        
+        public override void DidShowViewController (UINavigationController navigationController, UIViewController viewController, bool animated)
+        {
+            this.Transitioning = false;
+        }
+    }
 }

@@ -52,16 +52,13 @@ namespace apcurium.MK.Booking.Mobile.Client
             lblPassword.Text = Resources.GetValue("CreateAccountPassword");
             lblConfirmPassword.Text = Resources.GetValue("CreateAccountPasswordConfrimation");
 
-            txtEmail.ReturnKeyType = UIReturnKeyType.Done;
-            txtName.ReturnKeyType = UIReturnKeyType.Done;
-            txtPhone.ReturnKeyType = UIReturnKeyType.Done;
+            base.DismissKeyboardOnReturn(txtEmail, txtName, txtPhone, txtPassword, txtConfirmPassword);
+            
             txtPassword.SecureTextEntry = true;
-            txtPassword.ReturnKeyType = UIReturnKeyType.Done;
             txtConfirmPassword.SecureTextEntry = true;
-            txtConfirmPassword.ReturnKeyType = UIReturnKeyType.Done;
 
             var buttonsY = txtConfirmPassword.Frame.Y + txtConfirmPassword.Frame.Height + 25;
-            AddButton(scrollView, 95, buttonsY, Resources.CreateAccountCreate, "CreateAccount", apcurium.MK.Booking.Mobile.Client.AppStyle.ButtonColor.Green);
+            AddButton(scrollView, 60, buttonsY, Resources.CreateAccountCreate, "CreateAccount", apcurium.MK.Booking.Mobile.Client.AppStyle.ButtonColor.Green);
 
             this.AddBindings(new Dictionary<object, string>{
                 { txtName, "{'Text': {'Path': 'Data.Name', 'Mode': 'TwoWay' }}" },
@@ -71,29 +68,17 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { txtConfirmPassword, "{'Text': {'Path': 'ConfirmPassword', 'Mode': 'TwoWay' }}" },
             });
 
-        }
-		
-        public override void ViewDidUnload ()
-        {
-            base.ViewDidUnload ();
-			
-            // Clear any references to subviews of the main view in order to
-            // allow the Garbage Collector to collect them sooner.
-            //
-            // e.g. myOutlet.Dispose (); myOutlet = null;
-			
-            ReleaseDesignerOutlets ();
-        }
-		
-        public override bool ShouldAutorotateToInterfaceOrientation (UIInterfaceOrientation toInterfaceOrientation)
-        {
-            // Return true for supported orientations
-            return (toInterfaceOrientation != UIInterfaceOrientation.PortraitUpsideDown);
-        }
+            this.NavigationItem.TitleView = new TitleView(null, Resources.GetValue("View_SignUp"), true);
 
+
+            this.View.ApplyAppFont ();
+
+        }
+		
+       
         private void AddButton(UIView parent, float x, float y, string title, string command, AppStyle.ButtonColor bcolor)
         {
-            var btn = AppButtons.CreateStandardButton(new System.Drawing.RectangleF(x, y, 130, 40), title, bcolor);
+            var btn = AppButtons.CreateStandardButton(new System.Drawing.RectangleF(x, y, 200, 40), title, bcolor);
             btn.TextShadowColor = null;
             parent.AddSubview(btn);
             this.AddBindings(btn, "{'TouchUpInside': {'Path' : '" + command + "'}}");              

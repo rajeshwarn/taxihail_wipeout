@@ -49,7 +49,22 @@ namespace apcurium.MK.Booking.Mobile.Client
 			_progress.Hidden = true;
 			_progress.ActivityIndicatorViewStyle = UIActivityIndicatorViewStyle.Gray;
 			AddSubview( _progress );
+
+            TouchDown += HandleTouchDown;
+            TouchUpInside += HandleTouchUp;
+            TouchUpOutside += HandleTouchUp;
+           
 		}
+
+        void HandleTouchUp (object sender, EventArgs e)
+        {
+            this.BackgroundColor = UIColor.Clear;
+        }
+        
+        void HandleTouchDown (object sender, EventArgs e)
+        {
+            this.BackgroundColor = UIColor.FromRGBA(0,0,0,50);
+        }
 
         public string TextLine1
         {

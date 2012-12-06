@@ -19,6 +19,8 @@ using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.Client.Controls;
+using Android.Text.Method;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 {
@@ -33,6 +35,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 		protected override void OnViewModelSet ()
 		{
             SetContentView(Resource.Layout.View_RideSettings);
+
+			var txtPassword = this.FindViewById<EditTextNavigate>(Resource.Id.rideSettingsPassword);
+			txtPassword.TransformationMethod = PasswordTransformationMethod.Instance;
+			txtPassword.Text = "my secure password"; /* fake password for display only */
+
 
 		}
         protected override void OnCreate(Bundle bundle)

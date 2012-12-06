@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
     {
         protected override int ViewTitleResourceId
         {
-            get { return Resource.String.View_PasswordRecovery; }
+            get { return Resource.String.View_PasswordRecovery_Label; }
         }
 
         protected override void OnViewModelSet()

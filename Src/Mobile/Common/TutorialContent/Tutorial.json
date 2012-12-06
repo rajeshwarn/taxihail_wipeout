@@ -1,0 +1,75 @@
+{ 
+  "Items": [
+    {
+      "Position": "1",
+      "TopTitle": "Welcome!",
+      "TopText": "Here's how to book a ride with just a couple of taps",
+      "BottomTitle": "",
+      "BottomText": "Start by selecting your current position" ,
+      "ImageUri":"tutorial_screen01"
+    }
+    ,
+    {
+      "Position": "2",
+      "TopTitle": "",
+      "TopText": "We should be able to locate you using the GPS receiver in your mobile device.",
+      "BottomTitle": "",
+      "BottomText": "If it's a little off, simply reposition the map to your actual location." ,
+      "ImageUri":"tutorial_screen02"
+    }                   
+    ,
+    {
+      "Position": "3",
+      "TopTitle": "",
+      "TopText": "You may also select your pickup location by tapping the pickup address.",
+      "BottomTitle": "",
+      "BottomText": "You can search for a specific address or pick one from your favorites, contacts or a list of nearby places." ,
+      "ImageUri":"tutorial_screen03"
+    }                   
+    ,
+    {
+      "Position": "4",
+      "TopTitle": "",
+      "TopText": "If you want, you can also set your destination.",
+      "BottomTitle": "",
+      "BottomText": "Doing so will provide an estimate for the cost for the trip." ,
+      "ImageUri":"tutorial_screen04"
+    }                   
+    ,
+    {
+      "Position": "5",
+      "TopTitle": "",
+      "TopText": "Tap Book Now and a vehicle will be assigned as soon as possible.",
+      "BottomTitle": "",
+      "BottomText": "Or tap the Later button to schedule your pickup for a future time or date." ,
+      "ImageUri":"tutorial_screen05"
+    }                   
+    ,
+    {
+      "Position": "6",
+      "TopTitle": "",
+      "TopText": "The confirmation screen allows you to verify your trip details and to change any of your preferences for this specific ride.",
+      "BottomTitle": "",
+      "BottomText": "Tap Confim when you are ready to go." ,
+      "ImageUri":"tutorial_screen06"
+    }                   
+    ,    
+    {
+      "Position": "7",
+      "TopTitle": "",
+      "TopText": "On the Status screen you will see a reservation number confirming your booking. Once a vehicle is assigned, you can watch as it progresses to your pickup location.",
+      "BottomTitle": "",
+      "BottomText": "Status updates are provided when the vehicle arrives at the pickup address, when you enter the vehicle, and at the end of the ride." ,
+      "ImageUri":"tutorial_screen07"
+    }                   
+    ,    
+    {
+      "Position": "8",
+      "TopTitle": "",
+      "TopText": "You can review your order history at any time, and even rebook a previous trip with the push of a button.",
+      "BottomTitle": "We thank you for your business!",
+      "BottomText": "We hope you find this application both convenient and intuitive."      ,
+      "ImageUri":"tutorial_screen08"
+    }                   
+  ]
+}

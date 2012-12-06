@@ -74,7 +74,7 @@ namespace apcurium.MK.Booking.Mobile
 					
 					if ( Data.Phone.Count(x => Char.IsDigit(x)) < 10 )
 					{
-						MessageService.ShowMessage(Resources.GetString("CreateAccountInvalidDataTitle"), Resources.GetString("CreateAccountInvalidPhone"));
+						MessageService.ShowMessage(Resources.GetString("CreateAccountInvalidDataTitle"), Resources.GetString("InvalidPhoneErrorMessage"));
 						return;
 					}
 					else

@@ -8,6 +8,7 @@
    "FacebookAppId" : "134284363380764",
    "FacebookEnabled" : "false",
    "ServiceUrl" : "http://services.taxihail.com/taxiworld/api/",
+   "SupportEmail" : "techsupport@apcurium.com",
    "SiteUrl" : "http://www.taxiworldlondon.com/about-us/",
    "TwitterAccessTokenUrl" : "https://twitter.com/oauth/access_token",
    "TwitterAuthorizeUrl" : "https://twitter.com/oauth/authorize",
@@ -20,5 +21,6 @@
    "AndroidSigningKeyPassStorePass" : "mkt0001.",
    "AppName" : "Taxiworld",
    "GoogleMapKey" : "0XEY3WqKVmJPKgUaBK0NC_GfL7VtrnaAAs1hieQ",
-   "Package" : "com.apcurium.MK.TaxiworldDemo"
+   "Package" : "com.apcurium.MK.TaxiworldDemo",
+   "StreetNumberScreenEnabled":"true"
 }

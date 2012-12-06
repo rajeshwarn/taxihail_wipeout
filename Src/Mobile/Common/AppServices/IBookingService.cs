@@ -11,7 +11,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 {
 	public interface IBookingService
 	{
-        string GetFareEstimateDisplay(CreateOrder order, string fareFormat, string noFareText);
+        string GetFareEstimateDisplay(CreateOrder order, string fareFormat, string noFareText, bool includeDistance);
 
         bool IsValid(CreateOrder info);
 				
@@ -24,6 +24,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         bool CancelOrder(Guid orderId);
 
         bool SendReceipt(Guid orderId);
+
+        bool HasLastOrder{get;}
 
         OrderStatusDetail CreateOrder(CreateOrder info);
 

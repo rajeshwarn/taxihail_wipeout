@@ -27,13 +27,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             }
         }
 
-
         private bool _isStarted = false;
         private LocationManager _locMgr;
-
         private LocationListener _gpsListener;
         private LocationListener _networkListener;
-
         private Android.Locations.Location _lastLocation;
 
         private LocationService()
@@ -42,41 +39,43 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _networkListener = new LocationListener(this);
         }
 
-
-        
-
         public void Start()
         {
-            if (_isStarted)
+            if (!_isStarted)
             {
-                return;
-            }
+                _isStarted = true;
+                _locMgr = Application.Context.GetSystemService(Context.LocationService) as LocationManager;
 
-
-
-            _isStarted = true;
-            _locMgr = Application.Context.GetSystemService(Context.LocationService) as LocationManager;
-
-            if (LastLocation != null)
-            {
-                var lastDateTime = FromUnixTime(LastLocation.Time).ToLocalTime();
-                Console.WriteLine(lastDateTime.ToShortTimeString());
-                Console.WriteLine(lastDateTime.ToLongDateString());
-                var timeDelta = DateTime.Now.Subtract(lastDateTime).TotalSeconds;
-
-                if (timeDelta > 120)
+                if (LastLocation != null)
                 {
-                    _lastLocation = null;
+                    var lastDateTime = FromUnixTime(LastLocation.Time).ToLocalTime();
+                    Console.WriteLine(lastDateTime.ToShortTimeString());
+                    Console.WriteLine(lastDateTime.ToLongDateString());
+                    var timeDelta = DateTime.Now.Subtract(lastDateTime).TotalSeconds;
+
+                    if (timeDelta > 120)
+                    {
+                        _lastLocation = null;
+                    }
                 }
             }
 
-            _locMgr.RequestLocationUpdates(LocationManager.GpsProvider, 0, 0, _gpsListener);
-            _locMgr.RequestLocationUpdates(LocationManager.NetworkProvider, 0, 0, _networkListener);
+            _lastLocation = null;
+            if ( _locMgr.IsProviderEnabled( LocationManager.GpsProvider ) )
+            {
+                _locMgr.RequestLocationUpdates(LocationManager.GpsProvider, 0, 0, _gpsListener);
+            }
+
+            if ( _locMgr.IsProviderEnabled( LocationManager.NetworkProvider ) )
+            {
+                _locMgr.RequestLocationUpdates(LocationManager.NetworkProvider, 0, 0, _networkListener);
+            }
 
 
 
 
         }
+
         public DateTime FromUnixTime(long unixTime)
         {
             var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
@@ -118,7 +117,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                     if (result.Accuracy <= accuracy)
                     {
                         TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Good location found! : " +
-                                                                               result.Provider.ToString());
+                            result.Provider.ToString());
                         timeoutExpiredResult = false;
                         exit = true;
                     }
@@ -128,7 +127,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 Thread.Sleep(500);
                 
 
-                if ( watch.ElapsedMilliseconds >= timeout )
+                if (watch.ElapsedMilliseconds >= timeout)
                 {
                     exit = true;
                     timeoutExpiredResult = true;
@@ -149,8 +148,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             return result;
         }
 
-      
-
         public Android.Locations.Location LastLocation
         {
             get { return _lastLocation; }
@@ -164,7 +161,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _locMgr.RemoveUpdates(_gpsListener);
         }
 
-
         public void LocationChanged(Android.Locations.Location location)
         {
             if (IsBetterLocation(location, LastLocation))
@@ -176,10 +172,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private string GetLocationText(Android.Locations.Location location)
         {
             return "Lat : " + location.Latitude.ToString() + " Long: " + location.Longitude.ToString() + " Acc : " +
-                   location.Accuracy.ToString() + " Provider : " + location.Provider.ToString();
+                location.Accuracy.ToString() + " Provider : " + location.Provider.ToString();
         }
 
-        private const int TWO_MINUTES = 1000*60*2;
+        private const int TWO_MINUTES = 1000 * 60 * 2;
 
         protected bool IsBetterLocation(Android.Locations.Location location, Android.Locations.Location currentBestLocation)
         {
@@ -242,8 +238,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             return provider1.Equals(provider2);
         }
 
-
-
         public void Initialize()
         {
             Start();
@@ -253,32 +247,32 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             Start();
             var task = new Task<Position>(() =>
-                                              {
-                                                  TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("GetPositionAsync");
-                                                  bool timedout = false;
-                                                  Android.Locations.Location result;
-                                                  var firstResult = WaitForAccurateLocation(timeout, accuracy, out timedout);
-                                                  if (!timedout )
-                                                  {
-                                                      result = firstResult;
-                                                  }
-                                                  else
-                                                  {
-                                                      var secondResult = WaitForAccurateLocation(fallbackTimeout, fallbackAccuracy , out timedout);    
-                                                      if ( IsBetterLocation( secondResult, firstResult  ))
-                                                      {
-                                                          result = secondResult;
-                                                      }
-                                                      else
-                                                      {
-                                                          result = firstResult;
-                                                      }
-                                                  }
+            {
+                TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("GetPositionAsync");
+                bool timedout = false;
+                Android.Locations.Location result;
+                var firstResult = WaitForAccurateLocation(timeout, accuracy, out timedout);
+                if (!timedout)
+                {
+                    result = firstResult;
+                }
+                else
+                {
+                    var secondResult = WaitForAccurateLocation(fallbackTimeout, fallbackAccuracy, out timedout);    
+                    if (IsBetterLocation(secondResult, firstResult))
+                    {
+                        result = secondResult;
+                    }
+                    else
+                    {
+                        result = firstResult;
+                    }
+                }
                                                   
-                                                  var r = new Position { Latitude = result.Latitude, Longitude = result.Longitude };
-                                                  TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("END GetPositionAsync La {0} , ln{1}" , result.Latitude, result.Longitude );
-                                                  return r;
-                                              }, cancelToken);
+                var r = new Position { Latitude = result.Latitude, Longitude = result.Longitude };
+                TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("END GetPositionAsync La {0} , ln{1}", result.Latitude, result.Longitude);
+                return r;
+            }, cancelToken);
 
             task.Start();
             return task;
@@ -288,7 +282,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         public Position LastKnownPosition
         {
-            get { return new Position{ Latitude = _lastLocation.Latitude, Longitude = _lastLocation.Longitude } ;}  
+			get { return _lastLocation != null 
+					?  new Position
+						{
+							Latitude = _lastLocation.Latitude, 
+							Longitude = _lastLocation.Longitude, 
+						} 
+					: null;
+			}  
+
         }
     }
 }

@@ -135,8 +135,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             var popup = new UIAlertView (){AlertViewStyle = UIAlertViewStyle.PlainTextInput};
             popup.Title = "Server Url";
             popup.GetTextField (0).Text = TinyIoCContainer.Current.Resolve<IAppSettings> ().ServiceUrl;
-            var saveBtnIndex = popup.AddButton ("Save");
+
             var cancelBtnIndex = popup.AddButton ("Cancel");
+            var saveBtnIndex = popup.AddButton ("Save");
 
             popup.CancelButtonIndex = cancelBtnIndex;
 

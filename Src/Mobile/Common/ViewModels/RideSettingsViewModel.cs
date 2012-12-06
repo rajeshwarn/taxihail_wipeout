@@ -173,10 +173,6 @@ namespace apcurium.MK.Booking.Mobile
 					{
                     	ReturnResult(_bookingSettings);
 					}
-					else
-					{
-                		base.MessageService.ShowMessage(Resources.GetString("UpdateBookingSettingsInvalidDataTitle"), Resources.GetString("UpdateBookingSettingsEmptyField"));
-					}
                 });
             }
         }
@@ -187,8 +183,15 @@ namespace apcurium.MK.Booking.Mobile
 			    || string.IsNullOrEmpty(Phone)
 			    || Passengers <= 0)
 			{
+                base.MessageService.ShowMessage(Resources.GetString("UpdateBookingSettingsInvalidDataTitle"), Resources.GetString("UpdateBookingSettingsEmptyField"));
 				return false;
 			}
+            if ( Phone.Count(x => Char.IsDigit(x)) < 10 )
+            {
+                MessageService.ShowMessage(Resources.GetString("UpdateBookingSettingsInvalidDataTitle"), Resources.GetString("InvalidPhoneErrorMessage"));
+                return false;
+            }
+
 			return true;
 		}
 

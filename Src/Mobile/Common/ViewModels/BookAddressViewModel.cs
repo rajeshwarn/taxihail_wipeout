@@ -17,6 +17,7 @@ using apcurium.MK.Common.Diagnostic;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using Cirrious.MvvmCross.ExtensionMethods;
 using apcurium.MK.Booking.Mobile.Extensions;
+using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -33,10 +34,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private Action<Address> _setAddress;
         private string _id;
         private string _searchingTitle;
+        bool _isPickup;
 
         public event EventHandler AddressChanged;
 
-        public BookAddressViewModel (Func<Address> getAddress, Action<Address> setAddress, ILocationService geolocator)
+        public BookAddressViewModel (Func<Address> getAddress, Action<Address> setAddress, ILocationService geolocator, bool isPickup = false)
         {
             _getAddress = getAddress;
             _setAddress = setAddress;
@@ -44,6 +46,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _geolocator = geolocator;
             _searchingTitle = Resources.GetString ("AddressSearchingText");
             MessengerHub.Subscribe<AddressSelected> (OnAddressSelected, selected => selected.OwnerId == _id);
+            _isPickup = isPickup;
         }
 
         public string Title { get; set; }
@@ -56,8 +59,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (IsExecuting) {
                     return _searchingTitle;
                 }
-                if (Model.FullAddress.HasValue ()) {
-                    return Model.FullAddress;
+                if (Model.BookAddress.HasValue ()) {
+                    return Model.BookAddress;
                 } else {
                     return EmptyAddressPlaceholder;
                 }
@@ -126,7 +129,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return new MvxRelayCommand (() =>
                 {
                     CancelCurrentLocationCommand.Execute ();
-                    RequestNavigate<AddressSearchViewModel> (new { search = Model.FullAddress, ownerId = _id });
+                    if(Settings.StreetNumberScreenEnabled && _isPickup)
+                    {
+                        RequestNavigate<BookStreetNumberViewModel> (new { address = JsonSerializer.SerializeToString<Address>(Model), ownerId = _id });
+                    }else{
+                        RequestNavigate<AddressSearchViewModel> (new { search = Model.FullAddress, ownerId = _id });
+                    }
+
                 });
             }
         }
@@ -169,12 +178,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     if (IsExecuting) {
                         CancelCurrentLocationCommand.Execute ();
                     }
-                    Model.FullAddress = address.FullAddress;
-                    Model.Longitude = address.Longitude;
-                    Model.Latitude = address.Latitude;
-                    Model.Apartment = address.Apartment;
-                    Model.RingCode = address.RingCode;
-                    Model.BuildingName = address.BuildingName;
+
+                    address.Copy(Model);
 
                     FirePropertyChanged (() => Display);
                     FirePropertyChanged (() => Model);

@@ -160,7 +160,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 if (Order != null)
                 {
-                    return Order.PickupAddress.FullAddress;
+                    return Order.PickupAddress.BookAddress;
                 }
                 else
                 {
@@ -312,11 +312,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return new MvxRelayCommand(() =>
                 {
                     if (Common.Extensions.GuidExtensions.HasValue(OrderId))
-                        {
-                            TinyIoCContainer.Current.Resolve<IBookingService>().RemoveFromHistory(OrderId);
-                            MessengerHub.Publish(new OrderDeleted(this,OrderId,null));
-                            RequestNavigate<HistoryViewModel>(true);
-                        }
+                    {
+                        TinyIoCContainer.Current.Resolve<IBookingService>().RemoveFromHistory(OrderId);
+                        MessengerHub.Publish(new OrderDeleted(this,OrderId,null));
+                        Close();
+                    }
                 });
             }
         }

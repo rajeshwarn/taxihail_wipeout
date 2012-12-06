@@ -41,7 +41,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private bool mFirstLayout = true;
         private float mLastMotionX;
         private float mLastMotionY;
-        private OnScreenSwitchListener mOnScreenSwitchListener;
+        public event EventHandler<ScreenSwitchArgs> mOnScreenSwitchListener;
         private int mMaximumVelocity;
         private int mNextScreen = INVALID_SCREEN;
         private Scroller mScroller;
@@ -50,9 +50,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private VelocityTracker mVelocityTracker;
         private int mLastSeenLayoutWidth = -1;
 
-        private List<TutorialItemModel> _tutorialItemModel;
+        private TutorialItemModel[] _tutorialItemModel;
 
-        public List<TutorialItemModel> TutorialItemModel
+        public TutorialItemModel[] TutorialItemModel
         {
             get { return _tutorialItemModel; }
             set { _tutorialItemModel = value; this.init(); }
@@ -101,14 +101,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private void init()
         {
-            var viewOrder = new int[TutorialItemModel.Count];
+            var viewOrder = new int[TutorialItemModel.Count()];
             var inflater = (LayoutInflater)Context.GetSystemService(Context.LayoutInflaterService);
-            for (int i = 0; i < TutorialItemModel.Count; i++)
+            for (int i = 0; i < TutorialItemModel.Count(); i++)
             {
                 View vw = inflater.Inflate(Resource.Layout.TutorialListItem, null);
                 vw.Id = Resource.Layout.TutorialListItem + i;
                 vw.FindViewById<TextView>(Resource.Id.TutorialTopText).Text = TutorialItemModel[i].TopText;
                 vw.FindViewById<TextView>(Resource.Id.TutorialBottomText).Text = TutorialItemModel[i].BottomText;
+                vw.FindViewById<TextView>(Resource.Id.TutorialTopTitleText).Text = TutorialItemModel[i].TopTitle;
+                vw.FindViewById<TextView>(Resource.Id.TutorialBottomTitleText).Text = TutorialItemModel[i].BottomTitle;
                 var resource = Resources.GetIdentifier(TutorialItemModel[i].ImageUri, "drawable", Context.PackageName);
                 vw.FindViewById<ImageView>(Resource.Id.TutorialImage).SetImageResource(resource);
                 this.AddView(vw);
@@ -460,11 +462,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             {
                 mCurrentScreen = Math.Max(0, Math.Min(mNextScreen, ChildCount - 1));
 
-
                 // Notify observer about screen change
                 if (mOnScreenSwitchListener != null)
                 {
-                    mOnScreenSwitchListener.onScreenSwitched(mCurrentScreen);
+                    mOnScreenSwitchListener(this, new ScreenSwitchArgs(mCurrentScreen));
                 }
 
 
@@ -513,10 +514,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
          * @param onScreenSwitchListener The listener for switch events.
          */
 
-        public void setOnScreenSwitchListener(OnScreenSwitchListener onScreenSwitchListener)
-        {
-            mOnScreenSwitchListener = onScreenSwitchListener;
-        }
+        
 
 
         /**
@@ -613,5 +611,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
              */
             void onScreenSwitched(int screen);
         }
+    }
+
+    public class ScreenSwitchArgs : EventArgs
+    {
+        public ScreenSwitchArgs(int mCurrentScreen)
+        {
+            Screen = mCurrentScreen;
+        }
+
+        public int Screen { get; set; }
     }
 }

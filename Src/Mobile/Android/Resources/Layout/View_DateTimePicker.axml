@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.TaxiHailDemo"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
@@ -8,8 +9,7 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/textView1"
-         />
+        android:id="@+id/textView1" />
     <DatePicker
         android:layout_width="fill_parent"
         android:layout_height="125dp"
@@ -31,10 +31,11 @@
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="15dip"        
+        android:layout_margin="15dip"
         android:gravity="center_horizontal"
         android:weightSum="1.0">
-        <Button
+        <apcurium.mk.booking.mobile.client.controls.StyledButton
+            local:ButtonStyle="Green"
             android:id="@+id/DoneButton"
             style="@style/ButtonText"
             android:background="@drawable/green_button"
@@ -44,13 +45,14 @@
             android:singleLine="true"
             android:lines="1"
             android:text="@string/DateTimePickerSetButton" />
-        <Button
+        <apcurium.mk.booking.mobile.client.controls.StyledButton
+            local:ButtonStyle="Grey"
             android:id="@+id/NowButton"
             style="@style/ButtonText"
-            android:background="@drawable/green_button"
+            android:background="@drawable/gray_button"
             android:layout_width="fill_parent"
             android:layout_height="40dip"
             android:layout_weight="0.5"
-            android:text="@string/TimeNow" />
+            android:text="@string/CancelBoutton" />
     </LinearLayout>
 </LinearLayout>
