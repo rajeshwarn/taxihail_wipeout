@@ -110,7 +110,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 			finally
 			{				
-				TinyIoCContainer.Current.Resolve<IMessageService>().ShowProgress(false);
+				MessageService.ShowProgress(false);	
 			}
 		}
 
