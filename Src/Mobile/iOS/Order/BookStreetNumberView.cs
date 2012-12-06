@@ -39,7 +39,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             base.ViewDidLoad ();		
 
             View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
+            lblRefineAddress.Font = AppStyle.NormalTextFont;
             lblRefineAddress.Text = Resources.GetValue("StreetNumberLabel");
+            lblStreetName.Font = AppStyle.BoldTextFont;
             AppButtons.FormatStandardButton((GradientButton)btnSearch, Resources.GetValue("StreetNumberSearchBt"), AppStyle.ButtonColor.Grey, "Assets/Search/SearchIcon.png", "Assets/Cells/rightArrow.png");
 
             var button = new MonoTouch.UIKit.UIBarButtonItem(Resources.DoneButton, UIBarButtonItemStyle.Plain, delegate {
