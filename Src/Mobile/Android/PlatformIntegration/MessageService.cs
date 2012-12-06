@@ -20,14 +20,19 @@ using apcurium.MK.Booking.Mobile.Messages;
 using Cirrious.MvvmCross.Android.Views;
 using Cirrious.MvvmCross.Views;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Android.Interfaces;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
     public class MessageService : IMessageService
     {
+
         public const string ACTION_SERVICE_MESSAGE = "Mk_Taxi.ACTION_SERVICE_MESSAGE";
         public const string ACTION_EXTRA_MESSAGE = "Mk_Taxi.ACTION_EXTRA_MESSAGE";
-        public MessageService(Context context)
+
+
+
+		public MessageService(Context context)
         {
             Context = context;
         }
@@ -43,8 +48,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			presenter.Show(new MvxShowViewModelRequest(type, null, false, MvxRequestedBy.UserAction));
 		}
 
-
-
         public void ShowMessage(string title, string message)
         {
             
@@ -54,7 +57,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             i.PutExtra("Message", message);
             Context.StartActivity(i); 
         }
-
         
         public void ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction)
         {
@@ -125,7 +127,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 		{
 			throw new NotImplementedException();
 		}
-		
 
         public void ShowMessage(string title, string message, Action additionalAction)
         {            
@@ -149,34 +150,43 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			Context.StartActivity(i);
         }
 
-        public void ShowProgress(bool show)
-        {
-            /*TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher.RequestMainThreadAction(
-                () =>
-                    {
-                        new ProgressDialog(Context).Show();.Show(Context, "", "LoadingMessage", true,
-                                                              false);
-                       _progressDialog.Show();
-                    }
-                );*/
-			/* var i = new Intent(Context, typeof(ShowDialogActivity));
-            i.AddFlags(ActivityFlags.NewTask | ActivityFlags..ReorderToFront);
-            i.PutExtra("Show", show.ToString());
-            Context.StartActivity(i);
-            Context.ac*/
-        }          
+		Dictionary<string,ProgressDialog> progressDialogs = new Dictionary<string, ProgressDialog>();
 
-        public void ShowProgress(bool show, Action cancel)
-        {
-            var i = new Intent(Context, typeof(ShowDialogActivity));
-            i.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
-            i.PutExtra("Show", show.ToString());
-        }
+        public void ShowProgress (bool show)
+		{
+			TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher.RequestMainThreadAction(() =>{
+
+				var activity = TinyIoCContainer.Current.Resolve<IMvxAndroidCurrentTopActivity>().Activity;
+				ProgressDialog progress = null;
+				progressDialogs.TryGetValue(activity.Title, out progress);
+				if(show)
+				{ 
+					if(progress == null)
+					{
+						progress = new ProgressDialog(activity);
+						progress .SetTitle(string.Empty);
+						progress .SetMessage(activity.GetString(Resource.String.LoadingMessage));
+						progressDialogs[activity.Title] = progress;
+					}
+					progress.Show();
+
+				}else{
+					if(progress != null
+					   && progress.IsShowing)
+					{
+						progress.Dismiss();
+						progressDialogs.Remove(activity.Title);
+					}
+				}
+			});
+        }      
 
         public void ShowToast(string message, ToastDuration duration )
         {
-            Toast toast = Toast.MakeText(Context, message , duration == ToastDuration.Short ?  ToastLength.Short : ToastLength.Long );
-            toast.Show();
+			TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher.RequestMainThreadAction(() =>{
+	            Toast toast = Toast.MakeText(Context, message , duration == ToastDuration.Short ?  ToastLength.Short : ToastLength.Long );
+	            toast.Show();
+			});
         }
 
 		public void ShowDialog<T> (string title, IEnumerable<T> items, Func<T, string> displayNameSelector, Action<T> onResult)
