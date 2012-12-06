@@ -76,7 +76,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             RefreshStatusDisplay ();
 
             if (_timer == null) {           
-                _timer = NSTimer.CreateRepeatingScheduledTimer (TimeSpan.FromSeconds (4), RefreshStatus);
+                _timer = NSTimer.CreateRepeatingScheduledTimer (TimeSpan.FromSeconds (10), RefreshStatus);
             }
 
         }
