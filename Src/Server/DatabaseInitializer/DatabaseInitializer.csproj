@@ -87,7 +87,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="OldEvents\FavoriteAddressUpdatedv1.cs" />
+    <Compile Include="OldEvents\FavoriteAddressv1.cs" />
     <Compile Include="Services\EventsMigrator.cs" />
     <Compile Include="Services\IEventsMigrator.cs" />
     <Compile Include="Module.cs" />
