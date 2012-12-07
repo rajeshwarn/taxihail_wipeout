@@ -171,7 +171,6 @@
   <data name="BookItLaterButton" xml:space="preserve">
     <value>Later</value>
   </data>
-  
   <data name="LocationHistoryTitle" xml:space="preserve">
     <value>Locations history</value>
   </data>
@@ -781,7 +780,7 @@
   <data name="ServiceErrorUnauthorized" xml:space="preserve">
     <value>An unauthorized call has been made to server, you will be redirected to login page.</value>
   </data>
-   <data name="ServiceErrorUpdatePassword_NotSame" xml:space="preserve">
+  <data name="ServiceErrorUpdatePassword_NotSame" xml:space="preserve">
     <value>The current password is not valid.</value>
   </data>
   <data name="ServiceErrorResetPassword_AccountNotFound" xml:space="preserve">
@@ -1042,7 +1041,6 @@
   <data name="ChangePasswordConfirmmation" xml:space="preserve">
     <value>You password has been updated, please sign in.</value>
   </data>
-
   <data name="Tuto01Bottom" xml:space="preserve">
     <value>Start by selecting your current position.</value>
   </data>
@@ -1098,9 +1096,9 @@
     <value>Refine your address</value>
   </data>
   <data name="StreetNumberSearchBt" xml:space="preserve">
-    <value>Search</value>
+    <value>Use a different address</value>
   </data>
-   <data name="StreetNumberDoneBt" xml:space="preserve">
+  <data name="StreetNumberDoneBt" xml:space="preserve">
     <value>Use This Address</value>
   </data>
 </root>

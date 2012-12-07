@@ -15,32 +15,34 @@
         android:paddingTop="15dip"
         android:orientation="vertical">
         <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-	        <TextView
-	            style="@style/FormLabelText"
-	            android:id="@+id/streetNumberLabel"
-	            android:textStyle="normal"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_centerHorizontal="true"
-	            android:text="@string/StreetNumberLabel" />
-	        <EditText
-	            android:id="@+id/streetNumberText"
-	            android:layout_width="190dip"
-	            android:layout_height="wrap_content"
-	            android:layout_centerHorizontal="true"
-	            android:gravity="center"
-	            android:layout_below="@id/streetNumberLabel"
-	            android:inputType="text"
-	            local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;StreetNumberOrBuildingName&apos;}}" />
-	        <TextView
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_centerHorizontal="true"
-	            android:layout_below="@id/streetNumberText"
-	            local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Model.Street&apos;}}"
-	            style="@style/FormLabelText" />
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                style="@style/FormLabelText"
+                android:id="@+id/streetNumberLabel"
+                android:textStyle="normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="@string/StreetNumberLabel" />
+            <EditText
+                android:id="@+id/streetNumberText"
+                android:layout_width="190dip"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:layout_below="@id/streetNumberLabel"
+                android:inputType="number"
+                local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;StreetNumberOrBuildingName&apos;}}"
+                android:focusable="true"
+                android:focusableInTouchMode="true" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/streetNumberText"
+                local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Model.Street&apos;}}"
+                style="@style/FormLabelText" />
         </RelativeLayout>
         <apcurium.mk.booking.mobile.client.controls.StyledButton
             local:ButtonStyle="Green"
