@@ -302,7 +302,7 @@
 "searchHint"="Search";
 "CreateAccountErrorTitle"="Error";
 "CreateAccountLanguageFrench"="French";
-"BookItButton"="TaxiHail rocks!";
+"BookItButton"="Book Now";
 "ConfirmDestinationLabel"="Destination";
 "NearbyPlacesTitle"="Nearby places";
 "GenericTitle"="";
@@ -333,7 +333,8 @@
 "CreateAccountCancel"="Cancel";
 "InvalidPhoneErrorMessage"="The mobile number is invalid. It must contain 10 numbers.";
 "StreetNumberSearchBt"="Search";
-"StreetNumberTitle"="Address's Details";
+"StreetNumberTitle"="Address Details";
 "StreetNumberLabel"="Refine your address";
 "RideSettingsPassword"="Password";
-"StreetNumberDoneBt"="use this address";
+"StreetNumberDoneBt"="Use This Address";
+"ServiceErrorResetPassword_AccountNotFound"="No account with this email has been found.";

@@ -317,7 +317,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public bool CanClearAddress
         {
-            get { return DropoffIsActive && ( Dropoff != null) && (Dropoff.Model != null) && Dropoff.Model.HasValidCoordinate(); }
+            get { 
+                return DropoffIsActive && ( Dropoff != null) && (Dropoff.Model != null) && Dropoff.Model.HasValidCoordinate(); 
+            }
         }
 
         public bool NoAddressActiveSelection
@@ -535,33 +537,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
 
         private void CompleteOrder (CreateOrder order)
-		{
-
-			order.Id = Guid.NewGuid ();
-			try {
-				MessageService.ShowProgress (true);
-				var orderInfo = _bookingService.CreateOrder (order);
-
-				if (orderInfo.IBSOrderId.HasValue
-					&& orderInfo.IBSOrderId > 0) {
-					var orderCreated = new Order { CreatedDate = DateTime.Now, DropOffAddress = order.DropOffAddress, IBSOrderId = orderInfo.IBSOrderId, Id = order.Id, PickupAddress = order.PickupAddress, Note = order.Note, PickupDate = order.PickupDate.HasValue ? order.PickupDate.Value : DateTime.Now, Settings = order.Settings };
-
-					ShowStatusActivity (orderCreated, orderInfo);
-
-				}
-
-				NewOrder ();
-
-			} catch (Exception ex) {
-				InvokeOnMainThread (() =>
-				{
-					var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
-					string err = string.Format (Resources.GetString ("ServiceError_ErrorCreatingOrderMessage"), settings.ApplicationName, settings.PhoneNumberDisplay (order.Settings.ProviderId.HasValue ? order.Settings.ProviderId.Value : 1));
-					MessageService.ShowMessage (Resources.GetString ("ErrorCreatingOrderTitle"), err);
-				});
-			} finally {
-				MessageService.ShowProgress(false);
-			}
+		{	
+			NewOrder ();
         }
 
         private void ShowStatusActivity(Order data, OrderStatusDetail orderInfo)

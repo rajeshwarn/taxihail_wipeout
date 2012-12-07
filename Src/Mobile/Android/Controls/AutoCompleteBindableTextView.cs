@@ -58,7 +58,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             {
                 var subsciption = Observable.FromEvent<TextChangedEventArgs>(
                             ev => this.TextChanged += (sender2, e2) => { ev(e2); },
-                            ev => this.TextChanged -= (sender3, e3) => { ev(e3); }).Select(c=>c.Text.ToString());
+                            ev => this.TextChanged -= (sender3, e3) => { ev(e3); }).Select(x=>x.Text.ToString());
 
                 _subscription = subsciption.Throttle(TimeSpan.FromMilliseconds(700)).Subscribe(ExecuteCommand);
                 _subscriptionTypeStart = subsciption.Subscribe(_ =>
@@ -76,9 +76,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-
-        private void ExecuteCommand(string text)
-        {
+		private void ExecuteCommand(string text)
+		{
             if ((TextChangedCommand != null) && (TextChangedCommand.CanExecute()))
             {
                 TextChangedCommand.Execute(text);

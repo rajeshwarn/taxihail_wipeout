@@ -452,6 +452,7 @@
     <Compile Include="Views\MvxViewsContainer.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Touch\Views\Attributes\NoHistoryAttribute.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup />

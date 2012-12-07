@@ -327,9 +327,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			if (address.Latitude != 0 && address.Longitude != 0)
 			{
 				_dropoffPin = MapUtitilties.MapService.AddPushPin(this, Resources.GetDrawable(Resource.Drawable.pin_destination), address, address.FullAddress);
-				if(_dropoffCenterPin!= null) _dropoffCenterPin.Visibility = ViewStates.Gone;
 			}
-
+			if(_dropoffCenterPin!= null) _dropoffCenterPin.Visibility = ViewStates.Gone;
+			
 		}
 		
 		private void ShowPickupPin (Address address)
@@ -346,8 +346,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			if (address.Latitude != 0 && address.Longitude != 0)
 			{
 				_pickupPin = MapUtitilties.MapService.AddPushPin(this, Resources.GetDrawable(Resource.Drawable.pin_hail), address,  address.FullAddress);
-				if(_pickupCenterPin!= null) _pickupCenterPin.Visibility = ViewStates.Gone;
 			}
+			if(_pickupCenterPin!= null) _pickupCenterPin.Visibility = ViewStates.Gone;
 		}
     }
 }

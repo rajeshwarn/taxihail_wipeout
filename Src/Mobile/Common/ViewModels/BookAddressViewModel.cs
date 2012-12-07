@@ -129,7 +129,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return GetCommand(() =>
                 {
                     CancelCurrentLocationCommand.Execute ();
-                    if(Settings.StreetNumberScreenEnabled && _isPickup)
+                    if(Settings.StreetNumberScreenEnabled 
+                        && _isPickup
+                        && Model.BookAddress.HasValue())
                     {
                         RequestNavigate<BookStreetNumberViewModel> (new { address = JsonSerializer.SerializeToString<Address>(Model), ownerId = _id });
                     }else{
@@ -209,6 +211,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 FirePropertyChanged (() => Display);
                 FirePropertyChanged (() => Model);
                 IsExecuting = false;
+                if (AddressChanged != null) {
+                    AddressChanged (true, EventArgs.Empty);
+                }
             });
         }
 

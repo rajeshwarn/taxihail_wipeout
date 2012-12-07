@@ -8,6 +8,7 @@ using ServiceStack.Common.Web;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.Security;
@@ -29,7 +30,7 @@ namespace apcurium.MK.Booking.Api.Services
         public override object OnPost(ResetPassword request)
         {
             var user = _dao.FindByEmail(request.EmailAddress);
-            if (user == null) throw HttpError.NotFound("Account not found");
+            if (user == null) throw new HttpError(ErrorCode.ResetPassword_AccountNotFound.ToString());
 
             // In case user is signed in, sign out user to force him to authenticate again
             base.RequestContext.Get<IHttpRequest>().RemoveSession();

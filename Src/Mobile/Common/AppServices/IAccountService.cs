@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		
 		IEnumerable<ListItem> GetPaymentsList(  );
 
-		bool ResetPassword( string email );
+        void ResetPassword( string email );
 
 		string UpdatePassword( Guid accountId, string currentPassword, string newPassword );
 
@@ -46,8 +46,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         IEnumerable<Address> GetHistoryAddresses();
 
         IEnumerable<Address> GetFavoriteAddresses();
-
-
 
         void UpdateAddress(Address address);
 

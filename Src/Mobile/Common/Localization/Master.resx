@@ -784,6 +784,9 @@
    <data name="ServiceErrorUpdatePassword_NotSame" xml:space="preserve">
     <value>The current password is not valid.</value>
   </data>
+  <data name="ServiceErrorResetPassword_AccountNotFound" xml:space="preserve">
+    <value>No account with this email has been found.</value>
+  </data>
   <data name="BookDateLabel" xml:space="preserve">
     <value>Pick Me Up Later</value>
   </data>
@@ -1089,7 +1092,7 @@
     <value>You can review your order history at any time, and even rebook a previous trip with the push of a button</value>
   </data>
   <data name="StreetNumberTitle" xml:space="preserve">
-    <value>Address's Details</value>
+    <value>Address Details</value>
   </data>
   <data name="StreetNumberLabel" xml:space="preserve">
     <value>Refine your address</value>

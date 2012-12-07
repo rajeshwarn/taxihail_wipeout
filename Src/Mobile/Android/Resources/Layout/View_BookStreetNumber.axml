@@ -14,21 +14,34 @@
         android:paddingRight="15dip"
         android:paddingTop="15dip"
         android:orientation="vertical">
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/StreetNumberLabel"
-            style="@style/FormLabelText" />
-        <EditText
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;StreetNumberOrBuildingName&apos;}}" />
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Model.Street&apos;}}"
-            style="@style/FormLabelText" />
+        <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+	        <TextView
+	            style="@style/FormLabelText"
+	            android:id="@+id/streetNumberLabel"
+	            android:textStyle="normal"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_centerHorizontal="true"
+	            android:text="@string/StreetNumberLabel" />
+	        <EditText
+	            android:id="@+id/streetNumberText"
+	            android:layout_width="190dip"
+	            android:layout_height="wrap_content"
+	            android:layout_centerHorizontal="true"
+	            android:gravity="center"
+	            android:layout_below="@id/streetNumberLabel"
+	            android:inputType="text"
+	            local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;StreetNumberOrBuildingName&apos;}}" />
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_centerHorizontal="true"
+	            android:layout_below="@id/streetNumberText"
+	            local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Model.Street&apos;}}"
+	            style="@style/FormLabelText" />
+        </RelativeLayout>
         <apcurium.mk.booking.mobile.client.controls.StyledButton
             local:ButtonStyle="Green"
             android:id="@+id/SaveSettingsButton"
@@ -38,11 +51,10 @@
             android:layout_height="40dip"
             android:text="@string/StreetNumberDoneBt"
             local:MvxBind="{&apos;Click&apos;: {&apos;Path&apos;: &apos;SaveCommand&apos;}}" />
-        <apcurium.mk.booking.mobile.client.controls.EditTextNavigate
+        <apcurium.mk.booking.mobile.client.controls.SearchButton
             android:id="@+id/StreetNumberBtSearch"
             android:paddingTop="50dip"
             local:MvxBind="{&apos;NavigateCommand&apos;:{&apos;Path&apos;:&apos;NavigateToSearch&apos;}}"
-            android:layout_gravity="center_horizontal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>

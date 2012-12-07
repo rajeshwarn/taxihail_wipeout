@@ -239,6 +239,12 @@
     <AndroidResource Include="Resources\Values\StyledButtonAttributes.xml" />
     <AndroidResource Include="Resources\Drawable\button_no_background.xml" />
     <AndroidResource Include="Resources\drawable-hdpi\closeButton.png" />
+    <Compile Include="Controls\SearchButton.cs" />
+    <AndroidResource Include="Resources\Layout\Control_SearchButton.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Drawable\right_arrow_light.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\right_arrow_light.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />

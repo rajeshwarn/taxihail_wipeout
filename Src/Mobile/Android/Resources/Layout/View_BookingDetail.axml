@@ -6,6 +6,7 @@
     android:layout_height="fill_parent"
     android:gravity="center_horizontal"
     android:focusable="true"
+    android:noHistory="true"
     android:focusableInTouchMode="true">
     <RelativeLayout
         android:layout_width="fill_parent"
