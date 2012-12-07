@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             ButtonStyle = StyleManager.Current.Buttons.Single( b=>b.Key.ToLower() == style.ToLower() );
 
             SetTextColor( ButtonStyle.TextColor.ConvertToColor() );
-
+			SetTextShadow( ButtonStyle.TextShadowColor);
         }
         
         public StyledButton(IntPtr ptr, Android.Runtime.JniHandleOwnership handle)
@@ -51,7 +51,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             private set;
         }
 
+		void SetTextShadow (ColorDefinition textShadowColor)
+		{
+			if(textShadowColor == null) return;
 
+			this.SetShadowLayer(1,0,1,textShadowColor.ConvertToColor());
+		}
     }
 }
 
