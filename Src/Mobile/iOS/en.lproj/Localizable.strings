@@ -332,7 +332,7 @@
 "CreateAccountCreate"="Create";
 "CreateAccountCancel"="Cancel";
 "InvalidPhoneErrorMessage"="The mobile number is invalid. It must contain 10 numbers.";
-"StreetNumberSearchBt"="Search";
+"StreetNumberSearchBt"="Use a different address";
 "StreetNumberTitle"="Address Details";
 "StreetNumberLabel"="Refine your address";
 "RideSettingsPassword"="Password";

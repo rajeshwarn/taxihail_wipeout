@@ -44,6 +44,16 @@ namespace apcurium.MK.Booking.Mobile.Client
             lblStreetName.Font = AppStyle.BoldTextFont;
             AppButtons.FormatStandardButton((GradientButton)btnSearch, Resources.GetValue("StreetNumberSearchBt"), AppStyle.ButtonColor.Grey, "Assets/Search/SearchIcon.png", "Assets/Cells/rightArrow.png");
 
+            BeginInvokeOnMainThread(()=>{
+            txtStreetNumber.SelectAll(new NSObject(NSObjectFlag.Empty));
+            });
+
+            txtStreetNumber.KeyboardType = UIKeyboardType.NumberPad;
+            txtStreetNumber.ShouldReturn = delegate {
+                txtStreetNumber.ResignFirstResponder();
+                return true;
+            };
+
             var button = new MonoTouch.UIKit.UIBarButtonItem(Resources.DoneButton, UIBarButtonItemStyle.Plain, delegate {
                 ViewModel.SaveCommand.Execute();
             });
