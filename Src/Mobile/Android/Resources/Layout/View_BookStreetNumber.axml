@@ -32,7 +32,6 @@
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
                 android:layout_below="@id/streetNumberLabel"
-                android:inputType="number"
                 local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;StreetNumberOrBuildingName&apos;}}"
                 android:focusable="true"
                 android:focusableInTouchMode="true" />

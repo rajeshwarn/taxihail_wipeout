@@ -48,7 +48,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             txtStreetNumber.SelectAll(new NSObject(NSObjectFlag.Empty));
             });
 
-            txtStreetNumber.KeyboardType = UIKeyboardType.NumberPad;
             txtStreetNumber.ShouldReturn = delegate {
                 txtStreetNumber.ResignFirstResponder();
                 return true;
