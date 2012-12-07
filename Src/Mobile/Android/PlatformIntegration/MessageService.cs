@@ -150,32 +150,30 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			Context.StartActivity(i);
         }
 
-		Dictionary<string,ProgressDialog> progressDialogs = new Dictionary<string, ProgressDialog>();
+		Stack<ProgressDialog> progressDialogs = new Stack<ProgressDialog>();
 
         public void ShowProgress (bool show)
 		{
 			TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher.RequestMainThreadAction(() =>{
 
 				var activity = TinyIoCContainer.Current.Resolve<IMvxAndroidCurrentTopActivity>().Activity;
-				ProgressDialog progress = null;
-				progressDialogs.TryGetValue(activity.Title, out progress);
+
 				if(show)
-				{ 
-					if(progress == null)
-					{
-						progress = new ProgressDialog(activity);
-						progress .SetTitle(string.Empty);
-						progress .SetMessage(activity.GetString(Resource.String.LoadingMessage));
-						progressDialogs[activity.Title] = progress;
-					}
+				{ 		
+					var progress = new ProgressDialog(activity);
+					progressDialogs.Push(progress);
+					progress.SetTitle(string.Empty);
+					progress.SetMessage(activity.GetString(Resource.String.LoadingMessage));
 					progress.Show();
 
 				}else{
-					if(progress != null
-					   && progress.IsShowing)
+					var progressPrevious = progressDialogs.Pop();
+					if(progressPrevious != null
+					   && progressPrevious.IsShowing)
 					{
-						progress.Dismiss();
-						progressDialogs.Remove(activity.Title);
+						try{
+							progressPrevious.Dismiss();
+						}catch{} // on peut avoir une exception ici si activity est plus présente, pas grave
 					}
 				}
 			});

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using apcurium.MK.Common.Extensions;
 using System.Linq;
 
@@ -79,7 +79,7 @@ namespace apcurium.MK.Common.Entity
             }
         }
 
-        public void Copy (Address address)
+        public void CopyTo (Address address)
         {
             if(address == null) return;
             address.FullAddress = this.FullAddress;

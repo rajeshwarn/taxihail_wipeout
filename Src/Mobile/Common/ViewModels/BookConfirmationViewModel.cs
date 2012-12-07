@@ -29,18 +29,33 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		IMvxServiceConsumer<ICacheService>
     {
 		IBookingService _bookingService;
+        IAccountService _accountService;
 
         public BookConfirmationViewModel (string order)
         {
-			var accountService = this.GetService<IAccountService>();
+            _accountService = this.GetService<IAccountService>();
 			_bookingService = this.GetService<IBookingService>();
-            Order = JsonSerializer.DeserializeFromString<CreateOrder>( order );
-			Order.Settings = accountService.CurrentAccount.Settings;
+            Order = JsonSerializer.DeserializeFromString<CreateOrder>(order);	
+			Order.Settings = _accountService.CurrentAccount.Settings;
+        }
 
-			RideSettings = new RideSettingsModel(Order.Settings, accountService.GetCompaniesList(), accountService.GetVehiclesList(), accountService.GetPaymentsList());
-			FareEstimate = _bookingService.GetFareEstimateDisplay(Order, null, "NotAvailable", false);
+        public override void OnViewLoaded ()
+        {
+            base.OnViewLoaded ();
+            try {
 
-
+                MessageService.ShowProgress (true);                
+                RideSettings = new RideSettingsModel (Order.Settings, _accountService.GetCompaniesList (), _accountService.GetVehiclesList (), _accountService.GetPaymentsList ());
+                FareEstimate = _bookingService.GetFareEstimateDisplay (Order, null, "NotAvailable", false);
+                ShowFareEstimateAlertDialogIfNecessary();
+                ShowChooseProviderDialogIfNecessary();
+				FirePropertyChanged ( () => Vehicles );
+				FirePropertyChanged ( () => Payments );
+				FirePropertyChanged ( () => VehicleName );
+				FirePropertyChanged ( () => ChargeType );
+            } finally {
+                MessageService.ShowProgress (false);
+            }
         }
 
         public void SetVehicleTypeId( int id )
@@ -70,38 +85,29 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             
         public ListItem[] Vehicles {
             get {
-                return RideSettings.VehicleTypeList;
+				return RideSettings != null  ? RideSettings.VehicleTypeList : null;
             }
         }
 
         public ListItem[] Payments {
             get {
-                return RideSettings.ChargeTypeList;
+				return RideSettings != null  ? RideSettings.ChargeTypeList : null;
             }
         }
 
         public string VehicleName {
             get {
-                return RideSettings.VehicleTypeName;
+				return RideSettings != null  ? RideSettings.VehicleTypeName : null;
             }
         }
 
         public string ChargeType{
             get {
-                return RideSettings.ChargeTypeName;
+				return RideSettings != null  ? RideSettings.ChargeTypeName : null;
             }
         }
 
-		public override void OnViewLoaded ()
-		{
-			base.OnViewLoaded ();
-
-			ShowFareEstimateAlertDialogIfNecessary();
-			ShowChooseProviderDialogIfNecessary();
-
-		}
-
-        public CreateOrder Order { get; private set; }
+		public CreateOrder Order { get; private set; }
 		public string AptRingCode {
 			get {
 				return FormatAptRingCode(Order.PickupAddress.Apartment, Order.PickupAddress.RingCode);

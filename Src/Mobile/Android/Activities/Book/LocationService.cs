@@ -8,6 +8,7 @@ using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
 using Android.Locations;
+using Android.OS;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -63,17 +64,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _lastLocation = null;
             if ( _locMgr.IsProviderEnabled( LocationManager.GpsProvider ) )
             {
-                _locMgr.RequestLocationUpdates(LocationManager.GpsProvider, 0, 0, _gpsListener);
+               _locMgr.RequestLocationUpdates(LocationManager.GpsProvider, 0, 0, _gpsListener, Looper.MainLooper);
             }
 
             if ( _locMgr.IsProviderEnabled( LocationManager.NetworkProvider ) )
             {
-                _locMgr.RequestLocationUpdates(LocationManager.NetworkProvider, 0, 0, _networkListener);
+				_locMgr.RequestLocationUpdates(LocationManager.NetworkProvider, 0, 0, _networkListener, Looper.MainLooper);
             }
-
-
-
-
         }
 
         public DateTime FromUnixTime(long unixTime)
@@ -89,59 +86,56 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             return r;
         }
 
-        public Android.Locations.Location WaitForAccurateLocation(int timeout, float accuracy, out bool timeoutExpired)
-        {
-            var autoReset = new AutoResetEvent(false);
-            var result = LastLocation;
+        public Android.Locations.Location WaitForAccurateLocation (int timeout, float accuracy, out bool timeoutExpired)
+		{
+			var autoReset = new AutoResetEvent (false);
+			var result = LastLocation;
             
-            TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Start WaitForAccurateLocation");
+			TinyIoCContainer.Current.Resolve<ILogger> ().LogMessage ("Start WaitForAccurateLocation");
 
-            timeoutExpired = true;
+			timeoutExpired = true;
 
-            bool exit = false;
-            var timeoutExpiredResult = true;
+			bool exit = false;
+			var timeoutExpiredResult = true;
 
-            Thread.Sleep(500);
+			Thread.Sleep (500);
 
-            var watch = new Stopwatch();
-            watch.Start();
+			var watch = new Stopwatch ();
+			watch.Start ();
 
-            LastLocation = _locMgr.GetLastKnownLocation(_locMgr.GetBestProvider(new Criteria(), true));
-            while (!exit)
-            {
-                if (LastLocation != null)
-                {
-                    TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("xxxxxxxxxxxxxxxxxxxCurrent location : " + LastLocation.Provider + " pos Lat : " + LastLocation.Latitude.ToString() + "Pos Long : " + LastLocation.Longitude.ToString() + " + Accuracy : " + LastLocation.Accuracy.ToString());
+			LastLocation = _locMgr.GetLastKnownLocation (_locMgr.GetBestProvider (new Criteria (), true));
+			while (!exit) {
+				if (LastLocation != null) {
+					TinyIoCContainer.Current.Resolve<ILogger> ().LogMessage ("xxxxxxxxxxxxxxxxxxxCurrent location : " + LastLocation.Provider + " pos Lat : " + LastLocation.Latitude.ToString () + "Pos Long : " + LastLocation.Longitude.ToString () + " + Accuracy : " + LastLocation.Accuracy.ToString ());
 
-                    result = LastLocation;
-                    if (result.Accuracy <= accuracy)
-                    {
-                        TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Good location found! : " +
-                            result.Provider.ToString());
-                        timeoutExpiredResult = false;
-                        exit = true;
-                    }
-                }
+					result = LastLocation;
+					if (result.Accuracy <= accuracy) {
+						TinyIoCContainer.Current.Resolve<ILogger> ().LogMessage ("Good location found! : " +
+							result.Provider.ToString ());
+						timeoutExpiredResult = false;
+						exit = true;
+					}
+				}
 
                 
-                Thread.Sleep(500);
+				Thread.Sleep (500);
                 
 
-                if (watch.ElapsedMilliseconds >= timeout)
-                {
-                    exit = true;
-                    timeoutExpiredResult = true;
-                }
-            }
+				if (watch.ElapsedMilliseconds >= timeout) {
+					exit = true;
+					timeoutExpiredResult = true;
+				}
+			}
 
 
-            if (timeoutExpiredResult)
-            {
-                TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Location search timed out");                
-                result = LastLocation;
-            }
+			if (timeoutExpiredResult) {
+				TinyIoCContainer.Current.Resolve<ILogger> ().LogMessage ("Location search timed out");                
+				result = LastLocation;
+			} else {
+				TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("xxxxxxxxxxxxxxxxxxxCurrent location : " + result.Provider + " pos Lat : " + result.Latitude.ToString() + "Pos Long : " + result.Longitude.ToString() + " + Accuracy : " + result.Accuracy.ToString());
+			}
 
-            TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("xxxxxxxxxxxxxxxxxxxCurrent location : " + result.Provider + " pos Lat : " + result.Latitude.ToString() + "Pos Long : " + result.Longitude.ToString() + " + Accuracy : " + result.Accuracy.ToString());
+            
             TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Done WaitForAccurateLocation");
 
             timeoutExpired = timeoutExpiredResult;
@@ -243,10 +237,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             Start();
         }
 
+		private Task<Position> _last;
+
         public Task<Position> GetPositionAsync(int timeout, float accuracy, int fallbackTimeout, float fallbackAccuracy, CancellationToken cancelToken)
         {
+			if ( ( _last != null ) && ( _last.Status == TaskStatus.Running  ))
+			{
+				return _last;
+			}
             Start();
-            var task = new Task<Position>(() =>
+			_last = new Task<Position>(() =>
             {
                 TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("GetPositionAsync");
                 bool timedout = false;
@@ -268,14 +268,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                         result = firstResult;
                     }
                 }
-                                                  
-                var r = new Position { Latitude = result.Latitude, Longitude = result.Longitude };
-                TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("END GetPositionAsync La {0} , ln{1}", result.Latitude, result.Longitude);
+
+				Position r = null;
+                if(result != null)
+				{
+					r = new Position { Latitude = result.Latitude, Longitude = result.Longitude };
+					TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("END GetPositionAsync La {0} , ln{1}", result.Latitude, result.Longitude);
+				}
+                
                 return r;
             }, cancelToken);
 
-            task.Start();
-            return task;
+			_last.ContinueWith(t => {
+				TinyIoCContainer.Current.Resolve<ILogger>().LogError(t.Exception);
+			}, TaskContinuationOptions.OnlyOnFaulted );
+
+			if(!_last.IsCanceled)
+			{
+				_last.Start();
+			}
+			return _last;
 
         }
 

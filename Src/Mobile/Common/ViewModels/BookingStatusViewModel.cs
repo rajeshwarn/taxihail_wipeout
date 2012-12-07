@@ -29,7 +29,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         IMvxServiceConsumer<IBookingService>,
         IMvxServiceConsumer<ILocationService>
     {
-        private readonly IBookingService _bookingService;
+        private IBookingService _bookingService;
         private const string _doneStatus = "wosDONE";
         private const string _loadedStatus = "wosLOADED";
         private ILocationService _geolocator;
@@ -41,30 +41,36 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public BookingStatusViewModel(string order, string orderStatus)
 		{
 			Order = JsonSerializer.DeserializeFromString<Order>(order);
-			OrderStatusDetail = JsonSerializer.DeserializeFromString<OrderStatusDetail>(orderStatus);
-			ShowRatingButton = true;
-			MessengerHub.Subscribe<OrderRated>( OnOrderRated , o=>o.Content.Equals (Order.Id) );
-			_bookingService = this.GetService<IBookingService>();
+			OrderStatusDetail = JsonSerializer.DeserializeFromString<OrderStatusDetail>(orderStatus);		
+			_geolocator = this.GetService<ILocationService>();	
+
+		}
+
+        public override void OnViewLoaded ()
+        {
+            base.OnViewLoaded ();
+            ShowRatingButton = true;
+            MessengerHub.Subscribe<OrderRated>( OnOrderRated , o=>o.Content.Equals (Order.Id) );
+            _bookingService = this.GetService<IBookingService>();
             StatusInfoText = string.Format(Resources.GetString("StatusStatusLabel"), Resources.GetString("LoadingMessage"));
-             _geolocator = this.GetService<ILocationService>();
 
-		    Pickup = new BookAddressViewModel(() => Order.PickupAddress, address => Order.PickupAddress = address, _geolocator)
-            {
-                Title = Resources.GetString("BookPickupLocationButtonTitle"),
-                EmptyAddressPlaceholder = Resources.GetString("BookPickupLocationEmptyPlaceholder")
-            };
-            Dropoff = new BookAddressViewModel(() => Order.DropOffAddress, address => Order.DropOffAddress = address, _geolocator)
-            {
-                Title = Resources.GetString("BookDropoffLocationButtonTitle"),
-                EmptyAddressPlaceholder = Resources.GetString("BookDropoffLocationEmptyPlaceholder")
-            };
-
+			Pickup = new BookAddressViewModel(() => Order.PickupAddress, address => Order.PickupAddress = address, _geolocator)
+			{
+				Title = Resources.GetString("BookPickupLocationButtonTitle"),
+				EmptyAddressPlaceholder = Resources.GetString("BookPickupLocationEmptyPlaceholder")
+			};
+			Dropoff = new BookAddressViewModel(() => Order.DropOffAddress, address => Order.DropOffAddress = address, _geolocator)
+			{
+				Title = Resources.GetString("BookDropoffLocationButtonTitle"),
+				EmptyAddressPlaceholder = Resources.GetString("BookDropoffLocationEmptyPlaceholder")
+			};
+            
             Observable.Timer(TimeSpan.Zero, TimeSpan.FromSeconds(_refreshPeriod)).Select(c => new Unit())
                 .Subscribe(unit => InvokeOnMainThread(RefreshStatus))
-                .DisposeWith(Subscriptions);
-
+                    .DisposeWith(Subscriptions);
+            
             CenterMap(true);
-		}
+        }
 
         private IEnumerable<CoordinateViewModel> _mapCenter { get; set; }
 
@@ -80,8 +86,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         
 
-        public BookAddressViewModel Pickup { get; set; }
-        public BookAddressViewModel Dropoff { get; set; }
+        BookAddressViewModel pickup;
+        public BookAddressViewModel Pickup {
+            get {
+                return pickup;
+            }
+            set {
+                pickup = value;FirePropertyChanged(()=>Pickup); 
+            }
+        }
+        BookAddressViewModel dropoff;
+        public BookAddressViewModel Dropoff {
+            get {
+                return dropoff;
+            }
+            set {
+                dropoff = value;FirePropertyChanged(()=>Dropoff); 
+            }
+        }
 
         public Address PickupModel
         {
