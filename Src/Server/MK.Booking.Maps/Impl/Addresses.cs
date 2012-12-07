@@ -23,17 +23,26 @@ namespace apcurium.MK.Booking.Maps.Impl
             _popularAddressProvider = popularAddressProvider;
         }
 
-        public Address[] Search(string name, double latitude, double longitude)
+		/// <summary>
+		/// Search addresses for the specified name, latitude and longitude.
+		/// </summary>
+		/// <param name='name'>
+		/// Search criteria, address fragment. Cannot be null or empty
+		/// </param>
+		/// <param name='latitude'>
+		/// Latitude
+		/// </param>
+		/// <param name='longitude'>
+		/// Longitude
+		/// </param>
+        public Address[] Search(string name, double? latitude, double? longitude)
         {
-            var isNumeric = false;
-            if (!string.IsNullOrEmpty(name))
-            {
-                var term = name.Substring(0, 1);
-
-                int n;
-                isNumeric = int.TryParse(term, out n);
-            }
+			if( name == null) throw new ArgumentNullException("name");
+			if( name.Length == 0) throw new ArgumentException("name should not be emtpy", "name");
             
+			var term = name.Substring(0, 1);
+            int n;
+            var isNumeric = int.TryParse(term, out n);
 
             IEnumerable<Address> addressesGeocode = null;
             IEnumerable<Address> addressesPlaces = null;
