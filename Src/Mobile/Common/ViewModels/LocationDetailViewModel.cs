@@ -163,19 +163,17 @@ namespace apcurium.MK.Booking.Mobile
                             return;
                         }
                     
-                        InvokeOnMainThread (() =>
-                        {
-                            BookAddress = location.FullAddress;
-                            location.FriendlyName = _address.FriendlyName;
-                            location.Apartment = _address.Apartment;
-                            location.RingCode = _address.RingCode;
-                            location.Id = _address.Id;
-                            _accountService.UpdateAddress(location);
-                            // Must hide Progress indicator or otherwise the view won't close
-                            MessageService.ShowProgress(false);
-                            progressShowing = false;
-                            Close();
-                        });
+                        InvokeOnMainThread (() => BookAddress = location.FullAddress);
+
+						location.FriendlyName = _address.FriendlyName;
+						location.Apartment = _address.Apartment;
+						location.RingCode = _address.RingCode;
+						location.Id = _address.Id;
+						_accountService.UpdateAddress(location);
+						// Must hide Progress indicator or otherwise the view won't close in iOS
+						MessageService.ShowProgress(false);
+						progressShowing = false;
+						Close();
                     
                     } catch (Exception ex) {
                         Logger.LogError (ex);
