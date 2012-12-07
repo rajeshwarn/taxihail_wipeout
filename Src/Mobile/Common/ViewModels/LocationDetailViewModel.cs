@@ -131,7 +131,7 @@ namespace apcurium.MK.Booking.Mobile
 
                         InvokeOnMainThread (() =>
                                             {
-							location.Copy(_address);
+							location.CopyTo(_address);
 							FirePropertyChanged("BookAddress");
                             
                         });

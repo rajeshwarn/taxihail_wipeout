@@ -79,7 +79,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get {
                 return GetCommand<Address>(coordinate =>
                 {
-                    CancelCurrentLocationCommand.Execute ();
+					CancelCurrentLocation();
 
                     _cancellationToken = new CancellationTokenSource ();
 
@@ -128,7 +128,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get {
                 return GetCommand(() =>
                 {
-                    CancelCurrentLocationCommand.Execute ();
+					CancelCurrentLocation();
                     if(Settings.StreetNumberScreenEnabled 
                         && _isPickup
                         && Model.BookAddress.HasValue())
@@ -156,17 +156,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand CancelCurrentLocationCommand {
-            get {
-                return GetCommand(() =>
-                {
-                    IsExecuting = false;
-                    if ((_cancellationToken != null) && (_cancellationToken.Token.CanBeCanceled)) {
-                        _cancellationToken.Cancel ();
-                        _cancellationToken = null;
-                    }
-                });
-            }
+		public IMvxCommand CancelCurrentLocationCommand {
+			get {
+				return new MvxRelayCommand<string>(_notUsed => {
+					CancelCurrentLocation ();
+				});
+			}
+		}
+
+        private void CancelCurrentLocation ()
+		{
+			if ((_cancellationToken != null) && (_cancellationToken.Token.CanBeCanceled)) {
+				_cancellationToken.Cancel ();
+				_cancellationToken = null;
+			}
+			IsExecuting = false;
         }
 
         public void SetAddress (Address address, bool userInitiated)
@@ -176,12 +180,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 IsExecuting = true;
                 try {
 
-
                     if (IsExecuting) {
-                        CancelCurrentLocationCommand.Execute ();
+						CancelCurrentLocation();
                     }
 
-                    address.Copy(Model);
+                    address.CopyTo(Model);
 
                     FirePropertyChanged (() => Display);
                     FirePropertyChanged (() => Model);
@@ -204,10 +207,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             InvokeOnMainThread (() =>
             {
-
-                Model.FullAddress = null;
-                Model.Longitude = 0;
-                Model.Latitude = 0;
+				var clearAddress = new Address();
+				clearAddress.CopyTo(Model);
                 FirePropertyChanged (() => Display);
                 FirePropertyChanged (() => Model);
                 IsExecuting = false;
@@ -228,8 +229,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get {
                 return GetCommand(() =>
                 {
-
-                    CancelCurrentLocationCommand.Execute ();
+					CancelCurrentLocation();
                     IsExecuting = true;
                     _cancellationToken = new CancellationTokenSource ();
                     _geolocator.GetPositionAsync (5000, 50, 2000, 2000, _cancellationToken.Token).ContinueWith (t =>
