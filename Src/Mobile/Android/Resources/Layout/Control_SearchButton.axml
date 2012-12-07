@@ -8,13 +8,13 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
         <Button
-            style="@style/ButtonText"
+            style="@style/SearchButtonText"
             android:text="@string/StreetNumberSearchBt"
             android:id="@+id/navigateButton"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent" />
         <ImageView
-            android:src="@drawable/right_arrow"
+            android:src="@drawable/right_arrow_light"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
