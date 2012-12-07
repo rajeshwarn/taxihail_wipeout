@@ -21,5 +21,6 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
         OrderNotInIbs,
         OrderNotCompleted,
         Tariff_DuplicateName,
+        ResetPassword_AccountNotFound
     }
 }
