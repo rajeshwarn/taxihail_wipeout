@@ -337,3 +337,4 @@
 "StreetNumberLabel"="Refine your address";
 "RideSettingsPassword"="Password";
 "StreetNumberDoneBt"="Use This Address";
+"ServiceErrorResetPassword_AccountNotFound"="No account with this email has been found.";
