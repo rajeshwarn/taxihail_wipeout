@@ -371,17 +371,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return data;
         }
 
-        public bool ResetPassword (string email)
+        public void ResetPassword (string email)
         {
-            bool isSuccess = false;
-
             UseServiceClient<IAccountServiceClient> ("NotAuthenticated", service => {               
-                service.ResetPassword (email);
-                isSuccess = true;
-            });
-
-
-            return isSuccess;
+                service.ResetPassword (email);               
+            }, ex => { throw ex; });  
         }
 
         public bool Register (RegisterAccount data, out string error)
