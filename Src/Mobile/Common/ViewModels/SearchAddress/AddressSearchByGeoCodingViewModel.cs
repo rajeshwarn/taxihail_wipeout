@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.SearchAddress
 
             if (position == null)
             {
-                addresses = _geolocService.SearchAddress(Criteria, 0, 0);
+                addresses = _geolocService.SearchAddress(Criteria);
                 
             }
             else

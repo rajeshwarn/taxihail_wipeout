@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Maps.Impl
 		/// <param name='longitude'>
 		/// Longitude
 		/// </param>
-        public Address[] Search(string name, double latitude, double longitude)
+        public Address[] Search(string name, double? latitude, double? longitude)
         {
 			if( name == null) throw new ArgumentNullException("name");
 			if( name.Length == 0) throw new ArgumentException("name should not be emtpy", "name");

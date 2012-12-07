@@ -46,7 +46,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 
-        public Address[] SearchAddress(string address, double latitude, double longitude)
+        public Address[] SearchAddress(string address, double? latitude = null, double? longitude = null)
         {
             try
             {                
