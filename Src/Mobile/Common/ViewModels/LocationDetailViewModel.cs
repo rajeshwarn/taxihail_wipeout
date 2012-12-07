@@ -154,7 +154,7 @@ namespace apcurium.MK.Booking.Mobile
                 {
                 
                     if (!ValidateFields()) return;
-            
+                    var progressShowing = true;
                     MessageService.ShowProgress(true);
                     try {
 						var location = this.GetService<IGeolocService> ().ValidateAddress (_address.FullAddress);
@@ -170,14 +170,18 @@ namespace apcurium.MK.Booking.Mobile
                             location.Apartment = _address.Apartment;
                             location.RingCode = _address.RingCode;
                             location.Id = _address.Id;
-                            _accountService.UpdateAddress(location);     
+                            _accountService.UpdateAddress(location);
+                            // Must hide Progress indicator or otherwise the view won't close
+                            MessageService.ShowProgress(false);
+                            progressShowing = false;
                             Close();
                         });
                     
                     } catch (Exception ex) {
                         Logger.LogError (ex);
                     } finally {
-                        MessageService.ShowProgress(false);
+                        // Only call ShowProgress(false) if it was not already called in the try{} body
+                        if(progressShowing) MessageService.ShowProgress(false);
                     }
                 });
             }
