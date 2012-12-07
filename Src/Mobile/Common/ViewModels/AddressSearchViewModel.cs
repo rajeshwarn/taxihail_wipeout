@@ -5,6 +5,7 @@ using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Booking.Mobile.AppServices;
 using System.Collections.Generic;
+using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels.SearchAddress;
 using apcurium.MK.Common.Extensions;
 using System.Threading;
@@ -83,8 +84,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                                    return;
                                                }
 
-                                               //CancelCurrentSearch();
-
                                                _searchCancellationToken = new CancellationTokenSource();
 
                                                var task = SearchViewModelSelected.OnSearchExecute(_searchCancellationToken.Token);
@@ -99,15 +98,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-       /* private void CancelCurrentSearch ()
-        {
-            if (_searchCancellationToken != null
-                && _searchCancellationToken.Token.CanBeCanceled) {
-                _searchCancellationToken.Cancel ();
-                _searchCancellationToken.Dispose ();
-                _searchCancellationToken = null;
-            }
-        }*/
         public IMvxCommand CancelCurrentSearch
         {
             get

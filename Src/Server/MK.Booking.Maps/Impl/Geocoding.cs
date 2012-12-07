@@ -50,16 +50,19 @@ namespace apcurium.MK.Booking.Maps.Impl
         private GeoResult SearchUsingName(string name, bool useFilter)
         {
             var filter = _configManager.GetSetting("GeoLoc.SearchFilter");
-
-            if ((filter.HasValue()) && (useFilter))
+            if (name != null)
             {
-                var filteredName = string.Format(filter, name.Split(' ').JoinBy("+"));
-                return _mapApi.GeocodeAddress(filteredName);
+                if ((filter.HasValue()) && (useFilter))
+                {
+                    var filteredName = string.Format(filter, name.Split(' ').JoinBy("+"));
+                    return _mapApi.GeocodeAddress(filteredName);
+                }
+                else
+                {
+                    return _mapApi.GeocodeAddress(name.Split(' ').JoinBy("+"));
+                }
             }
-            else
-            {
-                return _mapApi.GeocodeAddress(name.Split(' ').JoinBy("+"));
-            }
+            return null;
         }
 
 

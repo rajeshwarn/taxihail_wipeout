@@ -25,10 +25,15 @@ namespace apcurium.MK.Booking.Maps.Impl
 
         public Address[] Search(string name, double latitude, double longitude)
         {
-            var term = name.Substring(0, 1);
+            var isNumeric = false;
+            if (!string.IsNullOrEmpty(name))
+            {
+                var term = name.Substring(0, 1);
 
-            int n;
-            var isNumeric = int.TryParse(term, out n);
+                int n;
+                isNumeric = int.TryParse(term, out n);
+            }
+            
 
             IEnumerable<Address> addressesGeocode = null;
             IEnumerable<Address> addressesPlaces = null;

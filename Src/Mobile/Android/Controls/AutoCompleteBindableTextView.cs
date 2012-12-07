@@ -60,7 +60,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                             ev => this.TextChanged += (sender2, e2) => { ev(e2); },
                             ev => this.TextChanged -= (sender3, e3) => { ev(e3); }).Select(c=>c.Text.ToString());
 
-                _subscription = subsciption.Throttle(TimeSpan.FromMilliseconds(1700)).Subscribe(ExecuteCommand);
+                _subscription = subsciption.Throttle(TimeSpan.FromMilliseconds(700)).Subscribe(ExecuteCommand);
                 _subscriptionTypeStart = subsciption.Subscribe(_ =>
                                                                    {
                                                                        if (IsAddressSearching)
@@ -73,8 +73,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 {
                     ExecuteCommand(Text);
                 }
-
-           
             }
         }
 
