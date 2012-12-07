@@ -9,8 +9,8 @@
 // Project Lead - Stuart Lodge, Cirrious. http://www.cirrious.com
 using MonoTouch.Foundation;
 using System;
-using apcurium.MK.Booking.Mobile.Client.Navigation;
 using System.Linq;
+using apcurium.MK.Booking.Mobile.Client.Navigation;
 
 
 #endregion
