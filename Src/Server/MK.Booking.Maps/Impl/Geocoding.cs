@@ -39,10 +39,11 @@ namespace apcurium.MK.Booking.Maps.Impl
                 result = ConvertGeoResultToAddresses(geoResult,null);
             }
 
-            if (( result == null ) || ( result.Count() == 0 ) )
-            {
-                result = ConvertGeoResultToAddresses(SearchUsingName(addressName, false),null);                                                
-            }
+            // If there is no search result, should we search without the filter ?
+//            if (( result == null ) || ( result.Count() == 0 ) )
+//            {
+//                result = ConvertGeoResultToAddresses(SearchUsingName(addressName, false),null);                                                
+//            }
             return result;
 
         }

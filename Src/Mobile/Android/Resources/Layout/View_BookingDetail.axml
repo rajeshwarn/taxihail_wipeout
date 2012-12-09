@@ -7,6 +7,7 @@
     android:gravity="center_horizontal"
     android:focusable="true"
     android:noHistory="true"
+    android:padding="10dip"
     android:focusableInTouchMode="true">
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -18,14 +19,13 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:gravity="center_horizontal"
-                android:orientation="vertical"
-                android:paddingTop="5dip">
+                android:orientation="vertical">
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content">
                     <TextView
-                        style="@style/FormLabelText"
+                        style="@style/GrayText"
                         android:text="@string/ConfirmOriginLablel"
                         android:layout_width="110dp"
                         android:gravity="left"
@@ -36,7 +36,7 @@
                         android:layout_height="wrap_content" />
                     <TextView
                         android:id="@+id/OriginTxt"
-                        style="@style/DetailText"
+                        style="@style/TitleText"
                         android:text="1122 sad asdasd dsa sajsaksd a ds ds dsds s dd s d d d d daasads"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -53,7 +53,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content">
                     <TextView
-                        style="@style/FormLabelText"
+                        style="@style/GrayText"
                         android:text="@string/ConfirmDestinationLabel"
                         android:layout_width="110dp"
                         android:gravity="left"
@@ -64,7 +64,7 @@
                         android:layout_height="wrap_content" />
                     <TextView
                         android:id="@+id/DestinationTxt"
-                        style="@style/DetailText"
+                        style="@style/TitleText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Not specified"
@@ -86,7 +86,7 @@
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content">
                             <TextView
-                                style="@style/FormLabelText"
+                                style="@style/GrayText"
                                 android:text="@string/ConfirmDateTimeLabel"
                                 android:layout_width="110dp"
                                 android:paddingLeft="5dp"
@@ -97,7 +97,7 @@
                                 android:layout_height="wrap_content" />
                             <TextView
                                 android:id="@+id/DateTimeTxt"
-                                style="@style/DetailText"
+                                style="@style/TitleText"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:paddingLeft="5dp"
@@ -112,7 +112,7 @@
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content">
                             <TextView
-                                style="@style/FormLabelText"
+                                style="@style/GrayText"
                                 android:text="@string/ApproxPrice"
                                 android:layout_width="wrap_content"
                                 android:paddingLeft="5dp"
@@ -123,7 +123,7 @@
                                 android:gravity="left" />
                             <TextView
                                 android:id="@+id/ApproxPriceTxt"
-                                style="@style/DetailText"
+                                style="@style/TitleText"
                                 android:text="2.22$"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -138,12 +138,12 @@
                 <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="2dp"
-                    android:paddingBottom="0dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="2dp"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
                     android:text="@string/ConfirmAptRingCodeLabel"
-                    style="@style/FormLabelText" />
+                    style="@style/GrayText" />
                 <apcurium.mk.booking.mobile.client.controls.EditTextNavigate
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -159,9 +159,9 @@
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
                     android:paddingTop="2dp"
-                    android:paddingBottom="0dp"
+                    android:paddingBottom="2dp"
                     android:text="@string/RideSettingsVehiculeType"
-                    style="@style/FormLabelText" />
+                    style="@style/GrayText" />
                 <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -176,9 +176,9 @@
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
                     android:paddingTop="2dp"
-                    android:paddingBottom="0dp"
+                    android:paddingBottom="2dp"
                     android:text="@string/RideSettingsChargeType"
-                    style="@style/FormLabelText" />
+                    style="@style/GrayText" />
                 <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"

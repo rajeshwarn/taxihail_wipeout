@@ -56,7 +56,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 return;
             }
             _wasResized = true;
-            if ( ((ValignLabel)txtDestination).CalculatedSize != null && ( ((ValignLabel)txtDestination).CalculatedSize.Height != ((ValignLabel)txtOrigin).CalculatedSize.Height ) )
+            if ( ( ((ValignLabel)txtDestination).CalculatedSize.Height != ((ValignLabel)txtOrigin).CalculatedSize.Height ) )
             {
                 var offset = ((ValignLabel)txtOrigin).CalculatedSize.Height - ((ValignLabel)txtDestination).CalculatedSize.Height;
                 

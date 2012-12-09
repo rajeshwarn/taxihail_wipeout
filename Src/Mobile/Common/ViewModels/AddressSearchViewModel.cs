@@ -212,6 +212,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void SetSelected (TopBarButton btn)
         {
+            if ( CancelCurrentSearch != null )
+            {
+                CancelCurrentSearch.Execute ();
+            }
+
             switch (btn) {
             case TopBarButton.SearchBtn:
                 SearchViewModelSelected = TinyIoCContainer.Current.Resolve<AddressSearchByGeoCodingViewModel> ();

@@ -8,6 +8,7 @@ using TinyIoC;
 using apcurium.MK.Common.Diagnostic;
 using System.Threading.Tasks;
 using System.Threading;
+using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -19,7 +20,7 @@ namespace apcurium.MK.Booking.Mobile
         {
 
             
-
+            TinyIoCContainer.Current.Resolve<IConfigurationManager>().Reset();
 
             if (TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount == null)
             {
@@ -29,6 +30,7 @@ namespace apcurium.MK.Booking.Mobile
             {
                 RequestNavigate<BookViewModel>();
             }
+
 
 
             TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Startup with server {0}", TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl);

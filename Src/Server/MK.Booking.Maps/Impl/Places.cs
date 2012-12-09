@@ -72,7 +72,7 @@ namespace apcurium.MK.Booking.Maps.Impl
                 Id = Guid.NewGuid(),
                 PlaceReference = place.Reference,
                 FriendlyName = place.Name + " (" + place.Types.FirstOrDefault().ToSafeString()+")",
-                FullAddress = place.Vicinity,
+                FullAddress = place.Formatted_Address.IsNullOrEmpty ()? place.Vicinity : place.Formatted_Address,
                 Latitude = place.Geometry.Location.Lat,
                 Longitude = place.Geometry.Location.Lng,
                 AddressType = "place"

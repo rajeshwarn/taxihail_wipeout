@@ -44,9 +44,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             lblStreetName.Font = AppStyle.BoldTextFont;
             AppButtons.FormatStandardButton((GradientButton)btnSearch, Resources.GetValue("StreetNumberSearchBt"), AppStyle.ButtonColor.Grey, "Assets/Search/SearchIcon.png", "Assets/Cells/rightArrow.png");
 
-            BeginInvokeOnMainThread(()=>{
-            txtStreetNumber.SelectAll(new NSObject(NSObjectFlag.Empty));
-            });
 
             txtStreetNumber.ShouldReturn = delegate {
                 txtStreetNumber.ResignFirstResponder();

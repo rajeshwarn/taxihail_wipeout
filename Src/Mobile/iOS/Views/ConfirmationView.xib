@@ -306,18 +306,21 @@
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<string key="IBUIText">Vehicle Type</string>
-						<nil key="IBUITextColor"/>
+						<object class="NSColor" key="IBUITextColor" id="510841623">
+							<int key="NSColorSpace">3</int>
+							<bytes key="NSWhite">MC4zMzMzMzMzMzMzAA</bytes>
+						</object>
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">0</int>
-						<object class="IBUIFontDescription" key="IBUIFontDescription" id="486818834">
-							<string key="name">Helvetica-Bold</string>
+						<object class="IBUIFontDescription" key="IBUIFontDescription" id="203444678">
+							<string key="name">Helvetica</string>
 							<string key="family">Helvetica</string>
-							<int key="traits">2</int>
-							<double key="pointSize">16</double>
+							<int key="traits">0</int>
+							<double key="pointSize">15</double>
 						</object>
-						<object class="NSFont" key="IBUIFont" id="388638864">
-							<string key="NSName">Helvetica-Bold</string>
-							<double key="NSSize">16</double>
+						<object class="NSFont" key="IBUIFont" id="642208832">
+							<string key="NSName">Helvetica</string>
+							<double key="NSSize">15</double>
 							<int key="NSfFlags">16</int>
 						</object>
 						<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
@@ -363,11 +366,11 @@
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<string key="IBUIText">Apt / Entry Code</string>
-						<nil key="IBUITextColor"/>
+						<reference key="IBUITextColor" ref="510841623"/>
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">0</int>
-						<reference key="IBUIFontDescription" ref="486818834"/>
-						<reference key="IBUIFont" ref="388638864"/>
+						<reference key="IBUIFontDescription" ref="203444678"/>
+						<reference key="IBUIFont" ref="642208832"/>
 						<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 					</object>
 					<object class="IBUILabel" id="469599177">
@@ -384,11 +387,11 @@
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<string key="IBUIText">Charge Type</string>
-						<nil key="IBUITextColor"/>
+						<reference key="IBUITextColor" ref="510841623"/>
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">0</int>
-						<reference key="IBUIFontDescription" ref="486818834"/>
-						<reference key="IBUIFont" ref="388638864"/>
+						<reference key="IBUIFontDescription" ref="203444678"/>
+						<reference key="IBUIFont" ref="642208832"/>
 						<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 					</object>
 					<object class="IBUITextField" id="818244391">
@@ -432,14 +435,14 @@
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<string key="IBUIText">Origin</string>
-						<nil key="IBUITextColor"/>
+						<reference key="IBUITextColor" ref="510841623"/>
 						<reference key="IBUIHighlightedColor" ref="867571361"/>
 						<reference key="IBUIShadowColor" ref="867571361"/>
 						<string key="IBUIShadowOffset">{0, 1}</string>
 						<int key="IBUIBaselineAdjustment">1</int>
 						<float key="IBUIMinimumFontSize">10</float>
-						<reference key="IBUIFontDescription" ref="486818834"/>
-						<reference key="IBUIFont" ref="388638864"/>
+						<reference key="IBUIFontDescription" ref="203444678"/>
+						<reference key="IBUIFont" ref="642208832"/>
 					</object>
 					<object class="IBUILabel" id="1040887545">
 						<reference key="NSNextResponder" ref="191373211"/>
@@ -455,14 +458,14 @@
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<string key="IBUIText">Destination</string>
-						<nil key="IBUITextColor"/>
+						<reference key="IBUITextColor" ref="510841623"/>
 						<reference key="IBUIHighlightedColor" ref="867571361"/>
 						<reference key="IBUIShadowColor" ref="867571361"/>
 						<string key="IBUIShadowOffset">{0, 1}</string>
 						<int key="IBUIBaselineAdjustment">1</int>
 						<float key="IBUIMinimumFontSize">10</float>
-						<reference key="IBUIFontDescription" ref="486818834"/>
-						<reference key="IBUIFont" ref="388638864"/>
+						<reference key="IBUIFontDescription" ref="203444678"/>
+						<reference key="IBUIFont" ref="642208832"/>
 					</object>
 					<object class="IBUILabel" id="888008888">
 						<reference key="NSNextResponder" ref="191373211"/>
@@ -537,13 +540,13 @@
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<string key="IBUIText">Date / Time:</string>
-						<nil key="IBUITextColor"/>
+						<reference key="IBUITextColor" ref="510841623"/>
 						<reference key="IBUIHighlightedColor" ref="867571361"/>
 						<reference key="IBUIShadowColor" ref="867571361"/>
 						<string key="IBUIShadowOffset">{0, 1}</string>
 						<int key="IBUIBaselineAdjustment">1</int>
-						<reference key="IBUIFontDescription" ref="486818834"/>
-						<reference key="IBUIFont" ref="388638864"/>
+						<reference key="IBUIFontDescription" ref="203444678"/>
+						<reference key="IBUIFont" ref="642208832"/>
 						<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 					</object>
 					<object class="IBUILabel" id="253103290">
@@ -583,14 +586,14 @@
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<string key="IBUIText">Approx. Price:</string>
-						<nil key="IBUITextColor"/>
+						<reference key="IBUITextColor" ref="510841623"/>
 						<reference key="IBUIHighlightedColor" ref="867571361"/>
 						<reference key="IBUIShadowColor" ref="867571361"/>
 						<string key="IBUIShadowOffset">{0, 1}</string>
 						<int key="IBUIBaselineAdjustment">1</int>
 						<float key="IBUIMinimumFontSize">10</float>
-						<reference key="IBUIFontDescription" ref="486818834"/>
-						<reference key="IBUIFont" ref="388638864"/>
+						<reference key="IBUIFontDescription" ref="203444678"/>
+						<reference key="IBUIFont" ref="642208832"/>
 					</object>
 					<object class="IBUILabel" id="234891872">
 						<reference key="NSNextResponder" ref="191373211"/>
@@ -962,37 +965,33 @@
 					<string>106.IBPluginDependency</string>
 					<string>121.CustomClassName</string>
 					<string>121.IBPluginDependency</string>
-					<string>122.CustomClassName</string>
 					<string>122.IBPluginDependency</string>
-					<string>123.CustomClassName</string>
+					<string>122.notes</string>
 					<string>123.IBPluginDependency</string>
+					<string>123.notes</string>
 					<string>124.CustomClassName</string>
 					<string>124.IBPluginDependency</string>
 					<string>127.CustomClassName</string>
 					<string>127.IBPluginDependency</string>
-					<string>128.CustomClassName</string>
 					<string>128.IBPluginDependency</string>
+					<string>128.notes</string>
 					<string>16.CustomClassName</string>
 					<string>16.IBPluginDependency</string>
 					<string>17.CustomClassName</string>
 					<string>17.IBPluginDependency</string>
-					<string>29.CustomClassName</string>
 					<string>29.IBPluginDependency</string>
 					<string>29.notes</string>
-					<string>30.CustomClassName</string>
 					<string>30.IBPluginDependency</string>
 					<string>30.notes</string>
 					<string>33.CustomClassName</string>
 					<string>33.IBPluginDependency</string>
 					<string>34.CustomClassName</string>
 					<string>34.IBPluginDependency</string>
-					<string>37.CustomClassName</string>
 					<string>37.IBPluginDependency</string>
 					<string>37.notes</string>
 					<string>38.IBPluginDependency</string>
 					<string>47.IBPluginDependency</string>
 					<string>48.IBPluginDependency</string>
-					<string>74.CustomClassName</string>
 					<string>74.IBPluginDependency</string>
 					<string>74.notes</string>
 					<string>75.IBPluginDependency</string>
@@ -1011,28 +1010,38 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>ModalTextField</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>FormLabel</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>FormLabel</string>
+					<object class="NSMutableAttributedString">
+						<object class="NSMutableString" key="NSString">
+							<characters key="NS.bytes"/>
+						</object>
+					</object>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<object class="NSMutableAttributedString">
+						<object class="NSMutableString" key="NSString">
+							<characters key="NS.bytes"/>
+						</object>
+					</object>
 					<string>ModalTextField</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>NavigateTextField</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>FormLabel</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>GradientButton</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>GradientButton</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>FormLabel</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<object class="NSMutableAttributedString">
 						<object class="NSMutableString" key="NSString">
 							<characters key="NS.bytes"/>
 						</object>
 					</object>
-					<string>FormLabel</string>
+					<string>GradientButton</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>GradientButton</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<object class="NSMutableAttributedString">
+						<object class="NSMutableString" key="NSString">
+							<characters key="NS.bytes"/>
+						</object>
+					</object>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<object class="NSMutableAttributedString">
 						<object class="NSMutableString" key="NSString">
@@ -1043,7 +1052,6 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>ValignLabel</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>FormLabel</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<object class="NSMutableAttributedString">
 						<object class="NSMutableString" key="NSString">
@@ -1053,7 +1061,6 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>FormLabel</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<object class="NSMutableAttributedString">
 						<object class="NSMutableString" key="NSString">

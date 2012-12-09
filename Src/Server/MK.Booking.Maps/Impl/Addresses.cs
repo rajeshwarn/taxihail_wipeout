@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using apcurium.MK.Common.Provider;
+using apcurium.MK.Booking.Maps.Geo;
 
 namespace apcurium.MK.Booking.Maps.Impl
 {
@@ -51,7 +52,18 @@ namespace apcurium.MK.Booking.Maps.Impl
             var t1 = Task.Factory.StartNew(() =>
             {
                 var geoCodingService = new Geocoding(_client, _configManager, _popularAddressProvider);
-                addressesGeocode = (Address[])geoCodingService.Search(name).Take(20).ToArray();
+
+
+                var allResults = (Address[])geoCodingService.Search(name);
+                if ( latitude.HasValue && longitude.HasValue && ( latitude.Value != 0 || longitude.Value != 0 )  )
+                {
+                    addressesGeocode =    allResults.OrderBy ( adrs => Position.CalculateDistance( adrs.Latitude, adrs.Longitude, latitude.Value , longitude.Value )).Take(20).ToArray();
+                }
+                else
+                {
+                    addressesGeocode = allResults.Take (20).ToArray ();
+                }
+
             });
 
             Task t2 = null;
