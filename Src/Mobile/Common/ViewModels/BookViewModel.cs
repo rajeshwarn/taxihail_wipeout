@@ -343,7 +343,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                     Task.Factory.SafeStartNew ( () => 
                                                {
-                        Thread.Sleep ( 2000 );
+                        Thread.Sleep ( 1000 );
                         InvokeOnMainThread ( () =>
                                             {
                                   var tutorialWasDisplayed = this.GetService<ICacheService> ().Get<string> ("TutorialWasDisplayed");
