@@ -1,6 +1,7 @@
 using System;
 using Cirrious.MvvmCross.Touch.Views.Presenters;
 using MonoTouch.UIKit;
+using Cirrious.MvvmCross.Touch.Interfaces;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -43,10 +44,17 @@ namespace apcurium.MK.Booking.Mobile.Client
        
         public override void Show (Cirrious.MvvmCross.Touch.Interfaces.IMvxTouchView view)
         {        
-            base.Show (view); 
-            var navigationController = ((UIViewController)view).NavigationController;
-            if (navigationController != null) {
-                navigationController.NavigationBar.Hidden = HideNavBar(view);
+            if (view is IMvxModalTouchView)
+            {
+                PresentModalViewController ( view as UIViewController, true );
+            }
+            else
+            {
+                base.Show (view); 
+                var navigationController = ((UIViewController)view).NavigationController;
+                if (navigationController != null) {
+                    navigationController.NavigationBar.Hidden = HideNavBar(view);
+                }
             }
         }
 
@@ -55,11 +63,35 @@ namespace apcurium.MK.Booking.Mobile.Client
             return ( view is INavigationView ) && (((INavigationView)view).HideNavigationBar );
         }
 
+        private UIViewController _modal;
       
         public override bool PresentModalViewController (UIViewController viewController, bool animated)
         {
+
+            if ( CurrentTopViewController != null )
+            {
+
+                viewController.View.Frame = new System.Drawing.RectangleF( 0,0, CurrentTopViewController.View.Bounds.Width, CurrentTopViewController.View.Bounds.Height );
+                _modal = viewController;
+                CurrentTopViewController.View.AddSubview ( viewController.View );
+                return true;
+            }
+            return false;
+
             //CurrentTopViewController.NavigationController.ModalPresentationStyle = UIModalPresentationStyle.CurrentContext; 
-            return base.PresentModalViewController (viewController, animated);
+            //return base.PresentModalViewController (viewController, animated);
+        }
+
+        public override void Close (Cirrious.MvvmCross.Interfaces.ViewModels.IMvxViewModel toClose)
+        {
+            if ( _modal != null )
+            {
+                _modal.View.RemoveFromSuperview ();
+                _modal = null;
+            }
+            else{
+            base.Close (toClose);
+            }
         }
 
         private void LoadBackgroundNavBar(UINavigationBar navBar)

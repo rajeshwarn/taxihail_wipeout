@@ -343,10 +343,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                     Task.Factory.SafeStartNew ( () => 
                                                {
-                        Thread.Sleep ( 5000 );
+                        Thread.Sleep ( 2000 );
                         InvokeOnMainThread ( () =>
                                             {
-                var tutorialWasDisplayed = this.GetService<ICacheService> ().Get<string> ("TutorialWasDisplayed");
+                                  var tutorialWasDisplayed = this.GetService<ICacheService> ().Get<string> ("TutorialWasDisplayed");
                                 if (tutorialWasDisplayed.IsNullOrEmpty ()) {
                                     this.GetService<ICacheService> ().Set<string> ("TutorialWasDisplayed", true.ToString ());
                                     MessageService.ShowDialogActivity (typeof(TutorialViewModel));
