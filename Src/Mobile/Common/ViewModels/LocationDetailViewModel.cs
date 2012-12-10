@@ -169,6 +169,7 @@ namespace apcurium.MK.Booking.Mobile
 						location.Apartment = _address.Apartment;
 						location.RingCode = _address.RingCode;
 						location.Id = _address.Id;
+                        location.IsHistoric = _address.IsHistoric;
 						_accountService.UpdateAddress(location);
 						// Must hide Progress indicator or otherwise the view won't close in iOS
 						MessageService.ShowProgress(false);
