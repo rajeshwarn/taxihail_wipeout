@@ -50,12 +50,13 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
         public void ShowMessage(string title, string message)
         {
-            
-            var i = new Intent(Context, typeof(AlertDialogActivity));
-            i.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
-            i.PutExtra("Title", title);
-            i.PutExtra("Message", message);
-            Context.StartActivity(i); 
+			TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher.RequestMainThreadAction(() =>{
+	            var i = new Intent(Context, typeof(AlertDialogActivity));
+	            i.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
+	            i.PutExtra("Title", title);
+	            i.PutExtra("Message", message);
+	            Context.StartActivity(i); 
+			});
         }
         
         public void ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction)

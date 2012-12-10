@@ -55,6 +55,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 		public LoginActivity ()
 		{
 			TopInstance = this;
+
 		}
 
         protected override int ViewTitleResourceId
@@ -163,6 +164,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             base.OnDestroy();           
             GC.Collect();
         }
+
+		public override void Finish ()
+		{
+			base.Finish ();
+		}
+
+		public override void FinishActivity (int requestCode)
+		{
+			base.FinishActivity (requestCode);
+		}
+
+		public override void FinishFromChild (Activity child)
+		{
+			base.FinishFromChild (child);
+		}
+
+
 
     }
 }

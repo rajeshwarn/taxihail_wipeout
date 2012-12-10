@@ -30,21 +30,15 @@ namespace apcurium.MK.Booking.Maps.Impl
 
         public Address[] Search(string addressName)
         {
-            Address[] result = null;
-
             var geoResult = SearchUsingName(addressName, true);
 
             if ((geoResult.Status == ResultStatus.OK) || ( geoResult.Results.Count > 0 ))
             {
-                result = ConvertGeoResultToAddresses(geoResult,null);
+                return ConvertGeoResultToAddresses(geoResult,null);
             }
 
-            // If there is no search result, should we search without the filter ?
-//            if (( result == null ) || ( result.Count() == 0 ) )
-//            {
-//                result = ConvertGeoResultToAddresses(SearchUsingName(addressName, false),null);                                                
-//            }
-            return result;
+			// No result
+            return new Address[0];
 
         }
 

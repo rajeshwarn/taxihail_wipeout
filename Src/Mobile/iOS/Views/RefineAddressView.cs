@@ -67,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 					ViewModel.SaveCommand.Execute();
 				}
 			});
-			NavigationItem.HidesBackButton = true;
+			NavigationItem.HidesBackButton = false;
 			NavigationItem.RightBarButtonItem = btnDone;
             NavigationItem.Title = Resources.GetValue( "View_RefineAddress");
 

@@ -57,20 +57,22 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         		
 		public void ShowProgress( bool show, Action cancel )
 		{
-			if( show )
-			{
-                UIApplication.SharedApplication.InvokeOnMainThread ( () =>
-                                                                  {				
-				LoadingOverlay.StartAnimatingLoading(   LoadingOverlayPosition.Center, null, 130, 30, cancel );
-                });
-			}
-			else
-            {
-                UIApplication.SharedApplication.InvokeOnMainThread ( () =>
-                                                                  {
-				LoadingOverlay.StopAnimatingLoading(  );
-                });
-			}
+            
+    			if( show )
+    			{
+                    UIApplication.SharedApplication.InvokeOnMainThread ( () =>
+                                                                      {				
+    				LoadingOverlay.StartAnimatingLoading(   LoadingOverlayPosition.Center, null, 130, 30, cancel );
+                    });
+    			}
+    			else
+                {
+                    UIApplication.SharedApplication.InvokeOnMainThread ( () =>
+                                                                      {
+    				LoadingOverlay.StopAnimatingLoading(  );
+                    });
+    			}
+            
         }
 
 		public void ShowProgress( bool show )
@@ -80,8 +82,10 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
         public void ShowDialogActivity(Type type)
         {
-            var presenter = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxTouchViewPresenter>();
-            presenter.Show(new MvxShowViewModelRequest(type,null, false, MvxRequestedBy.UserAction));
+            UIApplication.SharedApplication.InvokeOnMainThread(delegate {
+                var presenter = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxTouchViewPresenter>();
+                presenter.Show(new MvxShowViewModelRequest(type,null, false, MvxRequestedBy.UserAction));
+            });
         }
 
         public void ShowDialog<T> (string title, IEnumerable<T> items, Func<T, string> displayNameSelector, Action<T> onItemSelected)

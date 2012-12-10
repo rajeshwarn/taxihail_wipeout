@@ -27,18 +27,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public PanelViewModel ()
         {
             _accountService = this.GetService<IAccountService> ();
-
-
-            Task.Factory.SafeStartNew (() =>
-            {
-                Thread.Sleep (2000);
-                var tutorialWasDisplayed = this.GetService<ICacheService> ().Get<string> ("TutorialWasDisplayed");
-                if (tutorialWasDisplayed.IsNullOrEmpty ()) {
-                    this.GetService<ICacheService> ().Set<string> ("TutorialWasDisplayed", true.ToString ());
-                    NavigateToTutorial.Execute ();
-                }
-            });
-
         }
 
         private bool _menuIsOpen = false;
@@ -130,7 +118,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     MenuIsOpen = false;
                     MessageService.ShowDialogActivity (typeof(TutorialViewModel));
-                    //RequestNavigate<TutorialViewModel>()
                 });
             }
         }

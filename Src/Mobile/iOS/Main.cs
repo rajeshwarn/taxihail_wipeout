@@ -78,6 +78,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         // This method is required in iPhoneOS 3.0
         public override void OnActivated(UIApplication application)
         {
+            UIApplication.CheckForIllegalCrossThreadCalls=true;
 
             ThreadHelper.ExecuteInThread ( () =>        MonoTouch.ObjCRuntime.Runtime.StartWWAN( new Uri ( new AppSettings().ServiceUrl ) ));
 

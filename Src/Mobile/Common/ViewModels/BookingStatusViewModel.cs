@@ -359,18 +359,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                                                                       if(isSuccess)
                                                                                       {
                                                                                           MessengerHub.Publish(new OrderCanceled(this, Order, null));
-                                                                                          this.Close();
+                                                                                          RequestNavigate<BookViewModel>(clearTop:true);
                                                                                       }
                                                                                       else
                                                                                       {
                                                                                           MessageService.ShowMessage(Resources.GetString("StatusConfirmCancelRideErrorTitle"), Resources.GetString("StatusConfirmCancelRideError"));
                                                                                       }
                                                                                   },
-                                                                                  Resources.GetString("NoButton"),() =>
-                                                                                                                      {
-                                                                                                                          
-                                                                                                                      }
-                                                               );
+                                                                                  Resources.GetString("NoButton"),() => { });
                                                });
             }
         }

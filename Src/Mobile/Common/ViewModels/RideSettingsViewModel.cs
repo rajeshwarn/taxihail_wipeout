@@ -109,19 +109,6 @@ namespace apcurium.MK.Booking.Mobile
             }
         }
 
-        public int Passengers {
-            get {
-                return _bookingSettings.Passengers;
-            }
-            set {
-                if(value != _bookingSettings.Passengers)
-                {
-                    _bookingSettings.Passengers = value;
-                    FirePropertyChanged("Passengers");
-                }
-            }
-        }
-
         public IMvxCommand SetVehiculeType {
             get {
                 return GetCommand<int>(id =>
@@ -183,8 +170,7 @@ namespace apcurium.MK.Booking.Mobile
 		private bool ValidateRideSettings()
 		{
 			if (string.IsNullOrEmpty(Name) 
-			    || string.IsNullOrEmpty(Phone)
-			    || Passengers <= 0)
+			    || string.IsNullOrEmpty(Phone))
 			{
                 base.MessageService.ShowMessage(Resources.GetString("UpdateBookingSettingsInvalidDataTitle"), Resources.GetString("UpdateBookingSettingsEmptyField"));
 				return false;

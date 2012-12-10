@@ -43,19 +43,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             set { Data.Phone = value; }
         }
 
-        public string NbOfPassenger
-        {
-            get { return Data.Passengers.ToString(); }
-            set
-            {
-                int nbPassengers;
-                if (int.TryParse(value, out nbPassengers))
-                {
-                    Data.Passengers = nbPassengers;
-                }
-            }
-        }
-
         public int VehicleTypeId
         {
             get { return Data.VehicleTypeId; }
@@ -71,16 +58,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             get { return _vehicleTypeList.SingleOrDefault(v => v.Id == VehicleTypeId).SelectOrDefault(v => v.Display, ""); }            
         }
 
-        public string VehicleTypeNameAndNbOfPassengers {
-            get {
-                var resources = TinyIoCContainer.Current.Resolve<IAppResource>();            
-                var passengerFormat = Data.Passengers == 1 ? resources.GetString("NbPassenger") : resources.GetString("NbPassengers");
-                return VehicleTypeName + string.Format(passengerFormat, NbOfPassenger);
-            }
-        }
-
-
-        public int? ProviderId
+		public int? ProviderId
         {
             get { return Data.ProviderId; }
             set

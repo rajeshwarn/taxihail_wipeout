@@ -7,8 +7,6 @@
 
         public string Phone { get; set; }
 
-        public int Passengers { get; set; }
-
         public int VehicleTypeId { get; set; }
 
         public int ChargeTypeId { get; set; }

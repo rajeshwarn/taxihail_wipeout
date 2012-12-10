@@ -29,43 +29,17 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Name&apos;}}" />
-            <LinearLayout
+            <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/RideSettingsPhone"
-                    android:layout_weight="1"
-                    style="@style/FormLabelText" />
-                <TextView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/RideSettingsPassengers"
-                    android:layout_weight="1"
-                    style="@style/FormLabelText" />
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/rideSettingsPassengersLayout"
+                android:text="@string/RideSettingsPhone"
+                style="@style/FormLabelText" />
+            <EditText
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <EditText
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Phone&apos;}}"
-                    android:layout_weight="1"
-                    android:layout_marginRight="10dip"
-                    android:maxLines="1"
-                    android:singleLine="true" />
-                <EditText
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Passengers&apos;}}"
-                    android:layout_weight="1"
-                    android:singleLine="true" />
-            </LinearLayout>
+                local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Phone&apos;}}"
+                android:maxLines="1"
+                android:singleLine="true" />
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"

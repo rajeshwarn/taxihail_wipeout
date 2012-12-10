@@ -25,7 +25,6 @@ using apcurium.MK.Booking.Mobile.Client.Navigation;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-    [NoHistory]
     public partial class ConfirmationView : MvxBindingTouchViewController<BookConfirmationViewModel>
     {
 
@@ -107,10 +106,6 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { pickerChargeType, "{'Text': {'Path': 'ChargeType'}}" },
                 { pickerAptEntryBuilding, "{'NavigateCommand': {'Path': 'NavigateToRefineAddress'}, 'Text':{'Path':'AptRingCode'}}"}
             });
-           
-
-
-            ViewModel.OnViewLoaded();
             this.View.ApplyAppFont ();
         }
 

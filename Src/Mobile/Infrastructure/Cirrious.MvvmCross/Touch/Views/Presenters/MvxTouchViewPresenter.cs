@@ -121,7 +121,9 @@ namespace Cirrious.MvvmCross.Touch.Views.Presenters
 
         public override bool PresentModalViewController(UIViewController viewController, bool animated)
         {
+            Console.WriteLine("++++++++++CurrentTopViewController : " + CurrentTopViewController.GetType().FullName);
             CurrentTopViewController.PresentModalViewController(viewController, animated);
+            //CurrentTopViewController.PresentViewController(viewController, animated, delegate() {});
             return true;
         }
 

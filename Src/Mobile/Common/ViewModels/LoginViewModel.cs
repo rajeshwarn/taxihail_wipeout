@@ -81,26 +81,35 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get
 			{
 				return GetCommand(() => {
-                    TinyIoCContainer.Current.Resolve<IAccountService>().ClearCache();
-					ThreadPool.QueueUserWorkItem( SignIn );  
+                    _accountService.ClearCache();
+					SignIn();  
 				});
 			}
 		}
 
-		private void SignIn( object state )
+		private void SignIn()
 		{
 			try
 			{
-                TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("SignIn with server {0}", TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl);            
-                MessageService.ShowProgress(true);				
-				var account = _accountService.GetAccount(Email, Password);
+                Logger.LogMessage("SignIn with server {0}", Settings.ServiceUrl);            
+                MessageService.ShowProgress(true);
+				var account = default(Account);
 
-                if ( account != null )
-                {
-                    this.Password = "";
-                    RequestNavigate<BookViewModel>(true );
-                }              
-				
+				try {
+					account = _accountService.GetAccount(Email, Password);
+				} 
+				catch(Exception e)
+				{
+					var title = Resources.GetString ("InvalidLoginMessageTitle");
+					var message = Resources.GetString ("InvalidLoginMessage");
+					
+					MessageService.ShowMessage (title, message);        
+				}
+
+				if(account != null){
+					this.Password = string.Empty;
+					RequestNavigate<BookViewModel>(true);
+				}
 			}
 			finally
 			{				

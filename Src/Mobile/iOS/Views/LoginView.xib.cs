@@ -96,6 +96,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 return true;
             };            
 
+
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
             if (settings.FacebookEnabled) {
                 AppButtons.FormatStandardButton (btnFbLogin, Resources.FacebookButton, AppStyle.ButtonColor.AlternateCorporateColor, "Assets/Social/FB/fbIcon.png");               
@@ -125,7 +126,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { txtPassword, "{'Text':{'Path':'Password'}}"},
             });
 
-
+            ViewModel.OnViewLoaded ();
             this.View.ApplyAppFont();           
 
         }
