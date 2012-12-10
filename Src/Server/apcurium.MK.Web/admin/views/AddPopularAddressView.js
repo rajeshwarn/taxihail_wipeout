@@ -5,14 +5,12 @@
         className: 'add-favorite-view',
 
         events: {
-            'focus [name=fullAddress]': 'onfocus',
             'click [data-action=destroy]': 'destroyAddress',
             'click [data-action=cancel]': 'cancel'
         },
 
         initialize: function () {
-            _.bindAll(this, 'save', 'onkeyup', 'ondocumentclick');
-            _.defer(_.bind(function () { $(document).on('click', this.ondocumentclick); }, this));
+            _.bindAll(this, 'save');
         },
 
         render: function () {
@@ -22,33 +20,54 @@
             this.validate({
                 rules: {
                     friendlyName: "required",
-                    fullAddress: "required"
+                    fullAddress: "required",
+                    streetNumber: "required",
+                    street: "required",
+                    city: "required",
+                    zipCode: "required",
+                    state: "required",
+                    latitude: {
+                        required: true,
+                        number: true
+                    },
+                    longitude: {
+                        required: true,
+                        number: true
+                    }
                 },
                 messages: {
                     friendlyName: {
                         required: TaxiHail.localize('error.friendlyNameRequired')
                     },
+                    streetNumber: {
+                        required: TaxiHail.localize('error.streetNumberRequired')
+                    },
+                    street: {
+                        required: TaxiHail.localize('error.streetRequired')
+                    },
+                    city: {
+                        required: TaxiHail.localize('error.cityRequired')
+                    },
+                    zipCode: {
+                        required: TaxiHail.localize('error.zipCodeRequired')
+                    },
+                    state: {
+                        required: TaxiHail.localize('error.stateRequired')
+                    },
                     fullAddress: {
                         required: TaxiHail.localize('error.fullAddressRequired')
+                    },
+                    latitude: {
+                        required: TaxiHail.localize('error.latitudeRequired'),
+                        number: TaxiHail.localize('error.latitudeNumber')
+                    },
+                    longitude: {
+                        required: TaxiHail.localize('error.longitudeRequired'),
+                        number: TaxiHail.localize('error.longitudeNumber')
                     }
                 },
                 submitHandler: this.save
             });
-
-            //search address for full address
-            this.$('[name=fullAddress]').on('keyup', _.debounce(this.onkeyup, 500));
-            this._selector = new TaxiHail.AddressSelectionView({
-                model: this.model,
-                showFavorites: false,
-                showPlaces: this.options.showPlaces
-            }).on('selected', function (model, collection) {
-                this.model.set(model.toJSON());
-                this.close();
-            }, this);
-
-
-            this._selector.render().hide();
-            this.$(".address-selector-container").html(this._selector.el);
 
             return this;
         },
@@ -56,6 +75,7 @@
         save: function (form) {
             var address = this.serializeForm(form);
             var address = _.extend(this.model.toJSON(), address);
+            address.fullAddress = address.streetNumber + " " + address.street + ", " + address.city + ", " + address.state + " " + address.zipCode;
             var data = { Address: address, Id: address.Id };
             this.model.save(data, {
                 success: _.bind(function(model){
@@ -85,47 +105,12 @@
             return this;
         },
 
-        open: function (e) {
-            e && e.preventDefault();
-
-            this.trigger('open', this);
-            if (this._selector) {
-                this._selector.show();
-            }
-
-        },
-
-        close: function () {
-            var $input = this.$('[name=fullAddress]');
-
-            this._selector && this._selector.hide();
-            // Set address in textbox back to the value of the model
-            $input.val(this.model.get('fullAddress'));
-            // Force validation of the Address field
-            this.$('form').data().validator.element($input);
-        },
-
-        onfocus: function (e) {
-            this.open();
-        },
-
-        onkeyup: function (e) {
-            if (!jQuery.hotkeys.specialKeys[e.which]) {
-                this._selector && this._selector.search($(e.currentTarget).val());
-            }
-        },
-
         cancel: function (e) {
             e.preventDefault();
             this.model.set(this.model.previousAttributes);
             this.trigger('cancel', this);
-        },
-
-        ondocumentclick: function (e) {
-            if (!this.$('.address-picker').find(e.target).length) {
-                this.close();
-            }
         }
+
     });
 
     _.extend(View.prototype, TaxiHail.ValidatedView);

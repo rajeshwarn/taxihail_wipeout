@@ -1,16 +1,41 @@
 ﻿<div class='well'>
-    <h4 class="table-title">{{localize "Add to Popular"}}</h4>
+  <h4 class="table-title">{{localize "Add to Popular"}}</h4>
 
-    <div class="errors" style="margin-top: 10px;"></div>
+  <div class="errors" style="margin-top: 10px;"></div>
 
-    <form class="form-horizontal clearfix" >
-        <div class="control-group">
-            <label class="control-label">{{localize 'Full Address'}}</label>
-            <div class="controls address-picker">
-                <input type="text" id="inputFullAddress" name="fullAddress"  value="{{fullAddress}}" class='input-block-level'>
-                <div class='address-selector-container raise100' ></div>
-            </div>
+  <form class="form-horizontal clearfix" >
+
+    <div class="clearfix">
+      <div class="control-group left-control-group">
+        <label class="control-label">{{localize 'StreetNumber'}}</label>
+        <div class="controls">
+          <input type="text"  name="streetNumber"  value="{{streetNumber}}" class='input-block-level'>
+              </div>
+      </div>
+
+      <div class="control-group right-control-group">
+        <label class="control-label" >{{localize "Street"}}</label>
+        <div class="controls">
+          <input type="text" name="street" value="{{street}}" class='input-block-level'>
         </div>
+      </div>
+    </div>
+
+    <div class="clearfix">
+      <div class="control-group left-control-group">
+        <label class="control-label">{{localize 'City'}}</label>
+        <div class="controls">
+          <input type="text"  name="city"  value="{{city}}" class='input-block-level'>
+            </div>
+      </div>
+
+      <div class="control-group right-control-group">
+        <label class="control-label" >{{localize "ZipCode"}}</label>
+        <div class="controls">
+          <input type="text" name="zipCode" value="{{zipCode}}" class='input-block-level'>
+            </div>
+      </div>
+    </div>
         
         <div class="control-group left-control-group">
             <label class="control-label">{{localize 'Apartment'}}</label>
@@ -26,12 +51,38 @@
             </div>
         </div>
 
-        <div class="control-group">
-            <label class="control-label" >{{localize "Building Name"}}</label>
-            <div class="controls">
-                <input type="text" name="buildingName" value="{{buildingName}}" class='input-block-level'>
+    <div class="clearfix">
+      <div class="control-group left-control-group">
+        <label class="control-label">{{localize 'State'}}</label>
+        <div class="controls">
+          <input type="text" name="state" value="{{state}}" class='input-block-level'>
             </div>
-        </div>
+      </div>
+
+      <div class="control-group right-control-group">
+        <label class="control-label" >{{localize "Building Name"}}</label>
+        <div class="controls">
+          <input type="text" name="buildingName" value="{{buildingName}}" class='input-block-level'>
+            </div>
+      </div>
+    </div>
+
+    <div class="clearfix">
+      <div class="control-group left-control-group">
+        <label class="control-label">{{localize 'Latitude'}}</label>
+        <div class="controls">
+          <input type="text"  name="latitude"  value="{{latitude}}" class='input-block-level'>
+            </div>
+      </div>
+
+      <div class="control-group right-control-group">
+        <label class="control-label" >{{localize "Longitude"}}</label>
+        <div class="controls">
+          <input type="text" name="longitude" value="{{longitude}}" class='input-block-level'>
+            </div>
+      </div>
+    </div>
+
         <h4 style="text-align: center">{{localize "Give it a name"}}</h4>
         <div class="control-group no-label">
             <div class="controls">
