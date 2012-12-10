@@ -81,7 +81,6 @@
                     android:layout_gravity="center_vertical|left" />
                 <apcurium.mk.booking.mobile.client.controls.StyledButton
                     local:ButtonStyle="Black"
-                    android:id="@+id/SignInButton"
                     style="@style/ButtonText"
                     android:layout_weight="1"
                     local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;SignInCommand&apos;}}"

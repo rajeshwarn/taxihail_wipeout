@@ -294,17 +294,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 TinyIoC.TinyIoCContainer.Current.Resolve<IErrorHandler> ().HandleError (ex);
                 
                 return null;
-            } catch (Exception e) {
-                var title = TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("InvalidLoginMessageTitle");
-                var message = TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("InvalidLoginMessage");
-
-                TinyIoCContainer.Current.Resolve<IMessageService> ().ShowMessage (title, message);                
-
-                
-                return null;
             }
-            
-            
         }
 
         private static void SaveCredentials (AuthenticationData authResponse)
