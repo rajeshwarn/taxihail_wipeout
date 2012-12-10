@@ -63,6 +63,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         void HandleSignOutButtonClick (object sender, EventArgs e)
         {
 			ViewModel.Panel.SignOut.Execute();
+			// Finish the activity, because clearTop does not seem to work in this case
 			Finish();
         }
 
