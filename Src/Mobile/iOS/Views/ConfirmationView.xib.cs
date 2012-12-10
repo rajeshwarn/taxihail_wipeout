@@ -25,7 +25,6 @@ using apcurium.MK.Booking.Mobile.Client.Navigation;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-    [NoHistory]
     public partial class ConfirmationView : MvxBindingTouchViewController<BookConfirmationViewModel>
     {
 
