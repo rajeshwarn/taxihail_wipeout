@@ -348,19 +348,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return GetCommand(() =>
                 {
-                    // Close the menu if it was open
-                    Panel.MenuIsOpen = false;
-
-                    this.AddressSelectionMode = this.AddressSelectionMode == Data.AddressSelectionMode.PickupSelection
-                        ? Data.AddressSelectionMode.None
-                        : Data.AddressSelectionMode.PickupSelection;
-
-                    if (this.AddressSelectionMode == Data.AddressSelectionMode.PickupSelection && this.IsVisible)
+                    this.InvokeOnMainThread(delegate 
                     {
-                        MessageService.ShowToast(Resources.GetString("PickupWasActivatedToastMessage"), ToastDuration.Long );
-                    }
-                    FirePropertyChanged(() => SelectedAddress);
-                    CenterMap(false);
+                        // Close the menu if it was open
+                        Panel.MenuIsOpen = false;
+
+                        this.AddressSelectionMode = this.AddressSelectionMode == Data.AddressSelectionMode.PickupSelection
+                            ? Data.AddressSelectionMode.None
+                            : Data.AddressSelectionMode.PickupSelection;
+
+                        if (this.AddressSelectionMode == Data.AddressSelectionMode.PickupSelection && this.IsVisible)
+                        {
+                            MessageService.ShowToast(Resources.GetString("PickupWasActivatedToastMessage"), ToastDuration.Long );
+                        }
+                        FirePropertyChanged(() => SelectedAddress);
+                        CenterMap(false);
+                    });
                 });
             }
 
@@ -373,20 +376,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return GetCommand(() =>
                     {
-                        // Close the menu if it was open
-                        Panel.MenuIsOpen = false;
-
-                        this.AddressSelectionMode = this.AddressSelectionMode == Data.AddressSelectionMode.DropoffSelection
-                            ? Data.AddressSelectionMode.None
-                            : Data.AddressSelectionMode.DropoffSelection;
-
-                        if (this.AddressSelectionMode == Data.AddressSelectionMode.DropoffSelection && this.IsVisible)
+                        this.RequestMainThreadAction(delegate 
                         {
-                            MessageService.ShowToast(Resources.GetString("DropoffWasActivatedToastMessage"), ToastDuration.Long);
-                        }
-                        FirePropertyChanged(() => SelectedAddress);
-                        CenterMap(false);
+                            // Close the menu if it was open
+                            Panel.MenuIsOpen = false;
 
+                            this.AddressSelectionMode = this.AddressSelectionMode == Data.AddressSelectionMode.DropoffSelection
+                                ? Data.AddressSelectionMode.None
+                                : Data.AddressSelectionMode.DropoffSelection;
+
+                            if (this.AddressSelectionMode == Data.AddressSelectionMode.DropoffSelection && this.IsVisible)
+                            {
+                                MessageService.ShowToast(Resources.GetString("DropoffWasActivatedToastMessage"), ToastDuration.Long);
+                            }
+                            FirePropertyChanged(() => SelectedAddress);
+                            CenterMap(false);
+                        });
                     });
             }
         }

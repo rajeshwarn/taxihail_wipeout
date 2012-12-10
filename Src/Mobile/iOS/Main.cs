@@ -125,7 +125,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 				{
 					var model = ((BookView)AppContext.Current.Controller.TopViewController).ViewModel;
                     model.Reset ();
-                    if ( model.MapState != Data.MapState.PickupSelection )
+                    if ( model.AddressSelectionMode != Data.AddressSelectionMode.PickupSelection )
                     {
                         model.ActivatePickup.Execute ();
                     }

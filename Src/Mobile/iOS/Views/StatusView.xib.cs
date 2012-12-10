@@ -82,8 +82,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                     { btnNewRide, "{'TouchUpInside': {'Path': 'NewRide'}}" }
                 });
                 mapStatus.Delegate = new AddressMapDelegate ();
-                mapStatus.PickupIsActive = false;
-                mapStatus.DropoffIsActive = false;
+                mapStatus.AddressSelectionMode = Data.AddressSelectionMode.None;
             
             } catch (Exception ex) {
                 Logger.LogError (ex);
