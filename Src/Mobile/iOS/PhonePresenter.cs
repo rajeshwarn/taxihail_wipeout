@@ -41,10 +41,13 @@ namespace apcurium.MK.Booking.Mobile.Client
         }
 
        
-        public override void Show(Cirrious.MvvmCross.Touch.Interfaces.IMvxTouchView view)
+        public override void Show (Cirrious.MvvmCross.Touch.Interfaces.IMvxTouchView view)
         {        
-            base.Show(view);                      
-            ((UIViewController)view).NavigationController.NavigationBar.Hidden = HideNavBar(view);
+            base.Show (view); 
+            var navigationController = ((UIViewController)view).NavigationController;
+            if (navigationController != null) {
+                navigationController.NavigationBar.Hidden = HideNavBar(view);
+            }
         }
 
         private bool HideNavBar(Cirrious.MvvmCross.Touch.Interfaces.IMvxTouchView view)
