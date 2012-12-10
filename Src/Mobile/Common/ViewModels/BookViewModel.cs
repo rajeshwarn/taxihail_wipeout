@@ -66,6 +66,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _accountService = this.GetService<IAccountService>();
             _geolocator = this.GetService<ILocationService>();
             _bookingService = this.GetService<IBookingService>();
+
+			Panel = new PanelViewModel();
         }
 
         public override void OnViewLoaded ()
@@ -103,8 +105,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 Title = Resources.GetString("BookDropoffLocationButtonTitle"),
                 EmptyAddressPlaceholder = Resources.GetString("BookDropoffLocationEmptyPlaceholder")
             };
-            
-            Panel = new PanelViewModel();
             
             Pickup.AddressChanged += AddressChanged;
             Dropoff.AddressChanged += AddressChanged;
