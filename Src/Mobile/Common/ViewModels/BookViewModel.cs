@@ -351,10 +351,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     {
                         DropoffIsActive = false;
                     }
-                    if (PickupIsActive)
+                    if (PickupIsActive && this.IsVisible)
                     {
-                        var res = TinyIoCContainer.Current.Resolve<IAppResource>();
-                        TinyIoCContainer.Current.Resolve<IMessageService>().ShowToast(res.GetString("PickupWasActivatedToastMessage"), ToastDuration.Long );
+                        MessageService.ShowToast(Resources.GetString("PickupWasActivatedToastMessage"), ToastDuration.Long );
                     }
                     FirePropertyChanged(() => SelectedAddress);
                     FirePropertyChanged(() => NoAddressActiveSelection);
@@ -379,10 +378,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         {
                             PickupIsActive = false;
                         }
-                        if (DropoffIsActive)
+                        if (DropoffIsActive && this.IsVisible)
                         {
-                            var res = TinyIoCContainer.Current.Resolve<IAppResource>();
-                            TinyIoCContainer.Current.Resolve<IMessageService>().ShowToast(res.GetString("DropoffWasActivatedToastMessage"), ToastDuration.Long);
+                            MessageService.ShowToast(Resources.GetString("DropoffWasActivatedToastMessage"), ToastDuration.Long);
                         }
                         FirePropertyChanged(() => SelectedAddress);
                         FirePropertyChanged(() => NoAddressActiveSelection);
@@ -440,8 +438,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
 					if( date.HasValue && date < DateTime.Now )
 					{
-						var res = TinyIoCContainer.Current.Resolve<IAppResource>();
-						TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage( res.GetString("InvalidChoiceTitle"), res.GetString("BookViewInvalidDate") );
+                        MessageService.ShowMessage( Resources.GetString("InvalidChoiceTitle"), Resources.GetString("BookViewInvalidDate") );
 						Order.PickupDate = null;
 					}
 					else
@@ -535,8 +532,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{					
 					var orderGet = (Order)order ["order"];                  
 					var orderInfoGet = (OrderStatusDetail)order ["orderInfo"];
-					var orderWithStatus = new OrderWithStatusModel () { Order = orderGet, OrderStatusDetail = orderInfoGet };
-					var serialized = JsonSerializer.SerializeToString (orderWithStatus, typeof(OrderWithStatusModel));
                     RequestNavigate<BookingStatusViewModel>(new {
                         order =  orderGet.ToJson(),
                         orderStatus = orderInfoGet.ToJson()
