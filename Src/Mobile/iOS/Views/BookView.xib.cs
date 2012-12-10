@@ -154,6 +154,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             var btn = new UIBarButtonItem ( offsetView );
             navBar.TopItem.RightBarButtonItem = btn;
             navBar.TopItem.RightBarButtonItem.SetTitlePositionAdjustment (new UIOffset (-20, 0), UIBarMetrics.Default);
+
+
+            ViewModel.ShowTutorial.Execute ();
         }
 
         private void OnStatusCloseRequested (StatusCloseRequested msg)
