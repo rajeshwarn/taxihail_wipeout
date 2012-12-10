@@ -239,6 +239,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             set
             { 
                 _pickup = value;
+                if(this.AddressSelectionMode == Data.AddressSelectionMode.None)
+                {
+                    ShowPickupPin(value);
+                }
             }
         }
         
@@ -248,6 +252,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             set
             { 
                 _dropoff = value;
+                if(this.AddressSelectionMode == Data.AddressSelectionMode.None)
+                {
+                    ShowDropOffPin(value);
+                }
             }
         }
         

@@ -158,23 +158,31 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private PushPinOverlay _pickupPin;
         private PushPinOverlay _dropoffPin;
 
-        public Address Pickup
-        {
-            get { return _pickup; }
-            set 
-            { 
-                _pickup = value;
-            }
-        }
-
-        public Address Dropoff
-        {
-            get { return _dropoff; }
-            set 
-            { 
-                _dropoff = value;
-            }
-        }
+		public Address Pickup
+		{
+			get { return _pickup; }
+			set
+			{ 
+				_pickup = value;
+				if(this.AddressSelectionMode == Data.AddressSelectionMode.None)
+				{
+					ShowPickupPin(value);
+				}
+			}
+		}
+		
+		public Address Dropoff
+		{
+			get { return _dropoff; }
+			set
+			{ 
+				_dropoff = value;
+				if(this.AddressSelectionMode == Data.AddressSelectionMode.None)
+				{
+					ShowDropoffPin(value);
+				}
+			}
+		}
 
 		protected override void OnAttachedToWindow()
 		{
