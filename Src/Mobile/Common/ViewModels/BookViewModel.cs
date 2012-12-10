@@ -121,11 +121,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 //            Task.Factory.SafeStartNew (() =>
 //            {
 //                Thread.Sleep (2000);
-//                var tutorialWasDisplayed = this.GetService<ICacheService> ().Get<string> ("TutorialWasDisplayed");
-//                if (tutorialWasDisplayed.IsNullOrEmpty ()) {
-//                    this.GetService<ICacheService> ().Set<string> ("TutorialWasDisplayed", true.ToString ());
-//                    MessageService.ShowDialogActivity (typeof(TutorialViewModel));
-//                }
+//               
 //            });
 
             ForceRefresh();
@@ -337,6 +333,30 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get { return !DropoffIsActive && !PickupIsActive; }
         }
+
+
+        public IMvxCommand ShowTutorial
+        {
+            get{
+                return new MvxRelayCommand( () =>
+                                           {
+
+                    Task.Factory.SafeStartNew ( () => 
+                                               {
+                        Thread.Sleep ( 5000 );
+                        InvokeOnMainThread ( () =>
+                                            {
+                var tutorialWasDisplayed = this.GetService<ICacheService> ().Get<string> ("TutorialWasDisplayed");
+                                if (tutorialWasDisplayed.IsNullOrEmpty ()) {
+                                    this.GetService<ICacheService> ().Set<string> ("TutorialWasDisplayed", true.ToString ());
+                                    MessageService.ShowDialogActivity (typeof(TutorialViewModel));
+                                }
+                        });
+                    });
+                });
+            }
+        }
+
         public IMvxCommand ActivatePickup
         {
             get

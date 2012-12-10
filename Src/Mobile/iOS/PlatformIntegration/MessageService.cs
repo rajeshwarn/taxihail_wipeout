@@ -57,7 +57,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         		
 		public void ShowProgress( bool show, Action cancel )
 		{
-            UIApplication.SharedApplication.InvokeOnMainThread(delegate {
+            
     			if( show )
     			{
                     UIApplication.SharedApplication.InvokeOnMainThread ( () =>
@@ -72,7 +72,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
     				LoadingOverlay.StopAnimatingLoading(  );
                     });
     			}
-            });
+            
         }
 
 		public void ShowProgress( bool show )

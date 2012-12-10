@@ -58,7 +58,7 @@ namespace apcurium.MK.Booking.Mobile.Client
       
         public override bool PresentModalViewController (UIViewController viewController, bool animated)
         {
-            CurrentTopViewController.NavigationController.ModalPresentationStyle = UIModalPresentationStyle.CurrentContext; 
+            //CurrentTopViewController.NavigationController.ModalPresentationStyle = UIModalPresentationStyle.CurrentContext; 
             return base.PresentModalViewController (viewController, animated);
         }
 
