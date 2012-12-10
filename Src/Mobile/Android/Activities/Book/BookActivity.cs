@@ -23,6 +23,10 @@ using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 using apcurium.MK.Booking.Mobile.Client.Activities.Setting;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Client.Controls;
+using System.Reactive.Linq;
+using System.Reactive;
+
+
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
     [Activity(Label = "Book", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
@@ -63,8 +67,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         void HandleSignOutButtonClick (object sender, EventArgs e)
         {
 			ViewModel.Panel.SignOut.Execute();
-			// Finish the activity, because clearTop does not seem to work in this case
-			Finish();
+			// Finish the activity, because clearTop does not seem to be enough in this case
+			// Finish is delayed 1sec in order to prevent the application from being terminated
+			Observable.Return(Unit.Default).Delay (TimeSpan.FromSeconds(1)).Subscribe(x=>{
+				Finish();
+			});
         }
 
         void HandlePropertyChanged (object sender, System.ComponentModel.PropertyChangedEventArgs e)
