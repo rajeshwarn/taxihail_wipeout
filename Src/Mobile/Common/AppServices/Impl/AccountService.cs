@@ -255,7 +255,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             {
                 Name = settings.Name,
                 Phone = settings.Phone,
-                Passengers = settings.Passengers,
                 VehicleTypeId = settings.VehicleTypeId,
                 ChargeTypeId = settings.ChargeTypeId,
                 ProviderId = settings.ProviderId

@@ -160,7 +160,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
             else
             {
-                Order.Settings = new BookingSettings { Passengers = 2 };
+                Order.Settings = new BookingSettings();
             }
         }
 
@@ -461,9 +461,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return GetCommand(() =>
                 {
-				
-
-					if (Order.Settings.Passengers == 0) {
+					if (string.IsNullOrEmpty(Order.Settings.Phone)) {
 						var account = _accountService.CurrentAccount;
 						Order.Settings = account.Settings;
 					}

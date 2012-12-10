@@ -21,9 +21,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 		MonoTouch.UIKit.UILabel lblPhone { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblPassengers { get; set; }
-
-		[Outlet]
 		MonoTouch.UIKit.UILabel lblVehicleType { get; set; }
 
 		[Outlet]
@@ -31,9 +28,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		[Outlet]
 		MonoTouch.UIKit.UITextField txtPhone { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UITextField txtPassengers { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UITextField txtVehicleType { get; set; }
@@ -67,11 +61,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 				lblPhone = null;
 			}
 
-			if (lblPassengers != null) {
-				lblPassengers.Dispose ();
-				lblPassengers = null;
-			}
-
 			if (lblVehicleType != null) {
 				lblVehicleType.Dispose ();
 				lblVehicleType = null;
@@ -85,11 +74,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			if (txtPhone != null) {
 				txtPhone.Dispose ();
 				txtPhone = null;
-			}
-
-			if (txtPassengers != null) {
-				txtPassengers.Dispose ();
-				txtPassengers = null;
 			}
 
 			if (txtVehicleType != null) {

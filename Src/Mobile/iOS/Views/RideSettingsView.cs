@@ -48,13 +48,12 @@ namespace apcurium.MK.Booking.Mobile.Client
             scrollView.ContentSize = new SizeF(320, 400);
 
             lblName.Text= Resources.GetValue("RideSettingsName");
-            lblPassengers.Text= Resources.GetValue("RideSettingsPassengers");
             lblPhone.Text= Resources.GetValue("RideSettingsPhone");
             lblVehicleType.Text= Resources.GetValue("RideSettingsVehiculeType");
             lblChargeType.Text= Resources.GetValue("RideSettingsChargeType");
             lblPassword.Text = Resources.GetValue("RideSettingsPassword");
 
-            base.DismissKeyboardOnReturn(txtName, txtPassengers, txtPhone);
+            base.DismissKeyboardOnReturn(txtName, txtPhone);
             
             var button = new MonoTouch.UIKit.UIBarButtonItem(Resources.DoneButton, UIBarButtonItemStyle.Plain, delegate {
                 ViewModel.SaveCommand.Execute();
@@ -74,7 +73,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             this.AddBindings(new Dictionary<object, string>(){
                 { txtName, "{'Text': {'Path': 'Name'}}" },
                 { txtPhone, "{'Text': {'Path': 'Phone'}}" },
-                { txtPassengers, "{'Text': {'Path': 'Passengers'}}" },
                 { txtVehicleType, "{'Text': {'Path': 'VehicleTypeName'}}" },
                 { txtChargeType, "{'Text': {'Path': 'ChargeTypeName'}}" },
                 { txtPassword, "{'NavigateCommand': {'Path': 'NavigateToUpdatePassword'}}" }
