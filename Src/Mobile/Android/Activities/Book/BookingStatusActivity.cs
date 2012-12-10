@@ -92,8 +92,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             map.Traffic = false;
             map.Satellite = false;
 
-			map.DropoffIsActive = false;
-			map.PickupIsActive = false;
+			map.AddressSelectionMode = Data.AddressSelectionMode.None;
 
         }
     }

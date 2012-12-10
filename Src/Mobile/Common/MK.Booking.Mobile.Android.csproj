@@ -152,7 +152,6 @@
     <Compile Include="Messages\OrderRated.cs" />
     <Compile Include="Messages\DateTimePicked.cs" />
     <Compile Include="Messages\OrderConfirmed.cs" />
-    <Compile Include="Models\OrderWithStatusModel.cs" />
     <Compile Include="Models\RatingModel.cs" />
     <Compile Include="Mvx\TinyIoCProvider.cs" />
     <Compile Include="Mvx\TinyIoCServiceProviderSetup.cs" />
@@ -226,6 +225,8 @@
     <Compile Include="Extensions\TaskFactoryExtension.cs" />
     <Compile Include="ViewModels\BookStreetNumberViewModel.cs" />
     <Compile Include="Extensions\IDisposableExtensions.cs" />
+    <Compile Include="Data\AddressSelectionMode.cs" />
+    <Compile Include="BindingConverter\EnumToBoolConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">

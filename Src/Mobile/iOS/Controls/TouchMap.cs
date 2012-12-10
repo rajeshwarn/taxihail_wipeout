@@ -196,44 +196,40 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             } 
         }
 
-        private bool _pickupIsActive;
-        public bool PickupIsActive {
+        private AddressSelectionMode _addressSelectionMode;
+        public AddressSelectionMode AddressSelectionMode {
             get {
-                return _pickupIsActive;
+                return _addressSelectionMode;
             }
-            set{
-                _pickupIsActive = value;
-                if(value) {
+            set {
+                _addressSelectionMode = value;
+                if(_addressSelectionMode == Data.AddressSelectionMode.PickupSelection)
+                {
                     _pickupCenterPin.Hidden = false;
                     if(_pickupPin != null) RemoveAnnotation(_pickupPin);
                     _pickupPin = null;
-                }
-                else {
-                    ShowPickupPin(Pickup);
+
+                    ShowDropOffPin(Dropoff);
                     SetNeedsDisplay();
-                    
                 }
-            }
-        }
-        private bool _dropoffIsActive;
-        public bool DropoffIsActive {
-            get {
-                return _dropoffIsActive;
-            }
-            set {
-                _dropoffIsActive = value;
-                if(value) {
+                else if(_addressSelectionMode == Data.AddressSelectionMode.DropoffSelection)
+                {
                     _dropoffCenterPin.Hidden = false;
                     if(_dropoffPin != null) RemoveAnnotation(_dropoffPin);
                     _dropoffPin = null;
-                } else {
-                    ShowDropOffPin(Dropoff);
+
+                    ShowPickupPin(Pickup);
                     SetNeedsDisplay();
-                    
+                }
+                else
+                {
+                    ShowDropOffPin(Dropoff);
+                    ShowPickupPin(Pickup);
+                    SetNeedsDisplay();
                 }
             }
         }
-        
+
         private AddressAnnotation _pickupPin;
         private AddressAnnotation _dropoffPin;
         
@@ -243,6 +239,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             set
             { 
                 _pickup = value;
+                if(this.AddressSelectionMode == Data.AddressSelectionMode.None)
+                {
+                    ShowPickupPin(value);
+                }
             }
         }
         
@@ -252,6 +252,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             set
             { 
                 _dropoff = value;
+                if(this.AddressSelectionMode == Data.AddressSelectionMode.None)
+                {
+                    ShowDropOffPin(value);
+                }
             }
         }
         
