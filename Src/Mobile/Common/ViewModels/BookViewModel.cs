@@ -42,8 +42,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private IAccountService _accountService;
         private ILocationService _geolocator;
         private IBookingService _bookingService;
-        private bool _pickupIsActive = true;
-        private bool _dropoffIsActive = false;
         private IEnumerable<CoordinateViewModel> _mapCenter;
         private string _fareEstimate;
 
@@ -109,8 +107,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Pickup.AddressChanged += AddressChanged;
             Dropoff.AddressChanged += AddressChanged;
 
-            PickupIsActive = true;
-            DropoffIsActive = false;
+            AddressSelectionMode = AddressSelectionMode.PickupSelection;
+
             Pickup.RequestCurrentLocationCommand.Execute();            
             
             _fareEstimate = Resources.GetString("NoFareText");
@@ -206,7 +204,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                     ForceRefresh();
 
-                    if (!PickupIsActive)
+                    if (this.AddressSelectionMode != Data.AddressSelectionMode.PickupSelection)
                     {
                         ActivatePickup.Execute();
                         Thread.Sleep(300);
@@ -232,8 +230,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Order.PickupDate = null;
 			Pickup.SetAddress( Order.PickupAddress, false );
 			Dropoff.SetAddress( Order.DropOffAddress, false );
-			PickupIsActive=true;
-			DropoffIsActive=false;
+            this.AddressSelectionMode = Data.AddressSelectionMode.PickupSelection;
 			CenterMap(false);
 			ForceRefresh();
         }
@@ -244,8 +241,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             FirePropertyChanged(() => Pickup);
             FirePropertyChanged(() => Dropoff);
             FirePropertyChanged(() => SelectedAddress);
-            FirePropertyChanged(() => PickupIsActive);
-            FirePropertyChanged(() => DropoffIsActive);
+            FirePropertyChanged(() => AddressSelectionMode);
 			FirePropertyChanged(() => FareEstimate);
         }
 
@@ -270,11 +266,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                if (PickupIsActive)
+                if (this.AddressSelectionMode == Data.AddressSelectionMode.PickupSelection)
                 {
                     return Pickup;
                 }
-                else if (DropoffIsActive)
+                else if (this.AddressSelectionMode == Data.AddressSelectionMode.DropoffSelection)
                 {
                     return Dropoff;
                 }
@@ -300,39 +296,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public BookAddressViewModel Pickup { get; set; }
         public BookAddressViewModel Dropoff { get; set; }
 
-        public bool PickupIsActive
-        {
-            get { return _pickupIsActive; }
-            set
-            {
-                _pickupIsActive = value;
-                FirePropertyChanged(() => PickupIsActive);
 
+        private AddressSelectionMode _addressSelectionMode;
+        public AddressSelectionMode AddressSelectionMode {
+            get {
+                return _addressSelectionMode;
             }
-        }
-
-        public bool DropoffIsActive
-        {
-            get { return _dropoffIsActive; }
-            set
-            {
-                _dropoffIsActive = value;
-                FirePropertyChanged(() => DropoffIsActive);
-                FirePropertyChanged(() => CanClearAddress);
+            set {
+                if(_addressSelectionMode != value){
+                    _addressSelectionMode = value;
+					FirePropertyChanged("AddressSelectionMode");
+                    FirePropertyChanged(() => CanClearAddress);
+                }
             }
         }
 
         public bool CanClearAddress
         {
             get { 
-                return DropoffIsActive && ( Dropoff != null) && (Dropoff.Model != null) && Dropoff.Model.HasValidCoordinate(); 
+                return this.AddressSelectionMode == Data.AddressSelectionMode.DropoffSelection && ( Dropoff != null) && (Dropoff.Model != null) && Dropoff.Model.HasValidCoordinate(); 
             }
         }
 
-        public bool NoAddressActiveSelection
-        {
-            get { return !DropoffIsActive && !PickupIsActive; }
-        }
 
 
         public IMvxCommand ShowTutorial
@@ -366,17 +351,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     // Close the menu if it was open
                     Panel.MenuIsOpen = false;
 
-                    PickupIsActive = !PickupIsActive;
-                    if (DropoffIsActive && PickupIsActive)
-                    {
-                        DropoffIsActive = false;
-                    }
-                    if (PickupIsActive && this.IsVisible)
+                    this.AddressSelectionMode = this.AddressSelectionMode == Data.AddressSelectionMode.PickupSelection
+                        ? Data.AddressSelectionMode.None
+                        : Data.AddressSelectionMode.PickupSelection;
+
+                    if (this.AddressSelectionMode == Data.AddressSelectionMode.PickupSelection && this.IsVisible)
                     {
                         MessageService.ShowToast(Resources.GetString("PickupWasActivatedToastMessage"), ToastDuration.Long );
                     }
                     FirePropertyChanged(() => SelectedAddress);
-                    FirePropertyChanged(() => NoAddressActiveSelection);
                     CenterMap(false);
                 });
             }
@@ -393,18 +376,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         // Close the menu if it was open
                         Panel.MenuIsOpen = false;
 
-                        DropoffIsActive = !DropoffIsActive;
-                        if (DropoffIsActive && PickupIsActive)
-                        {
-                            PickupIsActive = false;
-                        }
-                        if (DropoffIsActive && this.IsVisible)
+                        this.AddressSelectionMode = this.AddressSelectionMode == Data.AddressSelectionMode.DropoffSelection
+                            ? Data.AddressSelectionMode.None
+                            : Data.AddressSelectionMode.DropoffSelection;
+
+                        if (this.AddressSelectionMode == Data.AddressSelectionMode.DropoffSelection && this.IsVisible)
                         {
                             MessageService.ShowToast(Resources.GetString("DropoffWasActivatedToastMessage"), ToastDuration.Long);
                         }
                         FirePropertyChanged(() => SelectedAddress);
-                        FirePropertyChanged(() => NoAddressActiveSelection);
-
                         CenterMap(false);
 
                     });
@@ -414,15 +394,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                
         private void CenterMap(bool changeZoom)
         {
-            if (DropoffIsActive && Dropoff.Model.HasValidCoordinate())
+            if (this.AddressSelectionMode == Data.AddressSelectionMode.DropoffSelection && Dropoff.Model.HasValidCoordinate())
             {
                 MapCenter = new CoordinateViewModel[] { new CoordinateViewModel { Coordinate = new Coordinate { Latitude = Dropoff.Model.Latitude, Longitude = Dropoff.Model.Longitude }, Zoom = changeZoom ? ZoomLevel.Close : ZoomLevel.DontChange } };
             }
-            else if (PickupIsActive && Pickup.Model.HasValidCoordinate())
+            else if (this.AddressSelectionMode == Data.AddressSelectionMode.PickupSelection && Pickup.Model.HasValidCoordinate())
             {
                 MapCenter = new CoordinateViewModel[] { new CoordinateViewModel { Coordinate = new Coordinate { Latitude = Pickup.Model.Latitude, Longitude = Pickup.Model.Longitude }, Zoom = changeZoom ? ZoomLevel.Close : ZoomLevel.DontChange } };
             }
-            else if ((!PickupIsActive && Pickup.Model.HasValidCoordinate()) && (!DropoffIsActive && Dropoff.Model.HasValidCoordinate()))
+            else if (this.AddressSelectionMode == Data.AddressSelectionMode.None && Pickup.Model.HasValidCoordinate() && Dropoff.Model.HasValidCoordinate())
             {
                 MapCenter = new CoordinateViewModel[] { new CoordinateViewModel { Coordinate = new Coordinate { Latitude = Dropoff.Model.Latitude, Longitude = Dropoff.Model.Longitude }, Zoom = changeZoom ? ZoomLevel.Close : ZoomLevel.DontChange } , 
                                             new CoordinateViewModel { Coordinate = new Coordinate { Latitude = Pickup.Model.Latitude, Longitude = Pickup.Model.Longitude }, Zoom = ZoomLevel.DontChange }};

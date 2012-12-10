@@ -189,7 +189,6 @@
     <Compile Include="ViewModels\BookingStatusViewModel.cs" />
     <Compile Include="Models\RatingModel.cs" />
     <Compile Include="Messages\OrderRated.cs" />
-    <Compile Include="Models\OrderWithStatusModel.cs" />
     <Compile Include="Messages\StatusCloseRequested.cs" />
     <Compile Include="ViewModels\BookConfirmationViewModel.cs" />
     <Compile Include="ViewModels\LocationDetailViewModel.cs" />
@@ -217,6 +216,7 @@
     <Compile Include="Data\TutorialContent.cs" />
     <Compile Include="Extensions\IDisposableExtensions.cs" />
     <Compile Include="AppServices\Impl\AsyncCommand.cs" />
+    <Compile Include="Data\AddressSelectionMode.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">
