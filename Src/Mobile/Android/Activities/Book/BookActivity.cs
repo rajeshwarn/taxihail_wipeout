@@ -52,11 +52,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             FindViewById<View>(Resource.Id.pickupDateButton).Click -= PickDate_Click;
             FindViewById<View>(Resource.Id.pickupDateButton).Click += PickDate_Click;
 
+			var signOutButton = FindViewById<View>(Resource.Id.settingsLogout);
+			signOutButton.Click -= HandleSignOutButtonClick;
+			signOutButton.Click += HandleSignOutButtonClick;
 
-
-            
 			ViewModel.Panel.PropertyChanged -= HandlePropertyChanged;
 			ViewModel.Panel.PropertyChanged += HandlePropertyChanged;
+        }
+
+        void HandleSignOutButtonClick (object sender, EventArgs e)
+        {
+			ViewModel.Panel.SignOut.Execute();
+			Finish();
         }
 
         void HandlePropertyChanged (object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -75,7 +82,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             ViewModel.ConfirmOrder.Execute();
         }
-
 
         protected override void OnResume()
         {
