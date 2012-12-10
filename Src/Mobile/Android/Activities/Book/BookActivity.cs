@@ -96,7 +96,28 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         protected override void OnResume()
         {
             base.OnResume();
+
+            ViewModel.ShowTutorial.Execute();
+
             apcurium.MK.Booking.Mobile.Client.Activities.Book.LocationService.Instance.Start();
+
+            var mainLayout = FindViewById(Resource.Id.MainLayout);
+            mainLayout.Invalidate();
+            mainLayout.ClearAnimation();
+            mainLayout.DrawingCacheEnabled = true;
+            mainLayout.RefreshDrawableState();
+
+            FindViewById<TouchMap>(Resource.Id.mapPickup).Invalidate();
+            FindViewById<TouchMap>(Resource.Id.mapPickup).RefreshDrawableState();
+
+
+        }
+
+
+        protected override void OnPause()
+        {
+            base.OnPause();
+
         }
         protected override void OnStop()
         {
