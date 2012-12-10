@@ -67,13 +67,11 @@ namespace apcurium.MK.Booking.Mobile.Client
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
-
             navBar.SetBackgroundImage (UIImage.FromFile ("Assets/navBar.png"), UIBarMetrics.Default);
             navBar.TopItem.TitleView = new TitleView (null, "", false);
 
             bookView.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
-            _menu = new PanelMenuView (bookView, this.NavigationController, ViewModel.Panel);
-            View.InsertSubviewBelow (_menu.View, bookView);
+      
                                
             TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub> ().Subscribe<StatusCloseRequested> (OnStatusCloseRequested);
             TinyIoCContainer.Current.Resolve<TinyMessenger.ITinyMessengerHub> ().Subscribe<DateTimePicked> (msg => _onDateTimePicked ());
@@ -109,7 +107,6 @@ namespace apcurium.MK.Booking.Mobile.Client
                 _dateTimePicker.Show (ViewModel.Order.PickupDate);
             };                      
 
-
             this.AddBindings (new Dictionary<object, string> ()                            {
                 { _bottomAction.RefreshCurrentLocationButton, "{'TouchUpInside':{'Path':'SelectedAddress.RequestCurrentLocationCommand'}}"},                
                 { pickupActivationButton, "{'TouchUpInside':{'Path':'ActivatePickup'},'Selected':{'Path':'PickupIsActive', 'Mode':'TwoWay'}}"},                
@@ -124,6 +121,10 @@ namespace apcurium.MK.Booking.Mobile.Client
             });
 
             this.View.ApplyAppFont ();
+            ViewModel.OnViewLoaded();
+
+            _menu = new PanelMenuView (bookView, this.NavigationController, ViewModel.Panel);
+            View.InsertSubviewBelow (_menu.View, bookView);
         }
 
         protected override void OnViewModelChanged ()
