@@ -54,10 +54,10 @@ namespace apcurium.MK.Booking.Maps.Impl
                 var geoCodingService = new Geocoding(_client, _configManager, _popularAddressProvider);
 
 
-                var allResults = (Address[])geoCodingService.Search(name);
+                var allResults = geoCodingService.Search(name);
                 if ( latitude.HasValue && longitude.HasValue && ( latitude.Value != 0 || longitude.Value != 0 )  )
                 {
-                    addressesGeocode =    allResults.OrderBy ( adrs => Position.CalculateDistance( adrs.Latitude, adrs.Longitude, latitude.Value , longitude.Value )).Take(20).ToArray();
+                    addressesGeocode = allResults.OrderBy ( adrs => Position.CalculateDistance( adrs.Latitude, adrs.Longitude, latitude.Value , longitude.Value )).Take(20).ToArray();
                 }
                 else
                 {
@@ -87,7 +87,6 @@ namespace apcurium.MK.Booking.Maps.Impl
             {
                 return addressesGeocode.ToArray();
             }
-
 
         }
 
