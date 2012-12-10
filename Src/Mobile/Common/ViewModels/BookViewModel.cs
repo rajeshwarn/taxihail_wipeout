@@ -118,15 +118,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             CenterMap(true);
             
             ThreadPool.QueueUserWorkItem(UpdateServerInfo);
-            Task.Factory.SafeStartNew (() =>
-            {
-                Thread.Sleep (2000);
-                var tutorialWasDisplayed = this.GetService<ICacheService> ().Get<string> ("TutorialWasDisplayed");
-                if (tutorialWasDisplayed.IsNullOrEmpty ()) {
-                    this.GetService<ICacheService> ().Set<string> ("TutorialWasDisplayed", true.ToString ());
-                    MessageService.ShowDialogActivity (typeof(TutorialViewModel));
-                }
-            });
+//            Task.Factory.SafeStartNew (() =>
+//            {
+//                Thread.Sleep (2000);
+//                var tutorialWasDisplayed = this.GetService<ICacheService> ().Get<string> ("TutorialWasDisplayed");
+//                if (tutorialWasDisplayed.IsNullOrEmpty ()) {
+//                    this.GetService<ICacheService> ().Set<string> ("TutorialWasDisplayed", true.ToString ());
+//                    MessageService.ShowDialogActivity (typeof(TutorialViewModel));
+//                }
+//            });
 
             ForceRefresh();
         }

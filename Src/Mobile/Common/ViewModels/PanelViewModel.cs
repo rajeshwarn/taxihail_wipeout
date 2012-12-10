@@ -118,7 +118,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     MenuIsOpen = false;
                     MessageService.ShowDialogActivity (typeof(TutorialViewModel));
-                    //RequestNavigate<TutorialViewModel>()
                 });
             }
         }
