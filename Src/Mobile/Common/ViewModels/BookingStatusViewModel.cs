@@ -44,6 +44,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			OrderStatusDetail = JsonSerializer.DeserializeFromString<OrderStatusDetail>(orderStatus);		
 			_geolocator = this.GetService<ILocationService>();	
 
+           /* if (OrderStatusDetail.Status.Equals(OrderStatus.Pending))
+            {
+                InvokeOnMainThread(() =>
+                {
+                    MessageService.ShowMessage(
+                     Resources.GetString("AddReminderTitle"),
+                     Resources.GetString("AddReminderMessage"),
+                     Resources.GetString("YesButton"), () =>
+                     {
+                         var applicationName = TinyIoC.TinyIoCContainer.Current.Resolve<IAppSettings>().ApplicationName;
+                         this.PhoneService.AddEventToCalendarAndReminder(applicationName, "Reminder for your book", Order.PickupAddress.FullAddress, Order.PickupDate);
+                     },
+                    Resources.GetString("NoButton"), () =>
+                    {
+
+                    });
+                });
+            }*/
 		}
 
         public override void OnViewLoaded ()

@@ -1101,4 +1101,10 @@
   <data name="StreetNumberDoneBt" xml:space="preserve">
     <value>Use This Address</value>
   </data>
+  <data name="AddReminderMessage" xml:space="preserve">
+    <value>Do you want to add a reminder ?</value>
+  </data>
+  <data name="AddReminderTitle" xml:space="preserve">
+    <value>Add Reminder</value>
+  </data>
 </root>

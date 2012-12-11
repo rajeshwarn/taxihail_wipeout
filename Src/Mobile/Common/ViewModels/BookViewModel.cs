@@ -450,9 +450,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					{
 						Order.PickupDate = date;
 						InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new DateTimePicked(this, Order.PickupDate )));
+
                         if ( date.HasValue )
                         {
                             BookTaxi.Execute ();
+                            
                         }
 					}
 					PickupDateSelected();
