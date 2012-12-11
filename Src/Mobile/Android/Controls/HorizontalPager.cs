@@ -111,8 +111,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 vw.FindViewById<TextView>(Resource.Id.TutorialBottomText).Text = TutorialItemModel[i].BottomText;
                 vw.FindViewById<TextView>(Resource.Id.TutorialTopTitleText).Text = TutorialItemModel[i].TopTitle;
                 vw.FindViewById<TextView>(Resource.Id.TutorialBottomTitleText).Text = TutorialItemModel[i].BottomTitle;
-                var resource = Resources.GetIdentifier(TutorialItemModel[i].ImageUri, "drawable", Context.PackageName);
-                vw.FindViewById<ImageView>(Resource.Id.TutorialImage).SetImageResource(resource);
+                //var resource = Resources.GetIdentifier(TutorialItemModel[i].ImageUri, "drawable", Context.PackageName);
+                //vw.FindViewById<ImageView>(Resource.Id.TutorialImage).SetImageResource(resource);
                 this.AddView(vw);
                 viewOrder[i] = Resource.Layout.TutorialListItem + i;
 

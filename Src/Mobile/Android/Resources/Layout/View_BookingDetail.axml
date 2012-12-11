@@ -192,7 +192,7 @@
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|bottom"
+            android:layout_gravity="center_horizontal|center_vertical"
             android:paddingTop="10dip"
             android:paddingBottom="4dip"
             android:background="@drawable/StatusBottomBarBackground"

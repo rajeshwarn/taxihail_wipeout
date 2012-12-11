@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 FirePropertyChanged("PickUpDateTxt"); }
 		}
 
-		private OrderStatusDetail _status;
+        private OrderStatusDetail _status = new OrderStatusDetail{ IBSStatusDescription = TinyIoCContainer.Current.Resolve<IAppResource>().GetString( "LoadingMessage") };
 		public OrderStatusDetail Status {
 			get{ return _status; }
             set { _status = value; FirePropertyChanged("Status");}
@@ -58,7 +58,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         }
 
-		private bool _isCompleted;
+        private bool _isCompleted = true;
 		public bool IsCompleted {
 			get {
 				return _isCompleted;
