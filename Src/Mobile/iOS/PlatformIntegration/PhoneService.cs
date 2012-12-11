@@ -56,6 +56,15 @@ namespace apcurium.MK.Booking.Mobile.Client
             presenter.PresentModalViewController(mailComposer, true);
         }
 
+
+        #region IPhoneService implementation
+
+        public void AddEventToCalendarAndReminder (string title, string addInfo, string place, DateTime startDate)
+        {
+            throw new NotImplementedException ();
+        }
+
+        #endregion
         #endregion
     }
 }

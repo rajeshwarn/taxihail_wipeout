@@ -338,3 +338,5 @@
 "RideSettingsPassword"="Password";
 "StreetNumberDoneBt"="Use This Address";
 "ServiceErrorResetPassword_AccountNotFound"="No account with this email has been found.";
+"AddReminderMessage"="Do you want to add a reminder ?";
+"AddReminderTitle"="Add Reminder";

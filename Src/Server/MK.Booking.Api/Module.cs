@@ -62,6 +62,11 @@ namespace apcurium.MK.Booking.Api
                .ForMember(p => p.TariffId, opt => opt.ResolveUsing(x => x.Id == Guid.Empty ? Guid.NewGuid() : x.Id))
                .ForMember(p => p.CompanyId, opt => opt.UseValue(AppConstants.CompanyId));
 
+  			AutoMapper.Mapper.CreateMap<CreditCardRequest, Commands.AddCreditCard>()
+                .ForMember(x => x.CreditCardId, opt => opt.ResolveUsing(x => x.CreditCardId == Guid.Empty ? Guid.NewGuid() : x.CreditCardId));
+
+            AutoMapper.Mapper.CreateMap<UpdatePaymentProfileRequest, Commands.UpdatePaymentProfile>();
+
             AutoMapper.Mapper.CreateMap<PopularAddress, Commands.AddPopularAddress>();
             AutoMapper.Mapper.CreateMap<PopularAddress, Commands.UpdatePopularAddress>();
 

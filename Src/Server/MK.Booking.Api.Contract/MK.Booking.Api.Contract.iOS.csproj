@@ -100,6 +100,9 @@
     <Compile Include="Resources\Cmt\PreCogMessage.cs" />
     <Compile Include="Resources\Cmt\PreCogResponse.cs" />
     <Compile Include="Security\AuthenticationData.cs" />
+    <Compile Include="Requests\CreditCardRequest.cs" />
+    <Compile Include="Requests\UpdatePaymentProfileRequest.cs" />
+    <Compile Include="Resources\CreditCardDetails.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MK.Common\MK.Common.iOS.csproj">

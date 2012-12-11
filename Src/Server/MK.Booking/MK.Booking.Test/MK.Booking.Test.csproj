@@ -62,6 +62,7 @@
     <Compile Include="AccountFixture\given_no_account.cs" />
     <Compile Include="AccountFixture\given_one_account.cs" />
     <Compile Include="AccountFixture\given_an_email_address.cs" />
+    <Compile Include="AccountFixture\given_one_account_for_credit_card.cs" />
     <Compile Include="CompanyFixture\given_a_company.cs" />
     <Compile Include="CompanyFixture\given_a_tariff.cs" />
     <Compile Include="CompanyFixture\given_a_rating_type.cs" />
@@ -75,6 +76,7 @@
     <Compile Include="Integration\CompanyFixture\RatingTypeDetailsGenerator.cs" />
     <Compile Include="Integration\CompanyFixture\TariffDetailsGenerator.cs" />
     <Compile Include="Integration\AppSettingsFixture\AppSettingsGenerator.cs" />
+    <Compile Include="Integration\CreditCardFixture\CreditCardDetailsGenerator.cs" />
     <Compile Include="Integration\GivenAConfigReadModelDatabase.cs" />
     <Compile Include="Integration\GivenAReadModelDatabase.cs" />
     <Compile Include="Integration\OrderFixture\OrderGenerator.cs" />

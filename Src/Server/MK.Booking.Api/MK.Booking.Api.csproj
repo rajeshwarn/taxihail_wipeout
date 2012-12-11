@@ -116,6 +116,7 @@
     <Compile Include="Services\ConfigurationsService.cs" />
     <Compile Include="Services\ConfirmAccountService.cs" />
     <Compile Include="Services\CreateOrderService.cs" />
+    <Compile Include="Services\CreditCardService.cs" />
     <Compile Include="Services\DefaultFavoriteAddressService.cs" />
     <Compile Include="Services\GrantAdminRightService.cs" />
     <Compile Include="Services\Maps\DefaultGeoLocationService.cs" />
@@ -130,6 +131,7 @@
     <Compile Include="Services\OrderService.cs" />
     <Compile Include="Services\OrderStatusService.cs" />
     <Compile Include="Services\Maps\PlaceDetailService.cs" />
+    <Compile Include="Services\PaymentProfileService.cs" />
     <Compile Include="Services\TariffsService.cs" />
     <Compile Include="Services\PopularAddressService.cs" />
     <Compile Include="Services\RatingTypesService.cs" />

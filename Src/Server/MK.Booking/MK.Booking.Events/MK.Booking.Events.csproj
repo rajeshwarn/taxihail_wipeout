@@ -50,6 +50,8 @@
     <Compile Include="AppSettingsUpdated.cs" />
     <Compile Include="BookingSettingsUpdated.cs" />
     <Compile Include="CompanyCreated.cs" />
+    <Compile Include="CreditCardAdded.cs" />
+    <Compile Include="CreditCardRemoved.cs" />
     <Compile Include="DefaultFavoriteAddressAdded.cs" />
     <Compile Include="DefaultFavoriteAddressRemoved.cs" />
     <Compile Include="DefaultFavoriteAddressUpdated.cs" />
@@ -61,6 +63,7 @@
     <Compile Include="OrderCreated.cs" />
     <Compile Include="OrderRated.cs" />
     <Compile Include="OrderRemovedFromHistory.cs" />
+    <Compile Include="PaymentProfileUpdated.cs" />
     <Compile Include="PopularAddressAdded.cs" />
     <Compile Include="PopularAddressRemoved.cs" />
     <Compile Include="PopularAddressUpdated.cs" />
