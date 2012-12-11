@@ -55,7 +55,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         public TutorialItemModel[] TutorialItemModel
         {
             get { return _tutorialItemModel; }
-            set { _tutorialItemModel = value; this.init(); }
+            set { _tutorialItemModel = value;  }
         }
         /**
          * Simple constructor to use when creating a view from code.
@@ -99,9 +99,28 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
          * Sets up the scroller and touch/fling sensitivity parameters for the pager.
          */
 
-        private void init()
+        private List<View> _tutorialItems;
+
+        private void UnloadItems()
         {
-            var viewOrder = new int[TutorialItemModel.Count()];
+
+            
+            if ( _tutorialItems != null )
+            {
+                foreach (var item in _tutorialItems) {
+                    this.RemoveView( item );
+                    item.Dispose();
+                }
+            }
+            GC.Collect();
+        }
+
+
+        private void LoadItems()
+        {
+           
+
+            _tutorialItems = new List<View>();
             var inflater = (LayoutInflater)Context.GetSystemService(Context.LayoutInflaterService);
             for (int i = 0; i < TutorialItemModel.Count(); i++)
             {
@@ -114,11 +133,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 //var resource = Resources.GetIdentifier(TutorialItemModel[i].ImageUri, "drawable", Context.PackageName);
                 //vw.FindViewById<ImageView>(Resource.Id.TutorialImage).SetImageResource(resource);
                 this.AddView(vw);
-                viewOrder[i] = Resource.Layout.TutorialListItem + i;
-
+                _tutorialItems.Add( vw );
             }
-
-
 
             mScroller = new Scroller(Context);
 
@@ -134,6 +150,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             mMaximumVelocity = configuration.ScaledMaximumFlingVelocity;
         }
 
+
+        protected override void OnVisibilityChanged(View changedView, ViewStates visibility)
+        {           
+            base.OnVisibilityChanged(changedView, visibility);
+
+            if ( visibility == ViewStates.Visible )
+            {
+                LoadItems();
+            }
+            else
+            {
+                UnloadItems();
+            }
+        }
 
 
         protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
