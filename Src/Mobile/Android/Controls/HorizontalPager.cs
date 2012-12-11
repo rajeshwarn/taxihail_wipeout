@@ -119,6 +119,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private void LoadItems()
         {
            
+            UnloadItems();
 
             _tutorialItems = new List<View>();
             var inflater = (LayoutInflater)Context.GetSystemService(Context.LayoutInflaterService);
@@ -165,6 +166,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
+        protected override void OnWindowVisibilityChanged(ViewStates visibility)
+        {
+            base.OnWindowVisibilityChanged(visibility);
+            if ( visibility != ViewStates.Visible )
+            {
+                UnloadItems();
+            }
+        }
 
         protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
         {
