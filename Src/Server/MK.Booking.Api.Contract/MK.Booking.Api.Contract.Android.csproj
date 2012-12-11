@@ -66,6 +66,7 @@
     <Compile Include="Requests\Cmt\PreCogRequest.cs" />
     <Compile Include="Requests\ConfirmAccountRequest.cs" />
     <Compile Include="Requests\CreateOrder.cs" />
+    <Compile Include="Requests\CreditCardRequest.cs" />
     <Compile Include="Requests\CurrentAccount.cs" />
     <Compile Include="Requests\DirectionsRequest.cs" />
     <Compile Include="Requests\GeocodingRequest.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="Requests\Tariff.cs" />
     <Compile Include="Requests\TestOnlyReqGetTestAccount.cs" />
     <Compile Include="Requests\UpdatePassword.cs" />
+    <Compile Include="Requests\UpdatePaymentProfileRequest.cs" />
     <Compile Include="Resources\Account.cs" />
     <Compile Include="Resources\AddressList.cs" />
     <Compile Include="Resources\AppSetting.cs" />
@@ -95,6 +97,7 @@
     <Compile Include="Resources\Cmt\PreCogMapItem.cs" />
     <Compile Include="Resources\Cmt\PreCogMessage.cs" />
     <Compile Include="Resources\Cmt\PreCogResponse.cs" />
+    <Compile Include="Resources\CreditCardDetails.cs" />
     <Compile Include="Resources\DirectionInfo.cs" />
     <Compile Include="Resources\ErrorCode.cs" />
     <Compile Include="Resources\Order.cs" />
