@@ -27,5 +27,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public int? ProviderId { get; set; }
 
         public int NumberOfTaxi { get; set; }
+
+        public int Passengers { get; set; }
     }
 }
