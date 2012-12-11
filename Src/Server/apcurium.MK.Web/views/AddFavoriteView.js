@@ -64,8 +64,7 @@
                 if (!this.model.get('isHistoric')) {
                     var address = this.serializeForm(form);
                     var address = _.extend(this.model.toJSON(), address);
-                    var data = { Address: address, Id: address.Id };
-                    this.model.save(data);
+                    this.model.save(address);
                 } else {
                     this.collection.create(_.pick(this.model.toJSON(), 'friendlyName', 'fullAddress', 'apartment', 'ringCode', 'buildingName'), { wait: true });
                 }

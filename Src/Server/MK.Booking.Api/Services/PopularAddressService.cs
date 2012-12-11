@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             _commandBus.Send(command);
 
-            return new HttpResult(HttpStatusCode.OK);
+            return new { command.Address.Id };
         }
 
         public override object OnDelete(PopularAddress request)
