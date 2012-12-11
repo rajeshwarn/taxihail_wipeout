@@ -340,4 +340,6 @@
   <string name="StreetNumberLabel">Refine your address</string>
   <string name="StreetNumberDoneBt">Use This Address</string>
   <string name="ServiceErrorResetPassword_AccountNotFound">No account with this email has been found.</string>
+  <string name="AddReminderMessage">Do you want to add a reminder ?</string>
+  <string name="AddReminderTitle">Add Reminder</string>
 </resources>
