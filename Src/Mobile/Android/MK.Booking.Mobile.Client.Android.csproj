@@ -120,7 +120,6 @@
     <Compile Include="Controls\TextButton.cs" />
     <Compile Include="Controls\IconActionControl.cs" />
     <Compile Include="Controls\TouchMap.cs" />
-    <Compile Include="Controls\TutorialPager.cs" />
     <Compile Include="Converter.cs" />
     <Compile Include="Converters\AppConverters.cs" />
     <Compile Include="Converters\CoordinateConverter.cs" />

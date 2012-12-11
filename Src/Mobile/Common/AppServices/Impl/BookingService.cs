@@ -164,7 +164,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return statusId.SoftEqual ("wosDONE");
         }
 
-        public string GetFareEstimateDisplay (CreateOrder order, string formatString, string defaultFare, bool includeDistance)
+        public string GetFareEstimateDisplay (CreateOrder order, string formatString, string defaultFare, bool includeDistance, string cannotGetFareText)
         {
             var appResource = TinyIoCContainer.Current.Resolve<IAppResource> ();
             var fareEstimate = appResource.GetString (defaultFare);
@@ -189,7 +189,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
                         }
                     } else {
-                        fareEstimate = String.Format (appResource.GetString ("EstimatedFareNotAvailable"));
+                        fareEstimate = String.Format (appResource.GetString (cannotGetFareText));
                     }
 
 
