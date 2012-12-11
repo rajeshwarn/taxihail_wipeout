@@ -29,6 +29,7 @@ namespace apcurium.MK.Booking.Api.Services
 
         public override object OnGet(ClientPopularAddress request)
         {
+            Response.AddHeader("Cache-Control", "no-cache");
             return Dao.GetAll();
         }
 

@@ -192,13 +192,14 @@
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|bottom"
-            android:paddingTop="10dip"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:paddingTop="4dip"
             android:paddingBottom="4dip"
             android:background="@drawable/StatusBottomBarBackground"
             android:layout_alignParentBottom="true"
             android:paddingRight="5dp"
-            android:paddingLeft="5dp">
+            android:paddingLeft="5dp"
+            android:layout_marginTop="0.0dp">
             <apcurium.mk.booking.mobile.client.controls.StyledButton
                 local:ButtonStyle="Red"
                 android:id="@+id/CancelBtn"

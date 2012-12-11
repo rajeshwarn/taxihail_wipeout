@@ -143,7 +143,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return GetCommand(() =>
                 {
                     MenuIsOpen = false;
-                    PhoneService.SendFeedbackErrorLog (Settings.ErrorLog, Settings.SupportEmail, Resources.GetString ("TechSupportEmailTitle"));        
+                    InvokeOnMainThread( ()=> PhoneService.SendFeedbackErrorLog (Settings.ErrorLog, Settings.SupportEmail, Resources.GetString ("TechSupportEmailTitle")) );
                 });
             }
         }

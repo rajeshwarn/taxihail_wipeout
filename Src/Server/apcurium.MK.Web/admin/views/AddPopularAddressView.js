@@ -76,8 +76,8 @@
             var address = this.serializeForm(form);
             var address = _.extend(this.model.toJSON(), address);
             address.fullAddress = address.streetNumber + " " + address.street + ", " + address.city + ", " + address.state + " " + address.zipCode;
-            var data = { Address: address, Id: address.Id };
-            this.model.save(data, {
+            
+            this.model.save(address, {
                 success: _.bind(function(model){
 
                     this.collection.add(model);

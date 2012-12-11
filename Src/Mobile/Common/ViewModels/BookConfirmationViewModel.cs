@@ -46,7 +46,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                 MessageService.ShowProgress (true);                
                 RideSettings = new RideSettingsModel (Order.Settings, _accountService.GetCompaniesList (), _accountService.GetVehiclesList (), _accountService.GetPaymentsList ());
-                FareEstimate = _bookingService.GetFareEstimateDisplay (Order, null, "NotAvailable", false);
+                FareEstimate = _bookingService.GetFareEstimateDisplay (Order, null, "NotAvailable", false, "NotAvailable");
                 ShowFareEstimateAlertDialogIfNecessary();
                 ShowChooseProviderDialogIfNecessary();
 				FirePropertyChanged ( () => Vehicles );

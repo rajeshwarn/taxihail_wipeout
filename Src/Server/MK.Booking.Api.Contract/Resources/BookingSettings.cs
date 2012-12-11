@@ -13,6 +13,8 @@
 
         public int? ProviderId { get; set; }
 
-        public int NumberOfTaxi { get; set; } 
+        public int NumberOfTaxi { get; set; }
+
+        public int Passengers { get; set; }
     }
 }

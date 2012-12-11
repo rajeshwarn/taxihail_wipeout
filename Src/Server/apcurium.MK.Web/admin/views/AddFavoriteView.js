@@ -56,8 +56,7 @@
         save: function (form) {
             var address = this.serializeForm(form);
             var address = _.extend(this.model.toJSON(), address);
-            var data = { Address: address, Id: address.Id };
-            this.model.save(data, {
+            this.model.save(address, {
                 success: _.bind(function(model){
 
                     this.collection.add(model);
