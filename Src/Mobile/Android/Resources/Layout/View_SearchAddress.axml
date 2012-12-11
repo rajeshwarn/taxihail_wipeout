@@ -43,6 +43,7 @@
             android:textSize="15dip"
             android:tag="ContactsBtn"
             android:textColor="@color/white"
+            android:visibility="gone"
             local:MvxBind="{&apos;SelectedChangedCommand&apos;:{&apos;Path&apos;:&apos;SelectedChangedCommand&apos;},&apos;Selected&apos;:{&apos;Path&apos;:&apos;ContactsSelected&apos;}}" />
         <apcurium.mk.booking.mobile.client.controls.BindableSelectionButton
             android:id="@+id/placesbtn"
@@ -83,7 +84,7 @@
                     android:background="@drawable/password_cell"
                     android:drawablePadding="1dp"
                     android:paddingLeft="35dp"
-                    local:MvxBind="{&apos;TextChangedCommand&apos;:{&apos;Path&apos;:&apos;SearchCommand&apos;}, &apos;Text&apos;:{&apos;Path&apos;:&apos;Criteria&apos;}}"
+                    local:MvxBind="{&apos;TextChangedCommand&apos;:{&apos;Path&apos;:&apos;SearchCommand&apos;}, &apos;Text&apos;:{&apos;Path&apos;:&apos;Criteria&apos;}, &apos;OnTypeStarted&apos;:{&apos;Path&apos;:&apos;CancelCurrentSearch&apos;}, &apos;IsAddressSearching&apos;:{&apos;Path&apos;:&apos;IsSearching&apos;}}"
                     android:paddingRight="30dip" />
               <FrameLayout android:layout_width="wrap_content"
                             android:id="@+id/eraseTextFrame"

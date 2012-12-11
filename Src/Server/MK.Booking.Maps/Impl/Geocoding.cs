@@ -16,7 +16,7 @@ namespace apcurium.MK.Booking.Maps.Impl
 {
     public class Geocoding : IGeocoding
     {
-        private string[] _otherTypesAllowed = new string[] { "airport", "transit_station", "bus_station", "train_station" };
+        private string[] _otherTypesAllowed = new string[] { "airport", "transit_station", "bus_station", "train_station", "route", "postal_code" };
         private IMapsApiClient _mapApi;        
         private IConfigurationManager _configManager;
         private readonly IPopularAddressProvider _popularAddressProvider;
@@ -30,36 +30,34 @@ namespace apcurium.MK.Booking.Maps.Impl
 
         public Address[] Search(string addressName)
         {
-            Address[] result = null;
-
             var geoResult = SearchUsingName(addressName, true);
 
             if ((geoResult.Status == ResultStatus.OK) || ( geoResult.Results.Count > 0 ))
             {
-                result = ConvertGeoResultToAddresses(geoResult,null);
+                return ConvertGeoResultToAddresses(geoResult,null);
             }
 
-            if (( result == null ) || ( result.Count() == 0 ) )
-            {
-                result = ConvertGeoResultToAddresses(SearchUsingName(addressName, false),null);                                                
-            }
-            return result;
+			// No result
+            return new Address[0];
 
         }
 
         private GeoResult SearchUsingName(string name, bool useFilter)
         {
             var filter = _configManager.GetSetting("GeoLoc.SearchFilter");
-
-            if ((filter.HasValue()) && (useFilter))
+            if (name != null)
             {
-                var filteredName = string.Format(filter, name.Split(' ').JoinBy("+"));
-                return _mapApi.GeocodeAddress(filteredName);
+                if ((filter.HasValue()) && (useFilter))
+                {
+                    var filteredName = string.Format(filter, name.Split(' ').JoinBy("+"));
+                    return _mapApi.GeocodeAddress(filteredName);
+                }
+                else
+                {
+                    return _mapApi.GeocodeAddress(name.Split(' ').JoinBy("+"));
+                }
             }
-            else
-            {
-                return _mapApi.GeocodeAddress(name.Split(' ').JoinBy("+"));
-            }
+            return null;
         }
 
 
@@ -68,8 +66,9 @@ namespace apcurium.MK.Booking.Maps.Impl
             var addressesInRange = new Address[0];
             if (searchPopularAddress)
             {
-               // addressesInRange = GetPopularAddressesInRange(new Position(latitude, longitude));
+               addressesInRange = GetPopularAddressesInRange(new Position(latitude, longitude));
             }
+
 
             var geoResult = _mapApi.GeocodeLocation(latitude, longitude);
             if (geoResult.Status == ResultStatus.OK)
@@ -85,7 +84,7 @@ namespace apcurium.MK.Booking.Maps.Impl
 
         private Address[] GetPopularAddressesInRange(Position position)
         {
-            float range = float.Parse(_configManager.GetSetting("GeoLoc.PopularAddress.Range"));
+            float range = 50;
             const double R = 6378137;
 
             var addressesInRange = from a in _popularAddressProvider.GetPopularAddresses()

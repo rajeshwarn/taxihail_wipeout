@@ -55,6 +55,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 		public LoginActivity ()
 		{
 			TopInstance = this;
+
 		}
 
         protected override int ViewTitleResourceId
@@ -65,6 +66,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
         protected override void OnViewModelSet()
         {            
 
+
             SetContentView(Resource.Layout.View_Login);            
 
             _progressDialog = new ProgressDialog(this);
@@ -72,7 +74,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
             if (!TinyIoCContainer.Current.Resolve<IAppSettings>().FacebookEnabled)
             {
-				FindViewById<Button>(Resource.Id.FacebookButton).Visibility = ViewStates.Gone;
+				FindViewById<Button>(Resource.Id.FacebookButton).Visibility = ViewStates.Invisible;
             }
 
             if (TinyIoCContainer.Current.Resolve<IAppSettings>().CanChangeServiceUrl)
@@ -84,12 +86,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             }
             else
             {
-                FindViewById<Button>(Resource.Id.ServerButton).Visibility = ViewStates.Gone;
+                FindViewById<Button>(Resource.Id.ServerButton).Visibility = ViewStates.Invisible;
             }
 
             if (!TinyIoCContainer.Current.Resolve<IAppSettings>().TwitterEnabled)
             {
-				FindViewById<Button>(Resource.Id.TwitterButton).Visibility = ViewStates.Gone;
+                FindViewById<Button>(Resource.Id.TwitterButton).Visibility = ViewStates.Invisible;
             }           
 
 #if DEBUG
@@ -162,6 +164,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             base.OnDestroy();           
             GC.Collect();
         }
+
+		public override void Finish ()
+		{
+			base.Finish ();
+		}
+
+		public override void FinishActivity (int requestCode)
+		{
+			base.FinishActivity (requestCode);
+		}
+
+		public override void FinishFromChild (Activity child)
+		{
+			base.FinishFromChild (child);
+		}
+
+
 
     }
 }

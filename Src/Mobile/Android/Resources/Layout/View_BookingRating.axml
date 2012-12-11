@@ -10,7 +10,7 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
-      <cirrious.mvvmCross.binding.android.views.MvxBindableListView
+        <cirrious.mvvmCross.binding.android.views.MvxBindableListView
             android:layout_width="fill_parent"
             android:layout_marginTop="5dip"
             android:layout_height="wrap_content"
@@ -19,7 +19,7 @@
             local:MvxItemTemplate="@layout/ratinglistitem"
             local:MvxBind="{&apos;ItemsSource&apos;:{&apos;Path&apos;:&apos;RatingList&apos;}}"
             android:layout_centerHorizontal="true" />
-      <!--EditText
+    <!--EditText
             android:id="@+id/RatingNote"
             android:layout_below="@id/RatingListView"
             android:layout_width="fill_parent"
@@ -38,7 +38,10 @@
             android:layout_marginRight="10dip"
             android:layout_marginBottom="10dip"
             android:layout_centerHorizontal="true" /-->
-        <Button
+        <apcurium.mk.booking.mobile.client.controls.StyledButton
+            local:ButtonStyle="Green"
+            style="@style/ButtonText"
+            android:background="@drawable/green_button"
             android:id="@+id/RateOrderButton"
             android:layout_below="@id/RatingListView"
             android:text="@string/Submit"

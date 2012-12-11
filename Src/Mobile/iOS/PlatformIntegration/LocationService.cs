@@ -6,6 +6,7 @@ using System.Threading;
 using TinyIoC;
 using apcurium.MK.Common.Diagnostic;
 using System.Diagnostics;
+using MonoTouch.Foundation;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -54,7 +55,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 if (_locationDelegate.LastKnownLocation != null)
                 {                   
                     result = _locationDelegate.LastKnownLocation;
-                    if ((result.HorizontalAccuracy <= accuracy) || (result.VerticalAccuracy <= accuracy))
+                    if (result.HorizontalAccuracy <= accuracy) 
                     {
                         TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Good location found! : " +
                             result.HorizontalAccuracy.ToString());
@@ -63,8 +64,8 @@ namespace apcurium.MK.Booking.Mobile.Client
                     }
                 }
                 
-                
-                Thread.Sleep(200);
+
+                NSRunLoop.Current.RunUntil(DateTime.Now.AddMilliseconds(400));             
                 
                 if (watch.ElapsedMilliseconds >= timeout)
                 {
@@ -103,28 +104,42 @@ namespace apcurium.MK.Booking.Mobile.Client
             _locationManager.StartUpdatingLocation();
         }
 
+        private Task<Position> _last;
+
         public Task<Position> GetPositionAsync(int timeout, float accuracy, int fallbackTimeout, float fallbackAccuracy, CancellationToken cancelToken)
         {
-            Initialize();
-            _locationManager.StartUpdatingLocation();
-            _locationDelegate.LastKnownLocation = null;
+            if ( ( _last != null ) && ( _last.Status == TaskStatus.Running  ))
+            {
+                return _last;
+            }
 
-            var task = new Task<Position>(() =>
+            Initialize();
+            _locationDelegate.LastKnownLocation = null;
+            _locationManager.StartUpdatingLocation();
+
+
+            Console.WriteLine ( "**********GetPositionAsync**********" );
+
+            _last = new Task<Position>(() =>
             {
                 bool timedout = false;
                 var result = WaitForAccurateLocation(timeout, accuracy, out timedout);
                 if(timedout)
                 {
-                    throw new Exception("Location search timed out");
+                    result = WaitForAccurateLocation(fallbackTimeout, fallbackAccuracy, out timedout);
+                    if ( timedout )
+                    {
+                        throw new Exception("Location search timed out");
+                    }
                 }
                 return new Position { Latitude = result.Coordinate.Latitude, Longitude = result.Coordinate.Longitude };
-            }, cancelToken);
+            }, cancelToken);           
 
-            task.ContinueWith(t => {
+            _last.ContinueWith(t => {
                 TinyIoCContainer.Current.Resolve<ILogger>().LogError(t.Exception);
             }, TaskContinuationOptions.OnlyOnFaulted );
-            task.Start();
-            return task;
+            _last.Start();
+            return _last;
 
         }
 

@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 			Frame = new System.Drawing.RectangleF(5, -3, 310, 50);
 
-			_titleText = new UILabel(new System.Drawing.RectangleF(0, 2, 320, 40));
+			_titleText = new UILabel(new System.Drawing.RectangleF(0, 4, 320, 40));
 			_titleText.TextAlignment = UITextAlignment.Center;
             _titleText.Font = AppStyle.GetBoldFont ( 20 ); 
 			_titleText.TextColor = AppStyle.NavigationTitleColor;

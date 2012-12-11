@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using ServiceStack.ServiceClient.Web;
+using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.ConfigTool
 {
@@ -41,6 +42,17 @@ namespace apcurium.MK.Booking.ConfigTool
 
 
 
+                new ConfigFile(this){ Source="apcuriumLogo.png", Destination=@"Mobile\iOS\Assets\apcuriumLogo.png" },    
+                new ConfigFile(this){ Source="apcuriumLogo@2x.png", Destination=@"Mobile\iOS\Assets\apcuriumLogo@2x.png" },    
+
+                new ConfigFile(this){ Source="apcuriumLogo@2x.png", Destination=@"Mobile\Android\Resources\Drawable\apcuriumLogo.png" },    
+
+                new ConfigFile(this){ Source="background.png", Destination=@"Mobile\iOS\Assets\background.png" },    
+                new ConfigFile(this){ Source="background@2x.png", Destination=@"Mobile\iOS\Assets\background@2x.png" },    
+
+                new ConfigFile(this){ Source="backPickupDestination.png", Destination=@"Mobile\iOS\Assets\backPickupDestination.png" },    
+                new ConfigFile(this){ Source="backPickupDestination@2x.png", Destination=@"Mobile\iOS\Assets\backPickupDestination@2x.png" },    
+
 
                 new ConfigFile(this){ Source="AppFont_Bold.otf", Destination=@"Mobile\iOS\Assets\AppFont_Bold.otf" },    
                 new ConfigFile(this){ Source="AppFont_Italic.otf", Destination=@"Mobile\iOS\Assets\AppFont_Italic.otf" },    
@@ -58,7 +70,6 @@ namespace apcurium.MK.Booking.ConfigTool
                 new ConfigFile(this){ Source="public.keystore", Destination=@"Mobile\Android\public.keystore" },
                 new ConfigFile(this){ Source="splash.png", Destination=@"Mobile\Android\Resources\Drawable\splash.png" },
                 new ConfigFile(this){ Source="splash.png", Destination=@"Mobile\Android\Resources\drawable-hdpi\splash.png" },
-                new ConfigFile(this){ Source="splash.png", Destination=@"Mobile\Android\Resources\drawable-mdpi\splash.png" },
                 new ConfigFile(this){ Source="Icon.png", Destination=@"Mobile\Android\Resources\Drawable\Icon.png" },            
                
                 new ConfigFile(this){ Source="navBar.png", Destination=@"Mobile\Android\Resources\Drawable\navBar.png" },            
@@ -68,48 +79,27 @@ namespace apcurium.MK.Booking.ConfigTool
                 new ConfigFile(this){ Source="Logo@2x.png", Destination=@"Mobile\Android\Resources\Drawable-hdpi\Logo.png" },
 
 				new ConfigFile(this) { Source="pin_cab.png", Destination=@"Mobile\Android\Resources\Drawable\pin_cab.png" },
-				new ConfigFile(this) { Source="pin_cab@2x.png", Destination=@"Mobile\Android\Resources\Drawable-hdpi\pin_cab.png" },
+				
+                //new ConfigFile(this) { Source="pin_cab@2x.png", Destination=@"Mobile\Android\Resources\Drawable-hdpi\pin_cab.png" },
+
 				new ConfigFile(this) { Source="pin_hail.png", Destination=@"Mobile\Android\Resources\Drawable\pin_hail.png" },
-				new ConfigFile(this) { Source="pin_hail@2x.png", Destination=@"Mobile\Android\Resources\Drawable-hdpi\pin_hail.png" },
+				//new ConfigFile(this) { Source="pin_hail@2x.png", Destination=@"Mobile\Android\Resources\Drawable-hdpi\pin_hail.png" },
 				new ConfigFile(this) { Source="pin_destination.png", Destination=@"Mobile\Android\Resources\Drawable\pin_destination.png" },
-				new ConfigFile(this) { Source="pin_destination@2x.png", Destination=@"Mobile\Android\Resources\Drawable-hdpi\pin_destination.png" },
+				//new ConfigFile(this) { Source="pin_destination@2x.png", Destination=@"Mobile\Android\Resources\Drawable-hdpi\pin_destination.png" },
+
+                new ConfigFile(this){ Source="backPickupDestination@2x.png", Destination=@"Mobile\Android\Resources\Drawable-hdpi\backPickupDestination.png" },    
+                new ConfigFile(this){ Source="backPickupDestination.png", Destination=@"Mobile\Android\Resources\Drawable\backPickupDestination.png" },    
+                new ConfigFile(this){ Source="background@2x.png", Destination=@"Mobile\Android\Resources\Drawable-hdpi\background.png" },    
+                new ConfigFile(this){ Source="background.png", Destination=@"Mobile\Android\Resources\Drawable\background.png" },    
 
 
                 new ConfigFile(this){ Source="backgroundblue.png", Destination=@"Mobile\Android\Resources\Drawable\backgroundblue.png" },                        
                 new ConfigXML(this){  Destination=@"Mobile\Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest", Attribute="package" , SetterAtt = ( app, att )=> att.Value = Config.Package  },
                 new ConfigXML(this){  Destination=@"Mobile\Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest/application", Attribute="android:label" , SetterAtt = ( app, att )=> att.Value = Config.AppName  },
-                new ConfigXML(this){  Destination=@"Mobile\Android\Resources\Values-fr\Strings.xml", NodeSelector=@"//resources/string[@name=""ApplicationName""]", SetterEle = ( app, ele )=> ele.InnerText = Config.AppName  },
                 new ConfigXML(this){  Destination=@"Mobile\Android\Resources\Values\String.xml", NodeSelector=@"//resources/string[@name=""ApplicationName""]" , SetterEle= ( app, ele )=> ele.InnerText = Config.AppName  },               
-                new ConfigXML(this){  Destination=@"Mobile\Android\Resources\Values-fr\Strings.xml", NodeSelector=@"//resources/string[@name=""GoogleMapKey""]", SetterEle = ( app, ele )=> ele.InnerText = Config.GoogleMapKey  },
                 new ConfigXML(this){  Destination=@"Mobile\Android\Resources\Values\String.xml", NodeSelector=@"//resources/string[@name=""GoogleMapKey""]" , SetterEle= ( app, ele )=> ele.InnerText = Config.GoogleMapKey  },                                                                          
 
-
-                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_BookingStatus.axml", Namespace = "xmlns:local", Value= Config.Package },
-
-                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\SubView_BookButtons.axml", Namespace = "xmlns:local", Value= Config.Package },
-
-
-                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_Book.axml", Namespace = "xmlns:local", Value= Config.Package },
-                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\SimpleListItem.axml", Namespace = "xmlns:local", Value= Config.Package },
-                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_SearchAddress.axml", Namespace = "xmlns:local", Value= Config.Package },
-				new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\SubView_MainMenu.axml", Namespace = "xmlns:local", Value= Config.Package },
-				new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_Login.axml", Namespace = "xmlns:local", Value= Config.Package },
-				new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_RefineAddress.axml", Namespace = "xmlns:local", Value= Config.Package },
-
-                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\RatingListItem.axml", Namespace = "xmlns:local", Value= Config.Package },
-                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\SimpleOrderListItem.axml", Namespace = "xmlns:local", Value= Config.Package },
-                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_BookingDetail.axml", Namespace = "xmlns:local", Value= Config.Package },
-                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_BookingRating.axml", Namespace = "xmlns:local", Value= Config.Package },
-                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_HistoryDetail.axml", Namespace = "xmlns:local", Value= Config.Package },
-                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_HistoryList.axml", Namespace = "xmlns:local", Value= Config.Package },
-
-                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_LocationDetail.axml", Namespace = "xmlns:local", Value= Config.Package },
-                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_LocationList.axml", Namespace = "xmlns:local", Value= Config.Package },
-                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_PasswordRecovery.axml", Namespace = "xmlns:local", Value= Config.Package },
-                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_RideSettings.axml", Namespace = "xmlns:local", Value= Config.Package },
-                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\View_SignUp.axml", Namespace = "xmlns:local", Value= Config.Package },
-
-
+                new ConfigXmlNamespace(this){  Destination=@"Mobile\Android\Resources\Layout\", Namespace = "xmlns:local", Value= Config.Package },
 
                 new ConfigXML(this){  Destination=@"Mobile\Android\MK.Booking.Mobile.Client.Android.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Debug|AnyCPU'"")]/a:AndroidSigningKeyAlias" , SetterEle= ( app, ele )=> ele.InnerText = Config.AndroidSigningKeyAlias },               
                 new ConfigXML(this){  Destination=@"Mobile\Android\MK.Booking.Mobile.Client.Android.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Release|AnyCPU'"")]/a:AndroidSigningKeyAlias" , SetterEle= ( app, ele )=> ele.InnerText = Config.AndroidSigningKeyAlias },               

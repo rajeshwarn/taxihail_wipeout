@@ -10,5 +10,12 @@
 	"Building Name" : "Building Name",
 	"Remove" : "Remove",
 	"Loading" : "Loading",
-	"Add to Popular" : "Add to Popular"
+	"Add to Popular" : "Add to Popular",
+	"Latitude" : "Latitude",
+	"Longitude" : "Longitude",
+	"StreetNumber" : "Street number",
+	"Street" : "Street",
+	"City" : "City",
+	"ZipCode" : "Zip Code",
+	"State" : "State"
 }

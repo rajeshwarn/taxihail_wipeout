@@ -70,7 +70,7 @@
                             android:src="@drawable/hail_state"
                             style="@style/ButtonTextGray"
                             android:layout_height="40dip"
-                            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;ActivatePickup&apos;}, &apos;Selected&apos;:{&apos;Path&apos;:&apos;PickupIsActive&apos;}}"
+                            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;ActivatePickup&apos;}, &apos;Selected&apos;:{&apos;Path&apos;:&apos;AddressSelectionMode&apos;, &apos;Converter&apos;: &apos;EnumToBool&apos;, &apos;ConverterParameter&apos;: &apos;PickupSelection&apos; }}"
                             android:layout_gravity="fill"
                             android:layout_width="40dip"
                             android:scaleType="fitCenter"
@@ -104,7 +104,7 @@
                             android:background="@drawable/address_selector_button"
                             android:src="@drawable/flag_state"
                             style="@style/ButtonTextGray"
-                            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;ActivateDropoff&apos;}, &apos;Selected&apos;:{&apos;Path&apos;:&apos;DropoffIsActive&apos;}}"
+                            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;ActivateDropoff&apos;}, &apos;Selected&apos;:{&apos;Path&apos;:&apos;AddressSelectionMode&apos;, &apos;Converter&apos;: &apos;EnumToBool&apos;, &apos;ConverterParameter&apos;: &apos;DropoffSelection&apos;}}"
                             android:layout_height="40dip"
                             android:layout_gravity="fill"
                             android:layout_marginLeft="10dip"
@@ -148,7 +148,7 @@
                                 android:layout_marginBottom="-50px"
                                 android:enabled="true"
                                 android:layout_margin="-20dip"
-                                local:MvxBind="{&apos;Pickup&apos;:{&apos;Path&apos;:&apos;Pickup.Model&apos;}, &apos;Dropoff&apos;:{&apos;Path&apos;:&apos;Dropoff.Model&apos;} , &apos;IsDropoffActive&apos;:{&apos;Path&apos;:&apos;DropoffIsActive&apos;}, &apos;IsPickupActive&apos;:{&apos;Path&apos;:&apos;PickupIsActive&apos;} , &apos;MapMoved&apos;:{&apos;Path&apos;:&apos;SelectedAddress.SearchCommand&apos;}, &apos;Center&apos;:{&apos;Path&apos;:&apos;MapCenter&apos;}, &apos;PickupIsActive&apos;: {&apos;Path&apos;: &apos;PickupIsActive&apos;}, &apos;DropoffIsActive&apos;: {&apos;Path&apos;: &apos;DropoffIsActive&apos;} }"
+                                local:MvxBind="{&apos;Pickup&apos;:{&apos;Path&apos;:&apos;Pickup.Model&apos;}, &apos;Dropoff&apos;:{&apos;Path&apos;:&apos;Dropoff.Model&apos;} , &apos;MapMoved&apos;:{&apos;Path&apos;:&apos;SelectedAddress.SearchCommand&apos;}, &apos;Center&apos;:{&apos;Path&apos;:&apos;MapCenter&apos;}, &apos;AddressSelectionMode&apos;: {&apos;Path&apos;: &apos;AddressSelectionMode&apos;}}"
                                 android:clickable="true" />
                             <View
                                 android:id="@+id/anchor"
@@ -187,28 +187,10 @@
                         <FrameLayout
                             android:id="@+id/bottomLayout"
                             android:layout_width="fill_parent"
-                            android:layout_height="60dip"
+                            android:layout_height="58dip"
                             android:layout_weight="1"
                             android:layout_gravity="bottom"
                             android:background="@drawable/StatusBottomBarBackground" />
-                        <RelativeLayout
-                            android:layout_weight="0.11"
-                            android:layout_width="fill_parent"
-                            android:layout_height="19dip"
-                            android:layout_gravity="center_horizontal|bottom"
-                            local:MvxBind="{&apos;Visibility&apos;:{&apos;Path&apos;:&apos;IsInTheFuture&apos;,&apos;Converter&apos;:&apos;Visibility&apos;}}"
-                            android:gravity="center_horizontal|center_vertical"
-                            android:layout_marginBottom="60dip"
-                            android:background="#ee000000">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text=""
-                                local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;PickupDateDisplay&apos;}}"
-                                android:gravity="center_horizontal|top"
-                                style="@style/SmallTitle"
-                                android:layout_gravity="center_horizontal|top" />
-                        </RelativeLayout>
                         <RelativeLayout
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"

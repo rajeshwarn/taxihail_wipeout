@@ -4,6 +4,7 @@ using System.Reactive;
 using System.Reactive.Subjects;
 using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.ExtensionMethods;
+using Cirrious.MvvmCross.Interfaces.Commands;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using ServiceStack.Text;
 using TinyIoC;
@@ -19,6 +20,8 @@ using System.Globalization;
 using System.Reactive.Linq;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
+using System.Reactive.Disposables;
+using apcurium.MK.Booking.Mobile.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -26,72 +29,48 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         IMvxServiceConsumer<IBookingService>,
         IMvxServiceConsumer<ILocationService>
     {
-        private readonly IBookingService _bookingService;
+        private IBookingService _bookingService;
         private const string _doneStatus = "wosDONE";
         private const string _loadedStatus = "wosLOADED";
         private ILocationService _geolocator;
         private const int _refreshPeriod = 20 ; //20 sec
         private bool _isThankYouDialogDisplayed = false;
-        private IObservable<Unit> timerSubscription = null;
-        private IDisposable timerDisposable = null;
 
-		[Obsolete]
-        public BookingStatusViewModel(string order)
+        protected readonly CompositeDisposable Subscriptions = new CompositeDisposable();
+
+		public BookingStatusViewModel(string order, string orderStatus)
+		{
+			Order = JsonSerializer.DeserializeFromString<Order>(order);
+			OrderStatusDetail = JsonSerializer.DeserializeFromString<OrderStatusDetail>(orderStatus);		
+			_geolocator = this.GetService<ILocationService>();	
+
+		}
+
+        public override void OnViewLoaded ()
         {
-            var orderWithStatus = JsonSerializer.DeserializeFromString <OrderWithStatusModel>(order);
-            Order = orderWithStatus.Order;
-            OrderStatusDetail = orderWithStatus.OrderStatusDetail;
+            base.OnViewLoaded ();
             ShowRatingButton = true;
             MessengerHub.Subscribe<OrderRated>( OnOrderRated , o=>o.Content.Equals (Order.Id) );
             _bookingService = this.GetService<IBookingService>();
             StatusInfoText = string.Format(Resources.GetString("StatusStatusLabel"), Resources.GetString("LoadingMessage"));
 
-
-            _geolocator = this.GetService<ILocationService>();
-
-            Pickup = new BookAddressViewModel(() => Order.PickupAddress, address => Order.PickupAddress = address, _geolocator)
-            {
-                Title = Resources.GetString("BookPickupLocationButtonTitle"),
-                EmptyAddressPlaceholder = Resources.GetString("BookPickupLocationEmptyPlaceholder")
-            };
-            Dropoff = new BookAddressViewModel(() => Order.DropOffAddress, address => Order.DropOffAddress = address, _geolocator)
-            {
-                Title = Resources.GetString("BookDropoffLocationButtonTitle"),
-                EmptyAddressPlaceholder = Resources.GetString("BookDropoffLocationEmptyPlaceholder")
-            };
-
-              timerSubscription = Observable.Timer(TimeSpan.Zero,TimeSpan.FromSeconds(_refreshPeriod)).Select(c => new Unit());
-
-            timerDisposable = timerSubscription.Subscribe(unit => InvokeOnMainThread(RefreshStatus));
+			Pickup = new BookAddressViewModel(() => Order.PickupAddress, address => Order.PickupAddress = address, _geolocator)
+			{
+				Title = Resources.GetString("BookPickupLocationButtonTitle"),
+				EmptyAddressPlaceholder = Resources.GetString("BookPickupLocationEmptyPlaceholder")
+			};
+			Dropoff = new BookAddressViewModel(() => Order.DropOffAddress, address => Order.DropOffAddress = address, _geolocator)
+			{
+				Title = Resources.GetString("BookDropoffLocationButtonTitle"),
+				EmptyAddressPlaceholder = Resources.GetString("BookDropoffLocationEmptyPlaceholder")
+			};
+            
+            Observable.Timer(TimeSpan.Zero, TimeSpan.FromSeconds(_refreshPeriod)).Select(c => new Unit())
+                .Subscribe(unit => InvokeOnMainThread(RefreshStatus))
+                    .DisposeWith(Subscriptions);
+            
             CenterMap(true);
         }
-
-		public BookingStatusViewModel(string order, string orderStatus)
-		{
-			Order = JsonSerializer.DeserializeFromString<Order>(order);
-			OrderStatusDetail = JsonSerializer.DeserializeFromString<OrderStatusDetail>(orderStatus);
-			ShowRatingButton = true;
-			MessengerHub.Subscribe<OrderRated>( OnOrderRated , o=>o.Content.Equals (Order.Id) );
-			_bookingService = this.GetService<IBookingService>();
-            StatusInfoText = string.Format(Resources.GetString("StatusStatusLabel"), Resources.GetString("LoadingMessage"));
-             _geolocator = this.GetService<ILocationService>();
-
-		    Pickup = new BookAddressViewModel(() => Order.PickupAddress, address => Order.PickupAddress = address, _geolocator)
-            {
-                Title = Resources.GetString("BookPickupLocationButtonTitle"),
-                EmptyAddressPlaceholder = Resources.GetString("BookPickupLocationEmptyPlaceholder")
-            };
-            Dropoff = new BookAddressViewModel(() => Order.DropOffAddress, address => Order.DropOffAddress = address, _geolocator)
-            {
-                Title = Resources.GetString("BookDropoffLocationButtonTitle"),
-                EmptyAddressPlaceholder = Resources.GetString("BookDropoffLocationEmptyPlaceholder")
-            };
-
-             timerSubscription = Observable.Timer(TimeSpan.Zero, TimeSpan.FromSeconds(_refreshPeriod)).Select(c => new Unit());
-
-            timerDisposable = timerSubscription.Subscribe(unit => InvokeOnMainThread(RefreshStatus));
-            CenterMap(true);
-		}
 
         private IEnumerable<CoordinateViewModel> _mapCenter { get; set; }
 
@@ -107,8 +86,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         
 
-        public BookAddressViewModel Pickup { get; set; }
-        public BookAddressViewModel Dropoff { get; set; }
+        BookAddressViewModel pickup;
+        public BookAddressViewModel Pickup {
+            get {
+                return pickup;
+            }
+            set {
+                pickup = value;FirePropertyChanged(()=>Pickup); 
+            }
+        }
+        BookAddressViewModel dropoff;
+        public BookAddressViewModel Dropoff {
+            get {
+                return dropoff;
+            }
+            set {
+                dropoff = value;FirePropertyChanged(()=>Dropoff); 
+            }
+        }
 
         public Address PickupModel
         {
@@ -232,10 +227,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                    
                     if (status != null)
                     {
-                        StatusInfoText = status.IBSStatusDescription;
-                        CenterMap(true);
+                        StatusInfoText = status.IBSStatusDescription;                        
                         this.OrderStatusDetail = status;
-                        ConfirmationNoTxt = string.Format(Resources.GetString("StatusDescription"), OrderStatusDetail.IBSOrderId.Value);
+
+                        CenterMap(true);
+                        if (OrderStatusDetail.IBSOrderId.HasValue)
+                        {
+                            ConfirmationNoTxt = string.Format(Resources.GetString("StatusDescription"), OrderStatusDetail.IBSOrderId.Value);
+                        }
                         if (isDone)
                         {
                             if (!_isThankYouDialogDisplayed)
@@ -308,11 +307,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public MvxRelayCommand NavigateToRatingPage
+        public IMvxCommand NavigateToRatingPage
         {
             get
             {
-                return new MvxRelayCommand(() =>
+                return GetCommand(() =>
                 {
                     MessengerHub.Subscribe<OrderRated>(HideRatingButton);
                     RequestNavigate<BookRatingViewModel>(new { orderId = Order.Id.ToString(), canRate = true.ToString(CultureInfo.InvariantCulture), isFromStatus = true.ToString(CultureInfo.InvariantCulture) });
@@ -320,14 +319,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public MvxRelayCommand NewRide
+        public IMvxCommand NewRide
         {
             get
             {
-                return new MvxRelayCommand(() =>
+                return GetCommand(() =>
                                                {
-                                                   _bookingService.ClearLastOrder();
-                                                   RequestNavigate<BookViewModel>(clearTop:true);
+
+                    MessageService.ShowMessage( Resources.GetString("StatusNewRideButton") ,  Resources.GetString("StatusConfirmNewBooking"),  Resources.GetString("YesButton"), () =>
+                    {
+                        _bookingService.ClearLastOrder();
+                        RequestNavigate<BookViewModel>(clearTop:true);
+                    },
+                    Resources.GetString("NoButton"), () => { });   
+                                        
                 });
             }
         }
@@ -335,11 +340,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
           
 
 
-        public MvxRelayCommand CancelOrder
+        public IMvxCommand CancelOrder
         {
             get
             {
-                return new MvxRelayCommand(() =>
+                return GetCommand(() =>
                                                {
                                                    if ((OrderStatusDetail.IBSStatusId == _doneStatus) || (OrderStatusDetail.IBSStatusId == _loadedStatus))
                                                    {
@@ -355,38 +360,38 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                                                                       if(isSuccess)
                                                                                       {
                                                                                           MessengerHub.Publish(new OrderCanceled(this, Order, null));
-                                                                                          this.Close();
+                                                                                          RequestNavigate<BookViewModel>(clearTop:true);
                                                                                       }
                                                                                       else
                                                                                       {
                                                                                           MessageService.ShowMessage(Resources.GetString("StatusConfirmCancelRideErrorTitle"), Resources.GetString("StatusConfirmCancelRideError"));
                                                                                       }
                                                                                   },
-                                                                                  Resources.GetString("NoButton"),() =>
-                                                                                                                      {
-                                                                                                                          
-                                                                                                                      }
-                                                               );
+                                                                                  Resources.GetString("NoButton"),() => { });
                                                });
             }
         }
 
-        public MvxRelayCommand CallCompany
+        public IMvxCommand CallCompany
         {
             get
             {
-                return new MvxRelayCommand(() =>
-                                               {
-                                                   var numberToCall = TinyIoCContainer.Current.Resolve<IAppSettings>().PhoneNumber(Order.Settings.ProviderId.Value);
-                                                   PhoneService.Call(numberToCall);
-                                               });
+                return GetCommand(() =>
+                {
+                    Action call = () => { PhoneService.Call(Settings.PhoneNumber(Order.Settings.ProviderId.Value)); };
+                    MessageService.ShowMessage(string.Empty, 
+                                               Settings.PhoneNumberDisplay(Order.Settings.ProviderId.Value), 
+                                               Resources.GetString("CallButton"), 
+                                               call, Resources.GetString("CancelBoutton"), 
+                                               () => {});                    
+                });
             }
         }
 
-        protected override void Close ()
+        public override void OnViewUnloaded ()
         {
-            base.Close ();
-            timerDisposable.Dispose();
+            base.OnViewUnloaded ();
+            Subscriptions.DisposeAll();
         }
     }
 }

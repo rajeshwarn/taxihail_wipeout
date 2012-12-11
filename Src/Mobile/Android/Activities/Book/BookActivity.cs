@@ -23,6 +23,10 @@ using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 using apcurium.MK.Booking.Mobile.Client.Activities.Setting;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Client.Controls;
+using System.Reactive.Linq;
+using System.Reactive;
+
+
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
     [Activity(Label = "Book", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
@@ -52,10 +56,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             FindViewById<View>(Resource.Id.pickupDateButton).Click -= PickDate_Click;
             FindViewById<View>(Resource.Id.pickupDateButton).Click += PickDate_Click;
 
-
+			var signOutButton = FindViewById<View>(Resource.Id.settingsLogout);
+			signOutButton.Click -= HandleSignOutButtonClick;
+			signOutButton.Click += HandleSignOutButtonClick;
 
 			ViewModel.Panel.PropertyChanged -= HandlePropertyChanged;
 			ViewModel.Panel.PropertyChanged += HandlePropertyChanged;
+
+            ViewModel.OnViewLoaded();
+        }
+
+        void HandleSignOutButtonClick (object sender, EventArgs e)
+        {
+			ViewModel.Panel.SignOut.Execute();
+			// Finish the activity, because clearTop does not seem to be enough in this case
+			// Finish is delayed 1sec in order to prevent the application from being terminated
+			Observable.Return(Unit.Default).Delay (TimeSpan.FromSeconds(1)).Subscribe(x=>{
+				Finish();
+			});
         }
 
         void HandlePropertyChanged (object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -75,11 +93,31 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             ViewModel.ConfirmOrder.Execute();
         }
 
-
         protected override void OnResume()
         {
             base.OnResume();
+
+            ViewModel.ShowTutorial.Execute();
+
             apcurium.MK.Booking.Mobile.Client.Activities.Book.LocationService.Instance.Start();
+
+            var mainLayout = FindViewById(Resource.Id.MainLayout);
+            mainLayout.Invalidate();
+            mainLayout.ClearAnimation();
+            mainLayout.DrawingCacheEnabled = true;
+            mainLayout.RefreshDrawableState();
+
+            FindViewById<TouchMap>(Resource.Id.mapPickup).Invalidate();
+            FindViewById<TouchMap>(Resource.Id.mapPickup).RefreshDrawableState();
+
+
+        }
+
+
+        protected override void OnPause()
+        {
+            base.OnPause();
+
         }
         protected override void OnStop()
         {
@@ -121,6 +159,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         void PickDate_Click(object sender, EventArgs e)
         {
+			//Close Menu if open
+			ViewModel.Panel.MenuIsOpen = false;
+
             var messengerHub = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>();
             var token = default(TinyMessageSubscriptionToken);
             token = messengerHub.Subscribe<DateTimePicked>(msg =>
@@ -129,11 +170,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 {
                     messengerHub.Unsubscribe<DateTimePicked>(token);
                 }
-                if (msg.Content.HasValue)
-                {
-                    ViewModel.Order.PickupDate = msg.Content;
-                    ViewModel.PickupDateSelected();
-                }
+
+                ViewModel.PickupDateSelectedCommand.Execute(msg.Content);
             });
 
             var intent = new Intent(this, typeof(DateTimePickerActivity));
@@ -141,6 +179,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             {
                 intent.PutExtra("SelectedDate", ViewModel.Order.PickupDate.Value.Ticks);
             }
+            intent.PutExtra("UseAmPmFormat", ViewModel.UseAmPmFormat );
+
             StartActivityForResult(intent, (int)ActivityEnum.DateTimePicked);
         }
 

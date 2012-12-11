@@ -5,6 +5,7 @@ using Cirrious.MvvmCross.Commands;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Booking.Mobile.AppServices;
 using System.Collections.Generic;
+using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels.SearchAddress;
 using apcurium.MK.Common.Extensions;
 using System.Threading;
@@ -74,36 +75,44 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public IMvxCommand SearchCommand {
             get {
-                return new MvxRelayCommand<string> (criteria =>
+                return GetCommand<string> (criteria =>
                 {
-                    SearchViewModelSelected.Criteria = criteria != null ? criteria.ToLowerInvariant () : null;
+                                               SearchViewModelSelected.Criteria = criteria != null ? criteria.ToLowerInvariant() : null;
 
-                    if (!SearchViewModelSelected.CriteriaValid) {
-                        return;
-                    }
+                                               if (!SearchViewModelSelected.CriteriaValid)
+                                               {
+                                                   return;
+                                               }
 
-                    CancelCurrentSearch ();
+                                               _searchCancellationToken = new CancellationTokenSource();
 
-                    _searchCancellationToken = new CancellationTokenSource ();
+                                               var task = SearchViewModelSelected.OnSearchExecute(_searchCancellationToken.Token);
+                                               task.ContinueWith(RefreshResults);
 
-                    var task = SearchViewModelSelected.OnSearchExecute (_searchCancellationToken.Token);
-                    task.ContinueWith (RefreshResults);
-
-                    if (!(SearchViewModelSelected is AddressSearchByContactViewModel)) {
-                        task.Start ();
-                    }
-                    IsSearching = true;
-                });
+                                               if (!(SearchViewModelSelected is AddressSearchByContactViewModel))
+                                               {
+                                                   task.Start();
+                                               }
+                                               IsSearching = true;
+                                           });
             }
         }
 
-        private void CancelCurrentSearch ()
+        public IMvxCommand CancelCurrentSearch
         {
-            if (_searchCancellationToken != null
-                && _searchCancellationToken.Token.CanBeCanceled) {
-                _searchCancellationToken.Cancel ();
-                _searchCancellationToken.Dispose ();
-                _searchCancellationToken = null;
+            get
+            {
+              return GetCommand(() =>
+                    {
+                        
+                            if (_searchCancellationToken != null
+                                && _searchCancellationToken.Token.CanBeCanceled)
+                            {
+                                _searchCancellationToken.Cancel();
+                                _searchCancellationToken.Dispose();
+                                _searchCancellationToken = null;
+                            }
+                    });
             }
         }
 
@@ -156,7 +165,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public IMvxCommand RowSelectedCommand {
             get {
-                return new MvxRelayCommand<AddressViewModel> (address =>
+                return GetCommand<AddressViewModel>(address =>
                 {
                     ThreadPool.QueueUserWorkItem (o =>
                     {
@@ -167,22 +176,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                 var placeAddress = _googleService.GetPlaceDetail (address.Address.FriendlyName, address.Address.PlaceReference);
                                 placeAddress.FriendlyName = address.Address.FriendlyName;
                                 placeAddress.BuildingName = address.Address.FriendlyName;
-                                InvokeOnMainThread (() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub> ().Publish (new AddressSelected (this, placeAddress, _ownerId)));
                                 RequestClose (this);
+                                InvokeOnMainThread (() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub> ().Publish (new AddressSelected (this, placeAddress, _ownerId)));
                             } else if (address.Address.AddressType == "localContact") {
                                 var geolocService = TinyIoCContainer.Current.Resolve<IGeolocService> ();
-                                var addresses = geolocService.SearchAddress (address.Address.FullAddress, 0, 0);
+                                var addresses = geolocService.SearchAddress (address.Address.FullAddress);
                                 if (addresses.Count () > 0) {
-                                    InvokeOnMainThread (() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub> ().Publish (new AddressSelected (this, addresses.ElementAt (0), _ownerId)));
                                     RequestClose (this);
+                                    InvokeOnMainThread (() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub> ().Publish (new AddressSelected (this, addresses.ElementAt (0), _ownerId)));
                                 } else {
                                     var title = TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("LocalContactCannotBeResolverTitle");
                                     var msg = TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("LocalContactCannotBeResolverMessage");
                                     TinyIoCContainer.Current.Resolve<IMessageService> ().ShowMessage (title, msg);
                                 }
                             } else {
-                                InvokeOnMainThread (() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub> ().Publish (new AddressSelected (this, address.Address, _ownerId)));
                                 RequestClose (this);
+                                InvokeOnMainThread (() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub> ().Publish (new AddressSelected (this, address.Address, _ownerId)));
                             }
 
                         }
@@ -203,6 +212,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void SetSelected (TopBarButton btn)
         {
+            if ( CancelCurrentSearch != null )
+            {
+                CancelCurrentSearch.Execute ();
+            }
+
             switch (btn) {
             case TopBarButton.SearchBtn:
                 SearchViewModelSelected = TinyIoCContainer.Current.Resolve<AddressSearchByGeoCodingViewModel> ();
@@ -234,7 +248,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public IMvxCommand SelectedChangedCommand {
             get {
-                return new MvxRelayCommand<object> (param => param.Maybe (tag =>
+                return GetCommand<object>(param => param.Maybe(tag =>
                 {
                     ClearResults ();
                     TopBarButton btSelected;
@@ -287,7 +301,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
         public IMvxCommand CloseViewCommand {
-            get { return new MvxRelayCommand (() => RequestClose (this)); }
+            get { return GetCommand(() => RequestClose(this)); }
         }
 
 

@@ -23,49 +23,31 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Extensions;
+using System.Globalization;
+
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
+
     public class BookViewModel : BaseViewModel,
         IMvxServiceConsumer<IAccountService>,
         IMvxServiceConsumer<ILocationService>,
-        IMvxServiceConsumer<IBookingService>
+        IMvxServiceConsumer<IBookingService>,
+        IMvxServiceConsumer<ICacheService>
 
     {
         private bool _initialized;
         private IAccountService _accountService;
         private ILocationService _geolocator;
         private IBookingService _bookingService;
-        private bool _pickupIsActive = true;
-        private bool _dropoffIsActive = false;
         private IEnumerable<CoordinateViewModel> _mapCenter;
         private string _fareEstimate;
 
         public BookViewModel()
         {
-			MessengerHub.Subscribe<LogOutRequested>(msg => RequestNavigate<LoginViewModel>(true));
-			InitializeOrder();
-
-            CenterMap(true);
-            CheckVersion();
-
-            PickupIsActive = true;
-            DropoffIsActive = false;
-            Pickup.RequestCurrentLocationCommand.Execute();
-
-            _bookingService.GetLastOrderStatus().ContinueWith(t => 
-            {
-                var isCompleted = _bookingService.IsStatusCompleted(t.Result.IBSStatusId);
-                if (isCompleted)
-                {
-                    _bookingService.ClearLastOrder();
-                }
-                else
-                {
-                    var order = TinyIoCContainer.Current.Resolve<IAccountService>().GetHistoryOrder(t.Result.OrderId);
-                    ShowStatusActivity(order, t.Result);
-                }
-            }, TaskContinuationOptions.OnlyOnRanToCompletion);           
+			
         }
 
         public BookViewModel(string order)
@@ -83,7 +65,35 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _geolocator = this.GetService<ILocationService>();
             _bookingService = this.GetService<IBookingService>();
 
-            Pickup = new BookAddressViewModel(() => Order.PickupAddress, address => Order.PickupAddress = address, _geolocator)
+			Panel = new PanelViewModel();
+        }
+
+        public override void OnViewLoaded ()
+        {
+            base.OnViewLoaded ();
+
+            InitializeOrder();           
+
+            CheckVersion();
+
+            if ( _bookingService.HasLastOrder )
+            {
+                _bookingService.GetLastOrderStatus().ContinueWith(t => 
+                                                                  {
+                    var isCompleted = _bookingService.IsStatusCompleted(t.Result.IBSStatusId);
+                    if (isCompleted)
+                    {
+                        _bookingService.ClearLastOrder();
+                    }
+                    else
+                    {
+                        var order = TinyIoCContainer.Current.Resolve<IAccountService>().GetHistoryOrder(t.Result.OrderId);
+                        ShowStatusActivity(order, t.Result);
+                    }
+                }, TaskContinuationOptions.OnlyOnRanToCompletion);           
+            }
+
+            Pickup = new BookAddressViewModel(() => Order.PickupAddress, address => Order.PickupAddress = address, _geolocator, true)
             {
                 Title = Resources.GetString("BookPickupLocationButtonTitle"),
                 EmptyAddressPlaceholder = Resources.GetString("BookPickupLocationEmptyPlaceholder")
@@ -93,17 +103,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 Title = Resources.GetString("BookDropoffLocationButtonTitle"),
                 EmptyAddressPlaceholder = Resources.GetString("BookDropoffLocationEmptyPlaceholder")
             };
-
-			Panel = new PanelViewModel();
-
-            Pickup.PropertyChanged += Address_PropertyChanged;
-            Dropoff.PropertyChanged += Address_PropertyChanged;
+            
             Pickup.AddressChanged += AddressChanged;
             Dropoff.AddressChanged += AddressChanged;
 
+            AddressSelectionMode = AddressSelectionMode.PickupSelection;
+
+            Pickup.RequestCurrentLocationCommand.Execute();            
+            
             _fareEstimate = Resources.GetString("NoFareText");
 
+            CenterMap(true);
+            
             ThreadPool.QueueUserWorkItem(UpdateServerInfo);
+//            Task.Factory.SafeStartNew (() =>
+//            {
+//                Thread.Sleep (2000);
+//               
+//            });
+
+            ForceRefresh();
         }
 
         private void CheckVersion()
@@ -122,20 +141,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             InvokeOnMainThread(() => FirePropertyChanged(() => Pickup));
             InvokeOnMainThread(() => FirePropertyChanged(() => Dropoff));
             CenterMap(sender is bool ? !(bool)sender : false );
+
+            Task.Factory.SafeStartNew( ()=> CalculateEstimate(  ) );
+            FirePropertyChanged ( () => CanClearAddress );
         }
 
-        void Address_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == "Display")
-            {
-                ThreadPool.QueueUserWorkItem(CalculateEstimate);
-                FirePropertyChanged(() => CanClearAddress);
-            }
-        }
 
-        private void CalculateEstimate(object state)
+        private void CalculateEstimate()
         {
-            _fareEstimate = TinyIoCContainer.Current.Resolve<IBookingService>().GetFareEstimateDisplay(Order, "EstimatePrice" , "NoFareText");
+            _fareEstimate = TinyIoCContainer.Current.Resolve<IBookingService>().GetFareEstimateDisplay(Order, "EstimatePrice" , "NoFareText", true, "EstimatedFareNotAvailable");
             
             InvokeOnMainThread(() => FirePropertyChanged(() => FareEstimate));
 
@@ -151,9 +165,35 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
             else
             {
-                Order.Settings = new BookingSettings { Passengers = 2 };
+                Order.Settings = new BookingSettings();
             }
         }
+
+        public bool UseAmPmFormat
+        {
+            get{
+
+                return new CultureInfo( CultureInfo).DateTimeFormat.LongTimePattern.ToLower().Contains ( "tt" );
+
+
+            }
+        }
+
+        public string CultureInfo
+        {
+            get{
+                var culture = TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting ( "PriceFormat" );
+                if ( culture.IsNullOrEmpty() )
+                {
+                    return "en-US";
+                }
+                else
+                {
+                    return culture;                
+                }
+            }
+        }
+
 
 
         private void NewOrder()
@@ -164,7 +204,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                     ForceRefresh();
 
-                    if (!PickupIsActive)
+                    if (this.AddressSelectionMode != Data.AddressSelectionMode.PickupSelection)
                     {
                         ActivatePickup.Execute();
                         Thread.Sleep(300);
@@ -190,8 +230,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Order.PickupDate = null;
 			Pickup.SetAddress( Order.PickupAddress, false );
 			Dropoff.SetAddress( Order.DropOffAddress, false );
-			PickupIsActive=true;
-			DropoffIsActive=false;
+            this.AddressSelectionMode = Data.AddressSelectionMode.PickupSelection;
 			CenterMap(false);
 			ForceRefresh();
         }
@@ -202,10 +241,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             FirePropertyChanged(() => Pickup);
             FirePropertyChanged(() => Dropoff);
             FirePropertyChanged(() => SelectedAddress);
-            FirePropertyChanged(() => PickupIsActive);
-            FirePropertyChanged(() => DropoffIsActive);
+            FirePropertyChanged(() => AddressSelectionMode);
 			FirePropertyChanged(() => FareEstimate);
-            FirePropertyChanged(() => IsInTheFuture);
         }
 
 
@@ -229,11 +266,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                if (PickupIsActive)
+                if (this.AddressSelectionMode == Data.AddressSelectionMode.PickupSelection)
                 {
                     return Pickup;
                 }
-                else if (DropoffIsActive)
+                else if (this.AddressSelectionMode == Data.AddressSelectionMode.DropoffSelection)
                 {
                     return Dropoff;
                 }
@@ -259,83 +296,102 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public BookAddressViewModel Pickup { get; set; }
         public BookAddressViewModel Dropoff { get; set; }
 
-        public bool PickupIsActive
-        {
-            get { return _pickupIsActive; }
-            set
-            {
-                _pickupIsActive = value;
-                FirePropertyChanged(() => PickupIsActive);
 
+        private AddressSelectionMode _addressSelectionMode;
+        public AddressSelectionMode AddressSelectionMode {
+            get {
+                return _addressSelectionMode;
             }
-        }
-
-        public bool DropoffIsActive
-        {
-            get { return _dropoffIsActive; }
-            set
-            {
-                _dropoffIsActive = value;
-                FirePropertyChanged(() => DropoffIsActive);
-                FirePropertyChanged(() => CanClearAddress);
+            set {
+                if(_addressSelectionMode != value){
+                    _addressSelectionMode = value;
+					FirePropertyChanged("AddressSelectionMode");
+                    FirePropertyChanged(() => CanClearAddress);
+                }
             }
         }
 
         public bool CanClearAddress
         {
-            get { return DropoffIsActive && ( Dropoff != null) && (Dropoff.Model != null) && Dropoff.Model.HasValidCoordinate(); }
+            get { 
+                return this.AddressSelectionMode == Data.AddressSelectionMode.DropoffSelection && ( Dropoff != null) && (Dropoff.Model != null) && Dropoff.Model.HasValidCoordinate(); 
+            }
         }
 
-        public bool NoAddressActiveSelection
+
+
+        public IMvxCommand ShowTutorial
         {
-            get { return !DropoffIsActive && !PickupIsActive; }
+            get{
+                return new MvxRelayCommand( () =>
+                                           {
+
+                    Task.Factory.SafeStartNew ( () => 
+                                               {
+                        Thread.Sleep ( 1000 );
+                        InvokeOnMainThread ( () =>
+                                            {
+                                  var tutorialWasDisplayed = this.GetService<ICacheService> ().Get<string> ("TutorialWasDisplayed");
+                                if (tutorialWasDisplayed.IsNullOrEmpty ()) {
+                                    this.GetService<ICacheService> ().Set<string> ("TutorialWasDisplayed", true.ToString ());
+                                    MessageService.ShowDialogActivity (typeof(TutorialViewModel));
+                                }
+                        });
+                    });
+                });
+            }
         }
-        public MvxRelayCommand ActivatePickup
+
+        public IMvxCommand ActivatePickup
         {
             get
             {
-                return new MvxRelayCommand(() =>
+                return GetCommand(() =>
                 {
-                    PickupIsActive = !PickupIsActive;
-                    if (DropoffIsActive && PickupIsActive)
+                    this.InvokeOnMainThread(delegate 
                     {
-                        DropoffIsActive = false;
-                    }
-                    if (PickupIsActive)
-                    {
-                        var res = TinyIoCContainer.Current.Resolve<IAppResource>();
-                        TinyIoCContainer.Current.Resolve<IMessageService>().ShowToast(res.GetString("PickupWasActivatedToastMessage"), ToastDuration.Long );
-                    }
-                    FirePropertyChanged(() => SelectedAddress);
-                    FirePropertyChanged(() => NoAddressActiveSelection);
-                    CenterMap(false);
+                        // Close the menu if it was open
+                        Panel.MenuIsOpen = false;
+
+                        this.AddressSelectionMode = this.AddressSelectionMode == Data.AddressSelectionMode.PickupSelection
+                            ? Data.AddressSelectionMode.None
+                            : Data.AddressSelectionMode.PickupSelection;
+
+                        if (this.AddressSelectionMode == Data.AddressSelectionMode.PickupSelection && this.IsVisible)
+                        {
+                            MessageService.ShowToast(Resources.GetString("PickupWasActivatedToastMessage"), ToastDuration.Long );
+                        }
+                        FirePropertyChanged(() => SelectedAddress);
+                        CenterMap(false);
+                    });
                 });
             }
 
         }
 
         
-        public MvxRelayCommand ActivateDropoff
+        public IMvxCommand ActivateDropoff
         {
             get
             {
-                return new MvxRelayCommand(() =>
+                return GetCommand(() =>
                     {
-                        DropoffIsActive = !DropoffIsActive;
-                        if (DropoffIsActive && PickupIsActive)
+                        this.RequestMainThreadAction(delegate 
                         {
-                            PickupIsActive = false;
-                        }
-                        if (DropoffIsActive)
-                        {
-                            var res = TinyIoCContainer.Current.Resolve<IAppResource>();
-                            TinyIoCContainer.Current.Resolve<IMessageService>().ShowToast(res.GetString("DropoffWasActivatedToastMessage"), ToastDuration.Long);
-                        }
-                        FirePropertyChanged(() => SelectedAddress);
-                        FirePropertyChanged(() => NoAddressActiveSelection);
+                            // Close the menu if it was open
+                            Panel.MenuIsOpen = false;
 
-                        CenterMap(false);
+                            this.AddressSelectionMode = this.AddressSelectionMode == Data.AddressSelectionMode.DropoffSelection
+                                ? Data.AddressSelectionMode.None
+                                : Data.AddressSelectionMode.DropoffSelection;
 
+                            if (this.AddressSelectionMode == Data.AddressSelectionMode.DropoffSelection && this.IsVisible)
+                            {
+                                MessageService.ShowToast(Resources.GetString("DropoffWasActivatedToastMessage"), ToastDuration.Long);
+                            }
+                            FirePropertyChanged(() => SelectedAddress);
+                            CenterMap(false);
+                        });
                     });
             }
         }
@@ -343,15 +399,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                
         private void CenterMap(bool changeZoom)
         {
-            if (DropoffIsActive && Dropoff.Model.HasValidCoordinate())
+            if (this.AddressSelectionMode == Data.AddressSelectionMode.DropoffSelection && Dropoff.Model.HasValidCoordinate())
             {
                 MapCenter = new CoordinateViewModel[] { new CoordinateViewModel { Coordinate = new Coordinate { Latitude = Dropoff.Model.Latitude, Longitude = Dropoff.Model.Longitude }, Zoom = changeZoom ? ZoomLevel.Close : ZoomLevel.DontChange } };
             }
-            else if (PickupIsActive && Pickup.Model.HasValidCoordinate())
+            else if (this.AddressSelectionMode == Data.AddressSelectionMode.PickupSelection && Pickup.Model.HasValidCoordinate())
             {
                 MapCenter = new CoordinateViewModel[] { new CoordinateViewModel { Coordinate = new Coordinate { Latitude = Pickup.Model.Latitude, Longitude = Pickup.Model.Longitude }, Zoom = changeZoom ? ZoomLevel.Close : ZoomLevel.DontChange } };
             }
-            else if ((!PickupIsActive && Pickup.Model.HasValidCoordinate()) && (!DropoffIsActive && Dropoff.Model.HasValidCoordinate()))
+            else if (this.AddressSelectionMode == Data.AddressSelectionMode.None && Pickup.Model.HasValidCoordinate() && Dropoff.Model.HasValidCoordinate())
             {
                 MapCenter = new CoordinateViewModel[] { new CoordinateViewModel { Coordinate = new Coordinate { Latitude = Dropoff.Model.Latitude, Longitude = Dropoff.Model.Longitude }, Zoom = changeZoom ? ZoomLevel.Close : ZoomLevel.DontChange } , 
                                             new CoordinateViewModel { Coordinate = new Coordinate { Latitude = Pickup.Model.Latitude, Longitude = Pickup.Model.Longitude }, Zoom = ZoomLevel.DontChange }};
@@ -375,45 +431,29 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         
 
-        public bool IsInTheFuture { get { return Order.PickupDate.HasValue; } }
-
-        public string PickupDateDisplay
-        {
-            get
-            {
-                if (Order.PickupDate.HasValue)
-                {
-                    var format = Resources.GetString("PickupDateDisplay");
-                    return String.Format(format, Order.PickupDate.Value);
-                }
-                else
-                {
-                    return "";
-                }
-
-            }
-        }
         public void PickupDateSelected()
         {
-            FirePropertyChanged(() => IsInTheFuture);
-            FirePropertyChanged(() => PickupDateDisplay);
-            ThreadPool.QueueUserWorkItem(CalculateEstimate);
+            Task.Factory.SafeStartNew ( CalculateEstimate );
         }
 		public IMvxCommand PickupDateSelectedCommand
 		{
 			get
 			{
-				return new MvxRelayCommand<DateTime?>(date => {
+                return GetCommand<DateTime?>(date =>
+                {
 					if( date.HasValue && date < DateTime.Now )
 					{
-						var res = TinyIoCContainer.Current.Resolve<IAppResource>();
-						TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage( res.GetString("InvalidChoiceTitle"), res.GetString("BookViewInvalidDate") );
+                        MessageService.ShowMessage( Resources.GetString("InvalidChoiceTitle"), Resources.GetString("BookViewInvalidDate") );
 						Order.PickupDate = null;
 					}
 					else
 					{
 						Order.PickupDate = date;
 						InvokeOnMainThread(() => TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Publish(new DateTimePicked(this, Order.PickupDate )));
+                        if ( date.HasValue )
+                        {
+                            BookTaxi.Execute ();
+                        }
 					}
 					PickupDateSelected();
 				});
@@ -432,11 +472,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return new MvxRelayCommand(() =>
+                return GetCommand(() =>
                 {
-				
-
-					if (Order.Settings.Passengers == 0) {
+					if (string.IsNullOrEmpty(Order.Settings.Phone)) {
 						var account = _accountService.CurrentAccount;
 						Order.Settings = account.Settings;
 					}
@@ -444,11 +482,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					bool isValid = _bookingService.IsValid (Order);
 					if (!isValid)
                     {
+                        Order.PickupDate = null;
                         InvokeOnMainThread(() => MessageService.ShowMessage(Resources.GetString("InvalidBookinInfoTitle"), Resources.GetString("InvalidBookinInfo")));
 						return;
                     }
 
 					if (Order.PickupDate.HasValue && Order.PickupDate.Value < DateTime.Now) {
+                        Order.PickupDate = null;
 						InvokeOnMainThread(() => MessageService.ShowMessage(Resources.GetString("InvalidBookinInfoTitle"), Resources.GetString("BookViewInvalidDate")));
 						return;
 					}
@@ -460,7 +500,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         {
                             MessengerHub.Unsubscribe<OrderConfirmed>(token);
                         }
-						Task.Factory.StartNew(() => CompleteOrder(msg.Content));
+                        if ( msg.IsCancelled )
+                        {
+                            //User cancelled
+                            Order.PickupDate = null;
+                        }
+                        else
+                        {
+						    Task.Factory.StartNew(() => CompleteOrder(msg.Content));
+                        }
                     });
 
                     InvokeOnMainThread(() =>
@@ -476,7 +524,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return new MvxRelayCommand(() => RequestNavigate<BookRatingViewModel>(
+                return GetCommand(() => RequestNavigate<BookRatingViewModel>(
                     new KeyValuePair<string, bool>("canRate", true)));
                
             }
@@ -485,45 +533,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public IMvxCommand NavigateToOrderStatus 
 		{
 			get {
-				return new MvxRelayCommand<Dictionary<string,object>> (order =>
+                return GetCommand<Dictionary<string, object>>(order =>
 				{					
 					var orderGet = (Order)order ["order"];                  
 					var orderInfoGet = (OrderStatusDetail)order ["orderInfo"];
-					var orderWithStatus = new OrderWithStatusModel () { Order = orderGet, OrderStatusDetail = orderInfoGet };
-					var serialized = JsonSerializer.SerializeToString (orderWithStatus, typeof(OrderWithStatusModel));
-                    RequestNavigate<BookingStatusViewModel> (new {order = serialized});
+                    RequestNavigate<BookingStatusViewModel>(new {
+                        order =  orderGet.ToJson(),
+                        orderStatus = orderInfoGet.ToJson()
+                    });
 				});
 			}
 		}
 
         private void CompleteOrder (CreateOrder order)
-		{
-
-			order.Id = Guid.NewGuid ();
-			try {
-				MessageService.ShowProgress (true);
-				var orderInfo = _bookingService.CreateOrder (order);
-
-				if (orderInfo.IBSOrderId.HasValue
-					&& orderInfo.IBSOrderId > 0) {
-					var orderCreated = new Order { CreatedDate = DateTime.Now, DropOffAddress = order.DropOffAddress, IBSOrderId = orderInfo.IBSOrderId, Id = order.Id, PickupAddress = order.PickupAddress, Note = order.Note, PickupDate = order.PickupDate.HasValue ? order.PickupDate.Value : DateTime.Now, Settings = order.Settings };
-
-					ShowStatusActivity (orderCreated, orderInfo);
-
-				}
-
-				NewOrder ();
-
-			} catch (Exception ex) {
-				InvokeOnMainThread (() =>
-				{
-					var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
-					string err = string.Format (Resources.GetString ("ServiceError_ErrorCreatingOrderMessage"), settings.ApplicationName, settings.PhoneNumberDisplay (order.Settings.ProviderId.HasValue ? order.Settings.ProviderId.Value : 1));
-					MessageService.ShowMessage (Resources.GetString ("ErrorCreatingOrderTitle"), err);
-				});
-			} finally {
-				MessageService.ShowProgress(false);
-			}
+		{	
+			NewOrder ();
         }
 
         private void ShowStatusActivity(Order data, OrderStatusDetail orderInfo)

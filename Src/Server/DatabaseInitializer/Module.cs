@@ -10,6 +10,7 @@ using Infrastructure.Serialization;
 using Infrastructure.Sql.EventSourcing;
 using Infrastructure.Sql.MessageLog;
 using Microsoft.Practices.Unity;
+using apcurium.MK.Booking.Maps;
 using apcurium.MK.Common.Entity;
 
 namespace DatabaseInitializer
@@ -23,9 +24,13 @@ namespace DatabaseInitializer
             new apcurium.MK.Common.Module().Init(container);
             new apcurium.MK.Booking.Module().Init(container);
             new apcurium.MK.Booking.IBS.Module().Init(container);
+            new apcurium.MK.Booking.Api.Module().Init(container);
+            new apcurium.MK.Booking.Google.Module().Init(container);
+            new apcurium.MK.Booking.Maps.Module().Init(container);
 
             RegisterEventHandlers(container);
             RegisterCommandHandlers(container);
+            container.RegisterInstance<IEventsMigrator>(new EventsMigrator(container.Resolve<IAddresses>(), () => container.Resolve<EventStoreDbContext>()));
         }
 
         private void RegisterInfrastructure(IUnityContainer container, ConnectionStringSettings connectionString)

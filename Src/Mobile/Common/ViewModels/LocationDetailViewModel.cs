@@ -11,6 +11,8 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using Cirrious.MvvmCross.ExtensionMethods;
 using apcurium.MK.Booking.Mobile.Extensions;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -19,6 +21,8 @@ namespace apcurium.MK.Booking.Mobile
         IMvxServiceConsumer<IAccountService>
 	{
         IAccountService _accountService;
+
+        CancellationTokenSource _validateAddressCancellationTokenSource = new CancellationTokenSource();
 
 		public LocationDetailViewModel (string address)
 		{
@@ -40,15 +44,15 @@ namespace apcurium.MK.Booking.Mobile
 
 		private Address _address;
 		
-        public string FullAddress {
+        public string BookAddress {
             get {
-                return _address.FullAddress;
+                return _address.BookAddress;
             }
             set {
                 if(value != _address.FullAddress)
                 {
                     _address.FullAddress = value;
-                    FirePropertyChanged("FullAddress");
+                    FirePropertyChanged("BookAddress");
                 }
             }
         }
@@ -108,60 +112,75 @@ namespace apcurium.MK.Booking.Mobile
 
         public IMvxCommand ValidateAddress {
             get {
-                return new MvxRelayCommand(()=> {
+                return GetCommand(() =>
+                {
                     MessageService.ShowProgress(true);
-                    try {
-                        var location = this.GetService<IGeolocService> ().ValidateAddress (FullAddress);
+                    var task = Task.Factory.StartNew(()=>{
+						return this.GetService<IGeolocService> ().ValidateAddress (_address.FullAddress);
+                    }, _validateAddressCancellationTokenSource.Token)
+                        .HandleErrors();
+                    task.ContinueWith(t=> {
+                                MessageService.ShowProgress(false);
+                    });
+                    task.ContinueWith(t=>{
+                        var location = t.Result;
                         if ((location == null) || string.IsNullOrWhiteSpace(location.FullAddress) || !location.HasValidCoordinate ()) {
                             MessageService.ShowMessage (Resources.GetString("InvalidAddressTitle"), Resources.GetString("InvalidAddressMessage"));
                             return;
                         }
-                        
+
                         InvokeOnMainThread (() =>
                                             {
-                            FullAddress = location.FullAddress;
-                            _address.Latitude = location.Latitude;
-                            _address.Longitude = location.Longitude;
+							location.CopyTo(_address);
+							FirePropertyChanged("BookAddress");
                             
                         });
                         
-                    } catch (Exception ex) {
-                        Logger.LogError (ex);
-                    } finally {
-                        MessageService.ShowProgress(false);
-                    }
+                    }, TaskContinuationOptions.OnlyOnRanToCompletion);
+
                 });
             }
+        }
+
+        public void StopValidatingAddresses ()
+        {
+            _validateAddressCancellationTokenSource.Cancel();
         }
 
         public IMvxCommand SaveAddress {
             get {
 
-                return new MvxRelayCommand(()=> {
+                return GetCommand(() =>
+                {
                 
                     if (!ValidateFields()) return;
-            
+                    var progressShowing = true;
                     MessageService.ShowProgress(true);
                     try {
-                        var location = this.GetService<IGeolocService> ().ValidateAddress (FullAddress);
+						var location = this.GetService<IGeolocService> ().ValidateAddress (_address.FullAddress);
                         if ((location == null) || string.IsNullOrWhiteSpace(location.FullAddress) || !location.HasValidCoordinate ()) {
                             MessageService.ShowMessage (Resources.GetString("InvalidAddressTitle"), Resources.GetString("InvalidAddressMessage"));
                             return;
                         }
                     
-                        InvokeOnMainThread (() =>
-                        {
-                            FullAddress = location.FullAddress;
-                            _address.Latitude = location.Latitude;
-                            _address.Longitude = location.Longitude;
-                            _accountService.UpdateAddress( _address );     
-                            Close();
-                        });
+                        InvokeOnMainThread (() => BookAddress = location.FullAddress);
+
+						location.FriendlyName = _address.FriendlyName;
+						location.Apartment = _address.Apartment;
+						location.RingCode = _address.RingCode;
+						location.Id = _address.Id;
+                        location.IsHistoric = _address.IsHistoric;
+						_accountService.UpdateAddress(location);
+						// Must hide Progress indicator or otherwise the view won't close in iOS
+						MessageService.ShowProgress(false);
+						progressShowing = false;
+						Close();
                     
                     } catch (Exception ex) {
                         Logger.LogError (ex);
                     } finally {
-                        MessageService.ShowProgress(false);
+                        // Only call ShowProgress(false) if it was not already called in the try{} body
+                        if(progressShowing) MessageService.ShowProgress(false);
                     }
                 });
             }
@@ -169,7 +188,8 @@ namespace apcurium.MK.Booking.Mobile
 
         public IMvxCommand DeleteAddress {
             get {
-                return new MvxRelayCommand (() => {
+                return GetCommand(() =>
+                {
 
                     MessageService.ShowProgress (true);
                 
@@ -194,7 +214,9 @@ namespace apcurium.MK.Booking.Mobile
 
 		public IMvxCommand RebookOrder
 		{
-			get { return new MvxRelayCommand(()=>
+            get
+            {
+                return GetCommand(() =>
 				                                 {
                  var order = new Order();
                  order.PickupAddress = _address;
@@ -208,7 +230,7 @@ namespace apcurium.MK.Booking.Mobile
 
         private bool ValidateFields()
         {
-            if (string.IsNullOrWhiteSpace(FullAddress))
+            if (string.IsNullOrWhiteSpace(BookAddress))
             {
                 MessageService.ShowMessage(Resources.GetString("InvalidAddressTitle"), Resources.GetString("InvalidAddressMessage"));
                 return false;

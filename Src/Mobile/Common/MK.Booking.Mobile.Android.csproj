@@ -67,16 +67,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppServices\IGeolocService.cs" />
+    <Compile Include="AppServices\Impl\AsyncCommand.cs" />
     <Compile Include="AppServices\Impl\BaseService.cs" />
     <Compile Include="AppServices\Impl\GeolocService.cs" />
     <Compile Include="AppServices\Impl\PopularAddressProvider.cs" />
     <Compile Include="AppServices\Impl\TariffProvider.cs" />
+    <Compile Include="AppServices\Impl\TutorialService.cs" />
+    <Compile Include="AppServices\ISocialNetworksService.cs" />
+    <Compile Include="AppServices\ITutorialService.cs" />
     <Compile Include="BindingConverter\BoolInverter.cs" />
     <Compile Include="BindingConverter\BoolVisibilityInverter.cs" />
     <Compile Include="Data\Coordinate.cs" />
     <Compile Include="Data\CoordinatePrecision.cs" />
     <Compile Include="Data\CoordinateRefreshTime.cs" />
     <Compile Include="Data\ListItemValue.cs" />
+    <Compile Include="Data\TutorialContent.cs" />
+    <Compile Include="Data\TutorialItem.cs" />
     <Compile Include="Extensions\AddressExtension.cs" />
     <Compile Include="Extensions\BookingSettingsExtension.cs" />
     <Compile Include="Framework\DisposableAction.cs" />
@@ -141,13 +147,11 @@
     <Compile Include="Messages\AddressSelected.cs" />
     <Compile Include="Messages\BookUsingAddress.cs" />
     <Compile Include="Messages\CloseViewsToRoot.cs" />
-    <Compile Include="Messages\LogOutRequested.cs" />
     <Compile Include="Messages\OrderCanceled.cs" />
     <Compile Include="Messages\OrderDeleted.cs" />
     <Compile Include="Messages\OrderRated.cs" />
     <Compile Include="Messages\DateTimePicked.cs" />
     <Compile Include="Messages\OrderConfirmed.cs" />
-    <Compile Include="Models\OrderWithStatusModel.cs" />
     <Compile Include="Models\RatingModel.cs" />
     <Compile Include="Mvx\TinyIoCProvider.cs" />
     <Compile Include="Mvx\TinyIoCServiceProviderSetup.cs" />
@@ -217,6 +221,12 @@
     <Compile Include="ViewModels\MyLocationsViewModel.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="Models\TutorialItemModel.cs" />
+    <Compile Include="ViewModels\UpdatePasswordViewModel.cs" />
+    <Compile Include="Extensions\TaskFactoryExtension.cs" />
+    <Compile Include="ViewModels\BookStreetNumberViewModel.cs" />
+    <Compile Include="Extensions\IDisposableExtensions.cs" />
+    <Compile Include="Data\AddressSelectionMode.cs" />
+    <Compile Include="BindingConverter\EnumToBoolConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">
@@ -259,6 +269,7 @@
       <LastGenOutput>TaxiHail.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Settings\Settings.json" />
+    <EmbeddedResource Include="TutorialContent\Tutorial.json" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

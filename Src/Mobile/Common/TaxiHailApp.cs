@@ -1,5 +1,6 @@
 using Cirrious.MvvmCross.Application;
 using Cirrious.MvvmCross.ExtensionMethods;
+using Cirrious.MvvmCross.Interfaces.Commands;
 using Cirrious.MvvmCross.Interfaces.Localization;
 using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
@@ -62,6 +63,10 @@ namespace apcurium.MK.Booking.Mobile
             TinyIoCContainer.Current.Register<IAccountService, AccountService>();
             TinyIoCContainer.Current.Register<IBookingService, BookingService>();
 
+            TinyIoCContainer.Current.Register<ITutorialService, TutorialService>();
+
+
+
             TinyIoCContainer.Current.Register<IGeolocService, GeolocService>();
             TinyIoCContainer.Current.Register<IGoogleService, GoogleService>();
             TinyIoCContainer.Current.Register<IApplicationInfoService, ApplicationInfoService>();
@@ -73,8 +78,7 @@ namespace apcurium.MK.Booking.Mobile
             TinyIoCContainer.Current.Register<IPlaces, Places>();
             TinyIoCContainer.Current.Register<IMapsApiClient, MapsApiClient>();
             TinyIoCContainer.Current.Register<IPopularAddressProvider, PopularAddressProvider>();
-            TinyIoCContainer.Current.Register<ITariffProvider, TariffProvider>();           
-
+            TinyIoCContainer.Current.Register<ITariffProvider, TariffProvider>();
         }
         
         private string GetSessionId (TinyIoCContainer container)

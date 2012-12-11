@@ -19,6 +19,8 @@ using apcurium.MK.Booking.Mobile.Client.Helpers;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.Client.Controls;
+using Android.Text.Method;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 {
@@ -33,37 +35,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 		protected override void OnViewModelSet ()
 		{
             SetContentView(Resource.Layout.View_RideSettings);
-			var rideStructure = GetRideStructure(ViewModel);
-			var listAdapter = new ListViewAdapter(this, rideStructure);
-			//var listView = FindViewById<ListView>(Resource.Id.RideSettingsList);
-			//listView.Adapter = listAdapter;
-			//FindViewById<TextView>(Resource.Id.rideSettingsListHeader).Text = GetString(Resource.String.DefaultRideSettingsViewTitle);
-		}
 
+			var txtPassword = this.FindViewById<EditTextNavigate>(Resource.Id.rideSettingsPassword);
+			txtPassword.TransformationMethod = PasswordTransformationMethod.Instance;
+			txtPassword.Text = "my secure password"; /* fake password for display only */
+
+
+		}
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
             
         }
-
-
-        private ListStructure GetRideStructure(RideSettingsViewModel model)
-        {
-            var structure = new ListStructure(25, false);
-            var section = structure.AddSection("Ride settings");
-
-            section.AddItem(new TextEditSectionItem(Resources.GetString(Resource.String.RideSettingsName), () => model.Name, (value) => model.Name = value));
-            section.AddItem(new TextEditSectionItem(Resources.GetString(Resource.String.RideSettingsPhone), () => model.Phone, (value) => model.Phone = value));
-            section.AddItem(new TextEditSectionItem(Resources.GetString(Resource.String.RideSettingsPassengers), () => model.Passengers, (value) => model.Passengers = value));
-            section.AddItem(new SpinnerSectionItem(Resources.GetString(Resource.String.RideSettingsVehiculeType), () => model.VehicleTypeId, (value) => model.VehicleTypeId = value, () => model.Vehicles.Select(i => new ListItemData { Key = i.Id, Value = i.Display }).ToList()));
-            section.AddItem(new SpinnerSectionItem(Resources.GetString(Resource.String.RideSettingsChargeType), () => model.ChargeTypeId, (value) => model.ChargeTypeId = value, () => model.Payments.Select(i => new ListItemData { Key = i.Id, Value = i.Display }).ToList()));
-
-
-            return structure;
-        }
-
-        
-
     }
 }
 

@@ -25,6 +25,11 @@ using SocialNetworks.Services.MonoDroid;
 using apcurium.MK.Booking.Mobile.Client.Activities.Account;
 using SocialNetworks.Services;
 using apcurium.MK.Booking.Mobile.Client.Activities.Book;
+using Cirrious.MvvmCross.Binding.Interfaces.Bindings.Target.Construction;
+using Cirrious.MvvmCross.Binding.Bindings.Target.Construction;
+using apcurium.MK.Booking.Mobile.Client.Controls;
+using Cirrious.MvvmCross.Android.Platform;
+using Cirrious.MvvmCross.Interfaces.Views;
 
 
 namespace apcurium.MK.Booking.Mobile.Client
@@ -46,7 +51,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             base.InitializeAdditionalPlatformServices();
 
 
-            TinyIoCContainer.Current.Register<IMessageService>(new MessageService(this.ApplicationContext));
+			TinyIoCContainer.Current.Register<IMessageService>(new MessageService(this.ApplicationContext));
 			TinyIoCContainer.Current.Register<IAddressBookService>(new AddressBookService());
             TinyIoCContainer.Current.Register<IPackageInfo>(new PackageInfo(this.ApplicationContext));
             TinyIoCContainer.Current.Register<IAppSettings>(new AppSettings());
@@ -70,6 +75,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             InitializeSocialNetwork();
         }
+
+		protected override void FillTargetFactories (IMvxTargetBindingFactoryRegistry registry)
+		{
+			base.FillTargetFactories (registry);
+			registry.RegisterFactory(new MvxCustomBindingFactory<EditTextSpinner>("SelectedItem", spinner => new EditTextSpinnerSelectedItemBinding(spinner)));
+		}
 
 
         public void InitializeSocialNetwork()

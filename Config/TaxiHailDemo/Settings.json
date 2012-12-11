@@ -7,6 +7,7 @@
    "ErrorLogEnabled" : "false",
    "FacebookAppId" : "134284363380764",
    "FacebookEnabled" : "true",
+   "SupportEmail" : "techsupport@apcurium.com",
    "ServiceUrl" : "http://services.taxihail.com/taxihaildemo/api/",
    "SiteUrl" : "http://www.mobile-knowledge.com/index.html",
    "TwitterAccessTokenUrl" : "https://twitter.com/oauth/access_token",
@@ -20,5 +21,6 @@
    "AndroidSigningKeyPassStorePass" : "mkt0001.",
    "AppName" : "TaxiHail",
    "GoogleMapKey" : "0XEY3WqKVmJPhADLxOCPUweMcqYg3AfqCp8BvWw",
-   "Package" : "com.apcurium.MK.TaxiHailDemo"
+   "Package" : "com.apcurium.MK.TaxiHailDemo",
+   "StreetNumberScreenEnabled" : "true"
 }

@@ -10,6 +10,7 @@ using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using apcurium.MK.Booking.Mobile.Models;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -40,7 +41,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private bool mFirstLayout = true;
         private float mLastMotionX;
         private float mLastMotionY;
-        private OnScreenSwitchListener mOnScreenSwitchListener;
+        public event EventHandler<ScreenSwitchArgs> mOnScreenSwitchListener;
         private int mMaximumVelocity;
         private int mNextScreen = INVALID_SCREEN;
         private Scroller mScroller;
@@ -49,9 +50,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private VelocityTracker mVelocityTracker;
         private int mLastSeenLayoutWidth = -1;
 
-        private List<TutorialItemModel> _tutorialItemModel;
+        private TutorialItemModel[] _tutorialItemModel;
 
-        public List<TutorialItemModel> TutorialItemModel
+        public TutorialItemModel[] TutorialItemModel
         {
             get { return _tutorialItemModel; }
             set { _tutorialItemModel = value; this.init(); }
@@ -100,16 +101,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private void init()
         {
-            var viewOrder = new int[TutorialItemModel.Count];
+            var viewOrder = new int[TutorialItemModel.Count()];
             var inflater = (LayoutInflater)Context.GetSystemService(Context.LayoutInflaterService);
-            for (int i = 0; i < TutorialItemModel.Count; i++)
+            for (int i = 0; i < TutorialItemModel.Count(); i++)
             {
                 View vw = inflater.Inflate(Resource.Layout.TutorialListItem, null);
                 vw.Id = Resource.Layout.TutorialListItem + i;
                 vw.FindViewById<TextView>(Resource.Id.TutorialTopText).Text = TutorialItemModel[i].TopText;
                 vw.FindViewById<TextView>(Resource.Id.TutorialBottomText).Text = TutorialItemModel[i].BottomText;
-                var resource = Resources.GetIdentifier(TutorialItemModel[i].ImageUri, "drawable", Context.PackageName);
-                vw.FindViewById<ImageView>(Resource.Id.TutorialImage).SetImageResource(resource);
+                vw.FindViewById<TextView>(Resource.Id.TutorialTopTitleText).Text = TutorialItemModel[i].TopTitle;
+                vw.FindViewById<TextView>(Resource.Id.TutorialBottomTitleText).Text = TutorialItemModel[i].BottomTitle;
+                //var resource = Resources.GetIdentifier(TutorialItemModel[i].ImageUri, "drawable", Context.PackageName);
+                //vw.FindViewById<ImageView>(Resource.Id.TutorialImage).SetImageResource(resource);
                 this.AddView(vw);
                 viewOrder[i] = Resource.Layout.TutorialListItem + i;
 
@@ -121,9 +124,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 
             // Calculate the density-dependent snap velocity in pixels
-            DisplayMetrics displayMetrics = new DisplayMetrics();
-            ((IWindowManager) Context.GetSystemService(Context.WindowService)).DefaultDisplay.GetMetrics(displayMetrics);
-            mDensityAdjustedSnapVelocity = (int) (displayMetrics.Density*SNAP_VELOCITY_DIP_PER_SECOND);
+           // DisplayMetrics displayMetrics = new DisplayMetrics();
+          //  ((IWindowManager) Context.GetSystemService(Context.WindowService)).DefaultDisplay.GetMetrics(displayMetrics);
+          //  mDensityAdjustedSnapVelocity = (int) (displayMetrics.Density*SNAP_VELOCITY_DIP_PER_SECOND);
 
 
             ViewConfiguration configuration = ViewConfiguration.Get(Context);
@@ -142,14 +145,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             MeasureSpecMode widthMode = MeasureSpec.GetMode(widthMeasureSpec);
             if (widthMode != MeasureSpecMode.Exactly)
             {
-                throw new Exception("ViewSwitcher can only be used in EXACTLY mode.");
+            //    throw new Exception("ViewSwitcher can only be used in EXACTLY mode.");
             }
 
 
             MeasureSpecMode heightMode = MeasureSpec.GetMode(heightMeasureSpec);
             if (heightMode != MeasureSpecMode.Exactly)
             {
-                throw new Exception("ViewSwitcher can only be used in EXACTLY mode.");
+              //  throw new Exception("ViewSwitcher can only be used in EXACTLY mode.");
             }
 
 
@@ -168,16 +171,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
 
 
-            else if (width != mLastSeenLayoutWidth)
-            {
+            //else if (width != mLastSeenLayoutWidth)
+            //{
                 // Width has changed
                 /*
                  * Recalculate the width and scroll to the right position to be sure we're in the right
                  * place in the event that we had a rotation that didn't result in an activity restart
                  * (code by aveyD). Without this you can end up between two pages after a rotation.
                  */
-                Display display =
-                    ((IWindowManager) Context.GetSystemService(Context.WindowService)).DefaultDisplay;
+               /*var display = ((IWindowManager) Context.GetSystemService(Context.WindowService)).DefaultDisplay;
                 int displayWidth = display.Width;
 
 
@@ -187,7 +189,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 
                 mScroller.StartScroll(ScrollX, 0, delta, 0, 0);
-            }
+            }*/
 
 
             mLastSeenLayoutWidth = width;
@@ -460,11 +462,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             {
                 mCurrentScreen = Math.Max(0, Math.Min(mNextScreen, ChildCount - 1));
 
-
                 // Notify observer about screen change
                 if (mOnScreenSwitchListener != null)
                 {
-                    mOnScreenSwitchListener.onScreenSwitched(mCurrentScreen);
+                    mOnScreenSwitchListener(this, new ScreenSwitchArgs(mCurrentScreen));
                 }
 
 
@@ -513,10 +514,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
          * @param onScreenSwitchListener The listener for switch events.
          */
 
-        public void setOnScreenSwitchListener(OnScreenSwitchListener onScreenSwitchListener)
-        {
-            mOnScreenSwitchListener = onScreenSwitchListener;
-        }
+        
 
 
         /**
@@ -613,5 +611,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
              */
             void onScreenSwitched(int screen);
         }
+    }
+
+    public class ScreenSwitchArgs : EventArgs
+    {
+        public ScreenSwitchArgs(int mCurrentScreen)
+        {
+            Screen = mCurrentScreen;
+        }
+
+        public int Screen { get; set; }
     }
 }

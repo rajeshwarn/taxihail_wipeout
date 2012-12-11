@@ -50,7 +50,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			}
 			try
 			{
-				var intent = Intent.CreateChooser(emailIntent, resource.GetString("SendEmail"));
+				var intent = Intent.CreateChooser(emailIntent, resource.GetString("SendEmail"));                    
 				intent.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
 				Context.StartActivity(intent);
 				LoggerImpl.FlushNextWrite();

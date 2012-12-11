@@ -79,7 +79,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             try
             {
-                var statusDetails = _bookingWebServiceClient.GetOrderStatus(order.IBSOrderId.Value, account.IBSAccountId);
+                var statusDetails = _bookingWebServiceClient.GetOrderStatus(order.IBSOrderId.Value, account.IBSAccountId, order.Settings.Phone);
 
                 Log.Debug("Status IBS : " + statusDetails.Status.ToSafeString());
                 

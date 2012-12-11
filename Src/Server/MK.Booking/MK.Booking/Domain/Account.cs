@@ -5,6 +5,7 @@ using System.Text;
 using Infrastructure.EventSourcing;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 namespace apcurium.MK.Booking.Domain
 {
@@ -147,37 +148,23 @@ namespace apcurium.MK.Booking.Domain
             });  
         }
 
-        public void AddFavoriteAddress(Guid id, string friendlyName, string apartment, string fullAddress, string ringCode, string buildingName, double latitude, double longitude)
+        public void AddFavoriteAddress(Address address)
         {
-            ValidateFavoriteAddress(friendlyName, fullAddress, latitude, longitude);
+            ValidateFavoriteAddress(address.FriendlyName, address.FullAddress, address.Latitude, address.Longitude);
 
             this.Update(new FavoriteAddressAdded
             {
-                AddressId = id,
-                FriendlyName = friendlyName,
-                Apartment = apartment,
-                FullAddress = fullAddress,
-                RingCode = ringCode,
-                BuildingName = buildingName,
-                Latitude = latitude,
-                Longitude = longitude,
+                Address = address
             });
         }
 
-        public void UpdateFavoriteAddress(Guid id, string friendlyName, string apartment, string fullAddress, string ringCode, string buildingName, double latitude, double longitude)
+        public void UpdateFavoriteAddress(Address address)
         {
-            ValidateFavoriteAddress(friendlyName, fullAddress, latitude, longitude);
+            ValidateFavoriteAddress(address.FriendlyName, address.FullAddress, address.Latitude, address.Longitude);
 
             this.Update(new FavoriteAddressUpdated()
             {
-                AddressId = id,
-                FriendlyName = friendlyName,
-                Apartment = apartment,
-                FullAddress = fullAddress,
-                RingCode = ringCode,
-                BuildingName = buildingName,
-                Latitude = latitude,
-                Longitude = longitude
+               Address = address
             });
         }
 
@@ -216,7 +203,7 @@ namespace apcurium.MK.Booking.Domain
 
         private void OnAddressAdded(FavoriteAddressAdded @event)
         {
-            _favoriteAddresses.Add(@event.AddressId);
+            _favoriteAddresses.Add(@event.Address.Id);
         }
 
         private void OnAddressRemoved(FavoriteAddressRemoved @event)
@@ -226,9 +213,9 @@ namespace apcurium.MK.Booking.Domain
 
         private void OnAddressUpdated(FavoriteAddressUpdated @event)
         {
-            if (!_favoriteAddresses.Contains(@event.AddressId))
+            if (!_favoriteAddresses.Contains(@event.Address.Id))
             {
-                _favoriteAddresses.Add(@event.AddressId);
+                _favoriteAddresses.Add(@event.Address.Id);
             }
 
         }

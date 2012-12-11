@@ -18,6 +18,8 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using System.Linq;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Configuration;
+using System.Globalization;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -26,27 +28,86 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		IMvxServiceConsumer<IBookingService>,
 		IMvxServiceConsumer<ICacheService>
     {
+		IBookingService _bookingService;
+        IAccountService _accountService;
+
         public BookConfirmationViewModel (string order)
         {
-			var accountService = this.GetService<IAccountService>();
-			var bookingService = this.GetService<IBookingService>();
-            Order = JsonSerializer.DeserializeFromString<CreateOrder>( order );
-			Order.Settings = accountService.CurrentAccount.Settings;
-
-			RideSettings = new RideSettingsModel(Order.Settings, accountService.GetCompaniesList(), accountService.GetVehiclesList(), accountService.GetPaymentsList());
-			FareEstimate = bookingService.GetFareEstimateDisplay(Order, null, "NotAvailable");
+            _accountService = this.GetService<IAccountService>();
+			_bookingService = this.GetService<IBookingService>();
+            Order = JsonSerializer.DeserializeFromString<CreateOrder>(order);	
+			Order.Settings = _accountService.CurrentAccount.Settings;
         }
 
-		public override void OnViewLoaded ()
-		{
-			base.OnViewLoaded ();
+        public override void OnViewLoaded ()
+        {
+            base.OnViewLoaded ();
+            try {
 
-			ShowFareEstimateAlertDialogIfNecessary();
-			ShowChooseProviderDialogIfNecessary();
+                MessageService.ShowProgress (true);                
+                RideSettings = new RideSettingsModel (Order.Settings, _accountService.GetCompaniesList (), _accountService.GetVehiclesList (), _accountService.GetPaymentsList ());
+                FareEstimate = _bookingService.GetFareEstimateDisplay (Order, null, "NotAvailable", false, "NotAvailable");
+                ShowFareEstimateAlertDialogIfNecessary();
+                ShowChooseProviderDialogIfNecessary();
+				FirePropertyChanged ( () => Vehicles );
+				FirePropertyChanged ( () => Payments );
+				FirePropertyChanged ( () => VehicleName );
+				FirePropertyChanged ( () => ChargeType );
+            } finally {
+                MessageService.ShowProgress (false);
+            }
+        }
 
-		}
+        public void SetVehicleTypeId( int id )
+        {
+            Order.Settings.VehicleTypeId = id;
+            FirePropertyChanged ( () => VehicleName );
+        }
 
-        public CreateOrder Order { get; private set; }
+        public void SetChargeTypeId( int id )
+        {
+            Order.Settings.ChargeTypeId = id;
+            FirePropertyChanged ( () => ChargeType );
+        }
+
+
+        public int VehicleTypeId {
+            get { return Order.Settings.VehicleTypeId ; }
+            set {  SetVehicleTypeId( value ); }
+        }
+        public int ChargeTypeId {
+            get { return Order.Settings.ChargeTypeId ; }
+            set {  SetChargeTypeId( value ); }
+        }
+
+
+            
+            
+        public ListItem[] Vehicles {
+            get {
+				return RideSettings != null  ? RideSettings.VehicleTypeList : null;
+            }
+        }
+
+        public ListItem[] Payments {
+            get {
+				return RideSettings != null  ? RideSettings.ChargeTypeList : null;
+            }
+        }
+
+        public string VehicleName {
+            get {
+				return RideSettings != null  ? RideSettings.VehicleTypeName : null;
+            }
+        }
+
+        public string ChargeType{
+            get {
+				return RideSettings != null  ? RideSettings.ChargeTypeName : null;
+            }
+        }
+
+		public CreateOrder Order { get; private set; }
 		public string AptRingCode {
 			get {
 				return FormatAptRingCode(Order.PickupAddress.Apartment, Order.PickupAddress.RingCode);
@@ -90,7 +151,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public IMvxCommand NavigateToEditBookingSettings {
 			get {
-				return new MvxRelayCommand(()=>{
+                return GetCommand(() =>
+                {
 					RequestSubNavigate<RideSettingsViewModel, BookingSettings>(new Dictionary<string, string>{
 						{ "bookingSettings", Order.Settings.ToJson () }
 					}, result=>{
@@ -108,7 +170,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public IMvxCommand NavigateToRefineAddress
 		{
 			get{
-				return new MvxRelayCommand(() => {
+                return GetCommand(() =>
+                {
 
 					RequestSubNavigate<RefineAddressViewModel, RefineAddressViewModel>(new Dictionary<string, string>() {
 						{"apt", Order.PickupAddress.Apartment},
@@ -136,10 +199,36 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get
             {
 
-                return new MvxRelayCommand(() => 
+                return GetCommand(() => 
                     {
-                        Close();
-                        MessengerHub.Publish(new OrderConfirmed(this, Order ));
+						Order.Id = Guid.NewGuid ();
+						try {
+						MessageService.ShowProgress (true);
+						var orderInfo = _bookingService.CreateOrder (Order);
+						
+						if (orderInfo.IBSOrderId.HasValue
+						    && orderInfo.IBSOrderId > 0) {
+							var orderCreated = new Order { CreatedDate = DateTime.Now, DropOffAddress = Order.DropOffAddress, IBSOrderId = orderInfo.IBSOrderId, Id = Order.Id, PickupAddress = Order.PickupAddress, Note = Order.Note, PickupDate = Order.PickupDate.HasValue ? Order.PickupDate.Value : DateTime.Now, Settings = Order.Settings };
+							
+							RequestNavigate<BookingStatusViewModel>(new
+							                                        {
+								order = orderCreated.ToJson(),
+								orderStatus = orderInfo.ToJson()
+							});	
+							Close();
+							MessengerHub.Publish(new OrderConfirmed(this, Order, false ));
+						}		
+						
+					} catch (Exception ex) {
+						InvokeOnMainThread (() =>
+						                    {
+							var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
+							string err = string.Format (Resources.GetString ("ServiceError_ErrorCreatingOrderMessage"), settings.ApplicationName, settings.PhoneNumberDisplay (Order.Settings.ProviderId.HasValue ? Order.Settings.ProviderId.Value : 1));
+							MessageService.ShowMessage (Resources.GetString ("ErrorCreatingOrderTitle"), err);
+						});
+					} finally {
+						MessageService.ShowProgress(false);
+					}                       
                     }); 
             }
         }
@@ -148,8 +237,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-
-                return new MvxRelayCommand(Close);               
+                return GetCommand(() => 
+                                           {
+                    Close();
+                    MessengerHub.Publish(new OrderConfirmed(this, Order, true ));
+                });            
             }
         }
 
@@ -209,11 +301,27 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private string FormatDateTime(DateTime? pickupDate )
 		{
-
-			string format = "{0:ddd, MMM d}, {0:h:mm tt}";
+            var formatTime = new CultureInfo( CultureInfoString ).DateTimeFormat.ShortTimePattern;
+			string format = "{0:ddd, MMM d}, {0:"+formatTime+"}";
 			string result = pickupDate.HasValue ? string.Format(format, pickupDate.Value) : Resources.GetString("TimeNow");
 			return result;
 		}
+
+        public string CultureInfoString
+        {
+            get{
+                var culture = TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting ( "PriceFormat" );
+                if ( culture.IsNullOrEmpty() )
+                {
+                    return "en-US";
+                }
+                else
+                {
+                    return culture;                
+                }
+            }
+        }
+
     }
 }
 

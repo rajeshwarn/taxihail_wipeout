@@ -17,31 +17,47 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using TinyIoC;
 using TinyMessenger;
 using apcurium.MK.Booking.Mobile.Messages;
+using Cirrious.MvvmCross.Android.Views;
+using Cirrious.MvvmCross.Views;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
+using Cirrious.MvvmCross.Android.Interfaces;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
     public class MessageService : IMessageService
     {
+
         public const string ACTION_SERVICE_MESSAGE = "Mk_Taxi.ACTION_SERVICE_MESSAGE";
         public const string ACTION_EXTRA_MESSAGE = "Mk_Taxi.ACTION_EXTRA_MESSAGE";
-        public MessageService(Context context)
+
+
+
+		public MessageService(Context context)
         {
             Context = context;
         }
 
         public Context Context { get; set; }
 
+		/// <summary>
+		/// put the content of on activity on a modal dialog ( type = viewmodel Type )
+		/// </summary>
+		public void ShowDialogActivity(Type type)
+		{
+			var presenter = new MvxAndroidViewPresenter();
+			presenter.Show(new MvxShowViewModelRequest(type, null, false, MvxRequestedBy.UserAction));
+		}
 
         public void ShowMessage(string title, string message)
         {
-            
-            var i = new Intent(Context, typeof(AlertDialogActivity));
-            i.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
-            i.PutExtra("Title", title);
-            i.PutExtra("Message", message);
-            Context.StartActivity(i); 
+			TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher.RequestMainThreadAction(() =>{
+	            var i = new Intent(Context, typeof(AlertDialogActivity));
+	            i.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
+	            i.PutExtra("Title", title);
+	            i.PutExtra("Message", message);
+	            Context.StartActivity(i); 
+			});
         }
-
         
         public void ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction)
         {
@@ -112,45 +128,64 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 		{
 			throw new NotImplementedException();
 		}
-		
 
-        public void ShowMessage(string title, string message,  string additionnalActionButtonTitle, Action additionalAction)
-        {
-            throw new NotImplementedException();
+        public void ShowMessage(string title, string message, Action additionalAction)
+        {            
+			var ownerId = Guid.NewGuid().ToString();
+			var i = new Intent(Context, typeof(AlertDialogActivity));
+			i.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
+			i.PutExtra("Title", title);
+			i.PutExtra("Message", message);
+			
+			i.PutExtra("NeutralButtonTitle", "OK");
+			i.PutExtra("OwnerId", ownerId);
+			
+			TinyMessageSubscriptionToken token = null;
+			token = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<ActivityCompleted>(a =>
+			{				
+				additionalAction();				
+				TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Unsubscribe<ActivityCompleted>(token);
+				token.Dispose();
+			}, a => a.OwnerId == ownerId);
+			
+			Context.StartActivity(i);
         }
 
-        public void ShowProgress(bool show)
-        {
-            /*TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher.RequestMainThreadAction(
-                () =>
-                    {
-                        new ProgressDialog(Context).Show();.Show(Context, "", "LoadingMessage", true,
-                                                              false);
-                       _progressDialog.Show();
-                    }
-                );*/
+		Stack<ProgressDialog> progressDialogs = new Stack<ProgressDialog>();
 
+        public void ShowProgress (bool show)
+		{
+			TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher.RequestMainThreadAction(() =>{
 
-        }
+				var activity = TinyIoCContainer.Current.Resolve<IMvxAndroidCurrentTopActivity>().Activity;
 
+				if(show)
+				{ 		
+					var progress = new ProgressDialog(activity);
+					progressDialogs.Push(progress);
+					progress.SetTitle(string.Empty);
+					progress.SetMessage(activity.GetString(Resource.String.LoadingMessage));
+					progress.Show();
 
-            /* var i = new Intent(Context, typeof(ShowDialogActivity));
-            i.AddFlags(ActivityFlags.NewTask | ActivityFlags..ReorderToFront);
-            i.PutExtra("Show", show.ToString());
-            Context.StartActivity(i);
-            Context.ac*/
-
-        public void ShowProgress(bool show, Action cancel)
-        {
-            var i = new Intent(Context, typeof(ShowDialogActivity));
-            i.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
-            i.PutExtra("Show", show.ToString());
-        }
+				}else{
+					var progressPrevious = progressDialogs.Pop();
+					if(progressPrevious != null
+					   && progressPrevious.IsShowing)
+					{
+						try{
+							progressPrevious.Dismiss();
+						}catch{} // on peut avoir une exception ici si activity est plus présente, pas grave
+					}
+				}
+			});
+        }      
 
         public void ShowToast(string message, ToastDuration duration )
         {
-            Toast toast = Toast.MakeText(Context, message , duration == ToastDuration.Short ?  ToastLength.Short : ToastLength.Long );
-            toast.Show();
+			TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider>().Dispatcher.RequestMainThreadAction(() =>{
+	            Toast toast = Toast.MakeText(Context, message , duration == ToastDuration.Short ?  ToastLength.Short : ToastLength.Long );
+	            toast.Show();
+			});
         }
 
 		public void ShowDialog<T> (string title, IEnumerable<T> items, Func<T, string> displayNameSelector, Action<T> onResult)

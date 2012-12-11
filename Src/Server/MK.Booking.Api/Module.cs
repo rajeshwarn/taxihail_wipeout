@@ -34,7 +34,9 @@ namespace apcurium.MK.Booking.Api
 
             AutoMapper.Mapper.CreateMap<BookingSettings, Commands.CreateOrder.BookingSettings>();
             AutoMapper.Mapper.CreateMap<BookingSettings, Commands.SendBookingConfirmationEmail.BookingSettings>();
-            AutoMapper.Mapper.CreateMap<Address, IBSAddress>();
+            AutoMapper.Mapper.CreateMap<Address, IBSAddress>()
+                .ForMember(x => x.FullAddress, y => y.ResolveUsing(a => a.BookAddress));
+
             AutoMapper.Mapper.CreateMap<RegisterAccount, Commands.RegisterAccount>()
                 .ForMember(p => p.AccountId, options => options.ResolveUsing(x => x.AccountId == Guid.Empty ? Guid.NewGuid() : x.AccountId));
             AutoMapper.Mapper.CreateMap<RegisterAccount, Commands.RegisterTwitterAccount>()
@@ -42,17 +44,13 @@ namespace apcurium.MK.Booking.Api
             AutoMapper.Mapper.CreateMap<RegisterAccount, Commands.RegisterFacebookAccount>()
                 .ForMember(p => p.AccountId, options => options.ResolveUsing(x => x.AccountId == Guid.Empty ? Guid.NewGuid() : x.AccountId)); ;
 
-            AutoMapper.Mapper.CreateMap<SaveAddress, Commands.AddFavoriteAddress>()
-                .ForMember(x => x.AddressId, opt => opt.ResolveUsing(x => x.Id == Guid.Empty ? Guid.NewGuid() : x.Id));
+            AutoMapper.Mapper.CreateMap<SaveAddress, Commands.AddFavoriteAddress>();
 
-            AutoMapper.Mapper.CreateMap<SaveAddress, Commands.UpdateFavoriteAddress>()
-                .ForMember(x => x.AddressId, opt => opt.MapFrom(x => x.Id));
+            AutoMapper.Mapper.CreateMap<SaveAddress, Commands.UpdateFavoriteAddress>();
 
-            AutoMapper.Mapper.CreateMap<DefaultFavoriteAddress, Commands.AddDefaultFavoriteAddress>()
-               .ForMember(x => x.AddressId, opt => opt.ResolveUsing(x => x.Id == Guid.Empty ? Guid.NewGuid() : x.Id));
+            AutoMapper.Mapper.CreateMap<DefaultFavoriteAddress, Commands.AddDefaultFavoriteAddress>();
 
-            AutoMapper.Mapper.CreateMap<DefaultFavoriteAddress, Commands.UpdateDefaultFavoriteAddress>()
-                .ForMember(x => x.AddressId, opt => opt.MapFrom(x => x.Id));
+            AutoMapper.Mapper.CreateMap<DefaultFavoriteAddress, Commands.UpdateDefaultFavoriteAddress>();
 
             AutoMapper.Mapper.CreateMap<AccountDetail, CurrentAccountResponse>();
             AutoMapper.Mapper.CreateMap<BookingSettingsDetails, BookingSettings>();
@@ -63,17 +61,13 @@ namespace apcurium.MK.Booking.Api
             AutoMapper.Mapper.CreateMap<Contract.Requests.Tariff, Commands.UpdateTariff>()
                .ForMember(p => p.TariffId, opt => opt.ResolveUsing(x => x.Id == Guid.Empty ? Guid.NewGuid() : x.Id))
                .ForMember(p => p.CompanyId, opt => opt.UseValue(AppConstants.CompanyId));
-                
-            AutoMapper.Mapper.CreateMap<PopularAddress, Commands.AddPopularAddress>()
-               .ForMember(x => x.AddressId, opt => opt.ResolveUsing(x => x.Id == Guid.Empty ? Guid.NewGuid() : x.Id));
-
-            AutoMapper.Mapper.CreateMap<PopularAddress, Commands.UpdatePopularAddress>()
-                .ForMember(x => x.AddressId, opt => opt.MapFrom(x => x.Id));
-
-            AutoMapper.Mapper.CreateMap<CreditCardRequest, Commands.AddCreditCard>()
+  			AutoMapper.Mapper.CreateMap<CreditCardRequest, Commands.AddCreditCard>()
                 .ForMember(x => x.CreditCardId, opt => opt.ResolveUsing(x => x.CreditCardId == Guid.Empty ? Guid.NewGuid() : x.CreditCardId));
 
             AutoMapper.Mapper.CreateMap<UpdatePaymentProfileRequest, Commands.UpdatePaymentProfile>();
+
+            AutoMapper.Mapper.CreateMap<PopularAddress, Commands.AddPopularAddress>();
+            AutoMapper.Mapper.CreateMap<PopularAddress, Commands.UpdatePopularAddress>();
 
         }
     }

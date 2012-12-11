@@ -76,49 +76,52 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		public MvxRelayCommand SignInCommand
+		public IMvxCommand SignInCommand
 		{
 			get
 			{
-				return new MvxRelayCommand(() => {
-					try
-					{
-                        TinyIoCContainer.Current.Resolve<IAccountService>().ClearCache();
-						ThreadPool.QueueUserWorkItem( SignIn );  
-					}
-					finally
-					{
-					}
+				return GetCommand(() => {
+                    _accountService.ClearCache();
+					SignIn();  
 				});
 			}
 		}
 
-		private void SignIn( object state )
+		private void SignIn()
 		{
 			try
 			{
-                TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("SignIn with server {0}", TinyIoCContainer.Current.Resolve<IAppSettings>().ServiceUrl);            
-                MessageService.ShowProgress(true);				
-				var account = _accountService.GetAccount(Email, Password);
+                Logger.LogMessage("SignIn with server {0}", Settings.ServiceUrl);            
+                MessageService.ShowProgress(true);
+				var account = default(Account);
 
-                if ( account != null )
-                {
-                    this.Password = "";
-                    RequestNavigate<BookViewModel>(true );
-                }              
-				
+				try {
+					account = _accountService.GetAccount(Email, Password);
+				} 
+				catch(Exception e)
+				{
+					var title = Resources.GetString ("InvalidLoginMessageTitle");
+					var message = Resources.GetString ("InvalidLoginMessage");
+					
+					MessageService.ShowMessage (title, message);        
+				}
+
+				if(account != null){
+					this.Password = string.Empty;
+					RequestNavigate<BookViewModel>(true);
+				}
 			}
 			finally
 			{				
-				TinyIoCContainer.Current.Resolve<IMessageService>().ShowProgress(false);
+				MessageService.ShowProgress(false);	
 			}
 		}
 
-        public MvxRelayCommand ResetPassword
+        public IMvxCommand ResetPassword
         {
             get
             {
-                return new MvxRelayCommand(() => 
+                return GetCommand(() => 
                 { 
                     RequestSubNavigate<ResetPasswordViewModel, string>(null, email => {
                         if(email.HasValue())
@@ -134,7 +137,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return new MvxRelayCommand(() => DoSignUp() );
+                return GetCommand(() => DoSignUp() );
             }
         }
 
@@ -176,10 +179,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public MvxRelayCommand LoginFacebook
+        public IMvxCommand LoginFacebook
         {
             get{
-                return new MvxRelayCommand(() => { 
+                return GetCommand(() => { 
                     if (_facebookService.IsConnected)
                     {
                         CheckFacebookAccount();
@@ -193,10 +196,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public MvxRelayCommand LoginTwitter
+        public IMvxCommand LoginTwitter
         {
             get{
-                return new MvxRelayCommand(() => { 
+                return GetCommand(() =>
+                { 
                     if (_twitterService.IsConnected)
                     {
                         CheckTwitterAccount();

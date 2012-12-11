@@ -60,14 +60,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             var locationService = new LocationService( );
             locationService.Initialize();
             TinyIoCContainer.Current.Register<ILocationService>(locationService );
-
-//            TinyIoCContainer.Current.Register<ILocationService>(new Geolocator() { DesiredAccuracy = 5000 });                        
-//
-//            TinyIoCContainer.Current.Register<Geolocator>(new Geolocator() { DesiredAccuracy = 5000 });                        
-//			TinyIoCContainer.Current.Register<Geolocator>(new Geolocator() { DesiredAccuracy = 10000 }, CoordinatePrecision.BallPark.ToString());
-//			TinyIoCContainer.Current.Register<Geolocator>(new Geolocator() { DesiredAccuracy = 5000 }, CoordinatePrecision.Coarse.ToString());
-//            TinyIoCContainer.Current.Register<Geolocator>(new Geolocator() { DesiredAccuracy = 5000 }, CoordinatePrecision.Medium.ToString());
-//
+           
 			TinyIoCContainer.Current.Register<IAddressBookService>(new AddressBookService());
 			TinyIoCContainer.Current.Register<IMessageService>(new MessageService());
             TinyIoCContainer.Current.Register<IAppSettings>(new AppSettings());

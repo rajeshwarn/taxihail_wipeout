@@ -84,8 +84,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
 
             ClearCache ();
-            var dispatch = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxViewDispatcherProvider> ().Dispatcher;
-            dispatch.RequestNavigate (new MvxShowViewModelRequest (typeof(LoginViewModel), null, false, MvxRequestedBy.UserAction));
+          
         }
 
         public void RefreshCache (bool reload)
@@ -256,7 +255,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             {
                 Name = settings.Name,
                 Phone = settings.Phone,
-                Passengers = settings.Passengers,
                 VehicleTypeId = settings.VehicleTypeId,
                 ChargeTypeId = settings.ChargeTypeId,
                 ProviderId = settings.ProviderId
@@ -277,9 +275,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public string UpdatePassword (Guid accountId, string currentPassword, string newPassword)
         {
             string response = null;
-            QueueCommand<IAccountServiceClient> (service => {                     
-                response = service.UpdatePassword (new UpdatePassword () { AccountId = accountId, CurrentPassword = currentPassword, NewPassword = newPassword });
-            });
+            response = UseServiceClient<IAccountServiceClient> (service => {                     
+                service.UpdatePassword (new UpdatePassword () { AccountId = accountId, CurrentPassword = currentPassword, NewPassword = newPassword });
+            }, ex => { throw ex; });
 
             return response;
         }
@@ -295,17 +293,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 TinyIoC.TinyIoCContainer.Current.Resolve<IErrorHandler> ().HandleError (ex);
                 
                 return null;
-            } catch (Exception e) {
-                var title = TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("InvalidLoginMessageTitle");
-                var message = TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("InvalidLoginMessage");
-
-                TinyIoCContainer.Current.Resolve<IMessageService> ().ShowMessage (title, message);                
-
-                
-                return null;
             }
-            
-            
         }
 
         private static void SaveCredentials (AuthenticationData authResponse)
@@ -372,17 +360,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return data;
         }
 
-        public bool ResetPassword (string email)
+        public void ResetPassword (string email)
         {
-            bool isSuccess = false;
-
             UseServiceClient<IAccountServiceClient> ("NotAuthenticated", service => {               
-                service.ResetPassword (email);
-                isSuccess = true;
-            });
-
-
-            return isSuccess;
+                service.ResetPassword (email);               
+            }, ex => { throw ex; });  
         }
 
         public bool Register (RegisterAccount data, out string error)
@@ -453,13 +435,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             {
                 var toSave = new SaveAddress
                     {
-                        Apartment = address.Apartment,
-                        FriendlyName = address.FriendlyName,
-                        FullAddress = address.FullAddress,
                         Id = address.Id,
-                        Latitude = address.Latitude,
-                        Longitude = address.Longitude,
-                        RingCode = address.RingCode
+                        Address = address
                     };
 
                 var toMove = toSave;

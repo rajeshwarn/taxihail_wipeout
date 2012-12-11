@@ -62,16 +62,6 @@ namespace apcurium.MK.Booking.Mobile
             }
         }
 
-	    public string VehicleTypeDisplay
-	    {
-            get { return Vehicles.Where(v => v.Id.Equals(VehicleTypeId)).Select(c => c.Display).FirstOrDefault(); }
-	    }
-
-        public string ChargeTypeDisplay
-        {
-            get { return Payments.Where(v => v.Id.Equals(ChargeTypeId)).Select(c => c.Display).FirstOrDefault(); }
-        }
-
         public int ChargeTypeId {
             get {
                 return _bookingSettings.ChargeTypeId;
@@ -119,22 +109,10 @@ namespace apcurium.MK.Booking.Mobile
             }
         }
 
-        public int Passengers {
-            get {
-                return _bookingSettings.Passengers;
-            }
-            set {
-                if(value != _bookingSettings.Passengers)
-                {
-                    _bookingSettings.Passengers = value;
-                    FirePropertyChanged("Passengers");
-                }
-            }
-        }
-
         public IMvxCommand SetVehiculeType {
             get {
-                return new MvxRelayCommand<int>(id=>{
+                return GetCommand<int>(id =>
+                {
 
                     VehicleTypeId = id;
 
@@ -142,11 +120,20 @@ namespace apcurium.MK.Booking.Mobile
             }
 
         }
+
+        public IMvxCommand NavigateToUpdatePassword
+        {
+            get
+            {
+                return GetCommand(() => RequestNavigate<UpdatePasswordViewModel>());
+            }
+        }
         
         public IMvxCommand SetChargeType
         {
             get{
-                return new MvxRelayCommand<int>(id=>{
+                return GetCommand<int>(id =>
+                {
 
                     ChargeTypeId = id;
 
@@ -157,7 +144,8 @@ namespace apcurium.MK.Booking.Mobile
         public IMvxCommand SetCompany
         {
             get{
-                return new MvxRelayCommand<int>(id=>{
+                return GetCommand<int>(id =>
+                {
 
                     _bookingSettings.ProviderId = id;
 
@@ -169,15 +157,11 @@ namespace apcurium.MK.Booking.Mobile
         {
             get
             {
-                return new MvxRelayCommand(() => 
+                return GetCommand(() => 
                                            {
 					if(ValidateRideSettings())
 					{
                     	ReturnResult(_bookingSettings);
-					}
-					else
-					{
-                		base.MessageService.ShowMessage(Resources.GetString("UpdateBookingSettingsInvalidDataTitle"), Resources.GetString("UpdateBookingSettingsEmptyField"));
 					}
                 });
             }
@@ -186,11 +170,17 @@ namespace apcurium.MK.Booking.Mobile
 		private bool ValidateRideSettings()
 		{
 			if (string.IsNullOrEmpty(Name) 
-			    || string.IsNullOrEmpty(Phone)
-			    || Passengers <= 0)
+			    || string.IsNullOrEmpty(Phone))
 			{
+                base.MessageService.ShowMessage(Resources.GetString("UpdateBookingSettingsInvalidDataTitle"), Resources.GetString("UpdateBookingSettingsEmptyField"));
 				return false;
 			}
+            if ( Phone.Count(x => Char.IsDigit(x)) < 10 )
+            {
+                MessageService.ShowMessage(Resources.GetString("UpdateBookingSettingsInvalidDataTitle"), Resources.GetString("InvalidPhoneErrorMessage"));
+                return false;
+            }
+
 			return true;
 		}
 

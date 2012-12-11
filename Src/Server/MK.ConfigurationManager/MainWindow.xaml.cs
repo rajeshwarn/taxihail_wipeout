@@ -42,12 +42,15 @@ namespace MK.ConfigurationManager
             get { return _currentCompany; }
             set
             {
-                _currentCompany = value;
-                OnPropertyChanged("CurrentCompany");
-                ConfigurationProperties.Clear();
-                CurrentCompany.ConfigurationProperties.OrderBy(x => x.Key).ToList().ForEach(x => ConfigurationProperties.Add(new MyCustomKeyValuePair(x.Key, x.Value)));
-                MobileConfigurationProperties.Clear();
-                CurrentCompany.MobileConfigurationProperties.OrderBy(x => x.Key).ToList().ForEach(x => MobileConfigurationProperties.Add(new MyCustomKeyValuePair(x.Key, x.Value)));
+                if (value != null)
+                {
+                    _currentCompany = value;
+                    OnPropertyChanged("CurrentCompany");
+                    ConfigurationProperties.Clear();
+                    CurrentCompany.ConfigurationProperties.OrderBy(x => x.Key).ToList().ForEach(x => ConfigurationProperties.Add(new MyCustomKeyValuePair(x.Key, x.Value)));
+                    MobileConfigurationProperties.Clear();
+                    CurrentCompany.MobileConfigurationProperties.OrderBy(x => x.Key).ToList().ForEach(x => MobileConfigurationProperties.Add(new MyCustomKeyValuePair(x.Key, x.Value)));
+                }
             }
         }
 
@@ -79,6 +82,11 @@ namespace MK.ConfigurationManager
 
         private void RefreshData()
         {
+            
+            int selectedCompanyIndex = DeployCompanyCombobox.SelectedIndex;
+            int selectedIbsServerIndex = DeployIbsServerCombobox.SelectedIndex;
+            int selectedTaxiHailEnvIndex = DeployTaxiHailEnvCombobox.SelectedIndex;
+
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<ConfigurationManagerDbContext, SimpleDbMigrationsConfiguration>("MKConfig"));
 
             var connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MKConfig"].ConnectionString;
@@ -88,7 +96,8 @@ namespace MK.ConfigurationManager
             }
             DbContext = new ConfigurationManagerDbContext(connectionString);
             DbContext.Database.CreateIfNotExists();
-
+           
+            
             Companies.Clear();
             DbContext.Set<Company>().OrderBy(x => x.Name).ToList().ForEach(Companies.Add);
 
@@ -103,6 +112,12 @@ namespace MK.ConfigurationManager
             DeploymentJobs.Clear();
             DbContext.Set<DeploymentJob>().OrderByDescending(x => x.RequestedDate).ToList().ForEach(DeploymentJobs.Add);
             statusBarTb.Text = "Done";
+
+
+            DeployCompanyCombobox.SelectedIndex = selectedCompanyIndex;
+            DeployIbsServerCombobox.SelectedIndex = selectedIbsServerIndex;
+            DeployTaxiHailEnvCombobox.SelectedIndex = selectedTaxiHailEnvIndex;
+
         }
 
         private void TaxiHailEnvironmentsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -325,6 +340,17 @@ namespace MK.ConfigurationManager
                 }
             }
 
+        }
+
+        private void ClearDeployHistory(object sender, RoutedEventArgs e)
+        {
+            var listDeploySelected = DeployDataGrid.SelectedItems;
+            foreach (DeploymentJob job in listDeploySelected)
+            {
+                DbContext.Set<DeploymentJob>().Remove(job);
+            }
+            DbContext.SaveChanges();
+            this.RefreshData();
         }
     }
 }

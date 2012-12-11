@@ -3,6 +3,7 @@ using MonoTouch.Foundation;
 using apcurium.MK.Booking.Mobile.Localization;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using System.Collections.Generic;
+using apcurium.MK.Booking.Mobile.Models;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -27,11 +28,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public string CurrentLanguageCode {
 			get { return GetValue ("LanguageCode"); }
 		}
-
-        public List<TutorialItemModel> GetTutorialItemsList()
-        {
-            throw new NotImplementedException();
-        }
 
 		public string OrderNote{ get { return Resources.OrderNoteStatic; } }
 
@@ -653,36 +649,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 			get { return GetValue ("ResetPasswordInvalidDataMessage"); }
 		}
 
-		public static string CreateAccoutTitle {
-			get { return GetValue ("CreateAccoutTitle"); }
+		public static string CreateAccountCreate {
+			get { return GetValue ("CreateAccountCreate"); }
 		}
 
-		public static string CreateAccoutEmailLabel {
-			get { return GetValue ("CreateAccoutEmailLabel"); }
-		}
-
-		public static string CreateAccoutTitleLabel {
-			get { return GetValue ("CreateAccoutTitleLabel"); }
-		}
-
-		public static string CreateAccoutLanguageLabel {
-			get { return GetValue ("CreateAccoutLanguageLabel"); }
-		}
-
-		public static string CreateAccoutPasswordLabel {
-			get { return GetValue ("CreateAccoutPasswordLabel"); }
-		}
-
-		public static string CreateAccoutPasswordConfirmLabel {
-			get { return GetValue ("CreateAccoutPasswordConfirmLabel"); }
-		}
-
-		public static string CreateAccoutCreate {
-			get { return GetValue ("CreateAccoutCreate"); }
-		}
-
-		public static string CreateAccoutCancel {
-			get { return GetValue ("CreateAccoutCancel"); }
+		public static string CreateAccountCancel {
+			get { return GetValue ("CreateAccountCancel"); }
 		}
 
 		public static string RideSettingsChargeType {
@@ -692,10 +664,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public static string CreateAccountInvalidPassword {
 			get { return GetValue ("CreateAccountInvalidPassword"); }
 		}
-
-        public static string CreateAccountInvalidPhone {
-            get { return GetValue ("CreateAccountInvalidPhone"); }
-        }
 
 
 		public static string CreateAccountEmptyField {
@@ -952,10 +920,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			get { return GetValue ("View_Book_Menu_SignOut"); }
 		}
-		public static string CreateAccoutPhoneNumberLabel
-		{
-			get { return GetValue ("CreateAccoutPhoneNumberLabel"); }
-		}
 		public static string View_RefineAddress
 		{
 			get { return GetValue ("View_RefineAddress"); }
@@ -1020,6 +984,22 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			get { return GetValue("ViewRatingBtn"); }
 		}
+
+        public List<TutorialItemModel> GetTutorialItemsList()
+        {
+            return new List<TutorialItemModel>()
+            {
+                new TutorialItemModel() {ImageUri = "tutorial_screen01", TopText = GetString("Tuto01Top"), BottomText = GetString("Tuto01Bottom")},
+                new TutorialItemModel() {ImageUri = "tutorial_screen02",  TopText = GetString("Tuto02Top"), BottomText = GetString("Tuto02Bottom")},
+                new TutorialItemModel() {ImageUri = "tutorial_screen03",  TopText = GetString("Tuto02Top"), BottomText = GetString("Tuto03Bottom")},
+                new TutorialItemModel() {ImageUri = "tutorial_screen04",  TopText = GetString("Tuto03Top"), BottomText = GetString("Tuto04Bottom")},
+                new TutorialItemModel() {ImageUri = "tutorial_screen05",  TopText = GetString("Tuto04Top"), BottomText = GetString("Tuto05Bottom")},
+                new TutorialItemModel() {ImageUri = "tutorial_screen06",  TopText = GetString("Tuto05Top"), BottomText = GetString("Tuto06Bottom")},
+                new TutorialItemModel() {ImageUri = "tutorial_screen07",  TopText = GetString("Tuto06Top"), BottomText = GetString("Tuto07Bottom")},
+                new TutorialItemModel() {ImageUri = "tutorial_screen08",  TopText = GetString("Tuto07Top"), BottomText = GetString("Tuto08Bottom")}
+
+            };
+        }
 	}
 }
 

@@ -240,7 +240,7 @@ namespace apcurium.MK.Web.Tests
             var sut = new AccountServiceClient(BaseUrl, SessionId);
 
             var exception = Assert.Throws<WebServiceException>(() => sut.ResetPassword("this.is.not@my.email.addre.ss"));
-            Assert.AreEqual(404, exception.StatusCode);
+            Assert.AreEqual(500, exception.StatusCode);
         }
 
         [Test]

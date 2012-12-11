@@ -26,8 +26,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		const string CellBindingText = @"
                 {
-                   'FirstLine':{'Path':'Address.FriendlyName'},
-                   'SecondLine':{'Path':'Address.FullAddress'},
+                   'FirstLine':{'Path':'DisplayLine1'},
+                   'SecondLine':{'Path':'DisplayLine2'},
 				   'ShowRightArrow':{'Path':'ShowRightArrow'},
 				   'ShowPlusSign':{'Path':'ShowPlusSign'},
 				   'IsFirst':{'Path':'IsFirst'},

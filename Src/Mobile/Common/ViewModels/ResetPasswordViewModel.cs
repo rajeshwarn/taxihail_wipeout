@@ -1,26 +1,33 @@
 using System;
+using Cirrious.MvvmCross.Interfaces.Commands;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Commands;
 using apcurium.Framework.Extensions;
 using System.Text.RegularExpressions;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.AppServices;
+using Cirrious.MvvmCross.Interfaces.ServiceProvider;
+using Cirrious.MvvmCross.ExtensionMethods;
 
 namespace apcurium.MK.Booking.Mobile
 {
-    public class ResetPasswordViewModel : BaseSubViewModel<string>
+    public class ResetPasswordViewModel : BaseSubViewModel<string>, IMvxServiceConsumer<IAccountService>
 	{
+        IAccountService _accountService;
+
         public ResetPasswordViewModel (string messageId) : base(messageId)
 		{
+            _accountService = this.GetService<IAccountService>();
 		}
 
 		public string Email { get; set; }
 
-		public MvxRelayCommand ResetPassword
+		public IMvxCommand ResetPassword
 		{
 			get
 			{
-				return new MvxRelayCommand(() => {
+                return GetCommand(() =>
+                {
 					if (!IsEmail(Email))
 					{
 						MessageService.ShowMessage(Resources.GetString("ResetPasswordInvalidDataTitle"), Resources.GetString("ResetPasswordInvalidDataMessage"));
@@ -28,33 +35,27 @@ namespace apcurium.MK.Booking.Mobile
 					}				
 					
 					MessageService.ShowProgress(true);
-					try
-					{
-						var result = TinyIoCContainer.Current.Resolve<IAccountService>().ResetPassword(Email);
-						if (result)
-						{
-							MessageService.ShowMessage(Resources.GetString("ResetPasswordConfirmationTitle"), Resources.GetString("ResetPasswordConfirmationMessage"));
-                            ReturnResult(Email);
-						}
-						else
-						{
-							MessageService.ShowMessage(Resources.GetString("NoConnectionTitle"), Resources.GetString("NoConnectionMessage"));
-						}
-					}
-					finally
-					{
+					try{
+                        _accountService.ResetPassword(Email);
+                     }catch(Exception e)
+                     {
+                        var msg = Resources.GetString("ServiceError" + e.Message);
+                        var title = Resources.GetString("ServiceErrorCallTitle");
+                        MessageService.ShowMessage(title, msg);;
+                     }finally
+					 {
 						MessageService.ShowProgress(false);
-					}
+					 }
 				});
 			}
 			
 		}
 
-		public MvxRelayCommand Cancel
+		public IMvxCommand Cancel
 		{
 			get
 			{
-				return new MvxRelayCommand(() => {  Close();});
+                return GetCommand(() => { Close(); });
 		    }
 	    }
 

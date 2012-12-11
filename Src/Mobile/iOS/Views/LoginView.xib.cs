@@ -96,6 +96,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 return true;
             };            
 
+
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
             if (settings.FacebookEnabled) {
                 AppButtons.FormatStandardButton (btnFbLogin, Resources.FacebookButton, AppStyle.ButtonColor.AlternateCorporateColor, "Assets/Social/FB/fbIcon.png");               
@@ -125,7 +126,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { txtPassword, "{'Text':{'Path':'Password'}}"},
             });
 
-
+            ViewModel.OnViewLoaded ();
             this.View.ApplyAppFont();           
 
         }
@@ -135,8 +136,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             var popup = new UIAlertView (){AlertViewStyle = UIAlertViewStyle.PlainTextInput};
             popup.Title = "Server Url";
             popup.GetTextField (0).Text = TinyIoCContainer.Current.Resolve<IAppSettings> ().ServiceUrl;
-            var saveBtnIndex = popup.AddButton ("Save");
+
             var cancelBtnIndex = popup.AddButton ("Cancel");
+            var saveBtnIndex = popup.AddButton ("Save");
 
             popup.CancelButtonIndex = cancelBtnIndex;
 

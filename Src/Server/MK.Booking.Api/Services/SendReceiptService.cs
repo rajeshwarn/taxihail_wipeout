@@ -43,7 +43,7 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(HttpStatusCode.Unauthorized, "Not your order");
             }
 
-            var orderStatus = _bookingWebServiceClient.GetOrderStatus(order.IBSOrderId.Value, account.IBSAccountId);
+            var orderStatus = _bookingWebServiceClient.GetOrderStatus(order.IBSOrderId.Value, account.IBSAccountId, order.Settings.Phone);
 
             if (orderStatus.Status != "wosDONE")
             {

@@ -68,19 +68,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private void Initialize()
         {   
-            _cancelToken = new CancellationTokenSource();
-            TinyIoCContainer.Current.Resolve<ILocationService>().GetPositionAsync(5000, 4000, 5000, 8000, _cancelToken.Token).ContinueWith(t => {
-                if (t.IsCompleted && !t.IsCanceled)
-                {
-                    InvokeOnMainThread(() =>
-                    {
-                        if (t.Result.Latitude != 0 && t.Result.Longitude != 0)
-                        {
-                            SetRegionAndZoom(new MKCoordinateRegion(), new CLLocationCoordinate2D(t.Result.Latitude, t.Result.Longitude), 0.2, 0.2);
-                        }
-                    });
-                }
-            }, TaskContinuationOptions.OnlyOnRanToCompletion);
+           /// _cancelToken = new CancellationTokenSource();
+
+            ShowsUserLocation = true;
+
+//            var task = TinyIoCContainer.Current.Resolve<ILocationService>().GetPositionAsync(5000, 4000, 5000, 8000, _cancelToken.Token).ContinueWith(t => {
+//                if (t.IsCompleted && !t.IsCanceled)
+//                {
+//                    InvokeOnMainThread(() =>
+//                    {
+//                        if (t.Result.Latitude != 0 && t.Result.Longitude != 0)
+//                        {
+//                            SetRegionAndZoom(new MKCoordinateRegion(), new CLLocationCoordinate2D(t.Result.Latitude, t.Result.Longitude), 0.2, 0.2);
+//                        }
+//                    });
+//                }
+//            }, TaskContinuationOptions.OnlyOnRanToCompletion);
+//
+//            task.Wait ( 1000 );
         }
 
         public override void MovedToSuperview ()
@@ -191,44 +196,40 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             } 
         }
 
-        private bool _pickupIsActive;
-        public bool PickupIsActive {
+        private AddressSelectionMode _addressSelectionMode;
+        public AddressSelectionMode AddressSelectionMode {
             get {
-                return _pickupIsActive;
+                return _addressSelectionMode;
             }
-            set{
-                _pickupIsActive = value;
-                if(value) {
+            set {
+                _addressSelectionMode = value;
+                if(_addressSelectionMode == Data.AddressSelectionMode.PickupSelection)
+                {
                     _pickupCenterPin.Hidden = false;
                     if(_pickupPin != null) RemoveAnnotation(_pickupPin);
                     _pickupPin = null;
-                }
-                else {
-                    ShowPickupPin(Pickup);
+
+                    ShowDropOffPin(Dropoff);
                     SetNeedsDisplay();
-                    
                 }
-            }
-        }
-        private bool _dropoffIsActive;
-        public bool DropoffIsActive {
-            get {
-                return _dropoffIsActive;
-            }
-            set {
-                _dropoffIsActive = value;
-                if(value) {
+                else if(_addressSelectionMode == Data.AddressSelectionMode.DropoffSelection)
+                {
                     _dropoffCenterPin.Hidden = false;
                     if(_dropoffPin != null) RemoveAnnotation(_dropoffPin);
                     _dropoffPin = null;
-                } else {
-                    ShowDropOffPin(Dropoff);
+
+                    ShowPickupPin(Pickup);
                     SetNeedsDisplay();
-                    
+                }
+                else
+                {
+                    ShowDropOffPin(Dropoff);
+                    ShowPickupPin(Pickup);
+                    SetNeedsDisplay();
                 }
             }
         }
-        
+
         private AddressAnnotation _pickupPin;
         private AddressAnnotation _dropoffPin;
         
@@ -238,6 +239,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             set
             { 
                 _pickup = value;
+                if(this.AddressSelectionMode == Data.AddressSelectionMode.None)
+                {
+                    ShowPickupPin(value);
+                }
             }
         }
         
@@ -247,6 +252,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             set
             { 
                 _dropoff = value;
+                if(this.AddressSelectionMode == Data.AddressSelectionMode.None)
+                {
+                    ShowDropOffPin(value);
+                }
             }
         }
         
@@ -408,8 +417,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             if (coords.Latitude != 0 && coords.Longitude != 0) {
                 _dropoffPin = new AddressAnnotation (coords, AddressAnnotationType.Destination, Resources.DestinationMapTitle, address.Display ());
                 AddAnnotation (_dropoffPin);
-                if( _dropoffCenterPin!= null) _dropoffCenterPin.Hidden = true;
             }
+            if( _dropoffCenterPin!= null) _dropoffCenterPin.Hidden = true;
 
         }
 
@@ -426,9 +435,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             if (coords.Latitude != 0 && coords.Longitude != 0) {
                 _pickupPin = new AddressAnnotation (coords, AddressAnnotationType.Pickup, Resources.PickupMapTitle, address.Display ());
                 AddAnnotation (_pickupPin);
-                if(_pickupCenterPin != null) _pickupCenterPin.Hidden = true;
             }
-            
+            if(_pickupCenterPin != null) _pickupCenterPin.Hidden = true;
         }
     }
 }
