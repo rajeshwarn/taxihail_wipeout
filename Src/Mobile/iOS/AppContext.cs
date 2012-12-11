@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using TinyIoC;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
+using MonoTouch.EventKit;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -30,7 +31,14 @@ namespace apcurium.MK.Booking.Mobile.Client
         private AppContext(UIWindow window)
         {
             Window = window;
+            eventStore = new EKEventStore ( );
         }
+
+        public EKEventStore EventStore 
+        {
+            get { return eventStore; }
+        }
+        protected EKEventStore eventStore;
 
         public UIWindow Window  { get; private set; }
             
