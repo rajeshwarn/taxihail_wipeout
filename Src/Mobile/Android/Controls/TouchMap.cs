@@ -202,7 +202,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 _taxiLocation = value;
                 if (_taxiLocationPin != null)
                 {
-                    this.Overlays.Remove(_dropoffPin);
+                    this.Overlays.Remove(_taxiLocationPin);
                     _taxiLocationPin = null;
                 }
 
