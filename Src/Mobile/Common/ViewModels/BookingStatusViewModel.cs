@@ -218,6 +218,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             this.StatusInfoText = string.Format(Resources.GetString("StatusStatusLabel"), message);
         }
 
+        private void AddReminder(OrderStatusDetail status)
+        {
+            if (status.IBSStatusId.Equals("wosSCHED") && !_hasSeenReminder)
+            {
+                this._hasSeenReminder = true;
+                InvokeOnMainThread(() => 
+                {
+                    MessageService.ShowMessage(Resources.GetString("AddReminderTitle"), Resources.GetString("AddReminderMessage"), Resources.GetString("YesButton"), () => 
+                    {
+                        var applicationName = TinyIoC.TinyIoCContainer.Current.Resolve<IAppSettings>().ApplicationName;
+                        this.PhoneService.AddEventToCalendarAndReminder(applicationName, "Reminder for your book", Order.PickupAddress.FullAddress, Order.PickupDate);
+                    }, Resources.GetString("NoButton"), () => 
+                    {
+                    });
+                });
+            }
+        }
+
         private void RefreshStatus()
         {
 
@@ -226,38 +244,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     var status = TinyIoCContainer.Current.Resolve<IBookingService>().GetOrderStatus(Order.Id);
                     var isDone = TinyIoCContainer.Current.Resolve<IBookingService>().IsStatusDone(status.IBSStatusId);
 
-                    if (status.IBSStatusId.Equals("wosSCHED") && !_hasSeenReminder)
-                    {
-                        this._hasSeenReminder = true;
-                        InvokeOnMainThread(() =>
-                                               {
-                                                   MessageService.ShowMessage(
-                                                       Resources.GetString("AddReminderTitle"),
-                                                       Resources.GetString("AddReminderMessage"),
-                                                       Resources.GetString("YesButton"), () =>
-                                                                                             {
-                                                                                                 var applicationName =
-                                                                                                     TinyIoC
-                                                                                                         .TinyIoCContainer
-                                                                                                         .Current
-                                                                                                         .Resolve
-                                                                                                         <IAppSettings>()
-                                                                                                         .ApplicationName;
-                                                                                                 this.PhoneService
-                                                                                                     .AddEventToCalendarAndReminder
-                                                                                                     (applicationName,
-                                                                                                      "Reminder for your book",
-                                                                                                      Order
-                                                                                                          .PickupAddress
-                                                                                                          .FullAddress,
-                                                                                                      Order.PickupDate);
-                                                                                             },
-                                                       Resources.GetString("NoButton"), () =>
-                                                                                            {
-
-                                                                                            });
-                                               });
-                    }
+                //AddReminder(status);
 
                     if (status != null)
                     {
