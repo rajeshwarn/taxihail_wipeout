@@ -35,6 +35,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private ILocationService _geolocator;
         private const int _refreshPeriod = 20 ; //20 sec
         private bool _isThankYouDialogDisplayed = false;
+        private bool _hasSeenReminder = false;
 
         protected readonly CompositeDisposable Subscriptions = new CompositeDisposable();
 
@@ -42,26 +43,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			Order = JsonSerializer.DeserializeFromString<Order>(order);
 			OrderStatusDetail = JsonSerializer.DeserializeFromString<OrderStatusDetail>(orderStatus);		
-			_geolocator = this.GetService<ILocationService>();	
-
-           /* if (OrderStatusDetail.Status.Equals(OrderStatus.Pending))
-            {
-                InvokeOnMainThread(() =>
-                {
-                    MessageService.ShowMessage(
-                     Resources.GetString("AddReminderTitle"),
-                     Resources.GetString("AddReminderMessage"),
-                     Resources.GetString("YesButton"), () =>
-                     {
-                         var applicationName = TinyIoC.TinyIoCContainer.Current.Resolve<IAppSettings>().ApplicationName;
-                         this.PhoneService.AddEventToCalendarAndReminder(applicationName, "Reminder for your book", Order.PickupAddress.FullAddress, Order.PickupDate);
-                     },
-                    Resources.GetString("NoButton"), () =>
-                    {
-
-                    });
-                });
-            }*/
+			_geolocator = this.GetService<ILocationService>();
+		    _hasSeenReminder = false;
 		}
 
         public override void OnViewLoaded ()
@@ -242,7 +225,40 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     var status = TinyIoCContainer.Current.Resolve<IBookingService>().GetOrderStatus(Order.Id);
                     var isDone = TinyIoCContainer.Current.Resolve<IBookingService>().IsStatusDone(status.IBSStatusId);
-                   
+
+                    if (status.IBSStatusId.Equals("wosSCHED") && !_hasSeenReminder)
+                    {
+                        this._hasSeenReminder = true;
+                        InvokeOnMainThread(() =>
+                                               {
+                                                   MessageService.ShowMessage(
+                                                       Resources.GetString("AddReminderTitle"),
+                                                       Resources.GetString("AddReminderMessage"),
+                                                       Resources.GetString("YesButton"), () =>
+                                                                                             {
+                                                                                                 var applicationName =
+                                                                                                     TinyIoC
+                                                                                                         .TinyIoCContainer
+                                                                                                         .Current
+                                                                                                         .Resolve
+                                                                                                         <IAppSettings>()
+                                                                                                         .ApplicationName;
+                                                                                                 this.PhoneService
+                                                                                                     .AddEventToCalendarAndReminder
+                                                                                                     (applicationName,
+                                                                                                      "Reminder for your book",
+                                                                                                      Order
+                                                                                                          .PickupAddress
+                                                                                                          .FullAddress,
+                                                                                                      Order.PickupDate);
+                                                                                             },
+                                                       Resources.GetString("NoButton"), () =>
+                                                                                            {
+
+                                                                                            });
+                                               });
+                    }
+
                     if (status != null)
                     {
                         StatusInfoText = status.IBSStatusDescription;                        

@@ -64,29 +64,45 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 		}
         public void AddEventToCalendarAndReminder(string title, string addInfo, string place, DateTime startDate)
         {
+            var cursor = Context.ContentResolver
+         .Query(Android.Net.Uri.Parse("content://com.android.calendar/calendars"),
+                 new String[] { "_id", "displayname" }, "selected=1",
+                 null, null);
+            cursor.MoveToFirst();
+            String[] CalNames = new String[cursor.Count];
+            int[] CalIds = new int[cursor.Count];
+            for (int i = 0; i < CalNames.Length; i++)
+            {
+                CalIds[i] = cursor.GetInt(0);
+                CalNames[i] = cursor.GetString(1);
+                cursor.MoveToNext();
+            }
+
+            cursor.Close();
 
             //Calendar cal = Calendar.GetInstance();
-            Intent intent = new Intent(Intent.ActionEdit);
+            /*Intent intent = new Intent(Intent.ActionEdit);
             intent.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
             intent.SetType("vnd.android.cursor.item/event");
-            intent.PutExtra("beginTime", startDate.Ticks);
-            intent.PutExtra("endTime", startDate.Ticks + 60 * 60 * 1000);
+            intent.PutExtra("beginTime", startDate.Millisecond);
+            intent.PutExtra("endTime", startDate.Millisecond + 60 * 60 * 1000);
             intent.PutExtra("title", title);
             intent.PutExtra("description", addInfo);
             intent.PutExtra("eventLocation", place);
-            Context.StartActivity(intent);
+            Context.StartActivity(intent);*/
 
             String eventUriString = "content://com.android.calendar/events";
             ContentValues eventValues = new ContentValues();
+            DateTime date1 = new DateTime(1970, 1, 1);
 
-            eventValues.Put("calendar_id", 1); // id, We need to choose from
+            eventValues.Put("calendar_id", 2); // id, We need to choose from
                                                 // our mobile for primary
                                                 // its 1
             eventValues.Put("title", title);
             eventValues.Put("description", addInfo);
             eventValues.Put("eventLocation", place);
-            long endDate = startDate.Ticks + 1000 * 60 * 60; // For next 1hr
-            eventValues.Put("dtstart", startDate.Ticks);
+            long endDate = (startDate.Ticks - date1.Ticks) + 1000 * 60 * 60; // For next 1hr
+            eventValues.Put("dtstart", startDate.Ticks - date1.Ticks);
             eventValues.Put("dtend", endDate);
 
             // values.put("allDay", 1); //If it is bithday alarm or such
