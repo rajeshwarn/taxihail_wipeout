@@ -116,7 +116,6 @@
     <Compile Include="Controls\BindableSelectionButton.cs" />
     <Compile Include="Controls\EditTextDelete.cs" />
     <Compile Include="Controls\EditTextSpinner.cs" />
-    <Compile Include="Controls\EditTextSpinnerPicture.cs" />
     <Compile Include="Controls\HeaderedLayout.cs" />
     <Compile Include="Controls\HorizontalPager.cs" />
     <Compile Include="Controls\TextButton.cs" />
