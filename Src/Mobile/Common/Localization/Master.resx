@@ -1128,4 +1128,31 @@
   <data name="PaymentDetails.TipAmount" xml:space="preserve">
     <value>Tip Amount</value>
   </data>
+  <data name="CreditCardsAddTitle" xml:space="preserve">
+    <value>New Credit Card</value>
+  </data>
+  <data name="CreditCardName" xml:space="preserve">
+    <value>Name as it appears on card</value>
+  </data>
+   <data name="CreditCardNumber" xml:space="preserve">
+    <value>Card Number</value>
+  </data>
+  <data name="CreditCardCategory" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="CreditCardType" xml:space="preserve">
+    <value>Type of Card</value>
+  </data>
+   <data name="CreditCardExpMonth" xml:space="preserve">
+    <value>Expiration Month</value>
+  </data>
+  <data name="CreditCardExpYear" xml:space="preserve">
+    <value>Expiration Year</value>
+  </data>
+   <data name="CreditCardCCV" xml:space="preserve">
+    <value>Card Security Code</value>
+  </data>
+  <data name="CreditCardZipCode" xml:space="preserve">
+    <value>Zip code (for authorization)</value>
+  </data>
 </root>

@@ -5,6 +5,7 @@ using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.Interfaces.Views;
 using Cirrious.MvvmCross.Views;
 using SocialNetworks.Services;
+using apcurium.MK.Booking.Mobile.Data;
 
 #if IOS
 using ServiceStack.ServiceClient.Web;
@@ -33,6 +34,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         private const string _favoriteAddressesCacheKey = "Account.FavoriteAddresses";
         private const string _historyAddressesCacheKey = "Account.HistoryAddresses";
         private const string _creditCardsCacheKey = "Account.CreditCards";
+        private const string _myPaymentsListCacheKey = "Account.MyPaymentList";
 
         private static ReferenceData _refData;
 
@@ -454,9 +456,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             }
             );
-
-
-
         }
 
         public IEnumerable<ListItem> GetCompaniesList ()
@@ -496,6 +495,50 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 cache.Set (_creditCardsCacheKey, result.ToArray ());
                 return result;
             }
+        }
+        
+        public IEnumerable<ListItem> GetMyPaymentList()
+        {
+            var cached = TinyIoCContainer.Current.Resolve<ICacheService>().Get<ListItem[]>(_myPaymentsListCacheKey);
+
+            if (cached != null)
+            {
+                return cached;
+            }
+            else
+            {
+
+                List<ListItem> result = new List<ListItem>();
+                UseServiceClient<IAccountServiceClient>(service =>
+                                                            {
+                                                                var list = service.GetCreditCards();
+                                                              
+                                                            }
+                );
+                TinyIoCContainer.Current.Resolve<ICacheService>().Set(_myPaymentsListCacheKey, result.ToArray());
+                return result;
+            }
+        }
+
+        public void AddCreditCard (CreditCardInfos creditCard)
+        {
+            var creditAuthorizationService = TinyIoCContainer.Current.Resolve<ICreditCardAuthorizationService>();
+
+            creditCard.Token = creditAuthorizationService.Authorize(creditCard);
+
+            var request = new CreditCardRequest
+            {
+                CreditCardCompany = creditCard.CreditCardCompany,
+                CreditCardId = creditCard.CreditCardId,
+                FriendlyName = creditCard.FriendlyName,
+                Last4Digits = creditCard.Last4Digits,
+                Token = creditCard.Token
+            };
+
+            UseServiceClient<IAccountServiceClient> (client => {               
+                client.AddCreditCard(request);               
+            }, ex => { throw ex; });  
+
         }
     }
 }

@@ -352,6 +352,10 @@
     <Compile Include="Views\Payment\PaymentDetails.designer.cs">
       <DependentUpon>PaymentDetails.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\PaymentPreferenceView.cs" />
+    <Compile Include="Views\PaymentPreferenceView.designer.cs">
+      <DependentUpon>PaymentPreferenceView.cs</DependentUpon>
+      </Compile>
     <Compile Include="Views\CreditCardAddView.cs" />
     <Compile Include="Views\CreditCardAddView.designer.cs">
       <DependentUpon>CreditCardAddView.cs</DependentUpon>
@@ -417,6 +421,7 @@
     <InterfaceDefinition Include="Order\BookStreetNumberView.xib" />
     <InterfaceDefinition Include="Views\StatusView.xib" />
     <InterfaceDefinition Include="Views\Payment\PaymentDetails.xib" />
+    <InterfaceDefinition Include="Views\PaymentPreferenceView.xib" />
     <InterfaceDefinition Include="Views\CreditCardAddView.xib" />
     <InterfaceDefinition Include="Views\CreditCardsListView.xib" />
   </ItemGroup>

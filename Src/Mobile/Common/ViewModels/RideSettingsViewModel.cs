@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Mobile
 		{
             this._bookingSettings = bookingSettings.FromJson<BookingSettings>();
             var accountService = this.GetService<IAccountService>();
-
+            
             _vehicules = accountService.GetVehiclesList().ToArray();
             _payments = accountService.GetPaymentsList().ToArray();
 		}
