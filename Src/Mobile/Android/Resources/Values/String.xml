@@ -342,4 +342,8 @@
   <string name="ServiceErrorResetPassword_AccountNotFound">No account with this email has been found.</string>
   <string name="AddReminderMessage">Do you want to add a reminder ?</string>
   <string name="AddReminderTitle">Add Reminder</string>
+  <string name="View_PaymentPreference">Payment Preference</string>
+  <string name="PaymentCreditCardsOnFile">Credit Cars On File</string>
+  <string name="PaymentOptional">(Optional)</string>
+  <string name="PaymentTipAmount">Tip Amount</string>
 </resources>

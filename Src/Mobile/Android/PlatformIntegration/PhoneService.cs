@@ -80,22 +80,11 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
             cursor.Close();
 
-            //Calendar cal = Calendar.GetInstance();
-            /*Intent intent = new Intent(Intent.ActionEdit);
-            intent.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
-            intent.SetType("vnd.android.cursor.item/event");
-            intent.PutExtra("beginTime", startDate.Millisecond);
-            intent.PutExtra("endTime", startDate.Millisecond + 60 * 60 * 1000);
-            intent.PutExtra("title", title);
-            intent.PutExtra("description", addInfo);
-            intent.PutExtra("eventLocation", place);
-            Context.StartActivity(intent);*/
-
             String eventUriString = "content://com.android.calendar/events";
             ContentValues eventValues = new ContentValues();
             DateTime date1 = new DateTime(1970, 1, 1);
 
-            eventValues.Put("calendar_id", 2); // id, We need to choose from
+            eventValues.Put("calendar_id", 1); // id, We need to choose from
                                                 // our mobile for primary
                                                 // its 1
             eventValues.Put("title", title);
@@ -105,9 +94,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             eventValues.Put("dtstart", startDate.Ticks - date1.Ticks);
             eventValues.Put("dtend", endDate);
 
-            // values.put("allDay", 1); //If it is bithday alarm or such
-            // kind (which should remind me for whole day) 0 for false, 1
-            // for true
             eventValues.Put("eventStatus", "1"); // This information is
             // sufficient for most
             // entries tentative (0),
@@ -122,11 +108,9 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                                                 // (1).
             eventValues.Put("hasAlarm", 0); // 0 for false, 1 for true
 
-    Android.Net.Uri eventUri = Context.ApplicationContext.ContentResolver.Insert(Android.Net.Uri.Parse(eventUriString), eventValues);
-    long eventID = long.Parse(eventUri.LastPathSegment);
-   // if (needReminder) {
-        /***************** Event: Reminder(with alert) Adding reminder to event *******************/
-
+        Android.Net.Uri eventUri = Context.ApplicationContext.ContentResolver.Insert(Android.Net.Uri.Parse(eventUriString), eventValues);
+        long eventID = long.Parse(eventUri.LastPathSegment);
+   
         String reminderUriString = "content://com.android.calendar/reminders";
 
         ContentValues reminderValues = new ContentValues();
@@ -140,7 +124,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                                             // SMS(3)
 
         Android.Net.Uri reminderUri = Context.ApplicationContext.ContentResolver.Insert(Android.Net.Uri.Parse(reminderUriString), reminderValues);
-   // }
+
         }
 
 		#endregion
