@@ -244,7 +244,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     var status = TinyIoCContainer.Current.Resolve<IBookingService>().GetOrderStatus(Order.Id);
                     var isDone = TinyIoCContainer.Current.Resolve<IBookingService>().IsStatusDone(status.IBSStatusId);
 
-                //AddReminder(status);
+                AddReminder(status);
 
                     if (status != null)
                     {
