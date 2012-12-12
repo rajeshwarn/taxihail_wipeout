@@ -198,8 +198,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public IMvxCommand NavigateToPaymentDetails {
             get {
                 return GetCommand(() => {
-                    RequestSubNavigate<PaymentDetailsViewModel, string>(new Dictionary<string, string> {}, result => {
 
+                    RequestSubNavigate<PaymentDetailsViewModel, PaymentDetailsViewModelResult>(new Dictionary<string, string> {
+                        { "selectedCreditCardId", new PaymentDetailsViewModelResult().ToJson () }
+                    }, result => {
+                        this.Order.Payment.PayWithCreditCard = result.CreditCardId != Guid.Empty;
+                        this.Order.Payment.CreditCardId = result.CreditCardId;
+                        this.Order.Payment.TipAmount = result.TipAmount;
+                        this.Order.Payment.TipPercent = result.TipPercent;
                     });
                 });
             }

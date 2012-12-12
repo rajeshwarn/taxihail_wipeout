@@ -4,9 +4,9 @@ using Cirrious.MvvmCross.Dialog.Touch.Dialog.Elements;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-    public class RadioElementWithId : RadioElement
+    public class RadioElementWithId<TId> : RadioElement where TId: struct
     {
-        public RadioElementWithId(int id, string caption) : base( caption )
+        public RadioElementWithId(TId id, string caption) : base( caption )
         {
             this.Id = id;
         }
@@ -18,7 +18,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             return cell;
         }
 
-        public int Id {
+        public TId Id {
             get;
             private set;
         }

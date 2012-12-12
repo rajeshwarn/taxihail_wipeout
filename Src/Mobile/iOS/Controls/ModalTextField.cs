@@ -46,22 +46,22 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
         }
 
-        public void Configure (string title, ListItem[] values, int selectedId, Action<ListItem> onItemSelected)
+        public void Configure<T>(string title, ListItem<T>[] values, T selectedId, Action<ListItem<T>> onItemSelected) where T: struct
         {
             int selected = 0;
             var section = new SectionWithBackground(title);
-            foreach (ListItem v in values)
+            foreach (var v in values)
             {
                 // Keep a reference to value in order for callbacks to work correctly
                 var value = v;
-                var item = new RadioElementWithId(value.Id, value.Display);
+                var item = new RadioElementWithId<T>(value.Id, value.Display);
                 item.Tapped += ()=> {
                     onItemSelected(value);
                     var controller = this.FindViewController();
                     if(controller != null) controller.NavigationController.PopViewControllerAnimated(true);
                 };
                 section.Add(item);
-                if (selectedId == value.Id)
+                if (selectedId.Equals(value.Id))
                 {
                     selected = Array.IndexOf(values, value);
                 }

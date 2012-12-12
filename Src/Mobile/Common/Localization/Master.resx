@@ -1120,6 +1120,12 @@
     <value>Tip Amount</value>
   </data>
   <data name="CreditCardsListTitle" xml:space="preserve">
-    <value>Credit Cars on File</value>
+    <value>Credit Cards on File</value>
+  </data>
+  <data name="PaymentDetails.CreditCardsLabel" xml:space="preserve">
+    <value>Credit Card</value>
+  </data>
+  <data name="PaymentDetails.TipAmount" xml:space="preserve">
+    <value>Tip Amount</value>
   </data>
 </root>

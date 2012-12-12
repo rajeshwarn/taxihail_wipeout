@@ -344,4 +344,7 @@
 "PaymentCreditCardsOnFile"="Credit Cars On File";
 "PaymentTipAmount"="Tip Amount";
 "View_PaymentPreference"="Payment Preference";
-"CreditCardsListTitle"="Credit Cars on File";
+"CreditCardsListTitle"="Credit Cards on File";
+"CreditCardsLabel"="Credit Cards";
+"PaymentDetails.TipAmount"="Tip Amount";
+"PaymentDetails.CreditCardsLabel"="Credit Card";
