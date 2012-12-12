@@ -87,6 +87,7 @@
     <Compile Include="Domain\Order.cs" />
     <Compile Include="Domain\BookingSettings.cs" />
     <Compile Include="Domain\OrderStatus.cs" />
+    <Compile Include="Domain\PaymentSettings.cs" />
     <Compile Include="Email\EmailSender.cs" />
     <Compile Include="Email\IEmailSender.cs" />
     <Compile Include="Email\ITemplateService.cs" />

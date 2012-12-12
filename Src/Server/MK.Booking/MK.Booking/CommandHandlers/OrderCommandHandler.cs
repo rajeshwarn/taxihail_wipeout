@@ -1,4 +1,5 @@
-﻿using Infrastructure.EventSourcing;
+﻿using AutoMapper;
+using Infrastructure.EventSourcing;
 using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
@@ -18,9 +19,15 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(CreateOrder command)
         {
             var settings =  new BookingSettings();
-            AutoMapper.Mapper.Map(command.Settings, settings);
+            Mapper.Map(command.Settings, settings);
             var order = new Order(command.OrderId, command.AccountId, command.IBSOrderId, command.PickupDate, 
                                     command.PickupAddress, command.DropOffAddress, settings);
+
+            if (command.Payment.PayWithCreditCard)
+            {
+                var payment = Mapper.Map<PaymentInformation>(command.Payment);
+                order.SetPaymentInformation(payment);
+            }
             _repository.Save(order, command.Id.ToString());
         }
 

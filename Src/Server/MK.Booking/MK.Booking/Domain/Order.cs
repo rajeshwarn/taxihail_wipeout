@@ -24,6 +24,7 @@ namespace apcurium.MK.Booking.Domain
             base.Handles<OrderCompleted>(OnOrderCompleted);
             base.Handles<OrderRemovedFromHistory>(OnOrderRemoved);
             base.Handles<OrderRated>(OnOrderRated);
+            base.Handles<PaymentInformationSet>(OnPaymentInformationSet);
         }
 
         public Order(Guid id, IEnumerable<IVersionedEvent> history)
@@ -39,6 +40,7 @@ namespace apcurium.MK.Booking.Domain
             {
                 throw new InvalidOperationException("Missing required fields");
             }
+
             this.Update(new OrderCreated
             {
                 IBSOrderId = ibsOrderId,
@@ -50,30 +52,31 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        private void OnOrderCreated(OrderCreated obj)
+        public void SetPaymentInformation(PaymentInformation payment)
         {
-            _status = OrderStatus.Created;   
+            if (payment == null)
+            {
+                throw new ArgumentNullException("payment");
+            }
+
+            if (payment.CreditCardId == default(Guid))
+            {
+                throw new InvalidOperationException("CreditCardId not supplied");
+            }
+            if (payment.TipAmount < 0 || payment.TipPercent < 0)
+            {
+                throw new InvalidOperationException("Tip amount or tip percent must be greater than 0");
+            }
+
+            this.Update(new PaymentInformationSet
+            {
+                CreditCardId = payment.CreditCardId,
+                TipAmount = payment.TipAmount,
+                TipPercent = payment.TipPercent
+            });
         }
 
-        private void OnOrderCancelled(OrderCancelled obj)
-        {
-            _status = OrderStatus.Canceled;   
-        }
-
-        private void OnOrderCompleted(OrderCompleted obj)
-        {
-            _status = OrderStatus.Completed;
-        }
-
-        private void OnOrderRemoved(OrderRemovedFromHistory obj)
-        {
-            _status = OrderStatus.Removed;
-        }
-
-        private void OnOrderRated(OrderRated obj)
-        {
-            _isRated = true;
-        }
+        
 
         public void Cancel()
         {
@@ -112,6 +115,36 @@ namespace apcurium.MK.Booking.Domain
                                RatingScores = ratingScores
                            });
             }
+        }
+
+        private void OnOrderCreated(OrderCreated obj)
+        {
+            _status = OrderStatus.Created;
+        }
+
+        private void OnOrderCancelled(OrderCancelled obj)
+        {
+            _status = OrderStatus.Canceled;
+        }
+
+        private void OnOrderCompleted(OrderCompleted obj)
+        {
+            _status = OrderStatus.Completed;
+        }
+
+        private void OnOrderRemoved(OrderRemovedFromHistory obj)
+        {
+            _status = OrderStatus.Removed;
+        }
+
+        private void OnOrderRated(OrderRated obj)
+        {
+            _isRated = true;
+        }
+
+        private void OnPaymentInformationSet(PaymentInformationSet @event)
+        {
+
         }
     }
 }
