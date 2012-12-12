@@ -87,12 +87,6 @@ namespace apcurium.MK.Booking.Api.Client.Cmt
             var req = string.Format("/accounts/{0}/addresses/{1}", Credentials.AccountId, addressId);
             Client.Delete<CmtResponse>(req);
         }
-
-        public IList<CreditCardDetails> GetCreditCards()
-        {
-            var req = string.Format("/account/creditcards");
-            return Client.Get<IList<CreditCardDetails>>(req);
-        }
         
         public void AddCreditCard (CreditCardRequest creditCardRequest)
         {
