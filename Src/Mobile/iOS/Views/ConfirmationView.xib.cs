@@ -1,10 +1,8 @@
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-
 using apcurium.Framework.Extensions;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Contract.Requests;
@@ -104,7 +102,8 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { txtPrice, "{'Text': {'Path': 'FareEstimate'}}" },
                 { pickerVehicleType, "{'Text': {'Path': 'VehicleName'}}" },
                 { pickerChargeType, "{'Text': {'Path': 'ChargeType'}}" },
-                { pickerAptEntryBuilding, "{'NavigateCommand': {'Path': 'NavigateToRefineAddress'}, 'Text':{'Path':'AptRingCode'}}"}
+                { pickerAptEntryBuilding, "{'NavigateCommand': {'Path': 'NavigateToRefineAddress'}, 'Text':{'Path':'AptRingCode'}}"},
+                { btnCreditCard, "{'TouchUpInside': {'Path': 'NavigateToPaymentDetails'}}"}
             });
             this.View.ApplyAppFont ();
         }

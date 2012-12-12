@@ -41,6 +41,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		
 		bool Register (RegisterAccount data, out string error);
 
+        #region Addresses
         Address FindInAccountAddresses(double latitude, double longitude);
 
         IEnumerable<Address> GetHistoryAddresses();
@@ -52,10 +53,19 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 	    void DeleteFavoriteAddress(Guid addressId);
 
         void DeleteHistoryAddress(Guid addressId);
+        #endregion
 
+        #region Orders
         IEnumerable<Order> GetHistoryOrders();
-
+        
         Order GetHistoryOrder(Guid id);
+        #endregion
+
+        #region Credit Cards
+
+        IEnumerable<CreditCardDetails> GetCreditCards();
+        
+        #endregion
 
         void RefreshCache(bool reload);
 

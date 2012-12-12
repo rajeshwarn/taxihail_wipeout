@@ -20,6 +20,7 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Configuration;
 using System.Globalization;
+using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -192,7 +193,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				});
 			}
-		}
+        }
+
+        public IMvxCommand NavigateToPaymentDetails {
+            get {
+                return GetCommand(() => {
+                    RequestSubNavigate<PaymentDetailsViewModel, string>(new Dictionary<string, string> {}, result => {
+
+                    });
+                });
+            }
+        }
 		
 		public IMvxCommand ConfirmOrderCommand
         {
