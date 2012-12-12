@@ -1107,4 +1107,19 @@
   <data name="AddReminderTitle" xml:space="preserve">
     <value>Add Reminder</value>
   </data>
+  <data name="View_PaymentPreference" xml:space="preserve">
+    <value>Payment Preference</value>
+  </data>
+  <data name="PaymentCreditCardsOnFile" xml:space="preserve">
+    <value>Credit Cars On File</value>
+  </data>
+  <data name="PaymentOptional" xml:space="preserve">
+    <value>(Optional)</value>
+  </data>
+  <data name="PaymentTipAmount" xml:space="preserve">
+    <value>Tip Amount</value>
+  </data>
+  <data name="CreditCardsListTitle" xml:space="preserve">
+    <value>Credit Cars on File</value>
+  </data>
 </root>

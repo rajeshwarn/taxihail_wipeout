@@ -75,7 +75,8 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { txtPhone, "{'Text': {'Path': 'Phone'}}" },
                 { txtVehicleType, "{'Text': {'Path': 'VehicleTypeName'}}" },
                 { txtChargeType, "{'Text': {'Path': 'ChargeTypeName'}}" },
-                { txtPassword, "{'NavigateCommand': {'Path': 'NavigateToUpdatePassword'}}" }
+                { txtPassword, "{'NavigateCommand': {'Path': 'NavigateToUpdatePassword'}}" },
+                { btCreditCardsOnFile, "{'TouchUpInside': {'Path': 'NavigateToCreditCarsList'}}" }
             });
 
         }

@@ -128,6 +128,22 @@ namespace apcurium.MK.Booking.Mobile
                 return GetCommand(() => RequestNavigate<UpdatePasswordViewModel>());
             }
         }
+
+        public IMvxCommand NavigateToPaymentPreference
+        {
+            get
+            {
+                return GetCommand(() => RequestNavigate<PaymentPreferenceViewModel>());
+            }
+        }
+
+        public IMvxCommand NavigateToCreditCarsList
+        {
+            get
+            {
+                return GetCommand(() => RequestNavigate<CreditCardsListViewModel>());
+            }
+        }
         
         public IMvxCommand SetChargeType
         {

@@ -5,6 +5,8 @@ using MonoTouch.Foundation;
 using MonoTouch.MessageUI;
 using System.IO;
 using Cirrious.MvvmCross.Touch.Interfaces;
+using MonoTouch.EventKit;
+using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -61,7 +63,24 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public void AddEventToCalendarAndReminder (string title, string addInfo, string place, DateTime startDate)
         {
-            throw new NotImplementedException ();
+            AppContext.Current.EventStore.RequestAccess (EKEntityType.Event,
+                                                  (bool granted, NSError e) => {
+                    if (granted)
+                    {
+                        EKEvent newEvent = EKEvent.FromStore ( AppContext.Current.EventStore );
+                        newEvent.AddAlarm ( EKAlarm.FromDate ( DateTime.Now.AddMinutes ( 120 ) ) );
+                        newEvent.StartDate = startDate;
+                        newEvent.EndDate = startDate.AddHours(1);
+                        newEvent.Title = title;
+                        newEvent.Notes = addInfo + " " + place + " - " + startDate.ToLongDateString();
+                        NSError err = null;
+                        AppContext.Current.EventStore.SaveEvent ( newEvent, EKSpan.ThisEvent, out err );
+                    }
+                    else
+                    {
+                        TinyIoC.TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Cant save reminder. User Denied Access to Calendar Data");
+                    }
+            } );
         }
 
         #endregion
