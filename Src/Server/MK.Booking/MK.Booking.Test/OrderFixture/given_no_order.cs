@@ -36,8 +36,6 @@ namespace apcurium.MK.Booking.Test.OrderFixture
         public void when_creating_an_order_successfully()
         {
             var pickupDate = DateTime.Now;
-            var requestDate = DateTime.Now.AddHours(1);
-            var creditCardId = Guid.NewGuid();
             var order = new CreateOrder
             {
                 AccountId = _accountId,
@@ -79,7 +77,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 IBSOrderId = 99,
             };
             order.Settings = new CreateOrder.BookingSettings { ChargeTypeId = 99, VehicleTypeId = 88, ProviderId = 11, Phone = "514-555-1212", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" };
-            order.Payment = new CreateOrder.PaymentSettings { PayWithCreditCard = true, CreditCardId = creditCardId, TipPercent = 15m };
+            order.Payment = new CreateOrder.PaymentInformation { PayWithCreditCard = true, CreditCardId = creditCardId, TipPercent = 15m };
 
             this.sut.When(order);
 

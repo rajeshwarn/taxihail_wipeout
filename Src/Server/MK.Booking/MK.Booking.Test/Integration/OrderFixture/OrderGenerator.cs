@@ -117,6 +117,29 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
         }
 
         [Test]
+        public void when_payment_information_set()
+        {
+            var creditCardId = Guid.NewGuid();
+            this.sut.Handle(new PaymentInformationSet
+            {
+                SourceId = _orderId,
+                CreditCardId = creditCardId,
+                TipAmount = 5,
+                TipPercent = 10
+            });
+
+            using (var context = new BookingDbContext(dbName))
+            {
+                var dto = context.Find<OrderDetail>(_orderId);
+                Assert.NotNull(dto);
+                Assert.IsTrue(dto.PaymentInformation.PayWithCreditCard);
+                Assert.AreEqual(creditCardId, dto.PaymentInformation.CreditCardId);
+                Assert.AreEqual(5, dto.PaymentInformation.TipAmount);
+                Assert.AreEqual(10, dto.PaymentInformation.TipPercent);
+            }
+        }
+
+        [Test]
         public void status_set_to_created()
         {
             using (var context = new BookingDbContext(dbName))

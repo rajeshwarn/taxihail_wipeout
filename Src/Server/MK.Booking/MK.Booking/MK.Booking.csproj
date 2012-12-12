@@ -87,7 +87,7 @@
     <Compile Include="Domain\Order.cs" />
     <Compile Include="Domain\BookingSettings.cs" />
     <Compile Include="Domain\OrderStatus.cs" />
-    <Compile Include="Domain\PaymentSettings.cs" />
+    <Compile Include="Domain\PaymentInformation.cs" />
     <Compile Include="Email\EmailSender.cs" />
     <Compile Include="Email\IEmailSender.cs" />
     <Compile Include="Email\ITemplateService.cs" />
@@ -106,6 +106,7 @@
     <Compile Include="ReadModel\AccountDetail.cs" />
     <Compile Include="ReadModel\BookingSetting.cs" />
     <Compile Include="ReadModel\AddressDetails.cs" />
+    <Compile Include="ReadModel\PaymentInformationDetails.cs" />
     <Compile Include="ReadModel\Query\CreditCardDao.cs" />
     <Compile Include="ReadModel\CreditCardDetails.cs" />
     <Compile Include="ReadModel\Query\ICreditCardDao.cs" />
