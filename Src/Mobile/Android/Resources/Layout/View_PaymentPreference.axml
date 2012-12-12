@@ -22,7 +22,7 @@
         <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;VehicleTypeName&apos;}, &apos;Data&apos;: {&apos;Path&apos;: &apos;Vehicles&apos;}, &apos;SelectedItem&apos;: {&apos;Path&apos;: &apos;VehicleTypeId&apos;}}" />
+            local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;PaymentTypeName&apos;}, &apos;Data&apos;: {&apos;Path&apos;: &apos;PaymentList&apos;}, &apos;SelectedItem&apos;: {&apos;Path&apos;: &apos;PaymentTypeId&apos;}}" />
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
