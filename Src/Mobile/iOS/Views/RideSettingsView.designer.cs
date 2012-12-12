@@ -12,6 +12,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 	partial class RideSettingsView
 	{
 		[Outlet]
+		MonoTouch.UIKit.UIButton paymentPreferenceButton { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UILabel lblName { get; set; }
 
 		[Outlet]
@@ -46,6 +49,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (paymentPreferenceButton != null) {
+				paymentPreferenceButton.Dispose ();
+				paymentPreferenceButton = null;
+			}
+
 			if (lblName != null) {
 				lblName.Dispose ();
 				lblName = null;

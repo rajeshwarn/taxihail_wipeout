@@ -340,3 +340,7 @@
 "ServiceErrorResetPassword_AccountNotFound"="No account with this email has been found.";
 "AddReminderMessage"="Do you want to add a reminder ?";
 "AddReminderTitle"="Add Reminder";
+"PaymentOptional"="(Optional)";
+"PaymentCreditCardsOnFile"="Credit Cars On File";
+"PaymentTipAmount"="Tip Amount";
+"View_PaymentPreference"="Payment Preference";
