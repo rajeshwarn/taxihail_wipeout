@@ -32,6 +32,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         private const string _favoriteAddressesCacheKey = "Account.FavoriteAddresses";
         private const string _historyAddressesCacheKey = "Account.HistoryAddresses";
+        private const string _myPaymentsListCacheKey = "Account.MyPaymentList";
         private static ReferenceData _refData;
 
         public void EnsureListLoaded ()
@@ -472,6 +473,29 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             EnsureListLoaded ();
             return _refData.PaymentsList;
+        }
+
+        public IEnumerable<ListItem> GetMyPaymentList()
+        {
+            var cached = TinyIoCContainer.Current.Resolve<ICacheService>().Get<ListItem[]>(_myPaymentsListCacheKey);
+
+            if (cached != null)
+            {
+                return cached;
+            }
+            else
+            {
+
+                List<ListItem> result = new List<ListItem>();
+                UseServiceClient<IAccountServiceClient>(service =>
+                                                            {
+                                                                var list = service.GetCreditCards();
+                                                              
+                                                            }
+                );
+                TinyIoCContainer.Current.Resolve<ICacheService>().Set(_myPaymentsListCacheKey, result.ToArray());
+                return result;
+            }
         }
     }
 }
