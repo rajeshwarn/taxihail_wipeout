@@ -348,6 +348,14 @@
     <Compile Include="Views\StatusView.xib.designer.cs">
       <DependentUpon>StatusView.xib</DependentUpon>
     </Compile>
+    <Compile Include="Views\CreditCardAddView.cs" />
+    <Compile Include="Views\CreditCardAddView.designer.cs">
+      <DependentUpon>CreditCardAddView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CreditCardsListView.cs" />
+    <Compile Include="Views\CreditCardsListView.designer.cs">
+      <DependentUpon>CreditCardsListView.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -403,6 +411,8 @@
     <InterfaceDefinition Include="Views\ResetPasswordView.xib" />
     <InterfaceDefinition Include="Order\BookStreetNumberView.xib" />
     <InterfaceDefinition Include="Views\StatusView.xib" />
+    <InterfaceDefinition Include="Views\CreditCardAddView.xib" />
+    <InterfaceDefinition Include="Views\CreditCardsListView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />

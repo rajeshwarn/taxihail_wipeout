@@ -43,6 +43,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		[Outlet]
 		MonoTouch.UIKit.UITextField txtPassword { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UIButton btCreditCardsOnFile { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
@@ -99,6 +102,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 			if (txtPassword != null) {
 				txtPassword.Dispose ();
 				txtPassword = null;
+			}
+
+			if (btCreditCardsOnFile != null) {
+				btCreditCardsOnFile.Dispose ();
+				btCreditCardsOnFile = null;
 			}
 		}
 	}

@@ -1119,4 +1119,7 @@
   <data name="PaymentTipAmount" xml:space="preserve">
     <value>Tip Amount</value>
   </data>
+  <data name="CreditCardsListTitle" xml:space="preserve">
+    <value>Credit Cars on File</value>
+  </data>
 </root>
