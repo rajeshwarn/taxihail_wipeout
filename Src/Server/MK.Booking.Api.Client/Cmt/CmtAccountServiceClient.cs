@@ -88,24 +88,13 @@ namespace apcurium.MK.Booking.Api.Client.Cmt
             Client.Delete<CmtResponse>(req);
         }
 
-        public void AddCreditCard(CreditCardRequest creditCardRequest)
+        #region IAccountServiceClient implementation
+
+        public void AddCreditCard (CreditCardRequest creditCardRequest)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException ();
         }
 
-        public IList<CreditCardDetails> GetCreditCards()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void RemoveCreditCard(Guid creditCardId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UpdatePaymentProfile(UpdatePaymentProfileRequest request)
-        {
-            throw new NotImplementedException();
-        }
+        #endregion
     }
 }
