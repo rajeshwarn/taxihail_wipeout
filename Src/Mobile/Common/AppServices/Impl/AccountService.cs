@@ -5,6 +5,7 @@ using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.Interfaces.Views;
 using Cirrious.MvvmCross.Views;
 using SocialNetworks.Services;
+using apcurium.MK.Booking.Mobile.Data;
 
 #if IOS
 using ServiceStack.ServiceClient.Web;
@@ -451,9 +452,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             }
             );
-
-
-
         }
 
         public IEnumerable<ListItem> GetCompaniesList ()
@@ -472,6 +470,27 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             EnsureListLoaded ();
             return _refData.PaymentsList;
+        }
+
+        public void AddCreditCard (CreditCardInfos creditCard)
+        {
+            var creditAuthorizationService = TinyIoCContainer.Current.Resolve<ICreditCardAuthorizationService>();
+
+            creditCard.Token = creditAuthorizationService.Authorize(creditCard);
+
+            var request = new CreditCardRequest
+            {
+                CreditCardCompany = creditCard.CreditCardCompany,
+                CreditCardId = creditCard.CreditCardId,
+                FriendlyName = creditCard.FriendlyName,
+                Last4Digits = creditCard.Last4Digits,
+                Token = creditCard.Token
+            };
+
+            UseServiceClient<IAccountServiceClient> (client => {               
+                client.AddCreditCard(request);               
+            }, ex => { throw ex; });  
+
         }
     }
 }
