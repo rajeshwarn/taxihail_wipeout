@@ -230,6 +230,9 @@
     <Compile Include="BindingConverter\EnumToBoolConverter.cs" />
     <Compile Include="ViewModels\CreditCardAddViewModel.cs" />
     <Compile Include="ViewModels\CreditCardsListViewModel.cs" />
+    <Compile Include="Data\CreditCardInfos.cs" />
+    <Compile Include="AppServices\ICreditCardAuthorizationService.cs" />
+    <Compile Include="AppServices\Impl\CreditCardAuthorizationService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">

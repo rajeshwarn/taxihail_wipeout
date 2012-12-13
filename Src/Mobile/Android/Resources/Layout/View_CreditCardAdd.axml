@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<apcurium.mk.booking.mobile.client.controls.HeaderedLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.TaxiHailDemo"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center_horizontal"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+    <ScrollView
+        android:scrollbarStyle="outsideInset"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:fillViewport="true">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:paddingLeft="15dip"
+            android:paddingRight="15dip"
+            android:paddingTop="15dip"
+            android:orientation="vertical" />
+    </ScrollView>
+</apcurium.mk.booking.mobile.client.controls.HeaderedLayout>
