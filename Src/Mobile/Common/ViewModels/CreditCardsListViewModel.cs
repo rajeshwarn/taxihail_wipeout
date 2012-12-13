@@ -1,5 +1,6 @@
 using System;
 using Cirrious.MvvmCross.Interfaces.Commands;
+using apcurium.MK.Booking.Mobile.Data;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -13,7 +14,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return GetCommand(() => RequestNavigate<CreditCardAddViewModel>());
+				return GetCommand(() => RequestSubNavigate<CreditCardAddViewModel,CreditCardInfos>(null, newCreditCard => {}));
             }
         }
     }

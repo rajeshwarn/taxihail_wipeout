@@ -38,6 +38,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
+                android:inputType="number"
                 local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Data.CardNumber&apos;}}" />
             <TextView
                 android:layout_width="fill_parent"
@@ -84,14 +85,14 @@
                 android:layout_height="fill_parent"
                 android:orientation="horizontal">
                 <TextView
-                    android:gravity="right"
+                    android:gravity="left"
                     android:layout_width="135dip"
-                    android:paddingLeft="27dip"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="10dip"
                     android:text="@string/CreditCardExpMonth"
                     style="@style/FormLabelText" />
                 <TextView
-                    android:gravity="right"
+                    android:gravity="left"
                     android:layout_width="135dip"
                     android:layout_height="wrap_content"
                     android:text="@string/CreditCardExpYear"
@@ -102,16 +103,18 @@
                 android:layout_height="fill_parent"
                 android:orientation="horizontal">
                 <EditText
-                    android:gravity="right"
+                    android:gravity="left"
                     android:layout_width="135dip"
-                    android:paddingLeft="27dip"
+                    android:layout_marginRight="10dip"
                     android:layout_height="wrap_content"
+                    android:inputType="number"
                     android:singleLine="true"
                     local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Data.ExpirationMonth&apos;}}" />
                 <EditText
-                    android:gravity="right"
+                    android:gravity="left"
                     android:layout_width="135dip"
                     android:layout_height="wrap_content"
+                    android:inputType="number"
                     android:singleLine="true"
                     local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Data.ExpirationYear&apos;}}" />
             </LinearLayout>
@@ -124,6 +127,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
+                android:inputType="number"
                 local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Data.CCV&apos;}}" />
             <TextView
                 android:layout_width="fill_parent"

@@ -127,6 +127,15 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
         }
 
+
+		#region IPhoneService implementation
+
+		public void AddEventToCalendarAndReminder (string title, string addInfo, string place, DateTime startDate, DateTime alertDate)
+		{
+			throw new NotImplementedException ();
+		}
+
+		#endregion
 		#endregion
     }
 }
