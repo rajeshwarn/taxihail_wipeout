@@ -1156,7 +1156,7 @@
     <value>All the fields are required</value>
   </data>
   <data name="CreditCardInvalidCrediCardNUmber" xml:space="preserve">
-    <value>All the fields are required</value>
+    <value>The Credit Card Number is invalid</value>
   </data>
   <data name="AddCreditCardTitle" xml:space="preserve">
     <value>Add a credit card</value>

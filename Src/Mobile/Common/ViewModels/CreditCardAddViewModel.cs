@@ -13,11 +13,11 @@ using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class CreditCardAddViewModel : BaseViewModel, IMvxServiceConsumer<IAccountService>
+	public class CreditCardAddViewModel : BaseSubViewModel<CreditCardInfos>, IMvxServiceConsumer<IAccountService>
     {
         IAccountService _accountService;
 
-        public CreditCardAddViewModel ()
+		public CreditCardAddViewModel (string messageId) : base(messageId)
         {
             Data = new CreditCardInfos();
             _accountService = this.GetService<IAccountService>();
@@ -53,8 +53,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public List<ListItem> CardCategories { get; set; }
 
-		public IMvxCommand SetCreditCardCompanyCommand { get { return GetCommand<string>(item => {
-					Data.CreditCardCompany = item;
+		public IMvxCommand SetCreditCardCompanyCommand { get { return GetCommand<object>(item => {
+					Data.CreditCardCompany = item.ToSafeString();	
 		}); } }
 
         public IMvxCommand AddCreditCardCommand { get { return GetCommand(AddCrediCard); } }
@@ -81,6 +81,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 MessageService.ShowProgress(true);
                 Data.Last4Digits = new string(Data.CardNumber.Reverse ().Take (4).ToArray());
                 _accountService.AddCreditCard (Data);
+
+				Data.CardNumber = null;
+				Data.CCV = null;
+
+				ReturnResult(Data);
             } finally {
                 MessageService.ShowProgress(false);
             }
