@@ -7,4 +7,4 @@
     android:paddingTop="5dip"
     android:paddingBottom="5dip"
     android:paddingLeft="15dip"
-    local:MvxBind="{&apos;TextLeft&apos;:{&apos;Path&apos;:&apos;FriendlyName&apos;}, &apos;TextRight&apos;:{&apos;Path&apos;:&apos;Last4Digits&apos;}, &apos;IsTop&apos;:{&apos;Path&apos;:&apos;IsFirst&apos;}, &apos;IsBottom&apos;:{&apos;Path&apos;:&apos;IsLast&apos;}, &apos;ShowAddSign&apos;:{&apos;Path&apos;:&apos;ShowPlusSign&apos;}}" />
+    local:MvxBind="{&apos;TextLeft&apos;:{&apos;Path&apos;:&apos;FriendlyName&apos;}, &apos;TextRight&apos;:{&apos;Path&apos;:&apos;Last4Digits&apos;}, &apos;IsTop&apos;:{&apos;Path&apos;:&apos;IsFirst&apos;}, &apos;IsBottom&apos;:{&apos;Path&apos;:&apos;IsLast&apos;}, &apos;ShowAddSign&apos;:{&apos;Path&apos;:&apos;ShowPlusSign&apos;}, &apos;Picture&apos;:{&apos;Path&apos;:&apos;Picture&apos;}}" />

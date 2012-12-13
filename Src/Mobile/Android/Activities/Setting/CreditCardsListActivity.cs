@@ -21,6 +21,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 		protected override void OnCreate (Bundle bundle)
 		{
 			base.OnCreate (bundle);
+            var _listView = FindViewById<ListView>(Resource.Id.CreditCardsListView);
+            _listView.Divider = null;
+            _listView.DividerHeight = 0;
+            _listView.SetPadding(10, 0, 10, 0);
 
 			// Create your application here
 		}
@@ -28,6 +32,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		protected override void OnViewModelSet()
 		{
 			SetContentView(Resource.Layout.View_CreditCardsList);
+            
 		}
 		
 		protected override int ViewTitleResourceId

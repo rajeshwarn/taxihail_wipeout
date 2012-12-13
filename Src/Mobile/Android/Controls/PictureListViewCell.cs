@@ -48,26 +48,29 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             base.OnDraw(canvas);
             if (!string.IsNullOrEmpty(TextLeft))
 			{
-                DrawText(canvas, TextLeft ?? "", 50,45, 20, AppFonts.Bold);
+                DrawText(canvas, TextLeft ?? "", 80,45, 20, AppFonts.Bold);
                 DrawText(canvas, TextRight ?? "", this.Width-80, 45, 20, AppFonts.Regular);
 			}
 			else
 			{
-                DrawText(canvas, TextRight ?? "",50, 45, 20, AppFonts.Regular);
+                DrawText(canvas, TextRight ?? "",80, 45, 20, AppFonts.Regular);
 			}
 
             if (ShowAddSign)
             {
-                canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, Resource.Drawable.add_button), this.Width - 80, 20, null);
+                canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, Resource.Drawable.add_button), this.Width - 80, 23, null);
             }
 
             if (!string.IsNullOrEmpty(Picture))
             {
-                var resource = Resources.GetIdentifier(Picture, "drawable", Context.PackageName);
-                canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, resource), 5,20, null);
+                var resource = Resources.GetIdentifier(Picture.ToLower(), "drawable", Context.PackageName);
+                if (resource != 0)
+                {
+                    canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, resource), 5, 20, null);
+                }
             }
 
-            var d = IsTop && !IsBottom ? Resource.Drawable.cell_top_state : IsBottom && !IsTop ? Resource.Drawable.blank_bottom_state : IsTop && IsBottom ? Resource.Drawable.blank_single_state : Resource.Drawable.cell_middle_state;
+            var d = ShowAddSign && !IsTop ? Resource.Drawable.cell_bottom_state : IsTop && IsBottom && ShowAddSign ? Resource.Drawable.add_single_state : IsTop && !IsBottom ? Resource.Drawable.cell_top_state : IsBottom && !IsTop ? Resource.Drawable.blank_bottom_state : IsTop && IsBottom ? Resource.Drawable.blank_single_state :  Resource.Drawable.cell_middle_state;
 			SetBackgroundDrawable( Resources.GetDrawable( d ) );
         }
 

@@ -55,7 +55,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 var creditCards = TinyIoCContainer.Current.Resolve<IAccountService>().GetMyPaymentList().ToList();
                 creditCards.Add(new CreditCardDetails
                 {
-                    FriendlyName = Resources.GetString("LocationAddFavoriteTitle"),
+                    FriendlyName = Resources.GetString("AddCreditCardTitle"),
                 });
                 CreditCards = new ObservableCollection<CreditCardViewModel>(creditCards.Select(x => new CreditCardViewModel()
                 {
@@ -68,7 +68,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     IsAddNew = x.CreditCardId.IsNullOrEmpty(),
                     ShowPlusSign = x.CreditCardId.IsNullOrEmpty(),
                     IsFirst = x.Equals(creditCards.First()),
-                    IsLast = x.Equals(creditCards.Last())
+                    IsLast = x.Equals(creditCards.Last()),
+                    Picture = x.CreditCardCompany
                 }));
                 HasCards = CreditCards.Any();
             });
