@@ -1517,8 +1517,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f07015f
 			public const int CreditCardCategory = 2131165535;
 			
-			// aapt resource value: 0x7f070164
-			public const int CreditCardErrorTitle = 2131165540;
+			// aapt resource value: 0x7f070167
+			public const int CreditCardErrorTitle = 2131165543;
 			
 			// aapt resource value: 0x7f07015e
 			public const int CreditCardExpMonth = 2131165534;
@@ -1526,8 +1526,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f070160
 			public const int CreditCardExpYear = 2131165536;
 			
-			// aapt resource value: 0x7f070165
-			public const int CreditCardInvalidCrediCardNUmber = 2131165541;
+			// aapt resource value: 0x7f070168
+			public const int CreditCardInvalidCrediCardNUmber = 2131165544;
 			
 			// aapt resource value: 0x7f070161
 			public const int CreditCardName = 2131165537;
@@ -1535,8 +1535,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f07015a
 			public const int CreditCardNumber = 2131165530;
 			
-			// aapt resource value: 0x7f070166
-			public const int CreditCardRequiredFields = 2131165542;
+			// aapt resource value: 0x7f070169
+			public const int CreditCardRequiredFields = 2131165545;
 			
 			// aapt resource value: 0x7f070162
 			public const int CreditCardType = 2131165538;
@@ -1871,14 +1871,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f070157
 			public const int PaymentCreditCardsOnFile = 2131165527;
 			
-			// aapt resource value: 0x7f070167
-			public const int PaymentDetails_CreditCardLabel = 2131165543;
+			// aapt resource value: 0x7f07016a
+			public const int PaymentDetails_CreditCardLabel = 2131165546;
 			
 			// aapt resource value: 0x7f070165
 			public const int PaymentDetails_InvalidDataTitle = 2131165541;
 			
-			// aapt resource value: 0x7f070168
-			public const int PaymentDetails_InvalidTipAmount = 2131165544;
+			// aapt resource value: 0x7f07016b
+			public const int PaymentDetails_InvalidTipAmount = 2131165547;
 			
 			// aapt resource value: 0x7f070164
 			public const int PaymentDetails_Optional = 2131165540;

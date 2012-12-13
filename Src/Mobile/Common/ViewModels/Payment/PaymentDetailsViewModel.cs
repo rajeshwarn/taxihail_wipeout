@@ -124,7 +124,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
         public bool ValidatePaymentSettings ()
         {
-            if(!GetDoubleValue(Tip).HasValue)
+
+            if(!string.IsNullOrWhiteSpace(Tip) && !GetDoubleValue(Tip).HasValue)
             {
                 base.MessageService.ShowMessage (Resources.GetString ("PaymentDetails.InvalidDataTitle"), Resources.GetString ("PaymentDetails.InvalidTipAmount"));
                 return false;

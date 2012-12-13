@@ -116,7 +116,7 @@
                 <EditText
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
+                    android:inputType="number|numberDecimal"
                     local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;PaymentPreferences.Tip&apos;, &apos;Mode&apos;: &apos;TwoWay&apos;}}"
                     android:layout_marginLeft="10dip"
                     android:maxLines="1"
