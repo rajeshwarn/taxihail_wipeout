@@ -106,6 +106,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             return CreditCards.Select(x=> new ListItem<Guid> { Id = x.CreditCardId, Display = x.FriendlyName }).ToArray();
         }
 
+		public IMvxCommand TogglePercent {
+			get {
+				return GetCommand (()=>{
+					IsTipInPercent = !IsTipInPercent;
+				});
+			}
+		}
+
         public IMvxCommand NavigateToCreditCardsList {
             get {
                 return GetCommand (()=>{

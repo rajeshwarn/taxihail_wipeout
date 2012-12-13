@@ -1844,6 +1844,21 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f070157
 			public const int PaymentCreditCardsOnFile = 2131165527;
 			
+			// aapt resource value: 0x7f070167
+			public const int PaymentDetails_CreditCardLabel = 2131165543;
+			
+			// aapt resource value: 0x7f070165
+			public const int PaymentDetails_InvalidDataTitle = 2131165541;
+			
+			// aapt resource value: 0x7f070168
+			public const int PaymentDetails_InvalidTipAmount = 2131165544;
+			
+			// aapt resource value: 0x7f070164
+			public const int PaymentDetails_Optional = 2131165540;
+			
+			// aapt resource value: 0x7f070166
+			public const int PaymentDetails_TipAmountLabel = 2131165542;
+			
 			// aapt resource value: 0x7f070158
 			public const int PaymentOptional = 2131165528;
 			

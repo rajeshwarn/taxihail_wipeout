@@ -349,11 +349,16 @@
   <string name="CreditCardNumber">Card Number</string>
   <string name="CreditCardZipCode">Zip code (for authorization)</string>
   <string name="CreditCardsAddTitle">New Credit Card</string>
-  <string name="CreditCardsListTitle">Credit Cars on File</string>
+  <string name="CreditCardsListTitle">Credit Cards on File</string>
   <string name="CreditCardExpMonth">Expiration Month</string>
   <string name="CreditCardCategory">Category</string>
   <string name="CreditCardExpYear">Expiration Year</string>
   <string name="CreditCardName">Name as it appears on card</string>
   <string name="CreditCardType">Type of Card</string>
   <string name="CreditCardCCV">Card Security Code</string>
+  <string name="PaymentDetails.Optional">(Optional)</string>
+  <string name="PaymentDetails.InvalidDataTitle">Tip amount is invalid</string>
+  <string name="PaymentDetails.TipAmountLabel">Tip Amount</string>
+  <string name="PaymentDetails.CreditCardLabel">Credit Card</string>
+  <string name="PaymentDetails.InvalidTipAmount">Invalid payment information</string>
 </resources>
