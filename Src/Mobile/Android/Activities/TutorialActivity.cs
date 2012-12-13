@@ -77,5 +77,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
                 ((ImageView)pipsLayout.GetChildAt(i)).SetImageDrawable(Resources.GetDrawable(Resource.Drawable.tutorial_grey_circle));
             }
         }
+
+
+
     }
 }
