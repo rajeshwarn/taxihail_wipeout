@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.FormLabel lblCardCategory { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.TextField txtCardCategory { get; set; }
+		apcurium.MK.Booking.Mobile.Client.ModalTextField pickerCreditCardCategory { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.FormLabel lblTypeCard { get; set; }
@@ -94,9 +94,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				lblCardCategory = null;
 			}
 
-			if (txtCardCategory != null) {
-				txtCardCategory.Dispose ();
-				txtCardCategory = null;
+			if (pickerCreditCardCategory != null) {
+				pickerCreditCardCategory.Dispose ();
+				pickerCreditCardCategory = null;
 			}
 
 			if (lblTypeCard != null) {

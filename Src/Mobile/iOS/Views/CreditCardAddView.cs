@@ -38,7 +38,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             scrollView.ContentSize = new SizeF(scrollView.ContentSize.Width, 416);
 			
             View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background_full.png"));
-            NavigationItem.Title = Resources.GetValue( "CreditCardsAddTitle");
+            NavigationItem.Title = Resources.GetValue("CreditCardsAddTitle");
 
             var save = new UIBarButtonItem(UIBarButtonSystemItem.Save, null, null);
             save.Clicked += (sender, e) => ViewModel.AddCreditCardCommand.Execute();
@@ -57,17 +57,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             txtNameOnCard.ShouldReturn += GoToNext;
             txtCardNumber.ShouldReturn += GoToNext;
-            txtCardCategory.ShouldReturn += GoToNext;
+            pickerCreditCardCategory.ShouldReturn += GoToNext;
             txtTypeCard.ShouldReturn += GoToNext;
             txtExpMonth.ShouldReturn += GoToNext;
             txtExpYear.ShouldReturn += GoToNext;
             txtSecurityCode.ShouldReturn += GoToNext;
             txtZipCode.ShouldReturn += GoToNext;
 
+            ((ModalTextField)pickerCreditCardCategory).Configure(Resources.GetValue("CreditCardCategory"), ViewModel.CardCategories.ToArray(), ViewModel.CreditCardCategory , x=> {
+                ViewModel.CreditCardCategory =  x.Id; });
+
             this.AddBindings(new Dictionary<object, string>{
                 { txtNameOnCard, "{'Text': {'Path': 'Data.NameOnCard', 'Mode': 'TwoWay' }}" }, 
                 { txtCardNumber, "{'Text': {'Path': 'Data.CardNumber', 'Mode': 'TwoWay' }}" }, 
-                { txtCardCategory, "{'Text': {'Path': 'Data.FriendlyName', 'Mode': 'TwoWay' }}" }, 
+                { pickerCreditCardCategory, "{'Text': {'Path': 'CreditCardCategoryName', 'Mode': 'TwoWay' }}" }, 
                 { txtTypeCard, "{'Text': {'Path': 'Data.CreditCardCompany', 'Mode': 'TwoWay' }}" }, 
                 { txtExpMonth, "{'Text': {'Path': 'Data.ExpirationMonth', 'Mode': 'TwoWay' }}" }, 
                 { txtExpYear, "{'Text': {'Path': 'Data.ExpirationYear', 'Mode': 'TwoWay' }}" }, 
@@ -85,8 +88,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (textField == txtNameOnCard) {
                 txtCardNumber.BecomeFirstResponder();
             }else if (textField == txtCardNumber) {
-                txtCardCategory.BecomeFirstResponder();
-            }else if (textField == txtCardCategory) {
+                pickerCreditCardCategory.BecomeFirstResponder();
+            }else if (textField == pickerCreditCardCategory) {
                 txtTypeCard.BecomeFirstResponder();
             }else if (textField == txtTypeCard) {
                 txtExpMonth.BecomeFirstResponder();

@@ -355,9 +355,12 @@
 "CreditCardsZipCode"="Zip code (for authorization)";
 "CreditCardNumber"="Card Number";
 "CreditCardZipCode"="Zip code (for authorization)";
-"CreditCardExpMonth"="Expiration Month";
+"CreditCardExpMonth"="Exp. Month";
 "CreditCardCategory"="Category";
-"CreditCardExpYear"="Expiration Year";
+"CreditCardExpYear"="Exp. Year";
 "CreditCardName"="Name as it appears on card";
 "CreditCardType"="Type of Card";
 "CreditCardCCV"="Card Security Code";
+"CreditCardErrorTitle"="Can't add the Credit Card";
+"CreditCardInvalidCrediCardNUmber"="The Credit Card Number is invalid";
+"CreditCardRequiredFields"="All the fields are required";

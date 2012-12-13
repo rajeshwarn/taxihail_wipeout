@@ -533,14 +533,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">txtCardCategory</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="766945296"/>
-					</object>
-					<int key="connectionID">29</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">lblTypeCard</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="609317246"/>
@@ -618,6 +610,14 @@
 						<reference key="destination" ref="126569716"/>
 					</object>
 					<int key="connectionID">39</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">pickerCreditCardCategory</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="766945296"/>
+					</object>
+					<int key="connectionID">40</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -758,7 +758,7 @@
 				<string key="-2.CustomClassName">UIResponder</string>
 				<string key="-2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="1.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<string key="10.CustomClassName">TextField</string>
+				<string key="10.CustomClassName">ModalTextField</string>
 				<string key="10.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="11.CustomClassName">FormLabel</string>
 				<string key="11.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -796,7 +796,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">39</int>
+			<int key="maxID">40</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -812,8 +812,8 @@
 						<string key="lblSecurityCode">FormLabel</string>
 						<string key="lblTypeCard">FormLabel</string>
 						<string key="lblZipCode">FormLabel</string>
+						<string key="pickerCreditCardCategory">ModalTextField</string>
 						<string key="scrollView">UIScrollView</string>
-						<string key="txtCardCategory">TextField</string>
 						<string key="txtCardNumber">TextField</string>
 						<string key="txtExpMonth">TextField</string>
 						<string key="txtExpYear">TextField</string>
@@ -855,13 +855,13 @@
 							<string key="name">lblZipCode</string>
 							<string key="candidateClassName">FormLabel</string>
 						</object>
+						<object class="IBToOneOutletInfo" key="pickerCreditCardCategory">
+							<string key="name">pickerCreditCardCategory</string>
+							<string key="candidateClassName">ModalTextField</string>
+						</object>
 						<object class="IBToOneOutletInfo" key="scrollView">
 							<string key="name">scrollView</string>
 							<string key="candidateClassName">UIScrollView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="txtCardCategory">
-							<string key="name">txtCardCategory</string>
-							<string key="candidateClassName">TextField</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="txtCardNumber">
 							<string key="name">txtCardNumber</string>
@@ -903,6 +903,14 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/FormLabel.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">ModalTextField</string>
+					<string key="superclassName">TextField</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/ModalTextField.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
