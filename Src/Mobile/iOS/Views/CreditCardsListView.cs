@@ -45,9 +45,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             NavigationItem.RightBarButtonItem = add;
 
             //this.AddBindings(new Dictionary<object, string>(){ });
-            this.View.ApplyAppFont ();
-
             NavigationItem.Title = Resources.GetValue( "CreditCardsListTitle");
+            this.View.ApplyAppFont ();
         }	
 
     }

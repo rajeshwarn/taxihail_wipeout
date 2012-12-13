@@ -245,6 +245,10 @@
     </AndroidResource>
     <AndroidResource Include="Resources\Drawable\right_arrow_light.png" />
     <AndroidResource Include="Resources\drawable-hdpi\right_arrow_light.png" />
+    <Compile Include="Activities\Setting\CreditCardsListActivity.cs" />
+    <Compile Include="Activities\Setting\CreditCardAddActivity.cs" />
+    <AndroidResource Include="Resources\Layout\View_CreditCardsList.axml" />
+    <AndroidResource Include="Resources\Layout\View_CreditCardAdd.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />

@@ -346,4 +346,14 @@
   <string name="PaymentCreditCardsOnFile">Credit Cars On File</string>
   <string name="PaymentOptional">(Optional)</string>
   <string name="PaymentTipAmount">Tip Amount</string>
+  <string name="CreditCardNumber">Card Number</string>
+  <string name="CreditCardZipCode">Zip code (for authorization)</string>
+  <string name="CreditCardsAddTitle">New Credit Card</string>
+  <string name="CreditCardsListTitle">Credit Cars on File</string>
+  <string name="CreditCardExpMonth">Expiration Month</string>
+  <string name="CreditCardCategory">Category</string>
+  <string name="CreditCardExpYear">Expiration Year</string>
+  <string name="CreditCardName">Name as it appears on card</string>
+  <string name="CreditCardType">Type of Card</string>
+  <string name="CreditCardCCV">Card Security Code</string>
 </resources>
