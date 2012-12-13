@@ -145,14 +145,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
         private Task LoadCreditCards ()
         {
-            return Task.Factory.StartNew(() => {
+            var task = Task.Factory.StartNew(() => {
                 
                 var cards = _accountService.GetCreditCards();
-                CreditCards.Clear();
-                foreach (var card in cards) {
-                    CreditCards.Add(card);
-                }
+                InvokeOnMainThread(delegate {
+                    CreditCards.Clear();
+                    foreach (var card in cards) {
+                        CreditCards.Add(card);
+                    }
+                    // refresh selected credit card name
+                    FirePropertyChanged("SelectedCreditCardName");
+                });
             }).HandleErrors();
+
+            return task;
         }
     }
 }
