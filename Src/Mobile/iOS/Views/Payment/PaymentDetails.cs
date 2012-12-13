@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payment
         {
             base.ViewDidLoad ();
 
-            base.DismissKeyboardOnReturn(txtCreditCard, txtTipAmount, txtTipPercent);
+            base.DismissKeyboardOnReturn(txtCreditCard, txtTipAmount);
 
             lblCreditCard.Text = Resources.GetValue("PaymentDetails.CreditCardLabel");
             lblTipAmount.Text = Resources.GetValue("PaymentDetails.TipAmountLabel");
@@ -49,15 +49,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payment
                 ViewModel.SelectedCreditCardId = result.Id;
             });
 
+            sgmtPercentOrValue.ValueChanged+= HandleValueChanged;
+
             this.AddBindings(new Dictionary<object, string> {
-                { txtTipAmount, "{'Text': {'Path': 'TipAmount'}}" },
-                { txtTipPercent, "{'Text': {'Path': 'TipPercent'}}" },
+                { txtTipAmount, "{'Text': {'Path': 'Tip'}}" },
                 { txtCreditCard, "{'Text': {'Path': 'SelectedCreditCardName'}}" },
             });
 
+        }
 
-
-     
+        void HandleValueChanged (object sender, EventArgs e)
+        {
+            ViewModel.IsTipInPercent = (sgmtPercentOrValue.SelectedSegment == 0);
         }
 		
         public override void ViewDidUnload ()

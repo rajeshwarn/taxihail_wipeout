@@ -199,8 +199,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get {
                 return GetCommand(() => {
 
-                    RequestSubNavigate<PaymentDetailsViewModel, PaymentDetailsViewModelResult>(new Dictionary<string, string> {
-                        { "selectedCreditCardId", new PaymentDetailsViewModelResult().ToJson () }
+                    RequestSubNavigate<PaymentDetailsViewModel, PaymentInformation>(new Dictionary<string, string> {
+                        { "selectedCreditCardId", new PaymentInformation().ToJson () }
                     }, result => {
                         this.Order.Payment.PayWithCreditCard = result.CreditCardId != Guid.Empty;
                         this.Order.Payment.CreditCardId = result.CreditCardId;

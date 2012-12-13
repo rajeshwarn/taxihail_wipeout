@@ -5,9 +5,9 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
     public class PaymentSettings
     {
         public bool PayWithCreditCard { get; set; }
-        public Guid CreditCardId { get; set; }
-        public decimal? TipAmount { get; set; }
-        public decimal? TipPercent { get; set; }
+        public Guid? CreditCardId { get; set; }
+        public double? TipAmount { get; set; }
+        public double? TipPercent { get; set; }
     }
 }
 

@@ -10,6 +10,9 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using Cirrious.MvvmCross.ExtensionMethods;
 using apcurium.MK.Common.Entity;
 using System.Linq;
+using apcurium.MK.Booking.Mobile.ViewModels.Payment;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -17,14 +20,15 @@ namespace apcurium.MK.Booking.Mobile
         IMvxServiceConsumer<IAccountService>
 	{
         private readonly BookingSettings _bookingSettings;
+        private readonly IAccountService _accountService;
 		public RideSettingsViewModel (string messageId, string bookingSettings)
 			:base(messageId)
 		{
             this._bookingSettings = bookingSettings.FromJson<BookingSettings>();
-            var accountService = this.GetService<IAccountService>();
+            _accountService = this.GetService<IAccountService>();
             
-            _vehicules = accountService.GetVehiclesList().ToArray();
-            _payments = accountService.GetPaymentsList().ToArray();
+            _vehicules = _accountService.GetVehiclesList().ToArray();
+            _payments = _accountService.GetPaymentsList().ToArray();
 		}
 
         private ListItem[] _vehicules;
@@ -133,7 +137,26 @@ namespace apcurium.MK.Booking.Mobile
         {
             get
             {
-                return GetCommand(() => RequestNavigate<PaymentPreferenceViewModel>());
+                return GetCommand(() => {
+
+                    var account = _accountService.CurrentAccount;
+                    var paymentInformation = new PaymentInformation {
+                        CreditCardId = account.DefaultCreditCard,
+                        TipAmount = account.DefaultTipAmount,
+                        TipPercent = account.DefaultTipPercent,
+                    };
+                    RequestSubNavigate<PaymentDetailsViewModel, PaymentInformation>(new Dictionary<string, string> {
+                        { "selectedCreditCardId", paymentInformation.ToJson () }
+                    }, result => {
+
+                        if(result != null && result.CreditCardId.GetValueOrDefault() != default(Guid))
+                        {
+                            Task.Factory.StartNew(()=> {
+                                this._accountService.UpdatePaymentProfile(result.CreditCardId.Value, result.TipAmount, result.TipPercent);
+                            }).HandleErrors();
+                        }
+                    });
+                });
             }
         }
 

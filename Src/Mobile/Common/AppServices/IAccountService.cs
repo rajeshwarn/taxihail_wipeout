@@ -61,9 +61,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         Order GetHistoryOrder(Guid id);
         #endregion
 
-        #region Credit Cards
+        #region Payment
 
         IEnumerable<CreditCardDetails> GetCreditCards();
+
+        void UpdatePaymentProfile (Guid creditCardId, double? tipAmount, double? tipPercent);
         
         #endregion
 

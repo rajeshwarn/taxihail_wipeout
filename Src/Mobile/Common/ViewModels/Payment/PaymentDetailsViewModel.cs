@@ -14,19 +14,23 @@ using apcurium.MK.Booking.Mobile.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
-    public class PaymentDetailsViewModel: BaseSubViewModel<PaymentDetailsViewModelResult>,
+    public class PaymentDetailsViewModel: BaseSubViewModel<PaymentInformation>,
         IMvxServiceConsumer<IAccountService>
     {
         private IAccountService _accountService;
-        public PaymentDetailsViewModel (string messageId, PaymentDetailsViewModelResult paymentDetails): base(messageId)
+        public PaymentDetailsViewModel (string messageId, PaymentInformation paymentDetails): base(messageId)
         {
             _accountService = this.GetService<IAccountService>();
             CreditCards.CollectionChanged += (sender, e) => FirePropertyChanged("HasCreditCards");
             LoadCreditCards();
 
-            SelectedCreditCardId = paymentDetails.CreditCardId;
-            TipAmount = paymentDetails.TipAmount.HasValue ? paymentDetails.TipAmount.Value.ToString(CultureInfo.InvariantCulture) : string.Empty;
-            TipPercent = paymentDetails.TipPercent.HasValue ? paymentDetails.TipPercent.Value.ToString(CultureInfo.InvariantCulture) : string.Empty;
+            SelectedCreditCardId = paymentDetails.CreditCardId.GetValueOrDefault();
+            IsTipInPercent = paymentDetails.TipPercent.HasValue;
+            Tip = paymentDetails.TipPercent.HasValue 
+                ? paymentDetails.TipPercent.Value.ToString(CultureInfo.InvariantCulture) 
+                : paymentDetails.TipAmount.HasValue 
+                    ? paymentDetails.TipAmount.Value.ToString(CultureInfo.InvariantCulture) 
+                    : string.Empty;
         }
 
         private readonly ObservableCollection<CreditCardDetails> _creditCards = new ObservableCollection<CreditCardDetails>();
@@ -67,29 +71,34 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             }
         }
 
-        private string _tipAmount;
-        public string TipAmount {
-            get{ return _tipAmount; }
+        private bool _isTipInPercent = true;
+        public bool IsTipInPercent {
+            get {
+                return _isTipInPercent;
+            }
             set {
-                if(value != _tipAmount)
+                if(value != _isTipInPercent)
                 {
-                    _tipAmount = value;
-                    FirePropertyChanged("TipAmount");
+                    _isTipInPercent = value;
+                    FirePropertyChanged("IsTipInPercent");
                 }
             }
         }
 
-        private string _tipPercent;
-        public string TipPercent {
-            get{ return _tipPercent; }
+        private string _tip;
+        public string Tip {
+            get {
+                return _tip;
+            }
             set {
-                if(value != _tipPercent)
+                if(value != _tip)
                 {
-                    _tipPercent = value;
-                    FirePropertyChanged("TipPercent");
+                    _tip = value;
+                    FirePropertyChanged("Tip");
                 }
             }
         }
+
 
 
         public apcurium.MK.Common.Entity.ListItem<Guid>[] GetCreditCardListItems ()
@@ -104,11 +113,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 
                 return GetCommand(() => 
                                   {
-                    ReturnResult(new PaymentDetailsViewModelResult
+                    var tipValue = GetDoubleValue(this.Tip).GetValueOrDefault();
+                    
+                    ReturnResult(new PaymentInformation
                     {
                         CreditCardId = this.SelectedCreditCardId,
-                        TipAmount = GetDecimalValue(this.TipAmount).GetValueOrDefault(),
-                        TipPercent = GetDecimalValue(this.TipPercent).GetValueOrDefault()
+                        TipAmount = IsTipInPercent ? default(double?) : tipValue,
+                        TipPercent = IsTipInPercent ? tipValue : default(double?),
                     });
                 });
             }
@@ -116,26 +127,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
         private bool ValidatePaymentSettings ()
         {
-            if (string.IsNullOrEmpty (TipAmount) 
-                || string.IsNullOrEmpty (TipPercent)) {
+            if (string.IsNullOrEmpty (Tip) ) {
                 base.MessageService.ShowMessage (Resources.GetString ("PaymentSettings.InvalidDataTitle"), Resources.GetString ("PaymentSettings.EmptyTipAmount"));
                 return false;
             }
-            if (!string.IsNullOrEmpty (TipAmount)) {
 
-                if(!GetDecimalValue(TipAmount).HasValue)
-                {
-                    base.MessageService.ShowMessage (Resources.GetString ("PaymentSettings.InvalidDataTitle"), Resources.GetString ("PaymentSettings.InvalidTipAmount"));
-                    return false;
-                }
-            }
-            if (!string.IsNullOrEmpty (TipPercent)) {
-                
-                if(!GetDecimalValue(TipPercent).HasValue)
-                {
-                    base.MessageService.ShowMessage (Resources.GetString ("PaymentSettings.InvalidDataTitle"), Resources.GetString ("PaymentSettings.InvalidTipPercent"));
-                    return false;
-                }
+            if(!GetDoubleValue(Tip).HasValue)
+            {
+                base.MessageService.ShowMessage (Resources.GetString ("PaymentSettings.InvalidDataTitle"), Resources.GetString ("PaymentSettings.InvalidTipAmount"));
+                return false;
             }
                         
             return true;
@@ -154,12 +154,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             }).HandleErrors();
         }
 
-        private decimal? GetDecimalValue(string value)
+        private double? GetDoubleValue(string value)
         {
-            decimal decimalValue;
-            return decimal.TryParse (value, System.Globalization.NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out decimalValue)
-                        ? decimalValue
-                        : default(decimal?);
+            double doubleValue;
+            return double.TryParse (value, System.Globalization.NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out doubleValue)
+                        ? doubleValue
+                        : default(double?);
         }
 
 

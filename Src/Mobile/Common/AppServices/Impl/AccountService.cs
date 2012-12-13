@@ -476,6 +476,19 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return _refData.PaymentsList;
         }
 
+        public void UpdatePaymentProfile (Guid creditCardId, double? tipAmount, double? tipPercent)
+        {
+            UseServiceClient<IAccountServiceClient>(service => 
+            {
+                service.UpdatePaymentProfile(new UpdatePaymentProfileRequest
+                { 
+                    DefaultCreditCard = creditCardId,
+                    DefaultTipAmount = tipAmount,
+                    DefaultTipPercent = tipPercent
+                });
+            });
+        }
+
         public IEnumerable<CreditCardDetails> GetCreditCards()
         {
             var cache = TinyIoCContainer.Current.Resolve<ICacheService> ();

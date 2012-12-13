@@ -21,10 +21,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payment
 		MonoTouch.UIKit.UITextField txtTipAmount { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UITextField txtTipPercent { get; set; }
+		MonoTouch.UIKit.UISegmentedControl sgmtPercentOrValue { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UITextField txtCreditCard { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UILabel lnlNoCreditCard { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UILabel lblOptional { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
@@ -43,14 +49,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payment
 				txtTipAmount = null;
 			}
 
-			if (txtTipPercent != null) {
-				txtTipPercent.Dispose ();
-				txtTipPercent = null;
+			if (sgmtPercentOrValue != null) {
+				sgmtPercentOrValue.Dispose ();
+				sgmtPercentOrValue = null;
 			}
 
 			if (txtCreditCard != null) {
 				txtCreditCard.Dispose ();
 				txtCreditCard = null;
+			}
+
+			if (lnlNoCreditCard != null) {
+				lnlNoCreditCard.Dispose ();
+				lnlNoCreditCard = null;
+			}
+
+			if (lblOptional != null) {
+				lblOptional.Dispose ();
+				lblOptional = null;
 			}
 		}
 	}
