@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<apcurium.mk.booking.mobile.client.controls.PictureListViewCell xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.TaxiHailDemo"
+    android:layout_width="fill_parent"
+    android:layout_height="50dip"
+    android:layout_weight="1"
+    android:paddingTop="5dip"
+    android:paddingBottom="5dip"
+    android:paddingLeft="15dip"
+    local:MvxBind="{&apos;TextLeft&apos;:{&apos;Path&apos;:&apos;FriendlyName&apos;}, &apos;TextRight&apos;:{&apos;Path&apos;:&apos;Last4Digits&apos;}, &apos;IsTop&apos;:{&apos;Path&apos;:&apos;IsFirst&apos;}, &apos;IsBottom&apos;:{&apos;Path&apos;:&apos;IsLast&apos;}, &apos;ShowAddSign&apos;:{&apos;Path&apos;:&apos;ShowPlusSign&apos;}}" />

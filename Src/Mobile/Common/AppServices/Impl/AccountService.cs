@@ -473,9 +473,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return _refData.PaymentsList;
         }
 
-        public IEnumerable<ListItem> GetMyPaymentList()
+        public IEnumerable<CreditCardDetails> GetMyPaymentList()
         {
-            var cached = TinyIoCContainer.Current.Resolve<ICacheService>().Get<ListItem[]>(_myPaymentsListCacheKey);
+            var cached = TinyIoCContainer.Current.Resolve<ICacheService>().Get<CreditCardDetails[]>(_myPaymentsListCacheKey);
 
             if (cached != null)
             {
@@ -484,10 +484,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             else
             {
 
-                List<ListItem> result = new List<ListItem>();
+                var result = new List<CreditCardDetails>();
                 UseServiceClient<IAccountServiceClient>(service =>
                                                             {
-                                                                var list = service.GetCreditCards();
+                                                                result = service.GetCreditCards().ToList();
                                                               
                                                             }
                 );
