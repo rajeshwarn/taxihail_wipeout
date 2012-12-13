@@ -31,14 +31,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         private AppContext(UIWindow window)
         {
             Window = window;
-            eventStore = new EKEventStore ( );
         }
-
-        public EKEventStore EventStore 
-        {
-            get { return eventStore; }
-        }
-        protected EKEventStore eventStore;
 
         public UIWindow Window  { get; private set; }
             
