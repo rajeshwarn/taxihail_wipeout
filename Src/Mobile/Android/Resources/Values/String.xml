@@ -356,4 +356,7 @@
   <string name="CreditCardName">Name as it appears on card</string>
   <string name="CreditCardType">Type of Card</string>
   <string name="CreditCardCCV">Card Security Code</string>
+  <string name="CreditCardErrorTitle">Can\'t add the Credit Card</string>
+  <string name="CreditCardInvalidCrediCardNUmber">All the fields are required</string>
+  <string name="CreditCardRequiredFields">All the fields are required</string>
 </resources>

@@ -8,6 +8,8 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using Cirrious.MvvmCross.ExtensionMethods;
 using apcurium.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Data;
+using System.Collections.Generic;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -19,25 +21,60 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             Data = new CreditCardInfos();
             _accountService = this.GetService<IAccountService>();
-        }
+
+			CardCategories = new List<ListItem>();
+			CardCategories.Add (new ListItem{ Id = 0, Display = "Personnal"} );
+			CardCategories.Add (new ListItem{ Id = 1, Display = "Work"});
+			CardCategories.Add (new ListItem{ Id = 2, Display = "Other"});
+			CreditCardCategory = 0;
+		}
 
         public CreditCardInfos Data { get; set; }
+
+		int _creditCardCategory;
+		public int CreditCardCategory {
+			get {
+				return _creditCardCategory;
+			}
+			set {
+				_creditCardCategory = value;
+				FirePropertyChanged("CreditCardCategory");
+				FirePropertyChanged("CreditCardCategoryName");
+			}
+		}
+
+		public string CreditCardCategoryName { 
+			get {
+				var category = CardCategories.FirstOrDefault(x=>x.Id == CreditCardCategory);
+				if(category == null) return null;
+				return category.Display; 
+			}
+		}
+
+		public List<ListItem> CardCategories { get; set; }
+
+		public IMvxCommand SetCreditCardCompanyCommand { get { return GetCommand<string>(item => {
+					Data.CreditCardCompany = item;
+		}); } }
 
         public IMvxCommand AddCreditCardCommand { get { return GetCommand(AddCrediCard); } }
 
         private void AddCrediCard ()
         {
+			Data.FriendlyName = CreditCardCategoryName;
             if (Params.Get<string> (Data.NameOnCard, Data.CardNumber, 
                                    Data.CreditCardCompany, Data.FriendlyName, 
                                    Data.ExpirationMonth, 
                                    Data.ExpirationYear, 
                                    Data.CCV, 
                                    Data.ZipCode).Any (x => x.IsNullOrEmpty ())) {
-                //missing field
+				MessageService.ShowMessage(Resources.GetString("CreditCardErrorTitle"), Resources.GetString("CreditCardRequiredFields"));
+				return;
             }
 
             if (!IsValidate (Data.CardNumber)) {
-                //invalid cc number            
+				MessageService.ShowMessage(Resources.GetString("CreditCardErrorTitle"), Resources.GetString("CreditCardInvalidCrediCardNUmber"));
+				return;
             }
 
             try {
