@@ -60,9 +60,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 		MonoTouch.UIKit.UITextField txtCreditCard { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lnlNoCreditCard { get; set; }
-
-		[Outlet]
 		MonoTouch.UIKit.UILabel lblOptional { get; set; }
 		
 		void ReleaseDesignerOutlets ()
@@ -145,11 +142,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			if (txtCreditCard != null) {
 				txtCreditCard.Dispose ();
 				txtCreditCard = null;
-			}
-
-			if (lnlNoCreditCard != null) {
-				lnlNoCreditCard.Dispose ();
-				lnlNoCreditCard = null;
 			}
 
 			if (lblOptional != null) {

@@ -281,7 +281,7 @@
 								<string key="NSFrame">{{8, 317}, {306, 30}}</string>
 								<reference key="NSSuperview" ref="135878076"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
+								<reference key="NSNextKeyView" ref="811517694"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -309,7 +309,7 @@
 								<string key="NSFrame">{{8, 355}, {102, 21}}</string>
 								<reference key="NSSuperview" ref="135878076"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="262758887"/>
+								<reference key="NSNextKeyView" ref="1014809052"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -381,7 +381,7 @@
 								<string key="NSFrame">{{8, 464}, {304, 30}}</string>
 								<reference key="NSSuperview" ref="135878076"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="199011276"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -435,32 +435,13 @@
 									<reference ref="4"/>
 								</array>
 							</object>
-							<object class="IBUILabel" id="199011276">
-								<reference key="NSNextResponder" ref="135878076"/>
-								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{20, 468}, {257, 21}}</string>
-								<reference key="NSSuperview" ref="135878076"/>
-								<reference key="NSWindow"/>
-								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<bool key="IBUIOpaque">NO</bool>
-								<bool key="IBUIClipsSubviews">YES</bool>
-								<int key="IBUIContentMode">7</int>
-								<bool key="IBUIUserInteractionEnabled">NO</bool>
-								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<string key="IBUIText">No credit card</string>
-								<reference key="IBUITextColor" ref="992233410"/>
-								<nil key="IBUIHighlightedColor"/>
-								<int key="IBUIBaselineAdjustment">0</int>
-								<reference key="IBUIFontDescription" ref="937788843"/>
-								<reference key="IBUIFont" ref="251194447"/>
-								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
-							</object>
 							<object class="IBUILabel" id="1014809052">
 								<reference key="NSNextResponder" ref="135878076"/>
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{102, 355}, {78, 21}}</string>
 								<reference key="NSSuperview" ref="135878076"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="262758887"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -645,14 +626,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">lnlNoCreditCard</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="199011276"/>
-					</object>
-					<int key="connectionID">55</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">lblOptional</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="1014809052"/>
@@ -706,7 +679,6 @@
 							<reference ref="849096937"/>
 							<reference ref="267203986"/>
 							<reference ref="262758887"/>
-							<reference ref="199011276"/>
 							<reference ref="1014809052"/>
 						</array>
 						<reference key="parent" ref="191373211"/>
@@ -787,11 +759,6 @@
 						<reference key="parent" ref="135878076"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">48</int>
-						<reference key="object" ref="199011276"/>
-						<reference key="parent" ref="135878076"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">49</int>
 						<reference key="object" ref="1014809052"/>
 						<reference key="parent" ref="135878076"/>
@@ -828,7 +795,6 @@
 				<string key="46.CustomClassName">NavigateTextField</string>
 				<string key="46.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="47.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<string key="48.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="49.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="5.CustomClassName">TextField</string>
 				<string key="5.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -881,7 +847,6 @@
 						<string key="lblPhone">UILabel</string>
 						<string key="lblTipAmount">UILabel</string>
 						<string key="lblVehicleType">UILabel</string>
-						<string key="lnlNoCreditCard">UILabel</string>
 						<string key="scrollView">UIScrollView</string>
 						<string key="sgmtPercentOrValue">UISegmentedControl</string>
 						<string key="txtChargeType">UITextField</string>
@@ -923,10 +888,6 @@
 						</object>
 						<object class="IBToOneOutletInfo" key="lblVehicleType">
 							<string key="name">lblVehicleType</string>
-							<string key="candidateClassName">UILabel</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="lnlNoCreditCard">
-							<string key="name">lnlNoCreditCard</string>
 							<string key="candidateClassName">UILabel</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="scrollView">
