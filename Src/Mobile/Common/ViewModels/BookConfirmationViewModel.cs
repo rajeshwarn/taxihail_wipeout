@@ -149,24 +149,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}
 			}
 		}
-
-		public IMvxCommand NavigateToEditBookingSettings {
-			get {
-                return GetCommand(() =>
-                {
-					RequestSubNavigate<RideSettingsViewModel, BookingSettings>(new Dictionary<string, string>{
-						{ "bookingSettings", Order.Settings.ToJson () }
-					}, result=>{
-						if(result != null)
-						{
-							Order.Settings = result;
-                            RideSettings.Data = result;
-                            FirePropertyChanged("RideSettings");
-						}
-					});
-				});
-			}
-		}
 		
 		public IMvxCommand NavigateToRefineAddress
 		{

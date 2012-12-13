@@ -106,39 +106,35 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             return CreditCards.Select(x=> new ListItem<Guid> { Id = x.CreditCardId, Display = x.FriendlyName }).ToArray();
         }
 
-        public IMvxCommand SaveCommand
-        {
-            get
-            {
-                
-                return GetCommand(() => 
-                                  {
-                    var tipValue = GetDoubleValue(this.Tip).GetValueOrDefault();
-                    
-                    ReturnResult(new PaymentInformation
-                    {
-                        CreditCardId = this.SelectedCreditCardId,
-                        TipAmount = IsTipInPercent ? default(double?) : tipValue,
-                        TipPercent = IsTipInPercent ? tipValue : default(double?),
-                    });
+        public IMvxCommand NavigateToCreditCardsList {
+            get {
+                return GetCommand (()=>{
+                    RequestNavigate<CreditCardsListViewModel>();
                 });
             }
         }
 
-        private bool ValidatePaymentSettings ()
+        public bool ValidatePaymentSettings ()
         {
-            if (string.IsNullOrEmpty (Tip) ) {
-                base.MessageService.ShowMessage (Resources.GetString ("PaymentSettings.InvalidDataTitle"), Resources.GetString ("PaymentSettings.EmptyTipAmount"));
-                return false;
-            }
-
             if(!GetDoubleValue(Tip).HasValue)
             {
-                base.MessageService.ShowMessage (Resources.GetString ("PaymentSettings.InvalidDataTitle"), Resources.GetString ("PaymentSettings.InvalidTipAmount"));
+                base.MessageService.ShowMessage (Resources.GetString ("PaymentDetails.InvalidDataTitle"), Resources.GetString ("PaymentDetails.InvalidTipAmount"));
                 return false;
             }
                         
             return true;
+        }
+
+        public PaymentInformation GetPaymentInformation ()
+        {
+            var tipValue = GetDoubleValue(this.Tip).GetValueOrDefault();
+            
+            return new PaymentInformation
+            {
+                CreditCardId = this.SelectedCreditCardId,
+                TipAmount = IsTipInPercent ? default(double?) : tipValue,
+                TipPercent = IsTipInPercent ? tipValue : default(double?),
+            };
         }
 
 

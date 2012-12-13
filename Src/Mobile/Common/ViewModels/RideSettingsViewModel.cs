@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile
 {
-	public class RideSettingsViewModel: BaseSubViewModel<BookingSettings>,
+	public class RideSettingsViewModel: BaseSubViewModel<object[]>,
         IMvxServiceConsumer<IAccountService>
 	{
         private readonly BookingSettings _bookingSettings;
@@ -29,7 +29,21 @@ namespace apcurium.MK.Booking.Mobile
             
             _vehicules = _accountService.GetVehiclesList().ToArray();
             _payments = _accountService.GetPaymentsList().ToArray();
+
+            var account = _accountService.CurrentAccount;
+            var paymentInformation = new PaymentInformation {
+                CreditCardId = account.DefaultCreditCard,
+                TipAmount = account.DefaultTipAmount,
+                TipPercent = account.DefaultTipPercent,
+            };
+            PaymentPreferences = new PaymentDetailsViewModel(Guid.NewGuid().ToString(), paymentInformation);
 		}
+
+        public PaymentDetailsViewModel PaymentPreferences {
+            get;
+            private set;
+        }
+
 
         private ListItem[] _vehicules;
         public ListItem[] Vehicles {
@@ -160,13 +174,6 @@ namespace apcurium.MK.Booking.Mobile
             }
         }
 
-        public IMvxCommand NavigateToCreditCarsList
-        {
-            get
-            {
-                return GetCommand(() => RequestNavigate<CreditCardsListViewModel>());
-            }
-        }
         
         public IMvxCommand SetChargeType
         {
@@ -198,9 +205,9 @@ namespace apcurium.MK.Booking.Mobile
             {
                 return GetCommand(() => 
                                            {
-					if(ValidateRideSettings())
+					if(ValidateRideSettings() && PaymentPreferences.ValidatePaymentSettings())
 					{
-                    	ReturnResult(_bookingSettings);
+                        ReturnResult(new object[] { _bookingSettings, PaymentPreferences.GetPaymentInformation() });
 					}
                 });
             }

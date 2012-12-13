@@ -478,15 +478,25 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public void UpdatePaymentProfile (Guid creditCardId, double? tipAmount, double? tipPercent)
         {
-            UseServiceClient<IAccountServiceClient>(service => 
-            {
-                service.UpdatePaymentProfile(new UpdatePaymentProfileRequest
-                { 
-                    DefaultCreditCard = creditCardId,
-                    DefaultTipAmount = tipAmount,
-                    DefaultTipPercent = tipPercent
-                });
+            var request = new UpdatePaymentProfileRequest
+            { 
+                DefaultCreditCard = creditCardId,
+                DefaultTipAmount = tipAmount,
+                DefaultTipPercent = tipPercent
+            };
+
+            QueueCommand<IAccountServiceClient> (service =>
+                                                 {                     
+                service.UpdatePaymentProfile (request);
+                
             });
+
+            var account = CurrentAccount;
+            account.DefaultCreditCard = creditCardId;
+            account.DefaultTipAmount = tipAmount;
+            account.DefaultTipPercent = tipPercent;
+            //Set to update the cache
+            CurrentAccount = account;
         }
 
         public IEnumerable<CreditCardDetails> GetCreditCards()
@@ -553,6 +563,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }, ex => { throw ex; });  
 
         }
+
+
     }
 }
 

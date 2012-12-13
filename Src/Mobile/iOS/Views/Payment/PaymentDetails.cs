@@ -44,16 +44,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payment
             lblCreditCard.Text = Resources.GetValue("PaymentDetails.CreditCardLabel");
             lblTipAmount.Text = Resources.GetValue("PaymentDetails.TipAmountLabel");
 			
-            ((ModalTextField)txtCreditCard).Configure (Resources.GetValue("CreditCardsListTitle"), ViewModel.GetCreditCardListItems(), ViewModel.SelectedCreditCardId, result =>
-            {
-                ViewModel.SelectedCreditCardId = result.Id;
-            });
-
-            sgmtPercentOrValue.ValueChanged+= HandleValueChanged;
+            sgmtPercentOrValue.SelectedSegment = ViewModel.IsTipInPercent ? 0 : 1;
+            sgmtPercentOrValue.ValueChanged += HandleValueChanged;
 
             this.AddBindings(new Dictionary<object, string> {
                 { txtTipAmount, "{'Text': {'Path': 'Tip'}}" },
-                { txtCreditCard, "{'Text': {'Path': 'SelectedCreditCardName'}}" },
+                { txtCreditCard, "{'Text': {'Path': 'SelectedCreditCardName'}, 'NavigateCommand': {'Path': 'NavigateToCreditCardsList'}}" },
             });
 
         }

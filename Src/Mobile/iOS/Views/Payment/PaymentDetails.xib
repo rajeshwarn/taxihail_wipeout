@@ -43,7 +43,7 @@
 						<string key="NSFrame">{{8, 20}, {102, 21}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="419626847"/>
+						<reference key="NSNextKeyView" ref="190483401"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -133,7 +133,7 @@
 						<string key="NSFrame">{{8, 129}, {304, 30}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="210388368"/>
+						<reference key="NSNextKeyView" ref="307989043"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -154,7 +154,7 @@
 						<reference key="IBUIFontDescription" ref="26421217"/>
 						<reference key="IBUIFont" ref="653031509"/>
 					</object>
-					<object class="IBUISegmentedControl" id="419626847">
+					<object class="IBUISegmentedControl" id="190483401">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{8, 50}, {86, 44}}</string>
@@ -187,7 +187,7 @@
 							<reference ref="4"/>
 						</array>
 					</object>
-					<object class="IBUILabel" id="210388368">
+					<object class="IBUILabel" id="307989043">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{20, 133}, {257, 21}}</string>
@@ -207,7 +207,7 @@
 						<reference key="IBUIFont" ref="516097794"/>
 						<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 					</object>
-					<object class="IBUILabel" id="342302765">
+					<object class="IBUILabel" id="707113790">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{102, 20}, {78, 21}}</string>
@@ -294,7 +294,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">lnlNoCreditCard</string>
 						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="210388368"/>
+						<reference key="destination" ref="307989043"/>
 					</object>
 					<int key="connectionID">20</int>
 				</object>
@@ -302,7 +302,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">sgmtPercentOrValue</string>
 						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="419626847"/>
+						<reference key="destination" ref="190483401"/>
 					</object>
 					<int key="connectionID">21</int>
 				</object>
@@ -310,7 +310,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">lblOptional</string>
 						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="342302765"/>
+						<reference key="destination" ref="707113790"/>
 					</object>
 					<int key="connectionID">23</int>
 				</object>
@@ -331,9 +331,9 @@
 							<reference ref="969451220"/>
 							<reference ref="916937038"/>
 							<reference ref="770599656"/>
-							<reference ref="419626847"/>
-							<reference ref="210388368"/>
-							<reference ref="342302765"/>
+							<reference ref="190483401"/>
+							<reference ref="307989043"/>
+							<reference ref="707113790"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -370,17 +370,17 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">17</int>
-						<reference key="object" ref="419626847"/>
+						<reference key="object" ref="190483401"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">19</int>
-						<reference key="object" ref="210388368"/>
+						<reference key="object" ref="307989043"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">22</int>
-						<reference key="object" ref="342302765"/>
+						<reference key="object" ref="707113790"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 				</array>
@@ -391,7 +391,7 @@
 				<string key="-2.CustomClassName">UIResponder</string>
 				<string key="-2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="1.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<string key="10.CustomClassName">ModalTextField</string>
+				<string key="10.CustomClassName">NavigateTextField</string>
 				<string key="10.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="17.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="19.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -420,11 +420,11 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
-					<string key="className">ModalTextField</string>
+					<string key="className">NavigateTextField</string>
 					<string key="superclassName">TextField</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/ModalTextField.h</string>
+						<string key="minorKey">./Classes/NavigateTextField.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
