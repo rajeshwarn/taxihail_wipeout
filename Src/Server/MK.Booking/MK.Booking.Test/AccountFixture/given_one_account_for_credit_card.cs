@@ -27,17 +27,17 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         [Test]
         public void when_add_first_credit_card()
         {
-            const string creditCardComapny = "visa";
+            const string creditCardCompany = "visa";
             const string friendlyName = "work credit card";
             var creditCardId = Guid.NewGuid();
             const string last4Digits = "4025";
             const string token = "jjwcnSLWm85";
 
-            this.sut.When(new AddCreditCard { AccountId = _accountId, CreditCardCompany = creditCardComapny, FriendlyName = friendlyName, CreditCardId = creditCardId, Last4Digits = last4Digits, Token = token, Id = Guid.NewGuid()});
+            this.sut.When(new AddCreditCard { AccountId = _accountId, CreditCardCompany = creditCardCompany, FriendlyName = friendlyName, CreditCardId = creditCardId, Last4Digits = last4Digits, Token = token, Id = Guid.NewGuid()});
 
             var @event = sut.ThenHasOne<CreditCardAdded>();
             Assert.AreEqual(_accountId, @event.SourceId);
-            Assert.AreEqual(creditCardComapny, @event.CreditCardCompany);
+            Assert.AreEqual(creditCardCompany, @event.CreditCardCompany);
             Assert.AreEqual(friendlyName, @event.FriendlyName);
             Assert.AreEqual(creditCardId, @event.CreditCardId);
             Assert.AreEqual(last4Digits, @event.Last4Digits);
@@ -51,7 +51,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         [Test]
         public void when_add_second_credit_card()
         {
-            const string creditCardComapny = "visa";
+            const string creditCardCompany = "visa";
             const string friendlyName = "work credit card";
             var creditCardId = Guid.NewGuid();
             const string last4Digits = "4025";
@@ -59,11 +59,11 @@ namespace apcurium.MK.Booking.Test.AccountFixture
 
             this.sut.Given(new CreditCardAdded { SourceId = _accountId });
             
-            this.sut.When(new AddCreditCard { AccountId = _accountId, CreditCardCompany = creditCardComapny, FriendlyName = friendlyName, CreditCardId = creditCardId, Last4Digits = last4Digits, Token = token, Id = Guid.NewGuid()});
+            this.sut.When(new AddCreditCard { AccountId = _accountId, CreditCardCompany = creditCardCompany, FriendlyName = friendlyName, CreditCardId = creditCardId, Last4Digits = last4Digits, Token = token, Id = Guid.NewGuid()});
 
             var @event = sut.ThenHasSingle<CreditCardAdded>();
             Assert.AreEqual(_accountId, @event.SourceId);
-            Assert.AreEqual(creditCardComapny, @event.CreditCardCompany);
+            Assert.AreEqual(creditCardCompany, @event.CreditCardCompany);
             Assert.AreEqual(friendlyName, @event.FriendlyName);
             Assert.AreEqual(creditCardId, @event.CreditCardId);
             Assert.AreEqual(last4Digits, @event.Last4Digits);
