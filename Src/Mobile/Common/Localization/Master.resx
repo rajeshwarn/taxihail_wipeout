@@ -1147,15 +1147,24 @@
     <value>Type of Card</value>
   </data>
    <data name="CreditCardExpMonth" xml:space="preserve">
-    <value>Expiration Month</value>
+    <value>Exp. Month</value>
   </data>
   <data name="CreditCardExpYear" xml:space="preserve">
-    <value>Expiration Year</value>
+    <value>Exp. Year</value>
   </data>
    <data name="CreditCardCCV" xml:space="preserve">
     <value>Card Security Code</value>
   </data>
   <data name="CreditCardZipCode" xml:space="preserve">
     <value>Zip code (for authorization)</value>
+  </data>
+   <data name="CreditCardErrorTitle" xml:space="preserve">
+    <value>Can't add the Credit Card</value>
+  </data>
+  <data name="CreditCardRequiredFields" xml:space="preserve">
+    <value>All the fields are required</value>
+  </data>
+  <data name="CreditCardInvalidCrediCardNUmber" xml:space="preserve">
+    <value>The Credit Card Number is invalid</value>
   </data>
 </root>

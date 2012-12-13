@@ -249,6 +249,13 @@
     <Compile Include="Activities\Setting\CreditCardAddActivity.cs" />
     <AndroidResource Include="Resources\Layout\View_CreditCardsList.axml" />
     <AndroidResource Include="Resources\Layout\View_CreditCardAdd.axml" />
+    <AndroidResource Include="Resources\Drawable\amex.png" />
+    <AndroidResource Include="Resources\Drawable\mastercard.png" />
+    <AndroidResource Include="Resources\Drawable\visa.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\amex.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\visa.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\mastercard.png" />
+    <Compile Include="Controls\BindableRadioButton.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
