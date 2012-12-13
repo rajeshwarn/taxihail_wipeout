@@ -12,6 +12,20 @@ namespace apcurium.MK.Booking.Mobile.Client
 {
     public class PhoneService : IPhoneService
     {
+
+        private EKEventStore _eventStore;
+
+        public EKEventStore EventStore 
+        {
+            get {
+                if (_eventStore == null) 
+                {
+                    _eventStore = new EKEventStore ();
+                }
+                return _eventStore;
+            }
+        }
+
         public PhoneService ()
         {
         }
@@ -46,7 +60,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             mailComposer.SetToRecipients (new string[] { supportEmail  });
             mailComposer.SetMessageBody ("", false);
             mailComposer.SetSubject (supportEmail);
-            mailComposer.Finished += delegate(object mailsender, MFComposeResultEventArgs mfce) {
+            mailComposer.Finished += delegate(object mailsender, MFComposeResultEventArgs mfce) 
+            {
                 mailComposer.DismissModalViewControllerAnimated (true);
                 presenter.NativeModalViewControllerDisappearedOnItsOwn();
                 if (File.Exists (errorLogPath))
@@ -61,20 +76,30 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         #region IPhoneService implementation
 
-        public void AddEventToCalendarAndReminder (string title, string addInfo, string place, DateTime startDate)
+        public void AddEventToCalendarAndReminder (string title, string addInfo, string place, DateTime startDate, DateTime alertDate)
         {
-            AppContext.Current.EventStore.RequestAccess (EKEntityType.Event,
+
+            EventStore.RequestAccess (EKEntityType.Event,
                                                   (bool granted, NSError e) => {
                     if (granted)
                     {
-                        EKEvent newEvent = EKEvent.FromStore ( AppContext.Current.EventStore );
-                        newEvent.AddAlarm ( EKAlarm.FromDate ( DateTime.Now.AddMinutes ( 120 ) ) );
+                        EKEvent newEvent = EKEvent.FromStore ( EventStore );
+                    newEvent.AddAlarm ( EKAlarm.FromDate ( alertDate ) );
                         newEvent.StartDate = startDate;
                         newEvent.EndDate = startDate.AddHours(1);
                         newEvent.Title = title;
                         newEvent.Notes = addInfo + " " + place + " - " + startDate.ToLongDateString();
+                        newEvent.Calendar = EventStore.DefaultCalendarForNewEvents;
                         NSError err = null;
-                        AppContext.Current.EventStore.SaveEvent ( newEvent, EKSpan.ThisEvent, out err );
+                        EventStore.SaveEvent ( newEvent, EKSpan.ThisEvent, out err );
+                        if (err != null) 
+                        {
+                            TinyIoC.TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Err Saving Event : " + err.ToString());
+                            return;
+                        } else 
+                        {
+                            TinyIoC.TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Event Saved,  ID: " + newEvent.EventIdentifier);
+                        }
                     }
                     else
                     {

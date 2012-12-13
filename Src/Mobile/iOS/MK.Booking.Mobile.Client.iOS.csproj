@@ -65,8 +65,7 @@
     <AssemblyName>TaxiMobileApp</AssemblyName>
     <MtouchExtraArgs>-v -v -v -v  -aot "nrgctx-trampolines=2500" -aot "nimt-trampolines=2500" -aot "ntrampolines=2500"</MtouchExtraArgs>
     <MtouchArch>ARMv7</MtouchArch>
-    <CodesignProvision>E7092E56-A6F8-4BEE-8C1B-E591B9AD7DBE</CodesignProvision>
-    <MtouchUseLlvm>True</MtouchUseLlvm>
+    <CodesignProvision>24AF24F0-717B-462F-BDD5-7C1E1D4AE482</CodesignProvision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>none</DebugType>
@@ -355,7 +354,7 @@
     <Compile Include="Views\PaymentPreferenceView.cs" />
     <Compile Include="Views\PaymentPreferenceView.designer.cs">
       <DependentUpon>PaymentPreferenceView.cs</DependentUpon>
-      </Compile>
+    </Compile>
     <Compile Include="Views\CreditCardAddView.cs" />
     <Compile Include="Views\CreditCardAddView.designer.cs">
       <DependentUpon>CreditCardAddView.cs</DependentUpon>
