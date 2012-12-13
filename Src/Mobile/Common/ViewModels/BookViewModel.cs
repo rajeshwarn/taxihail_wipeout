@@ -113,8 +113,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _fareEstimate = Resources.GetString("NoFareText");
 
             CenterMap(true);
-            
-            ThreadPool.QueueUserWorkItem(UpdateServerInfo);
+
+            Task.Factory.SafeStartNew( ()=> UpdateServerInfo());
  
             ForceRefresh();
         }
@@ -420,7 +420,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         }
 
-        private void UpdateServerInfo(object state)
+        private void UpdateServerInfo()
         {
             string appVersion = TinyIoCContainer.Current.Resolve<IPackageInfo>().Version;
             var versionFormat = TinyIoCContainer.Current.Resolve<IAppResource>().GetString("Version");

@@ -115,7 +115,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 txt.SetTextColor(new Color(StyleManager.Current.NavigationTitleColor.Red, StyleManager.Current.NavigationTitleColor.Green, StyleManager.Current.NavigationTitleColor.Blue));
             }
 
-            LoopAllChildren(this);
+            ///LoopAllChildren(this);
 
 
         }

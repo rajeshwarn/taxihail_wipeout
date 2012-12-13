@@ -41,7 +41,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			
 			emailIntent.SetType("message/rfc822");
 			emailIntent.PutExtra(Intent.ExtraEmail, new String[] { supportEmail });
-			emailIntent.PutExtra(Intent.ExtraCc, new String[] { AppContext.Current.LoggedInEmail });
 			emailIntent.PutExtra(Intent.ExtraSubject, subject);
 			
 			emailIntent.PutExtra(Intent.ExtraStream, Android.Net.Uri.Parse(@"file:///" + LoggerImpl.LogFilename));
