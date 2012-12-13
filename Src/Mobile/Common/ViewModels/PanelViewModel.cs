@@ -96,17 +96,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return GetCommand(() =>
                 {
                     MenuIsOpen = false;
-                    RequestSubNavigate<RideSettingsViewModel, object[]> (new Params{
+                    RequestNavigate<RideSettingsViewModel> (new Params{
                         { "bookingSettings", _accountService.CurrentAccount.Settings.ToJson()  }
-                    }, result => {
-                        if (result != null) {
-                            var bookingSettings = result[0] as BookingSettings;
-                            _accountService.UpdateSettings (bookingSettings);
-
-                            var paymentPreferences = result[1] as PaymentInformation;
-                            _accountService.UpdatePaymentProfile(paymentPreferences.CreditCardId.Value, paymentPreferences.TipAmount, paymentPreferences.TipPercent);
-
-                        }
                     });
                 });
             }

@@ -16,13 +16,12 @@ using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile
 {
-	public class RideSettingsViewModel: BaseSubViewModel<object[]>,
+	public class RideSettingsViewModel: BaseViewModel,
         IMvxServiceConsumer<IAccountService>
 	{
         private readonly BookingSettings _bookingSettings;
         private readonly IAccountService _accountService;
 		public RideSettingsViewModel (string messageId, string bookingSettings)
-			:base(messageId)
 		{
             this._bookingSettings = bookingSettings.FromJson<BookingSettings>();
             _accountService = this.GetService<IAccountService>();
@@ -207,7 +206,10 @@ namespace apcurium.MK.Booking.Mobile
                                            {
 					if(ValidateRideSettings() && PaymentPreferences.ValidatePaymentSettings())
 					{
-                        ReturnResult(new object[] { _bookingSettings, PaymentPreferences.GetPaymentInformation() });
+                        _accountService.UpdateSettings (_bookingSettings);
+                        var tipAmount = PaymentPreferences.IsTipInPercent ? default(double?) : PaymentPreferences.TipDouble;
+                        var tipPercent = PaymentPreferences.IsTipInPercent ? PaymentPreferences.TipDouble : default(double?);
+                        _accountService.UpdatePaymentProfile(PaymentPreferences.SelectedCreditCardId, tipAmount, tipPercent);
 					}
                 });
             }

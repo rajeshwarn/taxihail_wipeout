@@ -99,6 +99,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             }
         }
 
+        public double? TipDouble {
+            get {
+                double doubleValue;
+                return double.TryParse (Tip, System.Globalization.NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out doubleValue)
+                    ? doubleValue
+                    : default(double?);
+            }
+        }
+
 
 
         public apcurium.MK.Common.Entity.ListItem<Guid>[] GetCreditCardListItems ()
@@ -125,7 +134,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         public bool ValidatePaymentSettings ()
         {
 
-            if(!string.IsNullOrWhiteSpace(Tip) && !GetDoubleValue(Tip).HasValue)
+            if(!string.IsNullOrWhiteSpace(Tip) && !TipDouble.HasValue)
             {
                 base.MessageService.ShowMessage (Resources.GetString ("PaymentDetails.InvalidDataTitle"), Resources.GetString ("PaymentDetails.InvalidTipAmount"));
                 return false;
@@ -133,19 +142,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                         
             return true;
         }
-
-        public PaymentInformation GetPaymentInformation ()
-        {
-            var tipValue = GetDoubleValue(this.Tip).GetValueOrDefault();
-            
-            return new PaymentInformation
-            {
-                CreditCardId = this.SelectedCreditCardId,
-                TipAmount = IsTipInPercent ? default(double?) : tipValue,
-                TipPercent = IsTipInPercent ? tipValue : default(double?),
-            };
-        }
-
 
         private Task LoadCreditCards ()
         {
@@ -158,16 +154,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 }
             }).HandleErrors();
         }
-
-        private double? GetDoubleValue(string value)
-        {
-            double doubleValue;
-            return double.TryParse (value, System.Globalization.NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out doubleValue)
-                        ? doubleValue
-                        : default(double?);
-        }
-
-
     }
 }
 
