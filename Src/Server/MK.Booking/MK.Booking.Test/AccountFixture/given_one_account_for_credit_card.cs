@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         }
 
         [Test]
-        public void when_add_new_credit_card()
+        public void when_add_first_credit_card()
         {
             const string creditCardComapny = "visa";
             const string friendlyName = "work credit card";
@@ -33,6 +33,32 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             const string last4Digits = "4025";
             const string token = "jjwcnSLWm85";
 
+            this.sut.When(new AddCreditCard { AccountId = _accountId, CreditCardCompany = creditCardComapny, FriendlyName = friendlyName, CreditCardId = creditCardId, Last4Digits = last4Digits, Token = token, Id = Guid.NewGuid()});
+
+            var @event = sut.ThenHasOne<CreditCardAdded>();
+            Assert.AreEqual(_accountId, @event.SourceId);
+            Assert.AreEqual(creditCardComapny, @event.CreditCardCompany);
+            Assert.AreEqual(friendlyName, @event.FriendlyName);
+            Assert.AreEqual(creditCardId, @event.CreditCardId);
+            Assert.AreEqual(last4Digits, @event.Last4Digits);
+            Assert.AreEqual(token, @event.Token);
+
+            var secondEvent = sut.ThenHasOne<PaymentProfileUpdated>();
+            Assert.AreEqual(_accountId, secondEvent.SourceId);
+            Assert.AreEqual(creditCardId, secondEvent.DefaultCreditCard);
+        }
+
+        [Test]
+        public void when_add_second_credit_card()
+        {
+            const string creditCardComapny = "visa";
+            const string friendlyName = "work credit card";
+            var creditCardId = Guid.NewGuid();
+            const string last4Digits = "4025";
+            const string token = "jjwcnSLWm85";
+
+            this.sut.Given(new CreditCardAdded { SourceId = _accountId });
+            
             this.sut.When(new AddCreditCard { AccountId = _accountId, CreditCardCompany = creditCardComapny, FriendlyName = friendlyName, CreditCardId = creditCardId, Last4Digits = last4Digits, Token = token, Id = Guid.NewGuid()});
 
             var @event = sut.ThenHasSingle<CreditCardAdded>();
