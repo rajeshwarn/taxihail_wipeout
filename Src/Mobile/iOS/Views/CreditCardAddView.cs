@@ -34,7 +34,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
-            scrollView.ContentSize = new SizeF(scrollView.ContentSize.Width, 416);
+            scrollView.ContentSize = new SizeF(scrollView.ContentSize.Width, 800);
 			
             NavigationItem.Title = Resources.GetValue("CreditCardsAddTitle");
 
