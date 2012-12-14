@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.FormLabel lblCardCategory { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UISegmentedControl segmentTypeCard { get; set; }
+		apcurium.MK.Booking.Mobile.Client.ModalTextField pickerCreditCardType { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.ModalTextField pickerCreditCardCategory { get; set; }
@@ -94,9 +94,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				lblCardCategory = null;
 			}
 
-			if (segmentTypeCard != null) {
-				segmentTypeCard.Dispose ();
-				segmentTypeCard = null;
+			if (pickerCreditCardType != null) {
+				pickerCreditCardType.Dispose ();
+				pickerCreditCardType = null;
 			}
 
 			if (pickerCreditCardCategory != null) {

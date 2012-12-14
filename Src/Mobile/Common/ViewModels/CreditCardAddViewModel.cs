@@ -27,6 +27,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			CardCategories.Add (new ListItem{ Id = 1, Display = "Work"});
 			CardCategories.Add (new ListItem{ Id = 2, Display = "Other"});
 			CreditCardCategory = 0;
+
+            CreditCardCompanies = new List<ListItem>();
+            CreditCardCompanies.Add (new ListItem { Display = "Visa", Id = 0, Image = "Assets/CreditCard/visa.png" });
+            CreditCardCompanies.Add ( new ListItem { Display = "MasterCard", Id = 1, Image = "Assets/CreditCard/mastercard.png" });
+            CreditCardCompanies.Add ( new ListItem { Display = "Amex", Id = 2, Image = "Assets/CreditCard/amex.png" });
+            CreditCardType = 0;
 		}
 
         public CreditCardInfos Data { get; set; }
@@ -51,7 +57,29 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
+        int _creditCardType;
+        public int CreditCardType {
+            get {
+                return _creditCardType;
+            }
+            set {
+                _creditCardType = value;
+                FirePropertyChanged("CreditCardType");
+                FirePropertyChanged("CreditCardTypeName");
+            }
+        }
+
+        public string CreditCardTypeName { 
+            get {
+                var type = CreditCardCompanies.FirstOrDefault(x=>x.Id == CreditCardType);
+                if(type == null) return null;
+                return type.Display; 
+            }
+        }
+
 		public List<ListItem> CardCategories { get; set; }
+
+        public List<ListItem> CreditCardCompanies { get; set; }
 
 		public IMvxCommand SetCreditCardCompanyCommand { get { return GetCommand<object>(item => {
 					Data.CreditCardCompany = item.ToSafeString();	
@@ -62,6 +90,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private void AddCrediCard ()
         {
 			Data.FriendlyName = CreditCardCategoryName;
+            Data.CreditCardCompany = CreditCardTypeName;
             if (Params.Get<string> (Data.NameOnCard, Data.CardNumber, 
                                    Data.CreditCardCompany, Data.FriendlyName, 
                                    Data.ExpirationMonth, 

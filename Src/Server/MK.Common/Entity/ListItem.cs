@@ -6,5 +6,6 @@
         public string Display { get; set; }
         public bool? IsDefault{ get; set; }
         public ListItem Parent { get; set; }
+        public string Image { get; set; }
     }
 }
