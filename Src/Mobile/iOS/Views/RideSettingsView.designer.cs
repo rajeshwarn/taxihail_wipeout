@@ -33,10 +33,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 		MonoTouch.UIKit.UITextField txtPhone { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UITextField txtVehicleType { get; set; }
+		apcurium.MK.Booking.Mobile.Client.ModalTextField pickerVehiculeType { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UITextField txtChargeType { get; set; }
+		apcurium.MK.Booking.Mobile.Client.ModalTextField pickerChargeType { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UIScrollView scrollView { get; set; }
@@ -87,14 +87,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 				txtPhone = null;
 			}
 
-			if (txtVehicleType != null) {
-				txtVehicleType.Dispose ();
-				txtVehicleType = null;
+			if (pickerVehiculeType != null) {
+				pickerVehiculeType.Dispose ();
+				pickerVehiculeType = null;
 			}
 
-			if (txtChargeType != null) {
-				txtChargeType.Dispose ();
-				txtChargeType = null;
+			if (pickerChargeType != null) {
+				pickerChargeType.Dispose ();
+				pickerChargeType = null;
 			}
 
 			if (scrollView != null) {
