@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Views;
 using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 using System.Collections.Generic;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -54,30 +55,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             lblZipCode.Text = Resources.GetValue("CreditCardZipCode");
 
             txtNameOnCard.ShouldReturn += GoToNext;
-            txtCardNumber.ShouldReturn += GoToNext;
-            pickerCreditCardCategory.ShouldReturn += GoToNext;
-            txtExpMonth.ShouldReturn += GoToNext;
-            txtExpYear.ShouldReturn += GoToNext;
-            txtSecurityCode.ShouldReturn += GoToNext;
-            txtZipCode.ShouldReturn += GoToNext;
+            pickerCreditCardCategory.AllTouchEvents += (s,e) => { 
+                txtCardNumber.ResignFirstResponder(); 
+            };
+           
 
             ((ModalTextField)pickerCreditCardCategory).Configure(Resources.GetValue("CreditCardCategory"), ViewModel.CardCategories.ToArray(), ViewModel.CreditCardCategory , x=> {
                 ViewModel.CreditCardCategory =  x.Id; });
 
-            segmentTypeCard.SetImage(UIImage.FromFile("Assets/CreditCard/visa.png"), 0);
-            segmentTypeCard.SetImage(UIImage.FromFile("Assets/CreditCard/mastercard.png"), 1);
-            segmentTypeCard.SetImage(UIImage.FromFile("Assets/CreditCard/amex.png"), 2);
+            ViewModel.CreditCardCompanies[0].Image = "Assets/CreditCard/visa.png";
+            ViewModel.CreditCardCompanies[1].Image = "Assets/CreditCard/mastercard.png";
+            ViewModel.CreditCardCompanies[2].Image = "Assets/CreditCard/amex.png";
 
-            segmentTypeCard.ValueChanged += (sender, e) => {
-                var selectedSegmentId = (sender as UISegmentedControl).SelectedSegment;
-                var companies = new string[]{"Visa","MasterCard","Amex"};
-                ViewModel.Data.CreditCardCompany = companies[selectedSegmentId];
-            };
 
-            this.AddBindings(new Dictionary<object, string>{
+            ((ModalTextField)pickerCreditCardType).Configure(Resources.GetValue("CreditCardType"), ViewModel.CreditCardCompanies.ToArray(), ViewModel.CreditCardType , x=> {
+                ViewModel.CreditCardType =  x.Id; });
+
+           this.AddBindings(new Dictionary<object, string>{
                 { txtNameOnCard, "{'Text': {'Path': 'Data.NameOnCard', 'Mode': 'TwoWay' }}" }, 
                 { txtCardNumber, "{'Text': {'Path': 'Data.CardNumber', 'Mode': 'TwoWay' }}" }, 
                 { pickerCreditCardCategory, "{'Text': {'Path': 'CreditCardCategoryName', 'Mode': 'TwoWay' }}" }, 
+                { pickerCreditCardType, "{'Text': {'Path': 'CreditCardTypeName', 'Mode': 'TwoWay' }}" }, 
                 { txtExpMonth, "{'Text': {'Path': 'Data.ExpirationMonth', 'Mode': 'TwoWay' }}" }, 
                 { txtExpYear, "{'Text': {'Path': 'Data.ExpirationYear', 'Mode': 'TwoWay' }}" }, 
                 { txtSecurityCode, "{'Text': {'Path': 'Data.CCV', 'Mode': 'TwoWay' }}" }, 
@@ -89,22 +87,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private bool GoToNext (UITextField textField)
         {
-            textField.ResignFirstResponder ();
-
-            if (textField == txtNameOnCard) {
-                txtCardNumber.BecomeFirstResponder();
-            }else if (textField == txtCardNumber) {
-                pickerCreditCardCategory.BecomeFirstResponder();
-            }else if (textField == pickerCreditCardCategory) {
-                txtExpMonth.BecomeFirstResponder();
-            }else if (textField == txtExpMonth) {
-                txtExpYear.BecomeFirstResponder();
-            }else if (textField == txtExpYear) {
-                txtSecurityCode.BecomeFirstResponder();
-            }else if (textField == txtSecurityCode) {
-                txtZipCode.BecomeFirstResponder();
-            }
-
+            txtNameOnCard.ResignFirstResponder ();
+            txtCardNumber.BecomeFirstResponder();
             return true;
 
         }

@@ -41,7 +41,6 @@ namespace apcurium.MK.Booking.Mobile.Client
                 newDvc.View.BackgroundColor  = UIColor.FromRGB (230,230,230);
                 newDvc.TableView.BackgroundColor = UIColor.FromRGB (230,230,230);
                 newDvc.TableView.BackgroundView = new UIView{ BackgroundColor =  UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png")) }; 
-
                 controller.NavigationController.PushViewController(newDvc, true);
             }
         }
@@ -54,7 +53,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
                 // Keep a reference to value in order for callbacks to work correctly
                 var value = v;
-                var item = new RadioElementWithId(value.Id, value.Display);
+                var item = new RadioElementWithId(value.Id, value.Display, value.Image);
                 item.Tapped += ()=> {
                     onItemSelected(value);
                     var controller = this.FindViewController();

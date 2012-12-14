@@ -189,6 +189,7 @@
     <Compile Include="ViewModels\BookConfirmationViewModel.cs" />
     <Compile Include="ViewModels\BookingStatusViewModel.cs" />
     <Compile Include="ViewModels\BookRatingViewModel.cs" />
+    <Compile Include="ViewModels\CreditCardViewModel.cs" />
     <Compile Include="ViewModels\HistoryViewModel.cs" />
     <Compile Include="ViewModels\HistoryDetailViewModel.cs" />
     <Compile Include="ViewModels\OrderViewModel.cs" />
@@ -265,7 +266,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Localization\Master.resx" />
+    <None Include="Localization\Master.resx">
+      <SubType>Designer</SubType>
+    </None>
     <EmbeddedResource Include="Localization\Taxiworld.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Taxiworld.Designer.cs</LastGenOutput>

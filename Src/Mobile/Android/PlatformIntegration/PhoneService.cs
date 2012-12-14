@@ -62,7 +62,8 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 				Toast.MakeText(Context, resource.GetString("NoMailClient"), ToastLength.Short).Show();
 			}
 		}
-        public void AddEventToCalendarAndReminder(string title, string addInfo, string place, DateTime startDate)
+
+        public void AddEventToCalendarAndReminder(string title, string addInfo, string place, DateTime startDate, DateTime alertDate)
         {
             var cursor = Context.ContentResolver
          .Query(Android.Net.Uri.Parse("content://com.android.calendar/calendars"),
@@ -128,14 +129,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         }
 
 
-		#region IPhoneService implementation
-
-		public void AddEventToCalendarAndReminder (string title, string addInfo, string place, DateTime startDate, DateTime alertDate)
-		{
-			throw new NotImplementedException ();
-		}
-
-		#endregion
+	
 		#endregion
     }
 }
