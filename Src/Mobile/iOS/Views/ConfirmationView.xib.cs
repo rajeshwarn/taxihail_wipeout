@@ -90,10 +90,14 @@ namespace apcurium.MK.Booking.Mobile.Client
             ((ModalTextField)pickerVehicleType).Configure(Resources.RideSettingsVehiculeType, ViewModel.Vehicles, ViewModel.Order.Settings.VehicleTypeId, x=> {
                 ViewModel.SetVehicleTypeId ( x.Id );});
 
+            AppButtons.FormatStandardButton((GradientButton)pickerVehicleType, Resources.RideSettingsVehiculeType, AppStyle.ButtonColor.Grey, string.Empty, "Assets/Cells/rightArrow.png");
+
             ((ModalTextField)pickerChargeType).Configure(Resources.RideSettingsChargeType, ViewModel.Payments, ViewModel.Order.Settings.ChargeTypeId , x=> {
                 ViewModel.SetChargeTypeId( x.Id ); });
 
-			View.BringSubviewToFront( bottomBar );    
+            AppButtons.FormatStandardButton((GradientButton)pickerChargeType, Resources.RideSettingsChargeType, AppStyle.ButtonColor.Grey, string.Empty, "Assets/Cells/rightArrow.png");
+
+            View.BringSubviewToFront( bottomBar );    
 
             this.AddBindings(new Dictionary<object, string>() {
                 { btnCancel, "{'TouchUpInside':{'Path':'CancelOrderCommand'}}"},                
@@ -102,8 +106,8 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { txtDestination, "{'Text': {'Path': 'Order.DropOffAddress.FullAddress', 'Converter': 'EmptyToResource', 'ConverterParameter': 'ConfirmDestinationNotSpecified'}}" },
                 { txtDateTime, "{'Text': {'Path': 'FormattedPickupDate'}}" },
                 { txtPrice, "{'Text': {'Path': 'FareEstimate'}}" },
-                { pickerVehicleType, "{'Text': {'Path': 'VehicleName'}}" },
-                { pickerChargeType, "{'Text': {'Path': 'ChargeType'}}" },
+                { pickerVehicleType, "{'Title': {'Path': 'VehicleName'}}" },
+                { pickerChargeType, "{'Title': {'Path': 'ChargeType'}}" },
                 { pickerAptEntryBuilding, "{'NavigateCommand': {'Path': 'NavigateToRefineAddress'}, 'Text':{'Path':'AptRingCode'}}"}
             });
             this.View.ApplyAppFont ();
