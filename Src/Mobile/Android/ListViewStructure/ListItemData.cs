@@ -17,6 +17,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 			get;
 			set;
 		}
+
+		public string Image {
+			get;
+			set;
+		}
+
 		public override string ToString ()
 		{
 			return Value;

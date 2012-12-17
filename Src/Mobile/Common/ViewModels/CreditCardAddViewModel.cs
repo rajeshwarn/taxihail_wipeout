@@ -29,9 +29,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			CreditCardCategory = 0;
 
             CreditCardCompanies = new List<ListItem>();
-            CreditCardCompanies.Add (new ListItem { Display = "Visa", Id = 0, Image = "Assets/CreditCard/visa.png" });
-            CreditCardCompanies.Add ( new ListItem { Display = "MasterCard", Id = 1, Image = "Assets/CreditCard/mastercard.png" });
-            CreditCardCompanies.Add ( new ListItem { Display = "Amex", Id = 2, Image = "Assets/CreditCard/amex.png" });
+            CreditCardCompanies.Add (new ListItem { Display = "Visa", Id = 0 });
+            CreditCardCompanies.Add ( new ListItem { Display = "MasterCard", Id = 1 });
+            CreditCardCompanies.Add ( new ListItem { Display = "Amex", Id = 2 });
             CreditCardType = 0;
 		}
 

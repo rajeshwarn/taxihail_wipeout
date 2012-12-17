@@ -26,6 +26,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		protected override void OnViewModelSet()
 		{
+			ViewModel.CreditCardCompanies[0].Image = Resource.Drawable.visa.ToString();
+			ViewModel.CreditCardCompanies[1].Image = Resource.Drawable.mastercard.ToString();
+			ViewModel.CreditCardCompanies[2].Image = Resource.Drawable.amex.ToString();
 			SetContentView(Resource.Layout.View_CreditCardAdd);
 		}
 		
