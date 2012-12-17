@@ -76,8 +76,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
 
             sut.ThenHasSingle<OrderRemovedFromHistory>();
         }
-
-
+        
         [Test]
         public void when_rating_order_successfully()
         {

@@ -20,6 +20,7 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Configuration;
 using System.Globalization;
+using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -148,24 +149,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}
 			}
 		}
-
-		public IMvxCommand NavigateToEditBookingSettings {
-			get {
-                return GetCommand(() =>
-                {
-					RequestSubNavigate<RideSettingsViewModel, BookingSettings>(new Dictionary<string, string>{
-						{ "bookingSettings", Order.Settings.ToJson () }
-					}, result=>{
-						if(result != null)
-						{
-							Order.Settings = result;
-                            RideSettings.Data = result;
-                            FirePropertyChanged("RideSettings");
-						}
-					});
-				});
-			}
-		}
 		
 		public IMvxCommand NavigateToRefineAddress
 		{
@@ -192,7 +175,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				});
 			}
-		}
+        }
+
+        public IMvxCommand NavigateToPaymentDetails {
+            get {
+                return GetCommand(() => {
+
+                    RequestSubNavigate<PaymentDetailsViewModel, PaymentInformation>(new Dictionary<string, string> {
+                        { "selectedCreditCardId", new PaymentInformation().ToJson () }
+                    }, result => {
+                        this.Order.Payment.PayWithCreditCard = result.CreditCardId != Guid.Empty;
+                        this.Order.Payment.CreditCardId = result.CreditCardId;
+                        this.Order.Payment.TipAmount = result.TipAmount;
+                        this.Order.Payment.TipPercent = result.TipPercent;
+                    });
+                });
+            }
+        }
 		
 		public IMvxCommand ConfirmOrderCommand
         {

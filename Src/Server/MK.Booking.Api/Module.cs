@@ -33,6 +33,7 @@ namespace apcurium.MK.Booking.Api
                 .ForMember(p => p.Id, options => options.Ignore());
 
             AutoMapper.Mapper.CreateMap<BookingSettings, Commands.CreateOrder.BookingSettings>();
+            AutoMapper.Mapper.CreateMap<PaymentSettings, Commands.CreateOrder.PaymentInformation>();
             AutoMapper.Mapper.CreateMap<BookingSettings, Commands.SendBookingConfirmationEmail.BookingSettings>();
             AutoMapper.Mapper.CreateMap<Address, IBSAddress>()
                 .ForMember(x => x.FullAddress, y => y.ResolveUsing(a => a.BookAddress));

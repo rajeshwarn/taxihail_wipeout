@@ -6,7 +6,12 @@ using apcurium.MK.Booking.ReadModel;
 
 namespace apcurium.MK.Booking.EventHandlers
 {
-    public class OrderGenerator : IEventHandler<OrderCreated>, IEventHandler<OrderCancelled>, IEventHandler<OrderCompleted>, IEventHandler<OrderRemovedFromHistory>, IEventHandler<OrderRated>
+    public class OrderGenerator : IEventHandler<OrderCreated>,
+        IEventHandler<OrderCancelled>,
+        IEventHandler<OrderCompleted>,
+        IEventHandler<OrderRemovedFromHistory>,
+        IEventHandler<OrderRated>,
+        IEventHandler<PaymentInformationSet>
     {
 
         private readonly Func<BookingDbContext> _contextFactory;
@@ -95,6 +100,20 @@ namespace apcurium.MK.Booking.EventHandlers
                 order.IsRated = true;
 
                 context.SaveChanges();
+            }
+        }
+
+        public void Handle(PaymentInformationSet @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var order = context.Find<OrderDetail>(@event.SourceId);
+                order.PaymentInformation.PayWithCreditCard = true;
+                order.PaymentInformation.CreditCardId = @event.CreditCardId;
+                order.PaymentInformation.TipAmount = @event.TipAmount;
+                order.PaymentInformation.TipPercent = @event.TipPercent;
+
+                context.Save(order);
             }
         }
     }

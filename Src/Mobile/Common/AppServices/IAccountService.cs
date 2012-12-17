@@ -33,8 +33,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		
 		IEnumerable<ListItem> GetPaymentsList(  );
 
-	    IEnumerable<CreditCardDetails> GetMyPaymentList();
-
         void ResetPassword( string email );
 
 		string UpdatePassword( Guid accountId, string currentPassword, string newPassword );
@@ -43,6 +41,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		
 		bool Register (RegisterAccount data, out string error);
 
+        #region Addresses
         Address FindInAccountAddresses(double latitude, double longitude);
 
         IEnumerable<Address> GetHistoryAddresses();
@@ -54,10 +53,21 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 	    void DeleteFavoriteAddress(Guid addressId);
 
         void DeleteHistoryAddress(Guid addressId);
+        #endregion
 
+        #region Orders
         IEnumerable<Order> GetHistoryOrders();
-
+        
         Order GetHistoryOrder(Guid id);
+        #endregion
+
+        #region Payment
+
+        IEnumerable<CreditCardDetails> GetCreditCards();
+
+        void UpdatePaymentProfile (Guid creditCardId, double? tipAmount, double? tipPercent);
+        
+        #endregion
 
         void RefreshCache(bool reload);
 

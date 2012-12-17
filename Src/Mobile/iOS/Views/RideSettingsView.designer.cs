@@ -12,9 +12,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 	partial class RideSettingsView
 	{
 		[Outlet]
-		MonoTouch.UIKit.UIButton paymentPreferenceButton { get; set; }
-
-		[Outlet]
 		MonoTouch.UIKit.UILabel lblName { get; set; }
 
 		[Outlet]
@@ -48,15 +45,25 @@ namespace apcurium.MK.Booking.Mobile.Client
 		MonoTouch.UIKit.UITextField txtPassword { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIButton btCreditCardsOnFile { get; set; }
+		MonoTouch.UIKit.UILabel lblTipAmount { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UILabel lblCreditCard { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UITextField txtTipAmount { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UISegmentedControl sgmtPercentOrValue { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UITextField txtCreditCard { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UILabel lblOptional { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (paymentPreferenceButton != null) {
-				paymentPreferenceButton.Dispose ();
-				paymentPreferenceButton = null;
-			}
-
 			if (lblName != null) {
 				lblName.Dispose ();
 				lblName = null;
@@ -112,9 +119,34 @@ namespace apcurium.MK.Booking.Mobile.Client
 				txtPassword = null;
 			}
 
-			if (btCreditCardsOnFile != null) {
-				btCreditCardsOnFile.Dispose ();
-				btCreditCardsOnFile = null;
+			if (lblTipAmount != null) {
+				lblTipAmount.Dispose ();
+				lblTipAmount = null;
+			}
+
+			if (lblCreditCard != null) {
+				lblCreditCard.Dispose ();
+				lblCreditCard = null;
+			}
+
+			if (txtTipAmount != null) {
+				txtTipAmount.Dispose ();
+				txtTipAmount = null;
+			}
+
+			if (sgmtPercentOrValue != null) {
+				sgmtPercentOrValue.Dispose ();
+				sgmtPercentOrValue = null;
+			}
+
+			if (txtCreditCard != null) {
+				txtCreditCard.Dispose ();
+				txtCreditCard = null;
+			}
+
+			if (lblOptional != null) {
+				lblOptional.Dispose ();
+				lblOptional = null;
 			}
 		}
 	}

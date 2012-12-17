@@ -35,7 +35,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 		protected override void OnViewModelSet ()
 		{
             SetContentView(Resource.Layout.View_RideSettings);
-
 			var txtPassword = this.FindViewById<EditTextNavigate>(Resource.Id.rideSettingsPassword);
 			txtPassword.TransformationMethod = PasswordTransformationMethod.Instance;
 			txtPassword.Text = "my secure password"; /* fake password for display only */

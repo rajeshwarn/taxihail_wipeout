@@ -5,11 +5,11 @@ using System.Drawing;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-    public class RadioElementWithId : RadioElement
+    public class RadioElementWithId<TId> : RadioElement where TId: struct
     {
         string _image;
 
-        public RadioElementWithId(int id, string caption, string image = null) : base( caption )
+        public RadioElementWithId(TId id, string caption, string image = null) : base( caption )
         {
             this.Id = id;
             _image = image;
@@ -36,7 +36,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 
 
-        public int Id {
+        public TId Id {
             get;
             private set;
         }

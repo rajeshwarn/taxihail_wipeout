@@ -347,6 +347,10 @@
     <Compile Include="Views\StatusView.xib.designer.cs">
       <DependentUpon>StatusView.xib</DependentUpon>
     </Compile>
+    <Compile Include="Views\Payment\PaymentDetails.cs" />
+    <Compile Include="Views\Payment\PaymentDetails.designer.cs">
+      <DependentUpon>PaymentDetails.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\PaymentPreferenceView.cs" />
     <Compile Include="Views\PaymentPreferenceView.designer.cs">
       <DependentUpon>PaymentPreferenceView.cs</DependentUpon>
@@ -392,6 +396,7 @@
     <Folder Include="Converters\" />
     <Folder Include="Navigation\" />
     <Folder Include="Assets\Tutorial\" />
+    <Folder Include="Views\Payment\" />
     <Folder Include="Assets\CreditCard\" />
   </ItemGroup>
   <ItemGroup>
@@ -416,6 +421,7 @@
     <InterfaceDefinition Include="Views\ResetPasswordView.xib" />
     <InterfaceDefinition Include="Order\BookStreetNumberView.xib" />
     <InterfaceDefinition Include="Views\StatusView.xib" />
+    <InterfaceDefinition Include="Views\Payment\PaymentDetails.xib" />
     <InterfaceDefinition Include="Views\PaymentPreferenceView.xib" />
     <InterfaceDefinition Include="Views\CreditCardAddView.xib" />
     <InterfaceDefinition Include="Views\CreditCardsListView.xib" />
