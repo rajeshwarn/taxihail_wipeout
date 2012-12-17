@@ -33,6 +33,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 				_currentValue = newValue;
 				FireValueChanged(newValue);
 			}
+
 		}
 		
 		public override void SetValue(object value)

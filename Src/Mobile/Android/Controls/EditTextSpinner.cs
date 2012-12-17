@@ -15,7 +15,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 	public class EditTextSpinner: LinearLayout
 	{
 		Spinner _spinner;
-		ArrayAdapter<ListItemData> _adapter;
+		ListItemAdapter _adapter;
 		TextView _label;
 
 		public event EventHandler<AdapterView.ItemSelectedEventArgs> ItemSelected;
@@ -43,9 +43,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 		void Initialize ()
 		{
-			_adapter = new ArrayAdapter<ListItemData>( Context, Resource.Layout.SpinnerText, new List<ListItemData>() );
-			_adapter.SetDropDownViewResource( Android.Resource.Layout.SimpleSpinnerDropDownItem );
-			
+			_adapter = new ListItemAdapter( Context, Resource.Layout.SpinnerTextWithImage , Resource.Id.labelSpinner, new List<ListItemData>());
+			_adapter.SetDropDownViewResource( Resource.Layout.SpinnerTextWithImage );
 		}
 
 		protected override void OnFinishInflate ()
@@ -108,7 +107,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			set {
 				if(value != null)
 				{
-					var data = value.Select(i => new ListItemData { Key = i.Id, Value = i.Display }).ToList();
+					var data = value.Select(i => new ListItemData { Key = i.Id, Value = i.Display, Image = i.Image }).ToList();
 					_adapter.Clear();
 					foreach (var item in data) {
 						_adapter.Add(item);
@@ -116,8 +115,58 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 				}
 			}
 		}
+	}
+
+	public class ListItemAdapter : ArrayAdapter <ListItemData>{
+
+		public ListItemAdapter(Context context, int textViewResourceId) : base (context, textViewResourceId){
+
+		}	
+
+		
+		public ListItemAdapter(Context context, int resource, List<ListItemData> items) : base(context, resource, items)
+		{
+
+		}
+
+		public ListItemAdapter(Context context, int resource,int textViewResourceId, List<ListItemData> items) : base(context, resource,textViewResourceId, items)
+		{
+
+		}
 
 
+		public override View GetDropDownView (int position, View convertView, ViewGroup parent)
+		{
+			//we use the same layout as the GetView so we call it, see adapter ctor call to change the layout
+			return GetView (position, convertView, parent);
+		}
+
+
+		public override View GetView (int position, View convertView, ViewGroup parent)
+		{
+			var v = convertView;
+			
+			if (v == null) {
+				var inflater = (LayoutInflater)Context.GetSystemService (Context.LayoutInflaterService);
+				v = inflater.Inflate (Resource.Layout.SpinnerTextWithImage, null);
+			}
+
+			var p = (ListItemData)this.GetItem(position);
+			if(p != null)
+			{
+				CheckedTextView list_title = (CheckedTextView)v.FindViewById (Resource.Id.labelSpinner);
+				ImageView list_image = (ImageView)v.FindViewById (Resource.Id.imageSpinner);
+			
+				if (list_title != null) {
+					list_title.Text = p.Value;
+				}	
+				if (list_image != null
+				    && p.Image != null) {
+					list_image.SetImageResource (int.Parse (p.Image));
+				}
+			}			
+			return v;
+		}
 	}
 }
 
