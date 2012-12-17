@@ -57,7 +57,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                                                        CreditCards.Remove(creditCardToRemove);
                                                                    }
                                                                });
-           // PaymentList = new ObservableCollection<CreditCardDetails>(accountService.GetMyPaymentList());
         }
 
         public Task LoadCreditCards()

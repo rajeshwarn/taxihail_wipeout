@@ -126,6 +126,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                         if(result != default(Guid))
                         {
                             this.SelectedCreditCardId = result;
+
+                            //Reload credit cards in case the selected card has just been added
+                            this.LoadCreditCards();
                         }
                     });
                 });
