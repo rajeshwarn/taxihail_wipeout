@@ -68,7 +68,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			_strokeLineColor = UIColor.FromRGBA( buttonStyle.StrokeColor.Red, buttonStyle.StrokeColor.Green, buttonStyle.StrokeColor.Blue, buttonStyle.StrokeColor.Alpha);
             _strokeLineWidth = buttonStyle.StrokeLineWidth;
             _cornerRadius = cornerRadius;
-            _title = title;
+            _title = title ?? string.Empty;
             _titleColor = UIColor.FromRGBA( buttonStyle.TextColor.Red, buttonStyle.TextColor.Green, buttonStyle.TextColor.Blue, buttonStyle.TextColor.Alpha).CGColor;
 			_titleFont = titleFont;
 			_innerShadow = buttonStyle.InnerShadow;
@@ -284,7 +284,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         public override void SetTitle(string title, UIControlState forState)
         {
             SetNeedsDisplay();
-            _title = title;
+            _title = title ?? string.Empty;
         }
 
         public override void Draw (RectangleF rect)
