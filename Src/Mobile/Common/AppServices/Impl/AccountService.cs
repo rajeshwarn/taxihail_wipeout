@@ -6,7 +6,6 @@ using Cirrious.MvvmCross.Interfaces.Views;
 using Cirrious.MvvmCross.Views;
 using SocialNetworks.Services;
 using apcurium.MK.Booking.Mobile.Data;
-
 #if IOS
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Common.ServiceClient.Web;
@@ -34,7 +33,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         private const string _favoriteAddressesCacheKey = "Account.FavoriteAddresses";
         private const string _historyAddressesCacheKey = "Account.HistoryAddresses";
         private const string _creditCardsCacheKey = "Account.CreditCards";
-        private const string _myPaymentsListCacheKey = "Account.MyPaymentList";
 
         private static ReferenceData _refData;
 
@@ -516,29 +514,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     result = service.GetCreditCards ();
                 });
                 cache.Set (_creditCardsCacheKey, result.ToArray ());
-                return result;
-            }
-        }
-        
-        public IEnumerable<CreditCardDetails> GetMyPaymentList()
-        {
-            var cached = TinyIoCContainer.Current.Resolve<ICacheService>().Get<CreditCardDetails[]>(_myPaymentsListCacheKey);
-
-            if (cached != null)
-            {
-                return cached;
-            }
-            else
-            {
-
-                var result = new List<CreditCardDetails>();
-                UseServiceClient<IAccountServiceClient>(service =>
-                                                            {
-                                                                result = service.GetCreditCards().ToList();
-                                                              
-                                                            }
-                );
-                TinyIoCContainer.Current.Resolve<ICacheService>().Set(_myPaymentsListCacheKey, result.ToArray());
                 return result;
             }
         }
