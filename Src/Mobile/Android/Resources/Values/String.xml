@@ -349,7 +349,7 @@
   <string name="CreditCardNumber">Card Number</string>
   <string name="CreditCardZipCode">Zip code (for authorization)</string>
   <string name="CreditCardsAddTitle">New Credit Card</string>
-  <string name="CreditCardsListTitle">Credit Cards on File</string>
+  <string name="CreditCardsListTitle">Credit Cards On File</string>
   <string name="CreditCardExpMonth">Exp. Month</string>
   <string name="CreditCardCategory">Category</string>
   <string name="CreditCardExpYear">Exp. Year</string>
@@ -357,12 +357,15 @@
   <string name="CreditCardType">Type of Card</string>
   <string name="CreditCardCCV">Card Security Code</string>
   <string name="PaymentDetails.Optional">(Optional)</string>
-  <string name="PaymentDetails.InvalidDataTitle">Tip amount is invalid</string>
+  <string name="PaymentDetails.InvalidDataTitle">Invalid payment information</string>
   <string name="PaymentDetails.TipAmountLabel">Tip Amount</string>
   <string name="CreditCardErrorTitle">Can\'t add the Credit Card</string>
   <string name="CreditCardInvalidCrediCardNUmber">The Credit Card Number is invalid</string>
   <string name="CreditCardRequiredFields">All the fields are required</string>
   <string name="PaymentDetails.CreditCardLabel">Credit Card</string>
   <string name="AddCreditCardTitle">Add a credit card</string>
-  <string name="PaymentDetails.InvalidTipAmount">Invalid payment information</string>
+  <string name="PaymentDetails.InvalidTipAmount">Tip amount is invalid</string>
+  <string name="ChargeTypeCreditCardFile">Credit Card on File</string>
+  <string name="ReminderDetails">Reminder: A taxi will pick you up from {0} at {1} on {2}.</string>
+  <string name="ReminderTitle">{0} Booked</string>
 </resources>
