@@ -146,34 +146,7 @@ namespace apcurium.MK.Booking.Mobile
             }
         }
 
-        public IMvxCommand NavigateToPaymentPreference
-        {
-            get
-            {
-                return GetCommand(() => {
 
-                    var account = _accountService.CurrentAccount;
-                    var paymentInformation = new PaymentInformation {
-                        CreditCardId = account.DefaultCreditCard,
-                        TipAmount = account.DefaultTipAmount,
-                        TipPercent = account.DefaultTipPercent,
-                    };
-                    RequestSubNavigate<PaymentDetailsViewModel, PaymentInformation>(new Dictionary<string, string> {
-                        { "selectedCreditCardId", paymentInformation.ToJson () }
-                    }, result => {
-
-                        if(result != null && result.CreditCardId.GetValueOrDefault() != default(Guid))
-                        {
-                            Task.Factory.StartNew(()=> {
-                                this._accountService.UpdatePaymentProfile(result.CreditCardId.Value, result.TipAmount, result.TipPercent);
-                            }).HandleErrors();
-                        }
-                    });
-                });
-            }
-        }
-
-        
         public IMvxCommand SetChargeType
         {
             get{
