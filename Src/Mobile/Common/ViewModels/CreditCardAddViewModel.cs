@@ -108,7 +108,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             try {
                 MessageService.ShowProgress(true);
-                Data.Last4Digits = new string(Data.CardNumber.Reverse ().Take (4).ToArray());
+                Data.Last4Digits = new string(Data.CardNumber.Reverse ().Take (4).Reverse().ToArray());
                 _accountService.AddCreditCard (Data);
 
 				Data.CardNumber = null;
