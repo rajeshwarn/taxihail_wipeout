@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payment
 		MonoTouch.UIKit.UISegmentedControl sgmtPercentOrValue { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UITextField txtCreditCard { get; set; }
+		MonoTouch.UIKit.UILabel btnCreditCard { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel lnlNoCreditCard { get; set; }
@@ -54,9 +54,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payment
 				sgmtPercentOrValue = null;
 			}
 
-			if (txtCreditCard != null) {
-				txtCreditCard.Dispose ();
-				txtCreditCard = null;
+			if (btnCreditCard != null) {
+				btnCreditCard.Dispose ();
+				btnCreditCard = null;
 			}
 
 			if (lnlNoCreditCard != null) {

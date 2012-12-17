@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payment
         {
             base.ViewDidLoad ();
 
-            base.DismissKeyboardOnReturn(txtCreditCard, txtTipAmount);
+            base.DismissKeyboardOnReturn(txtTipAmount);
 
             lblCreditCard.Text = Resources.GetValue("PaymentDetails.CreditCardLabel");
             lblTipAmount.Text = Resources.GetValue("PaymentDetails.TipAmountLabel");
@@ -49,7 +49,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payment
 
             this.AddBindings(new Dictionary<object, string> {
                 { txtTipAmount, "{'Text': {'Path': 'Tip'}}" },
-                { txtCreditCard, "{'Text': {'Path': 'SelectedCreditCardName'}, 'NavigateCommand': {'Path': 'NavigateToCreditCardsList'}}" },
+                { btnCreditCard, "{'Title': {'Path': 'SelectedCreditCardName'}, 'TouchUpInside': {'Path': 'NavigateToCreditCardsList'}}" },
             });
 
         }
