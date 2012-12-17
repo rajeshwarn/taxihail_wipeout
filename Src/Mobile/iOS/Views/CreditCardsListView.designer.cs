@@ -8,11 +8,18 @@ using MonoTouch.Foundation;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-    [Register ("CreditCardsList")]
-    partial class CreditCardsListView
-    {
-        void ReleaseDesignerOutlets ()
-        {
-        }
-    }
+	[Register ("CreditCardsListView")]
+	partial class CreditCardsListView
+	{
+		[Outlet]
+		MonoTouch.UIKit.UITableView tableCardsList { get; set; }
+		
+		void ReleaseDesignerOutlets ()
+		{
+			if (tableCardsList != null) {
+				tableCardsList.Dispose ();
+				tableCardsList = null;
+			}
+		}
+	}
 }
