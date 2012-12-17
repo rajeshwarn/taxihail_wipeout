@@ -12,9 +12,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 	partial class RideSettingsView
 	{
 		[Outlet]
-		MonoTouch.UIKit.UIButton paymentPreferenceButton { get; set; }
-
-		[Outlet]
 		MonoTouch.UIKit.UILabel lblName { get; set; }
 
 		[Outlet]
@@ -45,18 +42,28 @@ namespace apcurium.MK.Booking.Mobile.Client
 		MonoTouch.UIKit.UILabel lblPassword { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UITextField txtPassword { get; set; }
+		MonoTouch.UIKit.UIButton btnPassword { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIButton btCreditCardsOnFile { get; set; }
+		MonoTouch.UIKit.UILabel lblTipAmount { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UILabel lblCreditCard { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UITextField txtTipAmount { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UISegmentedControl sgmtPercentOrValue { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UIButton btnCreditCard { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UILabel lblOptional { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (paymentPreferenceButton != null) {
-				paymentPreferenceButton.Dispose ();
-				paymentPreferenceButton = null;
-			}
-
 			if (lblName != null) {
 				lblName.Dispose ();
 				lblName = null;
@@ -107,14 +114,39 @@ namespace apcurium.MK.Booking.Mobile.Client
 				lblPassword = null;
 			}
 
-			if (txtPassword != null) {
-				txtPassword.Dispose ();
-				txtPassword = null;
+			if (btnPassword != null) {
+				btnPassword.Dispose ();
+				btnPassword = null;
 			}
 
-			if (btCreditCardsOnFile != null) {
-				btCreditCardsOnFile.Dispose ();
-				btCreditCardsOnFile = null;
+			if (lblTipAmount != null) {
+				lblTipAmount.Dispose ();
+				lblTipAmount = null;
+			}
+
+			if (lblCreditCard != null) {
+				lblCreditCard.Dispose ();
+				lblCreditCard = null;
+			}
+
+			if (txtTipAmount != null) {
+				txtTipAmount.Dispose ();
+				txtTipAmount = null;
+			}
+
+			if (sgmtPercentOrValue != null) {
+				sgmtPercentOrValue.Dispose ();
+				sgmtPercentOrValue = null;
+			}
+
+			if (btnCreditCard != null) {
+				btnCreditCard.Dispose ();
+				btnCreditCard = null;
+			}
+
+			if (lblOptional != null) {
+				lblOptional.Dispose ();
+				lblOptional = null;
 			}
 		}
 	}

@@ -1110,17 +1110,26 @@
   <data name="View_PaymentPreference" xml:space="preserve">
     <value>Payment Preference</value>
   </data>
-  <data name="PaymentCreditCardsOnFile" xml:space="preserve">
+  <data name="CreditCardsListTitle" xml:space="preserve">
     <value>Credit Cards On File</value>
   </data>
-  <data name="PaymentOptional" xml:space="preserve">
+  <data name="PaymentDetails.CreditCardLabel" xml:space="preserve">
+    <value>Credit Card</value>
+  </data>
+  <data name="PaymentDetails.Optional" xml:space="preserve">
     <value>(Optional)</value>
   </data>
-  <data name="PaymentTipAmount" xml:space="preserve">
+  <data name="PaymentDetails.TipAmountLabel" xml:space="preserve">
     <value>Tip Amount</value>
   </data>
-  <data name="CreditCardsListTitle" xml:space="preserve">
-    <value>Credit Cards on File</value>
+  <data name="PaymentDetails.InvalidTipAmount" xml:space="preserve">
+    <value>Tip amount is invalid</value>
+  </data>
+  <data name="PaymentDetails.InvalidDataTitle" xml:space="preserve">
+    <value>Invalid payment information</value>
+  </data>
+  <data name="CreditCardsAddTitle" xml:space="preserve">
+    <value>New Credit Card</value>
   </data>
   <data name="CreditCardsAddTitle" xml:space="preserve">
     <value>New Credit Card</value>

@@ -64,7 +64,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             return Task.Factory.StartNew(() =>
             {
-                var creditCards = TinyIoCContainer.Current.Resolve<IAccountService>().GetMyPaymentList().ToList();
+                var creditCards = TinyIoCContainer.Current.Resolve<IAccountService>().GetCreditCards().ToList();
                 creditCards.Add(new CreditCardDetails
                 {
                     FriendlyName = Resources.GetString("AddCreditCardTitle"),

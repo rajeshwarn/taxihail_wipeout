@@ -64,6 +64,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel txtPrice { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UIButton btnCreditCard { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
@@ -155,6 +158,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 			if (txtPrice != null) {
 				txtPrice.Dispose ();
 				txtPrice = null;
+			}
+
+			if (btnCreditCard != null) {
+				btnCreditCard.Dispose ();
+				btnCreditCard = null;
 			}
 		}
 	}

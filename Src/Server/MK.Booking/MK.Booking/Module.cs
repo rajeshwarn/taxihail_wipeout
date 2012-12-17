@@ -55,7 +55,7 @@ namespace apcurium.MK.Booking
         {
             AutoMapper.Mapper.CreateMap<UpdateBookingSettings, BookingSettings>();
             AutoMapper.Mapper.CreateMap<CreateOrder.BookingSettings, BookingSettings>();
-            AutoMapper.Mapper.CreateMap<CreateOrder.BookingSettings, BookingSettings>();
+            AutoMapper.Mapper.CreateMap<CreateOrder.PaymentInformation, PaymentInformation>();
             AutoMapper.Mapper.CreateMap<Address, AddressDetails>();
 
             AutoMapper.Mapper.CreateMap<EmailSender.SmtpConfiguration, SmtpClient>()

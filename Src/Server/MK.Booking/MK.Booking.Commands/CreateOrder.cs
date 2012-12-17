@@ -8,7 +8,8 @@ namespace apcurium.MK.Booking.Commands
     {
         public CreateOrder()
         {
-            Id = Guid.NewGuid();         
+            Id = Guid.NewGuid();
+            Payment = new PaymentInformation();
         }
 
         public Guid Id { get; private set; }
@@ -25,8 +26,10 @@ namespace apcurium.MK.Booking.Commands
 
         public Address DropOffAddress { get; set; }
 
-        public BookingSettings Settings { get; set; } 
-        
+        public BookingSettings Settings { get; set; }
+
+        public PaymentInformation Payment { get; set; }
+    
         public class BookingSettings
         {
 
@@ -43,6 +46,14 @@ namespace apcurium.MK.Booking.Commands
             public int? ProviderId { get; set; }
 
             public int NumberOfTaxi { get; set; }
+        }
+
+        public class PaymentInformation
+        {
+            public bool PayWithCreditCard { get; set; }
+            public Guid CreditCardId { get; set; }
+            public decimal? TipAmount { get; set; }
+            public decimal? TipPercent { get; set; }
         }
  
     }

@@ -31,9 +31,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			CreditCardCategory = 0;
 
             CreditCardCompanies = new List<ListItem>();
-            CreditCardCompanies.Add (new ListItem { Display = "Visa", Id = 0, Image = "Assets/CreditCard/visa.png" });
-            CreditCardCompanies.Add ( new ListItem { Display = "MasterCard", Id = 1, Image = "Assets/CreditCard/mastercard.png" });
-            CreditCardCompanies.Add ( new ListItem { Display = "Amex", Id = 2, Image = "Assets/CreditCard/amex.png" });
+            CreditCardCompanies.Add (new ListItem { Display = "Visa", Id = 0 });
+            CreditCardCompanies.Add ( new ListItem { Display = "MasterCard", Id = 1 });
+            CreditCardCompanies.Add ( new ListItem { Display = "Amex", Id = 2 });
             CreditCardType = 0;
 		}
 
@@ -110,7 +110,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             try {
                 MessageService.ShowProgress(true);
-                Data.Last4Digits = new string(Data.CardNumber.Reverse ().Take (4).ToArray());
+                Data.Last4Digits = new string(Data.CardNumber.Reverse ().Take (4).Reverse().ToArray());
                 _accountService.AddCreditCard (Data);
 
 				Data.CardNumber = null;

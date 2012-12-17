@@ -10,22 +10,39 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using Cirrious.MvvmCross.ExtensionMethods;
 using apcurium.MK.Common.Entity;
 using System.Linq;
+using apcurium.MK.Booking.Mobile.ViewModels.Payment;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile
 {
-	public class RideSettingsViewModel: BaseSubViewModel<BookingSettings>,
+	public class RideSettingsViewModel: BaseViewModel,
         IMvxServiceConsumer<IAccountService>
 	{
         private readonly BookingSettings _bookingSettings;
-		public RideSettingsViewModel (string messageId, string bookingSettings)
-			:base(messageId)
+        private readonly IAccountService _accountService;
+		public RideSettingsViewModel (string bookingSettings)
 		{
             this._bookingSettings = bookingSettings.FromJson<BookingSettings>();
-            var accountService = this.GetService<IAccountService>();
+            _accountService = this.GetService<IAccountService>();
             
-            _vehicules = accountService.GetVehiclesList().ToArray();
-            _payments = accountService.GetPaymentsList().ToArray();
+            _vehicules = _accountService.GetVehiclesList().ToArray();
+            _payments = _accountService.GetPaymentsList().ToArray();
+
+            var account = _accountService.CurrentAccount;
+            var paymentInformation = new PaymentInformation {
+                CreditCardId = account.DefaultCreditCard,
+                TipAmount = account.DefaultTipAmount,
+                TipPercent = account.DefaultTipPercent,
+            };
+            PaymentPreferences = new PaymentDetailsViewModel(Guid.NewGuid().ToString(), paymentInformation);
 		}
+
+        public PaymentDetailsViewModel PaymentPreferences {
+            get;
+            private set;
+        }
+
 
         private ListItem[] _vehicules;
         public ListItem[] Vehicles {
@@ -129,26 +146,7 @@ namespace apcurium.MK.Booking.Mobile
             }
         }
 
-        public IMvxCommand NavigateToPaymentPreference
-        {
-            get
-            {
-                return GetCommand(() => RequestNavigate<PaymentPreferenceViewModel>());
-            }
-        }
 
-        public IMvxCommand NavigateToCreditCarsList
-        {
-            get
-            {
-                return GetCommand(() => RequestSubNavigate<CreditCardsListViewModel, Guid>(null, creditCardSelectedGuid
-                                                                                                 =>
-                                                                                                     {
-
-                                                                                                     }));
-            }
-        }
-        
         public IMvxCommand SetChargeType
         {
             get{
@@ -179,9 +177,14 @@ namespace apcurium.MK.Booking.Mobile
             {
                 return GetCommand(() => 
                                            {
-					if(ValidateRideSettings())
+					if(ValidateRideSettings() && PaymentPreferences.ValidatePaymentSettings())
 					{
-                    	ReturnResult(_bookingSettings);
+                        _accountService.UpdateSettings (_bookingSettings);
+                        var tipAmount = PaymentPreferences.IsTipInPercent ? default(double?) : PaymentPreferences.TipDouble;
+                        var tipPercent = PaymentPreferences.IsTipInPercent ? PaymentPreferences.TipDouble : default(double?);
+                        _accountService.UpdatePaymentProfile(PaymentPreferences.SelectedCreditCardId, tipAmount, tipPercent);
+
+                        Close();
 					}
                 });
             }

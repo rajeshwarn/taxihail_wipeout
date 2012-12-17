@@ -235,6 +235,8 @@
     <Compile Include="Data\CreditCardInfos.cs" />
     <Compile Include="AppServices\ICreditCardAuthorizationService.cs" />
     <Compile Include="AppServices\Impl\CreditCardAuthorizationService.cs" />
+    <Compile Include="ViewModels\Payment\PaymentDetailsViewModel.cs" />
+    <Compile Include="ViewModels\Payment\PaymentInformation.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">

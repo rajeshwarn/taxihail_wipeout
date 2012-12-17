@@ -218,12 +218,14 @@
     <Compile Include="AppServices\Impl\AsyncCommand.cs" />
     <Compile Include="Data\AddressSelectionMode.cs" />
     <Compile Include="BindingConverter\EnumToBoolConverter.cs" />
+    <Compile Include="ViewModels\Payment\PaymentDetailsViewModel.cs" />
     <Compile Include="ViewModels\CreditCardsListViewModel.cs" />
     <Compile Include="ViewModels\PaymentPreferenceViewModel.cs" />
     <Compile Include="ViewModels\CreditCardAddViewModel.cs" />
     <Compile Include="AppServices\ICreditCardAuthorizationService.cs" />
     <Compile Include="AppServices\Impl\CreditCardAuthorizationService.cs" />
     <Compile Include="Data\CreditCardInfos.cs" />
+    <Compile Include="ViewModels\Payment\PaymentInformation.cs" />
     <Compile Include="ViewModels\CreditCardViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -268,6 +270,7 @@
     <Folder Include="ListViewStructure\" />
     <Folder Include="Messages\" />
     <Folder Include="TutorialContent\" />
+    <Folder Include="ViewModels\Payment\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Localization\Master.resx" />

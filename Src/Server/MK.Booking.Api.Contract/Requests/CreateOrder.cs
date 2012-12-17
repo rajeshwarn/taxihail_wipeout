@@ -15,6 +15,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         {
             PickupAddress = new Address();
             DropOffAddress = new Address();
+            Payment = new PaymentSettings();
         }
 
         public Guid Id { get; set; }
@@ -29,5 +30,6 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 
         public BookingSettings Settings { get; set; }        
          
+        public PaymentSettings Payment { get; set; }
     }
 }

@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             base.ViewDidLoad ();
            
-            scrollView.ContentSize = new SizeF(320, 400);
+            scrollView.ContentSize = new SizeF(320, btnCreditCard.Frame.Bottom + 20);
 
             lblName.Text= Resources.GetValue("RideSettingsName");
             lblPhone.Text= Resources.GetValue("RideSettingsPhone");
@@ -53,7 +53,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             lblChargeType.Text= Resources.GetValue("RideSettingsChargeType");
             lblPassword.Text = Resources.GetValue("RideSettingsPassword");
 
-            base.DismissKeyboardOnReturn(txtName, txtPhone);
+            base.DismissKeyboardOnReturn(txtName, txtPhone, txtTipAmount);
             
             var button = new MonoTouch.UIKit.UIBarButtonItem(Resources.DoneButton, UIBarButtonItemStyle.Plain, delegate {
                 ViewModel.SaveCommand.Execute();
@@ -74,16 +74,30 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             AppButtons.FormatStandardButton((GradientButton)pickerChargeType, Resources.RideSettingsChargeType, AppStyle.ButtonColor.Grey, string.Empty, "Assets/Cells/rightArrow.png");
 
+            lblCreditCard.Text = Resources.GetValue("PaymentDetails.CreditCardLabel");
+            lblTipAmount.Text = Resources.GetValue("PaymentDetails.TipAmountLabel");
+            lblOptional.Text= Resources.GetValue("PaymentDetails.Optional");
+            btnPassword.SetTitle("***************", UIControlState.Normal);
+            
+            sgmtPercentOrValue.SelectedSegment = ViewModel.PaymentPreferences.IsTipInPercent ? 0 : 1;
+            sgmtPercentOrValue.ValueChanged += HandleValueChanged;
+
+
             this.AddBindings(new Dictionary<object, string>(){
                 { txtName, "{'Text': {'Path': 'Name'}}" },
                 { txtPhone, "{'Text': {'Path': 'Phone'}}" },
                 { pickerVehiculeType, "{'Title': {'Path': 'VehicleTypeName'}}" },
                 { pickerChargeType, "{'Title': {'Path': 'ChargeTypeName'}}" },
-                { txtPassword, "{'NavigateCommand': {'Path': 'NavigateToUpdatePassword'}}" },
-                { paymentPreferenceButton, "{'TouchUpInside':{'Path':'NavigateToPaymentPreference'}}"},
-                { btCreditCardsOnFile, "{'TouchUpInside': {'Path': 'NavigateToCreditCarsList'}}" }
+                { btnPassword, "{'TouchUpInside': {'Path': 'NavigateToUpdatePassword'}}" },
+                { txtTipAmount, "{'Text': {'Path': 'PaymentPreferences.Tip'}}" },
+                { btnCreditCard, "{'Title': {'Path': 'PaymentPreferences.SelectedCreditCard.FriendlyName'}, 'Last4Digits': {'Path': 'PaymentPreferences.SelectedCreditCard.Last4Digits'}, 'CreditCardCompany': {'Path': 'PaymentPreferences.SelectedCreditCard.CreditCardCompany'}, 'TouchUpInside': {'Path': 'PaymentPreferences.NavigateToCreditCardsList'}}" }
             });
 
+        }
+
+        void HandleValueChanged (object sender, EventArgs e)
+        {
+            ViewModel.PaymentPreferences.IsTipInPercent = (sgmtPercentOrValue.SelectedSegment == 0);
         }
 
         public override void ViewWillAppear(bool animated)
