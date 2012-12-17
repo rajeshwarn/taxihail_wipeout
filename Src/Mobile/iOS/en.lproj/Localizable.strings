@@ -346,7 +346,7 @@
 "PaymentCreditCardsOnFile"="Credit Cards On File";
 "PaymentTipAmount"="Tip Amount";
 "View_PaymentPreference"="Payment Preference";
-"CreditCardsListTitle"="Credit Cards on File";
+"CreditCardsListTitle"="Credit Cards On File";
 "CreditCardsNumber"="Card Number";
 "CreditCardsAddTitle"="New Credit Card";
 "CreditCardsType"="Type of Card";
@@ -367,3 +367,8 @@
 "CreditCardInvalidCrediCardNUmber"="The Credit Card Number is invalid";
 "CreditCardRequiredFields"="All the fields are required";
 "AddCreditCardTitle"="Add a credit card";
+"PaymentDetails.Optional"="(Optional)";
+"PaymentDetails.InvalidDataTitle"="Invalid payment information";
+"PaymentDetails.TipAmountLabel"="Tip Amount";
+"PaymentDetails.CreditCardLabel"="Credit Card";
+"PaymentDetails.InvalidTipAmount"="Tip amount is invalid";

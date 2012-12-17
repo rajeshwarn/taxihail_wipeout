@@ -10,6 +10,7 @@ using apcurium.MK.Common.Entity;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using System.Globalization;
 using apcurium.MK.Booking.Mobile.Extensions;
+using System.Collections.Generic;
 
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
@@ -126,7 +127,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         public IMvxCommand NavigateToCreditCardsList {
             get {
                 return GetCommand (()=>{
-                    RequestNavigate<CreditCardsListViewModel>();
+                    RequestSubNavigate<CreditCardsListViewModel, Guid>(null, result => {
+                        if(result != default(Guid))
+                        {
+                            this.SelectedCreditCardId = result;
+                        }
+                    });
                 });
             }
         }
