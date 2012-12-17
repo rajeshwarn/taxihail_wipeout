@@ -141,11 +141,11 @@ namespace apcurium.MK.Booking.Mobile
         {
             get
             {
-                return GetCommand(() => /*RequestSubNavigate<CreditCardsListViewModel, Guid>(null, creditCardSelectedGuid
+                return GetCommand(() => RequestSubNavigate<CreditCardsListViewModel, Guid>(null, creditCardSelectedGuid
                                                                                                  =>
                                                                                                      {
 
-                                                                                                     }));*/ RequestNavigate<CreditCardsListViewModel>());
+                                                                                                     }));
             }
         }
         

@@ -10,6 +10,8 @@ using apcurium.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Data;
 using System.Collections.Generic;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -116,6 +118,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				ReturnResult(Data);
             } finally {
+                TinyIoCContainer.Current.Resolve<ICacheService>().Clear("Account.MyPaymentList");
                 MessageService.ShowProgress(false);
             }
         }

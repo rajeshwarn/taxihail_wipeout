@@ -13,7 +13,7 @@ using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class CreditCardsListViewModel : BaseViewModel,
+    public class CreditCardsListViewModel : BaseSubViewModel<Guid>,
         IMvxServiceConsumer<IAccountService>
     {
 
@@ -44,7 +44,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 
 
-        public CreditCardsListViewModel()
+        public CreditCardsListViewModel(string messageId):base(messageId)
         {
             var accountService = this.GetService<IAccountService>();
             LoadCreditCards();
@@ -102,18 +102,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
 				return GetCommand(() => RequestSubNavigate<CreditCardAddViewModel,CreditCardInfos>(null, newCreditCard =>
 				                                                                                             {
+                                                                                                                InvokeOnMainThread(()=>
+                                       {
+
                                                                                                                  var lastElem = CreditCards.ElementAt(CreditCards.Count - 1);
+
                                                                                                                  CreditCards.Remove(lastElem);
 				                                                                                                 CreditCards.Add(new CreditCardViewModel()
                                                                                                                  {
                                                                                                                      CreditCardCompany = newCreditCard.CreditCardCompany,
                                                                                                                      FriendlyName = newCreditCard.FriendlyName,
                                                                                                                      Last4Digits = newCreditCard.Last4Digits,
-                                                                                                                     IsLast = true
+                                                                                                                     Picture = newCreditCard.CreditCardCompany
                                                                                                                  });
                                                                                                                  CreditCards.Add(lastElem);
                                                                                                                  FirePropertyChanged("CreditCards");
+                    });
 				                                                                                             }));
+                
             }
         }
 
@@ -121,7 +127,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return GetCommand<Guid>(creditCardId => RequestNavigate<RideSettingsViewModel>());
+                return GetCommand<Guid>(creditCardId => this.ReturnResult(creditCardId));
             }
         }
     }
