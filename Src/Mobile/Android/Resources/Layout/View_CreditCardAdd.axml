@@ -54,32 +54,10 @@
                 android:layout_height="wrap_content"
                 android:text="@string/CreditCardType"
                 style="@style/FormLabelText" />
-            <RadioGroup
+            <apcurium.mk.booking.mobile.client.controls.EditTextSpinner
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <apcurium.mk.booking.mobile.client.controls.BindableRadioButton
-                    android:tag="Visa"
-                    local:MvxBind="{&apos;SelectedChangedCommand&apos;: {&apos;Path&apos;: &apos;SetCreditCardCompanyCommand&apos;}}"
-                    android:id="@+id/rbVisa"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableRight="@drawable/visa" />
-                <apcurium.mk.booking.mobile.client.controls.BindableRadioButton
-                    android:tag="MasterCard"
-                    local:MvxBind="{&apos;SelectedChangedCommand&apos;: {&apos;Path&apos;: &apos;SetCreditCardCompanyCommand&apos;}}"
-                    android:id="@+id/rbMaster"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableRight="@drawable/mastercard" />
-                <apcurium.mk.booking.mobile.client.controls.BindableRadioButton
-                    android:tag="Amex"
-                    local:MvxBind="{&apos;SelectedChangedCommand&apos;: {&apos;Path&apos;: &apos;SetCreditCardCompanyCommand&apos;}}"
-                    android:id="@+id/rbAmex"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableRight="@drawable/amex" />
-            </RadioGroup>
+                local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;CreditCardTypeName&apos;}, &apos;Data&apos;: {&apos;Path&apos;: &apos;CreditCardCompanies&apos;}, &apos;SelectedItem&apos;: {&apos;Path&apos;: &apos;CreditCardType&apos;}}" />
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
