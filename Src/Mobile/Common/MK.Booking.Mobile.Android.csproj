@@ -147,6 +147,7 @@
     <Compile Include="Messages\AddressSelected.cs" />
     <Compile Include="Messages\BookUsingAddress.cs" />
     <Compile Include="Messages\CloseViewsToRoot.cs" />
+    <Compile Include="Messages\CreditCardRemoved.cs" />
     <Compile Include="Messages\OrderCanceled.cs" />
     <Compile Include="Messages\OrderDeleted.cs" />
     <Compile Include="Messages\OrderRated.cs" />

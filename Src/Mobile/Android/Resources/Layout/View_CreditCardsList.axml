@@ -16,15 +16,4 @@
             local:MvxItemTemplate="@layout/creditcardlistitem"
             local:MvxBind="{&apos;ItemsSource&apos;:{&apos;Path&apos;:&apos;CreditCards&apos;},&apos;ItemClick&apos;:{&apos;Path&apos;:&apos;NavigateToAddOrSelect&apos;}}" />
     </RelativeLayout>
-    <apcurium.mk.booking.mobile.client.controls.StyledButton
-        local:ButtonStyle="Green"
-        style="@style/ButtonText"
-        android:background="@drawable/red_button"
-        android:layout_width="fill_parent"
-        android:layout_height="40dip"
-        android:layout_weight="0.33"
-        android:singleLine="true"
-        android:lines="1"
-        android:text="@string/CreditCardsAddTitle"
-        local:MvxBind="{&apos;Click&apos;: {&apos;Path&apos;: &apos;NavigateToAddCreditCard&apos;}}" />
 </apcurium.mk.booking.mobile.client.controls.HeaderedLayout>
