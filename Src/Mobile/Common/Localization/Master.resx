@@ -1161,4 +1161,10 @@
   <data name="AddCreditCardTitle" xml:space="preserve">
     <value>Add a credit card</value>
   </data>
+  <data name="ReminderTitle" xml:space="preserve">
+    <value>{0} Booked</value>
+  </data>
+  <data name="ReminderDetails" xml:space="preserve">
+    <value>Reminder: A taxi will pick you up from {0} at {1} on {2}.</value>
+  </data>
 </root>

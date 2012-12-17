@@ -340,6 +340,8 @@
 "ServiceErrorResetPassword_AccountNotFound"="No account with this email has been found.";
 "AddReminderMessage"="Do you want to add a reminder ?";
 "AddReminderTitle"="Add Reminder";
+"ReminderTitle"="{0} Booked";
+"ReminderDetails"="Reminder: A taxi will pick you up from {0} at {1} on {2}.";
 "PaymentOptional"="(Optional)";
 "PaymentCreditCardsOnFile"="Credit Cards On File";
 "PaymentTipAmount"="Tip Amount";
