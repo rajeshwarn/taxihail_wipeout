@@ -1176,4 +1176,7 @@
   <data name="ReminderDetails" xml:space="preserve">
     <value>Reminder: A taxi will pick you up from {0} at {1} on {2}.</value>
   </data>
+  <data name="ChargeTypeCreditCardFile" xml:space="preserve">
+    <value>Credit Card on File</value>
+  </data>
 </root>

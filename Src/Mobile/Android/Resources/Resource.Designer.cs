@@ -1350,6 +1350,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f070139
 			public const int ChangePasswordConfirmmation = 2131165497;
 			
+			// aapt resource value: 0x7f07016d
+			public const int ChargeTypeCreditCardFile = 2131165549;
+			
 			// aapt resource value: 0x7f0700c0
 			public const int ChargeTypeLabel = 2131165376;
 			
@@ -1928,6 +1931,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f070028
 			public const int RefineAddressTitle = 2131165224;
+			
+			// aapt resource value: 0x7f07016e
+			public const int ReminderDetails = 2131165550;
+			
+			// aapt resource value: 0x7f07016f
+			public const int ReminderTitle = 2131165551;
 			
 			// aapt resource value: 0x7f07002d
 			public const int ResetPasswordCancel = 2131165229;

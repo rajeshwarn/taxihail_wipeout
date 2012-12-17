@@ -471,6 +471,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public IEnumerable<ListItem> GetPaymentsList ()
         {
             EnsureListLoaded ();
+            //add credit card on file if not already included
+            if (_refData.PaymentsList != null
+                && _refData.PaymentsList.None(x => x.Id == 666)) {
+                _refData.PaymentsList.Add(new ListItem
+                                          { 
+                                            Id = 666, 
+                                            Display =  TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("ChargeTypeCreditCardFile")
+                                          });
+            }
+
             return _refData.PaymentsList;
         }
 
