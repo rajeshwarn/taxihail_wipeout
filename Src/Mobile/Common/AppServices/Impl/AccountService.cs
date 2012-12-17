@@ -524,7 +524,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             {
                 client.RemoveCreditCard(creditCardId);
             }, ex => { throw ex; });
-            TinyIoCContainer.Current.Resolve<ICacheService>().Clear(_myPaymentsListCacheKey);
+            TinyIoCContainer.Current.Resolve<ICacheService>().Clear(_creditCardsCacheKey);
         }
 
         public void AddCreditCard (CreditCardInfos creditCard)
