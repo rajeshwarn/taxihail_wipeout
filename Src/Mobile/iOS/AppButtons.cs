@@ -19,7 +19,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			return btn;
 		}
 
-        public static void FormatStandardButton ( GradientButton button,  string title, AppStyle.ButtonColor buttonColor, string image = null, string rightImage = null)
+        public static void FormatStandardButton ( GradientButton button,  string title, AppStyle.ButtonColor buttonColor, string image = null, string rightImage = null, UIControlContentHorizontalAlignment horizontalAlignment = UIControlContentHorizontalAlignment.Center)
         {
 			var btnStyle = StyleManager.Current.Buttons.Single( b => b.Key == buttonColor.ToString() );
 
@@ -39,9 +39,10 @@ namespace apcurium.MK.Booking.Mobile.Client
             button.SetRightImage( rightImage );
             button.ContentEdgeInsets = new UIEdgeInsets(0, 3, 0, 10);
 			button.DropShadow = btnStyle.DropShadow;
+            button.HorizontalAlignment = horizontalAlignment;
             button.SetTitle( title , UIControlState.Normal );
 			btnStyle.TextColor.Maybe( c => button.TitleColour = UIColor.FromRGBA( c.Red, c.Green, c.Blue, c.Alpha ).CGColor );
-            button.TitleFont = AppStyle.ButtonFont;        
+            button.TitleFont = AppStyle.ButtonFont;
         }
 
 

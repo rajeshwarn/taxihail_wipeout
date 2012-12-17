@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             base.ViewDidLoad ();
            
-            scrollView.ContentSize = new SizeF(320, btnCreditCard.Frame.Bottom + 20);
+            scrollView.ContentSize = new SizeF(320, sgmtPercentOrValue.Frame.Bottom + 20);
 
             lblName.Text= Resources.GetValue("RideSettingsName");
             lblPhone.Text= Resources.GetValue("RideSettingsPhone");
@@ -66,18 +66,20 @@ namespace apcurium.MK.Booking.Mobile.Client
             ((ModalTextField)pickerVehiculeType).Configure(Resources.RideSettingsVehiculeType, ViewModel.Vehicles, ViewModel.VehicleTypeId, x=> {
                 ViewModel.SetVehiculeType.Execute(x.Id);
             });
-            AppButtons.FormatStandardButton((GradientButton)pickerVehiculeType, Resources.RideSettingsVehiculeType, AppStyle.ButtonColor.Grey, string.Empty, "Assets/Cells/rightArrow.png");
+            AppButtons.FormatStandardButton((GradientButton)pickerVehiculeType, Resources.RideSettingsVehiculeType, AppStyle.ButtonColor.Grey, rightImage: "Assets/Cells/rightArrow.png", horizontalAlignment: UIControlContentHorizontalAlignment.Left);
 
             ((ModalTextField)pickerChargeType).Configure(Resources.RideSettingsChargeType, ViewModel.Payments, ViewModel.ChargeTypeId, x=> {
                 ViewModel.SetChargeType.Execute(x.Id);
             });
 
-            AppButtons.FormatStandardButton((GradientButton)pickerChargeType, Resources.RideSettingsChargeType, AppStyle.ButtonColor.Grey, string.Empty, "Assets/Cells/rightArrow.png");
+            AppButtons.FormatStandardButton((GradientButton)pickerChargeType, Resources.RideSettingsChargeType, AppStyle.ButtonColor.Grey,  rightImage: "Assets/Cells/rightArrow.png", horizontalAlignment: UIControlContentHorizontalAlignment.Left);
+            AppButtons.FormatStandardButton((GradientButton)btnPassword, "***************", AppStyle.ButtonColor.Grey,  rightImage: "Assets/Cells/rightArrow.png", horizontalAlignment: UIControlContentHorizontalAlignment.Left);
+
+
 
             lblCreditCard.Text = Resources.GetValue("PaymentDetails.CreditCardLabel");
             lblTipAmount.Text = Resources.GetValue("PaymentDetails.TipAmountLabel");
             lblOptional.Text= Resources.GetValue("PaymentDetails.Optional");
-            btnPassword.SetTitle("***************", UIControlState.Normal);
             
             sgmtPercentOrValue.SelectedSegment = ViewModel.PaymentPreferences.IsTipInPercent ? 0 : 1;
             sgmtPercentOrValue.ValueChanged += HandleValueChanged;
