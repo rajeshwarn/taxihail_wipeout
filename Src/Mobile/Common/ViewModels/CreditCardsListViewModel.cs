@@ -54,7 +54,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                                                    var creditCardToRemove = CreditCards.Where(c => c.CreditCardDetails.AccountId.Equals(creditCardId.Content)).FirstOrDefault();
                                                                    if (creditCardToRemove != null)
                                                                    {
-                                                                       CreditCards.Remove(creditCardToRemove);
+                                                                        InvokeOnMainThread(()=>
+                                                                        {
+                                                                            CreditCards.Remove(creditCardToRemove);
+                                                                            });
+                                                                            FirePropertyChanged("CreditCards");
                                                                    }
                                                                });
            // PaymentList = new ObservableCollection<CreditCardDetails>(accountService.GetMyPaymentList());
