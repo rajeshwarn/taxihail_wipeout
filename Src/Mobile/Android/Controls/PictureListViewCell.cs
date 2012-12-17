@@ -6,12 +6,14 @@ using System.Text;
 using Android.App;
 using Android.Content;
 using Android.Graphics;
+using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Runtime;
 using Android.Text;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using Cirrious.MvvmCross.Interfaces.Commands;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -46,9 +48,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         protected override void OnDraw(Android.Graphics.Canvas canvas)
         {
             base.OnDraw(canvas);
+           
             if (!string.IsNullOrEmpty(TextLeft))
 			{
-                DrawText(canvas, TextLeft ?? "", 80,45, 20, AppFonts.Bold);
+                DrawText(canvas, TextLeft ?? "", 80, 45, 20, AppFonts.Bold);
                 DrawText(canvas, TextRight ?? "", this.Width-80, 45, 20, AppFonts.Regular);
 			}
 			else

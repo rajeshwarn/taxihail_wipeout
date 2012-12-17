@@ -488,12 +488,20 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 UseServiceClient<IAccountServiceClient>(service =>
                                                             {
                                                                 result = service.GetCreditCards().ToList();
-                                                              
                                                             }
                 );
                 TinyIoCContainer.Current.Resolve<ICacheService>().Set(_myPaymentsListCacheKey, result.ToArray());
                 return result;
             }
+        }
+
+        public void RemoveCreditCard(Guid creditCardId)
+        {
+            UseServiceClient<IAccountServiceClient>(client =>
+            {
+                client.RemoveCreditCard(creditCardId);
+            }, ex => { throw ex; });
+            TinyIoCContainer.Current.Resolve<ICacheService>().Clear(_myPaymentsListCacheKey);
         }
 
         public void AddCreditCard (CreditCardInfos creditCard)
@@ -514,7 +522,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             UseServiceClient<IAccountServiceClient> (client => {               
                 client.AddCreditCard(request);               
             }, ex => { throw ex; });  
-
         }
     }
 }

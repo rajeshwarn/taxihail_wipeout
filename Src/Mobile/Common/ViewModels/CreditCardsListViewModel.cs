@@ -9,6 +9,7 @@ using apcurium.MK.Booking.Mobile.Data;
 using TinyIoC;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -48,6 +49,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             var accountService = this.GetService<IAccountService>();
             LoadCreditCards();
+            this.MessengerHub.Subscribe<CreditCardRemoved>(creditCardId =>
+                                                               {
+                                                                   var creditCardToRemove = CreditCards.Where(c => c.CreditCardDetails.AccountId.Equals(creditCardId.Content)).FirstOrDefault();
+                                                                   if (creditCardToRemove != null)
+                                                                   {
+                                                                       CreditCards.Remove(creditCardToRemove);
+                                                                   }
+                                                               });
            // PaymentList = new ObservableCollection<CreditCardDetails>(accountService.GetMyPaymentList());
         }
 
@@ -62,12 +71,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 });
                 CreditCards = new ObservableCollection<CreditCardViewModel>(creditCards.Select(x => new CreditCardViewModel()
                 {
-                    FriendlyName = x.FriendlyName,
-                    AccountId = x.AccountId,
-                    CreditCardCompany = x.CreditCardCompany,
-                    CreditCardId = x.CreditCardId,
-                    Last4Digits = x.Last4Digits,
-                    Token = x.Token,
+                    CreditCardDetails = x,
                     IsAddNew = x.CreditCardId.IsNullOrEmpty(),
                     ShowPlusSign = x.CreditCardId.IsNullOrEmpty(),
                     IsFirst = x.Equals(creditCards.First()),
@@ -90,7 +94,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                                                }
                                                                else
                                                                {
-                                                                   this.SelectCreditCardAndBackToSettings.Execute(creditCard.CreditCardId);
+                                                                   this.SelectCreditCardAndBackToSettings.Execute(creditCard.CreditCardDetails.CreditCardId);
                                                                }
                                                            });
             }
@@ -110,9 +114,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                                                                                                  CreditCards.Remove(lastElem);
 				                                                                                                 CreditCards.Add(new CreditCardViewModel()
                                                                                                                  {
-                                                                                                                     CreditCardCompany = newCreditCard.CreditCardCompany,
-                                                                                                                     FriendlyName = newCreditCard.FriendlyName,
-                                                                                                                     Last4Digits = newCreditCard.Last4Digits,
+                                                                                                                     CreditCardDetails = new CreditCardDetails()
+                                                                                                                                             {
+                                                                                                                                                 CreditCardCompany = newCreditCard.CreditCardCompany,
+                                                                                                                                                 FriendlyName = newCreditCard.FriendlyName,
+                                                                                                                                                 Last4Digits = newCreditCard.Last4Digits
+                                                                                                                                             },
                                                                                                                      Picture = newCreditCard.CreditCardCompany
                                                                                                                  });
                                                                                                                  CreditCards.Add(lastElem);
@@ -132,4 +139,3 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
     }
 }
-

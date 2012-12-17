@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<apcurium.mk.booking.mobile.client.controls.PictureListViewCell xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.TaxiHailDemo"
     android:layout_width="fill_parent"
-    android:layout_height="50dip"
-    android:layout_weight="1"
-    android:paddingTop="5dip"
-    android:paddingBottom="5dip"
-    android:paddingLeft="15dip"
-    local:MvxBind="{&apos;TextLeft&apos;:{&apos;Path&apos;:&apos;FriendlyName&apos;}, &apos;TextRight&apos;:{&apos;Path&apos;:&apos;Last4Digits&apos;}, &apos;IsTop&apos;:{&apos;Path&apos;:&apos;IsFirst&apos;}, &apos;IsBottom&apos;:{&apos;Path&apos;:&apos;IsLast&apos;}, &apos;ShowAddSign&apos;:{&apos;Path&apos;:&apos;ShowPlusSign&apos;}, &apos;Picture&apos;:{&apos;Path&apos;:&apos;Picture&apos;}}" />
+    android:layout_height="50dip">
+    <apcurium.mk.booking.mobile.client.controls.PictureListViewCell
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:paddingTop="5dip"
+        android:paddingBottom="5dip"
+        android:paddingLeft="15dip"
+        local:MvxBind="{&apos;TextLeft&apos;:{&apos;Path&apos;:&apos;CreditCardDetails.FriendlyName&apos;}, &apos;TextRight&apos;:{&apos;Path&apos;:&apos;CreditCardDetails.Last4Digits&apos;}, &apos;IsTop&apos;:{&apos;Path&apos;:&apos;IsFirst&apos;}, &apos;IsBottom&apos;:{&apos;Path&apos;:&apos;IsLast&apos;}, &apos;ShowAddSign&apos;:{&apos;Path&apos;:&apos;ShowPlusSign&apos;}, &apos;Picture&apos;:{&apos;Path&apos;:&apos;Picture&apos;}}" />
+    <Button
+        android:layout_width="30dip"
+        android:layout_height="30dip"
+        android:layout_gravity="center_vertical|right"
+        android:background="@drawable/closeButton"
+        android:focusable="false"
+        local:MvxBind="{&apos;Visibility&apos;:{&apos;Path&apos;:&apos;IsLast&apos;, &apos;Converter&apos; : &apos;InvertedVisibility&apos;}, &apos;Click&apos;:{&apos;Path&apos;:&apos;RemoveCreditCards&apos;}}" />
+</FrameLayout>

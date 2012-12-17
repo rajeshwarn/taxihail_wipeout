@@ -35,6 +35,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 	    IEnumerable<CreditCardDetails> GetMyPaymentList();
 
+	    void RemoveCreditCard(Guid creditCardId);
+
         void ResetPassword( string email );
 
 		string UpdatePassword( Guid accountId, string currentPassword, string newPassword );
