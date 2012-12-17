@@ -324,7 +324,6 @@
       <DependentUpon>BaseViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\TextFieldWithArrow.cs" />
-    <Compile Include="Controls\NavigateTextField.cs" />
     <Compile Include="Extensions\UIResponderExtensions.cs" />
     <Compile Include="Order\BookStreetNumberView.cs" />
     <Compile Include="Order\BookStreetNumberView.designer.cs">

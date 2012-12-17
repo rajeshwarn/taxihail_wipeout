@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		MonoTouch.UIKit.UILabel lblPassword { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UITextField txtPassword { get; set; }
+		MonoTouch.UIKit.UIButton btnPassword { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel lblTipAmount { get; set; }
@@ -57,7 +57,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		MonoTouch.UIKit.UISegmentedControl sgmtPercentOrValue { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UITextField txtCreditCard { get; set; }
+		MonoTouch.UIKit.UIButton btnCreditCard { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel lblOptional { get; set; }
@@ -114,9 +114,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 				lblPassword = null;
 			}
 
-			if (txtPassword != null) {
-				txtPassword.Dispose ();
-				txtPassword = null;
+			if (btnPassword != null) {
+				btnPassword.Dispose ();
+				btnPassword = null;
 			}
 
 			if (lblTipAmount != null) {
@@ -139,9 +139,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 				sgmtPercentOrValue = null;
 			}
 
-			if (txtCreditCard != null) {
-				txtCreditCard.Dispose ();
-				txtCreditCard = null;
+			if (btnCreditCard != null) {
+				btnCreditCard.Dispose ();
+				btnCreditCard = null;
 			}
 
 			if (lblOptional != null) {

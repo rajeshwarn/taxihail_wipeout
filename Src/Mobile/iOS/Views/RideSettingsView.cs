@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             base.ViewDidLoad ();
            
-            scrollView.ContentSize = new SizeF(320, txtCreditCard.Frame.Bottom + 20);
+            scrollView.ContentSize = new SizeF(320, btnCreditCard.Frame.Bottom + 20);
 
             lblName.Text= Resources.GetValue("RideSettingsName");
             lblPhone.Text= Resources.GetValue("RideSettingsPhone");
@@ -77,6 +77,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             lblCreditCard.Text = Resources.GetValue("PaymentDetails.CreditCardLabel");
             lblTipAmount.Text = Resources.GetValue("PaymentDetails.TipAmountLabel");
             lblOptional.Text= Resources.GetValue("PaymentDetails.Optional");
+            btnPassword.SetTitle("***************", UIControlState.Normal);
             
             sgmtPercentOrValue.SelectedSegment = ViewModel.PaymentPreferences.IsTipInPercent ? 0 : 1;
             sgmtPercentOrValue.ValueChanged += HandleValueChanged;
@@ -87,9 +88,9 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { txtPhone, "{'Text': {'Path': 'Phone'}}" },
                 { pickerVehiculeType, "{'Title': {'Path': 'VehicleTypeName'}}" },
                 { pickerChargeType, "{'Title': {'Path': 'ChargeTypeName'}}" },
-                { txtPassword, "{'NavigateCommand': {'Path': 'NavigateToUpdatePassword'}}" },
+                { btnPassword, "{'TouchUpInside': {'Path': 'NavigateToUpdatePassword'}}" },
                 { txtTipAmount, "{'Text': {'Path': 'PaymentPreferences.Tip'}}" },
-                { txtCreditCard, "{'Text': {'Path': 'PaymentPreferences.SelectedCreditCardName'}, 'NavigateCommand': {'Path': 'PaymentPreferences.NavigateToCreditCardsList'}}" }
+                { btnCreditCard, "{'Title': {'Path': 'PaymentPreferences.SelectedCreditCardName'}, 'TouchUpInside': {'Path': 'PaymentPreferences.NavigateToCreditCardsList'}}" }
             });
 
         }
