@@ -1,13 +1,12 @@
-
 using System;
 using System.Drawing;
-
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Views;
 using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 using System.Collections.Generic;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -35,10 +34,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
-            scrollView.ContentSize = new SizeF(scrollView.ContentSize.Width, 416);
+            scrollView.ContentSize = new SizeF(scrollView.ContentSize.Width, 800);
 			
-            View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background_full.png"));
-            NavigationItem.Title = Resources.GetValue( "CreditCardsAddTitle");
+            NavigationItem.Title = Resources.GetValue("CreditCardsAddTitle");
 
             var save = new UIBarButtonItem(UIBarButtonSystemItem.Save, null, null);
             save.Clicked += (sender, e) => ViewModel.AddCreditCardCommand.Execute();
@@ -55,20 +53,28 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             lblSecurityCode.Text = Resources.GetValue("CreditCardCCV");
             lblZipCode.Text = Resources.GetValue("CreditCardZipCode");
 
-            txtNameOnCard.ShouldReturn += GoToNext;
-            txtCardNumber.ShouldReturn += GoToNext;
-            txtCardCategory.ShouldReturn += GoToNext;
-            txtTypeCard.ShouldReturn += GoToNext;
-            txtExpMonth.ShouldReturn += GoToNext;
-            txtExpYear.ShouldReturn += GoToNext;
-            txtSecurityCode.ShouldReturn += GoToNext;
-            txtZipCode.ShouldReturn += GoToNext;
+            txtNameOnCard.ShouldReturn += GoToNext;           
 
-            this.AddBindings(new Dictionary<object, string>{
+            ((ModalTextField)pickerCreditCardCategory).Configure(Resources.GetValue("CreditCardCategory"), ViewModel.CardCategories.ToArray(), ViewModel.CreditCardCategory , x=> {
+                ViewModel.CreditCardCategory =  x.Id; });
+
+            AppButtons.FormatStandardButton((GradientButton)pickerCreditCardCategory, Resources.GetValue("CreditCardCategory"), AppStyle.ButtonColor.Grey, string.Empty, "Assets/Cells/rightArrow.png");
+
+            ViewModel.CreditCardCompanies[0].Image = "Assets/CreditCard/visa.png";
+            ViewModel.CreditCardCompanies[1].Image = "Assets/CreditCard/mastercard.png";
+            ViewModel.CreditCardCompanies[2].Image = "Assets/CreditCard/amex.png";
+
+
+            ((ModalTextField)pickerCreditCardType).Configure(Resources.GetValue("CreditCardType"), ViewModel.CreditCardCompanies.ToArray(), ViewModel.CreditCardType , x=> {
+                ViewModel.CreditCardType =  x.Id; });
+
+            AppButtons.FormatStandardButton((GradientButton)pickerCreditCardType, Resources.GetValue("CreditCardType"), AppStyle.ButtonColor.Grey, string.Empty, "Assets/Cells/rightArrow.png");
+
+           this.AddBindings(new Dictionary<object, string>{
                 { txtNameOnCard, "{'Text': {'Path': 'Data.NameOnCard', 'Mode': 'TwoWay' }}" }, 
                 { txtCardNumber, "{'Text': {'Path': 'Data.CardNumber', 'Mode': 'TwoWay' }}" }, 
-                { txtCardCategory, "{'Text': {'Path': 'Data.FriendlyName', 'Mode': 'TwoWay' }}" }, 
-                { txtTypeCard, "{'Text': {'Path': 'Data.CreditCardCompany', 'Mode': 'TwoWay' }}" }, 
+                { pickerCreditCardCategory, "{'Title': {'Path': 'CreditCardCategoryName', 'Mode': 'TwoWay' }}" }, 
+                { pickerCreditCardType, "{'Title': {'Path': 'CreditCardTypeName', 'Mode': 'TwoWay' }}" }, 
                 { txtExpMonth, "{'Text': {'Path': 'Data.ExpirationMonth', 'Mode': 'TwoWay' }}" }, 
                 { txtExpYear, "{'Text': {'Path': 'Data.ExpirationYear', 'Mode': 'TwoWay' }}" }, 
                 { txtSecurityCode, "{'Text': {'Path': 'Data.CCV', 'Mode': 'TwoWay' }}" }, 
@@ -80,27 +86,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private bool GoToNext (UITextField textField)
         {
-            textField.ResignFirstResponder ();
-
-            if (textField == txtNameOnCard) {
-                txtCardNumber.BecomeFirstResponder();
-            }else if (textField == txtCardNumber) {
-                txtCardCategory.BecomeFirstResponder();
-            }else if (textField == txtCardCategory) {
-                txtTypeCard.BecomeFirstResponder();
-            }else if (textField == txtTypeCard) {
-                txtExpMonth.BecomeFirstResponder();
-            }else if (textField == txtExpMonth) {
-                txtExpYear.BecomeFirstResponder();
-            }else if (textField == txtExpYear) {
-                txtSecurityCode.BecomeFirstResponder();
-            }else if (textField == txtSecurityCode) {
-                txtZipCode.BecomeFirstResponder();
-            }
-
+            txtNameOnCard.ResignFirstResponder ();
+            txtCardNumber.BecomeFirstResponder();
             return true;
 
         }
     }
 }
+
 

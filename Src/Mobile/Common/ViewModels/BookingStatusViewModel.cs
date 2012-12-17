@@ -228,7 +228,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     MessageService.ShowMessage(Resources.GetString("AddReminderTitle"), Resources.GetString("AddReminderMessage"), Resources.GetString("YesButton"), () => 
                     {
                         var applicationName = TinyIoC.TinyIoCContainer.Current.Resolve<IAppSettings>().ApplicationName;
-                        this.PhoneService.AddEventToCalendarAndReminder(applicationName, "Reminder for your book", Order.PickupAddress.FullAddress, Order.PickupDate, Order.PickupDate.AddHours(-2));
+                        this.PhoneService.AddEventToCalendarAndReminder(string.Format(Resources.GetString("ReminderTitle"),applicationName), 
+                                                                        string.Format(Resources.GetString("ReminderDetails"),Order.PickupAddress.FullAddress, Order.PickupDate.Date.ToLongDateString(), Order.PickupDate.Date.ToLongTimeString()), 
+                                                                        Order.PickupAddress.FullAddress, 
+                                                                        Order.PickupDate, 
+                                                                        Order.PickupDate.AddHours(-2));
                     }, Resources.GetString("NoButton"), () => 
                     {
                     });

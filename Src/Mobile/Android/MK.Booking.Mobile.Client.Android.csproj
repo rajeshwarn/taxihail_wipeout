@@ -118,6 +118,7 @@
     <Compile Include="Controls\EditTextSpinner.cs" />
     <Compile Include="Controls\HeaderedLayout.cs" />
     <Compile Include="Controls\HorizontalPager.cs" />
+    <Compile Include="Controls\PictureListViewCell.cs" />
     <Compile Include="Controls\TextButton.cs" />
     <Compile Include="Controls\IconActionControl.cs" />
     <Compile Include="Controls\TouchMap.cs" />
@@ -612,6 +613,11 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_PaymentPreference.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Layout\CreditCardListItem.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>

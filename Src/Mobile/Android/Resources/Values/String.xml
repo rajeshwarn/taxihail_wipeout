@@ -363,5 +363,6 @@
   <string name="CreditCardInvalidCrediCardNUmber">The Credit Card Number is invalid</string>
   <string name="CreditCardRequiredFields">All the fields are required</string>
   <string name="PaymentDetails.CreditCardLabel">Credit Card</string>
+  <string name="AddCreditCardTitle">Add a credit card</string>
   <string name="PaymentDetails.InvalidTipAmount">Invalid payment information</string>
 </resources>

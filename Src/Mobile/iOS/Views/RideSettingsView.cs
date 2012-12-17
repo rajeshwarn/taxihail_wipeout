@@ -63,13 +63,16 @@ namespace apcurium.MK.Booking.Mobile.Client
             NavigationItem.RightBarButtonItem = button;
             NavigationItem.Title = Resources.GetValue("View_RideSettings");
 
-
-            ((ModalTextField)txtVehicleType).Configure(Resources.RideSettingsVehiculeType, ViewModel.Vehicles, ViewModel.VehicleTypeId, x=> {
+            ((ModalTextField)pickerVehiculeType).Configure(Resources.RideSettingsVehiculeType, ViewModel.Vehicles, ViewModel.VehicleTypeId, x=> {
                 ViewModel.SetVehiculeType.Execute(x.Id);
             });
-            ((ModalTextField)txtChargeType).Configure(Resources.RideSettingsChargeType, ViewModel.Payments, ViewModel.ChargeTypeId, x=> {
+            AppButtons.FormatStandardButton((GradientButton)pickerVehiculeType, Resources.RideSettingsVehiculeType, AppStyle.ButtonColor.Grey, string.Empty, "Assets/Cells/rightArrow.png");
+
+            ((ModalTextField)pickerChargeType).Configure(Resources.RideSettingsChargeType, ViewModel.Payments, ViewModel.ChargeTypeId, x=> {
                 ViewModel.SetChargeType.Execute(x.Id);
             });
+
+            AppButtons.FormatStandardButton((GradientButton)pickerChargeType, Resources.RideSettingsChargeType, AppStyle.ButtonColor.Grey, string.Empty, "Assets/Cells/rightArrow.png");
 
             lblCreditCard.Text = Resources.GetValue("PaymentDetails.CreditCardLabel");
             lblTipAmount.Text = Resources.GetValue("PaymentDetails.TipAmountLabel");
@@ -82,8 +85,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             this.AddBindings(new Dictionary<object, string>(){
                 { txtName, "{'Text': {'Path': 'Name'}}" },
                 { txtPhone, "{'Text': {'Path': 'Phone'}}" },
-                { txtVehicleType, "{'Text': {'Path': 'VehicleTypeName'}}" },
-                { txtChargeType, "{'Text': {'Path': 'ChargeTypeName'}}" },
+                { pickerVehiculeType, "{'Title': {'Path': 'VehicleTypeName'}}" },
+                { pickerChargeType, "{'Title': {'Path': 'ChargeTypeName'}}" },
                 { txtPassword, "{'NavigateCommand': {'Path': 'NavigateToUpdatePassword'}}" },
                 { txtTipAmount, "{'Text': {'Path': 'PaymentPreferences.Tip'}}" },
                 { txtCreditCard, "{'Text': {'Path': 'PaymentPreferences.SelectedCreditCardName'}, 'NavigateCommand': {'Path': 'PaymentPreferences.NavigateToCreditCardsList'}}" }

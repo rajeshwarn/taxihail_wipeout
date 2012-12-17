@@ -396,6 +396,7 @@
     <Folder Include="Navigation\" />
     <Folder Include="Assets\Tutorial\" />
     <Folder Include="Views\Payment\" />
+    <Folder Include="Assets\CreditCard\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="MainWindow.xib" xmlns="" />
@@ -586,6 +587,12 @@
     <Content Include="Assets\Tutorial\tutorial_screen06%402x.png" />
     <Content Include="Assets\Tutorial\tutorial_screen07%402x.png" />
     <Content Include="Assets\Tutorial\tutorial_screen08%402x.png" />
+    <Content Include="Assets\CreditCard\amex.png" />
+    <Content Include="Assets\CreditCard\amex%402x.png" />
+    <Content Include="Assets\CreditCard\mastercard.png" />
+    <Content Include="Assets\CreditCard\mastercard%402x.png" />
+    <Content Include="Assets\CreditCard\visa.png" />
+    <Content Include="Assets\CreditCard\visa%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.iOS.csproj">

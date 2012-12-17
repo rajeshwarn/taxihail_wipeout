@@ -10,7 +10,7 @@ using System.Collections.Generic;
 namespace apcurium.MK.Booking.Mobile.Client
 {
     [Register("ModalTextField")]
-    public class ModalTextField : TextFieldWithArrow
+    public class ModalTextField : GradientButton
     {
         RootElement _rootElement;
 
@@ -18,17 +18,16 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             Initialize();
         }
-        
-        public ModalTextField(RectangleF rect) : base( rect )
+
+        public ModalTextField(RectangleF rect, float cornerRadius, Style.ButtonStyle buttonStyle, string title, UIFont titleFont, string image = null) : base ( rect , cornerRadius, buttonStyle, title, titleFont, image)
         {
-            Initialize();
         }
 
         private void Initialize() {
-            EditingDidBegin += HandleEditingDidBegin;
+            TouchUpInside += HandleTouchUpInside;
         }
 
-        void HandleEditingDidBegin (object sender, EventArgs e)
+        void HandleTouchUpInside (object sender, EventArgs e)
         {
             var controller = this.FindViewController();
             if(controller == null) return;
@@ -41,7 +40,6 @@ namespace apcurium.MK.Booking.Mobile.Client
                 newDvc.View.BackgroundColor  = UIColor.FromRGB (230,230,230);
                 newDvc.TableView.BackgroundColor = UIColor.FromRGB (230,230,230);
                 newDvc.TableView.BackgroundView = new UIView{ BackgroundColor =  UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png")) }; 
-
                 controller.NavigationController.PushViewController(newDvc, true);
             }
         }
@@ -54,7 +52,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
                 // Keep a reference to value in order for callbacks to work correctly
                 var value = v;
-                var item = new RadioElementWithId<T>(value.Id, value.Display);
+                var item = new RadioElementWithId<T>(value.Id, value.Display, value.Image);
                 item.Tapped += ()=> {
                     onItemSelected(value);
                     var controller = this.FindViewController();

@@ -84,11 +84,11 @@ namespace apcurium.MK.Booking.Mobile.Client
                     if (granted)
                     {
                         EKEvent newEvent = EKEvent.FromStore ( EventStore );
-                    newEvent.AddAlarm ( EKAlarm.FromDate ( alertDate ) );
+                        newEvent.AddAlarm ( EKAlarm.FromDate ( alertDate ) );
                         newEvent.StartDate = startDate;
                         newEvent.EndDate = startDate.AddHours(1);
                         newEvent.Title = title;
-                        newEvent.Notes = addInfo + " " + place + " - " + startDate.ToLongDateString();
+                        newEvent.Notes = addInfo ;
                         newEvent.Calendar = EventStore.DefaultCalendarForNewEvents;
                         NSError err = null;
                         EventStore.SaveEvent ( newEvent, EKSpan.ThisEvent, out err );
