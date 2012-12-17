@@ -310,8 +310,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             DrawInnerShadow (context, roundedRectanglePath);
             DrawStroke (context, roundedRectanglePath);
             var imageRect = DrawLeftImage (rect);
-            DrawRightImage (rect);
-            DrawText (rect, context, imageRect);
+            var rightImageRect = DrawRightImage (rect);
+            DrawText (rect, context, imageRect, rightImageRect);
 
 
             if (_pressed)
@@ -351,17 +351,19 @@ namespace apcurium.MK.Booking.Mobile.Client
             return imageRect;
         }
 
-        void DrawRightImage (RectangleF rect)
+        RectangleF DrawRightImage (RectangleF rect)
         {
+            var imageRect = new RectangleF();
             if (_rightImage != null) {
                 var emptySpaceX = rect.Width - _rightImage.Size.Width;
                 var emptySpaceY = rect.Height - _rightImage.Size.Height;
-                var rightImageRect = new RectangleF (emptySpaceX - ContentEdgeInsets.Right, emptySpaceY / 2, _rightImage.Size.Width, _rightImage.Size.Height);
-                _rightImage.Draw (rightImageRect, CGBlendMode.Normal, 1f);
+                imageRect = new RectangleF (emptySpaceX - ContentEdgeInsets.Right, emptySpaceY / 2, _rightImage.Size.Width, _rightImage.Size.Height);
+                _rightImage.Draw (imageRect, CGBlendMode.Normal, 1f);
             }
+            return imageRect;
         }
 
-        void DrawText (RectangleF rect, CGContext context, RectangleF imageRect)
+        protected virtual void DrawText (RectangleF rect, CGContext context, RectangleF imageRect, RectangleF rightImageRect)
         {
             context.SaveState ();
             context.SelectFont (_titleFont.Name, _titleFont.PointSize, CGTextEncoding.MacRoman);

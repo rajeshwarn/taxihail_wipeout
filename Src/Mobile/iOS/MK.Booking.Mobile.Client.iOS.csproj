@@ -363,6 +363,7 @@
       <DependentUpon>CreditCardsListView.cs</DependentUpon>
     </Compile>
     <Compile Include="InfoTableView\SingleLinePictureCell.cs" />
+    <Compile Include="Controls\CreditCardButton.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

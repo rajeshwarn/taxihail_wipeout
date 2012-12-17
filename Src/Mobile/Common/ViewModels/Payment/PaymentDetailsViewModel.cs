@@ -49,20 +49,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 {
                     _selectedCreditCardId = value;
                     FirePropertyChanged("SelectedCreditCardId");
-                    FirePropertyChanged("SelectedCreditCardName");
+                    FirePropertyChanged("SelectedCreditCard");
                 }
 
             }
         }
 
-        public string SelectedCreditCardName {
+        public CreditCardDetails SelectedCreditCard {
             get{ 
-                var selectedCreditCard = this.CreditCards.FirstOrDefault(x=>x.CreditCardId == SelectedCreditCardId);
-                if(selectedCreditCard == null)
-                {
-                    return null;
-                }
-                return selectedCreditCard.FriendlyName;
+                return this.CreditCards.FirstOrDefault(x=>x.CreditCardId == SelectedCreditCardId);
             }
         }
 
@@ -159,8 +154,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                     foreach (var card in cards) {
                         CreditCards.Add(card);
                     }
-                    // refresh selected credit card name
-                    FirePropertyChanged("SelectedCreditCardName");
+                    // refresh selected credit card
+                    FirePropertyChanged("SelectedCreditCard");
                 });
             }).HandleErrors();
 

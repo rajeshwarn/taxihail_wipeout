@@ -49,7 +49,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payment
 
             this.AddBindings(new Dictionary<object, string> {
                 { txtTipAmount, "{'Text': {'Path': 'Tip'}}" },
-                { btnCreditCard, "{'Title': {'Path': 'SelectedCreditCardName'}, 'TouchUpInside': {'Path': 'NavigateToCreditCardsList'}}" },
+                { btnCreditCard, "{'Title': {'Path': 'SelectedCreditCard.FriendlyName'}, 'TouchUpInside': {'Path': 'NavigateToCreditCardsList'}}" },
             });
 
         }
