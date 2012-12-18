@@ -65,10 +65,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             FirePropertyChanged ( () => VehicleName );
         }
 
-        public void SetChargeTypeId( int id )
+        public void SetChargeTypeId (int id)
         {
             Order.Settings.ChargeTypeId = id;
-            FirePropertyChanged ( () => ChargeType );
+            FirePropertyChanged (() => ChargeType);
+            if (ChargeType == ReferenceData.CreditCardOnFileType) {
+                Order.Payment = new PaymentSettings ();
+                Order.Payment.CreditCardId = _accountService.CurrentAccount.DefaultCreditCard;
+                Order.Payment.TipAmount = _accountService.CurrentAccount.DefaultTipAmount;
+                Order.Payment.TipPercent = _accountService.CurrentAccount.DefaultTipPercent;
+            } else {
+                Order.Payment = null;
+            }
         }
 
 
