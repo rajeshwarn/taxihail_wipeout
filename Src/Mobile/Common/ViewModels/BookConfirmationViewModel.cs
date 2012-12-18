@@ -21,6 +21,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Configuration;
 using System.Globalization;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -198,35 +199,44 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                 return GetCommand(() => 
                     {
-						Order.Id = Guid.NewGuid ();
-						try {
-						MessageService.ShowProgress (true);
-						var orderInfo = _bookingService.CreateOrder (Order);
-						
-						if (orderInfo.IBSOrderId.HasValue
-						    && orderInfo.IBSOrderId > 0) {
-							var orderCreated = new Order { CreatedDate = DateTime.Now, DropOffAddress = Order.DropOffAddress, IBSOrderId = orderInfo.IBSOrderId, Id = Order.Id, PickupAddress = Order.PickupAddress, Note = Order.Note, PickupDate = Order.PickupDate.HasValue ? Order.PickupDate.Value : DateTime.Now, Settings = Order.Settings };
-							
-							RequestNavigate<BookingStatusViewModel>(new
-							                                        {
-								order = orderCreated.ToJson(),
-								orderStatus = orderInfo.ToJson()
-							});	
-							Close();
-							MessengerHub.Publish(new OrderConfirmed(this, Order, false ));
-						}		
-						
-					} catch (Exception ex) {
-						InvokeOnMainThread (() =>
-						                    {
-							var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
-							string err = string.Format (Resources.GetString ("ServiceError_ErrorCreatingOrderMessage"), settings.ApplicationName, settings.PhoneNumberDisplay (Order.Settings.ProviderId.HasValue ? Order.Settings.ProviderId.Value : 1));
-							MessageService.ShowMessage (Resources.GetString ("ErrorCreatingOrderTitle"), err);
-						});
-					} finally {
-						MessageService.ShowProgress(false);
-					}                       
+
+                        if(Order.Settings.ChargeTypeId == ReferenceData.CreditCardOnFileType)
+                        {
+                            var serialized = Order.ToJson();
+                            RequestNavigate<BookPaymentSettingsViewModel>(new { order = serialized }, false, MvxRequestedBy.UserAction);
+
+                        }else{
+            					Order.Id = Guid.NewGuid ();
+            					try {
+            					MessageService.ShowProgress (true);
+            					var orderInfo = _bookingService.CreateOrder (Order);
+            					
+            					if (orderInfo.IBSOrderId.HasValue
+            					    && orderInfo.IBSOrderId > 0) {
+            						var orderCreated = new Order { CreatedDate = DateTime.Now, DropOffAddress = Order.DropOffAddress, IBSOrderId = orderInfo.IBSOrderId, Id = Order.Id, PickupAddress = Order.PickupAddress, Note = Order.Note, PickupDate = Order.PickupDate.HasValue ? Order.PickupDate.Value : DateTime.Now, Settings = Order.Settings };
+            						
+            						RequestNavigate<BookingStatusViewModel>(new
+            						                                        {
+            							order = orderCreated.ToJson(),
+            							orderStatus = orderInfo.ToJson()
+            						});	
+            						Close();
+            						MessengerHub.Publish(new OrderConfirmed(this, Order, false ));
+            					}		
+            					
+            				} catch (Exception ex) {
+            					InvokeOnMainThread (() =>
+            					                    {
+            						var settings = TinyIoCContainer.Current.Resolve<IAppSettings> ();
+            						string err = string.Format (Resources.GetString ("ServiceError_ErrorCreatingOrderMessage"), settings.ApplicationName, settings.PhoneNumberDisplay (Order.Settings.ProviderId.HasValue ? Order.Settings.ProviderId.Value : 1));
+            						MessageService.ShowMessage (Resources.GetString ("ErrorCreatingOrderTitle"), err);
+            					});
+            				} finally {
+            					MessageService.ShowProgress(false);
+            				} 
+                        }
                     }); 
+               
             }
         }
 

@@ -373,3 +373,5 @@
 "PaymentDetails.CreditCardLabel"="Credit Card";
 "PaymentDetails.InvalidTipAmount"="Tip amount is invalid";
 "ChargeTypeCreditCardFile"="Credit Card on File";
+"RemoveCreditCardMessage"="Are you sure you want to remove this credit card ?";
+"RemoveCreditCardTitle"="Remove credit card";
