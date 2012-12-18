@@ -59,8 +59,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             ((ModalTextField)pickerCreditCardCategory).Configure(Resources.GetValue("CreditCardCategory"), ViewModel.CardCategories.ToArray(), ViewModel.CreditCardCategory , x=> {
                 ViewModel.CreditCardCategory =  x.Id; });
 
-            //AppButtons.FormatStandardButton((GradientButton)pickerCreditCardCategory, Resources.GetValue("CreditCardCategory"), AppStyle.ButtonColor.Grey, string.Empty, "Assets/Cells/rightArrow.png");
-
             ViewModel.CreditCardCompanies[0].Image = "Assets/CreditCard/visa.png";
             ViewModel.CreditCardCompanies[1].Image = "Assets/CreditCard/mastercard.png";
             ViewModel.CreditCardCompanies[2].Image = "Assets/CreditCard/amex.png";
@@ -68,8 +66,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             ((ModalTextField)pickerCreditCardType).Configure(Resources.GetValue("CreditCardType"), ViewModel.CreditCardCompanies.ToArray(), ViewModel.CreditCardType , x=> {
                 ViewModel.CreditCardType =  x.Id; });
-
-            //AppButtons.FormatStandardButton((GradientButton)pickerCreditCardType, Resources.GetValue("CreditCardType"), AppStyle.ButtonColor.Grey, string.Empty, "Assets/Cells/rightArrow.png");
 
            this.AddBindings(new Dictionary<object, string>{
                 { txtNameOnCard, "{'Text': {'Path': 'Data.NameOnCard', 'Mode': 'TwoWay' }}" }, 

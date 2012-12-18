@@ -91,12 +91,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             ((ModalTextField)pickerVehicleType).Configure(Resources.RideSettingsVehiculeType, ViewModel.Vehicles, ViewModel.Order.Settings.VehicleTypeId, x=> {
                 ViewModel.SetVehicleTypeId ( x.Id );});
 
-            //AppButtons.FormatStandardButton((GradientButton)pickerVehicleType, Resources.RideSettingsVehiculeType, AppStyle.ButtonColor.Grey, string.Empty, "Assets/Cells/rightArrow.png");
-
             ((ModalTextField)pickerChargeType).Configure(Resources.RideSettingsChargeType, ViewModel.Payments, ViewModel.Order.Settings.ChargeTypeId , x=> {
                 ViewModel.SetChargeTypeId( x.Id ); });
-
-            //AppButtons.FormatStandardButton((GradientButton)pickerChargeType, Resources.RideSettingsChargeType, AppStyle.ButtonColor.Grey, string.Empty, "Assets/Cells/rightArrow.png");
 
             View.BringSubviewToFront( bottomBar );    
 
