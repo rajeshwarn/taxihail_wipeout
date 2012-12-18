@@ -19,7 +19,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 if(!IsAddNew)
                 {
-                    return "**** " + this.CreditCardDetails.Last4Digits;
+                    return "\u2022\u2022\u2022\u2022 " + this.CreditCardDetails.Last4Digits;
                 }
                 return "";
             }
