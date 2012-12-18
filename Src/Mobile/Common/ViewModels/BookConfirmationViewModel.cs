@@ -40,6 +40,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Order.Settings = _accountService.CurrentAccount.Settings;
         }
 
+
+
         public override void OnViewLoaded ()
         {
             base.OnViewLoaded ();
@@ -48,12 +50,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 MessageService.ShowProgress (true);                
                 RideSettings = new RideSettingsModel (Order.Settings, _accountService.GetCompaniesList (), _accountService.GetVehiclesList (), _accountService.GetPaymentsList ());
                 FareEstimate = _bookingService.GetFareEstimateDisplay (Order, null, "NotAvailable", false, "NotAvailable");
+
+                var paymentInformation = new PaymentInformation {
+                    CreditCardId = _accountService.CurrentAccount.DefaultCreditCard,
+                    TipAmount = _accountService.CurrentAccount.DefaultTipAmount,
+                    TipPercent = _accountService.CurrentAccount.DefaultTipPercent,
+                };
+
+
                 ShowFareEstimateAlertDialogIfNecessary();
                 ShowChooseProviderDialogIfNecessary();
 				FirePropertyChanged ( () => Vehicles );
 				FirePropertyChanged ( () => Payments );
 				FirePropertyChanged ( () => VehicleName );
 				FirePropertyChanged ( () => ChargeType );
+
             } finally {
                 MessageService.ShowProgress (false);
             }
@@ -69,15 +80,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             Order.Settings.ChargeTypeId = id;
             FirePropertyChanged (() => ChargeType);
-            if (ChargeType == ReferenceData.CreditCardOnFileType) {
-                Order.Payment = new PaymentSettings ();
-                Order.Payment.CreditCardId = _accountService.CurrentAccount.DefaultCreditCard;
-                Order.Payment.TipAmount = _accountService.CurrentAccount.DefaultTipAmount;
-                Order.Payment.TipPercent = _accountService.CurrentAccount.DefaultTipPercent;
-            } else {
-                Order.Payment = null;
-            }
         }
+
 
 
         public int VehicleTypeId {
@@ -185,23 +189,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
         }
 
-        public IMvxCommand NavigateToPaymentDetails {
-            get {
-                return GetCommand(() => {
 
-                    RequestSubNavigate<PaymentDetailsViewModel, PaymentInformation>(new Dictionary<string, string> {
-                        { "selectedCreditCardId", new PaymentInformation().ToJson () }
-                    }, result => {
-                        this.Order.Payment.PayWithCreditCard = result.CreditCardId != Guid.Empty;
-                        this.Order.Payment.CreditCardId = result.CreditCardId;
-                        this.Order.Payment.TipAmount = result.TipAmount;
-                        this.Order.Payment.TipPercent = result.TipPercent;
-                    });
-                });
-            }
-        }
-		
-		public IMvxCommand ConfirmOrderCommand
+
+        public IMvxCommand ConfirmOrderCommand
         {
             get
             {

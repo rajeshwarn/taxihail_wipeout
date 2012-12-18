@@ -447,7 +447,7 @@
 											<int key="traits">2</int>
 											<double key="pointSize">15</double>
 										</object>
-										<object class="NSFont" key="IBUIFont" id="408557204">
+										<object class="NSFont" key="IBUIFont" id="915463078">
 											<string key="NSName">Helvetica-Bold</string>
 											<double key="NSSize">15</double>
 											<int key="NSfFlags">16</int>
@@ -473,10 +473,10 @@
 										</object>
 										<reference key="IBUINormalTitleShadowColor" ref="711618959"/>
 										<reference key="IBUIFontDescription" ref="1052190528"/>
-										<reference key="IBUIFont" ref="408557204"/>
+										<reference key="IBUIFont" ref="915463078"/>
 									</object>
 								</object>
-								<string key="NSFrame">{{4, 412}, {320, 48}}</string>
+								<string key="NSFrame">{{0, 412}, {320, 48}}</string>
 								<reference key="NSSuperview" ref="781961504"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="457055350"/>
@@ -654,6 +654,14 @@
 					</object>
 					<int key="connectionID">92</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">scrollView</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="781961504"/>
+					</object>
+					<int key="connectionID">150</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -704,8 +712,8 @@
 							<reference ref="336619414"/>
 							<reference ref="469599177"/>
 							<reference ref="818244391"/>
-							<reference ref="425015997"/>
 							<reference ref="856358466"/>
+							<reference ref="425015997"/>
 						</object>
 						<reference key="parent" ref="191373211"/>
 					</object>
@@ -926,7 +934,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">145</int>
+			<int key="maxID">150</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -949,7 +957,6 @@
 							<string>bottomBar</string>
 							<string>btnCancel</string>
 							<string>btnConfirm</string>
-							<string>btnCreditCard</string>
 							<string>lblAptRing</string>
 							<string>lblChargeType</string>
 							<string>lblDateTime</string>
@@ -961,6 +968,7 @@
 							<string>pickerAptEntryBuilding</string>
 							<string>pickerChargeType</string>
 							<string>pickerVehicleType</string>
+							<string>scrollView</string>
 							<string>txtDateTime</string>
 							<string>txtDestination</string>
 							<string>txtOrigin</string>
@@ -971,7 +979,6 @@
 							<string>BottomBar</string>
 							<string>UIButton</string>
 							<string>UIButton</string>
-							<string>UIButton</string>
 							<string>FormLabel</string>
 							<string>FormLabel</string>
 							<string>UILabel</string>
@@ -983,6 +990,7 @@
 							<string>ModalTextField</string>
 							<string>ModalTextField</string>
 							<string>ModalTextField</string>
+							<string>UIScrollView</string>
 							<string>UILabel</string>
 							<string>UILabel</string>
 							<string>UILabel</string>
@@ -996,7 +1004,6 @@
 							<string>bottomBar</string>
 							<string>btnCancel</string>
 							<string>btnConfirm</string>
-							<string>btnCreditCard</string>
 							<string>lblAptRing</string>
 							<string>lblChargeType</string>
 							<string>lblDateTime</string>
@@ -1008,6 +1015,7 @@
 							<string>pickerAptEntryBuilding</string>
 							<string>pickerChargeType</string>
 							<string>pickerVehicleType</string>
+							<string>scrollView</string>
 							<string>txtDateTime</string>
 							<string>txtDestination</string>
 							<string>txtOrigin</string>
@@ -1025,10 +1033,6 @@
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">btnConfirm</string>
-								<string key="candidateClassName">UIButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">btnCreditCard</string>
 								<string key="candidateClassName">UIButton</string>
 							</object>
 							<object class="IBToOneOutletInfo">
@@ -1074,6 +1078,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">pickerVehicleType</string>
 								<string key="candidateClassName">ModalTextField</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">scrollView</string>
+								<string key="candidateClassName">UIScrollView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">txtDateTime</string>

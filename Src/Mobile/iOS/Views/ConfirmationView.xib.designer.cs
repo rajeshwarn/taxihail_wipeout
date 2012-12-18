@@ -12,6 +12,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 	partial class ConfirmationView
 	{
 		[Outlet]
+		MonoTouch.UIKit.UIScrollView scrollView { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.ModalTextField pickerAptEntryBuilding { get; set; }
 
 		[Outlet]
@@ -64,12 +67,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel txtPrice { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UIButton btnCreditCard { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (scrollView != null) {
+				scrollView.Dispose ();
+				scrollView = null;
+			}
+
 			if (pickerAptEntryBuilding != null) {
 				pickerAptEntryBuilding.Dispose ();
 				pickerAptEntryBuilding = null;
@@ -158,11 +163,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			if (txtPrice != null) {
 				txtPrice.Dispose ();
 				txtPrice = null;
-			}
-
-			if (btnCreditCard != null) {
-				btnCreditCard.Dispose ();
-				btnCreditCard = null;
 			}
 		}
 	}
