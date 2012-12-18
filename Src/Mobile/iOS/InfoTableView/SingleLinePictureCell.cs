@@ -95,27 +95,27 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
         
         private void Initialize ()
         {
-            _removeButton = new UIButton (new RectangleF (250, _rowHeight/2 - 48/2, 76, 48 ) );
+            _removeButton = new UIButton (new RectangleF (245, _rowHeight/2 - 48/2, 76, 48 ) );
             BackgroundView = new CustomCellBackgroundView( IsFirst, IsLast, Frame, ShowPlusSign );
            
-            _rightText = new UILabel(new RectangleF(170, _rowHeight/2 - 15/2,80,15));
+            _rightText = new UILabel(new RectangleF(150, _rowHeight/2 - 15/2,80,15));
             _rightText.TextColor = AppStyle.CellSecondLineTextColor;
             _rightText.BackgroundColor = UIColor.Clear;
             _rightText.Font = AppStyle.NormalTextFont;
             AddSubview(_rightText);
 
-            _leftText = new UILabel(new RectangleF(80, _rowHeight/2 - 15/2,200,15));
+            _leftText = new UILabel(new RectangleF(60, _rowHeight/2 - 15/2,200,15));
             _leftText.TextColor = AppStyle.CellFirstLineTextColor;
             _leftText.BackgroundColor = UIColor.Clear;
             _leftText.Font = AppStyle.CellFont;
             AddSubview(_leftText);
 
-            _picture = new UIImageView (new RectangleF (15, _rowHeight/2 - 15/2, 40, 15 ) ); 
+            _picture = new UIImageView (new RectangleF (0, _rowHeight/2 - 48/2, 76, 48 ) ); 
             _picture.BackgroundColor = UIColor.Clear;
-            _picture.ContentMode = UIViewContentMode.ScaleAspectFit;
+            _picture.ContentMode = UIViewContentMode.Center;
             AddSubview ( _picture ); 
             
-            _plusSignImage = new UIImageView (new RectangleF (280, _rowHeight/2 - 15/2, 14, 15 ) ); 
+            _plusSignImage = new UIImageView (new RectangleF (275, _rowHeight/2 - 15/2, 14, 15 ) ); 
             _plusSignImage.BackgroundColor = UIColor.Clear;
             _plusSignImage.ContentMode = UIViewContentMode.ScaleAspectFit;
             _plusSignImage.Image = UIImage.FromFile("Assets/Cells/plusSign.png");
