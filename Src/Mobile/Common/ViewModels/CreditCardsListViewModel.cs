@@ -51,7 +51,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             LoadCreditCards();
             this.MessengerHub.Subscribe<CreditCardRemoved>(creditCardId =>
                                                                {
-                                                                   var creditCardToRemove = CreditCards.Where(c => c.CreditCardDetails.AccountId.Equals(creditCardId.Content)).FirstOrDefault();
+                                                                   var creditCardToRemove = CreditCards.Where(c => c.CreditCardDetails.CreditCardId.Equals(creditCardId.Content)).FirstOrDefault();
                                                                    if (creditCardToRemove != null)
                                                                    {
                                                                         InvokeOnMainThread(()=>
@@ -60,8 +60,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                                                             });
                                                                             FirePropertyChanged("CreditCards");
                                                                    }
+                CreditCards[0].IsFirst=true;
+                
+                                                                    if(CreditCards.Count.Equals(1))
+                {
+                    CreditCards[0].IsLast=true;
+                }
+                CreditCards = new ObservableCollection<CreditCardViewModel>(CreditCards);
                                                                });
-           // PaymentList = new ObservableCollection<CreditCardDetails>(accountService.GetMyPaymentList());
         }
 
         public Task LoadCreditCards()
@@ -128,7 +134,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                                                                                                  });
                                                                                                                  CreditCards.Add(lastElem);
                                                                                                                  FirePropertyChanged("CreditCards");
-                    });
+                                                                                                                 });                                                                                         
+                                                                                                            CreditCards[0].IsFirst=true;
+                    CreditCards.LastOrDefault().IsFirst=false;                        
+                                                                                                            CreditCards.LastOrDefault().IsLast = true;
+                                                                                                            CreditCards.LastOrDefault().IsAddNew = true;
+                                                                                                            CreditCards = new ObservableCollection<CreditCardViewModel>(CreditCards);
 				                                                                                             }));
                 
             }
