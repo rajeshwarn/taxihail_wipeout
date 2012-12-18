@@ -38,17 +38,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 
         public string TextLeft { get; set; }
-        private string _textRight { get; set; }
-		public string TextRight 
-        {
-            get 
-            {
-		        if (!ShowAddSign)
-		        {
-		            return "**** " + this._textRight;
-		        }
-		        return "";
-		    } set { this._textRight = value; } }
+        public string TextRight { get; set; }
         public string Picture { get;set; }
 
 		public bool IsTop { get; set; }
