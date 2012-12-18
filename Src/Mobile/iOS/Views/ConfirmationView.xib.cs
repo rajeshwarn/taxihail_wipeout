@@ -106,8 +106,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { txtPrice, "{'Text': {'Path': 'FareEstimate'}}" },
                 { pickerVehicleType, "{'Title': {'Path': 'VehicleName'}}" },
                 { pickerChargeType, "{'Title': {'Path': 'ChargeType'}}" },
-                { pickerAptEntryBuilding, "{'NavigateCommand': {'Path': 'NavigateToRefineAddress'}, 'Text':{'Path':'AptRingCode'}}"},
-                { btnCreditCard, "{'TouchUpInside': {'Path': 'NavigateToPaymentDetails'}}"}
+                { pickerAptEntryBuilding, "{'NavigateCommand': {'Path': 'NavigateToRefineAddress'}, 'Text':{'Path':'AptRingCode'}}"}
             });
             this.View.ApplyAppFont ();
         }
