@@ -356,13 +356,13 @@
 "CreditCardsExpMonth"="Expiration Month";
 "CreditCardsZipCode"="Zip code (for authorization)";
 "CreditCardNumber"="Card Number";
-"CreditCardZipCode"="Zip code (for authorization)";
+"CreditCardZipCode"="Zip code";
 "CreditCardExpMonth"="Exp. Month";
 "CreditCardCategory"="Category";
 "CreditCardExpYear"="Exp. Year";
 "CreditCardName"="Name as it appears on card";
 "CreditCardType"="Type of Card";
-"CreditCardCCV"="Card Security Code";
+"CreditCardCCV"="CCV";
 "CreditCardErrorTitle"="Can't add the Credit Card";
 "CreditCardInvalidCrediCardNUmber"="The Credit Card Number is invalid";
 "CreditCardRequiredFields"="All the fields are required";
@@ -372,4 +372,4 @@
 "PaymentDetails.TipAmountLabel"="Tip Amount";
 "PaymentDetails.CreditCardLabel"="Credit Card";
 "PaymentDetails.InvalidTipAmount"="Tip amount is invalid";
-"ChargeTypeCreditCardFile"="Credit Card on File.";
+"ChargeTypeCreditCardFile"="Credit Card on File";

@@ -1150,10 +1150,10 @@
     <value>Exp. Year</value>
   </data>
   <data name="CreditCardCCV" xml:space="preserve">
-    <value>Card Security Code</value>
+    <value>CCV</value>
   </data>
   <data name="CreditCardZipCode" xml:space="preserve">
-    <value>Zip code (for authorization)</value>
+    <value>Zip code</value>
   </data>
   <data name="CreditCardErrorTitle" xml:space="preserve">
     <value>Can't add the Credit Card</value>
