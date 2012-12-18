@@ -41,16 +41,31 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             NavigationItem.Title = Resources.GetValue("ChargeTypeCreditCardFile");
 
             AppButtons.FormatStandardButton((GradientButton)btCancel, Resources.CancelBoutton, AppStyle.ButtonColor.Red );
-            AppButtons.FormatStandardButton((GradientButton)btConfirm, Resources.ConfirmButton, AppStyle.ButtonColor.Green );   
+            AppButtons.FormatStandardButton((GradientButton)btConfirm, Resources.ConfirmButton, AppStyle.ButtonColor.Green );  
+
+            lblCreditCardOnFile.Text = Resources.GetValue("PaymentDetails.CreditCardLabel");
+            lblTipAmount.Text = Resources.GetValue("PaymentDetails.TipAmountLabel");
+
+            base.DismissKeyboardOnReturn(txtTipAmount);
+
+            segmentTip.SelectedSegment = ViewModel.PaymentPreferences.IsTipInPercent ? 0 : 1;
+            segmentTip.ValueChanged += HandleValueChanged;
 
             this.AddBindings(new Dictionary<object, string>() {
                 { btCancel, "{'TouchUpInside':{'Path':'CancelOrderCommand'}}"},                
-                { btConfirm, "{'TouchUpInside':{'Path':'ConfirmOrderCommand'}}"}               
+                { btConfirm, "{'TouchUpInside':{'Path':'ConfirmOrderCommand'}}"},          
+                { txtTipAmount, "{'Text': {'Path': 'PaymentPreferences.Tip'}}" },
+                { btCreditCard, "{'Text': {'Path': 'PaymentPreferences.SelectedCreditCard.FriendlyName'}, 'Last4Digits': {'Path': 'PaymentPreferences.SelectedCreditCard.Last4Digits'}, 'CreditCardCompany': {'Path': 'PaymentPreferences.SelectedCreditCard.CreditCardCompany'}, 'NavigateCommand': {'Path': 'PaymentPreferences.NavigateToCreditCardsList'}}" }
             });
 			
 
             View.BringSubviewToFront( bottomBar );    
             this.View.ApplyAppFont ();
+        }
+
+        void HandleValueChanged (object sender, EventArgs e)
+        {
+            ViewModel.PaymentPreferences.IsTipInPercent = (segmentTip.SelectedSegment == 0);
         }
 		
     }

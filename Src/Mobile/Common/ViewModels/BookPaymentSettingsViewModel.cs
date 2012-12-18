@@ -54,6 +54,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         MessageService.ShowProgress (true);
 
                         var paymentSettings = new PaymentSettings{
+                            PayWithCreditCard = true,
                             CreditCardId = PaymentPreferences.SelectedCreditCardId,
                             TipAmount = PaymentPreferences.IsTipInPercent ? null : PaymentPreferences.TipDouble,
                             TipPercent = PaymentPreferences.IsTipInPercent ? PaymentPreferences.TipDouble : null,
@@ -64,7 +65,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         
                         if (orderInfo.IBSOrderId.HasValue
                             && orderInfo.IBSOrderId > 0) {
-                            var orderCreated = new Order { CreatedDate = DateTime.Now, DropOffAddress = Order.DropOffAddress, IBSOrderId = orderInfo.IBSOrderId, Id = Order.Id, PickupAddress = Order.PickupAddress, Note = Order.Note, PickupDate = Order.PickupDate.HasValue ? Order.PickupDate.Value : DateTime.Now, Settings = Order.Settings };
+
+                            var orderCreated = new Order { CreatedDate = DateTime.Now, 
+                                DropOffAddress = Order.DropOffAddress, 
+                                IBSOrderId = orderInfo.IBSOrderId, 
+                                Id = Order.Id, 
+                                PickupAddress = Order.PickupAddress, 
+                                Note = Order.Note, 
+                                PickupDate = Order.PickupDate.HasValue ? Order.PickupDate.Value : DateTime.Now, 
+                                Settings = Order.Settings
+                            };
                             
                             RequestNavigate<BookingStatusViewModel>(new
                                                                     {
