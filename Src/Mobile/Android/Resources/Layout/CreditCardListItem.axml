@@ -9,7 +9,7 @@
         android:paddingTop="5dip"
         android:paddingBottom="5dip"
         android:paddingLeft="15dip"
-        local:MvxBind="{&apos;TextLeft&apos;:{&apos;Path&apos;:&apos;CreditCardDetails.FriendlyName&apos;}, &apos;TextRight&apos;:{&apos;Path&apos;:&apos;CreditCardDetails.Last4Digits&apos;}, &apos;IsTop&apos;:{&apos;Path&apos;:&apos;IsFirst&apos;}, &apos;IsBottom&apos;:{&apos;Path&apos;:&apos;IsLast&apos;}, &apos;ShowAddSign&apos;:{&apos;Path&apos;:&apos;ShowPlusSign&apos;}, &apos;Picture&apos;:{&apos;Path&apos;:&apos;Picture&apos;}}" />
+        local:MvxBind="{&apos;TextLeft&apos;:{&apos;Path&apos;:&apos;CreditCardDetails.FriendlyName&apos;}, &apos;TextRight&apos;:{&apos;Path&apos;:&apos;Last4DigitsWithStars&apos;}, &apos;IsTop&apos;:{&apos;Path&apos;:&apos;IsFirst&apos;}, &apos;IsBottom&apos;:{&apos;Path&apos;:&apos;IsLast&apos;}, &apos;ShowAddSign&apos;:{&apos;Path&apos;:&apos;ShowPlusSign&apos;}, &apos;Picture&apos;:{&apos;Path&apos;:&apos;Picture&apos;}}" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
