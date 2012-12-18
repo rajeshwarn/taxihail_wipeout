@@ -13,6 +13,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     public class CreditCardViewModel : BaseViewModel
     {
         public CreditCardDetails CreditCardDetails { get; set; }
+        public string Last4DigitsWithStars
+        {
+            get
+            {
+                if(!IsAddNew)
+                {
+                    return "**** " + this.CreditCardDetails.Last4Digits;
+                }
+                return "";
+            }
+            set{
+                this.Last4DigitsWithStars = value;
+            }
+        }
         public bool IsFirst { get; set; }
         public bool IsLast { get; set; }
         public bool ShowPlusSign { get; set; }

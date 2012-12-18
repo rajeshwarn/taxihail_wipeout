@@ -38,7 +38,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 
         public string TextLeft { get; set; }
-		public string TextRight { get; set; }
+        private string _textRight { get; set; }
+		public string TextRight 
+        {
+            get 
+            {
+		        if (!ShowAddSign)
+		        {
+		            return "**** " + this._textRight;
+		        }
+		        return "";
+		    } set { this._textRight = value; } }
         public string Picture { get;set; }
 
 		public bool IsTop { get; set; }
@@ -48,11 +58,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         protected override void OnDraw(Android.Graphics.Canvas canvas)
         {
             base.OnDraw(canvas);
-           
             if (!string.IsNullOrEmpty(TextLeft))
 			{
                 DrawText(canvas, TextLeft ?? "", 80, 45, 20, AppFonts.Bold);
-                DrawText(canvas, TextRight ?? "", this.Width-80, 45, 20, AppFonts.Regular);
+                DrawText(canvas, TextRight ?? "", 200, 45, 20, AppFonts.Regular);
 			}
 			else
 			{
@@ -61,7 +70,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             if (ShowAddSign)
             {
-                canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, Resource.Drawable.add_button), this.Width - 80, 23, null);
+                canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, Resource.Drawable.add_button), this.Width - 60, 23, null);
             }
 
             if (!string.IsNullOrEmpty(Picture))

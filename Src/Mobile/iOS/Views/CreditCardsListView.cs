@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         const string CellBindingText = @"
                 {
                    'LeftText':{'Path':'CreditCardDetails.FriendlyName'} ,
-                   'RightText':{'Path':'CreditCardDetails.Last4Digits'} ,
+                   'RightText':{'Path':'Last4DigitsWithStars'} ,
                    'ShowPlusSign':{'Path':'ShowPlusSign'} ,
                    'IsFirst':{'Path':'IsFirst'} ,
                    'IsLast':{'Path':'IsLast'},
