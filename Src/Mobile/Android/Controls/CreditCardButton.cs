@@ -14,6 +14,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 	{
 		EditText _editText;
 		ImageView _cardImage;
+
+		TextView _last4DigitsTextView;
+
 		public IMvxCommand NavigateCommand { get; set; }
 		
 		[Register(".ctor", "(Landroid/content/Context;)V", "")]
@@ -53,6 +56,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			if (_transformationMethod != null)
 				_editText.TransformationMethod = TransformationMethod;
 
+			_last4DigitsTextView = (TextView)layout.FindViewById (Resource.Id.creditCardLast4Digits);
+			if (_last4Digits != null) {
+				_last4DigitsTextView.Text = _last4Digits;
+			}
 			_cardImage = (ImageView)layout.FindViewById (Resource.Id.creditCardImage);
 			SetCreditCardImage ();
 
@@ -80,6 +87,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			set {
 				_creditCardCompany = value;
 				SetCreditCardImage();
+			}
+		}
+
+		private string _last4Digits;
+		public string Last4Digits {
+			set {
+				_last4Digits = value;
+				if(_last4DigitsTextView != null)
+				{
+					_last4DigitsTextView.Text = value;
+				}
 			}
 		}
 
