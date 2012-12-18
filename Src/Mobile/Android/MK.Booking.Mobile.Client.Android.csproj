@@ -258,6 +258,8 @@
     <AndroidResource Include="Resources\drawable-hdpi\mastercard.png" />
     <Compile Include="Controls\BindableRadioButton.cs" />
     <AndroidResource Include="Resources\Layout\SpinnerTextWithImage.axml" />
+    <Compile Include="Controls\CreditCardButton.cs" />
+    <AndroidResource Include="Resources\Layout\Control_CreditCardButton.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />

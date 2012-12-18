@@ -6,7 +6,7 @@ namespace apcurium.MK.Booking.Events
     public class PaymentInformationSet: VersionedEvent
     {
         public Guid CreditCardId { get; set; }
-        public decimal? TipAmount { get; set; }
-        public decimal? TipPercent { get; set; }
+        public double? TipAmount { get; set; }
+        public double? TipPercent { get; set; }
     }
 }

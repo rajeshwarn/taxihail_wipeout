@@ -323,7 +323,6 @@
     <Compile Include="Views\BaseViewController.designer.cs">
       <DependentUpon>BaseViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\TextFieldWithArrow.cs" />
     <Compile Include="Extensions\UIResponderExtensions.cs" />
     <Compile Include="Order\BookStreetNumberView.cs" />
     <Compile Include="Order\BookStreetNumberView.designer.cs">

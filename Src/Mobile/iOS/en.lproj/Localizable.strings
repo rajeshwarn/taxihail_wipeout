@@ -372,3 +372,4 @@
 "PaymentDetails.TipAmountLabel"="Tip Amount";
 "PaymentDetails.CreditCardLabel"="Credit Card";
 "PaymentDetails.InvalidTipAmount"="Tip amount is invalid";
+"ChargeTypeCreditCardFile"="Credit Card on File.";
