@@ -363,6 +363,8 @@
     </Compile>
     <Compile Include="InfoTableView\SingleLinePictureCell.cs" />
     <Compile Include="Controls\CreditCardButton.cs" />
+    <Compile Include="Controls\TextFieldWithArrow.cs" />
+    <Compile Include="Controls\NavigateTextField.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

@@ -12,13 +12,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 	partial class ConfirmationView
 	{
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.ModalTextField pickerAptEntryBuilding { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.ModalTextField pickerAptEntryBuilding { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.ModalTextField pickerChargeType { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.ModalTextField pickerChargeType { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.ModalTextField pickerVehicleType { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.ModalTextField pickerVehicleType { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.FormLabel lblAptRing { get; set; }
