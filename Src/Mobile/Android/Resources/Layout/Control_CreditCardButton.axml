@@ -7,12 +7,13 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
-        <Button
-            style="@style/SearchButtonText"
-            android:id="@+id/creditCardButton"
+        <EditText
+            android:id="@+id/creditCardName"
+            android:editable="false"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
-            android:paddingLeft="60dip" />
+            android:layout_centerVertical="true"
+            android:paddingLeft="80dip" />
         <TextView
             style="@style/SearchButtonText"
             android:id="@+id/creditCardLast4Digits"
@@ -35,6 +36,12 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
-            android:layout_marginLeft="20dp" />
+            android:gravity="center"
+            android:layout_marginLeft="5dp" />
+        <Button
+            android:id="@+id/creditCardButton"
+            android:background="@android:color/transparent"
+            android:layout_width="fill_parent"
+            android:layout_height="43dp" />
     </RelativeLayout>
 </LinearLayout>
