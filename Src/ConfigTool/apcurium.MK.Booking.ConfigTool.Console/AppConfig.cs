@@ -47,12 +47,8 @@ namespace apcurium.MK.Booking.ConfigTool
 
                 new ConfigFile(this){ Source="apcuriumLogo@2x.png", Destination=@"Mobile\Android\Resources\Drawable\apcuriumLogo.png" },    
 
-                new ConfigFile(this){ Source="background.png", Destination=@"Mobile\iOS\Assets\background.png" },    
-                new ConfigFile(this){ Source="background@2x.png", Destination=@"Mobile\iOS\Assets\background@2x.png" },    
-
                 new ConfigFile(this){ Source="backPickupDestination.png", Destination=@"Mobile\iOS\Assets\backPickupDestination.png" },    
                 new ConfigFile(this){ Source="backPickupDestination@2x.png", Destination=@"Mobile\iOS\Assets\backPickupDestination@2x.png" },    
-
 
                 new ConfigFile(this){ Source="AppFont_Bold.otf", Destination=@"Mobile\iOS\Assets\AppFont_Bold.otf" },    
                 new ConfigFile(this){ Source="AppFont_Italic.otf", Destination=@"Mobile\iOS\Assets\AppFont_Italic.otf" },    
@@ -89,8 +85,7 @@ namespace apcurium.MK.Booking.ConfigTool
 
                 new ConfigFile(this){ Source="backPickupDestination@2x.png", Destination=@"Mobile\Android\Resources\Drawable-hdpi\backPickupDestination.png" },    
                 new ConfigFile(this){ Source="backPickupDestination.png", Destination=@"Mobile\Android\Resources\Drawable\backPickupDestination.png" },    
-                new ConfigFile(this){ Source="background@2x.png", Destination=@"Mobile\Android\Resources\Drawable-hdpi\background.png" },    
-                new ConfigFile(this){ Source="background.png", Destination=@"Mobile\Android\Resources\Drawable\background.png" },    
+    
 
 
                 new ConfigFile(this){ Source="backgroundblue.png", Destination=@"Mobile\Android\Resources\Drawable\backgroundblue.png" },                        
