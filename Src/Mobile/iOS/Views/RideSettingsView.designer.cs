@@ -57,7 +57,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		MonoTouch.UIKit.UISegmentedControl sgmtPercentOrValue { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIButton btnCreditCard { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.CreditCardButton btnCreditCard { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel lblOptional { get; set; }

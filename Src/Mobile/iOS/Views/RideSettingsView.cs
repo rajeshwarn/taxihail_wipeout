@@ -89,7 +89,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { pickerChargeType, "{'Text': {'Path': 'ChargeTypeName'}}" },
                 { txtPassword, "{'NavigateCommand': {'Path': 'NavigateToUpdatePassword'}}" },
                 { txtTipAmount, "{'Text': {'Path': 'PaymentPreferences.Tip'}}" },
-                { btnCreditCard, "{'Title': {'Path': 'PaymentPreferences.SelectedCreditCard.FriendlyName'}, 'Last4Digits': {'Path': 'PaymentPreferences.SelectedCreditCard.Last4Digits'}, 'CreditCardCompany': {'Path': 'PaymentPreferences.SelectedCreditCard.CreditCardCompany'}, 'TouchUpInside': {'Path': 'PaymentPreferences.NavigateToCreditCardsList'}}" }
+                { btnCreditCard, "{'Text': {'Path': 'PaymentPreferences.SelectedCreditCard.FriendlyName'}, 'Last4Digits': {'Path': 'PaymentPreferences.SelectedCreditCard.Last4Digits'}, 'CreditCardCompany': {'Path': 'PaymentPreferences.SelectedCreditCard.CreditCardCompany'}, 'NavigateCommand': {'Path': 'PaymentPreferences.NavigateToCreditCardsList'}}" }
             });
 
         }

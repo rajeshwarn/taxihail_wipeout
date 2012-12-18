@@ -12,6 +12,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 	partial class ConfirmationView
 	{
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.ModalTextField pickerAptEntryBuilding { get; set; }
+
+        [Outlet]
 		MonoTouch.UIKit.UIScrollView scrollView { get; set; }
 
 		[Outlet]

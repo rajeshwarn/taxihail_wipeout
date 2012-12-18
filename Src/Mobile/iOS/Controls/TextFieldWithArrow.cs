@@ -49,6 +49,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 return _button;
             }
         }
+
+        protected UITextField TextField
+        {
+            get{
+                return _textField;
+            }
+        }
     }
 }
 

@@ -7,7 +7,7 @@ using MonoTouch.CoreGraphics;
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
     [Register("CreditCardButton")]
-    public class CreditCardButton: GradientButton
+    public class CreditCardButton: NavigateTextField
     {
         public CreditCardButton(IntPtr handle) : base(  handle )
         {
@@ -15,17 +15,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         }
         
         
-        public CreditCardButton(RectangleF rect, float cornerRadius, Style.ButtonStyle buttonStyle, string title, UIFont titleFont, string image = null) 
-            : base ( rect, cornerRadius, buttonStyle, title, titleFont, image )
+        public CreditCardButton(RectangleF rect) 
+            : base ( rect )
         {
             Initialize();
         }
 
         void Initialize()
         {
-            this.HorizontalAlignment = UIControlContentHorizontalAlignment.Left;
-            this.SetRightImage("Assets/Cells/rightArrow.png");
-            this.ContentEdgeInsets = new UIEdgeInsets(0, 3, 0, 10);
         }
 
         private string _last4Digits = string.Empty;
@@ -41,31 +38,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             { 
                 if(value != null)
                 {
-                    this.SetImage("Assets/CreditCard/" +value.ToLower() +".png");
+                    var image = UIImage.FromFile("Assets/CreditCard/" +value.ToLower() +".png");
+                    if(image != null)
+                    {
+                        Button.SetImage(image, UIControlState.Normal);
+                        Button.HorizontalAlignment = UIControlContentHorizontalAlignment.Left;
+                        TextField.LeftViewMode = UITextFieldViewMode.Always;
+                        TextField.LeftView = new UIView(new Rectangle(0, 0, (int)image.Size.Width, (int)image.Size.Height));
+                    }
+                    else
+                    {
+                        Button.SetImage(null, UIControlState.Normal);
+                        TextField.LeftViewMode = UITextFieldViewMode.Never;
+                    }
                 }
             }
-        }
-
-        protected override void DrawText (RectangleF rect, MonoTouch.CoreGraphics.CGContext context, RectangleF imageRect, RectangleF rightImageRect)
-        {
-            base.DrawText (rect, context, imageRect, rightImageRect);
-
-            context.SaveState ();
-
-            context.SelectFont (TitleFont.Name, TitleFont.PointSize, CGTextEncoding.MacRoman);
-            context.SetTextDrawingMode (CGTextDrawingMode.Fill);
-            context.SetStrokeColor (TitleColour);
-            if (TextShadowColor != null) {
-                context.SetShadowWithColor (new SizeF (0f, -0.5f), 0.5f, TextShadowColor.CGColor);
-            }
-            context.SetFillColor (TitleColour);
-            context.TextMatrix = new CGAffineTransform (1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f);
-            var titleSize = ((NSString)_last4Digits).StringSize (TitleFont);
-
-            context.ShowTextAtPoint (rect.Width - ContentEdgeInsets.Right - rightImageRect.Width - 10 - titleSize.Width, rect.GetMidY () + (TitleFont.PointSize / 3), _last4Digits);
-
-            context.RestoreState ();
-
         }
     }
 }
