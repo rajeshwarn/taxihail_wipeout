@@ -368,4 +368,6 @@
   <string name="ChargeTypeCreditCardFile">Credit Card on File</string>
   <string name="ReminderDetails">Reminder: A taxi will pick you up from {0} at {1} on {2}.</string>
   <string name="ReminderTitle">{0} Booked</string>
+  <string name="RemoveCreditCardMessage">Are you sure you want to remove this credit card ?</string>
+  <string name="RemoveCreditCardTitle">Remove credit card</string>
 </resources>
