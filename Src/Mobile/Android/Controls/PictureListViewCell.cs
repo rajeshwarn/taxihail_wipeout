@@ -50,12 +50,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             base.OnDraw(canvas);
             if (!string.IsNullOrEmpty(TextLeft))
 			{
-                DrawText(canvas, TextLeft ?? "", 80, 45, 20, AppFonts.Bold);
-                DrawText(canvas, TextRight ?? "", 200, 45, 20, AppFonts.Regular);
+                DrawText(canvas, TextLeft ?? "", 100, 45, 20, AppFonts.Bold);
+                DrawText(canvas, TextRight ?? "", 220, 45, 20, AppFonts.Regular);
 			}
 			else
 			{
-                DrawText(canvas, TextRight ?? "",80, 45, 20, AppFonts.Regular);
+                DrawText(canvas, TextRight ?? "",100, 45, 20, AppFonts.Regular);
 			}
 
             if (ShowAddSign)
@@ -68,7 +68,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 var resource = Resources.GetIdentifier(Picture.ToLower(), "drawable", Context.PackageName);
                 if (resource != 0)
                 {
-                    canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, resource), 5, 20, null);
+                    canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, resource), 0, 6, null);
                 }
             }
 
