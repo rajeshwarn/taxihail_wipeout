@@ -12,8 +12,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
 	public class CreditCardButton: LinearLayout
 	{
-		Button _button;
+		EditText _editText;
 		ImageView _cardImage;
+
+		TextView _last4DigitsTextView;
+
 		public IMvxCommand NavigateCommand { get; set; }
 		
 		[Register(".ctor", "(Landroid/content/Context;)V", "")]
@@ -47,21 +50,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			base.OnFinishInflate ();
 			var inflater = (LayoutInflater)Context.GetSystemService (Context.LayoutInflaterService);
 			var layout = inflater.Inflate (Resource.Layout.Control_CreditCardButton, this, true);
-			_button = (Button)layout.FindViewById (Resource.Id.creditCardButton);
+			_editText = (EditText)layout.FindViewById (Resource.Id.creditCardName);
 			if (_text != null)
-				_button.Text = _text;
+				_editText.Text = _text;
 			if (_transformationMethod != null)
-				_button.TransformationMethod = TransformationMethod;
+				_editText.TransformationMethod = TransformationMethod;
 
+			_last4DigitsTextView = (TextView)layout.FindViewById (Resource.Id.creditCardLast4Digits);
+			if (_last4Digits != null) {
+				_last4DigitsTextView.Text = _last4Digits;
+			}
 			_cardImage = (ImageView)layout.FindViewById (Resource.Id.creditCardImage);
 			SetCreditCardImage ();
 
-			
-			_button.Click += (object sender, EventArgs e) => {
+			var button = (Button)layout.FindViewById( Resource.Id.creditCardButton );
+			button.Click += (object sender, EventArgs e) => {
 				if(NavigateCommand != null) {
 					NavigateCommand.Execute();
 				}
 			};
+		
 		}
 		
 		private string _text;
@@ -70,7 +78,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 				return _text;
 			}set {
 				_text = value;
-				if(_button != null) _button.Text = value;
+				if(_editText != null) _editText.Text = value;
 			}
 		}
 
@@ -82,6 +90,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			}
 		}
 
+		private string _last4Digits;
+		public string Last4Digits {
+			set {
+				_last4Digits = value;
+				if(_last4DigitsTextView != null)
+				{
+					_last4DigitsTextView.Text = value;
+				}
+			}
+		}
+
 		private ITransformationMethod _transformationMethod;
 		public ITransformationMethod TransformationMethod {
 			get {
@@ -89,7 +108,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			}
 			set {
 				_transformationMethod = value;
-				if(_button != null) _button.TransformationMethod= value;
+				if(_editText != null) _editText.TransformationMethod= value;
 			}
 		}
 
