@@ -260,6 +260,8 @@
     <AndroidResource Include="Resources\Layout\SpinnerTextWithImage.axml" />
     <Compile Include="Controls\CreditCardButton.cs" />
     <AndroidResource Include="Resources\Layout\Control_CreditCardButton.axml" />
+    <Compile Include="Activities\Book\BookPaymentSettingsActivity.cs" />
+    <AndroidResource Include="Resources\Layout\View_BookPaymentSettings.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
