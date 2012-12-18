@@ -20,6 +20,7 @@ using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 using apcurium.MK.Common;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Navigation;
+using System.Drawing;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -72,6 +73,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             ViewModel.OnViewLoaded();
             _wasResized = false;
             View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
+            scrollView.ContentSize = new SizeF(scrollView.ContentSize.Width, 500);
             NavigationItem.HidesBackButton = true;
                         		
 			AppButtons.FormatStandardButton((GradientButton)btnCancel, Resources.CancelBoutton, AppStyle.ButtonColor.Red );
@@ -84,6 +86,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             lblVehiculeType.Text = Resources.ConfirmVehiculeTypeLabel;
 			lblChargeType.Text = Resources.ChargeTypeLabel;			
 			lblPrice.Text = Resources.ApproxPrice;
+
 
             ((ModalTextField)pickerVehicleType).Configure(Resources.RideSettingsVehiculeType, ViewModel.Vehicles, ViewModel.Order.Settings.VehicleTypeId, x=> {
                 ViewModel.SetVehicleTypeId ( x.Id );});
@@ -106,8 +109,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { txtPrice, "{'Text': {'Path': 'FareEstimate'}}" },
                 { pickerVehicleType, "{'Title': {'Path': 'VehicleName'}}" },
                 { pickerChargeType, "{'Title': {'Path': 'ChargeType'}}" },
-                { pickerAptEntryBuilding, "{'NavigateCommand': {'Path': 'NavigateToRefineAddress'}, 'Text':{'Path':'AptRingCode'}}"},
-                { btnCreditCard, "{'TouchUpInside': {'Path': 'NavigateToPaymentDetails'}}"}
+                { pickerAptEntryBuilding, "{'NavigateCommand': {'Path': 'NavigateToRefineAddress'}, 'Text':{'Path':'AptRingCode'}}"}
             });
             this.View.ApplyAppFont ();
         }

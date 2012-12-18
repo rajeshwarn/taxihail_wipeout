@@ -118,7 +118,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				ReturnResult(Data);
             } finally {
-                TinyIoCContainer.Current.Resolve<ICacheService>().Clear("Account.MyPaymentList");
+                TinyIoCContainer.Current.Resolve<ICacheService>().Clear("Account.CreditCards");
                 MessageService.ShowProgress(false);
             }
         }
