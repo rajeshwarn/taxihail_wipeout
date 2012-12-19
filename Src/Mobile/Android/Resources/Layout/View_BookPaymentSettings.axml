@@ -25,7 +25,7 @@
             <apcurium.mk.booking.mobile.client.controls.CreditCardButton
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                local:MvxBind="{&apos;NavigateCommand&apos;: {&apos;Path&apos;: &apos;PaymentPreferences.NavigateToCreditCardsList&apos;}, &apos;Text&apos;:{&apos;Path&apos;:&apos;PaymentPreferences.SelectedCreditCard.FriendlyName&apos;}, &apos;CreditCardCompany&apos;: {&apos;Path&apos;: &apos;PaymentPreferences.SelectedCreditCard.CreditCardCompany&apos;}}" />
+                local:MvxBind="{&apos;NavigateCommand&apos;: {&apos;Path&apos;: &apos;PaymentPreferences.NavigateToCreditCardsList&apos;}, &apos;Text&apos;:{&apos;Path&apos;:&apos;PaymentPreferences.SelectedCreditCard.FriendlyName&apos;}, &apos;CreditCardCompany&apos;: {&apos;Path&apos;: &apos;PaymentPreferences.SelectedCreditCard.CreditCardCompany&apos;}, &apos;Last4Digits&apos;: {&apos;Path&apos;: &apos;PaymentPreferences.SelectedCreditCard.Last4Digits&apos;}}" />
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
