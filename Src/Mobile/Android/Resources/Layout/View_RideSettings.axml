@@ -99,7 +99,7 @@
                 android:orientation="horizontal">
                 <Button
                     style="@style/BigTitleTextBlack"
-                    android:background="@drawable/address_selector_button"
+                    android:background="@drawable/segmented_button_left"
                     android:layout_width="40dip"
                     android:layout_height="40dip"
                     android:text="%"
@@ -107,7 +107,7 @@
                     local:MvxBind="{&apos;Click&apos;: {&apos;Path&apos;: &apos;PaymentPreferences.TogglePercent&apos;}, &apos;Selected&apos;: {&apos;Path&apos;: &apos;PaymentPreferences.IsTipInPercent&apos;, &apos;Mode&apos;: &apos;OneWay&apos;}}" />
                 <Button
                     style="@style/BigTitleTextBlack"
-                    android:background="@drawable/address_selector_button"
+                    android:background="@drawable/segmented_button_right"
                     android:layout_width="40dip"
                     android:layout_height="40dip"
                     android:text="$"
