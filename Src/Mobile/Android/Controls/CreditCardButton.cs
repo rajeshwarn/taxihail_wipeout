@@ -96,7 +96,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 				_last4Digits = value;
 				if(_last4DigitsTextView != null)
 				{
-					_last4DigitsTextView.Text = value;
+					_last4DigitsTextView.Text = string.IsNullOrEmpty(value) ? string.Empty : "\u2022\u2022\u2022\u2022 " + value;
 				}
 			}
 		}

@@ -19,11 +19,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 			return btn;
 		}
 
-        public static void FormatStandardButton ( GradientButton button,  string title, AppStyle.ButtonColor buttonColor, string image = null, string rightImage = null, UIControlContentHorizontalAlignment horizontalAlignment = UIControlContentHorizontalAlignment.Center)
+        public static void FormatStandardButton (GradientButton button, string title, AppStyle.ButtonColor buttonColor, string image = null, string rightImage = null, UIControlContentHorizontalAlignment horizontalAlignment = UIControlContentHorizontalAlignment.Center)
         {
-			var btnStyle = StyleManager.Current.Buttons.Single( b => b.Key == buttonColor.ToString() );
+            var btnStyle = StyleManager.Current.Buttons.Single (b => b.Key == buttonColor.ToString ());
 
-            button.TextShadowColor = UIColor.FromRGBA(btnStyle.TextShadowColor.Red, btnStyle.TextShadowColor.Green, btnStyle.TextShadowColor.Blue, btnStyle.TextShadowColor.Alpha);
+            btnStyle.TextShadowColor.Maybe (c=> button.TextShadowColor = UIColor.FromRGBA (c.Red, c.Green, c.Blue, c.Alpha));
+            btnStyle.SelectedTextShadowColor.Maybe (c=> button.SelectedTextShadowColor = UIColor.FromRGBA (c.Red, c.Green, c.Blue, c.Alpha));
             button.CornerRadius = AppStyle.ButtonCornerRadius;
             button.Colors =  btnStyle.Colors.Select ( color => UIColor.FromRGBA(color.Red, color.Green, color.Blue, color.Alpha) ).ToArray();
 			btnStyle.SelectedColors.Maybe( () => {
@@ -34,6 +35,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			button.StrokeLineWidth = btnStyle.StrokeLineWidth;
 			button.StrokeLineColor = UIColor.FromRGBA( btnStyle.StrokeColor.Red, btnStyle.StrokeColor.Green, btnStyle.StrokeColor.Blue, btnStyle.StrokeColor.Alpha );
+            btnStyle.SelectedStrokeColor.Maybe(c=> button.SelectedStrokeLineColor = UIColor.FromRGBA(c.Red, c.Green, c.Blue, c.Alpha));
 			button.InnerShadow = btnStyle.InnerShadow;
             button.SetImage( image );
             button.SetRightImage( rightImage );
@@ -41,26 +43,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 			button.DropShadow = btnStyle.DropShadow;
             button.HorizontalAlignment = horizontalAlignment;
             button.SetTitle( title , UIControlState.Normal );
-			btnStyle.TextColor.Maybe( c => button.TitleColour = UIColor.FromRGBA( c.Red, c.Green, c.Blue, c.Alpha ).CGColor );
+            btnStyle.TextColor.Maybe( c => button.TitleColour = UIColor.FromRGBA( c.Red, c.Green, c.Blue, c.Alpha ).CGColor );
+			btnStyle.SelectedTextColor.Maybe( c => button.SelectedTitleColour = UIColor.FromRGBA( c.Red, c.Green, c.Blue, c.Alpha ).CGColor );
             button.TitleFont = AppStyle.ButtonFont;
         }
-
-
-//		public static GradientButton CreateStandardsButton ( RectangleF rect, string title, UIColor titleColor, AppStyle.ButtonColor buttonColor,  bool useTitleShadow = true )
-//		{
-//			var btn = new GradientButton( rect, AppStyle.ButtonCornerRadius, AppStyle.GetButtonColors( buttonColor ), AppStyle.GetButtonColorLocations( buttonColor ), AppStyle.ButtonStrokeLineWidth, AppStyle.GetButtonStrokeColor( buttonColor ), AppStyle.GetInnerShadow( buttonColor ), AppStyle.GetDropShadow( buttonColor ), title, titleColor, AppStyle.GetButtonFont( AppStyle.ButtonFontSize ), useTitleShadow );
-//
-//			return btn;
-//		}
-
-//		public static GradientButton CreateStandardButton ( RectangleF rect, string title, string image, AppStyle.ButtonColor buttonColor )
-//		{( 
-//			var btnStyle = StyleManager.Current.Buttons.Single( b => b.Key == buttonColor.ToString() );
-//		
-//			var btn = new GradientButton( rect, AppStyle.ButtonCornerRadius, btnStyle, title, AppStyle.ButtonFont, image  );
-//
-//			return btn;
-//		}
 
 		public static UIView GetAccessoryView( string leftBtnTitle, UIColor leftBtnTitleColor, Action leftBtnAction, AppStyle.ButtonColor leftBtnColor, string rightBtnTitle, UIColor rightBtnTitleColor, Action rightBtnAction, AppStyle.ButtonColor rightBtnColor )
 		{

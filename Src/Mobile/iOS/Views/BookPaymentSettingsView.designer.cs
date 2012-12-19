@@ -33,10 +33,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.FormLabel lblTipAmount { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UISegmentedControl segmentTip { get; set; }
+		MonoTouch.UIKit.UILabel lblOptional { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblOptional { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.TipButtons sgmtPercentOrValue { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
@@ -75,14 +75,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				lblTipAmount = null;
 			}
 
-			if (segmentTip != null) {
-				segmentTip.Dispose ();
-				segmentTip = null;
-			}
-
 			if (lblOptional != null) {
 				lblOptional.Dispose ();
 				lblOptional = null;
+			}
+
+			if (sgmtPercentOrValue != null) {
+				sgmtPercentOrValue.Dispose ();
+				sgmtPercentOrValue = null;
 			}
 		}
 	}

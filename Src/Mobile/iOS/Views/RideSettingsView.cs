@@ -45,8 +45,10 @@ namespace apcurium.MK.Booking.Mobile.Client
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
+
+            var bottomControl = ViewModel.Settings.PayByCreditCardEnabled ? (UIView)sgmtPercentOrValue : (UIView)pickerChargeType;
            
-            scrollView.ContentSize = new SizeF(320, sgmtPercentOrValue.Frame.Bottom + 20);
+            scrollView.ContentSize = new SizeF(320, bottomControl.Frame.Bottom + 60);
 
             lblName.Text= Resources.GetValue("RideSettingsName");
             lblPhone.Text= Resources.GetValue("RideSettingsPhone");
@@ -89,7 +91,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { txtTipAmount, "{'Text': {'Path': 'PaymentPreferences.Tip'}}" },
                 { btnCreditCard, "{'Text': {'Path': 'PaymentPreferences.SelectedCreditCard.FriendlyName'}, 'Last4Digits': {'Path': 'PaymentPreferences.SelectedCreditCard.Last4Digits'}, 'CreditCardCompany': {'Path': 'PaymentPreferences.SelectedCreditCard.CreditCardCompany'}, 'NavigateCommand': {'Path': 'PaymentPreferences.NavigateToCreditCardsList'}}" },
                 { sgmtPercentOrValue, "{'IsTipInPercent': {'Path': 'PaymentPreferences.IsTipInPercent', 'Mode': 'TwoWay'}}" }
-            });
+            });         
 
         }
 
@@ -107,6 +109,16 @@ namespace apcurium.MK.Booking.Mobile.Client
             ((UINavigationController)ParentViewController).View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             
             View.BackgroundColor = UIColor.Clear; 
+
+            if (!ViewModel.Settings.PayByCreditCardEnabled) {
+                
+                lblCreditCard.Hidden = true;
+                lblTipAmount.Hidden = true;
+                lblOptional.Hidden = true;
+                sgmtPercentOrValue.Hidden = true;
+                btnCreditCard.Hidden = true;
+                txtTipAmount.Hidden = true;
+            }
         }
 
 		

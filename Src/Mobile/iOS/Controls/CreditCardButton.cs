@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
                 TextField.RightView = new UILabel(new RectangleF(0,0,100,this.Bounds.Height))
                 {
-                    Text = "\u2022\u2022\u2022\u2022 " + value,
+                    Text = string.IsNullOrEmpty(value) ? string.Empty : "\u2022\u2022\u2022\u2022 " + value,
                     BackgroundColor = UIColor.Clear,
                     TextColor = UIColor.FromRGB(133, 133, 133),
                     Font = AppStyle.NormalTextFont,

@@ -31,6 +31,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		private float[] _selectedColorLocations = new float[] { 0f, 0.93f, 1f };
 		private float _strokeLineWidth = 1f;
         private UIColor _strokeLineColor = UIColor.FromRGB(155, 155, 155) ;
+        private UIColor _selectedStrokeLineColor;
         private float _cornerRadius = AppStyle.ButtonCornerRadius;
         private string _title = "";
         private CGColor _titleColor = UIColor.FromRGB(101, 101, 101).CGColor;
@@ -157,6 +158,16 @@ namespace apcurium.MK.Booking.Mobile.Client
             set
             {
                 _strokeLineColor = value;
+                SetNeedsDisplay();
+            }
+        }
+
+        public UIColor SelectedStrokeLineColor
+        {
+            get{ return _selectedStrokeLineColor; }
+            set
+            {
+                _selectedStrokeLineColor = value;
                 SetNeedsDisplay();
             }
         }
@@ -462,7 +473,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             context.SaveState ();
 
             roundedRectanglePath.LineWidth = _strokeLineWidth;
-            _strokeLineColor.SetStroke ();
+            var strokeLineColor = Selected ? (_selectedStrokeLineColor ?? _strokeLineColor) : _strokeLineColor;
+            strokeLineColor.SetStroke ();
             roundedRectanglePath.AddClip ();
             context.AddPath (roundedRectanglePath.CGPath);
             context.StrokePath ();

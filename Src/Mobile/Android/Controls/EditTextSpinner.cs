@@ -62,7 +62,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			};
 			_spinner = (Spinner) layout.FindViewById( Resource.Id.spinner );
 			_spinner.Adapter = _adapter;
-			_spinner.SetSelection(_selectedIndex);
+			SelectItem();
 			_spinner.ItemSelected -= HandleItemSelected;
 			_spinner.ItemSelected += HandleItemSelected;
 
@@ -86,11 +86,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			return _adapter;
 		}
 
-		int _selectedIndex;
-		public void SetSelection (int index)
+		int _selectedKey = int.MinValue;
+		public void SetSelection (int key)
 		{
-			_selectedIndex = index;
-			if(_spinner != null) _spinner.SetSelection(index);
+			_selectedKey = key;
+			SelectItem();
 		}
 
 
@@ -112,8 +112,28 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 					foreach (var item in data) {
 						_adapter.Add(item);
 					}
+					SelectItem();
 				}
 			}
+		}
+
+		private void SelectItem()
+		{
+			var index = -1;
+			for(int i= 0; i< _adapter.Count; i++)
+			{
+				var item = _adapter.GetItem(i);
+				if(item.Key.Equals(_selectedKey))
+				{
+					index = i;
+					break;
+				}
+			}
+			if (index < 0)
+			{
+				return;
+			}
+			if(_spinner != null) _spinner.SetSelection(index);
 		}
 	}
 

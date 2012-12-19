@@ -40,24 +40,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			if (!value.Equals(_currentValue))
 			{
-				var index = -1;
-				var adapter = _control.GetAdapter();
-				for(int i= 0; i< adapter.Count; i++)
-				{
-					var item = adapter.GetItem(i);
-					if(item.Key.Equals(value))
-					{
-						index = i;
-						break;
-					}
-				}
-				if (index < 0)
-				{
-					MvxBindingTrace.Trace(MvxTraceLevel.Warning, "Value not found for spinner {0}", value.ToString());
-					return;
-				}
 				_currentValue = value;
-				_control.SetSelection(index);
+				_control.SetSelection((int)value);
 			}
 		}
 		

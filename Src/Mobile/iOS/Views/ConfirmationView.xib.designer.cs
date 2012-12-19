@@ -12,9 +12,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 	partial class ConfirmationView
 	{
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.ModalTextField pickerAptEntryBuilding { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.NavigateTextField pickerAptEntryBuilding { get; set; }
 
-        [Outlet]
+		[Outlet]
 		MonoTouch.UIKit.UIScrollView scrollView { get; set; }
 
 		[Outlet]
@@ -70,14 +70,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (scrollView != null) {
-				scrollView.Dispose ();
-				scrollView = null;
-			}
-
 			if (pickerAptEntryBuilding != null) {
 				pickerAptEntryBuilding.Dispose ();
 				pickerAptEntryBuilding = null;
+			}
+
+			if (scrollView != null) {
+				scrollView.Dispose ();
+				scrollView = null;
 			}
 
 			if (pickerChargeType != null) {
