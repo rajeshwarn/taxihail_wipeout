@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Views;
 using System.Collections.Generic;
 using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
+using apcurium.MK.Booking.Mobile.Client.Controls;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -49,13 +50,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             base.DismissKeyboardOnReturn(txtTipAmount);
 
-            segmentTip.SelectedSegment = ViewModel.PaymentPreferences.IsTipInPercent ? 0 : 1;
-            segmentTip.ValueChanged += HandleValueChanged;
+            sgmtPercentOrValue.ValueChanged += HandleValueChanged;
 
             this.AddBindings(new Dictionary<object, string>() {
                 { btCancel, "{'TouchUpInside':{'Path':'CancelOrderCommand'}}"},                
                 { btConfirm, "{'TouchUpInside':{'Path':'ConfirmOrderCommand'}}"},          
                 { txtTipAmount, "{'Text': {'Path': 'PaymentPreferences.Tip'}}" },
+                { sgmtPercentOrValue, "{'IsTipInPercent': {'Path': 'PaymentPreferences.IsTipInPercent', 'Mode': 'TwoWay'}}" },
                 { btCreditCard, "{'Text': {'Path': 'PaymentPreferences.SelectedCreditCard.FriendlyName'}, 'Last4Digits': {'Path': 'PaymentPreferences.SelectedCreditCard.Last4Digits'}, 'CreditCardCompany': {'Path': 'PaymentPreferences.SelectedCreditCard.CreditCardCompany'}, 'NavigateCommand': {'Path': 'PaymentPreferences.NavigateToCreditCardsList'}}" }
             });
 			
@@ -64,9 +65,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             this.View.ApplyAppFont ();
         }
 
-        void HandleValueChanged (object sender, EventArgs e)
+        void HandleValueChanged (object sender, TipButtonsValueChangedEventArgs e)
         {
-            ViewModel.PaymentPreferences.IsTipInPercent = (segmentTip.SelectedSegment == 0);
+            ViewModel.PaymentPreferences.IsTipInPercent = (e.ButtonIndex == 0);
         }
 		
     }

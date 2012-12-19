@@ -150,5 +150,9 @@ namespace apcurium.MK.Booking.Mobile.Settings
         public bool StreetNumberScreenEnabled {
             get { return _data.StreetNumberScreenEnabled; }
         }
+
+        public bool PayByCreditCardEnabled {
+            get { return _data.PayByCreditCardEnabled; }
+        }
     }
 }
