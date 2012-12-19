@@ -70,8 +70,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
            this.AddBindings(new Dictionary<object, string>{
                 { txtNameOnCard, "{'Text': {'Path': 'Data.NameOnCard', 'Mode': 'TwoWay' }}" }, 
                 { txtCardNumber, "{'Text': {'Path': 'Data.CardNumber', 'Mode': 'TwoWay' }}" }, 
-                { pickerCreditCardCategory, "{'Title': {'Path': 'CreditCardCategoryName', 'Mode': 'TwoWay' }}" }, 
-                { pickerCreditCardType, "{'Title': {'Path': 'CreditCardTypeName', 'Mode': 'TwoWay' }}" }, 
+                { pickerCreditCardCategory, "{'Text': {'Path': 'CreditCardCategoryName', 'Mode': 'TwoWay' }}" }, 
+                { pickerCreditCardType, "{'Text': {'Path': 'CreditCardTypeName', 'Mode': 'TwoWay' }}" }, 
                 { txtExpMonth, "{'Text': {'Path': 'Data.ExpirationMonth', 'Mode': 'TwoWay' }}" }, 
                 { txtExpYear, "{'Text': {'Path': 'Data.ExpirationYear', 'Mode': 'TwoWay' }}" }, 
                 { txtSecurityCode, "{'Text': {'Path': 'Data.CCV', 'Mode': 'TwoWay' }}" }, 

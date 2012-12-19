@@ -45,6 +45,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             lblCreditCardOnFile.Text = Resources.GetValue("PaymentDetails.CreditCardLabel");
             lblTipAmount.Text = Resources.GetValue("PaymentDetails.TipAmountLabel");
+            lblOptional.Text= Resources.GetValue("PaymentDetails.Optional");
 
             base.DismissKeyboardOnReturn(txtTipAmount);
 

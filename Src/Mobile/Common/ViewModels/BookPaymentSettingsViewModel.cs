@@ -48,9 +48,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 
                 return GetCommand(() => 
                                   {                    
-
+					if(PaymentPreferences.SelectedCreditCard == null)
+					{
+						MessageService.ShowMessage (Resources.GetString ("ErrorCreatingOrderTitle"), Resources.GetString ("NoCreditCardSelected"));
+						return;
+					}
                     Order.Id = Guid.NewGuid ();
-                    try {
+                    try {                        
+
                         MessageService.ShowProgress (true);
 
                         var paymentSettings = new PaymentSettings{

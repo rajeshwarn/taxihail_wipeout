@@ -370,4 +370,5 @@
   <string name="ReminderTitle">{0} Booked</string>
   <string name="RemoveCreditCardMessage">Are you sure you want to remove this credit card ?</string>
   <string name="RemoveCreditCardTitle">Remove credit card</string>
+  <string name="NoCreditCardSelected">Please select a credit card</string>
 </resources>
