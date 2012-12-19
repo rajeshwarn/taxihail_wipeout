@@ -38,8 +38,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return GetCommand(() =>
                                       {
-                                          TinyIoCContainer.Current.Resolve<IAccountService>()
-                                                          .RemoveCreditCard(this.CreditCardDetails.CreditCardId);
+
                                           this.MessengerHub.Publish(new CreditCardRemoved(this,this.CreditCardDetails.CreditCardId,null));
                                       });
             }

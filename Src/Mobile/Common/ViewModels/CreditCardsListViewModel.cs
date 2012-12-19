@@ -59,6 +59,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                                                        this.Resources.GetString("YesButton"),
                                                                        () =>
                                                                        {
+                                                                           TinyIoCContainer.Current.Resolve<IAccountService>()
+                                                                                .RemoveCreditCard(creditCardId);
                                                                            var creditCardToRemove = CreditCards.FirstOrDefault(c => c.CreditCardDetails.CreditCardId.Equals(creditCardId));
                                                                            if (creditCardToRemove != null)
                                                                            {
@@ -70,6 +72,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                                                            if (CreditCards.Count.Equals(1))
                                                                            {
                                                                                CreditCards[0].IsLast = true;
+                                                                               CreditCards[0].IsAddNew = true;
                                                                            }
                                                                            CreditCards = new ObservableCollection<CreditCardViewModel>(CreditCards);
                                                                        },
@@ -128,10 +131,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                                                                                                 InvokeOnMainThread(()=>
                                        {
 
-                                                                                                                 var lastElem = CreditCards.ElementAt(CreditCards.Count - 1);
+                                                                                                                 //var lastElem = CreditCards.ElementAt(CreditCards.Count - 1);
 
-                                                                                                                 CreditCards.Remove(lastElem);
-				                                                                                                 CreditCards.Add(new CreditCardViewModel()
+                                                                                                                // CreditCards.Remove(lastElem);
+				                                                                                                 CreditCards.Insert(CreditCards.Count-1,new CreditCardViewModel()
                                                                                                                  {
                                                                                                                      CreditCardDetails = new CreditCardDetails()
                                                                                                                                              {
@@ -141,7 +144,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                                                                                                                              },
                                                                                                                      Picture = newCreditCard.CreditCardCompany
                                                                                                                  });
-                                                                                                                 CreditCards.Add(lastElem);
+                                                                                                               //  CreditCards.Add(lastElem);
                                                                                                                  FirePropertyChanged("CreditCards");
                                                                                                                  });                                                                                         
                                                                                                             CreditCards[0].IsFirst=true;
