@@ -14,13 +14,15 @@ namespace apcurium.MK.Booking.Mobile.Style
 
 		public ColorDefinition[] SelectedColors{get;set;}
         
-		public ColorDefinition StrokeColor{get;set;}
+        public ColorDefinition StrokeColor{get;set;}
 
 		public float StrokeLineWidth{get; set;}
 
         public ColorDefinition TextShadowColor{get;set;}
+        public ColorDefinition SelectedTextShadowColor{get;set;}
         
-		public ColorDefinition TextColor{get;set;}
+        public ColorDefinition TextColor{get;set;}
+		public ColorDefinition SelectedTextColor{get;set;}
 
         public ShadowDefinition InnerShadow{get;set;}
 

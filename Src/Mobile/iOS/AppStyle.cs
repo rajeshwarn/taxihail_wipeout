@@ -26,6 +26,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             DarkGray,   
             Blue,
             LightBlue,
+            SegmentedLightBlue,
         };
 
     
