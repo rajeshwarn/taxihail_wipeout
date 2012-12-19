@@ -35,6 +35,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			button.StrokeLineWidth = btnStyle.StrokeLineWidth;
 			button.StrokeLineColor = UIColor.FromRGBA( btnStyle.StrokeColor.Red, btnStyle.StrokeColor.Green, btnStyle.StrokeColor.Blue, btnStyle.StrokeColor.Alpha );
+            btnStyle.SelectedStrokeColor.Maybe(c=> button.SelectedStrokeLineColor = UIColor.FromRGBA(c.Red, c.Green, c.Blue, c.Alpha));
 			button.InnerShadow = btnStyle.InnerShadow;
             button.SetImage( image );
             button.SetRightImage( rightImage );
