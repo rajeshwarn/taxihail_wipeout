@@ -14,7 +14,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
 
         }
-        public SegmentedGradientButton (RectangleF rect, float cornerRadius, ButtonStyle buttonStyle, string title, UIFont titleFont, string image)
+
+        public SegmentedGradientButton (RectangleF rect): base(rect)
+        {
+
+        }
+
+        private SegmentedGradientButton (RectangleF rect, float cornerRadius, ButtonStyle buttonStyle, string title, UIFont titleFont, string image)
             : base(rect, cornerRadius, buttonStyle, title, titleFont, image)
         {
 

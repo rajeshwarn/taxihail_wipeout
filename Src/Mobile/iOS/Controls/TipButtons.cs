@@ -14,6 +14,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
     [Register("TipButtons")]
     public class TipButtons: UIView
     {
+        public event EventHandler<TipButtonsValueChangedEventArgs> ValueChanged;
+
         GradientButton _tipAmountButton;
         GradientButton _tipPercentButton;
 
@@ -36,10 +38,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             var btnStyle = StyleManager.Current.Buttons.Single( b => b.Key == AppStyle.ButtonColor.LightBlue.ToString() );
 
-            _tipPercentButton = new SegmentedGradientButton(new RectangleF(this.Bounds.X, this.Bounds.Y, this.Bounds.Width / 2, this.Bounds.Height), AppStyle.ButtonCornerRadius, btnStyle,"%", AppStyle.ButtonFont, null)
+            _tipPercentButton = new SegmentedGradientButton(new RectangleF(this.Bounds.X, this.Bounds.Y, this.Bounds.Width / 2, this.Bounds.Height))
             {
                 IsLeftButton = true
             };
+            AppButtons.FormatStandardButton(_tipPercentButton, "%", AppStyle.ButtonColor.LightBlue);
             _tipPercentButton.TitleColour = UIColor.FromRGB(112,112,112).CGColor;
             _tipPercentButton.SelectedTitleColour = UIColor.White.CGColor;
             _tipPercentButton.TextShadowColor = null;
@@ -47,10 +50,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             _tipPercentButton.RoundedCorners = UIRectCorner.BottomLeft | UIRectCorner.TopLeft;
             _tipPercentButton.TouchUpInside += HandleTouchUpInside;
 
-            _tipAmountButton = new SegmentedGradientButton(new RectangleF(this.Bounds.X + this.Bounds.Width / 2, this.Bounds.Y, this.Bounds.Width / 2, this.Bounds.Height), AppStyle.ButtonCornerRadius, btnStyle,culture.NumberFormat.CurrencySymbol, AppStyle.ButtonFont, null)
+            _tipAmountButton = new SegmentedGradientButton(new RectangleF(this.Bounds.X + this.Bounds.Width / 2, this.Bounds.Y, this.Bounds.Width / 2, this.Bounds.Height))
             {
                 IsLeftButton = false
             };
+            AppButtons.FormatStandardButton(_tipAmountButton, culture.NumberFormat.CurrencySymbol, AppStyle.ButtonColor.LightBlue);
             _tipAmountButton.TitleColour = UIColor.FromRGB(112,112,112).CGColor;
             _tipAmountButton.SelectedTitleColour = UIColor.White.CGColor;
             _tipAmountButton.TextShadowColor = null;
@@ -60,21 +64,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             
             this.AddSubviews(_tipPercentButton, _tipAmountButton);
 
-            IsTipIsPercent = true;
+            IsTipInPercent = true;
 
         }
 
         void HandleTouchUpInside (object sender, EventArgs e)
         {
-            if (_tipAmountButton == sender) {
-                IsTipIsPercent = false;
-            } else if (_tipPercentButton == sender) {
-                IsTipIsPercent = true;
+            var buttonIndex = (_tipPercentButton == sender) ? 0 : 1;
+            if (ValueChanged != null) {
+                ValueChanged(this, new TipButtonsValueChangedEventArgs(buttonIndex));
             }
         }
 
         private bool _isTipInPercent;
-        public bool IsTipIsPercent {
+        public bool IsTipInPercent {
             get {
                 return _isTipInPercent;
             }
@@ -85,5 +88,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
     }
+
+    public class TipButtonsValueChangedEventArgs: EventArgs
+    {
+        public TipButtonsValueChangedEventArgs (int buttonIndex)
+        {
+            this.ButtonIndex = buttonIndex;
+        }
+
+        public int ButtonIndex {
+            get;
+            private set;
+        }
+    }
+     
 }
 

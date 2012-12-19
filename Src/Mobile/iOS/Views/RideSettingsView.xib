@@ -379,7 +379,7 @@
 							<object class="IBUIView" id="691997414">
 								<reference key="NSNextResponder" ref="135878076"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{8, 463}, {68, 34}}</string>
+								<string key="NSFrame">{{13, 462}, {68, 32}}</string>
 								<reference key="NSSuperview" ref="135878076"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="126977808"/>
@@ -392,7 +392,7 @@
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 							</object>
 						</array>
-						<string key="NSFrameSize">{320, 416}</string>
+						<string key="NSFrame">{{0, -200}, {320, 575}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="290435726"/>

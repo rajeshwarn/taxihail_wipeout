@@ -47,12 +47,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public GradientButton(IntPtr handle) : base(  handle )
         {
-            BackgroundColor = UIColor.Clear;
-            Layer.MasksToBounds = false;
-            ClipsToBounds = false;
-            SetTitleColor( UIColor.Clear, UIControlState.Normal );
-            SetTitleColor( UIColor.Clear, UIControlState.Highlighted);
-            SetTitleColor( UIColor.Clear, UIControlState.Selected );
+            Initialize();
+        }
+
+        public GradientButton(RectangleF rect): base(rect)
+        {
+            Initialize();
         }
 
 
@@ -75,13 +75,19 @@ namespace apcurium.MK.Booking.Mobile.Client
 			_titleFont = titleFont;
 			_innerShadow = buttonStyle.InnerShadow;
 			_dropShadow = buttonStyle.DropShadow;
-            BackgroundColor = UIColor.Clear;
-            Layer.MasksToBounds = false;
-            ClipsToBounds = false;
             if (image != null)
             {
                 _image = UIImage.FromFile(image);
             }
+
+            Initialize();
+        }
+
+        private void Initialize ()
+        {
+            BackgroundColor = UIColor.Clear;
+            Layer.MasksToBounds = false;
+            ClipsToBounds = false;
             SetTitleColor( UIColor.Clear, UIControlState.Normal );
             SetTitleColor( UIColor.Clear, UIControlState.Highlighted);
             SetTitleColor( UIColor.Clear, UIControlState.Selected );
