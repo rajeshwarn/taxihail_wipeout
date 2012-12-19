@@ -264,6 +264,7 @@
     <AndroidResource Include="Resources\Drawable\segmented_button_right.xml" />
     <AndroidResource Include="Resources\Layout\View_BookPaymentSettings.axml" />
     <Compile Include="Activities\Book\BookPaymentSettingsActivity.cs" />
+    <AndroidResource Include="Resources\Drawable\segmented_button_text_color.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
