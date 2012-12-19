@@ -34,6 +34,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		[Outlet]
 		MonoTouch.UIKit.UISegmentedControl segmentTip { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UILabel lblOptional { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
@@ -75,6 +78,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (segmentTip != null) {
 				segmentTip.Dispose ();
 				segmentTip = null;
+			}
+
+			if (lblOptional != null) {
+				lblOptional.Dispose ();
+				lblOptional = null;
 			}
 		}
 	}
