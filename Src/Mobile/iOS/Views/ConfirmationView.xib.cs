@@ -73,6 +73,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             ViewModel.OnViewLoaded();
             _wasResized = false;
             View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
+            scrollView.ContentSize = new SizeF(scrollView.ContentSize.Width, 480);
 
             NavigationItem.HidesBackButton = true;
                         		
