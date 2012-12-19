@@ -139,6 +139,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                                                                                                      CreditCardDetails = new CreditCardDetails()
                                                                                                                                              {
                                                                                                                                                  CreditCardCompany = newCreditCard.CreditCardCompany,
+                                                                                                                                                 CreditCardId = newCreditCard.CreditCardId,
                                                                                                                                                  FriendlyName = newCreditCard.FriendlyName,
                                                                                                                                                  Last4Digits = newCreditCard.Last4Digits
                                                                                                                                              },
