@@ -73,7 +73,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             ViewModel.OnViewLoaded();
             _wasResized = false;
             View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
-            scrollView.ContentSize = new SizeF(scrollView.ContentSize.Width, 500);
+
             NavigationItem.HidesBackButton = true;
                         		
 			AppButtons.FormatStandardButton((GradientButton)btnCancel, Resources.CancelBoutton, AppStyle.ButtonColor.Red );
@@ -103,8 +103,8 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { txtDestination, "{'Text': {'Path': 'Order.DropOffAddress.FullAddress', 'Converter': 'EmptyToResource', 'ConverterParameter': 'ConfirmDestinationNotSpecified'}}" },
                 { txtDateTime, "{'Text': {'Path': 'FormattedPickupDate'}}" },
                 { txtPrice, "{'Text': {'Path': 'FareEstimate'}}" },
-                { pickerVehicleType, "{'Title': {'Path': 'VehicleName'}}" },
-                { pickerChargeType, "{'Title': {'Path': 'ChargeType'}}" },
+                { pickerVehicleType, "{'Text': {'Path': 'VehicleName'}}" },
+                { pickerChargeType, "{'Text': {'Path': 'ChargeType'}}" },
                 { pickerAptEntryBuilding, "{'NavigateCommand': {'Path': 'NavigateToRefineAddress'}, 'Text':{'Path':'AptRingCode'}}"}
             });
             this.View.ApplyAppFont ();

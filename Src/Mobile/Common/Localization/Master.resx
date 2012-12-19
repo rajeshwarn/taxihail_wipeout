@@ -1182,4 +1182,7 @@
   <data name="RemoveCreditCardTitle" xml:space="preserve">
     <value>Remove credit card</value>
   </data>
+   <data name="NoCreditCardSelected" xml:space="preserve">
+    <value>Please select a credit card</value>
+  </data>
 </root>
