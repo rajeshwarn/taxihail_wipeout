@@ -78,9 +78,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             lblOptional.Text= Resources.GetValue("PaymentDetails.Optional");
             txtPassword.Text = "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022";
 
-            sgmtPercentOrValue.SelectedSegment = ViewModel.PaymentPreferences.IsTipInPercent ? 0 : 1;
-            sgmtPercentOrValue.ValueChanged += HandleValueChanged;
-
+            //sgmtPercentOrValue.SelectedSegment = ViewModel.PaymentPreferences.IsTipInPercent ? 0 : 1;
+            //sgmtPercentOrValue.ValueChanged += HandleValueChanged;
 
             this.AddBindings(new Dictionary<object, string>(){
                 { txtName, "{'Text': {'Path': 'Name'}}" },
@@ -96,7 +95,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         void HandleValueChanged (object sender, EventArgs e)
         {
-            ViewModel.PaymentPreferences.IsTipInPercent = (sgmtPercentOrValue.SelectedSegment == 0);
+            //ViewModel.PaymentPreferences.IsTipInPercent = (sgmtPercentOrValue.SelectedSegment == 0);
         }
 
         public override void ViewWillAppear(bool animated)

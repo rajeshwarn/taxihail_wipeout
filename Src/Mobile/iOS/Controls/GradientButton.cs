@@ -34,9 +34,11 @@ namespace apcurium.MK.Booking.Mobile.Client
         private float _cornerRadius = AppStyle.ButtonCornerRadius;
         private string _title = "";
         private CGColor _titleColor = UIColor.FromRGB(101, 101, 101).CGColor;
+        private CGColor _selectedTitleColor;
         private UIColor _highlightedColor = UIColor.FromRGBA(0f, 0f, 0f, 0.6f);
         private UIFont _titleFont = AppStyle.GetButtonFont( AppStyle.ButtonFontSize ) ;       
         private UIColor _textShadowColor = null;
+        private UIColor _selectedTextShadowColor = null;
         private UIImage _image;
         private UIImage _rightImage;
         private UIImage _selectedImage;
@@ -223,6 +225,16 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
         }
 
+        public CGColor SelectedTitleColour
+        {
+            get{ return _selectedTitleColor;}
+            set
+            {
+                _selectedTitleColor = value;
+                SetNeedsDisplay();
+            }
+        }
+
 
         public UIFont TitleFont
         {
@@ -240,6 +252,16 @@ namespace apcurium.MK.Booking.Mobile.Client
             set
             {
                 _textShadowColor = value;
+                SetNeedsDisplay();
+            }
+        }
+
+        public UIColor SelectedTextShadowColor
+        {
+            get{ return _selectedTextShadowColor;}
+            set
+            {
+                _selectedTextShadowColor = value;
                 SetNeedsDisplay();
             }
         }
@@ -305,10 +327,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 
             var roundedRectanglePath = UIBezierPath.FromRoundedRect (rect, RoundedCorners, new SizeF (_cornerRadius, _cornerRadius));
-            
+
+
             DrawBackground (rect, context, newGradient, roundedRectanglePath);
             DrawInnerShadow (context, roundedRectanglePath);
-            DrawStroke (context, roundedRectanglePath);
+            DrawStroke (context, roundedRectanglePath, rect);
             var imageRect = DrawLeftImage (rect);
             var rightImageRect = DrawRightImage (rect);
             DrawText (rect, context, imageRect, rightImageRect);
@@ -368,20 +391,24 @@ namespace apcurium.MK.Booking.Mobile.Client
             context.SaveState ();
             context.SelectFont (_titleFont.Name, _titleFont.PointSize, CGTextEncoding.MacRoman);
             context.SetTextDrawingMode (CGTextDrawingMode.Fill);
-            context.SetStrokeColor (_titleColor);
-            if (_textShadowColor != null) {
-                context.SetShadowWithColor (new SizeF (0f, -0.5f), 0.5f, _textShadowColor.CGColor);
+            var textColor = this.Selected ? (_selectedTitleColor ?? _titleColor) : _titleColor;
+            var shadowColor = this.Selected ? _selectedTextShadowColor : _textShadowColor;
+            context.SetStrokeColor (textColor);
+            if (shadowColor != null) {
+                context.SetShadowWithColor (new SizeF (0f, -0.5f), 0.5f, shadowColor.CGColor);
             }
-            context.SetFillColor (_titleColor);
+            context.SetFillColor (textColor);
             context.TextMatrix = new CGAffineTransform (1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f);
             var titleSize = ((NSString)_title).StringSize (_titleFont);
             if (HorizontalAlignment == UIControlContentHorizontalAlignment.Left) {
                 context.ShowTextAtPoint (ContentEdgeInsets.Left + imageRect.Left + imageRect.Width + 10, rect.GetMidY () + (_titleFont.PointSize / 3), _title);
-            }
-            else {
+            } else {
                 context.ShowTextAtPoint (((rect.Width - imageRect.Width) / 2) - (titleSize.Width / 2) + imageRect.Right, rect.GetMidY () + (_titleFont.PointSize / 3), _title);
             }
             context.RestoreState ();
+
+            if (this.Selected) {
+            }
         }
 
         void DrawInnerShadow (CGContext context, UIBezierPath roundedRectanglePath)
@@ -424,9 +451,10 @@ namespace apcurium.MK.Booking.Mobile.Client
             context.RestoreState ();
         }
 
-        void DrawStroke (CGContext context, UIBezierPath roundedRectanglePath)
+        protected virtual void DrawStroke (CGContext context, UIBezierPath roundedRectanglePath, RectangleF rect)
         {
             context.SaveState ();
+
             roundedRectanglePath.LineWidth = _strokeLineWidth;
             _strokeLineColor.SetStroke ();
             roundedRectanglePath.AddClip ();
