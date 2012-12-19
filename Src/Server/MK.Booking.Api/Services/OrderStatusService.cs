@@ -99,6 +99,18 @@ namespace apcurium.MK.Booking.Api.Services
                             Log.Debug("Vehicle number :  " + orderDetails.VehicleNumber);
                             status.VehicleNumber = orderDetails.VehicleNumber;
                             desc = string.Format(_configManager.GetSetting("OrderStatus.CabDriverNumberAssigned"), orderDetails.VehicleNumber);
+                            if (!string.IsNullOrEmpty(orderDetails.CallNumber))
+                            {
+                               var driverInfos = _bookingWebServiceClient.GetDriverInfos(orderDetails.CallNumber);
+                               status.DriverInfos.FirstName = driverInfos.FirstName;
+                               status.DriverInfos.LastName = driverInfos.LastName;
+                               status.DriverInfos.MobilePhone = driverInfos.MobilePhone;
+                               status.DriverInfos.VehicleColor = driverInfos.VehicleColor;
+                               status.DriverInfos.VehicleMake = driverInfos.VehicleMake;
+                               status.DriverInfos.VehicleModel = driverInfos.VehicleModel;
+                               status.DriverInfos.VehicleRegistration = driverInfos.VehicleRegistration;
+                               status.DriverInfos.VehicleType = driverInfos.VehicleType;
+                            }
                         }
                         else
                         {
@@ -160,7 +172,6 @@ namespace apcurium.MK.Booking.Api.Services
                     }
 
                 }
-
                 status.IBSStatusDescription = desc.HasValue() ? desc : status.IBSStatusId;
 
             }

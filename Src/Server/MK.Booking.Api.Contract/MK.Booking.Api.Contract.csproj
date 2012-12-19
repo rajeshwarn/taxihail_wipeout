@@ -131,6 +131,7 @@
     <Compile Include="Resources\Cmt\PreCogResponse.cs" />
     <Compile Include="Resources\CreditCardDetails.cs" />
     <Compile Include="Resources\DirectionInfo.cs" />
+    <Compile Include="Resources\DriverInfos.cs" />
     <Compile Include="Resources\ErrorCode.cs" />
     <Compile Include="Resources\Order.cs" />
     <Compile Include="Resources\OrderRatings.cs" />
