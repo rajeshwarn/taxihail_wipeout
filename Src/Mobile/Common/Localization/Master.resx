@@ -1131,9 +1131,6 @@
   <data name="CreditCardsAddTitle" xml:space="preserve">
     <value>New Credit Card</value>
   </data>
-  <data name="CreditCardsAddTitle" xml:space="preserve">
-    <value>New Credit Card</value>
-  </data>
   <data name="CreditCardName" xml:space="preserve">
     <value>Name as it appears on card</value>
   </data>
@@ -1153,10 +1150,10 @@
     <value>Exp. Year</value>
   </data>
   <data name="CreditCardCCV" xml:space="preserve">
-    <value>Card Security Code</value>
+    <value>CCV</value>
   </data>
   <data name="CreditCardZipCode" xml:space="preserve">
-    <value>Zip code (for authorization)</value>
+    <value>Zip code</value>
   </data>
   <data name="CreditCardErrorTitle" xml:space="preserve">
     <value>Can't add the Credit Card</value>
@@ -1178,5 +1175,14 @@
   </data>
   <data name="ChargeTypeCreditCardFile" xml:space="preserve">
     <value>Credit Card on File</value>
+  </data>
+  <data name="RemoveCreditCardMessage" xml:space="preserve">
+    <value>Are you sure you want to remove this credit card ?</value>
+  </data>
+  <data name="RemoveCreditCardTitle" xml:space="preserve">
+    <value>Remove credit card</value>
+  </data>
+   <data name="NoCreditCardSelected" xml:space="preserve">
+    <value>Please select a credit card</value>
   </data>
 </root>

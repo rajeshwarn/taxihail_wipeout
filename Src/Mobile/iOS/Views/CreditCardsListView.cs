@@ -21,13 +21,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         
         const string CellBindingText = @"
                 {
-                   'LeftText':{'Path':'FriendlyName'} ,
-                   'RightText':{'Path':'Last4Digits'} ,
+                   'LeftText':{'Path':'CreditCardDetails.FriendlyName'} ,
+                   'RightText':{'Path':'Last4DigitsWithStars'} ,
                    'ShowPlusSign':{'Path':'ShowPlusSign'} ,
                    'IsFirst':{'Path':'IsFirst'} ,
                    'IsLast':{'Path':'IsLast'},
                    'Picture':{'Path':'Picture'},
                    'IsAddNewCell':{'Path':'IsAddNew'},
+                   'DeleteCommand':{'Path':'RemoveCreditCards'}
                 }";
         
         #region Constructors

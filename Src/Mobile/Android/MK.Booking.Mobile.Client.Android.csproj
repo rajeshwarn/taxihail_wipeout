@@ -260,6 +260,8 @@
     <AndroidResource Include="Resources\Layout\SpinnerTextWithImage.axml" />
     <Compile Include="Controls\CreditCardButton.cs" />
     <AndroidResource Include="Resources\Layout\Control_CreditCardButton.axml" />
+    <Compile Include="Activities\Book\BookPaymentSettingsActivity.cs" />
+    <AndroidResource Include="Resources\Layout\View_BookPaymentSettings.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
@@ -532,6 +534,8 @@
     <AndroidResource Include="Resources\Drawable\tutorial_screen06.png" />
     <AndroidResource Include="Resources\Drawable\tutorial_screen07.png" />
     <AndroidResource Include="Resources\Drawable\tutorial_screen08.png" />
+    <AndroidResource Include="Resources\Drawable\delete_card_btn.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\delete_card_btn.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -38,7 +38,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 
         public string TextLeft { get; set; }
-		public string TextRight { get; set; }
+        public string TextRight { get; set; }
         public string Picture { get;set; }
 
 		public bool IsTop { get; set; }
@@ -48,20 +48,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         protected override void OnDraw(Android.Graphics.Canvas canvas)
         {
             base.OnDraw(canvas);
-           
             if (!string.IsNullOrEmpty(TextLeft))
 			{
-                DrawText(canvas, TextLeft ?? "", 80, 45, 20, AppFonts.Bold);
-                DrawText(canvas, TextRight ?? "", this.Width-80, 45, 20, AppFonts.Regular);
+                DrawText(canvas, TextLeft ?? "", 100, 45, 20, AppFonts.Bold);
+                DrawText(canvas, TextRight ?? "", 220, 45, 20, AppFonts.Regular);
 			}
 			else
 			{
-                DrawText(canvas, TextRight ?? "",80, 45, 20, AppFonts.Regular);
+                DrawText(canvas, TextRight ?? "",100, 45, 20, AppFonts.Regular);
 			}
 
             if (ShowAddSign)
             {
-                canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, Resource.Drawable.add_button), this.Width - 80, 23, null);
+                canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, Resource.Drawable.add_button), this.Width - 60, 23, null);
             }
 
             if (!string.IsNullOrEmpty(Picture))
@@ -69,7 +68,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 var resource = Resources.GetIdentifier(Picture.ToLower(), "drawable", Context.PackageName);
                 if (resource != 0)
                 {
-                    canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, resource), 5, 20, null);
+                    canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, resource), 0, 6, null);
                 }
             }
 

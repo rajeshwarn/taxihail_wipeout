@@ -30,10 +30,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 		MonoTouch.UIKit.UITextField txtPhone { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.ModalTextField pickerVehiculeType { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.ModalTextField pickerVehiculeType { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.ModalTextField pickerChargeType { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.ModalTextField pickerChargeType { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UIScrollView scrollView { get; set; }
@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		MonoTouch.UIKit.UILabel lblPassword { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIButton btnPassword { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.NavigateTextField txtPassword { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel lblTipAmount { get; set; }
@@ -54,10 +54,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 		MonoTouch.UIKit.UITextField txtTipAmount { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UISegmentedControl sgmtPercentOrValue { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.TipButtons sgmtPercentOrValue { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIButton btnCreditCard { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.CreditCardButton btnCreditCard { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel lblOptional { get; set; }
@@ -114,9 +114,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 				lblPassword = null;
 			}
 
-			if (btnPassword != null) {
-				btnPassword.Dispose ();
-				btnPassword = null;
+			if (txtPassword != null) {
+				txtPassword.Dispose ();
+				txtPassword = null;
 			}
 
 			if (lblTipAmount != null) {

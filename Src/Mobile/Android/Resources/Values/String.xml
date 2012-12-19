@@ -347,7 +347,7 @@
   <string name="PaymentOptional">(Optional)</string>
   <string name="PaymentTipAmount">Tip Amount</string>
   <string name="CreditCardNumber">Card Number</string>
-  <string name="CreditCardZipCode">Zip code (for authorization)</string>
+  <string name="CreditCardZipCode">Zip code</string>
   <string name="CreditCardsAddTitle">New Credit Card</string>
   <string name="CreditCardsListTitle">Credit Cards On File</string>
   <string name="CreditCardExpMonth">Exp. Month</string>
@@ -355,7 +355,7 @@
   <string name="CreditCardExpYear">Exp. Year</string>
   <string name="CreditCardName">Name as it appears on card</string>
   <string name="CreditCardType">Type of Card</string>
-  <string name="CreditCardCCV">Card Security Code</string>
+  <string name="CreditCardCCV">CCV</string>
   <string name="PaymentDetails.Optional">(Optional)</string>
   <string name="PaymentDetails.InvalidDataTitle">Invalid payment information</string>
   <string name="PaymentDetails.TipAmountLabel">Tip Amount</string>
@@ -368,4 +368,7 @@
   <string name="ChargeTypeCreditCardFile">Credit Card on File</string>
   <string name="ReminderDetails">Reminder: A taxi will pick you up from {0} at {1} on {2}.</string>
   <string name="ReminderTitle">{0} Booked</string>
+  <string name="RemoveCreditCardMessage">Are you sure you want to remove this credit card ?</string>
+  <string name="RemoveCreditCardTitle">Remove credit card</string>
+  <string name="NoCreditCardSelected">Please select a credit card</string>
 </resources>

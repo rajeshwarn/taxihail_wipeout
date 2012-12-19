@@ -49,14 +49,37 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             var accountService = this.GetService<IAccountService>();
             LoadCreditCards();
-            this.MessengerHub.Subscribe<CreditCardRemoved>(creditCardId =>
-                                                               {
-                                                                   var creditCardToRemove = CreditCards.Where(c => c.CreditCardDetails.AccountId.Equals(creditCardId.Content)).FirstOrDefault();
-                                                                   if (creditCardToRemove != null)
-                                                                   {
-                                                                       CreditCards.Remove(creditCardToRemove);
-                                                                   }
-                                                               });
+            this.MessengerHub.Subscribe<CreditCardRemoved>(creditCardId => RemoveCreditCard(creditCardId.Content));
+        }
+
+        public void RemoveCreditCard(Guid creditCardId)
+        {
+            this.MessageService.ShowMessage(this.Resources.GetString("RemoveCreditCardTitle"),
+                                                                       this.Resources.GetString("RemoveCreditCardMessage"),
+                                                                       this.Resources.GetString("YesButton"),
+                                                                       () =>
+                                                                       {
+                                                                           TinyIoCContainer.Current.Resolve<IAccountService>()
+                                                                                .RemoveCreditCard(creditCardId);
+                                                                           var creditCardToRemove = CreditCards.FirstOrDefault(c => c.CreditCardDetails.CreditCardId.Equals(creditCardId));
+                                                                           if (creditCardToRemove != null)
+                                                                           {
+                                                                               InvokeOnMainThread(() => CreditCards.Remove(creditCardToRemove));
+                                                                               FirePropertyChanged("CreditCards");
+                                                                           }
+                                                                           CreditCards[0].IsFirst = true;
+
+                                                                           if (CreditCards.Count.Equals(1))
+                                                                           {
+                                                                               CreditCards[0].IsLast = true;
+                                                                               CreditCards[0].IsAddNew = true;
+                                                                           }
+                                                                           CreditCards = new ObservableCollection<CreditCardViewModel>(CreditCards);
+                                                                       },
+                                                                           this.Resources.GetString("CancelBoutton"),
+                                                                           () => { });
+                                                                                                                                                                                                                                        
+                                                                  
         }
 
         public Task LoadCreditCards()
@@ -108,22 +131,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                                                                                                 InvokeOnMainThread(()=>
                                        {
 
-                                                                                                                 var lastElem = CreditCards.ElementAt(CreditCards.Count - 1);
+                                                                                                                 //var lastElem = CreditCards.ElementAt(CreditCards.Count - 1);
 
-                                                                                                                 CreditCards.Remove(lastElem);
-				                                                                                                 CreditCards.Add(new CreditCardViewModel()
+                                                                                                                // CreditCards.Remove(lastElem);
+				                                                                                                 CreditCards.Insert(CreditCards.Count-1,new CreditCardViewModel()
                                                                                                                  {
                                                                                                                      CreditCardDetails = new CreditCardDetails()
                                                                                                                                              {
                                                                                                                                                  CreditCardCompany = newCreditCard.CreditCardCompany,
+                                                                                                                                                 CreditCardId = newCreditCard.CreditCardId,
                                                                                                                                                  FriendlyName = newCreditCard.FriendlyName,
                                                                                                                                                  Last4Digits = newCreditCard.Last4Digits
                                                                                                                                              },
                                                                                                                      Picture = newCreditCard.CreditCardCompany
                                                                                                                  });
-                                                                                                                 CreditCards.Add(lastElem);
+                                                                                                               //  CreditCards.Add(lastElem);
                                                                                                                  FirePropertyChanged("CreditCards");
-                    });
+                                                                                                                 });                                                                                         
+                                                                                                            CreditCards[0].IsFirst=true;
+                                                                                                            CreditCards.LastOrDefault().IsFirst=false;                        
+                                                                                                            CreditCards.LastOrDefault().IsLast = true;
+                                                                                                            CreditCards.LastOrDefault().IsAddNew = true;
+                                                                                                            CreditCards = new ObservableCollection<CreditCardViewModel>(CreditCards);
 				                                                                                             }));
                 
             }

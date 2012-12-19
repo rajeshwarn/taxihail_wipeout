@@ -111,6 +111,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             try {
                 MessageService.ShowProgress(true);
                 Data.Last4Digits = new string(Data.CardNumber.Reverse ().Take (4).Reverse().ToArray());
+                Data.CreditCardId = Guid.NewGuid();
                 _accountService.AddCreditCard (Data);
 
 				Data.CardNumber = null;
@@ -118,7 +119,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				ReturnResult(Data);
             } finally {
-                TinyIoCContainer.Current.Resolve<ICacheService>().Clear("Account.MyPaymentList");
+                TinyIoCContainer.Current.Resolve<ICacheService>().Clear("Account.CreditCards");
                 MessageService.ShowProgress(false);
             }
         }

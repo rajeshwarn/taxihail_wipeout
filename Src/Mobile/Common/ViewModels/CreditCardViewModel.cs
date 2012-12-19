@@ -13,6 +13,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     public class CreditCardViewModel : BaseViewModel
     {
         public CreditCardDetails CreditCardDetails { get; set; }
+        public string Last4DigitsWithStars
+        {
+            get
+            {
+                if(!IsAddNew)
+                {
+                    return "\u2022\u2022\u2022\u2022 " + this.CreditCardDetails.Last4Digits;
+                }
+                return "";
+            }
+            set{
+                this.Last4DigitsWithStars = value;
+            }
+        }
         public bool IsFirst { get; set; }
         public bool IsLast { get; set; }
         public bool ShowPlusSign { get; set; }
@@ -24,8 +38,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return GetCommand(() =>
                                       {
-                                          TinyIoCContainer.Current.Resolve<IAccountService>()
-                                                          .RemoveCreditCard(this.CreditCardDetails.CreditCardId);
+
                                           this.MessengerHub.Publish(new CreditCardRemoved(this,this.CreditCardDetails.CreditCardId,null));
                                       });
             }

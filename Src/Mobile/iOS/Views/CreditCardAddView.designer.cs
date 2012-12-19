@@ -30,10 +30,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.FormLabel lblCardCategory { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.ModalTextField pickerCreditCardType { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.ModalTextField pickerCreditCardType { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.ModalTextField pickerCreditCardCategory { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.ModalTextField pickerCreditCardCategory { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.FormLabel lblTypeCard { get; set; }

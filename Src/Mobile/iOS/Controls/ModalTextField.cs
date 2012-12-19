@@ -7,10 +7,10 @@ using Cirrious.MvvmCross.Dialog.Touch.Dialog;
 using apcurium.MK.Common.Entity;
 using System.Collections.Generic;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
     [Register("ModalTextField")]
-    public class ModalTextField : GradientButton
+    public class ModalTextField : TextFieldWithArrow
     {
         RootElement _rootElement;
 
@@ -19,12 +19,19 @@ namespace apcurium.MK.Booking.Mobile.Client
             Initialize();
         }
 
-        public ModalTextField(RectangleF rect, float cornerRadius, Style.ButtonStyle buttonStyle, string title, UIFont titleFont, string image = null) : base ( rect , cornerRadius, buttonStyle, title, titleFont, image)
-        {
+        public ModalTextField(RectangleF rect) : base ( rect ) {
+            Initialize();
         }
 
         private void Initialize() {
-            TouchUpInside += HandleTouchUpInside;
+        }
+
+        public override void WillMoveToSuperview (UIView newsuper)
+        {
+            base.WillMoveToSuperview (newsuper);
+
+            base.Button.TouchUpInside -= HandleTouchUpInside;
+            base.Button.TouchUpInside += HandleTouchUpInside;
         }
 
         void HandleTouchUpInside (object sender, EventArgs e)
