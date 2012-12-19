@@ -365,6 +365,8 @@
     </Compile>
     <Compile Include="Controls\TextFieldWithArrow.cs" />
     <Compile Include="Controls\NavigateTextField.cs" />
+    <Compile Include="Controls\TipButtons.cs" />
+    <Compile Include="Controls\SegmentedGradientButton.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

@@ -78,9 +78,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             lblOptional.Text= Resources.GetValue("PaymentDetails.Optional");
             txtPassword.Text = "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022";
 
-            sgmtPercentOrValue.SelectedSegment = ViewModel.PaymentPreferences.IsTipInPercent ? 0 : 1;
             sgmtPercentOrValue.ValueChanged += HandleValueChanged;
-
 
             this.AddBindings(new Dictionary<object, string>(){
                 { txtName, "{'Text': {'Path': 'Name'}}" },
@@ -89,14 +87,15 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { pickerChargeType, "{'Text': {'Path': 'ChargeTypeName'}}" },
                 { txtPassword, "{'NavigateCommand': {'Path': 'NavigateToUpdatePassword'}}" },
                 { txtTipAmount, "{'Text': {'Path': 'PaymentPreferences.Tip'}}" },
-                { btnCreditCard, "{'Text': {'Path': 'PaymentPreferences.SelectedCreditCard.FriendlyName'}, 'Last4Digits': {'Path': 'PaymentPreferences.SelectedCreditCard.Last4Digits'}, 'CreditCardCompany': {'Path': 'PaymentPreferences.SelectedCreditCard.CreditCardCompany'}, 'NavigateCommand': {'Path': 'PaymentPreferences.NavigateToCreditCardsList'}}" }
+                { btnCreditCard, "{'Text': {'Path': 'PaymentPreferences.SelectedCreditCard.FriendlyName'}, 'Last4Digits': {'Path': 'PaymentPreferences.SelectedCreditCard.Last4Digits'}, 'CreditCardCompany': {'Path': 'PaymentPreferences.SelectedCreditCard.CreditCardCompany'}, 'NavigateCommand': {'Path': 'PaymentPreferences.NavigateToCreditCardsList'}}" },
+                { sgmtPercentOrValue, "{'IsTipInPercent': {'Path': 'PaymentPreferences.IsTipInPercent', 'Mode': 'TwoWay'}}" }
             });
 
         }
 
-        void HandleValueChanged (object sender, EventArgs e)
+        void HandleValueChanged (object sender, TipButtonsValueChangedEventArgs e)
         {
-            ViewModel.PaymentPreferences.IsTipInPercent = (sgmtPercentOrValue.SelectedSegment == 0);
+            ViewModel.PaymentPreferences.IsTipInPercent = (e.ButtonIndex == 0);
         }
 
         public override void ViewWillAppear(bool animated)
