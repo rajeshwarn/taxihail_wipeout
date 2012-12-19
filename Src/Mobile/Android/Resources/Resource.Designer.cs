@@ -1857,6 +1857,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f070111
 			public const int NoConnectionTitle = 2131165457;
 			
+			// aapt resource value: 0x7f070172
+			public const int NoCreditCardSelected = 2131165554;
+			
 			// aapt resource value: 0x7f070088
 			public const int NoFareText = 2131165320;
 			

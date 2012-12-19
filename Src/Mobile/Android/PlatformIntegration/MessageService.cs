@@ -168,13 +168,16 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 					progress.Show();
 
 				}else{
-					var progressPrevious = progressDialogs.Pop();
-					if(progressPrevious != null
-					   && progressPrevious.IsShowing)
+					if(progressDialogs.Any())
 					{
-						try{
-							progressPrevious.Dismiss();
-						}catch{} // on peut avoir une exception ici si activity est plus présente, pas grave
+						var progressPrevious = progressDialogs.Pop();
+						if(progressPrevious != null
+						   && progressPrevious.IsShowing)
+						{
+							try{
+								progressPrevious.Dismiss();
+							}catch{} // on peut avoir une exception ici si activity est plus présente, pas grave
+						}
 					}
 				}
 			});

@@ -138,7 +138,6 @@
                     android:layout_width="135dip"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
                     android:singleLine="true"
                     local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Data.ZipCode&apos;}}" />
             </LinearLayout>
