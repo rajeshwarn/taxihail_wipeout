@@ -286,7 +286,7 @@ namespace MK.DeploymentService.Mobile
 			{
 				FileName = HgPath,
 				UseShellExecute = false,
-				Arguments = string.Format("update --repository {0} -C -r default", repository)
+				Arguments = string.Format("update --repository {0} -C", repository)
 			};
 			
 			using (var exeProcess = Process.Start(hgRevert))
