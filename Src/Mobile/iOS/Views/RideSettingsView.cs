@@ -46,43 +46,43 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             base.ViewDidLoad ();
            
-            scrollView.ContentSize = new SizeF(320, sgmtPercentOrValue.Frame.Bottom + 20);
+            scrollView.ContentSize = new SizeF (320, sgmtPercentOrValue.Frame.Bottom + 20);
 
-            lblName.Text= Resources.GetValue("RideSettingsName");
-            lblPhone.Text= Resources.GetValue("RideSettingsPhone");
-            lblVehicleType.Text= Resources.GetValue("RideSettingsVehiculeType");
-            lblChargeType.Text= Resources.GetValue("RideSettingsChargeType");
-            lblPassword.Text = Resources.GetValue("RideSettingsPassword");
+            lblName.Text = Resources.GetValue ("RideSettingsName");
+            lblPhone.Text = Resources.GetValue ("RideSettingsPhone");
+            lblVehicleType.Text = Resources.GetValue ("RideSettingsVehiculeType");
+            lblChargeType.Text = Resources.GetValue ("RideSettingsChargeType");
+            lblPassword.Text = Resources.GetValue ("RideSettingsPassword");
 
-            base.DismissKeyboardOnReturn(txtName, txtPhone, txtTipAmount);
+            base.DismissKeyboardOnReturn (txtName, txtPhone, txtTipAmount);
             
-            var button = new MonoTouch.UIKit.UIBarButtonItem(Resources.DoneButton, UIBarButtonItemStyle.Plain, delegate {
-                ViewModel.SaveCommand.Execute();
+            var button = new MonoTouch.UIKit.UIBarButtonItem (Resources.DoneButton, UIBarButtonItemStyle.Plain, delegate {
+                ViewModel.SaveCommand.Execute ();
             });
 
             NavigationItem.HidesBackButton = true;
             NavigationItem.RightBarButtonItem = button;
-            NavigationItem.Title = Resources.GetValue("View_RideSettings");
+            NavigationItem.Title = Resources.GetValue ("View_RideSettings");
 
-            ((ModalTextField)pickerVehiculeType).Configure(Resources.RideSettingsVehiculeType, ViewModel.Vehicles, ViewModel.VehicleTypeId, x=> {
-                ViewModel.SetVehiculeType.Execute(x.Id);
+            ((ModalTextField)pickerVehiculeType).Configure (Resources.RideSettingsVehiculeType, ViewModel.Vehicles, ViewModel.VehicleTypeId, x => {
+                ViewModel.SetVehiculeType.Execute (x.Id);
             });
 
-            ((ModalTextField)pickerChargeType).Configure(Resources.RideSettingsChargeType, ViewModel.Payments, ViewModel.ChargeTypeId, x=> {
-                ViewModel.SetChargeType.Execute(x.Id);
+            ((ModalTextField)pickerChargeType).Configure (Resources.RideSettingsChargeType, ViewModel.Payments, ViewModel.ChargeTypeId, x => {
+                ViewModel.SetChargeType.Execute (x.Id);
             });
 
 
-            lblCreditCard.Text = Resources.GetValue("PaymentDetails.CreditCardLabel");
-            lblTipAmount.Text = Resources.GetValue("PaymentDetails.TipAmountLabel");
-            lblOptional.Text= Resources.GetValue("PaymentDetails.Optional");
+            lblCreditCard.Text = Resources.GetValue ("PaymentDetails.CreditCardLabel");
+            lblTipAmount.Text = Resources.GetValue ("PaymentDetails.TipAmountLabel");
+            lblOptional.Text = Resources.GetValue ("PaymentDetails.Optional");
             txtPassword.Text = "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022";
 
             sgmtPercentOrValue.SelectedSegment = ViewModel.PaymentPreferences.IsTipInPercent ? 0 : 1;
             sgmtPercentOrValue.ValueChanged += HandleValueChanged;
 
 
-            this.AddBindings(new Dictionary<object, string>(){
+            this.AddBindings (new Dictionary<object, string> (){
                 { txtName, "{'Text': {'Path': 'Name'}}" },
                 { txtPhone, "{'Text': {'Path': 'Phone'}}" },
                 { pickerVehiculeType, "{'Text': {'Path': 'VehicleTypeName'}}" },
@@ -91,6 +91,8 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { txtTipAmount, "{'Text': {'Path': 'PaymentPreferences.Tip'}}" },
                 { btnCreditCard, "{'Text': {'Path': 'PaymentPreferences.SelectedCreditCard.FriendlyName'}, 'Last4Digits': {'Path': 'PaymentPreferences.SelectedCreditCard.Last4Digits'}, 'CreditCardCompany': {'Path': 'PaymentPreferences.SelectedCreditCard.CreditCardCompany'}, 'NavigateCommand': {'Path': 'PaymentPreferences.NavigateToCreditCardsList'}}" }
             });
+
+
 
         }
 
@@ -108,6 +110,16 @@ namespace apcurium.MK.Booking.Mobile.Client
             ((UINavigationController)ParentViewController).View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
             
             View.BackgroundColor = UIColor.Clear; 
+
+            if (!ViewModel.Settings.PayByCreditCardEnabled) {
+
+                lblCreditCard.Hidden = true;
+                lblTipAmount.Hidden = true;
+                lblOptional.Hidden = true;
+                sgmtPercentOrValue.Hidden = true;
+                btnCreditCard.Hidden = true;
+                txtTipAmount.Hidden = true;
+            }
         }
 
 		

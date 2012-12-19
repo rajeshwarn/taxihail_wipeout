@@ -41,7 +41,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         protected ITinyMessengerHub MessengerHub { get; private set; }
 
-        protected IAppSettings Settings { get; private set; }
+        public IAppSettings Settings { get; private set; }
 
         protected IPhoneService PhoneService { get; private set; }
 

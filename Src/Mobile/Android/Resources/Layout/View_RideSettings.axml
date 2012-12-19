@@ -70,16 +70,19 @@
                 local:MvxBind="{&apos;NavigateCommand&apos;: {&apos;Path&apos;: &apos;NavigateToUpdatePassword&apos;}}" />
             <TextView
                 android:layout_width="fill_parent"
+                android:id="@+id/lblCC"
                 android:layout_height="wrap_content"
                 android:text="@string/PaymentDetails.CreditCardLabel"
                 style="@style/FormLabelText" />
             <apcurium.mk.booking.mobile.client.controls.CreditCardButton
                 android:layout_width="fill_parent"
+                android:id="@+id/btCC"
                 android:layout_height="wrap_content"
                 local:MvxBind="{&apos;NavigateCommand&apos;: {&apos;Path&apos;: &apos;PaymentPreferences.NavigateToCreditCardsList&apos;}, &apos;Text&apos;:{&apos;Path&apos;:&apos;PaymentPreferences.SelectedCreditCard.FriendlyName&apos;},&apos;Last4Digits&apos;: {&apos;Path&apos;: &apos;PaymentPreferences.SelectedCreditCard.Last4Digits&apos;}, &apos;CreditCardCompany&apos;: {&apos;Path&apos;: &apos;PaymentPreferences.SelectedCreditCard.CreditCardCompany&apos;}}" />
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/TipLabels"
                 android:orientation="horizontal">
                 <TextView
                     android:layout_width="wrap_content"
@@ -94,10 +97,12 @@
                     style="@style/FormLabelText" />
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/TipPreferences"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <Button
+                    android:id="@+id/BtTipAmount"
                     style="@style/BigTitleTextBlack"
                     android:background="@drawable/address_selector_button"
                     android:layout_width="40dip"
@@ -106,6 +111,7 @@
                     android:gravity="center"
                     local:MvxBind="{&apos;Click&apos;: {&apos;Path&apos;: &apos;PaymentPreferences.TogglePercent&apos;}, &apos;Selected&apos;: {&apos;Path&apos;: &apos;PaymentPreferences.IsTipInPercent&apos;, &apos;Mode&apos;: &apos;OneWay&apos;}}" />
                 <Button
+                    android:id="@+id/BtPercent"
                     style="@style/BigTitleTextBlack"
                     android:background="@drawable/address_selector_button"
                     android:layout_width="40dip"
@@ -114,6 +120,7 @@
                     android:gravity="center"
                     local:MvxBind="{&apos;Click&apos;: {&apos;Path&apos;: &apos;PaymentPreferences.TogglePercent&apos;}, &apos;Selected&apos;: {&apos;Path&apos;: &apos;PaymentPreferences.IsTipInPercent&apos;, &apos;Converter&apos;: &apos;BoolInverter&apos;, &apos;Mode&apos;: &apos;OneWay&apos;}}" />
                 <EditText
+                    android:id="@+id/EditTip"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number|numberDecimal"
