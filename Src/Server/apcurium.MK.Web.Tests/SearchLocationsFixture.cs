@@ -46,15 +46,5 @@ namespace apcurium.MK.Web.Tests
             Assert.True(addresses.Count() > 0);
             Assert.True(addresses.ElementAt(0).AddressType.Contains("postal"));
         }
-
-        [Test]
-        public void when_numberk_then_postal()
-        {
-            var sut = new SearchLocationsServiceClient(BaseUrl, SessionId);
-            var addresses = sut.Search("3939", 45.5227967351675, -73.6242310144007);
-            Assert.True(addresses.Count() > 0);
-            Assert.True(addresses.ElementAt(0).AddressType.Contains("postal"));
-        }
-               
     }
 }
