@@ -14,7 +14,7 @@ using apcurium.MK.Booking.Mobile.Client.InfoTableView;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-    public partial class CreditCardsListView :  MvxBindingTouchViewController<CreditCardsListViewModel>
+    public partial class CreditCardsListView :  BaseViewController<CreditCardsListViewModel>
     {
         
         private const string CELLID = "CreditCardsCell";

@@ -52,12 +52,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             LoadCreditCards();
         }
 
-        public override void OnViewLoaded ()
+        public override void Start ()
         {
+            base.Start ();
             _removeCreditCardToken = MessengerHub.Subscribe<RemoveCreditCard>(creditCardId => RemoveCreditCard(creditCardId.Content));
         }
-        public override void OnViewUnloaded ()
+
+        public override void Stop ()
         {
+            base.Stop ();
+
             if (_removeCreditCardToken != null) {
                 MessengerHub.Unsubscribe<RemoveCreditCard>(_removeCreditCardToken);
             }

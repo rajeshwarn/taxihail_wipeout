@@ -147,7 +147,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             return true;
         }
 
-        private Task LoadCreditCards ()
+        public Task LoadCreditCards ()
         {
             var task = Task.Factory.StartNew(() => {
                 

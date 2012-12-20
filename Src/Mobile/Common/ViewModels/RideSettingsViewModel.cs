@@ -38,6 +38,12 @@ namespace apcurium.MK.Booking.Mobile
             PaymentPreferences = new PaymentDetailsViewModel(Guid.NewGuid().ToString(), paymentInformation);
 		}
 
+        public override void Restart ()
+        {
+            base.Restart ();
+            PaymentPreferences.LoadCreditCards();
+        }
+
         public PaymentDetailsViewModel PaymentPreferences {
             get;
             private set;

@@ -62,6 +62,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                         TextField.LeftViewMode = UITextFieldViewMode.Never;
                     }
                 }
+                else {
+                    Button.SetImage(null, UIControlState.Normal);
+                    TextField.LeftViewMode = UITextFieldViewMode.Never;
+                }
             }
         }
     }
