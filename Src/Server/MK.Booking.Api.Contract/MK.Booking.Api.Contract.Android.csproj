@@ -108,6 +108,7 @@
     <Compile Include="Resources\ApplicationInfo.cs" />
     <Compile Include="Security\AuthenticationData.cs" />
     <Compile Include="Resources\PaymentSettings.cs" />
+    <Compile Include="Resources\DriverInfos.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
