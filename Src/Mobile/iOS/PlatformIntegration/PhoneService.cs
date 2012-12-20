@@ -108,6 +108,15 @@ namespace apcurium.MK.Booking.Mobile.Client
             } );
         }
 
+
+        #region IPhoneService implementation
+
+        public bool CanUseCalendarAPI ()
+        {
+            return true;
+        }
+
+        #endregion
         #endregion
         #endregion
     }
