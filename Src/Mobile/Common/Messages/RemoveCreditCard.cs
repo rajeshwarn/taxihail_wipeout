@@ -8,10 +8,10 @@ using TinyMessenger;
 
 namespace apcurium.MK.Booking.Mobile.Messages
 {
-    public class CreditCardRemoved: GenericTinyMessage<Guid>
+    public class RemoveCreditCard: GenericTinyMessage<Guid>
     {
 
-        public CreditCardRemoved(object sender, Guid creditCardId)
+        public RemoveCreditCard(object sender, Guid creditCardId)
             : base(sender, creditCardId)
         {
         }

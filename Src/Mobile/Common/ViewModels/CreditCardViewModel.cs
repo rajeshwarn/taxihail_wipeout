@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return GetCommand(() =>
                                       {
 
-                                          this.MessengerHub.Publish(new CreditCardRemoved(this,this.CreditCardDetails.CreditCardId));
+                                          this.MessengerHub.Publish(new RemoveCreditCard(this,this.CreditCardDetails.CreditCardId));
                                       });
             }
         }
