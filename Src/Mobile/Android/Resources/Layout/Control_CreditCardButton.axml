@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
         android:layout_centerVertical="true"
-        android:paddingLeft="80dip" />
+        android:paddingLeft="70dip" />
     <TextView
         style="@style/SearchButtonText"
         android:id="@+id/creditCardLast4Digits"
@@ -19,7 +19,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:gravity="right|center_vertical"
-        android:layout_marginRight="60dp" />
+        android:layout_marginRight="40dp" />
     <ImageView
         android:src="@drawable/right_arrow_light"
         android:layout_width="wrap_content"
