@@ -1102,10 +1102,10 @@
     <value>Use This Address</value>
   </data>
   <data name="AddReminderMessage" xml:space="preserve">
-    <value>Do you want to add a reminder ?</value>
+    <value>Would you like a reminder added to your calendar for this pick-up time?</value>
   </data>
   <data name="AddReminderTitle" xml:space="preserve">
-    <value>Add Reminder</value>
+    <value>Scheduled Pick-Up</value>
   </data>
   <data name="View_PaymentPreference" xml:space="preserve">
     <value>Payment Preference</value>
