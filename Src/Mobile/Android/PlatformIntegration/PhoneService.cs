@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         }
         public Context Context { get; set; }
 
-		#region IPhoneService implementation
+
         public void Call(string phoneNumber)
         {
             Intent callIntent = new Intent(Intent.ActionCall);
@@ -65,26 +65,29 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
         public void AddEventToCalendarAndReminder (string title, string addInfo, string place, DateTime startDate, DateTime alertDate)
 		{
+			string uriCalendars = "content://com.android.calendar/calendars";
+			string eventUriString = "content://com.android.calendar/events";
+			string reminderUriString = "content://com.android.calendar/reminders";
 
-			var cursor = Context.ApplicationContext.ContentResolver.Query (Android.Net.Uri.Parse ("content://com.android.calendar/calendars"), new String[] { "_id" }, null, null, null);
+			var cursor = Context.ApplicationContext.ContentResolver.Query (Android.Net.Uri.Parse (uriCalendars), new String[] { "_id" }, null, null, null);
 			cursor.MoveToFirst ();
 			int[] CalIds = new int[cursor.Count];
 			for (int i = 0; i < CalIds.Length; i++) {
 				CalIds [i] = cursor.GetInt (0);
 				cursor.MoveToNext ();
 			}
-		
+	
 			cursor.Close ();
 
-			String eventUriString = "content://com.android.calendar/events";
+
 			ContentValues eventValues = new ContentValues ();
-        
+    
 
 			eventValues.Put ("calendar_id", CalIds [0]);
 			eventValues.Put ("title", title);
 			eventValues.Put ("description", addInfo);
 			eventValues.Put ("eventLocation", place);
-        
+    
 			eventValues.Put ("dtstart", GetDateTimeMS (startDate));
 			var endDate = startDate.AddHours (1); // For next 1hr
 			eventValues.Put ("dtend", GetDateTimeMS (endDate));
@@ -94,7 +97,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			Android.Net.Uri eventUri = Context.ApplicationContext.ContentResolver.Insert (Android.Net.Uri.Parse (eventUriString), eventValues);
 			long eventID = long.Parse (eventUri.LastPathSegment);
 
-			String reminderUriString = "content://com.android.calendar/reminders";
+
 
 			ContentValues reminderValues = new ContentValues ();
 
@@ -118,7 +121,11 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			
 			return c.TimeInMillis;
 		}
-	
-		#endregion
+
+		public bool CanUseCalendarAPI ()
+		{
+			return (int)Android.OS.Build .VERSION.SdkInt > 8;
+		}
     }
+
 }

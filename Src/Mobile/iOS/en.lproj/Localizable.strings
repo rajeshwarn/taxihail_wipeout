@@ -338,8 +338,8 @@
 "RideSettingsPassword"="Password";
 "StreetNumberDoneBt"="Use This Address";
 "ServiceErrorResetPassword_AccountNotFound"="No account with this email has been found.";
-"AddReminderMessage"="Do you want to add a reminder ?";
-"AddReminderTitle"="Add Reminder";
+"AddReminderMessage"="Would you like a reminder added to your calendar for this pick-up time?";
+"AddReminderTitle"="Scheduled Pick-Up";
 "ReminderTitle"="{0} Booked";
 "ReminderDetails"="Reminder: A taxi will pick you up from {0} at {1} on {2}.";
 "PaymentOptional"="(Optional)";
