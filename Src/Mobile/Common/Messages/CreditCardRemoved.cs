@@ -11,12 +11,9 @@ namespace apcurium.MK.Booking.Mobile.Messages
     public class CreditCardRemoved: GenericTinyMessage<Guid>
     {
 
-        public CreditCardRemoved(object sender, Guid creditCardId, string ownerId)
+        public CreditCardRemoved(object sender, Guid creditCardId)
             : base(sender, creditCardId)
         {
-            OwnerId = ownerId;
         }
-
-        public string OwnerId { get; private set; }
     }
 }

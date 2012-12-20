@@ -56,13 +56,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             base.ViewDidLoad ();
             
             View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
-            // NavigationItem.HidesBackButton = false;
-            
-            // this.NavigationItem.TitleView = new TitleView(null, Resources.GetValue("View_CreditCardsList"), true);
-            
-            //lblInfo.Text = Resources.HistoryInfo;   
-            //lblInfo.TextColor = AppStyle.TitleTextColor;
-            //lblNoHistory.Text = Resources.NoHistoryLabel;
+
+
             tableCardsList.BackgroundView = new UIView { BackgroundColor = UIColor.Clear };
             tableCardsList.BackgroundColor = UIColor.Clear;
             
@@ -78,17 +73,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             };
             this.AddBindings(new Dictionary<object, string>(){
                 {tableCardsList, "{'Hidden': {'Path': 'HasCards', 'Converter': 'BoolInverter'}}"} ,
-                // {lblNoHistory, "{'Hidden': {'Path': 'HasCards'}}"},
                 {source, "{'ItemsSource':{'Path':'CreditCards'}, 'SelectedCommand':{'Path':'NavigateToAddOrSelect'}}"}  ,
             });
             
             tableCardsList.Source = source;
-            
-            //var add = new UIBarButtonItem(UIBarButtonSystemItem.Add, null, null);
-            //add.Clicked += (sender, e) => ViewModel.NavigateToAddCreditCard.Execute();
-            //NavigationItem.RightBarButtonItem = add;
-            
-            //this.AddBindings(new Dictionary<object, string>(){ });
+
             NavigationItem.Title = Resources.GetValue( "CreditCardsListTitle");
             this.View.ApplyAppFont ();
         }   
@@ -96,6 +85,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             base.ViewWillAppear (animated);
             NavigationController.NavigationBar.Hidden = false;
+            ViewModel.OnViewLoaded();
+        }
+
+        public override void ViewWillDisappear (bool animated)
+        {
+            base.ViewWillDisappear (animated);
+            ViewModel.OnViewUnloaded();
         }
         
         public override void DidReceiveMemoryWarning ()
