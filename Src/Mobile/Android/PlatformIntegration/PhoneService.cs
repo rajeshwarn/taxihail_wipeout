@@ -63,71 +63,61 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			}
 		}
 
-        public void AddEventToCalendarAndReminder(string title, string addInfo, string place, DateTime startDate, DateTime alertDate)
-        {
-            var cursor = Context.ContentResolver
-         .Query(Android.Net.Uri.Parse("content://com.android.calendar/calendars"),
-                 new String[] { "_id", "displayname" }, "selected=1",
-                 null, null);
-            cursor.MoveToFirst();
-            String[] CalNames = new String[cursor.Count];
-            int[] CalIds = new int[cursor.Count];
-            for (int i = 0; i < CalNames.Length; i++)
-            {
-                CalIds[i] = cursor.GetInt(0);
-                CalNames[i] = cursor.GetString(1);
-                cursor.MoveToNext();
-            }
+        public void AddEventToCalendarAndReminder (string title, string addInfo, string place, DateTime startDate, DateTime alertDate)
+		{
 
-            cursor.Close();
+			var cursor = Context.ApplicationContext.ContentResolver.Query (Android.Net.Uri.Parse ("content://com.android.calendar/calendars"), new String[] { "_id" }, null, null, null);
+			cursor.MoveToFirst ();
+			int[] CalIds = new int[cursor.Count];
+			for (int i = 0; i < CalIds.Length; i++) {
+				CalIds [i] = cursor.GetInt (0);
+				cursor.MoveToNext ();
+			}
+		
+			cursor.Close ();
 
-            String eventUriString = "content://com.android.calendar/events";
-            ContentValues eventValues = new ContentValues();
-            DateTime date1 = new DateTime(1970, 1, 1);
+			String eventUriString = "content://com.android.calendar/events";
+			ContentValues eventValues = new ContentValues ();
+        
 
-            eventValues.Put("calendar_id", 1); // id, We need to choose from
-                                                // our mobile for primary
-                                                // its 1
-            eventValues.Put("title", title);
-            eventValues.Put("description", addInfo);
-            eventValues.Put("eventLocation", place);
-            long endDate = (startDate.Ticks - date1.Ticks) + 1000 * 60 * 60; // For next 1hr
-            eventValues.Put("dtstart", startDate.Ticks - date1.Ticks);
-            eventValues.Put("dtend", endDate);
+			eventValues.Put ("calendar_id", CalIds [0]);
+			eventValues.Put ("title", title);
+			eventValues.Put ("description", addInfo);
+			eventValues.Put ("eventLocation", place);
+        
+			eventValues.Put ("dtstart", GetDateTimeMS (startDate));
+			var endDate = startDate.AddHours (1); // For next 1hr
+			eventValues.Put ("dtend", GetDateTimeMS (endDate));
+			eventValues.Put ("eventTimezone", "UTC");
+			eventValues.Put ("eventEndTimezone", "UTC");        
 
-            eventValues.Put("eventStatus", "1"); // This information is
-            // sufficient for most
-            // entries tentative (0),
-            // confirmed (1) or canceled
-            // (2):
-            eventValues.Put("visibility", 3); // visibility to default (0),
-                                                // confidential (1), private
-                                                // (2), or public (3):
-            eventValues.Put("transparency", 0); // You can control whether
-                                                // an event consumes time
-                                                // opaque (0) or transparent
-                                                // (1).
-            eventValues.Put("hasAlarm", 0); // 0 for false, 1 for true
+			Android.Net.Uri eventUri = Context.ApplicationContext.ContentResolver.Insert (Android.Net.Uri.Parse (eventUriString), eventValues);
+			long eventID = long.Parse (eventUri.LastPathSegment);
 
-        Android.Net.Uri eventUri = Context.ApplicationContext.ContentResolver.Insert(Android.Net.Uri.Parse(eventUriString), eventValues);
-        long eventID = long.Parse(eventUri.LastPathSegment);
-   
-        String reminderUriString = "content://com.android.calendar/reminders";
+			String reminderUriString = "content://com.android.calendar/reminders";
 
-        ContentValues reminderValues = new ContentValues();
+			ContentValues reminderValues = new ContentValues ();
 
-        reminderValues.Put("event_id", eventID);
-        reminderValues.Put("minutes", 120); // Default value of the
-                                            // system. Minutes is a
-                                            // integer
-        reminderValues.Put("method", 1); // Alert Methods: Default(0),
-                                            // Alert(1), Email(2),
-                                            // SMS(3)
+			reminderValues.Put ("event_id", eventID);
+			reminderValues.Put ("minutes", 120); 
+			reminderValues.Put ("method", 1);
 
-        Android.Net.Uri reminderUri = Context.ApplicationContext.ContentResolver.Insert(Android.Net.Uri.Parse(reminderUriString), reminderValues);
+			Android.Net.Uri reminderUri = Context.ApplicationContext.ContentResolver.Insert (Android.Net.Uri.Parse (reminderUriString), reminderValues);			
 
         }
 
+		long GetDateTimeMS (DateTime date)
+		{
+			var c = Calendar.GetInstance (Java.Util.TimeZone.Default);
+			
+			c.Set (CalendarField.DayOfMonth, date.Day);
+			c.Set (CalendarField.HourOfDay, date.Hour);
+			c.Set (CalendarField.Minute, date.Minute);
+			c.Set (CalendarField.Month, date.Month -1);
+			c.Set (CalendarField.Year, date.Year);
+			
+			return c.TimeInMillis;
+		}
 	
 		#endregion
     }
