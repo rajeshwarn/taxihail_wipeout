@@ -64,7 +64,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             Background.LoadForRegularView( this.View );
             View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
 
-            ViewModel.Load ();
         }
 		
         public override void DidReceiveMemoryWarning ()

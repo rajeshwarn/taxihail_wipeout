@@ -59,11 +59,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Logger.LogMessage("View unloaded: " + GetType().Name);
         }
 
-        public virtual void Load ()
-        {
-
-        }
-
         public virtual void Start ()
         {
 

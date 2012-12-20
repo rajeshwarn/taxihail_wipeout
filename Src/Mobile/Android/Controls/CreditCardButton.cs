@@ -118,7 +118,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 				var resource = Resources.GetIdentifier (_creditCardCompany.ToLower (), "drawable", Context.PackageName);
 				if (resource != 0) {
 					_cardImage.SetImageResource (resource);
+					_cardImage.Visibility = ViewStates.Visible;
 				}
+				else
+				{
+					_cardImage.Visibility = ViewStates.Gone;
+				}
+			} else {
+				_cardImage.Visibility = ViewStates.Gone;
 			}
 		}
 	}

@@ -85,15 +85,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             base.ViewWillAppear (animated);
             NavigationController.NavigationBar.Hidden = false;
-            ViewModel.OnViewLoaded();
         }
 
-        public override void ViewWillDisappear (bool animated)
-        {
-            base.ViewWillDisappear (animated);
-            ViewModel.OnViewUnloaded();
-        }
-        
         public override void DidReceiveMemoryWarning ()
         {
             base.DidReceiveMemoryWarning ();
