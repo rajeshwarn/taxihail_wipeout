@@ -119,26 +119,30 @@
   </resheader>
   <data name="BookItButton" xml:space="preserve">
     <value>Pick Me Up Now</value>
-  </data>
-    <data name="ConfirmAptRingCodeLabel" xml:space="preserve">
-    <value>Flat / Entry Code</value>
-  </data>
+  </data>    
    <data name="NbPassenger" xml:space="preserve">
     <value> </value>
   </data>
   <data name="NbPassengers" xml:space="preserve">
     <value> </value>
-  </data>
-  <data name="LocationDetailAptPlaceholder" xml:space="preserve">
-    <value>Flat/Door number</value>
-  </data>
+  </data>  
   <data name="AptNumber" xml:space="preserve">
     <value>Flat No.</value>
-  </data>
-  <data name="AptNumberTextPlaceholder" xml:space="preserve">
-    <value>Flat/Door Number</value>
-  </data>
+  </data>  
   <data name="ConfirmNoApt" xml:space="preserve">
     <value>No flat</value>
   </data>
+   <data name="ApartmentLabel" xml:space="preserve">
+    <value>Flat</value>
+  </data>
+  <data name="EntryCodeLabel" xml:space="preserve">
+    <value>Building name</value>
+  </data>  
+  <data name="GoogleMapKey" xml:space="preserve">
+    <value>0XEY3WqKVmJPKgUaBK0NC_GfL7VtrnaAAs1hieQ</value>
+  </data>
+  <data name="DateTimePickerSetButton" xml:space="preserve">
+    <value>Pick Me Up Later</value>
+  </data>
+  
 </root>

@@ -173,10 +173,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			get { return GetValue ("PickupTextPlaceholder"); }
 		}
 
-		public static string AptNumberTextPlaceholder {
-			get { return GetValue ("AptNumberTextPlaceholder"); }
-		}
-
+		
 		public static string RingCodeTextPlaceholder {
 			get { return GetValue ("RingCodeTextPlaceholder"); }
 		}
@@ -229,10 +226,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			get { return GetValue ("ConfirmOriginLablel"); }
 		}
 
-		public static string ConfirmAptRingCodeLabel {
-			get { return GetValue ("ConfirmAptRingCodeLabel"); }
-		}
-
+		
 		public static string ConfirmDestinationLabel {
 			get { return GetValue ("ConfirmDestinationLabel"); }
 		}

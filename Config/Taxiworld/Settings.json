@@ -22,5 +22,6 @@
    "AppName" : "Taxiworld",
    "GoogleMapKey" : "0XEY3WqKVmJPKgUaBK0NC_GfL7VtrnaAAs1hieQ",
    "Package" : "com.apcurium.MK.TaxiworldDemo",
-   "StreetNumberScreenEnabled":"true"
+   "StreetNumberScreenEnabled":"true",
+   "PayByCreditCardEnabled" : "true"
 }

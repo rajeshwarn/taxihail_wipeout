@@ -11,15 +11,48 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.Models;
+using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Common.Extensions;
+using Android.Graphics;
+using System.Threading.Tasks;
+using Cirrious.MvvmCross.Interfaces.Views;
+using Android.Graphics.Drawables;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
+    public class PageInfo
+    {
+        public View RootView
+        {
+            get;
+            set;
+        }
+        
+        public View ContentView
+        {
+            get;
+            set;
+        }
+        
+        public TutorialItemModel ItemModel
+        {
+            get;
+            set;
+        }
+        
+        public bool IsLoaded
+        {
+            get;
+            set;
+        }
+        
+        
+        
+        
+    }
+
     public class HorizontalPager : ViewGroup
     {
-        /*
-         * How long to animate between screens when programmatically setting with setCurrentScreen using
-         * the animate parameter
-         */
         private static int ANIMATION_SCREEN_SET_DURATION_MILLIS = 500;
         // What fraction (1/x) of the screen the user must swipe to indicate a page change
         private static int FRACTION_OF_SCREEN_WIDTH_FOR_SWIPE = 4;
@@ -31,8 +64,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private static int SNAP_VELOCITY_DIP_PER_SECOND = 600;
         // Argument to getVelocity for units to give pixels per second (1 = pixels per millisecond).
         private static int VELOCITY_UNIT_PIXELS_PER_SECOND = 1000;
-
-
         private static int TOUCH_STATE_REST = 0;
         private static int TOUCH_STATE_HORIZONTAL_SCROLLING = 1;
         private static int TOUCH_STATE_VERTICAL_SCROLLING = -1;
@@ -41,7 +72,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private bool mFirstLayout = true;
         private float mLastMotionX;
         private float mLastMotionY;
+
         public event EventHandler<ScreenSwitchArgs> mOnScreenSwitchListener;
+
         private int mMaximumVelocity;
         private int mNextScreen = INVALID_SCREEN;
         private Scroller mScroller;
@@ -49,7 +82,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private int mTouchState = TOUCH_STATE_REST;
         private VelocityTracker mVelocityTracker;
         private int mLastSeenLayoutWidth = -1;
-
+        private List<PageInfo> _pages;
         private TutorialItemModel[] _tutorialItemModel;
 
         public TutorialItemModel[] TutorialItemModel
@@ -67,7 +100,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         public HorizontalPager(Context context)
             : base(context)
         {
-           // init();
+            // init();
         }
 
 
@@ -99,51 +132,193 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
          * Sets up the scroller and touch/fling sensitivity parameters for the pager.
          */
 
-        private List<View> _tutorialItems;
+
 
         private void UnloadItems()
         {
-
-            
-            if ( _tutorialItems != null )
+            if (_pages != null)
             {
-                foreach (var item in _tutorialItems) {
-                    this.RemoveView( item );
-                    item.Dispose();
+                int i = 0;
+                foreach (var page in _pages)
+                {
+                    if (page.IsLoaded)
+                    {
+                        UnloadItem(i);
+                    }
+
+                    i++;
                 }
             }
+            this.RemoveAllViews();
+            _pages = null;
             GC.Collect();
         }
 
+        void UnloadItem(int index)
+        {
+            if (index >= _pages.Count)
+            {
+                return;
+            }
+
+            var page = _pages[index];
+
+            if (page.IsLoaded)
+            {
+                page.IsLoaded = false;
+
+                if (page.ContentView != null)
+                {
+                    var d = page.ContentView.FindViewById<ImageView>(Resource.Id.TutorialImage).Drawable;
+                    if (d is BitmapDrawable)
+                    {
+                        ((BitmapDrawable)d).Bitmap.Recycle();
+                    }
+                    page.ContentView.FindViewById<ImageView>(Resource.Id.TutorialImage).SetImageBitmap(null);
+
+                    int i = this.IndexOfChild(page.ContentView);
+                    this.RemoveView(page.ContentView);
+                    page.RootView = new View(Context);
+                    this.AddView(page.RootView, i);
+                    page.RootView.Layout(page.ContentView.Left, 0, page.ContentView.Left + page.ContentView.MeasuredWidth, page.ContentView.MeasuredHeight);                                               
+                    page.ContentView.Dispose();
+                    page.ContentView = null;
+
+
+                   
+
+                    Console.WriteLine("Unloaded...  : " + page.ItemModel.ImageUri);
+                }
+
+            }
+
+            GC.Collect();
+
+
+        }
+
+        void LoadItem(int index)
+        {
+
+            if (index >= _pages.Count)
+            {
+                return;
+            }
+
+            GC.Collect();
+            var page = _pages[index];
+            if (!page.IsLoaded)
+            {
+
+                page.IsLoaded = true;
+                var inflater = (LayoutInflater)Context.GetSystemService(Context.LayoutInflaterService);
+                page.ContentView = inflater.Inflate(Resource.Layout.TutorialListItem, null);
+                
+                page.ContentView.FindViewById<TextView>(Resource.Id.TutorialTopText).Text = page.ItemModel.TopText;
+                page.ContentView.FindViewById<TextView>(Resource.Id.TutorialBottomText).Text = page.ItemModel.BottomText;
+                page.ContentView.FindViewById<TextView>(Resource.Id.TutorialTopTitleText).Text = page.ItemModel.TopTitle;
+                page.ContentView.FindViewById<TextView>(Resource.Id.TutorialBottomTitleText).Text = page.ItemModel.BottomTitle;
+
+                Console.WriteLine("Loading...  : " + page.ItemModel.ImageUri);
+
+                var resource = Resources.GetIdentifier(page.ItemModel.ImageUri, "drawable", Context.PackageName);
+
+                //Decode image size
+                var o = new BitmapFactory.Options();
+                o.InPurgeable = true;
+                o.InInputShareable = true;
+                o.InPreferredConfig = Bitmap.Config.Rgb565;
+
+                var bmp = BitmapFactory.DecodeResource(Resources, resource, o);
+
+                page.ContentView.FindViewById<ImageView>(Resource.Id.TutorialImage).SetImageBitmap(bmp);
+                page.ContentView.FindViewById<ImageView>(Resource.Id.TutorialImage).Invalidate();
+
+
+
+                int i = this.IndexOfChild(page.RootView);
+                this.RemoveView(page.RootView);
+                this.AddView(page.ContentView, i);
+                page.ContentView.Layout(page.RootView.Left, 0, page.RootView.Left + page.RootView.MeasuredWidth, page.RootView.MeasuredHeight);                           
+
+                page.RootView.Dispose();
+                page.RootView = null;
+
+            }
+        }
+        
+//        private void LayoutItem(int index)
+//        {
+//            var page = _pages[index];
+//            if (page.ContentView != null)
+//            {
+//                page.ContentView.Layout(page.RootView.Left, 0, page.RootView.Left + page.RootView.MeasuredWidth, page.RootView.MeasuredHeight);
+//            }
+//            //page.ContentView.Layout( page.RootView.Left, 0,page.RootView.Left+page.RootView.MeasuredWidth, page.RootView.MeasuredWidth);
+//            //            View child = _pages[i].RootView;
+//            //            
+//            //            if ((child != null) && (child.Visibilitpage.ContentView.Layout( page.RootView.Left, 0,page.RootView.Left+page.RootView.MeasuredWidth, page.RootView.MeasuredWidth);y != ViewStates.Gone))
+//            //            {
+//            //                int childWidth = child.MeasuredWidth;
+//            //                child.Layout(childLeft, 0, childLeft + childWidth, child.MeasuredHeight);
+//            //                childLeft += childWidth;
+//            //            }
+//            
+//        }
 
         private void LoadItems()
         {
            
-            UnloadItems();
-
-            _tutorialItems = new List<View>();
-            var inflater = (LayoutInflater)Context.GetSystemService(Context.LayoutInflaterService);
-            for (int i = 0; i < TutorialItemModel.Count(); i++)
+            if (_pages != null)
             {
-                View vw = inflater.Inflate(Resource.Layout.TutorialListItem, null);
-                vw.Id = Resource.Layout.TutorialListItem + i;
-                vw.FindViewById<TextView>(Resource.Id.TutorialTopText).Text = TutorialItemModel[i].TopText;
-                vw.FindViewById<TextView>(Resource.Id.TutorialBottomText).Text = TutorialItemModel[i].BottomText;
-                vw.FindViewById<TextView>(Resource.Id.TutorialTopTitleText).Text = TutorialItemModel[i].TopTitle;
-                vw.FindViewById<TextView>(Resource.Id.TutorialBottomTitleText).Text = TutorialItemModel[i].BottomTitle;
-                //var resource = Resources.GetIdentifier(TutorialItemModel[i].ImageUri, "drawable", Context.PackageName);
-                //vw.FindViewById<ImageView>(Resource.Id.TutorialImage).SetImageResource(resource);
-                this.AddView(vw);
-                _tutorialItems.Add( vw );
+                return;
             }
 
-            mScroller = new Scroller(Context);
+            _pages = new List<PageInfo>();                                           
 
+            for (int i = 0; i < TutorialItemModel.Count(); i++)
+            {
+                var page = new PageInfo{ ItemModel =  TutorialItemModel[i], RootView = new View(Context) };
+                _pages.Add(page);
+                this.AddView(page.RootView);
+
+
+                //View vw = inflater.Inflate(Resource.Layout.TutorialListItem, null);
+                  
+//                var uri = page.ItemModel.ImageUri;  
+//                var options = new BitmapFactory.Options();
+//                options.InPurgeable = true; //bitmap can be purged to disk
+//                var resource = Resources.GetIdentifier(uri, "drawable", Context.PackageName);
+//                var bm = BitmapFactory.DecodeResource(Context.Resources, resource, options);
+//
+//                Console.WriteLine("LoadItems 5 : " + i.ToString());
+
+//                
+//                Post(() =>
+//                {
+//                    Console.WriteLine("LoadItems 6 : " + i.ToString());
+//                    AddView(vw);
+//                    vw.FindViewById<TextView>(Resource.Id.TutorialTopText).Text = tutorialItem.TopText;
+//                    vw.FindViewById<TextView>(Resource.Id.TutorialBottomText).Text = tutorialItem.BottomText;
+//                    vw.FindViewById<TextView>(Resource.Id.TutorialTopTitleText).Text = tutorialItem.TopTitle;
+//                    vw.FindViewById<TextView>(Resource.Id.TutorialBottomTitleText).Text = tutorialItem.BottomTitle;
+//                    vw.FindViewById<ImageView>(Resource.Id.TutorialImage).SetImageBitmap(bm);
+//                    Console.WriteLine("LoadItems 7 : " + i.ToString());
+//                });
+                
+
+                                                  
+
+            }
+            LoadItem(0);
+            PostDelayed(() => LoadItem(1), 200);
+            mScroller = new Scroller(Context);
+            Console.WriteLine("Done LoadItems");
 
             // Calculate the density-dependent snap velocity in pixels
-           // DisplayMetrics displayMetrics = new DisplayMetrics();
-          //  ((IWindowManager) Context.GetSystemService(Context.WindowService)).DefaultDisplay.GetMetrics(displayMetrics);
-          //  mDensityAdjustedSnapVelocity = (int) (displayMetrics.Density*SNAP_VELOCITY_DIP_PER_SECOND);
+            // DisplayMetrics displayMetrics = new DisplayMetrics();
+            //  ((IWindowManager) Context.GetSystemService(Context.WindowService)).DefaultDisplay.GetMetrics(displayMetrics);
+            //  mDensityAdjustedSnapVelocity = (int) (displayMetrics.Density*SNAP_VELOCITY_DIP_PER_SECOND);
 
 
             ViewConfiguration configuration = ViewConfiguration.Get(Context);
@@ -151,12 +326,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             mMaximumVelocity = configuration.ScaledMaximumFlingVelocity;
         }
 
-
         protected override void OnVisibilityChanged(View changedView, ViewStates visibility)
         {           
             base.OnVisibilityChanged(changedView, visibility);
 
-            if ( visibility == ViewStates.Visible )
+            if (visibility == ViewStates.Visible)
             {
                 LoadItems();
             }
@@ -169,7 +343,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         protected override void OnWindowVisibilityChanged(ViewStates visibility)
         {
             base.OnWindowVisibilityChanged(visibility);
-            if ( visibility != ViewStates.Visible )
+            if (visibility != ViewStates.Visible)
             {
                 UnloadItems();
             }
@@ -184,14 +358,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             MeasureSpecMode widthMode = MeasureSpec.GetMode(widthMeasureSpec);
             if (widthMode != MeasureSpecMode.Exactly)
             {
-            //    throw new Exception("ViewSwitcher can only be used in EXACTLY mode.");
+                //    throw new Exception("ViewSwitcher can only be used in EXACTLY mode.");
             }
 
 
             MeasureSpecMode heightMode = MeasureSpec.GetMode(heightMeasureSpec);
             if (heightMode != MeasureSpecMode.Exactly)
             {
-              //  throw new Exception("ViewSwitcher can only be used in EXACTLY mode.");
+                //  throw new Exception("ViewSwitcher can only be used in EXACTLY mode.");
             }
 
 
@@ -205,20 +379,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             if (mFirstLayout)
             {
-                ScrollTo(mCurrentScreen*width, 0);
+                ScrollTo(mCurrentScreen * width, 0);
                 mFirstLayout = false;
             }
 
 
             //else if (width != mLastSeenLayoutWidth)
             //{
-                // Width has changed
-                /*
+            // Width has changed
+            /*
                  * Recalculate the width and scroll to the right position to be sure we're in the right
                  * place in the event that we had a rotation that didn't result in an activity restart
                  * (code by aveyD). Without this you can end up between two pages after a rotation.
                  */
-               /*var display = ((IWindowManager) Context.GetSystemService(Context.WindowService)).DefaultDisplay;
+            /*var display = ((IWindowManager) Context.GetSystemService(Context.WindowService)).DefaultDisplay;
                 int displayWidth = display.Width;
 
 
@@ -233,8 +407,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             mLastSeenLayoutWidth = width;
         }
-
-
 
         protected override void OnLayout(bool changed, int l, int t, int r,
                                          int b)
@@ -254,8 +426,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 }
             }
         }
-
-
 
         public override bool OnInterceptTouchEvent(MotionEvent ev)
         {
@@ -305,7 +475,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 
                         float x = ev.GetX();
-                        int xDiff = (int) Math.Abs(x - mLastMotionX);
+                        int xDiff = (int)Math.Abs(x - mLastMotionX);
                         bool xMoved = xDiff > mTouchSlop;
 
 
@@ -318,7 +488,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 
                         float y = ev.GetY();
-                        int yDiff = (int) Math.Abs(y - mLastMotionY);
+                        int yDiff = (int)Math.Abs(y - mLastMotionY);
                         bool yMoved = yDiff > mTouchSlop;
 
 
@@ -350,7 +520,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             return intercept;
         }
-
 
         public override bool OnTouchEvent(MotionEvent ev)
         {
@@ -396,7 +565,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
                     break;
                 case MotionEventActions.Move:
-                    int xDiff = (int) Math.Abs(x - mLastMotionX);
+                    int xDiff = (int)Math.Abs(x - mLastMotionX);
                     bool xMoved = xDiff > mTouchSlop;
 
 
@@ -410,7 +579,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     if (mTouchState == TOUCH_STATE_HORIZONTAL_SCROLLING)
                     {
                         // Scroll to follow the motion event
-                        int deltaX = (int) (mLastMotionX - x);
+                        int deltaX = (int)(mLastMotionX - x);
                         mLastMotionX = x;
                         int scrollX = ScrollX;
 
@@ -445,7 +614,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                         VelocityTracker velocityTracker = mVelocityTracker;
                         velocityTracker.ComputeCurrentVelocity(VELOCITY_UNIT_PIXELS_PER_SECOND,
                                                                mMaximumVelocity);
-                        int velocityX = (int) velocityTracker.XVelocity;
+                        int velocityX = (int)velocityTracker.XVelocity;
 
 
                         if (velocityX > mDensityAdjustedSnapVelocity && mCurrentScreen > 0)
@@ -454,7 +623,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                             snapToScreen(mCurrentScreen - 1);
                         }
                         else if (velocityX < -mDensityAdjustedSnapVelocity
-                                 && mCurrentScreen < ChildCount - 1)
+                            && mCurrentScreen < ChildCount - 1)
                         {
                             // Fling hard enough to move right
                             snapToScreen(mCurrentScreen + 1);
@@ -488,8 +657,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             return true;
         }
 
-
-
         public override void ComputeScroll()
         {
             if (mScroller.ComputeScrollOffset())
@@ -500,6 +667,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             else if (mNextScreen != INVALID_SCREEN)
             {
                 mCurrentScreen = Math.Max(0, Math.Min(mNextScreen, ChildCount - 1));
+
+                for (int i = 0; i < _pages.Count; i++)
+                {
+                    var idx = i;
+                    if ((i == mCurrentScreen) || (i == mCurrentScreen - 1) || (i == mCurrentScreen + 1))
+                    {
+                        LoadItem(idx);
+                    }
+                    else
+                    {
+                        UnloadItem(idx);
+                    }
+
+                }
+
 
                 // Notify observer about screen change
                 if (mOnScreenSwitchListener != null)
@@ -541,7 +723,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
             else
             {
-                ScrollTo(mCurrentScreen*Width, 0);
+                ScrollTo(mCurrentScreen * Width, 0);
             }
             Invalidate();
         }
@@ -566,18 +748,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             int screenWidth = Width;
             int scrollX = ScrollX;
             int whichScreen = mCurrentScreen;
-            int deltaX = scrollX - (screenWidth*mCurrentScreen);
+            int deltaX = scrollX - (screenWidth * mCurrentScreen);
 
 
             // Check if they want to go to the prev. screen
             if ((deltaX < 0) && mCurrentScreen != 0
-                && ((screenWidth/FRACTION_OF_SCREEN_WIDTH_FOR_SWIPE) < -deltaX))
+                && ((screenWidth / FRACTION_OF_SCREEN_WIDTH_FOR_SWIPE) < -deltaX))
             {
                 whichScreen--;
                 // Check if they want to go to the next screen
             }
             else if ((deltaX > 0) && (mCurrentScreen + 1 != ChildCount)
-                     && ((screenWidth/FRACTION_OF_SCREEN_WIDTH_FOR_SWIPE) < deltaX))
+                && ((screenWidth / FRACTION_OF_SCREEN_WIDTH_FOR_SWIPE) < deltaX))
             {
                 whichScreen++;
             }
@@ -617,15 +799,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
              * normal animation time, depending how far they've already scrolled.
              */
             mNextScreen = Math.Max(0, Math.Min(whichScreen, ChildCount - 1));
-            int newX = mNextScreen*Width;
+            int newX = mNextScreen * Width;
             int delta = newX - ScrollX;
 
 
             if (duration < 0)
             {
                 // E.g. if they've scrolled 80% of the way, only animation for 20% of the duration
-                mScroller.StartScroll(ScrollX, 0, delta, 0, (int) (Math.Abs(delta)
-                                                                   /(float) Width*ANIMATION_SCREEN_SET_DURATION_MILLIS));
+                mScroller.StartScroll(ScrollX, 0, delta, 0, (int)(Math.Abs(delta)
+                    / (float)Width * ANIMATION_SCREEN_SET_DURATION_MILLIS));
             }
             else
             {

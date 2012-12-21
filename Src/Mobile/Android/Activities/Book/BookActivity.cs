@@ -25,18 +25,25 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using System.Reactive.Linq;
 using System.Reactive;
+using Java.Lang;
+using Android.OS;
 
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
-    [Activity(Label = "Book", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
+    [Activity(Label = "Book", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait, ClearTaskOnLaunch = true, FinishOnTaskLaunch = true  )]
     public class BookActivity : MvxBindingMapActivityView<BookViewModel>
     {
         private int _menuWidth = 400;
         private DecelerateInterpolator _interpolator = new DecelerateInterpolator(0.9f);
-        
+
+
+
         protected override void OnViewModelSet()
         {
+            Console.WriteLine( "NativeHeapSize:" + Debug.NativeHeapSize );
+            Console.WriteLine( "NativeHeapFreeSize:" + Debug.NativeHeapFreeSize );
+
             SetContentView(Resource.Layout.View_Book);
 			FindViewById<TouchMap>(Resource.Id.mapPickup).SetMapCenterPins(FindViewById<ImageView>(Resource.Id.mapPickupCenterPin), FindViewById<ImageView>(Resource.Id.mapDropoffCenterPin));
 
@@ -64,6 +71,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			ViewModel.Panel.PropertyChanged += HandlePropertyChanged;
 
             ViewModel.OnViewLoaded();
+
+
+
+
+
         }
 
         void HandleSignOutButtonClick (object sender, EventArgs e)
@@ -93,9 +105,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             ViewModel.ConfirmOrder.Execute();
         }
 
+        private Guid _id = Guid.NewGuid();
+
         protected override void OnResume()
         {
             base.OnResume();
+
+            Console.WriteLine( "OnResumeOnResumeOnResumeOnResumeOnResumeOnResumeOnResumeOnResume" + _id.ToString() );
 
             ViewModel.ShowTutorial.Execute();
 
@@ -125,6 +141,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             base.OnStop();
             apcurium.MK.Booking.Mobile.Client.Activities.Book.LocationService.Instance.Stop();
         }
+
+
 		       
 
         private void MainSettingsButtonOnClick(object sender, EventArgs eventArgs)
@@ -198,6 +216,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         private void ShowStatusActivity(Order data, OrderStatusDetail orderInfo)
         {
+
             RunOnUiThread(() =>
             {
                 var param = new Dictionary<string, object>() {{"order", data}, {"orderInfo", orderInfo}};
@@ -208,6 +227,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 		protected override void OnDestroy ()
 		{
 			base.OnDestroy ();
+            Console.WriteLine( "OnDestroyOnDestroyOnDestroyOnDestroyOnDestroyOnDestroyOnDestroyOnDestroy:" + _id.ToString() );
+
 			if (ViewModel != null) {
 				ViewModel.Panel.PropertyChanged -= HandlePropertyChanged;
 			}

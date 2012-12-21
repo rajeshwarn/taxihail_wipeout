@@ -283,6 +283,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Settings\Settings.json" />
     <EmbeddedResource Include="TutorialContent\Tutorial.json" />
+    <None Include="ViewModels\Master.resx">
+      <DependentUpon>HistoryDetailViewModel.cs</DependentUpon>
+    </None>
+    <None Include="Localization\Master.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -27,7 +27,7 @@ using TinyMessenger;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {
-    [Activity(Label = "Login", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait, LaunchMode=Android.Content.PM.LaunchMode.SingleInstance)]
+    [Activity(Label = "Login", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait )]
     public class LoginActivity : BaseBindingActivity<LoginViewModel>
     {
         public static LoginActivity TopInstance{get;set;}

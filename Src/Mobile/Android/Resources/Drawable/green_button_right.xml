@@ -8,7 +8,7 @@
           android:width="1dp"
           android:color="#af3e00" />
       <corners
-              android:radius="7dp"
+              android:radius="5dp"
               android:bottomLeftRadius="0dp"
               android:topLeftRadius="0dp" />
       <padding
@@ -27,7 +27,7 @@
               android:width="1dp"
               android:color="#af3e00" />
           <corners
-              android:radius="7dp"
+              android:radius="5dp"
               android:bottomLeftRadius="0dp"
               android:topLeftRadius="0dp" />
           <padding
@@ -42,7 +42,7 @@
           <solid android:color="#ffb94d" />
           <stroke android:width="0px" />
              <corners
-              android:radius="7dp"
+              android:radius="5dp"
               android:bottomLeftRadius="0dp"
               android:topLeftRadius="0dp" />
           <padding
@@ -60,7 +60,7 @@
               android:angle="270" />
           <stroke android:width="0px" />
           <corners
-              android:radius="7dp"
+              android:radius="5dp"
               android:bottomLeftRadius="0dp"
               android:topLeftRadius="0dp" />
           <padding

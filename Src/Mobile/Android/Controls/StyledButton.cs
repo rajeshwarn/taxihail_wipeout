@@ -7,6 +7,7 @@ using Android.Util;
 using apcurium.MK.Booking.Mobile.Style;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
 using Android.Graphics;
+using Android.Graphics.Drawables;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -36,6 +37,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             SetTextColor( ButtonStyle.TextColor.ConvertToColor() );
 			SetTextShadow( ButtonStyle.TextShadowColor);
+             
+            //SetBackgroundDrawable ( new GradientDrawable(ButtonStyle.Colors.ConvertToIntArray() )); 
+
         }
         
         public StyledButton(IntPtr ptr, Android.Runtime.JniHandleOwnership handle)
@@ -55,8 +59,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 		{
 			if(textShadowColor == null) return;
 
-			this.SetShadowLayer(1,0,1,textShadowColor.ConvertToColor());
+			this.SetShadowLayer(1,0,1,textShadowColor.ConvertToColor() );
 		}
+
+
     }
 }
 

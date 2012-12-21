@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common.Entity;
 using ServiceStack.Text;
@@ -6,13 +8,15 @@ using apcurium.Framework.Extensions;
 using Cirrious.MvvmCross.Interfaces.Commands;
 using Cirrious.MvvmCross.Commands;
 using apcurium.MK.Booking.Mobile.Messages;
+using apcurium.MK.Common;
+using TinyMessenger;
 
 namespace apcurium.MK.Booking.Mobile
 {
     public class BookStreetNumberViewModel : BaseViewModel
     {
-        string _ownerId;
-
+        private string _ownerId;
+        private TinyMessageSubscriptionToken _token;
         public BookStreetNumberViewModel (string ownerId, string address)
         {
             _ownerId = ownerId;
@@ -29,7 +33,7 @@ namespace apcurium.MK.Booking.Mobile
                 }
                 FirePropertyChanged(() => StreetNumberOrBuildingName);
             }
-            MessengerHub.Subscribe<AddressSelected> (OnAddressSelected, selected => selected.OwnerId == _ownerId);
+            _token = MessengerHub.Subscribe<AddressSelected> (OnAddressSelected, selected => selected.OwnerId == _ownerId);
         }
 
         string _streetNumberOrBuildingName;
@@ -53,10 +57,21 @@ namespace apcurium.MK.Booking.Mobile
             }
         }
 
+        public string StreetCity
+        {
+            get{
+                return Params.Get(  _model.Street, _model.City ).Where( s=>s.HasValue() ).JoinBy( ", " );
+            }
+        }
+
         public IMvxCommand NavigateToSearch {
             get {
                 return GetCommand(() =>
                  {
+                    MessengerHub.Unsubscribe<AddressSelected> ( _token );
+                    _token.Dispose ();
+                    _token = null;
+
                     RequestNavigate<AddressSearchViewModel> (new { search = Model.BookAddress, ownerId = _ownerId });                    
                 });
             }

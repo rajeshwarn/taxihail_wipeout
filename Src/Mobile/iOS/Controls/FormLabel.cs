@@ -20,8 +20,8 @@ namespace apcurium.MK.Booking.Mobile.Client
         
         private void Initialize() {
         
-            Font = AppStyle.BoldTextFont;
-            TextColor = UIColor.FromRGB(66,63,58);
+            Font = AppStyle.NormalTextFont;
+            TextColor = UIColor.FromRGB(175,175,175);
             ShadowColor = UIColor.FromRGBA(255, 255, 255, 191);
             ShadowOffset = new SizeF(0,1);
 

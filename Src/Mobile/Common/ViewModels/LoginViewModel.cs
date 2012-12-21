@@ -108,7 +108,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				if(account != null){
 					this.Password = string.Empty;
-					RequestNavigate<BookViewModel>(true);
+
+                    RequestNavigate<BookViewModel>(true);
+                    RequestClose( this );
+
 				}
 			}
 			finally
