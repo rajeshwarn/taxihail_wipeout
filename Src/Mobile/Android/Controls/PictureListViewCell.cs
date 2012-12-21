@@ -60,7 +60,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             if (ShowAddSign)
             {
-                canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, Resource.Drawable.add_button), this.Width - 60, 23, null);
+                //canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, Resource.Drawable.add_btn), 10, 10, null);
             }
 
             if (!string.IsNullOrEmpty(Picture))
@@ -72,7 +72,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 }
             }
 
-            var d = ShowAddSign && !IsTop ? Resource.Drawable.cell_bottom_state : IsTop && IsBottom && ShowAddSign ? Resource.Drawable.add_single_state : IsTop && !IsBottom ? Resource.Drawable.cell_top_state : IsBottom && !IsTop ? Resource.Drawable.blank_bottom_state : IsTop && IsBottom ? Resource.Drawable.blank_single_state :  Resource.Drawable.cell_middle_state;
+            var d = IsTop && !IsBottom 
+						? Resource.Drawable.cell_top_state 
+						: IsBottom && !IsTop 
+							? Resource.Drawable.blank_bottom_state 
+							: IsTop && IsBottom 
+								? Resource.Drawable.blank_single_state 
+								:  Resource.Drawable.cell_middle_state;
+
 			SetBackgroundDrawable( Resources.GetDrawable( d ) );
         }
 
