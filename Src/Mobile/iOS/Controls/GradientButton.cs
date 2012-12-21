@@ -406,6 +406,10 @@ namespace apcurium.MK.Booking.Mobile.Client
         protected virtual void DrawText (RectangleF rect, CGContext context, RectangleF imageRect, RectangleF rightImageRect)
         {
             context.SaveState ();
+            var data = NSString.FromData(_title, NSStringEncoding.UTF8).Encode(NSStringEncoding.MacOSRoman);
+            byte[] dataBytes = new byte[data.Length];            
+            System.Runtime.InteropServices.Marshal.Copy(data.Bytes, dataBytes, 0, Convert.ToInt32(data.Length));
+
             context.SelectFont (_titleFont.Name, _titleFont.PointSize, CGTextEncoding.MacRoman);
             context.SetTextDrawingMode (CGTextDrawingMode.Fill);
             var textColor = this.Selected ? (_selectedTitleColor ?? _titleColor) : _titleColor;
@@ -418,9 +422,10 @@ namespace apcurium.MK.Booking.Mobile.Client
             context.TextMatrix = new CGAffineTransform (1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f);
             var titleSize = ((NSString)_title).StringSize (_titleFont);
             if (HorizontalAlignment == UIControlContentHorizontalAlignment.Left) {
-                context.ShowTextAtPoint (ContentEdgeInsets.Left + imageRect.Left + imageRect.Width + 10, rect.GetMidY () + (_titleFont.PointSize / 3), _title);
+                context.ShowTextAtPoint (ContentEdgeInsets.Left + imageRect.Left + imageRect.Width + 10, rect.GetMidY () + (_titleFont.PointSize / 3), dataBytes);
+
             } else {
-                context.ShowTextAtPoint (((rect.Width - imageRect.Width) / 2) - (titleSize.Width / 2) + imageRect.Right, rect.GetMidY () + (_titleFont.PointSize / 3), _title);
+                context.ShowTextAtPoint (((rect.Width - imageRect.Width) / 2) - (titleSize.Width / 2) + imageRect.Right, rect.GetMidY () + (_titleFont.PointSize / 3), dataBytes);
             }
             context.RestoreState ();
 
