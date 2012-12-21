@@ -7,14 +7,14 @@
 "AppNeedUpdateTitle"="Update available";
 "LoginForgotPasswordButton"="Forgot Password?";
 "CreateAccountLanguage"="Language";
-"NbPassenger"=" ";
+"NbPassenger"=" ({0} passenger)";
 "ResetPasswordSucessTitle"="Password resetted";
 "ServiceErrorCreateOrder_NoProvider"="Order cannot be created, no provider specified. Please try again or call us.";
 "ServiceError_ErrorCreatingOrderMessage"="Please contact {0} at {1} for further assistance.";
 "ConfirmNoRingCode"="No code";
 "View_BookingDetail"="Booking Details";
 "ServiceErrorCreateAccount_AccountAlreadyExist"="This email is already in use.";
-"DateTimePickerSetButton"="Pick Me Up Later";
+"DateTimePickerSetButton"="Book";
 "OrderNote"="Booked on mobile";
 "PickupTextPlaceholder"="Pickup street address";
 "TechSupportEmailTitle"="Support Application Mobile";
@@ -24,11 +24,11 @@
 "HistoryInfo"="Displaying trips from the last month";
 "View_Book_Menu_MyOrders"="My Bookings";
 "PickupMapTitle"="Pickup location";
-"NbPassengers"=" ";
+"NbPassengers"=" ({0} passengers)";
 "BookPickupLabel"="Confirm your pickup location";
 "StatusViewTitle"="Confirmed";
 "CreateAccoutLanguageLabel"="Language:";
-"AptNumber"="Flat No.";
+"AptNumber"="Apt. No.";
 "View_SignUp_Label"="Create Your Profile";
 "InvalidBookinInfo"="To book a ride, you need to enter a valid pickup address.";
 "BookDateLabel"="Pick Me Up Later";
@@ -187,7 +187,7 @@
 "CreateAccountInvalidDataTitle"="Invalid account info";
 "CurrentPasswordLabel"="Current Password";
 "StatusActionButton"="Call / Book / Cancel";
-"GoogleMapKey"="0XEY3WqKVmJPKgUaBK0NC_GfL7VtrnaAAs1hieQ";
+"GoogleMapKey"="0XEY3WqKVmJPhADLxOCPUweMcqYg3AfqCp8BvWw";
 "ApplicationName"="TaxiHail";
 "ChargeTypeLabel"="Charge type";
 "EmailLabel"="Email";
@@ -239,7 +239,7 @@
 "View_BookSettingMenu"="Settings";
 "BookPickupLocationEmptyPlaceholder"="Tap to choose pickup";
 "WarningEstimate"="Please note that the price provided by this App is an estimate only. The fare amount as calculated by the meter, along with any applicable minimums and extras will be charged at the end of the trip.";
-"ConfirmNoApt"="No flat";
+"ConfirmNoApt"="No apt.";
 "LocationDetailInstructionLabel"="Save as a favorite location";
 "View_HistoryList"="History";
 "SaveAddressEmptyFieldMessage"="The data is invalid, friendly name and address fields are required.";
@@ -301,7 +301,7 @@
 "searchHint"="Search";
 "CreateAccountErrorTitle"="Error";
 "CreateAccountLanguageFrench"="French";
-"BookItButton"="Pick Me Up Now";
+"BookItButton"="Book Now";
 "ConfirmDestinationLabel"="Destination";
 "NearbyPlacesTitle"="Nearby places";
 "GenericTitle"="";
@@ -339,6 +339,6 @@
 "ServiceErrorResetPassword_AccountNotFound"="No account with this email has been found.";
 "AddReminderMessage"="Do you want to add a reminder ?";
 "AddReminderTitle"="Add Reminder";
-"EntryCodeLabel"="Building name";
-"ApartmentLabel"="Flat";
+"EntryCodeLabel"="Entry code";
+"ApartmentLabel"="Apartment";
 "NotesToDriveLabel"="Notes to driver";

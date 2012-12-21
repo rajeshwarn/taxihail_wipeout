@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.TaxiworldDemo">
+    xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.TaxiHailDemo">
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_marginTop="2dip"
@@ -30,7 +30,7 @@
             android:layout_alignParentLeft="true" />
         <Button
             android:id="@+id/BookItBtn"
-            style="@style/ButtonTextTaxiworld"
+            style="@style/ButtonTextLarge"
             android:background="@drawable/green_button"
             android:text="@string/BookItButton"
             android:layout_marginLeft="5dip"

@@ -2254,14 +2254,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f08000e
 			public const int BigTitleTextBlack = 2131230734;
 			
-			// aapt resource value: 0x7f080002
-			public const int ButtonText = 2131230722;
+			// aapt resource value: 0x7f080003
+			public const int ButtonText = 2131230723;
 			
 			// aapt resource value: 0x7f080006
 			public const int ButtonTextGray = 2131230726;
 			
 			// aapt resource value: 0x7f080005
-			public const int ButtonTextTaxiworld = 2131230725;
+			public const int ButtonTextLarge = 2131230725;
 			
 			// aapt resource value: 0x7f080013
 			public const int DetailText = 2131230739;
@@ -2269,8 +2269,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f08000d
 			public const int FinePrint = 2131230733;
 			
-			// aapt resource value: 0x7f080004
-			public const int FormLabelText = 2131230724;
+			// aapt resource value: 0x7f080002
+			public const int FormLabelText = 2131230722;
 			
 			// aapt resource value: 0x7f080010
 			public const int GrayText = 2131230736;
@@ -2296,8 +2296,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f080007
 			public const int ListTitle = 2131230727;
 			
-			// aapt resource value: 0x7f080003
-			public const int SearchButtonText = 2131230723;
+			// aapt resource value: 0x7f080004
+			public const int SearchButtonText = 2131230724;
 			
 			// aapt resource value: 0x7f08000f
 			public const int SimpleText = 2131230735;

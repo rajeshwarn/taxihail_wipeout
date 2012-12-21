@@ -15,7 +15,7 @@ using apcurium.MK.Booking.Mobile.Client.Controls;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-	[Activity(Label = "BookStreetNumberActivity", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
+	[Activity(Label = "BookStreetNumberActivity", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait, NoHistory=true)]
 	public class BookStreetNumberActivity : BaseBindingActivity<BookStreetNumberViewModel> 
 	{
 		protected override int ViewTitleResourceId
