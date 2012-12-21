@@ -56,9 +56,9 @@ namespace apcurium.MK.Common.Entity
             }
             var components = Params.Get (prefixAddress, Street, City, string.Format ("{0} {1}", State, ZipCode)).Where (s => s.HasValue () && s.Trim().HasValue()).ToList ();
             if (components.Count > 1) {
-                return components.FirstOrDefault () + components.Skip (1).Aggregate ((x,y) => {
-                    return string.Format (" {0}, {1}", x.Trim (), y.Trim ());});
-            } else {
+                return components.First () + " " + components.Skip (1).JoinBy(", " );
+            }
+             else {
                 return FullAddress;
             }
         }

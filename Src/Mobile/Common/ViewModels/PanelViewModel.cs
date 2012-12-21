@@ -17,16 +17,17 @@ using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.Extensions;
 using System.Threading.Tasks;
 using System.Threading;
-using apcurium.MK.Booking.Mobile.ViewModels.Payment;
+using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class PanelViewModel : BaseViewModel, IMvxServiceConsumer<IAccountService>,IMvxServiceConsumer<ICacheService>
     {
         readonly IAccountService _accountService;
-
-        public PanelViewModel ()
+        private BookViewModel _parent;
+        public PanelViewModel ( BookViewModel parent )
         {
+            _parent = parent;
             _accountService = this.GetService<IAccountService> ();
         }
 
@@ -52,6 +53,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     MenuIsOpen = false;
                     _accountService.SignOut ();         
                     RequestNavigate<LoginViewModel> (true);
+                    RequestClose( _parent );
                 });
             }
         }
@@ -116,6 +118,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 });
             }
         }
+
+        public bool CanCall 
+        {
+            get{
+                return !TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.HideCallDispatchButton").TryToParse( true );
+            }
+        
+        }
+
+
+        public bool CanReportProblem 
+        {
+            get{
+                return !TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting("Client.HideReportProblem").TryToParse( true );
+            }
+            
+        }
+
 
         public IMvxCommand Call {
             get {

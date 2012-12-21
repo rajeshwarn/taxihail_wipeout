@@ -557,7 +557,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             };
 
             UseServiceClient<IAccountServiceClient> (client => {               
-                client.AddCreditCard(request);               
+                client.AddCreditCard(request); 
+                TinyIoCContainer.Current.Resolve<ICacheService>().Clear(_creditCardsCacheKey);
             }, ex => { throw ex; });  
         }
 

@@ -12,6 +12,7 @@ using System.Globalization;
 using apcurium.MK.Booking.Mobile.Extensions;
 using System.Collections.Generic;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Booking.Mobile.Data;
 
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
@@ -130,15 +131,39 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         public IMvxCommand NavigateToCreditCardsList {
             get {
                 return GetCommand (()=>{
-                    RequestSubNavigate<CreditCardsListViewModel, Guid>(null, result => {
-                        if(result != default(Guid))
-                        {
-                            this.SelectedCreditCardId = result;
 
-                            //Reload credit cards in case the credit card list has changed (add/remove)
-                            this.LoadCreditCards();
-                        }
-                    });
+                    if(CreditCards.Count == 0)
+                    {
+                        RequestSubNavigate<CreditCardAddViewModel,CreditCardInfos>(null, newCreditCard =>
+                                                                                   {
+                            InvokeOnMainThread(()=>
+                                               {
+                                CreditCards.Add (new CreditCardDetails
+                                    {
+                                        CreditCardCompany = newCreditCard.CreditCardCompany,
+                                        CreditCardId = newCreditCard.CreditCardId,
+                                        FriendlyName = newCreditCard.FriendlyName,
+                                        Last4Digits = newCreditCard.Last4Digits
+                                    });
+                                this.SelectedCreditCardId = newCreditCard.CreditCardId;
+                                this.LoadCreditCards();
+                            });                                                                                         
+
+                        });
+
+                    }else{
+
+
+                        RequestSubNavigate<CreditCardsListViewModel, Guid>(null, result => {
+                            if(result != default(Guid))
+                            {
+                                this.SelectedCreditCardId = result;
+
+                                //Reload credit cards in case the credit card list has changed (add/remove)
+                                this.LoadCreditCards();
+                            }
+                        });
+                    }
                 });
             }
         }

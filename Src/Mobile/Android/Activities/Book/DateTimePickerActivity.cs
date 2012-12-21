@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             FindViewById<TimePicker>(Resource.Id.timePickerCtl).TimeChanged += TimeOnTimeChanged;
             FindViewById<DatePicker>(Resource.Id.datePickerCtl).UpdateDate(selected.Year, selected.Month - 1, selected.Day);
             FindViewById<Button>(Resource.Id.DoneButton).Click += DoneOnClick;
-            FindViewById<Button>(Resource.Id.NowButton).Click += TimeOnClick;
+            //FindViewById<Button>(Resource.Id.NowButton).Click += TimeOnClick;
 
             var useAmPm = this.Intent.GetBooleanExtra("UseAmPmFormat", true );
 

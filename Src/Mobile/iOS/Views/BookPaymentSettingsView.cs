@@ -56,7 +56,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 { btCancel, "{'TouchUpInside':{'Path':'CancelOrderCommand'}}"},                
                 { btConfirm, "{'TouchUpInside':{'Path':'ConfirmOrderCommand'}}"},          
                 { txtTipAmount, "{'Text': {'Path': 'PaymentPreferences.Tip'}}" },
-                { sgmtPercentOrValue, "{'IsTipInPercent': {'Path': 'PaymentPreferences.IsTipInPercent', 'Mode': 'TwoWay'}}" },
+                { sgmtPercentOrValue, "{'IsTipInPercent': {'Path': 'PaymentPreferences.IsTipInPercent', 'Mode': 'TwoWay'},'TipCurrency': {'Path': 'PaymentPreferences.CurrencySymbol'}}" },
                 { btCreditCard, "{'Text': {'Path': 'PaymentPreferences.SelectedCreditCard.FriendlyName'}, 'Last4Digits': {'Path': 'PaymentPreferences.SelectedCreditCard.Last4Digits'}, 'CreditCardCompany': {'Path': 'PaymentPreferences.SelectedCreditCard.CreditCardCompany'}, 'NavigateCommand': {'Path': 'PaymentPreferences.NavigateToCreditCardsList'}}" }
             });
 			

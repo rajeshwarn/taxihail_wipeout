@@ -62,7 +62,7 @@
                             android:background="@color/transparent"
                             android:layout_marginRight="5dip"
                             android:drawableRight="@drawable/right_arrow"
-                            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;Pickup.PickAddress&apos;}, &apos;Cancel&apos;:{&apos;Path&apos;:&apos;Pickup.CancelCurrentLocationCommand&apos;},&apos;IsProgressing&apos;:{&apos;Path&apos;:&apos;Pickup.IsExecuting&apos;},&apos;TextLine1&apos; : {&apos;Path&apos;:&apos;Pickup.Title&apos;}, &apos;TextLine2&apos; : {&apos;Path&apos;:&apos;Pickup.Display&apos;},&apos;IsPlaceHolder&apos; : {&apos;Path&apos;:&apos;Pickup.IsPlaceHolder&apos;} }"
+                            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;Pickup.PickAddress&apos;}, &apos;Cancel&apos;:{&apos;Path&apos;:&apos;Pickup.CancelCurrentLocationCommand&apos;},&apos;IsProgressing&apos;:{&apos;Path&apos;:&apos;Pickup.IsExecuting&apos;},&apos;TextLine1&apos; : {&apos;Path&apos;:&apos;Pickup.AddressLine1&apos;}, &apos;TextLine2&apos; : {&apos;Path&apos;:&apos;Pickup.AddressLine2&apos;},&apos;IsPlaceHolder&apos; : {&apos;Path&apos;:&apos;Pickup.IsPlaceHolder&apos;} }"
                             android:paddingRight="5dip" />
                         <ImageButton
                             android:id="@+id/pickupIsActiveButton"
@@ -94,7 +94,7 @@
                             android:layout_marginBottom="5dip"
                             android:gravity="left"
                             android:layout_weight="1"
-                            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;Dropoff.PickAddress&apos;}, &apos;Cancel&apos;:{&apos;Path&apos;:&apos;Dropoff.CancelCurrentLocationCommand&apos;},&apos;IsProgressing&apos;:{&apos;Path&apos;:&apos;Dropoff.IsExecuting&apos;},&apos;TextLine1&apos; : {&apos;Path&apos;:&apos;Dropoff.Title&apos;}, &apos;TextLine2&apos; : {&apos;Path&apos;:&apos;Dropoff.Display&apos;},&apos;IsPlaceHolder&apos; : {&apos;Path&apos;:&apos;Dropoff.IsPlaceHolder&apos;} }"
+                            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;Dropoff.PickAddress&apos;}, &apos;Cancel&apos;:{&apos;Path&apos;:&apos;Dropoff.CancelCurrentLocationCommand&apos;},&apos;IsProgressing&apos;:{&apos;Path&apos;:&apos;Dropoff.IsExecuting&apos;},&apos;TextLine1&apos; : {&apos;Path&apos;:&apos;Dropoff.AddressLine1&apos;}, &apos;TextLine2&apos; : {&apos;Path&apos;:&apos;Dropoff.AddressLine2&apos;},&apos;IsPlaceHolder&apos; : {&apos;Path&apos;:&apos;Dropoff.IsPlaceHolder&apos;} }"
                             android:background="@color/transparent"
                             android:layout_marginRight="5dip"
                             android:paddingRight="5dip"
@@ -117,10 +117,13 @@
                         android:id="@+id/pickupDateLayout"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
+                        android:background="#525252"
                         android:layout_below="@id/destinationAddressLayout"
                         android:gravity="center_horizontal|center_vertical"
                         android:layout_gravity="center_horizontal|center_vertical"
                         android:paddingLeft="3dip"
+                        android:paddingTop="3dip"
+                        android:paddingBottom="3dip"
                         android:paddingRight="3dip">
                         <TextView
                             android:id="@+id/FareEstimateLabel"
@@ -182,22 +185,13 @@
                             android:layout_gravity="bottom"
                             android:layout_marginLeft="2dip"
                             android:layout_marginRight="10dip"
-                            android:layout_marginBottom="65dip"
+                            android:layout_marginBottom="62dip"
                             android:src="@drawable/poweredby2" />
-                        <FrameLayout
-                            android:id="@+id/bottomLayout"
-                            android:layout_width="fill_parent"
-                            android:layout_height="58dip"
-                            android:layout_weight="1"
-                            android:layout_gravity="bottom"
-                            android:background="@drawable/StatusBottomBarBackground" />
                         <RelativeLayout
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="bottom"
-                            android:layout_marginLeft="10dip"
-                            android:layout_marginRight="10dip"
-                            android:layout_marginBottom="7dip">
+                            android:background="@drawable/StatusBottomBarBackground">
                             <include
                                 android:id="@+id/BookButtons"
                                 android:layout_width="match_parent"
