@@ -20,7 +20,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 	{
 		protected override int ViewTitleResourceId
 		{
-			get { return Resource.String.PaymentCreditCardsOnFile; }
+			get { return Resource.String.View_PaymentCreditCardsOnFile; }
 		}
 
 		protected override void OnViewModelSet()

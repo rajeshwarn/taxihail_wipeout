@@ -286,7 +286,9 @@
     <None Include="ViewModels\Master.resx">
       <DependentUpon>HistoryDetailViewModel.cs</DependentUpon>
     </None>
-    <None Include="Localization\Master.resx" />
+    <None Include="Localization\Master.resx">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
