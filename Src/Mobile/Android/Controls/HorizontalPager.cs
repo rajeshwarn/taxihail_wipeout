@@ -16,15 +16,43 @@ using apcurium.MK.Common.Extensions;
 using Android.Graphics;
 using System.Threading.Tasks;
 using Cirrious.MvvmCross.Interfaces.Views;
+using Android.Graphics.Drawables;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
+    public class PageInfo
+    {
+        public View RootView
+        {
+            get;
+            set;
+        }
+        
+        public View ContentView
+        {
+            get;
+            set;
+        }
+        
+        public TutorialItemModel ItemModel
+        {
+            get;
+            set;
+        }
+        
+        public bool IsLoaded
+        {
+            get;
+            set;
+        }
+        
+        
+        
+        
+    }
+
     public class HorizontalPager : ViewGroup
     {
-        /*
-         * How long to animate between screens when programmatically setting with setCurrentScreen using
-         * the animate parameter
-         */
         private static int ANIMATION_SCREEN_SET_DURATION_MILLIS = 500;
         // What fraction (1/x) of the screen the user must swipe to indicate a page change
         private static int FRACTION_OF_SCREEN_WIDTH_FOR_SWIPE = 4;
@@ -54,7 +82,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         private int mTouchState = TOUCH_STATE_REST;
         private VelocityTracker mVelocityTracker;
         private int mLastSeenLayoutWidth = -1;
-
+        private List<PageInfo> _pages;
         private TutorialItemModel[] _tutorialItemModel;
 
         public TutorialItemModel[] TutorialItemModel
@@ -104,71 +132,186 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
          * Sets up the scroller and touch/fling sensitivity parameters for the pager.
          */
 
-        private List<View> _tutorialItems;
+
 
         private void UnloadItems()
         {
-
-            
-            if (_tutorialItems != null)
+            if (_pages != null)
             {
-                foreach (var item in _tutorialItems)
+                int i = 0;
+                foreach (var page in _pages)
                 {
-                    this.RemoveView(item);
-                    item.Dispose();
+                    if (page.IsLoaded)
+                    {
+                        UnloadItem(i);
+                    }
+
+                    i++;
                 }
             }
+            this.RemoveAllViews();
+            _pages = null;
             GC.Collect();
         }
+
+        void UnloadItem(int index)
+        {
+            if (index >= _pages.Count)
+            {
+                return;
+            }
+
+            var page = _pages[index];
+
+            if (page.IsLoaded)
+            {
+                page.IsLoaded = false;
+
+                if (page.ContentView != null)
+                {
+                    var d = page.ContentView.FindViewById<ImageView>(Resource.Id.TutorialImage).Drawable;
+                    if (d is BitmapDrawable)
+                    {
+                        ((BitmapDrawable)d).Bitmap.Recycle();
+                    }
+                    page.ContentView.FindViewById<ImageView>(Resource.Id.TutorialImage).SetImageBitmap(null);
+
+                    int i = this.IndexOfChild(page.ContentView);
+                    this.RemoveView(page.ContentView);
+                    page.RootView = new View(Context);
+                    this.AddView(page.RootView, i);
+                    page.RootView.Layout(page.ContentView.Left, 0, page.ContentView.Left + page.ContentView.MeasuredWidth, page.ContentView.MeasuredHeight);                                               
+                    page.ContentView.Dispose();
+                    page.ContentView = null;
+
+
+                   
+
+                    Console.WriteLine("Unloaded...  : " + page.ItemModel.ImageUri);
+                }
+
+            }
+
+            GC.Collect();
+
+
+        }
+
+        void LoadItem(int index)
+        {
+
+            if (index >= _pages.Count)
+            {
+                return;
+            }
+
+            GC.Collect();
+            var page = _pages[index];
+            if (!page.IsLoaded)
+            {
+
+                page.IsLoaded = true;
+                var inflater = (LayoutInflater)Context.GetSystemService(Context.LayoutInflaterService);
+                page.ContentView = inflater.Inflate(Resource.Layout.TutorialListItem, null);
+                
+                page.ContentView.FindViewById<TextView>(Resource.Id.TutorialTopText).Text = page.ItemModel.TopText;
+                page.ContentView.FindViewById<TextView>(Resource.Id.TutorialBottomText).Text = page.ItemModel.BottomText;
+                page.ContentView.FindViewById<TextView>(Resource.Id.TutorialTopTitleText).Text = page.ItemModel.TopTitle;
+                page.ContentView.FindViewById<TextView>(Resource.Id.TutorialBottomTitleText).Text = page.ItemModel.BottomTitle;
+
+                Console.WriteLine("Loading...  : " + page.ItemModel.ImageUri);
+
+                var resource = Resources.GetIdentifier(page.ItemModel.ImageUri, "drawable", Context.PackageName);
+
+                //Decode image size
+                var o = new BitmapFactory.Options();
+                o.InPurgeable = true;
+                o.InInputShareable = true;
+                o.InPreferredConfig = Bitmap.Config.Rgb565;
+
+                var bmp = BitmapFactory.DecodeResource(Resources, resource, o);
+
+                page.ContentView.FindViewById<ImageView>(Resource.Id.TutorialImage).SetImageBitmap(bmp);
+                page.ContentView.FindViewById<ImageView>(Resource.Id.TutorialImage).Invalidate();
+
+
+
+                int i = this.IndexOfChild(page.RootView);
+                this.RemoveView(page.RootView);
+                this.AddView(page.ContentView, i);
+                page.ContentView.Layout(page.RootView.Left, 0, page.RootView.Left + page.RootView.MeasuredWidth, page.RootView.MeasuredHeight);                           
+
+                page.RootView.Dispose();
+                page.RootView = null;
+
+            }
+        }
+        
+//        private void LayoutItem(int index)
+//        {
+//            var page = _pages[index];
+//            if (page.ContentView != null)
+//            {
+//                page.ContentView.Layout(page.RootView.Left, 0, page.RootView.Left + page.RootView.MeasuredWidth, page.RootView.MeasuredHeight);
+//            }
+//            //page.ContentView.Layout( page.RootView.Left, 0,page.RootView.Left+page.RootView.MeasuredWidth, page.RootView.MeasuredWidth);
+//            //            View child = _pages[i].RootView;
+//            //            
+//            //            if ((child != null) && (child.Visibilitpage.ContentView.Layout( page.RootView.Left, 0,page.RootView.Left+page.RootView.MeasuredWidth, page.RootView.MeasuredWidth);y != ViewStates.Gone))
+//            //            {
+//            //                int childWidth = child.MeasuredWidth;
+//            //                child.Layout(childLeft, 0, childLeft + childWidth, child.MeasuredHeight);
+//            //                childLeft += childWidth;
+//            //            }
+//            
+//        }
 
         private void LoadItems()
         {
            
-            UnloadItems();
-
-            Console.WriteLine("LoadItems");
-            Task.Factory.SafeStartNew(() =>
+            if (_pages != null)
             {
-                _tutorialItems = new List<View>();
-                Console.WriteLine("LoadItems 1");
-                var inflater = (LayoutInflater)Context.GetSystemService(Context.LayoutInflaterService);
-                Console.WriteLine("LoadItems 2");
-                for (int i = 0; i < TutorialItemModel.Count(); i++)
-                {
-                    Console.WriteLine("LoadItems 3 : " + i.ToString());
-                    View vw = inflater.Inflate(Resource.Layout.TutorialListItem, null);
-                    _tutorialItems.Add(vw);
+                return;
+            }
 
-                    Console.WriteLine("LoadItems 4 : " + i.ToString());
+            _pages = new List<PageInfo>();                                           
 
-                    var tutorialItem = TutorialItemModel[i];
-                    var uri = tutorialItem.ImageUri;  
-                    var options = new BitmapFactory.Options();
-                    options.InPurgeable = true; //bitmap can be purged to disk
-                    var resource = Resources.GetIdentifier(uri, "drawable", Context.PackageName);
-                    var bm = BitmapFactory.DecodeResource(Context.Resources, resource, options);
+            for (int i = 0; i < TutorialItemModel.Count(); i++)
+            {
+                var page = new PageInfo{ ItemModel =  TutorialItemModel[i], RootView = new View(Context) };
+                _pages.Add(page);
+                this.AddView(page.RootView);
 
-                    Console.WriteLine("LoadItems 5 : " + i.ToString());
 
-                
-                    Post(() =>
-                                                       {
-                        Console.WriteLine("LoadItems 6 : " + i.ToString());
-                        AddView(vw);
-                        vw.FindViewById<TextView>(Resource.Id.TutorialTopText).Text = tutorialItem.TopText;
-                        vw.FindViewById<TextView>(Resource.Id.TutorialBottomText).Text = tutorialItem.BottomText;
-                        vw.FindViewById<TextView>(Resource.Id.TutorialTopTitleText).Text = tutorialItem.TopTitle;
-                        vw.FindViewById<TextView>(Resource.Id.TutorialBottomTitleText).Text = tutorialItem.BottomTitle;
-                        vw.FindViewById<ImageView>(Resource.Id.TutorialImage).SetImageBitmap(bm);
-                        Console.WriteLine("LoadItems 7 : " + i.ToString());
-                                                        });
+                //View vw = inflater.Inflate(Resource.Layout.TutorialListItem, null);
+                  
+//                var uri = page.ItemModel.ImageUri;  
+//                var options = new BitmapFactory.Options();
+//                options.InPurgeable = true; //bitmap can be purged to disk
+//                var resource = Resources.GetIdentifier(uri, "drawable", Context.PackageName);
+//                var bm = BitmapFactory.DecodeResource(Context.Resources, resource, options);
+//
+//                Console.WriteLine("LoadItems 5 : " + i.ToString());
+
+//                
+//                Post(() =>
+//                {
+//                    Console.WriteLine("LoadItems 6 : " + i.ToString());
+//                    AddView(vw);
+//                    vw.FindViewById<TextView>(Resource.Id.TutorialTopText).Text = tutorialItem.TopText;
+//                    vw.FindViewById<TextView>(Resource.Id.TutorialBottomText).Text = tutorialItem.BottomText;
+//                    vw.FindViewById<TextView>(Resource.Id.TutorialTopTitleText).Text = tutorialItem.TopTitle;
+//                    vw.FindViewById<TextView>(Resource.Id.TutorialBottomTitleText).Text = tutorialItem.BottomTitle;
+//                    vw.FindViewById<ImageView>(Resource.Id.TutorialImage).SetImageBitmap(bm);
+//                    Console.WriteLine("LoadItems 7 : " + i.ToString());
+//                });
                 
 
                                                   
 
-                }
-
-            });
+            }
+            LoadItem(0);
+            PostDelayed(() => LoadItem(1), 200);
             mScroller = new Scroller(Context);
             Console.WriteLine("Done LoadItems");
 
@@ -524,6 +667,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             else if (mNextScreen != INVALID_SCREEN)
             {
                 mCurrentScreen = Math.Max(0, Math.Min(mNextScreen, ChildCount - 1));
+
+                for (int i = 0; i < _pages.Count; i++)
+                {
+                    var idx = i;
+                    if ((i == mCurrentScreen) || (i == mCurrentScreen - 1) || (i == mCurrentScreen + 1))
+                    {
+                        LoadItem(idx);
+                    }
+                    else
+                    {
+                        UnloadItem(idx);
+                    }
+
+                }
+
 
                 // Notify observer about screen change
                 if (mOnScreenSwitchListener != null)

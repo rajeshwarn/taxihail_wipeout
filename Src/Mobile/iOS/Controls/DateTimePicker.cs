@@ -27,14 +27,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			_picker = new UIDatePicker ();
 			BackgroundColor = UIColor.Gray;
 			
-			var accept = AppButtons.CreateStandardButton( new RectangleF (40, 5, 100, 35), Resources.DateTimePickerSetButton, AppStyle.ButtonColor.Green );
+			var accept = AppButtons.CreateStandardButton( new RectangleF (10, 5, 250, 35), Resources.DateTimePickerSetButton, AppStyle.ButtonColor.Green );
 			accept.TouchUpInside += delegate { 
 				SetSelectedDate( ((DateTime)_picker.Date).ToLocalTime () );
 
 			};
 			AddSubview( accept );
 			
-			var reset = AppButtons.CreateStandardButton( new RectangleF (_screenBounds.Width - 140, 5, 100, 35), Resources.CancelBoutton, AppStyle.ButtonColor.Silver );
+            var reset = AppButtons.CreateStandardButton( new RectangleF (_screenBounds.Width - 50, 5, 40, 35), "", AppStyle.ButtonColor.Red, "Assets/Cancel.png" );
 			reset.TouchUpInside += delegate {
 				SetSelectedDate (null);
 			};

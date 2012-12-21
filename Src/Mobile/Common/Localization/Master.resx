@@ -227,10 +227,7 @@
   </data>
   <data name="PickupTextPlaceholder" xml:space="preserve">
     <value>Pickup street address</value>
-  </data>
-  <data name="AptNumberTextPlaceholder" xml:space="preserve">
-    <value>Apt/Suite Number</value>
-  </data>
+  </data>  
   <data name="RingCodeTextPlaceholder" xml:space="preserve">
     <value>Entry code</value>
   </data>
@@ -272,10 +269,7 @@
   </data>
   <data name="ConfirmOriginLablel" xml:space="preserve">
     <value>Pickup</value>
-  </data>
-  <data name="ConfirmAptRingCodeLabel" xml:space="preserve">
-    <value>Apartment / Entry code</value>
-  </data>
+  </data>  
   <data name="ConfirmDestinationLabel" xml:space="preserve">
     <value>Destination</value>
   </data>
@@ -345,12 +339,12 @@
   <data name="LocationDetailStreetAddressPlaceholder" xml:space="preserve">
     <value>Street address</value>
   </data>
-  <data name="LocationDetailAptPlaceholder" xml:space="preserve">
-    <value>Apt/Suite number</value>
+  <data name="ApartmentLabel" xml:space="preserve">
+    <value>Apartment</value>
   </data>
-  <data name="LocationDetailRingCodePlaceholder" xml:space="preserve">
+  <data name="EntryCodeLabel" xml:space="preserve">
     <value>Entry code</value>
-  </data>
+  </data>  
   <data name="LocationDetailGiveItANamePlaceholder" xml:space="preserve">
     <value>Home, work, friend's house...</value>
   </data>
@@ -532,7 +526,7 @@
     <value>Call</value>
   </data>
   <data name="StatusCancelButton" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Cancel this order</value>
   </data>
   <data name="StatusNewRideButton" xml:space="preserve">
     <value>New Ride</value>
@@ -880,7 +874,7 @@
     <value>About Us</value>
   </data>
   <data name="View_BookingDetail" xml:space="preserve">
-    <value>Booking summary</value>
+    <value>Booking Details</value>
   </data>
   <data name="View_BookingStatus" xml:space="preserve">
     <value>Status</value>
@@ -922,7 +916,7 @@
     <value>Manage My Locations</value>
   </data>
   <data name="View_Book_Menu_MyOrders" xml:space="preserve">
-    <value>History And Current Bookings</value>
+    <value>My Bookings</value>
   </data>
   <data name="View_Book_Menu_UpdateMyProfile" xml:space="preserve">
     <value>Update My Profile</value>
@@ -1010,6 +1004,9 @@
   </data>
   <data name="Notes" xml:space="preserve">
     <value>Notes</value>
+  </data>
+  <data name="NotesToDriveLabel" xml:space="preserve">
+    <value>Notes to driver</value>
   </data>
   <data name="RateBtn" xml:space="preserve">
     <value>Rate your drive</value>

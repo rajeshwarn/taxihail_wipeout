@@ -72,11 +72,21 @@ namespace apcurium.MK.Booking.Mobile.Style
             set;
         }
 
+        public float? TextboxCornerRadius {
+            get;
+            set;
+        }
+
         public float? ButtonFontSize {
             get;
             set;
         }
      
+        public bool? CenterLogo {
+            get;
+            set;
+        }
+
         public ColorDefinition LightCorporateTextColor {
             get;
             set;

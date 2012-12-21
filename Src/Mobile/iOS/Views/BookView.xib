@@ -63,7 +63,7 @@
 							<object class="IBUILabel" id="1072163805">
 								<reference key="NSNextResponder" ref="817439265"/>
 								<int key="NSvFlags">290</int>
-								<string key="NSFrame">{{0, 151}, {320, 21}}</string>
+								<string key="NSFrame">{{0, 150}, {320, 21}}</string>
 								<reference key="NSSuperview" ref="817439265"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="799716075"/>
@@ -83,14 +83,14 @@
 								<float key="IBUIMinimumFontSize">10</float>
 								<int key="IBUITextAlignment">1</int>
 								<object class="IBUIFontDescription" key="IBUIFontDescription">
-									<string key="name">HelveticaNeue-Bold</string>
+									<string key="name">HelveticaNeue</string>
 									<string key="family">Helvetica Neue</string>
-									<int key="traits">2</int>
-									<double key="pointSize">12</double>
+									<int key="traits">0</int>
+									<double key="pointSize">15</double>
 								</object>
 								<object class="NSFont" key="IBUIFont">
-									<string key="NSName">HelveticaNeue-Bold</string>
-									<double key="NSSize">12</double>
+									<string key="NSName">HelveticaNeue-Medium</string>
+									<double key="NSSize">15</double>
 									<int key="NSfFlags">16</int>
 								</object>
 							</object>
@@ -100,7 +100,7 @@
 								<string key="NSFrame">{{0, 171}, {320, 289}}</string>
 								<reference key="NSSuperview" ref="817439265"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
+								<reference key="NSNextKeyView" ref="756231839"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<bool key="IBUIMultipleTouchEnabled">YES</bool>
@@ -547,8 +547,6 @@
 							<string>navBar</string>
 							<string>pickupActivationButton</string>
 							<string>pickupButton</string>
-							<string>pickupDateLabel</string>
-							<string>pickupDtaeLabel</string>
 							<string>refreshCurrentLocationButton</string>
 						</object>
 						<object class="NSArray" key="dict.values">
@@ -566,8 +564,6 @@
 							<string>UINavigationBar</string>
 							<string>GradientButton</string>
 							<string>TextProgressButton</string>
-							<string>UILabel</string>
-							<string>UILabel</string>
 							<string>GradientButton</string>
 						</object>
 					</object>
@@ -588,8 +584,6 @@
 							<string>navBar</string>
 							<string>pickupActivationButton</string>
 							<string>pickupButton</string>
-							<string>pickupDateLabel</string>
-							<string>pickupDtaeLabel</string>
 							<string>refreshCurrentLocationButton</string>
 						</object>
 						<object class="NSArray" key="dict.values">
@@ -645,14 +639,6 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">pickupButton</string>
 								<string key="candidateClassName">TextProgressButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">pickupDateLabel</string>
-								<string key="candidateClassName">UILabel</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">pickupDtaeLabel</string>
-								<string key="candidateClassName">UILabel</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">refreshCurrentLocationButton</string>

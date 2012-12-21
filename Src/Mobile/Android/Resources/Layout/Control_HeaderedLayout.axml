@@ -32,7 +32,7 @@
             <ImageButton
                 android:id="@+id/ViewNavBarRightButton"
                 style="@style/ButtonText"
-                android:background="@drawable/button_no_background"
+                android:background="@drawable/black_button"
                 android:layout_width="40dip"
                 android:layout_height="40dip"
                 android:src="@drawable/main_settings"

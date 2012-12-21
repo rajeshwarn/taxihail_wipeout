@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.Mobile.Client
     public class ModalTextField : TextFieldWithArrow
     {
         RootElement _rootElement;
-
+        private UIButton _button;
         public ModalTextField(IntPtr handle) : base(handle)
         {
             Initialize();
@@ -24,10 +24,24 @@ namespace apcurium.MK.Booking.Mobile.Client
             Initialize();
         }
 
-        private void Initialize() {
-            EditingDidBegin += HandleEditingDidBegin;
+        public override RectangleF Frame {
+            get {
+                return base.Frame;
+            }
+            set {
+                base.Frame = value;
+                if ( _button == null )
+                {
+                    _button=  UIButton.FromType( UIButtonType.Custom );
+                    _button.TouchUpInside += HandleEditingDidBegin;
+                    AddSubview ( _button );
+                }
+                _button.Frame = new RectangleF( 0,0, Bounds.Width, Bounds.Height );
+            }
         }
 
+
+                 
         void HandleEditingDidBegin (object sender, EventArgs e)
         {
             var controller = this.FindViewController();

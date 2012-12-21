@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="EstimateDistance"> ({0})</string>
   <string name="CreateAccoutCancel">Cancel</string>
@@ -9,14 +9,14 @@
   <string name="AppNeedUpdateTitle">Update available</string>
   <string name="LoginForgotPasswordButton">Forgot Password?</string>
   <string name="CreateAccountLanguage">Language</string>
-  <string name="NbPassenger"> ({0} passenger)</string>
+  <string name="NbPassenger"> </string>
   <string name="ResetPasswordSucessTitle">Password resetted</string>
   <string name="ServiceErrorCreateOrder_NoProvider">Order cannot be created, no provider specified. Please try again or call us.</string>
   <string name="ServiceError_ErrorCreatingOrderMessage">Please contact {0} at {1} for further assistance.</string>
   <string name="ConfirmNoRingCode">No code</string>
-  <string name="View_BookingDetail">Booking summary</string>
+  <string name="View_BookingDetail">Booking Details</string>
   <string name="ServiceErrorCreateAccount_AccountAlreadyExist">This email is already in use.</string>
-  <string name="DateTimePickerSetButton">Book</string>
+  <string name="DateTimePickerSetButton">Pick Me Up Later</string>
   <string name="OrderNote">Booked on mobile</string>
   <string name="PickupTextPlaceholder">Pickup street address</string>
   <string name="TechSupportEmailTitle">Support Application Mobile</string>
@@ -25,13 +25,15 @@
   <string name="DontHaveAnAccountLabel">Don\'t have an account?</string>
   <string name="HistoryInfo">Displaying trips from the last month</string>
   <string name="ConfirmAptRingCodeLabel">Apartment / Entry code</string>
-  <string name="View_Book_Menu_MyOrders">History And Current Bookings</string>
+  <string name="ApartmentLabel">Flat</string>
+  <string name="EntryCodeLabel">Building name</string>
+  <string name="View_Book_Menu_MyOrders">My Bookings</string>
   <string name="PickupMapTitle">Pickup location</string>
-  <string name="NbPassengers"> ({0} passengers)</string>
+  <string name="NbPassengers"> </string>
   <string name="BookPickupLabel">Confirm your pickup location</string>
   <string name="StatusViewTitle">Confirmed</string>
   <string name="CreateAccoutLanguageLabel">Language:</string>
-  <string name="AptNumber">Apt. No.</string>
+  <string name="AptNumber">Flat No.</string>
   <string name="View_SignUp_Label">Create Your Profile</string>
   <string name="InvalidBookinInfo">To book a ride, you need to enter a valid pickup address.</string>
   <string name="BookDateLabel">Pick Me Up Later</string>
@@ -89,8 +91,7 @@
   <string name="CannotCancelOrderTitle">Invalid Action</string>
   <string name="DateTimePickerPickInvalidDateMessage">The pickup date must be in the future.</string>
   <string name="HistoryDetailPickupDateLabel">Pickup Date:</string>
-  <string name="View_SignIn">
-  </string>
+  <string name="View_SignIn"></string>
   <string name="HistoryDetailBuildingNameLabel">Building Name:</string>
   <string name="PickupTimeTextPlaceholder">Time: Now</string>
   <string name="AccountActivationMessage">You will receive an email shortly with a link you need to click on to confirm your registration.</string>
@@ -154,7 +155,7 @@
   <string name="NewPasswordConfirmationLabel">Confirmation</string>
   <string name="SaveButton">Save</string>
   <string name="HistoryDetailRequestedLabel">Requested:</string>
-  <string name="LocationDetailAptPlaceholder">Apt/Suite number</string>
+  <string name="LocationDetailAptPlaceholder">Apartment</string>
   <string name="DateTimePickerPickInvalidDateTitle">Invalid date / time</string>
   <string name="NoHistoryLabel">No booking history</string>
   <string name="LocationHistoryTitle">Locations history</string>
@@ -191,7 +192,7 @@
   <string name="CreateAccountInvalidDataTitle">Invalid account info</string>
   <string name="CurrentPasswordLabel">Current Password</string>
   <string name="StatusActionButton">Call / Book / Cancel</string>
-  <string name="GoogleMapKey">0XEY3WqKVmJPhADLxOCPUweMcqYg3AfqCp8BvWw</string>
+  <string name="GoogleMapKey">0XEY3WqKVmJPKgUaBK0NC_GfL7VtrnaAAs1hieQ</string>
   <string name="ApplicationName">TaxiHail</string>
   <string name="ChargeTypeLabel">Charge type</string>
   <string name="EmailLabel">Email</string>
@@ -243,7 +244,7 @@
   <string name="View_BookSettingMenu">Settings</string>
   <string name="BookPickupLocationEmptyPlaceholder">Tap to choose pickup</string>
   <string name="WarningEstimate">Please note that the price provided by this App is an estimate only. The fare amount as calculated by the meter, along with any applicable minimums and extras will be charged at the end of the trip.</string>
-  <string name="ConfirmNoApt">No apt.</string>
+  <string name="ConfirmNoApt">No flat</string>
   <string name="LocationDetailInstructionLabel">Save as a favorite location</string>
   <string name="View_HistoryList">History</string>
   <string name="SaveAddressEmptyFieldMessage">The data is invalid, friendly name and address fields are required.</string>
@@ -300,17 +301,16 @@
   <string name="Now">Now</string>
   <string name="ResetPasswordReset">Reset</string>
   <string name="ResetPasswordInvalidDataMessage">The email is invalid.</string>
-  <string name="StatusCancelButton">Cancel</string>
+  <string name="StatusCancelButton">Cancel this order</string>
   <string name="CreateAccountEmail">Email</string>
   <string name="searchHint">Search</string>
   <string name="CreateAccountErrorTitle">Error</string>
   <string name="CreateAccountLanguageFrench">French</string>
-  <string name="BookItButton">Book Now</string>
+  <string name="BookItButton">Pick Me Up Now</string>
   <string name="BookItLaterButton">Later</string>
   <string name="ConfirmDestinationLabel">Destination</string>
   <string name="NearbyPlacesTitle">Nearby places</string>
-  <string name="GenericTitle">
-  </string>
+  <string name="GenericTitle"></string>
   <string name="View_PasswordRecovery">Reset Password</string>
   <string name="InvalidLocalContactTitle">Invalid contact</string>
   <string name="View_Book_Menu_Tutorial">View Tutorial</string>
@@ -344,4 +344,5 @@
   <string name="ServiceErrorResetPassword_AccountNotFound">No account with this email has been found.</string>
   <string name="AddReminderMessage">Do you want to add a reminder ?</string>
   <string name="AddReminderTitle">Add Reminder</string>
+  <string name="NotesToDriveLabel">Notes to driver</string>
 </resources>

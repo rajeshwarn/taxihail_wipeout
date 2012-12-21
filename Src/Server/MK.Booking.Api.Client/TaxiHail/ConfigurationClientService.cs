@@ -25,6 +25,12 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             {
                 Load();
             }
+
+            if (  !_settings.ContainsKey( key )  )
+            {
+                return null;
+            }
+
             return _settings[key];
         }
 

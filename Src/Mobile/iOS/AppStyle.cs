@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public static float ButtonCornerRadius { get { return StyleManager.Current.ButtonCornerRadius.HasValue ? StyleManager.Current.ButtonCornerRadius.Value : 2f; } }
 
-        public static UIColor GreyText { get { return UIColor.FromRGB (101, 101, 101); } }
+        public static UIColor GreyText { get { return UIColor.FromRGB (86, 86, 86); } }
 
         public static UIColor NavigationTitleColor { get { return  UIColor.FromRGBA (StyleManager.Current.NavigationTitleColor.Red, StyleManager.Current.NavigationTitleColor.Green, StyleManager.Current.NavigationTitleColor.Blue, StyleManager.Current.NavigationTitleColor.Alpha); } }
 
@@ -41,7 +41,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public static UIColor LightCorporateColor { get { return  UIColor.FromRGBA (StyleManager.Current.LightCorporateTextColor.Red, StyleManager.Current.LightCorporateTextColor.Green, StyleManager.Current.LightCorporateTextColor.Blue, StyleManager.Current.LightCorporateTextColor.Alpha); } }
 
-        public static UIColor DarkText { get { return UIColor.FromRGB (57, 44, 11); } }
+        public static UIColor DarkText { get { return UIColor.FromRGB (50, 50, 50); } }
 
         public static UIColor TitleTextColor { get { return UIColor.FromRGB (66, 63, 58); } }
 
@@ -62,6 +62,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         
         public static string RegularFontName { get { 
                 if (StyleManager.Current.UseCustomFonts) {
+
                     return StyleManager.Current.CustomRegularFont;
                 } else {
                     return "HelveticaNeue"; 

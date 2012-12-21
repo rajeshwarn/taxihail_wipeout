@@ -1,22 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.TaxiHailDemo"
+    xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.TaxiworldDemo"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-    <TextView
-        android:text="@string/DateTimePickerPickDate"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView1" />
     <DatePicker
         android:layout_width="fill_parent"
         android:layout_height="125dp"
         android:id="@+id/datePickerCtl"
         android:layout_marginBottom="0.0dp" />
     <TextView
-        android:text="@string/DateTimePickerPickTime"
+        android:text=" "
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -37,22 +31,11 @@
         <apcurium.mk.booking.mobile.client.controls.StyledButton
             local:ButtonStyle="Green"
             android:id="@+id/DoneButton"
-            style="@style/ButtonText"
+            style="@style/ButtonTextTaxiworld"
+            android:layout_width="180dip"
             android:background="@drawable/green_button"
-            android:layout_width="fill_parent"
             android:layout_height="40dip"
             android:layout_weight="0.5"
-            android:singleLine="true"
-            android:lines="1"
             android:text="@string/DateTimePickerSetButton" />
-        <apcurium.mk.booking.mobile.client.controls.StyledButton
-            local:ButtonStyle="Grey"
-            android:id="@+id/NowButton"
-            style="@style/ButtonText"
-            android:background="@drawable/gray_button"
-            android:layout_width="fill_parent"
-            android:layout_height="40dip"
-            android:layout_weight="0.5"
-            android:text="@string/CancelBoutton" />
     </LinearLayout>
 </LinearLayout>

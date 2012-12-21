@@ -12,7 +12,19 @@ namespace apcurium.MK.Booking.Mobile.Client
 	partial class ConfirmationView
 	{
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.ModalTextField pickerAptEntryBuilding { get; set; }
+		apcurium.MK.Booking.Mobile.Client.FormLabel lblApartment { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.FormLabel lblNoteDriver { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.FormLabel lblEntryCode { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.TextField txtEntryCode { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.TextField txtApartment { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.ModalTextField pickerChargeType { get; set; }
@@ -21,55 +33,45 @@ namespace apcurium.MK.Booking.Mobile.Client
 		apcurium.MK.Booking.Mobile.Client.ModalTextField pickerVehicleType { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblAptRing { get; set; }
+		MonoTouch.UIKit.UILabel lblVehiculeType { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblVehiculeType { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UILabel lblPickupDetails { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.FormLabel lblChargeType { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.BottomBar bottomBar { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UIButton btnCancel { get; set; }
+		MonoTouch.UIKit.UILabel lblChargeType { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UIButton btnConfirm { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblDateTime { get; set; }
+		MonoTouch.UIKit.UIScrollView scrollView { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblDestination { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UILabel lblOrigin { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UILabel txtDateTime { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UILabel txtDestination { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UILabel txtOrigin { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UILabel lblPrice { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UILabel txtPrice { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.TextView txtNotes { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (pickerAptEntryBuilding != null) {
-				pickerAptEntryBuilding.Dispose ();
-				pickerAptEntryBuilding = null;
+			if (lblApartment != null) {
+				lblApartment.Dispose ();
+				lblApartment = null;
+			}
+
+			if (lblNoteDriver != null) {
+				lblNoteDriver.Dispose ();
+				lblNoteDriver = null;
+			}
+
+			if (lblEntryCode != null) {
+				lblEntryCode.Dispose ();
+				lblEntryCode = null;
+			}
+
+			if (txtEntryCode != null) {
+				txtEntryCode.Dispose ();
+				txtEntryCode = null;
+			}
+
+			if (txtApartment != null) {
+				txtApartment.Dispose ();
+				txtApartment = null;
 			}
 
 			if (pickerChargeType != null) {
@@ -82,19 +84,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 				pickerVehicleType = null;
 			}
 
-			if (lblAptRing != null) {
-				lblAptRing.Dispose ();
-				lblAptRing = null;
-			}
-
 			if (lblVehiculeType != null) {
 				lblVehiculeType.Dispose ();
 				lblVehiculeType = null;
-			}
-
-			if (lblPickupDetails != null) {
-				lblPickupDetails.Dispose ();
-				lblPickupDetails = null;
 			}
 
 			if (lblChargeType != null) {
@@ -102,59 +94,19 @@ namespace apcurium.MK.Booking.Mobile.Client
 				lblChargeType = null;
 			}
 
-			if (bottomBar != null) {
-				bottomBar.Dispose ();
-				bottomBar = null;
-			}
-
-			if (btnCancel != null) {
-				btnCancel.Dispose ();
-				btnCancel = null;
-			}
-
 			if (btnConfirm != null) {
 				btnConfirm.Dispose ();
 				btnConfirm = null;
 			}
 
-			if (lblDateTime != null) {
-				lblDateTime.Dispose ();
-				lblDateTime = null;
+			if (scrollView != null) {
+				scrollView.Dispose ();
+				scrollView = null;
 			}
 
-			if (lblDestination != null) {
-				lblDestination.Dispose ();
-				lblDestination = null;
-			}
-
-			if (lblOrigin != null) {
-				lblOrigin.Dispose ();
-				lblOrigin = null;
-			}
-
-			if (txtDateTime != null) {
-				txtDateTime.Dispose ();
-				txtDateTime = null;
-			}
-
-			if (txtDestination != null) {
-				txtDestination.Dispose ();
-				txtDestination = null;
-			}
-
-			if (txtOrigin != null) {
-				txtOrigin.Dispose ();
-				txtOrigin = null;
-			}
-
-			if (lblPrice != null) {
-				lblPrice.Dispose ();
-				lblPrice = null;
-			}
-
-			if (txtPrice != null) {
-				txtPrice.Dispose ();
-				txtPrice = null;
+			if (txtNotes != null) {
+				txtNotes.Dispose ();
+				txtNotes = null;
 			}
 		}
 	}

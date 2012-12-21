@@ -178,5 +178,24 @@ namespace apcurium.MK.Common.Extensions
                 return "";
             }
         }
+        public static bool TryToParse( this string value, bool defaultValue )
+        {
+            if ( value.IsNullOrEmpty() )
+            {
+                return defaultValue ;
+            }
+            else
+            {
+                bool r;
+                if ( bool.TryParse( value, out r ) )
+                {
+                    return r;
+                }
+                return defaultValue;
+            }
+        }
+
+
+
     }
 }

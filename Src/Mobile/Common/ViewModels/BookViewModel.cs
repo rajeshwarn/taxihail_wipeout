@@ -26,6 +26,7 @@ using System.Collections.ObjectModel;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
 using System.Globalization;
+using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -46,6 +47,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public BookViewModel()
         {
+
+//            var t = new Timer( o=>
+//                              {
+//
+//                TinyIoC.TinyIoCContainer.Current.Resolve<ILogger>().LogMessage( "NativeHeapAllocatedSize : " + Android.OS.Debug.NativeHeapAllocatedSize.ToString() );
+//                TinyIoC.TinyIoCContainer.Current.Resolve<ILogger>().LogMessage( "NativeHeapFreeSize : " + Android.OS.Debug.NativeHeapFreeSize.ToString() );
+//                TinyIoC.TinyIoCContainer.Current.Resolve<ILogger>().LogMessage( "NativeHeapSize : " + Android.OS.Debug.NativeHeapSize.ToString() );
+//            },                null, 0, 1000 ); 
+//
+
+
             
         }
 
@@ -57,8 +69,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Order.PickupDate = null;
 
             _useExistingOrder = true;
-             
-
+         
 
         }
 
@@ -72,7 +83,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _geolocator = this.GetService<ILocationService>();
             _bookingService = this.GetService<IBookingService>();
 
-            Panel = new PanelViewModel();
+            Panel = new PanelViewModel(this);
         }
 
         public override void OnViewLoaded()
@@ -90,12 +101,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             Pickup = new BookAddressViewModel(() => Order.PickupAddress, address => Order.PickupAddress = address, _geolocator, true)
             {
-                Title = Resources.GetString("BookPickupLocationButtonTitle"),
+                IsExecuting = true,
+                //Title = Resources.GetString("BookPickupLocationButtonTitle"),
                 EmptyAddressPlaceholder = Resources.GetString("BookPickupLocationEmptyPlaceholder")
             };
             Dropoff = new BookAddressViewModel(() => Order.DropOffAddress, address => Order.DropOffAddress = address, _geolocator)
             {
-                Title = Resources.GetString("BookDropoffLocationButtonTitle"),
+                //Title = Resources.GetString("BookDropoffLocationButtonTitle"),
                 EmptyAddressPlaceholder = Resources.GetString("BookDropoffLocationEmptyPlaceholder")
             };
             
@@ -104,10 +116,29 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             AddressSelectionMode = AddressSelectionMode.PickupSelection;
 
-            if (! _useExistingOrder )
+            if (! _useExistingOrder ) 
             {
-                Pickup.RequestCurrentLocationCommand.Execute();            
+                var tutorialWasDisplayed = this.GetService<ICacheService>().Get<string>("TutorialWasDisplayed");
+                if (tutorialWasDisplayed.IsNullOrEmpty())
+                {
+                    Task.Factory.SafeStartNew( () =>
+                                              {
+                        Thread.Sleep( 4000 );
+                        Pickup.RequestCurrentLocationCommand.Execute();            
+                    });
+                }
+                else
+                {
+                    Pickup.RequestCurrentLocationCommand.Execute();            
+                }
             }
+            else
+            {                
+                Pickup.IsExecuting = false;
+                Dropoff.IsExecuting = false;
+            }
+
+
             _useExistingOrder = false;
 
             _fareEstimate = Resources.GetString("NoFareText");

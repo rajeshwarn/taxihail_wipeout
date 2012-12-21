@@ -54,6 +54,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
             base.OnPause();
         }
 
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            GC.Collect();
+        }
         
 
        

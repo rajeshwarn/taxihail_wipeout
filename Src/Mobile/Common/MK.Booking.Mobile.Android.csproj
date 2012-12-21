@@ -259,7 +259,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Localization\Master.resx" />
     <EmbeddedResource Include="Localization\Taxiworld.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Taxiworld.Designer.cs</LastGenOutput>
@@ -270,6 +269,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Settings\Settings.json" />
     <EmbeddedResource Include="TutorialContent\Tutorial.json" />
+    <None Include="ViewModels\Master.resx">
+      <DependentUpon>HistoryDetailViewModel.cs</DependentUpon>
+    </None>
+    <None Include="Localization\Master.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <apcurium.mk.booking.mobile.client.controls.HeaderedLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.TaxiHailDemo"
+    xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.TaxiworldDemo"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -40,8 +40,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_below="@id/streetNumberText"
-                local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;Model.Street&apos;}}"
-                style="@style/FormLabelText" />
+                local:MvxBind="{&apos;Text&apos;:{&apos;Path&apos;:&apos;StreetCity&apos;}}"
+                style="@style/BigTitleTextBlack" />
         </RelativeLayout>
         <apcurium.mk.booking.mobile.client.controls.StyledButton
             local:ButtonStyle="Green"
@@ -54,9 +54,8 @@
             local:MvxBind="{&apos;Click&apos;: {&apos;Path&apos;: &apos;SaveCommand&apos;}}" />
         <apcurium.mk.booking.mobile.client.controls.SearchButton
             android:id="@+id/StreetNumberBtSearch"
-            android:paddingTop="15dip"
             local:MvxBind="{&apos;NavigateCommand&apos;:{&apos;Path&apos;:&apos;NavigateToSearch&apos;}}"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="50dip" />
     </LinearLayout>
 </apcurium.mk.booking.mobile.client.controls.HeaderedLayout>
