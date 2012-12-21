@@ -60,7 +60,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             if (ShowAddSign)
             {
-                //canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, Resource.Drawable.add_btn), 10, 10, null);
+                canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, Resource.Drawable.add_btn), 10, 10, null);
             }
 
             if (!string.IsNullOrEmpty(Picture))

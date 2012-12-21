@@ -1334,6 +1334,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f070117
 			public const int AptNumberTextPlaceholder = 2131165463;
 			
+			// aapt resource value: 0x7f070174
+			public const int BackButton = 2131165556;
+			
 			// aapt resource value: 0x7f070024
 			public const int BookDateLabel = 2131165220;
 			
