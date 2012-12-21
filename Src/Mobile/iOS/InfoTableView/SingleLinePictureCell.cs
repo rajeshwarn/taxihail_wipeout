@@ -82,6 +82,9 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
         public bool IsAddNewCell {
             set {
                 ((CustomCellBackgroundView)BackgroundView).IsAddNewCell = value;
+                this._rightText.TextColor = this._leftText.TextColor = value 
+                    ? AppStyle.CellAddTextColor 
+                    : AppStyle.CellFirstLineTextColor;
             }
         }
 
@@ -110,30 +113,16 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
             _leftText.Font = AppStyle.CellFont;
             AddSubview(_leftText);
 
-            _picture = new UIImageView (new RectangleF (0, _rowHeight/2 - 48/2, 76, 48 ) ); 
+            _picture = new UIImageView (new RectangleF (12, (_rowHeight - 32) / 2, 46, 32 ) ); 
             _picture.BackgroundColor = UIColor.Clear;
-            _picture.ContentMode = UIViewContentMode.Center;
             AddSubview ( _picture ); 
             
-            _plusSignImage = new UIImageView (new RectangleF (275, _rowHeight/2 - 15/2, 14, 15 ) ); 
+            _plusSignImage = new UIImageView (new RectangleF (16, (_rowHeight - 24) / 2, 38, 24 ) ); 
             _plusSignImage.BackgroundColor = UIColor.Clear;
-            _plusSignImage.ContentMode = UIViewContentMode.ScaleAspectFit;
-            _plusSignImage.Image = UIImage.FromFile("Assets/Cells/plusSign.png");
+            _plusSignImage.Image = UIImage.FromFile("Assets/Cells/add_btn.png");
             _plusSignImage.Hidden = true;
             AddSubview ( _plusSignImage );  
-
-            /*if(DeleteCommand != null)
-            {
-                _removeButton = new UIButton (new RectangleF (260, _rowHeight/2 - 15/2, 14, 15 ) ); 
-                _removeButton.BackgroundColor = UIColor.Clear;
-                _removeButton.ContentMode = UIViewContentMode.ScaleAspectFit;
-                _removeButton.SetBackgroundImage(UIImage.FromFile("Assets/closeButton.png"),UIControlState.Normal);
-                _removeButton.SetImage(UIImage.FromFile("Assets/closeButton.png"),UIControlState.Normal);
-                _removeButton.TouchUpInside += (object sender, EventArgs e) => {
-                    DeleteCommand.Execute();
-                };
-                AddSubview ( _removeButton ); 
-            }*/
+           
         }
 
         public void AddRemoveButton(){

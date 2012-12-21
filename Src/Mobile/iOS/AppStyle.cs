@@ -121,9 +121,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public static UIColor CellBackgroundColor{ get { return UIColor.FromRGB (253, 253, 253); } }
 
-        public static UIColor CellFirstLineTextColor{ get { return UIColor.FromRGB (77, 77, 77); } }
+        public static UIColor CellFirstLineTextColor{ get { return UIColor.FromRGB (120, 120, 120); } }
 
         public static UIColor CellSecondLineTextColor{ get { return UIColor.FromRGB (133, 133, 133); } }
+
+        public static UIColor CellAddTextColor { get { return UIColor.FromRGB (222, 216, 216); } }
 
         public static void ApplyAppFont (this UIView instance)
         {

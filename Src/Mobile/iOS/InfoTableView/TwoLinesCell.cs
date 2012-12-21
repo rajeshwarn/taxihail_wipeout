@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 	public class TwoLinesCell : MvxBindableTableViewCell
 	{
 		private UIImageView _arrowImage;
-		private UIImageView _plusSignImage;
+		//private UIImageView _plusSignImage;
 		private bool _showPlusSign;
 		private bool _showArrow;
 		private float _rowHeight = 44f;
@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 			get { return _showPlusSign; }
 			set { 
 				_showPlusSign = value;
-				_plusSignImage.Hidden = !_showPlusSign;
+                ImageView.Image = value ? UIImage.FromFile("Assets/Cells/add_btn.png") : null;
 			}
 		}
 
@@ -70,6 +70,9 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
         public bool IsAddNewCell {
             set {
                 ((CustomCellBackgroundView)BackgroundView).IsAddNewCell = value;
+                this.TextLabel.TextColor = this.DetailTextLabel.TextColor = value 
+                    ? AppStyle.CellAddTextColor 
+                    : AppStyle.CellFirstLineTextColor;
             }
         }
 
@@ -89,13 +92,7 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 			_arrowImage.Image = UIImage.FromFile("Assets/Cells/rightArrow.png");
 			_arrowImage.Hidden = true;
 			AddSubview ( _arrowImage );	
-		
-			_plusSignImage = new UIImageView (new RectangleF (290, _rowHeight/2 - 15/2, 14, 15 ) ); 
-			_plusSignImage.BackgroundColor = UIColor.Clear;
-			_plusSignImage.ContentMode = UIViewContentMode.ScaleAspectFit;
-			_plusSignImage.Image = UIImage.FromFile("Assets/Cells/plusSign.png");
-			_plusSignImage.Hidden = true;
-			AddSubview ( _plusSignImage );	
+	
 		}
 	
 		public override void TouchesBegan ( NSSet touches, UIEvent evt )
