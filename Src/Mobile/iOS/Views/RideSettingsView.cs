@@ -90,7 +90,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { txtPassword, "{'NavigateCommand': {'Path': 'NavigateToUpdatePassword'}}" },
                 { txtTipAmount, "{'Text': {'Path': 'PaymentPreferences.Tip'}}" },
                 { btnCreditCard, "{'Text': {'Path': 'PaymentPreferences.SelectedCreditCard.FriendlyName'}, 'Last4Digits': {'Path': 'PaymentPreferences.SelectedCreditCard.Last4Digits'}, 'CreditCardCompany': {'Path': 'PaymentPreferences.SelectedCreditCard.CreditCardCompany'}, 'NavigateCommand': {'Path': 'PaymentPreferences.NavigateToCreditCardsList'}}" },
-                { sgmtPercentOrValue, "{'IsTipInPercent': {'Path': 'PaymentPreferences.IsTipInPercent', 'Mode': 'TwoWay'}}" }
+                { sgmtPercentOrValue, "{'IsTipInPercent': {'Path': 'PaymentPreferences.IsTipInPercent', 'Mode': 'TwoWay'},'TipCurrency': {'Path': 'PaymentPreferences.CurrencySymbol'}}" }
             });         
 
         }

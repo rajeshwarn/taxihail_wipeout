@@ -118,9 +118,8 @@
                     android:textColor="@drawable/segmented_button_text_color"
                     android:layout_width="40dip"
                     android:layout_height="40dip"
-                    android:text="$"
                     android:gravity="center"
-                    local:MvxBind="{&apos;Click&apos;: {&apos;Path&apos;: &apos;PaymentPreferences.TogglePercent&apos;}, &apos;Selected&apos;: {&apos;Path&apos;: &apos;PaymentPreferences.IsTipInPercent&apos;, &apos;Converter&apos;: &apos;BoolInverter&apos;, &apos;Mode&apos;: &apos;OneWay&apos;}}" />
+                    local:MvxBind="{&apos;Click&apos;: {&apos;Path&apos;: &apos;PaymentPreferences.TogglePercent&apos;},&apos;Text&apos;: {&apos;Path&apos;: &apos;PaymentPreferences.CurrencySymbol&apos;}, &apos;Selected&apos;: {&apos;Path&apos;: &apos;PaymentPreferences.IsTipInPercent&apos;, &apos;Converter&apos;: &apos;BoolInverter&apos;, &apos;Mode&apos;: &apos;OneWay&apos;}}" />
                 <EditText
                     android:id="@+id/EditTip"
                     android:layout_width="fill_parent"

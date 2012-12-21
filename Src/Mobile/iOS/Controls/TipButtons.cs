@@ -31,9 +31,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         void Initialize ()
         {
-            var configManager = TinyIoC.TinyIoCContainer.Current.Resolve<IConfigurationManager>();
-            var culture = CultureInfo.GetCultureInfo( configManager.GetSetting("PriceFormat"));
-
             this.BackgroundColor = UIColor.Clear;
 
             _tipPercentButton = new SegmentedGradientButton(new RectangleF(this.Bounds.X, this.Bounds.Y, this.Bounds.Width / 2, this.Bounds.Height))
@@ -48,15 +45,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             {
                 IsLeftButton = false
             };
-            AppButtons.FormatStandardButton(_tipAmountButton, culture.NumberFormat.CurrencySymbol, AppStyle.ButtonColor.SegmentedLightBlue);
+            AppButtons.FormatStandardButton(_tipAmountButton, string.Empty, AppStyle.ButtonColor.SegmentedLightBlue);
             _tipAmountButton.RoundedCorners = UIRectCorner.BottomRight | UIRectCorner.TopRight;
             _tipAmountButton.TouchUpInside += HandleTouchUpInside;
-            
+
             this.AddSubviews(_tipPercentButton, _tipAmountButton);
 
             IsTipInPercent = true;
 
         }
+
+        string tipCurrency;
+        public string TipCurrency {
+            get {
+                return tipCurrency;
+            }
+            set {
+                tipCurrency = value;
+                _tipAmountButton.SetTitle(value, UIControlState.Normal);
+            }
+        } 
 
         void HandleTouchUpInside (object sender, EventArgs e)
         {

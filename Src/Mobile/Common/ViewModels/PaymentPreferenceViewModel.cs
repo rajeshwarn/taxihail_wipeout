@@ -8,11 +8,13 @@ using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Configuration;
+using System.Globalization;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class PaymentPreferenceViewModel : BaseViewModel,
-        IMvxServiceConsumer<IAccountService>
+        IMvxServiceConsumer<IAccountService>, IMvxServiceConsumer<IConfigurationManager>
     {
 
         private ListItem[] _paymentList;
@@ -45,6 +47,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             DefaultTipAmount = accountService.CurrentAccount.DefaultTipAmount;
             DefaultTipPercent = accountService.CurrentAccount.DefaultTipPercent;
             PaymentList = accountService.GetPaymentsList().ToArray();
+        }
+
+        public string CurrencySymbol {
+            get {
+                var culture = new CultureInfo(this.GetService<IConfigurationManager>().GetSetting("PriceFormat"));
+                return culture.NumberFormat.CurrencySymbol;
+            }
         }
 
         public int PaymentTypeId

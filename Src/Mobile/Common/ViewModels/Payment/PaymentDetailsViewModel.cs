@@ -11,12 +11,13 @@ using Cirrious.MvvmCross.Interfaces.Commands;
 using System.Globalization;
 using apcurium.MK.Booking.Mobile.Extensions;
 using System.Collections.Generic;
+using apcurium.MK.Common.Configuration;
 
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
     public class PaymentDetailsViewModel: BaseSubViewModel<PaymentInformation>,
-        IMvxServiceConsumer<IAccountService>
+    IMvxServiceConsumer<IAccountService>, IMvxServiceConsumer<IConfigurationManager>
     {
         private IAccountService _accountService;
         public PaymentDetailsViewModel (string messageId, PaymentInformation paymentDetails): base(messageId)
@@ -52,6 +53,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                     FirePropertyChanged("SelectedCreditCard");
                 }
 
+            }
+        }
+
+        public string CurrencySymbol {
+            get {
+                var culture = new CultureInfo(this.GetService<IConfigurationManager>().GetSetting("PriceFormat"));
+                return culture.NumberFormat.CurrencySymbol;
             }
         }
 
