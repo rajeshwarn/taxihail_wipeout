@@ -11,7 +11,7 @@ using MonoTouch.EventKit;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-    public class AppContext : IAppContext
+    public class AppContext // : IAppContext
     {
         private static AppContext _current;
 
@@ -36,40 +36,40 @@ namespace apcurium.MK.Booking.Mobile.Client
         public UIWindow Window  { get; private set; }
             
 
-        public string LoggedInEmail
-        {
-            get
-            {
-                Console.WriteLine("getting : LoggedInEmail");
-                return NSUserDefaults.StandardUserDefaults.StringForKey("MK.Booking.Cache.LoggedInEmail");
-            }
-            set
-            { 
-
-                if (value != LoggedInEmail)
-                {
-                    NSUserDefaults.StandardUserDefaults.SetStringOrClear(value, "MK.Booking.Cache.LoggedInEmail");
-                }
-            }
-        }
-
-        public string LoggedInPassword
-        {
-            get { return NSUserDefaults.StandardUserDefaults.StringForKey("MK.Booking.Cache.LoggedInPassword"); }
-            set
-            {
-                if (value != LoggedInPassword)
-                {
-                    NSUserDefaults.StandardUserDefaults.SetStringOrClear(value, "MK.Booking.Cache.LoggedInPassword");
-                }
-            }
-        }
-                       
-        public bool ReceiveMemoryWarning
-        {
-            get;
-            set;
-        }
+//        public string LoggedInEmail
+//        {
+//            get
+//            {
+//                Console.WriteLine("getting : LoggedInEmail");
+//                return NSUserDefaults.StandardUserDefaults.StringForKey("MK.Booking.Cache.LoggedInEmail");
+//            }
+//            set
+//            { 
+//
+//                if (value != LoggedInEmail)
+//                {
+//                    NSUserDefaults.StandardUserDefaults.SetStringOrClear(value, "MK.Booking.Cache.LoggedInEmail");
+//                }
+//            }
+//        }
+//
+//        public string LoggedInPassword
+//        {
+//            get { return NSUserDefaults.StandardUserDefaults.StringForKey("MK.Booking.Cache.LoggedInPassword"); }
+//            set
+//            {
+//                if (value != LoggedInPassword)
+//                {
+//                    NSUserDefaults.StandardUserDefaults.SetStringOrClear(value, "MK.Booking.Cache.LoggedInPassword");
+//                }
+//            }
+//        }
+//                       
+//        public bool ReceiveMemoryWarning
+//        {
+//            get;
+//            set;
+//        }
         
 		public UINavigationController Controller
         {

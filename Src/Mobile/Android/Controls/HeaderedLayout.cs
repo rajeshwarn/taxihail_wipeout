@@ -86,6 +86,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 var d = Context.Resources.GetDrawable(Resource.Drawable.Logo) as BitmapDrawable;
                 var w = d.Bitmap.Width;
                 var h = d.Bitmap.Height;
+
                 var layoutParams = new RelativeLayout.LayoutParams(DrawHelper.GetPixels((56 * w) / h), DrawHelper.GetPixels(56));
                 layoutParams.AlignWithParent = true;
                 logo.LayoutParameters = layoutParams;
@@ -129,7 +130,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 for (int i = 0; i < vGroup.ChildCount; i++)
                 {
                     var child = vGroup.GetChildAt(i);
-                    System.Diagnostics.Debug.WriteLine(child.GetType());
                     LoopAllChildren(child);
 
 
@@ -137,12 +137,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
             else if ( view is TextView )
             {
-                //Context.ObtainStyledAttributes(attrs, new int[] { Resource.Attribute.HideLogo }, 0, 0);
 
-                var att = view.Context.ObtainStyledAttributes( view.Id ,  new int[] { Android.Resource.Attribute.TextStyle } );
-                var ff = att.GetBoolean(0, false);
-                var t = ((TextView)view).Text;
-                t.ToString();
                 var tt = ((TextView)view).Typeface;
 
                 if ( (tt != null) && (tt.IsBold) )

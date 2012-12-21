@@ -104,6 +104,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			watch.Start ();
 
 			LastLocation = _locMgr.GetLastKnownLocation (_locMgr.GetBestProvider (new Criteria (), true));
+
+            if ( LastLocation == null )
+            {
+                LastLocation = _locMgr.GetLastKnownLocation( LocationManager.GpsProvider );
+
+                var l = _locMgr.GetBestProvider(new Criteria{ Accuracy = Accuracy.Coarse } , true );
+            }
+
 			while (!exit) {
 				if (LastLocation != null) {
 					TinyIoCContainer.Current.Resolve<ILogger> ().LogMessage ("xxxxxxxxxxxxxxxxxxxCurrent location : " + LastLocation.Provider + " pos Lat : " + LastLocation.Latitude.ToString () + "Pos Long : " + LastLocation.Longitude.ToString () + " + Accuracy : " + LastLocation.Accuracy.ToString ());

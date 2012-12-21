@@ -12,11 +12,14 @@ namespace apcurium.MK.Booking.Mobile.Client
     [Register("TextField")]
     public class TextField : UITextField
     {
+
         private bool _isProgressing = false;
         private UIColor _strokeColor = UIColor.FromRGBA(82, 82, 82, 255);
         private float _paddingRight = 0;
         private float _paddingLeft = 0;
         private UIActivityIndicatorView _progress;
+
+
 
         public TextField(IntPtr handle) : base(handle)
         {
@@ -28,7 +31,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             Initialize();
         }
 
-        private void Initialize()
+       
+        public void Initialize()
         {
             BorderStyle = UITextBorderStyle.Line;
             BackgroundColor = UIColor.Clear;
@@ -153,7 +157,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             var inner = color3.CGColor;
             var innerOffset = new SizeF(0, 1);
 
-            var radius = StyleManager.Current.ButtonCornerRadius.HasValue ? StyleManager.Current.ButtonCornerRadius.Value : 3;
+            var radius = StyleManager.Current.TextboxCornerRadius.HasValue ? StyleManager.Current.TextboxCornerRadius.Value : 3;
             var innerBlurRadius = radius- 1;
             var outer = color2.CGColor;
             var outerOffset = new SizeF(0, 1);
