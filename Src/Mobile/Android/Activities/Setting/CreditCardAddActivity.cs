@@ -14,14 +14,12 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-	[Activity(Label = "CreditCardAddActivity", Theme = "@android:style/Theme.NoTitleBar", WindowSoftInputMode = SoftInput.AdjustPan, ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
+	[Activity(Label = "CreditCardAddActivity", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
 	public class CreditCardAddActivity : BaseBindingActivity<CreditCardAddViewModel>
 	{
 		protected override void OnCreate(Bundle bundle)
 		{
 			base.OnCreate(bundle);
-			
-			// Create your application here
 		}
 
 		protected override void OnViewModelSet()
@@ -31,7 +29,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			ViewModel.CreditCardCompanies[2].Image = Resource.Drawable.amex.ToString();
 			SetContentView(Resource.Layout.View_CreditCardAdd);
 		}
-		
+
 		protected override int ViewTitleResourceId
 		{
 			get { return Resource.String.CreditCardsAddTitle; }
