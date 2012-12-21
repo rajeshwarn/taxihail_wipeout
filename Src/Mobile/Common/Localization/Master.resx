@@ -1185,5 +1185,7 @@
   <data name="View_PaymentCreditCardsOnFile" xml:space="preserve">
     <value>Payment Info</value>
   </data>
-  
+  <data name="BackButton" xml:space="preserve">
+    <value>Back</value>
+  </data>
 </root>

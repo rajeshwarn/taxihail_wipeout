@@ -447,6 +447,7 @@ namespace Cirrious.MvvmCross.Dialog.Touch.Dialog.Elements
         /// </summary>
         protected virtual void PrepareDialogViewController (UIViewController dvc)
         {
+
         }
 		
         /// <summary>
