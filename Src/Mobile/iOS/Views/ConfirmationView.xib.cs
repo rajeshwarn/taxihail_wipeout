@@ -90,8 +90,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { pickerChargeType, "{'Text': {'Path': 'ChargeType'}}" },
             });
 
-            pickerVehicleType.Initialize();
-            pickerChargeType.Initialize();
+
             this.View.ApplyAppFont ();
         }
 
