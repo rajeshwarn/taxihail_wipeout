@@ -44,6 +44,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             NavigationItem.RightBarButtonItem = save;
 
             NavigationItem.HidesBackButton = false;
+            NavigationItem.BackBarButtonItem = new UIBarButtonItem(Resources.GetValue("BackButton"), UIBarButtonItemStyle.Bordered, null, null);
 
             lblNameOnCard.Text = Resources.GetValue("CreditCardName");
             lblCardNumber.Text = Resources.GetValue("CreditCardNumber");

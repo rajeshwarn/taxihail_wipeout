@@ -372,4 +372,5 @@
   <string name="RemoveCreditCardTitle">Remove credit card</string>
   <string name="PaymentDetails.InvalidTipAmount">Tip amount is invalid</string>
   <string name="View_PaymentCreditCardsOnFile">Payment Info</string>
+  <string name="BackButton">Back</string>
 </resources>
