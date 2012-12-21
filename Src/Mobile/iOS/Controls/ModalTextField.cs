@@ -47,6 +47,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 newDvc.View.BackgroundColor  = UIColor.FromRGB (230,230,230);
                 newDvc.TableView.BackgroundColor = UIColor.FromRGB (230,230,230);
                 newDvc.TableView.BackgroundView = new UIView{ BackgroundColor =  UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png")) }; 
+                controller.NavigationItem.BackBarButtonItem = new UIBarButtonItem(Resources.GetValue("BackButton"), UIBarButtonItemStyle.Bordered, null, null);
                 controller.NavigationController.PushViewController(newDvc, true);
             }
         }
@@ -75,6 +76,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             _rootElement = new CustomRootElement(title, new RadioGroup(selected));
             _rootElement.Add(section);
         }
-    }
+    }   
 }
 

@@ -59,11 +59,11 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             base.ViewDidLoad ();
             // Setup keyboard event handlers
-            RegisterForKeyboardNotifications();
+            RegisterForKeyboardNotifications ();
 
-            Background.LoadForRegularView( this.View );
-            View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
-
+            Background.LoadForRegularView (this.View);
+            View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
+            NavigationItem.BackBarButtonItem = new UIBarButtonItem(Resources.GetValue("BackButton"), UIBarButtonItemStyle.Bordered, null, null);
         }
 		
         public override void DidReceiveMemoryWarning ()

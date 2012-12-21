@@ -1185,4 +1185,7 @@
    <data name="NoCreditCardSelected" xml:space="preserve">
     <value>Please select a credit card</value>
   </data>
+  <data name="BackButton" xml:space="preserve">
+    <value>Back</value>
+  </data>
 </root>

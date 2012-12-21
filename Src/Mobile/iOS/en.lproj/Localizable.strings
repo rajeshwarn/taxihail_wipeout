@@ -376,3 +376,4 @@
 "RemoveCreditCardMessage"="Are you sure you want to remove this credit card ?";
 "RemoveCreditCardTitle"="Remove credit card";
 "NoCreditCardSelected"="Please select a credit card";
+"BackButton"="Back";
