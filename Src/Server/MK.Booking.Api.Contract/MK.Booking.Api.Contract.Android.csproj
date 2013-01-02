@@ -84,7 +84,6 @@
     <Compile Include="Requests\Tariff.cs" />
     <Compile Include="Requests\TestOnlyReqGetTestAccount.cs" />
     <Compile Include="Requests\UpdatePassword.cs" />
-    <Compile Include="Requests\UpdatePaymentProfileRequest.cs" />
     <Compile Include="Resources\Account.cs" />
     <Compile Include="Resources\AddressList.cs" />
     <Compile Include="Resources\AppSetting.cs" />
