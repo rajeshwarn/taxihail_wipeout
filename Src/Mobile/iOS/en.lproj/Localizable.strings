@@ -12,7 +12,7 @@
 "ServiceErrorCreateOrder_NoProvider"="Order cannot be created, no provider specified. Please try again or call us.";
 "ServiceError_ErrorCreatingOrderMessage"="Please contact {0} at {1} for further assistance.";
 "ConfirmNoRingCode"="No code";
-"View_BookingDetail"="Booking summary";
+"View_BookingDetail"="Booking Details";
 "ServiceErrorCreateAccount_AccountAlreadyExist"="This email is already in use.";
 "DateTimePickerSetButton"="Book";
 "OrderNote"="Booked on mobile";
@@ -23,7 +23,7 @@
 "DontHaveAnAccountLabel"="Don't have an account?";
 "HistoryInfo"="Displaying trips from the last month";
 "ConfirmAptRingCodeLabel"="Apartment / Entry code";
-"View_Book_Menu_MyOrders"="History And Current Bookings";
+"View_Book_Menu_MyOrders"="My Bookings";
 "PickupMapTitle"="Pickup location";
 "NbPassengers"=" ({0} passengers)";
 "BookPickupLabel"="Confirm your pickup location";
@@ -297,7 +297,7 @@
 "Now"="Now";
 "ResetPasswordReset"="Reset";
 "ResetPasswordInvalidDataMessage"="The email is invalid.";
-"StatusCancelButton"="Cancel";
+"StatusCancelButton"="Cancel this order";
 "CreateAccountEmail"="Email";
 "searchHint"="Search";
 "CreateAccountErrorTitle"="Error";
@@ -377,3 +377,7 @@
 "RemoveCreditCardTitle"="Remove credit card";
 "NoCreditCardSelected"="Please select a credit card";
 "BackButton"="Back";
+"EntryCodeLabel"="Entry code";
+"View_PaymentCreditCardsOnFile"="Payment Info";
+"ApartmentLabel"="Apartment";
+"NotesToDriveLabel"="Notes to driver";

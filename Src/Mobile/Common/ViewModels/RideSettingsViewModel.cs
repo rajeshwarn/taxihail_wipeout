@@ -185,11 +185,10 @@ namespace apcurium.MK.Booking.Mobile
                                            {
 					if(ValidateRideSettings() && PaymentPreferences.ValidatePaymentSettings())
 					{
-                        _accountService.UpdateSettings (_bookingSettings);
                         var tipAmount = PaymentPreferences.IsTipInPercent ? default(double?) : PaymentPreferences.TipDouble;
                         var tipPercent = PaymentPreferences.IsTipInPercent ? PaymentPreferences.TipDouble : default(double?);
-                        _accountService.UpdatePaymentProfile(PaymentPreferences.SelectedCreditCardId, tipAmount, tipPercent);
-
+                        Guid? creditCard = PaymentPreferences.SelectedCreditCardId == Guid.Empty ? default(Guid?) : PaymentPreferences.SelectedCreditCardId;
+                        _accountService.UpdateSettings (_bookingSettings, creditCard, tipAmount, tipPercent);
                         Close();
 					}
                 });

@@ -72,7 +72,13 @@ namespace apcurium.MK.Booking
             AutoMapper.Mapper.CreateMap<PopularAddressDetails, Address>();
             AutoMapper.Mapper.CreateMap<TariffDetail, Tariff>();
             AutoMapper.Mapper.CreateMap<CreditCardAdded, CreditCardDetails>()
-                .ForMember(p => p.AccountId, opt => opt.MapFrom(m => m.SourceId)); ;
+                .ForMember(p => p.AccountId, opt => opt.MapFrom(m => m.SourceId));
+
+
+            AutoMapper.Mapper.CreateMap<OrderDetail, OrderDetailWithAccount>();
+            AutoMapper.Mapper.CreateMap<AccountDetail, OrderDetailWithAccount>()
+                .ForMember(d => d.Name, opt => opt.MapFrom(m => m.Settings.Name))
+                .ForMember(d => d.Phone, opt => opt.MapFrom(m => m.Settings.Phone));
         }
 
         private static void RegisterEventHandlers(IUnityContainer container)

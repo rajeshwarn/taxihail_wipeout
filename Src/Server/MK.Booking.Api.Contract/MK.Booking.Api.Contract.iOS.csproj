@@ -101,7 +101,6 @@
     <Compile Include="Resources\Cmt\PreCogResponse.cs" />
     <Compile Include="Security\AuthenticationData.cs" />
     <Compile Include="Requests\CreditCardRequest.cs" />
-    <Compile Include="Requests\UpdatePaymentProfileRequest.cs" />
     <Compile Include="Resources\CreditCardDetails.cs" />
     <Compile Include="Resources\PaymentSettings.cs" />
     <Compile Include="Resources\DriverInfos.cs" />

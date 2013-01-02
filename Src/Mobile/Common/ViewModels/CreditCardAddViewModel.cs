@@ -68,6 +68,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 _creditCardType = value;
                 FirePropertyChanged("CreditCardType");
                 FirePropertyChanged("CreditCardTypeName");
+                FirePropertyChanged("CreditCardImagePath");
             }
         }
 
@@ -76,6 +77,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 var type = CreditCardCompanies.FirstOrDefault(x=>x.Id == CreditCardType);
                 if(type == null) return null;
                 return type.Display; 
+            }
+        }
+
+        public string CreditCardImagePath { 
+            get {
+                var type = CreditCardCompanies.FirstOrDefault(x=>x.Id == CreditCardType);
+                if(type == null) return null;
+                return type.Image; 
             }
         }
 

@@ -25,7 +25,11 @@
             "tariffs/add/day": "addDayTariff", //#tariffs/add/day
             "tariffs/edit/:id": "editTariff", //#tariffs/edit/{GUID}
             /* IBS exclusions */
-            "exclusions": "manageIBSExclusions"
+            "exclusions": "manageIBSExclusions",
+            
+            /*Export*/
+            "exportaccounts": "exportaccounts",
+            "exportorders": "exportorders"
         },
 
         initialize: function (options) {
@@ -83,6 +87,12 @@
 
         manageIBSExclusions: function() {
             action(TaxiHail.ExclusionsController, 'index');
+        },
+        exportaccounts: function () {
+           
+        },
+        exportorders: function () {
+            
         }
     });
 

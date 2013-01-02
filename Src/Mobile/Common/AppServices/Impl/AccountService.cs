@@ -252,7 +252,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 
-        public void UpdateSettings (BookingSettings settings)
+        public void UpdateSettings (BookingSettings settings, Guid? creditCardId, double? tipAmount, double? tipPercent)
         {
             var bsr = new BookingSettingsRequest
             {
@@ -260,7 +260,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 Phone = settings.Phone,
                 VehicleTypeId = settings.VehicleTypeId,
                 ChargeTypeId = settings.ChargeTypeId,
-                ProviderId = settings.ProviderId
+                ProviderId = settings.ProviderId,
+                DefaultCreditCard = creditCardId,
+                DefaultTipAmount = tipAmount,
+                DefaultTipPercent = tipPercent
             };
 
             QueueCommand<IAccountServiceClient> (service =>
@@ -270,6 +273,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             });
             var account = CurrentAccount;
             account.Settings = settings;
+            account.DefaultCreditCard = creditCardId;
+            account.DefaultTipAmount = tipAmount;
+            account.DefaultTipPercent = tipPercent;
             //Set to update the cache
             CurrentAccount = account;
 
@@ -486,29 +492,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
 
             return _refData.PaymentsList;
-        }
-
-        public void UpdatePaymentProfile (Guid creditCardId, double? tipAmount, double? tipPercent)
-        {
-            var request = new UpdatePaymentProfileRequest
-            { 
-                DefaultCreditCard = creditCardId,
-                DefaultTipAmount = tipAmount,
-                DefaultTipPercent = tipPercent
-            };
-
-            QueueCommand<IAccountServiceClient> (service =>
-                                                 {                     
-                service.UpdatePaymentProfile (request);
-                
-            });
-
-            var account = CurrentAccount;
-            account.DefaultCreditCard = creditCardId;
-            account.DefaultTipAmount = tipAmount;
-            account.DefaultTipPercent = tipPercent;
-            //Set to update the cache
-            CurrentAccount = account;
         }
 
         public IEnumerable<CreditCardDetails> GetCreditCards()

@@ -19,6 +19,10 @@ namespace apcurium.MK.Booking.Commands
         public int? ProviderId { get; set; }
         public int NumberOfTaxi { get; set; }
 
+        public Guid? DefaultCreditCard { get; set; }
+        public double? DefaultTipAmount { get; set; }
+        public double? DefaultTipPercent { get; set; }
+
         public Guid AccountId { get; set; }
     }
 }
