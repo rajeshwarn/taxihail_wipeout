@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 	{
 	    bool CheckSession();
 
-        void UpdateSettings(BookingSettings settings);
+        void UpdateSettings(BookingSettings settings, Guid? creditCardId, double? tipAmount, double? tipPercent);
 
         Account GetAccount(string email, string password);
 
@@ -67,8 +67,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         IEnumerable<CreditCardDetails> GetCreditCards();
 
-        void UpdatePaymentProfile (Guid creditCardId, double? tipAmount, double? tipPercent);
-        
         #endregion
 
         void RefreshCache(bool reload);
