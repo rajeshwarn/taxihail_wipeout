@@ -102,11 +102,5 @@ namespace apcurium.MK.Booking.Api.Client.Cmt
         {
             throw new NotImplementedException ();
         }
-
-        public void UpdatePaymentProfile (UpdatePaymentProfileRequest request)
-        {
-            throw new NotImplementedException ();
-        }
-
     }
 }

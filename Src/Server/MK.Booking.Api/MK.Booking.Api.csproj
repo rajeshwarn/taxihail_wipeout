@@ -108,6 +108,7 @@
     <Compile Include="Services\AddressHistoryService.cs" />
     <Compile Include="Services\AccountOrderListService.cs" />
     <Compile Include="Services\Admin\ExclusionsService.cs" />
+    <Compile Include="Services\Admin\ExportDataService.cs" />
     <Compile Include="Services\ApplicationInfoService.cs" />
     <Compile Include="Services\BookingSettingsService.cs" />
     <Compile Include="Services\CancelOrderService.cs" />
@@ -131,7 +132,6 @@
     <Compile Include="Services\OrderService.cs" />
     <Compile Include="Services\OrderStatusService.cs" />
     <Compile Include="Services\Maps\PlaceDetailService.cs" />
-    <Compile Include="Services\PaymentProfileService.cs" />
     <Compile Include="Services\TariffsService.cs" />
     <Compile Include="Services\PopularAddressService.cs" />
     <Compile Include="Services\RatingTypesService.cs" />
