@@ -62,7 +62,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         protected override void OnViewModelSet()
         {
             SetContentView(Resource.Layout.View_BookingStatus);
-			ViewModel.OnViewLoaded();
+			ViewModel.Load();
         }
 
         protected override void OnResume()

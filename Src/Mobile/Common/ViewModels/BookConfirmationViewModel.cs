@@ -43,9 +43,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 
 
-        public override void OnViewLoaded ()
+        public override void Load ()
         {
-            base.OnViewLoaded ();
+			base.Load ();
             try {
 
                 MessageService.ShowProgress (true);                

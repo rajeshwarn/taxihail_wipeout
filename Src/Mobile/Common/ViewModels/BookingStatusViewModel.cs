@@ -47,9 +47,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _hasSeenReminder = false;
         }
 
-        public override void OnViewLoaded ()
+		public override void Load ()
         {
-            base.OnViewLoaded ();
+			base.Load ();
             ShowRatingButton = true;
             MessengerHub.Subscribe<OrderRated> (OnOrderRated, o => o.Content.Equals (Order.Id));
             _bookingService = this.GetService<IBookingService> ();

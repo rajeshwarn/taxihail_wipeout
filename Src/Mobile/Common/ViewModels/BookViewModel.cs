@@ -86,9 +86,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Panel = new PanelViewModel(this);
         }
 
-        public override void OnViewLoaded()
+		public override void Load()
         {
-            base.OnViewLoaded();
+			base.Load();
 
             if ( Order == null || !_useExistingOrder )
             {

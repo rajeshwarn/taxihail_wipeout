@@ -49,10 +49,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
         }
 
-        [Obsolete]
-        public virtual void OnViewLoaded()
+        public virtual void Load()
         {
-            Logger.LogMessage("View loaded: " + GetType().Name);
+
         }
 
         public virtual void Start (bool firstStart = false)

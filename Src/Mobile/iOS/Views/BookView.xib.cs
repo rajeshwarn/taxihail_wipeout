@@ -121,7 +121,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             });
 
             this.View.ApplyAppFont ();
-            ViewModel.OnViewLoaded();
+            ViewModel.Load();
 
             _menu = new PanelMenuView (bookView, this.NavigationController, ViewModel.Panel);
             View.InsertSubviewBelow (_menu.View, bookView);

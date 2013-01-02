@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		protected override void OnViewModelSet()
 		{            
 			SetContentView(Resource.Layout.View_BookPaymentSettings);
-			ViewModel.OnViewLoaded();
+			ViewModel.Load();
 		}
 	}
 }
