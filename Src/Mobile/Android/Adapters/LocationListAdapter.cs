@@ -85,7 +85,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Adapters
 				} else {
 					controller.SetBackImage (Resource.Drawable.cell_bottom_state);
 				}
-				controller.SetNavIcon (Resource.Drawable.add_button);
+				controller.SetNavIcon (0);
+				controller.ShowAddButton();
 			} else {
 				controller.SetNavIcon (Resource.Drawable.right_arrow);
 			}

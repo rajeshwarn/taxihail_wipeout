@@ -25,6 +25,15 @@
             android:layout_marginRight="15dip"
             android:layout_centerInParent="true"
             android:layout_centerHorizontal="true">
+            <ImageView
+                android:id="@+id/ListItemAddButton"
+                android:src="@drawable/add_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="15dip"
+                android:visibility="gone"  />
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"

@@ -14,9 +14,7 @@ using Android.Graphics;
 namespace apcurium.MK.Booking.Mobile.Client.Adapters
 {
     public class TitleSubTitleListItemController
-    {
-        
-        
+	{
         public TitleSubTitleListItemController(View view)
         {
             View = view;
@@ -79,5 +77,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Adapters
         {
             View.FindViewById<ImageView>(Resource.Id.ListItemNavIcon).SetImageResource(resourceId);
         }
+
+		public void ShowAddButton ()
+		{
+			View.FindViewById<ImageView>(Resource.Id.ListItemAddButton).Visibility = ViewStates.Visible;
+		}
     }
 }

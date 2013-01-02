@@ -61,9 +61,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
         {
                 var adapter = new GroupedLocationListAdapter(this);
 
-                //SetFavoriteAdapter(adapter);
-
-
                 RunOnUiThread(() =>
                 {
 					((MvxBindableListView)_listView).Adapter = adapter;
