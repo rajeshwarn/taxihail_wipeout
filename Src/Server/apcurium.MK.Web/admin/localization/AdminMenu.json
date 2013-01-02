@@ -5,5 +5,8 @@
 	"User Management" : "User Management",
 	"Grant access admin" : "Grant access admin",
 	"Company Settings" : "Company Settings",
-	"Settings" : "Settings"
+	"Settings" : "Settings",
+	"Export" : "Export",
+	"ExportAccounts" : "Accounts",
+	"ExportOrders" : "Orders"
 }
