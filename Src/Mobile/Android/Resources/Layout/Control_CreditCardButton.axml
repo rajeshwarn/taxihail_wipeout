@@ -19,14 +19,16 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:gravity="right|center_vertical"
-        android:layout_marginRight="40dp" />
+        android:paddingRight="40dp"
+        android:paddingBottom="5dp" />
     <ImageView
         android:src="@drawable/right_arrow_light"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="20dp" />
+        android:layout_marginRight="20dp"
+        android:paddingBottom="5dp" />
     <ImageView
         android:id="@+id/creditCardImage"
         android:layout_width="wrap_content"
