@@ -132,7 +132,6 @@
     <Compile Include="Services\OrderService.cs" />
     <Compile Include="Services\OrderStatusService.cs" />
     <Compile Include="Services\Maps\PlaceDetailService.cs" />
-    <Compile Include="Services\PaymentProfileService.cs" />
     <Compile Include="Services\TariffsService.cs" />
     <Compile Include="Services\PopularAddressService.cs" />
     <Compile Include="Services\RatingTypesService.cs" />

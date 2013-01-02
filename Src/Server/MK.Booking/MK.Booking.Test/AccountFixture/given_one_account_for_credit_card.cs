@@ -82,20 +82,5 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             Assert.AreEqual(creditCardId, @event.CreditCardId);
         }
 
-        [Test]
-        public void when_updating_paynment_profile()
-        {
-            Guid? creditCardId = Guid.NewGuid();
-            double? tipAmount = 10.0;
-            double? defaultTipPercent = 15.0;
-
-            this.sut.When(new UpdatePaymentProfile{ AccountId =  _accountId, DefaultCreditCard = creditCardId, DefaultTipAmount = tipAmount, DefaultTipPercent = defaultTipPercent });
-
-            var @event = sut.ThenHasSingle<PaymentProfileUpdated>();
-            Assert.AreEqual(_accountId, @event.SourceId);
-            Assert.AreEqual(creditCardId, @event.DefaultCreditCard);
-            Assert.AreEqual(tipAmount, @event.DefaultTipAmount);
-            Assert.AreEqual(defaultTipPercent, @event.DefaultTipPercent);
-        }
     }
 }
