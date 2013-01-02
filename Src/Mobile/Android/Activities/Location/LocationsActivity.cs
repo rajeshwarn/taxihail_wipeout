@@ -107,7 +107,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Location
         protected override void OnResume()
         {
             base.OnResume();
-			ViewModel.OnViewLoaded();
             SetAdapter();
         }
     }

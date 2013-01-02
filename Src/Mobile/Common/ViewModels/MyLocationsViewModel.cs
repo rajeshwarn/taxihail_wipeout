@@ -24,9 +24,9 @@ namespace apcurium.MK.Booking.Mobile
             _accountService = TinyIoCContainer.Current.Resolve<IAccountService>();
         }
 
-        public override void OnViewLoaded ()
+        public override void Start(bool firstStart = false)
         {
-            base.OnViewLoaded ();
+            base.Start ();
 
             LoadAllAddresses();
         }
