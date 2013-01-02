@@ -17,6 +17,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 		Spinner _spinner;
 		ListItemAdapter _adapter;
 		TextView _label;
+	    private ImageView _imageLeftView;
 
 		public event EventHandler<AdapterView.ItemSelectedEventArgs> ItemSelected;
 
@@ -55,7 +56,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
 			_label = (TextView) layout.FindViewById( Resource.Id.label );
 			_label.Focusable = false;
+		    _imageLeftView = layout.FindViewById<ImageView>(Resource.Id.leftImage);
 			if(_text != null) _label.Text = _text;
+            if (_leftImage != null)
+            {
+                var resource = Resources.GetIdentifier(_leftImage.ToLower(), "drawable", Context.PackageName);
+                if (resource != 0)
+                {
+                    _imageLeftView.SetImageResource(resource);
+                    _label.SetPadding(100,0,0,0);
+                }
+            }
 			var button = (Button)layout.FindViewById( Resource.Id.openSpinnerButton );
 			button.Click += (object sender, EventArgs e) => {
 				_spinner.PerformClick();
@@ -103,6 +114,28 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 				if(_label != null) _label.Text = value;
 			}
 		}
+
+        private string _leftImage;
+        public string LeftImage
+        {
+            get
+            {
+                return _leftImage;
+            }
+            set
+            {
+                _leftImage = value;
+                if (_imageLeftView != null)
+                {
+                    var resource = Resources.GetIdentifier (value.ToLower (), "drawable", Context.PackageName);
+                    if (resource != 0)
+                    {
+                        _imageLeftView.SetImageResource(resource);
+                        _label.OffsetLeftAndRight(70);
+                    }
+                };
+            }
+        }
 		public IEnumerable<ListItem> Data {
 			set {
 				if(value != null)
