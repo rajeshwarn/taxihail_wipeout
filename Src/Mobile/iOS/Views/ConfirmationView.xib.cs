@@ -24,7 +24,7 @@ using System.Drawing;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-    public partial class ConfirmationView : MvxBindingTouchViewController<BookConfirmationViewModel>
+    public partial class ConfirmationView : BaseViewController<BookConfirmationViewModel>
     {
        
 

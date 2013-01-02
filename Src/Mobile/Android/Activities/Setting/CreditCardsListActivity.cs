@@ -36,12 +36,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             
 		}
 
-		protected override void OnDestroy ()
-		{
-			base.OnDestroy ();
-			ViewModel.OnViewUnloaded();
-		}
-		
 		protected override int ViewTitleResourceId
 		{
 			get { return Resource.String.CreditCardsListTitle; }

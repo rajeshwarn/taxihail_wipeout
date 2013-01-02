@@ -72,10 +72,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             ViewModel.OnViewLoaded();
 
-
-
-
-
         }
 
         void HandleSignOutButtonClick (object sender, EventArgs e)
