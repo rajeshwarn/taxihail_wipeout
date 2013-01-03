@@ -100,7 +100,6 @@
     <Compile Include="Adapters\GroupedLocationListAdapter.cs" />
     <Compile Include="Adapters\IconActionAdapter.cs" />
     <Compile Include="Adapters\LocationListAdapter.cs" />
-    <Compile Include="Adapters\OrderListAdapter.cs" />
     <Compile Include="Adapters\RatingListAdapter.cs" />
     <Compile Include="Adapters\TitleSubTitleListItemController.cs" />
     <Compile Include="Animations\ResizeAnimation.cs" />
