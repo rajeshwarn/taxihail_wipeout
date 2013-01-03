@@ -98,7 +98,6 @@
     <Compile Include="Activities\ShowDialogActivity.cs" />
     <Compile Include="Activities\TutorialActivity.cs" />
     <Compile Include="Adapters\GroupedLocationListAdapter.cs" />
-    <Compile Include="Adapters\IconActionAdapter.cs" />
     <Compile Include="Adapters\LocationListAdapter.cs" />
     <Compile Include="Adapters\TitleSubTitleListItemController.cs" />
     <Compile Include="Animations\ResizeAnimation.cs" />
