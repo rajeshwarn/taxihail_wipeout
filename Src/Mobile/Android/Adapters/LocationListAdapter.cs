@@ -68,12 +68,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Adapters
 			controller.SetBackImage (Resource.Drawable.cell_top_state);
 			
 			var avm = (AddressViewModel)ItemsSource [position];
-			if (avm.IsFirst) {
+			if (avm.IsFirst && avm.IsLast) {
+				controller.SetBackImage (Resource.Drawable.blank_single_state);
+			} else if (avm.IsFirst) {
 				controller.SetBackImage (Resource.Drawable.cell_top_state);
 			} else if (avm.IsLast) {
 				controller.SetBackImage (Resource.Drawable.blank_bottom_state);
-			} else if (avm.IsFirst && avm.IsLast) {
-				controller.SetBackImage (Resource.Drawable.blank_single_state);
 			} else {
 				controller.SetBackImage (Resource.Drawable.cell_middle_state);
 			}
