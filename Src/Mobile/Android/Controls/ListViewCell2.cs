@@ -38,25 +38,31 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 		public bool IsTop { get; set; }
 		public bool IsBottom { get; set; }
         public bool ShowRightArrow { get; set; }
+        public bool ShowPlusSign { get; set; }
 
         protected override void OnDraw(Android.Graphics.Canvas canvas)
         {
             base.OnDraw(canvas);
+			var textX = ShowPlusSign ? 100 : 8;
 			if( !TextLine1.IsNullOrEmpty() )
 			{
-	            DrawText(canvas, TextLine1 ?? "", 8, 32, 20, AppFonts.Bold);
-				DrawText(canvas, TextLine2 ?? "", 8, 54, 18, AppFonts.Regular);
+				DrawText(canvas, TextLine1 ?? "", textX, 27, 20, AppFonts.Bold);
+				DrawText(canvas, TextLine2 ?? "", textX, 49, 18, AppFonts.Regular);
 			}
 			else
 			{
-				DrawText(canvas, TextLine2 ?? "", 8, 45, 18, AppFonts.Regular);
+				DrawText(canvas, TextLine2 ?? "", textX, 40, 18, AppFonts.Regular);
 			}
 
             if (ShowRightArrow)
             {
-
                 canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, Resource.Drawable.right_arrow), this.Width-35, 20, null);
             }
+
+			if (ShowPlusSign)
+			{
+				canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, Resource.Drawable.add_btn), 8, 10, null);
+			}
 
             var d = IsTop && !IsBottom ? Resource.Drawable.cell_top_state : IsBottom && !IsTop ? Resource.Drawable.blank_bottom_state : IsTop && IsBottom ? Resource.Drawable.blank_single_state : Resource.Drawable.cell_middle_state;
 			SetBackgroundDrawable( Resources.GetDrawable( d ) );

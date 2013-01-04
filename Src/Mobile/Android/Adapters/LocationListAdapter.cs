@@ -21,12 +21,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Adapters
 {
 	public class LocationListAdapter : MvxBindableListAdapter
     {
-        private readonly Activity _context;
-
         public LocationListAdapter(Activity context, IList itemsSource)
             : base(context)
         {
-            this._context = context;
 			ItemsSource = itemsSource;
         }
 
@@ -39,6 +36,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Adapters
 		{
 			var item = (AddressViewModel)ItemsSource [position];
             
+			return base.GetBindableView (convertView, new {
+					DisplayLine1 = item.Address.FriendlyName,
+					DisplayLine2 = item.Address.FullAddress,
+					IsFirst = item.IsFirst,
+					IsLast = item.IsLast,
+				    ShowRightArrow = item.ShowRightArrow,
+					ShowPlusSign = item.ShowPlusSign,
+
+				}, Resource.Layout.SimpleListItem);
+
+			/*
             
 			TitleSubTitleListItemController controller = null;
 			if (item.Address.IsHistoric) {
@@ -92,6 +100,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Adapters
 			}
 
             return controller.View;
+
+*/
         }
     }
 }
