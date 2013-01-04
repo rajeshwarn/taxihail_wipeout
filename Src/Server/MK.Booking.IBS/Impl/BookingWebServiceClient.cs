@@ -13,11 +13,14 @@ namespace apcurium.MK.Booking.IBS.Impl
 
         private const int _invalidZoneErrorCode = -1002;
         private IStaticDataWebServiceClient _staticDataWebServiceClient;
+        private WebDriverService _webDriverService;
 
-        public BookingWebServiceClient(IConfigurationManager configManager, ILogger logger, IStaticDataWebServiceClient staticDataWebServiceClient)
+        public BookingWebServiceClient(IConfigurationManager configManager, ILogger logger, IStaticDataWebServiceClient staticDataWebServiceClient, WebDriverService webDriverService)
             : base(configManager, logger)
         {
             _staticDataWebServiceClient = staticDataWebServiceClient;
+            _webDriverService = webDriverService;
+
         }
 
         protected override string GetUrl()
@@ -59,9 +62,25 @@ namespace apcurium.MK.Booking.IBS.Impl
                     result.Fare = order.Fare == 0 ? (double?)null : order.Fare;
                     result.Toll = order.Tolls == 0 ? (double?)null : order.Tolls;
                     result.Tip = order.Tips == 0 ? (double?)null : order.Tips; //TODO à enlever
+                    result.CallNumber = order.CallNumber;
                 }
             });
             return result;
+        }
+
+        public IBSDriverInfos GetDriverInfos(string driverId)
+        {
+            var infos = new IBSDriverInfos();
+            var webDriver = _webDriverService.GetWEBDriver(UserNameApp, PasswordApp, driverId);
+            infos.FirstName = webDriver.FirstName;
+            infos.LastName = webDriver.LastName;
+            infos.MobilePhone = webDriver.MobilePhone;
+            infos.VehicleColor = webDriver.VehicleColor;
+            infos.VehicleMake = webDriver.VehicleMake;
+            infos.VehicleModel = webDriver.VehicleModel;
+            infos.VehicleRegistration = webDriver.VehicleRegistration;
+            infos.VehicleType = webDriver.VehicleType;
+            return infos;
         }
 
         public int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int vehicleTypeId, int chargeTypeId, string note, DateTime pickupDateTime, IBSAddress pickup, IBSAddress dropoff)

@@ -30,7 +30,7 @@ using apcurium.MK.Booking.Mobile.Client.Controls;
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
     [Activity(Label = "Book Status", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
-    public class BookingStatusActivity : MvxBindingMapActivityView<BookingStatusViewModel>
+	public class BookingStatusActivity : BaseMapActivity<BookingStatusViewModel>
     {
         private const string _doneStatus = "wosDONE";
         private const string _loadedStatus = "wosLOADED";
@@ -62,7 +62,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         protected override void OnViewModelSet()
         {
             SetContentView(Resource.Layout.View_BookingStatus);
-			ViewModel.OnViewLoaded();
+			ViewModel.Load();
         }
 
         protected override void OnResume()
@@ -70,12 +70,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             base.OnResume();
             InitMap();
         }
-
-		protected override void OnDestroy ()
-		{
-			base.OnDestroy ();
-			ViewModel.OnViewUnloaded();
-		}
 
         protected void InitMap()
         {

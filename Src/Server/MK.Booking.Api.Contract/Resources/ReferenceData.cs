@@ -5,6 +5,8 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
 {
     public class ReferenceData : BaseDTO
     {
+        public const int CreditCardOnFileType = 666;
+
         public IList<ListItem> CompaniesList { get; set; }
         public IList<ListItem> VehiclesList { get; set; }
         public IList<ListItem> PaymentsList { get; set; }

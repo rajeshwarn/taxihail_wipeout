@@ -41,7 +41,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         protected ITinyMessengerHub MessengerHub { get; private set; }
 
-        protected IAppSettings Settings { get; private set; }
+        public IAppSettings Settings { get; private set; }
 
         protected IPhoneService PhoneService { get; private set; }
 
@@ -49,15 +49,31 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
         }
 
-        public virtual void OnViewLoaded()
+        public virtual void Load()
         {
-            Logger.LogMessage("View loaded: " + GetType().Name);
+
         }
 
-        public virtual void OnViewUnloaded()
+        public virtual void Start (bool firstStart = false)
         {
-            Logger.LogMessage("View unloaded: " + GetType().Name);
+
         }
+
+        public virtual void Restart ()
+        {
+            
+        }
+
+        public virtual void Stop ()
+        {
+
+        }
+
+        public virtual void Unload ()
+        {
+
+        }
+
 
         protected bool RequestSubNavigate<TViewModel, TResult>(IDictionary<string, string> parameterValues,
                                                                Action<TResult> onResult)

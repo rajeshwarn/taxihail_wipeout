@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 		private float _strokeSize = 1f;
 		private float _innerShadowTopBottomBlurRadius = 3f;
 		private float _innerShadowSidesBlurRadius = 2f;
-		private UIColor _strokeColor = UIColor.FromRGB( 105, 105, 105 );
+		private UIColor _strokeColor = UIColor.FromRGB( 133, 133, 133 );
 		private UIColor _selectedBackgroundColor = UIColor.FromRGBA( 233, 217, 219, 0.1f );
 		private UIColor _backgroundColor = AppStyle.CellBackgroundColor;
 
@@ -84,22 +84,10 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
 			}
 
 			//Fill
-			if( IsAddNewCell && !((UITableViewCell)Superview).Highlighted )
-			{
-				UIImage.FromFile( "Assets/Cells/addNewBackground.png" ).Draw( rect, CGBlendMode.Normal, 1f );
-			}
-			else if( IsAddNewCell && ((UITableViewCell)Superview).Highlighted )
-			{
-				UIImage.FromFile( "Assets/Cells/addNewBackgroundSelected.png" ).Draw( rect, CGBlendMode.Normal, 1f );
-			}
-			else
-			{
-	  			var backgroundColor = ((UITableViewCell)Superview).Highlighted ? _selectedBackgroundColor : _backgroundColor;
-				backgroundColor.SetFill();
-				fillRectPath.LineWidth = _strokeSize;
-				fillRectPath.Fill();
-			}
-
+			var backgroundColor = ((UITableViewCell)Superview).Highlighted ? _selectedBackgroundColor : _backgroundColor;
+			backgroundColor.SetFill();
+			fillRectPath.LineWidth = _strokeSize;
+			fillRectPath.Fill();
 
 			//Inner Shadow
 		    var roundedRectangleBorderRect = fillRectPath.Bounds;
@@ -134,9 +122,6 @@ namespace apcurium.MK.Booking.Mobile.Client.InfoTableView
                 roundedRectangleNegativePath.Fill();
             }
             context.RestoreState();
-
-
-
 
 			//Stroke
 			context.SaveState();

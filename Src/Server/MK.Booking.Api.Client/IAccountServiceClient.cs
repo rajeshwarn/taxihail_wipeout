@@ -19,5 +19,9 @@ namespace apcurium.MK.Booking.Api.Client
         void ResetPassword(string emailAddress);
         string UpdatePassword(UpdatePassword updatePassword);
         void RemoveAddress(Guid addressId);
+        void AddCreditCard(CreditCardRequest creditCardRequest);
+        IList<CreditCardDetails> GetCreditCards();
+        void RemoveCreditCard(Guid creditCardId);
+
     }
 }

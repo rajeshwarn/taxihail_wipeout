@@ -126,7 +126,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { txtPassword, "{'Text':{'Path':'Password'}}"},
             });
 
-            ViewModel.OnViewLoaded ();
+            ViewModel.Load ();
             this.View.ApplyAppFont();           
 
         }

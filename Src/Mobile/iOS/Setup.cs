@@ -66,8 +66,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             TinyIoCContainer.Current.Register<IAppSettings>(new AppSettings());
             TinyIoCContainer.Current.Register<IPackageInfo>(new PackageInfo());
             TinyIoCContainer.Current.Register<IMvxTouchViewPresenter>(_presenter);
-            
-            TinyIoCContainer.Current.Register<IAppContext>(AppContext.Current);            
+
             TinyIoCContainer.Current.Register<IAppResource, Resources>();
             TinyIoCContainer.Current.Register<ILogger, LoggerWrapper>();
             TinyIoCContainer.Current.Register<IErrorHandler, ErrorHandler>();            

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using NUnit.Framework;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
@@ -273,6 +274,10 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public void UpdateBookingSettingsAccountTest()
         {
+            Guid? creditCardId = Guid.NewGuid();
+            double? tipAmount = 10.0;
+            double? defaultTipPercent = 15.0;
+
             var settings = new BookingSettingsRequest
             {
                 ChargeTypeId = 3,
@@ -281,7 +286,10 @@ namespace apcurium.MK.Web.Tests
                 Passengers = 8,
                 Phone = "12345",
                 ProviderId = 13,
-                VehicleTypeId = 1
+                VehicleTypeId = 1,
+                DefaultCreditCard = creditCardId,
+                DefaultTipAmount = tipAmount,
+                DefaultTipPercent = defaultTipPercent
             };
 
             var sut = new AccountServiceClient(BaseUrl, SessionId);
@@ -297,13 +305,9 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(settings.Phone, account.Settings.Phone);
             Assert.AreEqual(settings.ProviderId, account.Settings.ProviderId);
             Assert.AreEqual(settings.VehicleTypeId, account.Settings.VehicleTypeId);
+            Assert.AreEqual(creditCardId, account.DefaultCreditCard);
+            Assert.AreEqual(tipAmount, account.DefaultTipAmount);
+            Assert.AreEqual(defaultTipPercent, account.DefaultTipPercent);
         }
-
-
-      
-
-
-
-
     }
 }

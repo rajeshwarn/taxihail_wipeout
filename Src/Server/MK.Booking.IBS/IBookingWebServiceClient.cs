@@ -11,6 +11,8 @@ namespace apcurium.MK.Booking.IBS
         IBSOrderDetails GetOrderDetails(int orderId, int accountId, string contactPhone);
 
         bool CancelOrder(int orderId, int accountId, string contactPhone);
-        
+
+        IBSDriverInfos GetDriverInfos(string driverId);
+
     }
 }

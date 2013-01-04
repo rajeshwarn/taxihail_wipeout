@@ -22,7 +22,12 @@ namespace apcurium.MK.Booking.Mobile.Extensions
             return t;
         }
 
-
+        public static Task<TResult> SafeStartNew<TResult>(this TaskFactory<TResult> taskFactory, Func<TResult> action )
+        {
+            Task<TResult> t = taskFactory.StartNew( action );
+            t.HandleErrors ();
+            return t;
+        }
     }
 }
 

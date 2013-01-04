@@ -227,10 +227,7 @@
   </data>
   <data name="PickupTextPlaceholder" xml:space="preserve">
     <value>Pickup street address</value>
-  </data>
-  <data name="AptNumberTextPlaceholder" xml:space="preserve">
-    <value>Apt/Suite Number</value>
-  </data>
+  </data>  
   <data name="RingCodeTextPlaceholder" xml:space="preserve">
     <value>Entry code</value>
   </data>
@@ -272,10 +269,7 @@
   </data>
   <data name="ConfirmOriginLablel" xml:space="preserve">
     <value>Pickup</value>
-  </data>
-  <data name="ConfirmAptRingCodeLabel" xml:space="preserve">
-    <value>Apartment / Entry code</value>
-  </data>
+  </data>  
   <data name="ConfirmDestinationLabel" xml:space="preserve">
     <value>Destination</value>
   </data>
@@ -345,12 +339,12 @@
   <data name="LocationDetailStreetAddressPlaceholder" xml:space="preserve">
     <value>Street address</value>
   </data>
-  <data name="LocationDetailAptPlaceholder" xml:space="preserve">
-    <value>Apt/Suite number</value>
+  <data name="ApartmentLabel" xml:space="preserve">
+    <value>Apartment</value>
   </data>
-  <data name="LocationDetailRingCodePlaceholder" xml:space="preserve">
+  <data name="EntryCodeLabel" xml:space="preserve">
     <value>Entry code</value>
-  </data>
+  </data>  
   <data name="LocationDetailGiveItANamePlaceholder" xml:space="preserve">
     <value>Home, work, friend's house...</value>
   </data>
@@ -532,7 +526,7 @@
     <value>Call</value>
   </data>
   <data name="StatusCancelButton" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Cancel this order</value>
   </data>
   <data name="StatusNewRideButton" xml:space="preserve">
     <value>New Ride</value>
@@ -880,7 +874,7 @@
     <value>About Us</value>
   </data>
   <data name="View_BookingDetail" xml:space="preserve">
-    <value>Booking summary</value>
+    <value>Booking Details</value>
   </data>
   <data name="View_BookingStatus" xml:space="preserve">
     <value>Status</value>
@@ -922,7 +916,7 @@
     <value>Manage My Locations</value>
   </data>
   <data name="View_Book_Menu_MyOrders" xml:space="preserve">
-    <value>History And Current Bookings</value>
+    <value>My Bookings</value>
   </data>
   <data name="View_Book_Menu_UpdateMyProfile" xml:space="preserve">
     <value>Update My Profile</value>
@@ -1010,6 +1004,9 @@
   </data>
   <data name="Notes" xml:space="preserve">
     <value>Notes</value>
+  </data>
+  <data name="NotesToDriveLabel" xml:space="preserve">
+    <value>Notes to driver</value>
   </data>
   <data name="RateBtn" xml:space="preserve">
     <value>Rate your drive</value>
@@ -1100,5 +1097,95 @@
   </data>
   <data name="StreetNumberDoneBt" xml:space="preserve">
     <value>Use This Address</value>
+  </data>
+  <data name="AddReminderMessage" xml:space="preserve">
+    <value>Would you like a reminder added to your calendar for this pick-up time?</value>
+  </data>
+  <data name="AddReminderTitle" xml:space="preserve">
+    <value>Scheduled Pick-Up</value>
+  </data>
+  <data name="View_PaymentPreference" xml:space="preserve">
+    <value>Payment Preference</value>
+  </data>
+  <data name="CreditCardsListTitle" xml:space="preserve">
+    <value>Credit Cards On File</value>
+  </data>
+  <data name="PaymentDetails.CreditCardLabel" xml:space="preserve">
+    <value>Credit Card</value>
+  </data>
+  <data name="PaymentDetails.Optional" xml:space="preserve">
+    <value>(Optional)</value>
+  </data>
+  <data name="PaymentDetails.TipAmountLabel" xml:space="preserve">
+    <value>Tip Amount</value>
+  </data>
+  <data name="PaymentDetails.InvalidTipAmount" xml:space="preserve">
+    <value>Tip amount is invalid</value>
+  </data>
+  <data name="PaymentDetails.InvalidDataTitle" xml:space="preserve">
+    <value>Invalid payment information</value>
+  </data>
+  <data name="CreditCardsAddTitle" xml:space="preserve">
+    <value>New Credit Card</value>
+  </data>
+  <data name="CreditCardName" xml:space="preserve">
+    <value>Name as it appears on card</value>
+  </data>
+  <data name="CreditCardNumber" xml:space="preserve">
+    <value>Card Number</value>
+  </data>
+  <data name="CreditCardCategory" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="CreditCardType" xml:space="preserve">
+    <value>Type of Card</value>
+  </data>
+  <data name="CreditCardExpMonth" xml:space="preserve">
+    <value>Exp. Month</value>
+  </data>
+  <data name="CreditCardExpYear" xml:space="preserve">
+    <value>Exp. Year</value>
+  </data>
+  <data name="CreditCardCCV" xml:space="preserve">
+    <value>CCV</value>
+  </data>
+  <data name="CreditCardZipCode" xml:space="preserve">
+    <value>Zip code</value>
+  </data>
+  <data name="CreditCardErrorTitle" xml:space="preserve">
+    <value>Can't add the Credit Card</value>
+  </data>
+  <data name="CreditCardRequiredFields" xml:space="preserve">
+    <value>All the fields are required</value>
+  </data>
+  <data name="CreditCardInvalidCrediCardNUmber" xml:space="preserve">
+    <value>The Credit Card Number is invalid</value>
+  </data>
+  <data name="AddCreditCardTitle" xml:space="preserve">
+    <value>Add a credit card</value>
+  </data>
+  <data name="ReminderTitle" xml:space="preserve">
+    <value>{0} Booked</value>
+  </data>
+  <data name="ReminderDetails" xml:space="preserve">
+    <value>Reminder: A taxi will pick you up from {0} at {1} on {2}.</value>
+  </data>
+  <data name="ChargeTypeCreditCardFile" xml:space="preserve">
+    <value>Credit Card on File</value>
+  </data>
+  <data name="RemoveCreditCardMessage" xml:space="preserve">
+    <value>Are you sure you want to remove this credit card ?</value>
+  </data>
+  <data name="RemoveCreditCardTitle" xml:space="preserve">
+    <value>Remove credit card</value>
+  </data>
+   <data name="NoCreditCardSelected" xml:space="preserve">
+    <value>Please select a credit card</value>
+  </data>
+  <data name="View_PaymentCreditCardsOnFile" xml:space="preserve">
+    <value>Payment Info</value>
+  </data>
+  <data name="BackButton" xml:space="preserve">
+    <value>Back</value>
   </data>
 </root>

@@ -28,5 +28,6 @@
    "TaxiHail.ServerCompanyName" : "TaxiHail",
    "Booking.ConfirmationEmail" : "true",
    "Client.HideCallDispatchButton" : "false",
+   "Client.HideReportProblem" : "true",
    "IBS.TimeDifference" : "0"
 }

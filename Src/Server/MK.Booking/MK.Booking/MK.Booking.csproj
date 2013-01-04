@@ -87,6 +87,7 @@
     <Compile Include="Domain\Order.cs" />
     <Compile Include="Domain\BookingSettings.cs" />
     <Compile Include="Domain\OrderStatus.cs" />
+    <Compile Include="Domain\PaymentInformation.cs" />
     <Compile Include="Email\EmailSender.cs" />
     <Compile Include="Email\IEmailSender.cs" />
     <Compile Include="Email\ITemplateService.cs" />
@@ -94,6 +95,7 @@
     <Compile Include="EventHandlers\AccountDetailsGenerator.cs" />
     <Compile Include="EventHandlers\AddressListGenerator.cs" />
     <Compile Include="EventHandlers\AppSettingsGenerator.cs" />
+    <Compile Include="EventHandlers\CreditCardDetailsGenerator.cs" />
     <Compile Include="EventHandlers\OrderGenerator.cs" />
     <Compile Include="EventHandlers\TariffDetailsGenerator.cs" />
     <Compile Include="EventHandlers\RatingTypeDetailsGenerator.cs" />
@@ -104,6 +106,11 @@
     <Compile Include="ReadModel\AccountDetail.cs" />
     <Compile Include="ReadModel\BookingSetting.cs" />
     <Compile Include="ReadModel\AddressDetails.cs" />
+    <Compile Include="ReadModel\OrderDetailWithAccount.cs" />
+    <Compile Include="ReadModel\PaymentInformationDetails.cs" />
+    <Compile Include="ReadModel\Query\CreditCardDao.cs" />
+    <Compile Include="ReadModel\CreditCardDetails.cs" />
+    <Compile Include="ReadModel\Query\ICreditCardDao.cs" />
     <Compile Include="ReadModel\Query\IOrderRatingsDao.cs" />
     <Compile Include="ReadModel\Query\IRatingTypeDao.cs" />
     <Compile Include="ReadModel\Query\OrderRatingsDao.cs" />

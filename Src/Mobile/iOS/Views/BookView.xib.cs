@@ -111,8 +111,8 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { _bottomAction.RefreshCurrentLocationButton, "{'TouchUpInside':{'Path':'SelectedAddress.RequestCurrentLocationCommand'}}"},                
                 { pickupActivationButton, "{'TouchUpInside':{'Path':'ActivatePickup'},'Selected':{'Path':'AddressSelectionMode', 'Converter': 'EnumToBool', 'ConverterParameter': 'PickupSelection'}}"},                
                 { dropoffActivationButton, "{'TouchUpInside':{'Path':'ActivateDropoff'},'Selected':{'Path':'AddressSelectionMode', 'Converter': 'EnumToBool', 'ConverterParameter': 'DropoffSelection'}}"},       
-                { pickupButton, "{'TouchUpInside':{'Path':'Pickup.PickAddress'},'TextLine1':{'Path':'Pickup.Title', 'Mode':'TwoWay'}, 'TextLine2':{'Path':'Pickup.Display', 'Mode':'TwoWay'}, 'IsSearching':{'Path':'Pickup.IsExecuting', 'Mode':'TwoWay'}, 'IsPlaceholder':{'Path':'Pickup.IsPlaceHolder', 'Mode':'TwoWay'} }"},  
-                { dropoffButton, "{'TouchUpInside':{'Path':'Dropoff.PickAddress'},'TextLine1':{'Path':'Dropoff.Title', 'Mode':'TwoWay'}, 'TextLine2':{'Path':'Dropoff.Display', 'Mode':'TwoWay'}, 'IsSearching':{'Path':'Dropoff.IsExecuting', 'Mode':'TwoWay'}, 'IsPlaceholder':{'Path':'Dropoff.IsPlaceHolder', 'Mode':'TwoWay'} }"},             
+                { pickupButton, "{'TouchUpInside':{'Path':'Pickup.PickAddress'},'TextLine1':{'Path':'Pickup.AddressLine1', 'Mode':'TwoWay'}, 'TextLine2':{'Path':'Pickup.AddressLine2', 'Mode':'TwoWay'}, 'IsSearching':{'Path':'Pickup.IsExecuting', 'Mode':'TwoWay'}, 'IsPlaceholder':{'Path':'Pickup.IsPlaceHolder', 'Mode':'TwoWay'} }"},  
+                { dropoffButton, "{'TouchUpInside':{'Path':'Dropoff.PickAddress'},'TextLine1':{'Path':'Dropoff.AddressLine1', 'Mode':'TwoWay'}, 'TextLine2':{'Path':'Dropoff.AddressLine2', 'Mode':'TwoWay'}, 'IsSearching':{'Path':'Dropoff.IsExecuting', 'Mode':'TwoWay'}, 'IsPlaceholder':{'Path':'Dropoff.IsPlaceHolder', 'Mode':'TwoWay'} }"},             
                 { mapView, "{'Pickup':{'Path':'Pickup.Model'}, 'Dropoff':{'Path':'Dropoff.Model'} , 'MapMoved':{'Path':'SelectedAddress.SearchCommand'}, 'MapCenter':{'Path':'MapCenter'}, 'AddressSelectionMode': {'Path': 'AddressSelectionMode'}}" },
                 { infoLabel, "{'Text':{'Path':'FareEstimate'}}" },              
                 { _dateTimePicker, "{'DateChangedCommand':{'Path':'PickupDateSelectedCommand'}, 'CloseDatePickerCommand':{'Path':'CloseDatePickerCommand'}}" },
@@ -121,7 +121,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             });
 
             this.View.ApplyAppFont ();
-            ViewModel.OnViewLoaded();
+            ViewModel.Load();
 
             _menu = new PanelMenuView (bookView, this.NavigationController, ViewModel.Panel);
             View.InsertSubviewBelow (_menu.View, bookView);
@@ -137,7 +137,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             base.ViewWillAppear (animated);     
 
             NavigationController.NavigationBar.Hidden = true;
-            AppContext.Current.ReceiveMemoryWarning = false;  
+
 
         }
         
@@ -145,17 +145,14 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             base.ViewDidAppear (animated);
 
-            var button = AppButtons.CreateStandardButton( new RectangleF( 16,0,40,33 ) , "", AppStyle.ButtonColor.AlternateCorporateColor, "Assets/settings.png");
+            var button = AppButtons.CreateStandardButton( new RectangleF( 16,0,40,33 ) , "", AppStyle.ButtonColor.Black, "Assets/settings.png");
             button.TouchUpInside += (sender, e) => ViewModel.Panel.MenuIsOpen = !ViewModel.Panel.MenuIsOpen;
             var offsetView = new UIView( new RectangleF( 0,0,60,33) );
             offsetView.AddSubview ( button );
 
-            //new BarButtonItem (new RectangleF (0, 0, 40, 33), "Assets/settings.png", () => ViewModel.Panel.MenuIsOpen = !ViewModel.Panel.MenuIsOpen)
             var btn = new UIBarButtonItem ( offsetView );
             navBar.TopItem.RightBarButtonItem = btn;
             navBar.TopItem.RightBarButtonItem.SetTitlePositionAdjustment (new UIOffset (-20, 0), UIBarMetrics.Default);
-
-
             ViewModel.ShowTutorial.Execute ();
         }
 
@@ -165,8 +162,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             NavigationController.NavigationBar.Hidden = true;
             this.NavigationController.PopToRootViewController (true);
             ViewModel.Reset ();
-            ViewModel.Dropoff.ClearAddress ();
-            //ViewModel.Initialize ();
+            ViewModel.Dropoff.ClearAddress ();        
         }
 
         #endregion

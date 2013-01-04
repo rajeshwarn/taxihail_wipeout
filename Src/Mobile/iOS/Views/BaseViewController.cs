@@ -7,13 +7,15 @@ using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using Cirrious.MvvmCross.Views;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
+using apcurium.MK.Booking.Mobile.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-    public abstract class BaseViewController<TViewModel> : MvxBindingTouchViewController<TViewModel> where TViewModel: class, IMvxViewModel
+    public abstract class BaseViewController<TViewModel> : MvxBindingTouchViewController<TViewModel> where TViewModel: BaseViewModel, IMvxViewModel
     {
         NSObject _keyboardObserverWillShow;
         NSObject _keyboardObserverWillHide;
+        private bool _firstStart = true;
 
         #region Constructors
 
@@ -33,22 +35,43 @@ namespace apcurium.MK.Booking.Mobile.Client
         }
         
 #endregion
+
+        public override void ViewWillAppear (bool animated)
+        {
+            base.ViewWillAppear (animated);
+            if (_firstStart) {
+                _firstStart = false;
+                ViewModel.Start (firstStart: true);
+            } else {
+                ViewModel.Restart();
+                ViewModel.Start();
+            }
+
+        }
+
+        public override void ViewWillDisappear (bool animated)
+        {
+            base.ViewWillDisappear (animated);
+            ViewModel.Stop();
+        }
 				
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
             // Setup keyboard event handlers
-            RegisterForKeyboardNotifications();
+            RegisterForKeyboardNotifications ();
 
-            Background.LoadForRegularView( this.View );
-            View.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/background.png"));
+            Background.LoadForRegularView (this.View);
+            View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
+            NavigationItem.BackBarButtonItem = new UIBarButtonItem(Resources.GetValue("BackButton"), UIBarButtonItemStyle.Bordered, null, null);
         }
 		
-        public override void ViewDidUnload ()
+        public override void DidReceiveMemoryWarning ()
         {
             UnregisterKeyboardNotifications();
-            base.ViewDidUnload ();
-			
+            ViewModel.Unload ();
+            base.DidReceiveMemoryWarning ();
+
         }
 
         protected void DismissKeyboardOnReturn (params UITextField[] textFields)

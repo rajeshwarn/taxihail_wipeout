@@ -160,6 +160,34 @@
 	        "Color": { "Red": "0", "Green": "0", "Blue": "0", "Alpha": "76", "Location": "1"  }
         }
 
+    },
+    {
+      "Key": "SegmentedLightBlue",
+      "Colors": [  { "Red": "240", "Green": "240", "Blue": "240", "Alpha": "255",  "Location": "0"  } ,
+                { "Red": "222", "Green": "222", "Blue": "222", "Alpha": "255",  "Location": "0.93"  } ,
+                { "Red": "200", "Green": "200", "Blue": "200", "Alpha": "255",  "Location": "1"  } ],
+          "SelectedColors": [  { "Red": "41", "Green": "90", "Blue": "178", "Alpha": "255",  "Location": "0"  } ,
+                { "Red": "64", "Green": "133", "Blue": "236", "Alpha": "255",  "Location": "0.4"  },
+                { "Red": "82", "Green": "146", "Blue": "241", "Alpha": "255",  "Location": "0.7"  },
+                { "Red": "118", "Green": "173", "Blue": "252", "Alpha": "255",  "Location": "1"  } ],
+      "StrokeColor": {  "Red": "155", "Green": "155",  "Blue": "155", "Alpha": "255",  "Location": "1"  },
+      "SelectedStrokeColor": {  "Red": "4", "Green": "49",  "Blue": "74", "Alpha": "255",  "Location": "1"  },
+      "TextColor": {  "Red": "112", "Green": "112",  "Blue": "112", "Alpha": "255",  "Location": "1"  },
+      "SelectedTextColor": {  "Red": "255", "Green": "255",  "Blue": "255", "Alpha": "255",  "Location": "1"  },
+      "SelectedTextShadowColor": {  "Red": "0", "Green": "0",  "Blue": "0", "Alpha": "128",  "Location": "1"  },
+      "InnerShadow": {
+        "BlurRadius": "1",
+        "OffsetX": "0",
+        "OffsetY": "1",
+        "Color": { "Red": "255", "Green": "255", "Blue": "255", "Alpha": "128", "Location": "1"  }
+      },
+
+      "DropShadow": {
+        "BlurRadius": "1",
+        "OffsetX": "0",
+        "OffsetY": "0",
+        "Color": { "Red": "0", "Green": "0", "Blue": "0", "Alpha": "76", "Location": "1"  }
+      }
     }                              
   ]
 }

@@ -25,6 +25,10 @@ namespace apcurium.MK.Booking.ReadModel
         public bool IsAdmin { get; set; }
         
         public BookingSettingsDetails Settings { get; set; }
+
+        public Guid? DefaultCreditCard { get; set; }
+        public double? DefaultTipAmount { get; set; }
+        public double? DefaultTipPercent { get; set; } 
         
     }
 }

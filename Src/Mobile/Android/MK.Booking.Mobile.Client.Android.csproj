@@ -97,13 +97,8 @@
     <Compile Include="Activities\Setting\AboutActivity.cs" />
     <Compile Include="Activities\ShowDialogActivity.cs" />
     <Compile Include="Activities\TutorialActivity.cs" />
-    <Compile Include="Adapters\GroupedOrderListAdapter.cs" />
     <Compile Include="Adapters\GroupedLocationListAdapter.cs" />
-    <Compile Include="Adapters\IconActionAdapter.cs" />
     <Compile Include="Adapters\LocationListAdapter.cs" />
-    <Compile Include="Adapters\OrderListAdapter.cs" />
-    <Compile Include="Adapters\RatingListAdapter.cs" />
-    <Compile Include="Adapters\TitleSubTitleListItemController.cs" />
     <Compile Include="Animations\ResizeAnimation.cs" />
     <Compile Include="Animations\SlideAnimation.cs" />
     <Compile Include="AppContext.cs" />
@@ -117,6 +112,7 @@
     <Compile Include="Controls\EditTextSpinner.cs" />
     <Compile Include="Controls\HeaderedLayout.cs" />
     <Compile Include="Controls\HorizontalPager.cs" />
+    <Compile Include="Controls\PictureListViewCell.cs" />
     <Compile Include="Controls\TextButton.cs" />
     <Compile Include="Controls\IconActionControl.cs" />
     <Compile Include="Controls\TouchMap.cs" />
@@ -158,9 +154,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Activities\Account\SignUpActivity.cs" />
     <Compile Include="Activities\SplashActivity.cs" />
-    <AndroidResource Include="Resources\Layout\TitleSubTitleListItem.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\Layout\IconActionLayout.axml" />
     <AndroidResource Include="Resources\Drawable\cell_bottom_full_state.xml">
       <SubType>Designer</SubType>
@@ -244,6 +237,27 @@
     </AndroidResource>
     <AndroidResource Include="Resources\Drawable\right_arrow_light.png" />
     <AndroidResource Include="Resources\drawable-hdpi\right_arrow_light.png" />
+    <Compile Include="Activities\Setting\CreditCardsListActivity.cs" />
+    <Compile Include="Activities\Setting\CreditCardAddActivity.cs" />
+    <AndroidResource Include="Resources\Layout\View_CreditCardsList.axml" />
+    <AndroidResource Include="Resources\Layout\View_CreditCardAdd.axml" />
+    <AndroidResource Include="Resources\Drawable\amex.png" />
+    <AndroidResource Include="Resources\Drawable\mastercard.png" />
+    <AndroidResource Include="Resources\Drawable\visa.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\amex.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\visa.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\mastercard.png" />
+    <Compile Include="Controls\BindableRadioButton.cs" />
+    <AndroidResource Include="Resources\Layout\SpinnerTextWithImage.axml" />
+    <Compile Include="Controls\CreditCardButton.cs" />
+    <AndroidResource Include="Resources\Layout\Control_CreditCardButton.axml" />
+    <AndroidResource Include="Resources\Drawable\segmented_button_left.xml" />
+    <AndroidResource Include="Resources\Drawable\segmented_button_right.xml" />
+    <AndroidResource Include="Resources\Layout\View_BookPaymentSettings.axml" />
+    <Compile Include="Activities\Book\BookPaymentSettingsActivity.cs" />
+    <AndroidResource Include="Resources\Drawable\segmented_button_text_color.xml" />
+    <AndroidResource Include="Resources\Drawable\add_btn.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\add_btn.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
@@ -311,9 +325,6 @@
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\View_HistoryList.axml">
       <SubType>AndroidResource</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\Layout\TitleListItem.axml">
-      <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\View_Book.axml">
       <SubType>Designer</SubType>
@@ -437,7 +448,9 @@
     <AndroidResource Include="Resources\Drawable\target_state.xml" />
     <AndroidResource Include="Resources\drawable-hdpi\backPickupDestination.png" />
     <AndroidResource Include="Resources\drawable-hdpi\bookLaterIcon.png" />
-    <AndroidResource Include="Resources\Drawable\backPickupDestination.png" />
+    <AndroidResource Include="Resources\Drawable\backPickupDestination.png">
+      <DependentUpon>background.png</DependentUpon>
+    </AndroidResource>
     <AndroidResource Include="Resources\Drawable\bookLaterIcon.png" />
     <AndroidResource Include="Resources\Values\MvxBindingAttributes.xml" />
     <AndroidResource Include="Resources\Drawable\navBar.png" />
@@ -516,6 +529,8 @@
     <AndroidResource Include="Resources\Drawable\tutorial_screen06.png" />
     <AndroidResource Include="Resources\Drawable\tutorial_screen07.png" />
     <AndroidResource Include="Resources\Drawable\tutorial_screen08.png" />
+    <AndroidResource Include="Resources\Drawable\delete_card_btn.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\delete_card_btn.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -595,6 +610,11 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\TutorialListItem.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Layout\CreditCardListItem.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>

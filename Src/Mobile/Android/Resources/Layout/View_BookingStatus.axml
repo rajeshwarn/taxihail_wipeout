@@ -16,16 +16,16 @@
             android:layout_height="fill_parent"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:paddingTop="5dip">
+            android:paddingTop="7dip">
             <LinearLayout
                 android:id="@+id/statusInfo"
                 android:orientation="horizontal"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="5dip">
+                android:paddingBottom="7dip">
                 <TextView
                     android:id="@+id/confirmationNo"
-                    style="@style/ListItemValue"
+                    style="@style/BigTitleTextBlack"
                     android:text="@string/StatusDescription"
                     android:layout_width="match_parent"
                     android:gravity="center_horizontal"
@@ -54,8 +54,8 @@
                     android:background="#99000000"
                     android:gravity="center_horizontal|center_vertical">
                     <TextView
-                        android:layout_marginTop="2dip"
-                        android:layout_marginBottom="2dip"
+                        android:layout_marginTop="8dip"
+                        android:layout_marginBottom="8dip"
                         android:id="@+id/statusInfoText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -84,7 +84,7 @@
                         android:id="@+id/CancelBtn"
                         style="@style/ButtonText"
                         android:background="@drawable/red_button"
-                        android:layout_width="wrap_content"
+                        android:layout_width="180dip"
                         android:layout_height="35dip"
                         android:layout_weight="0.5"
                         android:text="@string/StatusCancelButton"
@@ -99,16 +99,6 @@
                         android:layout_weight="0.5"
                         android:text="@string/StatusCallButton"
                         local:MvxBind="{&apos;Click&apos;: {&apos;Path&apos;: &apos;CallCompany&apos;}, &apos;Visibility&apos;:{&apos;Path&apos;:&apos;IsCallButtonVisible&apos;, &apos;Converter&apos;:&apos;Visibility&apos;}}" />
-                    <apcurium.mk.booking.mobile.client.controls.StyledButton
-                        local:ButtonStyle="Green"
-                        android:id="@+id/NewRideBtn"
-                        style="@style/ButtonText"
-                        android:background="@drawable/green_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="35dip"
-                        android:layout_weight="0.5"
-                        android:text="@string/StatusNewRideButton"
-                        local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;NewRide&apos;}}" />
                 </LinearLayout>
             </FrameLayout>
         </LinearLayout>

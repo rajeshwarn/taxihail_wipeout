@@ -231,9 +231,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			MessengerHub.Subscribe<OrderRated>(RefreshOrderStatus);
 		}
 
-        public override void OnViewLoaded ()
+		public override void Load ()
         {
-            base.OnViewLoaded ();
+			base.Load ();
             LoadOrder();
             LoadStatus();
         }

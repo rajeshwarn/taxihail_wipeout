@@ -14,13 +14,15 @@
             return this;
         },
         
-        onitemclick: function(e) {
-            e.preventDefault();
+        onitemclick: function (e) {
             var $item = $(e.currentTarget).closest('li');
             var route = $item.data().route;
-            $item.addClass('active').siblings().removeClass('active');
             
-            TaxiHail.app.navigate(route, { trigger: true });
+            if (route) {
+                e.preventDefault();
+                $item.addClass('active').siblings().removeClass('active');
+                TaxiHail.app.navigate(route, { trigger: true });
+            }
         }
     });
 }());

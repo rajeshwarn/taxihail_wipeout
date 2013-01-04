@@ -40,6 +40,8 @@ namespace apcurium.MK.Booking
 
             container.RegisterInstance<IPopularAddressDao>(new PopularAddressDao(() => container.Resolve<BookingDbContext>()));
 
+            container.RegisterInstance<ICreditCardDao>(new CreditCardDao(() => container.Resolve<BookingDbContext>()));
+
             container.RegisterInstance<IPasswordService>(new PasswordService());
             container.RegisterInstance<ITemplateService>(new TemplateService());
             container.RegisterInstance<IEmailSender>(new EmailSender(container.Resolve<IConfigurationManager>()));
@@ -53,7 +55,7 @@ namespace apcurium.MK.Booking
         {
             AutoMapper.Mapper.CreateMap<UpdateBookingSettings, BookingSettings>();
             AutoMapper.Mapper.CreateMap<CreateOrder.BookingSettings, BookingSettings>();
-            AutoMapper.Mapper.CreateMap<CreateOrder.BookingSettings, BookingSettings>();
+            AutoMapper.Mapper.CreateMap<CreateOrder.PaymentInformation, PaymentInformation>();
             AutoMapper.Mapper.CreateMap<Address, AddressDetails>();
 
             AutoMapper.Mapper.CreateMap<EmailSender.SmtpConfiguration, SmtpClient>()
@@ -69,7 +71,14 @@ namespace apcurium.MK.Booking
             AutoMapper.Mapper.CreateMap<Address, PopularAddressDetails>();
             AutoMapper.Mapper.CreateMap<PopularAddressDetails, Address>();
             AutoMapper.Mapper.CreateMap<TariffDetail, Tariff>();
+            AutoMapper.Mapper.CreateMap<CreditCardAdded, CreditCardDetails>()
+                .ForMember(p => p.AccountId, opt => opt.MapFrom(m => m.SourceId));
 
+
+            AutoMapper.Mapper.CreateMap<OrderDetail, OrderDetailWithAccount>();
+            AutoMapper.Mapper.CreateMap<AccountDetail, OrderDetailWithAccount>()
+                .ForMember(d => d.Name, opt => opt.MapFrom(m => m.Settings.Name))
+                .ForMember(d => d.Phone, opt => opt.MapFrom(m => m.Settings.Phone));
         }
 
         private static void RegisterEventHandlers(IUnityContainer container)
@@ -80,6 +89,7 @@ namespace apcurium.MK.Booking
             container.RegisterType<IEventHandler, TariffDetailsGenerator>("TariffDetailsGenerator");
             container.RegisterType<IEventHandler, RatingTypeDetailsGenerator>("RatingTypeDetailsGenerator");
             container.RegisterType<IEventHandler, AppSettingsGenerator>("AppSettingsGenerator");
+            container.RegisterType<IEventHandler, CreditCardDetailsGenerator>("CreditCardDetailsGenerator");
         }
 
         private void RegisterCommandHandlers(IUnityContainer container)

@@ -5,7 +5,7 @@ using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.Interfaces.Views;
 using Cirrious.MvvmCross.Views;
 using SocialNetworks.Services;
-
+using apcurium.MK.Booking.Mobile.Data;
 #if IOS
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Common.ServiceClient.Web;
@@ -32,6 +32,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         private const string _favoriteAddressesCacheKey = "Account.FavoriteAddresses";
         private const string _historyAddressesCacheKey = "Account.HistoryAddresses";
+        private const string _creditCardsCacheKey = "Account.CreditCards";
+
         private static ReferenceData _refData;
 
         public void EnsureListLoaded ()
@@ -60,6 +62,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             _refData = null;
             TinyIoCContainer.Current.Resolve<ICacheService> ().Clear (_historyAddressesCacheKey);
             TinyIoCContainer.Current.Resolve<ICacheService> ().Clear (_favoriteAddressesCacheKey);
+            TinyIoCContainer.Current.Resolve<ICacheService> ().Clear (_creditCardsCacheKey);
             TinyIoCContainer.Current.Resolve<ICacheService> ().Clear ("AuthenticationData");
             TinyIoCContainer.Current.Resolve<ICacheService> ().ClearAll ();
             TinyIoCContainer.Current.Resolve<IAppSettings> ().ServiceUrl = serverUrl; 
@@ -249,7 +252,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 
-        public void UpdateSettings (BookingSettings settings)
+        public void UpdateSettings (BookingSettings settings, Guid? creditCardId, double? tipAmount, double? tipPercent)
         {
             var bsr = new BookingSettingsRequest
             {
@@ -257,7 +260,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 Phone = settings.Phone,
                 VehicleTypeId = settings.VehicleTypeId,
                 ChargeTypeId = settings.ChargeTypeId,
-                ProviderId = settings.ProviderId
+                ProviderId = settings.ProviderId,
+                DefaultCreditCard = creditCardId,
+                DefaultTipAmount = tipAmount,
+                DefaultTipPercent = tipPercent
             };
 
             QueueCommand<IAccountServiceClient> (service =>
@@ -267,6 +273,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             });
             var account = CurrentAccount;
             account.Settings = settings;
+            account.DefaultCreditCard = creditCardId;
+            account.DefaultTipAmount = tipAmount;
+            account.DefaultTipPercent = tipPercent;
             //Set to update the cache
             CurrentAccount = account;
 
@@ -451,9 +460,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             }
             );
-
-
-
         }
 
         public IEnumerable<ListItem> GetCompaniesList ()
@@ -468,11 +474,78 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return _refData.VehiclesList;
         }
 
+
+
         public IEnumerable<ListItem> GetPaymentsList ()
         {
             EnsureListLoaded ();
+            //add credit card on file if not already included and feature enabled
+            if (TinyIoCContainer.Current.Resolve<IAppSettings> ().PayByCreditCardEnabled
+                && _refData.PaymentsList != null
+                && _refData.PaymentsList.None(x => x.Id == ReferenceData.CreditCardOnFileType)) {
+
+                _refData.PaymentsList.Add(new ListItem
+                          { 
+                            Id = ReferenceData.CreditCardOnFileType, 
+                            Display =  TinyIoCContainer.Current.Resolve<IAppResource> ().GetString ("ChargeTypeCreditCardFile")
+                          });
+            }
+
             return _refData.PaymentsList;
         }
+
+        public IEnumerable<CreditCardDetails> GetCreditCards()
+        {
+            var cache = TinyIoCContainer.Current.Resolve<ICacheService> ();
+            var cached = cache.Get<CreditCardDetails[]> (_creditCardsCacheKey);
+            
+            if (cached != null)
+            {
+                return cached;
+            }
+            else
+            {
+                IEnumerable<CreditCardDetails> result = new CreditCardDetails[0];
+                UseServiceClient<IAccountServiceClient> (service =>
+                {
+                    result = service.GetCreditCards ();
+                });
+                cache.Set (_creditCardsCacheKey, result.ToArray ());
+                return result;
+            }
+        }
+
+        public void RemoveCreditCard(Guid creditCardId)
+        {
+            UseServiceClient<IAccountServiceClient>(client =>
+            {
+                client.RemoveCreditCard(creditCardId);
+            }, ex => { throw ex; });
+            TinyIoCContainer.Current.Resolve<ICacheService>().Clear(_creditCardsCacheKey);
+        }
+
+        public void AddCreditCard (CreditCardInfos creditCard)
+        {
+            var creditAuthorizationService = TinyIoCContainer.Current.Resolve<ICreditCardAuthorizationService>();
+
+            creditCard.Token = creditAuthorizationService.Authorize(creditCard);
+
+            var request = new CreditCardRequest
+            {
+                CreditCardCompany = creditCard.CreditCardCompany,
+                CreditCardId = creditCard.CreditCardId,
+                FriendlyName = creditCard.FriendlyName,
+                Last4Digits = creditCard.Last4Digits,
+                Token = creditCard.Token
+            };
+
+            UseServiceClient<IAccountServiceClient> (client => {               
+                client.AddCreditCard(request); 
+                TinyIoCContainer.Current.Resolve<ICacheService>().Clear(_creditCardsCacheKey);
+            }, ex => { throw ex; });  
+        }
+
+
     }
 }
 

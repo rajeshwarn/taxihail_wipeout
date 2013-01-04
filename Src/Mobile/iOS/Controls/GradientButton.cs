@@ -31,12 +31,15 @@ namespace apcurium.MK.Booking.Mobile.Client
 		private float[] _selectedColorLocations = new float[] { 0f, 0.93f, 1f };
 		private float _strokeLineWidth = 1f;
         private UIColor _strokeLineColor = UIColor.FromRGB(155, 155, 155) ;
+        private UIColor _selectedStrokeLineColor;
         private float _cornerRadius = AppStyle.ButtonCornerRadius;
         private string _title = "";
         private CGColor _titleColor = UIColor.FromRGB(101, 101, 101).CGColor;
+        private CGColor _selectedTitleColor;
         private UIColor _highlightedColor = UIColor.FromRGBA(0f, 0f, 0f, 0.6f);
         private UIFont _titleFont = AppStyle.GetButtonFont( AppStyle.ButtonFontSize ) ;       
         private UIColor _textShadowColor = null;
+        private UIColor _selectedTextShadowColor = null;
         private UIImage _image;
         private UIImage _rightImage;
         private UIImage _selectedImage;
@@ -45,12 +48,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public GradientButton(IntPtr handle) : base(  handle )
         {
-            BackgroundColor = UIColor.Clear;
-            Layer.MasksToBounds = false;
-            ClipsToBounds = false;
-            SetTitleColor( UIColor.Clear, UIControlState.Normal );
-            SetTitleColor( UIColor.Clear, UIControlState.Highlighted);
-            SetTitleColor( UIColor.Clear, UIControlState.Selected );
+            Initialize();
+        }
+
+        public GradientButton(RectangleF rect): base(rect)
+        {
+            Initialize();
         }
 
 
@@ -68,18 +71,24 @@ namespace apcurium.MK.Booking.Mobile.Client
 			_strokeLineColor = UIColor.FromRGBA( buttonStyle.StrokeColor.Red, buttonStyle.StrokeColor.Green, buttonStyle.StrokeColor.Blue, buttonStyle.StrokeColor.Alpha);
             _strokeLineWidth = buttonStyle.StrokeLineWidth;
             _cornerRadius = cornerRadius;
-            _title = title;
+            _title = title ?? string.Empty;
             _titleColor = UIColor.FromRGBA( buttonStyle.TextColor.Red, buttonStyle.TextColor.Green, buttonStyle.TextColor.Blue, buttonStyle.TextColor.Alpha).CGColor;
 			_titleFont = titleFont;
 			_innerShadow = buttonStyle.InnerShadow;
 			_dropShadow = buttonStyle.DropShadow;
-            BackgroundColor = UIColor.Clear;
-            Layer.MasksToBounds = false;
-            ClipsToBounds = false;
             if (image != null)
             {
                 _image = UIImage.FromFile(image);
             }
+
+            Initialize();
+        }
+
+        private void Initialize ()
+        {
+            BackgroundColor = UIColor.Clear;
+            Layer.MasksToBounds = false;
+            ClipsToBounds = false;
             SetTitleColor( UIColor.Clear, UIControlState.Normal );
             SetTitleColor( UIColor.Clear, UIControlState.Highlighted);
             SetTitleColor( UIColor.Clear, UIControlState.Selected );
@@ -149,6 +158,16 @@ namespace apcurium.MK.Booking.Mobile.Client
             set
             {
                 _strokeLineColor = value;
+                SetNeedsDisplay();
+            }
+        }
+
+        public UIColor SelectedStrokeLineColor
+        {
+            get{ return _selectedStrokeLineColor; }
+            set
+            {
+                _selectedStrokeLineColor = value;
                 SetNeedsDisplay();
             }
         }
@@ -223,6 +242,16 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
         }
 
+        public CGColor SelectedTitleColour
+        {
+            get{ return _selectedTitleColor;}
+            set
+            {
+                _selectedTitleColor = value;
+                SetNeedsDisplay();
+            }
+        }
+
 
         public UIFont TitleFont
         {
@@ -240,6 +269,16 @@ namespace apcurium.MK.Booking.Mobile.Client
             set
             {
                 _textShadowColor = value;
+                SetNeedsDisplay();
+            }
+        }
+
+        public UIColor SelectedTextShadowColor
+        {
+            get{ return _selectedTextShadowColor;}
+            set
+            {
+                _selectedTextShadowColor = value;
                 SetNeedsDisplay();
             }
         }
@@ -284,7 +323,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         public override void SetTitle(string title, UIControlState forState)
         {
             SetNeedsDisplay();
-            _title = title;
+            _title = title ?? string.Empty;
         }
 
         public override void Draw (RectangleF rect)
@@ -303,99 +342,17 @@ namespace apcurium.MK.Booking.Mobile.Client
             rect.X += _dropShadow != null && _dropShadow.OffsetX < 0 ? Math.Abs (_dropShadow.OffsetX) : 0;
             rect.Y += _dropShadow != null && _dropShadow.OffsetY < 0 ? Math.Abs (_dropShadow.OffsetY) : 0;
 
+
             var roundedRectanglePath = UIBezierPath.FromRoundedRect (rect, RoundedCorners, new SizeF (_cornerRadius, _cornerRadius));
-            context.SaveState ();
-            if (_dropShadow != null) {
-                context.SetShadowWithColor (new SizeF (_dropShadow.OffsetX, _dropShadow.OffsetY), _dropShadow.BlurRadius, UIColor.FromRGBA (_dropShadow.Color.Red, _dropShadow.Color.Green, _dropShadow.Color.Blue, _dropShadow.Color.Alpha).CGColor);
-            }
 
-            context.BeginTransparencyLayer (null);
-            roundedRectanglePath.AddClip ();
-            context.DrawLinearGradient (newGradient, new PointF (rect.X + (rect.Width / 2.0f), rect.Y), new PointF (rect.X + (rect.Width / 2.0f), rect.Y + rect.Height), 0);
-            context.EndTransparencyLayer ();
-            context.RestoreState ();
 
-            if (_innerShadow != null) {
-                var roundedRectangleBorderRect = roundedRectanglePath.Bounds;
-                roundedRectangleBorderRect.Inflate (_innerShadow.BlurRadius, _innerShadow.BlurRadius);
-                roundedRectangleBorderRect.Offset (-_innerShadow.OffsetX, -_innerShadow.OffsetY);
-                roundedRectangleBorderRect = RectangleF.Union (roundedRectangleBorderRect, roundedRectanglePath.Bounds);
-                roundedRectangleBorderRect.Inflate (1, 1);
+            DrawBackground (rect, context, newGradient, roundedRectanglePath);
+            DrawInnerShadow (context, roundedRectanglePath);
+            DrawStroke (context, roundedRectanglePath, rect);
+            var imageRect = DrawLeftImage (rect);
+            var rightImageRect = DrawRightImage (rect);
+            DrawText (rect, context, imageRect, rightImageRect);
 
-                var roundedRectangleNegativePath = UIBezierPath.FromRect (roundedRectangleBorderRect);
-                roundedRectangleNegativePath.AppendPath (roundedRectanglePath);
-                roundedRectangleNegativePath.UsesEvenOddFillRule = true;
-
-                context.SaveState ();
-                {
-                    var xOffset = _innerShadow.OffsetX + (float)Math.Round (roundedRectangleBorderRect.Width);
-                    var yOffset = _innerShadow.OffsetY;
-                    context.SetShadowWithColor (
-                        new SizeF (xOffset + (xOffset >= 0 ? 0.1f : -0.1f), yOffset + (yOffset >= 0 ? 0.1f : -0.1f)),
-                        _innerShadow.BlurRadius,
-                        UIColor.FromRGBA (_innerShadow.Color.Red, _innerShadow.Color.Green, _innerShadow.Color.Blue, _innerShadow.Color.Alpha).CGColor);
-
-                    roundedRectanglePath.AddClip ();
-                    var transform = CGAffineTransform.MakeTranslation (-(float)Math.Round (roundedRectangleBorderRect.Width), 0);
-                    roundedRectangleNegativePath.ApplyTransform (transform);
-                    UIColor.Gray.SetFill ();
-                    roundedRectangleNegativePath.Fill ();
-                }
-                context.RestoreState ();
-            }
-
-            context.SaveState ();
-            roundedRectanglePath.LineWidth = _strokeLineWidth;
-            _strokeLineColor.SetStroke ();
-            roundedRectanglePath.AddClip ();
-            context.AddPath (roundedRectanglePath.CGPath);
-            context.StrokePath ();
-            context.RestoreState ();
-
-            RectangleF imageRect = new RectangleF ();
-            if ((_image != null) && (!Selected || (_selectedImage == null))) {
-                var emptySpaceX = rect.Width - _image.Size.Width;
-                var emptySpaceY = rect.Height - _image.Size.Height;
-                if (_title.IsNullOrEmpty ()) {
-                    imageRect = new RectangleF (emptySpaceX / 2, emptySpaceY / 2, rect.Width - emptySpaceX, rect.Height - emptySpaceY);
-                } else {
-                    imageRect = new RectangleF (ContentEdgeInsets.Left + 3, emptySpaceY / 2, rect.Width - emptySpaceX, rect.Height - emptySpaceY);
-                }
-                                               
-                _image.Draw (imageRect, CGBlendMode.Normal, 1f);
-            } else if (Selected && (_selectedImage != null)) {
-                var emptySpaceX = rect.Width - _selectedImage.Size.Width;
-                var emptySpaceY = rect.Height - _selectedImage.Size.Height;
-                
-                imageRect = new RectangleF (emptySpaceX / 2, emptySpaceY / 2, rect.Width - emptySpaceX, rect.Height - emptySpaceY);                               
-                _selectedImage.Draw (imageRect, CGBlendMode.Normal, 1f);
-            }
-
-            if (_rightImage != null) {
-                var emptySpaceX = rect.Width - _rightImage.Size.Width;
-                var emptySpaceY = rect.Height - _rightImage.Size.Height;
-                var rightImageRect = new RectangleF (emptySpaceX - ContentEdgeInsets.Right, emptySpaceY / 2, _rightImage.Size.Width, _rightImage.Size.Height);
-                
-                _rightImage.Draw (rightImageRect, CGBlendMode.Normal, 1f);
-            }
-
-            context.SaveState ();
-            context.SelectFont (_titleFont.Name, _titleFont.PointSize, CGTextEncoding.MacRoman);
-            context.SetTextDrawingMode (CGTextDrawingMode.Fill);
-            context.SetStrokeColor (_titleColor);
-            if (_textShadowColor != null) {
-                context.SetShadowWithColor (new SizeF (0f, -0.5f), 0.5f, _textShadowColor.CGColor);
-            }
-            context.SetFillColor (_titleColor);
-            context.TextMatrix = new CGAffineTransform (1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f);
-            var titleSize = ((NSString)_title).StringSize (_titleFont);
-
-            if (HorizontalAlignment == UIControlContentHorizontalAlignment.Left) {
-                context.ShowTextAtPoint (ContentEdgeInsets.Left + imageRect.Left + imageRect.Width + 10, rect.GetMidY () + (_titleFont.PointSize / 3), _title);
-            } else {
-                context.ShowTextAtPoint (((rect.Width - imageRect.Width) / 2) - (titleSize.Width / 2) + imageRect.Right, rect.GetMidY () + (_titleFont.PointSize / 3), _title);
-            }
-            context.RestoreState();
 
             if (_pressed)
             {
@@ -408,6 +365,125 @@ namespace apcurium.MK.Booking.Mobile.Client
                 context.FillRect(insideRect);
                 context.RestoreState();
             }
+        }
+
+        RectangleF DrawLeftImage (RectangleF rect)
+        {
+            RectangleF imageRect = new RectangleF ();
+            if ((_image != null) && (!Selected || (_selectedImage == null))) {
+                var emptySpaceX = rect.Width - _image.Size.Width;
+                var emptySpaceY = rect.Height - _image.Size.Height;
+                if (_title.IsNullOrEmpty ()) {
+                    imageRect = new RectangleF (emptySpaceX / 2, emptySpaceY / 2, rect.Width - emptySpaceX, rect.Height - emptySpaceY);
+                }
+                else {
+                    imageRect = new RectangleF (ContentEdgeInsets.Left + 3, emptySpaceY / 2, rect.Width - emptySpaceX, rect.Height - emptySpaceY);
+                }
+                _image.Draw (imageRect, CGBlendMode.Normal, 1f);
+            }
+            else
+                if (Selected && (_selectedImage != null)) {
+                    var emptySpaceX = rect.Width - _selectedImage.Size.Width;
+                    var emptySpaceY = rect.Height - _selectedImage.Size.Height;
+                    imageRect = new RectangleF (emptySpaceX / 2, emptySpaceY / 2, rect.Width - emptySpaceX, rect.Height - emptySpaceY);
+                    _selectedImage.Draw (imageRect, CGBlendMode.Normal, 1f);
+                }
+            return imageRect;
+        }
+
+        RectangleF DrawRightImage (RectangleF rect)
+        {
+            var imageRect = new RectangleF();
+            if (_rightImage != null) {
+                var emptySpaceX = rect.Width - _rightImage.Size.Width;
+                var emptySpaceY = rect.Height - _rightImage.Size.Height;
+                imageRect = new RectangleF (emptySpaceX - ContentEdgeInsets.Right, emptySpaceY / 2, _rightImage.Size.Width, _rightImage.Size.Height);
+                _rightImage.Draw (imageRect, CGBlendMode.Normal, 1f);
+            }
+            return imageRect;
+        }
+
+        protected virtual void DrawText (RectangleF rect, CGContext context, RectangleF imageRect, RectangleF rightImageRect)
+        {
+            context.SaveState ();
+            var data = NSString.FromData(_title, NSStringEncoding.UTF8).Encode(NSStringEncoding.MacOSRoman);
+            byte[] dataBytes = new byte[data.Length];            
+            System.Runtime.InteropServices.Marshal.Copy(data.Bytes, dataBytes, 0, Convert.ToInt32(data.Length));
+
+            context.SelectFont (_titleFont.Name, _titleFont.PointSize, CGTextEncoding.MacRoman);
+            context.SetTextDrawingMode (CGTextDrawingMode.Fill);
+            var textColor = this.Selected ? (_selectedTitleColor ?? _titleColor) : _titleColor;
+            var shadowColor = this.Selected ? _selectedTextShadowColor : _textShadowColor;
+            context.SetStrokeColor (textColor);
+            if (shadowColor != null) {
+                context.SetShadowWithColor (new SizeF (0f, -0.5f), 0.5f, shadowColor.CGColor);
+            }
+            context.SetFillColor (textColor);
+            context.TextMatrix = new CGAffineTransform (1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f);
+            var titleSize = ((NSString)_title).StringSize (_titleFont);
+            if (HorizontalAlignment == UIControlContentHorizontalAlignment.Left) {
+                context.ShowTextAtPoint (ContentEdgeInsets.Left + imageRect.Left + imageRect.Width + 10, rect.GetMidY () + (_titleFont.PointSize / 3), dataBytes);
+
+            } else {
+                context.ShowTextAtPoint (((rect.Width - imageRect.Width) / 2) - (titleSize.Width / 2) + imageRect.Right, rect.GetMidY () + (_titleFont.PointSize / 3), dataBytes);
+            }
+            context.RestoreState ();
+
+            if (this.Selected) {
+            }
+        }
+
+        void DrawInnerShadow (CGContext context, UIBezierPath roundedRectanglePath)
+        {
+            if (_innerShadow != null) {
+                var roundedRectangleBorderRect = roundedRectanglePath.Bounds;
+                roundedRectangleBorderRect.Inflate (_innerShadow.BlurRadius, _innerShadow.BlurRadius);
+                roundedRectangleBorderRect.Offset (-_innerShadow.OffsetX, -_innerShadow.OffsetY);
+                roundedRectangleBorderRect = RectangleF.Union (roundedRectangleBorderRect, roundedRectanglePath.Bounds);
+                roundedRectangleBorderRect.Inflate (1, 1);
+                var roundedRectangleNegativePath = UIBezierPath.FromRect (roundedRectangleBorderRect);
+                roundedRectangleNegativePath.AppendPath (roundedRectanglePath);
+                roundedRectangleNegativePath.UsesEvenOddFillRule = true;
+                context.SaveState ();
+                {
+                    var xOffset = _innerShadow.OffsetX + (float)Math.Round (roundedRectangleBorderRect.Width);
+                    var yOffset = _innerShadow.OffsetY;
+                    context.SetShadowWithColor (new SizeF (xOffset + (xOffset >= 0 ? 0.1f : -0.1f), yOffset + (yOffset >= 0 ? 0.1f : -0.1f)), _innerShadow.BlurRadius, UIColor.FromRGBA (_innerShadow.Color.Red, _innerShadow.Color.Green, _innerShadow.Color.Blue, _innerShadow.Color.Alpha).CGColor);
+                    roundedRectanglePath.AddClip ();
+                    var transform = CGAffineTransform.MakeTranslation (-(float)Math.Round (roundedRectangleBorderRect.Width), 0);
+                    roundedRectangleNegativePath.ApplyTransform (transform);
+                    UIColor.Gray.SetFill ();
+                    roundedRectangleNegativePath.Fill ();
+                }
+                context.RestoreState ();
+            }
+        }
+
+        void DrawBackground (RectangleF rect, CGContext context, CGGradient newGradient, UIBezierPath roundedRectanglePath)
+        {
+            context.SaveState ();
+            if (_dropShadow != null) {
+                context.SetShadowWithColor (new SizeF (_dropShadow.OffsetX, _dropShadow.OffsetY), _dropShadow.BlurRadius, UIColor.FromRGBA (_dropShadow.Color.Red, _dropShadow.Color.Green, _dropShadow.Color.Blue, _dropShadow.Color.Alpha).CGColor);
+            }
+
+            context.BeginTransparencyLayer (null);
+            roundedRectanglePath.AddClip ();
+            context.DrawLinearGradient (newGradient, new PointF (rect.X + (rect.Width / 2.0f), rect.Y), new PointF (rect.X + (rect.Width / 2.0f), rect.Y + rect.Height), 0);
+            context.EndTransparencyLayer ();
+            context.RestoreState ();
+        }
+
+        protected virtual void DrawStroke (CGContext context, UIBezierPath roundedRectanglePath, RectangleF rect)
+        {
+            context.SaveState ();
+
+            roundedRectanglePath.LineWidth = _strokeLineWidth;
+            var strokeLineColor = Selected ? (_selectedStrokeLineColor ?? _strokeLineColor) : _strokeLineColor;
+            strokeLineColor.SetStroke ();
+            roundedRectanglePath.AddClip ();
+            context.AddPath (roundedRectanglePath.CGPath);
+            context.StrokePath ();
+            context.RestoreState ();
         }
     }
 }

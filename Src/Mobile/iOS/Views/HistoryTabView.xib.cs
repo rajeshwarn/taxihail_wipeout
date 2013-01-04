@@ -21,7 +21,7 @@ using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-	public partial class HistoryTabView : MvxBindingTouchViewController<HistoryViewModel>
+	public partial class HistoryTabView : BaseViewController<HistoryViewModel>
 	{
 
 		private const string CELLID = "HistoryCell";
@@ -93,12 +93,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			base.ViewWillAppear (animated);
 			NavigationController.NavigationBar.Hidden = false;
 		}
-
-        public override void DidReceiveMemoryWarning ()
-        {
-            base.DidReceiveMemoryWarning ();
-            ViewModel.OnViewUnloaded();
-        }
 	}
 }
 

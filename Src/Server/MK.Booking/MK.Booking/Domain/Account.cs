@@ -13,22 +13,26 @@ namespace apcurium.MK.Booking.Domain
     {
         private readonly IList<Guid> _favoriteAddresses = new List<Guid>();
         private string _confirmationToken;
+        private double? _defaultTipAmount;
+        private double? _defaultTipPercent;
+        private int _creditCardCount;
         protected Account(Guid id) : base(id)
         {
             base.Handles<AccountRegistered>(OnAccountRegistered);
-            base.Handles<AccountConfirmed>(OnAccountConfirmed);
-            base.Handles<AccountUpdated>(OnAccountUpdated);
+            base.Handles<AccountConfirmed>(NoAction);
+            base.Handles<AccountUpdated>(NoAction);
             base.Handles<FavoriteAddressAdded>(OnAddressAdded);
             base.Handles<FavoriteAddressRemoved>(OnAddressRemoved);
             base.Handles<FavoriteAddressUpdated>(OnAddressUpdated);
-            base.Handles<AccountPasswordReset>(OnAccountPasswordReset);
-            base.Handles<BookingSettingsUpdated>(OnBookingSettingsUpdated);
-            base.Handles<AccountPasswordUpdated>(OnAccountPasswordUpdated);
-            base.Handles<AddressRemovedFromHistory>(OnAddressRemoved);
-            base.Handles<AdminRightGranted>(OnAdminRightGranted);
+            base.Handles<AccountPasswordReset>(NoAction);
+            base.Handles<BookingSettingsUpdated>(NoAction);
+            base.Handles<AccountPasswordUpdated>(NoAction);
+            base.Handles<AddressRemovedFromHistory>(NoAction);
+            base.Handles<AdminRightGranted>(NoAction);
+            base.Handles<CreditCardAdded>(OnCreditCardAdded);
+            base.Handles<CreditCardRemoved>(OnCreditCardRemoved);
+            base.Handles<PaymentProfileUpdated>(OnPaymentProfileUpdated);
         }
-
-        
 
 
         public Account(Guid id, IEnumerable<IVersionedEvent> history)
@@ -180,6 +184,53 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
+        public void RemoveAddressFromHistory(Guid addressId)
+        {
+            this.Update(new AddressRemovedFromHistory() { AddressId = addressId });
+        }
+
+
+        public void AddCreditCard(string creditCardCompany, Guid creditCardId, string friendlyName, string last4Digits, string token)
+        {
+            this.Update(new CreditCardAdded
+            {
+                CreditCardCompany = creditCardCompany,
+                CreditCardId = creditCardId,
+                FriendlyName = friendlyName,
+                Last4Digits = last4Digits,
+                Token = token
+            });
+
+            // Automatically set first credit card as default
+            if (_creditCardCount == 1)
+            {
+                this.Update(new PaymentProfileUpdated
+                {
+                    DefaultCreditCard = creditCardId,
+                    DefaultTipAmount = _defaultTipAmount,
+                    DefaultTipPercent = _defaultTipPercent
+                });
+            }
+        }
+
+        public void RemoveCreditCard(Guid creditCardId)
+        {
+            this.Update(new CreditCardRemoved
+            {
+                CreditCardId = creditCardId
+            });
+        }
+
+        public void UpdatePaymentProfile(Guid? defaultCreditCard, double? defaultTipAmount, double? defaultTipPercent)
+        {
+            this.Update(new PaymentProfileUpdated
+            {
+                DefaultCreditCard = defaultCreditCard,
+                DefaultTipAmount = defaultTipAmount,
+                DefaultTipPercent = defaultTipPercent
+            });
+        }
+
         public void GrantAdminRight()
         {
             this.Update(new AdminRightGranted());
@@ -188,16 +239,6 @@ namespace apcurium.MK.Booking.Domain
         private void OnAccountRegistered(AccountRegistered @event)
         {
             _confirmationToken = @event.ConfirmationToken;
-        }
-
-        private void OnAccountConfirmed(AccountConfirmed @event)
-        {
-
-        }
-
-        private void OnAccountUpdated(AccountUpdated @event)
-        {
-
         }
 
         private void OnAddressAdded(FavoriteAddressAdded @event)
@@ -219,28 +260,27 @@ namespace apcurium.MK.Booking.Domain
 
         }
 
-        private void OnAccountPasswordReset(AccountPasswordReset obj)
+        private void OnCreditCardAdded(CreditCardAdded obj)
         {
-
-        }
-        
-        private void OnBookingSettingsUpdated(BookingSettingsUpdated obj)
-        {
+            _creditCardCount++;
         }
 
-        private void OnAccountPasswordUpdated(AccountPasswordUpdated obj)
+        private void OnCreditCardRemoved(CreditCardRemoved obj)
+        {
+            _creditCardCount = Math.Max(0, _creditCardCount - 1);
+        }
+
+        private void OnPaymentProfileUpdated(PaymentProfileUpdated @event)
+        {
+            this._defaultTipAmount = @event.DefaultTipAmount;
+            this._defaultTipPercent = @event.DefaultTipPercent;
+        }
+
+
+        private void NoAction<T>(T @event) where T : VersionedEvent
         {
             
         }
-        private void OnAddressRemoved(AddressRemovedFromHistory obj)
-        {
-
-        }
-
-        private void OnAdminRightGranted(AdminRightGranted obj)
-        {
-        }
-
 
         private static void ValidateFavoriteAddress(string friendlyName, string fullAddress, double latitude, double longitude)
         {
@@ -260,11 +300,6 @@ namespace apcurium.MK.Booking.Domain
             }
         }
 
-        public void RemoveAddressFromHistory(Guid addressId)
-        {
-            this.Update(new AddressRemovedFromHistory() { AddressId = addressId });
-        }
 
-        
     }
 }

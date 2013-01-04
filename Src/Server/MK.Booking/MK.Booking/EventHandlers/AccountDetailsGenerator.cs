@@ -15,7 +15,8 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<BookingSettingsUpdated>,
         IEventHandler<AccountPasswordReset>,
         IEventHandler<AccountPasswordUpdated>,
-        IEventHandler<AdminRightGranted>
+        IEventHandler<AdminRightGranted>,
+        IEventHandler<PaymentProfileUpdated>
     {
         private readonly Func<BookingDbContext> _contextFactory;
         private IConfigurationManager _configurationManager;
@@ -82,9 +83,6 @@ namespace apcurium.MK.Booking.EventHandlers
                 var account = context.Find<AccountDetail>(@event.SourceId);
                 account.IsConfirmed = true;
                 context.Save(account);
-                
-                //context.SaveChanges();
-
             }
         }
 
@@ -143,6 +141,18 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 var account = context.Find<AccountDetail>(@event.SourceId);
                 account.IsAdmin = true;
+                context.Save(account);
+            }
+        }
+
+        public void Handle(PaymentProfileUpdated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var account = context.Find<AccountDetail>(@event.SourceId);
+                account.DefaultCreditCard = @event.DefaultCreditCard;
+                account.DefaultTipAmount = @event.DefaultTipAmount;
+                account.DefaultTipPercent = @event.DefaultTipPercent;
                 context.Save(account);
             }
         }

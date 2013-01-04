@@ -5,11 +5,27 @@ using MonoTouch.Foundation;
 using MonoTouch.MessageUI;
 using System.IO;
 using Cirrious.MvvmCross.Touch.Interfaces;
+using MonoTouch.EventKit;
+using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
     public class PhoneService : IPhoneService
     {
+
+        private EKEventStore _eventStore;
+
+        public EKEventStore EventStore 
+        {
+            get {
+                if (_eventStore == null) 
+                {
+                    _eventStore = new EKEventStore ();
+                }
+                return _eventStore;
+            }
+        }
+
         public PhoneService ()
         {
         }
@@ -44,7 +60,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             mailComposer.SetToRecipients (new string[] { supportEmail  });
             mailComposer.SetMessageBody ("", false);
             mailComposer.SetSubject (supportEmail);
-            mailComposer.Finished += delegate(object mailsender, MFComposeResultEventArgs mfce) {
+            mailComposer.Finished += delegate(object mailsender, MFComposeResultEventArgs mfce) 
+            {
                 mailComposer.DismissModalViewControllerAnimated (true);
                 presenter.NativeModalViewControllerDisappearedOnItsOwn();
                 if (File.Exists (errorLogPath))
@@ -56,6 +73,51 @@ namespace apcurium.MK.Booking.Mobile.Client
             presenter.PresentModalViewController(mailComposer, true);
         }
 
+
+        #region IPhoneService implementation
+
+        public void AddEventToCalendarAndReminder (string title, string addInfo, string place, DateTime startDate, DateTime alertDate)
+        {
+
+            EventStore.RequestAccess (EKEntityType.Event,
+                                                  (bool granted, NSError e) => {
+                    if (granted)
+                    {
+                        EKEvent newEvent = EKEvent.FromStore ( EventStore );
+                        newEvent.AddAlarm ( EKAlarm.FromDate ( alertDate ) );
+                        newEvent.StartDate = startDate;
+                        newEvent.EndDate = startDate.AddHours(1);
+                        newEvent.Title = title;
+                        newEvent.Notes = addInfo ;
+                        newEvent.Calendar = EventStore.DefaultCalendarForNewEvents;
+                        NSError err = null;
+                        EventStore.SaveEvent ( newEvent, EKSpan.ThisEvent, out err );
+                        if (err != null) 
+                        {
+                            TinyIoC.TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Err Saving Event : " + err.ToString());
+                            return;
+                        } else 
+                        {
+                            TinyIoC.TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Event Saved,  ID: " + newEvent.EventIdentifier);
+                        }
+                    }
+                    else
+                    {
+                        TinyIoC.TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Cant save reminder. User Denied Access to Calendar Data");
+                    }
+            } );
+        }
+
+
+        #region IPhoneService implementation
+
+        public bool CanUseCalendarAPI ()
+        {
+            return true;
+        }
+
+        #endregion
+        #endregion
         #endregion
     }
 }

@@ -61,7 +61,7 @@
                 <Button
                     android:id="@+id/settingsCallCompany"
                     style="@style/BigTitleTextBlack"
-                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;Panel.Call&apos;}}"
+                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;Panel.Call&apos;},&apos;Visibility&apos;:{&apos;Path&apos;:&apos;Panel.CanCall&apos;,&apos;Converter&apos;:&apos;Visibility&apos;}}"
                     android:background="@drawable/cell_middle_button_state"
                     android:layout_width="fill_parent"
                     android:layout_height="40dip"
@@ -93,7 +93,7 @@
                     android:gravity="left|center_vertical" />
                 <Button
                     android:id="@+id/settingsSupport"
-                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;Panel.ReportProblem&apos;}}"
+                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;Panel.ReportProblem&apos;},&apos;Visibility&apos;:{&apos;Path&apos;:&apos;Panel.CanReportProblem&apos;,&apos;Converter&apos;:&apos;Visibility&apos;}}"
                     style="@style/BigTitleTextBlack"
                     android:background="@drawable/cell_middle_button_state"
                     android:layout_width="fill_parent"

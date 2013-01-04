@@ -66,6 +66,7 @@
     <Compile Include="Requests\Cmt\PreCogRequest.cs" />
     <Compile Include="Requests\ConfirmAccountRequest.cs" />
     <Compile Include="Requests\CreateOrder.cs" />
+    <Compile Include="Requests\CreditCardRequest.cs" />
     <Compile Include="Requests\CurrentAccount.cs" />
     <Compile Include="Requests\DirectionsRequest.cs" />
     <Compile Include="Requests\GeocodingRequest.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="Resources\Cmt\PreCogMapItem.cs" />
     <Compile Include="Resources\Cmt\PreCogMessage.cs" />
     <Compile Include="Resources\Cmt\PreCogResponse.cs" />
+    <Compile Include="Resources\CreditCardDetails.cs" />
     <Compile Include="Resources\DirectionInfo.cs" />
     <Compile Include="Resources\ErrorCode.cs" />
     <Compile Include="Resources\Order.cs" />
@@ -104,6 +106,8 @@
     <Compile Include="Resources\ReferenceData.cs" />
     <Compile Include="Resources\ApplicationInfo.cs" />
     <Compile Include="Security\AuthenticationData.cs" />
+    <Compile Include="Resources\PaymentSettings.cs" />
+    <Compile Include="Resources\DriverInfos.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

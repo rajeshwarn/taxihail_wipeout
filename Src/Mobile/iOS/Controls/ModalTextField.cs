@@ -7,7 +7,7 @@ using Cirrious.MvvmCross.Dialog.Touch.Dialog;
 using apcurium.MK.Common.Entity;
 using System.Collections.Generic;
 
-namespace apcurium.MK.Booking.Mobile.Client
+namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
     [Register("ModalTextField")]
     public class ModalTextField : TextFieldWithArrow
@@ -18,17 +18,23 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             Initialize();
         }
-        
-        public ModalTextField(RectangleF rect) : base( rect )
-        {
+
+        public ModalTextField(RectangleF rect) : base ( rect ) {
             Initialize();
         }
 
         private void Initialize() {
-            EditingDidBegin += HandleEditingDidBegin;
         }
 
-        void HandleEditingDidBegin (object sender, EventArgs e)
+        public override void WillMoveToSuperview (UIView newsuper)
+        {
+            base.WillMoveToSuperview (newsuper);
+
+            base.Button.TouchUpInside -= HandleTouchUpInside;
+            base.Button.TouchUpInside += HandleTouchUpInside;
+        }
+
+        void HandleTouchUpInside (object sender, EventArgs e)
         {
             var controller = this.FindViewController();
             if(controller == null) return;
@@ -41,27 +47,27 @@ namespace apcurium.MK.Booking.Mobile.Client
                 newDvc.View.BackgroundColor  = UIColor.FromRGB (230,230,230);
                 newDvc.TableView.BackgroundColor = UIColor.FromRGB (230,230,230);
                 newDvc.TableView.BackgroundView = new UIView{ BackgroundColor =  UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png")) }; 
-
+                controller.NavigationItem.BackBarButtonItem = new UIBarButtonItem(Resources.GetValue("BackButton"), UIBarButtonItemStyle.Bordered, null, null);
                 controller.NavigationController.PushViewController(newDvc, true);
             }
         }
 
-        public void Configure (string title, ListItem[] values, int selectedId, Action<ListItem> onItemSelected)
+        public void Configure<T>(string title, ListItem<T>[] values, T selectedId, Action<ListItem<T>> onItemSelected) where T: struct
         {
             int selected = 0;
             var section = new SectionWithBackground(title);
-            foreach (ListItem v in values)
+            foreach (var v in values)
             {
                 // Keep a reference to value in order for callbacks to work correctly
                 var value = v;
-                var item = new RadioElementWithId(value.Id, value.Display);
+                var item = new RadioElementWithId<T>(value.Id, value.Display, value.Image);
                 item.Tapped += ()=> {
                     onItemSelected(value);
                     var controller = this.FindViewController();
                     if(controller != null) controller.NavigationController.PopViewControllerAnimated(true);
                 };
                 section.Add(item);
-                if (selectedId == value.Id)
+                if (selectedId.Equals(value.Id))
                 {
                     selected = Array.IndexOf(values, value);
                 }
@@ -70,6 +76,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             _rootElement = new CustomRootElement(title, new RadioGroup(selected));
             _rootElement.Add(section);
         }
-    }
+    }   
 }
 

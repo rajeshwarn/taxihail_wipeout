@@ -143,7 +143,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public override void ReceiveMemoryWarning(UIApplication application)
         {
-            AppContext.Current.ReceiveMemoryWarning = true;
             Logger.LogMessage("ReceiveMemoryWarning");
         }
         

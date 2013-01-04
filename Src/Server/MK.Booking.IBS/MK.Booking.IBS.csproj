@@ -88,6 +88,7 @@
   <ItemGroup>
     <Compile Include="IBookingWebServiceClient.cs" />
     <Compile Include="IBSAddress.cs" />
+    <Compile Include="IBSDriverInfos.cs" />
     <Compile Include="IBSOrderDetails.cs" />
     <Compile Include="IBSOrderStauts.cs" />
     <Compile Include="Impl\BaseService.cs" />
@@ -100,6 +101,7 @@
     <Compile Include="Impl\StaticDataWebServiceClient.cs" />
     <Compile Include="WebServices\WebAccount3Service.cs" />
     <Compile Include="WebServices\StaticDataservice.cs" />
+    <Compile Include="WebServices\WebDriverService.cs" />
     <Compile Include="WebServices\WebOrder7Service.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -113,6 +115,9 @@
       <Project>{65033050-1D55-465A-A772-F3192F9E2428}</Project>
       <Name>MK.Common</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

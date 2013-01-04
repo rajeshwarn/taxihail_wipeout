@@ -8,9 +8,11 @@ using Cirrious.MvvmCross.Binding.Touch.Views;
 using Cirrious.MvvmCross.Views;
 using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 using System.Collections.Generic;
+using apcurium.MK.Booking.Mobile.Client.Navigation;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
+    [NoHistory]
     public partial class BookStreetNumberView : MvxBindingTouchViewController<BookStreetNumberViewModel>
     {
         public BookStreetNumberView() 
@@ -57,11 +59,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             this.AddBindings(new Dictionary<object, string>() {
                 { txtStreetNumber, "{'Text': {'Path': 'StreetNumberOrBuildingName'}}"},
-                { lblStreetName, "{'Text': {'Path': 'Model.Street'}}"},
+                { lblStreetName, "{'Text': {'Path': 'StreetCity'}}"},
                 { btnSearch, "{'TouchUpInside': {'Path': 'NavigateToSearch'}}" }
             });
             
-            ViewModel.OnViewLoaded();
+            ViewModel.Load();
             this.View.ApplyAppFont ();
         }
 		
