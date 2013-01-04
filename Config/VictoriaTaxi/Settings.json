@@ -1,5 +1,10 @@
 {
    "ApplicationName" : "Victoria Taxi Smart Hail",
+      "AndroidSigningKeyAlias" : "MKVictoriaTaxi",
+   "AndroidSigningKeyPassStorePass" : "mkVictoriaTaxi0001.",
+   "AppName" : "Smart Hail",
+   "GoogleMapKey" : "0lx0CFUZu0f3aFa3ZfecOeneyWiCZnlDEd_80Ug",
+   "Package" : "com.apcurium.MK.VictoriaTaxi",
    "CanChangeServiceUrl" : "false",
    "DefaultPhoneNumber" : "12503837111",
    "DefaultPhoneNumberDisplay" : "250-383-7111",
