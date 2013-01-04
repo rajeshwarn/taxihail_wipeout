@@ -99,7 +99,6 @@
     <Compile Include="Activities\TutorialActivity.cs" />
     <Compile Include="Adapters\GroupedLocationListAdapter.cs" />
     <Compile Include="Adapters\LocationListAdapter.cs" />
-    <Compile Include="Adapters\TitleSubTitleListItemController.cs" />
     <Compile Include="Animations\ResizeAnimation.cs" />
     <Compile Include="Animations\SlideAnimation.cs" />
     <Compile Include="AppContext.cs" />
@@ -155,9 +154,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Activities\Account\SignUpActivity.cs" />
     <Compile Include="Activities\SplashActivity.cs" />
-    <AndroidResource Include="Resources\Layout\TitleSubTitleListItem.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\Layout\IconActionLayout.axml" />
     <AndroidResource Include="Resources\Drawable\cell_bottom_full_state.xml">
       <SubType>Designer</SubType>
@@ -329,9 +325,6 @@
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\View_HistoryList.axml">
       <SubType>AndroidResource</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\Layout\TitleListItem.axml">
-      <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\View_Book.axml">
       <SubType>Designer</SubType>
