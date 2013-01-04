@@ -122,7 +122,7 @@ namespace DatabaseInitializer.Services
         private bool FillAdress(Address toBeCompleted, string fullAdress)
         {
             var addresses = _addressesService.Search(fullAdress, toBeCompleted.Latitude, toBeCompleted.Longitude);
-            if (addresses.Any())
+            if (addresses != null && addresses.Any())
             {
                 var address = addresses.First();
                 toBeCompleted.StreetNumber = address.StreetNumber;
