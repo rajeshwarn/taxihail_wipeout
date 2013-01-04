@@ -1,28 +1,22 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
 using Cirrious.MvvmCross.Interfaces.Views;
-using apcurium.MK.Booking.Mobile.Client.Activities;
-using apcurium.MK.Booking.Mobile.Client.Activities.Setting;
+using apcurium.MK.Booking.Mobile;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using TinyIoC;
 using TinyMessenger;
-using apcurium.MK.Booking.Mobile.Messages;
 using Cirrious.MvvmCross.Android.Views;
 using Cirrious.MvvmCross.Views;
 using Cirrious.MvvmCross.Interfaces.ViewModels;
 using Cirrious.MvvmCross.Android.Interfaces;
+using apcurium.MK.Callbox.Mobile.Client.Activities;
+using apcurium.MK.Callbox.Mobile.Client.Messages;
 
-namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
+namespace apcurium.MK.Callbox.Mobile.Client.PlatformIntegration
 {
     public class MessageService : IMessageService
     {
@@ -223,9 +217,24 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			Context.StartActivity(i); 
 		}
 
-        public void ShowEditTextDialog(string title, string message, string positiveButtonTitle, Action<string> positionAction)
+        public void ShowEditTextDialog(string title, string message, string positiveButtonTitle, Action<string> positiveAction)
         {
-            throw new NotImplementedException();
+            var ownerId = Guid.NewGuid().ToString();
+            var i = new Intent(Context, typeof(EditTextDialogActivity));
+            i.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
+            i.PutExtra("Title", title);
+            i.PutExtra("Message", message);
+            i.PutExtra("PositiveButtonTitle", positiveButtonTitle);
+            i.PutExtra("OwnerId", ownerId);
+
+            TinyMessageSubscriptionToken token = null;
+            token = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Subscribe<ActivityCompleted>(a =>
+            {
+                positiveAction(a.Content);
+                TinyIoCContainer.Current.Resolve<ITinyMessengerHub>().Unsubscribe<ActivityCompleted>(token);
+                token.Dispose();
+            }, a => a.OwnerId == ownerId);
+            Context.StartActivity(i);
         }
     }
 }

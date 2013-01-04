@@ -77,6 +77,7 @@
     <Compile Include="AppServices\ITutorialService.cs" />
     <Compile Include="BindingConverter\BoolInverter.cs" />
     <Compile Include="BindingConverter\BoolVisibilityInverter.cs" />
+    <Compile Include="CallBoxApp.cs" />
     <Compile Include="Data\Coordinate.cs" />
     <Compile Include="Data\CoordinatePrecision.cs" />
     <Compile Include="Data\CoordinateRefreshTime.cs" />
@@ -178,6 +179,7 @@
     <Compile Include="AppServices\Impl\ApplicationInfoService.cs" />
     <Compile Include="Settings\AppSettings.cs" />
     <Compile Include="Settings\AppSettingsData.cs" />
+    <Compile Include="StartCallboxNavigation.cs" />
     <Compile Include="StartNavigation.cs" />
     <Compile Include="Style\ButtonStyle.cs" />
     <Compile Include="Style\ColorDefinition.cs" />
@@ -189,6 +191,10 @@
     <Compile Include="ViewModels\BookConfirmationViewModel.cs" />
     <Compile Include="ViewModels\BookingStatusViewModel.cs" />
     <Compile Include="ViewModels\BookRatingViewModel.cs" />
+    <Compile Include="ViewModels\Callbox\CallboxCallTaxiViewModel.cs" />
+    <Compile Include="ViewModels\Callbox\CallboxLoginViewModel.cs" />
+    <Compile Include="ViewModels\Callbox\CallboxOrderListViewModel.cs" />
+    <Compile Include="ViewModels\Callbox\CallboxOrderViewModel.cs" />
     <Compile Include="ViewModels\CreditCardViewModel.cs" />
     <Compile Include="ViewModels\HistoryViewModel.cs" />
     <Compile Include="ViewModels\HistoryDetailViewModel.cs" />
