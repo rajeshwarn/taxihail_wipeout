@@ -110,7 +110,7 @@ namespace DatabaseInitializer.Services
                                                                FullAddress = @event.FullAddress
                                                            }
                                                };
-                            FillAdress(@event.Address, @event.FullAddress);
+                            FillAdress(newEvent.Address, @event.FullAddress);
                             message.Payload = Serialize(newEvent);
                         }
                     }
