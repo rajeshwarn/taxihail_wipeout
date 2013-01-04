@@ -99,7 +99,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             LoadLastActiveOrder();
 
-            Pickup = new BookAddressViewModel(() => Order.PickupAddress, address => Order.PickupAddress = address, _geolocator, true)
+            Pickup = new BookAddressViewModel(() => Order.PickupAddress, address => Order.PickupAddress = address, _geolocator)
             {
                 IsExecuting = true,
                 //Title = Resources.GetString("BookPickupLocationButtonTitle"),
