@@ -38,6 +38,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public event EventHandler AddressChanged;
 
+        public event EventHandler AddressCleared;
+
         public BookAddressViewModel(Func<Address> getAddress, Action<Address> setAddress, ILocationService geolocator)
         {
             _getAddress = getAddress;
@@ -300,6 +302,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (AddressChanged != null)
                 {
                     AddressChanged(true, EventArgs.Empty);
+                }
+
+                if (AddressCleared != null)
+                {
+                    AddressCleared(this, EventArgs.Empty);
                 }
             });
         }

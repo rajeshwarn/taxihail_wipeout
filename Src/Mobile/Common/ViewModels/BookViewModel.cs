@@ -113,6 +113,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             
             Pickup.AddressChanged += AddressChanged;
             Dropoff.AddressChanged += AddressChanged;
+            Dropoff.AddressCleared += RevertToPickupSelection;
 
             AddressSelectionMode = AddressSelectionMode.PickupSelection;
 
@@ -148,6 +149,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Task.Factory.SafeStartNew( ()=> UpdateServerInfo());
  
             ForceRefresh();
+        }
+
+        void RevertToPickupSelection (object sender, EventArgs e)
+        {
+            ActivatePickup.Execute(null);
         }
 
         void LoadLastActiveOrder( )
