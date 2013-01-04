@@ -1,10 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="EstimateDistance"> ({0})</string>
   <string name="CreateAccoutCancel">Cancel</string>
   <string name="SignUpButton">Create a free account</string>
   <string name="ResetPasswordPlaceholder">Enter your email here</string>
   <string name="BookDropoffLocationButtonTitle">Destination</string>
+  </string>
   <string name="ConfirmPhoneLabel">Mobile:</string>
   <string name="AppNeedUpdateTitle">Update available</string>
   <string name="LoginForgotPasswordButton">Forgot Password?</string>
@@ -166,6 +167,7 @@
   <string name="CarAssigned">Your taxi #{0}</string>
   <string name="RideSettingsChargeType">Charge type</string>
   <string name="CreateAccountEmptyField">The data is invalid, all the fields are required.</string>
+  </string>
   <string name="View_RideSettings">Profile</string>
   <string name="AddressSearchingText">Searching...</string>
   <string name="OrderHistoryListTitle">Order #{0} ({1:ddd, MMM d}, {1:h:mm tt})</string>
