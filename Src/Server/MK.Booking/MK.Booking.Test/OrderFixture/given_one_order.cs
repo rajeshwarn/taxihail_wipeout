@@ -49,7 +49,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
         [Test]
         public void when_complete_order_successfully()
         {
-            var completeOrder = new ChangeOrderStatus { Status = new OrderStatusDetail { OrderId = _orderId }, Fare = 23, Toll = 2, Tip = 5 };
+            var completeOrder = new ChangeOrderStatus { Status = new OrderStatusDetail { OrderId = _orderId, Status = OrderStatus.Completed}, Fare = 23, Toll = 2, Tip = 5 };
             this.sut.When(completeOrder);
 
             var @event = sut.ThenHasOne<OrderCompleted>();
