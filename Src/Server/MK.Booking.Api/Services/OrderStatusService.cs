@@ -49,26 +49,25 @@ namespace apcurium.MK.Booking.Api.Services
 
     }
 
-    public class MultipleOrderStatusService : RestServiceBase<Contract.Requests.MultipleOrderStatusRequest>
+    public class ActiveOrderStatusService : RestServiceBase<Contract.Requests.ActiveOrderStatusRequest>
     {
         private readonly IOrderDao _orderDao;
         private readonly IAccountDao _accountDao;
 
-        public MultipleOrderStatusService(IOrderDao orderDao, IAccountDao accountDao)
+        public ActiveOrderStatusService(IOrderDao orderDao, IAccountDao accountDao)
         {
             _accountDao = accountDao;
             _orderDao = orderDao;
         }
 
-        public override object OnGet(Contract.Requests.MultipleOrderStatusRequest request)
+        public override object OnGet(Contract.Requests.ActiveOrderStatusRequest request)
         {
-            var statuses = new MultipleOrderStatusRequestResponse();
+            var statuses = new ActiveOrderStatusRequestResponse();
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
-            var helper = new OrderStatusHelper(_orderDao, account.Id);
-
-            foreach (var id in request.OrderIds)
+            
+            foreach (var status in _orderDao.GetOrdersInProgressByAccountId(account.Id))
             {
-                statuses.Add(helper.GetOrderStatus(id));
+                statuses.Add(status);
             }
 
             return statuses;
