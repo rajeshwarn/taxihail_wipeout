@@ -53,6 +53,7 @@
     <Compile Include="AddPopularAddress.cs" />
     <Compile Include="CancelOrder.cs" />
     <Compile Include="AddRatingType.cs" />
+    <Compile Include="ChangeOrderStatus.cs" />
     <Compile Include="CompleteOrder.cs" />
     <Compile Include="ConfirmAccount.cs" />
     <Compile Include="CreateTariff.cs" />

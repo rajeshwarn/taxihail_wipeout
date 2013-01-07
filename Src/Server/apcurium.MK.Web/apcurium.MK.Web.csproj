@@ -476,6 +476,10 @@
       <Project>{c41ea1b3-0e19-41ae-8efc-ae242532b248}</Project>
       <Name>MK.Booking.Maps</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MK.Booking\MK.Booking.Commands\MK.Booking.Commands.csproj">
+      <Project>{20aea350-ad91-4053-a8b5-582e13ed43aa}</Project>
+      <Name>MK.Booking.Commands</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MK.Booking\MK.Booking.Test\MK.Booking.Test.csproj">
       <Project>{2AD48D85-462D-4763-8016-A2AA10F185A7}</Project>
       <Name>MK.Booking.Test</Name>
