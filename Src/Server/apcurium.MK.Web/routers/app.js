@@ -78,7 +78,6 @@
                     
             }
                     
-
             TaxiHail.auth.on('change', function(isloggedIn, urlToRedirect) {
                 if (isloggedIn) {
                     TaxiHail.auth.account.fetch();
@@ -103,19 +102,6 @@
             $('.login-status-zone').html(new TaxiHail.LoginStatusView({
                 model: TaxiHail.auth.account
             }).render().el);
-            
-            Modernizr.load([{
-
-                test: window.JSON,
-
-                nope: 'assets/js/json2.js'
-
-            },
-                {
-                    test: Modernizr.localstorage,
-                    nope: 'assets/js/persist-min.js'
-                }
-            ]);
 
         },
         
