@@ -49,12 +49,11 @@ namespace apcurium.MK.Booking.Test.OrderFixture
         [Test]
         public void when_complete_order_successfully()
         {
-            var completeOrder = new CompleteOrder {OrderId = _orderId, Date = DateTime.Now, Fare = 23, Toll = 2, Tip = 5};
+            var completeOrder = new ChangeOrderStatus { Status = new OrderStatusDetail { OrderId = _orderId }, Fare = 23, Toll = 2, Tip = 5 };
             this.sut.When(completeOrder);
 
-            var @event = sut.ThenHasSingle<OrderCompleted>();
+            var @event = sut.ThenHasOne<OrderCompleted>();
             Assert.AreEqual(_orderId, @event.SourceId);
-            Assert.That(@event.Date, Is.EqualTo(completeOrder.Date).Within(1).Seconds);
             Assert.AreEqual(completeOrder.Fare, @event.Fare);
             Assert.AreEqual(completeOrder.Toll, @event.Toll);
             Assert.AreEqual(completeOrder.Tip, @event.Tip);
@@ -64,9 +63,9 @@ namespace apcurium.MK.Booking.Test.OrderFixture
         public void when_complete_twice_order_one_event_only()
         {
             this.sut.Given(new OrderCompleted(){ SourceId =  _orderId});
-            this.sut.When(new CompleteOrder { OrderId = _orderId });
+            this.sut.When(new ChangeOrderStatus { Status = new OrderStatusDetail { OrderId = _orderId } });
 
-            Assert.AreEqual(0,sut.Events.Count);
+            Assert.AreEqual(false, sut.ThenContains<OrderCompleted>());
         }
 
         [Test]

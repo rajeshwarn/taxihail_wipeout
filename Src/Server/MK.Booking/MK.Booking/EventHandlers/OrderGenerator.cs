@@ -3,6 +3,8 @@ using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Common.Entity;
+using OrderStatus = apcurium.MK.Booking.ReadModel.OrderStatus;
 
 namespace apcurium.MK.Booking.EventHandlers
 {
@@ -11,7 +13,8 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<OrderCompleted>,
         IEventHandler<OrderRemovedFromHistory>,
         IEventHandler<OrderRated>,
-        IEventHandler<PaymentInformationSet>
+        IEventHandler<PaymentInformationSet>,
+        IEventHandler<OrderStatusChanged>
     {
 
         private readonly Func<BookingDbContext> _contextFactory;
@@ -116,5 +119,20 @@ namespace apcurium.MK.Booking.EventHandlers
                 context.Save(order);
             }
         }
+
+        public void Handle(OrderStatusChanged @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var details = context.Find<OrderStatusDetail>(@event.Status.OrderId);
+                AutoMapper.Mapper.Map(@event.Status, details);
+                context.Save(details);
+
+                var order = context.Find<OrderDetail>(@event.SourceId);
+                order.Status = (int)@event.Status.Status;
+                context.Save(order);
+            }
+        }
+       
     }
 }

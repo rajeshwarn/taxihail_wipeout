@@ -2,32 +2,27 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Web;
-using System.Web.Caching;
 using Infrastructure.Messaging;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Google.Resources;
 using apcurium.MK.Booking.IBS;
-using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using log4net;
-using OrderStatus = apcurium.MK.Common.Entity.OrderStatus;
 
-namespace apcurium.MK.Web.App_Start
+namespace apcurium.MK.Booking.Api.Jobs
 {
-    public class UpdateOrderStatusJob
+    public class UpdateOrderStatusJob : IUpdateOrderStatusJob
     {
         private readonly IOrderDao _orderDao;
         private readonly IConfigurationManager _configManager;
         private readonly IBookingWebServiceClient _bookingWebServiceClient;
         private readonly ICommandBus _commandBus;
-        private const string CacheKey = "OrderStatusJob";
         private static readonly ILog Logger = LogManager.GetLogger(typeof(UpdateOrderStatusJob));
         private const string AssignedStatus = "wosASSIGNED";
         private const string DoneStatus = "wosDONE";
@@ -40,18 +35,8 @@ namespace apcurium.MK.Web.App_Start
             _commandBus = commandBus;
         }
 
-        public void Start()
+        public void CheckStatus()
         {
-            if (HttpRuntime.Cache[CacheKey] == null)
-            {
-                Logger.Debug("Add OrderStatusJob in Cache");
-                HttpRuntime.Cache.Insert(CacheKey, new object(), null, DateTime.Now.AddSeconds(10), Cache.NoSlidingExpiration, CacheItemPriority.NotRemovable, CacheItemRemoved);
-            }
-        }
-
-        private void CacheItemRemoved(string key, object value, CacheItemRemovedReason reason)
-        {
-            Logger.Debug("OrderStatus Job Start New Instance");
             try
             {
                 var orders = _orderDao.GetOrdersInProgress();
@@ -65,6 +50,7 @@ namespace apcurium.MK.Web.App_Start
                     {
                         string description = null;
                         Logger.Debug("Status Changed for " + orderStatusDetail.OrderId);
+                        var command = new ChangeOrderStatus {Status = orderStatusDetail};
                         orderStatusDetail.IBSStatusId = ibsStatus.Status;
                         orderStatusDetail.Status = OrderStatus.Pending;
 
@@ -122,16 +108,10 @@ namespace apcurium.MK.Web.App_Start
                                 orderStatusDetail.FareAvailable = true;
                             }
 
-                            var completeOrder = new CompleteOrder
-                                                    {
-                                                        Date = DateTime.UtcNow,
-                                                        OrderId = orderStatusDetail.OrderId,
-                                                        Fare = orderDetails != null ? orderDetails.Fare : null,
-                                                        Toll = orderDetails != null ? orderDetails.Toll : null,
-                                                        Tip = orderDetails != null ? orderDetails.Tip : null
-                                                    };
-                            _commandBus.Send(completeOrder);
-                            
+                            command.Fare = orderDetails != null ? orderDetails.Fare : null;
+                            command.Toll = orderDetails != null ? orderDetails.Toll : null;
+                            command.Tip = orderDetails != null ? orderDetails.Tip : null;
+
                         }
 
                         if (description.HasValue())
@@ -144,17 +124,13 @@ namespace apcurium.MK.Web.App_Start
                         }
 
                         
-                        _commandBus.Send(new ChangeOrderStatus { Status = orderStatusDetail});
+                        _commandBus.Send(command);
                     }
                 }
             }
             catch (Exception e)
             {
                 Logger.Error(e.Message, e);
-            }
-            finally
-            {
-                HttpRuntime.Cache.Insert(CacheKey, new object(), null, DateTime.Now.AddSeconds(10), Cache.NoSlidingExpiration, CacheItemPriority.NotRemovable, CacheItemRemoved);
             }
         }
 

@@ -99,6 +99,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Jobs\IUpdateOrderStatusJob.cs" />
+    <Compile Include="Jobs\UpdateOrderStatusJob.cs" />
     <Compile Include="Providers\TariffProvider.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Providers\PopularAddressProvider.cs" />

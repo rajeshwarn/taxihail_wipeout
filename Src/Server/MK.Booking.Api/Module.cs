@@ -1,12 +1,15 @@
 ﻿using System;
+using Infrastructure.Messaging;
 using Microsoft.Practices.Unity;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Api.Jobs;
 using apcurium.MK.Booking.Api.Providers;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Common;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Provider;
 
@@ -20,6 +23,7 @@ namespace apcurium.MK.Booking.Api
 
             container.RegisterInstance<IPopularAddressProvider>(new PopularAddressProvider(container.Resolve<IPopularAddressDao>()));
             container.RegisterInstance<ITariffProvider>(new TariffProvider(container.Resolve<ITariffDao>()));
+            container.RegisterType<IUpdateOrderStatusJob, UpdateOrderStatusJob>();
         }
 
         private void RegisterMaps()

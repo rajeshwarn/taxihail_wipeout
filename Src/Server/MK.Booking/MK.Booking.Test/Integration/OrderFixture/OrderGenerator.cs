@@ -170,7 +170,7 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
         {
             var orderCompleted = new OrderCompleted
                                      {
-                                         SourceId = _orderId, Date = DateTime.Now, Fare = 23, Toll = 2, Tip = 5
+                                         SourceId = _orderId, Fare = 23, Toll = 2, Tip = 5
                                      };
             this.sut.Handle(orderCompleted);
 

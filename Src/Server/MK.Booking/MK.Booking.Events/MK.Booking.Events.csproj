@@ -63,6 +63,7 @@
     <Compile Include="OrderCreated.cs" />
     <Compile Include="OrderRated.cs" />
     <Compile Include="OrderRemovedFromHistory.cs" />
+    <Compile Include="OrderStatusChanged.cs" />
     <Compile Include="PaymentInformationSet.cs" />
     <Compile Include="PaymentProfileUpdated.cs" />
     <Compile Include="PopularAddressAdded.cs" />

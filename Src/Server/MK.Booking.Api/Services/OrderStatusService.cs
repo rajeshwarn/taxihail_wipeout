@@ -156,15 +156,15 @@ namespace apcurium.MK.Booking.Api.Services
 
                         if(order.Status != (int)OrderStatus.Completed)
                         {
-                            var completeOrder = new CompleteOrder {Date = DateTime.UtcNow};
-                            completeOrder.OrderId = request.OrderId;
-                            if(orderDetails != null)
-                            {
-                                completeOrder.Fare = orderDetails.Fare;
-                                completeOrder.Toll = orderDetails.Toll;
-                                completeOrder.Tip = orderDetails.Tip;
-                            }
-                            _commandBus.Send(completeOrder);
+                            //var completeOrder = new CompleteOrder {Date = DateTime.UtcNow};
+                            //completeOrder.OrderId = request.OrderId;
+                            //if(orderDetails != null)
+                            //{
+                            //    completeOrder.Fare = orderDetails.Fare;
+                            //    completeOrder.Toll = orderDetails.Toll;
+                            //    completeOrder.Tip = orderDetails.Tip;
+                            //}
+                            //_commandBus.Send(completeOrder);
                         }
                     }
                     else
