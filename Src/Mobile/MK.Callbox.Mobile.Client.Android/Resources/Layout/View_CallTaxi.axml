@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.TaxiHailDemo"
-    android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@drawable/background_logo"
-    android:gravity="bottom"
     android:paddingBottom="60dip">
+    <Button
+        android:id="@+id/LogoutButton"
+        android:background="@color/transparent"
+        android:layout_width="150dip"
+        android:layout_height="150dip"
+        android:layout_gravity="top|left" />
     <apcurium.mk.callbox.mobile.client.controls.StyledButton
         local:ButtonStyle="Black"
         style="@style/CallboxButtonText"
@@ -17,5 +21,5 @@
         android:layout_width="wrap_content"
         android:layout_height="60dip"
         android:layout_marginRight="0dp"
-        android:layout_gravity="center_horizontal" />
-</LinearLayout>
+        android:layout_gravity="bottom|center_horizontal" />
+</FrameLayout>

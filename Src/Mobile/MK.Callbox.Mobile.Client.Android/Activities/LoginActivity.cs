@@ -5,12 +5,11 @@ using Android.Views;
 using Android.Widget;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.ViewModels.Callbox;
 
 namespace apcurium.MK.Callbox.Mobile.Client.Activities
 {
-    [Activity(Label = "Login", Theme = "@android:style/Theme.NoTitleBar")]
+    [Activity(Label = "Login", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
     public class LoginActivity : BaseBindingActivity<CallboxLoginViewModel>
     {
         protected override void OnCreate(Bundle bundle)

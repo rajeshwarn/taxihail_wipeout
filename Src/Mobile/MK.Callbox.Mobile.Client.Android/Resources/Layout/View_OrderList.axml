@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.TaxiHailDemo"
-    android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/background_empty"
-    android:gravity="bottom"
-    android:paddingBottom="60dip" />
+    android:background="@drawable/background_empty">
+    <Button
+        android:id="@+id/LogoutButton"
+        android:background="@color/transparent"
+        android:layout_width="150dip"
+        android:layout_height="150dip"
+        android:layout_gravity="top|left" />
+</FrameLayout>
