@@ -3,6 +3,8 @@ using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Common.Entity;
+using OrderStatus = apcurium.MK.Booking.ReadModel.OrderStatus;
 
 namespace apcurium.MK.Booking.EventHandlers
 {
@@ -37,7 +39,15 @@ namespace apcurium.MK.Booking.EventHandlers
                     Status = (int)OrderStatus.Created,
                     IsRated = false
                 });
+
+                // Create an empty OrderStatusDetail row
+                context.Save(new OrderStatusDetail
+                {
+                     OrderId = @event.SourceId,
+                     IBSOrderId = @event.IBSOrderId
+                });
             }
+
         }
 
         public void Handle(OrderCancelled @event)
