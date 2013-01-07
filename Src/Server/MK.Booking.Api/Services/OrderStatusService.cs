@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Linq;
+using AutoMapper;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
@@ -40,8 +41,10 @@ namespace apcurium.MK.Booking.Api.Services
         {
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
 
-            return new OrderStatusHelper(_orderDao, account.Id)
-                .GetOrderStatus<OrderStatusRequestResponse>(request.OrderId);
+            var status = new OrderStatusHelper(_orderDao, account.Id)
+                .GetOrderStatus(request.OrderId);
+
+            return Mapper.Map<OrderStatusRequestResponse>(status);
         }
 
     }
@@ -65,7 +68,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             foreach (var id in request.OrderIds)
             {
-                statuses.Add(helper.GetOrderStatus<OrderStatusDetail>(id));
+                statuses.Add(helper.GetOrderStatus(id));
             }
 
             return statuses;
@@ -83,14 +86,14 @@ namespace apcurium.MK.Booking.Api.Services
             _accountId = accountId;
         }
 
-        internal T GetOrderStatus<T>(Guid id) where T:OrderStatusDetail, new()
+        internal OrderStatusDetail GetOrderStatus(Guid id)
         {
             var order = _orderDao.FindById(id);
 
             if (order == null)
             {
                 //Order could be null if creating the order takes a lot of time and this method is called before the create finishes
-                return new T
+                return new OrderStatusDetail
                 {
                     OrderId = id,
                     Status = apcurium.MK.Common.Entity.OrderStatus.Created,
@@ -107,14 +110,10 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (!order.IBSOrderId.HasValue)
             {
-                return new T { IBSStatusDescription = "Can't contact dispatch company" };
+                return new OrderStatusDetail {IBSStatusDescription = "Can't contact dispatch company"};
             }
 
-            //TODO: Read OrderStatus table
-            return new T
-            {
-                OrderId = id
-            };
+            return _orderDao.FindOrderStatusById(id);
         }
     }
 }
