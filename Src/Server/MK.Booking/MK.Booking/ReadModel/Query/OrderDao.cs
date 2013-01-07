@@ -70,5 +70,13 @@ namespace apcurium.MK.Booking.ReadModel.Query
                 return currentOrders;
             }
         }
+
+        public OrderStatusDetail FindOrderStatusById(Guid orderId)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                return context.Query<OrderStatusDetail>().SingleOrDefault(x => x.OrderId == orderId);
+            }
+        }
     }
 }

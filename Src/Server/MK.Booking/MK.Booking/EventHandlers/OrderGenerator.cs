@@ -40,7 +40,15 @@ namespace apcurium.MK.Booking.EventHandlers
                     Status = (int)OrderStatus.Created,
                     IsRated = false
                 });
+
+                // Create an empty OrderStatusDetail row
+                context.Save(new OrderStatusDetail
+                {
+                     OrderId = @event.SourceId,
+                     IBSOrderId = @event.IBSOrderId
+                });
             }
+
         }
 
         public void Handle(OrderCancelled @event)
