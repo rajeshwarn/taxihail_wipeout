@@ -64,8 +64,8 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         {
             var qs = "?orderIds=[" + string.Join(",", orderIds) + "]";
             var req = string.Format("/account/orders/status" + qs);
-            var result = Client.Get<MultipleOrderStatusRequestResponse>(req);
-            return result.ToArray();
+            var result = Client.Get<OrderStatusDetail[]>(req);
+            return result;
         }
 
         public List<RatingType> GetRatingTypes()
