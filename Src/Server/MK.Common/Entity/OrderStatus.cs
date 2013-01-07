@@ -6,6 +6,7 @@ namespace apcurium.MK.Common.Entity
         Pending = 1,
         Created = 2,
         Canceled = 3,
-        Completed = 4
+        Completed = 4,
+        Removed = 5
     }
 }

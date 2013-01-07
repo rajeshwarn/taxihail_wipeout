@@ -9,7 +9,7 @@ using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Entity;
-using OrderStatus = apcurium.MK.Booking.ReadModel.OrderStatus;
+
 
 namespace apcurium.MK.Booking.Test.Integration.OrderFixture
 {

@@ -4,7 +4,7 @@ using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Entity;
-using OrderStatus = apcurium.MK.Booking.ReadModel.OrderStatus;
+
 
 namespace apcurium.MK.Booking.EventHandlers
 {
@@ -56,8 +56,15 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var order = context.Find<OrderDetail>(@event.SourceId);
-                order.Status = (int)OrderStatus.Cancelled;
+                order.Status = (int)OrderStatus.Canceled;
                 context.Save(order);
+
+                var details = context.Find<OrderStatusDetail>(@event.SourceId);
+                if (details != null)
+                {
+                    details.Status = OrderStatus.Canceled;
+                    context.Save(details);
+                }
             }
         }
 
@@ -80,6 +87,14 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 var order = context.Find<OrderDetail>(@event.SourceId);
                 order.IsRemovedFromHistory = true;
+
+                var details = context.Find<OrderStatusDetail>(@event.SourceId);
+                if (details != null)
+                {
+                    details.Status = OrderStatus.Removed;
+                    context.Save(details);
+                }
+
                 context.SaveChanges();
             }
         }

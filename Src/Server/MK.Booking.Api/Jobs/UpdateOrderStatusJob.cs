@@ -19,6 +19,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 {
     public class UpdateOrderStatusJob : IUpdateOrderStatusJob
     {
+        private readonly IAccountDao _accountDao;
         private readonly IOrderDao _orderDao;
         private readonly IConfigurationManager _configManager;
         private readonly IBookingWebServiceClient _bookingWebServiceClient;
@@ -27,8 +28,9 @@ namespace apcurium.MK.Booking.Api.Jobs
         private const string AssignedStatus = "wosASSIGNED";
         private const string DoneStatus = "wosDONE";
 
-        public UpdateOrderStatusJob(IOrderDao orderDao, IConfigurationManager configManager, IBookingWebServiceClient bookingWebServiceClient, ICommandBus commandBus)
+        public UpdateOrderStatusJob(IAccountDao accountDao, IOrderDao orderDao, IConfigurationManager configManager, IBookingWebServiceClient bookingWebServiceClient, ICommandBus commandBus)
         {
+            _accountDao = accountDao;
             _orderDao = orderDao;
             _configManager = configManager;
             _bookingWebServiceClient = bookingWebServiceClient;
@@ -42,8 +44,11 @@ namespace apcurium.MK.Booking.Api.Jobs
                 var orders = _orderDao.GetOrdersInProgress();
                 foreach (var orderStatusDetail in orders)
                 {
+
+                    var order = _orderDao.FindById(orderStatusDetail.OrderId);
+                    var account = _accountDao.FindById(order.AccountId);
                     Logger.Debug("Get Status for " + orderStatusDetail.OrderId);
-                    var ibsStatus = _bookingWebServiceClient.GetOrderStatus(orderStatusDetail.IBSOrderId.Value, 0, string.Empty);
+                    var ibsStatus = _bookingWebServiceClient.GetOrderStatus(orderStatusDetail.IBSOrderId.Value, account.IBSAccountId, order.Settings.Phone);
 
                     if (ibsStatus.Status.HasValue()
                         && orderStatusDetail.IBSStatusId != ibsStatus.Status)
@@ -52,20 +57,19 @@ namespace apcurium.MK.Booking.Api.Jobs
                         Logger.Debug("Status Changed for " + orderStatusDetail.OrderId);
                         var command = new ChangeOrderStatus {Status = orderStatusDetail};
                         orderStatusDetail.IBSStatusId = ibsStatus.Status;
-                        orderStatusDetail.Status = OrderStatus.Pending;
 
+                        var ibsOrderDetails = _bookingWebServiceClient.GetOrderDetails(orderStatusDetail.IBSOrderId.Value, account.IBSAccountId, order.Settings.Phone);
                         if (ibsStatus.Status.SoftEqual(AssignedStatus))
                         {
-                            var orderDetails = _bookingWebServiceClient.GetOrderDetails(orderStatusDetail.IBSOrderId.Value, 0, string.Empty);
-                            if ((orderDetails != null) && (orderDetails.VehicleNumber.HasValue()))
+                            if ((ibsOrderDetails != null) && (ibsOrderDetails.VehicleNumber.HasValue()))
                             {
-                                Logger.Debug("Vehicle number :  " + orderDetails.VehicleNumber);
-                                orderStatusDetail.VehicleNumber = orderDetails.VehicleNumber;
+                                Logger.Debug("Vehicle number :  " + ibsOrderDetails.VehicleNumber);
+                                orderStatusDetail.VehicleNumber = ibsOrderDetails.VehicleNumber;
                                 description = string.Format(_configManager.GetSetting("OrderStatus.CabDriverNumberAssigned"),
-                                                     orderDetails.VehicleNumber);
-                                if (!string.IsNullOrEmpty(orderDetails.CallNumber))
+                                                     ibsOrderDetails.VehicleNumber);
+                                if (!string.IsNullOrEmpty(ibsOrderDetails.CallNumber))
                                 {
-                                    var driverInfos = _bookingWebServiceClient.GetDriverInfos(orderDetails.CallNumber);
+                                    var driverInfos = _bookingWebServiceClient.GetDriverInfos(ibsOrderDetails.CallNumber);
                                     orderStatusDetail.DriverInfos.FirstName = driverInfos.FirstName;
                                     orderStatusDetail.DriverInfos.LastName = driverInfos.LastName;
                                     orderStatusDetail.DriverInfos.MobilePhone = driverInfos.MobilePhone;
@@ -98,7 +102,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                         if (ibsStatus.Status.SoftEqual(DoneStatus))
                         {
                             orderStatusDetail.Status = OrderStatus.Completed;
-                            var orderDetails = _bookingWebServiceClient.GetOrderDetails(orderStatusDetail.IBSOrderId.Value, 0, string.Empty);
+                            var orderDetails = ibsOrderDetails ?? _bookingWebServiceClient.GetOrderDetails(orderStatusDetail.IBSOrderId.Value, account.IBSAccountId, order.Settings.Phone);
 
                             if ((orderDetails != null) && ((orderDetails.Fare.HasValue || orderDetails.Tip.HasValue || orderDetails.Toll.HasValue)))
                             {
