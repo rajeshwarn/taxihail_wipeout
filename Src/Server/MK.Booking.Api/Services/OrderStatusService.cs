@@ -10,6 +10,7 @@ using apcurium.MK.Booking.Google.Resources;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using System.Globalization;
 using System.Collections.Generic;
@@ -19,7 +20,7 @@ using apcurium.MK.Common;
 using apcurium.MK.Common.Diagnostic;
 using log4net;
 using ServiceStack.Text;
-using OrderStatusDetail = apcurium.MK.Booking.Api.Contract.Resources.OrderStatusDetail;
+using OrderStatusDetail = apcurium.MK.Common.Entity.OrderStatusDetail;
 
 namespace apcurium.MK.Booking.Api.Services
 {

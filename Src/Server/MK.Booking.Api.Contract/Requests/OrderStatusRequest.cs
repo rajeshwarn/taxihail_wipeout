@@ -3,6 +3,7 @@ using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.ServiceModel;
 using apcurium.MK.Booking.Api.Contract.Http;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
@@ -14,7 +15,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
     }
 
     [NoCache]
-    public class OrderStatusRequestResponse: Resources.OrderStatusDetail, IHasResponseStatus
+    public class OrderStatusRequestResponse: OrderStatusDetail, IHasResponseStatus
     {
         public ResponseStatus ResponseStatus { get; set; }
     }

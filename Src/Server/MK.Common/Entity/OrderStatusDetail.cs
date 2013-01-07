@@ -1,9 +1,15 @@
-﻿using System;
-namespace apcurium.MK.Booking.Api.Contract.Resources
+using System;
+
+namespace apcurium.MK.Common.Entity
 {
-    public class OrderStatusDetail : BaseDTO
+    public class OrderStatusDetail
     {
-        public Resources.OrderStatus Status { get; set; }
+        public OrderStatusDetail()
+        {
+            DriverInfos = new DriverInfos();
+        }
+
+        public OrderStatus Status { get; set; }
         public DriverInfos DriverInfos { get; set; }
         public int? IBSOrderId { get; set; }                
         public string IBSStatusId { get; set; }
@@ -13,6 +19,5 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
         public double? VehicleLongitude { get; set; }
         public bool FareAvailable { get; set; }
         public Guid OrderId { get; set; }
-
     }
 }

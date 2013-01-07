@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.ReadModel.Query
 {
@@ -9,5 +10,6 @@ namespace apcurium.MK.Booking.ReadModel.Query
         OrderDetail FindById(Guid id);
         IList<OrderDetail> FindByAccountId(Guid id);
         IList<OrderDetailWithAccount> GetAllWithAccountSummary();
+        IList<OrderStatusDetail> GetOrdersInProgress();
     }
 }
