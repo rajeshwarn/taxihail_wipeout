@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.TaxiHailDemo"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:minWidth="25px"
+    android:minHeight="25px">
+    <TextView
+        android:text="Medium Text"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="150dip"
+        android:layout_height="wrap_content"
+        android:id="@+id/dateTextView"
+        android:layout_weight="1"
+        android:singleLine="true"
+        android:textColor="@color/black" />
+    <TextView
+        android:text="Medium Text"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="150dip"
+        android:layout_height="wrap_content"
+        android:id="@+id/orderNumberTextView"
+        android:layout_weight="1"
+        android:singleLine="true"
+        android:textColor="@color/black" />
+    <TextView
+        android:text="Medium Textfffff"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="150dip"
+        android:layout_height="wrap_content"
+        android:id="@+id/orderStatusTextView"
+        android:layout_weight="1"
+        android:singleLine="false"
+        android:textColor="@color/black" />
+    <apcurium.mk.callbox.mobile.client.controls.StyledButton
+        android:text="Cancel Order"
+        local:ButtonStyle="Red"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="150dip"
+        android:layout_height="wrap_content"
+        android:id="@+id/cancelOrderButton"
+        android:layout_weight="1"
+        local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;CancelOrder&apos;},&apos;Visibility&apos;:{&apos;Path&apos;:&apos;CanBeCancelled&apos;,&apos;Converter&apos;:&apos;Visibility&apos;}}" />
+</LinearLayout>

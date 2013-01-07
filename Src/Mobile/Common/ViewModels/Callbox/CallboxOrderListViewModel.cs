@@ -48,6 +48,27 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
                 IbsOrderId  = orderDeserialize.IBSOrderId,
                 Id = orderDeserialize.Id,
                 OrderStatus = orderStatusDeserialize});
+            this.MessengerHub.Subscribe<OrderDeleted>(orderId => this.CancelOrder.Execute(orderId.Content));
+        }
+
+        public IMvxCommand CancelOrder
+        {
+            get
+            {
+                return this.GetCommand<Guid>(orderId => this.MessageService.ShowMessage(this.Resources.GetString("CancelOrderTitle"), 
+                    this.Resources.GetString("CancelOrderMessage"), 
+                    this.Resources.GetString("Yes"), ()
+                    =>
+                        {
+                            _bookingService.CancelOrder(orderId);
+                            var orderToRemove = Orders.FirstOrDefault(o => o.Id.Equals(orderId));
+                            Orders.Remove(orderToRemove);
+                            if (Orders.Count == 0)
+                            {
+                                RequestNavigate<CallboxCallTaxiViewModel>();
+                            }
+                        }, this.Resources.GetString("No"), () => { }));
+            }
         }
 
 

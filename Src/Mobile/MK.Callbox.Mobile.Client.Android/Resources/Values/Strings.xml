@@ -16,4 +16,11 @@
   <string name="BookTaxiTitle">Book taxi</string>
   <string name="BookTaxiPassengerName">Enter passenger name</string>
   <string name="Ok">Ok</string>
+  <string name="Yes">Yes</string>
+  <string name="No">No</string>
+  <string name="LogoutTitle">Logout</string>
+  <string name="LogoutMessage">Do you want to logout?</string>
+  <string name="CancelOrderTitle">Cancel order</string>
+  <string name="CancelOrderMessage">Do you want to cancel this order?</string>
+  <string name="NoPickupAddress">There is no pickup address</string>
 </resources>

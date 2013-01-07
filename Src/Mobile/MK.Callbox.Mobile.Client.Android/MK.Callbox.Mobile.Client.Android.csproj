@@ -84,6 +84,7 @@
     <Compile Include="Controls\HeaderedLayout.cs" />
     <Compile Include="Controls\StyledButton.cs" />
     <Compile Include="Converters\AppConverters.cs" />
+    <Compile Include="Converters\ColorEnumToAndroidColorConverter.cs" />
     <Compile Include="Converters\CoordinateConverter.cs" />
     <Compile Include="Diagnostic\ErrorHandler.cs" />
     <Compile Include="Diagnostic\Logger.cs" />
@@ -115,6 +116,9 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\View_OrderList.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\Control_OrderCell.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>
@@ -174,6 +178,7 @@
     <AndroidResource Include="Resources\Values\Color.xml" />
     <AndroidResource Include="Resources\Drawable\background_logo.png" />
     <AndroidResource Include="Resources\Drawable\background_empty.png" />
+    <AndroidResource Include="Resources\Drawable\orderListBackground.xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.Android.csproj">

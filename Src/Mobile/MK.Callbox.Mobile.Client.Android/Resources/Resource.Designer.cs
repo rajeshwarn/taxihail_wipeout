@@ -143,31 +143,34 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			public const int newBlackButton = 2130837517;
 			
 			// aapt resource value: 0x7f02000e
-			public const int password_cell = 2130837518;
+			public const int orderListBackground = 2130837518;
 			
 			// aapt resource value: 0x7f02000f
-			public const int server_button = 2130837519;
+			public const int password_cell = 2130837519;
 			
 			// aapt resource value: 0x7f020010
-			public const int server_button_state = 2130837520;
+			public const int server_button = 2130837520;
 			
 			// aapt resource value: 0x7f020011
-			public const int sign_in_btn = 2130837521;
+			public const int server_button_state = 2130837521;
 			
 			// aapt resource value: 0x7f020012
-			public const int social_media_login_btn = 2130837522;
+			public const int sign_in_btn = 2130837522;
 			
 			// aapt resource value: 0x7f020013
-			public const int social_media_login_btn_hit = 2130837523;
+			public const int social_media_login_btn = 2130837523;
 			
 			// aapt resource value: 0x7f020014
-			public const int social_media_login_btn_state = 2130837524;
+			public const int social_media_login_btn_hit = 2130837524;
 			
 			// aapt resource value: 0x7f020015
-			public const int splash = 2130837525;
+			public const int social_media_login_btn_state = 2130837525;
 			
 			// aapt resource value: 0x7f020016
-			public const int splash_resizable = 2130837526;
+			public const int splash = 2130837526;
+			
+			// aapt resource value: 0x7f020017
+			public const int splash_resizable = 2130837527;
 			
 			private Drawable()
 			{
@@ -183,17 +186,17 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f050007
 			public const int ContentLayout = 2131034119;
 			
-			// aapt resource value: 0x7f05000c
-			public const int ContentSection = 2131034124;
-			
-			// aapt resource value: 0x7f05000d
-			public const int HeaderSection = 2131034125;
-			
 			// aapt resource value: 0x7f050010
-			public const int LoginButton = 2131034128;
+			public const int ContentSection = 2131034128;
 			
-			// aapt resource value: 0x7f05000b
-			public const int LogoutButton = 2131034123;
+			// aapt resource value: 0x7f050011
+			public const int HeaderSection = 2131034129;
+			
+			// aapt resource value: 0x7f050014
+			public const int LoginButton = 2131034132;
+			
+			// aapt resource value: 0x7f05000f
+			public const int LogoutButton = 2131034127;
 			
 			// aapt resource value: 0x7f050009
 			public const int MainLogo = 2131034121;
@@ -204,8 +207,8 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f050000
 			public const int MvxBindingTagUnique = 2131034112;
 			
-			// aapt resource value: 0x7f05000a
-			public const int MyButton = 2131034122;
+			// aapt resource value: 0x7f05000e
+			public const int MyButton = 2131034126;
 			
 			// aapt resource value: 0x7f050008
 			public const int NavBarImage = 2131034120;
@@ -216,14 +219,17 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f050003
 			public const int NavBarSectionBackground = 2131034115;
 			
-			// aapt resource value: 0x7f05000f
-			public const int Password = 2131034127;
+			// aapt resource value: 0x7f050019
+			public const int OrderList = 2131034137;
+			
+			// aapt resource value: 0x7f050013
+			public const int Password = 2131034131;
+			
+			// aapt resource value: 0x7f050016
+			public const int ServerButton = 2131034134;
 			
 			// aapt resource value: 0x7f050012
-			public const int ServerButton = 2131034130;
-			
-			// aapt resource value: 0x7f05000e
-			public const int Username = 2131034126;
+			public const int Username = 2131034130;
 			
 			// aapt resource value: 0x7f050005
 			public const int ViewNavBarRightButton = 2131034117;
@@ -231,8 +237,26 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f050004
 			public const int ViewTitle = 2131034116;
 			
-			// aapt resource value: 0x7f050011
-			public const int linearLayout0 = 2131034129;
+			// aapt resource value: 0x7f05000d
+			public const int cancelOrderButton = 2131034125;
+			
+			// aapt resource value: 0x7f05000a
+			public const int dateTextView = 2131034122;
+			
+			// aapt resource value: 0x7f050015
+			public const int linearLayout0 = 2131034133;
+			
+			// aapt resource value: 0x7f050017
+			public const int listTitle = 2131034135;
+			
+			// aapt resource value: 0x7f05000b
+			public const int orderNumberTextView = 2131034123;
+			
+			// aapt resource value: 0x7f05000c
+			public const int orderStatusTextView = 2131034124;
+			
+			// aapt resource value: 0x7f050018
+			public const int stroke = 2131034136;
 			
 			private Id()
 			{
@@ -246,16 +270,19 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			public const int Control_HeaderedLayout = 2130903040;
 			
 			// aapt resource value: 0x7f030001
-			public const int Main = 2130903041;
+			public const int Control_OrderCell = 2130903041;
 			
 			// aapt resource value: 0x7f030002
-			public const int View_CallTaxi = 2130903042;
+			public const int Main = 2130903042;
 			
 			// aapt resource value: 0x7f030003
-			public const int View_Login = 2130903043;
+			public const int View_CallTaxi = 2130903043;
 			
 			// aapt resource value: 0x7f030004
-			public const int View_OrderList = 2130903044;
+			public const int View_Login = 2130903044;
+			
+			// aapt resource value: 0x7f030005
+			public const int View_OrderList = 2130903045;
 			
 			private Layout()
 			{
@@ -277,6 +304,12 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f06000b
 			public const int Callbox_passengerName = 2131099659;
 			
+			// aapt resource value: 0x7f060015
+			public const int CancelOrderMessage = 2131099669;
+			
+			// aapt resource value: 0x7f060014
+			public const int CancelOrderTitle = 2131099668;
+			
 			// aapt resource value: 0x7f06000a
 			public const int CarAssigned = 2131099658;
 			
@@ -295,6 +328,18 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f060007
 			public const int LoadingMessage = 2131099655;
 			
+			// aapt resource value: 0x7f060013
+			public const int LogoutMessage = 2131099667;
+			
+			// aapt resource value: 0x7f060012
+			public const int LogoutTitle = 2131099666;
+			
+			// aapt resource value: 0x7f060011
+			public const int No = 2131099665;
+			
+			// aapt resource value: 0x7f060016
+			public const int NoPickupAddress = 2131099670;
+			
 			// aapt resource value: 0x7f06000f
 			public const int Ok = 2131099663;
 			
@@ -312,6 +357,9 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			
 			// aapt resource value: 0x7f060005
 			public const int View_SignIn = 2131099653;
+			
+			// aapt resource value: 0x7f060010
+			public const int Yes = 2131099664;
 			
 			private String()
 			{

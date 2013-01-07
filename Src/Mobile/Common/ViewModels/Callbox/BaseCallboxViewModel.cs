@@ -25,8 +25,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
     public abstract class BaseCallboxViewModel : BaseViewModel, IMvxServiceConsumer<IBookingService>,
         IMvxServiceConsumer<IAccountService>
     {
-        private IBookingService _bookingService;
-        private IAccountService _accountService;
+        protected IBookingService _bookingService;
+        protected IAccountService _accountService;
 
         public CreateOrder Order { get; private set; }
 
@@ -42,11 +42,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
         {
             get
             {
-                return this.GetCommand(() => this.MessageService.ShowMessage("Logout", "Do you want to logout?", "Yes", () =>
+                return this.GetCommand(() => this.MessageService.ShowMessage(this.Resources.GetString("LogoutTitle"), this.Resources.GetString("LogoutMessage"), this.Resources.GetString("Yes"), () =>
                                                                                                                             {
                                                                                                                                 _accountService.SignOut();
                                                                                                                                 RequestNavigate<CallboxLoginViewModel>(true);
-                                                                                                                            },"No",()=>{}));
+                                                                                                                            }, this.Resources.GetString("No"), () => { }));
             }
         }
 
@@ -121,7 +121,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
             }
             else
             {
-                MessageService.ShowMessage(Resources.GetString("ErrorCreatingOrderTitle"), "No favorite address");
+                MessageService.ShowMessage(Resources.GetString("ErrorCreatingOrderTitle"), Resources.GetString("NoPickupAddress"));
             }
         }
     }
