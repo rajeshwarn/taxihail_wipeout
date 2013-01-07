@@ -94,6 +94,7 @@
     <Compile Include="Requests\DefaultGeoLocationRequest.cs" />
     <Compile Include="Requests\DirectionsRequest.cs" />
     <Compile Include="Requests\ExclusionsRequest.cs" />
+    <Compile Include="Requests\ExportDataRequest.cs" />
     <Compile Include="Requests\GeocodingRequest.cs" />
     <Compile Include="Requests\GrantAdminRightRequest.cs" />
     <Compile Include="Requests\NearbyPlacesRequest.cs" />
@@ -115,7 +116,6 @@
     <Compile Include="Requests\TestOnlyReqGetAdminTestAccount.cs" />
     <Compile Include="Requests\TestOnlyReqGetTestAccount.cs" />
     <Compile Include="Requests\UpdatePassword.cs" />
-    <Compile Include="Requests\UpdatePaymentProfileRequest.cs" />
     <Compile Include="Resources\Account.cs" />
     <Compile Include="Resources\AddressList.cs" />
     <Compile Include="Resources\ApplicationInfo.cs" />

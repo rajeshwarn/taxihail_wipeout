@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 
 namespace apcurium.MK.Booking.ConfigTool
 {
-    public class ConfigXmlNamespace: Config
+    public class ConfigXmlNamespace : Config
     {
         public ConfigXmlNamespace(AppConfig parent)
             : base(parent)
@@ -17,13 +17,13 @@ namespace apcurium.MK.Booking.ConfigTool
 
         public string Destination { get; set; }
 
-        public string Namespace{ get; set; }
+        public string Namespace { get; set; }
 
         public string Value { get; set; }
 
         public override void Apply()
         {
-            
+
             var destPath = Path.Combine(Parent.SrcDirectoryPath, PathConverter.Convert(Destination));
 
             var files = Directory.GetFiles(destPath, "*.axml");
@@ -48,7 +48,6 @@ namespace apcurium.MK.Booking.ConfigTool
         {
             return string.Format("[ConfigXmlNamespace: Destination={0}, Namespace={1}, Value={2}]", Destination, Namespace, Value);
         }
-        
+
     }
 }
- 

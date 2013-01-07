@@ -43,9 +43,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 
 
-        public override void OnViewLoaded ()
+        public override void Load ()
         {
-            base.OnViewLoaded ();
+			base.Load ();
             try {
 
                 MessageService.ShowProgress (true);                
@@ -276,7 +276,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         FirePropertyChanged("RideSettings");
 					}
 
-					this.GetService<IAccountService>().UpdateSettings(Order.Settings);
+                    this.GetService<IAccountService>().UpdateSettings(Order.Settings, _accountService.CurrentAccount.DefaultCreditCard, _accountService.CurrentAccount.DefaultTipAmount, _accountService.CurrentAccount.DefaultTipPercent );
 				});
 			}
             else if(Order.Settings.ProviderId == null)

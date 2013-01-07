@@ -146,7 +146,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                                         Last4Digits = newCreditCard.Last4Digits
                                     });
                                 this.SelectedCreditCardId = newCreditCard.CreditCardId;
-                                this.LoadCreditCards();
                             });                                                                                         
 
                         });

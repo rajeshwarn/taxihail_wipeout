@@ -9,6 +9,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         UIImageView _rightArrow;
         TextField _textField;
         UIButton _button;
+        UIImageView _leftImage;
   
         public TextFieldWithArrow(IntPtr handle) : base(handle)
         {
@@ -27,7 +28,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             _textField = new TextField(this.Bounds);
             _textField.UserInteractionEnabled = false;
             _textField.VerticalAlignment = UIControlContentVerticalAlignment.Center;
-            
+
+            _leftImage = new UIImageView(new Rectangle(5, 0, (int)0, (int)0));
+
             var rightArrow = new UIImageView(new RectangleF(this.Frame.Width - 25, this.Frame.Height/2 - 7,9, 13));
             rightArrow.Image = UIImage.FromFile("Assets/Cells/rightArrow.png");
             
@@ -50,10 +53,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-        protected UITextField TextField
+        public UITextField TextField
         {
             get{
                 return _textField;
+            }
+        }
+
+        public string LeftImagePath
+        {
+            set{
+                var image = ImageHelper.GetImage(value);
+                _leftImage = new UIImageView(new RectangleF(5, 0, image.Size.Width, image.Size.Height));
+                _leftImage.Image = image;
+                TextField.LeftViewMode = UITextFieldViewMode.Always;
+                TextField.LeftView =_leftImage;
             }
         }
     }

@@ -22,7 +22,7 @@ using Cirrious.MvvmCross.Binding.Touch.ExtensionMethods;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-    public partial class StatusView : MvxBindingTouchViewController<BookingStatusViewModel>
+    public partial class StatusView : BaseViewController<BookingStatusViewModel>
     {
         #region Constructors
 
@@ -61,7 +61,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             base.ViewDidLoad ();
 
             try {
-                ViewModel.OnViewLoaded();
+                ViewModel.Load();
                 NavigationItem.HidesBackButton = true;                
                 View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
 
@@ -96,14 +96,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             this.View.ApplyAppFont ();
         }
-
-        public override void ViewWillDisappear (bool animated)
-        {
-            base.ViewWillDisappear (animated);
-            ViewModel.OnViewUnloaded();
-        }
-
     }
-
 }
 

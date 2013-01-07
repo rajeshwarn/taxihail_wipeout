@@ -86,9 +86,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Panel = new PanelViewModel(this);
         }
 
-        public override void OnViewLoaded()
+		public override void Load()
         {
-            base.OnViewLoaded();
+			base.Load();
 
             if ( Order == null || !_useExistingOrder )
             {
@@ -99,7 +99,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             LoadLastActiveOrder();
 
-            Pickup = new BookAddressViewModel(() => Order.PickupAddress, address => Order.PickupAddress = address, _geolocator, true)
+            Pickup = new BookAddressViewModel(() => Order.PickupAddress, address => Order.PickupAddress = address, _geolocator)
             {
                 IsExecuting = true,
                 //Title = Resources.GetString("BookPickupLocationButtonTitle"),
@@ -113,6 +113,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             
             Pickup.AddressChanged += AddressChanged;
             Dropoff.AddressChanged += AddressChanged;
+            Dropoff.AddressCleared += RevertToPickupSelection;
 
             AddressSelectionMode = AddressSelectionMode.PickupSelection;
 
@@ -148,6 +149,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Task.Factory.SafeStartNew( ()=> UpdateServerInfo());
  
             ForceRefresh();
+        }
+
+        void RevertToPickupSelection (object sender, EventArgs e)
+        {
+            ActivatePickup.Execute(null);
         }
 
         void LoadLastActiveOrder( )

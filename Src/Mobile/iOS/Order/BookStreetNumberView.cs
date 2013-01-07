@@ -63,7 +63,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 { btnSearch, "{'TouchUpInside': {'Path': 'NavigateToSearch'}}" }
             });
             
-            ViewModel.OnViewLoaded();
+            ViewModel.Load();
             this.View.ApplyAppFont ();
         }
 		

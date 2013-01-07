@@ -70,11 +70,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			ViewModel.Panel.PropertyChanged -= HandlePropertyChanged;
 			ViewModel.Panel.PropertyChanged += HandlePropertyChanged;
 
-            ViewModel.OnViewLoaded();
-
-
-
-
+			ViewModel.Load();
 
         }
 

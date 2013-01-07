@@ -47,9 +47,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _hasSeenReminder = false;
         }
 
-        public override void OnViewLoaded ()
+		public override void Load ()
         {
-            base.OnViewLoaded ();
+			base.Load ();
             ShowRatingButton = true;
             MessengerHub.Subscribe<OrderRated> (OnOrderRated, o => o.Content.Equals (Order.Id));
             _bookingService = this.GetService<IBookingService> ();
@@ -65,13 +65,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 //Title = Resources.GetString("BookDropoffLocationButtonTitle"),
                 EmptyAddressPlaceholder = Resources.GetString("BookDropoffLocationEmptyPlaceholder")
             };
-            
-            Observable.Timer (TimeSpan.Zero, TimeSpan.FromSeconds (_refreshPeriod)).Select (c => new Unit ())
-                .Subscribe (unit => InvokeOnMainThread (RefreshStatus))
-                    .DisposeWith (Subscriptions);
-            
+
             CenterMap (true);
         }
+
+		public override void Start (bool firstStart)
+		{
+			base.Start (firstStart);
+
+			Observable.Timer (TimeSpan.Zero, TimeSpan.FromSeconds (_refreshPeriod)).Select (c => new Unit ())
+				.Subscribe (unit => InvokeOnMainThread (RefreshStatus))
+					.DisposeWith (Subscriptions);
+		}
+
+		public override void Stop ()
+		{
+			base.Stop ();
+            Subscriptions.DisposeAll ();
+		}
 
         private IEnumerable<CoordinateViewModel> _mapCenter { get; set; }
 
@@ -392,12 +403,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                                () => {});                    
                 });
             }
-        }
-
-        public override void OnViewUnloaded ()
-        {
-            base.OnViewUnloaded ();
-            Subscriptions.DisposeAll ();
         }
     }
 }

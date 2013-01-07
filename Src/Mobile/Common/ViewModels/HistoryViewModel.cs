@@ -103,9 +103,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public override void OnViewUnloaded ()
+        public override void Unload ()
         {
-            base.OnViewUnloaded ();
+            base.Unload ();
             MessengerHub.Unsubscribe<OrderDeleted>(orderDeletedToken);
         }
 
