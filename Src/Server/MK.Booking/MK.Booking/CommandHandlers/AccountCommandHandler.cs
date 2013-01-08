@@ -6,22 +6,20 @@ using apcurium.MK.Booking.Security;
 
 namespace apcurium.MK.Booking.CommandHandlers
 {
-
-
-    public class AccountCommandHandler : ICommandHandler<RegisterAccount>,
-                                         ICommandHandler<ConfirmAccount>, 
-                                         ICommandHandler<ResetAccountPassword>,
-                                         ICommandHandler<UpdateAccount>,
-                                         ICommandHandler<UpdateBookingSettings>,
-                                         ICommandHandler<RegisterFacebookAccount>,
-                                         ICommandHandler<RegisterTwitterAccount>,
-                                         ICommandHandler<UpdateAccountPassword>,
-                                         ICommandHandler<GrantAdminRight>,
-                                         ICommandHandler<AddCreditCard>,
-                                         ICommandHandler<RemoveCreditCard>,
-                                         ICommandHandler<RegisterDeviceForPushNotifications>
+    public partial class AccountCommandHandler : ICommandHandler<RegisterAccount>,
+                                                 ICommandHandler<ConfirmAccount>,
+                                                 ICommandHandler<ResetAccountPassword>,
+                                                 ICommandHandler<UpdateAccount>,
+                                                 ICommandHandler<UpdateBookingSettings>,
+                                                 ICommandHandler<RegisterFacebookAccount>,
+                                                 ICommandHandler<RegisterTwitterAccount>,
+                                                 ICommandHandler<UpdateAccountPassword>,
+                                                 ICommandHandler<GrantAdminRight>,
+                                                 ICommandHandler<AddCreditCard>,
+                                                 ICommandHandler<RemoveCreditCard>,
+                                                 ICommandHandler<RegisterDeviceForPushNotifications>,
+                                                 ICommandHandler<UnregisterDeviceForPushNotifications>
     {
-
         private readonly IEventSourcedRepository<Account> _repository;
         private readonly IPasswordService _passwordService;
 
@@ -119,6 +117,13 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var account = _repository.Find(command.AccountId);
             account.RegisterDeviceForPushNotifications(command.DeviceToken, command.Platform);
+            _repository.Save(account, command.Id.ToString());
+        }
+
+        public void Handle(UnregisterDeviceForPushNotifications command)
+        {
+            var account = _repository.Find(command.AccountId);
+            account.UnregisterDeviceForPushNotifications(command.DeviceToken);
             _repository.Save(account, command.Id.ToString());
         }
     }

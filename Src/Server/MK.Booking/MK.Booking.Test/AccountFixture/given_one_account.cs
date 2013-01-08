@@ -116,5 +116,22 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             Assert.AreEqual(PushNotificationServicePlatform.Android, @event.Platform);
 
         }
+
+        [Test]
+        public void when_unregistering_device_sucessfully()
+        {
+            var deviceToken = Guid.NewGuid().ToString();
+            this.sut.When(new UnregisterDeviceForPushNotifications
+            {
+                AccountId = _accountId,
+                DeviceToken = deviceToken,
+            });
+
+            var @event = sut.ThenHasSingle<DeviceUnregisteredForPushNotifications>();
+
+            Assert.AreEqual(_accountId, @event.SourceId);
+            Assert.AreEqual(deviceToken, @event.DeviceToken);
+
+        }
     }
 }

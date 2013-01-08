@@ -78,6 +78,7 @@
     <Compile Include="ResetAccountPassword.cs" />
     <Compile Include="SendPasswordResetEmail.cs" />
     <Compile Include="SendReceipt.cs" />
+    <Compile Include="UnregisterDeviceForPushNotifications.cs" />
     <Compile Include="UpdateAccount.cs" />
     <Compile Include="UpdateAccountPassword.cs" />
     <Compile Include="AddOrUpdateAppSettings.cs" />

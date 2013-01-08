@@ -34,6 +34,7 @@ namespace apcurium.MK.Booking.Domain
             base.Handles<CreditCardRemoved>(OnCreditCardRemoved);
             base.Handles<PaymentProfileUpdated>(OnPaymentProfileUpdated);
             base.Handles<DeviceRegisteredForPushNotifications>(NoAction);
+            base.Handles<DeviceUnregisteredForPushNotifications>(NoAction);
         }
 
 
@@ -252,6 +253,19 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
+        public void UnregisterDeviceForPushNotifications(string deviceToken)
+        {
+            if (Params.Get(deviceToken).Any(p => p.IsNullOrEmpty()))
+            {
+                throw new InvalidOperationException("Missing device token");
+            }
+
+            this.Update(new DeviceUnregisteredForPushNotifications
+            {
+                DeviceToken = deviceToken,
+            });
+        }
+
         private void OnAccountRegistered(AccountRegistered @event)
         {
             _confirmationToken = @event.ConfirmationToken;
@@ -316,7 +330,5 @@ namespace apcurium.MK.Booking.Domain
             }
         }
 
-
-        
     }
 }
