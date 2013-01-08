@@ -9,6 +9,7 @@ using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Email;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.Security;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Test.AccountFixture
 {
@@ -94,6 +95,25 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             var @event = sut.ThenHasSingle<AdminRightGranted>();
 
             Assert.AreEqual(_accountId, @event.SourceId);
+
+        }
+
+        [Test]
+        public void when_registering_device_sucessfully()
+        {
+            var deviceToken = Guid.NewGuid().ToString();
+            this.sut.When(new RegisterDeviceForPushNotifications
+            {
+                AccountId = _accountId,
+                DeviceToken = deviceToken,
+                Platform = PushNotificationServicePlatform.Android
+            });
+
+            var @event = sut.ThenHasSingle<DeviceRegisteredForPushNotifications>();
+
+            Assert.AreEqual(_accountId, @event.SourceId);
+            Assert.AreEqual(deviceToken, @event.DeviceToken);
+            Assert.AreEqual(PushNotificationServicePlatform.Android, @event.Platform);
 
         }
     }

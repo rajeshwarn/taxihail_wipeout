@@ -18,7 +18,8 @@ namespace apcurium.MK.Booking.CommandHandlers
                                          ICommandHandler<UpdateAccountPassword>,
                                          ICommandHandler<GrantAdminRight>,
                                          ICommandHandler<AddCreditCard>,
-                                         ICommandHandler<RemoveCreditCard>
+                                         ICommandHandler<RemoveCreditCard>,
+                                         ICommandHandler<RegisterDeviceForPushNotifications>
     {
 
         private readonly IEventSourcedRepository<Account> _repository;
@@ -111,6 +112,13 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var account = _repository.Find(command.AccountId);
             account.RemoveCreditCard(command.CreditCardId);
+            _repository.Save(account, command.Id.ToString());
+        }
+
+        public void Handle(RegisterDeviceForPushNotifications command)
+        {
+            var account = _repository.Find(command.AccountId);
+            account.RegisterDeviceForPushNotifications(command.DeviceToken, command.Platform);
             _repository.Save(account, command.Id.ToString());
         }
     }
