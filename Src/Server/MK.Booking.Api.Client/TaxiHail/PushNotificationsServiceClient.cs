@@ -1,7 +1,7 @@
 using System;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 
-namespace MK.Booking.Api.Client.Android
+namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
 	public class PushNotificationsServiceClient: BaseServiceClient
 	{
