@@ -47,7 +47,7 @@ namespace apcurium.MK.Booking.EventHandlers
                      OrderId = @event.SourceId,
                      AccountId = @event.AccountId,
                      IBSOrderId = @event.IBSOrderId,
-                     Status = OrderStatus.Created
+                     Status = OrderStatus.Created,
                      IBSStatusDescription = "Processing your order",
                 });
             }
