@@ -149,12 +149,21 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var details = context.Find<OrderStatusDetail>(@event.Status.OrderId);
-                AutoMapper.Mapper.Map(@event.Status, details);
-                context.Save(details);
+                if (details == null)
+                {
+                    context.Set<OrderStatusDetail>().Add(@event.Status);
+                }
+                else
+                {
+                    AutoMapper.Mapper.Map(@event.Status, details);
+                    context.Save(details);
+                }
 
                 var order = context.Find<OrderDetail>(@event.SourceId);
                 order.Status = (int)@event.Status.Status;
                 context.Save(order);
+
+                context.SaveChanges();
             }
         }
        
