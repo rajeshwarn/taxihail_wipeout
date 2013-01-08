@@ -12,7 +12,7 @@ namespace apcurium.MK.Web
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/assets").Include(
-                "~/assets/js/persist-min.js",
+                "~/assets/js/localstorage-polyfill.js",
                 "~/assets/js/handlebars-1.0.rc.1.js",
                 "~/assets/js/jquery.hotkeys.js",
                 "~/assets/js/jquery.edit-in-place.js",
@@ -94,7 +94,7 @@ namespace apcurium.MK.Web
 
             // Admin Bundles
             bundles.Add(new ScriptBundle("~/admin/bundles/assets").Include(
-                "~/assets/js/persist-min.js",
+                "~/assets/js/localstorage-polyfill.js",
                 "~/assets/js/handlebars-1.0.rc.1.js",
                 "~/assets/js/jquery.hotkeys.js",
                 "~/assets/js/jquery.edit-in-place.js",

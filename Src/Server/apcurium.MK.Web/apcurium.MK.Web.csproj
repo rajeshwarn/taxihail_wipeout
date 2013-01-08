@@ -191,8 +191,8 @@
     <Content Include="assets\bootstrap\js\bootstrap-typeahead.js" />
     <Content Include="assets\img\facebook-button.jpg" />
     <Content Include="assets\js\json2.js" />
+    <Content Include="assets\js\localstorage-polyfill.js" />
     <Content Include="assets\js\modernizr.min.js" />
-    <Content Include="assets\js\persist-min.js" />
     <Content Include="assets\bootstrap\js\tests\index.html" />
     <Content Include="assets\bootstrap\js\tests\phantom.js" />
     <Content Include="assets\bootstrap\js\tests\server.js" />
