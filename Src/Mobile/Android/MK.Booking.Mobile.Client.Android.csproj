@@ -101,7 +101,6 @@
     <Compile Include="Adapters\LocationListAdapter.cs" />
     <Compile Include="Animations\ResizeAnimation.cs" />
     <Compile Include="Animations\SlideAnimation.cs" />
-    <Compile Include="AppContext.cs" />
     <Compile Include="AppFonts.cs" />
     <Compile Include="Binding\EditTextSpinnerSelectedItemBinding.cs" />
     <Compile Include="Cache\CacheService.cs" />
