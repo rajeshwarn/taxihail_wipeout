@@ -22,7 +22,6 @@ using System;
 using ServiceStack.Text;
 using apcurium.MK.Common.Provider;
 using apcurium.MK.Booking.Api.Contract.Security;
-using MK.Booking.Api.Client.Android;
 
 namespace apcurium.MK.Booking.Mobile
 {

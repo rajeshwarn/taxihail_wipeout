@@ -161,7 +161,37 @@ namespace apcurium.MK.Booking.Mobile.Client
         public override bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)
         {
             return HandleOpenURL(application, url);
-        }       
+        }
+
+        public override void RegisteredForRemoteNotifications (UIApplication application, NSData deviceToken)
+        {
+            var oldDeviceToken = NSUserDefaults.StandardUserDefaults.StringForKey("PushDeviceToken");
+            
+            //There's probably a better way to do this
+            var strFormat = new NSString("%@");
+            var dt = new NSString(MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(new MonoTouch.ObjCRuntime.Class("NSString").Handle, new MonoTouch.ObjCRuntime.Selector("stringWithFormat:").Handle, strFormat.Handle, deviceToken.Handle));
+            var newDeviceToken = dt.ToString().Replace("<", "").Replace(">", "").Replace(" ", "");
+            
+            if (string.IsNullOrEmpty(oldDeviceToken) || !deviceToken.Equals(newDeviceToken))
+            {
+
+            }
+            
+            //Save device token now
+            NSUserDefaults.StandardUserDefaults.SetString(newDeviceToken, "PushDeviceToken");
+            
+            Console.WriteLine("Device Token: " + newDeviceToken);
+        }
+        
+        public override void FailedToRegisterForRemoteNotifications (UIApplication application, NSError error)
+        {
+            Console.WriteLine("Failed to register for notifications");
+        }
+        
+        public override void ReceivedRemoteNotification (UIApplication application, NSDictionary userInfo)
+        {
+            Console.WriteLine("Received Remote Notification!");
+        }
 
 
     }

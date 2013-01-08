@@ -229,6 +229,8 @@
     <Compile Include="ViewModels\CreditCardViewModel.cs" />
     <Compile Include="ViewModels\BookPaymentSettingsViewModel.cs" />
     <Compile Include="Messages\RemoveCreditCard.cs" />
+    <Compile Include="Extensions\IUseServiceClientExtensions.cs" />
+    <Compile Include="AppServices\IUseServiceClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">
