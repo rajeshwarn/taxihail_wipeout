@@ -17,10 +17,9 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
     }
 
     [Authenticate]
-    [RestService("/account/orders/status/", "GET")]
-    public class MultipleOrderStatusRequest : BaseDTO
+    [RestService("/account/orders/status/active", "GET")]
+    public class ActiveOrderStatusRequest : BaseDTO
     {
-        public Guid[] OrderIds { get; set; }
     }
 
     [NoCache]
@@ -30,10 +29,10 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
     }
 
     [NoCache]
-    public class MultipleOrderStatusRequestResponse: IEnumerable<OrderStatusDetail>, IHasResponseStatus
+    public class ActiveOrderStatusRequestResponse: IEnumerable<OrderStatusDetail>, IHasResponseStatus
     {
         private readonly IList<OrderStatusDetail> _details;
-        public MultipleOrderStatusRequestResponse()
+        public ActiveOrderStatusRequestResponse()
         {
             _details = new List<OrderStatusDetail>();
         }

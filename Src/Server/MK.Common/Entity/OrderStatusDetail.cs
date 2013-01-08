@@ -19,5 +19,6 @@ namespace apcurium.MK.Common.Entity
         public double? VehicleLongitude { get; set; }
         public bool FareAvailable { get; set; }
         public Guid OrderId { get; set; }
+        public Guid AccountId { get; set; }
     }
 }

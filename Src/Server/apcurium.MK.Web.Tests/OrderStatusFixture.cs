@@ -69,17 +69,15 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public void get_multiple_order_statuses()
+        public void get_active_orders_status()
         {
             var sut = new OrderServiceClient(BaseUrl, SessionId);
-            var data = sut.GetOrderStatus(new [] { _orderId, Guid.NewGuid() } );
+            var data = sut.GetActiveOrdersStatus();
 
 
-            Assert.AreEqual(2, data.Length);
+            Assert.AreEqual(1, data.Length);
             Assert.AreEqual(null, data[0].IBSStatusId);
             Assert.AreEqual(OrderStatus.Created, data[0].Status);
-            Assert.AreEqual(0, data[1].IBSOrderId);
-            Assert.AreEqual("", data[1].IBSStatusId);
             
         }
     }

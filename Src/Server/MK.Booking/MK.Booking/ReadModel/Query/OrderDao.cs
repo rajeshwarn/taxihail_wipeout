@@ -66,7 +66,19 @@ namespace apcurium.MK.Booking.ReadModel.Query
             {
                 var currentOrders = (from order in context.Set<OrderStatusDetail>()
                                      where order.Status != Common.Entity.OrderStatus.Canceled && order.Status != Common.Entity.OrderStatus.Completed
-                                   select order).ToList();
+                                     select order).ToList();
+                return currentOrders;
+            }
+        }
+
+        public IList<OrderStatusDetail> GetOrdersInProgressByAccountId(Guid accountId)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var currentOrders = (from order in context.Set<OrderStatusDetail>()
+                                     where order.AccountId == accountId
+                                     where order.Status != Common.Entity.OrderStatus.Canceled && order.Status != Common.Entity.OrderStatus.Completed
+                                     select order).ToList();
                 return currentOrders;
             }
         }
@@ -78,5 +90,6 @@ namespace apcurium.MK.Booking.ReadModel.Query
                 return context.Query<OrderStatusDetail>().SingleOrDefault(x => x.OrderId == orderId);
             }
         }
+
     }
 }
