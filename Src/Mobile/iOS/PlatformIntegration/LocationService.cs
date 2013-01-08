@@ -105,14 +105,26 @@ namespace apcurium.MK.Booking.Mobile.Client
         }
         
         private Task<Position> _last;
-        
+
+        public bool IsServiceEnabled
+        {
+            get { return CLLocationManager.Status == CLAuthorizationStatus.Authorized && CLLocationManager.LocationServicesEnabled ;}
+        }
+
         public Task<Position> GetPositionAsync(int timeout, float accuracy, int fallbackTimeout, float fallbackAccuracy, CancellationToken cancelToken)
         {
+           
             if ( ( _last != null ) && ( _last.Status == TaskStatus.Running  ))
             {
                 return _last;
             }
-            
+
+            if (!IsServiceEnabled)
+            {
+                return new Task<Position>(() =>{ throw new Exception("Location service not enabled");} ); 
+            }
+
+
             Initialize();
             _locationDelegate.LastKnownLocation = null;
             _locationManager.StartUpdatingLocation();
@@ -122,6 +134,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             
             _last = new Task<Position>(() =>
                                        {
+                 
                 bool timedout = false;
                 var result = WaitForAccurateLocation(timeout, accuracy, out timedout);
                 if(timedout)
@@ -129,7 +142,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                     result = WaitForAccurateLocation(fallbackTimeout, fallbackAccuracy, out timedout);
                     if ( timedout )
                     {
-                        throw new Exception("Location search timed out");
+                            throw new Exception("Location search timed out");
                     }
                 }
                 return new Position { Latitude = result.Coordinate.Latitude, Longitude = result.Coordinate.Longitude };

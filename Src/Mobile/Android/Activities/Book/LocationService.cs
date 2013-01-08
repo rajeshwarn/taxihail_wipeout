@@ -249,6 +249,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             Start();
         }
 
+
+        public bool IsServiceEnabled
+        {
+            get { 
+                Start();
+                return _locMgr.IsProviderEnabled( LocationManager.GpsProvider ) ||_locMgr.IsProviderEnabled( LocationManager.NetworkProvider ) ;
+            }
+        }
+
         public Task<Position> GetPositionAsync(int timeout, float accuracy, int fallbackTimeout, float fallbackAccuracy, CancellationToken cancelToken)
         {
             Start();
