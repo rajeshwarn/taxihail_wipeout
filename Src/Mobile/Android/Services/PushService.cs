@@ -12,6 +12,9 @@ using Android.Views;
 using Android.Widget;
 using Android.Util;
 using GCMSharp.Client;
+using MK.Booking.Api.Client.Android;
+using apcurium.MK.Booking.Mobile.AppServices.Impl;
+using apcurium.MK.Booking.Mobile.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Services
 {
@@ -36,28 +39,29 @@ namespace apcurium.MK.Booking.Mobile.Client.Services
 	}
 	
 	[Service] //Must use the service tag
-	public class GCMIntentService : GCMBaseIntentService
+	public class GCMIntentService : GCMBaseIntentService, IUseServiceClient
 	{
 		public GCMIntentService() : base(SampleBroadcastReceiver.SENDER_ID) {}
-		
+
 		protected override void OnRegistered (Context context, string registrationId)
 		{
 			Log.Verbose(SampleBroadcastReceiver.TAG, "GCM Registered: " + registrationId);
 			//Send back to the server
-			//	var wc = new WebClient();
-			//	var result = wc.UploadString("http://your.server.com/api/register/", "POST", 
-			//		"{ 'registrationId' : '" + registrationId + "' }");
-			
+			this.UseServiceClient<PushNotificationsServiceClient>(service =>
+			{
+				//service.Register(registrationId);
+			});
+
 			//createNotification("PushSharp-GCM Registered...", "The device has been Registered, Tap to View!");
 		}
 		
 		protected override void OnUnRegistered (Context context, string registrationId)
 		{
 			Log.Verbose(SampleBroadcastReceiver.TAG, "GCM Unregistered: " + registrationId);
-			//Remove from the web service
-			//	var wc = new WebClient();
-			//	var result = wc.UploadString("http://your.server.com/api/unregister/", "POST",
-			//		"{ 'registrationId' : '" + lastRegistrationId + "' }");
+			this.UseServiceClient<PushNotificationsServiceClient>(service =>
+			{
+				//service.Unregister(registrationId);
+			});
 			
 			//createNotification("PushSharp-GCM Unregistered...", "The device has been unregistered, Tap to View!");
 		}
@@ -101,7 +105,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Services
 			var notificationManager = GetSystemService(Context.NotificationService) as NotificationManager;
 			
 			//Create an intent to show ui
-			var uiIntent = default(Intent); //new Intent(this, typeof(DefaultActivity));
+			var uiIntent = new Intent(this, typeof(AlertDialogActivity));
 			
 			//Create the notification
 			var notification = new Notification(Android.Resource.Drawable.SymActionEmail, title);
