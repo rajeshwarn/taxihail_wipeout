@@ -1,44 +1,32 @@
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.Content.Res;
-using Android.Graphics;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Cirrious.MvvmCross.Converters;
 using apcurium.MK.Booking.Mobile.ViewModels;
 
-namespace apcurium.MK.Booking.Mobile.BindingConverter
+namespace apcurium.MK.Callbox.Mobile.Client.Converters
 {
     public class ColorEnumToAndroidColorConverter : MvxBaseValueConverter
     {
-        public  object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             switch ((ColorEnum)value)
             {
                 case ColorEnum.Black:
-                    return "@color/black";
+                    return Android.Graphics.Color.Red;
                     break;
                 case ColorEnum.Green:
-                    return "@color/green";
+                    return Android.Graphics.Color.Green;
                     break;
                     case ColorEnum.Red:
-                    return "@color/red";
+                    return Android.Graphics.Color.Red;
                     break;
                     case ColorEnum.LightGray:
-                    return "@color/lightgray";
+                    return Android.Graphics.Color.Gray;
             }
-            return "@color/black";
+            return Android.Graphics.Color.Black;
         }
 
-        public  object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotSupportedException();
         }

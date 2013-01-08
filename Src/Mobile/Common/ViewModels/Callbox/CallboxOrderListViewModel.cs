@@ -48,7 +48,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
                 IbsOrderId  = orderDeserialize.IBSOrderId,
                 Id = orderDeserialize.Id,
                 OrderStatus = orderStatusDeserialize});
-            this.MessengerHub.Subscribe<OrderDeleted>(orderId => this.CancelOrder.Execute(orderId.Content));
+            this.MessengerHub.Subscribe<OrderDeleted>(orderId =>
+                                                          {
+                                                              this.CancelOrder.Execute(orderId.Content);
+                                                              OrderCompleted(this, null);
+                                                          });
         }
 
         public IMvxCommand CancelOrder
@@ -70,8 +74,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
                         }, this.Resources.GetString("No"), () => { }));
             }
         }
-
-
+        public delegate void OrderHandler(object sender, EventArgs args);
+        public event OrderHandler OrderCompleted ;
         
     }
+
 }

@@ -88,6 +88,7 @@
     <Compile Include="Converters\CoordinateConverter.cs" />
     <Compile Include="Diagnostic\ErrorHandler.cs" />
     <Compile Include="Diagnostic\Logger.cs" />
+    <Compile Include="Extensions\ObservableExtensions.cs" />
     <Compile Include="Helpers\AlertDialogHelper.cs" />
     <Compile Include="Helpers\DrawHelper.cs" />
     <Compile Include="Localization\ResourceManager.cs" />
@@ -179,6 +180,7 @@
     <AndroidResource Include="Resources\Drawable\background_logo.png" />
     <AndroidResource Include="Resources\Drawable\background_empty.png" />
     <AndroidResource Include="Resources\Drawable\orderListBackground.xml" />
+    <AndroidResource Include="Resources\Raw\slidewhistle.mp3" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.Android.csproj">
