@@ -19,7 +19,6 @@ namespace apcurium.MK.Booking.Api.Jobs
 {
     public class UpdateOrderStatusJob : IUpdateOrderStatusJob
     {
-        private readonly IAccountDao _accountDao;
         private readonly IOrderDao _orderDao;
         private readonly IConfigurationManager _configManager;
         private readonly IBookingWebServiceClient _bookingWebServiceClient;
@@ -28,9 +27,8 @@ namespace apcurium.MK.Booking.Api.Jobs
         private const string AssignedStatus = "wosASSIGNED";
         private const string DoneStatus = "wosDONE";
 
-        public UpdateOrderStatusJob(IAccountDao accountDao, IOrderDao orderDao, IConfigurationManager configManager, IBookingWebServiceClient bookingWebServiceClient, ICommandBus commandBus)
+        public UpdateOrderStatusJob(IOrderDao orderDao, IConfigurationManager configManager, IBookingWebServiceClient bookingWebServiceClient, ICommandBus commandBus)
         {
-            _accountDao = accountDao;
             _orderDao = orderDao;
             _configManager = configManager;
             _bookingWebServiceClient = bookingWebServiceClient;
@@ -42,80 +40,53 @@ namespace apcurium.MK.Booking.Api.Jobs
             try
             {
                 var orders = _orderDao.GetOrdersInProgress();
-                foreach (var orderStatusDetail in orders)
-                {
-
-                    var order = _orderDao.FindById(orderStatusDetail.OrderId);
-                    var account = _accountDao.FindById(order.AccountId);
+                var ordersStatusIbs = _bookingWebServiceClient.GetOrdersStatus(orders.Where(x => x.IBSOrderId.HasValue).Select(x => x.IBSOrderId.Value).ToList());
+                foreach (var orderStatusDetail in orders){
+                   
                     Logger.Debug("Get Status for " + orderStatusDetail.OrderId);
-                    var ibsStatus = _bookingWebServiceClient.GetOrderStatus(orderStatusDetail.IBSOrderId.Value, account.IBSAccountId, order.Settings.Phone);
+                    var ibsStatus = ordersStatusIbs.FirstOrDefault(x => x.IBSOrderId == orderStatusDetail.IBSOrderId);
 
-                    if (ibsStatus.Status.HasValue()
+                    if (ibsStatus != null &&
+                        ibsStatus.Status.HasValue()
                         && orderStatusDetail.IBSStatusId != ibsStatus.Status)
                     {
                         string description = null;
                         Logger.Debug("Status Changed for " + orderStatusDetail.OrderId);
                         var command = new ChangeOrderStatus {Status = orderStatusDetail};
+
                         orderStatusDetail.IBSStatusId = ibsStatus.Status;
+                        orderStatusDetail.DriverInfos.FirstName = ibsStatus.FirstName;
+                        orderStatusDetail.DriverInfos.LastName = ibsStatus.LastName;
+                        orderStatusDetail.DriverInfos.MobilePhone = ibsStatus.MobilePhone;
+                        orderStatusDetail.DriverInfos.VehicleColor = ibsStatus.VehicleColor;
+                        orderStatusDetail.DriverInfos.VehicleMake = ibsStatus.VehicleMake;
+                        orderStatusDetail.DriverInfos.VehicleModel = ibsStatus.VehicleModel;
+                        orderStatusDetail.DriverInfos.VehicleRegistration = ibsStatus.VehicleRegistration;
+                        orderStatusDetail.DriverInfos.VehicleType = ibsStatus.VehicleType;
+                        orderStatusDetail.VehicleNumber = ibsStatus.VehicleNumber;
+                        orderStatusDetail.VehicleLatitude = ibsStatus.VehicleLatitude;
+                        orderStatusDetail.VehicleLongitude = ibsStatus.VehicleLongitude;
 
-                        var ibsOrderDetails = _bookingWebServiceClient.GetOrderDetails(orderStatusDetail.IBSOrderId.Value, account.IBSAccountId, order.Settings.Phone);
-                        if (ibsStatus.Status.SoftEqual(AssignedStatus))
+                        if (ibsStatus.VehicleNumber.HasValue())
                         {
-                            if ((ibsOrderDetails != null) && (ibsOrderDetails.VehicleNumber.HasValue()))
-                            {
-                                Logger.Debug("Vehicle number :  " + ibsOrderDetails.VehicleNumber);
-                                orderStatusDetail.VehicleNumber = ibsOrderDetails.VehicleNumber;
-                                description = string.Format(_configManager.GetSetting("OrderStatus.CabDriverNumberAssigned"),
-                                                     ibsOrderDetails.VehicleNumber);
-                                if (!string.IsNullOrEmpty(ibsOrderDetails.CallNumber))
-                                {
-                                    var driverInfos = _bookingWebServiceClient.GetDriverInfos(ibsOrderDetails.CallNumber);
-                                    orderStatusDetail.DriverInfos.FirstName = driverInfos.FirstName;
-                                    orderStatusDetail.DriverInfos.LastName = driverInfos.LastName;
-                                    orderStatusDetail.DriverInfos.MobilePhone = driverInfos.MobilePhone;
-                                    orderStatusDetail.DriverInfos.VehicleColor = driverInfos.VehicleColor;
-                                    orderStatusDetail.DriverInfos.VehicleMake = driverInfos.VehicleMake;
-                                    orderStatusDetail.DriverInfos.VehicleModel = driverInfos.VehicleModel;
-                                    orderStatusDetail.DriverInfos.VehicleRegistration = driverInfos.VehicleRegistration;
-                                    orderStatusDetail.DriverInfos.VehicleType = driverInfos.VehicleType;
-                                }
-                            }
-                            
-
-                            if (_configManager.GetSetting("OrderStatus.DemoMode") == "true")
-                            {
-                                Logger.Debug("DEMO MODE IS ACTIVE!");
-                                DemoModeFakePosition(orderStatusDetail);
-                            }
-                            else if (ibsStatus.VehicleLatitude.HasValue && ibsStatus.VehicleLongitude.HasValue)
-                            {
-                                Logger.Debug(string.Format("Vehicle poistion : Lat {0} : Lng{1}", ibsStatus.VehicleLatitude, ibsStatus.VehicleLongitude));
-                                orderStatusDetail.VehicleLatitude = ibsStatus.VehicleLatitude;
-                                orderStatusDetail.VehicleLongitude = ibsStatus.VehicleLongitude;
-                            }
-                            else
-                            {
-                                Logger.Debug("CANNOT GET VEHICULE POSITION");
-                            }
+                            Logger.Debug("Vehicle number :  " + ibsStatus.VehicleNumber);
+                            description = string.Format(_configManager.GetSetting("OrderStatus.CabDriverNumberAssigned"), ibsStatus.VehicleNumber);
                         }
 
                         if (ibsStatus.Status.SoftEqual(DoneStatus))
                         {
                             orderStatusDetail.Status = OrderStatus.Completed;
-                            var orderDetails = ibsOrderDetails ?? _bookingWebServiceClient.GetOrderDetails(orderStatusDetail.IBSOrderId.Value, account.IBSAccountId, order.Settings.Phone);
 
-                            if ((orderDetails != null) && ((orderDetails.Fare.HasValue || orderDetails.Tip.HasValue || orderDetails.Toll.HasValue)))
+                            if (ibsStatus.Fare.HasValue || ibsStatus.Tip.HasValue || ibsStatus.Toll.HasValue)
                             {
                                 //FormatPrice
-                                var total = Params.Get<double?>(orderDetails.Toll, orderDetails.Fare, orderDetails.Tip).Where(amount => amount.HasValue).Select(amount => amount.Value).Sum();
+                                var total = Params.Get<double?>(ibsStatus.Toll, ibsStatus.Fare, ibsStatus.Tip).Where(amount => amount.HasValue).Select(amount => amount.Value).Sum();
                                 description = string.Format(_configManager.GetSetting("OrderStatus.OrderDoneFareAvailable"), FormatPrice(total));
                                 orderStatusDetail.FareAvailable = true;
                             }
-
-                            command.Fare = orderDetails != null ? orderDetails.Fare : null;
-                            command.Toll = orderDetails != null ? orderDetails.Toll : null;
-                            command.Tip = orderDetails != null ? orderDetails.Tip : null;
-
+                            command.Fare = ibsStatus.Fare;
+                            command.Toll = ibsStatus.Toll;
+                            command.Tip = ibsStatus.Tip;
                         }
 
                         if (description.HasValue())

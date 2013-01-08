@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Infrastructure.Serialization;
 using Infrastructure.Sql.EventSourcing;
@@ -43,6 +44,26 @@ namespace DatabaseInitializer.Services
                 using (var context = _contextFactory.Invoke())
                 {
                     var orderCreatedEvents = context.Set<Event>().Where(x => x.EventType == typeof(OrderCreated).FullName).ToList();
+
+                    var ibsOrderIds = new List<int>();
+                    foreach (var orderCreatedMessage in orderCreatedEvents)
+                    {
+                        var orderCreatedEvent = _textSerializer.Deserialize<OrderCreated>(orderCreatedMessage.Payload);
+                        ibsOrderIds.Add(orderCreatedEvent.IBSOrderId);
+                    }
+
+                    var ibsOrderItsSplit = ibsOrderIds.Select((x, i) => new { Index = i, Value = x })
+                                            .GroupBy(x => x.Index / 50)
+                                            .Select(x => x.Select(v => v.Value).ToList())
+                                            .ToList();
+
+                    var ibsOrdersInformations = new List<IBSOrderInformation>();
+                    foreach (var listOfIds in ibsOrderItsSplit)
+                    {
+                        var infosFromIbs = _bookingWebServiceClient.GetOrdersStatus(listOfIds.ToArray());
+                        ibsOrdersInformations.AddRange(infosFromIbs);
+                    }
+
                     foreach (var orderCreatedMessage in orderCreatedEvents)
                     {
                         var orderCreatedEvent = _textSerializer.Deserialize<OrderCreated>(orderCreatedMessage.Payload);
@@ -59,7 +80,7 @@ namespace DatabaseInitializer.Services
                                                          Status = new OrderStatusDetail{ OrderId = orderCreatedMessage.AggregateId, IBSOrderId = orderCreatedEvent.IBSOrderId}
                                                      };
 
-                        CompleteStatusFromIbs(statusChangedEvent, orderCreatedEvent.AccountId, context);
+                        CompleteStatusFromIbs(statusChangedEvent, ibsOrdersInformations.FirstOrDefault(x => x.IBSOrderId == orderCreatedEvent.IBSOrderId));
 
 
                         var statusChangedEventMessage = new Event
@@ -79,19 +100,19 @@ namespace DatabaseInitializer.Services
             }
         }
 
-        private void CompleteStatusFromIbs(OrderStatusChanged statusChangedEvent, Guid accountId, EventStoreDbContext context)
+        private void CompleteStatusFromIbs(OrderStatusChanged statusChangedEvent, IBSOrderInformation ibsInformations)
         {
-            var accountCreatedPayload = (from @event in context.Set<Event>()
-                                where @event.AggregateId == accountId && @event.EventType == typeof(AccountRegistered).FullName 
-                                select @event.Payload).FirstOrDefault();
-
-            var accountCreatedEvent = _textSerializer.Deserialize<AccountRegistered>(accountCreatedPayload);
-            var ibsAccountId = accountCreatedEvent.IbsAcccountId;
-
-            var ibsStatus = _bookingWebServiceClient.GetOrderStatus(statusChangedEvent.Status.IBSOrderId.Value, ibsAccountId, null);
-
-            statusChangedEvent.Status.IBSStatusId = ibsStatus.Status;
-
+            statusChangedEvent.Status.IBSStatusId = ibsInformations.Status;
+            statusChangedEvent.Status.DriverInfos.FirstName = ibsInformations.FirstName;
+            statusChangedEvent.Status.DriverInfos.LastName = ibsInformations.LastName;
+            statusChangedEvent.Status.DriverInfos.MobilePhone = ibsInformations.MobilePhone;
+            statusChangedEvent.Status.DriverInfos.VehicleColor = ibsInformations.VehicleColor;
+            statusChangedEvent.Status.DriverInfos.VehicleMake = ibsInformations.VehicleMake;
+            statusChangedEvent.Status.DriverInfos.VehicleModel = ibsInformations.VehicleModel;
+            statusChangedEvent.Status.DriverInfos.VehicleRegistration = ibsInformations.VehicleRegistration;
+            statusChangedEvent.Status.DriverInfos.VehicleType = ibsInformations.VehicleType;
+            statusChangedEvent.Status.VehicleLatitude = ibsInformations.VehicleLatitude;
+            statusChangedEvent.Status.VehicleLongitude = ibsInformations.VehicleLongitude;
         }
     }
 }
