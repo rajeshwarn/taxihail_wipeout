@@ -1,6 +1,8 @@
 using System;
 using MonoTouch.CoreLocation;
 using MonoTouch.Foundation;
+using TinyIoC;
+using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -33,11 +35,13 @@ namespace apcurium.MK.Booking.Mobile.Client
                  (LastKnownLocation.HorizontalAccuracy > newLocation.HorizontalAccuracy)) && (secondHowRecent < -0.0 && secondHowRecent > -10.0))
             {
                 LastKnownLocation = newLocation;
-                Console.WriteLine ("********************UPDATING LOCATION**************************");
-                Console.WriteLine ("Lat : " + newLocation.Coordinate.Latitude.ToString ());
-                Console.WriteLine ("Long : " + newLocation.Coordinate.Longitude.ToString ());
-                Console.WriteLine ("HAcc : " + newLocation.HorizontalAccuracy.ToString ());
-                Console.WriteLine ("VAcc : " + newLocation.VerticalAccuracy.ToString ());
+
+
+
+                TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("********************UPDATING LOCATION**************************");
+                TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Lat : " + newLocation.Coordinate.Latitude.ToString ());
+                TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Long : " + newLocation.Coordinate.Longitude.ToString ());
+                TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("HAcc : " + newLocation.HorizontalAccuracy.ToString ());
             }
             
         }
