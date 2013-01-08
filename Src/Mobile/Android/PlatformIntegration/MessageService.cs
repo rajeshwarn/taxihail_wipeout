@@ -222,5 +222,10 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			msg => msg.MessageId == ownerId);
 			Context.StartActivity(i); 
 		}
+
+        public void ShowEditTextDialog(string title, string message, string positiveButtonTitle, Action<string> positionAction)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -1,11 +1,11 @@
 {
   "LightCorporateTextColor" : { "Red": "123", "Green": "93", "Blue": "15", "Alpha": "255", "Location": "1"  },
   "NavigationTitleColor" : { "Red": "0", "Green": "0", "Blue": "0", "Alpha": "255", "Location": "1"  },
-  "NavigationBarColor" : { "Red": "255", "Green": "183", "Blue": "0", "Alpha": "255", "Location": "1"  },
+  "NavigationBarColor" : { "Red": "100", "Green": "183", "Blue": "28", "Alpha": "255", "Location": "1"  },
   "Buttons": [
     {
       "Key": "CorporateColor",
-      "Colors": [  { "Red": "240", "Green": "211", "Blue": "18", "Alpha": "255",  "Location": "1"  }  ],
+      "Colors": [  { "Red": "100", "Green": "183", "Blue": "28", "Alpha": "255", "Location": "1"   }  ],
       "StrokeColor": {  "Red": "126", "Green": "98",  "Blue": "26", "Alpha": "255",  "Location": "1"  },
       "TextColor": {  "Red": "126", "Green": "98",  "Blue": "26", "Alpha": "255",  "Location": "1"  },
       "TextShadowColor": {  "Red": "0", "Green": "0",  "Blue": "0", "Alpha": "128",  "Location": "1"  },

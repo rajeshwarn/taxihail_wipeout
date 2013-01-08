@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="Hello">Hello World, Click Me!</string>
+    <string name="ApplicationName">MK.Callbox.Mobile.Client.Android</string>
+  <string name="EmailLabel">Email</string>
+  <string name="PasswordLabel">Password</string>
+  <string name="SignInButton">Sign In</string>
+  <string name="View_SignIn"></string>
+  <string name="OrderNote">Booked on mobile</string>
+  <string name="LoadingMessage">Loading...</string>
+  <string name="LanguageCode">en</string>
+  <string name="Language">English</string>
+  <string name="CarAssigned">Your taxi #{0}</string>
+  <string name="Callbox.passengerName">Order created using callbox for passenger: {0}</string>
+  <string name="PushTaxi">Push for a taxi</string>
+  <string name="BookTaxiTitle">Book taxi</string>
+  <string name="BookTaxiPassengerName">Enter passenger name</string>
+  <string name="Ok">Ok</string>
+  <string name="Yes">Yes</string>
+  <string name="No">No</string>
+  <string name="LogoutTitle">Logout</string>
+  <string name="LogoutMessage">Do you want to logout?</string>
+  <string name="CancelOrderTitle">Cancel order</string>
+  <string name="CancelOrderMessage">Do you want to cancel this order?</string>
+  <string name="NoPickupAddress">There is no pickup address</string>
+</resources>

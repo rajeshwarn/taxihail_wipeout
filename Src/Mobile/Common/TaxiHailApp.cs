@@ -104,11 +104,7 @@ namespace apcurium.MK.Booking.Mobile
         {
             return new TinyIocViewModelLocator(); //base.CreateDefaultViewModelLocator();
         }
-
-
-        
     }
-
 }
 
 

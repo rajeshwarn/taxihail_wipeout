@@ -102,6 +102,7 @@ namespace DatabaseInitializer
                 module.Init(container, connectionString);
 
                 //Init data
+
                 var commandBus = container.Resolve<ICommandBus>();
 
                 bool companyIsCreated = container.Resolve<IEventsPlayBackService>().CountEvent("Company") >0;

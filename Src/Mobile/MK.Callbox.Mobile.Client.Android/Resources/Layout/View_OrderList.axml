@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.TaxiHailDemo"
+    android:id="@+id/frameLayout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background_empty">
+    <Button
+        android:id="@+id/LogoutButton"
+        android:background="@color/transparent"
+        android:layout_width="150dip"
+        android:layout_height="150dip"
+        android:layout_gravity="top|left" />
+    <RelativeLayout
+        android:id="@+id/orderListLayout"
+        android:layout_height="300dip"
+        android:layout_width="800dip"
+        android:layout_gravity="center"
+        android:background="@drawable/orderlistbackground">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:id="@+id/listTitle">
+            <TextView
+                android:text="Time Fare was placed"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="150dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:singleLine="true"
+                android:textColor="@color/black" />
+            <TextView
+                android:text="Order No."
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="150dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:singleLine="true"
+                android:textColor="@color/black" />
+            <TextView
+                android:text="Status"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="150dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:singleLine="true"
+                android:textColor="@color/black" />
+            <TextView
+                android:text=""
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="150dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:singleLine="true"
+                android:textColor="@color/black" />
+        </LinearLayout>
+        <View
+            android:id="@+id/stroke"
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:layout_below="@id/listTitle"
+            android:background="@color/black" />
+        <cirrious.mvvmCross.binding.android.views.MvxBindableListView
+            android:id="@+id/OrderList"
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@android:color/transparent"
+            android:cacheColorHint="@android:color/transparent"
+            android:layout_marginBottom="5dip"
+            android:layout_marginLeft="5dip"
+            android:layout_marginRight="5dip"
+            android:layout_marginTop="10dip"
+            android:layout_gravity="center"
+            android:layout_below="@id/stroke"
+            local:MvxItemTemplate="@layout/control_ordercell"
+            local:MvxBind="{&apos;ItemsSource&apos;:{&apos;Path&apos;:&apos;Orders&apos;}}" />
+    </RelativeLayout>
+</FrameLayout>
