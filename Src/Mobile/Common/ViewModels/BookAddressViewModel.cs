@@ -320,16 +320,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public IMvxCommand RequestCurrentLocationCommand
-        {
-            get
-            {
-                return GetCommand(() =>
+        public IMvxCommand RequestCurrentLocationCommand {
+            get {
+                return new MvxRelayCommand (() =>
                 {
-                    CancelCurrentLocation();
+
+                    CancelCurrentLocationCommand.Execute ();
+
+                    if ( !_geolocator.IsServiceEnabled )
+                    {
+                        TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage ( TinyIoCContainer.Current.Resolve<IAppResource>().GetString ("LocationServiceErrorTitle"),TinyIoCContainer.Current.Resolve<IAppResource>().GetString ("LocationServiceErrorMessage") );
+                        return ;
+                    }
                     IsExecuting = true;
-                    _cancellationToken = new CancellationTokenSource();
-                    _geolocator.GetPositionAsync(5000, 50, 2000, 2000, _cancellationToken.Token).ContinueWith(t =>
+                    _cancellationToken = new CancellationTokenSource ();
+                    _geolocator.GetPositionAsync (6000, 50, 2000, 2000, _cancellationToken.Token).ContinueWith (t =>
                     {
                         try
                         {
