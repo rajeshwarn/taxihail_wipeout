@@ -225,7 +225,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                     IsExecuting = true;
                     _cancellationToken = new CancellationTokenSource ();
-                    _geolocator.GetPositionAsync (5000, 50, 2000, 2000, _cancellationToken.Token).ContinueWith (t =>
+                    _geolocator.GetPositionAsync (6000, 50, 2000, 2000, _cancellationToken.Token).ContinueWith (t =>
                     {
                         try {
                             TinyIoCContainer.Current.Resolve<ILogger> ().LogMessage ("Request Location Command");

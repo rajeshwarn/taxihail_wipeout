@@ -142,6 +142,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                     result = WaitForAccurateLocation(fallbackTimeout, fallbackAccuracy, out timedout);
                     if ( timedout )
                     {
+                        TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Location search timed out");
                             throw new Exception("Location search timed out");
                     }
                 }
