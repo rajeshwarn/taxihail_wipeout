@@ -151,8 +151,11 @@ namespace DatabaseInitializer
                 if (isUpdate)
                 {
                     //migrate events
-                    var migrator = container.Resolve<IEventsMigrator>();
-                    migrator.Do(appSettings["TaxiHail.Version"]);
+                    var migrators = container.ResolveAll<IEventsMigrator>();
+                    foreach (var eventsMigrator in migrators)
+                    {
+                        eventsMigrator.Do(appSettings["TaxiHail.Version"]);
+                    }
 
                     //replay events
                     var replayService = container.Resolve<IEventsPlayBackService>();
