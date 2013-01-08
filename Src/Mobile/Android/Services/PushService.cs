@@ -12,9 +12,10 @@ using Android.Views;
 using Android.Widget;
 using Android.Util;
 using GCMSharp.Client;
-using MK.Booking.Api.Client.Android;
+
 using apcurium.MK.Booking.Mobile.AppServices.Impl;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Api.Client.TaxiHail;
 
 namespace apcurium.MK.Booking.Mobile.Client.Services
 {
