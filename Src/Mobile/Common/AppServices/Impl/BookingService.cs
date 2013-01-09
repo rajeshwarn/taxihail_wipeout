@@ -159,6 +159,21 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 statusId.SoftEqual ("wosCANCELLED_DONE");
         }
 
+        public bool IsCallboxStatusActive(string statusId)
+        {
+            return statusId.IsNullOrEmpty() ||
+                statusId.SoftEqual("wosSCHEDULED") ||
+                statusId.SoftEqual("wosWAITING") ||
+                statusId.SoftEqual("wosASSIGNED") ||
+                statusId.SoftEqual("wosARRIVED");
+        }
+
+        public bool IsCallboxStatusCompleted(string statusId)
+        {
+            return
+                statusId.SoftEqual("wosARRIVED") ;
+        }
+
         public bool IsStatusDone (string statusId)
         {
             return statusId.SoftEqual ("wosDONE");

@@ -29,15 +29,13 @@ namespace apcurium.MK.Booking.Mobile
 
 
             TinyIoCContainer.Current.Resolve<IConfigurationManager>().Reset();
-
+            
             if (TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount == null)
             {
                 RequestNavigate<CallboxLoginViewModel>();
             }
-            else if (TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService>().Get<IEnumerable<OrderViewModel>>("callbox.orderList") != null 
-                && TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService>().Get<IEnumerable<OrderViewModel>>("callbox.orderList").Any())
+            else if (TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().GetActiveOrdersStatus().Any())
             {
-                var test = TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService>().Get<IEnumerable<OrderViewModel>>("callbox.orderList");
                 RequestNavigate<CallboxOrderListViewModel>();
             }
             else

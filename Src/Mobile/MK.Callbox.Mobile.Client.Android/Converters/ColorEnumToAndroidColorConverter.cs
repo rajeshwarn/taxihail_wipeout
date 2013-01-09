@@ -12,7 +12,7 @@ namespace apcurium.MK.Callbox.Mobile.Client.Converters
             switch ((ColorEnum)value)
             {
                 case ColorEnum.Black:
-                    return Android.Graphics.Color.Red;
+                    return Android.Graphics.Color.Black;
                     break;
                 case ColorEnum.Green:
                     return Android.Graphics.Color.Green;

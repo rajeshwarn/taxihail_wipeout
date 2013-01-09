@@ -55,26 +55,50 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 
         public bool CanBeCancelled
         {
-            get
-            {
-                //return !_bookingService.IsCompleted(Id);
-                return true;
-            }
+            get { return !_bookingService.IsCallboxStatusCompleted(OrderStatus.IBSStatusId); }
         }
 
         public ColorEnum TextColor
         {
             get
             {
-                switch (OrderStatus.Status)
+                switch (OrderStatus.IBSStatusId)
                 {
-                        case MK.Common.Entity.OrderStatus.Pending:
-                        return ColorEnum.Red;
+                        case "wosWAITING":
+                        return ColorEnum.LightGray;
                         break;
-						case MK.Common.Entity.OrderStatus.Completed:
+						case "wosARRIVED":
                         return ColorEnum.Green;
+                        break;
+                    case  "wosASSIGNED":
+                        return ColorEnum.Black;
+                        break;
                 };
                 return ColorEnum.Black;
+            }
+        }
+
+        public int TextSize
+        {
+            get
+            {
+                if (OrderStatus.IBSStatusId.Equals("wosARRIVED"))
+                {
+                    return 25;
+                }
+                return 15;
+            }
+        }
+
+        public string StatusDescription
+        {
+            get
+            {
+                if (OrderStatus.IBSStatusId.Equals("wosASSIGNED"))
+                {
+                   return OrderStatus.IBSStatusDescription + string.Format("Cab number: {0}", OrderStatus.VehicleNumber);
+                }
+                return OrderStatus.IBSStatusDescription;
             }
         }
     }

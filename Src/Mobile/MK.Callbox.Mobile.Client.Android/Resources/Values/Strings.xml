@@ -32,4 +32,5 @@
   <string name="Status">Status</string>
   <string name="InvalidLoginMessageTitle">Invalid information</string>
   <string name="InvalidLoginMessage">The email or/and password is invalid.</string>
+  <string name="ServiceErrorCallTitle">Server Error</string>
 </resources>

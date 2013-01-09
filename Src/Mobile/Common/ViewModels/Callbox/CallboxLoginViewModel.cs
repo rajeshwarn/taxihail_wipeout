@@ -106,7 +106,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
                 if (account != null)
                 {
                     this.Password = string.Empty;
-                    RequestNavigate<CallboxCallTaxiViewModel>(true);
+                    if (_accountService.GetActiveOrdersStatus().Any())
+                    {
+                        RequestNavigate<CallboxOrderListViewModel>(true);
+                    }
+                    else
+                    {
+                        RequestNavigate<CallboxCallTaxiViewModel>(true);
+                    }
                     RequestClose(this);
                 }
             }

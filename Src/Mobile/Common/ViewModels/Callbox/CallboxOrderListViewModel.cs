@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Text;
 
 using Android.App;
@@ -22,6 +23,7 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 {
@@ -29,7 +31,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
     {
         private TinyMessageSubscriptionToken token;
         public CreateOrder Order { get; private set; }
-
+        private IDisposable refreshStatusToken;
         private ObservableCollection<CallboxOrderViewModel> _orders { get; set; }
 
         public ObservableCollection<CallboxOrderViewModel> Orders
@@ -47,20 +49,45 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
         {
             Order = new CreateOrder();
             Order.Settings = AccountService.CurrentAccount.Settings;
-            Orders = CacheService.Get<ObservableCollection<CallboxOrderViewModel>>("callbox.orderList") ?? new ObservableCollection<CallboxOrderViewModel>();
+           // Orders = CacheService.Get<ObservableCollection<CallboxOrderViewModel>>("callbox.orderList") ?? new ObservableCollection<CallboxOrderViewModel>();
+            //var orderStatus = AccountService.GetActiveOrdersStatus().ToList();
+            Orders = new ObservableCollection<CallboxOrderViewModel>();
+             refreshStatusToken = Observable.Timer(TimeSpan.Zero, TimeSpan.FromSeconds(20))
+                      .Subscribe(a =>
+                                     {
+                                         RefreshOrderStatus();
+                                     });
             token = this.MessengerHub.Subscribe<OrderDeleted>(orderId =>
             {
                 this.CancelOrder.Execute(orderId.Content);
-                OrderCompleted(this, null);
             });
         }
 
-        
+        private void RefreshOrderStatus()
+        {
+            var orderStatus = AccountService.GetActiveOrdersStatus().ToList();
+            InvokeOnMainThread(() =>
+                                   {
+                                       Orders.Clear();
+                                       Orders.AddRange(orderStatus.Where(status => BookingService.IsCallboxStatusActive(status.IBSStatusId)).Select(status => new CallboxOrderViewModel()
+                                       {
+                                           OrderStatus = status,
+                                           CreatedDate = DateTime.Now,
+                                           IbsOrderId = status.IBSOrderId,
+                                           Id = status.OrderId
+                                       }));
+                                   });
+            if (Orders.Where(order => BookingService.IsCallboxStatusCompleted(order.OrderStatus.IBSStatusId)).Any())
+            {
+                OrderCompleted(this, null);
+            }
+        }
 
         protected override void Close()
         {
             base.Close();
             token.Dispose();
+            refreshStatusToken.Dispose();
         }
  
         public CallboxOrderListViewModel(string passengerName)
