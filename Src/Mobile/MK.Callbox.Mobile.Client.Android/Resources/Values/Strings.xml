@@ -13,8 +13,10 @@
   <string name="CarAssigned">Your taxi #{0}</string>
   <string name="Callbox.passengerName">Order created using callbox for passenger: {0}</string>
   <string name="PushTaxi">Push for a taxi</string>
+  <string name="OrderAnotherTaxi">Order Another Taxi</string>
+  <string name="ErrorCreatingOrderTitle">Booking cannot be completed</string>
   <string name="BookTaxiTitle">Book taxi</string>
-  <string name="BookTaxiPassengerName">Enter passenger name</string>
+  <string name="BookTaxiPassengerName">Enter passenger name (optional)</string>
   <string name="Ok">Ok</string>
   <string name="Yes">Yes</string>
   <string name="No">No</string>
@@ -23,4 +25,12 @@
   <string name="CancelOrderTitle">Cancel order</string>
   <string name="CancelOrderMessage">Do you want to cancel this order?</string>
   <string name="NoPickupAddress">There is no pickup address</string>
+  <string name="ServiceError_ErrorCreatingOrderMessage">Please contact {0} at {1} for further assistance.</string>
+  <string name="ErrorCreatingOrderTitle">Booking cannot be completed</string>
+  <string name="TimeFareWasPlaced">Time fare was placed</string>
+  <string name="OrderNo">Order No.</string>
+  <string name="Status">Status</string>
+  <string name="InvalidLoginMessageTitle">Invalid information</string>
+  <string name="InvalidLoginMessage">The email or/and password is invalid.</string>
+  <string name="ServiceErrorCallTitle">Server Error</string>
 </resources>

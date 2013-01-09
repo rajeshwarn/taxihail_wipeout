@@ -77,6 +77,7 @@
     <Compile Include="Cache\CacheService.cs" />
     <Compile Include="Controls\HeaderedLayout.cs" />
     <Compile Include="Controls\StyledButton.cs" />
+    <Compile Include="Controls\TextViewColor.cs" />
     <Compile Include="Converters\AppConverters.cs" />
     <Compile Include="Converters\ColorEnumToAndroidColorConverter.cs" />
     <Compile Include="Converters\CoordinateConverter.cs" />
@@ -124,7 +125,7 @@
     <AndroidResource Include="Resources\Values\Strings.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\Drawable\Icon.png" />
+    <AndroidResource Include="Resources\Drawable\icon.png" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\AndroidManifest.xml" />
@@ -174,7 +175,8 @@
     <AndroidResource Include="Resources\Drawable\background_logo.png" />
     <AndroidResource Include="Resources\Drawable\background_empty.png" />
     <AndroidResource Include="Resources\Drawable\orderListBackground.xml" />
-    <AndroidResource Include="Resources\Raw\slidewhistle.mp3" />
+    <AndroidResource Include="Resources\Raw\vehicle.mp3" />
+    <AndroidResource Include="Resources\Drawable\red_button.xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.Android.csproj">

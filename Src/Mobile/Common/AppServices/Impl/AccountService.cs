@@ -143,6 +143,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return result;
         }
 
+        public OrderStatusDetail[] GetActiveOrdersStatus()
+        {
+            var result = default(OrderStatusDetail[]);
+            UseServiceClient<OrderServiceClient>(service =>
+            {
+                result = service.GetActiveOrdersStatus();
+            }
+            );
+            return result;
+        }
+
         public IEnumerable<Address> GetFavoriteAddresses ()
         {
             var cached = TinyIoCContainer.Current.Resolve<ICacheService> ().Get<Address[]> (_favoriteAddressesCacheKey);

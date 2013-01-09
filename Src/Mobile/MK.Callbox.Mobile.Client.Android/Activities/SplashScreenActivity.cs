@@ -5,7 +5,7 @@ using Cirrious.MvvmCross.Android.Views;
 
 namespace apcurium.MK.Callbox.Mobile.Client.Activities
 {
-    [Activity(Label = "@string/ApplicationName", MainLauncher = true, Theme = "@style/Theme.Splash", NoHistory = true, Icon = "@drawable/icon", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
+    [Activity(Label = "@string/ApplicationName", MainLauncher = true, Theme = "@style/Theme.Splash", NoHistory = true, Icon = "@drawable/icon", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
     public class SplashScreenActivity : MvxBaseSplashScreenActivity
     {
         protected override void OnCreate(Bundle bundle)

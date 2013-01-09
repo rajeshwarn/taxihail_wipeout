@@ -29,10 +29,14 @@ namespace apcurium.MK.Booking.Mobile
 
 
             TinyIoCContainer.Current.Resolve<IConfigurationManager>().Reset();
-
+            
             if (TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount == null)
             {
                 RequestNavigate<CallboxLoginViewModel>();
+            }
+            else if (TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().GetActiveOrdersStatus().Any(c => TinyIoC.TinyIoCContainer.Current.Resolve<IBookingService>().IsCallboxStatusActive(c.IBSStatusId)))
+            {
+                RequestNavigate<CallboxOrderListViewModel>();
             }
             else
             {

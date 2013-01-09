@@ -20,5 +20,6 @@ namespace apcurium.MK.Common.Entity
         public bool FareAvailable { get; set; }
         public Guid OrderId { get; set; }
         public Guid AccountId { get; set; }
+        public DateTime PickupDate { get; set; }
     }
 }
