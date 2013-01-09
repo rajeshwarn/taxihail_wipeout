@@ -62,8 +62,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             mailComposer.SetSubject (supportEmail);
             mailComposer.Finished += delegate(object mailsender, MFComposeResultEventArgs mfce) 
             {
-                mailComposer.DismissModalViewControllerAnimated (true);
-                presenter.NativeModalViewControllerDisappearedOnItsOwn();
+                presenter.Close ( null ); 
+                //presenter.NativeModalViewControllerDisappearedOnItsOwn();
                 if (File.Exists (errorLogPath))
                 {
                     File.Delete (errorLogPath);
