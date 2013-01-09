@@ -10,6 +10,7 @@ using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Email;
 using apcurium.MK.Booking.EventHandlers;
+using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query;
@@ -92,6 +93,9 @@ namespace apcurium.MK.Booking
             container.RegisterType<IEventHandler, RatingTypeDetailsGenerator>("RatingTypeDetailsGenerator");
             container.RegisterType<IEventHandler, AppSettingsGenerator>("AppSettingsGenerator");
             container.RegisterType<IEventHandler, CreditCardDetailsGenerator>("CreditCardDetailsGenerator");
+            
+            // Integration event handlers
+            container.RegisterType<IEventHandler, PushNotificationSender>("PushNotificationSender");
         }
 
         private void RegisterCommandHandlers(IUnityContainer container)
