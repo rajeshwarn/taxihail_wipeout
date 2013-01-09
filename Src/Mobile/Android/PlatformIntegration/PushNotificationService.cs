@@ -1,24 +1,55 @@
-
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 using Android.Util;
+using Android.Content;
 using GCMSharp.Client;
-
-using apcurium.MK.Booking.Mobile.AppServices.Impl;
+using Android.App;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
+using System.Text;
 
-namespace apcurium.MK.Booking.Mobile.Client.Services
+namespace apcurium.MK.Booking.Mobile.Client
 {
+	public class PushNotificationService: IPushNotificationService
+	{
+		readonly Context _context;
+
+		public PushNotificationService (Context context)
+		{
+			this._context = context;
+		}
+
+		public void RegisterDeviceForPushNotifications ()
+		{
+			//Check to ensure everything's setup right
+			GCMSharp.Client.GCMRegistrar.CheckDevice(_context);
+			GCMSharp.Client.GCMRegistrar.CheckManifest(_context);
+			
+			//Get the stored latest registration id
+			var registrationId = GCMSharp.Client.GCMRegistrar.GetRegistrationId(_context);
+			
+			
+			bool registered = !string.IsNullOrEmpty(registrationId);
+			const string TAG = "PushSharp-GCM";
+			
+			if (!registered)
+			{
+				Log.Info(TAG, "Registering...");
+				
+				//Call to register
+				GCMSharp.Client.GCMRegistrar.Register(_context, SampleBroadcastReceiver.SENDER_ID);
+			}
+			else {
+				Log.Info(TAG, "Already registered");
+			}
+		}
+
+		public void SaveDeviceToken (string deviceToken)
+		{
+			throw new NotImplementedException ("iOS only");
+		}
+	}
+
 	//You must subclass this!
 	[BroadcastReceiver(Permission=GCMConstants.PERMISSION_GCM_INTENTS)]
 	[IntentFilter(new string[] { GCMConstants.INTENT_FROM_GCM_MESSAGE },
@@ -43,25 +74,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Services
 	public class GCMIntentService : GCMBaseIntentService, IUseServiceClient
 	{
 		public GCMIntentService() : base(SampleBroadcastReceiver.SENDER_ID) {}
-
+		
 		protected override void OnRegistered (Context context, string registrationId)
 		{
 			Log.Verbose(SampleBroadcastReceiver.TAG, "GCM Registered: " + registrationId);
 			//Send back to the server
-			this.UseServiceClient<PushNotificationsServiceClient>(service =>
-			{
-				//service.Register(registrationId);
+			this.UseServiceClient<PushNotificationRegistrationServiceClient>(service =>
+			                                                                 {
+				service.Register(registrationId);
 			});
-
+			
 			//createNotification("PushSharp-GCM Registered...", "The device has been Registered, Tap to View!");
 		}
 		
 		protected override void OnUnRegistered (Context context, string registrationId)
 		{
 			Log.Verbose(SampleBroadcastReceiver.TAG, "GCM Unregistered: " + registrationId);
-			this.UseServiceClient<PushNotificationsServiceClient>(service =>
-			{
-				//service.Unregister(registrationId);
+			this.UseServiceClient<PushNotificationRegistrationServiceClient>(service =>
+			                                                                 {
+				service.Unregister(registrationId);
 			});
 			
 			//createNotification("PushSharp-GCM Unregistered...", "The device has been unregistered, Tap to View!");

@@ -257,7 +257,7 @@
     <AndroidResource Include="Resources\Drawable\segmented_button_text_color.xml" />
     <AndroidResource Include="Resources\Drawable\add_btn.png" />
     <AndroidResource Include="Resources\drawable-hdpi\add_btn.png" />
-    <Compile Include="Services\PushService.cs" />
+    <Compile Include="PlatformIntegration\PushNotificationService.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />

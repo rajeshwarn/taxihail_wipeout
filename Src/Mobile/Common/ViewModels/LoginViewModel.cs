@@ -21,13 +21,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class LoginViewModel : BaseViewModel
     {
-		private IAccountService _accountService;
-        private IFacebookService _facebookService;
-        private ITwitterService _twitterService;
+        readonly IAccountService _accountService;
+        readonly IFacebookService _facebookService;
+        readonly ITwitterService _twitterService;
+        readonly IPushNotificationService _pushService;
 
-        public LoginViewModel(IFacebookService facebookService,ITwitterService twitterService, IAccountService accountService)
+        public LoginViewModel(IFacebookService facebookService,ITwitterService twitterService, IAccountService accountService, IPushNotificationService pushService)
 		{
-			_accountService = accountService;		
+			_accountService = accountService;
+            _pushService = pushService;
 
             CheckVersion();
             _facebookService = facebookService;
@@ -38,12 +40,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _twitterService.ConnectionStatusChanged -= HandleTwitterConnectionStatusChanged;
             _twitterService.ConnectionStatusChanged += HandleTwitterConnectionStatusChanged;
 		}
-
-	    public LoginViewModel(IAccountService  accountService)
-	    {
-            _accountService = accountService;
-            CheckVersion();
-	    }
 
 		public override void Load ()
 		{
@@ -114,6 +110,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				if(account != null){
 					this.Password = string.Empty;
+
+                    InvokeOnMainThread(()=> _pushService.RegisterDeviceForPushNotifications());
 
                     RequestNavigate<BookViewModel>(true);
                     RequestClose( this );

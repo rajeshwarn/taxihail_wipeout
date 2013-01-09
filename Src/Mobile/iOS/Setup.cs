@@ -74,8 +74,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             TinyIoCContainer.Current.Register<IErrorHandler, ErrorHandler>();            
             TinyIoCContainer.Current.Register<ICacheService>(new CacheService());
             TinyIoCContainer.Current.Register<IPhoneService, PhoneService>();
+            TinyIoCContainer.Current.Register<IPushNotificationService, PushNotificationService>();
             InitializeSocialNetwork();
-            InitializePushNotifications();
         }
 
         private void InitializeSocialNetwork()
@@ -102,18 +102,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             TinyIoCContainer.Current.Register<ITwitterService>(twitterService);
             
         }
-
-        private void InitializePushNotifications()
-        {
-            if (TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount != null)
-            {
-                //Register for remote notifications
-                UIApplication.SharedApplication.RegisterForRemoteNotificationTypes(UIRemoteNotificationType.Alert
-                                                                                   | UIRemoteNotificationType.Badge
-                                                                                   | UIRemoteNotificationType.Sound);
-            }
-        }
-
 
 #endregion
     }

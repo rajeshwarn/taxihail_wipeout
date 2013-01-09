@@ -94,7 +94,7 @@
     <Compile Include="IAccountServiceClient.cs" />
     <Compile Include="IAuthServiceClient.cs" />
     <Compile Include="Client\CmtJsonServiceClient.cs" />
-    <Compile Include="TaxiHail\PushNotificationsServiceClient.cs" />
+    <Compile Include="TaxiHail\PushNotificationRegistrationServiceClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Cmt\" />
