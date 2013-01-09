@@ -111,15 +111,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
             else
             {
-                Model.BookAddress.ToSafeString();
-                var prefixAddress = adr.StreetNumber;
                 if (adr.BuildingName.HasValue())
                 {
-                    prefixAddress = adr.BuildingName;
+                    return Params.Get(adr.BuildingName, adr.Street).Where(s => s.HasValue() && s.Trim().HasValue()).JoinBy(", ");
                 }
-                if (Params.Get(prefixAddress, adr.Street).Where(s => s.HasValue() && s.Trim().HasValue()).Count() > 0)
+                else if (Params.Get(adr.StreetNumber, adr.Street).Where(s => s.HasValue() && s.Trim().HasValue()).Count() > 0)
                 {
-                    return Params.Get(prefixAddress, adr.Street).Where(s => s.HasValue() && s.Trim().HasValue()).JoinBy(", ");
+                    return Params.Get(adr.StreetNumber, adr.Street).Where(s => s.HasValue() && s.Trim().HasValue()).JoinBy(" ");
                 }
                 else
                 {

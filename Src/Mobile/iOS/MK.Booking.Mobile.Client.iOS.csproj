@@ -364,6 +364,7 @@
     <Compile Include="Controls\TipButtons.cs" />
     <Compile Include="Controls\SegmentedGradientButton.cs" />
     <Compile Include="Controls\TextView.cs" />
+    <Compile Include="Binding\MvxUITextViewTargetBinding.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -397,6 +398,7 @@
     <Folder Include="Navigation\" />
     <Folder Include="Assets\Tutorial\" />
     <Folder Include="Assets\CreditCard\" />
+    <Folder Include="Binding\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="MainWindow.xib" xmlns="" />

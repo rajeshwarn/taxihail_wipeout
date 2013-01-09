@@ -78,6 +78,12 @@ namespace apcurium.MK.Booking.Mobile.Client
                 
                 View.BringSubviewToFront (bottomBar);
 
+                if ( ViewModel.IsCallButtonVisible )
+                {
+                    btnCancel.Frame = new System.Drawing.RectangleF( 8,  btnCancel.Frame.Y,  btnCancel.Frame.Width,  btnCancel.Frame.Height );
+                    btnCall.Frame = new System.Drawing.RectangleF( 320 - 8 - btnCall.Frame.Width ,  btnCall.Frame.Y,  btnCall.Frame.Width,  btnCall.Frame.Height );
+                }
+
                 this.AddBindings (new Dictionary<object, string> ()                            
                 {
                     { mapStatus, "{'Pickup':{'Path':'Pickup.Model'}, 'TaxiLocation':{'Path':'OrderStatusDetail'}, 'MapCenter':{'Path':'MapCenter'} }" },

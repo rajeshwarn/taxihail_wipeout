@@ -26,6 +26,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private ObservableCollection<OrderViewModel> _orders;
         private TinyMessageSubscriptionToken orderDeletedToken = null;
 
+        public HistoryViewModel()
+        {
+            HasOrders = true; //Needs to be true otherwise we see the no order for a few seconds
+            orderDeletedToken = MessengerHub.Subscribe<OrderDeleted>(c => OnOrderDeleted(c.Content));
+            LoadOrders ();
+        }
         public ObservableCollection<OrderViewModel> Orders
         {
             get { return _orders; }
@@ -45,11 +51,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public HistoryViewModel()
-        {
-            orderDeletedToken = MessengerHub.Subscribe<OrderDeleted>(c => OnOrderDeleted(c.Content));
-			LoadOrders ();
-        }
+
 
         private void OnOrderDeleted(Guid orderId)
         {
@@ -75,6 +77,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public Task LoadOrders ()
 		{
 			return Task.Factory.StartNew (() => {
+
 				var orders = TinyIoCContainer.Current.Resolve<IAccountService> ().GetHistoryOrders ().ToArray();
 				Orders = new ObservableCollection<OrderViewModel> (orders.Select (x => new OrderViewModel ()
 					{

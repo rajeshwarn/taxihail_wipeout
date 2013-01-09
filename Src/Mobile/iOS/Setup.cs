@@ -19,6 +19,10 @@ using SocialNetworks.Services.MonoTouch;
 using SocialNetworks.Services;
 using apcurium.MK.Booking.Mobile.Client.Converters;
 using MonoTouch.CoreLocation;
+using Cirrious.MvvmCross.Binding.Touch.Target;
+using apcurium.MK.Booking.Mobile.Client.Binding;
+using Cirrious.MvvmCross.Binding.Bindings.Target.Construction;
+using MonoTouch.UIKit;
 
 
 namespace apcurium.MK.Booking.Mobile.Client
@@ -52,6 +56,13 @@ namespace apcurium.MK.Booking.Mobile.Client
 				return new[] { typeof(AppConverters) };
 			}
 		}
+
+
+        protected override void FillTargetFactories (Cirrious.MvvmCross.Binding.Interfaces.Bindings.Target.Construction.IMvxTargetBindingFactoryRegistry registry)
+        {
+            base.FillTargetFactories (registry);
+            registry.RegisterFactory(new MvxSimplePropertyInfoTargetBindingFactory(typeof(MvxUITextViewTargetBinding), typeof(UITextView), "Text"));
+        }
 
         protected override void InitializeIoC()
         {

@@ -904,7 +904,7 @@
     <value>Reset Password</value>
   </data>
   <data name="View_PasswordRecovery_Label" xml:space="preserve">
-    <value>Reset Your Password</value>
+    <value>Reset Password</value>
   </data>
   <data name="View_SignUp" xml:space="preserve">
     <value>Create Your Account</value>

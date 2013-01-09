@@ -21,6 +21,8 @@ namespace apcurium.MK.Booking.Mobile.Settings
         public string DefaultPhoneNumberDisplay { get; set; }
 
 
+        public bool? TutorialEnabled{ get; set; }
+
         public bool TwitterEnabled{ get; set; }
         public string TwitterConsumerKey { get; set; }
         public string TwitterCallback { get; set; }
