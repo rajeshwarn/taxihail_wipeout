@@ -12,7 +12,7 @@ using log4net;
 
 namespace DatabaseInitializer.Services
 {
-    public class EventsMigrator : IEventsMigrator
+    public class AddressEventsMigrator : IEventsMigrator
     {
         private readonly IAddresses _addressesService;
         private readonly Func<EventStoreDbContext> _contextFactory;
@@ -20,7 +20,7 @@ namespace DatabaseInitializer.Services
         private readonly JsonSerializer _deserializer;
         private ILog _loggger;
 
-        public EventsMigrator(IAddresses addressesService, Func<EventStoreDbContext> contextFactory)
+        public AddressEventsMigrator(IAddresses addressesService, Func<EventStoreDbContext> contextFactory)
         {
             _addressesService = addressesService;
             _contextFactory = contextFactory;
@@ -36,15 +36,9 @@ namespace DatabaseInitializer.Services
             //parse version i.e. x.y.z to get y and z
             var versionNumbers = version.Split('.');
             var versionNumber = int.Parse(versionNumbers[1]);
-            var minorVersionNumber = 0;
-            if (versionNumbers.Length > 2)
-            {
-                minorVersionNumber = int.Parse(versionNumbers[2]);
-            }
-           
+            
 
-            if (versionNumber < 3
-                || (versionNumber == 3 && minorVersionNumber == 0))
+            if (versionNumber < 3)
             {
 
                 using (var context = _contextFactory.Invoke())

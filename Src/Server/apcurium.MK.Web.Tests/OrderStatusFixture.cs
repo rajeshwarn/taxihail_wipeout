@@ -4,6 +4,7 @@ using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Web.Tests
 {
@@ -51,7 +52,8 @@ namespace apcurium.MK.Web.Tests
         {
             var sut = new OrderServiceClient(BaseUrl, SessionId);
             var data = sut.GetOrderStatus( _orderId);
-            Assert.AreEqual("wosWAITING", data.IBSStatusId);
+            Assert.AreEqual(null, data.IBSStatusId);
+            Assert.AreEqual(OrderStatus.Created, data.Status);
         }
 
 
@@ -64,6 +66,19 @@ namespace apcurium.MK.Web.Tests
             var sut = new OrderServiceClient(BaseUrl, SessionId);
 
             Assert.Throws<WebServiceException>(() => sut.GetOrderStatus(_orderId));
+        }
+
+        [Test]
+        public void get_active_orders_status()
+        {
+            var sut = new OrderServiceClient(BaseUrl, SessionId);
+            var data = sut.GetActiveOrdersStatus();
+
+
+            Assert.AreEqual(1, data.Length);
+            Assert.AreEqual(null, data[0].IBSStatusId);
+            Assert.AreEqual(OrderStatus.Created, data[0].Status);
+            
         }
     }
 }

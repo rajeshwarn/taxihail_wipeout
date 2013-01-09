@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
@@ -83,12 +84,43 @@ namespace apcurium.MK.Booking.IBS.Impl
             return infos;
         }
 
+        public IEnumerable<IBSOrderInformation> GetOrdersStatus(IList<int> ibsOrdersIds)
+        {
+            var result = new List<IBSOrderInformation>();
+            UseService(service =>
+                {
+                    var status = service.GetOrdersStatus(UserNameApp, PasswordApp, ibsOrdersIds.ToArray());
+                    foreach (var orderInfoFromIBS in status)
+                    {
+                        var statusInfos = new IBSOrderInformation();
+                        statusInfos.Status = orderInfoFromIBS.OrderStatus.ToString();
+                        statusInfos.IBSOrderId = orderInfoFromIBS.OrderID;
+                        statusInfos.VehicleNumber = orderInfoFromIBS.VehicleNumber;
+                        statusInfos.MobilePhone = orderInfoFromIBS.DriverMobilePhone;
+                        statusInfos.FirstName = orderInfoFromIBS.DriverFirstName;
+                        statusInfos.LastName = orderInfoFromIBS.DriverLastName;
+                        statusInfos.VehicleColor = orderInfoFromIBS.VehicleColor;
+                        statusInfos.VehicleLatitude = orderInfoFromIBS.VehicleCoordinateLat > 0 ? (double?)orderInfoFromIBS.VehicleCoordinateLat : null;
+                        statusInfos.VehicleLongitude = orderInfoFromIBS.VehicleCoordinateLong > 0 ? (double?)orderInfoFromIBS.VehicleCoordinateLong : null;
+                        statusInfos.VehicleMake = orderInfoFromIBS.VehicleMake;
+                        statusInfos.VehicleModel = orderInfoFromIBS.VehicleModel;
+                        statusInfos.VehicleRegistration = orderInfoFromIBS.VehicleRegistration;
+                        statusInfos.Fare = orderInfoFromIBS.Fare;
+                        statusInfos.Tip = orderInfoFromIBS.Tips;
+                        statusInfos.Toll = orderInfoFromIBS.Tolls;
+                        result.Add(statusInfos);
+                    }
+                });
+
+            return result;
+        }
+
         public int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int vehicleTypeId, int chargeTypeId, string note, DateTime pickupDateTime, IBSAddress pickup, IBSAddress dropoff)
         {
             Logger.LogMessage("WebService Create Order call : accountID=" + accountId);
             var order = new TBookOrder_5();
 
-            order.ServiceProviderID = providerId;
+            order.ServiceProviderID = providerId.HasValue ? providerId.Value : 0;
             order.AccountID = accountId;
             order.Customer = passengerName;
             order.Phone = phone;
