@@ -74,6 +74,7 @@ namespace apcurium.MK.Booking
             AutoMapper.Mapper.CreateMap<CreditCardAdded, CreditCardDetails>()
                 .ForMember(p => p.AccountId, opt => opt.MapFrom(m => m.SourceId));
 
+            AutoMapper.Mapper.CreateMap<OrderStatusDetail, OrderStatusDetail>();
 
             AutoMapper.Mapper.CreateMap<OrderDetail, OrderDetailWithAccount>();
             AutoMapper.Mapper.CreateMap<AccountDetail, OrderDetailWithAccount>()

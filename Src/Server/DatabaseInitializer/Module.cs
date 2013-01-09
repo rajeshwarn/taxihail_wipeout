@@ -10,6 +10,7 @@ using Infrastructure.Serialization;
 using Infrastructure.Sql.EventSourcing;
 using Infrastructure.Sql.MessageLog;
 using Microsoft.Practices.Unity;
+using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.Maps;
 using apcurium.MK.Common.Entity;
 
@@ -30,7 +31,8 @@ namespace DatabaseInitializer
 
             RegisterEventHandlers(container);
             RegisterCommandHandlers(container);
-            container.RegisterInstance<IEventsMigrator>(new EventsMigrator(container.Resolve<IAddresses>(), () => container.Resolve<EventStoreDbContext>()));
+            container.RegisterType(typeof(IEventsMigrator), typeof(AddressEventsMigrator), "AdresseEventsMigrator", null);
+            container.RegisterType(typeof(IEventsMigrator), typeof(OrderStatusEventsMigrator), "OrderStatusEventsMigrator", null); 
         }
 
         private void RegisterInfrastructure(IUnityContainer container, ConnectionStringSettings connectionString)
