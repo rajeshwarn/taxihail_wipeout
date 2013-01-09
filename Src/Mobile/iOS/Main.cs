@@ -166,7 +166,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public override void RegisteredForRemoteNotifications (UIApplication application, NSData deviceToken)
         {
-            new PushNotificationsService().SaveDeviceToken(deviceToken);
+            var strFormat = new NSString("%@");
+            var dt = new NSString(MonoTouch.ObjCRuntime.Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(new MonoTouch.ObjCRuntime.Class("NSString").Handle, new MonoTouch.ObjCRuntime.Selector("stringWithFormat:").Handle, strFormat.Handle, deviceToken.Handle));
+            new PushNotificationService().SaveDeviceToken(dt);
         }
         
         public override void FailedToRegisterForRemoteNotifications (UIApplication application, NSError error)

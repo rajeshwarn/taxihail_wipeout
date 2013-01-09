@@ -248,6 +248,7 @@
     <Compile Include="Messages\RemoveCreditCard.cs" />
     <Compile Include="AppServices\IUseServiceClient.cs" />
     <Compile Include="Extensions\IUseServiceClientExtensions.cs" />
+    <Compile Include="Infrastructure\IPushNotificationService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">

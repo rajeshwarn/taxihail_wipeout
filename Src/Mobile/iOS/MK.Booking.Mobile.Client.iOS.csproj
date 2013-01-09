@@ -363,7 +363,7 @@
     <Compile Include="Controls\TipButtons.cs" />
     <Compile Include="Controls\SegmentedGradientButton.cs" />
     <Compile Include="Controls\TextView.cs" />
-    <Compile Include="PlatformIntegration\PushNotificationsService.cs" />
+    <Compile Include="PlatformIntegration\PushNotificationService.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

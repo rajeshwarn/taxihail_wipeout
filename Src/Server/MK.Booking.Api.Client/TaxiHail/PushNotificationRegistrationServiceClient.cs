@@ -10,15 +10,22 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 		{
 		}
 			
-		public void Register(string registrationId)
+        public void Register(string deviceToken)
 		{
-			var result = Client.Post<string>("account/pushnotifications/" + Uri.EscapeDataString(registrationId), null);
+            Client.Post<string>("account/pushnotifications/" + Uri.EscapeDataString(deviceToken), null);
 		}
 
-		public void Unregister(string registrationId)
+        public void Unregister(string deviceToken)
 		{
-			Client.Delete<string>("account/pushnotifications/" + Uri.EscapeDataString(registrationId));
+            Client.Delete<string>("account/pushnotifications/" + Uri.EscapeDataString(deviceToken));
 		}
+
+        public void Replace (string oldDeviceToken, string newDeviceToken)
+        {
+            Client.Post<string>("account/ushnotifications/" + Uri.EscapeDataString(newDeviceToken), new {
+                OldDeviceToken = oldDeviceToken
+            });
+        }
 	}
 }
 
