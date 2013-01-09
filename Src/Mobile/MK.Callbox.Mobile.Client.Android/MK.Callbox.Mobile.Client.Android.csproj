@@ -21,19 +21,18 @@
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
+    <DebugSymbols>True</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>False</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
     <AndroidLinkMode>None</AndroidLinkMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>True</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -43,31 +42,26 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
-    <Reference Include="Mono.Facebook, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Libraries\Monodroid\Mono.Facebook.dll</HintPath>
-    </Reference>
     <Reference Include="mscorlib" />
-    <Reference Include="ServiceStack.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Libraries\Monodroid\ServiceStack.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Interfaces, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Libraries\Monodroid\ServiceStack.Interfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Text, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Libraries\Monodroid\ServiceStack.Text.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Reactive.Android, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Libraries\Monodroid\System.Reactive.Android.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
+    <Reference Include="Mono.Facebook">
+      <HintPath>..\Libraries\Monodroid\Mono.Facebook.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Common">
+      <HintPath>..\Libraries\Monodroid\ServiceStack.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Interfaces">
+      <HintPath>..\Libraries\Monodroid\ServiceStack.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Text">
+      <HintPath>..\Libraries\Monodroid\ServiceStack.Text.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Android">
+      <HintPath>..\Libraries\Monodroid\System.Reactive.Android.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\AlertDialogActivity.cs" />
@@ -186,19 +180,19 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.Android.csproj">
-      <Project>{bdec449b-7c09-4302-aef1-af46b34be9a6}</Project>
+      <Project>{BDEC449B-7C09-4302-AEF1-AF46B34BE9A6}</Project>
       <Name>MK.Common.Android</Name>
     </ProjectReference>
     <ProjectReference Include="..\Common\MK.Booking.Mobile.Android.csproj">
-      <Project>{b2adb131-e47e-4df4-8aa6-1d7e284effa9}</Project>
+      <Project>{B2ADB131-E47E-4DF4-8AA6-1D7E284EFFA9}</Project>
       <Name>MK.Booking.Mobile.Android</Name>
     </ProjectReference>
     <ProjectReference Include="..\Infrastructure\Cirrious.MvvmCross.Binding\Cirrious.MvvmCross.Binding.Android.csproj">
-      <Project>{47fd89c3-19dc-4bd2-9b6d-fb8363be7eb9}</Project>
+      <Project>{47FD89C3-19DC-4BD2-9B6D-FB8363BE7EB9}</Project>
       <Name>Cirrious.MvvmCross.Binding.Android</Name>
     </ProjectReference>
     <ProjectReference Include="..\Infrastructure\Cirrious.MvvmCross\Cirrious.MvvmCross.Android.csproj">
-      <Project>{7a6be137-d0f1-46a1-ae5c-81faeedddf02}</Project>
+      <Project>{7A6BE137-D0F1-46A1-AE5C-81FAEEDDDF02}</Project>
       <Name>Cirrious.MvvmCross.Android</Name>
     </ProjectReference>
   </ItemGroup>

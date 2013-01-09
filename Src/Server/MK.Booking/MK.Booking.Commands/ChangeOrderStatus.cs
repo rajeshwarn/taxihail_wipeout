@@ -1,18 +1,18 @@
 ﻿using System;
 using Infrastructure.Messaging;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Commands
 {
-    public class CompleteOrder : ICommand
+    public class ChangeOrderStatus : ICommand
     {
-        public CompleteOrder()
+        public ChangeOrderStatus()
         {
             Id = Guid.NewGuid();
         }
+        public Guid Id { get; private set; }
 
-        public Guid Id { get; set; }
-        public Guid OrderId { get; set; }
-        public DateTime Date { get; set; }
+        public OrderStatusDetail Status { get; set; }
         public double? Fare { get; set; }
         public double? Toll { get; set; }
         public double? Tip { get; set; }

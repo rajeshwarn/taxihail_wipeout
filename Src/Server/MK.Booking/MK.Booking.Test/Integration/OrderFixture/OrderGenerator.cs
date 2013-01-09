@@ -10,6 +10,7 @@ using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Entity;
 
+
 namespace apcurium.MK.Booking.Test.Integration.OrderFixture
 {
     public class given_a_view_model_generator : given_a_read_model_database
@@ -169,7 +170,7 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
         {
             var orderCompleted = new OrderCompleted
                                      {
-                                         SourceId = _orderId, Date = DateTime.Now, Fare = 23, Toll = 2, Tip = 5
+                                         SourceId = _orderId, Fare = 23, Toll = 2, Tip = 5
                                      };
             this.sut.Handle(orderCompleted);
 

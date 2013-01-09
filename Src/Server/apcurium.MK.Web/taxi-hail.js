@@ -7,9 +7,11 @@ TaxiHail.loader = {
 
     load: function (callback) {
 
-        var deferreds = [];
-
-        $.when.apply(null, deferreds).done(callback);
+        Modernizr.load([{
+            test: window.JSON,
+            nope: 'assets/js/json2.js',
+            complete: callback
+        }]);
     }
 
 };

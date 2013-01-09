@@ -18,8 +18,6 @@ namespace apcurium.MK.Booking.Mobile
     {
         public void Start()
         {
-
-            
             TinyIoCContainer.Current.Resolve<IConfigurationManager>().Reset();
 
             if (TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount == null)

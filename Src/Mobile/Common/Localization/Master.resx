@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -200,6 +200,12 @@
   </data>
   <data name="SignUpButton" xml:space="preserve">
     <value>Create a free account</value>
+  </data>
+  <data name="LocationServiceErrorTitle" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="LocationServiceErrorMessage" xml:space="preserve">
+    <value>The location service is not enabled.</value>
   </data>
   <data name="FacebookButton" xml:space="preserve">
     <value>Sign In with Facebook</value>

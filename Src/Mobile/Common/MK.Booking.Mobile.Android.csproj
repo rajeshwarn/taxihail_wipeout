@@ -247,6 +247,8 @@
     <Compile Include="ViewModels\Payment\PaymentInformation.cs" />
     <Compile Include="ViewModels\BookPaymentSettingsViewModel.cs" />
     <Compile Include="Messages\RemoveCreditCard.cs" />
+    <Compile Include="AppServices\IUseServiceClient.cs" />
+    <Compile Include="Extensions\IUseServiceClientExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">

@@ -16,6 +16,7 @@ using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Messages;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 {
@@ -67,10 +68,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
             {
                 switch (OrderStatus.Status)
                 {
-                        case Api.Contract.Resources.OrderStatus.Pending:
+                        case MK.Common.Entity.OrderStatus.Pending:
                         return ColorEnum.Red;
                         break;
-                        case Api.Contract.Resources.OrderStatus.Completed:
+						case MK.Common.Entity.OrderStatus.Completed:
                         return ColorEnum.Green;
                 };
                 return ColorEnum.Black;

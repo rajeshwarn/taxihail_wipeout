@@ -22,6 +22,7 @@ using Cirrious.MvvmCross.Touch.Interfaces;
 using apcurium.MK.Booking.Mobile.Data;
 using Xamarin.Contacts;
 using apcurium.MK.Booking.Mobile.Settings;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -161,7 +162,22 @@ namespace apcurium.MK.Booking.Mobile.Client
         public override bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)
         {
             return HandleOpenURL(application, url);
-        }       
+        }
+
+        public override void RegisteredForRemoteNotifications (UIApplication application, NSData deviceToken)
+        {
+            new PushNotificationsService().SaveDeviceToken(deviceToken);
+        }
+        
+        public override void FailedToRegisterForRemoteNotifications (UIApplication application, NSError error)
+        {
+            Console.WriteLine("Failed to register for notifications");
+        }
+        
+        public override void ReceivedRemoteNotification (UIApplication application, NSDictionary userInfo)
+        {
+            Console.WriteLine("Received Remote Notification!");
+        }
 
 
     }

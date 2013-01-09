@@ -19,6 +19,8 @@ using SocialNetworks.Services.MonoTouch;
 using SocialNetworks.Services;
 using apcurium.MK.Booking.Mobile.Client.Converters;
 using MonoTouch.CoreLocation;
+using MonoTouch.UIKit;
+using apcurium.MK.Booking.Mobile.AppServices;
 
 
 namespace apcurium.MK.Booking.Mobile.Client
@@ -73,6 +75,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             TinyIoCContainer.Current.Register<ICacheService>(new CacheService());
             TinyIoCContainer.Current.Register<IPhoneService, PhoneService>();
             InitializeSocialNetwork();
+            InitializePushNotifications();
         }
 
         private void InitializeSocialNetwork()
@@ -99,6 +102,19 @@ namespace apcurium.MK.Booking.Mobile.Client
             TinyIoCContainer.Current.Register<ITwitterService>(twitterService);
             
         }
+
+        private void InitializePushNotifications()
+        {
+            if (TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount != null)
+            {
+                //Register for remote notifications
+                UIApplication.SharedApplication.RegisterForRemoteNotificationTypes(UIRemoteNotificationType.Alert
+                                                                                   | UIRemoteNotificationType.Badge
+                                                                                   | UIRemoteNotificationType.Sound);
+            }
+        }
+
+
 #endregion
     }
 }

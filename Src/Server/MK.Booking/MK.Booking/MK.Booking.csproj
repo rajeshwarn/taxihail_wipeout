@@ -10,11 +10,12 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>apcurium.MK.Booking</RootNamespace>
     <AssemblyName>apcurium.MK.Booking</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <DontImportPostSharp>True</DontImportPostSharp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -25,6 +26,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <SkipPostSharp>True</SkipPostSharp>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -34,13 +36,15 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <SkipPostSharp>True</SkipPostSharp>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutoMapper">
       <HintPath>..\..\packages\AutoMapper.2.1.267\lib\net40\AutoMapper.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework">
-      <HintPath>..\..\packages\EntityFramework.4.3.1\lib\net40\EntityFramework.dll</HintPath>
+    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
@@ -86,7 +90,6 @@
     <Compile Include="Domain\Company.cs" />
     <Compile Include="Domain\Order.cs" />
     <Compile Include="Domain\BookingSettings.cs" />
-    <Compile Include="Domain\OrderStatus.cs" />
     <Compile Include="Domain\PaymentInformation.cs" />
     <Compile Include="Email\EmailSender.cs" />
     <Compile Include="Email\IEmailSender.cs" />
@@ -118,7 +121,6 @@
     <Compile Include="ReadModel\RatingTypeDetail.cs" />
     <Compile Include="ReadModel\DefaultAddressDetails.cs" />
     <Compile Include="ReadModel\OrderDetail.cs" />
-    <Compile Include="ReadModel\OrderStatus.cs" />
     <Compile Include="ReadModel\PopularAddressDetails.cs" />
     <Compile Include="ReadModel\Query\AccountDao.cs" />
     <Compile Include="ReadModel\Query\AddressDao.cs" />
@@ -144,6 +146,7 @@
     <Content Include="Email\Images\header-gradient.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="App.config" />
     <None Include="Email\Templates\AccountConfirmationSuccess.mustache">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
