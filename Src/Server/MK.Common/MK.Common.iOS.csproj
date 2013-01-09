@@ -73,6 +73,9 @@
     <Compile Include="Entity\OrderRatings.cs" />
     <Compile Include="Entity\RatingType.cs" />
     <Compile Include="Entity\RatingScore.cs" />
+    <Compile Include="Entity\DriverInfos.cs" />
+    <Compile Include="Entity\OrderStatus.cs" />
+    <Compile Include="Entity\OrderStatusDetail.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Configuration\" />
