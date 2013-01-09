@@ -128,7 +128,7 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			public const int gray_button = 2130837512;
 			
 			// aapt resource value: 0x7f020009
-			public const int Icon = 2130837513;
+			public const int icon = 2130837513;
 			
 			// aapt resource value: 0x7f02000a
 			public const int Logo = 2130837514;

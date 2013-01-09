@@ -106,8 +106,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
                 if (account != null)
                 {
                     this.Password = string.Empty;
-                    if (_accountService.GetActiveOrdersStatus().Any())
+                    if (_accountService.GetActiveOrdersStatus().Any(c => TinyIoC.TinyIoCContainer.Current.Resolve<IBookingService>().IsCallboxStatusActive(c.IBSStatusId)))
                     {
+                        var active = _accountService.GetActiveOrdersStatus();
                         RequestNavigate<CallboxOrderListViewModel>(true);
                     }
                     else

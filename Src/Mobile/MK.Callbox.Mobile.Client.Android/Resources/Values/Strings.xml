@@ -16,7 +16,7 @@
   <string name="OrderAnotherTaxi">Order Another Taxi</string>
   <string name="ErrorCreatingOrderTitle">Booking cannot be completed</string>
   <string name="BookTaxiTitle">Book taxi</string>
-  <string name="BookTaxiPassengerName">Enter passenger name</string>
+  <string name="BookTaxiPassengerName">Enter passenger name (optional)</string>
   <string name="Ok">Ok</string>
   <string name="Yes">Yes</string>
   <string name="No">No</string>

@@ -62,19 +62,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
         {
             get
             {
-                switch (OrderStatus.IBSStatusId)
+                if (OrderStatus.IBSStatusId != null)
                 {
+                    switch (OrderStatus.IBSStatusId)
+                    {
                         case "wosWAITING":
-                        return ColorEnum.LightGray;
-                        break;
-						case "wosARRIVED":
-                        return ColorEnum.Green;
-                        break;
-                    case  "wosASSIGNED":
-                        return ColorEnum.Black;
-                        break;
-                };
-                return ColorEnum.Black;
+                            return ColorEnum.LightGray;
+                            break;
+                        case "wosARRIVED":
+                            return ColorEnum.Green;
+                            break;
+                        case "wosASSIGNED":
+                            return ColorEnum.Black;
+                            break;
+                    };
+                }
+                return ColorEnum.LightGray;
             }
         }
 
@@ -82,23 +85,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
         {
             get
             {
-                if (OrderStatus.IBSStatusId.Equals("wosARRIVED"))
+                if (OrderStatus.IBSStatusId != null && OrderStatus.IBSStatusId.Equals("wosARRIVED"))
                 {
                     return 25;
                 }
-                return 15;
-            }
-        }
-
-        public string StatusDescription
-        {
-            get
-            {
-                if (OrderStatus.IBSStatusId.Equals("wosASSIGNED"))
-                {
-                   return OrderStatus.IBSStatusDescription + string.Format("Cab number: {0}", OrderStatus.VehicleNumber);
-                }
-                return OrderStatus.IBSStatusDescription;
+                return 18;
             }
         }
     }

@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace apcurium.MK.Callbox.Mobile.Client.Activities
 {
-    [Activity(Label = "Order List", Theme = "@android:style/Theme.NoTitleBar")]
+    [Activity(Label = "Order List", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Landscape)]
     public class OrderListActivity : MvxBindingActivityView<CallboxOrderListViewModel>
     {
         private const int NbClick = 5;
@@ -57,12 +57,12 @@ namespace apcurium.MK.Callbox.Mobile.Client.Activities
                                                 {
                                                     
                                                     mp.Start();
-                                                    var isWhite = false;
+                                                    var isRed = false;
                                                     Observable.Timer(TimeSpan.Zero, BlinkMs).Select(c => new Unit())
                                                     .Subscribe(unit => RunOnUiThread(() =>
                                                                                          {
-                                                                                             
-                                                                                             if (isWhite)
+
+                                                                                             if (isRed)
                                                                                              {
                                                                                                  rootLayout.SetBackgroundDrawable(Resources.GetDrawable(Resource.Drawable.background_empty));
                                                                                              }
@@ -72,9 +72,9 @@ namespace apcurium.MK.Callbox.Mobile.Client.Activities
                                                                                                      .SetBackgroundColor
                                                                                                      (Android.Graphics
                                                                                                              .Color
-                                                                                                             .White);
+                                                                                                             .Red);
                                                                                              }
-                                                                                             isWhite = !isWhite;
+                                                                                             isRed = !isRed;
                                                                                          }))
                                                     .DisposeWith(Subscriptions);
 

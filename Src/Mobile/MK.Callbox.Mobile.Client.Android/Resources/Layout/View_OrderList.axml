@@ -102,7 +102,7 @@
         android:background="@drawable/newBlackButton"
         android:text="@string/OrderAnotherTaxi"
         android:layout_width="wrap_content"
-        android:layout_height="60dip"
+        android:layout_height="90dip"
         android:layout_gravity="bottom|center_horizontal"
         android:layout_marginTop="15dip"
         android:paddingLeft="40dip"

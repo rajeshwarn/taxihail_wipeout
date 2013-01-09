@@ -33,6 +33,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
         public CreateOrder Order { get; private set; }
         private IDisposable refreshStatusToken;
         private ObservableCollection<CallboxOrderViewModel> _orders { get; set; }
+        private List<int?> OrderNotified { get; set; } 
 
         public ObservableCollection<CallboxOrderViewModel> Orders
         {
@@ -48,11 +49,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
         public CallboxOrderListViewModel() : base()
         {
             Order = new CreateOrder();
+            OrderNotified = new List<int?>();
             Order.Settings = AccountService.CurrentAccount.Settings;
            // Orders = CacheService.Get<ObservableCollection<CallboxOrderViewModel>>("callbox.orderList") ?? new ObservableCollection<CallboxOrderViewModel>();
             //var orderStatus = AccountService.GetActiveOrdersStatus().ToList();
             Orders = new ObservableCollection<CallboxOrderViewModel>();
-             refreshStatusToken = Observable.Timer(TimeSpan.Zero, TimeSpan.FromSeconds(20))
+             refreshStatusToken = Observable.Timer(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(20))
                       .Subscribe(a =>
                                      {
                                          RefreshOrderStatus();
@@ -65,21 +67,31 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 
         private void RefreshOrderStatus()
         {
-            var orderStatus = AccountService.GetActiveOrdersStatus().ToList();
+            var orderStatus = AccountService.GetActiveOrdersStatus().ToList().OrderByDescending(o=>o.IBSOrderId);
             InvokeOnMainThread(() =>
                                    {
                                        Orders.Clear();
                                        Orders.AddRange(orderStatus.Where(status => BookingService.IsCallboxStatusActive(status.IBSStatusId)).Select(status => new CallboxOrderViewModel()
                                        {
                                            OrderStatus = status,
-                                           CreatedDate = DateTime.Now,
+                                           CreatedDate = status.PickupDate,
                                            IbsOrderId = status.IBSOrderId,
                                            Id = status.OrderId
                                        }));
+                                       if (!Orders.Any())
+                                       {
+                                           RequestNavigate<CallboxCallTaxiViewModel>();
+                                           this.Close();
+                                       }
                                    });
-            if (Orders.Where(order => BookingService.IsCallboxStatusCompleted(order.OrderStatus.IBSStatusId)).Any())
+            
+            foreach (var order in Orders)
             {
-                OrderCompleted(this, null);
+                if (BookingService.IsCallboxStatusCompleted(order.OrderStatus.IBSStatusId) && !OrderNotified.Any(c=>c.Value.Equals(order.IbsOrderId)))
+                {
+                    OrderNotified.Add(order.IbsOrderId);
+                    OrderCompleted(this, null);
+                }
             }
         }
 
@@ -152,7 +164,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
                                                           {
                                                               InvokeOnMainThread(() =>
                                                                                      {
-                                                                                         Orders.Add(new CallboxOrderViewModel()
+                                                                                         Orders.Insert(0,new CallboxOrderViewModel()
                                                                                          {
                                                                                              CreatedDate = DateTime.Now,
                                                                                              IbsOrderId = orderInfo.IBSOrderId,
