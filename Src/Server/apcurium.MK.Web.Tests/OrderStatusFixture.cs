@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using NUnit.Framework;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
@@ -75,7 +76,8 @@ namespace apcurium.MK.Web.Tests
             var data = sut.GetActiveOrdersStatus();
 
 
-            Assert.AreEqual(1, data.Length);
+            Assert.AreEqual(true, data.Any());
+            Assert.AreEqual(true, data.Any(x => x.OrderId == _orderId));
             Assert.AreEqual(null, data[0].IBSStatusId);
             Assert.AreEqual(OrderStatus.Created, data[0].Status);
             
