@@ -381,3 +381,5 @@
 "View_PaymentCreditCardsOnFile"="Payment Info";
 "ApartmentLabel"="Apartment";
 "NotesToDriveLabel"="Notes to driver";
+"LocationServiceErrorTitle"="Error";
+"LocationServiceErrorMessage"="The location service is not enabled.";
