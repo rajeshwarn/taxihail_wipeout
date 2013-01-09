@@ -22,12 +22,19 @@ namespace apcurium.MK.Callbox.Mobile.Client.Activities
         private static TimeSpan TimeBlinkScreenLongSec = TimeSpan.FromSeconds(30);
         private static TimeSpan TimeOut = TimeSpan.FromSeconds(5);
         private static TimeSpan BlinkMs = TimeSpan.FromMilliseconds(500);
+        private MediaPlayer mp;
         protected readonly CompositeDisposable Subscriptions = new CompositeDisposable();
-        private FrameLayout rootLayout;
+        private LinearLayout rootLayout;
+
+        public OrderListActivity()
+        {
+            
+        }
+
         protected override void OnViewModelSet()
         {
             SetContentView(Resource.Layout.View_OrderList);
-             rootLayout = this.FindViewById<FrameLayout>(Resource.Id.frameLayout);
+             rootLayout = this.FindViewById<LinearLayout>(Resource.Id.frameLayout);
             var orderListLayout = this.FindViewById<RelativeLayout>(Resource.Id.orderListLayout);
             var logoutButton = this.FindViewById<Button>(Resource.Id.LogoutButton);
             Observable.FromEventPattern<View.TouchEventArgs>(logoutButton, "Touch")
@@ -35,12 +42,20 @@ namespace apcurium.MK.Callbox.Mobile.Client.Activities
                 .Buffer(TimeOut, NbClick)
                 .Where(s => s.Count == 5)
                 .Subscribe(_ => RunOnUiThread(() => ViewModel.Logout.Execute(null)));
+             mp = MediaPlayer.Create(this, Resource.Raw.vehicle);
+            ViewModel.OrderCompleted += ViewModelOnOrderCompleted; 
+            Observable.FromEventPattern<View.TouchEventArgs>(rootLayout, "Touch")
+                     .Subscribe(e => DisposeBlinkScreen());
+            
+            Observable.FromEventPattern<View.TouchEventArgs>(orderListLayout, "Touch")
+                     .Subscribe(e => DisposeBlinkScreen());
+        }
 
-            ViewModel.OrderCompleted += (sender, args) =>
-                                            {
-                                                if (Subscriptions.Count == 0)
+        private void ViewModelOnOrderCompleted(object sender, EventArgs args)
+        {
+            if (Subscriptions.Count == 0)
                                                 {
-                                                    MediaPlayer mp = MediaPlayer.Create(this, Resource.Raw.slidewhistle);
+                                                    
                                                     mp.Start();
                                                     var isWhite = false;
                                                     Observable.Timer(TimeSpan.Zero, BlinkMs).Select(c => new Unit())
@@ -67,19 +82,20 @@ namespace apcurium.MK.Callbox.Mobile.Client.Activities
                                                     .Subscribe(unit => RunOnUiThread(DisposeBlinkScreen))
                                                     .DisposeWith(Subscriptions);
                                                 }
-                                            };
-
-            Observable.FromEventPattern<View.TouchEventArgs>(rootLayout, "Touch")
-                     .Subscribe(e => DisposeBlinkScreen());
-            
-            Observable.FromEventPattern<View.TouchEventArgs>(orderListLayout, "Touch")
-                     .Subscribe(e => DisposeBlinkScreen());
          
         }
+
+
         private void DisposeBlinkScreen()
         {
             Subscriptions.DisposeAll();
             RunOnUiThread( () =>rootLayout.SetBackgroundDrawable(Resources.GetDrawable(Resource.Drawable.background_empty)));
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            ViewModel.OrderCompleted -= ViewModelOnOrderCompleted; 
         }
     }
 }

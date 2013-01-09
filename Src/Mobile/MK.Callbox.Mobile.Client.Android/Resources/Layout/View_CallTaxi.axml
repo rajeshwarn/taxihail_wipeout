@@ -4,7 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@drawable/background_logo"
-    android:paddingBottom="60dip">
+    android:paddingBottom="40dip">
     <Button
         android:id="@+id/LogoutButton"
         android:background="@color/transparent"
@@ -20,6 +20,5 @@
         android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
         android:layout_height="60dip"
-        android:layout_marginRight="0dp"
         android:layout_gravity="bottom|center_horizontal" />
 </FrameLayout>

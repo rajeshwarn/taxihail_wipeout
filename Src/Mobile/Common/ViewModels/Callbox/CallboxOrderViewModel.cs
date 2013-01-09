@@ -56,7 +56,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
         {
             get
             {
-                return !_bookingService.IsCompleted(Id);
+                //return !_bookingService.IsCompleted(Id);
+                return true;
             }
         }
 

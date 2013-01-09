@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Android.Graphics.Drawables;
 using Android.Widget;
 using Android.Runtime;
 using Android.Content;
@@ -36,7 +37,7 @@ namespace apcurium.MK.Callbox.Mobile.Client.Controls
             SetTextColor( ButtonStyle.TextColor.ConvertToColor() );
 			SetTextShadow( ButtonStyle.TextShadowColor);
              
-            //SetBackgroundDrawable ( new GradientDrawable(ButtonStyle.Colors.ConvertToIntArray() )); 
+           // SetBackgroundDrawable ( new GradientDrawable(ButtonStyle.Colors.ConvertToIntArray() )); 
 
         }
         

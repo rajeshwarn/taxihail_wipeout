@@ -34,6 +34,12 @@ namespace apcurium.MK.Booking.Mobile
             {
                 RequestNavigate<CallboxLoginViewModel>();
             }
+            else if (TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService>().Get<IEnumerable<OrderViewModel>>("callbox.orderList") != null 
+                && TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService>().Get<IEnumerable<OrderViewModel>>("callbox.orderList").Any())
+            {
+                var test = TinyIoC.TinyIoCContainer.Current.Resolve<ICacheService>().Get<IEnumerable<OrderViewModel>>("callbox.orderList");
+                RequestNavigate<CallboxOrderListViewModel>();
+            }
             else
             {
                 RequestNavigate<CallboxCallTaxiViewModel>();

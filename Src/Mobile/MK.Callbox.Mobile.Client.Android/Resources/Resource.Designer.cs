@@ -149,28 +149,31 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			public const int password_cell = 2130837519;
 			
 			// aapt resource value: 0x7f020010
-			public const int server_button = 2130837520;
+			public const int red_button = 2130837520;
 			
 			// aapt resource value: 0x7f020011
-			public const int server_button_state = 2130837521;
+			public const int server_button = 2130837521;
 			
 			// aapt resource value: 0x7f020012
-			public const int sign_in_btn = 2130837522;
+			public const int server_button_state = 2130837522;
 			
 			// aapt resource value: 0x7f020013
-			public const int social_media_login_btn = 2130837523;
+			public const int sign_in_btn = 2130837523;
 			
 			// aapt resource value: 0x7f020014
-			public const int social_media_login_btn_hit = 2130837524;
+			public const int social_media_login_btn = 2130837524;
 			
 			// aapt resource value: 0x7f020015
-			public const int social_media_login_btn_state = 2130837525;
+			public const int social_media_login_btn_hit = 2130837525;
 			
 			// aapt resource value: 0x7f020016
-			public const int splash = 2130837526;
+			public const int social_media_login_btn_state = 2130837526;
 			
 			// aapt resource value: 0x7f020017
-			public const int splash_resizable = 2130837527;
+			public const int splash = 2130837527;
+			
+			// aapt resource value: 0x7f020018
+			public const int splash_resizable = 2130837528;
 			
 			private Drawable()
 			{
@@ -299,7 +302,7 @@ namespace apcurium.MK.Callbox.Mobile.Client
 		{
 			
 			// aapt resource value: 0x7f040000
-			public const int slidewhistle = 2130968576;
+			public const int vehicle = 2130968576;
 			
 			private Raw()
 			{
@@ -312,20 +315,20 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f070001
 			public const int ApplicationName = 2131165185;
 			
-			// aapt resource value: 0x7f07000e
-			public const int BookTaxiPassengerName = 2131165198;
+			// aapt resource value: 0x7f070010
+			public const int BookTaxiPassengerName = 2131165200;
 			
-			// aapt resource value: 0x7f07000d
-			public const int BookTaxiTitle = 2131165197;
+			// aapt resource value: 0x7f07000f
+			public const int BookTaxiTitle = 2131165199;
 			
 			// aapt resource value: 0x7f07000b
 			public const int Callbox_passengerName = 2131165195;
 			
-			// aapt resource value: 0x7f070015
-			public const int CancelOrderMessage = 2131165205;
+			// aapt resource value: 0x7f070017
+			public const int CancelOrderMessage = 2131165207;
 			
-			// aapt resource value: 0x7f070014
-			public const int CancelOrderTitle = 2131165204;
+			// aapt resource value: 0x7f070016
+			public const int CancelOrderTitle = 2131165206;
 			
 			// aapt resource value: 0x7f07000a
 			public const int CarAssigned = 2131165194;
@@ -333,8 +336,17 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f070002
 			public const int EmailLabel = 2131165186;
 			
+			// aapt resource value: 0x7f07000e
+			public const int ErrorCreatingOrderTitle = 2131165198;
+			
 			// aapt resource value: 0x7f070000
 			public const int Hello = 2131165184;
+			
+			// aapt resource value: 0x7f07001e
+			public const int InvalidLoginMessage = 2131165214;
+			
+			// aapt resource value: 0x7f07001d
+			public const int InvalidLoginMessageTitle = 2131165213;
 			
 			// aapt resource value: 0x7f070009
 			public const int Language = 2131165193;
@@ -345,20 +357,26 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f070007
 			public const int LoadingMessage = 2131165191;
 			
-			// aapt resource value: 0x7f070013
-			public const int LogoutMessage = 2131165203;
+			// aapt resource value: 0x7f070015
+			public const int LogoutMessage = 2131165205;
 			
-			// aapt resource value: 0x7f070012
-			public const int LogoutTitle = 2131165202;
+			// aapt resource value: 0x7f070014
+			public const int LogoutTitle = 2131165204;
+			
+			// aapt resource value: 0x7f070013
+			public const int No = 2131165203;
+			
+			// aapt resource value: 0x7f070018
+			public const int NoPickupAddress = 2131165208;
 			
 			// aapt resource value: 0x7f070011
-			public const int No = 2131165201;
+			public const int Ok = 2131165201;
 			
-			// aapt resource value: 0x7f070016
-			public const int NoPickupAddress = 2131165206;
+			// aapt resource value: 0x7f07000d
+			public const int OrderAnotherTaxi = 2131165197;
 			
-			// aapt resource value: 0x7f07000f
-			public const int Ok = 2131165199;
+			// aapt resource value: 0x7f07001b
+			public const int OrderNo = 2131165211;
 			
 			// aapt resource value: 0x7f070006
 			public const int OrderNote = 2131165190;
@@ -369,14 +387,23 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f07000c
 			public const int PushTaxi = 2131165196;
 			
+			// aapt resource value: 0x7f070019
+			public const int ServiceError_ErrorCreatingOrderMessage = 2131165209;
+			
 			// aapt resource value: 0x7f070004
 			public const int SignInButton = 2131165188;
+			
+			// aapt resource value: 0x7f07001c
+			public const int Status = 2131165212;
+			
+			// aapt resource value: 0x7f07001a
+			public const int TimeFareWasPlaced = 2131165210;
 			
 			// aapt resource value: 0x7f070005
 			public const int View_SignIn = 2131165189;
 			
-			// aapt resource value: 0x7f070010
-			public const int Yes = 2131165200;
+			// aapt resource value: 0x7f070012
+			public const int Yes = 2131165202;
 			
 			private String()
 			{
