@@ -31,7 +31,6 @@ using apcurium.MK.Booking.Mobile.Client.Controls;
 using Cirrious.MvvmCross.Android.Platform;
 using Cirrious.MvvmCross.Interfaces.Views;
 using Android.Util;
-using apcurium.MK.Booking.Mobile.Client.Services;
 
 
 namespace apcurium.MK.Booking.Mobile.Client
@@ -71,11 +70,11 @@ namespace apcurium.MK.Booking.Mobile.Client
             TinyIoCContainer.Current.Register<Geolocator>(new Geolocator(this.ApplicationContext) { DesiredAccuracy = 900 }, CoordinatePrecision.Medium.ToString());
 
 			TinyIoCContainer.Current.Register<IPhoneService>(new PhoneService(this.ApplicationContext));
-
+			TinyIoCContainer.Current.Register<IPushNotificationService>(new PushNotificationService(this.ApplicationContext));
+			
             TinyIoCContainer.Current.Register<ILocationService>(LocationService.Instance );
 
             InitializeSocialNetwork();
-			InitializePushNotifications();
         }
 
 		protected override void FillTargetFactories (IMvxTargetBindingFactoryRegistry registry)
@@ -87,12 +86,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public void InitializeSocialNetwork()
         {
-
-
-
             var settings = TinyIoCContainer.Current.Resolve<IAppSettings>();
-
-
 
             var oauthConfig = new OAuthConfig
             {
@@ -109,37 +103,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             TinyIoCContainer.Current.Register<ITwitterService>( (c,p)=> new TwitterServiceMonoDroid( oauthConfig, LoginActivity.TopInstance ) );
 
         }
-
-		public void InitializePushNotifications ()
-		{
-			//Check to ensure everything's setup right
-			GCMSharp.Client.GCMRegistrar.CheckDevice(this.ApplicationContext);
-			GCMSharp.Client.GCMRegistrar.CheckManifest(this.ApplicationContext);
-
-			//Get the stored latest registration id
-			var registrationId = GCMSharp.Client.GCMRegistrar.GetRegistrationId(this.ApplicationContext);
-
-
-			bool registered = !string.IsNullOrEmpty(registrationId);
-			const string TAG = "PushSharp-GCM";
-			
-			if (!registered)
-			{
-				Log.Info(TAG, "Registering...");
-				
-				//Call to register
-				GCMSharp.Client.GCMRegistrar.Register(this.ApplicationContext, SampleBroadcastReceiver.SENDER_ID);
-			}
-			else
-			{
-				Log.Info(TAG, "Unregistering...");
-				
-				//Call to unregister
-				GCMSharp.Client.GCMRegistrar.UnRegister(this.ApplicationContext);
-			}
-
-
-		}
         
         protected override MvxApplication CreateApp()
         {

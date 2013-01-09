@@ -76,6 +76,7 @@
     <Compile Include="AddressesFixture\given_an_address.cs" />
     <Compile Include="AddressesFixture\given_no_address.cs" />
     <Compile Include="Integration\AccountFixture\AccountDetailsGenerator.cs" />
+    <Compile Include="Integration\AccountFixture\DeviceDetailsGenerator.cs" />
     <Compile Include="Integration\AddressListFixture\AddressListGenerator.cs" />
     <Compile Include="Integration\CompanyFixture\RatingTypeDetailsGenerator.cs" />
     <Compile Include="Integration\CompanyFixture\TariffDetailsGenerator.cs" />

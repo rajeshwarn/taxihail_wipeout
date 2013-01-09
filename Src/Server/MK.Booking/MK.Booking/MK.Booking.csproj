@@ -99,6 +99,7 @@
     <Compile Include="EventHandlers\AddressListGenerator.cs" />
     <Compile Include="EventHandlers\AppSettingsGenerator.cs" />
     <Compile Include="EventHandlers\CreditCardDetailsGenerator.cs" />
+    <Compile Include="EventHandlers\DeviceDetailsGenerator.cs" />
     <Compile Include="EventHandlers\OrderGenerator.cs" />
     <Compile Include="EventHandlers\TariffDetailsGenerator.cs" />
     <Compile Include="EventHandlers\RatingTypeDetailsGenerator.cs" />
@@ -109,6 +110,7 @@
     <Compile Include="ReadModel\AccountDetail.cs" />
     <Compile Include="ReadModel\BookingSetting.cs" />
     <Compile Include="ReadModel\AddressDetails.cs" />
+    <Compile Include="ReadModel\DeviceDetail.cs" />
     <Compile Include="ReadModel\OrderDetailWithAccount.cs" />
     <Compile Include="ReadModel\PaymentInformationDetails.cs" />
     <Compile Include="ReadModel\Query\CreditCardDao.cs" />

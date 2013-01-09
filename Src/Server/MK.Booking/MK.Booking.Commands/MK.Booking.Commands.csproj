@@ -62,6 +62,7 @@
     <Compile Include="DeleteTariff.cs" />
     <Compile Include="HideRatingType.cs" />
     <Compile Include="RateOrder.cs" />
+    <Compile Include="RegisterDeviceForPushNotifications.cs" />
     <Compile Include="RemoveCreditCard.cs" />
     <Compile Include="RemovePopularAddress.cs" />
     <Compile Include="SendBookingConfirmationEmail.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="ResetAccountPassword.cs" />
     <Compile Include="SendPasswordResetEmail.cs" />
     <Compile Include="SendReceipt.cs" />
+    <Compile Include="UnregisterDeviceForPushNotifications.cs" />
     <Compile Include="UpdateAccount.cs" />
     <Compile Include="UpdateAccountPassword.cs" />
     <Compile Include="AddOrUpdateAppSettings.cs" />

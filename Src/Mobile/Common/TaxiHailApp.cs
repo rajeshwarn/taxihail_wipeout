@@ -31,11 +31,12 @@ namespace apcurium.MK.Booking.Mobile
       
         public TaxiHailApp()
         {
-            InitaliseServices();
-            InitialiseStartNavigation();
+            InitalizeServices();
+            InitializePushNotifications();
+            InitializeStartNavigation();
         }
         
-        private void InitaliseServices()
+        private void InitalizeServices()
         {
             TinyIoCContainer.Current.Register<ITinyMessengerHub, TinyMessengerHub>();
 
@@ -51,7 +52,7 @@ namespace apcurium.MK.Booking.Mobile
             TinyIoCContainer.Current.Register<ReferenceDataServiceClient>((c, p) => new ReferenceDataServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
             TinyIoCContainer.Current.Register<PopularAddressesServiceClient>((c, p) => new PopularAddressesServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
             TinyIoCContainer.Current.Register<TariffsServiceClient>((c, p) => new TariffsServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
-			TinyIoCContainer.Current.Register<PushNotificationsServiceClient>((c, p) => new PushNotificationsServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
+			TinyIoCContainer.Current.Register<PushNotificationRegistrationServiceClient>((c, p) => new PushNotificationRegistrationServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
 
             TinyIoCContainer.Current.Register<OrderServiceClient>((c, p) => new OrderServiceClient(c.Resolve<IAppSettings>().ServiceUrl, this.GetSessionId(c)));
 
@@ -93,13 +94,21 @@ namespace apcurium.MK.Booking.Mobile
             return sessionId;
         }
         
-        private void InitialiseStartNavigation()
+        private void InitializeStartNavigation()
         {
             var startApplicationObject = new StartNavigation();
             this.RegisterServiceInstance<IMvxStartNavigation>(startApplicationObject);
         }
 
-        
+        private void InitializePushNotifications()
+        {
+            var accountService = TinyIoCContainer.Current.Resolve<IAccountService>();
+            var pushService = TinyIoCContainer.Current.Resolve<IPushNotificationService>();
+            if (accountService.CurrentAccount != null)
+            {
+                pushService.RegisterDeviceForPushNotifications();
+            }
+        }
 
         protected override IMvxViewModelLocator CreateDefaultViewModelLocator()
         {
