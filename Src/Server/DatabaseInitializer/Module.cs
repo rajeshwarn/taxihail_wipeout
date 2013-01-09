@@ -1,5 +1,6 @@
 ﻿using System.Configuration;
 using System.Data.Entity;
+using System.Linq;
 using DatabaseInitializer.Services;
 using Infrastructure;
 using Infrastructure.EventSourcing;
@@ -83,8 +84,12 @@ namespace DatabaseInitializer
         private static void RegisterEventHandlers(IUnityContainer unityContainer)
         {
             var eventHandlerRegistry = unityContainer.Resolve<IEventHandlerRegistry>();
+            // Filter out Integration Event Handlers
+            // They should never replay events
+            var eventHandlers = unityContainer.ResolveAll<IEventHandler>()
+                                              .Where(x=> !(x is IIntegrationEventHandler));
 
-            foreach (var eventHandler in unityContainer.ResolveAll<IEventHandler>())
+            foreach (var eventHandler in eventHandlers)
             {
                 eventHandlerRegistry.Register(eventHandler);
             }
