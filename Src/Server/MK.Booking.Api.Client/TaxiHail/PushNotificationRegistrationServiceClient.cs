@@ -1,5 +1,6 @@
 using System;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
@@ -10,9 +11,12 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 		{
 		}
 			
-        public void Register(string deviceToken)
+        public void Register(string deviceToken, PushNotificationServicePlatform platform)
 		{
-            Client.Post<string>("account/pushnotifications/" + Uri.EscapeDataString(deviceToken), null);
+            Client.Post<string>("account/pushnotifications/" + Uri.EscapeDataString(deviceToken), new
+            {
+                Platform = platform                                                                                              
+            });
 		}
 
         public void Unregister(string deviceToken)
@@ -20,10 +24,11 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             Client.Delete<string>("account/pushnotifications/" + Uri.EscapeDataString(deviceToken));
 		}
 
-        public void Replace (string oldDeviceToken, string newDeviceToken)
+        public void Replace (string oldDeviceToken, string newDeviceToken, PushNotificationServicePlatform platform)
         {
             Client.Post<string>("account/ushnotifications/" + Uri.EscapeDataString(newDeviceToken), new {
-                OldDeviceToken = oldDeviceToken
+                OldDeviceToken = oldDeviceToken,
+                Platform = platform                                                                                              
             });
         }
 	}
