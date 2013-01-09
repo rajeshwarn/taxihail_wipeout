@@ -4025,6 +4025,12 @@ public partial class TOrderStatus
 
     private string driverMobilePhoneField;
 
+    private double fareField;
+
+    private double tollsField;
+
+    private double tipsField;
+
     /// <remarks/>
     public int OrderID
     {
@@ -4178,6 +4184,45 @@ public partial class TOrderStatus
         set
         {
             this.driverMobilePhoneField = value;
+        }
+    }
+
+    /// <remarks/>
+    public double Fare
+    {
+        get
+        {
+            return this.fareField;
+        }
+        set
+        {
+            this.fareField = value;
+        }
+    }
+
+    /// <remarks/>
+    public double Tolls
+    {
+        get
+        {
+            return this.tollsField;
+        }
+        set
+        {
+            this.tollsField = value;
+        }
+    }
+
+    /// <remarks/>
+    public double Tips
+    {
+        get
+        {
+            return this.tipsField;
+        }
+        set
+        {
+            this.tipsField = value;
         }
     }
 }

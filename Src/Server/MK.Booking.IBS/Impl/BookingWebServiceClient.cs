@@ -92,21 +92,23 @@ namespace apcurium.MK.Booking.IBS.Impl
                     var status = service.GetOrdersStatus(UserNameApp, PasswordApp, ibsOrdersIds.ToArray());
                     foreach (var orderInfoFromIBS in status)
                     {
-                        var statusInformations = new IBSOrderInformation();
-                        statusInformations.Status = orderInfoFromIBS.OrderStatus.ToString();
-                        statusInformations.IBSOrderId = orderInfoFromIBS.OrderID;
-                        statusInformations.VehicleNumber = orderInfoFromIBS.VehicleNumber;
-                        statusInformations.MobilePhone = orderInfoFromIBS.DriverMobilePhone;
-                        statusInformations.FirstName = orderInfoFromIBS.DriverFirstName;
-                        statusInformations.LastName = orderInfoFromIBS.DriverLastName;
-                        statusInformations.VehicleColor = orderInfoFromIBS.VehicleColor;
-                        statusInformations.VehicleLatitude = orderInfoFromIBS.VehicleCoordinateLat > 0 ? (double?)orderInfoFromIBS.VehicleCoordinateLat : null;
-                        statusInformations.VehicleLongitude = orderInfoFromIBS.VehicleCoordinateLong > 0 ? (double?)orderInfoFromIBS.VehicleCoordinateLong : null;
-                        statusInformations.VehicleMake = orderInfoFromIBS.VehicleMake;
-                        statusInformations.VehicleModel = orderInfoFromIBS.VehicleModel;
-                        statusInformations.VehicleRegistration = orderInfoFromIBS.VehicleRegistration;
-
-                        result.Add(statusInformations);
+                        var statusInfos = new IBSOrderInformation();
+                        statusInfos.Status = orderInfoFromIBS.OrderStatus.ToString();
+                        statusInfos.IBSOrderId = orderInfoFromIBS.OrderID;
+                        statusInfos.VehicleNumber = orderInfoFromIBS.VehicleNumber;
+                        statusInfos.MobilePhone = orderInfoFromIBS.DriverMobilePhone;
+                        statusInfos.FirstName = orderInfoFromIBS.DriverFirstName;
+                        statusInfos.LastName = orderInfoFromIBS.DriverLastName;
+                        statusInfos.VehicleColor = orderInfoFromIBS.VehicleColor;
+                        statusInfos.VehicleLatitude = orderInfoFromIBS.VehicleCoordinateLat > 0 ? (double?)orderInfoFromIBS.VehicleCoordinateLat : null;
+                        statusInfos.VehicleLongitude = orderInfoFromIBS.VehicleCoordinateLong > 0 ? (double?)orderInfoFromIBS.VehicleCoordinateLong : null;
+                        statusInfos.VehicleMake = orderInfoFromIBS.VehicleMake;
+                        statusInfos.VehicleModel = orderInfoFromIBS.VehicleModel;
+                        statusInfos.VehicleRegistration = orderInfoFromIBS.VehicleRegistration;
+                        statusInfos.Fare = orderInfoFromIBS.Fare;
+                        statusInfos.Tip = orderInfoFromIBS.Tips;
+                        statusInfos.Toll = orderInfoFromIBS.Tolls;
+                        result.Add(statusInfos);
                     }
                 });
 

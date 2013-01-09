@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using Infrastructure.Messaging;
 using ServiceStack.ServiceClient.Web;
+using ServiceStack.Text;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Google.Resources;
@@ -43,7 +44,6 @@ namespace apcurium.MK.Booking.Api.Jobs
                 var ordersStatusIbs = _bookingWebServiceClient.GetOrdersStatus(orders.Where(x => x.IBSOrderId.HasValue).Select(x => x.IBSOrderId.Value).ToList());
                 foreach (var orderStatusDetail in orders){
                    
-                    Logger.Debug("Get Status for " + orderStatusDetail.OrderId);
                     var ibsStatus = ordersStatusIbs.FirstOrDefault(x => x.IBSOrderId == orderStatusDetail.IBSOrderId);
 
                     if (ibsStatus != null &&
@@ -51,8 +51,15 @@ namespace apcurium.MK.Booking.Api.Jobs
                         && orderStatusDetail.IBSStatusId != ibsStatus.Status)
                     {
                         string description = null;
-                        Logger.Debug("Status Changed for " + orderStatusDetail.OrderId);
-                        var command = new ChangeOrderStatus {Status = orderStatusDetail};
+                        Logger.Debug("Status Changed for " + orderStatusDetail.OrderId + " -- new status IBS : " + ibsStatus.Status);
+                        Logger.Debug("IBS Status infos :  " + ibsStatus.Dump());
+                        var command = new ChangeOrderStatus
+                            {
+                                Status = orderStatusDetail,
+                                Fare = ibsStatus.Fare,
+                                Toll = ibsStatus.Toll,
+                                Tip = ibsStatus.Tip
+                            };
 
                         orderStatusDetail.IBSStatusId = ibsStatus.Status;
                         orderStatusDetail.DriverInfos.FirstName = ibsStatus.FirstName;
@@ -67,9 +74,8 @@ namespace apcurium.MK.Booking.Api.Jobs
                         orderStatusDetail.VehicleLatitude = ibsStatus.VehicleLatitude;
                         orderStatusDetail.VehicleLongitude = ibsStatus.VehicleLongitude;
 
-                        if (ibsStatus.VehicleNumber.HasValue())
+                        if (ibsStatus.Status.SoftEqual(AssignedStatus))
                         {
-                            Logger.Debug("Vehicle number :  " + ibsStatus.VehicleNumber);
                             description = string.Format(_configManager.GetSetting("OrderStatus.CabDriverNumberAssigned"), ibsStatus.VehicleNumber);
                         }
 
@@ -84,9 +90,6 @@ namespace apcurium.MK.Booking.Api.Jobs
                                 description = string.Format(_configManager.GetSetting("OrderStatus.OrderDoneFareAvailable"), FormatPrice(total));
                                 orderStatusDetail.FareAvailable = true;
                             }
-                            command.Fare = ibsStatus.Fare;
-                            command.Toll = ibsStatus.Toll;
-                            command.Tip = ibsStatus.Tip;
                         }
 
                         if (description.HasValue())
