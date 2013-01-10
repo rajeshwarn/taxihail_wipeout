@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using apcurium.MK.Common.Provider;
 using apcurium.MK.Booking.Maps.Geo;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Maps.Impl
 {
@@ -38,8 +39,10 @@ namespace apcurium.MK.Booking.Maps.Impl
 		/// </param>
         public Address[] Search(string name, double? latitude, double? longitude)
         {
-			if( name == null) throw new ArgumentNullException("name");
-			if( name.Length == 0) throw new ArgumentException("name should not be emtpy", "name");
+            if ( name.IsNullOrEmpty() )
+            {
+                return new Address[0];
+            }			
             
 			var term = name.Substring(0, 1);
             int n;

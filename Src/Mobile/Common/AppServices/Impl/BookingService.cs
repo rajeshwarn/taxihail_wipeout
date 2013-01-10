@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             
             UseServiceClient<OrderServiceClient> (service =>
             {
-                orderDetail = service.CreateOrder (order);
+                 orderDetail = service.CreateOrder (order);
             }, ex => HandleCreateOrderError (ex, order));
 
             if (orderDetail.IBSOrderId.HasValue && orderDetail.IBSOrderId > 0) {

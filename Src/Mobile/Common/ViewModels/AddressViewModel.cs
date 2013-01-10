@@ -6,9 +6,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class AddressViewModel
 	{
-		public AddressViewModel ()
-		{
-		}
+		
 
 		public Address Address { get; set; }
 
@@ -16,7 +14,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                if ( Address.AddressType ==  "place" )
+                if ( ( Address.AddressType ==  "place" ) ||  ( Address.FriendlyName.HasValue () ) )
                 {
                     return Address.FriendlyName;
                 }
@@ -35,7 +33,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                if ( ( Address.AddressType ==  "place" ) || ( Params.Get( Address.City,Address.State, Address.ZipCode ).Count ( s=> s.HasValue () ) == 0 ) )
+                if ( ( Address.AddressType ==  "place" ) || ( Params.Get( Address.City,Address.State, Address.ZipCode ).Count ( s=> s.HasValue () ) == 0 ) || ( Address.FriendlyName.HasValue () ) )
                 {
                     return Address.FullAddress;
                 }

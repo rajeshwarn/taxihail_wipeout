@@ -73,7 +73,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			base.Start (firstStart);
 
-			Observable.Timer (TimeSpan.Zero, TimeSpan.FromSeconds (_refreshPeriod)).Select (c => new Unit ())
+			Observable.Timer ( TimeSpan.FromSeconds ( 2 ), TimeSpan.FromSeconds (_refreshPeriod)).Select (c => new Unit ())
 				.Subscribe (unit => InvokeOnMainThread (RefreshStatus))
 					.DisposeWith (Subscriptions);
 		}

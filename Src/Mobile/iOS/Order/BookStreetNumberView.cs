@@ -44,6 +44,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             lblRefineAddress.Font = AppStyle.NormalTextFont;
             lblRefineAddress.Text = Resources.GetValue("StreetNumberLabel");
             lblStreetName.Font = AppStyle.BoldTextFont;
+            lblStreetName.TextColor = AppStyle.DarkText;
             AppButtons.FormatStandardButton((GradientButton)btnSearch, Resources.GetValue("StreetNumberSearchBt"), AppStyle.ButtonColor.Grey, "Assets/Search/SearchIcon.png", "Assets/Cells/rightArrow.png");
 
 

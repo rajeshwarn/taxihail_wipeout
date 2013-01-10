@@ -20,7 +20,11 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
         string PhoneNumberDisplay(int providerId);
         string DefaultServiceUrl{ get; }
 
-        bool TwitterEnabled{ get; }        
+        bool TutorialEnabled{ get; }        
+
+        bool TwitterEnabled{ get; }       
+
+
         string TwitterConsumerKey{ get; }
         string TwitterCallback{ get; }
         string TwitterConsumerSecret{ get; }

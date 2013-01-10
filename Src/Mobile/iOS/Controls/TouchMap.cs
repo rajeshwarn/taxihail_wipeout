@@ -71,46 +71,32 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
            /// _cancelToken = new CancellationTokenSource();
 
             ShowsUserLocation = true;
-
-//            var task = TinyIoCContainer.Current.Resolve<ILocationService>().GetPositionAsync(5000, 4000, 5000, 8000, _cancelToken.Token).ContinueWith(t => {
-//                if (t.IsCompleted && !t.IsCanceled)
-//                {
-//                    InvokeOnMainThread(() =>
-//                    {
-//                        if (t.Result.Latitude != 0 && t.Result.Longitude != 0)
-//                        {
-//                            SetRegionAndZoom(new MKCoordinateRegion(), new CLLocationCoordinate2D(t.Result.Latitude, t.Result.Longitude), 0.2, 0.2);
-//                        }
-//                    });
-//                }
-//            }, TaskContinuationOptions.OnlyOnRanToCompletion);
-//
-//            task.Wait ( 1000 );
-        }
-
-        public override void MovedToSuperview ()
-        {
-            base.MovedToSuperview ();
-
             if (_pickupCenterPin == null) {
                 _pickupCenterPin = new UIImageView(new UIImage(AddressAnnotation.GetImageFilename(AddressAnnotationType.Pickup)));
                 _pickupCenterPin.BackgroundColor = UIColor.Clear;
                 _pickupCenterPin.ContentMode = UIViewContentMode.Center;
                 AddSubview(_pickupCenterPin);
-                var p = this.ConvertCoordinate(this.CenterCoordinate,this);
-                _pickupCenterPin.Frame = new RectangleF(p.X - 21, p.Y - 57, 42, 57);
-                _pickupCenterPin.Hidden = true;
-
+                _pickupCenterPin.Hidden = true;                
             }
             if (_dropoffCenterPin == null) {
                 _dropoffCenterPin = new UIImageView(new UIImage(AddressAnnotation.GetImageFilename(AddressAnnotationType.Destination)));
                 _dropoffCenterPin.BackgroundColor = UIColor.Clear;
                 _dropoffCenterPin.ContentMode = UIViewContentMode.Center;
                 AddSubview(_dropoffCenterPin);
-                var p = this.ConvertCoordinate(this.CenterCoordinate,this);
-                _dropoffCenterPin.Frame = new RectangleF(p.X - 21, p.Y - 57, 42, 57);
+                
                 _dropoffCenterPin.Hidden = true;
             }
+        }
+
+        public override void LayoutSubviews ()
+        {
+            base.LayoutSubviews ();
+
+
+
+            var p = this.ConvertCoordinate(this.CenterCoordinate,this);
+            _pickupCenterPin.Frame = new RectangleF(p.X - 21, p.Y - 57, 42, 57); //Image is 42 x 57           
+            _dropoffCenterPin.Frame = new RectangleF(p.X - 21, p.Y - 57, 42, 57);
         }
 
         public void OnRegionChanged()

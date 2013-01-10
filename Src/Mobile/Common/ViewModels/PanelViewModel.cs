@@ -113,8 +113,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get {
                 return GetCommand(() =>
                 {
-                    MenuIsOpen = false;
-                    MessageService.ShowDialogActivity (typeof(TutorialViewModel));
+                    if ( Settings.TutorialEnabled )
+                    {
+                        MenuIsOpen = false;
+                        MessageService.ShowDialogActivity (typeof(TutorialViewModel));
+                    }
                 });
             }
         }

@@ -55,6 +55,20 @@ namespace apcurium.MK.Booking.Mobile.Settings
             return _data.DefaultPhoneNumberDisplay;
         }
 
+        public bool TutorialEnabled
+        {
+            get{
+                if ( _data.TutorialEnabled.HasValue )
+                {
+                    return _data.TutorialEnabled.Value;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+        }
         public int[] InvalidProviderIds {
             get { return new int[0]; }
         }

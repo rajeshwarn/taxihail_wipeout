@@ -140,9 +140,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
 
 
+                CalculateEstimate ();
+//            }
+//            else
+//            {
+//                _fareEstimate = Resources.GetString("NoFareText");
+//            }
+
             _useExistingOrder = false;
 
-            _fareEstimate = Resources.GetString("NoFareText");
+
 
             CenterMap(true);
 
@@ -365,6 +372,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return new MvxRelayCommand(() =>
                 {
+                    if ( !Settings.TutorialEnabled )
+                    {
+                        return;
+                    }
 
                     Task.Factory.SafeStartNew(() => 
                     {

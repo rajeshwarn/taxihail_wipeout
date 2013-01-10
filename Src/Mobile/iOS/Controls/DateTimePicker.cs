@@ -34,7 +34,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			};
 			AddSubview( accept );
 			
-            var reset = AppButtons.CreateStandardButton( new RectangleF (_screenBounds.Width - 50, 5, 40, 35), "", AppStyle.ButtonColor.Red, "Assets/Cancel.png" );
+            var reset = AppButtons.CreateStandardButton( new RectangleF (_screenBounds.Width - 50, 5, 40, 35), "", AppStyle.ButtonColor.Red, "Assets/cancel.png" );
 			reset.TouchUpInside += delegate {
 				SetSelectedDate (null);
 			};
