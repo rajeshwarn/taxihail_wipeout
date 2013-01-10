@@ -5,6 +5,7 @@ using PushSharp;
 using PushSharp.Android;
 using PushSharp.Apple;
 using PushSharp.Common;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Enumeration;
 
@@ -12,35 +13,24 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
 {
     public class PushNotificationService: IPushNotificationService
     {
-        readonly ApplePushChannelSettings _appleSettings;
-        readonly GcmPushChannelSettings _androidSettings;
+        readonly IConfigurationManager _configurationManager;
         readonly ILogger _logger;
         readonly PushService _push;
+        private bool _started = false;
 
-        public PushNotificationService(ApplePushChannelSettings appleSettings, GcmPushChannelSettings androidSettings, ILogger logger)
+        public PushNotificationService(IConfigurationManager configurationManager, ILogger logger)
         {
-            _appleSettings = appleSettings;
-            _androidSettings = androidSettings;
+            _configurationManager = configurationManager;
             _logger = logger;
             //Create our service	
             _push = new PushService();
-
-            //Wire up the events
-            _push.Events.OnDeviceSubscriptionExpired += Events_OnDeviceSubscriptionExpired;
-            _push.Events.OnDeviceSubscriptionIdChanged += Events_OnDeviceSubscriptionIdChanged;
-            _push.Events.OnChannelException += Events_OnChannelException;
-            _push.Events.OnNotificationSendFailure += Events_OnNotificationSendFailure;
-            _push.Events.OnNotificationSent += Events_OnNotificationSent;
-            _push.Events.OnChannelCreated += Events_OnChannelCreated;
-            _push.Events.OnChannelDestroyed += Events_OnChannelDestroyed;
-
-            _push.StartApplePushService(_appleSettings);
-            _push.StartGoogleCloudMessagingPushService(_androidSettings);
         }
 
 
         public void Send(string alert, string deviceToken, PushNotificationServicePlatform platform)
         {
+            EnsureStarted();
+
             switch (platform)
             {
                 case PushNotificationServicePlatform.Apple:
@@ -52,6 +42,38 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
                 default:
                     throw new NotImplementedException();
             }
+        }
+
+        private void EnsureStarted()
+        {
+            if (_started) return;
+
+            _started = true;
+
+#if DEBUG
+            var production = false;
+            var certificatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, _configurationManager.GetSetting("APNS.DevelopmentCertificatePath"));
+#else
+            var production = true;
+            var certificatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, _configurationManager.GetSetting("APNS.ProductionCertificatePath"));
+#endif
+            // Push notifications
+            var appleCert = File.ReadAllBytes(certificatePath);
+
+            var appleSettings = new ApplePushChannelSettings(production, appleCert, _configurationManager.GetSetting("APNS.CertificatePassword"));
+            var androidSettings = new GcmPushChannelSettings(_configurationManager.GetSetting("GCM.SenderId"), _configurationManager.GetSetting("GCM.APIKey"), _configurationManager.GetSetting("GCM.PackageName"));
+
+            //Wire up the events
+            _push.Events.OnDeviceSubscriptionExpired += Events_OnDeviceSubscriptionExpired;
+            _push.Events.OnDeviceSubscriptionIdChanged += Events_OnDeviceSubscriptionIdChanged;
+            _push.Events.OnChannelException += Events_OnChannelException;
+            _push.Events.OnNotificationSendFailure += Events_OnNotificationSendFailure;
+            _push.Events.OnNotificationSent += Events_OnNotificationSent;
+            _push.Events.OnChannelCreated += Events_OnChannelCreated;
+            _push.Events.OnChannelDestroyed += Events_OnChannelDestroyed;
+
+            _push.StartApplePushService(appleSettings);
+            _push.StartGoogleCloudMessagingPushService(androidSettings);
         }
 
         private void SendAndroidNotification(string alert, string registrationId)

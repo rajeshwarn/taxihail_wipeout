@@ -87,7 +87,8 @@ namespace DatabaseInitializer
             // Filter out Integration Event Handlers
             // They should never replay events
             var eventHandlers = unityContainer.ResolveAll<IEventHandler>()
-                                              .Where(x=> !(x is IIntegrationEventHandler));
+                                              .Where(x=> !(x is IIntegrationEventHandler))
+                                              .ToArray();
 
             foreach (var eventHandler in eventHandlers)
             {
