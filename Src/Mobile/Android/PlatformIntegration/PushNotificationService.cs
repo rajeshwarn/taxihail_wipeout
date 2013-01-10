@@ -51,13 +51,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 	}
 
 	//You must subclass this!
-	[BroadcastReceiver(Permission=GCMConstants.PERMISSION_GCM_INTENTS)]
-	[IntentFilter(new string[] { GCMConstants.INTENT_FROM_GCM_MESSAGE },
-	Categories = new string[] { "com.apcurium.MK.TaxiHailDemo" })]
-	[IntentFilter(new string[] { GCMConstants.INTENT_FROM_GCM_REGISTRATION_CALLBACK },
-	Categories = new string[] { "com.apcurium.MK.TaxiHailDemo" })]
-	[IntentFilter(new string[] { GCMConstants.INTENT_FROM_GCM_LIBRARY_RETRY },
-	Categories = new string[] { "com.apcurium.MK.TaxiHailDemo" })]
 	public class SampleBroadcastReceiver : GCMBroadcastReceiver<GCMIntentService>
 	{
 		//IMPORTANT: Change this to your own Sender ID!
