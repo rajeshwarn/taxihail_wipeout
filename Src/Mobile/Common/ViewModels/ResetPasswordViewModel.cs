@@ -37,6 +37,7 @@ namespace apcurium.MK.Booking.Mobile
 					MessageService.ShowProgress(true);
 					try{
                         _accountService.ResetPassword(Email);
+                        RequestClose( this );
                      }catch(Exception e)
                      {
                         var msg = Resources.GetString("ServiceError" + e.Message);
