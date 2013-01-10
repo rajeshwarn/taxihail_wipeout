@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
                 foreach (var device in devices)
                 {
-                    _pushNotificationService.Send("notification", device.DeviceToken, device.Platform);
+                    _pushNotificationService.Send("status changed to " + @event.Status.IBSStatusId, device.DeviceToken, device.Platform);
                 }
 
             }

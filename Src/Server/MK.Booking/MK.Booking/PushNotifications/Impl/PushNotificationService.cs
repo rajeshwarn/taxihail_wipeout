@@ -5,6 +5,7 @@ using PushSharp;
 using PushSharp.Android;
 using PushSharp.Apple;
 using PushSharp.Common;
+using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.PushNotifications.Impl
@@ -13,12 +14,14 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
     {
         readonly ApplePushChannelSettings _appleSettings;
         readonly GcmPushChannelSettings _androidSettings;
+        readonly ILogger _logger;
         readonly PushService _push;
 
-        public PushNotificationService(ApplePushChannelSettings appleSettings, GcmPushChannelSettings androidSettings)
+        public PushNotificationService(ApplePushChannelSettings appleSettings, GcmPushChannelSettings androidSettings, ILogger logger)
         {
             _appleSettings = appleSettings;
             _androidSettings = androidSettings;
+            _logger = logger;
             //Create our service	
             _push = new PushService();
 
@@ -69,40 +72,40 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
                 .WithSound("default"));
         }
 
-        static void Events_OnDeviceSubscriptionIdChanged(PlatformType platform, string oldDeviceInfo, string newDeviceInfo, Notification notification)
+        void Events_OnDeviceSubscriptionIdChanged(PlatformType platform, string oldDeviceInfo, string newDeviceInfo, Notification notification)
 		{
 			//Currently this event will only ever happen for Android GCM
-			Console.WriteLine("Device Registration Changed:  Old-> " + oldDeviceInfo + "  New-> " + newDeviceInfo);
+            _logger.LogMessage("Device Registration Changed:  Old-> " + oldDeviceInfo + "  New-> " + newDeviceInfo);
 		}
 
-		static void Events_OnNotificationSent(Notification notification)
+		void Events_OnNotificationSent(Notification notification)
 		{
-			Console.WriteLine("Sent: " + notification.Platform.ToString() + " -> " + notification.ToString());
+            _logger.LogMessage("Sent: " + notification.Platform.ToString() + " -> " + notification.ToString());
 		}
 
-		static void Events_OnNotificationSendFailure(Notification notification, Exception notificationFailureException)
+		void Events_OnNotificationSendFailure(Notification notification, Exception notificationFailureException)
 		{
-			Console.WriteLine("Failure: " + notification.Platform.ToString() + " -> " + notificationFailureException.Message + " -> " + notification.ToString());
+            _logger.LogMessage("Failure: " + notification.Platform.ToString() + " -> " + notificationFailureException.Message + " -> " + notification.ToString());
 		}
 
-		static void Events_OnChannelException(Exception exception, PlatformType platformType, Notification notification)
+		void Events_OnChannelException(Exception exception, PlatformType platformType, Notification notification)
 		{
-			Console.WriteLine("Channel Exception: " + platformType.ToString() + " -> " + exception.ToString());
+            _logger.LogError(exception);
 		}
 
-		static void Events_OnDeviceSubscriptionExpired(PlatformType platform, string deviceInfo, Notification notification)
+		void Events_OnDeviceSubscriptionExpired(PlatformType platform, string deviceInfo, Notification notification)
 		{
-			Console.WriteLine("Device Subscription Expired: " + platform.ToString() + " -> " + deviceInfo);
+            _logger.LogMessage("Device Subscription Expired: " + platform.ToString() + " -> " + deviceInfo);
 		}
 
-		static void Events_OnChannelDestroyed(PlatformType platformType, int newChannelCount)
+		void Events_OnChannelDestroyed(PlatformType platformType, int newChannelCount)
 		{
-			Console.WriteLine("Channel Destroyed for: " + platformType.ToString() + " Channel Count: " + newChannelCount);
+            _logger.LogMessage("Channel Destroyed for: " + platformType.ToString() + " Channel Count: " + newChannelCount);
 		}
 
-		static void Events_OnChannelCreated(PlatformType platformType, int newChannelCount)
+		void Events_OnChannelCreated(PlatformType platformType, int newChannelCount)
 		{
-			Console.WriteLine("Channel Created for: " + platformType.ToString() + " Channel Count: " + newChannelCount);
+            _logger.LogMessage("Channel Created for: " + platformType.ToString() + " Channel Count: " + newChannelCount);
 		}
     }
 }

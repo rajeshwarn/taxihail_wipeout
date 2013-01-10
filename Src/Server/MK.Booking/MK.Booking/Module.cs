@@ -1,8 +1,12 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
+using System.IO;
 using System.Net;
 using System.Net.Mail;
 using Infrastructure.Messaging.Handling;
 using Microsoft.Practices.Unity;
+using PushSharp.Android;
+using PushSharp.Apple;
 using apcurium.MK.Booking.BackOffice.EventHandlers;
 using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
@@ -12,12 +16,15 @@ using apcurium.MK.Booking.Email;
 using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.Events;
+using apcurium.MK.Booking.PushNotifications;
+using apcurium.MK.Booking.PushNotifications.Impl;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking
 {
@@ -46,6 +53,12 @@ namespace apcurium.MK.Booking
             container.RegisterInstance<IPasswordService>(new PasswordService());
             container.RegisterInstance<ITemplateService>(new TemplateService());
             container.RegisterInstance<IEmailSender>(new EmailSender(container.Resolve<IConfigurationManager>()));
+
+            var appleCert = File.ReadAllBytes(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../Certificates/production.p12"));
+            var applePushChannelSettings = new ApplePushChannelSettings(appleCert, "TaxiHail");
+            var androidPushChannelSettings = new GcmPushChannelSettings("296878124787", "AIzaSyCZRrVrdIrJZloNbrm2d4fKHN3QuXbauBo", "com.apcurium.MK.TaxiHailDemo");
+
+            container.RegisterInstance<IPushNotificationService>(new PushNotificationService(applePushChannelSettings, androidPushChannelSettings, container.Resolve<ILogger>()));
 
             RegisterMaps();
             RegisterCommandHandlers(container);
