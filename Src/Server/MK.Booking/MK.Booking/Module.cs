@@ -54,8 +54,8 @@ namespace apcurium.MK.Booking
             container.RegisterInstance<ITemplateService>(new TemplateService());
             container.RegisterInstance<IEmailSender>(new EmailSender(container.Resolve<IConfigurationManager>()));
 
-            var appleCert = File.ReadAllBytes(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../Certificates/production.p12"));
-            var applePushChannelSettings = new ApplePushChannelSettings(appleCert, "TaxiHail");
+            var appleCert = File.ReadAllBytes(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../Certificates/production.p12"));
+            var applePushChannelSettings = new ApplePushChannelSettings(true, appleCert, "TaxiHail");
             var androidPushChannelSettings = new GcmPushChannelSettings("296878124787", "AIzaSyCZRrVrdIrJZloNbrm2d4fKHN3QuXbauBo", "com.apcurium.MK.TaxiHailDemo");
 
             container.RegisterInstance<IPushNotificationService>(new PushNotificationService(applePushChannelSettings, androidPushChannelSettings, container.Resolve<ILogger>()));
