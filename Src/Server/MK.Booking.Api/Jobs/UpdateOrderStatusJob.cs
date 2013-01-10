@@ -77,6 +77,9 @@ namespace apcurium.MK.Booking.Api.Jobs
                         if (ibsStatus.Status.SoftEqual(AssignedStatus))
                         {
                             description = string.Format(_configManager.GetSetting("OrderStatus.CabDriverNumberAssigned"), ibsStatus.VehicleNumber);
+
+                            //if(ibsStatus.)//condition sur eta
+                            //description += " " + string.Format(_configManager.GetSetting("OrderStatus.CabDriverETA"), )
                         }
 
                         if (ibsStatus.Status.SoftEqual(DoneStatus))
