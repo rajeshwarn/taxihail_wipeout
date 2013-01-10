@@ -10,38 +10,56 @@ namespace apcurium.MK.Booking.Mobile.Client
     {
 
 
-        public LocationManagerDelegate()
+        public LocationManagerDelegate ()
         {
         }
 
-        public CLLocation LastKnownLocation
-        {
+        public CLLocation LastKnownLocation {
             get;
             set;
         }
-
 
         public static DateTime NSDateToDateTime (MonoTouch.Foundation.NSDate date)
         {
             return (new DateTime (2001, 1, 1, 0, 0, 0)).AddSeconds (date.SecondsSinceReferenceDate);
         }
 
+//        public override void LocationsUpdated (CLLocationManager manager, CLLocation[] locations)
+//        {
+////            double secondHowRecent = newLocation.Timestamp.SecondsSinceReferenceDate - NSDate.Now.SecondsSinceReferenceDate;
+////            
+////            if (( LastKnownLocation == null ) ||
+////                ((LastKnownLocation.Coordinate.Latitude == 0) || (LastKnownLocation.Coordinate.Longitude == 0) ||
+////             (LastKnownLocation.HorizontalAccuracy > newLocation.HorizontalAccuracy)) && (secondHowRecent < -0.0 && secondHowRecent > -20.0))
+////            {
+////                LastKnownLocation = newLocation;
+//                
+//                
+//                foreach (var newLocation in locations) {
+//                    
+//            
+//            TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("********************Start - LocationsUpdated**************************");
+//                TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Lat : " + newLocation.Coordinate.Latitude.ToString ());
+//                TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Long : " + newLocation.Coordinate.Longitude.ToString ());
+//                TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("HAcc : " + newLocation.HorizontalAccuracy.ToString ());
+//            TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("********************Done - LocationsUpdated**************************");
+//            }
+//        }
+
         public override void UpdatedLocation (CLLocationManager manager, CLLocation newLocation, CLLocation oldLocation)
         {
-            double secondHowRecent = newLocation.Timestamp.SecondsSinceReferenceDate - NSDate.Now.SecondsSinceReferenceDate;
-            
-            if (( LastKnownLocation == null ) ||
-                ((LastKnownLocation.Coordinate.Latitude == 0) || (LastKnownLocation.Coordinate.Longitude == 0) ||
-                 (LastKnownLocation.HorizontalAccuracy > newLocation.HorizontalAccuracy)) && (secondHowRecent < -0.0 && secondHowRecent > -10.0))
+            TinyIoCContainer.Current.Resolve<ILogger> ().LogMessage ("************************** Raw GPS update : Lat {0},  Long {1}, Acc : {2}", newLocation.Coordinate.Latitude, newLocation.Coordinate.Longitude, newLocation.HorizontalAccuracy);
+
+            double secondHowRecent = double.MaxValue;
+            if ( LastKnownLocation != null )
+            {
+                secondHowRecent = NSDate.Now.SecondsSinceReferenceDate  - LastKnownLocation.Timestamp.SecondsSinceReferenceDate ;
+            }
+            if ( (LastKnownLocation == null) ||
+                (LastKnownLocation.HorizontalAccuracy > newLocation.HorizontalAccuracy) || (secondHowRecent > 10   ))
             {
                 LastKnownLocation = newLocation;
-
-
-
-                TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("********************UPDATING LOCATION**************************");
-                TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Lat : " + newLocation.Coordinate.Latitude.ToString ());
-                TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Long : " + newLocation.Coordinate.Longitude.ToString ());
-                TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("HAcc : " + newLocation.HorizontalAccuracy.ToString ());
+                TinyIoCContainer.Current.Resolve<ILogger> ().LogMessage ("************************** Better GPS update : Lat {0},  Long {1}, Acc : {2}", newLocation.Coordinate.Latitude, newLocation.Coordinate.Longitude, newLocation.HorizontalAccuracy);
             }
             
         }

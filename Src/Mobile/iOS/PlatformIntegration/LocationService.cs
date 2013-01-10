@@ -12,6 +12,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 {
     public class LocationService : ILocationService
     {
+        private CLLocation _lastValidLocation;
         private CLLocationManager _locationManager;
         private LocationManagerDelegate _locationDelegate;
         
@@ -93,6 +94,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             if (_locationManager != null)
             {
+                _locationManager.StartUpdatingLocation();
                 return;
             }
             
@@ -102,6 +104,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             _locationDelegate = new LocationManagerDelegate();
             _locationManager.Delegate = _locationDelegate;
             _locationManager.StartUpdatingLocation();
+
+
         }
         
         private Task<Position> _last;
@@ -123,12 +127,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
                 return new Task<Position>(() =>{ throw new Exception("Location service not enabled");} ); 
             }
-
-
+             
             Initialize();
-            _locationDelegate.LastKnownLocation = null;
-            _locationManager.StartUpdatingLocation();
-
 
             Console.WriteLine ( "**********GetPositionAsync**********" );
 
@@ -137,13 +137,21 @@ namespace apcurium.MK.Booking.Mobile.Client
                  
                 bool timedout = false;
                 var result = WaitForAccurateLocation(timeout, accuracy, out timedout);
+
                 if(timedout)
                 {
                     result = WaitForAccurateLocation(fallbackTimeout, fallbackAccuracy, out timedout);
                     if ( timedout )
                     {
                         TinyIoCContainer.Current.Resolve<ILogger>().LogMessage("Location search timed out");
-                            throw new Exception("Location search timed out");
+                        if ( _locationDelegate.LastKnownLocation != null )
+                        {
+                            result = _locationDelegate.LastKnownLocation;
+                        }
+                        else if ( _lastValidLocation != null )
+                        {
+                            result = _lastValidLocation;
+                        }                         
                     }
                 }
                 return new Position { Latitude = result.Coordinate.Latitude, Longitude = result.Coordinate.Longitude };
@@ -157,6 +165,11 @@ namespace apcurium.MK.Booking.Mobile.Client
             
         }
         
+
+        public void Stop ()
+        {
+            _locationManager.StopUpdatingLocation ();
+        }
 #endregion
     }
 }
