@@ -76,6 +76,7 @@
     <Compile Include="Entity\DriverInfos.cs" />
     <Compile Include="Entity\OrderStatus.cs" />
     <Compile Include="Entity\OrderStatusDetail.cs" />
+    <Compile Include="Enumeration\PushNotificationServicePlatform.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Configuration\" />
