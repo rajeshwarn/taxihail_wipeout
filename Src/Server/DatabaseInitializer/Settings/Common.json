@@ -38,7 +38,7 @@
    "Client.HideCallDispatchButton" : "false",
    "Client.HideReportProblem" : "false",
    "GeoLoc.PopularAddress.Range" : "500",
-   "Admin.CompanySettings": "IBS.TimeDifference,IBS.PickupZoneToExclude,IBS.DestinationZoneToExclude,IBS.ValidateDestinationZone,IBS.ValidatePickupZone,Booking.ConfirmationEmail,Client.HideCallDispatchButton,DefaultBookingSettings.ChargeTypeId,DefaultBookingSettings.NbPassenger,DefaultBookingSettings.ProviderId,DefaultBookingSettings.VehicleTypeId,Receipt.Note,Client.HideReportProblem"
+   "Admin.CompanySettings": "IBS.TimeDifference,IBS.PickupZoneToExclude,IBS.DestinationZoneToExclude,IBS.ValidateDestinationZone,IBS.ValidatePickupZone,Booking.ConfirmationEmail,Client.HideCallDispatchButton,DefaultBookingSettings.ChargeTypeId,DefaultBookingSettings.NbPassenger,DefaultBookingSettings.ProviderId,DefaultBookingSettings.VehicleTypeId,Receipt.Note,Client.HideReportProblem",
    "GCM.SenderId": "296878124787",
    "GCM.APIKey": "AIzaSyCZRrVrdIrJZloNbrm2d4fKHN3QuXbauBo",
    "APNS.CertificatePassword": "TaxiHail"
