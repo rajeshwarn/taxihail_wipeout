@@ -6,7 +6,6 @@ using log4net;
 using MK.ConfigurationManager.Entities;
 using System.IO;
 using System.Diagnostics;
-using apcurium.MK.Booking.ConfigTool;
 using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
@@ -119,8 +118,6 @@ namespace MK.DeploymentService.Mobile
 			}
 		}
 
-
-
 		private void FetchSource (DeploymentJob job, string sourceDirectory, Company company)
 		{
 			//pull source from bitbucket if not done yet
@@ -197,20 +194,39 @@ namespace MK.DeploymentService.Mobile
 			jsonSettings.WriteTo(new JsonTextWriter(new StringWriter(stringBuilder)));
 			File.WriteAllText(jsonSettingsFile, stringBuilder.ToString());
 
-			logger.DebugFormat ("Run Customization");
+			logger.DebugFormat ("Build Config Tool Customization");
 
-			var configCompanyFolder = Path.Combine (sourceDirectory, "Config", company.Name);
-			var sourceFolder = Path.Combine (sourceDirectory, "Src");
-			var commonConfigFolder = Path.Combine (sourceDirectory, "Config", "Common");
-			var appConfigTool = new AppConfig (company.Name, configCompanyFolder, sourceFolder, commonConfigFolder);
-			appConfigTool.Apply ();
+			var buildArgs = string.Format("build \"--project:{0}\" \"--configuration:{1}\"  \"{2}/ConfigTool.iOS.sln\"",
+			                              "apcurium.MK.Booking.ConfigTool",
+			                              "Debug|x86",
+			                              Path.Combine (sourceDirectory,"Src","ConfigTool"));
+			
+			BuildProject(buildArgs);
+
+			logger.DebugFormat ("Run Config Tool Customization");
+
+			var configToolRun = new ProcessStartInfo
+			{
+				FileName = "mono",
+				UseShellExecute = false,
+				WorkingDirectory = Path.Combine (sourceDirectory,"Src", "ConfigTool", "apcurium.MK.Booking.ConfigTool.Console", "bin", "Debug"),
+				Arguments = string.Format("apcurium.MK.Booking.ConfigTool.exe {0}", company.Name)
+			};
+			
+			using (var exeProcess = Process.Start(configToolRun))
+			{
+				exeProcess.WaitForExit();
+				if (exeProcess.ExitCode > 0)
+				{
+					throw new Exception("Error during customization");
+				}
+			}
+
 			logger.DebugFormat ("Customization Finished");
 		}
 
 		private void Build (DeploymentJob job, string sourceDirectory, Company company)
-		{
-
-			
+		{			
 			//Build
 			logger.DebugFormat ("Launch Customization");
 			var sourceMobileFolder = Path.Combine (sourceDirectory, "Src", "Mobile");
@@ -270,6 +286,7 @@ namespace MK.DeploymentService.Mobile
 
 		private void BuildProject (string buildArgs)
 		{
+			logger.Debug("Build Project : " + buildArgs);
 			var buildiOSproject = new ProcessStartInfo
 			{
 				FileName = "/Applications/MonoDevelop.app/Contents/MacOS/mdtool",

@@ -40,6 +40,16 @@
     <CodesignKey>iPhone Developer</CodesignKey>
     <DefineConstants>CLIENT</DefineConstants>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
+    <DebugType>none</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <DefineConstants>CLIENT</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+    <AssemblyName>MK.Booking.Api.Client.iOS</AssemblyName>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
