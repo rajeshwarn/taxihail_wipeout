@@ -57,7 +57,7 @@ namespace apcurium.MK.Booking.Database
         {
             var entry = this.Entry(entity);
 
-            if (entry.State == System.Data.EntityState.Detached)
+            if (entry.State == System.Data.Entity.EntityState.Detached)
                 this.Set<T>().Add(entity);
 
             this.SaveChanges();
