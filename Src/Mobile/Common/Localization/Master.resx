@@ -907,10 +907,10 @@
     <value>Reset Password</value>
   </data>
   <data name="View_SignUp" xml:space="preserve">
-    <value>Create Your Account</value>
+    <value>Create Account</value>
   </data>
   <data name="View_SignUp_Label" xml:space="preserve">
-    <value>Create Your Profile</value>
+    <value>Create Profile</value>
   </data>
   <data name="View_SignIn" xml:space="preserve">
     <value />
