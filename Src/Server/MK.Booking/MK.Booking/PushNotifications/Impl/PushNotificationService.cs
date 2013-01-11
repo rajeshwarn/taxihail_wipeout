@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 using PushSharp;
@@ -27,17 +28,17 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
         }
 
 
-        public void Send(string alert, string deviceToken, PushNotificationServicePlatform platform)
+        public void Send(string alert, IDictionary<string, object> data, string deviceToken, PushNotificationServicePlatform platform)
         {
             EnsureStarted();
 
             switch (platform)
             {
                 case PushNotificationServicePlatform.Apple:
-                    SendAppleNotification(alert, deviceToken);
+                    SendAppleNotification(alert, data, deviceToken);
                     break;
                 case PushNotificationServicePlatform.Android:
-                    SendAndroidNotification(alert, deviceToken);
+                    SendAndroidNotification(alert, data, deviceToken);
                     break;
                 default:
                     throw new NotImplementedException();
@@ -76,22 +77,29 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
             _push.StartGoogleCloudMessagingPushService(androidSettings);
         }
 
-        private void SendAndroidNotification(string alert, string registrationId)
+        private void SendAndroidNotification(string alert, IDictionary<string, object> data, string registrationId)
         {
-            var payload = JsonConvert.SerializeObject(new { alert });
+            var payload = new Dictionary<string, object>(data);
+            payload["alert"] = alert;
 
             _push.QueueNotification(NotificationFactory.AndroidGcm()
                 .ForDeviceRegistrationId(registrationId)
                 .WithCollapseKey("NONE")
-                .WithJson(payload));
+                .WithJson(JsonConvert.SerializeObject(payload)));
         }
 
-        private void SendAppleNotification(string alert, string deviceToken)
+        private void SendAppleNotification(string alert, IDictionary<string, object> data, string deviceToken)
         {
-            _push.QueueNotification(NotificationFactory.Apple()
-                .ForDeviceToken(deviceToken)
-                .WithAlert(alert)
-                .WithSound("default"));
+            var notification = NotificationFactory.Apple()
+                                                  .ForDeviceToken(deviceToken)
+                                                  .WithAlert(alert)
+                                                  .WithSound("default");
+            foreach (var key in data.Keys)
+            {
+                notification.WithCustomItem(key, new[] {data[key]});
+            }
+
+            _push.QueueNotification(notification);
         }
 
         void Events_OnDeviceSubscriptionIdChanged(PlatformType platform, string oldDeviceInfo, string newDeviceInfo, Notification notification)

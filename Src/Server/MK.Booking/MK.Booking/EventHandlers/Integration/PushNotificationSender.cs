@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Database;
@@ -28,10 +29,14 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             {
                 var order = context.Find<OrderDetail>(@event.SourceId);
                 var devices = context.Set<DeviceDetail>().Where(x => x.AccountId == order.AccountId);
+                var data = new Dictionary<string, object>
+                {
+                    { "orderId", order.Id },
+                };
 
                 foreach (var device in devices)
                 {
-                    _pushNotificationService.Send("status changed to " + @event.Status.IBSStatusId, device.DeviceToken, device.Platform);
+                    _pushNotificationService.Send("status changed to " + @event.Status.IBSStatusId, data, device.DeviceToken, device.Platform);
                 }
 
             }
