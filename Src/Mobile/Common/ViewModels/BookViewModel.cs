@@ -575,22 +575,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                
             }
         }
-
-        public IMvxCommand NavigateToOrderStatus
-        {
-            get
-            {
-                return GetCommand<Dictionary<string, object>>(order =>
-                {                   
-                    var orderGet = (Order)order["order"];                  
-                    var orderInfoGet = (OrderStatusDetail)order["orderInfo"];
-                    RequestNavigate<BookingStatusViewModel>(new {
-                        order =  orderGet.ToJson(),
-                        orderStatus = orderInfoGet.ToJson()
-                    });
-                });
-            }
-        }
+		       
 
         private void CompleteOrder(CreateOrder order)
         {   
