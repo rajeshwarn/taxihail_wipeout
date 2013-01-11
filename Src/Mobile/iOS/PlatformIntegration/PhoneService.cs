@@ -59,11 +59,11 @@ namespace apcurium.MK.Booking.Mobile.Client
             var presenter = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxTouchViewPresenter>();
             mailComposer.SetToRecipients (new string[] { supportEmail  });
             mailComposer.SetMessageBody ("", false);
-            mailComposer.SetSubject (supportEmail);
+            mailComposer.SetSubject (subject);
             mailComposer.Finished += delegate(object mailsender, MFComposeResultEventArgs mfce) 
             {
-                mailComposer.DismissModalViewControllerAnimated (true);
-                presenter.NativeModalViewControllerDisappearedOnItsOwn();
+                presenter.Close ( null ); 
+                //presenter.NativeModalViewControllerDisappearedOnItsOwn();
                 if (File.Exists (errorLogPath))
                 {
                     File.Delete (errorLogPath);

@@ -33,6 +33,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             this.Bounds = new RectangleF(Bounds.X, Bounds.Y, Bounds.Width, Bounds.Height );
         }
 
+
+
         public override void Draw(System.Drawing.RectangleF frame)
         {
             

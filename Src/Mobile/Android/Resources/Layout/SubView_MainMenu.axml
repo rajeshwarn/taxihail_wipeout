@@ -72,7 +72,7 @@
                 <Button
                     android:id="@+id/settingsTutorial"
                     style="@style/BigTitleTextBlack"
-                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;Panel.NavigateToTutorial&apos;}}"
+                    local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;Panel.NavigateToTutorial&apos;},&apos;Visibility&apos;:{&apos;Path&apos;:&apos;Panel.Settings.TutorialEnabled&apos;,&apos;Converter&apos;:&apos;Visibility&apos;}}"
                     android:background="@drawable/cell_middle_button_state"
                     android:layout_width="fill_parent"
                     android:layout_height="40dip"

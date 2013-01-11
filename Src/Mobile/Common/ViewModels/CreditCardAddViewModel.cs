@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _accountService = this.GetService<IAccountService>();
 
 			CardCategories = new List<ListItem>();
-			CardCategories.Add (new ListItem{ Id = 0, Display = "Personnal"} );
+			CardCategories.Add (new ListItem{ Id = 0, Display = "Personal"} );
 			CardCategories.Add (new ListItem{ Id = 1, Display = "Work"});
 			CardCategories.Add (new ListItem{ Id = 2, Display = "Other"});
 			CreditCardCategory = 0;

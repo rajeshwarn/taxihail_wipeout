@@ -80,12 +80,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             ((ModalTextField)pickerChargeType).Configure(Resources.RideSettingsChargeType, ViewModel.Payments, ViewModel.Order.Settings.ChargeTypeId , x=> {
                 ViewModel.SetChargeTypeId( x.Id ); });
-
+             
             this.AddBindings(new Dictionary<object, string>() {
                 { btnConfirm, "{'TouchUpInside':{'Path':'ConfirmOrderCommand'}}"},
                 { txtApartment, "{'Text': {'Path': 'Order.PickupAddress.Apartment'}}" },
                 { txtEntryCode, "{'Text': {'Path': 'Order.PickupAddress.RingCode'}}" },
-                { txtNotes, "{'Text': {'Path': 'Order.PickupAddress.RingCode'}}" },
+                { txtNotes, "{'Text': {'Path': 'Order.Note'}}" },
                 { pickerVehicleType, "{'Text': {'Path': 'VehicleName'}}" },
                 { pickerChargeType, "{'Text': {'Path': 'ChargeType'}}" },
             });

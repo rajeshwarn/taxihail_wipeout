@@ -111,15 +111,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
             else
             {
-                Model.BookAddress.ToSafeString();
-                var prefixAddress = adr.StreetNumber;
                 if (adr.BuildingName.HasValue())
                 {
-                    prefixAddress = adr.BuildingName;
+                    return Params.Get(adr.BuildingName, adr.Street).Where(s => s.HasValue() && s.Trim().HasValue()).JoinBy(", ");
                 }
-                if (Params.Get(prefixAddress, adr.Street).Where(s => s.HasValue() && s.Trim().HasValue()).Count() > 0)
+                else if (Params.Get(adr.StreetNumber, adr.Street).Where(s => s.HasValue() && s.Trim().HasValue()).Count() > 0)
                 {
-                    return Params.Get(prefixAddress, adr.Street).Where(s => s.HasValue() && s.Trim().HasValue()).JoinBy(", ");
+                    return Params.Get(adr.StreetNumber, adr.Street).Where(s => s.HasValue() && s.Trim().HasValue()).JoinBy(" ");
                 }
                 else
                 {
@@ -264,6 +262,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     if (IsExecuting)
                     {
                         CancelCurrentLocation();
+                    }
+
+                    if ( address.Street.IsNullOrEmpty() ) // This should only be true when using an address from a version smaller than 1.3
+                    {
+                        var a = this.GetService<IGeolocService>().SearchAddress(address.FullAddress, null , null );
+                        if ( a.Count() > 0 )
+                        {
+                            address = a.First();
+                        }
                     }
 
                     address.CopyTo(Model);

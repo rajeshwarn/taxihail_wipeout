@@ -21,7 +21,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
     {
         private static int _progressSize = DrawHelper.GetPixels(30);
         private static int _xPositionText = DrawHelper.GetPixels(4);
-        private static int _yPositionTextL1 = DrawHelper.GetPixels(18);
+        private static int _yPositionTextL1 = DrawHelper.GetPixels(19);
         private static int _yPositionTextL2 = DrawHelper.GetPixels(38);
         private static int _yPositionTextOnlyL1 = DrawHelper.GetPixels(26);
         private static int _fontTextL1 = DrawHelper.GetPixels(20);

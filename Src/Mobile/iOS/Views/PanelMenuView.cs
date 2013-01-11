@@ -84,10 +84,13 @@ namespace apcurium.MK.Booking.Mobile.Client
                     _viewModel.NavigateToUpdateProfile.Execute();
                 })              
             });
-            sect.AddItem (new SingleLineItem (Resources.GetValue ("View_Book_Menu_Tutorial")) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
+
+            if (_viewModel.Settings.TutorialEnabled) {
+                sect.AddItem (new SingleLineItem (Resources.GetValue ("View_Book_Menu_Tutorial")) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
                     _viewModel.NavigateToTutorial.Execute();
                 })              
             });
+            }
 
             if (_viewModel.CanCall) {               
                 sect.AddItem (new SingleLineItem (Resources.GetValue ("View_Book_Menu_CallDispatch")) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
@@ -100,8 +103,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 })              
             });
 
-            if ( _viewModel.CanReportProblem ) 
-            {
+            if (_viewModel.CanReportProblem) {
                 sect.AddItem (new SingleLineItem (Resources.GetValue ("View_Book_Menu_ReportProblem")) { OnItemSelected = sectItem => InvokeOnMainThread(() => { 
                         _viewModel.ReportProblem.Execute();                 
                     })              
