@@ -283,9 +283,9 @@
     <Content Include="services\OrderService.js" />
     <Content Include="common\services\PlacesService.js" />
     <Content Include="taxi-hail.js" />
-    <Content Include="themes\303Taxi\img\cancel-icon.png" />
-    <Content Include="themes\303Taxi\img\location.png" />
-    <Content Include="themes\303Taxi\img\logo.png" />
+    <Content Include="themes\Taxi303\img\cancel-icon.png" />
+    <Content Include="themes\Taxi303\img\location.png" />
+    <Content Include="themes\Taxi303\img\logo.png" />
     <Content Include="themes\AtlantaCheckerCab\img\cancel-icon.png" />
     <Content Include="themes\AtlantaCheckerCab\img\location.png" />
     <Content Include="themes\AtlantaCheckerCab\img\logo.png" />
@@ -309,8 +309,6 @@
     <Content Include="themes\FlashCab\img\cancel-icon.png" />
     <Content Include="themes\FlashCab\img\location.png" />
     <Content Include="themes\FlashCab\img\logo.png" />
-    <Content Include="themes\Nawlins\img\cancel-icon.png" />
-    <Content Include="themes\Nawlins\img\location.png" />
     <Content Include="themes\Nawlins\img\logo.png" />
     <Content Include="themes\Taxiworld\img\header-bg.png" />
     <Content Include="themes\Taxiworld\img\logo.png" />
@@ -397,10 +395,10 @@
     <Content Include="themes\BarrieTaxi\less\combined.less" />
     <Content Include="themes\BarrieTaxi\less\style.less" />
     <Content Include="themes\BarrieTaxi\less\variables.less" />
-    <Content Include="themes\303Taxi\less\combined-responsive.less" />
-    <Content Include="themes\303Taxi\less\combined.less" />
-    <Content Include="themes\303Taxi\less\style.less" />
-    <Content Include="themes\303Taxi\less\variables.less" />
+    <Content Include="themes\Taxi303\less\combined-responsive.less" />
+    <Content Include="themes\Taxi303\less\combined.less" />
+    <Content Include="themes\Taxi303\less\style.less" />
+    <Content Include="themes\Taxi303\less\variables.less" />
     <Content Include="themes\FlashCab\less\combined-responsive.less" />
     <Content Include="themes\FlashCab\less\combined.less" />
     <Content Include="themes\FlashCab\less\style.less" />
