@@ -65,7 +65,6 @@
     <AssemblyName>TaxiMobileApp</AssemblyName>
     <MtouchExtraArgs>-v -v -v -v  -aot "nrgctx-trampolines=2500" -aot "nimt-trampolines=2500" -aot "ntrampolines=2500"</MtouchExtraArgs>
     <MtouchArch>ARMv7</MtouchArch>
-    <CodesignProvision>1958114B-AC37-4D7D-B316-996A9820BE6A</CodesignProvision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>none</DebugType>
@@ -364,6 +363,7 @@
     <Compile Include="Controls\SegmentedGradientButton.cs" />
     <Compile Include="Controls\TextView.cs" />
     <Compile Include="PlatformIntegration\PushNotificationService.cs" />
+    <Compile Include="Binding\MvxUITextViewTargetBinding.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -397,6 +397,7 @@
     <Folder Include="Navigation\" />
     <Folder Include="Assets\Tutorial\" />
     <Folder Include="Assets\CreditCard\" />
+    <Folder Include="Binding\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="MainWindow.xib" xmlns="" />

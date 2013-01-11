@@ -254,6 +254,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         }
 
 		private Task<Position> _last;
+
         public Task<Position> GetPositionAsync(int timeout, float accuracy, int fallbackTimeout, float fallbackAccuracy, CancellationToken cancelToken)
         {
 			if ( ( _last != null ) && ( _last.Status == TaskStatus.Running  ))

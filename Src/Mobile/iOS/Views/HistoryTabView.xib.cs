@@ -64,6 +64,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			lblInfo.Text = Resources.HistoryInfo;	
 			lblInfo.TextColor = AppStyle.TitleTextColor;
 			lblNoHistory.Text = Resources.NoHistoryLabel;
+            lblNoHistory.Hidden = true;
             tableHistory.BackgroundView = new UIView { BackgroundColor = UIColor.Clear };
             tableHistory.BackgroundColor = UIColor.Clear;
 

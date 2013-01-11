@@ -1817,6 +1817,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0700b6
 			public const int LocationNoHistory = 2131165366;
 			
+			// aapt resource value: 0x7f070176
+			public const int LocationServiceErrorMessage = 2131165558;
+			
+			// aapt resource value: 0x7f070175
+			public const int LocationServiceErrorTitle = 2131165557;
+			
 			// aapt resource value: 0x7f0700d2
 			public const int LocationViewTitle = 2131165394;
 			

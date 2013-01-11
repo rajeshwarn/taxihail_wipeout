@@ -139,11 +139,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Localization\TaxiHail.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>TaxiHail.resx</DependentUpon>
-    </Compile>
     <Compile Include="Messages\AddressRefinedMessage.cs" />
     <Compile Include="Messages\AddressSelected.cs" />
     <Compile Include="Messages\BookUsingAddress.cs" />
@@ -288,10 +283,6 @@
     <EmbeddedResource Include="Localization\Taxiworld.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Taxiworld.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Localization\TaxiHail.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>TaxiHail.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Settings\Settings.json" />
     <EmbeddedResource Include="TutorialContent\Tutorial.json" />
