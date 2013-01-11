@@ -7,6 +7,7 @@ using Android.App;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using System.Text;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -74,7 +75,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			//Send back to the server
 			this.UseServiceClient<PushNotificationRegistrationServiceClient>(service =>
 			                                                                 {
-				service.Register(registrationId);
+				service.Register(registrationId, PushNotificationServicePlatform.Android);
 			});
 			
 			//createNotification("PushSharp-GCM Registered...", "The device has been Registered, Tap to View!");
@@ -85,7 +86,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			Log.Verbose(SampleBroadcastReceiver.TAG, "GCM Unregistered: " + registrationId);
 			this.UseServiceClient<PushNotificationRegistrationServiceClient>(service =>
 			                                                                 {
-				service.Unregister(registrationId);
+				service.Unregister(registrationId, PushNotificationServicePlatform.Android);
 			});
 			
 			//createNotification("PushSharp-GCM Unregistered...", "The device has been unregistered, Tap to View!");

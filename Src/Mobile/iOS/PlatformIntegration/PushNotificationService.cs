@@ -4,6 +4,7 @@ using MonoTouch.Foundation;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using MonoTouch.UIKit;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -32,13 +33,13 @@ namespace apcurium.MK.Booking.Mobile.Client
             if (string.IsNullOrEmpty(oldDeviceToken))
             {
                 base.UseServiceClient<PushNotificationRegistrationServiceClient>(service => {
-                    service.Register(newDeviceToken);
+                    service.Register(newDeviceToken, PushNotificationServicePlatform.Apple);
                 });
             }
             else if(!oldDeviceToken.Equals(newDeviceToken))
             {
                 base.UseServiceClient<PushNotificationRegistrationServiceClient>(service => {
-                    service.Replace(oldDeviceToken, newDeviceToken);
+                    service.Replace(oldDeviceToken, newDeviceToken, PushNotificationServicePlatform.Apple);
                 });
             }
                         

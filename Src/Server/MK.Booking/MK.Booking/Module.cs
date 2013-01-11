@@ -10,12 +10,15 @@ using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Email;
 using apcurium.MK.Booking.EventHandlers;
+using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.Events;
+using apcurium.MK.Booking.PushNotifications;
+using apcurium.MK.Booking.PushNotifications.Impl;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking
@@ -45,7 +48,9 @@ namespace apcurium.MK.Booking
             container.RegisterInstance<IPasswordService>(new PasswordService());
             container.RegisterInstance<ITemplateService>(new TemplateService());
             container.RegisterInstance<IEmailSender>(new EmailSender(container.Resolve<IConfigurationManager>()));
+            container.RegisterInstance<IPushNotificationService>(new PushNotificationService(container.Resolve<IConfigurationManager>(), container.Resolve<ILogger>()));
 
+            
             RegisterMaps();
             RegisterCommandHandlers(container);
             RegisterEventHandlers(container);
@@ -85,12 +90,16 @@ namespace apcurium.MK.Booking
         private static void RegisterEventHandlers(IUnityContainer container)
         {
             container.RegisterType<IEventHandler, AccountDetailsGenerator>("AccountDetailsGenerator");
+            container.RegisterType<IEventHandler, DeviceDetailsGenerator>("DeviceDetailsGenerator");
             container.RegisterType<IEventHandler, AddressListGenerator>("AddressListGenerator");
             container.RegisterType<IEventHandler, OrderGenerator>("OrderGenerator");
             container.RegisterType<IEventHandler, TariffDetailsGenerator>("TariffDetailsGenerator");
             container.RegisterType<IEventHandler, RatingTypeDetailsGenerator>("RatingTypeDetailsGenerator");
             container.RegisterType<IEventHandler, AppSettingsGenerator>("AppSettingsGenerator");
             container.RegisterType<IEventHandler, CreditCardDetailsGenerator>("CreditCardDetailsGenerator");
+            
+            // Integration event handlers
+            container.RegisterType<IEventHandler, PushNotificationSender>("PushNotificationSender");
         }
 
         private void RegisterCommandHandlers(IUnityContainer container)
