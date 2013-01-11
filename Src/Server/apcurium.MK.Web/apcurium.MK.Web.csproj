@@ -283,8 +283,6 @@
     <Content Include="services\OrderService.js" />
     <Content Include="common\services\PlacesService.js" />
     <Content Include="taxi-hail.js" />
-    <Content Include="themes\Taxi303\img\cancel-icon.png" />
-    <Content Include="themes\Taxi303\img\location.png" />
     <Content Include="themes\Taxi303\img\logo.png" />
     <Content Include="themes\AtlantaCheckerCab\img\cancel-icon.png" />
     <Content Include="themes\AtlantaCheckerCab\img\location.png" />
@@ -306,8 +304,6 @@
     <Content Include="themes\BarrieTaxi\img\cancel-icon.png" />
     <Content Include="themes\BarrieTaxi\img\location.png" />
     <Content Include="themes\BarrieTaxi\img\logo.png" />
-    <Content Include="themes\FlashCab\img\cancel-icon.png" />
-    <Content Include="themes\FlashCab\img\location.png" />
     <Content Include="themes\FlashCab\img\logo.png" />
     <Content Include="themes\Nawlins\img\logo.png" />
     <Content Include="themes\Taxiworld\img\header-bg.png" />
