@@ -78,9 +78,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 	
 	[Service] //Must use the service tag
 	public class GCMIntentService : GCMBaseIntentService,
-		IUseServiceClient,
-		IMvxServiceConsumer<IAccountService>,
-		IMvxServiceConsumer<IBookingService>
+		IUseServiceClient
 	{
 		public GCMIntentService() : base(SampleBroadcastReceiver.SENDER_ID) {}
 		
@@ -145,47 +143,38 @@ namespace apcurium.MK.Booking.Mobile.Client
 		{
 			//Create notification
 			var notificationManager = GetSystemService (Context.NotificationService) as NotificationManager;
-			var accountService = this.GetService<IAccountService> ();
-			var bookingService = this.GetService<IBookingService> ();
 
-			var orderStatus = bookingService.GetOrderStatus (orderId);
-			var order = accountService.GetHistoryOrder (orderId);
-
-			if (order != null && orderStatus != null) {
-
-				//Create an intent to show ui
-				var uiIntent = new Intent (this, typeof(BookingStatusActivity));
-				// set intent so it does not start a new activity
-				//uiIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.SingleTop);
-				var launchData = JsonConvert.SerializeObject (new MvxShowViewModelRequest (
-					typeof(BookingStatusViewModel),
-					new Dictionary<string, string>
-					{
-						{"order", order.ToJson()},
-						{"orderStatus", orderStatus.ToJson()},
-					},
-					true,
-					MvxRequestedBy.UserAction));
-
-				uiIntent.PutExtra ("MvxLaunchData", launchData);
+			//Create an intent to show ui
+			var uiIntent = new Intent (this, typeof(NotificationActivity));
+			var launchData = JsonConvert.SerializeObject (new MvxShowViewModelRequest (
+				typeof(NotificationViewModel),
+				new Dictionary<string, string>
+				{
+					{ "orderId", orderId.ToString() },
+				},
+				true,
+				MvxRequestedBy.UserAction));
 			
-				//Create the notification
-				var notification = new Notification (Android.Resource.Drawable.SymActionEmail, title);
+			uiIntent.PutExtra ("MvxLaunchData", launchData);
 
-				//Auto cancel will remove the notification once the user touches it
-				notification.Flags = NotificationFlags.AutoCancel;
 			
-				//Set the notification info
-				//we use the pending intent, passing our ui intent over which will get called
-				//when the notification is tapped.
-				notification.SetLatestEventInfo (this,
-			                                title,
-			                                desc,
-			                                PendingIntent.GetActivity (this, 0, uiIntent, 0));
-			
-				//Show the notification
-				notificationManager.Notify (1, notification);
-			}
+			//Create the notification
+			var notification = new Notification (Android.Resource.Drawable.SymActionEmail, title);
+
+			//Auto cancel will remove the notification once the user touches it
+			notification.Flags = NotificationFlags.AutoCancel;
+		
+			//Set the notification info
+			//we use the pending intent, passing our ui intent over which will get called
+			//when the notification is tapped.
+			notification.SetLatestEventInfo (this,
+		                                title,
+		                                desc,
+		                                PendingIntent.GetActivity (this, 0, uiIntent, 0));
+		
+			//Show the notification
+			notificationManager.Notify (1, notification);
+
 		}
 	}
 }
