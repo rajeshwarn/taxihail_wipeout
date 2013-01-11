@@ -201,9 +201,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public Address FindInAccountAddresses (double latitude, double longitude)
         {
-            Address found = GetAddresseInRange( GetFavoriteAddresses(), new apcurium.MK.Booking.Maps.Geo.Position( latitude, longitude ), 200);                   
+            Address found = GetAddresseInRange( GetFavoriteAddresses(), new apcurium.MK.Booking.Maps.Geo.Position( latitude, longitude ), 100);                   
             if (found == null) {
-                found = GetAddresseInRange( GetHistoryAddresses(), new apcurium.MK.Booking.Maps.Geo.Position(  latitude,  longitude ), 100);
+                found = GetAddresseInRange( GetHistoryAddresses(), new apcurium.MK.Booking.Maps.Geo.Position(  latitude,  longitude ), 75);
             }
             return found;
 

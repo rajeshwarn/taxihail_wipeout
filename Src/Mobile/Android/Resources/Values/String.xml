@@ -34,7 +34,7 @@
   <string name="StatusViewTitle">Confirmed</string>
   <string name="CreateAccoutLanguageLabel">Language:</string>
   <string name="AptNumber">Apt. No.</string>
-  <string name="View_SignUp_Label">Create Your Profile</string>
+  <string name="View_SignUp_Label">Create Profile</string>
   <string name="InvalidBookinInfo">To book a ride, you need to enter a valid pickup address.</string>
   <string name="BookDateLabel">Pick Me Up Later</string>
   <string name="YesButton">Yes</string>
@@ -283,7 +283,7 @@
   <string name="View_BookingStatus_ThankYouTitle">Thank you</string>
   <string name="CreateAccoutMobileLabel">Mobile:</string>
   <string name="NoButton">No</string>
-  <string name="View_PasswordRecovery_Label">Reset Your Password</string>
+  <string name="View_PasswordRecovery_Label">Reset Password</string>
   <string name="DeleteButton">Delete</string>
   <string name="TwitterButton">Sign In with Twitter</string>
   <string name="StatusCannotBeDisplayed">Cannot get status. Please call provider.</string>
@@ -297,7 +297,7 @@
   <string name="UpdateBookingSettingsEmptyField">The data is invalid, all the fields are required.</string>
   <string name="RideSettingsCannotLoadListMessage">The server cannot be contacted, try again later.</string>
   <string name="ReturnBookingScreen">Return to main screen</string>
-  <string name="View_SignUp">Create Your Account</string>
+  <string name="View_SignUp">Create Account</string>
   <string name="Now">Now</string>
   <string name="ResetPasswordReset">Reset</string>
   <string name="ResetPasswordInvalidDataMessage">The email is invalid.</string>
