@@ -44,7 +44,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			var registrationId = GCMSharp.Client.GCMRegistrar.GetRegistrationId(_context);
 			
 			
-			bool registered = false;// !string.IsNullOrEmpty(registrationId);
+			bool registered = !string.IsNullOrEmpty(registrationId);
 			const string TAG = "PushSharp-GCM";
 			
 			if (!registered)

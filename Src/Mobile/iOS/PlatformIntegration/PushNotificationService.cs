@@ -36,7 +36,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                     service.Register(newDeviceToken, PushNotificationServicePlatform.Apple);
                 });
             }
-            else if(true /*!oldDeviceToken.Equals(newDeviceToken)*/)
+            else if(!oldDeviceToken.Equals(newDeviceToken))
             {
                 base.UseServiceClient<PushNotificationRegistrationServiceClient>(service => {
                     service.Replace(oldDeviceToken, newDeviceToken, PushNotificationServicePlatform.Apple);
