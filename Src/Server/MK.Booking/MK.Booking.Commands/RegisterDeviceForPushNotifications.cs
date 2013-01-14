@@ -17,6 +17,7 @@ namespace apcurium.MK.Booking.Commands
         public Guid Id { get; private set; }
         public Guid AccountId { get; set; }
         public string DeviceToken { get; set; }
+        public string OldDeviceToken { get; set; }
         public PushNotificationServicePlatform Platform { get; set; }
     }
 }

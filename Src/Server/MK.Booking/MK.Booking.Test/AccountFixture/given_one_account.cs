@@ -118,6 +118,30 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         }
 
         [Test]
+        public void when_replacing_device_sucessfully()
+        {
+            var deviceToken = Guid.NewGuid().ToString();
+            var oldDeviceToken = Guid.NewGuid().ToString();
+            this.sut.When(new RegisterDeviceForPushNotifications
+            {
+                AccountId = _accountId,
+                DeviceToken = deviceToken,
+                OldDeviceToken = oldDeviceToken,
+                Platform = PushNotificationServicePlatform.Android
+            });
+
+            var event1 = sut.ThenHasOne<DeviceUnregisteredForPushNotifications>();
+            var event2 = sut.ThenHasOne<DeviceRegisteredForPushNotifications>();
+
+            Assert.AreEqual(_accountId, event1.SourceId);
+            Assert.AreEqual(oldDeviceToken, event1.DeviceToken);
+            Assert.AreEqual(_accountId, event2.SourceId);
+            Assert.AreEqual(deviceToken, event2.DeviceToken);
+            Assert.AreEqual(PushNotificationServicePlatform.Android, event2.Platform);
+
+        }
+
+        [Test]
         public void when_unregistering_device_sucessfully()
         {
             var deviceToken = Guid.NewGuid().ToString();
