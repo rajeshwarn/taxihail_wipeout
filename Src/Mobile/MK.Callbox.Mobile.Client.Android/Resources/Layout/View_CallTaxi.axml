@@ -12,12 +12,12 @@
         android:layout_gravity="top|left" />
     <apcurium.mk.callbox.mobile.client.controls.StyledButton
         local:ButtonStyle="Black"
-        style="@style/CallboxButtonText"
         local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;CallTaxi&apos;}}"
         android:background="@drawable/newBlackButton"
         android:text="@string/PushTaxi"
         android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
         android:layout_height="90dip"
-        android:layout_gravity="bottom|center_horizontal" />
+        android:layout_gravity="bottom|center_horizontal"
+        style="@style/CallboxButtonText" />
 </FrameLayout>

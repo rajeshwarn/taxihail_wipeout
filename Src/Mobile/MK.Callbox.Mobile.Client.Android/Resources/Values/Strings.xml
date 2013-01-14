@@ -33,4 +33,5 @@
   <string name="InvalidLoginMessageTitle">Invalid information</string>
   <string name="InvalidLoginMessage">The email or/and password is invalid.</string>
   <string name="ServiceErrorCallTitle">Server Error</string>
+  <string name="ServiceErrorDefaultMessage">An error occurred. Please try again.</string>
 </resources>

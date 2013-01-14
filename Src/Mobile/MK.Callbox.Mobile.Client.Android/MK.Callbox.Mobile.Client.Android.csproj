@@ -29,6 +29,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidLinkMode>None</AndroidLinkMode>
+    <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
+    <AndroidLinkSkip />
+    <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -174,14 +177,16 @@
     <AndroidResource Include="Resources\drawable-hdpi\server_button.png" />
     <AndroidResource Include="Resources\drawable-hdpi\sign_in_btn.9.png" />
     <AndroidResource Include="Resources\Drawable\sign_in_btn.9.png" />
-    <AndroidResource Include="Resources\Values\StyledButtonAttributes.xml" />
+    <AndroidResource Include="Resources\Values\StyledButtonAttributes.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <AndroidResource Include="Resources\Values\Color.xml" />
     <AndroidResource Include="Resources\Drawable\background_logo.png" />
     <AndroidResource Include="Resources\Drawable\background_empty.png" />
     <AndroidResource Include="Resources\Drawable\orderListBackground.xml" />
     <AndroidResource Include="Resources\Raw\vehicle.mp3" />
     <AndroidResource Include="Resources\Drawable\red_button.xml" />
-    <AndroidAsset Include="Resources\Drawable\navBar.png" />
+    <AndroidResource Include="Resources\Drawable\navBar.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.Android.csproj">
