@@ -27,19 +27,11 @@ namespace apcurium.MK.Booking.Api.Services
         {
             var account = _dao.FindById(new Guid(this.GetSession().UserAuthId));
             
-            if (!string.IsNullOrEmpty(request.OldDeviceToken))
-            {
-                _commandBus.Send(new UnregisterDeviceForPushNotifications
-                {
-                    AccountId = account.Id,
-                    DeviceToken = request.OldDeviceToken
-                });
-            }
-
             var command = new RegisterDeviceForPushNotifications
             {
                 AccountId = account.Id,
                 DeviceToken = request.DeviceToken,
+                OldDeviceToken = request.OldDeviceToken,
                 Platform = request.Platform
             };
 
