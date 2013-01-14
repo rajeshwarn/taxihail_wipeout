@@ -22,6 +22,7 @@ using System;
 using ServiceStack.Text;
 using apcurium.MK.Common.Provider;
 using apcurium.MK.Booking.Api.Contract.Security;
+using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -30,10 +31,15 @@ namespace apcurium.MK.Booking.Mobile
     {    
       
         public TaxiHailApp()
+            : this(default(IDictionary<string, string>))
+        {
+        }
+
+        public TaxiHailApp(IDictionary<string, string> @params)
         {
             InitalizeServices();
             InitializePushNotifications();
-            InitializeStartNavigation();
+            InitializeStartNavigation(@params);
         }
         
         private void InitalizeServices()
@@ -94,9 +100,9 @@ namespace apcurium.MK.Booking.Mobile
             return sessionId;
         }
         
-        private void InitializeStartNavigation()
+        private void InitializeStartNavigation(IDictionary<string, string> @params)
         {
-            var startApplicationObject = new StartNavigation();
+            var startApplicationObject = new StartNavigation(@params);
             this.RegisterServiceInstance<IMvxStartNavigation>(startApplicationObject);
         }
 
