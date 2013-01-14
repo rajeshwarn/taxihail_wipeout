@@ -108,7 +108,7 @@ namespace apcurium.MK.Booking.IBS.Impl
                         statusInfos.Fare = orderInfoFromIBS.Fare;
                         statusInfos.Tip = orderInfoFromIBS.Tips;
                         statusInfos.Toll = orderInfoFromIBS.Tolls;
-                        statusInfos.Eta = orderInfoFromIBS.ETATime == null ? (DateTime?)null : new DateTime(orderInfoFromIBS.ETATime.Year, 
+                        statusInfos.Eta = orderInfoFromIBS.ETATime == null || orderInfoFromIBS.ETATime.Year < DateTime.Now.Year ? (DateTime?)null : new DateTime(orderInfoFromIBS.ETATime.Year, 
                                                                                                             orderInfoFromIBS.ETATime.Month, orderInfoFromIBS.ETATime.Day,
                                                                                                             orderInfoFromIBS.ETATime.Hour, orderInfoFromIBS.ETATime.Minute,
                                                                                                             orderInfoFromIBS.ETATime.Second);
