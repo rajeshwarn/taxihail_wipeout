@@ -45,7 +45,8 @@ namespace apcurium.MK.Booking.ConfigTool
 					new ConfigXML(this){  Destination=@"Mobile\MK.Callbox.Mobile.Client.Android\MK.Callbox.Mobile.Client.Android.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Debug|AnyCPU'"")]/a:AndroidSigningStorePass" , SetterEle= ( app, ele )=> ele.InnerText = Config.AndroidSigningKeyPassStorePass},               
 					new ConfigXML(this){  Destination=@"Mobile\MK.Callbox.Mobile.Client.Android\MK.Callbox.Mobile.Client.Android.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Release|AnyCPU'"")]/a:AndroidSigningStorePass" , SetterEle= ( app, ele )=> ele.InnerText = Config.AndroidSigningKeyPassStorePass },               
 					
-					new ConfigXML(this){  Destination=@"Mobile\MK.Callbox.Mobile.Client.Android\Resources\Values\String.xml", NodeSelector=@"//resources/string[@name=""ApplicationName""]" , SetterEle= ( app, ele )=> ele.InnerText = Config.AppName + " CallBox" },               
+					new ConfigXML(this){  Destination=@"Mobile\MK.Callbox.Mobile.Client.Android\Resources\Values\Strings.xml", NodeSelector=@"//resources/string[@name=""ApplicationName""]" , SetterEle= ( app, ele )=> ele.InnerText = Config.AppName + " CallBox" },               
+
 
 					/**TaxiHail **/
 	               	new ConfigFile(this){ Source="AppFont_Bold.otf", Destination=@"Mobile\Android\Assets\AppFont_Bold.otf" },    
