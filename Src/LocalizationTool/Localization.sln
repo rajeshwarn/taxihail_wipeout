@@ -1,6 +1,6 @@
-
+﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2012
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Localization", "Localization\Localization.csproj", "{AD8EC0B5-FABF-47DB-9783-145BD922E7E8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "apcurium.Tools.Localization.Tests", "apcurium.Tools.Localization.Tests\apcurium.Tools.Localization.Tests.csproj", "{33211AEA-A9FC-4290-BE5F-2FEEEEB7A950}"
@@ -25,10 +25,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{AD8EC0B5-FABF-47DB-9783-145BD922E7E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AD8EC0B5-FABF-47DB-9783-145BD922E7E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AD8EC0B5-FABF-47DB-9783-145BD922E7E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AD8EC0B5-FABF-47DB-9783-145BD922E7E8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{33211AEA-A9FC-4290-BE5F-2FEEEEB7A950}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{33211AEA-A9FC-4290-BE5F-2FEEEEB7A950}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{33211AEA-A9FC-4290-BE5F-2FEEEEB7A950}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -37,6 +33,15 @@ Global
 		{7E152428-8C0B-4434-807B-CE93B28DF09A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E152428-8C0B-4434-807B-CE93B28DF09A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7E152428-8C0B-4434-807B-CE93B28DF09A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD8EC0B5-FABF-47DB-9783-145BD922E7E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD8EC0B5-FABF-47DB-9783-145BD922E7E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD8EC0B5-FABF-47DB-9783-145BD922E7E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD8EC0B5-FABF-47DB-9783-145BD922E7E8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = apcurium.Tools.Localization.UpdateTool\apcurium.Tools.Localization.UpdateTool.csproj
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

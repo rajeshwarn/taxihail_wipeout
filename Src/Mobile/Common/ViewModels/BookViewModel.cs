@@ -141,9 +141,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
 
 
+                CalculateEstimate ();
+//            }
+//            else
+//            {
+//                _fareEstimate = Resources.GetString("NoFareText");
+//            }
+
             _useExistingOrder = false;
 
-            _fareEstimate = Resources.GetString("NoFareText");
+
 
             CenterMap(true);
 
@@ -366,6 +373,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return new MvxRelayCommand(() =>
                 {
+                    if ( !Settings.TutorialEnabled )
+                    {
+                        return;
+                    }
 
                     Task.Factory.SafeStartNew(() => 
                     {
@@ -575,22 +586,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                
             }
         }
-
-        public IMvxCommand NavigateToOrderStatus
-        {
-            get
-            {
-                return GetCommand<Dictionary<string, object>>(order =>
-                {                   
-                    var orderGet = (Order)order["order"];                  
-                    var orderInfoGet = (OrderStatusDetail)order["orderInfo"];
-                    RequestNavigate<BookingStatusViewModel>(new {
-                        order =  orderGet.ToJson(),
-                        orderStatus = orderInfoGet.ToJson()
-                    });
-                });
-            }
-        }
+		       
 
         private void CompleteOrder(CreateOrder order)
         {   

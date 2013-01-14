@@ -26,10 +26,12 @@ namespace apcurium.MK.Booking.Api.Services
         public override object OnPost(PushNotificationRegistration request)
         {
             var account = _dao.FindById(new Guid(this.GetSession().UserAuthId));
+            
             var command = new RegisterDeviceForPushNotifications
             {
                 AccountId = account.Id,
                 DeviceToken = request.DeviceToken,
+                OldDeviceToken = request.OldDeviceToken,
                 Platform = request.Platform
             };
 

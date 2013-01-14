@@ -1,4 +1,6 @@
-﻿namespace apcurium.MK.Booking.IBS
+﻿using System;
+
+namespace apcurium.MK.Booking.IBS
 {
     /// <summary>
     /// class with all the data about the order when requesting  status of a list of order
@@ -22,5 +24,7 @@
         public string FirstName;
         public string LastName;
         public string MobilePhone;
+
+        public DateTime? Eta { get; set; }
     }
 }

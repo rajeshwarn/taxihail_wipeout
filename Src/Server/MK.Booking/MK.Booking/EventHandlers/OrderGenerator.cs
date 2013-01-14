@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.SqlTypes;
 using Infrastructure.Messaging.Handling;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
@@ -151,6 +152,9 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
+                @event.Status.PickupDate = @event.Status.PickupDate < (DateTime) SqlDateTime.MinValue
+                                               ? (DateTime) SqlDateTime.MinValue
+                                               : @event.Status.PickupDate;
                 var details = context.Find<OrderStatusDetail>(@event.Status.OrderId);
                 if (details == null)
                 {

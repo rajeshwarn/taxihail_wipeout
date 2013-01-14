@@ -23,6 +23,7 @@ using apcurium.MK.Booking.Mobile.Data;
 using Xamarin.Contacts;
 using apcurium.MK.Booking.Mobile.Settings;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -81,6 +82,12 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             UIApplication.CheckForIllegalCrossThreadCalls=true;
 
+            var locService = TinyIoCContainer.Current.Resolve<ILocationService>() as LocationService ;
+            if ( locService != null )
+            {
+                locService.Initialize ();
+            }
+
             ThreadHelper.ExecuteInThread ( () =>        MonoTouch.ObjCRuntime.Runtime.StartWWAN( new Uri ( new AppSettings().ServiceUrl ) ));
 
             Logger.LogMessage("OnActivated");
@@ -96,7 +103,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			JsConfig.RegisterTypeForAot<InstantMessagingService>();
 			JsConfig.RegisterTypeForAot<EmailType>();
 			JsConfig.RegisterTypeForAot<PhoneType>();
-			JsConfig.RegisterTypeForAot<Contact>();
+            JsConfig.RegisterTypeForAot<Contact>();
+			JsConfig.RegisterTypeForAot<PushNotificationServicePlatform>();
 
 
 
@@ -141,7 +149,18 @@ namespace apcurium.MK.Booking.Mobile.Client
             _isStarting = false;
         }
 
+        public override void DidEnterBackground (UIApplication application)
+        {
+            var locService = TinyIoCContainer.Current.Resolve<ILocationService>() as LocationService ;
+            if ( locService != null )
+            {
+                locService.Stop();
+            }
 
+
+            base.DidEnterBackground (application);
+
+        }
         public override void ReceiveMemoryWarning(UIApplication application)
         {
             Logger.LogMessage("ReceiveMemoryWarning");

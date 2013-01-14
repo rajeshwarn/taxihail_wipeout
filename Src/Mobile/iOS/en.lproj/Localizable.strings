@@ -279,7 +279,7 @@
 "View_BookingStatus_ThankYouTitle"="Thank you";
 "CreateAccoutMobileLabel"="Mobile:";
 "NoButton"="No";
-"View_PasswordRecovery_Label"="Reset Your Password";
+"View_PasswordRecovery_Label"="Reset Password";
 "DeleteButton"="Delete";
 "TwitterButton"="Sign In with Twitter";
 "StatusCannotBeDisplayed"="Cannot get status. Please call provider.";

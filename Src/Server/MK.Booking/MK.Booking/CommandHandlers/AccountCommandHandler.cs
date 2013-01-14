@@ -116,6 +116,12 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(RegisterDeviceForPushNotifications command)
         {
             var account = _repository.Find(command.AccountId);
+
+            if (!string.IsNullOrEmpty(command.OldDeviceToken))
+            {
+                account.UnregisterDeviceForPushNotifications(command.OldDeviceToken);
+            }
+
             account.RegisterDeviceForPushNotifications(command.DeviceToken, command.Platform);
             _repository.Save(account, command.Id.ToString());
         }

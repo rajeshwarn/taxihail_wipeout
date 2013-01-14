@@ -12,6 +12,7 @@ using Android.Util;
 using Android.Graphics;
 using Android.Text;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -43,26 +44,28 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         protected override void OnDraw(Android.Graphics.Canvas canvas)
         {
             base.OnDraw(canvas);
-			var textX = ShowPlusSign ? 100 : 8;
+            var textX = ShowPlusSign ? DrawHelper.GetPixels(65) : DrawHelper.GetPixels(8);
 			if( !TextLine1.IsNullOrEmpty() )
 			{
-				DrawText(canvas, TextLine1 ?? "", textX, 27, 20, AppFonts.Bold);
-				DrawText(canvas, TextLine2 ?? "", textX, 49, 18, AppFonts.Regular);
+                DrawText(canvas, TextLine1 ?? "", textX, DrawHelper.GetPixels( 21 ), DrawHelper.GetPixels( 16 ), AppFonts.Bold,new Color( 50,50,50,255 ));
+                DrawText(canvas, TextLine2 ?? "", textX,  DrawHelper.GetPixels( 41 ),  DrawHelper.GetPixels( 15 ), AppFonts.Regular,new Color( 86,86,86,255 ) );
 			}
 			else
 			{
-				DrawText(canvas, TextLine2 ?? "", textX, 40, 18, AppFonts.Regular);
+                DrawText(canvas, TextLine2 ?? "", textX, DrawHelper.GetPixels( 32 ), DrawHelper.GetPixels(16), AppFonts.Regular,new Color( 86,86,86,255 ) );
 			}
 
             if (ShowRightArrow)
             {
-                canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, Resource.Drawable.right_arrow), this.Width-35, 20, null);
+                canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, Resource.Drawable.right_arrow), this.Width-DrawHelper.GetPixels(20), DrawHelper.GetPixels(16), null);
             }
 
 			if (ShowPlusSign)
 			{
-				canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, Resource.Drawable.add_btn), 8, 10, null);
+                canvas.DrawBitmap(BitmapFactory.DecodeResource(Resources, Resource.Drawable.add_btn), DrawHelper.GetPixels(6), DrawHelper.GetPixels(10), null);
 			}
+
+
 
             var d = IsTop && !IsBottom ? Resource.Drawable.cell_top_state : IsBottom && !IsTop ? Resource.Drawable.blank_bottom_state : IsTop && IsBottom ? Resource.Drawable.blank_single_state : Resource.Drawable.cell_middle_state;
 			SetBackgroundDrawable( Resources.GetDrawable( d ) );
@@ -94,15 +97,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         }
 
-        private void DrawText(Android.Graphics.Canvas canvas, string text, float x, float y, float textSize, Typeface typeface)
+        private void DrawText(Android.Graphics.Canvas canvas, string text, float x, float y, float textSize, Typeface typeface, Color color )
         {
             TextPaint paintText = new TextPaint(PaintFlags.AntiAlias | Android.Graphics.PaintFlags.LinearText);
             var rect = new Rect();
             paintText.TextSize = textSize;
             paintText.GetTextBounds(text, 0, text.Length, rect);
-            paintText.SetARGB(255, 49, 49, 49);
+            paintText.SetARGB(color.A, color.R  , color.G , color.B );
 			paintText.SetTypeface(typeface);
-
             var p = new TextPaint();
             p.SetTypeface(typeface);
 

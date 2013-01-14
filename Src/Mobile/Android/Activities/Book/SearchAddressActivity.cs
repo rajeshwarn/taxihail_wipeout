@@ -45,11 +45,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			var _listView = FindViewById<MvxBindableListView>(Resource.Id.SearchAddressListView);
 			_listView.Divider = null;
 			_listView.DividerHeight = 0;
-			
+            _listView.SetScrollContainer( false );
+
 			var _historicListView = FindViewById<MvxBindableListView>(Resource.Id.HistoricListView);
 			_historicListView.Divider = null;
 			_historicListView.DividerHeight = 0;
-
+            _historicListView.SetScrollContainer( false );
             var searchAddressText = FindViewById<AutoCompleteBindableTextView>(Resource.Id.SearchAddressText);
 
             var frame = FindViewById<FrameLayout>(Resource.Id.eraseTextFrame);

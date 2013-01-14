@@ -23,6 +23,8 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using ServiceStack.Text;
 using System.Collections.Generic;
 using TinyMessenger;
+using apcurium.MK.Booking.Mobile.Client.Controls;
+using apcurium.MK.Booking.Mobile.Style;
 
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
@@ -94,10 +96,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                 FindViewById<Button>(Resource.Id.TwitterButton).Visibility = ViewStates.Invisible;
             }           
 
+            var linkResetPassword = FindViewById<UnderlineTextView>( Resource.Id.ForgotPasswordButton );
+
+            linkResetPassword.SetTextColor( StyleManager.Current.NavigationTitleColor.ConvertToColor() );
+
 #if DEBUG
             FindViewById<EditText>(Resource.Id.Username).Text = "john@taxihail.com";
             FindViewById<EditText>(Resource.Id.Password).Text = "password";            
 #endif 
+
         }
 
         private void HideProgressDialog()

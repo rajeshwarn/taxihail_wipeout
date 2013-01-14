@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     {
                         AccountId = @event.SourceId,
                         DeviceToken = @event.DeviceToken,
-                        Platform = (int) @event.Platform
+                        Platform = @event.Platform
                     };
 
                     context.Save(device);

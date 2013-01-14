@@ -9,6 +9,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
     public class PushNotificationRegistration
     {
         public string DeviceToken { get; set; }
+        public string OldDeviceToken { get; set; }
         public PushNotificationServicePlatform Platform { get; set; }
     }
 }

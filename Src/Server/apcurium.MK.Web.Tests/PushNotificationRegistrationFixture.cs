@@ -2,6 +2,7 @@
 using System;
 using NUnit.Framework;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Web.Tests
 {
@@ -28,7 +29,7 @@ namespace apcurium.MK.Web.Tests
             base.Setup();
             CreateAndAuthenticateTestAdminAccount();
             var sut = new PushNotificationRegistrationServiceClient(BaseUrl, SessionId);
-            sut.Register(_knownDeviceToken);
+            sut.Register(_knownDeviceToken, PushNotificationServicePlatform.Android);
         }
 
         [Test]
@@ -37,7 +38,7 @@ namespace apcurium.MK.Web.Tests
             var sut = new PushNotificationRegistrationServiceClient(BaseUrl, SessionId);
             var deviceToken = Guid.NewGuid().ToString();
 
-            sut.Register(deviceToken);
+            sut.Register(deviceToken, PushNotificationServicePlatform.Android);
 
             Assert.Inconclusive("Need API to check that device was successfully registered");
         }

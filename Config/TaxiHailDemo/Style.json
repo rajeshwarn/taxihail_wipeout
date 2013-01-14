@@ -2,6 +2,7 @@
   "LightCorporateTextColor" : { "Red": "188", "Green": "217", "Blue": "242", "Alpha": "255",  "Location": "1"  },
   "NavigationTitleColor" : { "Red": "255", "Green": "255", "Blue": "255", "Alpha": "255",   "Location": "1"  },
   "NavigationBarColor" : { "Red": "0", "Green": "78", "Blue": "145", "Alpha": "255", "Location": "1"  },
+  "ButtonFontSize" : "18",
   "Buttons": [
     {
       "Key": "CorporateColor",

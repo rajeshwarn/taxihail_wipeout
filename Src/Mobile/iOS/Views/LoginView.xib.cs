@@ -117,7 +117,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
             btnServer.Hidden = !settings.CanChangeServiceUrl;
 
-
+            linkForgotPassword.TextColor = AppStyle.NavigationTitleColor;
+            
+            
             this.AddBindings (new Dictionary<object, string> () {
                 { btnSignIn, "{'TouchUpInside':{'Path':'SignInCommand'}}"}, 
                 { linkForgotPassword, "{'TouchUpInside':{'Path':'ResetPassword'}}"}, 

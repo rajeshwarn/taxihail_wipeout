@@ -7,6 +7,19 @@ using Android.App;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using System.Text;
+using apcurium.MK.Common.Enumeration;
+using System.Dynamic.Utils;
+using System.Linq;
+using apcurium.MK.Booking.Mobile.Client.Activities.Book;
+using Cirrious.MvvmCross.Views;
+using apcurium.MK.Booking.Mobile.ViewModels;
+using Cirrious.MvvmCross.Interfaces.ViewModels;
+using ServiceStack.Text;
+using Newtonsoft.Json;
+using Cirrious.MvvmCross.Interfaces.ServiceProvider;
+using apcurium.MK.Booking.Mobile.AppServices;
+using Cirrious.MvvmCross.ExtensionMethods;
+using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -29,7 +42,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			var registrationId = GCMSharp.Client.GCMRegistrar.GetRegistrationId(_context);
 			
 			
-			bool registered = !string.IsNullOrEmpty(registrationId);
+			bool registered = false;// !string.IsNullOrEmpty(registrationId);
 			const string TAG = "PushSharp-GCM";
 			
 			if (!registered)
@@ -51,13 +64,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 	}
 
 	//You must subclass this!
-	[BroadcastReceiver(Permission=GCMConstants.PERMISSION_GCM_INTENTS)]
-	[IntentFilter(new string[] { GCMConstants.INTENT_FROM_GCM_MESSAGE },
-	Categories = new string[] { "com.apcurium.MK.TaxiHailDemo" })]
-	[IntentFilter(new string[] { GCMConstants.INTENT_FROM_GCM_REGISTRATION_CALLBACK },
-	Categories = new string[] { "com.apcurium.MK.TaxiHailDemo" })]
-	[IntentFilter(new string[] { GCMConstants.INTENT_FROM_GCM_LIBRARY_RETRY },
-	Categories = new string[] { "com.apcurium.MK.TaxiHailDemo" })]
 	public class SampleBroadcastReceiver : GCMBroadcastReceiver<GCMIntentService>
 	{
 		//IMPORTANT: Change this to your own Sender ID!
@@ -71,7 +77,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 	}
 	
 	[Service] //Must use the service tag
-	public class GCMIntentService : GCMBaseIntentService, IUseServiceClient
+	public class GCMIntentService : GCMBaseIntentService,
+		IUseServiceClient
 	{
 		public GCMIntentService() : base(SampleBroadcastReceiver.SENDER_ID) {}
 		
@@ -81,10 +88,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			//Send back to the server
 			this.UseServiceClient<PushNotificationRegistrationServiceClient>(service =>
 			                                                                 {
-				service.Register(registrationId);
+				service.Register(registrationId, PushNotificationServicePlatform.Android);
 			});
-			
-			//createNotification("PushSharp-GCM Registered...", "The device has been Registered, Tap to View!");
+
 		}
 		
 		protected override void OnUnRegistered (Context context, string registrationId)
@@ -94,8 +100,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			                                                                 {
 				service.Unregister(registrationId);
 			});
-			
-			//createNotification("PushSharp-GCM Unregistered...", "The device has been unregistered, Tap to View!");
+
 		}
 		
 		protected override void OnMessage (Context context, Intent intent)
@@ -115,8 +120,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 			var edit = prefs.Edit();
 			edit.PutString("last_msg", msg.ToString());
 			edit.Commit();
-			
-			createNotification("PushSharp-GCM Msg Rec'd", "Message Received for C2DM-Sharp... Tap to View!");
+
+			var alert = intent.Extras.KeySet().Where(key => key == "alert").Select(key => intent.Extras.Get(key).ToString()).FirstOrDefault() ?? string.Empty;
+			var orderId = intent.Extras.KeySet ().Where(key => key == "orderId").Select(key => Guid.Parse(intent.Extras.Get (key).ToString())).FirstOrDefault();
+
+			createNotification(alert, "Tap to view...", orderId);
 		}
 		
 		protected override bool OnRecoverableError (Context context, string errorId)
@@ -131,30 +139,42 @@ namespace apcurium.MK.Booking.Mobile.Client
 			Log.Error(SampleBroadcastReceiver.TAG, "GCM Error: " + errorId);
 		}
 		
-		void createNotification(string title, string desc)
+		void createNotification (string title, string desc, Guid orderId)
 		{
 			//Create notification
-			var notificationManager = GetSystemService(Context.NotificationService) as NotificationManager;
-			
+			var notificationManager = GetSystemService (Context.NotificationService) as NotificationManager;
+
 			//Create an intent to show ui
-			var uiIntent = new Intent(this, typeof(AlertDialogActivity));
+			var uiIntent = new Intent (this, typeof(NotificationActivity));
+			var launchData = JsonConvert.SerializeObject (new MvxShowViewModelRequest (
+				typeof(NotificationViewModel),
+				new Dictionary<string, string>
+				{
+					{ "orderId", orderId.ToString() },
+				},
+				true,
+				MvxRequestedBy.UserAction));
+			
+			uiIntent.PutExtra ("MvxLaunchData", launchData);
+
 			
 			//Create the notification
-			var notification = new Notification(Android.Resource.Drawable.SymActionEmail, title);
-			
+			var notification = new Notification (Android.Resource.Drawable.SymActionEmail, title);
+
 			//Auto cancel will remove the notification once the user touches it
 			notification.Flags = NotificationFlags.AutoCancel;
-			
+		
 			//Set the notification info
 			//we use the pending intent, passing our ui intent over which will get called
 			//when the notification is tapped.
-			notification.SetLatestEventInfo(this,
-			                                title,
-			                                desc,
-			                                PendingIntent.GetActivity(this, 0, uiIntent, 0));
-			
+			notification.SetLatestEventInfo (this,
+		                                title,
+		                                desc,
+		                                PendingIntent.GetActivity (this, 0, uiIntent, 0));
+		
 			//Show the notification
-			notificationManager.Notify(1, notification);
+			notificationManager.Notify (1, notification);
+
 		}
 	}
 }

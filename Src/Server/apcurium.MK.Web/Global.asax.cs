@@ -39,45 +39,27 @@ namespace apcurium.MK.Web
 
                 ServiceStack.Text.JsConfig.Reset();
                 ServiceStack.Text.JsConfig.EmitCamelCaseNames = true;
-                ServiceStack.Text.JsConfig.DateHandler = JsonDateHandler.ISO8601;                                
-                //ServiceStack.Text.JsConfig<CreateOrder>.RawDeserializeFn = DeSerializeOrder;
-                ServiceStack.Text.JsConfig<DateTime>.RawDeserializeFn = DateTimeRawDesirializtion;
-                ServiceStack.Text.JsConfig<DateTime?>.RawDeserializeFn = DateTimeRawDesirializtion2;
+                ServiceStack.Text.JsConfig.DateHandler = JsonDateHandler.ISO8601;
+                ServiceStack.Text.JsConfig<DateTime?>.RawDeserializeFn = NullableDateTimeRawDesirializtion;
 
             }
 
-            private DateTime DateTimeRawDesirializtion(string s)
-            {
-                return DateTimeSerializer.ParseShortestXsdDateTime(s);
-                
-            }
-            private DateTime? DateTimeRawDesirializtion2(string s)
+            private DateTime? NullableDateTimeRawDesirializtion(string s)
             {
                 try
                 {
+                    if (s.IndexOf(".") > 0)
+                    {
+                        s = s.Substring(0, s.IndexOf("."));
+                    }
                     return DateTimeSerializer.ParseShortestXsdDateTime(s);
                 }
                 catch (Exception)
                 {
-                    return null;                    
+                    return null;
                 }
                 throw new NotImplementedException();
 
-            }
-
-            private CreateOrder DeSerializeOrder(string s)
-            {
-                try
-                {
-                    return new CreateOrder();
-                }
-                catch (Exception)
-                {
-                    return null;
-                    throw;
-                }
-                
-                
             }
 
             public override void Configure(Container containerFunq)

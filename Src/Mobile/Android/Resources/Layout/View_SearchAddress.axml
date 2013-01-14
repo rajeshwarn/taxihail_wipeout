@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:local="http://schemas.android.com/apk/res/com.apcurium.MK.TaxiHailDemo"
-    android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:background="@drawable/background">
     <LinearLayout
+        android:id="@+id/topBtn"
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -59,6 +61,8 @@
     </LinearLayout>
     <FrameLayout
         android:layout_width="fill_parent"
+        android:layout_below="@id/topBtn"
+        android:id="@+id/searchSection"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dip"
         android:layout_marginBottom="5dip"
@@ -86,26 +90,27 @@
                     android:paddingLeft="35dp"
                     local:MvxBind="{&apos;TextChangedCommand&apos;:{&apos;Path&apos;:&apos;SearchCommand&apos;}, &apos;Text&apos;:{&apos;Path&apos;:&apos;Criteria&apos;}, &apos;OnTypeStarted&apos;:{&apos;Path&apos;:&apos;CancelCurrentSearch&apos;}, &apos;IsAddressSearching&apos;:{&apos;Path&apos;:&apos;IsSearching&apos;}}"
                     android:paddingRight="30dip" />
-              <FrameLayout android:layout_width="wrap_content"
-                            android:id="@+id/eraseTextFrame"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical|right"
-                            android:layout_alignParentRight="true"
-                            android:paddingLeft="10dip"
-                            android:paddingTop="10dip"
-                            android:paddingBottom="10dip"
-                            android:paddingRight="10dip">
-                <Button
-                    android:id="@+id/eraseTextButton"
-                    android:background="@drawable/erase_cross_btn"
-                    android:layout_height="20dp"
-                    android:layout_width="20dp"
-                    android:gravity="center"
-                    android:layout_marginRight="0dip"
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:id="@+id/eraseTextFrame"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical|right"
                     android:layout_alignParentRight="true"
-                    android:visibility="gone" />
-              </FrameLayout>
+                    android:paddingLeft="10dip"
+                    android:paddingTop="10dip"
+                    android:paddingBottom="10dip"
+                    android:paddingRight="10dip">
+                    <Button
+                        android:id="@+id/eraseTextButton"
+                        android:background="@drawable/erase_cross_btn"
+                        android:layout_height="20dp"
+                        android:layout_width="20dp"
+                        android:gravity="center"
+                        android:layout_marginRight="0dip"
+                        android:layout_gravity="center_vertical|right"
+                        android:layout_alignParentRight="true"
+                        android:visibility="gone" />
+                </FrameLayout>
             </FrameLayout>
         </LinearLayout>
         <apcurium.mk.booking.mobile.client.controls.SpinningSearch
@@ -117,34 +122,47 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="0dp" />
     </FrameLayout>
-    <cirrious.mvvmCross.binding.android.views.MvxBindableListView
+    <ScrollView
+        android:layout_below="@id/searchSection"
+        android:id="@+id/listSection"
+        android:fillViewport="true"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/SearchAddressListView"
-        android:layout_marginBottom="5dip"
-        local:MvxItemTemplate="@layout/simplelistitem"
-        local:MvxBind="{&apos;ItemsSource&apos;:{&apos;Path&apos;:&apos;AddressViewModels&apos;},&apos;ItemClick&apos;:{&apos;Path&apos;:&apos;RowSelectedCommand&apos;}}"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp" />
-    <TextView
-        android:id="@+id/HistoricListViewTitle"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="9dip"
-        android:paddingBottom="2dip"
-        android:paddingLeft="5dip"
-        style="@style/HeaderGroupTitle"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        local:MvxBind="{&apos;Visibility&apos;:{&apos;Path&apos;:&apos;HistoricIsHidden&apos;,&apos;Converter&apos;:&apos;InvertedVisibility&apos;}}"
-        android:visibility="gone" />
-    <cirrious.mvvmCross.binding.android.views.MvxBindableListView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/HistoricListView"
-        android:layout_marginBottom="5dip"
-        local:MvxItemTemplate="@layout/simplelistitem"
-        local:MvxBind="{&apos;ItemsSource&apos;:{&apos;Path&apos;:&apos;HistoricAddressViewModels&apos;}, &apos;Visibility&apos;:{&apos;Path&apos;:&apos;HistoricIsHidden&apos;,&apos;Converter&apos;:&apos;InvertedVisibility&apos;}, &apos;ItemClick&apos;:{&apos;Path&apos;:&apos;RowSelectedCommand&apos;}}"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp" />
-</LinearLayout>
+        android:layout_height="fill_parent">
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+            <cirrious.mvvmCross.binding.android.views.MvxBindableListView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/SearchAddressListView"
+                android:layout_marginBottom="5dip"
+                local:MvxItemTemplate="@layout/simplelistitem"
+                local:MvxBind="{&apos;ItemsSource&apos;:{&apos;Path&apos;:&apos;AddressViewModels&apos;},&apos;ItemClick&apos;:{&apos;Path&apos;:&apos;RowSelectedCommand&apos;}}"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp" />
+            <TextView
+                android:id="@+id/HistoricListViewTitle"
+                android:layout_width="fill_parent"
+                android:layout_below="@id/SearchAddressListView"
+                android:layout_height="wrap_content"
+                android:paddingTop="9dip"
+                android:paddingBottom="2dip"
+                android:paddingLeft="5dip"
+                style="@style/HeaderGroupTitle"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                local:MvxBind="{&apos;Visibility&apos;:{&apos;Path&apos;:&apos;HistoricIsHidden&apos;,&apos;Converter&apos;:&apos;InvertedVisibility&apos;}}"
+                android:visibility="gone" />
+            <cirrious.mvvmCross.binding.android.views.MvxBindableListView
+                android:layout_width="fill_parent"
+                android:layout_below="@id/HistoricListViewTitle"
+                android:layout_height="wrap_content"
+                android:id="@+id/HistoricListView"
+                android:layout_marginBottom="5dip"
+                local:MvxItemTemplate="@layout/simplelistitem"
+                local:MvxBind="{&apos;ItemsSource&apos;:{&apos;Path&apos;:&apos;HistoricAddressViewModels&apos;}, &apos;Visibility&apos;:{&apos;Path&apos;:&apos;HistoricIsHidden&apos;,&apos;Converter&apos;:&apos;InvertedVisibility&apos;}, &apos;ItemClick&apos;:{&apos;Path&apos;:&apos;RowSelectedCommand&apos;}}"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp" />
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>
