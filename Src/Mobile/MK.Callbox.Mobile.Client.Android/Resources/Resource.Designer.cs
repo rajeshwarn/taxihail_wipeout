@@ -169,12 +169,6 @@ namespace apcurium.MK.Callbox.Mobile.Client
 			// aapt resource value: 0x7f020016
 			public const int social_media_login_btn_state = 2130837526;
 			
-			// aapt resource value: 0x7f020017
-			public const int splash = 2130837527;
-			
-			// aapt resource value: 0x7f020018
-			public const int splash_resizable = 2130837528;
-			
 			private Drawable()
 			{
 			}
