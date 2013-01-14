@@ -106,7 +106,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         
         protected override MvxApplication CreateApp()
         {
-            var app = new TaxiHailApp();
+            var app = new TaxiHailApp(_params);
             return app;
         }
 
@@ -121,5 +121,11 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             get { return new[] { typeof(AppConverters) }; }
         }
+
+		private IDictionary<string, string> _params;
+		public void SetParams (IDictionary<string, string> @params)
+		{
+			this._params = @params;
+		}
     }
 }

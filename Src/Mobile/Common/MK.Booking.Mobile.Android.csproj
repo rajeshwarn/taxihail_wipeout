@@ -245,7 +245,6 @@
     <Compile Include="AppServices\IUseServiceClient.cs" />
     <Compile Include="Extensions\IUseServiceClientExtensions.cs" />
     <Compile Include="Infrastructure\IPushNotificationService.cs" />
-    <Compile Include="ViewModels\NotificationViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">

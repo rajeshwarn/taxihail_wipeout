@@ -20,6 +20,8 @@ using Cirrious.MvvmCross.Interfaces.ServiceProvider;
 using apcurium.MK.Booking.Mobile.AppServices;
 using Cirrious.MvvmCross.ExtensionMethods;
 using System.Collections.Generic;
+using apcurium.MK.Booking.Mobile.Client.Activities;
+using Cirrious.MvvmCross.ViewModels;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -145,17 +147,15 @@ namespace apcurium.MK.Booking.Mobile.Client
 			var notificationManager = GetSystemService (Context.NotificationService) as NotificationManager;
 
 			//Create an intent to show ui
-			var uiIntent = new Intent (this, typeof(NotificationActivity));
+			var uiIntent = new Intent (this, typeof(SplashActivity));
 			var launchData = JsonConvert.SerializeObject (new MvxShowViewModelRequest (
-				typeof(NotificationViewModel),
-				new Dictionary<string, string>
-				{
-					{ "orderId", orderId.ToString() },
-				},
+				typeof(MvxNullViewModel),
+				new Dictionary<string, string>(),
 				true,
 				MvxRequestedBy.UserAction));
 			
 			uiIntent.PutExtra ("MvxLaunchData", launchData);
+			uiIntent.PutExtra ("orderId", orderId.ToString());
 
 			
 			//Create the notification
