@@ -115,7 +115,8 @@ namespace MK.DeploymentService.Mobile
 					File.Copy(apkFile, targetDir);
 				}else
 				{
-					throw new Exception("Can't find the Callbox APK file in the release dir");
+					//throw new Exception("Can't find the Callbox APK file in the release dir");
+					logger.Debug("Warning Can't find the Callbox APK file in the release dir");
 				}
                 
 			}
@@ -297,11 +298,18 @@ namespace MK.DeploymentService.Mobile
 				BuildProject(buildClient);
 
 				//CallBox
-				buildClient = string.Format("build \"--project:{0}\" \"--configuration:{1}\" \"--target:SignAndroidPackage\"  \"{2}/MK.Booking.Mobile.Solution.Android.sln\"",
-				                                	"MK.Callbox.Mobile.Client.Android",
-					                                configAndroid,
-					                                sourceMobileFolder);
-				BuildProject(buildClient);
+				if(Directory.Exists(Path.Combine(sourceMobileFolder, "MK.Callbox.Mobile.Client.Android")))
+				{
+					buildClient = string.Format("build \"--project:{0}\" \"--configuration:{1}\" \"--target:SignAndroidPackage\"  \"{2}/MK.Booking.Mobile.Solution.Android.sln\"",
+					                            "MK.Callbox.Mobile.Client.Android",
+					                            configAndroid,
+					                            sourceMobileFolder);
+					BuildProject(buildClient);
+
+				}else{
+					logger.Debug("Warning no CallBox project found");
+				}
+
 				
 				logger.Debug("Build Android done");
 			}
