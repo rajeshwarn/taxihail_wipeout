@@ -101,15 +101,23 @@ namespace apcurium.MK.Booking.Api.Services
                             desc = string.Format(_configManager.GetSetting("OrderStatus.CabDriverNumberAssigned"), orderDetails.VehicleNumber);
                             if (!string.IsNullOrEmpty(orderDetails.CallNumber))
                             {
-                               var driverInfos = _bookingWebServiceClient.GetDriverInfos(orderDetails.CallNumber);
-                               status.DriverInfos.FirstName = driverInfos.FirstName;
-                               status.DriverInfos.LastName = driverInfos.LastName;
-                               status.DriverInfos.MobilePhone = driverInfos.MobilePhone;
-                               status.DriverInfos.VehicleColor = driverInfos.VehicleColor;
-                               status.DriverInfos.VehicleMake = driverInfos.VehicleMake;
-                               status.DriverInfos.VehicleModel = driverInfos.VehicleModel;
-                               status.DriverInfos.VehicleRegistration = driverInfos.VehicleRegistration;
-                               status.DriverInfos.VehicleType = driverInfos.VehicleType;
+                                status.DriverInfos = new DriverInfos();
+                                try
+                                {
+                                    var driverInfos = _bookingWebServiceClient.GetDriverInfos(orderDetails.CallNumber);
+                                    status.DriverInfos.FirstName = driverInfos.FirstName;
+                                    status.DriverInfos.LastName = driverInfos.LastName;
+                                    status.DriverInfos.MobilePhone = driverInfos.MobilePhone;
+                                    status.DriverInfos.VehicleColor = driverInfos.VehicleColor;
+                                    status.DriverInfos.VehicleMake = driverInfos.VehicleMake;
+                                    status.DriverInfos.VehicleModel = driverInfos.VehicleModel;
+                                    status.DriverInfos.VehicleRegistration = driverInfos.VehicleRegistration;
+                                    status.DriverInfos.VehicleType = driverInfos.VehicleType;
+                                }
+                                catch
+                                {                                
+                                }
+
                             }
                         }
                         else
