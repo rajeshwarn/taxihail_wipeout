@@ -73,13 +73,16 @@ namespace apcurium.MK.Booking.Api.Jobs
                         orderStatusDetail.VehicleNumber = ibsStatus.VehicleNumber;
                         orderStatusDetail.VehicleLatitude = ibsStatus.VehicleLatitude;
                         orderStatusDetail.VehicleLongitude = ibsStatus.VehicleLongitude;
+                        orderStatusDetail.Eta = ibsStatus.Eta;
 
                         if (ibsStatus.Status.SoftEqual(AssignedStatus))
                         {
                             description = string.Format(_configManager.GetSetting("OrderStatus.CabDriverNumberAssigned"), ibsStatus.VehicleNumber);
 
-                            //if(ibsStatus.)//condition sur eta
-                            //description += " " + string.Format(_configManager.GetSetting("OrderStatus.CabDriverETA"), )
+                            if (ibsStatus.Eta.HasValue)
+                            {
+                                description += " - " + string.Format(_configManager.GetSetting("OrderStatus.CabDriverETA"), ibsStatus.Eta.Value.ToString("t"));
+                            }
                         }
 
                         if (ibsStatus.Status.SoftEqual(DoneStatus))
