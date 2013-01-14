@@ -105,6 +105,7 @@ namespace apcurium.MK.Booking.Api.Services
                                 try
                                 {
                                     var driverInfos = _bookingWebServiceClient.GetDriverInfos(orderDetails.CallNumber);
+                                    status.DriverInfos = new DriverInfos();
                                     status.DriverInfos.FirstName = driverInfos.FirstName;
                                     status.DriverInfos.LastName = driverInfos.LastName;
                                     status.DriverInfos.MobilePhone = driverInfos.MobilePhone;
