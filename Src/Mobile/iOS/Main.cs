@@ -47,23 +47,31 @@ namespace apcurium.MK.Booking.Mobile.Client
     {
         private bool _callbackFromFB = false;
         private bool _isStarting = false;
-        public override bool FinishedLaunching(UIApplication app, NSDictionary options)
+        public override bool FinishedLaunching (UIApplication app, NSDictionary options)
         {
             _isStarting = true;
-            ThreadHelper.ExecuteInThread ( () =>        MonoTouch.ObjCRuntime.Runtime.StartWWAN( new Uri ( new AppSettings().ServiceUrl ) ));
+            ThreadHelper.ExecuteInThread (() => MonoTouch.ObjCRuntime.Runtime.StartWWAN (new Uri (new AppSettings ().ServiceUrl)));
 
-            Background.Load(window, "Assets/background_full_nologo.png", false, 0, 0);          
+            Background.Load (window, "Assets/background_full_nologo.png", false, 0, 0);          
 
-			AppContext.Initialize(window);
-            
-			var setup = new Setup(this, new PhonePresenter( this, window ) );
+            AppContext.Initialize (window);
+            var @params = new Dictionary<string, string> ();
+            if (options != null && options.ContainsKey (new NSString ("UIApplicationLaunchOptionsRemoteNotificationKey"))) {
+                NSDictionary remoteNotificationParams = options.ObjectForKey(new NSString("UIApplicationLaunchOptionsRemoteNotificationKey")) as NSDictionary;
+                if(remoteNotificationParams.ContainsKey(new NSString("orderId")))
+                {
+                    @params["orderId"] = remoteNotificationParams.ObjectForKey(new NSString ("orderId")).ToString();
+                }
+            }
+			var setup = new Setup(this, new PhonePresenter( this, window ), @params );
             setup.Initialize();
 
 
             window.MakeKeyAndVisible();
 
+
 			var start = this.GetService<IMvxStartNavigation>();
-			start.Start();     
+			start.Start();
             
             ThreadHelper.ExecuteInThread(() => TinyIoCContainer.Current.Resolve<IAccountService>().EnsureListLoaded());
 
@@ -199,6 +207,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             Console.WriteLine("Received Remote Notification!");
         }
+
 
 
     }
