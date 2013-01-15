@@ -136,7 +136,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 };
             }
         }
-		public IEnumerable<NullableListItem<int>> Data {
+		public IEnumerable<ListItem> Data {
 			set {
 				if(value != null)
 				{

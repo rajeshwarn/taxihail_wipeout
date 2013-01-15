@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 			set;
 		}
 		
-		public int? Key {
+		public int Key {
 			get;
 			set;
 		}
