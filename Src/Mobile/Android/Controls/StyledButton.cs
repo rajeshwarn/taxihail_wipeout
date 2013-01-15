@@ -11,7 +11,7 @@ using Android.Graphics.Drawables;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
-    public class StyledButton : Button
+    public sealed class StyledButton : Button
     {
         [Register(".ctor", "(Landroid/content/Context;)V", "")]
         public StyledButton(Context context)

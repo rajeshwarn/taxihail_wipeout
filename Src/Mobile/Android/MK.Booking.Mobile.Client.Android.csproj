@@ -227,7 +227,9 @@
     <AndroidResource Include="Resources\Drawable\closeButton.png" />
     <Compile Include="Controls\UnderlineTextView.cs" />
     <Compile Include="Controls\StyledButton.cs" />
-    <AndroidResource Include="Resources\Values\StyledButtonAttributes.xml" />
+    <AndroidResource Include="Resources\Values\StyledButtonAttributes.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <AndroidResource Include="Resources\Drawable\button_no_background.xml" />
     <AndroidResource Include="Resources\drawable-hdpi\closeButton.png" />
     <Compile Include="Controls\SearchButton.cs" />
