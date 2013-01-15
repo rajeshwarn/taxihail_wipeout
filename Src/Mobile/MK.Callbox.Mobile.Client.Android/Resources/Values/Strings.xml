@@ -12,9 +12,11 @@
   <string name="Language">English</string>
   <string name="CarAssigned">Your taxi #{0}</string>
   <string name="Callbox.passengerName">Order created using callbox for passenger: {0}</string>
+  <string name="Callbox.noPassengerName">Order created using callbox.</string>
   <string name="PushTaxi">Push for a taxi</string>
   <string name="OrderAnotherTaxi">Order Another Taxi</string>
   <string name="ErrorCreatingOrderTitle">Booking cannot be completed</string>
+  <string name="ErrorRefreshingOrderTitle">Orders cannot be refreshed</string>
   <string name="BookTaxiTitle">Book taxi</string>
   <string name="BookTaxiPassengerName">Enter passenger name (optional)</string>
   <string name="Ok">Ok</string>
@@ -26,6 +28,7 @@
   <string name="CancelOrderMessage">Do you want to cancel this order?</string>
   <string name="NoPickupAddress">There is no pickup address</string>
   <string name="ServiceError_ErrorCreatingOrderMessage">Please contact {0} at {1} for further assistance.</string>
+  <string name="ServiceError_ErrorRefreshingOrderMessage">Please contact {0} at {1} for further assistance.</string>
   <string name="ErrorCreatingOrderTitle">Booking cannot be completed</string>
   <string name="TimeFareWasPlaced">Time fare was placed</string>
   <string name="OrderNo">Order No.</string>

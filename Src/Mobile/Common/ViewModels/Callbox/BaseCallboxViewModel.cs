@@ -46,6 +46,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
             {
                 return this.GetCommand(() => this.MessageService.ShowMessage(this.Resources.GetString("LogoutTitle"), this.Resources.GetString("LogoutMessage"), this.Resources.GetString("Yes"), () =>
                                                                                                                             {
+                                                                                                                                Close();
                                                                                                                                 AccountService.SignOut();
                                                                                                                                 RequestNavigate<CallboxLoginViewModel>(true);
                                                                                                                             }, this.Resources.GetString("No"), () => { }));

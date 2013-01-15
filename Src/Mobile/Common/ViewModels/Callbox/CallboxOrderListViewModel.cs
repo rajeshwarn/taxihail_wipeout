@@ -4,11 +4,13 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Linq;
 using Cirrious.MvvmCross.Interfaces.Commands;
+using ServiceStack.ServiceClient.Web;
 using TinyIoC;
 using TinyMessenger;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Messages;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
@@ -53,32 +55,66 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 
         private void RefreshOrderStatus()
         {
-            var orderStatus = AccountService.GetActiveOrdersStatus().ToList().OrderByDescending(o=>o.IBSOrderId);
-            InvokeOnMainThread(() =>
-                                   {
-                                       Orders.Clear();
-                                       Orders.AddRange(orderStatus.Where(status => BookingService.IsCallboxStatusActive(status.IBSStatusId)).Select(status => new CallboxOrderViewModel()
-                                       {
-                                           OrderStatus = status,
-                                           CreatedDate = status.PickupDate,
-                                           IbsOrderId = status.IBSOrderId,
-                                           Id = status.OrderId
-                                       }));
-                                       if (!Orders.Any())
-                                       {
-                                           RequestNavigate<CallboxCallTaxiViewModel>();
-                                           this.Close();
-                                       }
-                                   });
-            
-            foreach (var order in Orders)
+            try
             {
-                if (BookingService.IsCallboxStatusCompleted(order.OrderStatus.IBSStatusId) && !OrderNotified.Any(c=>c.Value.Equals(order.IbsOrderId)))
+                var orderStatus = AccountService.GetActiveOrdersStatus().ToList().OrderByDescending(o => o.IBSOrderId);
+                InvokeOnMainThread(() =>
                 {
-                    OrderNotified.Add(order.IbsOrderId);
-                    OrderCompleted(this, null);
+                    Orders.Clear();
+                    Orders.AddRange(orderStatus.Where(status => BookingService.IsCallboxStatusActive(status.IBSStatusId)).Select(status => new CallboxOrderViewModel()
+                    {
+                        OrderStatus = status,
+                        CreatedDate = status.PickupDate,
+                        IbsOrderId = status.IBSOrderId,
+                        Id = status.OrderId
+                    }));
+                    if (!Orders.Any())
+                    {
+                        RequestNavigate<CallboxCallTaxiViewModel>();
+                        this.Close();
+                    }
+                });
+
+                foreach (var order in Orders)
+                {
+                    if (BookingService.IsCallboxStatusCompleted(order.OrderStatus.IBSStatusId) && !OrderNotified.Any(c => c.Value.Equals(order.IbsOrderId)))
+                    {
+                        OrderNotified.Add(order.IbsOrderId);
+                        OrderCompleted(this, null);
+                    }
                 }
             }
+            catch (WebServiceException e)
+            {
+                InvokeOnMainThread(() =>
+                                       {
+                                           var settings =
+                                               TinyIoCContainer.Current
+                                                               .Resolve
+                                                   <IAppSettings>();
+                                           string err =
+                                               string.Format(
+                                                   Resources.GetString(
+                                                       "ServiceError_ErrorRefreshingOrderMessage"),
+                                                   settings.ApplicationName,
+                                                   settings.PhoneNumberDisplay
+                                                       (
+                                                           Order.Settings
+                                                                .ProviderId
+                                                                .HasValue
+                                                               ? Order
+                                                                     .Settings
+                                                                     .ProviderId
+                                                                     .Value
+                                                               : 1));
+                                           MessageService.ShowMessage(
+                                               Resources.GetString(
+                                                   "ErrorRefreshingOrderTitle"),
+                                               err);
+                                       });
+            }
+             
+           
         }
 
         protected override void Close()
@@ -137,9 +173,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
                                                   {
                                                       Order.PickupAddress = pickupAddress;
                                                       Order.PickupDate = DateTime.Now;
-                                                      Order.Note =
+                                                      if (!string.IsNullOrEmpty(passengerName))
+                                                      {
+                                                          Order.Note =
                                                           string.Format(Resources.GetString("Callbox.passengerName"),
                                                                         passengerName);
+                                                      }
+                                                      else
+                                                      {
+                                                          Order.Note = Resources.GetString("Callbox.noPassengerName");
+                                                      }
+                                                      
                                                       try
                                                       {
                                                           MessageService.ShowProgress(true);
@@ -152,7 +196,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
                                                                                      {
                                                                                          Orders.Insert(0,new CallboxOrderViewModel()
                                                                                          {
-                                                                                             CreatedDate = DateTime.Now,
+                                                                                             CreatedDate = orderInfo.PickupDate,
                                                                                              IbsOrderId = orderInfo.IBSOrderId,
                                                                                              Id = Order.Id,
                                                                                              OrderStatus = orderInfo
