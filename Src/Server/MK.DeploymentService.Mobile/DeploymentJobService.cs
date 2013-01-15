@@ -75,6 +75,8 @@ namespace MK.DeploymentService.Mobile
 						Deploy (job, sourceDirectory, company, releaseiOSDir, releaseAndroidDir, releaseCallboxAndroidDir);
 
 						db.Update ("[MkConfig].[DeploymentJob]", "Id", new { status = JobStatus.SUCCESS }, job.Id);
+
+						logger.Debug("Deployment finished without error");
 					}
 				} catch (Exception e) {
 					logger.Error (e.Message);
@@ -106,16 +108,17 @@ namespace MK.DeploymentService.Mobile
 				    throw new Exception("Can't find th APK file in the release dir");
 				}
 
-				apkFile = Directory.EnumerateFiles(apkPathCallBox, "*-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault();
-				if(apkFile != null)
+				try{
+					apkFile = Directory.EnumerateFiles(apkPathCallBox, "*-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault();
+					if(apkFile != null)
+					{
+						var fileInfo = new FileInfo(apkFile); 
+						var targetDir = Path.Combine(System.Configuration.ConfigurationManager.AppSettings["AndroidDeployDir"], company.Name, fileInfo.Name);
+						if(File.Exists(targetDir)) File.Delete(targetDir);
+						File.Copy(apkFile, targetDir);
+					}
+				}catch
 				{
-					var fileInfo = new FileInfo(apkFile); 
-					var targetDir = Path.Combine(System.Configuration.ConfigurationManager.AppSettings["AndroidDeployDir"], company.Name, fileInfo.Name);
-					if(File.Exists(targetDir)) File.Delete(targetDir);
-					File.Copy(apkFile, targetDir);
-				}else
-				{
-					//throw new Exception("Can't find the Callbox APK file in the release dir");
 					logger.Debug("Warning Can't find the Callbox APK file in the release dir");
 				}
                 
