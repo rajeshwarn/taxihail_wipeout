@@ -71,7 +71,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public void SetVehicleTypeId( int id )
+        public void SetVehicleTypeId( int? id )
         {
             Order.Settings.VehicleTypeId = id;
             FirePropertyChanged ( () => VehicleName );
@@ -85,7 +85,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 
 
-        public int VehicleTypeId {
+        public int? VehicleTypeId {
             get { return Order.Settings.VehicleTypeId ; }
             set {  SetVehicleTypeId( value ); }
         }

@@ -43,11 +43,16 @@ namespace apcurium.MK.Booking.Mobile.Client
             set { Data.Phone = value; }
         }
 
-        public int VehicleTypeId
+        public int? VehicleTypeId
         {
             get { return Data.VehicleTypeId; }
             set
             {
+				int? id = value;
+				if(id == ListItem.NullListItem.Id)
+				{
+					id = null;
+				}
                 Data.VehicleTypeId = value;
             }
         }
@@ -61,15 +66,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public int? ProviderId
         {
             get { return Data.ProviderId; }
-            set
-            {
-                Data.ProviderId = value;
-            }
-        }
 
-        public string ProviderName
-        {
-            get { return _companyList.SingleOrDefault(v => v.Id == ProviderId).SelectOrDefault(v => v.Display, ""); }            
         }
 
         public int ChargeTypeId

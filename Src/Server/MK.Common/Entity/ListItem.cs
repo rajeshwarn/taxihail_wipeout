@@ -2,7 +2,13 @@
 {
     public class ListItem : ListItem<int>
     {
-
+		private static ListItem _nullListItem = new ListItem { Id = int.MinValue }; 
+		public static ListItem NullListItem
+		{
+			get{
+				return _nullListItem;
+			}
+		}
     }
 
     public class ListItem<TId> where TId: struct

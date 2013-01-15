@@ -1194,4 +1194,7 @@
   <data name="BackButton" xml:space="preserve">
     <value>Back</value>
   </data>
+  <data name="NoPreference" xml:space="preserve">
+    <value>No preference</value>
+  </data>
 </root>
