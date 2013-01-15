@@ -23,6 +23,7 @@ using Cirrious.MvvmCross.Binding.Touch.Target;
 using apcurium.MK.Booking.Mobile.Client.Binding;
 using Cirrious.MvvmCross.Binding.Bindings.Target.Construction;
 using MonoTouch.UIKit;
+using MonoTouch.Foundation;
 
 
 namespace apcurium.MK.Booking.Mobile.Client
@@ -31,18 +32,20 @@ namespace apcurium.MK.Booking.Mobile.Client
         : MvxTouchDialogBindingSetup
     {
         IMvxTouchViewPresenter _presenter;
+        IDictionary<string, string> _options;
 
-        public Setup(MvxApplicationDelegate applicationDelegate, IMvxTouchViewPresenter presenter)
+        public Setup(MvxApplicationDelegate applicationDelegate, IMvxTouchViewPresenter presenter, IDictionary<string, string> options)
             : base(applicationDelegate, presenter)
         {
             _presenter = presenter;
+            _options = options;
         }
         
         #region Overrides of MvxBaseSetup
         
         protected override MvxApplication CreateApp()
         {
-            var app = new TaxiHailApp();
+            var app = new TaxiHailApp(_options);
             return app;
         }
         

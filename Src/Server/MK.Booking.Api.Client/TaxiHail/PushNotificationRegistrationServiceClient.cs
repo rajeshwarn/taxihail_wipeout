@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
         public void Replace (string oldDeviceToken, string newDeviceToken, PushNotificationServicePlatform platform)
         {
-            Client.Post<string>("account/ushnotifications/" + Uri.EscapeDataString(newDeviceToken), new PushNotificationRegistration
+            Client.Post<string>("account/pushnotifications/" + Uri.EscapeDataString(newDeviceToken), new PushNotificationRegistration
             {
                 OldDeviceToken = oldDeviceToken,
                 Platform = platform                                                                                              

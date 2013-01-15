@@ -14,8 +14,11 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
         }
 
-        public void RegisterDeviceForPushNotifications ()
+        public void RegisterDeviceForPushNotifications (bool force = false)
         {
+            if (force) {
+                NSUserDefaults.StandardUserDefaults.SetString (string.Empty, "PushDeviceToken");
+            }
 
             UIApplication.SharedApplication.RegisterForRemoteNotificationTypes(UIRemoteNotificationType.Alert
                                                                                | UIRemoteNotificationType.Badge

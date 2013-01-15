@@ -373,6 +373,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             if (isSuccess) 
                             {
                                 MessengerHub.Publish (new OrderCanceled (this, Order, null));
+                                TinyIoCContainer.Current.Resolve<ICacheService>().Clear("LastOrderId");
                                 RequestNavigate<BookViewModel> (clearTop: true);
                             } 
                             else 

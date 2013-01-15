@@ -6,11 +6,11 @@ using Android.Runtime;
 using Android.Content;
 using Android.Util;
 using apcurium.MK.Booking.Mobile.Style;
-using apcurium.MK.Booking.Mobile.Client.Helpers;
+using apcurium.MK.Callbox.Mobile.Client.Helpers;
 
 namespace apcurium.MK.Callbox.Mobile.Client.Controls
 {
-    public class StyledButton : Button
+    public sealed class StyledButton : Button
     {
         [Register(".ctor", "(Landroid/content/Context;)V", "")]
         public StyledButton(Context context)
@@ -29,7 +29,7 @@ namespace apcurium.MK.Callbox.Mobile.Client.Controls
 
             if ( StyleManager.Current.ButtonFontSize.HasValue )
             {
-                TextSize = DrawHelper.GetPixelsFromPt(  StyleManager.Current.ButtonFontSize.Value * 0.3f );
+                //TextSize = DrawHelper.GetPixelsFromPt(  StyleManager.Current.ButtonFontSize.Value * 0.3f );
             }
 
             ButtonStyle = StyleManager.Current.Buttons.Single( b=>b.Key.ToLower() == style.ToLower() );
