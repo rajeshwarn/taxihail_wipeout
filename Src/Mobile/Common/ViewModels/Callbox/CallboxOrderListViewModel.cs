@@ -84,7 +84,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
                     }
                 }
             }
-            catch (Exception e)
+            catch (WebServiceException e)
             {
                 InvokeOnMainThread(() =>
                                        {
