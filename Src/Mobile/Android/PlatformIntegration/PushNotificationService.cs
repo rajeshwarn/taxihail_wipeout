@@ -163,7 +163,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 			
 			//Create the notification
-			var notification = new Notification (Android.Resource.Drawable.SymActionEmail, title);
+			var notification = new Notification (Resource.Drawable.notification_icon, title);
 
 			//Auto cancel will remove the notification once the user touches it
 			notification.Flags = NotificationFlags.AutoCancel;
