@@ -30,6 +30,11 @@
     <WarningLevel>4</WarningLevel>
     <AndroidLinkMode>None</AndroidLinkMode>
     <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
+    <AndroidKeyStore>True</AndroidKeyStore>
+    <AndroidSigningKeyStore>public.keystore</AndroidSigningKeyStore>
+    <AndroidSigningStorePass>mkt0001.</AndroidSigningStorePass>
+    <AndroidSigningKeyAlias>MKTaxiHail</AndroidSigningKeyAlias>
+    <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
     <AndroidLinkSkip />
     <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
   </PropertyGroup>
