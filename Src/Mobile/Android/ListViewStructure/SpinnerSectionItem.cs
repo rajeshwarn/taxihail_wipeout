@@ -5,11 +5,11 @@ namespace apcurium.MK.Booking.Mobile.Client.ListViewStructure
 {
 	public class SpinnerSectionItem : SectionItem
 	{
-		private Func<int> _getValue;
-		private Action<int> _setValue;
+		private Func<int?> _getValue;
+		private Action<int?> _setValue;
 		private Func<List<ListItemData>> _getValues;
 		
-		public SpinnerSectionItem ( string label, Func<int> getValue, Action<int> setValue, Func<List<ListItemData>> getValues )
+		public SpinnerSectionItem ( string label, Func<int?> getValue, Action<int?> setValue, Func<List<ListItemData>> getValues )
 		{
 			Label = label;	
 			_getValue = getValue;
@@ -17,11 +17,11 @@ namespace apcurium.MK.Booking.Mobile.Client.ListViewStructure
 			_getValues = getValues;
 		}
 		
-		public Func<int> GetValue {
+		public Func<int?> GetValue {
 			get{ return _getValue; }
 		}
 		
-		public Action<int> SetValue {
+		public Action<int?> SetValue {
 			get{ return _setValue; }
 		}
 		
