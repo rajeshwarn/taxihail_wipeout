@@ -14,8 +14,11 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
         }
 
-        public void RegisterDeviceForPushNotifications ()
+        public void RegisterDeviceForPushNotifications (bool force = false)
         {
+            if (force) {
+                NSUserDefaults.StandardUserDefaults.SetString (string.Empty, "PushDeviceToken");
+            }
 
             UIApplication.SharedApplication.RegisterForRemoteNotificationTypes(UIRemoteNotificationType.Alert
                                                                                | UIRemoteNotificationType.Badge
@@ -36,7 +39,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                     service.Register(newDeviceToken, PushNotificationServicePlatform.Apple);
                 });
             }
-            else if(true /*!oldDeviceToken.Equals(newDeviceToken)*/)
+            else if(!oldDeviceToken.Equals(newDeviceToken))
             {
                 base.UseServiceClient<PushNotificationRegistrationServiceClient>(service => {
                     service.Replace(oldDeviceToken, newDeviceToken, PushNotificationServicePlatform.Apple);

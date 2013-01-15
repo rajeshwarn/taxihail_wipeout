@@ -34,17 +34,21 @@ namespace apcurium.MK.Booking.Mobile.Client
 			this._context = context;
 		}
 
-		public void RegisterDeviceForPushNotifications ()
+		public void RegisterDeviceForPushNotifications (bool force = false)
 		{
 			//Check to ensure everything's setup right
 			GCMSharp.Client.GCMRegistrar.CheckDevice(_context);
 			GCMSharp.Client.GCMRegistrar.CheckManifest(_context);
+
+			if (force) {
+				GCMSharp.Client.GCMRegistrar.ClearRegistrationId(_context);
+			}
 			
 			//Get the stored latest registration id
 			var registrationId = GCMSharp.Client.GCMRegistrar.GetRegistrationId(_context);
 			
 			
-			bool registered = false;// !string.IsNullOrEmpty(registrationId);
+			bool registered = !string.IsNullOrEmpty(registrationId);
 			const string TAG = "PushSharp-GCM";
 			
 			if (!registered)

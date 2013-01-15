@@ -208,7 +208,7 @@ namespace GCMSharp.Client
 			return !string.IsNullOrEmpty(registrationId);
 		}
 
-		internal static string ClearRegistrationId(Context context)
+		public static string ClearRegistrationId(Context context)
 		{
 			return SetRegistrationId(context, "");
 		}
