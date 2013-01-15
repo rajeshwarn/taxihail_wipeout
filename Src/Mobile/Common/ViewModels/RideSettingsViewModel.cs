@@ -50,8 +50,8 @@ namespace apcurium.MK.Booking.Mobile
         }
 
 
-        private NullableListItem[] _vehicules;
-        public NullableListItem[] Vehicles {
+        private ListItem[] _vehicules;
+        public ListItem[] Vehicles {
             get {
                 return _vehicules;
             }
@@ -64,7 +64,7 @@ namespace apcurium.MK.Booking.Mobile
             }
         }
 
-        public int? VehicleTypeId {
+        public int VehicleTypeId {
 			get {
 				return _bookingSettings.VehicleTypeId;
 			}

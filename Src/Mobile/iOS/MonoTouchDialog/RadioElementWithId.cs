@@ -9,7 +9,7 @@ namespace apcurium.MK.Booking.Mobile.Client
     {
         string _image;
 
-        public RadioElementWithId(TId? id, string caption, string image = null) : base( caption )
+        public RadioElementWithId(TId id, string caption, string image = null) : base( caption )
         {
             this.Id = id;
             _image = image;
@@ -36,7 +36,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 
 
-        public TId? Id {
+        public TId Id {
             get;
             private set;
         }

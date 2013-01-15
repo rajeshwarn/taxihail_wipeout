@@ -473,13 +473,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             );
         }
 
-        public IEnumerable<NullableListItem> GetCompaniesList ()
+        public IEnumerable<ListItem> GetCompaniesList ()
         {
             EnsureListLoaded ();
             return _refData.CompaniesList;
         }
 
-        public IEnumerable<NullableListItem> GetVehiclesList ()
+        public IEnumerable<ListItem> GetVehiclesList ()
         {
             EnsureListLoaded ();
             return _refData.VehiclesList;

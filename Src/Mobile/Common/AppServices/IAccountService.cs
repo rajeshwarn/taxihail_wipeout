@@ -27,9 +27,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         Account CurrentAccount { get; }
 
-		IEnumerable<NullableListItem> GetCompaniesList( );
+		IEnumerable<ListItem> GetCompaniesList( );
 		
-		IEnumerable<NullableListItem> GetVehiclesList(  );
+		IEnumerable<ListItem> GetVehiclesList(  );
 		
 		IEnumerable<ListItem> GetPaymentsList(  );
 

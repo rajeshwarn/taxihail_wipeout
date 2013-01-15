@@ -13,11 +13,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 {
     public class RideSettingsModel
     {
-		private IEnumerable<NullableListItem> _companyList;
-		private IEnumerable<NullableListItem> _vehicleTypeList;
+        private IEnumerable<ListItem> _companyList;
+        private IEnumerable<ListItem> _vehicleTypeList;
         private IEnumerable<ListItem> _chargeTypeList;
 
-        public RideSettingsModel(BookingSettings data, IEnumerable<NullableListItem> companyList, IEnumerable<NullableListItem> vehicleTypeList, IEnumerable<ListItem> chargeTypeList)
+        public RideSettingsModel(BookingSettings data, IEnumerable<ListItem> companyList, IEnumerable<ListItem> vehicleTypeList, IEnumerable<ListItem> chargeTypeList)
         {
             _companyList = companyList;
             _vehicleTypeList = vehicleTypeList;
@@ -43,7 +43,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             set { Data.Phone = value; }
         }
 
-        public int? VehicleTypeId
+        public int VehicleTypeId
         {
             get { return Data.VehicleTypeId; }
             set
@@ -87,8 +87,8 @@ namespace apcurium.MK.Booking.Mobile.Client
         }
             
             
-        public NullableListItem[] CompanyList { get { return _companyList.ToArray(); } }
-        public NullableListItem[] VehicleTypeList { get { return _vehicleTypeList.ToArray(); } }
+           public ListItem[] CompanyList { get { return _companyList.ToArray(); } }
+        public ListItem[] VehicleTypeList { get { return _vehicleTypeList.ToArray(); } }
         public ListItem[] ChargeTypeList { get { return _chargeTypeList.ToArray(); } }
 
         public List<string> ToStringList(ListItem[] listItem)
