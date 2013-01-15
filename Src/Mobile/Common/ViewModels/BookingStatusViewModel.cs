@@ -302,12 +302,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 }
                 this.Close ();
             },
-                Resources.GetString ("HistoryDetailSendReceiptButton"), () =>
-            {
-                if (Common.Extensions.GuidExtensions.HasValue (Order.Id)) {
-                    TinyIoCContainer.Current.Resolve<IBookingService> ().SendReceipt (Order.Id);
-                }
-            },
                 stringNeutral, actionNeutral
             );
         }

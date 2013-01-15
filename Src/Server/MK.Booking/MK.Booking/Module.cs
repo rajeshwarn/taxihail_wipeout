@@ -100,6 +100,7 @@ namespace apcurium.MK.Booking
             
             // Integration event handlers
             container.RegisterType<IEventHandler, PushNotificationSender>("PushNotificationSender");
+            container.RegisterType<IEventHandler, ReceiptSender>("ReceiptSender");
         }
 
         private void RegisterCommandHandlers(IUnityContainer container)
