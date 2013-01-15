@@ -41,10 +41,15 @@ namespace apcurium.MK.Booking.Api.Jobs
             try
             {
                 var orders = _orderDao.GetOrdersInProgress();
-                var ordersStatusIbs = _bookingWebServiceClient.GetOrdersStatus(orders.Where(x => x.IBSOrderId.HasValue).Select(x => x.IBSOrderId.Value).ToList());
+                var ibsOrdersIds = orders.Where(x => x.IBSOrderId.HasValue).Select(x => x.IBSOrderId.Value).ToList();
+                Logger.Debug("Call IBS for ids : " + ibsOrdersIds.Join(","));
+                var ordersStatusIbs = _bookingWebServiceClient.GetOrdersStatus(ibsOrdersIds);
+
                 foreach (var orderStatusDetail in orders){
                    
                     var ibsStatus = ordersStatusIbs.FirstOrDefault(x => x.IBSOrderId == orderStatusDetail.IBSOrderId);
+
+                    Logger.Debug("Status from IBS " + ibsStatus.Dump());
 
                     if (ibsStatus != null &&
                         ibsStatus.Status.HasValue()
@@ -52,7 +57,6 @@ namespace apcurium.MK.Booking.Api.Jobs
                     {
                         string description = null;
                         Logger.Debug("Status Changed for " + orderStatusDetail.OrderId + " -- new status IBS : " + ibsStatus.Status);
-                        Logger.Debug("IBS Status infos :  " + ibsStatus.Dump());
                         var command = new ChangeOrderStatus
                             {
                                 Status = orderStatusDetail,
@@ -70,7 +74,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                         orderStatusDetail.DriverInfos.VehicleModel = ibsStatus.VehicleModel;
                         orderStatusDetail.DriverInfos.VehicleRegistration = ibsStatus.VehicleRegistration;
                         orderStatusDetail.DriverInfos.VehicleType = ibsStatus.VehicleType;
-                        orderStatusDetail.VehicleNumber = ibsStatus.VehicleNumber;
+                        orderStatusDetail.VehicleNumber = ibsStatus.VehicleNumber == null ? null : ibsStatus.VehicleNumber.Trim();
                         orderStatusDetail.VehicleLatitude = ibsStatus.VehicleLatitude;
                         orderStatusDetail.VehicleLongitude = ibsStatus.VehicleLongitude;
                         orderStatusDetail.Eta = ibsStatus.Eta;

@@ -260,6 +260,8 @@
     <AndroidResource Include="Resources\Drawable\add_btn.png" />
     <AndroidResource Include="Resources\drawable-hdpi\add_btn.png" />
     <Compile Include="PlatformIntegration\PushNotificationService.cs" />
+    <AndroidResource Include="Resources\Drawable\notification_icon.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\notification_icon.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
