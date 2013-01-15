@@ -54,6 +54,7 @@ namespace apcurium.MK.Booking.ConfigTool
 					
 					new ConfigXML(this){  Destination=@"Mobile\MK.Callbox.Mobile.Client.Android\Resources\Values\Strings.xml", NodeSelector=@"//resources/string[@name=""ApplicationName""]" , SetterEle= ( app, ele )=> ele.InnerText = Config.AppName + " CallBox" },               
 
+					new ConfigFile(this){ Source="public.keystore", Destination=@"Mobile\MK.Callbox.Mobile.Client.Android\public.keystore" },
 
 					/**TaxiHail **/
 	               	new ConfigFile(this){ Source="AppFont_Bold.otf", Destination=@"Mobile\Android\Assets\AppFont_Bold.otf" },    
