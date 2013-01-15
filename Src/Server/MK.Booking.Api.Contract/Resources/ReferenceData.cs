@@ -7,8 +7,8 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
     {
         public const int CreditCardOnFileType = 666;
 
-        public IList<ListItem> CompaniesList { get; set; }
-        public IList<ListItem> VehiclesList { get; set; }
+        public IList<NullableListItem> CompaniesList { get; set; }
+        public IList<NullableListItem> VehiclesList { get; set; }
         public IList<ListItem> PaymentsList { get; set; }
 
         public IList<ListItem> PickupCityList { get; set; }

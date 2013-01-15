@@ -52,7 +52,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-        public void Configure<T>(string title, ListItem<T>[] values, T selectedId, Action<ListItem<T>> onItemSelected) where T: struct
+        public void Configure<T>(string title, NullableListItem<T>[] values, T? selectedId, Action<NullableListItem<T>> onItemSelected) where T: struct
         {
             int selected = 0;
             var section = new SectionWithBackground(title);
@@ -75,6 +75,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             
             _rootElement = new CustomRootElement(title, new RadioGroup(selected));
             _rootElement.Add(section);
+        }
+
+        public void Configure<T>(string title, ListItem<T>[] values, T? selectedId, Action<ListItem<T>> onItemSelected) where T: struct
+        {
+            Configure(title, values, selectedId, (NullableListItem<T> item) => onItemSelected( (ListItem<T>)item)); 
         }
     }   
 }
