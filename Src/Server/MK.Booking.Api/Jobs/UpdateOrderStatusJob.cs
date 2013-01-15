@@ -74,7 +74,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                         orderStatusDetail.DriverInfos.VehicleModel = ibsStatus.VehicleModel;
                         orderStatusDetail.DriverInfos.VehicleRegistration = ibsStatus.VehicleRegistration;
                         orderStatusDetail.DriverInfos.VehicleType = ibsStatus.VehicleType;
-                        orderStatusDetail.VehicleNumber = ibsStatus.VehicleNumber;
+                        orderStatusDetail.VehicleNumber = ibsStatus.VehicleNumber == null ? null : ibsStatus.VehicleNumber.Trim();
                         orderStatusDetail.VehicleLatitude = ibsStatus.VehicleLatitude;
                         orderStatusDetail.VehicleLongitude = ibsStatus.VehicleLongitude;
                         orderStatusDetail.Eta = ibsStatus.Eta;
