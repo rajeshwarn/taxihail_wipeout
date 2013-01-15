@@ -62,15 +62,21 @@ namespace MK.DeploymentService.Mobile
 						if (Directory.Exists (releaseAndroidDir))
 							Directory.Delete (releaseAndroidDir, true);
 
+						var releaseCallboxAndroidDir = Path.Combine (sourceDirectory, "Src", "Mobile", "MK.Callbox.Mobile.Client.Android", "bin", "Release");
+						if (Directory.Exists (releaseCallboxAndroidDir))
+							Directory.Delete (releaseCallboxAndroidDir, true);
+
 						FetchSource (job, sourceDirectory, company);
 
 						Customize (sourceDirectory, company, taxiHailEnv);
 
 						Build (job, sourceDirectory, company);
 
-						Deploy (job, sourceDirectory, company, releaseiOSDir, releaseAndroidDir);
+						Deploy (job, sourceDirectory, company, releaseiOSDir, releaseAndroidDir, releaseCallboxAndroidDir);
 
 						db.Update ("[MkConfig].[DeploymentJob]", "Id", new { status = JobStatus.SUCCESS }, job.Id);
+
+						logger.Debug("Deployment finished without error");
 					}
 				} catch (Exception e) {
 					logger.Error (e.Message);
@@ -86,7 +92,7 @@ namespace MK.DeploymentService.Mobile
 			timer.Change(Timeout.Infinite, Timeout.Infinite);
 		}
 
-		void Deploy (DeploymentJob job, string sourceDirectory, Company company, string ipaPath, string apkPath)
+		void Deploy (DeploymentJob job, string sourceDirectory, Company company, string ipaPath, string apkPath, string apkPathCallBox)
 		{
 			if (job.Android) {
                 logger.DebugFormat("Copy Apk");
@@ -100,6 +106,20 @@ namespace MK.DeploymentService.Mobile
 			    }else
 				{
 				    throw new Exception("Can't find th APK file in the release dir");
+				}
+
+				try{
+					apkFile = Directory.EnumerateFiles(apkPathCallBox, "*-Signed.apk", SearchOption.TopDirectoryOnly).FirstOrDefault();
+					if(apkFile != null)
+					{
+						var fileInfo = new FileInfo(apkFile); 
+						var targetDir = Path.Combine(System.Configuration.ConfigurationManager.AppSettings["AndroidDeployDir"], company.Name, fileInfo.Name);
+						if(File.Exists(targetDir)) File.Delete(targetDir);
+						File.Copy(apkFile, targetDir);
+					}
+				}catch
+				{
+					logger.Debug("Warning Can't find the Callbox APK file in the release dir");
 				}
                 
 			}
@@ -279,6 +299,20 @@ namespace MK.DeploymentService.Mobile
 				                              configAndroid,
 				                              sourceMobileFolder);
 				BuildProject(buildClient);
+
+				//CallBox
+				if(Directory.Exists(Path.Combine(sourceMobileFolder, "MK.Callbox.Mobile.Client.Android")))
+				{
+					buildClient = string.Format("build \"--project:{0}\" \"--configuration:{1}\" \"--target:SignAndroidPackage\"  \"{2}/MK.Booking.Mobile.Solution.Android.sln\"",
+					                            "MK.Callbox.Mobile.Client.Android",
+					                            configAndroid,
+					                            sourceMobileFolder);
+					BuildProject(buildClient);
+
+				}else{
+					logger.Debug("Warning no CallBox project found");
+				}
+
 				
 				logger.Debug("Build Android done");
 			}
