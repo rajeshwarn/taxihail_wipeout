@@ -61,6 +61,13 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             Assert.AreEqual(45.50643, orderCreated.DropOffAddress.Latitude);
             Assert.AreEqual(99, orderCreated.IBSOrderId);
             Assert.AreEqual(-73.554052, orderCreated.DropOffAddress.Longitude);
+            Assert.AreEqual(99, orderCreated.Settings.ChargeTypeId);
+            Assert.AreEqual(88, orderCreated.Settings.VehicleTypeId);
+            Assert.AreEqual(11, orderCreated.Settings.ProviderId);
+            Assert.AreEqual("514-555-1212", orderCreated.Settings.Phone);
+            Assert.AreEqual(6, orderCreated.Settings.Passengers);
+            Assert.AreEqual(1, orderCreated.Settings.NumberOfTaxi);
+            Assert.AreEqual("Joe Smith", orderCreated.Settings.Name);
         }
 
         [Test]

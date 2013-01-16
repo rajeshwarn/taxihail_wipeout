@@ -49,6 +49,7 @@ namespace apcurium.MK.Booking.Domain
                 PickupDate = pickupDate,
                 PickupAddress = pickupAddress,
                 DropOffAddress = dropOffAddress,
+                Settings =  settings,
                 CreatedDate = DateTime.Now,                
             });
         }

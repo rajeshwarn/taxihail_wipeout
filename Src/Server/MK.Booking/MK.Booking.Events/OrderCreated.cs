@@ -17,6 +17,8 @@ namespace apcurium.MK.Booking.Events
         public Address PickupAddress { get; set; }
 
         public Address DropOffAddress { get; set; }
+
+        public BookingSettings Settings { get; set; }
         
     }
 }
