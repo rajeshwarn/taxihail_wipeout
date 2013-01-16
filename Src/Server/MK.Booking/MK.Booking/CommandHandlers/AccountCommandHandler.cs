@@ -3,6 +3,7 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
 using Infrastructure.EventSourcing;
 using apcurium.MK.Booking.Security;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.CommandHandlers
 {

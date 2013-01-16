@@ -103,16 +103,13 @@ namespace apcurium.MK.Booking.Api.Services
 
         private int? CreateIBSOrder(AccountDetail account, CreateOrder request, ReferenceData referenceData)
         {
-
-            if (!request.Settings.ProviderId.HasValue)
-            {
-                throw new HttpError(ErrorCode.CreateOrder_NoProvider.ToString());
-            }
-            else if (referenceData.CompaniesList.None(c => c.Id == request.Settings.ProviderId.Value))
+            // Provider is optional
+            // But if a provider is specified, it must match with one of the ReferenceData values
+            if (request.Settings.ProviderId.HasValue &&
+                referenceData.CompaniesList.None(c => c.Id == request.Settings.ProviderId.Value))
             {
                 throw new HttpError(ErrorCode.CreateOrder_InvalidProvider.ToString());
             }
-            
 
             var ibsPickupAddress = Mapper.Map<IBSAddress>(request.PickupAddress);
             var ibsDropOffAddress = IsValid(request.DropOffAddress) ? Mapper.Map<IBSAddress>(request.DropOffAddress) : (IBSAddress)null;

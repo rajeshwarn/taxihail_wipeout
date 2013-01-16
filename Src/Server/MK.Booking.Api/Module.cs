@@ -37,7 +37,6 @@ namespace apcurium.MK.Booking.Api
             Mapper.CreateMap<apcurium.MK.Booking.Api.Contract.Requests.CreateOrder, Commands.SendBookingConfirmationEmail>()
                 .ForMember(p => p.Id, options => options.Ignore());
 
-            Mapper.CreateMap<BookingSettings, Commands.CreateOrder.BookingSettings>();
             Mapper.CreateMap<PaymentSettings, Commands.CreateOrder.PaymentInformation>();
             Mapper.CreateMap<BookingSettings, Commands.SendBookingConfirmationEmail.BookingSettings>();
             Mapper.CreateMap<Address, IBSAddress>()
@@ -62,7 +61,6 @@ namespace apcurium.MK.Booking.Api
             Mapper.CreateMap<DefaultFavoriteAddress, Commands.UpdateDefaultFavoriteAddress>();
 
             Mapper.CreateMap<AccountDetail, CurrentAccountResponse>();
-            Mapper.CreateMap<BookingSettingsDetails, BookingSettings>();
             Mapper.CreateMap<Contract.Requests.Tariff, Commands.CreateTariff>()
                 .ForMember(p => p.TariffId, opt => opt.ResolveUsing(x => x.Id == Guid.Empty ? Guid.NewGuid() : x.Id))
                 .ForMember(p => p.CompanyId, opt => opt.UseValue(AppConstants.CompanyId));

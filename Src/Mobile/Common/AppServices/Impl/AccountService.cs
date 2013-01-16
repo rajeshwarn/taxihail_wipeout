@@ -42,6 +42,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 UseServiceClient<ReferenceDataServiceClient> (service =>
                 {
                     _refData = service.GetReferenceData ();
+					_refData.CompaniesList.Add(ListItem.NullListItem);
+					_refData.VehiclesList.Add(ListItem.NullListItem);
                 }
                 );
             }

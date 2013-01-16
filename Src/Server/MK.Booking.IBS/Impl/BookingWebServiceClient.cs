@@ -121,12 +121,12 @@ namespace apcurium.MK.Booking.IBS.Impl
             return result;
         }
 
-        public int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int vehicleTypeId, int chargeTypeId, string note, DateTime pickupDateTime, IBSAddress pickup, IBSAddress dropoff)
+        public int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int chargeTypeId, string note, DateTime pickupDateTime, IBSAddress pickup, IBSAddress dropoff)
         {
             Logger.LogMessage("WebService Create Order call : accountID=" + accountId);
             var order = new TBookOrder_5();
 
-            order.ServiceProviderID = providerId.HasValue ? providerId.Value : 0;
+            order.ServiceProviderID = providerId ?? 0;
             order.AccountID = accountId;
             order.Customer = passengerName;
             order.Phone = phone;
@@ -144,7 +144,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             order.PickupAddress = new TWEBAddress { StreetPlace = pickup.FullAddress, AptBaz = aptRing, Longitude = pickup.Longitude, Latitude = pickup.Latitude };
             order.DropoffAddress = dropoff == null ? new TWEBAddress() : new TWEBAddress { StreetPlace = dropoff.FullAddress, AptBaz = dropoff.Apartment, Longitude = dropoff.Longitude, Latitude = dropoff.Latitude };
             order.Passengers = nbPassengers;
-            order.VehicleTypeID = vehicleTypeId;
+            order.VehicleTypeID = vehicleTypeId ?? 0;
             order.Note = note;
             order.ContactPhone = phone;
             order.OrderStatus = TWEBOrderStatusValue.wosPost;

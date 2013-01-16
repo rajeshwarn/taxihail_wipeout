@@ -88,6 +88,7 @@
     <Compile Include="Diagnostic\ILogger.cs" />
     <Compile Include="Diagnostic\Logger.cs" />
     <Compile Include="Entity\Address.cs" />
+    <Compile Include="Entity\BookingSettings.cs" />
     <Compile Include="Entity\DriverInfos.cs" />
     <Compile Include="Entity\OrderRatings.cs" />
     <Compile Include="Entity\DayOfTheWeek.cs" />

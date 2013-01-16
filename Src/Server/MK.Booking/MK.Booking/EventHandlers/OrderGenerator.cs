@@ -38,6 +38,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     PickupDate = @event.PickupDate,
                     CreatedDate = @event.CreatedDate,
                     DropOffAddress = @event.DropOffAddress,
+                    Settings = @event.Settings,
                     Status = (int)OrderStatus.Created,
                     IsRated = false
                 });
