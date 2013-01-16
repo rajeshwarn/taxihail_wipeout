@@ -46,11 +46,13 @@ namespace apcurium.MK.Booking.EventHandlers
                                      IsAdmin = @event.IsAdmin
                                  };
 
+                
 
                 var chargeTypeId = int.Parse(_configurationManager.GetSetting("DefaultBookingSettings.ChargeTypeId"));
                 var nbPassenger = int.Parse(_configurationManager.GetSetting("DefaultBookingSettings.NbPassenger"));
-                var vehicleTypeId= int.Parse(_configurationManager.GetSetting("DefaultBookingSettings.VehicleTypeId"));
-                var providerId= int.Parse(_configurationManager.GetSetting("DefaultBookingSettings.ProviderId"));
+                int dummy;
+                int? vehicleTypeId = int.TryParse(_configurationManager.GetSetting("DefaultBookingSettings.VehicleTypeId"), out dummy) ? dummy : default(int?); ;
+                int? providerId = int.TryParse(_configurationManager.GetSetting("DefaultBookingSettings.ProviderId"), out dummy) ? dummy : default(int?); ;
 
                 account.Settings = new BookingSettings { ChargeTypeId = chargeTypeId, Name = account.Name, NumberOfTaxi = 1, Passengers = nbPassenger, Phone = account.Phone, ProviderId = providerId, VehicleTypeId = vehicleTypeId };
 
