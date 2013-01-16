@@ -92,6 +92,8 @@ namespace apcurium.MK.Booking.IBS.Impl
                     var status = service.GetOrdersStatus(UserNameApp, PasswordApp, ibsOrdersIds.ToArray());
                     foreach (var orderInfoFromIBS in status)
                     {
+                        Logger.LogMessage("Status from IBS");
+                        Logger.LogMessage(orderInfoFromIBS.Dump());
                         var statusInfos = new IBSOrderInformation();
                         statusInfos.Status = orderInfoFromIBS.OrderStatus.ToString();
                         statusInfos.IBSOrderId = orderInfoFromIBS.OrderID;

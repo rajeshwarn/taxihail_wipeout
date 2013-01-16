@@ -49,7 +49,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                    
                     var ibsStatus = ordersStatusIbs.FirstOrDefault(x => x.IBSOrderId == orderStatusDetail.IBSOrderId);
 
-                    Logger.Debug("Status from IBS " + ibsStatus.Dump());
+                    Logger.Debug("Status from IBS Webservice " + ibsStatus.Dump());
 
                     if (ibsStatus != null &&
                         ibsStatus.Status.HasValue()
