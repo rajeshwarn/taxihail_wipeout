@@ -54,7 +54,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-        public void Configure<T>(string title, ListItem<T>[] values, T? selectedId, Action<ListItem<T>> onItemSelected) where T: struct
+        public void Configure<T>(string title, ListItem<T>[] values, T selectedId, Action<ListItem<T>> onItemSelected) where T: struct
         {
             int selected = 0;
             var section = new SectionWithBackground(title);

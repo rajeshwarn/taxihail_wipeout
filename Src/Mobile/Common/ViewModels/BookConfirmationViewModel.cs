@@ -48,8 +48,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			base.Load ();
             try {
 
-                MessageService.ShowProgress (true);                
-                RideSettings = new RideSettingsModel (Order.Settings, _accountService.GetCompaniesList (), _accountService.GetVehiclesList (), _accountService.GetPaymentsList ());
+                MessageService.ShowProgress (true);
+				this.Vehicles = _accountService.GetVehiclesList().ToArray();
+				this.Payments = _accountService.GetPaymentsList().ToArray();
                 FareEstimate = _bookingService.GetFareEstimateDisplay (Order, null, "NotAvailable", false, "NotAvailable");
 
                 var paymentInformation = new PaymentInformation {
@@ -71,9 +72,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public void SetVehicleTypeId( int? id )
+        public void SetVehicleTypeId (int id)
         {
-            Order.Settings.VehicleTypeId = id;
+            if (id == ListItem.NullId) {
+                Order.Settings.VehicleTypeId = null;
+            } else {
+                Order.Settings.VehicleTypeId = id;
+            }
             FirePropertyChanged ( () => VehicleName );
         }
 
@@ -89,8 +94,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get { return Order.Settings.VehicleTypeId ?? ListItem.NullId; }
             set 
 			{  
-				var id = value == ListItem.NullId ? default(int?) : value;
-				SetVehicleTypeId( id );
+				SetVehicleTypeId( value );
 			}
         }
 
@@ -100,32 +104,31 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
             
         public ListItem[] Vehicles {
-            get {
-				return RideSettings != null  ? RideSettings.VehicleTypeList : null;
-            }
+			get;
+			private set;
         }
 
         public ListItem[] Payments {
-            get {
-				return RideSettings != null  ? RideSettings.ChargeTypeList : null;
-            }
+			get;
+			private set;
         }
+		      
 
-        public string VehicleName {
-            get {
+		public string VehicleName
+		{
+			get 
+			{
 				if(VehicleTypeId == ListItem.NullId)
 				{
 					return base.Resources.GetString("NoPreference");
 				}
-				return RideSettings != null  ? RideSettings.VehicleTypeName : null;
-            }
-        }
+				return Vehicles.SingleOrDefault(v => v.Id == VehicleTypeId).SelectOrDefault(v => v.Display, ""); }            
+		}
 
-        public string ChargeType{
-            get {
-				return RideSettings != null  ? RideSettings.ChargeTypeName : null;
-            }
-        }
+		public string ChargeType
+		{
+			get { return this.Payments.SingleOrDefault(v => v.Id == ChargeTypeId).SelectOrDefault(v => v.Display, ""); }            
+		}
 
 		public CreateOrder Order { get; private set; }
 		public string AptRingCode {
@@ -155,20 +158,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}
 			}
 		}
-		private RideSettingsModel _rideSettings;
-		public RideSettingsModel RideSettings {
-			get {
-				return _rideSettings;
-			}
-			private set {
-				if(value != _rideSettings)
-				{
-					_rideSettings = value;
-					FirePropertyChanged("RideSettings");
-				}
-			}
-		}
-		
+
 		public IMvxCommand NavigateToRefineAddress
 		{
 			get{
@@ -278,17 +268,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				MessageService.ShowDialog(Resources.GetString("ChooseProviderDialogTitle"), companyList, x=>x.Display, result => {
 					if(result != null) {
 						Order.Settings.ProviderId =  result.Id;
-                        RideSettings.Data = Order.Settings;
                         FirePropertyChanged("RideSettings");
 					}
 
                     this.GetService<IAccountService>().UpdateSettings(Order.Settings, _accountService.CurrentAccount.DefaultCreditCard, _accountService.CurrentAccount.DefaultTipAmount, _accountService.CurrentAccount.DefaultTipPercent );
 				});
 			}
-            else if(Order.Settings.ProviderId == null)
-            {
-                Order.Settings.ProviderId = RideSettings.ProviderId;
-            }
+            
 		}
 		
 		

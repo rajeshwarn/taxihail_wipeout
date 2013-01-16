@@ -71,7 +71,7 @@ namespace apcurium.MK.Booking.Mobile
 			set {
 				var id = value == ListItem.NullId ? default(int?) : value;
 				if(id != _bookingSettings.VehicleTypeId){
-					_bookingSettings.VehicleTypeId = value;
+					_bookingSettings.VehicleTypeId = id;
                     FirePropertyChanged("VehicleTypeId");
                     FirePropertyChanged("VehicleTypeName");
 				}

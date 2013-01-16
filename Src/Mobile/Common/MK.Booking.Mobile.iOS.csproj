@@ -136,7 +136,6 @@
     <Compile Include="Framework\Null.cs" />
     <Compile Include="Framework\NullDisposable.cs" />
     <Compile Include="Framework\Params.cs" />
-    <Compile Include="Models\RideSettingsModel.cs" />
     <Compile Include="AppServices\IGoogleService.cs" />
     <Compile Include="AppServices\Impl\GoogleService.cs" />
     <Compile Include="AppServices\Impl\ApplicationInfoService.cs" />

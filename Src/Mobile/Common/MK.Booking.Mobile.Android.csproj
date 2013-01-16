@@ -168,7 +168,6 @@
     <Compile Include="AppServices\Mapper\OrderMapping.cs" />
     <Compile Include="AppServices\Mapper\SettingMapper.cs" />
     <Compile Include="AppServices\ModuleService.cs" />
-    <Compile Include="Models\RideSettingsModel.cs" />
     <Compile Include="AppServices\Impl\GoogleService.cs" />
     <Compile Include="AppServices\IGoogleService.cs" />
     <Compile Include="AppServices\IApplicationInfoService.cs" />
