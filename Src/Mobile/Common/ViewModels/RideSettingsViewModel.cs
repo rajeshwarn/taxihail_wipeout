@@ -80,6 +80,12 @@ namespace apcurium.MK.Booking.Mobile
 
         public string VehicleTypeName {
             get {
+
+				if(VehicleTypeId == ListItem.NullId)
+				{
+					return base.Resources.GetString("NoPreference");
+				}
+
                 var vehicle = this.Vehicles.FirstOrDefault(x=>x.Id == VehicleTypeId);
                 if(vehicle == null) return null;
                 return vehicle.Display;

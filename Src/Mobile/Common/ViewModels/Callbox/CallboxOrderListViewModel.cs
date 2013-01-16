@@ -73,16 +73,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
                         RequestNavigate<CallboxCallTaxiViewModel>();
                         this.Close();
                     }
-                });
-
-                foreach (var order in Orders)
-                {
-                    if (BookingService.IsCallboxStatusCompleted(order.OrderStatus.IBSStatusId) && !OrderNotified.Any(c => c.Value.Equals(order.IbsOrderId)))
+                    foreach (var order in Orders)
                     {
-                        OrderNotified.Add(order.IbsOrderId);
-                        OrderCompleted(this, null);
+                        if (BookingService.IsCallboxStatusCompleted(order.OrderStatus.IBSStatusId) && !OrderNotified.Any(c => c.Value.Equals(order.IbsOrderId)))
+                        {
+                            OrderNotified.Add(order.IbsOrderId);
+                            OrderCompleted(this, null);
+                        }
                     }
-                }
+                });
             }
             catch (WebServiceException e)
             {
@@ -196,7 +195,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
                                                                                      {
                                                                                          Orders.Insert(0,new CallboxOrderViewModel()
                                                                                          {
-                                                                                             CreatedDate = orderInfo.PickupDate,
+                                                                                             CreatedDate = DateTime.Now,
                                                                                              IbsOrderId = orderInfo.IBSOrderId,
                                                                                              Id = Order.Id,
                                                                                              OrderStatus = orderInfo

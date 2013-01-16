@@ -113,6 +113,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public string VehicleName {
             get {
+				if(VehicleTypeId == ListItem.NullId)
+				{
+					return base.Resources.GetString("NoPreference");
+				}
 				return RideSettings != null  ? RideSettings.VehicleTypeName : null;
             }
         }

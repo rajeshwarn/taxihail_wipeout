@@ -8,10 +8,12 @@ using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using Cirrious.MvvmCross.Interfaces.ServiceProvider;
+using Cirrious.MvvmCross.ExtensionMethods;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
-    public class RideSettingsModel
+	public class RideSettingsModel: IMvxServiceConsumer<IAppResource>
     {
         private IEnumerable<ListItem> _companyList;
         private IEnumerable<ListItem> _vehicleTypeList;
@@ -43,9 +45,9 @@ namespace apcurium.MK.Booking.Mobile.Client
             set { Data.Phone = value; }
         }
 
-        public int? VehicleTypeId
+        public int VehicleTypeId
         {
-            get { return Data.VehicleTypeId; }
+            get { return Data.VehicleTypeId ?? ListItem.NullId; }
             set
             {
 				var id = value == ListItem.NullId ? default(int?) : value;
@@ -58,7 +60,13 @@ namespace apcurium.MK.Booking.Mobile.Client
         
         public string VehicleTypeName
         {
-            get { return _vehicleTypeList.SingleOrDefault(v => v.Id == VehicleTypeId).SelectOrDefault(v => v.Display, ""); }            
+            get 
+			{
+				if(VehicleTypeId == ListItem.NullId)
+				{
+					return this.GetService<IAppResource>().GetString("NoPreference");
+				}
+				return _vehicleTypeList.SingleOrDefault(v => v.Id == VehicleTypeId).SelectOrDefault(v => v.Display, ""); }            
         }
 
 		public int? ProviderId
