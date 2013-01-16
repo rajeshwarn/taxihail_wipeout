@@ -130,8 +130,7 @@
         android:layout_height="fill_parent">
         <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:background="@color/red">
+            android:layout_height="fill_parent">
             <cirrious.mvvmCross.binding.android.views.MvxBindableListView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"

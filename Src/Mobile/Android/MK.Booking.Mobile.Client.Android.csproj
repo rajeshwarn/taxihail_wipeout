@@ -258,6 +258,11 @@
     <AndroidResource Include="Resources\Drawable\add_btn.png" />
     <AndroidResource Include="Resources\drawable-hdpi\add_btn.png" />
     <Compile Include="PlatformIntegration\PushNotificationService.cs" />
+    <Compile Include="Animations\SlideDownAnimation.cs" />
+    <Compile Include="Controls\SlidingPanel.cs" />
+    <AndroidResource Include="Resources\Drawable\statusDropShadow.xml" />
+    <AndroidResource Include="Resources\Drawable\backStatusVehicleInfo.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\backStatusVehicleInfo.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
@@ -579,7 +584,7 @@
       <Name>Newtonsoft.Json.MonoDroid</Name>
     </ProjectReference>
     <ProjectReference Include="..\Infrastructure\PushSharp.Client.MonoForAndroid.Gcm\PushSharp.Client.MonoForAndroid.Gcm.csproj">
-      <Project>{1466d096-69fa-4b75-bbb6-533ffaf5d4eb}</Project>
+      <Project>{1466D096-69FA-4B75-BBB6-533FFAF5D4EB}</Project>
       <Name>PushSharp.Client.MonoForAndroid.Gcm</Name>
     </ProjectReference>
   </ItemGroup>
