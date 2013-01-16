@@ -30,7 +30,7 @@
 "StatusViewTitle"="Confirmed";
 "CreateAccoutLanguageLabel"="Language:";
 "AptNumber"="Apt. No.";
-"View_SignUp_Label"="Create Your Profile";
+"View_SignUp_Label"="Create Profile";
 "InvalidBookinInfo"="To book a ride, you need to enter a valid pickup address.";
 "BookDateLabel"="Pick Me Up Later";
 "YesButton"="Yes";
@@ -292,7 +292,7 @@
 "UpdateBookingSettingsEmptyField"="The data is invalid, all the fields are required.";
 "RideSettingsCannotLoadListMessage"="The server cannot be contacted, try again later.";
 "ReturnBookingScreen"="Return to main screen";
-"View_SignUp"="Create Your Account";
+"View_SignUp"="Create Account";
 "Now"="Now";
 "ResetPasswordReset"="Reset";
 "ResetPasswordInvalidDataMessage"="The email is invalid.";
@@ -373,3 +373,4 @@
 "Tuto08Bottom"="We hope you find this application both convenient and intuitive.";
 "ChooseProviderDialogTitle"="Pick a provider";
 "Tuto08Top"="You can review your order history at any time, and even rebook a previous trip with the push of a button";
+"NoPreference"="No preference";
