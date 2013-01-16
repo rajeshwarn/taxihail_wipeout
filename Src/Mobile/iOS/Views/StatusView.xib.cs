@@ -65,9 +65,10 @@ namespace apcurium.MK.Booking.Mobile.Client
                 NavigationItem.HidesBackButton = true;                
                 View.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("Assets/background.png"));
 
-                View.BringSubviewToFront (lblTitle);
-                View.BringSubviewToFront (lblStatus);
-                lblTitle.Text = Resources.LoadingMessage;
+                View.BringSubviewToFront (statusBar);
+
+                statusBar.Initialize ( topVisibleStatus, topSlidingStatus );
+                lblConfirmation.Text = Resources.LoadingMessage;
 
                 btnChangeBooking.SetTitle (Resources.ChangeBookingSettingsButton, UIControlState.Normal);
              
@@ -87,8 +88,8 @@ namespace apcurium.MK.Booking.Mobile.Client
                 this.AddBindings (new Dictionary<object, string> ()                            
                 {
                     { mapStatus, "{'Pickup':{'Path':'Pickup.Model'}, 'TaxiLocation':{'Path':'OrderStatusDetail'}, 'MapCenter':{'Path':'MapCenter'} }" },
-                    { lblTitle, "{'Text':{'Path':'StatusInfoText'}}" },
-                    { lblStatus, "{'Text':{'Path':'ConfirmationNoTxt'}}" },
+                    { lblStatus, "{'Text':{'Path':'StatusInfoText'}}" },
+                    { lblConfirmation, "{'Text':{'Path':'ConfirmationNoTxt'}}" },
                     { btnCancel, "{'TouchUpInside': {'Path': 'CancelOrder'}}" },
                     { btnCall, "{'Hidden':{'Path':'IsCallButtonVisible', 'Converter':'BoolInverter'}, 'Enabled':{'Path':'IsCallButtonVisible'}, 'TouchUpInside':{'Path':'CallCompany'}}" },
                     { btnNewRide, "{'TouchUpInside': {'Path': 'NewRide'}}" }
