@@ -223,7 +223,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void AddReminder (OrderStatusDetail status)
         {
-            if (status.IBSStatusId.Equals("wosSCHED") 
+
+            if ( ( status != null )
+                && ( status.IBSStatusId != null )
+                && status.IBSStatusId.Equals("wosSCHED") 
 			    && !_hasSeenReminder
 				&& this.PhoneService.CanUseCalendarAPI())
             {

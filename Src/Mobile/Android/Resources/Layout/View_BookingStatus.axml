@@ -11,27 +11,16 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:paddingTop="7dip">
-            <LinearLayout
+            android:paddingTop="0dip">
+            <View
                 android:id="@+id/statusInfo"
-                android:orientation="horizontal"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="7dip">
-                <TextView
-                    android:id="@+id/confirmationNo"
-                    style="@style/BigTitleTextBlack"
-                    android:text="@string/StatusDescription"
-                    android:layout_width="match_parent"
-                    android:gravity="center_horizontal"
-                    android:layout_height="wrap_content"
-                    local:MvxBind="{&apos;Text&apos;: {&apos;Path&apos;: &apos;ConfirmationNoTxt&apos;}}" />
-            </LinearLayout>
+                android:layout_height="45dip" />
             <FrameLayout
                 android:id="@+id/statusMapSection"
                 android:layout_below="@id/statusInfo"
@@ -44,33 +33,9 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:apiKey="@string/GoogleMapKey"
-                    android:enabled="true"
+                    android:enabled="false"
                     local:MvxBind="{&apos;Pickup&apos;:{&apos;Path&apos;:&apos;Pickup.Model&apos;}, &apos;TaxiLocation&apos;:{&apos;Path&apos;:&apos;OrderStatusDetail&apos;}, &apos;Center&apos;:{&apos;Path&apos;:&apos;MapCenter&apos;} }"
                     android:clickable="true" />
-                <LinearLayout
-                    android:layout_weight="0.11"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#99000000"
-                    android:gravity="center_horizontal|center_vertical">
-                    <TextView
-                        android:layout_marginTop="8dip"
-                        android:layout_marginBottom="8dip"
-                        android:id="@+id/statusInfoText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Order #"
-                        android:gravity="center_horizontal|center_vertical"
-                        style="@style/BigTitleText"
-                        android:layout_gravity="center_horizontal|top"
-                        local:MvxBind="{&apos;Text&apos;: {&apos;Path&apos;: &apos;StatusInfoText&apos;}}" />
-                </LinearLayout>
-                <View
-                    android:layout_width="fill_parent"
-                    android:layout_height="3dip"
-                    android:layout_weight="0"
-                    android:background="@drawable/DropShadow"
-                    android:layout_gravity="top" />
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="fill_parent"
@@ -101,6 +66,46 @@
                         local:MvxBind="{&apos;Click&apos;: {&apos;Path&apos;: &apos;CallCompany&apos;}, &apos;Visibility&apos;:{&apos;Path&apos;:&apos;IsCallButtonVisible&apos;, &apos;Converter&apos;:&apos;Visibility&apos;}}" />
                 </LinearLayout>
             </FrameLayout>
-        </LinearLayout>
+            <apcurium.mk.booking.mobile.client.controls.SlidingPanel
+                android:layout_width="fill_parent"
+                android:layout_height="138dip"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:id="@+id/hiddenTopContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="90dip"
+                    android:background="@drawable/backStatusVehicleInfo" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="48dip">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:layout_height="45dip"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:background="@drawable/background">
+                        <TextView
+                            style="@style/BigTitleTextBlack"
+                            local:MvxBind="{&apos;Text&apos;: {&apos;Path&apos;: &apos;ConfirmationNoTxt&apos;}}"
+                            android:gravity="center_horizontal|top"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            style="@style/BigTitleTextBlack"
+                            android:gravity="center_horizontal|top"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            local:MvxBind="{&apos;Text&apos;: {&apos;Path&apos;: &apos;StatusInfoText&apos;}}" />
+                    </LinearLayout>
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="3dip"
+                        android:layout_weight="0"
+                        android:background="@drawable/statusDropShadow"
+                        android:layout_gravity="bottom" />
+                </LinearLayout>
+            </apcurium.mk.booking.mobile.client.controls.SlidingPanel>
+        </RelativeLayout>
     </RelativeLayout>
 </apcurium.mk.booking.mobile.client.controls.HeaderedLayout>
