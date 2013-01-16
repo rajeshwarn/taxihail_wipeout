@@ -49,7 +49,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                    
                     var ibsStatus = ordersStatusIbs.FirstOrDefault(x => x.IBSOrderId == orderStatusDetail.IBSOrderId);
 
-                    Logger.Debug("Status from IBS " + ibsStatus.Dump());
+                    Logger.Debug("Status from IBS Webservice " + ibsStatus.Dump());
 
                     if (ibsStatus != null &&
                         ibsStatus.Status.HasValue()
@@ -74,7 +74,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                         orderStatusDetail.DriverInfos.VehicleModel = ibsStatus.VehicleModel;
                         orderStatusDetail.DriverInfos.VehicleRegistration = ibsStatus.VehicleRegistration;
                         orderStatusDetail.DriverInfos.VehicleType = ibsStatus.VehicleType;
-                        orderStatusDetail.VehicleNumber = ibsStatus.VehicleNumber == null ? null : ibsStatus.VehicleNumber.Trim();
+                        orderStatusDetail.VehicleNumber = ibsStatus.VehicleNumber;
                         orderStatusDetail.VehicleLatitude = ibsStatus.VehicleLatitude;
                         orderStatusDetail.VehicleLongitude = ibsStatus.VehicleLongitude;
                         orderStatusDetail.Eta = ibsStatus.Eta;
