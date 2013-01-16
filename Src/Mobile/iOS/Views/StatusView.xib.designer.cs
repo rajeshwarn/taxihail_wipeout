@@ -12,6 +12,18 @@ namespace apcurium.MK.Booking.Mobile.Client
 	partial class StatusView
 	{
 		[Outlet]
+		MonoTouch.UIKit.UIView topVisibleStatus { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UIView topSlidingStatus { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UILabel lblConfirmation { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UILabel lblStatus { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UIView bottomBar { get; set; }
 
 		[Outlet]
@@ -27,19 +39,36 @@ namespace apcurium.MK.Booking.Mobile.Client
 		MonoTouch.UIKit.UIButton btnChangeBooking { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblTitle { get; set; }
+		apcurium.MK.Booking.Mobile.Client.StatusBar statusBar { get; set; }
 
 		[Outlet]
-        apcurium.MK.Booking.Mobile.Client.Controls.TouchMap mapStatus { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.TouchMap mapStatus { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UIButton btnRefresh { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UILabel lblStatus { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (topVisibleStatus != null) {
+				topVisibleStatus.Dispose ();
+				topVisibleStatus = null;
+			}
+
+			if (topSlidingStatus != null) {
+				topSlidingStatus.Dispose ();
+				topSlidingStatus = null;
+			}
+
+			if (lblConfirmation != null) {
+				lblConfirmation.Dispose ();
+				lblConfirmation = null;
+			}
+
+			if (lblStatus != null) {
+				lblStatus.Dispose ();
+				lblStatus = null;
+			}
+
 			if (bottomBar != null) {
 				bottomBar.Dispose ();
 				bottomBar = null;
@@ -65,9 +94,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 				btnChangeBooking = null;
 			}
 
-			if (lblTitle != null) {
-				lblTitle.Dispose ();
-				lblTitle = null;
+			if (statusBar != null) {
+				statusBar.Dispose ();
+				statusBar = null;
 			}
 
 			if (mapStatus != null) {
@@ -78,11 +107,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			if (btnRefresh != null) {
 				btnRefresh.Dispose ();
 				btnRefresh = null;
-			}
-
-			if (lblStatus != null) {
-				lblStatus.Dispose ();
-				lblStatus = null;
 			}
 		}
 	}
