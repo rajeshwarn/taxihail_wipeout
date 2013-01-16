@@ -195,7 +195,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
                                                                                      {
                                                                                          Orders.Insert(0,new CallboxOrderViewModel()
                                                                                          {
-                                                                                             CreatedDate = orderInfo.PickupDate,
+                                                                                             CreatedDate = DateTime.Now,
                                                                                              IbsOrderId = orderInfo.IBSOrderId,
                                                                                              Id = Order.Id,
                                                                                              OrderStatus = orderInfo
