@@ -68,7 +68,6 @@
     <Compile Include="AuthenticateAttribute.cs" />
     <Compile Include="Resources\Account.cs" />
     <Compile Include="Resources\AddressList.cs" />
-    <Compile Include="Resources\BookingSettings.cs" />
     <Compile Include="Resources\DirectionInfo.cs" />
     <Compile Include="Resources\ErrorCode.cs" />
     <Compile Include="Resources\Order.cs" />
