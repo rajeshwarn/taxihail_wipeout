@@ -21,10 +21,8 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(CreateOrder command)
         {
-            var settings =  new BookingSettings();
-            Mapper.Map(command.Settings, settings);
             var order = new Order(command.OrderId, command.AccountId, command.IBSOrderId, command.PickupDate, 
-                                    command.PickupAddress, command.DropOffAddress, settings);
+                                    command.PickupAddress, command.DropOffAddress, command.Settings);
 
             if (command.Payment.PayWithCreditCard)
             {

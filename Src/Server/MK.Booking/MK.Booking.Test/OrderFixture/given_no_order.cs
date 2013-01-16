@@ -44,7 +44,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 DropOffAddress = new Address { Latitude = 45.50643, Longitude = -73.554052, FullAddress = "Velvet auberge st gabriel" },           
                 IBSOrderId = 99,
             };
-            order.Settings = new CreateOrder.BookingSettings { ChargeTypeId = 99, VehicleTypeId = 88, ProviderId = 11, Phone = "514-555-1212", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" };
+            order.Settings = new BookingSettings { ChargeTypeId = 99, VehicleTypeId = 88, ProviderId = 11, Phone = "514-555-1212", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" };
 
             this.sut.When(order );
 
@@ -76,7 +76,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 DropOffAddress = new Address { Latitude = 45.50643, Longitude = -73.554052, FullAddress = "Velvet auberge st gabriel" },
                 IBSOrderId = 99,
             };
-            order.Settings = new CreateOrder.BookingSettings { ChargeTypeId = 99, VehicleTypeId = 88, ProviderId = 11, Phone = "514-555-1212", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" };
+            order.Settings = new BookingSettings { ChargeTypeId = 99, VehicleTypeId = 88, ProviderId = 11, Phone = "514-555-1212", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" };
             order.Payment = new CreateOrder.PaymentInformation { PayWithCreditCard = true, CreditCardId = creditCardId, TipPercent = 15 };
 
             this.sut.When(order);
@@ -102,7 +102,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 PickupAddress = new Address { RingCode = "3131", Latitude = 45.515065, Longitude = -73.558064, FullAddress = "1234 rue Saint-Hubert", Apartment="3939" },
                 IBSOrderId = 99,
             };
-            order.Settings = new CreateOrder.BookingSettings { ChargeTypeId = 99, VehicleTypeId = 88, ProviderId = 11, Phone = "514-555-1212", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" };
+            order.Settings = new BookingSettings { ChargeTypeId = 99, VehicleTypeId = 88, ProviderId = 11, Phone = "514-555-1212", Passengers = 6, NumberOfTaxi = 1, Name = "Joe Smith" };
 
             this.sut.When(order);
             

@@ -124,7 +124,6 @@
     <Compile Include="Resources\AddressList.cs" />
     <Compile Include="Resources\ApplicationInfo.cs" />
     <Compile Include="Resources\AppSetting.cs" />
-    <Compile Include="Resources\BookingSettings.cs" />
     <Compile Include="Resources\Cmt\CmtResponse.cs" />
     <Compile Include="Resources\Cmt\LinkData.cs" />
     <Compile Include="Resources\Cmt\PreCogActionType.cs" />
