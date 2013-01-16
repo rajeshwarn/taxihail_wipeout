@@ -141,7 +141,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			set {
 				if(value != null)
 				{
-					var data = value.Select(i => i == ListItem.NullListItem 
+					var data = value.Select(i => i.Id == ListItem.NullId 
 					                        ? ListItemData.NullListItemData 
 					                        : new ListItemData { Key = i.Id, Value = i.Display, Image = i.Image }).ToList();
 					_adapter.Clear();
