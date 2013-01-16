@@ -48,14 +48,12 @@ namespace apcurium.MK.Booking.Mobile.Client
             get { return Data.VehicleTypeId; }
             set
             {
-				int? id = value;
-				if(id == ListItem.NullListItem.Id)
-				{
-					id = null;
-				}
-                Data.VehicleTypeId = value;
+				var id = value == ListItem.NullId ? default(int?) : value;
+				Data.VehicleTypeId = id;
             }
         }
+
+
 
         
         public string VehicleTypeName

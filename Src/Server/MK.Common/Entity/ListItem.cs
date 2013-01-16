@@ -2,7 +2,8 @@
 {
     public class ListItem : ListItem<int>
     {
-		private static ListItem _nullListItem = new ListItem { Id = int.MinValue }; 
+		public const int NullId = int.MinValue;
+		private static ListItem _nullListItem = new ListItem { Id = NullId }; 
 		public static ListItem NullListItem
 		{
 			get{
