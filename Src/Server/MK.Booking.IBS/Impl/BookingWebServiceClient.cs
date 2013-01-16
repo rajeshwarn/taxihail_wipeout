@@ -97,13 +97,13 @@ namespace apcurium.MK.Booking.IBS.Impl
                         var statusInfos = new IBSOrderInformation();
                         statusInfos.Status = orderInfoFromIBS.OrderStatus.ToString();
                         statusInfos.IBSOrderId = orderInfoFromIBS.OrderID;
-                        statusInfos.VehicleNumber = orderInfoFromIBS.VehicleNumber;
+                        statusInfos.VehicleNumber = orderInfoFromIBS.VehicleNumber == null ? null : orderInfoFromIBS.VehicleNumber.Trim(); ;
                         statusInfos.MobilePhone = orderInfoFromIBS.DriverMobilePhone;
                         statusInfos.FirstName = orderInfoFromIBS.DriverFirstName;
                         statusInfos.LastName = orderInfoFromIBS.DriverLastName;
                         statusInfos.VehicleColor = orderInfoFromIBS.VehicleColor;
-                        statusInfos.VehicleLatitude = orderInfoFromIBS.VehicleCoordinateLat > 0 ? (double?)orderInfoFromIBS.VehicleCoordinateLat : null;
-                        statusInfos.VehicleLongitude = orderInfoFromIBS.VehicleCoordinateLong > 0 ? (double?)orderInfoFromIBS.VehicleCoordinateLong : null;
+                        statusInfos.VehicleLatitude = orderInfoFromIBS.VehicleCoordinateLat != 0 ? (double?)orderInfoFromIBS.VehicleCoordinateLat : null;
+                        statusInfos.VehicleLongitude = orderInfoFromIBS.VehicleCoordinateLong != 0 ? (double?)orderInfoFromIBS.VehicleCoordinateLong : null;
                         statusInfos.VehicleMake = orderInfoFromIBS.VehicleMake;
                         statusInfos.VehicleModel = orderInfoFromIBS.VehicleModel;
                         statusInfos.VehicleRegistration = orderInfoFromIBS.VehicleRegistration;
