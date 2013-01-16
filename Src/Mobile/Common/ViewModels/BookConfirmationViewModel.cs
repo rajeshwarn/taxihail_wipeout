@@ -122,12 +122,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 					return base.Resources.GetString("NoPreference");
 				}
-				return Vehicles.SingleOrDefault(v => v.Id == VehicleTypeId).SelectOrDefault(v => v.Display, ""); }            
+				return Vehicles == null ? null : Vehicles.SingleOrDefault(v => v.Id == VehicleTypeId).SelectOrDefault(v => v.Display, ""); }            
 		}
 
 		public string ChargeType
 		{
-			get { return this.Payments.SingleOrDefault(v => v.Id == ChargeTypeId).SelectOrDefault(v => v.Display, ""); }            
+			get
+			{ 
+				return Payments == null ? null : this.Payments.SingleOrDefault(v => v.Id == ChargeTypeId).SelectOrDefault(v => v.Display, ""); }            
 		}
 
 		public CreateOrder Order { get; private set; }
