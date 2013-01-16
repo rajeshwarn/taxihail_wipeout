@@ -6,6 +6,11 @@ namespace apcurium.MK.Booking.Events
 {
     public class OrderCreated : VersionedEvent
     {
+        public OrderCreated()
+        {
+            Settings = new BookingSettings();    
+        }
+
         public Guid AccountId { get; set; }
 
         public int IBSOrderId { get; set; }
