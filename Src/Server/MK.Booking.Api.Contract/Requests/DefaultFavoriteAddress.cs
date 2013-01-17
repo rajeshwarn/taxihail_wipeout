@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Http;
