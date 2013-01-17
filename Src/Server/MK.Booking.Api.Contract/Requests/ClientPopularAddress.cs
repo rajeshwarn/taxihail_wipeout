@@ -2,7 +2,9 @@
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Booking.Api.Contract.Http;
+#if !CLIENT
 using apcurium.MK.Booking.ReadModel;
+#endif
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
@@ -13,6 +15,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         
     }
 
+#if !CLIENT
     [NoCache]
     public class ClientPopularAddressResponse : List<PopularAddressDetails>
     {
@@ -27,4 +30,5 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
             
         }
     }
+#endif
 }
