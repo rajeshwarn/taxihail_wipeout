@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.Api.Services
 
         public override object OnGet(DefaultFavoriteAddress request)
         {
-            return Dao.GetAll();
+            return new DefaultFavoriteAddressResponse(Dao.GetAll());
         }
 
         public override object OnPost(DefaultFavoriteAddress request)
