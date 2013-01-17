@@ -283,6 +283,7 @@
     <Content Include="services\OrderService.js" />
     <Content Include="common\services\PlacesService.js" />
     <Content Include="taxi-hail.js" />
+    <Content Include="themes\FreedomTaxi\img\logo.png" />
     <Content Include="themes\Taxi303\img\logo.png" />
     <Content Include="themes\AtlantaCheckerCab\img\cancel-icon.png" />
     <Content Include="themes\AtlantaCheckerCab\img\location.png" />
@@ -403,6 +404,10 @@
     <Content Include="themes\Nawlins\less\combined.less" />
     <Content Include="themes\Nawlins\less\style.less" />
     <Content Include="themes\Nawlins\less\variables.less" />
+    <Content Include="themes\FreedomTaxi\less\combined-responsive.less" />
+    <Content Include="themes\FreedomTaxi\less\combined.less" />
+    <Content Include="themes\FreedomTaxi\less\style.less" />
+    <Content Include="themes\FreedomTaxi\less\variables.less" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
