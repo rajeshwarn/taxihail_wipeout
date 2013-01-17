@@ -5,6 +5,7 @@ using System.Text;
 using Infrastructure.Messaging;
 using ServiceStack.FluentValidation;
 using ServiceStack.ServiceInterface;
+using apcurium.MK.Booking.Api.Contract.Http;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query;
@@ -29,8 +30,7 @@ namespace apcurium.MK.Booking.Api.Services
 
         public override object OnGet(ClientPopularAddress request)
         {
-            Response.AddHeader("Cache-Control", "no-cache");
-            return Dao.GetAll();
+            return new ClientPopularAddressResponse(Dao.GetAll());
         }
 
     }
