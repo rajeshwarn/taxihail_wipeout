@@ -20,5 +20,7 @@
    "TwitterConsumerKey" : "",
    "TwitterConsumerSecret" : "",
    "TwitterEnabled" : "false",
-   "TwitterRequestTokenUrl" : ""
+   "TwitterRequestTokenUrl" : "",
+   "StreetNumberScreenEnabled" : "true",
+   "TutorialEnabled" : "true"
 }
