@@ -20,7 +20,10 @@
 
             $ul.first().append(items);
 
-            var $add = $('<a href="#addresses/popular/add">').addClass('new').text(TaxiHail.localize('popular.add-new'));
+            var $add = $('<a>')
+                .attr('href', '#addresses/popular/add')
+                .addClass('new')
+                .text(TaxiHail.localize('popular.add-new'));
 
             $ul.first().append($('<li>').append($add));
 

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using ServiceStack.ServiceHost;
+﻿using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
+using System;
 
 namespace apcurium.MK.Booking.Api.Contract.Http
 {
@@ -12,6 +9,17 @@ namespace apcurium.MK.Booking.Api.Contract.Http
 #else 
     public partial class NoCacheAttribute : ResponseFilterAttribute
     {
+        public NoCacheAttribute(ApplyTo applyTo)
+            :base(applyTo)
+        {
+            
+        }
+
+        public NoCacheAttribute()
+        {
+            
+        }
+
         public override void Execute(IHttpRequest req, IHttpResponse res, object requestDto)
         {
             res.AddHeader("Cache-Control", "no-cache");

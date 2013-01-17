@@ -21,8 +21,7 @@ namespace apcurium.MK.Booking.Api.Services
 
         public override object OnGet(DefaultFavoriteAddress request)
         {
-            Response.AddHeader("Cache-Control", "no-cache");
-            return Dao.GetAll();
+            return new DefaultFavoriteAddressResponse(Dao.GetAll());
         }
 
         public override object OnPost(DefaultFavoriteAddress request)
