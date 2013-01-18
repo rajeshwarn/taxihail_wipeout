@@ -24,6 +24,24 @@ namespace apcurium.MK.Booking.Mobile.Client
 		MonoTouch.UIKit.UILabel lblStatus { get; set; }
 
 		[Outlet]
+		MonoTouch.UIKit.UILabel lblDriver { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UILabel lblLicence { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UILabel lblTaxiType { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UILabel lblMake { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UILabel lblModel { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UILabel lblColor { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UIView bottomBar { get; set; }
 
 		[Outlet]
@@ -67,6 +85,36 @@ namespace apcurium.MK.Booking.Mobile.Client
 			if (lblStatus != null) {
 				lblStatus.Dispose ();
 				lblStatus = null;
+			}
+
+			if (lblDriver != null) {
+				lblDriver.Dispose ();
+				lblDriver = null;
+			}
+
+			if (lblLicence != null) {
+				lblLicence.Dispose ();
+				lblLicence = null;
+			}
+
+			if (lblTaxiType != null) {
+				lblTaxiType.Dispose ();
+				lblTaxiType = null;
+			}
+
+			if (lblMake != null) {
+				lblMake.Dispose ();
+				lblMake = null;
+			}
+
+			if (lblModel != null) {
+				lblModel.Dispose ();
+				lblModel = null;
+			}
+
+			if (lblColor != null) {
+				lblColor.Dispose ();
+				lblColor = null;
 			}
 
 			if (bottomBar != null) {

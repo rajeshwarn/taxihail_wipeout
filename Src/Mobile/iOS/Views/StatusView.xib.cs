@@ -90,6 +90,12 @@ namespace apcurium.MK.Booking.Mobile.Client
                     { mapStatus, "{'Pickup':{'Path':'Pickup.Model'}, 'TaxiLocation':{'Path':'OrderStatusDetail'}, 'MapCenter':{'Path':'MapCenter'} }" },
                     { lblStatus, "{'Text':{'Path':'StatusInfoText'}}" },
                     { lblConfirmation, "{'Text':{'Path':'ConfirmationNoTxt'}}" },
+                    { lblDriver, "{'Text':{'Path':'OrderStatusDetail.DriverInfos.FirstName'}}" },
+                    { lblLicence, "{'Text':{'Path':'OrderStatusDetail.DriverInfos.VehicleRegistration'}}" },
+                    { lblTaxiType, "{'Text':{'Path':'OrderStatusDetail.DriverInfos.VehicleType'}}" },
+                    { lblMake, "{'Text':{'Path':'OrderStatusDetail.DriverInfos.VehicleMake'}}" },
+                    { lblModel, "{'Text':{'Path':'OrderStatusDetail.DriverInfos.VehicleModel'}}" },
+                    { lblColor, "{'Text':{'Path':'VehicleColor'}}" },
                     { btnCancel, "{'TouchUpInside': {'Path': 'CancelOrder'}}" },
                     { btnCall, "{'Hidden':{'Path':'IsCallButtonVisible', 'Converter':'BoolInverter'}, 'Enabled':{'Path':'IsCallButtonVisible'}, 'TouchUpInside':{'Path':'CallCompany'}}" },
                     { btnNewRide, "{'TouchUpInside': {'Path': 'NewRide'}}" }
