@@ -81,6 +81,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 		MonoTouch.UIKit.UILabel txtModel { get; set; }
 
 		[Outlet]
+		MonoTouch.UIKit.UIImageView imgGrip { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UILabel txtColor { get; set; }
 		
 		void ReleaseDesignerOutlets ()
@@ -198,6 +201,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 			if (txtModel != null) {
 				txtModel.Dispose ();
 				txtModel = null;
+			}
+
+			if (imgGrip != null) {
+				imgGrip.Dispose ();
+				imgGrip = null;
 			}
 
 			if (txtColor != null) {

@@ -84,9 +84,9 @@ namespace apcurium.MK.Booking.Mobile.Client
                 AppButtons.FormatStandardButton ((GradientButton)btnCancel, Resources.StatusCancelButton, AppStyle.ButtonColor.Red);
                 AppButtons.FormatStandardButton ((GradientButton)btnNewRide, Resources.StatusNewRideButton, AppStyle.ButtonColor.Green);
                 this.NavigationItem.TitleView = new TitleView (null, Resources.GenericTitle, false);
-                
-                View.BringSubviewToFront (bottomBar);
 
+                View.BringSubviewToFront (bottomBar);
+                imgGrip.Image = UIImage.FromFile("Assets/grip@2x.png");
                 if ( ViewModel.IsCallButtonVisible )
                 {
                     btnCancel.Frame = new System.Drawing.RectangleF( 8,  btnCancel.Frame.Y,  btnCancel.Frame.Width,  btnCancel.Frame.Height );
@@ -104,6 +104,8 @@ namespace apcurium.MK.Booking.Mobile.Client
                     { lblMake, "{'Text':{'Path':'OrderStatusDetail.DriverInfos.VehicleMake'}}" },
                     { lblModel, "{'Text':{'Path':'OrderStatusDetail.DriverInfos.VehicleModel'}}" },
                     { lblColor, "{'Text':{'Path':'VehicleColor'}}" },
+                    { statusBar, "{'Text':{'Path':'IsDriverInfoAvailable'}}" },
+                    { imgGrip, "{'Hidden':{'Path':'IsDriverInfoAvailable', 'Converter':'BoolInverter'}}" },
                     { btnCancel, "{'TouchUpInside': {'Path': 'CancelOrder'}}" },
                     { btnCall, "{'Hidden':{'Path':'IsCallButtonVisible', 'Converter':'BoolInverter'}, 'Enabled':{'Path':'IsCallButtonVisible'}, 'TouchUpInside':{'Path':'CallCompany'}}" },
                     { btnNewRide, "{'TouchUpInside': {'Path': 'NewRide'}}" }
