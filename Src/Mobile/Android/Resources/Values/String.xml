@@ -375,4 +375,12 @@
   <string name="BackButton">Back</string>
   <string name="LocationServiceErrorTitle">Error</string>
   <string name="LocationServiceErrorMessage">The location service is not enabled.</string>
+  <string name="DriverInfo.Driver">Driver: </string>
+  <string name="DriverInfo.Licence">Licence #: </string>
+  <string name="DriverInfo.TaxiType">Taxi Type: </string>
+  <string name="DriverInfo.Make">Make: </string>
+  <string name="DriverInfo.Model">Model: </string>
+  <string name="DriverInfo.Color">Color: </string>
+  <string name="NoPhoneNumberTitle">Invalid phone Number</string>
+  <string name="NoPhoneNumberMessage">The phone number is invalid for this driver.</string>
 </resources>

@@ -143,6 +143,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             private set{}
         }
 
+        public IMvxCommand CallTaxi
+        {
+            get { return GetCommand(() =>
+                                        {
+                                            if (!string.IsNullOrEmpty(OrderStatusDetail.DriverInfos.MobilePhone))
+                                            {
+                                                PhoneService.Call(OrderStatusDetail.DriverInfos.MobilePhone);
+                                            }
+                                            else
+                                            {
+                                                MessageService.ShowMessage(Resources.GetString("NoPhoneNumberTitle"), Resources.GetString("NoPhoneNumberMessage"));
+                                            }
+                                        }); }
+        }
+
+        public bool IsDriverInfoAvailable
+        {
+            get { return !string.IsNullOrEmpty(OrderStatusDetail.DriverInfos.VehicleRegistration); }
+        }
+
         private string _statusInfoText { get; set; }
 
         public string StatusInfoText {

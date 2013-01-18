@@ -70,7 +70,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         public bool OnTouch(View v, MotionEvent e)
         {
-            if (v != this)
+            if (v != this || !this.IsEnabled)
             {
                 return true;
             }
@@ -191,6 +191,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
 
         }
+
+        public bool IsEnabled { get; set; }
     }
 }
 
