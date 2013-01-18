@@ -1668,23 +1668,23 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f070016
 			public const int DontHaveAnAccountLabel = 2131165206;
 			
-			// aapt resource value: 0x7f07017c
-			public const int DriverInfo_Color = 2131165564;
+			// aapt resource value: 0x7f07017d
+			public const int DriverInfo_Color = 2131165565;
 			
 			// aapt resource value: 0x7f070177
 			public const int DriverInfo_Driver = 2131165559;
 			
-			// aapt resource value: 0x7f070178
-			public const int DriverInfo_Licence = 2131165560;
-			
-			// aapt resource value: 0x7f07017a
-			public const int DriverInfo_Make = 2131165562;
+			// aapt resource value: 0x7f070179
+			public const int DriverInfo_Licence = 2131165561;
 			
 			// aapt resource value: 0x7f07017b
-			public const int DriverInfo_Model = 2131165563;
+			public const int DriverInfo_Make = 2131165563;
 			
-			// aapt resource value: 0x7f070179
-			public const int DriverInfo_TaxiType = 2131165561;
+			// aapt resource value: 0x7f07017c
+			public const int DriverInfo_Model = 2131165564;
+			
+			// aapt resource value: 0x7f07017a
+			public const int DriverInfo_TaxiType = 2131165562;
 			
 			// aapt resource value: 0x7f07010a
 			public const int DropoffWasActivatedToastMessage = 2131165450;
@@ -1932,11 +1932,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f070079
 			public const int NoMailClient = 2131165305;
 			
-			// aapt resource value: 0x7f07017e
-			public const int NoPhoneNumberMessage = 2131165566;
+			// aapt resource value: 0x7f07017f
+			public const int NoPhoneNumberMessage = 2131165567;
 			
-			// aapt resource value: 0x7f07017d
-			public const int NoPhoneNumberTitle = 2131165565;
+			// aapt resource value: 0x7f07017e
+			public const int NoPhoneNumberTitle = 2131165566;
+			
+			// aapt resource value: 0x7f070178
+			public const int NoPreference = 2131165560;
 			
 			// aapt resource value: 0x7f07003a
 			public const int NotAvailable = 2131165242;
