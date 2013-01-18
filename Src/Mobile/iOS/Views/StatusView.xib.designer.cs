@@ -12,6 +12,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 	partial class StatusView
 	{
 		[Outlet]
+		MonoTouch.UIKit.UIView viewLine { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.GradientButton btnCallDriver { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UIView topVisibleStatus { get; set; }
 
 		[Outlet]
@@ -88,6 +94,16 @@ namespace apcurium.MK.Booking.Mobile.Client
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (viewLine != null) {
+				viewLine.Dispose ();
+				viewLine = null;
+			}
+
+			if (btnCallDriver != null) {
+				btnCallDriver.Dispose ();
+				btnCallDriver = null;
+			}
+
 			if (topVisibleStatus != null) {
 				topVisibleStatus.Dispose ();
 				topVisibleStatus = null;

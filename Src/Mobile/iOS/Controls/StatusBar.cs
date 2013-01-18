@@ -3,6 +3,7 @@ using MonoTouch.UIKit;
 using System.Drawing;
 using MonoTouch.Foundation;
 using MonoTouch.CoreGraphics;
+using Cirrious.MvvmCross.Interfaces.Commands;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -92,8 +93,31 @@ namespace apcurium.MK.Booking.Mobile.Client
             _visibleView.Frame = new RectangleF (0, this.Bounds.Height - _minHeight, this.Bounds.Width, _minHeight);
         }
 
-        public bool isEnabled{get;set;}
-        
+        private bool _isEnabled{get;set;}
+
+        public bool IsEnabled
+        {
+            get {return _isEnabled;}
+            set 
+            { 
+                if ( _isEnabled != value )
+                {
+                    _isEnabled = value;
+                    if ( IsEnabled )
+                    {
+                        SlideOut();
+                    }
+                    else
+                    {
+                        SlideIn();
+                    }
+                }
+            }
+        }
+
+
+
+
         void SetSlideoutView ()
         {
             if (_slideoutView == null) {
@@ -138,7 +162,11 @@ namespace apcurium.MK.Booking.Mobile.Client
             SetHeight (_maxHeight, true);
         }
 
-        
+        public void SlideIn ()
+        {
+            SetHeight (_minHeight, true);
+        }
+
 
 
         PointF _startPt;
@@ -147,7 +175,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         public override void TouchesBegan (NSSet touches, UIEvent evt)
         {
             UITouch t = touches.AnyObject as UITouch;
-            if (t != null && this.isEnabled) {
+            if (t != null && this.IsEnabled) {
                 _initialHeight = this.Bounds.Height;
                 _startPt = t.LocationInView (this);
                 _lastPoint = _startPt;
@@ -163,7 +191,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         public override void TouchesMoved (NSSet touches, UIEvent evt)
         {
             UITouch t = touches.AnyObject as UITouch;
-            if (t != null && this.isEnabled) {
+            if (t != null && this.IsEnabled) {
                 var p = t.LocationInView (this);
                 Console.WriteLine (p.Y);
                 var newHeight = _initialHeight + p.Y - _startPt.Y;

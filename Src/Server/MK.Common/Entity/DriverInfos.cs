@@ -1,3 +1,6 @@
+using System.Linq;
+using apcurium.MK.Common.Extensions;
+
 namespace apcurium.MK.Common.Entity
 {
     public class DriverInfos
@@ -15,6 +18,13 @@ namespace apcurium.MK.Common.Entity
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
+
+        public string FullName 
+        {
+            get{
+                return Params.Get( FirstName, LastName ).Where ( s=> s.HasValue () ).JoinBy( " " );
+            }
+        }
 
         public string MobilePhone { get; set; }
     }
