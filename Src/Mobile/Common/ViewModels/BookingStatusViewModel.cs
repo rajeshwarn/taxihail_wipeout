@@ -167,7 +167,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public bool IsDriverInfoAvailable
         {
-            get { return (OrderStatusDetail.IBSStatusId == "wosASSIGNED" ) && ( OrderStatusDetail.DriverInfos.VehicleRegistration.HasValue() || OrderStatusDetail.DriverInfos.LastName.HasValue() || OrderStatusDetail.DriverInfos.FirstName.HasValue()); }
+            get { return ( (OrderStatusDetail.IBSStatusId == "wosASSIGNED" ) || (OrderStatusDetail.IBSStatusId == "wosARRIVED") ) && ( OrderStatusDetail.DriverInfos.VehicleRegistration.HasValue() || OrderStatusDetail.DriverInfos.LastName.HasValue() || OrderStatusDetail.DriverInfos.FirstName.HasValue()); }
         }
 
         private string _statusInfoText { get; set; }
