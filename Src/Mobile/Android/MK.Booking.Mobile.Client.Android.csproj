@@ -542,6 +542,10 @@
     <AndroidResource Include="Resources\Drawable\tutorial_screen08.png" />
     <AndroidResource Include="Resources\Drawable\delete_card_btn.png" />
     <AndroidResource Include="Resources\drawable-hdpi\delete_card_btn.png" />
+    <AndroidResource Include="Resources\Drawable\driverInfosBackGrey.png" />
+    <AndroidResource Include="Resources\Drawable\driverInfosBackLightGrey.png" />
+    <AndroidResource Include="Resources\Drawable\grip.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\grip.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

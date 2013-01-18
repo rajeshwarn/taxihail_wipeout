@@ -75,7 +75,7 @@
                   android:id="@+id/hiddenTopContent"
                   android:layout_width="match_parent"
                   android:layout_height="120dip"
-                  android:background="@drawable/backStatusVehicleInfo" >
+                  android:background="@drawable/driverInfosBackGrey" >
                 <RelativeLayout
                   android:layout_width="match_parent"
                   android:layout_height="match_parent"
@@ -199,7 +199,7 @@
                   <FrameLayout
                       android:layout_width="match_parent"
                     android:layout_height="45dip"
-                    android:background="@drawable/background"
+                   android:background="@drawable/driverInfosBackLightGrey"
                     android:paddingRight="10dip">
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -223,7 +223,7 @@
                         android:layout_width="20dip"
                         android:scaleType="fitXY"
                         android:adjustViewBounds="true"
-                        android:src="@drawable/cancel"
+                        android:src="@drawable/grip"
                         android:layout_gravity="center_vertical|right"
                         android:layout_height="20dip" 
                         android:layout_marginRight="10dip" 
