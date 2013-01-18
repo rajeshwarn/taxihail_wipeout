@@ -117,7 +117,6 @@
     <Compile Include="Domain\Account.cs" />
     <Compile Include="Domain\Company.cs" />
     <Compile Include="Domain\Order.cs" />
-    <Compile Include="Domain\BookingSettings.cs" />
     <Compile Include="Domain\PaymentInformation.cs" />
     <Compile Include="Email\EmailSender.cs" />
     <Compile Include="Email\IEmailSender.cs" />
@@ -140,7 +139,6 @@
     <Compile Include="PushNotifications\IPushNotificationService.cs" />
     <Compile Include="ReadModel\AccountAddress.cs" />
     <Compile Include="ReadModel\AccountDetail.cs" />
-    <Compile Include="ReadModel\BookingSetting.cs" />
     <Compile Include="ReadModel\AddressDetails.cs" />
     <Compile Include="ReadModel\DeviceDetail.cs" />
     <Compile Include="ReadModel\OrderDetailWithAccount.cs" />

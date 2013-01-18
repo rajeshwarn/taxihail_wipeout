@@ -48,8 +48,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			base.Load ();
             try {
 
-                MessageService.ShowProgress (true);                
-                RideSettings = new RideSettingsModel (Order.Settings, _accountService.GetCompaniesList (), _accountService.GetVehiclesList (), _accountService.GetPaymentsList ());
+                MessageService.ShowProgress (true);
+				this.Vehicles = _accountService.GetVehiclesList().ToArray();
+				this.Payments = _accountService.GetPaymentsList().ToArray();
                 FareEstimate = _bookingService.GetFareEstimateDisplay (Order, null, "NotAvailable", false, "NotAvailable");
 
                 var paymentInformation = new PaymentInformation {
@@ -71,9 +72,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public void SetVehicleTypeId( int id )
+        public void SetVehicleTypeId (int id)
         {
-            Order.Settings.VehicleTypeId = id;
+            if (id == ListItem.NullId) {
+                Order.Settings.VehicleTypeId = null;
+            } else {
+                Order.Settings.VehicleTypeId = id;
+            }
             FirePropertyChanged ( () => VehicleName );
         }
 
@@ -86,40 +91,46 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 
         public int VehicleTypeId {
-            get { return Order.Settings.VehicleTypeId ; }
-            set {  SetVehicleTypeId( value ); }
+            get { return Order.Settings.VehicleTypeId ?? ListItem.NullId; }
+            set 
+			{  
+				SetVehicleTypeId( value );
+			}
         }
+
         public int ChargeTypeId {
             get { return Order.Settings.ChargeTypeId ; }
             set {  SetChargeTypeId( value ); }
         }
-
-
-            
             
         public ListItem[] Vehicles {
-            get {
-				return RideSettings != null  ? RideSettings.VehicleTypeList : null;
-            }
+			get;
+			private set;
         }
 
         public ListItem[] Payments {
-            get {
-				return RideSettings != null  ? RideSettings.ChargeTypeList : null;
-            }
+			get;
+			private set;
         }
+		      
 
-        public string VehicleName {
-            get {
-				return RideSettings != null  ? RideSettings.VehicleTypeName : null;
-            }
-        }
+		public string VehicleName
+		{
+			get 
+			{
+				if(VehicleTypeId == ListItem.NullId)
+				{
+					return base.Resources.GetString("NoPreference");
+				}
+				return Vehicles == null ? null : Vehicles.SingleOrDefault(v => v.Id == VehicleTypeId).SelectOrDefault(v => v.Display, ""); }            
+		}
 
-        public string ChargeType{
-            get {
-				return RideSettings != null  ? RideSettings.ChargeTypeName : null;
-            }
-        }
+		public string ChargeType
+		{
+			get
+			{ 
+				return Payments == null ? null : this.Payments.SingleOrDefault(v => v.Id == ChargeTypeId).SelectOrDefault(v => v.Display, ""); }            
+		}
 
 		public CreateOrder Order { get; private set; }
 		public string AptRingCode {
@@ -149,20 +160,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}
 			}
 		}
-		private RideSettingsModel _rideSettings;
-		public RideSettingsModel RideSettings {
-			get {
-				return _rideSettings;
-			}
-			private set {
-				if(value != _rideSettings)
-				{
-					_rideSettings = value;
-					FirePropertyChanged("RideSettings");
-				}
-			}
-		}
-		
+
 		public IMvxCommand NavigateToRefineAddress
 		{
 			get{
@@ -272,17 +270,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				MessageService.ShowDialog(Resources.GetString("ChooseProviderDialogTitle"), companyList, x=>x.Display, result => {
 					if(result != null) {
 						Order.Settings.ProviderId =  result.Id;
-                        RideSettings.Data = Order.Settings;
                         FirePropertyChanged("RideSettings");
 					}
 
                     this.GetService<IAccountService>().UpdateSettings(Order.Settings, _accountService.CurrentAccount.DefaultCreditCard, _accountService.CurrentAccount.DefaultTipAmount, _accountService.CurrentAccount.DefaultTipPercent );
 				});
 			}
-            else if(Order.Settings.ProviderId == null)
-            {
-                Order.Settings.ProviderId = RideSettings.ProviderId;
-            }
+            
 		}
 		
 		

@@ -376,6 +376,7 @@
   <string name="LocationServiceErrorTitle">Error</string>
   <string name="LocationServiceErrorMessage">The location service is not enabled.</string>
   <string name="DriverInfo.Driver">Driver: </string>
+  <string name="NoPreference">No preference</string>
   <string name="DriverInfo.Licence">Licence #: </string>
   <string name="DriverInfo.TaxiType">Taxi Type: </string>
   <string name="DriverInfo.Make">Make: </string>

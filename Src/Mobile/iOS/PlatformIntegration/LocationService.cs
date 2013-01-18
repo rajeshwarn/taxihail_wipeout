@@ -109,7 +109,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         }
         
         private Task<Position> _last;
-        
+
 
         public bool IsServiceEnabled
         {
@@ -122,11 +122,13 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
                 return _last;
             }
-            
+
  if (!IsServiceEnabled)
             {
                 return new Task<Position>(() =>{ throw new Exception("Location service not enabled");} ); 
             }
+
+
             Initialize();
 
             Console.WriteLine ( "**********GetPositionAsync**********" );

@@ -333,7 +333,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
 
                     CancelCurrentLocationCommand.Execute ();
-   if ( !_geolocator.IsServiceEnabled )
+
+                    if ( !_geolocator.IsServiceEnabled )
                     {
                         TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage ( TinyIoCContainer.Current.Resolve<IAppResource>().GetString ("LocationServiceErrorTitle"),TinyIoCContainer.Current.Resolve<IAppResource>().GetString ("LocationServiceErrorMessage") );
                         return ;
