@@ -207,12 +207,6 @@
   <data name="LocationServiceErrorMessage" xml:space="preserve">
     <value>The location service is not enabled.</value>
   </data>
-  <data name="LocationServiceErrorTitle" xml:space="preserve">
-    <value>Error</value>
-  </data>
-  <data name="LocationServiceErrorMessage" xml:space="preserve">
-    <value>The location service is not enabled.</value>
-  </data>
   <data name="FacebookButton" xml:space="preserve">
     <value>Sign In with Facebook</value>
   </data>
@@ -239,7 +233,7 @@
   </data>
   <data name="PickupTextPlaceholder" xml:space="preserve">
     <value>Pickup street address</value>
-  </data>  
+  </data>
   <data name="RingCodeTextPlaceholder" xml:space="preserve">
     <value>Entry code</value>
   </data>
@@ -281,7 +275,7 @@
   </data>
   <data name="ConfirmOriginLablel" xml:space="preserve">
     <value>Pickup</value>
-  </data>  
+  </data>
   <data name="ConfirmDestinationLabel" xml:space="preserve">
     <value>Destination</value>
   </data>
@@ -356,7 +350,7 @@
   </data>
   <data name="EntryCodeLabel" xml:space="preserve">
     <value>Entry code</value>
-  </data>  
+  </data>
   <data name="LocationDetailGiveItANamePlaceholder" xml:space="preserve">
     <value>Home, work, friend's house...</value>
   </data>
@@ -1191,7 +1185,7 @@
   <data name="RemoveCreditCardTitle" xml:space="preserve">
     <value>Remove credit card</value>
   </data>
-   <data name="NoCreditCardSelected" xml:space="preserve">
+  <data name="NoCreditCardSelected" xml:space="preserve">
     <value>Please select a credit card</value>
   </data>
   <data name="View_PaymentCreditCardsOnFile" xml:space="preserve">
@@ -1202,5 +1196,29 @@
   </data>
   <data name="NoPreference" xml:space="preserve">
     <value>No preference</value>
+  </data>
+  <data name="DriverInfoColor" xml:space="preserve">
+    <value>Color:</value>
+  </data>
+  <data name="DriverInfoDriver" xml:space="preserve">
+    <value>Driver:</value>
+  </data>
+  <data name="DriverInfoLicence" xml:space="preserve">
+    <value>Licence #:</value>
+  </data>
+  <data name="DriverInfoMake" xml:space="preserve">
+    <value>Make:</value>
+  </data>
+  <data name="DriverInfoModel" xml:space="preserve">
+    <value>Model:</value>
+  </data>
+  <data name="DriverInfoTaxiType" xml:space="preserve">
+    <value>Taxi Type:</value>
+  </data>
+  <data name="NoPhoneNumberMessage" xml:space="preserve">
+    <value>The phone number is invalid for this driver.</value>
+  </data>
+  <data name="NoPhoneNumberTitle" xml:space="preserve">
+    <value>Invalid phone Number</value>
   </data>
 </root>

@@ -51,7 +51,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		apcurium.MK.Booking.Mobile.Client.GradientButton btnCancel { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIButton btnCall { get; set; }
+		apcurium.MK.Booking.Mobile.Client.GradientButton btnCall { get; set; }
 
 		[Outlet]
 		MonoTouch.UIKit.UIButton btnChangeBooking { get; set; }
@@ -64,6 +64,24 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		[Outlet]
 		MonoTouch.UIKit.UIButton btnRefresh { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UILabel txtDriver { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UILabel txtLicence { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UILabel txtTaxiType { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UILabel txtMake { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UILabel txtModel { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UILabel txtColor { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
@@ -155,6 +173,36 @@ namespace apcurium.MK.Booking.Mobile.Client
 			if (btnRefresh != null) {
 				btnRefresh.Dispose ();
 				btnRefresh = null;
+			}
+
+			if (txtDriver != null) {
+				txtDriver.Dispose ();
+				txtDriver = null;
+			}
+
+			if (txtLicence != null) {
+				txtLicence.Dispose ();
+				txtLicence = null;
+			}
+
+			if (txtTaxiType != null) {
+				txtTaxiType.Dispose ();
+				txtTaxiType = null;
+			}
+
+			if (txtMake != null) {
+				txtMake.Dispose ();
+				txtMake = null;
+			}
+
+			if (txtModel != null) {
+				txtModel.Dispose ();
+				txtModel = null;
+			}
+
+			if (txtColor != null) {
+				txtColor.Dispose ();
+				txtColor = null;
 			}
 		}
 	}

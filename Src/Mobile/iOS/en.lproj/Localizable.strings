@@ -374,3 +374,11 @@
 "ChooseProviderDialogTitle"="Pick a provider";
 "Tuto08Top"="You can review your order history at any time, and even rebook a previous trip with the push of a button";
 "NoPreference"="No preference";
+"DriverInfoDriver"="Driver:";
+"DriverInfoLicence"="Licence #:";
+"DriverInfoTaxiType"="Taxi Type:";
+"DriverInfoModel"="Model:";
+"NoPhoneNumberMessage"="The phone number is invalid for this driver.";
+"NoPhoneNumberTitle"="Invalid phone Number";
+"DriverInfoMake"="Make:";
+"DriverInfoColor"="Color:";

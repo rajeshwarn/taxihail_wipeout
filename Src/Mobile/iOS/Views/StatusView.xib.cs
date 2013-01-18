@@ -69,9 +69,17 @@ namespace apcurium.MK.Booking.Mobile.Client
 
                 statusBar.Initialize ( topVisibleStatus, topSlidingStatus );
                 lblConfirmation.Text = Resources.LoadingMessage;
+                txtDriver.Text = Resources.DriverInfoDriver;
+                txtLicence.Text = Resources.DriverInfoLicence;
+                txtMake.Text = Resources.DriverInfoMake;
+                txtModel.Text = Resources.DriverInfoModel;
+                txtTaxiType.Text = Resources.DriverInfoTaxiType;
+                txtColor.Text = Resources.DriverInfoColor;
 
                 btnChangeBooking.SetTitle (Resources.ChangeBookingSettingsButton, UIControlState.Normal);
-             
+               
+                topSlidingStatus.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/driverInfosBackGrey.png"));
+                topVisibleStatus.BackgroundColor = UIColor.FromPatternImage(UIImage.FromFile("Assets/driverInfosBackLightGrey.png"));
                 AppButtons.FormatStandardButton ((GradientButton)btnCall, Resources.StatusCallButton, AppStyle.ButtonColor.Black);
                 AppButtons.FormatStandardButton ((GradientButton)btnCancel, Resources.StatusCancelButton, AppStyle.ButtonColor.Red);
                 AppButtons.FormatStandardButton ((GradientButton)btnNewRide, Resources.StatusNewRideButton, AppStyle.ButtonColor.Green);
