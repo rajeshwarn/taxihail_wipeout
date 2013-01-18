@@ -83,7 +83,9 @@ namespace apcurium.MK.Booking.Google.Impl
                 { "key",  PlacesApiKey },            
             };
 
-            return client.Get<PlaceDetailResponse>("json" + BuildQueryString(@params)).Result;
+            var qry = "json" + BuildQueryString(@params);
+            Console.WriteLine ( qry );
+            return client.Get<PlaceDetailResponse>(qry).Result;
         }
 
         public DirectionResult GetDirections(double originLat, double originLng, double destLat, double destLng)

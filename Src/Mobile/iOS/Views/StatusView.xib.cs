@@ -86,7 +86,8 @@ namespace apcurium.MK.Booking.Mobile.Client
                 this.NavigationItem.TitleView = new TitleView (null, Resources.GenericTitle, false);
 
                 View.BringSubviewToFront (bottomBar);
-                imgGrip.Image = UIImage.FromFile("Assets/grip@2x.png");
+               
+
                 if ( ViewModel.IsCallButtonVisible )
                 {
                     btnCancel.Frame = new System.Drawing.RectangleF( 8,  btnCancel.Frame.Y,  btnCancel.Frame.Width,  btnCancel.Frame.Height );

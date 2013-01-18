@@ -20,6 +20,7 @@ using System.Globalization;
 using System.Reactive.Linq;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Extensions;
 using System.Reactive.Disposables;
 using apcurium.MK.Booking.Mobile.Extensions;
 using System.Threading.Tasks;
@@ -160,7 +161,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public bool IsDriverInfoAvailable
         {
-            get { return !string.IsNullOrEmpty(OrderStatusDetail.DriverInfos.VehicleRegistration); }
+            get { return OrderStatusDetail.DriverInfos.VehicleRegistration.HasValue() || OrderStatusDetail.DriverInfos.LastName.HasValue() || OrderStatusDetail.DriverInfos.FirstName.HasValue()  ; }
         }
 
         private string _statusInfoText { get; set; }
@@ -197,6 +198,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set {
                 _orderStatusDetail = value;
                 FirePropertyChanged (() => OrderStatusDetail);
+                FirePropertyChanged (() => IsDriverInfoAvailable);
             }
         }
 
@@ -280,6 +282,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (status != null) {
                     StatusInfoText = status.IBSStatusDescription;                        
                     this.OrderStatusDetail = status;
+
 
                     CenterMap (true);
                     if (OrderStatusDetail.IBSOrderId.HasValue) {
