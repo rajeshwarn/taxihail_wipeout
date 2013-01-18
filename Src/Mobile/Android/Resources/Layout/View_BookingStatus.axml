@@ -84,7 +84,7 @@
                   <TextView
                             android:id="@+id/driverLabel"
                             style="@style/GrayText"
-                            android:text="@string/DriverInfo.Driver"
+                            android:text="@string/DriverInfoDriver"
                             android:gravity="center_vertical|right"
                             android:layout_width="90dip"
                             android:layout_height="wrap_content" />
@@ -99,7 +99,7 @@
                   <TextView
                             android:id="@+id/licenceLabel"
                             style="@style/GrayText"
-                            android:text="@string/DriverInfo.Licence"
+                            android:text="@string/DriverInfoLicence"
                             android:gravity="center_vertical|right"
                             android:layout_width="90dip"
                             android:layout_height="wrap_content"
@@ -116,7 +116,7 @@
                   <TextView
                             android:id="@+id/taxiTypeLabel"
                             style="@style/GrayText"
-                            android:text="@string/DriverInfo.TaxiType"
+                            android:text="@string/DriverInfoTaxiType"
                             android:gravity="center_vertical|right"
                             android:layout_width="90dip"
                             android:layout_height="wrap_content" 
@@ -133,7 +133,7 @@
                   <TextView
                             android:id="@+id/makeLabel"
                             style="@style/GrayText"
-                            android:text="@string/DriverInfo.Make"
+                            android:text="@string/DriverInfoMake"
                             android:gravity="center_vertical|right"
                             android:layout_width="90dip"
                             android:layout_height="wrap_content" 
@@ -150,7 +150,7 @@
                   <TextView
                             android:id="@+id/modelLabel"
                             style="@style/GrayText"
-                            android:text="@string/DriverInfo.Model"
+                            android:text="@string/DriverInfoModel"
                             android:gravity="center_vertical|right"
                             android:layout_width="90dip"
                             android:layout_height="wrap_content" 
@@ -167,7 +167,7 @@
                   <TextView
                             android:id="@+id/ColorLabel"
                             style="@style/GrayText"
-                            android:text="@string/DriverInfo.Color"
+                            android:text="@string/DriverInfoColor"
                             android:gravity="center_vertical|right"
                             android:layout_width="90dip"
                             android:layout_height="wrap_content" 
