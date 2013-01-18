@@ -91,6 +91,8 @@ namespace apcurium.MK.Booking.Mobile.Client
            
             _visibleView.Frame = new RectangleF (0, this.Bounds.Height - _minHeight, this.Bounds.Width, _minHeight);
         }
+
+        public bool isEnabled{get;set;}
         
         void SetSlideoutView ()
         {
@@ -145,7 +147,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         public override void TouchesBegan (NSSet touches, UIEvent evt)
         {
             UITouch t = touches.AnyObject as UITouch;
-            if (t != null) {
+            if (t != null && this.isEnabled) {
                 _initialHeight = this.Bounds.Height;
                 _startPt = t.LocationInView (this);
                 _lastPoint = _startPt;
@@ -161,7 +163,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         public override void TouchesMoved (NSSet touches, UIEvent evt)
         {
             UITouch t = touches.AnyObject as UITouch;
-            if (t != null) {
+            if (t != null && this.isEnabled) {
                 var p = t.LocationInView (this);
                 Console.WriteLine (p.Y);
                 var newHeight = _initialHeight + p.Y - _startPt.Y;
