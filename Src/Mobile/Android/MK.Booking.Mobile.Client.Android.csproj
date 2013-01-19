@@ -546,6 +546,10 @@
     <AndroidResource Include="Resources\Drawable\driverInfosBackLightGrey.png" />
     <AndroidResource Include="Resources\Drawable\grip.png" />
     <AndroidResource Include="Resources\drawable-hdpi\grip.png" />
+    <AndroidResource Include="Resources\Drawable\driverInfosBackGreyRepeat.xml" />
+    <AndroidResource Include="Resources\Drawable\driverInfosBackLightGreyRepeat.xml" />
+    <AndroidResource Include="Resources\Drawable\phone.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\phone.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

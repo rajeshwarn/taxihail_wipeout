@@ -68,33 +68,37 @@
             </FrameLayout>
             <apcurium.mk.booking.mobile.client.controls.SlidingPanel
                 android:layout_width="fill_parent"
-                android:layout_height="178dip"
+                android:layout_height="190dip"
                 android:orientation="vertical"
                 local:MvxBind="{&apos;IsEnabled&apos;: {&apos;Path&apos;: &apos;IsDriverInfoAvailable&apos;}}">
               <LinearLayout
                   android:id="@+id/hiddenTopContent"
                   android:layout_width="match_parent"
-                  android:layout_height="120dip"
-                  android:background="@drawable/driverInfosBackGrey" >
+                  android:layout_height="132dip"
+                  android:background="@drawable/driverInfosBackGreyRepeat" >
                 <RelativeLayout
                   android:layout_width="match_parent"
                   android:layout_height="match_parent"
-                  android:layout_marginTop="10dip"
-                  android:paddingRight="10dip">
+                  android:layout_marginTop="10dip">
                   <TextView
                             android:id="@+id/driverLabel"
                             style="@style/GrayText"
                             android:text="@string/DriverInfoDriver"
-                            android:gravity="center_vertical|right"
+                            android:gravity="bottom|right"
                             android:layout_width="90dip"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content" 
+                            android:layout_marginTop="2dip"/>
                   <TextView
                             android:id="@+id/driverValue"
                             style="@style/BigTitleTextBlack"
                             local:MvxBind="{&apos;Text&apos;: {&apos;Path&apos;: &apos;OrderStatusDetail.DriverInfos.FirstName&apos;}}"
-                            android:gravity="center_vertical|left"
+                            android:gravity="top|left"
                             android:layout_width="150dip"
                             android:layout_height="wrap_content"
+                            android:paddingLeft="5dip"
+                            android:lines="1"
+                            android:ellipsize="end"
+                            android:singleLine="true"
                             android:layout_toRightOf="@id/driverLabel"/>
                   <TextView
                             android:id="@+id/licenceLabel"
@@ -103,7 +107,8 @@
                             android:gravity="center_vertical|right"
                             android:layout_width="90dip"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/driverLabel"/>
+                            android:layout_below="@id/driverLabel"
+                            android:layout_marginTop="2dip"/>
                   <TextView
                             android:id="@+id/licenceValue"
                             style="@style/BigTitleTextBlack"
@@ -112,6 +117,8 @@
                             android:layout_width="150dip"
                             android:layout_height="wrap_content"
                             android:layout_toRightOf="@id/licenceLabel"
+                            android:paddingLeft="5dip"
+                            android:layout_gravity="top"
                             android:layout_below="@id/driverLabel" />
                   <TextView
                             android:id="@+id/taxiTypeLabel"
@@ -120,7 +127,8 @@
                             android:gravity="center_vertical|right"
                             android:layout_width="90dip"
                             android:layout_height="wrap_content" 
-                            android:layout_below="@id/licenceLabel"/>
+                            android:layout_below="@id/licenceLabel"
+                            android:layout_marginTop="2dip"/>
                   <TextView
                             android:id="@+id/taxiTypeValue"
                             style="@style/BigTitleTextBlack"
@@ -129,6 +137,8 @@
                             android:layout_width="150dip"
                             android:layout_height="wrap_content" 
                             android:layout_toRightOf="@id/taxiTypeLabel"
+                            android:paddingLeft="5dip"
+                            android:layout_gravity="top"
                             android:layout_below="@id/licenceLabel" />
                   <TextView
                             android:id="@+id/makeLabel"
@@ -137,7 +147,8 @@
                             android:gravity="center_vertical|right"
                             android:layout_width="90dip"
                             android:layout_height="wrap_content" 
-                            android:layout_below="@id/taxiTypeLabel"/>
+                            android:layout_below="@id/taxiTypeLabel"
+                            android:layout_marginTop="2dip"/>
                   <TextView
                             android:id="@+id/makeValue"
                             style="@style/BigTitleTextBlack"
@@ -145,6 +156,8 @@
                             android:gravity="center_vertical|left"
                             android:layout_width="150dip"
                             android:layout_height="wrap_content" 
+                            android:paddingLeft="5dip"
+                            android:layout_gravity="top"
                             android:layout_toRightOf="@id/makeLabel"
                             android:layout_below="@id/taxiTypeLabel" />
                   <TextView
@@ -154,7 +167,8 @@
                             android:gravity="center_vertical|right"
                             android:layout_width="90dip"
                             android:layout_height="wrap_content" 
-                            android:layout_below="@id/makeLabel"/>
+                            android:layout_below="@id/makeLabel"
+                            android:layout_marginTop="2dip"/>
                   <TextView
                             android:id="@+id/modelValue"
                             style="@style/BigTitleTextBlack"
@@ -162,6 +176,8 @@
                             android:gravity="center_vertical|left"
                             android:layout_width="150dip"
                             android:layout_height="wrap_content" 
+                            android:paddingLeft="5dip"
+                            android:layout_gravity="top"
                             android:layout_toRightOf="@id/modelLabel"
                             android:layout_below="@id/makeLabel" />
                   <TextView
@@ -171,7 +187,8 @@
                             android:gravity="center_vertical|right"
                             android:layout_width="90dip"
                             android:layout_height="wrap_content" 
-                            android:layout_below="@id/modelLabel"/>
+                            android:layout_below="@id/modelLabel"
+                            android:layout_marginTop="2dip"/>
                   <TextView
                             android:id="@+id/ColorValue"
                             style="@style/BigTitleTextBlack"
@@ -179,27 +196,45 @@
                             android:gravity="center_vertical|left"
                             android:layout_width="150dip"
                             android:layout_height="wrap_content"
+                            android:paddingLeft="5dip"
+                            android:layout_gravity="top"
                             android:layout_toRightOf="@id/ColorLabel"
                             android:layout_below="@id/modelLabel" />
+                  <FrameLayout
+                   android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:paddingLeft="10dip"
+                            android:layout_marginRight="10dip"
+                            android:paddingRight="10dip">
                  <ImageButton
                             local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;CallTaxi&apos;}}"
-                            android:src="@drawable/cancel"
+                            android:src="@drawable/phone"
                             android:background="@drawable/gray_button"
                             style="@style/ButtonTextGray"
                             android:layout_width="40dip"
                             android:layout_height="40dip"
                             android:layout_marginRight="10dip"
-                            android:layout_alignParentRight="true" />
+                             />
+                  </FrameLayout>
+                  <View
+                         android:layout_width="fill_parent"
+                         android:layout_height="1"
+                         android:layout_weight="0"
+                         android:background="#646464" 
+                         android:layout_below="@id/ColorLabel" />
                 </RelativeLayout>
+               
               </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:orientation="vertical"
                     android:layout_height="58dip">
+                  
                   <FrameLayout
                       android:layout_width="match_parent"
                     android:layout_height="45dip"
-                   android:background="@drawable/driverInfosBackLightGrey"
+                   android:background="@drawable/driverInfosBackLightGreyRepeat"
                     android:paddingRight="10dip">
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -220,12 +255,12 @@
                             local:MvxBind="{&apos;Text&apos;: {&apos;Path&apos;: &apos;StatusInfoText&apos;}}" />
                     </LinearLayout>
                     <ImageView
-                        android:layout_width="20dip"
+                        android:layout_width="wrap_content"
                         android:scaleType="fitXY"
                         android:adjustViewBounds="true"
                         android:src="@drawable/grip"
                         android:layout_gravity="center_vertical|right"
-                        android:layout_height="20dip" 
+                        android:layout_height="wrap_content" 
                         android:layout_marginRight="10dip" 
                         local:MvxBind="{&apos;Visibility&apos;:{&apos;Path&apos;:&apos;IsDriverInfoAvailable&apos;,&apos;Converter&apos;:&apos;Visibility&apos;}}" />  
                   </FrameLayout>
