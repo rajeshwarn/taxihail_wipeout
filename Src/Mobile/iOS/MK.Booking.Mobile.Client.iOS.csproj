@@ -596,6 +596,8 @@
     <Content Include="Assets\driverInfosBackLightGrey.png" />
     <Content Include="Assets\grip%402x.png" />
     <Content Include="Assets\grip.png" />
+    <Content Include="Assets\phone.png" />
+    <Content Include="Assets\phone%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.iOS.csproj">
