@@ -74,7 +74,7 @@
               <LinearLayout
                   android:id="@+id/hiddenTopContent"
                   android:layout_width="match_parent"
-                  android:layout_height="132dip"
+                  android:layout_height="131dip"
                   android:background="@drawable/driverInfosBackGreyRepeat" >
                 <RelativeLayout
                   android:layout_width="match_parent"
@@ -91,7 +91,7 @@
                   <TextView
                             android:id="@+id/driverValue"
                             style="@style/BigTitleTextBlack"
-                            local:MvxBind="{&apos;Text&apos;: {&apos;Path&apos;: &apos;OrderStatusDetail.DriverInfos.FirstName&apos;}}"
+                            local:MvxBind="{&apos;Text&apos;: {&apos;Path&apos;: &apos;OrderStatusDetail.DriverInfos.FullName&apos;}}"
                             android:gravity="top|left"
                             android:layout_width="150dip"
                             android:layout_height="wrap_content"
@@ -208,7 +208,7 @@
                             android:layout_marginRight="10dip"
                             android:paddingRight="10dip">
                  <ImageButton
-                            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;CallTaxi&apos;}}"
+                            local:MvxBind="{&apos;Click&apos;:{&apos;Path&apos;:&apos;CallTaxi&apos;},&apos;Visibility&apos;:{&apos;Path&apos;:&apos;IsCallTaxiVisible&apos;,&apos;Converter&apos;:&apos;Visibility&apos;}}"
                             android:src="@drawable/phone"
                             android:background="@drawable/gray_button"
                             style="@style/ButtonTextGray"
@@ -219,7 +219,7 @@
                   </FrameLayout>
                   <View
                          android:layout_width="fill_parent"
-                         android:layout_height="1"
+                         android:layout_height="1px"
                          android:layout_weight="0"
                          android:background="#646464" 
                          android:layout_below="@id/ColorLabel" />
@@ -229,7 +229,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:orientation="vertical"
-                    android:layout_height="58dip">
+                    android:layout_height="59dip">
                   
                   <FrameLayout
                       android:layout_width="match_parent"
