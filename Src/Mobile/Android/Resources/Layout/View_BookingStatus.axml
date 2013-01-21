@@ -244,7 +244,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center_horizontal|center_vertical">
                         <TextView
-                            style="@style/SimpleText"
+                            style="@style/BigTextBlack"
                             local:MvxBind="{&apos;Text&apos;: {&apos;Path&apos;: &apos;ConfirmationNoTxt&apos;}}"
                             android:gravity="center_horizontal|top"
                             android:layout_width="match_parent"

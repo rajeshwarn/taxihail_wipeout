@@ -2477,6 +2477,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 		public partial class Style
 		{
 			
+			// aapt resource value: 0x7f080010
+			public const int BigTextBlack = 2131230736;
+			
 			// aapt resource value: 0x7f08000b
 			public const int BigTitleText = 2131230731;
 			
@@ -2492,8 +2495,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f080004
 			public const int ButtonTextLarge = 2131230724;
 			
-			// aapt resource value: 0x7f080013
-			public const int DetailText = 2131230739;
+			// aapt resource value: 0x7f080014
+			public const int DetailText = 2131230740;
 			
 			// aapt resource value: 0x7f08000d
 			public const int FinePrint = 2131230733;
@@ -2501,23 +2504,23 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f080002
 			public const int FormLabelText = 2131230722;
 			
-			// aapt resource value: 0x7f080010
-			public const int GrayText = 2131230736;
+			// aapt resource value: 0x7f080011
+			public const int GrayText = 2131230737;
 			
-			// aapt resource value: 0x7f080012
-			public const int HeaderGroupTitle = 2131230738;
+			// aapt resource value: 0x7f080013
+			public const int HeaderGroupTitle = 2131230739;
 			
 			// aapt resource value: 0x7f080001
 			public const int LinkText = 2131230721;
 			
-			// aapt resource value: 0x7f080014
-			public const int ListItemLabel = 2131230740;
+			// aapt resource value: 0x7f080015
+			public const int ListItemLabel = 2131230741;
+			
+			// aapt resource value: 0x7f080017
+			public const int ListItemSpinnerValue = 2131230743;
 			
 			// aapt resource value: 0x7f080016
-			public const int ListItemSpinnerValue = 2131230742;
-			
-			// aapt resource value: 0x7f080015
-			public const int ListItemValue = 2131230741;
+			public const int ListItemValue = 2131230742;
 			
 			// aapt resource value: 0x7f080008
 			public const int ListSubTitle = 2131230728;
@@ -2531,20 +2534,20 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f08000f
 			public const int SimpleText = 2131230735;
 			
-			// aapt resource value: 0x7f080011
-			public const int SimpleTextItem = 2131230737;
+			// aapt resource value: 0x7f080012
+			public const int SimpleTextItem = 2131230738;
 			
 			// aapt resource value: 0x7f08000c
 			public const int SmallTitle = 2131230732;
 			
-			// aapt resource value: 0x7f080018
-			public const int Theme_Modal = 2131230744;
+			// aapt resource value: 0x7f080019
+			public const int Theme_Modal = 2131230745;
 			
 			// aapt resource value: 0x7f080000
 			public const int Theme_Splash = 2131230720;
 			
-			// aapt resource value: 0x7f080017
-			public const int Theme_Transparent = 2131230743;
+			// aapt resource value: 0x7f080018
+			public const int Theme_Transparent = 2131230744;
 			
 			// aapt resource value: 0x7f080009
 			public const int TitleText = 2131230729;

@@ -357,7 +357,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get {
                 return GetCommand (() =>
                 {
-                    MessengerHub.Subscribe<OrderRated> (HideRatingButton);
                     RequestNavigate<BookRatingViewModel> (new { orderId = Order.Id.ToString (), canRate = true.ToString (CultureInfo.InvariantCulture), isFromStatus = true.ToString (CultureInfo.InvariantCulture) });
                 });
             }
