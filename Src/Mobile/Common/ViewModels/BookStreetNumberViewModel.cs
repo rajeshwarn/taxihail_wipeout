@@ -71,8 +71,7 @@ namespace apcurium.MK.Booking.Mobile
                     MessengerHub.Unsubscribe<AddressSelected> ( _token );
                     _token.Dispose ();
                     _token = null;
-
-                    RequestNavigate<AddressSearchViewModel> (new { search = Model.BookAddress, ownerId = _ownerId });                    
+                    RequestNavigate<AddressSearchViewModel> (new { search = "", ownerId = _ownerId });                                       
                 });
             }
         }
