@@ -243,6 +243,27 @@ namespace MK.DeploymentService.Mobile
 			}
 
 			logger.DebugFormat ("Customization Finished");
+
+			logger.DebugFormat ("Run Localization tool for Android");
+
+			var localizationToolRun = new ProcessStartInfo
+			{
+				FileName = "mono",
+				UseShellExecute = false,
+				WorkingDirectory = Path.Combine (sourceDirectory,"Src", "LocalizationTool", "output"),
+				Arguments = "LocalizationTool.exe -t=android -m=\"../Mobile/Common/Localization/Master.resx\" -d=\"../Mobile/Android/Resources/Values/String.xml\" -s=\"../Mobile/Common/Settings/Settings.json\""
+			};
+			
+			using (var exeProcess = Process.Start(localizationToolRun))
+			{
+				exeProcess.WaitForExit();
+				if (exeProcess.ExitCode > 0)
+				{
+					throw new Exception("Error during localization tool");
+				}
+			}
+
+			logger.DebugFormat ("Run Localization tool for Android Finished");
 		}
 
 		private void Build (DeploymentJob job, string sourceDirectory, Company company)
