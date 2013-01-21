@@ -36,15 +36,10 @@ namespace DatabaseInitializer.Services
             //parse version i.e. x.y.z to get y and z
             var versionNumbers = version.Split('.');
             var versionNumber = int.Parse(versionNumbers[1]);
-            var minorVersionNumber = 0;
-            if (versionNumbers.Length > 2)
-            {
-                minorVersionNumber = int.Parse(versionNumbers[2]);
-            }
            
 
-            if (versionNumber < 3
-                || (versionNumber == 3 && minorVersionNumber == 0))
+
+            if (versionNumber < 3)
             {
 
                 using (var context = _contextFactory.Invoke())
@@ -71,16 +66,18 @@ namespace DatabaseInitializer.Services
                         if (@event.Address == null)
                         {
                             var newEvent = new FavoriteAddressAdded
-                                               {
-                                                   SourceId = @event.SourceId,
-                                                   Version = @event.Version,
-                                                   Address =
-                                                       new Address
-                                                           {
-                                                               Id = @event.AddressId,
-                                                               FullAddress = @event.FullAddress
-                                                           }
-                                               };
+                            {
+                                SourceId = @event.SourceId,
+                                Version = @event.Version,
+                                Address =
+                                    new Address
+                                    {
+                                        Id = @event.AddressId,
+                                        FullAddress = @event.FullAddress,
+                                        Latitude = @event.Latitude,
+                                        Longitude = @event.Longitude
+                                    }
+                            };
                             FillAdress(newEvent.Address, @event.FullAddress);
                             message.Payload = Serialize(newEvent);
                         }
@@ -100,16 +97,18 @@ namespace DatabaseInitializer.Services
                         if (@event.Address == null)
                         {
                             var newEvent = new FavoriteAddressUpdated
-                                               {
-                                                   SourceId = @event.SourceId,
-                                                   Version = @event.Version,
-                                                   Address =
-                                                       new Address
-                                                           {
-                                                               Id = @event.AddressId,
-                                                               FullAddress = @event.FullAddress
-                                                           }
-                                               };
+                            {
+                                SourceId = @event.SourceId,
+                                Version = @event.Version,
+                                Address =
+                                    new Address
+                                    {
+                                        Id = @event.AddressId,
+                                        FullAddress = @event.FullAddress,
+                                        Latitude = @event.Latitude,
+                                        Longitude = @event.Longitude
+                                    }
+                            };
                             FillAdress(newEvent.Address, @event.FullAddress);
                             message.Payload = Serialize(newEvent);
                         }
