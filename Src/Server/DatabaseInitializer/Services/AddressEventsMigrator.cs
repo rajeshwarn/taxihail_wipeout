@@ -70,7 +70,9 @@ namespace DatabaseInitializer.Services
                                                        new Address
                                                            {
                                                                Id = @event.AddressId,
-                                                               FullAddress = @event.FullAddress
+                                                               FullAddress = @event.FullAddress,
+                                                               Latitude = @event.Latitude,
+                                                               Longitude = @event.Longitude
                                                            }
                                                };
                         FillAdress(newEvent.Address, @event.FullAddress);
@@ -97,7 +99,9 @@ namespace DatabaseInitializer.Services
                                                        new Address
                                                            {
                                                                Id = @event.AddressId,
-                                                               FullAddress = @event.FullAddress
+                                                               FullAddress = @event.FullAddress,
+                                                               Latitude = @event.Latitude,
+                                                               Longitude = @event.Longitude
                                                            }
                                                };
                         FillAdress(newEvent.Address, @event.FullAddress);
