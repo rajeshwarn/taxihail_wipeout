@@ -62,9 +62,7 @@ namespace DatabaseInitializer.Services
                     foreach (var message in events)
                     {
                         var @event = Deserialize<OldEvents.FavoriteAddressAddedv1>(message.Payload);
-                        if (@event.Address == null)
-                        {
-                            var newEvent = new FavoriteAddressAdded
+                        var newEvent = new FavoriteAddressAdded
                                                {
                                                    SourceId = @event.SourceId,
                                                    Version = @event.Version,
@@ -75,9 +73,9 @@ namespace DatabaseInitializer.Services
                                                                FullAddress = @event.FullAddress
                                                            }
                                                };
-                            FillAdress(newEvent.Address, @event.FullAddress);
-                            message.Payload = Serialize(newEvent);
-                        }
+                        FillAdress(newEvent.Address, @event.FullAddress);
+                        message.Payload = Serialize(newEvent);
+                        
                     }
                     context.SaveChanges();
                 }
@@ -91,9 +89,7 @@ namespace DatabaseInitializer.Services
                     foreach (var message in events)
                     {
                         var @event = Deserialize<OldEvents.FavoriteAddressUpdatedv1>(message.Payload);
-                        if (@event.Address == null)
-                        {
-                            var newEvent = new FavoriteAddressUpdated
+                        var newEvent = new FavoriteAddressUpdated
                                                {
                                                    SourceId = @event.SourceId,
                                                    Version = @event.Version,
@@ -104,9 +100,9 @@ namespace DatabaseInitializer.Services
                                                                FullAddress = @event.FullAddress
                                                            }
                                                };
-                            FillAdress(newEvent.Address, @event.FullAddress);
-                            message.Payload = Serialize(newEvent);
-                        }
+                        FillAdress(newEvent.Address, @event.FullAddress);
+                        message.Payload = Serialize(newEvent);
+                        
                     }
                     context.SaveChanges();
                 }
