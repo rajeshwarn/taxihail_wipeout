@@ -59,7 +59,7 @@ namespace apcurium.MK.Booking.Maps.Impl
 
             }
 
-            var googlePlaces = _client.GetNearbyPlaces(latitude, longitude, name, "en", false, radius.HasValue? radius.Value : defaultRadius).Take(5);
+            var googlePlaces = _client.GetNearbyPlaces(latitude, longitude, name, "en", false, radius.HasValue? radius.Value : defaultRadius).Take(15);
 
             return popularAddresses.Concat(googlePlaces.Select(ConvertToAddress)).ToArray();
         }
