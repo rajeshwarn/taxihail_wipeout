@@ -250,8 +250,8 @@ namespace MK.DeploymentService.Mobile
 			{
 				FileName = "mono",
 				UseShellExecute = false,
-				WorkingDirectory = Path.Combine (sourceDirectory,"Src", "LocalizationTool", "output"),
-				Arguments = "LocalizationTool.exe -t=android -m=\"../Mobile/Common/Localization/Master.resx\" -d=\"../Mobile/Android/Resources/Values/String.xml\" -s=\"../Mobile/Common/Settings/Settings.json\""
+				WorkingDirectory = Path.Combine (sourceDirectory,"Src", "LocalizationTool"),
+				Arguments = "output/LocalizationTool.exe -t=android -m=\"../Mobile/Common/Localization/Master.resx\" -d=\"../Mobile/Android/Resources/Values/String.xml\" -s=\"../Mobile/Common/Settings/Settings.json\""
 			};
 			
 			using (var exeProcess = Process.Start(localizationToolRun))
