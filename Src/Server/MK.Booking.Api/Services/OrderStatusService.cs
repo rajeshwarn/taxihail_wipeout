@@ -46,8 +46,6 @@ namespace apcurium.MK.Booking.Api.Services
 
             return Mapper.Map<OrderStatusRequestResponse>(status);
         }
-
-                                    status.DriverInfos = new DriverInfos();
     }
 
     public class ActiveOrderStatusService : RestServiceBase<Contract.Requests.ActiveOrderStatusRequest>
