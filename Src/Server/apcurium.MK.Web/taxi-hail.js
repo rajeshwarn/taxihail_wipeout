@@ -7,22 +7,9 @@ TaxiHail.loader = {
 
     load: function (callback) {
 
-        Modernizr.load([{
-            test: window.JSON,
-            nope: 'assets/js/json2.js',
-            complete: callback
-        },
-        {
-            test : $('html').is('.lt-ie8'),
-            yep : ['assets/js/jquery.jreject.min.js', 'assets/css/jquery.jreject.css'],
-            complete: function() {
-                $('html').is('.lt-ie8') && $.reject({
-                    reject: { all: true },
-                    imagePath: './assets/img/jreject/'
-                });
-                return false;
-            }
-          }]);
+        var deferreds = [];
+
+        $.when.apply(null, deferreds).done(callback);
     }
 
 };
