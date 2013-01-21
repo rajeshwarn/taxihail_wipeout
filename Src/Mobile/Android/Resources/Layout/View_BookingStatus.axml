@@ -68,17 +68,17 @@
             </FrameLayout>
             <apcurium.mk.booking.mobile.client.controls.SlidingPanel
                 android:layout_width="fill_parent"
-                android:layout_height="190dip"
+                android:layout_height="200dip"
                 android:orientation="vertical"
                 local:MvxBind="{&apos;IsEnabled&apos;: {&apos;Path&apos;: &apos;IsDriverInfoAvailable&apos;}}">
               <LinearLayout
                   android:id="@+id/hiddenTopContent"
                   android:layout_width="match_parent"
-                  android:layout_height="131dip"
+                  android:layout_height="140dip"
                   android:background="@drawable/driverInfosBackGreyRepeat" >
                 <RelativeLayout
                   android:layout_width="match_parent"
-                  android:layout_height="match_parent"
+                  android:layout_height="wrap_content"
                   android:layout_marginTop="10dip">
                   <TextView
                             android:id="@+id/driverLabel"
@@ -215,22 +215,24 @@
                             android:layout_width="40dip"
                             android:layout_height="40dip"
                             android:layout_marginRight="10dip"
+                            android:padding="7dip"
+                            android:scaleType="fitCenter"
                              />
                   </FrameLayout>
-                  <View
-                         android:layout_width="fill_parent"
-                         android:layout_height="1px"
-                         android:layout_weight="0"
-                         android:background="#646464" 
-                         android:layout_below="@id/ColorLabel" />
+                  
                 </RelativeLayout>
                
               </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:orientation="vertical"
-                    android:layout_height="59dip">
-                  
+                    android:layout_height="60dip">
+                  <View
+                         android:layout_width="fill_parent"
+                         android:layout_height="1px"
+                         android:layout_weight="0"
+                         android:background="#646464" 
+                         android:layout_below="@id/ColorLabel" />
                   <FrameLayout
                       android:layout_width="match_parent"
                     android:layout_height="45dip"
