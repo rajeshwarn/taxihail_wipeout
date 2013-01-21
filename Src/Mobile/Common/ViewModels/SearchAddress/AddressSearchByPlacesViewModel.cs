@@ -6,6 +6,7 @@ using apcurium.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using System.Threading;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.SearchAddress
 {
@@ -26,8 +27,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.SearchAddress
 			}
 
 			var position = TinyIoCContainer.Current.Resolve<ILocationService> ().LastKnownPosition;
-			if (position == null)
-				return Enumerable.Empty<AddressViewModel> ();
+            if (position == null)
+            {
+                var cancellationToken = new CancellationTokenSource();
+                var locService = TinyIoCContainer.Current.Resolve<ILocationService>().GetPositionAsync(1000, 1000, 1000, 5000, cancellationToken.Token);
+                locService.ContinueWith(p => position = p.Result);
+                locService.Start();
+                locService.Wait();
+                
+                if (position == null)
+                {
+                    return Enumerable.Empty<AddressViewModel> ();
+                }
+            }
+
            
 			var fullAddresses = _googleService.GetNearbyPlaces (position.Latitude, position.Longitude);
 			var addresses = fullAddresses.Where (predicate).ToList ();
