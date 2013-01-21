@@ -70,14 +70,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-        protected override void OnDraw(Android.Graphics.Canvas canvas)
-        {
-            base.OnDraw(canvas);
-            Initialize();
-        }
-     
-
-
         public bool OnTouch(View v, MotionEvent e)
         {
             if (v != this || !this.IsEnabled)
