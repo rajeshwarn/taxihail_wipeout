@@ -103,6 +103,7 @@ namespace DatabaseInitializer.Services
         private void CompleteStatusFromIbs(OrderStatusChanged statusChangedEvent, IBSOrderInformation ibsInformations)
         {
             statusChangedEvent.Status.IBSStatusId = ibsInformations.Status;
+            statusChangedEvent.Status.Status = MapStatus(ibsInformations.Status);
             statusChangedEvent.Status.DriverInfos.FirstName = ibsInformations.FirstName;
             statusChangedEvent.Status.DriverInfos.LastName = ibsInformations.LastName;
             statusChangedEvent.Status.DriverInfos.MobilePhone = ibsInformations.MobilePhone;
@@ -113,6 +114,41 @@ namespace DatabaseInitializer.Services
             statusChangedEvent.Status.DriverInfos.VehicleType = ibsInformations.VehicleType;
             statusChangedEvent.Status.VehicleLatitude = ibsInformations.VehicleLatitude;
             statusChangedEvent.Status.VehicleLongitude = ibsInformations.VehicleLongitude;
+        }
+
+        private const string AssignedStatus = "wosASSIGNED";
+        private const string DoneStatus = "wosDONE";
+        private const string CancelStatus = "wosCANCELLED_DONE";
+        private const string NoneStatus = "wosNone";
+        private const string NoShowStatus = "wosNOSHOW";
+        private const string WaitingStatus = "wosWAITING";
+
+
+        private OrderStatus MapStatus(string statusIBS)
+        {
+            var status = OrderStatus.Pending;
+            switch (statusIBS)
+            {
+                case AssignedStatus:
+                    return status = OrderStatus.Pending;
+                    break;
+                case DoneStatus:
+                    return status = OrderStatus.Completed;
+                    break;
+                case CancelStatus:
+                    return status = OrderStatus.Canceled;
+                    break;
+                case NoneStatus:
+                    return status = OrderStatus.Completed;
+                    break;
+                case NoShowStatus:
+                    return status = OrderStatus.Completed;
+                    break;
+                case WaitingStatus:
+                    return status = OrderStatus.Pending;
+                    break;
+            }
+            return status;
         }
     }
 }
