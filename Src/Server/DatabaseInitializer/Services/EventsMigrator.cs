@@ -12,7 +12,7 @@ using log4net;
 
 namespace DatabaseInitializer.Services
 {
-    public class AddressEventsMigrator : IEventsMigrator
+    public class EventsMigrator : IEventsMigrator
     {
         private readonly IAddresses _addressesService;
         private readonly Func<EventStoreDbContext> _contextFactory;
@@ -20,7 +20,7 @@ namespace DatabaseInitializer.Services
         private readonly JsonSerializer _deserializer;
         private ILog _loggger;
 
-        public AddressEventsMigrator(IAddresses addressesService, Func<EventStoreDbContext> contextFactory)
+        public EventsMigrator(IAddresses addressesService, Func<EventStoreDbContext> contextFactory)
         {
             _addressesService = addressesService;
             _contextFactory = contextFactory;
@@ -36,7 +36,8 @@ namespace DatabaseInitializer.Services
             //parse version i.e. x.y.z to get y and z
             var versionNumbers = version.Split('.');
             var versionNumber = int.Parse(versionNumbers[1]);
-            
+           
+
 
             if (versionNumber < 3)
             {
@@ -62,22 +63,24 @@ namespace DatabaseInitializer.Services
                     foreach (var message in events)
                     {
                         var @event = Deserialize<OldEvents.FavoriteAddressAddedv1>(message.Payload);
-                        var newEvent = new FavoriteAddressAdded
-                                               {
-                                                   SourceId = @event.SourceId,
-                                                   Version = @event.Version,
-                                                   Address =
-                                                       new Address
-                                                           {
-                                                               Id = @event.AddressId,
-                                                               FullAddress = @event.FullAddress,
-                                                               Latitude = @event.Latitude,
-                                                               Longitude = @event.Longitude
-                                                           }
-                                               };
-                        FillAdress(newEvent.Address, @event.FullAddress);
-                        message.Payload = Serialize(newEvent);
-                        
+                        if (@event.Address == null)
+                        {
+                            var newEvent = new FavoriteAddressAdded
+                            {
+                                SourceId = @event.SourceId,
+                                Version = @event.Version,
+                                Address =
+                                    new Address
+                                    {
+                                        Id = @event.AddressId,
+                                        FullAddress = @event.FullAddress,
+                                        Latitude = @event.Latitude,
+                                        Longitude = @event.Longitude
+                                    }
+                            };
+                            FillAdress(newEvent.Address, @event.FullAddress);
+                            message.Payload = Serialize(newEvent);
+                        }
                     }
                     context.SaveChanges();
                 }
@@ -91,22 +94,24 @@ namespace DatabaseInitializer.Services
                     foreach (var message in events)
                     {
                         var @event = Deserialize<OldEvents.FavoriteAddressUpdatedv1>(message.Payload);
-                        var newEvent = new FavoriteAddressUpdated
-                                               {
-                                                   SourceId = @event.SourceId,
-                                                   Version = @event.Version,
-                                                   Address =
-                                                       new Address
-                                                           {
-                                                               Id = @event.AddressId,
-                                                               FullAddress = @event.FullAddress,
-                                                               Latitude = @event.Latitude,
-                                                               Longitude = @event.Longitude
-                                                           }
-                                               };
-                        FillAdress(newEvent.Address, @event.FullAddress);
-                        message.Payload = Serialize(newEvent);
-                        
+                        if (@event.Address == null)
+                        {
+                            var newEvent = new FavoriteAddressUpdated
+                            {
+                                SourceId = @event.SourceId,
+                                Version = @event.Version,
+                                Address =
+                                    new Address
+                                    {
+                                        Id = @event.AddressId,
+                                        FullAddress = @event.FullAddress,
+                                        Latitude = @event.Latitude,
+                                        Longitude = @event.Longitude
+                                    }
+                            };
+                            FillAdress(newEvent.Address, @event.FullAddress);
+                            message.Payload = Serialize(newEvent);
+                        }
                     }
                     context.SaveChanges();
                 }

@@ -46,7 +46,6 @@ namespace apcurium.MK.Booking.Api.Services
 
             return Mapper.Map<OrderStatusRequestResponse>(status);
         }
-
     }
 
     public class ActiveOrderStatusService : RestServiceBase<Contract.Requests.ActiveOrderStatusRequest>
