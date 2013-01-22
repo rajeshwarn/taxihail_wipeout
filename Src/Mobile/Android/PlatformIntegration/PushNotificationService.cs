@@ -167,6 +167,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 			//Auto cancel will remove the notification once the user touches it
 			notification.Flags = NotificationFlags.AutoCancel;
+			notification.Defaults = NotificationDefaults.All;
 		
 			//Set the notification info
 			//we use the pending intent, passing our ui intent over which will get called
