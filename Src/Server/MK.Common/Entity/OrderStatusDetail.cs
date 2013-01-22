@@ -22,5 +22,6 @@ namespace apcurium.MK.Common.Entity
         public Guid AccountId { get; set; }
         public DateTime PickupDate { get; set; }
         public DateTime? Eta { get; set; }
+        public string Name { get; set; }
     }
 }

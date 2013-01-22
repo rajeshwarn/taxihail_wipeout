@@ -51,7 +51,8 @@ namespace apcurium.MK.Booking.EventHandlers
                      IBSOrderId = @event.IBSOrderId,
                      Status = OrderStatus.Created,
                      IBSStatusDescription = "Processing your order",
-                     PickupDate = @event.PickupDate
+                     PickupDate = @event.PickupDate,
+                     Name = @event.Settings != null ? @event.Settings.Name : null
                 });
             }
 
