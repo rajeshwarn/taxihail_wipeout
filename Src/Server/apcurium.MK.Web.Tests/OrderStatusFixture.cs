@@ -55,6 +55,7 @@ namespace apcurium.MK.Web.Tests
             var data = sut.GetOrderStatus( _orderId);
             Assert.AreEqual(null, data.IBSStatusId);
             Assert.AreEqual(OrderStatus.Created, data.Status);
+            Assert.AreEqual("Joe Smith", data.Name);
         }
 
 
