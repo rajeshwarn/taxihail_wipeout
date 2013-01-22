@@ -23,7 +23,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
         public CallboxLoginViewModel(IAccountService accountService)
         {
             _accountService = accountService;
-            CheckVersion();
         }
 
         public override void Load()
@@ -33,18 +32,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
             Email = "john@taxihail.com";
             Password = "password";
 #endif
-        }
-
-        private void CheckVersion()
-        {
-            ThreadPool.QueueUserWorkItem(o =>
-                                             {
-                                                 //The 2 second delay is required because the view might not be created.
-                                                 Thread.Sleep(2000);
-                                                 TinyIoCContainer.Current.Resolve<IApplicationInfoService>()
-                                                                 .CheckVersion();
-                                             });
-
         }
 
         private string _email;

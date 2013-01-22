@@ -177,10 +177,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
                                                           Order.Note =
                                                           string.Format(Resources.GetString("Callbox.passengerName"),
                                                                         passengerName);
+                                                          Order.Settings.Name = passengerName;
                                                       }
                                                       else
                                                       {
                                                           Order.Note = Resources.GetString("Callbox.noPassengerName");
+                                                          Order.Settings.Name = Resources.GetString("NotSpecified");
                                                       }
                                                       
                                                       try
@@ -191,6 +193,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
                                                           if (orderInfo.IBSOrderId.HasValue
                                                               && orderInfo.IBSOrderId > 0)
                                                           {
+                                                              orderInfo.Name = Order.Settings.Name;
                                                               InvokeOnMainThread(() =>
                                                                                      {
                                                                                          Orders.Insert(0,new CallboxOrderViewModel()
