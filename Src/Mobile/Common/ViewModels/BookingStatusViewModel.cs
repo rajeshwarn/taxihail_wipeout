@@ -270,7 +270,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                                                         string.Format(Resources.GetString("ReminderDetails"),Order.PickupAddress.FullAddress, Order.PickupDate.Date.ToLongDateString(), Order.PickupDate.Date.ToLongTimeString()), 
                                                                         Order.PickupAddress.FullAddress, 
                                                                         Order.PickupDate, 
-                                                                        Order.PickupDate.AddHours(-2));
+                                                                        Order.PickupDate.AddMinutes(-15));
                     }, Resources.GetString("NoButton"), () => 
                     {
                     });
