@@ -193,7 +193,13 @@ namespace apcurium.MK.Booking.IBS.Impl
             var isValidationEnabled = bool.Parse(ConfigManager.GetSetting(enableValidationKey));
             if (isValidationEnabled)
             {
+
+                Logger.LogMessage("Validating Zone " + JsonSerializer.SerializeToString(tWEBAddress, typeof(TWEBAddress)));
+                
                 var zone = _staticDataWebServiceClient.GetZoneByCoordinate(tWEBAddress.Latitude, tWEBAddress.Longitude);
+
+                Logger.LogMessage("Zone returned : " + zone.ToSafeString() );
+
                 if ( zone.ToSafeString().Trim().IsNullOrEmpty())
                 {
                     return false;
