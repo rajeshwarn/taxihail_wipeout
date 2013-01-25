@@ -791,10 +791,7 @@
   </data>
   <data name="OrderHistoryListTitle" xml:space="preserve">
     <value>Order #{0} ({1:ddd, MMM d}, {1:h:mm tt})</value>
-  </data>
-  <data name="GoogleMapKey" xml:space="preserve">
-    <value>0XEY3WqKVmJPhADLxOCPUweMcqYg3AfqCp8BvWw</value>
-  </data>
+  </data> 
   <data name="searchHint" xml:space="preserve">
     <value>Search</value>
   </data>
