@@ -137,10 +137,7 @@
   </data>
   <data name="EntryCodeLabel" xml:space="preserve">
     <value>Building name</value>
-  </data>  
-  <data name="GoogleMapKey" xml:space="preserve">
-    <value>0XEY3WqKVmJPKgUaBK0NC_GfL7VtrnaAAs1hieQ</value>
-  </data>
+  </data>   
   <data name="DateTimePickerSetButton" xml:space="preserve">
     <value>Pick Me Up Later</value>
   </data>
