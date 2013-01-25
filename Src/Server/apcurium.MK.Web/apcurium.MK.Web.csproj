@@ -332,6 +332,7 @@
     <Content Include="services\OrderService.js" />
     <Content Include="common\services\PlacesService.js" />
     <Content Include="taxi-hail.js" />
+    <Content Include="themes\DiamondCab\img\logo.png" />
     <Content Include="themes\FreedomTaxi\img\logo.png" />
     <Content Include="themes\MississaugaTaxi\img\logo.png" />
     <Content Include="themes\Taxi303\img\logo.png" />
@@ -462,6 +463,10 @@
     <Content Include="themes\MississaugaTaxi\less\combined.less" />
     <Content Include="themes\MississaugaTaxi\less\style.less" />
     <Content Include="themes\MississaugaTaxi\less\variables.less" />
+    <Content Include="themes\DiamondCab\less\combined-responsive.less" />
+    <Content Include="themes\DiamondCab\less\combined.less" />
+    <Content Include="themes\DiamondCab\less\style.less" />
+    <Content Include="themes\DiamondCab\less\variables.less" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
