@@ -55,6 +55,7 @@
     <Compile Include="AddRatingType.cs" />
     <Compile Include="CompleteOrder.cs" />
     <Compile Include="ConfirmAccount.cs" />
+    <Compile Include="ConfirmAccountByAdmin.cs" />
     <Compile Include="CreateTariff.cs" />
     <Compile Include="DeleteTariff.cs" />
     <Compile Include="HideRatingType.cs" />

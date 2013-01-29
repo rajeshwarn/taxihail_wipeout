@@ -10,6 +10,7 @@ namespace apcurium.MK.Booking.CommandHandlers
 
     public class AccountCommandHandler : ICommandHandler<RegisterAccount>,
                                          ICommandHandler<ConfirmAccount>, 
+                                         ICommandHandler<ConfirmAccountByAdmin>,
                                          ICommandHandler<ResetAccountPassword>,
                                          ICommandHandler<UpdateAccount>,
                                          ICommandHandler<UpdateBookingSettings>,
@@ -111,6 +112,13 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var account = _repository.Find(command.AccountId);
             account.RemoveCreditCard(command.CreditCardId);
+            _repository.Save(account, command.Id.ToString());
+        }
+
+        public void Handle(ConfirmAccountByAdmin command)
+        {
+            var account = _repository.Find(command.AccountId);
+            account.ConfirmAccountByAdmin();
             _repository.Save(account, command.Id.ToString());
         }
     }

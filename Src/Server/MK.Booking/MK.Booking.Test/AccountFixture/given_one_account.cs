@@ -39,6 +39,15 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         }
 
         [Test]
+        public void when_confirming_byadmin_account_successfully()
+        {
+            this.sut.When(new ConfirmAccountByAdmin { AccountId = _accountId });
+
+            var @event = sut.ThenHasSingle<AccountConfirmed>();
+            Assert.AreEqual(_accountId, @event.SourceId);
+        }
+
+        [Test]
         public void when_confirming_account_with_invalid_token()
         {
             Assert.Throws<InvalidOperationException>(
