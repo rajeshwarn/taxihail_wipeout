@@ -145,6 +145,7 @@ namespace apcurium.MK.Web
                 "~/admin/views/AddFavoriteView.js",
                 "~/common/views/BootstrapConfirmationView.js",
                 "~/admin/views/GrantAdminAccessView.js",
+                "~/admin/views/ConfirmEmailView.js",
                 "~/admin/views/AdminMenuView.js",
                 "~/admin/views/ManageDefaultAddressesView.js",
                 "~/admin/views/ManageTariffsView.js",
