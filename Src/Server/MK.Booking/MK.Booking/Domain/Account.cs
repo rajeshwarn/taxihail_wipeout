@@ -330,5 +330,9 @@ namespace apcurium.MK.Booking.Domain
             }
         }
 
+        public void ConfirmAccountByAdmin()
+        {
+            this.Update(new AccountConfirmed());  
+        }
     }
 }

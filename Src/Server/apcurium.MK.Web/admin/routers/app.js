@@ -15,6 +15,7 @@
 
             /* Admin right*/
             "security": "manageSecurity",
+            "confirmemail": "confirmEmail",
             
             /* settings */
             "settings" : "manageCompanySettings",
@@ -67,6 +68,10 @@
 
         manageSecurity: function () {
             action(TaxiHail.SecurityController, 'index');
+        },
+        
+        confirmEmail: function () {
+            action(TaxiHail.SecurityController, 'confirmemail');
         },
 
         manageTariffs: function() {

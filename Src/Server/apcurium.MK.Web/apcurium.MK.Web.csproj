@@ -192,6 +192,7 @@
     <Content Include="admin\templates\ManageCompanySettings.handlebars" />
     <Content Include="admin\models\CompanySettings.js" />
     <Content Include="admin\views\AddFavoriteView.js" />
+    <Content Include="admin\views\ConfirmEmailView.js" />
     <Content Include="admin\views\EditTariffView.js" />
     <Content Include="admin\views\ManageCompanySettingsView.js" />
     <Content Include="admin\views\ManageExclusionsView.js" />
@@ -467,6 +468,8 @@
     <Content Include="themes\DiamondCab\less\combined.less" />
     <Content Include="themes\DiamondCab\less\style.less" />
     <Content Include="themes\DiamondCab\less\variables.less" />
+    <Content Include="admin\templates\ConfirmEmail.handlebars" />
+    <Content Include="admin\localization\ConfirmEmail.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

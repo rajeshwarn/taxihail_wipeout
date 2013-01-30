@@ -83,6 +83,7 @@
     <Compile Include="Requests\AddressHistoryRequest.cs" />
     <Compile Include="Requests\AccountOrderListRequest.cs" />
     <Compile Include="BaseDTO.cs" />
+    <Compile Include="Requests\AdminConfirmAccountRequest.cs" />
     <Compile Include="Requests\ApplicationInfoRequest.cs" />
     <Compile Include="Requests\BookingSettingsRequest.cs" />
     <Compile Include="Requests\CancelOrder.cs" />

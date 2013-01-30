@@ -9,6 +9,7 @@ namespace apcurium.MK.Booking.CommandHandlers
 {
     public partial class AccountCommandHandler : ICommandHandler<RegisterAccount>,
                                                  ICommandHandler<ConfirmAccount>,
+                                         ICommandHandler<ConfirmAccountByAdmin>,
                                                  ICommandHandler<ResetAccountPassword>,
                                                  ICommandHandler<UpdateAccount>,
                                                  ICommandHandler<UpdateBookingSettings>,
@@ -133,5 +134,13 @@ namespace apcurium.MK.Booking.CommandHandlers
             account.UnregisterDeviceForPushNotifications(command.DeviceToken);
             _repository.Save(account, command.Id.ToString());
         }
+        
+         public void Handle(ConfirmAccountByAdmin command)
+        {
+            var account = _repository.Find(command.AccountId);
+            account.ConfirmAccountByAdmin();
+            _repository.Save(account, command.Id.ToString());
+        }
+
     }
 }
