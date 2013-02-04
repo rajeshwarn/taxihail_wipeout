@@ -141,8 +141,8 @@ namespace apcurium.MK.Booking.IBS.Impl
             order.ChargeTypeID = chargeTypeId;
             var aptRing = Params.Get(pickup.Apartment, pickup.RingCode).Where(s => s.HasValue()).JoinBy(" / ");
 
-            order.PickupAddress = new TWEBAddress { StreetPlace = pickup.FullAddress, AptBaz = aptRing, Longitude = pickup.Longitude, Latitude = pickup.Latitude };
-            order.DropoffAddress = dropoff == null ? new TWEBAddress() : new TWEBAddress { StreetPlace = dropoff.FullAddress, AptBaz = dropoff.Apartment, Longitude = dropoff.Longitude, Latitude = dropoff.Latitude };
+            order.PickupAddress = new TWEBAddress { StreetPlace = pickup.FullAddress, AptBaz = aptRing, Longitude = pickup.Longitude, Latitude = pickup.Latitude, Postal = pickup.ZipCode };
+            order.DropoffAddress = dropoff == null ? new TWEBAddress() : new TWEBAddress { StreetPlace = dropoff.FullAddress, AptBaz = dropoff.Apartment, Longitude = dropoff.Longitude, Latitude = dropoff.Latitude, Postal = dropoff.ZipCode };
             order.Passengers = nbPassengers;
             order.VehicleTypeID = vehicleTypeId ?? 0;
             order.Note = note;
