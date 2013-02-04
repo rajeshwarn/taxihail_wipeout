@@ -46,19 +46,14 @@ namespace apcurium.MK.Booking.EventHandlers
                                      IsAdmin = @event.IsAdmin
                                  };
 
-                
 
-                var chargeTypeId = int.Parse(_configurationManager.GetSetting("DefaultBookingSettings.ChargeTypeId"));
                 var nbPassenger = int.Parse(_configurationManager.GetSetting("DefaultBookingSettings.NbPassenger"));
-                int dummy;
-                int? vehicleTypeId = int.TryParse(_configurationManager.GetSetting("DefaultBookingSettings.VehicleTypeId"), out dummy) ? dummy : default(int?); ;
-                int? providerId = int.TryParse(_configurationManager.GetSetting("DefaultBookingSettings.ProviderId"), out dummy) ? dummy : default(int?); ;
-
-                account.Settings = new BookingSettings { ChargeTypeId = chargeTypeId, Name = account.Name, NumberOfTaxi = 1, Passengers = nbPassenger, Phone = account.Phone, ProviderId = providerId, VehicleTypeId = vehicleTypeId };
+                account.Settings = new BookingSettingsDetails { Name = account.Name, NumberOfTaxi = 1, Passengers = nbPassenger, Phone = account.Phone };
 
                 context.Save(account);
                 var defaultCompanyAddress = (from a in context.Query<DefaultAddressDetails>()
                                              select a).ToList();
+                
                 //add default company favorite address
                 defaultCompanyAddress.ForEach(c => context.Set<AddressDetails>().Add(new AddressDetails()
                 {
