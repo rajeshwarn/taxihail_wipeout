@@ -48,7 +48,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
 
                 var nbPassenger = int.Parse(_configurationManager.GetSetting("DefaultBookingSettings.NbPassenger"));
-                account.Settings = new BookingSettingsDetails { Name = account.Name, NumberOfTaxi = 1, Passengers = nbPassenger, Phone = account.Phone };
+                account.Settings = new BookingSettings { Name = account.Name, NumberOfTaxi = 1, Passengers = nbPassenger, Phone = account.Phone };
 
                 context.Save(account);
                 var defaultCompanyAddress = (from a in context.Query<DefaultAddressDetails>()

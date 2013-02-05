@@ -177,10 +177,10 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 Assert.AreEqual(dto.Settings.Phone  , dto.Phone);
 
                 var config = new TestConfigurationManager();                
-                Assert.AreEqual(dto.Settings.ChargeTypeId.ToString(), config.GetSetting("DefaultBookingSettings.ChargeTypeId"));
+                Assert.IsNull(dto.Settings.ChargeTypeId);
                 Assert.AreEqual(dto.Settings.Passengers.ToString(), config.GetSetting("DefaultBookingSettings.NbPassenger"));
-                Assert.AreEqual(dto.Settings.VehicleTypeId.ToString(), config.GetSetting("DefaultBookingSettings.VehicleTypeId"));
-                Assert.AreEqual(dto.Settings.ProviderId.ToString(), config.GetSetting("DefaultBookingSettings.ProviderId"));
+                Assert.IsNull(dto.Settings.VehicleTypeId);
+                Assert.IsNull(dto.Settings.ProviderId);
                 
             }
         }
