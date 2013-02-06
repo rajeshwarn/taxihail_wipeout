@@ -7,6 +7,7 @@ using apcurium.MK.Common.Entity;
 namespace apcurium.MK.Booking.CommandHandlers
 {
     public class CompanyCommandHandler : ICommandHandler<CreateCompany>, ICommandHandler<CreateTariff>, ICommandHandler<UpdateTariff>, ICommandHandler<DeleteTariff>, ICommandHandler<AddOrUpdateAppSettings>,
+        ICommandHandler<CreateRule>, ICommandHandler<UpdateRule>, ICommandHandler<DeleteRule>, ICommandHandler<ActivateRule>, ICommandHandler<DeactivateRule>,
         ICommandHandler<AddRatingType>,
         ICommandHandler<UpdateRatingType>, ICommandHandler<HideRatingType>
     {
@@ -96,6 +97,78 @@ namespace apcurium.MK.Booking.CommandHandlers
 
             _repository.Save(company, command.Id.ToString());
         }
+
+
+        public void Handle(CreateRule command)
+        {
+            var company = _repository.Get(command.CompanyId);
+
+            
+            company.CreateRule(command.RuleId,
+                    command.Name,
+                    command.Message,
+                    command.Type,
+                    command.Category,
+                    command.AppliesToCurrentBooking,
+                    command.AppliesToFutureBooking,
+                    command.Priority, 
+                    command.IsActive, 
+                    command.DaysOfTheWeek,
+                    command.StartTime,
+                    command.EndTime,
+                    command.ActiveFrom,
+                    command.ActiveTo 
+                    );            
+            _repository.Save(company, command.Id.ToString());
+        }
+
+        public void Handle(UpdateRule command)
+        {
+            var company = _repository.Get(command.CompanyId);
+
+            company.UpdateRule( command.RuleId, 
+                                command.Name, 
+                                command.Message, 
+                                command.AppliesToCurrentBooking, 
+                                command.AppliesToFutureBooking, 
+                                command.DaysOfTheWeek, 
+                                command.StartTime, 
+                                command.EndTime, 
+                                command.ActiveFrom, 
+                                command.ActiveTo, 
+                                command.Priority, 
+                                command.IsActive );
+
+            _repository.Save(company, command.Id.ToString());
+        }
+
+        public void Handle(DeleteRule command)
+        {
+            var company = _repository.Get(command.CompanyId);
+
+            company.DeleteRule(command.RuleId);
+
+            _repository.Save(company, command.Id.ToString());
+        }
+
+        public void Handle(ActivateRule command)
+        {
+            var company = _repository.Get(command.CompanyId);
+
+            company.ActivateRule(command.RuleId);
+
+            _repository.Save(company, command.Id.ToString());
+        }
+        public void Handle(DeactivateRule command)
+        {
+            var company = _repository.Get(command.CompanyId);
+
+            company.DeactivateRule(command.RuleId);
+
+            _repository.Save(company, command.Id.ToString());
+        }
+
+
 
         public void Handle(AddRatingType command)
         {

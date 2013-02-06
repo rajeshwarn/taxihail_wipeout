@@ -117,6 +117,9 @@
     <Compile Include="Services\ConfigurationResetService.cs" />
     <Compile Include="Services\ConfigurationsService.cs" />
     <Compile Include="Services\ConfirmAccountService.cs" />
+    <Compile Include="Services\ValidateOrderService.cs" />
+    <Compile Include="Services\RuleActivateService.cs" />
+    <Compile Include="Services\RuleDeactivateService.cs" />
     <Compile Include="Services\CreateOrderService.cs" />
     <Compile Include="Services\CreditCardService.cs" />
     <Compile Include="Services\DefaultFavoriteAddressService.cs" />
@@ -133,6 +136,7 @@
     <Compile Include="Services\OrderService.cs" />
     <Compile Include="Services\OrderStatusService.cs" />
     <Compile Include="Services\Maps\PlaceDetailService.cs" />
+    <Compile Include="Services\RulesService.cs" />
     <Compile Include="Services\TariffsService.cs" />
     <Compile Include="Services\PopularAddressService.cs" />
     <Compile Include="Services\RatingTypesService.cs" />

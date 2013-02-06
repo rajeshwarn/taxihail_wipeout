@@ -56,6 +56,11 @@
     <Compile Include="CompleteOrder.cs" />
     <Compile Include="ConfirmAccount.cs" />
     <Compile Include="ConfirmAccountByAdmin.cs" />
+    <Compile Include="ActivateRule.cs" />
+    <Compile Include="DeactivateRule.cs" />
+    <Compile Include="UpdateRule.cs" />
+    <Compile Include="DeleteRule.cs" />
+    <Compile Include="CreateRule.cs" />
     <Compile Include="CreateTariff.cs" />
     <Compile Include="DeleteTariff.cs" />
     <Compile Include="HideRatingType.cs" />

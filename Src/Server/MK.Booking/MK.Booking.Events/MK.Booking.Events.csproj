@@ -50,6 +50,11 @@
     <Compile Include="AppSettingsUpdated.cs" />
     <Compile Include="BookingSettingsUpdated.cs" />
     <Compile Include="CompanyCreated.cs" />
+    <Compile Include="RuleActivated.cs" />
+    <Compile Include="RuleDeactivated.cs" />
+    <Compile Include="RuleCreated.cs" />
+    <Compile Include="RuleDeleted.cs" />
+    <Compile Include="RuleUpdated.cs" />
     <Compile Include="CreditCardAdded.cs" />
     <Compile Include="CreditCardRemoved.cs" />
     <Compile Include="DefaultFavoriteAddressAdded.cs" />
