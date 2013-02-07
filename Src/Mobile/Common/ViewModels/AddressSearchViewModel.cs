@@ -13,6 +13,7 @@ using TinyIoC;
 using apcurium.MK.Booking.Mobile.Messages;
 using TinyMessenger;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -77,6 +78,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get {
                 return GetCommand<string> (criteria =>
                 {
+                    TinyIoCContainer.Current.Resolve<ILogger>().LogMessage( "Starting SearchCommand : " + SearchViewModelSelected.Criteria.ToSafeString()   );
+
                                                SearchViewModelSelected.Criteria = criteria != null ? criteria.ToLowerInvariant() : null;
 
                                                if (!SearchViewModelSelected.CriteriaValid)
@@ -247,7 +250,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public IMvxCommand SelectedChangedCommand {
             get {
-                return GetCommand<object>(param => param.Maybe(tag =>
+                return new MvxRelayCommand<object>(param => param.Maybe(tag =>
                 {
                     ClearResults ();
                     TopBarButton btSelected;

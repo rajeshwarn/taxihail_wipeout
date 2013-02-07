@@ -264,6 +264,12 @@
   <data name="CancelBoutton" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="ContinueButton" xml:space="preserve">
+    <value>Continue</value>
+  </data>
+  <data name="WarningTitle" xml:space="preserve">
+    <value>Warning</value>
+  </data>
   <data name="ConfirmButton" xml:space="preserve">
     <value>Confirm</value>
   </data>

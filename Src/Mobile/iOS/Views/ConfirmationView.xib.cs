@@ -75,10 +75,10 @@ namespace apcurium.MK.Booking.Mobile.Client
             scrollView.ContentSize = new System.Drawing.SizeF( 320, 700 );
 
 
-            ((ModalTextField)pickerVehicleType).Configure(Resources.RideSettingsVehiculeType, ViewModel.Vehicles, ViewModel.Order.Settings.VehicleTypeId, x=> {
+            ((ModalTextField)pickerVehicleType).Configure(Resources.RideSettingsVehiculeType, ViewModel.Vehicles, ViewModel.Order.Settings.VehicleTypeId.Value, x=> {
                 ViewModel.SetVehicleTypeId ( x.Id );});
 
-            ((ModalTextField)pickerChargeType).Configure(Resources.RideSettingsChargeType, ViewModel.Payments, ViewModel.Order.Settings.ChargeTypeId , x=> {
+            ((ModalTextField)pickerChargeType).Configure(Resources.RideSettingsChargeType, ViewModel.Payments, ViewModel.Order.Settings.ChargeTypeId.Value , x=> {
                 ViewModel.SetChargeTypeId( x.Id ); });
              
             this.AddBindings(new Dictionary<object, string>() {

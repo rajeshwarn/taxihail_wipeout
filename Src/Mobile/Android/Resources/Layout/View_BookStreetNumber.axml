@@ -29,6 +29,7 @@
                 android:id="@+id/streetNumberText"
                 android:layout_width="190dip"
                 android:layout_height="wrap_content"
+                android:maxLength="10"
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
                 android:layout_below="@id/streetNumberLabel"

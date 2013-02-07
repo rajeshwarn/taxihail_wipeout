@@ -61,6 +61,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                 ShowFareEstimateAlertDialogIfNecessary();
                 ShowChooseProviderDialogIfNecessary();
+                ShowWarningIfNecessary();
 				FirePropertyChanged ( () => Vehicles );
 				FirePropertyChanged ( () => Payments );
 				FirePropertyChanged ( () => VehicleName );
@@ -71,13 +72,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public void SetVehicleTypeId( int id )
+        public void SetVehicleTypeId( int? id )
         {
             Order.Settings.VehicleTypeId = id;
             FirePropertyChanged ( () => VehicleName );
         }
 
-        public void SetChargeTypeId (int id)
+        public void SetChargeTypeId (int? id)
         {
             Order.Settings.ChargeTypeId = id;
             FirePropertyChanged (() => ChargeType);
@@ -85,11 +86,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 
 
-        public int VehicleTypeId {
+        public int? VehicleTypeId {
             get { return Order.Settings.VehicleTypeId ; }
             set {  SetVehicleTypeId( value ); }
         }
-        public int ChargeTypeId {
+        public int? ChargeTypeId {
             get { return Order.Settings.ChargeTypeId ; }
             set {  SetChargeTypeId( value ); }
         }
@@ -251,6 +252,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 });            
             }
         }
+
+
+        private void ShowWarningIfNecessary()
+        {
+            var validationInfo = _bookingService.ValidateOrder( Order );
+            if ( validationInfo.HasWarning )
+            {
+
+                MessageService.ShowMessage(Resources.GetString("WarningTitle"), validationInfo.Message,  Resources.GetString("ContinueButton") , () => validationInfo.ToString(), Resources.GetString("CancelBoutton") , ()=> RequestClose ( this) );
+            }
+        }
+
 
 		private void ShowFareEstimateAlertDialogIfNecessary()
 		{
