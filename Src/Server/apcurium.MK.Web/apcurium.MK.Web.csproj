@@ -134,14 +134,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="admin\collections\RuleCollection.js" />
     <Content Include="admin\collections\TariffCollection.js" />
     <Content Include="admin\controllers\Controller.js" />
     <Content Include="admin\controllers\CompanySettingsController.js" />
+    <Content Include="admin\controllers\RulesController.js" />
     <Content Include="admin\controllers\DefaultAddressesController.js" />
     <Content Include="admin\controllers\ExclusionsController.js" />
     <Content Include="admin\controllers\PopularAddressesController.js" />
     <Content Include="admin\controllers\SecurityController.js" />
     <Content Include="admin\controllers\TariffsController.js" />
+    <Content Include="admin\models\Rule.js" />
     <Content Include="admin\models\Tariff.js" />
     <Content Include="admin\localization\EditTariff.json" />
     <Content Include="admin\localization\ManageExclusions.json" />
@@ -154,6 +157,9 @@
     <Content Include="admin\models\CompanySettings.js" />
     <Content Include="admin\views\AddFavoriteView.js" />
     <Content Include="admin\views\ConfirmEmailView.js" />
+    <Content Include="admin\views\RuleItemView.js" />
+    <Content Include="admin\views\ManageRulesView.js" />
+    <Content Include="admin\views\EditRuleView.js" />
     <Content Include="admin\views\EditTariffView.js" />
     <Content Include="admin\views\ManageCompanySettingsView.js" />
     <Content Include="admin\views\ManageExclusionsView.js" />
@@ -431,6 +437,10 @@
     <Content Include="themes\DiamondCab\less\variables.less" />
     <Content Include="admin\templates\ConfirmEmail.handlebars" />
     <Content Include="admin\localization\ConfirmEmail.json" />
+    <Content Include="admin\templates\ManageRules.handlebars" />
+    <Content Include="admin\localization\ManageRules.json" />
+    <Content Include="admin\templates\EditRule.handlebars" />
+    <Content Include="admin\localization\EditRule.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -27,6 +27,9 @@
             "tariffs/edit/:id": "editTariff", //#tariffs/edit/{GUID}
             /* IBS exclusions */
             "exclusions": "manageIBSExclusions",
+
+            /* Manage Booking Rules */
+            "rules": "manageBookingRules",
             
             /*Export*/
             "exportaccounts": "exportaccounts",
@@ -87,11 +90,18 @@
         },
 
         editTariff: function(id) {
+            
             action(TaxiHail.TariffsController, 'edit', id);
         },
 
-        manageIBSExclusions: function() {
+        manageIBSExclusions: function () {
+            
             action(TaxiHail.ExclusionsController, 'index');
+        },
+
+        manageBookingRules: function () {
+            
+            action(TaxiHail.RulesController, 'index');
         },
         exportaccounts: function () {
            
