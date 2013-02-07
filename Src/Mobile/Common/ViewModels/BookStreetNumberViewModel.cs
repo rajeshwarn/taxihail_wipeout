@@ -10,6 +10,8 @@ using Cirrious.MvvmCross.Commands;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Common;
 using TinyMessenger;
+using TinyIoC;
+using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -34,6 +36,23 @@ namespace apcurium.MK.Booking.Mobile
                 FirePropertyChanged(() => StreetNumberOrBuildingName);
             }
             _token = MessengerHub.Subscribe<AddressSelected> (OnAddressSelected, selected => selected.OwnerId == _ownerId);
+        }
+
+        public int NumberOfCharAllowed
+        {
+            get{
+                var max =TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting( "Client.NumberOfCharInRefineAddress" );
+                int m;
+                if ( int.TryParse( max , out m ) )
+                {
+                    return m;
+                }
+                else
+                {
+                    return 10;
+                }
+            }
+
         }
 
         string _streetNumberOrBuildingName;

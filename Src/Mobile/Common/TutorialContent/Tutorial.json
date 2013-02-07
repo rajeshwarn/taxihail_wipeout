@@ -57,7 +57,7 @@
     {
       "Position": "7",
       "TopTitle": "",
-      "TopText": "On the Status screen you will see a reservation number confirming your booking. Once a vehicle is assigned, you can watch as it progresses to your pickup location.",
+      "TopText": "On the Status screen you will see a reservation number confirming your booking. Once a vehicle is assigned, you can watch as it approaches to your pickup location.",
       "BottomTitle": "",
       "BottomText": "Status updates are provided when the vehicle arrives at the pickup address, when you enter the vehicle, and at the end of the ride." ,
       "ImageUri":"tutorial_screen07"

@@ -375,4 +375,6 @@
   <string name="BackButton">Back</string>
   <string name="LocationServiceErrorTitle">Error</string>
   <string name="LocationServiceErrorMessage">The location service is not enabled.</string>
+  <string name="ContinueButton">Continue</string>
+  <string name="WarningTitle">Warning</string>
 </resources>

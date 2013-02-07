@@ -38,14 +38,23 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         protected ICacheService Cache {
             get { return TinyIoCContainer.Current.Resolve<ICacheService> (); }
         }
-
+        public OrderValidationResult ValidateOrder (CreateOrder order)
+        {
+            var validationResut = new OrderValidationResult ();
+            
+            UseServiceClient<OrderServiceClient> (service =>
+                                                  {
+                validationResut = service.ValidateOrder  (order);
+            }, ex => TinyIoCContainer.Current.Resolve<ILogger> ().LogError (ex));
+            return validationResut;
+        }
         public OrderStatusDetail CreateOrder (CreateOrder order)
         {
             var orderDetail = new OrderStatusDetail ();
             
             UseServiceClient<OrderServiceClient> (service =>
             {
-                 orderDetail = service.CreateOrder (order);
+                orderDetail = service.CreateOrder (order);
             }, ex => HandleCreateOrderError (ex, order));
 
             if (orderDetail.IBSOrderId.HasValue && orderDetail.IBSOrderId > 0) {
@@ -72,7 +81,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             try {
                 if (ex is WebServiceException) {
-                    message = appResource.GetString ("ServiceError" + ((WebServiceException)ex).ErrorCode);
+                    if (((WebServiceException)ex).ErrorCode ==ErrorCode.CreateOrder_RuleDisable.ToString ()) {
+                        message = ((WebServiceException)ex).ErrorMessage;
+                    } else {
+                        message = appResource.GetString ("ServiceError" + ((WebServiceException)ex).ErrorCode);
+                    }
                 }
             } catch {
 

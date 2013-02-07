@@ -36,6 +36,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             NavigationController.NavigationBar.Hidden = false;
         }
 		
+      
+
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();		
@@ -51,6 +53,16 @@ namespace apcurium.MK.Booking.Mobile.Client
             txtStreetNumber.ShouldReturn = delegate {
                 txtStreetNumber.ResignFirstResponder();
                 return true;
+            };
+
+
+            txtStreetNumber.ShouldChangeCharacters = (textField, range, replacementString) => 
+            {
+                using (NSString original = new NSString(textField.Text), replace = new NSString(replacementString.ToUpper()))
+                {
+                    return original.Replace (range, replace).Length <= ViewModel.NumberOfCharAllowed;
+                }
+                //return false;
             };
 
             var button = new MonoTouch.UIKit.UIBarButtonItem(Resources.DoneButton, UIBarButtonItemStyle.Plain, delegate {

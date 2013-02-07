@@ -1430,6 +1430,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f070083
 			public const int ConfirmVehiculeTypeLabel = 2131165315;
 			
+			// aapt resource value: 0x7f070177
+			public const int ContinueButton = 2131165559;
+			
 			// aapt resource value: 0x7f07014e
 			public const int CreateAccountCancel = 2131165518;
 			
@@ -2383,6 +2386,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f070031
 			public const int WarningEstimateTitle = 2131165233;
+			
+			// aapt resource value: 0x7f070178
+			public const int WarningTitle = 2131165560;
 			
 			// aapt resource value: 0x7f070025
 			public const int YesButton = 2131165221;
