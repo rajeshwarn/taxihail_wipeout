@@ -30,37 +30,10 @@ namespace apcurium.MK.Booking.Mobile
 
             LoadAllAddresses();
         }
+       
 
-        private ObservableCollection<Address> _favoriteAddresses;
-        public ObservableCollection<Address> FavoriteAddresses {
-            get {
-                return _favoriteAddresses;
-            }
-            set {
-                if(value != _favoriteAddresses)
-                {
-                    _favoriteAddresses = value;
-                    FirePropertyChanged("FavoriteAddresses");
-                }
-            }
-        }
-
-        private ObservableCollection<Address> _historyAddresses;
-        public ObservableCollection<Address> HistoryAddresses {
-            get {
-                return _historyAddresses;
-            }
-            set {
-                if(value != _historyAddresses)
-                {
-                    _historyAddresses = value;
-                    FirePropertyChanged("HistoryAddresses");
-                }
-            }
-        }
-
-        private ObservableCollection<SectionAddressViewModel> _allAddresses;
-        public ObservableCollection<SectionAddressViewModel> AllAddresses { 
+        private ObservableCollection<AddressViewModel> _allAddresses = new ObservableCollection<AddressViewModel>();
+        public ObservableCollection<AddressViewModel> AllAddresses { 
             get {
                 return _allAddresses;
             }
@@ -97,23 +70,31 @@ namespace apcurium.MK.Booking.Mobile
             };
             return Task.Factory.ContinueWhenAll<AddressViewModel[]>(tasks, t => {
 
-                var allAddresses = new ObservableCollection<SectionAddressViewModel>();
+                AllAddresses.Clear ();
                 if(t[0].Status == TaskStatus.RanToCompletion)
                 {
-                    allAddresses.Add(new SectionAddressViewModel{
-                        Addresses = t[0].Result,
-                        SectionTitle = Resources.GetString("FavoriteLocationsTitle")
-                    });
+                    AllAddresses.AddRange(t[0].Result);
                 }
 
                 if(t[1].Status == TaskStatus.RanToCompletion)
                 {
-                    allAddresses.Add(new SectionAddressViewModel{
-                        Addresses = t[1].Result,
-                        SectionTitle = Resources.GetString("LocationHistoryTitle")
-                    });
+                    AllAddresses.AddRange(t[1].Result);
                 }
-                AllAddresses = allAddresses;
+
+                AllAddresses.Add (new AddressViewModel{ Address =  new Address
+                          {
+                            FriendlyName=Resources.GetString("LocationAddFavoriteTitle"),
+                            FullAddress = Resources.GetString("LocationAddFavoriteSubtitle"),
+                    }, IsAddNew = true, ShowPlusSign=true});
+
+
+                AllAddresses.ForEach ( a=> 
+                                           {
+                    a.IsFirst = a.Equals(AllAddresses.First());
+                    a.IsLast = a.Equals(AllAddresses.Last());                    
+                });
+
+                FirePropertyChanged( () =>AllAddresses );
 
             }, new CancellationTokenSource().Token, TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
         }
@@ -123,20 +104,14 @@ namespace apcurium.MK.Booking.Mobile
         {
             return Task<AddressViewModel[]>.Factory.StartNew(()=>{
                 var adrs = _accountService.GetFavoriteAddresses().ToList();
-                adrs.Add (new Address
-                {
-                    FriendlyName=Resources.GetString("LocationAddFavoriteTitle"),
-                    FullAddress = Resources.GetString("LocationAddFavoriteSubtitle"),
-                });
-
+             
                 return adrs.Select(a => new AddressViewModel
                 { 
                     Address = a,
                     IsAddNew =  a.Id.IsNullOrEmpty(),
                     ShowPlusSign = a.Id.IsNullOrEmpty(),
                     ShowRightArrow = !a.Id.IsNullOrEmpty(),
-                    IsFirst = a.Equals(adrs.First()),
-                    IsLast = a.Equals(adrs.Last())
+                    Icon = "favorites"
                 }).ToArray();
             }).HandleErrors();
         }
@@ -150,8 +125,7 @@ namespace apcurium.MK.Booking.Mobile
                     Address = a,
                     ShowPlusSign = a.Id.IsNullOrEmpty(),
                     ShowRightArrow = !a.Id.IsNullOrEmpty(),
-                    IsFirst = a.Equals(adrs.First()),
-                    IsLast = a.Equals(adrs.Last()) 
+                    Icon = "history"
                 }).ToArray();
             }).HandleErrors();
         }

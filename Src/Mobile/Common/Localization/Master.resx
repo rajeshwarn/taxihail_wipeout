@@ -876,6 +876,11 @@
   <data name="NetworkErrorMessage" xml:space="preserve">
     <value>Cannot connect to Internet. Please check your connection settings and try again.</value>
   </data>
+  
+  <data name="View_SearchAddress" xml:space="preserve">
+    <value>Address Search</value>
+  </data>
+  
   <data name="View_About" xml:space="preserve">
     <value>About Us</value>
   </data>
@@ -1194,4 +1199,8 @@
   <data name="BackButton" xml:space="preserve">
     <value>Back</value>
   </data>
+  <data name="StreetNumberPlacesBt" xml:space="preserve">
+    <value>Search for places</value>
+  </data>
+  
 </root>

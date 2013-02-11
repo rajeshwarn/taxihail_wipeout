@@ -15,13 +15,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 		MonoTouch.UIKit.UITableView AddressListView { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIButton CancelButton { get; set; }
-
-		[Outlet]
 		MonoTouch.UIKit.UITextField SearchTextField { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.SegmentedButtonBar TopBar { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
@@ -30,19 +24,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 				AddressListView = null;
 			}
 
-			if (CancelButton != null) {
-				CancelButton.Dispose ();
-				CancelButton = null;
-			}
-
 			if (SearchTextField != null) {
 				SearchTextField.Dispose ();
 				SearchTextField = null;
-			}
-
-			if (TopBar != null) {
-				TopBar.Dispose ();
-				TopBar = null;
 			}
 		}
 	}

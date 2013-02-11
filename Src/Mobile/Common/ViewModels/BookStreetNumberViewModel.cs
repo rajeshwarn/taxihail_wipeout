@@ -12,6 +12,9 @@ using apcurium.MK.Common;
 using TinyMessenger;
 using TinyIoC;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.Extensions;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -41,7 +44,10 @@ namespace apcurium.MK.Booking.Mobile
         public int NumberOfCharAllowed
         {
             get{
-                var max =TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting( "Client.NumberOfCharInRefineAddress" );
+
+                    
+                var max =  TinyIoCContainer.Current.Resolve<ICacheService>().Get<string>( "Client.NumberOfCharInRefineAddress");
+                Task.Factory.SafeStartNew( () => TinyIoCContainer.Current.Resolve<ICacheService>().Set<string>( "Client.NumberOfCharInRefineAddress", TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting( "Client.NumberOfCharInRefineAddress" )));
                 int m;
                 if ( int.TryParse( max , out m ) )
                 {
@@ -90,7 +96,21 @@ namespace apcurium.MK.Booking.Mobile
                     MessengerHub.Unsubscribe<AddressSelected> ( _token );
                     _token.Dispose ();
                     _token = null;
-                    RequestNavigate<AddressSearchViewModel> (new { search = "", ownerId = _ownerId });                                       
+                    RequestClose( this );
+                    RequestNavigate<AddressSearchViewModel> (new { search = "", ownerId = _ownerId , places = "false"});                                       
+                });
+            }
+        }
+
+        public IMvxCommand NavigateToPlaces {
+            get {
+                return GetCommand(() =>
+                                  {
+                    MessengerHub.Unsubscribe<AddressSelected> ( _token );
+                    _token.Dispose ();
+                    _token = null;
+                    RequestClose( this );
+                    RequestNavigate<AddressSearchViewModel> (new { search = "", ownerId = _ownerId, places = "true" });                                       
                 });
             }
         }

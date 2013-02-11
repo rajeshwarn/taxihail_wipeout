@@ -385,3 +385,5 @@
 "LocationServiceErrorMessage"="The location service is not enabled.";
 "ContinueButton"="Continue";
 "WarningTitle"="Warning";
+"View_SearchAddress"="Address Search";
+"StreetNumberPlacesBt"="Search for places";

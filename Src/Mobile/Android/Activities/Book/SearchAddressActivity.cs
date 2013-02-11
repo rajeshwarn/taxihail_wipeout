@@ -29,9 +29,19 @@ using System.Reactive;
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
     [Activity(Label = "SearchActivity", Theme = "@android:style/Theme.NoTitleBar", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
-    public class SearchAddressActivity : MvxBindingActivityView<AddressSearchViewModel>
+    public class SearchAddressActivity : BaseBindingActivity<AddressSearchViewModel>
 	{
-	    private IObservable<string> subscription;
+      
+      
+        protected override int ViewTitleResourceId
+        {
+            get
+            {
+                return Resource.String.View_SearchAddress;
+            }
+        }
+
+	   
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -42,20 +52,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             SetContentView(Resource.Layout.View_SearchAddress);
 
-			var _listView = FindViewById<MvxBindableListView>(Resource.Id.SearchAddressListView);
-			_listView.Divider = null;
-			_listView.DividerHeight = 0;
-            _listView.SetScrollContainer( false );
+			
+            var searchAddressText = FindViewById<EditText>(Resource.Id.searchAddressText);
 
-			var _historicListView = FindViewById<MvxBindableListView>(Resource.Id.HistoricListView);
-			_historicListView.Divider = null;
-			_historicListView.DividerHeight = 0;
-            _historicListView.SetScrollContainer( false );
-            var searchAddressText = FindViewById<AutoCompleteBindableTextView>(Resource.Id.SearchAddressText);
 
-            var frame = FindViewById<FrameLayout>(Resource.Id.eraseTextFrame);
-            var button = FindViewById<Button>(Resource.Id.eraseTextButton);
-            frame.Click += (sender, args) =>
+            var button = FindViewById<ImageButton>(Resource.Id.clearable_button_clear);
+            button.Touch  += (sender, args) =>
                                 {
                                     searchAddressText.Text = "";
                                     ViewModel.ClearResults();
@@ -63,35 +65,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
                                 };
 
-             subscription = Observable.FromEventPattern<TextChangedEventArgs>(searchAddressText
-                                                                                 , "TextChanged").Select(
-                                                                                     c => ((EditText) c.Sender).Text);
-                
-            subscription.Subscribe(c =>
-                                             {
-                                                 RunOnUiThread(() =>
-                                                                   {
-                                                                       if (c.Length > 0)
-                                                                       {
-                                                                           button.Visibility = ViewStates.Visible;
-                                                                       }
-                                                                       else
-                                                                       {
-                                                                           button.Visibility = ViewStates.Gone;
-                                                                       }
-                                                                   });
-                                             });
+            searchAddressText.TextChanged += delegate
+            {
+                if (searchAddressText.Text.Length > 0)
+                {
+                    button.Visibility = ViewStates.Visible;
+                }
+                else
+                {
+                    button.Visibility = ViewStates.Gone;
+                }
+            };
 
             if(searchAddressText.Length()> 0)
             {
                 button.Visibility = ViewStates.Visible;
-                //searchAddressText.SelectAll();
-                //searchAddressText.ExtendSelection(0);
             }
-
-
-			
-			FindViewById<TextView>( Resource.Id.HistoricListViewTitle ).Text = Resources.GetString( Resource.String.LocationHistoryTitle );
 		}
 
         protected override void OnDestroy()

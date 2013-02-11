@@ -32,6 +32,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                    'ShowPlusSign':{'Path':'ShowPlusSign'},
                    'IsFirst':{'Path':'IsFirst'},
                    'IsLast':{'Path':'IsLast'},
+                    'Icon':{'Path':'Icon'},
                    'IsAddNewCell': {'Path': 'IsAddNew'}
                 }";
 

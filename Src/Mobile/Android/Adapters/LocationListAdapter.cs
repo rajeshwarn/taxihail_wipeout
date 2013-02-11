@@ -43,6 +43,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Adapters
 					IsLast = item.IsLast,
 				    ShowRightArrow = item.ShowRightArrow,
 					ShowPlusSign = item.ShowPlusSign,
+                    Icon = item.Icon
 				}, Resource.Layout.SimpleListItem);
         }
     }

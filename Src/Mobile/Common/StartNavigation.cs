@@ -9,6 +9,7 @@ using apcurium.MK.Common.Diagnostic;
 using System.Threading.Tasks;
 using System.Threading;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Booking.Mobile.Extensions;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -21,6 +22,8 @@ namespace apcurium.MK.Booking.Mobile
 
             
             TinyIoCContainer.Current.Resolve<IConfigurationManager>().Reset();
+
+            Task.Factory.SafeStartNew( () => TinyIoCContainer.Current.Resolve<ICacheService>().Set<string>( "Client.NumberOfCharInRefineAddress", TinyIoCContainer.Current.Resolve<IConfigurationManager>().GetSetting( "Client.NumberOfCharInRefineAddress" )));
 
             if (TinyIoC.TinyIoCContainer.Current.Resolve<IAccountService>().CurrentAccount == null)
             {

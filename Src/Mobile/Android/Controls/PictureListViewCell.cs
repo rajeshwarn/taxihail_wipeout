@@ -75,9 +75,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             var d = IsTop && !IsBottom 
 						? Resource.Drawable.cell_top_state 
 						: IsBottom && !IsTop 
-							? Resource.Drawable.blank_bottom_state 
+							? Resource.Drawable.cell_bottom_state 
 							: IsTop && IsBottom 
-								? Resource.Drawable.blank_single_state 
+								? Resource.Drawable.cell_full_state 
 								:  Resource.Drawable.cell_middle_state;
 
 			SetBackgroundDrawable( Resources.GetDrawable( d ) );

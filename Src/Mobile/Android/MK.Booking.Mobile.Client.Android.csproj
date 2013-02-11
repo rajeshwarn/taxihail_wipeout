@@ -103,7 +103,9 @@
     <Compile Include="Animations\SlideAnimation.cs" />
     <Compile Include="AppContext.cs" />
     <Compile Include="AppFonts.cs" />
-    <Compile Include="Binding\EditTextSpinnerSelectedItemBinding.cs" />
+    <Compile Include="Binding\EditTextSpinnerSelectedItemBinding.cs">
+      <DependentUpon>EditTextSpinnerSelectedItemBinding.cs</DependentUpon>
+    </Compile>
     <Compile Include="Cache\CacheService.cs" />
     <Compile Include="Controls\AutoCompleteBindableTextView.cs" />
     <Compile Include="Controls\BaloonLayout.cs" />
@@ -155,9 +157,6 @@
     <Compile Include="Activities\Account\SignUpActivity.cs" />
     <Compile Include="Activities\SplashActivity.cs" />
     <AndroidResource Include="Resources\Layout\IconActionLayout.axml" />
-    <AndroidResource Include="Resources\Drawable\cell_bottom_full_state.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\Layout\RatingListItem.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -258,6 +257,16 @@
     <AndroidResource Include="Resources\Drawable\segmented_button_text_color.xml" />
     <AndroidResource Include="Resources\Drawable\add_btn.png" />
     <AndroidResource Include="Resources\drawable-hdpi\add_btn.png" />
+    <AndroidResource Include="Resources\Drawable\cell_full_state.xml" />
+    <AndroidResource Include="Resources\Drawable\cell_selected.xml" />
+    <AndroidResource Include="Resources\Drawable\history.png" />
+    <AndroidResource Include="Resources\Drawable\favorites.png" />
+    <AndroidResource Include="Resources\Drawable\transparentAllStates.xml" />
+    <AndroidResource Include="Resources\Drawable\address.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\favorites.png" />
+    <Compile Include="Binding\CellItemBinding.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\address.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\history.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\AppFont_Medium.otf" />
@@ -360,9 +369,6 @@
     <AndroidResource Include="Resources\drawable-hdpi\splash.png" />
     <AndroidResource Include="Resources\Drawable\backgroundblue.png" />
     <AndroidResource Include="Resources\Drawable\right_arrow.png" />
-    <AndroidResource Include="Resources\Drawable\cell_bottom.9.png" />
-    <AndroidResource Include="Resources\Drawable\cell_middle.9.png" />
-    <AndroidResource Include="Resources\Drawable\cell_top.9.png" />
     <AndroidResource Include="Resources\Drawable\email_cell.9.png" />
     <AndroidResource Include="Resources\Drawable\password_cell.9.png" />
     <AndroidResource Include="Resources\Drawable\social_media_login_btn.9.png" />
@@ -372,9 +378,6 @@
     <AndroidResource Include="Resources\Drawable\forgot_password_btn.9.png" />
     <AndroidResource Include="Resources\Drawable\sign_in_btn.9.png" />
     <AndroidResource Include="Resources\drawable-hdpi\add_button.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\cell_bottom.9.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\cell_middle.9.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\cell_top.9.png" />
     <AndroidResource Include="Resources\drawable-hdpi\email_cell.9.png" />
     <AndroidResource Include="Resources\drawable-hdpi\facebook_icon.png" />
     <AndroidResource Include="Resources\drawable-hdpi\forgot_password_btn.9.png" />
@@ -388,15 +391,13 @@
     </AndroidResource>
     <AndroidResource Include="Resources\Drawable\cell_middle_state.xml">
       <SubType>Designer</SubType>
+      <DependentUpon>cell_middle_state.xml</DependentUpon>
     </AndroidResource>
     <AndroidResource Include="Resources\Drawable\cell_top_state.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Drawable\cell_bottom_state.xml" />
     <AndroidResource Include="Resources\Drawable\dropdown.png" />
-    <AndroidResource Include="Resources\Drawable\cell_borderTop.png" />
-    <AndroidResource Include="Resources\Drawable\cell_bottom_full.9.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\cell_bottom_full.9.png" />
     <AndroidResource Include="Resources\Drawable\social_media_login_btn_state.xml" />
     <AndroidResource Include="Resources\Drawable\social_media_login_btn_hit.9.png" />
     <AndroidResource Include="Resources\drawable-hdpi\social_media_login_btn_hit.9.png" />
@@ -406,19 +407,11 @@
     <AndroidResource Include="Resources\Drawable\facebook_icon_hit.png" />
     <AndroidResource Include="Resources\drawable-hdpi\twitter_icon_hit.png" />
     <AndroidResource Include="Resources\drawable-hdpi\facebook_icon_hit.png" />
-    <AndroidResource Include="Resources\Drawable\blank_single.9.png" />
-    <AndroidResource Include="Resources\Drawable\add_single.9.png" />
     <AndroidResource Include="Resources\Drawable\red_button.xml" />
     <AndroidResource Include="Resources\Drawable\forgot_password_btn_state.xml" />
-    <AndroidResource Include="Resources\Drawable\blank_bottom.9.png" />
     <AndroidResource Include="Resources\drawable-hdpi\blank_single.9.png" />
     <AndroidResource Include="Resources\drawable-hdpi\add_single.9.png" />
     <AndroidResource Include="Resources\drawable-hdpi\blank_bottom.9.png" />
-    <AndroidResource Include="Resources\Drawable\add_single_state.xml" />
-    <AndroidResource Include="Resources\Drawable\blank_bottom_state.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\Drawable\blank_single_state.xml" />
     <AndroidResource Include="Resources\Drawable\textedit_background.9.png" />
     <AndroidResource Include="Resources\Drawable\textedit_background_std.xml" />
     <AndroidResource Include="Resources\Drawable\textedit_background_disabled.9.png" />
@@ -470,9 +463,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Drawable\drop_shadow.xml" />
-    <AndroidResource Include="Resources\Drawable\cell_top_button_state.xml" />
-    <AndroidResource Include="Resources\Drawable\cell_middle_button_state.xml" />
-    <AndroidResource Include="Resources\Drawable\blank_bottom_button_state.xml" />
     <AndroidResource Include="Resources\drawable-hdpi\location_info.png" />
     <AndroidResource Include="Resources\drawable-hdpi\number_icon.png" />
     <AndroidResource Include="Resources\drawable-hdpi\number_icon_selected.png" />
